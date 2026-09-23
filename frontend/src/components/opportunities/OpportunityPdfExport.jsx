@@ -32,9 +32,9 @@ export default function OpportunityPdfExport({ getSpec, disabled = false, langua
   const btnStyle = {
     padding: '6px 12px',
     borderRadius: 8,
-    border: '1px solid rgba(212,175,55,0.45)',
-    background: 'rgba(212,175,55,0.12)',
-    color: 'rgba(212,175,55,0.95)',
+    border: '1px solid color-mix(in srgb, var(--gold) 45%, transparent)',
+    background: 'var(--goldSoft)',
+    color: 'var(--gold)',
     fontWeight: 700,
     fontSize: 12,
     cursor: disabled || exporting ? 'not-allowed' : 'pointer',

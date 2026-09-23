@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts';
 import { LayoutGrid, RefreshCw, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
+import { montantCompact } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -26,19 +27,27 @@ const HS_LEVELS = [
   { value: 'HS6', digits: 6 },
 ];
 
-// Palette chaude/terre cohérente avec le thème de la plateforme
-const PALETTE = [
-  '#C8531A', '#D4891A', '#1A7A4A', '#1A6B8A', '#8A5A1A',
-  '#A03C12', '#34853A', '#2A8A9A', '#B5701A', '#6A4A8A',
-  '#C0392B', '#27AE60', '#2980B9', '#D68910', '#7D6608',
+// Familles de produits, par chapitre SH : sections I à IV, V, XIV-XV ; tout
+// le reste en produits industriels. La couleur d'un bloc dit sa famille —
+// jamais son rang ni sa valeur, que la surface porte déjà.
+const FAMILLES = [
+  { id: 'agri', de: 1, a: 24, sh: 'SH 01–24' },
+  { id: 'mineraux', de: 25, a: 27, sh: 'SH 25–27' },
+  { id: 'metaux', de: 71, a: 83, sh: 'SH 71–83' },
+  { id: 'industrie', sh: 'SH 28–70, 84–99' },
 ];
 
-const formatUSD = (v) => {
+const familleSH = (code) => {
+  const chapitre = parseInt(String(code).slice(0, 2), 10);
+  if (Number.isNaN(chapitre)) return 'autres';
+  const f = FAMILLES.find((x) => x.de && chapitre >= x.de && chapitre <= x.a);
+  return f ? f.id : 'industrie';
+};
+
+// « 64,56 Md $ » en français, « $64.56B » en anglais.
+const formatUSD = (v, language) => {
   if (!v && v !== 0) return '—';
-  if (v >= 1e9) return `$${(v / 1e9).toFixed(2)} Mds`;
-  if (v >= 1e6) return `$${(v / 1e6).toFixed(1)} M`;
-  if (v >= 1e3) return `$${(v / 1e3).toFixed(1)} k`;
-  return `$${v.toFixed(0)}`;
+  return montantCompact(v, language, { B: 2, M: 1, K: 1 });
 };
 
 const TEXTS = {
@@ -59,8 +68,14 @@ const TEXTS = {
     share: 'Part',
     total: 'Total',
     products: 'produits',
-    hint: 'La surface de chaque bloc est proportionnelle à la valeur échangée. Survolez un bloc pour le détail.',
+    hint: 'La surface de chaque bloc est proportionnelle à la valeur échangée ; sa couleur indique la famille de produits (sections du SH). Survolez un bloc pour le détail.',
     levelHint: { HS2: 'Chapitres (2 chiffres)', HS4: 'Positions (4 chiffres)', HS6: 'Sous-positions (6 chiffres)' },
+    familles: {
+      agri: 'Agriculture et alimentation',
+      mineraux: 'Minerais et énergie',
+      metaux: 'Métaux et pierres précieuses',
+      industrie: 'Produits industriels',
+    },
   },
   en: {
     title: 'Product map',
@@ -79,15 +94,28 @@ const TEXTS = {
     share: 'Share',
     total: 'Total',
     products: 'products',
-    hint: 'Each block area is proportional to the traded value. Hover a block for details.',
+    hint: 'Each block area is proportional to the traded value; its colour shows the product family (HS sections). Hover a block for details.',
     levelHint: { HS2: 'Chapters (2 digits)', HS4: 'Positions (4 digits)', HS6: 'Sub-positions (6 digits)' },
+    familles: {
+      agri: 'Agriculture & food',
+      mineraux: 'Minerals & energy',
+      metaux: 'Metals & precious stones',
+      industrie: 'Industrial products',
+    },
   },
 };
 
 /* ── Contenu personnalisé d'une cellule du treemap ─────────────── */
 const TreemapCell = (props) => {
-  const { x, y, width, height, index, name, share, colorIndex } = props;
-  const fill = PALETTE[(colorIndex ?? index) % PALETTE.length];
+  const { x, y, width, height, name, share, famille } = props;
+  // Skill dataviz : une teinte par famille de produits (jetons --tm-*), la
+  // queue repliée « Autres » en gris. Les blocs se touchent tous : quatre
+  // familles au plus, validées « toutes paires » dans les deux thèmes. 2 px
+  // de surface entre les blocs ; libellé posé sur l'aplat, blanc ou encre
+  // selon sa luminance (--tm-*-ink, ≥ 5:1). Le nœud racine n'a pas de
+  // famille : les blocs le recouvrent, rien à peindre.
+  if (!famille) return null;
+  const encre = `var(--tm-${famille}-ink)`;
   const showLabel = width > 64 && height > 30;
   const showShare = width > 64 && height > 48;
   return (
@@ -97,16 +125,16 @@ const TreemapCell = (props) => {
         y={y}
         width={width}
         height={height}
-        rx={3}
-        style={{ fill, stroke: 'rgba(10,14,20,0.65)', strokeWidth: 1.5 }}
+        rx={4}
+        style={{ fill: `var(--tm-${famille})`, stroke: 'var(--afcfta-card)', strokeWidth: 2 }}
       />
       {showLabel && (
-        <text x={x + 7} y={y + 18} fill="#fff" fontSize={11} fontWeight={600}>
+        <text x={x + 7} y={y + 18} fill={encre} fontSize={11} fontWeight={600}>
           {name?.length > Math.floor(width / 7) ? `${name.slice(0, Math.floor(width / 7))}…` : name}
         </text>
       )}
       {showShare && (
-        <text x={x + 7} y={y + 34} fill="rgba(255,255,255,0.85)" fontSize={10}>
+        <text x={x + 7} y={y + 34} fill={encre} fontSize={10}>
           {share != null ? `${share.toFixed(1)}%` : ''}
         </text>
       )}
@@ -115,14 +143,14 @@ const TreemapCell = (props) => {
 };
 
 /* ── Tooltip ───────────────────────────────────────────────────── */
-const makeTooltip = (txt) => ({ active, payload }) => {
+const makeTooltip = (txt, language) => ({ active, payload }) => {
   if (!active || !payload || !payload.length) return null;
   const d = payload[0]?.payload;
   if (!d) return null;
   return (
     <div
       style={{
-        background: 'rgba(16,22,32,0.97)',
+        background: 'var(--afcfta-card)',
         border: '1px solid rgba(212,137,26,0.3)',
         borderRadius: 10,
         padding: '10px 14px',
@@ -130,15 +158,21 @@ const makeTooltip = (txt) => ({ active, payload }) => {
         maxWidth: 280,
       }}
     >
-      <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>
+      <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>
         {d.hsId ? `${d.hsId} · ` : ''}{d.fullName}
       </p>
-      <p style={{ color: '#D4891A', margin: 0 }}>
-        <strong>{formatUSD(d.size)}</strong>
+      <p style={{ color: 'var(--gold)', margin: 0 }}>
+        <strong>{formatUSD(d.size, language)}</strong>
       </p>
       {d.share != null && (
-        <p style={{ color: 'rgba(142,155,174,0.85)', margin: '2px 0 0' }}>
+        <p style={{ color: 'var(--afcfta-muted)', margin: '2px 0 0' }}>
           {txt.share}: {d.share.toFixed(2)}%
+        </p>
+      )}
+      {d.famille && d.famille !== 'autres' && (
+        <p style={{ color: 'var(--afcfta-muted)', margin: '2px 0 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 2, background: `var(--tm-${d.famille})`, flexShrink: 0 }} />
+          {txt.familles[d.famille]}
         </p>
       )}
     </div>
@@ -205,13 +239,14 @@ export default function ProductTreemap({ language = 'fr' }) {
     const nodes = response.data.map((item, i) => {
       const fullName = item[hsLevel] || `${txt.products} #${i + 1}`;
       const value = item['Trade Value'] || 0;
+      const hsId = item[`${hsLevel} ID`] != null ? String(item[`${hsLevel} ID`]).slice(-HS_LEVELS.find(l => l.value === hsLevel).digits) : '';
       return {
         name: fullName,
         fullName,
-        hsId: item[`${hsLevel} ID`] != null ? String(item[`${hsLevel} ID`]).slice(-HS_LEVELS.find(l => l.value === hsLevel).digits) : '',
+        hsId,
         size: value,
         share: (value / total) * 100,
-        colorIndex: i,
+        famille: familleSH(hsId),
       };
     });
 
@@ -224,29 +259,37 @@ export default function ProductTreemap({ language = 'fr' }) {
         hsId: '',
         size: remainder,
         share: (remainder / total) * 100,
-        colorIndex: PALETTE.length - 1,
+        famille: 'autres',
       });
     }
     return nodes;
   }, [response, hsLevel, txt]);
 
+  // Légende : les familles présentes, dans l'ordre fixe, puis le reste.
+  const legende = useMemo(() => {
+    const presentes = new Set(treemapData.map((n) => n.famille));
+    return [...FAMILLES, { id: 'autres' }]
+      .filter((f) => presentes.has(f.id))
+      .map((f) => ({ ...f, label: f.id === 'autres' ? txt.others : txt.familles[f.id] }));
+  }, [treemapData, txt]);
+
   const total = response?.total_value || 0;
-  const TooltipContent = useMemo(() => makeTooltip(txt), [txt]);
+  const TooltipContent = useMemo(() => makeTooltip(txt, language), [txt, language]);
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="product-treemap">
-      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
-              <LayoutGrid className="w-7 h-7 text-white" />
+              <LayoutGrid className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
-              <CardDescription className="text-slate-300 mt-0.5">{txt.subtitle}</CardDescription>
+              <CardDescription className="mt-0.5">{txt.subtitle}</CardDescription>
             </div>
           </div>
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1">
+          <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
             OEC/BACI · {year}
           </Badge>
         </div>
@@ -256,7 +299,7 @@ export default function ProductTreemap({ language = 'fr' }) {
         {/* ── Contrôles ───────────────────────────────────────── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.country}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.country}</label>
             <Select value={selectedCountry} onValueChange={setSelectedCountry}>
               <SelectTrigger data-testid="treemap-country-select">
                 <SelectValue placeholder={txt.selectCountry} />
@@ -275,7 +318,7 @@ export default function ProductTreemap({ language = 'fr' }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.year}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.year}</label>
             <Select value={String(year)} onValueChange={(v) => setYear(Number(v))}>
               <SelectTrigger data-testid="treemap-year-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -287,22 +330,22 @@ export default function ProductTreemap({ language = 'fr' }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.flow}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.flow}</label>
             <Select value={flow} onValueChange={setFlow}>
               <SelectTrigger data-testid="treemap-flow-select"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="exports">
-                  <span className="flex items-center gap-2"><ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />{txt.exports}</span>
+                  <span className="flex items-center gap-2"><ArrowUpRight className="w-3.5 h-3.5 text-[var(--success)]" />{txt.exports}</span>
                 </SelectItem>
                 <SelectItem value="imports">
-                  <span className="flex items-center gap-2"><ArrowDownRight className="w-3.5 h-3.5 text-blue-600" />{txt.imports}</span>
+                  <span className="flex items-center gap-2"><ArrowDownRight className="w-3.5 h-3.5 text-[var(--info)]" />{txt.imports}</span>
                 </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.level}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.level}</label>
             <Select value={hsLevel} onValueChange={setHsLevel}>
               <SelectTrigger data-testid="treemap-level-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -318,31 +361,43 @@ export default function ProductTreemap({ language = 'fr' }) {
 
         {/* ── Résumé ──────────────────────────────────────────── */}
         {!loading && !error && response && (
-          <div className="flex items-center gap-4 text-sm text-slate-600 flex-wrap">
-            <span className="font-semibold text-slate-800">
-              {flow === 'exports' ? txt.exports : txt.imports} {year} · {formatUSD(total)}
+          <div className="flex items-center gap-4 text-sm text-[var(--afcfta-muted)] flex-wrap">
+            <span className="font-semibold text-[var(--text)]">
+              {flow === 'exports' ? txt.exports : txt.imports} {year} · {formatUSD(total, language)}
             </span>
             <span>{response.total_products || treemapData.length} {txt.products}</span>
+          </div>
+        )}
+
+        {/* ── Légende des familles ────────────────────────────── */}
+        {!loading && !error && legende.length > 0 && (
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs" data-testid="treemap-legend">
+            {legende.map((f) => (
+              <span key={f.id} className="inline-flex items-center gap-1.5 text-[var(--text-soft)]">
+                <span className="w-3 h-3 rounded-[3px] shrink-0" style={{ background: `var(--tm-${f.id})` }} />
+                {f.label}
+                {f.sh && <span className="text-[var(--afcfta-muted)]">{f.sh}</span>}
+              </span>
+            ))}
           </div>
         )}
 
         {/* ── Treemap ─────────────────────────────────────────── */}
         <div style={{ width: '100%', height: 460 }}>
           {loading ? (
-            <div className="flex items-center justify-center h-full text-slate-500 gap-2">
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)] gap-2">
               <RefreshCw className="w-5 h-5 animate-spin" /> {txt.loading}
             </div>
           ) : error ? (
-            <div className="flex items-center justify-center h-full text-red-500">{txt.error}</div>
+            <div className="flex items-center justify-center h-full text-[var(--danger)]">{txt.error}</div>
           ) : !treemapData.length ? (
-            <div className="flex items-center justify-center h-full text-slate-500">{txt.noData}</div>
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)]">{txt.noData}</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <Treemap
                 data={treemapData}
                 dataKey="size"
                 nameKey="name"
-                stroke="#fff"
                 isAnimationActive={false}
                 content={<TreemapCell />}
               >
@@ -352,7 +407,7 @@ export default function ProductTreemap({ language = 'fr' }) {
           )}
         </div>
 
-        <p className="text-xs text-slate-400">{txt.hint}</p>
+        <p className="text-xs text-[var(--afcfta-muted)]">{txt.hint}</p>
       </CardContent>
     </Card>
   );

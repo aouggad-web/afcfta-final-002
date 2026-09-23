@@ -105,13 +105,13 @@ export default function FreeZonesTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
-        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+      <div className="flex items-center gap-3 bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
           <Building2 className="w-5 h-5" />
         </div>
         <div>
           <h2 className="text-lg font-bold">{t.title}</h2>
-          <p className="text-blue-100 text-sm">{t.description}</p>
+          <p className="text-[var(--info)] text-sm">{t.description}</p>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <span className="text-sm font-semibold text-gray-700">{t.filterByCountry}</span>
+              <span className="text-sm font-semibold text-[var(--text)]">{t.filterByCountry}</span>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                 <SelectTrigger className="w-64">
                   <SelectValue placeholder={t.allCountries} />
@@ -162,14 +162,12 @@ export default function FreeZonesTab({ language = 'fr' }) {
               <Button
                 onClick={() => setViewMode('map')}
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'bg-orange-600 hover:bg-orange-700' : ''}
               >
                 🗺️ {t.map}
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
                 variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'bg-orange-600 hover:bg-orange-700' : ''}
               >
                 📋 {t.list}
               </Button>
@@ -179,7 +177,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
       </Card>
 
       {viewMode === 'map' ? (
-        <Card className="h-[550px] overflow-hidden border-2 border-orange-100">
+        <Card className="h-[550px] overflow-hidden border-2 border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
           <MapContainer center={[5.0, 20.0]} zoom={3} style={{ height: '100%', width: '100%' }}>
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -193,19 +191,19 @@ export default function FreeZonesTab({ language = 'fr' }) {
               >
                 <Popup>
                   <div className="p-2 min-w-[280px]">
-                    <h3 className="font-bold text-lg text-orange-700 mb-1">{zone.name}</h3>
-                    <Badge className="bg-orange-100 text-orange-800 mb-2">{zone.type}</Badge>
-                    <p className="text-sm text-gray-600 mb-2">{zone.country}</p>
+                    <h3 className="font-bold text-lg text-[var(--terra)] mb-1">{zone.name}</h3>
+                    <Badge className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] mb-2">{zone.type}</Badge>
+                    <p className="text-sm text-[var(--afcfta-muted)] mb-2">{zone.country}</p>
                     <div className="text-xs space-y-1">
                       <p><strong>🏗️ {t.industries}:</strong> {zone.industries.join(', ')}</p>
                       <p><strong>📏 {t.surface}:</strong> {zone.surface_ha} ha</p>
                       <p><strong>🔗 {t.connection}:</strong> {zone.connection}</p>
                     </div>
                     {zone.authority && (
-                      <div className="mt-2 pt-2 border-t border-gray-200">
-                        <p className="text-xs font-semibold text-blue-700">🏛️ {zone.authority.name}</p>
+                      <div className="mt-2 pt-2 border-t border-[var(--afcfta-border)]">
+                        <p className="text-xs font-semibold text-[var(--info)]">🏛️ {zone.authority.name}</p>
                         {zone.authority.website && (
-                          <a href={zone.authority.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">
+                          <a href={zone.authority.website} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--info)] hover:underline">
                             {zone.authority.website}
                           </a>
                         )}
@@ -219,14 +217,14 @@ export default function FreeZonesTab({ language = 'fr' }) {
           </MapContainer>
         </Card>
       ) : (
-        <div className="max-h-[550px] overflow-y-auto rounded-lg border border-gray-200 p-4 bg-gray-50">
+        <div className="max-h-[550px] overflow-y-auto rounded-lg border border-[var(--afcfta-border)] p-4 bg-[var(--afcfta-card2)]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {zones.map((zone) => (
               <Card key={zone.id} className="hover:shadow-lg transition-shadow border-t-4 border-t-orange-500">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                   <Badge variant="outline" className="text-xs">{zone.country}</Badge>
-                  <Badge className={zone.status.includes('Opérationnel') ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                  <Badge className={zone.status.includes('Opérationnel') ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]' : 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]'}>
                     {zone.status}
                   </Badge>
                 </div>
@@ -235,31 +233,31 @@ export default function FreeZonesTab({ language = 'fr' }) {
               </CardHeader>
               <CardContent className="text-sm space-y-4">
                 <div>
-                  <p className="font-semibold text-gray-700 mb-1">{t.keyIndustries}:</p>
+                  <p className="font-semibold text-[var(--text)] mb-1">{t.keyIndustries}:</p>
                   <div className="flex flex-wrap gap-1">
                     {zone.industries.map((ind, i) => (
-                      <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-600 text-xs">
+                      <Badge key={i} variant="secondary" className="bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] text-xs">
                         {ind}
                       </Badge>
                     ))}
                   </div>
                 </div>
                 
-                <div className="bg-orange-50 p-3 rounded-lg border border-orange-100">
-                  <p className="font-semibold text-orange-800 mb-1">💡 {t.incentives}:</p>
-                  <p className="text-xs text-orange-700">{zone.incentives}</p>
+                <div className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] p-3 rounded-lg border border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
+                  <p className="font-semibold text-[var(--terra)] mb-1">💡 {t.incentives}:</p>
+                  <p className="text-xs text-[var(--terra)]">{zone.incentives}</p>
                 </div>
 
-                <div className="space-y-1 text-gray-600">
+                <div className="space-y-1 text-[var(--afcfta-muted)]">
                   <p><strong>🏢 {t.keyTenants}:</strong> {zone.key_tenants.join(', ')}</p>
                   <p><strong>🌍 {t.impact}:</strong> {zone.impact}</p>
                   <p><strong>⚓ {t.connection}:</strong> {zone.connection}</p>
                 </div>
 
                 {zone.authority && (
-                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 mt-3">
-                    <p className="font-semibold text-blue-800 mb-2">🏛️ {t.managingAuthority}:</p>
-                    <div className="text-xs text-blue-700 space-y-1">
+                  <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-3 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] mt-3">
+                    <p className="font-semibold text-[var(--info)] mb-2">🏛️ {t.managingAuthority}:</p>
+                    <div className="text-xs text-[var(--info)] space-y-1">
                       <p className="font-medium">{zone.authority.name}</p>
                       {zone.authority.address && (
                         <p>📍 {zone.authority.address}</p>
@@ -268,10 +266,10 @@ export default function FreeZonesTab({ language = 'fr' }) {
                         <p>📞 <a href={`tel:${zone.authority.phone}`} className="hover:underline">{zone.authority.phone}</a></p>
                       )}
                       {zone.authority.email && (
-                        <p>✉️ <a href={`mailto:${zone.authority.email}`} className="text-blue-600 hover:underline">{zone.authority.email}</a></p>
+                        <p>✉️ <a href={`mailto:${zone.authority.email}`} className="text-[var(--info)] hover:underline">{zone.authority.email}</a></p>
                       )}
                       {zone.authority.website && (
-                        <p>🌐 <a href={zone.authority.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{zone.authority.website}</a></p>
+                        <p>🌐 <a href={zone.authority.website} target="_blank" rel="noopener noreferrer" className="text-[var(--info)] hover:underline">{zone.authority.website}</a></p>
                       )}
                     </div>
                   </div>

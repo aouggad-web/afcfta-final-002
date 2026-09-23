@@ -48,6 +48,7 @@ import {
   resolveZlecafAvailability,
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
+import { montant } from '../../utils/nombres';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -334,7 +335,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     return sectorNames[language][sector] || `${t.sectorPrefix} ${sector}`;
   };
 
+  // « 12 345 $ » en français ; forme anglaise inchangée.
   const formatCurrency = (amount) => {
+    if (language !== 'en') return montant(amount, language, 2);
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -982,13 +985,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   const getBlocColor = (bloc) => {
     const colors = {
-      'CEDEAO': 'bg-amber-100 text-amber-700 border-amber-300',
-      'AES': 'bg-orange-100 text-orange-700 border-orange-300',
-      'CEMAC': 'bg-blue-100 text-blue-700 border-blue-300',
-      'EAC': 'bg-green-100 text-green-700 border-green-300',
-      'SACU': 'bg-purple-100 text-purple-700 border-purple-300',
+      'CEDEAO': 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
+      'AES': 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]',
+      'CEMAC': 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
+      'EAC': 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
+      'SACU': 'bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]',
     };
-    return colors[bloc] || 'bg-gray-100 text-gray-600 border-gray-300';
+    return colors[bloc] || 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)]';
   };
 
   return (
@@ -1019,12 +1022,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       
       {/* === FORMULAIRE DE CALCUL === */}
       <Card className="bg-[image:var(--card-grad)] border-[var(--afcfta-border)] overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[color-mix(in_srgb,var(--gold)_5%,transparent)] rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
         
         <CardHeader className="relative">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-amber-500/20">
-              <Calculator className="w-8 h-8 text-amber-400" />
+            <div className="p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+              <Calculator className="w-8 h-8 text-[var(--gold)]" />
             </div>
             <div>
               <CardTitle className="text-2xl text-[var(--text)]">{t.calculatorTitle}</CardTitle>
@@ -1039,13 +1042,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             {/* Pays d'origine */}
             <div className="space-y-2">
               <Label className="text-[var(--text)] font-medium flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-xs text-blue-400">1</span>
+                <span className="w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] flex items-center justify-center text-xs text-[var(--info)]">1</span>
                 {t.originCountry}
               </Label>
               <Select value={originCountry} onValueChange={setOriginCountry}>
                 <SelectTrigger 
                   data-testid="origin-country-select"
-                  className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-blue-500/50 transition-colors"
+                  className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--info)_30%,transparent)] transition-colors"
                 >
                   <SelectValue placeholder={t.originCountry} />
                 </SelectTrigger>
@@ -1059,7 +1062,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
                           <span>{country.name}</span>
                           {hasData && <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>}
-                          {bloc && <span className={`text-[10px] px-1.5 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
+                          {bloc && <span className={`text-[11px] px-1.5 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
                         </span>
                       </SelectItem>
                     );
@@ -1071,13 +1074,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             {/* Pays de destination */}
             <div className="space-y-2">
               <Label className="text-[var(--text)] font-medium flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-xs text-amber-400">2</span>
+                <span className="w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] flex items-center justify-center text-xs text-[var(--gold)]">2</span>
                 {t.partnerCountry}
               </Label>
               <Select value={destinationCountry} onValueChange={handleDestinationChange}>
                 <SelectTrigger 
                   data-testid="destination-country-select"
-                  className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-amber-500/50 transition-colors"
+                  className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
                 >
                   <SelectValue placeholder={t.partnerCountry} />
                 </SelectTrigger>
@@ -1091,7 +1094,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
                           <span>{country.name}</span>
                           {hasData && <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>}
-                          {bloc && <span className={`text-[10px] px-1.5 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
+                          {bloc && <span className={`text-[11px] px-1.5 rounded border font-medium ${getBlocColor(bloc)}`}>{bloc}</span>}
                         </span>
                       </SelectItem>
                     );
@@ -1114,7 +1117,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {/* Profil tarifaire du pays */}
           {loadingProfile && (
             <div className="flex items-center justify-center gap-3 py-4">
-              <div className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] border-t-transparent rounded-full animate-spin"></div>
               <span className="text-[var(--afcfta-muted)]">{language === 'fr' ? 'Chargement du tarif national...' : 'Loading national tariff...'}</span>
             </div>
           )}
@@ -1122,7 +1125,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {countryTariffProfile && countryTariffProfile.summary && !loadingProfile && (
             <div className="bg-[var(--overlay)] border border-[var(--afcfta-border)] rounded-xl overflow-hidden">
               <div className="px-4 py-3 bg-[var(--overlay)] border-b border-[var(--afcfta-border)] flex items-center justify-between flex-wrap gap-2">
-                <span className="font-semibold text-white flex items-center gap-2">
+                <span className="font-semibold text-[var(--text)] flex items-center gap-2">
                   <span className="text-lg">{getFlag(countries.find(c => c.code === destinationCountry)?.iso2 || destinationCountry)}</span>
                   {language === 'fr' ? 'Profil Tarifaire' : 'Tariff Profile'} - {getCountryName(destinationCountry)}
                 </span>
@@ -1134,7 +1137,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   )}
                   <Badge className={`text-xs ${
                     COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
-                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                      ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'
                       : 'bg-[var(--overlay)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)]'
                   } border`}>
                     {COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
@@ -1146,18 +1149,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
               <div className="grid grid-cols-3 divide-x divide-[var(--afcfta-border)]">
                 <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide">{language === 'fr' ? 'DD moyen' : 'Avg. duty'}</p>
-                  <p className="text-2xl font-bold text-blue-400 mt-1">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</p>
+                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'DD moyen' : 'Avg. duty'}</p>
+                  <p className="text-2xl font-bold text-[var(--info)] mt-1">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</p>
                   <p className="text-[var(--afcfta-muted)] text-xs">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</p>
                 </div>
                 <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide">{language === 'fr' ? 'TVA' : 'VAT'}</p>
-                  <p className="text-2xl font-bold text-amber-400 mt-1">{countryTariffProfile.summary.vat_rate_pct || 0}%</p>
+                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'TVA' : 'VAT'}</p>
+                  <p className="text-2xl font-bold text-[var(--gold)] mt-1">{countryTariffProfile.summary.vat_rate_pct || 0}%</p>
                   <p className="text-[var(--afcfta-muted)] text-xs">{countryTariffProfile.summary.vat_source || ''}</p>
                 </div>
                 <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide">{language === 'fr' ? 'Autres' : 'Other'}</p>
-                  <p className="text-2xl font-bold text-red-400 mt-1">{countryTariffProfile.summary.other_taxes_pct || 0}%</p>
+                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Autres' : 'Other'}</p>
+                  <p className="text-2xl font-bold text-[var(--danger)] mt-1">{countryTariffProfile.summary.other_taxes_pct || 0}%</p>
                   <p className="text-[var(--afcfta-muted)] text-xs truncate">
                     {countryTariffProfile.summary.other_taxes_detail
                       ? Object.entries(countryTariffProfile.summary.other_taxes_detail).map(([k, v]) => `${k} ${v}%`).join(', ')
@@ -1176,7 +1179,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label className="text-[var(--text)] font-medium flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-xs text-[var(--violet)]">3</span>
+                <span className="w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] flex items-center justify-center text-xs text-[var(--violet)]">3</span>
                 <Package className="w-4 h-4 text-[var(--violet)]" />
                 {t.hsCodeLabel}
               </Label>
@@ -1185,7 +1188,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 variant="ghost"
                 size="sm"
                 onClick={() => setUseSmartSearch(!useSmartSearch)}
-                className="text-xs text-[var(--violet)] hover:text-[var(--violet)] hover:bg-purple-500/10"
+                className="text-xs text-[var(--violet)] hover:text-[var(--violet)] hover:bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]"
               >
                 <Sparkles className="w-3 h-3 mr-1" />
                 {useSmartSearch ? 'Mode simple' : 'Recherche intelligente'}
@@ -1235,11 +1238,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   placeholder={language === 'fr' ? "Ex: 090111, 870323, 8517" : "Ex: 090111, 870323, 8517"}
                   value={hsCode}
                   onChange={(e) => setHsCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 12))}
-                  className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-purple-500/50 focus:border-purple-500 transition-colors tracking-wider"
+                  className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] focus:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] transition-colors tracking-wider"
                   data-testid="hs-code-simple-input"
                 />
                 {hsCodeSimpleLabel ? (
-                  <p className="text-emerald-400 text-xs truncate" title={hsCodeSimpleLabel}>
+                  <p className="text-[var(--success)] text-xs truncate" title={hsCodeSimpleLabel}>
                     {hsCodeSimpleLabel}
                   </p>
                 ) : (
@@ -1250,7 +1253,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
             {/* Code sélectionné via recherche */}
             {hsCode && selectedSubPositionDesc && (
-              <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2 bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] rounded-lg px-3 py-2">
                 <span className="font-mono text-[var(--violet)] text-sm font-bold shrink-0">{hsCode}</span>
                 <span className="text-[var(--afcfta-muted)] text-xs line-clamp-1">{selectedSubPositionDesc}</span>
               </div>
@@ -1261,21 +1264,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 for a previous code (e.g. via Smart Search) never lingers
                 after the user switches to simple input or types a new code. */}
             {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && ruleOfOrigin.hs_code === hsCode && (
-              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 space-y-2">
+              <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <span className="text-amber-300 text-xs font-semibold uppercase tracking-wide">
+                  <span className="text-[var(--gold)] text-xs font-semibold">
                     {language === 'fr' ? "Règle d'origine ZLECAf" : 'AfCFTA Rule of Origin'}
                   </span>
-                  <Badge className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs">
+                  <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
                     {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
                   </Badge>
                   {ruleOfOrigin.rules.regional_content != null && (
-                    <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs">
+                    <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-xs">
                       {language === 'fr' ? 'Contenu régional' : 'Regional content'}: {ruleOfOrigin.rules.regional_content}%
                     </Badge>
                   )}
                   {ruleOfOrigin.status === 'YTB' && (
-                    <Badge className="bg-orange-500/20 text-orange-300 border border-orange-500/30 text-xs">
+                    <Badge className="bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] text-[var(--terra)] border border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-xs">
                       {language === 'fr' ? 'En négociation' : 'Under negotiation'}
                     </Badge>
                   )}
@@ -1298,7 +1301,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               variant="outline"
               size="sm"
               onClick={() => setShowHSBrowser(!showHSBrowser)}
-              className="w-full bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-amber-500/50 hover:bg-[var(--overlay)] text-[var(--text)]"
+              className="w-full bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] hover:bg-[var(--overlay)] text-[var(--text)]"
               data-testid="toggle-hs-browser"
             >
               {showHSBrowser ? (
@@ -1332,7 +1335,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {/* Valeur */}
           <div className="space-y-2">
             <Label className="text-[var(--text)] font-medium flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-xs text-emerald-400">4</span>
+              <span className="w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] flex items-center justify-center text-xs text-[var(--success)]">4</span>
               {t.valueLabel}
             </Label>
             <Input
@@ -1341,7 +1344,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               onChange={(e) => setValue(e.target.value)}
               placeholder="100000"
               min="0"
-              className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-emerald-500/50 focus:border-emerald-500 transition-colors"
+              className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--success)_30%,transparent)] focus:border-[color-mix(in_srgb,var(--success)_30%,transparent)] transition-colors"
               data-testid="cif-value-input"
             />
           </div>
@@ -1373,11 +1376,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               onClick={() => calculateTariff()}
               disabled={loading}
               data-testid="calculate-tariff-button"
-              className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-xl transition-all"
+              className="flex-1 h-14 text-lg font-bold bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6] shadow-lg hover:shadow-xl transition-all"
             >
               {loading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
+                  <div className="w-5 h-5 border-2 border-[var(--overlay-border)] border-t-white rounded-full animate-spin mr-2"></div>
                   {t.calculating}
                 </>
               ) : (
@@ -1394,7 +1397,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               disabled={loading}
               data-testid="reset-search-button"
               title={language === 'fr' ? 'Réinitialiser la recherche' : 'Reset search'}
-              className="h-14 px-5 border-[var(--afcfta-border)] text-[var(--text)] hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10 transition-all"
+              className="h-14 px-5 border-[var(--afcfta-border)] text-[var(--text)] hover:border-[color-mix(in_srgb,var(--danger)_30%,transparent)] hover:text-[var(--danger)] hover:bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] transition-all"
             >
               <RotateCcw className="w-5 h-5 mr-2" />
               {language === 'fr' ? 'Réinitialiser' : 'Reset'}
@@ -1408,19 +1411,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         <div className="space-y-4 animate-in fade-in duration-300">
           {/* En-tête des résultats avec synthèse */}
           <Card className="bg-[image:var(--card-grad)] border-[var(--afcfta-border)] overflow-hidden transition-all duration-300">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
+            <div className="absolute top-0 left-0 w-64 h-64 bg-[color-mix(in_srgb,var(--success)_5%,transparent)] rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
             
             <CardHeader className="relative">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl border border-emerald-500/20">
-                    <CheckCircle className="w-8 h-8 text-emerald-400" />
+                  <div className="p-3 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+                    <CheckCircle className="w-8 h-8 text-[var(--success)]" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl text-white flex items-center gap-2">
+                    <CardTitle className="text-xl text-[var(--text)] flex items-center gap-2">
                       {t.detailedResults}
                       {result.data_source === 'authentic_tariff' && (
-                        <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 border text-xs">
+                        <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)] border text-xs">
                           {language === 'fr' ? 'Données Officielles' : 'Official Data'}
                         </Badge>
                       )}
@@ -1455,55 +1458,55 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                       si une réserve accompagne la préférence
                                       (règle d'origine non arrêtée). */}
               {result.trade_regime === 'CUSTOMS_UNION' && (
-                <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] rounded-xl flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-[var(--success)] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-emerald-300 font-semibold text-sm">
+                    <p className="text-[var(--success)] font-semibold text-sm">
                       {language === 'fr'
                         ? `Union douanière ${result.trade_regime_code || ''} — libre circulation`
                         : `${result.trade_regime_code || ''} customs union — free circulation`}
                     </p>
-                    <p className="text-emerald-200/80 text-sm mt-1">{result.trade_regime_note}</p>
+                    <p className="text-[var(--success)] text-sm mt-1">{result.trade_regime_note}</p>
                   </div>
                 </div>
               )}
 
               {result.trade_regime === 'FTA_CONDITIONAL' && (
-                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
-                  <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">
+                  <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-amber-300 font-semibold text-sm">
+                    <p className="text-[var(--gold)] font-semibold text-sm">
                       {language === 'fr'
                         ? `Régime ${result.trade_regime_code || 'du bloc'} applicable sous conditions`
                         : `${result.trade_regime_code || 'Bloc'} regime applies under conditions`}
                     </p>
-                    <p className="text-amber-200/80 text-sm mt-1">{result.trade_regime_note}</p>
+                    <p className="text-[var(--gold)] text-sm mt-1">{result.trade_regime_note}</p>
                   </div>
                 </div>
               )}
 
               {result.trade_regime === 'ZLECAF' && result.zlecaf_reserve && (
-                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-amber-300 font-semibold text-sm">
+                    <p className="text-[var(--gold)] font-semibold text-sm">
                       {language === 'fr'
                         ? 'Préférence ZLECAf servie sous réserve'
                         : 'AfCFTA preference shown with a reservation'}
                     </p>
-                    <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_reserve}</p>
+                    <p className="text-[var(--gold)] text-sm mt-1">{result.zlecaf_reserve}</p>
                   </div>
                 </div>
               )}
 
               {result.trade_regime === 'NPF' && result.zlecaf_note && (
-                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-amber-300 font-semibold text-sm">
+                    <p className="text-[var(--gold)] font-semibold text-sm">
                       {language === 'fr' ? 'Préférence ZLECAf non appliquée' : 'AfCFTA preference not applied'}
                     </p>
-                    <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_note}</p>
+                    <p className="text-[var(--gold)] text-sm mt-1">{result.zlecaf_note}</p>
                   </div>
                 </div>
               )}
@@ -1539,13 +1542,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   champ reste absent partout ailleurs. */}
               {result.quantite_requise?.requise && (
                 <div
-                  className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl"
+                  className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl"
                   data-testid="quantite-requise"
                 >
                   <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                    <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                     <div className="w-full">
-                      <p className="text-amber-300 font-semibold text-sm">
+                      <p className="text-[var(--gold)] font-semibold text-sm">
                         {language === 'fr'
                           ? 'Droit spécifique : quantité nécessaire'
                           : 'Specific duty: quantity required'}
@@ -1553,7 +1556,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
                       <div className="mt-2 space-y-1">
                         {result.quantite_requise.lignes.map((l) => (
-                          <p key={l.code} className="text-amber-200/80 text-xs">
+                          <p key={l.code} className="text-[var(--gold)] text-xs">
                             <span className="font-mono">{l.code}</span> — {l.libelle}
                             {l.specifique ? ` : ${l.specifique}` : ''}
                           </p>
@@ -1564,7 +1567,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         <div className="mt-3 flex flex-wrap items-end gap-2">
                           <div>
                             <label
-                              className="block text-amber-200/70 text-xs mb-1"
+                              className="block text-[var(--gold)] text-xs mb-1"
                               htmlFor="quantite-droit-specifique"
                             >
                               {language === 'fr'
@@ -1582,7 +1585,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                 setQuantity(e.target.value);
                                 setQuantityFor(result._quantite_cle);
                               }}
-                              className="w-40 px-3 py-2 bg-[var(--overlay)] border border-amber-500/40 rounded-lg text-white text-sm"
+                              className="w-40 px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
                               placeholder={result.quantite_requise.unite}
                             />
                           </div>
@@ -1597,7 +1600,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           </Button>
                         </div>
                       ) : (
-                        <p className="text-amber-200/70 text-xs mt-3">
+                        <p className="text-[var(--gold)] text-xs mt-3">
                           {result.quantite_requise.uniteAmbigue
                             ? (language === 'fr'
                               ? "Cette position porte deux droits spécifiques exprimés dans des unités différentes : une quantité unique en liquiderait un dans la mauvaise unité. Le total reste incomplet."
@@ -1613,16 +1616,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               )}
 
               {Array.isArray(result.regional_simulations) && result.regional_simulations.length > 0 && (
-                <div className="mb-6 p-4 bg-sky-500/10 border border-sky-500/30 rounded-xl">
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] rounded-xl">
                   <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
+                    <Info className="w-5 h-5 text-[var(--info)] mt-0.5 flex-shrink-0" />
                     <div className="w-full">
-                      <p className="text-sky-300 font-semibold text-sm">
+                      <p className="text-[var(--info)] font-semibold text-sm">
                         {language === 'fr'
                           ? 'Autres régimes publiés par le tarif de destination'
                           : 'Other regimes published by the destination tariff'}
                       </p>
-                      <p className="text-sky-200/70 text-xs mt-1">
+                      <p className="text-[var(--info)] text-xs mt-1">
                         {language === 'fr'
                           ? "Simulations, non appliquées au total ci-dessus."
                           : 'Simulations, not applied to the total above.'}
@@ -1637,7 +1640,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           >
                             <div className="flex flex-wrap items-baseline justify-between gap-2">
                               <span className="text-[var(--text)] text-sm font-medium">{sim.libelle}</span>
-                              <span className="font-mono text-sm text-sky-300">
+                              <span className="font-mono text-sm text-[var(--info)]">
                                 {sim.taux_publie_pct} % · {sim.prelevement}
                               </span>
                             </div>
@@ -1668,15 +1671,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               )}
 
               {result.plancher_npf && (
-                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
-                  <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">
+                  <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-amber-300 font-semibold text-sm">
+                    <p className="text-[var(--gold)] font-semibold text-sm">
                       {language === 'fr'
                         ? `Taux NPF servi (${result.plancher_npf.taux_retenu_pct} %) : le barème préférentiel est plus cher`
                         : `MFN rate applied (${result.plancher_npf.taux_retenu_pct}%): the preferential schedule costs more`}
                     </p>
-                    <p className="text-amber-200/80 text-sm mt-1">
+                    <p className="text-[var(--gold)] text-sm mt-1">
                       {language === 'fr'
                         ? `Le barème préférentiel de cette position affiche ${result.plancher_npf.taux_preferentiel_ecarte_pct} %, soit davantage que le droit commun. Une préférence est une faculté, pas une obligation : c'est le NPF qui est servi.`
                         : `The preferential schedule for this line shows ${result.plancher_npf.taux_preferentiel_ecarte_pct}%, more than the ordinary duty. A preference is an option, not an obligation: the MFN rate is applied.`}
@@ -1692,12 +1695,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {/* Valeur CIF */}
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-500/10 rounded-lg">
-                      <DollarSign className="w-5 h-5 text-emerald-400" />
+                    <div className="p-2 bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-lg">
+                      <DollarSign className="w-5 h-5 text-[var(--success)]" />
                     </div>
                     <div>
-                      <p className="text-[var(--afcfta-muted)] text-xs uppercase">{language === 'fr' ? 'Valeur CIF' : 'CIF Value'}</p>
-                      <p className="text-xl font-bold text-emerald-400">
+                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Valeur CIF' : 'CIF value'}</p>
+                      <p className="text-xl font-bold text-[var(--success)]">
                         {formatCurrency(parseFloat(value) || 0)}
                       </p>
                     </div>
@@ -1705,22 +1708,22 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   
                   {/* Code HS utilisé */}
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-500/10 rounded-lg">
+                    <div className="p-2 bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] rounded-lg">
                       <Package className="w-5 h-5 text-[var(--violet)]" />
                     </div>
                     <div>
-                      <p className="text-[var(--afcfta-muted)] text-xs uppercase">{language === 'fr' ? 'Code Tarifaire' : 'Tariff Code'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Code tarifaire' : 'Tariff code'}</p>
                       <p className="font-mono text-lg font-bold text-[var(--violet)]">{result.hs_code || hsCode}</p>
                     </div>
                   </div>
                   
                   {/* Description produit */}
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-500/10 rounded-lg">
-                      <FileText className="w-5 h-5 text-amber-400" />
+                    <div className="p-2 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-lg">
+                      <FileText className="w-5 h-5 text-[var(--gold)]" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[var(--afcfta-muted)] text-xs uppercase">{language === 'fr' ? 'Produit' : 'Product'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Produit' : 'Product'}</p>
                       <p className="text-sm text-[var(--text)] truncate">
                         {selectedSubPositionDesc || detailedResult?.description || result.description || (language === 'fr' ? 'Position sélectionnée' : 'Selected position')}
                       </p>
@@ -1732,21 +1735,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               {/* Grille de synthèse économique */}
               <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                 {/* Total NPF */}
-                <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
-                  <p className="text-red-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
-                  <p className="text-3xl font-bold text-red-400 mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
-                  <p className="text-red-400/60 text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
+                <div className="bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
+                  <p className="text-[var(--danger)] text-xs font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
+                  <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
+                  <p className="text-[var(--danger)] text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
                 </div>
                 
                 {/* Total ZLECAf */}
-                <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
-                  <p className="text-emerald-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
-                  <p className="text-3xl font-bold text-emerald-400 mt-1">
+                <div className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+                  <p className="text-[var(--success)] text-xs font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
+                  <p className="text-3xl font-bold text-[var(--success)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `${zlecafTotalTaxRatePct(result).toFixed(1)}%`
                       : '—'}
                   </p>
-                  <p className="text-emerald-400/60 text-xs mt-1">
+                  <p className="text-[var(--success)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? (language === 'fr' ? 'Avec accord' : 'With agreement')
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
@@ -1762,14 +1765,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
 
                 {/* Économie */}
-                <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
-                  <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
-                  <p className="text-3xl font-bold text-amber-400 mt-1">
+                <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                  <p className="text-[var(--gold)] text-xs font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
+                  <p className="text-3xl font-bold text-[var(--gold)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
                       : '—'}
                   </p>
-                  <p className="text-amber-400/60 text-xs mt-1">
+                  <p className="text-[var(--gold)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
@@ -1779,21 +1782,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
                 
                 {/* Montant économisé */}
-                <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
-                  <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
-                  <p className="text-2xl font-bold text-blue-400 mt-1">
+                <div className="bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                  <p className="text-[var(--info)] text-xs font-medium">{language === 'fr' ? 'Montant économisé' : 'Amount saved'}</p>
+                  <p className="text-2xl font-bold text-[var(--info)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? `${((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} USD`
+                      ? montant((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100, language)
                       : '—'}
                   </p>
-                  <p className="text-blue-400/60 text-xs mt-1">
+                  <p className="text-[var(--info)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? (language === 'fr' ? 'Sur votre valeur' : 'On your value')
                       : (language === 'fr' ? 'Non calculé' : 'Not calculated')}
                   </p>
                 </div>
               </div>
-              <p className="mt-4 text-center text-xs font-medium text-amber-300">
+              <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
                 Simulation informative — non opposable à l’administration douanière.
               </p>
 
@@ -1802,16 +1805,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   des frais dont le montant n'est pas chiffré dans les sources. Le coût
                   total réel de dédouanement est donc INCOMPLET — signalé, jamais estimé. */}
               {hasUnpricedActiveProviderFees(result.regulatory_compliance) && (
-                <div className="mt-4 flex items-start gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
-                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                  <p className="text-sm text-amber-200/90">
+                <div className="mt-4 flex items-start gap-3 p-3 rounded-xl bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                  <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--gold)]">
                     {language === 'fr'
                       ? "Calcul incomplet : ces totaux couvrent les droits et taxes exigibles, mais un prestataire mandaté actif perçoit des frais dont le montant n'est pas publié dans les sources (NOT_AVAILABLE). Le coût total de dédouanement est donc supérieur — voir le bloc « Frais des prestataires mandatés » ci-dessous. Aucun montant n'est estimé."
                       : 'Incomplete calculation: these totals cover payable duties and taxes, but an active mandated provider charges fees whose amount is not published in the sources (NOT_AVAILABLE). The total clearance cost is therefore higher — see the “Mandated-provider fees” block below. No amount is estimated.'}
                   </p>
                 </div>
               )}
-              <p className="mt-4 text-center text-xs font-medium text-amber-300">
+              <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
                 Simulation informative — non opposable à l’administration douanière.
               </p>
             </CardContent>
@@ -1832,11 +1835,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                    <ClipboardList className="w-5 h-5 text-blue-400" />
+                  <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <ClipboardList className="w-5 h-5 text-[var(--info)]" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Détail des Taxes' : 'Tax Breakdown'}</CardTitle>
+                    <CardTitle className="text-lg text-[var(--text)]">{language === 'fr' ? 'Détail des Taxes' : 'Tax Breakdown'}</CardTitle>
                     <CardDescription className="text-[var(--afcfta-muted)]">
                       {result.taxes_detail.length} {language === 'fr' ? 'taxes applicables' : 'applicable taxes'}
                     </CardDescription>
@@ -1848,14 +1851,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   {result.taxes_detail.map((tax, idx) => (
                     <div 
                       key={idx}
-                      className="flex items-center justify-between p-3 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)] hover:border-blue-500/30 transition-colors"
+                      className="flex items-center justify-between p-3 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--info)_30%,transparent)] transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-500/10 rounded-lg">
-                          <FileText className="w-4 h-4 text-blue-400" />
+                        <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg">
+                          <FileText className="w-4 h-4 text-[var(--info)]" />
                         </div>
                         <div>
-                          <span className="font-mono text-white font-semibold">{tax.tax}</span>
+                          <span className="font-mono text-[var(--text)] font-semibold">{tax.tax}</span>
                           {tax.observation && (
                             <p className="text-[var(--afcfta-muted)] text-sm">{tax.observation}</p>
                           )}
@@ -1864,11 +1867,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <div className="flex items-center gap-4">
                         <div className="text-right">
                           <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'NPF' : 'MFN'}</p>
-                          <p className="text-white font-bold">{tax.rate}%</p>
+                          <p className="text-[var(--text)] font-bold">{tax.rate}%</p>
                         </div>
                         <div className="text-right">
                           <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'ZLECAf' : 'AfCFTA'}</p>
-                          <p className="text-emerald-400 font-bold">
+                          <p className="text-[var(--success)] font-bold">
                             {isDisplayableZlecafResult(result)
                               ? (typeof tax.rate_zlecaf_pct === 'number'
                                 ? `${tax.rate_zlecaf_pct.toFixed(2)}%`
@@ -1922,11 +1925,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                    <div className="p-2 bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                       <Scale className="w-5 h-5 text-[var(--violet)]" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg text-white">
+                      <CardTitle className="text-lg text-[var(--text)]">
                         {language === 'fr' ? 'Positions Nationales' : 'National Positions'}
                       </CardTitle>
                       <CardDescription className="text-[var(--afcfta-muted)]">
@@ -1936,7 +1939,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                   </div>
                   {selectedSubPositionDesc && (
-                    <Badge className="bg-purple-500/20 text-[var(--violet)] border border-purple-500/30 text-xs">
+                    <Badge className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-xs">
                       {hsCode.replace(/[.\s]/g, '').slice(0, 10)} {language === 'fr' ? 'sélectionnée' : 'selected'}
                     </Badge>
                   )}
@@ -1961,12 +1964,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         data-testid={`sub-position-${code}`}
                         className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${
                           isSelected
-                            ? 'bg-purple-500/20 border-purple-500/50'
-                            : 'bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-purple-500/30 hover:bg-[var(--overlay)]'
+                            ? 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]'
+                            : 'bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] hover:bg-[var(--overlay)]'
                         }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <span className="font-mono text-sm font-bold text-[var(--violet)] bg-purple-500/10 px-2 py-0.5 rounded shrink-0">
+                          <span className="font-mono text-sm font-bold text-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] px-2 py-0.5 rounded shrink-0">
                             {code}
                           </span>
                           <p className="text-[var(--text)] text-sm truncate">{desc}</p>
@@ -2039,11 +2042,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                        <FileCheck className="w-5 h-5 text-amber-400" />
+                      <div className="p-2 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                        <FileCheck className="w-5 h-5 text-[var(--gold)]" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg text-white">
+                        <CardTitle className="text-lg text-[var(--text)]">
                           {language === 'fr' ? 'Documents Requis' : 'Required Documents'}
                         </CardTitle>
                         <CardDescription className="text-[var(--afcfta-muted)]">
@@ -2053,7 +2056,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               : (language === 'fr' ? 'Non établies' : 'Not established'))
                             : `${formalities.length} ${language === 'fr' ? 'formalités' : 'formalities'}`}
                           {isPositionLevel && (
-                            <span className="ml-2 text-amber-400 text-xs font-mono">
+                            <span className="ml-2 text-[var(--violet)] text-xs font-mono">
                               — position {positionCode}
                             </span>
                           )}
@@ -2061,7 +2064,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </div>
                     </div>
                     {isPositionLevel && (
-                      <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs">
+                      <Badge className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-xs">
                         {language === 'fr' ? 'Position nationale' : 'National position'}
                       </Badge>
                     )}
@@ -2069,10 +2072,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </CardHeader>
                 <CardContent>
                   {aucuneFormalite && (
-                    <div className={`flex items-start gap-3 p-3 rounded-lg border ${constatSource ? 'bg-[var(--overlay)] border-[var(--afcfta-border)]' : 'bg-amber-500/10 border-amber-500/20'}`}>
+                    <div className={`flex items-start gap-3 p-3 rounded-lg border ${constatSource ? 'bg-[var(--overlay)] border-[var(--afcfta-border)]' : 'bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]'}`}>
                       {constatSource
                         ? <Info className="w-5 h-5 text-[var(--afcfta-muted)] shrink-0 mt-0.5" />
-                        : <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />}
+                        : <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />}
                       <p className="text-[var(--text)] text-sm">{reserve}</p>
                     </div>
                   )}
@@ -2083,7 +2086,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         className={`p-3 rounded-lg border ${form.is_mandatory === false ? 'bg-[var(--overlay)] border-[var(--afcfta-border)]' : 'bg-[var(--overlay)] border-[var(--afcfta-border)]'}`}
                       >
                         <div className="flex items-start gap-2">
-                          <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 border font-mono shrink-0 text-xs">
+                          <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] border font-mono shrink-0 text-xs">
                             {form.code}
                           </Badge>
                           <div className="flex-1 min-w-0">
@@ -2146,7 +2149,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <Shield className="w-5 h-5 text-[var(--text)]" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg text-white">
+                      <CardTitle className="text-lg text-[var(--text)]">
                         {language === 'fr'
                           ? 'Colonnes préférentielles publiées'
                           : 'Published preferential columns'}
@@ -2167,7 +2170,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         className="flex items-start gap-3 p-3 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)]"
                       >
                         {entree.reduitLeDroit === true ? (
-                          <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                          <CheckCircle className="w-5 h-5 text-[var(--success)] shrink-0 mt-0.5" />
                         ) : (
                           <Info className="w-5 h-5 text-[var(--afcfta-muted)] shrink-0 mt-0.5" />
                         )}
@@ -2175,13 +2178,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <div className="text-[var(--text)]">
                             {entree.libelle}
                             {entree.taux !== null && (
-                              <span className="ml-2 font-mono text-white">
+                              <span className="ml-2 font-mono text-[var(--text)]">
                                 {entree.taux} %
                               </span>
                             )}
                           </div>
                           {entree.reduitLeDroit === false && (
-                            <div className="text-xs text-amber-400/80 mt-1">
+                            <div className="text-xs text-[var(--gold)] mt-1">
                               {language === 'fr'
                                 ? `Cette colonne ne réduit pas le droit NPF de la position (${result.npf_dd_rate_pct} %).`
                                 : `This column does not reduce the position's MFN duty (${result.npf_dd_rate_pct}%).`}
@@ -2234,14 +2237,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               pour une formalité opérée directement par l'administration ni un mandat
               expiré). Distinct des droits et taxes. */}
           {hasActiveMandatedProvider(result.regulatory_compliance) && (
-            <Card className="bg-[image:var(--card-grad)] border border-amber-500/30">
+            <Card className="bg-[image:var(--card-grad)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                    <ClipboardList className="w-5 h-5 text-amber-400" />
+                  <div className="p-2 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                    <ClipboardList className="w-5 h-5 text-[var(--gold)]" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-white">
+                    <CardTitle className="text-lg text-[var(--text)]">
                       {language === 'fr'
                         ? 'Détail des formalités & prestataires mandatés'
                         : 'Formalities & mandated providers — detail'}
@@ -2255,9 +2258,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                  <p className="text-sm text-amber-200/90">
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                  <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--gold)]">
                     {language === 'fr'
                       ? "Les frais du prestataire mandaté sont séparés des droits et taxes publics (voir « Composition du coût réglementaire » ci-dessus). Un montant n'est chiffré et intégré que lorsqu'il est prouvé et sourcé ; sinon il reste à confirmer (jamais fabriqué, jamais valué à zéro)."
                       : 'Mandated-provider fees are separate from public duties and taxes (see “Regulatory cost composition” above). An amount is quantified and included only when proven and sourced; otherwise it stays to be confirmed (never fabricated, never valued at zero).'}
@@ -2288,14 +2291,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 et UNIQUEMENT pour un pays de destination utilisant réellement un
                 prestataire mandaté actif. */}
             {hasActiveMandatedProvider(result?.regulatory_compliance) && (
-              <Card className="bg-[image:var(--card-grad)] border border-amber-500/30">
+              <Card className="bg-[image:var(--card-grad)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                      <ClipboardList className="w-6 h-6 text-amber-400" />
+                    <div className="p-2 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                      <ClipboardList className="w-6 h-6 text-[var(--gold)]" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl text-white">
+                      <CardTitle className="text-xl text-[var(--text)]">
                         {language === 'fr'
                           ? 'Formalités particulières & prestataires mandatés'
                           : 'Special formalities & mandated providers'}
@@ -2320,12 +2323,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
             {/* Header avec recherche */}
             <Card className="bg-[image:var(--card-grad)] border-[var(--afcfta-border)] overflow-hidden">
-              <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
+              <div className="absolute top-0 left-0 w-96 h-96 bg-[color-mix(in_srgb,var(--gold)_5%,transparent)] rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
               
               <CardHeader className="relative">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-amber-500/20">
-                    <Scale className="w-8 h-8 text-amber-400" />
+                  <div className="p-3 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                    <Scale className="w-8 h-8 text-[var(--gold)]" />
                   </div>
                   <div>
                     <CardTitle className="text-2xl text-[var(--text)]">
@@ -2350,7 +2353,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <Select value={destinationCountry} onValueChange={handleDestinationChange}>
                       <SelectTrigger 
                         data-testid="regulatory-country-select"
-                        className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-amber-500/50 transition-colors"
+                        className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
                       >
                         <SelectValue placeholder={language === 'fr' ? 'Sélectionner un pays...' : 'Select a country...'} />
                       </SelectTrigger>
@@ -2372,7 +2375,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                 <span className="text-lg">{getFlag(country.iso2 || country.code)}</span>
                                 <span>{country.name}</span>
                                 {hasRegulatoryData && (
-                                  <span className="ml-2 text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">
+                                  <span className="ml-2 text-xs bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] px-2 py-0.5 rounded">
                                     {language === 'fr' ? 'Disponible' : 'Available'}
                                   </span>
                                 )}
@@ -2392,7 +2395,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       value={hsCode}
                       onChange={handleRegulatoryHsCodeChange}
                       placeholder={language === 'fr' ? 'Ex: 010110, 0101101000...' : 'E.g: 010110, 0101101000...'}
-                      className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-amber-500/50 focus:border-amber-500 transition-colors"
+                      className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] focus:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
                       data-testid="regulatory-hs-input"
                     />
                   </div>
@@ -2401,28 +2404,28 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 {/* Guide d'utilisation */}
                 <div className="bg-[var(--overlay)] border border-[var(--afcfta-border)] rounded-xl p-5">
                   <div className="flex items-start gap-4">
-                    <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20 shrink-0">
-                      <Info className="w-5 h-5 text-blue-400" />
+                    <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] shrink-0">
+                      <Info className="w-5 h-5 text-[var(--info)]" />
                     </div>
                     <div>
-                      <p className="font-semibold text-white mb-2">
+                      <p className="font-semibold text-[var(--text)] mb-2">
                         {language === 'fr' ? 'Guide d\'utilisation' : 'How to use'}
                       </p>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div className="flex items-start gap-2">
-                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold shrink-0">1</span>
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] text-xs font-bold shrink-0">1</span>
                           <span className="text-[var(--afcfta-muted)]">
                             {language === 'fr' ? 'Sélectionnez le pays de destination' : 'Select the destination country'}
                           </span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold shrink-0">2</span>
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] text-xs font-bold shrink-0">2</span>
                           <span className="text-[var(--afcfta-muted)]">
                             {language === 'fr' ? 'Entrez un code HS6 ou HS10' : 'Enter an HS6 or HS10 code'}
                           </span>
                         </div>
                         <div className="flex items-start gap-2">
-                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold shrink-0">3</span>
+                          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] text-xs font-bold shrink-0">3</span>
                           <span className="text-[var(--afcfta-muted)]">
                             {language === 'fr' ? 'Consultez droits, taxes et documents' : 'View duties, taxes and documents'}
                           </span>
@@ -2450,21 +2453,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   />
                 )}
                 {regulatorySelectedPosDesc && (
-                  <div className="flex items-start justify-between gap-3 p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
+                  <div className="flex items-start justify-between gap-3 p-4 bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] rounded-xl border border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                     <div className="flex items-start gap-3 min-w-0">
-                      <FileText className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
+                      <FileText className="w-5 h-5 text-[var(--violet)] mt-0.5 shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-amber-400/70 uppercase tracking-wide font-medium mb-1">
+                        <p className="text-xs text-[var(--violet)] font-medium mb-1">
                           {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
                         </p>
-                        <p className="text-white font-medium">{regulatorySelectedPosDesc}</p>
-                        <p className="text-amber-400/60 font-mono text-sm mt-1">{regulatorySelectedPos}</p>
+                        <p className="text-[var(--text)] font-medium">{regulatorySelectedPosDesc}</p>
+                        <p className="text-[var(--violet)] font-mono text-sm mt-1">{regulatorySelectedPos}</p>
                       </div>
                     </div>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="shrink-0 border-amber-500/40 text-amber-300 hover:bg-amber-500/10"
+                      className="shrink-0 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)] hover:bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]"
                       onClick={() => {
                         setRegulatorySelectedPos(null);
                         setRegulatorySelectedPosDesc(null);

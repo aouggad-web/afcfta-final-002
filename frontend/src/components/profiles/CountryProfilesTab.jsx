@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
+import { montant, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -59,9 +60,9 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       loadError: "Impossible de charger la liste des pays",
       population: "Population",
       inhabitants: "habitants",
-      totalGdp: "PIB Total",
+      totalGdp: "PIB total",
       rank: "Rang",
-      gdpPerCapita: "PIB/Habitant",
+      gdpPerCapita: "PIB/habitant",
       perPerson: "USD/personne",
       hdi2024: "IDH 2024",
       hdiDesc: "Indice Dév. Humain",
@@ -93,7 +94,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       digitalConnectivity: "Digital & Connectivité",
       internetAccess: "Accès Internet",
       cybersecurity: "Cybersécurité",
-      electricityAccess: "Accès Électricité",
+      electricityAccess: "Accès électricité",
       coverage3g: "Couverture 3G",
       environmentEquality: "Environnement & Égalité",
       workingWomen: "Femmes actives",
@@ -134,7 +135,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       inhabitants: "inhabitants",
       totalGdp: "Total GDP",
       rank: "Rank",
-      gdpPerCapita: "GDP/Capita",
+      gdpPerCapita: "GDP/capita",
       perPerson: "USD/person",
       hdi2024: "HDI 2024",
       hdiDesc: "Human Dev. Index",
@@ -155,34 +156,34 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       worldBankIndicators: "World Bank Indicators (latest available year)",
       officialData: "Official World Bank data - Updated 2024",
       socialIndicators: "Social Indicators",
-      lifeExpectancy: "Life Expectancy",
+      lifeExpectancy: "Life expectancy",
       years: "years",
-      giniIndex: "Gini Index",
+      giniIndex: "Gini index",
       outOf100: "out of 100",
       povertyRate: "Poverty ($3/day)",
       populationPercent: "population",
-      urbanPopulation: "Urban Population",
+      urbanPopulation: "Urban population",
       ofTotal: "of total",
       digitalConnectivity: "Digital & Connectivity",
-      internetAccess: "Internet Access",
+      internetAccess: "Internet access",
       cybersecurity: "Cybersecurity",
-      electricityAccess: "Electricity Access",
+      electricityAccess: "Electricity access",
       coverage3g: "3G Coverage",
       environmentEquality: "Environment & Equality",
-      workingWomen: "Working Women",
+      workingWomen: "Working women",
       femalePopulation: "female pop.",
-      waterStress: "Water Stress",
+      waterStress: "Water stress",
       resources: "resources",
-      ghgEmissions: "GHG Emissions",
-      learningPoverty: "Learning Poverty",
+      ghgEmissions: "GHG emissions",
+      learningPoverty: "Learning poverty",
       children: "children",
       source: "Source",
       infrastructurePerformance: "Infrastructure & Logistics Performance",
       continentalRanking: "Continental ranking (AIDI 2025) and global (LPI 2023)",
-      lpiScore: "LPI Score",
+      lpiScore: "LPI score",
       infrastructure: "Infrastructure",
       worldRank: "World Rank",
-      aidiScore: "AIDI 2025 Score",
+      aidiScore: "AIDI 2025 score",
       globalIndex: "Global Index",
       africaRank: "Africa Rank",
       lpiDescription: "Evaluates the quality of trade and transport related infrastructure (World Bank).",
@@ -233,13 +234,13 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-xl border border-[rgba(212,175,55,0.2)] bg-gradient-to-br from-slate-800 to-slate-900">
-        <CardHeader className="bg-gradient-to-r from-[#1B232C] to-[#15202A] border-b border-[rgba(212,175,55,0.14)]">
-          <CardTitle className="text-2xl font-bold text-amber-400 flex items-center gap-2">
+      <Card className="shadow-xl border border-[rgba(212,175,55,0.2)] bg-[image:var(--card-grad)]">
+        <CardHeader className="bg-[image:var(--card-head)] border-b border-[var(--afcfta-border)]">
+          <CardTitle className="text-2xl font-bold text-[var(--gold)] flex items-center gap-2">
             <span>🌍</span>
             <span>{t.title}</span>
           </CardTitle>
-          <CardDescription className="font-semibold text-slate-400">
+          <CardDescription className="font-semibold text-[var(--afcfta-muted)]">
             {t.description}
           </CardDescription>
         </CardHeader>
@@ -267,136 +268,136 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
       {countryProfile && (
         <div className="space-y-4">
-          <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
-            <CardHeader className="bg-gradient-to-r from-green-900/50 via-amber-900/30 to-red-900/30 border-b border-amber-500/30">
+          <Card className="shadow-2xl border-0 bg-[image:var(--card-grad)]">
+            <CardHeader className="bg-[image:var(--card-head)] border-b border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
               <CardTitle className="flex items-center space-x-3 text-2xl">
                 <span className="text-5xl drop-shadow-lg">{getFlag(countryProfile.country_code)}</span>
                 <div>
-                  <span className="font-bold text-amber-400 text-3xl">{countryProfile.country_name}</span>
-                  <p className="text-sm text-gray-300 mt-1">{countryProfile.region}</p>
+                  <span className="font-bold text-[var(--gold)] text-3xl">{countryProfile.country_name}</span>
+                  <p className="text-sm text-[var(--text)] mt-1">{countryProfile.region}</p>
                 </div>
               </CardTitle>
-              <CardDescription className="text-lg font-semibold text-gray-200 flex items-center gap-4 mt-2">
-                <span className="bg-amber-600/30 px-3 py-1 rounded-full text-amber-300">👥 {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : formatNumber(countryProfile.population)} {t.inhabitants}</span>
-                <span className="bg-green-600/30 px-3 py-1 rounded-full text-green-300">🌍 UA Member</span>
+              <CardDescription className="text-lg font-semibold text-[var(--text)] flex items-center gap-4 mt-2">
+                <span className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] px-3 py-1 rounded-full text-[var(--gold)]">👥 {countryProfile.population_millions ? `${countryProfile.population_millions.toFixed(1)}M` : formatNumber(countryProfile.population)} {t.inhabitants}</span>
+                <span className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] px-3 py-1 rounded-full text-[var(--success)]">🌍 UA Member</span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-6 bg-gray-900/50">
+            <CardContent className="pt-6 bg-[var(--afcfta-card2)]">
               {/* SECTION: Indicateurs Économiques Principaux */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                <h3 className="text-lg font-bold text-[var(--gold)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pb-2">
                   <span className="text-2xl">💰</span> {language === 'fr' ? 'Indicateurs Économiques' : 'Economic Indicators'}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   {/* PIB Total */}
                   {countryProfile.gdp_usd != null && (
-                    <div className="bg-gradient-to-br from-emerald-900/80 to-green-800/60 p-4 rounded-xl border-2 border-emerald-500 shadow-lg shadow-emerald-500/20 text-center transform hover:scale-105 transition-all">
-                      <p className="text-xs font-bold text-emerald-300 mb-2 uppercase tracking-wide">💵 {t.totalGdp}</p>
-                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                        ${(countryProfile.gdp_usd / 1000000000).toFixed(1)}B
+                    <div className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-lg shadow-emerald-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-[var(--success)] mb-2">💵 {t.totalGdp}</p>
+                      <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
+                        {montantUnite(countryProfile.gdp_usd / 1000000000, 'B', language, 1)}
                       </p>
-                      <p className="text-xs text-emerald-200 mt-2 bg-emerald-950/50 rounded-full px-2 py-1">{t.rank}: #{countryProfile.projections?.africa_rank || 'N/A'}</p>
+                      <p className="text-xs text-[var(--success)] mt-2 bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.rank}: #{countryProfile.projections?.africa_rank || 'N/A'}</p>
                     </div>
                   )}
                   
                   {/* PIB par Habitant */}
                   {countryProfile.gdp_per_capita != null && (
-                    <div className="bg-gradient-to-br from-blue-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
-                      <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">👤 {t.gdpPerCapita}</p>
-                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
-                        ${formatNumber(Math.round(countryProfile.gdp_per_capita))}
+                    <div className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-[var(--info)] mb-2">👤 {t.gdpPerCapita}</p>
+                      <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
+                        {montant(Math.round(countryProfile.gdp_per_capita), language)}
                       </p>
-                      <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.perPerson}</p>
+                      <p className="text-xs text-[var(--info)] mt-2 bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.perPerson}</p>
                     </div>
                   )}
                   
                   {/* Croissance 2024 */}
-                  <div className="bg-gradient-to-br from-teal-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-teal-500 shadow-lg shadow-teal-500/20 text-center transform hover:scale-105 transition-all">
-                    <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">📈 {language === 'fr' ? 'Croissance' : 'Growth'} 2024</p>
-                    <p className={`text-3xl font-extrabold drop-shadow-lg ${parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 5 ? 'text-green-400' : parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 3 ? 'text-white' : 'text-orange-400'}`}>
+                  <div className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-lg shadow-teal-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-[var(--success)] mb-2">📈 {language === 'fr' ? 'Croissance' : 'Growth'} 2024</p>
+                    <p className={`text-3xl font-extrabold drop-shadow-lg ${parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 5 ? 'text-[var(--success)]' : parseFloat(countryProfile.projections?.gdp_growth_forecast_2024) >= 3 ? 'text-[var(--text)]' : 'text-[var(--terra)]'}`}>
                       {countryProfile.projections?.gdp_growth_forecast_2024 || 'N/A'}
                     </p>
-                    <p className="text-xs text-teal-200 mt-2 bg-teal-950/50 rounded-full px-2 py-1">FMI 2024</p>
+                    <p className="text-xs text-[var(--success)] mt-2 bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] rounded-full px-2 py-1">FMI 2024</p>
                   </div>
                   
                   {/* Projection 2025 */}
-                  <div className="bg-gradient-to-br from-amber-900/80 to-yellow-800/60 p-4 rounded-xl border-2 border-amber-500 shadow-lg shadow-amber-500/20 text-center transform hover:scale-105 transition-all">
-                    <p className="text-xs font-bold text-amber-300 mb-2 uppercase tracking-wide">🎯 Projection 2025</p>
-                    <p className={`text-3xl font-extrabold drop-shadow-lg ${countryProfile.projections?.gdp_growth_projection_2025 && countryProfile.projections?.gdp_growth_projection_2025 !== 'N/A' ? 'text-white' : 'text-gray-400'}`}>
+                  <div className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] shadow-lg shadow-amber-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-[var(--gold)] mb-2">🎯 Projection 2025</p>
+                    <p className={`text-3xl font-extrabold drop-shadow-lg ${countryProfile.projections?.gdp_growth_projection_2025 && countryProfile.projections?.gdp_growth_projection_2025 !== 'N/A' ? 'text-[var(--text)]' : 'text-[var(--afcfta-muted)]'}`}>
                       {countryProfile.projections?.gdp_growth_projection_2025 || 'N/A'}
                     </p>
-                    <p className="text-xs text-amber-200 mt-2 bg-amber-950/50 rounded-full px-2 py-1">FMI/BM</p>
+                    <p className="text-xs text-[var(--gold)] mt-2 bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] rounded-full px-2 py-1">FMI/BM</p>
                   </div>
                   
                   {/* IDH */}
-                  <div className="bg-gradient-to-br from-purple-900/80 to-violet-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
-                    <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">📊 {t.hdi2024}</p>
-                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                  <div className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-[var(--violet)] mb-2">📊 {t.hdi2024}</p>
+                    <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                       {countryProfile.hdi || countryProfile.projections?.development_index || 'N/A'}
                     </p>
-                    <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{countryProfile.hdi_rank ? `Rang #${countryProfile.hdi_rank}` : 'PNUD'}</p>
+                    <p className="text-xs text-[var(--violet)] mt-2 bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{countryProfile.hdi_rank ? `Rang #${countryProfile.hdi_rank}` : 'PNUD'}</p>
                   </div>
                 </div>
               </div>
 
               {/* SECTION: Indicateurs Sociaux */}
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                <h3 className="text-lg font-bold text-[var(--gold)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pb-2">
                   <span className="text-2xl">👥</span> {language === 'fr' ? 'Indicateurs Sociaux' : 'Social Indicators'}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {/* Inflation */}
                   <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
                     countryProfile.inflation_rate != null && countryProfile.inflation_rate > 15 
-                      ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
+                      ? 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-red-500/20' 
                       : countryProfile.inflation_rate != null && countryProfile.inflation_rate > 7 
-                        ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
-                        : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
+                        ? 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] shadow-orange-500/20'
+                        : 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-green-500/20'
                   }`}>
-                    <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">📈 Inflation 2024</p>
-                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                    <p className="text-xs font-bold text-[var(--text-soft)] mb-2">📈 Inflation 2024</p>
+                    <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                       {countryProfile.inflation_rate != null ? `${countryProfile.inflation_rate.toFixed(1)}%` : 'N/A'}
                     </p>
-                    <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">FMI/BM</p>
+                    <p className="text-xs text-[var(--afcfta-muted)] mt-2 bg-[var(--overlay)] rounded-full px-2 py-1">FMI/BM</p>
                   </div>
 
                   {/* Chômage */}
                   <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
                     countryProfile.unemployment_rate != null && countryProfile.unemployment_rate > 25 
-                      ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
+                      ? 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-red-500/20' 
                       : countryProfile.unemployment_rate != null && countryProfile.unemployment_rate > 15 
-                        ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
-                        : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
+                        ? 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] shadow-orange-500/20'
+                        : 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-green-500/20'
                   }`}>
-                    <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">👔 {language === 'fr' ? 'Chômage' : 'Unemployment'} 2024</p>
-                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                    <p className="text-xs font-bold text-[var(--text-soft)] mb-2">👔 {language === 'fr' ? 'Chômage' : 'Unemployment'} 2024</p>
+                    <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                       {countryProfile.unemployment_rate != null ? `${countryProfile.unemployment_rate.toFixed(1)}%` : 'N/A'}
                     </p>
-                    <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">OIT/BM</p>
+                    <p className="text-xs text-[var(--afcfta-muted)] mt-2 bg-[var(--overlay)] rounded-full px-2 py-1">OIT/BM</p>
                   </div>
 
                   {/* Population */}
-                  <div className="bg-gradient-to-br from-cyan-900/80 to-blue-800/60 p-4 rounded-xl border-2 border-cyan-500 shadow-lg shadow-cyan-500/20 text-center transform hover:scale-105 transition-all">
-                    <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wide">👥 Population</p>
-                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                  <div className="bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--atlantic)_30%,transparent)] shadow-lg shadow-cyan-500/20 text-center transform hover:scale-105 transition-all">
+                    <p className="text-xs font-bold text-[var(--atlantic)] mb-2">👥 Population</p>
+                    <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                       {countryProfile.population_millions != null ? `${countryProfile.population_millions.toFixed(1)}M` : (countryProfile.population != null ? formatNumber(countryProfile.population) : 'N/A')}
                     </p>
-                    <p className="text-xs text-cyan-200 mt-2 bg-cyan-950/50 rounded-full px-2 py-1">2024</p>
+                    <p className="text-xs text-[var(--atlantic)] mt-2 bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] rounded-full px-2 py-1">2024</p>
                   </div>
 
                   {/* Rang IDH Mondial */}
                   <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
                     countryProfile.hdi_rank != null && countryProfile.hdi_rank <= 80 
-                      ? 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20' 
+                      ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-green-500/20' 
                       : countryProfile.hdi_rank != null && countryProfile.hdi_rank <= 120 
-                        ? 'bg-gradient-to-br from-amber-900/80 to-yellow-700/60 border-amber-500 shadow-amber-500/20'
-                        : 'bg-gradient-to-br from-red-900/80 to-orange-700/60 border-red-500 shadow-red-500/20'
+                        ? 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] shadow-amber-500/20'
+                        : 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-red-500/20'
                   }`}>
-                    <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">🏆 {language === 'fr' ? 'Rang IDH' : 'HDI Rank'}</p>
-                    <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                    <p className="text-xs font-bold text-[var(--text-soft)] mb-2">🏆 {language === 'fr' ? 'Rang IDH' : 'HDI rank'}</p>
+                    <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                       #{countryProfile.hdi_rank || 'N/A'}
                     </p>
-                    <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">/193 pays</p>
+                    <p className="text-xs text-[var(--afcfta-muted)] mt-2 bg-[var(--overlay)] rounded-full px-2 py-1">/193 pays</p>
                   </div>
                 </div>
               </div>
@@ -404,74 +405,74 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               {/* SECTION DETTE PUBLIQUE */}
               {(countryProfile.total_debt_pct_gdp != null || countryProfile.external_debt_pct_gdp != null) && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                  <h3 className="text-lg font-bold text-[var(--gold)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pb-2">
                     <span className="text-2xl">💳</span> {language === 'fr' ? 'Dette Publique 2024' : 'Public Debt 2024'}
-                    <span className="text-xs font-normal text-gray-400 ml-2">(FMI/BM)</span>
+                    <span className="text-xs font-normal text-[var(--afcfta-muted)] ml-2">(FMI/BM)</span>
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {/* Dette Totale */}
                     <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
                       countryProfile.total_debt_pct_gdp > 80 
-                        ? 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20' 
+                        ? 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-red-500/20' 
                         : countryProfile.total_debt_pct_gdp > 60 
-                          ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
+                          ? 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] shadow-orange-500/20'
                           : countryProfile.total_debt_pct_gdp > 40 
-                            ? 'bg-gradient-to-br from-yellow-900/80 to-amber-700/60 border-yellow-500 shadow-yellow-500/20'
-                            : 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20'
+                            ? 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] shadow-yellow-500/20'
+                            : 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-green-500/20'
                     }`}>
-                      <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">📊 {language === 'fr' ? 'Dette Totale' : 'Total Debt'}</p>
-                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      <p className="text-xs font-bold text-[var(--text-soft)] mb-2">📊 {language === 'fr' ? 'Dette totale' : 'Total debt'}</p>
+                      <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                         {countryProfile.total_debt_pct_gdp != null ? `${countryProfile.total_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
-                      <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
+                      <p className="text-xs text-[var(--afcfta-muted)] mt-2 bg-[var(--overlay)] rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                     </div>
 
                     {/* Dette Extérieure */}
-                    <div className="bg-gradient-to-br from-blue-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
-                      <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌍 {language === 'fr' ? 'Dette Extérieure' : 'External Debt'}</p>
-                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                    <div className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-[var(--info)] mb-2">🌍 {language === 'fr' ? 'Dette extérieure' : 'External debt'}</p>
+                      <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                         {countryProfile.external_debt_pct_gdp != null ? `${countryProfile.external_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
-                      <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
+                      <p className="text-xs text-[var(--info)] mt-2 bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                       {countryProfile.external_debt_bn_usd != null && (
-                        <p className="text-lg font-bold text-amber-400 mt-2">
-                          ${countryProfile.external_debt_bn_usd.toFixed(1)}B
+                        <p className="text-lg font-bold text-[var(--gold)] mt-2">
+                          {montantUnite(countryProfile.external_debt_bn_usd, 'B', language, 1)}
                         </p>
                       )}
                     </div>
 
                     {/* Dette Intérieure */}
-                    <div className="bg-gradient-to-br from-purple-900/80 to-violet-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
-                      <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">🏠 {language === 'fr' ? 'Dette Intérieure' : 'Domestic Debt'}</p>
-                      <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                    <div className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
+                      <p className="text-xs font-bold text-[var(--violet)] mb-2">🏠 {language === 'fr' ? 'Dette intérieure' : 'Domestic debt'}</p>
+                      <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                         {countryProfile.domestic_debt_pct_gdp != null ? `${countryProfile.domestic_debt_pct_gdp.toFixed(1)}%` : 'N/A'}
                       </p>
-                      <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
+                      <p className="text-xs text-[var(--violet)] mt-2 bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                     </div>
 
                     {/* Indicateur de Viabilité */}
                     <div className={`p-4 rounded-xl border-2 shadow-lg text-center transform hover:scale-105 transition-all ${
                       countryProfile.total_debt_pct_gdp <= 40 
-                        ? 'bg-gradient-to-br from-green-900/80 to-emerald-700/60 border-green-500 shadow-green-500/20' 
+                        ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-green-500/20' 
                         : countryProfile.total_debt_pct_gdp <= 60 
-                          ? 'bg-gradient-to-br from-amber-900/80 to-yellow-700/60 border-amber-500 shadow-amber-500/20'
+                          ? 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] shadow-amber-500/20'
                           : countryProfile.total_debt_pct_gdp <= 80 
-                            ? 'bg-gradient-to-br from-orange-900/80 to-amber-700/60 border-orange-500 shadow-orange-500/20'
-                            : 'bg-gradient-to-br from-red-900/80 to-red-700/60 border-red-500 shadow-red-500/20'
+                            ? 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] shadow-orange-500/20'
+                            : 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-red-500/20'
                     }`}>
-                      <p className="text-xs font-bold text-white/80 mb-2 uppercase tracking-wide">⚖️ {language === 'fr' ? 'Viabilité' : 'Sustainability'}</p>
+                      <p className="text-xs font-bold text-[var(--text-soft)] mb-2">⚖️ {language === 'fr' ? 'Viabilité' : 'Sustainability'}</p>
                       <div className="flex justify-center items-center py-2">
                         {countryProfile.total_debt_pct_gdp <= 40 ? (
-                          <span className="text-lg font-extrabold text-green-300">✓ FAIBLE RISQUE</span>
+                          <span className="text-lg font-extrabold text-[var(--success)]">✓ FAIBLE RISQUE</span>
                         ) : countryProfile.total_debt_pct_gdp <= 60 ? (
-                          <span className="text-lg font-extrabold text-amber-300">⚠ MODÉRÉ</span>
+                          <span className="text-lg font-extrabold text-[var(--gold)]">⚠ MODÉRÉ</span>
                         ) : countryProfile.total_debt_pct_gdp <= 80 ? (
-                          <span className="text-lg font-extrabold text-orange-300">⚠ ÉLEVÉ</span>
+                          <span className="text-lg font-extrabold text-[var(--terra)]">⚠ ÉLEVÉ</span>
                         ) : (
-                          <span className="text-lg font-extrabold text-red-300">🚨 CRITIQUE</span>
+                          <span className="text-lg font-extrabold text-[var(--danger)]">🚨 CRITIQUE</span>
                         )}
                       </div>
-                      <p className="text-xs text-white/70 mt-2 bg-black/20 rounded-full px-2 py-1">{language === 'fr' ? 'Seuil FMI: 60%' : 'IMF threshold: 60%'}</p>
+                      <p className="text-xs text-[var(--afcfta-muted)] mt-2 bg-[var(--overlay)] rounded-full px-2 py-1">{language === 'fr' ? 'Seuil FMI: 60%' : 'IMF threshold: 60%'}</p>
                     </div>
                   </div>
                 </div>
@@ -481,20 +482,20 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Gold Reserves */}
                 {countryProfile.projections?.gold_reserves_tonnes != null && (
-                  <div className="bg-gradient-to-br from-yellow-50 to-amber-100 p-4 rounded-lg shadow-lg border-2 border-yellow-400">
+                  <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-4 rounded-lg shadow-lg border-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-2xl">🥇</span>
-                      <p className="text-sm font-bold text-yellow-800">{t.goldReserves}</p>
+                      <p className="text-sm font-bold text-[var(--gold)]">{t.goldReserves}</p>
                     </div>
-                    <p className="text-3xl font-bold text-yellow-700 mb-2">
+                    <p className="text-3xl font-bold text-[var(--gold)] mb-2">
                       {countryProfile.projections.gold_reserves_tonnes.toFixed(1)} <span className="text-xl">{t.tonnes}</span>
                     </p>
                     <div className="flex gap-3 text-xs">
-                      <span className="bg-yellow-200 text-yellow-800 px-2 py-1 rounded font-semibold">
+                      <span className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] px-2 py-1 rounded font-semibold">
                         🌍 {t.africa}: #{countryProfile.projections.gold_reserves_rank_africa}
                       </span>
                       {countryProfile.projections.gold_reserves_rank_global && (
-                        <span className="bg-yellow-300 text-yellow-900 px-2 py-1 rounded font-semibold">
+                        <span className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] px-2 py-1 rounded font-semibold">
                           🌎 {t.global}: #{countryProfile.projections.gold_reserves_rank_global}
                         </span>
                       )}
@@ -504,31 +505,31 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
                 {/* Global Attractiveness Index 2025 */}
                 {countryProfile.projections?.gai_2025_score != null && (
-                  <div className="bg-gradient-to-br from-indigo-50 to-purple-100 p-4 rounded-lg shadow-lg border-2 border-indigo-400">
+                  <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-4 rounded-lg shadow-lg border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl">📊</span>
-                        <p className="text-sm font-bold text-indigo-800">{t.gaiTitle}</p>
+                        <p className="text-sm font-bold text-[var(--violet)]">{t.gaiTitle}</p>
                       </div>
                       <span className={`px-3 py-1 rounded-full font-bold text-sm ${
-                        countryProfile.projections.gai_2025_rating === 'A' ? 'bg-green-500 text-white' :
-                        countryProfile.projections.gai_2025_rating?.startsWith('A') ? 'bg-green-400 text-white' :
-                        countryProfile.projections.gai_2025_rating?.startsWith('B') ? 'bg-blue-400 text-white' :
-                        countryProfile.projections.gai_2025_rating?.startsWith('C') ? 'bg-yellow-400 text-white' :
-                        countryProfile.projections.gai_2025_rating?.startsWith('D') ? 'bg-orange-400 text-white' :
-                        'bg-red-400 text-white'
+                        countryProfile.projections.gai_2025_rating === 'A' ? 'bg-[var(--success)] text-[var(--bg)]' :
+                        countryProfile.projections.gai_2025_rating?.startsWith('A') ? 'bg-[var(--success)] text-[var(--bg)]' :
+                        countryProfile.projections.gai_2025_rating?.startsWith('B') ? 'bg-[var(--info)] text-[var(--bg)]' :
+                        countryProfile.projections.gai_2025_rating?.startsWith('C') ? 'bg-[var(--gold)] text-[var(--bg)]' :
+                        countryProfile.projections.gai_2025_rating?.startsWith('D') ? 'bg-[var(--terra)] text-[var(--bg)]' :
+                        'bg-[var(--danger)] text-[var(--bg)]'
                       }`}>
                         {countryProfile.projections.gai_2025_rating}
                       </span>
                     </div>
                     <div className="flex items-baseline gap-2 mb-2">
-                      <p className="text-4xl font-bold text-indigo-700">
+                      <p className="text-4xl font-bold text-[var(--violet)]">
                         {countryProfile.projections.gai_2025_score.toFixed(1)}
                       </p>
                       <span className={`text-sm font-semibold px-2 py-1 rounded ${
-                        countryProfile.projections.gai_2025_trend === 'improving' ? 'bg-green-200 text-green-800' :
-                        countryProfile.projections.gai_2025_trend === 'declining' ? 'bg-red-200 text-red-800' :
-                        'bg-gray-200 text-gray-800'
+                        countryProfile.projections.gai_2025_trend === 'improving' ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)]' :
+                        countryProfile.projections.gai_2025_trend === 'declining' ? 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)]' :
+                        'bg-[var(--afcfta-card2)] text-[var(--text)]'
                       }`}>
                         {countryProfile.projections.gai_2025_trend === 'improving' ? `📈 ${t.improving}` :
                          countryProfile.projections.gai_2025_trend === 'declining' ? `📉 ${t.declining}` :
@@ -536,17 +537,17 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                       </span>
                     </div>
                     {(countryProfile.projections.gai_2025_category_fr || countryProfile.projections.gai_2025_category_en) && (
-                      <p className="text-sm font-semibold text-indigo-700 mb-2">
+                      <p className="text-sm font-semibold text-[var(--violet)] mb-2">
                         {language === 'fr'
                           ? countryProfile.projections.gai_2025_category_fr
                           : countryProfile.projections.gai_2025_category_en}
                       </p>
                     )}
                     <div className="flex gap-3 text-xs">
-                      <span className="bg-indigo-200 text-indigo-800 px-2 py-1 rounded font-semibold">
+                      <span className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] px-2 py-1 rounded font-semibold">
                         🌍 {t.africa}: #{countryProfile.projections.gai_2025_rank_africa}
                       </span>
-                      <span className="bg-purple-200 text-purple-800 px-2 py-1 rounded font-semibold">
+                      <span className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] px-2 py-1 rounded font-semibold">
                         🌎 {t.global}: #{countryProfile.projections.gai_2025_rank_global}
                       </span>
                     </div>
@@ -571,7 +572,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 if (!years.length) return null;
                 return (
                   <div className="mb-6">
-                    <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                    <h3 className="text-lg font-bold text-[var(--gold)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pb-2">
                       <span className="text-2xl">🔮</span>
                       {language === 'fr' ? 'Perspectives FMI' : 'IMF Outlook'}
                     </h3>
@@ -579,27 +580,27 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                       <table className="w-full text-sm border-collapse">
                         <thead>
                           <tr>
-                            <th className="text-left p-2 text-gray-400 font-semibold">{language === 'fr' ? 'Indicateur' : 'Indicator'}</th>
+                            <th className="text-left p-2 text-[var(--afcfta-muted)] font-semibold">{language === 'fr' ? 'Indicateur' : 'Indicator'}</th>
                             {years.map((y) => (
-                              <th key={y} className={`p-2 text-center font-bold ${y <= nowY ? 'text-gray-300' : 'text-amber-300'}`}>
+                              <th key={y} className={`p-2 text-center font-bold ${y <= nowY ? 'text-[var(--text)]' : 'text-[var(--gold)]'}`}>
                                 {y}{y > nowY ? ' *' : ''}
                               </th>
                             ))}
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="border-t border-gray-700">
-                            <td className="p-2 text-teal-300 font-semibold">📈 {language === 'fr' ? 'Croissance PIB' : 'GDP growth'}</td>
+                          <tr className="border-t border-[var(--afcfta-border)]">
+                            <td className="p-2 text-[var(--success)] font-semibold">📈 {language === 'fr' ? 'Croissance PIB' : 'GDP growth'}</td>
                             {years.map((y) => (
-                              <td key={y} className="p-2 text-center text-white font-bold">
+                              <td key={y} className="p-2 text-center text-[var(--text)] font-bold">
                                 {growth[y] != null ? `${growth[y].toFixed(1)}%` : '—'}
                               </td>
                             ))}
                           </tr>
-                          <tr className="border-t border-gray-700">
-                            <td className="p-2 text-orange-300 font-semibold">💰 {language === 'fr' ? 'Inflation' : 'Inflation'}</td>
+                          <tr className="border-t border-[var(--afcfta-border)]">
+                            <td className="p-2 text-[var(--terra)] font-semibold">💰 {language === 'fr' ? 'Inflation' : 'Inflation'}</td>
                             {years.map((y) => (
-                              <td key={y} className="p-2 text-center text-white font-bold">
+                              <td key={y} className="p-2 text-center text-[var(--text)] font-bold">
                                 {inflation[y] != null ? `${inflation[y].toFixed(1)}%` : '—'}
                               </td>
                             ))}
@@ -607,7 +608,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                         </tbody>
                       </table>
                     </div>
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-[var(--afcfta-muted)] mt-2">
                       {language === 'fr' ? '* projection · ' : '* projection · '}
                       {countryProfile.projections.imf_source || 'FMI — WEO'}
                     </p>
@@ -619,12 +620,12 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               {countryProfile.ongoing_projects && countryProfile.ongoing_projects.length > 0 && (
                 <div className="mb-4">
                   <Card className="shadow-xl border-t-4 border-t-emerald-600">
-                    <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50">
-                      <CardTitle className="text-xl font-bold text-emerald-700 flex items-center gap-2">
+                    <CardHeader className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]">
+                      <CardTitle className="text-xl font-bold text-[var(--success)] flex items-center gap-2">
                         <span>🏗️</span>
                         <span>{t.structuringProjects}</span>
                       </CardTitle>
-                      <CardDescription className="font-semibold text-gray-700">
+                      <CardDescription className="font-semibold text-[var(--text)]">
                         {t.majorInvestments}
                       </CardDescription>
                     </CardHeader>
@@ -636,14 +637,14 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                           
                           return (
                           <div key={index} className={`rounded-xl shadow-md border-2 hover:shadow-xl transition-all overflow-hidden flex flex-col ${
-                            isOperational ? 'border-green-500 bg-green-50' : 
-                            isConstruction ? 'border-amber-400 bg-amber-50' :
-                            'border-gray-200 bg-white'
+                            isOperational ? 'border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : 
+                            isConstruction ? 'border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]' :
+                            'border-[var(--afcfta-border)] bg-[var(--afcfta-card)]'
                           }`}>
-                            <div className={`text-white p-3 ${
-                              isOperational ? 'bg-gradient-to-r from-green-600 to-emerald-600' :
-                              isConstruction ? 'bg-gradient-to-r from-amber-500 to-orange-500' :
-                              'bg-gradient-to-r from-emerald-600 to-teal-600'
+                            <div className={`text-[var(--bg)] p-3 ${
+                              isOperational ? 'bg-[var(--success)]' :
+                              isConstruction ? 'bg-[var(--gold)]' :
+                              'bg-[var(--success)]'
                             }`}>
                               <h5 className="font-bold text-sm leading-tight flex items-center gap-2">
                                 {isOperational && <span>✅</span>}
@@ -654,14 +655,14 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             <div className="p-4 flex-grow flex flex-col gap-3">
                               <div className="flex justify-between items-start flex-wrap gap-2">
                                 <Badge variant="outline" className={`text-xs ${
-                                  isOperational ? 'bg-green-100 text-green-700 border-green-300' :
-                                  'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                  isOperational ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' :
+                                  'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'
                                 }`}>
                                   {project.secteur}
                                 </Badge>
                                 <span className={`text-xs font-bold px-2 py-1 rounded ${
-                                  isOperational ? 'bg-green-200 text-green-800' :
-                                  'bg-gray-100 text-gray-600'
+                                  isOperational ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)]' :
+                                  'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)]'
                                 }`}>
                                   🏁 {project.echeance}
                                 </span>
@@ -669,25 +670,25 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               
                               {/* Statut bien visible */}
                               <div className={`px-3 py-2 rounded-lg text-sm font-bold text-center ${
-                                isOperational ? 'bg-green-500 text-white' :
-                                isConstruction ? 'bg-amber-400 text-amber-900' :
-                                'bg-blue-100 text-blue-800'
+                                isOperational ? 'bg-[var(--success)] text-[var(--bg)]' :
+                                isConstruction ? 'bg-[var(--gold)] text-[var(--bg)]' :
+                                'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]'
                               }`}>
                                 {project.statut}
                               </div>
                               
-                              <div className="space-y-2 text-sm text-gray-600 flex-grow">
+                              <div className="space-y-2 text-sm text-[var(--afcfta-muted)] flex-grow">
                                 <p className="line-clamp-3">{project.description}</p>
                                 
-                                <div className="bg-gray-50 p-2 rounded text-xs border border-gray-100">
+                                <div className="bg-[var(--afcfta-card2)] p-2 rounded text-xs border border-[var(--afcfta-border)]">
                                   <p><strong>💰 {t.budget}:</strong> {project.budget}</p>
                                   <p><strong>🚀 {t.impact}:</strong> {project.impact}</p>
                                 </div>
                               </div>
                               
-                              <div className="mt-auto pt-3 border-t border-gray-100 text-xs text-gray-500 flex justify-between items-center">
+                              <div className="mt-auto pt-3 border-t border-[var(--afcfta-border)] text-xs text-[var(--afcfta-muted)] flex justify-between items-center">
                                 <span className="truncate max-w-[70%]">🤝 {project.partenaires}</span>
-                                <span className="italic text-gray-400">{project.source?.split('/')[0]}</span>
+                                <span className="italic text-[var(--afcfta-muted)]">{project.source?.split('/')[0]}</span>
                               </div>
                             </div>
                           </div>
@@ -714,59 +715,59 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 countryProfile.projections.learning_poverty_2023 != null
               ) && (
                 <div className="mb-4">
-                  <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
-                    <CardHeader className="bg-gradient-to-r from-blue-900/50 via-purple-900/30 to-pink-900/30 border-b border-blue-500/30">
-                      <CardTitle className="text-xl font-bold text-blue-400 flex items-center gap-3">
+                  <Card className="shadow-2xl border-0 bg-[image:var(--card-grad)]">
+                    <CardHeader className="bg-[image:var(--card-head)] border-b border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                      <CardTitle className="text-xl font-bold text-[var(--info)] flex items-center gap-3">
                         <span className="text-2xl">🌐</span>
                         <span>{t.worldBankIndicators}</span>
                       </CardTitle>
-                      <p className="text-sm text-gray-300 mt-1">
+                      <p className="text-sm text-[var(--text)] mt-1">
                         {t.officialData}
                       </p>
                     </CardHeader>
-                    <CardContent className="pt-6 bg-gray-900/50">
+                    <CardContent className="pt-6 bg-[var(--afcfta-card2)]">
                       {/* Section 1: People (Social) */}
                       <div className="mb-6">
-                        <h4 className="text-lg font-bold text-pink-400 mb-4 flex items-center gap-2 border-b border-pink-500/30 pb-2">
+                        <h4 className="text-lg font-bold text-[var(--danger)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--danger)_30%,transparent)] pb-2">
                           <span className="text-2xl">👥</span>
                           <span>{t.socialIndicators}</span>
                         </h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          <div className="bg-gradient-to-br from-green-900/80 to-emerald-800/60 p-4 rounded-xl border-2 border-green-500 shadow-lg shadow-green-500/20 transform hover:scale-105 transition-all">
-                            <p className="text-xs font-bold text-green-300 mb-2 uppercase tracking-wide">🏥 {t.lifeExpectancy}</p>
-                            <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                          <div className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-lg shadow-green-500/20 transform hover:scale-105 transition-all">
+                            <p className="text-xs font-bold text-[var(--success)] mb-2">🏥 {t.lifeExpectancy}</p>
+                            <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                               {countryProfile.projections.life_expectancy_2023 != null ? parseFloat(countryProfile.projections.life_expectancy_2023).toFixed(1) : 'N/A'}
                             </p>
-                            <p className="text-xs text-green-200 mt-2 bg-green-950/50 rounded-full px-2 py-1">{t.years} ({countryProfile.projections.life_expectancy_2023_year ?? 2023})</p>
+                            <p className="text-xs text-[var(--success)] mt-2 bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.years} ({countryProfile.projections.life_expectancy_2023_year ?? 2023})</p>
                           </div>
                           
                           {countryProfile.projections.gini_index_2024 != null && (
-                            <div className="bg-gradient-to-br from-orange-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-orange-500 shadow-lg shadow-orange-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-orange-300 mb-2 uppercase tracking-wide">📊 {t.giniIndex}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--terra)_30%,transparent)] shadow-lg shadow-orange-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--terra)] mb-2">📊 {t.giniIndex}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.gini_index_2024).toFixed(1)}
                               </p>
-                              <p className="text-xs text-orange-200 mt-2 bg-orange-950/50 rounded-full px-2 py-1">{t.outOf100} ({countryProfile.projections.gini_index_2024_year ?? 2024})</p>
+                              <p className="text-xs text-[var(--terra)] mt-2 bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.outOf100} ({countryProfile.projections.gini_index_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.poverty_rate_3usd_2024 !== undefined && countryProfile.projections.poverty_rate_3usd_2024 !== null && (
-                            <div className="bg-gradient-to-br from-red-900/80 to-rose-800/60 p-4 rounded-xl border-2 border-red-500 shadow-lg shadow-red-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-red-300 mb-2 uppercase tracking-wide">💰 {t.povertyRate}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-lg shadow-red-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--danger)] mb-2">💰 {t.povertyRate}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.poverty_rate_3usd_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-red-200 mt-2 bg-red-950/50 rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.poverty_rate_3usd_2024_year ?? 2024})</p>
+                              <p className="text-xs text-[var(--danger)] mt-2 bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.poverty_rate_3usd_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.urban_population_pct_2024 != null && (
-                            <div className="bg-gradient-to-br from-purple-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">🏙️ {t.urbanPopulation}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] shadow-lg shadow-purple-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--violet)] mb-2">🏙️ {t.urbanPopulation}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.urban_population_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-purple-200 mt-2 bg-purple-950/50 rounded-full px-2 py-1">{t.ofTotal} ({countryProfile.projections.urban_population_pct_2024_year ?? 2024})</p>
+                              <p className="text-xs text-[var(--violet)] mt-2 bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.ofTotal} ({countryProfile.projections.urban_population_pct_2024_year ?? 2024})</p>
                             </div>
                           )}
                         </div>
@@ -774,48 +775,48 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
                       {/* Section 2: Digital & Infrastructure */}
                       <div className="mb-6">
-                        <h4 className="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2 border-b border-cyan-500/30 pb-2">
+                        <h4 className="text-lg font-bold text-[var(--atlantic)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--atlantic)_30%,transparent)] pb-2">
                           <span className="text-2xl">💻</span>
                           <span>{t.digitalConnectivity}</span>
                         </h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           {countryProfile.projections.internet_users_pct_2024 != null && (
-                            <div className="bg-gradient-to-br from-blue-900/80 to-sky-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌐 {t.internetAccess}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--info)] mb-2">🌐 {t.internetAccess}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.internet_users_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.internet_users_pct_2024_year ?? 2024})</p>
+                              <p className="text-xs text-[var(--info)] mt-2 bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.internet_users_pct_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.cybersecurity_index_2024 != null && (
-                            <div className="bg-gradient-to-br from-indigo-900/80 to-purple-800/60 p-4 rounded-xl border-2 border-indigo-500 shadow-lg shadow-indigo-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-indigo-300 mb-2 uppercase tracking-wide">🔒 {t.cybersecurity}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] shadow-lg shadow-indigo-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--violet)] mb-2">🔒 {t.cybersecurity}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.cybersecurity_index_2024).toFixed(1)}
                               </p>
-                              <p className="text-xs text-indigo-200 mt-2 bg-indigo-950/50 rounded-full px-2 py-1">ITU GCI (2024)</p>
+                              <p className="text-xs text-[var(--violet)] mt-2 bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-full px-2 py-1">ITU GCI (2024)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.electricity_access_2022 != null && (
-                            <div className="bg-gradient-to-br from-yellow-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-yellow-500 shadow-lg shadow-yellow-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-yellow-300 mb-2 uppercase tracking-wide">⚡ {t.electricityAccess}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] shadow-lg shadow-yellow-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--gold)] mb-2">⚡ {t.electricityAccess}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.electricity_access_2022).toFixed(0)}%
                               </p>
-                              <p className="text-xs text-yellow-200 mt-2 bg-yellow-950/50 rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.electricity_access_2022_year ?? 2022})</p>
+                              <p className="text-xs text-[var(--gold)] mt-2 bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.populationPercent} ({countryProfile.projections.electricity_access_2022_year ?? 2022})</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.mobile_3g_coverage_2024 != null && (
-                            <div className="bg-gradient-to-br from-teal-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-teal-500 shadow-lg shadow-teal-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">📱 {t.coverage3g}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-lg shadow-teal-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--success)] mb-2">📱 {t.coverage3g}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.mobile_3g_coverage_2024).toFixed(0)}%
                               </p>
-                              <p className="text-xs text-teal-200 mt-2 bg-teal-950/50 rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
+                              <p className="text-xs text-[var(--success)] mt-2 bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.populationPercent} (2024)</p>
                             </div>
                           )}
                         </div>
@@ -823,58 +824,58 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
                       {/* Section 3: Environment & Gender */}
                       <div>
-                        <h4 className="text-lg font-bold text-emerald-400 mb-4 flex items-center gap-2 border-b border-emerald-500/30 pb-2">
+                        <h4 className="text-lg font-bold text-[var(--success)] mb-4 flex items-center gap-2 border-b border-[color-mix(in_srgb,var(--success)_30%,transparent)] pb-2">
                           <span className="text-2xl">🌍</span>
                           <span>{t.environmentEquality}</span>
                         </h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           {countryProfile.projections.female_labor_force_pct_2024 != null && (
-                            <div className="bg-gradient-to-br from-pink-900/80 to-rose-800/60 p-4 rounded-xl border-2 border-pink-500 shadow-lg shadow-pink-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-pink-300 mb-2 uppercase tracking-wide">👩‍💼 {t.workingWomen}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--danger)_30%,transparent)] shadow-lg shadow-pink-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--danger)] mb-2">👩‍💼 {t.workingWomen}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.female_labor_force_pct_2024).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-pink-200 mt-2 bg-pink-950/50 rounded-full px-2 py-1">{t.femalePopulation} ({countryProfile.projections.female_labor_force_pct_2024_year ?? 2024})</p>
+                              <p className="text-xs text-[var(--danger)] mt-2 bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.femalePopulation} ({countryProfile.projections.female_labor_force_pct_2024_year ?? 2024})</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.water_stress_2022 != null && (
-                            <div className="bg-gradient-to-br from-blue-900/80 to-cyan-800/60 p-4 rounded-xl border-2 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">💧 {t.waterStress}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--info)] mb-2">💧 {t.waterStress}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.water_stress_2022).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-blue-200 mt-2 bg-blue-950/50 rounded-full px-2 py-1">{t.resources} (2022)</p>
+                              <p className="text-xs text-[var(--info)] mt-2 bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.resources} (2022)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.ghg_emissions_mt_2022 != null && (
-                            <div className="bg-gradient-to-br from-gray-900/80 to-slate-800/60 p-4 rounded-xl border-2 border-gray-500 shadow-lg shadow-gray-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-gray-300 mb-2 uppercase tracking-wide">🏭 {t.ghgEmissions}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[image:var(--card-grad)] p-4 rounded-xl border-2 border-[var(--afcfta-border)] shadow-lg shadow-gray-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--text)] mb-2">🏭 {t.ghgEmissions}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.ghg_emissions_mt_2022).toFixed(1)}
                               </p>
-                              <p className="text-xs text-gray-200 mt-2 bg-gray-950/50 rounded-full px-2 py-1">Mt CO₂e (2022)</p>
+                              <p className="text-xs text-[var(--text)] mt-2 bg-[var(--afcfta-card2)] rounded-full px-2 py-1">Mt CO₂e (2022)</p>
                             </div>
                           )}
                           
                           {countryProfile.projections.learning_poverty_2023 != null && (
-                            <div className="bg-gradient-to-br from-violet-900/80 to-purple-800/60 p-4 rounded-xl border-2 border-violet-500 shadow-lg shadow-violet-500/20 transform hover:scale-105 transition-all">
-                              <p className="text-xs font-bold text-violet-300 mb-2 uppercase tracking-wide">📚 {t.learningPoverty}</p>
-                              <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                            <div className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] shadow-lg shadow-violet-500/20 transform hover:scale-105 transition-all">
+                              <p className="text-xs font-bold text-[var(--violet)] mb-2">📚 {t.learningPoverty}</p>
+                              <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                                 {parseFloat(countryProfile.projections.learning_poverty_2023).toFixed(1)}%
                               </p>
-                              <p className="text-xs text-violet-200 mt-2 bg-violet-950/50 rounded-full px-2 py-1">{t.children} (2023)</p>
+                              <p className="text-xs text-[var(--violet)] mt-2 bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.children} (2023)</p>
                             </div>
                           )}
                         </div>
                       </div>
                       
                       {/* Source footer */}
-                      <div className="mt-6 pt-4 border-t border-gray-700">
-                        <p className="text-xs text-gray-400 text-center">
-                          {t.source}: <strong className="text-blue-400">World Bank Data360</strong> - {t.officialData} • 
-                          <a href="https://data360.worldbank.org" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline ml-1">
+                      <div className="mt-6 pt-4 border-t border-[var(--afcfta-border)]">
+                        <p className="text-xs text-[var(--afcfta-muted)] text-center">
+                          {t.source}: <strong className="text-[var(--info)]">World Bank Data360</strong> - {t.officialData} • 
+                          <a href="https://data360.worldbank.org" target="_blank" rel="noopener noreferrer" className="text-[var(--info)] hover:underline ml-1">
                             data360.worldbank.org
                           </a>
                         </p>
@@ -886,46 +887,46 @@ export default function CountryProfilesTab({ language = 'fr' }) {
 
               {/* Infrastructure Section (AIDI 2025 & LPI 2023) */}
               {countryProfile.infrastructure_ranking && Object.keys(countryProfile.infrastructure_ranking).length > 0 && (
-                <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
-                  <CardHeader className="bg-gradient-to-r from-orange-900/50 via-amber-900/30 to-yellow-900/30 border-b border-orange-500/30">
-                    <CardTitle className="text-xl font-bold text-orange-400 flex items-center gap-2">
+                <Card className="shadow-2xl border-0 bg-[image:var(--card-grad)]">
+                  <CardHeader className="bg-[image:var(--card-head)] border-b border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
+                    <CardTitle className="text-xl font-bold text-[var(--terra)] flex items-center gap-2">
                       <span>🏗️</span>
                       <span>{t.infrastructurePerformance}</span>
                     </CardTitle>
-                    <CardDescription className="font-semibold text-gray-300">
+                    <CardDescription className="font-semibold text-[var(--text)]">
                       {t.continentalRanking}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-6 bg-gray-900/50">
+                  <CardContent className="pt-6 bg-[var(--afcfta-card2)]">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-gradient-to-br from-purple-900/80 to-indigo-800/60 p-4 rounded-xl border-2 border-purple-500 shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
-                        <p className="text-xs font-bold text-purple-300 mb-2 uppercase tracking-wide">📊 {t.lpiScore}</p>
-                        <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      <div className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] shadow-lg shadow-purple-500/20 text-center transform hover:scale-105 transition-all">
+                        <p className="text-xs font-bold text-[var(--violet)] mb-2">📊 {t.lpiScore}</p>
+                        <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                           {countryProfile.infrastructure_ranking.lpi_infrastructure_score}/5
                         </p>
-                        <p className="text-xs text-purple-200 mt-2">{t.infrastructure}</p>
-                        <div className="mt-2 text-xs bg-purple-950/50 rounded-full px-3 py-1">
-                          {t.worldRank}: <strong className="text-white">#{countryProfile.infrastructure_ranking.lpi_world_rank}</strong>
+                        <p className="text-xs text-[var(--violet)] mt-2">{t.infrastructure}</p>
+                        <div className="mt-2 text-xs bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-full px-3 py-1">
+                          {t.worldRank}: <strong className="text-[var(--text)]">#{countryProfile.infrastructure_ranking.lpi_world_rank}</strong>
                         </div>
                       </div>
                       
-                      <div className="bg-gradient-to-br from-orange-900/80 to-amber-800/60 p-4 rounded-xl border-2 border-orange-500 shadow-lg shadow-orange-500/20 text-center transform hover:scale-105 transition-all">
-                        <p className="text-xs font-bold text-orange-300 mb-2 uppercase tracking-wide">🏗️ {t.aidiScore}</p>
-                        <p className="text-3xl font-extrabold text-white drop-shadow-lg">
+                      <div className="bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--terra)_30%,transparent)] shadow-lg shadow-orange-500/20 text-center transform hover:scale-105 transition-all">
+                        <p className="text-xs font-bold text-[var(--terra)] mb-2">🏗️ {t.aidiScore}</p>
+                        <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
                           {countryProfile.infrastructure_ranking.aidi_transport_score}/100
                         </p>
-                        <p className="text-xs text-orange-200 mt-2">{t.globalIndex}</p>
-                        <div className="mt-2 text-xs bg-orange-950/50 rounded-full px-3 py-1">
-                          {t.africaRank}: <strong className="text-white">#{countryProfile.infrastructure_ranking.africa_rank}</strong>
+                        <p className="text-xs text-[var(--terra)] mt-2">{t.globalIndex}</p>
+                        <div className="mt-2 text-xs bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] rounded-full px-3 py-1">
+                          {t.africaRank}: <strong className="text-[var(--text)]">#{countryProfile.infrastructure_ranking.africa_rank}</strong>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="mt-6 bg-gray-800/50 p-4 rounded-xl border border-gray-700">
-                      <p className="text-xs text-gray-300">
-                        <strong className="text-blue-400">IPL ({language === 'fr' ? 'Indice de Performance Logistique' : 'Logistics Performance Index'})</strong> : {t.lpiDescription}
+                    <div className="mt-6 bg-[var(--afcfta-card2)] p-4 rounded-xl border border-[var(--afcfta-border)]">
+                      <p className="text-xs text-[var(--text)]">
+                        <strong className="text-[var(--info)]">IPL ({language === 'fr' ? 'Indice de Performance Logistique' : 'Logistics Performance Index'})</strong> : {t.lpiDescription}
                         <br />
-                        <strong className="text-orange-400">AIDI (Africa Infrastructure Development Index)</strong> : {t.aidiDescription}
+                        <strong className="text-[var(--terra)]">AIDI (Africa Infrastructure Development Index)</strong> : {t.aidiDescription}
                       </p>
                     </div>
                   </CardContent>

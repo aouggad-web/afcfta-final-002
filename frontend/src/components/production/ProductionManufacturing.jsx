@@ -7,11 +7,21 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
 import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
+import { montant, montantCompact, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const CHART_COLORS = ['#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a', '#60a5fa', '#93c5fd', '#bfdbfe'];
+// Skill dataviz : les secteurs sont des catégories sans ordre — séries
+// validées, dans l'ordre fixe, jamais une rampe d'un même bleu. Au-delà de
+// huit, le reste passe en gris plutôt que de recycler une teinte.
+const SECTOR_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)',
+  'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
+const couleurSecteur = (index) => SECTOR_COLORS[index] || 'var(--afcfta-muted)';
+// Classement : emphase — le pays choisi en safran, les autres en gris neutre
+// (90 % : ≥ 5:1 sur la carte, et distinct du safran en daltonisme).
+const RANG_AUTRES = 'color-mix(in srgb, var(--afcfta-muted) 90%, var(--afcfta-card))';
+const RANG_CHOISI = 'var(--series-5)';
 
 // Libellés officiels ISIC Rev.4, divisions manufacturières (Section C, 10-33).
 
@@ -269,6 +279,11 @@ function ProductionManufacturing({ language = 'fr' }) {
     return num?.toLocaleString() || '0';
   };
 
+  // Montants : « 12,3 Md $ » en français, « $12.3B » en anglais — mêmes
+  // paliers et même précision que formatNumber.
+  const formatUsd = (num) =>
+    num >= 1000 ? montantCompact(num, language, { B: 1, M: 1, K: 0 }) : montant(num ?? 0, language, 3);
+
   // Export PDF : le rapport reprend les encadrés ISIC2 tels qu'affichés, et
   // porte la nature de la donnée — un tableau détaché de l'écran doit dire
   // lui-même s'il est mesuré ou estimé.
@@ -323,7 +338,7 @@ function ProductionManufacturing({ language = 'fr' }) {
   const formatIndicatorValue = (field, value) => {
     if (value === null || value === undefined) return '—';
     if (PERCENT_INDICATORS.has(field)) return `${value.toLocaleString()} %`;
-    return USD_INDICATORS.has(field) ? `$${formatNumber(value)}` : value.toLocaleString();
+    return USD_INDICATORS.has(field) ? formatUsd(value) : value.toLocaleString();
   };
 
   const prepareSectorPieData = () => {
@@ -332,7 +347,7 @@ function ProductionManufacturing({ language = 'fr' }) {
     return unidoData.top_sectors.map((sector, index) => ({
       name: sector.name,
       value: sector.share_mva,
-      fill: CHART_COLORS[index % CHART_COLORS.length]
+      fill: couleurSecteur(index)
     }));
   };
 
@@ -364,7 +379,7 @@ function ProductionManufacturing({ language = 'fr' }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-xl overflow-hidden">
+      <Card className="bg-[image:var(--card-grad)] border-[var(--afcfta-border)] text-[var(--text)] shadow-xl overflow-hidden">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div>
@@ -372,16 +387,16 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <Factory className="w-8 h-8" />
                 {t('production.manufacturing.panel.title')}
               </CardTitle>
-              <CardDescription className="text-blue-100 text-lg mt-2">
+              <CardDescription className="text-[var(--info)] text-lg mt-2">
                 {t('production.manufacturing.panel.subtitle')}
               </CardDescription>
             </div>
             {unidoStats && (
               <div className="text-right">
-                <Badge className="bg-white/20 text-white hover:bg-white/30">
-                  ${unidoStats.total_mva_bln_usd}B {t('production.manufacturing.panel.totalMva')}
+                <Badge className="bg-[var(--overlay)] text-[var(--text)] hover:bg-[var(--overlay)]">
+                  {montantUnite(unidoStats.total_mva_bln_usd, 'B', language)} {t('production.manufacturing.panel.totalMva')}
                 </Badge>
-                <p className="text-xs text-blue-200 mt-1">{unidoStats.total_countries} {t('production.manufacturing.panel.countries')}</p>
+                <p className="text-xs text-[var(--info)] mt-1">{unidoStats.total_countries} {t('production.manufacturing.panel.countries')}</p>
               </div>
             )}
           </div>
@@ -390,7 +405,7 @@ function ProductionManufacturing({ language = 'fr' }) {
 
       {/* Enhanced Country Selector */}
       <div style={{ position: 'relative', zIndex: 100 }}>
-        <Card className="border-2 border-blue-200 shadow-lg" style={{ overflow: 'visible' }}>
+        <Card className="border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] shadow-lg" style={{ overflow: 'visible' }}>
           <CardContent className="pt-6" style={{ overflow: 'visible' }}>
             <EnhancedCountrySelector
               value={selectedCountry}
@@ -408,8 +423,8 @@ function ProductionManufacturing({ language = 'fr' }) {
         <Card className="animate-pulse">
           <CardContent className="flex items-center justify-center h-48">
             <div className="text-center">
-              <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto" />
-              <p className="mt-4 text-gray-600">{t('production.manufacturing.panel.loading')}</p>
+              <Loader2 className="w-12 h-12 animate-spin text-[var(--info)] mx-auto" />
+              <p className="mt-4 text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.loading')}</p>
             </div>
           </CardContent>
         </Card>
@@ -419,10 +434,10 @@ function ProductionManufacturing({ language = 'fr' }) {
       {!loading && (!unidoData || unidoData.message) && (
         <Card className="border-l-4 border-l-amber-500">
           <CardContent className="flex items-center gap-4 py-8">
-            <AlertTriangle className="w-12 h-12 text-amber-500" />
+            <AlertTriangle className="w-12 h-12 text-[var(--gold)]" />
             <div>
-              <h3 className="font-bold text-lg text-gray-800">{t('production.manufacturing.panel.noData')}</h3>
-              <p className="text-gray-600">{t('production.manufacturing.panel.noDataDesc')}</p>
+              <h3 className="font-bold text-lg text-[var(--text)]">{t('production.manufacturing.panel.noData')}</h3>
+              <p className="text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.noDataDesc')}</p>
             </div>
           </CardContent>
         </Card>
@@ -433,77 +448,77 @@ function ProductionManufacturing({ language = 'fr' }) {
         <>
           {/* Key Metrics Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+            <Card className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] border-l-4 border-l-[var(--info)]">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-blue-100 text-sm">{t('production.manufacturing.panel.mvaLabel')}</p>
-                    <p className="text-3xl font-bold">${formatNumber(unidoData.mva_2023_mln_usd * 1000000)}</p>
+                    <p className="text-[var(--info)] text-sm">{t('production.manufacturing.panel.mvaLabel')}</p>
+                    <p className="text-3xl font-bold">{formatUsd(unidoData.mva_2023_mln_usd * 1000000)}</p>
                   </div>
-                  <DollarSign className="w-10 h-10 text-blue-200" />
+                  <DollarSign className="w-10 h-10 text-[var(--info)]" />
                 </div>
                 {getCountryRank() && (
-                  <Badge className="mt-3 bg-white/20 text-white">
+                  <Badge className="mt-3 bg-[var(--overlay)] text-[var(--text)]">
                     #{getCountryRank()} {t('production.manufacturing.panel.inAfrica')}
                   </Badge>
                 )}
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white">
+            <Card className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] border-l-4 border-l-[var(--success)]">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-emerald-100 text-sm">{t('production.manufacturing.panel.mvaGdp')}</p>
+                    <p className="text-[var(--success)] text-sm">{t('production.manufacturing.panel.mvaGdp')}</p>
                     <p className="text-3xl font-bold">{unidoData.mva_gdp_percent}%</p>
                   </div>
-                  <TrendingUp className="w-10 h-10 text-emerald-200" />
+                  <TrendingUp className="w-10 h-10 text-[var(--success)]" />
                 </div>
-                <p className="text-sm text-emerald-100 mt-2">{t('production.manufacturing.panel.industrialShare')}</p>
+                <p className="text-sm text-[var(--success)] mt-2">{t('production.manufacturing.panel.industrialShare')}</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-purple-500 to-violet-600 text-white">
+            <Card className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] border-l-4 border-l-[var(--violet)]">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-purple-100 text-sm">{t('production.manufacturing.panel.mvaPerCapita')}</p>
-                    <p className="text-3xl font-bold">${unidoData.mva_per_capita_usd}</p>
+                    <p className="text-[var(--violet)] text-sm">{t('production.manufacturing.panel.mvaPerCapita')}</p>
+                    <p className="text-3xl font-bold">{montantUnite(unidoData.mva_per_capita_usd, null, language)}</p>
                   </div>
-                  <Users className="w-10 h-10 text-purple-200" />
+                  <Users className="w-10 h-10 text-[var(--violet)]" />
                 </div>
-                <p className="text-sm text-purple-100 mt-2">{t('production.manufacturing.panel.industrialization')}</p>
+                <p className="text-sm text-[var(--violet)] mt-2">{t('production.manufacturing.panel.industrialization')}</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-amber-500 to-orange-600 text-white">
+            <Card className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] border-l-4 border-l-[var(--gold)]">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-amber-100 text-sm">{t('production.manufacturing.panel.growth2023')}</p>
+                    <p className="text-[var(--gold)] text-sm">{t('production.manufacturing.panel.growth2023')}</p>
                     <p className="text-3xl font-bold">
                       {unidoData.growth_rate_2023 > 0 ? '+' : ''}{unidoData.growth_rate_2023}%
                     </p>
                   </div>
-                  <TrendingUp className="w-10 h-10 text-amber-200" />
+                  <TrendingUp className="w-10 h-10 text-[var(--gold)]" />
                 </div>
-                <p className="text-sm text-amber-100 mt-2">{t('production.manufacturing.panel.annualGrowth')}</p>
+                <p className="text-sm text-[var(--gold)] mt-2">{t('production.manufacturing.panel.annualGrowth')}</p>
               </CardContent>
             </Card>
           </div>
 
           {/* Country Overview */}
-          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+          <Card className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
             <CardHeader className="pb-2">
-              <CardTitle className="text-2xl text-blue-800 flex items-center gap-3">
+              <CardTitle className="text-2xl text-[var(--info)] flex items-center gap-3">
                 <Building2 className="w-7 h-7" />
                 {unidoData.country_name}
               </CardTitle>
-              <CardDescription className="text-blue-700 flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="border-blue-500 text-blue-700">{unidoData.region}</Badge>
-                <Badge variant="outline" className="border-blue-500 text-blue-700">{t('production.manufacturing.panel.data')} {unidoData.data_year}</Badge>
+              <CardDescription className="text-[var(--info)] flex items-center gap-2 flex-wrap">
+                <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">{unidoData.region}</Badge>
+                <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">{t('production.manufacturing.panel.data')} {unidoData.data_year}</Badge>
                 {unidoData.industrial_zones && (
-                  <Badge variant="outline" className="border-blue-500 text-blue-700">
+                  <Badge variant="outline" className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">
                     <Building2 className="w-3 h-3 mr-1" /> {unidoData.industrial_zones} {t('production.manufacturing.panel.industrialZones')}
                   </Badge>
                 )}
@@ -511,29 +526,29 @@ function ProductionManufacturing({ language = 'fr' }) {
             </CardHeader>
             <CardContent>
               {/* Additional Info */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {unidoData.industry_employment && (
-                  <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.industrialJobs')}</p>
-                    <p className="text-2xl font-bold text-blue-700">{formatNumber(unidoData.industry_employment)}</p>
+                  <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.industrialJobs')}</p>
+                    <p className="text-2xl font-bold text-[var(--info)]">{formatNumber(unidoData.industry_employment)}</p>
                   </div>
                 )}
                 {unidoData.exports_manuf_mln_usd && (
-                  <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.manufExports')}</p>
-                    <p className="text-2xl font-bold text-green-700">${formatNumber(unidoData.exports_manuf_mln_usd * 1000000)}</p>
+                  <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.manufExports')}</p>
+                    <p className="text-2xl font-bold text-[var(--success)]">{formatUsd(unidoData.exports_manuf_mln_usd * 1000000)}</p>
                   </div>
                 )}
                 {unidoData.top_sectors && (
-                  <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.keySectors')}</p>
-                    <p className="text-2xl font-bold text-blue-700">{unidoData.top_sectors.length}</p>
+                  <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.keySectors')}</p>
+                    <p className="text-2xl font-bold text-[var(--info)]">{unidoData.top_sectors.length}</p>
                   </div>
                 )}
                 {unidoData.special_economic_zones && (
-                  <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.specialZones')}</p>
-                    <p className="text-2xl font-bold text-purple-700">{unidoData.special_economic_zones}</p>
+                  <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.specialZones')}</p>
+                    <p className="text-2xl font-bold text-[var(--violet)]">{unidoData.special_economic_zones}</p>
                   </div>
                 )}
               </div>
@@ -546,7 +561,7 @@ function ProductionManufacturing({ language = 'fr' }) {
               {/* Pie Chart */}
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-700 flex items-center gap-2">
+                  <CardTitle className="text-lg text-[var(--text)] flex items-center gap-2">
                     <Package className="w-5 h-5" /> {t('production.manufacturing.panel.sectorDistribution')}
                   </CardTitle>
                 </CardHeader>
@@ -558,11 +573,10 @@ function ProductionManufacturing({ language = 'fr' }) {
                         cx="50%"
                         cy="50%"
                         outerRadius={90}
-                        fill="#8884d8"
                         dataKey="value"
                       >
                         {prepareSectorPieData().map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                          <Cell key={`cell-${index}`} fill={entry.fill} stroke="var(--afcfta-card)" strokeWidth={2} />
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => value + '% ' + t('production.manufacturing.panel.mva')} />
@@ -575,7 +589,7 @@ function ProductionManufacturing({ language = 'fr' }) {
               {/* Bar Chart */}
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-700 flex items-center gap-2">
+                  <CardTitle className="text-lg text-[var(--text)] flex items-center gap-2">
                     <Factory className="w-5 h-5" /> {t('production.manufacturing.panel.sectorValue')}
                   </CardTitle>
                 </CardHeader>
@@ -583,13 +597,18 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={prepareSectorBarData()} layout="vertical">
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" tickFormatter={(v) => `$${formatNumber(v * 1000000)}`} />
+                      <XAxis type="number" tickFormatter={(v) => formatUsd(v * 1000000)} />
                       <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
                       <Tooltip 
-                        formatter={(value) => [`$${formatNumber(value * 1000000)}`, t('production.manufacturing.panel.value')]}
+                        formatter={(value) => [formatUsd(value * 1000000), t('production.manufacturing.panel.value')]}
                         labelFormatter={(label) => prepareSectorBarData().find(d => d.name === label)?.fullName || label}
                       />
-                      <Bar dataKey="value" fill="#3b82f6" radius={[0, 4, 4, 0]} />
+                      {/* Même couleur par secteur que le camembert voisin. */}
+                      <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={24}>
+                        {prepareSectorBarData().map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={couleurSecteur(index)} />
+                        ))}
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -600,9 +619,9 @@ function ProductionManufacturing({ language = 'fr' }) {
           {/* ISIC4 Detail Table — vraies données UNIDO IDSB/INDSTAT, toutes les
               classes ISIC4 groupées par division ISIC2, historique complet au clic */}
           <Card className="shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+            <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <CardTitle className="text-xl text-blue-700 flex items-center gap-2">
+                <CardTitle className="text-xl text-[var(--info)] flex items-center gap-2">
                   <Award className="w-5 h-5" /> {t('production.manufacturing.panel.mainIndustrialSectors')}
                 </CardTitle>
                 {isic4Status === 'ready' && (
@@ -616,15 +635,15 @@ function ProductionManufacturing({ language = 'fr' }) {
                         de « estimations dérivées » présentait de l'estimé comme du
                         mesuré. */}
                     {isic4Basis === 'ESTIMATED_FROM_ISIC2' ? (
-                      <Badge className="text-xs bg-amber-500 hover:bg-amber-500 text-white">
+                      <Badge className="text-xs bg-[var(--gold)] hover:bg-[var(--gold)] text-[var(--bg)]">
                         {t('production.manufacturing.panel.estimatedStructure')}
                       </Badge>
                     ) : isic4DataQuality?.is_fully_estimated ? (
-                      <Badge className="text-xs bg-sky-600 hover:bg-sky-600 text-white">
+                      <Badge className="text-xs bg-[var(--info)] hover:bg-[var(--info)] text-[var(--bg)]">
                         {t('production.manufacturing.panel.unidoDerivedEstimates')}
                       </Badge>
                     ) : (
-                      <Badge className="text-xs bg-emerald-600 hover:bg-emerald-600 text-white">
+                      <Badge className="text-xs bg-[var(--success)] hover:bg-[var(--success)] text-[var(--bg)]">
                         {t('production.manufacturing.panel.measuredUnido')}
                       </Badge>
                     )}
@@ -632,7 +651,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                       type="button"
                       onClick={exportIsic4Pdf}
                       disabled={pdfBusy}
-                      className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-blue-300 text-blue-700 hover:bg-blue-100 transition disabled:opacity-60 disabled:cursor-wait"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)] hover:bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] transition disabled:opacity-60 disabled:cursor-wait"
                     >
                       {pdfBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
                       {pdfBusy
@@ -642,19 +661,19 @@ function ProductionManufacturing({ language = 'fr' }) {
                   </div>
                 )}
               </div>
-              <CardDescription className="text-blue-700 text-xs mt-1">
+              <CardDescription className="text-[var(--info)] text-xs mt-1">
                 {t('production.manufacturing.panel.sourceUnidoStatisticsData')}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               {isic4Status === 'loading' && (
-                <p className="text-sm text-gray-500 py-6 text-center">
+                <p className="text-sm text-[var(--afcfta-muted)] py-6 text-center">
                   <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
                   {t('production.manufacturing.panel.loadingShort')}
                 </p>
               )}
               {isic4Status === 'error' && (
-                <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-4">
+                <div className="text-sm text-[var(--danger)] flex items-center justify-between gap-2 py-4">
                   <span>{t('production.manufacturing.panel.failedLoadIsic4Data')}</span>
                   <button type="button" className="underline hover:no-underline" onClick={() => fetchIsic4Sectors(selectedCountry)}>
                     {t('production.manufacturing.panel.retry')}
@@ -662,23 +681,23 @@ function ProductionManufacturing({ language = 'fr' }) {
                 </div>
               )}
               {isic4Status === 'no_data' && (
-                <p className="text-sm text-gray-500 py-4 flex items-center gap-2">
+                <p className="text-sm text-[var(--afcfta-muted)] py-4 flex items-center gap-2">
                   <Info className="w-4 h-4 shrink-0" />
                   {t('production.manufacturing.panel.noUnidoIdsbIndstat')}
                 </p>
               )}
               {isic4Status === 'ready' && isic4Sectors.length === 0 && (
-                <p className="text-sm text-gray-500 py-4">
+                <p className="text-sm text-[var(--afcfta-muted)] py-4">
                   {t('production.manufacturing.panel.noIsic4SectorFor')}
                 </p>
               )}
               {isic4Status === 'ready' && isic4Basis === 'ESTIMATED_FROM_ISIC2' && (
-                <div className="mb-5 rounded-lg border-l-4 border-amber-500 bg-amber-50 px-4 py-3">
-                  <p className="text-sm font-semibold text-amber-900 flex items-center gap-2">
+                <div className="mb-5 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] px-4 py-3">
+                  <p className="text-sm font-semibold text-[var(--gold)] flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 shrink-0" />
                     {t('production.manufacturing.panel.theseFiguresAreStructural')}
                   </p>
-                  <ul className="text-xs text-amber-900/90 mt-2 space-y-1 list-disc list-inside">
+                  <ul className="text-xs text-[var(--gold)] mt-2 space-y-1 list-disc list-inside">
                     <li>
                       {t('production.manufacturing.panel.unidoPublishesNoIsic')}
                     </li>
@@ -693,7 +712,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                     </li>
                   </ul>
                   {isic4Method?.source && (
-                    <p className="text-[11px] text-amber-800/80 mt-2">
+                    <p className="text-[11px] text-[var(--gold)] mt-2">
                       {t('production.manufacturing.panel.sourcePrefix')}{isic4Method.source}
                     </p>
                   )}
@@ -713,6 +732,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                         label={label}
                         shareMva={shareMva}
                         valueMlnUsd={valueMlnUsd}
+                        language={language}
                         sectors={sectors}
                         selectedIsic4={expandedIsic4}
                         onSelect={selectIsic4Class}
@@ -744,7 +764,7 @@ function ProductionManufacturing({ language = 'fr' }) {
           {unidoData.key_products && unidoData.key_products.length > 0 && (
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-xl text-gray-700 flex items-center gap-2">
+                <CardTitle className="text-xl text-[var(--text)] flex items-center gap-2">
                   <Package className="w-5 h-5" /> {t('production.manufacturing.panel.keyProducts')}
                 </CardTitle>
               </CardHeader>
@@ -753,8 +773,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                   {unidoData.key_products.map((product, index) => (
                     <Badge 
                       key={index} 
-                      className="text-sm py-2 px-4"
-                      style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length], color: 'white' }}
+                      className="text-sm py-2 px-4 bg-[var(--afcfta-card2)] text-[var(--text)] border border-[var(--afcfta-border)] hover:bg-[var(--afcfta-card2)]"
                     >
                       {product}
                     </Badge>
@@ -767,8 +786,8 @@ function ProductionManufacturing({ language = 'fr' }) {
           {/* African MVA Ranking */}
           {mvaRanking.length > 0 && (
             <Card className="shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50">
-                <CardTitle className="text-xl text-amber-700 flex items-center gap-2">
+              <CardHeader className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]">
+                <CardTitle className="text-xl text-[var(--gold)] flex items-center gap-2">
                   <Award className="w-5 h-5" /> {t('production.manufacturing.panel.top10Africa')}
                 </CardTitle>
               </CardHeader>
@@ -777,19 +796,20 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <BarChart data={prepareRankingBarData()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-45} textAnchor="end" height={80} />
-                    <YAxis tickFormatter={(v) => `$${formatNumber(v * 1000000)}`} />
+                    <YAxis tickFormatter={(v) => formatUsd(v * 1000000)} />
                     <Tooltip 
-                      formatter={(value) => [`$${formatNumber(value * 1000000)}`, 'MVA 2023']}
+                      formatter={(value) => [formatUsd(value * 1000000), 'MVA 2023']}
                       labelFormatter={(label) => prepareRankingBarData().find(d => d.name === label)?.fullName || label}
                     />
                     <Bar 
                       dataKey="mva" 
                       radius={[4, 4, 0, 0]}
+                      maxBarSize={24}
                     >
                       {prepareRankingBarData().map((entry, index) => (
                         <Cell 
                           key={`cell-${index}`} 
-                          fill={entry.isSelected ? '#f59e0b' : '#3b82f6'} 
+                          fill={entry.isSelected ? RANG_CHOISI : RANG_AUTRES} 
                         />
                       ))}
                     </Bar>
@@ -797,12 +817,12 @@ function ProductionManufacturing({ language = 'fr' }) {
                 </ResponsiveContainer>
                 <div className="flex justify-center gap-4 mt-4">
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-blue-500" />
-                    <span className="text-sm text-gray-600">{t('production.manufacturing.panel.otherCountries')}</span>
+                    <div className="w-4 h-4 rounded" style={{ background: RANG_AUTRES }} />
+                    <span className="text-sm text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.otherCountries')}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-amber-500" />
-                    <span className="text-sm text-gray-600">{t('production.manufacturing.panel.selectedCountry')}</span>
+                    <div className="w-4 h-4 rounded" style={{ background: RANG_CHOISI }} />
+                    <span className="text-sm text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.selectedCountry')}</span>
                   </div>
                 </div>
               </CardContent>
@@ -810,11 +830,11 @@ function ProductionManufacturing({ language = 'fr' }) {
           )}
 
           {/* Source Information */}
-          <Card className="bg-gray-50 border-gray-200">
+          <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
             <CardContent className="py-4">
               <div className="flex items-start gap-3">
-                <Info className="w-5 h-5 text-gray-400 mt-0.5" />
-                <div className="text-sm text-gray-600">
+                <Info className="w-5 h-5 text-[var(--afcfta-muted)] mt-0.5" />
+                <div className="text-sm text-[var(--afcfta-muted)]">
                   <p><strong>{t('production.manufacturing.panel.source')}</strong> {unidoData.source}</p>
                   <p className="mt-1">
                     {t('production.manufacturing.panel.sourceNote')}
@@ -853,40 +873,40 @@ export function femaleSharePct(series, year) {
 
 // Encadré carré d'une division ISIC 2 chiffres : intitulé, code, part de MVA
 // chiffrée, puis la liste de ses classes ISIC 4 en liens cliquables.
-function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect }) {
+function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect, language }) {
   const { t } = useTranslation();
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col">
-      <div className="px-4 pt-4 pb-3 border-b border-gray-100">
+    <div className="bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-xl shadow-sm flex flex-col">
+      <div className="px-4 pt-4 pb-3 border-b border-[var(--afcfta-border)]">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <span className="inline-flex items-center gap-2">
-              <span className="text-[11px] font-semibold text-gray-400">#{rank}</span>
-              <span className="font-mono text-sm font-bold text-blue-700">ISIC {division}</span>
+              <span className="text-[11px] font-semibold text-[var(--afcfta-muted)]">#{rank}</span>
+              <span className="font-mono text-sm font-bold text-[var(--info)]">ISIC {division}</span>
             </span>
             {/* Intitulé complet, jamais tronqué : il passe à la ligne. */}
-            <h4 className="font-bold text-gray-800 leading-snug mt-1 break-words">{label}</h4>
+            <h4 className="font-bold text-[var(--text)] leading-snug mt-1 break-words">{label}</h4>
           </div>
           <div className="text-right shrink-0">
             {shareMva != null ? (
               <>
-                <div className="text-2xl font-bold text-gray-900 tabular-nums leading-none">
+                <div className="text-2xl font-bold text-[var(--text)] tabular-nums leading-none">
                   {shareMva.toLocaleString()} %
                 </div>
-                <div className="text-[11px] text-gray-500 mt-1">
+                <div className="text-[11px] text-[var(--afcfta-muted)] mt-1">
                   {t('production.manufacturing.panel.mva')}
                 </div>
               </>
             ) : (
-              <div className="text-sm text-gray-400" title={t('production.manufacturing.panel.shareNotPublishedFor')}>
+              <div className="text-sm text-[var(--afcfta-muted)]" title={t('production.manufacturing.panel.shareNotPublishedFor')}>
                 —
               </div>
             )}
           </div>
         </div>
         {valueMlnUsd != null && (
-          <p className="text-xs text-gray-500 mt-2 tabular-nums">
-            ${valueMlnUsd.toLocaleString()} {t('production.manufacturing.panel.mUsdValueAdded')}
+          <p className="text-xs text-[var(--afcfta-muted)] mt-2 tabular-nums">
+            {montantUnite(valueMlnUsd, 'M', language, 3, { max: true })} {t('production.manufacturing.panel.mUsdValueAdded')}
           </p>
         )}
       </div>
@@ -911,15 +931,15 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
                 onClick={() => onSelect(sector.isic4)}
                 aria-pressed={isSelected}
                 className={`w-full text-left rounded-lg px-2 py-1.5 flex gap-2 items-baseline transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
-                  isSelected ? 'bg-blue-100' : 'hover:bg-blue-50'
+                  isSelected ? 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]' : 'hover:bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]'
                 }`}
               >
-                <span className="font-mono text-xs font-semibold text-blue-700 underline decoration-dotted underline-offset-2 shrink-0">
+                <span className="font-mono text-xs font-semibold text-[var(--info)] underline decoration-dotted underline-offset-2 shrink-0">
                   {sector.isic4}
                 </span>
-                <span className="text-sm text-gray-700 leading-snug break-words">
+                <span className="text-sm text-[var(--text)] leading-snug break-words min-w-0">
                   {sector.isic_description || sector.description || (
-                    <span className="text-gray-400 italic">
+                    <span className="text-[var(--afcfta-muted)] italic">
                       {t('production.manufacturing.panel.labelNotPublished')}
                     </span>
                   )}
@@ -930,7 +950,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
         })}
       </ul>
 
-      <div className="px-4 pb-3 text-[11px] text-gray-400">
+      <div className="px-4 pb-3 text-[11px] text-[var(--afcfta-muted)]">
         {sectors.length} {t('production.manufacturing.panel.isic4Classes')}
       </div>
     </div>
@@ -954,9 +974,9 @@ function YearMatrix({ title, subtitle, fields, series, years, formatIndicatorVal
     <div className="mt-4">
       <h5 className={`text-sm font-bold ${accent.text} flex items-baseline gap-2 flex-wrap`}>
         {title}
-        <span className="text-xs font-normal text-gray-500">{subtitle}</span>
+        <span className="text-xs font-normal text-[var(--afcfta-muted)]">{subtitle}</span>
       </h5>
-      <div className="mt-2 overflow-x-auto rounded-lg border border-gray-200 bg-white">
+      <div className="mt-2 overflow-x-auto rounded-lg border border-[var(--afcfta-border)] bg-[var(--afcfta-card)]">
         <table className="text-sm border-collapse min-w-full">
           <thead>
             <tr className={accent.head}>
@@ -972,24 +992,24 @@ function YearMatrix({ title, subtitle, fields, series, years, formatIndicatorVal
           </thead>
           <tbody>
             {present.map((field, i) => (
-              <tr key={field} className={i % 2 ? 'bg-gray-50/60' : 'bg-white'}>
-                <th scope="row" className="text-left font-medium text-gray-700 px-4 py-2 whitespace-nowrap sticky left-0 z-10 bg-inherit">
+              <tr key={field} className={i % 2 ? 'bg-gray-50/60' : 'bg-[var(--afcfta-card)]'}>
+                <th scope="row" className="text-left font-medium text-[var(--text)] px-4 py-2 whitespace-nowrap sticky left-0 z-10 bg-inherit">
                   {t(`production.manufacturing.isicIndicator.${field}`, { defaultValue: field })}
                 </th>
                 {years.map((year) => (
-                  <td key={year} className="text-right px-4 py-2 whitespace-nowrap tabular-nums text-gray-900">
+                  <td key={year} className="text-right px-4 py-2 whitespace-nowrap tabular-nums text-[var(--text)]">
                     {valueAt(field, year)}
                   </td>
                 ))}
               </tr>
             ))}
             {extraRows.map((row, i) => (
-              <tr key={row.key} className={(present.length + i) % 2 ? 'bg-gray-50/60' : 'bg-white'}>
-                <th scope="row" className="text-left font-medium text-gray-700 px-4 py-2 whitespace-nowrap sticky left-0 z-10 bg-inherit">
+              <tr key={row.key} className={(present.length + i) % 2 ? 'bg-gray-50/60' : 'bg-[var(--afcfta-card)]'}>
+                <th scope="row" className="text-left font-medium text-[var(--text)] px-4 py-2 whitespace-nowrap sticky left-0 z-10 bg-inherit">
                   {row.label}
                 </th>
                 {years.map((year) => (
-                  <td key={year} className="text-right px-4 py-2 whitespace-nowrap tabular-nums text-gray-900">
+                  <td key={year} className="text-right px-4 py-2 whitespace-nowrap tabular-nums text-[var(--text)]">
                     {row.valueAt(year)}
                   </td>
                 ))}
@@ -1028,22 +1048,22 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue,
     : [];
 
   return (
-    <div className="mt-6 rounded-xl border-2 border-blue-200 bg-slate-50 px-5 py-4">
+    <div className="mt-6 rounded-xl border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-[var(--afcfta-card2)] px-5 py-4">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="min-w-0">
-          <h4 className="font-bold text-gray-900 leading-snug break-words">
-            <span className="font-mono text-blue-700">{sector?.isic4}</span>
-            <span className="text-gray-400 mx-2">·</span>
+          <h4 className="font-bold text-[var(--text)] leading-snug break-words">
+            <span className="font-mono text-[var(--info)]">{sector?.isic4}</span>
+            <span className="text-[var(--afcfta-muted)] mx-2">·</span>
             {sector?.isic_description || sector?.description}
           </h4>
           {sector?.division_name && (
-            <p className="text-xs text-gray-500 mt-0.5">{sector.division_name}</p>
+            <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">{sector.division_name}</p>
           )}
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="text-sm text-blue-600 hover:underline shrink-0"
+          className="text-sm text-[var(--info)] hover:underline shrink-0"
         >
           {t('production.manufacturing.panel.close')}
         </button>
@@ -1057,13 +1077,13 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue,
       ) : (
         <>
           {status === 'loading' && (
-            <p className="text-sm text-gray-500 py-3">
+            <p className="text-sm text-[var(--afcfta-muted)] py-3">
               <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
               {t('production.manufacturing.panel.loadingShort')}
             </p>
           )}
           {status === 'error' && (
-            <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-2">
+            <div className="text-sm text-[var(--danger)] flex items-center justify-between gap-2 py-2">
               <span>{t('production.manufacturing.panel.failedLoadHistory')}</span>
               <button type="button" className="underline hover:no-underline" onClick={onRetry}>
                 {t('production.manufacturing.panel.retry')}
@@ -1071,7 +1091,7 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue,
             </div>
           )}
           {status === 'ready' && years.length === 0 && (
-            <p className="text-sm text-gray-500 py-2">
+            <p className="text-sm text-[var(--afcfta-muted)] py-2">
               {t('production.manufacturing.panel.noTimeSeriesAvailable')}
             </p>
           )}
@@ -1084,7 +1104,7 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue,
                 series={series}
                 years={years}
                 formatIndicatorValue={formatIndicatorValue}
-                accent={{ text: 'text-emerald-800', head: 'bg-emerald-50 text-emerald-900 border-b-2 border-emerald-200' }}
+                accent={{ text: 'text-[var(--success)]', head: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-b-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)]' }}
                 extraRows={femaleShareRow}
               />
               <YearMatrix
@@ -1094,9 +1114,9 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue,
                 series={series}
                 years={years}
                 formatIndicatorValue={formatIndicatorValue}
-                accent={{ text: 'text-sky-800', head: 'bg-sky-50 text-sky-900 border-b-2 border-sky-200' }}
+                accent={{ text: 'text-[var(--info)]', head: 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-b-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)]' }}
               />
-              <p className="text-[11px] text-gray-500 mt-3">
+              <p className="text-[11px] text-[var(--afcfta-muted)] mt-3">
                 {t('production.manufacturing.panel.twoTablesAreKept')}
               </p>
             </>
@@ -1112,17 +1132,17 @@ function EstimatedDetail({ indicators, formatIndicatorValue }) {
   const fields = ISIC4_INDICATOR_ORDER.filter((f) => indicators[f]?.value !== undefined && indicators[f]?.value !== null);
   if (fields.length === 0) {
     return (
-      <p className="text-sm text-gray-500 py-2">
+      <p className="text-sm text-[var(--afcfta-muted)] py-2">
         {t('production.manufacturing.panel.noEstimatedValueFor')}
       </p>
     );
   }
   return (
     <>
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+      <div className="overflow-x-auto rounded-lg border border-[var(--afcfta-border)] bg-[var(--afcfta-card)]">
         <table className="text-sm border-collapse w-full">
           <thead>
-            <tr className="bg-gray-100 text-gray-700">
+            <tr className="bg-[var(--afcfta-card2)] text-[var(--text)]">
               <th className="py-2 px-3 font-semibold text-left">{t('production.manufacturing.panel.indicator')}</th>
               <th className="py-2 px-3 font-semibold text-right">{t('production.manufacturing.panel.estimatedValue')}</th>
               <th className="py-2 px-3 font-semibold text-left">{t('production.manufacturing.panel.nature')}</th>
@@ -1130,13 +1150,13 @@ function EstimatedDetail({ indicators, formatIndicatorValue }) {
           </thead>
           <tbody>
             {fields.map((field, i) => (
-              <tr key={field} className={i % 2 ? 'bg-slate-50/60' : 'bg-white'}>
-                <td className="py-2 px-3 text-gray-800">{labels[field] || field}</td>
-                <td className="py-2 px-3 text-right text-gray-900 font-semibold tabular-nums whitespace-nowrap">
+              <tr key={field} className={i % 2 ? 'bg-slate-50/60' : 'bg-[var(--afcfta-card)]'}>
+                <td className="py-2 px-3 text-[var(--text)]">{labels[field] || field}</td>
+                <td className="py-2 px-3 text-right text-[var(--text)] font-semibold tabular-nums whitespace-nowrap">
                   {formatIndicatorValue(field, indicators[field].value)}
                 </td>
                 <td className="py-2 px-3">
-                  <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                  <span className="rounded bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] px-2 py-0.5 text-xs font-medium text-[var(--gold)]">
                     {t('production.manufacturing.panel.structuralEstimate')}
                   </span>
                 </td>
@@ -1145,7 +1165,7 @@ function EstimatedDetail({ indicators, formatIndicatorValue }) {
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-amber-800 italic pt-3">
+      <p className="text-xs text-[var(--gold)] italic pt-3">
         {t('production.manufacturing.panel.valueObtainedByDividing')}
       </p>
     </>

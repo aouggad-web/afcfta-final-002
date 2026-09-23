@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Map as MapIcon, RefreshCw } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 import { AFRICA_CENTROIDS } from '../../utils/africaCentroids';
+import { montant, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -55,8 +56,8 @@ const TEXTS = {
 };
 
 const METRIC_CONFIG = {
-  gdp: { field: 'gdp_2024_billion_usd', diverging: false, fmt: (v) => `$${v.toFixed(1)} Mds` },
-  gdpPerCapita: { field: 'gdp_per_capita_2024_usd', diverging: false, fmt: (v) => `$${v.toLocaleString('en-US')}` },
+  gdp: { field: 'gdp_2024_billion_usd', diverging: false, fmt: (v, language) => montantUnite(v, 'B', language, 1) },
+  gdpPerCapita: { field: 'gdp_per_capita_2024_usd', diverging: false, fmt: (v, language) => montant(v, language, 3) },
   population: { field: 'population_2024', diverging: false, fmt: (v) => `${(v / 1e6).toFixed(1)} M` },
   hdi: { field: 'development_index', diverging: false, fmt: (v) => v.toFixed(3) },
   growth: { field: 'growth_forecast_2024_pct', diverging: true, fmt: (v) => `${v.toFixed(1)} %` },
@@ -134,18 +135,18 @@ export default function AfricaTradeMap({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="africa-trade-map">
-      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
-              <MapIcon className="w-7 h-7 text-white" />
+              <MapIcon className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
-              <CardDescription className="text-slate-300 mt-0.5">{txt.subtitle}</CardDescription>
+              <CardDescription className="mt-0.5">{txt.subtitle}</CardDescription>
             </div>
           </div>
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1">
+          <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
             WDI · 2024
           </Badge>
         </div>
@@ -154,7 +155,7 @@ export default function AfricaTradeMap({ language = 'fr' }) {
       <CardContent className="pt-5 space-y-4">
         {/* ── Sélecteur d'indicateur ──────────────────────────── */}
         <div className="max-w-xs">
-          <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.metric}</label>
+          <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.metric}</label>
           <Select value={metric} onValueChange={setMetric}>
             <SelectTrigger data-testid="map-metric-select"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -166,13 +167,13 @@ export default function AfricaTradeMap({ language = 'fr' }) {
         </div>
 
         {/* ── Carte ───────────────────────────────────────────── */}
-        <div className="relative rounded-lg overflow-hidden border border-slate-200" style={{ height: 520 }}>
+        <div className="relative rounded-lg overflow-hidden border border-[var(--afcfta-border)]" style={{ height: 520 }}>
           {loading ? (
-            <div className="flex items-center justify-center h-full text-slate-500 gap-2">
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)] gap-2">
               <RefreshCw className="w-5 h-5 animate-spin" /> {txt.loading}
             </div>
           ) : error ? (
-            <div className="flex items-center justify-center h-full text-red-500">{txt.error}</div>
+            <div className="flex items-center justify-center h-full text-[var(--danger)]">{txt.error}</div>
           ) : (
             <MapContainer center={[2, 18]} zoom={3} style={{ height: '100%', width: '100%' }} className="z-0" scrollWheelZoom={false}>
               <TileLayer
@@ -193,11 +194,11 @@ export default function AfricaTradeMap({ language = 'fr' }) {
                     <div className="text-center">
                       <strong className="text-sm">{getCountryFlag(p.iso3)} {p.name}</strong>
                       <br />
-                      <span className="text-xs">{txt.metrics[metric]}: <strong>{cfg.fmt(p.value)}</strong></span>
+                      <span className="text-xs">{txt.metrics[metric]}: <strong>{cfg.fmt(p.value, language)}</strong></span>
                       {p.africa_rank != null && (
                         <>
                           <br />
-                          <span className="text-xs text-gray-600">{txt.rank}: #{p.africa_rank}</span>
+                          <span className="text-xs text-[var(--afcfta-muted)]">{txt.rank}: #{p.africa_rank}</span>
                         </>
                       )}
                     </div>
@@ -208,7 +209,7 @@ export default function AfricaTradeMap({ language = 'fr' }) {
           )}
         </div>
 
-        <p className="text-xs text-slate-400">{txt.hint}</p>
+        <p className="text-xs text-[var(--afcfta-muted)]">{txt.hint}</p>
       </CardContent>
     </Card>
   );

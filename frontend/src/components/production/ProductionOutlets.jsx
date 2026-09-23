@@ -96,7 +96,7 @@ function ProductionOutlets({ language = 'fr' }) {
         <h2 className="text-base font-semibold text-[var(--text)]">
           {t('production.outlets.title')}
         </h2>
-        <p className="text-sm text-gray-400 max-w-3xl">{t('production.outlets.intro')}</p>
+        <p className="text-sm text-[var(--afcfta-muted)] max-w-3xl">{t('production.outlets.intro')}</p>
       </div>
 
       <EnhancedCountrySelector
@@ -106,21 +106,21 @@ function ProductionOutlets({ language = 'fr' }) {
       />
 
       {status === 'loading' && (
-        <div className="flex items-center gap-2 text-sm text-gray-400 py-6">
+        <div className="flex items-center gap-2 text-sm text-[var(--afcfta-muted)] py-6">
           <Loader2 className="w-4 h-4 animate-spin" />
           {t('production.outlets.loading')}
         </div>
       )}
 
       {status === 'error' && (
-        <div className="flex items-start gap-2 text-sm text-amber-500 py-6" role="status">
+        <div className="flex items-start gap-2 text-sm text-[var(--gold)] py-6" role="status">
           <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
           {t('production.outlets.error')}
         </div>
       )}
 
       {status === 'ready' && !products.length && (
-        <div className="flex items-start gap-2 text-sm text-gray-400 py-6" role="status">
+        <div className="flex items-start gap-2 text-sm text-[var(--afcfta-muted)] py-6" role="status">
           <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
           {t('production.outlets.empty')}
         </div>
@@ -128,13 +128,13 @@ function ProductionOutlets({ language = 'fr' }) {
 
       {status === 'ready' && products.length > 0 && (
         <>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-[var(--afcfta-muted)]">
             {t('production.outlets.count', { count: products.length })}
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm" data-testid="outlets-table">
               <thead>
-                <tr className="text-left text-xs uppercase text-gray-500 border-b border-[var(--afcfta-border)]">
+                <tr className="text-left text-xs text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
                   <th className="py-2 pr-3">{t('production.outlets.colProduct')}</th>
                   <th className="py-2 pr-3">{t('production.outlets.colHs')}</th>
                   <th className="py-2 pr-3 text-right">{t('production.outlets.colOutput')}</th>
@@ -155,7 +155,7 @@ function ProductionOutlets({ language = 'fr' }) {
                         {p.commodity}
                         {caveat && (
                           <div
-                            className="flex items-start gap-1 mt-1 text-[11px] text-amber-500"
+                            className="flex items-start gap-1 mt-1 text-[11px] text-[var(--gold)]"
                             data-testid="outlets-caveat"
                           >
                             <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" />
@@ -163,12 +163,12 @@ function ProductionOutlets({ language = 'fr' }) {
                           </div>
                         )}
                       </td>
-                      <td className="py-2 pr-3 font-mono text-xs text-gray-400">{p.hs_code}</td>
+                      <td className="py-2 pr-3 font-mono text-xs text-[var(--afcfta-muted)]">{p.hs_code}</td>
                       <td className="py-2 pr-3 text-right tabular-nums text-[var(--text)]">
                         {typeof p.value === 'number' ? p.value.toLocaleString(language) : '—'}
-                        <span className="text-gray-500 text-xs"> {p.unit}</span>
+                        <span className="text-[var(--afcfta-muted)] text-xs"> {p.unit}</span>
                       </td>
-                      <td className="py-2 pr-3 text-xs text-gray-400">
+                      <td className="py-2 pr-3 text-xs text-[var(--afcfta-muted)]">
                         {/* Jamais le rang seul : le dénominateur le rend jugeable. */}
                         {p.rank
                           ? t('production.outlets.rankOf', {
@@ -177,7 +177,7 @@ function ProductionOutlets({ language = 'fr' }) {
                             })
                           : '—'}
                       </td>
-                      <td className="py-2 pr-3 text-xs text-gray-500">
+                      <td className="py-2 pr-3 text-xs text-[var(--afcfta-muted)]">
                         {p.institution}
                         {p.year ? ` ${p.year}` : ''}
                         {DATASET_LABEL_KEY[p.dataset] && (
@@ -204,7 +204,7 @@ function ProductionOutlets({ language = 'fr' }) {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-gray-500">{t('production.outlets.footnote')}</p>
+          <p className="text-xs text-[var(--afcfta-muted)]">{t('production.outlets.footnote')}</p>
         </>
       )}
     </div>

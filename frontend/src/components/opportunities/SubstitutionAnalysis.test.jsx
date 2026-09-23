@@ -195,9 +195,9 @@ describe('OpportunityCard — substitution feasibility block', () => {
         language="fr"
       />
     );
-    expect(screen.getByTestId('exporter-avg-price')).toHaveTextContent('$10,000/t');
+    expect(screen.getByTestId('exporter-avg-price')).toHaveTextContent('10 000 $/t');
     const pp = screen.getByTestId('price-positioning');
-    expect(pp).toHaveTextContent('$16,000/t');
+    expect(pp).toHaveTextContent('16 000 $/t');
     expect(pp).toHaveTextContent('-37.5%');
     expect(pp).toHaveTextContent('Compétitif');
     // Exact HS6 product match: no HS4-level caveat.

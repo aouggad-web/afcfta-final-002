@@ -102,7 +102,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
   return (
     <div className="relative">
       {/* Map Legend */}
-      <div className="absolute top-4 right-4 z-[1000] bg-white p-4 rounded-lg shadow-lg">
+      <div className="absolute top-4 right-4 z-[1000] bg-[var(--afcfta-card)] p-4 rounded-lg shadow-lg">
         <h4 className="font-bold text-sm mb-2">{t.legend}</h4>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
             <span>{t.multimodal}</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-1 bg-gray-900" style={{height: '3px'}}></div>
+            <div className="w-8 h-1 bg-[var(--afcfta-card2)]" style={{height: '3px'}}></div>
             <span>{t.highImportance}</span>
           </div>
           <div className="flex items-center gap-2">
@@ -164,26 +164,26 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
                   <h3 className="font-bold text-base mb-1">
                     {corridor.corridor_name}
                   </h3>
-                  <p className="text-xs text-gray-600 mb-2">
+                  <p className="text-xs text-[var(--afcfta-muted)] mb-2">
                     {corridor.countries_spanned?.join(' → ')}
                   </p>
                   
                   <div className="space-y-1 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">{t.type}:</span>
+                      <span className="text-[var(--afcfta-muted)]">{t.type}:</span>
                       <span className="font-semibold capitalize">{corridor.corridor_type}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">{t.length}:</span>
+                      <span className="text-[var(--afcfta-muted)]">{t.length}:</span>
                       <span className="font-semibold">{formatNumber(corridor.length_km)} km</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">{t.status}:</span>
+                      <span className="text-[var(--afcfta-muted)]">{t.status}:</span>
                       <span className="font-semibold">{corridor.status}</span>
                     </div>
                     {corridor.stats?.freight_throughput_tons && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600">{t.freight}:</span>
+                        <span className="text-[var(--afcfta-muted)]">{t.freight}:</span>
                         <span className="font-semibold">{formatNumber(corridor.stats.freight_throughput_tons)} {t.tons}</span>
                       </div>
                     )}
@@ -191,7 +191,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
                   
                   <button 
                     onClick={() => onCorridorClick(corridor)}
-                    className="mt-3 w-full bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-xs font-semibold"
+                    className="mt-3 w-full bg-[var(--info)] text-[var(--bg)] px-3 py-2 rounded hover:bg-[var(--info)] text-xs font-semibold"
                   >
                     {t.viewDetails}
                   </button>
@@ -217,8 +217,8 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
               <Popup>
                 <div className="text-xs">
                   <p className="font-bold">{node.node_name}</p>
-                  <p className="text-gray-600">{node.node_type}</p>
-                  {node.is_osbp && <p className="text-green-600 font-semibold">✓ OSBP</p>}
+                  <p className="text-[var(--afcfta-muted)]">{node.node_type}</p>
+                  {node.is_osbp && <p className="text-[var(--success)] font-semibold">✓ OSBP</p>}
                 </div>
               </Popup>
             </CircleMarker>

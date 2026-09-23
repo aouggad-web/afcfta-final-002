@@ -49,6 +49,6 @@ describe('TaxBreakdownDual availability', () => {
     );
 
     expect(screen.getByText('(0%)')).toBeInTheDocument();
-    expect(screen.getAllByText('$200').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('200 $').length).toBeGreaterThan(0);
   });
 });

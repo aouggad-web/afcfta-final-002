@@ -147,26 +147,26 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-4 animate-fade-in">
       {/* Compact Header */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+      <div className="flex items-center justify-between bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
             <Ship className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-lg font-bold">{t.title}</h2>
-            <p className="text-blue-100 text-sm">{t.subtitle}</p>
+            <p className="text-[var(--info)] text-sm">{t.subtitle}</p>
           </div>
         </div>
         
         {/* Quick Stats */}
         <div className="hidden md:flex items-center gap-4">
-          <div className="text-center px-4 border-r border-white/20">
+          <div className="text-center px-4 border-r border-[var(--overlay-border)]">
             <p className="text-2xl font-bold">{ports.length}</p>
-            <p className="text-xs text-blue-100">{t.stats.totalPorts}</p>
+            <p className="text-xs text-[var(--info)]">{t.stats.totalPorts}</p>
           </div>
           <div className="text-center px-4">
             <p className="text-2xl font-bold">{portsWithTRS}</p>
-            <p className="text-xs text-blue-100">{t.stats.withTRS}</p>
+            <p className="text-xs text-[var(--info)]">{t.stats.withTRS}</p>
           </div>
         </div>
       </div>
@@ -245,13 +245,13 @@ export default function MaritimeLogisticsTab({ language = 'fr' }) {
                 {filteredPorts.slice(0, 20).map((port) => (
                   <div
                     key={port.port_id}
-                    className="p-3 rounded-lg border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 cursor-pointer transition-all"
+                    className="p-3 rounded-lg border border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--info)_30%,transparent)] hover:bg-blue-50/50 cursor-pointer transition-all"
                     onClick={() => handlePortClick(port)}
                   >
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium text-sm">{port.port_name}</p>
-                        <p className="text-xs text-gray-500">{port.country_name}</p>
+                        <p className="text-xs text-[var(--afcfta-muted)]">{port.country_name}</p>
                       </div>
                       {port.trs_analysis?.container_dwell_time_days && 
                        port.trs_analysis.container_dwell_time_days !== 'NA' && (

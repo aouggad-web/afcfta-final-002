@@ -95,7 +95,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-sky-900 flex items-center gap-2">
+          <DialogTitle className="text-2xl font-bold text-[var(--info)] flex items-center gap-2">
             <span>✈️</span>
             {airport.airport_name}
             {airport.iata_code && (
@@ -110,42 +110,42 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
-          <Card className="bg-gradient-to-br from-sky-50 to-sky-100 border-sky-200">
+          <Card className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
             <CardContent className="pt-4">
-              <p className="text-xs font-semibold text-sky-700 mb-1">📦 {t.cargoFreight} {latestStats.year}</p>
-              <p className="text-2xl font-bold text-sky-900">{formatNumber(latestStats.cargo_throughput_tons)}</p>
-              <p className="text-xs text-gray-600">{t.tons}</p>
+              <p className="text-xs font-semibold text-[var(--info)] mb-1">📦 {t.cargoFreight} {latestStats.year}</p>
+              <p className="text-2xl font-bold text-[var(--info)]">{formatNumber(latestStats.cargo_throughput_tons)}</p>
+              <p className="text-xs text-[var(--afcfta-muted)]">{t.tons}</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200">
+          <Card className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
             <CardContent className="pt-4">
-              <p className="text-xs font-semibold text-amber-700 mb-1">📬 {t.mail} {latestStats.year}</p>
-              <p className="text-2xl font-bold text-amber-900">{formatNumber(latestStats.mail_throughput_tons)}</p>
-              <p className="text-xs text-gray-600">{t.tons}</p>
+              <p className="text-xs font-semibold text-[var(--gold)] mb-1">📬 {t.mail} {latestStats.year}</p>
+              <p className="text-2xl font-bold text-[var(--gold)]">{formatNumber(latestStats.mail_throughput_tons)}</p>
+              <p className="text-xs text-[var(--afcfta-muted)]">{t.tons}</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <Card className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <CardContent className="pt-4">
-              <p className="text-xs font-semibold text-green-700 mb-1">🛩️ {t.movements} {latestStats.year}</p>
-              <p className="text-2xl font-bold text-green-900">{formatNumber(latestStats.cargo_aircraft_movements)}</p>
-              <p className="text-xs text-gray-600">{t.cargoAircraft}</p>
+              <p className="text-xs font-semibold text-[var(--success)] mb-1">🛩️ {t.movements} {latestStats.year}</p>
+              <p className="text-2xl font-bold text-[var(--success)]">{formatNumber(latestStats.cargo_aircraft_movements)}</p>
+              <p className="text-xs text-[var(--afcfta-muted)]">{t.cargoAircraft}</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+          <Card className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
             <CardContent className="pt-4">
-              <p className="text-xs font-semibold text-purple-700 mb-1">📊 {t.annualCapacity}</p>
-              <p className="text-2xl font-bold text-purple-900">{formatNumber(airport.annual_capacity_tons)}</p>
-              <p className="text-xs text-gray-600">{t.tonsYear}</p>
+              <p className="text-xs font-semibold text-[var(--violet)] mb-1">📊 {t.annualCapacity}</p>
+              <p className="text-2xl font-bold text-[var(--violet)]">{formatNumber(airport.annual_capacity_tons)}</p>
+              <p className="text-xs text-[var(--afcfta-muted)]">{t.tonsYear}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Infrastructure */}
         <Card className="mb-4">
-          <CardHeader className="bg-gray-50">
+          <CardHeader className="bg-[var(--afcfta-card2)]">
             <CardTitle className="text-lg flex items-center gap-2">
               <span>🏗️</span>
               {t.cargoInfrastructure}
@@ -156,21 +156,21 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🏢</span>
                 <div>
-                  <p className="text-xs text-gray-600">{t.cargoTerminalArea}</p>
-                  <p className="font-bold text-gray-900">{formatNumber(airport.cargo_terminal_area_sqm)} m²</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{t.cargoTerminalArea}</p>
+                  <p className="font-bold text-[var(--text)]">{formatNumber(airport.cargo_terminal_area_sqm)} m²</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-2xl">📍</span>
                 <div>
-                  <p className="text-xs text-gray-600">{t.gpsCoordinates}</p>
-                  <p className="font-bold text-gray-900">{airport.geo_lat?.toFixed(4)}, {airport.geo_lon?.toFixed(4)}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{t.gpsCoordinates}</p>
+                  <p className="font-bold text-[var(--text)]">{airport.geo_lat?.toFixed(4)}, {airport.geo_lon?.toFixed(4)}</p>
                 </div>
               </div>
             </div>
             {airport.cargo_infra_notes && (
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm text-gray-700">
+              <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg">
+                <p className="text-sm text-[var(--text)]">
                   <span className="font-semibold">💡 {t.notes}: </span>
                   {airport.cargo_infra_notes}
                 </p>
@@ -197,17 +197,17 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                 {airport.actors && airport.actors.length > 0 ? (
                   <div className="space-y-3">
                     <div>
-                      <h4 className="font-semibold text-sky-900 mb-2 flex items-center gap-2">
+                      <h4 className="font-semibold text-[var(--info)] mb-2 flex items-center gap-2">
                         <span>✈️</span>
                         {t.cargoAirlines}
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {airport.actors.filter(a => a.actor_type === 'airline').map((actor, idx) => (
-                          <div key={idx} className="flex items-center gap-2 p-2 bg-sky-50 rounded">
+                          <div key={idx} className="flex items-center gap-2 p-2 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded">
                             <span className="text-lg">✈️</span>
                             <div className="flex-1">
                               <p className="font-semibold text-sm">{actor.actor_name}</p>
-                              <p className="text-xs text-gray-600">{actor.group}</p>
+                              <p className="text-xs text-[var(--afcfta-muted)]">{actor.group}</p>
                             </div>
                           </div>
                         ))}
@@ -216,17 +216,17 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
 
                     {airport.actors.filter(a => a.actor_type === 'handler').length > 0 && (
                       <div>
-                        <h4 className="font-semibold text-amber-900 mb-2 flex items-center gap-2">
+                        <h4 className="font-semibold text-[var(--gold)] mb-2 flex items-center gap-2">
                           <span>🔧</span>
                           {t.handlersGround}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                           {airport.actors.filter(a => a.actor_type === 'handler').map((actor, idx) => (
-                            <div key={idx} className="flex items-center gap-2 p-2 bg-amber-50 rounded">
+                            <div key={idx} className="flex items-center gap-2 p-2 bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] rounded">
                               <span className="text-lg">🔧</span>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm">{actor.actor_name}</p>
-                                <p className="text-xs text-gray-600">{actor.group}</p>
+                                <p className="text-xs text-[var(--afcfta-muted)]">{actor.group}</p>
                               </div>
                             </div>
                           ))}
@@ -236,17 +236,17 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
 
                     {airport.actors.filter(a => a.actor_type === 'forwarder').length > 0 && (
                       <div>
-                        <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                        <h4 className="font-semibold text-[var(--success)] mb-2 flex items-center gap-2">
                           <span>📦</span>
                           {t.forwarders}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                           {airport.actors.filter(a => a.actor_type === 'forwarder').map((actor, idx) => (
-                            <div key={idx} className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                            <div key={idx} className="flex items-center gap-2 p-2 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded">
                               <span className="text-lg">📦</span>
                               <div className="flex-1">
                                 <p className="font-semibold text-sm">{actor.actor_name}</p>
-                                <p className="text-xs text-gray-600">{actor.group}</p>
+                                <p className="text-xs text-[var(--afcfta-muted)]">{actor.group}</p>
                               </div>
                             </div>
                           ))}
@@ -255,7 +255,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                     )}
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-8">{t.noActors}</p>
+                  <p className="text-[var(--afcfta-muted)] text-center py-8">{t.noActors}</p>
                 )}
               </CardContent>
             </Card>
@@ -271,7 +271,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                 {airport.routes && airport.routes.length > 0 ? (
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
-                      <thead className="bg-gray-100">
+                      <thead className="bg-[var(--afcfta-card2)]">
                         <tr>
                           <th className="text-left p-3">{t.destination}</th>
                           <th className="text-left p-3">{t.carrier}</th>
@@ -281,7 +281,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                       </thead>
                       <tbody>
                         {airport.routes.map((route, idx) => (
-                          <tr key={idx} className="border-b hover:bg-gray-50">
+                          <tr key={idx} className="border-b hover:bg-[var(--afcfta-card2)]">
                             <td className="p-3 font-semibold">{route.destination_airport}</td>
                             <td className="p-3">{route.airline}</td>
                             <td className="p-3">{route.frequency}</td>
@@ -292,7 +292,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                     </table>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-8">{t.noRoutes}</p>
+                  <p className="text-[var(--afcfta-muted)] text-center py-8">{t.noRoutes}</p>
                 )}
               </CardContent>
             </Card>
@@ -337,14 +337,14 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
                 </Card>
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">{t.noHistorical}</p>
+              <p className="text-[var(--afcfta-muted)] text-center py-8">{t.noHistorical}</p>
             )}
           </TabsContent>
         </Tabs>
 
         {/* Footer Source */}
-        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-500">
+        <div className="mt-4 p-3 bg-[var(--afcfta-card2)] rounded-lg">
+          <p className="text-xs text-[var(--afcfta-muted)]">
             <span className="font-semibold">{t.dataSource}:</span> {t.sourceText}
           </p>
         </div>

@@ -60,17 +60,17 @@ const CustomSankeyTooltip = ({ active, payload }) => {
     if (!source?.payload || !target?.payload) return null;
 
     return (
-      <div className="bg-white/95 dark:bg-slate-800/95 p-3 border border-slate-200 dark:border-slate-700 rounded-lg shadow-xl text-xs">
+      <div className="bg-[var(--afcfta-card)] dark:bg-[var(--afcfta-card2)] p-3 border border-[var(--afcfta-border)] dark:border-[var(--afcfta-border)] rounded-lg shadow-xl text-xs">
         <div className="flex justify-between items-center mb-2 gap-4">
-          <span className="font-bold text-slate-900 dark:text-white">
+          <span className="font-bold text-[var(--text)] dark:text-[var(--text)]">
             {source.payload.name}
           </span>
-          <span className="text-slate-400">→</span>
-          <span className="font-bold text-slate-900 dark:text-white">
+          <span className="text-[var(--afcfta-muted)]">→</span>
+          <span className="font-bold text-[var(--text)] dark:text-[var(--text)]">
             {target.payload.name}
           </span>
         </div>
-        <p className="font-semibold text-emerald-600 dark:text-emerald-400">
+        <p className="font-semibold text-[var(--success)] dark:text-[var(--success)]">
           {t('opportunities.tradeSankeyDiagram.value')}: {formatValue(value)}
         </p>
       </div>
@@ -271,12 +271,12 @@ export default function TradeSankeyDiagram({
   // Empty state
   if (data.nodes.length === 0) {
     return (
-      <Card className="bg-slate-50 border-slate-200">
+      <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
         <CardContent className="py-16 text-center">
-          <div className="text-slate-400 mb-4">
+          <div className="text-[var(--afcfta-muted)] mb-4">
             <Filter className="h-12 w-12 mx-auto opacity-50" />
           </div>
-          <p className="text-slate-500 italic mb-4">{t('opportunities.tradeSankeyDiagram.noData')}</p>
+          <p className="text-[var(--afcfta-muted)] italic mb-4">{t('opportunities.tradeSankeyDiagram.noData')}</p>
           {hasAnyFilter && (
             <Button
               variant="outline"
@@ -299,18 +299,18 @@ export default function TradeSankeyDiagram({
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <CardTitle className="text-lg font-bold">{t('opportunities.tradeSankeyDiagram.title')}</CardTitle>
-            <p className="text-sm text-slate-500">{t('opportunities.tradeSankeyDiagram.subtitle')}</p>
+            <p className="text-sm text-[var(--afcfta-muted)]">{t('opportunities.tradeSankeyDiagram.subtitle')}</p>
           </div>
           
           {/* Value type toggle */}
           <div className="flex items-center gap-2">
-            <div className="inline-flex rounded-lg border border-slate-200 p-1">
+            <div className="inline-flex rounded-lg border border-[var(--afcfta-border)] p-1">
               <button
                 onClick={() => setValueType('potential')}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
                   valueType === 'potential'
-                    ? 'bg-emerald-600 text-white'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-[var(--success)] text-[var(--bg)]'
+                    : 'text-[var(--afcfta-muted)] hover:bg-[var(--afcfta-card2)]'
                 }`}
               >
                 {t('opportunities.tradeSankeyDiagram.potential')}
@@ -319,8 +319,8 @@ export default function TradeSankeyDiagram({
                 onClick={() => setValueType('current')}
                 className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
                   valueType === 'current'
-                    ? 'bg-emerald-600 text-white'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-[var(--success)] text-[var(--bg)]'
+                    : 'text-[var(--afcfta-muted)] hover:bg-[var(--afcfta-card2)]'
                 }`}
               >
                 {t('opportunities.tradeSankeyDiagram.current')}
@@ -332,7 +332,7 @@ export default function TradeSankeyDiagram({
         {/* Active filters */}
         <div className="flex flex-wrap gap-2 mt-3">
           {activeFilters.source && (
-            <Badge variant="secondary" className="bg-blue-100 text-blue-700 gap-1">
+            <Badge variant="secondary" className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] gap-1">
               {t('opportunities.tradeSankeyDiagram.source')}: {activeFilters.source}
               <button onClick={() => handleNodeClick('source', activeFilters.source)}>
                 <X className="h-3 w-3" />
@@ -340,7 +340,7 @@ export default function TradeSankeyDiagram({
             </Badge>
           )}
           {activeFilters.product && (
-            <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 gap-1">
+            <Badge variant="secondary" className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] gap-1">
               {t('opportunities.tradeSankeyDiagram.product')}: {activeFilters.product.substring(0, 20)}...
               <button onClick={() => handleNodeClick('product', activeFilters.product)}>
                 <X className="h-3 w-3" />
@@ -348,7 +348,7 @@ export default function TradeSankeyDiagram({
             </Badge>
           )}
           {activeFilters.target && (
-            <Badge variant="secondary" className="bg-orange-100 text-orange-700 gap-1">
+            <Badge variant="secondary" className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] gap-1">
               {t('opportunities.tradeSankeyDiagram.destination')}: {activeFilters.target}
               <button onClick={() => handleNodeClick('target', activeFilters.target)}>
                 <X className="h-3 w-3" />
@@ -360,14 +360,14 @@ export default function TradeSankeyDiagram({
               variant="ghost"
               size="sm"
               onClick={clearFilters}
-              className="h-6 px-2 text-xs text-slate-500"
+              className="h-6 px-2 text-xs text-[var(--afcfta-muted)]"
             >
               <RotateCcw className="h-3 w-3 mr-1" />
               {t('opportunities.tradeSankeyDiagram.clearFilters')}
             </Button>
           )}
           {!hasAnyFilter && (
-            <span className="text-xs text-slate-400 italic">{t('opportunities.tradeSankeyDiagram.filterTip')}</span>
+            <span className="text-xs text-[var(--afcfta-muted)] italic">{t('opportunities.tradeSankeyDiagram.filterTip')}</span>
           )}
         </div>
       </CardHeader>
@@ -391,15 +391,15 @@ export default function TradeSankeyDiagram({
         <div className="flex justify-center gap-6 mt-4 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-blue-500"></div>
-            <span className="text-slate-600">{t('opportunities.tradeSankeyDiagram.source')}</span>
+            <span className="text-[var(--afcfta-muted)]">{t('opportunities.tradeSankeyDiagram.source')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-emerald-500"></div>
-            <span className="text-slate-600">{t('opportunities.tradeSankeyDiagram.product')}</span>
+            <span className="text-[var(--afcfta-muted)]">{t('opportunities.tradeSankeyDiagram.product')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-orange-500"></div>
-            <span className="text-slate-600">{t('opportunities.tradeSankeyDiagram.destination')}</span>
+            <span className="text-[var(--afcfta-muted)]">{t('opportunities.tradeSankeyDiagram.destination')}</span>
           </div>
         </div>
       </CardContent>

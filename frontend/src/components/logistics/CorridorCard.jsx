@@ -16,18 +16,18 @@ const getTypeIcon = (type) => {
 };
 
 const getTypeColor = (type) => {
-  if (type === 'road') return 'bg-blue-100 text-blue-800 border-blue-300';
-  if (type === 'rail') return 'bg-red-100 text-red-800 border-red-300';
-  if (type === 'multimodal') return 'bg-purple-100 text-purple-800 border-purple-300';
-  return 'bg-gray-100 text-gray-800 border-gray-300';
+  if (type === 'road') return 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]';
+  if (type === 'rail') return 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]';
+  if (type === 'multimodal') return 'bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]';
+  return 'bg-[var(--afcfta-card2)] text-[var(--text)] border-[var(--afcfta-border)]';
 };
 
 const getStatusColor = (status) => {
-  if (status === 'Opérationnel') return 'bg-green-100 text-green-800';
-  if (status === 'En construction' || status === 'En réhabilitation') return 'bg-yellow-100 text-yellow-800';
-  if (status === 'Projet') return 'bg-gray-100 text-gray-800';
-  if (status === 'Partiellement opérationnel') return 'bg-orange-100 text-orange-800';
-  return 'bg-gray-100 text-gray-800';
+  if (status === 'Opérationnel') return 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]';
+  if (status === 'En construction' || status === 'En réhabilitation') return 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]';
+  if (status === 'Projet') return 'bg-[var(--afcfta-card2)] text-[var(--text)]';
+  if (status === 'Partiellement opérationnel') return 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]';
+  return 'bg-[var(--afcfta-card2)] text-[var(--text)]';
 };
 
 export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' }) {
@@ -72,7 +72,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
       <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 border-b">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <CardTitle className="text-lg font-bold text-[var(--text)] flex items-center gap-2">
               <span>{getTypeIcon(corridor.corridor_type)}</span>
               <span>{corridor.corridor_name}</span>
             </CardTitle>
@@ -85,7 +85,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
               {corridor.corridor_type}
             </Badge>
             {corridor.importance === 'high' && (
-              <Badge className="bg-amber-100 text-amber-800">⭐ {t.priority}</Badge>
+              <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]">⭐ {t.priority}</Badge>
             )}
           </div>
         </div>
@@ -94,12 +94,12 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
       <CardContent className="pt-4">
         {/* Status and Length */}
         <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-gray-50 p-2 rounded">
-            <p className="text-xs font-semibold text-gray-700">📏 {t.length}</p>
-            <p className="text-lg font-bold text-gray-900">{formatNumber(corridor.length_km)} km</p>
+          <div className="bg-[var(--afcfta-card2)] p-2 rounded">
+            <p className="text-xs font-semibold text-[var(--text)]">📏 {t.length}</p>
+            <p className="text-lg font-bold text-[var(--text)]">{formatNumber(corridor.length_km)} km</p>
           </div>
-          <div className="bg-gray-50 p-2 rounded">
-            <p className="text-xs font-semibold text-gray-700">🚦 {t.status}</p>
+          <div className="bg-[var(--afcfta-card2)] p-2 rounded">
+            <p className="text-xs font-semibold text-[var(--text)]">🚦 {t.status}</p>
             <Badge className={getStatusColor(corridor.status)} variant="outline">
               {corridor.status}
             </Badge>
@@ -109,43 +109,43 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
         {/* Stats if available */}
         {stats.freight_throughput_tons && (
           <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="bg-blue-50 p-2 rounded border-l-4 border-blue-500">
-              <p className="text-xs font-semibold text-blue-700">📦 {t.annualFreight}</p>
-              <p className="text-base font-bold text-blue-900">
+            <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-2 rounded border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+              <p className="text-xs font-semibold text-[var(--info)]">📦 {t.annualFreight}</p>
+              <p className="text-base font-bold text-[var(--info)]">
                 {formatNumber(stats.freight_throughput_tons)}
               </p>
-              <p className="text-xs text-gray-600">{t.tonsYear}</p>
+              <p className="text-xs text-[var(--afcfta-muted)]">{t.tonsYear}</p>
             </div>
-            <div className="bg-green-50 p-2 rounded border-l-4 border-green-500">
-              <p className="text-xs font-semibold text-green-700">⏱️ {t.transitTime}</p>
-              <p className="text-base font-bold text-green-900">
+            <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-2 rounded border-l-4 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+              <p className="text-xs font-semibold text-[var(--success)]">⏱️ {t.transitTime}</p>
+              <p className="text-base font-bold text-[var(--success)]">
                 {stats.avg_transit_time_hours || 'N/A'}
               </p>
-              <p className="text-xs text-gray-600">{t.hours}</p>
+              <p className="text-xs text-[var(--afcfta-muted)]">{t.hours}</p>
             </div>
           </div>
         )}
 
         {/* Nodes and Operators */}
         <div className="grid grid-cols-3 gap-2 mb-4">
-          <div className="bg-gray-50 p-2 rounded text-center">
-            <p className="text-xs font-semibold text-gray-700">🚧 {t.nodes}</p>
-            <p className="text-lg font-bold text-gray-900">{nodes.length}</p>
+          <div className="bg-[var(--afcfta-card2)] p-2 rounded text-center">
+            <p className="text-xs font-semibold text-[var(--text)]">🚧 {t.nodes}</p>
+            <p className="text-lg font-bold text-[var(--text)]">{nodes.length}</p>
           </div>
-          <div className="bg-green-50 p-2 rounded text-center">
-            <p className="text-xs font-semibold text-green-700">✅ OSBP</p>
-            <p className="text-lg font-bold text-green-900">{osbpCount}</p>
+          <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-2 rounded text-center">
+            <p className="text-xs font-semibold text-[var(--success)]">✅ OSBP</p>
+            <p className="text-lg font-bold text-[var(--success)]">{osbpCount}</p>
           </div>
-          <div className="bg-orange-50 p-2 rounded text-center">
-            <p className="text-xs font-semibold text-orange-700">🚛 {t.operators}</p>
-            <p className="text-lg font-bold text-orange-900">{operators.length}</p>
+          <div className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] p-2 rounded text-center">
+            <p className="text-xs font-semibold text-[var(--terra)]">🚛 {t.operators}</p>
+            <p className="text-lg font-bold text-[var(--terra)]">{operators.length}</p>
           </div>
         </div>
 
         {/* Infrastructure details preview */}
         {corridor.infra_details && (
-          <div className="bg-slate-50 p-2 rounded mb-4">
-            <p className="text-xs text-gray-700">
+          <div className="bg-[var(--afcfta-card2)] p-2 rounded mb-4">
+            <p className="text-xs text-[var(--text)]">
               <span className="font-semibold">🔧 {t.infrastructure}: </span>
               {corridor.infra_details.substring(0, 80)}{corridor.infra_details.length > 80 ? '...' : ''}
             </p>
@@ -154,7 +154,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
 
         <Button 
           onClick={() => onOpenDetails(corridor)} 
-          className="w-full bg-slate-700 hover:bg-slate-800 text-white"
+          className="w-full bg-[var(--afcfta-card2)] hover:bg-[var(--afcfta-card2)] text-[var(--text)]"
         >
           🔍 {t.viewDetails}
         </Button>

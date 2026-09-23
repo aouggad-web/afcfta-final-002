@@ -17,7 +17,7 @@ export function FilterBar({
   compact = false 
 }) {
   return (
-    <Card className={`border border-[rgba(212,175,55,0.1)] shadow-sm bg-[rgba(27,35,44,0.8)] ${className}`}>
+    <Card className={`border border-[var(--afcfta-border)] shadow-sm bg-[var(--afcfta-card2)] ${className}`}>
       <CardContent className={compact ? "py-3 px-4" : "py-4 px-5"}>
         <div className="flex flex-wrap items-center gap-3">
           {children}
@@ -45,18 +45,18 @@ export function SearchFilter({
 
   return (
     <div className={`relative flex-1 min-w-[200px] max-w-md ${className}`}>
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--afcfta-muted)]" />
       <Input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`pl-10 pr-8 ${sizeClasses[size]} border-gray-200 focus:border-blue-400 focus:ring-blue-400/20`}
+        className={`pl-10 pr-8 ${sizeClasses[size]} border-[var(--afcfta-border)] focus:border-[color-mix(in_srgb,var(--info)_30%,transparent)] focus:ring-blue-400/20`}
       />
       {value && (
         <button
           onClick={() => onChange('')}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--afcfta-muted)] hover:text-[var(--afcfta-muted)] transition-colors"
         >
           <X className="h-4 w-4" />
         </button>
@@ -87,12 +87,12 @@ export function SelectFilter({
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       {showLabel && label && (
-        <Label className="text-sm font-medium text-gray-600 whitespace-nowrap">
+        <Label className="text-sm font-medium text-[var(--afcfta-muted)] whitespace-nowrap">
           {label}
         </Label>
       )}
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className={`min-w-[160px] ${sizeClasses[size]} border-gray-200`}>
+        <SelectTrigger className={`min-w-[160px] ${sizeClasses[size]} border-[var(--afcfta-border)]`}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent className="z-50">
@@ -136,7 +136,7 @@ export function ViewModeToggle({
   };
 
   return (
-    <div className={`flex items-center bg-white rounded-lg border border-gray-200 p-0.5 ${className}`}>
+    <div className={`flex items-center bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)] p-0.5 ${className}`}>
       {modes.map((mode) => (
         <Button
           key={mode}
@@ -145,8 +145,8 @@ export function ViewModeToggle({
           onClick={() => onChange(mode)}
           className={`h-8 px-3 rounded-md transition-all ${
             value === mode 
-              ? 'bg-blue-100 text-blue-700 shadow-sm' 
-              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              ? 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] shadow-sm' 
+              : 'text-[var(--afcfta-muted)] hover:text-[var(--text)] hover:bg-[var(--afcfta-card2)]'
           }`}
         >
           {modeIcons[mode]}
@@ -171,11 +171,11 @@ export function ResultsCounter({
   return (
     <Badge 
       variant="secondary" 
-      className={`bg-white border border-gray-200 text-gray-600 font-normal px-3 py-1 ${className}`}
+      className={`bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] text-[var(--afcfta-muted)] font-normal px-3 py-1 ${className}`}
     >
-      <span className="font-semibold text-gray-800">{count}</span>
+      <span className="font-semibold text-[var(--text)]">{count}</span>
       {total && total !== count && (
-        <span className="text-gray-400">/{total}</span>
+        <span className="text-[var(--afcfta-muted)]">/{total}</span>
       )}
       <span className="ml-1">{label}</span>
     </Badge>
@@ -192,11 +192,11 @@ export function FilterChip({
   className = ""
 }) {
   const colorClasses = {
-    blue: "bg-blue-100 text-blue-700 border-blue-200",
-    green: "bg-green-100 text-green-700 border-green-200",
-    orange: "bg-orange-100 text-orange-700 border-orange-200",
-    purple: "bg-purple-100 text-purple-700 border-purple-200",
-    gray: "bg-gray-100 text-gray-700 border-gray-200"
+    blue: "bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]",
+    green: "bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]",
+    orange: "bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]",
+    purple: "bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]",
+    gray: "bg-[var(--afcfta-card2)] text-[var(--text)] border-[var(--afcfta-border)]"
   };
 
   return (
@@ -205,7 +205,7 @@ export function FilterChip({
       {onRemove && (
         <button 
           onClick={onRemove}
-          className="hover:bg-white/50 rounded-full p-0.5 transition-colors"
+          className="hover:bg-[var(--afcfta-card)] rounded-full p-0.5 transition-colors"
         >
           <X className="h-3 w-3" />
         </button>
@@ -218,7 +218,7 @@ export function FilterChip({
  * Filter Section Divider
  */
 export function FilterDivider({ className = "" }) {
-  return <div className={`h-6 w-px bg-gray-200 mx-1 ${className}`} />;
+  return <div className={`h-6 w-px bg-[var(--afcfta-card2)] mx-1 ${className}`} />;
 }
 
 /**
@@ -236,7 +236,7 @@ export function ResetFiltersButton({
       size="sm"
       onClick={onClick}
       disabled={disabled}
-      className={`text-gray-500 hover:text-gray-700 h-8 ${className}`}
+      className={`text-[var(--afcfta-muted)] hover:text-[var(--text)] h-8 ${className}`}
     >
       <X className="h-4 w-4 mr-1" />
       {label}

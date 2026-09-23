@@ -38,11 +38,11 @@ export default function BusinessAtlasModule({ language = 'fr' }) {
     <Card className="border-2 shadow-xl" style={{ borderColor: 'rgba(45,179,106,0.35)' }}>
       <CardHeader className="afcfta-dark-gradient" style={{ borderBottom: '1px solid rgba(45,179,106,0.25)' }}>
         <div className="flex items-center gap-3 flex-wrap">
-          <CardTitle className="text-2xl text-green-400 flex items-center gap-2">
+          <CardTitle className="text-2xl text-[var(--success)] flex items-center gap-2">
             <span>🧭</span>
             <span>{t.title}</span>
           </CardTitle>
-          <Badge className="bg-green-600 text-white">{t.status}</Badge>
+          <Badge className="bg-[var(--success)] text-[var(--bg)]">{t.status}</Badge>
         </div>
         <CardDescription className="text-base font-medium">
           {t.subtitle}
@@ -55,7 +55,7 @@ export default function BusinessAtlasModule({ language = 'fr' }) {
         </p>
 
         <div className="flex flex-wrap gap-3 mb-4">
-          <Button asChild className="bg-green-600 hover:bg-green-700 text-white">
+          <Button asChild className="bg-[var(--success)] hover:bg-[var(--success)] text-[var(--bg)]">
             <a href={ATLAS_PATH} target="_blank" rel="noopener noreferrer">
               {t.open}
             </a>

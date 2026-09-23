@@ -333,7 +333,7 @@
         "onlyCountryU2019sMain": "Seuls les secteurs principaux du pays sont couverts, pas les 24 divisions manufacturières 10-33. Une division absente n'est pas nulle : elle n'est pas renseignée.",
         "noTimeSeriesExists": "Aucune série temporelle n'existe à ce niveau pour ce pays.",
         "shareNotPublishedFor": "Part non publiée pour cette division",
-        "mUsdValueAdded": "M USD de valeur ajoutée",
+        "mUsdValueAdded": "de valeur ajoutée",
         "labelNotPublished": "libellé non publié",
         "isic4Classes": "classes ISIC 4",
         "indicator": "Indicateur",

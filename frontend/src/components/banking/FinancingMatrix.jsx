@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -106,7 +107,7 @@ export default function FinancingMatrix({ language = 'en' }) {
       <Card>
         <CardHeader>
           <CardTitle>{t.title}</CardTitle>
-          <p className="text-sm text-gray-600">{t.subtitle}</p>
+          <p className="text-sm text-[var(--afcfta-muted)]">{t.subtitle}</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -139,8 +140,8 @@ export default function FinancingMatrix({ language = 'en' }) {
           </form>
 
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded">
-              <p className="text-red-800">{t.error}: {error}</p>
+            <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] rounded">
+              <p className="text-[var(--danger)]">{t.error}: {error}</p>
             </div>
           )}
 
@@ -154,8 +155,8 @@ export default function FinancingMatrix({ language = 'en' }) {
                     onClick={() => setActiveTab(key)}
                     className={`px-4 py-2 text-sm ${
                       activeTab === key
-                        ? 'border-b-2 border-blue-500 font-semibold'
-                        : 'text-gray-600 hover:text-gray-800'
+                        ? 'border-b-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] font-semibold'
+                        : 'text-[var(--afcfta-muted)] hover:text-[var(--text)]'
                     }`}
                   >
                     {label}
@@ -173,7 +174,7 @@ export default function FinancingMatrix({ language = 'en' }) {
                     )
                     .slice(0, 5)
                     .map(([code, inst], i) => (
-                      <Card key={code} className={i === 0 ? 'bg-green-50' : ''}>
+                      <Card key={code} className={i === 0 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : ''}>
                         <CardContent className="pt-4">
                           <div className="flex justify-between items-start mb-2">
                             <div className="font-semibold">{inst.instrument}</div>
@@ -181,10 +182,10 @@ export default function FinancingMatrix({ language = 'en' }) {
                               ROI: {inst.roi_pct}%
                             </Badge>
                           </div>
-                          <div className="grid grid-cols-3 gap-2 text-xs text-gray-600">
-                            <div>{t.cost}: ${inst.total_cost_usd.toLocaleString()}</div>
-                            <div>Protection: ${inst.risk_protection_value_usd.toLocaleString()}</div>
-                            <div>{t.netBenefit}: ${inst.net_benefit_usd.toLocaleString()}</div>
+                          <div className="grid grid-cols-3 gap-2 text-xs text-[var(--afcfta-muted)]">
+                            <div>{t.cost}: {montant(inst.total_cost_usd, language, 3)}</div>
+                            <div>Protection: {montant(inst.risk_protection_value_usd, language, 3)}</div>
+                            <div>{t.netBenefit}: {montant(inst.net_benefit_usd, language, 3)}</div>
                           </div>
                         </CardContent>
                       </Card>
@@ -227,7 +228,7 @@ export default function FinancingMatrix({ language = 'en' }) {
                     <Card key={size}>
                       <CardHeader>
                         <CardTitle className="text-sm">{size}</CardTitle>
-                        <p className="text-xs text-gray-600">{data.size_range_usd}</p>
+                        <p className="text-xs text-[var(--afcfta-muted)]">{data.size_range_usd}</p>
                       </CardHeader>
                       <CardContent>
                         <div className="text-xs space-y-1">

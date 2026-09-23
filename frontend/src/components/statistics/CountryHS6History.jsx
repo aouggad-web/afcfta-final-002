@@ -10,25 +10,22 @@ import {
 } from 'recharts';
 import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown, Moon } from 'lucide-react';
 import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeReportPdf';
+import { montantCompact, nombreCompact, chiffres } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const fmtUSD = (v) => {
+// « 1,23 Md $ » en français, « $1.23B » en anglais ; même précision par palier.
+const fmtUSD = (v, language) => {
   if (v == null || isNaN(v)) return '—';
-  const abs = Math.abs(v);
-  if (abs >= 1e9) return `$${(v / 1e9).toFixed(2)}B`;
-  if (abs >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
-  if (abs >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
-  return `$${v.toFixed(0)}`;
+  return montantCompact(v, language, { B: 2, M: 1, K: 0 });
 };
 
 // Volume BACI (poids net, tonnes métriques) — affiché à côté de la valeur USD.
-const fmtTonnes = (v) => {
+const fmtTonnes = (v, language) => {
   if (v == null || isNaN(v) || v <= 0) return '—';
-  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M t`;
-  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K t`;
-  return `${v.toFixed(v < 10 ? 1 : 0)} t`;
+  if (v < 1e3) return `${chiffres(v, language, v < 10 ? 1 : 0)} t`;
+  return `${nombreCompact(v, language, { M: 2, K: 1 })} t`;
 };
 
 const MATCH_LEVEL_LABEL = {
@@ -224,8 +221,8 @@ export default function CountryHS6History({ language = 'fr' }) {
         language,
         levelLen: LEVEL_LEN[searchLevel],
         matchLevelLabel: (MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
-        fmtUSD,
-        fmtTonnes,
+        fmtUSD: (v) => fmtUSD(v, language),
+        fmtTonnes: (v) => fmtTonnes(v, language),
         theme: themeName,
       });
       doc.save(`${tradeReportFilename(data)}_${themeName}.pdf`);
@@ -286,12 +283,12 @@ export default function CountryHS6History({ language = 'fr' }) {
 
       <div style={{ padding: '14px 16px 6px', display: 'grid', gridTemplateColumns: '1.5fr 1.2fr 0.8fr auto', gap: 10, alignItems: 'end' }}>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>{t.country}</span>
+          <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700, letterSpacing: 0.4 }}>{t.country}</span>
           <select
             data-testid="hs6-country-select"
             value={iso3}
             onChange={(e) => setIso3(e.target.value)}
-            style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
+            style={{ padding: '8px 10px', borderRadius: 8, background: 'var(--overlay)', border: '1px solid var(--goldSoft)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
           >
             {countries.length === 0 && <option value={iso3}>{iso3}</option>}
             {countries.map((c) => (
@@ -302,7 +299,7 @@ export default function CountryHS6History({ language = 'fr' }) {
           </select>
         </label>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>
+          <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700, letterSpacing: 0.4 }}>
             {`Code SH${LEVEL_LEN[searchLevel]}`}
           </span>
           <input
@@ -313,16 +310,16 @@ export default function CountryHS6History({ language = 'fr' }) {
             placeholder={t.hintByLevel[searchLevel]}
             inputMode="numeric"
             maxLength={LEVEL_LEN[searchLevel]}
-            style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600, letterSpacing: 1.2 }}
+            style={{ padding: '8px 10px', borderRadius: 8, background: 'var(--overlay)', border: '1px solid var(--goldSoft)', color: 'var(--text)', fontSize: 13, fontWeight: 600, letterSpacing: 1.2 }}
           />
         </label>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>{t.years}</span>
+          <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700, letterSpacing: 0.4 }}>{t.years}</span>
           <select
             data-testid="hs6-years-select"
             value={years}
             onChange={(e) => setYears(Number(e.target.value))}
-            style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
+            style={{ padding: '8px 10px', borderRadius: 8, background: 'var(--overlay)', border: '1px solid var(--goldSoft)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
           >
             {[3, 5, 7, 10].map((n) => (
               <option key={n} value={n}>{n}</option>
@@ -336,7 +333,7 @@ export default function CountryHS6History({ language = 'fr' }) {
           style={{
             padding: '8px 16px',
             borderRadius: 8,
-            border: '1px solid rgba(212,175,55,0.45)',
+            border: '1px solid var(--afcfta-border)',
             background: 'linear-gradient(180deg, rgba(212,175,55,0.85) 0%, rgba(180,140,40,0.9) 100%)',
             color: '#0b0f1a',
             fontWeight: 700,
@@ -353,13 +350,13 @@ export default function CountryHS6History({ language = 'fr' }) {
       </div>
 
       {error && (
-        <div style={{ padding: '10px 16px', color: '#fca5a5', fontSize: 13 }} data-testid="hs6-error">
+        <div style={{ padding: '10px 16px', color: 'var(--danger)', fontSize: 13 }} data-testid="hs6-error">
           {error}
         </div>
       )}
 
       {loading && (
-        <div style={{ padding: 30, textAlign: 'center', color: 'rgba(142,155,174,0.85)' }}>
+        <div style={{ padding: 30, textAlign: 'center', color: 'var(--afcfta-muted)' }}>
           <Loader2 className="animate-spin" style={{ display: 'inline', marginRight: 8 }} />
           {t.loading}
         </div>
@@ -369,30 +366,30 @@ export default function CountryHS6History({ language = 'fr' }) {
       {view === 'label' && (
         <div style={{ padding: '6px 16px 16px' }} data-testid="hs-label-panel">
           {labelLoading ? (
-            <div style={{ padding: 24, textAlign: 'center', color: 'rgba(142,155,174,0.85)' }}>
+            <div style={{ padding: 24, textAlign: 'center', color: 'var(--afcfta-muted)' }}>
               <Loader2 className="animate-spin" style={{ display: 'inline', marginRight: 8 }} />
               {t.loading}
             </div>
           ) : labelData ? (
-            <div style={{ padding: '14px 16px', borderRadius: 10, background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.22)' }}>
+            <div style={{ padding: '14px 16px', borderRadius: 10, background: 'var(--goldSoft)', border: '1px solid var(--goldSoft)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 0.8, background: 'rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.95)', borderRadius: 6, padding: '4px 9px' }}>
+                <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 0.8, background: 'color-mix(in srgb, var(--gold) 12%, var(--afcfta-card))', color: 'var(--gold)', borderRadius: 6, padding: '4px 9px' }}>
                   SH{LEVEL_LEN[labelData.level]} · {labelData.code}
                 </span>
-                <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 600 }}>{t.labelTitle}</span>
+                <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 600 }}>{t.labelTitle}</span>
               </div>
               <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.4, marginBottom: 4 }} data-testid="hs-label-fr">
                 {labelData.label_fr || labelData.label_en || '—'}
                 {labelData.label_lang === 'en' && (
-                  <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, color: 'rgba(142,155,174,0.7)', border: '1px solid rgba(142,155,174,0.35)', borderRadius: 4, padding: '1px 5px' }}>{t.enOnly}</span>
+                  <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, color: 'var(--afcfta-muted)', border: '1px solid var(--afcfta-muted)', borderRadius: 4, padding: '1px 5px' }}>{t.enOnly}</span>
                 )}
               </div>
               {labelData.label_en && labelData.label_lang === 'both' && labelData.label_en !== labelData.label_fr && (
-                <div style={{ fontSize: 12.5, color: 'rgba(142,155,174,0.9)', fontStyle: 'italic', marginBottom: 8 }}>
+                <div style={{ fontSize: 12.5, color: 'var(--afcfta-muted)', fontStyle: 'italic', marginBottom: 8 }}>
                   {labelData.label_en}
                 </div>
               )}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', paddingTop: 10, borderTop: '1px solid rgba(212,175,55,0.15)', marginTop: 8 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', paddingTop: 10, borderTop: '1px solid var(--goldSoft)', marginTop: 8 }}>
                 <LabelMeta k={t.chapterLbl} v={`${labelData.chapter} — ${language === 'fr' ? labelData.chapter_name_fr : labelData.chapter_name_en}`} />
                 {labelData.heading && <LabelMeta k={t.headingLbl} v={`${labelData.heading}${labelData.heading_name_en ? ' — ' + labelData.heading_name_en : ''}`} />}
                 {labelData.category && <LabelMeta k={t.categoryLbl} v={labelData.category} />}
@@ -401,7 +398,7 @@ export default function CountryHS6History({ language = 'fr' }) {
               <p className="stats-source-note" style={{ margin: '10px 0 0' }}>{labelData.source}</p>
             </div>
           ) : (
-            <div style={{ padding: 24, textAlign: 'center', color: 'rgba(142,155,174,0.85)' }} data-testid="hs-label-empty">
+            <div style={{ padding: 24, textAlign: 'center', color: 'var(--afcfta-muted)' }} data-testid="hs-label-empty">
               {t.selectCodePrompt}
             </div>
           )}
@@ -416,14 +413,14 @@ export default function CountryHS6History({ language = 'fr' }) {
               margin: '6px 16px 2px',
               padding: '10px 14px',
               borderRadius: 10,
-              background: 'rgba(212,175,55,0.07)',
-              border: '1px solid rgba(212,175,55,0.22)',
+              background: 'var(--goldSoft)',
+              border: '1px solid var(--goldSoft)',
             }}>
               {/* Ligne HS4 */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: data.hs_labels.length > 1 ? 6 : 0 }}>
                 <span style={{
-                  fontSize: 10, fontWeight: 800, letterSpacing: 0.8,
-                  background: 'rgba(212,175,55,0.18)', color: 'rgba(212,175,55,0.95)',
+                  fontSize: 11, fontWeight: 700, letterSpacing: 0.4,
+                  background: 'var(--afcfta-card)', color: 'var(--gold)',
                   borderRadius: 5, padding: '2px 6px', flexShrink: 0,
                 }}>
                   SH{LEVEL_LEN[data.level] || 6} {data.hs_query || data.hs4_code}
@@ -433,9 +430,11 @@ export default function CountryHS6History({ language = 'fr' }) {
                 </span>
                 {data.match_level && (
                   <span style={{
-                    marginLeft: 'auto', fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
-                    color: data.match_level === 'hs6' ? '#10b981' : data.match_level === 'hs4' ? '#fbbf24' : '#f43f5e',
-                    background: data.match_level === 'hs6' ? 'rgba(16,185,129,0.12)' : data.match_level === 'hs4' ? 'rgba(251,191,36,0.12)' : 'rgba(244,63,94,0.12)',
+                    marginLeft: 'auto', fontSize: 11, fontWeight: 700, letterSpacing: 0.2,
+                    // Qualité de correspondance = statut (exact / approché / autre) : jetons de statut,
+                    // pastille opaque pour ne pas s'additionner au bandeau teinté dessous.
+                    color: data.match_level === 'hs6' ? 'var(--success)' : data.match_level === 'hs4' ? 'var(--gold)' : 'var(--danger)',
+                    background: `color-mix(in srgb, ${data.match_level === 'hs6' ? 'var(--success)' : data.match_level === 'hs4' ? 'var(--gold)' : 'var(--danger)'} 12%, var(--afcfta-card))`,
                     borderRadius: 5, padding: '2px 7px', flexShrink: 0,
                   }}>
                     {(MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level]}
@@ -445,16 +444,16 @@ export default function CountryHS6History({ language = 'fr' }) {
 
               {/* Sous-positions HS6 (si plusieurs) */}
               {data.hs_labels.length > 1 && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px 8px', paddingTop: 4, borderTop: '1px solid rgba(212,175,55,0.12)' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px 8px', paddingTop: 4, borderTop: '1px solid var(--goldSoft)' }}>
                   {data.hs_labels.slice(0, 12).map((item) => (
                     <span key={item.hs6_id} style={{
                       display: 'inline-flex', alignItems: 'center', gap: 5,
-                      fontSize: 11, color: 'rgba(142,155,174,0.9)',
+                      fontSize: 11, color: 'var(--afcfta-muted)',
                     }}>
                       <span style={{
                         fontSize: 9.5, fontWeight: 800, letterSpacing: 0.5,
-                        background: 'rgba(255,255,255,0.07)', borderRadius: 4,
-                        padding: '1px 5px', color: 'rgba(212,175,55,0.75)',
+                        background: 'var(--overlay)', borderRadius: 4,
+                        padding: '1px 5px', color: 'var(--gold)',
                       }}>
                         {t.hs6Label} {String(item.hs6_id).slice(-6)}
                       </span>
@@ -462,7 +461,7 @@ export default function CountryHS6History({ language = 'fr' }) {
                     </span>
                   ))}
                   {data.hs_labels.length > 12 && (
-                    <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.7)', fontWeight: 700 }}>
+                    <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700 }}>
                       +{data.hs_labels.length - 12} {t.productsFound}
                     </span>
                   )}
@@ -474,10 +473,10 @@ export default function CountryHS6History({ language = 'fr' }) {
           {/* ─── Stat strip ─── */}
           {totals && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: '8px 16px' }}>
-              <StatBox label={t.totalExports} value={fmtUSD(totals.exports)} icon={<TrendingUp size={14} color="#10b981" />} />
-              <StatBox label={t.totalImports} value={fmtUSD(totals.imports)} icon={<TrendingDown size={14} color="#f43f5e" />} />
-              <StatBox label={t.cumulativeBalance} value={fmtUSD(totals.balance)} icon={totals.balance >= 0 ? <TrendingUp size={14} color="#10b981" /> : <TrendingDown size={14} color="#f43f5e" />} accent={totals.balance >= 0 ? '#10b981' : '#f43f5e'} />
-              <StatBox label={t.avgGrowth} value={totals.cagr != null ? `${totals.cagr.toFixed(1)}%` : '—'} icon={totals.cagr != null && totals.cagr >= 0 ? <TrendingUp size={14} color="#10b981" /> : <Minus size={14} />} />
+              <StatBox label={t.totalExports} value={fmtUSD(totals.exports, language)} icon={<TrendingUp size={14} color="var(--success)" />} />
+              <StatBox label={t.totalImports} value={fmtUSD(totals.imports, language)} icon={<TrendingDown size={14} color="var(--danger)" />} />
+              <StatBox label={t.cumulativeBalance} value={fmtUSD(totals.balance, language)} icon={totals.balance >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <TrendingDown size={14} color="var(--danger)" />} />
+              <StatBox label={t.avgGrowth} value={totals.cagr != null ? `${totals.cagr.toFixed(1)}%` : '—'} icon={totals.cagr != null && totals.cagr >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <Minus size={14} />} />
             </div>
           )}
 
@@ -485,32 +484,32 @@ export default function CountryHS6History({ language = 'fr' }) {
           {data.chart_rows && data.chart_rows.length > 0 ? (
             <div style={{ padding: '8px 8px 4px' }}>
               <ResponsiveContainer width="100%" height={300}>
-                <ComposedChart data={data.chart_rows} margin={{ top: 8, right: 16, left: 0, bottom: 4 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(142,155,174,0.15)" />
-                  <XAxis dataKey="year" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.85)', fontWeight: 700 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.85)' }} axisLine={false} tickLine={false} tickFormatter={(v) => fmtUSD(v)} width={62} />
+                <ComposedChart data={data.chart_rows} margin={{ top: 8, right: 16, left: 0, bottom: 4 }} barGap={2}>
+                  <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+                  <XAxis dataKey="year" tick={{ fontSize: 12, fill: 'var(--afcfta-muted)', fontWeight: 700 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => fmtUSD(v, language)} width={62} />
                   <Tooltip
-                    contentStyle={{ background: '#1a2332', border: '1px solid rgba(212,137,26,0.4)', borderRadius: 8, color: '#e2e8f0' }}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)', borderRadius: 8, color: 'var(--text)' }}
                     formatter={(value, name, entry) => {
                       const row = entry?.payload || {};
                       if (name === t.exports && row.exports_quantity > 0) {
-                        return [`${fmtUSD(value)} · ${fmtTonnes(row.exports_quantity)}`, name];
+                        return [`${fmtUSD(value, language)} · ${fmtTonnes(row.exports_quantity, language)}`, name];
                       }
                       if (name === t.imports && row.imports_quantity > 0) {
-                        return [`${fmtUSD(value)} · ${fmtTonnes(row.imports_quantity)}`, name];
+                        return [`${fmtUSD(value, language)} · ${fmtTonnes(row.imports_quantity, language)}`, name];
                       }
-                      return [fmtUSD(value), name];
+                      return [fmtUSD(value, language), name];
                     }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar dataKey="exports" name={t.exports} fill="#10b981" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="imports" name={t.imports} fill="#f43f5e" radius={[4, 4, 0, 0]} />
-                  <Line type="monotone" dataKey="balance" name={t.balance} stroke="#fbbf24" strokeWidth={2.5} dot={{ r: 4 }} />
+                  <Bar dataKey="exports" name={t.exports} fill="var(--series-1)" radius={[4, 4, 0, 0]} maxBarSize={24} />
+                  <Bar dataKey="imports" name={t.imports} fill="var(--series-2)" radius={[4, 4, 0, 0]} maxBarSize={24} />
+                  <Line type="monotone" dataKey="balance" name={t.balance} stroke="var(--series-3)" strokeWidth={2} dot={{ r: 4, fill: 'var(--series-3)', stroke: 'var(--afcfta-card)', strokeWidth: 2 }} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <div style={{ padding: 24, textAlign: 'center', color: 'rgba(142,155,174,0.85)' }} data-testid="hs6-empty">
+            <div style={{ padding: 24, textAlign: 'center', color: 'var(--afcfta-muted)' }} data-testid="hs6-empty">
               {t.noData}
             </div>
           )}
@@ -520,25 +519,25 @@ export default function CountryHS6History({ language = 'fr' }) {
             <div style={{ padding: '4px 16px 16px', overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid rgba(212,175,55,0.25)' }}>
-                    <th style={{ textAlign: 'left', padding: '6px 4px', color: 'rgba(212,175,55,0.9)', fontWeight: 700 }}>{t.year}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#10b981', fontWeight: 700 }}>{t.exports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#34d399', fontWeight: 600, fontSize: 12 }}>{t.qtyExports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#f43f5e', fontWeight: 700 }}>{t.imports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#fb7185', fontWeight: 600, fontSize: 12 }}>{t.qtyImports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#fbbf24', fontWeight: 700 }}>{t.balance}</th>
+                  <tr style={{ borderBottom: '1px solid var(--afcfta-border)' }}>
+                    <th style={{ textAlign: 'left', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.year}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.exports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--afcfta-muted)', fontWeight: 600, fontSize: 12 }}>{t.qtyExports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.imports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--afcfta-muted)', fontWeight: 600, fontSize: 12 }}>{t.qtyImports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.balance}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.chart_rows.map((row) => (
-                    <tr key={row.year} style={{ borderBottom: '1px solid rgba(142,155,174,0.10)' }}>
+                    <tr key={row.year} style={{ borderBottom: '1px solid var(--afcfta-border)', fontVariantNumeric: 'tabular-nums' }}>
                       <td style={{ padding: '6px 4px', fontWeight: 700 }}>{row.year}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.exports)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'rgba(52,211,153,0.85)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.imports)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'rgba(251,113,133,0.85)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', color: row.balance >= 0 ? '#10b981' : '#f43f5e' }}>
-                        {fmtUSD(row.balance)}
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.exports, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.imports, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', color: 'var(--text)' }}>
+                        {fmtUSD(row.balance, language)}
                       </td>
                     </tr>
                   ))}
@@ -560,9 +559,9 @@ export default function CountryHS6History({ language = 'fr' }) {
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
-                border: '1px solid rgba(212,175,55,0.45)',
-                background: 'rgba(212,175,55,0.12)',
-                color: 'rgba(212,175,55,0.95)',
+                border: '1px solid var(--afcfta-border)',
+                background: 'var(--goldSoft)',
+                color: 'var(--gold)',
                 fontWeight: 700,
                 fontSize: 12.5,
                 cursor: exportingTheme != null ? 'not-allowed' : 'pointer',
@@ -584,9 +583,9 @@ export default function CountryHS6History({ language = 'fr' }) {
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
-                border: '1px solid rgba(212,175,55,0.45)',
-                background: 'rgba(212,175,55,0.12)',
-                color: 'rgba(212,175,55,0.95)',
+                border: '1px solid var(--afcfta-border)',
+                background: 'var(--goldSoft)',
+                color: 'var(--gold)',
                 fontWeight: 700,
                 fontSize: 12.5,
                 cursor: exportingTheme != null ? 'not-allowed' : 'pointer',
@@ -606,9 +605,9 @@ export default function CountryHS6History({ language = 'fr' }) {
               style={{
                 padding: '7px 14px',
                 borderRadius: 8,
-                border: '1px solid rgba(212,175,55,0.45)',
-                background: 'rgba(212,175,55,0.12)',
-                color: 'rgba(212,175,55,0.95)',
+                border: '1px solid var(--afcfta-border)',
+                background: 'var(--goldSoft)',
+                color: 'var(--gold)',
                 fontWeight: 700,
                 fontSize: 12.5,
                 cursor: 'pointer',
@@ -628,10 +627,10 @@ function tabStyle(active) {
   return {
     padding: '7px 14px',
     borderRadius: '8px 8px 0 0',
-    border: '1px solid rgba(212,175,55,0.28)',
-    borderBottom: active ? '2px solid rgba(212,175,55,0.95)' : '1px solid rgba(212,175,55,0.12)',
-    background: active ? 'rgba(212,175,55,0.16)' : 'rgba(255,255,255,0.03)',
-    color: active ? 'rgba(212,175,55,0.98)' : 'rgba(142,155,174,0.9)',
+    border: '1px solid var(--afcfta-border)',
+    borderBottom: active ? '2px solid var(--gold)' : '1px solid var(--goldSoft)',
+    background: active ? 'var(--goldSoft)' : 'var(--overlay)',
+    color: active ? 'var(--gold)' : 'var(--afcfta-muted)',
     fontWeight: 700,
     fontSize: 12.5,
     letterSpacing: 0.3,
@@ -642,8 +641,8 @@ function tabStyle(active) {
 
 function LabelMeta({ k, v }) {
   return (
-    <span style={{ fontSize: 12, color: 'rgba(142,155,174,0.95)' }}>
-      <span style={{ fontWeight: 800, color: 'rgba(212,175,55,0.8)', textTransform: 'uppercase', fontSize: 10, letterSpacing: 0.5, marginRight: 5 }}>{k}</span>
+    <span style={{ fontSize: 12, color: 'var(--afcfta-muted)' }}>
+      <span style={{ fontWeight: 800, color: 'var(--gold)', fontSize: 10, marginRight: 5 }}>{k}</span>
       {v}
     </span>
   );
@@ -655,18 +654,18 @@ function StatBox({ label, value, icon, accent }) {
       style={{
         padding: 10,
         borderRadius: 10,
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(212,175,55,0.18)',
+        background: 'var(--overlay)',
+        border: '1px solid var(--goldSoft)',
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'rgba(142,155,174,0.85)', fontSize: 10.5, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--afcfta-muted)', fontSize: 12, fontWeight: 600 }}>
         {icon}
         {label}
       </div>
-      <div style={{ fontSize: 17, fontWeight: 800, color: accent || 'var(--text)', fontFamily: 'monospace' }}>{value}</div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: accent || 'var(--text)' }}>{value}</div>
     </div>
   );
 }

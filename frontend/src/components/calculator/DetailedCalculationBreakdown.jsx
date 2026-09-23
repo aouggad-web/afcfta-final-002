@@ -33,7 +33,7 @@ const TaxLineRow = ({ tax, language }) => {
         <div className="flex items-center gap-2">
           <span>{language === 'fr' ? tax.name_fr : tax.name_en}</span>
           {isExempt && (
-            <Badge variant="outline" className="text-xs bg-emerald-100 text-emerald-700 border-emerald-300">
+            <Badge variant="outline" className="text-xs bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
               Exonéré ZLECAf
             </Badge>
           )}
@@ -51,7 +51,7 @@ const TaxLineRow = ({ tax, language }) => {
           ({tax.base_type === 'cif_plus_dd' ? 'CIF+DD' : 'CIF'})
         </span>
       </TableCell>
-      <TableCell className={`text-right font-bold ${isExempt ? 'text-emerald-600' : 'text-slate-900'}`}>
+      <TableCell className={`text-right font-bold ${isExempt ? 'text-[var(--success)]' : 'text-[var(--text)]'}`}>
         {formatCurrency(tax.amount)}
       </TableCell>
     </TableRow>
@@ -60,10 +60,10 @@ const TaxLineRow = ({ tax, language }) => {
 
 // Single regime breakdown
 const RegimeBreakdown = ({ calculation, language, isZlecaf = false }) => {
-  const bgColor = isZlecaf ? 'bg-emerald-50' : 'bg-blue-50';
-  const borderColor = isZlecaf ? 'border-emerald-200' : 'border-blue-200';
-  const headerColor = isZlecaf ? 'text-emerald-700' : 'text-blue-700';
-  const accentColor = isZlecaf ? 'bg-emerald-100' : 'bg-blue-100';
+  const bgColor = isZlecaf ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]';
+  const borderColor = isZlecaf ? 'border-[color-mix(in_srgb,var(--success)_30%,transparent)]' : 'border-[color-mix(in_srgb,var(--info)_30%,transparent)]';
+  const headerColor = isZlecaf ? 'text-[var(--success)]' : 'text-[var(--info)]';
+  const accentColor = isZlecaf ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]';
   
   const texts = {
     fr: {
@@ -113,7 +113,7 @@ const RegimeBreakdown = ({ calculation, language, isZlecaf = false }) => {
       <CardContent className="space-y-4">
         {/* CIF Breakdown */}
         <div className={`${accentColor} rounded-lg p-3`}>
-          <h4 className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1">
+          <h4 className="text-sm font-semibold text-[var(--text)] mb-2 flex items-center gap-1">
             <Calculator className="h-4 w-4" />
             {txt.cifBreakdown}
           </h4>
@@ -125,21 +125,21 @@ const RegimeBreakdown = ({ calculation, language, isZlecaf = false }) => {
             <span className="text-[var(--afcfta-muted)]">{txt.insurance}:</span>
             <span className="text-right font-mono">{formatCurrency(calculation.insurance)}</span>
             <Separator className="col-span-2 my-1" />
-            <span className="font-semibold text-slate-800">{txt.cifTotal}:</span>
+            <span className="font-semibold text-[var(--text)]">{txt.cifTotal}:</span>
             <span className="text-right font-mono font-bold">{formatCurrency(calculation.cif_value)}</span>
           </div>
         </div>
         
         {/* Tax Details Table */}
         <div>
-          <h4 className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1">
+          <h4 className="text-sm font-semibold text-[var(--text)] mb-2 flex items-center gap-1">
             <Percent className="h-4 w-4" />
             {txt.taxBreakdown}
           </h4>
-          <div className="rounded-lg overflow-hidden border border-slate-200 bg-white">
+          <div className="rounded-lg overflow-hidden border border-[var(--afcfta-border)] bg-[var(--afcfta-card)]">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50">
+                <TableRow className="bg-[var(--afcfta-card2)]">
                   <TableHead>{txt.tax}</TableHead>
                   <TableHead className="text-center">{txt.rate}</TableHead>
                   <TableHead className="text-right">{txt.base}</TableHead>
@@ -163,8 +163,8 @@ const RegimeBreakdown = ({ calculation, language, isZlecaf = false }) => {
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between items-center">
-            <span className="font-semibold text-slate-800">{txt.totalToPay}:</span>
-            <span className={`text-xl font-bold ${isZlecaf ? 'text-emerald-700' : 'text-blue-700'}`}>
+            <span className="font-semibold text-[var(--text)]">{txt.totalToPay}:</span>
+            <span className={`text-xl font-bold ${isZlecaf ? 'text-[var(--success)]' : 'text-[var(--info)]'}`}>
               {formatCurrency(calculation.total_to_pay)}
             </span>
           </div>
@@ -209,8 +209,8 @@ export default function DetailedCalculationBreakdown({ result, language = 'fr' }
     <div className="space-y-6" data-testid="detailed-calculation-breakdown">
       {/* Header */}
       <div className="text-center">
-        <h3 className="text-xl font-bold text-slate-900 flex items-center justify-center gap-2">
-          <Calculator className="h-6 w-6 text-purple-600" />
+        <h3 className="text-xl font-bold text-[var(--text)] flex items-center justify-center gap-2">
+          <Calculator className="h-6 w-6 text-[var(--violet)]" />
           {txt.title}
         </h3>
         <p className="text-sm text-[var(--afcfta-muted)]">{txt.subtitle}</p>
@@ -269,12 +269,12 @@ export default function DetailedCalculationBreakdown({ result, language = 'fr' }
       </div>
       
       {/* Methodology Note */}
-      <Card className="bg-slate-50 border-slate-200">
+      <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
         <CardContent className="py-4">
           <div className="flex items-start gap-2">
             <Info className="h-5 w-5 text-[var(--afcfta-muted)] mt-0.5 shrink-0" />
             <div>
-              <p className="text-sm font-semibold text-slate-700">{txt.methodology}</p>
+              <p className="text-sm font-semibold text-[var(--text)]">{txt.methodology}</p>
               <p className="text-xs text-[var(--afcfta-muted)] mt-1">{txt.methodologyText}</p>
             </div>
           </div>

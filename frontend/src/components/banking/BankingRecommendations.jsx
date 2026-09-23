@@ -91,7 +91,7 @@ export default function BankingRecommendations({ language = 'en' }) {
       <Card>
         <CardHeader>
           <CardTitle>{t.title}</CardTitle>
-          <p className="text-sm text-gray-600">{t.subtitle}</p>
+          <p className="text-sm text-[var(--afcfta-muted)]">{t.subtitle}</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -134,15 +134,15 @@ export default function BankingRecommendations({ language = 'en' }) {
           </form>
 
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded">
-              <p className="text-red-800">{t.error}: {error}</p>
+            <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] rounded">
+              <p className="text-[var(--danger)]">{t.error}: {error}</p>
             </div>
           )}
 
           {result && (
             <div className="mt-6 space-y-4">
               {/* Risk Profile */}
-              <Card className="bg-blue-50">
+              <Card className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
                 <CardHeader>
                   <CardTitle className="text-base">{t.risk}</CardTitle>
                 </CardHeader>
@@ -151,7 +151,7 @@ export default function BankingRecommendations({ language = 'en' }) {
                     <span>{t.rating}:</span>
                     <Badge>{result.risk_profile?.rating}</Badge>
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-[var(--afcfta-muted)]">
                     <div>Forex: {result.risk_profile?.forex_risk}</div>
                     <div>Political: {result.risk_profile?.political_risk}</div>
                   </div>
@@ -166,9 +166,9 @@ export default function BankingRecommendations({ language = 'en' }) {
                   </CardHeader>
                   <CardContent className="space-y-2">
                     {result.instruments.map((inst, i) => (
-                      <div key={i} className="p-2 bg-gray-50 rounded">
+                      <div key={i} className="p-2 bg-[var(--afcfta-card2)] rounded">
                         <div className="font-medium">{inst.name}</div>
-                        <div className="text-xs text-gray-600">
+                        <div className="text-xs text-[var(--afcfta-muted)]">
                           {inst.typical_cost_pct}% cost • {inst.risk_coverage} coverage
                         </div>
                       </div>
@@ -203,9 +203,9 @@ export default function BankingRecommendations({ language = 'en' }) {
                   </CardHeader>
                   <CardContent className="space-y-2">
                     {result.banks.slice(0, 3).map((bank, i) => (
-                      <div key={i} className="p-2 bg-gray-50 rounded">
+                      <div key={i} className="p-2 bg-[var(--afcfta-card2)] rounded">
                         <div className="font-medium">{bank.name}</div>
-                        <div className="text-xs text-gray-600">
+                        <div className="text-xs text-[var(--afcfta-muted)]">
                           Score: {bank.recommendation_score}/10 • {bank.suitability}
                         </div>
                       </div>

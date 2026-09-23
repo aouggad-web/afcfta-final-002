@@ -42,8 +42,8 @@ code {
         --card-foreground: 36.9 38.2% 86.7%;
         --popover: 212 30.6% 9.6%;             /* --surface       #111820 */
         --popover-foreground: 36.9 38.2% 86.7%;
-        --primary: 19.7 69.6% 51%;             /* --terra         #D9642B */
-        --primary-foreground: 212.3 35.1% 7.3%;
+        --primary: 18.5 78.1% 35.9%;             /* #A34014 = départ de --active-fill (texte sombre dessus : 4,43:1) */
+        --primary-foreground: 38.8 51.5% 93.5%;   /* #F7F1E6 */
         --secondary: 217.1 35.6% 11.6%;        /* --afcfta-card2  #131B28 */
         --secondary-foreground: 36.9 38.2% 86.7%;
         --muted: 217.1 35.6% 11.6%;

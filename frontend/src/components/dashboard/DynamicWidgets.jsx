@@ -186,7 +186,7 @@ export function LSCIChartWidget({ language }) {
     rank: d.rank_africa
   }));
 
-  const COLORS = ['#f59e0b', '#6b7280', '#b45309', '#8b5cf6', '#3b82f6', '#10b981', '#ef4444', '#6366f1'];
+  const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
   return (
     <div className="space-y-2">

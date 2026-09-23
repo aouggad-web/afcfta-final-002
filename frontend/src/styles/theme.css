@@ -35,18 +35,54 @@
   --text-soft:     rgba(234,224,208,0.90);
   --field:         rgba(24,32,48,0.95);
   --card-grad:     linear-gradient(to bottom right, #1e293b, #0f172a);
-  --card-head:     linear-gradient(135deg, rgba(193,122,43,0.15), rgba(212,175,55,0.08));
+  --card-head:     linear-gradient(135deg, rgba(193,122,43,0.10), rgba(212,175,55,0.05));   /* 15/8 % : titre or sur voile or à 4,35:1 */
   --field-border:  rgba(200,83,26,0.20);
+  --stats-hero:    linear-gradient(135deg, rgba(200,83,26,0.18) 0%, #121820 35%, #0C1219 65%, rgba(26,107,138,0.18) 100%);
+  --active-fill: linear-gradient(135deg, #A34014, #8F3510);   /* ≥ 4,8:1 même au survol (brightness 1.1) */
+
+  /* Vocabulaire --afcfta-* : ces trois noms étaient employés (Opportunités,
+     recherche SH par produit) mais jamais définis — leurs replis s'affichaient
+     (fond transparent, carte blanche, texte quasi noir). */
+  --afcfta-bg:     var(--afcfta-card2);
+  --afcfta-text:   var(--text);
+  --afcfta-accent: var(--gold);
+
+  /* ── Séries de graphiques (skill dataviz) ──────────────────────
+     Huit teintes de la marque, ordre fixe, jamais cyclées. Validées par
+     validate_palette.js sur la carte #182030 : bande L, chroma ≥ 0,10,
+     CVD voisins ≥ 11,2, vision normale ≥ 17,7, contraste ≥ 3:1 ; les trois
+     premières passent aussi « toutes paires ». */
+  --series-1: #03A762;   /* vert baobab   */
+  --series-2: #0C83AB;   /* bleu atlantique */
+  --series-3: #BA480B;   /* terre          */
+  --series-4: #EF4092;   /* bougainvillier */
+  --series-5: #C57D06;   /* safran         */
+  --series-6: #9D6BFE;   /* violet         */
+  --series-7: #EA2E41;   /* rouge kente    */
+  --series-8: #10A693;   /* lagune         */
+  --chart-grid: #243044;   /* un cran au-dessus de la carte, trait plein */
+  --chart-axis: #34425A;
+
+  /* Cartographie des produits : une teinte par famille de produits SH.
+     Les blocs se touchent tous, donc contrôle « toutes paires » : quatre
+     familles au plus, plus le gris du reste (vision normale ≥ 17,1,
+     daltonisme ≥ 10,0). Libellé posé sur l'aplat, blanc ou encre selon
+     sa luminance : ≥ 5:1 partout. */
+  --tm-agri: var(--series-1);                                   --tm-agri-ink: #0C1219;
+  --tm-mineraux: var(--series-3);                               --tm-mineraux-ink: #FFFFFF;
+  --tm-metaux: var(--series-6);                                 --tm-metaux-ink: #0C1219;
+  --tm-industrie: color-mix(in srgb, var(--series-2) 90%, #000); --tm-industrie-ink: #FFFFFF;
+  --tm-autres: color-mix(in srgb, var(--afcfta-muted) 25%, var(--afcfta-card)); --tm-autres-ink: #FFFFFF;
 
   /* ── Palette africaine ─────────────────────────────────────── */
-  --terra:        #D9642B;   /* terre rouge — accent principal (relevé : 4,22:1 → 5,20:1) */
+  --terra:        #DE7A49;   /* terre rouge — accent principal ; relevé pour tenir 4,6:1 en pastille teintée sur carte */
   --gold:         #D4891A;   /* or saharien */
   --green:        #2E9E68;   /* vert baobab (relevé : 3,52:1 → 5,56:1) */
-  --red:          #E76060;   /* rouge kente (relevé : 3,12:1 → 5,59:1) */
-  --atlantic:     #3E9CBF;   /* bleu atlantique (relevé : 3,15:1 → 6,01:1) */
+  --red:          #E97070;   /* rouge kente ; aligné sur --danger */
+  --atlantic:     #47A1C3;   /* bleu atlantique ; relevé pour tenir 4,6:1 en pastille teintée */
 
-  --terrasoft:    rgba(217,100,43,0.16);
-  --goldSoft:     rgba(212,137,26,0.16);
+  --terrasoft:    rgba(222,122,73,0.14);
+  --goldSoft:     rgba(212,137,26,0.10);   /* 0,16 poussait --gold à 3,93:1 sur carte teintée */
   --greenSoft:    rgba(46,158,104,0.16);
 
   /* ── Texte ─────────────────────────────────────────────────── */
@@ -58,7 +94,7 @@
   --info:         #4BA8D4;
   --violet:       #A98BF7;
   --warning:      #D4891A;
-  --danger:       #E76060;
+  --danger:       #E97070;
 
   /* ── Sidebar ───────────────────────────────────────────────── */
   --sidebar-w:    228px;
@@ -470,9 +506,11 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--terra), #A84215);
-  border: 1px solid rgba(200,83,26,0.4);
-  color: #fff;
+  /* Même remplissage que toute action principale : le dégradé terre + blanc
+     tombait à 4,23:1 une fois --terra éclairci pour les pastilles. */
+  background: var(--active-fill);
+  border: 1px solid transparent;
+  color: #F7F1E6;
   font-weight: 700;
   padding: 11px 18px;
   border-radius: 10px;
@@ -486,14 +524,14 @@ body::before {
 .afcfta-btn:disabled{ opacity: 0.5; cursor: not-allowed; transform: none; }
 
 .afcfta-btn-secondary {
-  background: rgba(255,255,255,0.05);
+  background: var(--overlay);
   border: 1px solid var(--afcfta-border);
   color: var(--text);
 }
 
 .afcfta-btn-secondary:hover {
-  background: rgba(255,255,255,0.09);
-  border-color: rgba(200,83,26,0.22);
+  background: var(--overlay-border);
+  border-color: color-mix(in srgb, var(--terra) 30%, transparent);
 }
 
 .afcfta-btn-sm {
@@ -651,16 +689,16 @@ body::before {
    Result cards
    ================================================================ */
 .afcfta-result {
-  background: linear-gradient(135deg, rgba(24,32,48,0.95), rgba(18,26,40,0.95));
-  border: 1px solid rgba(200,83,26,0.16);
+  background: var(--afcfta-card);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-md);
   overflow: hidden;
 }
 
 .afcfta-result-header {
   padding: 14px 16px;
-  background: linear-gradient(135deg, rgba(200,83,26,0.14), rgba(212,137,26,0.07));
-  border-bottom: 1px solid rgba(200,83,26,0.15);
+  background: var(--card-head);
+  border-bottom: 1px solid var(--afcfta-border);
 }
 
 .afcfta-result-body { padding: 16px; }
@@ -773,13 +811,28 @@ body::before {
 .afcfta-shell input::placeholder,
 .afcfta-shell textarea::placeholder { color: var(--afcfta-muted) !important; }
 
-/* Radix combobox/select */
+/* Radix combobox/select
+   Radix pose [data-radix-collection-item] sur les onglets AUSSI : sans
+   l'exclusion, tous les onglets de l'application étaient peints en champ de
+   saisie et perdaient leur état actif. */
 .afcfta-shell [role="combobox"],
-.afcfta-shell [data-radix-collection-item] {
+.afcfta-shell [data-radix-collection-item]:not([role="tab"]) {
   background: var(--field) !important;
   border: 1px solid var(--field-border) !important;
   color: var(--text) !important;
   border-radius: 10px;
+}
+
+/* Un seul traitement d'onglet actif dans toute l'application. */
+.afcfta-shell [role="tab"] {
+  color: var(--afcfta-muted);
+  border-radius: 10px;
+}
+
+.afcfta-shell [role="tab"][data-state="active"] {
+  background: var(--active-fill) !important;
+  color: #F7F1E6 !important;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--terra) 32%, transparent);
 }
 
 .afcfta-shell [role="combobox"]:hover { border-color: rgba(200,83,26,0.4) !important; }
@@ -816,7 +869,7 @@ body::before {
 .afcfta-shell .tabs-list-enhanced,
 .afcfta-shell .tabs-list-boxed,
 .afcfta-shell .tabs-vertical .tabs-list-vertical,
-.afcfta-shell .tabs-list-mini {
+html:not(.theme-light) .afcfta-shell .tabs-list-mini {
   background: rgba(24,32,48,0.9) !important;
   border: 1px solid rgba(200,83,26,0.12) !important;
   box-shadow: none !important;
@@ -840,16 +893,18 @@ body::before {
 .afcfta-shell .tab-trigger-enhanced[data-state="active"],
 .afcfta-shell .tab-trigger-mini[data-state="active"],
 .afcfta-shell .tab-trigger-stat[data-state="active"] {
-  color: var(--gold) !important;
-  background: var(--goldSoft) !important;
-  border-color: rgba(212,137,26,0.28) !important;
+  /* Même traitement que [data-slot="tabs-trigger"] : un seul onglet actif
+     dans toute l'application. L'or sur voile or plafonnait à 4,41:1. */
+  color: #F7F1E6 !important;
+  background: var(--active-fill) !important;
+  border-color: transparent !important;
 }
 
-.afcfta-shell .tab-badge { background: rgba(255,255,255,0.07) !important; color: var(--afcfta-muted) !important; }
+.afcfta-shell .tab-badge { background: var(--overlay) !important; color: var(--afcfta-muted) !important; }
 
 .afcfta-shell .tab-trigger-enhanced[data-state="active"] .tab-badge {
-  background: rgba(212,137,26,0.18) !important;
-  color: var(--gold) !important;
+  background: rgba(255,255,255,0.22) !important;
+  color: #F7F1E6 !important;
 }
 
 /* ================================================================
@@ -895,41 +950,44 @@ body::before {
    Color overrides for Tailwind classes
    ================================================================ */
 .afcfta-shell .text-slate-900,
+.afcfta-shell .text-slate-800,
+.afcfta-shell .text-slate-700,
 .afcfta-shell .text-gray-900,
 .afcfta-shell .text-gray-800,
 .afcfta-shell .text-gray-700 { color: var(--text) !important; }
 
+.afcfta-shell .text-slate-600,
 .afcfta-shell .text-slate-500,
 .afcfta-shell .text-gray-500,
 .afcfta-shell .text-gray-600 { color: var(--afcfta-muted) !important; }
 
-.afcfta-shell .text-orange-700,
-.afcfta-shell .text-orange-800 { color: #fb923c !important; }
-.afcfta-shell .text-blue-700,
-.afcfta-shell .text-blue-800   { color: #60a5fa !important; }
-.afcfta-shell .text-green-700,
-.afcfta-shell .text-green-800  { color: #4ade80 !important; }
-.afcfta-shell .text-purple-700,
-.afcfta-shell .text-purple-800 { color: #c084fc !important; }
-.afcfta-shell .text-red-700,
-.afcfta-shell .text-red-800    { color: #f87171 !important; }
-.afcfta-shell .text-emerald-700,
-.afcfta-shell .text-emerald-800{ color: #34d399 !important; }
-.afcfta-shell .text-amber-700,
-.afcfta-shell .text-amber-800  { color: #fbbf24 !important; }
-.afcfta-shell .text-indigo-700,
-.afcfta-shell .text-indigo-800 { color: #818cf8 !important; }
-.afcfta-shell .text-teal-700   { color: #2dd4bf !important; }
-.afcfta-shell .text-cyan-700   { color: #22d3ee !important; }
-.afcfta-shell .text-yellow-700,
-.afcfta-shell .text-yellow-800 { color: #fde047 !important; }
+html:not(.theme-light) .afcfta-shell .text-orange-700,
+html:not(.theme-light) .afcfta-shell .text-orange-800 { color: #fb923c !important; }
+html:not(.theme-light) .afcfta-shell .text-blue-700,
+html:not(.theme-light) .afcfta-shell .text-blue-800   { color: #60a5fa !important; }
+html:not(.theme-light) .afcfta-shell .text-green-700,
+html:not(.theme-light) .afcfta-shell .text-green-800  { color: #4ade80 !important; }
+html:not(.theme-light) .afcfta-shell .text-purple-700,
+html:not(.theme-light) .afcfta-shell .text-purple-800 { color: #c084fc !important; }
+html:not(.theme-light) .afcfta-shell .text-red-700,
+html:not(.theme-light) .afcfta-shell .text-red-800    { color: #f87171 !important; }
+html:not(.theme-light) .afcfta-shell .text-emerald-700,
+html:not(.theme-light) .afcfta-shell .text-emerald-800{ color: #34d399 !important; }
+html:not(.theme-light) .afcfta-shell .text-amber-700,
+html:not(.theme-light) .afcfta-shell .text-amber-800  { color: #fbbf24 !important; }
+html:not(.theme-light) .afcfta-shell .text-indigo-700,
+html:not(.theme-light) .afcfta-shell .text-indigo-800 { color: #818cf8 !important; }
+html:not(.theme-light) .afcfta-shell .text-teal-700   { color: #2dd4bf !important; }
+html:not(.theme-light) .afcfta-shell .text-cyan-700   { color: #22d3ee !important; }
+html:not(.theme-light) .afcfta-shell .text-yellow-700,
+html:not(.theme-light) .afcfta-shell .text-yellow-800 { color: #fde047 !important; }
 
 .afcfta-shell .bg-white       { background-color: var(--afcfta-card) !important; }
-.afcfta-shell .bg-gray-50,
-.afcfta-shell .bg-slate-50    { background-color: rgba(255,255,255,0.03) !important; }
-.afcfta-shell .bg-gray-100,
-.afcfta-shell .bg-slate-100   { background-color: rgba(255,255,255,0.06) !important; }
-.afcfta-shell .bg-gray-200    { background-color: rgba(255,255,255,0.09) !important; }
+html:not(.theme-light) .afcfta-shell .bg-gray-50,
+html:not(.theme-light) .afcfta-shell .bg-slate-50    { background-color: rgba(255,255,255,0.03) !important; }
+html:not(.theme-light) .afcfta-shell .bg-gray-100,
+html:not(.theme-light) .afcfta-shell .bg-slate-100   { background-color: rgba(255,255,255,0.06) !important; }
+html:not(.theme-light) .afcfta-shell .bg-gray-200    { background-color: rgba(255,255,255,0.09) !important; }
 
 .afcfta-shell .bg-orange-50,
 .afcfta-shell .bg-red-50,
@@ -943,14 +1001,28 @@ body::before {
 .afcfta-shell .bg-yellow-50,
 .afcfta-shell .bg-indigo-50,
 .afcfta-shell .bg-lime-50,
-.afcfta-shell .bg-teal-50     { background-color: var(--afcfta-card) !important; }
+.afcfta-shell .bg-teal-50,
+.afcfta-shell .bg-orange-100,
+.afcfta-shell .bg-red-100,
+.afcfta-shell .bg-blue-100,
+.afcfta-shell .bg-cyan-100,
+.afcfta-shell .bg-green-100,
+.afcfta-shell .bg-emerald-100,
+.afcfta-shell .bg-purple-100,
+.afcfta-shell .bg-pink-100,
+.afcfta-shell .bg-amber-100,
+.afcfta-shell .bg-yellow-100,
+.afcfta-shell .bg-indigo-100,
+.afcfta-shell .bg-teal-100  { background-color: var(--afcfta-card) !important; }
 
 .afcfta-shell .border-gray-200,
 .afcfta-shell .border-slate-100,
 .afcfta-shell .border-gray-100 { border-color: var(--afcfta-border) !important; }
 
+/* Surface « dégradé de carte » : sombre en dur, elle restait un îlot sombre en
+   thème clair dans les 7 composants qui l'emploient. */
 .afcfta-dark-gradient {
-  background: linear-gradient(135deg, rgba(24,32,48,0.96), rgba(18,26,40,0.96)) !important;
+  background: var(--card-grad) !important;
 }
 
 /* ~= et non *= : la correspondance par sous-chaîne attrapait aussi les
@@ -978,14 +1050,14 @@ body::before {
 /* Overflow fixes */
 .afcfta-shell table td,
 .afcfta-shell table th         { overflow-wrap: break-word; word-break: break-word; max-width: 0; min-width: 0; }
-.afcfta-shell .overflow-x-auto { -webkit-overflow-scrolling: touch; }
-.afcfta-shell .recharts-responsive-container { overflow: hidden; }
+html:not(.theme-light) .afcfta-shell .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+html:not(.theme-light) .afcfta-shell .recharts-responsive-container { overflow: hidden; }
 .afcfta-shell .afcfta-card,
 .afcfta-shell [class*="rounded"] { min-width: 0; }
 .afcfta-shell .badge,
 .afcfta-shell [class*="badge"]   { white-space: nowrap; }
-.afcfta-shell .recharts-legend-item-text { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.afcfta-shell .recharts-wrapper  { overflow: hidden; }
+html:not(.theme-light) .afcfta-shell .recharts-legend-item-text { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
 
 /* Neutralise "brochure gradients" */
 .rainbow-header,
@@ -1385,6 +1457,7 @@ body::before {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  container-type: inline-size; /* la valeur se mesure à la carte */
 }
 
 .afcfta-kpiCard-top {
@@ -1397,8 +1470,6 @@ body::before {
 .afcfta-kpiCard-title {
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
   color: var(--afcfta-muted);
 }
 
@@ -1406,6 +1477,9 @@ body::before {
   margin-top: 8px;
   font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 3.2vw, 42px);
+  /* « 2 700 Md $ » ne se coupe pas : la valeur se réduit pour tenir à côté
+     de l'icône (46 px + 12 px d'écart) au lieu de la pousser hors de la carte. */
+  font-size: min(clamp(28px, 3.2vw, 42px), calc((100cqi - 58px) / 5.5));
   font-weight: 700;
   color: var(--text);
   line-height: 1;
@@ -1477,8 +1551,8 @@ body::before {
 
 .tabs-list-boxed,
 [data-slot="tabs-list"] {
-  background: rgba(255,255,255,0.04) !important;
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--overlay) !important;
+  border: 1px solid var(--overlay-border);
   border-radius: 14px;
   padding: 4px;
   gap: 4px;
@@ -1492,9 +1566,9 @@ body::before {
 }
 
 [data-slot="tabs-trigger"][data-state="active"] {
-  background: rgba(255,255,255,0.08) !important;
-  color: var(--text) !important;
-  box-shadow: inset 0 0 0 1px rgba(212,137,26,0.16);
+  background: var(--active-fill) !important;
+  color: #F7F1E6 !important;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--terra) 32%, transparent);
 }
 
 /* Shared cards in content areas */
@@ -1871,7 +1945,7 @@ body::before {
   font-size: 15px;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1279px) {
   .afcfta-kpiRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2267,3 +2341,35 @@ body::before {
   }
 }
 
+/* Légendes Recharts : la bibliothèque colore chaque libellé avec la couleur
+   de sa série (ambre, rouge vif…) — illisible sur l'un ou l'autre thème. La
+   pastille garde la couleur de la série ; le libellé prend l'encre du thème. */
+.recharts-legend-item-text { color: var(--text-soft) !important; }
+
+/* ── Graphiques Recharts : habillage (skill dataviz, marques & anatomie) ──
+   Grilles et axes : trait plein d'un pixel, un cran au-dessus de la surface,
+   jamais en pointillés. Graduations et libellés : encre atténuée du thème
+   (Recharts les peint en #666 par défaut, 2,84:1 sur la carte sombre). Une
+   règle CSS l'emporte sur les attributs de présentation SVG. */
+.recharts-cartesian-grid line { stroke: var(--chart-grid) !important; stroke-dasharray: none !important; stroke-width: 1px; }
+.recharts-cartesian-axis-line,
+.recharts-cartesian-axis-tick-line { stroke: var(--chart-axis) !important; }
+.recharts-cartesian-axis-tick-value,
+.recharts-polar-angle-axis-tick-value,
+.recharts-polar-radius-axis-tick-value,
+.recharts-label,
+.recharts-reference-line .recharts-label { fill: var(--afcfta-muted) !important; }
+.recharts-default-tooltip {
+  background: var(--afcfta-card) !important;
+  border: 1px solid var(--afcfta-border) !important;
+  border-radius: 10px;
+  color: var(--text);
+}
+.recharts-tooltip-label { color: var(--text) !important; }
+/* Éléments de l'infobulle : Recharts les colore à la teinte de la série — le
+   nom de la série suffit à l'identifier ; le texte reste à l'encre. */
+.recharts-tooltip-item { color: var(--text) !important; }
+
+/* Attribution des cartes Leaflet : le bleu par défaut (#0078A8) tombait à
+   4,09:1 sur les tuiles claires, qui restent claires dans les deux thèmes. */
+.leaflet-control-attribution a { color: #0B5673 !important; }

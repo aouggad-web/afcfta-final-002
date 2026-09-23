@@ -78,13 +78,13 @@ function ProductionMining({ language = 'fr' }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-xl">
+      <Card className="bg-[image:var(--card-grad)] border-l-4 border-l-[var(--gold)] shadow-xl">
         <CardHeader>
           <CardTitle className="text-3xl font-bold flex items-center gap-3">
             <span>⛏️</span>
             <span>{t('production.mining.panel.title')}</span>
           </CardTitle>
-          <CardDescription className="text-amber-100 text-lg">
+          <CardDescription className="text-[var(--gold)] text-lg">
             {t('production.mining.panel.subtitle')}
           </CardDescription>
         </CardHeader>
@@ -119,8 +119,8 @@ function ProductionMining({ language = 'fr' }) {
         <Card>
           <CardContent className="flex items-center justify-center h-96">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">{t('production.mining.panel.loading')}</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] mx-auto"></div>
+              <p className="mt-4 text-[var(--afcfta-muted)]">{t('production.mining.panel.loading')}</p>
             </div>
           </CardContent>
         </Card>
@@ -128,8 +128,8 @@ function ProductionMining({ language = 'fr' }) {
         <>
           {/* Line Chart: Evolution Production */}
           <Card className="shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50">
-              <CardTitle className="text-xl text-amber-700">
+            <CardHeader className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]">
+              <CardTitle className="text-xl text-[var(--gold)]">
                 📈 {t('production.mining.panel.evolutionTitle')}
               </CardTitle>
             </CardHeader>
@@ -167,8 +167,8 @@ function ProductionMining({ language = 'fr' }) {
 
           {/* Bar Chart: Comparison */}
           <Card className="shadow-lg">
-            <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50">
-              <CardTitle className="text-xl text-orange-700">
+            <CardHeader className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]">
+              <CardTitle className="text-xl text-[var(--terra)]">
                 📊 {t('production.mining.panel.comparisonTitle')}
               </CardTitle>
             </CardHeader>
@@ -204,23 +204,23 @@ function ProductionMining({ language = 'fr' }) {
           {/* Details Cards */}
           <Card className="shadow-lg">
             <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-50">
-              <CardTitle className="text-xl text-gray-700">
+              <CardTitle className="text-xl text-[var(--text)]">
                 ⛏️ {t('production.mining.panel.detailsTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.entries(miningData.data_by_commodity).map(([commodity, records]) => (
-                  <div key={commodity} className="border-l-4 border-amber-500 pl-4 py-3 bg-amber-50 rounded-lg">
-                    <h4 className="font-bold text-amber-700 text-lg mb-3 flex items-center gap-2">
+                  <div key={commodity} className="border-l-4 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] pl-4 py-3 bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] rounded-lg">
+                    <h4 className="font-bold text-[var(--gold)] text-lg mb-3 flex items-center gap-2">
                       💎 {commodity}
                     </h4>
                     <div className="space-y-2">
                       {records.map(record => (
-                        <div key={record.year} className="bg-white p-3 rounded shadow-sm flex justify-between items-center">
+                        <div key={record.year} className="bg-[var(--afcfta-card)] p-3 rounded shadow-sm flex justify-between items-center">
                           <div>
-                            <p className="text-sm text-gray-600">{t('production.mining.panel.year')} {record.year}</p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-sm text-[var(--afcfta-muted)]">{t('production.mining.panel.year')} {record.year}</p>
+                            <p className="text-xs text-[var(--afcfta-muted)]">
                               {record.commodity_code} - {record.usgs_table_name}
                             </p>
                             <Badge variant="outline" className="text-xs mt-1">
@@ -228,10 +228,10 @@ function ProductionMining({ language = 'fr' }) {
                             </Badge>
                           </div>
                           <div className="text-right">
-                            <p className="text-xl font-bold text-amber-600">
+                            <p className="text-xl font-bold text-[var(--gold)]">
                               {record.value.toLocaleString()}
                             </p>
-                            <p className="text-xs text-gray-500">{record.unit}</p>
+                            <p className="text-xs text-[var(--afcfta-muted)]">{record.unit}</p>
                           </div>
                         </div>
                       ))}
@@ -254,12 +254,12 @@ function ProductionMining({ language = 'fr' }) {
                 ? t('production.mining.panel.notIngestedTitle')
                 : t('production.mining.panel.noProductionTitle')}
             </p>
-            <p className="mt-2 text-sm text-gray-500 max-w-3xl">
+            <p className="mt-2 text-sm text-[var(--afcfta-muted)] max-w-3xl">
               {miningData.coverage.note}
             </p>
             {miningData.coverage.sources_consulted?.length > 0 && (
-              <div className="mt-4 text-xs text-gray-500">
-                <p className="uppercase tracking-wide mb-1">{t('production.mining.panel.sourcesConsulted')}</p>
+              <div className="mt-4 text-xs text-[var(--afcfta-muted)]">
+                <p className=" mb-1">{t('production.mining.panel.sourcesConsulted')}</p>
                 <ul className="list-disc list-inside space-y-0.5">
                   {miningData.coverage.sources_consulted.map((src) => (
                     <li key={src}>{src}</li>
@@ -281,7 +281,7 @@ function ProductionMining({ language = 'fr' }) {
         </Card>
       ) : (
         <Card>
-          <CardContent className="text-center py-12 text-gray-500">
+          <CardContent className="text-center py-12 text-[var(--afcfta-muted)]">
             {t('production.mining.panel.noData')}
           </CardContent>
         </Card>

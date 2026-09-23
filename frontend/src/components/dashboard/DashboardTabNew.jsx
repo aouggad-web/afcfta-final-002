@@ -9,6 +9,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import NewsDashboard from './NewsDashboard';
+import { montantCompact, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -90,17 +91,20 @@ function DashboardMetricCard({ item }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        containerType: 'inline-size',
       }}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">
+          <p className="text-[11px] text-[var(--afcfta-muted)] font-bold">
             {item.title}
           </p>
           <p
             className="mt-3 font-bold text-[var(--text)]"
             style={{
-              fontSize: 'clamp(30px, 3vw, 44px)',
+              // « 2 700 Md $ » ne se coupe pas : réduit pour tenir à côté de
+              // l'icône (46 px + 16 px d'écart) au lieu de la pousser dehors.
+              fontSize: 'min(clamp(30px, 3vw, 44px), calc((100cqi - 62px) / 5.5))',
               fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
               lineHeight: 1,
             }}
@@ -115,7 +119,7 @@ function DashboardMetricCard({ item }) {
           style={{
             background: `${item.accent}18`,
             borderColor: `${item.accent}40`,
-            color: item.accent,
+            color: `color-mix(in srgb, ${item.accent} 40%, var(--text))`,
           }}
         >
           <Icon className="w-5 h-5" />
@@ -186,7 +190,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
       {
         key: 'gdp',
         title: t.totalGdp,
-        value: '$2.7T',
+        value: montantCompact(2.7e12, language, { T: 1 }),
         subtitle: `54 ${t.countries}`,
         icon: BarChart3,
         accent: 'var(--gold)',
@@ -196,7 +200,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         key: 'trade',
         title: t.intraAfricanTrade,
         // Real figure from Afreximbank ATR 2026 (2025) when available
-        value: atr?.intra_african_trade_busd ? `$${atr.intra_african_trade_busd}B` : '$213.8B',
+        value: montantUnite(atr?.intra_african_trade_busd || 213.8, 'B', language),
         subtitle: `2025: +${atr?.intra_african_trade_growth_pct ?? 5.5}%`,
         icon: TrendingUp,
         accent: '#4f8ef7',
@@ -237,7 +241,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         <div className="p-5 md:p-6">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 text-xs uppercase tracking-wide font-bold text-[var(--gold)] mb-3">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--gold)] mb-3">
                 <ShieldCheck className="w-4 h-4" />
                 {t.overview}
               </div>
@@ -260,7 +264,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 { label: t.authentic, value: String(stats?.overview?.authentic_countries || 54) },
               ].map(({ label, value }) => (
                 <div key={label} className="rounded-xl border px-3 py-4 text-center bg-[var(--overlay)] border-[var(--overlay-border)]">
-                  <div className="text-[10px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">{label}</div>
+                  <div className="text-[11px] text-[var(--afcfta-muted)] font-bold">{label}</div>
                   <div
                     className="mt-2 font-bold text-[var(--text)]"
                     style={{
@@ -311,12 +315,12 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               },
               {
                 label: t.intraAfricanTradeShort,
-                value: atr.intra_african_trade_busd != null ? `$${atr.intra_african_trade_busd}B` : '—',
+                value: atr.intra_african_trade_busd != null ? montantUnite(atr.intra_african_trade_busd, 'B', language) : '—',
                 accent: '#4f8ef7',
               },
               {
                 label: t.merchExports,
-                value: atr.merchandise_exports_busd != null ? `$${atr.merchandise_exports_busd}B` : '—',
+                value: atr.merchandise_exports_busd != null ? montantUnite(atr.merchandise_exports_busd, 'B', language) : '—',
                 accent: '#d4891a',
               },
             ].map(({ label, value, accent }) => (
@@ -328,15 +332,17 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                   borderColor: `${accent}44`,
                   borderLeftWidth: 3,
                   borderLeftColor: accent,
+                  containerType: 'inline-size',
                 }}
               >
-                <div className="text-[11px] font-bold uppercase tracking-[1px]" style={{ color: accent }}>
+                <div className="text-[11px] font-bold" style={{ color: `color-mix(in srgb, ${accent} 40%, var(--text))`}}>
                   {label}
                 </div>
                 <div
                   className="mt-2 font-bold text-[var(--text)]"
                   style={{
-                    fontSize: 'clamp(24px, 2.6vw, 34px)',
+                    // Plafonnée à la tuile : « 685,2 Md $ » ne se coupe pas.
+                    fontSize: 'min(clamp(24px, 2.6vw, 34px), 18cqi)',
                     fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
                     lineHeight: 1,
                   }}
@@ -382,8 +388,8 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               }}
             >
               <div
-                className="text-[11px] font-bold uppercase tracking-[1px]"
-                style={{ color: bloc.accent }}
+                className="text-[11px] font-bold"
+                style={{ color: `color-mix(in srgb, ${bloc.accent} 40%, var(--text))`}}
               >
                 {bloc.name}
               </div>

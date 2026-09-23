@@ -12,8 +12,8 @@ const emptyValue = {
 export default function KenyaRemissionAuthorization({ value = emptyValue, onChange }) {
   const update = (field, next) => onChange?.({ ...emptyValue, ...value, [field]: next });
   return (
-    <fieldset className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 space-y-3">
-      <legend className="px-2 text-sm font-semibold text-amber-200">
+    <fieldset className="rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] p-4 space-y-3">
+      <legend className="px-2 text-sm font-semibold text-[var(--gold)]">
         Disposez-vous d’une autorisation ou d’une allocation officielle couvrant cette
         marchandise au titre de cette remission ?
       </legend>
@@ -82,7 +82,7 @@ export default function KenyaRemissionAuthorization({ value = emptyValue, onChan
           </label>
         </div>
       )}
-      <p className="text-xs text-amber-100/80">
+      <p className="text-xs text-[var(--gold)]">
         Sans autorisation vérifiable couvrant la ligne exacte, la remission n’est pas appliquée.
       </p>
     </fieldset>

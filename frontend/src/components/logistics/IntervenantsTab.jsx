@@ -19,7 +19,7 @@ const CATEGORY_META = {
     color: 'blue',
     bg: 'rgba(59,130,246,0.1)',
     border: 'rgba(59,130,246,0.3)',
-    badge: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
     desc: 'Grandes compagnies de transport maritime opérant sur les routes africaines',
   },
   port_operators: {
@@ -28,7 +28,7 @@ const CATEGORY_META = {
     color: 'cyan',
     bg: 'rgba(6,182,212,0.1)',
     border: 'rgba(6,182,212,0.3)',
-    badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] text-[var(--atlantic)] border-[color-mix(in_srgb,var(--atlantic)_30%,transparent)]',
     desc: 'Gestionnaires de terminaux à conteneurs et ports africains',
   },
   transitaires: {
@@ -37,7 +37,7 @@ const CATEGORY_META = {
     color: 'amber',
     bg: 'rgba(245,158,11,0.1)',
     border: 'rgba(245,158,11,0.3)',
-    badge: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
     desc: 'Commissionnaires de transport, organisateurs de fret, dédouanement',
   },
   rail_operators: {
@@ -46,7 +46,7 @@ const CATEGORY_META = {
     color: 'green',
     bg: 'rgba(34,197,94,0.1)',
     border: 'rgba(34,197,94,0.3)',
-    badge: 'bg-green-500/20 text-green-300 border-green-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
     desc: 'Compagnies ferroviaires nationales et régionales africaines',
   },
   trucking_companies: {
@@ -55,7 +55,7 @@ const CATEGORY_META = {
     color: 'orange',
     bg: 'rgba(249,115,22,0.1)',
     border: 'rgba(249,115,22,0.3)',
-    badge: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]',
     desc: 'Compagnies de transport routier et de distribution',
   },
   air_cargo: {
@@ -64,7 +64,7 @@ const CATEGORY_META = {
     color: 'purple',
     bg: 'rgba(168,85,247,0.1)',
     border: 'rgba(168,85,247,0.3)',
-    badge: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]',
     desc: 'Compagnies cargo aérien opérant sur le continent africain',
   },
   customs_agents: {
@@ -73,7 +73,7 @@ const CATEGORY_META = {
     color: 'red',
     bg: 'rgba(239,68,68,0.1)',
     border: 'rgba(239,68,68,0.3)',
-    badge: 'bg-red-500/20 text-red-300 border-red-500/30',
+    badge: 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]',
     desc: 'Autorités douanières et commissionnaires agréés',
   },
   regulatory_bodies: {
@@ -82,7 +82,7 @@ const CATEGORY_META = {
     color: 'slate',
     bg: 'rgba(100,116,139,0.1)',
     border: 'rgba(100,116,139,0.3)',
-    badge: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+    badge: 'bg-slate-500/20 text-[var(--text)] border-[var(--afcfta-border)]',
     desc: 'Organisations et associations internationales du secteur logistique',
   },
 };
@@ -109,10 +109,10 @@ function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
   if (!value) return null;
   const content = (
     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono max-w-full min-w-0
-      bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white
+      bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)] hover:bg-[var(--overlay)] hover:text-[var(--text)]
       transition-colors cursor-pointer group`}
     >
-      <Icon className="w-3 h-3 flex-shrink-0 text-gray-400 group-hover:text-white" />
+      <Icon className="w-3 h-3 flex-shrink-0 text-[var(--afcfta-muted)] group-hover:text-[var(--text)]" />
       <span className="truncate min-w-0">{value}</span>
     </span>
   );
@@ -124,8 +124,8 @@ function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
 function CountryBadge({ iso }) {
   const label = COUNTRY_LABELS[iso] || iso;
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px]
-      bg-white/5 border border-white/10 text-gray-400">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px]
+      bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--afcfta-muted)]">
       {label}
     </span>
   );
@@ -141,13 +141,13 @@ function ContactRow({ icon: Icon, label, value, href, mono = false }) {
   const textClass = `min-w-0 flex-1 ${mono ? 'font-mono' : ''}`;
   const anywhere = { overflowWrap: 'anywhere', wordBreak: 'break-word' };
   return (
-    <div className="flex items-start gap-1.5 text-xs text-gray-300 min-w-0">
-      <Icon className="w-3 h-3 flex-shrink-0 mt-0.5 text-gray-400" />
+    <div className="flex items-start gap-1.5 text-xs text-[var(--text)] min-w-0">
+      <Icon className="w-3 h-3 flex-shrink-0 mt-0.5 text-[var(--afcfta-muted)]" />
       <div className={textClass} style={anywhere}>
-        {label && <span className="text-gray-500 mr-1">{label} :</span>}
+        {label && <span className="text-[var(--afcfta-muted)] mr-1">{label} :</span>}
         {href ? (
           <a href={href} target="_blank" rel="noreferrer"
-            className="text-gray-300 hover:text-white underline-offset-2 hover:underline">
+            className="text-[var(--text)] hover:text-[var(--text)] underline-offset-2 hover:underline">
             {value}
           </a>
         ) : (
@@ -201,8 +201,8 @@ function ContactsBlock({ contacts }) {
             if (!phone && !email && !address && !website) return null;
             const label = key.replace(/_/g, ' ');
             return (
-              <div key={key} className="p-2 rounded-lg bg-white/3 border border-white/8 min-w-0">
-                <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1 font-medium"
+              <div key={key} className="p-2 rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)] min-w-0">
+                <div className="text-[11px] text-[var(--afcfta-muted)] mb-1 font-medium"
                   style={{ overflowWrap: 'anywhere' }}>{label}</div>
                 <div className="space-y-1">
                   <ContactRow icon={Phone} value={phone} href={phone ? `tel:${phone.replace(/\s/g, '')}` : null} mono />
@@ -236,68 +236,68 @@ function OperatorCard({ operator, catMeta }) {
         <div className="flex items-start gap-3">
           <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
             style={{ background: catMeta.bg, border: `1px solid ${catMeta.border}` }}>
-            <Icon className="w-4 h-4 text-gray-300" />
+            <Icon className="w-4 h-4 text-[var(--text)]" />
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h4 className="text-sm font-semibold text-white leading-tight">{operator.name}</h4>
+                <h4 className="text-sm font-semibold text-[var(--text)] leading-tight">{operator.name}</h4>
                 {operator.hq && (
                   <div className="flex items-center gap-1 mt-0.5">
-                    <MapPin className="w-3 h-3 text-gray-500" />
-                    <span className="text-xs text-gray-400">{operator.hq}</span>
+                    <MapPin className="w-3 h-3 text-[var(--afcfta-muted)]" />
+                    <span className="text-xs text-[var(--afcfta-muted)]">{operator.hq}</span>
                   </div>
                 )}
               </div>
-              <Badge className={`text-[10px] px-1.5 flex-shrink-0 border ${catMeta.badge}`}>
+              <Badge className={`text-[11px] px-1.5 flex-shrink-0 border ${catMeta.badge}`}>
                 {operator.type_label || operator.type}
               </Badge>
             </div>
 
             <div className="flex flex-wrap gap-2 mt-2">
               {operator.fleet_size && (
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                   <Truck className="w-3 h-3" /> {operator.fleet_size} véhicules
                 </span>
               )}
               {operator.fleet_vessels && (
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                   <Ship className="w-3 h-3" /> {operator.fleet_vessels} navires
                 </span>
               )}
               {operator.fleet_teu && (
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                   <Package className="w-3 h-3" /> {(operator.fleet_teu / 1000000).toFixed(1)}M TEU
                 </span>
               )}
               {operator.fleet_freighters && (
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                   <Plane className="w-3 h-3" /> {operator.fleet_freighters} avions cargo
                 </span>
               )}
               {operator.network_km && (
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                   <Train className="w-3 h-3" /> {operator.network_km.toLocaleString('fr-FR')} km
                 </span>
               )}
               {operator.market_share_africa_pct && (
-                <span className="text-[11px] text-amber-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--gold)] flex items-center gap-1">
                   <Star className="w-3 h-3" /> {operator.market_share_africa_pct}% part de marché Afrique
                 </span>
               )}
               {operator.africa_offices_count && (
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                   <Building2 className="w-3 h-3" /> {operator.africa_offices_count} bureaux Afrique
                 </span>
               )}
               {operator.iata_accredited && (
-                <span className="text-[11px] text-green-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--success)] flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" /> Agréé IATA
                 </span>
               )}
               {operator.fiata_member && (
-                <span className="text-[11px] text-blue-400 flex items-center gap-1">
+                <span className="text-[11px] text-[var(--info)] flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" /> Membre FIATA
                 </span>
               )}
@@ -315,7 +315,7 @@ function OperatorCard({ operator, catMeta }) {
                 {operator.contacts.website && (
                   <a href={operator.contacts.website} target="_blank" rel="noreferrer">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs
-                      bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:text-blue-300 transition-colors">
+                      bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)] hover:text-[var(--info)] transition-colors">
                       <ExternalLink className="w-3 h-3" />
                       Site web
                     </span>
@@ -331,7 +331,7 @@ function OperatorCard({ operator, catMeta }) {
                   <CountryBadge key={iso} iso={iso} />
                 ))}
                 {!expanded && presenceList.length > 6 && (
-                  <span className="text-[10px] text-gray-500 px-2 py-0.5">
+                  <span className="text-[11px] text-[var(--afcfta-muted)] px-2 py-0.5">
                     +{presenceList.length - 6} pays
                   </span>
                 )}
@@ -346,7 +346,7 @@ function OperatorCard({ operator, catMeta }) {
             size="sm"
             variant="ghost"
             onClick={() => setExpanded(!expanded)}
-            className="w-full mt-3 h-7 text-xs text-gray-400 hover:text-white border border-white/10 rounded-lg"
+            className="w-full mt-3 h-7 text-xs text-[var(--afcfta-muted)] hover:text-[var(--text)] border border-[var(--overlay-border)] rounded-lg"
           >
             {expanded ? (
               <><ChevronUp className="w-3 h-3 mr-1" />Masquer contacts</>
@@ -364,10 +364,10 @@ function OperatorCard({ operator, catMeta }) {
         {/* Services list */}
         {expanded && operator.services && (
           <div className="mt-3">
-            <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1">Services</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Services</div>
             <div className="flex flex-wrap gap-1">
               {operator.services.map(s => (
-                <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-300">{s}</span>
+                <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>
               ))}
             </div>
           </div>
@@ -376,13 +376,13 @@ function OperatorCard({ operator, catMeta }) {
         {/* Africa terminals for port operators */}
         {expanded && operator.africa_terminals && (
           <div className="mt-3">
-            <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1">Terminaux africains</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Terminaux africains</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
               {operator.africa_terminals.map((t, i) => (
-                <div key={i} className="text-[11px] text-gray-400 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/3">
-                  <Anchor className="w-2.5 h-2.5 text-cyan-400 flex-shrink-0" />
+                <div key={i} className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--overlay)]">
+                  <Anchor className="w-2.5 h-2.5 text-[var(--atlantic)] flex-shrink-0" />
                   <span>{t.port} ({t.country})</span>
-                  {t.teu_capacity && <span className="text-gray-500">— {(t.teu_capacity/1000).toFixed(0)}K TEU</span>}
+                  {t.teu_capacity && <span className="text-[var(--afcfta-muted)]">— {(t.teu_capacity/1000).toFixed(0)}K TEU</span>}
                 </div>
               ))}
             </div>
@@ -392,10 +392,10 @@ function OperatorCard({ operator, catMeta }) {
         {/* Africa services for shipping lines */}
         {expanded && operator.africa_services && (
           <div className="mt-3">
-            <div className="text-[10px] text-gray-500 uppercase tracking-wide mb-1">Services Afrique</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Services Afrique</div>
             <div className="flex flex-wrap gap-1">
               {operator.africa_services.map(s => (
-                <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-300">{s}</span>
+                <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>
               ))}
             </div>
           </div>
@@ -405,7 +405,7 @@ function OperatorCard({ operator, catMeta }) {
         {expanded && operator.certifications && (
           <div className="mt-2 flex flex-wrap gap-1">
             {operator.certifications.map(c => (
-              <span key={c} className="text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400">
+              <span key={c} className="text-[11px] px-2 py-0.5 rounded-full bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]">
                 <ShieldCheck className="w-2.5 h-2.5 inline mr-0.5" />{c}
               </span>
             ))}
@@ -481,15 +481,15 @@ export default function IntervenantsTab({ language = 'fr' }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full" />
-        <span className="ml-3 text-gray-400 text-sm">Chargement des intervenants logistiques...</span>
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--gold)] border-t-transparent rounded-full" />
+        <span className="ml-3 text-[var(--afcfta-muted)] text-sm">Chargement des intervenants logistiques...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center py-16 text-red-400">
+      <div className="text-center py-16 text-[var(--danger)]">
         <p>{error}</p>
         <Button onClick={fetchOperators} className="mt-3">Réessayer</Button>
       </div>
@@ -499,15 +499,15 @@ export default function IntervenantsTab({ language = 'fr' }) {
   return (
     <div className="space-y-5">
       {/* Header Section - Compact */}
-      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
-        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+      <div className="flex items-center gap-3 bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
           <Users className="w-5 h-5" />
         </div>
         <div>
           <h2 className="text-lg font-bold">
             {language === 'en' ? 'Logistics Operators' : 'Intervenants logistiques'}
           </h2>
-          <p className="text-blue-100 text-sm">
+          <p className="text-[var(--info)] text-sm">
             {language === 'en'
               ? 'Operators and stakeholders of the African logistics chain'
               : 'Opérateurs et acteurs de la chaîne logistique africaine'}
@@ -534,10 +534,10 @@ export default function IntervenantsTab({ language = 'fr' }) {
                 }}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <Icon className="w-4 h-4 text-gray-300" />
-                  <span className="text-xl font-bold text-white">{count}</span>
+                  <Icon className="w-4 h-4 text-[var(--text)]" />
+                  <span className="text-xl font-bold text-[var(--text)]">{count}</span>
                 </div>
-                <div className="text-[11px] text-gray-400 leading-tight">{meta.label}</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)] leading-tight">{meta.label}</div>
               </button>
             );
           })}
@@ -545,26 +545,26 @@ export default function IntervenantsTab({ language = 'fr' }) {
       )}
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl border border-white/10 bg-white/3">
+      <div className="flex flex-wrap gap-3 items-center p-3 rounded-xl border border-[var(--overlay-border)] bg-[var(--overlay)]">
         <div className="flex-1 min-w-[200px] relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--afcfta-muted)]" />
           <input
             type="text"
             placeholder="Rechercher un opérateur, une ville, un contact..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-white/5 border border-white/10
-              text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]/40"
+            className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)]
+              text-[var(--text)] placeholder:text-[var(--afcfta-muted)] focus:outline-none focus:border-[color-mix(in_srgb,var(--gold)_40%,transparent)]"
           />
         </div>
         <select
           value={selectedCountry}
           onChange={e => setSelectedCountry(e.target.value)}
-          className="px-3 py-2 text-sm rounded-lg bg-white/5 border border-white/10 text-gray-300
-            focus:outline-none focus:border-[#D4AF37]/40 cursor-pointer"
+          className="px-3 py-2 text-sm rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]
+            focus:outline-none focus:border-[color-mix(in_srgb,var(--gold)_40%,transparent)] cursor-pointer"
         >
           {Object.entries(COUNTRY_LABELS).map(([iso, label]) => (
-            <option key={iso} value={iso} className="bg-[#1B232C]">{label}</option>
+            <option key={iso} value={iso} className="bg-[var(--afcfta-card)]">{label}</option>
           ))}
         </select>
         {(activeCategory !== 'ALL' || selectedCountry !== 'ALL' || searchQuery) && (
@@ -572,12 +572,12 @@ export default function IntervenantsTab({ language = 'fr' }) {
             variant="ghost"
             size="sm"
             onClick={() => { setActiveCategory('ALL'); setSelectedCountry('ALL'); setSearchQuery(''); }}
-            className="text-xs text-gray-400 hover:text-white border border-white/10"
+            className="text-xs text-[var(--afcfta-muted)] hover:text-[var(--text)] border border-[var(--overlay-border)]"
           >
             Réinitialiser
           </Button>
         )}
-        <span className="text-xs text-gray-500 ml-auto">
+        <span className="text-xs text-[var(--afcfta-muted)] ml-auto">
           {filtered.length} intervenant{filtered.length > 1 ? 's' : ''} trouvé{filtered.length > 1 ? 's' : ''}
         </span>
       </div>
@@ -588,8 +588,8 @@ export default function IntervenantsTab({ language = 'fr' }) {
           onClick={() => setActiveCategory('ALL')}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border
             ${activeCategory === 'ALL'
-              ? 'bg-[#D4AF37]/20 border-[#D4AF37]/40 text-[#D4AF37]'
-              : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}
+              ? 'bg-[color-mix(in_srgb,var(--gold)_14%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_40%,transparent)] text-[var(--gold)]'
+              : 'bg-[var(--overlay)] border-[var(--overlay-border)] text-[var(--afcfta-muted)] hover:text-[var(--text)]'}`}
         >
           <Globe className="w-3 h-3 inline mr-1" />
           Tous
@@ -602,8 +602,8 @@ export default function IntervenantsTab({ language = 'fr' }) {
               onClick={() => setActiveCategory(key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border
                 ${activeCategory === key
-                  ? 'text-white'
-                  : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}
+                  ? 'text-[var(--text)]'
+                  : 'bg-[var(--overlay)] border-[var(--overlay-border)] text-[var(--afcfta-muted)] hover:text-[var(--text)]'}`}
               style={activeCategory === key ? { background: meta.bg, borderColor: meta.border } : {}}
             >
               <Icon className="w-3 h-3 inline mr-1" />
@@ -615,7 +615,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
 
       {/* Operators list */}
       {Object.keys(groupedFiltered).length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-[var(--afcfta-muted)]">
           <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
           <p>Aucun intervenant trouvé pour ces critères.</p>
         </div>
@@ -625,15 +625,15 @@ export default function IntervenantsTab({ language = 'fr' }) {
           const Icon = meta.icon;
           return (
             <div key={cat} className="space-y-3">
-              <div className="flex items-center gap-2 pb-2 border-b border-white/10">
+              <div className="flex items-center gap-2 pb-2 border-b border-[var(--overlay-border)]">
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: meta.bg }}>
-                  <Icon className="w-4 h-4 text-gray-300" />
+                  <Icon className="w-4 h-4 text-[var(--text)]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">{meta.label}</h3>
-                  <p className="text-xs text-gray-500">{meta.desc}</p>
+                  <h3 className="text-sm font-semibold text-[var(--text)]">{meta.label}</h3>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{meta.desc}</p>
                 </div>
-                <Badge className={`ml-auto text-[10px] border ${meta.badge}`}>
+                <Badge className={`ml-auto text-[11px] border ${meta.badge}`}>
                   {ops.length} opérateur{ops.length > 1 ? 's' : ''}
                 </Badge>
               </div>
@@ -649,7 +649,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
       )}
 
       {/* Data sources footer */}
-      <div className="text-center text-xs text-gray-600 pt-4 border-t border-white/5">
+      <div className="text-center text-xs text-[var(--afcfta-muted)] pt-4 border-t border-[var(--overlay-border)]">
         Sources : Sites officiels des opérateurs · Lloyd's List · IATA · BIMCO · UNCTAD Maritime Transport Review 2024 · World Bank LPI 2023
         <br />Données mises à jour : Avril 2025 — Données réelles, aucune donnée générique
       </div>

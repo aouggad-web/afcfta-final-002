@@ -280,7 +280,7 @@ export function ZoomableChart({ children, className = '' }) {
   return (
     <div className={`relative ${className}`}>
       {/* Zoom Controls */}
-      <div className="absolute top-2 right-2 z-10 flex gap-1 bg-white/90 rounded-lg shadow-sm p-1">
+      <div className="absolute top-2 right-2 z-10 flex gap-1 bg-[var(--afcfta-card)] rounded-lg shadow-sm p-1">
         <Button
           variant="ghost"
           size="sm"
