@@ -367,7 +367,9 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_preference_applied: hasZlecaf,
     zlecaf_note: calcul.preference_zlecaf?.note || null,
     zlecaf_reserve: hasZlecaf ? calcul.preference_zlecaf?.reserve || null : null,
-    plancher_npf: null,
+    // Le moteur retient le NPF quand le taux préférentiel lui est supérieur :
+    // la ligne le dit, et le bandeau de l'interface l'affiche.
+    plancher_npf: (pref?.lignes || []).find((l) => l.plancher_npf)?.plancher_npf || null,
     zlecaf_status: zlecafStatusLegacy(calcul.preference_zlecaf),
     zlecaf_rate_expression: null,
     zlecaf_rate_source: null,

@@ -292,6 +292,41 @@ def test_la_forme_simple_reste_acceptee():
     assert lignes(r, "preference")["DD"]["montant"] == 0.0
 
 
+def test_une_preference_plus_chere_que_le_npf_n_est_pas_servie():
+    """Une préférence est une faculté : le moteur retient le NPF et le dit.
+
+    Cas réel : Kenya, 2106.90.20 — barème ZLECAf 4 % en 2026, NPF 0 %. Le
+    chemin historique retenait déjà le NPF ; le socle servait 4 %."""
+    r = calculer(position(droit("DD", 0, "CIF", "droit")), 1000, taux_preferentiels={"DD": 4.0})
+    ligne = lignes(r, "preference")["DD"]
+    assert ligne["montant"] == 0.0
+    assert ligne["regime_applique"] == "npf_plancher"
+    assert ligne["plancher_npf"]["taux_preferentiel_ecarte_pct"] == 4.0
+    assert ligne["plancher_npf"]["taux_retenu_pct"] == 0
+
+
+def test_une_preference_moins_chere_reste_servie():
+    r = calculer(position(droit("DD", 25, "CIF", "droit")), 1000, taux_preferentiels={"DD": 10.0})
+    ligne = lignes(r, "preference")["DD"]
+    assert ligne["montant"] == 100.0
+    assert ligne["regime_applique"] == "preference"
+    assert "plancher_npf" not in ligne
+
+
+def test_le_plancher_ne_compare_pas_un_specifique_a_un_ad_valorem():
+    """Sans quantité ni valeur, « 8c/kg » et « 10 % » ne se comparent pas :
+    la préférence est servie telle que publiée."""
+    npf = droit(
+        "DD",
+        None,
+        "xQTE",
+        "droit",
+        specifique={"montant": 0.08, "unite_quantite": "kg", "brut": "8c/kg"},
+    )
+    r = calculer(position(npf), 1000, quantite=500, taux_preferentiels={"DD": {"taux": 0.0}})
+    assert lignes(r, "preference")["DD"]["regime_applique"] == "preference"
+
+
 # ── Le modificateur plafond ───────────────────────────────────────────────────
 def test_plafond_borne_l_assiette():
     d = droit("TCI", 10, "CIF", "communautaire", plafond={"montant": 500.0, "devise": None})
