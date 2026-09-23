@@ -697,6 +697,20 @@
    "reference_legale": "Customs and Excise Act (Cap. 42:01), s.111(2) et Schedule A — prix normal ; voir fiche MWI_colonnes_remises_et_prix_normal_2026-09-19.json",
    "_tva_retiree": "L'entree portait « TVA sur CIF+DD » sous la seule mention « Malawi Revenue Authority — import VAT » : un nom d'autorite, pas un article. L'Order 2022 publie les TAUX de l'accise, de la TVA et de l'Advance Income Tax (colonnes 10, 11 et 12) et ne dit rien de leur assiette ; aucun texte malawien lu ne l'etablit. La laisser faisait liquider la TVA malawienne sur une assiette que personne n'a lue."
   },
+  "NAM": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "FOB",
+     "origine_assiette": "texte_primaire",
+     "texte": "Customs and Excise Act 20 of 1998 (Namibie), s. 75(1) : la valeur en douane est la valeur transactionnelle ; s. 77(1)(e) ajoute les frais jusqu'au port ou lieu d'exportation, s. 77(2)(a) DÉDUIT le fret et l'assurance du port d'exportation jusqu'au port d'importation en Namibie — assiette FOB. Le renvoi au droit sud-africain n'existe plus : la s. 131(1) et le Schedule 9 de cette même loi abrogent le Customs and Excise Act 91 of 1964 « The whole » ; l'Accord SACU 2002 ne dit rien de l'assiette (art. 1, 20(1), 22).",
+     "fiche": "NAM_assiette_DD_2026-09-23.json"
+    }
+   },
+   "reference_legale": "Customs and Excise Act 20 of 1998 (Namibie), s. 75(1) : la valeur en douane est la valeur transactionnelle ; s. 77(1)(e) ajoute les frais jusqu'au port ou lieu d'exportation, s. 77(2)(a) DÉDUIT le fret et l'assurance du port d'exportation jusqu'au port d'importation en Namibie — assiette FOB."
+  },
   "NER": {
    "ordre": [
     "DD",
