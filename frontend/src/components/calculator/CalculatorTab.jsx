@@ -649,6 +649,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           zlecaf_eligible: authenticResult.zlecaf_eligible === true,
           zlecaf_preference_applied: authenticResult.zlecaf_preference_applied === true,
           zlecaf_note: authenticResult.zlecaf_note || null,
+          zlecaf_reserve: authenticResult.zlecaf_reserve || null,
           // Renseigné uniquement quand le taux préférentiel dépassait le NPF
           // et a donc été écarté. Sans ce report, l'opérateur verrait un taux
           // qui ne correspond pas au barème sans savoir pourquoi.
@@ -1453,7 +1454,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                       préférentielle suffit), SAUF si le
                                       plancher NPF a écarté le taux du barème :
                                       l'opérateur verrait sinon un taux qui ne
-                                      correspond à aucune source lisible. */}
+                                      correspond à aucune source lisible ; ou
+                                      si une réserve accompagne la préférence
+                                      (règle d'origine non arrêtée). */}
               {result.trade_regime === 'CUSTOMS_UNION' && (
                 <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] rounded-xl flex items-start gap-3">
                   <Shield className="w-5 h-5 text-[var(--success)] mt-0.5 flex-shrink-0" />
@@ -1478,6 +1481,20 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         : `${result.trade_regime_code || 'Bloc'} regime applies under conditions`}
                     </p>
                     <p className="text-[var(--gold)] text-sm mt-1">{result.trade_regime_note}</p>
+                  </div>
+                </div>
+              )}
+
+              {result.trade_regime === 'ZLECAF' && result.zlecaf_reserve && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-amber-300 font-semibold text-sm">
+                      {language === 'fr'
+                        ? 'Préférence ZLECAf servie sous réserve'
+                        : 'AfCFTA preference shown with a reservation'}
+                    </p>
+                    <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_reserve}</p>
                   </div>
                 </div>
               )}

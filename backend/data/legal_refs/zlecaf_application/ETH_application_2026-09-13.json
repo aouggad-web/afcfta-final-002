@@ -47,8 +47,61 @@
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION — annexes 2 et 4, certificat d'origine obligatoire"
  },
  "note_coherence": "Le statut PARTNER_NOTICE_REQUIRED déjà porté par le dépôt est exactement juste : le règlement délègue effectivement la liste à un avis ministériel. La nouveauté est qu'un tel avis existerait, reçu par la commission des douanes.",
+ "recherche_avis_motri_2026-09-23": {
+  "objet": "Recherche de l'avis du Ministry of Trade and Regional Integration (MoTRI) notifiant la liste des États membres au sens de l'article 3(2) du règlement 574/2025.",
+  "date": "2026-09-23",
+  "resultat": "NON TROUVÉ — aucun acte primaire de notification n'est accessible publiquement à cette date. La piste de presse (liste de 24 pays reçue par l'Ethiopian Customs Commission) reste non opposable : ni numéro, ni date, ni signataire.",
+  "acte_conditionnant_relu": {
+   "titre": "Implementation of the Concession of Duty Tariff Rates on Goods for the African Continental Free Trade Area Agreement Council of Ministers Regulation No. 574/2025",
+   "url": "https://justice.gov.et/wp-content/uploads/2025/10/Implementation-of-the-Concession-of-Duty-Tariff-Rates-on-Goods-for-the-African-Continental-Free-Trade-Area-Agreement-Council-of-Ministers-Regulation-No.-5742025.pdf",
+   "sha256": "fb36d59edbefc32f0ab2dea1096c321f32e47ea9dcb3d8485131450b98154034",
+   "taille_octets": 24545855,
+   "pages": 419,
+   "consulte_le": "2026-09-23",
+   "constat": "Le texte intégral (419 pages, annexe tarifaire comprise) ne contient AUCUNE liste de pays : la notification de l'article 3(2) n'est pas publiée dans la gazette du règlement. Empreinte différente du PDF déjà haché (3bd4acae…) ; l'origine de cette différence n'est pas établie.",
+   "pdf_integral_non_archive": "PDF de 24 545 855 octets non versé au dépôt ; seul le dispositif de la gazette est archivé (voir le bloc instrument ci-dessus)."
+  },
+  "sources_consultees": [
+   {
+    "source": "MoTRI (motri.gov.et)",
+    "resultat": "HTTPS apex en erreur 60 (certificat expiré). Pages annonces EN/AM, ressources et recherche interne consultées INDIRECTEMENT, via un intermédiaire tiers (r.jina.ai) : lecture non vérifiable et non archivable comme source primaire — sans conséquence ici, rien n'ayant été trouvé. Telegram officiel t.me/s/motri_gov_et (août–décembre 2025) : aucun post."
+   },
+   {
+    "source": "Ethiopian Customs Commission (ecc.gov.et, customs.erca.gov.et)",
+    "resultat": "Sites injoignables (curl code 000 ; r.jina.ai 422 ERR_ADDRESS_UNREACHABLE) ; archives Liferay : dernières circulaires en ligne au 13/02/2025 ; SPA capturée le 28/12/2025 : endpoints /api/circular|directive|preferential|tariff|document non archivés, pages vides ; Telegram ECC (sept.–déc. 2025) : aucun post de circulaire."
+   },
+   {
+    "source": "Federal Negarit Gazette / justice.gov.et",
+    "resultat": "Règlement 574/2025 (EN/AM) relu intégralement : aucune liste ; registre légal et recherche WordPress : aucun acte de notification postérieur."
+   },
+   {
+    "source": "Ministères et portails (mofed.gov.et, etrade.gov.et, ethiopia.gov.et, investethiopia.gov.et)",
+    "resultat": "Rien trouvé ; ethiopia.gov.et NXDOMAIN ; investethiopia.gov.et injoignable."
+   },
+   {
+    "source": "Secrétariat ZLECAf (au-afcfta.org)",
+    "resultat": "Page state-parties rendue en JavaScript (non extraite) ; rapport pays Éthiopie : fichiers 2022 seulement — corroboration insuffisante, non probante."
+   },
+   {
+    "source": "Archives (web.archive.org, CDX)",
+    "resultat": "motri.gov.et (772 captures) et ecc.gov.et : rien de probant."
+   },
+   {
+    "source": "Moteurs de recherche (Exa, Bing, DuckDuckGo, Mojeek)",
+    "resultat": "Seule piste : Birr Metrics du 05/11/2025 (liste de 24 pays, sans numéro ni date) — presse, non opposable. DuckDuckGo 202 (limitation de débit), Mojeek 403."
+   }
+  ],
+  "ce_qu_il_reste_a_obtenir": [
+   "Demande directe au MoTRI (direction de l'intégration commerciale) : copie de la lettre de notification art. 3(2) — référence, date, signataire, liste annexée.",
+   "Demande directe à l'Ethiopian Customs Commission : circulaire transmise aux bureaux de douane (citée par la presse, non publiée).",
+   "Vérifier les numéros du Negarit Gazette postérieurs au n° 55/2025 : la notification y aurait-elle été publiée ?",
+   "Réinterroger les API d'ecc.gov.et (/api/circular, /api/preferential, /api/tariff, /api/document) quand le site répond.",
+   "Confirmation par le Secrétariat ZLECAf des PSTC adoptés au 09/10/2025 (corrobore ou infirme la liste de 24)."
+  ],
+  "effet_sur_le_depot": "Aucun : registre (ETH reste PARTNER_NOTICE_REQUIRED, accepted_origins vide) et moteur inchangés. Mesure des couples destination × origine sur main au 23/09/2026, avant le barème kényan (#509) : 2 756 couples, ZLECAf servi 0, identique avant/après cette fiche. Aucun couple à destination de l'Éthiopie n'est servi, quel que soit l'état des autres pays."
+ },
  "remaining_work": [
-  "Obtenir l'avis du Ministry of Trade and Regional Integration listant les origines admises, avec sa date et son numéro. C'est le seul verrou restant : tout le reste est établi.",
+  "Obtenir l'avis du Ministry of Trade and Regional Integration listant les origines admises, avec sa date et son numéro. C'est le seul verrou restant : tout le reste est établi. Recherche du 23/09/2026 infructueuse sur sources publiques — la voie restante est une demande directe au MoTRI ou à l'Ethiopian Customs Commission (détail : bloc recherche_avis_motri_2026-09-23).",
   "Vérifier la catégorie (A, B ou C) de chaque ligne du barème collecté — seule la catégorie A est réduite à ce jour (article 3(3)).",
   "Implémenter la règle du moins-disant de l'article 3(5) : comparer NPF et taux ZLECAf, retenir le plus bas.",
   "Traiter la surtaxe du règlement 133/2007 (décroissante) et l'extinction de la Social Development Levy du règlement 519/2022 pour les catégories A et B."

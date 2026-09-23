@@ -1,0 +1,32 @@
+{
+ "schema_version": 1,
+ "objet": "Barème ZLECAf catégorie A applicable à l'importation au Kenya : 5 342 positions, calendrier 2021-2030, droit de douane seul.",
+ "verified_at": "2026-09-23",
+ "evidence_level": "primaire — texte gazetté téléchargé, haché et lu (347 pages, texte natif, pas un scan). Chaque extrait retrouvé dans le document ; les 53 420 colonnes contrôlées une à une.",
+ "source": {
+  "instrument": "EAC Provisional Schedule of Tariff Concessions for the AfCFTA: Category A Products — Legal Notice EAC/321/2022, Journal officiel de l'EAC du 06/09/2022",
+  "url": "https://www.kra.go.ke/images/publications/EAC-PROVISIONAL-SCHEDULE-OF-TARIFF-CONCESSIONS-FOR-THE-AFRICAN-CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf",
+  "institution": "Conseil des ministres de l'EAC ; publié par la Kenya Revenue Authority",
+  "texte_archive": "sources/KEN_bareme_zlecaf.source-extrait.txt",
+  "sha256": "53046b9f1cb445d30d54c5c7bbb91aa04b85e7853452bddadbb43f0c669e1281",
+  "document_sha256": "7a92fb35c5bba0e637deecb6d7d5eb309ecbbdefa84fecae67a56aa75f0ecaeb",
+  "pdf_non_archive": "Le PDF de 347 pages (7,9 Mo) n'est pas archivé ici : le barème est extrait dans backend/data/zlecaf_ken/bareme_categorie_a.json, régénérable par scripts/build_zlecaf_ken_schedule.py, qui vérifie l'empreinte du document qu'on lui donne. Seuls l'extrait des passages de dispositif et cette empreinte sont conservés."
+ },
+ "regle": {
+  "portee": "5 342 positions SH à dix chiffres, taux ZLECAf catégorie A, calendrier 2021-2030",
+  "article": "Legal Notice EAC/321/2022, section 112 (1) (b) de l'East African Community Customs Management Act, 2004",
+  "verbatim_page_1": "SCHEDULE APPLICABLE TO State Parties with Provisional Schedule of Tariﬀ Concessions in Annex 1 to the Ministerial Directive on the Application of Provisional Schedules of Tariﬀ Concessions",
+  "verbatim_page_2": "IN EXERCISE of the powers conferred upon the Council of Ministers by Section 112 (1) (b) of the East African Community Customs Management Act, 2004, the Council of Ministers has approved preferential tariff treatment on originating goods imported from State Parties of the African Continental Free Trade Area (AfCFTA)",
+  "verbatim_en_t_te_du_tableau": "Heading HS Code Description Unit of Quantity Rate Time Frame (years) 2021 2022 2023 2024 2025 2026 2027 2028 2029 2030",
+  "verbatim_exemple_lu": "0201.10.00 - Carcasses and half-carcasses kg 35% 10 31.5% 28.0% 24.5% 21.0% 17.5% 14.0% 10.5% 7.0% 3.5% 0.0%",
+  "verbatim_une_ligne_taux_composite_cart_e": "7213.20.00 - Other, of free-cutting steel kg 25% or $200/MT whichever is higher",
+  "taux_2026": "sixième annuité : base 0 % → 0,0 % ; 10 % → 4,0 % ; 25 % → 10,0 % ; 35 % → 14,0 %",
+  "perimetre": "Droit de douane SEUL. L'IDF (3,5 %) et le RDL (2 %) restent dus au taux plein : aucune détermination publiée ne les qualifie au regard de l'art. 7(3) du Protocole, et les exonérations du Miscellaneous Fees and Levies Act 2016 ne visent que l'origine EAC. Constat de droit positif, NON un périmètre vérifié.",
+  "lignes_ecartees": "11 lignes d'aciers à taux composite « X% or $Y/MT whichever is higher ». Les ramener à leur volet ad valorem servirait un droit inférieur à celui qui est dû. 7228.40.00 est de plus incohérente dans le document : base composite, annuités de la série 35 %.",
+  "couverture": "5 324 des 5 935 positions kényannes du socle, soit 89,7 % — les « 90 % » de la catégorie A. Les 611 autres rendent « non couvert ».",
+  "opposabilite": "06/09/2022, date de gazettisation. Le calendrier est réputé commencé au 01/01/2021 (Directive 1/2021 §11), mais le §15 dispense de tout remboursement entre les deux dates : rien n'est servi avant la gazettisation.",
+  "lecture": "Les taux sont LUS dans les dix colonnes publiées, jamais calculés. Qu'elles vaillent exactement base × (1 − n/10) sur les 53 420 colonnes du document est un CONTRÔLE de l'extraction, pas la règle de production : une colonne qui s'en écarterait ferait foi."
+ },
+ "un_piege_de_lecture": "Le pourcentage d'une DÉSIGNATION n'est pas un taux. « containing 99% or more lactose », « less than 20% by weight of fructose » décrivent la composition du produit et font corps avec l'intitulé de la position. Une extraction qui prend le premier « % » du segment les ramasse et fabrique des bases de 0,25 %, 85 % ou 99,99 %. 55 positions sont concernées ; l'ancrage se fait donc sur la STRUCTURE du tableau, et un test impose que toute base appartienne aux quatre bandes du TEC.",
+ "ce_que_cela_ne_tranche_pas": "Quatre choses. (1) La QUALIFICATION de l'IDF et du RDL au regard de l'art. 7(3) du Protocole : aucune détermination publiée. (2) Les catégories B et C : aucun barème publié, les 611 positions hors barème restent au NPF. (3) Le GEL des lignes dépourvues de règles d'origine ZLECAf arrêtées (Directive 1/2021 §17) : la règle est établie, la liste ne l'est pas — une position au barème n'est donc pas nécessairement exigible. (4) Le TAUX DE BASE diverge de la directive : le §10 prescrit le NPF au 30/05/2019, le barème retient le TEC 2022, plus favorable sur les lignes montées de 25 % à 35 %. C'est le barème gazetté qui est opposable, mais un barème final pourrait revenir à la base de 2019."
+}

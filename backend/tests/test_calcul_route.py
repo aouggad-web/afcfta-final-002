@@ -173,13 +173,38 @@ def test_un_couloir_non_autorise_reste_au_npf():
 
 @besoin_socle
 def test_un_couloir_autorise_sans_taux_trace_ne_derive_rien_du_npf():
-    """Le Kenya admet le Ghana, mais sa source ne porte pas de colonne ZLECAf :
-    aucun taux n'est fabriqué à partir du NPF."""
-    position, _ = socle.position("KEN", "01012100")
-    decision = taux_preferentiels(position, "KEN", "GHA", "01012100")
+    """Couloir ouvert, position hors barème : rien n'est fabriqué à partir du NPF.
+
+    Ce test portait sur 01012100 tant que le Kenya n'avait AUCUN barème. Il en
+    a un depuis la Legal Notice EAC/321/2022, et cette position y figure — la
+    garde serait devenue vide. L'exemple change, l'intention ne bouge pas.
+
+    04069000 (« Other cheese ») est l'un des 611 codes kényans absents du
+    barème : produit laitier, chapitre 04, liste sensible du tarif extérieur
+    commun, droit NPF de 60 %. C'est le cas où la tentation de dériver est la
+    plus forte — un droit élevé, un couloir ouvert, un opérateur qui attend
+    une préférence. Le moteur refuse et le dit.
+    """
+    from services.zlecaf_schedule_ken import POSITIONS
+
+    code = "04069000"
+    assert "04.06.90" not in POSITIONS, (
+        "cette position est entrée au barème : en choisir une autre encore "
+        "absente plutôt que de relâcher l'assertion"
+    )
+    position, _ = socle.position("KEN", code)
+    decision = taux_preferentiels(position, "KEN", "GHA", code)
     assert decision["applique"] is False
     assert decision["statut"] == "PREFERENCE_NON_TRACEE"
     assert decision["taux"] == {}
+
+    # Et le contrôle qui donne son sens au précédent : sur une position que le
+    # barème COUVRE, le même couloir sert bien une préférence. Sans lui, un
+    # refus généralisé passerait pour une garde qui fonctionne.
+    couverte, _ = socle.position("KEN", "01012100")
+    servie = taux_preferentiels(couverte, "KEN", "GHA", "01012100")
+    assert servie["applique"] is True
+    assert servie["regime"] == "ZLECAF"
 
 
 @besoin_socle

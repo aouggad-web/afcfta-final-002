@@ -872,8 +872,82 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     merged[code]["description_en"] = description
 
     result = sorted(merged.values(), key=lambda x: x["code"])
+    result = _detacher_cle_de_controle(country_iso3, result)
     logger.debug(f"get_sub_positions({country_iso3}, {hs6_normalized}): {len(result)} positions")
     return result
+
+
+def _longueur_position_declaree(country_iso3):
+    """La longueur de la POSITION TARIFAIRE quand le pays déclare une clé.
+
+    La déclaration vit dans le fichier de socle du pays — un seul endroit, et
+    pays par pays. Rien n'est déduit d'une longueur observée.
+    """
+    try:
+        from services import socle as _socle
+
+        return (_socle.charger(country_iso3).get("nomenclature") or {}).get("longueur_position")
+    except Exception:  # pragma: no cover - socle absent ou pays non servi
+        return None
+
+
+def _position_sans_cle(country_iso3, code):
+    """Ramener un code SAISI à la position, qu'il porte ou non sa clé.
+
+    Le chemin historique indexe les codes que `get_sub_positions` lui rend,
+    désormais sans clé. Un opérateur qui recopie sa déclaration en douane tape
+    pourtant les onze caractères : sans cette normalisation, il se verrait
+    répondre « Position nationale introuvable » sur un code que le produit
+    affichait lui-même hier.
+    """
+    longueur = _longueur_position_declaree(country_iso3)
+    if longueur and len(code) == longueur + 1 and code.isdigit():
+        return code[:longueur]
+    return code
+
+
+def _detacher_cle_de_controle(country_iso3, positions):
+    """Rendre la POSITION TARIFAIRE, sans la clé de contrôle qui la suit.
+
+    La Tunisie publie `01012100015`. Ce n'est pas un code à onze chiffres :
+    c'est la sous-position `0101210001` suivie de la clé `5`, que le déclarant
+    saisit avec elle sur la déclaration en douane. Les servir collés faisait
+    afficher au sélecteur « HS11 digits » — le produit affirmait une
+    nomenclature tunisienne à onze chiffres, qui n'existe pas — et faisait
+    répondre « Position nationale introuvable » au code que l'opérateur tape.
+
+    Le pays DÉCLARE sa nomenclature dans son propre fichier de socle ; rien
+    n'est déduit d'une longueur. L'Éthiopie porte aussi des codes de onze
+    caractères, mais son onzième est toujours « 0 » — un remplissage, pas une
+    clé — et elle ne déclare rien : ses codes ressortent intacts.
+
+    La clé n'est pas perdue pour autant : elle accompagne la position sous
+    `cle_controle`, puisqu'elle sert à la saisie.
+    """
+    longueur = _longueur_position_declaree(country_iso3)
+    if not longueur:
+        return positions
+
+    detachees = []
+    for position in positions:
+        code = str(position.get("code") or "")
+        if len(code) != longueur + 1 or not code.isdigit():
+            detachees.append(position)
+            continue
+        copie = dict(position)
+        copie["code"] = code[:longueur]
+        copie["national_code"] = code[:longueur]
+        copie["cle_controle"] = code[longueur:]
+        copie["digits"] = longueur
+        # `code_raw` est délibérément RETIRÉ, pas renseigné avec le code
+        # complet. `select_calculation_position` indexe par `code_raw` en
+        # priorité : l'y laisser à onze caractères remettrait l'index à onze
+        # pendant que la requête, elle, est à dix — index et requête doivent
+        # s'accorder. Le code complet se reconstruit après la sélection, à
+        # partir de `cle_controle`, là où le moteur en a besoin.
+        copie.pop("code_raw", None)
+        detachees.append(copie)
+    return detachees
 
 
 def get_taxes_detail(country_iso3, hs_code):
@@ -1687,7 +1761,7 @@ def _resolve_zlecaf_context(
         f"{official_rate['hs_code']}, {official_rate['source_column']} : "
         f"{official_rate['rate_expression']}. Certificat d'origine ZLECAf requis."
     )
-    return _result(
+    contexte = _result(
         preferential=True,
         preference_applied=applied,
         dd=eff_dd,
@@ -1701,6 +1775,13 @@ def _resolve_zlecaf_context(
         preferential_rate_source=source,
         preferential_rate_calculation_status=official_rate["calculation_status"],
     )
+    if dest == "KEN" and applied:
+        # Même réserve que le moteur du socle : rubrique sans règle d'origine
+        # arrêtée à l'Appendice IV (décembre 2023), que le Kenya n'exclut pas.
+        from services.zlecaf_schedule_ken import reserve_regle_d_origine
+
+        contexte["zlecaf_reserve"] = reserve_regle_d_origine(hs_code_clean)
+    return contexte
 
 
 # Alias public : le moteur de rapports (benchmarking_service) doit appliquer
@@ -1793,14 +1874,23 @@ def calculate_import_taxes(
     )
 
     try:
-        hs_code_clean = normalize_calculation_code(hs_code)
+        hs_code_clean = _position_sans_cle(country_iso3, normalize_calculation_code(hs_code))
         selected = select_calculation_position(
             hs_code_clean, get_sub_positions(country_iso3, hs_code_clean[:6])
         )
         if selected:
-            hs_code_clean = normalize_calculation_code(
+            retenu = (
                 selected.get("code_raw") or selected.get("code") or selected.get("national_code")
             )
+            # Le moteur historique retrouve sa ligne dans le CRAWL, qui indexe
+            # le code avec sa clé de contrôle. La sélection, elle, se fait sur
+            # la position. On recolle donc la clé ici — sans quoi la recherche
+            # échoue et le calcul se rabat sur le parent SH6 : sur 9003110000,
+            # le droit passait ainsi de 10 % à 43 % sans que rien ne le
+            # signale.
+            if selected.get("cle_controle"):
+                retenu = f"{retenu}{selected['cle_controle']}"
+            hs_code_clean = normalize_calculation_code(retenu)
     except NationalPositionRequired as exc:
         return {"error": str(exc), "error_detail": exc.detail}
     hs6 = hs_code_clean[:6]
@@ -2360,6 +2450,9 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
+        # Réserve jointe à une préférence servie (Kenya : règle d'origine non
+        # arrêtée). `None` quand il n'y en a pas.
+        "zlecaf_reserve": _zctx.get("zlecaf_reserve"),
         # Renseigné UNIQUEMENT quand le taux préférentiel dépassait le NPF et a
         # donc été écarté : porte le taux écarté, le taux retenu et le motif.
         # Un montant corrigé sans être dit ne serait pas opposable, et la note

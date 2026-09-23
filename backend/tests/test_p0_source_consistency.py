@@ -29,8 +29,14 @@ def local_sources(monkeypatch):
     "country,code,duty",
     [
         ("EGY", "0207110000", 30),
-        ("TUN", "90031100003", 10),
-        ("TUN", "73090090109", 30),
+        # Tunisie : la POSITION, sans la clé de contrôle. Ces deux lignes
+        # portaient « 90031100003 » et « 73090090109 » — la position suivie du
+        # chiffre que le déclarant saisit avec elle sur la déclaration en
+        # douane. Le socle s'indexait sur le tout ; il s'indexe désormais sur
+        # la position, et la clé (3 et 9) l'accompagne à part. Le droit
+        # contrôlé ne change pas : 10 % et 30 %.
+        ("TUN", "9003110000", 10),
+        ("TUN", "7309009010", 30),
         ("DZA", "2201101100", 30),
     ],
 )
