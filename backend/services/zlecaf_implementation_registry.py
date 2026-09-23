@@ -37,25 +37,55 @@ class ImplementationRecord:
     note: str
 
 
-# KRA's implementation material reproduces Legal Notice EAC/321/2022 and
-# explicitly lists these 21 origins as eligible at import into Kenya, subject
-# to reciprocity and an AfCFTA certificate of origin.
-KENYA_ACCEPTED_ORIGINS: FrozenSet[str] = frozenset(
+# Les origines admises à l'importation au Kenya ne sont PAS nommées par
+# l'instrument tarifaire. Vérifié le 23/09/2026 sur le texte gazetté lui-même
+# (347 pages) : ZÉRO occurrence d'un nom de pays. Sa page 1 renvoie ailleurs :
+#
+#   « SCHEDULE APPLICABLE TO State Parties with Provisional Schedule of Tariff
+#     Concessions in Annex 1 to the Ministerial Directive on the Application of
+#     Provisional Schedules of Tariff Concessions »
+#
+# Cette Annexe 1 — Directive ministérielle 1/2021, AfCFTA/COM/7/DIRECTIVE/FINAL,
+# Conseil des ministres de la ZLECAf, Accra, 10 octobre 2021 — liste 29 parties,
+# reprises ici telles qu'elle les énumère. Fiche : ZLECAF_origines_annexe1_2026-09-23.json
+#
+# LA LISTE PRÉCÉDENTE PORTAIT 21 PAYS ET N'AVAIT AUCUNE SOURCE. Elle était
+# l'Annexe 1 privée de huit entrées (EGY, MDG, MWI, MUS, SYC, ZMB, BEN, GNB)
+# sans règle qui l'explique : le Liberia, astérisqué « subject to ratification »
+# au même titre que le Bénin et la Guinée-Bissau, y avait lui été conservé. Le
+# commentaire qui l'accompagnait affirmait que la KRA « lists these 21 origins » ;
+# le document qu'il invoquait est injoignable, et le texte normatif ne nomme
+# personne.
+#: L'Annexe 1 TELLE QU'ELLE EST PUBLIÉE : 29 parties, dont trois marquées
+#: « * Subject to ratification ». On la consigne entière et sans retouche ; ce
+#: qui en est opérant est décidé plus bas.
+ANNEXE1_PARTIES_2021: FrozenSet[str] = frozenset(
     {
-        "BFA",
-        "CPV",
+        # Parties ayant soumis individuellement (Annexe 1, première liste)
+        "COD",  # Democratic Republic of Congo
+        "EGY",  # Egypt
+        "MDG",  # Madagascar
+        "MWI",  # Malawi
+        "MUS",  # Mauritius
+        "SYC",  # Seychelles
+        "ZMB",  # Zambia
+        # CEMAC Member States
+        "GAB",
         "CMR",
         "CAF",
         "TCD",
         "COG",
-        "CIV",
-        "COD",
         "GNQ",
-        "GAB",
+        # ECOWAS Member States + Mauritania
+        "BEN",  # astérisqué : subject to ratification
+        "BFA",
+        "CPV",
+        "CIV",
         "GMB",
         "GHA",
         "GIN",
-        "LBR",
+        "GNB",  # astérisqué : subject to ratification
+        "LBR",  # astérisqué : subject to ratification
         "MLI",
         "MRT",
         "NER",
@@ -64,6 +94,54 @@ KENYA_ACCEPTED_ORIGINS: FrozenSet[str] = frozenset(
         "SLE",
         "TGO",
     }
+)
+
+#: Les trois entrées que l'Annexe 1 marque d'un astérisque — « * Subject to
+#: ratification ». L'Annexe ne les liste donc PAS inconditionnellement : les
+#: retenir sans leur condition serait moins fidèle à la source, pas plus.
+ANNEXE1_SOUS_RESERVE_DE_RATIFICATION: FrozenSet[str] = frozenset({"BEN", "GNB", "LBR"})
+
+#: Des trois, deux ont depuis déposé leur ratification ; le Bénin ne l'a pas
+#: fait — c'est le statut continental que le dépôt tient par ailleurs, et c'est
+#: `build_bilateral_application_matrix` qui le dit, pas moi.
+#:
+#: La condition de l'Annexe n'est donc pas remplie pour lui. Il est écarté de la
+#: liste opérante et entrera le jour où il ratifiera, sans qu'on touche à la
+#: transcription de l'Annexe ci-dessus.
+#:
+#: Ce n'est pas une précaution de forme. Le moteur écarte déjà une origine non
+#: ratifiante avant même de lire les listes, si bien qu'aucune préférence ne lui
+#: serait servie dans tous les cas. Mais le dépôt tient un registre des
+#: CONTRADICTIONS entre un acte national qui nomme une origine et le statut
+#: continental qui la dément, et il s'impose que ce registre reste vide sur les
+#: listes réelles. Déclarer le Bénin admis y aurait inscrit une contradiction
+#: qui n'existe que parce qu'on aurait négligé un astérisque.
+ORIGINES_ECARTEES_FAUTE_DE_RATIFICATION: FrozenSet[str] = frozenset({"BEN"})
+
+KENYA_ACCEPTED_ORIGINS: FrozenSet[str] = (
+    ANNEXE1_PARTIES_2021 - ORIGINES_ECARTEES_FAUTE_DE_RATIFICATION
+)
+
+#: CE QUE CETTE LISTE N'ÉTABLIT PAS, et qu'aucune source atteignable n'établit.
+#:
+#: 1. Qu'elle soit À JOUR. L'Annexe est datée d'octobre 2021 et le §20 de la
+#:    directive prévoit sa révision annuelle : « Such review shall include
+#:    regular updates of the Annex to this Directive. » Aucune version
+#:    postérieure n'a été retrouvée.
+#: 2. Que figurer à l'Annexe SUFFISE. Le §16 (ii) réserve : un État n'est pas
+#:    tenu de servir la préférence « with respect to products imported from
+#:    State Parties that have not yet start the implementation of their
+#:    Provisional Schedules of Tariff Concessions ». Avoir SOUMIS un barème
+#:    n'est pas avoir COMMENCÉ à l'appliquer. La liste de ceux qui ont commencé
+#:    n'est pas publiée.
+#:
+#: Ces deux réserves vont dans le même sens : la liste est un PLAFOND, jamais un
+#: droit acquis. Elle peut être trop large, pas trop étroite.
+KENYA_ORIGINS_RESERVES = (
+    "Annexe 1 datée du 10/10/2021, révision annuelle prévue (§20) mais non "
+    "retrouvée ; la soumission d'un barème ne vaut pas mise en œuvre effective "
+    "(§16 ii), et la liste des États ayant effectivement commencé n'est pas "
+    "publiée. Liste à traiter comme un plafond."
 )
 
 
@@ -77,16 +155,19 @@ RECORDS = {
             "AfCFTA tariff concessions"
         ),
         instrument_url=(
-            "https://ikesra.kra.go.ke/bitstream/handle/123456789/2484/"
-            "Sensitization%20on%20EAC%20tariff%20Concession%20for%20AfCFTA%20"
-            "_EXTERNAL%2027.10.2022.pdf?isAllowed=y&sequence=1"
+            "https://www.kra.go.ke/images/publications/"
+            "EAC-PROVISIONAL-SCHEDULE-OF-TARIFF-CONCESSIONS-FOR-THE-AFRICAN-"
+            "CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf"
         ),
         effective_from="2021-01-01",
         accepted_origins=KENYA_ACCEPTED_ORIGINS,
         tariff_dataset="EAC",
         note=(
-            "KRA : 21 origines nommément admises; catégorie A; réciprocité et "
-            "certificat d'origine ZLECAf obligatoires."
+            "Catégorie A, gazetté au Journal de l'EAC le 06/09/2022. Les 29 "
+            "origines viennent de l'Annexe 1 de la Directive ministérielle "
+            "1/2021 (10/10/2021) : le barème lui-même ne nomme aucun pays. "
+            "Trois sont sous réserve de ratification, et la liste est un "
+            "plafond — voir KENYA_ORIGINS_RESERVES."
         ),
     ),
     # Regulation 574/2025 is in force and contains Ethiopia's schedule, but

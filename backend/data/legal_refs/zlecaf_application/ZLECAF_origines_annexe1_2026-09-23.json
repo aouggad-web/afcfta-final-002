@@ -1,0 +1,69 @@
+{
+ "schema_version": 1,
+ "objet": "Origines admises sous ZLECAf à l'importation au Kenya : la liste vient de l'Annexe 1 de la Directive ministérielle 1/2021, non du barème tarifaire, qui ne nomme aucun pays.",
+ "verified_at": "2026-09-23",
+ "evidence_level": "primaire quant au contenu de l'acte, RELAYÉ par un tiers (tralac) : le document porte « Distribution: RESTRICTED ». Chaque citation a été retrouvée dans le PDF téléchargé et vérifiée. La liste de l'Annexe 1 a été lue intégralement.",
+ "source": {
+  "instrument": "Directive ministérielle 1/2021 (AfCFTA/COM/7/DIRECTIVE/FINAL), Conseil des ministres de la ZLECAf, Accra, 10 octobre 2021 — Annexe 1",
+  "url": "https://www.tralac.org/documents/resources/cfta/4877-afcfta-application-of-provisional-schedules-of-tariff-concessions-ministerial-directive-1-2021/file.html",
+  "institution": "Conseil des ministres responsables du commerce de la ZLECAf (copie relayée par tralac)",
+  "texte_archive": "sources/ZLECAF_origines_annexe1.source-extrait.txt",
+  "sha256": "8ae2449c62da0dff4b837d7e3426d09bd6946f7434d6082f704a1a949ca46867",
+  "document_sha256": "eb37fe7471fa5c866af5a5af41565e0b2ceaa2e03d2c8a97ee3c145f8904e2fa",
+  "pdf_non_archive": "Le PDF de 7 pages n'est pas archivé ici ; seul l'extrait l'est. L'empreinte du document sert à l'identifier."
+ },
+ "regle": {
+  "portee": "29 États parties à l'Annexe 1, dont 3 sous réserve de ratification — 28 opérantes au 23/09/2026",
+  "article": "Directive ministérielle 1/2021, Annexe 1 et §§4, 5, 10, 11, 16, 17, 20",
+  "verbatim_4": "the exchange of tariff concessions between State Parties shall be conditioned by the principle of reciprocity in terms of product line coverage and tariff reduction schedules that are aligned with the agreed Modalities",
+  "verbatim_5": "The Council of Ministers notes that the following State Parties: Democratic Republic of Congo, Egypt, Mad agascar, Malawi, Mauritius, Seychelles, Zambia, and the CEMAC and ECOWAS Member States + Mauritania have submitted Provisional Schedules of Tariff Concessions identifying at least 90% of tariff lines and calls for immediate implementation of these Schedule s, pending final approval by the Assembly of Heads of State and Government of the African Union. The full list is provided in Annex 1",
+  "verbatim_10": "the base tariff rates set out in each State Party’s Provisional Schedules of Tariff Concessions shall reflect the Most -Favoured-Nation (MFN) applied rates of customs duties of each State Party in effect on the date of the entry into force of the Agreement Establishing the AfCFTA, that is, 30 May 2019",
+  "verbatim_11": "The reduction or elimination of customs duties on a preferential and reciprocal basis as provided for in all the Schedules in Annex 1 shall be deemed to have commenced on 1 January 2021",
+  "verbatim_16": "State Parties shall not be required to implement preferential tariff concessions: i. with respect to products imported from another State Party before the date of implementation of their own Provisional Schedule of Tariff Concessions; and ii. with respect to products imported from State Parties that have not yet start the implementation of their Provisional Schedules of Tariff Concessions",
+  "verbatim_17": "State Parties shall not be required to implement preferential tariff concessions with respect to products in the Provisional Schedules of Tariff Concessions for which there are no agreed AfCFTA Rules of Origin",
+  "verbatim_20": "The Council of Ministers shall review a nnually the disciplines of this Directive and shall monitor the implementation of this Directive as appropriate. Such review shall include regular updates of the Annex to this Directive",
+  "verbatim_annexe_1": "Submission of Provisional Schedules of Tariff Concessions \n \nSTATE PARTY       DATE OF SUBMISSION \n \nDemocratic Republic of Congo       \nEgypt           \nMadagascar          \nMalawi          \nMauritius          \nSeychelles          \nZambia          \nCEMAC Member States        \n Gabon \nCameroon \nCentral African Republic  \nChad \nRepublic of the Congo \nEquatorial Guinea \nECOWAS Member States  + Mauritania      \n Benin*i \nBurkina Faso \n \n7 \nCabo Verde \nCôte d'Ivoire \nThe Gambia \nGhana \nGuinea \nGuinea Bissau* \nLiberia* \nMali \nMauritania \nNiger \nNigeria \nSenegal \nSierra Leone \nTogo \n  \n \n \ni * Subject to ratification",
+  "origines_retenues": [
+   "BFA",
+   "CAF",
+   "CIV",
+   "CMR",
+   "COD",
+   "COG",
+   "CPV",
+   "EGY",
+   "GAB",
+   "GHA",
+   "GIN",
+   "GMB",
+   "GNB",
+   "GNQ",
+   "LBR",
+   "MDG",
+   "MLI",
+   "MRT",
+   "MUS",
+   "MWI",
+   "NER",
+   "NGA",
+   "SEN",
+   "SLE",
+   "SYC",
+   "TCD",
+   "TGO",
+   "ZMB"
+  ],
+  "sous_reserve_de_ratification": [
+   "BEN",
+   "GNB",
+   "LBR"
+  ],
+  "lecture": "Les 29 parties de l'Annexe 1 sont les origines que le Kenya admet, le barème gazetté n'en nommant aucune. Mais l'Annexe astérisque trois d'entre elles — « * Subject to ratification » — et ne les liste donc pas inconditionnellement. Deux ont depuis ratifié ; le Bénin ne l'a pas fait, et il est écarté de la liste opérante jusqu'à ce qu'il le fasse. Restent 28. La liste est un PLAFOND : le §16 (ii) réserve le cas des parties qui n'ont pas commencé à appliquer leur propre barème, et cette liste-là n'est pas publiée.",
+  "ecartee_faute_de_ratification": [
+   "BEN"
+  ]
+ },
+ "ce_que_le_bareme_dit_de_lui_meme": "Le barème gazetté (Legal Notice EAC/321/2022, 347 p., SHA-256 7a92fb35c5bba0e637deecb6d7d5eb309ecbbdefa84fecae67a56aa75f0ecaeb) ne nomme AUCUN pays — zéro occurrence vérifiée sur l'intégralité du document. Sa page 1 porte : « SCHEDULE APPLICABLE TO State Parties with Provisional Schedule of Tariff Concessions in Annex 1 to the Ministerial Directive on the Application of Provisional Schedules of Tariff Concessions ».",
+ "ce_que_cela_remplace": "Une liste de 21 origines sans source, qui était l'Annexe 1 privée de huit entrées (EGY, MDG, MWI, MUS, SYC, ZMB, BEN, GNB) sans règle qui l'explique — le Liberia, astérisqué au même titre que le Bénin et la Guinée-Bissau, y avait été conservé. Le commentaire qui l'accompagnait invoquait un document de sensibilisation de la KRA, injoignable au 23/09/2026 (tunnel fermé en cours d'échange, et 503 en lecture assistée).",
+ "ce_que_cela_ne_tranche_pas": "Deux choses, et elles vont dans le même sens. (1) L'ACTUALITÉ : l'Annexe date d'octobre 2021 et le §20 prévoit sa révision annuelle ; aucune version postérieure n'a été retrouvée. (2) LA MISE EN ŒUVRE EFFECTIVE : le §16 (ii) réserve le cas des parties qui n'ont pas commencé à appliquer leur propre barème, et cette liste n'est pas publiée. Le Bénin est écarté faute de ratification déposée, non parce que l'Annexe l'exclurait. La liste est donc un PLAFOND : elle peut être trop large, jamais trop étroite. S'y ajoute le §17, qui gèle les lignes dépourvues de règles d'origine ZLECAf arrêtées — liste également non publiée."
+}
