@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "objet": "Soudan — recherche documentaire assiettes : valeur en douane (loi douanes 1986 mod. 2010, art. 75, méthodes OMC ; inclusion fret/manutention/assurance déléguée au Directeur général) ; TVA à l'importation (loi TVA 2001, art. 12-14, 22, 28 : base = valeur en douane + droits et taxes hors TVA) ; pièces en vue de remplacer les sources agrégateurs (WITS/Trading Economics) — remplacement NON effectué par cette fiche : le socle sert toujours le 17 % de Trading Economics.",
+  "verified_at": "2026-09-23",
+  "etabli": true,
+  "evidence_level": "primaire — PDF officiels téléchargés (customs.gov.sd et tax.gov.sd), scannés sans couche texte utile : lecture par OCR (easyocr) des articles clés ; numérotation corroborée par recoupement d'instruments modificatifs officiels (ordonnance 2018 modifiant l'art. 14). Relecture le 2026-09-23 sur l'image des pages (aucun modèle OCR arabe disponible) : les citations ci-dessous sont des tranches de la transcription archivée sources/SDN_articles_cites.texte-extrait.txt, avec page PDF et page imprimée.",
+  "regle": {
+    "valeur_en_douane": {
+      "valeur": "valeur transactionnelle (art. 75(1)) ; l'inclusion du transport, de la manutention et de l'assurance relève d'un ordre du Directeur général (art. 75(11)), non retrouvé — ni CIF ni FOB n'est établi",
+      "article": "Loi sur les douanes 1986 (mod. 2010), الفصل الثاني تقدير الرسوم الجمركية, article 75 (تحديد القيمة), alinéas (1) [p. imprimée 47] et (11) [p. 55]",
+      "verbatim": "(١) تكون القيمة الجمركية للسلع المستوردة هي القيمة التعاقدية التي دفعت فعلاً أو التي ستدفع أي ثمن بيع السلع المصدرة إلى جمهورية السودان أو القيمة المعدلة وفقاً لأحكام الفقرة (١٠) وذلك مع مراعاة الشروط الآتية:- | (١١) يجوز للمدير بناءاً على أمر يصدره أن يدرج أو يستبعد من القيمة الجمركية كلياً أو جزئياً :- (أ) تكلفة نقل السلع المستوردة إلى الميناء أو مكان الاستيراد . (ب) تكاليف الشحن والتفريغ والمناولة المرتبطة بنقل السلع المستوردة إلى ميناء أو مكان الاستيراد . (ج) تكلفة التأمين .",
+      "portee": "Méthodes OMC : valeur transactionnelle, ajustée selon l'alinéa (10), puis méthodes subsidiaires ; application progressive sur 4 ans (alinéa 18) ; conversion des monnaies selon les circulaires de la Banque centrale (art. 82). Le CIF/FOB dépend d'un ordre du Directeur général, NON RETROUVÉ.",
+      "fichier_archive": "sources/SDN_loi_douanes_1986_mod_2010_texte-integral.pdf",
+      "sha256": "65a1029140ffc90f2403420d403f142f7646a343f80c82f92470d8e80ed2c831",
+      "verbatim_art75_18": "(١٨) تطبق نصوص وأحكام هذه المادة بالتدرج الذي يراعى تفادى الآثار السالبة على الاقتصاد الوطني خلال فترة (٤) سنوات من تاريخ إجازة هذا القانون .",
+      "verbatim_art82": "٨٢- إذا لم تكن قيمة البضاعة موضحة بالعملة السودانية أو العملة الحرة المعتمدة فيجوز للمدير أن يحدد الفئة التي تحول بها قيمة الفاتورة لأغراض هذا القانون وذلك وفقاً للمنشورات الصادرة من بنك السودان المركزي."
+    },
+    "assiette_tva_import": {
+      "assiette": "valeur en douane + droits et taxes perçus à l'entrée, TVA elle-même exclue",
+      "article": "Loi sur la TVA 2001, article 22 (القيمة الواجب الإقرار عنها), alinéa (2)",
+      "verbatim": "(٢) تقدر قيمة السلع المستوردة من الخارج في مرحلة الإفراج عنها من الجمارك بالقيمة المتخذة أساساً لتحديد الضريبة الجمركية مضافاً إليها الضرائب الجمركية وغيرها من الضرائب والرسوم المفروضة على السلع ماعدا الضريبة على القيمة المضافة المفروضة بموجب أحكام هذا القانون.",
+      "portee": "Correspond à CIF+TOUS_SAUF_TVA si la valeur en douane retenue est CIF ; suit l'ordre du Directeur général (fret/assurance) mentionné ci-dessus.",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
+    },
+    "exigibilite_import": {
+      "valeur": "exigibilité à la phase de mainlevée douanière, pour tout importateur quel que soit son chiffre d'affaires",
+      "article": "Loi sur la TVA 2001, article 13 (استحقاق الضريبة), alinéa (2)",
+      "verbatim": "(٢) تستحق الضريبة بالنسبة إلى السلع المستوردة في مرحلة الإفراج عنها من الجمارك بتحقق الواقعة المنشئة للضريبة الجمركية، وتحصل وفقاً للإجراءات المقررة في شأنها وتتحقق هذه الواقعة بالنسبة لكل مستورد مهما كان رقم أعماله .",
+      "portee": "Complété par l'article 28 : paiement à la mainlevée, avec les droits de douane, pas de mainlevée sans paiement intégral ; et l'article 5 : recouvrement par les douanes pour le compte de la Chambre des impôts.",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
+    },
+    "taux_tva": {
+      "taux": "15 % au texte de 2001 (art. 14(1)) ; 17 % selon la note de l'édition officielle : ordre du Conseil des ministres du 19 juin 2012, pris sur le fondement de l'art. 15 ; télécommunications 30 % (art. 14(2)) ; exportations 0 %",
+      "article": "Loi sur la TVA 2001, article 14 (فئة الضريبة), alinéas (1) et (2), et article 15 (تعديل فئة الضريبة)",
+      "verbatim": "(١) تكون فئة الضريبة على السلع والخدمات والأعمال ١٥% (خمسة عشر في المائة) ويكون فرض الضريبة على السلع والخدمات التي يتم تصديرها للخارج بفئة (صفر) ، وذلك طبقاً للشروط والأوضاع التي تحددها اللوائح *. (٢) على الرغم من أحكام البند (١) تكون فئة الضريبة على خدمات الاتصالات ٣٠% ( ثلاثون في المائة ) .",
+      "portee": "Le 17 % a une base légale nommée (art. 15 : le Conseil des ministres modifie le taux par ordre) et un instrument daté (ordre du 19 juin 2012), cités par l'édition officielle de la Chambre des impôts. Le texte de l'ordre lui-même n'est pas retrouvé (réserve). Cigarettes : ordre du 7 mai 2015 (30 %) et ordonnance 2018 (art. 14) ; loi 2019 (art. 37) archivée par ailleurs.",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f",
+      "verbatim_note_taux_17": "صدر أمر مجلس الوزراء بتاريخ ١٩ يونيو ٢٠١٢ بتعديل فئة الضريبة إلى ١٧% كما صدر أمر مجلس الوزراء ٧ مايو لسنة ٢٠١٥ بتعديل فئة الضريبة على القيمة المضافة على السجائر ٣٠%.",
+      "verbatim_art15": "١٥- يجوز لمجلس الوزراء بموجب أمر يصدره تعديل فئة الضريبة المبينة في المادة ١٤(١) .",
+      "verbatim_note_amendements_art14": "قانون رقم ٢٩ لسنة ٢٠٠٧ ، قانون رقم ١٤ لسنة ٢٠٠٦ ، قانون رقم ٢٦ لسنة ٢٠٠٨ ، قانون رقم ٢٣ لسنة ٢٠١١ ، قانون رقم ٣٥ لسنة ٢٠١٥ ."
+    }
+  },
+  "sources_primaires": {
+    "loi_douanes_1986_mod_2010": {
+      "instrument": "قانون الجمارك لسنة ١٩٨٦م تعديل لسنة ٢٠١٠م — Loi sur les douanes de 1986, amendée en 2010 (amendement adopté par décision du Conseil des ministres n° 20 de 2010, janvier 2010)",
+      "autorite": "République du Soudan — Conseil des ministres / Présidence",
+      "url": "https://web.prog.customs.gov.sd/wp-content/uploads/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AC%D9%85%D8%A7%D8%B1%D9%83%202010%D9%85.pdf",
+      "pages": 122,
+      "consulte_le": "2026-09-23",
+      "note_extraction": "PDF scanné sans couche texte ; lecture par OCR. Page de garde : جمهورية السودان/هيئة الجمارك/قانون الجمارك لسنة ١٩٨٦م تعديل لسنة ٢٠١٠.",
+      "note_url_alternative": "customs.gov.sd (sans web.prog) renvoie la page HTML du site sur ce chemin ; web.prog.customs.gov.sd sert le PDF (HTTP 200, 8 822 098 octets)."
+    },
+    "loi_tva_2001_ar": {
+      "instrument": "قانون الضريبة على القيمة المضافة لسنة ٢٠٠١م — Loi sur la taxe sur la valeur ajoutée de 2001 (version arabe consolidée, édition officielle avec notes marginales d'amendements)",
+      "autorite": "République du Soudan — وزارة المالية والاقتصاد الوطني / ديوان الضرائب (Chambre des impôts)",
+      "url": "https://tax.gov.sd/wp-content/uploads/2025/02/vat2001.pdf",
+      "pages": 36,
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
+    },
+    "loi_tva_2001_en_scan": {
+      "instrument": "The Value Added Tax Act, 2001 — version imprimée bilingue (Ministry of Justice, Sudan Currency Printing Press)",
+      "url": "https://tax.gov.sd/wp-content/uploads/2025/02/The-Value-Add-tax.pdf",
+      "pages": 48,
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_loi_tva_2001_en_scan.pdf",
+      "sha256": "afa0f4f160d81e92665f08a911588b614de38a0f7a6f421833465aca7d2897e4",
+      "note": "scan avec couche texte corrompue ; mêmes articles que la version arabe."
+    },
+    "reglement_tva_2017": {
+      "instrument": "لائحة الضريبة على القيمة المضافة لسنة ٢٠١٧ — Règlement d'exécution de la TVA (2017)",
+      "url": "https://tax.gov.sd/wp-content/uploads/2025/02/vat_list.pdf",
+      "pages": 34,
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_reglement_tva_2017.pdf",
+      "sha256": "9dcefbbeb697c7553fbfd3a4926d53ac346295e9df0751a127633de87feae611",
+      "note": "couche texte inexploitable (cmap) ; non OCR-isé à ce stade."
+    },
+    "instrument_2018_art14": {
+      "instrument": "أمر بموجب قانون الضريبة على القيمة المضافة لسنة ٢٠٠١م (تعديل) لسنة ٢٠١٨م — ordonnance du Conseil des ministres (2018) modifiant l'article 14 : taux de la TVA sur le tabac et les cigarettes",
+      "url": "https://tax.gov.sd/wp-content/uploads/2025/02/law13_14.pdf",
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_ordonnance_2018_art14.pdf",
+      "sha256": "76bf7fe4f5d2bb0806e6c83823cf81b8c64b151e82df4fa4f958469ea6a120ec"
+    },
+    "instrument_2019_art37": {
+      "instrument": "قانون الضريبة على القيمة المضافة (تعديل) لسنة ٢٠١٩م — loi d'amendement de 2019 modifiant l'article 37 (pouvoir d'exemption), adoptée sous le Document constitutionnel transitoire de 2019",
+      "url": "https://tax.gov.sd/wp-content/uploads/2025/02/law22.pdf",
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_loi_2019_art37.pdf",
+      "sha256": "bd5c6b529d988bd7ef47a76e8dd5a96b7417cb0bef49dd703c3aff9ee63e9639"
+    }
+  },
+  "verdicts": {
+    "a_valeur_douane": "TROUVÉ ET VÉRIFIÉ pour la méthode et l'article (loi douanes 1986 mod. 2010, art. 75) — CIF/FOB NON TRANCHÉ PAR LA LOI : délégué à un ordre du Directeur général (à retrouver)",
+    "b_taxe_interieure_TVA": "TROUVÉ ET VÉRIFIÉ pour l'existence, l'assiette d'importation (art. 22(2)) et l'article de taux (art. 14) ; taux actuel 17 % = cité par l'édition officielle (ordre du Conseil des ministres du 19 juin 2012, art. 15), texte de l'ordre NON RETROUVÉ",
+    "c_tva_import": "OUI — TROUVÉ ET VÉRIFIÉ (art. 13, 22, 28)",
+    "tarif_national": "NON TROUVÉ dans cette passe — la page officielle التعريفة الجمركية (customs.gov.sd/?page_id=2) ne publie pas de fichier tarifaire téléchargeable identifié ; le contrat de collecte COM/MDG/SDN/STP reste à traiter pour le fichier SDN_tariffs.json (positions nationales)"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "CIF vs FOB : délégué à un ordre du Directeur général (non retrouvé) — ne pas présumer CIF sans l'ordre ou arbitrage du propriétaire",
+    "Taux TVA 17 % : l'ordre du Conseil des ministres du 19 juin 2012 n'est pas retrouvé — ne pas figer sans arbitrage du propriétaire",
+    "Tarif national soudanais (positions et taux) : non collecté dans cette passe",
+    "Pas de famille accise au socle SDN — rien à documenter de ce côté"
+  ],
+  "obstacles_rencontres": [
+    "customs.gov.sd/wp-content/... : HTTP 404 (page HTML) — le PDF n'est servi que par web.prog.customs.gov.sd",
+    "PDF loi douanes (122 p.) et pièces fiscales : scans sans couche texte ; couche texte arabe du VAT Act inexploitable (cmap corrompu) — recours OCR",
+    "Aucun blocage anti-bot ni proxy rencontré ; sites officiels accessibles"
+  ],
+  "decisions_de_modelisation_non_prises": [
+    "CIF vs FOB : la loi soudanaise délègue l'inclusion/exclusion du fret, de la manutention et de l'assurance à un ordre du Directeur général",
+    "Base TVA : art. 22 donne « valeur en douane + droits et taxes, TVA exclue » — suit la valeur en douane retenue",
+    "Taux TVA 17 % : ordre du 19 juin 2012 cité par l'édition officielle, texte non retrouvé — ne pas figer sans arbitrage"
+  ],
+  "transcription": {
+    "texte_archive": "sources/SDN_articles_cites.texte-extrait.txt",
+    "sha256": "9f7ca48ef4f79ebd5a5290c22f3f5a4d43b14f2f350ba640ce47ec87665e03ad",
+    "methode": "transcription manuelle depuis l'image des pages ; chaque passage porte sa page PDF et sa page imprimée"
+  },
+  "note_ocr_collaborateur": "Les sorties OCR (easyocr) de la première passe sont restées hors dépôt ; aucune citation de cette fiche n'en dépend plus."
+}
