@@ -82,6 +82,43 @@ LIBELLE = (
     "(Journal officiel de l'EAC du 06/09/2022), colonne {annee}"
 )
 
+#: Rubriques SANS RÈGLE D'ORIGINE ARRÊTÉE dans l'Appendice IV à l'Annexe 2,
+#: version du 12e Conseil des ministres (décembre 2023) : « Yet to be agreed »,
+#: ou entre crochets (note 2.4). Fiche :
+#: ZLECAF_appendice_IV_regles_non_arretees_2026-09-23.json.
+#:
+#: Le §17 de la Directive 1/2021 PERMET de ne pas appliquer la préférence à ces
+#: produits — l'Algérie l'a fait, par sa circulaire. Le barème kényan, lui, ne
+#: les gèle pas : la préférence publiée est servie, avec une réserve. Liste
+#: tenue ici pour le Kenya seul, même si elle coïncide avec celle de l'Algérie :
+#: la base juridique n'est pas la même.
+RUBRIQUES_SANS_REGLE_D_ORIGINE = (
+    ("5111", "5113"),
+    ("5204", "5212"),
+    ("5309", "5309"),
+    ("5407", "5408"),
+    ("5512", "5516"),
+    ("5801", "5804"),
+    ("5806", "5806"),
+    ("5810", "5810"),
+    ("6001", "6006"),  # chapitre 60 entier
+    ("6301", "6306"),
+    ("8701", "8701"),
+    ("8703", "8708"),
+    ("8710", "8712"),
+)
+
+RESERVE_REGLE_D_ORIGINE = (
+    "Règle d'origine ZLECAf non arrêtée pour la rubrique {rubrique} dans "
+    "l'Appendice IV à l'Annexe 2 (Conseil des ministres, décembre 2023). La "
+    "Directive 1/2021 (§17) permet de ne pas appliquer la préférence à ce "
+    "produit ; le barème kényan ne l'exclut pas. L'adoption des règles "
+    "manquantes est annoncée par le gouvernement sud-africain (dtic, mars 2026) "
+    "et, par l'Assemblée de l'UA en février 2026, par tralac ; ni la décision, "
+    "ni les règles adoptées, ni leur mécanisme transitoire n'ont été retrouvés. "
+    "La préférence peut ne pas être accordée en douane."
+)
+
 
 def _normaliser(hs_code: str) -> str:
     """Le barème indexe en SH à huit chiffres pointés (1702.30.00) ; le socle, sans points."""
@@ -129,3 +166,49 @@ def compute_ken_zlecaf_rate(
         logger.warning("Barème ZLECAf KEN : %s porte %d annuités", code, len(annuites))
         return None, None
     return float(annuites[annee - PREMIERE_ANNEE]), LIBELLE.format(annee=annee)
+
+
+def reserve_regle_d_origine(hs_code: str) -> Optional[str]:
+    """La réserve à joindre à la préférence, ou None si la rubrique a sa règle."""
+    rubrique = (hs_code or "").replace(".", "").replace(" ", "")[:4]
+    if len(rubrique) != 4:
+        return None
+    for debut, fin in RUBRIQUES_SANS_REGLE_D_ORIGINE:
+        if debut <= rubrique <= fin:
+            return RESERVE_REGLE_D_ORIGINE.format(rubrique=f"{rubrique[:2]}.{rubrique[2:]}")
+    return None
+
+
+def ligne_du_journal_officiel(
+    hs_code: str, origin_iso3: str, as_of: Optional[datetime.date] = None
+) -> Optional[dict]:
+    """La ligne du barème gazetté, sous la forme que rend le résolveur des
+    taux officiels — pour que le chemin historique serve le Journal officiel,
+    et non l'e-Tariff Book du Secrétariat.
+
+    Les deux divergent sur 275 lignes : l'e-Tariff Book calcule sur une base
+    de 25 % là où le Journal officiel porte 35 % (bande du TEC de 2022), et il
+    ignore 1 072 lignes du barème. Le Journal officiel est l'acte que la douane
+    kényane applique.
+    """
+    jour = as_of or datetime.date.today()
+    taux, _ = compute_ken_zlecaf_rate(hs_code, origin_iso3, jour)
+    if taux is None:
+        return None
+    annee = min(max(jour.year, PREMIERE_ANNEE), DERNIERE_ANNEE)
+    return {
+        "hs_code": _normaliser(hs_code).replace(".", ""),
+        "country_iso3": "KEN",
+        "agreement": "AfCFTA",
+        "source_title": _BAREME["_instrument"],
+        "source_date": OPPOSABLE_A_PARTIR_DU.isoformat(),
+        "source_url": _BAREME["_url"],
+        "source_api_url": None,
+        "source_column": str(annee),
+        "schedule": "EAC/321/2022",
+        "schedule_year": annee - PREMIERE_ANNEE + 1,
+        "rate_expression": f"{taux:g}%",
+        "ad_valorem_rate_pct": taux,
+        "rate_kind": "AD_VALOREM",
+        "calculation_status": "CALCULABLE",
+    }

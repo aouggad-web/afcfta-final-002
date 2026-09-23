@@ -20,18 +20,18 @@ export default function LogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-5" data-testid="logistics-tab">
       {/* Compact Header with Export */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+      <div className="flex items-center justify-between bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
             <Globe className="w-5 h-5" />
           </div>
           <div>
             <h1 className="text-lg font-bold">{t('logistics.title')}</h1>
-            <p className="text-blue-100 text-sm">{t('logistics.subtitle')}</p>
+            <p className="text-[var(--info)] text-sm">{t('logistics.subtitle')}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <Badge className="bg-white/20 text-white hidden md:flex">
+          <Badge className="bg-[var(--overlay)] text-[var(--text)] hidden md:flex">
             <Database className="w-3 h-3 mr-1" />
             68 ports • 64+ aéroports • 15 corridors • LPI 54 pays
           </Badge>
@@ -136,26 +136,26 @@ export default function LogisticsTab({ language = 'fr' }) {
         </Tabs>
 
         {/* Data Sources - Compact footer */}
-        <Card className="border-0 shadow-sm mt-6" style={{background:'rgba(27,35,44,0.7)'}}>
+        <Card className="border-0 shadow-sm mt-6" style={{background:'var(--afcfta-card2)'}}>
           <CardContent className="py-4">
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-[var(--afcfta-muted)]">
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px]">TRS</Badge>
+                <Badge variant="outline" className="h-5 text-[11px]">TRS</Badge>
                 WCO Time Release Studies
               </span>
-              <span className="text-gray-300">|</span>
+              <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px]">UNCTAD</Badge>
+                <Badge variant="outline" className="h-5 text-[11px]">UNCTAD</Badge>
                 Maritime Transport Review 2024
               </span>
-              <span className="text-gray-300">|</span>
+              <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px]">LPI</Badge>
+                <Badge variant="outline" className="h-5 text-[11px]">LPI</Badge>
                 World Bank 2023
               </span>
-              <span className="text-gray-300">|</span>
+              <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px]">AfCFTA</Badge>
+                <Badge variant="outline" className="h-5 text-[11px]">AfCFTA</Badge>
                 Secretariat
               </span>
             </div>

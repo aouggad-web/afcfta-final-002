@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/
 import { Badge } from './ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
+import { montantUnite } from '../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -37,14 +38,14 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       intraAfricanTrade: "Commerce Intra-Africain",
       top5GDP: "Top 5 PIB Africains - Comparaison Commerce",
       worldVsIntraAfrican: "Commerce Mondial vs Commerce Intra-Africain (2024)",
-      detailByCountry: "Détail par Pays (Milliards USD)",
+      detailByCountry: "Détail par pays (milliards USD)",
       expWorld: "Exp. Monde",
       expIntraAfr: "Exp. Intra-Afr",
       impWorld: "Imp. Monde",
       impIntraAfr: "Imp. Intra-Afr",
       sectorPerformance: "Performance par Secteur",
       sectorDistribution: "Distribution des exportations par secteur économique",
-      sectorDetails: "Détail des Secteurs",
+      sectorDetails: "Détail des secteurs",
       exportsWorld: "Exports Monde",
       exportsIntraAfr: "Exports Intra-Afr.",
       importsWorld: "Imports Monde",
@@ -69,14 +70,14 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       intraAfricanTrade: "Intra-African Trade",
       top5GDP: "Top 5 African GDP - Trade Comparison",
       worldVsIntraAfrican: "World Trade vs Intra-African Trade (2024)",
-      detailByCountry: "Detail by Country (Billion USD)",
+      detailByCountry: "Detail by country (billion USD)",
       expWorld: "Exp. World",
       expIntraAfr: "Exp. Intra-Afr",
       impWorld: "Imp. World",
       impIntraAfr: "Imp. Intra-Afr",
       sectorPerformance: "Sector Performance",
       sectorDistribution: "Export distribution by economic sector",
-      sectorDetails: "Sector Details",
+      sectorDetails: "Sector details",
       exportsWorld: "World Exports",
       exportsIntraAfr: "Intra-Afr. Exports",
       importsWorld: "World Imports",
@@ -173,7 +174,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
     return (
       <div className="stats-loading">
         <div className="stats-spinner" />
-        <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{t.loading}</p>
+        <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.875rem' }}>{t.loading}</p>
       </div>
     );
   }
@@ -182,7 +183,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
     return (
       <div className="stats-empty-state">
         <div className="stats-empty-icon">
-          <BarChart3 style={{ width: 28, height: 28, color: '#D4891A' }} />
+          <BarChart3 style={{ width: 28, height: 28, color: 'var(--gold)' }} />
         </div>
         <p>{t.noData}</p>
       </div>
@@ -190,17 +191,17 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   }
 
   /* ── African-themed palette for charts ───────────────────── */
-  const COLORS = ['#1A7A4A', '#1A6B8A', '#D4891A', '#C8531A', '#9B6EF5', '#C8102E', '#0E8A7A', '#D4522A'];
+  const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
   /* ── Custom tooltip ─────────────────────────────────────── */
   const AfricaTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
     return (
-      <div style={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
-        <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>{label}</p>
+      <div style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
+        <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
         {payload.map((p, i) => (
-          <p key={i} style={{ color: p.color, margin: '2px 0' }}>
-            {p.name}: <strong>{typeof p.value === 'number' ? `$${p.value.toFixed(1)}B` : p.value}</strong>
+          <p key={i} style={{ color: `color-mix(in srgb, ${p.color} 40%, var(--text))`, margin: '2px 0' }}>
+            {p.name}: <strong>{typeof p.value === 'number' ? montantUnite(p.value, 'B', language, 1) : p.value}</strong>
           </p>
         ))}
       </div>
@@ -219,9 +220,9 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       <div className="stats-chart-card" style={{ padding: '24px' }}>
         {/* Section title with kente accent */}
         <div className="flex items-center gap-3 mb-6">
-          <BarChart3 style={{ width: 22, height: 22, color: '#D4891A', flexShrink: 0 }} />
+          <BarChart3 style={{ width: 22, height: 22, color: 'var(--gold)', flexShrink: 0 }} />
           <div>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#EAE0D0', margin: 0 }}>
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text)', margin: 0 }}>
               {t.analysisTitle}
             </h2>
             <div className="stats-kente-bar" style={{ width: 160, marginTop: 6 }} />
@@ -229,7 +230,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
         </div>
 
         {/* KPI Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {/* PIB Combiné */}
           <div className="stats-kpi-card atlantic">
             <svg className="stats-kpi-ornament" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -238,9 +239,9 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </svg>
             <p className="stats-kpi-label">{t.totalTradeValue}</p>
             <p className="stats-kpi-value atlantic">
-              ${statistics.overview?.estimated_combined_gdp
-                ? (statistics.overview.estimated_combined_gdp / 1e9).toFixed(0)
-                : '2706'}B
+              {montantUnite(statistics.overview?.estimated_combined_gdp
+                ? statistics.overview.estimated_combined_gdp / 1e9
+                : 2706, 'B', language, 0)}
             </p>
             <p className="stats-kpi-footer">
               <DollarSign style={{ width: 12, height: 12 }} />
@@ -255,7 +256,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </svg>
             <p className="stats-kpi-label">{t.totalExports}</p>
             <p className="stats-kpi-value green">
-              ${africaTotals?.exports_billions ? africaTotals.exports_billions.toFixed(0) : '720'}B
+              {montantUnite(africaTotals?.exports_billions ? africaTotals.exports_billions : 720, 'B', language, 0)}
             </p>
             <p className="stats-kpi-footer">
               <TrendingUp style={{ width: 12, height: 12 }} />
@@ -270,7 +271,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </svg>
             <p className="stats-kpi-label">{t.totalImports}</p>
             <p className="stats-kpi-value terra">
-              ${africaTotals?.imports_billions ? africaTotals.imports_billions.toFixed(0) : '761'}B
+              {montantUnite(africaTotals?.imports_billions ? africaTotals.imports_billions : 761, 'B', language, 0)}
             </p>
             <p className="stats-kpi-footer">
               <TrendingDown style={{ width: 12, height: 12 }} />
@@ -299,8 +300,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           {/* Top Exportateurs */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <TrendingUp style={{ width: 16, height: 16, color: '#34d399' }} />
-              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#34d399', margin: 0 }}>
+              <TrendingUp style={{ width: 16, height: 16, color: 'var(--success)' }} />
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>
                 {t.top10Exporters}
               </h3>
             </div>
@@ -312,13 +313,13 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                   <div key={index} className="stats-rank-item green">
                     <div className="flex items-center gap-2 min-w-0">
                       <span className={`stats-rank-badge ${getRankClass(index)}`}>{index + 1}</span>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#EAE0D0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {translateCountry(exporter.name)}
                       </span>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#34d399', margin: 0 }}>${val}B</p>
-                      <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.7)', margin: 0 }}>{exporter.share_pct}% {t.ofTotal}</p>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>{montantUnite(val, 'B', language, 1)}</p>
+                      <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{exporter.share_pct}% {t.ofTotal}</p>
                       <div className="stats-progress-bar" style={{ width: 64 }}>
                         <div className="stats-progress-fill green" style={{ width: `${pct}%` }} />
                       </div>
@@ -332,8 +333,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
           {/* Top Importateurs */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <TrendingDown style={{ width: 16, height: 16, color: '#38bdf8' }} />
-              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#38bdf8', margin: 0 }}>
+              <TrendingDown style={{ width: 16, height: 16, color: 'var(--info)' }} />
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>
                 {t.top10Importers}
               </h3>
             </div>
@@ -345,13 +346,13 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                   <div key={index} className="stats-rank-item blue">
                     <div className="flex items-center gap-2 min-w-0">
                       <span className={`stats-rank-badge ${getRankClass(index)}`}>{index + 1}</span>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#EAE0D0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {translateCountry(importer.name)}
                       </span>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', margin: 0 }}>${val}B</p>
-                      <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.7)', margin: 0 }}>{importer.share_pct}% {t.ofTotal}</p>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>{montantUnite(val, 'B', language, 1)}</p>
+                      <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{importer.share_pct}% {t.ofTotal}</p>
                       <div className="stats-progress-bar" style={{ width: 64 }}>
                         <div className="stats-progress-fill blue" style={{ width: `${pct}%` }} />
                       </div>
@@ -395,8 +396,8 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                     <span className={`stats-rank-badge ${getRankClass(index)}`}>{country.rank}</span>
                   </td>
                   <td style={{ fontWeight: 600 }}>{translateCountry(country.country)}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 700, color: '#fbbf24' }}>
-                    ${country.gdp_2024_billion?.toFixed(1)}B
+                  <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--gold)' }}>
+                    {montantUnite(country.gdp_2024_billion, 'B', language, 1)}
                   </td>
                   <td style={{ textAlign: 'right' }}>
                     <span className={`stats-chip ${parseFloat(country.growth_2024) >= 3 ? 'up' : 'down'}`}>
@@ -404,7 +405,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                     </span>
                   </td>
                   <td style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 700, padding: '2px 8px', borderRadius: 6, background: country.growth_projection_2025 !== 'N/A' ? 'rgba(212,137,26,0.15)' : 'rgba(255,255,255,0.06)', color: country.growth_projection_2025 !== 'N/A' ? '#fbbf24' : 'rgba(142,155,174,0.6)' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, padding: '2px 8px', borderRadius: 6, background: country.growth_projection_2025 !== 'N/A' ? 'rgba(212,137,26,0.15)' : 'var(--overlay)', color: country.growth_projection_2025 !== 'N/A' ? '#fbbf24' : 'var(--afcfta-muted)' }}>
                       {country.growth_projection_2025 || 'N/A'}
                     </span>
                   </td>
@@ -448,15 +449,15 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                     <stop offset="100%" stopColor="#9B6EF5" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="année" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.8)', fontWeight: 600 }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--overlay)" />
+                <XAxis dataKey="année" tick={{ fontSize: 12, fill: 'var(--afcfta-muted)', fontWeight: 600 }} axisLine={false} tickLine={false} />
                 <YAxis
-                  tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }}
+                  tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }}
                   axisLine={false} tickLine={false}
-                  label={{ value: t.billionUSD, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)' } }}
+                  label={{ value: t.billionUSD, angle: -90, position: 'insideLeft', offset: -10, style: { fontSize: 10, fill: 'var(--afcfta-muted)' } }}
                 />
                 <Tooltip content={<AfricaTooltip />} />
-                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
                 <Area
                   type="monotone"
                   dataKey="valeur"
@@ -512,24 +513,24 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       <stop offset="0%" stopColor="#1B6CA8" /><stop offset="100%" stopColor="#93c5fd" />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--overlay)" />
                   <XAxis
                     type="number"
-                    label={{ value: t.billionUSD, position: 'insideBottom', offset: -8, style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)', fontWeight: 600 } }}
-                    tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.7)' }}
+                    label={{ value: t.billionUSD, position: 'insideBottom', offset: -8, style: { fontSize: 10, fill: 'var(--afcfta-muted)', fontWeight: 600 } }}
+                    tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }}
                     axisLine={false} tickLine={false}
                   />
                   <YAxis
                     type="category" dataKey="pays" width={110}
-                    tick={{ fontSize: 11, fontWeight: 700, fill: '#EAE0D0' }}
+                    tick={{ fontSize: 11, fontWeight: 700, fill: 'var(--text)' }}
                     axisLine={false} tickLine={false}
                   />
                   <Tooltip
-                    formatter={(value) => `$${value.toFixed(1)}B`}
-                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                    formatter={(value) => montantUnite(value, 'B', language, 1)}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '0.72rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Legend wrapperStyle={{ fontSize: '0.72rem', color: 'var(--afcfta-muted)' }} />
                   <Bar dataKey={t.exportsWorld}    fill="url(#gExpWorld)" radius={[0, 4, 4, 0]} maxBarSize={14} />
                   <Bar dataKey={t.exportsIntraAfr} fill="url(#gExpIntra)" radius={[0, 4, 4, 0]} maxBarSize={14} />
                   <Bar dataKey={t.importsWorld}    fill="url(#gImpWorld)" radius={[0, 4, 4, 0]} maxBarSize={14} />
@@ -539,34 +540,34 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
 
               {/* Tableau Détaillé */}
               <div>
-                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(142,155,174,0.8)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 12 }}>
                   {t.detailByCountry}
                 </p>
                 <div className="space-y-3">
                   {statistics.top_5_gdp_trade_comparison.map((country, index) => (
-                    <div key={index} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: '12px 14px', borderLeft: '3px solid #1A6B8A' }}>
+                    <div key={index} style={{ background: 'var(--overlay)', borderRadius: 10, padding: '12px 14px', borderLeft: '3px solid #1A6B8A' }}>
                       <div className="flex justify-between items-center mb-2">
-                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#EAE0D0' }}>{translateCountry(country.country)}</span>
-                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: '#a78bfa', border: '1px solid rgba(155,110,245,0.25)' }}>
-                          {language === 'en' ? 'GDP' : 'PIB'}: ${country.gdp_2024}B
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text)' }}>{translateCountry(country.country)}</span>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: 'var(--violet)', border: '1px solid rgba(155,110,245,0.25)' }}>
+                          {language === 'en' ? 'GDP' : 'PIB'}: {montantUnite(country.gdp_2024, 'B', language)}
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
-                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.expWorld}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#34d399', margin: 0 }}>${country.exports_world.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.expWorld}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>{montantUnite(country.exports_world, 'B', language, 1)}</p>
                         </div>
                         <div>
-                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.expIntraAfr}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#6ee7b7', margin: 0 }}>${country.exports_intra_african.toFixed(1)}B <span style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)' }}>({country.intra_african_percentage}%)</span></p>
+                          <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.expIntraAfr}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>{montantUnite(country.exports_intra_african, 'B', language, 1)} <span style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)' }}>({country.intra_african_percentage}%)</span></p>
                         </div>
                         <div>
-                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.impWorld}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#38bdf8', margin: 0 }}>${country.imports_world.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.impWorld}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>{montantUnite(country.imports_world, 'B', language, 1)}</p>
                         </div>
                         <div>
-                          <p style={{ fontSize: '0.68rem', color: 'rgba(142,155,174,0.6)', margin: 0 }}>{t.impIntraAfr}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#93c5fd', margin: 0 }}>${country.imports_intra_african.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.impIntraAfr}</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>{montantUnite(country.imports_intra_african, 'B', language, 1)}</p>
                         </div>
                       </div>
                     </div>
@@ -606,20 +607,20 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                     dataKey="value"
                   >
                     {Object.entries(statistics.sector_performance).slice(0, 8).map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.3)" strokeWidth={1} />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="var(--afcfta-card)" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip
                     formatter={(value) => [`${parseFloat(value).toFixed(1)}%`, '']}
-                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '0.72rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Legend wrapperStyle={{ fontSize: '0.72rem', color: 'var(--afcfta-muted)' }} />
                 </PieChart>
               </ResponsiveContainer>
 
               <div>
-                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(142,155,174,0.8)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 12 }}>
                   {t.sectorDetails}
                 </p>
                 <div className="space-y-2">
@@ -633,13 +634,13 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <div style={{ width: 10, height: 10, borderRadius: 2, background: COLORS[index % COLORS.length], flexShrink: 0 }} />
-                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#EAE0D0' }}>{displayName}</span>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)' }}>{displayName}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="stats-progress-bar" style={{ width: 60 }}>
                             <div style={{ height: '100%', borderRadius: 2, background: COLORS[index % COLORS.length], width: `${Math.min(100, parseFloat(pct) * 5)}%` }} />
                           </div>
-                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: COLORS[index % COLORS.length], minWidth: 32, textAlign: 'right' }}>{pct}%</span>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: `color-mix(in srgb, ${COLORS[index % COLORS.length]} 40%, var(--text))`, minWidth: 32, textAlign: 'right' }}>{pct}%</span>
                         </div>
                       </div>
                     );
@@ -652,7 +653,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       )}
 
       {/* ── Source Footer ──────────────────────────────────────── */}
-      <div className="stats-source-note" style={{ background: 'rgba(18,24,32,0.5)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="stats-source-note" style={{ background: 'var(--afcfta-card2)', borderRadius: 10, border: '1px solid var(--overlay)' }}>
         {language === 'en'
           ? 'Sources: IMF World Economic Outlook 2024 · World Bank WDI · UNCTAD COMTRADE · AfCFTA Secretariat · African Development Bank'
           : 'Sources: FMI World Economic Outlook 2024 · Banque Mondiale WDI · UNCTAD COMTRADE · Secrétariat ZLECAf · Banque Africaine de Développement'}

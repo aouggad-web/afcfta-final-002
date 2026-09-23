@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
+import { montantUnite } from '../../utils/nombres';
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || '';
 
@@ -78,11 +79,11 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
 
       <div style={{ padding: '16px 20px' }}>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 280, marginBottom: 16 }}>
-          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700 }}>{t.country}</span>
+          <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700 }}>{t.country}</span>
           <select
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
+            style={{ padding: '8px 10px', borderRadius: 8, background: 'var(--overlay)', border: '1px solid var(--goldSoft)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
           >
             {countries.map((c) => (
               <option key={c.iso3} value={c.iso3}>
@@ -93,13 +94,13 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
         </label>
 
         {loading && (
-          <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.85rem' }}>{t.loading}</p>
+          <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.85rem' }}>{t.loading}</p>
         )}
         {error && !loading && (
-          <p style={{ color: '#f87171', fontSize: '0.85rem' }}>{t.error}</p>
+          <p style={{ color: 'var(--danger)', fontSize: '0.85rem' }}>{t.error}</p>
         )}
         {!loading && !error && data && !data.has_data && (
-          <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.85rem' }}>{t.noData}</p>
+          <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.85rem' }}>{t.noData}</p>
         )}
 
         {!loading && !error && data?.has_data && (data.source_used || data.source) && (
@@ -114,7 +115,7 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
                 padding: '3px 10px',
                 borderRadius: 100,
                 background: 'rgba(52,211,153,0.14)',
-                color: '#34d399',
+                color: 'var(--success)',
                 border: '1px solid rgba(52,211,153,0.3)',
               }}
             >
@@ -126,19 +127,19 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
         {!loading && !error && data?.has_data && (
           <ResponsiveContainer width="100%" height={320} debounce={300}>
             <LineChart data={chartData} margin={{ top: 10, right: 24, left: 12, bottom: 8 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-              <XAxis dataKey="year" tick={{ fontSize: 12, fontWeight: 600, fill: '#EAE0D0' }} axisLine={false} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--overlay)" />
+              <XAxis dataKey="year" tick={{ fontSize: 12, fontWeight: 600, fill: 'var(--text)' }} axisLine={false} tickLine={false} />
               <YAxis
-                label={{ value: t.billionUsd, angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)' } }}
-                tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }}
+                label={{ value: t.billionUsd, angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'var(--afcfta-muted)' } }}
+                tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }}
                 axisLine={false} tickLine={false}
               />
               <Tooltip
-                formatter={(value) => [`$${value}B`, '']}
-                contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                formatter={(value) => [montantUnite(value, 'B', language), '']}
+                contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
               />
-              <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} iconType="circle" />
+              <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} iconType="circle" />
               <Line type="monotone" dataKey="exports" stroke="#34d399" strokeWidth={2.5} name={t.exports} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="imports" stroke="#fb923c" strokeWidth={2.5} name={t.imports} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="balance" stroke="#38bdf8" strokeWidth={2} strokeDasharray="5 5" name={t.balance} dot={{ r: 3 }} />

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { buildTradeReportPdf, tradeReportFilename } from './tradeReportPdf';
+import jsPDF from 'jspdf';
+import { buildTradeReportPdf, tradeReportFilename, espacesSimples } from './tradeReportPdf';
 
 const fmtUSD = (v) => {
   if (v == null || isNaN(v)) return '—';
@@ -141,6 +142,16 @@ describe('buildTradeReportPdf', () => {
     const noLabel = { ...dominantImportsData, hs_labels: [] };
     const doc = buildTradeReportPdf(baseParams(noLabel));
     expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(1000);
+  });
+});
+
+describe('espacesSimples', () => {
+  it("mesure et écrit les montants français avec des espaces simples", () => {
+    const doc = espacesSimples(new jsPDF());
+    expect(doc.getTextWidth('1\u00A0234\u00A0Md\u00A0$')).toBe(doc.getTextWidth('1 234 Md $'));
+    expect(doc.splitTextToSize('12\u00A0$', 100)).toEqual(['12 $']);
+    doc.text('7,11\u00A0Md\u00A0$', 10, 10);
+    expect(doc.output()).toContain('(7,11 Md $) Tj');
   });
 });
 

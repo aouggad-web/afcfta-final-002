@@ -116,7 +116,7 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
   return (
     <div className="relative">
       {/* Map Legend */}
-      <div className="absolute top-4 right-4 z-[1000] bg-white p-4 rounded-lg shadow-lg">
+      <div className="absolute top-4 right-4 z-[1000] bg-[var(--afcfta-card)] p-4 rounded-lg shadow-lg">
         <h4 className="font-bold text-sm mb-2">{t.legend}</h4>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
@@ -172,30 +172,30 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
                     <span>✈️</span>
                     {airport.airport_name}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="text-sm text-[var(--afcfta-muted)] mb-2">
                     {airport.country_name} • {airport.iata_code}
                   </p>
                   
                   <div className="space-y-2 text-sm">
-                    <div className="bg-sky-50 p-2 rounded">
-                      <p className="font-semibold text-sky-800">📦 {t.freight} {stats.year}</p>
-                      <p className="text-sky-600 font-bold">{formatNumber(stats.cargo_throughput_tons)} {t.tons}</p>
+                    <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-2 rounded">
+                      <p className="font-semibold text-[var(--info)]">📦 {t.freight} {stats.year}</p>
+                      <p className="text-[var(--info)] font-bold">{formatNumber(stats.cargo_throughput_tons)} {t.tons}</p>
                     </div>
                     
-                    <div className="bg-amber-50 p-2 rounded">
-                      <p className="font-semibold text-amber-800">📬 {t.mail} {stats.year}</p>
-                      <p className="text-amber-600 font-bold">{formatNumber(stats.mail_throughput_tons)} {t.tons}</p>
+                    <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-2 rounded">
+                      <p className="font-semibold text-[var(--gold)]">📬 {t.mail} {stats.year}</p>
+                      <p className="text-[var(--gold)] font-bold">{formatNumber(stats.mail_throughput_tons)} {t.tons}</p>
                     </div>
                     
-                    <div className="bg-green-50 p-2 rounded">
-                      <p className="font-semibold text-green-800">🛩️ {t.cargoMovements}</p>
-                      <p className="text-green-600 font-bold">{formatNumber(stats.cargo_aircraft_movements)}</p>
+                    <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-2 rounded">
+                      <p className="font-semibold text-[var(--success)]">🛩️ {t.cargoMovements}</p>
+                      <p className="text-[var(--success)] font-bold">{formatNumber(stats.cargo_aircraft_movements)}</p>
                     </div>
                   </div>
                   
                   <button 
                     onClick={() => onAirportClick(airport)}
-                    className="mt-3 w-full bg-sky-600 text-white px-3 py-2 rounded hover:bg-sky-700 text-sm font-semibold"
+                    className="mt-3 w-full bg-[var(--info)] text-[var(--bg)] px-3 py-2 rounded hover:bg-[var(--info)] text-sm font-semibold"
                   >
                     {t.viewDetails}
                   </button>

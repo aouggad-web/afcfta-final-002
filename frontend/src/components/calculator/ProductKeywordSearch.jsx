@@ -23,7 +23,7 @@ function toISO3(code) {
 function TaxBadge({ label, value, color }) {
   if (!value && value !== 0) return null;
   return (
-    <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold ${color}`}>
+    <span className={`inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] font-mono tabular-nums font-semibold ${color}`}>
       {label} {value}%
     </span>
   );
@@ -118,7 +118,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
           {labelText}
         </span>
         {selected && (
-          <span className="text-xs text-emerald-400 flex items-center gap-1">
+          <span className="text-xs text-[var(--success)] flex items-center gap-1">
             <CheckCircle className="w-3 h-3" />
             {selected.code}
           </span>
@@ -135,7 +135,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
           onChange={e => setQuery(e.target.value)}
           onFocus={() => results.length > 0 && setOpen(true)}
           placeholder={placeholder}
-          className="w-full h-11 pl-9 pr-9 rounded-lg bg-[var(--overlay)] border border-[var(--afcfta-border)] text-[var(--text)] text-sm placeholder-slate-500 focus:outline-none focus:border-purple-500/70 focus:ring-1 focus:ring-purple-500/30 transition-colors"
+          className="w-full h-11 pl-9 pr-9 rounded-lg bg-[var(--overlay)] border border-[var(--afcfta-border)] text-[var(--text)] text-sm placeholder:text-[var(--afcfta-muted)] focus:outline-none focus:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] focus:ring-1 focus:ring-purple-500/30 transition-colors"
         />
         {loading && (
           <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--violet)] animate-spin" />
@@ -152,9 +152,9 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 w-full mt-1 bg-[var(--overlay)] border border-[var(--afcfta-border)] rounded-xl shadow-2xl overflow-hidden">
+        <div className="absolute z-50 w-full mt-1 bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-xl shadow-[var(--shadow)] overflow-hidden">
           {error && (
-            <div className="flex items-center gap-2 px-4 py-3 text-red-400 text-sm">
+            <div className="flex items-center gap-2 px-4 py-3 text-[var(--danger)] text-sm">
               <AlertCircle className="w-4 h-4 shrink-0" />
               {error}
             </div>
@@ -174,7 +174,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                   {iso3 && <span className="ml-1 text-[var(--violet)]">· {iso3}</span>}
                 </span>
                 {results[0]?.source_quality === 'crawled_authentic' && (
-                  <span className="text-[10px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                  <span className="text-[11px] bg-[var(--greenSoft)] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] px-2 py-0.5 rounded-full">
                     douane.gov.dz
                   </span>
                 )}
@@ -202,35 +202,35 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                         <div className="flex items-start gap-3">
                           {/* Code */}
                           <div className="shrink-0 mt-0.5">
-                            <span className="font-mono text-xs font-bold text-[var(--violet)] bg-purple-500/10 px-2 py-0.5 rounded">
+                            <span className="font-mono tabular-nums text-xs font-bold bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] px-2 py-0.5 rounded">
                               {code}
                             </span>
                           </div>
 
                           {/* Description + taxes */}
                           <div className="flex-1 min-w-0">
-                            <p className="text-[var(--text)] text-sm leading-tight line-clamp-2">
+                            <p className="text-[var(--text)] text-sm leading-snug line-clamp-2">
                               {desc}
                             </p>
                             {/* Tax badges */}
                             <div className="flex flex-wrap gap-1 mt-1.5">
-                              {dd != null && <TaxBadge label="DD" value={dd} color="bg-blue-500/15 text-blue-300" />}
-                              {daps > 0 && <TaxBadge label="DAPS" value={daps} color="bg-orange-500/15 text-orange-300" />}
-                              {prct > 0 && <TaxBadge label="PRCT" value={prct} color="bg-yellow-500/15 text-yellow-300" />}
-                              {tcs > 0 && <TaxBadge label="TCS" value={tcs} color="bg-cyan-500/15 text-cyan-300" />}
+                              {dd != null && <TaxBadge label="DD" value={dd} color="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)]" />}
+                              {daps > 0 && <TaxBadge label="DAPS" value={daps} color="bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] text-[var(--terra)]" />}
+                              {prct > 0 && <TaxBadge label="PRCT" value={prct} color="bg-[var(--goldSoft)] text-[var(--gold)]" />}
+                              {tcs > 0 && <TaxBadge label="TCS" value={tcs} color="bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] text-[var(--atlantic)]" />}
                               {tva != null && <TaxBadge label="TVA" value={tva} color="bg-[var(--overlay)] text-[var(--text)]" />}
                               {total != null && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-500/15 text-red-300">
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] tabular-nums font-semibold bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)]">
                                   Total {total}%
                                 </span>
                               )}
                               {hasAdvantages && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/15 text-emerald-300">
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] bg-[var(--greenSoft)] text-[var(--success)]">
                                   ZLECAf ✓
                                 </span>
                               )}
                               {isAuthentic && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] bg-purple-500/15 text-[var(--violet)]">
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)]">
                                   authentique
                                 </span>
                               )}

@@ -160,6 +160,21 @@ function pillBadge(doc, x, y, text, theme) {
   return w;
 }
 
+/**
+ * Les montants en français portent des espaces insécables (« 1,23 Md $ ») :
+ * jsPDF les mesure comme un chiffre (0,53 em) alors que la police les dessine
+ * comme une espace (0,28 em), et un nombre aligné à droite se décalerait. Le
+ * document reçoit donc des espaces simples.
+ */
+export function espacesSimples(doc) {
+  const simple = (t) => (typeof t === 'string' ? t.replace(/\u00A0/g, ' ') : Array.isArray(t) ? t.map(simple) : t);
+  ['text', 'getTextWidth', 'splitTextToSize'].forEach((m) => {
+    const f = doc[m].bind(doc);
+    doc[m] = (t, ...rest) => f(simple(t), ...rest);
+  });
+  return doc;
+}
+
 function axisUnit(maxAbs, language) {
   if (maxAbs >= 1e6) return { divisor: 1e6, suffix: language === 'fr' ? ' M$' : ' M$' };
   if (maxAbs >= 1e3) return { divisor: 1e3, suffix: language === 'fr' ? ' k$' : ' k$' };
@@ -345,7 +360,7 @@ export function buildTradeReportPdf(p) {
   const { data, totals, language, levelLen, matchLevelLabel, fmtUSD, fmtTonnes, theme: themeName } = p;
   const theme = themeName === 'dark' ? THEME_DARK : THEME_LIGHT;
   const t = I18N[language] || I18N.fr;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const doc = espacesSimples(new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' }));
   const rows = data.chart_rows || [];
   const years = rows.map((r) => r.year);
   const period = years.length ? `${years[0]}-${years[years.length - 1]}` : '—';

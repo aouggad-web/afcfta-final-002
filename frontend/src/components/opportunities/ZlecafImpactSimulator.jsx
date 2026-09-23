@@ -228,8 +228,8 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
                     <YAxis tickFormatter={fmtUSD} tick={{ fontSize: 10, fill: 'rgba(148,163,184,0.7)' }} axisLine={false} tickLine={false} width={70} />
                     <Tooltip
                       formatter={(v) => fmtUSD(v)}
-                      contentStyle={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(52,211,153,0.3)', borderRadius: 8, fontSize: 12 }}
-                      labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                      contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)', borderRadius: 8, fontSize: 12 }}
+                      labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                     />
                     <Area type="monotone" dataKey="cumulative_saving" stroke="#34d399" strokeWidth={2.5} fill="url(#savingGrad)" name={t('opportunities.zlecafImpactSimulator.tableCum')} />
                   </AreaChart>

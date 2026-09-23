@@ -237,7 +237,7 @@ export default function SmartHSSearch({
       {/* Search Input */}
       <div className="relative">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--afcfta-muted)]" />
           <Input
             type="text"
             value={searchQuery}
@@ -251,7 +251,7 @@ export default function SmartHSSearch({
 
         {/* Search Results Dropdown */}
         {showResults && searchResults.length > 0 && (
-          <div className="absolute z-50 w-full mt-1 bg-[#1B232C] border border-[rgba(212,175,55,0.2)] rounded-lg shadow-2xl max-h-96 overflow-y-auto">
+          <div className="absolute z-50 w-full mt-1 bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-lg shadow-2xl max-h-96 overflow-y-auto">
             {/* Chapter header if code search */}
             {searchResults[0]?.chapter_name && (
               <div className="sticky top-0 bg-gradient-to-r from-[#C17A2B] to-[#D4AF37] text-[#0b0f14] px-4 py-2 text-sm font-bold">
@@ -260,24 +260,24 @@ export default function SmartHSSearch({
             )}
             
             {searchResults.map((result, idx) => (
-              <div key={idx} className="border-b border-[rgba(255,255,255,0.08)] last:border-b-0">
+              <div key={idx} className="border-b border-[var(--afcfta-border)] last:border-b-0">
                 {/* Main HS6 code */}
                 <div
-                  className="p-3 hover:bg-[rgba(212,175,55,0.1)] cursor-pointer transition-colors"
+                  className="p-3 hover:bg-[var(--goldSoft)] cursor-pointer transition-colors"
                   onClick={() => handleCodeSelect(result.code, result.description)}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono font-bold text-[#D4AF37] bg-[rgba(212,175,55,0.15)] px-2 py-0.5 rounded text-base">{result.code}</span>
-                        <span className="text-xs text-[#A0AAB4]">HS6</span>
+                        <span className="font-mono tabular-nums font-bold text-[var(--gold)] bg-[var(--goldSoft)] px-2 py-0.5 rounded text-base">{result.code}</span>
+                        <span className="text-xs text-[var(--afcfta-muted)]">HS6</span>
                         {result.category && (
-                          <Badge variant="outline" className="text-xs border-[rgba(255,255,255,0.15)] text-[#A0AAB4]">{result.category}</Badge>
+                          <Badge variant="outline" className="text-xs border-[var(--afcfta-border)] text-[var(--afcfta-muted)]">{result.category}</Badge>
                         )}
                       </div>
-                      <p className="text-[#F5F5F5] mt-1 text-sm">{result.description}</p>
+                      <p className="text-[var(--text)] mt-1 text-sm leading-snug">{result.description}</p>
                     </div>
-                    <Button size="sm" variant="ghost" className="shrink-0 text-[#D4AF37] hover:bg-[rgba(212,175,55,0.15)]">
+                    <Button size="sm" variant="ghost" className="shrink-0 text-[var(--gold)] hover:bg-[var(--goldSoft)]">
                       {t.useCode}
                     </Button>
                   </div>
@@ -285,8 +285,8 @@ export default function SmartHSSearch({
                 
                 {/* Sub-positions nationales (HS8-HS12) */}
                 {result.sub_positions && result.sub_positions.length > 0 && (
-                  <div className="bg-[rgba(139,92,246,0.08)] px-3 py-2 border-t border-[rgba(139,92,246,0.2)]">
-                    <p className="text-xs font-semibold text-[#A78BFA] mb-2 flex items-center gap-1">
+                  <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] px-3 py-2 border-t border-[color-mix(in_srgb,var(--violet)_22%,transparent)]">
+                    <p className="text-xs font-semibold text-[var(--violet)] mb-2 flex items-center gap-1">
                       <Info className="h-3 w-3" />
                       {language === 'fr' ? 'Sous-positions nationales disponibles:' : 'National sub-positions available:'}
                     </p>
@@ -294,7 +294,7 @@ export default function SmartHSSearch({
                       {result.sub_positions.slice(0, 5).map((sp, spIdx) => (
                         <div 
                           key={spIdx}
-                          className="flex items-center justify-between bg-[#15202A] p-2 rounded border border-[rgba(139,92,246,0.25)] hover:border-[#A78BFA] cursor-pointer transition-colors"
+                          className="flex items-center justify-between bg-[var(--afcfta-card2)] p-2 rounded border border-[color-mix(in_srgb,var(--violet)_28%,transparent)] hover:border-[var(--violet)] cursor-pointer transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleSubPositionSelect(
@@ -305,22 +305,22 @@ export default function SmartHSSearch({
                           }}
                         >
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-sm font-bold text-[#A78BFA] bg-[rgba(139,92,246,0.15)] px-2 py-0.5 rounded">{sp.code}</span>
-                            <span className="text-xs text-[#A0AAB4]">HS{sp.digits}</span>
+                            <span className="font-mono tabular-nums text-sm font-bold text-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_15%,var(--afcfta-card))] px-2 py-0.5 rounded">{sp.code}</span>
+                            <span className="text-xs text-[var(--afcfta-muted)]">HS{sp.digits}</span>
                           </div>
                           <div className="flex-1 px-2">
-                            <span className="text-sm text-[#F5F5F5]">{language === 'fr' ? sp.description_fr : sp.description_en}</span>
+                            <span className="text-sm text-[var(--text)]">{language === 'fr' ? sp.description_fr : sp.description_en}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Badge className="bg-[rgba(212,175,55,0.15)] text-[#D4AF37] text-xs border border-[rgba(212,175,55,0.3)]">DD: {sp.dd}%</Badge>
-                            <Button size="sm" variant="outline" className="text-xs h-6 text-[#A78BFA] border-[rgba(139,92,246,0.4)] hover:bg-[rgba(139,92,246,0.15)]">
+                            <Badge className="bg-[var(--goldSoft)] text-[var(--gold)] text-xs tabular-nums border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">DD: {sp.dd}%</Badge>
+                            <Button size="sm" variant="outline" className="text-xs h-6 text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_40%,transparent)] hover:bg-[color-mix(in_srgb,var(--violet)_15%,var(--afcfta-card))]">
                               {language === 'fr' ? 'Utiliser' : 'Use'}
                             </Button>
                           </div>
                         </div>
                       ))}
                       {result.sub_positions.length > 5 && (
-                        <p className="text-xs text-[#A78BFA] text-center pt-1">
+                        <p className="text-xs text-[var(--violet)] text-center pt-1">
                           +{result.sub_positions.length - 5} {language === 'fr' ? 'autres sous-positions' : 'more sub-positions'}
                         </p>
                       )}
@@ -333,7 +333,7 @@ export default function SmartHSSearch({
         )}
 
         {showResults && searchResults.length === 0 && searchQuery.length >= 2 && !loading && (
-          <div className="absolute z-50 w-full mt-1 bg-[#1B232C] border border-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-4 text-center text-[#A0AAB4]">
+          <div className="absolute z-50 w-full mt-1 bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-lg shadow-lg p-4 text-center text-[var(--afcfta-muted)]">
             {t.noResults}
           </div>
         )}
@@ -341,11 +341,11 @@ export default function SmartHSSearch({
 
       {/* Suggestions Panel */}
       {suggestions && (
-        <Card className="border-purple-200 bg-purple-50">
+        <Card className="border-[color-mix(in_srgb,var(--violet)_30%,transparent)] bg-[color-mix(in_srgb,var(--violet)_6%,var(--afcfta-card))]">
           <CardHeader className="py-3 cursor-pointer" onClick={() => setShowSuggestions(!showSuggestions)}>
             <CardTitle className="text-sm flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <span className="text-purple-700">{t.subPositionSuggestions}</span>
+                <span className="text-[var(--violet)]">{t.subPositionSuggestions}</span>
                 {suggestions.description && (
                   <Badge variant="outline" className="text-xs">
                     {suggestions.hs6_code}: {suggestions.description}
@@ -361,22 +361,22 @@ export default function SmartHSSearch({
               {/* Generic Suggestions */}
               {suggestions.generic_suggestions && suggestions.generic_suggestions.length > 0 && (
                 <div>
-                  <h4 className="text-xs font-semibold text-gray-600 mb-2">{t.genericSuggestions}</h4>
+                  <h4 className="text-xs font-semibold text-[var(--afcfta-muted)] mb-2">{t.genericSuggestions}</h4>
                   <div className="space-y-2">
                     {suggestions.generic_suggestions.map((sg, idx) => (
-                      <div key={idx} className="bg-white p-2 rounded border">
-                        <div className="font-medium text-sm text-purple-700 mb-1">{sg.label}</div>
+                      <div key={idx} className="bg-[var(--afcfta-card)] p-2 rounded border">
+                        <div className="font-medium text-sm text-[var(--violet)] mb-1">{sg.label}</div>
                         <div className="flex flex-wrap gap-1">
                           {sg.options.map((opt, optIdx) => (
                             <Button
                               key={optIdx}
                               variant="outline"
                               size="sm"
-                              className="text-xs h-7 hover:bg-purple-100"
+                              className="text-xs h-7 hover:bg-[color-mix(in_srgb,var(--violet)_14%,var(--afcfta-card))]"
                               onClick={() => handleSubPositionSelect(opt.full_code, opt.label)}
                             >
                               <span className="font-mono mr-1">{opt.full_code}</span>
-                              <span className="text-gray-500">{opt.label}</span>
+                              <span className="text-[var(--afcfta-muted)]">{opt.label}</span>
                             </Button>
                           ))}
                         </div>
@@ -390,18 +390,18 @@ export default function SmartHSSearch({
               {suggestions.country_sub_positions && suggestions.country_sub_positions.length > 0 && (
                 <div>
                   <Separator className="my-3" />
-                  <h4 className="text-xs font-semibold text-gray-600 mb-2 flex items-center gap-2">
+                  <h4 className="text-xs font-semibold text-[var(--afcfta-muted)] mb-2 flex items-center gap-2">
                     {suggestions.authentic_data 
                       ? (language === 'fr' ? 'Positions tarifaires nationales (source officielle)' : 'National tariff positions (official source)')
                       : t.countrySpecificRates}
-                    <Badge className="bg-green-600 text-white text-xs">{suggestions.country_code}</Badge>
+                    <Badge className="bg-[var(--success)] text-[var(--bg)] text-xs">{suggestions.country_code}</Badge>
                     {suggestions.authentic_data && (
-                      <Badge className="bg-emerald-700 text-white text-xs">
+                      <Badge className="bg-[var(--success)] text-[var(--bg)] text-xs">
                         {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
                       </Badge>
                     )}
                   </h4>
-                  <div className="text-xs text-gray-500 mb-2">
+                  <div className="text-xs text-[var(--afcfta-muted)] mb-2">
                     {suggestions.country_sub_positions.length} {language === 'fr' ? 'positions trouvées' : 'positions found'}
                     {suggestions.country_sub_positions[0]?.source && (
                       <span> — {language === 'fr' ? 'Source' : 'Source'}: {suggestions.country_sub_positions[0].source}</span>
@@ -411,7 +411,7 @@ export default function SmartHSSearch({
                     {suggestions.country_sub_positions.map((sp, idx) => (
                       <div
                         key={idx}
-                        className="bg-white p-2 rounded border hover:bg-green-50 cursor-pointer"
+                        className="bg-[var(--afcfta-card)] p-2 rounded border border-[var(--afcfta-border)] hover:bg-[var(--greenSoft)] cursor-pointer"
                         onClick={() => handleSubPositionSelect(
                           sp.code_clean || sp.code,
                           sp.description_fr || sp.description,
@@ -420,12 +420,12 @@ export default function SmartHSSearch({
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <span className="font-mono font-bold text-green-700">{sp.code}</span>
-                            <span className="mx-2 text-gray-400">—</span>
-                            <span className="text-sm text-gray-700">{sp.description_fr || sp.description}</span>
+                            <span className="font-mono tabular-nums font-bold text-[var(--success)]">{sp.code}</span>
+                            <span className="mx-2 text-[var(--afcfta-muted)]">—</span>
+                            <span className="text-sm text-[var(--text)]">{sp.description_fr || sp.description}</span>
                           </div>
                           {sp.dd_rate_pct && (
-                            <Badge className="bg-blue-600 text-white ml-2 shrink-0">
+                            <Badge className="bg-[var(--info)] text-[var(--bg)] ml-2 shrink-0">
                               DD {sp.dd_rate_pct}
                             </Badge>
                           )}
@@ -433,7 +433,7 @@ export default function SmartHSSearch({
                         {sp.taxes_display && sp.taxes_display.length > 0 && (
                           <div className="mt-1 flex flex-wrap gap-1">
                             {sp.taxes_display.map((tax, tIdx) => (
-                              <span key={tIdx} className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">
+                              <span key={tIdx} className="text-xs bg-[var(--overlay)] text-[var(--afcfta-muted)] px-1.5 py-0.5 rounded">
                                 {tax}
                               </span>
                             ))}
@@ -442,7 +442,7 @@ export default function SmartHSSearch({
                         {sp.administrative_formalities && sp.administrative_formalities.length > 0 && (
                           <div className="mt-1">
                             {sp.administrative_formalities.slice(0, 2).map((f, fIdx) => (
-                              <span key={fIdx} className="text-xs text-orange-600 mr-2">
+                              <span key={fIdx} className="text-xs text-[var(--terra)] mr-2">
                                 ⚠ {typeof f === 'string' ? f : f.text || f.description || ''}
                               </span>
                             ))}
@@ -458,28 +458,28 @@ export default function SmartHSSearch({
               {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && (
                 <div>
                   <Separator className="my-3" />
-                  <h4 className="text-xs font-semibold text-gray-600 mb-2">{t.ruleOfOrigin}</h4>
-                  <div className="bg-white p-3 rounded border space-y-2">
+                  <h4 className="text-xs font-semibold text-[var(--afcfta-muted)] mb-2">{t.ruleOfOrigin}</h4>
+                  <div className="bg-[var(--afcfta-card)] p-3 rounded border space-y-2">
                     <div className="flex items-center justify-between gap-2 flex-wrap">
                       <Badge variant="outline" className="text-xs">
                         {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
                       </Badge>
                       {ruleOfOrigin.rules.regional_content != null && (
-                        <Badge className="bg-yellow-500 text-white">
+                        <Badge className="bg-[var(--gold)] text-[var(--bg)]">
                           {t.regionalContent}: {ruleOfOrigin.rules.regional_content}%
                         </Badge>
                       )}
                       {ruleOfOrigin.status === 'YTB' && (
-                        <Badge className="bg-orange-500 text-white">
+                        <Badge className="bg-[var(--terra)] text-[var(--bg)]">
                           {language === 'fr' ? 'En cours de négociation' : 'Yet to be agreed'}
                         </Badge>
                       )}
                     </div>
                     {ruleOfOrigin.rules.primary_rule?.explanation && (
-                      <p className="text-sm text-gray-700">{ruleOfOrigin.rules.primary_rule.explanation}</p>
+                      <p className="text-sm text-[var(--text)]">{ruleOfOrigin.rules.primary_rule.explanation}</p>
                     )}
                     {ruleOfOrigin.rules.alternative_rule && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-[var(--afcfta-muted)]">
                         {t.alternativeRule}: {ruleOfOrigin.rules.alternative_rule.name}
                       </p>
                     )}
@@ -490,7 +490,7 @@ export default function SmartHSSearch({
               {/* No suggestions message */}
               {(!suggestions.generic_suggestions || suggestions.generic_suggestions.length === 0) &&
                (!suggestions.country_sub_positions || suggestions.country_sub_positions.length === 0) && (
-                <div className="text-center text-gray-500 py-2">
+                <div className="text-center text-[var(--afcfta-muted)] py-2">
                   <AlertTriangle className="h-5 w-5 mx-auto mb-1" />
                   {t.noSuggestions}
                 </div>

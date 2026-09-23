@@ -18,7 +18,7 @@ const CustomTooltip = ({ active, payload, language }) => {
       <p className="text-[var(--text)] font-semibold">
         {language === 'fr' ? `Année ${d.year}` : `Year ${d.year}`} — {d.calendar_year}
       </p>
-      <p className="text-emerald-400 font-bold text-base">{d.rate.toFixed(2)}%</p>
+      <p className="text-[var(--success)] font-bold text-base">{d.rate.toFixed(2)}%</p>
       {d.reduction_pct > 0 && (
         <p className="text-[var(--afcfta-muted)] text-xs">
           {language === 'fr' ? 'Réduction cumulée' : 'Cumulative reduction'}: {d.reduction_pct.toFixed(1)}%
@@ -33,10 +33,10 @@ const CustomTooltip = ({ active, payload, language }) => {
 // ---------------------------------------------------------------------------
 const CategoryBadge = ({ category, label }) => {
   const colors = {
-    A: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    B: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    C: 'bg-red-500/20 text-red-400 border-red-500/30',
-    D: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+    A: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
+    B: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
+    C: 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]',
+    D: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
   };
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${colors[category] || colors.A}`}>
@@ -76,7 +76,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
   if (!countryIso3 || !hs6 || npfRate === undefined) return null;
   if (loading) return (
     <div className="flex items-center gap-2 py-4 text-[var(--afcfta-muted)] text-sm">
-      <div className="w-4 h-4 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+      <div className="w-4 h-4 rounded-full border-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] border-t-transparent animate-spin" />
       {language === 'fr' ? 'Chargement du schéma de démantèlement…' : 'Loading dismantlement schedule…'}
     </div>
   );
@@ -88,11 +88,11 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
       <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
         <CardContent className="pt-4 pb-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
-              <TrendingDown className="w-4 h-4 text-blue-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+              <TrendingDown className="w-4 h-4 text-[var(--info)]" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-[var(--text)]">
                 {language === 'fr' ? 'Déjà en franchise ZLECAf (0%)' : 'Already duty-free under AfCFTA (0%)'}
               </p>
               <p className="text-xs text-[var(--afcfta-muted)]">
@@ -111,11 +111,11 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
       <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
         <CardContent className="pt-4 pb-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
-              <Info className="w-4 h-4 text-red-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
+              <Info className="w-4 h-4 text-[var(--danger)]" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-[var(--text)]">
                 {language === 'fr' ? 'Produit exclu du démantèlement ZLECAf' : 'Product excluded from AfCFTA dismantlement'}
               </p>
               <p className="text-xs text-[var(--afcfta-muted)]">
@@ -141,11 +141,11 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-              <TrendingDown className="w-5 h-5 text-emerald-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+              <TrendingDown className="w-5 h-5 text-[var(--success)]" />
             </div>
             <div>
-              <CardTitle className="text-lg text-white">
+              <CardTitle className="text-lg text-[var(--text)]">
                 {language === 'fr' ? 'Schéma de Démantèlement ZLECAf' : 'AfCFTA Dismantlement Schedule'}
               </CardTitle>
               <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">
@@ -163,39 +163,39 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
         {/* Indicateurs clés */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {/* Taux NPF */}
-          <div className="bg-red-500/10 rounded-xl p-3 border border-red-500/20 text-center">
-            <p className="text-red-400/70 text-xs uppercase tracking-wide">
-              {language === 'fr' ? 'Taux NPF' : 'MFN Rate'}
+          <div className="bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] text-center">
+            <p className="text-[var(--danger)] text-xs">
+              {language === 'fr' ? 'Taux NPF' : 'MFN rate'}
             </p>
-            <p className="text-2xl font-bold text-red-400 mt-1">{data.npf_rate.toFixed(1)}%</p>
+            <p className="text-2xl font-bold text-[var(--danger)] mt-1">{data.npf_rate.toFixed(1)}%</p>
           </div>
 
           {/* Taux actuel ZLECAf */}
-          <div className="bg-emerald-500/10 rounded-xl p-3 border border-emerald-500/20 text-center">
-            <p className="text-emerald-400/70 text-xs uppercase tracking-wide">
+          <div className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-center">
+            <p className="text-[var(--success)] text-xs">
               {language === 'fr' ? `ZLECAf ${currentCalendarYear}` : `AfCFTA ${currentCalendarYear}`}
             </p>
-            <p className="text-2xl font-bold text-emerald-400 mt-1">
+            <p className="text-2xl font-bold text-[var(--success)] mt-1">
               {data.current_zlecaf_rate.toFixed(1)}%
             </p>
           </div>
 
           {/* Économie actuelle */}
-          <div className="bg-amber-500/10 rounded-xl p-3 border border-amber-500/20 text-center">
-            <p className="text-amber-400/70 text-xs uppercase tracking-wide">
+          <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-center">
+            <p className="text-[var(--gold)] text-xs">
               {language === 'fr' ? 'Gain actuel' : 'Current gain'}
             </p>
-            <p className="text-2xl font-bold text-amber-400 mt-1">
+            <p className="text-2xl font-bold text-[var(--gold)] mt-1">
               -{savingsPct.toFixed(0)}%
             </p>
           </div>
 
           {/* Année finale */}
-          <div className="bg-blue-500/10 rounded-xl p-3 border border-blue-500/20 text-center">
-            <p className="text-blue-400/70 text-xs uppercase tracking-wide">
+          <div className="bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-center">
+            <p className="text-[var(--info)] text-xs">
               {language === 'fr' ? 'Franchise totale' : 'Full duty-free'}
             </p>
-            <p className="text-2xl font-bold text-blue-400 mt-1">
+            <p className="text-2xl font-bold text-[var(--info)] mt-1">
               {data.target_calendar_year
                 ? (data.fully_liberalized
                     ? (language === 'fr' ? 'Atteint' : 'Reached')
@@ -303,7 +303,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
                     <tr
                       key={row.year}
                       className={isCurrent
-                        ? 'bg-amber-500/10 font-semibold'
+                        ? 'bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] font-semibold'
                         : 'hover:bg-[var(--overlay)]'}
                     >
                       <td className="py-1.5 pr-4 text-[var(--text)]">
@@ -311,11 +311,11 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
                           ? (language === 'fr' ? 'Avant EIV' : 'Pre-EIF')
                           : `An ${row.year}`}
                         {isCurrent && (
-                          <span className="ml-1 text-amber-400">←</span>
+                          <span className="ml-1 text-[var(--gold)]">←</span>
                         )}
                       </td>
                       <td className="py-1.5 pr-4 text-[var(--text)]">{row.calendar_year}</td>
-                      <td className={`py-1.5 pr-4 font-mono ${row.rate === 0 ? 'text-emerald-400' : 'text-white'}`}>
+                      <td className={`py-1.5 pr-4 font-mono ${row.rate === 0 ? 'text-[var(--success)]' : 'text-[var(--text)]'}`}>
                         {row.rate.toFixed(2)}%
                       </td>
                       <td className="py-1.5 text-[var(--afcfta-muted)]">

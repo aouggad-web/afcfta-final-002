@@ -140,27 +140,27 @@ export default function RcaAnalysis({ language = 'fr' }) {
     const d = payload[0]?.payload;
     if (!d) return null;
     return (
-      <div style={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem', maxWidth: 260 }}>
-        <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>{d.code} · {d.fullName}</p>
-        <p style={{ color: d.hasAdvantage ? '#34d399' : '#d4a373', margin: 0 }}>RCA = <strong>{d.rca.toFixed(2)}</strong></p>
+      <div style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem', maxWidth: 260 }}>
+        <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{d.code} · {d.fullName}</p>
+        <p style={{ color: `color-mix(in srgb, ${d.hasAdvantage ? '#34d399' : '#d4a373'} 40%, var(--text))`, margin: 0 }}>RCA = <strong>{d.rca.toFixed(2)}</strong></p>
       </div>
     );
   };
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="rca-analysis">
-      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Award className="w-7 h-7 text-white" />
+              <Award className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
-              <CardDescription className="text-slate-300 mt-0.5">{txt.subtitle}</CardDescription>
+              <CardDescription className="mt-0.5">{txt.subtitle}</CardDescription>
             </div>
           </div>
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1">
+          <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
             OEC/BACI · {year}
           </Badge>
         </div>
@@ -170,7 +170,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
         {/* ── Contrôles ───────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.country}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.country}</label>
             <Select value={selectedCountry} onValueChange={setSelectedCountry}>
               <SelectTrigger data-testid="rca-country-select">
                 <SelectValue placeholder={txt.selectCountry} />
@@ -189,7 +189,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.year}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.year}</label>
             <Select value={String(year)} onValueChange={(v) => setYear(Number(v))}>
               <SelectTrigger data-testid="rca-year-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -201,7 +201,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.level}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.level}</label>
             <Select value={hsLevel} onValueChange={setHsLevel}>
               <SelectTrigger data-testid="rca-level-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -216,7 +216,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
         {/* ── Résumé ──────────────────────────────────────────── */}
         {!loading && !error && response && (
           <div className="flex items-center justify-between gap-3 flex-wrap">
-            <div className="text-sm font-semibold text-slate-800">
+            <div className="text-sm font-semibold text-[var(--text)]">
               {txt.summary(response.products_with_advantage, response.total_products)}
             </div>
             {rows.length > 0 && (
@@ -240,13 +240,13 @@ export default function RcaAnalysis({ language = 'fr' }) {
         {/* ── Graphique ───────────────────────────────────────── */}
         <div style={{ width: '100%', height: 420 }}>
           {loading ? (
-            <div className="flex items-center justify-center h-full text-slate-500 gap-2">
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)] gap-2">
               <RefreshCw className="w-5 h-5 animate-spin" /> {txt.loading}
             </div>
           ) : error ? (
-            <div className="flex items-center justify-center h-full text-red-500">{txt.error}</div>
+            <div className="flex items-center justify-center h-full text-[var(--danger)]">{txt.error}</div>
           ) : !chartData.length ? (
-            <div className="flex items-center justify-center h-full text-slate-500">{txt.noData}</div>
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)]">{txt.noData}</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} layout="vertical" margin={{ top: 8, right: 30, left: 8, bottom: 8 }}>
@@ -284,15 +284,15 @@ export default function RcaAnalysis({ language = 'fr' }) {
                   <TableRow key={`${d.hs_code}-${i}`}>
                     <TableCell className="font-mono text-xs">{d.hs_code}</TableCell>
                     <TableCell className="max-w-xs truncate">{d.product}</TableCell>
-                    <TableCell className="text-right font-semibold" style={{ color: d.has_advantage ? ADV_COLOR : '#92400e' }}>
+                    <TableCell className="text-right font-semibold" style={{ color: `color-mix(in srgb, ${d.has_advantage ? ADV_COLOR : '#92400e'} 40%, var(--text))`}}>
                       {d.rca.toFixed(2)}
                     </TableCell>
                     <TableCell className="text-right">{fmtPct(d.country_share)}</TableCell>
                     <TableCell className="text-right">{fmtPct(d.world_share)}</TableCell>
                     <TableCell className="text-center">
                       {d.has_advantage
-                        ? <span className="text-emerald-600 font-medium">{txt.yes}</span>
-                        : <span className="text-slate-400">{txt.no}</span>}
+                        ? <span className="text-[var(--success)] font-medium">{txt.yes}</span>
+                        : <span className="text-[var(--afcfta-muted)]">{txt.no}</span>}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -301,7 +301,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
           </div>
         )}
 
-        <p className="text-xs text-slate-400">{txt.methodology}</p>
+        <p className="text-xs text-[var(--afcfta-muted)]">{txt.methodology}</p>
       </CardContent>
     </Card>
   );

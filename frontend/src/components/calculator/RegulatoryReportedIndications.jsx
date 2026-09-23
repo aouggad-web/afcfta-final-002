@@ -109,10 +109,10 @@ function ReportedItem({ item, t, language }) {
           <Badge variant="outline" className="bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)]">
             {item.side === 'export' ? t.sideExport : t.sideImport}
           </Badge>
-          <p className="mt-1 text-xs text-amber-300/90">
+          <p className="mt-1 text-xs text-[var(--gold)]">
             {t.reportedFee}: <span className="italic">{item.reported_fee_range || t.toConfirm}</span>
           </p>
-          <p className="text-[10px] text-[var(--afcfta-muted)] mt-0.5">{t.toConfirm}</p>
+          <p className="text-[11px] text-[var(--afcfta-muted)] mt-0.5">{t.toConfirm}</p>
         </div>
       </div>
     </div>
@@ -156,7 +156,7 @@ export default function RegulatoryReportedIndications({ result, language = 'fr' 
           <div>
             <CardTitle className="text-base text-[var(--text)] flex items-center gap-2">
               {t.title}
-              <Badge variant="outline" className="bg-amber-600/15 text-amber-300 border-amber-500/40 text-[10px]">
+              <Badge variant="outline" className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-[11px]">
                 {t.unverified}
               </Badge>
             </CardTitle>
@@ -165,14 +165,14 @@ export default function RegulatoryReportedIndications({ result, language = 'fr' 
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
-          <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-          <p className="text-sm text-amber-200/90">{t.warning}</p>
+        <div className="flex items-start gap-3 p-3 rounded-lg bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+          <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
+          <p className="text-sm text-[var(--gold)]">{t.warning}</p>
         </div>
 
         {/* Encadré explicatif import vs export */}
-        <div className="rounded-lg border border-sky-500/30 bg-sky-500/5 p-3">
-          <p className="text-sm font-semibold text-sky-200 flex items-center gap-2">
+        <div className="rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-[color-mix(in_srgb,var(--info)_5%,var(--afcfta-card))] p-3">
+          <p className="text-sm font-semibold text-[var(--info)] flex items-center gap-2">
             <Info className="w-4 h-4" /> {t.explainTitle}
           </p>
           <p className="text-xs text-[var(--text)]/90 mt-1">{t.explainBody}</p>

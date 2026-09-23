@@ -32,17 +32,17 @@ export default function CalculationMethodStatus({
       data-testid="calculation-method-status"
       className={`rounded-xl border p-4 ${
         isCountrySpecific
-          ? "border-emerald-500/30 bg-emerald-500/10"
-          : "border-amber-500/40 bg-amber-500/10"
+          ? "border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))]"
+          : "border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))]"
       }`}
     >
       <div className="flex items-start gap-3">
         <Icon
-          className={`mt-0.5 h-5 w-5 shrink-0 ${isCountrySpecific ? "text-emerald-400" : "text-amber-400"}`}
+          className={`mt-0.5 h-5 w-5 shrink-0 ${isCountrySpecific ? "text-[var(--success)]" : "text-[var(--gold)]"}`}
         />
         <div>
           <p
-            className={`font-semibold ${isCountrySpecific ? "text-emerald-300" : "text-amber-300"}`}
+            className={`font-semibold ${isCountrySpecific ? "text-[var(--success)]" : "text-[var(--gold)]"}`}
           >
             {title}
           </p>

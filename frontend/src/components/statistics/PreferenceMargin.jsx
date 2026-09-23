@@ -73,11 +73,11 @@ const TEXTS = {
 };
 
 const Kpi = ({ label, value, suffix, color }) => (
-  <div className="rounded-xl bg-slate-50 p-3 text-center">
-    <div className="text-2xl font-bold" style={{ color: color || '#1e293b' }}>
+  <div className="rounded-xl bg-[var(--afcfta-card2)] p-3 text-center">
+    <div className="text-2xl font-bold" style={{ color: `color-mix(in srgb, ${color || '#1e293b'} 40%, var(--text))`}}>
       {value != null ? value : '—'}{value != null && suffix ? suffix : ''}
     </div>
-    <div className="text-xs text-slate-500 mt-0.5">{label}</div>
+    <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">{label}</div>
   </div>
 );
 
@@ -132,18 +132,18 @@ export default function PreferenceMargin({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="preference-margin">
-      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Percent className="w-7 h-7 text-white" />
+              <Percent className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
-              <CardDescription className="text-slate-300 mt-0.5">{txt.subtitle}</CardDescription>
+              <CardDescription className="mt-0.5">{txt.subtitle}</CardDescription>
             </div>
           </div>
-          <Badge className="bg-amber-500/20 text-amber-300 border border-amber-500/30 px-3 py-1">
+          <Badge className="bg-[var(--afcfta-card2)] text-[var(--gold)] border border-[var(--afcfta-border)] px-3 py-1">
             ZLECAf · tarifs nationaux
           </Badge>
         </div>
@@ -152,7 +152,7 @@ export default function PreferenceMargin({ language = 'fr' }) {
       <CardContent className="pt-5 space-y-4">
         {/* ── Sélecteur pays ──────────────────────────────────── */}
         <div className="max-w-xs">
-          <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.country}</label>
+          <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.country}</label>
           <Select value={country} onValueChange={setCountry}>
             <SelectTrigger data-testid="pref-country-select"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -166,11 +166,11 @@ export default function PreferenceMargin({ language = 'fr' }) {
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-10 text-slate-500 gap-2">
+          <div className="flex items-center justify-center py-10 text-[var(--afcfta-muted)] gap-2">
             <RefreshCw className="w-5 h-5 animate-spin" /> {txt.loading}
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center py-10 text-red-500">{txt.error}</div>
+          <div className="flex items-center justify-center py-10 text-[var(--danger)]">{txt.error}</div>
         ) : data ? (
           <>
             {/* ── KPI ─────────────────────────────────────────── */}
@@ -181,14 +181,14 @@ export default function PreferenceMargin({ language = 'fr' }) {
               <Kpi label={txt.benefiting} value={data.lines_with_preference_pct} suffix="%" color="#1A7A4A" />
               <Kpi label={txt.dutyFree} value={data.lines_already_duty_free_pct} suffix="%" color="#1A6B8A" />
             </div>
-            <div className="text-xs text-slate-400">
+            <div className="text-xs text-[var(--afcfta-muted)]">
               {data.total_lines_analyzed?.toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')} {txt.lines}
             </div>
 
             {/* ── Ventilation par sensibilité ─────────────────── */}
             {data.sensitivity_breakdown && Object.keys(data.sensitivity_breakdown).length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-slate-700 mb-2">{txt.sensitivity}</h4>
+                <h4 className="text-sm font-semibold text-[var(--text)] mb-2">{txt.sensitivity}</h4>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -221,7 +221,7 @@ export default function PreferenceMargin({ language = 'fr' }) {
             {sectorChart.length > 0 && (
               <div>
                 <div className="flex items-center justify-between gap-3 flex-wrap mb-2">
-                  <h4 className="text-sm font-semibold text-slate-700">{txt.topSectors}</h4>
+                  <h4 className="text-sm font-semibold text-[var(--text)]">{txt.topSectors}</h4>
                   <CSVExportButton
                     rows={data.top_sectors_by_margin || []}
                     columns={[
@@ -254,7 +254,7 @@ export default function PreferenceMargin({ language = 'fr' }) {
           </>
         ) : null}
 
-        <p className="text-xs text-slate-400">{txt.methodology}</p>
+        <p className="text-xs text-[var(--afcfta-muted)]">{txt.methodology}</p>
       </CardContent>
     </Card>
   );

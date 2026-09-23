@@ -245,13 +245,13 @@ export default function AirLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-4">
       {/* Header Section - Compact */}
-      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
-        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+      <div className="flex items-center gap-3 bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
           <Plane className="w-5 h-5" />
         </div>
         <div>
           <h2 className="text-lg font-bold">{t.title}</h2>
-          <p className="text-blue-100 text-sm">{t.subtitle}</p>
+          <p className="text-[var(--info)] text-sm">{t.subtitle}</p>
         </div>
       </div>
 
@@ -264,11 +264,11 @@ export default function AirLogisticsTab({ language = 'fr' }) {
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Country Filter */}
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <span className="text-sm font-semibold text-gray-700">{t.filterByCountry}</span>
+              <span className="text-sm font-semibold text-[var(--text)]">{t.filterByCountry}</span>
               <select
                 value={selectedCountry}
                 onChange={(e) => setSelectedCountry(e.target.value)}
-                className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
+                className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:border-[color-mix(in_srgb,var(--info)_30%,transparent)]"
               >
                 <option value="ALL">🌍 {t.allCountries}</option>
                 <optgroup label={t.northAfrica}>
@@ -304,14 +304,12 @@ export default function AirLogisticsTab({ language = 'fr' }) {
               <Button
                 onClick={() => setViewMode('map')}
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'bg-sky-600 hover:bg-sky-700' : ''}
               >
                 🗺️ {t.map}
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
                 variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'bg-sky-600 hover:bg-sky-700' : ''}
               >
                 📋 {t.list}
               </Button>
@@ -330,8 +328,8 @@ export default function AirLogisticsTab({ language = 'fr' }) {
         <Card>
           <CardContent className="py-12">
             <div className="flex flex-col items-center justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600"></div>
-              <p className="mt-4 text-gray-600">{t.loading}</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)]"></div>
+              <p className="mt-4 text-[var(--afcfta-muted)]">{t.loading}</p>
             </div>
           </CardContent>
         </Card>
@@ -342,7 +340,7 @@ export default function AirLogisticsTab({ language = 'fr' }) {
           language={language}
         />
       ) : (
-        <div className="max-h-[550px] overflow-y-auto rounded-lg border border-gray-200 p-4 bg-gray-50">
+        <div className="max-h-[550px] overflow-y-auto rounded-lg border border-[var(--afcfta-border)] p-4 bg-[var(--afcfta-card2)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {airports.map((airport) => (
               <AirportCard

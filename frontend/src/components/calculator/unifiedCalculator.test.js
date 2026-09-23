@@ -105,6 +105,37 @@ describe('mapCalculToLegacyResult — préférence appliquée', () => {
     expect(r.savings_percentage).toBe(100);
   });
 
+  it("ne signale aucun plancher quand la préférence est servie", () => {
+    expect(r.plancher_npf).toBeNull();
+  });
+
+  it('reprend le plancher NPF posé par le moteur sur une ligne', () => {
+    const plancher = { taux_preferentiel_ecarte_pct: 4, taux_retenu_pct: 0, motif: 'NPF servi.' };
+    const avecPlancher = mapCalculToLegacyResult(
+      {
+        ...calcul,
+        preference: {
+          ...calcul.preference,
+          lignes: [ligne({ regime_applique: 'npf_plancher', plancher_npf: plancher })],
+        },
+      },
+      contexte,
+    );
+    expect(avecPlancher.plancher_npf).toEqual(plancher);
+  });
+
+  it("ne porte aucune réserve quand le moteur n'en joint pas", () => {
+    expect(r.zlecaf_reserve).toBeNull();
+  });
+
+  it('reprend la réserve jointe à la préférence', () => {
+    const avecReserve = mapCalculToLegacyResult(
+      { ...calcul, preference_zlecaf: { ...calcul.preference_zlecaf, reserve: "Règle d'origine non arrêtée." } },
+      contexte,
+    );
+    expect(avecReserve.zlecaf_reserve).toBe("Règle d'origine non arrêtée.");
+  });
+
   it('marque la ligne réduite dans le tableau comparatif', () => {
     const ddRow = r.taxes_breakdown.find((row) => row.code === 'DD');
     expect(ddRow.amount_npf).toBe(200);

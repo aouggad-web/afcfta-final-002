@@ -84,7 +84,7 @@ export default function BankScoring({ language = 'en' }) {
       <Card>
         <CardHeader>
           <CardTitle>{t.title}</CardTitle>
-          <p className="text-sm text-gray-600">{t.subtitle}</p>
+          <p className="text-sm text-[var(--afcfta-muted)]">{t.subtitle}</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,25 +117,25 @@ export default function BankScoring({ language = 'en' }) {
           </form>
 
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded">
-              <p className="text-red-800">{t.error}: {error}</p>
+            <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] rounded">
+              <p className="text-[var(--danger)]">{t.error}: {error}</p>
             </div>
           )}
 
           {result && (
             <div className="mt-6 space-y-3">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-[var(--afcfta-muted)]">
                 {t.banks}: <strong>{result.banks_scored}</strong>
               </div>
 
               {result.banks && result.banks.map((bank, i) => (
-                <Card key={i} className={i === 0 ? 'border-green-300 bg-green-50' : ''}>
+                <Card key={i} className={i === 0 ? 'border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : ''}>
                   <CardContent className="pt-4">
                     <div className="space-y-2">
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="font-semibold">{bank.name}</div>
-                          <div className="text-xs text-gray-600">{bank.abbreviation}</div>
+                          <div className="text-xs text-[var(--afcfta-muted)]">{bank.abbreviation}</div>
                         </div>
                         <Badge variant={i === 0 ? 'default' : 'outline'}>
                           {bank.score}/10
@@ -143,13 +143,13 @@ export default function BankScoring({ language = 'en' }) {
                       </div>
 
                       <div className="text-sm">
-                        <div className="text-gray-700">
+                        <div className="text-[var(--text)]">
                           {t.suitability}: <strong>{bank.suitability_level}</strong>
                         </div>
                       </div>
 
                       {bank.key_strengths && (
-                        <div className="text-xs bg-white p-2 rounded border">
+                        <div className="text-xs bg-[var(--afcfta-card)] p-2 rounded border">
                           <strong>{t.strengths}:</strong>
                           <ul className="mt-1 space-y-1">
                             {bank.key_strengths.map((s, j) => (
@@ -160,7 +160,7 @@ export default function BankScoring({ language = 'en' }) {
                       )}
 
                       {bank.correspondents_count > 0 && (
-                        <div className="text-xs text-gray-600">
+                        <div className="text-xs text-[var(--afcfta-muted)]">
                           {t.correspondents}: {bank.correspondents_count}
                         </div>
                       )}

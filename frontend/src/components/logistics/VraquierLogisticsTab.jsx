@@ -7,11 +7,12 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Ship, Anchor, Waves, Loader2, Leaf, AlertTriangle, Package, TrendingUp } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const fmtUsd = (v) => (v == null ? '—' : '$' + Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 }));
+const fmtUsd = (v, language) => (v == null ? '—' : montant(v, language));
 const fmtNum = (v, u = '') => (v == null ? '—' : Number(v).toLocaleString('fr-FR') + (u ? ' ' + u : ''));
 const fmtDays = (min, max) => (min == null && max == null ? '—' : min === max || max == null ? `${min} j` : `${min}–${max} j`);
 
@@ -67,18 +68,18 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-5" data-testid="vraquier-logistics-tab">
       {/* Header */}
-      <Card className="border-0 shadow-sm" style={{ background: 'rgba(27,35,44,0.7)' }}>
+      <Card className="border-0 shadow-sm" style={{ background: 'var(--afcfta-card2)' }}>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-500/15 flex items-center justify-center">
-                <Ship className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-lg bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] flex items-center justify-center">
+                <Ship className="w-5 h-5 text-[var(--info)]" />
               </div>
               <div>
-                <CardTitle className="text-white text-base">
+                <CardTitle className="text-[var(--text)] text-base">
                   {fr ? 'Fret vraquier (bulk carrier)' : 'Bulk carrier freight'}
                 </CardTitle>
-                <CardDescription className="text-gray-400 text-xs">
+                <CardDescription className="text-[var(--afcfta-muted)] text-xs">
                   {fr
                     ? 'Cargaison homogène en vrac sec — coût USD/t par classe de navire, contraintes portuaires et voyages multiples.'
                     : 'Homogeneous dry-bulk cargo — USD/t cost per vessel class, port constraints and multiple voyages.'}
@@ -89,8 +90,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               <Badge
                 className={
                   market.is_live
-                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                    : 'bg-gray-500/15 text-gray-300 border-gray-500/30'
+                    ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'
+                    : 'bg-gray-500/15 text-[var(--text)] border-[var(--afcfta-border)]'
                 }
                 title={market.source || ''}
               >
@@ -107,11 +108,11 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
       </Card>
 
       {/* Inputs */}
-      <Card className="border-0 shadow-sm" style={{ background: 'rgba(27,35,44,0.7)' }}>
+      <Card className="border-0 shadow-sm" style={{ background: 'var(--afcfta-card2)' }}>
         <CardContent className="py-4">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
             <div>
-              <Label className="text-gray-300 text-xs">{fr ? 'Port de départ' : 'Origin port'}</Label>
+              <Label className="text-[var(--text)] text-xs">{fr ? 'Port de départ' : 'Origin port'}</Label>
               <Select value={origin} onValueChange={setOrigin}>
                 <SelectTrigger data-testid="vraquier-origin"><SelectValue /></SelectTrigger>
                 <SelectContent className="max-h-72">
@@ -120,7 +121,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">{fr ? "Port d'arrivée" : 'Destination port'}</Label>
+              <Label className="text-[var(--text)] text-xs">{fr ? "Port d'arrivée" : 'Destination port'}</Label>
               <Select value={destination} onValueChange={setDestination}>
                 <SelectTrigger data-testid="vraquier-destination"><SelectValue /></SelectTrigger>
                 <SelectContent className="max-h-72">
@@ -129,7 +130,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">{fr ? 'Tonnage (t)' : 'Tonnage (t)'}</Label>
+              <Label className="text-[var(--text)] text-xs">{fr ? 'Tonnage (t)' : 'Tonnage (t)'}</Label>
               <Input
                 type="number"
                 value={tonnes}
@@ -139,7 +140,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-xs">{fr ? 'Code SH (optionnel)' : 'HS code (optional)'}</Label>
+              <Label className="text-[var(--text)] text-xs">{fr ? 'Code SH (optionnel)' : 'HS code (optional)'}</Label>
               <Input
                 value={hsCode}
                 onChange={(e) => setHsCode(e.target.value)}
@@ -157,7 +158,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
 
       {error && (
         <Card className="border-0 shadow-sm border-l-4 border-l-red-500" style={{ background: 'rgba(60,20,20,0.5)' }}>
-          <CardContent className="py-3 text-red-300 text-sm flex items-center gap-2">
+          <CardContent className="py-3 text-[var(--danger)] text-sm flex items-center gap-2">
             <AlertTriangle className="w-4 h-4" /> {error}
           </CardContent>
         </Card>
@@ -166,7 +167,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
       {/* Not available (below threshold / liquid) */}
       {result && !result.available && (
         <Card className="border-0 shadow-sm border-l-4 border-l-amber-500" style={{ background: 'rgba(50,40,15,0.5)' }}>
-          <CardContent className="py-4 text-amber-200 text-sm flex items-start gap-2">
+          <CardContent className="py-4 text-[var(--gold)] text-sm flex items-start gap-2">
             <Package className="w-4 h-4 mt-0.5 flex-shrink-0" />
             <div>
               <div className="font-semibold mb-1">
@@ -182,28 +183,28 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
 
       {/* Result */}
       {cost && (
-        <Card className="border-0 shadow-sm" style={{ background: 'rgba(27,35,44,0.7)' }} data-testid="vraquier-result">
+        <Card className="border-0 shadow-sm" style={{ background: 'var(--afcfta-card2)' }} data-testid="vraquier-result">
           <CardContent className="py-5">
             <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
               <div className="flex items-center gap-2">
-                <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/30 capitalize">
+                <Badge className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)] capitalize">
                   🚢 {cost.vessel_class_label || cost.vessel_class}
                 </Badge>
                 {cost.is_modeled && (
-                  <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/40">
+                  <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                     {fr ? 'Modélisé' : 'Modeled'}
                   </Badge>
                 )}
                 <Badge
-                  className={isLive ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' : 'bg-gray-500/15 text-gray-300 border-gray-500/30'}
+                  className={isLive ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' : 'bg-gray-500/15 text-[var(--text)] border-[var(--afcfta-border)]'}
                   title={override?.source || ''}
                 >
                   {isLive ? `${fr ? 'Marché' : 'Live'} · ${override.as_of}` : fr ? 'Calibré 2024' : 'Calibrated 2024'}
                 </Badge>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-white">{fmtUsd(cost.total_cost_usd)}</div>
-                <div className="text-xs text-gray-400">{fmtNum(cost.total_usd_per_t)} USD/t</div>
+                <div className="text-2xl font-bold text-[var(--text)]">{fmtUsd(cost.total_cost_usd, language)}</div>
+                <div className="text-xs text-[var(--afcfta-muted)]">{fmtNum(cost.total_usd_per_t)} USD/t</div>
               </div>
             </div>
 
@@ -216,10 +217,10 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
                 { label: 'Total USD/t', v: cost.total_usd_per_t, icon: TrendingUp },
               ].map((b, i) => (
                 <div key={i} className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                  <div className="text-[11px] text-gray-400 flex items-center gap-1">
+                  <div className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
                     <b.icon className="w-3 h-3" /> {b.label}
                   </div>
-                  <div className="text-white font-semibold mt-1">{fmtNum(b.v)}</div>
+                  <div className="text-[var(--text)] font-semibold mt-1">{fmtNum(b.v)}</div>
                 </div>
               ))}
             </div>
@@ -227,20 +228,20 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             {/* Meta row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
               <div>
-                <div className="text-[11px] text-gray-400">{fr ? 'Voyages' : 'Voyages'}</div>
-                <div className="text-white font-medium">{cost.voyages_needed}</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)]">{fr ? 'Voyages' : 'Voyages'}</div>
+                <div className="text-[var(--text)] font-medium">{cost.voyages_needed}</div>
               </div>
               <div>
-                <div className="text-[11px] text-gray-400">{fr ? 'Délai' : 'Transit'}</div>
-                <div className="text-white font-medium">{fmtDays(cost.transit_days_min, cost.transit_days_max)}</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)]">{fr ? 'Délai' : 'Transit'}</div>
+                <div className="text-[var(--text)] font-medium">{fmtDays(cost.transit_days_min, cost.transit_days_max)}</div>
               </div>
               <div>
-                <div className="text-[11px] text-gray-400 flex items-center gap-1"><Leaf className="w-3 h-3" /> CO₂</div>
-                <div className="text-white font-medium">{fmtNum(cost.co2_g_per_tkm)} g/t·km</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1"><Leaf className="w-3 h-3" /> CO₂</div>
+                <div className="text-[var(--text)] font-medium">{fmtNum(cost.co2_g_per_tkm)} g/t·km</div>
               </div>
               <div>
-                <div className="text-[11px] text-gray-400">{fr ? 'Distance' : 'Distance'}</div>
-                <div className="text-white font-medium">{fmtNum(cost.distance_nm)} nm</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)]">{fr ? 'Distance' : 'Distance'}</div>
+                <div className="text-[var(--text)] font-medium">{fmtNum(cost.distance_nm)} nm</div>
               </div>
             </div>
 
@@ -248,14 +249,14 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             {cost.constraints_notes?.length > 0 && (
               <div className="mt-4 space-y-1">
                 {cost.constraints_notes.map((n, i) => (
-                  <div key={i} className="text-xs text-amber-200/90 flex items-start gap-2">
+                  <div key={i} className="text-xs text-[var(--gold)] flex items-start gap-2">
                     <AlertTriangle className="w-3 h-3 mt-0.5 flex-shrink-0" /> {n}
                   </div>
                 ))}
               </div>
             )}
 
-            <div className="mt-4 text-[11px] text-gray-500">
+            <div className="mt-4 text-[11px] text-[var(--afcfta-muted)]">
               {result.commodity?.label && <span>{result.commodity.label} · </span>}
               {override?.source || cost.disclaimer}
             </div>
@@ -265,14 +266,14 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
 
       {/* Vessel class reference */}
       {classes.length > 0 && (
-        <Card className="border-0 shadow-sm" style={{ background: 'rgba(27,35,44,0.7)' }}>
+        <Card className="border-0 shadow-sm" style={{ background: 'var(--afcfta-card2)' }}>
           <CardHeader className="pb-2">
-            <CardTitle className="text-white text-sm">{fr ? 'Classes de navires vraquiers' : 'Bulk vessel classes'}</CardTitle>
+            <CardTitle className="text-[var(--text)] text-sm">{fr ? 'Classes de navires vraquiers' : 'Bulk vessel classes'}</CardTitle>
           </CardHeader>
           <CardContent className="py-2 overflow-x-auto">
-            <table className="w-full text-xs text-gray-300">
+            <table className="w-full text-xs text-[var(--text)]">
               <thead>
-                <tr className="text-gray-500 text-left">
+                <tr className="text-[var(--afcfta-muted)] text-left">
                   <th className="py-1 pr-3">Classe</th>
                   <th className="py-1 pr-3">DWT</th>
                   <th className="py-1 pr-3">{fr ? 'Emport max' : 'Max parcel'}</th>
@@ -282,8 +283,8 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
               </thead>
               <tbody>
                 {classes.map((c) => (
-                  <tr key={c.id} className="border-t border-white/5">
-                    <td className="py-1 pr-3 font-medium text-white">{c.label}</td>
+                  <tr key={c.id} className="border-t border-[var(--overlay-border)]">
+                    <td className="py-1 pr-3 font-medium text-[var(--text)]">{c.label}</td>
                     <td className="py-1 pr-3">{fmtNum(c.min_dwt)}–{fmtNum(c.max_dwt)}</td>
                     <td className="py-1 pr-3">{fmtNum(c.max_parcel_t)} t</td>
                     <td className="py-1 pr-3">{c.loaded_draft_m} m</td>

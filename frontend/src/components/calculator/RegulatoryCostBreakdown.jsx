@@ -9,11 +9,11 @@ import { AlertTriangle, Landmark, Info, ArrowUpRight, ArrowDownLeft } from 'luci
 // remplacé par zéro : il est affiché « montant à confirmer ».
 
 const FEE_STATUS_STYLES = {
-  CALCULABLE: 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40',
-  DOCUMENTED_FIXED_AMOUNT: 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40',
-  DOCUMENTED_PERCENTAGE: 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40',
-  PARTIAL: 'bg-amber-600/20 text-amber-300 border-amber-500/40',
-  FEE_EXISTS_AMOUNT_NOT_AVAILABLE: 'bg-amber-600/20 text-amber-300 border-amber-500/40',
+  CALCULABLE: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
+  DOCUMENTED_FIXED_AMOUNT: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
+  DOCUMENTED_PERCENTAGE: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
+  PARTIAL: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
+  FEE_EXISTS_AMOUNT_NOT_AVAILABLE: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
   NOT_AVAILABLE: 'bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)]',
   NOT_APPLICABLE: 'bg-[var(--overlay)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)]',
 };
@@ -103,7 +103,7 @@ function T(language) {
 function ScopeTag({ item, t }) {
   if (item.provider_status === 'UNCONFIRMED') {
     return (
-      <span className="text-[9px] px-1.5 py-0.5 rounded border bg-amber-600/15 text-amber-300 border-amber-500/40">
+      <span className="text-[11px] px-1.5 py-0.5 rounded border bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
         {t.unconfirmedProvider}
       </span>
     );
@@ -111,10 +111,10 @@ function ScopeTag({ item, t }) {
   const isPublic = item.scope === 'formality' || item.collector_type === 'STATE_BODY';
   return (
     <span
-      className={`text-[9px] px-1.5 py-0.5 rounded border ${
+      className={`text-[11px] px-1.5 py-0.5 rounded border ${
         isPublic
           ? 'bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)]'
-          : 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40'
+          : 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]'
       }`}
     >
       {isPublic ? t.publicScope : t.providerScope}
@@ -127,7 +127,7 @@ function StageBlock({ title, desc, icon: Icon, items, t, language }) {
   return (
     <div className="space-y-2">
       <div>
-        <p className="text-sm font-semibold text-amber-300 flex items-center gap-2">
+        <p className="text-sm font-semibold text-[var(--gold)] flex items-center gap-2">
           <Icon className="w-4 h-4" /> {title}
         </p>
         <p className="text-[11px] text-[var(--afcfta-muted)] ml-6">{desc}</p>
@@ -192,7 +192,7 @@ function FeeLine({ item, t, language }) {
           {href && (
             <p className="text-xs mt-0.5">
               {t.contact}:{' '}
-              <a href={href} target="_blank" rel="noopener noreferrer" className="text-amber-400 underline break-all">
+              <a href={href} target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] underline break-all">
                 {item.contact}
               </a>
             </p>
@@ -203,7 +203,7 @@ function FeeLine({ item, t, language }) {
             </p>
           )}
           {item.provider_status === 'UNCONFIRMED' && (
-            <p className="text-amber-400/90 text-[11px] mt-1 italic">{t.unconfirmedProviderNote}</p>
+            <p className="text-[var(--gold)] text-[11px] mt-1 italic">{t.unconfirmedProviderNote}</p>
           )}
         </div>
         <div className="text-right shrink-0">
@@ -215,27 +215,27 @@ function FeeLine({ item, t, language }) {
               {item.side === 'export' ? t.sideExport : t.sideImport}
             </Badge>
             {item.tier === 'VERIFIED_PRIMARY' && (
-              <Badge variant="outline" className="bg-emerald-600/15 text-emerald-300 border-emerald-500/40 text-[9px]">
+              <Badge variant="outline" className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[11px]">
                 {t.verified}
               </Badge>
             )}
           </div>
           <p className="mt-1 font-semibold">
             {range ? (
-              <span className="text-emerald-300">{range}</span>
+              <span className="text-[var(--success)]">{range}</span>
             ) : amount ? (
-              <span className="text-emerald-300">{amount}</span>
+              <span className="text-[var(--success)]">{amount}</span>
             ) : (
-              <span className="text-amber-300 italic">{t.toConfirm}</span>
+              <span className="text-[var(--gold)] italic">{t.toConfirm}</span>
             )}
           </p>
           {item.is_range && rateBracket(item, t) && (
-            <p className="text-[10px] text-[var(--afcfta-muted)]">{rateBracket(item, t)}</p>
+            <p className="text-[11px] text-[var(--afcfta-muted)]">{rateBracket(item, t)}</p>
           )}
           {item.ad_valorem && (range || amount) && (
-            <p className="text-[10px] text-[var(--afcfta-muted)]">{t.adValoremUnit}</p>
+            <p className="text-[11px] text-[var(--afcfta-muted)]">{t.adValoremUnit}</p>
           )}
-          <p className="text-[10px] text-[var(--afcfta-muted)] font-mono mt-0.5">{item.fee_status}</p>
+          <p className="text-[11px] text-[var(--afcfta-muted)] font-mono mt-0.5">{item.fee_status}</p>
         </div>
       </div>
     </div>
@@ -266,15 +266,15 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
   const complete = rc.complete;
 
   return (
-    <Card className="bg-[image:var(--card-grad)] border border-amber-500/30">
+    <Card className="bg-[image:var(--card-grad)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
-              <Landmark className="w-5 h-5 text-amber-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+              <Landmark className="w-5 h-5 text-[var(--gold)]" />
             </div>
             <div>
-              <CardTitle className="text-lg text-white">{t.title}</CardTitle>
+              <CardTitle className="text-lg text-[var(--text)]">{t.title}</CardTitle>
               <CardDescription className="text-[var(--afcfta-muted)]">{t.desc}</CardDescription>
             </div>
           </div>
@@ -296,8 +296,8 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
         </div>
 
         {/* Encadré explicatif import vs export */}
-        <div className="rounded-lg border border-sky-500/30 bg-sky-500/5 p-3">
-          <p className="text-sm font-semibold text-sky-200 flex items-center gap-2">
+        <div className="rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-[color-mix(in_srgb,var(--info)_5%,var(--afcfta-card))] p-3">
+          <p className="text-sm font-semibold text-[var(--info)] flex items-center gap-2">
             <Info className="w-4 h-4" /> {t.explainTitle}
           </p>
           <p className="text-xs text-[var(--text)]/90 mt-1">{t.explainBody}</p>
@@ -328,21 +328,21 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
         />
 
         {/* Coût réglementaire total */}
-        <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
+        <div className="rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_5%,var(--afcfta-card))] p-3">
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold text-[var(--text)]">{t.regulatoryTotal}</span>
-            <span className="text-sm font-bold text-amber-300">
+            <span className="text-sm font-bold text-[var(--gold)]">
               {regTotal != null ? fmt(regTotal, regCcy) : <span className="italic">{t.toConfirm}</span>}
             </span>
           </div>
           <div className="mt-2 flex items-center justify-between">
-            <span className="text-sm font-semibold text-white">{t.estimatedTotal}</span>
+            <span className="text-sm font-semibold text-[var(--text)]">{t.estimatedTotal}</span>
             <span className="text-right">
-              <span className="text-base font-bold text-white">{fmt(publicSubtotal, '')}</span>
+              <span className="text-base font-bold text-[var(--text)]">{fmt(publicSubtotal, '')}</span>
               {regTotal != null && complete ? (
-                <span className="text-emerald-300"> + {fmt(regTotal, regCcy)}</span>
+                <span className="text-[var(--success)]"> + {fmt(regTotal, regCcy)}</span>
               ) : (
-                <span className="block text-xs text-amber-300 italic">
+                <span className="block text-xs text-[var(--gold)] italic">
                   + {t.providerFees.toLowerCase()} : {t.toConfirm}
                 </span>
               )}
@@ -352,9 +352,9 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
 
         {/* Message d'incomplétude (frais existants non chiffrés) */}
         {rc.has_unpriced_fees && (
-          <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
-            <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-            <p className="text-sm text-amber-200/90">{t.incompleteNote}</p>
+          <div className="flex items-start gap-3 p-3 rounded-lg bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+            <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
+            <p className="text-sm text-[var(--gold)]">{t.incompleteNote}</p>
           </div>
         )}
       </CardContent>
@@ -366,7 +366,7 @@ function Row({ label, value, strong }) {
   return (
     <div className="flex items-center justify-between px-3 py-2">
       <span className={`text-sm ${strong ? 'font-semibold text-[var(--text)]' : 'text-[var(--afcfta-muted)]'}`}>{label}</span>
-      <span className={`text-sm ${strong ? 'font-bold text-white' : 'text-[var(--text)]'}`}>{value}</span>
+      <span className={`text-sm ${strong ? 'font-bold text-[var(--text)]' : 'text-[var(--text)]'}`}>{value}</span>
     </div>
   );
 }

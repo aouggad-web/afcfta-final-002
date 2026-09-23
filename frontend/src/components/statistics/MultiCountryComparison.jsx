@@ -20,21 +20,23 @@ import {
   Loader2, AlertCircle, Plus, X, RefreshCw, Scale
 } from 'lucide-react';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
+import { montant, montantCompact, montantUnite, nombreUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-// Color palette for countries
-const COUNTRY_COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626'];
+// Quatre pays au plus, dont les tracés se superposent tous sur le radar :
+// contrôle « toutes paires » du skill dataviz. Les séries 1, 2, 3 et 6 le
+// passent dans les deux thèmes (daltonisme ≥ 10,0, vision normale ≥ 17,3) ;
+// la série 4 tombait à 5,2 face au vert en sombre.
+const COUNTRY_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-6)'];
 
-// Format currency values
-const formatValue = (value) => {
+// Montants : « 290,8 Md $ » en français, « $290.8B » en anglais — même
+// précision qu'auparavant, palier par palier.
+const formatValue = (value, language) => {
   if (!value || isNaN(value)) return '-';
-  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-  if (value >= 1e3) return `$${(value / 1e3).toFixed(0)}K`;
-  return `$${value.toLocaleString()}`;
+  if (value < 1e3) return montant(value, language, 3);
+  return montantCompact(value, language, { T: 2, B: 2, M: 1, K: 0 });
 };
 
 // Format percentage
@@ -55,6 +57,11 @@ const HIGH_INFLATION_THRESHOLD = 8;
 export default function MultiCountryComparison({ language = 'fr' }) {
   const [availableCountries, setAvailableCountries] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
+  // Couleur par pays, jamais par rang (skill dataviz) : un pays garde son
+  // emplacement tant qu'il reste sélectionné ; en retirer un ne repeint pas
+  // les autres.
+  const [emplacements, setEmplacements] = useState({});
+  const couleurPays = (iso) => COUNTRY_COLORS[emplacements[iso] ?? 0];
   const [countryData, setCountryData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -147,12 +154,17 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   const addCountry = (countryIso) => {
     if (selectedCountries.length < MAX_COUNTRIES && !selectedCountries.includes(countryIso)) {
       setSelectedCountries([...selectedCountries, countryIso]);
+      const pris = new Set(Object.values(emplacements));
+      setEmplacements({ ...emplacements, [countryIso]: COUNTRY_COLORS.findIndex((_, i) => !pris.has(i)) });
     }
   };
 
   // Remove country from selection
   const removeCountry = (countryIso) => {
     setSelectedCountries(selectedCountries.filter(c => c !== countryIso));
+    const restants = { ...emplacements };
+    delete restants[countryIso];
+    setEmplacements(restants);
     const newData = { ...countryData };
     delete newData[countryIso];
     setCountryData(newData);
@@ -161,6 +173,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   // Reset selection
   const resetSelection = () => {
     setSelectedCountries([]);
+    setEmplacements({});
     setCountryData({});
     setError(null);
   };
@@ -208,12 +221,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   // Extract economic indicators for comparison
   const getEconomicData = () => {
-    return selectedCountries.map((iso, idx) => {
+    return selectedCountries.map((iso) => {
       const data = countryData[iso] || {};
       const eco = data.economic_indicators || data.economics || {};
       return {
         name: getCountryName(iso),
-        color: COUNTRY_COLORS[idx],
+        color: couleurPays(iso),
         gdp: eco.gdp_billion_usd || eco.gdp || 0,
         gdpPerCapita: eco.gdp_per_capita_usd || eco.gdp_per_capita || 0,
         inflation: eco.inflation_percent || eco.inflation || 0,
@@ -225,12 +238,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   // Extract trade data for comparison
   const getTradeData = () => {
-    return selectedCountries.map((iso, idx) => {
+    return selectedCountries.map((iso) => {
       const data = countryData[iso] || {};
       const trade = data.trade_summary || data.trade || {};
       return {
         name: getCountryName(iso),
-        color: COUNTRY_COLORS[idx],
+        color: couleurPays(iso),
         exports: trade.total_exports_musd || trade.exports || 0,
         imports: trade.total_imports_musd || trade.imports || 0,
         balance: trade.trade_balance_musd || trade.balance || 0,
@@ -241,12 +254,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   // Get development indices for comparison
   const getDevelopmentData = () => {
-    return selectedCountries.map((iso, idx) => {
+    return selectedCountries.map((iso) => {
       const data = countryData[iso] || {};
       const dev = data.development_indices || data.development || {};
       return {
         name: getCountryName(iso),
-        color: COUNTRY_COLORS[idx],
+        color: couleurPays(iso),
         hdi: dev.hdi_score || dev.hdi || 0,
         hdiRank: dev.hdi_world_rank || dev.hdi_rank || '-',
         gai: dev.gai_score || dev.gai || 0,
@@ -312,8 +325,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
     return getTradeData().map(d => ({
       name: d.name,
       [txt.exports]: d.exports,
-      [txt.imports]: d.imports,
-      fill: d.color
+      [txt.imports]: d.imports
     }));
   };
 
@@ -324,7 +336,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       {/* ── Header ─────────────────────────────────────────────── */}
       <div className="stats-hero">
         <div className="flex items-center gap-3 mb-2">
-          <Scale style={{ width: 26, height: 26, color: '#D4891A', flexShrink: 0 }} />
+          <Scale style={{ width: 26, height: 26, color: 'var(--gold)', flexShrink: 0 }} />
           <div>
             <h2 className="stats-hero-title">{txt.title}</h2>
             <p className="stats-hero-subtitle">{txt.subtitle}</p>
@@ -338,12 +350,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         <div className="flex flex-wrap items-center gap-3">
           {/* Selected country tags */}
           <div className="flex flex-wrap gap-2 flex-1 min-w-0">
-            {selectedCountries.map((iso, idx) => (
+            {selectedCountries.map((iso) => (
               <span
                 key={iso}
                 className="stats-country-tag"
-                style={{ background: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 13%, transparent)`, borderColor: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 33%, transparent)`, color: COUNTRY_COLORS[idx] }}
+                style={{ background: `color-mix(in srgb, ${couleurPays(iso)} 13%, transparent)`, borderColor: `color-mix(in srgb, ${couleurPays(iso)} 33%, transparent)`, color: 'var(--text)' }}
               >
+                <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
                 {getCountryName(iso)}
                 <button onClick={() => removeCountry(iso)}>
                   <X style={{ width: 13, height: 13 }} />
@@ -356,7 +369,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <SelectTrigger
                   className="w-[180px] h-8 text-sm"
                   data-testid="add-country-select"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,137,26,0.25)', color: '#EAE0D0', borderRadius: 8 }}
+                  style={{ background: 'var(--overlay)', border: '1px solid rgba(212,137,26,0.25)', color: 'var(--text)', borderRadius: 8 }}
                 >
                   <SelectValue placeholder={txt.selectCountry} />
                 </SelectTrigger>
@@ -380,11 +393,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               disabled={selectedCountries.length < 2 || loading}
               data-testid="compare-btn"
               style={{
-                background: selectedCountries.length < 2
-                  ? 'rgba(155,110,245,0.2)'
-                  : 'linear-gradient(135deg,#7c3aed,#9B6EF5)',
-                border: '1px solid rgba(155,110,245,0.4)',
-                color: '#EAE0D0', borderRadius: 8,
+                background: selectedCountries.length < 2 ? 'var(--overlay)' : 'var(--active-fill)',
+                border: '1px solid var(--afcfta-border)',
+                color: selectedCountries.length < 2 ? 'var(--text-soft)' : '#F7F1E6', borderRadius: 8,
                 padding: '6px 14px', fontSize: '0.82rem', fontWeight: 700,
                 opacity: selectedCountries.length < 2 ? 0.5 : 1,
               }}
@@ -400,7 +411,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               variant="outline"
               onClick={resetSelection}
               disabled={selectedCountries.length === 0}
-              style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(234,224,208,0.7)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
+              style={{ border: '1px solid var(--afcfta-border)', background: 'transparent', color: 'var(--text-soft)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               {txt.reset}
@@ -409,7 +420,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         </div>
 
         {/* Max countries hint */}
-        <p style={{ fontSize: '0.7rem', color: 'rgba(142,155,174,0.5)', marginTop: 10 }}>
+        <p style={{ fontSize: '0.7rem', color: 'var(--afcfta-muted)', marginTop: 10 }}>
           {language === 'fr'
             ? `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`
             : `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`}
@@ -420,15 +431,15 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       {loading && (
         <div className="stats-loading">
           <div className="stats-spinner" />
-          <span style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{txt.loading}</span>
+          <span style={{ color: 'var(--afcfta-muted)', fontSize: '0.875rem' }}>{txt.loading}</span>
         </div>
       )}
 
       {/* ── Error ─────────────────────────────────────────────── */}
       {error && (
         <div className="stats-chart-card" style={{ padding: '32px 24px', textAlign: 'center' }}>
-          <AlertCircle style={{ width: 32, height: 32, color: '#f87171', margin: '0 auto 12px' }} />
-          <p style={{ color: '#f87171', fontWeight: 600 }}>{error}</p>
+          <AlertCircle style={{ width: 32, height: 32, color: 'var(--danger)', margin: '0 auto 12px' }} />
+          <p style={{ color: 'var(--danger)', fontWeight: 600 }}>{error}</p>
         </div>
       )}
 
@@ -437,10 +448,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         <div className="stats-chart-card">
           <div className="stats-empty-state">
             <div className="stats-empty-icon">
-              <Globe style={{ width: 28, height: 28, color: '#D4891A' }} />
+              <Globe style={{ width: 28, height: 28, color: 'var(--gold)' }} />
             </div>
-            <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
-            <p style={{ color: 'rgba(142,155,174,0.4)', fontSize: '0.78rem', marginTop: 6 }}>
+            <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
+            <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.78rem', marginTop: 6 }}>
               {language === 'fr'
                 ? 'Ajoutez au moins 2 pays africains pour commencer la comparaison'
                 : 'Add at least 2 African countries to start the comparison'}
@@ -468,24 +479,24 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             <div style={{ padding: '16px 8px' }}>
               <ResponsiveContainer width="100%" height={400}>
                 <RadarChart data={getRadarData()}>
-                  <PolarGrid stroke="rgba(255,255,255,0.08)" />
-                  <PolarAngleAxis dataKey="indicator" tick={{ fill: 'rgba(234,224,208,0.75)', fontSize: 12 }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: 'rgba(142,155,174,0.5)', fontSize: 10 }} axisLine={false} />
-                  {selectedCountries.map((iso, idx) => (
+                  <PolarGrid stroke="var(--overlay)" />
+                  <PolarAngleAxis dataKey="indicator" tick={{ fill: 'var(--text-soft)', fontSize: 12 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: 'var(--afcfta-muted)', fontSize: 10 }} axisLine={false} />
+                  {selectedCountries.map((iso) => (
                     <Radar
                       key={iso}
                       name={getCountryName(iso)}
                       dataKey={getCountryName(iso)}
-                      stroke={COUNTRY_COLORS[idx]}
-                      fill={COUNTRY_COLORS[idx]}
+                      stroke={couleurPays(iso)}
+                      fill={couleurPays(iso)}
                       fillOpacity={0.15}
                       strokeWidth={2}
                     />
                   ))}
-                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
                   <Tooltip
-                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
                 </RadarChart>
               </ResponsiveContainer>
@@ -495,7 +506,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           {/* Economic Indicators Table */}
           <div className="stats-chart-card">
             <div className="stats-chart-header">
-              <div className="stats-chart-title" style={{ color: '#34d399' }}>
+              <div className="stats-chart-title" style={{ color: 'var(--success)' }}>
                 <DollarSign style={{ width: 18, height: 18 }} />
                 {txt.economicIndicators}
               </div>
@@ -505,21 +516,26 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
-                    {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
+                    {selectedCountries.map((iso) => (
+                      <th key={iso} style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
+                          {getCountryName(iso)}
+                        </span>
+                      </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {[
-                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: '#fbbf24' }}>${d.gdp.toFixed(1)}B</strong> : '-' },
-                    { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita) : '-' },
+                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: 'var(--gold)' }}>{montantUnite(d.gdp, 'B', language, 1)}</strong> : '-' },
+                    { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita, language) : '-' },
                     { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > HIGH_INFLATION_THRESHOLD ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
                     { label: txt.unemployment, render: (d) => d.unemployment ? formatPercent(d.unemployment) : '-' },
-                    { label: `${txt.population} (M)`, render: (d) => d.population ? `${d.population.toFixed(1)}M` : '-' },
+                    { label: `${txt.population} (M)`, render: (d) => d.population ? nombreUnite(d.population, 'M', language, 1) : '-' },
                   ].map((row, ri) => (
                     <tr key={ri}>
-                      <td style={{ fontWeight: 600, color: 'rgba(234,224,208,0.8)' }}>{row.label}</td>
+                      <td style={{ fontWeight: 600, color: 'var(--text-soft)' }}>{row.label}</td>
                       {getEconomicData().map((d, idx) => (
                         <td key={idx} style={{ textAlign: 'right' }}>{row.render(d)}</td>
                       ))}
@@ -540,26 +556,21 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             </div>
             <div style={{ padding: '16px 8px' }}>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={getTradeBarData()}>
-                  <defs>
-                    <linearGradient id="mcGradExp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#1A7A4A" /><stop offset="100%" stopColor="#34d399" />
-                    </linearGradient>
-                    <linearGradient id="mcGradImp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#1A6B8A" /><stop offset="100%" stopColor="#38bdf8" />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'rgba(234,224,208,0.75)' }} axisLine={false} tickLine={false} />
-                  <YAxis tickFormatter={(v) => `$${v}M`} tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.7)' }} axisLine={false} tickLine={false} />
+                {/* Skill dataviz : la couleur dit la série (exportations,
+                    importations), comme la légende ; le pays est déjà nommé
+                    par l'axe. Séries 1 et 2 validées, barres ≤ 24 px. */}
+                <BarChart data={getTradeBarData()} barGap={2}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--overlay)" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'var(--text-soft)' }} axisLine={false} tickLine={false} />
+                  <YAxis tickFormatter={(v) => montantUnite(v, 'M', language)} tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    formatter={(value) => [`$${value.toFixed(0)}M`, '']}
-                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                    formatter={(value) => [montantUnite(value, 'M', language, 0), '']}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
-                  <Bar dataKey={txt.exports} fill="url(#mcGradExp)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey={txt.imports} fill="url(#mcGradImp)" radius={[4, 4, 0, 0]} />
+                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
+                  <Bar dataKey={txt.exports} fill="var(--series-1)" radius={[4, 4, 0, 0]} maxBarSize={24} />
+                  <Bar dataKey={txt.imports} fill="var(--series-2)" radius={[4, 4, 0, 0]} maxBarSize={24} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -578,8 +589,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
-                    {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
+                    {selectedCountries.map((iso) => (
+                      <th key={iso} style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
+                          {getCountryName(iso)}
+                        </span>
+                      </th>
                     ))}
                   </tr>
                 </thead>
@@ -587,24 +603,24 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.exports} (M$)</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>
-                        {d.exports ? `$${d.exports.toFixed(0)}M` : '-'}
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>
+                        {d.exports ? montantUnite(d.exports, 'M', language, 0) : '-'}
                       </td>
                     ))}
                   </tr>
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.imports} (M$)</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: '#38bdf8' }}>
-                        {d.imports ? `$${d.imports.toFixed(0)}M` : '-'}
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--info)' }}>
+                        {d.imports ? montantUnite(d.imports, 'M', language, 0) : '-'}
                       </td>
                     ))}
                   </tr>
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.tradeBalance}</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: d.balance >= 0 ? '#34d399' : '#f87171' }}>
-                        {d.balance ? `${d.balance >= 0 ? '+' : ''}$${d.balance.toFixed(0)}M` : '-'}
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: d.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+                        {d.balance ? `${d.balance >= 0 ? '+' : ''}${montantUnite(d.balance, 'M', language, 0)}` : '-'}
                       </td>
                     ))}
                   </tr>
@@ -634,8 +650,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
-                    {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
+                    {selectedCountries.map((iso) => (
+                      <th key={iso} style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
+                          {getCountryName(iso)}
+                        </span>
+                      </th>
                     ))}
                   </tr>
                 </thead>
@@ -651,7 +672,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.hdi} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
+                      <td key={idx} style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                         #{d.hdiRank}
                       </td>
                     ))}
@@ -667,7 +688,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.gai} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
+                      <td key={idx} style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                         #{d.gaiRank}
                       </td>
                     ))}

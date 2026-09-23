@@ -123,18 +123,18 @@ export default function TradeComplementarity({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="trade-complementarity">
-      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Link2 className="w-7 h-7 text-white" />
+              <Link2 className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
-              <CardDescription className="text-slate-300 mt-0.5">{txt.subtitle}</CardDescription>
+              <CardDescription className="mt-0.5">{txt.subtitle}</CardDescription>
             </div>
           </div>
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1">
+          <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
             OEC/BACI · {year}
           </Badge>
         </div>
@@ -144,7 +144,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
         {/* ── Contrôles ───────────────────────────────────────── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.exporter}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.exporter}</label>
             <Select value={exporter} onValueChange={setExporter}>
               <SelectTrigger data-testid="tci-exporter-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -157,7 +157,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
             </Select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.importer}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.importer}</label>
             <Select value={importer} onValueChange={setImporter}>
               <SelectTrigger data-testid="tci-importer-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -170,7 +170,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
             </Select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.year}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.year}</label>
             <Select value={String(year)} onValueChange={(v) => setYear(Number(v))}>
               <SelectTrigger data-testid="tci-year-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -179,7 +179,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
             </Select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.level}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.level}</label>
             <Select value={hsLevel} onValueChange={setHsLevel}>
               <SelectTrigger data-testid="tci-level-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -190,38 +190,38 @@ export default function TradeComplementarity({ language = 'fr' }) {
         </div>
 
         {exporter === importer ? (
-          <div className="flex items-center justify-center py-10 text-amber-600">{txt.sameCountry}</div>
+          <div className="flex items-center justify-center py-10 text-[var(--gold)]">{txt.sameCountry}</div>
         ) : loading ? (
-          <div className="flex items-center justify-center py-10 text-slate-500 gap-2">
+          <div className="flex items-center justify-center py-10 text-[var(--afcfta-muted)] gap-2">
             <RefreshCw className="w-5 h-5 animate-spin" /> {txt.loading}
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center py-10 text-red-500">{txt.error}</div>
+          <div className="flex items-center justify-center py-10 text-[var(--danger)]">{txt.error}</div>
         ) : !response ? (
-          <div className="flex items-center justify-center py-10 text-slate-500">{txt.noData}</div>
+          <div className="flex items-center justify-center py-10 text-[var(--afcfta-muted)]">{txt.noData}</div>
         ) : (
           <>
             {/* ── Score TCI ─────────────────────────────────────── */}
-            <div className="flex flex-col items-center justify-center py-4 rounded-xl bg-slate-50">
-              <div className="flex items-center gap-3 text-sm text-slate-600 mb-2">
+            <div className="flex flex-col items-center justify-center py-4 rounded-xl bg-[var(--afcfta-card2)]">
+              <div className="flex items-center gap-3 text-sm text-[var(--afcfta-muted)] mb-2">
                 <span className="flex items-center gap-1 font-medium">
                   {getCountryFlag(exporter)} {response.exporter?.name_fr || response.exporter?.name_en || exporter}
                 </span>
-                <ArrowRight className="w-4 h-4 text-slate-400" />
+                <ArrowRight className="w-4 h-4 text-[var(--afcfta-muted)]" />
                 <span className="flex items-center gap-1 font-medium">
                   {getCountryFlag(importer)} {response.importer?.name_fr || response.importer?.name_en || importer}
                 </span>
               </div>
-              <div className="text-5xl font-bold" style={{ color: scoreColor(tci) }}>{tci}</div>
-              <div className="text-xs text-slate-500 mt-1">{txt.score} · {txt.interpretation(tci)}</div>
-              <div className="text-xs text-slate-400 mt-1">{txt.matchingProducts(response.matching_products)}</div>
+              <div className="text-5xl font-bold" style={{ color: `color-mix(in srgb, ${scoreColor(tci)} 40%, var(--text))`}}>{tci}</div>
+              <div className="text-xs text-[var(--afcfta-muted)] mt-1">{txt.score} · {txt.interpretation(tci)}</div>
+              <div className="text-xs text-[var(--afcfta-muted)] mt-1">{txt.matchingProducts(response.matching_products)}</div>
             </div>
 
             {/* ── Opportunités ──────────────────────────────────── */}
             {rows.length > 0 && (
               <div>
                 <div className="flex items-center justify-between gap-3 flex-wrap mb-2">
-                  <h4 className="text-sm font-semibold text-slate-700">{txt.opportunities}</h4>
+                  <h4 className="text-sm font-semibold text-[var(--text)]">{txt.opportunities}</h4>
                   <CSVExportButton
                     rows={rows}
                     columns={[
@@ -253,7 +253,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
                           <TableCell className="max-w-xs truncate">{o.product}</TableCell>
                           <TableCell className="text-right">{o.exporter_export_share}%</TableCell>
                           <TableCell className="text-right">{o.importer_import_share}%</TableCell>
-                          <TableCell className="text-right font-semibold text-cyan-700">{o.match_score}%</TableCell>
+                          <TableCell className="text-right font-semibold text-[var(--atlantic)]">{o.match_score}%</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -264,7 +264,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
           </>
         )}
 
-        <p className="text-xs text-slate-400">{txt.methodology}</p>
+        <p className="text-xs text-[var(--afcfta-muted)]">{txt.methodology}</p>
       </CardContent>
     </Card>
   );

@@ -129,10 +129,10 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96 bg-gray-100 rounded-lg">
+      <div className="flex items-center justify-center h-96 bg-[var(--afcfta-card2)] rounded-lg">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">{t.loading}</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] mx-auto"></div>
+          <p className="mt-4 text-[var(--afcfta-muted)]">{t.loading}</p>
         </div>
       </div>
     );
@@ -140,8 +140,8 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-96 bg-red-50 rounded-lg">
-        <div className="text-center text-red-600">
+      <div className="flex items-center justify-center h-96 bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] rounded-lg">
+        <div className="text-center text-[var(--danger)]">
           <p className="font-bold">❌ {t.loadError}</p>
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
   }
 
   return (
-    <div className="relative rounded-lg overflow-hidden shadow-xl border-4 border-blue-200">
+    <div className="relative rounded-lg overflow-hidden shadow-xl border-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
       <MapContainer
         center={[5, 20]}
         zoom={4}
@@ -184,7 +184,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
               <div className="text-center">
                 <strong className="text-sm">{port.port_name}</strong>
                 <br />
-                <span className="text-xs text-gray-600">{port.country_name}</span>
+                <span className="text-xs text-[var(--afcfta-muted)]">{port.country_name}</span>
                 <br />
                 <span className="text-xs">
                   📦 {port.latest_stats?.container_throughput_teu?.toLocaleString('fr-FR') || 'N/A'} TEU
@@ -197,18 +197,18 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
                   <span>⚓</span>
                   {port.port_name}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-[var(--afcfta-muted)] mb-2">
                   {port.country_name}{port.un_locode ? ` • ${port.un_locode}` : ''}
                 </p>
-                <div className="bg-blue-50 p-2 rounded text-sm mb-1">
-                  <p className="font-semibold text-blue-800">📦 {t.teuYear}</p>
-                  <p className="text-blue-600 font-bold">
+                <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-2 rounded text-sm mb-1">
+                  <p className="font-semibold text-[var(--info)]">📦 {t.teuYear}</p>
+                  <p className="text-[var(--info)] font-bold">
                     {port.latest_stats?.container_throughput_teu?.toLocaleString('fr-FR') || 'N/A'} TEU
                   </p>
                 </div>
                 <button
                   onClick={() => onPortClick && onPortClick(port)}
-                  className="mt-2 w-full bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm font-semibold"
+                  className="mt-2 w-full bg-[var(--info)] text-[var(--bg)] px-3 py-2 rounded hover:bg-[var(--info)] text-sm font-semibold"
                 >
                   {t.viewDetails}
                 </button>
@@ -219,8 +219,8 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
       </MapContainer>
 
       {/* Légende */}
-      <div className="absolute bottom-4 right-4 bg-white p-3 rounded-lg shadow-lg z-10 border border-gray-300">
-        <p className="text-xs font-bold text-gray-700 mb-2">{language === 'en' ? 'Port Type' : 'Type de Port'}</p>
+      <div className="absolute bottom-4 right-4 bg-[var(--afcfta-card)] p-3 rounded-lg shadow-lg z-10 border border-[var(--afcfta-border)]">
+        <p className="text-xs font-bold text-[var(--text)] mb-2">{language === 'en' ? 'Port Type' : 'Type de Port'}</p>
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded-full bg-red-500"></div>
@@ -235,13 +235,13 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
             <span className="text-xs">{t.commercial}</span>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-[var(--afcfta-muted)] mt-2">
           {t.sizeTraffic}
         </p>
       </div>
 
       {/* Info bulle nombre de ports */}
-      <div className="absolute top-4 left-4 bg-blue-600 text-white p-3 rounded-lg shadow-lg z-10">
+      <div className="absolute top-4 left-4 bg-[var(--info)] text-[var(--bg)] p-3 rounded-lg shadow-lg z-10">
         <p className="text-sm font-bold">🚢 {ports.length} {t.portsDisplayed}</p>
       </div>
     </div>

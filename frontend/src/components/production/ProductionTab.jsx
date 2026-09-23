@@ -50,23 +50,23 @@ function ProductionTab({ language = 'fr' }) {
   return (
     <div className="space-y-5">
       {/* Compact Header with Export */}
-      <div className="flex items-center justify-between bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
+      <div className="flex items-center justify-between bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
             <BarChart3 className="w-5 h-5" />
           </div>
           <div>
             <h1 className="text-lg font-bold">{t('production.title')}</h1>
-            <p className="text-purple-100 text-sm">{t('production.subtitle')}</p>
+            <p className="text-[var(--violet)] text-sm">{t('production.subtitle')}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="hidden md:flex items-center gap-2">
-            <Badge className="bg-white/20 text-white text-xs">
+            <Badge className="bg-[var(--overlay)] text-[var(--text)] text-xs">
               <Globe className="w-3 h-3 mr-1" />
               55 pays
             </Badge>
-            <Badge className="bg-white/20 text-white text-xs">
+            <Badge className="bg-[var(--overlay)] text-[var(--text)] text-xs">
               <Database className="w-3 h-3 mr-1" />
               {latestYear}
             </Badge>
@@ -143,26 +143,26 @@ function ProductionTab({ language = 'fr' }) {
         </Tabs>
 
         {/* Data Sources - Compact footer */}
-        <Card className="border-0 shadow-sm mt-6" style={{background:'rgba(27,35,44,0.7)'}}>
+        <Card className="border-0 shadow-sm mt-6" style={{background:'var(--afcfta-card2)'}}>
           <CardContent className="py-4">
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-[var(--afcfta-muted)]">
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px] border-purple-300 text-purple-600">Macro</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)]">Macro</Badge>
                 World Bank • IMF WEO {macroYear}
               </span>
-              <span className="text-gray-300">|</span>
+              <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px] border-green-300 text-green-600">Agri</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]">Agri</Badge>
                 FAOSTAT {agriYear}
               </span>
-              <span className="text-gray-300">|</span>
+              <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px] border-blue-300 text-blue-600">Manuf</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]">Manuf</Badge>
                 UNIDO {manufYear}
               </span>
-              <span className="text-gray-300">|</span>
+              <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[10px] border-orange-300 text-orange-600">Mining</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-[var(--terra)]">Mining</Badge>
                 USGS • AfDB {miningYear}
               </span>
             </div>

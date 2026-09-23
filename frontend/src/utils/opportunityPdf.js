@@ -13,7 +13,7 @@
  * bâtisseur s'occupe de la mise en page et de la pagination.
  */
 import jsPDF from 'jspdf';
-import { THEME_LIGHT, THEME_DARK } from './tradeReportPdf';
+import { THEME_LIGHT, THEME_DARK, espacesSimples } from './tradeReportPdf';
 
 const MM = { pageW: 210, pageH: 297, margin: 13 };
 
@@ -287,7 +287,7 @@ function drawFooters(doc, theme, { language, source }) {
 export function buildOpportunityPdf(spec) {
   const theme = spec.theme === 'dark' ? THEME_DARK : THEME_LIGHT;
   const language = spec.language || 'fr';
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const doc = espacesSimples(new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' }));
   paintPage(doc, theme);
 
   let y = drawMasthead(doc, theme, { ...spec, language });

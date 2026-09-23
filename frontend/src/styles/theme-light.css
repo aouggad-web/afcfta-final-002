@@ -31,10 +31,40 @@ html.theme-light body {
   --card-grad:     linear-gradient(to bottom right, #FFFDF8, #F4EDDF);
   --card-head:     linear-gradient(135deg, rgba(175,71,24,0.10), rgba(143,92,8,0.07));
   --field-border:  #E0D5C2;
+  --stats-hero:    linear-gradient(135deg, rgba(175,71,24,0.14) 0%, #FFFDF8 35%, #FBF6EC 65%, rgba(23,92,119,0.14) 100%);
+  --active-fill: linear-gradient(135deg, #AF4718, #8E3712);
+
+  /* Vocabulaire --afcfta-* : ces trois noms étaient employés (Opportunités,
+     recherche SH par produit) mais jamais définis — leurs replis s'affichaient
+     (fond transparent, carte blanche, texte quasi noir). */
+  --afcfta-bg:     var(--afcfta-card2);
+  --afcfta-text:   var(--text);
+  --afcfta-accent: var(--gold);
+
+  /* ── Séries de graphiques (skill dataviz) — pas propres au thème clair,
+     validés sur la carte #FFFDF8 : CVD voisins ≥ 12,1, normal ≥ 17,3. */
+  --series-1: #0FA361;
+  --series-2: #0280A8;
+  --series-3: #EF5D08;
+  --series-4: #D21B7A;
+  --series-5: #CD8204;
+  --series-6: #9D6BFE;
+  --series-7: #C90A2D;
+  --series-8: #019886;
+  --chart-grid: #EDE4D4;
+  --chart-axis: #D6CAB5;
+
+  /* Cartographie : mêmes familles, pas propres au thème clair (vision
+     normale ≥ 19,0, daltonisme ≥ 9,4 ; libellé ≥ 5:1). */
+  --tm-agri: var(--series-1);                                   --tm-agri-ink: #241F18;
+  --tm-mineraux: color-mix(in srgb, var(--series-3) 95%, var(--afcfta-card)); --tm-mineraux-ink: #241F18;
+  --tm-metaux: color-mix(in srgb, var(--series-6) 90%, var(--afcfta-card));   --tm-metaux-ink: #241F18;
+  --tm-industrie: color-mix(in srgb, var(--series-2) 90%, #000); --tm-industrie-ink: #FFFFFF;
+  --tm-autres: color-mix(in srgb, var(--afcfta-muted) 25%, var(--afcfta-card)); --tm-autres-ink: #241F18;
 
   /* Accents légèrement assombris pour contraste sur fond clair */
-  --terra:        #AF4718;
-  --gold:         #8F5C08;   /* relevé : 3,95:1 → 5,21:1 */
+  --terra:        #9C3F15;   /* relevé : 3,87:1 → 4,61:1 sur voile terre */
+  --gold:         #865608;   /* relevé : 4,20:1 → 4,64:1 sur voile or */
   --green:        #136143;
   --red:          #A82424;
   --atlantic:     #175C77;
@@ -179,9 +209,20 @@ html.theme-light .afcfta-langBtn:hover {
   color: var(--terra);
 }
 html.theme-light .afcfta-langBtn.active {
-  background: linear-gradient(180deg, rgba(200, 83, 26, 0.20) 0%, rgba(200, 83, 26, 0.08) 100%);
-  border-color: rgba(200, 83, 26, 0.6);
+  /* Voile allégé : à 0,20 d'alpha le libellé tombait à 3,61:1. */
+  background: linear-gradient(180deg, rgba(175, 71, 24, 0.10) 0%, rgba(175, 71, 24, 0.04) 100%);
+  border-color: rgba(175, 71, 24, 0.55);
   color: var(--terra);
+}
+
+/* L'élément de nav actif : même raison, le libellé or tombait à 4,11:1. */
+html.theme-light .afcfta-nav-item.active {
+  background: rgba(143, 92, 8, 0.07);
+  border-color: rgba(143, 92, 8, 0.30);
+}
+
+html.theme-light .afcfta-nav-item.active .afcfta-nav-icon {
+  background: rgba(175, 71, 24, 0.12);
 }
 html.theme-light .afcfta-themeToggle {
   background: #FFFFFF;
@@ -198,12 +239,15 @@ html.theme-light .afcfta-themeToggle:hover {
 html.theme-light .stat-value { color: var(--text); }
 html.theme-light .stat-label { color: var(--afcfta-muted); }
 
-/* Hero cards & shells with hardcoded dark backgrounds */
+/* Hero cards & shells with hardcoded dark backgrounds.
+   [class*="hero"] attrape aussi .stats-hero-title, un texte peint par son
+   fond (background-clip: text) : remplacer ce fond par la surface rendait le
+   titre invisible. Il garde son propre dégradé, défini en jetons. */
 html.theme-light .afcfta-shell,
 html.theme-light .afcfta-card,
 html.theme-light .afcfta-card2,
 html.theme-light .afcfta-hero,
-html.theme-light [class*="hero"],
+html.theme-light [class*="hero"]:not(.stats-hero-title),
 html.theme-light .zellige-najm {
   background: var(--surface) !important;
   color: var(--text);
@@ -294,3 +338,7 @@ html.theme-light .zlecaf-overview-hero {
 html.theme-light .zlecaf-overview-hero .text-\[rgba\(234\,224\,208\,0\.9\)\] {
   color: var(--text) !important;
 }
+
+/* Contrôles natifs (listes de <select>, barres de défilement, calendriers) :
+   :root impose `color-scheme: dark`, ils s'ouvraient sombres sur la page crème. */
+html.theme-light { color-scheme: light; }

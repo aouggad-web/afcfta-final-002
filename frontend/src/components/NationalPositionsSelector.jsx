@@ -154,61 +154,61 @@ export default function NationalPositionsSelector({
   }
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700 overflow-hidden transition-all duration-300">
+    <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)] overflow-hidden transition-all duration-300">
       <CardHeader 
-        className="py-3 cursor-pointer hover:bg-slate-700/30 transition-colors"
+        className="py-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-500/10 rounded-lg border border-purple-500/20">
-              <Package className="w-5 h-5 text-purple-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--violet)_25%,transparent)]">
+              <Package className="w-5 h-5 text-[var(--violet)]" />
             </div>
             <div>
-              <CardTitle className="text-lg text-white flex items-center gap-2">
+              <CardTitle className="text-lg text-[var(--text)] flex items-center gap-2">
                 {t.title}
                 {positions.length > 0 && (
-                  <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 border">
+                  <Badge className="bg-[color-mix(in_srgb,var(--violet)_14%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)] border">
                     {positions.length} {t.positions}
                   </Badge>
                 )}
               </CardTitle>
-              <p className="text-slate-400 text-sm">{t.subtitle}</p>
+              <p className="text-[var(--afcfta-muted)] text-sm">{t.subtitle}</p>
             </div>
           </div>
-          {expanded ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+          {expanded ? <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />}
         </div>
       </CardHeader>
 
       {expanded && (
         <CardContent className="pt-0 space-y-4">
           {apiNote && (
-            <div className="flex items-start gap-2 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-              <Info className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-              <p className="text-sm text-blue-300">{apiNote}</p>
+            <div className="flex items-start gap-2 p-3 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_22%,transparent)]">
+              <Info className="w-4 h-4 text-[var(--info)] mt-0.5 flex-shrink-0" />
+              <p className="text-sm text-[var(--info)]">{apiNote}</p>
             </div>
           )}
 
           {loading && (
             <div className="flex items-center justify-center py-8">
-              <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-3 text-slate-400">Chargement des positions nationales...</span>
+              <div className="w-8 h-8 border-2 border-[var(--violet)] border-t-transparent rounded-full animate-spin"></div>
+              <span className="ml-3 text-[var(--afcfta-muted)]">Chargement des positions nationales...</span>
             </div>
           )}
 
           {error && (
-            <div className="flex items-center gap-3 p-4 bg-red-500/10 rounded-lg border border-red-500/20">
-              <AlertCircle className="w-5 h-5 text-red-400" />
-              <p className="text-red-300">{error}</p>
+            <div className="flex items-center gap-3 p-4 bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--danger)_25%,transparent)]">
+              <AlertCircle className="w-5 h-5 text-[var(--danger)]" />
+              <p className="text-[var(--danger)]">{error}</p>
             </div>
           )}
 
           {!loading && !error && positions.length === 0 && (
             <div className="text-center py-8">
-              <div className="w-16 h-16 mx-auto mb-4 bg-slate-700/50 rounded-full flex items-center justify-center">
-                <Package className="w-8 h-8 text-slate-500" />
+              <div className="w-16 h-16 mx-auto mb-4 bg-[var(--overlay)] rounded-full flex items-center justify-center">
+                <Package className="w-8 h-8 text-[var(--afcfta-muted)]" />
               </div>
-              <p className="text-slate-400">{t.noPositions}</p>
+              <p className="text-[var(--afcfta-muted)]">{t.noPositions}</p>
             </div>
           )}
 
@@ -232,8 +232,8 @@ export default function NationalPositionsSelector({
                     key={idx}
                     className={`relative rounded-xl border-2 transition-all duration-200 cursor-pointer overflow-hidden ${
                       isSelected 
-                        ? 'border-purple-500 bg-purple-500/10' 
-                        : 'border-slate-700 bg-slate-800/30 hover:border-slate-600 hover:bg-slate-800/50'
+                        ? 'border-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]' 
+                        : 'border-[var(--afcfta-border)] bg-[var(--afcfta-card)] hover:border-[color-mix(in_srgb,var(--violet)_45%,transparent)]'
                     }`}
                     onClick={() => handleSelect(position)}
                   >
@@ -241,19 +241,19 @@ export default function NationalPositionsSelector({
                       <div className="flex items-start gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-2">
-                            <span className={`font-mono text-lg font-bold px-3 py-1 rounded-lg ${
-                              isSelected ? 'bg-purple-500/30 text-purple-300' : 'bg-amber-500/20 text-amber-400'
+                            <span className={`font-mono tabular-nums text-lg font-bold px-3 py-1 rounded-lg ${
+                              isSelected ? 'bg-[var(--violet)] text-[var(--bg)]' : 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)]'
                             }`}>
                               {currentCode}
                             </span>
-                            <Badge variant="outline" className="text-xs border-slate-600 text-slate-400 uppercase">
+                            <Badge variant="outline" className="text-xs border-[var(--afcfta-border)] text-[var(--afcfta-muted)]">
                               {badgeLabel}
                             </Badge>
                           </div>
                           
                           <div className="relative">
                             <p className={`text-base leading-relaxed transition-all ${
-                              isSelected ? 'text-white' : 'text-slate-200'
+                              isSelected ? 'text-[var(--text)]' : 'text-[var(--text-soft)]'
                             } ${!isDescExpanded && isLongDesc ? 'line-clamp-2' : ''}`}>
                               {desc}
                             </p>
@@ -263,7 +263,7 @@ export default function NationalPositionsSelector({
                                   e.stopPropagation();
                                   toggleDescription(idx);
                                 }}
-                                className="mt-1 text-purple-400 hover:text-purple-300 text-xs font-semibold flex items-center gap-1"
+                                className="mt-1 text-[var(--violet)] hover:opacity-80 text-xs font-semibold flex items-center gap-1"
                               >
                                 {isDescExpanded ? <><Minimize2 className="w-3 h-3"/> {t.showLess}</> : <><Maximize2 className="w-3 h-3"/> {t.showMore}</>}
                               </button>
