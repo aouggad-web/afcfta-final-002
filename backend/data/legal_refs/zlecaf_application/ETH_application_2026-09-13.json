@@ -193,5 +193,29 @@
    "source": "https://www.afriwise.com/blog/ethiopia-implements-afcfta-tariff-concessions-council-of-ministers-regulation-no-574-2025",
    "source_nature": "fournisseur d'intelligence juridique — secondaire"
   }
+ },
+ "recoupements_2026-09-23": {
+  "objet": "Recoupements officiels postérieurs à la recherche de l'avis MoTRI : ils éclairent l'origine de la liste de 24 pays rapportée par la presse, sans remplacer l'avis exigé par l'article 3(2).",
+  "sources": [
+   {
+    "source": "the dtic (ministère sud-africain du commerce), « Update on the AfCFTA — What's New? March 2026 »",
+    "url": "https://www.thedtic.gov.za/wp-content/uploads/Newsletter-on-the-AfCFTA-March-2026.pdf",
+    "sha256": "39987c9e2f7119ecf690a2a78113e43879bd0b91d1801aaa25556e28c28c0949",
+    "document_non_archive": "PDF de 6 pages non versé au dépôt ; citations relevées le 2026-09-23.",
+    "nature": "primaire gouvernementale (Afrique du Sud) — ne vaut pas pour le droit éthiopien",
+    "verbatim_ethiopie": "Ethiopia gazetted its Provisional Schedule of Tariff Concessions and was added to South Africa’s Schedule 1, General Note O of the Customs and Excise Act on 24 October 2025.",
+    "verbatim_25_pays": "As of March 2026, only 25 countries, including SACU, have gazette their Tariff Schedules.",
+    "verbatim_ratification": "4 countries, namely Benin, Libya, South Sudan and Sudan are yet to ratify the Agreement."
+   },
+   {
+    "source": "U.S. International Trade Administration, « Ghana — African Continental Free Trade Area (AfCFTA) December 2025 Update » (page datée du 05/02/2026)",
+    "url": "https://www.trade.gov/market-intelligence/ghana-african-continental-free-trade-area-afcfta-december-2025-update",
+    "nature": "gouvernementale étrangère, secondaire quant à la ZLECAf — la liste n'est attribuée à aucun document du Secrétariat",
+    "verbatim_liste": "Twenty-five countries have now completed that process: Algeria, Burundi, Botswana, Cameroon, Egypt, Eswatini, Ethiopia, the Gambia, Ghana, Kenya, Lesotho, Malawi, Mauritius, Morocco, Mozambique, Namibia, Nigeria, Rwanda, Seychelles, South Africa, South Sudan, Tanzania, Tunisia, Uganda, and Zambia."
+   }
+  ],
+  "constat": "Les 25 États de l'ITA, Éthiopie retirée, sont EXACTEMENT les 24 de la liste rapportée par Birr Metrics (partner_list_reported.iso3). La liste reçue par l'Ethiopian Customs Commission serait donc celle des États parties ayant publié leur barème — lecture cohérente avec la réciprocité, mais qui reste une INFÉRENCE, pas l'avis du MoTRI.",
+  "contradiction_confirmee": "La dtic, source gouvernementale, range le Soudan du Sud parmi les pays qui n'ont pas ratifié ; il figure pourtant dans la liste des 24. L'article 2(4) du règlement 574/2025 réserve le bénéfice aux pays ayant « signed, ratified, and acceded » : la liste rapportée échoue toujours au test du règlement.",
+  "effet_sur_le_depot": "Aucun : ETH reste PARTNER_NOTICE_REQUIRED, accepted_origins vide. Seul l'avis du MoTRI (art. 3(2)) peut ouvrir le verrou 2 ; la voie reste une demande directe au MoTRI ou à l'Ethiopian Customs Commission."
  }
 }
