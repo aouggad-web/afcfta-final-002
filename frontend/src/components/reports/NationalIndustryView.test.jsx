@@ -59,6 +59,17 @@ const caroube = {
     afrique: [{ iso3: 'EGY', pays: 'Égypte', importations_2024_usd: 1137212, importations_2019_usd: 2007901, evolution_2019_2024_pct: -43.4, part_pays_pct: 0 }],
   },
   source: 'CEPII BACI via l\'API OEC', limites: [],
+  filiere: {
+    hs: '1212', libelle: 'Caroube (gousses, farine et graines)', filiere: 'Agricole',
+    synthese: "L'Algérie récolte entre 8 000 et 15 000 t de caroube.",
+    production: [{
+      annee: 2023, valeur: 8000, unite: 't', perimetre: 'national (estimation de la filière, borne basse)',
+      fiabilite: 'C', source_titre: 'El Watan', source_url: 'https://elwatan.dz/x', extrait: 'La production varie aujourd’hui entre 8000 et 15 000 tonnes.',
+    }],
+    capacite: [],
+    entreprises: [{ nom: 'SARL Boublenza (Tlemcen)', role: 'producteur et exportateur principal', chiffre: 'exportations vers 25 pays', annee: 2022, source_url: 'https://www.tsa-algerie.com/x' }],
+    contradictions: ['Production : la FAO donne 3 219 t en 2021, la filière avance 8 000 à 15 000 t (2023).'],
+  },
 };
 
 beforeEach(() => {
@@ -113,6 +124,17 @@ describe('NationalIndustryView', () => {
     await waitFor(() =>
       expect(axios.get.mock.calls.some(([u]) => u.includes('hors_hydrocarbures=false'))).toBe(true)
     );
+  });
+
+  it('montre la fiche filière avec sa fiabilité, ses entreprises et les écarts entre sources', async () => {
+    render(<NationalIndustryView fr={true} />);
+    await screen.findByTestId('dza-exportations');
+    await userEvent.click(screen.getByTestId('raccourci-caroube'));
+    const filiere = await screen.findByTestId('fiche-filiere');
+    expect(filiere).toHaveTextContent('La filière en Algérie');
+    expect(within(filiere).getByTestId('filiere-production')).toHaveTextContent('fiabilité C (ordre de grandeur)');
+    expect(filiere).toHaveTextContent('SARL Boublenza');
+    expect(within(filiere).getByTestId('filiere-ecarts')).toHaveTextContent('3 219 t');
   });
 
   it('demande le tri africain quand on choisit « Afrique »', async () => {

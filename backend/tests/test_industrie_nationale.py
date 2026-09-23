@@ -103,6 +103,29 @@ def test_marches_absents_respectent_les_seuils():
     assert all(m["iso3"] != "DZA" for m in fiche["importateurs_monde_2024"])
 
 
+def test_fiche_filiere_rattachee_au_produit():
+    # un SH6 est couvert par le code de fiche le plus long qui en est le préfixe
+    assert ins.fiche_filiere("DZA", "121292")["hs"] == "1212"
+    assert ins.fiche_filiere("DZA", "721420")["hs"] == "7214"
+    assert ins.fiche_filiere("DZA", "730519")["hs"] == "7305/7306"
+    assert ins.fiche_filiere("DZA", "999999") is None
+    assert ins.fiche_filiere("MAR", "121292") is None
+    fiche = ins.fiche_produit("DZA", "121292")
+    assert fiche["filiere"]["hs"] == "1212"
+
+
+def test_fiche_filiere_chaque_chiffre_est_une_preuve():
+    import json
+
+    donnees = json.load(open(ins.FICHIERS["DZA"]["filieres"], encoding="utf-8"))
+    assert donnees["fiches"]
+    for f in donnees["fiches"]:
+        for c in f["production"] + f["capacite"]:
+            assert c["source_url"].startswith("http") and c["extrait"]
+            assert c["fiabilite"] in {"A", "B", "C"}
+            assert 2021 <= c["annee"] <= 2025
+
+
 def test_produit_hors_champ():
     r = ins.fiche_produit("DZA", "999999")
     assert r["available"] is False and "0,5 M USD" in r["message"]

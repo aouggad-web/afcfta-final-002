@@ -173,6 +173,104 @@ function IndustrieBloc({ ind, fr }) {
   );
 }
 
+/* Fiabilité des preuves (consignes de collecte) : A officiel ou base de référence,
+   B presse citant une source officielle ou une entreprise, C ordre de grandeur. */
+const FIABILITE = {
+  A: { fr: "officiel ou base de référence", en: "official or reference database" },
+  B: { fr: "presse citant une source officielle ou une entreprise", en: "press citing an official or company source" },
+  C: { fr: "ordre de grandeur", en: "order of magnitude" },
+};
+
+function Chiffre({ c, fr }) {
+  const valeur =
+    typeof c.valeur === "number"
+      ? c.valeur.toLocaleString(fr ? "fr-FR" : "en-US", { maximumFractionDigits: 2 }).replace(/\u202F/g, NBSP)
+      : c.valeur;
+  const f = FIABILITE[c.fiabilite];
+  return (
+    <li style={{ marginBottom: 4 }}>
+      <strong>
+        {c.annee} · {valeur} {c.unite}
+      </strong>{" "}
+      <span style={muted}>
+        — {c.perimetre} · {fr ? "fiabilité" : "reliability"} {c.fiabilite}
+        {f ? ` (${fr ? f.fr : f.en})` : ""} ·{" "}
+        <a href={c.source_url} target="_blank" rel="noreferrer" title={c.extrait}>
+          {c.source_titre || (fr ? "source" : "source")}
+        </a>
+      </span>
+    </li>
+  );
+}
+
+function FicheFiliere({ f, fr }) {
+  const liste = (titreListe, chiffres, testid) =>
+    chiffres.length ? (
+      <div data-testid={testid}>
+        <div style={{ ...muted, fontWeight: 600 }}>{titreListe}</div>
+        <ul style={{ margin: "4px 0 0", paddingLeft: 18, fontSize: 13 }}>
+          {chiffres.map((c, i) => (
+            <Chiffre key={i} c={c} fr={fr} />
+          ))}
+        </ul>
+      </div>
+    ) : null;
+  return (
+    <div
+      data-testid="fiche-filiere"
+      style={{
+        borderLeft: "3px solid var(--info, #175C77)",
+        paddingLeft: 12,
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      <div style={titre}>
+        {fr ? "La filière en Algérie" : "The sector in Algeria"} · {f.libelle}
+      </div>
+      {f.synthese && <p style={{ fontSize: 13, lineHeight: 1.5, margin: 0 }}>{f.synthese}</p>}
+      {liste(fr ? "Production" : "Production", f.production, "filiere-production")}
+      {liste(fr ? "Capacité installée" : "Installed capacity", f.capacite, "filiere-capacite")}
+      {!f.production.length && !f.capacite.length && (
+        <div style={muted}>
+          — {fr ? "Aucun chiffre de production ou de capacité sourcé pour 2021-2025." : "No sourced production or capacity figure for 2021-2025."}
+        </div>
+      )}
+      {f.entreprises.length > 0 && (
+        <div>
+          <div style={{ ...muted, fontWeight: 600 }}>{fr ? "Entreprises" : "Companies"}</div>
+          <ul style={{ margin: "4px 0 0", paddingLeft: 18, fontSize: 13 }}>
+            {f.entreprises.map((e, i) => (
+              <li key={i} style={{ marginBottom: 4 }}>
+                <strong>{e.nom}</strong> <span style={muted}>({e.role})</span> — {e.chiffre}
+                {e.annee ? ` (${e.annee})` : ""}{" "}
+                {e.source_url && (
+                  <a href={e.source_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>
+                    {fr ? "source" : "source"}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {f.contradictions.length > 0 && (
+        <details data-testid="filiere-ecarts">
+          <summary style={{ ...muted, cursor: "pointer" }}>
+            {fr ? "Écarts entre sources" : "Discrepancies between sources"} ({f.contradictions.length})
+          </summary>
+          <ul style={{ ...muted, lineHeight: 1.5, paddingLeft: 18 }}>
+            {f.contradictions.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </div>
+  );
+}
+
 function FicheProduit({ fiche, fr }) {
   if (!fiche.available) {
     return <div style={{ ...card, ...muted }}>— {fiche.message}</div>;
@@ -216,6 +314,7 @@ function FicheProduit({ fiche, fr }) {
           {fr ? "Libellé" : "Label"} : {fiche.libelle_source}
         </div>
       </div>
+      {fiche.filiere && <FicheFiliere f={fiche.filiere} fr={fr} />}
       <div>
         <div style={titre}>{fr ? "Exportations de l'Algérie" : "Algeria's exports"}</div>
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "4px 10px", fontSize: 13 }}>
@@ -392,6 +491,14 @@ export default function NationalIndustryView({ fr }) {
                   >
                     <td style={td}>
                       {p.libelle} <span style={muted}>({p.hs6})</span>
+                      {p.fiche_filiere && (
+                        <span
+                          style={{ ...muted, marginLeft: 6, fontWeight: 600, color: "var(--info, #175C77)" }}
+                          title={fr ? "Fiche filière : production, capacités, entreprises" : "Sector sheet: production, capacity, companies"}
+                        >
+                          {fr ? "· fiche filière" : "· sector sheet"}
+                        </span>
+                      )}
                     </td>
                     <td style={tdNum}>{montant(p.exportations_2024_usd, fr)}</td>
                     <td style={tdNum}>{pourcent(p.part_afrique_2024_pct, fr)}</td>

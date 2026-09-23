@@ -42,6 +42,7 @@ FICHIERS = {
     "DZA": {
         "industrie": RACINE / "data" / "json" / "dza_industrie.json",
         "commerce": RACINE / "data" / "json" / "dza_commerce_baci.json",
+        "filieres": RACINE / "data" / "json" / "dza_filieres.json",
     }
 }
 DESIGNATIONS = RACINE / "backend" / "data" / "hs6_designations_fr_en.json"
@@ -188,6 +189,40 @@ def industrie(iso3: str, lang: str = "fr") -> Dict:
 # ---------------------------------------------------------------------------
 
 
+def fiche_filiere(iso3: str, hs6: str, lang: str = "fr") -> Optional[Dict]:
+    """Fiche filière qui couvre un produit : production, capacités, entreprises, écarts.
+
+    Une fiche porte un code SH (« 310210 »), une position (« 2523 ») ou plusieurs
+    (« 7305/7306 ») ; elle couvre un SH6 quand l'un de ses codes en est le préfixe.
+    Le code le plus long l'emporte. Chaque chiffre de la fiche est une preuve
+    sourcée (URL, extrait verbatim, fiabilité A/B/C) ; ``None`` sans fiche.
+    """
+    donnees = _fichier(iso3, "filieres")
+    if not donnees:
+        return None
+    code = "".join(c for c in str(hs6) if c.isdigit())[:6]
+    meilleure, longueur = None, 0
+    for f in donnees.get("fiches", []):
+        for prefixe in str(f.get("hs", "")).split("/"):
+            if prefixe and code.startswith(prefixe) and len(prefixe) > longueur:
+                meilleure, longueur = f, len(prefixe)
+    if not meilleure:
+        return None
+    f = meilleure
+    return {
+        "hs": f["hs"],
+        "libelle": f["libelle_fr"] if lang == "fr" else f["libelle_en"],
+        "filiere": f.get("filiere", ""),
+        "synthese": f.get("synthese_fr") if lang == "fr" else f.get("synthese_en"),
+        "production": f.get("production", []),
+        "capacite": f.get("capacite", []),
+        "entreprises": f.get("entreprises", []),
+        "exportations_baci": f.get("exportations_baci", {}),
+        "contradictions": f.get("contradictions", []),
+        "regles": donnees.get("meta", {}).get("regles", []),
+    }
+
+
 def _meta_commerce(donnees: Dict) -> Dict:
     m = donnees["meta"]
     return {
@@ -233,6 +268,7 @@ def exportations(
         lignes.append(
             {
                 "hs6": hs6,
+                "fiche_filiere": fiche_filiere(iso3, hs6, lang) is not None,
                 "libelle": lib["libelle"],
                 "libelle_source": lib["source"],
                 "exportations_2024_usd": v24,
@@ -350,5 +386,6 @@ def fiche_produit(
             "monde": absents(monde),
             "afrique": absents(afrique),
         },
+        "filiere": fiche_filiere(iso3, code, lang),
         **_meta_commerce(donnees),
     }
