@@ -230,6 +230,12 @@ function FicheFiliere({ f, fr }) {
         {fr ? "La filière en Algérie" : "The sector in Algeria"} · {f.libelle}
       </div>
       {f.synthese && <p style={{ fontSize: 13, lineHeight: 1.5, margin: 0 }}>{f.synthese}</p>}
+      {/* périmètres, entreprises et écarts ne sont collectés qu'en français */}
+      {!fr && (
+        <div data-testid="filiere-detail-fr" style={muted}>
+          Details below are available in French only.
+        </div>
+      )}
       {liste(fr ? "Production" : "Production", f.production, "filiere-production")}
       {liste(fr ? "Capacité installée" : "Installed capacity", f.capacite, "filiere-capacite")}
       {!f.production.length && !f.capacite.length && (

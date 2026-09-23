@@ -135,6 +135,16 @@ describe('NationalIndustryView', () => {
     expect(within(filiere).getByTestId('filiere-production')).toHaveTextContent('fiabilité C (ordre de grandeur)');
     expect(filiere).toHaveTextContent('SARL Boublenza');
     expect(within(filiere).getByTestId('filiere-ecarts')).toHaveTextContent('3 219 t');
+    expect(within(filiere).queryByTestId('filiere-detail-fr')).toBeNull();
+  });
+
+  it('prévient le lecteur anglophone que le détail de la fiche filière est en français', async () => {
+    render(<NationalIndustryView fr={false} />);
+    await screen.findByTestId('dza-exportations');
+    await userEvent.click(screen.getByTestId('raccourci-caroube'));
+    const filiere = await screen.findByTestId('fiche-filiere');
+    expect(filiere).toHaveTextContent('The sector in Algeria');
+    expect(within(filiere).getByTestId('filiere-detail-fr')).toHaveTextContent('available in French only');
   });
 
   it('demande le tri africain quand on choisit « Afrique »', async () => {
