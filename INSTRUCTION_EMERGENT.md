@@ -320,7 +320,43 @@ touche.
   barème kényan** : c'est le seul couloir autorisé, et il rendrait le produit
   capable de servir sa première vraie préférence continentale.
 
-- **SACU — 33 448 droits muets pour quatre champs vides.** Botswana, Lesotho,
+- **SACU — RÉGLÉ le 23/09/2026 (33 068 droits débloqués).** Les quatre
+  assiettes sont établies sur le droit NATIONAL de chaque État, jamais sur le
+  texte sud-africain : Customs Act 2018 s. 326(1) (BWA), C&E Act 1982 s. 67-68
+  (LSO), C&E Act 20 of 1998 s. 75-77 (NAM), C&E Act 1971 s. 65-67 (SWZ). Les
+  quatre liquident désormais 98,9 %, comme l'Afrique du Sud.
+
+  **La leçon vaut d'être gardée**, parce que le réflexe aurait été faux :
+  l'Accord SACU 2002 ne dit RIEN de la valeur en douane — zéro occurrence de
+  « valuation » ou « customs value » dans le texte officiel, vérifié sur les
+  deux PDF du Secrétariat. Son art. 1 définit le droit de douane PAR RENVOI à
+  la loi de chaque État membre, et son art. 22 n'exige qu'une législation
+  « similar ». Le renvoi au droit sud-africain existe bien au Lesotho
+  (s. 122(2)) et en Eswatini (s. 47(1)) — mais il est opéré par LEUR propre
+  loi, et il ne porte que sur les ANNEXES tarifaires. La Namibie, elle, a
+  purement ABROGÉ le texte sud-africain qu'elle avait reçu (s. 131(1) et
+  Schedule 9). **Ce qui est commun dans une union douanière, c'est le barème
+  des taux, pas l'assiette.**
+
+  **Deux réserves restent servies avec la donnée**, et ne doivent pas être
+  effacées : la consolidation eswatinienne s'arrête à A.5/1991 sans que la
+  postériorité ait pu être vérifiée (aucun hôte gouvernemental joignable), et
+  le texte lesothan retient le « normal price » de la Définition de Bruxelles
+  alors que l'OMC déclarait en 2023 un régime de valeur transactionnelle.
+
+- **Les quatre TVA de la SACU ne sont PAS écrites, chacune pour sa raison.**
+  Botswana : le VAT Act renvoie à une section d'une loi abrogée, et la section
+  de même numéro dans la loi nouvelle porte sur le « Temporary storage » — le
+  renvoi est orphelin. Namibie : l'assiette est `max(FOB + 10 %, valeur de
+  marché)`, le droit de douane EXCLU ; aucun code de la grammaire ne
+  l'exprime et la branche « valeur de marché » n'est pas calculable —
+  arbitrage du propriétaire. Eswatini : l'art. 23(c) du VAT Act 2011 pourrait
+  réintégrer le fret, et aucune source primaire accessible ne tranche.
+  Lesotho : la mieux établie des quatre (VAT Act 2001, s. 16(1), vérifiée),
+  mais le socle ne porte aucune ligne de TVA lesothane — poser une assiette
+  sans taxe à liquider n'aurait aucun sens.
+
+- **Ce qui reste du constat SACU, pour mémoire.** Botswana, Lesotho,
   Namibie et Eswatini portent exactement le même tarif que l'Afrique du Sud :
   8 589 positions, 8 589 droits, 8 361 taux chiffrés, distribution identique,
   source `sars.gov.za`. L'Afrique du Sud en liquide **8 494 — 98,9 %** ; les

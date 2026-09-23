@@ -93,9 +93,26 @@ elif d["assiette"] and (d["taux"] is not None or specifique_lisible):
 ```
 
 **Sans assiette, aucun droit ne se liquide**, si publié que soit son taux.
-**33 448 droits** sont muets pour quatre champs vides.
+**33 068 droits** sont muets pour quatre champs vides.
 
-C'est la carence la moins chère de toute cette liste : quatre références
+**RÉGLÉ le 23/09/2026.** Les quatre assiettes ont été établies sur le droit
+NATIONAL de chaque État — Customs Act 2018 (BWA), C&E Act 1982 (LSO), C&E Act
+20 of 1998 (NAM), C&E Act 1971 (SWZ) — et non sur le texte sud-africain. Les
+quatre liquident désormais **8 494 droits sur 8 589, soit 98,9 %**, exactement
+comme l'Afrique du Sud : **33 068 droits débloqués**. Les 95 qui restent muets
+par pays le sont pour absence de TAUX, non d'assiette, et ce sont les mêmes
+positions dans les cinq pays. Fiches et extraits archivés dans
+`backend/data/legal_refs/zlecaf_application/`.
+
+Ce qui a été établi au passage, et qui valait le détour : **aucun article de
+l'Accord SACU 2002 ne traite de la valeur en douane** — zéro occurrence de
+« valuation », « customs value », « f.o.b. » ou « c.i.f. » dans le texte
+officiel. Le renvoi au droit sud-africain existe bien au Lesotho (s. 122(2))
+et en Eswatini (s. 47(1)), mais il est opéré par LEUR propre loi et ne porte
+que sur les Annexes tarifaires. La Namibie, elle, a purement **abrogé** le
+texte sud-africain reçu (s. 131(1) et Schedule 9).
+
+C'était la carence la moins chère de toute cette liste : quatre références
 légales. **Mais elle ne se comble pas en recopiant celle de l'Afrique du Sud**
 — chaque État a sa propre loi douanière, et l'administration commune du tarif
 extérieur ne dit rien de ce que chaque droit national prescrit comme valeur en
@@ -176,7 +193,7 @@ réglementaire n'a rien à afficher pour 52 pays sur 54.
 
 ## 7. Par coût croissant
 
-1. **Les quatre assiettes SACU** — 33 448 droits débloqués. Quatre recherches
+1. **Les quatre assiettes SACU** — 33 068 droits débloqués. Quatre recherches
    séparées ; ne pas généraliser depuis l'Afrique du Sud, et se méfier du FOB.
 2. **Les sept assiettes restantes** — COD, CPV, LBY, SDN, SSD, DJI, ERI.
 3. **Le barème ZLECAf kényan** — le Kenya est le seul couloir autorisé. Son
