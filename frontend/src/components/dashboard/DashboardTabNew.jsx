@@ -115,7 +115,7 @@ function DashboardMetricCard({ item }) {
           style={{
             background: `${item.accent}18`,
             borderColor: `${item.accent}40`,
-            color: item.accent,
+            color: `color-mix(in srgb, ${item.accent} 40%, var(--text))`,
           }}
         >
           <Icon className="w-5 h-5" />
@@ -260,7 +260,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 { label: t.authentic, value: String(stats?.overview?.authentic_countries || 54) },
               ].map(({ label, value }) => (
                 <div key={label} className="rounded-xl border px-3 py-4 text-center bg-[var(--overlay)] border-[var(--overlay-border)]">
-                  <div className="text-[10px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">{label}</div>
+                  <div className="text-[11px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">{label}</div>
                   <div
                     className="mt-2 font-bold text-[var(--text)]"
                     style={{
@@ -330,7 +330,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                   borderLeftColor: accent,
                 }}
               >
-                <div className="text-[11px] font-bold uppercase tracking-[1px]" style={{ color: accent }}>
+                <div className="text-[11px] font-bold uppercase tracking-[1px]" style={{ color: `color-mix(in srgb, ${accent} 40%, var(--text))`}}>
                   {label}
                 </div>
                 <div
@@ -383,7 +383,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
             >
               <div
                 className="text-[11px] font-bold uppercase tracking-[1px]"
-                style={{ color: bloc.accent }}
+                style={{ color: `color-mix(in srgb, ${bloc.accent} 40%, var(--text))`}}
               >
                 {bloc.name}
               </div>

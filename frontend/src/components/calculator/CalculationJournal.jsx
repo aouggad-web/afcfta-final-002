@@ -43,7 +43,7 @@ function JournalTable({ steps, language }) {
                         href={s.legal_ref_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 hover:text-indigo-400"
+                        className="inline-flex items-center gap-1 hover:text-[var(--violet)]"
                       >
                         {s.legal_ref}
                         <ExternalLink className="w-3 h-3" />
@@ -56,7 +56,7 @@ function JournalTable({ steps, language }) {
               </td>
               <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{usd(s.base)}</td>
               <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{s.rate ?? '—'}</td>
-              <td className="py-2 px-2 text-right font-mono text-white font-semibold">{usd(s.amount)}</td>
+              <td className="py-2 px-2 text-right font-mono text-[var(--text)] font-semibold">{usd(s.amount)}</td>
               <td className="py-2 pl-2 text-right font-mono text-[var(--text)]">{usd(s.cumulative)}</td>
             </tr>
           ))}
@@ -77,8 +77,8 @@ export default function CalculationJournal({ normalJournal, zlecafJournal, langu
 
   const TabBtn = ({ id, label, tone }) => {
     const on = tab === id;
-    const onColor = tone === 'emerald' ? 'border-emerald-500/50 text-emerald-300 bg-emerald-500/10'
-                                       : 'border-red-500/50 text-red-300 bg-red-500/10';
+    const onColor = tone === 'emerald' ? 'border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)] bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))]'
+                                       : 'border-[color-mix(in_srgb,var(--danger)_30%,transparent)] text-[var(--danger)] bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))]';
     return (
       <button
         type="button"
@@ -97,11 +97,11 @@ export default function CalculationJournal({ normalJournal, zlecafJournal, langu
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
-              <ScrollText className="w-5 h-5 text-amber-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+              <ScrollText className="w-5 h-5 text-[var(--gold)]" />
             </div>
             <div>
-              <CardTitle className="text-lg text-white">
+              <CardTitle className="text-lg text-[var(--text)]">
                 {fr ? 'Journal de calcul' : 'Calculation journal'}
               </CardTitle>
               <CardDescription className="text-[var(--afcfta-muted)]">

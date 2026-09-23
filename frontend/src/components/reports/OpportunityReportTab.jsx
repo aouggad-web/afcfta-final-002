@@ -117,7 +117,7 @@ function EstBadge({ isEstimation, level, fr }) {
         padding: "2px 8px",
         borderRadius: 999,
         background: isEstimation ? "rgba(154,103,0,0.12)" : "rgba(26,127,55,0.12)",
-        color: isEstimation ? "#9a6700" : "#1a7f37",
+        color: `color-mix(in srgb, ${isEstimation ? "#9a6700" : "#1a7f37"} 40%, var(--text))`,
       }}
     >
       {isEstimation
@@ -261,7 +261,7 @@ function MarketSeekingView({ fr, prefill }) {
         {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
-      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "var(--danger)" }}>{error}</div>}
 
       {rep && (
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
@@ -358,7 +358,7 @@ function MarketSeekingView({ fr, prefill }) {
             )}
             {supply.commodity_caveat && (
               <div style={{
-                fontSize: 11, color: "#92400e", background: "#fef3c7",
+                fontSize: 11, color: "var(--gold)", background: "#fef3c7",
                 border: "1px solid #fde68a", borderRadius: 6, padding: "6px 9px",
                 marginTop: 8, lineHeight: 1.4,
               }}>
@@ -588,7 +588,7 @@ export function BilateralView({ countries, fr, prefill }) {
         {report && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
-      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "var(--danger)" }}>{error}</div>}
 
       {report && (
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
@@ -791,37 +791,37 @@ export function BilateralView({ countries, fr, prefill }) {
               </div>
               <div style={{ fontSize: 13, display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
                 <strong>{vtw.usd_per_kg.toLocaleString()} USD/kg</strong>
-                <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: tier.bg, color: tier.fg }}>
+                <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: tier.bg, color: `color-mix(in srgb, ${tier.fg} 40%, var(--text))`}}>
                   {tier.label}
                 </span>
               </div>
               {vtw.basis && (
-                <div style={{ fontSize: 12, color: "#334155", marginTop: 6 }}>
+                <div style={{ fontSize: 12, color: "var(--text)", marginTop: 6 }}>
                   {fr ? "Base" : "Basis"} : {vtw.basis}
                   {vtw.raw_quote && ` (${vtw.raw_quote})`}
                 </div>
               )}
-              <div style={{ fontSize: 12, color: "#64748b", marginTop: 6 }}>
+              <div style={{ fontSize: 12, color: "var(--afcfta-muted)", marginTop: 6 }}>
                 {vtw.source}
               </div>
               {landed.shipment_sizing.negotiation_reference ? (
-                <div style={{ fontSize: 12, color: "#334155", marginTop: 6 }}>
+                <div style={{ fontSize: 12, color: "var(--text)", marginTop: 6 }}>
                   {fr
                     ? "Utilisable comme repère grossier de négociation d'achat. "
                     : "Usable as a rough purchase-negotiation reference. "}
-                  <span style={{ color: "#b45309" }}>
+                  <span style={{ color: "var(--gold)" }}>
                     {landed.shipment_sizing.negotiation_reference.caveat}
                   </span>
                 </div>
               ) : (
-                <div style={{ fontSize: 12, color: "#b45309", marginTop: 6 }}>
+                <div style={{ fontSize: 12, color: "var(--gold)", marginTop: 6 }}>
                   {fr
                     ? "Dimensionnement logistique uniquement — PAS une base de négociation de prix."
                     : "Logistics sizing only — NOT a price-negotiation basis."}
                 </div>
               )}
               {vtw.discarded_observed_value && (
-                <div style={{ fontSize: 11, color: "#92400e", background: "#fef3c7", border: "1px solid #fde68a", borderRadius: 6, padding: "6px 9px", marginTop: 8, lineHeight: 1.4 }}>
+                <div style={{ fontSize: 11, color: "var(--gold)", background: "#fef3c7", border: "1px solid #fde68a", borderRadius: 6, padding: "6px 9px", marginTop: 8, lineHeight: 1.4 }}>
                   ⚠ {vtw.discarded_observed_value}
                 </div>
               )}
@@ -976,7 +976,7 @@ export function BilateralView({ countries, fr, prefill }) {
                                 padding: "2px 6px",
                                 borderRadius: 999,
                                 background: "rgba(100,116,139,0.12)",
-                                color: "#64748b",
+                                color: "var(--afcfta-muted)",
                               }}
                             >
                               {fr ? "Calibré 2024" : "Calibrated 2024"}
@@ -1150,7 +1150,7 @@ export function BilateralView({ countries, fr, prefill }) {
                       padding: "2px 8px",
                       borderRadius: 999,
                       background: need.is_estimation ? "rgba(154,103,0,0.12)" : "rgba(26,127,55,0.12)",
-                      color: need.is_estimation ? "#9a6700" : "#1a7f37",
+                      color: `color-mix(in srgb, ${need.is_estimation ? "#9a6700" : "#1a7f37"} 40%, var(--text))`,
                     }}
                   >
                     {need.is_estimation
@@ -1202,7 +1202,7 @@ export function BilateralView({ countries, fr, prefill }) {
                               : intensity === "moyen"
                               ? "rgba(154,103,0,0.12)"
                               : "rgba(102,102,102,0.12)",
-                          color: intensity === "fort" ? "#c8102e" : intensity === "moyen" ? "#9a6700" : "#667",
+                          color: `color-mix(in srgb, ${intensity === "fort" ? "#c8102e" : intensity === "moyen" ? "#9a6700" : "#667"} 40%, var(--text))`,
                         }}
                       >
                         {(BARRIER_LABEL[key]?.[fr ? "fr" : "en"] || key)} · {(INTENSITY_LABEL[intensity]?.[fr ? "fr" : "en"] || intensity)}
@@ -1267,7 +1267,7 @@ export function BilateralView({ countries, fr, prefill }) {
                           fontSize: 11,
                           fontWeight: 700,
                           color:
-                            f.category === "opportunity" ? "#1a7f37" : f.category === "risk" ? "#c8102e" : "#8b949e",
+                            `color-mix(in srgb, ${f.category === "opportunity" ? "#1a7f37" : f.category === "risk" ? "#c8102e" : "#8b949e"} 40%, var(--text))`,
                         }}
                       >
                         {f.category === "opportunity" ? "▲" : f.category === "risk" ? "▼" : "■"}
@@ -1515,7 +1515,7 @@ function DirectExportView({ countries, fr, onAnalyze }) {
         {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
-      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "var(--danger)" }}>{error}</div>}
 
       {rep && (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1759,7 +1759,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
         {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
-      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "var(--danger)" }}>{error}</div>}
 
       {rep && (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1924,7 +1924,7 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
         {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
-      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "var(--danger)" }}>{error}</div>}
 
       {rep && (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -2115,7 +2115,7 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
         {rep && <OpportunityPdfExport getSpec={buildPdfSpec} language={fr ? 'fr' : 'en'} />}
       </div>
 
-      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "#c8102e" }}>{error}</div>}
+      {error && <div style={{ ...card, borderColor: "rgba(200,16,46,0.3)", color: "var(--danger)" }}>{error}</div>}
 
       {rep && (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -2135,7 +2135,7 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 </div>
                 {rep.plausibility?.caveat && (
                   <div style={{
-                    fontSize: 12, color: "#92400e", background: "#fef3c7",
+                    fontSize: 12, color: "var(--gold)", background: "#fef3c7",
                     border: "1px solid #fbbf24", borderRadius: 6, padding: "8px 10px",
                     marginTop: 8, lineHeight: 1.45,
                   }}>

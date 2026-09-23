@@ -142,18 +142,18 @@ export default function RcaAnalysis({ language = 'fr' }) {
     return (
       <div style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem', maxWidth: 260 }}>
         <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{d.code} · {d.fullName}</p>
-        <p style={{ color: d.hasAdvantage ? '#34d399' : '#d4a373', margin: 0 }}>RCA = <strong>{d.rca.toFixed(2)}</strong></p>
+        <p style={{ color: `color-mix(in srgb, ${d.hasAdvantage ? '#34d399' : '#d4a373'} 40%, var(--text))`, margin: 0 }}>RCA = <strong>{d.rca.toFixed(2)}</strong></p>
       </div>
     );
   };
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="rca-analysis">
-      <CardHeader className="bg-[image:var(--card-grad)] text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Award className="w-7 h-7 text-white" />
+              <Award className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
@@ -284,7 +284,7 @@ export default function RcaAnalysis({ language = 'fr' }) {
                   <TableRow key={`${d.hs_code}-${i}`}>
                     <TableCell className="font-mono text-xs">{d.hs_code}</TableCell>
                     <TableCell className="max-w-xs truncate">{d.product}</TableCell>
-                    <TableCell className="text-right font-semibold" style={{ color: d.has_advantage ? ADV_COLOR : '#92400e' }}>
+                    <TableCell className="text-right font-semibold" style={{ color: `color-mix(in srgb, ${d.has_advantage ? ADV_COLOR : '#92400e'} 40%, var(--text))`}}>
                       {d.rca.toFixed(2)}
                     </TableCell>
                     <TableCell className="text-right">{fmtPct(d.country_share)}</TableCell>

@@ -16,7 +16,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Palette de couleurs africaines moderne
-const COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#2563eb', '#9333ea', '#e11d48'];
+const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
 const formatValue = (value) => {
   if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
@@ -113,9 +113,9 @@ const POPULAR_HS_CODES = {
 
 // HS level badge colors
 const HS_LEVEL_COLORS = {
-  HS2: { badge: 'bg-emerald-100 text-[var(--success)]', btn: 'bg-emerald-600', indicator: 'text-[var(--success)]' },
-  HS4: { badge: 'bg-blue-100 text-[var(--info)]', btn: 'bg-blue-600', indicator: 'text-[var(--info)]' },
-  HS6: { badge: 'bg-violet-100 text-[var(--violet)]', btn: 'bg-violet-600', indicator: 'text-[var(--violet)]' },
+  HS2: { badge: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]', btn: 'bg-emerald-600', indicator: 'text-[var(--success)]' },
+  HS4: { badge: 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]', btn: 'bg-blue-600', indicator: 'text-[var(--info)]' },
+  HS6: { badge: 'bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)]', btn: 'bg-violet-600', indicator: 'text-[var(--violet)]' },
 };
 
 export default function OECTradeStats({ language = 'fr' }) {
@@ -465,7 +465,7 @@ export default function OECTradeStats({ language = 'fr' }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
-                <Globe2 className="w-8 h-8 text-white" />
+                <Globe2 className="w-8 h-8 text-[var(--text)]" />
               </div>
               <div>
                 <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
@@ -485,7 +485,7 @@ export default function OECTradeStats({ language = 'fr' }) {
         <TabsList className="grid w-full grid-cols-3 bg-[var(--afcfta-card2)] p-1.5 rounded-xl h-auto">
           <TabsTrigger 
             value="country" 
-            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
+            className="data-[state=active]:bg-[var(--afcfta-card)] data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
             data-testid="tab-country"
           >
             <Globe2 className="w-4 h-4 mr-2" />
@@ -493,7 +493,7 @@ export default function OECTradeStats({ language = 'fr' }) {
           </TabsTrigger>
           <TabsTrigger 
             value="product"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
+            className="data-[state=active]:bg-[var(--afcfta-card)] data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
             data-testid="tab-product"
           >
             <BarChart3 className="w-4 h-4 mr-2" />
@@ -501,7 +501,7 @@ export default function OECTradeStats({ language = 'fr' }) {
           </TabsTrigger>
           <TabsTrigger 
             value="bilateral"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
+            className="data-[state=active]:bg-[var(--afcfta-card)] data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
             data-testid="tab-bilateral"
           >
             <ArrowUpRight className="w-4 h-4 mr-2" />
@@ -518,7 +518,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.selectCountry}</Label>
                   <Select value={selectedCountry} onValueChange={setSelectedCountry}>
-                    <SelectTrigger data-testid="country-select" className="bg-white">
+                    <SelectTrigger data-testid="country-select" className="bg-[var(--afcfta-card)]">
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent>
@@ -537,7 +537,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.selectYear}</Label>
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger className="bg-white">
+                    <SelectTrigger className="bg-[var(--afcfta-card)]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -551,7 +551,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.tradeFlow}</Label>
                   <Select value={selectedFlow} onValueChange={setSelectedFlow}>
-                    <SelectTrigger className="bg-white">
+                    <SelectTrigger className="bg-[var(--afcfta-card)]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -595,7 +595,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <Button 
                     onClick={searchByCountry}
                     disabled={!selectedCountry || loading}
-                    className="w-full bg-[image:var(--stats-tab-active)] hover:opacity-90 text-[#F7F1E6] font-medium"
+                    className="w-full bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6] font-medium"
                     data-testid="search-country-btn"
                   >
                     {loading ? (
@@ -616,7 +616,7 @@ export default function OECTradeStats({ language = 'fr' }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Carte récapitulative avec graphique des produits */}
               <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-emerald-50 to-cyan-50 border-b">
+                <CardHeader className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-b">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-semibold text-[var(--text)]">
                       {selectedFlow === 'exports' ? t.exports : t.imports} - {tradeData.country?.name_fr || tradeData.country?.name_en || selectedCountry}
@@ -629,7 +629,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardContent className="pt-6">
                   {/* Stats avec Valeur et Volume */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="text-center p-3 bg-emerald-50 rounded-lg">
+                    <div className="text-center p-3 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded-lg">
                       <p className="text-xs text-[var(--success)] mb-1">{t.totalValue}</p>
                       <p className="text-2xl font-bold text-[var(--success)]">{formatValue(tradeData.total_value || 0)}</p>
                     </div>
@@ -686,7 +686,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                               <TableCell className="font-medium text-[var(--afcfta-muted)]">{idx + 1}</TableCell>
                               <TableCell>
                                 <div className="flex items-start gap-2">
-                                  <Badge variant="secondary" className="bg-emerald-100 text-[var(--success)] font-mono text-xs px-1.5 py-0.5 shrink-0">
+                                  <Badge variant="secondary" className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] font-mono text-xs px-1.5 py-0.5 shrink-0">
                                     {extractHSCode(item[hsIdKey], countryHsLevel)}
                                   </Badge>
                                   <span className="font-medium text-sm">{item[hsNameKey] || '-'}</span>
@@ -750,7 +750,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.hsRevision}</Label>
                   <Select value={hsRevision} onValueChange={setHsRevision}>
-                    <SelectTrigger className="bg-white" data-testid="hs-revision-select">
+                    <SelectTrigger className="bg-[var(--afcfta-card)]" data-testid="hs-revision-select">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -781,13 +781,13 @@ export default function OECTradeStats({ language = 'fr' }) {
                       value={hsCode}
                       onChange={(e) => setHsCode(e.target.value.replace(/\D/g, '').slice(0, hsLevelDigits))}
                       placeholder={getPlaceholderForLevel(hsLevel, language)}
-                      className="bg-white"
+                      className="bg-[var(--afcfta-card)]"
                       maxLength={hsLevelDigits}
                       data-testid="hs-code-input"
                     />
                     {/* Affichage de la dénomination du code HS */}
                     {hsCodeName && (
-                      <div className="mt-1 px-2 py-1.5 bg-[var(--overlay)] border border-violet-200 rounded-md">
+                      <div className="mt-1 px-2 py-1.5 bg-[var(--overlay)] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] rounded-md">
                         <p className="text-sm text-[var(--violet)] font-medium truncate" title={hsCodeName}>
                           {hsCodeName}
                         </p>
@@ -803,7 +803,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         onClick={() => setHsCode(item.code)}
                         className={`text-xs px-2 py-1 rounded-full transition-all ${
                           hsCode === item.code 
-                            ? 'bg-[image:var(--stats-tab-active)] text-[#F7F1E6]' 
+                            ? 'bg-[image:var(--active-fill)] text-[#F7F1E6]' 
                             : 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] hover:bg-[var(--afcfta-card2)]'
                         }`}
                       >
@@ -816,7 +816,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.selectYear}</Label>
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger className="bg-white">
+                    <SelectTrigger className="bg-[var(--afcfta-card)]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -831,7 +831,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <Button 
                     onClick={searchByProduct}
                     disabled={!hsCode || loading}
-                    className="w-full bg-[image:var(--stats-tab-active)] hover:opacity-90 text-[#F7F1E6] font-medium"
+                    className="w-full bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6] font-medium"
                     data-testid="search-product-btn"
                   >
                     {loading ? (
@@ -851,7 +851,7 @@ export default function OECTradeStats({ language = 'fr' }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Carte récapitulative */}
               <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-violet-50 to-purple-50 border-b">
+                <CardHeader className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] border-b">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary" className={`${HS_LEVEL_COLORS[hsLevel].badge} font-mono text-xs px-1.5 py-0.5`}>
@@ -861,7 +861,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         {productData.hs_code} - {selectedFlow === 'exports' ? t.exports : t.imports}
                       </CardTitle>
                     </div>
-                    <Badge variant="outline" className="text-[var(--violet)] border-violet-300">
+                    <Badge variant="outline" className="text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                       {t.dataYear} {selectedYear}
                     </Badge>
                   </div>
@@ -962,7 +962,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.exporter}</Label>
                   <Select value={selectedCountry} onValueChange={setSelectedCountry}>
-                    <SelectTrigger data-testid="exporter-select" className="bg-white">
+                    <SelectTrigger data-testid="exporter-select" className="bg-[var(--afcfta-card)]">
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent>
@@ -981,7 +981,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.importer}</Label>
                   <Select value={secondCountry} onValueChange={setSecondCountry}>
-                    <SelectTrigger data-testid="importer-select" className="bg-white">
+                    <SelectTrigger data-testid="importer-select" className="bg-[var(--afcfta-card)]">
                       <SelectValue placeholder={t.selectCountry} />
                     </SelectTrigger>
                     <SelectContent>
@@ -1000,7 +1000,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-[var(--text)]">{t.selectYear}</Label>
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger className="bg-white">
+                    <SelectTrigger className="bg-[var(--afcfta-card)]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -1045,7 +1045,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <Button 
                     onClick={searchBilateral}
                     disabled={!selectedCountry || !secondCountry || loading}
-                    className="w-full bg-[image:var(--stats-tab-active)] hover:opacity-90 text-[#F7F1E6] font-medium"
+                    className="w-full bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6] font-medium"
                     data-testid="search-bilateral-btn"
                   >
                     {loading ? (
@@ -1066,7 +1066,7 @@ export default function OECTradeStats({ language = 'fr' }) {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Carte récapitulative */}
               <Card className="shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b">
+                <CardHeader className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] border-b">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg font-semibold text-[var(--text)]">
@@ -1076,7 +1076,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         {language === 'fr' ? bilateralData.exporter?.name_fr : bilateralData.exporter?.name_en} → {language === 'fr' ? bilateralData.importer?.name_fr : bilateralData.importer?.name_en}
                       </CardDescription>
                     </div>
-                    <Badge variant="outline" className="text-[var(--terra)] border-orange-300">
+                    <Badge variant="outline" className="text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
                       {t.dataYear} {selectedYear}
                     </Badge>
                   </div>
@@ -1084,9 +1084,9 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardContent className="pt-6">
                   {/* Stats avec Valeur et Volume */}
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="text-center p-3 bg-orange-50 rounded-lg">
+                    <div className="text-center p-3 bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] rounded-lg">
                       <p className="text-xs text-[var(--terra)] mb-1">{t.totalValue}</p>
-                      <p className="text-2xl font-bold text-orange-800">{formatValue(bilateralData.total_value || 0)}</p>
+                      <p className="text-2xl font-bold text-[var(--terra)]">{formatValue(bilateralData.total_value || 0)}</p>
                     </div>
                     <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
                       <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
@@ -1095,7 +1095,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   </div>
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <span className="text-sm font-medium">{language === 'fr' ? bilateralData.exporter?.name_fr : bilateralData.exporter?.name_en}</span>
-                    <ArrowUpRight className="w-4 h-4 text-orange-500" />
+                    <ArrowUpRight className="w-4 h-4 text-[var(--terra)]" />
                     <span className="text-sm font-medium">{language === 'fr' ? bilateralData.importer?.name_fr : bilateralData.importer?.name_en}</span>
                   </div>
                   
@@ -1145,7 +1145,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                             <TableCell className="font-medium text-[var(--afcfta-muted)]">{idx + 1}</TableCell>
                             <TableCell>
                               <div className="flex items-start gap-2">
-                                <Badge variant="secondary" className="bg-orange-100 text-[var(--terra)] font-mono text-xs px-1.5 py-0.5 shrink-0">
+                                <Badge variant="secondary" className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)] font-mono text-xs px-1.5 py-0.5 shrink-0">
                                   {extractHSCode(item[hsIdKey], bilateralHsLevel)}
                                 </Badge>
                                 <span className="font-medium text-sm">{item[hsNameKey] || '-'}</span>
@@ -1172,9 +1172,9 @@ export default function OECTradeStats({ language = 'fr' }) {
 
       {/* Message d'erreur */}
       {error && (
-        <Card className="border-red-200 bg-red-50">
+        <Card className="border-[color-mix(in_srgb,var(--danger)_30%,transparent)] bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))]">
           <CardContent className="py-4">
-            <p className="text-red-700 text-center">{error}</p>
+            <p className="text-[var(--danger)] text-center">{error}</p>
           </CardContent>
         </Card>
       )}

@@ -32,7 +32,27 @@ html.theme-light body {
   --card-head:     linear-gradient(135deg, rgba(175,71,24,0.10), rgba(143,92,8,0.07));
   --field-border:  #E0D5C2;
   --stats-hero:    linear-gradient(135deg, rgba(175,71,24,0.14) 0%, #FFFDF8 35%, #FBF6EC 65%, rgba(23,92,119,0.14) 100%);
-  --stats-tab-active: linear-gradient(135deg, #AF4718, #8E3712);
+  --active-fill: linear-gradient(135deg, #AF4718, #8E3712);
+
+  /* Vocabulaire --afcfta-* : ces trois noms étaient employés (Opportunités,
+     recherche SH par produit) mais jamais définis — leurs replis s'affichaient
+     (fond transparent, carte blanche, texte quasi noir). */
+  --afcfta-bg:     var(--afcfta-card2);
+  --afcfta-text:   var(--text);
+  --afcfta-accent: var(--gold);
+
+  /* ── Séries de graphiques (skill dataviz) — pas propres au thème clair,
+     validés sur la carte #FFFDF8 : CVD voisins ≥ 12,1, normal ≥ 17,3. */
+  --series-1: #0FA361;
+  --series-2: #0280A8;
+  --series-3: #EF5D08;
+  --series-4: #D21B7A;
+  --series-5: #CD8204;
+  --series-6: #9D6BFE;
+  --series-7: #C90A2D;
+  --series-8: #019886;
+  --chart-grid: #EDE4D4;
+  --chart-axis: #D6CAB5;
 
   /* Accents légèrement assombris pour contraste sur fond clair */
   --terra:        #9C3F15;   /* relevé : 3,87:1 → 4,61:1 sur voile terre */
@@ -307,3 +327,7 @@ html.theme-light .zlecaf-overview-hero {
 html.theme-light .zlecaf-overview-hero .text-\[rgba\(234\,224\,208\,0\.9\)\] {
   color: var(--text) !important;
 }
+
+/* Contrôles natifs (listes de <select>, barres de défilement, calendriers) :
+   :root impose `color-scheme: dark`, ils s'ouvraient sombres sur la page crème. */
+html.theme-light { color-scheme: light; }

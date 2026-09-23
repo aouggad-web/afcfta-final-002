@@ -204,7 +204,7 @@ export default function Insurance({ language = 'en' }) {
       <Card>
         <CardHeader>
           <CardTitle>{t.title}</CardTitle>
-          <p className="text-sm text-gray-600">{t.subtitle}</p>
+          <p className="text-sm text-[var(--afcfta-muted)]">{t.subtitle}</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleQuote} className="space-y-4">
@@ -286,15 +286,15 @@ export default function Insurance({ language = 'en' }) {
           </form>
 
           {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded">
-              <p className="text-red-800">
+            <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] rounded">
+              <p className="text-[var(--danger)]">
                 {t.error}: {error}
               </p>
             </div>
           )}
 
           {profile && (
-            <Card className="mt-6 bg-blue-50">
+            <Card className="mt-6 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   {t.profile}
@@ -317,7 +317,7 @@ export default function Insurance({ language = 'en' }) {
                 {profile.available_insurers?.length > 0 && (
                   <ul className="mt-2 space-y-1">
                     {profile.available_insurers.slice(0, 3).map((ins, i) => (
-                      <li key={i} className="text-xs text-gray-700">
+                      <li key={i} className="text-xs text-[var(--text)]">
                         • {ins.name} ({t.rating}: {ins.credit_rating || 'N/A'}
                         {ins.total_capacity_usd_bn
                           ? `, ${t.capacity}: $${ins.total_capacity_usd_bn}bn`
@@ -332,13 +332,13 @@ export default function Insurance({ language = 'en' }) {
           )}
 
           {!profile && profileNotFound && !error && (
-            <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+            <div className="mt-6 p-3 bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded text-sm text-[var(--gold)]">
               {t.country} {countryCode.toUpperCase()}: {t.noProfile}
             </div>
           )}
 
           {quote && (
-            <Card className="mt-4 bg-green-50 border-green-300">
+            <Card className="mt-4 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
               <CardHeader>
                 <CardTitle className="text-base">{t.quote}</CardTitle>
               </CardHeader>
@@ -364,7 +364,7 @@ export default function Insurance({ language = 'en' }) {
                   <span>{quote.risk_adjustment_percent}%</span>
                 </div>
                 {quote.notes && (
-                  <p className="text-xs text-gray-600 mt-2 italic">{quote.notes}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)] mt-2 italic">{quote.notes}</p>
                 )}
               </CardContent>
             </Card>
@@ -381,7 +381,7 @@ export default function Insurance({ language = 'en' }) {
                   .map(([type, q], i) => (
                     <div
                       key={type}
-                      className={`p-2 rounded text-sm ${i === 0 ? 'bg-green-50' : 'bg-gray-50'}`}
+                      className={`p-2 rounded text-sm ${i === 0 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : 'bg-[var(--afcfta-card2)]'}`}
                     >
                       <div className="flex justify-between">
                         <span className="font-medium capitalize">{type.replace('_', ' ')}</span>
@@ -389,7 +389,7 @@ export default function Insurance({ language = 'en' }) {
                           ${q.final_premium_usd?.toLocaleString()}
                         </Badge>
                       </div>
-                      <div className="text-xs text-gray-600 mt-1">
+                      <div className="text-xs text-[var(--afcfta-muted)] mt-1">
                         {t.coverage}: ${q.coverage_usd?.toLocaleString()}
                       </div>
                     </div>

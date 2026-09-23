@@ -126,7 +126,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
           className="border"
           style={{
             background: `${categoryStyle.accent}18`,
-            color: categoryStyle.accent,
+            color: `color-mix(in srgb, ${categoryStyle.accent} 40%, var(--text))`,
             borderColor: `${categoryStyle.accent}40`,
           }}
         >
@@ -155,7 +155,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
               className="border"
               style={{
                 background: `${tagStyle.accent}18`,
-                color: tagStyle.accent,
+                color: `color-mix(in srgb, ${tagStyle.accent} 40%, var(--text))`,
                 borderColor: `${tagStyle.accent}40`,
               }}
             >
@@ -202,7 +202,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 font-medium"
-          style={{ color: categoryStyle.accent }}
+          style={{ color: `color-mix(in srgb, ${categoryStyle.accent} 40%, var(--text))`}}
         >
           {t.readMore}
           <ExternalLink className="w-3.5 h-3.5" />
@@ -222,7 +222,7 @@ const RegionSection = ({ region, articles, t, language }) => {
           className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold"
           style={{
             background: `${accent}18`,
-            color: accent,
+            color: `color-mix(in srgb, ${accent} 40%, var(--text))`,
             border: `1px solid ${accent}40`,
           }}
         >
@@ -254,7 +254,7 @@ const CategorySection = ({ category, articles, t, language }) => {
           className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold"
           style={{
             background: `${categoryStyle.accent}18`,
-            color: categoryStyle.accent,
+            color: `color-mix(in srgb, ${categoryStyle.accent} 40%, var(--text))`,
             border: `1px solid ${categoryStyle.accent}40`,
           }}
         >
@@ -428,9 +428,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
       <div
         className="rounded-2xl border overflow-hidden"
         style={{
-          background:
-            'radial-gradient(900px 240px at 0% 0%, rgba(212,137,26,0.10), transparent 55%), radial-gradient(720px 220px at 100% 0%, rgba(79,142,247,0.08), transparent 60%), linear-gradient(135deg, rgba(18,26,40,0.98), rgba(12,18,25,0.98))',
-          borderColor: 'rgba(212,137,26,0.14)',
+          background: 'var(--panel)',
+          borderColor: 'var(--panel-border)',
         }}
       >
         <div className="p-5 md:p-6">

@@ -74,7 +74,7 @@ const TEXTS = {
 
 const Kpi = ({ label, value, suffix, color }) => (
   <div className="rounded-xl bg-[var(--afcfta-card2)] p-3 text-center">
-    <div className="text-2xl font-bold" style={{ color: color || '#1e293b' }}>
+    <div className="text-2xl font-bold" style={{ color: `color-mix(in srgb, ${color || '#1e293b'} 40%, var(--text))`}}>
       {value != null ? value : '—'}{value != null && suffix ? suffix : ''}
     </div>
     <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">{label}</div>
@@ -132,11 +132,11 @@ export default function PreferenceMargin({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="preference-margin">
-      <CardHeader className="bg-[image:var(--card-grad)] text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Percent className="w-7 h-7 text-white" />
+              <Percent className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>

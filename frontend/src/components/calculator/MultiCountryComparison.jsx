@@ -302,13 +302,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   return (
     <div className="space-y-6" data-testid="multi-country-comparison">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+      <Card className="bg-[image:var(--card-grad)]">
         <CardHeader>
           <CardTitle className="text-2xl flex items-center gap-3">
             <Globe className="h-8 w-8" />
             {t.title}
           </CardTitle>
-          <CardDescription className="text-purple-100">
+          <CardDescription className="text-[var(--violet)]">
             {t.subtitle}
           </CardDescription>
         </CardHeader>
@@ -359,7 +359,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                       variant="outline"
                       size="sm"
                       onClick={() => toggleRegion(regionKey)}
-                      className={allSelected ? 'bg-purple-100 border-purple-300' : ''}
+                      className={allSelected ? 'bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]' : ''}
                     >
                       {t.regions[regionKey]}
                     </Button>
@@ -373,8 +373,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                           variant={isSelected ? 'default' : 'outline'}
                           className={`cursor-pointer transition-all ${
                             isSelected 
-                              ? 'bg-purple-600 hover:bg-purple-700' 
-                              : 'hover:bg-purple-100'
+                              ? 'bg-[var(--violet)] text-[var(--bg)] hover:opacity-90' 
+                              : 'hover:bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))]'
                           }`}
                           onClick={() => toggleCountry(iso3)}
                           data-testid={`country-badge-${iso3}`}
@@ -393,7 +393,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           <Button
             onClick={compareCountries}
             disabled={loading || selectedCountries.length < 2}
-            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
+            className="w-full bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6]"
             data-testid="compare-button"
           >
             {loading ? (
@@ -415,14 +415,14 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       {results.length > 0 && (
         <>
           {/* Product Info */}
-          <Card className="bg-slate-50">
+          <Card className="bg-[var(--afcfta-card2)]">
             <CardContent className="py-4">
               <div className="flex items-center gap-4 flex-wrap">
                 <Badge variant="outline" className="text-lg px-4 py-2">
                   <span className="font-mono font-bold">{hsCode}</span>
                 </Badge>
-                <span className="text-lg font-medium text-slate-700">{productDescription}</span>
-                <Badge className="bg-green-100 text-green-700">
+                <span className="text-lg font-medium text-[var(--text)]">{productDescription}</span>
+                <Badge className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]">
                   {formatCurrency(value)} CIF
                 </Badge>
               </div>
@@ -431,7 +431,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           
           {/* Best Choice Highlight */}
           {bestCountry && (
-            <Card className="bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-xl">
+            <Card className="bg-[var(--success)] text-[var(--bg)] shadow-xl">
               <CardContent className="py-6">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
@@ -446,7 +446,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <div className="text-right">
                     <p className="text-sm opacity-90">{t.zlecafTotal}</p>
                     <p className="text-3xl font-bold">{formatCurrency(bestCountry.zlecafTotal)}</p>
-                    <Badge className="bg-white/20 mt-2">
+                    <Badge className="bg-[color-mix(in_srgb,var(--bg)_12%,transparent)] text-[var(--bg)] border-transparent mt-2">
                       {t.savings}: {formatCurrency(bestCountry.savings)} (-{bestCountry.savingsPercent}%)
                     </Badge>
                   </div>
@@ -466,7 +466,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-slate-100">
+                    <tr className="bg-[var(--afcfta-card2)]">
                       <th className="text-left p-3">{t.country}</th>
                       <th className="text-center p-3">{t.ddRate}</th>
                       <th className="text-center p-3">{t.vatRate}</th>
@@ -480,14 +480,14 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     {results.map((r, idx) => (
                       <tr 
                         key={r.iso3} 
-                        className={`border-b hover:bg-slate-50 ${idx === 0 ? 'bg-emerald-50' : ''}`}
+                        className={`border-b hover:bg-[var(--afcfta-card2)] ${idx === 0 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : ''}`}
                       >
                         <td className="p-3 font-medium">
                           <div className="flex items-center gap-2">
                             <span className="text-xl">{getFlag(r.iso2)}</span>
                             <span>{r.countryName}</span>
                             {idx === 0 && (
-                              <Badge className="bg-emerald-500 text-white text-xs">
+                              <Badge className="bg-[var(--success)] text-[var(--bg)] text-xs">
                                 #1
                               </Badge>
                             )}
@@ -507,7 +507,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                               </Badge>
                             ))}
                             {r.taxes.length > 4 && (
-                              <Badge variant="outline" className="text-xs bg-slate-100">
+                              <Badge variant="outline" className="text-xs bg-[var(--afcfta-card2)]">
                                 +{r.taxes.length - 4}
                               </Badge>
                             )}
@@ -516,11 +516,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                         <td className="text-right p-3 font-mono text-[var(--afcfta-muted)]">
                           {formatCurrency(r.npfTotal)}
                         </td>
-                        <td className="text-right p-3 font-mono font-bold text-emerald-600">
+                        <td className="text-right p-3 font-mono font-bold text-[var(--success)]">
                           {formatCurrency(r.zlecafTotal)}
                         </td>
                         <td className="text-right p-3">
-                          <div className="text-green-600 font-bold">
+                          <div className="text-[var(--success)] font-bold">
                             {formatCurrency(r.savings)}
                           </div>
                           <div className="text-xs text-[var(--afcfta-muted)]">

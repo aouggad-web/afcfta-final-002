@@ -85,7 +85,7 @@ function Prov({ nature }) {
         padding: "1px 4px",
         borderRadius: 4,
         background: m.bg,
-        color: m.fg,
+        color: `color-mix(in srgb, ${m.fg} 40%, var(--text))`,
       }}
     >
       {m.t}
@@ -118,7 +118,7 @@ function Chip({ ok, children }) {
         padding: "2px 8px",
         borderRadius: 999,
         background: ok ? "rgba(26,127,55,0.12)" : "rgba(102,102,102,0.12)",
-        color: ok ? "var(--success)" : "#667",
+        color: `color-mix(in srgb, ${ok ? "var(--success)" : "#667"} 40%, var(--text))`,
       }}
     >
       {children}
@@ -279,7 +279,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 padding: "2px 8px",
                 borderRadius: 999,
                 background: balStyle.bg,
-                color: balStyle.fg,
+                color: `color-mix(in srgb, ${balStyle.fg} 40%, var(--text))`,
                 textTransform: "uppercase",
               }}
             >

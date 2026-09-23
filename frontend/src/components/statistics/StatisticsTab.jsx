@@ -36,7 +36,7 @@ const AfricaTooltip = ({ active, payload, label, unit }) => {
     <div className="stats-tooltip" style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
       <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
       {payload.map((p, i) => (
-        <p key={i} style={{ color: p.color, margin: 0 }}>
+        <p key={i} style={{ color: `color-mix(in srgb, ${p.color} 40%, var(--text))`, margin: 0 }}>
           {p.name}: <strong>{`$${(p.value / 1e9).toFixed(1)}B`}</strong>
         </p>
       ))}
@@ -129,7 +129,7 @@ export default function StatisticsTab({ language = 'fr' }) {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h2 className="stats-hero-title flex items-center gap-2">
-              <BarChart3 className="h-7 w-7" style={{ color: '#D4891A' }} />
+              <BarChart3 className="h-7 w-7" style={{ color: 'var(--gold)' }} />
               {txt.title}
             </h2>
             <p className="stats-hero-subtitle">{txt.subtitle}</p>

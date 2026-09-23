@@ -376,7 +376,7 @@ export default function CountryHS6History({ language = 'fr' }) {
           ) : labelData ? (
             <div style={{ padding: '14px 16px', borderRadius: 10, background: 'var(--goldSoft)', border: '1px solid var(--goldSoft)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 0.8, background: 'var(--goldSoft)', color: 'var(--gold)', borderRadius: 6, padding: '4px 9px' }}>
+                <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: 0.8, background: 'color-mix(in srgb, var(--gold) 12%, var(--afcfta-card))', color: 'var(--gold)', borderRadius: 6, padding: '4px 9px' }}>
                   SH{LEVEL_LEN[labelData.level]} · {labelData.code}
                 </span>
                 <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 600 }}>{t.labelTitle}</span>
@@ -422,8 +422,8 @@ export default function CountryHS6History({ language = 'fr' }) {
               {/* Ligne HS4 */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: data.hs_labels.length > 1 ? 6 : 0 }}>
                 <span style={{
-                  fontSize: 10, fontWeight: 800, letterSpacing: 0.8,
-                  background: 'var(--goldSoft)', color: 'var(--gold)',
+                  fontSize: 11, fontWeight: 700, letterSpacing: 0.4,
+                  background: 'var(--afcfta-card)', color: 'var(--gold)',
                   borderRadius: 5, padding: '2px 6px', flexShrink: 0,
                 }}>
                   SH{LEVEL_LEN[data.level] || 6} {data.hs_query || data.hs4_code}
@@ -433,9 +433,11 @@ export default function CountryHS6History({ language = 'fr' }) {
                 </span>
                 {data.match_level && (
                   <span style={{
-                    marginLeft: 'auto', fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
-                    color: data.match_level === 'hs6' ? '#10b981' : data.match_level === 'hs4' ? '#fbbf24' : '#f43f5e',
-                    background: data.match_level === 'hs6' ? 'rgba(16,185,129,0.12)' : data.match_level === 'hs4' ? 'rgba(251,191,36,0.12)' : 'rgba(244,63,94,0.12)',
+                    marginLeft: 'auto', fontSize: 11, fontWeight: 700, letterSpacing: 0.2,
+                    // Qualité de correspondance = statut (exact / approché / autre) : jetons de statut,
+                    // pastille opaque pour ne pas s'additionner au bandeau teinté dessous.
+                    color: data.match_level === 'hs6' ? 'var(--success)' : data.match_level === 'hs4' ? 'var(--gold)' : 'var(--danger)',
+                    background: `color-mix(in srgb, ${data.match_level === 'hs6' ? 'var(--success)' : data.match_level === 'hs4' ? 'var(--gold)' : 'var(--danger)'} 12%, var(--afcfta-card))`,
                     borderRadius: 5, padding: '2px 7px', flexShrink: 0,
                   }}>
                     {(MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level]}
@@ -474,10 +476,10 @@ export default function CountryHS6History({ language = 'fr' }) {
           {/* ─── Stat strip ─── */}
           {totals && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: '8px 16px' }}>
-              <StatBox label={t.totalExports} value={fmtUSD(totals.exports)} icon={<TrendingUp size={14} color="#10b981" />} />
-              <StatBox label={t.totalImports} value={fmtUSD(totals.imports)} icon={<TrendingDown size={14} color="#f43f5e" />} />
-              <StatBox label={t.cumulativeBalance} value={fmtUSD(totals.balance)} icon={totals.balance >= 0 ? <TrendingUp size={14} color="#10b981" /> : <TrendingDown size={14} color="#f43f5e" />} accent={totals.balance >= 0 ? '#10b981' : '#f43f5e'} />
-              <StatBox label={t.avgGrowth} value={totals.cagr != null ? `${totals.cagr.toFixed(1)}%` : '—'} icon={totals.cagr != null && totals.cagr >= 0 ? <TrendingUp size={14} color="#10b981" /> : <Minus size={14} />} />
+              <StatBox label={t.totalExports} value={fmtUSD(totals.exports)} icon={<TrendingUp size={14} color="var(--success)" />} />
+              <StatBox label={t.totalImports} value={fmtUSD(totals.imports)} icon={<TrendingDown size={14} color="var(--danger)" />} />
+              <StatBox label={t.cumulativeBalance} value={fmtUSD(totals.balance)} icon={totals.balance >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <TrendingDown size={14} color="var(--danger)" />} />
+              <StatBox label={t.avgGrowth} value={totals.cagr != null ? `${totals.cagr.toFixed(1)}%` : '—'} icon={totals.cagr != null && totals.cagr >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <Minus size={14} />} />
             </div>
           )}
 
@@ -485,12 +487,12 @@ export default function CountryHS6History({ language = 'fr' }) {
           {data.chart_rows && data.chart_rows.length > 0 ? (
             <div style={{ padding: '8px 8px 4px' }}>
               <ResponsiveContainer width="100%" height={300}>
-                <ComposedChart data={data.chart_rows} margin={{ top: 8, right: 16, left: 0, bottom: 4 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--afcfta-muted)" />
+                <ComposedChart data={data.chart_rows} margin={{ top: 8, right: 16, left: 0, bottom: 4 }} barGap={2}>
+                  <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
                   <XAxis dataKey="year" tick={{ fontSize: 12, fill: 'var(--afcfta-muted)', fontWeight: 700 }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => fmtUSD(v)} width={62} />
                   <Tooltip
-                    contentStyle={{ background: '#1a2332', border: '1px solid rgba(212,137,26,0.4)', borderRadius: 8, color: '#e2e8f0' }}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)', borderRadius: 8, color: 'var(--text)' }}
                     formatter={(value, name, entry) => {
                       const row = entry?.payload || {};
                       if (name === t.exports && row.exports_quantity > 0) {
@@ -503,9 +505,9 @@ export default function CountryHS6History({ language = 'fr' }) {
                     }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar dataKey="exports" name={t.exports} fill="#10b981" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="imports" name={t.imports} fill="#f43f5e" radius={[4, 4, 0, 0]} />
-                  <Line type="monotone" dataKey="balance" name={t.balance} stroke="#fbbf24" strokeWidth={2.5} dot={{ r: 4 }} />
+                  <Bar dataKey="exports" name={t.exports} fill="var(--series-1)" radius={[4, 4, 0, 0]} maxBarSize={24} />
+                  <Bar dataKey="imports" name={t.imports} fill="var(--series-2)" radius={[4, 4, 0, 0]} maxBarSize={24} />
+                  <Line type="monotone" dataKey="balance" name={t.balance} stroke="var(--series-3)" strokeWidth={2} dot={{ r: 4, fill: 'var(--series-3)', stroke: 'var(--afcfta-card)', strokeWidth: 2 }} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -520,24 +522,24 @@ export default function CountryHS6History({ language = 'fr' }) {
             <div style={{ padding: '4px 16px 16px', overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid var(--goldSoft)' }}>
-                    <th style={{ textAlign: 'left', padding: '6px 4px', color: 'var(--gold)', fontWeight: 700 }}>{t.year}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#10b981', fontWeight: 700 }}>{t.exports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--success)', fontWeight: 600, fontSize: 12 }}>{t.qtyExports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#f43f5e', fontWeight: 700 }}>{t.imports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: '#fb7185', fontWeight: 600, fontSize: 12 }}>{t.qtyImports}</th>
-                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--gold)', fontWeight: 700 }}>{t.balance}</th>
+                  <tr style={{ borderBottom: '1px solid var(--afcfta-border)' }}>
+                    <th style={{ textAlign: 'left', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.year}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.exports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--afcfta-muted)', fontWeight: 600, fontSize: 12 }}>{t.qtyExports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.imports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--afcfta-muted)', fontWeight: 600, fontSize: 12 }}>{t.qtyImports}</th>
+                    <th style={{ textAlign: 'right', padding: '6px 4px', color: 'var(--text-soft)', fontWeight: 600 }}>{t.balance}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.chart_rows.map((row) => (
-                    <tr key={row.year} style={{ borderBottom: '1px solid var(--afcfta-muted)' }}>
+                    <tr key={row.year} style={{ borderBottom: '1px solid var(--afcfta-border)', fontVariantNumeric: 'tabular-nums' }}>
                       <td style={{ padding: '6px 4px', fontWeight: 700 }}>{row.year}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.exports)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--success)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity)}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.imports)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'rgba(251,113,133,0.85)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', color: row.balance >= 0 ? '#10b981' : '#f43f5e' }}>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', color: 'var(--text)' }}>
                         {fmtUSD(row.balance)}
                       </td>
                     </tr>
@@ -662,11 +664,11 @@ function StatBox({ label, value, icon, accent }) {
         gap: 4,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--afcfta-muted)', fontSize: 10.5, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--afcfta-muted)', fontSize: 12, fontWeight: 600 }}>
         {icon}
         {label}
       </div>
-      <div style={{ fontSize: 17, fontWeight: 800, color: accent || 'var(--text)', fontFamily: 'monospace' }}>{value}</div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: accent || 'var(--text)' }}>{value}</div>
     </div>
   );
 }

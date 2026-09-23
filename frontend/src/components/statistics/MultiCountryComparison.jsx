@@ -25,7 +25,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 // Color palette for countries
-const COUNTRY_COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626'];
+const COUNTRY_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)'];
 
 // Format currency values
 const formatValue = (value) => {
@@ -324,7 +324,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       {/* ── Header ─────────────────────────────────────────────── */}
       <div className="stats-hero">
         <div className="flex items-center gap-3 mb-2">
-          <Scale style={{ width: 26, height: 26, color: '#D4891A', flexShrink: 0 }} />
+          <Scale style={{ width: 26, height: 26, color: 'var(--gold)', flexShrink: 0 }} />
           <div>
             <h2 className="stats-hero-title">{txt.title}</h2>
             <p className="stats-hero-subtitle">{txt.subtitle}</p>
@@ -342,7 +342,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               <span
                 key={iso}
                 className="stats-country-tag"
-                style={{ background: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 13%, transparent)`, borderColor: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 33%, transparent)`, color: COUNTRY_COLORS[idx] }}
+                style={{ background: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 13%, transparent)`, borderColor: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 33%, transparent)`, color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}
               >
                 {getCountryName(iso)}
                 <button onClick={() => removeCountry(iso)}>
@@ -437,7 +437,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         <div className="stats-chart-card">
           <div className="stats-empty-state">
             <div className="stats-empty-icon">
-              <Globe style={{ width: 28, height: 28, color: '#D4891A' }} />
+              <Globe style={{ width: 28, height: 28, color: 'var(--gold)' }} />
             </div>
             <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
             <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.78rem', marginTop: 6 }}>
@@ -506,7 +506,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
                     {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
+                      <th key={iso} style={{ textAlign: 'right', color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}>{getCountryName(iso)}</th>
                     ))}
                   </tr>
                 </thead>
@@ -579,7 +579,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
                     {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
+                      <th key={iso} style={{ textAlign: 'right', color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}>{getCountryName(iso)}</th>
                     ))}
                   </tr>
                 </thead>
@@ -603,7 +603,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.tradeBalance}</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: d.balance >= 0 ? '#34d399' : '#f87171' }}>
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: `color-mix(in srgb, ${d.balance >= 0 ? '#34d399' : '#f87171'} 40%, var(--text))`}}>
                         {d.balance ? `${d.balance >= 0 ? '+' : ''}$${d.balance.toFixed(0)}M` : '-'}
                       </td>
                     ))}
@@ -635,7 +635,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
                     {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: COUNTRY_COLORS[idx] }}>{getCountryName(iso)}</th>
+                      <th key={iso} style={{ textAlign: 'right', color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}>{getCountryName(iso)}</th>
                     ))}
                   </tr>
                 </thead>

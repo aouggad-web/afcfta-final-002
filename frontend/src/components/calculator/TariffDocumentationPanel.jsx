@@ -47,16 +47,16 @@ const DEFAULT_QUALITY_DIMENSIONS = {
 };
 
 const statusBadgeClass = (status) => {
-  if (status === 'CALCULATION_UNAVAILABLE') return 'border-red-400/50 text-red-200';
-  if (status === 'REVIEW_REQUIRED') return 'border-orange-400/50 text-orange-200';
-  if (status === 'INFORMATIVE_COMPLETE') return 'border-emerald-400/40 text-emerald-200';
-  return 'border-amber-400/40 text-amber-200';
+  if (status === 'CALCULATION_UNAVAILABLE') return 'border-[color-mix(in_srgb,var(--danger)_30%,transparent)] text-[var(--danger)]';
+  if (status === 'REVIEW_REQUIRED') return 'border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-[var(--terra)]';
+  if (status === 'INFORMATIVE_COMPLETE') return 'border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]';
+  return 'border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-[var(--gold)]';
 };
 
 const dimensionColor = (value) => {
-  if (value === 'DOCUMENTED') return 'text-emerald-300';
-  if (value === 'PARTIAL') return 'text-amber-300';
-  if (value === 'UNVERIFIED') return 'text-amber-300';
+  if (value === 'DOCUMENTED') return 'text-[var(--success)]';
+  if (value === 'PARTIAL') return 'text-[var(--gold)]';
+  if (value === 'UNVERIFIED') return 'text-[var(--gold)]';
   return 'text-[var(--text)]';
 };
 
@@ -95,16 +95,16 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
   const qualityDimensions = { ...DEFAULT_QUALITY_DIMENSIONS, ...(legal.quality_dimensions || {}) };
 
   return (
-    <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4" data-testid="tariff-documentation-panel">
+    <div className="mb-6 rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] p-4" data-testid="tariff-documentation-panel">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="font-semibold text-amber-300 text-sm">
+        <p className="font-semibold text-[var(--gold)] text-sm">
           {language === 'fr' ? 'Qualité documentaire du calcul' : 'Calculation documentation quality'}
         </p>
         <span className={`rounded border px-2 py-1 text-xs font-semibold ${statusBadgeClass(status)}`}>
           {STATUS_LABELS[status] || status}
         </span>
       </div>
-      <div className="mt-3 grid gap-2 text-xs text-amber-100/90 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-3 grid gap-2 text-xs text-[var(--gold)] sm:grid-cols-2 lg:grid-cols-4">
         <span>Statut : <strong>{status}</strong></span>
         <span>Source : <strong>{source || 'non renseignée'}</strong></span>
         <span>Date d’effet : <strong>{effective || 'non établie'}</strong></span>
@@ -114,24 +114,24 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
         {remission && <span>Remission : <strong>{remission}</strong></span>}
       </div>
       {blocked ? (
-        <p className="mt-3 text-sm font-medium text-red-200">
+        <p className="mt-3 text-sm font-medium text-[var(--danger)]">
           Donnée indispensable manquante : aucun total n’est affiché. {missing[0] || 'Le tarif de base n’est pas disponible.'}
         </p>
       ) : (
         <>
           {status === 'REVIEW_REQUIRED' && (
-            <p className="mt-3 text-sm font-medium text-orange-200">
+            <p className="mt-3 text-sm font-medium text-[var(--terra)]">
               Résultat affiché uniquement comme simulation à confirmer.
             </p>
           )}
           {amount != null && (
-            <p className="mt-3 text-sm text-amber-100">
+            <p className="mt-3 text-sm text-[var(--gold)]">
               Montant {status === 'REVIEW_REQUIRED' ? 'simulé — à confirmer' : 'informatif'} : <strong>{amount} {legal.currency_code || ''}</strong>
             </p>
           )}
         </>
       )}
-      <p className="mt-2 text-xs font-medium text-amber-200">
+      <p className="mt-2 text-xs font-medium text-[var(--gold)]">
         Simulation informative — non opposable à l’administration douanière.
       </p>
       {components.length > 0 && (
@@ -140,19 +140,19 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
             const rawComponentStatus = component.documentation_status || component.verification_status || component.status;
             const componentStatus = rawComponentStatus === 'VERIFIED' ? 'DOCUMENTED' : rawComponentStatus || 'UNVERIFIED';
             return (
-              <span key={`${component.code || 'component'}-${index}`} className="rounded bg-[var(--overlay)] px-2 py-1 text-amber-100/80">
+              <span key={`${component.code || 'component'}-${index}`} className="rounded bg-[var(--overlay)] px-2 py-1 text-[var(--gold)]">
                 {component.code || 'COMPOSANT'} : {componentStatus}
               </span>
             );
         })}
       </div>
       )}
-      <p className="mt-3 text-xs text-amber-100/80">
+      <p className="mt-3 text-xs text-[var(--gold)]">
         Simulation informative fondée sur les données disponibles. Elle ne remplace pas la confirmation administrative auprès de l’autorité compétente.
       </p>
-      <details className="mt-4 rounded-lg border border-amber-400/20 bg-[var(--overlay)] p-3" open>
-        <summary className="cursor-pointer text-sm font-semibold text-amber-100">Comprendre ce calcul</summary>
-        <div className="mt-3 grid gap-2 text-xs text-amber-100/90 sm:grid-cols-2 lg:grid-cols-3">
+      <details className="mt-4 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[var(--overlay)] p-3" open>
+        <summary className="cursor-pointer text-sm font-semibold text-[var(--gold)]">Comprendre ce calcul</summary>
+        <div className="mt-3 grid gap-2 text-xs text-[var(--gold)] sm:grid-cols-2 lg:grid-cols-3">
           {[
             ['Droits de douane', amountFor(legal, 'customs_duty')],
             ['VAT', amountFor(legal, 'vat')],
@@ -166,12 +166,12 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
           ))}
         </div>
         {(legal.sources_used || legal.source_authority || legal.source_title) && (
-          <p className="mt-3 text-xs text-amber-100/80">
+          <p className="mt-3 text-xs text-[var(--gold)]">
             Sources : <strong>{(legal.sources_used || [legal.source_authority, legal.source_title]).filter(Boolean).join(', ') || 'non renseignées'}</strong>
           </p>
         )}
         {legal.assumptions?.length > 0 && (
-          <p className="mt-2 text-xs text-amber-100/80">Hypothèses : {legal.assumptions.join('; ')}</p>
+          <p className="mt-2 text-xs text-[var(--gold)]">Hypothèses : {legal.assumptions.join('; ')}</p>
         )}
       </details>
       <div className="mt-3 grid gap-2 text-xs sm:grid-cols-2 lg:grid-cols-3">
@@ -183,7 +183,7 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
         })}
       </div>
       {missing.length > 0 && (
-        <div className="mt-3 text-xs text-amber-100/80">
+        <div className="mt-3 text-xs text-[var(--gold)]">
           <p className="font-semibold">Éléments manquants</p>
           <ul className="mt-1 list-disc space-y-0.5 pl-5">
             {missing.slice(0, 6).map((item, index) => <li key={`${index}-${item}`}>{String(item)}</li>)}

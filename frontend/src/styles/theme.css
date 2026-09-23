@@ -35,19 +35,42 @@
   --text-soft:     rgba(234,224,208,0.90);
   --field:         rgba(24,32,48,0.95);
   --card-grad:     linear-gradient(to bottom right, #1e293b, #0f172a);
-  --card-head:     linear-gradient(135deg, rgba(193,122,43,0.15), rgba(212,175,55,0.08));
+  --card-head:     linear-gradient(135deg, rgba(193,122,43,0.10), rgba(212,175,55,0.05));   /* 15/8 % : titre or sur voile or à 4,35:1 */
   --field-border:  rgba(200,83,26,0.20);
   --stats-hero:    linear-gradient(135deg, rgba(200,83,26,0.18) 0%, #121820 35%, #0C1219 65%, rgba(26,107,138,0.18) 100%);
-  --stats-tab-active: linear-gradient(135deg, #C8531A, #A03C12);
+  --active-fill: linear-gradient(135deg, #A34014, #8F3510);   /* ≥ 4,8:1 même au survol (brightness 1.1) */
+
+  /* Vocabulaire --afcfta-* : ces trois noms étaient employés (Opportunités,
+     recherche SH par produit) mais jamais définis — leurs replis s'affichaient
+     (fond transparent, carte blanche, texte quasi noir). */
+  --afcfta-bg:     var(--afcfta-card2);
+  --afcfta-text:   var(--text);
+  --afcfta-accent: var(--gold);
+
+  /* ── Séries de graphiques (skill dataviz) ──────────────────────
+     Huit teintes de la marque, ordre fixe, jamais cyclées. Validées par
+     validate_palette.js sur la carte #182030 : bande L, chroma ≥ 0,10,
+     CVD voisins ≥ 11,2, vision normale ≥ 17,7, contraste ≥ 3:1 ; les trois
+     premières passent aussi « toutes paires ». */
+  --series-1: #03A762;   /* vert baobab   */
+  --series-2: #0C83AB;   /* bleu atlantique */
+  --series-3: #BA480B;   /* terre          */
+  --series-4: #EF4092;   /* bougainvillier */
+  --series-5: #C57D06;   /* safran         */
+  --series-6: #9D6BFE;   /* violet         */
+  --series-7: #EA2E41;   /* rouge kente    */
+  --series-8: #10A693;   /* lagune         */
+  --chart-grid: #243044;   /* un cran au-dessus de la carte, trait plein */
+  --chart-axis: #34425A;
 
   /* ── Palette africaine ─────────────────────────────────────── */
-  --terra:        #D9642B;   /* terre rouge — accent principal (relevé : 4,22:1 → 5,20:1) */
+  --terra:        #DE7A49;   /* terre rouge — accent principal ; relevé pour tenir 4,6:1 en pastille teintée sur carte */
   --gold:         #D4891A;   /* or saharien */
   --green:        #2E9E68;   /* vert baobab (relevé : 3,52:1 → 5,56:1) */
-  --red:          #E76060;   /* rouge kente (relevé : 3,12:1 → 5,59:1) */
-  --atlantic:     #3E9CBF;   /* bleu atlantique (relevé : 3,15:1 → 6,01:1) */
+  --red:          #E97070;   /* rouge kente ; aligné sur --danger */
+  --atlantic:     #47A1C3;   /* bleu atlantique ; relevé pour tenir 4,6:1 en pastille teintée */
 
-  --terrasoft:    rgba(217,100,43,0.16);
+  --terrasoft:    rgba(222,122,73,0.14);
   --goldSoft:     rgba(212,137,26,0.10);   /* 0,16 poussait --gold à 3,93:1 sur carte teintée */
   --greenSoft:    rgba(46,158,104,0.16);
 
@@ -60,7 +83,7 @@
   --info:         #4BA8D4;
   --violet:       #A98BF7;
   --warning:      #D4891A;
-  --danger:       #E76060;
+  --danger:       #E97070;
 
   /* ── Sidebar ───────────────────────────────────────────────── */
   --sidebar-w:    228px;
@@ -472,9 +495,11 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--terra), #A84215);
-  border: 1px solid rgba(200,83,26,0.4);
-  color: #fff;
+  /* Même remplissage que toute action principale : le dégradé terre + blanc
+     tombait à 4,23:1 une fois --terra éclairci pour les pastilles. */
+  background: var(--active-fill);
+  border: 1px solid transparent;
+  color: #F7F1E6;
   font-weight: 700;
   padding: 11px 18px;
   border-radius: 10px;
@@ -488,14 +513,14 @@ body::before {
 .afcfta-btn:disabled{ opacity: 0.5; cursor: not-allowed; transform: none; }
 
 .afcfta-btn-secondary {
-  background: rgba(255,255,255,0.05);
+  background: var(--overlay);
   border: 1px solid var(--afcfta-border);
   color: var(--text);
 }
 
 .afcfta-btn-secondary:hover {
-  background: rgba(255,255,255,0.09);
-  border-color: rgba(200,83,26,0.22);
+  background: var(--overlay-border);
+  border-color: color-mix(in srgb, var(--terra) 30%, transparent);
 }
 
 .afcfta-btn-sm {
@@ -653,16 +678,16 @@ body::before {
    Result cards
    ================================================================ */
 .afcfta-result {
-  background: linear-gradient(135deg, rgba(24,32,48,0.95), rgba(18,26,40,0.95));
-  border: 1px solid rgba(200,83,26,0.16);
+  background: var(--afcfta-card);
+  border: 1px solid var(--afcfta-border);
   border-radius: var(--r-md);
   overflow: hidden;
 }
 
 .afcfta-result-header {
   padding: 14px 16px;
-  background: linear-gradient(135deg, rgba(200,83,26,0.14), rgba(212,137,26,0.07));
-  border-bottom: 1px solid rgba(200,83,26,0.15);
+  background: var(--card-head);
+  border-bottom: 1px solid var(--afcfta-border);
 }
 
 .afcfta-result-body { padding: 16px; }
@@ -794,7 +819,7 @@ body::before {
 }
 
 .afcfta-shell [role="tab"][data-state="active"] {
-  background: var(--stats-tab-active) !important;
+  background: var(--active-fill) !important;
   color: #F7F1E6 !important;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--terra) 32%, transparent);
 }
@@ -860,7 +885,7 @@ html:not(.theme-light) .afcfta-shell .tabs-list-mini {
   /* Même traitement que [data-slot="tabs-trigger"] : un seul onglet actif
      dans toute l'application. L'or sur voile or plafonnait à 4,41:1. */
   color: #F7F1E6 !important;
-  background: var(--stats-tab-active) !important;
+  background: var(--active-fill) !important;
   border-color: transparent !important;
 }
 
@@ -983,8 +1008,10 @@ html:not(.theme-light) .afcfta-shell .bg-gray-200    { background-color: rgba(25
 .afcfta-shell .border-slate-100,
 .afcfta-shell .border-gray-100 { border-color: var(--afcfta-border) !important; }
 
+/* Surface « dégradé de carte » : sombre en dur, elle restait un îlot sombre en
+   thème clair dans les 7 composants qui l'emploient. */
 .afcfta-dark-gradient {
-  background: linear-gradient(135deg, rgba(24,32,48,0.96), rgba(18,26,40,0.96)) !important;
+  background: var(--card-grad) !important;
 }
 
 /* ~= et non *= : la correspondance par sous-chaîne attrapait aussi les
@@ -1526,7 +1553,7 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
 }
 
 [data-slot="tabs-trigger"][data-state="active"] {
-  background: var(--stats-tab-active) !important;
+  background: var(--active-fill) !important;
   color: #F7F1E6 !important;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--terra) 32%, transparent);
 }
@@ -2301,3 +2328,35 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
   }
 }
 
+/* Légendes Recharts : la bibliothèque colore chaque libellé avec la couleur
+   de sa série (ambre, rouge vif…) — illisible sur l'un ou l'autre thème. La
+   pastille garde la couleur de la série ; le libellé prend l'encre du thème. */
+.recharts-legend-item-text { color: var(--text-soft) !important; }
+
+/* ── Graphiques Recharts : habillage (skill dataviz, marques & anatomie) ──
+   Grilles et axes : trait plein d'un pixel, un cran au-dessus de la surface,
+   jamais en pointillés. Graduations et libellés : encre atténuée du thème
+   (Recharts les peint en #666 par défaut, 2,84:1 sur la carte sombre). Une
+   règle CSS l'emporte sur les attributs de présentation SVG. */
+.recharts-cartesian-grid line { stroke: var(--chart-grid) !important; stroke-dasharray: none !important; stroke-width: 1px; }
+.recharts-cartesian-axis-line,
+.recharts-cartesian-axis-tick-line { stroke: var(--chart-axis) !important; }
+.recharts-cartesian-axis-tick-value,
+.recharts-polar-angle-axis-tick-value,
+.recharts-polar-radius-axis-tick-value,
+.recharts-label,
+.recharts-reference-line .recharts-label { fill: var(--afcfta-muted) !important; }
+.recharts-default-tooltip {
+  background: var(--afcfta-card) !important;
+  border: 1px solid var(--afcfta-border) !important;
+  border-radius: 10px;
+  color: var(--text);
+}
+.recharts-tooltip-label { color: var(--text) !important; }
+/* Éléments de l'infobulle : Recharts les colore à la teinte de la série — le
+   nom de la série suffit à l'identifier ; le texte reste à l'encre. */
+.recharts-tooltip-item { color: var(--text) !important; }
+
+/* Attribution des cartes Leaflet : le bleu par défaut (#0078A8) tombait à
+   4,09:1 sur les tuiles claires, qui restent claires dans les deux thèmes. */
+.leaflet-control-attribution a { color: #0B5673 !important; }

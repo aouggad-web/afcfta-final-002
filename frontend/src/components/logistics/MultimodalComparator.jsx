@@ -28,19 +28,19 @@ const COUNTRY_NAMES_FR = {
 };
 
 const MODE_META = {
-  sea:        { icon: Ship,  color: 'text-blue-400',    bg: 'bg-blue-500/10',    label: 'Maritime' },
-  air:        { icon: Plane, color: 'text-cyan-400',    bg: 'bg-cyan-500/10',    label: 'Aérien' },
-  land:       { icon: Truck, color: 'text-orange-400',  bg: 'bg-orange-500/10',  label: 'Terrestre' },
-  road:       { icon: Truck, color: 'text-orange-400',  bg: 'bg-orange-500/10',  label: 'Route' },
-  rail:       { icon: Train, color: 'text-emerald-400', bg: 'bg-emerald-500/10', label: 'Rail' },
-  multimodal: { icon: Layers, color: 'text-purple-400', bg: 'bg-purple-500/10',  label: 'Multimodal' },
+  sea:        { icon: Ship,  color: 'text-[var(--info)]',    bg: 'bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))]',    label: 'Maritime' },
+  air:        { icon: Plane, color: 'text-[var(--atlantic)]',    bg: 'bg-[color-mix(in_srgb,var(--atlantic)_10%,var(--afcfta-card))]',    label: 'Aérien' },
+  land:       { icon: Truck, color: 'text-[var(--terra)]',  bg: 'bg-[color-mix(in_srgb,var(--terra)_10%,var(--afcfta-card))]',  label: 'Terrestre' },
+  road:       { icon: Truck, color: 'text-[var(--terra)]',  bg: 'bg-[color-mix(in_srgb,var(--terra)_10%,var(--afcfta-card))]',  label: 'Route' },
+  rail:       { icon: Train, color: 'text-[var(--success)]', bg: 'bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))]', label: 'Rail' },
+  multimodal: { icon: Layers, color: 'text-[var(--violet)]', bg: 'bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]',  label: 'Multimodal' },
 };
 
 const PHASE_META = {
-  operational:         { label: 'Opérationnel',          cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
-  under_construction:  { label: 'En construction',       cls: 'bg-amber-500/15  text-amber-300  border-amber-500/40'  },
-  planned:             { label: 'Planifié',              cls: 'bg-sky-500/15    text-sky-300    border-sky-500/40'    },
-  study:               { label: "Étude de faisabilité", cls: 'bg-purple-500/15 text-purple-300 border-purple-500/40' },
+  operational:         { label: 'Opérationnel',          cls: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' },
+  under_construction:  { label: 'En construction',       cls: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))]  text-[var(--gold)]  border-[color-mix(in_srgb,var(--gold)_30%,transparent)]'  },
+  planned:             { label: 'Planifié',              cls: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))]    text-[var(--info)]    border-[color-mix(in_srgb,var(--info)_30%,transparent)]'    },
+  study:               { label: "Étude de faisabilité", cls: 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]' },
 };
 
 function fmtUsd(v) {
@@ -68,15 +68,15 @@ function OptionCard({ opt }) {
   const phaseMeta = PHASE_META[opt.phase] || PHASE_META.operational;
 
   const badges = [];
-  if (opt.is_cheapest) badges.push({ icon: Award, label: 'Le moins cher', cls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' });
-  if (opt.is_fastest)  badges.push({ icon: Zap,    label: 'Le plus rapide', cls: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30' });
-  if (opt.is_greenest) badges.push({ icon: Leaf,   label: 'Le plus vert',   cls: 'bg-lime-500/15 text-lime-300 border-lime-500/30' });
-  if (opt.is_future_cheapest)  badges.push({ icon: Sparkles, label: 'Futur · le moins cher', cls: 'bg-sky-500/15 text-sky-300 border-sky-500/40' });
-  if (opt.is_future_greenest)  badges.push({ icon: Sparkles, label: 'Futur · le plus vert', cls: 'bg-sky-500/15 text-sky-300 border-sky-500/40' });
+  if (opt.is_cheapest) badges.push({ icon: Award, label: 'Le moins cher', cls: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' });
+  if (opt.is_fastest)  badges.push({ icon: Zap,    label: 'Le plus rapide', cls: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]' });
+  if (opt.is_greenest) badges.push({ icon: Leaf,   label: 'Le plus vert',   cls: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' });
+  if (opt.is_future_cheapest)  badges.push({ icon: Sparkles, label: 'Futur · le moins cher', cls: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]' });
+  if (opt.is_future_greenest)  badges.push({ icon: Sparkles, label: 'Futur · le plus vert', cls: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]' });
 
   const cardBorder = opt.is_future
-    ? 'border border-dashed border-sky-500/40 bg-[#1B232C]/70'
-    : 'border border-white/10 bg-[#1B232C]';
+    ? 'border border-dashed border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-[var(--afcfta-card2)]'
+    : 'border border-[var(--overlay-border)] bg-[var(--afcfta-card)]';
 
   return (
     <Card className={cardBorder} data-testid={`multimodal-option-${opt.mode}`}>
@@ -87,18 +87,18 @@ function OptionCard({ opt }) {
               <Icon className={`w-5 h-5 ${meta.color}`} />
             </div>
             <div>
-              <CardTitle className="text-base text-white flex items-center gap-2 flex-wrap">
+              <CardTitle className="text-base text-[var(--text)] flex items-center gap-2 flex-wrap">
                 {opt.label}
                 {opt.is_future && (
-                  <Badge variant="outline" className={`text-[10px] ${phaseMeta.cls}`}>
+                  <Badge variant="outline" className={`text-[11px] ${phaseMeta.cls}`}>
                     <Construction className="w-3 h-3 mr-1" />{phaseMeta.label}
                   </Badge>
                 )}
               </CardTitle>
               {opt.via_port && (
-                <CardDescription className="text-xs mt-1 text-gray-400">
-                  Transit via <span className="text-white">{opt.via_port}</span>
-                  {opt.corridor_name && <> · Corridor <span className="text-white">{opt.corridor_name}</span></>}
+                <CardDescription className="text-xs mt-1 text-[var(--afcfta-muted)]">
+                  Transit via <span className="text-[var(--text)]">{opt.via_port}</span>
+                  {opt.corridor_name && <> · Corridor <span className="text-[var(--text)]">{opt.corridor_name}</span></>}
                 </CardDescription>
               )}
             </div>
@@ -117,24 +117,24 @@ function OptionCard({ opt }) {
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg bg-white/5 px-3 py-2">
-            <div className="text-[11px] uppercase tracking-wide text-gray-400 mb-1">Coût total</div>
-            <div className="font-display text-2xl text-white">{fmtUsd(opt.total_cost_usd)}</div>
+          <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
+            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Coût total</div>
+            <div className="font-display text-2xl text-[var(--text)]">{fmtUsd(opt.total_cost_usd)}</div>
           </div>
-          <div className="rounded-lg bg-white/5 px-3 py-2">
-            <div className="text-[11px] uppercase tracking-wide text-gray-400 mb-1">Délai</div>
-            <div className="font-display text-2xl text-white">{fmtDays(opt.transit_days_min, opt.transit_days_max)}</div>
+          <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
+            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Délai</div>
+            <div className="font-display text-2xl text-[var(--text)]">{fmtDays(opt.transit_days_min, opt.transit_days_max)}</div>
           </div>
-          <div className="rounded-lg bg-white/5 px-3 py-2">
-            <div className="text-[11px] uppercase tracking-wide text-gray-400 mb-1">Empreinte CO₂</div>
-            <div className="font-display text-2xl text-white">{fmtKg(opt.co2_kg)}</div>
+          <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
+            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Empreinte CO₂</div>
+            <div className="font-display text-2xl text-[var(--text)]">{fmtKg(opt.co2_kg)}</div>
           </div>
         </div>
 
         {/* Segments */}
         {opt.segments && opt.segments.length > 0 && (
-          <div className="border-t border-white/10 pt-3">
-            <div className="text-[11px] uppercase tracking-wide text-gray-400 mb-2">
+          <div className="border-t border-[var(--overlay-border)] pt-3">
+            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-2">
               {opt.segments.length === 1 ? 'Trajet' : `${opt.segments.length} segments`}
             </div>
             <div className="space-y-2">
@@ -147,12 +147,12 @@ function OptionCard({ opt }) {
                       <SegIcon className={`w-3.5 h-3.5 ${segMeta.color}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-gray-200">
+                      <div className="text-[var(--text)]">
                         <span className="font-medium">{seg.from}</span>
                         {' → '}
                         <span className="font-medium">{seg.to}</span>
                       </div>
-                      <div className="text-xs text-gray-400 mt-0.5">
+                      <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">
                         {seg.distance_km != null && <span>{seg.distance_km.toLocaleString('en-US')} km</span>}
                         {seg.transit_days_min != null && <span> · {fmtDays(seg.transit_days_min, seg.transit_days_max)}</span>}
                         {seg.cost_usd != null && <span> · {fmtUsd(seg.cost_usd)}</span>}
@@ -160,11 +160,11 @@ function OptionCard({ opt }) {
                       </div>
                       {seg.carriers && seg.carriers.length > 0 && (
                         <div className="flex flex-wrap items-center gap-1 mt-1">
-                          <Building2 className="w-3 h-3 text-gray-500 flex-shrink-0" />
+                          <Building2 className="w-3 h-3 text-[var(--afcfta-muted)] flex-shrink-0" />
                           {seg.carriers.map((c, ci) => (
                             <span
                               key={ci}
-                              className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-gray-300 border border-white/10"
+                              className="text-[11px] px-1.5 py-0.5 rounded bg-[var(--overlay)] text-[var(--text)] border border-[var(--overlay-border)]"
                             >
                               {c}
                             </span>
@@ -180,7 +180,7 @@ function OptionCard({ opt }) {
         )}
 
         {opt.notes && (
-          <div className="text-xs text-gray-400 italic border-t border-white/5 pt-2">
+          <div className="text-xs text-[var(--afcfta-muted)] italic border-t border-[var(--overlay-border)] pt-2">
             {opt.notes}
           </div>
         )}
@@ -246,24 +246,24 @@ export default function MultimodalComparator({ language = 'fr' }) {
   return (
     <div className="space-y-5" data-testid="multimodal-comparator">
       {/* Header */}
-      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
-        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+      <div className="flex items-center gap-3 bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
           <Layers className="w-5 h-5" />
         </div>
         <div>
           <h2 className="text-lg font-bold">Comparateur Multimodal</h2>
-          <p className="text-blue-100 text-sm">
+          <p className="text-[var(--info)] text-sm">
             Compare maritime · aérien · terrestre · combinaisons port+corridor pour les pays enclavés
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <Card className="border border-white/10 bg-[#1B232C]">
+      <Card className="border border-[var(--overlay-border)] bg-[var(--afcfta-card)]">
         <CardContent className="pt-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label className="text-gray-300 text-sm mb-1.5 block">Pays d&apos;origine</Label>
+              <Label className="text-[var(--text)] text-sm mb-1.5 block">Pays d&apos;origine</Label>
               <Select value={origin} onValueChange={setOrigin}>
                 <SelectTrigger data-testid="multimodal-origin-select"><SelectValue /></SelectTrigger>
                 <SelectContent className="max-h-[280px]">
@@ -276,10 +276,10 @@ export default function MultimodalComparator({ language = 'fr' }) {
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-sm mb-1.5 block">
+              <Label className="text-[var(--text)] text-sm mb-1.5 block">
                 Pays de destination
                 {isLandlockedDest && (
-                  <Badge className="ml-2 text-[10px] bg-amber-500/20 text-amber-300 border-amber-500/40">
+                  <Badge className="ml-2 text-[11px] bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                     Enclavé
                   </Badge>
                 )}
@@ -302,7 +302,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <Label className="text-gray-300 text-sm mb-1.5 block">Poids (kg)</Label>
+              <Label className="text-[var(--text)] text-sm mb-1.5 block">Poids (kg)</Label>
               <Input
                 type="number" min={1}
                 value={weightKg}
@@ -311,7 +311,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-sm mb-1.5 block">Volume (m³, optionnel)</Label>
+              <Label className="text-[var(--text)] text-sm mb-1.5 block">Volume (m³, optionnel)</Label>
               <Input
                 type="number" min={0} step="0.1"
                 value={volumeM3}
@@ -319,7 +319,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
               />
             </div>
             <div>
-              <Label className="text-gray-300 text-sm mb-1.5 block">Conteneur (maritime)</Label>
+              <Label className="text-[var(--text)] text-sm mb-1.5 block">Conteneur (maritime)</Label>
               <Select value={containerType} onValueChange={setContainerType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -330,7 +330,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
               </Select>
             </div>
             <div>
-              <Label className="text-gray-300 text-sm mb-1.5 block">Nature marchandise (air)</Label>
+              <Label className="text-[var(--text)] text-sm mb-1.5 block">Nature marchandise (air)</Label>
               <Select value={airCommodity} onValueChange={setAirCommodity}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -348,7 +348,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
             <Button
               onClick={handleCompare}
               disabled={loading || origin === destination}
-              className="bg-purple-500 hover:bg-purple-600 text-white"
+              className="bg-[var(--violet)] hover:bg-[var(--violet)] text-[var(--bg)]"
               data-testid="multimodal-compare-btn"
             >
               {loading ? (
@@ -358,21 +358,21 @@ export default function MultimodalComparator({ language = 'fr' }) {
               )}
             </Button>
             {origin === destination && (
-              <span className="ml-3 text-xs text-amber-400">Origine et destination doivent être différentes.</span>
+              <span className="ml-3 text-xs text-[var(--gold)]">Origine et destination doivent être différentes.</span>
             )}
           </div>
         </CardContent>
       </Card>
 
       {error && (
-        <Card className="border border-red-500/40 bg-red-500/10">
-          <CardContent className="pt-4 text-sm text-red-300">⚠ {error}</CardContent>
+        <Card className="border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))]">
+          <CardContent className="pt-4 text-sm text-[var(--danger)]">⚠ {error}</CardContent>
         </Card>
       )}
 
       {result && result.options_count === 0 && (
-        <Card className="border border-amber-500/40 bg-amber-500/10">
-          <CardContent className="pt-4 text-sm text-amber-300">
+        <Card className="border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))]">
+          <CardContent className="pt-4 text-sm text-[var(--gold)]">
             Aucune option de fret disponible dans la base de données pour ce trajet.
           </CardContent>
         </Card>
@@ -381,17 +381,17 @@ export default function MultimodalComparator({ language = 'fr' }) {
       {result && result.options_count > 0 && (
         <div ref={reportRef} className="space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <h3 className="text-lg font-display text-white">
+            <h3 className="text-lg font-display text-[var(--text)]">
               {result.operational_count} option{result.operational_count > 1 ? 's' : ''} opérationnelle{result.operational_count > 1 ? 's' : ''}
               {result.future_count > 0 && (
-                <span className="text-sky-300 text-base ml-2">
+                <span className="text-[var(--info)] text-base ml-2">
                   · {result.future_count} option{result.future_count > 1 ? 's' : ''} future{result.future_count > 1 ? 's' : ''} (planifiées / en construction)
                 </span>
               )}
             </h3>
             <div className="flex items-center gap-2 flex-wrap">
               {result.is_destination_landlocked && (
-                <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/40">
+                <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                   Destination enclavée — combinaisons port + corridor proposées
                 </Badge>
               )}
@@ -408,17 +408,17 @@ export default function MultimodalComparator({ language = 'fr' }) {
 
           {/* ROI Infrastructure card */}
           {result.roi_infrastructure && (
-            <Card className="border border-sky-500/40 bg-gradient-to-br from-sky-500/10 to-purple-500/10">
+            <Card className="border border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-gradient-to-br from-sky-500/10 to-purple-500/10">
               <CardHeader className="pb-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-sky-500/20 flex items-center justify-center flex-shrink-0">
-                    <TrendingUp className="w-5 h-5 text-sky-300" />
+                  <div className="w-11 h-11 rounded-xl bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-[var(--info)]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <CardTitle className="text-base text-white">
+                    <CardTitle className="text-base text-[var(--text)]">
                       ROI Infrastructure — projection si les routes planifiées étaient opérationnelles
                     </CardTitle>
-                    <CardDescription className="text-xs mt-1 text-gray-300">
+                    <CardDescription className="text-xs mt-1 text-[var(--text)]">
                       Compare la meilleure option opérationnelle d&apos;aujourd&apos;hui avec la meilleure route future.
                     </CardDescription>
                   </div>
@@ -426,28 +426,28 @@ export default function MultimodalComparator({ language = 'fr' }) {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="rounded-lg bg-white/5 p-3 border border-white/10">
-                    <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">Aujourd&apos;hui</div>
-                    <div className="text-sm text-gray-200 mb-2">
+                  <div className="rounded-lg bg-[var(--overlay)] p-3 border border-[var(--overlay-border)]">
+                    <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Aujourd&apos;hui</div>
+                    <div className="text-sm text-[var(--text)] mb-2">
                       {result.roi_infrastructure.reference_operational.label}
                     </div>
                     <div className="grid grid-cols-3 gap-2">
-                      <div><span className="text-gray-400 text-[10px]">Coût</span><div className="font-display text-base text-white">${result.roi_infrastructure.reference_operational.cost_usd?.toLocaleString('en-US')}</div></div>
-                      <div><span className="text-gray-400 text-[10px]">Délai</span><div className="font-display text-base text-white">{result.roi_infrastructure.reference_operational.transit_days_avg} j</div></div>
-                      <div><span className="text-gray-400 text-[10px]">CO₂</span><div className="font-display text-base text-white">{(result.roi_infrastructure.reference_operational.co2_kg / 1000).toFixed(1)} t</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Coût</span><div className="font-display text-base text-[var(--text)]">${result.roi_infrastructure.reference_operational.cost_usd?.toLocaleString('en-US')}</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Délai</span><div className="font-display text-base text-[var(--text)]">{result.roi_infrastructure.reference_operational.transit_days_avg} j</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">CO₂</span><div className="font-display text-base text-[var(--text)]">{(result.roi_infrastructure.reference_operational.co2_kg / 1000).toFixed(1)} t</div></div>
                     </div>
                   </div>
-                  <div className="rounded-lg bg-sky-500/10 p-3 border border-dashed border-sky-500/40">
-                    <div className="text-[10px] uppercase tracking-wide text-sky-300 mb-1">
+                  <div className="rounded-lg bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] p-3 border border-dashed border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <div className="text-[11px] uppercase tracking-wide text-[var(--info)] mb-1">
                       🚧 Futur · {result.roi_infrastructure.best_future_cost.status}
                     </div>
-                    <div className="text-sm text-gray-200 mb-2">
+                    <div className="text-sm text-[var(--text)] mb-2">
                       {result.roi_infrastructure.best_future_cost.label}
                     </div>
                     <div className="grid grid-cols-3 gap-2">
-                      <div><span className="text-gray-400 text-[10px]">Coût</span><div className="font-display text-base text-sky-200">${result.roi_infrastructure.best_future_cost.cost_usd?.toLocaleString('en-US')}</div></div>
-                      <div><span className="text-gray-400 text-[10px]">Délai</span><div className="font-display text-base text-sky-200">{result.roi_infrastructure.best_future_cost.transit_days_avg} j</div></div>
-                      <div><span className="text-gray-400 text-[10px]">CO₂</span><div className="font-display text-base text-sky-200">{(result.roi_infrastructure.best_future_cost.co2_kg / 1000).toFixed(1)} t</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Coût</span><div className="font-display text-base text-[var(--info)]">${result.roi_infrastructure.best_future_cost.cost_usd?.toLocaleString('en-US')}</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Délai</span><div className="font-display text-base text-[var(--info)]">{result.roi_infrastructure.best_future_cost.transit_days_avg} j</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">CO₂</span><div className="font-display text-base text-[var(--info)]">{(result.roi_infrastructure.best_future_cost.co2_kg / 1000).toFixed(1)} t</div></div>
                     </div>
                   </div>
                 </div>
@@ -460,52 +460,52 @@ export default function MultimodalComparator({ language = 'fr' }) {
                   const annualCo2 = ((ps.co2_savings_kg || 0) * teuPerYear) / 1000;
                   return (
                     <>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-white/10">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-[var(--overlay-border)]">
                         <div className="text-center">
-                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">
+                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">
                             {costPositive ? 'Économie par expédition' : 'Surcoût par expédition'}
                           </div>
-                          <div className={`font-display text-2xl ${costPositive ? 'text-emerald-300' : 'text-red-300'}`}>
+                          <div className={`font-display text-2xl ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                             {costPositive ? '$' : '+$'}{Math.abs(ps.cost_savings_usd ?? 0).toLocaleString('en-US')}
                           </div>
-                          <div className={`text-[11px] ${costPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+                          <div className={`text-[11px] ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                             {Math.abs(ps.cost_savings_pct ?? 0)}%
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">
+                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">
                             {co2Positive ? 'CO₂ évité' : 'CO₂ supplémentaire'}
                           </div>
-                          <div className={`font-display text-2xl ${co2Positive ? 'text-lime-300' : 'text-red-300'}`}>
+                          <div className={`font-display text-2xl ${co2Positive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                             {Math.abs(ps.co2_savings_kg ?? 0).toLocaleString('en-US')} kg
                           </div>
-                          <div className={`text-[11px] ${co2Positive ? 'text-lime-400' : 'text-red-400'}`}>
+                          <div className={`text-[11px] ${co2Positive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                             {Math.abs(ps.co2_savings_pct ?? 0)}%
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">
+                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">
                             {ps.time_savings_days >= 0 ? 'Temps gagné' : 'Délai allongé'}
                           </div>
-                          <div className="font-display text-2xl text-yellow-300">
+                          <div className="font-display text-2xl text-[var(--gold)]">
                             {Math.abs(ps.time_savings_days ?? 0)} j
                           </div>
-                          <div className="text-[11px] text-yellow-400">/ expédition</div>
+                          <div className="text-[11px] text-[var(--gold)]">/ expédition</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-[10px] uppercase tracking-wide text-gray-400 mb-1">vs Aérien</div>
-                          <div className="font-display text-2xl text-purple-300">
+                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">vs Aérien</div>
+                          <div className="font-display text-2xl text-[var(--violet)]">
                             ${ps.cost_savings_vs_air_usd?.toLocaleString('en-US') ?? '—'}
                           </div>
-                          <div className="text-[11px] text-purple-400">économisés {ps.cost_savings_vs_air_pct}%</div>
+                          <div className="text-[11px] text-[var(--violet)]">économisés {ps.cost_savings_vs_air_pct}%</div>
                         </div>
                       </div>
 
-                      <div className={`border rounded-lg p-3 flex items-start gap-3 ${costPositive ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                      <div className={`border rounded-lg p-3 flex items-start gap-3 ${costPositive ? 'bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' : 'bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]'}`}>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <span className={`text-[11px] uppercase tracking-wide ${costPositive ? 'text-emerald-300' : 'text-red-300'}`}>Projection annuelle</span>
-                            <Label htmlFor="teu-yr" className="text-[10px] text-gray-400 ml-2">TEU/an :</Label>
+                            <span className={`text-[11px] uppercase tracking-wide ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>Projection annuelle</span>
+                            <Label htmlFor="teu-yr" className="text-[11px] text-[var(--afcfta-muted)] ml-2">TEU/an :</Label>
                             <Input
                               id="teu-yr"
                               type="number" min={1}
@@ -517,14 +517,14 @@ export default function MultimodalComparator({ language = 'fr' }) {
                           </div>
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <div className="text-[10px] text-gray-400">{costPositive ? 'Économie annuelle' : 'Surcoût annuel'}</div>
-                              <div className={`font-display text-2xl ${costPositive ? 'text-emerald-200' : 'text-red-200'}`}>
+                              <div className="text-[11px] text-[var(--afcfta-muted)]">{costPositive ? 'Économie annuelle' : 'Surcoût annuel'}</div>
+                              <div className={`font-display text-2xl ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                                 ${Math.abs(annualCost).toLocaleString('en-US')}
                               </div>
                             </div>
                             <div>
-                              <div className="text-[10px] text-gray-400">{co2Positive ? 'CO₂ évité annuel' : 'CO₂ supplémentaire annuel'}</div>
-                              <div className={`font-display text-2xl ${co2Positive ? 'text-lime-200' : 'text-red-200'}`}>
+                              <div className="text-[11px] text-[var(--afcfta-muted)]">{co2Positive ? 'CO₂ évité annuel' : 'CO₂ supplémentaire annuel'}</div>
+                              <div className={`font-display text-2xl ${co2Positive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                                 {Math.abs(annualCo2).toFixed(1)} t
                               </div>
                             </div>
@@ -535,7 +535,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                   );
                 })()}
 
-                <div className="text-xs text-gray-300 italic border-t border-white/5 pt-2">
+                <div className="text-xs text-[var(--text)] italic border-t border-[var(--overlay-border)] pt-2">
                   {result.roi_infrastructure.interpretation}
                 </div>
               </CardContent>
@@ -554,16 +554,16 @@ export default function MultimodalComparator({ language = 'fr' }) {
           {/* Future routes section */}
           {result.options.filter(o => o.is_future).length > 0 && (
             <>
-              <div className="border-t border-dashed border-sky-500/30 pt-4 mt-6">
+              <div className="border-t border-dashed border-[color-mix(in_srgb,var(--info)_30%,transparent)] pt-4 mt-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-9 h-9 rounded-lg bg-sky-500/15 flex items-center justify-center">
-                    <Construction className="w-4 h-4 text-sky-300" />
+                  <div className="w-9 h-9 rounded-lg bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] flex items-center justify-center">
+                    <Construction className="w-4 h-4 text-[var(--info)]" />
                   </div>
                   <div>
-                    <h3 className="text-base font-display text-white">
+                    <h3 className="text-base font-display text-[var(--text)]">
                       Routes futures — Transsaharienne · Train Alger-Tamanrasset · Lagos-Calabar
                     </h3>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-[var(--afcfta-muted)]">
                       Infrastructures planifiées ou en construction (PIDA / BAD / SNTF / CCECC).
                       Coûts modélisés pour anticiper l&apos;impact sur vos chaînes logistiques.
                     </p>
@@ -578,7 +578,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
             </>
           )}
 
-          <div className="text-xs text-gray-500 text-center pt-2">
+          <div className="text-xs text-[var(--afcfta-muted)] text-center pt-2">
             Facteurs CO₂ (g/t·km) : Maritime {result.co2_methodology?.factors_g_per_tkm?.sea} ·
             Rail {result.co2_methodology?.factors_g_per_tkm?.rail} ·
             Route {result.co2_methodology?.factors_g_per_tkm?.road} ·

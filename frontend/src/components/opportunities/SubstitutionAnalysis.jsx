@@ -33,7 +33,7 @@ import {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#2563eb'];
+const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
 // Sous-module « faisabilité de substitution » (services/substitution_feasibility_service.py) :
 // tous les dollars importés ne sont pas également substituables par une offre africaine — l'effet
@@ -66,22 +66,22 @@ const fmtPerTonne = (v) => {
 };
 
 const POSITIONING_CHIP = {
-  'compétitif': 'bg-emerald-100 text-emerald-700',
-  'aligné': 'bg-blue-100 text-blue-700',
-  'premium': 'bg-amber-100 text-amber-700',
+  'compétitif': 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
+  'aligné': 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]',
+  'premium': 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]',
 };
 
 
 const coefficientColor = (coef) => {
-  if (coef >= 0.7) return { bar: 'bg-emerald-500', text: 'text-emerald-700', chip: 'bg-emerald-100 text-emerald-700' };
-  if (coef >= 0.4) return { bar: 'bg-amber-500', text: 'text-amber-700', chip: 'bg-amber-100 text-amber-700' };
-  return { bar: 'bg-red-500', text: 'text-red-700', chip: 'bg-red-100 text-red-700' };
+  if (coef >= 0.7) return { bar: 'bg-emerald-500', text: 'text-[var(--success)]', chip: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]' };
+  if (coef >= 0.4) return { bar: 'bg-amber-500', text: 'text-[var(--gold)]', chip: 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]' };
+  return { bar: 'bg-red-500', text: 'text-[var(--danger)]', chip: 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]' };
 };
 
 const intensityChipColor = (intensity) => {
-  if (intensity === 'fort') return 'bg-red-100 text-red-700';
-  if (intensity === 'moyen') return 'bg-amber-100 text-amber-700';
-  return 'bg-slate-100 text-slate-600';
+  if (intensity === 'fort') return 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]';
+  if (intensity === 'moyen') return 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]';
+  return 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)]';
 };
 
 // Affiche le coefficient de substituabilité, le facteur limitant et le détail
@@ -107,21 +107,21 @@ const FeasibilityBlock = ({ feasibility, bindingConstraint }) => {
     : null;
 
   return (
-    <div className="mb-4 bg-slate-50 rounded-lg p-3" data-testid="substitution-feasibility">
+    <div className="mb-4 bg-[var(--afcfta-card2)] rounded-lg p-3" data-testid="substitution-feasibility">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-medium text-slate-500">{t('opportunities.substitutionAnalysis.feasibility.coefficient')}</span>
+        <span className="text-xs font-medium text-[var(--afcfta-muted)]">{t('opportunities.substitutionAnalysis.feasibility.coefficient')}</span>
         <span className={`text-sm font-bold ${colors.text}`}>{Math.round(coef * 100)}%</span>
       </div>
-      <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mb-2">
+      <div className="h-1.5 w-full bg-[var(--afcfta-card2)] rounded-full overflow-hidden mb-2">
         <div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${Math.round(coef * 100)}%` }} />
       </div>
-      {bindingLabel && <p className="text-[11px] text-slate-500 mb-2">{bindingLabel}</p>}
+      {bindingLabel && <p className="text-[11px] text-[var(--afcfta-muted)] mb-2">{bindingLabel}</p>}
       {barriers && (
         <div className="flex flex-wrap gap-1.5">
           {Object.entries(barriers).map(([key, intensity]) => (
             <span
               key={key}
-              className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${intensityChipColor(intensity)}`}
+              className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${intensityChipColor(intensity)}`}
               title={feasibility.rationale}
             >
               {t(`opportunities.substitutionAnalysis.feasibility.${key}`, { defaultValue: key })} · {t(`opportunities.substitutionAnalysis.feasibility.intensityLabel.${intensity}`, { defaultValue: intensity })}
@@ -140,30 +140,30 @@ const VerifiedProductionBlock = ({ production }) => {
   const { t } = useTranslation();
   if (!production) return null;
   return (
-    <div className="mb-4 bg-emerald-50/60 border border-emerald-100 rounded-lg p-3" data-testid="verified-production">
+    <div className="mb-4 bg-emerald-50/60 border border-[color-mix(in_srgb,var(--success)_30%,transparent)] rounded-lg p-3" data-testid="verified-production">
       <div className="flex items-center gap-1.5 mb-1.5">
-        <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-        <span className="text-xs font-semibold text-emerald-800">{t('opportunities.substitutionAnalysis.enriched.verifiedTitle')}</span>
-        <span className="text-[10px] text-emerald-600 ml-auto">
+        <ShieldCheck className="h-3.5 w-3.5 text-[var(--success)]" />
+        <span className="text-xs font-semibold text-[var(--success)]">{t('opportunities.substitutionAnalysis.enriched.verifiedTitle')}</span>
+        <span className="text-[11px] text-[var(--success)] ml-auto">
           {production.institution} · {production.year}
         </span>
       </div>
-      <p className="text-[11px] text-slate-600 mb-1.5">{production.commodity}</p>
+      <p className="text-[11px] text-[var(--afcfta-muted)] mb-1.5">{production.commodity}</p>
       <div className="flex flex-wrap gap-1.5">
         {(production.top_producers || []).map((p) => (
-          <span key={p.country_iso3} className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-white border border-emerald-200 text-emerald-800">
+          <span key={p.country_iso3} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-[var(--afcfta-card)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]">
             {p.country_name} · {fmtProduction(p.value, production.unit)}
             {p.share_pct != null && ` (${p.share_pct}%)`}
           </span>
         ))}
       </div>
       {production.coverage_caveat && (
-        <p className="mt-1.5 text-[10px] text-amber-700" data-testid="verified-production-caveat">
+        <p className="mt-1.5 text-[11px] text-[var(--gold)]" data-testid="verified-production-caveat">
           ⚠ {production.coverage_caveat}
         </p>
       )}
       {production.commodity_caveat && (
-        <p className="mt-1.5 text-[10px] text-amber-700" data-testid="verified-production-commodity-caveat">
+        <p className="mt-1.5 text-[11px] text-[var(--gold)]" data-testid="verified-production-commodity-caveat">
           ⚠ {production.commodity_caveat}
         </p>
       )}
@@ -183,24 +183,24 @@ const formatValue = (value) => {
 // Stat Card Component
 const StatCard = ({ title, value, icon: Icon, trend, color = "emerald", subtitle }) => {
   const colorClasses = {
-    emerald: "bg-emerald-100 text-emerald-600",
-    blue: "bg-blue-100 text-blue-600",
-    purple: "bg-purple-100 text-purple-600",
-    orange: "bg-orange-100 text-orange-600",
-    red: "bg-red-100 text-red-600"
+    emerald: "bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]",
+    blue: "bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]",
+    purple: "bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)]",
+    orange: "bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]",
+    red: "bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]"
   };
 
   return (
-    <Card className="bg-white border-slate-200 shadow-lg hover:shadow-xl transition-shadow">
+    <Card className="bg-[var(--afcfta-card)] border-[var(--afcfta-border)] shadow-lg hover:shadow-xl transition-shadow">
       <CardContent className="p-5">
         <div className="flex items-center gap-4">
           <div className={`flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-full ${colorClasses[color]}`}>
             <Icon className="h-6 w-6" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-slate-500 truncate">{title}</p>
-            <p className="text-2xl font-bold text-slate-900">{value}</p>
-            {subtitle && <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>}
+            <p className="text-sm font-medium text-[var(--afcfta-muted)] truncate">{title}</p>
+            <p className="text-2xl font-bold text-[var(--text)]">{value}</p>
+            {subtitle && <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">{subtitle}</p>}
           </div>
         </div>
       </CardContent>
@@ -224,20 +224,20 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
   // niveau réel. Un texte d'affichage est un mauvais identifiant.
   // `difficulty` reste lu en repli, le temps que d'anciens clients passent.
   const difficultyColors = {
-    easy: "bg-emerald-100 text-emerald-700",
-    moderate: "bg-amber-100 text-amber-700",
-    difficult: "bg-orange-100 text-orange-700",
-    very_difficult: "bg-red-100 text-red-700",
+    easy: "bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]",
+    moderate: "bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]",
+    difficult: "bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]",
+    very_difficult: "bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]",
   };
 
   const competitivenessColors = {
-    highly_competitive: "bg-emerald-100 text-emerald-700",
-    competitive: "bg-blue-100 text-blue-700",
-    developing: "bg-amber-100 text-amber-700"
+    highly_competitive: "bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]",
+    competitive: "bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]",
+    developing: "bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]"
   };
 
   return (
-    <Card className="bg-white border-slate-200 shadow hover:shadow-lg transition-all">
+    <Card className="bg-[var(--afcfta-card)] border-[var(--afcfta-border)] shadow hover:shadow-lg transition-all">
       <CardContent className="p-5">
         {/* Product Header */}
         <div className="flex items-start justify-between mb-4">
@@ -245,7 +245,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             <Badge variant="outline" className="mb-2 font-mono text-xs">
               HS {product.hs_code}
             </Badge>
-            <h3 className="font-bold text-slate-900 text-lg leading-tight">
+            <h3 className="font-bold text-[var(--text)] text-lg leading-tight">
               {product.name}
             </h3>
           </div>
@@ -267,19 +267,19 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 
         {/* Value Info */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="bg-slate-50 rounded-lg p-3">
-            <p className="text-xs text-slate-500 mb-1">
+          <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
+            <p className="text-xs text-[var(--afcfta-muted)] mb-1">
               {isImport ? "Import actuel" : "Marché potentiel"}
             </p>
-            <p className="font-bold text-lg text-slate-900">
+            <p className="font-bold text-lg text-[var(--text)]">
               {formatValue(isImport ? product?.import_value : opportunity.total_market_potential)}
             </p>
           </div>
-          <div className="bg-emerald-50 rounded-lg p-3">
-            <p className="text-xs text-emerald-600 mb-1">
+          <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded-lg p-3">
+            <p className="text-xs text-[var(--success)] mb-1">
               {isImport ? "Potentiel substitution" : "Avantage ZLECAf"}
             </p>
-            <p className="font-bold text-lg text-emerald-700">
+            <p className="font-bold text-lg text-[var(--success)]">
               {isImport ? formatValue(opportunity.substitution_potential) : (opportunity.afcfta_advantage || '-')}
             </p>
           </div>
@@ -296,48 +296,48 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 
         {/* Current Source (for imports) */}
         {isImport && product?.current_source && (
-          <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
+          <div className="mb-4 flex items-center gap-2 text-sm text-[var(--afcfta-muted)]">
             <Globe className="h-4 w-4" />
-            <span>Source actuelle: <strong className="text-slate-700">{product.current_source}</strong></span>
+            <span>Source actuelle: <strong className="text-[var(--text)]">{product.current_source}</strong></span>
           </div>
         )}
 
         {/* Average export price + market-match caveat (exports only) */}
         {!isImport && opportunity.exporter_avg_price_usd_per_tonne != null && (
-          <div className="mb-3 flex items-center gap-2 text-sm text-slate-600" data-testid="exporter-avg-price">
-            <DollarSign className="h-4 w-4 text-slate-400" />
+          <div className="mb-3 flex items-center gap-2 text-sm text-[var(--afcfta-muted)]" data-testid="exporter-avg-price">
+            <DollarSign className="h-4 w-4 text-[var(--afcfta-muted)]" />
             <span>
               {t('opportunities.substitutionAnalysis.averageExportPrice')} :{' '}
-              <strong className="text-slate-800">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
+              <strong className="text-[var(--text)]">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
             </span>
           </div>
         )}
         {!isImport && opportunity.market_match_level === 'hs4' && (
-          <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
+          <p className="mb-3 text-[11px] text-[var(--gold)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
             {t('opportunities.substitutionAnalysis.marketsEstimatedAtHs4')}
           </p>
         )}
 
         {/* Suppliers/Markets */}
         <div>
-          <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+          <p className="text-xs font-medium text-[var(--afcfta-muted)] uppercase tracking-wider mb-2">
             {isImport ? "Fournisseurs africains potentiels" : "Marchés cibles"}
           </p>
           <div className="space-y-2">
             {targets?.slice(0, 3).map((target, idx) => (
-              <div key={idx} className="bg-slate-50 rounded-lg px-3 py-2">
+              <div key={idx} className="bg-[var(--afcfta-card2)] rounded-lg px-3 py-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm text-slate-700">
+                    <span className="font-medium text-sm text-[var(--text)]">
                       {target.country_name}
                     </span>
                     {target.quality && (
-                      <Badge variant="outline" className="text-[10px]">
+                      <Badge variant="outline" className="text-[11px]">
                         {target.quality}
                       </Badge>
                     )}
                   </div>
-                  <span className="text-sm font-semibold text-emerald-600">
+                  <span className="text-sm font-semibold text-[var(--success)]">
                     {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
                   </span>
                 </div>
@@ -345,14 +345,14 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
                     à ses fournisseurs actuels vs prix moyen d'export du pays. */}
                 {!isImport && target.price_positioning && (
                   <div className="mt-1.5 flex items-center justify-between gap-2" data-testid="price-positioning">
-                    <span className="text-[11px] text-slate-500">
+                    <span className="text-[11px] text-[var(--afcfta-muted)]">
                       {t('opportunities.substitutionAnalysis.marketPays')}{' '}
                       <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne)}</strong>
                       {' · '}
                       {target.price_positioning.price_delta_pct > 0 ? '+' : ''}
                       {target.price_positioning.price_delta_pct}%
                     </span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${POSITIONING_CHIP[target.price_positioning.positioning] || POSITIONING_CHIP['aligné']}`}>
+                    <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${POSITIONING_CHIP[target.price_positioning.positioning] || POSITIONING_CHIP['aligné']}`}>
                       {t(`opportunities.substitutionAnalysis.positioning.${target.price_positioning.positioning}`, { defaultValue: target.price_positioning.positioning })}
                     </span>
                   </div>
@@ -375,46 +375,46 @@ const AnalysisSummaryPanel = ({ analysis, language }) => {
   if (!analysis || Object.keys(analysis).length === 0) return null;
 
   return (
-    <Card className="shadow-lg border-slate-200" data-testid="analysis-summary">
+    <Card className="shadow-lg border-[var(--afcfta-border)]" data-testid="analysis-summary">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-emerald-600" />
+          <BarChart3 className="h-5 w-5 text-[var(--success)]" />
           {t('opportunities.substitutionAnalysis.enriched.analysisTitle')}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-slate-50 rounded-lg p-3">
-          <p className="text-xs text-slate-500 mb-1">{t('opportunities.substitutionAnalysis.enriched.avgCoef')}</p>
-          <p className="text-2xl font-bold text-slate-900">
+        <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
+          <p className="text-xs text-[var(--afcfta-muted)] mb-1">{t('opportunities.substitutionAnalysis.enriched.avgCoef')}</p>
+          <p className="text-2xl font-bold text-[var(--text)]">
             {analysis.avg_feasibility_coefficient != null
               ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%`
               : '—'}
           </p>
         </div>
-        <div className="bg-slate-50 rounded-lg p-3">
-          <p className="text-xs text-slate-500 mb-1.5">{t('opportunities.substitutionAnalysis.enriched.difficulties')}</p>
+        <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
+          <p className="text-xs text-[var(--afcfta-muted)] mb-1.5">{t('opportunities.substitutionAnalysis.enriched.difficulties')}</p>
           <div className="flex flex-wrap gap-1.5">
             {Object.entries(analysis.difficulty_distribution || {}).map(([code, count]) => (
-              <span key={code} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
+              <span key={code} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] text-[var(--text)]">
                 {t(`opportunities.substitutionAnalysis.difficulty.${code}`, { defaultValue: code })}
                 {' · '}{count}
               </span>
             ))}
           </div>
         </div>
-        <div className="bg-slate-50 rounded-lg p-3">
-          <p className="text-xs text-slate-500 mb-1.5">{t('opportunities.substitutionAnalysis.enriched.constraints')}</p>
+        <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
+          <p className="text-xs text-[var(--afcfta-muted)] mb-1.5">{t('opportunities.substitutionAnalysis.enriched.constraints')}</p>
           <div className="flex flex-wrap gap-1.5">
             {Object.entries(analysis.binding_constraint_distribution || {}).map(([label, count]) => (
-              <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
+              <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] text-[var(--text)]">
                 {t(`opportunities.substitutionAnalysis.constraintLabels.${label}`, { defaultValue: label })} · {count}
               </span>
             ))}
           </div>
         </div>
-        <div className="bg-emerald-50 rounded-lg p-3">
-          <p className="text-xs text-emerald-600 mb-1">{t('opportunities.substitutionAnalysis.enriched.verifiedCount')}</p>
-          <p className="text-2xl font-bold text-emerald-700">
+        <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded-lg p-3">
+          <p className="text-xs text-[var(--success)] mb-1">{t('opportunities.substitutionAnalysis.enriched.verifiedCount')}</p>
+          <p className="text-2xl font-bold text-[var(--success)]">
             {analysis.verified_production_count ?? 0}
           </p>
         </div>
@@ -443,21 +443,21 @@ const ProductHierarchyPanel = ({ hierarchy }) => {
         {hierarchy.map((chapter) => {
           const isOpen = openChapter === chapter.chapter;
           return (
-            <div key={chapter.chapter} className="border border-slate-200 rounded-lg overflow-hidden">
+            <div key={chapter.chapter} className="border border-[var(--afcfta-border)] rounded-lg overflow-hidden">
               <button
                 type="button"
                 onClick={() => { setOpenChapter(isOpen ? null : chapter.chapter); setOpenHs4(null); }}
-                className="w-full flex items-center gap-2 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 transition-colors text-left"
+                className="w-full flex items-center gap-2 px-3 py-2.5 bg-[var(--afcfta-card2)] hover:bg-[var(--afcfta-card2)] transition-colors text-left"
                 data-testid={`hierarchy-chapter-${chapter.chapter}`}
               >
-                {isOpen ? <ChevronDown className="h-4 w-4 text-slate-400" /> : <ChevronRight className="h-4 w-4 text-slate-400" />}
+                {isOpen ? <ChevronDown className="h-4 w-4 text-[var(--afcfta-muted)]" /> : <ChevronRight className="h-4 w-4 text-[var(--afcfta-muted)]" />}
                 <Badge variant="outline" className="font-mono text-xs">SH {chapter.chapter}</Badge>
-                <span className="font-medium text-sm text-slate-800 flex-1">{chapter.name}</span>
-                <span className="text-xs text-slate-500">{chapter.opportunity_count} {t('opportunities.substitutionAnalysis.enriched.opportunitiesCount')}</span>
-                <span className="text-sm font-bold text-emerald-700">{formatValue(chapter.total_value)}</span>
+                <span className="font-medium text-sm text-[var(--text)] flex-1">{chapter.name}</span>
+                <span className="text-xs text-[var(--afcfta-muted)]">{chapter.opportunity_count} {t('opportunities.substitutionAnalysis.enriched.opportunitiesCount')}</span>
+                <span className="text-sm font-bold text-[var(--success)]">{formatValue(chapter.total_value)}</span>
               </button>
               {isOpen && (
-                <div className="divide-y divide-slate-100">
+                <div className="divide-y divide-[var(--afcfta-border)]">
                   {(chapter.hs4 || []).map((hs4) => {
                     const hs4Open = openHs4 === hs4.hs4_code;
                     return (
@@ -465,24 +465,24 @@ const ProductHierarchyPanel = ({ hierarchy }) => {
                         <button
                           type="button"
                           onClick={() => setOpenHs4(hs4Open ? null : hs4.hs4_code)}
-                          className="w-full flex items-center gap-2 pl-9 pr-3 py-2 hover:bg-slate-50 transition-colors text-left"
+                          className="w-full flex items-center gap-2 pl-9 pr-3 py-2 hover:bg-[var(--afcfta-card2)] transition-colors text-left"
                           data-testid={`hierarchy-hs4-${hs4.hs4_code}`}
                         >
-                          {hs4Open ? <ChevronDown className="h-3.5 w-3.5 text-slate-400" /> : <ChevronRight className="h-3.5 w-3.5 text-slate-400" />}
-                          <Badge variant="outline" className="font-mono text-[10px]">SH {hs4.hs4_code}</Badge>
-                          <span className="text-sm text-slate-700 flex-1 truncate">{hs4.representative_name}</span>
-                          <span className="text-xs font-semibold text-emerald-600">{formatValue(hs4.total_value)}</span>
+                          {hs4Open ? <ChevronDown className="h-3.5 w-3.5 text-[var(--afcfta-muted)]" /> : <ChevronRight className="h-3.5 w-3.5 text-[var(--afcfta-muted)]" />}
+                          <Badge variant="outline" className="font-mono text-[11px]">SH {hs4.hs4_code}</Badge>
+                          <span className="text-sm text-[var(--text)] flex-1 truncate">{hs4.representative_name}</span>
+                          <span className="text-xs font-semibold text-[var(--success)]">{formatValue(hs4.total_value)}</span>
                         </button>
                         {hs4Open && (
                           <div className="pl-16 pr-3 pb-2 space-y-1">
                             {(hs4.products || []).map((p) => (
                               <div key={p.hs_code} className="flex items-center gap-2 py-1 text-sm" data-testid={`hierarchy-hs6-${p.hs_code}`}>
-                                <Badge className="font-mono text-[10px] bg-emerald-100 text-emerald-800 hover:bg-emerald-100">SH6 {p.hs_code}</Badge>
-                                <span className="text-slate-600 flex-1 truncate">{p.name}</span>
+                                <Badge className="font-mono text-[11px] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] hover:bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]">SH6 {p.hs_code}</Badge>
+                                <span className="text-[var(--afcfta-muted)] flex-1 truncate">{p.name}</span>
                                 {p.feasibility_coefficient != null && (
-                                  <span className="text-[10px] text-slate-500">{Math.round(p.feasibility_coefficient * 100)}%</span>
+                                  <span className="text-[11px] text-[var(--afcfta-muted)]">{Math.round(p.feasibility_coefficient * 100)}%</span>
                                 )}
-                                <span className="text-xs font-semibold text-slate-800">{formatValue(p.value)}</span>
+                                <span className="text-xs font-semibold text-[var(--text)]">{formatValue(p.value)}</span>
                               </div>
                             ))}
                           </div>
@@ -800,12 +800,12 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       {/* Header */}
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <ArrowLeftRight className="h-8 w-8 text-emerald-600" />
-          <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
+          <ArrowLeftRight className="h-8 w-8 text-[var(--success)]" />
+          <h2 className="text-3xl font-black text-[var(--text)] uppercase tracking-tight">
             {t('opportunities.substitutionAnalysis.title')}
           </h2>
         </div>
-        <p className="text-slate-500">{t('opportunities.substitutionAnalysis.subtitle')}</p>
+        <p className="text-[var(--afcfta-muted)]">{t('opportunities.substitutionAnalysis.subtitle')}</p>
       </div>
 
       {/* Country Selection */}
@@ -813,7 +813,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 items-end">
             <div className="flex-1 space-y-2">
-              <label className="text-sm font-medium text-slate-700">{t('opportunities.substitutionAnalysis.selectCountry')}</label>
+              <label className="text-sm font-medium text-[var(--text)]">{t('opportunities.substitutionAnalysis.selectCountry')}</label>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                 <SelectTrigger className="w-full" data-testid="country-select-substitution">
                   <SelectValue placeholder={t('opportunities.substitutionAnalysis.selectCountry')} />
@@ -824,10 +824,10 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                       <span className="flex items-center gap-2">
                         {country.name}
                         {country.has_trade_data && (
-                          <Sparkles className="h-3 w-3 text-amber-500" />
+                          <Sparkles className="h-3 w-3 text-[var(--gold)]" />
                         )}
                         {!country.has_trade_data && (
-                          <span className="text-xs text-slate-400">(pas de données)</span>
+                          <span className="text-xs text-[var(--afcfta-muted)]">(pas de données)</span>
                         )}
                       </span>
                     </SelectItem>
@@ -855,16 +855,16 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       {/* Results */}
       {loading && (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
-          <span className="ml-3 text-slate-600">{t('opportunities.substitutionAnalysis.loading')}</span>
+          <Loader2 className="h-8 w-8 animate-spin text-[var(--success)]" />
+          <span className="ml-3 text-[var(--afcfta-muted)]">{t('opportunities.substitutionAnalysis.loading')}</span>
         </div>
       )}
 
       {error && (
-        <Card className="bg-red-50 border-red-200">
+        <Card className="bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
           <CardContent className="py-8 text-center">
-            <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-2" />
-            <p className="text-red-700">{error}</p>
+            <AlertCircle className="h-8 w-8 text-[var(--danger)] mx-auto mb-2" />
+            <p className="text-[var(--danger)]">{error}</p>
           </CardContent>
         </Card>
       )}
@@ -926,9 +926,9 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
             </div>
 
             {/* Description */}
-            <Card className="bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
+            <Card className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
               <CardContent className="py-4 px-6">
-                <p className="text-sm text-emerald-800">
+                <p className="text-sm text-[var(--success)]">
                   {activeTab === 'import' ? t('opportunities.substitutionAnalysis.importSubtitle') : t('opportunities.substitutionAnalysis.exportSubtitle')}
                 </p>
               </CardContent>
@@ -1009,17 +1009,17 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
 
       {/* Empty State */}
       {!loading && !error && !currentData && (
-        <Card className="bg-slate-50 border-slate-200">
+        <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
           <CardContent className="py-16 text-center">
-            <Globe className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">{t('opportunities.substitutionAnalysis.noData')}</p>
+            <Globe className="h-16 w-16 text-[var(--text)] mx-auto mb-4" />
+            <p className="text-[var(--afcfta-muted)]">{t('opportunities.substitutionAnalysis.noData')}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Source Footer */}
       <div className="text-center">
-        <p className="text-xs text-slate-400 italic">{t('opportunities.substitutionAnalysis.source')}</p>
+        <p className="text-xs text-[var(--afcfta-muted)] italic">{t('opportunities.substitutionAnalysis.source')}</p>
       </div>
     </div>
   );

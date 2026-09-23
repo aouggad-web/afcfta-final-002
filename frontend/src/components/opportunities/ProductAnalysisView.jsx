@@ -31,7 +31,7 @@ import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
+const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
 // Source colors for data badges
 const SOURCE_COLORS = {
@@ -135,7 +135,7 @@ const DataBarChart = ({ data, barColor, title, valueKey = 'tradeValue' }) => {
             borderRadius: '12px', 
             border: 'none', 
             boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-            background: 'rgba(255,255,255,0.95)'
+            background: 'var(--afcfta-card)', color: 'var(--text)'
           }}
         />
         <Bar dataKey={valueKey} fill={barColor} radius={[0, 4, 4, 0]} barSize={16}>
@@ -181,7 +181,7 @@ const MarketShareTrendChart = ({ trends }) => {
                 borderRadius: '16px', 
                 border: 'none', 
                 boxShadow: '0 10px 40px rgba(0,0,0,0.15)', 
-                background: 'rgba(255,255,255,0.95)' 
+                background: 'var(--afcfta-card)', color: 'var(--text)' 
               }}
               formatter={(value) => [`$${value.toLocaleString()} M`, '']}
             />

@@ -55,11 +55,11 @@ export default function TaxBreakdownDual({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-indigo-500/10 rounded-lg border border-indigo-500/20">
-              <Layers className="w-5 h-5 text-indigo-400" />
+            <div className="p-2 bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
+              <Layers className="w-5 h-5 text-[var(--violet)]" />
             </div>
             <div>
-              <CardTitle className="text-lg text-white">
+              <CardTitle className="text-lg text-[var(--text)]">
                 {fr ? 'Détail des droits et taxes — NPF vs ZLECAf' : 'Duties & taxes — MFN vs AfCFTA'}
               </CardTitle>
               <CardDescription className="text-[var(--afcfta-muted)]">
@@ -81,7 +81,7 @@ export default function TaxBreakdownDual({
             <button
               type="button"
               onClick={() => setMode(useLocal ? 'USD' : 'LOCAL')}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--afcfta-border)] bg-[var(--overlay)] text-[var(--text)] text-sm hover:border-indigo-500/40 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--afcfta-border)] bg-[var(--overlay)] text-[var(--text)] text-sm hover:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] transition-colors"
             >
               <ArrowLeftRight className="w-4 h-4" />
               {useLocal ? (currency.local_code) : 'USD'}
@@ -92,7 +92,7 @@ export default function TaxBreakdownDual({
 
       <CardContent>
         {!zlecafAvailable && (
-          <div className="mb-4 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
+          <div className="mb-4 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] p-3 text-sm text-[var(--gold)]">
             {fr
               ? 'Taux ZLECAf non disponible pour cette ligne : la colonne préférentielle et les économies ne sont pas calculées.'
               : 'AfCFTA rate unavailable for this line: the preferential column and savings are not calculated.'}
@@ -118,12 +118,12 @@ export default function TaxBreakdownDual({
               >
                 <div className="md:col-span-5">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-white font-semibold">{b.name}</span>
-                    <Badge variant="outline" className="text-[10px] border-[var(--afcfta-border)] text-[var(--text)]">
+                    <span className="text-[var(--text)] font-semibold">{b.name}</span>
+                    <Badge variant="outline" className="text-[11px] border-[var(--afcfta-border)] text-[var(--text)]">
                       {b.code}
                     </Badge>
                     {b.cap && (
-                      <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-300">
+                      <Badge variant="outline" className="text-[11px] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-[var(--gold)]">
                         {fr ? 'plafond' : 'cap'} {b.cap.amount.toLocaleString('fr-FR')} {b.cap.currency}
                       </Badge>
                     )}
@@ -136,7 +136,7 @@ export default function TaxBreakdownDual({
                 <div className="md:col-span-3 flex md:block items-center justify-between md:text-right">
                   <span className="md:hidden text-xs text-[var(--afcfta-muted)]">{fr ? 'NPF' : 'MFN'}</span>
                   <div>
-                    <span className="text-white font-bold">{fmt(b.amount_npf, b.amount_npf_local)}</span>
+                    <span className="text-[var(--text)] font-bold">{fmt(b.amount_npf, b.amount_npf_local)}</span>
                     <span className="text-[var(--afcfta-muted)] text-xs ml-1">({b.rate_npf_pct}%)</span>
                   </div>
                 </div>
@@ -144,7 +144,7 @@ export default function TaxBreakdownDual({
                 <div className="md:col-span-4 flex md:block items-center justify-between md:text-right">
                   <span className="md:hidden text-xs text-[var(--afcfta-muted)]">ZLECAf</span>
                   <div>
-                    <span className={`font-bold ${reduced ? 'text-emerald-400' : 'text-[var(--text)]'}`}>
+                    <span className={`font-bold ${reduced ? 'text-[var(--success)]' : 'text-[var(--text)]'}`}>
                       {zlecafAvailable ? fmt(b.amount_zlecaf, b.amount_zlecaf_local) : '—'}
                     </span>
                     <span className="text-[var(--afcfta-muted)] text-xs ml-1">
@@ -184,12 +184,12 @@ export default function TaxBreakdownDual({
         )}
 
         {summary && (
-          <div className="mt-3 flex items-center justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-            <div className="flex items-center gap-2 text-emerald-300">
+          <div className="mt-3 flex items-center justify-between p-3 rounded-lg bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+            <div className="flex items-center gap-2 text-[var(--success)]">
               <TrendingDown className="w-4 h-4" />
               <span className="font-semibold">{fr ? 'Économie totale ZLECAf' : 'Total AfCFTA savings'}</span>
             </div>
-            <span className="text-emerald-400 font-bold text-lg">
+            <span className="text-[var(--success)] font-bold text-lg">
               {!zlecafAvailable || s.economie_totale === null || s.economie_totale === undefined
                 ? '—'
                 : useLocal
@@ -205,7 +205,7 @@ export default function TaxBreakdownDual({
 
 function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
   const fr = language === 'fr';
-  const color = tone === 'emerald' ? 'text-emerald-400' : 'text-red-400';
+  const color = tone === 'emerald' ? 'text-[var(--success)]' : 'text-[var(--danger)]';
   const val = (k) => {
     if (useLocal) {
       const v = sLocal[k];
@@ -223,7 +223,7 @@ function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
     </div>
   );
   return (
-    <div className="p-3 rounded-lg bg-[var(--overlay)] border border-[var(--afcfta-border)] space-y-1.5">
+    <div className="p-3 rounded-lg bg-[var(--afcfta-card2)] border border-[var(--afcfta-border)] space-y-1.5">
       <p className={`font-semibold ${color}`}>{title}</p>
       <Row label={fr ? 'Droit de douane' : 'Customs duty'} k="droit_douane" />
       <Row label={fr ? 'Autres taxes' : 'Other levies'} k="autres_taxes" />

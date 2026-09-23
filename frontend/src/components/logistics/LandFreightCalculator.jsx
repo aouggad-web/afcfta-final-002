@@ -48,10 +48,10 @@ function CostBar({ label, value, total, color }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
-        <span className="text-gray-600">{label}</span>
+        <span className="text-[var(--afcfta-muted)]">{label}</span>
         <span className="font-semibold">${value.toLocaleString()}</span>
       </div>
-      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-[var(--afcfta-card2)] rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-500 ${color}`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -114,26 +114,26 @@ export default function LandFreightCalculator({ language = 'fr' }) {
 
   return (
     <div className="space-y-4" data-testid="land-freight-calculator">
-      <Card className="border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+      <Card className="border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]">
         <CardHeader className="py-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
-              <Truck className="w-5 h-5 text-white" />
+              <Truck className="w-5 h-5 text-[var(--text)]" />
             </div>
             <div>
-              <CardTitle className="text-base font-bold text-gray-800">{t.title}</CardTitle>
-              <CardDescription className="text-xs text-amber-700">{t.subtitle}</CardDescription>
+              <CardTitle className="text-base font-bold text-[var(--text)]">{t.title}</CardTitle>
+              <CardDescription className="text-xs text-[var(--gold)]">{t.subtitle}</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent className="pt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-gray-700 mb-1">{t.corridor}</label>
+              <label className="block text-xs font-medium text-[var(--text)] mb-1">{t.corridor}</label>
               <select
                 value={corridorId}
                 onChange={e => handleCorridorChange(e.target.value)}
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="w-full text-sm border border-[var(--afcfta-border)] rounded-lg px-3 py-2 bg-[var(--afcfta-card)] focus:outline-none focus:ring-2 focus:ring-amber-400"
                 data-testid="land-corridor-select"
               >
                 <option value="">— {t.corridor} —</option>
@@ -148,12 +148,12 @@ export default function LandFreightCalculator({ language = 'fr' }) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{t.mode}</label>
+              <label className="block text-xs font-medium text-[var(--text)] mb-1">{t.mode}</label>
               <select
                 value={mode}
                 onChange={e => { setMode(e.target.value); setResult(null); }}
                 disabled={!corridorId}
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+                className="w-full text-sm border border-[var(--afcfta-border)] rounded-lg px-3 py-2 bg-[var(--afcfta-card)] focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
                 data-testid="land-mode-select"
               >
                 {availableModes.map(m => (
@@ -162,20 +162,20 @@ export default function LandFreightCalculator({ language = 'fr' }) {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{t.weight}</label>
+              <label className="block text-xs font-medium text-[var(--text)] mb-1">{t.weight}</label>
               <input
                 type="number" min="1" value={weight}
                 onChange={e => setWeight(e.target.value)}
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="w-full text-sm border border-[var(--afcfta-border)] rounded-lg px-3 py-2 bg-[var(--afcfta-card)] focus:outline-none focus:ring-2 focus:ring-amber-400"
                 data-testid="land-weight-input"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">{t.cargo}</label>
+              <label className="block text-xs font-medium text-[var(--text)] mb-1">{t.cargo}</label>
               <select
                 value={cargoType}
                 onChange={e => setCargoType(e.target.value)}
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="w-full text-sm border border-[var(--afcfta-border)] rounded-lg px-3 py-2 bg-[var(--afcfta-card)] focus:outline-none focus:ring-2 focus:ring-amber-400"
                 data-testid="land-cargo-select"
               >
                 {cargoTypes.map(c => (<option key={c.value} value={c.value}>{cargoLabel(c)}</option>))}
@@ -186,7 +186,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
           <Button
             onClick={handleCalculate}
             disabled={loading || !corridorId || !weight}
-            className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg text-sm font-medium w-full md:w-auto"
+            className="bg-[var(--gold)] hover:bg-[var(--gold)] text-[var(--bg)] px-6 py-2 rounded-lg text-sm font-medium w-full md:w-auto"
             data-testid="land-calculate-btn"
           >
             <Truck className="w-4 h-4 mr-2" />
@@ -194,7 +194,7 @@ export default function LandFreightCalculator({ language = 'fr' }) {
           </Button>
 
           {error && (
-            <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800 flex items-start gap-2">
+            <div className="mt-3 p-3 bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-lg text-sm text-[var(--gold)] flex items-start gap-2">
               <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />{error}
             </div>
           )}
@@ -202,11 +202,11 @@ export default function LandFreightCalculator({ language = 'fr' }) {
       </Card>
 
       {result && (
-        <Card className="border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50" data-testid="land-result-card">
-          <CardHeader className="py-4 border-b border-green-100">
+        <Card className="border border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]" data-testid="land-result-card">
+          <CardHeader className="py-4 border-b border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base font-bold text-gray-800">{t.result}</CardTitle>
-              <Badge className="bg-amber-100 text-amber-800 text-xs">{language === 'fr' ? 'Estimé' : 'Modeled'} · {result.data_year}</Badge>
+              <CardTitle className="text-base font-bold text-[var(--text)]">{t.result}</CardTitle>
+              <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] text-xs">{language === 'fr' ? 'Estimé' : 'Modeled'} · {result.data_year}</Badge>
             </div>
             <div className="flex flex-wrap gap-2 mt-1">
               <Badge variant="outline" className="text-xs"><MapPin className="w-3 h-3 mr-1" />{result.length_km.toLocaleString()} {t.km}</Badge>
@@ -220,10 +220,10 @@ export default function LandFreightCalculator({ language = 'fr' }) {
             </div>
           </CardHeader>
           <CardContent className="pt-4 space-y-5">
-            <div className="text-center py-4 bg-white rounded-xl border border-green-200 shadow-sm">
-              <p className="text-xs text-gray-500 mb-1">{t.totalCost}</p>
-              <p className="text-4xl font-bold text-green-700" data-testid="land-total-cost">${result.total_cost_usd.toLocaleString()}</p>
-              <p className="text-xs text-gray-400 mt-1">
+            <div className="text-center py-4 bg-[var(--afcfta-card)] rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-sm">
+              <p className="text-xs text-[var(--afcfta-muted)] mb-1">{t.totalCost}</p>
+              <p className="text-4xl font-bold text-[var(--success)]" data-testid="land-total-cost">${result.total_cost_usd.toLocaleString()}</p>
+              <p className="text-xs text-[var(--afcfta-muted)] mt-1">
                 USD · ${result.cost_per_ton_usd.toLocaleString()}{t.perTon} · {result.cost_per_ton_km_usd} {t.perTonKm} · {result.weight_tons} t
               </p>
             </div>
@@ -238,8 +238,8 @@ export default function LandFreightCalculator({ language = 'fr' }) {
             </div>
 
             {result.operators?.length > 0 && (
-              <div className="p-3 bg-white rounded-lg border border-gray-100">
-                <p className="text-xs font-semibold text-gray-500 mb-1">{t.operators}</p>
+              <div className="p-3 bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)]">
+                <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.operators}</p>
                 <div className="flex flex-wrap gap-1">
                   {result.operators.map(o => (<Badge key={o} variant="secondary" className="text-xs">{o}</Badge>))}
                 </div>
@@ -247,11 +247,11 @@ export default function LandFreightCalculator({ language = 'fr' }) {
             )}
 
             <div className="space-y-2">
-              <div className="p-3 bg-white rounded-lg border border-gray-100 text-xs">
-                <span className="font-semibold text-gray-600">{t.source}: </span>
-                <span className="text-gray-600">{result.source}</span>
+              <div className="p-3 bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)] text-xs">
+                <span className="font-semibold text-[var(--afcfta-muted)]">{t.source}: </span>
+                <span className="text-[var(--afcfta-muted)]">{result.source}</span>
               </div>
-              <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 text-xs text-gray-500">
+              <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg border border-[var(--afcfta-border)] text-xs text-[var(--afcfta-muted)]">
                 <span className="font-semibold">{t.disclaimer}: </span>{result.disclaimer}
               </div>
             </div>

@@ -79,10 +79,10 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
   };
 
   const lpiScoreColor = (score) => {
-    if (!score) return 'text-gray-500';
-    if (score >= 3.5) return 'text-green-600 font-bold';
-    if (score >= 2.5) return 'text-yellow-600 font-bold';
-    return 'text-red-600 font-bold';
+    if (!score) return 'text-[var(--afcfta-muted)]';
+    if (score >= 3.5) return 'text-[var(--success)] font-bold';
+    if (score >= 2.5) return 'text-[var(--gold)] font-bold';
+    return 'text-[var(--danger)] font-bold';
   };
 
   const chartData = historicalStats.map((s) => ({
@@ -96,7 +96,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-blue-900 flex items-center gap-2">
+          <DialogTitle className="text-2xl font-bold text-[var(--info)] flex items-center gap-2">
             <span>&#x1F6A2;</span>
             <span>{port.port_name}</span>
           </DialogTitle>
@@ -106,12 +106,12 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
               <Badge variant="secondary">{port.port_type}</Badge>
               {port.un_locode && <Badge>{port.un_locode}</Badge>}
               {(perfMetrics.efficiency_grade || latestStats.performance_grade) && (
-                <Badge className={`${gradeColor(perfMetrics.efficiency_grade || latestStats.performance_grade)} text-white`}>
+                <Badge className={`${gradeColor(perfMetrics.efficiency_grade || latestStats.performance_grade)} text-[var(--text)]`}>
                   Grade: {perfMetrics.efficiency_grade || latestStats.performance_grade}
                 </Badge>
               )}
               {lsci && (
-                <Badge className="bg-indigo-600 text-white">
+                <Badge className="bg-[var(--violet)] text-[var(--bg)]">
                   LSCI: {lsci.value} (#{lsci.world_rank} {t.worldRank})
                 </Badge>
               )}
@@ -121,22 +121,22 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
 
         {/* KPI Row 1 */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 my-4">
-          <div className="bg-blue-50 p-3 rounded-lg text-center">
-            <p className="text-xs text-blue-700 font-semibold">&#x1F4E6; {t.teuYear}</p>
-            <p className="text-lg font-bold text-blue-600">{formatNumber(latestStats.container_throughput_teu)}</p>
-            <p className="text-xs text-gray-500">{latestStats.year || 2024}</p>
+          <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-3 rounded-lg text-center">
+            <p className="text-xs text-[var(--info)] font-semibold">&#x1F4E6; {t.teuYear}</p>
+            <p className="text-lg font-bold text-[var(--info)]">{formatNumber(latestStats.container_throughput_teu)}</p>
+            <p className="text-xs text-[var(--afcfta-muted)]">{latestStats.year || 2024}</p>
           </div>
-          <div className="bg-green-50 p-3 rounded-lg text-center">
-            <p className="text-xs text-green-700 font-semibold">&#x2696;&#xFE0F; {t.tonsYear}</p>
-            <p className="text-lg font-bold text-green-600">{formatNumber(latestStats.cargo_throughput_tons)}</p>
+          <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-3 rounded-lg text-center">
+            <p className="text-xs text-[var(--success)] font-semibold">&#x2696;&#xFE0F; {t.tonsYear}</p>
+            <p className="text-lg font-bold text-[var(--success)]">{formatNumber(latestStats.cargo_throughput_tons)}</p>
           </div>
-          <div className="bg-purple-50 p-3 rounded-lg text-center">
-            <p className="text-xs text-purple-700 font-semibold">&#x2693; {t.calls}</p>
-            <p className="text-lg font-bold text-purple-600">{formatNumber(latestStats.vessel_calls)}</p>
+          <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-3 rounded-lg text-center">
+            <p className="text-xs text-[var(--violet)] font-semibold">&#x2693; {t.calls}</p>
+            <p className="text-lg font-bold text-[var(--violet)]">{formatNumber(latestStats.vessel_calls)}</p>
           </div>
-          <div className="bg-orange-50 p-3 rounded-lg text-center">
-            <p className="text-xs text-orange-700 font-semibold">&#x23F1;&#xFE0F; {t.portTime}</p>
-            <p className="text-lg font-bold text-orange-600">
+          <div className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] p-3 rounded-lg text-center">
+            <p className="text-xs text-[var(--terra)] font-semibold">&#x23F1;&#xFE0F; {t.portTime}</p>
+            <p className="text-lg font-bold text-[var(--terra)]">
               {perfMetrics.avg_port_stay_hours
                 ? `${perfMetrics.avg_port_stay_hours}${t.hours}`
                 : latestStats.median_time_in_port_hours
@@ -144,9 +144,9 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 : 'N/A'}
             </p>
           </div>
-          <div className="bg-pink-50 p-3 rounded-lg text-center">
-            <p className="text-xs text-pink-700 font-semibold">&#x23F3; {t.waiting}</p>
-            <p className="text-lg font-bold text-pink-600">
+          <div className="bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] p-3 rounded-lg text-center">
+            <p className="text-xs text-[var(--danger)] font-semibold">&#x23F3; {t.waiting}</p>
+            <p className="text-lg font-bold text-[var(--danger)]">
               {perfMetrics.avg_waiting_time_hours
                 ? `${perfMetrics.avg_waiting_time_hours}${t.hours}`
                 : latestStats.average_waiting_time_hours
@@ -159,30 +159,30 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
         {/* KPI Row 2 */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
           {(perfMetrics.berth_productivity || latestStats.berth_productivity_moves_per_hour) && (
-            <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-3 rounded-lg border-l-4 border-cyan-500">
-              <p className="text-xs font-semibold text-cyan-700">&#x1F3D7;&#xFE0F; {t.berthProductivity}</p>
-              <p className="text-lg font-bold text-cyan-900">
+            <div className="bg-[color-mix(in_srgb,var(--atlantic)_8%,var(--afcfta-card))] p-3 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--atlantic)_30%,transparent)]">
+              <p className="text-xs font-semibold text-[var(--atlantic)]">&#x1F3D7;&#xFE0F; {t.berthProductivity}</p>
+              <p className="text-lg font-bold text-[var(--atlantic)]">
                 {perfMetrics.berth_productivity || latestStats.berth_productivity_moves_per_hour} {t.movesPerHour}
               </p>
             </div>
           )}
           {trsAnalysis && trsAnalysis.container_dwell_time_days && trsAnalysis.container_dwell_time_days !== 'NA' && (
-            <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-3 rounded-lg border-l-4 border-amber-500">
-              <p className="text-xs font-semibold text-amber-700">&#x1F4E6; {t.dwellTime}</p>
-              <p className="text-lg font-bold text-amber-900">{trsAnalysis.container_dwell_time_days} {t.days}</p>
-              <p className="text-xs text-amber-600 truncate">{trsAnalysis.source_reliability_label || trsAnalysis.source_type}</p>
+            <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-3 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+              <p className="text-xs font-semibold text-[var(--gold)]">&#x1F4E6; {t.dwellTime}</p>
+              <p className="text-lg font-bold text-[var(--gold)]">{trsAnalysis.container_dwell_time_days} {t.days}</p>
+              <p className="text-xs text-[var(--gold)] truncate">{trsAnalysis.source_reliability_label || trsAnalysis.source_type}</p>
             </div>
           )}
           {trsAnalysis && (trsAnalysis.vessel_waiting_days || (trsAnalysis.vessel_turnaround_hours && trsAnalysis.vessel_turnaround_hours !== 'NA')) && (
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-3 rounded-lg border-l-4 border-indigo-500">
-              <p className="text-xs font-semibold text-indigo-700">&#x1F6A2; {t.vesselWaiting}</p>
-              <p className="text-lg font-bold text-indigo-900">
+            <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-3 rounded-lg border-l-4 border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
+              <p className="text-xs font-semibold text-[var(--violet)]">&#x1F6A2; {t.vesselWaiting}</p>
+              <p className="text-lg font-bold text-[var(--violet)]">
                 {trsAnalysis.vessel_waiting_days
                   ? `${trsAnalysis.vessel_waiting_days} ${t.days}`
                   : `${trsAnalysis.vessel_turnaround_hours}${t.hours}`}
               </p>
               {trsAnalysis.vessel_waiting_source && (
-                <p className="text-xs text-indigo-500 truncate">{trsAnalysis.vessel_waiting_source.split(',')[0]}</p>
+                <p className="text-xs text-[var(--violet)] truncate">{trsAnalysis.vessel_waiting_source.split(',')[0]}</p>
               )}
             </div>
           )}
@@ -206,10 +206,10 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 {agents.map((agent, index) => (
                   <div
                     key={index}
-                    className="p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500 hover:bg-blue-50 transition-colors flex flex-col gap-1"
+                    className="p-3 bg-[var(--afcfta-card2)] rounded-lg border-l-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)] hover:bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] transition-colors flex flex-col gap-1"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-bold text-gray-900 text-sm leading-tight">{agent.agent_name}</p>
+                      <p className="font-bold text-[var(--text)] text-sm leading-tight">{agent.agent_name}</p>
                       {agent.group && (
                         <Badge variant="outline" className="text-xs shrink-0">
                           {agent.group}
@@ -217,15 +217,15 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                       )}
                     </div>
                     {agent.role && (
-                      <p className="text-xs text-blue-700 font-medium">{agent.role}</p>
+                      <p className="text-xs text-[var(--info)] font-medium">{agent.role}</p>
                     )}
                     {agent.contact && (
-                      <p className="text-xs text-gray-600 flex items-center gap-1">
+                      <p className="text-xs text-[var(--afcfta-muted)] flex items-center gap-1">
                         <span>📞</span> {agent.contact}
                       </p>
                     )}
                     {agent.email && (
-                      <p className="text-xs text-gray-500 flex items-center gap-1 truncate">
+                      <p className="text-xs text-[var(--afcfta-muted)] flex items-center gap-1 truncate">
                         <span>✉️</span>
                         <span className="truncate">{agent.email}</span>
                       </p>
@@ -233,7 +233,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     {agent.services && agent.services.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-1">
                         {agent.services.map((s, i) => (
-                          <span key={i} className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">
+                          <span key={i} className="text-xs bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] px-1.5 py-0.5 rounded">
                             {s}
                           </span>
                         ))}
@@ -242,21 +242,21 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     {agent.cargo_types && agent.cargo_types.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {agent.cargo_types.map((c, i) => (
-                          <span key={i} className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                          <span key={i} className="text-xs bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] px-1.5 py-0.5 rounded">
                             {c}
                           </span>
                         ))}
                       </div>
                     )}
                     {agent.operating_hours && (
-                      <p className="text-xs text-gray-400">🕐 {agent.operating_hours}</p>
+                      <p className="text-xs text-[var(--afcfta-muted)]">🕐 {agent.operating_hours}</p>
                     )}
                     {agent.website && agent.website !== 'Non disponible' && (
                       <a
                         href={agent.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs text-blue-500 hover:underline truncate"
+                        className="text-xs text-[var(--info)] hover:underline truncate"
                       >
                         🌐 {agent.website.replace('https://','').replace('http://','').split('/')[0]}
                       </a>
@@ -265,7 +265,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 ))}
               </div>
             ) : (
-              <div className="text-center p-8 text-gray-500"><p>{t.noAgents}</p></div>
+              <div className="text-center p-8 text-[var(--afcfta-muted)]"><p>{t.noAgents}</p></div>
             )}
           </TabsContent>
 
@@ -274,18 +274,18 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
             {services.length > 0 ? (
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {services.map((service, index) => (
-                  <div key={index} className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
-                    <p className="font-bold text-blue-900 flex items-center gap-2">
+                  <div key={index} className="p-4 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                    <p className="font-bold text-[var(--info)] flex items-center gap-2">
                       <span>&#x1F6A2;</span><span>{service.carrier}</span>
                     </p>
-                    <p className="text-sm text-gray-800 font-semibold mt-1">{service.service_name}</p>
+                    <p className="text-sm text-[var(--text)] font-semibold mt-1">{service.service_name}</p>
                     {service.frequency && (
-                      <p className="text-sm text-gray-700 mt-1">
+                      <p className="text-sm text-[var(--text)] mt-1">
                         <span className="font-semibold">{t.frequency}:</span> {service.frequency}
                       </p>
                     )}
                     {service.rotation && (
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="text-xs text-[var(--afcfta-muted)] mt-1">
                         <span className="font-semibold">{t.rotation}:</span> {service.rotation}
                       </p>
                     )}
@@ -293,7 +293,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 ))}
               </div>
             ) : (
-              <div className="text-center p-8 text-gray-500"><p>{t.noServices}</p></div>
+              <div className="text-center p-8 text-[var(--afcfta-muted)]"><p>{t.noServices}</p></div>
             )}
           </TabsContent>
 
@@ -301,8 +301,8 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
           <TabsContent value="stats" className="mt-4">
             {chartData.length > 0 ? (
               <div className="space-y-4">
-                <div className="bg-white p-4 rounded-lg border">
-                  <h3 className="text-sm font-bold text-gray-700 mb-3">{t.teuEvolution}</h3>
+                <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border">
+                  <h3 className="text-sm font-bold text-[var(--text)] mb-3">{t.teuEvolution}</h3>
                   <ResponsiveContainer width="100%" height={200}>
                     <LineChart data={chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
@@ -314,8 +314,8 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                   </ResponsiveContainer>
                 </div>
                 {chartData.some((d) => d.avg_wait) && (
-                  <div className="bg-white p-4 rounded-lg border">
-                    <h3 className="text-sm font-bold text-gray-700 mb-3">{t.portTimeEvolution}</h3>
+                  <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border">
+                    <h3 className="text-sm font-bold text-[var(--text)] mb-3">{t.portTimeEvolution}</h3>
                     <ResponsiveContainer width="100%" height={180}>
                       <LineChart data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" />
@@ -327,12 +327,12 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     </ResponsiveContainer>
                   </div>
                 )}
-                <div className="bg-white p-4 rounded-lg border">
-                  <h3 className="text-sm font-bold text-gray-700 mb-3">{t.annualComparison}</h3>
+                <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border">
+                  <h3 className="text-sm font-bold text-[var(--text)] mb-3">{t.annualComparison}</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full text-xs">
                       <thead>
-                        <tr className="border-b bg-gray-50">
+                        <tr className="border-b bg-[var(--afcfta-card2)]">
                           <th className="text-left p-2">{t.year}</th>
                           <th className="text-right p-2">{t.teu}</th>
                           <th className="text-right p-2">{language === 'fr' ? 'Navires' : 'Vessels'}</th>
@@ -341,7 +341,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                       </thead>
                       <tbody>
                         {chartData.map((stat, idx) => (
-                          <tr key={idx} className="border-b hover:bg-gray-50">
+                          <tr key={idx} className="border-b hover:bg-[var(--afcfta-card2)]">
                             <td className="p-2 font-bold">{stat.year}</td>
                             <td className="text-right p-2">{formatNumber(stat.teu)}</td>
                             <td className="text-right p-2">{formatNumber(stat.vessels)}</td>
@@ -354,15 +354,15 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 </div>
               </div>
             ) : (
-              <div className="text-center p-8 text-gray-500"><p>{t.noHistorical}</p></div>
+              <div className="text-center p-8 text-[var(--afcfta-muted)]"><p>{t.noHistorical}</p></div>
             )}
           </TabsContent>
 
           {/* LPI */}
           <TabsContent value="lpi" className="mt-4 space-y-4">
             {lpi2023 && (
-              <div className="bg-white p-4 rounded-lg border">
-                <h3 className="text-sm font-bold text-gray-700 mb-3">
+              <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border">
+                <h3 className="text-sm font-bold text-[var(--text)] mb-3">
                   &#x1F4CA; {t.lpiOverall} — World Bank {lpi2023.year || 2023}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
@@ -372,10 +372,10 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                     { label: t.lpiInfra, value: lpi2023.infrastructure_score, icon: '&#x1F3D7;&#xFE0F;' },
                     { label: t.lpiTimeliness, value: lpi2023.timeliness_score, icon: '&#x23F1;&#xFE0F;' },
                   ].map((item, i) => (
-                    <div key={i} className="bg-gray-50 p-3 rounded-lg text-center">
+                    <div key={i} className="bg-[var(--afcfta-card2)] p-3 rounded-lg text-center">
                       <p className={`text-xl font-bold ${lpiScoreColor(item.value)}`}>{item.value ?? 'N/A'}</p>
-                      <p className="text-xs text-gray-600">{item.label}</p>
-                      <p className="text-xs text-gray-400">/5.0</p>
+                      <p className="text-xs text-[var(--afcfta-muted)]">{item.label}</p>
+                      <p className="text-xs text-[var(--afcfta-muted)]">/5.0</p>
                     </div>
                   ))}
                 </div>
@@ -394,73 +394,73 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                   </BarChart>
                 </ResponsiveContainer>
                 {lpi2023.world_rank && (
-                  <p className="mt-2 text-xs text-gray-500 text-right">
+                  <p className="mt-2 text-xs text-[var(--afcfta-muted)] text-right">
                     Rang mondial: #{lpi2023.world_rank} &#x2022; {lpi2023.source}
                   </p>
                 )}
               </div>
             )}
             {lsci && (
-              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg border border-indigo-200">
-                <h3 className="text-sm font-bold text-indigo-700 mb-2">
+              <div className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
+                <h3 className="text-sm font-bold text-[var(--violet)] mb-2">
                   &#x1F310; LSCI — {language === 'fr' ? 'Connectivité Maritime' : 'Maritime Connectivity'} ({lsci.year})
                 </h3>
                 <div className="flex items-center gap-6">
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-indigo-900">{lsci.value}</p>
-                    <p className="text-xs text-gray-600">/100</p>
+                    <p className="text-3xl font-bold text-[var(--violet)]">{lsci.value}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">/100</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-indigo-700">#{lsci.world_rank}</p>
-                    <p className="text-xs text-gray-600">{t.worldRank}</p>
+                    <p className="text-2xl font-bold text-[var(--violet)]">#{lsci.world_rank}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t.worldRank}</p>
                   </div>
                 </div>
               </div>
             )}
             {globalBenchmarks && (
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <h3 className="text-sm font-bold text-gray-700 mb-3">&#x1F30D; {t.globalBenchmarks}</h3>
+              <div className="bg-[var(--afcfta-card2)] p-4 rounded-lg border">
+                <h3 className="text-sm font-bold text-[var(--text)] mb-3">&#x1F30D; {t.globalBenchmarks}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="bg-orange-50 p-3 rounded border-l-4 border-orange-400">
-                    <p className="text-xs font-semibold text-orange-700">{t.africaAvg}</p>
-                    <p className="text-xl font-bold text-orange-900">{globalBenchmarks.africa_avg_dwell_days} {t.days}</p>
-                    <p className="text-xs text-gray-500">{globalBenchmarks.africa_avg_source}</p>
+                  <div className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] p-3 rounded border-l-4 border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
+                    <p className="text-xs font-semibold text-[var(--terra)]">{t.africaAvg}</p>
+                    <p className="text-xl font-bold text-[var(--terra)]">{globalBenchmarks.africa_avg_dwell_days} {t.days}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{globalBenchmarks.africa_avg_source}</p>
                   </div>
                   {globalBenchmarks.global_median_dwell_days_h2_2023 && (
-                    <div className="bg-green-50 p-3 rounded border-l-4 border-green-400">
-                      <p className="text-xs font-semibold text-green-700">{t.globalMedian}</p>
-                      <p className="text-xl font-bold text-green-900">{globalBenchmarks.global_median_dwell_days_h2_2023} {t.days}</p>
+                    <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-3 rounded border-l-4 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+                      <p className="text-xs font-semibold text-[var(--success)]">{t.globalMedian}</p>
+                      <p className="text-xl font-bold text-[var(--success)]">{globalBenchmarks.global_median_dwell_days_h2_2023} {t.days}</p>
                     </div>
                   )}
                 </div>
               </div>
             )}
             {trsAnalysis && (
-              <div className={`p-4 rounded-lg border-l-4 ${trsAnalysis.warning ? 'bg-yellow-50 border-yellow-400' : 'bg-blue-50 border-blue-400'}`}>
-                <h3 className="text-sm font-bold text-gray-700 mb-2">
+              <div className={`p-4 rounded-lg border-l-4 ${trsAnalysis.warning ? 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]' : 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--info)_30%,transparent)]'}`}>
+                <h3 className="text-sm font-bold text-[var(--text)] mb-2">
                   &#x1F4CB; TRS — Time Release Study
                   {trsAnalysis.source_reliability_label && (
-                    <Badge className="ml-2 text-xs bg-yellow-100 text-yellow-800">{trsAnalysis.source_reliability_label}</Badge>
+                    <Badge className="ml-2 text-xs bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]">{trsAnalysis.source_reliability_label}</Badge>
                   )}
                 </h3>
                 {trsAnalysis.warning && (
-                  <p className="text-xs text-yellow-700 mb-2 italic">{trsAnalysis.warning.substring(0, 200)}&#x2026;</p>
+                  <p className="text-xs text-[var(--gold)] mb-2 italic">{trsAnalysis.warning.substring(0, 200)}&#x2026;</p>
                 )}
                 {trsAnalysis.factual_data_points?.length > 0 && (
                   <div className="mb-2">
-                    <p className="text-xs font-semibold text-gray-600 mb-1">{t.factualData}:</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.factualData}:</p>
                     <ul className="list-disc list-inside space-y-0.5">
                       {trsAnalysis.factual_data_points.map((pt, i) => (
-                        <li key={i} className="text-xs text-gray-700">{pt}</li>
+                        <li key={i} className="text-xs text-[var(--text)]">{pt}</li>
                       ))}
                     </ul>
                   </div>
                 )}
-                {trsAnalysis.notes && <p className="text-xs text-gray-600">{trsAnalysis.notes}</p>}
+                {trsAnalysis.notes && <p className="text-xs text-[var(--afcfta-muted)]">{trsAnalysis.notes}</p>}
               </div>
             )}
             {!lpi2023 && !lsci && !globalBenchmarks && !trsAnalysis && (
-              <div className="text-center p-8 text-gray-400">
+              <div className="text-center p-8 text-[var(--afcfta-muted)]">
                 <p>{language === 'fr' ? 'Aucune donnée LPI disponible' : 'No LPI data available'}</p>
               </div>
             )}
@@ -469,65 +469,65 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
           {/* AUTHORITY */}
           <TabsContent value="authority" className="mt-4 space-y-4">
             {portAuthority ? (
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
-                <h3 className="text-base font-bold text-blue-800 mb-3">&#x1F3DB;&#xFE0F; {portAuthority.name}</h3>
+              <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                <h3 className="text-base font-bold text-[var(--info)] mb-3">&#x1F3DB;&#xFE0F; {portAuthority.name}</h3>
                 <div className="space-y-2 text-sm">
                   {portAuthority.address && (
                     <p className="flex items-start gap-2">
-                      <span className="text-blue-500">&#x1F4CD;</span><span>{portAuthority.address}</span>
+                      <span className="text-[var(--info)]">&#x1F4CD;</span><span>{portAuthority.address}</span>
                     </p>
                   )}
                   {portAuthority.contact_phone && (
                     <p className="flex items-center gap-2">
-                      <span className="text-blue-500">&#x1F4DE;</span>
-                      <a href={`tel:${portAuthority.contact_phone}`} className="text-blue-600 hover:underline">{portAuthority.contact_phone}</a>
+                      <span className="text-[var(--info)]">&#x1F4DE;</span>
+                      <a href={`tel:${portAuthority.contact_phone}`} className="text-[var(--info)] hover:underline">{portAuthority.contact_phone}</a>
                     </p>
                   )}
                   {portAuthority.contact_email && (
                     <p className="flex items-center gap-2">
-                      <span className="text-blue-500">&#x2709;&#xFE0F;</span>
-                      <a href={`mailto:${portAuthority.contact_email}`} className="text-blue-600 hover:underline">{portAuthority.contact_email}</a>
+                      <span className="text-[var(--info)]">&#x2709;&#xFE0F;</span>
+                      <a href={`mailto:${portAuthority.contact_email}`} className="text-[var(--info)] hover:underline">{portAuthority.contact_email}</a>
                     </p>
                   )}
                   {portAuthority.website && (
                     <p className="flex items-center gap-2">
-                      <span className="text-blue-500">&#x1F310;</span>
-                      <a href={portAuthority.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{portAuthority.website}</a>
+                      <span className="text-[var(--info)]">&#x1F310;</span>
+                      <a href={portAuthority.website} target="_blank" rel="noopener noreferrer" className="text-[var(--info)] hover:underline">{portAuthority.website}</a>
                     </p>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="text-center p-6 text-gray-400">
+              <div className="text-center p-6 text-[var(--afcfta-muted)]">
                 <p>{language === 'fr' ? 'Données autorité non disponibles' : 'Port authority data unavailable'}</p>
               </div>
             )}
             {logisticsNetwork && (
-              <div className="bg-white p-4 rounded-lg border">
-                <h3 className="text-sm font-bold text-gray-700 mb-3">&#x1F517; {t.logistics_network}</h3>
+              <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border">
+                <h3 className="text-sm font-bold text-[var(--text)] mb-3">&#x1F517; {t.logistics_network}</h3>
                 {logisticsNetwork.global_carriers_present?.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{t.global_carriers}</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] uppercase mb-1">{t.global_carriers}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.global_carriers_present.map((c, i) => (
-                        <Badge key={i} className="bg-blue-100 text-blue-800 text-xs">{c}</Badge>
+                        <Badge key={i} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] text-xs">{c}</Badge>
                       ))}
                     </div>
                   </div>
                 )}
                 {logisticsNetwork.regional_specialists_present?.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{t.regional_specialists}</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] uppercase mb-1">{t.regional_specialists}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.regional_specialists_present.map((c, i) => (
-                        <Badge key={i} className="bg-green-100 text-green-800 text-xs">{c}</Badge>
+                        <Badge key={i} className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs">{c}</Badge>
                       ))}
                     </div>
                   </div>
                 )}
                 {logisticsNetwork.service_providers_available?.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{t.service_providers}</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] uppercase mb-1">{t.service_providers}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.service_providers_available.map((s, i) => (
                         <Badge key={i} variant="outline" className="text-xs">{s}</Badge>
@@ -541,37 +541,37 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
 
           {/* INFO */}
           <TabsContent value="info" className="mt-4 space-y-3">
-            <div className="p-3 bg-gray-100 rounded-lg">
+            <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg">
               <p className="text-sm">
                 <span className="font-semibold">&#x1F4CD; {t.coordinates}:</span>{' '}
                 {port.geo_lat ?? port.latitude}, {port.geo_lon ?? port.longitude}
               </p>
             </div>
             {port.timezone && (
-              <div className="p-3 bg-gray-100 rounded-lg">
+              <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg">
                 <p className="text-sm"><span className="font-semibold">&#x1F550; {t.timezone}:</span> {port.timezone}</p>
               </div>
             )}
             {port.un_locode && (
-              <div className="p-3 bg-gray-100 rounded-lg">
+              <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg">
                 <p className="text-sm"><span className="font-semibold">&#x1F516; UN LOCODE:</span> {port.un_locode}</p>
               </div>
             )}
-            <div className="p-3 bg-gray-100 rounded-lg">
+            <div className="p-3 bg-[var(--afcfta-card2)] rounded-lg">
               <p className="text-sm">
                 <span className="font-semibold">&#x1F4C5; {t.lastUpdate}:</span>{' '}
                 {perfMetrics.last_updated || '2024'}
               </p>
             </div>
             {latestStats.source && (
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <p className="text-xs text-blue-700">
+              <div className="p-3 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg">
+                <p className="text-xs text-[var(--info)]">
                   <span className="font-semibold">{t.source}:</span> {latestStats.source}
                 </p>
               </div>
             )}
-            <div className="p-3 bg-blue-50 rounded-lg">
-              <p className="text-xs text-blue-700">
+            <div className="p-3 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg">
+              <p className="text-xs text-[var(--info)]">
                 <span className="font-semibold">{t.source}:</span>{' '}
                 UNCTAD Maritime Transport Review 2024 | World Bank LPI 2023 | AfCFTA Secretariat
               </p>

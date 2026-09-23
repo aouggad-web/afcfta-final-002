@@ -120,7 +120,7 @@ function ProductionMacro({ language = 'fr' }) {
     return `${value.toLocaleString(locale)} USD`;
   };
 
-  const seriesColors = ['#9b6ef5', '#4f8ef7', '#20c997', '#d4891a'];
+  const seriesColors = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)'];
 
   return (
     <div className="space-y-6">
@@ -138,11 +138,11 @@ function ProductionMacro({ language = 'fr' }) {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              <Badge className="bg-[rgba(255,255,255,0.06)] text-[var(--text)] border border-[rgba(255,255,255,0.08)]">
+              <Badge className="bg-[var(--overlay)] text-[var(--text)] border border-[var(--overlay-border)]">
                 {t('production.macro.panel.source')}: World Bank
               </Badge>
               {coverageYears.length > 0 && (
-                <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
+                <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                   {coverageYears.length > 1
                     ? `${coverageYears[0]}–${coverageYears[coverageYears.length - 1]}`
                     : `${coverageYears[0]}`}
@@ -165,10 +165,10 @@ function ProductionMacro({ language = 'fr' }) {
 
               {macroData && (
                 <div className="flex flex-wrap gap-2 xl:justify-end">
-                  <Badge className="bg-[rgba(79,142,247,0.12)] text-[#8db8ff] border border-[rgba(79,142,247,0.22)]">
+                  <Badge className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                     {macroData.total_records} {t('production.macro.panel.records')}
                   </Badge>
-                  <Badge className="bg-[rgba(32,201,151,0.12)] text-[#66e0bb] border border-[rgba(32,201,151,0.22)]">
+                  <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                     {sectorNames.length} {t('production.macro.panel.sectors')}
                   </Badge>
                 </div>
@@ -213,13 +213,13 @@ function ProductionMacro({ language = 'fr' }) {
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'rgba(17,24,39,0.96)',
+                      backgroundColor: 'var(--afcfta-card)',
                       border: '1px solid rgba(212,137,26,0.18)',
                       borderRadius: '10px',
-                      color: '#eae0d0',
+                      color: 'var(--text)',
                     }}
                   />
-                  <Legend wrapperStyle={{ color: '#cbd5e1', fontSize: '12px' }} />
+                  <Legend wrapperStyle={{ color: 'var(--text)', fontSize: '12px' }} />
                   {sectorNames.map((sector, index) => (
                     <Line
                       key={sector}
@@ -260,13 +260,13 @@ function ProductionMacro({ language = 'fr' }) {
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: 'rgba(17,24,39,0.96)',
+                      backgroundColor: 'var(--afcfta-card)',
                       border: '1px solid rgba(212,137,26,0.18)',
                       borderRadius: '10px',
-                      color: '#eae0d0',
+                      color: 'var(--text)',
                     }}
                   />
-                  <Legend wrapperStyle={{ color: '#cbd5e1', fontSize: '12px' }} />
+                  <Legend wrapperStyle={{ color: 'var(--text)', fontSize: '12px' }} />
                   {sectorNames.map((sector, index) => (
                     <Bar
                       key={sector}
@@ -294,7 +294,7 @@ function ProductionMacro({ language = 'fr' }) {
                       key={record.year}
                       className="rounded-lg border p-3 min-w-[110px]"
                       style={{
-                        background: 'rgba(17,24,39,0.55)',
+                        background: 'var(--afcfta-card2)',
                         borderColor: 'rgba(255,255,255,0.05)',
                       }}
                     >
@@ -304,7 +304,7 @@ function ProductionMacro({ language = 'fr' }) {
                         </p>
                         {record.is_projection && (
                           <span
-                            className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                            className="text-[11px] font-semibold px-1.5 py-0.5 rounded"
                             style={{ background: 'rgba(155,110,245,0.18)', color: '#c3a3ff' }}
                             title={t('production.macro.panel.projectionHint')}
                           >
@@ -328,7 +328,7 @@ function ProductionMacro({ language = 'fr' }) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-4">
-                <p className="text-xs text-gray-500 mb-4 max-w-3xl">{t('production.macro.panel.usdHint')}</p>
+                <p className="text-xs text-[var(--afcfta-muted)] mb-4 max-w-3xl">{t('production.macro.panel.usdHint')}</p>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {usdSectorNames.map((sectorName) => {
                     const series = usdSectors[sectorName] || [];
@@ -347,7 +347,7 @@ function ProductionMacro({ language = 'fr' }) {
                         <p className="text-xl font-bold mt-1 text-[var(--text)]">
                           {formatUsd(latest.value)}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-[var(--afcfta-muted)] mt-1">
                           {latest.year} · {series.length} {t('production.macro.panel.year').toLowerCase()}
                           {series.length > 1 ? 's' : ''}
                         </p>
@@ -381,9 +381,9 @@ function ProductionMacro({ language = 'fr' }) {
                       <Badge
                         className="border"
                         style={{
-                          background: `${seriesColors[index % seriesColors.length]}22`,
-                          color: seriesColors[index % seriesColors.length],
-                          borderColor: `${seriesColors[index % seriesColors.length]}55`,
+                          background: `color-mix(in srgb, ${seriesColors[index % seriesColors.length]} 13%, transparent)`,
+                          color: `color-mix(in srgb, ${seriesColors[index % seriesColors.length]} 40%, var(--text))`,
+                          borderColor: `color-mix(in srgb, ${seriesColors[index % seriesColors.length]} 33%, transparent)`,
                         }}
                       >
                         {records.length} {t('production.macro.panel.records')}
@@ -396,7 +396,7 @@ function ProductionMacro({ language = 'fr' }) {
                           key={record.year}
                           className="rounded-lg border p-3"
                           style={{
-                            background: 'rgba(17,24,39,0.55)',
+                            background: 'var(--afcfta-card2)',
                             borderColor: 'rgba(255,255,255,0.05)',
                           }}
                         >
@@ -406,7 +406,7 @@ function ProductionMacro({ language = 'fr' }) {
                             </p>
                             {record.is_projection && (
                               <span
-                                className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                                className="text-[11px] font-semibold px-1.5 py-0.5 rounded"
                                 style={{
                                   background: 'rgba(155,110,245,0.18)',
                                   color: '#c3a3ff',

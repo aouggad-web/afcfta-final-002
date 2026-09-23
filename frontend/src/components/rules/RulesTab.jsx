@@ -111,12 +111,12 @@ export default function RulesTab({ language = 'fr' }) {
   return (
     <div className="space-y-6">
       <Card className="shadow-xl border-t-4 border-t-orange-500">
-        <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50">
-          <CardTitle className="text-2xl font-bold text-orange-700 flex items-center gap-2">
+        <CardHeader className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]">
+          <CardTitle className="text-2xl font-bold text-[var(--terra)] flex items-center gap-2">
             <FileText className="w-6 h-6" />
             <span>{t.title}</span>
           </CardTitle>
-          <CardDescription className="font-semibold text-gray-700">
+          <CardDescription className="font-semibold text-[var(--text)]">
             {t.searchOrBrowse}
           </CardDescription>
         </CardHeader>
@@ -134,7 +134,7 @@ export default function RulesTab({ language = 'fr' }) {
               type="button"
               variant="outline"
               onClick={() => setShowBrowser(!showBrowser)}
-              className="w-full text-orange-600 border-orange-300 hover:bg-orange-50"
+              className="w-full text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)] hover:bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]"
               data-testid="toggle-rules-hs-browser"
             >
               {showBrowser ? (
@@ -153,7 +153,7 @@ export default function RulesTab({ language = 'fr' }) {
 
           {/* HS Browser Panel */}
           {showBrowser && (
-            <div className="border-2 border-orange-200 rounded-lg overflow-hidden">
+            <div className="border-2 border-[color-mix(in_srgb,var(--terra)_30%,transparent)] rounded-lg overflow-hidden">
               <HSCodeBrowser
                 onSelect={handleBrowserSelect}
                 language={language}
@@ -168,8 +168,8 @@ export default function RulesTab({ language = 'fr' }) {
       {loading && (
         <Card className="shadow-lg border-l-4 border-l-blue-500">
           <CardContent className="py-8 text-center">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p className="text-gray-600">{t.loadingRules}</p>
+            <div className="animate-spin w-8 h-8 border-4 border-[color-mix(in_srgb,var(--info)_30%,transparent)] border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-[var(--afcfta-muted)]">{t.loadingRules}</p>
           </CardContent>
         </Card>
       )}
@@ -178,76 +178,76 @@ export default function RulesTab({ language = 'fr' }) {
       {!loading && rulesOfOrigin && rulesOfOrigin.rule && (
         <Card className="shadow-2xl border-l-4 border-l-amber-500">
           <CardHeader className="bg-gradient-to-r from-amber-100 to-yellow-100">
-            <CardTitle className="text-xl font-bold text-amber-800 flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+            <CardTitle className="text-xl font-bold text-[var(--gold)] flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-[var(--success)]" />
               {t.rulesForCode} {rulesOfOrigin.hs_code}
             </CardTitle>
-            <CardDescription className="font-semibold text-amber-700 flex items-center gap-2">
+            <CardDescription className="font-semibold text-[var(--gold)] flex items-center gap-2">
               <Globe className="w-4 h-4" />
               {t.sector}: {getSectorName(rulesOfOrigin.hs_code)}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             {rulesOfOrigin.warning && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+              <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-lg p-3 text-sm text-[var(--gold)]">
                 ⚠️ {rulesOfOrigin.warning}
               </div>
             )}
 
             {rulesOfOrigin.status === 'YTB' && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 flex items-start gap-2 text-sm text-orange-800">
+              <div className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--terra)_30%,transparent)] rounded-lg p-3 flex items-start gap-2 text-sm text-[var(--terra)]">
                 <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
                 <span>{t.ytbWarning}</span>
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                <h4 className="font-semibold mb-2 text-gray-700">{t.ruleType}</h4>
-                <Badge variant="secondary" className="text-base px-4 py-2 bg-orange-100 text-orange-800">
+              <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] shadow-sm">
+                <h4 className="font-semibold mb-2 text-[var(--text)]">{t.ruleType}</h4>
+                <Badge variant="secondary" className="text-base px-4 py-2 bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]">
                   {rulesOfOrigin.rules?.primary_rule?.name || rulesOfOrigin.rule.category || rulesOfOrigin.match_type}
                 </Badge>
               </div>
 
-              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                <h4 className="font-semibold mb-2 text-gray-700">{t.requirement}</h4>
-                <p className="text-sm font-medium text-gray-800">{rulesOfOrigin.rule.psr}</p>
+              <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] shadow-sm">
+                <h4 className="font-semibold mb-2 text-[var(--text)]">{t.requirement}</h4>
+                <p className="text-sm font-medium text-[var(--text)]">{rulesOfOrigin.rule.psr}</p>
               </div>
             </div>
 
             {rulesOfOrigin.rules?.primary_rule?.explanation && (
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 flex items-start gap-2">
-                <Info className="w-4 h-4 mt-0.5 text-amber-700 shrink-0" />
+              <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] flex items-start gap-2">
+                <Info className="w-4 h-4 mt-0.5 text-[var(--gold)] shrink-0" />
                 <div>
-                  <h4 className="font-semibold mb-1 text-amber-800">{t.explanation}</h4>
-                  <p className="text-sm text-amber-800">{rulesOfOrigin.rules.primary_rule.explanation}</p>
+                  <h4 className="font-semibold mb-1 text-[var(--gold)]">{t.explanation}</h4>
+                  <p className="text-sm text-[var(--gold)]">{rulesOfOrigin.rules.primary_rule.explanation}</p>
                 </div>
               </div>
             )}
 
             {rulesOfOrigin.rules?.alternative_rule && (
-              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                <h4 className="font-semibold mb-2 text-gray-700">{t.alternativeRule}</h4>
+              <div className="bg-[var(--afcfta-card)] p-4 rounded-lg border border-[var(--afcfta-border)] shadow-sm">
+                <h4 className="font-semibold mb-2 text-[var(--text)]">{t.alternativeRule}</h4>
                 <Badge variant="outline" className="text-sm px-3 py-1">
                   {rulesOfOrigin.rules.alternative_rule.name}
                 </Badge>
                 {rulesOfOrigin.rules.alternative_rule.explanation && (
-                  <p className="text-sm text-gray-600 mt-2">{rulesOfOrigin.rules.alternative_rule.explanation}</p>
+                  <p className="text-sm text-[var(--afcfta-muted)] mt-2">{rulesOfOrigin.rules.alternative_rule.explanation}</p>
                 )}
               </div>
             )}
 
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
-              <h4 className="font-semibold mb-3 text-green-800">{t.minRegionalContent}</h4>
+            <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+              <h4 className="font-semibold mb-3 text-[var(--success)]">{t.minRegionalContent}</h4>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
                   <Progress value={rulesOfOrigin.rule.value_added_threshold || 30} className="w-full h-4" />
                 </div>
-                <span className="text-2xl font-bold text-green-700">
+                <span className="text-2xl font-bold text-[var(--success)]">
                   {rulesOfOrigin.rule.value_added_threshold || 30}%
                 </span>
               </div>
-              <p className="text-sm text-green-700 mt-2">
+              <p className="text-sm text-[var(--success)] mt-2">
                 {rulesOfOrigin.rule.value_added_threshold || 30}% {t.regionalContentRequired}
               </p>
             </div>
@@ -255,15 +255,15 @@ export default function RulesTab({ language = 'fr' }) {
             {rulesOfOrigin.rule.notes && (
               <>
                 <Separator />
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <h4 className="font-semibold text-blue-800 mb-2">{t.adminInfo}</h4>
-                  <p className="text-sm text-blue-700">{rulesOfOrigin.rule.notes}</p>
+                <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
+                  <h4 className="font-semibold text-[var(--info)] mb-2">{t.adminInfo}</h4>
+                  <p className="text-sm text-[var(--info)]">{rulesOfOrigin.rule.notes}</p>
                 </div>
               </>
             )}
 
             {rulesOfOrigin.source && (
-              <p className="text-xs text-gray-400 text-right">{t.source}: {rulesOfOrigin.source}</p>
+              <p className="text-xs text-[var(--afcfta-muted)] text-right">{t.source}: {rulesOfOrigin.source}</p>
             )}
           </CardContent>
         </Card>

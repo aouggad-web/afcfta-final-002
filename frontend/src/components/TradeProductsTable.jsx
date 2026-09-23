@@ -182,7 +182,7 @@ function TradeProductsTable({ language = 'fr' }) {
                   </span>
                 </td>
                 <td style={{ textAlign: 'right' }}>
-                  <span style={{ fontWeight: 700, color: valueColor }}>
+                  <span style={{ fontWeight: 700, color: `color-mix(in srgb, ${valueColor} 40%, var(--text))`}}>
                     {formatValue(product.value_mln_usd)}
                   </span>
                 </td>
@@ -225,7 +225,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="spc-metrics">
               <div className="spc-metric">
                 <span className="spc-label">{t.value}</span>
-                <span className="spc-value" style={{ color: valueColor }}>{formatValue(product.value_mln_usd)}</span>
+                <span className="spc-value" style={{ color: `color-mix(in srgb, ${valueColor} 40%, var(--text))`}}>{formatValue(product.value_mln_usd)}</span>
               </div>
               <div className="spc-metric">
                 <span className="spc-label">{t.share}</span>
@@ -267,7 +267,7 @@ function TradeProductsTable({ language = 'fr' }) {
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div>
             <h2 className="stats-hero-title flex items-center gap-2">
-              <Package style={{ width: 26, height: 26, color: '#D4891A', flexShrink: 0 }} />
+              <Package style={{ width: 26, height: 26, color: 'var(--gold)', flexShrink: 0 }} />
               {t.title}
             </h2>
             <p className="stats-hero-subtitle">{t.subtitle}</p>
@@ -283,7 +283,7 @@ function TradeProductsTable({ language = 'fr' }) {
               ].map((item, i) => (
                 <div key={i} style={{ background: 'var(--overlay)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
                   <p style={{ fontSize: '0.65rem', color: 'var(--afcfta-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
-                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0', whiteSpace: 'nowrap' }}>{item.value}</p>
+                  <p style={{ fontSize: '1.2rem', fontWeight: 800, color: `color-mix(in srgb, ${item.color} 40%, var(--text))`, margin: '4px 0 0', whiteSpace: 'nowrap' }}>{item.value}</p>
                 </div>
               ))}
             </div>

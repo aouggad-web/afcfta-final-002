@@ -152,8 +152,8 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
   );
 
   const surfaceClass = isProminent
-    ? 'bg-[linear-gradient(135deg,rgba(24,32,48,0.98),rgba(18,26,40,0.98))] border-[rgba(212,137,26,0.28)]'
-    : 'bg-[rgba(24,32,48,0.96)] border-[rgba(212,137,26,0.18)]';
+    ? 'bg-[image:var(--card-grad)] border-[color-mix(in_srgb,var(--gold)_35%,transparent)]'
+    : 'bg-[var(--afcfta-card)] border-[var(--afcfta-border)]';
 
   return (
     <div className="relative w-full">
@@ -228,7 +228,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
               left: dropdownPosition.left,
               width: dropdownPosition.width,
               zIndex: 99999,
-              background: 'rgba(17, 24, 39, 0.985)',
+              background: 'var(--afcfta-card)',
               borderColor: 'rgba(212, 137, 26, 0.22)',
               boxShadow: '0 30px 70px rgba(0,0,0,0.55)',
             }}
@@ -237,7 +237,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
               className="p-3 border-b"
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: 'rgba(12,18,25,0.96)',
+                background: 'var(--afcfta-card2)',
                 borderColor: 'rgba(212,137,26,0.12)',
               }}
             >
@@ -252,7 +252,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
                   onClick={(e) => e.stopPropagation()}
                   className="w-full pl-10 pr-4 py-2.5 rounded-lg focus:outline-none text-sm border"
                   style={{
-                    background: 'rgba(24,32,48,0.95)',
+                    background: 'var(--afcfta-card)',
                     color: 'var(--text)',
                     borderColor: 'rgba(212,137,26,0.18)',
                   }}
@@ -266,7 +266,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
               </p>
             </div>
 
-            <div className="max-h-80 overflow-y-auto" style={{ background: 'rgba(17,24,39,0.985)' }}>
+            <div className="max-h-80 overflow-y-auto" style={{ background: 'var(--afcfta-card)' }}>
               {!searchTerm && majorEconomiesFiltered.length > 0 && (
                 <div className="p-2.5">
                   <div
@@ -358,7 +358,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
                           <span className="flex-1 text-sm truncate">{country.name}</span>
                           <Badge
                             variant="outline"
-                            className="text-[10px] font-mono border-[rgba(212,137,26,0.18)] text-[var(--afcfta-muted)]"
+                            className="text-[11px] font-mono border-[rgba(212,137,26,0.18)] text-[var(--afcfta-muted)]"
                           >
                             {country.code}
                           </Badge>

@@ -79,8 +79,8 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
     <Card>
       <CardContent className="flex items-center justify-center h-48">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto" />
-          <p className="mt-3 text-gray-600">{t.loading}</p>
+          <Loader2 className="w-10 h-10 animate-spin text-[var(--info)] mx-auto" />
+          <p className="mt-3 text-[var(--afcfta-muted)]">{t.loading}</p>
         </div>
       </CardContent>
     </Card>
@@ -88,7 +88,7 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
 
   if (error || !data) return (
     <Card className="border-l-4 border-l-red-500">
-      <CardContent className="py-8 text-center text-red-600">{error || t.noData}</CardContent>
+      <CardContent className="py-8 text-center text-[var(--danger)]">{error || t.noData}</CardContent>
     </Card>
   );
 
@@ -114,13 +114,13 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-white shadow-xl">
+      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-[var(--afcfta-border)] text-white shadow-xl">
         <CardHeader>
           <CardTitle className="text-xl font-bold flex items-center gap-3">
-            <Globe className="w-6 h-6 text-blue-300" />
+            <Globe className="w-6 h-6 text-[var(--info)]" />
             {t.title}
           </CardTitle>
-          <CardDescription className="text-slate-300">
+          <CardDescription className="text-[var(--text)]">
             {t.subtitle}
           </CardDescription>
         </CardHeader>
@@ -132,8 +132,8 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
                 onClick={() => setSortBy(key)}
                 className={`p-2 rounded-lg text-center transition-all ${
                   sortBy === key
-                    ? 'bg-blue-600 text-white shadow-lg scale-105'
-                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    ? 'bg-[var(--info)] text-[var(--bg)] shadow-lg scale-105'
+                    : 'bg-[var(--afcfta-card2)] text-[var(--text)] hover:bg-slate-600'
                 }`}
               >
                 <p className="text-xs font-semibold">{label}</p>
@@ -145,8 +145,8 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
 
       {/* Top 10 Chart */}
       <Card className="shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
-          <CardTitle className="text-lg text-blue-700 flex items-center gap-2">
+        <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
+          <CardTitle className="text-lg text-[var(--info)] flex items-center gap-2">
             <Award className="w-5 h-5" /> {t.topCountries}
           </CardTitle>
         </CardHeader>
@@ -185,23 +185,23 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-blue-600" />
+            <TrendingUp className="w-5 h-5 text-[var(--info)]" />
             {language === 'fr' ? 'Classement Complet — 54 pays africains' : 'Full Ranking — 54 African countries'}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto max-h-96 overflow-y-auto">
             <table className="w-full text-xs">
-              <thead className="sticky top-0 bg-gray-100 z-10">
+              <thead className="sticky top-0 bg-[var(--afcfta-card2)] z-10">
                 <tr>
                   <th className="text-center p-2 font-bold">{t.rank}</th>
                   <th className="text-left p-2 font-bold">{t.country}</th>
-                  <th className="text-center p-2 font-bold text-blue-700">{t.overall}</th>
-                  <th className="text-center p-2 font-bold text-red-600">{t.customs}</th>
-                  <th className="text-center p-2 font-bold text-yellow-600">{t.infrastructure}</th>
-                  <th className="text-center p-2 font-bold text-green-600">{t.quality}</th>
-                  <th className="text-center p-2 font-bold text-purple-600">{t.tracking}</th>
-                  <th className="text-center p-2 font-bold text-cyan-600">{t.timeliness}</th>
+                  <th className="text-center p-2 font-bold text-[var(--info)]">{t.overall}</th>
+                  <th className="text-center p-2 font-bold text-[var(--danger)]">{t.customs}</th>
+                  <th className="text-center p-2 font-bold text-[var(--gold)]">{t.infrastructure}</th>
+                  <th className="text-center p-2 font-bold text-[var(--success)]">{t.quality}</th>
+                  <th className="text-center p-2 font-bold text-[var(--violet)]">{t.tracking}</th>
+                  <th className="text-center p-2 font-bold text-[var(--atlantic)]">{t.timeliness}</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,7 +210,7 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
                   .map((country, idx) => {
                     const overall = country.lpi_overall?.value;
                     return (
-                      <tr key={country.country_iso} className={`border-b ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-blue-50`}>
+                      <tr key={country.country_iso} className={`border-b ${idx % 2 === 0 ? 'bg-[var(--afcfta-card)]' : 'bg-[var(--afcfta-card2)]'} hover:bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]`}>
                         <td className="text-center p-2">
                           <Badge variant={idx < 3 ? 'default' : 'outline'} className={idx === 0 ? 'bg-yellow-500' : idx === 1 ? 'bg-gray-400' : idx === 2 ? 'bg-amber-700' : ''}>
                             #{idx + 1}
@@ -218,12 +218,12 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
                         </td>
                         <td className="p-2 font-medium">{country.country_name}</td>
                         <td className="text-center p-2">
-                          <span className="font-bold" style={{ color: scoreColor(overall) }}>
+                          <span className="font-bold" style={{ color: `color-mix(in srgb, ${scoreColor(overall)} 40%, var(--text))`}}>
                             {overall?.toFixed(2) || 'N/A'}
                           </span>
                         </td>
                         {['lpi_customs', 'lpi_infrastructure', 'lpi_logistics_quality', 'lpi_tracking', 'lpi_timeliness'].map(dim => (
-                          <td key={dim} className="text-center p-2 text-gray-600">
+                          <td key={dim} className="text-center p-2 text-[var(--afcfta-muted)]">
                             {country[dim]?.value?.toFixed(2) || '—'}
                           </td>
                         ))}
@@ -237,9 +237,9 @@ export default function WBLogisticsPanel({ language = 'fr' }) {
       </Card>
 
       {/* Source */}
-      <Card className="bg-gray-50 border-gray-200">
+      <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
         <CardContent className="py-3">
-          <p className="text-xs text-gray-500 text-center">{t.source}</p>
+          <p className="text-xs text-[var(--afcfta-muted)] text-center">{t.source}</p>
         </CardContent>
       </Card>
     </div>

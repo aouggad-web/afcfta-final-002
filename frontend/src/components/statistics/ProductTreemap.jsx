@@ -87,7 +87,15 @@ const TEXTS = {
 /* ── Contenu personnalisé d'une cellule du treemap ─────────────── */
 const TreemapCell = (props) => {
   const { x, y, width, height, index, name, share, colorIndex } = props;
-  const fill = PALETTE[(colorIndex ?? index) % PALETTE.length];
+  // Skill dataviz : des produits sont des catégories nominales — une seule
+  // teinte (série 1), en lavis plutôt qu'en aplat saturé ; la queue repliée
+  // « Autres » en lavis neutre. Les cellules sont séparées par un espace de
+  // 2 px couleur de surface, et les libellés, posés sur un lavis, restent à
+  // l'encre du thème (contraste assuré dans les deux thèmes).
+  const autres = (colorIndex ?? index) === PALETTE.length - 1;
+  const fill = autres
+    ? 'color-mix(in srgb, var(--afcfta-muted) 16%, var(--afcfta-card))'
+    : 'color-mix(in srgb, var(--series-1) 22%, var(--afcfta-card))';
   const showLabel = width > 64 && height > 30;
   const showShare = width > 64 && height > 48;
   return (
@@ -97,16 +105,16 @@ const TreemapCell = (props) => {
         y={y}
         width={width}
         height={height}
-        rx={3}
-        style={{ fill, stroke: 'rgba(10,14,20,0.65)', strokeWidth: 1.5 }}
+        rx={4}
+        style={{ fill, stroke: 'var(--afcfta-card)', strokeWidth: 2 }}
       />
       {showLabel && (
-        <text x={x + 7} y={y + 18} fill="#fff" fontSize={11} fontWeight={600}>
+        <text x={x + 7} y={y + 18} fill="var(--text)" fontSize={11} fontWeight={600}>
           {name?.length > Math.floor(width / 7) ? `${name.slice(0, Math.floor(width / 7))}…` : name}
         </text>
       )}
       {showShare && (
-        <text x={x + 7} y={y + 34} fill="rgba(255,255,255,0.85)" fontSize={10}>
+        <text x={x + 7} y={y + 34} fill="var(--text-soft)" fontSize={10}>
           {share != null ? `${share.toFixed(1)}%` : ''}
         </text>
       )}
@@ -133,7 +141,7 @@ const makeTooltip = (txt) => ({ active, payload }) => {
       <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>
         {d.hsId ? `${d.hsId} · ` : ''}{d.fullName}
       </p>
-      <p style={{ color: '#D4891A', margin: 0 }}>
+      <p style={{ color: 'var(--gold)', margin: 0 }}>
         <strong>{formatUSD(d.size)}</strong>
       </p>
       {d.share != null && (
@@ -235,11 +243,11 @@ export default function ProductTreemap({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="product-treemap">
-      <CardHeader className="bg-[image:var(--card-grad)] text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
-              <LayoutGrid className="w-7 h-7 text-white" />
+              <LayoutGrid className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>

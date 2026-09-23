@@ -182,7 +182,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
     return (
       <div className="stats-empty-state">
         <div className="stats-empty-icon">
-          <BarChart3 style={{ width: 28, height: 28, color: '#D4891A' }} />
+          <BarChart3 style={{ width: 28, height: 28, color: 'var(--gold)' }} />
         </div>
         <p>{t.noData}</p>
       </div>
@@ -190,7 +190,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
   }
 
   /* ── African-themed palette for charts ───────────────────── */
-  const COLORS = ['#1A7A4A', '#1A6B8A', '#D4891A', '#C8531A', '#9B6EF5', '#C8102E', '#0E8A7A', '#D4522A'];
+  const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
   /* ── Custom tooltip ─────────────────────────────────────── */
   const AfricaTooltip = ({ active, payload, label }) => {
@@ -199,7 +199,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       <div style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
         <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
         {payload.map((p, i) => (
-          <p key={i} style={{ color: p.color, margin: '2px 0' }}>
+          <p key={i} style={{ color: `color-mix(in srgb, ${p.color} 40%, var(--text))`, margin: '2px 0' }}>
             {p.name}: <strong>{typeof p.value === 'number' ? `$${p.value.toFixed(1)}B` : p.value}</strong>
           </p>
         ))}
@@ -219,7 +219,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       <div className="stats-chart-card" style={{ padding: '24px' }}>
         {/* Section title with kente accent */}
         <div className="flex items-center gap-3 mb-6">
-          <BarChart3 style={{ width: 22, height: 22, color: '#D4891A', flexShrink: 0 }} />
+          <BarChart3 style={{ width: 22, height: 22, color: 'var(--gold)', flexShrink: 0 }} />
           <div>
             <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text)', margin: 0 }}>
               {t.analysisTitle}
@@ -558,7 +558,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                         </div>
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.expIntraAfr}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#6ee7b7', margin: 0 }}>${country.exports_intra_african.toFixed(1)}B <span style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)' }}>({country.intra_african_percentage}%)</span></p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>${country.exports_intra_african.toFixed(1)}B <span style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)' }}>({country.intra_african_percentage}%)</span></p>
                         </div>
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.impWorld}</p>
@@ -566,7 +566,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                         </div>
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.impIntraAfr}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: '#93c5fd', margin: 0 }}>${country.imports_intra_african.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>${country.imports_intra_african.toFixed(1)}B</p>
                         </div>
                       </div>
                     </div>
@@ -606,7 +606,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                     dataKey="value"
                   >
                     {Object.entries(statistics.sector_performance).slice(0, 8).map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.3)" strokeWidth={1} />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="var(--afcfta-card)" strokeWidth={2} />
                     ))}
                   </Pie>
                   <Tooltip
@@ -639,7 +639,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                           <div className="stats-progress-bar" style={{ width: 60 }}>
                             <div style={{ height: '100%', borderRadius: 2, background: COLORS[index % COLORS.length], width: `${Math.min(100, parseFloat(pct) * 5)}%` }} />
                           </div>
-                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: COLORS[index % COLORS.length], minWidth: 32, textAlign: 'right' }}>{pct}%</span>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: `color-mix(in srgb, ${COLORS[index % COLORS.length]} 40%, var(--text))`, minWidth: 32, textAlign: 'right' }}>{pct}%</span>
                         </div>
                       </div>
                     );

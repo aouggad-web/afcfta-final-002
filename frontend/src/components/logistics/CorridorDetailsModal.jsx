@@ -118,12 +118,12 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <DialogTitle className="text-2xl font-bold text-[var(--text)] flex items-center gap-2">
             <span>{getTypeIcon(corridor.corridor_type)}</span>
             {corridor.corridor_name}
           </DialogTitle>
           <DialogDescription className="flex gap-2 mt-2 flex-wrap">
-            <Badge className="bg-slate-700">{corridor.corridor_type}</Badge>
+            <Badge className="bg-[var(--afcfta-card2)]">{corridor.corridor_type}</Badge>
             <Badge variant="outline">{corridor.status}</Badge>
             {corridor.importance === 'high' && <Badge className="bg-amber-500">⭐ {t.pidaPriority}</Badge>}
             <Badge variant="outline">{corridor.length_km} km</Badge>
@@ -132,8 +132,8 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
 
         {/* Description */}
         {corridor.description && (
-          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
-            <p className="text-sm text-gray-800">
+          <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-4 rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)] mb-4">
+            <p className="text-sm text-[var(--text)]">
               <span className="font-semibold">📋 {t.description}: </span>
               {corridor.description}
             </p>
@@ -143,40 +143,40 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
         {/* KPI Cards Section */}
         {stats.freight_throughput_tons && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+            <Card className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
               <CardContent className="pt-4">
-                <p className="text-xs font-semibold text-blue-700 mb-1">📦 {t.annualFreight}</p>
-                <p className="text-2xl font-bold text-blue-900">{formatNumber(stats.freight_throughput_tons)}</p>
-                <p className="text-xs text-gray-600">{t.tons} ({stats.year || 2024})</p>
+                <p className="text-xs font-semibold text-[var(--info)] mb-1">📦 {t.annualFreight}</p>
+                <p className="text-2xl font-bold text-[var(--info)]">{formatNumber(stats.freight_throughput_tons)}</p>
+                <p className="text-xs text-[var(--afcfta-muted)]">{t.tons} ({stats.year || 2024})</p>
               </CardContent>
             </Card>
 
             {stats.avg_transit_time_hours && (
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+              <Card className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
                 <CardContent className="pt-4">
-                  <p className="text-xs font-semibold text-green-700 mb-1">⏱️ {t.transitTime}</p>
-                  <p className="text-2xl font-bold text-green-900">{stats.avg_transit_time_hours}</p>
-                  <p className="text-xs text-gray-600">{t.hours}</p>
+                  <p className="text-xs font-semibold text-[var(--success)] mb-1">⏱️ {t.transitTime}</p>
+                  <p className="text-2xl font-bold text-[var(--success)]">{stats.avg_transit_time_hours}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{t.hours}</p>
                 </CardContent>
               </Card>
             )}
 
             {stats.avg_border_crossing_time_hours && (
-              <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+              <Card className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
                 <CardContent className="pt-4">
-                  <p className="text-xs font-semibold text-orange-700 mb-1">🚧 {t.borderTime}</p>
-                  <p className="text-2xl font-bold text-orange-900">{stats.avg_border_crossing_time_hours}</p>
-                  <p className="text-xs text-gray-600">{t.hours}</p>
+                  <p className="text-xs font-semibold text-[var(--terra)] mb-1">🚧 {t.borderTime}</p>
+                  <p className="text-2xl font-bold text-[var(--terra)]">{stats.avg_border_crossing_time_hours}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{t.hours}</p>
                 </CardContent>
               </Card>
             )}
 
             {stats.truck_volumes_daily && (
-              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+              <Card className="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                 <CardContent className="pt-4">
-                  <p className="text-xs font-semibold text-purple-700 mb-1">🚛 {t.dailyTraffic}</p>
-                  <p className="text-2xl font-bold text-purple-900">{formatNumber(stats.truck_volumes_daily)}</p>
-                  <p className="text-xs text-gray-600">{t.trucksDay}</p>
+                  <p className="text-xs font-semibold text-[var(--violet)] mb-1">🚛 {t.dailyTraffic}</p>
+                  <p className="text-2xl font-bold text-[var(--violet)]">{formatNumber(stats.truck_volumes_daily)}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{t.trucksDay}</p>
                 </CardContent>
               </Card>
             )}
@@ -185,7 +185,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
 
         {/* Infrastructure Section */}
         <Card className="mb-4">
-          <CardHeader className="bg-gray-50">
+          <CardHeader className="bg-[var(--afcfta-card2)]">
             <CardTitle className="text-lg flex items-center gap-2">
               <span>🔧</span>
               {t.infrastructureRoute}
@@ -194,19 +194,19 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
           <CardContent className="pt-4">
             <div className="space-y-3">
               <div>
-                <p className="text-sm font-semibold text-gray-700">{t.countriesCrossed}:</p>
+                <p className="text-sm font-semibold text-[var(--text)]">{t.countriesCrossed}:</p>
                 <p className="text-base">{corridor.countries_spanned?.join(' → ')}</p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-700">{t.startEndPoints}:</p>
+                <p className="text-sm font-semibold text-[var(--text)]">{t.startEndPoints}:</p>
                 <p className="text-base">{corridor.start_node} → {corridor.end_node}</p>
               </div>
-              <div className="bg-slate-50 p-3 rounded">
-                <p className="text-sm font-semibold text-gray-700 mb-1">{t.technicalDetails}:</p>
-                <p className="text-sm text-gray-800">{corridor.infra_details}</p>
+              <div className="bg-[var(--afcfta-card2)] p-3 rounded">
+                <p className="text-sm font-semibold text-[var(--text)] mb-1">{t.technicalDetails}:</p>
+                <p className="text-sm text-[var(--text)]">{corridor.infra_details}</p>
               </div>
               {stats.source_org && (
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-[var(--afcfta-muted)]">
                   <span className="font-semibold">{t.source}: </span>
                   {stats.source_org}
                 </div>
@@ -229,7 +229,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
               <CardHeader>
                 <CardTitle className="text-lg">{t.logisticsNodesBorder}</CardTitle>
                 {osbpNodes.length > 0 && (
-                  <p className="text-sm text-green-600 font-semibold">✓ {osbpNodes.length} {t.osbpOperational}</p>
+                  <p className="text-sm text-[var(--success)] font-semibold">✓ {osbpNodes.length} {t.osbpOperational}</p>
                 )}
               </CardHeader>
               <CardContent>
@@ -240,10 +240,10 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                         key={idx} 
                         className={`p-3 rounded-lg border-l-4 ${
                           node.is_osbp 
-                            ? 'bg-green-50 border-green-500' 
+                            ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' 
                             : node.node_type === 'border_crossing'
-                            ? 'bg-orange-50 border-orange-500'
-                            : 'bg-blue-50 border-blue-500'
+                            ? 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]'
+                            : 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--info)_30%,transparent)]'
                         }`}
                       >
                         <div className="flex items-start justify-between">
@@ -251,14 +251,14 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                             <p className="font-bold text-base flex items-center gap-2">
                               <span>{getNodeTypeIcon(node.node_type)}</span>
                               {node.node_name}
-                              {node.is_osbp && <Badge className="bg-green-600 text-white text-xs">OSBP</Badge>}
+                              {node.is_osbp && <Badge className="bg-[var(--success)] text-[var(--bg)] text-xs">OSBP</Badge>}
                             </p>
-                            <p className="text-sm text-gray-600">{node.country_iso} • {node.node_type}</p>
+                            <p className="text-sm text-[var(--afcfta-muted)]">{node.country_iso} • {node.node_type}</p>
                             {node.notes && (
-                              <p className="text-xs text-gray-700 mt-1">{node.notes}</p>
+                              <p className="text-xs text-[var(--text)] mt-1">{node.notes}</p>
                             )}
                           </div>
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-[var(--afcfta-muted)]">
                             {node.geo_lat?.toFixed(3)}, {node.geo_lon?.toFixed(3)}
                           </div>
                         </div>
@@ -266,7 +266,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-8">{t.noNodes}</p>
+                  <p className="text-[var(--afcfta-muted)] text-center py-8">{t.noNodes}</p>
                 )}
               </CardContent>
             </Card>
@@ -286,8 +286,8 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                         key={idx} 
                         className={`p-3 rounded-lg ${
                           operator.operator_type === 'rail_operator'
-                            ? 'bg-red-50 border border-red-200'
-                            : 'bg-blue-50 border border-blue-200'
+                            ? 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]'
+                            : 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)]'
                         }`}
                       >
                         <div className="flex items-start justify-between">
@@ -295,13 +295,13 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                             <p className="font-bold text-base">
                               {operator.operator_type === 'rail_operator' ? '🚂' : '🚛'} {operator.operator_name}
                             </p>
-                            <p className="text-sm text-gray-600">{operator.group}</p>
-                            <p className="text-xs text-gray-500 mt-1">{operator.country_iso}</p>
+                            <p className="text-sm text-[var(--afcfta-muted)]">{operator.group}</p>
+                            <p className="text-xs text-[var(--afcfta-muted)] mt-1">{operator.country_iso}</p>
                           </div>
                           {operator.fleet_size > 0 && (
                             <div className="text-right">
-                              <p className="text-2xl font-bold text-gray-900">{operator.fleet_size}</p>
-                              <p className="text-xs text-gray-600">
+                              <p className="text-2xl font-bold text-[var(--text)]">{operator.fleet_size}</p>
+                              <p className="text-xs text-[var(--afcfta-muted)]">
                                 {operator.operator_type === 'rail_operator' ? t.locomotives : t.trucks}
                               </p>
                             </div>
@@ -311,7 +311,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-8">{t.noOperators}</p>
+                  <p className="text-[var(--afcfta-muted)] text-center py-8">{t.noOperators}</p>
                 )}
               </CardContent>
             </Card>
@@ -324,12 +324,12 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 {logisticsNetwork.global_3pl_present?.length > 0 && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-semibold text-blue-700">🌐 {t.global3pl}</CardTitle>
+                      <CardTitle className="text-sm font-semibold text-[var(--info)]">🌐 {t.global3pl}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex flex-wrap gap-2">
                         {logisticsNetwork.global_3pl_present.map((c, i) => (
-                          <Badge key={i} className="bg-blue-100 text-blue-800">{c}</Badge>
+                          <Badge key={i} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]">{c}</Badge>
                         ))}
                       </div>
                     </CardContent>
@@ -338,12 +338,12 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 {logisticsNetwork.regional_trucking_operators?.length > 0 && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-semibold text-orange-700">🚛 {t.regionalTrucking}</CardTitle>
+                      <CardTitle className="text-sm font-semibold text-[var(--terra)]">🚛 {t.regionalTrucking}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex flex-wrap gap-2">
                         {logisticsNetwork.regional_trucking_operators.map((c, i) => (
-                          <Badge key={i} className="bg-orange-100 text-orange-800">{c}</Badge>
+                          <Badge key={i} className="bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]">{c}</Badge>
                         ))}
                       </div>
                     </CardContent>
@@ -352,12 +352,12 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 {logisticsNetwork.rail_operators_present?.length > 0 && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-semibold text-red-700">🚂 {t.railOperators}</CardTitle>
+                      <CardTitle className="text-sm font-semibold text-[var(--danger)]">🚂 {t.railOperators}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex flex-wrap gap-2">
                         {logisticsNetwork.rail_operators_present.map((c, i) => (
-                          <Badge key={i} className="bg-red-100 text-red-800">{c}</Badge>
+                          <Badge key={i} className="bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]">{c}</Badge>
                         ))}
                       </div>
                     </CardContent>
@@ -366,13 +366,13 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 {logisticsNetwork.corridor_management_bodies?.length > 0 && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-semibold text-purple-700">🏛️ {t.corridorBodies}</CardTitle>
+                      <CardTitle className="text-sm font-semibold text-[var(--violet)]">🏛️ {t.corridorBodies}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="space-y-1">
                         {logisticsNetwork.corridor_management_bodies.map((c, i) => (
-                          <p key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                            <span className="text-purple-400">▸</span>{c}
+                          <p key={i} className="text-sm text-[var(--text)] flex items-start gap-2">
+                            <span className="text-[var(--violet)]">▸</span>{c}
                           </p>
                         ))}
                       </div>
@@ -382,41 +382,41 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 {logisticsNetwork.local_agents_by_country && Object.keys(logisticsNetwork.local_agents_by_country).length > 0 && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-semibold text-green-700">👥 {t.localAgents}</CardTitle>
+                      <CardTitle className="text-sm font-semibold text-[var(--success)]">👥 {t.localAgents}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="space-y-4 max-h-80 overflow-y-auto">
                         {Object.entries(logisticsNetwork.local_agents_by_country).map(([country, agents]) => (
                           <div key={country}>
-                            <p className="text-xs font-bold text-gray-500 uppercase mb-2 border-b pb-1">{country}</p>
+                            <p className="text-xs font-bold text-[var(--afcfta-muted)] uppercase mb-2 border-b pb-1">{country}</p>
                             <div className="space-y-2">
                               {agents.map((agent, i) => (
-                                <div key={i} className="p-2 bg-green-50 rounded border-l-2 border-green-400">
-                                  <p className="font-semibold text-sm text-green-900">{agent.company_name}</p>
-                                  {agent.city && <p className="text-xs text-gray-500">📍 {agent.city}{agent.address ? ` – ${agent.address}` : ''}</p>}
+                                <div key={i} className="p-2 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded border-l-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
+                                  <p className="font-semibold text-sm text-[var(--success)]">{agent.company_name}</p>
+                                  {agent.city && <p className="text-xs text-[var(--afcfta-muted)]">📍 {agent.city}{agent.address ? ` – ${agent.address}` : ''}</p>}
                                   <div className="flex flex-wrap gap-2 mt-1">
                                     {agent.phone && (
-                                      <a href={`tel:${agent.phone}`} className="text-xs text-blue-600 hover:underline">📞 {agent.phone}</a>
+                                      <a href={`tel:${agent.phone}`} className="text-xs text-[var(--info)] hover:underline">📞 {agent.phone}</a>
                                     )}
                                     {agent.email && (
-                                      <a href={`mailto:${agent.email}`} className="text-xs text-blue-600 hover:underline">✉️ {agent.email}</a>
+                                      <a href={`mailto:${agent.email}`} className="text-xs text-[var(--info)] hover:underline">✉️ {agent.email}</a>
                                     )}
                                     {agent.website && (
-                                      <a href={agent.website} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline">🌐 {agent.website.replace(/^https?:\/\//, '')}</a>
+                                      <a href={agent.website} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--info)] hover:underline">🌐 {agent.website.replace(/^https?:\/\//, '')}</a>
                                     )}
                                   </div>
-                                  {agent.operating_hours && <p className="text-xs text-gray-500 mt-1">🕐 {agent.operating_hours}</p>}
+                                  {agent.operating_hours && <p className="text-xs text-[var(--afcfta-muted)] mt-1">🕐 {agent.operating_hours}</p>}
                                   {agent.services?.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mt-1">
                                       {agent.services.map((s, si) => (
-                                        <Badge key={si} variant="secondary" className="text-xs bg-green-100 text-green-800">{s}</Badge>
+                                        <Badge key={si} variant="secondary" className="text-xs bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]">{s}</Badge>
                                       ))}
                                     </div>
                                   )}
                                   {agent.certifications?.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mt-1">
                                       {agent.certifications.map((c, ci) => (
-                                        <Badge key={ci} className="text-xs bg-blue-100 text-blue-700">{c}</Badge>
+                                        <Badge key={ci} className="text-xs bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]">{c}</Badge>
                                       ))}
                                     </div>
                                   )}
@@ -432,7 +432,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 {logisticsNetwork.service_providers_available?.length > 0 && (
                   <Card>
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-semibold text-gray-700">⚙️ {t.serviceProviders}</CardTitle>
+                      <CardTitle className="text-sm font-semibold text-[var(--text)]">⚙️ {t.serviceProviders}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex flex-wrap gap-2">
@@ -445,7 +445,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                 )}
               </div>
             ) : (
-              <div className="text-center p-8 text-gray-400">
+              <div className="text-center p-8 text-[var(--afcfta-muted)]">
                 <p>{t.noNetwork}</p>
               </div>
             )}
@@ -453,7 +453,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
         </Tabs>
 
         {/* Source information */}
-        <div className="mt-4 text-xs text-gray-600 bg-gray-50 p-3 rounded">
+        <div className="mt-4 text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)] p-3 rounded">
           <span className="font-semibold">{t.source}: </span>
           {corridor.source_org}
         </div>

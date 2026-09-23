@@ -123,11 +123,11 @@ export default function TradeComplementarity({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="trade-complementarity">
-      <CardHeader className="bg-[image:var(--card-grad)] text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-              <Link2 className="w-7 h-7 text-white" />
+              <Link2 className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
@@ -212,7 +212,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
                   {getCountryFlag(importer)} {response.importer?.name_fr || response.importer?.name_en || importer}
                 </span>
               </div>
-              <div className="text-5xl font-bold" style={{ color: scoreColor(tci) }}>{tci}</div>
+              <div className="text-5xl font-bold" style={{ color: `color-mix(in srgb, ${scoreColor(tci)} 40%, var(--text))`}}>{tci}</div>
               <div className="text-xs text-[var(--afcfta-muted)] mt-1">{txt.score} · {txt.interpretation(tci)}</div>
               <div className="text-xs text-[var(--afcfta-muted)] mt-1">{txt.matchingProducts(response.matching_products)}</div>
             </div>
@@ -253,7 +253,7 @@ export default function TradeComplementarity({ language = 'fr' }) {
                           <TableCell className="max-w-xs truncate">{o.product}</TableCell>
                           <TableCell className="text-right">{o.exporter_export_share}%</TableCell>
                           <TableCell className="text-right">{o.importer_import_share}%</TableCell>
-                          <TableCell className="text-right font-semibold text-cyan-700">{o.match_score}%</TableCell>
+                          <TableCell className="text-right font-semibold text-[var(--atlantic)]">{o.match_score}%</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

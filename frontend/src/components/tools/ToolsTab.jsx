@@ -104,13 +104,13 @@ export default function ToolsTab({ language = 'fr' }) {
   return (
     <div className="space-y-6">
       {/* En-tête Outils */}
-      <Card className="bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-600 text-white shadow-2xl border-none">
+      <Card className="bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] shadow-2xl">
         <CardHeader>
           <CardTitle className="text-3xl flex items-center gap-3">
             <span>🛠️</span>
             <span>{t.title}</span>
           </CardTitle>
-          <CardDescription className="text-yellow-100 text-lg font-semibold">
+          <CardDescription className="text-[var(--gold)] text-lg font-semibold">
             {t.subtitle}
           </CardDescription>
         </CardHeader>
@@ -125,20 +125,20 @@ export default function ToolsTab({ language = 'fr' }) {
         <Card className="afcfta-dark-gradient border-l-4 border-l-orange-500 shadow-xl hover:shadow-2xl transition-shadow">          <CardContent className="pt-6">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-4xl">🚧</span>
-              <h3 className="font-bold text-xl text-orange-400">{t.ntbTitle}</h3>
+              <h3 className="font-bold text-xl text-[var(--terra)]">{t.ntbTitle}</h3>
             </div>
             <p className="text-sm mb-4 leading-relaxed" style={{color:'var(--afcfta-muted)'}}>
               {t.ntbDesc}
             </p>
-            <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
-              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.ntbStatus}</Badge></p>
+            <div className="p-3 rounded-lg mb-3" style={{background:'var(--overlay)'}}>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.ntbStatus}</Badge></p>
               <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.ntbCountries}</strong> 55 {language === 'fr' ? 'membres ZLECAf' : 'AfCFTA members'}</p>
             </div>
             <a 
               href="https://tradebarriers.africa" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block w-full text-center bg-orange-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-orange-700 transition shadow-lg"
+              className="inline-block w-full text-center bg-[var(--terra)] text-[var(--bg)] px-4 py-3 rounded-lg font-semibold hover:bg-[var(--terra)] transition shadow-lg"
             >
               🔗 {t.ntbBtn}
             </a>
@@ -148,20 +148,20 @@ export default function ToolsTab({ language = 'fr' }) {
         <Card className="afcfta-dark-gradient border-l-4 border-l-blue-500 shadow-xl hover:shadow-2xl transition-shadow">          <CardContent className="pt-6">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-4xl">💻</span>
-              <h3 className="font-bold text-xl text-blue-400">{t.digitalTitle}</h3>
+              <h3 className="font-bold text-xl text-[var(--info)]">{t.digitalTitle}</h3>
             </div>
             <p className="text-sm mb-4 leading-relaxed" style={{color:'var(--afcfta-muted)'}}>
               {t.digitalDesc}
             </p>
-            <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
+            <div className="p-3 rounded-lg mb-3" style={{background:'var(--overlay)'}}>
               <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.digitalAdoption}</strong> 18 {language === 'fr' ? 'février' : 'February'} 2024</p>
-              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.digitalStatus}</Badge></p>
+              <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.digitalStatus}</Badge></p>
             </div>
             <a 
               href="https://au.int/en/treaties/protocol-digital-trade" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block w-full text-center bg-blue-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg"
+              className="inline-block w-full text-center bg-[var(--info)] text-[var(--bg)] px-4 py-3 rounded-lg font-semibold hover:bg-[var(--info)] transition shadow-lg"
             >
               📄 {t.digitalBtn}
             </a>
@@ -171,20 +171,20 @@ export default function ToolsTab({ language = 'fr' }) {
         <Card className="afcfta-dark-gradient border-l-4 border-l-green-500 shadow-xl hover:shadow-2xl transition-shadow">          <CardContent className="pt-6">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-4xl">🚀</span>
-              <h3 className="font-bold text-xl text-green-400">{t.gtiTitle}</h3>
+              <h3 className="font-bold text-xl text-[var(--success)]">{t.gtiTitle}</h3>
             </div>
             <p className="text-sm mb-4 leading-relaxed" style={{color:'var(--afcfta-muted)'}}>
               {t.gtiDesc}
             </p>
-            <div className="p-3 rounded-lg mb-3" style={{background:'rgba(255,255,255,0.06)'}}>
-              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-green-600 ml-2">{t.gtiStatus}</Badge></p>
+            <div className="p-3 rounded-lg mb-3" style={{background:'var(--overlay)'}}>
+              <p className="text-xs" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>Status:</strong> <Badge className="bg-[var(--success)] text-[var(--bg)] ml-2">{t.gtiStatus}</Badge></p>
               <p className="text-xs mt-1" style={{color:'var(--afcfta-muted)'}}><strong style={{color:'var(--text)'}}>{t.gtiFocus}</strong> {t.gtiCorridors}</p>
             </div>
             <a 
               href="https://www.tralac.org/news/article/afcfta-guided-trade-initiative.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block w-full text-center bg-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition shadow-lg"
+              className="inline-block w-full text-center bg-[var(--success)] text-[var(--bg)] px-4 py-3 rounded-lg font-semibold hover:bg-[var(--success)] transition shadow-lg"
             >
               🌍 {t.gtiBtn}
             </a>
@@ -195,7 +195,7 @@ export default function ToolsTab({ language = 'fr' }) {
       {/* Section PAPSS */}
       <Card className="shadow-2xl border-t-4 border-t-purple-600">
         <CardHeader className="afcfta-dark-gradient" style={{borderBottom:'1px solid rgba(192,132,252,0.2)'}}>
-          <CardTitle className="text-2xl font-bold text-purple-400 flex items-center gap-2">
+          <CardTitle className="text-2xl font-bold text-[var(--violet)] flex items-center gap-2">
             <span>💳</span>
             <span>{t.papssTitle}</span>
           </CardTitle>
@@ -206,7 +206,7 @@ export default function ToolsTab({ language = 'fr' }) {
         <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-bold text-lg text-purple-400 mb-3">{t.papssAbout}</h4>
+              <h4 className="font-bold text-lg text-[var(--violet)] mb-3">{t.papssAbout}</h4>
               <p style={{color:'var(--afcfta-muted)'}} className="mb-4">
                 {t.papssDesc}
               </p>
@@ -226,18 +226,18 @@ export default function ToolsTab({ language = 'fr' }) {
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-lg text-purple-400 mb-3">{t.papssAdvantages}</h4>
+              <h4 className="font-bold text-lg text-[var(--violet)] mb-3">{t.papssAdvantages}</h4>
               <div className="p-4 rounded-lg space-y-3" style={{background:'rgba(192,132,252,0.08)', border:'1px solid rgba(192,132,252,0.2)'}}>
                 <div>
-                  <p className="text-sm font-semibold text-purple-400">💰 {t.papssCost}</p>
+                  <p className="text-sm font-semibold text-[var(--violet)]">💰 {t.papssCost}</p>
                   <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.papssCostDesc}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-purple-400">⚡ {t.papssSpeed}</p>
+                  <p className="text-sm font-semibold text-[var(--violet)]">⚡ {t.papssSpeed}</p>
                   <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.papssSpeedDesc}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-purple-400">🔒 {t.papssSecurity}</p>
+                  <p className="text-sm font-semibold text-[var(--violet)]">🔒 {t.papssSecurity}</p>
                   <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.papssSecurityDesc}</p>
                 </div>
               </div>
@@ -264,9 +264,9 @@ export default function ToolsTab({ language = 'fr' }) {
               className="flex items-center gap-3 p-4 rounded-lg transition"
               style={{background:'rgba(59,130,246,0.1)', border:'1px solid rgba(59,130,246,0.25)'}}
             >
-              <span className="text-blue-400 text-2xl">🌐</span>
+              <span className="text-[var(--info)] text-2xl">🌐</span>
               <div>
-                <p className="font-semibold text-blue-400">{t.secretariat}</p>
+                <p className="font-semibold text-[var(--info)]">{t.secretariat}</p>
                 <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.secretariatDesc}</p>
               </div>
             </a>
@@ -278,9 +278,9 @@ export default function ToolsTab({ language = 'fr' }) {
               className="flex items-center gap-3 p-4 rounded-lg transition"
               style={{background:'rgba(74,222,128,0.1)', border:'1px solid rgba(74,222,128,0.25)'}}
             >
-              <span className="text-green-400 text-2xl">⚖️</span>
+              <span className="text-[var(--success)] text-2xl">⚖️</span>
               <div>
-                <p className="font-semibold text-green-400">{t.tralac}</p>
+                <p className="font-semibold text-[var(--success)]">{t.tralac}</p>
                 <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.tralacDesc}</p>
               </div>
             </a>
@@ -292,9 +292,9 @@ export default function ToolsTab({ language = 'fr' }) {
               className="flex items-center gap-3 p-4 rounded-lg transition"
               style={{background:'rgba(192,132,252,0.1)', border:'1px solid rgba(192,132,252,0.25)'}}
             >
-              <span className="text-purple-400 text-2xl">🏛️</span>
+              <span className="text-[var(--violet)] text-2xl">🏛️</span>
               <div>
-                <p className="font-semibold text-purple-400">{t.worldBank}</p>
+                <p className="font-semibold text-[var(--violet)]">{t.worldBank}</p>
                 <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.worldBankDesc}</p>
               </div>
             </a>
@@ -306,9 +306,9 @@ export default function ToolsTab({ language = 'fr' }) {
               className="flex items-center gap-3 p-4 rounded-lg transition"
               style={{background:'rgba(251,146,60,0.1)', border:'1px solid rgba(251,146,60,0.25)'}}
             >
-              <span className="text-orange-400 text-2xl">📈</span>
+              <span className="text-[var(--terra)] text-2xl">📈</span>
               <div>
-                <p className="font-semibold text-orange-400">{t.uneca}</p>
+                <p className="font-semibold text-[var(--terra)]">{t.uneca}</p>
                 <p className="text-xs" style={{color:'var(--afcfta-muted)'}}>{t.unecaDesc}</p>
               </div>
             </a>
@@ -319,9 +319,9 @@ export default function ToolsTab({ language = 'fr' }) {
       <MonitoringDashboard language={language} />
 
       {/* Footer with Source Indicator */}
-      <Card className="bg-gray-50 border-gray-200">
+      <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
         <CardContent className="py-3">
-          <p className="text-xs text-gray-500 text-center">
+          <p className="text-xs text-[var(--afcfta-muted)] text-center">
             {t.sourceLabel}
           </p>
         </CardContent>

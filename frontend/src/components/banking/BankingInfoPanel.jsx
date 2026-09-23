@@ -288,12 +288,12 @@ const texts = {
 
 function AlertBadge({ level }) {
   const colorMap = {
-    green: 'bg-green-100 text-green-800',
-    orange: 'bg-orange-100 text-orange-800',
-    red: 'bg-red-100 text-red-800',
+    green: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
+    orange: 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]',
+    red: 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]',
   };
   return (
-    <span className={`px-2 py-1 rounded text-xs font-semibold ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>
+    <span className={`px-2 py-1 rounded text-xs font-semibold ${colorMap[level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
       {level?.toUpperCase()}
     </span>
   );
@@ -301,13 +301,13 @@ function AlertBadge({ level }) {
 
 function RiskBadge({ level }) {
   const colorMap = {
-    low: 'bg-green-100 text-green-800',
-    moderate: 'bg-yellow-100 text-yellow-800',
-    high: 'bg-orange-100 text-orange-800',
-    very_high: 'bg-red-100 text-red-800',
+    low: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
+    moderate: 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]',
+    high: 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] text-[var(--terra)]',
+    very_high: 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]',
   };
   return (
-    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>
+    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
       {level?.replace('_', ' ').toUpperCase()}
     </span>
   );
@@ -315,12 +315,12 @@ function RiskBadge({ level }) {
 
 function RegulationBadge({ level }) {
   const colorMap = {
-    strict: 'bg-red-100 text-red-800',
-    moderate: 'bg-yellow-100 text-yellow-800',
-    liberal: 'bg-green-100 text-green-800',
+    strict: 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]',
+    moderate: 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]',
+    liberal: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
   };
   return (
-    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-gray-100 text-gray-700'}`}>
+    <span className={`px-2 py-0.5 rounded text-xs font-medium ${colorMap[level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
       {level?.toUpperCase()}
     </span>
   );
@@ -329,24 +329,24 @@ function RegulationBadge({ level }) {
 function ContactBlock({ contact, t }) {
   if (!contact) return null;
   return (
-    <div className="mt-2 text-xs text-gray-600 space-y-0.5 border-t pt-2">
-      {contact.address && <div className="flex gap-1"><span className="text-gray-400">📍</span>{contact.address}</div>}
+    <div className="mt-2 text-xs text-[var(--afcfta-muted)] space-y-0.5 border-t pt-2">
+      {contact.address && <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📍</span>{contact.address}</div>}
       {contact.phone && (
-        <div className="flex gap-1"><span className="text-gray-400">📞</span>
-          <a href={`tel:${contact.phone}`} className="text-blue-600 hover:underline">{contact.phone}</a>
+        <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📞</span>
+          <a href={`tel:${contact.phone}`} className="text-[var(--info)] hover:underline">{contact.phone}</a>
         </div>
       )}
       {contact.email && (
-        <div className="flex gap-1"><span className="text-gray-400">✉</span>
-          <a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline">{contact.email}</a>
+        <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">✉</span>
+          <a href={`mailto:${contact.email}`} className="text-[var(--info)] hover:underline">{contact.email}</a>
         </div>
       )}
       {contact.website && (
-        <div className="flex gap-1"><span className="text-gray-400">🌐</span>
-          <a href={contact.website} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline truncate">{contact.website.replace(/^https?:\/\//, '')}</a>
+        <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">🌐</span>
+          <a href={contact.website} target="_blank" rel="noreferrer" className="text-[var(--info)] hover:underline truncate">{contact.website.replace(/^https?:\/\//, '')}</a>
         </div>
       )}
-      {contact.department && <div className="flex gap-1"><span className="text-gray-400">🏢</span><span className="italic">{contact.department}</span></div>}
+      {contact.department && <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">🏢</span><span className="italic">{contact.department}</span></div>}
     </div>
   );
 }
@@ -397,25 +397,25 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between gap-2 border rounded-lg px-3 py-2 text-sm bg-white shadow-sm hover:border-blue-400 transition-colors"
+        className="w-full flex items-center justify-between gap-2 border rounded-lg px-3 py-2 text-sm bg-[var(--afcfta-card)] shadow-sm hover:border-[color-mix(in_srgb,var(--info)_30%,transparent)] transition-colors"
       >
         <span className="flex items-center gap-2 min-w-0">
           {selected ? (
             <>
               <span className="text-lg leading-none">{COUNTRY_FLAGS[selected.country_code] || '🌍'}</span>
               <span className="font-medium truncate">{selected.country_name}</span>
-              <span className="text-gray-400 text-xs shrink-0">({selected.country_code})</span>
+              <span className="text-[var(--afcfta-muted)] text-xs shrink-0">({selected.country_code})</span>
             </>
           ) : (
-            <span className="text-gray-400">{placeholder}</span>
+            <span className="text-[var(--afcfta-muted)]">{placeholder}</span>
           )}
         </span>
-        <span className="text-gray-400 text-xs shrink-0">{open ? '▲' : '▼'}</span>
+        <span className="text-[var(--afcfta-muted)] text-xs shrink-0">{open ? '▲' : '▼'}</span>
       </button>
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 mt-1 w-full bg-white border rounded-lg shadow-lg overflow-hidden">
+        <div className="absolute z-50 mt-1 w-full bg-[var(--afcfta-card)] border rounded-lg shadow-lg overflow-hidden">
           {/* Search input */}
           <div className="p-2 border-b">
             <input
@@ -424,7 +424,7 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="🔍 Rechercher un pays, devise…"
-              className="w-full px-3 py-1.5 text-sm border rounded-md bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-400"
+              className="w-full px-3 py-1.5 text-sm border rounded-md bg-[var(--afcfta-card2)] focus:outline-none focus:ring-1 focus:ring-blue-400"
             />
           </div>
 
@@ -432,33 +432,33 @@ function CountrySearch({ countries, value, onChange, placeholder }) {
           <div className="max-h-64 overflow-y-auto">
             {value && (
               <button
-                className="w-full text-left px-3 py-2 text-xs text-gray-400 hover:bg-gray-50 border-b"
+                className="w-full text-left px-3 py-2 text-xs text-[var(--afcfta-muted)] hover:bg-[var(--afcfta-card2)] border-b"
                 onClick={() => selectCountry('')}
               >
                 ✕ Effacer la sélection
               </button>
             )}
             {filtered.length === 0 && (
-              <div className="px-3 py-4 text-center text-sm text-gray-400">Aucun résultat</div>
+              <div className="px-3 py-4 text-center text-sm text-[var(--afcfta-muted)]">Aucun résultat</div>
             )}
             {filtered.map((c) => (
               <button
                 key={c.country_code}
-                className={`w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-blue-50 transition-colors ${
-                  c.country_code === value ? 'bg-blue-50 font-medium text-blue-700' : ''
+                className={`w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] transition-colors ${
+                  c.country_code === value ? 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] font-medium text-[var(--info)]' : ''
                 }`}
                 onClick={() => selectCountry(c.country_code)}
               >
                 <span className="text-base leading-none shrink-0">{COUNTRY_FLAGS[c.country_code] || '🌍'}</span>
                 <span className="flex-1 truncate">{c.country_name}</span>
-                <span className="text-gray-400 text-xs shrink-0">{c.country_code}</span>
-                {c.currency_code && <span className="text-gray-300 text-xs shrink-0 font-mono">{c.currency_code}</span>}
+                <span className="text-[var(--afcfta-muted)] text-xs shrink-0">{c.country_code}</span>
+                {c.currency_code && <span className="text-[var(--text)] text-xs shrink-0 font-mono">{c.currency_code}</span>}
               </button>
             ))}
           </div>
 
           {/* Footer count */}
-          <div className="px-3 py-1.5 border-t text-xs text-gray-400 bg-gray-50">
+          <div className="px-3 py-1.5 border-t text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)]">
             {filtered.length} / {sorted.length} pays AfCFTA
           </div>
         </div>
@@ -473,35 +473,35 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
   const flag = COUNTRY_FLAGS[countryCode] || '🌍';
   const cb = bankData?.central_bank;
   const regLevel = cb?.forex_regulation || forexData?.forex_regulation?.regulation_level;
-  const regColors = { strict: 'text-red-700 bg-red-50', moderate: 'text-yellow-700 bg-yellow-50', liberal: 'text-green-700 bg-green-50' };
-  const alertColors = { green: 'text-green-700 bg-green-50', orange: 'text-orange-700 bg-orange-50', red: 'text-red-700 bg-red-50' };
+  const regColors = { strict: 'text-[var(--danger)] bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))]', moderate: 'text-[var(--gold)] bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]', liberal: 'text-[var(--success)] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' };
+  const alertColors = { green: 'text-[var(--success)] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]', orange: 'text-[var(--terra)] bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]', red: 'text-[var(--danger)] bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))]' };
 
   return (
-    <div className="flex flex-wrap gap-2 px-3 py-2 bg-white border rounded-lg shadow-sm">
+    <div className="flex flex-wrap gap-2 px-3 py-2 bg-[var(--afcfta-card)] border rounded-lg shadow-sm">
       {/* Flag + country */}
       <div className="flex items-center gap-2 min-w-0">
         <span className="text-2xl">{flag}</span>
         <div className="min-w-0">
-          <div className="font-semibold text-sm text-gray-900 truncate">{bankData?.country_name || forexData?.country_name || countryCode}</div>
-          {cb?.name && <div className="text-xs text-gray-500 truncate">{cb.name}</div>}
+          <div className="font-semibold text-sm text-[var(--text)] truncate">{bankData?.country_name || forexData?.country_name || countryCode}</div>
+          {cb?.name && <div className="text-xs text-[var(--afcfta-muted)] truncate">{cb.name}</div>}
         </div>
       </div>
 
-      <div className="h-auto w-px bg-gray-200 self-stretch hidden sm:block" />
+      <div className="h-auto w-px bg-[var(--afcfta-card2)] self-stretch hidden sm:block" />
 
       {/* Currency */}
       {cb?.currency_code && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">Devise</span>
-          <span className="font-mono font-bold text-gray-800">{cb.currency_code}</span>
+          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Devise</span>
+          <span className="font-mono font-bold text-[var(--text)]">{cb.currency_code}</span>
         </div>
       )}
 
       {/* Regulation */}
       {regLevel && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">Réglementation</span>
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${regColors[regLevel] || 'bg-gray-100 text-gray-700'}`}>
+          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Réglementation</span>
+          <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${regColors[regLevel] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
             {regLevel.toUpperCase()}
           </span>
         </div>
@@ -510,16 +510,16 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Risk rating */}
       {riskData?.overall_risk_rating && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">Note risque</span>
-          <span className="font-bold text-lg text-gray-800">{riskData.overall_risk_rating}</span>
+          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Note risque</span>
+          <span className="font-bold text-lg text-[var(--text)]">{riskData.overall_risk_rating}</span>
         </div>
       )}
 
       {/* Alert level */}
       {riskData?.alert_level && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">Alerte</span>
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${alertColors[riskData.alert_level] || 'bg-gray-100 text-gray-700'}`}>
+          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Alerte</span>
+          <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${alertColors[riskData.alert_level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
             {riskData.alert_level.toUpperCase()}
           </span>
         </div>
@@ -528,8 +528,8 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Domiciliation required */}
       {forexData?.domiciliation && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">Domiciliation</span>
-          <span className={`text-xs font-semibold mt-0.5 ${forexData.domiciliation.required ? 'text-red-600' : forexData.domiciliation.conditional ? 'text-yellow-600' : 'text-green-600'}`}>
+          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Domiciliation</span>
+          <span className={`text-xs font-semibold mt-0.5 ${forexData.domiciliation.required ? 'text-[var(--danger)]' : forexData.domiciliation.conditional ? 'text-[var(--gold)]' : 'text-[var(--success)]'}`}>
             {forexData.domiciliation.required ? 'OBLIGATOIRE' : forexData.domiciliation.conditional ? 'CONDITIONNELLE' : 'LIBRE'}
           </span>
         </div>
@@ -559,15 +559,15 @@ function TabBar({ activeTab, onChange, t }) {
   return (
     <div className="flex gap-1 flex-wrap border-b mb-4">
       <div className="flex gap-1 flex-wrap">
-        <span className="text-xs text-gray-400 self-center pr-1 border-r mr-1">Par pays</span>
+        <span className="text-xs text-[var(--afcfta-muted)] self-center pr-1 border-r mr-1">Par pays</span>
         {COUNTRY_TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => onChange(tab)}
             className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors flex items-center gap-1 ${
               activeTab === tab
-                ? 'bg-white border-b-2 border-blue-600 text-blue-700'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-[var(--afcfta-card)] border-b-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)]'
+                : 'text-[var(--afcfta-muted)] hover:text-[var(--text)]'
             }`}
           >
             <span>{TAB_ICONS[tab]}</span>
@@ -576,15 +576,15 @@ function TabBar({ activeTab, onChange, t }) {
         ))}
       </div>
       <div className="flex gap-1 flex-wrap ml-2">
-        <span className="text-xs text-gray-400 self-center pr-1 border-r mr-1">Global</span>
+        <span className="text-xs text-[var(--afcfta-muted)] self-center pr-1 border-r mr-1">Global</span>
         {GLOBAL_TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => onChange(tab)}
             className={`px-3 py-1.5 text-sm font-medium rounded-t transition-colors flex items-center gap-1 ${
               activeTab === tab
-                ? 'bg-white border-b-2 border-emerald-600 text-emerald-700'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-[var(--afcfta-card)] border-b-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]'
+                : 'text-[var(--afcfta-muted)] hover:text-[var(--text)]'
             }`}
           >
             <span>{TAB_ICONS[tab]}</span>
@@ -597,11 +597,11 @@ function TabBar({ activeTab, onChange, t }) {
 }
 
 // ── Section Header with count badge ──────────────────────────────────────────
-function SectionHeader({ icon, title, count, colorClass = 'bg-blue-100 text-blue-700' }) {
+function SectionHeader({ icon, title, count, colorClass = 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]' }) {
   return (
     <div className="flex items-center gap-2 mb-3">
       <span className="text-base">{icon}</span>
-      <h3 className="font-semibold text-gray-800 text-sm">{title}</h3>
+      <h3 className="font-semibold text-[var(--text)] text-sm">{title}</h3>
       {count != null && (
         <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${colorClass}`}>{count}</span>
       )}
@@ -614,26 +614,26 @@ function SectionHeader({ icon, title, count, colorClass = 'bg-blue-100 text-blue
 function BanksTab({ data, t }) {
   const [expandedBank, setExpandedBank] = useState(null);
 
-  if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
+  if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
   const { central_bank, commercial_banks = [], regional_banks = [] } = data;
 
   return (
     <div className="space-y-5">
       {/* ── Central Bank ── */}
       <div>
-        <SectionHeader icon="🏛️" title={t.centralBank} colorClass="bg-blue-100 text-blue-700" />
+        <SectionHeader icon="🏛️" title={t.centralBank} colorClass="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]" />
         <Card className="border-l-4 border-l-blue-500">
           <CardContent className="pt-4 space-y-3 text-sm">
             <div className="flex items-start justify-between flex-wrap gap-2">
               <div>
-                <div className="font-bold text-base text-gray-900">{central_bank?.name}</div>
+                <div className="font-bold text-base text-[var(--text)]">{central_bank?.name}</div>
                 {central_bank?.abbreviation && (
-                  <div className="text-xs text-gray-500 mt-0.5">{central_bank.abbreviation}</div>
+                  <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">{central_bank.abbreviation}</div>
                 )}
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {central_bank?.currency_code && (
-                  <span className="font-mono text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded font-semibold">
+                  <span className="font-mono text-xs bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] px-2 py-0.5 rounded font-semibold">
                     {central_bank.currency_code}
                   </span>
                 )}
@@ -643,38 +643,38 @@ function BanksTab({ data, t }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1.5 text-xs text-gray-600 bg-gray-50 rounded-lg p-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1.5 text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)] rounded-lg p-3">
               {central_bank?.swift_code && (
                 <div>
-                  <span className="text-gray-400 uppercase tracking-wide text-[10px]">SWIFT</span>
-                  <div className="font-mono font-semibold text-gray-800">{central_bank.swift_code}</div>
+                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">SWIFT</span>
+                  <div className="font-mono font-semibold text-[var(--text)]">{central_bank.swift_code}</div>
                 </div>
               )}
               {central_bank?.established_year && (
                 <div>
-                  <span className="text-gray-400 uppercase tracking-wide text-[10px]">{t.established}</span>
-                  <div className="font-semibold text-gray-800">{central_bank.established_year}</div>
+                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">{t.established}</span>
+                  <div className="font-semibold text-[var(--text)]">{central_bank.established_year}</div>
                 </div>
               )}
               {central_bank?.total_assets_usd_bn && (
                 <div>
-                  <span className="text-gray-400 uppercase tracking-wide text-[10px]">Actifs totaux</span>
-                  <div className="font-semibold text-gray-800">{central_bank.total_assets_usd_bn} Mrd USD</div>
+                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">Actifs totaux</span>
+                  <div className="font-semibold text-[var(--text)]">{central_bank.total_assets_usd_bn} Mrd USD</div>
                 </div>
               )}
               {central_bank?.currency_name && (
                 <div className="col-span-2">
-                  <span className="text-gray-400 uppercase tracking-wide text-[10px]">Devise</span>
-                  <div className="font-semibold text-gray-800">{central_bank.currency_code} – {central_bank.currency_name}</div>
+                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">Devise</span>
+                  <div className="font-semibold text-[var(--text)]">{central_bank.currency_code} – {central_bank.currency_name}</div>
                 </div>
               )}
             </div>
 
             {central_bank?.banking_act && (
-              <p className="text-xs text-gray-500 italic border-l-2 border-gray-200 pl-2">{t.bankingAct}: {central_bank.banking_act}</p>
+              <p className="text-xs text-[var(--afcfta-muted)] italic border-l-2 border-[var(--afcfta-border)] pl-2">{t.bankingAct}: {central_bank.banking_act}</p>
             )}
             {central_bank?.imf_article_status && (
-              <p className="text-xs text-indigo-600 bg-indigo-50 px-2 py-1 rounded">FMI: {central_bank.imf_article_status}</p>
+              <p className="text-xs text-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] px-2 py-1 rounded">FMI: {central_bank.imf_article_status}</p>
             )}
             {central_bank?.contact && <ContactBlock contact={central_bank.contact} t={t} />}
           </CardContent>
@@ -684,7 +684,7 @@ function BanksTab({ data, t }) {
       {/* ── Commercial Banks ── */}
       {commercial_banks.length > 0 && (
         <div>
-          <SectionHeader icon="🏦" title={t.commercialBanks} count={commercial_banks.length} colorClass="bg-purple-100 text-purple-700" />
+          <SectionHeader icon="🏦" title={t.commercialBanks} count={commercial_banks.length} colorClass="bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)]" />
           <div className="space-y-2">
             {commercial_banks.map((bank, i) => {
               const isOpen = expandedBank === i;
@@ -701,23 +701,23 @@ function BanksTab({ data, t }) {
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0 flex-wrap">
                         <div className="min-w-0">
-                          <span className="font-semibold text-sm text-gray-900">{bank.name}</span>
+                          <span className="font-semibold text-sm text-[var(--text)]">{bank.name}</span>
                           {bank.abbreviation && (
-                            <span className="ml-1.5 text-gray-400 text-xs">({bank.abbreviation})</span>
+                            <span className="ml-1.5 text-[var(--afcfta-muted)] text-xs">({bank.abbreviation})</span>
                           )}
                         </div>
                         {bank.license_type && (
-                          <span className="bg-gray-100 text-gray-600 text-xs px-1.5 py-0.5 rounded shrink-0">{bank.license_type}</span>
+                          <span className="bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] text-xs px-1.5 py-0.5 rounded shrink-0">{bank.license_type}</span>
                         )}
                         {bank.trade_finance && (
-                          <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded font-medium shrink-0">Trade ✓</span>
+                          <span className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-2 py-0.5 rounded font-medium shrink-0">Trade ✓</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {bank.swift_code && (
-                          <span className="font-mono text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded hidden sm:inline">{bank.swift_code}</span>
+                          <span className="font-mono text-xs bg-[var(--afcfta-card2)] text-[var(--text)] px-2 py-0.5 rounded hidden sm:inline">{bank.swift_code}</span>
                         )}
-                        <span className="text-gray-400 text-xs">{isOpen ? '▲' : '▼'}</span>
+                        <span className="text-[var(--afcfta-muted)] text-xs">{isOpen ? '▲' : '▼'}</span>
                       </div>
                     </div>
 
@@ -725,7 +725,7 @@ function BanksTab({ data, t }) {
                     {bank.services?.length > 0 && (
                       <div className="flex flex-wrap gap-0.5 mt-2">
                         {bank.services.map((s) => (
-                          <span key={s} className="bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded text-xs">{s}</span>
+                          <span key={s} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] px-1.5 py-0.5 rounded text-xs">{s}</span>
                         ))}
                       </div>
                     )}
@@ -733,19 +733,19 @@ function BanksTab({ data, t }) {
 
                   {/* Expanded details */}
                   {isOpen && (
-                    <div className="px-3 pb-3 pt-1 bg-white border-t space-y-2">
+                    <div className="px-3 pb-3 pt-1 bg-[var(--afcfta-card)] border-t space-y-2">
                       {/* Swift + correspondents */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         {bank.swift_code && (
-                          <div className="bg-gray-50 rounded p-2">
-                            <div className="text-gray-400 uppercase text-[10px] tracking-wide mb-0.5">SWIFT / BIC</div>
-                            <div className="font-mono font-bold text-gray-800 text-base">{bank.swift_code}</div>
+                          <div className="bg-[var(--afcfta-card2)] rounded p-2">
+                            <div className="text-[var(--afcfta-muted)] uppercase text-[11px] tracking-wide mb-0.5">SWIFT / BIC</div>
+                            <div className="font-mono font-bold text-[var(--text)] text-base">{bank.swift_code}</div>
                           </div>
                         )}
                         {bank.correspondent_banks?.length > 0 && (
-                          <div className="bg-gray-50 rounded p-2">
-                            <div className="text-gray-400 uppercase text-[10px] tracking-wide mb-0.5">{t.correspondents}</div>
-                            <div className="text-gray-700 leading-relaxed">{bank.correspondent_banks.join(' · ')}</div>
+                          <div className="bg-[var(--afcfta-card2)] rounded p-2">
+                            <div className="text-[var(--afcfta-muted)] uppercase text-[11px] tracking-wide mb-0.5">{t.correspondents}</div>
+                            <div className="text-[var(--text)] leading-relaxed">{bank.correspondent_banks.join(' · ')}</div>
                           </div>
                         )}
                       </div>
@@ -762,27 +762,27 @@ function BanksTab({ data, t }) {
       {/* ── Regional Banks ── */}
       {regional_banks.length > 0 && (
         <div>
-          <SectionHeader icon="🌍" title={t.regionalBanks} count={regional_banks.length} colorClass="bg-emerald-100 text-emerald-700" />
+          <SectionHeader icon="🌍" title={t.regionalBanks} count={regional_banks.length} colorClass="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]" />
           <div className="space-y-2">
             {regional_banks.map((rb, i) => (
               <div key={i} className="border rounded-lg p-3 text-sm bg-emerald-50/30 border-l-4 border-l-emerald-400">
                 <div className="flex items-start justify-between flex-wrap gap-2">
                   <div>
-                    <span className="font-bold text-gray-800">{rb.abbreviation}</span>
-                    <span className="ml-2 text-gray-600 text-xs">{rb.name}</span>
+                    <span className="font-bold text-[var(--text)]">{rb.abbreviation}</span>
+                    <span className="ml-2 text-[var(--afcfta-muted)] text-xs">{rb.name}</span>
                   </div>
-                  <span className="text-xs text-gray-500 bg-white border rounded px-2 py-0.5">{rb.headquarters}</span>
+                  <span className="text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card)] border rounded px-2 py-0.5">{rb.headquarters}</span>
                 </div>
                 {rb.focus_areas?.length > 0 && (
                   <div className="flex flex-wrap gap-0.5 mt-2">
                     {rb.focus_areas.map((f) => (
-                      <span key={f} className="bg-emerald-100 text-emerald-700 text-xs px-1.5 py-0.5 rounded">{f.replace(/_/g, ' ')}</span>
+                      <span key={f} className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-1.5 py-0.5 rounded">{f.replace(/_/g, ' ')}</span>
                     ))}
                   </div>
                 )}
                 {rb.contact && <ContactBlock contact={rb.contact} t={t} />}
                 {rb.website && !rb.contact && (
-                  <a href={rb.website} target="_blank" rel="noreferrer" className="text-blue-500 underline text-xs mt-1 block">{rb.website}</a>
+                  <a href={rb.website} target="_blank" rel="noreferrer" className="text-[var(--info)] underline text-xs mt-1 block">{rb.website}</a>
                 )}
               </div>
             ))}
@@ -838,75 +838,75 @@ function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
   };
 
   return (
-    <Card className="border-blue-200 bg-blue-50/30">
+    <Card className="border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-blue-50/30">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm flex items-center gap-2">
           <span>💱</span> {t.converterTitle}
           {countryCurrencyCode && (
-            <span className="text-xs font-normal text-gray-500 ml-1">→ {countryCurrencyCode}</span>
+            <span className="text-xs font-normal text-[var(--afcfta-muted)] ml-1">→ {countryCurrencyCode}</span>
           )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex flex-wrap gap-2 items-end">
           <div className="flex-1 min-w-[100px]">
-            <label className="text-xs text-gray-500 block mb-1">{t.amount}</label>
+            <label className="text-xs text-[var(--afcfta-muted)] block mb-1">{t.amount}</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => { setAmount(e.target.value); setResult(null); }}
               onKeyDown={(e) => e.key === 'Enter' && doConvert()}
-              className="border rounded px-3 py-1.5 text-sm bg-white w-full"
+              className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)] w-full"
               min="0"
             />
           </div>
           <div className="min-w-[90px]">
-            <label className="text-xs text-gray-500 block mb-1">{t.from}</label>
+            <label className="text-xs text-[var(--afcfta-muted)] block mb-1">{t.from}</label>
             <select
               value={fromCurrency}
               onChange={(e) => { setFromCurrency(e.target.value); setResult(null); }}
-              className="border rounded px-2 py-1.5 text-sm bg-white w-full"
+              className="border rounded px-2 py-1.5 text-sm bg-[var(--afcfta-card)] w-full"
             >
               {SOURCE_CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
-          <div className="flex items-end pb-1.5 text-gray-400 text-sm">→</div>
+          <div className="flex items-end pb-1.5 text-[var(--afcfta-muted)] text-sm">→</div>
           <div className="min-w-[90px] flex flex-col justify-end">
-            <label className="text-xs text-gray-500 block mb-1">{t.to}</label>
-            <div className="border rounded px-3 py-1.5 text-sm bg-gray-50 font-mono font-semibold text-gray-700">
+            <label className="text-xs text-[var(--afcfta-muted)] block mb-1">{t.to}</label>
+            <div className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card2)] font-mono font-semibold text-[var(--text)]">
               {countryCurrencyCode || '—'}
             </div>
           </div>
           <button
             onClick={doConvert}
             disabled={loading || !countryCode}
-            className="px-4 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            className="px-4 py-1.5 bg-[var(--info)] text-[var(--bg)] text-sm rounded hover:bg-[var(--info)] disabled:opacity-50 transition-colors"
           >
             {loading ? '…' : t.convert}
           </button>
         </div>
 
         {error && (
-          <p className="text-xs text-orange-700 bg-orange-50 border border-orange-200 px-3 py-2 rounded">
+          <p className="text-xs text-[var(--terra)] bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--terra)_30%,transparent)] px-3 py-2 rounded">
             ⚠ {error}
           </p>
         )}
 
         {result && (
-          <div className="bg-white border border-blue-200 rounded px-4 py-3 flex items-center justify-between flex-wrap gap-2">
+          <div className="bg-[var(--afcfta-card)] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] rounded px-4 py-3 flex items-center justify-between flex-wrap gap-2">
             <div>
-              <div className="text-xl font-bold text-blue-800">
+              <div className="text-xl font-bold text-[var(--info)]">
                 {result.converted_amount?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}{' '}
                 <span className="text-base font-normal">{result.to_currency}</span>
               </div>
-              <div className="text-xs text-gray-500 mt-0.5">
+              <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">
                 {parseFloat(amount).toLocaleString()} {fromCurrency} → {result.currency_name || result.to_currency}
               </div>
             </div>
-            <div className="text-xs text-gray-500 text-right space-y-0.5">
-              {result.rate_display && <div className="font-medium text-gray-700">{result.rate_display}</div>}
-              {result.source && <div className="text-gray-400">Source : {result.source}</div>}
-              {result.disclaimer && <div className="text-gray-400 max-w-[180px] italic">{result.disclaimer}</div>}
+            <div className="text-xs text-[var(--afcfta-muted)] text-right space-y-0.5">
+              {result.rate_display && <div className="font-medium text-[var(--text)]">{result.rate_display}</div>}
+              {result.source && <div className="text-[var(--afcfta-muted)]">Source : {result.source}</div>}
+              {result.disclaimer && <div className="text-[var(--afcfta-muted)] max-w-[180px] italic">{result.disclaimer}</div>}
             </div>
           </div>
         )}
@@ -918,17 +918,17 @@ function ForexConverter({ countryCode, countryCurrencyCode, countryName, t }) {
 // ── Forex Tab ─────────────────────────────────────────────────────────────────
 
 function ForexTab({ data, countryCode, t }) {
-  if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
+  if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
   const { forex_regulation, import_formalities, export_formalities } = data;
   const currencyCode = data.currency_code || data.central_bank?.currency_code;
 
   const domColorFor = (f) => f?.domiciliation_required == null
-    ? 'bg-gray-50 border-gray-300'
+    ? 'bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]'
     : f.domiciliation_required
-    ? 'bg-red-50 border-red-200'
+    ? 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]'
     : f.domiciliation_conditional
-    ? 'bg-yellow-50 border-yellow-200'
-    : 'bg-green-50 border-green-200';
+    ? 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]'
+    : 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]';
 
   const domLabelFor = (f) => f?.domiciliation_required == null
     ? t.notDocumented
@@ -962,18 +962,18 @@ function ForexTab({ data, countryCode, t }) {
               <strong>{t.transferDeadline} :</strong>{' '}
               {import_formalities?.transfer_deadline_days
                 ? `${import_formalities.transfer_deadline_days} ${t.days}`
-                : <span className="text-gray-500 italic">{t.noTransferDeadline}</span>}
+                : <span className="text-[var(--afcfta-muted)] italic">{t.noTransferDeadline}</span>}
             </p>
             {import_formalities?.mandatory_documents?.length > 0 && (
               <div>
                 <strong>{t.mandatory_documents} :</strong>
-                <ul className="list-disc ml-4 mt-1 text-xs text-gray-700">
+                <ul className="list-disc ml-4 mt-1 text-xs text-[var(--text)]">
                   {import_formalities.mandatory_documents.map((d) => <li key={d}>{d.replace(/_/g, ' ')}</li>)}
                 </ul>
               </div>
             )}
             {import_formalities?.payment_formalities && (
-              <p className="text-gray-600 text-xs italic"><strong>{t.paymentFormalitiesNotes} :</strong> {import_formalities.payment_formalities}</p>
+              <p className="text-[var(--afcfta-muted)] text-xs italic"><strong>{t.paymentFormalitiesNotes} :</strong> {import_formalities.payment_formalities}</p>
             )}
           </CardContent>
         </Card>
@@ -997,13 +997,13 @@ function ForexTab({ data, countryCode, t }) {
             {export_formalities?.mandatory_documents?.length > 0 && (
               <div>
                 <strong>{t.mandatory_documents} :</strong>
-                <ul className="list-disc ml-4 mt-1 text-xs text-gray-700">
+                <ul className="list-disc ml-4 mt-1 text-xs text-[var(--text)]">
                   {export_formalities.mandatory_documents.map((d) => <li key={d}>{d.replace(/_/g, ' ')}</li>)}
                 </ul>
               </div>
             )}
             {export_formalities?.repatriation_formalities && (
-              <p className="text-gray-600 text-xs italic"><strong>{t.repatriationFormalitiesNotes} :</strong> {export_formalities.repatriation_formalities}</p>
+              <p className="text-[var(--afcfta-muted)] text-xs italic"><strong>{t.repatriationFormalitiesNotes} :</strong> {export_formalities.repatriation_formalities}</p>
             )}
           </CardContent>
         </Card>
@@ -1017,16 +1017,16 @@ function ForexTab({ data, countryCode, t }) {
           <div className="flex items-center gap-2">
             <RegulationBadge level={forex_regulation?.regulation_level} />
             {forex_regulation?.prior_authorization_required && (
-              <span className="text-xs text-red-600">{t.priorAuthRequired}</span>
+              <span className="text-xs text-[var(--danger)]">{t.priorAuthRequired}</span>
             )}
             {forex_regulation?.prior_authorization_required == null && (
-              <span className="text-xs text-gray-600">{t.notDocumented}</span>
+              <span className="text-xs text-[var(--afcfta-muted)]">{t.notDocumented}</span>
             )}
           </div>
           {forex_regulation?.penalties && (
-            <p className="text-xs text-red-700 bg-red-50 p-2 rounded"><strong>{t.penalties} :</strong> {forex_regulation.penalties}</p>
+            <p className="text-xs text-[var(--danger)] bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] p-2 rounded"><strong>{t.penalties} :</strong> {forex_regulation.penalties}</p>
           )}
-          {forex_regulation?.notes && <p className="text-gray-600 text-xs italic">{forex_regulation.notes}</p>}
+          {forex_regulation?.notes && <p className="text-[var(--afcfta-muted)] text-xs italic">{forex_regulation.notes}</p>}
           {data.authorized_currencies?.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1">
               {data.authorized_currencies.map((c) => <Badge key={c} variant="outline" className="text-xs">{c}</Badge>)}
@@ -1043,11 +1043,11 @@ function ForexTab({ data, countryCode, t }) {
 function RiskGauge({ score, maxScore = 10 }) {
   const pct = Math.min(100, Math.round((score / maxScore) * 100));
   const color = score <= 3 ? '#22c55e' : score <= 5 ? '#eab308' : score <= 7 ? '#f97316' : '#ef4444';
-  const trackColor = score <= 3 ? 'bg-green-100' : score <= 5 ? 'bg-yellow-100' : score <= 7 ? 'bg-orange-100' : 'bg-red-100';
+  const trackColor = score <= 3 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : score <= 5 ? 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))]' : score <= 7 ? 'bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))]' : 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))]';
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-xs text-gray-500">
+      <div className="flex items-center justify-between text-xs text-[var(--afcfta-muted)]">
         <span>Score risque</span>
         <span className="font-bold text-base" style={{ color }}>{score}/{maxScore}</span>
       </div>
@@ -1057,7 +1057,7 @@ function RiskGauge({ score, maxScore = 10 }) {
           style={{ width: `${pct}%`, backgroundColor: color }}
         />
       </div>
-      <div className="flex justify-between text-xs text-gray-300">
+      <div className="flex justify-between text-xs text-[var(--text)]">
         <span>Faible</span>
         <span>Élevé</span>
       </div>
@@ -1068,7 +1068,7 @@ function RiskGauge({ score, maxScore = 10 }) {
 // ── Risk Tab ──────────────────────────────────────────────────────────────────
 
 function RiskTab({ data, t }) {
-  if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
+  if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   const riskRows = [
     { label: t.forexRisk, value: data.forex_risk },
@@ -1085,20 +1085,20 @@ function RiskTab({ data, t }) {
         <CardContent className="space-y-4 text-sm">
           {/* Rating + alert */}
           <div className="flex items-center gap-4 flex-wrap">
-            <div className="flex flex-col items-center justify-center bg-gray-50 border rounded-lg px-6 py-3">
-              <span className="text-xs text-gray-400 uppercase tracking-wide mb-1">Notation</span>
-              <span className="font-bold text-3xl text-gray-800">{data.overall_risk_rating}</span>
+            <div className="flex flex-col items-center justify-center bg-[var(--afcfta-card2)] border rounded-lg px-6 py-3">
+              <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide mb-1">Notation</span>
+              <span className="font-bold text-3xl text-[var(--text)]">{data.overall_risk_rating}</span>
             </div>
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className="text-gray-500 text-xs">Alerte :</span>
+                <span className="text-[var(--afcfta-muted)] text-xs">Alerte :</span>
                 <AlertBadge level={data.alert_level} />
               </div>
               {data.credit_insurance_available !== undefined && (
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-[var(--afcfta-muted)]">
                   Assurance crédit : {data.credit_insurance_available
-                    ? <span className="text-green-600 font-medium">Disponible ✓</span>
-                    : <span className="text-red-600 font-medium">Non disponible</span>}
+                    ? <span className="text-[var(--success)] font-medium">Disponible ✓</span>
+                    : <span className="text-[var(--danger)] font-medium">Non disponible</span>}
                 </div>
               )}
             </div>
@@ -1106,7 +1106,7 @@ function RiskTab({ data, t }) {
 
           {/* Gauge */}
           {data.risk_score != null && (
-            <div className="bg-gray-50 rounded-lg p-3">
+            <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
               <RiskGauge score={data.risk_score} />
             </div>
           )}
@@ -1115,31 +1115,31 @@ function RiskTab({ data, t }) {
           <div className="grid grid-cols-1 gap-2">
             {riskRows.map(({ label, value }) => value && (
               <div key={label} className="flex items-center justify-between py-1 border-b last:border-b-0">
-                <span className="text-gray-600 text-xs">{label}</span>
+                <span className="text-[var(--afcfta-muted)] text-xs">{label}</span>
                 <RiskBadge level={value} />
               </div>
             ))}
           </div>
 
           {data.max_recommended_exposure_usd && (
-            <div className="bg-blue-50 border border-blue-100 rounded p-2 text-xs text-blue-700">
+            <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] rounded p-2 text-xs text-[var(--info)]">
               {t.maxExposure} : <strong>{data.max_recommended_exposure_usd.toLocaleString()} USD</strong>
             </div>
           )}
           {data.exposure_warning && (
-            <p className="text-xs text-red-700 bg-red-50 p-2 rounded">{t.exposureWarning}</p>
+            <p className="text-xs text-[var(--danger)] bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] p-2 rounded">{t.exposureWarning}</p>
           )}
           {data.recommended_instruments?.length > 0 && (
             <div>
-              <p className="text-xs text-gray-500 mb-1">{t.instruments} :</p>
+              <p className="text-xs text-[var(--afcfta-muted)] mb-1">{t.instruments} :</p>
               <div className="flex flex-wrap gap-1">
                 {data.recommended_instruments.map((code) => (
-                  <span key={code} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">{code}</span>
+                  <span key={code} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] px-2 py-0.5 rounded text-xs font-medium">{code}</span>
                 ))}
               </div>
             </div>
           )}
-          {data.notes && <p className="text-gray-600 text-xs italic border-t pt-2">{data.notes}</p>}
+          {data.notes && <p className="text-[var(--afcfta-muted)] text-xs italic border-t pt-2">{data.notes}</p>}
         </CardContent>
       </Card>
     </div>
@@ -1171,7 +1171,7 @@ function InstrumentSimulator({ countryCode, t }) {
   };
 
   return (
-    <Card className="border-emerald-200 bg-emerald-50/20">
+    <Card className="border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-emerald-50/20">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm flex items-center gap-2">
           <span>🎯</span> {t.simulatorTitle}
@@ -1180,18 +1180,18 @@ function InstrumentSimulator({ countryCode, t }) {
       <CardContent className="space-y-3">
         <div className="flex flex-wrap gap-2 items-end">
           <div className="flex-1 min-w-[120px]">
-            <label className="text-xs text-gray-500 block mb-1">{t.txAmount}</label>
+            <label className="text-xs text-[var(--afcfta-muted)] block mb-1">{t.txAmount}</label>
             <input
               type="number"
               value={txAmount}
               onChange={(e) => setTxAmount(e.target.value)}
-              className="border rounded px-3 py-1.5 text-sm bg-white w-full"
+              className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)] w-full"
               min="0"
             />
           </div>
           <div className="min-w-[120px]">
-            <label className="text-xs text-gray-500 block mb-1">{t.txType}</label>
-            <select value={txType} onChange={(e) => setTxType(e.target.value)} className="border rounded px-3 py-1.5 text-sm bg-white w-full">
+            <label className="text-xs text-[var(--afcfta-muted)] block mb-1">{t.txType}</label>
+            <select value={txType} onChange={(e) => setTxType(e.target.value)} className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)] w-full">
               <option value="import">{t.txImport}</option>
               <option value="export">{t.txExport}</option>
             </select>
@@ -1199,7 +1199,7 @@ function InstrumentSimulator({ countryCode, t }) {
           <button
             onClick={simulate}
             disabled={loading || !countryCode}
-            className="px-4 py-1.5 bg-emerald-600 text-white text-sm rounded hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+            className="px-4 py-1.5 bg-[var(--success)] text-[var(--bg)] text-sm rounded hover:bg-[var(--success)] disabled:opacity-50 transition-colors"
           >
             {loading ? '…' : t.simulate}
           </button>
@@ -1207,17 +1207,17 @@ function InstrumentSimulator({ countryCode, t }) {
 
         {result?.recommended_instruments?.length > 0 && (
           <div className="space-y-2">
-            <p className="text-xs font-medium text-gray-600">
+            <p className="text-xs font-medium text-[var(--afcfta-muted)]">
               {t.recommendedFor} {parseFloat(txAmount).toLocaleString()} USD ({txType}) :
             </p>
             <div className="flex flex-wrap gap-1">
               {result.recommended_instruments.map((inst) => (
-                <span key={typeof inst === 'string' ? inst : inst.code} className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded text-xs font-medium">
+                <span key={typeof inst === 'string' ? inst : inst.code} className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] px-3 py-1 rounded text-xs font-medium">
                   {typeof inst === 'string' ? inst : (inst.name_fr || inst.name)}
                 </span>
               ))}
             </div>
-            {result.notes && <p className="text-xs text-gray-500 italic">{result.notes}</p>}
+            {result.notes && <p className="text-xs text-[var(--afcfta-muted)] italic">{result.notes}</p>}
           </div>
         )}
       </CardContent>
@@ -1228,7 +1228,7 @@ function InstrumentSimulator({ countryCode, t }) {
 // ── Instruments Tab ───────────────────────────────────────────────────────────
 
 function InstrumentsTab({ instruments, countryCode, t }) {
-  if (!instruments?.length) return <p className="text-gray-500 text-sm">{t.noData}</p>;
+  if (!instruments?.length) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   return (
     <div className="space-y-4">
@@ -1242,18 +1242,18 @@ function InstrumentsTab({ instruments, countryCode, t }) {
               <div className="flex items-center gap-2 flex-wrap">
                 <CardTitle className="text-sm">{inst.name_fr}</CardTitle>
                 <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                  inst.risk_coverage === 'full' ? 'bg-green-100 text-green-800'
-                  : inst.risk_coverage === 'partial' ? 'bg-yellow-100 text-yellow-800'
-                  : 'bg-gray-100 text-gray-700'
+                  inst.risk_coverage === 'full' ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]'
+                  : inst.risk_coverage === 'partial' ? 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]'
+                  : 'bg-[var(--afcfta-card2)] text-[var(--text)]'
                 }`}>
                   {t.coverage} : {inst.risk_coverage}
                 </span>
                 {inst.typical_cost_pct != null && (
-                  <span className="text-xs text-gray-500 bg-gray-50 px-2 py-0.5 rounded border">~{inst.typical_cost_pct}%</span>
+                  <span className="text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)] px-2 py-0.5 rounded border">~{inst.typical_cost_pct}%</span>
                 )}
               </div>
             </CardHeader>
-            <CardContent className="text-xs text-gray-600">{inst.description}</CardContent>
+            <CardContent className="text-xs text-[var(--afcfta-muted)]">{inst.description}</CardContent>
           </Card>
         ))}
       </div>
@@ -1267,7 +1267,7 @@ const PAYMENT_TYPE_ICONS = { swift: '🌐', regional: '🏛️', mobile_money: '
 const PAYMENT_TYPE_LABELS = { swift: 'SWIFT', regional: 'Régional', mobile_money: 'Mobile Money', digital: 'Digital' };
 
 function PaymentSystemsTab({ systems, t }) {
-  if (!systems?.length) return <p className="text-gray-500 text-sm">{t.noData}</p>;
+  if (!systems?.length) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   const grouped = systems.reduce((acc, ps) => {
     const key = ps.type;
@@ -1280,7 +1280,7 @@ function PaymentSystemsTab({ systems, t }) {
     <div className="space-y-4">
       {Object.entries(grouped).map(([type, list]) => (
         <div key={type}>
-          <h4 className="text-sm font-semibold text-gray-700 mb-2">
+          <h4 className="text-sm font-semibold text-[var(--text)] mb-2">
             {PAYMENT_TYPE_ICONS[type]} {PAYMENT_TYPE_LABELS[type] || type}
           </h4>
           <div className="space-y-2">
@@ -1290,8 +1290,8 @@ function PaymentSystemsTab({ systems, t }) {
                   <div className="flex items-start gap-2 justify-between">
                     <div>
                       <div className="font-medium text-sm">{ps.name}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{ps.region}</div>
-                      {ps.notes && <div className="text-xs text-gray-600 mt-1">{ps.notes}</div>}
+                      <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">{ps.region}</div>
+                      {ps.notes && <div className="text-xs text-[var(--afcfta-muted)] mt-1">{ps.notes}</div>}
                     </div>
                     {ps.currency && <Badge variant="outline" className="text-xs shrink-0">{ps.currency}</Badge>}
                   </div>
@@ -1308,7 +1308,7 @@ function PaymentSystemsTab({ systems, t }) {
 // ── Compliance Tab ────────────────────────────────────────────────────────────
 
 function ComplianceTab({ data, t }) {
-  if (!data) return <p className="text-gray-500 text-sm">{t.noData}</p>;
+  if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
 
   return (
     <div className="space-y-3 text-sm">
@@ -1323,7 +1323,7 @@ function ComplianceTab({ data, t }) {
               <span className="font-medium">{t.kycRequired} :</span>
               <div className="flex flex-wrap gap-1 mt-1">
                 {data.kyc_requirements.map((r) => (
-                  <span key={r} className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs">{r.replace(/_/g, ' ')}</span>
+                  <span key={r} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] px-2 py-0.5 rounded text-xs">{r.replace(/_/g, ' ')}</span>
                 ))}
               </div>
             </div>
@@ -1332,7 +1332,7 @@ function ComplianceTab({ data, t }) {
             <div><span className="font-medium">{t.sanctionsScreening} :</span> {data.sanctions_screening}</div>
           )}
           {data.reporting_requirements && (
-            <div className="bg-yellow-50 p-2 rounded text-xs">
+            <div className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] p-2 rounded text-xs">
               <div className="font-medium mb-1">{t.reportingRequirements} :</div>
               {Object.entries(data.reporting_requirements).map(([k, v]) => (
                 <div key={k}>{k.replace(/_/g, ' ')} : <strong>{typeof v === 'number' ? v.toLocaleString() : v}</strong></div>
@@ -1340,10 +1340,10 @@ function ComplianceTab({ data, t }) {
             </div>
           )}
           {data.compliance_contacts && (
-            <div className="text-xs text-gray-600 space-y-0.5">
+            <div className="text-xs text-[var(--afcfta-muted)] space-y-0.5">
               {data.compliance_contacts.fiu && <div>{t.fiuLabel} : <strong>{data.compliance_contacts.fiu}</strong></div>}
               {data.compliance_contacts.website && (
-                <a href={data.compliance_contacts.website} target="_blank" rel="noreferrer" className="text-blue-500 underline">{data.compliance_contacts.website}</a>
+                <a href={data.compliance_contacts.website} target="_blank" rel="noreferrer" className="text-[var(--info)] underline">{data.compliance_contacts.website}</a>
               )}
             </div>
           )}
@@ -1356,9 +1356,9 @@ function ComplianceTab({ data, t }) {
 // ── Register Tab ──────────────────────────────────────────────────────────────
 
 const TYPE_COLORS = {
-  central: 'bg-blue-100 text-blue-800',
-  commercial: 'bg-purple-100 text-purple-800',
-  regional: 'bg-emerald-100 text-emerald-800',
+  central: 'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]',
+  commercial: 'bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] text-[var(--violet)]',
+  regional: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]',
 };
 
 const TYPE_ICONS = { central: '🏛️', commercial: '🏦', regional: '🌍' };
@@ -1399,8 +1399,8 @@ function RegisterTab({ t, countries }) {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-semibold text-gray-800">{t.registerTitle}</h3>
-        <p className="text-xs text-gray-500">{t.registerSubtitle}</p>
+        <h3 className="font-semibold text-[var(--text)]">{t.registerTitle}</h3>
+        <p className="text-xs text-[var(--afcfta-muted)]">{t.registerSubtitle}</p>
       </div>
 
       {/* Filters */}
@@ -1410,12 +1410,12 @@ function RegisterTab({ t, countries }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t.searchPlaceholder}
-          className="border rounded px-3 py-1.5 text-sm bg-white min-w-48 flex-1"
+          className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)] min-w-48 flex-1"
         />
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="border rounded px-3 py-1.5 text-sm bg-white"
+          className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)]"
         >
           <option value="">{t.allTypes}</option>
           <option value="central">{t.centralType}</option>
@@ -1425,7 +1425,7 @@ function RegisterTab({ t, countries }) {
         <select
           value={filterCountry}
           onChange={(e) => setFilterCountry(e.target.value)}
-          className="border rounded px-3 py-1.5 text-sm bg-white"
+          className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)]"
         >
           <option value="">{t.allCountries}</option>
           {countries.map((c) => (
@@ -1445,9 +1445,9 @@ function RegisterTab({ t, countries }) {
         </label>
       </div>
 
-      <p className="text-xs text-gray-500">{total} {t.resultCount}</p>
+      <p className="text-xs text-[var(--afcfta-muted)]">{total} {t.resultCount}</p>
 
-      {loading && <div className="text-center py-6 text-gray-400">{t.loading}</div>}
+      {loading && <div className="text-center py-6 text-[var(--afcfta-muted)]">{t.loading}</div>}
 
       {!loading && (
         <div className="space-y-2">
@@ -1456,10 +1456,10 @@ function RegisterTab({ t, countries }) {
             return (
               <div
                 key={i}
-                className="border rounded-lg overflow-hidden hover:border-blue-300 transition-colors"
+                className="border rounded-lg overflow-hidden hover:border-[color-mix(in_srgb,var(--info)_30%,transparent)] transition-colors"
               >
                 <button
-                  className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-50"
+                  className="w-full flex items-center justify-between p-3 text-left hover:bg-[var(--afcfta-card2)]"
                   onClick={() => setExpanded(isOpen ? null : i)}
                 >
                   <div className="flex items-center gap-2 flex-wrap min-w-0">
@@ -1467,48 +1467,48 @@ function RegisterTab({ t, countries }) {
                     <div className="min-w-0">
                       <span className="font-medium text-sm">{bank.name}</span>
                       {bank.abbreviation && (
-                        <span className="ml-1.5 text-gray-500 text-xs">({bank.abbreviation})</span>
+                        <span className="ml-1.5 text-[var(--afcfta-muted)] text-xs">({bank.abbreviation})</span>
                       )}
                     </div>
                     <span className={`text-xs px-2 py-0.5 rounded font-medium ${TYPE_COLORS[bank.type]}`}>
                       {bank.country_code ? `${COUNTRY_FLAGS[bank.country_code] || ''} ${bank.country_name} · ${bank.country_code}` : bank.country_name}
                     </span>
                     {bank.trade_finance && (
-                      <span className="bg-green-50 text-green-700 text-xs px-1.5 py-0.5 rounded">Trade ✓</span>
+                      <span className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs px-1.5 py-0.5 rounded">Trade ✓</span>
                     )}
                   </div>
-                  <span className="text-gray-400 text-sm shrink-0 ml-2">{isOpen ? '▲' : '▼'}</span>
+                  <span className="text-[var(--afcfta-muted)] text-sm shrink-0 ml-2">{isOpen ? '▲' : '▼'}</span>
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 pb-4 pt-1 bg-white border-t text-sm space-y-3">
+                  <div className="px-4 pb-4 pt-1 bg-[var(--afcfta-card)] border-t text-sm space-y-3">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-xs">
                       {bank.swift_code && (
-                        <div><span className="text-gray-500">{t.swiftCode}: </span><span className="font-mono">{bank.swift_code}</span></div>
+                        <div><span className="text-[var(--afcfta-muted)]">{t.swiftCode}: </span><span className="font-mono">{bank.swift_code}</span></div>
                       )}
                       {bank.currency_code && (
-                        <div><span className="text-gray-500">{t.currency}: </span><strong>{bank.currency_code} – {bank.currency_name}</strong></div>
+                        <div><span className="text-[var(--afcfta-muted)]">{t.currency}: </span><strong>{bank.currency_code} – {bank.currency_name}</strong></div>
                       )}
                       {bank.forex_regulation && (
-                        <div><span className="text-gray-500">{t.regulation}: </span><RegulationBadge level={bank.forex_regulation} /></div>
+                        <div><span className="text-[var(--afcfta-muted)]">{t.regulation}: </span><RegulationBadge level={bank.forex_regulation} /></div>
                       )}
                       {bank.established_year && (
-                        <div><span className="text-gray-500">{t.established}: </span>{bank.established_year}</div>
+                        <div><span className="text-[var(--afcfta-muted)]">{t.established}: </span>{bank.established_year}</div>
                       )}
                       {bank.license_type && (
-                        <div><span className="text-gray-500">{t.licenseType}: </span>{bank.license_type}</div>
+                        <div><span className="text-[var(--afcfta-muted)]">{t.licenseType}: </span>{bank.license_type}</div>
                       )}
                       {bank.banking_act && (
-                        <div className="md:col-span-2"><span className="text-gray-500">{t.bankingAct}: </span><span className="italic">{bank.banking_act}</span></div>
+                        <div className="md:col-span-2"><span className="text-[var(--afcfta-muted)]">{t.bankingAct}: </span><span className="italic">{bank.banking_act}</span></div>
                       )}
                     </div>
 
                     {bank.services?.length > 0 && (
                       <div>
-                        <span className="text-xs text-gray-500 block mb-1">{t.services}:</span>
+                        <span className="text-xs text-[var(--afcfta-muted)] block mb-1">{t.services}:</span>
                         <div className="flex flex-wrap gap-1">
                           {bank.services.map((s) => (
-                            <span key={s} className="bg-blue-50 text-blue-700 text-xs px-1.5 py-0.5 rounded">{s}</span>
+                            <span key={s} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] text-xs px-1.5 py-0.5 rounded">{s}</span>
                           ))}
                         </div>
                       </div>
@@ -1516,44 +1516,44 @@ function RegisterTab({ t, countries }) {
 
                     {bank.correspondent_banks?.length > 0 && (
                       <div>
-                        <span className="text-xs text-gray-500">{t.correspondents}: </span>
+                        <span className="text-xs text-[var(--afcfta-muted)]">{t.correspondents}: </span>
                         <span className="text-xs">{bank.correspondent_banks.join(' · ')}</span>
                       </div>
                     )}
 
                     {bank.member_countries?.length > 0 && (
                       <div>
-                        <span className="text-xs text-gray-500">{t.memberCountries}: </span>
+                        <span className="text-xs text-[var(--afcfta-muted)]">{t.memberCountries}: </span>
                         <div className="flex flex-wrap gap-0.5 mt-0.5">
                           {bank.member_countries.map((c) => (
-                            <span key={c} className="bg-gray-100 text-gray-600 text-xs px-1.5 py-0.5 rounded">{c}</span>
+                            <span key={c} className="bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] text-xs px-1.5 py-0.5 rounded">{c}</span>
                           ))}
                         </div>
                       </div>
                     )}
 
                     {(bank.contact?.address || bank.contact?.phone || bank.contact?.email || bank.website) && (
-                      <div className="border-t pt-2 space-y-0.5 text-xs text-gray-600">
-                        <div className="font-medium text-gray-700 mb-1">{t.contact}</div>
+                      <div className="border-t pt-2 space-y-0.5 text-xs text-[var(--afcfta-muted)]">
+                        <div className="font-medium text-[var(--text)] mb-1">{t.contact}</div>
                         {bank.contact?.address && (
-                          <div className="flex gap-1"><span className="text-gray-400">📍</span>{bank.contact.address}</div>
+                          <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📍</span>{bank.contact.address}</div>
                         )}
                         {bank.contact?.phone && (
-                          <div className="flex gap-1"><span className="text-gray-400">📞</span>
-                            <a href={`tel:${bank.contact.phone}`} className="text-blue-600 hover:underline">{bank.contact.phone}</a>
+                          <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📞</span>
+                            <a href={`tel:${bank.contact.phone}`} className="text-[var(--info)] hover:underline">{bank.contact.phone}</a>
                           </div>
                         )}
                         {bank.contact?.email && (
-                          <div className="flex gap-1"><span className="text-gray-400">✉</span>
-                            <a href={`mailto:${bank.contact.email}`} className="text-blue-600 hover:underline">{bank.contact.email}</a>
+                          <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">✉</span>
+                            <a href={`mailto:${bank.contact.email}`} className="text-[var(--info)] hover:underline">{bank.contact.email}</a>
                           </div>
                         )}
                         {bank.contact?.department && (
-                          <div className="flex gap-1"><span className="text-gray-400">🏢</span><span className="italic">{bank.contact.department}</span></div>
+                          <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">🏢</span><span className="italic">{bank.contact.department}</span></div>
                         )}
                         {bank.website && (
-                          <div className="flex gap-1"><span className="text-gray-400">🌐</span>
-                            <a href={bank.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{bank.website}</a>
+                          <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">🌐</span>
+                            <a href={bank.website} target="_blank" rel="noreferrer" className="text-[var(--info)] hover:underline">{bank.website}</a>
                           </div>
                         )}
                       </div>
@@ -1564,7 +1564,7 @@ function RegisterTab({ t, countries }) {
             );
           })}
           {results.length === 0 && !loading && (
-            <p className="text-center text-gray-400 text-sm py-8">{t.noData}</p>
+            <p className="text-center text-[var(--afcfta-muted)] text-sm py-8">{t.noData}</p>
           )}
         </div>
       )}
@@ -1583,14 +1583,14 @@ function RegSummaryBar({ data, t }) {
   }, {});
   const total = data.length;
   const levels = [
-    { key: 'strict', label: t.strict, color: 'bg-red-400', textColor: 'text-red-700' },
-    { key: 'moderate', label: t.moderate, color: 'bg-yellow-400', textColor: 'text-yellow-700' },
-    { key: 'liberal', label: t.liberal, color: 'bg-green-400', textColor: 'text-green-700' },
+    { key: 'strict', label: t.strict, color: 'bg-red-400', textColor: 'text-[var(--danger)]' },
+    { key: 'moderate', label: t.moderate, color: 'bg-yellow-400', textColor: 'text-[var(--gold)]' },
+    { key: 'liberal', label: t.liberal, color: 'bg-green-400', textColor: 'text-[var(--success)]' },
   ];
 
   return (
-    <div className="bg-gray-50 border rounded-lg p-3 space-y-2">
-      <p className="text-xs font-medium text-gray-600">{t.regSummary}</p>
+    <div className="bg-[var(--afcfta-card2)] border rounded-lg p-3 space-y-2">
+      <p className="text-xs font-medium text-[var(--afcfta-muted)]">{t.regSummary}</p>
       {/* Bar */}
       <div className="h-4 rounded-full overflow-hidden flex">
         {levels.map(({ key, color }) => {
@@ -1606,7 +1606,7 @@ function RegSummaryBar({ data, t }) {
           <div key={key} className="flex items-center gap-1.5 text-xs">
             <span className={`inline-block w-3 h-3 rounded-sm ${color}`} />
             <span className={`font-medium ${textColor}`}>{label}</span>
-            <span className="text-gray-500">{counts[key] || 0} {t.countries}</span>
+            <span className="text-[var(--afcfta-muted)]">{counts[key] || 0} {t.countries}</span>
           </div>
         ))}
       </div>
@@ -1616,12 +1616,12 @@ function RegSummaryBar({ data, t }) {
 
 // ── Regulations Tab ───────────────────────────────────────────────────────────
 
-const REG_COLORS = { strict: 'bg-red-100 text-red-800', moderate: 'bg-yellow-100 text-yellow-800', liberal: 'bg-green-100 text-green-800' };
+const REG_COLORS = { strict: 'bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] text-[var(--danger)]', moderate: 'bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]', liberal: 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]' };
 const DOM_COLORS = {
-  required: 'text-red-700 font-medium',
-  conditional: 'text-yellow-700',
-  free: 'text-green-700',
-  unknown: 'text-gray-600',
+  required: 'text-[var(--danger)] font-medium',
+  conditional: 'text-[var(--gold)]',
+  free: 'text-[var(--success)]',
+  unknown: 'text-[var(--afcfta-muted)]',
 };
 
 function RegulationsTab({ t }) {
@@ -1643,8 +1643,8 @@ function RegulationsTab({ t }) {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-semibold text-gray-800">{t.regulationsTitle}</h3>
-        <p className="text-xs text-gray-500">{t.regulationsSubtitle}</p>
+        <h3 className="font-semibold text-[var(--text)]">{t.regulationsTitle}</h3>
+        <p className="text-xs text-[var(--afcfta-muted)]">{t.regulationsSubtitle}</p>
       </div>
 
       {/* Summary bar */}
@@ -1654,23 +1654,23 @@ function RegulationsTab({ t }) {
         <select
           value={filterLevel}
           onChange={(e) => setFilterLevel(e.target.value)}
-          className="border rounded px-3 py-1.5 text-sm bg-white"
+          className="border rounded px-3 py-1.5 text-sm bg-[var(--afcfta-card)]"
         >
           <option value="">{t.allLevels}</option>
           <option value="strict">{t.strict}</option>
           <option value="moderate">{t.moderate}</option>
           <option value="liberal">{t.liberal}</option>
         </select>
-        <span className="text-xs text-gray-400">{filtered.length} {t.resultCount}</span>
+        <span className="text-xs text-[var(--afcfta-muted)]">{filtered.length} {t.resultCount}</span>
       </div>
 
-      {loading && <div className="text-center py-6 text-gray-400">{t.loading}</div>}
+      {loading && <div className="text-center py-6 text-[var(--afcfta-muted)]">{t.loading}</div>}
 
       {!loading && (
         <div className="overflow-x-auto">
           <table className="w-full text-xs border-collapse min-w-[600px]">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-[var(--afcfta-card2)]">
                 <th className="border px-2 py-1.5 text-left">{t.countryCol}</th>
                 <th className="border px-2 py-1.5 text-left">{t.bankCol}</th>
                 <th className="border px-2 py-1.5">{t.currencyCol}</th>
@@ -1710,110 +1710,110 @@ function RegulationsTab({ t }) {
                 return (
                   <React.Fragment key={i}>
                     <tr
-                      className="hover:bg-blue-50 cursor-pointer"
+                      className="hover:bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] cursor-pointer"
                       onClick={() => setExpanded(isOpen ? null : i)}
                     >
                       <td className="border px-2 py-1.5 font-medium">
                         <span className="mr-1">{isOpen ? '▼' : '▶'}</span>
                         {flag && <span className="mr-1">{flag}</span>}
                         {row.country_name}
-                        <span className="ml-1 text-gray-400">({row.country_code})</span>
+                        <span className="ml-1 text-[var(--afcfta-muted)]">({row.country_code})</span>
                       </td>
-                      <td className="border px-2 py-1.5 text-gray-600">{row.central_bank}</td>
+                      <td className="border px-2 py-1.5 text-[var(--afcfta-muted)]">{row.central_bank}</td>
                       <td className="border px-2 py-1.5 text-center font-mono">{row.currency_code}</td>
                       <td className="border px-2 py-1.5 text-center">
-                        <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${REG_COLORS[row.regulation_level] || 'bg-gray-100'}`}>
+                        <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${REG_COLORS[row.regulation_level] || 'bg-[var(--afcfta-card2)]'}`}>
                           {row.regulation_level?.toUpperCase()}
                         </span>
                       </td>
                       <td className={`border px-2 py-1.5 text-center ${DOM_COLORS[domKey]}`}>{domText}</td>
                       <td className="border px-2 py-1.5 text-center">
                         {row.prior_authorization == null
-                          ? <span className="text-gray-600">{t.notDocumented}</span>
+                          ? <span className="text-[var(--afcfta-muted)]">{t.notDocumented}</span>
                           : row.prior_authorization
-                          ? <span className="text-red-600 font-medium">{t.yes}</span>
-                          : <span className="text-green-600">{t.no}</span>}
+                          ? <span className="text-[var(--danger)] font-medium">{t.yes}</span>
+                          : <span className="text-[var(--success)]">{t.no}</span>}
                       </td>
-                      <td className="border px-2 py-1.5 text-center text-gray-600">
+                      <td className="border px-2 py-1.5 text-center text-[var(--afcfta-muted)]">
                         {repatriationText}
                       </td>
                       <td className="border px-2 py-1.5 text-center">
                         {(row.central_bank_phone || row.central_bank_email) ? (
-                          <span className="text-blue-600">📋</span>
+                          <span className="text-[var(--info)]">📋</span>
                         ) : '—'}
                       </td>
                     </tr>
                     {isOpen && (
-                      <tr className="bg-blue-50">
+                      <tr className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
                         <td colSpan={8} className="border px-4 py-3">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-xs">
                             <div className="space-y-1">
                               {row.threshold_usd != null && (
-                                <div><span className="text-gray-500">{t.threshold}: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.threshold}: </span>
                                   <strong>{row.threshold_usd === 0 ? t.allOperations : `${row.threshold_usd.toLocaleString()} USD`}</strong>
                                 </div>
                               )}
                               {row.threshold_local_amount != null && (
-                                <div><span className="text-gray-500">{t.threshold}: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.threshold}: </span>
                                   <strong>{row.threshold_local_amount.toLocaleString()} {row.threshold_currency}</strong>
                                 </div>
                               )}
                               {row.repatriation_days != null && (
-                                <div><span className="text-gray-500">{t.standardDeadline}: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.standardDeadline}: </span>
                                   <strong>{row.repatriation_days} {t.days}</strong>
                                 </div>
                               )}
                               {row.conditional_repatriation_days != null && (
-                                <div><span className="text-gray-500">{t.conditionalDeadline}: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.conditionalDeadline}: </span>
                                   <strong>{row.conditional_repatriation_days} {t.days}</strong>
                                   {row.conditional_repatriation_condition && (
-                                    <span className="block text-gray-600 italic mt-0.5">{row.conditional_repatriation_condition}</span>
+                                    <span className="block text-[var(--afcfta-muted)] italic mt-0.5">{row.conditional_repatriation_condition}</span>
                                   )}
                                 </div>
                               )}
                               {row.export_payment_due_days != null && (
-                                <div><span className="text-gray-500">{t.paymentDueDeadline}: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.paymentDueDeadline}: </span>
                                   <strong>{row.export_payment_due_days} {t.days}</strong>
                                 </div>
                               )}
                               {row.repatriation_after_due_months != null && (
-                                <div><span className="text-gray-500">{t.postDueDeadline}: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.postDueDeadline}: </span>
                                   <strong>{row.repatriation_after_due_months} {t.month}</strong>
                                 </div>
                               )}
                               {row.authorization_threshold_usd && (
-                                <div><span className="text-gray-500">Seuil autorisation: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">Seuil autorisation: </span>
                                   <strong>{row.authorization_threshold_usd.toLocaleString()} USD</strong>
                                 </div>
                               )}
                               {row.declaration_threshold_usd && (
-                                <div><span className="text-gray-500">Seuil déclaration: </span>
+                                <div><span className="text-[var(--afcfta-muted)]">Seuil déclaration: </span>
                                   <strong>{row.declaration_threshold_usd.toLocaleString()} USD</strong>
                                 </div>
                               )}
                               {row.penalties && (
-                                <div className="text-red-700 bg-red-50 p-1.5 rounded">
+                                <div className="text-[var(--danger)] bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] p-1.5 rounded">
                                   <span className="font-medium">{t.penalties}: </span>{row.penalties}
                                 </div>
                               )}
                               {row.banking_act && (
-                                <div><span className="text-gray-500">{t.bankingAct}: </span><span className="italic">{row.banking_act}</span></div>
+                                <div><span className="text-[var(--afcfta-muted)]">{t.bankingAct}: </span><span className="italic">{row.banking_act}</span></div>
                               )}
                             </div>
                             <div className="space-y-1">
                               {row.central_bank_phone && (
-                                <div className="flex gap-1"><span className="text-gray-400">📞</span>
-                                  <a href={`tel:${row.central_bank_phone}`} className="text-blue-600 hover:underline">{row.central_bank_phone}</a>
+                                <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">📞</span>
+                                  <a href={`tel:${row.central_bank_phone}`} className="text-[var(--info)] hover:underline">{row.central_bank_phone}</a>
                                 </div>
                               )}
                               {row.central_bank_email && (
-                                <div className="flex gap-1"><span className="text-gray-400">✉</span>
-                                  <a href={`mailto:${row.central_bank_email}`} className="text-blue-600 hover:underline">{row.central_bank_email}</a>
+                                <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">✉</span>
+                                  <a href={`mailto:${row.central_bank_email}`} className="text-[var(--info)] hover:underline">{row.central_bank_email}</a>
                                 </div>
                               )}
                               {row.central_bank_website && (
-                                <div className="flex gap-1"><span className="text-gray-400">🌐</span>
-                                  <a href={row.central_bank_website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{row.central_bank_website}</a>
+                                <div className="flex gap-1"><span className="text-[var(--afcfta-muted)]">🌐</span>
+                                  <a href={row.central_bank_website} target="_blank" rel="noreferrer" className="text-[var(--info)] hover:underline">{row.central_bank_website}</a>
                                 </div>
                               )}
                             </div>
@@ -1825,7 +1825,7 @@ function RegulationsTab({ t }) {
                 );
               })}
               {filtered.length === 0 && (
-                <tr><td colSpan={8} className="border px-4 py-6 text-center text-gray-400">{t.noData}</td></tr>
+                <tr><td colSpan={8} className="border px-4 py-6 text-center text-[var(--afcfta-muted)]">{t.noData}</td></tr>
               )}
             </tbody>
           </table>
@@ -1902,8 +1902,8 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">{t.title}</h2>
-          <p className="text-sm text-gray-500 mt-1">{t.subtitle}</p>
+          <h2 className="text-xl font-bold text-[var(--text)]">{t.title}</h2>
+          <p className="text-sm text-[var(--afcfta-muted)] mt-1">{t.subtitle}</p>
         </div>
         <CountrySearch
           countries={countries}
@@ -1937,17 +1937,17 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
       {!isGlobalTab && (
         <>
           {!selectedCountry && (
-            <div className="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-700">
+            <div className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] rounded p-4 text-sm text-[var(--info)]">
               {t.selectCountryPrompt}
             </div>
           )}
 
           {loading && (
-            <div className="text-center py-8 text-gray-500">{t.loading}</div>
+            <div className="text-center py-8 text-[var(--afcfta-muted)]">{t.loading}</div>
           )}
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-700">{error}</div>
+            <div className="bg-[color-mix(in_srgb,var(--danger)_8%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] rounded p-3 text-sm text-[var(--danger)]">{error}</div>
           )}
 
           {selectedCountry && !loading && (

@@ -459,7 +459,7 @@ const TradeComparison = ({ language = 'fr' }) => {
                   <tr key={item.country}>
                     <td style={{ fontWeight: 600 }}>{item.name}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.exports.toFixed(1)}B</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#fb923c' }}>${item.imports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--terra)' }}>${item.imports.toFixed(1)}B</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
                       {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
                     </td>
@@ -510,7 +510,7 @@ const TradeComparison = ({ language = 'fr' }) => {
                   <tr key={item.country}>
                     <td style={{ fontWeight: 600 }}>{item.name}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.exports.toFixed(1)}B</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#6ee7b7' }}>${item.imports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.imports.toFixed(1)}B</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
                       {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
                     </td>

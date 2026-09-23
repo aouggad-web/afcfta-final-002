@@ -134,11 +134,11 @@ export default function AfricaTradeMap({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="africa-trade-map">
-      <CardHeader className="bg-[image:var(--card-grad)] text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-[var(--text)] pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
-              <MapIcon className="w-7 h-7 text-white" />
+              <MapIcon className="w-7 h-7 text-[var(--text)]" />
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>

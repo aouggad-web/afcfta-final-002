@@ -78,7 +78,7 @@
 }
 
 .stats-tab-trigger[data-state="active"] {
-  background: var(--stats-tab-active);
+  background: var(--active-fill);
   color: #F7F1E6;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--terra) 40%, transparent);
 }
@@ -117,28 +117,27 @@
 .stats-kpi-card.red     { --kpi-accent: var(--red); }
 
 .stats-kpi-label {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   color: var(--afcfta-muted);
   margin-bottom: 8px;
 }
 
 .stats-kpi-value {
   font-size: 2rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
   line-height: 1;
 }
 
-.stats-kpi-value.green   { color: var(--success); }
-.stats-kpi-value.terra   { color: var(--terra); }
-.stats-kpi-value.atlantic{ color: var(--info); }
-.stats-kpi-value.violet  { color: var(--violet); }
-.stats-kpi-value.gold    { color: var(--gold); }
-.stats-kpi-value.red     { color: var(--danger); }
+.stats-kpi-value.green { color: var(--text); }
+.stats-kpi-value.terra { color: var(--text); }
+.stats-kpi-value.atlantic { color: var(--text); }
+.stats-kpi-value.violet { color: var(--text); }
+.stats-kpi-value.gold { color: var(--text); }
+.stats-kpi-value.red { color: var(--text); }
 
 .stats-kpi-footer {
   margin-top: 8px;
@@ -240,7 +239,7 @@
 
 .stats-rank-badge.rank-1 { background: #FCDD09; color: #0D0800; }
 .stats-rank-badge.rank-2 { background: #b0b8c0; color: #0D0800; }
-.stats-rank-badge.rank-3 { background: #CD7F32; color: #fff; }
+.stats-rank-badge.rank-3 { background: #CD7F32; color: #0D0800; }   /* blanc sur bronze : 3,14:1 */
 .stats-rank-badge.rank-n { background: var(--overlay); color: var(--text-soft); }
 
 /* ── DATA TABLE ─────────────────────────────────────────────── */
@@ -254,16 +253,15 @@
 .stats-table thead th {
   background: var(--afcfta-card2);
   color: var(--afcfta-muted);
-  font-weight: 700;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
   padding: 10px 12px;
   border-bottom: 2px solid var(--afcfta-border);
   /* Allow header labels to wrap onto multiple lines instead of overflowing and
      overlapping neighbouring columns when the table is squeezed. */
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;   /* « anywhere » coupait « Croissanc/e » */
   vertical-align: bottom;
 }
 
@@ -283,6 +281,7 @@
 }
 
 .stats-table tbody td {
+  font-variant-numeric: tabular-nums;   /* chiffres alignés d'une ligne à l'autre */
   padding: 9px 12px;
   color: var(--text);
   border-bottom: 1px solid var(--afcfta-border);
@@ -467,8 +466,8 @@
   letter-spacing: 0.03em;
 }
 
-.stats-chip.up   { background: var(--greenSoft);  color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 35%, transparent); }
-.stats-chip.down { background: color-mix(in srgb, var(--danger) 16%, transparent); color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent); }
+.stats-chip.up   { background: color-mix(in srgb, var(--success) 12%, var(--afcfta-card));  color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 35%, transparent); }
+.stats-chip.down { background: color-mix(in srgb, var(--danger) 12%, var(--afcfta-card)); color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent); }
 .stats-chip.flat { background: var(--overlay); color: var(--afcfta-muted); border: 1px solid var(--overlay-border); }
 
 /* ── COUNTRY SELECTOR ───────────────────────────────────────── */

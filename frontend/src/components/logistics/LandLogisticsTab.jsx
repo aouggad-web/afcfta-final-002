@@ -102,13 +102,13 @@ export default function LandLogisticsTab({ language = 'fr' }) {
   return (
     <div className="space-y-4">
       {/* Header Section - Compact */}
-      <div className="flex items-center gap-3 bg-gradient-to-r from-[#1B232C] to-[#0F1419] border border-[rgba(212,175,55,0.2)] text-white p-4 rounded-xl shadow-lg">
-        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+      <div className="flex items-center gap-3 bg-[image:var(--card-grad)] border border-[var(--afcfta-border)] text-[var(--text)] p-4 rounded-xl shadow-lg">
+        <div className="w-10 h-10 bg-[var(--overlay)] rounded-lg flex items-center justify-center">
           <Truck className="w-5 h-5" />
         </div>
         <div>
           <h2 className="text-lg font-bold">{t.title}</h2>
-          <p className="text-blue-100 text-sm">{t.description}</p>
+          <p className="text-[var(--info)] text-sm">{t.description}</p>
         </div>
       </div>
 
@@ -121,11 +121,11 @@ export default function LandLogisticsTab({ language = 'fr' }) {
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Type Filter */}
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <span className="text-sm font-semibold text-gray-700">{t.type}:</span>
+              <span className="text-sm font-semibold text-[var(--text)]">{t.type}:</span>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
-                className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-[var(--afcfta-border)]"
               >
                 <option value="ALL">🌍 {t.allTypes}</option>
                 <option value="road">🛣️ {t.road}</option>
@@ -136,11 +136,11 @@ export default function LandLogisticsTab({ language = 'fr' }) {
 
             {/* Importance Filter */}
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <span className="text-sm font-semibold text-gray-700">{t.importance}:</span>
+              <span className="text-sm font-semibold text-[var(--text)]">{t.importance}:</span>
               <select
                 value={selectedImportance}
                 onChange={(e) => setSelectedImportance(e.target.value)}
-                className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
+                className="px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-[var(--afcfta-border)]"
               >
                 <option value="ALL">{t.all}</option>
                 <option value="high">⭐ {t.highPriority}</option>
@@ -153,14 +153,14 @@ export default function LandLogisticsTab({ language = 'fr' }) {
               <Button
                 onClick={() => setViewMode('map')}
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'bg-slate-700 hover:bg-slate-800' : ''}
+                className={viewMode === 'map' ? 'bg-[var(--afcfta-card2)] hover:bg-[var(--afcfta-card2)]' : ''}
               >
                 🗺️ {t.map}
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
                 variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'bg-slate-700 hover:bg-slate-800' : ''}
+                className={viewMode === 'list' ? 'bg-[var(--afcfta-card2)] hover:bg-[var(--afcfta-card2)]' : ''}
               >
                 📋 {t.list}
               </Button>
@@ -179,8 +179,8 @@ export default function LandLogisticsTab({ language = 'fr' }) {
         <Card>
           <CardContent className="py-12">
             <div className="flex flex-col items-center justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-700"></div>
-              <p className="mt-4 text-gray-600">{t.loading}</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--afcfta-border)]"></div>
+              <p className="mt-4 text-[var(--afcfta-muted)]">{t.loading}</p>
             </div>
           </CardContent>
         </Card>
@@ -192,7 +192,7 @@ export default function LandLogisticsTab({ language = 'fr' }) {
           language={language}
         />
       ) : (
-        <div className="max-h-[550px] overflow-y-auto rounded-lg border border-gray-200 p-4 bg-gray-50">
+        <div className="max-h-[550px] overflow-y-auto rounded-lg border border-[var(--afcfta-border)] p-4 bg-[var(--afcfta-card2)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {corridors.map((corridor) => (
               <CorridorCard
