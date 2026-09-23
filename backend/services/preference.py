@@ -148,12 +148,19 @@ def taux_preferentiels(
         # annuelle, et une position hors barème rend None plutôt que de se
         # déduire du plein droit.
         try:
-            from services.zlecaf_schedule_ken import compute_ken_zlecaf_rate
+            from services.zlecaf_schedule_ken import (
+                compute_ken_zlecaf_rate,
+                reserve_regle_d_origine,
+            )
 
             taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
             if taux is not None:
                 taux_dd = {"taux": taux}
                 origine_taux = libelle
+                # Servie, mais pas nécessairement accordée : voir la réserve.
+                reserve = reserve_regle_d_origine(hs_code)
+                if reserve:
+                    resultat["reserve"] = reserve
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Barème ZLECAf KEN indisponible : %s", exc)
 

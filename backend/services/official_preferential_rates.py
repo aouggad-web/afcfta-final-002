@@ -375,6 +375,14 @@ def resolve_official_preferential_rate(
             return None
         dataset_code = decision["tariff_dataset"]
 
+    if country == "KEN":
+        # Le Kenya a un barème gazetté (Legal Notice EAC/321/2022) : c'est lui
+        # qui fait foi, pas l'e-Tariff Book, qui en diverge sur 275 lignes.
+        from services.zlecaf_schedule_ken import ligne_du_journal_officiel
+
+        jour = date(as_of_year, 12, 31) if as_of_year else None
+        return ligne_du_journal_officiel(clean_code, origin, jour)
+
     dataset = _load_dataset(dataset_code)
     if dataset is None:
         return None

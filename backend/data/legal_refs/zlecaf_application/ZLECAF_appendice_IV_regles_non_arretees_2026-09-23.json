@@ -1,0 +1,27 @@
+{
+ "schema_version": 1,
+ "objet": "Rubriques du SH pour lesquelles l'Appendice IV à l'Annexe 2 (règles d'origine) ne porte pas de règle arrêtée — version approuvée par le 12e Conseil des ministres de la ZLECAf, décembre 2023. Fonde la réserve servie sur la préférence kényane.",
+ "verified_at": "2026-09-23",
+ "evidence_level": "primaire quant au contenu de l'acte, RELAYÉ par un tiers (tralac). Chaque rubrique citée a été retrouvée dans le PDF téléchargé (texte natif), page par page.",
+ "source": {
+  "instrument": "Appendix IV to Annex 2 on Rules of Origin, as approved by the 12th meeting of the AfCFTA Council of Ministers, December 2023",
+  "url": "https://www.tralac.org/documents/resources/cfta/6514-appendix-iv-to-annex-2-afcfta-agreement-rules-of-origin-approved-1/file.html",
+  "institution": "Conseil des ministres responsables du commerce de la ZLECAf (copie relayée par tralac)",
+  "texte_archive": "sources/ZLECAF_appendice_IV_regles_non_arretees.source-extrait.txt",
+  "sha256": "f8ffda12e006ffdaf65e269548dbbbaf056a53e16eb35fa2e692c1379711bc90",
+  "document_sha256": "8202d0b43e52e017da18a575240ae96e93d4a5a34b6f9c541d8e2653939f6704",
+  "document_non_archive": "PDF de 560 569 octets (131 pages) non versé au dépôt : l'extrait archivé reproduit la note 2.4 et chaque rubrique non arrêtée, avec sa page.",
+  "consulte_le": "2026-09-23"
+ },
+ "regle": {
+  "portee": "Textiles : 51.11-51.13, 52.04-52.12, 53.09, 54.07-54.08, 55.12-55.16, 58.01-58.04, 58.06, 58.10, chapitre 60, 63.01-63.06. Automobile : 87.01, 87.03-87.08, 87.10-87.12. Les chapitres 61 et 62 ont leur règle de chapitre (note 27).",
+  "article": "Appendice IV à l'Annexe 2, note 2.4 et colonne 3 des rubriques citées",
+  "verbatim_note_2_4": "2.4: Where a Chapter, Heading or Sub-heading, in Column 1, or any text of this Appendix, is in square brackets that is an indication that the rule for that Chapter, Heading or Sub- heading in Column 3, or that text, is yet to be agreed by the AfCFTA Negotiating Institutions.",
+  "verbatim_exemple_textile": "[51.11] Woven fabrics of carded wool or of carded fine animal hair Yet to be agreed",
+  "verbatim_exemple_automobile": "87.03 Motor cars and other motor vehicles principally designed for the transport of persons (other than those of heading 87.02), including station wagons and racing cars Yet to be agreed",
+  "verbatim_note_27": "27 Chapter 61 yet to be finalised. The Chapter Rule has been agreed, however, flexibility given to Member States to submit exceptions for Headings and Sub- Headings",
+  "concordance_algerie": "Liste identique, rubrique par rubrique, aux positions gelées par la circulaire DGD 482/2024 (partie III-1) — FROZEN_HEADINGS de zlecaf_schedule_dza. L'Algérie a exercé la faculté du §17 de la Directive 1/2021 sur exactement ces rubriques.",
+  "effet_kenya": "Le barème kényan (Legal Notice EAC/321/2022) ne gèle aucune de ces rubriques : relu sur ses 347 pages, sans astérisque, note ni exclusion. La préférence publiée est servie ; une réserve l'accompagne sur les 331 positions du barème concernées."
+ },
+ "ce_que_cela_ne_tranche_pas": "L'ÉTAT EN 2026. (1) Source gouvernementale : la lettre d'information du ministère sud-africain du commerce (dtic), « Update on the AfCFTA — What's New? March 2026 », écrit : « Rules of Origin • Outstanding Rules of Origin on Automotive, Clothing and Textiles adopted (100% of Rules of Origin agreed) » — sans nommer l'organe ni la date (https://www.thedtic.gov.za/wp-content/uploads/Newsletter-on-the-AfCFTA-March-2026.pdf, 6 p., SHA-256 39987c9e2f7119ecf690a2a78113e43879bd0b91d1801aaa25556e28c28c0949, non archivé). (2) Source secondaire : tralac écrit « In February 2026, RoO outstanding on the Automotive, and Clothing and Textiles sectors were adopted by the AU Assembly. This means that 100% of RoO are now agreed » (tralac.org/resources/by-region/cfta.html), après un consensus du 17e Conseil des ministres (Le Caire, septembre 2025) « under a transitional implementation mechanism ». (3) Ni la décision de l'Assemblée, ni le texte des règles adoptées, ni le contenu du mécanisme transitoire n'ont été retrouvés au 23/09/2026 ; le communiqué de clôture de la 39e session (au.int, 15/02/2026) n'en dit rien. D'où une réserve, et non un gel ni une levée de réserve. (4) Algérie : aucune circulaire levant le gel de la circulaire 482/2024 n'a été trouvée ; douane.gov.dz échoue à la vérification TLS (certificat non reconnu), non contournée — à revoir."
+}

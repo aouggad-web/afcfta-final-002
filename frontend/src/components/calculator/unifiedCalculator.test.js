@@ -105,6 +105,18 @@ describe('mapCalculToLegacyResult — préférence appliquée', () => {
     expect(r.savings_percentage).toBe(100);
   });
 
+  it("ne porte aucune réserve quand le moteur n'en joint pas", () => {
+    expect(r.zlecaf_reserve).toBeNull();
+  });
+
+  it('reprend la réserve jointe à la préférence', () => {
+    const avecReserve = mapCalculToLegacyResult(
+      { ...calcul, preference_zlecaf: { ...calcul.preference_zlecaf, reserve: "Règle d'origine non arrêtée." } },
+      contexte,
+    );
+    expect(avecReserve.zlecaf_reserve).toBe("Règle d'origine non arrêtée.");
+  });
+
   it('marque la ligne réduite dans le tableau comparatif', () => {
     const ddRow = r.taxes_breakdown.find((row) => row.code === 'DD');
     expect(ddRow.amount_npf).toBe(200);
