@@ -11,7 +11,16 @@ import { buildProductionPdf, productionPdfFilename } from '../../utils/productio
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const CHART_COLORS = ['#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a', '#60a5fa', '#93c5fd', '#bfdbfe'];
+// Skill dataviz : les secteurs sont des catégories sans ordre — séries
+// validées, dans l'ordre fixe, jamais une rampe d'un même bleu. Au-delà de
+// huit, le reste passe en gris plutôt que de recycler une teinte.
+const SECTOR_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)',
+  'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
+const couleurSecteur = (index) => SECTOR_COLORS[index] || 'var(--afcfta-muted)';
+// Classement : emphase — le pays choisi en safran, les autres en gris neutre
+// (90 % : ≥ 5:1 sur la carte, et distinct du safran en daltonisme).
+const RANG_AUTRES = 'color-mix(in srgb, var(--afcfta-muted) 90%, var(--afcfta-card))';
+const RANG_CHOISI = 'var(--series-5)';
 
 // Libellés officiels ISIC Rev.4, divisions manufacturières (Section C, 10-33).
 
@@ -332,7 +341,7 @@ function ProductionManufacturing({ language = 'fr' }) {
     return unidoData.top_sectors.map((sector, index) => ({
       name: sector.name,
       value: sector.share_mva,
-      fill: CHART_COLORS[index % CHART_COLORS.length]
+      fill: couleurSecteur(index)
     }));
   };
 
@@ -558,11 +567,10 @@ function ProductionManufacturing({ language = 'fr' }) {
                         cx="50%"
                         cy="50%"
                         outerRadius={90}
-                        fill="#8884d8"
                         dataKey="value"
                       >
                         {prepareSectorPieData().map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                          <Cell key={`cell-${index}`} fill={entry.fill} stroke="var(--afcfta-card)" strokeWidth={2} />
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => value + '% ' + t('production.manufacturing.panel.mva')} />
@@ -589,7 +597,12 @@ function ProductionManufacturing({ language = 'fr' }) {
                         formatter={(value) => [`$${formatNumber(value * 1000000)}`, t('production.manufacturing.panel.value')]}
                         labelFormatter={(label) => prepareSectorBarData().find(d => d.name === label)?.fullName || label}
                       />
-                      <Bar dataKey="value" fill="#3b82f6" radius={[0, 4, 4, 0]} />
+                      {/* Même couleur par secteur que le camembert voisin. */}
+                      <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={24}>
+                        {prepareSectorBarData().map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={couleurSecteur(index)} />
+                        ))}
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -753,8 +766,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                   {unidoData.key_products.map((product, index) => (
                     <Badge 
                       key={index} 
-                      className="text-sm py-2 px-4"
-                      style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length], color: 'white' }}
+                      className="text-sm py-2 px-4 bg-[var(--afcfta-card2)] text-[var(--text)] border border-[var(--afcfta-border)] hover:bg-[var(--afcfta-card2)]"
                     >
                       {product}
                     </Badge>
@@ -785,11 +797,12 @@ function ProductionManufacturing({ language = 'fr' }) {
                     <Bar 
                       dataKey="mva" 
                       radius={[4, 4, 0, 0]}
+                      maxBarSize={24}
                     >
                       {prepareRankingBarData().map((entry, index) => (
                         <Cell 
                           key={`cell-${index}`} 
-                          fill={entry.isSelected ? '#f59e0b' : '#3b82f6'} 
+                          fill={entry.isSelected ? RANG_CHOISI : RANG_AUTRES} 
                         />
                       ))}
                     </Bar>
@@ -797,11 +810,11 @@ function ProductionManufacturing({ language = 'fr' }) {
                 </ResponsiveContainer>
                 <div className="flex justify-center gap-4 mt-4">
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-blue-500" />
+                    <div className="w-4 h-4 rounded" style={{ background: RANG_AUTRES }} />
                     <span className="text-sm text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.otherCountries')}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded bg-amber-500" />
+                    <div className="w-4 h-4 rounded" style={{ background: RANG_CHOISI }} />
                     <span className="text-sm text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.selectedCountry')}</span>
                   </div>
                 </div>
@@ -917,7 +930,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
                 <span className="font-mono text-xs font-semibold text-[var(--info)] underline decoration-dotted underline-offset-2 shrink-0">
                   {sector.isic4}
                 </span>
-                <span className="text-sm text-[var(--text)] leading-snug break-words">
+                <span className="text-sm text-[var(--text)] leading-snug break-words min-w-0">
                   {sector.isic_description || sector.description || (
                     <span className="text-[var(--afcfta-muted)] italic">
                       {t('production.manufacturing.panel.labelNotPublished')}

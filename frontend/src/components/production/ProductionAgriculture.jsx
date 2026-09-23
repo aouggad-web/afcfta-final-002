@@ -17,9 +17,14 @@ import {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const COLORS_CULTURES  = ['#16a34a','#15803d','#22c55e','#84cc16','#f59e0b','#ea580c','#dc2626','#10b981','#059669'];
-const COLORS_ELEVAGE   = ['#92400e','#b45309','#d97706','#fbbf24','#fde68a'];
-const COLORS_PECHE     = ['#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc'];
+// Skill dataviz. Cultures et élevages sont des catégories sans ordre,
+// montrées en barres que l'axe nomme : une seule teinte par graphique — le
+// vert de la section cultures, le safran de la section élevage — au lieu de
+// couleurs recyclées sans signification. Les courbes d'évolution et la pêche
+// prennent les séries validées dans l'ordre fixe, jamais cyclées.
+const TEINTE_CULTURES = 'var(--series-1)';
+const TEINTE_ELEVAGE  = 'var(--series-5)';
+const SERIES = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)'];
 
 
 const fmt = (n) => {
@@ -78,12 +83,11 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
   // ── Charts data ──────────────────────────────────────────────────────────
   const culturesChartData = () =>
-    (detail?.cultures || []).map((c, i) => ({
+    (detail?.cultures || []).map((c) => ({
       name: c.name.length > 14 ? c.name.slice(0, 14) + '…' : c.name,
       fullName: c.name,
       value: c.value_2023,
       year: c.is_bulk_faostat ? c.year : 2023,
-      fill: COLORS_CULTURES[i % COLORS_CULTURES.length],
     }));
 
   const evolutionChartData = () => {
@@ -99,18 +103,17 @@ export default function ProductionAgriculture({ language = 'fr' }) {
   };
 
   const elevageChartData = () =>
-    (detail?.elevage || []).map((e, i) => ({
+    (detail?.elevage || []).map((e) => ({
       name: e.name,
       value: e.value,
-      fill: COLORS_ELEVAGE[i % COLORS_ELEVAGE.length],
     }));
 
   const pecheChartData = () => {
     const p = detail?.peche_aquaculture;
     if (!p) return [];
     return [
-      { name: t('production.agriculture.panel.capture'), value: p.capture_tonnes, fill: COLORS_PECHE[0] },
-      { name: t('production.agriculture.panel.aquaculture'), value: p.aquaculture_tonnes, fill: COLORS_PECHE[2] },
+      { name: t('production.agriculture.panel.capture'), value: p.capture_tonnes, fill: SERIES[0] },
+      { name: t('production.agriculture.panel.aquaculture'), value: p.aquaculture_tonnes, fill: SERIES[1] },
     ].filter(x => x.value > 0);
   };
 
@@ -266,11 +269,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                 p?.payload?.fullName || '',
                               ]}
                             />
-                            <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                              {culturesChartData().map((e, i) => (
-                                <Cell key={i} fill={e.fill} />
-                              ))}
-                            </Bar>
+                            <Bar dataKey="value" radius={[0, 4, 4, 0]} fill={TEINTE_CULTURES} maxBarSize={24} />
                           </BarChart>
                         </ResponsiveContainer>
                       </CardContent>
@@ -293,14 +292,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                               </tr>
                             </thead>
                             <tbody>
-                              {detail.cultures.map((c, i) => (
+                              {detail.cultures.map((c) => (
                                 <tr key={c.name} className="border-b hover:bg-[var(--afcfta-card2)]">
                                   <td className="px-3 py-2">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-3 h-3 rounded-full flex-shrink-0"
-                                        style={{ backgroundColor: COLORS_CULTURES[i % COLORS_CULTURES.length] }} />
-                                      <span className="font-medium">{c.name}</span>
-                                    </div>
+                                    <span className="font-medium">{c.name}</span>
                                   </td>
                                   <td className="px-3 py-2 text-right font-mono text-[var(--success)] font-bold">
                                     {fmt(c.value_2023)} t
@@ -349,10 +344,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                 key={crop}
                                 type="monotone"
                                 dataKey={crop}
-                                stroke={COLORS_CULTURES[i % COLORS_CULTURES.length]}
-                                strokeWidth={2.5}
-                                dot={{ r: 4 }}
-                                activeDot={{ r: 7 }}
+                                stroke={SERIES[i]}
+                                strokeWidth={2}
+                                dot={{ r: 4, stroke: 'var(--afcfta-card)', strokeWidth: 2, fill: SERIES[i] }}
+                                activeDot={{ r: 6, stroke: 'var(--afcfta-card)', strokeWidth: 2 }}
                               />
                             ))}
                           </LineChart>
@@ -429,11 +424,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <XAxis type="number" tickFormatter={fmt} tick={{ fontSize: 11 }} />
                             <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11 }} />
                             <Tooltip formatter={(v) => [fmt(v) + ' ' + t('production.agriculture.panel.tetes')]} />
-                            <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                              {elevageChartData().map((e, i) => (
-                                <Cell key={i} fill={e.fill} />
-                              ))}
-                            </Bar>
+                            <Bar dataKey="value" radius={[0, 4, 4, 0]} fill={TEINTE_ELEVAGE} maxBarSize={24} />
                           </BarChart>
                         </ResponsiveContainer>
                       </CardContent>
@@ -454,14 +445,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             </tr>
                           </thead>
                           <tbody>
-                            {detail.elevage.map((e, i) => (
-                              <tr key={e.name} className="border-b hover:bg-amber-50/50">
+                            {detail.elevage.map((e) => (
+                              <tr key={e.name} className="border-b hover:bg-[var(--afcfta-card2)]">
                                 <td className="px-3 py-2.5">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full"
-                                      style={{ backgroundColor: COLORS_ELEVAGE[i % COLORS_ELEVAGE.length] }} />
-                                    <span className="font-medium">{e.name}</span>
-                                  </div>
+                                  <span className="font-medium">{e.name}</span>
                                 </td>
                                 <td className="px-3 py-2.5 text-right font-mono font-bold text-[var(--gold)]">
                                   {fmt(e.value)} {e.unit}
@@ -657,15 +644,17 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     return (
                       <div
                         key={proj.commodity}
-                        className="rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-emerald-50/60 p-4"
+                        className="rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)] bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] p-4"
                       >
                         <div className="flex items-center justify-between gap-2 mb-2">
                           <span className="font-semibold text-[var(--success)] text-sm">
                             {commodityShortLabel(proj.commodity)}
                           </span>
                           <Badge
-                            className={`text-[11px] text-[var(--text)] ${
-                              proj.is_livestock ? 'bg-amber-600' : 'bg-emerald-600'
+                            className={`text-[11px] text-[var(--bg)] ${
+                              proj.is_livestock
+                                ? 'bg-[var(--gold)] hover:bg-[var(--gold)]'
+                                : 'bg-[var(--success)] hover:bg-[var(--success)]'
                             }`}
                           >
                             {proj.is_livestock ? t('production.agriculture.panel.sectorLivestock') : t('production.agriculture.panel.sectorCrops')}

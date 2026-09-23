@@ -24,8 +24,11 @@ import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-// Color palette for countries
-const COUNTRY_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)'];
+// Quatre pays au plus, dont les tracés se superposent tous sur le radar :
+// contrôle « toutes paires » du skill dataviz. Les séries 1, 2, 3 et 6 le
+// passent dans les deux thèmes (daltonisme ≥ 10,0, vision normale ≥ 17,3) ;
+// la série 4 tombait à 5,2 face au vert en sombre.
+const COUNTRY_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-6)'];
 
 // Format currency values
 const formatValue = (value) => {
@@ -55,6 +58,11 @@ const HIGH_INFLATION_THRESHOLD = 8;
 export default function MultiCountryComparison({ language = 'fr' }) {
   const [availableCountries, setAvailableCountries] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
+  // Couleur par pays, jamais par rang (skill dataviz) : un pays garde son
+  // emplacement tant qu'il reste sélectionné ; en retirer un ne repeint pas
+  // les autres.
+  const [emplacements, setEmplacements] = useState({});
+  const couleurPays = (iso) => COUNTRY_COLORS[emplacements[iso] ?? 0];
   const [countryData, setCountryData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -147,12 +155,17 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   const addCountry = (countryIso) => {
     if (selectedCountries.length < MAX_COUNTRIES && !selectedCountries.includes(countryIso)) {
       setSelectedCountries([...selectedCountries, countryIso]);
+      const pris = new Set(Object.values(emplacements));
+      setEmplacements({ ...emplacements, [countryIso]: COUNTRY_COLORS.findIndex((_, i) => !pris.has(i)) });
     }
   };
 
   // Remove country from selection
   const removeCountry = (countryIso) => {
     setSelectedCountries(selectedCountries.filter(c => c !== countryIso));
+    const restants = { ...emplacements };
+    delete restants[countryIso];
+    setEmplacements(restants);
     const newData = { ...countryData };
     delete newData[countryIso];
     setCountryData(newData);
@@ -161,6 +174,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   // Reset selection
   const resetSelection = () => {
     setSelectedCountries([]);
+    setEmplacements({});
     setCountryData({});
     setError(null);
   };
@@ -208,12 +222,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   // Extract economic indicators for comparison
   const getEconomicData = () => {
-    return selectedCountries.map((iso, idx) => {
+    return selectedCountries.map((iso) => {
       const data = countryData[iso] || {};
       const eco = data.economic_indicators || data.economics || {};
       return {
         name: getCountryName(iso),
-        color: COUNTRY_COLORS[idx],
+        color: couleurPays(iso),
         gdp: eco.gdp_billion_usd || eco.gdp || 0,
         gdpPerCapita: eco.gdp_per_capita_usd || eco.gdp_per_capita || 0,
         inflation: eco.inflation_percent || eco.inflation || 0,
@@ -225,12 +239,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   // Extract trade data for comparison
   const getTradeData = () => {
-    return selectedCountries.map((iso, idx) => {
+    return selectedCountries.map((iso) => {
       const data = countryData[iso] || {};
       const trade = data.trade_summary || data.trade || {};
       return {
         name: getCountryName(iso),
-        color: COUNTRY_COLORS[idx],
+        color: couleurPays(iso),
         exports: trade.total_exports_musd || trade.exports || 0,
         imports: trade.total_imports_musd || trade.imports || 0,
         balance: trade.trade_balance_musd || trade.balance || 0,
@@ -241,12 +255,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
   // Get development indices for comparison
   const getDevelopmentData = () => {
-    return selectedCountries.map((iso, idx) => {
+    return selectedCountries.map((iso) => {
       const data = countryData[iso] || {};
       const dev = data.development_indices || data.development || {};
       return {
         name: getCountryName(iso),
-        color: COUNTRY_COLORS[idx],
+        color: couleurPays(iso),
         hdi: dev.hdi_score || dev.hdi || 0,
         hdiRank: dev.hdi_world_rank || dev.hdi_rank || '-',
         gai: dev.gai_score || dev.gai || 0,
@@ -312,8 +326,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
     return getTradeData().map(d => ({
       name: d.name,
       [txt.exports]: d.exports,
-      [txt.imports]: d.imports,
-      fill: d.color
+      [txt.imports]: d.imports
     }));
   };
 
@@ -338,12 +351,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         <div className="flex flex-wrap items-center gap-3">
           {/* Selected country tags */}
           <div className="flex flex-wrap gap-2 flex-1 min-w-0">
-            {selectedCountries.map((iso, idx) => (
+            {selectedCountries.map((iso) => (
               <span
                 key={iso}
                 className="stats-country-tag"
-                style={{ background: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 13%, transparent)`, borderColor: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 33%, transparent)`, color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}
+                style={{ background: `color-mix(in srgb, ${couleurPays(iso)} 13%, transparent)`, borderColor: `color-mix(in srgb, ${couleurPays(iso)} 33%, transparent)`, color: 'var(--text)' }}
               >
+                <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
                 {getCountryName(iso)}
                 <button onClick={() => removeCountry(iso)}>
                   <X style={{ width: 13, height: 13 }} />
@@ -380,11 +394,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               disabled={selectedCountries.length < 2 || loading}
               data-testid="compare-btn"
               style={{
-                background: selectedCountries.length < 2
-                  ? 'rgba(155,110,245,0.2)'
-                  : 'linear-gradient(135deg,#7c3aed,#9B6EF5)',
-                border: '1px solid rgba(155,110,245,0.4)',
-                color: 'var(--text)', borderRadius: 8,
+                background: selectedCountries.length < 2 ? 'var(--overlay)' : 'var(--active-fill)',
+                border: '1px solid var(--afcfta-border)',
+                color: selectedCountries.length < 2 ? 'var(--text-soft)' : '#F7F1E6', borderRadius: 8,
                 padding: '6px 14px', fontSize: '0.82rem', fontWeight: 700,
                 opacity: selectedCountries.length < 2 ? 0.5 : 1,
               }}
@@ -400,7 +412,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               variant="outline"
               onClick={resetSelection}
               disabled={selectedCountries.length === 0}
-              style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'var(--text-soft)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
+              style={{ border: '1px solid var(--afcfta-border)', background: 'transparent', color: 'var(--text-soft)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               {txt.reset}
@@ -471,13 +483,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <PolarGrid stroke="var(--overlay)" />
                   <PolarAngleAxis dataKey="indicator" tick={{ fill: 'var(--text-soft)', fontSize: 12 }} />
                   <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: 'var(--afcfta-muted)', fontSize: 10 }} axisLine={false} />
-                  {selectedCountries.map((iso, idx) => (
+                  {selectedCountries.map((iso) => (
                     <Radar
                       key={iso}
                       name={getCountryName(iso)}
                       dataKey={getCountryName(iso)}
-                      stroke={COUNTRY_COLORS[idx]}
-                      fill={COUNTRY_COLORS[idx]}
+                      stroke={couleurPays(iso)}
+                      fill={couleurPays(iso)}
                       fillOpacity={0.15}
                       strokeWidth={2}
                     />
@@ -505,8 +517,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
-                    {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}>{getCountryName(iso)}</th>
+                    {selectedCountries.map((iso) => (
+                      <th key={iso} style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
+                          {getCountryName(iso)}
+                        </span>
+                      </th>
                     ))}
                   </tr>
                 </thead>
@@ -540,15 +557,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             </div>
             <div style={{ padding: '16px 8px' }}>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={getTradeBarData()}>
-                  <defs>
-                    <linearGradient id="mcGradExp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#1A7A4A" /><stop offset="100%" stopColor="#34d399" />
-                    </linearGradient>
-                    <linearGradient id="mcGradImp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#1A6B8A" /><stop offset="100%" stopColor="#38bdf8" />
-                    </linearGradient>
-                  </defs>
+                {/* Skill dataviz : la couleur dit la série (exportations,
+                    importations), comme la légende ; le pays est déjà nommé
+                    par l'axe. Séries 1 et 2 validées, barres ≤ 24 px. */}
+                <BarChart data={getTradeBarData()} barGap={2}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--overlay)" />
                   <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'var(--text-soft)' }} axisLine={false} tickLine={false} />
                   <YAxis tickFormatter={(v) => `$${v}M`} tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
@@ -558,8 +570,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
                   <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
-                  <Bar dataKey={txt.exports} fill="url(#mcGradExp)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey={txt.imports} fill="url(#mcGradImp)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey={txt.exports} fill="var(--series-1)" radius={[4, 4, 0, 0]} maxBarSize={24} />
+                  <Bar dataKey={txt.imports} fill="var(--series-2)" radius={[4, 4, 0, 0]} maxBarSize={24} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -578,8 +590,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
-                    {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}>{getCountryName(iso)}</th>
+                    {selectedCountries.map((iso) => (
+                      <th key={iso} style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
+                          {getCountryName(iso)}
+                        </span>
+                      </th>
                     ))}
                   </tr>
                 </thead>
@@ -603,7 +620,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.tradeBalance}</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: `color-mix(in srgb, ${d.balance >= 0 ? '#34d399' : '#f87171'} 40%, var(--text))`}}>
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: d.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
                         {d.balance ? `${d.balance >= 0 ? '+' : ''}$${d.balance.toFixed(0)}M` : '-'}
                       </td>
                     ))}
@@ -634,8 +651,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left' }}>{txt.indicator}</th>
-                    {selectedCountries.map((iso, idx) => (
-                      <th key={iso} style={{ textAlign: 'right', color: `color-mix(in srgb, ${COUNTRY_COLORS[idx]} 40%, var(--text))`}}>{getCountryName(iso)}</th>
+                    {selectedCountries.map((iso) => (
+                      <th key={iso} style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                          <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: '50%', background: couleurPays(iso), flexShrink: 0 }} />
+                          {getCountryName(iso)}
+                        </span>
+                      </th>
                     ))}
                   </tr>
                 </thead>

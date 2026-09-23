@@ -239,12 +239,15 @@ html.theme-light .afcfta-themeToggle:hover {
 html.theme-light .stat-value { color: var(--text); }
 html.theme-light .stat-label { color: var(--afcfta-muted); }
 
-/* Hero cards & shells with hardcoded dark backgrounds */
+/* Hero cards & shells with hardcoded dark backgrounds.
+   [class*="hero"] attrape aussi .stats-hero-title, un texte peint par son
+   fond (background-clip: text) : remplacer ce fond par la surface rendait le
+   titre invisible. Il garde son propre dégradé, défini en jetons. */
 html.theme-light .afcfta-shell,
 html.theme-light .afcfta-card,
 html.theme-light .afcfta-card2,
 html.theme-light .afcfta-hero,
-html.theme-light [class*="hero"],
+html.theme-light [class*="hero"]:not(.stats-hero-title),
 html.theme-light .zellige-najm {
   background: var(--surface) !important;
   color: var(--text);
