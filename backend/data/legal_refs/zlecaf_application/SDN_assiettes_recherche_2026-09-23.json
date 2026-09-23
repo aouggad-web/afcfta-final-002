@@ -1,117 +1,130 @@
 {
   "schema_version": 1,
-  "objet": "Soudan — recherche documentaire assiettes : valeur en douane (loi douanes 1986 mod. 2010, art. 75, méthodes OMC, inclusion fret/assurance déléguée au Directeur général) ; TVA à l'importation (loi TVA 2001, art. 12-14, 22, 28 : base = valeur en douane + droits et taxes hors TVA ; taux 15 % → 17 % par amendement) ; remplacement des sources agrégateurs (WITS/Trading Economics).",
+  "objet": "Soudan — recherche documentaire assiettes : valeur en douane (loi douanes 1986 mod. 2010, art. 75, méthodes OMC ; inclusion fret/manutention/assurance déléguée au Directeur général) ; TVA à l'importation (loi TVA 2001, art. 12-14, 22, 28 : base = valeur en douane + droits et taxes hors TVA) ; remplacement des sources agrégateurs (WITS/Trading Economics).",
   "verified_at": "2026-09-23",
   "etabli": true,
   "evidence_level": "primaire — PDF officiels téléchargés (customs.gov.sd et tax.gov.sd), scannés sans couche texte utile : lecture par OCR (easyocr) des articles clés ; numérotation corroborée par recoupement d'instruments modificatifs officiels (ordonnance 2018 modifiant l'art. 14).",
+
+  "regle": {
+    "valeur_en_douane": {
+      "valeur": "CIF sous condition — la loi pose la valeur transactionnelle et délègue au Directeur général l'inclusion/exclusion du transport, de la manutention et de l'assurance (totalement ou partiellement)",
+      "article": "Loi sur les douanes 1986 (mod. 2010), chapitre تقدير الرسوم الجمركية, article 75 (تحديد القيمة), alinéas (1) et (11)",
+      "verbatim": "(١) تكون القيمة الجمركية للسلع المستوردة هي القيمة التعاقدية … التي دفعت فعلا أو ستدفع أي ثمن بيع السلع | (١١) يجوز للمدير بناءاً على أمر يصدره أن يدرج أو يستبعد من القيمة الجمركية كلياً أو جزئياً: (أ) تكلفة نقل السلع المستوردة إلى الميناء أو مكان الاستيراد (ب) تكاليف الشحن والتفريغ والمناولة المرتبطة بنقل السلع المستوردة إلى ميناء أو مكان الاستيراد (ج) تكلفة التأمين",
+      "portee": "Méthodes OMC : valeur transactionnelle d'abord, puis biens identiques/similaires, valeur déductive, valeur calculée, repli (renvoi exprès à l'article VII du GATT 1994). Le CIF/FOB dépend d'un ordre du Directeur général, NON RETROUVÉ à ce stade.",
+      "fichier_archive": "sources/SDN_loi_douanes_1986_mod_2010_texte-integral.pdf",
+      "sha256": "65a1029140ffc90f2403420d403f142f7646a343f80c82f92470d8e80ed2c831"
+    },
+    "assiette_tva_import": {
+      "assiette": "valeur en douane + droits et taxes perçus à l'entrée, TVA elle-même exclue",
+      "article": "Loi sur la TVA 2001, article 22 (القيمة), alinéa relatif aux biens importés",
+      "verbatim": "قيمة السلع المستوردة … بالقيمة المتخذة أساساً لتحديد الضرائب الجمركية وغيرها من الرسوم الجمركية مضافاً إليها الضرائب والرسوم المفروضة على السلع ماعدا الضريبة على القيمة المضافة المفروضة بموجب هذا القانون",
+      "portee": "Correspond à CIF+TOUS_SAUF_TVA si la valeur en douane retenue est CIF ; suit l'ordre du Directeur général (fret/assurance) mentionné ci-dessus.",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
+    },
+    "exigibilite_import": {
+      "valeur": "exigibilité à la phase de mainlevée douanière, pour tout importateur quel que soit son chiffre d'affaires",
+      "article": "Loi sur la TVA 2001, article 13 (استحقاق)",
+      "verbatim": "تستحق الضريبة بالنسبة إلى السلع المستوردة في مرحلة الإفراج عنها من الجمارك … وتتحقق هذه الواقعة بالنسبة لكل مستورد مهما كان رقم أعماله",
+      "portee": "Complété par l'article 28 : paiement à la mainlevée, avec les droits de douane, pas de mainlevée sans paiement intégral ; et l'article 5 : recouvrement par les douanes pour le compte de la Chambre des impôts.",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
+    },
+    "taux_tva": {
+      "taux": "15 % (texte de 2001) — porté à 17 % par amendement de 2012 selon la note marginale de l'édition officielle consolidée ; télécommunications 30 % ; exportations 0 %",
+      "article": "Loi sur la TVA 2001, article 14 (فئة الضريبة)",
+      "verbatim": "تكون فئة الضريبة على السلع والخدمات والأعمال خمسة عشر في المائة … وتكون فئة الضريبة على خدمات الاتصالات ٣٠٪ (ثلاثون في المائة)",
+      "portee": "L'instrument de 2012 portant le taux à 17 % n'a pas été retrouvé (réserve) ; ordonnance 2018 (art. 14, tabac/cigarettes) et loi 2019 (art. 37) archivées par ailleurs.",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
+    }
+  },
+
   "sources_primaires": {
     "loi_douanes_1986_mod_2010": {
-      "instrument": "قانون الجمارك لسنة ١٩٨٦م تعديل لسنة ٢٠١٠م — Loi sur les douanes de 1986, amendée en 2010 (amendement adopté par décision du Conseil des ministres n° 20 de 2010, signée du Président de la République, janvier 2010)",
+      "instrument": "قانون الجمارك لسنة ١٩٨٦م تعديل لسنة ٢٠١٠م — Loi sur les douanes de 1986, amendée en 2010 (amendement adopté par décision du Conseil des ministres n° 20 de 2010, janvier 2010)",
       "autorite": "République du Soudan — Conseil des ministres / Présidence",
       "url": "https://web.prog.customs.gov.sd/wp-content/uploads/pdf/%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AC%D9%85%D8%A7%D8%B1%D9%83%202010%D9%85.pdf",
-      "fichier_archive": "backend/data/legal_refs/zlecaf_application/sources/SDN_loi_douanes_1986_mod_2010_texte-integral.pdf",
-      "sha256": "65a1029140ffc90f2403420d403f142f7646a343f80c82f92470d8e80ed2c831",
       "pages": 122,
       "consulte_le": "2026-09-23",
-      "note_extraction": "PDF scanné sans couche texte ; lecture par OCR. Page de garde : جمهورية السودان/هيئة الجمارك/قانون الجمارك لسنة ١٩٨٦م تعديل لسنة ٢٠١٠. Décision d'adoption : Conseil des ministres, décision n° 20/2010.",
-      "note_url_alternative": "customs.gov.sd (sans web.prog) renvoie la page HTML du site sur ce chemin (404 logique) ; web.prog.customs.gov.sd sert le PDF (HTTP 200, 8 822 098 octets)."
+      "note_extraction": "PDF scanné sans couche texte ; lecture par OCR. Page de garde : جمهورية السودان/هيئة الجمارك/قانون الجمارك لسنة ١٩٨٦م تعديل لسنة ٢٠١٠.",
+      "note_url_alternative": "customs.gov.sd (sans web.prog) renvoie la page HTML du site sur ce chemin ; web.prog.customs.gov.sd sert le PDF (HTTP 200, 8 822 098 octets)."
     },
     "loi_tva_2001_ar": {
       "instrument": "قانون الضريبة على القيمة المضافة لسنة ٢٠٠١م — Loi sur la taxe sur la valeur ajoutée de 2001 (version arabe consolidée, édition officielle avec notes marginales d'amendements)",
       "autorite": "République du Soudan — وزارة المالية والاقتصاد الوطني / ديوان الضرائب (Chambre des impôts)",
       "url": "https://tax.gov.sd/wp-content/uploads/2025/02/vat2001.pdf",
-      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f",
       "pages": 36,
-      "consulte_le": "2026-09-23"
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_loi_tva_2001_ar_texte-integral.pdf",
+      "sha256": "0d4dda9caa93a6fcb125dd70edcb9049dd90681606f190544bd1e8d57132252f"
     },
     "loi_tva_2001_en_scan": {
-      "instrument": "The Value Added Tax Act, 2001 — version bilingue imprimée (Ministry of Justice, Sudan Currency Printing Press)",
+      "instrument": "The Value Added Tax Act, 2001 — version imprimée bilingue (Ministry of Justice, Sudan Currency Printing Press)",
       "url": "https://tax.gov.sd/wp-content/uploads/2025/02/The-Value-Add-tax.pdf",
-      "sha256": "afa0f4f160d81e92665f08a911588b614de38a0f7a6f421833465aca7d2897e4",
       "pages": 48,
       "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_loi_tva_2001_en_scan.pdf",
+      "sha256": "afa0f4f160d81e92665f08a911588b614de38a0f7a6f421833465aca7d2897e4",
       "note": "scan avec couche texte corrompue ; mêmes articles que la version arabe."
     },
     "reglement_tva_2017": {
       "instrument": "لائحة الضريبة على القيمة المضافة لسنة ٢٠١٧ — Règlement d'exécution de la TVA (2017)",
       "url": "https://tax.gov.sd/wp-content/uploads/2025/02/vat_list.pdf",
-      "sha256": "9dcefbbeb697c7553fbfd3a4926d53ac346295e9df0751a127633de87feae611",
       "pages": 34,
       "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_reglement_tva_2017.pdf",
+      "sha256": "9dcefbbeb697c7553fbfd3a4926d53ac346295e9df0751a127633de87feae611",
       "note": "couche texte inexploitable (cmap) ; non OCR-isé à ce stade."
     },
     "instrument_2018_art14": {
       "instrument": "أمر بموجب قانون الضريبة على القيمة المضافة لسنة ٢٠٠١م (تعديل) لسنة ٢٠١٨م — ordonnance du Conseil des ministres (2018) modifiant l'article 14 : taux de la TVA sur le tabac et les cigarettes",
       "url": "https://tax.gov.sd/wp-content/uploads/2025/02/law13_14.pdf",
-      "sha256": "76bf7fe4f5d2bb0806e6c83823cf81b8c64b151e82df4fa4f958469ea6a120ec",
-      "consulte_le": "2026-09-23"
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_ordonnance_2018_art14.pdf",
+      "sha256": "76bf7fe4f5d2bb0806e6c83823cf81b8c64b151e82df4fa4f958469ea6a120ec"
     },
     "instrument_2019_art37": {
       "instrument": "قانون الضريبة على القيمة المضافة (تعديل) لسنة ٢٠١٩م — loi d'amendement de 2019 modifiant l'article 37 (pouvoir d'exemption), adoptée sous le Document constitutionnel transitoire de 2019",
       "url": "https://tax.gov.sd/wp-content/uploads/2025/02/law22.pdf",
-      "sha256": "bd5c6b529d988bd7ef47a76e8dd5a96b7417cb0bef49dd703c3aff9ee63e9639",
-      "consulte_le": "2026-09-23"
+      "consulte_le": "2026-09-23",
+      "fichier_archive": "sources/SDN_loi_2019_art37.pdf",
+      "sha256": "bd5c6b529d988bd7ef47a76e8dd5a96b7417cb0bef49dd703c3aff9ee63e9639"
     }
   },
-  "regles": {
-    "valeur_en_douane": {
-      "article": "Loi sur les douanes 1986 (mod. 2010), chapitre « تقدير الرسوم الجمركية », article 75 (تحديد القيمة)",
-      "methode": "valeur transactionnelle (القيمة التعاقدية = الثمن المدفوع فعلاً أو المستحق) — conforme à l'Accord de l'OMC sur l'évaluation (renvoi exprès à l'art. VII du GATT 1994 au repli) ; méthodes subsidiaires : biens identiques (مطابقة), biens similaires (مشابهة), valeur déductive (prix de vente au Soudan), valeur calculée (القيمة المحسوبة), repli",
-      "verbatim_1": "تكون القيمة الجمركية للسلع المستوردة هي القيمة التعاقدية … التي دفعت فعلا أو ستدفع أي ثمن بيع السلع … (الفقرة (١١) من هذه المادة)",
-      "verbatim_11": "(١١) يجوز للمدير بناءاً على أمر يصدره أن يدرج أو يستبعد من القيمة الجمركية كلياً أو جزئياً: (أ) تكلفة نقل السلع المستوردة إلى الميناء أو مكان الاستيراد (ب) تكاليف الشحن والتفريغ والمناولة المرتبطة بنقل السلع المستوردة إلى ميناء أو مكان الاستيراد (ج) تكلفة التأمين",
-      "fob_ou_cif": "NON TRANCHÉ PAR LA LOI — la loi habilitue le Directeur général (par ordre publié) à inclure ou exclure, totalement ou partiellement, le transport, la manutention et l'assurance. Le CIF/FOB dépend donc de l'ordre du Directeur général (NON RETROUVÉ à ce stade).",
-      "articles_connexes": {
-        "69": "documents exigés avec la déclaration : factures et بوالص الشحن والنولون والتأمين والتكاليف — sert au contrôle de la valeur",
-        "82": "تحويل القيمة إذا لم تكن موضحة بالعملة السودانية — conversion de la valeur si elle n'est pas exprimée en monnaie soudanaise",
-        "18_in_75": "application progressive du chapitre de la valeur dans les (4) ans de l'adoption"
-      }
-    },
-    "tva": {
-      "existence": "OUI — Loi sur la TVA de 2001 (pas de « sales tax » générique : régime TVA nominatif)",
-      "articles": {
-        "12": "فرض الضريبة — imposition sur les biens locaux et importés et les services, sauf exception légale",
-        "13": "استحقاق — pour les biens importés : accroissement à la phase de mainlevée douanière ; due par tout importateur quel que soit son chiffre d'affaires",
-        "14": "فئة الضريبة — taux : (1) 15 % (خمسة عشر في المائة) sur biens/services/ travaux ; exportations 0 % ; (أ) télécommunications 30 %",
-        "22": "القيمة — base de la TVA à l'importation : القيمة المتخذة أساساً لتحديد الضرائب الجمركية وغيرها من الرسوم الجمركية مضافاً إليها الضرائب والرسوم المفروضة على السلع ماعدا الضريبة على القيمة المضافة المفروضة بموجب هذا القانون (= valeur en douane + droits et taxes perçus à l'entrée, TVA elle-même exclue)",
-        "28": "تحصيل — la TVA sur les biens importés est payée à la phase de mainlevée douanière, avec les droits de douane ; pas de mainlevée sans paiement intégral",
-        "5": "les douanes recouvrent la TVA sur les importations pour le compte de la Chambre des impôts"
-      },
-      "taux": {
-        "texte_origine": "15 % (art. 14) ; télécom 30 % ; exportations 0 %",
-        "etat_actuel": "17 % (note marginale de l'édition officielle consolidée : amendement de 2012 portant le taux à 17 % ; corroboré par sources secondaires)",
-        "reserve": "l'instrument de 2012 portant le taux à 17 % n'a pas été retrouvé en texte primaire — à récupérer",
-        "amendements_identifies": [
-          "ordonnance du Conseil des ministres 2018 modifiant l'art. 14 (tabac/cigarettes)",
-          "ordonnance du 7 mai 2015 (taux TVA sur les cigarettes, note marginale)",
-          "loi d'amendement 2019 (art. 37, exemptions — loi n° de 2019 sous Document constitutionnel transitoire)",
-          "notes marginales : lois/ord. de 2006, 2007, 2008, 2011, 2014 selon l'édition consolidée"
-        ]
-      }
-    },
-    "accise": "Aucune famille accise au socle SDN (familles : droit, tva). Rien à documenter de ce côté à ce stade."
-  },
+
   "verdicts": {
     "a_valeur_douane": "TROUVÉ ET VÉRIFIÉ pour la méthode et l'article (loi douanes 1986 mod. 2010, art. 75) — CIF/FOB NON TRANCHÉ PAR LA LOI : délégué à un ordre du Directeur général (à retrouver)",
     "b_taxe_interieure_TVA": "TROUVÉ ET VÉRIFIÉ pour l'existence, l'assiette d'importation (art. 22) et l'article de taux (art. 14) ; taux actuel 17 % = TROUVÉ MAIS NON VÉRIFIABLE (instrument de 2012 non retrouvé)",
     "c_tva_import": "OUI — TROUVÉ ET VÉRIFIÉ (art. 13, 22, 28)",
-    "tarif_national": "NON TROUVÉ dans cette passe — la page officielle « التعريفة الجمركية » (customs.gov.sd/?page_id=2) ne publie pas de fichier tarifaire téléchargeable identifié ; le contrat de collecte COM/MDG/SDN/STP reste à traiter pour le fichier SDN_tariffs.json (positions nationales)"
+    "tarif_national": "NON TROUVÉ dans cette passe — la page officielle التعريفة الجمركية (customs.gov.sd/?page_id=2) ne publie pas de fichier tarifaire téléchargeable identifié ; le contrat de collecte COM/MDG/SDN/STP reste à traiter pour le fichier SDN_tariffs.json (positions nationales)"
   },
+
+  "ce_que_cela_ne_tranche_pas": [
+    "CIF vs FOB : délégué à un ordre du Directeur général (non retrouvé) — ne pas présumer CIF sans l'ordre ou arbitrage du propriétaire",
+    "Taux TVA 17 % : instrument d'amendement de 2012 non retrouvé — ne pas figer sans vérification",
+    "Tarif national soudanais (positions et taux) : non collecté dans cette passe",
+    "Pas de famille accise au socle SDN — rien à documenter de ce côté"
+  ],
+
   "obstacles_rencontres": [
     "customs.gov.sd/wp-content/... : HTTP 404 (page HTML) — le PDF n'est servi que par web.prog.customs.gov.sd",
     "PDF loi douanes (122 p.) et pièces fiscales : scans sans couche texte ; couche texte arabe du VAT Act inexploitable (cmap corrompu) — recours OCR",
     "Aucun blocage anti-bot ni proxy rencontré ; sites officiels accessibles"
   ],
+
   "decisions_de_modelisation_non_prises": [
-    "CIF vs FOB : la loi soudanaise délègue l'inclusion/exclusion du fret, de la manutention et de l'assurance à un ordre du Directeur général — le socle ne doit pas présumer CIF sans retrouver/qualifier cet ordre (ou sans décision du propriétaire)",
-    "Base TVA : art. 22 donne « valeur en douane + droits et taxes, TVA exclue » → correspond à CIF+TOUS_SAUF_TVA *si* la valeur en douane retenue est CIF ; si l'ordre du DG exclut fret/assurance, la base TVA suit",
-    "Taux TVA 17 % : affiché par l'édition officielle et les sources secondaires, instrument d'amendement de 2012 non retrouvé — ne pas figer sans arbitrage"
+    "CIF vs FOB : la loi soudanaise délègue l'inclusion/exclusion du fret, de la manutention et de l'assurance à un ordre du Directeur général",
+    "Base TVA : art. 22 donne « valeur en douane + droits et taxes, TVA exclue » — suit la valeur en douane retenue",
+    "Taux TVA 17 % : instrument d'amendement non retrouvé — ne pas figer sans arbitrage"
   ],
+
   "pieces_hors_depot_a_ce_stade": {
     "textes_ocr": [
       "customs_value_chapter.txt (OCR art. 69-82 de la loi douanes)",
-      "vat2001_ar.txt + OCR ciblé des pages 5-19 (art. 12-28)",
+      "vat_key_articles_ocr.txt (OCR art. 12-14, 22, 28 de la loi TVA)",
       "ocr des instruments 2018/2019"
     ],
-    "note": "Toutes les pièces sont dans /tmp/afcfta-sdn ; aucune écriture dépôt effectuée."
+    "note": "Toutes les pièces sont dans /tmp/afcfta-sdn ; aucune écriture dépôt effectuée pour ces fichiers."
   }
 }
