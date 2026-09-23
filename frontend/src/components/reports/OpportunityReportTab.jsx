@@ -3,6 +3,7 @@ import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
 import StrategicFlows from "../opportunities/StrategicFlows";
 import SectoralAnalysis from "../opportunities/SectoralAnalysis";
+import NationalIndustryView from "./NationalIndustryView";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 import { montant, montantUnite, nombre } from "../../utils/nombres";
@@ -2284,6 +2285,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
         {tabBtn("s4", fr ? "S4 · Importations" : "S4 · Imports")}
         {tabBtn("s5", fr ? "S5 · Substitution" : "S5 · Substitution")}
         {tabBtn("s6", fr ? "S6 · Flux stratégiques" : "S6 · Strategic flows")}
+        {tabBtn("dza", fr ? "Algérie · industrie et marchés" : "Algeria · industry and markets")}
       </div>
       {mode === "market" && <MarketSeekingView fr={fr} prefill={marketPrefill} />}
       {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
@@ -2293,6 +2295,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
       {mode === "s4" && <ImportOpportunitiesView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s5" && <SubstitutionAnalysis language={fr ? "fr" : "en"} />}
       {mode === "s6" && <StrategicFlows language={fr ? "fr" : "en"} />}
+      {mode === "dza" && <NationalIndustryView fr={fr} />}
     </div>
   );
 }

@@ -1,0 +1,1281 @@
+N°1067
+
+Les comptes économiques de 2021 à 2024
+
+Cette publication présente les résultats des comptes économiques à travers une série de tableaux statistiques, permettant une lecture détaillée et harmonisée des comptes annuels couvrant les années 2021 à 2024.
+
+Cette série des comptes nationaux est élaborée conformément au Système de Comptabilité Nationale 2008 (SCN 2008). Les données sont présentées en valeurs nominales et en volume. Les comptes sont définitifs pour les années 2021 et 2022, semi-définitifs pour 2023, et provisoires pour 2024.
+
+La compilation des comptes économiques s’appuie sur une diversité de sources statistiques, incluant notamment :
+
+❖ Les diverses enquêtes menées par l’Office National des Statistiques :
+
+✓ L’enquête mensuelle sur les prix à la consommation ; ✓ Enquête trimestrielle sur la production industrielle ; ✓ L’enquête trimestrielle sur les prix à la production industrielle ; ✓ Enquête annuelle auprès des banques et entreprises d’assurance ; ✓ L’enquête sur les dépenses de consommation des ménages ; ✓ L’enquête annuelle sur les salaires.
+
+❖ Les statistiques élaborées par le Ministère de l’Énergie et des Mines ; ❖ Les statistiques élaborées par le Ministère des Finances ; ❖ Les statistiques élaborées par le Ministère du Tourisme et de l’Artisanat ; ❖ Les statistiques élaborées par le Ministère des Travaux Publics et des Infrastructures de Base ; ❖ Les statistiques élaborées par le Ministère des Transports ; ❖ Les statistiques élaborées par le Ministère de l’Industrie et de la Production Pharmaceutique ; ❖ Les Statistiques élaborées par le Ministère de l’Habitat, de l'Urbanisme et de la Ville ; ❖ Les Statistiques élaborées par le Ministère du Travail, de l'Emploi et de la Sécurité Sociale ; ❖ Les Statistiques élaborées par le Ministère de l’Intérieur, des Collectivités Locales
+
+et de l’Aménagement du Territoire ; ❖ Les données statistiques de la Direction Générale des Douanes ; ❖ Les statistiques de la Banque d’Algérie ; ❖ Les statistiques de l’emploi de la Direction de la Fonction Publique ; ❖ Les comptes des entreprises de la téléphonie et de la poste ; et certaines statistiques confectionnées par l’Autorité de Régulation de la Poste et de la Communication Électronique (ARPCE) ; ❖ Les statistiques élaborées par le Ministère de l’Agriculture, du Développement Rural
+
+et de la Pêche ; ❖ Les rapports d’activité sectoriels,….etc.
+
+Directeur de la publication : Taoufik HADJ MESSAOUD Ce numéro est élaboré par la Direction Technique chargée de la comptabilité nationale Direction des publications et de la Diffusion – 8 & 10, Rue des Moussebiline – Alger 16000 ☎&萱: (021) 63 98 06 ONS (Siège) -Avenue Belkacemi Mohamed El Annasser - Alger 16009 ☎: (023) 73 81 49 萱:(023) 73 81 59 ISSN 1111 - 5939 prix = 40 DA Aout 2025 Site Web : http://www.ons.dz Courriel: ons@ons.dzoustat@ons.dz
+
+Principales tendances économiques en 2024
+
+La croissance réelle de l’économie algérienne a atteint 3,7% en 2024. Cette évolution traduit le maintien d’une dynamique économique positive.
+
+La progression du PIB en 2024 résulte essentiellement des hausses enregistrées dans certains secteurs stratégiques. L’agriculture, l’industrie agroalimentaire, l’industrie textile et le commerce ont contribué de manière significative, avec des taux de croissance respectifs de 5,3%, 5,2%, 10,3% et 7,4%.
+
+Le produit intérieur brut (PIB) en valeur nominale s’élève à 36 103,5 milliards de DA en 2024, contre 33 678,7 milliards de DA en 2023, enregistrant ainsi un accroissement de 7,2%. Cette hausse reflète une évolution de 3,4% de l’indice implicite des prix du PIB sur l’année.
+
+La valeur du PIB en 2024, convertie en dollars américains, s’élève à 269,3 milliards USD.
+
+Le taux de croissance du Produit Intérieur Brut hors hydrocarbures enregistre une progression plus soutenue que celui du PIB global. Il passe de 4,3% en 2023 à 4,8% en 2024, marquant ainsi une amélioration notable et une performance économique appréciable.
+
+En 2024, la demande intérieure a affiché une croissance de 6,9%, marquant un léger ralentissement après la progression de 7,2% en 2023. Ce rythme reste toutefois soutenu, porté en grande partie par une hausse notable de 9,8% de la formation brute de capital fixe. Par ailleurs, la consommation finale des ménages a connu une hausse de 3,9%, contre 4,0% l’année précédente. La consommation finale des administrations publiques a, pour sa part, augmenté de 2,8%, en ralentissement par rapport à la progression de 3,4% enregistrée en 2023.
+
+Figure 1 : Évolution du taux de croissance du PIB et du PIB hors hydrocarbures
+
+8,0
+
+6,0
+
+4,0
+
+2,0
+
+0,0
+
+\-2,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+\-4,0
+
+\-6,0
+
+I- Évolution des secteurs d’activité économique en 2024
+
+I-1 L’agriculture
+
+En 2024, le taux de croissance du secteur agricole s’établit à 5,3%, traduisant une reprise significative par rapport à l’année précédente, où il s’élevait à 3,0%. Cette amélioration est attribuable à plusieurs facteurs, notamment la reprise de la production céréalière et le dynamisme de certaines cultures à forte valeur commerciale.
+
+La production végétale a bondi de 8,7%, portée par une saison particulièrement favorable. En revanche, la production animale est restée modérée, avec une augmentation de seulement 2,2%.
+
+Le Produit Intérieur Brut Le Produit Intérieur Brut HH
+
+2
+
+Figure 2 : Évolution du taux de croissance de la valeur ajoutée de l’agriculture et de la pêche
+
+14,0
+
+12,0 12,0 10,0
+
+7,0 8,0
+
+3,1
+
+1,6
+
+3,3 2,6 2,8
+
+5,3
+
+6,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+\-6,0
+
+\-4,0
+
+I-2 Les hydrocarbures
+
+Après une croissance de 3,6% en 2023, le secteur des hydrocarbures a connu un repli de 1,3% en 2024. Cette baisse est principalement due à un recul de 2,8% dans l’extraction. En revanche, les activités de raffinage et de cokéfaction se sont redressées, enregistrant une hausse de 3,0% contre une légère baisse de 0,2% l’année précédente.
+
+En termes nominaux, la valeur ajoutée du secteur des hydrocarbures a diminué de 4,7%, s'établissant à 6 133 milliards de dinars, contre 6 435,4 milliards de dinars en 2023. Cette évolution s'accompagne d'une baisse du déflateur de 3,5%, reflétant le recul des prix du baril sur le marché international.
+
+Figure 3 : Évolution du taux de croissance de la valeur ajoutée des hydrocarbures
+
+\-8,9
+
+I-3 L’industrie
+
+En 2024, la valeur ajoutée du secteur industriel a enregistré une croissance de 5,7%, identique à celle observée en 2023. Plusieurs branches ont affiché des performances particulièrement notables, notamment :
+
+• L’industrie textile, de l’habillement et des fourrures (+10,3%) ;
+
+• Les autres industries extractives (+6,5%) ;
+
+• L’industrie du bois et du papier (+5,8%) ;
+
+• L’industrie alimentaire et du tabac (+5,2%).
+
+En revanche, la branche de la fabrication de machines et appareils électriques a enregistré une baisse de sa valeur ajoutée de 4,8%.
+
+En termes nominaux, la valeur ajoutée industrielle s’est élevée à 1 674,4 milliards de dinars en 2024, contre 1 467,7 milliards en 2023, soit une progression de 14,1%
+
+5,2 3,0
+
+4,0 2,0 0,0 -2,0 -4,0
+
+\-2,2
+
+20,0
+
+10,8 15,0
+
+17,1
+
+3,6
+
+10,0 5,0 0,0 -5,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+\-10,0 -15,0 -20,0
+
+\-0,6
+
+\-0,2
+
+\-1,3 -2,4
+
+\-2,5 -9,4 -7,0 -13,9
+
+3
+
+Figure 4 : Évolution du taux de croissance de la valeur ajoutée de l’industrie
+
+15,0
+
+10,7
+
+3,9
+
+4,8
+
+5,8
+
+2,4 2,9
+
+7,0
+
+9,6
+
+5,7 5,7
+
+10,0
+
+4,8
+
+5,0
+
+0,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 -5,0
+
+\-10,0
+
+\-8,1
+
+I-4 L’électricité et le gaz
+
+Le secteur de l’électricité et du gaz a progressé de 6,1% en 2024, contre 4,5% en 2023. L’ensemble des activités du secteur a enregistré une croissance, témoignant de sa robustesse face aux fluctuations économiques.
+
+Figure 5 : Évolution du taux de croissance de la valeur ajoutée de l’électricité et du gaz
+
+10,0
+
+6,5 6,5 7,1
+
+5,2
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+I-5 La construction
+
+Le secteur de la construction a continué de croître en 2024, avec une hausse de 3,8% en volume, un peu plus élevée que les 3,4% de 2023. En termes de valeur, cela représente 4 803,9 milliards de dinars, soit une augmentation de 11,3% par rapport à l’année précédente.
+
+Figure 6 : Évolution du taux de croissance de la valeur ajoutée de la construction
+
+13,4
+
+7,8 4,8 6,8 8,2 7,8 4,7
+
+\-1,3
+
+8,3
+
+5,6 4,5 6,1
+
+\-2,0
+
+8,4
+
+8,0
+
+3,7
+
+4,4 6,0
+
+4,0
+
+2,0
+
+\-1,1
+
+0,0
+
+16,0 14,0 12,0 10,0
+
+5,8 4,0 3,4 3,8
+
+8,0 6,0 4,0 2,0 0,0 -2,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 -4,0
+
+4
+
+I-6 Les services
+
+Le secteur des services demeure un pilier essentiel de la croissance économique. Il occupe une place stratégique dans la sphère réelle, en intervenant à la fois en amont et en aval des autres activités économiques. Cette position centrale lui confère un dynamisme soutenu, qui contribue fortement à l’impulsion de la croissance globale.
+
+En 2024, plusieurs branches du secteur ont enregistré des performances remarquables :
+
+• Le commerce, avec une croissance de 7,4% ;
+
+• Les transports et communications, en hausse de 4,5% ;
+
+• L’hôtel et restaurants, avec une croissance de 8,2%.
+
+Figure 7 : Évolution du taux de croissance de la valeur ajoutée des services
+
+8,0
+
+5,5
+
+6,0
+
+4,3
+
+2,1
+
+3,0
+
+5,9
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+II. Évolution de la demande finale en 2024
+
+II-1 La consommation finale
+
+En 2024, la consommation totale, qui regroupe les dépenses des ménages et celles de l’administration publique, a augmenté de 3,6%, après une hausse de 3,8% en 2023.
+
+Les ménages, en particulier, ont vu leur consommation augmenter de 3,9%. En valeur, cela représente 14 901,7 milliards de dinars, et cette hausse s’est accompagnée d’un niveau de prix global en progression, avec un déflateur de 4,8%.
+
+Figure 8 : Évolution du taux de croissance de la consommation finale des ménages
+
+6,1
+
+5,4
+
+4,0 4,6
+
+4,0
+
+2,0
+
+2,5
+
+3,2
+
+4,4
+
+0,0
+
+\-2,0
+
+\-4,0
+
+\-6,0
+
+1,7
+
+\-3,9
+
+8,0 6,0
+
+3,92,3
+
+4,0
+
+4,0
+
+2,6
+
+1,6
+
+2,0
+
+2,7
+
+2,6
+
+3,6
+
+3,9
+
+0,0 -2,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+\-4,0
+
+\-4,8 -6,0
+
+5
+
+II-2 La formation brute de capital fixe
+
+La formation brute de capital fixe (FBCF) a affiché en 2024 une croissance en volume de 9,8%, marquant ainsi une accélération du rythme de croissance par rapport à l’année précédente.
+
+En valeur nominale, les investissements ont atteint 12 707,7 milliards de DA, contre 11 020,5 milliards de DA en 2023, soit une croissance de 15,3%. Cette hausse en valeur est le reflet non seulement de l’augmentation des volumes, mais également de l’effet prix, traduisant une intensification des dépenses d’équipement.
+
+Figure 9 : Évolution du taux de croissance de la formation brute de capital fixe
+
+15,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+III - Les échanges extérieurs
+
+En 2024, les importations de biens et services ont enregistré une hausse en volume de 11,9%, après une augmentation plus marquée de 16,1% en 2023. Du côté des exportations, on observe une baisse globale de 2,4% en volume par rapport à l’année précédente.
+
+En dépit des mesures adoptées pour freiner les importations, le déséquilibre des échanges extérieurs s’est accentué sous l’effet d’une baisse des exportations et d’une progression continue des importations, entraînant un déficit commercial.
+
+Les exportations d’hydrocarbures, qui constituent une part essentielle des recettes extérieures du pays, ont enregistré une baisse de 1,9% en 2024, en contraste avec la hausse de 3,0% observée en 2023. Cette diminution s’inscrit dans un contexte marqué par une baisse des prix internationaux, qui a directement impacté la valeur des exportations.
+
+Parallèlement, les exportations des autres biens ont subi une forte contraction de 20,8%, en nette rupture avec la croissance de 4,8% observée l’année précédente. Ce recul important pourrait refléter un affaiblissement de la demande extérieure ou une baisse de la compétitivité hors hydrocarbures.
+
+En revanche, les exportations de services ont connu une croissance en volume de 14,3% en 2024, marquant une nette amélioration par rapport à l’augmentation limitée de 1,4% en 2023. Cette performance positive reste cependant insuffisante pour compenser la baisse globale des exportations de biens.
+
+Figure 10 : Évolution du taux de croissance des importations de biens et services
+
+\-20,0
+
+8,78,5
+
+9,2 9,8 10,0
+
+5,2
+
+2,8
+
+\-10,0
+
+1,6 2,1 5,0
+
+0,4 2,6 0,0
+
+\-5,0
+
+\-0,6
+
+\-7,2
+
+40,0
+
+20,0
+
+0,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+Importations de biens Importations de services
+
+6
+
+Figure 11 : Évolution du taux de croissance des exportations de biens et services
+
+60,0
+
+40,0
+
+20,0
+
+0,0
+
+\-20,0
+
+2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+\-40,0
+
+Exportations des hydrocarbures Exportations d’autres biens Exportations de services
+
+Figure 12 : Importations, exportations et solde commercial en milliards de DA
+
+12 000
+
+4 000
+
+10 000
+
+3 000
+
+8 000
+
+2 000
+
+6 000
+
+1 000 04 000
+
+0
+
+\-3 000 2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024
+
+Importations Exportations Solde commercial
+
+IV- Structure de la valeur ajoutée en 2024
+
+Secteurs d'activité Agriculture et pêche Hydrocarbures Industries Électricité, gaz Construction Services
+
+Part en (%) 14,7 17,9 4,9 1,3 14 47,2
+
+En 2024, la structure de l’économie révèle une nette domination des services, qui génèrent 47,2% de la valeur ajoutée à prix courant. Les hydrocarbures, bien que stratégiques, ne représentent que 17,9%, confirmant une certaine diversification. Le secteur agricole (y compris la pêche) et celui de la construction affichent des contributions proches, avec respectivement 14,7% et 14,0%. L’industrie hors hydrocarbures contribue modestement à hauteur de 4,9%, tandis que le secteur de l’électricité et du gaz n’apporte que 1,3%.
+
+Figure 13 : Répartition de la valeur ajoutée par grands secteurs d’activité (en%)
+
+Services
+
+Agriculture et pêche 47,2%
+
+14,7%
+
+Hydrocarbures 17,9% Industries 4,9%
+
+Construction
+
+14%Electricité, gaz
+
+1,3% -1 000 2 000
+
+\-2 000
+
+7
+
+Compte de production et compte d'exploitation par secteur d'activité -2021-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Agriculture et pêche
+
+SNF publiques 31 870 17 737 14 133 4 366 1 073 8 694 Entreprises privées
+
+3 381 828 569 889 2 811 939 311 417 20 853 2 479 669 TOTAL 3 413 698 587 626 2 826 072 315 783 21 926 2 488 363 Branche Unité Fictive (BUF) Sociétés
+
+financières
+
+0 467 471 -467 471 0 0 -467 471 TOTAL 0 467 471 -467 471 0 0 -467 471
+
+Extraction d'hydrocarbures et services annexes
+
+SNF publiques 4 720 821 1 678 634 3 042 187 134 650 759 261 2 148 276 Entreprises privées
+
+244 941 70 072 174 869 11 014 38 306 125 549 TOTAL 4 965 762 1 748 706 3 217 056 145 664 797 567 2 273 825
+
+Autres industries extractives
+
+SNF publiques 41 332 12 693 28 639 15 930 2 387 10 322 Entreprises privées
+
+23 186 8 740 14 446 5 972 2 969 5 505 TOTAL 64 518 21 433 43 085 21 902 5 356 15 827
+
+Industries alimentaires et du tabac
+
+SNF publiques 813 213 660 361 152 852 41 747 6 834 104 271 Entreprises privées
+
+1 260 059 936 582 323 477 70 421 18 047 235 009 TOTAL 2 073 272 1 596 943 476 329 112 168 24 881 339 280
+
+Industrie textile, de l'habillement et des fourrures
+
+SNF publiques 20 834 12 734 8 100 3 158 603 4 339 Entreprises privées
+
+159 613 79 482 80 131 54 521 5 055 20 555 TOTAL 180 447 92 216 88 231 57 679 5 658 24 894
+
+Industrie du cuir et de la chaussure
+
+SNF publiques 5 223 4 328 895 289 77 529 Entreprises privées
+
+35 764 17 837 17 927 4 572 983 12 372 TOTAL 40 987 22 165 18 822 4 861 1060 12 901 Fabrication d'articles en bois et en papier, imprimerie et reproduction
+
+SNF publiques 55 440 44 892 10 548 4 613 501 5 434 Entreprises privées
+
+108 804 68 103 40 701 17 216 3 062 20 423 TOTAL 164 244 112 995 51 249 21 829 3 563 25 857
+
+Raffinage et cokéfaction
+
+SNF publiques 1 418 362 440 517 977 845 22 010 152 108 803 727 Entreprises privées
+
+51 813 11 211 40 602 5 951 5 679 28 972 TOTAL 1 470 175 451 728 1 018 447 27 961 157 787 832 699
+
+Industrie chimique, du caoutchouc et des plastiques
+
+SNF publiques 263 743 187 321 76 422 13 435 5 477 57 510 Entreprises privées
+
+113 536 70 053 43 483 14 779 3 171 25 533 TOTAL 377 279 257 374 119 905 28 214 8 648 83 043
+
+Fabrication d'autres produits minéraux non métalliques
+
+SNF publiques 175 145 113 903 61 242 51 089 5 277 4 876 Entreprises privées
+
+50 770 36 117 14 653 11 293 1090 2 270 TOTAL 225 915 150 020 75 895 62 382 6 367 7 146
+
+Métallurgie, travail des métaux
+
+SNF publiques 233 465 207 821 25 644 9 855 1 723 14 066 Entreprises privées
+
+45 585 23 959 21 626 7 627 1 991 12 008 TOTAL 279 050 231 780 47 270 17 482 3 714 26 074
+
+Fabrication de machines et équipements
+
+SNF publiques 91 950 75 394 16 556 14 420 1 398 738 Entreprises privées
+
+62 066 23 859 38 207 3 735 2 186 32 286 TOTAL 154 016 99 253 54 763 18 155 3 584 33 024
+
+Fabrication de machines de bureau et matériel informatique
+
+SNF publiques 1 535 477 1 058 571 89 398 Entreprises privées
+
+3 771 1 605 2 166 248 179 1 739 TOTAL 5 306 2 082 3 224 819 268 2 137
+
+Fabrication de machines et appareils électriques
+
+SNF publiques 39 355 21 458 17 897 10 292 1 302 6 303 Entreprises privées
+
+8 617 3 288 5 329 2 051 463 2815 TOTAL 47 972 24 746 23 226 12 343 1 765 9 118
+
+8
+
+Compte de production et compte d'exploitation par secteur d'activité (suite) -2021-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Fabrication d’équipements de communication et d'instruments médicaux
+
+SNF publiques 29 163 14 221 14 942 6 704 1 420 6 818 Entreprises privées 26 056 13 104 12 952 6 441 1 184 5 327 Administration publique 270 20 250 191 0 59 TOTAL 55 489 27 345 28 144 13 336 2 604 12 204
+
+Autres industries manufacturières
+
+SNF publiques 41 869 29 819 12 050 12 057 702 -709 Entreprises privées 94 745 52 364 42 381 22 066 4 105 16 210 TOTAL 136 614 82 183 54 431 34 123 4 807 15 501
+
+Production et distribution d'électricité, de gaz
+
+SNF publiques 484 936 110 883 374 053 116 040 16 827 241 186 Entreprises privées 953 525 428 102 26 300 TOTAL 485 889 111 408 374 481 116 142 16 853 241 486
+
+Construction
+
+SNF publiques 812 803 382 316 430 487 203 800 18 125 208 562 Entreprises privées 4 746 660 1 736 095 3 010 565 421 465 161 529 2 427 571 Administration publique 425 18 407 130 0 277 TOTAL 5 559 888 2 118 429 3 441 459 625 395 179 654 2 636 410
+
+Commerce, réparations- auto et d’articles domestiques
+
+SNF publiques 375 062 114 959 260 103 78 034 31 875 150 194 Entreprises privées 3 005 247 524 338 2 480 909 413 748 88 013 1 979 148 Administration publique 282 16 266 176 0 90 TOTAL 3 380 591 639 313 2 741 278 491 958 119 888 2 129 432
+
+Hôtels et restaurations
+
+SNF publiques 22 097 14 543 7 554 7 520 339 -305 Entreprises privées 441 293 244 615 196 678 102 460 17 701 76 517 TOTAL 463 390 259 158 204 232 109 980 18 040 76 212
+
+Transports et communications
+
+SNF publiques 1 338 732 311 570 1 027 162 174 484 66 913 785 765 Entreprises privées 2 519 782 708 461 1 811 321 257 845 58 181 1 495 295 TOTAL 3 858 514 1 020 031 2 838 483 432 329 125 094 2 281 060 Activités financières Sociétés financières TOTAL 821 170 192 700 628 470 117 181 26 024 485 265 821 170 192 700 628 470 117 181 26 024 485 265
+
+Immobilier, location et services aux entreprises
+
+SNF publiques 120 328 30 785 89 543 69 140 1 651 18 752 Entreprises privées 2 100 772 259 335 1 841 437 146 746 106 781 1 587 910 Administration publique 45 100 3 693 41 407 9 637 42 31 728 TOTAL 2 266 200 293 813 1 972 387 225 523 108 474 1 638 390 Administration publique Administration TOTAL publique 2 753 665 489 415 2 264 250 2 124 428 2 515 137 307 2 753 665 489 415 2 264 250 2 124 428 2 515 137 307
+
+Education, santé et action sociale
+
+Entreprises privées 193 740 53 864 139 876 39 830 11 033 89 013 Administration publique 1 414 707 228 253 1 186 454 1 084 078 1 327 101 049 TOTAL 1 608 447 282 117 1 326 330 1 123 908 12 360 190 062
+
+Services collectifs, sociaux, personnels et domestiques
+
+SNF publiques 12 658 4 055 8 603 7 668 870 65 Entreprises privées 122 610 28 945 93 665 33 232 4 400 56 033 Administration publique 152 771 34 193 118 578 13 719 5 104 854 TOTAL 288 039 67 193 220 846 54 619 5 275 160 952
+
+Ensemble
+
+SNF publiques 11 149 936 4 491 421 6 658 515 1 001 872 1 076 832 4 579 811 Entreprises privées 18 802 211 5 542 443 13 259 768 1 964 752 556 987 10 738 029 Sociétés financières 821 170 660 171 160 999 117 181 26 024 17 794 Administration publique
+
+4 367 220 755 608 3 611 612 3 232 359 3 889 375 364 TOTAL 35 140 537 11 449 643 23 690 894 6 316 164 1 663 732 15 710 998
+
+9
+
+Compte de production et compte d'exploitation par secteur d'activité -2022-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Agriculture et pêche
+
+SNF publiques 37 897 20 337 17 560 4 555 1 299 11 706 Entreprises privées
+
+4 065 044 672 194 3 392 850 383 392 22 705 2 986 753 TOTAL 4 102 941 692 531 3 410 410 387 947 24 004 2 998 459 Branche Unité Fictive (BUF) Sociétés
+
+financières
+
+0 486 833 -486 833 0 0 -486 833 TOTAL 0 486 833 -486 833 0 0 -486 833
+
+Extraction d'hydrocarbures et services annexes
+
+SNF publiques 7 721 848 1 837 214 5 884 634 152 234 1 305 407 4 426 993 Entreprises privées
+
+392 386 77 639 314 747 12 374 88 182 214 191 TOTAL 8 114 234 1 914 853 6 199 381 164 608 1 393 589 4 641 184
+
+Autres industries extractives
+
+SNF publiques 83 547 19 550 63 997 18 019 3 986 41 992 Entreprises privées
+
+24 297 8 950 15 347 6 513 3 425 5 409 TOTAL 107 844 28 500 79 344 24 532 7 411 47 401
+
+Industries alimentaires et du tabac
+
+SNF publiques 937 275 704 753 232 522 45 554 9 619 177 349 Entreprises privées
+
+1 405 192 1 069 233 335 959 81 219 19 503 235 237 TOTAL 2 342 467 1 773 986 568 481 126 773 29 122 412 586
+
+Industrie textile, de l'habillement et des fourrures
+
+SNF publiques 25 379 15 306 10 073 2 930 711 6 432 Entreprises privées
+
+203 175 95 598 107 577 55 272 6 684 45 621 TOTAL 228 554 110 904 117 650 58 202 7 395 52 053
+
+Industrie du cuir et de la chaussure
+
+SNF publiques 5 952 4 770 1 182 393 81 708 Entreprises privées
+
+41 183 19 018 22 165 5 666 1 723 14 776 TOTAL 47 135 23 788 23 347 6 059 1 804 15 484 Fabrication d'articles en bois et en papier, imprimerie et reproduction
+
+SNF publiques 60 026 46 484 13 542 4 770 666 8 106 Entreprises privées
+
+112 549 68 612 43 937 18 222 3 199 22 516 TOTAL 172 575 115 096 57 479 22 992 3 865 30 622
+
+Raffinage et cokéfaction
+
+SNF publiques 2 579 585 602 337 1 977 248 22 253 248 446 1 706 549 Entreprises privées
+
+57 069 15 388 41 681 6 465 7 415 27 801 TOTAL 2 636 654 617 725 2 018 929 28 718 255 861 1 734 350
+
+Industrie chimique, du caoutchouc et des plastiques
+
+SNF publiques 279 462 193 891 85 571 14 899 6 027 64 645 Entreprises privées
+
+133 073 78 385 54 688 17 583 3 650 33 455 TOTAL 412 535 272 276 140 259 32 482 9 677 98 100
+
+Fabrication d'autres produits minéraux non métalliques
+
+SNF publiques 200 870 125 067 75 803 55 925 5 648 14 230 Entreprises privées
+
+51 417 38 600 12 817 11 417 982 418 TOTAL 252 287 163 667 88 620 67 342 6 630 14 648
+
+Métallurgie, travail des métaux
+
+SNF publiques 274 476 236 642 37 834 11 575 2 258 24 001 Entreprises privées
+
+45 688 26 489 19 199 8 246 1 914 9 039 TOTAL 320 164 263 131 57 033 19 821 4 172 33 040
+
+Fabrication de machines et équipements
+
+SNF publiques 107 344 82 649 24 695 16 814 2 346 5 535 Entreprises privées
+
+66 890 22 960 43 930 3 743 2 993 37 194 TOTAL 174 234 105 609 68 625 20 557 5 339 42 729 Fabrication de machines de bureau et matériel informatique
+
+SNF publiques 1 624 532 1 092 681 95 316 Entreprises privées
+
+4 770 1 944 2 826 281 242 2 303 TOTAL 6 394 2 476 3 918 962 337 2 619
+
+Fabrication de machines et appareils électriques
+
+SNF publiques 50 408 25 774 24 634 11 237 2 070 11 327 Entreprises privées
+
+6 846 4 241 2 605 2 238 255 112 TOTAL 57 254 30 015 27 239 13 475 2 325 11 439
+
+10
+
+Compte de production et compte d'exploitation par secteur d'activité (suite) -2022-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Fabrication d’équipements de communication et d'instruments médicaux
+
+SNF publiques 32 410 15 048 17 362 6 671 1 555 9 136 Entreprises privées 28 254 12 996 15 258 6 989 1 187 7 082 Administration publique 371 21 350 198 0 152 TOTAL 61 035 28 065 32 970 13 858 2 742 16 370
+
+Autres industries manufacturières
+
+SNF publiques 44 526 30 421 14 105 12 545 1 032 528 Entreprises privées 105 961 51 843 54 118 24 899 4 769 24 450 TOTAL 150 487 82 264 68 223 37 444 5 801 24 978
+
+Production et distribution d'électricité, de gaz
+
+SNF publiques 520 601 125 124 395 477 117 201 17 399 260 877 Entreprises privées 999 677 322 109 41 172 TOTAL 521 600 125 801 395 799 117 310 17 440 261 049
+
+Construction
+
+SNF publiques 910 270 428 478 481 792 209 993 19 869 251 930 Entreprises privées 5 306 998 1 946 317 3 360 681 474 399 175 843 2 710 439 Administration publique 475 19 456 140 0 316 TOTAL 6 217 743 2 374 814 3 842 929 684 532 195 712 2 962 685
+
+Commerce, réparations- auto et d’articles domestiques
+
+SNF publiques 428 232 128 590 299 642 85 960 36 098 177 584 Entreprises privées 3 451 534 585 957 2 865 577 449 757 92 140 2 323 680 Administration publique 323 17 306 203 0 103 TOTAL 3 880 089 714 564 3 165 525 535 920 128 238 2 501 367
+
+Hôtels et restaurations
+
+SNF publiques 25 924 16 409 9 515 8 216 557 742 Entreprises privées 615 858 277 373 338 485 112 359 29 677 196 449 TOTAL 641 782 293 782 348 000 120 575 30 234 197 191
+
+Transports et communications
+
+SNF publiques 1 432 092 342 141 1 089 951 199 514 67 194 823 243 Entreprises privées 2 719 661 801 778 1 917 883 260 870 59 998 1 597 015 TOTAL 4 151 753 1 143 919 3 007 834 460 384 127 192 2 420 258 Activités financières Sociétés financières TOTAL 862 305 203 642 658 663 119 769 27 120 511 774 862 305 203 642 658 663 119 769 27 120 511 774
+
+Immobilier, location et services aux entreprises
+
+SNF publiques 136 196 34 894 101 302 75 663 1 990 23 649 Entreprises privées 2 369 634 291 809 2 077 825 158 349 119 960 1 799 516 Administration publique 50 866 4 125 46 741 10 529 49 36 163 TOTAL 2 556 696 330 828 2 225 868 244 541 121 999 1 859 328 Administration publique Administration TOTAL publique 3 088 587 549 314 2 539 273 2 377 122 2 871 159 280 3 088 587 549 314 2 539 273 2 377 122 2 871 159 280
+
+Education, santé et action sociale
+
+Entreprises privées 220 392 60 369 160 023 44 729 11 743 103 551 Administration publique 1 594 729 255 627 1 339 102 1 249 108 1 501 88 493 TOTAL 1 815 121 315 996 1 499 125 1 293 837 13 244 192 044
+
+Services collectifs, sociaux, personnels et domestiques
+
+SNF publiques 14 370 4 523 9 847 9 138 901 -192 Entreprises privées 137 566 32 314 105 252 35 955 4 852 64 445 Administration publique 171 411 38 534 132 877 14 312 5 118 560 TOTAL 323 347 75 371 247 976 59 405 5 758 182 813
+
+Ensemble
+
+SNF publiques 15 910 314 5 040 934 10 869 380 1 086 740 1 735 254 8 047 386 Entreprises privées 21 566 436 6 260 684 15 305 752 2 181 046 663 082 12 461 624 Sociétés financières 862 305 690 475 171 830 119 769 27 120 24 941 Administration publique
+
+4 906 762 847 657 4 059 105 3 651 612 4 426 403 067 TOTAL 43 245 817 12 839 749 30 406 067 7 039 167 2 429 882 20 937 018
+
+11
+
+Compte de production et compte d'exploitation par secteur d'activité -2023-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Agriculture et pêche
+
+SNF publiques 41 144 22 540 18 604 4 868 1 394 12 342 Entreprises privées 5 216 407 732 422 4 483 985 457 771 27 551 3 998 663 TOTAL 5 257 551 754 962 4 502 589 462 639 28 945 4 011 005 Branche Unité Fictive (BUF) Sociétés TOTAL financières 0 609 705 -609 705 0 0 -609 705 0 609 705 -609 705 0 0 -609 705
+
+Extraction d'hydrocarbures et services annexes
+
+SNF publiques 6 396 729 1 891 540 4 505 189 166 341 1 165 999 3 172 849 Entreprises privées 312 117 72 266 239 851 12 708 39 653 187 490 TOTAL 6 708 846 1 963 806 4 745 040 179 049 1 205 652 3 360 339
+
+Autres industries extractives
+
+SNF publiques 65 687 22 303 43 384 20 767 3 289 19 328 Entreprises privées 59 712 16 659 43 053 7 161 8 166 27 726 TOTAL 125 399 38 962 86 437 27 928 11 455 47 054
+
+Industries alimentaires et du tabac
+
+SNF publiques 960 973 722 837 238 136 50 277 9 792 178 067 Entreprises privées 1 544 033 1 179 774 364 259 91 706 20 000 252 553 TOTAL 2 505 006 1 902 611 602 395 141 983 29 792 430 620
+
+Industrie textile, de l'habillement et des fourrures
+
+SNF publiques 30 457 17 951 12 506 3 162 745 8 599 Entreprises privées 221 378 93 718 127 660 55 954 8 398 63 308 TOTAL 251 835 111 669 140 166 59 116 9 143 71 907
+
+Industrie du cuir et de la chaussure
+
+SNF publiques 6 443 5 228 1 215 447 91 677 Entreprises privées 45 143 19 423 25 720 6 779 1 525 17 416 TOTAL 51 586 24 651 26 935 7 226 1 616 18 093 Fabrication d'articles en bois et en papier, imprimerie et reproduction
+
+SNF publiques 64 548 50 695 13 853 5 135 706 8 012 Entreprises privées 125 495 70 369 55 126 19 057 3 918 32 151 TOTAL 190 043 121 064 68 979 24 192 4 624 40 163
+
+Raffinage et cokéfaction
+
+SNF publiques 2 200 506 550 012 1 650 494 23 775 272 429 1 354 290 Entreprises privées 55 044 15 194 39 850 6 497 7 235 26 118 TOTAL 2 255 550 565 206 1 690 344 30 272 279 664 1 380 408
+
+Industrie chimique, du caoutchouc et des plastiques
+
+SNF publiques 320 108 216 360 103 748 17 218 6 509 80 021 Entreprises privées 122 477 78 039 44 438 19 455 2 675 22 308 TOTAL 442 585 294 399 148 186 36 673 9 184 102 329
+
+Fabrication d'autres produits minéraux non métalliques
+
+SNF publiques 205 858 112 919 92 939 58 618 6 219 28 102 Entreprises privées 53 143 38 993 14 150 11 536 1 072 1 542 TOTAL 259 001 151 912 107 089 70 154 7 291 29 644
+
+Métallurgie, travail des métaux
+
+SNF publiques 285 427 245 750 39 677 12 378 2 582 24 717 Entreprises privées 50 147 27 221 22 926 8 430 2 132 12 364 TOTAL 335 574 272 971 62 603 20 808 4 714 37 081
+
+Fabrication de machines et équipements
+
+SNF publiques 112 163 88 273 23 890 19 091 2 579 2 220 Entreprises privées 72 607 23 797 48 810 3 904 3 216 41 690 TOTAL 184 770 112 070 72 700 22 995 5 795 43 910 Fabrication de machines de bureau et matériel informatique
+
+SNF publiques 1 773 592 1 181 772 101 308 Entreprises privées 5 924 2 265 3 659 324 248 3 087 TOTAL 7 697 2 857 4 840 1 096 349 3 395
+
+Fabrication de machines et appareils électriques
+
+SNF publiques 53 165 26 153 27 012 13 012 2 357 11 643 Entreprises privées 8 048 4 813 3 235 2 319 288 628 TOTAL 61 213 30 966 30 247 15 331 2 645 12 271
+
+12
+
+Compte de production et compte d'exploitation par secteur d'activité (suite) -2023-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Fabrication d’équipements de communication et d'instruments médicaux
+
+SNF publiques 34 669 15 520 19 149 7 005 1 760 10 384 Entreprises privées 31 930 13 654 18 276 7 264 1 293 9 719 Administration publique 405 23 382 202 0 180 TOTAL 67 004 29 197 37 807 14 471 3 053 20 283
+
+Autres industries manufacturières
+
+SNF publiques 48 403 32 980 15 423 13 566 1 085 772 Entreprises privées 119 014 55 168 63 846 27 616 5 537 30 693 TOTAL 167 417 88 148 79 269 41 182 6 622 31 465
+
+Production et distribution d'électricité, de gaz
+
+SNF publiques 562 132 134 792 427 340 118 879 19 086 289 375 Entreprises privées 1 050 610 440 113 45 282 TOTAL 563 182 135 402 427 780 118 992 19 131 289 657
+
+Construction
+
+SNF publiques 988 148 451 859 536 289 234 982 18 558 282 749 Entreprises privées 5 841 147 2 063 190 3 777 957 509 979 179 712 3 088 266 Administration publique 522 20 502 147 0 355 TOTAL 6 829 817 2 515 069 4 314 748 745 108 198 270 3 371 370
+
+Commerce, réparations- auto et d’articles domestiques
+
+SNF publiques 467 245 138 685 328 560 95 022 39 400 194 138 Entreprises privées 3 841 709 626 999 3 214 710 505 968 100 808 2 607 934 Administration publique 361 18 343 218 0 125 TOTAL 4 309 315 765 702 3 543 613 601 208 140 208 2 802 197
+
+Hôtels et restaurations
+
+SNF publiques 31 064 19 576 11 488 8 796 656 2 036 Entreprises privées 747 323 299 423 447 900 124 468 32 684 290 748 TOTAL 778 387 318 999 459 388 133 264 33 340 292 784
+
+Transports et communications
+
+SNF publiques 1 560 981 361 648 1 199 333 204 366 71 739 923 228 Entreprises privées 2 828 447 824 423 2 004 024 269 283 61 427 1 673 314 TOTAL 4 389 428 1 186 071 3 203 357 473 649 133 166 2 596 542 Activités financières Sociétés financières 1 074 426 250 228 824 198 121 048 34 470 668 680 TOTAL 1 074 426 250 228 824 198 121 048 34 470 668 680
+
+Immobilier, location et services aux entreprises
+
+SNF publiques 147 363 36 378 110 985 83 154 2 131 25 700 Entreprises privées 2 567 608 315 134 2 252 474 168 800 129 797 1 953 877 Administration publique 54 046 4 316 49 730 11 487 52 38 191 TOTAL 2 769 017 355 828 2 413 189 263 441 131 980 2 017 768 Administration publique Administration TOTAL publique 3 551 492 617 778 2 933 714 2 726 559 3 195 203 960 3 551 492 617 778 2 933 714 2 726 559 3 195 203 960
+
+Education, santé et action sociale
+
+Entreprises privées 250 813 64 687 186 126 49 855 13 236 123 035 Administration publique 1 799 916 280 988 1 518 928 1 427 003 1 671 90 254 TOTAL 2 050 729 345 675 1 705 054 1 476 858 14 907 213 289
+
+Services collectifs, sociaux, personnels et domestiques
+
+SNF publiques 15 040 4 999 10 041 9 753 927 -639 Entreprises privées 143 436 33 423 110 013 37 344 5 248 67 421 Administration publique 178 359 41 056 137 303 14 922 6 122 375 TOTAL 336 835 79 478 257 357 62 019 6 181 189 157
+
+Ensemble
+
+SNF publiques 14 600 026 5 169 590 9 430 436 1 171 384 1 630 134 6 628 918 Entreprises privées 24 264 152 6 671 664 17 592 488 2 404 291 655 864 14 532 333 Sociétés financières 1 074 426 859 933 214 493 121 048 34 470 58 975 Administration publique
+
+5 585 101 944 199 4 640 902 4 180 538 4 924 455 440 TOTAL 45 523 705 13 645 386 31 878 319 7 877 261 2 325 392 21 675 666
+
+13
+
+Compte de production et compte d'exploitation par secteur d'activité -2024-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Agriculture et pêche
+
+SNF publiques 44 329 24 088 20 241 5 365 1 422 13 454 Entreprises privées 5 843 680 823 975 5 019 705 517 281 25 255 4 477 169 TOTAL 5 888 009 848 063 5 039 946 522 646 26 677 4 490 623 Branche Unité Fictive (BUF) Sociétés TOTAL financières 0 706 866 -706 866 0 0 -706 866 0 706 866 -706 866 0 0 -706 866
+
+Extraction d'hydrocarbures et services annexes
+
+SNF publiques 5 936 841 1 869 563 4 067 278 170 808 1 147 689 2 748 781 Entreprises privées 320 160 83 950 236 210 13 712 38 671 183 827 TOTAL 6 257 001 1 953 513 4 303 488 184 520 1 186 360 2 932 608
+
+Autres industries extractives
+
+SNF publiques 69 584 23 268 46 316 21 166 3 208 21 942 Entreprises privées 61 130 16 994 44 136 7 161 8 046 28 929 TOTAL 130 714 40 262 90 452 28 327 11 254 50 871
+
+Industries alimentaires et du tabac
+
+SNF publiques 1 015 068 742 638 272 430 51 283 8 833 212 314 Entreprises privées 1 606 566 1 197 614 408 952 99 868 17 905 291 179 TOTAL 2 621 634 1 940 252 681 382 151 151 26 738 503 493
+
+Industrie textile, de l'habillement et des fourrures
+
+SNF publiques 38 376 22 152 16 224 3 485 710 12 029 Entreprises privées 272 738 119 928 152 810 63 228 7 747 81 835 TOTAL 311 114 142 080 169 034 66 713 8 457 93 864
+
+Industrie du cuir et de la chaussure
+
+SNF publiques 6 514 5 202 1 312 448 80 784 Entreprises privées 50 334 20 031 30 303 7 762 1 365 21 176 TOTAL 56 848 25 233 31 615 8 210 1 445 21 960 Fabrication d'articles en bois et en papier, imprimerie et reproduction
+
+SNF publiques 66 614 50 124 16 490 5 253 618 10 619 Entreprises privées 135 033 76 162 58 871 20 867 3 372 34 632 TOTAL 201 647 126 286 75 361 26 120 3 990 45 251
+
+Raffinage et cokéfaction
+
+SNF publiques 2 334 892 547 654 1 787 238 24 898 258 769 1 503 571 Entreprises privées 57 620 15 385 42 235 6 647 7 060 28 528 TOTAL 2 392 512 563 039 1 829 473 31 545 265 829 1 532 099
+
+Industrie chimique, du caoutchouc et des plastiques
+
+SNF publiques 350 518 227 413 123 105 19 284 5 278 98 543 Entreprises privées 141 526 79 287 62 239 21 079 2 387 38 773 TOTAL 492 044 306 700 185 344 40 363 7 665 137 316
+
+Fabrication d'autres produits minéraux non métalliques
+
+SNF publiques 221 915 121 301 100 614 64 597 5 990 30 027 Entreprises privées 57 288 41 464 15 824 13 174 977 1 673 TOTAL 279 203 162 765 116 438 77 771 6 967 31 700
+
+Métallurgie, travail des métaux
+
+SNF publiques 315 461 265 780 49 681 13 740 2 126 33 815 Entreprises privées 54 811 29 175 25 636 9 088 1 900 14 648 TOTAL 370 272 294 955 75 317 22 828 4 026 48 463
+
+Fabrication de machines et équipements
+
+SNF publiques 118 377 91 018 27 359 21 191 2 051 4 117 Entreprises privées 82 046 25 318 56 728 4 209 2 592 49 927 TOTAL 200 423 116 336 84 087 25 400 4 643 54 044 Fabrication de machines de bureau et matériel informatique
+
+SNF publiques 1 684 547 1 137 807 85 245 Entreprises privées 5 936 2 205 3 731 342 236 3 153 TOTAL 7 620 2 752 4 868 1 149 321 3 398
+
+Fabrication de machines et appareils électriques
+
+SNF publiques 56 727 26 368 30 359 13 689 2 170 14 500 Entreprises privées 8 738 5 256 3 482 2 421 274 787 TOTAL 65 465 31 624 33 841 16 110 2 444 15 287
+
+14
+
+Compte de production et compte d'exploitation par secteur d'activité (suite) -2024-
+
+En millions de DA
+
+Compte de production Compte d'exploitation Secteur d'activité Secteur juridique PB CI VA RS AINSP EBE/RM
+
+Fabrication d’équipements de communication et d'instruments médicaux
+
+SNF publiques 37 269 18 032 19 237 7 369 1 599 10 269 Entreprises privées 32 984 15 052 17 932 7 584 1 192 9 156 Administration publique
+
+415 26 389 209 0 180 TOTAL 70 668 33 110 37 558 15 162 2 791 19 605
+
+Autres industries manufacturières
+
+SNF publiques 57 116 39 498 17 618 14 366 1 054 2 198 Entreprises privées 145 197 73 681 71 516 31 814 4 881 34 821 TOTAL 202 313 113 179 89 134 46 180 5 935 37 019
+
+Production et distribution d'électricité, de gaz
+
+SNF publiques 598 108 141 916 456 192 127 082 17 798 311 312 Entreprises privées 1 097 615 482 117 42 323 TOTAL 599 205 142 531 456 674 127 199 17 840 311 635
+
+Construction
+
+SNF publiques 1 135 455 518 585 616 870 243 875 11 675 361 320 Entreprises privées 6 477 107 2 290 679 4 186 428 581 486 126 776 3 478 166 Administration publique
+
+574 22 552 152 0 400 TOTAL 7 613 136 2 809 286 4 803 850 825 513 138 451 3 839 886
+
+Commerce, réparations- auto et d’articles domestiques
+
+SNF publiques 571 490 150 889 420 601 106 805 38 042 275 754 Entreprises privées 4 313 036 701 589 3 611 447 576 804 105 681 2 928 962 Administration publique
+
+451 23 428 240 0 188 TOTAL 4 884 977 852 501 4 032 476 683 849 143 723 3 204 904
+
+Hôtels et restaurations
+
+SNF publiques 33 642 20 778 12 864 9 412 450 3 002 Entreprises privées 844 736 310 248 534 488 132 200 20 393 381 895 TOTAL 878 378 331 026 547 352 141 612 20 843 384 897
+
+Transports et communications
+
+SNF publiques 1 696 786 383 347 1 313 439 212 540 66 932 1 033 967 Entreprises privées 2 926 312 857 400 2 068 912 277 362 62 588 1 728 962 TOTAL 4 623 098 1 240 747 3 382 351 489 902 129 520 2 762 929 Activités financières Sociétés financières 1 217 235 275 405 941 830 132 416 33 002 776 412 TOTAL 1 217 235 275 405 941 830 132 416 33 002 776 412
+
+Immobilier, location et services aux entreprises
+
+SNF publiques 157 442 38 470 118 972 89 919 1 764 27 289 Entreprises privées 2 811 017 342 942 2 468 075 186 751 112 494 2 168 830 Administration publique
+
+55 562 4 400 51 162 12 205 35 38 922 TOTAL 3 024 021 385 812 2 638 209 288 875 114 293 2 235 041 Administration publique Administration
+
+publique
+
+3 853 465 630 200 3 223 265 2 977 745 3 382 242 138 TOTAL 3 853 465 630 200 3 223 265 2 977 745 3 382 242 138
+
+Education, santé et action sociale
+
+Entreprises privées 276 396 70 664 205 732 59 138 13 013 133 581 Administration publique
+
+1 943 639 291 255 1 652 384 1 564 630 1 737 86 017 TOTAL 2 220 035 361 919 1 858 116 1 623 768 14 750 219 598
+
+Service collectifs, sociaux, personnels et domestiques
+
+SNF publiques 16 906 5 423 11 483 10 431 948 104 Entreprises privées 155 719 36 084 119 635 40 573 5 691 73 371 Administration publique
+
+183 815 43 893 139 922 15 535 4 124 383 TOTAL 356 440 85 400 271 040 66 539 6 643 197 858
+
+Ensemble
+
+SNF publiques 14 881 114 5 334 054 9 547 060 1 237 813 1 579 291 6 729 956 Entreprises privées 26 681 207 7 235 698 19 445 509 2 680 668 570 538 16 194 303 Sociétés financières 1 217 235 982 271 234 964 132 416 33 002 69 546 Administration publique
+
+6 037 921 969 819 5 068 102 4 570 716 5 158 492 228 TOTAL 48 817 477 14 521 842 34 295 635 8 621 613 2 187 989 23 486 033
+
+15
+
+Produit Intérieur Brut et valeurs ajoutées sectorielles 2021-2022
+
+En millions de DA
+
+2021 2022 Secteur d'activité SNF
+
+publiques
+
+SNF privées
+
+Sociétés financières APU Total SNF
+
+publiques
+
+SNF privées
+
+Sociétés financières APU Total Agriculture et pêche 14 133 2 811 939 0 0 2 826 072 17 560 3 392 850 0 0 3 410 410 Branche Unité Fictive 0 0 -467 471 0 -467 471 0 0 -486 833 0 -486 833 Extraction d'hydrocarbures et services annexes 3 042 187 174 869 0 0 3 217 056 5 884 634 314 747 0 0 6 199 381 Autres industries extractives 28 639 14 446 0 0 43 085 63 997 15 347 0 0 79 344 Industries alimentaires et du tabac 152 852 323 477 0 0 476 329 232 522 335 959 0 0 568 481 Industrie textile, de l'habillement et des fourrures 8 100 80 131 0 0 88 231 10 073 107 577 0 0 117 650 Industrie du cuir et de la chaussure 895 17 927 0 0 18 822 1 182 22 165 0 0 23 347 Fabrication d'articles en bois et en papier, imprimerie et reproduction 10 548 40 701 0 0 51 249 13 542 43 937 0 0 57 479 Raffinage et cokéfaction 977 845 40 602 0 0 1 018 447 1 977 248 41 681 0 0 2 018 929 Industrie chimique, du caoutchouc et des plastiques 76 422 43 483 0 0 119 905 85 571 54 688 0 0 140 259 Fabrication d'autres produits minéraux non métalliques 61 242 14 653 0 0 75 895 75 803 12 817 0 0 88 620 Métallurgie, travail des métaux 25 644 21 626 0 0 47 270 37 834 19 199 0 0 57 033 Fabrication de machines et équipements 16 556 38 207 0 0 54 763 24 695 43 930 0 0 68 625 Fabrication de machines de bureau et matériel informatique 1 058 2 166 0 0 3 224 1 092 2 826 0 0 3 918 Fabrication de machines et appareils électriques 17 897 5 329 0 0 23 226 24 634 2 605 0 0 27 239 Fabrication d'équipements de communication et d’instruments médicaux 14 942 12 952 0 250 28 144 17 362 15 258 0 350 32 970 Autres industries manufacturières 12 050 42 381 0 0 54 431 14 105 54 118 0 0 68 223 Production et distribution d'électricité, de gaz 374 053 428 0 0 374 481 395 477 322 0 0 395 799 Construction 430 487 3 010 565 0 407 3 441 459 481 792 3 360 681 0 456 3 842 929 Commerce, réparations automobiles et d'articles domestiques 260 103 2 480 909 0 266 2 741 278 299 642 2 865 577 0 306 3 165 525 Hôtels et restaurants 7 554 196 678 0 0 204 232 9 515 338 485 0 0 348 000 Transports et communications 1 027 162 1 811 321 0 0 2 838 483 1089951 1 917 883 0 0 3 007 834 Activités financières 0 0 628 470 0 628 470 0 0 658 663 0 658 663 Immobilier, location et services aux entreprises 89 543 1 841 437 0 41 407 1 972 387 101 302 2 077 825 0 46 741 2 225 868 Administration publique 0 0 2 264 250 2 264 250 0 0 0 2 539 273 2 539 273 Education, santé et action sociale 0 139 876 0 1 186 454 1 326 330 0 160 023 0 1 339 102 1 499 125 Services collectifs, sociaux, personnels et domestiques 8 603 93 665 0 118 578 220 846 9 847 105 252 0 132 877 247 976 Sous Total 6 658 515 13 259 768 160 999 3 611 612 23 690 894 10 869 380 15 305 752 171 830 4 059 105 30 406 067 Impôts sur les importations 332 300 338 313 Impôts nets de subventions sur les produits 1 130 012 1 287 080 Produit Intérieur Brut 25 153 206 32 031 460
+
+16
+
+Produit Intérieur Brut et valeurs ajoutées sectorielles 2023-2024
+
+En millions de DA
+
+2023 2024 Secteur d'activité SNF
+
+publiques
+
+SNF privées
+
+Sociétés financières APU Total SNF
+
+publiques
+
+SNF privées
+
+Sociétés financières APU Total Agriculture et pêche 18 604 4 483 985 0 0 4 502 589 20 241 5 019 705 0 0 5 039 946 Branche Unité Fictive 0 0 -609 705 0 -609 705 0 0 -706 866 0 -706 866 Extraction d'hydrocarbures et services annexes 4 505 189 239 851 0 0 4 745 040 4 067 278 236 210 0 0 4 303 488 Autres industries extractives 43 384 43 053 0 0 86 437 46 316 44 136 0 0 90 452 Industries alimentaires et du tabac 238 136 364 259 0 0 602 395 272 430 408 952 0 0 681 382 Industrie textile, de l'habillement et des fourrures 12 506 127 660 0 0 140 166 16 224 152 810 0 0 169 034 Industrie du cuir et de la chaussure 1 215 25 720 0 0 26 935 1 312 30 303 0 0 31 615 Fabrication d'articles en bois et en papier, imprimerie et reproduction
+
+13 853 55 126 0 0 68 979 16 490 58 871 0 0 75 361 Raffinage et cokéfaction 1 650 494 39 850 0 0 1 690 344 1 787 238 42 235 0 0 1 829 473 Industrie chimique, du caoutchouc et des plastiques 103 748 44 438 0 0 148 186 123 105 62 239 0 0 185 344 Fabrication d'autres produits minéraux non métalliques 92 939 14 150 0 0 107 089 100 614 15 824 0 0 116 438 Métallurgie, travail des métaux 39 677 22 926 0 0 62 603 49 681 25 636 0 0 75 317 Fabrication de machines et équipements 23 890 48 810 0 0 72 700 27 359 56 728 0 0 84 087 Fabrication de machines de bureau et matériel informatique 1 181 3 659 0 0 4 840 1 137 3 731 0 0 4 868 Fabrication de machines et appareils électriques 27 012 3 235 0 0 30 247 30 359 3 482 0 0 33 841 Fabrication d'équipements de communication et d’instruments médicaux
+
+19 149 18 276 0 382 37 807 19 237 17 932 0 389 37 558 Autres industries manufacturières 15 423 63 846 0 0 79 269 17 618 71 516 0 0 89 134 Production et distribution d'électricité, de gaz 427 340 440 0 0 427 780 456 192 482 0 0 456 674 Construction 536 289 3 777 957 0 502 4 314 748 616 870 4 186 428 0 552 4 803 850 Commerce, réparations automobiles et d'articles domestiques 328 560 3 214 710 0 343 3 543 613 420 601 3 611 447 0 428 4 032 476 Hôtels et restaurants 11 488 447 900 0 0 459 388 12 864 534 488 0 0 547 352 Transports et communications 1 199 333 2 004 024 0 0 3 203 357 1 313 439 2 068 912 0 0 3 382 351 Activités financières 0 0 824 198 0 824 198 0 0 941 830 0 941 830 Immobilier, location et services aux entreprises 110 985 2 252 474 0 49 730 2 413 189 118 972 2 468 075 0 51 162 2 638 209 Administration publique 0 0 0 2 933 714 2 933 714 0 3 223 265 3 223 265 Education, santé et action sociale 0 186 126 0 1 518 928 1 705 054 205 732 0 1 652 384 1 858 116 Services collectifs, sociaux, personnels et domestiques 10 041 110 013 0 137 303 257 357 11 483 119 635 0 139 922 271 040 Sous Total 9 430 436 17 592 488 214 493 4 640 902 31 878 319 9 547 060 19 445 509 234 964 5 068 102 34 295 635 Impôts sur les importations 354 085 367 835 Impôts nets de subventions sur les produits 1 446 304 1 440 055 Produit Intérieur Brut 33 678 708 36 103 525
+
+17
+
+Produit Intérieur Brut et ses emplois
+
+En millions de DA 2021 2022 2023 2024 Consommation finale des ménages 10 658 276 12 162 009 13 685 809 14 901 716 Consommation finale des administrations publiques 4 635 391 5 298 027 6 030 650 6 519 133 Formation brute de capital fixe 8 833 178 9 732 692 11 020 471 12 707 666 Variation des stocks 1 013 363 1 509 695 1 648 407 2 130 188 Exportations de biens et services 5 897 010 9 862 985 8 012 185 7 167 409 (-) Importations de biens et services 5 884 012 6 533 948 6 718 814 7 322 587 Produit Intérieur Brut 25 153 206 32 031 460 33 678 708 36 103 525
+
+Décomposition du Produit Intérieur Brut par l’approche revenu
+
+En millions de DA 2021 2022 2023 2024 Rémunération des salariés 6 316 164 7 039 167 7 877 261 8 621 613 Impôts nets de subventions sur la production et les importations 3 126 044 4 055 275 4 125 781 3 995 879 Excédent brut d'exploitation / Revenu mixte brut 15 710 998 20 937 018 21 675 666 23 486 033 Produit Intérieur Brut 25 153 206 32 031 460 33 678 708 36 103 525
+
+Revenu National Brut Disponible et son affectation
+
+En million de DA
+
+2021 2022 2023 2024 Rémunération des salariés 6 316 164 7 039 167 7 877 261 8 621 613 Impôts sur la production et les importations nets de subventions 3 126 044 4 055 275 4 125 781 3 995 879 Excédent brut d'exploitation / revenu mixte 15 710 998 20 937 018 21 675 666 23 486 033 Solde de la RS et du RP avec le reste du monde -491 993 -746 840 -487 003 -682 765 Revenu National Brut 24 661 213 31 284 620 33 191 705 35 420 760 Solde des autres transferts courants avec le reste du monde 349 363 377 220 353 999 342 080 Revenu National Brut Disponible 25 010 576 31 661 840 33 545 704 35 762 840 Consommation finale des ménages 10 658 276 12 162 009 13 685 809 14 901 716 Consommation finale des administrations publiques 4 635 391 5 298 027 6 030 650 6 519 133 Épargne nette 9 716 909 14 201 804 13 829 245 14 341 991 Revenu National Brut Disponible 25 010 576 31 661 840 33 545 704 35 762 840
+
+18
+
+Partage volume -prix du PIB : optique production 2021-2022
+
+Valeurs= millions de DA ; Volume= variation en % ; Prix= variation en % 2021 2022 Valeurs Ajoutées Val au prix de
+
+l’année (n-1) Volume Prix Val au prix de
+
+l’année (n)
+
+Val au prix de l’année (n-1) Volume Prix Val au prix de
+
+l’année (n) Agriculture et pêche 2 624 440 -2,2 7,7 2 826 072 2 972 107 5,2 14,7 3 410 410 Branche Unité Fictive -466 966 -2,6 0,1 -467 471 -476 353 1,9 2,2 -486 833 Extraction d'hydrocarbures et services annexes 1 813 753 20,3 77,4 3 217 056 3 046 222 -5,3 103,5 6 199 381 Autres industries extractives 33 660 -3,8 28,0 43 085 46 673 8,3 70,0 79 344 Industries alimentaires et du tabac 464 711 6,4 2,5 476 329 522 966 9,8 8,7 568 481 Industrie textile, de l'habillement et des fourrures 82 228 9,9 7,3 88 231 94 127 6,7 25,0 117 650 Industrie du cuir et de la chaussure 17 723 10,0 6,2 18 822 22 557 19,8 3,5 23 347 Fabrication d'articles en bois et en papier, imprimerie et reproduction 50 742 1,7 1,0 51 249 56 854 10,9 1,1 57 479 Raffinage et cokéfaction 387 664 4,0 162,7 1 018 447 1 181 813 16,0 70,8 2 018 929 Industrie chimique, du caoutchouc et des plastiques 109 005 7,7 10,0 119 905 131 083 9,3 7,0 140 259 Fabrication d'autres produits minéraux non métalliques 82 495 7,8 -8,0 75 895 90 613 19,4 -2,2 88 620 Métallurgie, travail des métaux 50 828 23,0 -7,0 47 270 48 333 2,2 18,0 57 033 Fabrication de machines et équipements 51 908 11,1 5,5 54 763 55 885 2,0 22,8 68 625 Fabrication de machines de bureau et matériel informatique 3 085 6,8 4,5 3 224 3 265 1,3 20,0 3 918 Fabrication de machines et appareils électriques 21 808 7,4 6,5 23 226 24 540 5,7 11,0 27 239 Fabrication d'équipements de communication et d’instruments médicaux
+
+26 601 7,1 5,8 28 144 28 670 1,9 15,0 32 970 Autres industries manufacturières 49 012 0,0 11,1 54 431 63 131 16,0 8,1 68 223 Production et distribution d'électricité, de gaz 390 973 8,3 -4,2 374 481 395 497 5,6 0,1 395 799 Construction 3 235 966 5,8 6,4 3 441 459 3 579 431 4,0 7,4 3 842 929 Commerce, réparations automobiles et d'articles domestiques 2 511 695 3,5 9,1 2 741 278 2 861 071 4,4 10,6 3 165 525 Hôtels et restaurants 169 717 33,4 20,3 204 232 310 959 52,3 11,9 348 000 Transports et communications 2 793 044 3,8 1,6 2 838 483 2 967 363 4,5 1,4 3 007 834 Activités financières 621 068 -1,6 1,2 628 470 641 996 2,2 2,6 658 663 Immobilier, location et services aux entreprises 1 799 934 1,5 9,6 1 972 387 2 045 992 3,7 8,8 2 225 868 Administration publique 2 022 194 0,6 12,0 2 264 250 2 313 963 2,2 9,7 2 539 273 Education, santé et action sociale 1 219 415 3,2 8,8 1 326 330 1 349 570 1,8 11,1 1 499 125 Services collectifs, sociaux, personnels et domestiques 204 586 4,9 7,9 220 846 228 274 3,4 8,6 247 976 Sous Total 20 371 289 4,4 16,3 23 690 894 24 606 602 3,9 23,6 30 406 067 Impôts Impôts sur nets les de importations subventions sur les produits 1 282 044 008 163 -14,2 -1,3 17,8 8,2 1 332 130 300 012 1 294 163 614 143 -11,3 2,9 14,8 10,7 1 338 287 080 313 Produit Intérieur Brut 21 697 460 3,8 15,9 25 153 206 26 064 359 3,6 22,9 32 031 460
+
+19
+
+Partage volume -prix du PIB : optique production 2023-2024
+
+Valeurs= millions de DA ; Volume= variation en % ; Prix= variation en % 2023 2024 Valeurs Ajoutées Val au prix de
+
+l’année (n-1) Volume Prix Val au prix de
+
+l’année (n)
+
+Val au prix de l’année (n-1) Volume Prix Val au prix de
+
+l’année (n) Agriculture et pêche 3 512 797 3,0 28,2 4 502 589 4 741 226 5,3 6,3 5 039 946 Branche Unité Fictive -501 438 3,0 21,6 -609 705 -635 922 4,3 11,2 -706 866 Extraction d'hydrocarbures et services annexes 6 503 151 4,9 -27,0 4 745 040 4 614 463 -2,8 -6,7 4 303 488 Autres industries extractives 81 169 2,3 6,5 86 437 92 092 6,5 -1,8 90 452 Industries alimentaires et du tabac 582 125 2,4 3,5 602 395 633 909 5,2 7,5 681 382 Industrie textile, de l'habillement et des fourrures 131 415 11,7 6,7 140 166 154 552 10,3 9,4 169 034 Industrie du cuir et de la chaussure 24 865 6,5 8,3 26 935 29 198 8,4 8,3 31 615 Fabrication d'articles en bois et en papier, imprimerie et reproduction 62 250 8,3 10,8 68 979 72 980 5,8 3,3 75 361 Raffinage et cokéfaction 2 014 891 -0,2 -16,1 1 690 344 1 740 341 3,0 5,1 1 829 473 Industrie chimique, du caoutchouc et des plastiques 147 552 5,2 0,4 148 186 154 852 4,5 19,7 185 344 Fabrication d'autres produits minéraux non métalliques 95 887 8,2 11,7 107 089 115 870 8,2 0,5 116 438 Métallurgie, travail des métaux 60 512 6,1 3,5 62 603 67 486 7,8 11,6 75 317 Fabrication de machines et équipements 76 242 11,1 -4,6 72 700 76 044 4,6 10,6 84 087 Fabrication de machines de bureau et matériel informatique 4 416 12,7 9,6 4 840 5 028 3,9 -3,2 4 868 Fabrication de machines et appareils électriques 30 208 10,9 0,1 30 247 28 795 -4,8 17,5 33 841 Fabrication d'équipements de communication et d’instruments médicaux
+
+38 410 16,5 -1,6 37 807 38 600 2,1 -2,7 37 558 Autres industries manufacturières 74 431 9,1 6,5 79 269 82 093 3,6 8,6 89 134 Production et distribution d'électricité, de gaz 413 610 4,5 3,4 427 780 453 983 6,1 0,6 456 674 Construction 3 973 589 3,4 8,6 4 314 748 4 476 763 3,8 7,3 4 803 850 Commerce, réparations automobiles et d'articles domestiques 3 361 788 6,2 5,4 3 543 613 3 805 840 7,4 6,0 4 032 476 Hôtels et restaurants 407 160 17,0 12,8 459 388 497 177 8,2 10,1 547 352 Transports et communications 3 095 062 2,9 3,5 3 203 357 3 347 508 4,5 1,0 3 382 351 Activités financières 687 644 4,4 19,9 824 198 861 386 4,5 9,3 941 830 Immobilier, location et services aux entreprises 2 290 418 2,9 5,4 2 413 189 2 493 862 3,3 5,8 2 638 209 Administration publique 2 607 833 2,7 12,5 2 933 714 3 021 725 3,0 6,7 3 223 265 Education, santé et action sociale 1 533 605 2,3 11,2 1 705 054 1 754 501 2,9 5,9 1 858 116 Services collectifs, sociaux, personnels et domestiques 254 423 2,6 1,2 257 357 267 619 4,0 1,3 271 040 Sous Total 31 564 015 3,8 1,0 31 878 319 32 991 971 3,5 4,0 34 295 635 Impôts Impôts sur nets les de importations subventions sur les produits 1 373 417 498 075 10,4 10,1 -5,2 2,1 1 354 446 085 304 1 378 537 755 421 7,0 6,3 -2,9 -6,3 1 367 440 055 835 Produit Intérieur Brut 33 354 588 4,1 1,0 33 678 708 34 908 147 3,7 3,4 36 103 525
+
+20
+
+Partage volume -prix du PIB par grands secteurs d'activité 2021-2023
+
+Valeurs= millions de DA ; Volume= variation en % ; Prix= variation en %
+
+2021 2022 2023
+
+Intitulés des grands secteurs VA l’année au prix (n-1) de
+
+Volume Prix VA au prix de
+
+l’année (n)
+
+VA l’année au prix (n-1) de
+
+Volume Prix VA au prix de
+
+l’année (n)
+
+VA l’année au prix (n-1) de
+
+Volume Prix VA au prix de
+
+l’année (n)
+
+Agriculture et pêche 2 624 440 -2,2 7,7 2 826 072 2 972 107 5,2 14,7 3 410 410 3 512 797 3,0 28,2 4 502 589
+
+Hydrocarbures 2 201 417 17,1 92,4 4 235 503 4 228 035 -0,2 94,4 8 218 310 8 518 042 3,6 -24,4 6 435 384
+
+Industrie 1 043 806 7,0 3,9 1 084 574 1 188 697 9,6 12,2 1 333 188 1 409 482 5,7 4,1 1 467 653
+
+Production et distribution d'électricité, de gaz 390 973 8,3 -4,2 374 481 395 497 5,6 0,1 395 799 413 610 4,5 3,4 427 780
+
+Construction 3 235 966 5,8 6,4 3 441 459 3 579 431 4,0 7,4 3 842 929 3 973 589 3,4 8,6 4 314 748
+
+Services 10 874 687 3,0 7,9 11 728 805 12 242 835 4,4 7,9 13 205 431 13 736 495 4,0 7,2 14 730 165
+
+Impôts sur les importations 282 008 -14,2 17,8 332 300 294 614 -11,3 14,8 338 313 373 498 10,4 -5,2 354 085
+
+Impôts nets de subventions sur les produits 1 044 163 -1,3 8,2 1 130 012 1 163 143 2,9 10,7 1 287 080 1 417 075 10,1 2,1 1 446 304
+
+Produit Intérieur Brut 21 697 460 3,8 15,9 25 153 206 26 064 359 3,6 22,9 32 031 460 33 354 588 4,1 1,0 33 678 708
+
+Produit Intérieur Brut hors hydrocarbures 19 496 043 2,5 7,3 20 917 703 21 836 324 4,4 9,1 23 813 150 24 836 546 4,3 9,7 27 243 324
+
+21
+
+Partage volume -prix du PIB par grands secteurs d'activité 2024
+
+Valeurs= millions de DA ; Volume= variation en % ; Prix= variation en %
+
+2024
+
+Intitulés des grands secteurs VA au prix de
+
+l’année (n-1) Volume Prix VA au prix de
+
+l’année (n)
+
+Agriculture et pêche 4 741 226 5,3 6,3 5 039 946
+
+Hydrocarbures 6 354 804 -1,3 -3,5 6 132 961
+
+Industrie 1 551 499 5,7 7,9 1 674 431
+
+Production et distribution d'électricité, de gaz 453 983 6,1 0,6 456 674
+
+Construction 4 476 763 3,8 7,3 4 803 850
+
+Services 15 413 696 4,6 5,0 16 187 773
+
+Impôts sur les importations 378 755 7,0 -2,9 367 835
+
+Impôts nets de subventions sur les produits 1 537 421 6,3 -6,3 1 440 055
+
+Produit Intérieur Brut 34 908 147 3,7 3,4 36 103 525
+
+Produit Intérieur Brut hors hydrocarbures 28 553 343 4,8 5,0 29 970 564
+
+22
+
+Partage volume- prix du PIB : optique dépenses 2021-2022
+
+Valeurs= millions de DA ; Volume= variation en % ; Prix= variation en % 2021 2022
+
+Val au prix de l’année (n-1) Volume Prix Val au prix de
+
+l’année (n)
+
+Val au prix de l’année (n-1) Volume Prix Val au prix de
+
+l’année (n)
+
+Produit Intérieur Brut 21 697 460 3,8 15,9 25 153 206 26 064 359 3,6 22,9 32 031 460
+
+Importations 4 961 727 -4,5 18,6 5 884 012 5 872 759 -0,2 11,3 6 533 948
+
+Importations de biens 4 261 466 -5,2 23,8 5 274 233 5 126 389 -2,8 11,6 5 719 849
+
+Importations de services 700 260 0,4 -12,9 609 779 746 370 22,4 9,1 814 099
+
+Total ressources 26 659 186 2,2 16,4 31 037 218 31 937 118 2,9 20,8 38 565 408
+
+Dépense intérieure brute 23 039 477 0,8 9,1 25 140 208 26 043 301 3,6 10,2 28 702 423
+
+Consommation finale 14 080 686 1,5 8,6 15 293 667 15 806 528 3,4 10,5 17 460 036
+
+Consommation finale des ménages 9 893 791 1,6 7,7 10 658 276 11 041 411 3,6 10,1 12 162 009
+
+Consommation finale des administrations publiques 4 186 895 1,2 10,7 4 635 391 4 765 117 2,8 11,2 5 298 027
+
+Accumulation brute 8 958 791 -0,2 9,9 9 846 541 10 236 773 4,0 9,8 11 242 387
+
+Formation brute de capital fixe 8 204 087 0,4 7,7 8 833 178 9 066 148 2,6 7,4 9 732 692
+
+Variation des stocks 754 704 -6,4 34,3 1 013 363 1 170 625 15,5 29,0 1 509 695
+
+Exportations 3 619 709 11,5 62,9 5 897 010 5 893 817 -0,1 67,3 9 862 985
+
+Exportations des hydrocarbures 2 804 337 7,6 66,1 4 658 658 4 620 160 -0,8 81,7 8 392 588
+
+Exportations d’autres biens 385 449 47,8 105,0 790 049 763 534 -3,4 24,8 953 064
+
+Exportations de services 429 923 12,9 4,3 448 303 510 123 13,8 1,4 517 333
+
+Total emplois 26 659 186 2,2 16,4 31 037 218 31 937 118 2,9 20,8 38 565 408
+
+23
+
+Partage volume- prix du PIB : optique dépenses 2023-2024
+
+Valeurs= millions de DA ; Volume= variation en % ; Prix= variation en %
+
+2023 2024
+
+Val au prix de l’année (n-1) Volume Prix Val au prix de
+
+l’année (n)
+
+Val au prix de l’année (n-1) Volume Prix Val au prix de
+
+l’année (n)
+
+Produit Intérieur Brut 33 354 588 4,1 1,0 33 678 708 34 908 147 3,7 3,4 36 103 525
+
+Importations 7 586 785 16,1 -11,4 6 718 814 7 521 375 11,9 -2,6 7 322 587
+
+Importations de biens 6 689 648 17,0 -12,1 5 880 435 6 653 653 13,1 -3,1 6 446 909
+
+Importations de services 897 137 10,2 -6,5 838 379 867 722 3,5 0,9 875 678
+
+Total ressources 40 941 373 6,2 -1,3 40 397 522 42 429 522 5,0 2,3 43 426 112
+
+Dépense intérieure brute 30 773 620 7,2 5,2 32 385 337 34 608 297 6,9 4,8 36 258 703
+
+Consommation finale 18 126 972 3,8 8,8 19 716 459 20 421 884 3,6 4,9 21 420 849
+
+Consommation finale des ménages 12 648 489 4,0 8,2 13 685 809 14 219 556 3,9 4,8 14 901 716
+
+Consommation finale des administrations publiques 5 478 483 3,4 10,1 6 030 650 6 202 328 2,8 5,1 6 519 133
+
+Accumulation brute 12 646 648 12,5 0,2 12 668 878 14 186 413 12,0 4,6 14 837 854
+
+Formation brute de capital fixe 10 628 100 9,2 3,7 11 020 471 12 100 477 9,8 5,0 12 707 666
+
+Variation des stocks 2 018 548 33,7 -18,3 1 648 407 2 085 936 26,5 2,1 2 130 188
+
+Exportations 10 167 753 3,1 -21,2 8 012 185 7 821 225 -2,4 -8,4 7 167 409
+
+Exportations des hydrocarbures 8 644 366 3,0 -21,0 6 828 481 6 698 740 -1,9 -8,8 6 111 598
+
+Exportations d’autres biens 998 811 4,8 -34,1 657 918 521 298 -20,8 -6,1 489 693
+
+Exportations de services 524 576 1,4 0,2 525 786 601 187 14,3 -5,8 566 118
+
+Total emplois 40 941 373 6,2 -1,3 40 397 522 42 429 522 5,0 2,3 43 426 112
+
+24
+
+<http://www.ons.dz/>   
+[mailto:ons@ons.dz%20%20ou](mailto:ons@ons.dz%20%20ou)   
+[mailto:ons@ons.dz%20%20ou](mailto:ons@ons.dz%20%20ou)   

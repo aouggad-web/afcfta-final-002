@@ -1,0 +1,1882 @@
+{
+ "meta": {
+  "titre": "Industrie manufacturière de l'Algérie par branche, 2016-2025",
+  "pays": "DZA",
+  "genere_le": "2026-09-23",
+  "script": "backend/scripts/build_dza_industrie.py",
+  "unites": {
+   "_mda": "milliards de DA courants",
+   "_musd": "millions de USD courants",
+   "_pct": "pourcentage"
+  },
+  "natures": {
+   "officiel": "chiffre publié par l'ONS (ou repris tel quel par la Banque mondiale)",
+   "calcul_officiel": "dérivé exactement de chiffres officiels",
+   "estimation": "projection 2025, avec fourchette, confiance et méthode ; à remplacer par les comptes 2025 de l'ONS"
+  },
+  "perimetre": "13 branches manufacturières de l'ONS, raffinage compris (comme la VA manufacturière de la Banque mondiale) ; la VA hors raffinage est donnée à part",
+  "limites": [
+   "2016-2019 : seul le total est publié dans les sources disponibles ; pas de détail par branche.",
+   "La production brute n'est publiée qu'à partir de 2021.",
+   "2025 : estimation aux prix de 2024, en attendant les comptes économiques 2025 de l'ONS."
+  ],
+  "methode_2025": "Croissance en volume 2025 par branche : comptes trimestriels 2025 de l'ONS (tous secteurs) quand la presse les reprend, sinon indicateurs physiques annuels (worldsteel, OPEP, OICA, USDA) et IPI du secteur public lu selon sa part dans la VA de la branche ; à défaut, tendance officielle 2022-2024. La fourchette couvre l'écart entre ces indicateurs. Valeurs aux prix et au taux de change de 2024 : aucune hypothèse de prix 2025. Confiance B : deux trimestres 2025 publiés et concordants ; C : indicateurs partiels ou indirects. À remplacer par les comptes économiques 2025 de l'ONS dès leur parution.",
+  "taux_change_dzd_usd": {
+   "source": "Banque mondiale, WDI PA.NUS.FCRF (moyenne annuelle)",
+   "valeurs": {
+    "2016": 109.4431,
+    "2017": 110.973,
+    "2018": 116.5938,
+    "2019": 119.3536,
+    "2020": 126.7768,
+    "2021": 135.0641,
+    "2022": 141.995,
+    "2023": 135.8429,
+    "2024": 134.0532,
+    "2025": 131.6059
+   }
+  },
+  "sources": {
+   "ons_comptes": {
+    "titre": "ONS, Les comptes économiques de 2021 à 2024, n° 1067 (août 2025)",
+    "url": "https://www.ons.dz"
+   },
+   "wdi": {
+    "titre": "Banque mondiale, World Development Indicators : NV.IND.MANF.CN, NV.IND.MANF.KD.ZG, PA.NUS.FCRF",
+    "url": "https://api.worldbank.org/v2/country/DZA/indicator/NV.IND.MANF.CN?format=json"
+   },
+   "cnt_t1_2025": {
+    "titre": "ONS, comptes nationaux trimestriels, 1er trimestre 2025 (n° 1063), repris par El Watan",
+    "url": "https://elwatan.dz/etat-de-leconomie-nationale-au-1er-trimestre-2025-forte-hausse-des-importations-et-baisse-des-exportations/"
+   },
+   "cnt_t1_2025_bis": {
+    "titre": "ONS, comptes nationaux trimestriels, 1er trimestre 2025, repris par Algérie Eco",
+    "url": "https://algerie-eco.com/2025/07/14/croissance-economique-pib-hydrocarbures-exportations-importations-chiffres-premier-trimestre-2025/"
+   },
+   "cnt_t2_2025": {
+    "titre": "ONS, comptes nationaux trimestriels, 2e trimestre 2025, repris par El Watan",
+    "url": "https://elwatan.dz/situation-economique-au-deuxieme-trimestre-2025-recul-des-exportations-et-hausse-des-importations-selon-lons/"
+   },
+   "ipi_t2_2025": {
+    "titre": "ONS, Indice de la production industrielle au 2e trimestre 2025 (secteur public national)",
+    "url": "https://www.ons.dz"
+   },
+   "worldsteel": {
+    "titre": "worldsteel, Steel Data Viewer : production d'acier brut, Algérie",
+    "url": "https://worldsteel.org/mappingworld-api/?values=P1_crude_steel_total&lang=EN"
+   },
+   "opep": {
+    "titre": "OPEP, Annual Statistical Bulletin 2026",
+    "url": "https://publications.opec.org/ASSETS/assetdb/asb-2026.pdf"
+   },
+   "oica": {
+    "titre": "OICA, 2025 Production Statistics",
+    "url": "https://oica.net/wp-content/uploads/2025/11/prod-total-2025.pdf"
+   },
+   "usda": {
+    "titre": "USDA, PSD Online : soja, Algérie",
+    "url": "https://apps.fas.usda.gov/psdonline/downloads/psd_oilseeds_csv.zip"
+   }
+  }
+ },
+ "total": {
+  "2016": {
+   "nature": "officiel",
+   "sources": [
+    "wdi"
+   ],
+   "va_mda": 1364.762,
+   "va_musd": 12470.1,
+   "croissance_volume_pct": 4.7
+  },
+  "2017": {
+   "nature": "officiel",
+   "sources": [
+    "wdi"
+   ],
+   "va_mda": 1545.515,
+   "va_musd": 13926.9,
+   "croissance_volume_pct": 10.1
+  },
+  "2018": {
+   "nature": "officiel",
+   "sources": [
+    "wdi"
+   ],
+   "va_mda": 1605.422,
+   "va_musd": 13769.4,
+   "croissance_volume_pct": 2.4
+  },
+  "2019": {
+   "nature": "officiel",
+   "sources": [
+    "wdi"
+   ],
+   "va_mda": 1478.683,
+   "va_musd": 12389.1,
+   "croissance_volume_pct": 2.3
+  },
+  "2020": {
+   "nature": "officiel",
+   "sources": [
+    "wdi",
+    "ons_comptes"
+   ],
+   "va_mda": 1313.154,
+   "va_musd": 10358.0,
+   "croissance_volume_pct": 3.4,
+   "detail_par_branche": "calcul_officiel"
+  },
+  "2021": {
+   "nature": "officiel",
+   "sources": [
+    "ons_comptes"
+   ],
+   "va_mda": 2059.7,
+   "production_brute_mda": 5210.8,
+   "va_musd": 15249.8,
+   "production_brute_musd": 38580.2,
+   "va_hors_raffinage_mda": 1041.3
+  },
+  "2022": {
+   "nature": "officiel",
+   "sources": [
+    "ons_comptes"
+   ],
+   "va_mda": 3272.7,
+   "production_brute_mda": 6861.9,
+   "va_musd": 23048.0,
+   "production_brute_musd": 48324.9,
+   "va_hors_raffinage_mda": 1253.8
+  },
+  "2023": {
+   "nature": "officiel",
+   "sources": [
+    "ons_comptes"
+   ],
+   "va_mda": 3071.5,
+   "production_brute_mda": 6779.3,
+   "va_musd": 22610.7,
+   "production_brute_musd": 49905.4,
+   "va_hors_raffinage_mda": 1381.2
+  },
+  "2024": {
+   "nature": "officiel",
+   "sources": [
+    "ons_comptes"
+   ],
+   "va_mda": 3413.4,
+   "production_brute_mda": 7271.6,
+   "va_musd": 25463.0,
+   "production_brute_musd": 54244.1,
+   "va_hors_raffinage_mda": 1583.9
+  },
+  "2025": {
+   "nature": "estimation",
+   "base_prix": "prix et taux de change de 2024",
+   "va_mda": {
+    "bas": 3415.8,
+    "central": 3504.8,
+    "haut": 3613.1
+   },
+   "va_musd": {
+    "bas": 25480.9,
+    "central": 26144.8,
+    "haut": 26952.7
+   },
+   "croissance_volume_pct": {
+    "bas": 0.1,
+    "central": 2.7,
+    "haut": 5.9
+   },
+   "note": "Somme des projections par branche ; les bornes de toutes les branches ne se réalisent pas ensemble."
+  }
+ },
+ "branches": [
+  {
+   "code": "10-12",
+   "libelle_fr": "Industries alimentaires et du tabac",
+   "libelle_en": "Food products, beverages and tobacco",
+   "branche_ons": "Industries alimentaires et du tabac",
+   "citi_rev4": [
+    "10",
+    "11",
+    "12"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 436.8,
+     "va_musd": 3445.1,
+     "methode": "VA 2021 aux prix de 2020 (464 711 M DA) divisée par 1 + croissance 2021 (6.4 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2073.3,
+     "va_mda": 476.3,
+     "va_publique_mda": 152.9,
+     "va_privee_mda": 323.5,
+     "part_privee_va_pct": 67.9,
+     "remuneration_salaries_mda": 112.2,
+     "croissance_volume_pct": 6.4,
+     "prix_va_pct": 2.5,
+     "production_brute_musd": 15350.3,
+     "va_musd": 3526.7
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2342.5,
+     "va_mda": 568.5,
+     "va_publique_mda": 232.5,
+     "va_privee_mda": 336.0,
+     "part_privee_va_pct": 59.1,
+     "remuneration_salaries_mda": 126.8,
+     "croissance_volume_pct": 9.8,
+     "prix_va_pct": 8.7,
+     "production_brute_musd": 16496.8,
+     "va_musd": 4003.5
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2505.0,
+     "va_mda": 602.4,
+     "va_publique_mda": 238.1,
+     "va_privee_mda": 364.3,
+     "part_privee_va_pct": 60.5,
+     "remuneration_salaries_mda": 142.0,
+     "croissance_volume_pct": 2.4,
+     "prix_va_pct": 3.5,
+     "production_brute_musd": 18440.5,
+     "va_musd": 4434.5
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2621.6,
+     "va_mda": 681.4,
+     "va_publique_mda": 272.4,
+     "va_privee_mda": 409.0,
+     "part_privee_va_pct": 60.0,
+     "remuneration_salaries_mda": 151.2,
+     "croissance_volume_pct": 5.2,
+     "prix_va_pct": 7.5,
+     "production_brute_musd": 19556.7,
+     "va_musd": 5082.9
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "cnt_t1_2025",
+      "ipi_t2_2025",
+      "usda",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 2.5,
+      "central": 5.5,
+      "haut": 7.5
+     },
+     "va_mda": {
+      "bas": 698.4,
+      "central": 718.9,
+      "haut": 732.5
+     },
+     "production_brute_mda": {
+      "bas": 2687.1,
+      "central": 2765.8,
+      "haut": 2818.2
+     },
+     "va_musd": {
+      "bas": 5210.0,
+      "central": 5362.5,
+      "haut": 5464.1
+     },
+     "production_brute_musd": {
+      "bas": 20045.6,
+      "central": 20632.3,
+      "haut": 21023.5
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels, T1 2025 : industries alimentaires et du tabac +5,6 %",
+      "IPI du secteur public (40 % de la VA de la branche) : T1 2025 −10,1 %, T2 2025 −4,7 %",
+      "USDA : trituration de soja 2025 +34,8 % (1 650 → 2 225 kt)",
+      "Tendance officielle 2022-2024 : +9,8 %, +2,4 %, +5,2 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "13-14",
+   "libelle_fr": "Textile, habillement et fourrures",
+   "libelle_en": "Textiles, wearing apparel and fur",
+   "branche_ons": "Industrie textile, de l'habillement et des fourrures",
+   "citi_rev4": [
+    "13",
+    "14"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 74.8,
+     "va_musd": 590.2,
+     "methode": "VA 2021 aux prix de 2020 (82 228 M DA) divisée par 1 + croissance 2021 (9.9 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 180.4,
+     "va_mda": 88.2,
+     "va_publique_mda": 8.1,
+     "va_privee_mda": 80.1,
+     "part_privee_va_pct": 90.8,
+     "remuneration_salaries_mda": 57.7,
+     "croissance_volume_pct": 9.9,
+     "prix_va_pct": 7.3,
+     "production_brute_musd": 1336.0,
+     "va_musd": 653.3
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 228.6,
+     "va_mda": 117.7,
+     "va_publique_mda": 10.1,
+     "va_privee_mda": 107.6,
+     "part_privee_va_pct": 91.4,
+     "remuneration_salaries_mda": 58.2,
+     "croissance_volume_pct": 6.7,
+     "prix_va_pct": 25.0,
+     "production_brute_musd": 1609.6,
+     "va_musd": 828.6
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 251.8,
+     "va_mda": 140.2,
+     "va_publique_mda": 12.5,
+     "va_privee_mda": 127.7,
+     "part_privee_va_pct": 91.1,
+     "remuneration_salaries_mda": 59.1,
+     "croissance_volume_pct": 11.7,
+     "prix_va_pct": 6.7,
+     "production_brute_musd": 1853.9,
+     "va_musd": 1031.8
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 311.1,
+     "va_mda": 169.0,
+     "va_publique_mda": 16.2,
+     "va_privee_mda": 152.8,
+     "part_privee_va_pct": 90.4,
+     "remuneration_salaries_mda": 66.7,
+     "croissance_volume_pct": 10.3,
+     "prix_va_pct": 9.4,
+     "production_brute_musd": 2320.8,
+     "va_musd": 1260.9
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "B",
+     "sources": [
+      "cnt_t1_2025_bis",
+      "cnt_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 4.0,
+      "central": 7.3,
+      "haut": 10.0
+     },
+     "va_mda": {
+      "bas": 175.8,
+      "central": 181.3,
+      "haut": 185.9
+     },
+     "production_brute_mda": {
+      "bas": 323.5,
+      "central": 333.8,
+      "haut": 342.2
+     },
+     "va_musd": {
+      "bas": 1311.3,
+      "central": 1352.9,
+      "haut": 1387.0
+     },
+     "production_brute_musd": {
+      "bas": 2413.6,
+      "central": 2490.2,
+      "haut": 2552.9
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels : T1 2025 +5,9 %, T2 2025 +8,8 %",
+      "Tendance officielle 2022-2024 : +6,7 %, +11,7 %, +10,3 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "15",
+   "libelle_fr": "Cuir et chaussure",
+   "libelle_en": "Leather and footwear",
+   "branche_ons": "Industrie du cuir et de la chaussure",
+   "citi_rev4": [
+    "15"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 16.1,
+     "va_musd": 127.1,
+     "methode": "VA 2021 aux prix de 2020 (17 723 M DA) divisée par 1 + croissance 2021 (10.0 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 41.0,
+     "va_mda": 18.8,
+     "va_publique_mda": 0.9,
+     "va_privee_mda": 17.9,
+     "part_privee_va_pct": 95.2,
+     "remuneration_salaries_mda": 4.9,
+     "croissance_volume_pct": 10.0,
+     "prix_va_pct": 6.2,
+     "production_brute_musd": 303.5,
+     "va_musd": 139.4
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 47.1,
+     "va_mda": 23.3,
+     "va_publique_mda": 1.2,
+     "va_privee_mda": 22.2,
+     "part_privee_va_pct": 94.9,
+     "remuneration_salaries_mda": 6.1,
+     "croissance_volume_pct": 19.8,
+     "prix_va_pct": 3.5,
+     "production_brute_musd": 331.9,
+     "va_musd": 164.4
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 51.6,
+     "va_mda": 26.9,
+     "va_publique_mda": 1.2,
+     "va_privee_mda": 25.7,
+     "part_privee_va_pct": 95.5,
+     "remuneration_salaries_mda": 7.2,
+     "croissance_volume_pct": 6.5,
+     "prix_va_pct": 8.3,
+     "production_brute_musd": 379.7,
+     "va_musd": 198.3
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 56.8,
+     "va_mda": 31.6,
+     "va_publique_mda": 1.3,
+     "va_privee_mda": 30.3,
+     "part_privee_va_pct": 95.9,
+     "remuneration_salaries_mda": 8.2,
+     "croissance_volume_pct": 8.4,
+     "prix_va_pct": 8.3,
+     "production_brute_musd": 424.1,
+     "va_musd": 235.8
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "B",
+     "sources": [
+      "cnt_t1_2025",
+      "cnt_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 8.0,
+      "central": 12.5,
+      "haut": 15.5
+     },
+     "va_mda": {
+      "bas": 34.1,
+      "central": 35.6,
+      "haut": 36.5
+     },
+     "production_brute_mda": {
+      "bas": 61.3,
+      "central": 63.9,
+      "haut": 65.6
+     },
+     "va_musd": {
+      "bas": 254.7,
+      "central": 265.3,
+      "haut": 272.3
+     },
+     "production_brute_musd": {
+      "bas": 458.0,
+      "central": 477.1,
+      "haut": 489.8
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels : T1 2025 +15,4 %, T2 2025 +9,6 %",
+      "Tendance officielle 2022-2024 : +19,8 %, +6,5 %, +8,4 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "16-18",
+   "libelle_fr": "Bois, papier et imprimerie",
+   "libelle_en": "Wood, paper and printing",
+   "branche_ons": "Fabrication d'articles en bois et en papier, imprimerie et reproduction",
+   "citi_rev4": [
+    "16",
+    "17",
+    "18"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 49.9,
+     "va_musd": 393.6,
+     "methode": "VA 2021 aux prix de 2020 (50 742 M DA) divisée par 1 + croissance 2021 (1.7 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 164.2,
+     "va_mda": 51.2,
+     "va_publique_mda": 10.5,
+     "va_privee_mda": 40.7,
+     "part_privee_va_pct": 79.4,
+     "remuneration_salaries_mda": 21.8,
+     "croissance_volume_pct": 1.7,
+     "prix_va_pct": 1.0,
+     "production_brute_musd": 1216.0,
+     "va_musd": 379.4
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 172.6,
+     "va_mda": 57.5,
+     "va_publique_mda": 13.5,
+     "va_privee_mda": 43.9,
+     "part_privee_va_pct": 76.4,
+     "remuneration_salaries_mda": 23.0,
+     "croissance_volume_pct": 10.9,
+     "prix_va_pct": 1.1,
+     "production_brute_musd": 1215.4,
+     "va_musd": 404.8
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 190.0,
+     "va_mda": 69.0,
+     "va_publique_mda": 13.9,
+     "va_privee_mda": 55.1,
+     "part_privee_va_pct": 79.9,
+     "remuneration_salaries_mda": 24.2,
+     "croissance_volume_pct": 8.3,
+     "prix_va_pct": 10.8,
+     "production_brute_musd": 1399.0,
+     "va_musd": 507.8
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 201.6,
+     "va_mda": 75.4,
+     "va_publique_mda": 16.5,
+     "va_privee_mda": 58.9,
+     "part_privee_va_pct": 78.1,
+     "remuneration_salaries_mda": 26.1,
+     "croissance_volume_pct": 5.8,
+     "prix_va_pct": 3.3,
+     "production_brute_musd": 1504.2,
+     "va_musd": 562.2
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "ipi_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 2.0,
+      "central": 6.0,
+      "haut": 11.0
+     },
+     "va_mda": {
+      "bas": 76.9,
+      "central": 79.9,
+      "haut": 83.7
+     },
+     "production_brute_mda": {
+      "bas": 205.6,
+      "central": 213.7,
+      "haut": 223.8
+     },
+     "va_musd": {
+      "bas": 573.4,
+      "central": 595.9,
+      "haut": 624.0
+     },
+     "production_brute_musd": {
+      "bas": 1534.3,
+      "central": 1594.5,
+      "haut": 1669.7
+     },
+     "indicateurs": [
+      "Pas de chiffre trimestriel 2025 publié dans les sources disponibles",
+      "IPI du secteur public (22 % de la VA) : T1 2025 +91,1 %, T2 2025 +131,6 %, sur une base très faible",
+      "Tendance officielle 2022-2024 : +10,9 %, +8,3 %, +5,8 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "19",
+   "libelle_fr": "Raffinage et cokéfaction",
+   "libelle_en": "Coke and refined petroleum products",
+   "branche_ons": "Raffinage et cokéfaction",
+   "citi_rev4": [
+    "19"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 372.8,
+     "va_musd": 2940.2,
+     "methode": "VA 2021 aux prix de 2020 (387 664 M DA) divisée par 1 + croissance 2021 (4.0 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 1470.2,
+     "va_mda": 1018.4,
+     "va_publique_mda": 977.8,
+     "va_privee_mda": 40.6,
+     "part_privee_va_pct": 4.0,
+     "remuneration_salaries_mda": 28.0,
+     "croissance_volume_pct": 4.0,
+     "prix_va_pct": 162.7,
+     "production_brute_musd": 10885.0,
+     "va_musd": 7540.5
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2636.7,
+     "va_mda": 2018.9,
+     "va_publique_mda": 1977.2,
+     "va_privee_mda": 41.7,
+     "part_privee_va_pct": 2.1,
+     "remuneration_salaries_mda": 28.7,
+     "croissance_volume_pct": 16.0,
+     "prix_va_pct": 70.8,
+     "production_brute_musd": 18568.6,
+     "va_musd": 14218.3
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2255.6,
+     "va_mda": 1690.3,
+     "va_publique_mda": 1650.5,
+     "va_privee_mda": 39.9,
+     "part_privee_va_pct": 2.4,
+     "remuneration_salaries_mda": 30.3,
+     "croissance_volume_pct": -0.2,
+     "prix_va_pct": -16.1,
+     "production_brute_musd": 16604.1,
+     "va_musd": 12443.4
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 2392.5,
+     "va_mda": 1829.5,
+     "va_publique_mda": 1787.2,
+     "va_privee_mda": 42.2,
+     "part_privee_va_pct": 2.3,
+     "remuneration_salaries_mda": 31.5,
+     "croissance_volume_pct": 3.0,
+     "prix_va_pct": 5.1,
+     "production_brute_musd": 17847.5,
+     "va_musd": 13647.4
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "B",
+     "sources": [
+      "opep",
+      "cnt_t1_2025",
+      "cnt_t2_2025",
+      "ipi_t2_2025"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": -2.5,
+      "central": -1.0,
+      "haut": 2.0
+     },
+     "va_mda": {
+      "bas": 1783.8,
+      "central": 1811.2,
+      "haut": 1866.1
+     },
+     "production_brute_mda": {
+      "bas": 2332.7,
+      "central": 2368.6,
+      "haut": 2440.3
+     },
+     "va_musd": {
+      "bas": 13306.2,
+      "central": 13510.9,
+      "haut": 13920.3
+     },
+     "production_brute_musd": {
+      "bas": 17401.3,
+      "central": 17669.0,
+      "haut": 18204.5
+     },
+     "indicateurs": [
+      "OPEP : produits raffinés 2025 −2,2 % (681 → 666 kb/j)",
+      "ONS, comptes trimestriels : T1 2025 −5,5 %, T2 2025 +9,0 %",
+      "IPI raffinage (secteur public, 98 % de la VA) : T1 2025 −2,2 %, T2 2025 +6,2 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "20-22",
+   "libelle_fr": "Chimie, pharmacie, caoutchouc et plastiques",
+   "libelle_en": "Chemicals, pharmaceuticals, rubber and plastics",
+   "branche_ons": "Industrie chimique, du caoutchouc et des plastiques",
+   "citi_rev4": [
+    "20",
+    "21",
+    "22"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 101.2,
+     "va_musd": 798.3,
+     "methode": "VA 2021 aux prix de 2020 (109 005 M DA) divisée par 1 + croissance 2021 (7.7 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 377.3,
+     "va_mda": 119.9,
+     "va_publique_mda": 76.4,
+     "va_privee_mda": 43.5,
+     "part_privee_va_pct": 36.3,
+     "remuneration_salaries_mda": 28.2,
+     "croissance_volume_pct": 7.7,
+     "prix_va_pct": 10.0,
+     "production_brute_musd": 2793.3,
+     "va_musd": 887.8
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 412.5,
+     "va_mda": 140.3,
+     "va_publique_mda": 85.6,
+     "va_privee_mda": 54.7,
+     "part_privee_va_pct": 39.0,
+     "remuneration_salaries_mda": 32.5,
+     "croissance_volume_pct": 9.3,
+     "prix_va_pct": 7.0,
+     "production_brute_musd": 2905.3,
+     "va_musd": 987.8
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 442.6,
+     "va_mda": 148.2,
+     "va_publique_mda": 103.7,
+     "va_privee_mda": 44.4,
+     "part_privee_va_pct": 30.0,
+     "remuneration_salaries_mda": 36.7,
+     "croissance_volume_pct": 5.2,
+     "prix_va_pct": 0.4,
+     "production_brute_musd": 3258.1,
+     "va_musd": 1090.9
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 492.0,
+     "va_mda": 185.3,
+     "va_publique_mda": 123.1,
+     "va_privee_mda": 62.2,
+     "part_privee_va_pct": 33.6,
+     "remuneration_salaries_mda": 40.4,
+     "croissance_volume_pct": 4.5,
+     "prix_va_pct": 19.7,
+     "production_brute_musd": 3670.5,
+     "va_musd": 1382.6
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "cnt_t2_2025",
+      "ipi_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 0.0,
+      "central": 5.0,
+      "haut": 11.0
+     },
+     "va_mda": {
+      "bas": 185.3,
+      "central": 194.6,
+      "haut": 205.7
+     },
+     "production_brute_mda": {
+      "bas": 492.0,
+      "central": 516.6,
+      "haut": 546.1
+     },
+     "va_musd": {
+      "bas": 1382.6,
+      "central": 1451.7,
+      "haut": 1534.7
+     },
+     "production_brute_musd": {
+      "bas": 3670.5,
+      "central": 3854.0,
+      "haut": 4074.3
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels : T2 2025 +11,0 % (T1 2025 non repris par la presse)",
+      "IPI chimie (secteur public, 66 % de la VA) : T1 2025 −11,1 %, T2 2025 +2,5 %",
+      "IPI produits pharmaceutiques (public) : T1 2025 −15,1 %, T2 2025 +7,3 %",
+      "Tendance officielle 2022-2024 : +9,3 %, +5,2 %, +4,5 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "23",
+   "libelle_fr": "Ciment, verre, céramique et autres minéraux non métalliques",
+   "libelle_en": "Other non-metallic mineral products",
+   "branche_ons": "Fabrication d'autres produits minéraux non métalliques",
+   "citi_rev4": [
+    "23"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 76.5,
+     "va_musd": 603.6,
+     "methode": "VA 2021 aux prix de 2020 (82 495 M DA) divisée par 1 + croissance 2021 (7.8 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 225.9,
+     "va_mda": 75.9,
+     "va_publique_mda": 61.2,
+     "va_privee_mda": 14.7,
+     "part_privee_va_pct": 19.3,
+     "remuneration_salaries_mda": 62.4,
+     "croissance_volume_pct": 7.8,
+     "prix_va_pct": -8.0,
+     "production_brute_musd": 1672.7,
+     "va_musd": 561.9
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 252.3,
+     "va_mda": 88.6,
+     "va_publique_mda": 75.8,
+     "va_privee_mda": 12.8,
+     "part_privee_va_pct": 14.5,
+     "remuneration_salaries_mda": 67.3,
+     "croissance_volume_pct": 19.4,
+     "prix_va_pct": -2.2,
+     "production_brute_musd": 1776.7,
+     "va_musd": 624.1
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 259.0,
+     "va_mda": 107.1,
+     "va_publique_mda": 92.9,
+     "va_privee_mda": 14.2,
+     "part_privee_va_pct": 13.2,
+     "remuneration_salaries_mda": 70.2,
+     "croissance_volume_pct": 8.2,
+     "prix_va_pct": 11.7,
+     "production_brute_musd": 1906.6,
+     "va_musd": 788.3
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 279.2,
+     "va_mda": 116.4,
+     "va_publique_mda": 100.6,
+     "va_privee_mda": 15.8,
+     "part_privee_va_pct": 13.6,
+     "remuneration_salaries_mda": 77.8,
+     "croissance_volume_pct": 8.2,
+     "prix_va_pct": 0.5,
+     "production_brute_musd": 2082.8,
+     "va_musd": 868.6
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "B",
+     "sources": [
+      "cnt_t1_2025_bis",
+      "cnt_t2_2025",
+      "ipi_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 7.0,
+      "central": 9.9,
+      "haut": 12.5
+     },
+     "va_mda": {
+      "bas": 124.5,
+      "central": 127.9,
+      "haut": 131.0
+     },
+     "production_brute_mda": {
+      "bas": 298.7,
+      "central": 306.8,
+      "haut": 314.1
+     },
+     "va_musd": {
+      "bas": 929.4,
+      "central": 954.6,
+      "haut": 977.2
+     },
+     "production_brute_musd": {
+      "bas": 2228.6,
+      "central": 2289.0,
+      "haut": 2343.2
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels : T1 2025 +9,9 %, T2 2025 +9,9 %",
+      "IPI liants hydrauliques (ciment, public) : T1 2025 +0,5 %, T2 2025 +15,3 %",
+      "Tendance officielle 2022-2024 : +19,4 %, +8,2 %, +8,2 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "24-25",
+   "libelle_fr": "Métallurgie et travail des métaux",
+   "libelle_en": "Basic metals and fabricated metal products",
+   "branche_ons": "Métallurgie, travail des métaux",
+   "citi_rev4": [
+    "24",
+    "25"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 41.3,
+     "va_musd": 326.0,
+     "methode": "VA 2021 aux prix de 2020 (50 828 M DA) divisée par 1 + croissance 2021 (23.0 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 279.1,
+     "va_mda": 47.3,
+     "va_publique_mda": 25.6,
+     "va_privee_mda": 21.6,
+     "part_privee_va_pct": 45.7,
+     "remuneration_salaries_mda": 17.5,
+     "croissance_volume_pct": 23.0,
+     "prix_va_pct": -7.0,
+     "production_brute_musd": 2066.1,
+     "va_musd": 350.0
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 320.2,
+     "va_mda": 57.0,
+     "va_publique_mda": 37.8,
+     "va_privee_mda": 19.2,
+     "part_privee_va_pct": 33.7,
+     "remuneration_salaries_mda": 19.8,
+     "croissance_volume_pct": 2.2,
+     "prix_va_pct": 18.0,
+     "production_brute_musd": 2254.8,
+     "va_musd": 401.7
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 335.6,
+     "va_mda": 62.6,
+     "va_publique_mda": 39.7,
+     "va_privee_mda": 22.9,
+     "part_privee_va_pct": 36.6,
+     "remuneration_salaries_mda": 20.8,
+     "croissance_volume_pct": 6.1,
+     "prix_va_pct": 3.5,
+     "production_brute_musd": 2470.3,
+     "va_musd": 460.8
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 370.3,
+     "va_mda": 75.3,
+     "va_publique_mda": 49.7,
+     "va_privee_mda": 25.6,
+     "part_privee_va_pct": 34.0,
+     "remuneration_salaries_mda": 22.8,
+     "croissance_volume_pct": 7.8,
+     "prix_va_pct": 11.6,
+     "production_brute_musd": 2762.1,
+     "va_musd": 561.8
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "worldsteel",
+      "ipi_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 8.0,
+      "central": 16.0,
+      "haut": 21.0
+     },
+     "va_mda": {
+      "bas": 81.3,
+      "central": 87.3,
+      "haut": 91.1
+     },
+     "production_brute_mda": {
+      "bas": 399.9,
+      "central": 429.5,
+      "haut": 448.1
+     },
+     "va_musd": {
+      "bas": 606.7,
+      "central": 651.7,
+      "haut": 679.8
+     },
+     "production_brute_musd": {
+      "bas": 2983.1,
+      "central": 3204.0,
+      "haut": 3342.1
+     },
+     "indicateurs": [
+      "worldsteel : acier brut 2025 +20,8 % (4 520 → 5 460 kt)",
+      "IPI sidérurgie (secteur public) : T1 2025 −59,2 %, T2 2025 −0,1 %",
+      "L'acier domine la branche (production brute 2024 : 2 762 M USD, du même ordre que 4,5 Mt d'acier) ; le travail des métaux (CITI 25) n'a pas d'indicateur 2025",
+      "Tendance officielle 2022-2024 : +2,2 %, +6,1 %, +7,8 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "28",
+   "libelle_fr": "Machines et équipements",
+   "libelle_en": "Machinery and equipment",
+   "branche_ons": "Fabrication de machines et équipements",
+   "citi_rev4": [
+    "28"
+   ],
+   "note_citi": "Correspondance CITI indicative : la publication de l'ONS ne précise pas où est classé le matériel de transport (autres industries manufacturières ou machines et équipements).",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 46.7,
+     "va_musd": 368.5,
+     "methode": "VA 2021 aux prix de 2020 (51 908 M DA) divisée par 1 + croissance 2021 (11.1 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 154.0,
+     "va_mda": 54.8,
+     "va_publique_mda": 16.6,
+     "va_privee_mda": 38.2,
+     "part_privee_va_pct": 69.8,
+     "remuneration_salaries_mda": 18.2,
+     "croissance_volume_pct": 11.1,
+     "prix_va_pct": 5.5,
+     "production_brute_musd": 1140.3,
+     "va_musd": 405.5
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 174.2,
+     "va_mda": 68.6,
+     "va_publique_mda": 24.7,
+     "va_privee_mda": 43.9,
+     "part_privee_va_pct": 64.0,
+     "remuneration_salaries_mda": 20.6,
+     "croissance_volume_pct": 2.0,
+     "prix_va_pct": 22.8,
+     "production_brute_musd": 1227.0,
+     "va_musd": 483.3
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 184.8,
+     "va_mda": 72.7,
+     "va_publique_mda": 23.9,
+     "va_privee_mda": 48.8,
+     "part_privee_va_pct": 67.1,
+     "remuneration_salaries_mda": 23.0,
+     "croissance_volume_pct": 11.1,
+     "prix_va_pct": -4.6,
+     "production_brute_musd": 1360.2,
+     "va_musd": 535.2
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 200.4,
+     "va_mda": 84.1,
+     "va_publique_mda": 27.4,
+     "va_privee_mda": 56.7,
+     "part_privee_va_pct": 67.5,
+     "remuneration_salaries_mda": 25.4,
+     "croissance_volume_pct": 4.6,
+     "prix_va_pct": 10.6,
+     "production_brute_musd": 1495.1,
+     "va_musd": 627.3
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "ipi_t2_2025",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 0.0,
+      "central": 5.0,
+      "haut": 10.0
+     },
+     "va_mda": {
+      "bas": 84.1,
+      "central": 88.3,
+      "haut": 92.5
+     },
+     "production_brute_mda": {
+      "bas": 200.4,
+      "central": 210.4,
+      "haut": 220.4
+     },
+     "va_musd": {
+      "bas": 627.3,
+      "central": 658.7,
+      "haut": 690.0
+     },
+     "production_brute_musd": {
+      "bas": 1495.1,
+      "central": 1569.9,
+      "haut": 1644.6
+     },
+     "indicateurs": [
+      "Pas d'indicateur 2025 propre à la branche",
+      "IPI ISMMEE (secteur public) : T1 2025 −41,7 %, T2 2025 −1,8 %",
+      "Tendance officielle 2022-2024 : +2,0 %, +11,1 %, +4,6 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "26-bur",
+   "libelle_fr": "Machines de bureau et matériel informatique",
+   "libelle_en": "Office machinery and computers",
+   "branche_ons": "Fabrication de machines de bureau et matériel informatique",
+   "citi_rev4": [
+    "26"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 2.9,
+     "va_musd": 22.8,
+     "methode": "VA 2021 aux prix de 2020 (3 085 M DA) divisée par 1 + croissance 2021 (6.8 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 5.3,
+     "va_mda": 3.2,
+     "va_publique_mda": 1.1,
+     "va_privee_mda": 2.2,
+     "part_privee_va_pct": 67.2,
+     "remuneration_salaries_mda": 0.8,
+     "croissance_volume_pct": 6.8,
+     "prix_va_pct": 4.5,
+     "production_brute_musd": 39.3,
+     "va_musd": 23.9
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 6.4,
+     "va_mda": 3.9,
+     "va_publique_mda": 1.1,
+     "va_privee_mda": 2.8,
+     "part_privee_va_pct": 72.1,
+     "remuneration_salaries_mda": 1.0,
+     "croissance_volume_pct": 1.3,
+     "prix_va_pct": 20.0,
+     "production_brute_musd": 45.0,
+     "va_musd": 27.6
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 7.7,
+     "va_mda": 4.8,
+     "va_publique_mda": 1.2,
+     "va_privee_mda": 3.7,
+     "part_privee_va_pct": 75.6,
+     "remuneration_salaries_mda": 1.1,
+     "croissance_volume_pct": 12.7,
+     "prix_va_pct": 9.6,
+     "production_brute_musd": 56.7,
+     "va_musd": 35.6
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 7.6,
+     "va_mda": 4.9,
+     "va_publique_mda": 1.1,
+     "va_privee_mda": 3.7,
+     "part_privee_va_pct": 76.6,
+     "remuneration_salaries_mda": 1.1,
+     "croissance_volume_pct": 3.9,
+     "prix_va_pct": -3.2,
+     "production_brute_musd": 56.8,
+     "va_musd": 36.3
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "cnt_t1_2025_bis",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": -3.0,
+      "central": 0.0,
+      "haut": 5.0
+     },
+     "va_mda": {
+      "bas": 4.8,
+      "central": 4.9,
+      "haut": 5.1
+     },
+     "production_brute_mda": {
+      "bas": 7.4,
+      "central": 7.6,
+      "haut": 8.0
+     },
+     "va_musd": {
+      "bas": 35.2,
+      "central": 36.3,
+      "haut": 38.1
+     },
+     "production_brute_musd": {
+      "bas": 55.1,
+      "central": 56.8,
+      "haut": 59.6
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels : T1 2025 −0,6 %",
+      "Tendance officielle 2022-2024 : +1,3 %, +12,7 %, +3,9 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "27",
+   "libelle_fr": "Machines et appareils électriques",
+   "libelle_en": "Electrical equipment",
+   "branche_ons": "Fabrication de machines et appareils électriques",
+   "citi_rev4": [
+    "27"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 20.3,
+     "va_musd": 160.2,
+     "methode": "VA 2021 aux prix de 2020 (21 808 M DA) divisée par 1 + croissance 2021 (7.4 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 48.0,
+     "va_mda": 23.2,
+     "va_publique_mda": 17.9,
+     "va_privee_mda": 5.3,
+     "part_privee_va_pct": 22.9,
+     "remuneration_salaries_mda": 12.3,
+     "croissance_volume_pct": 7.4,
+     "prix_va_pct": 6.5,
+     "production_brute_musd": 355.2,
+     "va_musd": 172.0
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 57.3,
+     "va_mda": 27.2,
+     "va_publique_mda": 24.6,
+     "va_privee_mda": 2.6,
+     "part_privee_va_pct": 9.6,
+     "remuneration_salaries_mda": 13.5,
+     "croissance_volume_pct": 5.7,
+     "prix_va_pct": 11.0,
+     "production_brute_musd": 403.2,
+     "va_musd": 191.8
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 61.2,
+     "va_mda": 30.2,
+     "va_publique_mda": 27.0,
+     "va_privee_mda": 3.2,
+     "part_privee_va_pct": 10.7,
+     "remuneration_salaries_mda": 15.3,
+     "croissance_volume_pct": 10.9,
+     "prix_va_pct": 0.1,
+     "production_brute_musd": 450.6,
+     "va_musd": 222.7
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 65.5,
+     "va_mda": 33.8,
+     "va_publique_mda": 30.4,
+     "va_privee_mda": 3.5,
+     "part_privee_va_pct": 10.3,
+     "remuneration_salaries_mda": 16.1,
+     "croissance_volume_pct": -4.8,
+     "prix_va_pct": 17.5,
+     "production_brute_musd": 488.4,
+     "va_musd": 252.4
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": -5.0,
+      "central": 2.0,
+      "haut": 8.0
+     },
+     "va_mda": {
+      "bas": 32.1,
+      "central": 34.5,
+      "haut": 36.5
+     },
+     "production_brute_mda": {
+      "bas": 62.2,
+      "central": 66.8,
+      "haut": 70.7
+     },
+     "va_musd": {
+      "bas": 239.8,
+      "central": 257.4,
+      "haut": 272.6
+     },
+     "production_brute_musd": {
+      "bas": 464.0,
+      "central": 498.2,
+      "haut": 527.5
+     },
+     "indicateurs": [
+      "Pas d'indicateur 2025 propre à la branche ; 2024 : −4,8 %",
+      "Tendance officielle 2022-2024 : +5,7 %, +10,9 %, −4,8 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "26-com",
+   "libelle_fr": "Équipements de communication et instruments médicaux",
+   "libelle_en": "Communication equipment and medical instruments",
+   "branche_ons": "Fabrication d'équipements de communication et d'instruments médicaux",
+   "citi_rev4": [
+    "26",
+    "32"
+   ],
+   "note_citi": "",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 24.8,
+     "va_musd": 195.9,
+     "methode": "VA 2021 aux prix de 2020 (26 601 M DA) divisée par 1 + croissance 2021 (7.1 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 55.5,
+     "va_mda": 28.1,
+     "va_publique_mda": 14.9,
+     "va_privee_mda": 13.0,
+     "part_privee_va_pct": 46.0,
+     "remuneration_salaries_mda": 13.3,
+     "croissance_volume_pct": 7.1,
+     "prix_va_pct": 5.8,
+     "production_brute_musd": 410.8,
+     "va_musd": 208.4
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 61.0,
+     "va_mda": 33.0,
+     "va_publique_mda": 17.4,
+     "va_privee_mda": 15.3,
+     "part_privee_va_pct": 46.3,
+     "remuneration_salaries_mda": 13.9,
+     "croissance_volume_pct": 1.9,
+     "prix_va_pct": 15.0,
+     "production_brute_musd": 429.8,
+     "va_musd": 232.2
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 67.0,
+     "va_mda": 37.8,
+     "va_publique_mda": 19.1,
+     "va_privee_mda": 18.3,
+     "part_privee_va_pct": 48.3,
+     "remuneration_salaries_mda": 14.5,
+     "croissance_volume_pct": 16.5,
+     "prix_va_pct": -1.6,
+     "production_brute_musd": 493.2,
+     "va_musd": 278.3
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 70.7,
+     "va_mda": 37.6,
+     "va_publique_mda": 19.2,
+     "va_privee_mda": 17.9,
+     "part_privee_va_pct": 47.7,
+     "remuneration_salaries_mda": 15.2,
+     "croissance_volume_pct": 2.1,
+     "prix_va_pct": -2.7,
+     "production_brute_musd": 527.2,
+     "va_musd": 280.2
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "C",
+     "sources": [
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 0.0,
+      "central": 4.0,
+      "haut": 10.0
+     },
+     "va_mda": {
+      "bas": 37.6,
+      "central": 39.1,
+      "haut": 41.4
+     },
+     "production_brute_mda": {
+      "bas": 70.7,
+      "central": 73.5,
+      "haut": 77.8
+     },
+     "va_musd": {
+      "bas": 280.2,
+      "central": 291.4,
+      "haut": 308.2
+     },
+     "production_brute_musd": {
+      "bas": 527.2,
+      "central": 548.3,
+      "haut": 579.9
+     },
+     "indicateurs": [
+      "Pas d'indicateur 2025 propre à la branche",
+      "Tendance officielle 2022-2024 : +1,9 %, +16,5 %, +2,1 %"
+     ]
+    }
+   }
+  },
+  {
+   "code": "29-33",
+   "libelle_fr": "Autres industries manufacturières",
+   "libelle_en": "Other manufacturing",
+   "branche_ons": "Autres industries manufacturières",
+   "citi_rev4": [
+    "29",
+    "30",
+    "31",
+    "32",
+    "33"
+   ],
+   "note_citi": "Correspondance CITI indicative : la publication de l'ONS ne précise pas où est classé le matériel de transport (autres industries manufacturières ou machines et équipements).",
+   "annees": {
+    "2020": {
+     "nature": "calcul_officiel",
+     "sources": [
+      "ons_comptes"
+     ],
+     "va_mda": 49.0,
+     "va_musd": 386.6,
+     "methode": "VA 2021 aux prix de 2020 (49 012 M DA) divisée par 1 + croissance 2021 (0.0 %)"
+    },
+    "2021": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 136.6,
+     "va_mda": 54.4,
+     "va_publique_mda": 12.1,
+     "va_privee_mda": 42.4,
+     "part_privee_va_pct": 77.9,
+     "remuneration_salaries_mda": 34.1,
+     "croissance_volume_pct": 0.0,
+     "prix_va_pct": 11.1,
+     "production_brute_musd": 1011.5,
+     "va_musd": 403.0
+    },
+    "2022": {
+     "nature": "officiel",
+     "statut_ons": "définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 150.5,
+     "va_mda": 68.2,
+     "va_publique_mda": 14.1,
+     "va_privee_mda": 54.1,
+     "part_privee_va_pct": 79.3,
+     "remuneration_salaries_mda": 37.4,
+     "croissance_volume_pct": 16.0,
+     "prix_va_pct": 8.1,
+     "production_brute_musd": 1059.8,
+     "va_musd": 480.5
+    },
+    "2023": {
+     "nature": "officiel",
+     "statut_ons": "semi-définitif",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 167.4,
+     "va_mda": 79.3,
+     "va_publique_mda": 15.4,
+     "va_privee_mda": 63.8,
+     "part_privee_va_pct": 80.5,
+     "remuneration_salaries_mda": 41.2,
+     "croissance_volume_pct": 9.1,
+     "prix_va_pct": 6.5,
+     "production_brute_musd": 1232.4,
+     "va_musd": 583.5
+    },
+    "2024": {
+     "nature": "officiel",
+     "statut_ons": "provisoire",
+     "sources": [
+      "ons_comptes"
+     ],
+     "production_brute_mda": 202.3,
+     "va_mda": 89.1,
+     "va_publique_mda": 17.6,
+     "va_privee_mda": 71.5,
+     "part_privee_va_pct": 80.2,
+     "remuneration_salaries_mda": 46.2,
+     "croissance_volume_pct": 3.6,
+     "prix_va_pct": 8.6,
+     "production_brute_musd": 1509.2,
+     "va_musd": 664.9
+    },
+    "2025": {
+     "nature": "estimation",
+     "confiance": "B",
+     "sources": [
+      "cnt_t1_2025_bis",
+      "cnt_t2_2025",
+      "oica",
+      "ons_comptes"
+     ],
+     "base_prix": "prix et taux de change de 2024",
+     "croissance_volume_pct": {
+      "bas": 9.0,
+      "central": 13.7,
+      "haut": 18.0
+     },
+     "va_mda": {
+      "bas": 97.1,
+      "central": 101.3,
+      "haut": 105.1
+     },
+     "production_brute_mda": {
+      "bas": 220.5,
+      "central": 230.0,
+      "haut": 238.7
+     },
+     "va_musd": {
+      "bas": 724.7,
+      "central": 756.0,
+      "haut": 784.6
+     },
+     "production_brute_musd": {
+      "bas": 1645.0,
+      "central": 1716.0,
+      "haut": 1780.9
+     },
+     "indicateurs": [
+      "ONS, comptes trimestriels : T1 2025 +14,4 %, T2 2025 +13,0 %",
+      "OICA : véhicules produits en 2025 +43,0 % (30 108 → 43 052), si la branche les inclut",
+      "Tendance officielle 2022-2024 : +16,0 %, +9,1 %, +3,6 %"
+     ]
+    }
+   }
+  }
+ ]
+}

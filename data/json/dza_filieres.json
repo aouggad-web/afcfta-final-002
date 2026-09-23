@@ -1,0 +1,3373 @@
+{
+ "meta": {
+  "titre": "Fiches produit : capacités de production et d'export de l'industrie algérienne (2021-2025)",
+  "genere_le": "2026-09-23",
+  "script": "Construit hors dépôt à partir des relevés de collecte du 23 septembre 2026 : chaque chiffre reprend l'URL, l'extrait verbatim et la fiabilité de sa preuve.",
+  "sources": {
+   "preuves": "Relevés de collecte (ONS, ministères, entreprises, presse, bases internationales), non versionnés : chaque chiffre de ce fichier en cite la source et l'extrait.",
+   "exportations": "data/json/dza_commerce_baci.json (CEPII BACI via l'API OEC, USD courants)"
+  },
+  "regles": [
+   "production et capacite : 1 à 3 chiffres 2021-2025 par fiche, copiés des preuves (fiabilité A avant B avant C) ; liste vide si aucune preuve",
+   "perimetre = périmètre de la preuve + produit exact visé par le chiffre",
+   "exportations_baci : M USD, somme des SH6 listés dans sh6_inclus (seuls figurent dans BACI les SH6 ayant dépassé 0,5 M USD une année 2021-2024) ; part_afrique_2024_pct = exportations vers l'Afrique / total ; premieres_destinations_2024 agrégées sur les 15 premières destinations de chaque SH6",
+   "fiches triées par exportations 2024 décroissantes",
+   "hs contenant « / » : fiche regroupant plusieurs positions SH4"
+  ],
+  "nombre_fiches": 32,
+  "fiabilite": {
+   "A": "publication officielle ou base internationale de référence",
+   "B": "presse reprenant explicitement un chiffre officiel ou d'entreprise",
+   "C": "chiffre de presse non attribué, ordre de grandeur"
+  }
+ },
+ "fiches": [
+  {
+   "hs": "2710",
+   "libelle_fr": "Produits pétroliers raffinés",
+   "libelle_en": "Refined petroleum products",
+   "filiere": "Raffinage",
+   "citi_rev4": "1920",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 30.5,
+     "unite": "Mt",
+     "perimetre": "national — produits raffinés y compris GPL de raffinage - production globale des raffineries",
+     "fiabilite": "A",
+     "source_titre": "Bilan énergétique national 2024 - Ministère des Hydrocarbures et des Mines",
+     "source_url": "https://www.oilmines.gov.dz/Media/galerie/bilan_energetique_2024_6926cbcbb04c5.pdf",
+     "extrait": "L'activité raffinage s'est appréciée durant l'année 2024 induisant une augmentation (4,0 %) de la production globale de produits raffinés (y c GPL-raffinage) à 30,5 M tonnes.",
+     "nature": "officiel"
+    },
+    {
+     "annee": 2025,
+     "valeur": 666,
+     "unite": "kb/j",
+     "perimetre": "national — produits raffinés - total",
+     "fiabilite": "A",
+     "source_titre": "OPEC Annual Statistical Bulletin 2026 (61e édition)",
+     "source_url": "https://publications.opec.org/ASSETS/assetdb/asb-2026.pdf",
+     "extrait": "Table 4.4 … 2021 2022 2023 2024 2025 Change 25/24 Algeria 621 644 657 681 666 –14 Gasoline 74 74 83 85 83 –2 Kerosene 19 22 18 16 19 3 Distillates 211 211 224 233 226 –7 Residuals 104 110 109 106 109 4 Others 214 226 224 240 229 –11",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 10803,
+     "unite": "kt",
+     "perimetre": "national — gasoil",
+     "fiabilite": "A",
+     "source_titre": "Bilan énergétique national 2024 - Ministère des Hydrocarbures et des Mines",
+     "source_url": "https://www.oilmines.gov.dz/Media/galerie/bilan_energetique_2024_6926cbcbb04c5.pdf",
+     "extrait": "III- PRODUITS LIQUIDES 103 Tonnes … 2- Production d'énergie dérivée, dont : 29 820 2.1- Produits pétroliers légers - Essence 3 679 - Naphta 8 715 - Jet fuel 738 2.2- Produits pétroliers lourds - Gasoil 10 803 - Fuel oil 5 574 2.3- Autres 311",
+     "nature": "officiel"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 677,
+     "unite": "kb/j",
+     "perimetre": "national — capacité de raffinage totale (brut + condensat)",
+     "fiabilite": "A",
+     "source_titre": "OPEC Annual Statistical Bulletin 2026 (61e édition)",
+     "source_url": "https://publications.opec.org/ASSETS/assetdb/asb-2026.pdf",
+     "extrait": "Location 2021 2022 2023 2024 2025 Change 25/24 Algeria2 677 677 677 677 677 0 Sonatrach Skikda 355 355 355 355 355 0 Skikda (Condensate) 122 122 122 122 122 0 Arzew 87 87 87 87 87 0 Algiers 78 78 78 78 78 0 Hassi Messaoud 22 22 22 22 22 0 Adrar 13 13 13 13 13 0",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 657,
+     "unite": "kb/j",
+     "perimetre": "national — capacité de raffinage totale (distillation atmosphérique + splitter condensat)",
+     "fiabilite": "A",
+     "source_titre": "Energy Institute - Statistical Review of World Energy 2025 (74e édition)",
+     "source_url": "https://elements.visualcapitalist.com/wp-content/uploads/2026/01/Statistical-Review-of-World-Energy-1.pdf",
+     "extrait": "Oil Refining capacity … Thousand barrels daily* 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 2024 … Algeria 651 651 651 657 657 657 657 657 657 657 657 † 0.1% 0.6% … * Atmospheric distillation capacity at year end on a calendar-day basis.",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 30.7,
+     "unite": "Mt/an",
+     "perimetre": "national — capacité nationale de raffinage (brut + condensat)",
+     "fiabilite": "B",
+     "source_titre": "La réhabilitation des raffineries a permis d'augmenter la production de 3,7 millions de tonnes (Algérie Eco)",
+     "source_url": "https://algerie-eco.com/2024/07/03/la-rehabilitation-des-raffineries-a-permis-daugmenter-la-production-de-37-millions-de-tonnes/",
+     "extrait": "Le programme de réhabilitation et d'adaptation des raffineries du nord du pays a permis d'augmenter les capacités nationales du raffinage de pétrole de 27 millions de tonnes en 2018 à 30,7 millions de tonnes en 2023, soit une production supplémentaire de 3,7 millions de tonnes.",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Sonatrach (raffineries de Skikda, Arzew, Alger, Hassi Messaoud et Adrar)",
+     "role": "producteur et exportateur",
+     "chiffre": "16,2 Mt de produits à la raffinerie RA1K de Skikda en 2024 (RA2K : 5,2 Mt ; RA1Z : 4,4 Mt ; RA1G : 3,9 Mt)",
+     "annee": 2024,
+     "source_url": "https://sonatrach.com/wp-content/uploads/2025/12/RA_2024_FR_08-dec.pdf"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 6888.7,
+    "2022": 9408.0,
+    "2023": 7964.0,
+    "2024": 8553.4,
+    "part_afrique_2024_pct": 0.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "KOR",
+      "pays": "South Korea",
+      "valeur_m_usd": 2467.9,
+      "part_pct": 28.9
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 1745.1,
+      "part_pct": 20.4
+     },
+     {
+      "iso3": "NLD",
+      "pays": "Netherlands",
+      "valeur_m_usd": 613.7,
+      "part_pct": 7.2
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 565.8,
+      "part_pct": 6.6
+     },
+     {
+      "iso3": "BRA",
+      "pays": "Brazil",
+      "valeur_m_usd": 507.6,
+      "part_pct": 5.9
+     }
+    ],
+    "sh6_inclus": [
+     "271000"
+    ]
+   },
+   "contradictions": [
+    "Capacité : 677 kb/j selon l'OPEP (splitter de condensat de Skikda compris), 657 kb/j selon l'Energy Institute (2024).",
+    "Le record de 10,8 Mt de gasoil est attribué à 2024 par Sonatrach mais à 2023 par une source de presse ; le bilan énergétique donne 10 336 kt en 2023 et 10 803 kt en 2024."
+   ],
+   "synthese_fr": "Les raffineries de Sonatrach (677 kb/j de capacité selon l'OPEP) ont produit 30,5 Mt de produits pétroliers en 2024, dont 10 803 kt de gasoil. Selon BACI, les exportations de produits raffinés ont atteint 8 553,4 M USD en 2024, surtout vers la Corée du Sud et les États-Unis ; aucun flux vers l'Afrique n'est recensé (0,0 %).",
+   "synthese_en": "Sonatrach's refineries (677 kb/d of capacity according to OPEC) produced 30.5 Mt of petroleum products in 2024, including 10,803 kt of diesel. According to BACI, refined product exports reached USD 8,553.4 million in 2024, mainly to South Korea and the United States; no flows to Africa are recorded (0.0%)."
+  },
+  {
+   "hs": "310210",
+   "libelle_fr": "Urée",
+   "libelle_en": "Urea",
+   "filiere": "Chimie et engrais",
+   "citi_rev4": "2012",
+   "production": [
+    {
+     "annee": 2021,
+     "valeur": 1500,
+     "unite": "kt",
+     "perimetre": "national — urée (teneur en N)",
+     "fiabilite": "A",
+     "source_titre": "USGS Minerals Yearbook 2020-21, Algeria — tables-only advance release (Table 1: Production of mineral commodities)",
+     "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb3-2020-21-Algeria-advrel.xlsx",
+     "extrait": "Urea | 633 | 1596 | 1400 | 1600 | e | 1500 | e (Nitrogen, N content; Thousand metric tons; colonnes 2017 à 2021)",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 2.4,
+     "unite": "Mt",
+     "perimetre": "entreprise: AOA (Algerian Omani Fertilizer Company), Arzew — urée granulée",
+     "fiabilite": "B",
+     "source_titre": "Omani group backs fertilizer expansion",
+     "source_url": "https://www.omanobserver.om/article/1195125/business/economy/omani-group-backs-fertilizer-expansion",
+     "extrait": "In 2024, the complex was reported to have produced more than 2.4 million tonnes of urea and 1.35 million tonnes of ammonia, underscoring its importance to Algeria's fertiliser industry.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 1259,
+     "unite": "kt",
+     "perimetre": "entreprise: Sorfert Algérie (Fertiglobe 51%) — urée",
+     "fiabilite": "A",
+     "source_titre": "Fertiglobe Annual Report 2025 — Capacity by Asset ('000 tpa)",
+     "source_url": "https://fertiglobe.com/wp-content/uploads/2026/03/Fertiglobe-2025-Annual-Report-vF.pdf",
+     "extrait": "Plant Country Gross Ammonia Net Ammonia Urea DEF Total ... Sorfert Algeria 1,606 803 1,259 – 2,062",
+     "nature": "entreprise"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "AOA – Algerian Omani Fertilizer Company (Arzew)",
+     "role": "producteur principal et exportateur",
+     "chiffre": "plus de 2,4 Mt d'urée et 1,35 Mt d'ammoniac produites en 2024 ; capacité nominale d'environ 7 000 t/j d'urée granulée",
+     "annee": 2024,
+     "source_url": "https://www.omanobserver.om/article/1195125/business/economy/omani-group-backs-fertilizer-expansion"
+    },
+    {
+     "nom": "Sorfert Algérie (Arzew ; Fertiglobe 51 %)",
+     "role": "producteur et exportateur",
+     "chiffre": "capacité de 1 259 kt/an d'urée et de 1 606 kt/an d'ammoniac brut",
+     "annee": 2025,
+     "source_url": "https://fertiglobe.com/wp-content/uploads/2026/03/Fertiglobe-2025-Annual-Report-vF.pdf"
+    },
+    {
+     "nom": "Sorfert Algérie",
+     "role": "exportateur",
+     "chiffre": "1,3 Mt d'urée et 900 000 t d'ammoniac exportées en 2022",
+     "annee": 2022,
+     "source_url": "https://www.algerieinvest.dz/engrais-azotes-sofert-algerie-a-exporte-pour-1-milliard-de-dollars-us-en-2022/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 1344.3,
+    "2022": 2312.0,
+    "2023": 1346.7,
+    "2024": 1024.5,
+    "part_afrique_2024_pct": 0.7,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "BRA",
+      "pays": "Brazil",
+      "valeur_m_usd": 165.5,
+      "part_pct": 16.2
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 157.0,
+      "part_pct": 15.3
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 154.9,
+      "part_pct": 15.1
+     },
+     {
+      "iso3": "CAN",
+      "pays": "Canada",
+      "valeur_m_usd": 110.9,
+      "part_pct": 10.8
+     },
+     {
+      "iso3": "ARG",
+      "pays": "Argentina",
+      "valeur_m_usd": 99.6,
+      "part_pct": 9.7
+     }
+    ],
+    "sh6_inclus": [
+     "310210"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2024 : BACI (données réconciliées avec les déclarations des importateurs) donne 1 024,5 M USD pour 2 831 kt, la déclaration douanière algérienne publiée par WITS/UN Comtrade 941,7 M USD pour 2 165 kt.",
+    "L'ONS chiffre à 1,25 Md USD et 3,53 Mt les exportations 2023 de l'ensemble des engrais azotés (SH 3102), soit moins que la seule urée dans BACI (1 346,7 M USD, 3 230 kt).",
+    "Unités : l'USGS exprime la production en tonnes d'azote contenu (1 500 kt N en 2021, estimation ; diviser par 0,46 pour obtenir des tonnes d'urée), alors que les entreprises publient des tonnes de produit (AOA : plus de 2,4 Mt d'urée en 2024) ; les deux séries ne se comparent pas directement."
+   ],
+   "synthese_fr": "L'Algérie est un grand producteur d'urée : le complexe AOA d'Arzew en a produit plus de 2,4 Mt en 2024 et Sorfert dispose d'une capacité de 1 259 kt/an. Selon BACI, les exportations ont atteint 1 024,5 M USD en 2024, surtout vers le Brésil, les États-Unis et la France ; l'Afrique n'en a reçu que 0,7 %.",
+   "synthese_en": "Algeria is a major urea producer: the AOA complex in Arzew produced more than 2.4 Mt in 2024 and Sorfert has a capacity of 1,259 kt/year. According to BACI, exports reached USD 1,024.5 million in 2024, mainly to Brazil, the United States and France; Africa received only 0.7%."
+  },
+  {
+   "hs": "280429",
+   "libelle_fr": "Hélium (gaz rares hors argon)",
+   "libelle_en": "Helium (rare gases other than argon)",
+   "filiere": "Chimie et engrais",
+   "citi_rev4": "2011",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 11,
+     "unite": "millions de m3",
+     "perimetre": "national — hélium",
+     "fiabilite": "A",
+     "source_titre": "USGS Mineral Commodity Summaries 2026 — HELIUM",
+     "source_url": "https://pubs.usgs.gov/periodicals/mcs2026/mcs2026-helium.pdf",
+     "extrait": "World ... Production and Reserves: [colonnes 2024 2025e] Algeria e11 11 e1,800",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 9,
+     "unite": "millions de m3",
+     "perimetre": "national — hélium",
+     "fiabilite": "A",
+     "source_titre": "USGS Mineral Commodity Summaries 2025 — HELIUM",
+     "source_url": "https://pubs.usgs.gov/periodicals/mcs2025/mcs2025-helium.pdf",
+     "extrait": "World ... Production and Reserves: [colonnes 2023 2024e] Algeria e9 11 e1,800",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "Helios (Arzew) et Helison (Skikda), coentreprises de Sonatrach",
+     "role": "producteurs",
+     "chiffre": null,
+     "annee": null,
+     "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb3-2020-21-Algeria-advrel.xlsx"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 165.8,
+    "2022": 192.4,
+    "2023": 564.7,
+    "2024": 555.0,
+    "part_afrique_2024_pct": 1.4,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 365.7,
+      "part_pct": 65.9
+     },
+     {
+      "iso3": "GBR",
+      "pays": "United Kingdom",
+      "valeur_m_usd": 39.2,
+      "part_pct": 7.1
+     },
+     {
+      "iso3": "DEU",
+      "pays": "Germany",
+      "valeur_m_usd": 26.6,
+      "part_pct": 4.8
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 21.7,
+      "part_pct": 3.9
+     },
+     {
+      "iso3": "IRL",
+      "pays": "Ireland",
+      "valeur_m_usd": 19.6,
+      "part_pct": 3.5
+     }
+    ],
+    "sh6_inclus": [
+     "280429"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2024 : BACI donne 555,0 M USD, mais la déclaration douanière algérienne (WITS) ne recense que 160,5 M USD pour tout le SH 2804, dont 158,6 M USD de gaz rares ; BACI s'appuie sur les déclarations des importateurs, surtout la France.",
+    "En 2023, l'ONS classe sous « hydrogène » 163 M USD pour 6 036 t, alors que les données miroir donnent 564,5 M USD d'hélium (SH 280429) : il s'agit très probablement du même flux, mal libellé.",
+    "Volumes : la France a déclaré à elle seule 13,19 millions de m3 importés d'Algérie en 2023, davantage que la production estimée par l'USGS pour cette année (9 millions de m3)."
+   ],
+   "synthese_fr": "L'Algérie produit de l'hélium à partir de son gaz naturel : 11 millions de m3 en 2024 selon l'USGS (estimation). Selon BACI, les exportations ont atteint 555,0 M USD en 2024, dont 65,9 % vers la France et 1,4 % vers l'Afrique ; la déclaration douanière algérienne donne un montant bien plus faible.",
+   "synthese_en": "Algeria produces helium from its natural gas: 11 million m3 in 2024 according to USGS (estimate). According to BACI, exports reached USD 555.0 million in 2024, 65.9% of it to France and 1.4% to Africa; Algeria's own customs declaration shows a much lower amount."
+  },
+  {
+   "hs": "281410",
+   "libelle_fr": "Ammoniac anhydre",
+   "libelle_en": "Anhydrous ammonia",
+   "filiere": "Chimie et engrais",
+   "citi_rev4": "2012",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 2000,
+     "unite": "kt",
+     "perimetre": "national — ammoniac (teneur en N)",
+     "fiabilite": "A",
+     "source_titre": "USGS Mineral Commodity Summaries 2026 — NITROGEN (FIXED)—AMMONIA",
+     "source_url": "https://pubs.usgs.gov/periodicals/mcs2026/mcs2026-nitrogen.pdf",
+     "extrait": "World ... Production and Reserves: [colonnes 2024 2025e] Algeria 2,000 2,000",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 1.35,
+     "unite": "Mt",
+     "perimetre": "entreprise: AOA (Algerian Omani Fertilizer Company), Arzew — ammoniac",
+     "fiabilite": "B",
+     "source_titre": "Omani group backs fertilizer expansion",
+     "source_url": "https://www.omanobserver.om/article/1195125/business/economy/omani-group-backs-fertilizer-expansion",
+     "extrait": "In 2024, the complex was reported to have produced more than 2.4 million tonnes of urea and 1.35 million tonnes of ammonia",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 1606,
+     "unite": "kt",
+     "perimetre": "entreprise: Sorfert Algérie (Fertiglobe 51%) — ammoniac brut",
+     "fiabilite": "A",
+     "source_titre": "Fertiglobe Annual Report 2025 — Capacity by Asset ('000 tpa)",
+     "source_url": "https://fertiglobe.com/wp-content/uploads/2026/03/Fertiglobe-2025-Annual-Report-vF.pdf",
+     "extrait": "Plant Country Gross Ammonia Net Ammonia Urea DEF Total ... Sorfert Algeria 1,606 803 1,259 – 2,062",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2025,
+     "valeur": 803,
+     "unite": "kt",
+     "perimetre": "entreprise: Sorfert Algérie (Fertiglobe 51%) — ammoniac marchand (net)",
+     "fiabilite": "A",
+     "source_titre": "Fertiglobe Annual Report 2025 — Capacity by Asset ('000 tpa)",
+     "source_url": "https://fertiglobe.com/wp-content/uploads/2026/03/Fertiglobe-2025-Annual-Report-vF.pdf",
+     "extrait": "Plant Country Gross Ammonia Net Ammonia Urea DEF Total ... Sorfert Algeria 1,606 803 1,259 – 2,062",
+     "nature": "entreprise"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Sorfert Algérie (Arzew ; Fertiglobe 51 %)",
+     "role": "producteur et exportateur",
+     "chiffre": "capacité de 1 606 kt/an d'ammoniac brut, dont 803 kt/an d'ammoniac marchand",
+     "annee": 2025,
+     "source_url": "https://fertiglobe.com/wp-content/uploads/2026/03/Fertiglobe-2025-Annual-Report-vF.pdf"
+    },
+    {
+     "nom": "Sorfert Algérie",
+     "role": "exportateur",
+     "chiffre": "900 000 t d'ammoniac et 1,3 Mt d'urée exportées en 2022",
+     "annee": 2022,
+     "source_url": "https://www.algerieinvest.dz/engrais-azotes-sofert-algerie-a-exporte-pour-1-milliard-de-dollars-us-en-2022/"
+    },
+    {
+     "nom": "AOA – Algerian Omani Fertilizer Company (Arzew)",
+     "role": "producteur",
+     "chiffre": "1,35 Mt d'ammoniac produites en 2024 ; capacité nominale d'environ 4 000 t/j",
+     "annee": 2024,
+     "source_url": "https://www.omanobserver.om/article/1195125/business/economy/omani-group-backs-fertilizer-expansion"
+    },
+    {
+     "nom": "Fertial (Arzew et Annaba ; groupe Asmidal)",
+     "role": "producteur (ammoniac et engrais azotés)",
+     "chiffre": "production d'engrais attendue à 140 000 t fin 2024, soit 77 % des besoins nationaux (prévision)",
+     "annee": 2024,
+     "source_url": "https://elwatan.dz/production-dengrais-et-dammoniac-fertial-un-acteur-cle-pour-le-developpement-du-secteur-de-lagriculture/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 771.3,
+    "2022": 1409.3,
+    "2023": 440.1,
+    "2024": 479.8,
+    "part_afrique_2024_pct": 3.5,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUR",
+      "pays": "Turkey",
+      "valeur_m_usd": 130.9,
+      "part_pct": 27.3
+     },
+     {
+      "iso3": "GBR",
+      "pays": "United Kingdom",
+      "valeur_m_usd": 75.5,
+      "part_pct": 15.7
+     },
+     {
+      "iso3": "PRT",
+      "pays": "Portugal",
+      "valeur_m_usd": 48.5,
+      "part_pct": 10.1
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 43.4,
+      "part_pct": 9.0
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 34.9,
+      "part_pct": 7.3
+     }
+    ],
+    "sh6_inclus": [
+     "281410"
+    ]
+   },
+   "contradictions": [
+    "Production 2023 : l'USGS l'estimait à 2 600 kt d'azote (Mineral Commodity Summaries 2024), puis l'a ramenée à 2 000 kt dans l'édition 2025.",
+    "Unités : l'USGS compte l'azote contenu (diviser par 0,822 pour obtenir des tonnes d'ammoniac), AOA et Sorfert des tonnes de produit.",
+    "Exportations 2024 : BACI donne 479,8 M USD pour 977 kt, la déclaration algérienne (WITS/UN Comtrade) 432,4 M USD pour 720 kt.",
+    "Exportations 2023 : l'ONS publie 453 M USD pour 1,02 Mt, BACI 440,1 M USD pour 866 kt."
+   ],
+   "synthese_fr": "L'Algérie produit environ 2 000 kt d'azote sous forme d'ammoniac (USGS, 2024) ; le seul complexe AOA a produit 1,35 Mt d'ammoniac en 2024 et Sorfert dispose de 803 kt/an d'ammoniac marchand. Selon BACI, les exportations ont atteint 479,8 M USD en 2024, surtout vers la Turquie, le Royaume-Uni et le Portugal ; l'Afrique en a reçu 3,5 %.",
+   "synthese_en": "Algeria produces about 2,000 kt of nitrogen in the form of ammonia (USGS, 2024); the AOA complex alone produced 1.35 Mt of ammonia in 2024 and Sorfert has 803 kt/year of merchant ammonia capacity. According to BACI, exports reached USD 479.8 million in 2024, mainly to Turkey, the United Kingdom and Portugal; Africa received 3.5%."
+  },
+  {
+   "hs": "2523",
+   "libelle_fr": "Ciment et clinker",
+   "libelle_en": "Cement and clinker",
+   "filiere": "Minéraux non métalliques",
+   "citi_rev4": "2394",
+   "production": [
+    {
+     "annee": 2022,
+     "valeur": 28.0,
+     "unite": "Mt",
+     "perimetre": "national — ciment hydraulique",
+     "fiabilite": "A",
+     "source_titre": "USGS — The Mineral Industry of Algeria, 2022 tables-only release (XLSX), Table 1",
+     "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb3-2022-Algeria-advrel.xlsx",
+     "extrait": "Cement, hydraulice | 2018: 25000 r | 2019: 26000 r | 2020: 23000 r | 2021: 26000 r | 2022: 28000 | 7.7",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 19.5,
+     "unite": "Mt",
+     "perimetre": "entreprise: GICA — ciment",
+     "fiabilite": "B",
+     "source_titre": "Comment l’Algérie est passé d’un pays importateur à exportateur de ciment (ObservAlgérie)",
+     "source_url": "https://observalgerie.com/2025/02/16/economie/comment-algerie-passe-de-pays-importateur-a-exportateur-ciment/",
+     "extrait": "En 2023, il a produit 19,5 millions de tonnes de ciment et exporté 6 millions de tonnes .",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 40,
+     "unite": "Mt",
+     "perimetre": "national (exercice 2023-2024) — ciment",
+     "fiabilite": "C",
+     "source_titre": "Exportation du ciment: 24 milliards de DA engrangés par le groupe GICA (Les Enjeux Eco)",
+     "source_url": "https://lesenjeuxeco.dz/exportation-du-ciment-24-milliards-de-da-engranges-par-le-groupe-gica/",
+     "extrait": "« le Groupe GICA et d’autres opérateurs qui activent dans ce secteur ont réussi à produire, durant l’exercice 2023-2024, quelques 40 millions de tonnes de ciment, dont 19,5 millions de tonnes sont produits par le Groupe GICA.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 42,
+     "unite": "Mt",
+     "perimetre": "national — ciment",
+     "fiabilite": "B",
+     "source_titre": "L’Algérie se lance dans la course au ciment vert, avec 3 projets majeurs (TSA)",
+     "source_url": "https://www.tsa-algerie.com/lalgerie-se-lance-dans-la-course-au-ciment-vert-avec-3-projets-majeurs/",
+     "extrait": "L’Algérie dispose d’une capacité de production de 42 millions de tonnes de ciments pour des besoins internes estimés à 30 millions de tonnes, a indiqué le ministre de l’Industrie.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 40,
+     "unite": "Mt",
+     "perimetre": "national (21 usines) — ciment",
+     "fiabilite": "B",
+     "source_titre": "Avec l’exportation de 10 millions de tonnes par an: Le ciment algérien à la conquête du marché international (Les Enjeux Eco)",
+     "source_url": "https://lesenjeuxeco.dz/avec-lexportation-de-10-millions-de-tonnes-par-an-le-ciment-algerien-a-la-conquete-du-marche-international/",
+     "extrait": "permettant d’augmenter les capacités nationales installées à 40 millions de tonnes par an.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2022,
+     "valeur": 39,
+     "unite": "Mt",
+     "perimetre": "national (18 cimenteries) — ciment",
+     "fiabilite": "B",
+     "source_titre": "Les exportations algériennes de ciment ont atteint 747 millions USD en 2023 (Akhbar El Watane, reprise APS)",
+     "source_url": "https://akhbarelwatane.dz/fr/les-exportations-algeriennes-de-ciment-ont-atteint-747-millions-usd-en-2023/",
+     "extrait": "Il a ajouté que les 18 cimenteries du pays ont atteint une capacité de production nationale de 39 millions de tonnes en 2022, dépassant largement la demande locale estimée à 21 millions de tonnes.",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "GICA – Groupe industriel des ciments d'Algérie (public)",
+     "role": "producteur principal et exportateur",
+     "chiffre": "19,5 Mt de ciment produites et 6 Mt exportées en 2023",
+     "annee": 2023,
+     "source_url": "https://observalgerie.com/2025/02/16/economie/comment-algerie-passe-de-pays-importateur-a-exportateur-ciment/"
+    },
+    {
+     "nom": "Holcim El Djazaïr (ex-Lafarge Algérie)",
+     "role": "producteur et exportateur",
+     "chiffre": "3,1 Mt exportées en 2024 (dont 40 % de ciment), pour plus de 140 M USD",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2025/02/23/ciment-et-clinker-holcim-el-djazair-a-exporte-31-millions-de-tonnes-pour-140-millions-en-2024/"
+    },
+    {
+     "nom": "Cimenterie de Chlef (ECDE, groupe GICA)",
+     "role": "exportateur",
+     "chiffre": "1,9 Mt de clinker et 60 000 t de ciment gris exportées vers l'Europe de janvier à mi-octobre 2025",
+     "annee": 2025,
+     "source_url": "https://lesenjeuxeco.dz/cimenterie-de-chlef-pres-de-2-millions-de-tonnes-de-clinker-exportes-vers-leurope/"
+    },
+    {
+     "nom": "Amouda Ciment (Laghouat)",
+     "role": "exportateur vers le Sahel",
+     "chiffre": "environ 100 000 t de clinker et 100 000 t de ciment gris exportées vers le Mali et le Niger de 2021 à septembre 2023",
+     "annee": 2023,
+     "source_url": "https://lesenjeuxeco.dz/amouda-ciment-exportation-de-pres-de-200-000-t-de-clinker-et-de-ciment-gris/"
+    },
+    {
+     "nom": "Groupe Souakri (CILAS, Biskra)",
+     "role": "exportateur (contrat)",
+     "chiffre": "contrat d'un an de 51 M USD pour fournir du ciment à la Libye",
+     "annee": 2025,
+     "source_url": "https://www.globalcement.com/news/19848-souakri-group-signs-us-51m-cement-supply-deal-with-libya"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 335.8,
+    "2022": 704.4,
+    "2023": 563.4,
+    "2024": 356.9,
+    "part_afrique_2024_pct": 30.8,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 86.4,
+      "part_pct": 24.2
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 59.5,
+      "part_pct": 16.7
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 44.9,
+      "part_pct": 12.6
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 27.5,
+      "part_pct": 7.7
+     },
+     {
+      "iso3": "CIV",
+      "pays": "Cote d'Ivoire",
+      "valeur_m_usd": 25.9,
+      "part_pct": 7.3
+     }
+    ],
+    "sh6_inclus": [
+     "252310",
+     "252321",
+     "252329",
+     "252330",
+     "252390"
+    ]
+   },
+   "contradictions": [
+    "Production : l'USGS donne 28,0 Mt en 2022, alors que le ministère évoque « quelque 40 millions de tonnes » produites sur l'exercice 2023-2024 ; ce second chiffre correspond plutôt à la capacité installée (39 à 42 Mt).",
+    "Capacité 2025 : 42 Mt selon le ministre de l'Industrie, 40 Mt (21 usines) selon une autre source.",
+    "Exportations 2023 : le ministère du Commerce annonce 747 M USD pour 9,6 Mt (ciment et clinker) et l'ONS 753 M USD pour 9,74 Mt de clinker, contre 563,4 M USD pour 8 195 kt dans BACI.",
+    "Exportations 2024 : la Banque d'Algérie donne 328 M USD et la presse « plus de 10 millions de tonnes », contre 356,9 M USD pour 5 419 kt dans BACI."
+   ],
+   "synthese_fr": "L'Algérie dispose d'une capacité cimentière de 40 à 42 Mt/an pour une production de 28,0 Mt en 2022 (USGS), d'où un excédent exportable. Selon BACI, les exportations de ciment et de clinker ont atteint 356,9 M USD en 2024 (États-Unis, France et Mauritanie en tête), dont 30,8 % vers l'Afrique.",
+   "synthese_en": "Algeria has 40 to 42 Mt/year of cement capacity for production of 28.0 Mt in 2022 (USGS), leaving an exportable surplus. According to BACI, cement and clinker exports reached USD 356.9 million in 2024 (led by the United States, France and Mauritania), 30.8% of it to Africa."
+  },
+  {
+   "hs": "7207",
+   "libelle_fr": "Demi-produits en acier (billettes et brames)",
+   "libelle_en": "Semi-finished steel (billets and slabs)",
+   "filiere": "Sidérurgie et tubes",
+   "citi_rev4": "2410",
+   "production": [
+    {
+     "annee": 2025,
+     "valeur": 5460,
+     "unite": "kt",
+     "perimetre": "national — acier brut",
+     "fiabilite": "A",
+     "source_titre": "worldsteel – Steel Data Viewer : Total production of crude steel (Algeria / DZA)",
+     "source_url": "https://worldsteel.org/mappingworld-api/?values=P1_crude_steel_total&lang=EN",
+     "extrait": "\"DZA\":{\"2006\":1158.204,\"2007\":1277.971,\"2008\":618.722,\"2009\":596.997,\"2010\":661.696563,\"2011\":551.330656,\"2012\":556.548752,\"2013\":416.78489,\"2014\":415,\"2015\":650,\"2016\":650,\"2017\":415,\"2018\":2300,\"2019\":2400,\"2020\":3000,\"2021\":3491.324,\"2022\":4300,\"2023\":4421,\"2024\":4520,\"2025\":5460}",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 4520,
+     "unite": "kt",
+     "perimetre": "national — acier brut",
+     "fiabilite": "A",
+     "source_titre": "worldsteel – Steel Data Viewer : Total production of crude steel (Algeria / DZA)",
+     "source_url": "https://worldsteel.org/mappingworld-api/?values=P1_crude_steel_total&lang=EN",
+     "extrait": "\"DZA\":{\"2006\":1158.204,\"2007\":1277.971,\"2008\":618.722,\"2009\":596.997,\"2010\":661.696563,\"2011\":551.330656,\"2012\":556.548752,\"2013\":416.78489,\"2014\":415,\"2015\":650,\"2016\":650,\"2017\":415,\"2018\":2300,\"2019\":2400,\"2020\":3000,\"2021\":3491.324,\"2022\":4300,\"2023\":4421,\"2024\":4520,\"2025\":5460}",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 6200,
+     "unite": "kt",
+     "perimetre": "entreprise: Tosyali Algérie — acier brut (fours électriques)",
+     "fiabilite": "B",
+     "source_titre": "Tosyali Algerie Oran steel plant (Global Energy Monitor – Global Iron and Steel Tracker)",
+     "source_url": "https://www.gem.wiki/Tosyali_Algerie_Oran_steel_plant",
+     "extrait": "Nominal crude steel capacity (total) operating 6200",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2025,
+     "valeur": 2.2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Algerian Qatari Steel (AQS) — acier brut (fours électriques)",
+     "fiabilite": "A",
+     "source_titre": "Creating a Culture of Success: Performance & Achievements of AQS (Direct From Midrex)",
+     "source_url": "https://www.midrex.com/direct-from-midrex/technical-articles/creating-a-culture-of-success-performance-achievements-of-aqs/",
+     "extrait": "Two 120-ton electric arc furnaces (EAFs) – total production capacity of 2.2 Mt/y",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2024,
+     "valeur": 2.2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Tosyali Algérie — brames (aciérie du complexe de produits plats)",
+     "fiabilite": "B",
+     "source_titre": "Tosyalı Algerie commissions new flat steel facility, begins slab production (SteelOrbis)",
+     "source_url": "https://www.steelorbis.com/steel-news/latest-news/tosyali-algerie-commissions-new-flat-steel-facility-begins-slab-production-1342231.htm",
+     "extrait": "The facility with an annual capacity of 2.2 million mt has started slab production",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Tosyali Algérie (Bethioua, Oran)",
+     "role": "producteur et exportateur",
+     "chiffre": "premières exportations de brames du pays : 25 000 t en août 2024",
+     "annee": 2024,
+     "source_url": "https://www.steelorbis.com/steel-news/latest-news/tosyali-algerie-exports-first-slab-from-algeria-1353633.htm"
+    },
+    {
+     "nom": "Algerian Qatari Steel – AQS (Bellara, Jijel)",
+     "role": "producteur",
+     "chiffre": "deux fours électriques de 120 t, capacité de 2,2 Mt/an d'acier",
+     "annee": 2025,
+     "source_url": "https://www.midrex.com/direct-from-midrex/technical-articles/creating-a-culture-of-success-performance-achievements-of-aqs/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 376.6,
+    "2022": 181.2,
+    "2023": 439.6,
+    "2024": 332.9,
+    "part_afrique_2024_pct": 7.3,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUR",
+      "pays": "Turkey",
+      "valeur_m_usd": 208.3,
+      "part_pct": 62.6
+     },
+     {
+      "iso3": "COL",
+      "pays": "Colombia",
+      "valeur_m_usd": 57.9,
+      "part_pct": 17.4
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 42.3,
+      "part_pct": 12.7
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 10.7,
+      "part_pct": 3.2
+     },
+     {
+      "iso3": "MAR",
+      "pays": "Morocco",
+      "valeur_m_usd": 10.6,
+      "part_pct": 3.2
+     }
+    ],
+    "sh6_inclus": [
+     "720711",
+     "720712",
+     "720719",
+     "720720"
+    ]
+   },
+   "contradictions": [
+    "Une analyse sectorielle affirme que 92 à 95 % de l'acier brut est aussitôt laminé, alors que BACI recense 589 kt de demi-produits exportés en 2024 pour 4 520 kt d'acier brut produites.",
+    "worldsteel estimait la production 2022 à 3,5 Mt avant de la réviser à 4 300 kt ; de même, 2025, estimée à 5,3 Mt en janvier 2026, s'établit finalement à 5 460 kt."
+   ],
+   "synthese_fr": "L'Algérie a produit 5 460 kt d'acier brut en 2025 (worldsteel), coulé en billettes et brames, surtout par Tosyali (capacité de 6 200 kt) et AQS (2,2 Mt/an). Selon BACI, les exportations de demi-produits ont atteint 332,9 M USD en 2024, dont 62,6 % vers la Turquie et 7,3 % vers l'Afrique.",
+   "synthese_en": "Algeria produced 5,460 kt of crude steel in 2025 (worldsteel), cast into billets and slabs, mainly by Tosyali (6,200 kt capacity) and AQS (2.2 Mt/year). According to BACI, exports of semi-finished products reached USD 332.9 million in 2024, 62.6% of it to Turkey and 7.3% to Africa."
+  },
+  {
+   "hs": "7214",
+   "libelle_fr": "Rond à béton (barres en acier)",
+   "libelle_en": "Steel reinforcing bars (rebar)",
+   "filiere": "Sidérurgie et tubes",
+   "citi_rev4": "2410",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 4168,
+     "unite": "kt",
+     "perimetre": "national — produits laminés à chaud, longs et plats (le rond à béton n’est pas isolé)",
+     "fiabilite": "A",
+     "source_titre": "worldsteel – Steel Data Viewer : Production of hot rolled products (Algeria / DZA)",
+     "source_url": "https://worldsteel.org/mappingworld-api/?values=P2_hr_products_total&lang=EN",
+     "extrait": "\"DZA\":{\"2005\":860,\"2006\":980,\"2007\":1090,\"2008\":530,\"2009\":510,\"2010\":560,\"2011\":470,\"2012\":470,\"2013\":400,\"2014\":520,\"2015\":1050,\"2016\":1100,\"2017\":1950,\"2018\":2850,\"2019\":2800,\"2020\":4060,\"2021\":2810,\"2022\":2848,\"2023\":3874,\"2024\":4168}",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 3.5,
+     "unite": "Mt",
+     "perimetre": "entreprise: Tosyali Algérie — acier long (rond à béton, fil machine, cornières, tubes spirales)",
+     "fiabilite": "B",
+     "source_titre": "Algérie: des perspectives prometteuses pour l’industrie sidérurgique en 2024 (Arab News en français)",
+     "source_url": "https://www.arabnews.fr/economie/algerie-des-perspectives-prometteuses-pour-lindustrie-siderurgique-en-2024-466696",
+     "extrait": "la société produit 3,5 millions de tonnes d’acier long (rond béton, fil machine, cornières et tubes spirales). De ce total, 2,5 millions de tonnes proviennent du minerai de fer, tandis que 1 million de tonnes sont issues du traitement des déchets ferreux collectés à travers le pays.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Algerian Qatari Steel (AQS) — produits sidérurgiques",
+     "fiabilite": "B",
+     "source_titre": "AQS a exporté pour plus de 360 millions $ en 2024 (Algérie Eco / APS)",
+     "source_url": "https://algerie-eco.com/2025/01/20/aqs-a-exporte-pour-plus-de-360-millions-en-2024/",
+     "extrait": "le volume de production a dépassé les deux (2) millions de tonnes de produits sidérurgiques, dont 66% ont été orientés vers le marché national et 34% vers l'exportation",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Algerian Qatari Steel (AQS) — rond à béton et fil machine",
+     "fiabilite": "A",
+     "source_titre": "Creating a Culture of Success: Performance & Achievements of AQS (Direct From Midrex)",
+     "source_url": "https://www.midrex.com/direct-from-midrex/technical-articles/creating-a-culture-of-success-performance-achievements-of-aqs/",
+     "extrait": "Three rolling mills – total production capacity of 2 Mt/y of reinforcing bars and wire rod",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2025,
+     "valeur": 3.5,
+     "unite": "Mt",
+     "perimetre": "entreprise: Tosyali Algérie — rond à béton et fil machine (capacité de laminage)",
+     "fiabilite": "B",
+     "source_titre": "Algeria’s steel industry: why is it growing? (GMK Center, analyse)",
+     "source_url": "https://gmk.center/en/posts/algeria-s-steel-industry-why-is-it-growing/",
+     "extrait": "with an annual capacity of 6.2 million tonnes of steel and 5.9 million tonnes of rolled products. Of this, 3.5 million tonnes are rebar and wire rod, 2.4 million tonnes are HRC, 800,000 tonnes are CRC, 400,000 tonnes are GI, and 400,000 tonnes are LDP.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 650,
+     "unite": "kt",
+     "perimetre": "entreprise: Fondal (usine de Draâ El-Hadja, M'sila) — rond à béton",
+     "fiabilite": "B",
+     "source_titre": "Une usine de rond à béton inaugurée à M'sila (Algérie Eco / APS)",
+     "source_url": "https://algerie-eco.com/2025/10/07/une-usine-de-rond-a-beton-inauguree-a-msila/",
+     "extrait": "L'usine devrait créer près de 450 emplois directs, avec une capacité de production annuelle estimée à 650.000 tonnes.",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Tosyali Algérie (Bethioua, Oran)",
+     "role": "producteur principal et exportateur",
+     "chiffre": "3 Mt de produits sidérurgiques produites et environ 1,3 Mt exportées en 2022, pour plus de 800 M USD",
+     "annee": 2022,
+     "source_url": "https://algerie-eco.com/2023/12/19/tosyali-algerie-tripler-les-revenus-a-lexport/"
+    },
+    {
+     "nom": "Algerian Qatari Steel – AQS (Bellara, Jijel)",
+     "role": "producteur et exportateur",
+     "chiffre": "près de 700 000 t de produits sidérurgiques exportées en 2024, pour plus de 360 M USD",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2025/01/20/aqs-a-exporte-pour-plus-de-360-millions-en-2024/"
+    },
+    {
+     "nom": "Algerian Qatari Steel – AQS",
+     "role": "exportateur (contrats signés)",
+     "chiffre": "4 contrats d'exportation vers des pays africains, pour 420 M USD",
+     "annee": 2025,
+     "source_url": "https://algerie-eco.com/2025/09/09/aqs-signe-quatre-contrats-dexportation-de-420-millions-vers-des-pays-africains/"
+    },
+    {
+     "nom": "Fondal (Draâ El-Hadja, M'Sila)",
+     "role": "producteur",
+     "chiffre": "usine de rond à béton d'une capacité de 650 000 t/an",
+     "annee": 2025,
+     "source_url": "https://algerie-eco.com/2025/10/07/une-usine-de-rond-a-beton-inauguree-a-msila/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 304.1,
+    "2022": 570.8,
+    "2023": 500.5,
+    "2024": 262.3,
+    "part_afrique_2024_pct": 3.1,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "LTU",
+      "pays": "Lithuania",
+      "valeur_m_usd": 72.9,
+      "part_pct": 27.8
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 53.5,
+      "part_pct": 20.4
+     },
+     {
+      "iso3": "GBR",
+      "pays": "United Kingdom",
+      "valeur_m_usd": 52.6,
+      "part_pct": 20.0
+     },
+     {
+      "iso3": "CAN",
+      "pays": "Canada",
+      "valeur_m_usd": 18.9,
+      "part_pct": 7.2
+     },
+     {
+      "iso3": "BEL",
+      "pays": "Belgium",
+      "valeur_m_usd": 18.4,
+      "part_pct": 7.0
+     }
+    ],
+    "sh6_inclus": [
+     "721420",
+     "721491",
+     "721499"
+    ]
+   },
+   "contradictions": [
+    "Additionnés, les volumes déclarés par Tosyali (3,5 Mt d'acier long en 2023) et par AQS (plus de 2 Mt de produits en 2024) dépassent la production nationale de laminés à chaud publiée par worldsteel (3 874 kt en 2023, 4 168 kt en 2024).",
+    "Exportations 2024 : AQS annonce à lui seul près de 700 000 t pour plus de 360 M USD, alors que BACI ne recense que 262,3 M USD (424 kt) de rond à béton et 70,0 M USD de fil machine pour toute l'Algérie ; une partie des ventes d'AQS relève peut-être d'autres positions (bobines, demi-produits)."
+   ],
+   "synthese_fr": "Le rond à béton est produit par les complexes sidérurgiques de Tosyali (Oran) et d'AQS (Jijel), ainsi que par Fondal (M'Sila) : Tosyali déclare 3,5 Mt/an de capacité en rond à béton et fil machine et AQS 2 Mt/an. Selon BACI, les exportations de barres (SH 7214) ont atteint 262,3 M USD en 2024 (Lituanie, États-Unis, Royaume-Uni), dont 3,1 % vers l'Afrique.",
+   "synthese_en": "Rebar is produced by the Tosyali (Oran) and AQS (Jijel) steel complexes, as well as by Fondal (M'Sila): Tosyali reports 3.5 Mt/year of rebar and wire rod capacity and AQS 2 Mt/year. According to BACI, bar exports (HS 7214) reached USD 262.3 million in 2024 (Lithuania, United States, United Kingdom), 3.1% of it to Africa."
+  },
+  {
+   "hs": "2510",
+   "libelle_fr": "Phosphates de calcium naturels",
+   "libelle_en": "Natural calcium phosphates",
+   "filiere": "Minier",
+   "citi_rev4": "0891",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 2000,
+     "unite": "kt",
+     "perimetre": "national — minerai de phosphate (marchand)",
+     "fiabilite": "A",
+     "source_titre": "USGS Mineral Commodity Summaries 2026 — PHOSPHATE ROCK",
+     "source_url": "https://pubs.usgs.gov/periodicals/mcs2026/mcs2026-phosphate.pdf",
+     "extrait": "World ... Production and Reserves: [colonnes 2024 2025] Algeria 2,000 2,000 2,200,000",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2022,
+     "valeur": 1800,
+     "unite": "kt",
+     "perimetre": "national — minerai de phosphate (marchand)",
+     "fiabilite": "A",
+     "source_titre": "USGS Mineral Commodity Summaries 2024 — PHOSPHATE ROCK",
+     "source_url": "https://pubs.usgs.gov/periodicals/mcs2024/mcs2024-phosphate.pdf",
+     "extrait": "World ... Production and Reserves: [colonnes 2022 2023e] Algeria e1,800 1,800 2,200,000",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "Sonatrach – Projet Phosphate Intégré (Bled El Hadba, Oued Keberit)",
+     "role": "projet",
+     "chiffre": "capacité prévue de 3,2 Mt/an de concentré de phosphate pour 5,5 Mt/an de minerai extrait (première phase)",
+     "annee": 2027,
+     "source_url": "https://sonatrach.com/en/integrated-phosphate-project-phase-1/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 147.3,
+    "2022": 259.6,
+    "2023": 252.4,
+    "2024": 224.7,
+    "part_afrique_2024_pct": 0.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "IND",
+      "pays": "India",
+      "valeur_m_usd": 100.1,
+      "part_pct": 44.5
+     },
+     {
+      "iso3": "IDN",
+      "pays": "Indonesia",
+      "valeur_m_usd": 25.5,
+      "part_pct": 11.3
+     },
+     {
+      "iso3": "LTU",
+      "pays": "Lithuania",
+      "valeur_m_usd": 25.2,
+      "part_pct": 11.2
+     },
+     {
+      "iso3": "PAK",
+      "pays": "Pakistan",
+      "valeur_m_usd": 20.8,
+      "part_pct": 9.3
+     },
+     {
+      "iso3": "TUR",
+      "pays": "Turkey",
+      "valeur_m_usd": 11.9,
+      "part_pct": 5.3
+     }
+    ],
+    "sh6_inclus": [
+     "251010",
+     "251020"
+    ]
+   },
+   "contradictions": [
+    "Production : 2 000 kt par an selon l'USGS (2023-2024, estimations), environ 2,5 Mt par an selon la presse citant les autorités (2025).",
+    "Exportations 2023 : l'ONS publie 212 M USD pour 1,97 Mt, BACI 252,4 M USD pour 1 574 kt."
+   ],
+   "synthese_fr": "L'Algérie extrait environ 2 000 kt de minerai de phosphate par an (USGS, 2024) et prépare le projet intégré de Bled El Hadba (3,2 Mt/an de concentré prévues en première phase). Selon BACI, les exportations ont atteint 224,7 M USD en 2024, dont 44,5 % vers l'Inde, sans flux recensé vers l'Afrique.",
+   "synthese_en": "Algeria mines about 2,000 kt of phosphate rock a year (USGS, 2024) and is preparing the integrated Bled El Hadba project (3.2 Mt/year of concentrate planned in its first phase). According to BACI, exports reached USD 224.7 million in 2024, 44.5% of it to India, with no recorded flows to Africa."
+  },
+  {
+   "hs": "0804",
+   "libelle_fr": "Dattes",
+   "libelle_en": "Dates",
+   "filiere": "Agricole",
+   "citi_rev4": "0122",
+   "production": [
+    {
+     "annee": 2023,
+     "valeur": 1324767.0,
+     "unite": "t",
+     "perimetre": "national — dattes (production agricole)",
+     "fiabilite": "B",
+     "source_titre": "FAOSTAT – Supply Utilization Accounts (SCL), Algérie, Dates, Production",
+     "source_url": "https://bulks-faostat.fao.org/production/SUA_Crops_Livestock_E_All_Data_(Normalized).zip",
+     "extrait": "4,'012,Algeria,577,'01314,Dates,5510,Production,2023,2023,t,1324767.010000,I",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2021,
+     "valeur": 1188803.0,
+     "unite": "t",
+     "perimetre": "national — dattes (production agricole)",
+     "fiabilite": "A",
+     "source_titre": "FAOSTAT – Supply Utilization Accounts (SCL), Algérie, Dates, Production",
+     "source_url": "https://bulks-faostat.fao.org/production/SUA_Crops_Livestock_E_All_Data_(Normalized).zip",
+     "extrait": "4,'012,Algeria,577,'01314,Dates,5510,Production,2021,2021,t,1188803.000000,A",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [],
+   "entreprises": [],
+   "exportations_baci": {
+    "2021": 144.0,
+    "2022": 127.4,
+    "2023": 133.9,
+    "2024": 167.8,
+    "part_afrique_2024_pct": 40.9,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "MAR",
+      "pays": "Morocco",
+      "valeur_m_usd": 50.0,
+      "part_pct": 29.8
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 41.0,
+      "part_pct": 24.5
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 15.0,
+      "part_pct": 8.9
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 9.4,
+      "part_pct": 5.6
+     },
+     {
+      "iso3": "NER",
+      "pays": "Niger",
+      "valeur_m_usd": 8.82,
+      "part_pct": 5.3
+     }
+    ],
+    "sh6_inclus": [
+     "080410"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2023 : l'ONS publie 73 M USD pour 83 025 t (67 M USD dans un autre article), BACI 133,9 M USD pour 159 kt ; la presse évoque aussi des exportations informelles non recensées."
+   ],
+   "synthese_fr": "L'Algérie a récolté 1 324 767 t de dattes en 2023 (FAO). Selon BACI, les exportations ont atteint 167,8 M USD en 2024, vers le Maroc, la France et les États-Unis, dont 40,9 % vers l'Afrique ; les statistiques officielles algériennes donnent des montants bien inférieurs.",
+   "synthese_en": "Algeria harvested 1,324,767 t of dates in 2023 (FAO). According to BACI, exports reached USD 167.8 million in 2024, to Morocco, France and the United States, 40.9% of it to Africa; Algeria's official statistics show much lower amounts."
+  },
+  {
+   "hs": "1701",
+   "libelle_fr": "Sucre raffiné",
+   "libelle_en": "Refined sugar",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1072",
+   "production": [
+    {
+     "annee": 2023,
+     "valeur": 1767103.7,
+     "unite": "t",
+     "perimetre": "national — sucre raffiné",
+     "fiabilite": "B",
+     "source_titre": "FAOSTAT – Supply Utilization Accounts (SCL), Algérie, Refined sugar, Production",
+     "source_url": "https://bulks-faostat.fao.org/production/SUA_Crops_Livestock_E_All_Data_(Normalized).zip",
+     "extrait": "4,'012,Algeria,164,'23520,Refined sugar,5510,Production,2023,2023,t,1767103.700000,I",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2022,
+     "valeur": 1813481.3,
+     "unite": "t",
+     "perimetre": "national — sucre raffiné",
+     "fiabilite": "B",
+     "source_titre": "FAOSTAT – Supply Utilization Accounts (SCL), Algérie, Refined sugar, Production",
+     "source_url": "https://bulks-faostat.fao.org/production/SUA_Crops_Livestock_E_All_Data_(Normalized).zip",
+     "extrait": "4,'012,Algeria,164,'23520,Refined sugar,5510,Production,2022,2022,t,1813481.310000,I",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 3,
+     "unite": "Mt",
+     "perimetre": "national — sucre raffiné",
+     "fiabilite": "B",
+     "source_titre": "Après l’inauguration d’une grande raffinerie près de Boumerdès : Sucre raffiné, l’Algérie vise l’exportation",
+     "source_url": "https://elwatan.dz/apres-linauguration-dune-grande-raffinerie-pres-de-boumerdes-sucre-raffine-lalgerie-vise-lexportation/",
+     "extrait": "«Cette usine portera la production de sucre dans notre pays à 3 millions de tonnes/an, alors que nos besoins sont estimés à 1,4 million de tonnes», a précisé Sifi Ghrieb, ministre de l’Industrie, à l’issue de la mise en service de la raffinerie, la 4e en Algérie.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Cevital Agro-Industrie — sucre raffiné",
+     "fiabilite": "B",
+     "source_titre": "Cevital » Food Processing and Distribution",
+     "source_url": "https://www.cevital.com/intro-food-processing-and-distribution/",
+     "extrait": "The major production plants include: The world’s largest sugar refinery with a production capacity of 2 million tonnes per year and the largest oil refinery in Africa, producing 570,000 tonnes per year.",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2025,
+     "valeur": 2000,
+     "unite": "t/jour",
+     "perimetre": "entreprise: Tafadis SPA (Madar Holding), Larbatache (Boumerdès) — sucre raffiné (blanc, liquide, roux)",
+     "fiabilite": "B",
+     "source_titre": "Après l’inauguration d’une grande raffinerie près de Boumerdès : Sucre raffiné, l’Algérie vise l’exportation",
+     "source_url": "https://elwatan.dz/apres-linauguration-dune-grande-raffinerie-pres-de-boumerdes-sucre-raffine-lalgerie-vise-lexportation/",
+     "extrait": "Reprise en 2023 par Tafadis SPA (filiale de Madar Holding), l’infrastructure s’étend sur une superficie de 14 hectares pour une capacité de production de 2000 tonnes/j, dont 1350 de sucre blanc premium, 450 de sucre liquide industriel et 200 tonnes de sucre roux raffiné.",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Cevital Agro-Industrie (Béjaïa)",
+     "role": "producteur principal et exportateur",
+     "chiffre": "raffinerie de sucre d'une capacité de 2 Mt/an",
+     "annee": 2025,
+     "source_url": "https://www.cevital.com/intro-food-processing-and-distribution/"
+    },
+    {
+     "nom": "Cevital",
+     "role": "exportateur",
+     "chiffre": "40 000 t de sucre blanc à exporter vers la Tunisie",
+     "annee": 2025,
+     "source_url": "https://maghrebemergent.news/fr/cevital-exportera-du-sucre-blanc-vers-la-tunisie/"
+    },
+    {
+     "nom": "Tafadis (groupe public Madar Holding, Larbatache)",
+     "role": "producteur",
+     "chiffre": "raffinerie de 2 000 t/j, dont 1 350 t de sucre blanc, 450 t de sucre liquide et 200 t de sucre roux raffiné",
+     "annee": 2025,
+     "source_url": "https://elwatan.dz/apres-linauguration-dune-grande-raffinerie-pres-de-boumerdes-sucre-raffine-lalgerie-vise-lexportation/"
+    },
+    {
+     "nom": "Tafadis (groupe Madar)",
+     "role": "exportateur (contrat)",
+     "chiffre": "contrat d'exportation de sucre raffiné vers la Libye de 180 M USD",
+     "annee": 2025,
+     "source_url": "https://www.horizons.dz/2025/09/industrie-sucriere-de-la-surproduction-a-lexportation/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 274.7,
+    "2022": 155.0,
+    "2023": 200.1,
+    "2024": 101.6,
+    "part_afrique_2024_pct": 89.9,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 82.2,
+      "part_pct": 80.9
+     },
+     {
+      "iso3": "NER",
+      "pays": "Niger",
+      "valeur_m_usd": 6.23,
+      "part_pct": 6.1
+     },
+     {
+      "iso3": "LBN",
+      "pays": "Lebanon",
+      "valeur_m_usd": 5.16,
+      "part_pct": 5.1
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 2.92,
+      "part_pct": 2.9
+     },
+     {
+      "iso3": "BEL",
+      "pays": "Belgium",
+      "valeur_m_usd": 2.8,
+      "part_pct": 2.8
+     }
+    ],
+    "sh6_inclus": [
+     "170114",
+     "170199"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2024 : 220 M USD pour 360 000 t selon une source de presse, 82 M USD selon la Banque d'Algérie, 101,6 M USD pour 121 kt selon BACI ; ce volume est quasi identique à celui publié par l'ONS pour 2023 (360 649 t).",
+    "Exportations 2023 : l'ONS publie 244 M USD pour 360 649 t (sucre de canne raffiné), BACI 200,1 M USD pour 277 kt."
+   ],
+   "synthese_fr": "L'Algérie raffine du sucre roux importé : 1 767 103,7 t de sucre raffiné en 2023 selon la FAO, pour une capacité portée à 3 Mt/an en 2025 (Cevital, Tafadis…). Selon BACI, les exportations ont atteint 101,6 M USD en 2024, dont 89,9 % vers l'Afrique, la Tunisie en tête.",
+   "synthese_en": "Algeria refines imported raw sugar: 1,767,103.7 t of refined sugar in 2023 according to FAO, with capacity raised to 3 Mt/year in 2025 (Cevital, Tafadis, etc.). According to BACI, exports reached USD 101.6 million in 2024, 89.9% of it to Africa, led by Tunisia."
+  },
+  {
+   "hs": "7213",
+   "libelle_fr": "Fil machine en acier",
+   "libelle_en": "Steel wire rod",
+   "filiere": "Sidérurgie et tubes",
+   "citi_rev4": "2410",
+   "production": [
+    {
+     "annee": 2023,
+     "valeur": 3.5,
+     "unite": "Mt",
+     "perimetre": "entreprise: Tosyali Algérie — acier long (rond à béton, fil machine, cornières, tubes spirales)",
+     "fiabilite": "B",
+     "source_titre": "Algérie: des perspectives prometteuses pour l’industrie sidérurgique en 2024 (Arab News en français)",
+     "source_url": "https://www.arabnews.fr/economie/algerie-des-perspectives-prometteuses-pour-lindustrie-siderurgique-en-2024-466696",
+     "extrait": "la société produit 3,5 millions de tonnes d’acier long (rond béton, fil machine, cornières et tubes spirales). De ce total, 2,5 millions de tonnes proviennent du minerai de fer, tandis que 1 million de tonnes sont issues du traitement des déchets ferreux collectés à travers le pays.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Algerian Qatari Steel (AQS) — produits sidérurgiques",
+     "fiabilite": "B",
+     "source_titre": "AQS a exporté pour plus de 360 millions $ en 2024 (Algérie Eco / APS)",
+     "source_url": "https://algerie-eco.com/2025/01/20/aqs-a-exporte-pour-plus-de-360-millions-en-2024/",
+     "extrait": "le volume de production a dépassé les deux (2) millions de tonnes de produits sidérurgiques, dont 66% ont été orientés vers le marché national et 34% vers l'exportation",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 2,
+     "unite": "Mt",
+     "perimetre": "entreprise: Algerian Qatari Steel (AQS) — rond à béton et fil machine",
+     "fiabilite": "A",
+     "source_titre": "Creating a Culture of Success: Performance & Achievements of AQS (Direct From Midrex)",
+     "source_url": "https://www.midrex.com/direct-from-midrex/technical-articles/creating-a-culture-of-success-performance-achievements-of-aqs/",
+     "extrait": "Three rolling mills – total production capacity of 2 Mt/y of reinforcing bars and wire rod",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2025,
+     "valeur": 3.5,
+     "unite": "Mt",
+     "perimetre": "entreprise: Tosyali Algérie — rond à béton et fil machine (capacité de laminage)",
+     "fiabilite": "B",
+     "source_titre": "Algeria’s steel industry: why is it growing? (GMK Center, analyse)",
+     "source_url": "https://gmk.center/en/posts/algeria-s-steel-industry-why-is-it-growing/",
+     "extrait": "with an annual capacity of 6.2 million tonnes of steel and 5.9 million tonnes of rolled products. Of this, 3.5 million tonnes are rebar and wire rod, 2.4 million tonnes are HRC, 800,000 tonnes are CRC, 400,000 tonnes are GI, and 400,000 tonnes are LDP.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 450,
+     "unite": "kt",
+     "perimetre": "entreprise: Ozmert Algérie (Tamzoura) — rond à béton et fil machine",
+     "fiabilite": "B",
+     "source_titre": "Algeria’s steel industry: why is it growing? (GMK Center, analyse)",
+     "source_url": "https://gmk.center/en/posts/algeria-s-steel-industry-why-is-it-growing/",
+     "extrait": "It is also worth noting Ozmert Algeria, an EAF plant with an annual capacity of 400,000 tonnes of steel and 450,000 tonnes of rolled steel.",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Tosyali Algérie (Bethioua, Oran)",
+     "role": "producteur principal et exportateur",
+     "chiffre": "3 Mt de produits sidérurgiques produites et environ 1,3 Mt exportées en 2022, pour plus de 800 M USD",
+     "annee": 2022,
+     "source_url": "https://algerie-eco.com/2023/12/19/tosyali-algerie-tripler-les-revenus-a-lexport/"
+    },
+    {
+     "nom": "Algerian Qatari Steel – AQS (Bellara, Jijel)",
+     "role": "producteur et exportateur",
+     "chiffre": "près de 700 000 t de produits sidérurgiques exportées en 2024, pour plus de 360 M USD",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2025/01/20/aqs-a-exporte-pour-plus-de-360-millions-en-2024/"
+    },
+    {
+     "nom": "Ozmert Algérie (Tamazoura)",
+     "role": "producteur",
+     "chiffre": "aciérie électrique de 400 000 t d'acier et 450 000 t de laminés par an",
+     "annee": 2025,
+     "source_url": "https://gmk.center/en/posts/algeria-s-steel-industry-why-is-it-growing/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 149.7,
+    "2022": 181.9,
+    "2023": 135.8,
+    "2024": 70.0,
+    "part_afrique_2024_pct": 0.1,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 26.6,
+      "part_pct": 37.9
+     },
+     {
+      "iso3": "GRC",
+      "pays": "Greece",
+      "valeur_m_usd": 14.9,
+      "part_pct": 21.3
+     },
+     {
+      "iso3": "ESP",
+      "pays": "Spain",
+      "valeur_m_usd": 13.9,
+      "part_pct": 19.8
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 7.2,
+      "part_pct": 10.3
+     },
+     {
+      "iso3": "TUR",
+      "pays": "Turkey",
+      "valeur_m_usd": 6.38,
+      "part_pct": 9.1
+     }
+    ],
+    "sh6_inclus": [
+     "721310",
+     "721320",
+     "721391",
+     "721399"
+    ]
+   },
+   "contradictions": [
+    "Additionnés, les volumes déclarés par Tosyali (3,5 Mt d'acier long en 2023) et par AQS (plus de 2 Mt de produits en 2024) dépassent la production nationale de laminés à chaud publiée par worldsteel (3 874 kt en 2023, 4 168 kt en 2024)."
+   ],
+   "synthese_fr": "Le fil machine est laminé par Tosyali et AQS, dont les laminoirs de produits longs totalisent respectivement 3,5 Mt/an et 2 Mt/an (rond à béton compris). Selon BACI, les exportations de fil machine ont atteint 70,0 M USD en 2024, surtout vers les États-Unis, la Grèce et l'Espagne ; l'Afrique en a reçu 0,1 %.",
+   "synthese_en": "Wire rod is rolled by Tosyali and AQS, whose long-product mills total 3.5 Mt/year and 2 Mt/year respectively (rebar included). According to BACI, wire rod exports reached USD 70.0 million in 2024, mainly to the United States, Greece and Spain; Africa received 0.1%."
+  },
+  {
+   "hs": "7005",
+   "libelle_fr": "Verre flotté (verre plat)",
+   "libelle_en": "Float glass (flat glass)",
+   "filiere": "Minéraux non métalliques",
+   "citi_rev4": "2310",
+   "production": [],
+   "capacite": [
+    {
+     "annee": 2024,
+     "valeur": 511,
+     "unite": "kt",
+     "perimetre": "entreprise: Mediterranean Float Glass (MFG, groupe Cevital) — verre plat (float)",
+     "fiabilite": "B",
+     "source_titre": "Verre plat : l’Algérie, 1er producteur en Afrique (L'Algérie Aujourd'hui, reprise APS)",
+     "source_url": "https://lalgerieaujourdhui.dz/verre-plat-lalgerie-1er-producteur-en-afrique/",
+     "extrait": "ce qui a porté sa capacité de production globale à 1400 t de verre par jour, soit de quoi lui assurer un taux de croissance de plus de 130% et un chiffre d’affaires de plus de 45 millions d’euros, selon les estimations du groupe.",
+     "nature": "calcul"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "MFG – Mediterranean Float Glass (groupe Cevital, Larbaâ)",
+     "role": "producteur et exportateur",
+     "chiffre": "capacité de 1 400 t de verre par jour ; programme d'affectation de 70 % de la production à l'export",
+     "annee": 2024,
+     "source_url": "https://lalgerieaujourdhui.dz/verre-plat-lalgerie-1er-producteur-en-afrique/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 30.1,
+    "2022": 74.6,
+    "2023": 40.6,
+    "2024": 47.9,
+    "part_afrique_2024_pct": 49.4,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "MAR",
+      "pays": "Morocco",
+      "valeur_m_usd": 11.5,
+      "part_pct": 24.1
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 10.6,
+      "part_pct": 22.2
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 6.06,
+      "part_pct": 12.6
+     },
+     {
+      "iso3": "ESP",
+      "pays": "Spain",
+      "valeur_m_usd": 5.51,
+      "part_pct": 11.5
+     },
+     {
+      "iso3": "BRA",
+      "pays": "Brazil",
+      "valeur_m_usd": 4.92,
+      "part_pct": 10.3
+     }
+    ],
+    "sh6_inclus": [
+     "700510",
+     "700521",
+     "700529"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2023 : l'ONS publie 33,3 M USD pour 93 408 t de glaces en plaques, BACI 40,6 M USD pour 89 kt (SH 7005)."
+   ],
+   "synthese_fr": "Le verre plat algérien est produit par MFG (groupe Cevital), dont la capacité atteint 1 400 t de verre par jour, soit 511 kt/an. Selon BACI, les exportations ont atteint 47,9 M USD en 2024, dont 49,4 % vers l'Afrique (Maroc et Tunisie en tête).",
+   "synthese_en": "Algerian flat glass is made by MFG (Cevital group), whose capacity reaches 1,400 t of glass per day, i.e. 511 kt/year. According to BACI, exports reached USD 47.9 million in 2024, 49.4% of it to Africa (led by Morocco and Tunisia)."
+  },
+  {
+   "hs": "7305/7306",
+   "libelle_fr": "Tubes et tuyaux soudés en acier",
+   "libelle_en": "Welded steel tubes and pipes",
+   "filiere": "Sidérurgie et tubes",
+   "citi_rev4": "2410",
+   "production": [],
+   "capacite": [
+    {
+     "annee": 2024,
+     "valeur": 350,
+     "unite": "kt",
+     "perimetre": "entreprise: Alfapipe (unité de Bethioua, Oran) — tubes soudés",
+     "fiabilite": "B",
+     "source_titre": "Alfapipe : Une nouvelle unité de production bientôt en service (Algérie Eco / APS)",
+     "source_url": "https://algerie-eco.com/2024/10/26/alfapipe-une-nouvelle-unite-de-production-bientot-en-service/",
+     "extrait": "la capacité de production de cette nouvelle unité est de 350.000 tonnes par an",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Alfapipe (groupe IMETAL)",
+     "role": "producteur",
+     "chiffre": "nouvelle unité de tubes soudés de 350 000 t/an à Bethioua (relance annoncée fin 2024)",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2024/10/26/alfapipe-une-nouvelle-unite-de-production-bientot-en-service/"
+    },
+    {
+     "nom": "Tosyali Algérie (Bethioua, Oran)",
+     "role": "producteur",
+     "chiffre": "usine de tubes spiralés à deux lignes, capacité de 400 000 t/an",
+     "annee": 2019,
+     "source_url": "https://www.tosyali-algerie.com/about-us"
+    },
+    {
+     "nom": "Jingdong Steel (Chine)",
+     "role": "projet (usine en construction)",
+     "chiffre": "usine de 500 000 t/an de tôles et de tubes, dont environ 50 % destinés à l'export",
+     "annee": 2025,
+     "source_url": "https://www.steelorbis.com/steel-news/latest-news/jingdong-steels-500-million-algerian-steel-plant-reaches-60-percent-completion-1437755.htm"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 0.0,
+    "2022": 5.82,
+    "2023": 22.3,
+    "2024": 35.4,
+    "part_afrique_2024_pct": 0.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "ROU",
+      "pays": "Romania",
+      "valeur_m_usd": 30.5,
+      "part_pct": 86.0
+     },
+     {
+      "iso3": "DEU",
+      "pays": "Germany",
+      "valeur_m_usd": 4.09,
+      "part_pct": 11.5
+     },
+     {
+      "iso3": "GBR",
+      "pays": "United Kingdom",
+      "valeur_m_usd": 0.74,
+      "part_pct": 2.1
+     },
+     {
+      "iso3": "POL",
+      "pays": "Poland",
+      "valeur_m_usd": 0.05,
+      "part_pct": 0.1
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 0.04,
+      "part_pct": 0.1
+     }
+    ],
+    "sh6_inclus": [
+     "730519",
+     "730539",
+     "730590",
+     "730619",
+     "730630"
+    ]
+   },
+   "contradictions": [
+    "Capacité d'Alfapipe : 350 000 t/an pour la seule unité de Bethioua (2024), contre 200 000 t/an pour les usines d'Annaba et de Ghardaïa dans la table 2019 de l'USGS."
+   ],
+   "synthese_fr": "Alfapipe a relancé à Bethioua une unité de tubes soudés de 350 000 t/an et Tosyali exploite une usine de tubes spiralés. Selon BACI, les exportations de tubes (SH 7305/7306) ont atteint 35,4 M USD en 2024, dont 86,0 % vers la Roumanie ; aucun flux vers l'Afrique n'est recensé.",
+   "synthese_en": "Alfapipe has restarted a 350,000 t/year welded tube unit in Bethioua and Tosyali operates a spiral pipe plant. According to BACI, tube exports (HS 7305/7306) reached USD 35.4 million in 2024, 86.0% of it to Romania; no flows to Africa are recorded."
+  },
+  {
+   "hs": "4803",
+   "libelle_fr": "Papier sanitaire en bobines (papier ouate)",
+   "libelle_en": "Tissue paper in rolls (sanitary paper)",
+   "filiere": "Papier",
+   "citi_rev4": "1701",
+   "production": [],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "Tonic Industrie (groupe public ACS)",
+     "role": "exportateur",
+     "chiffre": "1 185 000 unités de papier à usage sanitaire expédiées vers la Tunisie (décembre 2024)",
+     "annee": 2024,
+     "source_url": "https://www.horizons.dz/?p=203052"
+    },
+    {
+     "nom": "Hayat DHC (groupe turc)",
+     "role": "projet",
+     "chiffre": "usine de bobines mères de papier de 70 000 t/an (projet enregistré)",
+     "annee": 2026,
+     "source_url": "https://www.jeune-independant.net/industrie-du-papier-un-projet-majeur-enregistre-aupres-de-laapi/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 10.8,
+    "2022": 36.9,
+    "2023": 40.4,
+    "2024": 35.4,
+    "part_afrique_2024_pct": 21.7,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "GBR",
+      "pays": "United Kingdom",
+      "valeur_m_usd": 16.9,
+      "part_pct": 47.8
+     },
+     {
+      "iso3": "LBN",
+      "pays": "Lebanon",
+      "valeur_m_usd": 6.25,
+      "part_pct": 17.7
+     },
+     {
+      "iso3": "CIV",
+      "pays": "Cote d'Ivoire",
+      "valeur_m_usd": 4.08,
+      "part_pct": 11.5
+     },
+     {
+      "iso3": "GRC",
+      "pays": "Greece",
+      "valeur_m_usd": 1.8,
+      "part_pct": 5.1
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 1.7,
+      "part_pct": 4.8
+     }
+    ],
+    "sh6_inclus": [
+     "480300"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2023 : l'ONS publie 43,8 M USD pour 34 518 t de « papiers de toilette », BACI 40,4 M USD pour 28 kt de papier ouate en bobines (SH 4803), les produits finis (SH 4818) étant comptés à part."
+   ],
+   "synthese_fr": "Aucun chiffre de production ou de capacité n'a été trouvé pour le papier sanitaire. Selon BACI, les exportations de papier ouate en bobines (SH 4803) ont atteint 35,4 M USD en 2024, vers le Royaume-Uni (47,8 %), le Liban et la Côte d'Ivoire ; 21,7 % sont allés en Afrique.",
+   "synthese_en": "No production or capacity figures were found for tissue paper. According to BACI, exports of tissue paper in rolls (HS 4803) reached USD 35.4 million in 2024, to the United Kingdom (47.8%), Lebanon and Côte d'Ivoire; 21.7% went to Africa."
+  },
+  {
+   "hs": "7408",
+   "libelle_fr": "Fil de cuivre",
+   "libelle_en": "Copper wire",
+   "filiere": "Sidérurgie et tubes",
+   "citi_rev4": "2420",
+   "production": [],
+   "capacite": [],
+   "entreprises": [],
+   "exportations_baci": {
+    "2021": 0.13,
+    "2022": 0.21,
+    "2023": 0.77,
+    "2024": 31.2,
+    "part_afrique_2024_pct": 0.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "BEL",
+      "pays": "Belgium",
+      "valeur_m_usd": 19.1,
+      "part_pct": 61.0
+     },
+     {
+      "iso3": "SAU",
+      "pays": "Saudi Arabia",
+      "valeur_m_usd": 10.7,
+      "part_pct": 34.3
+     },
+     {
+      "iso3": "TUR",
+      "pays": "Turkey",
+      "valeur_m_usd": 1.47,
+      "part_pct": 4.7
+     }
+    ],
+    "sh6_inclus": [
+     "740811",
+     "740821"
+    ]
+   },
+   "contradictions": [],
+   "synthese_fr": "Aucune donnée de production, de capacité ou d'entreprise n'a été trouvée pour le fil de cuivre. Selon BACI, les exportations, quasi nulles jusqu'en 2023 (0,77 M USD), ont atteint 31,2 M USD en 2024, vers la Belgique (61,0 %) et l'Arabie saoudite, sans flux vers l'Afrique.",
+   "synthese_en": "No production, capacity or company data was found for copper wire. According to BACI, exports, close to zero until 2023 (USD 0.77 million), reached USD 31.2 million in 2024, to Belgium (61.0%) and Saudi Arabia, with no flows to Africa."
+  },
+  {
+   "hs": "290511",
+   "libelle_fr": "Méthanol",
+   "libelle_en": "Methanol",
+   "filiere": "Chimie et engrais",
+   "citi_rev4": "2011",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 114702,
+     "unite": "t",
+     "perimetre": "entreprise: Sonatrach - complexe CP1Z Arzew — méthanol et dérivés (résines, formol, formurée)",
+     "fiabilite": "A",
+     "source_titre": "Sonatrach - Rapport annuel 2024",
+     "source_url": "https://sonatrach.com/wp-content/uploads/2025/12/RA_2024_FR_08-dec.pdf",
+     "extrait": "La production du complexe CP1Z d'Arzew a atteint un volume de production de 114 702 T onnes.",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2021,
+     "valeur": 105,
+     "unite": "kt",
+     "perimetre": "national — méthanol",
+     "fiabilite": "A",
+     "source_titre": "USGS Minerals Yearbook 2020-21, Algeria — tables-only advance release (Table 1: Production of mineral commodities)",
+     "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/files/myb3-2020-21-Algeria-advrel.xlsx",
+     "extrait": "Methanol | 91 | 66 | 89 | 102 | 105 | e (Thousand metric tons; colonnes 2017 à 2021)",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2021,
+     "valeur": 114724,
+     "unite": "t",
+     "perimetre": "entreprise: Sonatrach - complexe CP1Z Arzew — méthanol et dérivés (résines, formol, formurée)",
+     "fiabilite": "A",
+     "source_titre": "Sonatrach - Annual Report 2021",
+     "source_url": "https://sonatrach.com/wp-content/uploads/2025/06/RAPPORT-ANNUEL-2021-An-2.pdf",
+     "extrait": "the production of the CP1Z complex in Arzew reached a volume of 114,724 Tons.",
+     "nature": "entreprise"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 152,
+     "unite": "kt/an",
+     "perimetre": "entreprise: Sonatrach - complexe CP1Z Arzew — méthanol et dérivés (résines, formol, formurée)",
+     "fiabilite": "A",
+     "source_titre": "Sonatrach - Raffinage & Pétrochimie (page web)",
+     "source_url": "https://sonatrach.com/raffinage-petrochimie/",
+     "extrait": "CP1Z : Arzew • Start UP : 1976 • Capacité Production : 152 000 Tonnes/an • Produits : Méthanol, Résine, Formol, Formurée CP2K : Skikda • Start UP : 2005 • Capacité Production : 130 000 Tonnes/an • Produit : PEHD.",
+     "nature": "entreprise"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Sonatrach – complexe pétrochimique CP1Z (Arzew)",
+     "role": "producteur unique identifié et exportateur",
+     "chiffre": "114 702 t produites en 2024, dont 80 920 t exportées et 13 294 t vendues sur le marché national",
+     "annee": 2024,
+     "source_url": "https://sonatrach.com/wp-content/uploads/2025/12/RA_2024_FR_08-dec.pdf"
+    },
+    {
+     "nom": "Algeria Methanol Company (groupe Souakri et AzMeCo)",
+     "role": "projet",
+     "chiffre": "usine de méthanol d'une capacité initiale de 1 Mt/an, projet estimé à 1 milliard de dollars (accord de 2025)",
+     "annee": 2025,
+     "source_url": "https://www.horizons.dz/2026/05/petrochimie-des-projets-structurants-pour-faire-de-lalgerie-un-pole-exportateur/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 38.6,
+    "2022": 22.3,
+    "2023": 26.8,
+    "2024": 30.1,
+    "part_afrique_2024_pct": 30.9,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "IND",
+      "pays": "India",
+      "valeur_m_usd": 14.4,
+      "part_pct": 48.0
+     },
+     {
+      "iso3": "EGY",
+      "pays": "Egypt",
+      "valeur_m_usd": 9.3,
+      "part_pct": 30.9
+     },
+     {
+      "iso3": "LTU",
+      "pays": "Lithuania",
+      "valeur_m_usd": 5.72,
+      "part_pct": 19.0
+     },
+     {
+      "iso3": "UKR",
+      "pays": "Ukraine",
+      "valeur_m_usd": 0.63,
+      "part_pct": 2.1
+     }
+    ],
+    "sh6_inclus": [
+     "290511"
+    ]
+   },
+   "contradictions": [
+    "Production 2021 : Sonatrach déclare 114 724 t pour le complexe CP1Z (méthanol et dérivés : résines, formol, formurée), l'USGS 105 kt de méthanol (estimation).",
+    "Capacité : 152 000 t/an pour CP1Z selon Sonatrach (tous produits), 113 000 t/an de méthanol dans la table des capacités de l'USGS (2019).",
+    "Exportations 2023 : Sonatrach indique 107 807 t exportées par CP1Z pour 22 M USD, BACI 92 kt de méthanol pour 26,8 M USD."
+   ],
+   "synthese_fr": "Le méthanol algérien provient du complexe CP1Z de Sonatrach à Arzew (capacité de 152 kt/an), qui a produit 114 702 t en 2024, dont 80 920 t exportées. Selon BACI, les exportations ont atteint 30,1 M USD en 2024 ; l'Inde est le premier client et l'Égypte a reçu 30,9 % des ventes.",
+   "synthese_en": "Algerian methanol comes from Sonatrach's CP1Z complex in Arzew (capacity 152 kt/year), which produced 114,702 t in 2024, of which 80,920 t were exported. According to BACI, exports reached USD 30.1 million in 2024; India is the largest customer and Egypt took 30.9% of sales."
+  },
+  {
+   "hs": "8418/8450/8415/8528/8516",
+   "libelle_fr": "Électroménager (réfrigérateurs, lave-linge, climatiseurs, téléviseurs, appareils électrothermiques)",
+   "libelle_en": "Household appliances (refrigerators, washing machines, air conditioners, TV sets, electrothermic appliances)",
+   "filiere": "Électroménager",
+   "citi_rev4": "2750/2640",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 13000,
+     "unite": "unités/mois (25 000 en haute saison)",
+     "perimetre": "entreprise: Sinova (partenaire Samsung Electronics, Sétif) — réfrigérateurs Samsung",
+     "fiabilite": "B",
+     "source_titre": "A la découverte de l'usine Samsung-Sinova…",
+     "source_url": "https://www.lnr-dz.com/2024/03/13/a-la-decouverte-de-lusine-samsung-sinova/",
+     "extrait": "Plus de 400 employés travaillent actuellement sur une production mensuelle de 13.000 unités, atteignant 25.000 unités en période de saison haute.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 83,
+     "unite": "% des besoins du marché national couverts par la production locale",
+     "perimetre": "national — électroménager (ensemble de la filière)",
+     "fiabilite": "B",
+     "source_titre": "L'électroménager made in Algeria s'impose sur le marché local et européen",
+     "source_url": "https://www.algerie360.com/lelectromenager-made-in-algeria-simpose-sur-le-marche-local-et-europeen/",
+     "extrait": "« La filière de l'électroménager a augmenté considérablement ses capacités de production, réussissant à couvrir près de 83% des besoins du marché local », a précisé Aoun",
+     "nature": "presse"
+    },
+    {
+     "annee": 2023,
+     "valeur": 2000000,
+     "unite": "unités",
+     "perimetre": "entreprise: Condor Electronics (Bordj Bou Arréridj) — électroménager, tous produits",
+     "fiabilite": "C",
+     "source_titre": "Algérie : le secteur de l'électronique et de l'électroménager affiche ses ambitions",
+     "source_url": "https://observalgerie.com/2025/07/20/economie/algerie-le-secteur-de-lelectronique-et-de-lelectromenager-affiche-ses-ambitions",
+     "extrait": "En 2023, Condor a produit 2 millions d'appareils électroménagers, dont 80% destinés à l'export, en particulier vers des marchés tels que l'Afrique et le Moyen-Orient.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2022,
+     "valeur": 400000,
+     "unite": "unités/an",
+     "perimetre": "entreprise: Condor Electronics (Bordj Bou Arréridj) — réfrigérateurs (nouveau complexe)",
+     "fiabilite": "B",
+     "source_titre": "Condor autorisé à lancer de nouvelles usines",
+     "source_url": "https://www.tsa-algerie.com/condor-autorise-a-lancer-de-nouvelles-usines/",
+     "extrait": "Un complexe qui « offre 900 nouveaux emplois, avec une capacité de production de 400 000 unités par an « , note la même source.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 13000,
+     "unite": "unités/mois",
+     "perimetre": "entreprise: Sinova (partenaire Samsung Electronics, Sétif) — machines à laver Samsung",
+     "fiabilite": "B",
+     "source_titre": "A la découverte de l'usine Samsung-Sinova…",
+     "source_url": "https://www.lnr-dz.com/2024/03/13/a-la-decouverte-de-lusine-samsung-sinova/",
+     "extrait": "La capacité actuelle de production des machines à laver est de 13.000 unités par mois, avec une possibilité de doubler en cas de demande accrue sur le marché avec un taux d'intégration allant jusqu'à 50 %.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 10000,
+     "unite": "téléviseurs/mois (plancher)",
+     "perimetre": "entreprise: Sinova (partenaire Samsung Electronics, Sétif) — téléviseurs Samsung",
+     "fiabilite": "B",
+     "source_titre": "A la découverte de l'usine Samsung-Sinova…",
+     "source_url": "https://www.lnr-dz.com/2024/03/13/a-la-decouverte-de-lusine-samsung-sinova/",
+     "extrait": "Actuellement, les deux lignes de montage TV dans cette usine ont une capacité dépassant les 10.000 unités par mois, avec une vision ambitieuse d'atteindre 15.000 unités par mois dans le futur",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Condor Electronics (Bordj Bou Arréridj)",
+     "role": "producteur et exportateur",
+     "chiffre": "35 M USD d'exportations par an",
+     "annee": 2024,
+     "source_url": "https://www.tsa-algerie.com/hisense-byd-sebcondor-devoile-ses-nouveaux-projets-en-algerie/"
+    },
+    {
+     "nom": "Condor Electronics",
+     "role": "exportateur (contrats signés)",
+     "chiffre": "accord de 80 M USD avec six entreprises africaines (Égypte, Libye, Tunisie, Mauritanie, Sénégal, Côte d'Ivoire)",
+     "annee": 2025,
+     "source_url": "https://news.radioalgerie.dz/fr/node/70651"
+    },
+    {
+     "nom": "Brandt Algérie (groupe Cevital, Sétif)",
+     "role": "producteur et exportateur",
+     "chiffre": "plus de 700 000 réfrigérateurs et machines à laver exportés depuis 2018 (cumul à mi-2022)",
+     "annee": 2022,
+     "source_url": "https://www.tsa-algerie.com/brandt-algerie-un-taux-dintegration-de-85/"
+    },
+    {
+     "nom": "Iris (Saterex, Sétif)",
+     "role": "exportateur (contrat signé)",
+     "chiffre": "contrat d'exportation d'électroménager de 50 M USD vers le Zimbabwe",
+     "annee": 2025,
+     "source_url": "https://algeriesolidaire.net/iatf-2025-des-entreprises-de-lindustrie-electronique-decrochent-plusieurs-contrats-dexportation/"
+    },
+    {
+     "nom": "ENIEM (public, Tizi Ouzou)",
+     "role": "producteur",
+     "chiffre": "35 000 appareils produits pour une capacité de 220 000",
+     "annee": 2023,
+     "source_url": "https://elwatan-dz.com/visite-hier-de-ali-aoun-a-leniem-de-tizi-ouzou-letat-nabandonnera-pas-ses-usines"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 39.5,
+    "2022": 27.8,
+    "2023": 27.2,
+    "2024": 26.4,
+    "part_afrique_2024_pct": 56.9,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 14.5,
+      "part_pct": 55.2
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 9.46,
+      "part_pct": 35.9
+     },
+     {
+      "iso3": "ESP",
+      "pays": "Spain",
+      "valeur_m_usd": 0.72,
+      "part_pct": 2.7
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 0.41,
+      "part_pct": 1.5
+     },
+     {
+      "iso3": "CZE",
+      "pays": "Czechia",
+      "valeur_m_usd": 0.37,
+      "part_pct": 1.4
+     }
+    ],
+    "sh6_inclus": [
+     "841510",
+     "841810",
+     "841830",
+     "845011",
+     "845020",
+     "851690",
+     "852859",
+     "852872"
+    ]
+   },
+   "contradictions": [
+    "Condor : « 2 millions d'appareils produits en 2023, dont 80 % destinés à l'export » selon la presse, alors que le groupe déclare 35 M USD d'exportations par an (2024).",
+    "Emplois de la filière : plus de 20 000 selon le ministère, près de 30 000 selon la presse (2024).",
+    "Brandt Algérie : « 90 % de la production destinés aux marchés étrangers » selon la presse (2024), peu compatible avec les 26,4 M USD d'exportations d'électroménager de tout le pays dans BACI en 2024."
+   ],
+   "synthese_fr": "La filière électroménager couvre près de 83 % des besoins du marché national (2024) grâce à des assembleurs comme Condor, Brandt (Cevital), Iris et Sinova (Samsung), qui produit 13 000 réfrigérateurs par mois. Selon BACI, les exportations de ces cinq positions ont atteint 26,4 M USD en 2024, dont 56,9 % vers l'Afrique (Tunisie en tête) et 35,9 % vers la France.",
+   "synthese_en": "The household appliance industry covers nearly 83% of domestic market needs (2024) thanks to assemblers such as Condor, Brandt (Cevital), Iris and Sinova (Samsung), which produces 13,000 refrigerators a month. According to BACI, exports under these five headings reached USD 26.4 million in 2024, 56.9% of it to Africa (led by Tunisia) and 35.9% to France."
+  },
+  {
+   "hs": "3004",
+   "libelle_fr": "Médicaments dosés (dont insuline)",
+   "libelle_en": "Medicaments in measured doses (incl. insulin)",
+   "filiere": "Pharmacie",
+   "citi_rev4": "2100",
+   "production": [
+    {
+     "annee": 2023,
+     "valeur": 3.56,
+     "unite": "Md USD",
+     "perimetre": "national — médicaments et produits pharmaceutiques",
+     "fiabilite": "B",
+     "source_titre": "Production pharmaceutique : perspectives d'une production atteignant 4 milliards de dollars en 2024",
+     "source_url": "https://algerie-eco.com/2024/05/12/production-pharmaceutique-perspectives-dune-production-atteignant-4-milliards-de-dollars-en-2024/",
+     "extrait": "la production locale du secteur pharmaceutique, pourvue de près de 300 unités publiques et privées, avait atteint 3,56 milliards de dollars en 2023 et 3,14 milliards de dollars en 2022",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 82,
+     "unite": "%",
+     "perimetre": "national — médicaments (taux de couverture des besoins par la production nationale)",
+     "fiabilite": "A",
+     "source_titre": "Projet de Politique pharmaceutique nationale (enrichi et révisé, août 2026)",
+     "source_url": "https://www.miph.gov.dz/fr/wp-content/uploads/2026/09/clean_Projet-Politique-Pharmaceutique-Nationale-enrichi-et-revise-aout-2026-1.pdf",
+     "extrait": "À la fin de l’exercice 2025, la production nationale couvre environ 82 % des besoins en médicaments. En revanche, le secteur des dispositifs médicaux demeure largement dépendant des importations",
+     "nature": "officiel"
+    },
+    {
+     "annee": 2023,
+     "valeur": 17,
+     "unite": "millions de stylos",
+     "perimetre": "entreprise: Novo Nordisk Algérie (Aldaph), Boufarik — stylos à insuline produits",
+     "fiabilite": "B",
+     "source_titre": "Aoun supervise l'opération à l'usine de Novo Nordisk de Boufarik : Exportation de stylos d'insuline vers l'Arabie Saoudite (El Watan)",
+     "source_url": "https://elwatan.dz/aoun-supervise-loperation-a-lusine-de-novo-nordisk-de-boufarik-exportation-de-stylos-dinsuline-vers-larabie-saoudite/",
+     "extrait": "durant la première année d’exploitation de ce site, soit en 2023, plus de 17 millions de stylos d’insuline rapide ont été produits.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2023,
+     "valeur": 45,
+     "unite": "millions de stylos par an",
+     "perimetre": "entreprise: Novo Nordisk Algérie (Aldaph), Boufarik — stylos à insuline (capacité)",
+     "fiabilite": "B",
+     "source_titre": "Mise en service de l'unité de production de stylos à insuline à Boufarik (Algérie Eco)",
+     "source_url": "https://algerie-eco.com/2023/01/16/mise-en-service-de-lunite-de-production-de-stylos-a-insuline-a-boufarik/",
+     "extrait": "L'unité de production comprend une ligne d'assemblage et deux lignes de remplissage, avec une capacité de production totale estimée à 45/50 millions de stylos par an",
+     "nature": "presse"
+    },
+    {
+     "annee": 2022,
+     "valeur": 10,
+     "unite": "millions de boîtes de 5 stylos par an",
+     "perimetre": "entreprise: Biothéra (groupe Biocare Biotech), Alger — stylos à insuline glargine « Glarus » (capacité)",
+     "fiabilite": "A",
+     "source_titre": "Inauguration de la 1ère unité de production de stylo à insuline et de la 6ème unité de production d'anti-cancéreux en Algérie (MIPH)",
+     "source_url": "https://www.miph.gov.dz/fr/premiere-unite-production-stylo-insuline/",
+     "extrait": "Avec une capacité de production de plus 10 millions de boites de 5 stylos jetables, cette unité de production fabrique 50 millions d’unité de vente soit le double de la consommation annuelle algérienne pour ce type d’insuline pouvant ainsi s’orienter vers l’exportation.",
+     "nature": "officiel"
+    },
+    {
+     "annee": 2025,
+     "valeur": 127,
+     "unite": "unités",
+     "perimetre": "national — établissements de fabrication de produits pharmaceutiques (médicaments, hors dispositifs médicaux et mixtes)",
+     "fiabilite": "A",
+     "source_titre": "Liste des établissements pharmaceutiques de fabrication agréés (MIPH, mai 2025)",
+     "source_url": "https://www.miph.gov.dz/fr/wp-content/uploads/2025/05/agrement-fabrication.pdf",
+     "extrait": "N° Opérateur Nature 1 EPE SPA GROUPE INDUSTRIEL SAIDAL ANNABA PP […] 127 SPA WINTHROP PHARMA SAIDAL PP […] 62 SARL TOP GLOVES LATEX INDUSTRIES DM",
+     "nature": "calcul"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Groupe Saidal (public)",
+     "role": "producteur",
+     "chiffre": "144,33 millions d'unités de vente produites en 2025",
+     "annee": 2025,
+     "source_url": "https://lechiffredaffaires.dz/saidal-double-son-chiffre-daffaires-en-2025-et-franchit-le-cap-des-44-milliards-de-dinars/"
+    },
+    {
+     "nom": "Groupe Saidal",
+     "role": "exportateur",
+     "chiffre": "exporte vers 10 pays, dont la Tunisie, la Libye, la Mauritanie, le Sénégal, le Tchad, le Mali et le Burkina Faso",
+     "annee": 2025,
+     "source_url": "https://algeriebrevesnews.dz/33-eme-edition-de-lsaidal-augmentation-de-plus-de-100-pour-cent-du-chiffre-daffaires-en-quatre-ans/"
+    },
+    {
+     "nom": "Novo Nordisk Algérie (usine de Boufarik)",
+     "role": "producteur et exportateur (insuline)",
+     "chiffre": "exportation de 2,5 millions de stylos à insuline vers l'Arabie saoudite, chiffre d'affaires estimé à 11 M EUR",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2024/04/28/novo-nordisk-algerie-exportation-de-25-millions-de-stylos-a-insuline-vers-larabie-saoudite/"
+    },
+    {
+     "nom": "Biopharm (branche production)",
+     "role": "producteur",
+     "chiffre": "65,8 millions de boîtes produites en 2024",
+     "annee": 2024,
+     "source_url": "https://www.biopharmdz.com/storage/documents/Rapport%20Annuel%202024.pdf"
+    },
+    {
+     "nom": "Hikma Pharma Algérie",
+     "role": "producteur",
+     "chiffre": "nouvelle usine d'injectables de 10 millions d'ampoules par an (Staouéli)",
+     "annee": 2025,
+     "source_url": "https://algerie-eco.com/2025/06/17/industrie-pharmaceutique-hikma-pharma-inaugure-une-nouvelle-usine-en-algerie/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 1.62,
+    "2022": 1.9,
+    "2023": 4.38,
+    "2024": 23.3,
+    "part_afrique_2024_pct": 18.8,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "SAU",
+      "pays": "Saudi Arabia",
+      "valeur_m_usd": 18.9,
+      "part_pct": 80.9
+     },
+     {
+      "iso3": "ZAF",
+      "pays": "South Africa",
+      "valeur_m_usd": 2.95,
+      "part_pct": 12.7
+     },
+     {
+      "iso3": "SEN",
+      "pays": "Senegal",
+      "valeur_m_usd": 0.59,
+      "part_pct": 2.5
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 0.4,
+      "part_pct": 1.7
+     },
+     {
+      "iso3": "CIV",
+      "pays": "Cote d'Ivoire",
+      "valeur_m_usd": 0.26,
+      "part_pct": 1.1
+     }
+    ],
+    "sh6_inclus": [
+     "300410",
+     "300450",
+     "300490"
+    ]
+   },
+   "contradictions": [
+    "Nombre d'établissements de fabrication : 233 selon le ministre (novembre 2025), 178 sur la liste officielle des agréments (décembre 2025), 194 sur celle de mai 2025.",
+    "Production 2024 : « plus de 4 Md USD » présentés comme réalisés par la presse, alors que ce montant était l'objectif annoncé par le ministre en mai 2024 ; aucun chiffre officiel réalisé n'a été trouvé.",
+    "Exportations d'insuline 2024 : la déclaration algérienne recense 11,92 M USD d'insuline (SH 300431) vers l'Arabie saoudite, alors que BACI n'a aucune ligne 300431 et classe 18,9 M USD de médicaments vers ce pays sous d'autres sous-positions (300490 surtout)."
+   ],
+   "synthese_fr": "L'industrie pharmaceutique a produit l'équivalent de 3,56 Md USD en 2023 et couvre environ 82 % des besoins nationaux en médicaments fin 2025 ; l'insuline est désormais fabriquée sur place (plus de 17 millions de stylos en 2023 à l'usine Novo Nordisk de Boufarik). Selon BACI, les exportations de médicaments dosés ont atteint 23,3 M USD en 2024, dont 80,9 % vers l'Arabie saoudite et 18,8 % vers l'Afrique.",
+   "synthese_en": "The pharmaceutical industry produced the equivalent of USD 3.56 billion in 2023 and covers about 82% of national medicine needs at end-2025; insulin is now made locally (more than 17 million pens in 2023 at Novo Nordisk's Boufarik plant). According to BACI, exports of medicaments in doses reached USD 23.3 million in 2024, 80.9% of it to Saudi Arabia and 18.8% to Africa."
+  },
+  {
+   "hs": "2202",
+   "libelle_fr": "Boissons non alcoolisées (sodas, eaux aromatisées)",
+   "libelle_en": "Non-alcoholic beverages (soft drinks, flavoured waters)",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1104",
+   "production": [
+    {
+     "annee": 2025,
+     "valeur": 4.7,
+     "unite": "Md litres",
+     "perimetre": "national — boissons (production nationale)",
+     "fiabilite": "B",
+     "source_titre": "Boissons algériennes : les exportations vers l’Europe reprennent après un an de blocage",
+     "source_url": "https://maghrebemergent.news/fr/boissons-algeriennes-les-exportations-vers-leurope-reprennent-apres-un-an-de-blocage/",
+     "extrait": "La production nationale atteint 4,7 milliards de litres par an, preuve d’une capacité suffisante pour alimenter à la fois le marché local et l’export. L’association regroupe 49 producteurs, qui représentent environ 90 % de la production totale du pays.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [],
+   "entreprises": [],
+   "exportations_baci": {
+    "2021": 13.8,
+    "2022": 11.7,
+    "2023": 13.7,
+    "2024": 18.3,
+    "part_afrique_2024_pct": 14.9,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 14.3,
+      "part_pct": 78.3
+     },
+     {
+      "iso3": "GMB",
+      "pays": "Gambia",
+      "valeur_m_usd": 2.48,
+      "part_pct": 13.5
+     },
+     {
+      "iso3": "CAN",
+      "pays": "Canada",
+      "valeur_m_usd": 0.84,
+      "part_pct": 4.6
+     },
+     {
+      "iso3": "GBR",
+      "pays": "United Kingdom",
+      "valeur_m_usd": 0.21,
+      "part_pct": 1.2
+     },
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 0.13,
+      "part_pct": 0.7
+     }
+    ],
+    "sh6_inclus": [
+     "220210",
+     "220299"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2024 : 38 M USD selon l'association des producteurs (toutes boissons), environ 29,8 M USD selon la déclaration algérienne à UN Comtrade (SH 2202, 2009 et 2201), 18,3 M USD pour le seul SH 2202 dans BACI."
+   ],
+   "synthese_fr": "La production nationale de boissons atteint 4,7 milliards de litres par an selon l'association des producteurs (APAB). Selon BACI, les exportations de boissons non alcoolisées (SH 2202) ont atteint 18,3 M USD en 2024, dont 78,3 % vers la France ; 14,9 % sont allés en Afrique (Gambie).",
+   "synthese_en": "National beverage production reaches 4.7 billion litres a year according to the producers' association (APAB). According to BACI, exports of non-alcoholic beverages (HS 2202) reached USD 18.3 million in 2024, 78.3% of it to France; 14.9% went to Africa (Gambia)."
+  },
+  {
+   "hs": "1212",
+   "libelle_fr": "Caroube (gousses, farine et graines)",
+   "libelle_en": "Carob (pods, flour and seeds)",
+   "filiere": "Agricole",
+   "citi_rev4": "0125",
+   "production": [
+    {
+     "annee": 2021,
+     "valeur": 3219.0,
+     "unite": "t",
+     "perimetre": "national (production recensée par le MADR, via FAOSTAT)",
+     "fiabilite": "A",
+     "source_titre": "FAOSTAT – Production_Crops_Livestock (Afrique), Algérie, article 461 « Locust beans (carobs) » (fichier en masse, mis à jour le 31/12/2025)",
+     "source_url": "https://bulks-faostat.fao.org/production/Production_Crops_Livestock_E_Africa.zip",
+     "extrait": "Area: Algeria | Item: Locust beans (carobs) (461) | Element: Production (t) | Y2021: 3219.000000 | Y2021F: A",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 8000,
+     "unite": "t",
+     "perimetre": "national (estimation de la filière, borne basse) — caroube (gousses)",
+     "fiabilite": "C",
+     "source_titre": "Filières agricoles alternatives et complémentaires en Algérie : des cultures économiques et créatrices de richesses (El Watan)",
+     "source_url": "https://elwatan.dz/filieres-agricoles-alternatives-et-complementaires-en-algerie-des-cultures-economiques-et-creatrices-de-richesses/",
+     "extrait": "Pourtant en 1962, l’Algérie produisait entre 30 000 et 35 000 tonnes par an, selon les statistiques avancées par M. Boublenza. La production varie aujourd’hui entre 8000 et 15 000 tonnes.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2023,
+     "valeur": 15000,
+     "unite": "t",
+     "perimetre": "national (estimation de la filière, borne haute) — caroube (gousses)",
+     "fiabilite": "C",
+     "source_titre": "Filières agricoles alternatives et complémentaires en Algérie : des cultures économiques et créatrices de richesses (El Watan)",
+     "source_url": "https://elwatan.dz/filieres-agricoles-alternatives-et-complementaires-en-algerie-des-cultures-economiques-et-creatrices-de-richesses/",
+     "extrait": "Pourtant en 1962, l’Algérie produisait entre 30 000 et 35 000 tonnes par an, selon les statistiques avancées par M. Boublenza. La production varie aujourd’hui entre 8000 et 15 000 tonnes.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "SARL Boublenza (Tlemcen)",
+     "role": "producteur et exportateur principal",
+     "chiffre": "exportations vers 25 pays pour 47,6 M USD par an (déclaration, période 2020-2022)",
+     "annee": 2022,
+     "source_url": "https://www.tsa-algerie.com/algerie-qui-sont-ces-champions-de-lexport-agricole/"
+    },
+    {
+     "nom": "Prodalex (filiale de Boublenza)",
+     "role": "transformateur",
+     "chiffre": "deux unités de production à Zenata et Remchi (Tlemcen)",
+     "annee": 2020,
+     "source_url": "https://algerie-eco.com/2020/02/13/poudre-caroube-sarl-boublenza-sinteresse-marche-local/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 30.2,
+    "2022": 47.9,
+    "2023": 9.04,
+    "2024": 11.5,
+    "part_afrique_2024_pct": 12.2,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 4.23,
+      "part_pct": 36.9
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 4.0,
+      "part_pct": 34.9
+     },
+     {
+      "iso3": "MAR",
+      "pays": "Morocco",
+      "valeur_m_usd": 1.2,
+      "part_pct": 10.4
+     },
+     {
+      "iso3": "ESP",
+      "pays": "Spain",
+      "valeur_m_usd": 0.63,
+      "part_pct": 5.5
+     },
+     {
+      "iso3": "THA",
+      "pays": "Thailand",
+      "valeur_m_usd": 0.25,
+      "part_pct": 2.1
+     }
+    ],
+    "sh6_inclus": [
+     "121292",
+     "121299"
+    ],
+    "note": "Somme de SH 121292 (caroubes ; libellé « Sugar cane » dans la source OEC) et de SH 121299, code mixte « autres produits végétaux » où sont classées les graines de caroube (preuves caroube.jsonl)."
+   },
+   "contradictions": [
+    "Production : la statistique officielle (MADR via FAOSTAT) recense 3 219 t en 2021, dernier chiffre officiel (les valeurs 2022-2024, de 3 402,33 à 3 444,75 t, sont imputées par la FAO), alors que la filière estime la production entre 8 000 et 15 000 t (2023). La production recensée porte sur 688 ha récoltés en 2021 (FAOSTAT) : elle semble ne couvrir que les vergers et non la cueillette sur arbres forestiers et isolés, ce qui pourrait expliquer l'écart (hypothèse).",
+    "Exportations : Boublenza déclare à elle seule 47,6 M USD par an, alors que la Chambre d'agriculture évoque « plus de 7 millions de dollars » pour tout le pays en 2023 et que BACI donne 9,04 M USD pour 2023.",
+    "Exportations 2024 de caroubes (SH 121292) : 5,6 M USD selon la déclaration algérienne à UN Comtrade, 2,2 M USD selon BACI."
+   ],
+   "synthese_fr": "La production de caroubes est mal mesurée : la statistique officielle recense 3 219 t en 2021 sur 688 ha récoltés, alors que la filière l'estime entre 8 000 et 15 000 t (2023) ; l'écart pourrait venir de la cueillette sur arbres forestiers et isolés, que la statistique ne semble pas couvrir (hypothèse). Selon BACI, les exportations de caroubes (SH 121292) et du code 121299, où sont classées les graines, ont atteint 11,5 M USD en 2024, surtout vers l'Italie et la France ; 12,2 % sont allés en Afrique. Le principal exportateur cité, Boublenza (Tlemcen), vend vers 25 pays.",
+   "synthese_en": "Carob production is poorly measured: official statistics record 3,219 t in 2021 from 688 harvested hectares, while the industry puts it at 8,000 to 15,000 t (2023); the gap may come from wild harvesting on forest and isolated trees, which the statistics do not seem to cover (hypothesis). According to BACI, exports of carob (HS 121292) and of code 121299, where the seeds are classified, reached USD 11.5 million in 2024, mainly to Italy and France; 12.2% went to Africa. The main exporter cited, Boublenza (Tlemcen), sells to 25 countries."
+  },
+  {
+   "hs": "4011",
+   "libelle_fr": "Pneumatiques neufs",
+   "libelle_en": "New pneumatic tyres",
+   "filiere": "Caoutchouc et pneumatiques",
+   "citi_rev4": "2211",
+   "production": [],
+   "capacite": [
+    {
+     "annee": 2023,
+     "valeur": 2000000,
+     "unite": "unités",
+     "perimetre": "entreprise: IRIS Tyres (Sétif) — pneumatiques (tourisme)",
+     "fiabilite": "B",
+     "source_titre": "Pneus : Iris Tyres va augmenter sa production à 4 millions d'unités/an en 2024",
+     "source_url": "https://algerie-eco.com/2023/12/21/pneus-iris-tyres-va-augmenter-sa-production-a-4-millions-dunites-an-en-2024/",
+     "extrait": "augmenter la production de pneus pour voitures touristiques de 2 millions d'unités/an à 4 millions d'unités/an d'ici 2024",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "IRIS Tyres (Sétif)",
+     "role": "producteur et exportateur",
+     "chiffre": "plus de 400 000 pneus exportés vers 13 pays (cumul annoncé en 2021)",
+     "annee": 2021,
+     "source_url": "https://motorsactu.com/groupe-iris-exportation-de-400-000-pneus-vers-13-pays/"
+    },
+    {
+     "nom": "Groupe Iris (Saterex, Sétif)",
+     "role": "exportateur",
+     "chiffre": "45 M USD d'exportations de 2021 à 2023 (électronique, électroménager et pneus) vers 28 pays",
+     "annee": 2023,
+     "source_url": "https://www.maghrebinfo.dz/2023/07/11/14-entreprises-honores-iris-remporte-la-medaille-dhonneur-de-lexportation/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 17.8,
+    "2022": 15.7,
+    "2023": 11.3,
+    "2024": 8.81,
+    "part_afrique_2024_pct": 14.8,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "USA",
+      "pays": "United States",
+      "valeur_m_usd": 2.14,
+      "part_pct": 24.2
+     },
+     {
+      "iso3": "BRA",
+      "pays": "Brazil",
+      "valeur_m_usd": 2.09,
+      "part_pct": 23.7
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 1.19,
+      "part_pct": 13.5
+     },
+     {
+      "iso3": "EGY",
+      "pays": "Egypt",
+      "valeur_m_usd": 1.18,
+      "part_pct": 13.4
+     },
+     {
+      "iso3": "MLT",
+      "pays": "Malta",
+      "valeur_m_usd": 0.49,
+      "part_pct": 5.5
+     }
+    ],
+    "sh6_inclus": [
+     "401110",
+     "401120",
+     "401190"
+    ]
+   },
+   "contradictions": [
+    "IRIS Tyres annonçait 4 millions de pneus par an pour 2023, puis pour 2024 ; la capacité citée fin 2023 restait de 2 millions."
+   ],
+   "synthese_fr": "IRIS Tyres (Sétif) est le principal fabricant identifié, avec une capacité de 2 millions de pneus tourisme par an (2023). Selon BACI, les exportations de pneus neufs ont atteint 8,81 M USD en 2024 (États-Unis, Brésil, Italie, Égypte), dont 14,8 % vers l'Afrique.",
+   "synthese_en": "IRIS Tyres (Sétif) is the main manufacturer identified, with a capacity of 2 million passenger-car tyres a year (2023). According to BACI, new tyre exports reached USD 8.81 million in 2024 (United States, Brazil, Italy, Egypt), 14.8% of it to Africa."
+  },
+  {
+   "hs": "1902/1103",
+   "libelle_fr": "Pâtes alimentaires et semoule",
+   "libelle_en": "Pasta and semolina",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1074/1061",
+   "production": [
+    {
+     "annee": 2023,
+     "valeur": 5989.3,
+     "unite": "milliers de quintaux",
+     "perimetre": "secteur public — semoule",
+     "fiabilite": "A",
+     "source_titre": "CEIC – industrial production public ft grains semolina",
+     "source_url": "https://www.ceicdata.com/en/algeria/industrial-production/industrial-production-public-ft-grains-semolina",
+     "extrait": "Algeria Industrial Production: Public: FT: Grains: Semolina data was reported at 5,989.300 Quintal th in 2023. This records an increase from the previous number of 5,358.500 Quintal th for 2022.",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 235.2,
+     "unite": "milliers de quintaux",
+     "perimetre": "secteur public — pâtes alimentaires",
+     "fiabilite": "A",
+     "source_titre": "CEIC – industrial production public ft grains pasta",
+     "source_url": "https://www.ceicdata.com/en/algeria/industrial-production/industrial-production-public-ft-grains-pasta",
+     "extrait": "Algeria Industrial Production: Public: FT: Grains: Pasta data was reported at 235.200 Quintal th in 2023. This records an increase from the previous number of 200.000 Quintal th for 2022.",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2022,
+     "valeur": 556,
+     "unite": "unités",
+     "perimetre": "national (411 minoteries + 145 semouleries) — minoteries (farine) et semouleries",
+     "fiabilite": "B",
+     "source_titre": "60 millions de litres de lait cru collectés par mois et aucune crainte de pénurie",
+     "source_url": "https://algerie-eco.com/2022/04/05/60-millions-de-litres-de-lait-cru-collectes-par-mois-et-aucune-crainte-de-penurie/",
+     "extrait": "411 minoteries pour la farine et 145 pour la semoule",
+     "nature": "calcul"
+    }
+   ],
+   "entreprises": [],
+   "exportations_baci": {
+    "2021": 10.0,
+    "2022": 7.89,
+    "2023": 7.23,
+    "2024": 8.61,
+    "part_afrique_2024_pct": 96.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "NER",
+      "pays": "Niger",
+      "valeur_m_usd": 8.13,
+      "part_pct": 94.4
+     },
+     {
+      "iso3": "CAN",
+      "pays": "Canada",
+      "valeur_m_usd": 0.21,
+      "part_pct": 2.4
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 0.13,
+      "part_pct": 1.5
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 0.13,
+      "part_pct": 1.5
+     },
+     {
+      "iso3": "SEN",
+      "pays": "Senegal",
+      "valeur_m_usd": 0.01,
+      "part_pct": 0.1
+     }
+    ],
+    "sh6_inclus": [
+     "110311",
+     "190219",
+     "190230",
+     "190240"
+    ]
+   },
+   "contradictions": [
+    "Nombre de moulins : 556 unités en 2022 (411 minoteries et 145 semouleries) selon une source, 432 moulins selon le gouvernement (chiffre repris par l'USDA)."
+   ],
+   "synthese_fr": "Les seules séries de production publiées couvrent le secteur public : 5 989,3 milliers de quintaux de semoule et 235,2 milliers de quintaux de pâtes en 2023 ; le pays comptait 145 semouleries en 2022. Selon BACI, les exportations de pâtes et de semoule ont atteint 8,61 M USD en 2024, dont 96,0 % vers l'Afrique, essentiellement le Niger.",
+   "synthese_en": "The only published production series cover the public sector: 5,989.3 thousand quintals of semolina and 235.2 thousand quintals of pasta in 2023; the country had 145 semolina mills in 2022. According to BACI, pasta and semolina exports reached USD 8.61 million in 2024, 96.0% of it to Africa, mostly Niger."
+  },
+  {
+   "hs": "1905",
+   "libelle_fr": "Biscuits et produits de biscuiterie",
+   "libelle_en": "Biscuits and bakery products",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1071",
+   "production": [],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "Groupe Bimo (Baba Ali, Alger)",
+     "role": "producteur",
+     "chiffre": "un peu plus de 35 % du marché national des biscuits, gaufrettes et chocolat",
+     "annee": 2024,
+     "source_url": "https://elmoudjahid.com/fr/economie/32e-foire-de-la-production-algerienne-amina-krimat-directrice-sarl-biscuiterie-bimo-nous-visons-le-marche-africain-228308"
+    },
+    {
+     "nom": "Biscuiterie Sai – marque Kaada (El Bordj)",
+     "role": "producteur",
+     "chiffre": "environ 25 % du marché de la biscuiterie algérienne",
+     "annee": 2024,
+     "source_url": "https://www.horizons.dz/2025/06/le-secteur-de-la-biscuiterie-et-du-chocolat-une-industrie-algerienne-en-pleine-croissance/"
+    },
+    {
+     "nom": "Groupe Palmary Food (Boumerdès)",
+     "role": "producteur",
+     "chiffre": "plus de 2 200 collaborateurs",
+     "annee": 2025,
+     "source_url": "https://maghrebemergent.news/fr/le-groupe-francais-bel-va-confier-la-production-de-ses-marques-a-un-partenaire-algerien/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 3.59,
+    "2022": 3.57,
+    "2023": 5.0,
+    "2024": 7.77,
+    "part_afrique_2024_pct": 29.4,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "NLD",
+      "pays": "Netherlands",
+      "valeur_m_usd": 2.25,
+      "part_pct": 28.9
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 0.89,
+      "part_pct": 11.5
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 0.84,
+      "part_pct": 10.8
+     },
+     {
+      "iso3": "CAN",
+      "pays": "Canada",
+      "valeur_m_usd": 0.63,
+      "part_pct": 8.1
+     },
+     {
+      "iso3": "LBN",
+      "pays": "Lebanon",
+      "valeur_m_usd": 0.45,
+      "part_pct": 5.8
+     }
+    ],
+    "sh6_inclus": [
+     "190531",
+     "190532",
+     "190590"
+    ]
+   },
+   "contradictions": [],
+   "synthese_fr": "Aucune statistique de production de biscuits n'a été trouvée ; le marché est tenu par des groupes privés comme Bimo (un peu plus de 35 % de parts de marché) et Kaada (environ 25 %). Selon BACI, les exportations ont atteint 7,77 M USD en 2024, vers les Pays-Bas, la Tunisie et la France ; 29,4 % sont allés en Afrique.",
+   "synthese_en": "No biscuit production statistics were found; the market is led by private groups such as Bimo (just over 35% market share) and Kaada (about 25%). According to BACI, exports reached USD 7.77 million in 2024, to the Netherlands, Tunisia and France; 29.4% went to Africa."
+  },
+  {
+   "hs": "3923",
+   "libelle_fr": "Emballages en plastique",
+   "libelle_en": "Plastic packaging",
+   "filiere": "Plastiques",
+   "citi_rev4": "2220",
+   "production": [],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "SGT Algérie (préformes PET et bouchons ; Rouïba, Sétif)",
+     "role": "producteur",
+     "chiffre": "capacité de 2 milliards de bouchons par an (site de Sétif)",
+     "annee": 2018,
+     "source_url": "https://www.sgt-pet.com/sgt-algeria/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 6.02,
+    "2022": 7.34,
+    "2023": 5.68,
+    "2024": 5.64,
+    "part_afrique_2024_pct": 90.8,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 4.64,
+      "part_pct": 82.2
+     },
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 0.43,
+      "part_pct": 7.7
+     },
+     {
+      "iso3": "NER",
+      "pays": "Niger",
+      "valeur_m_usd": 0.29,
+      "part_pct": 5.1
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 0.13,
+      "part_pct": 2.3
+     },
+     {
+      "iso3": "DEU",
+      "pays": "Germany",
+      "valeur_m_usd": 0.04,
+      "part_pct": 0.7
+     }
+    ],
+    "sh6_inclus": [
+     "392310",
+     "392321",
+     "392330",
+     "392350",
+     "392390"
+    ]
+   },
+   "contradictions": [],
+   "synthese_fr": "Aucun chiffre récent de production ou de capacité n'a été trouvé ; SGT Algérie (préformes PET et bouchons) annonçait en 2018 une capacité de 2 milliards de bouchons par an. Selon BACI, les exportations d'emballages plastiques ont atteint 5,64 M USD en 2024, dont 90,8 % vers l'Afrique, principalement la Tunisie.",
+   "synthese_en": "No recent production or capacity figures were found; SGT Algérie (PET preforms and caps) announced in 2018 a capacity of 2 billion caps a year. According to BACI, plastic packaging exports reached USD 5.64 million in 2024, 90.8% of it to Africa, mainly Tunisia."
+  },
+  {
+   "hs": "3920",
+   "libelle_fr": "Plaques et films en plastique",
+   "libelle_en": "Plastic sheets and films",
+   "filiere": "Plastiques",
+   "citi_rev4": "2220",
+   "production": [],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "Meriplast (Béjaïa)",
+     "role": "producteur et exportateur",
+     "chiffre": "25 000 t de film plastique produites par an",
+     "annee": 2020,
+     "source_url": "https://algerie-eco.com/2020/10/06/bejaia-lunite-meriplast-exporte-du-film-plastique-vers-leurope-lafrique-et-les-usa/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 0.58,
+    "2022": 1.25,
+    "2023": 3.71,
+    "2024": 3.98,
+    "part_afrique_2024_pct": 47.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 2.04,
+      "part_pct": 51.2
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 1.38,
+      "part_pct": 34.6
+     },
+     {
+      "iso3": "SEN",
+      "pays": "Senegal",
+      "valeur_m_usd": 0.28,
+      "part_pct": 7.0
+     },
+     {
+      "iso3": "NER",
+      "pays": "Niger",
+      "valeur_m_usd": 0.07,
+      "part_pct": 1.7
+     },
+     {
+      "iso3": "MDG",
+      "pays": "Madagascar",
+      "valeur_m_usd": 0.07,
+      "part_pct": 1.7
+     }
+    ],
+    "sh6_inclus": [
+     "392010",
+     "392030"
+    ]
+   },
+   "contradictions": [],
+   "synthese_fr": "Aucun chiffre récent de production ou de capacité n'a été trouvé ; Meriplast (Béjaïa) déclarait 25 000 t de film plastique par an en 2020. Selon BACI, les exportations de plaques et films (SH 3920) ont atteint 3,98 M USD en 2024, vers l'Italie (51,2 %) et la Tunisie ; 47,0 % sont allés en Afrique.",
+   "synthese_en": "No recent production or capacity figures were found; Meriplast (Béjaïa) reported 25,000 t of plastic film a year in 2020. According to BACI, exports of plastic sheets and films (HS 3920) reached USD 3.98 million in 2024, to Italy (51.2%) and Tunisia; 47.0% went to Africa."
+  },
+  {
+   "hs": "8544",
+   "libelle_fr": "Fils et câbles électriques isolés",
+   "libelle_en": "Insulated electric wires and cables",
+   "filiere": "Équipements électriques",
+   "citi_rev4": "2732",
+   "production": [],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "GISB Electric",
+     "role": "exportateur (accord signé)",
+     "chiffre": "accord d'exportation de 300 M USD d'équipements électriques sur trois ans vers la CEDEAO",
+     "annee": 2025,
+     "source_url": "https://www.ecomnewsmed.com/2025/09/19/lalgerie-prevoit-dexporter-pour-480-millions-de-dollars-dequipements-electriques-vers-les-marches-dafrique-de-louest-sur-une-periode-de-trois-ans/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 3.94,
+    "2022": 7.51,
+    "2023": 16.4,
+    "2024": 3.59,
+    "part_afrique_2024_pct": 83.4,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "CIV",
+      "pays": "Cote d'Ivoire",
+      "valeur_m_usd": 1.61,
+      "part_pct": 44.8
+     },
+     {
+      "iso3": "SEN",
+      "pays": "Senegal",
+      "valeur_m_usd": 0.75,
+      "part_pct": 21.0
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 0.53,
+      "part_pct": 14.7
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 0.46,
+      "part_pct": 12.8
+     },
+     {
+      "iso3": "EGY",
+      "pays": "Egypt",
+      "valeur_m_usd": 0.14,
+      "part_pct": 3.9
+     }
+    ],
+    "sh6_inclus": [
+     "854420",
+     "854430",
+     "854449",
+     "854460"
+    ]
+   },
+   "contradictions": [
+    "Exportations 2024 : la déclaration douanière algérienne (UN Comtrade) donne 13,998 M USD (dont Côte d'Ivoire 4,07 M, Égypte 3,43 M, Libye 1,28 M), contre 3,59 M USD dans BACI."
+   ],
+   "synthese_fr": "Aucun chiffre de production ou de capacité n'a été trouvé pour les câbles électriques. Selon BACI, les exportations ont atteint 3,59 M USD en 2024, dont 83,4 % vers l'Afrique (Côte d'Ivoire, Sénégal) ; la déclaration douanière algérienne donne un montant nettement supérieur (13,998 M USD).",
+   "synthese_en": "No production or capacity figures were found for electric cables. According to BACI, exports reached USD 3.59 million in 2024, 83.4% of it to Africa (Côte d'Ivoire, Senegal); Algeria's customs declaration shows a much higher amount (USD 13.998 million)."
+  },
+  {
+   "hs": "3917",
+   "libelle_fr": "Tubes et tuyaux en plastique",
+   "libelle_en": "Plastic tubes and pipes",
+   "filiere": "Plastiques",
+   "citi_rev4": "2220",
+   "production": [],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "ITP – Innovation Transformation Polymère (groupe AMRY Industry)",
+     "role": "producteur",
+     "chiffre": "capacité de 30 000 t/an de tubes PEHD (site de l'entreprise)",
+     "annee": 2026,
+     "source_url": "https://itp.dz/a-propos/"
+    },
+    {
+     "nom": "Groupe Chiali (Sidi Bel Abbès, Sétif)",
+     "role": "producteur",
+     "chiffre": "9 sites de production (tubes PEHD et PVC, profilés)",
+     "annee": 2026,
+     "source_url": "https://www.groupe-chiali.com/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 0.01,
+    "2022": 1.11,
+    "2023": 0.68,
+    "2024": 2.74,
+    "part_afrique_2024_pct": 100.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 2.12,
+      "part_pct": 77.5
+     },
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 0.59,
+      "part_pct": 21.4
+     },
+     {
+      "iso3": "GMB",
+      "pays": "Gambia",
+      "valeur_m_usd": 0.02,
+      "part_pct": 0.9
+     }
+    ],
+    "sh6_inclus": [
+     "391721",
+     "391732"
+    ]
+   },
+   "contradictions": [],
+   "synthese_fr": "Aucun chiffre récent de production ou de capacité n'a été trouvé ; les principaux fabricants de tubes PEHD et PVC sont le groupe Chiali (9 sites de production) et ITP (30 000 t/an selon son site en 2026). Selon BACI, les exportations ont atteint 2,74 M USD en 2024, entièrement vers l'Afrique (100,0 %), surtout la Tunisie et la Mauritanie.",
+   "synthese_en": "No recent production or capacity figures were found; the main HDPE and PVC pipe makers are the Chiali group (9 production sites) and ITP (30,000 t/year according to its website in 2026). According to BACI, exports reached USD 2.74 million in 2024, all to Africa (100.0%), mainly Tunisia and Mauritania."
+  },
+  {
+   "hs": "1507/2304",
+   "libelle_fr": "Huile et tourteaux de soja",
+   "libelle_en": "Soybean oil and soybean meal",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1040",
+   "production": [
+    {
+     "annee": 2024,
+     "valeur": 297.0,
+     "unite": "kt",
+     "perimetre": "national — huile de soja brute (issue de trituration locale)",
+     "fiabilite": "A",
+     "source_titre": "USDA PSD Online – Oil, Soybean – Algeria (téléchargement CSV)",
+     "source_url": "https://apps.fas.usda.gov/psdonline/downloads/psd_oilseeds_csv.zip",
+     "extrait": "Algeria | Oil, Soybean | Market_Year 2024 | Production | 297.0000 | (1000 MT)",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 1287.0,
+     "unite": "kt",
+     "perimetre": "national — tourteau de soja",
+     "fiabilite": "A",
+     "source_titre": "USDA PSD Online – Meal, Soybean – Algeria (téléchargement CSV)",
+     "source_url": "https://apps.fas.usda.gov/psdonline/downloads/psd_oilseeds_csv.zip",
+     "extrait": "Algeria | Meal, Soybean | Market_Year 2024 | Production | 1287.0000 | (1000 MT)",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 1650.0,
+     "unite": "kt",
+     "perimetre": "national — graines de soja (trituration)",
+     "fiabilite": "A",
+     "source_titre": "USDA PSD Online – Oilseed, Soybean – Algeria (téléchargement CSV)",
+     "source_url": "https://apps.fas.usda.gov/psdonline/downloads/psd_oilseeds_csv.zip",
+     "extrait": "Algeria | Oilseed, Soybean | Market_Year 2024 | Crush | 1650.0000 | (1000 MT)",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 1.32,
+     "unite": "Mt",
+     "perimetre": "entreprise: Kotama Agri Food (Madar), Jijel — tourteaux de soja",
+     "fiabilite": "B",
+     "source_titre": "Huile de table : l’Algérie se dote d’un complexe stratégique pour 324 millions $ à Jijel",
+     "source_url": "https://www.tsa-algerie.com/lalgerie-inaugure-un-complexe-strategique-pour-sa-securite-alimentaire/",
+     "extrait": "la capacité nominale de l’usine est de 1,65 million de tonnes/an, dont 1,32 million de tonnes de tourteaux de soja et 300.000 tonnes d’huiles brutes, couvrant 70 % du marché national en tourteaux",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 300000,
+     "unite": "t",
+     "perimetre": "entreprise: Kotama Agri Food (Madar), Jijel — huiles végétales brutes (trituration)",
+     "fiabilite": "B",
+     "source_titre": "Huile de table : l’Algérie se dote d’un complexe stratégique pour 324 millions $ à Jijel",
+     "source_url": "https://www.tsa-algerie.com/lalgerie-inaugure-un-complexe-strategique-pour-sa-securite-alimentaire/",
+     "extrait": "la capacité nominale de l’usine est de 1,65 million de tonnes/an, dont 1,32 million de tonnes de tourteaux de soja et 300.000 tonnes d’huiles brutes",
+     "nature": "presse"
+    },
+    {
+     "annee": 2022,
+     "valeur": 5600,
+     "unite": "t/jour",
+     "perimetre": "national (2 usines de trituration en service fin 2022) — trituration de graines de soja",
+     "fiabilite": "A",
+     "source_titre": "USDA FAS GAIN – Algeria Grain and Feed Annual (AG2023-0004)",
+     "source_url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Grain+and+Feed+Annual_Algiers_Algeria_AG2023-0004",
+     "extrait": "As of the end of 2022, Algeria’s had two crush plants in operation: one with a 3,600 MT per day crush capacity, and another crushing plant with a 2,000 MT crush capacity.",
+     "nature": "calcul"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Kotama Agri Food (groupe public Madar, Jijel)",
+     "role": "producteur",
+     "chiffre": "capacité nominale de 1,65 Mt/an, dont 1,32 Mt de tourteaux de soja et 300 000 t d'huiles brutes",
+     "annee": 2025,
+     "source_url": "https://www.tsa-algerie.com/lalgerie-inaugure-un-complexe-strategique-pour-sa-securite-alimentaire/"
+    },
+    {
+     "nom": "Cevital (complexe de trituration de Béjaïa)",
+     "role": "producteur",
+     "chiffre": "capacité de trituration de 22 000 t/j de graines, dont 11 000 t de soja",
+     "annee": 2023,
+     "source_url": "https://algerie-eco.com/2023/05/30/cevital-mise-en-service-du-complexe-de-trituration-des-graines-oleagineuses/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 28.4,
+    "2022": 14.6,
+    "2023": 1.67,
+    "2024": 0.84,
+    "part_afrique_2024_pct": 99.8,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "MRT",
+      "pays": "Mauritania",
+      "valeur_m_usd": 0.84,
+      "part_pct": 99.8
+     }
+    ],
+    "sh6_inclus": [
+     "150710",
+     "150790"
+    ],
+    "note": "Seule l'huile de soja (SH 1507) figure dans BACI ; les tourteaux (SH 2304) sont restés sous 0,5 M USD d'exportations chaque année 2021-2024."
+   },
+   "contradictions": [
+    "Cevital annonçait la mise en service de son complexe de trituration (22 000 t/j) en mai 2023, mais l'USDA indiquait en 2025 que l'usine devait entrer en production au premier semestre 2025.",
+    "Part des besoins couverts par l'usine Kotama : 70 % des tourteaux et 25 % des huiles brutes selon un article, 60 % et 40 % selon un autre, 80 % et 20 % selon un troisième."
+   ],
+   "synthese_fr": "La trituration locale de soja a produit 297 kt d'huile et 1 287 kt de tourteaux en 2024 (USDA), avec de nouvelles usines comme celle de Kotama (Madar, Jijel : 1,32 Mt/an de tourteaux et 300 000 t d'huiles brutes). Les exportations restent marginales : 0,84 M USD d'huile de soja en 2024 selon BACI, presque entièrement vers la Mauritanie ; les tourteaux n'apparaissent pas dans BACI.",
+   "synthese_en": "Local soybean crushing produced 297 kt of oil and 1,287 kt of meal in 2024 (USDA), with new plants such as Kotama's (Madar, Jijel: 1.32 Mt/year of meal and 300,000 t of crude oil). Exports remain marginal: USD 0.84 million of soybean oil in 2024 according to BACI, almost entirely to Mauritania; soybean meal does not appear in BACI."
+  },
+  {
+   "hs": "1806",
+   "libelle_fr": "Chocolat et préparations au cacao",
+   "libelle_en": "Chocolate and cocoa preparations",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1073",
+   "production": [
+    {
+     "annee": 2025,
+     "valeur": 80,
+     "unite": "t/jour",
+     "perimetre": "entreprise: SARL Cebon (El Mordjene), Tipaza — pâte à tartiner aux noisettes (El Mordjene)",
+     "fiabilite": "B",
+     "source_titre": "Interdite en Europe, la pâte à tartiner El Mordjene multiplie sa production par dix et se tourne vers le Moyen-Orient",
+     "source_url": "https://algerie-eco.com/2025/11/28/interdite-en-europe-la-pate-a-tartiner-el-mordjene-multiplie-sa-production-par-dix-et-se-tourne-vers-le-moyen-orient/",
+     "extrait": "Avant le « buzz » sur les réseaux sociaux, la production quotidienne était de 8 tonnes. Elle atteint désormais 80 tonnes, selon le fabricant",
+     "nature": "presse"
+    },
+    {
+     "annee": 2024,
+     "valeur": 8,
+     "unite": "t/jour",
+     "perimetre": "entreprise: SARL Cebon (El Mordjene), Tipaza — pâte à tartiner aux noisettes (El Mordjene)",
+     "fiabilite": "B",
+     "source_titre": "Interdite en Europe, la pâte à tartiner El Mordjene multiplie sa production par dix et se tourne vers le Moyen-Orient",
+     "source_url": "https://algerie-eco.com/2025/11/28/interdite-en-europe-la-pate-a-tartiner-el-mordjene-multiplie-sa-production-par-dix-et-se-tourne-vers-le-moyen-orient/",
+     "extrait": "Avant le « buzz » sur les réseaux sociaux, la production quotidienne était de 8 tonnes.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2021,
+     "valeur": 11,
+     "unite": "t/jour",
+     "perimetre": "entreprise: SARL Confi Choc (marque Chocolatti, TB Groupe), Batna — chocolat (tablettes, pépites, pellets, glaçage)",
+     "fiabilite": "B",
+     "source_titre": "En seulement 2 ans d'existence en Algérie : « Chocolatti » convoite déjà le marché africain",
+     "source_url": "https://ecotimesdz.com/en-seulement-2-ans-dexistence-en-algerie-chocolatti-convoite-deja-le-marche-africain/",
+     "extrait": "La Sarl Confi Choc, produit 11 tonnes de Chocolatti par jour",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [],
+   "entreprises": [
+    {
+     "nom": "Cebon – marque El Mordjene (Tipaza)",
+     "role": "producteur et exportateur",
+     "chiffre": "10 % de la production déjà destinés aux pays du Golfe avant l'été 2024",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2025/11/28/interdite-en-europe-la-pate-a-tartiner-el-mordjene-multiplie-sa-production-par-dix-et-se-tourne-vers-le-moyen-orient/"
+    },
+    {
+     "nom": "Kawa-Food – marque Optila",
+     "role": "producteur et exportateur",
+     "chiffre": "plus de mille employés ; exporte déjà vers la Libye et la Tunisie",
+     "annee": 2025,
+     "source_url": "https://www.horizons.dz/2025/06/le-secteur-de-la-biscuiterie-et-du-chocolat-une-industrie-algerienne-en-pleine-croissance/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 0.78,
+    "2022": 0.4,
+    "2023": 0.93,
+    "2024": 0.61,
+    "part_afrique_2024_pct": 31.1,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "FRA",
+      "pays": "France",
+      "valeur_m_usd": 0.23,
+      "part_pct": 36.9
+     },
+     {
+      "iso3": "CAN",
+      "pays": "Canada",
+      "valeur_m_usd": 0.12,
+      "part_pct": 19.1
+     },
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 0.11,
+      "part_pct": 18.1
+     },
+     {
+      "iso3": "QAT",
+      "pays": "Qatar",
+      "valeur_m_usd": 0.06,
+      "part_pct": 9.7
+     },
+     {
+      "iso3": "AGO",
+      "pays": "Angola",
+      "valeur_m_usd": 0.05,
+      "part_pct": 7.8
+     }
+    ],
+    "sh6_inclus": [
+     "180631",
+     "180690"
+    ]
+   },
+   "contradictions": [],
+   "synthese_fr": "La production de chocolat et de pâtes à tartiner repose sur des entreprises privées : Cebon (El Mordjene) produit 80 t par jour fin 2025, contre 8 t avant l'été 2024. Selon BACI, les exportations de chocolat restent faibles, à 0,61 M USD en 2024 (France, Canada, Tunisie), dont 31,1 % vers l'Afrique.",
+   "synthese_en": "Chocolate and spread production relies on private firms: Cebon (El Mordjene) was producing 80 t per day at end-2025, up from 8 t before summer 2024. According to BACI, chocolate exports remain small, at USD 0.61 million in 2024 (France, Canada, Tunisia), 31.1% of it to Africa."
+  },
+  {
+   "hs": "3916/3925",
+   "libelle_fr": "Profilés et menuiserie en PVC",
+   "libelle_en": "PVC profiles and building joinery",
+   "filiere": "Plastiques",
+   "citi_rev4": "2220",
+   "production": [],
+   "capacite": [
+    {
+     "annee": 2022,
+     "valeur": 11000,
+     "unite": "t/an",
+     "perimetre": "entreprise: ADOPEN Algérie (Tiaret, JV algéro-turque) — profilés PVC pour portes et fenêtres",
+     "fiabilite": "B",
+     "source_titre": "DK News – Tiaret : entrée de l'usine de plaques « PVC » en phase de production",
+     "source_url": "https://www.dknews-dz.com/article/159874-tiaret-entree-de-lusine-de-plaques-pvc-en-phase-de-production.html",
+     "extrait": "la capacité de production actuelle de l'usine \"ADOPEN Algérie\" est de 35 tonnes/jour, soit l'équivalent de 11.000 tonnes par an.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2025,
+     "valeur": 117000,
+     "unite": "unités/an",
+     "perimetre": "entreprise: Izdihar PVC (Tiaret) — portes et fenêtres en PVC",
+     "fiabilite": "B",
+     "source_titre": "Algerie360 – PVC : l'Algérie mise sur 2 nouvelles usines pour passer de l'import à l'export",
+     "source_url": "https://www.algerie360.com/pvc-lalgerie-mise-sur-2-nouvelles-usines-pour-passer-de-limport-a-lexport/",
+     "extrait": "Au cœur de ce nouveau complexe industriel se trouve la société Izdihar PVC. Spécialisée dans la fabrication de portes et fenêtres en PVC. Avec une capacité de production annoncée de 117 000 unités par an,",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "OXXO Algérie (groupe Cevital, Aïn Taghrout)",
+     "role": "producteur",
+     "chiffre": "capacité de 25 000 à 30 000 t de profilés PVC",
+     "annee": 2026,
+     "source_url": "https://oxxo.dz/oxxo/sites-industriels/"
+    },
+    {
+     "nom": "ADOPEN Algérie (Tiaret)",
+     "role": "producteur (objectif d'export)",
+     "chiffre": "exportation prévue de 20 % de la production vers la Côte d'Ivoire et la Guinée",
+     "annee": 2023,
+     "source_url": "https://www.dknews-dz.com/article/159874-tiaret-entree-de-lusine-de-plaques-pvc-en-phase-de-production.html"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 0.62,
+    "2022": 0.36,
+    "2023": 0.48,
+    "2024": 0.58,
+    "part_afrique_2024_pct": 90.5,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "TUN",
+      "pays": "Tunisia",
+      "valeur_m_usd": 0.52,
+      "part_pct": 89.7
+     },
+     {
+      "iso3": "ITA",
+      "pays": "Italy",
+      "valeur_m_usd": 0.05,
+      "part_pct": 8.2
+     },
+     {
+      "iso3": "CHE",
+      "pays": "Switzerland",
+      "valeur_m_usd": 0.01,
+      "part_pct": 1.3
+     }
+    ],
+    "sh6_inclus": [
+     "391690",
+     "392510"
+    ]
+   },
+   "contradictions": [
+    "OXXO (Cevital) : capacité de 550 000 fenêtres/an selon son site, 55 000/an selon la presse (2026).",
+    "ADOPEN Algérie : 11 000 t/an de profilés en 2022, capacité annoncée à 17 000 t/an pour début 2023 sans confirmation ultérieure."
+   ],
+   "synthese_fr": "Les profilés PVC sont extrudés notamment par ADOPEN Algérie (11 000 t/an à Tiaret en 2022) et OXXO (Cevital), tandis qu'Izdihar PVC a mis en service en 2025 une capacité de 117 000 portes et fenêtres par an. Selon BACI, les exportations restent faibles : 0,58 M USD en 2024, dont 90,5 % vers l'Afrique (Tunisie).",
+   "synthese_en": "PVC profiles are extruded notably by ADOPEN Algérie (11,000 t/year in Tiaret in 2022) and OXXO (Cevital), while Izdihar PVC commissioned 117,000 doors and windows a year of capacity in 2025. According to BACI, exports remain small: USD 0.58 million in 2024, 90.5% of it to Africa (Tunisia)."
+  },
+  {
+   "hs": "0401/0402/0406",
+   "libelle_fr": "Lait et produits laitiers (lait, lait en poudre, fromages)",
+   "libelle_en": "Milk and dairy products (milk, milk powder, cheese)",
+   "filiere": "Agroalimentaire",
+   "citi_rev4": "1050",
+   "production": [
+    {
+     "annee": 2023,
+     "valeur": 12291.7,
+     "unite": "milliers d'hl",
+     "perimetre": "secteur public — lait pasteurisé",
+     "fiabilite": "A",
+     "source_titre": "CEIC – industrial production public ft dairy products pasteurized milk",
+     "source_url": "https://www.ceicdata.com/en/algeria/industrial-production/industrial-production-public-ft-dairy-products-pasteurized-milk",
+     "extrait": "Algeria Industrial Production: Public: FT: Dairy Products: Pasteurized Milk data was reported at 12,291.700 hl th in 2023. This records an increase from the previous number of 11,237.500 hl th for 2022.",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 5538.7,
+     "unite": "t",
+     "perimetre": "secteur public — fromages",
+     "fiabilite": "A",
+     "source_titre": "CEIC – industrial production public ft dairy products cheese",
+     "source_url": "https://www.ceicdata.com/en/algeria/industrial-production/industrial-production-public-ft-dairy-products-cheese",
+     "extrait": "Algeria Industrial Production: Public: FT: Dairy Products: Cheese data was reported at 5,538.700 Ton in 2023. This records an increase from the previous number of 5,229.000 Ton for 2022.",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2023,
+     "valeur": 2419276.6,
+     "unite": "t",
+     "perimetre": "national — lait cru de vache (matière première laitière)",
+     "fiabilite": "B",
+     "source_titre": "FAOSTAT – Supply Utilization Accounts (SCL), Algérie, Raw milk of cattle, Production",
+     "source_url": "https://bulks-faostat.fao.org/production/SUA_Crops_Livestock_E_All_Data_(Normalized).zip",
+     "extrait": "4,'012,Algeria,882,'02211,Raw milk of cattle,5510,Production,2023,2023,t,2419276.560000,E",
+     "nature": "base_internationale"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2025,
+     "valeur": 2.6,
+     "unite": "Md litres/an",
+     "perimetre": "entreprise: groupe public Giplait (16 unités) — lait et produits laitiers",
+     "fiabilite": "B",
+     "source_titre": "Laiterie de Rouiba : démarrage des essais pour la plus grande usine de production en Algérie",
+     "source_url": "https://algerie-eco.com/2025/02/15/laiterie-de-rouiba-demarrage-des-essais-pour-la-plus-grande-usine-de-production-en-algerie/",
+     "extrait": "la capacité de production globale du groupe Giplait passera à plus de 2,6 milliards de litre par an",
+     "nature": "presse"
+    },
+    {
+     "annee": 2022,
+     "valeur": 300000,
+     "unite": "litres/jour",
+     "perimetre": "entreprise: Laiterie Soummam (Béjaïa) — lait et produits laitiers",
+     "fiabilite": "B",
+     "source_titre": "Béjaïa : la laiterie Soummam dispose d’une capacité de production de 300.000 litres/jour",
+     "source_url": "https://algerie-eco.com/2022/02/09/bejaia-la-laiterie-soummam-dispose-dune-capacite-de-production-de-300-000-litres-jour/",
+     "extrait": "L'unité de production de la laiterie Soummam sise a Béjaïa dispose d'une capacité de production de 300.000 litres/jour",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Laiterie Soummam (Akbou, Béjaïa)",
+     "role": "producteur principal",
+     "chiffre": "2 000 t/jour de produits laitiers ; 65 % du marché des produits laitiers",
+     "annee": 2023,
+     "source_url": "https://www.algerieinvest.dz/agroalimentaire-le-groupe-laitier-soummam-sur-le-point-dexporter-ses-produits-vers-la-lybie/"
+    },
+    {
+     "nom": "Bel Algérie (Koléa, Tipaza)",
+     "role": "producteur (fromages fondus)",
+     "chiffre": "18 000 t de fromage produites en 2022",
+     "annee": 2022,
+     "source_url": "https://lactualite-eco.dz/fromagerie-bel-algerie-deblocage-dimportation-de-la-matiere-premiere/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": 0.05,
+    "2022": 0.0,
+    "2023": 1.15,
+    "2024": 0.02,
+    "part_afrique_2024_pct": 100.0,
+    "premieres_destinations_2024": [
+     {
+      "iso3": "NER",
+      "pays": "Niger",
+      "valeur_m_usd": 0.02,
+      "part_pct": 100.0
+     }
+    ],
+    "sh6_inclus": [
+     "040210"
+    ]
+   },
+   "contradictions": [
+    "Laiterie Soummam : capacité de 300 000 litres/jour (2022) contre 2 000 t/jour de produits laitiers annoncées en 2023."
+   ],
+   "synthese_fr": "La production de lait de vache a atteint 2 419 276,6 t en 2023 (FAO) ; le secteur public a produit 12 291,7 milliers d'hl de lait pasteurisé et 5 538,7 t de fromages, et le groupe Giplait vise 2,6 milliards de litres/an de capacité. Les exportations sont quasi nulles : 0,02 M USD en 2024 selon BACI (lait en poudre vers le Niger).",
+   "synthese_en": "Cow's milk production reached 2,419,276.6 t in 2023 (FAO); the public sector produced 12,291.7 thousand hl of pasteurised milk and 5,538.7 t of cheese, and the Giplait group targets 2.6 billion litres/year of capacity. Exports are close to zero: USD 0.02 million in 2024 according to BACI (milk powder to Niger)."
+  },
+  {
+   "hs": "8703/8704",
+   "libelle_fr": "Voitures et véhicules utilitaires",
+   "libelle_en": "Passenger cars and commercial vehicles",
+   "filiere": "Automobile",
+   "citi_rev4": "2910",
+   "production": [
+    {
+     "annee": 2025,
+     "valeur": 43052,
+     "unite": "unités",
+     "perimetre": "national — véhicules automobiles (tous types)",
+     "fiabilite": "A",
+     "source_titre": "OICA - 2025 Production Statistics (prod-total-2025)",
+     "source_url": "https://oica.net/wp-content/uploads/2025/11/prod-total-2025.pdf",
+     "extrait": "UNITS YTD 2019 YTD 2021 YTD 2022 YTD 2023 YTD 2024 YTD 2025 [...] ALGERIA 60,012 5,208 2,773 2,456 30,108 43,052 -28% 727% 1453% 1653% 43% CCFA",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2024,
+     "valeur": 30108,
+     "unite": "unités",
+     "perimetre": "national — véhicules automobiles (tous types)",
+     "fiabilite": "A",
+     "source_titre": "OICA correspondents survey - World motor vehicle production by country/region and type 2024",
+     "source_url": "https://oica.net/wp-content/uploads/2025/10/By-country-region-2024.pdf",
+     "extrait": "UNITS YTD 2019 YTD 2021 YTD 2022 YTD 2023 YTD 2024 [...] ALGERIA 60 012 5 208 2 773 2 456 30 108 -50% 478% 986% 1126% CCFA",
+     "nature": "base_internationale"
+    },
+    {
+     "annee": 2025,
+     "valeur": 53000,
+     "unite": "unités",
+     "perimetre": "entreprise: Stellantis/Fiat El Djazaïr (usine de Tafraoui, Oran) — véhicules Fiat (500, Doblò)",
+     "fiabilite": "B",
+     "source_titre": "Fiat Algérie : l'objectif de 90.000 véhicules en 2026 en danger",
+     "source_url": "https://www.tsa-algerie.com/fiat-algerie-lobjectif-de-90-000-vehicules-en-2026-en-danger/",
+     "extrait": "En 2025, ce chiffre a bondi à 53.000 véhicules alors que l'objectif était de produire 60.000 unités.",
+     "nature": "presse"
+    }
+   ],
+   "capacite": [
+    {
+     "annee": 2023,
+     "valeur": 25000,
+     "unite": "unités/an",
+     "perimetre": "entreprise: Renault Algérie Production (Oued Tlelat, Oran) — véhicules Renault/Dacia",
+     "fiabilite": "A",
+     "source_titre": "Oran Plant (Renault Algeria Production) - Renault Group",
+     "source_url": "https://www.renaultgroup.com/en/group/locations/oran-plant-renault-algeria-production/",
+     "extrait": "With a production capacity of 25,000 vehicles per year, which can be extended to 75,000 vehicles per year, the plant in Oran produces the Sandero 2.",
+     "nature": "entreprise"
+    },
+    {
+     "annee": 2024,
+     "valeur": 9000,
+     "unite": "unités/an",
+     "perimetre": "secteur public: industries militaires (MDN) - SAFAV-MB Tiaret, SAPPL-MB/SNVI Rouiba — véhicules Mercedes-Benz (Sprinter, Classe G) et camions",
+     "fiabilite": "B",
+     "source_titre": "La SNVI renaît de ses cendres",
+     "source_url": "https://lalgerieaujourdhui.dz/la-snvi-renait-de-ses-cendres/",
+     "extrait": "La capacité de production des deux usines (Tiaret et Rouiba) relevant de ce département militaire est estimée à 6000 véhicules Mercedes-Benz (fourgon Sprinter et 4×4 Classe G) et 2000 camions, avec la production de 1000 unités de véhicules Sonacome.",
+     "nature": "presse"
+    },
+    {
+     "annee": 2023,
+     "valeur": 24000,
+     "unite": "unités/an",
+     "perimetre": "entreprise: Stellantis/Fiat El Djazaïr (usine de Tafraoui, Oran) — véhicules Fiat (capacité phase 1)",
+     "fiabilite": "C",
+     "source_titre": "Usine FIAT Tafraoui (Wikipédia, d'après TSA 07/11/2022 et MotorsActu 13/12/2023)",
+     "source_url": "https://fr.wikipedia.org/wiki/Usine_Fiat_Tafraoui",
+     "extrait": "Elle est implantée sur un terrain de 130 hectares. Pour cette première étape du projet, elle a une capacité de production de 24 000 automobiles par an.",
+     "nature": "presse"
+    }
+   ],
+   "entreprises": [
+    {
+     "nom": "Stellantis – Fiat El Djazaïr (Tafraoui, Oran)",
+     "role": "producteur principal",
+     "chiffre": "17 000 voitures produites en 2024",
+     "annee": 2024,
+     "source_url": "https://algerie-eco.com/2025/05/21/usine-fiat-doran-60-000-vehicules-seront-produits-en-2025/"
+    },
+    {
+     "nom": "Renault Algérie Production (Oued Tlelat, Oran)",
+     "role": "producteur",
+     "chiffre": "2 260 Logan et 196 Sandero produites en 2023",
+     "annee": 2023,
+     "source_url": "https://www.renaultgroup.com/en/group/locations/oran-plant-renault-algeria-production/"
+    }
+   ],
+   "exportations_baci": {
+    "2021": null,
+    "2022": null,
+    "2023": null,
+    "2024": null,
+    "part_afrique_2024_pct": null,
+    "premieres_destinations_2024": [],
+    "sh6_inclus": [],
+    "note": "Aucun code SH6 de cette fiche n'atteint 0,5 M USD d'exportations sur 2021-2024 dans BACI (seuil du fichier dza_commerce_baci.json) : valeurs non disponibles, pas nécessairement nulles."
+   },
+   "contradictions": [
+    "Production 2025 : 43 052 véhicules pour toute l'Algérie selon l'OICA, 53 000 pour la seule usine Fiat selon la presse.",
+    "Fiat 2024 : plus de 18 000 véhicules annoncés en décembre 2024, 17 000 produits selon le bilan publié en 2025."
+   ],
+   "synthese_fr": "La production automobile a redémarré avec l'usine Fiat (Stellantis) de Tafraoui : 43 052 véhicules en 2025 selon l'OICA, contre 30 108 en 2024. BACI ne recense pas d'exportations significatives de voitures ou d'utilitaires (moins de 0,5 M USD par an sur 2021-2024).",
+   "synthese_en": "Car production has restarted with the Fiat (Stellantis) plant in Tafraoui: 43,052 vehicles in 2025 according to OICA, up from 30,108 in 2024. BACI records no significant exports of cars or commercial vehicles (less than USD 0.5 million a year over 2021-2024)."
+  }
+ ]
+}

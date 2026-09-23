@@ -83,6 +83,7 @@ from .countries import router as countries_router
 from .etl import router as etl_router
 from .hs6_database import router as hs6_db_router
 from .hs_codes import router as hs_codes_router
+from .industrie_nationale import router as industrie_nationale_router
 from .logistics import router as logistics_router
 from .oec import router as oec_router
 from .production import router as production_router
@@ -491,6 +492,9 @@ def register_routes(api_router: APIRouter):
     )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
     api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
+    api_router.include_router(
+        industrie_nationale_router, tags=["Industrie nationale"], dependencies=_auth
+    )
     api_router.include_router(
         strategic_router, tags=["Strategic Trade Intelligence"], dependencies=_auth
     )
