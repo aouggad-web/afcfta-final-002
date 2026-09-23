@@ -233,7 +233,7 @@ export default function NationalPositionsSelector({
                     className={`relative rounded-xl border-2 transition-all duration-200 cursor-pointer overflow-hidden ${
                       isSelected 
                         ? 'border-[var(--violet)] bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]' 
-                        : 'border-[var(--afcfta-border)] bg-[var(--afcfta-card)] hover:border-[color-mix(in_srgb,var(--gold)_45%,transparent)]'
+                        : 'border-[var(--afcfta-border)] bg-[var(--afcfta-card)] hover:border-[color-mix(in_srgb,var(--violet)_45%,transparent)]'
                     }`}
                     onClick={() => handleSelect(position)}
                   >
@@ -242,7 +242,7 @@ export default function NationalPositionsSelector({
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-2">
                             <span className={`font-mono tabular-nums text-lg font-bold px-3 py-1 rounded-lg ${
-                              isSelected ? 'bg-[color-mix(in_srgb,var(--violet)_16%,var(--afcfta-card))] text-[var(--violet)]' : 'bg-[var(--goldSoft)] text-[var(--gold)]'
+                              isSelected ? 'bg-[var(--violet)] text-[var(--bg)]' : 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)]'
                             }`}>
                               {currentCode}
                             </span>

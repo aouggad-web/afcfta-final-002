@@ -162,14 +162,12 @@ export default function FreeZonesTab({ language = 'fr' }) {
               <Button
                 onClick={() => setViewMode('map')}
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'bg-orange-600 hover:bg-orange-700' : ''}
               >
                 🗺️ {t.map}
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
                 variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'bg-orange-600 hover:bg-orange-700' : ''}
               >
                 📋 {t.list}
               </Button>

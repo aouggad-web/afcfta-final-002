@@ -2036,7 +2036,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               : (language === 'fr' ? 'Non établies' : 'Not established'))
                             : `${formalities.length} ${language === 'fr' ? 'formalités' : 'formalities'}`}
                           {isPositionLevel && (
-                            <span className="ml-2 text-[var(--gold)] text-xs font-mono">
+                            <span className="ml-2 text-[var(--violet)] text-xs font-mono">
                               — position {positionCode}
                             </span>
                           )}
@@ -2044,7 +2044,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </div>
                     </div>
                     {isPositionLevel && (
-                      <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
+                      <Badge className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-xs">
                         {language === 'fr' ? 'Position nationale' : 'National position'}
                       </Badge>
                     )}
@@ -2433,21 +2433,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   />
                 )}
                 {regulatorySelectedPosDesc && (
-                  <div className="flex items-start justify-between gap-3 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
+                  <div className="flex items-start justify-between gap-3 p-4 bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))] rounded-xl border border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                     <div className="flex items-start gap-3 min-w-0">
-                      <FileText className="w-5 h-5 text-[var(--gold)] mt-0.5 shrink-0" />
+                      <FileText className="w-5 h-5 text-[var(--violet)] mt-0.5 shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-[var(--gold)] uppercase tracking-wide font-medium mb-1">
+                        <p className="text-xs text-[var(--violet)] uppercase tracking-wide font-medium mb-1">
                           {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
                         </p>
                         <p className="text-[var(--text)] font-medium">{regulatorySelectedPosDesc}</p>
-                        <p className="text-[var(--gold)] font-mono text-sm mt-1">{regulatorySelectedPos}</p>
+                        <p className="text-[var(--violet)] font-mono text-sm mt-1">{regulatorySelectedPos}</p>
                       </div>
                     </div>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="shrink-0 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-[var(--gold)] hover:bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))]"
+                      className="shrink-0 border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)] hover:bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]"
                       onClick={() => {
                         setRegulatorySelectedPos(null);
                         setRegulatorySelectedPosDesc(null);

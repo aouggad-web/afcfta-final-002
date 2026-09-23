@@ -153,14 +153,12 @@ export default function LandLogisticsTab({ language = 'fr' }) {
               <Button
                 onClick={() => setViewMode('map')}
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'bg-[var(--afcfta-card2)] hover:bg-[var(--afcfta-card2)]' : ''}
               >
                 🗺️ {t.map}
               </Button>
               <Button
                 onClick={() => setViewMode('list')}
                 variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'bg-[var(--afcfta-card2)] hover:bg-[var(--afcfta-card2)]' : ''}
               >
                 📋 {t.list}
               </Button>
