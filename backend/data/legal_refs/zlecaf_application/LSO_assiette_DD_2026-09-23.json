@@ -1,0 +1,23 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette du droit de douane — Lesotho : valeur en douane sur base FOB, établie par le droit NATIONAL et non par le texte sud-africain.",
+ "verified_at": "2026-09-23",
+ "evidence_level": "primaire — texte national, téléchargé et vérifié passage par passage le 2026-09-23. Transcription visuelle : voir reserve.",
+ "source": {
+  "instrument": "Customs and Excise Act, 1982 (Act No. 10 of 1982), s. 67(1) « normal price » ; borne FOB par s. 68(1)(e) et s. 68(3)",
+  "url": "https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf",
+  "institution": "Revenue Services Lesotho (RSL) — consolidation dont les notes marginales vont jusqu'à L.N. 34 of 1983",
+  "texte_archive": "sources/LSO_assiette_DD.source-extrait.txt",
+  "sha256": "858babe37542521d6b34cad630abbcc9cbd54b0804044c05ee3294823b3df83c",
+  "document_sha256": "45722bb12a3b9145cd14984791bdf63d3754cb778ca46b19e2c388f178c568d1",
+  "pdf_non_archive": "Le document intégral n'est pas archivé ici ; seul l'extrait des articles de valeur l'est. L'empreinte du document sert à l'identifier."
+ },
+ "regle": {
+  "assiette": "FOB",
+  "lecture": "La valeur en douane ajoute les frais jusqu'au port ou lieu d'exportation et exclut le fret et l'assurance internationaux. Le socle exige la valeur FOB de l'appelant : il ne la déduit jamais du CIF."
+ },
+ "portee_du_renvoi_sud_africain": "Un renvoi au droit sud-africain existe, mais il est opéré par la LOI LESOTHANE elle-même (s. 122(2), note marginale « Non-publication of notices: South African Schedules to apply » ; et s. 48(1)) et il ne porte que sur les Schedules Nos. 1 à 7 — les taux. Le renvoi conventionnel qui, lui, visait le droit sud-africain en bloc figurait dans l'Accord SACU de 1969, abrogé par l'article 51 de l'Accord de 2002.",
+ "accord_sacu_2002": "Vérifié sur le texte officiel du Secrétariat SACU (deux PDF) : ZÉRO occurrence de « valuation », « customs value », « value for customs », « f.o.b. », « c.i.f. » ou « dutiable value ». L'art. 1 définit le droit de douane PAR RENVOI à la législation de chaque État membre ; l'art. 20(1) attribue le tarif au Council sur recommandation du Tariff Board ; l'art. 22 n'exige qu'une législation « similar ». L'Accord n'opère donc aucun renvoi en matière d'assiette.",
+ "reserve": "ATTENTION — LA CHAÎNE DE VÉRIFICATION EST LA PLUS FAIBLE DES QUATRE, et l'extrait n'est pas une extraction mais une TRANSCRIPTION. Le PDF officiel RSL est un scan de 98 pages SANS COUCHE TEXTE : 0 caractère extractible. Les trois passages ci-dessous ont été transcrits à la lecture des images rendues des pages imprimées 96, 97 et 135. DEUX RÉSERVES DE FOND, distinctes : (1) le texte publié retient le « normal price » de la Définition de Bruxelles, alors que le Trade Policy Review de la SACU de 2023 (WT/TPR/S/447) déclare un régime de valeur transactionnelle OMC — l'écart est sans conséquence sur le point FOB, mais la référence légale pourrait être datée ; (2) une « Customs and Excise Amendment Act No. 6 of 2021 » existe, mais le fichier joint à sa page RSL est erroné (il sert un barème d'accises sans rapport) : son effet sur les ss. 67-68 N'EST PAS ÉTABLI.",
+ "ce_qui_n_est_pas_etabli": "L'assiette de la TVA à l'importation n'est PAS établie par cette fiche et n'est pas écrite au socle. Voir INSTRUCTION_EMERGENT.md, registre G4."
+}
