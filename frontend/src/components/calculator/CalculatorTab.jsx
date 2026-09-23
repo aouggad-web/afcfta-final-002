@@ -1486,15 +1486,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               )}
 
               {result.trade_regime === 'ZLECAF' && result.zlecaf_reserve && (
-                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-amber-300 font-semibold text-sm">
+                    <p className="text-[var(--gold)] font-semibold text-sm">
                       {language === 'fr'
                         ? 'Préférence ZLECAf servie sous réserve'
                         : 'AfCFTA preference shown with a reservation'}
                     </p>
-                    <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_reserve}</p>
+                    <p className="text-[var(--gold)] text-sm mt-1">{result.zlecaf_reserve}</p>
                   </div>
                 </div>
               )}
