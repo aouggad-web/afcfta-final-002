@@ -113,9 +113,10 @@ RESERVE_REGLE_D_ORIGINE = (
     "l'Appendice IV à l'Annexe 2 (Conseil des ministres, décembre 2023). La "
     "Directive 1/2021 (§17) permet de ne pas appliquer la préférence à ce "
     "produit ; le barème kényan ne l'exclut pas. L'adoption des règles "
-    "manquantes par l'Assemblée de l'UA en février 2026 est annoncée par une "
-    "source secondaire ; la décision et son mécanisme transitoire n'ont pas été "
-    "retrouvés. La préférence peut ne pas être accordée en douane."
+    "manquantes est annoncée par le gouvernement sud-africain (dtic, mars 2026) "
+    "et, par l'Assemblée de l'UA en février 2026, par tralac ; ni la décision, "
+    "ni les règles adoptées, ni leur mécanisme transitoire n'ont été retrouvés. "
+    "La préférence peut ne pas être accordée en douane."
 )
 
 
