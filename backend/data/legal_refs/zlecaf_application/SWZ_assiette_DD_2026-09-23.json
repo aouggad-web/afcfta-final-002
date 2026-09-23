@@ -1,0 +1,28 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette du droit de douane — Eswatini : valeur en douane sur base FOB, établie par le droit NATIONAL et non par le texte sud-africain.",
+ "verified_at": "2026-09-23",
+ "evidence_level": "primaire — texte national, téléchargé et vérifié passage par passage le 2026-09-23.",
+ "source": {
+  "instrument": "Customs and Excise Act, 1971 (Eswatini, alors Swaziland), s. 65(1) ; borne FOB par s. 67(1)(e) et s. 67(2)(a)",
+  "url": "https://www.wipo.int/wipolex/edocs/lexdocs/laws/en/sz/sz013en.html",
+  "institution": "WIPO Lex — texte communiqué par l'État à l'OMPI ; consolidation telle qu'amendée jusqu'à A.5/1991",
+  "texte_archive": "sources/SWZ_assiette_DD.source-extrait.txt",
+  "sha256": "9eb309304d35d98b4fb7736ceb8853ef89ace03c7de53ac66ed4954f1680aa69",
+  "document_sha256": "6a960473b2e0c708ddad1816575ffeab973086950de5965a661c2e6dd3de9062",
+  "pdf_non_archive": "Le document intégral n'est pas archivé ici ; seul l'extrait des articles de valeur l'est. L'empreinte du document sert à l'identifier."
+ },
+ "regle": {
+  "assiette": "FOB",
+  "article": "Customs and Excise Act, 1971 (Eswatini, alors Swaziland), s. 65(1) ; borne FOB par s. 67(1)(e) et s. 67(2)(a)",
+  "verbatim_s_65_1": "Subject to this Act, the value for customs duty purposes of any imported goods shall, at the time of entry for home consumption, be the transaction value thereof, within ther meaning of section 66",
+  "verbatim_s_67_1_e": "to the extent that it is not included in the price actually paid or payable for the goods, the cost of transportation and the cost of loading, unloading, handling, insurance and associated costs incidental to delivery of the goods at the port or place of export in the country of exportation, ready for export to Swaziland",
+  "verbatim_s_67_2_a": "the cost of transportation and the cost of loading, unloading, handling, insurance and associated costs incidental to the transportation of the goods from the port or place of export in the country of exportation to the port or place of importation in Swaziland",
+  "verbatim_s_47_1": "Notwithstanding the date of commencement of this Act the Schedules to the Cus- toms and Excise Act, No. 91 of 1964 of the Republic as amended from time to time, pub- lished in English prior to the commencement of this Act shall mutatis mutandis be deemed to be the correspondingly numbered Schedules to this Act",
+  "lecture": "La valeur en douane ajoute les frais jusqu'au port ou lieu d'exportation et exclut le fret et l'assurance internationaux. Le socle exige la valeur FOB de l'appelant : il ne la déduit jamais du CIF."
+ },
+ "portee_du_renvoi_sud_africain": "Un renvoi au droit sud-africain existe, mais il est opéré par la LOI ESWATINIENNE elle-même (s. 47(1), note marginale « Application of Schedules and amendments thereto ») et il ne porte que sur les ANNEXES — les taux. Les ss. 65-67 sont dans le corps de la loi, hors de sa portée. Le texte publié porte des césures d'origine (« Cus- toms », « mutatis mu- tandis ») : l'extrait archivé les conserve.",
+ "accord_sacu_2002": "Vérifié sur le texte officiel du Secrétariat SACU (deux PDF) : ZÉRO occurrence de « valuation », « customs value », « value for customs », « f.o.b. », « c.i.f. » ou « dutiable value ». L'art. 1 définit le droit de douane PAR RENVOI à la législation de chaque État membre ; l'art. 20(1) attribue le tarif au Council sur recommandation du Tariff Board ; l'art. 22 n'exige qu'une législation « similar ». L'Accord n'opère donc aucun renvoi en matière d'assiette.",
+ "reserve": "Version consolidée arrêtée à A.5/1991 ; la POSTÉRIORITÉ N'EST PAS VÉRIFIÉE. Aucun hôte gouvernemental eswatinien n'a pu être atteint (www.ers.org.sz : chaîne TLS incomplète côté serveur ; www.gov.sz : connexion réinitialisée) et EswatiniLII ne porte pas cette loi ; archive.gazettes.africa ne couvre l'Eswatini que de 1976 à 2017. La s. 65(1) porte la coquille « within ther meaning » : elle est REPRODUITE TELLE QUELLE et ne doit pas être corrigée en silence. Le pays s'appelait Swaziland jusqu'en 2018 ; le texte le dit partout, ce qui ne le périme pas.",
+ "ce_que_cela_ne_tranche_pas": "L'assiette de la TVA à l'importation n'est PAS établie par cette fiche et n'est pas écrite au socle. Voir INSTRUCTION_EMERGENT.md, registre G4."
+}

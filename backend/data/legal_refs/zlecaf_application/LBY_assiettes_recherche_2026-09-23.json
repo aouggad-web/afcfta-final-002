@@ -1,0 +1,79 @@
+{
+ "schema_version": 1,
+ "objet": "Libye — recherche documentaire assiettes (mission LBY) : loi sur les douanes n° 10/2010 (valeur en douane = CIF, art. 29-31, 43) ; loi n° 19/1992 sur la taxe de production (base = volume/poids/nombre ou valeur au prix de revient, art. 1er + règlement 943/1993 art. 4) ; TSP ad valorem NON TROUVÉ ; absence de TVA confirmée.",
+ "verified_at": "2026-09-23",
+ "etabli": true,
+ "evidence_level": "primaire — deux PDF officiels téléchargés et archivés (customs.gov.ly), textes intégraux ; numérotation des articles établie par OCR (couche texte du PDF arabe brouillée), corroborée par citation officielle croisée (LANA, art. 43).",
+ "sources_primaires": {
+  "loi_10_2010": {
+   "instrument": "قانون رقم (10) لسنة 1378 و.ر الموافق 2010 م بشأن الجمارك — Loi n° 10 de 2010 sur les douanes",
+   "autorite": "مؤتمر الشعب العام (Congrès général du peuple)",
+   "url": "https://customs.gov.ly/wp-content/uploads/2023/12/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%A7%D9%84%D8%AC%D9%85%D8%A7%D8%B1%D9%83-%D8%A7%D9%84%D9%84%D9%8A%D8%A8%D9%8A%D8%A9.pdf",
+   "fichier_archive": "sources/LBY_loi_10_2010_texte-integral.pdf",
+   "sha256": "9ce4e8b6916487997722f7b60eca61fdc9ecba28382f395e4b6567a7f923b203",
+   "consulte_le": "2026-09-23",
+   "note_extraction": "PDF 45 pages, cmap arabe défectueux : chiffres et ordre des mots brouillés à l'extraction. Numérotation des articles établie par OCR (easyocr) des en-têtes d'articles, calibrée et validée : page 9 = art. 29/30/31, page 13 = art. 42-49, chap. VI = art. 192-196."
+  },
+  "loi_19_1992": {
+   "instrument": "قانون رقم (19) لسنة 1992 م بشأن ضريبة الإنتاج — Loi n° 19 de 1992 sur la taxe de production/consommation + règlement d'exécution (قرار اللجنة الشعبية العامة رقم 943 لسنة 1993, lu par OCR — numéro à confirmer au JO)",
+   "autorite": "مؤتمر الشعب العام (Congrès général du peuple)",
+   "publication": "الجريدة الرسمية العدد 37 du 30/12/1993 (mention portée par le document)",
+   "url": "https://customs.gov.ly/wp-content/uploads/2023/12/قانون-ضرائب-الإنتاج.pdf",
+   "fichier_archive": "sources/LBY_loi_19_1992_production_texte-integral.pdf",
+   "sha256": "3fd85d761fd0b8b24613d93457aa2527659edefad3a9f84fec25e95c5760d1d4",
+   "consulte_le": "2026-09-23"
+  },
+  "corroboration_art43": {
+   "source": "وكالة الأنباء الليبية (LANA, agence officielle), 16/04/2026 — cite l'art. 43 de la loi 10/2010 avec le même verbatim que le PDF primaire",
+   "url": "https://lana.gov.ly/post.php?id=355141&lang=ar",
+   "consulte_le": "2026-09-23"
+  },
+  "decision_393_2025_ports": {
+   "instrument": "قرار مجلس الوزراء رقم (393) لسنة 2025 م — redevances et recettes souveraines des ports",
+   "url": "http://lpma.gov.ly/ta3memat/q39325.pdf",
+   "sha256": "16d2e594942b4028ee9b5922c49f888b4a670945087e56c9da2adf47f23c4493",
+   "pdf_non_archive": "Document NON ARCHIVÉ dans le dépôt, délibérément. Il n'établit aucune valeur servie : il est cité pour le constat NÉGATIF qu'il porte — ses redevances sont par navire et par tonne, et non ad valorem sur la valeur en douane, ce qui est précisément ce qui interdit d'en tirer une assiette pour le TSP. L'empreinte est relevée pour identifier la version lue (13 pages scannées sans couche texte, lues par OCR), et permet de retrouver ce document exact à l'URL ci-dessus.",
+   "consulte_le": "2026-09-23",
+   "limite": "13 pages scannées sans couche texte (lu par OCR) ; redevances par navire/tonne, PAS une taxe ad valorem sur la valeur en douane. Téléchargement alternatif ltfu.ltnet.gov.ly/laws/DownloadFile/248 → HTTP 302 vers page de login (bloqué, rapporté)."
+  }
+ },
+ "regles": {
+  "assiette_droit_de_douane": {
+   "article": "Loi 10/2010, art. 29 (définition), 30 (données objectives), 31 (exclusions)",
+   "assiette": "CIF",
+   "verbatim_art29": "تكون القيمة الجمركية للبضائع الموردة إلى الدولة هي القيمة التعاقدية للصفقة أي الثمن المدفوع فعلاً أو المستحق عن بيع البضائع بعد تعديله بإضافة عناصر التكاليف بالقدر الذي تحمله المشترى فعلياً ولم يدرج في الثمن … مصاريف نقل وتأمين البضائع الموردة … مصاريف الشحن والتفريغ وجميع النفقات الأخرى المرتبطة بعملية نقل البضائع الموردة حتى مكان وصولها إلى مركز الدخول بالإقليم الجمركي",
+   "fob_ou_cif": "CIF — transport, assurance, chargement/déchargement jusqu'au point d'entrée du territoire douanier (art. 29). Le texte n'emploie pas l'acronyme, la règle est explicite.",
+   "droit_dans_assiette": "NON — art. 31 exclut « الضرائب والرسوم المدفوعة في الدولة » (impôts et redevances payés dans l'État)"
+  },
+  "assiette_taxe_production": {
+   "article": "Loi 19/1992 art. 1er + règlement d'exécution art. 4",
+   "assiette": "spécifique (volume/poids/nombre) OU valeur au prix de revient (قيمة السلعة بسعر التكلفة)",
+   "verbatim_reg_art4": "تقدر ضريبة الإنتاج أو الاستهلاك على السلع المنتجة محلياً أو المستوردة على أساس الحجم أو الوزن أو العدد أو على أساس قيمة السلعة بسعر التكلفة",
+   "ni_cif_ni_fob_precise": "le texte ne dit ni CIF ni FOB ; ni que le droit de douane entre dans l'assiette",
+   "taux": "fixé par décret par famille de biens — le 2 % du socle (PwC) reste non vérifié sur texte primaire"
+  },
+  "tsp": {
+   "assiette": "NON TROUVÉE",
+   "detail": "Aucun texte primaire trouvé établissant une base ad valorem 4 % sur la valeur en douane. Base légale des frais de services = Loi 10/2010 chap. VI (art. 192-196, OCR) : taux fixés par décision, plafond d'entreposage à la moitié de la valeur. La décision 393/2025 (ports) porte des redevances par navire/tonne, pas ad valorem. La source PwC du crawl reste non corroborée."
+  },
+  "absence_tva": {
+   "etabli": true,
+   "preuve": "zéro occurrence de « القيمة المضافة » / « ضريبة القيمة » dans la loi 10/2010 (45 p.) ; aucune colonne TVA dans le tarif 2022 ; codes du crawl : DD, LIGUE_ARABE, TSP, TP seulement"
+  }
+ },
+ "textes_concurrents_documentes": {
+  "aladel_gov_ly": "Le ministère de la Justice (https://aladel.gov.ly/home/القانون-الجمركي/) héberge un droit douanier ANTÉRIEUR à 2010 (réfère au « الجمهورية العربية الليبية », « وزير الخزانة », « مجلس قيادة الثورة ») — très probablement la loi n° 67 de 1972 modifiée par la loi 10/1981. Numérotation différente. NE PAS citer pour l'assiette actuelle.",
+  "decret_881": "القرار 881 بتحديد القيمة الجمركية — toujours inaccessible (URL customs.gov.ly en erreur 522 au 2026-09-23)."
+ },
+ "corrections_fiche_precedente": "LBY_assiette_TSP_TP_2026-09-17.json disait « articles 26 à 31 » : la définition de la valeur en douane est à l'ARTICLE 29 (30-31 adjacentes) ; 26-28 couvrent les personnes liées. Numérotation établie par OCR et corroborée par l'art. 43 (LANA).",
+ "ce_que_cela_ne_tranche_pas": [
+  "Taux TSP 4 % et texte instituteur — aucune base ad valorem sur imports dans les textes trouvés",
+  "Taux TP 2 % — la loi renvoie à des décrets par famille de biens",
+  "Survie de la loi 19/1992 et des décrets de taux après 2011 (aucune abrogation ni confirmation trouvée sur source primaire)",
+  "القرار 881 (inaccessible)"
+ ],
+ "decisions_de_modelisation_non_prises": [
+  "TP : base primaire = prix de revient ou spécifique — la grammaire assiettes_pays.json (CIF/FOB/CIF+CODES/xQTE) ne couvre pas « prix de revient » ; ne pas mapper TP sur CIF sans décision du propriétaire",
+  "TSP : aucune base primaire → ne pas écrire d'entrée d'assiette (le moteur rend ASSIETTE_INDISPONIBLE, état honnête)"
+ ]
+}
