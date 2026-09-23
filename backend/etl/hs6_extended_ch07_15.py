@@ -1049,7 +1049,10 @@ HS6_EXTENDED_CH07_15 = {
             "regional_content": 100,
         },
     },
-    "121292": {
+    # SH 2022 : 1212.93 = cannes à sucre ; 1212.92 = caroubes (libellé servi par
+    # la base CSV). Cette entrée était rangée par erreur sous 121292 et
+    # étiquetait la caroube « canne à sucre ».
+    "121293": {
         "chapter": "12",
         "description_fr": "Canne à sucre fraîche",
         "description_en": "Fresh sugar cane",
