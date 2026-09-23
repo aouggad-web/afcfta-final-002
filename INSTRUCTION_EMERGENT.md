@@ -129,9 +129,16 @@ le même commit :
 
 ## 4. État actuel
 
-**54 pays au socle, 367 340 positions**, dont 23 en couverture `COMPLET`,
-29 en `PARTIEL`, 2 déclarés `VIDE` (Djibouti, Érythrée — déclarés vides, jamais
-estimés).
+**54 pays au socle, 368 260 positions** (mesuré le 23/09/2026), dont 23 en
+couverture `COMPLET`, 29 en `PARTIEL`, 2 déclarés `VIDE` (Djibouti, Érythrée —
+déclarés vides, jamais estimés).
+
+**Ce que ce chiffre ne dit pas, et qu'il faut lire avant tout le reste :** sur
+les 2 756 couples destination × origine que ce socle permet de former,
+**aucun ne se voit servir de préférence ZLECAf**. Les 148 préférences servies
+relèvent d'unions douanières antérieures. Le détail, les causes et l'ordre de
+travail sont dans `reports/CARENCES_CALCULATEUR_2026-09-23.md` ; les entrées
+correspondantes sont au registre, en G2.
 
 Intégrés récemment, depuis le texte officiel et non depuis un agrégateur :
 
@@ -288,6 +295,63 @@ touche.
 
 ### G2 — le produit cache du vrai
 
+- **Aucune préférence ZLECAf n'est servie, sur aucun couloir.** Mesuré le
+  23/09/2026 ; constat complet dans
+  `reports/CARENCES_CALCULATEUR_2026-09-23.md`. `taux_preferentiels()` exécuté
+  sur les **2 756 couples destination × origine** que le socle permet de
+  former rend **0 préférence ZLECAf**. Les 148 préférences effectivement
+  servies relèvent toutes d'une **union douanière** — EAC, SACU, CEMAC,
+  UEMOA — c'est-à-dire d'un régime antérieur à la ZLECAf, que le moteur nomme
+  correctement `UNION_DOUANIERE`.
+
+  La cause est une **intersection vide**, et elle tient en deux lignes. Le
+  registre d'application ne contient que cinq pays, dont un seul `APPLIED` :
+  le Kenya. Neuf pays portent une colonne `AFCFTA` au socle : AGO, BWA, LSO,
+  MUS, MWI, NAM, SWZ, SYC, ZAF. **Le Kenya n'en fait pas partie** — vérifié
+  sur ses 5 935 positions, aucune ne porte de colonne préférentielle. Le seul
+  couloir juridiquement ouvert est donc celui dont le tarif n'a pas de
+  barème, d'où les 20 `PREFERENCE_NON_TRACEE`.
+
+  **Le moteur ne fabrique rien** — vérifié : `preference.py` est fail-closed,
+  aucun taux n'est dérivé du NPF par un coefficient, et `calcul.py` refuse de
+  calculer une économie si l'un des deux régimes n'est pas `COMPLET`. C'est
+  une carence de collecte, des deux côtés à la fois. Le code est prêt ; la
+  donnée n'y est pas. **Le geste au meilleur rapport coût/portée est le
+  barème kényan** : c'est le seul couloir autorisé, et il rendrait le produit
+  capable de servir sa première vraie préférence continentale.
+
+- **SACU — 33 448 droits muets pour quatre champs vides.** Botswana, Lesotho,
+  Namibie et Eswatini portent exactement le même tarif que l'Afrique du Sud :
+  8 589 positions, 8 589 droits, 8 361 taux chiffrés, distribution identique,
+  source `sars.gov.za`. L'Afrique du Sud en liquide **8 494 — 98,9 %** ; les
+  quatre autres **227 — 2,6 %**. La seule différence est l'assiette :
+  `reference_legale` vide, `origine: source_seule`. La règle de
+  `build_socle.py:1196` est `assiette and (taux is not None or
+  specifique_lisible)` — sans assiette, un taux publié ne se liquide pas.
+
+  C'est la carence la moins chère du registre : quatre références légales.
+  **Elle ne se comble pas en recopiant celle de l'Afrique du Sud** — chaque
+  État a sa propre loi douanière, et l'administration commune du tarif
+  extérieur ne dit rien de ce que chaque droit national prescrit comme valeur
+  en douane. Quatre recherches séparées, ou quatre articles de renvoi
+  identifiés. Et un piège : le dépôt a établi que la valeur en douane de la
+  SACU est la valeur **FOB**, jamais déduite du CIF ; une assiette CIF posée
+  par réflexe produirait des montants faux qui auraient l'air complets.
+
+- **Neuf pays sans TVA ni repli.** Douze pays ne portent aucune ligne de TVA
+  au socle — AGO, BWA, DJI, ERI, LBY, LSO, NAM, SOM, SWZ, SYC, ZAF, ZWE — et
+  la table `tva_nationale.json` n'en couvre que trois (ZAF, DJI, AGO), avec
+  sa réserve inscrite : c'est le taux **standard**, qui ne distingue ni les
+  biens détaxés ni les exonérés. Restent **BWA, ERI, LBY, LSO, NAM, SOM, SWZ,
+  SYC, ZWE** sans TVA d'aucune sorte. L'Afrique du Sud, premier importateur
+  du continent, n'est servie que par le repli — donc sous réserve, sur toutes
+  ses positions.
+
+- **Onze pays sans assiette.** BWA, COD, CPV, DJI, ERI, LBY, LSO, NAM, SDN,
+  SSD, SWZ. Le moteur rend `ASSIETTE_INDISPONIBLE` quels que soient les taux
+  collectés. Les quatre de la SACU ci-dessus ; les sept autres demandent
+  chacun leur propre recherche.
+
 - **394 taxes dont le taux ne se liquide pas — Égypte et les sept du TEC.**
   Mesuré le 21/09/2026 ; constat complet dans
   `reports/TAUX_INDISPONIBLES_EGY_EAC_2026-09-21.md`. Deux familles sans
@@ -432,6 +496,17 @@ touche.
   qui fixe le `server_hostname` de la poignée de main.
 
 ### G4 — en attente d'arbitrage ou de source
+
+- **Djibouti et l'Érythrée : zéro position.** Les deux seuls pays du socle à
+  l'état `VIDE`. Le calculateur ne connaît pas ces deux pays et ne s'en cache
+  pas, mais il ne peut rien en dire. Aucune source tarifaire n'a été trouvée à
+  ce jour ; c'est un arbitrage du propriétaire — chercher, ou déclarer ces
+  deux pays hors périmètre à l'écran.
+
+- **Les formalités n'existent pour ainsi dire pas.** Aucune position du socle
+  n'en porte. Deux fichiers dans `data/` : le Kenya, et un échantillon de
+  portail algérien. Le panneau réglementaire n'a rien à afficher pour 52 pays
+  sur 54. Mesuré le 23/09/2026.
 
 - **TROIS pays servent la TOTALITÉ de leur droit de douane depuis une moyenne
   statistique SH6** : Comores, São Tomé, Soudan. Tous de la forme
