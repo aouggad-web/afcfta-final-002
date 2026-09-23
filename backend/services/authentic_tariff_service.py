@@ -1872,17 +1872,13 @@ def calculate_import_taxes(
     )
 
     try:
-        hs_code_clean = _position_sans_cle(
-            country_iso3, normalize_calculation_code(hs_code)
-        )
+        hs_code_clean = _position_sans_cle(country_iso3, normalize_calculation_code(hs_code))
         selected = select_calculation_position(
             hs_code_clean, get_sub_positions(country_iso3, hs_code_clean[:6])
         )
         if selected:
             retenu = (
-                selected.get("code_raw")
-                or selected.get("code")
-                or selected.get("national_code")
+                selected.get("code_raw") or selected.get("code") or selected.get("national_code")
             )
             # Le moteur historique retrouve sa ligne dans le CRAWL, qui indexe
             # le code avec sa clé de contrôle. La sélection, elle, se fait sur
