@@ -112,7 +112,14 @@ def test_chaque_sha256_cite_correspond_a_un_document_archive(fiche):
 
 #: Un chemin d'archive tel que les fiches le nomment, sous une clé dédiée ou
 #: au fil d'une phrase.
-_CHEMIN_SOURCE_RE = re.compile(r"(sources/[\w.\-]+)")
+#:
+#: Le lookbehind n'est pas une précaution théorique : sans lui, « sources/ » se
+#: reconnaît À L'INTÉRIEUR d'un mot, et l'URL d'une fiche citant
+#: `tralac.org/documents/re·sources/cfta/…` faisait chercher un fichier nommé
+#: `sources/cfta`. Le test échouait alors sur une fiche parfaitement formée,
+#: dont les deux empreintes étaient justes — un faux positif qui aurait fini
+#: par faire douter du contrôle plutôt que de la fiche.
+_CHEMIN_SOURCE_RE = re.compile(r"(?<!\w)(sources/[\w.\-]+)")
 
 
 def _paires_document_empreinte(payload, trouvees=None) -> list:
