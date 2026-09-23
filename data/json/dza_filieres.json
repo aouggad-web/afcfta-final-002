@@ -2226,6 +2226,17 @@
    "citi_rev4": "0125",
    "production": [
     {
+     "annee": 2021,
+     "valeur": 3219.0,
+     "unite": "t",
+     "perimetre": "national (production recensée par le MADR, via FAOSTAT)",
+     "fiabilite": "A",
+     "source_titre": "FAOSTAT – Production_Crops_Livestock (Afrique), Algérie, article 461 « Locust beans (carobs) » (fichier en masse, mis à jour le 31/12/2025)",
+     "source_url": "https://bulks-faostat.fao.org/production/Production_Crops_Livestock_E_Africa.zip",
+     "extrait": "Area: Algeria | Item: Locust beans (carobs) (461) | Element: Production (t) | Y2021: 3219.000000 | Y2021F: A",
+     "nature": "base_internationale"
+    },
+    {
      "annee": 2023,
      "valeur": 8000,
      "unite": "t",
@@ -2310,12 +2321,12 @@
     "note": "Somme de SH 121292 (caroubes ; libellé « Sugar cane » dans la source OEC) et de SH 121299, code mixte « autres produits végétaux » où sont classées les graines de caroube (preuves caroube.jsonl)."
    },
    "contradictions": [
-    "Production : la FAO (statistique officielle) donne 3 219 t en 2021, la filière avance 8 000 à 15 000 t (2023).",
+    "Production : la statistique officielle (MADR via FAOSTAT) recense 3 219 t en 2021, dernier chiffre officiel (les valeurs 2022-2024, de 3 402,33 à 3 444,75 t, sont imputées par la FAO), alors que la filière estime la production entre 8 000 et 15 000 t (2023). La production recensée porte sur 688 ha récoltés en 2021 (FAOSTAT) : elle semble ne couvrir que les vergers et non la cueillette sur arbres forestiers et isolés, ce qui pourrait expliquer l'écart (hypothèse).",
     "Exportations : Boublenza déclare à elle seule 47,6 M USD par an, alors que la Chambre d'agriculture évoque « plus de 7 millions de dollars » pour tout le pays en 2023 et que BACI donne 9,04 M USD pour 2023.",
     "Exportations 2024 de caroubes (SH 121292) : 5,6 M USD selon la déclaration algérienne à UN Comtrade, 2,2 M USD selon BACI."
    ],
-   "synthese_fr": "La production de caroubes est mal mesurée : la filière l'estime entre 8 000 et 15 000 t (2023), et Boublenza, principal exportateur cité, vend vers 25 pays. Selon BACI, les exportations de caroubes et de graines (SH 1212) ont atteint 11,5 M USD en 2024, surtout vers l'Italie et la France ; 12,2 % sont allés en Afrique.",
-   "synthese_en": "Carob production is poorly measured: the industry puts it at 8,000 to 15,000 t (2023), and Boublenza, the main exporter cited, sells to 25 countries. According to BACI, exports of carob and carob seeds (HS 1212) reached USD 11.5 million in 2024, mainly to Italy and France; 12.2% went to Africa."
+   "synthese_fr": "La production de caroubes est mal mesurée : la statistique officielle recense 3 219 t en 2021 sur 688 ha récoltés, alors que la filière l'estime entre 8 000 et 15 000 t (2023) ; l'écart pourrait venir de la cueillette sur arbres forestiers et isolés, que la statistique ne semble pas couvrir (hypothèse). Selon BACI, les exportations de caroubes (SH 121292) et du code 121299, où sont classées les graines, ont atteint 11,5 M USD en 2024, surtout vers l'Italie et la France ; 12,2 % sont allés en Afrique. Le principal exportateur cité, Boublenza (Tlemcen), vend vers 25 pays.",
+   "synthese_en": "Carob production is poorly measured: official statistics record 3,219 t in 2021 from 688 harvested hectares, while the industry puts it at 8,000 to 15,000 t (2023); the gap may come from wild harvesting on forest and isolated trees, which the statistics do not seem to cover (hypothesis). According to BACI, exports of carob (HS 121292) and of code 121299, where the seeds are classified, reached USD 11.5 million in 2024, mainly to Italy and France; 12.2% went to Africa. The main exporter cited, Boublenza (Tlemcen), sells to 25 countries."
   },
   {
    "hs": "4011",
