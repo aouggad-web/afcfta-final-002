@@ -1,0 +1,31 @@
+EAC Provisional Schedule of Tariff Concessions for the AfCFTA : Category A Products
+Legal Notice No. EAC/321/2022 — Journal officiel de l'EAC, 6 septembre 2022
+Signé : HON. AMB. EZEKIEL NIBIGIRA, Chairperson Council of Ministers
+
+Source : https://www.kra.go.ke/images/publications/EAC-PROVISIONAL-SCHEDULE-OF-TARIFF-CONCESSIONS-FOR-THE-AFRICAN-CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf
+Consulté le 2026-09-23. SHA-256 du PDF (347 p., texte natif) : 7a92fb35c5bba0e637deecb6d7d5eb309ecbbdefa84fecae67a56aa75f0ecaeb
+
+Extraits reproduits tels que publiés, ligatures typographiques comprises
+(« Tariﬀ »). Le document ne nomme AUCUN pays : zéro occurrence vérifiée
+sur l'intégralité des 347 pages.
+==============================================================================
+
+Page 1 — le barème renvoie l'admission des origines ailleurs
+------------------------------------------------------------
+SCHEDULE APPLICABLE TO State Parties with Provisional Schedule of Tariﬀ Concessions in Annex 1 to the Ministerial Directive on the Application of Provisional Schedules of Tariﬀ Concessions
+
+Page 2 — l'habilitation : section 112 (1) (b) de l'EACCMA 2004
+--------------------------------------------------------------
+IN EXERCISE of the powers conferred upon the Council of Ministers by Section 112 (1) (b) of the East African Community Customs Management Act, 2004, the Council of Ministers has approved preferential tariff treatment on originating goods imported from State Parties of the African Continental Free Trade Area (AfCFTA)
+
+En-tête du tableau — un taux de base, un horizon, dix annuités
+--------------------------------------------------------------
+Heading HS Code Description Unit of Quantity Rate Time Frame (years) 2021 2022 2023 2024 2025 2026 2027 2028 2029 2030
+
+Exemple lu — 0201.10.00, base 35 %, sixième annuité 14,0 % en 2026
+------------------------------------------------------------------
+0201.10.00 - Carcasses and half-carcasses kg 35% 10 31.5% 28.0% 24.5% 21.0% 17.5% 14.0% 10.5% 7.0% 3.5% 0.0%
+
+Une ligne à taux composite, écartée — 7213.20.00
+------------------------------------------------
+7213.20.00 - Other, of free-cutting steel kg 25% or $200/MT whichever is higher
