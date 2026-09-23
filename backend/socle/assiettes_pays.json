@@ -1,1069 +1,1125 @@
 {
-  "_objet": "Assiettes par pays, migrées depuis COUNTRY_TAX_PROFILES et ASSIETTE_TVA_ETABLIE (services/authentic_tariff_service.py). Utilisées UNIQUEMENT quand la source ne porte pas elle-même l'assiette de la taxe. Une assiette presente dans la donnee prime.",
-  "_grammaire": {
-    "CIF": "valeur en douane",
-    "FOB": "valeur FOB (valeur en douane SACU : fret et assurance internationaux exclus) — fournie par l'appelant, jamais déduite du CIF",
-    "FOB+<CODES>": "FOB augmenté du montant des droits nommés",
-    "CIF+<CODES>": "CIF augmente du montant des droits nommes",
-    "CIF+TOUS_SAUF_TVA": "CIF augmente de tous les prelevements d entree, TVA exclue",
-    "SOMME(TOUS_SAUF_SOI)": "somme des montants des autres droits, sans le CIF",
-    "%DD": "pourcentage du montant du droit de douane",
-    "xQTE": "droit specifique : montant unitaire x quantite"
-  },
-  "_migre_le": "2026-09-15",
-  "pays": {
-    "AGO": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "texte_primaire",
-          "texte": "Código Aduaneiro (Decreto-Lei n.º 05/06), art. 117.º n.º 2 — transport, chargement, manutention jusqu'au port ou lieu d'importation et coût de l'assurance entrent dans la valeur en douane ; art. 119.º a) et c) en bornent l'autre côté",
-          "fiche": "AGO_assiette_droit_de_douane_2026-09-19.json"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche AGO_assiette_TVA_2026-09-17.json",
-          "fiche": "AGO_assiette_TVA_2026-09-17.json"
-        }
-      },
-      "reference_legale": "Código Aduaneiro de Angola, Decreto-Lei n.º 05/06 (assiette du droit) — voir fiches AGO_assiette_droit_de_douane_2026-09-19.json et AGO_assiette_TVA_2026-09-17.json"
+ "_objet": "Assiettes par pays, migrées depuis COUNTRY_TAX_PROFILES et ASSIETTE_TVA_ETABLIE (services/authentic_tariff_service.py). Utilisées UNIQUEMENT quand la source ne porte pas elle-même l'assiette de la taxe. Une assiette presente dans la donnee prime.",
+ "_grammaire": {
+  "CIF": "valeur en douane",
+  "FOB": "valeur FOB (valeur en douane SACU : fret et assurance internationaux exclus) — fournie par l'appelant, jamais déduite du CIF",
+  "FOB+<CODES>": "FOB augmenté du montant des droits nommés",
+  "CIF+<CODES>": "CIF augmente du montant des droits nommes",
+  "CIF+TOUS_SAUF_TVA": "CIF augmente de tous les prelevements d entree, TVA exclue",
+  "SOMME(TOUS_SAUF_SOI)": "somme des montants des autres droits, sans le CIF",
+  "%DD": "pourcentage du montant du droit de douane",
+  "xQTE": "droit specifique : montant unitaire x quantite"
+ },
+ "_migre_le": "2026-09-15",
+ "pays": {
+  "AGO": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "Código Aduaneiro (Decreto-Lei n.º 05/06), art. 117.º n.º 2 — transport, chargement, manutention jusqu'au port ou lieu d'importation et coût de l'assurance entrent dans la valeur en douane ; art. 119.º a) et c) en bornent l'autre côté",
+     "fiche": "AGO_assiette_droit_de_douane_2026-09-19.json"
     },
-    "BDI": {
-      "ordre": [
-        "DD",
-        "IDF",
-        "RDL",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "IDF": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RDL": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "OBR Burundi — EAC CMA"
-    },
-    "BEN": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Bénin"
-    },
-    "BFA": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Burkina Faso"
-    },
-    "CAF": {
-      "ordre": [
-        "DD",
-        "TCI",
-        "CAC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CAC": {
-          "assiette": "%DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TCI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "CEMAC Tarif des Douanes"
-    },
-    "CIV": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire"
-    },
-    "CMR": {
-      "ordre": [
-        "DD",
-        "TCI",
-        "CAC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CAC": {
-          "assiette": "%DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TCI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "douanes.cm — Directive TVA CEMAC art. 9"
-    },
-    "COG": {
-      "ordre": [
-        "DD",
-        "TCI",
-        "CAC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CAC": {
-          "assiette": "%DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TCI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "CEMAC Tarif des Douanes"
-    },
-    "COM": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "texte_primaire",
-          "texte": "Code des douanes de l'Union des Comores (Loi n°15-016/AU), art. 36 et art. 40.1 e) — valeur transactionnelle augmentée du transport, de l'assurance et de la manutention jusqu'au lieu d'importation ; art. 41 a) et f) en bornent l'autre côté",
-          "fiche": "COM_assiette_droit_de_douane_2026-09-19.json"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche COM_assiette_TVA_2026-09-17.json",
-          "fiche": "COM_assiette_TVA_2026-09-17.json"
-        }
-      },
-      "reference_legale": "Code des douanes de l'Union des Comores, version 2024 (assiette du droit) ; Code général des impôts éd. 2023, art. 140 4° (assiette de la TVA) — voir fiches COM_assiette_droit_de_douane_2026-09-19.json et COM_assiette_TVA_2026-09-17.json"
-    },
-    "DZA": {
-      "ordre": [
-        "DAPS",
-        "DD",
-        "TCS",
-        "TVA",
-        "PRCT"
-      ],
-      "taxes": {
-        "DAPS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DAPS+DD",
-          "origine_assiette": "profil_code"
-        },
-        "PRCT": {
-          "assiette": "CIF+DD+TCS+TVA",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS"
-    },
-    "EGY": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)"
-    },
-    "ETH": {
-      "ordre": [
-        "DD",
-        "SUR",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "SUR": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+SUR",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)"
-    },
-    "GAB": {
-      "ordre": [
-        "DD",
-        "TCI",
-        "CAC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CAC": {
-          "assiette": "%DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TCI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "CEMAC Tarif des Douanes"
-    },
-    "GHA": {
-      "ordre": [
-        "DD",
-        "CEDEAO",
-        "TVA",
-        "NHIL",
-        "GETFUND"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CEDEAO": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+CEDEAO",
-          "origine_assiette": "profil_code"
-        },
-        "NHIL": {
-          "assiette": "CIF+DD+CEDEAO",
-          "origine_assiette": "profil_code"
-        },
-        "GETFUND": {
-          "assiette": "CIF+DD+CEDEAO",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "UNIPASS Ghana — VAT Act 870 (VAT/NHIL/GETFUND base = CIF+DD+ECOWAS)"
-    },
-    "GIN": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Guinée"
-    },
-    "GMB": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "TEC CEDEAO"
-    },
-    "GNB": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Guinée-Bissau"
-    },
-    "GNQ": {
-      "ordre": [
-        "DD",
-        "TCI",
-        "CAC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CAC": {
-          "assiette": "%DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TCI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "CEMAC Tarif des Douanes"
-    },
-    "KEN": {
-      "ordre": [
-        "DD",
-        "IDF",
-        "RDL",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "IDF": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RDL": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the amount of duty of customs », expression que la loi définit comme « import duty, excise duty, export duty, countervailing duty, levy, cess, tax or surtax charged under any law [...] relating to customs or excise » — la définition élargit l'alinéa bien au-delà du droit de douane",
-          "fiche": "EAC_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022"
-    },
-    "LBR": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "TEC CEDEAO"
-    },
-    "MAR": {
-      "ordre": [
-        "DD",
-        "TPI",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TPI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TPI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)"
-    },
-    "MDG": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "texte_primaire",
-          "texte": "Code des douanes de Madagascar (Loi n° 2006-023), version consolidée après la LFI 2026 (Loi n° 2025-021 du 20/12/2025), art. 23 §1 et §4 c) — valeur transactionnelle augmentée du transport, de l'assurance et des frais de chargement/manutention jusqu'au port ou lieu d'introduction à Madagascar",
-          "fiche": "MDG_assiette_droit_de_douane_2026-09-21.json"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "CGI malgache, édition 2025 (CDI n° 2025-MEF/SG/DGI du 2025-02-06), art. 06.01.11 — TVA assise sur la valeur des importations, frais et taxes inclus, TVA exclue de sa propre assiette",
-          "fiche": "MDG_assiette_TVA_2026-09-21.json"
-        }
-      },
-      "reference_legale": "Code des douanes (Loi n° 2006-023, version après LFI 2026), art. 23 (assiette du droit) ; Code général des impôts éd. 2025, art. 06.01.11 (assiette de la TVA) — voir fiches MDG_assiette_droit_de_douane_2026-09-21.json et MDG_assiette_TVA_2026-09-21.json"
-    },
-    "MLI": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Mali"
-    },
-    "MOZ": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "Autoridade Tributária de Moçambique — IVA na importação"
-    },
-    "MRT": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "CGI Mauritanie (Livre II, Titre I — TVA), chapitre 3 : « La base imposable pour les importations est constituée par la valeur définie par la législation douanière, y compris les taxes et prélèvements de toute nature perçus lors du franchissement du cordon douanier, à l'exception de la taxe sur la valeur ajoutée elle-même »",
-          "fiche": "MRT_assiette_TVA_2026-09-17.json"
-        }
-      },
-      "reference_legale": "impots.gov.mr — CGI (TVA) ; tarif douanes.mr"
-    },
-    "MUS": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "Mauritius Revenue Authority — VAT on imports"
-    },
-    "MWI": {
-      "ordre": [
-        "DD"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "Customs and Excise Act (Cap. 42:01), s.111(2) et Schedule A — prix normal ; voir fiche MWI_colonnes_remises_et_prix_normal_2026-09-19.json",
-      "_tva_retiree": "L'entree portait « TVA sur CIF+DD » sous la seule mention « Malawi Revenue Authority — import VAT » : un nom d'autorite, pas un article. L'Order 2022 publie les TAUX de l'accise, de la TVA et de l'Advance Income Tax (colonnes 10, 11 et 12) et ne dit rien de leur assiette ; aucun texte malawien lu ne l'etablit. La laisser faisait liquider la TVA malawienne sur une assiette que personne n'a lue."
-    },
-    "NER": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Niger"
-    },
-    "NGA": {
-      "ordre": [
-        "DD",
-        "IAT",
-        "EXC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "IAT": {
-          "assiette": "CIF",
-          "origine_assiette": "texte_primaire",
-          "texte": "NCSA 2023, s.69 : « the transaction value, which is the price paid or payable ... » — IAT liquidé sur la valeur CIF",
-          "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
-        },
-        "EXC": {
-          "assiette": "CIF",
-          "origine_assiette": "texte_primaire",
-          "texte": "NCSA 2023, s.69 ; CETA Cap C49 — accise ad valorem sur la valeur CIF",
-          "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; VAITA (TVA CIF+DD)"
-    },
-    "RWA": {
-      "ordre": [
-        "DD",
-        "IDF",
-        "RDL",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "IDF": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RDL": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "RRA Rwanda — VAT Act Cap 349"
-    },
-    "SEN": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "douanes.sn / TEC CEDEAO — CGI Sénégal"
-    },
-    "SLE": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "TEC CEDEAO"
-    },
-    "SOM": {
-      "ordre": [
-        "DD"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "texte_primaire",
-          "texte": "Somali Customs Tariff 2020, règles générales applicables à la nomenclature et aux droits, règle C.1 : « The assessment of the amount of ad valorem Customs duties will be made on the base of Customs value of imported or exported goods. […] the base for determination of the Customs value will be the transaction value of goods being imported or exported »",
-          "fiche": "SOM_assiette_DD_2026-09-17.json"
-        }
-      },
-      "reference_legale": "Ministère des Finances de Somalie — Somali Customs Tariff 2020 (mof.gov.so)"
-    },
-    "STP": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche STP_assiette_TVA_2026-09-17.json",
-          "fiche": "STP_assiette_TVA_2026-09-17.json"
-        }
-      },
-      "reference_legale": "voir fiche STP_assiette_TVA_2026-09-17.json"
-    },
-    "SYC": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche SYC_assiette_TVA_2026-09-17.json",
-          "fiche": "SYC_assiette_TVA_2026-09-17.json"
-        }
-      },
-      "reference_legale": "voir fiche SYC_assiette_TVA_2026-09-17.json"
-    },
-    "TCD": {
-      "ordre": [
-        "DD",
-        "TCI",
-        "CAC",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCI": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "CAC": {
-          "assiette": "%DD",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD+TCI",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "CEMAC Tarif des Douanes"
-    },
-    "TGO": {
-      "ordre": [
-        "DD",
-        "RS",
-        "PCS",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "PCS": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
-          "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "TEC CEDEAO — CGI Togo"
-    },
-    "TUN": {
-      "ordre": [
-        "DD",
-        "TCL",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TCL": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)"
-    },
-    "TZA": {
-      "ordre": [
-        "DD",
-        "IDF",
-        "RDL",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "IDF": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RDL": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "TRA Tanzania — VAT Act Cap 148"
-    },
-    "UGA": {
-      "ordre": [
-        "DD",
-        "IDF",
-        "RDL",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "IDF": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "RDL": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+TOUS_SAUF_TVA",
-          "origine_assiette": "texte_primaire",
-          "texte": "Ouganda, Value Added Tax Act Chapter 349, section 23 (b) : « the amount of customs duty, excise tax and any other fiscal charge other than tax payable on those goods », « tax » désignant la TVA elle-même",
-          "fiche": "EAC_assiette_TVA_2026-09-14.json"
-        }
-      },
-      "reference_legale": "URA Uganda — VAT Act Cap 349"
-    },
-    "ZAF": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "FOB",
-          "origine_assiette": "texte_primaire",
-          "texte": "Customs and Excise Act 1964 (Act 91 of 1964), s.65-67, corroboré par la politique SARS SC-CR-A-03 rév. 5 : la valeur en douane SACU est la valeur de transaction sur base FOB — fret et assurance internationaux exclus (art. 8.2 de l'Accord OMC). Le socle exige la valeur FOB de l'appelant : il ne la déduit jamais de la valeur CIF.",
-          "fiche": "SACU_assiette_DD_2026-09-17.json"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "Customs and Excise Act 91/1964 s.65-67 + SARS SC-CR-A-03 (assiette du droit = FOB) ; sars.gov.za — VAT Act s.13(2) (TVA base = CIF+DD)"
-    },
-    "ZMB": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "Zambia Revenue Authority — VAT on imports"
-    },
-    "ZWE": {
-      "ordre": [
-        "DD",
-        "TVA"
-      ],
-      "taxes": {
-        "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
-        }
-      },
-      "reference_legale": "ZIMRA — VAT on imported goods"
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche AGO_assiette_TVA_2026-09-17.json",
+     "fiche": "AGO_assiette_TVA_2026-09-17.json"
     }
+   },
+   "reference_legale": "Código Aduaneiro de Angola, Decreto-Lei n.º 05/06 (assiette du droit) — voir fiches AGO_assiette_droit_de_douane_2026-09-19.json et AGO_assiette_TVA_2026-09-17.json"
+  },
+  "BDI": {
+   "ordre": [
+    "DD",
+    "IDF",
+    "RDL",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "IDF": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RDL": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "OBR Burundi — EAC CMA"
+  },
+  "BEN": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Bénin"
+  },
+  "BFA": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Burkina Faso"
+  },
+  "BWA": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "FOB",
+     "origine_assiette": "texte_primaire",
+     "texte": "Customs Act 2018 (Act No. 33 of 2018, Botswana), s. 326(1) : la valeur en douane est la valeur transactionnelle ; s. 334(2) : transport, manutention et assurance ajoutés jusqu'à la mise à bord au port ou lieu d'exportation seulement — fret et assurance internationaux exclus, donc assiette FOB ; fait générateur s. 304(1). Le renvoi au droit sud-africain n'existe pas : la loi botswanaise est autonome et transpose l'Accord OMC sur l'évaluation en douane ; l'Accord SACU 2002 ne dit rien de l'assiette (art. 1, 20(1), 22).",
+     "fiche": "BWA_assiette_DD_2026-09-23.json"
+    }
+   },
+   "reference_legale": "Customs Act 2018 (Act No. 33 of 2018, Botswana), s. 326(1) : la valeur en douane est la valeur transactionnelle ; s. 334(2) : transport, manutention et assurance ajoutés jusqu'à la mise à bord au port ou lieu d'exportation seulement — fret et assurance internationaux exclus, donc assiette FOB ; fait générateur s. 304(1)."
+  },
+  "CAF": {
+   "ordre": [
+    "DD",
+    "TCI",
+    "CAC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CAC": {
+     "assiette": "%DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TCI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "CEMAC Tarif des Douanes"
+  },
+  "CIV": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire"
+  },
+  "CMR": {
+   "ordre": [
+    "DD",
+    "TCI",
+    "CAC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CAC": {
+     "assiette": "%DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TCI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "douanes.cm — Directive TVA CEMAC art. 9"
+  },
+  "COG": {
+   "ordre": [
+    "DD",
+    "TCI",
+    "CAC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CAC": {
+     "assiette": "%DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TCI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "CEMAC Tarif des Douanes"
+  },
+  "COM": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "Code des douanes de l'Union des Comores (Loi n°15-016/AU), art. 36 et art. 40.1 e) — valeur transactionnelle augmentée du transport, de l'assurance et de la manutention jusqu'au lieu d'importation ; art. 41 a) et f) en bornent l'autre côté",
+     "fiche": "COM_assiette_droit_de_douane_2026-09-19.json"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche COM_assiette_TVA_2026-09-17.json",
+     "fiche": "COM_assiette_TVA_2026-09-17.json"
+    }
+   },
+   "reference_legale": "Code des douanes de l'Union des Comores, version 2024 (assiette du droit) ; Code général des impôts éd. 2023, art. 140 4° (assiette de la TVA) — voir fiches COM_assiette_droit_de_douane_2026-09-19.json et COM_assiette_TVA_2026-09-17.json"
+  },
+  "DZA": {
+   "ordre": [
+    "DAPS",
+    "DD",
+    "TCS",
+    "TVA",
+    "PRCT"
+   ],
+   "taxes": {
+    "DAPS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DAPS+DD",
+     "origine_assiette": "profil_code"
+    },
+    "PRCT": {
+     "assiette": "CIF+DD+TCS+TVA",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS"
+  },
+  "EGY": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)"
+  },
+  "ETH": {
+   "ordre": [
+    "DD",
+    "SUR",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "SUR": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+SUR",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)"
+  },
+  "GAB": {
+   "ordre": [
+    "DD",
+    "TCI",
+    "CAC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CAC": {
+     "assiette": "%DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TCI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "CEMAC Tarif des Douanes"
+  },
+  "GHA": {
+   "ordre": [
+    "DD",
+    "CEDEAO",
+    "TVA",
+    "NHIL",
+    "GETFUND"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CEDEAO": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+CEDEAO",
+     "origine_assiette": "profil_code"
+    },
+    "NHIL": {
+     "assiette": "CIF+DD+CEDEAO",
+     "origine_assiette": "profil_code"
+    },
+    "GETFUND": {
+     "assiette": "CIF+DD+CEDEAO",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "UNIPASS Ghana — VAT Act 870 (VAT/NHIL/GETFUND base = CIF+DD+ECOWAS)"
+  },
+  "GIN": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Guinée"
+  },
+  "GMB": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "TEC CEDEAO"
+  },
+  "GNB": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Guinée-Bissau"
+  },
+  "GNQ": {
+   "ordre": [
+    "DD",
+    "TCI",
+    "CAC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CAC": {
+     "assiette": "%DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TCI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "CEMAC Tarif des Douanes"
+  },
+  "KEN": {
+   "ordre": [
+    "DD",
+    "IDF",
+    "RDL",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "IDF": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RDL": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the amount of duty of customs », expression que la loi définit comme « import duty, excise duty, export duty, countervailing duty, levy, cess, tax or surtax charged under any law [...] relating to customs or excise » — la définition élargit l'alinéa bien au-delà du droit de douane",
+     "fiche": "EAC_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022"
+  },
+  "LBR": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "TEC CEDEAO"
+  },
+  "LSO": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "FOB",
+     "origine_assiette": "texte_primaire",
+     "texte": "Customs and Excise Act 1982 (Act No. 10 of 1982, Lesotho), s. 67(1) : la valeur pour droits est le « normal price » ; s. 68(1)(e) : ce prix inclut tous les frais jusqu'au lieu de dispatch final dans le territoire d'exportation et EXCLUT ceux de la livraison jusqu'au Lesotho — assiette FOB. Le renvoi au droit sud-africain est opéré par la loi lesothane elle-même (s. 122(2), s. 48(1)) et ne porte que sur les Schedules Nos. 1 à 7, les taux ; l'Accord SACU de 1969, qui renvoyait au droit sud-africain en bloc, est abrogé par l'art. 51 de l'Accord de 2002. Consolidation arrêtée à L.N. 34 of 1983 ; texte publié en « normal price » alors que l'OMC déclarait en 2023 un régime de valeur transactionnelle : référence possiblement datée.",
+     "fiche": "LSO_assiette_DD_2026-09-23.json"
+    }
+   },
+   "reference_legale": "Customs and Excise Act 1982 (Act No. 10 of 1982, Lesotho), s. 67(1) : la valeur pour droits est le « normal price » ; s. 68(1)(e) : ce prix inclut tous les frais jusqu'au lieu de dispatch final dans le territoire d'exportation et EXCLUT ceux de la livraison jusqu'au Lesotho — assiette FOB."
+  },
+  "MAR": {
+   "ordre": [
+    "DD",
+    "TPI",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TPI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TPI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)"
+  },
+  "MDG": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "Code des douanes de Madagascar (Loi n° 2006-023), version consolidée après la LFI 2026 (Loi n° 2025-021 du 20/12/2025), art. 23 §1 et §4 c) — valeur transactionnelle augmentée du transport, de l'assurance et des frais de chargement/manutention jusqu'au port ou lieu d'introduction à Madagascar",
+     "fiche": "MDG_assiette_droit_de_douane_2026-09-21.json"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "CGI malgache, édition 2025 (CDI n° 2025-MEF/SG/DGI du 2025-02-06), art. 06.01.11 — TVA assise sur la valeur des importations, frais et taxes inclus, TVA exclue de sa propre assiette",
+     "fiche": "MDG_assiette_TVA_2026-09-21.json"
+    }
+   },
+   "reference_legale": "Code des douanes (Loi n° 2006-023, version après LFI 2026), art. 23 (assiette du droit) ; Code général des impôts éd. 2025, art. 06.01.11 (assiette de la TVA) — voir fiches MDG_assiette_droit_de_douane_2026-09-21.json et MDG_assiette_TVA_2026-09-21.json"
+  },
+  "MLI": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Mali"
+  },
+  "MOZ": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "Autoridade Tributária de Moçambique — IVA na importação"
+  },
+  "MRT": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "CGI Mauritanie (Livre II, Titre I — TVA), chapitre 3 : « La base imposable pour les importations est constituée par la valeur définie par la législation douanière, y compris les taxes et prélèvements de toute nature perçus lors du franchissement du cordon douanier, à l'exception de la taxe sur la valeur ajoutée elle-même »",
+     "fiche": "MRT_assiette_TVA_2026-09-17.json"
+    }
+   },
+   "reference_legale": "impots.gov.mr — CGI (TVA) ; tarif douanes.mr"
+  },
+  "MUS": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "Mauritius Revenue Authority — VAT on imports"
+  },
+  "MWI": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "Customs and Excise Act (Cap. 42:01), s.111(2) et Schedule A — prix normal ; voir fiche MWI_colonnes_remises_et_prix_normal_2026-09-19.json",
+   "_tva_retiree": "L'entree portait « TVA sur CIF+DD » sous la seule mention « Malawi Revenue Authority — import VAT » : un nom d'autorite, pas un article. L'Order 2022 publie les TAUX de l'accise, de la TVA et de l'Advance Income Tax (colonnes 10, 11 et 12) et ne dit rien de leur assiette ; aucun texte malawien lu ne l'etablit. La laisser faisait liquider la TVA malawienne sur une assiette que personne n'a lue."
+  },
+  "NAM": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "FOB",
+     "origine_assiette": "texte_primaire",
+     "texte": "Customs and Excise Act 20 of 1998 (Namibie), s. 75(1) : la valeur en douane est la valeur transactionnelle ; s. 77(1)(e) ajoute les frais jusqu'au port ou lieu d'exportation, s. 77(2)(a) DÉDUIT le fret et l'assurance du port d'exportation jusqu'au port d'importation en Namibie — assiette FOB. Le renvoi au droit sud-africain n'existe plus : la s. 131(1) et le Schedule 9 de cette même loi abrogent le Customs and Excise Act 91 of 1964 « The whole » ; l'Accord SACU 2002 ne dit rien de l'assiette (art. 1, 20(1), 22).",
+     "fiche": "NAM_assiette_DD_2026-09-23.json"
+    }
+   },
+   "reference_legale": "Customs and Excise Act 20 of 1998 (Namibie), s. 75(1) : la valeur en douane est la valeur transactionnelle ; s. 77(1)(e) ajoute les frais jusqu'au port ou lieu d'exportation, s. 77(2)(a) DÉDUIT le fret et l'assurance du port d'exportation jusqu'au port d'importation en Namibie — assiette FOB."
+  },
+  "NER": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Niger"
+  },
+  "NGA": {
+   "ordre": [
+    "DD",
+    "IAT",
+    "EXC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "IAT": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "NCSA 2023, s.69 : « the transaction value, which is the price paid or payable ... » — IAT liquidé sur la valeur CIF",
+     "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
+    },
+    "EXC": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "NCSA 2023, s.69 ; CETA Cap C49 — accise ad valorem sur la valeur CIF",
+     "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; VAITA (TVA CIF+DD)"
+  },
+  "RWA": {
+   "ordre": [
+    "DD",
+    "IDF",
+    "RDL",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "IDF": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RDL": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "RRA Rwanda — VAT Act Cap 349"
+  },
+  "SEN": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "douanes.sn / TEC CEDEAO — CGI Sénégal"
+  },
+  "SLE": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "TEC CEDEAO"
+  },
+  "SOM": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "Somali Customs Tariff 2020, règles générales applicables à la nomenclature et aux droits, règle C.1 : « The assessment of the amount of ad valorem Customs duties will be made on the base of Customs value of imported or exported goods. […] the base for determination of the Customs value will be the transaction value of goods being imported or exported »",
+     "fiche": "SOM_assiette_DD_2026-09-17.json"
+    }
+   },
+   "reference_legale": "Ministère des Finances de Somalie — Somali Customs Tariff 2020 (mof.gov.so)"
+  },
+  "STP": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche STP_assiette_TVA_2026-09-17.json",
+     "fiche": "STP_assiette_TVA_2026-09-17.json"
+    }
+   },
+   "reference_legale": "voir fiche STP_assiette_TVA_2026-09-17.json"
+  },
+  "SWZ": {
+   "ordre": [
+    "DD"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "FOB",
+     "origine_assiette": "texte_primaire",
+     "texte": "Customs and Excise Act 1971 (Eswatini), s. 65(1) : la valeur en douane est la valeur transactionnelle ; s. 67(1)(e) ajoute les frais jusqu'au port ou lieu d'exportation, s. 67(2)(a) DÉDUIT ceux du port d'exportation jusqu'au port d'importation en Eswatini — assiette FOB. Le renvoi au droit sud-africain est opéré par la loi eswatinienne elle-même (s. 47(1)) et ne porte que sur les ANNEXES tarifaires, non sur la valeur ; l'Accord SACU 2002 ne dit rien de l'assiette (art. 1, 20(1), 22). Consolidation arrêtée à A.5/1991 : postériorité non vérifiée.",
+     "fiche": "SWZ_assiette_DD_2026-09-23.json"
+    }
+   },
+   "reference_legale": "Customs and Excise Act 1971 (Eswatini), s. 65(1) : la valeur en douane est la valeur transactionnelle ; s. 67(1)(e) ajoute les frais jusqu'au port ou lieu d'exportation, s. 67(2)(a) DÉDUIT ceux du port d'exportation jusqu'au port d'importation en Eswatini — assiette FOB."
+  },
+  "SYC": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche SYC_assiette_TVA_2026-09-17.json",
+     "fiche": "SYC_assiette_TVA_2026-09-17.json"
+    }
+   },
+   "reference_legale": "voir fiche SYC_assiette_TVA_2026-09-17.json"
+  },
+  "TCD": {
+   "ordre": [
+    "DD",
+    "TCI",
+    "CAC",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCI": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "CAC": {
+     "assiette": "%DD",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD+TCI",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "CEMAC Tarif des Douanes"
+  },
+  "TGO": {
+   "ordre": [
+    "DD",
+    "RS",
+    "PCS",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "PCS": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+     "fiche": "UEMOA_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "TEC CEDEAO — CGI Togo"
+  },
+  "TUN": {
+   "ordre": [
+    "DD",
+    "TCL",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TCL": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)"
+  },
+  "TZA": {
+   "ordre": [
+    "DD",
+    "IDF",
+    "RDL",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "IDF": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RDL": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "TRA Tanzania — VAT Act Cap 148"
+  },
+  "UGA": {
+   "ordre": [
+    "DD",
+    "IDF",
+    "RDL",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "IDF": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "RDL": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Ouganda, Value Added Tax Act Chapter 349, section 23 (b) : « the amount of customs duty, excise tax and any other fiscal charge other than tax payable on those goods », « tax » désignant la TVA elle-même",
+     "fiche": "EAC_assiette_TVA_2026-09-14.json"
+    }
+   },
+   "reference_legale": "URA Uganda — VAT Act Cap 349"
+  },
+  "ZAF": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "FOB",
+     "origine_assiette": "texte_primaire",
+     "texte": "Customs and Excise Act 1964 (Act 91 of 1964), s.65-67, corroboré par la politique SARS SC-CR-A-03 rév. 5 : la valeur en douane SACU est la valeur de transaction sur base FOB — fret et assurance internationaux exclus (art. 8.2 de l'Accord OMC). Le socle exige la valeur FOB de l'appelant : il ne la déduit jamais de la valeur CIF.",
+     "fiche": "SACU_assiette_DD_2026-09-17.json"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "Customs and Excise Act 91/1964 s.65-67 + SARS SC-CR-A-03 (assiette du droit = FOB) ; sars.gov.za — VAT Act s.13(2) (TVA base = CIF+DD)"
+  },
+  "ZMB": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "Zambia Revenue Authority — VAT on imports"
+  },
+  "ZWE": {
+   "ordre": [
+    "DD",
+    "TVA"
+   ],
+   "taxes": {
+    "DD": {
+     "assiette": "CIF",
+     "origine_assiette": "profil_code"
+    },
+    "TVA": {
+     "assiette": "CIF+DD",
+     "origine_assiette": "profil_code"
+    }
+   },
+   "reference_legale": "ZIMRA — VAT on imported goods"
   }
+ }
 }
