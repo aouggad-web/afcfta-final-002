@@ -56,15 +56,15 @@
    "url": "https://justice.gov.et/wp-content/uploads/2025/10/Implementation-of-the-Concession-of-Duty-Tariff-Rates-on-Goods-for-the-African-Continental-Free-Trade-Area-Agreement-Council-of-Ministers-Regulation-No.-5742025.pdf",
    "sha256": "fb36d59edbefc32f0ab2dea1096c321f32e47ea9dcb3d8485131450b98154034",
    "taille_octets": 24545855,
-   "pages": 406,
+   "pages": 419,
    "consulte_le": "2026-09-23",
-   "constat": "Le texte intégral (406 pages, annexe tarifaire comprise) ne contient AUCUNE liste de pays : la notification de l'article 3(2) n'est pas publiée dans la gazette du règlement. Version légèrement différente du PDF déjà haché (3bd4acae…, 419 pages) — même dispositif, découpage différent.",
+   "constat": "Le texte intégral (419 pages, annexe tarifaire comprise) ne contient AUCUNE liste de pays : la notification de l'article 3(2) n'est pas publiée dans la gazette du règlement. Empreinte différente du PDF déjà haché (3bd4acae…) ; l'origine de cette différence n'est pas établie.",
    "pdf_integral_non_archive": "PDF de 24 545 855 octets non versé au dépôt ; seul le dispositif de la gazette est archivé (voir le bloc instrument ci-dessus)."
   },
   "sources_consultees": [
    {
     "source": "MoTRI (motri.gov.et)",
-    "resultat": "HTTPS apex en erreur 60 (certificat expiré — TLS non contourné) ; pages annonces EN/AM, ressources et recherche interne lues via r.jina.ai : aucune notification ; Telegram officiel t.me/s/motri_gov_et (août–décembre 2025) : aucun post."
+    "resultat": "HTTPS apex en erreur 60 (certificat expiré). Pages annonces EN/AM, ressources et recherche interne consultées INDIRECTEMENT, via un intermédiaire tiers (r.jina.ai) : lecture non vérifiable et non archivable comme source primaire — sans conséquence ici, rien n'ayant été trouvé. Telegram officiel t.me/s/motri_gov_et (août–décembre 2025) : aucun post."
    },
    {
     "source": "Ethiopian Customs Commission (ecc.gov.et, customs.erca.gov.et)",
@@ -98,7 +98,7 @@
    "Réinterroger les API d'ecc.gov.et (/api/circular, /api/preferential, /api/tariff, /api/document) quand le site répond.",
    "Confirmation par le Secrétariat ZLECAf des PSTC adoptés au 09/10/2025 (corrobore ou infirme la liste de 24)."
   ],
-  "effet_sur_le_depot": "Aucun : registre (ETH reste PARTNER_NOTICE_REQUIRED, accepted_origins vide) et moteur inchangés. Mesure des couples destination × origine du 23/09/2026 (socle reconstruit, méthode du rapport de carences) : 2 756 couples, ZLECAf servi 0 — identique avant/après."
+  "effet_sur_le_depot": "Aucun : registre (ETH reste PARTNER_NOTICE_REQUIRED, accepted_origins vide) et moteur inchangés. Mesure des couples destination × origine sur main au 23/09/2026, avant le barème kényan (#509) : 2 756 couples, ZLECAf servi 0, identique avant/après cette fiche. Aucun couple à destination de l'Éthiopie n'est servi, quel que soit l'état des autres pays."
  },
  "remaining_work": [
   "Obtenir l'avis du Ministry of Trade and Regional Integration listant les origines admises, avec sa date et son numéro. C'est le seul verrou restant : tout le reste est établi. Recherche du 23/09/2026 infructueuse sur sources publiques — la voie restante est une demande directe au MoTRI ou à l'Ethiopian Customs Commission (détail : bloc recherche_avis_motri_2026-09-23).",
