@@ -165,6 +165,35 @@ PREFERENTIELS = {
 #: préférentiels partout sur la foi d'un seul tarif. Chaque pays déclare donc
 #: les siens, et un régime absent de sa table n'est PAS servi : il est compté
 #: et écarté, jamais rabattu sur la cascade NPF où il deviendrait un droit dû.
+#: PAYS DONT LE CODE PUBLIÉ PORTE UNE CLÉ DE CONTRÔLE, et la longueur de la
+#: POSITION TARIFAIRE sans elle. Déclaré pays par pays, jamais déduit d'une
+#: longueur : une nomenclature peut légitimement compter onze chiffres.
+#:
+#: La Tunisie publie `01012100015`. Ce n'est pas une position à onze chiffres :
+#: c'est la sous-position `0101210001` suivie de la clé `5`, que le déclarant
+#: saisit avec le code sur la déclaration en douane. La preuve est dans la
+#: donnée — tronquer les 17 541 codes au dixième caractère donne 17 541
+#: préfixes DISTINCTS, zéro collision. Si le onzième chiffre était un niveau de
+#: subdivision, plusieurs codes partageraient leur parent ; aucun ne le fait,
+#: il est donc fonctionnellement déterminé par les dix premiers. Et il est
+#: uniformément réparti de 0 à 9, ce qu'un niveau tarifaire n'est jamais.
+#:
+#: CE QUE COÛTAIT L'ABSENCE DE CETTE TABLE. Le socle s'indexait sur le code
+#: PLUS sa clé, si bien que le code qu'un déclarant tape — dix chiffres — se
+#: voyait répondre « Position nationale introuvable ». Et le sélecteur
+#: affichait « HS11 digits » : le produit affirmait une nomenclature tunisienne
+#: à onze chiffres, qui n'existe pas.
+#:
+#: NE PAS Y VERSER L'ÉTHIOPIE sur la foi de la même longueur. Ses 6 296 codes
+#: font aussi onze caractères, mais le onzième est TOUJOURS « 0 » : c'est un
+#: remplissage, pas une clé. Même symptôme, cause différente, à examiner pour
+#: elle-même.
+CLE_DE_CONTROLE_SUFFIXE = {
+    # Tunisie — douane.gov.tn/tarifwebnew : position à 10 chiffres + 1 de clé.
+    "TUN": 10,
+}
+
+
 REGIMES_PAR_PAYS = {
     # Maurice — mra.mu, Customs Tariff Schedules (HS 2022). Douze colonnes
     # préférentielles, que le tarif nomme en toutes lettres.
@@ -1070,6 +1099,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     for code, designation, unite, droits, source_ligne, restrictions in lignes_du_fichier(
         donnees, REGIMES_PAR_PAYS.get(iso), compteurs
     ):
+        # LA CLÉ DE CONTRÔLE N'EST PAS UNE SUBDIVISION TARIFAIRE. Elle est
+        # détachée ici, au point unique où le pays est connu et où les six
+        # schémas de lecture se rejoignent — la poser dans le générateur
+        # obligerait à la répéter six fois, et `iso` n'y est pas défini.
+        cle_controle = None
+        longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+        if longueur_position and len(code) == longueur_position + 1:
+            code, cle_controle = code[:longueur_position], code[longueur_position:]
+
         retenus, prefs = [], {}
         position_complete = True
         for d in droits:
@@ -1210,6 +1248,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             "chapitre": code[:2],
             "droits": retenus,
         }
+        if cle_controle:
+            # Conservée pour la saisie de la déclaration, mais hors du code :
+            # le sélecteur affiche la position, pas la position plus sa clé.
+            positions[code]["cle_controle"] = cle_controle
         if unite:
             positions[code]["unite"] = unite
         if prefs:
@@ -1424,6 +1466,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         # date de construction vit au manifeste, qui n'est pas empreint.
         "positions": positions,
     }
+    if iso in CLE_DE_CONTROLE_SUFFIXE:
+        # Posée seulement pour les pays concernés : les 53 autres fichiers
+        # restent alors identiques au bit près, et le manifeste ne signale que
+        # ce qui a réellement changé.
+        socle["nomenclature"] = {
+            "longueur_position": CLE_DE_CONTROLE_SUFFIXE[iso],
+            "cle_controle": "suffixe d'un chiffre, saisi avec le code sur la déclaration",
+        }
+
     return socle, compteurs
 
 

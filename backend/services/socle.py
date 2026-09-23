@@ -201,6 +201,24 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
 
     niveau = "national" if len(code) > 6 else "hs6"
     trouve = positions.get(code)
+
+    # UN CODE SAISI AVEC SA CLÉ DE CONTRÔLE reste un code valide. La Tunisie
+    # publie `01012100015` : la position est `0101210001`, et le `5` est la clé
+    # que le déclarant saisit avec elle sur la déclaration en douane. Le socle
+    # s'indexe sur la position, mais un opérateur qui recopie sa déclaration
+    # tape les onze caractères — et se voyait répondre « position absente ».
+    #
+    # Le pays DÉCLARE sa nomenclature dans son propre fichier : rien n'est
+    # déduit d'une longueur. L'Éthiopie porte aussi des codes de onze
+    # caractères, dont le onzième est toujours « 0 » — un remplissage, pas une
+    # clé — et elle ne déclare donc rien ici.
+    nomenclature = donnees.get("nomenclature") or {}
+    longueur = nomenclature.get("longueur_position")
+    if trouve is None and longueur and len(code) == longueur + 1:
+        trouve = positions.get(code[:longueur])
+        if trouve is not None:
+            code = code[:longueur]
+
     if trouve is None and niveau == "national":
         hs6 = code[:6]
         trouve, niveau = positions.get(hs6), "hs6"

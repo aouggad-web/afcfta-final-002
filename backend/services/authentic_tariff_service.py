@@ -872,8 +872,51 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     merged[code]["description_en"] = description
 
     result = sorted(merged.values(), key=lambda x: x["code"])
+    result = _detacher_cle_de_controle(country_iso3, result)
     logger.debug(f"get_sub_positions({country_iso3}, {hs6_normalized}): {len(result)} positions")
     return result
+
+
+def _detacher_cle_de_controle(country_iso3, positions):
+    """Rendre la POSITION TARIFAIRE, sans la clé de contrôle qui la suit.
+
+    La Tunisie publie `01012100015`. Ce n'est pas un code à onze chiffres :
+    c'est la sous-position `0101210001` suivie de la clé `5`, que le déclarant
+    saisit avec elle sur la déclaration en douane. Les servir collés faisait
+    afficher au sélecteur « HS11 digits » — le produit affirmait une
+    nomenclature tunisienne à onze chiffres, qui n'existe pas — et faisait
+    répondre « Position nationale introuvable » au code que l'opérateur tape.
+
+    Le pays DÉCLARE sa nomenclature dans son propre fichier de socle ; rien
+    n'est déduit d'une longueur. L'Éthiopie porte aussi des codes de onze
+    caractères, mais son onzième est toujours « 0 » — un remplissage, pas une
+    clé — et elle ne déclare rien : ses codes ressortent intacts.
+
+    La clé n'est pas perdue pour autant : elle accompagne la position sous
+    `cle_controle`, puisqu'elle sert à la saisie.
+    """
+    try:
+        from services import socle as _socle
+
+        longueur = (_socle.charger(country_iso3).get("nomenclature") or {}).get("longueur_position")
+    except Exception:  # pragma: no cover - socle absent ou pays non servi
+        return positions
+    if not longueur:
+        return positions
+
+    detachees = []
+    for position in positions:
+        code = str(position.get("code") or "")
+        if len(code) != longueur + 1 or not code.isdigit():
+            detachees.append(position)
+            continue
+        copie = dict(position)
+        copie["code"] = code[:longueur]
+        copie["national_code"] = code[:longueur]
+        copie["cle_controle"] = code[longueur:]
+        copie["digits"] = longueur
+        detachees.append(copie)
+    return detachees
 
 
 def get_taxes_detail(country_iso3, hs_code):
