@@ -523,25 +523,25 @@ function ProductionManufacturing({ language = 'fr' }) {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {unidoData.industry_employment && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                    <p className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">{t('production.manufacturing.panel.industrialJobs')}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.industrialJobs')}</p>
                     <p className="text-2xl font-bold text-[var(--info)]">{formatNumber(unidoData.industry_employment)}</p>
                   </div>
                 )}
                 {unidoData.exports_manuf_mln_usd && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                    <p className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">{t('production.manufacturing.panel.manufExports')}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.manufExports')}</p>
                     <p className="text-2xl font-bold text-[var(--success)]">${formatNumber(unidoData.exports_manuf_mln_usd * 1000000)}</p>
                   </div>
                 )}
                 {unidoData.top_sectors && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                    <p className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">{t('production.manufacturing.panel.keySectors')}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.keySectors')}</p>
                     <p className="text-2xl font-bold text-[var(--info)]">{unidoData.top_sectors.length}</p>
                   </div>
                 )}
                 {unidoData.special_economic_zones && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                    <p className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">{t('production.manufacturing.panel.specialZones')}</p>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.specialZones')}</p>
                     <p className="text-2xl font-bold text-[var(--violet)]">{unidoData.special_economic_zones}</p>
                   </div>
                 )}

@@ -202,7 +202,7 @@ function ContactsBlock({ contacts }) {
             const label = key.replace(/_/g, ' ');
             return (
               <div key={key} className="p-2 rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)] min-w-0">
-                <div className="text-[11px] text-[var(--afcfta-muted)] uppercase tracking-wide mb-1 font-medium"
+                <div className="text-[11px] text-[var(--afcfta-muted)] mb-1 font-medium"
                   style={{ overflowWrap: 'anywhere' }}>{label}</div>
                 <div className="space-y-1">
                   <ContactRow icon={Phone} value={phone} href={phone ? `tel:${phone.replace(/\s/g, '')}` : null} mono />
@@ -364,7 +364,7 @@ function OperatorCard({ operator, catMeta }) {
         {/* Services list */}
         {expanded && operator.services && (
           <div className="mt-3">
-            <div className="text-[11px] text-[var(--afcfta-muted)] uppercase tracking-wide mb-1">Services</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Services</div>
             <div className="flex flex-wrap gap-1">
               {operator.services.map(s => (
                 <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>
@@ -376,7 +376,7 @@ function OperatorCard({ operator, catMeta }) {
         {/* Africa terminals for port operators */}
         {expanded && operator.africa_terminals && (
           <div className="mt-3">
-            <div className="text-[11px] text-[var(--afcfta-muted)] uppercase tracking-wide mb-1">Terminaux africains</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Terminaux africains</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
               {operator.africa_terminals.map((t, i) => (
                 <div key={i} className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--overlay)]">
@@ -392,7 +392,7 @@ function OperatorCard({ operator, catMeta }) {
         {/* Africa services for shipping lines */}
         {expanded && operator.africa_services && (
           <div className="mt-3">
-            <div className="text-[11px] text-[var(--afcfta-muted)] uppercase tracking-wide mb-1">Services Afrique</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Services Afrique</div>
             <div className="flex flex-wrap gap-1">
               {operator.africa_services.map(s => (
                 <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>

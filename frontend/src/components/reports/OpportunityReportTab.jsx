@@ -1112,7 +1112,7 @@ export function BilateralView({ countries, fr, prefill }) {
               <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
                 {fr ? "Matrice effort / impact" : "Effort / impact matrix"}
               </div>
-              <div style={{ fontSize: 20, fontWeight: 800, textTransform: "uppercase" }}>
+              <div className="first-letter:uppercase" style={{ fontSize: 20, fontWeight: 800 }}>
                 {(effort.quadrant || "—").replace(/_/g, " ")}
               </div>
               <div style={{ fontSize: 13, marginTop: 4 }}>
@@ -1124,7 +1124,7 @@ export function BilateralView({ countries, fr, prefill }) {
               <div style={{ ...label, marginBottom: 6, fontWeight: 700 }}>
                 {fr ? "Matrice risque / récompense" : "Risk / reward matrix"}
               </div>
-              <div style={{ fontSize: 20, fontWeight: 800, textTransform: "uppercase" }}>
+              <div className="first-letter:uppercase" style={{ fontSize: 20, fontWeight: 800 }}>
                 {(rr.quadrant || "—").replace(/_/g, " ")}
               </div>
               <div style={{ fontSize: 13, marginTop: 4 }}>

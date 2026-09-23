@@ -134,7 +134,7 @@ function ProductionOutlets({ language = 'fr' }) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm" data-testid="outlets-table">
               <thead>
-                <tr className="text-left text-xs uppercase text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
+                <tr className="text-left text-xs text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
                   <th className="py-2 pr-3">{t('production.outlets.colProduct')}</th>
                   <th className="py-2 pr-3">{t('production.outlets.colHs')}</th>
                   <th className="py-2 pr-3 text-right">{t('production.outlets.colOutput')}</th>

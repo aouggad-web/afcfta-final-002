@@ -118,17 +118,17 @@ const texts = {
     subtitle: 'AfCFTA Regulatory Engine v3',
     productInfo: 'Product Information',
     nationalCode: 'National code',
-    hs6Code: 'HS6 Code',
+    hs6Code: 'HS6 code',
     chapter: 'Chapter',
     category: 'Category',
     unit: 'Unit',
-    sensitivity: 'AfCFTA Sensitivity',
+    sensitivity: 'AfCFTA sensitivity',
     measures: 'Duties and Taxes',
     measuresDesc: 'Applicable tariff measures breakdown',
     taxCode: 'Code',
     taxName: 'Name',
-    taxRate: 'MFN Rate',
-    zlecafRate: 'AfCFTA Rate',
+    taxRate: 'MFN rate',
+    zlecafRate: 'AfCFTA rate',
     requirements: 'Required Documents',
     requirementsDesc: 'Administrative formalities for import',
     document: 'Document',
@@ -317,7 +317,7 @@ export default function RegulatoryDetailsPanel({
                   style={{ width: `${Math.min(total_npf_pct || 0, 100)}%` }}
                 ></div>
               </div>
-              <p className="text-[var(--afcfta-muted)] text-sm font-medium uppercase tracking-wide">{t.totalNPF}</p>
+              <p className="text-[var(--afcfta-muted)] text-sm font-medium">{t.totalNPF}</p>
               <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(total_npf_pct || 0).toFixed(1)}%</p>
               <p className="text-[var(--afcfta-muted)] text-xs mt-1">{language === 'fr' ? 'Tarif Nation Plus Favorisée' : 'Most Favored Nation'}</p>
             </div>
@@ -330,7 +330,7 @@ export default function RegulatoryDetailsPanel({
                   style={{ width: `${Math.min(total_zlecaf_pct || 0, 100)}%` }}
                 ></div>
               </div>
-              <p className="text-[var(--afcfta-muted)] text-sm font-medium uppercase tracking-wide">{t.totalZLECAf}</p>
+              <p className="text-[var(--afcfta-muted)] text-sm font-medium">{t.totalZLECAf}</p>
               <p className="text-3xl font-bold text-[var(--success)] mt-1">{(total_zlecaf_pct || 0).toFixed(1)}%</p>
               <p className="text-[var(--afcfta-muted)] text-xs mt-1">{language === 'fr' ? 'Accord de Libre-Échange' : 'Free Trade Agreement'}</p>
             </div>
@@ -340,7 +340,7 @@ export default function RegulatoryDetailsPanel({
               <div className="absolute top-3 right-3">
                 <TrendingDown className="w-5 h-5 text-[var(--gold)]" />
               </div>
-              <p className="text-[var(--gold)] text-sm font-medium uppercase tracking-wide">{t.savings}</p>
+              <p className="text-[var(--gold)] text-sm font-medium">{t.savings}</p>
               <p className="text-3xl font-bold text-[var(--gold)] mt-1">-{(savings_pct || 0).toFixed(1)}%</p>
               <p className="text-[var(--gold)] text-xs mt-1">{language === 'fr' ? 'Avec Certificat d\'Origine' : 'With Certificate of Origin'}</p>
             </div>
@@ -368,19 +368,19 @@ export default function RegulatoryDetailsPanel({
             {/* Grille d'informations */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.nationalCode}</p>
+                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.nationalCode}</p>
                 <p className="text-[var(--text)] font-mono text-lg font-semibold">{commodity.national_code}</p>
               </div>
               <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.hs6Code}</p>
+                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.hs6Code}</p>
                 <p className="text-[var(--text)] font-mono text-lg">{commodity.hs6}</p>
               </div>
               <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.chapter}</p>
+                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.chapter}</p>
                 <p className="text-[var(--text)] text-lg">{commodity.chapter}</p>
               </div>
               <div className="bg-[var(--overlay)] rounded-lg p-3">
-                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.sensitivity}</p>
+                <p className="text-[var(--afcfta-muted)] text-xs mb-1">{t.sensitivity}</p>
                 <Badge className={`${sensStyle.bg} ${sensStyle.text} ${sensStyle.border} border`}>
                   {t[commodity.sensitivity] || commodity.sensitivity}
                 </Badge>
@@ -451,14 +451,14 @@ export default function RegulatoryDetailsPanel({
                       
                       <div className="flex items-center gap-6">
                         <div className="text-right">
-                          <p className="text-[var(--afcfta-muted)] text-xs uppercase">{t.taxRate}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs">{t.taxRate}</p>
                           <p className={`text-lg font-bold ${hasReduction ? 'text-[var(--danger)] line-through opacity-60' : 'text-[var(--text)]'}`}>
                             {measure.rate_pct}%
                           </p>
                         </div>
                         {measure.is_zlecaf_applicable && (
                           <div className="text-right">
-                            <p className="text-[var(--afcfta-muted)] text-xs uppercase">{t.zlecafRate}</p>
+                            <p className="text-[var(--afcfta-muted)] text-xs">{t.zlecafRate}</p>
                             <p className="text-lg font-bold text-[var(--success)]">
                               {measure.zlecaf_rate_pct ?? measure.rate_pct}%
                             </p>

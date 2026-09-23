@@ -280,7 +280,6 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 borderRadius: 999,
                 background: balStyle.bg,
                 color: `color-mix(in srgb, ${balStyle.fg} 40%, var(--text))`,
-                textTransform: "uppercase",
               }}
             >
               {verdictLabel(bal.verdict, t)}

@@ -645,7 +645,7 @@ function tabStyle(active) {
 function LabelMeta({ k, v }) {
   return (
     <span style={{ fontSize: 12, color: 'var(--afcfta-muted)' }}>
-      <span style={{ fontWeight: 800, color: 'var(--gold)', textTransform: 'uppercase', fontSize: 10, letterSpacing: 0.5, marginRight: 5 }}>{k}</span>
+      <span style={{ fontWeight: 800, color: 'var(--gold)', fontSize: 10, marginRight: 5 }}>{k}</span>
       {v}
     </span>
   );

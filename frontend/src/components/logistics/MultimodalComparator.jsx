@@ -118,15 +118,15 @@ function OptionCard({ opt }) {
       <CardContent className="space-y-3">
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
-            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Coût total</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Coût total</div>
             <div className="font-display text-2xl text-[var(--text)]">{fmtUsd(opt.total_cost_usd)}</div>
           </div>
           <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
-            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Délai</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Délai</div>
             <div className="font-display text-2xl text-[var(--text)]">{fmtDays(opt.transit_days_min, opt.transit_days_max)}</div>
           </div>
           <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
-            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Empreinte CO₂</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Empreinte CO₂</div>
             <div className="font-display text-2xl text-[var(--text)]">{fmtKg(opt.co2_kg)}</div>
           </div>
         </div>
@@ -134,7 +134,7 @@ function OptionCard({ opt }) {
         {/* Segments */}
         {opt.segments && opt.segments.length > 0 && (
           <div className="border-t border-[var(--overlay-border)] pt-3">
-            <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-2">
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-2">
               {opt.segments.length === 1 ? 'Trajet' : `${opt.segments.length} segments`}
             </div>
             <div className="space-y-2">
@@ -427,7 +427,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="rounded-lg bg-[var(--overlay)] p-3 border border-[var(--overlay-border)]">
-                    <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">Aujourd&apos;hui</div>
+                    <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Aujourd&apos;hui</div>
                     <div className="text-sm text-[var(--text)] mb-2">
                       {result.roi_infrastructure.reference_operational.label}
                     </div>
@@ -438,7 +438,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                     </div>
                   </div>
                   <div className="rounded-lg bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] p-3 border border-dashed border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                    <div className="text-[11px] uppercase tracking-wide text-[var(--info)] mb-1">
+                    <div className="text-[11px] text-[var(--info)] mb-1">
                       🚧 Futur · {result.roi_infrastructure.best_future_cost.status}
                     </div>
                     <div className="text-sm text-[var(--text)] mb-2">
@@ -462,7 +462,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                     <>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-[var(--overlay-border)]">
                         <div className="text-center">
-                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">
+                          <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">
                             {costPositive ? 'Économie par expédition' : 'Surcoût par expédition'}
                           </div>
                           <div className={`font-display text-2xl ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
@@ -473,7 +473,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">
+                          <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">
                             {co2Positive ? 'CO₂ évité' : 'CO₂ supplémentaire'}
                           </div>
                           <div className={`font-display text-2xl ${co2Positive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
@@ -484,7 +484,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">
+                          <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">
                             {ps.time_savings_days >= 0 ? 'Temps gagné' : 'Délai allongé'}
                           </div>
                           <div className="font-display text-2xl text-[var(--gold)]">
@@ -493,7 +493,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                           <div className="text-[11px] text-[var(--gold)]">/ expédition</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-[11px] uppercase tracking-wide text-[var(--afcfta-muted)] mb-1">vs Aérien</div>
+                          <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">vs aérien</div>
                           <div className="font-display text-2xl text-[var(--violet)]">
                             ${ps.cost_savings_vs_air_usd?.toLocaleString('en-US') ?? '—'}
                           </div>
@@ -504,7 +504,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                       <div className={`border rounded-lg p-3 flex items-start gap-3 ${costPositive ? 'bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' : 'bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]'}`}>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <span className={`text-[11px] uppercase tracking-wide ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>Projection annuelle</span>
+                            <span className={`text-[11px] ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>Projection annuelle</span>
                             <Label htmlFor="teu-yr" className="text-[11px] text-[var(--afcfta-muted)] ml-2">TEU/an :</Label>
                             <Input
                               id="teu-yr"

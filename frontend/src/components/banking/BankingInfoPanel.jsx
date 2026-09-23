@@ -492,7 +492,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Currency */}
       {cb?.currency_code && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Devise</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">Devise</span>
           <span className="font-mono font-bold text-[var(--text)]">{cb.currency_code}</span>
         </div>
       )}
@@ -500,7 +500,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Regulation */}
       {regLevel && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Réglementation</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">Réglementation</span>
           <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${regColors[regLevel] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
             {regLevel.toUpperCase()}
           </span>
@@ -510,7 +510,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Risk rating */}
       {riskData?.overall_risk_rating && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Note risque</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">Note risque</span>
           <span className="font-bold text-lg text-[var(--text)]">{riskData.overall_risk_rating}</span>
         </div>
       )}
@@ -518,7 +518,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Alert level */}
       {riskData?.alert_level && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Alerte</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">Alerte</span>
           <span className={`text-xs font-semibold px-2 py-0.5 rounded mt-0.5 ${alertColors[riskData.alert_level] || 'bg-[var(--afcfta-card2)] text-[var(--text)]'}`}>
             {riskData.alert_level.toUpperCase()}
           </span>
@@ -528,7 +528,7 @@ function QuickStatsBar({ bankData, riskData, forexData, countryCode }) {
       {/* Domiciliation required */}
       {forexData?.domiciliation && (
         <div className="flex flex-col items-center justify-center px-2">
-          <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide">Domiciliation</span>
+          <span className="text-xs text-[var(--afcfta-muted)]">Domiciliation</span>
           <span className={`text-xs font-semibold mt-0.5 ${forexData.domiciliation.required ? 'text-[var(--danger)]' : forexData.domiciliation.conditional ? 'text-[var(--gold)]' : 'text-[var(--success)]'}`}>
             {forexData.domiciliation.required ? 'OBLIGATOIRE' : forexData.domiciliation.conditional ? 'CONDITIONNELLE' : 'LIBRE'}
           </span>
@@ -646,25 +646,25 @@ function BanksTab({ data, t }) {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1.5 text-xs text-[var(--afcfta-muted)] bg-[var(--afcfta-card2)] rounded-lg p-3">
               {central_bank?.swift_code && (
                 <div>
-                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">SWIFT</span>
+                  <span className="text-[var(--afcfta-muted)] text-[11px]">SWIFT</span>
                   <div className="font-mono font-semibold text-[var(--text)]">{central_bank.swift_code}</div>
                 </div>
               )}
               {central_bank?.established_year && (
                 <div>
-                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">{t.established}</span>
+                  <span className="text-[var(--afcfta-muted)] text-[11px]">{t.established}</span>
                   <div className="font-semibold text-[var(--text)]">{central_bank.established_year}</div>
                 </div>
               )}
               {central_bank?.total_assets_usd_bn && (
                 <div>
-                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">Actifs totaux</span>
+                  <span className="text-[var(--afcfta-muted)] text-[11px]">Actifs totaux</span>
                   <div className="font-semibold text-[var(--text)]">{central_bank.total_assets_usd_bn} Mrd USD</div>
                 </div>
               )}
               {central_bank?.currency_name && (
                 <div className="col-span-2">
-                  <span className="text-[var(--afcfta-muted)] uppercase tracking-wide text-[11px]">Devise</span>
+                  <span className="text-[var(--afcfta-muted)] text-[11px]">Devise</span>
                   <div className="font-semibold text-[var(--text)]">{central_bank.currency_code} – {central_bank.currency_name}</div>
                 </div>
               )}
@@ -738,13 +738,13 @@ function BanksTab({ data, t }) {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         {bank.swift_code && (
                           <div className="bg-[var(--afcfta-card2)] rounded p-2">
-                            <div className="text-[var(--afcfta-muted)] uppercase text-[11px] tracking-wide mb-0.5">SWIFT / BIC</div>
+                            <div className="text-[var(--afcfta-muted)] text-[11px] mb-0.5">SWIFT / BIC</div>
                             <div className="font-mono font-bold text-[var(--text)] text-base">{bank.swift_code}</div>
                           </div>
                         )}
                         {bank.correspondent_banks?.length > 0 && (
                           <div className="bg-[var(--afcfta-card2)] rounded p-2">
-                            <div className="text-[var(--afcfta-muted)] uppercase text-[11px] tracking-wide mb-0.5">{t.correspondents}</div>
+                            <div className="text-[var(--afcfta-muted)] text-[11px] mb-0.5">{t.correspondents}</div>
                             <div className="text-[var(--text)] leading-relaxed">{bank.correspondent_banks.join(' · ')}</div>
                           </div>
                         )}
@@ -1086,7 +1086,7 @@ function RiskTab({ data, t }) {
           {/* Rating + alert */}
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex flex-col items-center justify-center bg-[var(--afcfta-card2)] border rounded-lg px-6 py-3">
-              <span className="text-xs text-[var(--afcfta-muted)] uppercase tracking-wide mb-1">Notation</span>
+              <span className="text-xs text-[var(--afcfta-muted)] mb-1">Notation</span>
               <span className="font-bold text-3xl text-[var(--text)]">{data.overall_risk_rating}</span>
             </div>
             <div className="flex flex-col gap-1">

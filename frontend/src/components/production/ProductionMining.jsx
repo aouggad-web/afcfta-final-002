@@ -259,7 +259,7 @@ function ProductionMining({ language = 'fr' }) {
             </p>
             {miningData.coverage.sources_consulted?.length > 0 && (
               <div className="mt-4 text-xs text-[var(--afcfta-muted)]">
-                <p className="uppercase tracking-wide mb-1">{t('production.mining.panel.sourcesConsulted')}</p>
+                <p className=" mb-1">{t('production.mining.panel.sourcesConsulted')}</p>
                 <ul className="list-disc list-inside space-y-0.5">
                   {miningData.coverage.sources_consulted.map((src) => (
                     <li key={src}>{src}</li>

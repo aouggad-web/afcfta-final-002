@@ -37,14 +37,14 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       intraAfricanTrade: "Commerce Intra-Africain",
       top5GDP: "Top 5 PIB Africains - Comparaison Commerce",
       worldVsIntraAfrican: "Commerce Mondial vs Commerce Intra-Africain (2024)",
-      detailByCountry: "Détail par Pays (Milliards USD)",
+      detailByCountry: "Détail par pays (milliards USD)",
       expWorld: "Exp. Monde",
       expIntraAfr: "Exp. Intra-Afr",
       impWorld: "Imp. Monde",
       impIntraAfr: "Imp. Intra-Afr",
       sectorPerformance: "Performance par Secteur",
       sectorDistribution: "Distribution des exportations par secteur économique",
-      sectorDetails: "Détail des Secteurs",
+      sectorDetails: "Détail des secteurs",
       exportsWorld: "Exports Monde",
       exportsIntraAfr: "Exports Intra-Afr.",
       importsWorld: "Imports Monde",
@@ -69,14 +69,14 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       intraAfricanTrade: "Intra-African Trade",
       top5GDP: "Top 5 African GDP - Trade Comparison",
       worldVsIntraAfrican: "World Trade vs Intra-African Trade (2024)",
-      detailByCountry: "Detail by Country (Billion USD)",
+      detailByCountry: "Detail by country (billion USD)",
       expWorld: "Exp. World",
       expIntraAfr: "Exp. Intra-Afr",
       impWorld: "Imp. World",
       impIntraAfr: "Imp. Intra-Afr",
       sectorPerformance: "Sector Performance",
       sectorDistribution: "Export distribution by economic sector",
-      sectorDetails: "Sector Details",
+      sectorDetails: "Sector details",
       exportsWorld: "World Exports",
       exportsIntraAfr: "Intra-Afr. Exports",
       importsWorld: "World Imports",
@@ -539,7 +539,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
 
               {/* Tableau Détaillé */}
               <div>
-                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 12 }}>
                   {t.detailByCountry}
                 </p>
                 <div className="space-y-3">
@@ -619,7 +619,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
               </ResponsiveContainer>
 
               <div>
-                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 12 }}>
                   {t.sectorDetails}
                 </p>
                 <div className="space-y-2">

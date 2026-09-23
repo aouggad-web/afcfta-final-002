@@ -164,15 +164,15 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {/* Taux NPF */}
           <div className="bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--danger)_30%,transparent)] text-center">
-            <p className="text-[var(--danger)] text-xs uppercase tracking-wide">
-              {language === 'fr' ? 'Taux NPF' : 'MFN Rate'}
+            <p className="text-[var(--danger)] text-xs">
+              {language === 'fr' ? 'Taux NPF' : 'MFN rate'}
             </p>
             <p className="text-2xl font-bold text-[var(--danger)] mt-1">{data.npf_rate.toFixed(1)}%</p>
           </div>
 
           {/* Taux actuel ZLECAf */}
           <div className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-center">
-            <p className="text-[var(--success)] text-xs uppercase tracking-wide">
+            <p className="text-[var(--success)] text-xs">
               {language === 'fr' ? `ZLECAf ${currentCalendarYear}` : `AfCFTA ${currentCalendarYear}`}
             </p>
             <p className="text-2xl font-bold text-[var(--success)] mt-1">
@@ -182,7 +182,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
 
           {/* Économie actuelle */}
           <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-center">
-            <p className="text-[var(--gold)] text-xs uppercase tracking-wide">
+            <p className="text-[var(--gold)] text-xs">
               {language === 'fr' ? 'Gain actuel' : 'Current gain'}
             </p>
             <p className="text-2xl font-bold text-[var(--gold)] mt-1">
@@ -192,7 +192,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
 
           {/* Année finale */}
           <div className="bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-xl p-3 border border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-center">
-            <p className="text-[var(--info)] text-xs uppercase tracking-wide">
+            <p className="text-[var(--info)] text-xs">
               {language === 'fr' ? 'Franchise totale' : 'Full duty-free'}
             </p>
             <p className="text-2xl font-bold text-[var(--info)] mt-1">

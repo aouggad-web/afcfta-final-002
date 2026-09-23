@@ -157,7 +157,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
 
   return (
     <div className="relative w-full">
-      <label className="block text-xs font-semibold tracking-wide text-[var(--afcfta-muted)] mb-2 flex items-center gap-2 uppercase">
+      <label className="block text-xs font-semibold text-[var(--afcfta-muted)] mb-2 flex items-center gap-2">
         <Globe className="w-4 h-4 text-[var(--gold)]" />
         {displayLabel}
       </label>
@@ -270,7 +270,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
               {!searchTerm && majorEconomiesFiltered.length > 0 && (
                 <div className="p-2.5">
                   <div
-                    className="flex items-center gap-2 px-3 py-1.5 text-[11px] font-semibold rounded-lg mb-2 uppercase tracking-wide"
+                    className="flex items-center gap-2 px-3 py-1.5 text-[11px] font-semibold rounded-lg mb-2"
                     style={{
                       color: 'var(--gold)',
                       background: 'rgba(212,137,26,0.08)',

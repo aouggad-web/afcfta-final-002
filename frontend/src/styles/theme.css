@@ -1469,8 +1469,6 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
 .afcfta-kpiCard-title {
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
   color: var(--afcfta-muted);
 }
 

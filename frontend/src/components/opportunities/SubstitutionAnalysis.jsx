@@ -320,7 +320,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 
         {/* Suppliers/Markets */}
         <div>
-          <p className="text-xs font-medium text-[var(--afcfta-muted)] uppercase tracking-wider mb-2">
+          <p className="text-xs font-medium text-[var(--afcfta-muted)] mb-2">
             {isImport ? "Fournisseurs africains potentiels" : "Marchés cibles"}
           </p>
           <div className="space-y-2">
@@ -801,7 +801,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">
           <ArrowLeftRight className="h-8 w-8 text-[var(--success)]" />
-          <h2 className="text-3xl font-black text-[var(--text)] uppercase tracking-tight">
+          <h2 className="text-3xl font-black text-[var(--text)] tracking-tight">
             {t('opportunities.substitutionAnalysis.title')}
           </h2>
         </div>

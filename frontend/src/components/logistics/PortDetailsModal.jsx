@@ -23,8 +23,8 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
       lpiOverall: 'LPI Global', lpiCustoms: 'Douanes', lpiInfra: 'Infrastructure',
       lpiTimeliness: 'Ponctualité', globalBenchmarks: 'Benchmarks Mondiaux',
       africaAvg: 'Moy. Afrique', globalMedian: 'Médiane mondiale (H2-2023)',
-      logistics_network: 'Réseau Logistique', global_carriers: 'Transporteurs Mondiaux',
-      regional_specialists: 'Spécialistes Régionaux', service_providers: 'Prestataires',
+      logistics_network: 'Réseau Logistique', global_carriers: 'Transporteurs mondiaux',
+      regional_specialists: 'Spécialistes régionaux', service_providers: 'Prestataires',
       factualData: 'Données factuelles',
     },
     en: {
@@ -42,8 +42,8 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
       lpiOverall: 'Overall LPI', lpiCustoms: 'Customs', lpiInfra: 'Infrastructure',
       lpiTimeliness: 'Timeliness', globalBenchmarks: 'Global Benchmarks',
       africaAvg: 'Africa Avg.', globalMedian: 'Global Median (H2-2023)',
-      logistics_network: 'Logistics Network', global_carriers: 'Global Carriers',
-      regional_specialists: 'Regional Specialists', service_providers: 'Service Providers',
+      logistics_network: 'Logistics Network', global_carriers: 'Global carriers',
+      regional_specialists: 'Regional specialists', service_providers: 'Service providers',
       factualData: 'Factual data points',
     },
   };
@@ -507,7 +507,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 <h3 className="text-sm font-bold text-[var(--text)] mb-3">&#x1F517; {t.logistics_network}</h3>
                 {logisticsNetwork.global_carriers_present?.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] uppercase mb-1">{t.global_carriers}</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.global_carriers}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.global_carriers_present.map((c, i) => (
                         <Badge key={i} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] text-xs">{c}</Badge>
@@ -517,7 +517,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 )}
                 {logisticsNetwork.regional_specialists_present?.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] uppercase mb-1">{t.regional_specialists}</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.regional_specialists}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.regional_specialists_present.map((c, i) => (
                         <Badge key={i} className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] text-xs">{c}</Badge>
@@ -527,7 +527,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                 )}
                 {logisticsNetwork.service_providers_available?.length > 0 && (
                   <div>
-                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] uppercase mb-1">{t.service_providers}</p>
+                    <p className="text-xs font-semibold text-[var(--afcfta-muted)] mb-1">{t.service_providers}</p>
                     <div className="flex flex-wrap gap-1">
                       {logisticsNetwork.service_providers_available.map((s, i) => (
                         <Badge key={i} variant="outline" className="text-xs">{s}</Badge>

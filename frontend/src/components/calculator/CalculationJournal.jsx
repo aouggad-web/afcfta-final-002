@@ -23,7 +23,7 @@ function JournalTable({ steps, language }) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-xs uppercase tracking-wide text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
+          <tr className="text-xs text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
             <th className="text-left py-2 pr-2 font-medium">{fr ? 'Étape' : 'Step'}</th>
             <th className="text-right py-2 px-2 font-medium">{fr ? 'Base' : 'Base'}</th>
             <th className="text-right py-2 px-2 font-medium">{fr ? 'Taux' : 'Rate'}</th>

@@ -388,7 +388,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
                       <div className="space-y-4 max-h-80 overflow-y-auto">
                         {Object.entries(logisticsNetwork.local_agents_by_country).map(([country, agents]) => (
                           <div key={country}>
-                            <p className="text-xs font-bold text-[var(--afcfta-muted)] uppercase mb-2 border-b pb-1">{country}</p>
+                            <p className="text-xs font-bold text-[var(--afcfta-muted)] first-letter:uppercase mb-2 border-b pb-1">{country}</p>
                             <div className="space-y-2">
                               {agents.map((agent, i) => (
                                 <div key={i} className="p-2 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded border-l-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)]">

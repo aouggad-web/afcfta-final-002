@@ -350,10 +350,8 @@
   min-width: 0;
 }
 .stats-product-card .spc-label {
-  font-size: 0.6rem;
+  font-size: 0.7rem;   /* 0,6 rem suffisait en capitales ; en casse de phrase, trop petit */
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: var(--afcfta-muted);
 }
 .stats-product-card .spc-value {

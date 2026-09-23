@@ -1145,17 +1145,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </div>
               <div className="grid grid-cols-3 divide-x divide-[var(--afcfta-border)]">
                 <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide">{language === 'fr' ? 'DD moyen' : 'Avg. duty'}</p>
+                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'DD moyen' : 'Avg. duty'}</p>
                   <p className="text-2xl font-bold text-[var(--info)] mt-1">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</p>
                   <p className="text-[var(--afcfta-muted)] text-xs">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</p>
                 </div>
                 <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide">{language === 'fr' ? 'TVA' : 'VAT'}</p>
+                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'TVA' : 'VAT'}</p>
                   <p className="text-2xl font-bold text-[var(--gold)] mt-1">{countryTariffProfile.summary.vat_rate_pct || 0}%</p>
                   <p className="text-[var(--afcfta-muted)] text-xs">{countryTariffProfile.summary.vat_source || ''}</p>
                 </div>
                 <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide">{language === 'fr' ? 'Autres' : 'Other'}</p>
+                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Autres' : 'Other'}</p>
                   <p className="text-2xl font-bold text-[var(--danger)] mt-1">{countryTariffProfile.summary.other_taxes_pct || 0}%</p>
                   <p className="text-[var(--afcfta-muted)] text-xs truncate">
                     {countryTariffProfile.summary.other_taxes_detail
@@ -1262,7 +1262,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && ruleOfOrigin.hs_code === hsCode && (
               <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <span className="text-[var(--gold)] text-xs font-semibold uppercase tracking-wide">
+                  <span className="text-[var(--gold)] text-xs font-semibold">
                     {language === 'fr' ? "Règle d'origine ZLECAf" : 'AfCFTA Rule of Origin'}
                   </span>
                   <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
@@ -1679,7 +1679,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <DollarSign className="w-5 h-5 text-[var(--success)]" />
                     </div>
                     <div>
-                      <p className="text-[var(--afcfta-muted)] text-xs uppercase">{language === 'fr' ? 'Valeur CIF' : 'CIF Value'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Valeur CIF' : 'CIF value'}</p>
                       <p className="text-xl font-bold text-[var(--success)]">
                         {formatCurrency(parseFloat(value) || 0)}
                       </p>
@@ -1692,7 +1692,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <Package className="w-5 h-5 text-[var(--violet)]" />
                     </div>
                     <div>
-                      <p className="text-[var(--afcfta-muted)] text-xs uppercase">{language === 'fr' ? 'Code Tarifaire' : 'Tariff Code'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Code tarifaire' : 'Tariff code'}</p>
                       <p className="font-mono text-lg font-bold text-[var(--violet)]">{result.hs_code || hsCode}</p>
                     </div>
                   </div>
@@ -1703,7 +1703,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <FileText className="w-5 h-5 text-[var(--gold)]" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[var(--afcfta-muted)] text-xs uppercase">{language === 'fr' ? 'Produit' : 'Product'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Produit' : 'Product'}</p>
                       <p className="text-sm text-[var(--text)] truncate">
                         {selectedSubPositionDesc || detailedResult?.description || result.description || (language === 'fr' ? 'Position sélectionnée' : 'Selected position')}
                       </p>
@@ -1716,14 +1716,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                 {/* Total NPF */}
                 <div className="bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
-                  <p className="text-[var(--danger)] text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
+                  <p className="text-[var(--danger)] text-xs font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
                   <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
                   <p className="text-[var(--danger)] text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
                 </div>
                 
                 {/* Total ZLECAf */}
                 <div className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
-                  <p className="text-[var(--success)] text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
+                  <p className="text-[var(--success)] text-xs font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
                   <p className="text-3xl font-bold text-[var(--success)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `${zlecafTotalTaxRatePct(result).toFixed(1)}%`
@@ -1746,7 +1746,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
                 {/* Économie */}
                 <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
-                  <p className="text-[var(--gold)] text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
+                  <p className="text-[var(--gold)] text-xs font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
                   <p className="text-3xl font-bold text-[var(--gold)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
@@ -1763,7 +1763,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 
                 {/* Montant économisé */}
                 <div className="bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                  <p className="text-[var(--info)] text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
+                  <p className="text-[var(--info)] text-xs font-medium">{language === 'fr' ? 'Montant économisé' : 'Amount saved'}</p>
                   <p className="text-2xl font-bold text-[var(--info)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `${((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} USD`
@@ -2437,7 +2437,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <div className="flex items-start gap-3 min-w-0">
                       <FileText className="w-5 h-5 text-[var(--violet)] mt-0.5 shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-xs text-[var(--violet)] uppercase tracking-wide font-medium mb-1">
+                        <p className="text-xs text-[var(--violet)] font-medium mb-1">
                           {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
                         </p>
                         <p className="text-[var(--text)] font-medium">{regulatorySelectedPosDesc}</p>

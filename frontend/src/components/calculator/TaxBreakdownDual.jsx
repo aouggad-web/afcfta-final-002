@@ -99,8 +99,8 @@ export default function TaxBreakdownDual({
           </div>
         )}
         {/* En-tête de colonnes */}
-        <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs uppercase tracking-wide text-[var(--afcfta-muted)]">
-          <div className="col-span-5">{fr ? 'Taxe / Base' : 'Tax / Base'}</div>
+        <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs text-[var(--afcfta-muted)]">
+          <div className="col-span-5">{fr ? 'Taxe / base' : 'Tax / base'}</div>
           <div className="col-span-3 text-right">{fr ? 'NPF' : 'MFN'}</div>
           <div className="col-span-4 text-right">ZLECAf</div>
         </div>

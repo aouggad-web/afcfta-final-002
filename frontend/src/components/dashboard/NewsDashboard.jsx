@@ -292,7 +292,7 @@ const CountrySpotlight = ({ spotlight, t, language }) => {
       <div className="flex items-center gap-3 mb-4 flex-wrap">
         <span className="text-3xl">{spotlight.flag}</span>
         <div>
-          <div className="text-xs uppercase tracking-wide font-bold text-[var(--gold)]">
+          <div className="text-xs font-bold text-[var(--gold)]">
             {t.countryOfWeek}
           </div>
           <h4 className="text-xl font-bold text-[var(--text)]">{countryName}</h4>
@@ -435,7 +435,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
         <div className="p-5 md:p-6">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 text-xs uppercase tracking-wide font-bold text-[var(--gold)] mb-3">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--gold)] mb-3">
                 <Sparkles className="w-4 h-4" />
                 intelligence feed
               </div>

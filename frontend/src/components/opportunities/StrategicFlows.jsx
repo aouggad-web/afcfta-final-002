@@ -85,7 +85,7 @@ function MarketList({ markets }) {
   const max = Math.max(...rows.map((m) => m.import_usd || 0), 1);
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 8 }}>
         <MapPin style={{ width: 13, height: 13 }} />{t('opportunities.strategicFlows.importMarkets')}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }} data-testid="flow-market-list">
@@ -180,7 +180,7 @@ function FlowCard({ flow }) {
       {/* Rationale */}
       {flow.strategic_rationale && (
         <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 4 }}>{t('opportunities.strategicFlows.rationale')}</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{t('opportunities.strategicFlows.rationale')}</div>
           <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.5 }}>{flow.strategic_rationale}</div>
         </div>
       )}
@@ -188,7 +188,7 @@ function FlowCard({ flow }) {
       {/* Transformation */}
       {(tr.champion || tr.process) && (
         <div style={{ padding: 12, borderRadius: 10, background: 'var(--afcfta-bg)', border: '1px solid var(--afcfta-border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 8 }}>
             <Factory style={{ width: 13, height: 13 }} />{t('opportunities.strategicFlows.transformation')}
             {tr.champion && <span style={{ fontWeight: 600, textTransform: 'none' }}>· {tr.champion}</span>}
           </div>
@@ -341,7 +341,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             {/* Priority commodities */}
             <div style={{ flex: '1 1 280px', padding: 14, borderRadius: 12, background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 8 }}>
                 <Package style={{ width: 14, height: 14 }} />{t('opportunities.strategicFlows.priorityCommodities')}
               </div>
               {(summary.priority_commodities || []).slice(0, 8).map((c, i) => (
@@ -355,7 +355,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             </div>
             {/* Top partners */}
             <div style={{ flex: '1 1 280px', padding: 14, borderRadius: 12, background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: 'var(--afcfta-muted)', textTransform: 'uppercase', marginBottom: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 8 }}>
                 <MapPin style={{ width: 14, height: 14 }} />{t('opportunities.strategicFlows.topPartners')}
               </div>
               {(summary.top_partners || []).slice(0, 8).map((p, i) => {

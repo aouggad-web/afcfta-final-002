@@ -282,7 +282,7 @@ function TradeProductsTable({ language = 'fr' }) {
                 { label: t.exportIntra,  value: formatValue(summary.top_20_intra_african_exports_total_mln_usd), color: '#fb923c' },
               ].map((item, i) => (
                 <div key={i} style={{ background: 'var(--overlay)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
-                  <p style={{ fontSize: '0.65rem', color: 'var(--afcfta-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
+                  <p style={{ fontSize: '0.65rem', color: 'var(--afcfta-muted)', margin: 0 }}>{item.label}</p>
                   <p style={{ fontSize: '1.2rem', fontWeight: 800, color: `color-mix(in srgb, ${item.color} 40%, var(--text))`, margin: '4px 0 0', whiteSpace: 'nowrap' }}>{item.value}</p>
                 </div>
               ))}

@@ -94,7 +94,7 @@ function DashboardMetricCard({ item }) {
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">
+          <p className="text-[11px] text-[var(--afcfta-muted)] font-bold">
             {item.title}
           </p>
           <p
@@ -237,7 +237,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         <div className="p-5 md:p-6">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 text-xs uppercase tracking-wide font-bold text-[var(--gold)] mb-3">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--gold)] mb-3">
                 <ShieldCheck className="w-4 h-4" />
                 {t.overview}
               </div>
@@ -260,7 +260,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 { label: t.authentic, value: String(stats?.overview?.authentic_countries || 54) },
               ].map(({ label, value }) => (
                 <div key={label} className="rounded-xl border px-3 py-4 text-center bg-[var(--overlay)] border-[var(--overlay-border)]">
-                  <div className="text-[11px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">{label}</div>
+                  <div className="text-[11px] text-[var(--afcfta-muted)] font-bold">{label}</div>
                   <div
                     className="mt-2 font-bold text-[var(--text)]"
                     style={{
@@ -330,7 +330,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                   borderLeftColor: accent,
                 }}
               >
-                <div className="text-[11px] font-bold uppercase tracking-[1px]" style={{ color: `color-mix(in srgb, ${accent} 40%, var(--text))`}}>
+                <div className="text-[11px] font-bold" style={{ color: `color-mix(in srgb, ${accent} 40%, var(--text))`}}>
                   {label}
                 </div>
                 <div
@@ -382,7 +382,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               }}
             >
               <div
-                className="text-[11px] font-bold uppercase tracking-[1px]"
+                className="text-[11px] font-bold"
                 style={{ color: `color-mix(in srgb, ${bloc.accent} 40%, var(--text))`}}
               >
                 {bloc.name}
