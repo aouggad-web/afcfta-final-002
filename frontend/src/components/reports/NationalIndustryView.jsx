@@ -110,7 +110,7 @@ function IndustrieBloc({ ind, fr }) {
         <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={th}>{fr ? "Branche" : "Branch"}</th>
+              <th style={{ ...th, width: "34%" }}>{fr ? "Branche" : "Branch"}</th>
               <th style={thNum}>{fr ? "VA 2024" : "VA 2024"}</th>
               <th style={thNum}>{fr ? "Part privée" : "Private share"}</th>
               <th style={thNum}>{fr ? "Volume 2024" : "Volume 2024"}</th>
@@ -334,7 +334,9 @@ export default function NationalIndustryView({ fr }) {
               {r === "monde" ? (fr ? "Monde" : "World") : fr ? "Afrique" : "Africa"}
             </button>
           ))}
-          <label style={{ ...muted, display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+          <label
+            style={{ ...muted, display: "flex", alignItems: "center", gap: 6, cursor: "pointer", whiteSpace: "nowrap" }}
+          >
             <input
               type="checkbox"
               checked={horsHydro}
@@ -373,7 +375,7 @@ export default function NationalIndustryView({ fr }) {
             <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
               <thead>
                 <tr>
-                  <th style={th}>{fr ? "Produit" : "Product"}</th>
+                  <th style={{ ...th, width: "44%" }}>{fr ? "Produit" : "Product"}</th>
                   <th style={thNum}>{fr ? "Exportations" : "Exports"}</th>
                   <th style={thNum}>{fr ? "vers l'Afrique" : "to Africa"}</th>
                   <th style={thNum}>{fr ? "Demande mondiale" : "World demand"}</th>
