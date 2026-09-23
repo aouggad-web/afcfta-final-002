@@ -337,9 +337,31 @@ def _liquider(
                     else droit["specifique"]
                 )
             npf_specifique = bool(ligne.get("specifique_npf"))
-            droit = dict(droit, taux=remise.get("taux"), specifique=remise.get("specifique"))
-            ligne["taux_pct"] = droit["taux"]
-            ligne["regime_applique"] = "preference"
+            # Une préférence est une FACULTÉ : aucun importateur n'invoque un
+            # régime plus cher que le droit commun. Même garde-fou que le
+            # chemin historique (`plancher_npf`), posé seulement quand les
+            # deux taux sont ad valorem — un spécifique et un ad valorem ne se
+            # comparent pas sans quantité ni valeur.
+            comparables = (
+                droit.get("taux") is not None
+                and not droit.get("specifique")
+                and remise.get("taux") is not None
+                and remise.get("specifique") is None
+            )
+            if comparables and remise["taux"] > droit["taux"]:
+                ligne["regime_applique"] = "npf_plancher"
+                ligne["plancher_npf"] = {
+                    "taux_preferentiel_ecarte_pct": remise["taux"],
+                    "taux_retenu_pct": droit["taux"],
+                    "motif": (
+                        "Le taux préférentiel dépasse le droit NPF de la même "
+                        "position : c'est le NPF qui est servi."
+                    ),
+                }
+            else:
+                droit = dict(droit, taux=remise.get("taux"), specifique=remise.get("specifique"))
+                ligne["taux_pct"] = droit["taux"]
+                ligne["regime_applique"] = "preference"
 
             if npf_specifique and droit.get("specifique") is None and droit.get("taux") is not None:
                 # Une remise ad valorem remplace un droit spécifique : l'assiette
