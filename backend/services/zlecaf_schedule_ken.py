@@ -177,3 +177,38 @@ def reserve_regle_d_origine(hs_code: str) -> Optional[str]:
         if debut <= rubrique <= fin:
             return RESERVE_REGLE_D_ORIGINE.format(rubrique=f"{rubrique[:2]}.{rubrique[2:]}")
     return None
+
+
+def ligne_du_journal_officiel(
+    hs_code: str, origin_iso3: str, as_of: Optional[datetime.date] = None
+) -> Optional[dict]:
+    """La ligne du barème gazetté, sous la forme que rend le résolveur des
+    taux officiels — pour que le chemin historique serve le Journal officiel,
+    et non l'e-Tariff Book du Secrétariat.
+
+    Les deux divergent sur 275 lignes : l'e-Tariff Book calcule sur une base
+    de 25 % là où le Journal officiel porte 35 % (bande du TEC de 2022), et il
+    ignore 1 072 lignes du barème. Le Journal officiel est l'acte que la douane
+    kényane applique.
+    """
+    jour = as_of or datetime.date.today()
+    taux, _ = compute_ken_zlecaf_rate(hs_code, origin_iso3, jour)
+    if taux is None:
+        return None
+    annee = min(max(jour.year, PREMIERE_ANNEE), DERNIERE_ANNEE)
+    return {
+        "hs_code": _normaliser(hs_code).replace(".", ""),
+        "country_iso3": "KEN",
+        "agreement": "AfCFTA",
+        "source_title": _BAREME["_instrument"],
+        "source_date": OPPOSABLE_A_PARTIR_DU.isoformat(),
+        "source_url": _BAREME["_url"],
+        "source_api_url": None,
+        "source_column": str(annee),
+        "schedule": "EAC/321/2022",
+        "schedule_year": annee - PREMIERE_ANNEE + 1,
+        "rate_expression": f"{taux:g}%",
+        "ad_valorem_rate_pct": taux,
+        "rate_kind": "AD_VALOREM",
+        "calculation_status": "CALCULABLE",
+    }

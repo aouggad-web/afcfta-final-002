@@ -101,12 +101,26 @@ def test_kenya_applies_only_to_the_21_origins_named_by_kra():
 
 
 def test_kenya_uses_the_exact_eac_line_and_2026_tier():
+    # Lu dans le Journal officiel (Legal Notice EAC/321/2022), colonne 2026 —
+    # plus dans l'e-Tariff Book du Secrétariat, qui en diverge.
     rate = resolve_official_preferential_rate("KEN", "01012900", "GHA", as_of_year=2026)
     assert rate["hs_code"] == "01012900"
+    assert rate["schedule"] == "EAC/321/2022"
     assert rate["schedule_year"] == 6
-    assert rate["source_column"] == "year6"
+    assert rate["source_column"] == "2026"
     assert rate["rate_expression"] == "10%"
     assert rate["ad_valorem_rate_pct"] == 10.0
+
+
+def test_kenya_serves_the_gazetted_base_not_the_etariff_book():
+    """0201.10.00 : base 35 % au Journal officiel, sixième annuité 14,0 %.
+    L'e-Tariff Book, parti d'une base de 25 %, servait 10 %."""
+    rate = resolve_official_preferential_rate("KEN", "02011000", "GHA", as_of_year=2026)
+    assert rate["ad_valorem_rate_pct"] == 14.0
+    # Ligne du barème absente de l'e-Tariff Book : désormais servie.
+    assert resolve_official_preferential_rate("KEN", "51111100", "GHA", as_of_year=2026)
+    # Ligne à taux composite, écartée du barème : jamais aplatie à 0 %.
+    assert resolve_official_preferential_rate("KEN", "72139110", "GHA", as_of_year=2026) is None
 
     context = resolve_zlecaf_context("KEN", "GHA", "01012900", 25.0, None)
     assert context["trade_regime"] == "ZLECAF"
