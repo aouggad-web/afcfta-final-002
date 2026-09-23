@@ -141,6 +141,22 @@ def taux_preferentiels(
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Calendrier ZLECAf DZA indisponible : %s", exc)
 
+    elif taux_dd is None and destination_iso3.upper() == "KEN":
+        # Le tarif kényan ne porte pas de colonne ZLECAf : le barème est publié
+        # à part, par la Legal Notice EAC/321/2022. Contrairement au calendrier
+        # algérien, celui-ci ne prend PAS le taux NPF — il lit une colonne
+        # annuelle, et une position hors barème rend None plutôt que de se
+        # déduire du plein droit.
+        try:
+            from services.zlecaf_schedule_ken import compute_ken_zlecaf_rate
+
+            taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
+            if taux is not None:
+                taux_dd = {"taux": taux}
+                origine_taux = libelle
+        except Exception as exc:  # pragma: no cover - dépendance optionnelle
+            logger.warning("Barème ZLECAf KEN indisponible : %s", exc)
+
     if taux_dd is None:
         resultat["statut"] = "PREFERENCE_NON_TRACEE"
         resultat["note"] = (

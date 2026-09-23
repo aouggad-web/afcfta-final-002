@@ -295,30 +295,65 @@ touche.
 
 ### G2 — le produit cache du vrai
 
-- **Aucune préférence ZLECAf n'est servie, sur aucun couloir.** Mesuré le
-  23/09/2026 ; constat complet dans
-  `reports/CARENCES_CALCULATEUR_2026-09-23.md`. `taux_preferentiels()` exécuté
-  sur les **2 756 couples destination × origine** que le socle permet de
-  former rend **0 préférence ZLECAf**. Les 148 préférences effectivement
-  servies relèvent toutes d'une **union douanière** — EAC, SACU, CEMAC,
-  UEMOA — c'est-à-dire d'un régime antérieur à la ZLECAf, que le moteur nomme
-  correctement `UNION_DOUANIERE`.
+- **Le Kenya sert la première préférence ZLECAf du produit — RÉGLÉ le
+  23/09/2026.** Le barème existait, publié ligne à ligne : *EAC Provisional
+  Schedule of Tariff Concessions for the AfCFTA, Category A* — Legal Notice
+  EAC/321/2022, gazettée le 06/09/2022. 5 342 positions extraites, calendrier
+  2021-2030, **zéro écart sur 53 420 colonnes contrôlées**. Fiche :
+  `KEN_bareme_zlecaf_2026-09-23.json`.
 
-  La cause est une **intersection vide**, et elle tient en deux lignes. Le
-  registre d'application ne contient que cinq pays, dont un seul `APPLIED` :
-  le Kenya. Neuf pays portent une colonne `AFCFTA` au socle : AGO, BWA, LSO,
-  MUS, MWI, NAM, SWZ, SYC, ZAF. **Le Kenya n'en fait pas partie** — vérifié
-  sur ses 5 935 positions, aucune ne porte de colonne préférentielle. Le seul
-  couloir juridiquement ouvert est donc celui dont le tarif n'a pas de
-  barème, d'où les 20 `PREFERENCE_NON_TRACEE`.
+  **Le périmètre est le droit de douane SEUL, et c'est un constat de droit
+  positif, pas un périmètre vérifié.** L'IDF (3,5 %) et le RDL (2 %) restent
+  dus au taux plein : l'art. 7(3) du Protocole définit pourtant le droit
+  d'importation largement — « any duty or charge of any kind » — avec une
+  exclusion pour les redevances de l'art. VIII du GATT, mais **aucune
+  détermination publiée ne qualifie ces deux-là**, et les exonérations du
+  *Miscellaneous Fees and Levies Act 2016* ne visent que l'origine EAC. Le
+  moteur sert ce que le Kenya perçoit, pas ce qu'on croit qu'il devrait
+  percevoir. C'est l'erreur inverse du cas algérien, où le DAPS était
+  expressément adjoint.
+
+  **Un piège d'extraction à ne pas rouvrir.** Le pourcentage d'une
+  DÉSIGNATION n'est pas un taux : « containing 99% or more lactose », « less
+  than 20% by weight of fructose » décrivent la composition du produit. Une
+  extraction qui prend le premier « % » du segment fabrique des bases de
+  0,25 %, 85 % ou 99,99 %. 55 positions sont concernées. Un test impose que
+  toute base appartienne aux quatre bandes du TEC.
+
+- **Ce qui reste hors barème, et que ce lot ne comble pas.** 611 positions
+  kényannes sur 5 935 — produits sensibles, catégories B et C — dont aucun
+  barème n'est publié ; elles rendent « non couvert ». 11 lignes d'aciers à
+  taux composite (« 25% or $200/MT whichever is higher ») que la grammaire ne
+  liquide pas, et qu'on ne ramène pas à leur volet ad valorem : ce serait
+  servir un droit inférieur à celui qui est dû. Et le **gel** des lignes
+  dépourvues de règles d'origine ZLECAf arrêtées (Directive 1/2021 §17) : la
+  règle est établie, la liste ne l'est pas, donc une position au barème n'est
+  pas nécessairement exigible.
+
+- **Les 53 autres couloirs restent muets.** Mesuré le 23/09/2026 ; constat
+  d'origine dans `reports/CARENCES_CALCULATEUR_2026-09-23.md`.
+  `taux_preferentiels()` exécuté sur les **2 756 couples destination ×
+  origine** que le socle permet de former rendait **0 préférence ZLECAf**
+  avant le barème kényan ; il en rend **27** depuis. Les 148 autres
+  préférences servies relèvent d'une **union douanière** — EAC, SACU, CEMAC,
+  UEMOA — c'est-à-dire d'un régime antérieur à la ZLECAf, que le moteur nomme
+  correctement `UNION_DOUANIERE`. L'art. 8(2) du Protocole les préserve
+  expressément : ce n'est pas un contournement.
+
+  **Ce qui manque pour les autres n'est pas le même que pour le Kenya.** Là,
+  le couloir était ouvert et le barème manquait. Ailleurs, c'est le couloir :
+  le registre d'application ne contient que cinq pays, dont un seul `APPLIED`.
+  Les quatre autres sont `PARTNER_NOTICE_REQUIRED` — CIV, ETH, NGA, ZMB — et
+  les 49 restants n'y figurent pas du tout. Neuf pays portent pourtant une
+  colonne `AFCFTA` au socle (AGO, BWA, LSO, MUS, MWI, NAM, SWZ, SYC, ZAF) :
+  ils ont un barème et pas de couloir, exactement l'inverse du Kenya d'hier.
 
   **Le moteur ne fabrique rien** — vérifié : `preference.py` est fail-closed,
   aucun taux n'est dérivé du NPF par un coefficient, et `calcul.py` refuse de
   calculer une économie si l'un des deux régimes n'est pas `COMPLET`. C'est
-  une carence de collecte, des deux côtés à la fois. Le code est prêt ; la
-  donnée n'y est pas. **Le geste au meilleur rapport coût/portée est le
-  barème kényan** : c'est le seul couloir autorisé, et il rendrait le produit
-  capable de servir sa première vraie préférence continentale.
+  ce qui classe ce qui reste en G2 et non en G1 : le produit se tait, il
+  n'affirme pas de faux.
+
 
 - **SACU — RÉGLÉ le 23/09/2026 (33 068 droits débloqués).** Les quatre
   assiettes sont établies sur le droit NATIONAL de chaque État, jamais sur le
