@@ -366,6 +366,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_eligible: hasZlecaf,
     zlecaf_preference_applied: hasZlecaf,
     zlecaf_note: calcul.preference_zlecaf?.note || null,
+    zlecaf_reserve: hasZlecaf ? calcul.preference_zlecaf?.reserve || null : null,
     plancher_npf: null,
     zlecaf_status: zlecafStatusLegacy(calcul.preference_zlecaf),
     zlecaf_rate_expression: null,

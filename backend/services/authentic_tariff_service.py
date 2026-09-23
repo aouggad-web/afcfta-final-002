@@ -1761,7 +1761,7 @@ def _resolve_zlecaf_context(
         f"{official_rate['hs_code']}, {official_rate['source_column']} : "
         f"{official_rate['rate_expression']}. Certificat d'origine ZLECAf requis."
     )
-    return _result(
+    contexte = _result(
         preferential=True,
         preference_applied=applied,
         dd=eff_dd,
@@ -1775,6 +1775,13 @@ def _resolve_zlecaf_context(
         preferential_rate_source=source,
         preferential_rate_calculation_status=official_rate["calculation_status"],
     )
+    if dest == "KEN" and applied:
+        # Même réserve que le moteur du socle : rubrique sans règle d'origine
+        # arrêtée à l'Appendice IV (décembre 2023), que le Kenya n'exclut pas.
+        from services.zlecaf_schedule_ken import reserve_regle_d_origine
+
+        contexte["zlecaf_reserve"] = reserve_regle_d_origine(hs_code_clean)
+    return contexte
 
 
 # Alias public : le moteur de rapports (benchmarking_service) doit appliquer
@@ -2443,6 +2450,9 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
+        # Réserve jointe à une préférence servie (Kenya : règle d'origine non
+        # arrêtée). `None` quand il n'y en a pas.
+        "zlecaf_reserve": _zctx.get("zlecaf_reserve"),
         # Renseigné UNIQUEMENT quand le taux préférentiel dépassait le NPF et a
         # donc été écarté : porte le taux écarté, le taux retenu et le motif.
         # Un montant corrigé sans être dit ne serait pas opposable, et la note

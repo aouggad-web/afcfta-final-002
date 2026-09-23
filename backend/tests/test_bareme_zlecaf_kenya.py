@@ -14,6 +14,7 @@ dit pas.
 import datetime
 import json
 import os
+import re
 import sys
 
 import pytest
@@ -27,7 +28,9 @@ from services.zlecaf_schedule_ken import (  # noqa: E402
     OPPOSABLE_A_PARTIR_DU,
     POSITIONS,
     PREMIERE_ANNEE,
+    RUBRIQUES_SANS_REGLE_D_ORIGINE,
     compute_ken_zlecaf_rate,
+    reserve_regle_d_origine,
 )
 
 RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -249,3 +252,66 @@ def test_une_position_hors_bareme_rend_preference_non_tracee():
     resultat = taux_preferentiels(positions_socle[hors], "KEN", "NGA", hors)
     assert resultat["applique"] is False
     assert resultat["statut"] == "PREFERENCE_NON_TRACEE"
+
+
+EXTRAIT_APPENDICE_IV = os.path.join(
+    RACINE,
+    "backend",
+    "data",
+    "legal_refs",
+    "zlecaf_application",
+    "sources",
+    "ZLECAF_appendice_IV_regles_non_arretees.source-extrait.txt",
+)
+
+
+def test_chaque_rubrique_reservee_est_non_arretee_dans_l_appendice_iv():
+    """La liste ne s'invente pas : chaque borne est lue dans l'extrait archivé.
+
+    L'Appendice IV de décembre 2023 marque « Yet to be agreed » les rubriques
+    sans règle d'origine. Une borne absente de l'extrait serait une rubrique
+    réservée sans texte.
+    """
+    with open(EXTRAIT_APPENDICE_IV, encoding="utf-8") as f:
+        extrait = f.read()
+    for debut, fin in RUBRIQUES_SANS_REGLE_D_ORIGINE:
+        for rubrique in {debut, fin}:
+            if rubrique.startswith("60"):
+                assert "[Chapter 60] Knitted or crocheted fabrics Yet to be agreed" in extrait
+                continue
+            code = f"{rubrique[:2]}.{rubrique[2:]}"
+            motif = re.compile(rf"^\[p\. \d+\] \[?{re.escape(code)}\]? .*Yet to be agreed", re.M)
+            assert motif.search(extrait), f"{code} non attesté dans l'extrait"
+
+
+def test_la_reserve_touche_331_positions_du_bareme_et_epargne_les_vetements():
+    """Les chapitres 61 et 62 ont leur règle (« manufacture from yarn ») : pas de réserve."""
+    reservees = [c for c in POSITIONS if reserve_regle_d_origine(c)]
+    assert len(reservees) == 331
+    assert not any(c[:2] in ("61", "62") for c in reservees)
+    assert reserve_regle_d_origine("6101.20.00") is None
+    assert reserve_regle_d_origine("8702.10.00") is None  # 87.02 a sa règle
+    assert "87.03" in reserve_regle_d_origine("8703.10.10")
+
+
+def test_la_preference_reste_servie_mais_porte_sa_reserve():
+    """Le Kenya n'a pas exercé la faculté du §17 : la préférence publiée est
+    servie, et la réserve dit qu'elle peut ne pas être accordée en douane."""
+    resultat = taux_preferentiels(_position("51111100"), "KEN", "GHA", "51111100")
+    assert resultat["applique"] is True
+    assert "51.11" in resultat["reserve"]
+    sans = taux_preferentiels(_position("02011000"), "KEN", "GHA", "02011000")
+    assert sans["applique"] is True
+    assert "reserve" not in sans
+
+
+def test_le_chemin_historique_porte_la_meme_reserve():
+    """L'interface calcule le Kenya d'abord par le chemin historique : sans la
+    réserve à cet endroit, l'opérateur ne la verrait pas."""
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    avec = calculate_import_taxes("KEN", "51111100", 10000, apply_zlecaf=True, origin_country="GHA")
+    assert avec["zlecaf_preference_applied"] is True
+    assert "51.11" in avec["zlecaf_reserve"]
+    sans = calculate_import_taxes("KEN", "02011000", 10000, apply_zlecaf=True, origin_country="GHA")
+    assert sans["zlecaf_reserve"] is None

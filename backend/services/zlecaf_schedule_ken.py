@@ -82,6 +82,42 @@ LIBELLE = (
     "(Journal officiel de l'EAC du 06/09/2022), colonne {annee}"
 )
 
+#: Rubriques SANS RÈGLE D'ORIGINE ARRÊTÉE dans l'Appendice IV à l'Annexe 2,
+#: version du 12e Conseil des ministres (décembre 2023) : « Yet to be agreed »,
+#: ou entre crochets (note 2.4). Fiche :
+#: ZLECAF_appendice_IV_regles_non_arretees_2026-09-23.json.
+#:
+#: Le §17 de la Directive 1/2021 PERMET de ne pas appliquer la préférence à ces
+#: produits — l'Algérie l'a fait, par sa circulaire. Le barème kényan, lui, ne
+#: les gèle pas : la préférence publiée est servie, avec une réserve. Liste
+#: tenue ici pour le Kenya seul, même si elle coïncide avec celle de l'Algérie :
+#: la base juridique n'est pas la même.
+RUBRIQUES_SANS_REGLE_D_ORIGINE = (
+    ("5111", "5113"),
+    ("5204", "5212"),
+    ("5309", "5309"),
+    ("5407", "5408"),
+    ("5512", "5516"),
+    ("5801", "5804"),
+    ("5806", "5806"),
+    ("5810", "5810"),
+    ("6001", "6006"),  # chapitre 60 entier
+    ("6301", "6306"),
+    ("8701", "8701"),
+    ("8703", "8708"),
+    ("8710", "8712"),
+)
+
+RESERVE_REGLE_D_ORIGINE = (
+    "Règle d'origine ZLECAf non arrêtée pour la rubrique {rubrique} dans "
+    "l'Appendice IV à l'Annexe 2 (Conseil des ministres, décembre 2023). La "
+    "Directive 1/2021 (§17) permet de ne pas appliquer la préférence à ce "
+    "produit ; le barème kényan ne l'exclut pas. L'adoption des règles "
+    "manquantes par l'Assemblée de l'UA en février 2026 est annoncée par une "
+    "source secondaire ; la décision et son mécanisme transitoire n'ont pas été "
+    "retrouvés. La préférence peut ne pas être accordée en douane."
+)
+
 
 def _normaliser(hs_code: str) -> str:
     """Le barème indexe en SH à huit chiffres pointés (1702.30.00) ; le socle, sans points."""
@@ -129,3 +165,14 @@ def compute_ken_zlecaf_rate(
         logger.warning("Barème ZLECAf KEN : %s porte %d annuités", code, len(annuites))
         return None, None
     return float(annuites[annee - PREMIERE_ANNEE]), LIBELLE.format(annee=annee)
+
+
+def reserve_regle_d_origine(hs_code: str) -> Optional[str]:
+    """La réserve à joindre à la préférence, ou None si la rubrique a sa règle."""
+    rubrique = (hs_code or "").replace(".", "").replace(" ", "")[:4]
+    if len(rubrique) != 4:
+        return None
+    for debut, fin in RUBRIQUES_SANS_REGLE_D_ORIGINE:
+        if debut <= rubrique <= fin:
+            return RESERVE_REGLE_D_ORIGINE.format(rubrique=f"{rubrique[:2]}.{rubrique[2:]}")
+    return None
