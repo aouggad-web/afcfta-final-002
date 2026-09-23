@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
+import { montantUnite } from '../../utils/nombres';
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || '';
 
@@ -134,7 +135,7 @@ const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
                 axisLine={false} tickLine={false}
               />
               <Tooltip
-                formatter={(value) => [`$${value}B`, '']}
+                formatter={(value) => [montantUnite(value, 'B', language), '']}
                 contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
                 labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
               />

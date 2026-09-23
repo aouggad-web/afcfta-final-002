@@ -8,6 +8,7 @@ import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Ship, Plane, Truck, Train, Loader2, Layers, Award, Zap, Leaf, Construction, Sparkles, TrendingUp, Building2 } from 'lucide-react';
 import { PDFExportButton } from '../common/ExportTools';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -43,9 +44,10 @@ const PHASE_META = {
   study:               { label: "Étude de faisabilité", cls: 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]' },
 };
 
-function fmtUsd(v) {
+// « 12 345 $ » en français, « $12,345 » en anglais.
+function fmtUsd(v, language) {
   if (v == null) return '—';
-  return '$' + Number(v).toLocaleString('en-US');
+  return montant(v, language, 3);
 }
 
 function fmtKg(v) {
@@ -60,7 +62,7 @@ function fmtDays(min, max) {
   return `${min}–${max} j`;
 }
 
-function OptionCard({ opt }) {
+function OptionCard({ opt, language }) {
   // Pick icon by corridor mode when available (so rail uses Train, not Truck)
   const iconKey = opt.corridor_mode || opt.mode;
   const meta = MODE_META[iconKey] || MODE_META[opt.mode] || MODE_META.sea;
@@ -119,7 +121,7 @@ function OptionCard({ opt }) {
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
             <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Coût total</div>
-            <div className="font-display text-2xl text-[var(--text)]">{fmtUsd(opt.total_cost_usd)}</div>
+            <div className="font-display text-2xl text-[var(--text)]">{fmtUsd(opt.total_cost_usd, language)}</div>
           </div>
           <div className="rounded-lg bg-[var(--overlay)] px-3 py-2">
             <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Délai</div>
@@ -155,7 +157,7 @@ function OptionCard({ opt }) {
                       <div className="text-xs text-[var(--afcfta-muted)] mt-0.5">
                         {seg.distance_km != null && <span>{seg.distance_km.toLocaleString('en-US')} km</span>}
                         {seg.transit_days_min != null && <span> · {fmtDays(seg.transit_days_min, seg.transit_days_max)}</span>}
-                        {seg.cost_usd != null && <span> · {fmtUsd(seg.cost_usd)}</span>}
+                        {seg.cost_usd != null && <span> · {fmtUsd(seg.cost_usd, language)}</span>}
                         {seg.corridor_name && <span> · {seg.corridor_name}</span>}
                       </div>
                       {seg.carriers && seg.carriers.length > 0 && (
@@ -432,7 +434,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                       {result.roi_infrastructure.reference_operational.label}
                     </div>
                     <div className="grid grid-cols-3 gap-2">
-                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Coût</span><div className="font-display text-base text-[var(--text)]">${result.roi_infrastructure.reference_operational.cost_usd?.toLocaleString('en-US')}</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Coût</span><div className="font-display text-base text-[var(--text)]">{fmtUsd(result.roi_infrastructure.reference_operational.cost_usd, language)}</div></div>
                       <div><span className="text-[var(--afcfta-muted)] text-[11px]">Délai</span><div className="font-display text-base text-[var(--text)]">{result.roi_infrastructure.reference_operational.transit_days_avg} j</div></div>
                       <div><span className="text-[var(--afcfta-muted)] text-[11px]">CO₂</span><div className="font-display text-base text-[var(--text)]">{(result.roi_infrastructure.reference_operational.co2_kg / 1000).toFixed(1)} t</div></div>
                     </div>
@@ -445,7 +447,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                       {result.roi_infrastructure.best_future_cost.label}
                     </div>
                     <div className="grid grid-cols-3 gap-2">
-                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Coût</span><div className="font-display text-base text-[var(--info)]">${result.roi_infrastructure.best_future_cost.cost_usd?.toLocaleString('en-US')}</div></div>
+                      <div><span className="text-[var(--afcfta-muted)] text-[11px]">Coût</span><div className="font-display text-base text-[var(--info)]">{fmtUsd(result.roi_infrastructure.best_future_cost.cost_usd, language)}</div></div>
                       <div><span className="text-[var(--afcfta-muted)] text-[11px]">Délai</span><div className="font-display text-base text-[var(--info)]">{result.roi_infrastructure.best_future_cost.transit_days_avg} j</div></div>
                       <div><span className="text-[var(--afcfta-muted)] text-[11px]">CO₂</span><div className="font-display text-base text-[var(--info)]">{(result.roi_infrastructure.best_future_cost.co2_kg / 1000).toFixed(1)} t</div></div>
                     </div>
@@ -466,7 +468,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                             {costPositive ? 'Économie par expédition' : 'Surcoût par expédition'}
                           </div>
                           <div className={`font-display text-2xl ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
-                            {costPositive ? '$' : '+$'}{Math.abs(ps.cost_savings_usd ?? 0).toLocaleString('en-US')}
+                            {costPositive ? '' : '+'}{fmtUsd(Math.abs(ps.cost_savings_usd ?? 0), language)}
                           </div>
                           <div className={`text-[11px] ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
                             {Math.abs(ps.cost_savings_pct ?? 0)}%
@@ -495,7 +497,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                         <div className="text-center">
                           <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">vs aérien</div>
                           <div className="font-display text-2xl text-[var(--violet)]">
-                            ${ps.cost_savings_vs_air_usd?.toLocaleString('en-US') ?? '—'}
+                            {fmtUsd(ps.cost_savings_vs_air_usd, language)}
                           </div>
                           <div className="text-[11px] text-[var(--violet)]">économisés {ps.cost_savings_vs_air_pct}%</div>
                         </div>
@@ -519,7 +521,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
                             <div>
                               <div className="text-[11px] text-[var(--afcfta-muted)]">{costPositive ? 'Économie annuelle' : 'Surcoût annuel'}</div>
                               <div className={`font-display text-2xl ${costPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'}`}>
-                                ${Math.abs(annualCost).toLocaleString('en-US')}
+                                {fmtUsd(Math.abs(annualCost), language)}
                               </div>
                             </div>
                             <div>
@@ -546,7 +548,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
           {result.options.filter(o => !o.is_future).length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {result.options.filter(o => !o.is_future).map((opt, i) => (
-                <OptionCard key={`op-${i}`} opt={opt} />
+                <OptionCard key={`op-${i}`} opt={opt} language={language} />
               ))}
             </div>
           )}
@@ -572,7 +574,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {result.options.filter(o => o.is_future).map((opt, i) => (
-                  <OptionCard key={`fut-${i}`} opt={opt} />
+                  <OptionCard key={`fut-${i}`} opt={opt} language={language} />
                 ))}
               </div>
             </>

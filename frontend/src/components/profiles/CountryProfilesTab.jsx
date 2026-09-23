@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
+import { montant, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -293,7 +294,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     <div className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-lg shadow-emerald-500/20 text-center transform hover:scale-105 transition-all">
                       <p className="text-xs font-bold text-[var(--success)] mb-2">💵 {t.totalGdp}</p>
                       <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
-                        ${(countryProfile.gdp_usd / 1000000000).toFixed(1)}B
+                        {montantUnite(countryProfile.gdp_usd / 1000000000, 'B', language, 1)}
                       </p>
                       <p className="text-xs text-[var(--success)] mt-2 bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.rank}: #{countryProfile.projections?.africa_rank || 'N/A'}</p>
                     </div>
@@ -304,7 +305,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     <div className="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] p-4 rounded-xl border-2 border-[color-mix(in_srgb,var(--info)_30%,transparent)] shadow-lg shadow-blue-500/20 text-center transform hover:scale-105 transition-all">
                       <p className="text-xs font-bold text-[var(--info)] mb-2">👤 {t.gdpPerCapita}</p>
                       <p className="text-3xl font-extrabold text-[var(--text)] drop-shadow-lg">
-                        ${formatNumber(Math.round(countryProfile.gdp_per_capita))}
+                        {montant(Math.round(countryProfile.gdp_per_capita), language)}
                       </p>
                       <p className="text-xs text-[var(--info)] mt-2 bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{t.perPerson}</p>
                     </div>
@@ -435,7 +436,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                       <p className="text-xs text-[var(--info)] mt-2 bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] rounded-full px-2 py-1">{language === 'fr' ? 'du PIB' : 'of GDP'}</p>
                       {countryProfile.external_debt_bn_usd != null && (
                         <p className="text-lg font-bold text-[var(--gold)] mt-2">
-                          ${countryProfile.external_debt_bn_usd.toFixed(1)}B
+                          {montantUnite(countryProfile.external_debt_bn_usd, 'B', language, 1)}
                         </p>
                       )}
                     </div>

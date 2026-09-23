@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -182,9 +183,9 @@ export default function FinancingMatrix({ language = 'en' }) {
                             </Badge>
                           </div>
                           <div className="grid grid-cols-3 gap-2 text-xs text-[var(--afcfta-muted)]">
-                            <div>{t.cost}: ${inst.total_cost_usd.toLocaleString()}</div>
-                            <div>Protection: ${inst.risk_protection_value_usd.toLocaleString()}</div>
-                            <div>{t.netBenefit}: ${inst.net_benefit_usd.toLocaleString()}</div>
+                            <div>{t.cost}: {montant(inst.total_cost_usd, language, 3)}</div>
+                            <div>Protection: {montant(inst.risk_protection_value_usd, language, 3)}</div>
+                            <div>{t.netBenefit}: {montant(inst.net_benefit_usd, language, 3)}</div>
                           </div>
                         </CardContent>
                       </Card>

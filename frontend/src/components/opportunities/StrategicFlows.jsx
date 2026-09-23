@@ -21,28 +21,26 @@ import {
   Loader2, AlertCircle, TrendingUp, MapPin, ArrowRight, Factory,
   ShieldCheck, Percent, Package, Sparkles,
 } from 'lucide-react';
+import { montant, montantCompact } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 
 // Même convention d'affichage que le reste du module Opportunités
-// (formatValue de SubstitutionAnalysis) : $B / $M / $K.
-const fmtUsd = (v) => {
+// (formatValue de SubstitutionAnalysis) : $B / $M / $K, « Md $ / M $ / k $ »
+// en français.
+const fmtUsd = (v, lang) => {
   const n = Number(v) || 0;
-  if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
-  if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
-  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
-  return `$${n.toLocaleString()}`;
+  if (n < 1e3) return montant(n, lang, 3);
+  return montantCompact(n, lang, { B: 2, M: 1, K: 0 });
 };
 
 // Volume d'import compact pour la liste des marchés.
-const fmtImport = (v) => {
+const fmtImport = (v, lang) => {
   const n = Number(v) || 0;
-  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
-  if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
-  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
-  return `$${n.toLocaleString()}`;
+  if (n < 1e3) return montant(n, lang, 3);
+  return montantCompact(n, lang, { B: 1, M: 0, K: 0 });
 };
 
 const fmtQty = (cap) => {
@@ -78,7 +76,7 @@ function SignalBadge({ signal, emerging }) {
   );
 }
 
-function MarketList({ markets }) {
+function MarketList({ markets, lang }) {
   const { t } = useTranslation();
   const rows = markets || [];
   if (rows.length === 0) return null;
@@ -98,7 +96,7 @@ function MarketList({ markets }) {
               <span style={{ display: 'block', height: '100%', width: `${Math.max(5, ((m.import_usd || 0) / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,var(--success),var(--info))' }} />
             </span>
             <span style={{ flex: '0 0 auto', fontSize: 12, color: 'var(--afcfta-muted)', whiteSpace: 'nowrap' }}>
-              {t('opportunities.strategicFlows.imports')} <strong style={{ color: 'var(--text)' }}>{fmtImport(m.import_usd)}</strong>
+              {t('opportunities.strategicFlows.imports')} <strong style={{ color: 'var(--text)' }}>{fmtImport(m.import_usd, lang)}</strong>
               {m.lead_time_days != null && <span> · {m.lead_time_days} {t('opportunities.strategicFlows.days')}</span>}
               {m.logistics_accessibility?.available && (m.logistics_accessibility.index ?? 1) < 0.35 && (
                 <span style={{ color: 'var(--gold)', fontWeight: 600 }}> · ⚠ {t('opportunities.strategicFlows.limitedAccess')}</span>
@@ -128,7 +126,7 @@ function AdvantageChip({ icon: Icon, label, value, sub }) {
   );
 }
 
-function FlowCard({ flow }) {
+function FlowCard({ flow, lang }) {
   const { t } = useTranslation();
   const tr = flow.transformation || {};
   const adv = flow.advantage || {};
@@ -162,7 +160,7 @@ function FlowCard({ flow }) {
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.potential')}</div>
-          <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(flow.potential_usd)}</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(flow.potential_usd, lang)}</div>
         </div>
       </div>
 
@@ -216,14 +214,14 @@ function FlowCard({ flow }) {
           {flow.capacity_evidence?.value_added_usd != null && (
             <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--violet)', fontWeight: 600 }}>
               <Factory style={{ width: 12, height: 12 }} />
-              {t('opportunities.strategicFlows.capacityEvidence')} · {flow.capacity_evidence.isic_label} : {fmtUsd(flow.capacity_evidence.value_added_usd)} {t('opportunities.strategicFlows.valueAdded')}
+              {t('opportunities.strategicFlows.capacityEvidence')} · {flow.capacity_evidence.isic_label} : {fmtUsd(flow.capacity_evidence.value_added_usd, lang)} {t('opportunities.strategicFlows.valueAdded')}
             </div>
           )}
         </div>
       )}
 
       {/* Marchés africains importateurs (volume d'import réel) */}
-      <MarketList markets={flow.markets} />
+      <MarketList markets={flow.markets} lang={lang} />
 
       {/* Advantage chips */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -334,7 +332,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             </div>
             <div style={{ flex: '1 1 160px', padding: 16, borderRadius: 12, background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)' }}>
               <div style={{ fontSize: 12, color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.totalPotential')}</div>
-              <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(summary.total_potential_usd)}</div>
+              <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(summary.total_potential_usd, lang)}</div>
             </div>
           </div>
 
@@ -364,7 +362,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
                   <div key={p.iso3} style={{ padding: '5px 0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 3 }}>
                       <span style={{ color: 'var(--text)', fontWeight: 600 }}>{p.name}</span>
-                      <span style={{ color: 'var(--afcfta-muted)' }}>{fmtUsd(p.potential_usd)}</span>
+                      <span style={{ color: 'var(--afcfta-muted)' }}>{fmtUsd(p.potential_usd, lang)}</span>
                     </div>
                     <div style={{ height: 5, borderRadius: 3, background: 'var(--afcfta-bg)' }}>
                       <div style={{ height: '100%', width: `${Math.max(4, (p.potential_usd / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,var(--success),var(--info))' }} />
@@ -380,7 +378,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             <div style={{ padding: 30, textAlign: 'center', color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.noFlows')}</div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 14 }}>
-              {(data.flows || []).map((f) => <FlowCard key={f.hs_code} flow={f} />)}
+              {(data.flows || []).map((f) => <FlowCard key={f.hs_code} flow={f} lang={lang} />)}
             </div>
           )}
         </>

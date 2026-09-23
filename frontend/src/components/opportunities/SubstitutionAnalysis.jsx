@@ -23,6 +23,7 @@ import {
 import TradeSankeyDiagram from './TradeSankeyDiagram';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { montant, montantCompact } from '../../utils/nombres';
 import {
   TrendingUp, TrendingDown, Globe, Package, Factory, Ship,
   ArrowRight, ArrowLeftRight, Loader2, AlertCircle, Search,
@@ -49,9 +50,9 @@ const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--
 
 // Valeur de production : l'unité varie selon le référentiel (tonnes FAOSTAT,
 // USD de valeur ajoutée UNIDO, tonnes/carats USGS) — formater en conséquence.
-const fmtProduction = (value, unit) => {
+const fmtProduction = (value, unit, lang) => {
   if (value == null || isNaN(value)) return '—';
-  if (unit === 'USD') return formatValue(value);
+  if (unit === 'USD') return formatValue(value, lang);
   const n = value >= 1e6 ? `${(value / 1e6).toFixed(1)}M` : value >= 1e3 ? `${(value / 1e3).toFixed(0)}K` : `${Math.round(value)}`;
   return `${n} ${unit || ''}`.trim();
 };
@@ -60,9 +61,9 @@ const fmtProduction = (value, unit) => {
 // moyen d'export du pays ($/t, valeur unitaire BACI) au prix moyen que le
 // marché cible paie déjà à ses fournisseurs actuels — l'information dont un
 // exportateur a besoin pour savoir s'il peut se placer sur un marché.
-const fmtPerTonne = (v) => {
+const fmtPerTonne = (v, lang) => {
   if (v == null || isNaN(v)) return '—';
-  return `$${Math.round(v).toLocaleString('en-US')}/t`;
+  return `${montant(Math.round(v), lang)}/t`;
 };
 
 const POSITIONING_CHIP = {
@@ -136,7 +137,7 @@ const FeasibilityBlock = ({ feasibility, bindingConstraint }) => {
 // Production africaine réelle du produit (FAOSTAT / UNIDO / USGS) : commodité,
 // année, institution source et top producteurs mesurés — avec le garde-fou de
 // couverture quand le référentiel n'ingère qu'une poignée de pays.
-const VerifiedProductionBlock = ({ production }) => {
+const VerifiedProductionBlock = ({ production, language }) => {
   const { t } = useTranslation();
   if (!production) return null;
   return (
@@ -152,7 +153,7 @@ const VerifiedProductionBlock = ({ production }) => {
       <div className="flex flex-wrap gap-1.5">
         {(production.top_producers || []).map((p) => (
           <span key={p.country_iso3} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-[var(--afcfta-card)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)]">
-            {p.country_name} · {fmtProduction(p.value, production.unit)}
+            {p.country_name} · {fmtProduction(p.value, production.unit, language)}
             {p.share_pct != null && ` (${p.share_pct}%)`}
           </span>
         ))}
@@ -171,13 +172,11 @@ const VerifiedProductionBlock = ({ production }) => {
   );
 };
 
-// Format currency values
-const formatValue = (value) => {
-  if (!value || isNaN(value)) return '$0';
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-  if (value >= 1e3) return `$${(value / 1e3).toFixed(0)}K`;
-  return `$${value.toLocaleString()}`;
+// Format currency values — « 4,2 Md $ » en français, « $4.2B » en anglais.
+const formatValue = (value, lang) => {
+  if (!value || isNaN(value)) return montant(0, lang);
+  if (value < 1e3) return montant(value, lang, 3);
+  return montantCompact(value, lang, { B: 2, M: 1, K: 0 });
 };
 
 // Stat Card Component
@@ -272,7 +271,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
               {isImport ? "Import actuel" : "Marché potentiel"}
             </p>
             <p className="font-bold text-lg text-[var(--text)]">
-              {formatValue(isImport ? product?.import_value : opportunity.total_market_potential)}
+              {formatValue(isImport ? product?.import_value : opportunity.total_market_potential, language)}
             </p>
           </div>
           <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded-lg p-3">
@@ -280,7 +279,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
               {isImport ? "Potentiel substitution" : "Avantage ZLECAf"}
             </p>
             <p className="font-bold text-lg text-[var(--success)]">
-              {isImport ? formatValue(opportunity.substitution_potential) : (opportunity.afcfta_advantage || '-')}
+              {isImport ? formatValue(opportunity.substitution_potential, language) : (opportunity.afcfta_advantage || '-')}
             </p>
           </div>
         </div>
@@ -292,7 +291,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
         />
 
         {/* Real African production of this product (FAOSTAT / UNIDO / USGS) */}
-        <VerifiedProductionBlock production={opportunity.verified_production} />
+        <VerifiedProductionBlock production={opportunity.verified_production} language={language} />
 
         {/* Current Source (for imports) */}
         {isImport && product?.current_source && (
@@ -308,7 +307,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             <DollarSign className="h-4 w-4 text-[var(--afcfta-muted)]" />
             <span>
               {t('opportunities.substitutionAnalysis.averageExportPrice')} :{' '}
-              <strong className="text-[var(--text)]">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
+              <strong className="text-[var(--text)]">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne, language)}</strong>
             </span>
           </div>
         )}
@@ -338,7 +337,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
                     )}
                   </div>
                   <span className="text-sm font-semibold text-[var(--success)]">
-                    {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size)}
+                    {formatValue(isImport ? (target.export_value || target.production_capacity) : target.market_size, language)}
                   </span>
                 </div>
                 {/* Positionnement prix (export) : prix moyen payé par le marché
@@ -347,7 +346,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
                   <div className="mt-1.5 flex items-center justify-between gap-2" data-testid="price-positioning">
                     <span className="text-[11px] text-[var(--afcfta-muted)]">
                       {t('opportunities.substitutionAnalysis.marketPays')}{' '}
-                      <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne)}</strong>
+                      <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne, language)}</strong>
                       {' · '}
                       {target.price_positioning.price_delta_pct > 0 ? '+' : ''}
                       {target.price_positioning.price_delta_pct}%
@@ -427,7 +426,7 @@ const AnalysisSummaryPanel = ({ analysis, language }) => {
 // backend (summary.product_hierarchy) : l'utilisateur repère le chapitre
 // porteur, l'ouvre en positions SH4, puis lit les codes SH6 exacts — la
 // granularité où se prend la décision.
-const ProductHierarchyPanel = ({ hierarchy }) => {
+const ProductHierarchyPanel = ({ hierarchy, language }) => {
   const { t } = useTranslation();
   const [openChapter, setOpenChapter] = useState(null);
   const [openHs4, setOpenHs4] = useState(null);
@@ -454,7 +453,7 @@ const ProductHierarchyPanel = ({ hierarchy }) => {
                 <Badge variant="outline" className="font-mono text-xs">SH {chapter.chapter}</Badge>
                 <span className="font-medium text-sm text-[var(--text)] flex-1">{chapter.name}</span>
                 <span className="text-xs text-[var(--afcfta-muted)]">{chapter.opportunity_count} {t('opportunities.substitutionAnalysis.enriched.opportunitiesCount')}</span>
-                <span className="text-sm font-bold text-[var(--success)]">{formatValue(chapter.total_value)}</span>
+                <span className="text-sm font-bold text-[var(--success)]">{formatValue(chapter.total_value, language)}</span>
               </button>
               {isOpen && (
                 <div className="divide-y divide-[var(--afcfta-border)]">
@@ -471,7 +470,7 @@ const ProductHierarchyPanel = ({ hierarchy }) => {
                           {hs4Open ? <ChevronDown className="h-3.5 w-3.5 text-[var(--afcfta-muted)]" /> : <ChevronRight className="h-3.5 w-3.5 text-[var(--afcfta-muted)]" />}
                           <Badge variant="outline" className="font-mono text-[11px]">SH {hs4.hs4_code}</Badge>
                           <span className="text-sm text-[var(--text)] flex-1 truncate">{hs4.representative_name}</span>
-                          <span className="text-xs font-semibold text-[var(--success)]">{formatValue(hs4.total_value)}</span>
+                          <span className="text-xs font-semibold text-[var(--success)]">{formatValue(hs4.total_value, language)}</span>
                         </button>
                         {hs4Open && (
                           <div className="pl-16 pr-3 pb-2 space-y-1">
@@ -482,7 +481,7 @@ const ProductHierarchyPanel = ({ hierarchy }) => {
                                 {p.feasibility_coefficient != null && (
                                   <span className="text-[11px] text-[var(--afcfta-muted)]">{Math.round(p.feasibility_coefficient * 100)}%</span>
                                 )}
-                                <span className="text-xs font-semibold text-[var(--text)]">{formatValue(p.value)}</span>
+                                <span className="text-xs font-semibold text-[var(--text)]">{formatValue(p.value, language)}</span>
                               </div>
                             ))}
                           </div>
@@ -588,12 +587,12 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       { label: t('opportunities.substitutionAnalysis.totalOpportunities'), value: String(summary.total_opportunities ?? 0), accent: 'gold' },
       {
         label: isImport ? t('opportunities.substitutionAnalysis.substitutableValue') : t('opportunities.substitutionAnalysis.marketPotential'),
-        value: formatValue(isImport ? summary.total_substitutable_value : summary.total_market_potential),
+        value: formatValue(isImport ? summary.total_substitutable_value : summary.total_market_potential, currentLang),
         accent: 'green',
       },
     ];
     if (isImport && summary.total_imports_from_outside) {
-      kpis.push({ label: t('opportunities.substitutionAnalysis.outsideAfrica'), value: formatValue(summary.total_imports_from_outside), accent: 'red' });
+      kpis.push({ label: t('opportunities.substitutionAnalysis.outsideAfrica'), value: formatValue(summary.total_imports_from_outside, currentLang), accent: 'red' });
     }
 
     const sections = [];
@@ -625,9 +624,9 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           rows: opportunities.map((o) => ({
             hs: o.imported_product?.hs_code || '—',
             name: o.imported_product?.name || '—',
-            imp: formatValue(o.imported_product?.import_value),
+            imp: formatValue(o.imported_product?.import_value, currentLang),
             coef: o.substitution_feasibility ? `${Math.round(o.substitution_feasibility.coefficient * 100)}%` : '—',
-            pot: formatValue(o.substitution_potential),
+            pot: formatValue(o.substitution_potential, currentLang),
             constraint: o.binding_constraint || '—',
           })),
         },
@@ -647,9 +646,9 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           rows: opportunities.map((o) => ({
             hs: o.export_product?.hs_code || '—',
             name: o.export_product?.name || '—',
-            price: o.exporter_avg_price_usd_per_tonne != null ? fmtPerTonne(o.exporter_avg_price_usd_per_tonne) : '—',
+            price: o.exporter_avg_price_usd_per_tonne != null ? fmtPerTonne(o.exporter_avg_price_usd_per_tonne, currentLang) : '—',
             coef: o.substitution_feasibility ? `${Math.round(o.substitution_feasibility.coefficient * 100)}%` : '—',
-            pot: formatValue(o.total_market_potential),
+            pot: formatValue(o.total_market_potential, currentLang),
             constraint: o.binding_constraint || '—',
           })),
         },
@@ -659,8 +658,8 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         (o.potential_markets || []).map((m) => ({
           product: `${o.export_product?.hs_code || ''} ${o.export_product?.name || ''}`.trim(),
           market: m.country_name,
-          size: formatValue(m.market_size),
-          marketPrice: m.price_positioning ? fmtPerTonne(m.price_positioning.market_avg_price_usd_per_tonne) : '—',
+          size: formatValue(m.market_size, currentLang),
+          marketPrice: m.price_positioning ? fmtPerTonne(m.price_positioning.market_avg_price_usd_per_tonne, currentLang) : '—',
           delta: m.price_positioning ? `${m.price_positioning.price_delta_pct > 0 ? '+' : ''}${m.price_positioning.price_delta_pct}%` : '—',
           positioning: m.price_positioning
             ? t(`opportunities.substitutionAnalysis.positioning.${m.price_positioning.positioning}`, { defaultValue: m.price_positioning.positioning })
@@ -695,7 +694,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           hs: product?.hs_code || '—',
           commodity: vp.commodity || '—',
           producers: (vp.top_producers || [])
-            .map((p) => `${p.country_name} (${fmtProduction(p.value, vp.unit)})`)
+            .map((p) => `${p.country_name} (${fmtProduction(p.value, vp.unit, currentLang)})`)
             .join(' · '),
           source: `${vp.institution || '—'} ${vp.year || ''}`.trim(),
         };
@@ -722,7 +721,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           hs4: h4.hs4_code,
           hs6: p.hs_code,
           name: p.name || '—',
-          value: formatValue(p.value),
+          value: formatValue(p.value, currentLang),
         })),
       ),
     );
@@ -900,7 +899,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                 value={formatValue(
                   activeTab === 'import' 
                     ? currentData.summary?.total_substitutable_value 
-                    : currentData.summary?.total_market_potential
+                    : currentData.summary?.total_market_potential, currentLang
                 )}
                 icon={DollarSign}
                 color="blue"
@@ -969,7 +968,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           </Tabs>
 
           {/* Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6) */}
-          <ProductHierarchyPanel hierarchy={currentData?.summary?.product_hierarchy} />
+          <ProductHierarchyPanel hierarchy={currentData?.summary?.product_hierarchy} language={currentLang} />
 
           {/* Top Sectors Chart — imports ET exports (le backend fournit
               top_sectors pour les deux flux ; dataKey aligné sur total_value,
@@ -987,9 +986,9 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                     margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                    <XAxis type="number" tickFormatter={(v) => formatValue(v)} />
+                    <XAxis type="number" tickFormatter={(v) => formatValue(v, currentLang)} />
                     <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 11 }} />
-                    <Tooltip formatter={(v) => formatValue(v)} />
+                    <Tooltip formatter={(v) => formatValue(v, currentLang)} />
                     <Bar dataKey="total_value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
                   </BarChart>
                 </ResponsiveContainer>

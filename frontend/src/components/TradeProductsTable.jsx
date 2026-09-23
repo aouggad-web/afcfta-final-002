@@ -7,6 +7,7 @@ import {
   ArrowDownToLine, ArrowUpFromLine, Globe, Handshake, 
   TrendingUp, TrendingDown, Package, Info, Loader2 
 } from 'lucide-react';
+import { montantUnite } from '../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -110,9 +111,9 @@ function TradeProductsTable({ language = 'fr' }) {
 
   const formatValue = (value) => {
     if (value >= 1000) {
-      return `$${(value / 1000).toFixed(1)}B`;
+      return montantUnite(value / 1000, 'B', language, 1);
     }
-    return `$${value}M`;
+    return montantUnite(value, 'M', language);
   };
 
   const renderGrowthBadge = (growth) => {
@@ -274,7 +275,7 @@ function TradeProductsTable({ language = 'fr' }) {
             <div className="stats-kente-bar" style={{ width: 180, marginTop: 10 }} />
           </div>
           {summary && (
-            <div className="grid grid-cols-2 gap-3 flex-1 min-w-0" style={{ maxWidth: 420 }}>
+            <div className="grid grid-cols-2 gap-3 flex-1" style={{ maxWidth: 420, minWidth: 280 }}>
               {[
                 { label: t.importWorld,  value: formatValue(summary.top_20_imports_world_total_mln_usd),  color: 'var(--info)' },
                 { label: t.exportWorld,  value: formatValue(summary.top_20_exports_world_total_mln_usd),  color: 'var(--success)' },

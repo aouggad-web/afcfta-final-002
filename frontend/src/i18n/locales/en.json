@@ -333,7 +333,7 @@
         "onlyCountryU2019sMain": "Only the country\\u2019s main sectors are covered, not all 24 manufacturing divisions 10-33. A missing division is not zero: it is not documented.",
         "noTimeSeriesExists": "No time series exists at this level for this country.",
         "shareNotPublishedFor": "Share not published for this division",
-        "mUsdValueAdded": "M USD value added",
+        "mUsdValueAdded": "value added",
         "labelNotPublished": "label not published",
         "isic4Classes": "ISIC 4 classes",
         "indicator": "Indicator",

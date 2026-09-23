@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 import { Search, Globe, TrendingDown, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { normalizeTaxesDetail } from './taxesDetail';
+import { montant, montantUnite } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -99,14 +100,10 @@ const COUNTRY_NAMES = {
 };
 
 // Format currency
-const formatCurrency = (value) => {
+// « 12 345 $ » en français, « $12,345 » en anglais.
+const formatCurrency = (value, language) => {
   if (value === null || value === undefined) return '-';
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(value);
+  return montant(value, language);
 };
 
 // Regional groupings
@@ -423,7 +420,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </Badge>
                 <span className="text-lg font-medium text-[var(--text)]">{productDescription}</span>
                 <Badge className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)]">
-                  {formatCurrency(value)} CIF
+                  {formatCurrency(value, language)} CIF
                 </Badge>
               </div>
             </CardContent>
@@ -445,9 +442,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   </div>
                   <div className="text-right">
                     <p className="text-sm opacity-90">{t.zlecafTotal}</p>
-                    <p className="text-3xl font-bold">{formatCurrency(bestCountry.zlecafTotal)}</p>
+                    <p className="text-3xl font-bold">{formatCurrency(bestCountry.zlecafTotal, language)}</p>
                     <Badge className="bg-[color-mix(in_srgb,var(--bg)_12%,transparent)] text-[var(--bg)] border-transparent mt-2">
-                      {t.savings}: {formatCurrency(bestCountry.savings)} (-{bestCountry.savingsPercent}%)
+                      {t.savings}: {formatCurrency(bestCountry.savings, language)} (-{bestCountry.savingsPercent}%)
                     </Badge>
                   </div>
                 </div>
@@ -514,14 +511,14 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                           </div>
                         </td>
                         <td className="text-right p-3 font-mono text-[var(--afcfta-muted)]">
-                          {formatCurrency(r.npfTotal)}
+                          {formatCurrency(r.npfTotal, language)}
                         </td>
                         <td className="text-right p-3 font-mono font-bold text-[var(--success)]">
-                          {formatCurrency(r.zlecafTotal)}
+                          {formatCurrency(r.zlecafTotal, language)}
                         </td>
                         <td className="text-right p-3">
                           <div className="text-[var(--success)] font-bold">
-                            {formatCurrency(r.savings)}
+                            {formatCurrency(r.savings, language)}
                           </div>
                           <div className="text-xs text-[var(--afcfta-muted)]">
                             -{r.savingsPercent}%
@@ -548,10 +545,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={chartData} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
+                    <XAxis type="number" tickFormatter={(v) => montantUnite(v / 1000, 'K', language, 0)} />
                     <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
                     <Tooltip 
-                      formatter={(v) => formatCurrency(v)}
+                      formatter={(v) => formatCurrency(v, language)}
                       labelFormatter={(label) => label}
                     />
                     <Legend />

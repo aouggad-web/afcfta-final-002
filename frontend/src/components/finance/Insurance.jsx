@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { montant, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -77,6 +78,8 @@ const texts = {
 
 export default function Insurance({ language = 'en' }) {
   const t = texts[language] || texts.en;
+  // « 12 345 $ » en français, « $12,345 » en anglais.
+  const usd = (v) => (v == null ? '—' : montant(v, language, 3));
   const [countryCode, setCountryCode] = useState('DZ');
   const [amount, setAmount] = useState(500000);
   const [productType, setProductType] = useState('export_credit');
@@ -320,7 +323,7 @@ export default function Insurance({ language = 'en' }) {
                       <li key={i} className="text-xs text-[var(--text)]">
                         • {ins.name} ({t.rating}: {ins.credit_rating || 'N/A'}
                         {ins.total_capacity_usd_bn
-                          ? `, ${t.capacity}: $${ins.total_capacity_usd_bn}bn`
+                          ? `, ${t.capacity}: ${montantUnite(ins.total_capacity_usd_bn, 'B', language)}`
                           : ''}
                         )
                       </li>
@@ -345,19 +348,19 @@ export default function Insurance({ language = 'en' }) {
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>{t.basePremium}:</span>
-                  <strong>${quote.base_premium_usd?.toLocaleString()}</strong>
+                  <strong>{usd(quote.base_premium_usd)}</strong>
                 </div>
                 <div className="flex justify-between">
                   <span>{t.finalPremium}:</span>
-                  <strong>${quote.final_premium_usd?.toLocaleString()}</strong>
+                  <strong>{usd(quote.final_premium_usd)}</strong>
                 </div>
                 <div className="flex justify-between">
                   <span>{t.coverage}:</span>
-                  <span>${quote.coverage_usd?.toLocaleString()}</span>
+                  <span>{usd(quote.coverage_usd)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t.deductible}:</span>
-                  <span>${quote.deductible_usd?.toLocaleString()}</span>
+                  <span>{usd(quote.deductible_usd)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t.adjustment}:</span>
@@ -386,11 +389,11 @@ export default function Insurance({ language = 'en' }) {
                       <div className="flex justify-between">
                         <span className="font-medium capitalize">{type.replace('_', ' ')}</span>
                         <Badge variant={i === 0 ? 'default' : 'outline'}>
-                          ${q.final_premium_usd?.toLocaleString()}
+                          {usd(q.final_premium_usd)}
                         </Badge>
                       </div>
                       <div className="text-xs text-[var(--afcfta-muted)] mt-1">
-                        {t.coverage}: ${q.coverage_usd?.toLocaleString()}
+                        {t.coverage}: {usd(q.coverage_usd)}
                       </div>
                     </div>
                   ))}

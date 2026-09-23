@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/
 import { Badge } from './ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, Area, AreaChart } from 'recharts';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3, Globe, Users, ArrowUpRight } from 'lucide-react';
+import { montantUnite } from '../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -200,7 +201,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
         <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
         {payload.map((p, i) => (
           <p key={i} style={{ color: `color-mix(in srgb, ${p.color} 40%, var(--text))`, margin: '2px 0' }}>
-            {p.name}: <strong>{typeof p.value === 'number' ? `$${p.value.toFixed(1)}B` : p.value}</strong>
+            {p.name}: <strong>{typeof p.value === 'number' ? montantUnite(p.value, 'B', language, 1) : p.value}</strong>
           </p>
         ))}
       </div>
@@ -229,7 +230,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
         </div>
 
         {/* KPI Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {/* PIB Combiné */}
           <div className="stats-kpi-card atlantic">
             <svg className="stats-kpi-ornament" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -238,9 +239,9 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </svg>
             <p className="stats-kpi-label">{t.totalTradeValue}</p>
             <p className="stats-kpi-value atlantic">
-              ${statistics.overview?.estimated_combined_gdp
-                ? (statistics.overview.estimated_combined_gdp / 1e9).toFixed(0)
-                : '2706'}B
+              {montantUnite(statistics.overview?.estimated_combined_gdp
+                ? statistics.overview.estimated_combined_gdp / 1e9
+                : 2706, 'B', language, 0)}
             </p>
             <p className="stats-kpi-footer">
               <DollarSign style={{ width: 12, height: 12 }} />
@@ -255,7 +256,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </svg>
             <p className="stats-kpi-label">{t.totalExports}</p>
             <p className="stats-kpi-value green">
-              ${africaTotals?.exports_billions ? africaTotals.exports_billions.toFixed(0) : '720'}B
+              {montantUnite(africaTotals?.exports_billions ? africaTotals.exports_billions : 720, 'B', language, 0)}
             </p>
             <p className="stats-kpi-footer">
               <TrendingUp style={{ width: 12, height: 12 }} />
@@ -270,7 +271,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
             </svg>
             <p className="stats-kpi-label">{t.totalImports}</p>
             <p className="stats-kpi-value terra">
-              ${africaTotals?.imports_billions ? africaTotals.imports_billions.toFixed(0) : '761'}B
+              {montantUnite(africaTotals?.imports_billions ? africaTotals.imports_billions : 761, 'B', language, 0)}
             </p>
             <p className="stats-kpi-footer">
               <TrendingDown style={{ width: 12, height: 12 }} />
@@ -317,7 +318,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       </span>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>${val}B</p>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>{montantUnite(val, 'B', language, 1)}</p>
                       <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{exporter.share_pct}% {t.ofTotal}</p>
                       <div className="stats-progress-bar" style={{ width: 64 }}>
                         <div className="stats-progress-fill green" style={{ width: `${pct}%` }} />
@@ -350,7 +351,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       </span>
                     </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>${val}B</p>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>{montantUnite(val, 'B', language, 1)}</p>
                       <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{importer.share_pct}% {t.ofTotal}</p>
                       <div className="stats-progress-bar" style={{ width: 64 }}>
                         <div className="stats-progress-fill blue" style={{ width: `${pct}%` }} />
@@ -396,7 +397,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                   </td>
                   <td style={{ fontWeight: 600 }}>{translateCountry(country.country)}</td>
                   <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--gold)' }}>
-                    ${country.gdp_2024_billion?.toFixed(1)}B
+                    {montantUnite(country.gdp_2024_billion, 'B', language, 1)}
                   </td>
                   <td style={{ textAlign: 'right' }}>
                     <span className={`stats-chip ${parseFloat(country.growth_2024) >= 3 ? 'up' : 'down'}`}>
@@ -525,7 +526,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                     axisLine={false} tickLine={false}
                   />
                   <Tooltip
-                    formatter={(value) => `$${value.toFixed(1)}B`}
+                    formatter={(value) => montantUnite(value, 'B', language, 1)}
                     contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
                     labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
@@ -548,25 +549,25 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
                       <div className="flex justify-between items-center mb-2">
                         <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text)' }}>{translateCountry(country.country)}</span>
                         <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: 'var(--violet)', border: '1px solid rgba(155,110,245,0.25)' }}>
-                          {language === 'en' ? 'GDP' : 'PIB'}: ${country.gdp_2024}B
+                          {language === 'en' ? 'GDP' : 'PIB'}: {montantUnite(country.gdp_2024, 'B', language)}
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.expWorld}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>${country.exports_world.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>{montantUnite(country.exports_world, 'B', language, 1)}</p>
                         </div>
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.expIntraAfr}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>${country.exports_intra_african.toFixed(1)}B <span style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)' }}>({country.intra_african_percentage}%)</span></p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--success)', margin: 0 }}>{montantUnite(country.exports_intra_african, 'B', language, 1)} <span style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)' }}>({country.intra_african_percentage}%)</span></p>
                         </div>
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.impWorld}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>${country.imports_world.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>{montantUnite(country.imports_world, 'B', language, 1)}</p>
                         </div>
                         <div>
                           <p style={{ fontSize: '0.68rem', color: 'var(--afcfta-muted)', margin: 0 }}>{t.impIntraAfr}</p>
-                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>${country.imports_intra_african.toFixed(1)}B</p>
+                          <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--info)', margin: 0 }}>{montantUnite(country.imports_intra_african, 'B', language, 1)}</p>
                         </div>
                       </div>
                     </div>

@@ -48,6 +48,7 @@ import {
   resolveZlecafAvailability,
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
+import { montant } from '../../utils/nombres';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -334,7 +335,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     return sectorNames[language][sector] || `${t.sectorPrefix} ${sector}`;
   };
 
+  // « 12 345 $ » en français ; forme anglaise inchangée.
   const formatCurrency = (amount) => {
+    if (language !== 'en') return montant(amount, language, 2);
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -1766,7 +1769,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-[var(--info)] text-xs font-medium">{language === 'fr' ? 'Montant économisé' : 'Amount saved'}</p>
                   <p className="text-2xl font-bold text-[var(--info)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? `${((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} USD`
+                      ? montant((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100, language)
                       : '—'}
                   </p>
                   <p className="text-[var(--info)] text-xs mt-1">

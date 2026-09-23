@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { montant, montantCompact } from "../../utils/nombres";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -18,19 +19,17 @@ const td = { padding: "4px 8px", fontSize: 12 };
 const dash = (v, suffix = "") =>
   v === null || v === undefined || v === "" ? "—" : `${v}${suffix}`;
 
-const money = (v) =>
-  v === null || v === undefined
-    ? "—"
-    : `$${Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+/* « 12 345 $ » en français, « $12,345 » en anglais. */
+const money = (v, fr) =>
+  v === null || v === undefined ? "—" : montant(v, fr ? "fr" : "en");
 
-/* Compact USD (e.g. $3.3B, $46B, $120M) for large industrial aggregates. */
-const moneyShort = (v) => {
+/* Compact USD (e.g. $3.3B, $46B, $120M ; « 3,3 Md $ » en français) for large
+   industrial aggregates. */
+const moneyShort = (v, fr) => {
   if (v === null || v === undefined) return "—";
   const n = Number(v);
-  const abs = Math.abs(n);
-  if (abs >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
-  if (abs >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
-  return money(n);
+  if (Math.abs(n) >= 1e6) return montantCompact(n, fr ? "fr" : "en", { B: 1, M: 0 });
+  return money(n, fr);
 };
 
 const intFmt = (v) =>
@@ -297,7 +296,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
             )}
             {bal.hs_import_demand?.value != null && (
               <Chip ok>
-                {t("opportunities.sectoralAnalysis.oecImportsExactHs")} · {money(bal.hs_import_demand.value)}
+                {t("opportunities.sectoralAnalysis.oecImportsExactHs")} · {money(bal.hs_import_demand.value, fr)}
                 {bal.hs_import_demand.year ? ` (${bal.hs_import_demand.year})` : ""}
               </Chip>
             )}
@@ -328,21 +327,21 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.output2")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(industrial_base.output_usd)}
+                    {moneyShort(industrial_base.output_usd, fr)}
                     <Prov nature={industrial_base.provenance?.output_usd} />
                   </div>
                 </div>
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.valueAdded")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(industrial_base.value_added_usd)}
+                    {moneyShort(industrial_base.value_added_usd, fr)}
                     <Prov nature={industrial_base.provenance?.value_added_usd} />
                   </div>
                 </div>
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.worldExports")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(industrial_base.exports_world_usd)}
+                    {moneyShort(industrial_base.exports_world_usd, fr)}
                     <Prov nature={industrial_base.provenance?.exports_world_usd} />
                   </div>
                 </div>
@@ -382,7 +381,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                         <tr key={sub.isic4} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                           <td style={{ ...td, fontWeight: 600, whiteSpace: "nowrap" }}>{sub.isic4}</td>
                           <td style={td}>{sub.label}</td>
-                          <td style={{ ...td, textAlign: "right", fontWeight: 600 }}>{moneyShort(sub.output_usd)}</td>
+                          <td style={{ ...td, textAlign: "right", fontWeight: 600 }}>{moneyShort(sub.output_usd, fr)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -417,14 +416,14 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.apparentConsumption")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(market_demand.apparent_consumption_usd)}
+                    {moneyShort(market_demand.apparent_consumption_usd, fr)}
                     <Prov nature={market_demand.provenance?.apparent_consumption_usd} />
                   </div>
                 </div>
                 <div>
                   <div style={label}>{t("opportunities.sectoralAnalysis.worldImports")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
-                    {moneyShort(market_demand.imports_world_usd)}
+                    {moneyShort(market_demand.imports_world_usd, fr)}
                     <Prov nature={market_demand.provenance?.imports_world_usd} />
                   </div>
                 </div>

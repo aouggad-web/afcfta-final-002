@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Layers, TrendingDown, ArrowLeftRight } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
 const CATEGORY_LABEL = {
   droit_douane: { fr: 'Droit de douane', en: 'Customs duty' },
@@ -40,7 +41,7 @@ export default function TaxBreakdownDual({
       return `${n} ${currency.local_symbol || currency.local_code}`;
     }
     if (amountUsd === undefined || amountUsd === null) return '—';
-    return `$${amountUsd.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`;
+    return montant(amountUsd, language);
   };
 
   const s = summary || {};
@@ -194,7 +195,7 @@ export default function TaxBreakdownDual({
                 ? '—'
                 : useLocal
                   ? `${sl.economie_totale.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${currency.local_symbol || currency.local_code}`
-                  : `$${s.economie_totale.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`}
+                  : montant(s.economie_totale, language)}
             </span>
           </div>
         )}
@@ -214,7 +215,7 @@ function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
     }
     const v = s[k];
     if (v === undefined || v === null) return '—';
-    return `$${v.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`;
+    return montant(v, language);
   };
   const Row = ({ label, k }) => (
     <div className="flex items-center justify-between text-sm">

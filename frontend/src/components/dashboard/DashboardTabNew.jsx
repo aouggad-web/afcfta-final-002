@@ -9,6 +9,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import NewsDashboard from './NewsDashboard';
+import { montantCompact, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -90,6 +91,7 @@ function DashboardMetricCard({ item }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        containerType: 'inline-size',
       }}
     >
       <div className="flex items-start justify-between gap-4">
@@ -100,7 +102,9 @@ function DashboardMetricCard({ item }) {
           <p
             className="mt-3 font-bold text-[var(--text)]"
             style={{
-              fontSize: 'clamp(30px, 3vw, 44px)',
+              // « 2 700 Md $ » ne se coupe pas : réduit pour tenir à côté de
+              // l'icône (46 px + 16 px d'écart) au lieu de la pousser dehors.
+              fontSize: 'min(clamp(30px, 3vw, 44px), calc((100cqi - 62px) / 5.5))',
               fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
               lineHeight: 1,
             }}
@@ -186,7 +190,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
       {
         key: 'gdp',
         title: t.totalGdp,
-        value: '$2.7T',
+        value: montantCompact(2.7e12, language, { T: 1 }),
         subtitle: `54 ${t.countries}`,
         icon: BarChart3,
         accent: 'var(--gold)',
@@ -196,7 +200,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         key: 'trade',
         title: t.intraAfricanTrade,
         // Real figure from Afreximbank ATR 2026 (2025) when available
-        value: atr?.intra_african_trade_busd ? `$${atr.intra_african_trade_busd}B` : '$213.8B',
+        value: montantUnite(atr?.intra_african_trade_busd || 213.8, 'B', language),
         subtitle: `2025: +${atr?.intra_african_trade_growth_pct ?? 5.5}%`,
         icon: TrendingUp,
         accent: '#4f8ef7',
@@ -311,12 +315,12 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               },
               {
                 label: t.intraAfricanTradeShort,
-                value: atr.intra_african_trade_busd != null ? `$${atr.intra_african_trade_busd}B` : '—',
+                value: atr.intra_african_trade_busd != null ? montantUnite(atr.intra_african_trade_busd, 'B', language) : '—',
                 accent: '#4f8ef7',
               },
               {
                 label: t.merchExports,
-                value: atr.merchandise_exports_busd != null ? `$${atr.merchandise_exports_busd}B` : '—',
+                value: atr.merchandise_exports_busd != null ? montantUnite(atr.merchandise_exports_busd, 'B', language) : '—',
                 accent: '#d4891a',
               },
             ].map(({ label, value, accent }) => (
@@ -328,6 +332,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                   borderColor: `${accent}44`,
                   borderLeftWidth: 3,
                   borderLeftColor: accent,
+                  containerType: 'inline-size',
                 }}
               >
                 <div className="text-[11px] font-bold" style={{ color: `color-mix(in srgb, ${accent} 40%, var(--text))`}}>
@@ -336,7 +341,8 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 <div
                   className="mt-2 font-bold text-[var(--text)]"
                   style={{
-                    fontSize: 'clamp(24px, 2.6vw, 34px)',
+                    // Plafonnée à la tuile : « 685,2 Md $ » ne se coupe pas.
+                    fontSize: 'min(clamp(24px, 2.6vw, 34px), 18cqi)',
                     fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)",
                     lineHeight: 1,
                   }}

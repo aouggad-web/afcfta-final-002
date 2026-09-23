@@ -7,11 +7,12 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Ship, Anchor, Waves, Loader2, Leaf, AlertTriangle, Package, TrendingUp } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const fmtUsd = (v) => (v == null ? '—' : '$' + Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 }));
+const fmtUsd = (v, language) => (v == null ? '—' : montant(v, language));
 const fmtNum = (v, u = '') => (v == null ? '—' : Number(v).toLocaleString('fr-FR') + (u ? ' ' + u : ''));
 const fmtDays = (min, max) => (min == null && max == null ? '—' : min === max || max == null ? `${min} j` : `${min}–${max} j`);
 
@@ -202,7 +203,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
                 </Badge>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-[var(--text)]">{fmtUsd(cost.total_cost_usd)}</div>
+                <div className="text-2xl font-bold text-[var(--text)]">{fmtUsd(cost.total_cost_usd, language)}</div>
                 <div className="text-xs text-[var(--afcfta-muted)]">{fmtNum(cost.total_usd_per_t)} USD/t</div>
               </div>
             </div>

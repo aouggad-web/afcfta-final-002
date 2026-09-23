@@ -9,11 +9,12 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { ScrollText, ExternalLink } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
-const usd = (v) => {
+const usd = (v, language) => {
   if (v === null || v === undefined || v === '-') return '—';
   if (typeof v === 'string') return v;
-  return `$${v.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`;
+  return montant(v, language);
 };
 
 function JournalTable({ steps, language }) {
@@ -54,10 +55,10 @@ function JournalTable({ steps, language }) {
                   </span>
                 )}
               </td>
-              <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{usd(s.base)}</td>
+              <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{usd(s.base, language)}</td>
               <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{s.rate ?? '—'}</td>
-              <td className="py-2 px-2 text-right font-mono text-[var(--text)] font-semibold">{usd(s.amount)}</td>
-              <td className="py-2 pl-2 text-right font-mono text-[var(--text)]">{usd(s.cumulative)}</td>
+              <td className="py-2 px-2 text-right font-mono text-[var(--text)] font-semibold">{usd(s.amount, language)}</td>
+              <td className="py-2 pl-2 text-right font-mono text-[var(--text)]">{usd(s.cumulative, language)}</td>
             </tr>
           ))}
         </tbody>

@@ -202,8 +202,8 @@ function App() {
   const fetchStats = async () => {
     try {
       setStats({
-        gdp: '$2.7T',
-        trade: '$235B',
+        gdp: 2.7e12,
+        trade: 235e9,
         ports: '68',
         progress: '57%',
       });

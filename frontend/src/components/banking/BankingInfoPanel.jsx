@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -611,7 +612,7 @@ function SectionHeader({ icon, title, count, colorClass = 'bg-[color-mix(in_srgb
 
 // ── Banks Tab ────────────────────────────────────────────────────────────────
 
-function BanksTab({ data, t }) {
+function BanksTab({ data, t, language }) {
   const [expandedBank, setExpandedBank] = useState(null);
 
   if (!data) return <p className="text-[var(--afcfta-muted)] text-sm">{t.noData}</p>;
@@ -659,7 +660,7 @@ function BanksTab({ data, t }) {
               {central_bank?.total_assets_usd_bn && (
                 <div>
                   <span className="text-[var(--afcfta-muted)] text-[11px]">Actifs totaux</span>
-                  <div className="font-semibold text-[var(--text)]">{central_bank.total_assets_usd_bn} Mrd USD</div>
+                  <div className="font-semibold text-[var(--text)]">{montantUnite(central_bank.total_assets_usd_bn, 'B', language)}</div>
                 </div>
               )}
               {central_bank?.currency_name && (
@@ -1952,7 +1953,7 @@ export default function BankingInfoPanel({ language = 'fr', selectedCountry: pro
 
           {selectedCountry && !loading && (
             <>
-              {activeTab === 'banks' && <BanksTab data={bankData} t={t} />}
+              {activeTab === 'banks' && <BanksTab data={bankData} t={t} language={language} />}
               {activeTab === 'forex' && <ForexTab data={forexData} countryCode={selectedCountry} t={t} />}
               {activeTab === 'risk' && <RiskTab data={riskData} t={t} />}
               {activeTab === 'instruments' && (

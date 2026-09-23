@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Plane, DollarSign, Clock, Package, Info, Weight } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -65,13 +66,13 @@ function groupByRegion(list) {
   return groups;
 }
 
-function CostBar({ label, value, total, color }) {
+function CostBar({ label, value, total, color, language }) {
   const pct = total > 0 ? (value / total) * 100 : 0;
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
         <span className="text-[var(--afcfta-muted)]">{label}</span>
-        <span className="font-semibold">${value.toLocaleString()}</span>
+        <span className="font-semibold">{montant(value, language, 3)}</span>
       </div>
       <div className="h-2 bg-[var(--afcfta-card2)] rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-500 ${color}`} style={{ width: `${pct}%` }} />
@@ -264,7 +265,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
           <CardContent className="pt-4 space-y-5">
             <div className="text-center py-4 bg-[var(--afcfta-card)] rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-sm">
               <p className="text-xs text-[var(--afcfta-muted)] mb-1">{t.totalCost}</p>
-              <p className="text-4xl font-bold text-[var(--success)]" data-testid="air-total-cost">${result.total_cost_usd.toLocaleString()}</p>
+              <p className="text-4xl font-bold text-[var(--success)]" data-testid="air-total-cost">{montant(result.total_cost_usd, language, 3)}</p>
               <p className="text-xs text-[var(--afcfta-muted)] mt-1">
                 USD · {result.rate_per_kg_usd}{t.perKg} × {result.chargeable_weight_kg.toLocaleString()} kg
                 {result.min_charge_applied ? ` · ${t.minCharge}` : ''}
@@ -288,10 +289,10 @@ export default function AirFreightCalculator({ language = 'fr' }) {
             </div>
 
             <div className="space-y-3">
-              <CostBar label={t.airFreight} value={result.air_freight_usd} total={result.total_cost_usd} color="bg-sky-500" />
-              <CostBar label={t.fsc} value={result.fuel_surcharge_usd} total={result.total_cost_usd} color="bg-orange-400" />
-              <CostBar label={t.ssc} value={result.security_surcharge_usd} total={result.total_cost_usd} color="bg-purple-400" />
-              <CostBar label={t.handling} value={result.handling_awb_usd} total={result.total_cost_usd} color="bg-emerald-400" />
+              <CostBar label={t.airFreight} value={result.air_freight_usd} total={result.total_cost_usd} color="bg-sky-500" language={language} />
+              <CostBar label={t.fsc} value={result.fuel_surcharge_usd} total={result.total_cost_usd} color="bg-orange-400" language={language} />
+              <CostBar label={t.ssc} value={result.security_surcharge_usd} total={result.total_cost_usd} color="bg-purple-400" language={language} />
+              <CostBar label={t.handling} value={result.handling_awb_usd} total={result.total_cost_usd} color="bg-emerald-400" language={language} />
             </div>
 
             <div className="p-3 bg-[var(--afcfta-card)] rounded-lg border border-[var(--afcfta-border)]">

@@ -20,6 +20,7 @@ import {
   Loader2, AlertCircle, Plus, X, RefreshCw, Scale
 } from 'lucide-react';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
+import { montant, montantCompact, montantUnite, nombreUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -30,14 +31,12 @@ const API = `${BACKEND_URL}/api`;
 // la série 4 tombait à 5,2 face au vert en sombre.
 const COUNTRY_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-6)'];
 
-// Format currency values
-const formatValue = (value) => {
+// Montants : « 290,8 Md $ » en français, « $290.8B » en anglais — même
+// précision qu'auparavant, palier par palier.
+const formatValue = (value, language) => {
   if (!value || isNaN(value)) return '-';
-  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-  if (value >= 1e3) return `$${(value / 1e3).toFixed(0)}K`;
-  return `$${value.toLocaleString()}`;
+  if (value < 1e3) return montant(value, language, 3);
+  return montantCompact(value, language, { T: 2, B: 2, M: 1, K: 0 });
 };
 
 // Format percentage
@@ -529,11 +528,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </thead>
                 <tbody>
                   {[
-                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: 'var(--gold)' }}>${d.gdp.toFixed(1)}B</strong> : '-' },
-                    { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita) : '-' },
+                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: 'var(--gold)' }}>{montantUnite(d.gdp, 'B', language, 1)}</strong> : '-' },
+                    { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita, language) : '-' },
                     { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > HIGH_INFLATION_THRESHOLD ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
                     { label: txt.unemployment, render: (d) => d.unemployment ? formatPercent(d.unemployment) : '-' },
-                    { label: `${txt.population} (M)`, render: (d) => d.population ? `${d.population.toFixed(1)}M` : '-' },
+                    { label: `${txt.population} (M)`, render: (d) => d.population ? nombreUnite(d.population, 'M', language, 1) : '-' },
                   ].map((row, ri) => (
                     <tr key={ri}>
                       <td style={{ fontWeight: 600, color: 'var(--text-soft)' }}>{row.label}</td>
@@ -563,9 +562,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <BarChart data={getTradeBarData()} barGap={2}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--overlay)" />
                   <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'var(--text-soft)' }} axisLine={false} tickLine={false} />
-                  <YAxis tickFormatter={(v) => `$${v}M`} tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
+                  <YAxis tickFormatter={(v) => montantUnite(v, 'M', language)} tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    formatter={(value) => [`$${value.toFixed(0)}M`, '']}
+                    formatter={(value) => [montantUnite(value, 'M', language, 0), '']}
                     contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
                     labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
@@ -605,7 +604,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     <td style={{ fontWeight: 600 }}>{txt.exports} (M$)</td>
                     {getTradeData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>
-                        {d.exports ? `$${d.exports.toFixed(0)}M` : '-'}
+                        {d.exports ? montantUnite(d.exports, 'M', language, 0) : '-'}
                       </td>
                     ))}
                   </tr>
@@ -613,7 +612,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     <td style={{ fontWeight: 600 }}>{txt.imports} (M$)</td>
                     {getTradeData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--info)' }}>
-                        {d.imports ? `$${d.imports.toFixed(0)}M` : '-'}
+                        {d.imports ? montantUnite(d.imports, 'M', language, 0) : '-'}
                       </td>
                     ))}
                   </tr>
@@ -621,7 +620,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     <td style={{ fontWeight: 600 }}>{txt.tradeBalance}</td>
                     {getTradeData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: d.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-                        {d.balance ? `${d.balance >= 0 ? '+' : ''}$${d.balance.toFixed(0)}M` : '-'}
+                        {d.balance ? `${d.balance >= 0 ? '+' : ''}${montantUnite(d.balance, 'M', language, 0)}` : '-'}
                       </td>
                     ))}
                   </tr>

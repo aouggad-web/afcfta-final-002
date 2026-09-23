@@ -1457,6 +1457,7 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  container-type: inline-size; /* la valeur se mesure à la carte */
 }
 
 .afcfta-kpiCard-top {
@@ -1476,6 +1477,9 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
   margin-top: 8px;
   font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 3.2vw, 42px);
+  /* « 2 700 Md $ » ne se coupe pas : la valeur se réduit pour tenir à côté
+     de l'icône (46 px + 12 px d'écart) au lieu de la pousser hors de la carte. */
+  font-size: min(clamp(28px, 3.2vw, 42px), calc((100cqi - 58px) / 5.5));
   font-weight: 700;
   color: var(--text);
   line-height: 1;
@@ -1941,7 +1945,7 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
   font-size: 15px;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1279px) {
   .afcfta-kpiRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

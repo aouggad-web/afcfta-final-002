@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Ship, DollarSign, Clock, Anchor, BarChart3, Info, ExternalLink } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -109,13 +110,13 @@ const texts = {
   },
 };
 
-function CostBar({ label, value, total, color }) {
+function CostBar({ label, value, total, color, language }) {
   const pct = total > 0 ? (value / total) * 100 : 0;
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
         <span className="text-[var(--afcfta-muted)]">{label}</span>
-        <span className="font-semibold">${value.toLocaleString()}</span>
+        <span className="font-semibold">{montant(value, language, 3)}</span>
       </div>
       <div className="h-2 bg-[var(--afcfta-card2)] rounded-full overflow-hidden">
         <div
@@ -341,7 +342,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             <div className="text-center py-4 bg-[var(--afcfta-card)] rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-sm">
               <p className="text-xs text-[var(--afcfta-muted)] mb-1">{t.totalCost}</p>
               <p className="text-4xl font-bold text-[var(--success)]">
-                ${result.total_cost_usd.toLocaleString()}
+                {montant(result.total_cost_usd, language, 3)}
               </p>
               <p className="text-xs text-[var(--afcfta-muted)] mt-1">USD / {containerLabel(containerType)}</p>
             </div>
@@ -353,6 +354,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                 value={result.ocean_freight_usd}
                 total={result.total_cost_usd}
                 color="bg-blue-500"
+                language={language}
               />
               {result.origin_thc_usd > 0 && (
                 <CostBar
@@ -360,6 +362,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                   value={result.origin_thc_usd}
                   total={result.total_cost_usd}
                   color="bg-orange-400"
+                  language={language}
                 />
               )}
               {result.destination_thc_usd > 0 && (
@@ -368,6 +371,7 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                   value={result.destination_thc_usd}
                   total={result.total_cost_usd}
                   color="bg-purple-400"
+                  language={language}
                 />
               )}
             </div>
@@ -376,15 +380,15 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
             <div className="grid grid-cols-3 gap-2">
               <div className="text-center p-2 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                 <p className="text-xs text-[var(--info)]">{t.oceanFreight}</p>
-                <p className="font-bold text-[var(--info)]">${result.ocean_freight_usd.toLocaleString()}</p>
+                <p className="font-bold text-[var(--info)]">{montant(result.ocean_freight_usd, language, 3)}</p>
               </div>
               <div className="text-center p-2 bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
                 <p className="text-xs text-[var(--terra)]">{t.originTHC}</p>
-                <p className="font-bold text-[var(--terra)]">${result.origin_thc_usd.toLocaleString()}</p>
+                <p className="font-bold text-[var(--terra)]">{montant(result.origin_thc_usd, language, 3)}</p>
               </div>
               <div className="text-center p-2 bg-[color-mix(in_srgb,var(--violet)_8%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--violet)_30%,transparent)]">
                 <p className="text-xs text-[var(--violet)]">{t.destinationTHC}</p>
-                <p className="font-bold text-[var(--violet)]">${result.destination_thc_usd.toLocaleString()}</p>
+                <p className="font-bold text-[var(--violet)]">{montant(result.destination_thc_usd, language, 3)}</p>
               </div>
             </div>
 
@@ -463,10 +467,10 @@ export default function ShippingFeesCalculator({ language = 'fr' }) {
                       <td className="p-2 font-medium text-[var(--text)]">{r.origin_port}</td>
                       <td className="p-2 text-[var(--text)]">{r.destination_port}</td>
                       <td className="p-2 text-right font-semibold text-[var(--info)]">
-                        ${r.teu_usd.toLocaleString()}
+                        {montant(r.teu_usd, language, 3)}
                       </td>
                       <td className="p-2 text-right text-[var(--text)]">
-                        ${r.feu_usd.toLocaleString()}
+                        {montant(r.feu_usd, language, 3)}
                       </td>
                       <td className="p-2 text-right text-[var(--afcfta-muted)]">
                         {r.distance_nm.toLocaleString()}

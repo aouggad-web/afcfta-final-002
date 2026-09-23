@@ -3,6 +3,7 @@ import { TableBody } from './ui/table';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 import { Globe, TrendingUp } from 'lucide-react';
+import { montantUnite, chiffres } from '../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API_URL = BACKEND_URL || '';
@@ -293,10 +294,10 @@ const TradeComparison = ({ language = 'fr' }) => {
       </div>
 
       {/* ── KPI Cards Grid ──────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="stats-kpi-card atlantic">
           <p className="stats-kpi-label">{t.kpiGdp}</p>
-          <p className="stats-kpi-value atlantic">${tradeOverview.totalTrade.value}B</p>
+          <p className="stats-kpi-value atlantic">{montantUnite(tradeOverview.totalTrade.value, 'B', language)}</p>
           <p className="stats-kpi-footer">
             <span className="stats-chip up">+{tradeOverview.totalTrade.change}%</span>
             {t.kpiGdpFooter}
@@ -304,7 +305,7 @@ const TradeComparison = ({ language = 'fr' }) => {
         </div>
         <div className="stats-kpi-card green">
           <p className="stats-kpi-label">{t.kpiExports}</p>
-          <p className="stats-kpi-value green">${tradeOverview.exports.value}B</p>
+          <p className="stats-kpi-value green">{montantUnite(tradeOverview.exports.value, 'B', language)}</p>
           <p className="stats-kpi-footer">
             <span className="stats-chip up">+{tradeOverview.exports.change}%</span>
             {t.kpiExportsFooter}
@@ -312,7 +313,7 @@ const TradeComparison = ({ language = 'fr' }) => {
         </div>
         <div className="stats-kpi-card terra">
           <p className="stats-kpi-label">{t.kpiImports}</p>
-          <p className="stats-kpi-value terra">${tradeOverview.imports.value}B</p>
+          <p className="stats-kpi-value terra">{montantUnite(tradeOverview.imports.value, 'B', language)}</p>
           <p className="stats-kpi-footer">
             <span className="stats-chip down">+{tradeOverview.imports.change}%</span>
             {t.kpiImportsFooter}
@@ -320,7 +321,7 @@ const TradeComparison = ({ language = 'fr' }) => {
         </div>
         <div className="stats-kpi-card violet">
           <p className="stats-kpi-label">{t.kpiBalance}</p>
-          <p className="stats-kpi-value green">+${tradeOverview.balance.value}B</p>
+          <p className="stats-kpi-value green">+{montantUnite(tradeOverview.balance.value, 'B', language)}</p>
           <p className="stats-kpi-footer">
             <span className="stats-chip up">{tradeOverview.balance.isSurplus ? t.surplus : t.deficit}</span>
           </p>
@@ -341,12 +342,12 @@ const TradeComparison = ({ language = 'fr' }) => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
               <div className="stats-kpi-card atlantic">
                 <p className="stats-kpi-label">{t.intra2023}</p>
-                <p className="stats-kpi-value atlantic">${statistics.trade_evolution.intra_african_trade_2023}B</p>
+                <p className="stats-kpi-value atlantic">{montantUnite(statistics.trade_evolution.intra_african_trade_2023, 'B', language)}</p>
                 <p className="stats-kpi-footer">{t.billionUsd}</p>
               </div>
               <div className="stats-kpi-card green">
                 <p className="stats-kpi-label">{t.intra2024}</p>
-                <p className="stats-kpi-value green">${statistics.trade_evolution.intra_african_trade_2024}B</p>
+                <p className="stats-kpi-value green">{montantUnite(statistics.trade_evolution.intra_african_trade_2024, 'B', language)}</p>
                 <p className="stats-kpi-footer">{t.billionUsd}</p>
               </div>
               <div className="stats-kpi-card gold">
@@ -381,7 +382,7 @@ const TradeComparison = ({ language = 'fr' }) => {
                   axisLine={false} tickLine={false}
                 />
                 <Tooltip
-                  formatter={(value) => [`$${value.toFixed(1)}B USD`, t.commerceLabel]}
+                  formatter={(value) => [`${montantUnite(value, 'B', language, 1)}${language === 'en' ? ' USD' : ''}`, t.commerceLabel]}
                   contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
                   labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                 />
@@ -458,10 +459,10 @@ const TradeComparison = ({ language = 'fr' }) => {
                 {calculationsGlobal.map((item) => (
                   <tr key={item.country}>
                     <td style={{ fontWeight: 600 }}>{item.name}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.exports.toFixed(1)}B</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--terra)' }}>${item.imports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>{montantUnite(item.exports, 'B', language, 1)}</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--terra)' }}>{montantUnite(item.imports, 'B', language, 1)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-                      {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
+                      {item.balance >= 0 ? '+' : ''}{chiffres(item.balance, language, 1)}
                     </td>
                   </tr>
                 ))}
@@ -509,10 +510,10 @@ const TradeComparison = ({ language = 'fr' }) => {
                 {calculationsIntraAfrican.map((item) => (
                   <tr key={item.country}>
                     <td style={{ fontWeight: 600 }}>{item.name}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.exports.toFixed(1)}B</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.imports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>{montantUnite(item.exports, 'B', language, 1)}</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>{montantUnite(item.imports, 'B', language, 1)}</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
-                      {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
+                      {item.balance >= 0 ? '+' : ''}{chiffres(item.balance, language, 1)}
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '1px 6px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: 'var(--violet)', border: '1px solid rgba(155,110,245,0.25)' }}>

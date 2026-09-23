@@ -10,25 +10,22 @@ import {
 } from 'recharts';
 import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown, Moon } from 'lucide-react';
 import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeReportPdf';
+import { montantCompact, nombreCompact, chiffres } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
-const fmtUSD = (v) => {
+// « 1,23 Md $ » en français, « $1.23B » en anglais ; même précision par palier.
+const fmtUSD = (v, language) => {
   if (v == null || isNaN(v)) return '—';
-  const abs = Math.abs(v);
-  if (abs >= 1e9) return `$${(v / 1e9).toFixed(2)}B`;
-  if (abs >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
-  if (abs >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
-  return `$${v.toFixed(0)}`;
+  return montantCompact(v, language, { B: 2, M: 1, K: 0 });
 };
 
 // Volume BACI (poids net, tonnes métriques) — affiché à côté de la valeur USD.
-const fmtTonnes = (v) => {
+const fmtTonnes = (v, language) => {
   if (v == null || isNaN(v) || v <= 0) return '—';
-  if (v >= 1e6) return `${(v / 1e6).toFixed(2)}M t`;
-  if (v >= 1e3) return `${(v / 1e3).toFixed(1)}K t`;
-  return `${v.toFixed(v < 10 ? 1 : 0)} t`;
+  if (v < 1e3) return `${chiffres(v, language, v < 10 ? 1 : 0)} t`;
+  return `${nombreCompact(v, language, { M: 2, K: 1 })} t`;
 };
 
 const MATCH_LEVEL_LABEL = {
@@ -224,8 +221,8 @@ export default function CountryHS6History({ language = 'fr' }) {
         language,
         levelLen: LEVEL_LEN[searchLevel],
         matchLevelLabel: (MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
-        fmtUSD,
-        fmtTonnes,
+        fmtUSD: (v) => fmtUSD(v, language),
+        fmtTonnes: (v) => fmtTonnes(v, language),
         theme: themeName,
       });
       doc.save(`${tradeReportFilename(data)}_${themeName}.pdf`);
@@ -476,9 +473,9 @@ export default function CountryHS6History({ language = 'fr' }) {
           {/* ─── Stat strip ─── */}
           {totals && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: '8px 16px' }}>
-              <StatBox label={t.totalExports} value={fmtUSD(totals.exports)} icon={<TrendingUp size={14} color="var(--success)" />} />
-              <StatBox label={t.totalImports} value={fmtUSD(totals.imports)} icon={<TrendingDown size={14} color="var(--danger)" />} />
-              <StatBox label={t.cumulativeBalance} value={fmtUSD(totals.balance)} icon={totals.balance >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <TrendingDown size={14} color="var(--danger)" />} />
+              <StatBox label={t.totalExports} value={fmtUSD(totals.exports, language)} icon={<TrendingUp size={14} color="var(--success)" />} />
+              <StatBox label={t.totalImports} value={fmtUSD(totals.imports, language)} icon={<TrendingDown size={14} color="var(--danger)" />} />
+              <StatBox label={t.cumulativeBalance} value={fmtUSD(totals.balance, language)} icon={totals.balance >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <TrendingDown size={14} color="var(--danger)" />} />
               <StatBox label={t.avgGrowth} value={totals.cagr != null ? `${totals.cagr.toFixed(1)}%` : '—'} icon={totals.cagr != null && totals.cagr >= 0 ? <TrendingUp size={14} color="var(--success)" /> : <Minus size={14} />} />
             </div>
           )}
@@ -490,18 +487,18 @@ export default function CountryHS6History({ language = 'fr' }) {
                 <ComposedChart data={data.chart_rows} margin={{ top: 8, right: 16, left: 0, bottom: 4 }} barGap={2}>
                   <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
                   <XAxis dataKey="year" tick={{ fontSize: 12, fill: 'var(--afcfta-muted)', fontWeight: 700 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => fmtUSD(v)} width={62} />
+                  <YAxis tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} tickFormatter={(v) => fmtUSD(v, language)} width={62} />
                   <Tooltip
                     contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)', borderRadius: 8, color: 'var(--text)' }}
                     formatter={(value, name, entry) => {
                       const row = entry?.payload || {};
                       if (name === t.exports && row.exports_quantity > 0) {
-                        return [`${fmtUSD(value)} · ${fmtTonnes(row.exports_quantity)}`, name];
+                        return [`${fmtUSD(value, language)} · ${fmtTonnes(row.exports_quantity, language)}`, name];
                       }
                       if (name === t.imports && row.imports_quantity > 0) {
-                        return [`${fmtUSD(value)} · ${fmtTonnes(row.imports_quantity)}`, name];
+                        return [`${fmtUSD(value, language)} · ${fmtTonnes(row.imports_quantity, language)}`, name];
                       }
-                      return [fmtUSD(value), name];
+                      return [fmtUSD(value, language), name];
                     }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
@@ -535,12 +532,12 @@ export default function CountryHS6History({ language = 'fr' }) {
                   {data.chart_rows.map((row) => (
                     <tr key={row.year} style={{ borderBottom: '1px solid var(--afcfta-border)', fontVariantNumeric: 'tabular-nums' }}>
                       <td style={{ padding: '6px 4px', fontWeight: 700 }}>{row.year}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.exports)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.imports)}</td>
-                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.exports, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-exp-${row.year}`}>{fmtTonnes(row.exports_quantity, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace' }}>{fmtUSD(row.imports, language)}</td>
+                      <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', fontSize: 12, color: 'var(--afcfta-muted)' }} data-testid={`qty-imp-${row.year}`}>{fmtTonnes(row.imports_quantity, language)}</td>
                       <td style={{ padding: '6px 4px', textAlign: 'right', fontFamily: 'monospace', color: 'var(--text)' }}>
-                        {fmtUSD(row.balance)}
+                        {fmtUSD(row.balance, language)}
                       </td>
                     </tr>
                   ))}

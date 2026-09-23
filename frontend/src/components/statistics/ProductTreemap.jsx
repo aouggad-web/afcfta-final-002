@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts';
 import { LayoutGrid, RefreshCw, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
+import { montantCompact } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -43,12 +44,10 @@ const familleSH = (code) => {
   return f ? f.id : 'industrie';
 };
 
-const formatUSD = (v) => {
+// « 64,56 Md $ » en français, « $64.56B » en anglais.
+const formatUSD = (v, language) => {
   if (!v && v !== 0) return '—';
-  if (v >= 1e9) return `$${(v / 1e9).toFixed(2)} Mds`;
-  if (v >= 1e6) return `$${(v / 1e6).toFixed(1)} M`;
-  if (v >= 1e3) return `$${(v / 1e3).toFixed(1)} k`;
-  return `$${v.toFixed(0)}`;
+  return montantCompact(v, language, { B: 2, M: 1, K: 1 });
 };
 
 const TEXTS = {
@@ -144,7 +143,7 @@ const TreemapCell = (props) => {
 };
 
 /* ── Tooltip ───────────────────────────────────────────────────── */
-const makeTooltip = (txt) => ({ active, payload }) => {
+const makeTooltip = (txt, language) => ({ active, payload }) => {
   if (!active || !payload || !payload.length) return null;
   const d = payload[0]?.payload;
   if (!d) return null;
@@ -163,7 +162,7 @@ const makeTooltip = (txt) => ({ active, payload }) => {
         {d.hsId ? `${d.hsId} · ` : ''}{d.fullName}
       </p>
       <p style={{ color: 'var(--gold)', margin: 0 }}>
-        <strong>{formatUSD(d.size)}</strong>
+        <strong>{formatUSD(d.size, language)}</strong>
       </p>
       {d.share != null && (
         <p style={{ color: 'var(--afcfta-muted)', margin: '2px 0 0' }}>
@@ -275,7 +274,7 @@ export default function ProductTreemap({ language = 'fr' }) {
   }, [treemapData, txt]);
 
   const total = response?.total_value || 0;
-  const TooltipContent = useMemo(() => makeTooltip(txt), [txt]);
+  const TooltipContent = useMemo(() => makeTooltip(txt, language), [txt, language]);
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="product-treemap">
@@ -364,7 +363,7 @@ export default function ProductTreemap({ language = 'fr' }) {
         {!loading && !error && response && (
           <div className="flex items-center gap-4 text-sm text-[var(--afcfta-muted)] flex-wrap">
             <span className="font-semibold text-[var(--text)]">
-              {flow === 'exports' ? txt.exports : txt.imports} {year} · {formatUSD(total)}
+              {flow === 'exports' ? txt.exports : txt.imports} {year} · {formatUSD(total, language)}
             </span>
             <span>{response.total_products || treemapData.length} {txt.products}</span>
           </div>

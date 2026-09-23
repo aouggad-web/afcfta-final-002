@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Truck, Clock, Package, Info, MapPin, Flag } from 'lucide-react';
+import { montant } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -43,13 +44,13 @@ const texts = {
   },
 };
 
-function CostBar({ label, value, total, color }) {
+function CostBar({ label, value, total, color, language }) {
   const pct = total > 0 ? (value / total) * 100 : 0;
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-sm">
         <span className="text-[var(--afcfta-muted)]">{label}</span>
-        <span className="font-semibold">${value.toLocaleString()}</span>
+        <span className="font-semibold">{montant(value, language, 3)}</span>
       </div>
       <div className="h-2 bg-[var(--afcfta-card2)] rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-500 ${color}`} style={{ width: `${pct}%` }} />
@@ -222,19 +223,19 @@ export default function LandFreightCalculator({ language = 'fr' }) {
           <CardContent className="pt-4 space-y-5">
             <div className="text-center py-4 bg-[var(--afcfta-card)] rounded-xl border border-[color-mix(in_srgb,var(--success)_30%,transparent)] shadow-sm">
               <p className="text-xs text-[var(--afcfta-muted)] mb-1">{t.totalCost}</p>
-              <p className="text-4xl font-bold text-[var(--success)]" data-testid="land-total-cost">${result.total_cost_usd.toLocaleString()}</p>
+              <p className="text-4xl font-bold text-[var(--success)]" data-testid="land-total-cost">{montant(result.total_cost_usd, language, 3)}</p>
               <p className="text-xs text-[var(--afcfta-muted)] mt-1">
-                USD · ${result.cost_per_ton_usd.toLocaleString()}{t.perTon} · {result.cost_per_ton_km_usd} {t.perTonKm} · {result.weight_tons} t
+                USD · {montant(result.cost_per_ton_usd, language, 3)}{t.perTon} · {result.cost_per_ton_km_usd} {t.perTonKm} · {result.weight_tons} t
               </p>
             </div>
 
             <div className="space-y-3">
-              <CostBar label={t.transport} value={result.transport_cost_usd} total={result.total_cost_usd} color="bg-amber-500" />
+              <CostBar label={t.transport} value={result.transport_cost_usd} total={result.total_cost_usd} color="bg-amber-500" language={language} />
               {result.transshipment_cost_usd > 0 && (
-                <CostBar label={t.transship} value={result.transshipment_cost_usd} total={result.total_cost_usd} color="bg-blue-400" />
+                <CostBar label={t.transship} value={result.transshipment_cost_usd} total={result.total_cost_usd} color="bg-blue-400" language={language} />
               )}
-              <CostBar label={t.border} value={result.border_cost_usd} total={result.total_cost_usd} color="bg-red-400" />
-              <CostBar label={t.handling} value={result.handling_usd} total={result.total_cost_usd} color="bg-emerald-400" />
+              <CostBar label={t.border} value={result.border_cost_usd} total={result.total_cost_usd} color="bg-red-400" language={language} />
+              <CostBar label={t.handling} value={result.handling_usd} total={result.total_cost_usd} color="bg-emerald-400" language={language} />
             </div>
 
             {result.operators?.length > 0 && (

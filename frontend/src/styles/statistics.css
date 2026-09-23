@@ -92,6 +92,7 @@
   padding: 20px 22px;
   border: 1px solid var(--afcfta-border);
   transition: transform 0.2s ease, border-color 0.2s ease;
+  container-type: inline-size; /* la valeur se mesure à la tuile */
 }
 
 .stats-kpi-card:hover {
@@ -124,8 +125,11 @@
   margin-bottom: 8px;
 }
 
+/* Un montant (« 2 706,0 Md $ ») ne se coupe pas : dans une tuile étroite,
+   il se réduit à la largeur de la tuile au lieu de déborder. */
 .stats-kpi-value {
   font-size: 2rem;
+  font-size: min(2rem, 16cqi);
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
@@ -536,6 +540,7 @@
   }
   .stats-kpi-value {
     font-size: 1.6rem;
+    font-size: min(1.6rem, 16cqi);
   }
   .stats-chart-card .recharts-wrapper {
     font-size: 10px;

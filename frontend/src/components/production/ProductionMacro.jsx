@@ -16,6 +16,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
+import { montantCompact } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -112,12 +113,10 @@ function ProductionMacro({ language = 'fr' }) {
   // un chiffre faux — d'où un bloc distinct plutôt qu'une colonne de plus.
   const usdSectors = useMemo(() => macroData?.data_by_sector_usd || {}, [macroData]);
   const usdSectorNames = Object.keys(usdSectors);
+  // « 21,84 Md $ » en français, « $21.84B » en anglais — mêmes arrondis.
   const formatUsd = (value) => {
     if (typeof value !== 'number') return '—';
-    const locale = language === 'fr' ? 'fr-FR' : 'en-US';
-    if (Math.abs(value) >= 1e9) return `${(value / 1e9).toLocaleString(locale, { maximumFractionDigits: 2 })} Md USD`;
-    if (Math.abs(value) >= 1e6) return `${(value / 1e6).toLocaleString(locale, { maximumFractionDigits: 1 })} M USD`;
-    return `${value.toLocaleString(locale)} USD`;
+    return montantCompact(value, language, { B: 2, M: 1, u: 3 }, { max: true });
   };
 
   const seriesColors = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)'];

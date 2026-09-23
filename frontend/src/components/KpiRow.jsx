@@ -1,5 +1,6 @@
 import React from "react";
 import { BarChart3, TrendingUp, Ship, ShieldCheck } from "lucide-react";
+import { montantCompact } from "../utils/nombres";
 
 const KPI_CONFIG = {
   gdp:      { icon: BarChart3,   accent: "var(--gold)",    accentSoft: "rgba(212,137,26,0.16)",  colorClass: "progress" },
@@ -13,14 +14,14 @@ export default function KpiRow({ language = "fr", stats }) {
     {
       type: "gdp",
       title: language === "fr" ? "PIB combiné Afrique" : "Combined Africa GDP",
-      value: stats?.gdp || "$2.7T",
+      value: montantCompact(stats?.gdp || 2.7e12, language, { T: 1 }),
       subtext: language === "fr" ? "54 signataires · 48 ratifications" : "54 signatories · 48 ratifications",
       meta: language === "fr" ? "Macro" : "Macro",
     },
     {
       type: "trade",
       title: language === "fr" ? "Commerce intra-africain" : "Intra-African Trade",
-      value: stats?.trade || "$235B",
+      value: montantCompact(stats?.trade || 235e9, language, { B: 0 }),
       subtext: language === "fr" ? "Croissance 2024 : +7.7 %" : "2024 Growth: +7.7%",
       meta: "▲ +7.7 %",
       metaPositive: true,

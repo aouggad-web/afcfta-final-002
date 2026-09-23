@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, Globe2, TrendingUp, Search, RefreshCw, BarChart3, Filter } from 'lucide-react';
 import { getCountryFlag, getCountryInfo } from '../../utils/countryCodes';
+import { montantCompact, nombreCompact } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -18,19 +19,10 @@ const API = `${BACKEND_URL}/api`;
 // Palette de couleurs africaines moderne
 const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)', 'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 
-const formatValue = (value) => {
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-  if (value >= 1e3) return `$${(value / 1e3).toFixed(0)}K`;
-  return `$${value.toFixed(0)}`;
-};
+// « 1,23 Md $ » / « 12,3 M » en français ; forme anglaise inchangée.
+const formatValue = (value, language) => montantCompact(value, language, { B: 2, M: 1, K: 0 });
 
-const formatQuantity = (quantity) => {
-  if (quantity >= 1e9) return `${(quantity / 1e9).toFixed(2)}B`;
-  if (quantity >= 1e6) return `${(quantity / 1e6).toFixed(1)}M`;
-  if (quantity >= 1e3) return `${(quantity / 1e3).toFixed(0)}K`;
-  return quantity.toFixed(0);
-};
+const formatQuantity = (quantity, language) => nombreCompact(quantity, language, { B: 2, M: 1, K: 0 });
 
 /**
  * Extrait le vrai code HS depuis l'identifiant OEC
@@ -631,11 +623,11 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="text-center p-3 bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded-lg">
                       <p className="text-xs text-[var(--success)] mb-1">{t.totalValue}</p>
-                      <p className="text-2xl font-bold text-[var(--success)]">{formatValue(tradeData.total_value || 0)}</p>
+                      <p className="text-2xl font-bold text-[var(--success)]">{formatValue(tradeData.total_value || 0, language)}</p>
                     </div>
                     <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
                       <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
-                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(tradeData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
+                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(tradeData.total_quantity || 0, language)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
                     </div>
                   </div>
                   <p className="text-sm text-[var(--afcfta-muted)] text-center mb-4">{tradeData.total_products} {t.topProducts}</p>
@@ -644,10 +636,10 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <div className="h-56">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={prepareChartData(tradeData, 'country', 10, countryHsLevel)} layout="vertical">
-                        <XAxis type="number" tickFormatter={(v) => formatValue(v)} />
+                        <XAxis type="number" tickFormatter={(v) => formatValue(v, language)} />
                         <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 10 }} />
                         <Tooltip 
-                          formatter={(v) => formatValue(v)} 
+                          formatter={(v) => formatValue(v, language)} 
                           labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName || label}
                         />
                         <Bar dataKey="value" radius={[0, 4, 4, 0]}>
@@ -693,10 +685,10 @@ export default function OECTradeStats({ language = 'fr' }) {
                                 </div>
                               </TableCell>
                               <TableCell className="text-right font-semibold text-[var(--success)]">
-                                {formatValue(item['Trade Value'] || 0)}
+                                {formatValue(item['Trade Value'] || 0, language)}
                               </TableCell>
                               <TableCell className="text-right text-sm text-[var(--info)]">
-                                {formatQuantity(item['Quantity'] || 0)} t
+                                {formatQuantity(item['Quantity'] || 0, language)} t
                               </TableCell>
                             </TableRow>
                             );
@@ -871,11 +863,11 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
                       <p className="text-xs text-[var(--violet)] mb-1">{t.totalValue}</p>
-                      <p className="text-2xl font-bold text-[var(--violet)]">{formatValue(productData.total_value || 0)}</p>
+                      <p className="text-2xl font-bold text-[var(--violet)]">{formatValue(productData.total_value || 0, language)}</p>
                     </div>
                     <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
                       <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
-                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(productData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
+                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(productData.total_quantity || 0, language)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
                     </div>
                   </div>
                   <p className="text-sm text-[var(--afcfta-muted)] text-center mb-4">{productData.total_countries} {t.country}</p>
@@ -897,7 +889,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                             <Cell key={`cell-${index}`} fill={entry.fill} />
                           ))}
                         </Pie>
-                        <Tooltip formatter={(v) => formatValue(v)} />
+                        <Tooltip formatter={(v) => formatValue(v, language)} />
                         <Legend iconSize={10} wrapperStyle={{ fontSize: '11px' }} />
                       </PieChart>
                     </ResponsiveContainer>
@@ -936,10 +928,10 @@ export default function OECTradeStats({ language = 'fr' }) {
                                 </span>
                               </TableCell>
                               <TableCell className="text-right font-semibold text-[var(--violet)]">
-                                {formatValue(item['Trade Value'] || 0)}
+                                {formatValue(item['Trade Value'] || 0, language)}
                               </TableCell>
                               <TableCell className="text-right text-sm text-[var(--info)]">
-                                {formatQuantity(item['Quantity'] || 0)} t
+                                {formatQuantity(item['Quantity'] || 0, language)} t
                               </TableCell>
                             </TableRow>
                           );
@@ -1086,11 +1078,11 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="text-center p-3 bg-[color-mix(in_srgb,var(--terra)_8%,var(--afcfta-card))] rounded-lg">
                       <p className="text-xs text-[var(--terra)] mb-1">{t.totalValue}</p>
-                      <p className="text-2xl font-bold text-[var(--terra)]">{formatValue(bilateralData.total_value || 0)}</p>
+                      <p className="text-2xl font-bold text-[var(--terra)]">{formatValue(bilateralData.total_value || 0, language)}</p>
                     </div>
                     <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
                       <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
-                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(bilateralData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
+                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(bilateralData.total_quantity || 0, language)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
                     </div>
                   </div>
                   <div className="flex items-center justify-center gap-2 mb-4">
@@ -1104,9 +1096,9 @@ export default function OECTradeStats({ language = 'fr' }) {
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={prepareChartData(bilateralData, 'bilateral', 8, bilateralHsLevel)}>
                         <XAxis dataKey="name" tick={{ fontSize: 9 }} angle={-45} textAnchor="end" height={70} />
-                        <YAxis tickFormatter={(v) => formatValue(v)} />
+                        <YAxis tickFormatter={(v) => formatValue(v, language)} />
                         <Tooltip 
-                          formatter={(v) => formatValue(v)}
+                          formatter={(v) => formatValue(v, language)}
                           labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName || label}
                         />
                         <Bar dataKey="value" radius={[4, 4, 0, 0]}>
@@ -1152,10 +1144,10 @@ export default function OECTradeStats({ language = 'fr' }) {
                               </div>
                             </TableCell>
                             <TableCell className="text-right font-semibold text-[var(--terra)]">
-                              {formatValue(item['Trade Value'] || 0)}
+                              {formatValue(item['Trade Value'] || 0, language)}
                             </TableCell>
                             <TableCell className="text-right text-sm text-[var(--info)]">
-                              {formatQuantity(item['Quantity'] || 0)} t
+                              {formatQuantity(item['Quantity'] || 0, language)} t
                             </TableCell>
                           </TableRow>
                           );

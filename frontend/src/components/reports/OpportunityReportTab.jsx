@@ -5,6 +5,7 @@ import StrategicFlows from "../opportunities/StrategicFlows";
 import SectoralAnalysis from "../opportunities/SectoralAnalysis";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 import { opportunityPdfFilename } from "../../utils/opportunityPdf";
+import { montant, montantUnite, nombre } from "../../utils/nombres";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -14,16 +15,15 @@ const dash = (v, suffix = "") =>
 
 const pct = (v) => (v === null || v === undefined ? "—" : `${Math.round(v * 100)}%`);
 
-const money = (v) =>
-  v === null || v === undefined
-    ? "—"
-    : `$${Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+/* « 12 345 $ » en français, « $12,345 » en anglais. */
+const money = (v, fr) =>
+  v === null || v === undefined ? "—" : montant(v, fr ? "fr" : "en");
 
 /* Volume BACI (poids net, tonnes métriques) — affiché à côté de la valeur. */
-const tonnes = (v) =>
+const tonnes = (v, fr) =>
   v === null || v === undefined || !(Number(v) > 0)
     ? null
-    : `${Number(v).toLocaleString("en-US", { maximumFractionDigits: Number(v) < 10 ? 1 : 0 })} t`;
+    : `${nombre(v, fr ? "fr" : "en", Number(v) < 10 ? 1 : 0)} t`;
 
 /* Sous-module « faisabilité de substitution » (substitution_feasibility_service.py) :
    libellés des barrières non tarifaires (effet marque, écart technologique...)
@@ -192,8 +192,8 @@ function MarketSeekingView({ fr, prefill }) {
           ],
           rows: demand.markets.map((m) => ({
             country: `${m.country_name} (${m.country_iso3})`,
-            imports: money(m.import_value_usd),
-            volume: tonnes(m.import_quantity_tonnes) || '—',
+            imports: money(m.import_value_usd, fr),
+            volume: tonnes(m.import_quantity_tonnes, fr) || '—',
             share: m.share_pct === null ? '—' : `${m.share_pct}%`,
           })),
         },
@@ -293,8 +293,8 @@ function MarketSeekingView({ fr, prefill }) {
                       <td style={td}>
                         {m.country_name} ({m.country_iso3})
                       </td>
-                      <td style={td}>{money(m.import_value_usd)}</td>
-                      <td style={td}>{tonnes(m.import_quantity_tonnes) || "—"}</td>
+                      <td style={td}>{money(m.import_value_usd, fr)}</td>
+                      <td style={td}>{tonnes(m.import_quantity_tonnes, fr) || "—"}</td>
                       <td style={td}>{m.share_pct === null ? "—" : `${m.share_pct}%`}</td>
                     </tr>
                   ))}
@@ -488,7 +488,7 @@ export function BilateralView({ countries, fr, prefill }) {
     if (!report) return null;
     const kpis = [];
     if (e2e.available) kpis.push({ label: fr ? "Score bout en bout" : "End-to-end score", value: pct(e2e.score), accent: 'gold' });
-    if (landed.available) kpis.push({ label: fr ? "Coût rendu" : "Landed cost", value: money(landed.value_usd), accent: 'green' });
+    if (landed.available) kpis.push({ label: fr ? "Coût rendu" : "Landed cost", value: money(landed.value_usd, fr), accent: 'green' });
     if (logAccess.available) kpis.push({ label: fr ? "Accessibilité logistique" : "Logistics accessibility", value: pct(logAccess.index), accent: 'terra' });
     if (finIdx.available) kpis.push({ label: fr ? "Faisabilité financement" : "Financing feasibility", value: pct(finIdx.index), accent: 'red' });
 
@@ -504,7 +504,7 @@ export function BilateralView({ countries, fr, prefill }) {
       if (tariff.national_rate_pct != null) tariffKv.push({ label: fr ? 'Taux NPF national' : 'National MFN rate', value: `${tariff.national_rate_pct}%` });
       if (tariff.zlecaf_rate_pct != null) tariffKv.push({ label: fr ? 'Taux ZLECAf' : 'AfCFTA rate', value: `${tariff.zlecaf_rate_pct}%` });
       if (tariff.tariff_advantage_pct != null) tariffKv.push({ label: fr ? 'Avantage tarifaire' : 'Tariff advantage', value: `${tariff.tariff_advantage_pct}%` });
-      if (tariff.savings_per_1000usd != null) tariffKv.push({ label: fr ? 'Économie / 1000 USD' : 'Savings / 1000 USD', value: money(tariff.savings_per_1000usd) });
+      if (tariff.savings_per_1000usd != null) tariffKv.push({ label: fr ? 'Économie / 1000 USD' : 'Savings / 1000 USD', value: money(tariff.savings_per_1000usd, fr) });
       if (tariff.trade_regime) tariffKv.push({ label: fr ? 'Régime commercial' : 'Trade regime', value: tariff.trade_regime });
     }
     if (tariffKv.length) sections.push({ title: fr ? 'Avantage tarifaire ZLECAf' : 'AfCFTA tariff benefit', keyValues: tariffKv });
@@ -513,7 +513,7 @@ export function BilateralView({ countries, fr, prefill }) {
     if (need.available) {
       needKv.push({ label: fr ? 'Besoin estimé' : 'Estimated need', value: `${Math.round(need.value || 0).toLocaleString('en-US')} ${need.unit || ''}` });
       if (need.method) needKv.push({ label: fr ? 'Méthode' : 'Method', value: need.method });
-      if (need.observed_imports?.import_value_usd) needKv.push({ label: fr ? 'Imports observés' : 'Observed imports', value: money(need.observed_imports.import_value_usd) });
+      if (need.observed_imports?.import_value_usd) needKv.push({ label: fr ? 'Imports observés' : 'Observed imports', value: money(need.observed_imports.import_value_usd, fr) });
     }
     if (needKv.length) sections.push({ title: fr ? `Besoin national — ${destination}` : `National need — ${destination}`, keyValues: needKv });
 
@@ -529,7 +529,7 @@ export function BilateralView({ countries, fr, prefill }) {
     const finKv = [];
     if (risk.available) finKv.push({ label: fr ? 'Risque pays' : 'Country risk', value: `${risk.overall_risk_rating || '—'}${risk.alert_level ? ` (${risk.alert_level})` : ''}` });
     if (gai) finKv.push({ label: 'GAI', value: `${gai.rating || gai.score || '—'}${gai.rank_africa ? ` · #${gai.rank_africa} Afrique` : ''}` });
-    if (fx.available) finKv.push({ label: fr ? 'Réserves de change' : 'FX reserves', value: `$${fx.value_busd}B (${fx.year || '—'})` });
+    if (fx.available) finKv.push({ label: fr ? 'Réserves de change' : 'FX reserves', value: `${montantUnite(fx.value_busd, 'B', fr ? 'fr' : 'en')} (${fx.year || '—'})` });
     if (cover.available) finKv.push({ label: fr ? "Couverture d'imports" : 'Import cover', value: `${cover.months} ${fr ? 'mois' : 'months'}` });
     if (finKv.length) sections.push({ title: fr ? 'Profil financier de la destination' : 'Destination financial profile', keyValues: finKv });
 
@@ -639,14 +639,14 @@ export function BilateralView({ countries, fr, prefill }) {
             />
             <Metric
               title={fr ? "Coût rendu estimé" : "Estimated landed cost"}
-              value={landed.available ? money(landed.value_usd) : "—"}
+              value={landed.available ? money(landed.value_usd, fr) : "—"}
               sub={
                 landed.available
-                  ? `FOB ${money(landed.breakdown?.goods_value_fob_usd)} + ${fr ? "fret" : "freight"} ${money(
-                      landed.breakdown?.best_operational_freight_usd
-                    )} + ${fr ? "assurance" : "insurance"} ${money(landed.breakdown?.insurance_usd)}` +
+                  ? `FOB ${money(landed.breakdown?.goods_value_fob_usd, fr)} + ${fr ? "fret" : "freight"} ${money(
+                      landed.breakdown?.best_operational_freight_usd, fr
+                    )} + ${fr ? "assurance" : "insurance"} ${money(landed.breakdown?.insurance_usd, fr)}` +
                     (landed.breakdown?.trade_finance_fee_usd
-                      ? ` + ${fr ? "banque" : "banking"} ${money(landed.breakdown.trade_finance_fee_usd)}`
+                      ? ` + ${fr ? "banque" : "banking"} ${money(landed.breakdown.trade_finance_fee_usd, fr)}`
                       : "") +
                     (landed.breakdown?.freight_mode === "sea_bulk"
                       ? ` · ${fr ? "affrètement vraquier" : "bulk charter"}${
@@ -753,12 +753,12 @@ export function BilateralView({ countries, fr, prefill }) {
                         {rows.map((r, i) => (
                           <tr key={i} style={{ borderTop: i > 0 ? "1px solid rgba(0,0,0,0.06)" : "none" }}>
                             <td style={td}>{r.l}</td>
-                            <td style={{ ...td, textAlign: "right" }}>{money(r.v)}</td>
+                            <td style={{ ...td, textAlign: "right" }}>{money(r.v, fr)}</td>
                           </tr>
                         ))}
                         <tr style={{ borderTop: "2px solid rgba(0,0,0,0.15)", fontWeight: 700 }}>
                           <td style={td}>{fr ? "Coût rendu estimé (total)" : "Estimated landed cost (total)"}</td>
-                          <td style={{ ...td, textAlign: "right" }}>{money(landed.value_usd)}</td>
+                          <td style={{ ...td, textAlign: "right" }}>{money(landed.value_usd, fr)}</td>
                         </tr>
                       </>
                     );
@@ -790,7 +790,7 @@ export function BilateralView({ countries, fr, prefill }) {
                   : "Value/weight index & negotiation reference"}
               </div>
               <div style={{ fontSize: 13, display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
-                <strong>{vtw.usd_per_kg.toLocaleString()} USD/kg</strong>
+                <strong>{montant(vtw.usd_per_kg, fr ? "fr" : "en", 3)}/kg</strong>
                 <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: tier.bg, color: `color-mix(in srgb, ${tier.fg} 40%, var(--text))`}}>
                   {tier.label}
                 </span>
@@ -860,17 +860,17 @@ export function BilateralView({ countries, fr, prefill }) {
                 {report?.market_potential?.available
                   ? fr
                     ? `Potentiel de marché activé via les imports OEC réels du marché (${money(
-                        report.market_potential.import_value_usd
+                        report.market_potential.import_value_usd, fr
                       )}/an${
-                        tonnes(report.market_potential.import_quantity_tonnes)
-                          ? ` · ${tonnes(report.market_potential.import_quantity_tonnes)}`
+                        tonnes(report.market_potential.import_quantity_tonnes, fr)
+                          ? ` · ${tonnes(report.market_potential.import_quantity_tonnes, fr)}`
                           : ""
                       }).`
                     : `Market potential activated from real OEC imports (${money(
-                        report.market_potential.import_value_usd
+                        report.market_potential.import_value_usd, fr
                       )}/yr${
-                        tonnes(report.market_potential.import_quantity_tonnes)
-                          ? ` · ${tonnes(report.market_potential.import_quantity_tonnes)}`
+                        tonnes(report.market_potential.import_quantity_tonnes, fr)
+                          ? ` · ${tonnes(report.market_potential.import_quantity_tonnes, fr)}`
                           : ""
                       }).`
                   : fr
@@ -891,7 +891,7 @@ export function BilateralView({ countries, fr, prefill }) {
                     <strong>{cheapest.label || cheapest.mode}</strong>
                   </div>
                   <div>
-                    {fr ? "Coût" : "Cost"} : {money(cheapest.total_cost_usd)}
+                    {fr ? "Coût" : "Cost"} : {money(cheapest.total_cost_usd, fr)}
                   </div>
                   <div>
                     {fr ? "Délai" : "Transit"} : {dash(cheapest.transit_days_min)}–{dash(cheapest.transit_days_max)}{" "}
@@ -983,7 +983,7 @@ export function BilateralView({ countries, fr, prefill }) {
                             </span>
                           )}
                         </div>
-                        <div style={{ fontWeight: 700 }}>{money(opt.total_cost_usd)}</div>
+                        <div style={{ fontWeight: 700 }}>{money(opt.total_cost_usd, fr)}</div>
                         {cb.total_usd_per_t != null && (
                           <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 2 }}>
                             {num(cb.total_usd_per_t)} USD/t
@@ -1072,7 +1072,7 @@ export function BilateralView({ countries, fr, prefill }) {
               />
               <Metric
                 title={fr ? "Réserves de change" : "FX reserves"}
-                value={fx.available ? money(fx.value_busd * 1e9) : "—"}
+                value={fx.available ? money(fx.value_busd * 1e9, fr) : "—"}
                 sub={fx.available ? `${fr ? "Année" : "Year"} ${dash(fx.year)}` : fr ? "À produire via ETL BM" : "Pending WB ETL"}
               />
               <Metric
@@ -1161,10 +1161,10 @@ export function BilateralView({ countries, fr, prefill }) {
                   </div>
                   {need.observed_imports?.import_value_usd && (
                     <div style={{ fontSize: 12, marginTop: 6 }}>
-                      {fr ? "Importe déjà" : "Already imports"} : {money(need.observed_imports.import_value_usd)}
-                      {tonnes(need.observed_imports.import_quantity_tonnes) && (
+                      {fr ? "Importe déjà" : "Already imports"} : {money(need.observed_imports.import_value_usd, fr)}
+                      {tonnes(need.observed_imports.import_quantity_tonnes, fr) && (
                         <span style={{ color: "var(--afcfta-muted,#667)" }}>
-                          {" "}· {tonnes(need.observed_imports.import_quantity_tonnes)}
+                          {" "}· {tonnes(need.observed_imports.import_quantity_tonnes, fr)}
                         </span>
                       )}
                     </div>
@@ -1245,7 +1245,7 @@ export function BilateralView({ countries, fr, prefill }) {
                   ) : null}
                   {tariff.savings_per_1000usd ? (
                     <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)" }}>
-                      {money(tariff.savings_per_1000usd)} / 1 000 $ CIF
+                      {money(tariff.savings_per_1000usd, fr)} / 1 000 $ CIF
                     </div>
                   ) : null}
                 </div>
@@ -1469,7 +1469,7 @@ function DirectExportView({ countries, fr, onAnalyze }) {
             score: o.score_available ? pct(o.end_to_end_score) : '—',
             need: o.market_need?.available ? `${Math.round(o.market_need.value).toLocaleString('en-US')} ${o.market_need.unit || ''}` : '—',
             tariffAdv: o.tariff_benefit?.available && o.tariff_benefit.tariff_advantage_pct != null ? `${o.tariff_benefit.tariff_advantage_pct}%` : '—',
-            landedCost: o.landed_cost?.available ? money(o.landed_cost.value_usd) : '—',
+            landedCost: o.landed_cost?.available ? money(o.landed_cost.value_usd, fr) : '—',
           })),
         },
       });
@@ -1599,7 +1599,7 @@ function DirectExportView({ countries, fr, onAnalyze }) {
                           }`
                         : "—"}
                     </td>
-                    <td style={td}>{o.landed_cost?.available ? money(o.landed_cost.value_usd) : "—"}</td>
+                    <td style={td}>{o.landed_cost?.available ? money(o.landed_cost.value_usd, fr) : "—"}</td>
                     <td style={td}>
                       <button
                         onClick={() => onAnalyze && onAnalyze(producer, o.destination_iso3, hsCode, goodsValue)}
@@ -1674,7 +1674,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
         title: fr ? '1 · Import de l’intrant' : '1 · Input import',
         keyValues: [
           { label: fr ? 'Intrant' : 'Input', value: `SH ${inputHs} — ${inputOrigin}` },
-          { label: fr ? 'Coût rendu intrant' : 'Input landed cost', value: leg1.landed_cost?.available ? money(leg1.landed_cost.value_usd) : '—' },
+          { label: fr ? 'Coût rendu intrant' : 'Input landed cost', value: leg1.landed_cost?.available ? money(leg1.landed_cost.value_usd, fr) : '—' },
           { label: fr ? 'Avantage tarifaire intrant' : 'Input tariff advantage', value: leg1.tariff?.available && leg1.tariff.tariff_advantage_pct != null ? `${leg1.tariff.tariff_advantage_pct}%` : '—' },
         ],
       },
@@ -1700,7 +1700,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
       sections.push({
         title: fr ? 'Valeur ajoutée brute' : 'Gross value added',
         keyValues: [
-          { label: fr ? 'Valeur ajoutée' : 'Value added', value: money(va.gross_value_added_usd) },
+          { label: fr ? 'Valeur ajoutée' : 'Value added', value: money(va.gross_value_added_usd, fr) },
           { label: fr ? 'Marge brute' : 'Gross margin', value: va.gross_margin_pct != null ? `${va.gross_margin_pct}%` : '—' },
         ],
       });
@@ -1714,7 +1714,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
       filename: opportunityPdfFilename('S1', `${producer}_${finishedHs}`),
       kpis: [
         { label: fr ? "Produit fini" : "Finished product", value: finishedHs, accent: 'gold' },
-        { label: fr ? "Valeur ajoutée" : "Value added", value: va.available ? money(va.gross_value_added_usd) : '—', accent: 'green' },
+        { label: fr ? "Valeur ajoutée" : "Value added", value: va.available ? money(va.gross_value_added_usd, fr) : '—', accent: 'green' },
         { label: fr ? "Score export" : "Export score", value: exportScore != null ? pct(exportScore) : '—', accent: 'terra' },
       ],
       sections,
@@ -1767,7 +1767,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
             <div style={card} data-testid="s1-leg1">
               <div style={{ ...label, fontWeight: 700 }}>1 · {fr ? "Import intrant" : "Import input"}</div>
               <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
-                {leg1.landed_cost?.available ? money(leg1.landed_cost.value_usd) : "—"}
+                {leg1.landed_cost?.available ? money(leg1.landed_cost.value_usd, fr) : "—"}
               </div>
               <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
                 {fr ? "Coût rendu intrant" : "Input landed cost"}
@@ -1809,7 +1809,7 @@ function TransformationView({ countries, fr, onAnalyze }) {
               {va.available ? (
                 <>
                   <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
-                    {money(va.gross_value_added_usd)}
+                    {money(va.gross_value_added_usd, fr)}
                   </div>
                   <div style={{ fontSize: 12, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
                     {fr ? "Marge" : "Margin"} {dash(va.gross_margin_pct, " %")}
@@ -1971,9 +1971,9 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze }) {
                         )}
                         {o.observed_imports?.import_value_usd && (
                           <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)" }}>
-                            {fr ? "importe déjà" : "already imports"} {money(o.observed_imports.import_value_usd)}
-                            {tonnes(o.observed_imports.import_quantity_tonnes) &&
-                              ` · ${tonnes(o.observed_imports.import_quantity_tonnes)}`}
+                            {fr ? "importe déjà" : "already imports"} {money(o.observed_imports.import_value_usd, fr)}
+                            {tonnes(o.observed_imports.import_quantity_tonnes, fr) &&
+                              ` · ${tonnes(o.observed_imports.import_quantity_tonnes, fr)}`}
                           </div>
                         )}
                       </td>
@@ -2065,7 +2065,7 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
         { label: fr ? 'Méthode' : 'Method', value: rep.method || '—' },
       ];
       if (rep.is_estimation) needKv.push({ label: fr ? 'Statut' : 'Status', value: `${fr ? 'Estimation' : 'Estimate'}${rep.estimation_level ? ` (L${rep.estimation_level})` : ''}` });
-      if (rep.observed_imports?.import_value_usd) needKv.push({ label: fr ? 'Imports observés' : 'Observed imports', value: money(rep.observed_imports.import_value_usd) });
+      if (rep.observed_imports?.import_value_usd) needKv.push({ label: fr ? 'Imports observés' : 'Observed imports', value: money(rep.observed_imports.import_value_usd, fr) });
       if (rep.suggested_supplier?.iso3) needKv.push({ label: fr ? 'Fournisseur conseillé' : 'Suggested supplier', value: rep.suggested_supplier.iso3 });
       sections.push({ title: fr ? `Besoin national — ${country}` : `National need — ${country}`, keyValues: needKv });
 
@@ -2144,10 +2144,10 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 )}
                 {rep.observed_imports?.import_value_usd && (
                   <div style={{ fontSize: 13, marginTop: 4 }}>
-                    {fr ? "Importe déjà" : "Already imports"} : {money(rep.observed_imports.import_value_usd)}
-                    {tonnes(rep.observed_imports.import_quantity_tonnes) && (
+                    {fr ? "Importe déjà" : "Already imports"} : {money(rep.observed_imports.import_value_usd, fr)}
+                    {tonnes(rep.observed_imports.import_quantity_tonnes, fr) && (
                       <span style={{ color: "var(--afcfta-muted,#667)" }}>
-                        {" "}· {tonnes(rep.observed_imports.import_quantity_tonnes)}
+                        {" "}· {tonnes(rep.observed_imports.import_quantity_tonnes, fr)}
                       </span>
                     )}
                   </div>

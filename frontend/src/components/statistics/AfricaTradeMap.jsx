@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Map as MapIcon, RefreshCw } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 import { AFRICA_CENTROIDS } from '../../utils/africaCentroids';
+import { montant, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -55,8 +56,8 @@ const TEXTS = {
 };
 
 const METRIC_CONFIG = {
-  gdp: { field: 'gdp_2024_billion_usd', diverging: false, fmt: (v) => `$${v.toFixed(1)} Mds` },
-  gdpPerCapita: { field: 'gdp_per_capita_2024_usd', diverging: false, fmt: (v) => `$${v.toLocaleString('en-US')}` },
+  gdp: { field: 'gdp_2024_billion_usd', diverging: false, fmt: (v, language) => montantUnite(v, 'B', language, 1) },
+  gdpPerCapita: { field: 'gdp_per_capita_2024_usd', diverging: false, fmt: (v, language) => montant(v, language, 3) },
   population: { field: 'population_2024', diverging: false, fmt: (v) => `${(v / 1e6).toFixed(1)} M` },
   hdi: { field: 'development_index', diverging: false, fmt: (v) => v.toFixed(3) },
   growth: { field: 'growth_forecast_2024_pct', diverging: true, fmt: (v) => `${v.toFixed(1)} %` },
@@ -193,7 +194,7 @@ export default function AfricaTradeMap({ language = 'fr' }) {
                     <div className="text-center">
                       <strong className="text-sm">{getCountryFlag(p.iso3)} {p.name}</strong>
                       <br />
-                      <span className="text-xs">{txt.metrics[metric]}: <strong>{cfg.fmt(p.value)}</strong></span>
+                      <span className="text-xs">{txt.metrics[metric]}: <strong>{cfg.fmt(p.value, language)}</strong></span>
                       {p.africa_rank != null && (
                         <>
                           <br />

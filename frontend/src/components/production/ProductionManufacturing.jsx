@@ -7,6 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
 import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
+import { montant, montantCompact, montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -278,6 +279,11 @@ function ProductionManufacturing({ language = 'fr' }) {
     return num?.toLocaleString() || '0';
   };
 
+  // Montants : « 12,3 Md $ » en français, « $12.3B » en anglais — mêmes
+  // paliers et même précision que formatNumber.
+  const formatUsd = (num) =>
+    num >= 1000 ? montantCompact(num, language, { B: 1, M: 1, K: 0 }) : montant(num ?? 0, language, 3);
+
   // Export PDF : le rapport reprend les encadrés ISIC2 tels qu'affichés, et
   // porte la nature de la donnée — un tableau détaché de l'écran doit dire
   // lui-même s'il est mesuré ou estimé.
@@ -332,7 +338,7 @@ function ProductionManufacturing({ language = 'fr' }) {
   const formatIndicatorValue = (field, value) => {
     if (value === null || value === undefined) return '—';
     if (PERCENT_INDICATORS.has(field)) return `${value.toLocaleString()} %`;
-    return USD_INDICATORS.has(field) ? `$${formatNumber(value)}` : value.toLocaleString();
+    return USD_INDICATORS.has(field) ? formatUsd(value) : value.toLocaleString();
   };
 
   const prepareSectorPieData = () => {
@@ -388,7 +394,7 @@ function ProductionManufacturing({ language = 'fr' }) {
             {unidoStats && (
               <div className="text-right">
                 <Badge className="bg-[var(--overlay)] text-[var(--text)] hover:bg-[var(--overlay)]">
-                  ${unidoStats.total_mva_bln_usd}B {t('production.manufacturing.panel.totalMva')}
+                  {montantUnite(unidoStats.total_mva_bln_usd, 'B', language)} {t('production.manufacturing.panel.totalMva')}
                 </Badge>
                 <p className="text-xs text-[var(--info)] mt-1">{unidoStats.total_countries} {t('production.manufacturing.panel.countries')}</p>
               </div>
@@ -447,7 +453,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[var(--info)] text-sm">{t('production.manufacturing.panel.mvaLabel')}</p>
-                    <p className="text-3xl font-bold">${formatNumber(unidoData.mva_2023_mln_usd * 1000000)}</p>
+                    <p className="text-3xl font-bold">{formatUsd(unidoData.mva_2023_mln_usd * 1000000)}</p>
                   </div>
                   <DollarSign className="w-10 h-10 text-[var(--info)]" />
                 </div>
@@ -477,7 +483,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[var(--violet)] text-sm">{t('production.manufacturing.panel.mvaPerCapita')}</p>
-                    <p className="text-3xl font-bold">${unidoData.mva_per_capita_usd}</p>
+                    <p className="text-3xl font-bold">{montantUnite(unidoData.mva_per_capita_usd, null, language)}</p>
                   </div>
                   <Users className="w-10 h-10 text-[var(--violet)]" />
                 </div>
@@ -520,7 +526,7 @@ function ProductionManufacturing({ language = 'fr' }) {
             </CardHeader>
             <CardContent>
               {/* Additional Info */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {unidoData.industry_employment && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                     <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.industrialJobs')}</p>
@@ -530,7 +536,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                 {unidoData.exports_manuf_mln_usd && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                     <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.manufExports')}</p>
-                    <p className="text-2xl font-bold text-[var(--success)]">${formatNumber(unidoData.exports_manuf_mln_usd * 1000000)}</p>
+                    <p className="text-2xl font-bold text-[var(--success)]">{formatUsd(unidoData.exports_manuf_mln_usd * 1000000)}</p>
                   </div>
                 )}
                 {unidoData.top_sectors && (
@@ -591,10 +597,10 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={prepareSectorBarData()} layout="vertical">
                       <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number" tickFormatter={(v) => `$${formatNumber(v * 1000000)}`} />
+                      <XAxis type="number" tickFormatter={(v) => formatUsd(v * 1000000)} />
                       <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
                       <Tooltip 
-                        formatter={(value) => [`$${formatNumber(value * 1000000)}`, t('production.manufacturing.panel.value')]}
+                        formatter={(value) => [formatUsd(value * 1000000), t('production.manufacturing.panel.value')]}
                         labelFormatter={(label) => prepareSectorBarData().find(d => d.name === label)?.fullName || label}
                       />
                       {/* Même couleur par secteur que le camembert voisin. */}
@@ -726,6 +732,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                         label={label}
                         shareMva={shareMva}
                         valueMlnUsd={valueMlnUsd}
+                        language={language}
                         sectors={sectors}
                         selectedIsic4={expandedIsic4}
                         onSelect={selectIsic4Class}
@@ -789,9 +796,9 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <BarChart data={prepareRankingBarData()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-45} textAnchor="end" height={80} />
-                    <YAxis tickFormatter={(v) => `$${formatNumber(v * 1000000)}`} />
+                    <YAxis tickFormatter={(v) => formatUsd(v * 1000000)} />
                     <Tooltip 
-                      formatter={(value) => [`$${formatNumber(value * 1000000)}`, 'MVA 2023']}
+                      formatter={(value) => [formatUsd(value * 1000000), 'MVA 2023']}
                       labelFormatter={(label) => prepareRankingBarData().find(d => d.name === label)?.fullName || label}
                     />
                     <Bar 
@@ -866,7 +873,7 @@ export function femaleSharePct(series, year) {
 
 // Encadré carré d'une division ISIC 2 chiffres : intitulé, code, part de MVA
 // chiffrée, puis la liste de ses classes ISIC 4 en liens cliquables.
-function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect }) {
+function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect, language }) {
   const { t } = useTranslation();
   return (
     <div className="bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-xl shadow-sm flex flex-col">
@@ -899,7 +906,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
         </div>
         {valueMlnUsd != null && (
           <p className="text-xs text-[var(--afcfta-muted)] mt-2 tabular-nums">
-            ${valueMlnUsd.toLocaleString()} {t('production.manufacturing.panel.mUsdValueAdded')}
+            {montantUnite(valueMlnUsd, 'M', language, 3, { max: true })} {t('production.manufacturing.panel.mUsdValueAdded')}
           </p>
         )}
       </div>

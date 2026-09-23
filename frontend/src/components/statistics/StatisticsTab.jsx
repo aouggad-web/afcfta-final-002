@@ -25,19 +25,20 @@ import RcaAnalysis from './RcaAnalysis';
 import TradeComplementarity from './TradeComplementarity';
 import PreferenceMargin from './PreferenceMargin';
 import { PDFExportButton } from '../common/ExportTools';
+import { montantUnite } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 /* ── Custom tooltip pour les barres ──────────────────────────── */
-const AfricaTooltip = ({ active, payload, label, unit }) => {
+const AfricaTooltip = ({ active, payload, label, unit, language }) => {
   if (!active || !payload || !payload.length) return null;
   return (
     <div className="stats-tooltip" style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
       <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ color: `color-mix(in srgb, ${p.color} 40%, var(--text))`, margin: 0 }}>
-          {p.name}: <strong>{`$${(p.value / 1e9).toFixed(1)}B`}</strong>
+          {p.name}: <strong>{montantUnite(p.value / 1e9, 'B', language, 1)}</strong>
         </p>
       ))}
       {unit && <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.68rem', marginTop: 4 }}>{unit}</p>}
@@ -202,7 +203,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--overlay)" />
                         <XAxis
                           type="number"
-                          tickFormatter={(v) => `$${(v / 1e9).toFixed(0)}B`}
+                          tickFormatter={(v) => montantUnite(v / 1e9, 'B', language, 0)}
                           tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }}
                           axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
                           tickLine={false}
@@ -215,7 +216,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                           axisLine={false}
                           tickLine={false}
                         />
-                        <Tooltip content={<AfricaTooltip unit={txt.exportsEvolution} />} />
+                        <Tooltip content={<AfricaTooltip unit={txt.exportsEvolution} language={language} />} />
                         <Bar
                           dataKey="exports_2024"
                           fill="url(#gradExport)"
@@ -253,7 +254,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--overlay)" />
                         <XAxis
                           type="number"
-                          tickFormatter={(v) => `$${(v / 1e9).toFixed(0)}B`}
+                          tickFormatter={(v) => montantUnite(v / 1e9, 'B', language, 0)}
                           tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }}
                           axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
                           tickLine={false}
@@ -266,7 +267,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                           axisLine={false}
                           tickLine={false}
                         />
-                        <Tooltip content={<AfricaTooltip unit={txt.importsVolume} />} />
+                        <Tooltip content={<AfricaTooltip unit={txt.importsVolume} language={language} />} />
                         <Bar
                           dataKey="imports_2024"
                           fill="url(#gradImport)"
