@@ -204,13 +204,24 @@ def _part(numerateur: float, denominateur: float) -> Optional[float]:
     return round(numerateur / denominateur * 100, 1) if denominateur else None
 
 
-def exportations(iso3: str, lang: str = "fr", region: str = "monde", limite: int = 30) -> Dict:
-    """Produits exportés, du plus important au moins important en 2024."""
+def exportations(
+    iso3: str,
+    lang: str = "fr",
+    region: str = "monde",
+    limite: int = 30,
+    hors_hydrocarbures: bool = False,
+) -> Dict:
+    """Produits exportés, du plus important au moins important en 2024.
+
+    ``hors_hydrocarbures`` écarte le chapitre 27 (combustibles minéraux), comme la
+    définition « hors hydrocarbures » de l'ONS (CTCI 3)."""
     donnees = _fichier(iso3, "commerce")
     if not donnees:
         return _non_couvert(iso3, lang)
     lignes = []
     for hs6, p in donnees["produits"].items():
+        if hors_hydrocarbures and hs6.startswith("27"):
+            continue
         v24, t24 = (p["exportations"].get("2024") or [0, None])[:2]
         v21 = (p["exportations"].get("2021") or [0])[0]
         afr24 = p["exportations_afrique"].get("2024", 0)
@@ -241,6 +252,7 @@ def exportations(iso3: str, lang: str = "fr", region: str = "monde", limite: int
         "available": True,
         "country_iso3": iso3.upper(),
         "region": region,
+        "hors_hydrocarbures": hors_hydrocarbures,
         "annee": 2024,
         "total_produits": len(lignes),
         "produits": lignes[: max(1, min(limite, 400))],

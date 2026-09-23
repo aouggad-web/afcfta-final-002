@@ -76,6 +76,14 @@ def test_exportations_tri_et_parts():
     assert all(p["exportations_afrique_2024_usd"] > 0 for p in afrique)
 
 
+def test_hors_hydrocarbures_ecarte_le_chapitre_27():
+    tous = ins.exportations("DZA", limite=400)["produits"]
+    assert any(p["hs6"].startswith("27") for p in tous)
+    hh = ins.exportations("DZA", limite=400, hors_hydrocarbures=True)
+    assert hh["hors_hydrocarbures"] is True
+    assert hh["produits"] and not any(p["hs6"].startswith("27") for p in hh["produits"])
+
+
 def test_caroube_libelle_tarifaire_et_non_oec():
     # L'OEC étiquette 121292 « Sugar cane » : le service doit servir le libellé tarifaire.
     fiche = ins.fiche_produit("DZA", "121292", "fr")

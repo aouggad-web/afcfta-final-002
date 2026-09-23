@@ -99,9 +99,20 @@ describe('NationalIndustryView', () => {
     await userEvent.click(screen.getByTestId('raccourci-caroube'));
     const fiche = await screen.findByTestId('fiche-produit');
     expect(fiche).toHaveTextContent('Caroubes');
-    expect(within(fiche).getByTestId('absents-monde')).toHaveTextContent('Spain');
+    // nom du pays traduit par le navigateur à partir du code ISO (Spain → Espagne)
+    expect(within(fiche).getByTestId('absents-monde')).toHaveTextContent('Espagne');
     expect(within(fiche).getByTestId('absents-afrique')).toHaveTextContent('Égypte');
     expect(fiche).toHaveTextContent('pas un score');
+  });
+
+  it('écarte les hydrocarbures par défaut, et les réintègre sur demande', async () => {
+    render(<NationalIndustryView fr={true} />);
+    await screen.findByTestId('dza-exportations');
+    expect(axios.get.mock.calls.some(([u]) => u.includes('hors_hydrocarbures=true'))).toBe(true);
+    await userEvent.click(screen.getByTestId('hors-hydrocarbures'));
+    await waitFor(() =>
+      expect(axios.get.mock.calls.some(([u]) => u.includes('hors_hydrocarbures=false'))).toBe(true)
+    );
   });
 
   it('demande le tri africain quand on choisit « Afrique »', async () => {

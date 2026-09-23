@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import { nomPays } from "../../utils/iso3166";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -60,8 +61,9 @@ function NatureBadge({ nature, confiance, fr }) {
         fontWeight: 700,
         padding: "2px 8px",
         borderRadius: 999,
-        background: estime ? "rgba(154,103,0,0.12)" : "rgba(26,127,55,0.12)",
-        color: estime ? "#9a6700" : "#1a7f37",
+        // Jetons du thème : contraste vérifié en clair comme en sombre.
+        background: `color-mix(in srgb, var(${estime ? "--warning" : "--success"}) 14%, transparent)`,
+        color: estime ? "var(--warning, #8F5C08)" : "var(--success, #136143)",
       }}
     >
       {texte}
@@ -192,7 +194,7 @@ function FicheProduit({ fiche, fr }) {
           {liste.map((m) => (
             <tr key={m.iso3} style={ligne}>
               <td style={td}>
-                {m.pays} <span style={muted}>({m.iso3})</span>
+                {nomPays(m.iso3, m.pays, fr ? "fr" : "en")} <span style={muted}>({m.iso3})</span>
               </td>
               <td style={tdNum}>{montant(m.importations_2024_usd, fr)}</td>
               <td style={tdNum}>{signe(m.evolution_2019_2024_pct, fr)}</td>
@@ -244,7 +246,7 @@ function FicheProduit({ fiche, fr }) {
           {fiche.destinations_2024.slice(0, 10).map((d, i) => (
             <span key={d.iso3}>
               {i > 0 ? " · " : ""}
-              {d.pays} {montant(d.valeur_usd, fr)}
+              {nomPays(d.iso3, d.pays, fr ? "fr" : "en")} {montant(d.valeur_usd, fr)}
             </span>
           ))}
         </div>
@@ -274,6 +276,7 @@ export default function NationalIndustryView({ fr }) {
   const [ind, setInd] = useState(null);
   const [exp, setExp] = useState(null);
   const [region, setRegion] = useState("monde");
+  const [horsHydro, setHorsHydro] = useState(true);
   const [hs6, setHs6] = useState("");
   const [fiche, setFiche] = useState(null);
   const [erreur, setErreur] = useState(null);
@@ -287,10 +290,12 @@ export default function NationalIndustryView({ fr }) {
 
   useEffect(() => {
     axios
-      .get(`${API}/industrie-nationale/DZA/exportations?lang=${lang}&region=${region}&limite=25`)
+      .get(
+        `${API}/industrie-nationale/DZA/exportations?lang=${lang}&region=${region}&limite=25&hors_hydrocarbures=${horsHydro}`
+      )
       .then((r) => setExp(r.data))
       .catch(() => setErreur(fr ? "Données indisponibles." : "Data unavailable."));
-  }, [lang, region, fr]);
+  }, [lang, region, horsHydro, fr]);
 
   const ouvrir = useCallback(
     (code) => {
@@ -329,6 +334,15 @@ export default function NationalIndustryView({ fr }) {
               {r === "monde" ? (fr ? "Monde" : "World") : fr ? "Afrique" : "Africa"}
             </button>
           ))}
+          <label style={{ ...muted, display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={horsHydro}
+              onChange={(e) => setHorsHydro(e.target.checked)}
+              data-testid="hors-hydrocarbures"
+            />
+            {fr ? "Hors hydrocarbures (chapitre 27)" : "Excluding hydrocarbons (chapter 27)"}
+          </label>
           <span style={{ flex: 1 }} />
           <input
             value={hs6}

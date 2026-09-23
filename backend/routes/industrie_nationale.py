@@ -36,9 +36,12 @@ async def exportations_par_produit(
         default="monde", pattern="^(monde|afrique)$", description="Tri : monde ou Afrique"
     ),
     limite: int = Query(default=30, ge=1, le=400),
+    hors_hydrocarbures: bool = Query(
+        default=False, description="Écarter le chapitre 27 (définition ONS « hors hydrocarbures »)"
+    ),
 ):
     """Produits exportés en 2024, avec la demande mondiale et africaine (BACI)."""
-    return ins.exportations(country_iso3, lang, region, limite)
+    return ins.exportations(country_iso3, lang, region, limite, hors_hydrocarbures)
 
 
 @router.get("/{country_iso3}/exportations/{hs6}")
