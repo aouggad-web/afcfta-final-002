@@ -63,6 +63,17 @@
   --chart-grid: #243044;   /* un cran au-dessus de la carte, trait plein */
   --chart-axis: #34425A;
 
+  /* Cartographie des produits : une teinte par famille de produits SH.
+     Les blocs se touchent tous, donc contrôle « toutes paires » : quatre
+     familles au plus, plus le gris du reste (vision normale ≥ 17,1,
+     daltonisme ≥ 10,0). Libellé posé sur l'aplat, blanc ou encre selon
+     sa luminance : ≥ 5:1 partout. */
+  --tm-agri: var(--series-1);                                   --tm-agri-ink: #0C1219;
+  --tm-mineraux: var(--series-3);                               --tm-mineraux-ink: #FFFFFF;
+  --tm-metaux: var(--series-6);                                 --tm-metaux-ink: #0C1219;
+  --tm-industrie: color-mix(in srgb, var(--series-2) 90%, #000); --tm-industrie-ink: #FFFFFF;
+  --tm-autres: color-mix(in srgb, var(--afcfta-muted) 25%, var(--afcfta-card)); --tm-autres-ink: #FFFFFF;
+
   /* ── Palette africaine ─────────────────────────────────────── */
   --terra:        #DE7A49;   /* terre rouge — accent principal ; relevé pour tenir 4,6:1 en pastille teintée sur carte */
   --gold:         #D4891A;   /* or saharien */

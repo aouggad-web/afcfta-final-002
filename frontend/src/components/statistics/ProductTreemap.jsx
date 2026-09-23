@@ -26,12 +26,22 @@ const HS_LEVELS = [
   { value: 'HS6', digits: 6 },
 ];
 
-// Palette chaude/terre cohérente avec le thème de la plateforme
-const PALETTE = [
-  '#C8531A', '#D4891A', '#1A7A4A', '#1A6B8A', '#8A5A1A',
-  '#A03C12', '#34853A', '#2A8A9A', '#B5701A', '#6A4A8A',
-  '#C0392B', '#27AE60', '#2980B9', '#D68910', '#7D6608',
+// Familles de produits, par chapitre SH : sections I à IV, V, XIV-XV ; tout
+// le reste en produits industriels. La couleur d'un bloc dit sa famille —
+// jamais son rang ni sa valeur, que la surface porte déjà.
+const FAMILLES = [
+  { id: 'agri', de: 1, a: 24, sh: 'SH 01–24' },
+  { id: 'mineraux', de: 25, a: 27, sh: 'SH 25–27' },
+  { id: 'metaux', de: 71, a: 83, sh: 'SH 71–83' },
+  { id: 'industrie', sh: 'SH 28–70, 84–99' },
 ];
+
+const familleSH = (code) => {
+  const chapitre = parseInt(String(code).slice(0, 2), 10);
+  if (Number.isNaN(chapitre)) return 'autres';
+  const f = FAMILLES.find((x) => x.de && chapitre >= x.de && chapitre <= x.a);
+  return f ? f.id : 'industrie';
+};
 
 const formatUSD = (v) => {
   if (!v && v !== 0) return '—';
@@ -59,8 +69,14 @@ const TEXTS = {
     share: 'Part',
     total: 'Total',
     products: 'produits',
-    hint: 'La surface de chaque bloc est proportionnelle à la valeur échangée. Survolez un bloc pour le détail.',
+    hint: 'La surface de chaque bloc est proportionnelle à la valeur échangée ; sa couleur indique la famille de produits (sections du SH). Survolez un bloc pour le détail.',
     levelHint: { HS2: 'Chapitres (2 chiffres)', HS4: 'Positions (4 chiffres)', HS6: 'Sous-positions (6 chiffres)' },
+    familles: {
+      agri: 'Agriculture et alimentation',
+      mineraux: 'Minerais et énergie',
+      metaux: 'Métaux et pierres précieuses',
+      industrie: 'Produits industriels',
+    },
   },
   en: {
     title: 'Product map',
@@ -79,23 +95,28 @@ const TEXTS = {
     share: 'Share',
     total: 'Total',
     products: 'products',
-    hint: 'Each block area is proportional to the traded value. Hover a block for details.',
+    hint: 'Each block area is proportional to the traded value; its colour shows the product family (HS sections). Hover a block for details.',
     levelHint: { HS2: 'Chapters (2 digits)', HS4: 'Positions (4 digits)', HS6: 'Sub-positions (6 digits)' },
+    familles: {
+      agri: 'Agriculture & food',
+      mineraux: 'Minerals & energy',
+      metaux: 'Metals & precious stones',
+      industrie: 'Industrial products',
+    },
   },
 };
 
 /* ── Contenu personnalisé d'une cellule du treemap ─────────────── */
 const TreemapCell = (props) => {
-  const { x, y, width, height, index, name, share, colorIndex } = props;
-  // Skill dataviz : des produits sont des catégories nominales — une seule
-  // teinte (série 1), en lavis plutôt qu'en aplat saturé ; la queue repliée
-  // « Autres » en lavis neutre. Les cellules sont séparées par un espace de
-  // 2 px couleur de surface, et les libellés, posés sur un lavis, restent à
-  // l'encre du thème (contraste assuré dans les deux thèmes).
-  const autres = (colorIndex ?? index) === PALETTE.length - 1;
-  const fill = autres
-    ? 'color-mix(in srgb, var(--afcfta-muted) 16%, var(--afcfta-card))'
-    : 'color-mix(in srgb, var(--series-1) 22%, var(--afcfta-card))';
+  const { x, y, width, height, name, share, famille } = props;
+  // Skill dataviz : une teinte par famille de produits (jetons --tm-*), la
+  // queue repliée « Autres » en gris. Les blocs se touchent tous : quatre
+  // familles au plus, validées « toutes paires » dans les deux thèmes. 2 px
+  // de surface entre les blocs ; libellé posé sur l'aplat, blanc ou encre
+  // selon sa luminance (--tm-*-ink, ≥ 5:1). Le nœud racine n'a pas de
+  // famille : les blocs le recouvrent, rien à peindre.
+  if (!famille) return null;
+  const encre = `var(--tm-${famille}-ink)`;
   const showLabel = width > 64 && height > 30;
   const showShare = width > 64 && height > 48;
   return (
@@ -106,15 +127,15 @@ const TreemapCell = (props) => {
         width={width}
         height={height}
         rx={4}
-        style={{ fill, stroke: 'var(--afcfta-card)', strokeWidth: 2 }}
+        style={{ fill: `var(--tm-${famille})`, stroke: 'var(--afcfta-card)', strokeWidth: 2 }}
       />
       {showLabel && (
-        <text x={x + 7} y={y + 18} fill="var(--text)" fontSize={11} fontWeight={600}>
+        <text x={x + 7} y={y + 18} fill={encre} fontSize={11} fontWeight={600}>
           {name?.length > Math.floor(width / 7) ? `${name.slice(0, Math.floor(width / 7))}…` : name}
         </text>
       )}
       {showShare && (
-        <text x={x + 7} y={y + 34} fill="var(--text-soft)" fontSize={10}>
+        <text x={x + 7} y={y + 34} fill={encre} fontSize={10}>
           {share != null ? `${share.toFixed(1)}%` : ''}
         </text>
       )}
@@ -147,6 +168,12 @@ const makeTooltip = (txt) => ({ active, payload }) => {
       {d.share != null && (
         <p style={{ color: 'var(--afcfta-muted)', margin: '2px 0 0' }}>
           {txt.share}: {d.share.toFixed(2)}%
+        </p>
+      )}
+      {d.famille && d.famille !== 'autres' && (
+        <p style={{ color: 'var(--afcfta-muted)', margin: '2px 0 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 2, background: `var(--tm-${d.famille})`, flexShrink: 0 }} />
+          {txt.familles[d.famille]}
         </p>
       )}
     </div>
@@ -213,13 +240,14 @@ export default function ProductTreemap({ language = 'fr' }) {
     const nodes = response.data.map((item, i) => {
       const fullName = item[hsLevel] || `${txt.products} #${i + 1}`;
       const value = item['Trade Value'] || 0;
+      const hsId = item[`${hsLevel} ID`] != null ? String(item[`${hsLevel} ID`]).slice(-HS_LEVELS.find(l => l.value === hsLevel).digits) : '';
       return {
         name: fullName,
         fullName,
-        hsId: item[`${hsLevel} ID`] != null ? String(item[`${hsLevel} ID`]).slice(-HS_LEVELS.find(l => l.value === hsLevel).digits) : '',
+        hsId,
         size: value,
         share: (value / total) * 100,
-        colorIndex: i,
+        famille: familleSH(hsId),
       };
     });
 
@@ -232,11 +260,19 @@ export default function ProductTreemap({ language = 'fr' }) {
         hsId: '',
         size: remainder,
         share: (remainder / total) * 100,
-        colorIndex: PALETTE.length - 1,
+        famille: 'autres',
       });
     }
     return nodes;
   }, [response, hsLevel, txt]);
+
+  // Légende : les familles présentes, dans l'ordre fixe, puis le reste.
+  const legende = useMemo(() => {
+    const presentes = new Set(treemapData.map((n) => n.famille));
+    return [...FAMILLES, { id: 'autres' }]
+      .filter((f) => presentes.has(f.id))
+      .map((f) => ({ ...f, label: f.id === 'autres' ? txt.others : txt.familles[f.id] }));
+  }, [treemapData, txt]);
 
   const total = response?.total_value || 0;
   const TooltipContent = useMemo(() => makeTooltip(txt), [txt]);
@@ -334,6 +370,19 @@ export default function ProductTreemap({ language = 'fr' }) {
           </div>
         )}
 
+        {/* ── Légende des familles ────────────────────────────── */}
+        {!loading && !error && legende.length > 0 && (
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs" data-testid="treemap-legend">
+            {legende.map((f) => (
+              <span key={f.id} className="inline-flex items-center gap-1.5 text-[var(--text-soft)]">
+                <span className="w-3 h-3 rounded-[3px] shrink-0" style={{ background: `var(--tm-${f.id})` }} />
+                {f.label}
+                {f.sh && <span className="text-[var(--afcfta-muted)]">{f.sh}</span>}
+              </span>
+            ))}
+          </div>
+        )}
+
         {/* ── Treemap ─────────────────────────────────────────── */}
         <div style={{ width: '100%', height: 460 }}>
           {loading ? (
@@ -350,7 +399,6 @@ export default function ProductTreemap({ language = 'fr' }) {
                 data={treemapData}
                 dataKey="size"
                 nameKey="name"
-                stroke="#fff"
                 isAnimationActive={false}
                 content={<TreemapCell />}
               >

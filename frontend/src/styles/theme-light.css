@@ -54,6 +54,14 @@ html.theme-light body {
   --chart-grid: #EDE4D4;
   --chart-axis: #D6CAB5;
 
+  /* Cartographie : mêmes familles, pas propres au thème clair (vision
+     normale ≥ 19,0, daltonisme ≥ 9,4 ; libellé ≥ 5:1). */
+  --tm-agri: var(--series-1);                                   --tm-agri-ink: #241F18;
+  --tm-mineraux: color-mix(in srgb, var(--series-3) 95%, var(--afcfta-card)); --tm-mineraux-ink: #241F18;
+  --tm-metaux: color-mix(in srgb, var(--series-6) 90%, var(--afcfta-card));   --tm-metaux-ink: #241F18;
+  --tm-industrie: color-mix(in srgb, var(--series-2) 90%, #000); --tm-industrie-ink: #FFFFFF;
+  --tm-autres: color-mix(in srgb, var(--afcfta-muted) 25%, var(--afcfta-card)); --tm-autres-ink: #241F18;
+
   /* Accents légèrement assombris pour contraste sur fond clair */
   --terra:        #9C3F15;   /* relevé : 3,87:1 → 4,61:1 sur voile terre */
   --gold:         #865608;   /* relevé : 4,20:1 → 4,64:1 sur voile or */
