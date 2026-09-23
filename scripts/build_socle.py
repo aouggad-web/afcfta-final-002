@@ -154,17 +154,6 @@ PREFERENTIELS = {
     "COI": "COI",
 }
 
-#: Les régimes que la collecte range dans `preferential_rates` plutôt que dans
-#: `taxes`, PAYS PAR PAYS.
-#:
-#: POURQUOI UNE SECONDE TABLE, ET POURQUOI PAR PAYS. `PREFERENTIELS` est
-#: interrogée avec le code d'une colonne de taxe ; ici la source nomme le régime
-#: elle-même, dans un champ à part. Verser ces noms dans `PREFERENTIELS`
-#: changerait le sort des colonnes homonymes de TOUS les autres pays — « UE »,
-#: « INDE », « UK » sont des mots trop courants pour qu'on les rende
-#: préférentiels partout sur la foi d'un seul tarif. Chaque pays déclare donc
-#: les siens, et un régime absent de sa table n'est PAS servi : il est compté
-#: et écarté, jamais rabattu sur la cascade NPF où il deviendrait un droit dû.
 #: PAYS DONT LE CODE PUBLIÉ PORTE UNE CLÉ DE CONTRÔLE, et la longueur de la
 #: POSITION TARIFAIRE sans elle. Déclaré pays par pays, jamais déduit d'une
 #: longueur : une nomenclature peut légitimement compter onze chiffres.
@@ -194,6 +183,17 @@ CLE_DE_CONTROLE_SUFFIXE = {
 }
 
 
+#: Les régimes que la collecte range dans `preferential_rates` plutôt que dans
+#: `taxes`, PAYS PAR PAYS.
+#:
+#: POURQUOI UNE SECONDE TABLE, ET POURQUOI PAR PAYS. `PREFERENTIELS` est
+#: interrogée avec le code d'une colonne de taxe ; ici la source nomme le régime
+#: elle-même, dans un champ à part. Verser ces noms dans `PREFERENTIELS`
+#: changerait le sort des colonnes homonymes de TOUS les autres pays — « UE »,
+#: « INDE », « UK » sont des mots trop courants pour qu'on les rende
+#: préférentiels partout sur la foi d'un seul tarif. Chaque pays déclare donc
+#: les siens, et un régime absent de sa table n'est PAS servi : il est compté
+#: et écarté, jamais rabattu sur la cascade NPF où il deviendrait un droit dû.
 REGIMES_PAR_PAYS = {
     # Maurice — mra.mu, Customs Tariff Schedules (HS 2022). Douze colonnes
     # préférentielles, que le tarif nomme en toutes lettres.

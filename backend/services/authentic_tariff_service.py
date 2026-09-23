@@ -924,12 +924,7 @@ def _detacher_cle_de_controle(country_iso3, positions):
     La clé n'est pas perdue pour autant : elle accompagne la position sous
     `cle_controle`, puisqu'elle sert à la saisie.
     """
-    try:
-        from services import socle as _socle
-
-        longueur = (_socle.charger(country_iso3).get("nomenclature") or {}).get("longueur_position")
-    except Exception:  # pragma: no cover - socle absent ou pays non servi
-        return positions
+    longueur = _longueur_position_declaree(country_iso3)
     if not longueur:
         return positions
 
