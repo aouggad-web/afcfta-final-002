@@ -877,6 +877,35 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
     return result
 
 
+def _longueur_position_declaree(country_iso3):
+    """La longueur de la POSITION TARIFAIRE quand le pays déclare une clé.
+
+    La déclaration vit dans le fichier de socle du pays — un seul endroit, et
+    pays par pays. Rien n'est déduit d'une longueur observée.
+    """
+    try:
+        from services import socle as _socle
+
+        return (_socle.charger(country_iso3).get("nomenclature") or {}).get("longueur_position")
+    except Exception:  # pragma: no cover - socle absent ou pays non servi
+        return None
+
+
+def _position_sans_cle(country_iso3, code):
+    """Ramener un code SAISI à la position, qu'il porte ou non sa clé.
+
+    Le chemin historique indexe les codes que `get_sub_positions` lui rend,
+    désormais sans clé. Un opérateur qui recopie sa déclaration en douane tape
+    pourtant les onze caractères : sans cette normalisation, il se verrait
+    répondre « Position nationale introuvable » sur un code que le produit
+    affichait lui-même hier.
+    """
+    longueur = _longueur_position_declaree(country_iso3)
+    if longueur and len(code) == longueur + 1 and code.isdigit():
+        return code[:longueur]
+    return code
+
+
 def _detacher_cle_de_controle(country_iso3, positions):
     """Rendre la POSITION TARIFAIRE, sans la clé de contrôle qui la suit.
 
@@ -915,6 +944,13 @@ def _detacher_cle_de_controle(country_iso3, positions):
         copie["national_code"] = code[:longueur]
         copie["cle_controle"] = code[longueur:]
         copie["digits"] = longueur
+        # `code_raw` est délibérément RETIRÉ, pas renseigné avec le code
+        # complet. `select_calculation_position` indexe par `code_raw` en
+        # priorité : l'y laisser à onze caractères remettrait l'index à onze
+        # pendant que la requête, elle, est à dix — index et requête doivent
+        # s'accorder. Le code complet se reconstruit après la sélection, à
+        # partir de `cle_controle`, là où le moteur en a besoin.
+        copie.pop("code_raw", None)
         detachees.append(copie)
     return detachees
 
@@ -1836,14 +1872,27 @@ def calculate_import_taxes(
     )
 
     try:
-        hs_code_clean = normalize_calculation_code(hs_code)
+        hs_code_clean = _position_sans_cle(
+            country_iso3, normalize_calculation_code(hs_code)
+        )
         selected = select_calculation_position(
             hs_code_clean, get_sub_positions(country_iso3, hs_code_clean[:6])
         )
         if selected:
-            hs_code_clean = normalize_calculation_code(
-                selected.get("code_raw") or selected.get("code") or selected.get("national_code")
+            retenu = (
+                selected.get("code_raw")
+                or selected.get("code")
+                or selected.get("national_code")
             )
+            # Le moteur historique retrouve sa ligne dans le CRAWL, qui indexe
+            # le code avec sa clé de contrôle. La sélection, elle, se fait sur
+            # la position. On recolle donc la clé ici — sans quoi la recherche
+            # échoue et le calcul se rabat sur le parent SH6 : sur 9003110000,
+            # le droit passait ainsi de 10 % à 43 % sans que rien ne le
+            # signale.
+            if selected.get("cle_controle"):
+                retenu = f"{retenu}{selected['cle_controle']}"
+            hs_code_clean = normalize_calculation_code(retenu)
     except NationalPositionRequired as exc:
         return {"error": str(exc), "error_detail": exc.detail}
     hs6 = hs_code_clean[:6]
