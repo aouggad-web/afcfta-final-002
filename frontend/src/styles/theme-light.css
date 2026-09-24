@@ -243,13 +243,19 @@ html.theme-light .stat-label { color: var(--afcfta-muted); }
    [class*="hero"] attrape aussi .stats-hero-title, un texte peint par son
    fond (background-clip: text) : remplacer ce fond par la surface rendait le
    titre invisible. Il garde son propre dégradé, défini en jetons. */
-html.theme-light .afcfta-shell,
 html.theme-light .afcfta-card,
 html.theme-light .afcfta-card2,
 html.theme-light .afcfta-hero,
-html.theme-light [class*="hero"]:not(.stats-hero-title),
-html.theme-light .zellige-najm {
+html.theme-light [class*="hero"]:not(.stats-hero-title) {
   background: var(--surface) !important;
+  color: var(--text);
+}
+
+/* Le conteneur principal garde son pavage zellige (ambiance.css) : seule
+   sa couleur est forcée — un `background` complet effaçait le motif. */
+html.theme-light .afcfta-shell,
+html.theme-light .zellige-najm {
+  background-color: var(--surface) !important;
   color: var(--text);
 }
 

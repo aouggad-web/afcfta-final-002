@@ -230,7 +230,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
   return (
     <div className="space-y-6">
       <section
-        className="rounded-2xl border overflow-hidden"
+        className="rounded-2xl border overflow-hidden zellige-frise"
         style={{
           background:
             'var(--panel)',

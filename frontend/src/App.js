@@ -6,6 +6,7 @@ import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
 import './styles/theme-light.css';
+import './styles/ambiance.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
 import AfcftaSidebar from './components/AfcftaSidebar';

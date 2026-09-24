@@ -1,0 +1,69 @@
+/* ════════════════════════════════════════════════════════════════
+   Ambiance — zellige en trame de fond, velours du Kasaï dans les bandeaux
+   ════════════════════════════════════════════════════════════════
+   Couche ornementale seule, chargée après les thèmes : elle ne touche
+   ni aux couleurs du texte, ni aux polices, ni aux composants.
+
+   - Fond de page : réseau étoile-et-croix du zellige, filaire, avec au
+     cœur des étoiles un petit carreau bleu ou vert de Ghardaïa.
+   - Bandeaux (en-têtes de section, Statistiques, accueil) : aucun pavage
+     derrière les titres, seulement une bande de velours du Kasaï sur le
+     bord supérieur ; ses petits losanges alternent le bleu et le vert de
+     Ghardaïa.
+   - Bande kente de 4 px en haut de l'écran.
+
+   Fichier généré par scripts/build_ambiance_css.py : modifier le script,
+   puis régénérer. */
+
+/* Bande kente — 4 px, en haut de chaque écran */
+.kente-band {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 4px;
+  background: repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 9px, #FCDD09 9px, #FCDD09 18px, #007A3D 18px, #007A3D 27px,
+    #0D0800 27px, #0D0800 32px, #E8890C 32px, #E8890C 41px, #0D0800 41px, #0D0800 46px);
+  pointer-events: none;
+}
+
+/* Fond de page : trame zellige sur le conteneur principal */
+.zellige-najm {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='rgba(212,137,26,0.10)' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Crect x='-14' y='-14' width='28' height='28'/%3E%3Crect x='-14' y='-14' width='28' height='28' transform='rotate(45 0 0)'/%3E%3Crect x='42' y='-14' width='28' height='28'/%3E%3Crect x='42' y='-14' width='28' height='28' transform='rotate(45 56 0)'/%3E%3Crect x='-14' y='42' width='28' height='28'/%3E%3Crect x='-14' y='42' width='28' height='28' transform='rotate(45 0 56)'/%3E%3Crect x='42' y='42' width='28' height='28'/%3E%3Crect x='42' y='42' width='28' height='28' transform='rotate(45 56 56)'/%3E%3C/g%3E%3Crect x='25' y='25' width='6' height='6' transform='rotate(45 28 28)' fill='rgba(74,144,200,0.16)'/%3E%3Crect x='-3' y='-3' width='6' height='6' transform='rotate(45 0 0)' fill='rgba(62,160,110,0.14)'/%3E%3Crect x='53' y='-3' width='6' height='6' transform='rotate(45 56 0)' fill='rgba(62,160,110,0.14)'/%3E%3Crect x='-3' y='53' width='6' height='6' transform='rotate(45 0 56)' fill='rgba(62,160,110,0.14)'/%3E%3Crect x='53' y='53' width='6' height='6' transform='rotate(45 56 56)' fill='rgba(62,160,110,0.14)'/%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+html.theme-light .zellige-najm {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='rgba(156,63,21,0.10)' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Crect x='-14' y='-14' width='28' height='28'/%3E%3Crect x='-14' y='-14' width='28' height='28' transform='rotate(45 0 0)'/%3E%3Crect x='42' y='-14' width='28' height='28'/%3E%3Crect x='42' y='-14' width='28' height='28' transform='rotate(45 56 0)'/%3E%3Crect x='-14' y='42' width='28' height='28'/%3E%3Crect x='-14' y='42' width='28' height='28' transform='rotate(45 0 56)'/%3E%3Crect x='42' y='42' width='28' height='28'/%3E%3Crect x='42' y='42' width='28' height='28' transform='rotate(45 56 56)'/%3E%3C/g%3E%3Crect x='25' y='25' width='6' height='6' transform='rotate(45 28 28)' fill='rgba(36,104,160,0.12)'/%3E%3Crect x='-3' y='-3' width='6' height='6' transform='rotate(45 0 0)' fill='rgba(40,120,80,0.11)'/%3E%3Crect x='53' y='-3' width='6' height='6' transform='rotate(45 56 0)' fill='rgba(40,120,80,0.11)'/%3E%3Crect x='-3' y='53' width='6' height='6' transform='rotate(45 0 56)' fill='rgba(40,120,80,0.11)'/%3E%3Crect x='53' y='53' width='6' height='6' transform='rotate(45 56 56)' fill='rgba(40,120,80,0.11)'/%3E%3C/svg%3E");
+}
+
+/* Bandeaux : pas de pavage derrière les titres, fond opaque */
+.stats-hero::before {
+  background-image: none;
+}
+.afcfta-sectionHead, .stats-hero, .zellige-frise {
+  position: relative;
+  overflow: hidden;
+}
+.afcfta-sectionHead {
+  background-color: var(--afcfta-card);
+}
+.afcfta-sectionHead, .stats-hero {
+  padding-top: 30px;
+}
+
+/* Velours du Kasaï — bord supérieur de chaque bandeau, au-dessus du titre */
+.afcfta-sectionHead::after, .stats-hero::after, .zellige-frise::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%231B1206'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%23D4891A' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%234A90C8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%233EA06E'/%3E%3C/svg%3E");
+  background-size: 24px 10px;
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+html.theme-light .afcfta-sectionHead::after, html.theme-light .stats-hero::after, html.theme-light .zellige-frise::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%23F3E6CC'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%238A4B12' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%232F6FA8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%232E7D57'/%3E%3C/svg%3E");
+}
