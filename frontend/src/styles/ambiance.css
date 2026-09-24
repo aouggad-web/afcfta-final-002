@@ -1,18 +1,16 @@
 /* ════════════════════════════════════════════════════════════════
-   Ambiance — zellige de Tlemcen et kente panafricain
+   Ambiance — zellige en trame de fond, velours du Kasaï dans les bandeaux
    ════════════════════════════════════════════════════════════════
    Couche ornementale seule, chargée après les thèmes : elle ne touche
-   ni aux couleurs du texte, ni aux polices, ni aux composants. Les
-   motifs se posent sous le contenu, jamais derrière un texte de carte
-   (les cartes sont opaques). Généré par un script : pavage à étoiles à
-   huit branches (najm) reliées en réseau, frise pour le bandeau
-   d'accueil, bande kente en haut de l'écran.
+   ni aux couleurs du texte, ni aux polices, ni aux composants.
 
-   Le fichier design-system.css portait ces motifs depuis avril, mais
-   son import a disparu de index.js le 05/09 (audit) : il n'est plus
-   chargé. On n'en reprend que l'ornement, recoloré par thème ; ses
-   classes génériques (.stat-label, .section-title…) auraient écrasé
-   les thèmes actuels.
+   - Fond de page : réseau étoile-et-croix du zellige, filaire, avec au
+     cœur des étoiles un petit carreau bleu ou vert de Ghardaïa.
+   - Bandeaux (en-têtes de section, Statistiques, accueil) : aucun pavage
+     derrière les titres, seulement une bande de velours du Kasaï sur le
+     bord supérieur ; ses petits losanges alternent le bleu et le vert de
+     Ghardaïa.
+   - Bande kente de 4 px en haut de l'écran.
 
    Fichier généré par scripts/build_ambiance_css.py : modifier le script,
    puis régénérer. */
@@ -29,41 +27,43 @@
   pointer-events: none;
 }
 
-/* Fond de page : pavage zellige sur le conteneur principal */
+/* Fond de page : trame zellige sur le conteneur principal */
 .zellige-najm {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba(212,137,26,0.11)' stroke-width='1' stroke-linejoin='round'%3E%3Cpolygon points='32.00,10.00 35.44,23.69 47.56,16.44 40.31,28.56 54.00,32.00 40.31,35.44 47.56,47.56 35.44,40.31 32.00,54.00 28.56,40.31 16.44,47.56 23.69,35.44 10.00,32.00 23.69,28.56 16.44,16.44 28.56,23.69'/%3E%3Crect x='21.00' y='21.00' width='22.00' height='22.00' transform='rotate(45 32.0 32.0)'/%3E%3Ccircle cx='32.0' cy='32.0' r='5'/%3E%3Cpolygon points='0.00,-12.00 1.91,-4.62 8.49,-8.49 4.62,-1.91 12.00,0.00 4.62,1.91 8.49,8.49 1.91,4.62 0.00,12.00 -1.91,4.62 -8.49,8.49 -4.62,1.91 -12.00,0.00 -4.62,-1.91 -8.49,-8.49 -1.91,-4.62'/%3E%3Cpolygon points='64.00,-12.00 65.91,-4.62 72.49,-8.49 68.62,-1.91 76.00,0.00 68.62,1.91 72.49,8.49 65.91,4.62 64.00,12.00 62.09,4.62 55.51,8.49 59.38,1.91 52.00,0.00 59.38,-1.91 55.51,-8.49 62.09,-4.62'/%3E%3Cpolygon points='0.00,52.00 1.91,59.38 8.49,55.51 4.62,62.09 12.00,64.00 4.62,65.91 8.49,72.49 1.91,68.62 0.00,76.00 -1.91,68.62 -8.49,72.49 -4.62,65.91 -12.00,64.00 -4.62,62.09 -8.49,55.51 -1.91,59.38'/%3E%3Cpolygon points='64.00,52.00 65.91,59.38 72.49,55.51 68.62,62.09 76.00,64.00 68.62,65.91 72.49,72.49 65.91,68.62 64.00,76.00 62.09,68.62 55.51,72.49 59.38,65.91 52.00,64.00 59.38,62.09 55.51,55.51 62.09,59.38'/%3E%3Cpath d='M32.0 10.0L32.0 0M32.0 54.0L32.0 64M10.0 32.0L0 32.0M54.0 32.0L64 32.0'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 64px 64px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='rgba(212,137,26,0.10)' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Crect x='-14' y='-14' width='28' height='28'/%3E%3Crect x='-14' y='-14' width='28' height='28' transform='rotate(45 0 0)'/%3E%3Crect x='42' y='-14' width='28' height='28'/%3E%3Crect x='42' y='-14' width='28' height='28' transform='rotate(45 56 0)'/%3E%3Crect x='-14' y='42' width='28' height='28'/%3E%3Crect x='-14' y='42' width='28' height='28' transform='rotate(45 0 56)'/%3E%3Crect x='42' y='42' width='28' height='28'/%3E%3Crect x='42' y='42' width='28' height='28' transform='rotate(45 56 56)'/%3E%3C/g%3E%3Crect x='25' y='25' width='6' height='6' transform='rotate(45 28 28)' fill='rgba(74,144,200,0.16)'/%3E%3Crect x='-3' y='-3' width='6' height='6' transform='rotate(45 0 0)' fill='rgba(62,160,110,0.14)'/%3E%3Crect x='53' y='-3' width='6' height='6' transform='rotate(45 56 0)' fill='rgba(62,160,110,0.14)'/%3E%3Crect x='-3' y='53' width='6' height='6' transform='rotate(45 0 56)' fill='rgba(62,160,110,0.14)'/%3E%3Crect x='53' y='53' width='6' height='6' transform='rotate(45 56 56)' fill='rgba(62,160,110,0.14)'/%3E%3C/svg%3E");
+  background-size: 56px 56px;
 }
 html.theme-light .zellige-najm {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba(156,63,21,0.10)' stroke-width='1' stroke-linejoin='round'%3E%3Cpolygon points='32.00,10.00 35.44,23.69 47.56,16.44 40.31,28.56 54.00,32.00 40.31,35.44 47.56,47.56 35.44,40.31 32.00,54.00 28.56,40.31 16.44,47.56 23.69,35.44 10.00,32.00 23.69,28.56 16.44,16.44 28.56,23.69'/%3E%3Crect x='21.00' y='21.00' width='22.00' height='22.00' transform='rotate(45 32.0 32.0)'/%3E%3Ccircle cx='32.0' cy='32.0' r='5'/%3E%3Cpolygon points='0.00,-12.00 1.91,-4.62 8.49,-8.49 4.62,-1.91 12.00,0.00 4.62,1.91 8.49,8.49 1.91,4.62 0.00,12.00 -1.91,4.62 -8.49,8.49 -4.62,1.91 -12.00,0.00 -4.62,-1.91 -8.49,-8.49 -1.91,-4.62'/%3E%3Cpolygon points='64.00,-12.00 65.91,-4.62 72.49,-8.49 68.62,-1.91 76.00,0.00 68.62,1.91 72.49,8.49 65.91,4.62 64.00,12.00 62.09,4.62 55.51,8.49 59.38,1.91 52.00,0.00 59.38,-1.91 55.51,-8.49 62.09,-4.62'/%3E%3Cpolygon points='0.00,52.00 1.91,59.38 8.49,55.51 4.62,62.09 12.00,64.00 4.62,65.91 8.49,72.49 1.91,68.62 0.00,76.00 -1.91,68.62 -8.49,72.49 -4.62,65.91 -12.00,64.00 -4.62,62.09 -8.49,55.51 -1.91,59.38'/%3E%3Cpolygon points='64.00,52.00 65.91,59.38 72.49,55.51 68.62,62.09 76.00,64.00 68.62,65.91 72.49,72.49 65.91,68.62 64.00,76.00 62.09,68.62 55.51,72.49 59.38,65.91 52.00,64.00 59.38,62.09 55.51,55.51 62.09,59.38'/%3E%3Cpath d='M32.0 10.0L32.0 0M32.0 54.0L32.0 64M10.0 32.0L0 32.0M54.0 32.0L64 32.0'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='rgba(156,63,21,0.10)' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Crect x='-14' y='-14' width='28' height='28'/%3E%3Crect x='-14' y='-14' width='28' height='28' transform='rotate(45 0 0)'/%3E%3Crect x='42' y='-14' width='28' height='28'/%3E%3Crect x='42' y='-14' width='28' height='28' transform='rotate(45 56 0)'/%3E%3Crect x='-14' y='42' width='28' height='28'/%3E%3Crect x='-14' y='42' width='28' height='28' transform='rotate(45 0 56)'/%3E%3Crect x='42' y='42' width='28' height='28'/%3E%3Crect x='42' y='42' width='28' height='28' transform='rotate(45 56 56)'/%3E%3C/g%3E%3Crect x='25' y='25' width='6' height='6' transform='rotate(45 28 28)' fill='rgba(36,104,160,0.12)'/%3E%3Crect x='-3' y='-3' width='6' height='6' transform='rotate(45 0 0)' fill='rgba(40,120,80,0.11)'/%3E%3Crect x='53' y='-3' width='6' height='6' transform='rotate(45 56 0)' fill='rgba(40,120,80,0.11)'/%3E%3Crect x='-3' y='53' width='6' height='6' transform='rotate(45 0 56)' fill='rgba(40,120,80,0.11)'/%3E%3Crect x='53' y='53' width='6' height='6' transform='rotate(45 56 56)' fill='rgba(40,120,80,0.11)'/%3E%3C/svg%3E");
 }
 
-/* Bandeaux (Statistiques) : le même pavage, un peu plus présent */
+/* Bandeaux : pas de pavage derrière les titres, fond opaque */
 .stats-hero::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba(212,137,26,0.14)' stroke-width='1' stroke-linejoin='round'%3E%3Cpolygon points='32.00,10.00 35.44,23.69 47.56,16.44 40.31,28.56 54.00,32.00 40.31,35.44 47.56,47.56 35.44,40.31 32.00,54.00 28.56,40.31 16.44,47.56 23.69,35.44 10.00,32.00 23.69,28.56 16.44,16.44 28.56,23.69'/%3E%3Crect x='21.00' y='21.00' width='22.00' height='22.00' transform='rotate(45 32.0 32.0)'/%3E%3Ccircle cx='32.0' cy='32.0' r='5'/%3E%3Cpolygon points='0.00,-12.00 1.91,-4.62 8.49,-8.49 4.62,-1.91 12.00,0.00 4.62,1.91 8.49,8.49 1.91,4.62 0.00,12.00 -1.91,4.62 -8.49,8.49 -4.62,1.91 -12.00,0.00 -4.62,-1.91 -8.49,-8.49 -1.91,-4.62'/%3E%3Cpolygon points='64.00,-12.00 65.91,-4.62 72.49,-8.49 68.62,-1.91 76.00,0.00 68.62,1.91 72.49,8.49 65.91,4.62 64.00,12.00 62.09,4.62 55.51,8.49 59.38,1.91 52.00,0.00 59.38,-1.91 55.51,-8.49 62.09,-4.62'/%3E%3Cpolygon points='0.00,52.00 1.91,59.38 8.49,55.51 4.62,62.09 12.00,64.00 4.62,65.91 8.49,72.49 1.91,68.62 0.00,76.00 -1.91,68.62 -8.49,72.49 -4.62,65.91 -12.00,64.00 -4.62,62.09 -8.49,55.51 -1.91,59.38'/%3E%3Cpolygon points='64.00,52.00 65.91,59.38 72.49,55.51 68.62,62.09 76.00,64.00 68.62,65.91 72.49,72.49 65.91,68.62 64.00,76.00 62.09,68.62 55.51,72.49 59.38,65.91 52.00,64.00 59.38,62.09 55.51,55.51 62.09,59.38'/%3E%3Cpath d='M32.0 10.0L32.0 0M32.0 54.0L32.0 64M10.0 32.0L0 32.0M54.0 32.0L64 32.0'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 64px 64px;
+  background-image: none;
 }
-html.theme-light .stats-hero::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba(156,63,21,0.12)' stroke-width='1' stroke-linejoin='round'%3E%3Cpolygon points='32.00,10.00 35.44,23.69 47.56,16.44 40.31,28.56 54.00,32.00 40.31,35.44 47.56,47.56 35.44,40.31 32.00,54.00 28.56,40.31 16.44,47.56 23.69,35.44 10.00,32.00 23.69,28.56 16.44,16.44 28.56,23.69'/%3E%3Crect x='21.00' y='21.00' width='22.00' height='22.00' transform='rotate(45 32.0 32.0)'/%3E%3Ccircle cx='32.0' cy='32.0' r='5'/%3E%3Cpolygon points='0.00,-12.00 1.91,-4.62 8.49,-8.49 4.62,-1.91 12.00,0.00 4.62,1.91 8.49,8.49 1.91,4.62 0.00,12.00 -1.91,4.62 -8.49,8.49 -4.62,1.91 -12.00,0.00 -4.62,-1.91 -8.49,-8.49 -1.91,-4.62'/%3E%3Cpolygon points='64.00,-12.00 65.91,-4.62 72.49,-8.49 68.62,-1.91 76.00,0.00 68.62,1.91 72.49,8.49 65.91,4.62 64.00,12.00 62.09,4.62 55.51,8.49 59.38,1.91 52.00,0.00 59.38,-1.91 55.51,-8.49 62.09,-4.62'/%3E%3Cpolygon points='0.00,52.00 1.91,59.38 8.49,55.51 4.62,62.09 12.00,64.00 4.62,65.91 8.49,72.49 1.91,68.62 0.00,76.00 -1.91,68.62 -8.49,72.49 -4.62,65.91 -12.00,64.00 -4.62,62.09 -8.49,55.51 -1.91,59.38'/%3E%3Cpolygon points='64.00,52.00 65.91,59.38 72.49,55.51 68.62,62.09 76.00,64.00 68.62,65.91 72.49,72.49 65.91,68.62 64.00,76.00 62.09,68.62 55.51,72.49 59.38,65.91 52.00,64.00 59.38,62.09 55.51,55.51 62.09,59.38'/%3E%3Cpath d='M32.0 10.0L32.0 0M32.0 54.0L32.0 64M10.0 32.0L0 32.0M54.0 32.0L64 32.0'/%3E%3C/g%3E%3C/svg%3E");
+.afcfta-sectionHead, .stats-hero, .zellige-frise {
+  position: relative;
+  overflow: hidden;
+}
+.afcfta-sectionHead {
+  background-color: var(--afcfta-card);
+}
+.afcfta-sectionHead, .stats-hero {
+  padding-top: 30px;
 }
 
-/* Frise zellige — bord supérieur d'un bandeau (classe zellige-frise).
-   Posée dans la marge haute : elle ne passe derrière aucun texte. */
-.zellige-frise {
-  position: relative;
-}
-.zellige-frise::before {
+/* Velours du Kasaï — bord supérieur de chaque bandeau, au-dessus du titre */
+.afcfta-sectionHead::after, .stats-hero::after, .zellige-frise::after {
   content: "";
   position: absolute;
-  top: 6px;
+  top: 0;
   left: 0;
   right: 0;
-  height: 12px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='12' viewBox='0 0 22 12'%3E%3Cg fill='none' stroke='rgba(212,137,26,0.55)' stroke-width='1' stroke-linejoin='round'%3E%3Cpolygon points='11.00,1.00 11.84,3.97 14.54,2.46 13.03,5.16 16.00,6.00 13.03,6.84 14.54,9.54 11.84,8.03 11.00,11.00 10.16,8.03 7.46,9.54 8.97,6.84 6.00,6.00 8.97,5.16 7.46,2.46 10.16,3.97'/%3E%3Cpath d='M0 6L6 6M16 6L22 6'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 22px 12px;
+  height: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%231B1206'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%23D4891A' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%234A90C8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%233EA06E'/%3E%3C/svg%3E");
+  background-size: 24px 10px;
   background-repeat: repeat-x;
   pointer-events: none;
 }
-html.theme-light .zellige-frise::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='12' viewBox='0 0 22 12'%3E%3Cg fill='none' stroke='rgba(134,86,8,0.50)' stroke-width='1' stroke-linejoin='round'%3E%3Cpolygon points='11.00,1.00 11.84,3.97 14.54,2.46 13.03,5.16 16.00,6.00 13.03,6.84 14.54,9.54 11.84,8.03 11.00,11.00 10.16,8.03 7.46,9.54 8.97,6.84 6.00,6.00 8.97,5.16 7.46,2.46 10.16,3.97'/%3E%3Cpath d='M0 6L6 6M16 6L22 6'/%3E%3C/g%3E%3C/svg%3E");
+html.theme-light .afcfta-sectionHead::after, html.theme-light .stats-hero::after, html.theme-light .zellige-frise::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Crect width='24' height='10' fill='%23F3E6CC'/%3E%3Cpath d='M0 5L6 0L12 5L6 10Z M12 5L18 0L24 5L18 10Z' fill='none' stroke='%238A4B12' stroke-width='1.4'/%3E%3Cpath d='M6 3L8 5L6 7L4 5Z' fill='%232F6FA8'/%3E%3Cpath d='M18 3L20 5L18 7L16 5Z' fill='%232E7D57'/%3E%3C/svg%3E");
 }
