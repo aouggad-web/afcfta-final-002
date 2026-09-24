@@ -44,11 +44,77 @@ describe('ProductionManufacturing', () => {
         : Promise.resolve({ data: {} }),
     );
     render(<ProductionManufacturing language="fr" />);
-    // Les secteurs ne vivent que dans les graphes recharts, qui ne se
-    // disposent pas sous jsdom : c'est le pays porté par la réponse qui
-    // atteste, dans le DOM, de quelle donnée est affichée.
+    // Les graphes recharts ne se disposent pas sous jsdom : c'est le pays
+    // porté par la réponse, et la légende HTML du camembert, qui attestent
+    // dans le DOM de quelle donnée est affichée.
     expect(await screen.findByText('Maroc')).toBeInTheDocument();
+    expect(screen.getByTestId('manufacture-legende-camembert')).toHaveTextContent('Textile21,5 %');
     expect(screen.queryByText(/Aucune donnée UNIDO/i)).not.toBeInTheDocument();
+    // Une entrée UNIDO seule ne déclare pas de nature : aucun badge, aucune estimation.
+    expect(screen.queryAllByTestId(/^nature-/)).toHaveLength(0);
+    expect(screen.queryByTestId('manufacture-estimation')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('manufacture-mva-2024')).not.toBeInTheDocument();
+    expect(screen.getByText(/proviennent de la base UNIDO INDSTAT4/)).toBeInTheDocument();
+  });
+
+  it('dit la nature de chaque chiffre et l’estimation de l’année en cours', async () => {
+    // Entrée recalculée sur un office national (forme de l'entrée algérienne).
+    const ons = {
+      country_iso3: 'DZA',
+      country_name: 'Algérie',
+      mva_2023_mln_usd: 22610.7,
+      mva_2024_mln_usd: 25463.0,
+      mva_gdp_percent: 9.12,
+      mva_per_capita_usd: 490,
+      growth_rate_2023: 2.2,
+      growth_rate_2024: 4.2,
+      data_year: 2024,
+      source_institution: 'ONS Algérie',
+      source_dataset: 'Les comptes économiques de 2021 à 2024 (n° 1067)',
+      top_sectors: [{ isic: '19', name: 'Raffinage et cokéfaction', share_mva: 53.6, value_mln_usd: 13647.4 }],
+      natures: {
+        mva_2023_mln_usd: 'officiel',
+        mva_2024_mln_usd: 'officiel',
+        top_sectors: 'officiel',
+        growth_rate_2023: 'calcul_officiel',
+        growth_rate_2024: 'calcul_officiel',
+        mva_gdp_percent: 'calcul_officiel',
+        mva_per_capita_usd: 'calcul_officiel',
+      },
+      estimation_2025: {
+        annee: 2025,
+        va_mln_usd: { bas: 25480.9, central: 26144.8, haut: 26952.7 },
+        croissance_volume_pct: { bas: 0.1, central: 2.7, haut: 5.9 },
+        confiance_part_va_pct: { B: 65.5, C: 34.5 },
+        methode: 'Comptes trimestriels 2025 de l’ONS, indicateurs physiques.',
+        note: 'Somme des projections par branche.',
+        base_prix: 'prix et taux de change de 2024',
+      },
+    };
+    axios.get.mockImplementation((url) =>
+      url.includes('/production/unido/MAR') ? Promise.resolve({ data: ons }) : Promise.resolve({ data: {} }),
+    );
+    render(<ProductionManufacturing language="fr" />);
+    expect(await screen.findByText('Algérie')).toBeInTheDocument();
+    expect(screen.getAllByTestId('nature-officiel').length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId('nature-calcul_officiel')).toHaveLength(3);
+
+    const estimation = screen.getByTestId('manufacture-estimation');
+    expect(estimation).toHaveTextContent('Industrie manufacturière 2025');
+    expect(estimation).toHaveTextContent('Estimation');
+    expect(estimation).toHaveTextContent('Fourchette');
+    expect(estimation).toHaveTextContent('+2,7 % [0,1 ; 5,9]');
+    expect(screen.getByTestId('manufacture-confiance')).toHaveTextContent('B : 65,5 % · C : 34,5 %');
+    expect(screen.getByTestId('manufacture-structure-source')).toHaveTextContent('ONS Algérie');
+    // Le dernier total officiel est à l'écran, pas seulement celui de 2023.
+    expect(screen.getByTestId('manufacture-mva-2024')).toHaveTextContent('2024 : 25,5 Md $');
+    expect(screen.getByTestId('manufacture-croissance-2024')).toHaveTextContent('2024 : +4,2 %');
+    // Les tuiles suivent le même format : « 9,12 % », « +2,2 % ».
+    expect(screen.getByText('9,12 %')).toBeInTheDocument();
+    expect(screen.getByText('+2,2 %')).toBeInTheDocument();
+    // La note de bas d'écran ne dit plus « données UNIDO INDSTAT4 ».
+    expect(screen.queryByText(/proviennent de la base UNIDO INDSTAT4/)).not.toBeInTheDocument();
+    expect(screen.getByText(/comptes nationaux publiés par l'office statistique/)).toBeInTheDocument();
   });
 
   it('dit l’absence de donnée UNIDO au lieu de laisser l’écran muet', async () => {

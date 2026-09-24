@@ -811,12 +811,17 @@ def _unido_flow_rationale(
     # laitages, huiles... pas seulement le produit visé) — elle documente une
     # activité manufacturière réelle, jamais une preuve d'excédent exportable
     # garanti pour CE produit précis (c'est tout l'objet du plafond ci-dessous).
+    source = evidence.get("va_source") or "UNIDO INDSTAT4"
     anchor = (
         f"{exporter_name} a une activité manufacturière recensée dans « {sector} » "
-        f"({va_txt} de valeur ajoutée, UNIDO INDSTAT4 — un agrégat sectoriel, "
+        f"({va_txt} de valeur ajoutée, {source} — un agrégat sectoriel, "
         f"pas une mesure dédiée à « {product_name} »), pouvant s'appliquer à sa "
         f"production."
     )
+    # Valeur d'une branche nationale groupée, portée sur une seule division :
+    # le texte le dit (estimation).
+    if evidence.get("va_note"):
+        anchor += f" {evidence['va_note']} (estimation)."
     if len(markets) <= 1:
         demand = (
             f"{top_name} importe {top_import_txt} aujourd'hui (toutes origines) ; "
@@ -1008,7 +1013,9 @@ async def _unido_discovered_flows(
             "isic_label": evidence.get("isic_label_fr"),
             "value_added_usd": evidence.get("value_added_usd"),
             "va_year": evidence.get("va_year"),
-            "source": "UNIDO INDSTAT4",
+            "source": evidence.get("va_source") or "UNIDO INDSTAT4",
+            "va_is_estimation": evidence.get("va_is_estimation", False),
+            "va_note": evidence.get("va_note"),
             # Traçabilité du système à facteurs multiples (voir
             # unido_discovery_service, section « Contrôle de plausibilité »).
             "input_requirement_checked": evidence.get("input_requirement_checked", False),

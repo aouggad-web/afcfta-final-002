@@ -455,8 +455,16 @@ def build_manufacturing():
         country_name = d.get("country_name", iso3)
         year = d.get("data_year", 2023)
         mva_total = d.get("mva_2024_mln_usd", d.get("mva_2023_mln_usd"))
+        # Une entrée recalculée sur l'office statistique national (Algérie :
+        # ONS) porte sa propre source ; les autres restent UNIDO.
+        institution = d.get("source_institution", "UNIDO")
+        dataset = d.get("source_dataset", "INDSTAT4 (ISIC Rev.4)")
         for sector in d.get("top_sectors", []):
-            isic = str(sector.get("isic", ""))
+            # Branche nationale groupée sans division CITI défendable : elle
+            # reste à l'écran mais n'entre pas dans les classements.
+            if "rattachement_isic" in sector and not sector["rattachement_isic"]:
+                continue
+            isic = str(sector.get("rattachement_isic") or sector.get("isic", ""))
             val_mln = sector.get("value_mln_usd")
             is_estimation = False
             if not val_mln and mva_total and sector.get("share_mva"):
@@ -464,30 +472,41 @@ def build_manufacturing():
                 is_estimation = True
             if not val_mln:
                 continue
+            # La VA d'une branche qui couvre plusieurs divisions, portée sur
+            # une seule, en est un majorant : c'est une estimation.
+            if len(sector.get("divisions") or []) > 1:
+                is_estimation = True
             label_en = ISIC_LABELS_EN.get(isic, sector.get("name", f"ISIC {isic}"))
-            records.append(
-                {
-                    "country_name": country_name,
-                    "country_iso3": iso3,
-                    "year": year,
-                    "sector_isic_section": "C",
-                    "sector_detail": label_en,
-                    "indicator_code": "INDSTAT_VA",
-                    "indicator_label": "Value added",
-                    "value": round(val_mln * 1_000_000),
-                    "unit": "USD",
-                    "currency": "USD",
-                    "price_base_year": "current",
-                    "source_institution": "UNIDO",
-                    "source_dataset": "INDSTAT4 (ISIC Rev.4)",
-                    "source_url": "https://stat.unido.org/",
-                    "unido_dataset": "INDSTAT4",
-                    "isic_revision": "4",
-                    "isic_code": isic,
-                    "isic_label": label_en,
-                    "is_estimation": is_estimation,
-                }
-            )
+            record = {
+                "country_name": country_name,
+                "country_iso3": iso3,
+                "year": year,
+                "sector_isic_section": "C",
+                "sector_detail": label_en,
+                "indicator_code": "INDSTAT_VA",
+                "indicator_label": "Value added",
+                "value": round(val_mln * 1_000_000),
+                "unit": "USD",
+                "currency": "USD",
+                "price_base_year": "current",
+                "source_institution": institution,
+                "source_dataset": dataset,
+                "source_url": d.get("source_url", "https://stat.unido.org/"),
+                "unido_dataset": "INDSTAT4" if institution == "UNIDO" else None,
+                "isic_revision": "4",
+                "isic_code": isic,
+                "isic_label": label_en,
+                "is_estimation": is_estimation,
+            }
+            if sector.get("name_en"):
+                # Libellé de la branche nationale (le libellé CITI standard
+                # reste la clé de correspondance SH des classements).
+                record["national_label"] = sector["name_en"]
+            if sector.get("divisions"):
+                record["isic_codes"] = sector["divisions"]
+            if sector.get("rattachement_note"):
+                record["note"] = sector["rattachement_note"]
+            records.append(record)
     return records
 
 

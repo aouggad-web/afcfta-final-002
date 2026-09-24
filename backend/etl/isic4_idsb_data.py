@@ -186,12 +186,18 @@ def get_country_isic4_summary(country_iso3: str) -> Optional[Dict]:
         "is_fully_estimated": official_indicators == 0 and estimated_indicators > 0,
     }
 
+    # Années réellement présentes pour CE pays : l'Algérie est servie par un
+    # versement 2005-2017, les autres par le filtre 2018+ ; une chaîne fixe
+    # « 2018-2024 » datait faussement son détail.
+    annees = sorted({r["year"] for r in records})
+    years_covered = str(annees[0]) if annees[0] == annees[-1] else f"{annees[0]}-{annees[-1]}"
+
     return {
         "country_iso3": iso3,
         "country_name": country_name,
         "classification": "ISIC Rev.4 (4 chiffres / classe)",
         "source": "UNIDO Statistics Data Portal — IDSB + INDSTAT, ISIC Rev.4",
-        "years_covered": "2018-2024 (filtré depuis la source d'origine 2005-2024)",
+        "years_covered": years_covered,
         "data_quality": data_quality,
         "sectors": sorted(by_isic.values(), key=lambda x: x["isic4"]),
     }

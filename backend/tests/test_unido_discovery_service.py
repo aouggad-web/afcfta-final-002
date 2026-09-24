@@ -33,9 +33,17 @@ def test_capacity_for_hs_maps_product_to_division():
 
 
 def test_capacity_absent_for_uncovered_sector():
-    # L'électronique (TV, 8528) n'est PAS une division phare algérienne dans les
-    # top-secteurs UNIDO : la découverte auto ne doit rien affirmer (Condor reste
-    # porté par la base curée).
+    # Véhicules (8703, division 29) : la branche ONS 29-33 (autres industries)
+    # n'a pas de division de rattachement défendable — l'ONS ne précise pas où
+    # il classe le matériel de transport. La découverte ne doit rien affirmer.
+    assert disco.capacity_for_hs("DZA", "870323")["available"] is False
+
+
+def test_electronics_not_affirmed_from_an_unattributed_ons_branch():
+    # Les branches ONS « 26 » (bureau ; communication et instruments) couvrent
+    # les divisions 26 et 32 sans partage publié : elles restent hors
+    # classements, et la découverte n'affirme pas de capacité en téléviseurs
+    # (Condor reste porté par la base curée).
     assert disco.capacity_for_hs("DZA", "852872")["available"] is False
 
 

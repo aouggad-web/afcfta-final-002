@@ -136,7 +136,11 @@ def test_unido_discovered_flow_from_capacity():
     ev = steel["capacity_evidence"]
     assert ev["isic_code"] == "24"
     assert ev["value_added_usd"] > 0
-    assert ev["source"] == "UNIDO INDSTAT4"
+    # Algérie : valeur ajoutée des comptes de l'ONS (branche 24-25 portée sur
+    # la division 24, donc estimation, et la justification le dit).
+    assert ev["source"].startswith("ONS Algérie")
+    assert ev["va_is_estimation"] is True and "24-25" in ev["va_note"]
+    assert "24-25" in steel["strategic_rationale"]
     # La transformation est narrée depuis l'évidence de division (pas de champion).
     assert steel["transformation"]["sector"]
 
