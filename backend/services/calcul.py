@@ -57,6 +57,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
+from services.designation import texte_designation
+
 #: Le seul code que le moteur connaisse, et il lui vient de la grammaire des
 #: assiettes : « CIF + tous les droits **sauf la TVA** » doit savoir laquelle
 #: exclure. Tout le reste — quels prélèvements existent, dans quel ordre ils se
@@ -655,7 +657,7 @@ def calculer(
     facteur_devise = _facteur_devise_specifique(devise_position, devise_cif, taux_de_change)
     resultat = {
         "position": {
-            "designation": position.get("designation"),
+            "designation": texte_designation(position.get("designation")),
             "unite": position.get("unite"),
             "source": position.get("source"),
         },

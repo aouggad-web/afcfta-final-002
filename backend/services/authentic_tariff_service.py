@@ -6,6 +6,7 @@ from collections import OrderedDict
 from math import isfinite
 from typing import Dict, Optional
 
+from services.designation import texte_designation
 from services.tax_profile_data import (
     ASSIETTE_TVA_ETABLIE,
     ASSIETTE_TVA_NON_APPLICABLE,
@@ -44,27 +45,6 @@ def _clean_crawled_hs_code(entry: dict) -> str:
     return ""
 
 
-def _texte_designation(valeur, langue="fr"):
-    """Une désignation bilingue ``{fr, en, verbatim}`` rendue en texte.
-
-    Six crawls (LBY, MUS, MWI, SYC, ZMB, ZWE) portent leur désignation sous
-    cette forme, avec ``fr`` vide : la source ne publie qu'en anglais. Servie
-    telle quelle, l'interface recevait un objet là où elle attend du texte, et
-    React plantait (« Objects are not valid as a React child ») — écran vide
-    après le calcul. On rend la langue demandée si elle existe, sinon le texte
-    publié (``verbatim``) : rien n'est traduit ni inventé.
-    """
-    if isinstance(valeur, dict):
-        return (
-            valeur.get(langue)
-            or valeur.get("verbatim")
-            or valeur.get("en")
-            or valeur.get("fr")
-            or ""
-        )
-    return valeur
-
-
 def _adapt_crawled_position(entry: dict, parent: Optional[dict] = None) -> Optional[dict]:
     """Expose one source position without changing its tariff columns."""
     code = _clean_crawled_hs_code(entry)
@@ -90,10 +70,10 @@ def _adapt_crawled_position(entry: dict, parent: Optional[dict] = None) -> Optio
     result.update(
         {
             "hs_code": code,
-            "name": _texte_designation(description),
-            "description": _texte_designation(description),
-            "description_fr": _texte_designation(entry.get("description_fr") or description, "fr"),
-            "description_en": _texte_designation(entry.get("description_en") or description, "en"),
+            "name": texte_designation(description),
+            "description": texte_designation(description),
+            "description_fr": texte_designation(entry.get("description_fr") or description, "fr"),
+            "description_en": texte_designation(entry.get("description_en") or description, "en"),
             "source": source,
             "source_url": entry.get("source_url") or parent.get("source_url"),
             "source_quality": (
