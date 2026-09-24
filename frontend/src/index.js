@@ -2,6 +2,12 @@ import { createRoot } from 'react-dom/client';
 
 import './index.css';
 import './i18n';
+// Installe l'intercepteur CSRF sur l'instance axios par défaut AVANT toute
+// requête. Sans cet import, aucun module monté ne chargeait `services/csrf` —
+// seuls des composants orphelins l'importaient — et chaque POST partait sans
+// en-tête X-CSRF-Token : le serveur répondait 403 « CSRF token missing », à
+// commencer par le calcul de la Tunisie, qui passe d'abord par POST /calcul.
+import './services/csrf';
 import App from './App';
 
 // Point d'entrée mince : l'application complète vit dans App.js, qui monte

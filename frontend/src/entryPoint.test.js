@@ -30,6 +30,13 @@ describe('point d’entrée du frontend', () => {
     expect(index).not.toContain('Module en développement');
   });
 
+  it("l'intercepteur CSRF est installé dès le point d'entrée", () => {
+    // Sans lui, chaque POST axios part sans X-CSRF-Token et le serveur répond
+    // 403 « CSRF token missing » — le calcul de la Tunisie en premier.
+    expect(index).toContain("import './services/csrf'");
+    expect(index.indexOf("import './services/csrf'")).toBeLessThan(index.indexOf('import App'));
+  });
+
   it('i18next est initialisé avant le rendu, car App.js appelle useTranslation', () => {
     expect(index).toContain("import './i18n'");
     expect(read('./App.js')).toContain('useTranslation');
