@@ -75,8 +75,11 @@ _MIN_SECTOR_VA_USD = 15_000_000
 
 # Nombre maximal de secteurs retenus par pays (les plus intenses en valeur
 # ajoutée). Borne la combinatoire produit et concentre la découverte sur les
-# filières où la capacité est la plus crédible.
-_MAX_SECTORS = 6
+# filières où la capacité est la plus crédible. Les entrées UNIDO curées
+# portent cinq divisions ; l'Algérie, recalculée sur les comptes de l'ONS, en
+# porte sept : le plafond les couvre, sans quoi les équipements électriques
+# (câbles, 8544 — un export algérien réel) seraient écartés.
+_MAX_SECTORS = 12
 
 # --------------------------------------------------------------------------- #
 # FACTEUR 2 — Corroboration par l'INTRANT (production réelle FAOSTAT/USGS) pour
@@ -207,10 +210,20 @@ def _sector_value_added(iso3: str) -> Dict[str, Dict]:
         # Une division peut avoir plusieurs années : on garde la plus récente.
         prev = out.get(isic)
         if prev is None or (year or 0) > (prev.get("year") or 0):
+            institution = rec.get("source_institution") or "UNIDO"
             out[isic] = {
                 "value": val,
                 "year": year,
                 "isic_label": rec.get("isic_label"),
+                # Source réelle de la valeur ajoutée : UNIDO INDSTAT4, ou
+                # l'office statistique national (Algérie : ONS).
+                "source": (
+                    "UNIDO INDSTAT4"
+                    if institution == "UNIDO"
+                    else f"{institution}, {rec.get('source_dataset') or ''}".rstrip(", ")
+                ),
+                "is_estimation": bool(rec.get("is_estimation")),
+                "note": rec.get("note"),
             }
     return out
 
@@ -257,6 +270,9 @@ def capacity_hs4_index(iso3: str) -> Dict[str, Dict]:
                 "isic_label_en": transf.get("isic_label_en"),
                 "value_added_usd": va,
                 "va_year": meta.get("year"),
+                "va_source": meta.get("source") or "UNIDO INDSTAT4",
+                "va_is_estimation": meta.get("is_estimation", False),
+                "va_note": meta.get("note"),
                 "product_label": label,
                 # Intrant PRÉCIS du produit final (ex. 1701 -> « sucre brut »),
                 # repli sur l'intrant générique de division si non nommé.

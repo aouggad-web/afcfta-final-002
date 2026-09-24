@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
 import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
-import { montant, montantCompact, montantUnite } from '../../utils/nombres';
+import { chiffres, montant, montantCompact, montantUnite, nombre } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -18,6 +18,42 @@ const API = `${BACKEND_URL}/api`;
 const SECTOR_COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--series-4)',
   'var(--series-5)', 'var(--series-6)', 'var(--series-7)', 'var(--series-8)'];
 const couleurSecteur = (index) => SECTOR_COLORS[index] || 'var(--afcfta-muted)';
+// Au-delà de six branches (entrée recalculée sur un office national : treize
+// pour l'Algérie), le camembert garde les cinq premières et réunit le reste.
+const MAX_PARTS_CAMEMBERT = 6;
+const PARTS_NOMMEES = 5;
+
+// Nature d'un chiffre, quand l'entrée la déclare (entrée recalculée sur un
+// office statistique national) : officiel, calculé sur l'officiel, estimation,
+// ou champ que seul UNIDO publie. Jetons du thème, comme dans Opportunités.
+const NATURES = {
+  officiel: { couleur: 'var(--success)', cle: 'production.manufacturing.panel.natureOfficial' },
+  calcul_officiel: { couleur: 'var(--success)', cle: 'production.manufacturing.panel.natureComputed' },
+  estimation: { couleur: 'var(--warning)', cle: 'production.manufacturing.panel.natureEstimate' },
+  unido: { couleur: 'var(--info)', cle: 'production.manufacturing.panel.natureUnido' },
+};
+
+function NatureValeur({ nature, t }) {
+  const n = NATURES[nature];
+  if (!n) return null;
+  // Le texte garde l'encre du thème : posé sur une tuile déjà teintée de la
+  // même couleur, un texte coloré tombait sous 4,5:1. La nature se lit à la
+  // pastille et à la bordure.
+  return (
+    <span
+      data-testid={`nature-${nature}`}
+      className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-semibold text-[var(--text)]"
+      style={{
+        background: `color-mix(in srgb, ${n.couleur} 10%, var(--afcfta-card))`,
+        border: `1px solid color-mix(in srgb, ${n.couleur} 55%, transparent)`,
+      }}
+    >
+      <span aria-hidden="true" className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: n.couleur }} />
+      {t(n.cle)}
+    </span>
+  );
+}
+
 // Classement : emphase — le pays choisi en safran, les autres en gris neutre
 // (90 % : ≥ 5:1 sur la carte, et distinct du safran en daltonisme).
 const RANG_AUTRES = 'color-mix(in srgb, var(--afcfta-muted) 90%, var(--afcfta-card))';
@@ -154,6 +190,7 @@ function ProductionManufacturing({ language = 'fr' }) {
         methodology: response.data.methodology || null,
         coverage: response.data.coverage || null,
         source: response.data.source || null,
+        years: response.data.years_covered || null,
       });
       setIsic4Status('ready');
     } catch (error) {
@@ -238,7 +275,10 @@ function ProductionManufacturing({ language = 'fr' }) {
     // le chiffre qui donne l'ordre d'importance des secteurs, et il est réel
     // pour les 54 pays — y compris ceux dont le niveau classe est estimé.
     const divisionStats = {};
-    for (const s of unidoData?.top_sectors || []) {
+    // Entrée recalculée sur un office national (Algérie) : ses branches 2024
+    // ne sont pas des divisions CITI ; le détail par classe, lui, vient
+    // d'INDSTAT. Les parts de division suivent le même millésime.
+    for (const s of unidoData?.structure_indstat_2015 || unidoData?.top_sectors || []) {
       if (!s?.isic) continue;
       divisionStats[String(s.isic).padStart(2, '0')] = {
         shareMva: s.share_mva ?? null,
@@ -341,22 +381,44 @@ function ProductionManufacturing({ language = 'fr' }) {
     return USD_INDICATORS.has(field) ? formatUsd(value) : value.toLocaleString();
   };
 
+  // Pourcentage au format de la langue, décimales plafonnées : « 9,12 % »,
+  // « +2,2 % » ; en anglais « 9.12% », « +2.2% ».
+  const pct = (v, signe = false, decimales = 1) =>
+    t('production.manufacturing.panel.percentValue', {
+      value: `${signe && v > 0 ? '+' : ''}${nombre(v, language, decimales)}`,
+    });
+  // Libellé anglais quand l'entrée le porte (branches d'un office national).
+  const nomBranche = (sector) => (language === 'en' && sector.name_en) || sector.name;
+
+  const secteursPlies = () => (unidoData?.top_sectors?.length || 0) > MAX_PARTS_CAMEMBERT;
+  const couleurBranche = (index) =>
+    secteursPlies() && index >= PARTS_NOMMEES ? 'var(--afcfta-muted)' : couleurSecteur(index);
+
   const prepareSectorPieData = () => {
     if (!unidoData?.top_sectors) return [];
-    
-    return unidoData.top_sectors.map((sector, index) => ({
-      name: sector.name,
+    const parts = unidoData.top_sectors.map((sector, index) => ({
+      name: nomBranche(sector),
       value: sector.share_mva,
       fill: couleurSecteur(index)
     }));
+    if (!secteursPlies()) return parts;
+    const reste = parts.slice(PARTS_NOMMEES);
+    return [
+      ...parts.slice(0, PARTS_NOMMEES),
+      {
+        name: t('production.manufacturing.panel.sectorsOthers'),
+        value: Math.round(reste.reduce((somme, p) => somme + (p.value || 0), 0) * 10) / 10,
+        fill: 'var(--afcfta-muted)',
+      },
+    ];
   };
 
   const prepareSectorBarData = () => {
     if (!unidoData?.top_sectors) return [];
     
     return unidoData.top_sectors.map((sector) => ({
-      name: sector.name.length > 20 ? sector.name.substring(0, 20) + '...' : sector.name,
-      fullName: sector.name,
+      name: nomBranche(sector).length > 20 ? nomBranche(sector).substring(0, 20) + '...' : nomBranche(sector),
+      fullName: nomBranche(sector),
       value: sector.value_mln_usd || 0,
       share: sector.share_mva
     }));
@@ -454,6 +516,12 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <div>
                     <p className="text-[var(--info)] text-sm">{t('production.manufacturing.panel.mvaLabel')}</p>
                     <p className="text-3xl font-bold">{formatUsd(unidoData.mva_2023_mln_usd * 1000000)}</p>
+                    <NatureValeur nature={unidoData.natures?.mva_2023_mln_usd} t={t} />
+                    {unidoData.natures?.mva_2024_mln_usd && (
+                      <p className="text-sm text-[var(--text-soft)] mt-2" data-testid="manufacture-mva-2024">
+                        {t('production.manufacturing.panel.yearValue', { year: 2024, value: formatUsd(unidoData.mva_2024_mln_usd * 1000000) })}
+                      </p>
+                    )}
                   </div>
                   <DollarSign className="w-10 h-10 text-[var(--info)]" />
                 </div>
@@ -470,7 +538,8 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[var(--success)] text-sm">{t('production.manufacturing.panel.mvaGdp')}</p>
-                    <p className="text-3xl font-bold">{unidoData.mva_gdp_percent}%</p>
+                    <p className="text-3xl font-bold">{pct(unidoData.mva_gdp_percent, false, 2)}</p>
+                    <NatureValeur nature={unidoData.natures?.mva_gdp_percent} t={t} />
                   </div>
                   <TrendingUp className="w-10 h-10 text-[var(--success)]" />
                 </div>
@@ -484,6 +553,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <div>
                     <p className="text-[var(--violet)] text-sm">{t('production.manufacturing.panel.mvaPerCapita')}</p>
                     <p className="text-3xl font-bold">{montantUnite(unidoData.mva_per_capita_usd, null, language)}</p>
+                    <NatureValeur nature={unidoData.natures?.mva_per_capita_usd} t={t} />
                   </div>
                   <Users className="w-10 h-10 text-[var(--violet)]" />
                 </div>
@@ -496,9 +566,13 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[var(--gold)] text-sm">{t('production.manufacturing.panel.growth2023')}</p>
-                    <p className="text-3xl font-bold">
-                      {unidoData.growth_rate_2023 > 0 ? '+' : ''}{unidoData.growth_rate_2023}%
-                    </p>
+                    <p className="text-3xl font-bold">{pct(unidoData.growth_rate_2023, true)}</p>
+                    <NatureValeur nature={unidoData.natures?.growth_rate_2023} t={t} />
+                    {unidoData.natures?.growth_rate_2024 && (
+                      <p className="text-sm text-[var(--text-soft)] mt-2" data-testid="manufacture-croissance-2024">
+                        {t('production.manufacturing.panel.yearValue', { year: 2024, value: pct(unidoData.growth_rate_2024, true) })}
+                      </p>
+                    )}
                   </div>
                   <TrendingUp className="w-10 h-10 text-[var(--gold)]" />
                 </div>
@@ -506,6 +580,61 @@ function ProductionManufacturing({ language = 'fr' }) {
               </CardContent>
             </Card>
           </div>
+
+          {/* Estimation de l'année en cours (entrée recalculée sur un office
+              national) : jamais lue comme une mesure — valeur centrale,
+              fourchette, confiance et méthode. */}
+          {unidoData.estimation_2025 && (
+            <Card
+              data-testid="manufacture-estimation"
+              className="border-l-4 border-l-[var(--warning)] bg-[color-mix(in_srgb,var(--warning)_8%,var(--afcfta-card))]"
+            >
+              <CardContent className="pt-5">
+                <div className="flex flex-wrap items-start justify-between gap-6">
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--text)] flex items-center gap-2 flex-wrap">
+                      {t('production.manufacturing.panel.estimate2025Title')}
+                      <NatureValeur nature="estimation" t={t} />
+                    </p>
+                    <p className="text-3xl font-bold mt-1">
+                      {formatUsd(unidoData.estimation_2025.va_mln_usd.central * 1000000)}
+                    </p>
+                    <p className="text-sm text-[var(--text-soft)]">
+                      {t('production.manufacturing.panel.estimateRange', {
+                        bas: formatUsd(unidoData.estimation_2025.va_mln_usd.bas * 1000000),
+                        haut: formatUsd(unidoData.estimation_2025.va_mln_usd.haut * 1000000),
+                      })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.estimateVolumeGrowth')}</p>
+                    <p className="text-xl font-bold">
+                      {pct(unidoData.estimation_2025.croissance_volume_pct.central, true)}
+                      <span className="text-sm font-normal text-[var(--text-soft)]">
+                        {' '}{t('production.manufacturing.panel.estimateGrowthRange', {
+                          bas: chiffres(unidoData.estimation_2025.croissance_volume_pct.bas, language, 1),
+                          haut: chiffres(unidoData.estimation_2025.croissance_volume_pct.haut, language, 1),
+                        })}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.estimateConfidence')}</p>
+                    <p className="text-sm font-semibold" data-testid="manufacture-confiance">
+                      {Object.entries(unidoData.estimation_2025.confiance_part_va_pct || {})
+                        .map(([grade, share]) => t('production.manufacturing.panel.estimateConfidenceShare', { grade, share: chiffres(share, language, 1) }))
+                        .join(' · ')}
+                    </p>
+                  </div>
+                </div>
+                <details className="mt-3 text-xs text-[var(--text-soft)]">
+                  <summary className="cursor-pointer">{t('production.manufacturing.panel.estimateMethod')}</summary>
+                  <p className="mt-2 leading-relaxed">{unidoData.estimation_2025.methode}</p>
+                  <p className="mt-1">{unidoData.estimation_2025.note} — {unidoData.estimation_2025.base_prix}</p>
+                </details>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Country Overview */}
           <Card className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
@@ -531,12 +660,14 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                     <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.industrialJobs')}</p>
                     <p className="text-2xl font-bold text-[var(--info)]">{formatNumber(unidoData.industry_employment)}</p>
+                    <NatureValeur nature={unidoData.natures?.industry_employment} t={t} />
                   </div>
                 )}
                 {unidoData.exports_manuf_mln_usd && (
                   <div className="bg-[var(--afcfta-card)] p-4 rounded-xl shadow-sm border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                     <p className="text-xs text-[var(--afcfta-muted)]">{t('production.manufacturing.panel.manufExports')}</p>
                     <p className="text-2xl font-bold text-[var(--success)]">{formatUsd(unidoData.exports_manuf_mln_usd * 1000000)}</p>
+                    <NatureValeur nature={unidoData.natures?.exports_manuf_mln_usd} t={t} />
                   </div>
                 )}
                 {unidoData.top_sectors && (
@@ -566,7 +697,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={220}>
                     <PieChart>
                       <Pie
                         data={prepareSectorPieData()}
@@ -580,9 +711,20 @@ function ProductionManufacturing({ language = 'fr' }) {
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => value + '% ' + t('production.manufacturing.panel.mva')} />
-                      <Legend />
                     </PieChart>
                   </ResponsiveContainer>
+                  {/* Légende en HTML : un libellé long (branche d'un office
+                      national) passe à la ligne au lieu de déborder de la
+                      carte, et l'ordre suit les parts, pas l'alphabet. */}
+                  <ul className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-sm text-[var(--text)]" data-testid="manufacture-legende-camembert">
+                    {prepareSectorPieData().map((part) => (
+                      <li key={part.name} className="flex items-center gap-1.5">
+                        <span aria-hidden="true" className="w-3 h-3 rounded-sm shrink-0" style={{ background: part.fill }} />
+                        <span>{part.name}</span>
+                        {part.value != null && <span className="text-[var(--afcfta-muted)] tabular-nums">{pct(part.value)}</span>}
+                      </li>
+                    ))}
+                  </ul>
                 </CardContent>
               </Card>
 
@@ -594,11 +736,11 @@ function ProductionManufacturing({ language = 'fr' }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={prepareSectorBarData()} layout="vertical">
+                  <ResponsiveContainer width="100%" height={Math.max(300, prepareSectorBarData().length * 34)}>
+                    <BarChart data={prepareSectorBarData()} layout="vertical" margin={{ top: 5, right: 28, bottom: 5, left: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis type="number" tickFormatter={(v) => formatUsd(v * 1000000)} />
-                      <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
+                      <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} interval={0} />
                       <Tooltip 
                         formatter={(value) => [formatUsd(value * 1000000), t('production.manufacturing.panel.value')]}
                         labelFormatter={(label) => prepareSectorBarData().find(d => d.name === label)?.fullName || label}
@@ -606,7 +748,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                       {/* Même couleur par secteur que le camembert voisin. */}
                       <Bar dataKey="value" radius={[0, 4, 4, 0]} maxBarSize={24}>
                         {prepareSectorBarData().map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={couleurSecteur(index)} />
+                          <Cell key={`cell-${index}`} fill={couleurBranche(index)} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -614,6 +756,16 @@ function ProductionManufacturing({ language = 'fr' }) {
                 </CardContent>
               </Card>
             </div>
+          )}
+
+          {unidoData.top_sectors?.length > 0 && unidoData.natures?.top_sectors && (
+            <p className="text-xs text-[var(--afcfta-muted)] -mt-3 flex items-center gap-2 flex-wrap" data-testid="manufacture-structure-source">
+              <NatureValeur nature={unidoData.natures.top_sectors} t={t} />
+              {t('production.manufacturing.panel.structureSource', {
+                year: unidoData.data_year,
+                source: [unidoData.source_institution, unidoData.source_dataset].filter(Boolean).join(', '),
+              })}
+            </p>
           )}
 
           {/* ISIC4 Detail Table — vraies données UNIDO IDSB/INDSTAT, toutes les
@@ -662,7 +814,12 @@ function ProductionManufacturing({ language = 'fr' }) {
                 )}
               </div>
               <CardDescription className="text-[var(--info)] text-xs mt-1">
-                {t('production.manufacturing.panel.sourceUnidoStatisticsData')}
+                {isic4Method?.years
+                  ? t('production.manufacturing.panel.sourceUnidoStatisticsDataYears', { years: isic4Method.years })
+                  : t('production.manufacturing.panel.sourceUnidoStatisticsData')}
+                {unidoData.structure_indstat_2015?.length > 0 && (
+                  <> {t('production.manufacturing.panel.divisionSharesIndstat', { year: 2015 })}</>
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
@@ -732,6 +889,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                         label={label}
                         shareMva={shareMva}
                         valueMlnUsd={valueMlnUsd}
+                        annee={unidoData.structure_indstat_2015?.length ? 2015 : null}
                         language={language}
                         sectors={sectors}
                         selectedIsic4={expandedIsic4}
@@ -796,7 +954,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                   <BarChart data={prepareRankingBarData()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-45} textAnchor="end" height={80} />
-                    <YAxis tickFormatter={(v) => formatUsd(v * 1000000)} />
+                    <YAxis tickFormatter={(v) => formatUsd(v * 1000000)} width={80} />
                     <Tooltip 
                       formatter={(value) => [formatUsd(value * 1000000), 'MVA 2023']}
                       labelFormatter={(label) => prepareRankingBarData().find(d => d.name === label)?.fullName || label}
@@ -837,7 +995,9 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <div className="text-sm text-[var(--afcfta-muted)]">
                   <p><strong>{t('production.manufacturing.panel.source')}</strong> {unidoData.source}</p>
                   <p className="mt-1">
-                    {t('production.manufacturing.panel.sourceNote')}
+                    {unidoData.source_institution
+                      ? t('production.manufacturing.panel.sourceNoteNational')
+                      : t('production.manufacturing.panel.sourceNote')}
                   </p>
                 </div>
               </div>
@@ -873,7 +1033,7 @@ export function femaleSharePct(series, year) {
 
 // Encadré carré d'une division ISIC 2 chiffres : intitulé, code, part de MVA
 // chiffrée, puis la liste de ses classes ISIC 4 en liens cliquables.
-function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect, language }) {
+function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, annee, sectors, selectedIsic4, onSelect, language }) {
   const { t } = useTranslation();
   return (
     <div className="bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-xl shadow-sm flex flex-col">
@@ -894,7 +1054,9 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
                   {shareMva.toLocaleString()} %
                 </div>
                 <div className="text-[11px] text-[var(--afcfta-muted)] mt-1">
-                  {t('production.manufacturing.panel.mva')}
+                  {annee
+                    ? t('production.manufacturing.panel.mvaYear', { year: annee })
+                    : t('production.manufacturing.panel.mva')}
                 </div>
               </>
             ) : (
@@ -906,7 +1068,10 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
         </div>
         {valueMlnUsd != null && (
           <p className="text-xs text-[var(--afcfta-muted)] mt-2 tabular-nums">
-            {montantUnite(valueMlnUsd, 'M', language, 3, { max: true })} {t('production.manufacturing.panel.mUsdValueAdded')}
+            {montantUnite(valueMlnUsd, 'M', language, 3, { max: true })}{' '}
+            {annee
+              ? t('production.manufacturing.panel.mUsdValueAddedYear', { year: annee })
+              : t('production.manufacturing.panel.mUsdValueAdded')}
           </p>
         )}
       </div>

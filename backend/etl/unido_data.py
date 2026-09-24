@@ -244,6 +244,12 @@ UNIDO_INDUSTRY_DATA = {
         "data_year": 2024,
     },
     "DZA": {
+        # Base de l'entrée algérienne : la valeur ajoutée, sa croissance et la
+        # structure par branche sont recalculées sur les comptes de l'ONS
+        # 2021-2024 (etl/dza_manufacture_ons.py, en fin de table). Restent
+        # d'ici les champs que l'ONS ne publie pas (emploi, exportations
+        # manufacturières, CIP), et la structure INDSTAT 2015 ci-dessous,
+        # conservée sous « structure_indstat_2015 ».
         # Valeurs RÉELLES publiées, collectées via l'API officielle du portail
         # UNIDO (stat.unido.org/portal) le 2026-09-22 — voir
         # scripts/fetch_unido_indstat.py et le versement
@@ -1823,6 +1829,12 @@ UNIDO_INDUSTRY_DATA = {
 # =============================================================================
 # FONCTIONS D'ACCÈS
 # =============================================================================
+
+# L'Algérie publie sa valeur ajoutée par branche jusqu'en 2024 : son entrée
+# est recalculée sur l'ONS, chaque champ portant sa nature.
+from .dza_manufacture_ons import entree_dza  # noqa: E402
+
+UNIDO_INDUSTRY_DATA["DZA"] = entree_dza(UNIDO_INDUSTRY_DATA["DZA"])
 
 
 def get_unido_country_data(country_iso3: str) -> Dict:

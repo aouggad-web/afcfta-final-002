@@ -1,63 +1,117 @@
-"""L'entrée DZA curée d'unido_data doit être celle que publie UNIDO.
+"""L'entrée DZA d'unido_data doit servir les comptes de l'ONS, chiffre par chiffre.
 
-L'Algérie portait des valeurs dérivées (mva × part) présentées comme des
-montants publiés, sur une structure (raffinage à 28,5 %) que les publications
-ONS/UNIDO contredisent : le raffinage pèse 80 % de la VA manufacturière dans
-INDSTAT. Ces tests verrouillent l'entrée sur les valeurs réelles collectées
-via l'API du portail UNIDO le 2026-09-22, et — le point important — vérifient
-la cohérence croisée entre l'entrée curée et le versement ISIC4 committé
-(``unido_idsb_indstat_isic4_dza_2005_2017.csv.gz``) : la division 19 doit y
-valoir exactement la somme de ses classes 1910+1920.
+L'entrée algérienne reposait sur la structure INDSTAT de 2015, la dernière
+transmise par l'ONS à l'ONUDI : l'écran Manufacture montrait l'Algérie dix
+ans en retard sur les autres pays. L'ONS publie pourtant sa valeur ajoutée par
+branche jusqu'en 2024 (« Les comptes économiques de 2021 à 2024 », n° 1067),
+reprise dans ``data/json/dza_industrie.json`` avec une estimation 2025.
+
+Ces tests verrouillent l'entrée recalculée (``etl/dza_manufacture_ons.py``) :
+les totaux retombent sur les chiffres publiés, la structure par branche sur la
+VA totale, chaque champ dit sa nature, et l'estimation 2025 garde sa fourchette
+et sa confiance. La structure INDSTAT 2015 est conservée à part : elle recoupe
+toujours exactement le versement ISIC4 (classes 1910+1920 = division 19) que
+l'écran affiche encore au niveau classe.
 """
 
 import csv
 import gzip
+import json
 import os
 
 from etl.unido_data import UNIDO_INDUSTRY_DATA
+
 from scripts.build_production_real import build_manufacturing
 
 DZA = UNIDO_INDUSTRY_DATA["DZA"]
 
-# Valeurs de référence — collectées le 2026-09-22 via l'API stat.unido.org :
-# National Accounts (dataset 140) pour les totaux, INDSTAT 2026 (dataset 148)
-# pour les divisions, MTD (163) pour le commerce manufacturier, CIP (165)
-# pour le rang. Les fichiers bruts sont archivés hors dépôt.
-_MVA_2023_MLN = 23017.840702  # MvaCud 2023
-_MVA_2024_MLN = 25318.547003  # MvaCud 2024
-_MVA_2015_MLN = 13330.846087  # MvaCud 2015 (base National Accounts, plus étroite)
+_RACINE = os.path.join(os.path.dirname(__file__), "..", "..")
+ONS = json.load(open(os.path.join(_RACINE, "data", "json", "dza_industrie.json"), encoding="utf-8"))
+
+# Valeur ajoutée manufacturière publiée par l'ONS, en millions d'USD (taux de
+# change moyen annuel de la Banque mondiale) ; la Banque mondiale (WDI
+# NV.IND.MANF.CD) publie les mêmes chiffres au million près.
+_VA_2023_MUSD = 22610.7
+_VA_2024_MUSD = 25463.0
 
 
-def test_totals_match_unido_national_accounts():
-    assert abs(DZA["mva_2024_mln_usd"] - _MVA_2024_MLN) < 0.05  # curée au 1/10 de mln
-    assert abs(DZA["mva_2023_mln_usd"] - _MVA_2023_MLN) < 0.05
-    # Part du PIB 2024 : 25,318.547 / 266,972.276 = 9.48 %
-    assert abs(DZA["mva_gdp_percent"] - 9.48) < 0.01
-    # MVA par habitant 2024 courant : 25,318.5 M / 46,814,308 hab.
-    assert abs(DZA["mva_per_capita_usd"] - 541) < 1
+def test_totals_are_the_published_ons_values():
+    assert abs(DZA["mva_2023_mln_usd"] - _VA_2023_MUSD) < 0.05
+    assert abs(DZA["mva_2024_mln_usd"] - _VA_2024_MUSD) < 0.05
+    # Part du PIB 2023 : 22 610,7 M$ / PIB Banque mondiale = 9,12 % (WDI publie 9,12)
+    assert abs(DZA["mva_gdp_percent"] - 9.12) < 0.01
+    # Par habitant 2023 : 22 610,7 M$ / 46 164 219 habitants
+    assert abs(DZA["mva_per_capita_usd"] - 490) < 1
+    assert DZA["data_year"] == 2024
 
 
-def test_structure_is_indstat_2015_with_refining_at_its_real_weight():
-    """La structure divisée vient d'INDSTAT (ONS, « Comptes Économiques »),
-    qui inclut le raffinage : 80,3 % de la VA manufacturière — pas les 28,5 %
-    de l'ancienne entrée, dont les montants étaient dérivés d'un total au
-    périmètre différent (National Accounts)."""
-    by_isic = {s["isic"]: s for s in DZA["top_sectors"]}
-    assert set(by_isic) == {"19", "10", "23", "24", "20"}
-    assert abs(by_isic["19"]["value_mln_usd"] - 29221.36) < 0.05
-    assert abs(by_isic["19"]["share_mva"] - 80.3) < 0.1
+def test_growth_is_aggregated_from_official_branch_volumes():
+    """Croissance du total : VA de l'année précédente de chaque branche portée
+    par sa croissance en volume publiée, rapportée à leur somme."""
+    for annee, cle in ((2023, "growth_rate_2023"), (2024, "growth_rate_2024")):
+        num = den = 0.0
+        for b in ONS["branches"]:
+            v0 = b["annees"][str(annee - 1)]["va_mda"]
+            num += v0 * (1 + b["annees"][str(annee)]["croissance_volume_pct"] / 100)
+            den += v0
+        assert abs(DZA[cle] - round((num / den - 1) * 100, 1)) < 1e-9
+    assert DZA["natures"]["growth_rate_2023"] == "calcul_officiel"
+
+
+def test_structure_is_ons_2024_and_sums_to_the_published_total():
+    secteurs = DZA["top_sectors"]
+    somme = sum(s["value_mln_usd"] for s in secteurs)
+    assert abs(somme - _VA_2024_MUSD) < 0.5  # arrondis au dixième, 13 branches
+    assert abs(sum(s["share_mva"] for s in secteurs) - 100) < 0.3
+    # Du plus grand au plus petit ; le raffinage pèse 53,6 % en 2024.
+    valeurs = [s["value_mln_usd"] for s in secteurs]
+    assert valeurs == sorted(valeurs, reverse=True)
+    raffinage = {s["isic"]: s for s in secteurs}["19"]
+    assert abs(raffinage["value_mln_usd"] - 13647.4) < 0.05
+    assert abs(raffinage["share_mva"] - 53.6) < 0.05
+    # Les treize branches ONS sont là.
+    assert sorted(s["code_ons"] for s in secteurs) == sorted(b["code"] for b in ONS["branches"])
+    assert all(s["nature"] == "officiel" for s in secteurs)
+
+
+def test_grouped_branches_say_how_they_enter_the_rankings():
+    par_isic = {s["isic"]: s for s in DZA["top_sectors"]}
+    # Rattachement défendable : la VA de la branche est portée sur une division.
+    assert par_isic["24"]["rattachement_isic"] == "24"
+    assert "24-25" in par_isic["24"]["rattachement_note"]
+    # Sans rattachement défendable, ou sans correspondance SH : hors classements.
+    for cle in ("16-18", "29-33", "26-bur", "26-com", "15", "28"):
+        assert par_isic[cle]["rattachement_isic"] is None
+        assert "hors classements" in par_isic[cle]["rattachement_note"]
+
+
+def test_estimation_2025_keeps_its_range_and_confidence():
+    e = DZA["estimation_2025"]
+    total = ONS["total"]["2025"]
+    assert e["va_mln_usd"] == total["va_musd"]
+    assert e["va_mln_usd"]["bas"] <= e["va_mln_usd"]["central"] <= e["va_mln_usd"]["haut"]
+    assert e["croissance_volume_pct"] == total["croissance_volume_pct"]
+    # Part de la VA 2024 portée par des branches notées B, puis C.
+    assert set(e["confiance_part_va_pct"]) <= {"B", "C"}
+    assert abs(sum(e["confiance_part_va_pct"].values()) - 100) < 0.2
+    assert e["methode"] and e["base_prix"]
 
 
 def test_division_19_cross_checks_against_the_class_level_versement():
     """Le versement ISIC4 committé donne 1910+1920 (VA 2015) ; leur somme doit
-    retomber EXACTEMENT sur la division 19 portée par l'entrée curée."""
+    retomber EXACTEMENT sur la division 19 de la structure INDSTAT 2015."""
     rows = []
     with gzip.open(
         os.path.join(
-            os.path.dirname(__file__), "..", "data", "unido",
+            os.path.dirname(__file__),
+            "..",
+            "data",
+            "unido",
             "unido_idsb_indstat_isic4_dza_2005_2017.csv.gz",
         ),
-        mode="rt", encoding="utf-8", newline="",
+        mode="rt",
+        encoding="utf-8",
+        newline="",
     ) as f:
         for r in csv.DictReader(f):
             if (
@@ -69,43 +123,30 @@ def test_division_19_cross_checks_against_the_class_level_versement():
                 rows.append(float(r["value"]))
     assert len(rows) == 2, "les classes 1910/1920 doivent être dans le versement"
     division_19 = sum(rows) / 1e6
-    curate = {s["isic"]: s for s in DZA["top_sectors"]}["19"]["value_mln_usd"]
-    assert abs(division_19 - curate) < 0.05, (
-        f"division 19 curée ({curate}) ≠ versement ISIC4 ({division_19})"
-    )
+    indstat = {s["isic"]: s for s in DZA["structure_indstat_2015"]}["19"]["value_mln_usd"]
+    assert (
+        abs(division_19 - indstat) < 0.05
+    ), f"division 19 INDSTAT 2015 ({indstat}) ≠ versement ISIC4 ({division_19})"
 
 
-def test_top_sectors_share_sums_to_the_indstat_base():
-    """share_mva est calculée sur la SOMME des divisions INDSTAT (36,4 Md$),
-    pas sur le MVA National Accounts (13,3 Md$) — deux périmètres, un seul
-    dénominateur valide par base."""
-    somme = sum(s["value_mln_usd"] for s in DZA["top_sectors"])
-    part = sum(s["share_mva"] for s in DZA["top_sectors"])
-    # Les cinq premières divisions portent la quasi-totalité du manufacturier
-    # hors hydrocarbures annexes ; leur somme (34,5 Md$) est un sous-ensemble
-    # de la base INDSTAT (36,4 Md$), qui domine la base réharmonisée (13,3 Md$)
-    # par construction — deux périmètres, ne jamais les additionner.
-    assert 34_000 < somme < 35_000  # mln USD : somme des CINQ divisions
-    assert 90 < part < 100  # ~94,8 % : le reste est dispersé sur 17 divisions
-
-
-def test_manufacturing_records_carry_the_published_2015_values():
+def test_manufacturing_records_carry_the_ons_source_and_nature():
     records = [r for r in build_manufacturing() if r["country_iso3"] == "DZA"]
-    assert len(records) == 5
-    by_isic = {r["isic_code"]: r for r in records}
-    # INDSTAT publie 29,221,364,138 USD pour la division 19 en 2015 —
-    # le module curé l'arrondit au cent-milliard de dollar le plus proche.
-    assert by_isic["19"]["value"] == 29_221_360_000
-    assert by_isic["19"]["year"] == 2015
-    # Des valeurs publiées : PAS des estimations dérivées.
-    assert all(r["is_estimation"] is False for r in records)
-    # Les libellés ISIC restent mappés vers le SH (invariant du pont).
-    assert {r["isic_code"] for r in records} == {"19", "10", "23", "24", "20"}
+    par_isic = {r["isic_code"]: r for r in records}
+    assert set(par_isic) == {"19", "10", "20", "13", "23", "24", "27"}
+    assert all(r["year"] == 2024 and r["source_institution"] == "ONS Algérie" for r in records)
+    assert par_isic["19"]["value"] == 13_647_400_000
+    # Branche d'une seule division : valeur publiée. Branche groupée portée sur
+    # une division : majorant, donc estimation, et la note le dit.
+    assert par_isic["19"]["is_estimation"] is False
+    assert par_isic["24"]["is_estimation"] is True and "24-25" in par_isic["24"]["note"]
+    # Le libellé CITI standard reste la clé de correspondance SH.
+    assert par_isic["24"]["isic_label"] == "Manufacture of basic metals"
 
 
-def test_cip_and_trade_metadata_match_the_published_editions():
+def test_unido_only_fields_are_kept_and_labelled():
     assert DZA["cip_index_rank"] == 93  # CIP 2024
     assert abs(DZA["mht_share_mva"] - 2.69) < 0.01  # MHVAsh 2024 / ODD 9.b.1 2015
     assert abs(DZA["exports_manuf_mln_usd"] - 17544.63) < 0.01  # MTD X_Manuf 2025
     assert abs(DZA["manuf_share_exports"] - 36.6) < 0.1  # X_Manuf / X_T 2025
-    assert DZA["data_year"] == 2015  # la structure, pas les totaux
+    for cle in ("cip_index_rank", "exports_manuf_mln_usd", "industry_employment"):
+        assert DZA["natures"][cle] == "unido"
