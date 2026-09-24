@@ -372,7 +372,18 @@
         "percentValue": "{{value}}%",
         "yearValue": "{{year}}: {{value}}",
         "estimateGrowthRange": "[{{bas}}; {{haut}}]",
-        "sourceNoteNational": "Value added, growth and structure by branch: national accounts published by the country's statistical office. Employment, manufactured exports, CIP index and ISIC Rev.4 class detail: UNIDO INDSTAT4 database (United Nations Industrial Development Organization)."
+        "sourceNoteNational": "Value added, growth and structure by branch: economic accounts published by the country's statistical office. Employment, manufactured exports and CIP index: UNIDO INDSTAT4 database (United Nations Industrial Development Organization).",
+        "onsBranchesTitle": "Manufacturing branches — ONS economic accounts",
+        "onsBranchesSubtitle": "Thirteen ONS branches. Value added {{year}}: {{total}}; 2025 estimate: {{estimate}} (range {{bas}} to {{haut}}).",
+        "onsVolume2024": "Volume 2024",
+        "onsPrivate2024": "Private share 2024",
+        "onsUnit": "Value added in current US dollars, at the average annual exchange rate. Volume: real growth of value added. Private share: private sector share of value added.",
+        "onsConfidenceLegend": "Estimate for 2025, at 2024 prices and exchange rate. Confidence B: two published, consistent 2025 quarters; C: partial or indirect indicators. To be replaced by the ONS 2025 accounts when published.",
+        "onsCitiNote": "Indicative ISIC correspondence: the ONS publication does not state the exact classification of the branch.",
+        "onsStatusFinal": "final",
+        "onsStatusSemiFinal": "semi-final",
+        "onsStatusProvisional": "provisional",
+        "onsConfidenceGrade": "confidence {{grade}}"
       }
     },
     "mining": {

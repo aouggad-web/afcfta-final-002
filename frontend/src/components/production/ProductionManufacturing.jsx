@@ -768,8 +768,14 @@ function ProductionManufacturing({ language = 'fr' }) {
             </p>
           )}
 
-          {/* ISIC4 Detail Table — vraies données UNIDO IDSB/INDSTAT, toutes les
-              classes ISIC4 groupées par division ISIC2, historique complet au clic */}
+          {/* Office statistique national (Algérie) : les branches de ses comptes
+              économiques, datées et référencées, à la place du détail ISIC4
+              d'UNIDO, qui s'arrête à 2017 pour ce pays. */}
+          {unidoData.comptes_ons ? (
+            <ComptesOns comptes={unidoData.comptes_ons} language={language} t={t} />
+          ) : (
+          /* ISIC4 Detail Table — vraies données UNIDO IDSB/INDSTAT, toutes les
+             classes ISIC4 groupées par division ISIC2, historique complet au clic */
           <Card className="shadow-lg">
             <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
               <div className="flex items-center justify-between flex-wrap gap-2">
@@ -917,6 +923,7 @@ function ProductionManufacturing({ language = 'fr' }) {
               )}
             </CardContent>
           </Card>
+          )}
 
           {/* Key Products */}
           {unidoData.key_products && unidoData.key_products.length > 0 && (
@@ -1006,6 +1013,129 @@ function ProductionManufacturing({ language = 'fr' }) {
         </>
       )}
     </div>
+  );
+}
+
+// Branches des comptes économiques d'un office national, au format des
+// encadrés de division : une carte par branche, rang et part de la valeur
+// ajoutée 2024 en tête, puis chaque millésime daté de son statut (définitif,
+// semi-définitif, provisoire) et l'estimation 2025 avec sa confiance.
+const STATUTS_ONS = {
+  'définitif': 'production.manufacturing.panel.onsStatusFinal',
+  'semi-définitif': 'production.manufacturing.panel.onsStatusSemiFinal',
+  provisoire: 'production.manufacturing.panel.onsStatusProvisional',
+};
+
+function ComptesOns({ comptes, language, t }) {
+  const m = (v) => montantUnite(v, 'M', language, 0, { max: true });
+  const p = (v, signe = false) =>
+    v == null ? '—' : t('production.manufacturing.panel.percentValue', { value: `${signe && v > 0 ? '+' : ''}${chiffres(v, language, 1)}` });
+  const statut = (a) => (STATUTS_ONS[comptes.statuts[a]] ? t(STATUTS_ONS[comptes.statuts[a]]) : comptes.statuts[a]);
+  const annees = Object.keys(comptes.total.va_musd);
+  const derniere = annees[annees.length - 1];
+  const totalDerniere = comptes.total.va_musd[derniere];
+  const libelle = (b) => (language === 'en' && b.libelle_en) || b.libelle_fr;
+  const e25 = comptes.total.estimation_2025;
+  return (
+    <Card className="shadow-lg" data-testid="manufacture-comptes-ons">
+      <CardHeader className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))]">
+        <CardTitle className="text-xl text-[var(--info)] flex items-center gap-2">
+          <Award className="w-5 h-5" /> {t('production.manufacturing.panel.onsBranchesTitle')}
+        </CardTitle>
+        <CardDescription className="text-sm text-[var(--text-soft)]">
+          {t('production.manufacturing.panel.onsBranchesSubtitle', {
+            total: m(totalDerniere),
+            year: derniere,
+            estimate: m(e25.va_musd.central),
+            bas: m(e25.va_musd.bas),
+            haut: m(e25.va_musd.haut),
+          })}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {comptes.branches.map((b, index) => {
+            const max = Math.max(...annees.map((a) => b.va_musd[a]), b.estimation_2025.va_musd.haut);
+            const barre = (v, couleur) => (
+              <span className="block h-1.5 rounded-full mt-1" style={{ width: `${Math.max(2, (v / max) * 100)}%`, background: couleur }} />
+            );
+            return (
+              <div
+                key={b.code}
+                className="bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-xl shadow-sm flex flex-col"
+                data-testid={`branche-ons-${b.code}`}
+              >
+                <div className="px-4 pt-4 pb-3 border-b border-[var(--afcfta-border)]">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="inline-flex items-center gap-2">
+                        <span className="text-[11px] font-semibold text-[var(--afcfta-muted)]">#{index + 1}</span>
+                        <span className="font-mono text-sm font-bold text-[var(--info)]">CITI {b.citi.join(', ')}{b.note_citi ? ' *' : ''}</span>
+                      </span>
+                      <h4 className="font-bold text-[var(--text)] leading-snug mt-1 break-words">{libelle(b)}</h4>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-2xl font-bold text-[var(--text)] tabular-nums leading-none">
+                        {p((b.va_musd[derniere] / totalDerniere) * 100)}
+                      </div>
+                      <div className="text-[11px] text-[var(--afcfta-muted)] mt-1">
+                        {t('production.manufacturing.panel.mvaYear', { year: derniere })}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-[var(--afcfta-muted)] mt-2 tabular-nums">
+                    {m(b.va_musd[derniere])} {t('production.manufacturing.panel.mUsdValueAddedYear', { year: derniere })}
+                  </p>
+                </div>
+                <ul className="px-4 py-3 space-y-2 flex-1 text-sm tabular-nums">
+                  {annees.map((a) => (
+                    <li key={a}>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-[var(--text)]">
+                          {a} <span className="text-xs text-[var(--afcfta-muted)]">{statut(a)}</span>
+                        </span>
+                        <span className="text-[var(--text)]">{m(b.va_musd[a])}</span>
+                      </div>
+                      {barre(b.va_musd[a], 'var(--info)')}
+                    </li>
+                  ))}
+                  <li>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-[var(--text)] flex items-center gap-1.5 flex-wrap">
+                        2025 <NatureValeur nature="estimation" t={t} />
+                        <span className="text-xs text-[var(--afcfta-muted)]">
+                          {t('production.manufacturing.panel.onsConfidenceGrade', { grade: b.estimation_2025.confiance })}
+                        </span>
+                      </span>
+                      <span className="text-[var(--text)] text-right shrink-0">
+                        {m(b.estimation_2025.va_musd.central)}
+                        <span className="block text-xs text-[var(--afcfta-muted)] whitespace-nowrap">
+                          {m(b.estimation_2025.va_musd.bas)} – {m(b.estimation_2025.va_musd.haut)}
+                        </span>
+                      </span>
+                    </div>
+                    {barre(b.estimation_2025.va_musd.central, 'var(--warning)')}
+                  </li>
+                </ul>
+                <div className="px-4 pb-3 text-[11px] text-[var(--afcfta-muted)] flex flex-wrap gap-x-3">
+                  <span>{t('production.manufacturing.panel.onsVolume2024')} : {p(b.croissance_volume_2024_pct, true)}</span>
+                  <span>{t('production.manufacturing.panel.onsPrivate2024')} : {p(b.part_privee_va_2024_pct)}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-4 space-y-1 text-xs text-[var(--text-soft)]">
+          <p>{t('production.manufacturing.panel.onsUnit')}</p>
+          <p>{t('production.manufacturing.panel.onsConfidenceLegend')}</p>
+          {comptes.branches.some((b) => b.note_citi) && <p>* {t('production.manufacturing.panel.onsCitiNote')}</p>}
+          <p>
+            {t('production.manufacturing.panel.sourcePrefix')}
+            <a href={comptes.source_url} target="_blank" rel="noopener noreferrer" className="underline">{comptes.source}</a>
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

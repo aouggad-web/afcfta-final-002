@@ -372,7 +372,18 @@
         "percentValue": "{{value}} %",
         "yearValue": "{{year}} : {{value}}",
         "estimateGrowthRange": "[{{bas}} ; {{haut}}]",
-        "sourceNoteNational": "Valeur ajoutée, croissance et structure par branche : comptes nationaux publiés par l'office statistique du pays. Emploi, exportations manufacturières, indice CIP et détail par classe ISIC Rev.4 : base UNIDO INDSTAT4 (Organisation des Nations Unies pour le développement industriel)."
+        "sourceNoteNational": "Valeur ajoutée, croissance et structure par branche : comptes économiques publiés par l'office statistique du pays. Emploi, exportations manufacturières et indice CIP : base UNIDO INDSTAT4 (Organisation des Nations Unies pour le développement industriel).",
+        "onsBranchesTitle": "Branches manufacturières — comptes économiques de l'ONS",
+        "onsBranchesSubtitle": "Treize branches de l'ONS. Valeur ajoutée {{year}} : {{total}} ; estimation 2025 : {{estimate}} (fourchette {{bas}} à {{haut}}).",
+        "onsVolume2024": "Volume 2024",
+        "onsPrivate2024": "Part privée 2024",
+        "onsUnit": "Valeur ajoutée en dollars courants, au taux de change annuel moyen. Volume : croissance en volume de la valeur ajoutée. Part privée : part du secteur privé dans la valeur ajoutée.",
+        "onsConfidenceLegend": "Estimation 2025, aux prix et taux de change de 2024. Confiance B : deux trimestres 2025 publiés et concordants ; C : indicateurs partiels ou indirects. À remplacer par les comptes 2025 de l'ONS dès leur parution.",
+        "onsCitiNote": "Correspondance CITI indicative : la publication de l'ONS ne précise pas le classement exact de la branche.",
+        "onsStatusFinal": "définitif",
+        "onsStatusSemiFinal": "semi-définitif",
+        "onsStatusProvisional": "provisoire",
+        "onsConfidenceGrade": "confiance {{grade}}"
       }
     },
     "mining": {

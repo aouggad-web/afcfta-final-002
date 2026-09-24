@@ -114,7 +114,51 @@ describe('ProductionManufacturing', () => {
     expect(screen.getByText('+2,2 %')).toBeInTheDocument();
     // La note de bas d'écran ne dit plus « données UNIDO INDSTAT4 ».
     expect(screen.queryByText(/proviennent de la base UNIDO INDSTAT4/)).not.toBeInTheDocument();
-    expect(screen.getByText(/comptes nationaux publiés par l'office statistique/)).toBeInTheDocument();
+    expect(screen.getByText(/comptes économiques publiés par l'office statistique/)).toBeInTheDocument();
+  });
+
+  it('remplace le détail ISIC4 par les branches des comptes économiques', async () => {
+    const branche = (code, libelle, citi, va, confiance) => ({
+      code,
+      libelle_fr: libelle,
+      libelle_en: libelle,
+      citi,
+      note_citi: '',
+      va_musd: { 2021: va / 2, 2022: va * 0.8, 2023: va * 0.9, 2024: va },
+      croissance_volume_2024_pct: 3,
+      part_privee_va_2024_pct: 2.3,
+      estimation_2025: { va_musd: { bas: va * 0.97, central: va, haut: va * 1.02 }, croissance_volume_pct: {}, confiance },
+    });
+    const ons = {
+      country_iso3: 'DZA',
+      country_name: 'Algérie',
+      source_institution: 'ONS Algérie',
+      top_sectors: [{ isic: '19', name: 'Raffinage et cokéfaction', share_mva: 53.6, value_mln_usd: 13647.4 }],
+      comptes_ons: {
+        source: 'ONS, Les comptes économiques de 2021 à 2024, n° 1067 (août 2025)',
+        source_url: 'https://www.ons.dz',
+        statuts: { 2021: 'définitif', 2022: 'définitif', 2023: 'semi-définitif', 2024: 'provisoire' },
+        branches: [branche('19', 'Raffinage et cokéfaction', ['19'], 13647.4, 'B'), branche('10-12', 'Industries alimentaires', ['10', '11', '12'], 5082.9, 'C')],
+        total: {
+          va_musd: { 2021: 15249.8, 2022: 23048, 2023: 22610.7, 2024: 18730.3 },
+          estimation_2025: { va_musd: { bas: 18000, central: 19000, haut: 19500 }, croissance_volume_pct: {} },
+        },
+      },
+    };
+    axios.get.mockImplementation((url) =>
+      url.includes('/production/unido/MAR') ? Promise.resolve({ data: ons }) : Promise.resolve({ data: {} }),
+    );
+    render(<ProductionManufacturing language="fr" />);
+    const section = await screen.findByTestId('manufacture-comptes-ons');
+    expect(section).toHaveTextContent('Branches manufacturières');
+    expect(section).toHaveTextContent('n° 1067');
+    const raffinage = screen.getByTestId('branche-ons-19');
+    expect(raffinage).toHaveTextContent('CITI 19');
+    expect(raffinage).toHaveTextContent('2024 provisoire');
+    expect(raffinage).toHaveTextContent('2021 définitif');
+    expect(raffinage).toHaveTextContent('confiance B');
+    // Le détail ISIC4 d'UNIDO n'est plus affiché pour cette entrée.
+    expect(screen.queryByText(/classes ISIC 4 chiffres/)).not.toBeInTheDocument();
   });
 
   it('dit l’absence de donnée UNIDO au lieu de laisser l’écran muet', async () => {
