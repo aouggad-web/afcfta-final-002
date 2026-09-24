@@ -115,6 +115,55 @@ def _secteurs_2024(branches, total_2024: float):
     return sorted(secteurs, key=lambda s: -s["value_mln_usd"])
 
 
+_ANNEES_ONS = ("2021", "2022", "2023", "2024")
+
+
+def _comptes_ons(ons: Dict) -> Dict:
+    """Tableau des branches des comptes économiques, pour l'écran : valeur
+    ajoutée 2021-2024 (M$ courants) avec le statut ONS de chaque millésime,
+    croissance en volume et part privée 2024, estimation 2025 et sa note de
+    confiance. Remplace, pour l'Algérie, le détail ISIC4 d'UNIDO (2005-2017)."""
+    branches = ons["branches"]
+    reference = next(b for b in branches if b["code"] == "19")["annees"]
+    lignes = []
+    for b in branches:
+        a = b["annees"]
+        e = a["2025"]
+        lignes.append(
+            {
+                "code": b["code"],
+                "libelle_fr": b["libelle_fr"],
+                "libelle_en": b["libelle_en"],
+                "citi": b["citi_rev4"],
+                "note_citi": b["note_citi"],
+                "va_musd": {y: a[y]["va_musd"] for y in _ANNEES_ONS},
+                "croissance_volume_2024_pct": a["2024"]["croissance_volume_pct"],
+                "part_privee_va_2024_pct": a["2024"].get("part_privee_va_pct"),
+                "estimation_2025": {
+                    "va_musd": e["va_musd"],
+                    "croissance_volume_pct": e["croissance_volume_pct"],
+                    "confiance": e["confiance"],
+                },
+            }
+        )
+    lignes.sort(key=lambda r: -r["va_musd"]["2024"])
+    total = ons["total"]
+    return {
+        "source": ons["meta"]["sources"]["ons_comptes"]["titre"],
+        "source_url": ons["meta"]["sources"]["ons_comptes"]["url"],
+        "unite": "millions de USD courants, taux de change annuel moyen",
+        "statuts": {y: reference[y]["statut_ons"] for y in _ANNEES_ONS},
+        "branches": lignes,
+        "total": {
+            "va_musd": {y: total[y]["va_musd"] for y in _ANNEES_ONS},
+            "estimation_2025": {
+                "va_musd": total["2025"]["va_musd"],
+                "croissance_volume_pct": total["2025"]["croissance_volume_pct"],
+            },
+        },
+    }
+
+
 def entree_dza(base: Dict) -> Dict:
     """L'entrée UNIDO de l'Algérie, recalculée sur les comptes de l'ONS.
 
@@ -149,6 +198,7 @@ def entree_dza(base: Dict) -> Dict:
             "mva_gdp_percent": round(va_2023 * 1e6 / bm["GDP"]["2023"] * 100, 2),
             "mva_per_capita_usd": round(va_2023 * 1e6 / bm["Population"]["2023"]),
             "top_sectors": _secteurs_2024(branches, va_2024),
+            "comptes_ons": _comptes_ons(ons),
             "data_year": 2024,
             "estimation_2025": {
                 "annee": 2025,

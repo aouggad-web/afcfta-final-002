@@ -150,3 +150,24 @@ def test_unido_only_fields_are_kept_and_labelled():
     assert abs(DZA["manuf_share_exports"] - 36.6) < 0.1  # X_Manuf / X_T 2025
     for cle in ("cip_index_rank", "exports_manuf_mln_usd", "industry_employment"):
         assert DZA["natures"][cle] == "unido"
+
+
+def test_comptes_ons_replace_the_isic4_detail_on_screen():
+    """L'écran remplace, pour l'Algérie, le détail ISIC4 d'UNIDO (2005-2017)
+    par les treize branches des comptes économiques, millésime par
+    millésime, avec le statut ONS de chacun."""
+    c = DZA["comptes_ons"]
+    assert c["statuts"] == {"2021": "définitif", "2022": "définitif", "2023": "semi-définitif", "2024": "provisoire"}
+    assert "n° 1067" in c["source"]
+    assert len(c["branches"]) == 13
+    for annee in ("2021", "2022", "2023", "2024"):
+        somme = sum(b["va_musd"][annee] for b in c["branches"])
+        # Branches et total convertis séparément en dollars : écart d'arrondi.
+        assert abs(somme - c["total"]["va_musd"][annee]) < 3.0
+    assert c["total"]["va_musd"]["2024"] == _VA_2024_MUSD
+    raffinage = c["branches"][0]
+    assert raffinage["code"] == "19" and raffinage["va_musd"]["2024"] == 13647.4
+    for b in c["branches"]:
+        e = b["estimation_2025"]
+        assert e["confiance"] in ("B", "C")
+        assert e["va_musd"]["bas"] <= e["va_musd"]["central"] <= e["va_musd"]["haut"]
