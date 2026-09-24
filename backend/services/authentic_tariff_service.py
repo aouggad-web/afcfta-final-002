@@ -6,6 +6,7 @@ from collections import OrderedDict
 from math import isfinite
 from typing import Dict, Optional
 
+from services.designation import texte_designation
 from services.tax_profile_data import (
     ASSIETTE_TVA_ETABLIE,
     ASSIETTE_TVA_NON_APPLICABLE,
@@ -69,10 +70,10 @@ def _adapt_crawled_position(entry: dict, parent: Optional[dict] = None) -> Optio
     result.update(
         {
             "hs_code": code,
-            "name": description,
-            "description": description,
-            "description_fr": entry.get("description_fr") or description,
-            "description_en": entry.get("description_en") or description,
+            "name": texte_designation(description),
+            "description": texte_designation(description),
+            "description_fr": texte_designation(entry.get("description_fr") or description, "fr"),
+            "description_en": texte_designation(entry.get("description_en") or description, "en"),
             "source": source,
             "source_url": entry.get("source_url") or parent.get("source_url"),
             "source_quality": (
