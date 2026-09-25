@@ -2,12 +2,13 @@
  "schema_version": 1,
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
- "mis_a_jour_le": "2026-09-24",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : le Maroc passe à APPLIQUE — la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier (5 ans P1, 10 ans P2) ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée.",
+ "mis_a_jour_le": "2026-09-25",
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée).",
  "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas. Le drapeau bareme_collecte dit qu'un barème tarifaire est archivé pour cette destination — instantané régional inclus — et non que la préférence est appliquée : le niveau juridique reste porté par le champ niveau.",
  "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
+  "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
   "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
   "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
   "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
@@ -309,9 +310,9 @@
    "bareme_collecte": false
   },
   "TUN": {
-   "niveau": "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE",
-   "preuve": "Tarif Web 2026 douane.gov.tn : 8 origines ZLECAf publiées (CMR GHA KEN TZA ZAF NGA MUS RWA). Sens du % non tranché : 40 % affiché contre 36 % de NPF.",
-   "niveau_de_source": "primaire — portail tarifaire officiel scellé dans le dépôt",
+   "niveau": "INSTRUMENT_VERIFIE_BAREME_MANQUANT",
+   "preuve": "Texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), lu intégralement : les pourcentages sont des parts du droit de base 2019 — liste A 5 ans (MUS RWA EGY TZA : 80/60/40/20/0 de 2021 à 2025), liste A 10 ans (CMR GHA KEN : 90 … 40 en 2026 … 0 en 2030), listes B sur 5 et 8 ans. Tarif Web 2026 : 8 origines (CMR GHA KEN TZA ZAF NGA MUS RWA). Barème non exploitable : droits de base 2019 ligne à ligne et classement A/B/C manquants.",
+   "niveau_de_source": "texte officiel lu via lecteur tiers (r.jina.ai), octets du PDF non archivés ; l'empreinte porte sur la transcription",
    "bareme_collecte": true
   },
   "TZA": {
@@ -351,8 +352,9 @@
   "NON_RECHERCHE": 41,
   "NOTIFICATION_PARTENAIRES_REQUISE": 4,
   "OFFRE_SEULE": 3,
-  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 1,
-  "PREUVES_ASSEMBLEES": 1
+  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
+  "PREUVES_ASSEMBLEES": 1,
+  "INSTRUMENT_VERIFIE_BAREME_MANQUANT": 1
  },
  "fiches_detaillees": [
   "DZA_application_2026-09-14.json",
