@@ -245,6 +245,12 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
 
     if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET", "DR"}:
         return "DD"
+    if norm in {"TPI", "TAXEPARAFISCALE"} or "parafiscale" in text:
+        # Maroc : la « Taxe Parafiscale à l'Importation (TPI) » arrive du crawl
+        # sous son libellé entier. Sans ce mapping, elle était calculée sous un
+        # code inconnu du profil MAR : la TVA, assise sur CIF+DD+TPI (CGI
+        # art. 96), était sous-évaluée de TPI × TVA.
+        return "TPI"
     if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "VALUEADDE", "VALUE_ADDE"}:
         return "TVA"
     if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
@@ -2242,6 +2248,24 @@ def calculate_import_taxes(
         # DAPS (droit de douane) : exonération binaire selon les listes (A)/(B).
         if "DAPS" in zlecaf_taxes and daps_rate_pct > 0 and _zctx["daps_exempt"]:
             zlecaf_taxes.pop("DAPS", None)
+        # TPI marocaine : la circulaire ADII 6530/223 (section III) la démantèle
+        # avec le DI, sur le même calendrier (5 ans P1, 10 ans P2 à compter du
+        # 01/01/2021 ; avenant 6627/223). Part restante appliquée à la TPI
+        # publiée — jamais une exonération immédiate. Le chemin socle applique
+        # la même règle par PERIMETRES_NATIONAUX.
+        if country_iso3.upper() == "MAR" and "TPI" in zlecaf_taxes and _eff_dd is not None:
+            from services.zlecaf_schedule_mar import tpi_preferentielle
+
+            _tpi_base = zlecaf_taxes["TPI"]
+            _tpi_pref, _tpi_ref = tpi_preferentielle(_tpi_base, origin_country)
+            if _tpi_pref is not None and _tpi_pref < _tpi_base:
+                if _tpi_pref == 0:
+                    zlecaf_taxes.pop("TPI", None)
+                else:
+                    zlecaf_taxes["TPI"] = _tpi_pref
+                zlecaf_note = (zlecaf_note or "") + (
+                    f" TPI : {_tpi_base} % → {_tpi_pref} % — {_tpi_ref}."
+                )
     # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
     zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3, fob_value=fob_value)
 
