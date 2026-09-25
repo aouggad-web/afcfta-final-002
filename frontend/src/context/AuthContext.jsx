@@ -153,6 +153,18 @@ export function AuthProvider({ children }) {
     return syncSupabaseSession(current.session || data.session);
   };
 
+  // Abonnement : état affiché dans Mon compte, et espace client Stripe
+  // (carte bancaire, factures, changement de formule, résiliation).
+  const getSubscription = useCallback(async () => {
+    const { data } = await axios.get(`${API}/billing/subscription`, { withCredentials: true });
+    return data;
+  }, []);
+
+  const openBillingPortal = async () => {
+    const { data } = await axios.post(`${API}/billing/portal`, {}, { withCredentials: true });
+    window.location.href = data.url;
+  };
+
   // Droits RGPD : copie de toutes ses données (fichier JSON) et suppression.
   const exportAccount = async () => {
     const { data } = await axios.get(`${API}/auth/account/export`, { withCredentials: true });
@@ -183,6 +195,8 @@ export function AuthProvider({ children }) {
         updatePassword,
         exportAccount,
         deleteAccount,
+        getSubscription,
+        openBillingPortal,
       }}
     >
       {children}

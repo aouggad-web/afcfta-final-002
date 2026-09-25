@@ -33,6 +33,21 @@ _PRICE_ENV = {
 }
 
 
+def plan_for_price(price_id: str | None) -> tuple[str, str] | None:
+    """(plan, cycle) correspondant à un price_id Stripe configuré, ou None.
+
+    Sert à connaître la formule réellement payée quand le client en change
+    depuis l'espace client Stripe (les metadata, figées à la souscription,
+    ne suivent pas ce changement).
+    """
+    if not price_id:
+        return None
+    for plan_cycle, env_name in _PRICE_ENV.items():
+        if os.environ.get(env_name) == price_id:
+            return plan_cycle
+    return None
+
+
 def _require_api_key() -> None:
     """Positionne stripe.api_key depuis l'environnement, ou 503 si absente."""
     key = os.environ.get("STRIPE_SECRET_KEY")

@@ -784,3 +784,114 @@ def test_payment_signals_never_contain_ip_addresses(trusted_edge):
     assert "ip" not in signals and "signup_ip" not in signals
     assert "41.100.0.9" not in str(signals)
     assert signals["detected_country"] == "DZ"
+
+
+# ── Espace client Stripe : changement de formule, résiliation ───────────────
+
+
+def test_plan_for_price_maps_configured_prices(monkeypatch):
+    monkeypatch.setenv("STRIPE_PRICE_PRO_Y", "price_pro_year")
+    assert stripe_service.plan_for_price("price_pro_year") == ("pro", "annual")
+    assert stripe_service.plan_for_price("price_inconnu") is None
+    assert stripe_service.plan_for_price(None) is None
+
+
+def test_subscription_update_follows_the_price_actually_paid(webhook_client, monkeypatch):
+    """Changement de formule dans l'espace client : les metadata disent
+    encore « starter », mais le prix payé est celui de Pro annuel."""
+    client, _fake = webhook_client
+    monkeypatch.setenv("STRIPE_PRICE_PRO_Y", "price_pro_year")
+    event = {
+        "id": "evt_upd",
+        "type": "customer.subscription.updated",
+        "data": {
+            "object": {
+                "customer": "cus_1",
+                "status": "active",
+                "cancel_at_period_end": True,
+                "metadata": {"plan": "starter"},
+                "items": {
+                    "data": [
+                        {"price": {"id": "price_pro_year"}, "current_period_end": 1_900_000_000}
+                    ]
+                },
+            }
+        },
+    }
+    monkeypatch.setattr(stripe_service, "construct_event", lambda payload, sig: event)
+    updates = {}
+
+    async def _capture(customer_id, fields):
+        updates.update(fields)
+
+    monkeypatch.setattr(billing, "_update_user_by_customer", _capture)
+    resp = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert resp.status_code == 200
+    assert updates["subscription_tier"] == "pro"
+    assert updates["subscription_cycle"] == "annual"
+    assert updates["subscription_cancel_at_period_end"] is True
+    assert updates["subscription_current_end"].year == 2030
+
+
+def test_subscription_update_without_period_end_keeps_stored_one(webhook_client, monkeypatch):
+    client, _fake = webhook_client
+    event = {
+        "id": "evt_upd2",
+        "type": "customer.subscription.updated",
+        "data": {"object": {"customer": "cus_1", "status": "past_due", "metadata": {}}},
+    }
+    monkeypatch.setattr(stripe_service, "construct_event", lambda payload, sig: event)
+    updates = {}
+
+    async def _capture(customer_id, fields):
+        updates.update(fields)
+
+    monkeypatch.setattr(billing, "_update_user_by_customer", _capture)
+    client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert "subscription_current_end" not in updates  # jamais écrasée par None
+    assert updates["subscription_status"] == "past_due"
+
+
+def test_active_stripe_subscriber_is_sent_to_the_portal(client, monkeypatch):
+    """Pas de second abonnement : un abonné actif change de formule dans
+    l'espace client Stripe."""
+
+    async def _fake_user(_request):
+        return {
+            "_id": "000000000000000000000001",
+            "email": "u@example.com",
+            "signup_country": "FR",
+            "payment_provider": "stripe",
+            "stripe_customer_id": "cus_1",
+            "subscription_status": "active",
+        }
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    monkeypatch.setattr(
+        stripe_service, "create_portal_session", lambda **kw: "https://billing.stripe.test/p"
+    )
+    monkeypatch.setattr(
+        stripe_service,
+        "create_checkout_session",
+        lambda **kw: pytest.fail("aucune nouvelle souscription ne doit être créée"),
+    )
+    resp = client.post("/billing/checkout", json={"plan": "business", "cycle": "monthly"})
+    assert resp.json() == {"url": "https://billing.stripe.test/p", "portal": True}
+
+
+def test_subscription_endpoint_reports_state_for_my_account(client, monkeypatch):
+    async def _fake_user(_request):
+        return {
+            "_id": "000000000000000000000001",
+            "subscription_tier": "pro",
+            "subscription_status": "active",
+            "subscription_cancel_at_period_end": True,
+            "payment_provider": "stripe",
+            "stripe_customer_id": "cus_1",
+        }
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    data = client.get("/billing/subscription").json()
+    assert data["effective_tier"] == "pro"
+    assert data["cancel_at_period_end"] is True
+    assert data["can_manage_billing"] is True

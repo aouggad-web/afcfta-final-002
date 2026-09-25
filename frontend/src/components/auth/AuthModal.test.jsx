@@ -155,4 +155,50 @@ describe('AuthModal', () => {
     expect(deleteAccount).toHaveBeenCalledTimes(1);
     expect(onClose).toHaveBeenCalled();
   });
+
+  it('shows the Stripe subscription and opens the billing portal', async () => {
+    const openBillingPortal = vi.fn().mockResolvedValue();
+    useAuth.mockReturnValue({
+      user: { name: 'Alice', email: 'alice@example.com' },
+      getSubscription: vi.fn().mockResolvedValue({
+        effective_tier: 'pro',
+        cycle: 'monthly',
+        status: 'active',
+        payment_provider: 'stripe',
+        current_period_end: '2026-10-25T00:00:00Z',
+        cancel_at_period_end: false,
+        can_manage_billing: true,
+      }),
+      openBillingPortal,
+    });
+    const user = userEvent.setup();
+    render(<AuthModal open onClose={vi.fn()} language="fr" />);
+
+    const block = await screen.findByTestId('subscription-block');
+    expect(block).toHaveTextContent('Formule Pro · mensuel');
+    expect(block).toHaveTextContent('Prochain renouvellement le 25/10/2026');
+    await user.click(screen.getByTestId('manage-billing-btn'));
+    expect(openBillingPortal).toHaveBeenCalledTimes(1);
+  });
+
+  it('offers renewal instead of the Stripe portal for Chargily payments', async () => {
+    useAuth.mockReturnValue({
+      user: { name: 'Karim', email: 'karim@example.com' },
+      getSubscription: vi.fn().mockResolvedValue({
+        effective_tier: 'starter',
+        cycle: 'monthly',
+        status: 'active',
+        payment_provider: 'chargily',
+        current_period_end: '2026-10-25T00:00:00Z',
+        can_manage_billing: false,
+      }),
+    });
+    render(<AuthModal open onClose={vi.fn()} language="fr" />);
+
+    const block = await screen.findByTestId('subscription-block');
+    expect(block).toHaveTextContent('sans renouvellement automatique');
+    expect(screen.queryByTestId('manage-billing-btn')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Renouveler' })).toBeInTheDocument();
+  });
 });
+

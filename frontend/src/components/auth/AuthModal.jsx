@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Input } from '../ui/input';
@@ -19,6 +19,8 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
     updatePassword,
     exportAccount,
     deleteAccount,
+    getSubscription,
+    openBillingPortal,
   } = useAuth();
   const isFr = language === 'fr';
   const [tab, setTab] = useState('login');
@@ -37,6 +39,12 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
   const [view, setView] = useState(null);
   const [forgotEmail, setForgotEmail] = useState('');
   const [newPassword, setNewPassword] = useState({ password: '', confirm: '' });
+  const [subscription, setSubscription] = useState(null);
+
+  useEffect(() => {
+    if (!open || !user || !getSubscription) return;
+    getSubscription().then(setSubscription).catch(() => setSubscription(null));
+  }, [open, user, getSubscription]);
 
   const resetForms = () => {
     setTab('login');
@@ -261,6 +269,21 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
           <br />
           {user.email}
         </div>
+        {subscription && (
+          <SubscriptionBlock
+            subscription={subscription}
+            isFr={isFr}
+            infoStyle={infoStyle}
+            loading={loading}
+            onManage={() =>
+              runAction(
+                openBillingPortal,
+                'Espace de gestion indisponible. Réessayez.',
+                'Billing portal unavailable. Try again.'
+              )
+            }
+          />
+        )}
         {view === 'confirmDelete' ? (
           <div style={{ ...infoStyle, borderColor: 'rgba(220, 38, 38, 0.5)' }}>
             {isFr
@@ -564,3 +587,62 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
     </Dialog>
   );
 }
+
+const PLAN_LABELS = { free: 'Free', starter: 'Starter', pro: 'Pro', business: 'Business' };
+
+function formatDate(value, isFr) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toLocaleDateString(isFr ? 'fr-FR' : 'en-GB');
+}
+
+// Bloc « Mon abonnement » : formule en cours, échéance, et accès à la gestion
+// (espace client Stripe pour la carte, les factures, le changement de formule
+// et la résiliation ; page tarifs pour souscrire ou renouveler via Chargily).
+function SubscriptionBlock({ subscription, isFr, infoStyle, loading, onManage }) {
+  const tier = subscription.effective_tier || 'free';
+  const isPaid = tier !== 'free';
+  const endDate = formatDate(subscription.current_period_end, isFr);
+  const cycle = subscription.cycle === 'annual' ? (isFr ? 'annuel' : 'yearly') : isFr ? 'mensuel' : 'monthly';
+
+  let detail = null;
+  if (isPaid && subscription.status === 'past_due') {
+    detail = isFr
+      ? 'Le dernier paiement a échoué : mettez à jour votre carte pour garder votre accès.'
+      : 'Your last payment failed: update your card to keep your access.';
+  } else if (isPaid && subscription.cancel_at_period_end && endDate) {
+    detail = isFr ? `Résiliation programmée : accès jusqu'au ${endDate}.` : `Canceled: access until ${endDate}.`;
+  } else if (isPaid && endDate) {
+    detail =
+      subscription.payment_provider === 'stripe'
+        ? isFr ? `Prochain renouvellement le ${endDate}.` : `Renews on ${endDate}.`
+        : isFr ? `Valable jusqu'au ${endDate} (sans renouvellement automatique).` : `Valid until ${endDate} (no automatic renewal).`;
+  }
+
+  return (
+    <div style={infoStyle} data-testid="subscription-block">
+      <div style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, opacity: 0.7 }}>
+        {isFr ? 'Mon abonnement' : 'My subscription'}
+      </div>
+      <strong>
+        {isFr ? 'Formule ' : 'Plan '}
+        {PLAN_LABELS[tier] || tier}
+        {isPaid ? ` · ${cycle}` : ''}
+      </strong>
+      {detail && <div style={{ fontSize: 13, marginTop: 4 }}>{detail}</div>}
+      <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+        {subscription.can_manage_billing && subscription.payment_provider !== 'chargily' && (
+          <Button className="flex-1" onClick={onManage} disabled={loading} data-testid="manage-billing-btn">
+            {isFr ? 'Gérer mon abonnement' : 'Manage subscription'}
+          </Button>
+        )}
+        {(!isPaid || subscription.payment_provider === 'chargily') && (
+          <Button variant="outline" className="flex-1" onClick={() => { window.location.href = '/pricing.html'; }}>
+            {isPaid ? (isFr ? 'Renouveler' : 'Renew') : isFr ? 'Voir les formules' : 'See plans'}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+

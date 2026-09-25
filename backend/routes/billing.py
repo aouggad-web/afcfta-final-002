@@ -26,7 +26,7 @@ from typing import Literal, Optional
 
 import pricing
 from bson import ObjectId
-from entitlements import all_tier_entitlements
+from entitlements import all_tier_entitlements, resolve_entitlements
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
 from pymongo.errors import DuplicateKeyError
@@ -246,6 +246,20 @@ async def create_checkout(payload: CheckoutPayload, request: Request):
     if ctx["provider"] == "chargily":
         return await _checkout_chargily(db, user, payload, signals)
 
+    if (
+        user.get("payment_provider") == "stripe"
+        and user.get("stripe_customer_id")
+        and user.get("subscription_status") in ("active", "trialing", "past_due")
+    ):
+        # Déjà abonné : changer de formule se fait dans l'espace client Stripe
+        # (prorata calculé par Stripe), jamais par un second abonnement.
+        portal_url = await run_in_threadpool(
+            lambda: stripe_service.create_portal_session(
+                customer_id=user["stripe_customer_id"], return_url=_cancel_url()
+            )
+        )
+        return {"url": portal_url, "portal": True}
+
     price_id = stripe_service.resolve_price_id(payload.plan, payload.cycle)
 
     customer_id = await run_in_threadpool(
@@ -448,6 +462,12 @@ async def get_subscription(request: Request):
         "cycle": user.get("subscription_cycle"),
         "current_period_end": user.get("subscription_current_end"),
         "payment_provider": user.get("payment_provider"),
+        # Résiliation demandée : l'accès continue jusqu'à current_period_end.
+        "cancel_at_period_end": bool(user.get("subscription_cancel_at_period_end")),
+        # Formule réellement accordée maintenant (tient compte de l'expiration).
+        "effective_tier": resolve_entitlements(user).tier,
+        # L'espace client Stripe n'existe que pour un client Stripe.
+        "can_manage_billing": bool(user.get("stripe_customer_id")),
     }
 
 
@@ -469,8 +489,15 @@ async def _update_user_by_customer(customer_id: str, fields: dict) -> None:
     await db.users.update_one({"stripe_customer_id": customer_id}, {"$set": fields})
 
 
+def _first_item(sub: dict) -> dict:
+    items = (sub.get("items") or {}).get("data") or []
+    return items[0] if items else {}
+
+
 def _period_end(sub: dict) -> Optional[datetime]:
-    ts = sub.get("current_period_end")
+    # Depuis l'API Stripe 2025-03-31, la fin de période est portée par les
+    # éléments de l'abonnement et non plus par l'abonnement lui-même.
+    ts = sub.get("current_period_end") or _first_item(sub).get("current_period_end")
     return datetime.fromtimestamp(ts, tz=timezone.utc) if ts else None
 
 
@@ -660,9 +687,18 @@ async def stripe_webhook(request: Request):
             meta = data_obj.get("metadata") or {}
             fields = {
                 "subscription_status": data_obj.get("status"),
-                "subscription_current_end": _period_end(data_obj),
+                "subscription_cancel_at_period_end": bool(data_obj.get("cancel_at_period_end")),
             }
-            if meta.get("plan"):
+            period_end = _period_end(data_obj)
+            if period_end:
+                fields["subscription_current_end"] = period_end
+            # Formule réellement payée (changement possible depuis l'espace
+            # client Stripe) ; à défaut, celle fixée à la souscription.
+            price_id = (_first_item(data_obj).get("price") or {}).get("id")
+            plan_cycle = stripe_service.plan_for_price(price_id)
+            if plan_cycle:
+                fields["subscription_tier"], fields["subscription_cycle"] = plan_cycle
+            elif meta.get("plan"):
                 fields["subscription_tier"] = meta["plan"]
             await _update_user_by_customer(data_obj.get("customer", ""), fields)
 
