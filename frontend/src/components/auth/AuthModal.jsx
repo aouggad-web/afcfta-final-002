@@ -542,9 +542,15 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
                   style={{ marginTop: 3 }}
                 />
                 <span>
-                  {isFr
-                    ? 'J\'accepte les conditions d\'utilisation et la politique de confidentialité.'
-                    : 'I accept the terms of use and the privacy policy.'}
+                  {isFr ? 'J\'accepte les ' : 'I accept the '}
+                  <a href="/cgu.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+                    {isFr ? 'conditions d\'utilisation' : 'terms of use'}
+                  </a>
+                  {isFr ? ' et la ' : ' and the '}
+                  <a href="/confidentialite.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>
+                    {isFr ? 'politique de confidentialité' : 'privacy policy'}
+                  </a>
+                  .
                 </span>
               </label>
               <Button type="submit" className="w-full" disabled={loading} aria-busy={loading} data-testid="register-submit-btn">

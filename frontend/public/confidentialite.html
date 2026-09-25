@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Politique de confidentialité — ZLECAf Intelligence</title>
+<!--
+  PROJET À FAIRE VALIDER PAR UN JURISTE avant publication.
+  Les passages surlignés (<mark>) sont à compléter : ils ne doivent plus
+  apparaître en production. Toute modification de fond de ce texte ou des
+  CGU impose d'incrémenter TERMS_VERSION (frontend/src/lib/supabase.js).
+-->
+<style>
+:root{--bg:#0b0f14;--card:#121821;--txt:#e6e9ee;--muted:#9aa4b2;--gold:#d4a336;--b:#243041}
+@media (prefers-color-scheme: light){:root{--bg:#f7f7f5;--card:#fff;--txt:#1b1f24;--muted:#5b6470;--gold:#9a6f12;--b:#e2e5ea}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:820px;margin:0 auto;padding:40px 20px 80px}
+a{color:var(--gold)}
+h1{font-size:30px;line-height:1.25;margin:0 0 6px}
+h2{font-size:20px;margin:36px 0 10px;padding-top:12px;border-top:1px solid var(--b)}
+.meta{color:var(--muted);font-size:14px;margin-bottom:28px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+th,td{border:1px solid var(--b);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--card)}
+.scroll{overflow-x:auto}
+mark{background:#ffe08a;color:#1b1f24;padding:0 3px;border-radius:3px}
+nav{font-size:14px;margin-bottom:24px}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">← Retour au site</a> · <a href="/cgu.html">Conditions d'utilisation</a></nav>
+<h1>Politique de confidentialité</h1>
+<p class="meta">Version 2026-09 · en vigueur le <mark>[date de mise en ligne]</mark></p>
+
+<p>Cette politique explique quelles données personnelles la plateforme ZLECAf Intelligence (<a href="https://afcfta-zlecaf.com">afcfta-zlecaf.com</a>) collecte, pourquoi, avec qui elles sont partagées, combien de temps elles sont conservées et comment exercer vos droits. Elle s'applique au site, à l'API et aux futures applications mobiles.</p>
+
+<h2>1. Responsable du traitement</h2>
+<p><mark>[Raison sociale]</mark>, <mark>[forme juridique]</mark>, <mark>[adresse du siège]</mark>, <mark>[n° RC / NIF]</mark>.<br>
+Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zlecaf.com">contact@afcfta-zlecaf.com</a>. <mark>[Nom et contact du délégué à la protection des données, le cas échéant]</mark></p>
+
+<h2>2. Données collectées et finalités</h2>
+<div class="scroll"><table>
+<tr><th>Données</th><th>Pourquoi</th><th>Base légale</th></tr>
+<tr><td>Nom, adresse email, mot de passe (stocké chiffré, jamais en clair)</td><td>Créer et sécuriser votre compte, vous envoyer les emails liés au compte (confirmation, mot de passe oublié)</td><td>Exécution du contrat</td></tr>
+<tr><td>Version des conditions acceptées et date d'acceptation</td><td>Prouver votre consentement</td><td>Obligation légale</td></tr>
+<tr><td>Adresse IP et pays détecté à l'inscription et lors d'un paiement</td><td>Déterminer le moyen de paiement applicable à votre pays (réglementation des changes), prévenir la fraude</td><td>Obligation légale et intérêt légitime</td></tr>
+<tr><td>Formule souscrite, historique d'achats, statut des paiements</td><td>Fournir le service payé, facturation, comptabilité</td><td>Exécution du contrat, obligation légale</td></tr>
+<tr><td>Clés API et compteurs d'utilisation (nombre de calculs, de requêtes)</td><td>Appliquer les quotas de votre formule</td><td>Exécution du contrat</td></tr>
+<tr><td>Messages envoyés via le formulaire de contact</td><td>Vous répondre</td><td>Intérêt légitime</td></tr>
+<tr><td>Questions posées aux fonctions d'analyse par intelligence artificielle</td><td>Générer la réponse demandée</td><td>Exécution du contrat</td></tr>
+</table></div>
+<p><strong>Paiements :</strong> vos données de carte bancaire sont saisies directement chez nos prestataires de paiement (Stripe ou Chargily). Elles ne transitent jamais par nos serveurs et nous ne les conservons pas.</p>
+<p>Nous n'utilisons <strong>aucun outil de publicité ni de mesure d'audience</strong>, et nous ne vendons pas vos données.</p>
+
+<h2>3. Destinataires et sous-traitants</h2>
+<p>Vos données sont accessibles à notre équipe, dans la limite de ce qui est nécessaire, et aux prestataires suivants, qui agissent pour notre compte :</p>
+<div class="scroll"><table>
+<tr><th>Prestataire</th><th>Rôle</th><th>Localisation</th></tr>
+<tr><td>Supabase</td><td>Gestion des comptes (identifiants, emails de confirmation)</td><td>Union européenne</td></tr>
+<tr><td><mark>[Hébergeur du site et de la base de données]</mark></td><td>Hébergement du site et des données</td><td><mark>[pays]</mark></td></tr>
+<tr><td>Stripe</td><td>Paiements par carte (hors Algérie)</td><td>Union européenne / États-Unis</td></tr>
+<tr><td>Chargily</td><td>Paiements CIB / Edahabia (Algérie)</td><td>Algérie</td></tr>
+<tr><td>Zoho</td><td>Envoi des emails</td><td><mark>[pays du centre de données Zoho utilisé]</mark></td></tr>
+<tr><td>IPinfo</td><td>Détection du pays à partir de l'adresse IP</td><td>États-Unis</td></tr>
+<tr><td>Anthropic, Google</td><td>Fonctions d'analyse par intelligence artificielle</td><td>États-Unis</td></tr>
+</table></div>
+<p>Pour les transferts hors de l'Union européenne ou hors d'Algérie, nous nous appuyons sur les garanties prévues par la loi (clauses contractuelles types de la Commission européenne ou décision d'adéquation) <mark>[et, pour les données de résidents algériens, l'autorisation de l'ANPDP prévue par la loi n° 18-07 — à confirmer]</mark>.</p>
+<p>Ne saisissez pas de données personnelles dans les questions posées aux fonctions d'IA : elles sont transmises à ces prestataires pour générer la réponse.</p>
+
+<h2>4. Durées de conservation</h2>
+<div class="scroll"><table>
+<tr><th>Données</th><th>Durée</th></tr>
+<tr><td>Compte et données associées</td><td>Tant que le compte existe ; effacées dès sa suppression</td></tr>
+<tr><td>Adresses IP (inscription, paiement, tentatives de connexion)</td><td><mark>[12 mois — à valider]</mark></td></tr>
+<tr><td>Achats et factures</td><td><mark>[10 ans — durée comptable légale à confirmer selon le pays]</mark>, sous forme anonymisée après suppression du compte</td></tr>
+<tr><td>Messages de contact</td><td><mark>[3 ans après le dernier échange — à valider]</mark></td></tr>
+</table></div>
+
+<h2>5. Vos droits</h2>
+<p>Vous pouvez à tout moment :</p>
+<ul>
+<li><strong>télécharger toutes vos données</strong> (droit d'accès et de portabilité) : <em>Mon compte → Télécharger mes données</em> ;</li>
+<li><strong>supprimer votre compte</strong> (droit à l'effacement) : <em>Mon compte → Supprimer mon compte</em>. Vos abonnements sont résiliés et vos données effacées, à l'exception des achats, conservés anonymisés pour nos obligations comptables ;</li>
+<li>demander la rectification de vos données, vous opposer à un traitement ou en demander la limitation, en écrivant à <a href="mailto:contact@afcfta-zlecaf.com">contact@afcfta-zlecaf.com</a>. Nous répondons sous un mois.</li>
+</ul>
+<p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez saisir l'autorité de protection des données de votre pays : la CNIL (France, <a href="https://www.cnil.fr">cnil.fr</a>), l'ANPDP (Algérie), la CNDP (Maroc), l'INPDP (Tunisie) ou toute autre autorité compétente.</p>
+
+<h2>6. Cookies et stockage local</h2>
+<p>Le site n'utilise que des cookies et un stockage local <strong>strictement nécessaires</strong> à son fonctionnement ; ils ne nécessitent donc pas votre consentement :</p>
+<ul>
+<li><code>access_token</code> : maintient votre session de connexion ;</li>
+<li><code>csrf_token</code> : protège vos actions contre les attaques par falsification de requête ;</li>
+<li>stockage local du navigateur : session de connexion Supabase, thème clair/sombre, disposition de votre tableau de bord.</li>
+</ul>
+
+<h2>7. Sécurité</h2>
+<p>Mots de passe chiffrés, connexions HTTPS, cookies de session inaccessibles aux scripts, confirmation de l'adresse email, limitation des tentatives de connexion. Aucune mesure n'offre toutefois une sécurité absolue : en cas de violation de données présentant un risque pour vous, nous vous en informerons ainsi que l'autorité compétente, dans les délais prévus par la loi.</p>
+
+<h2>8. Modifications</h2>
+<p>Nous pouvons modifier cette politique. En cas de changement important, nous vous en informerons par email ou sur le site avant son entrée en vigueur.</p>
+</main>
+</body>
+</html>
