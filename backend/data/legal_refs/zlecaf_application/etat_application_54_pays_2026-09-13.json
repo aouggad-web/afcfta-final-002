@@ -3,7 +3,7 @@
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
  "mis_a_jour_le": "2026-09-24",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json.",
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : étape 4 ouverte — fiche Zambie livrée (ZMB_application_2026-09-25.json) : SI 92/2024 daté et documenté, texte intégral et liste d'origines toujours manquants, niveau inchangé.",
  "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas. Le drapeau bareme_collecte dit qu'un barème tarifaire est archivé pour cette destination — instantané régional inclus — et non que la préférence est appliquée : le niveau juridique reste porté par le champ niveau.",
  "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
@@ -334,8 +334,8 @@
   },
   "ZMB": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "SI 92/2024 : Le Parlement confirme la domestication et l'usage sous GTI, mais aucune liste officielle exhaustive des origines réciproques n'a été retrouvée.",
-   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "preuve": "SI 92/2024 du 30/12/2024 (gazette n° 7696), dont l'objet est confirmé par l'Assemblée nationale (19/06/2025) : domestication de 90 % des lignes, barème provisoire utilisé sous GTI. Recherche du 25/09/2026 : texte intégral non obtenu (ZambiaLII sous CAPTCHA, supplément absent de gazettes.africa) et aucune liste nominative d'origines retrouvée ; un SI 96/2025 existe, texte à obtenir. Fiche : ZMB_application_2026-09-25.json.",
+   "niveau_de_source": "primaire pour l'existence et l'objet (journal officiel + Assemblée nationale, extraits archivés) ; texte du SI non obtenu",
    "bareme_collecte": true
   },
   "ZWE": {
@@ -361,6 +361,7 @@
   "ETH_application_2026-09-13.json",
   "MAR_application_2026-09-13.json",
   "TUN_application_2026-09-13.json",
+  "ZMB_application_2026-09-25.json",
   "chantier_collecte_2026-09-14.json"
  ],
  "recoupements_reciprocite": {
