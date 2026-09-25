@@ -114,20 +114,27 @@ def test_checkout_algeria_disabled_returns_501(client, monkeypatch):
     """Chargily non activé : la branche algérienne annonce clairement 501."""
 
     async def _fake_user(_request):
-        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+        return {
+            "_id": "000000000000000000000001",
+            "email": "u@example.com",
+            "name": "U",
+            "signup_country": "DZ",
+        }
 
     monkeypatch.setattr(billing, "get_current_user", _fake_user)
     monkeypatch.setenv("CHARGILY_ENABLED", "false")
-    resp = client.post(
-        "/billing/checkout",
-        json={"plan": "pro", "cycle": "monthly", "billing_country": "DZ"},
-    )
+    resp = client.post("/billing/checkout", json={"plan": "pro", "cycle": "monthly"})
     assert resp.status_code == 501
 
 
 def test_checkout_missing_price_config_is_503(client, monkeypatch):
     async def _fake_user(_request):
-        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+        return {
+            "_id": "000000000000000000000001",
+            "email": "u@example.com",
+            "name": "U",
+            "signup_country": "FR",
+        }
 
     monkeypatch.setattr(billing, "get_current_user", _fake_user)
     monkeypatch.delenv("STRIPE_PRICE_PRO_M", raising=False)
@@ -266,46 +273,77 @@ def test_country_unknown_when_no_source():
     assert geo_service.country_from_request(req) is None
 
 
-def test_algerian_ip_forces_chargily_and_locks(trusted_edge):
-    req = _request_with({"cf-ipcountry": "DZ"})
-    ctx = billing.resolve_provider(req, {}, None)
-    assert ctx["provider"] == "chargily"
-    assert ctx["locked"] is True
-
-
-def test_algerian_ip_beats_declared_foreign_country(trusted_edge):
-    """Propriété de sécurité : le pays déclaré par le client ne peut pas
-    contourner une IP algérienne détectée."""
-    req = _request_with({"cf-ipcountry": "DZ"})
-    ctx = billing.resolve_provider(req, {}, "FR")
-    assert ctx["provider"] == "chargily"
-    assert ctx["locked"] is True
-
-
-def test_exemption_releases_the_lock(trusted_edge):
-    req = _request_with({"cf-ipcountry": "DZ"})
-    ctx = billing.resolve_provider(req, {"billing_stripe_exemption": True}, None)
-    assert ctx["provider"] == "stripe"
-    assert ctx["locked"] is False
-
-
-def test_declared_algeria_without_geo_uses_chargily_unlocked():
+def test_algerian_signup_forces_chargily():
     req = _request_with({})
-    ctx = billing.resolve_provider(req, {}, "DZ")
+    ctx = billing.resolve_provider(req, {"signup_country": "DZ"})
     assert ctx["provider"] == "chargily"
-    assert ctx["locked"] is False
 
 
-def test_unknown_country_falls_back_to_stripe():
+def test_foreign_signup_forces_stripe():
     req = _request_with({})
-    ctx = billing.resolve_provider(req, {}, None)
+    ctx = billing.resolve_provider(req, {"signup_country": "FR"})
     assert ctx["provider"] == "stripe"
-    assert ctx["locked"] is False
+
+
+def test_signup_country_beats_current_ip(trusted_edge):
+    """Le pays d'inscription décide, pas l'IP du moment : un compte créé en
+    Algérie reste sur Chargily même en voyage, et inversement."""
+    ctx = billing.resolve_provider(_request_with({"cf-ipcountry": "FR"}), {"signup_country": "DZ"})
+    assert ctx["provider"] == "chargily"
+    ctx = billing.resolve_provider(_request_with({"cf-ipcountry": "DZ"}), {"signup_country": "FR"})
+    assert ctx["provider"] == "stripe"
+
+
+def test_legacy_account_without_signup_country_uses_current_ip(trusted_edge):
+    ctx = billing.resolve_provider(_request_with({"cf-ipcountry": "DZ"}), {})
+    assert ctx["provider"] == "chargily"
+
+
+def test_exemption_forces_stripe(trusted_edge):
+    req = _request_with({"cf-ipcountry": "DZ"})
+    ctx = billing.resolve_provider(req, {"signup_country": "DZ", "billing_stripe_exemption": True})
+    assert ctx["provider"] == "stripe"
+
+
+def test_unknown_country_has_no_provider():
+    ctx = billing.resolve_provider(_request_with({}), {})
+    assert ctx["provider"] is None
+
+
+def test_checkout_refused_when_country_unknown(client, monkeypatch):
+    """Sans pays déterminable, pas de repli silencieux vers Stripe."""
+
+    async def _fake_user(_request):
+        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    resp = client.post("/billing/checkout", json={"plan": "pro", "cycle": "monthly"})
+    assert resp.status_code == 403
+
+
+def test_checkout_ignores_client_declared_country(client, monkeypatch):
+    """Un pays envoyé par le navigateur ne change plus rien au routage."""
+
+    async def _fake_user(_request):
+        return {
+            "_id": "000000000000000000000001",
+            "email": "u@example.com",
+            "name": "U",
+            "signup_country": "DZ",
+        }
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    monkeypatch.setenv("CHARGILY_ENABLED", "false")
+    resp = client.post(
+        "/billing/checkout",
+        json={"plan": "pro", "cycle": "monthly", "billing_country": "FR"},
+    )
+    assert resp.status_code == 501
 
 
 def test_checkout_from_algerian_ip_routes_to_chargily(client, monkeypatch, trusted_edge):
-    """Bout en bout : IP algérienne + pays déclaré vide → branche Chargily
-    (ici désactivée, donc 501) au lieu de partir vers Stripe."""
+    """Bout en bout : compte sans pays d'inscription + IP algérienne → branche
+    Chargily (ici désactivée, donc 501) au lieu de partir vers Stripe."""
 
     async def _fake_user(_request):
         return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}

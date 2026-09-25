@@ -60,10 +60,6 @@ h1 em{font-style:italic;color:var(--gold)}
 .toggle-track.on .toggle-thumb{left:18px}
 .save-badge{background:var(--grn-bg);color:var(--grn);font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--grn-b);font-weight:500}
 .country-picker{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.country-picker label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
-.country-picker select{background:var(--ink2);color:var(--txt);border:1px solid var(--b2);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
-.country-picker select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.country-picker select:disabled{opacity:.75;cursor:not-allowed}
 .country-note{font-size:12px;color:var(--gold);flex-basis:100%;text-align:center;margin-top:6px}
 .country-note:empty{display:none}
 
@@ -250,11 +246,6 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <span class="save-badge">−8% en annuel</span>
   </div>
   <div class="country-picker">
-    <label for="billing-country">Pays de facturation</label>
-    <select id="billing-country" aria-label="Pays de facturation">
-      <option value="">Hors Algérie — paiement par carte (Stripe)</option>
-      <option value="DZ">Algérie — CIB / Edahabia (Chargily)</option>
-    </select>
     <span class="country-note" id="country-note" role="status"></span>
   </div>
 </div>
@@ -756,50 +747,27 @@ function toggleFaq(el) {
   el.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
-// Le serveur détecte le pays depuis l'IP. Une IP algérienne impose Chargily
-// (contrôle des changes) : on pré-sélectionne et on verrouille le sélecteur.
-// Le verrou côté serveur reste la seule autorité — ceci n'est qu'un confort.
+// Le moyen de paiement est imposé par le serveur selon le pays d'inscription :
+// Algérie → Chargily (DZD), étranger → Stripe (EUR). L'utilisateur n'a pas de
+// choix ; on se contente d'afficher la bonne devise et le moyen utilisé.
 async function loadPaymentContext() {
   try {
     const res = await fetch('/api/billing/payment-context', { credentials: 'include' });
     if (!res.ok) return;
     const ctx = await res.json();
-    const select = document.getElementById('billing-country');
     const note = document.getElementById('country-note');
-    if (!select) return;
-
     if (ctx.provider === 'chargily') {
-      select.value = 'DZ';
       currentCurrency = 'DZD';
       renderPrices();
-      if (ctx.locked) {
-        select.disabled = true;
-        if (note) {
-          note.textContent =
-            'Connexion depuis l’Algérie : paiement en dinars via Chargily (CIB / Edahabia). '
-            + 'Vous voyagez ou utilisez un VPN d’entreprise ? Écrivez-nous à contact@afcfta-zlecaf.com.';
-        }
-      }
+      if (note) note.textContent = 'Paiement en dinars via Chargily (CIB / Edahabia).';
+    } else if (ctx.provider === 'stripe') {
+      if (note) note.textContent = 'Paiement par carte bancaire via Stripe (EUR).';
     }
   } catch (e) {
-    // Détection indisponible : le sélecteur manuel reste utilisable.
+    // Contexte indisponible : affichage en EUR par défaut, le serveur tranche au checkout.
   }
 }
 document.addEventListener('DOMContentLoaded', loadPaymentContext);
-
-// Bascule EUR/DZD selon le pays choisi manuellement : DZ → Chargily (DZD),
-// tout autre pays → Stripe (EUR). Le montant réellement débité reste décidé
-// côté serveur au checkout (resolve_provider) — ceci n'est qu'un miroir UI.
-document.addEventListener('DOMContentLoaded', function () {
-  const select = document.getElementById('billing-country');
-  if (!select) return;
-  select.addEventListener('change', function () {
-    const next = this.value === 'DZ' ? 'DZD' : 'EUR';
-    if (next === currentCurrency) return;
-    currentCurrency = next;
-    renderPrices();
-  });
-});
 
 // Retour du checkout Stripe : ?checkout=success ou ?checkout=cancel. Affiche
 // une bannière d'état, puis nettoie l'URL pour ne pas la rejouer au reload.
@@ -865,16 +833,15 @@ async function ensureCsrf(forceRefresh) {
   return token;
 }
 
-// Lance le paiement pour le plan choisi (Stripe hors DZ, Chargily pour DZ).
+// Lance le paiement pour le plan choisi (Stripe hors DZ, Chargily pour DZ,
+// selon le pays d'inscription).
 // Nécessite une session (cookie JWT) : sinon, redirection vers la connexion.
 // Le cycle suit le toggle mensuel/annuel. Les prix sont résolus côté serveur.
 async function startCheckout(plan) {
   const cycle = annual ? 'annual' : 'monthly';
-  // Pays choisi explicitement par l'utilisateur : "DZ" route vers Chargily
-  // (CIB/Edahabia, en dinars), sinon Stripe. Pas de détection silencieuse.
-  const countryEl = document.getElementById('billing-country');
-  const country = countryEl ? countryEl.value : '';
-  const body = JSON.stringify({ plan: plan, cycle: cycle, billing_country: country });
+  // Le prestataire (Stripe / Chargily) est choisi côté serveur selon le pays
+  // d'inscription du compte : rien à envoyer ici.
+  const body = JSON.stringify({ plan: plan, cycle: cycle });
 
   // Safari/iOS perd le "geste utilisateur" dès qu'un await sépare le clic de
   // la navigation : window.location.href après un fetch y est alors ignoré

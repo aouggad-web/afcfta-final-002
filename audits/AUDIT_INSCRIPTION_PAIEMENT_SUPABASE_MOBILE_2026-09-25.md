@@ -31,7 +31,7 @@
 - **Chargily** : retries uniquement sur échec pré‑envoi (pas de double débit), HMAC vérifié en temps constant.
 - **Résolution des droits fail‑closed** (`entitlements.py`) : statut inactif, date invalide ou période expirée → `free`.
 - **Hachage bcrypt** hors boucle événementielle, contrôle des 72 octets, cookie `httpOnly`, CSRF double‑submit, rate‑limit dédié à `/auth/login` et `/auth/register`, CORS en liste blanche exacte.
-- **Routage Algérie → Chargily** imposé par géo‑IP (contrôle des changes), avec dérogation manuelle tracée.
+- **Routage imposé par le pays d'inscription** : Algérie → Chargily, étranger → Stripe, sans choix de l'utilisateur ; paiement refusé si le pays est indéterminable ; dérogation posée uniquement par le support.
 
 ### 2.2 Constats — Inscription et sessions
 

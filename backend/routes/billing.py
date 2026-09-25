@@ -10,9 +10,9 @@ Monté sous `api_router` (préfixe `/api`), donc URLs effectives :
   POST /api/billing/chargily/webhook  — événements Chargily (auth par signature HMAC)
 
 L'accès n'est **jamais** accordé sur la redirection de succès : seul le webhook
-signé fait foi. Le routage par pays est explicite (choix de l'utilisateur, pas
-de géo-IP) : `billing_country == "DZ"` part vers Chargily (CIB/Edahabia, DZD),
-tout le reste vers Stripe (EUR). Si Chargily n'est pas activé
+signé fait foi. Le routage est imposé par le pays d'inscription, sans choix de
+l'utilisateur (voir `resolve_provider`) : Algérie → Chargily (CIB/Edahabia,
+DZD), étranger → Stripe (EUR). Si Chargily n'est pas activé
 (`CHARGILY_ENABLED`), la branche algérienne répond 501.
 """
 
@@ -78,37 +78,30 @@ def _cancel_url() -> str:
 class CheckoutPayload(BaseModel):
     plan: Literal["starter", "pro", "business"]
     cycle: Literal["monthly", "annual"] = "monthly"
-    billing_country: Optional[str] = None  # ISO-2 ; "DZ" → Chargily (Phase 2)
 
 
-def resolve_provider(request: Request, user: dict, declared_country: Optional[str]) -> dict:
-    """Décide du prestataire de paiement et dit si le choix est verrouillé.
+def resolve_provider(request: Request, user: dict) -> dict:
+    """Décide du prestataire de paiement. L'utilisateur n'a jamais le choix.
 
-    Règle : une IP détectée en Algérie impose Chargily (contrôle des changes),
-    quel que soit le pays déclaré par le navigateur — la valeur envoyée par le
-    client n'est qu'une préférence, jamais une autorité.
+    Règle : le pays d'inscription (`signup_country`, détecté depuis l'IP à la
+    création du compte) décide — Algérie → Chargily (CIB/Edahabia, DZD),
+    étranger → Stripe (EUR). Pour un compte créé avant l'enregistrement de ce
+    champ (ou un visiteur non connecté), on retombe sur le pays de l'IP courante.
 
     Dérogation : `billing_stripe_exemption: true` sur le document utilisateur
-    (posée manuellement par le support) rend la main à l'utilisateur, pour les
-    cas légitimes — Algérien en déplacement, expatrié, VPN d'entreprise.
+    (posée manuellement par le support, jamais par l'utilisateur) impose Stripe.
 
-    Si le pays n'est pas détectable (aucune source géo configurée, IP privée),
-    on retombe sur le choix explicite de l'utilisateur plutôt que de bloquer.
+    Pays indéterminable (aucune source géo configurée, IP privée) : `provider`
+    vaut None et le checkout est refusé — on ne laisse pas un compte
+    potentiellement algérien partir vers Stripe faute de donnée.
     """
     detected = geo_service.country_from_request(request)
-    declared = (declared_country or "").strip().upper() or None
-    exempt = bool(user.get("billing_stripe_exemption"))
-
-    if detected == "DZ" and not exempt:
-        return {"provider": "chargily", "country": "DZ", "locked": True, "detected": detected}
-    if declared == "DZ":
-        return {"provider": "chargily", "country": "DZ", "locked": False, "detected": detected}
-    return {
-        "provider": "stripe",
-        "country": declared or detected,
-        "locked": False,
-        "detected": detected,
-    }
+    if user.get("billing_stripe_exemption"):
+        return {"provider": "stripe", "country": user.get("signup_country") or detected}
+    country = user.get("signup_country") or detected
+    if country is None:
+        return {"provider": None, "country": None}
+    return {"provider": "chargily" if country == "DZ" else "stripe", "country": country}
 
 
 @router.get("/geo-diagnostic")
@@ -201,21 +194,20 @@ async def get_entitlements():
 
 @router.get("/payment-context")
 async def payment_context(request: Request):
-    """Contexte de paiement pour l'interface : prestataire imposé ou non.
+    """Contexte de paiement pour l'interface : prestataire imposé.
 
-    Permet au front de pré-sélectionner — et de verrouiller — le bon moyen de
-    paiement avant même que l'utilisateur clique.
+    Permet au front d'afficher la bonne devise et le moyen de paiement qui sera
+    utilisé, avant même que l'utilisateur clique.
     """
     user = {}
     try:
         user = await get_current_user(request)
     except HTTPException:
         pass  # Visiteur non connecté : on renvoie quand même le contexte géo.
-    ctx = resolve_provider(request, user, None)
+    ctx = resolve_provider(request, user)
     return {
         "provider": ctx["provider"],
         "country": ctx["country"],
-        "locked": ctx["locked"],
         "currency": "DZD" if ctx["provider"] == "chargily" else "EUR",
     }
 
@@ -226,18 +218,26 @@ async def create_checkout(payload: CheckoutPayload, request: Request):
     db = _require_db()
     user = await get_current_user(request)
 
-    ctx = resolve_provider(request, user, payload.billing_country)
+    ctx = resolve_provider(request, user)
     signals = geo_service.collect_signals(request, user)
     logger.info(
-        "Checkout: user=%s plan=%s provider=%s locked=%s detected=%s mismatch=%s",
+        "Checkout: user=%s plan=%s provider=%s country=%s detected=%s mismatch=%s",
         user.get("_id"),
         payload.plan,
         ctx["provider"],
-        ctx["locked"],
+        ctx["country"],
         signals.get("detected_country"),
         signals.get("country_mismatch"),
     )
 
+    if ctx["provider"] is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                "Pays d'inscription non déterminé : impossible de choisir le moyen de "
+                "paiement. Écrivez-nous à contact@afcfta-zlecaf.com."
+            ),
+        )
     if ctx["provider"] == "chargily":
         return await _checkout_chargily(db, user, payload, signals)
 
@@ -288,7 +288,6 @@ async def _record_attempt(db, user, payload, provider: str, signals: dict) -> No
                 "plan": payload.plan,
                 "cycle": payload.cycle,
                 "provider": provider,
-                "declared_country": (payload.billing_country or "").strip().upper() or None,
                 "created_at": datetime.now(timezone.utc),
                 **signals,
             }
