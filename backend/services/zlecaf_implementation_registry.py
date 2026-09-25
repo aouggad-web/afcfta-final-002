@@ -279,13 +279,19 @@ RECORDS = {
         status=PARTNER_NOTICE_REQUIRED,
         instrument_id="PSTC gazettée en avril 2025",
         instrument_title="Nigeria — gazetting of the AfCFTA PSTC",
-        instrument_url="https://x.com/AfCFTA/status/1911814539785494880",
-        effective_from="2025-04-15",
+        instrument_url=(
+            "https://au-afcfta.org/2025/04/"
+            "nigeria-gazettes-its-afcfta-tariff-commitments-advancing-implementation-efforts/"
+        ),
+        # Texte de la gazette non lu : la date d'entrée en vigueur n'est pas
+        # établie (annonce du Secrétariat du 14/04/2025 seulement).
+        effective_from=None,
         accepted_origins=frozenset(),
         tariff_dataset="ECOWAS",
         note=(
-            "La domestication est confirmée, mais aucune liste officielle des "
-            "corridors réciproques acceptés n'a été retrouvée."
+            "Barème provisoire gazetté (annonce du Secrétariat ZLECAf du "
+            "14/04/2025) ; texte de la gazette non lu ; préférence accordée aux "
+            "« State Parties » sans liste nominative."
         ),
     ),
 }
