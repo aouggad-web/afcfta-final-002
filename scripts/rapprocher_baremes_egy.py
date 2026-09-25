@@ -422,26 +422,27 @@ def principal() -> None:
         "echantillon_liste_a": echantillon,
         "classement_lignes": klassement,
         "verdict": verdict,
-        "point_reserve_au_proprietaire": {
-            "question": (
+        "decision_du_proprietaire": {
+            "tranchee_le": ETABLI_LE,
+            "choix": "acte national",
+            "regle_servie": (
+                "taux = NPF x part restante du calendrier de la circulaire "
+                "(liste A seulement ; chapitres 50 à 63 et 87 reportés) — "
+                "zlecaf_schedule_egy.py"
+            ),
+            "question_posee": (
                 "Aucun barème de l'UA, avec sa propre carte d'origines, ne "
                 "reproduit la circulaire pour ses 19 origines (15 divergent), et "
                 "il publie des réductions sur les chapitres 50-63 et 87 que la "
                 "n° 44 reporte. Appliquer le repli prévu au plan : taux = NPF x "
                 "part restante du calendrier de la circulaire ?"
             ),
-            "applique_dans_cette_livraison": (
-                "Oui — repli du plan (modèle algérien), liste A seulement, hors "
-                "chapitres 50-63 et 87. Si les taux remappés coïncident sur "
-                "2025-2026 (0 écart), les barèmes de l'UA ne portent ni le report "
-                "des chapitres ni la carte d'origines de l'acte national."
-            ),
-            "variante_ecartee": (
-                "Servir la ligne publiée du barème UA remappé par la circulaire "
-                "(groupe 5 ans → barème 1, groupe 10 ans → barème 2) : elle "
-                "servirait une réduction sur les chapitres 50-63 et 87, que "
-                "l'Égypte a reportée, et ferait dépendre le taux d'une offre dont "
-                "la carte d'origines contredit l'acte national."
+            "portee": (
+                "L'e-Tariff Book ne sert jamais le taux égyptien : garde posée "
+                "dans resolve_official_preferential_rate. La variante « barème "
+                "UA remappé » est écartée : elle ferait dépendre le taux d'une "
+                "offre dont la carte d'origines contredit l'acte national et "
+                "exigerait de recoder le report des chapitres."
             ),
         },
         "ne_tranche_pas": [

@@ -129,7 +129,8 @@
   },
   "rapprochement_baremes": {
    "fiche": "EGY_rapprochement_baremes_2026-09-24.json",
-   "conclusion": "Les deux barèmes de l'UA, remappés par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2), reproduisent ses pourcentages : 0 écart sur 18 920 comparaisons 2025-2026. Mais la carte d'origines de l'UA contredit la circulaire pour 15 des 19 origines, et les barèmes de l'UA publient des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte : aucun barème de l'UA, tel qu'alloué, ne reproduit la circulaire. Le taux est donc calculé à partir du NPF et du calendrier national (modèle algérien)."
+   "conclusion": "Les deux barèmes de l'UA, remappés par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2), reproduisent ses pourcentages : 0 écart sur 18 920 comparaisons 2025-2026. Mais la carte d'origines de l'UA contredit la circulaire pour 15 des 19 origines, et les barèmes de l'UA publient des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte : aucun barème de l'UA, tel qu'alloué, ne reproduit la circulaire. Le taux est donc calculé à partir du NPF et du calendrier national (modèle algérien).",
+   "decision_du_proprietaire": "Tranchée le 24/09/2026 : acte national — taux = NPF × part restante du calendrier de la circulaire (liste A seulement, chapitres 50 à 63 et 87 reportés). L'e-Tariff Book ne sert jamais le taux égyptien."
   },
  "data_defect_found": {
   "severity": "corrigé dans cette même branche",

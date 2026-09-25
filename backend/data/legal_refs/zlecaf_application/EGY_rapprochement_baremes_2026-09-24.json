@@ -22,7 +22,7 @@
   "fiche_determination": {
    "artifact": "backend/data/legal_refs/zlecaf_application/EGY_application_2026-09-14.json",
    "document_non_archive": "Fiche du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture.",
-   "sha256": "ab82eedae4dceb47c056cdd9b4bc13c83a4eebd80fbee089c5f9a11cc6635c09"
+   "sha256": "2caa02fe7d6039fcd0e76bc82d12436189644d2bb940a2e160e352752a8db987"
   }
  },
  "regle": {
@@ -1233,10 +1233,12 @@
   },
   "lecture": "Le barème 1 porte un calendrier à 5 ans pour sa liste A, le barème 2 un calendrier à 10 ans. Remappés par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2), les taux publiés reproduisent ses pourcentages : 0 écart sur les comparaisons 2025-2026. Mais la carte d'origines de l'UA contredit la circulaire (15 origines sur 19), et l'UA publie des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte : aucun barème de l'UA, tel qu'alloué, ne reproduit la circulaire. C'est l'acte national qui fait foi."
  },
- "point_reserve_au_proprietaire": {
-  "question": "Aucun barème de l'UA, avec sa propre carte d'origines, ne reproduit la circulaire pour ses 19 origines (15 divergent), et il publie des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte. Appliquer le repli prévu au plan : taux = NPF x part restante du calendrier de la circulaire ?",
-  "applique_dans_cette_livraison": "Oui — repli du plan (modèle algérien), liste A seulement, hors chapitres 50-63 et 87. Si les taux remappés coïncident sur 2025-2026 (0 écart), les barèmes de l'UA ne portent ni le report des chapitres ni la carte d'origines de l'acte national.",
-  "variante_ecartee": "Servir la ligne publiée du barème UA remappé par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2) : elle servirait une réduction sur les chapitres 50-63 et 87, que l'Égypte a reportée, et ferait dépendre le taux d'une offre dont la carte d'origines contredit l'acte national."
+ "decision_du_proprietaire": {
+  "tranchee_le": "2026-09-24",
+  "choix": "acte national",
+  "regle_servie": "taux = NPF x part restante du calendrier de la circulaire (liste A seulement ; chapitres 50 à 63 et 87 reportés) — zlecaf_schedule_egy.py",
+  "question_posee": "Aucun barème de l'UA, avec sa propre carte d'origines, ne reproduit la circulaire pour ses 19 origines (15 divergent), et il publie des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte. Appliquer le repli prévu au plan : taux = NPF x part restante du calendrier de la circulaire ?",
+  "portee": "L'e-Tariff Book ne sert jamais le taux égyptien : garde posée dans resolve_official_preferential_rate. La variante « barème UA remappé » est écartée : elle ferait dépendre le taux d'une offre dont la carte d'origines contredit l'acte national et exigerait de recoder le report des chapitres."
  },
  "ne_tranche_pas": [
   "La circulaire n° 44 ne réénumère pas le groupe à 5 ans de la n° 38 : celui-ci est tenu pour maintenu, la n° 44 se présentant comme un complément (إلحاقاً).",
