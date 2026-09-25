@@ -260,15 +260,18 @@ RECORDS = {
     "CIV": ImplementationRecord(
         destination_iso3="CIV",
         status=PARTNER_NOTICE_REQUIRED,
-        instrument_id="Ordonnance du 23 avril 2025",
+        instrument_id="Ordonnance n° 2025-260 du 23 avril 2025",
         instrument_title="Démantèlement tarifaire ZLECAf de la Côte d'Ivoire",
         instrument_url=("https://onu.diplomatie.gouv.ci/conseil-ministre.php?lang=&num=508"),
-        effective_from="2025-04-23",
+        # L'ordonnance n'est pas en vigueur tant que les décrets d'application
+        # ne sont pas pris (rapport d'activités 2025 du CN-ZLECAf).
+        effective_from=None,
         accepted_origins=frozenset(),
         tariff_dataset="ECOWAS",
         note=(
-            "L'ordonnance conditionne la préférence à la réciprocité; la liste "
-            "des partenaires acceptés n'est pas publiée dans la source revue."
+            "Ordonnance n° 2025-260 du 23/04/2025 adoptée ; texte non lu ; "
+            "décrets d'application et circulaires en attente (rapport CN-ZLECAf "
+            "2025) ; aucune liste d'origines."
         ),
     ),
     "NGA": ImplementationRecord(
