@@ -2,10 +2,10 @@
  "schema_version": 1,
  "destination_iso3": "TUN",
  "agreement": "ZLECAf / AfCFTA",
- "verification_status": "INSTRUMENT_ET_ORIGINES_VERIFIES_SEMANTIQUE_TRANCHEE",
+ "verification_status": "INSTRUMENT_VERIFIE_SEMANTIQUE_TRANCHEE_BAREME_MANQUANT",
  "verified_at": "2026-09-13",
  "mis_a_jour_le": "2026-09-25",
- "evidence_level": "primaire — texte d'application TA n°016/2023 lu intégralement (153 pages) et archivé ; portail tarifaire officiel de la Douane tunisienne, déjà collecté et scellé dans le dépôt",
+ "evidence_level": "texte officiel lu via un lecteur tiers (r.jina.ai) ; octets du PDF non archivés ; l'empreinte porte sur la transcription. Le portail tarifaire officiel, lui, est scellé dans le dépôt.",
  "source": {
   "title": "Tarif Web 2026 — portail officiel de la Douane tunisienne",
   "url": "https://www.douane.gov.tn/tarifweb2026/",
@@ -25,7 +25,32 @@
   "retrieved_via": "r.jina.ai sur l'URL officielle — douane.gov.tn injoignable en direct depuis l'environnement ce jour (HTTP 000, site intermittent)",
   "texte_extrait": "sources/TUN_texte_016_2023_2023-04-06.lecture-ara.txt",
   "sha256": "cdebe29a57c00f8cc7f3a77b566783e852ae37eb5fd8157f5624c1cf107040a9",
-  "pdf_non_archive": "Le PDF original n'est pas versé : téléchargement direct impossible (HTTP 000) ; la capture Wayback du 2024-04-22 (20240422134554) est tronquée par le crawler à 1 048 576 octets (« 299 wayback content truncated by length ») et son xref est cassé. Seul le texte intégral est archivé, avec la méthode et les réserves de lecture.",
+  "pdf_non_archive": "Le PDF original n'est pas versé : les octets n'ont pas pu être obtenus, et l'empreinte publiée porte sur la transcription. Tentatives du 2026-09-25, vérification TLS jamais désactivée :",
+  "tentatives_archivage_pdf": {
+   "consulte_le": "2026-09-25",
+   "tentatives": [
+    {
+     "cible": "téléchargement direct — https://www.douane.gov.tn/wp-content/uploads/2023/04/016_2023-1.pdf",
+     "resultat": "échec — HTTP 000 ; curl ssl_verify_result=20 (chaîne de certificats incomplète côté serveur). Vérification TLS NON désactivée, conformément à la doctrine : un site inaccessible se signale, il ne se force pas."
+    },
+    {
+     "cible": "toutes les captures Wayback de l'URL (CDX, liste exhaustive)",
+     "resultat": "une seule capture 200 (20240422134554), tronquée par le crawler à 1 048 576 octets (« 299 wayback content truncated by length ») et au xref cassé ; trois captures 302 (20240517224007, 20250314071511, 20240527102004) renvoient toutes à cette même capture tronquée. Aucune capture non tronquée."
+    },
+    {
+     "cible": "site du ministère — africatradeagreements.tn (qui héberge les deux présentations)",
+     "resultat": "rien — recherche interne « 016_2023 » sans résultat, API média WordPress sans résultat ; le TA n'y est pas miroité."
+    },
+    {
+     "cible": "site du Secrétariat de la ZLECAf — au-afcfta.org",
+     "resultat": "rien — recherche « 016_2023 » sans résultat ; la page pays Tunisie (countries-report/tunisia) ne porte que des rapports 2022 (xlsx/zip), pas de texte d'application."
+    },
+    {
+     "cible": "recherche de miroirs (Exa) — « 016_2023-1.pdf », « Texte TA n°016 », « نص ت ع رقم 016 لسنة 2023 »",
+     "resultat": "aucun miroir du PDF ; seules reviennent les présentations officielles et les dépêches de presse."
+    }
+   ]
+  },
   "publication": "La présentation officielle de la Direction du Tarif (pièce jointe) situe l'entrée en application ainsi : « Publication dans le Journal Officiel de la Douane Tunisienne du texte n°16-2023 du 6 Avril 2023 du texte d'application de l'Accord ZLECAf en Tunisie ». Il s'agit de la النشرية الرسمية للديوانة, publication de la douane, distincte du JORT national."
  },
  "semantique_du_pourcentage": {
@@ -105,9 +130,9 @@
   "note": "Accord d'Agadir cité sur 35 034 positions, Tunisie-UE 1995 sur 13 832, Tunisie-Royaume-Uni post-Brexit sur 13 831, bilatéral TUN-MAR sur 13 735, Tunisie-AELE 2004 sur 13 390, Tunisie-Turquie 2005 sur 13 234. Ces régimes non africains sont collectés et inexploités."
  },
  "gates_status": {
-  "1_instrument_national_en_vigueur": "SATISFAIT — texte TA n°016/2023 du 06/04/2023, publié à la النشرية الرسمية للديوانة n° 973, texte intégral lu et archivé",
-  "2_liste_officielle_origines_reciproques": "SATISFAIT — 8 origines publiées au tarif officiel ; le texte nomme les groupes par pays",
-  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT pour le calendrier — coefficients par groupe et par année dans le TA ; restent à collecter les droits de base 2019 ligne à ligne et la classification A/B/C",
+  "1_instrument_national_en_vigueur": "SATISFAIT — texte TA n°016/2023 du 06/04/2023, publié à la النشرية الرسمية للديوانة n° 973, lu intégralement ; octets du PDF non archivés, empreinte sur la transcription",
+  "2_liste_officielle_origines_reciproques": "PARTIEL — le texte de 2023 nomme 7 pays, le tarif de 2026 en publie 8, et les deux listes divergent (EGY d'un côté, ZAF et NGA de l'autre)",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — calendrier établi, droits de base 2019 et classement A/B/C à collecter",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
  "remaining_work": [
