@@ -2,8 +2,8 @@
  "schema_version": 1,
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
- "mis_a_jour_le": "2026-09-14",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json).",
+ "mis_a_jour_le": "2026-09-24",
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json.",
  "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas. Le drapeau bareme_collecte dit qu'un barème tarifaire est archivé pour cette destination — instantané régional inclus — et non que la préférence est appliquée : le niveau juridique reste porté par le champ niveau.",
  "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
@@ -102,9 +102,9 @@
    "bareme_collecte": false
   },
   "EGY": {
-   "niveau": "PREUVES_ASSEMBLEES",
-   "preuve": "Circulaire Accords n° 38 (compl. n° 3, 6, 10, 15), douane égyptienne : 17 origines en deux groupes — 10 ans à 50 % de réduction au 1/1/2025 (ZAF BWA GHA KEN CMR SWZ), 5 ans à 100 % (MAR RWA TZA MUS TUN DZA BDI LSO MWI GMB UGA). Listes B et C non entrées en vigueur.",
-   "niveau_de_source": "primaire — PDF officiels customs.gov.eg lus à l'image et par OCR arabe, API tarifaire interrogée en direct",
+   "niveau": "APPLIQUE",
+   "preuve": "Circulaires Accords n° 38 (compl. n° 3, 6, 10, 15) et n° 44 du 28/12/2025, douane égyptienne : liste A seulement, 19 origines en deux groupes — 10 ans à 50 % de réduction au 1/1/2025 et 60 % au 1/1/2026 (GHA KEN CMR ZAF NAM NGA SWZ BWA), 5 ans à 100 % au 1/1/2025 (MAR RWA TZA MUS TUN DZA BDI LSO MWI GMB UGA). Chapitres 50 à 63 et 87 reportés. Listes B et C non entrées en vigueur. Taux calculés depuis le NPF (la carte d'origines de l'e-Tariff Book contredit l'acte national pour 15 origines sur 19).",
+   "niveau_de_source": "primaire — trois PDF officiels customs.gov.eg archivés et scellés (n° 36, 38, 44), lus à l'image ; API tarifaire interrogée en direct ; rapprochement des barèmes de l'UA consigné",
    "bareme_collecte": true
   },
   "ERI": {
@@ -346,17 +346,18 @@
   }
  },
  "repartition": {
-  "APPLIQUE": 1,
+  "APPLIQUE": 2,
   "NON_APPLIQUE_PRESUME": 1,
   "NON_RECHERCHE": 41,
   "NOTIFICATION_PARTENAIRES_REQUISE": 4,
   "OFFRE_SEULE": 3,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 1,
-  "PREUVES_ASSEMBLEES": 3
+  "PREUVES_ASSEMBLEES": 2
  },
  "fiches_detaillees": [
   "DZA_application_2026-09-14.json",
   "EGY_application_2026-09-14.json",
+  "EGY_rapprochement_baremes_2026-09-24.json",
   "ETH_application_2026-09-13.json",
   "MAR_application_2026-09-13.json",
   "TUN_application_2026-09-13.json",
@@ -418,6 +419,8 @@
    "MAR",
    "MUS",
    "MWI",
+   "NAM",
+   "NGA",
    "RWA",
    "SWZ",
    "TUN",

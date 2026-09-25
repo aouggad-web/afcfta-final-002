@@ -926,9 +926,13 @@ def test_country_product_imports_falls_back_to_direct(monkeypatch):
 def test_tariff_benefit_remains_unavailable_when_mfn_is_zero_but_offer_is_unverified():
     from services import benchmarking_service as benchmark
 
-    # EGY rice (100630) is already 0 % NPF, but that does not turn Egypt's
+    # TUN rice (100630) is already 0 % NPF, but that does not turn Tunisia's
     # unverified offer into an applicable ZLECAf rate or a verified zero saving.
-    res = benchmark.tariff_benefit_analysis("SEN", "EGY", "100630")
+    # L'Égypte a été retirée de ce cas le 24/09/2026 : ses circulaires n° 38 et
+    # n° 44 sont vérifiées, et son taux passe par zlecaf_schedule_egy. La
+    # Tunisie, elle, publie 8 origines au tarif sans que le sens du pourcentage
+    # soit tranché — l'offre y reste non vérifiée.
+    res = benchmark.tariff_benefit_analysis("SEN", "TUN", "100630")
     assert res["available"] is False
     assert res.get("zlecaf_rate_pct") is None
     assert res.get("tariff_advantage_pct") is None

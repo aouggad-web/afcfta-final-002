@@ -88,6 +88,13 @@ def _perimetre_dza(hs_code: str, origine: str) -> Dict[str, str]:
 #: pas une règle générale, et surtout pas une déduction du moteur.
 PERIMETRES_NATIONAUX = {"DZA": _perimetre_dza}
 
+#: Destinations dont le taux ZLECAf se calcule depuis le NPF par un calendrier
+#: national, faute de colonne préférentielle au socle : DZA (circulaire DGD
+#: 482/2024) et EGY (circulaires 38/2024 et 44/2025, liste A seulement — voir
+#: services/zlecaf_schedule_egy.py). Une destination absente d'ici ne reçoit
+#: aucun taux inventé.
+DESTINATIONS_A_CALENDRIER_NATIONAL = frozenset({"DZA", "EGY"})
+
 
 def taux_preferentiels(
     position: Dict[str, Any],
@@ -127,19 +134,25 @@ def taux_preferentiels(
     taux_dd = _colonne_de_la_position(position)
     origine_taux = "colonne préférentielle de la position (socle)"
 
-    if taux_dd is None and destination_iso3.upper() == "DZA":
+    if taux_dd is None and destination_iso3.upper() in DESTINATIONS_A_CALENDRIER_NATIONAL:
         try:
-            from services.zlecaf_schedule_dza import compute_dza_zlecaf_rate
-
             npf = _taux_npf(position, "DD")
             if npf is not None:
                 # Signature : (hs_code, origin_iso3, normal_rate_pct). L'ordre
                 # est significatif — origin_iso3 fait `.upper()` sur son
                 # argument, un taux passé à sa place lève immédiatement.
-                taux, origine_taux = compute_dza_zlecaf_rate(hs_code, origine_iso3, npf)
+                if destination_iso3.upper() == "DZA":
+                    from services.zlecaf_schedule_dza import compute_dza_zlecaf_rate
+
+                    compute_rate = compute_dza_zlecaf_rate
+                else:
+                    from services.zlecaf_schedule_egy import compute_egy_zlecaf_rate
+
+                    compute_rate = compute_egy_zlecaf_rate
+                taux, origine_taux = compute_rate(hs_code, origine_iso3, npf)
                 taux_dd = {"taux": taux}
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
-            logger.warning("Calendrier ZLECAf DZA indisponible : %s", exc)
+            logger.warning("Calendrier ZLECAf %s indisponible : %s", destination_iso3.upper(), exc)
 
     elif taux_dd is None and destination_iso3.upper() == "KEN":
         # Le tarif kényan ne porte pas de colonne ZLECAf : le barème est publié
