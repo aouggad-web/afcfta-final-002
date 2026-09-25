@@ -60,10 +60,6 @@ h1 em{font-style:italic;color:var(--gold)}
 .toggle-track.on .toggle-thumb{left:18px}
 .save-badge{background:var(--grn-bg);color:var(--grn);font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--grn-b);font-weight:500}
 .country-picker{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.country-picker label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
-.country-picker select{background:var(--ink2);color:var(--txt);border:1px solid var(--b2);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
-.country-picker select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.country-picker select:disabled{opacity:.75;cursor:not-allowed}
 .country-note{font-size:12px;color:var(--gold);flex-basis:100%;text-align:center;margin-top:6px}
 .country-note:empty{display:none}
 
@@ -199,6 +195,11 @@ h1 em{font-style:italic;color:var(--gold)}
 .stripe-note p{font-size:12px;color:var(--dim)}
 .stripe-note strong{color:var(--muted)}
 
+/* Affichage selon la géolocalisation : loadPaymentContext() pose region-dz ou
+   region-intl sur <body>. Sans classe (pays inconnu), tout reste visible. */
+body.region-dz [data-region="intl"],body.region-intl [data-region="dz"]{display:none}
+body.region-dz .pay-methods,body.region-intl .pay-methods{grid-template-columns:1fr;max-width:640px}
+
 footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;gap:8px}
 
 @media(max-width:1000px){
@@ -232,7 +233,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <button class="nav-link" onclick="window.location.href='https://afcfta-zlecaf.com'">Calculateur</button>
     <button class="nav-link">API</button>
     <button class="nav-link">Rapports</button>
-    <button class="nav-cta">Commencer gratuitement</button>
+    <button class="nav-cta" onclick="window.location.href='/#auth=login'">Commencer gratuitement</button>
   </div>
 </nav>
 
@@ -240,7 +241,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <div class="hero">
   <div class="hero-eyebrow">Tarifs & Plans</div>
   <h1>Le commerce africain<br><em>commence ici</em></h1>
-  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. Paiement par carte partout dans le monde, et par Chargily (CIB / Edahabia) en Algérie.</p>
+  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. <span data-region="intl">Paiement par carte bancaire via Stripe, en euros.</span> <span data-region="dz">Paiement par carte CIB ou Edahabia via Chargily, en dinars.</span></p>
   <div class="billing-toggle" role="switch" tabindex="0" aria-checked="false" aria-label="Facturation annuelle" id="billing-switch" onclick="toggleBilling()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBilling();}">
     <span id="bill-monthly" style="color:var(--txt);font-weight:500">Mensuel</span>
     <div class="toggle-track" id="toggle-track">
@@ -250,11 +251,6 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <span class="save-badge">−8% en annuel</span>
   </div>
   <div class="country-picker">
-    <label for="billing-country">Pays de facturation</label>
-    <select id="billing-country" aria-label="Pays de facturation">
-      <option value="">Hors Algérie — paiement par carte (Stripe)</option>
-      <option value="DZ">Algérie — CIB / Edahabia (Chargily)</option>
-    </select>
     <span class="country-note" id="country-note" role="status"></span>
   </div>
 </div>
@@ -264,7 +260,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 
   <div class="plan">
     <div class="plan-name">Free</div>
-    <div class="plan-price">0€<span>/mois</span></div>
+    <div class="plan-price" id="price-free">0€<span>/mois</span></div>
     <div class="plan-per">pour toujours · sans carte</div>
     <div class="annual-price" id="annual-free"></div>
     <div class="plan-desc">Idéal pour découvrir les opportunités commerciales AfCFTA et faire vos premiers calculs.</div>
@@ -278,7 +274,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
       <div class="plan-item no">Alertes tarifaires</div>
       <div class="plan-item no">Accès API</div>
     </div>
-    <button class="plan-btn secondary" onclick="alert('Inscription gratuite — intégration Stripe / Chargily à venir')">Commencer gratuitement</button>
+    <button class="plan-btn secondary" onclick="window.location.href='/#auth=login'">Commencer gratuitement</button>
   </div>
 
   <div class="plan">
@@ -350,7 +346,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="api-plans">
     <div class="api-card">
       <div class="api-tag">Starter API</div>
-      <div class="api-price">29€</div>
+      <div class="api-price" data-product="api_starter">29€</div>
       <div class="api-per">/ mois · 5 000 requêtes</div>
       <div class="api-specs">
         <div class="api-spec"><strong>5 000 requêtes / mois</strong></div>
@@ -359,11 +355,11 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">Clé API dédiée</div>
         <div class="api-spec">Support communauté</div>
       </div>
-      <button class="api-cta">Obtenir une clé API</button>
+      <button class="api-cta" onclick="startProductCheckout('api_starter')">Démarrer Starter API</button>
     </div>
     <div class="api-card" style="border-color:var(--blu-b)">
       <div class="api-tag">Business API</div>
-      <div class="api-price">99€</div>
+      <div class="api-price" data-product="api_business">99€</div>
       <div class="api-per">/ mois · 50 000 requêtes</div>
       <div class="api-specs">
         <div class="api-spec"><strong>50 000 requêtes / mois</strong></div>
@@ -372,7 +368,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">IP whitelist · Logs avancés</div>
         <div class="api-spec">Intégration Postman incluse</div>
       </div>
-      <button class="api-cta">Démarrer Business API</button>
+      <button class="api-cta" onclick="startProductCheckout('api_business')">Démarrer Business API</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Enterprise API</div>
@@ -394,47 +390,47 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <div class="section">
   <div class="section-eyebrow">Options à la carte</div>
   <div class="section-title">Ajoutez ce dont vous avez besoin</div>
-  <p class="section-sub">Complétez votre abonnement Pro ou Business avec des options ponctuelles, sans changer de plan.</p>
+  <p class="section-sub">Complétez votre abonnement Pro ou Business avec des options mensuelles ou ponctuelles, sans changer de plan.</p>
   <div class="addon-plans">
     <div class="api-card">
       <div class="api-tag">Utilisateur supplémentaire</div>
-      <div class="api-price">5€</div>
+      <div class="api-price" data-product="extra_seat">5€</div>
       <div class="api-per">/ mois / utilisateur</div>
       <div class="api-specs">
         <div class="api-spec">Plan Business uniquement</div>
         <div class="api-spec">Accès complet à la plateforme</div>
       </div>
-      <button class="api-cta">Ajouter des utilisateurs</button>
+      <button class="api-cta" onclick="startProductCheckout('extra_seat')">Ajouter des utilisateurs</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Pack requêtes API</div>
-      <div class="api-price">19€</div>
+      <div class="api-price" data-product="api_pack">19€</div>
       <div class="api-per">+ 20 000 requêtes / mois</div>
       <div class="api-specs">
         <div class="api-spec">Cumulable avec tout plan API</div>
         <div class="api-spec">Activation immédiate</div>
       </div>
-      <button class="api-cta">Ajouter le pack</button>
+      <button class="api-cta" onclick="startProductCheckout('api_pack')">Ajouter le pack</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Support prioritaire</div>
-      <div class="api-price">15€</div>
+      <div class="api-price" data-product="priority_support">15€</div>
       <div class="api-per">/ mois · réponse &lt; 4h</div>
       <div class="api-specs">
         <div class="api-spec">Chat + email + téléphone</div>
         <div class="api-spec">Disponible sur Pro & Starter</div>
       </div>
-      <button class="api-cta">Activer le support</button>
+      <button class="api-cta" onclick="startProductCheckout('priority_support')">Activer le support</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Formation équipe</div>
-      <div class="api-price">99€</div>
+      <div class="api-price" data-product="team_training">99€</div>
       <div class="api-per">webinar dédié · one-shot</div>
       <div class="api-specs">
         <div class="api-spec">2h en direct, jusqu'à 10 pers.</div>
         <div class="api-spec">Support de formation inclus</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Formation équipe'">Réserver une session</button>
+      <button class="api-cta" onclick="startProductCheckout('team_training')">Réserver une session</button>
     </div>
   </div>
 </div>
@@ -445,57 +441,57 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-title">Données sectorielles AfCFTA</div>
   <p class="section-sub">Rapports PDF approfondis sur les opportunités commerciales par secteur. Générés à partir des données live de votre plateforme.</p>
   <div class="reports-grid">
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="startProductCheckout('report_agri')">
       <div class="report-icon">🌾</div>
       <div class="report-meta">
         <div class="report-name">Rapport Agriculture & Agroalimentaire</div>
         <div class="report-desc">Tarifs, règles d'origine et opportunités pour 15 secteurs agricoles entre 54 pays. 40 pages. Mis à jour trimestriellement.</div>
         <div class="report-footer">
-          <span class="report-price">59€</span>
+          <span class="report-price" data-product="report_agri">59€</span>
           <button class="report-buy">Acheter →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="startProductCheckout('report_textile')">
       <div class="report-icon">🧵</div>
       <div class="report-meta">
         <div class="report-name">Rapport Textile & Habillement</div>
         <div class="report-desc">Double transformation, règles d'origine et corridors logistiques pour le textile. Focus : Éthiopie, Maroc, Tunisie.</div>
         <div class="report-footer">
-          <span class="report-price">59€</span>
+          <span class="report-price" data-product="report_textile">59€</span>
           <button class="report-buy">Acheter →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="startProductCheckout('report_pharma')">
       <div class="report-icon">💊</div>
       <div class="report-meta">
         <div class="report-name">Rapport Pharmaceutique & Santé</div>
         <div class="report-desc">Tarifs préférentiels et listes de produits exemptés dans le secteur pharma AfCFTA. Critique pour l'accès aux médicaments.</div>
         <div class="report-footer">
-          <span class="report-price">89€</span>
+          <span class="report-price" data-product="report_pharma">89€</span>
           <button class="report-buy">Acheter →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Abonnement mensuel via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="startProductCheckout('newsletter')">
       <div class="report-icon">📧</div>
       <div class="report-meta">
         <div class="report-name">Newsletter — Veille tarifaire mensuelle</div>
         <div class="report-desc">Bulletin mensuel : nouveaux accords, changements de tarifs, opportunités commerciales détectées automatiquement. Abonnement.</div>
         <div class="report-footer">
-          <span class="report-price">9€ / mois</span>
+          <span class="report-price"><span data-product="newsletter">9€</span> / mois</span>
           <button class="report-buy">S'abonner →</button>
         </div>
       </div>
     </div>
-    <div class="report-card bundle" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')" style="grid-column:1/-1">
+    <div class="report-card bundle" onclick="startProductCheckout('report_pack')" style="grid-column:1/-1">
       <div class="report-icon">📦</div>
       <div class="report-meta">
         <div class="report-name">Pack 4 rapports sectoriels — l'année complète</div>
         <div class="report-desc">Les 4 rapports (Agriculture, Textile, Pharma + 1 rapport bonus au choix) livrés dès leur mise à jour trimestrielle.</div>
         <div class="report-footer">
-          <span class="report-price"><s>266€</s> 179€</span>
+          <span class="report-price"><s data-strike="report_agri,report_textile,report_pharma,report_agri">266€</s> <span data-product="report_pack">179€</span></span>
           <button class="report-buy">Acheter le pack →</button>
         </div>
       </div>
@@ -522,10 +518,10 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <div class="cert-price-box">
       <div class="cert-price-label">Tarif lancement</div>
-      <div class="cert-price-old">199€</div>
-      <div class="cert-price-val">129€</div>
+      <div class="cert-price-old" data-strike-eur="199">199€</div>
+      <div class="cert-price-val" data-product="certification">129€</div>
       <div class="cert-price-per">accès à vie</div>
-      <button class="cert-btn" onclick="alert('Paiement Stripe / Chargily — à configurer')">M'inscrire</button>
+      <button class="cert-btn" onclick="startProductCheckout('certification')">M'inscrire</button>
     </div>
   </div>
 </div>
@@ -557,7 +553,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-eyebrow">Moyens de paiement</div>
   <div class="section-title" style="margin-bottom:24px">Un paiement adapté à votre pays</div>
   <div class="pay-methods">
-    <div class="pay-card">
+    <div class="pay-card" data-region="intl">
       <div class="pay-flag">🌍</div>
       <div>
         <h4>International — Stripe</h4>
@@ -565,12 +561,12 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <span class="tag">Hors Algérie</span>
       </div>
     </div>
-    <div class="pay-card">
+    <div class="pay-card" data-region="dz">
       <div class="pay-flag">🇩🇿</div>
       <div>
         <h4>Algérie — Chargily</h4>
-        <p>Cartes CIB et Edahabia, facturation en dinars algériens (DZD) au taux du jour. Solution locale conforme à la réglementation des changes.</p>
-        <span class="tag">Phase de lancement</span>
+        <p>Cartes CIB et Edahabia, tarifs fixes en dinars algériens (DZD). Paiement ponctuel pour 1 mois ou 1 an, sans renouvellement automatique. Solution locale conforme à la réglementation des changes.</p>
+        <span class="tag">Algérie</span>
       </div>
     </div>
   </div>
@@ -587,29 +583,21 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Puis-je annuler à tout moment ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Oui. Tous les plans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de la période en cours, et aucun frais n'est prélevé ensuite.</div>
+      <div class="faq-a"><span data-region="intl">Oui. Tous les plans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de la période en cours, et aucun frais n'est prélevé ensuite.</span> <span data-region="dz">Il n'y a rien à annuler : les paiements Chargily sont ponctuels, sans renouvellement automatique. Votre accès dure la période payée (1 mois ou 1 an) ; pour continuer, il suffit de renouveler depuis cette page.</span></div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">D'où proviennent les données tarifaires ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Les données proviennent de sources officielles : World Bank, WTO, OEC, AfDB, FMI et le Secrétariat de l'AfCFTA. Elles sont mises à jour automatiquement chaque jour à 2h00 UTC via notre pipeline de données. Les règles d'origine couvrent 97 secteurs HS2.</div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
-      <div class="faq-q">L'API est-elle disponible immédiatement après souscription ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Oui. Après souscription au plan Business ou à un plan API, votre clé est générée immédiatement dans votre tableau de bord. La documentation complète avec exemples en Python, JavaScript et cURL est disponible sur docs.afcfta-zlecaf.com.</div>
-    </div>
-    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Proposez-vous des tarifs spéciaux pour les institutions africaines ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Oui. Nous proposons des contrats institutionnels spéciaux pour les gouvernements, banques de développement (Afreximbank, AfDB), universités et organisations régionales africaines. Contactez-nous à contact@afcfta-zlecaf.com pour discuter d'un partenariat.</div>
-    </div>
-    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
-      <div class="faq-q">Comment fonctionne le paiement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en euros (EUR). En Algérie, dans un premier temps, les paiements sont traités via Chargily : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé dépend de votre pays de facturation.</div>
     </div>
   </div>
 </div>
 
 <div class="stripe-note">
-  <p><strong>Paiements sécurisés via Stripe (international) et Chargily (Algérie)</strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
+  <p><strong><span data-region="intl">Paiements sécurisés via Stripe</span><span data-region="dz">Paiements sécurisés via Chargily</span></strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs</p>
 </div>
 
 <footer>
@@ -627,7 +615,7 @@ let annual = false;
 // la grille serveur dès que possible, pour qu'un changement de pricing.py
 // n'exige plus d'édition manuelle de cette page.
 // prices : montants EUR (Stripe, hors DZ). pricesDZD : montants DZD
-// (Chargily, DZ) — un seul jeu est affiché à la fois selon le pays choisi.
+// (Chargily, DZ) — un seul jeu est affiché à la fois selon la géolocalisation.
 let prices = {
   starter: { m: 10,  y: 110  },
   pro:     { m: 25,  y: 275  },
@@ -638,10 +626,13 @@ let pricesDZD = {
   pro:     { m: 3750,  y: 41250  },
   biz:     { m: 18750, y: 206250 }
 };
-// 'EUR' (Stripe) ou 'DZD' (Chargily) — piloté par le sélecteur pays.
-// Aligné automatiquement sur DZD quand loadPaymentContext / le sélecteur
-// désigne DZ, sinon reste sur EUR.
+// 'EUR' (Stripe) ou 'DZD' (Chargily) — fixé par loadPaymentContext() selon le
+// prestataire imposé par le serveur ; EUR tant qu'il n'a pas répondu.
 let currentCurrency = 'EUR';
+// Produits hors formule (API, options, rapports, formation) : id → {eur, dzd},
+// rempli par loadPricing() depuis pricing.PRODUCTS. Vide = prix EUR statiques.
+let productPrices = {};
+let dzdPerEur = 150;
 
 // Charge la grille tarifaire publique depuis le backend (source unique
 // pricing.py) et re-rend les cartes. En cas d'échec, on garde silencieusement
@@ -667,6 +658,8 @@ async function loadPricing() {
       pro:     { m: byPlan.pro.dzd.monthly,     y: byPlan.pro.dzd.annual },
       biz:     { m: byPlan.business.dzd.monthly, y: byPlan.business.dzd.annual }
     };
+    (data.products || []).forEach(function (p) { productPrices[p.product] = p; });
+    if (data.dzd_per_eur) dzdPerEur = data.dzd_per_eur;
     renderPrices();
   } catch (e) {
     console.warn('Grille tarifaire serveur indisponible, repli statique conservé:', e);
@@ -756,50 +749,29 @@ function toggleFaq(el) {
   el.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
-// Le serveur détecte le pays depuis l'IP. Une IP algérienne impose Chargily
-// (contrôle des changes) : on pré-sélectionne et on verrouille le sélecteur.
-// Le verrou côté serveur reste la seule autorité — ceci n'est qu'un confort.
+// Le moyen de paiement est imposé par le serveur selon le pays d'inscription :
+// Algérie → Chargily (DZD), étranger → Stripe (EUR). L'utilisateur n'a pas de
+// choix ; on se contente d'afficher la bonne devise et le moyen utilisé.
 async function loadPaymentContext() {
   try {
     const res = await fetch('/api/billing/payment-context', { credentials: 'include' });
     if (!res.ok) return;
     const ctx = await res.json();
-    const select = document.getElementById('billing-country');
     const note = document.getElementById('country-note');
-    if (!select) return;
-
     if (ctx.provider === 'chargily') {
-      select.value = 'DZ';
+      document.body.classList.add('region-dz');
       currentCurrency = 'DZD';
       renderPrices();
-      if (ctx.locked) {
-        select.disabled = true;
-        if (note) {
-          note.textContent =
-            'Connexion depuis l’Algérie : paiement en dinars via Chargily (CIB / Edahabia). '
-            + 'Vous voyagez ou utilisez un VPN d’entreprise ? Écrivez-nous à contact@afcfta-zlecaf.com.';
-        }
-      }
+      if (note) note.textContent = 'Paiement en dinars via Chargily (CIB / Edahabia).';
+    } else if (ctx.provider === 'stripe') {
+      document.body.classList.add('region-intl');
+      if (note) note.textContent = 'Paiement par carte bancaire via Stripe (EUR).';
     }
   } catch (e) {
-    // Détection indisponible : le sélecteur manuel reste utilisable.
+    // Contexte indisponible : affichage en EUR par défaut, le serveur tranche au checkout.
   }
 }
 document.addEventListener('DOMContentLoaded', loadPaymentContext);
-
-// Bascule EUR/DZD selon le pays choisi manuellement : DZ → Chargily (DZD),
-// tout autre pays → Stripe (EUR). Le montant réellement débité reste décidé
-// côté serveur au checkout (resolve_provider) — ceci n'est qu'un miroir UI.
-document.addEventListener('DOMContentLoaded', function () {
-  const select = document.getElementById('billing-country');
-  if (!select) return;
-  select.addEventListener('change', function () {
-    const next = this.value === 'DZ' ? 'DZD' : 'EUR';
-    if (next === currentCurrency) return;
-    currentCurrency = next;
-    renderPrices();
-  });
-});
 
 // Retour du checkout Stripe : ?checkout=success ou ?checkout=cancel. Affiche
 // une bannière d'état, puis nettoie l'URL pour ne pas la rejouer au reload.
@@ -865,16 +837,25 @@ async function ensureCsrf(forceRefresh) {
   return token;
 }
 
-// Lance le paiement pour le plan choisi (Stripe hors DZ, Chargily pour DZ).
+// Lance le paiement pour le plan choisi (Stripe hors DZ, Chargily pour DZ,
+// selon le pays d'inscription).
 // Nécessite une session (cookie JWT) : sinon, redirection vers la connexion.
 // Le cycle suit le toggle mensuel/annuel. Les prix sont résolus côté serveur.
 async function startCheckout(plan) {
   const cycle = annual ? 'annual' : 'monthly';
-  // Pays choisi explicitement par l'utilisateur : "DZ" route vers Chargily
-  // (CIB/Edahabia, en dinars), sinon Stripe. Pas de détection silencieuse.
-  const countryEl = document.getElementById('billing-country');
-  const country = countryEl ? countryEl.value : '';
-  const body = JSON.stringify({ plan: plan, cycle: cycle, billing_country: country });
+  // Le prestataire (Stripe / Chargily) est choisi côté serveur selon le pays
+  // d'inscription du compte : rien à envoyer ici.
+  return launchCheckout('/api/billing/checkout', { plan: plan, cycle: cycle });
+}
+
+// Produits hors formule (API, options, rapports, formation) : même parcours,
+// prix et prestataire décidés côté serveur (pricing.PRODUCTS).
+async function startProductCheckout(product) {
+  return launchCheckout('/api/billing/product-checkout', { product: product });
+}
+
+async function launchCheckout(url, payload) {
+  const body = JSON.stringify(payload);
 
   // Safari/iOS perd le "geste utilisateur" dès qu'un await sépare le clic de
   // la navigation : window.location.href après un fetch y est alors ignoré
@@ -885,7 +866,7 @@ async function startCheckout(plan) {
   const w = window.open('', '_blank');
 
   async function postCheckout(token) {
-    return fetch('/api/billing/checkout', {
+    return fetch(url, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
@@ -969,6 +950,25 @@ function renderPrices() {
   const symbol = currentCurrency === 'DZD' ? ' DZD' : '€';
   // Formatage FR : séparateur de milliers en DZD (18 750 DZD lisible), rien en EUR.
   const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : String(n);
+  document.getElementById('price-free').innerHTML = '0' + symbol + '<span>/mois</span>';
+  const productAmount = (id) => {
+    const p = productPrices[id];
+    return p ? (currentCurrency === 'DZD' ? p.dzd : p.eur) : null;
+  };
+  document.querySelectorAll('[data-product]').forEach(function (el) {
+    const amount = productAmount(el.dataset.product);
+    if (amount !== null) el.textContent = fmt(amount) + symbol;
+  });
+  document.querySelectorAll('[data-strike]').forEach(function (el) {
+    const amounts = el.dataset.strike.split(',').map(productAmount);
+    if (amounts.every(function (a) { return a !== null; })) {
+      el.textContent = fmt(amounts.reduce(function (a, b) { return a + b; }, 0)) + symbol;
+    }
+  });
+  document.querySelectorAll('[data-strike-eur]').forEach(function (el) {
+    const eur = Number(el.dataset.strikeEur);
+    el.textContent = fmt(currentCurrency === 'DZD' ? eur * dzdPerEur : eur) + symbol;
+  });
 
   // Équivalent mensuel exact : EUR à 2 décimales (110/12 = 9,17 € — se
   // réconcilie avec le total annuel, contrairement à un arrondi entier

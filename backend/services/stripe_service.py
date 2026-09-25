@@ -105,6 +105,46 @@ def create_checkout_session(
     return session.url
 
 
+def create_product_checkout_session(
+    *,
+    customer_id: str,
+    label: str,
+    amount_eur: int,
+    recurring: bool,
+    success_url: str,
+    cancel_url: str,
+    client_reference_id: str,
+    metadata: dict,
+) -> str:
+    """Checkout d'un produit hors formule (API, option, rapport…).
+
+    Le prix est passé en `price_data` depuis la grille serveur (`pricing.PRODUCTS`)
+    plutôt qu'en `price_…` pré-créé : aucune configuration Stripe par produit.
+    Produit mensuel → abonnement ; sinon paiement unique.
+    """
+    _require_api_key()
+    price_data = {
+        "currency": "eur",
+        "unit_amount": amount_eur * 100,
+        "product_data": {"name": label},
+    }
+    kwargs = {}
+    if recurring:
+        price_data["recurring"] = {"interval": "month"}
+        kwargs["subscription_data"] = {"metadata": metadata}
+    session = stripe.checkout.Session.create(
+        mode="subscription" if recurring else "payment",
+        customer=customer_id,
+        line_items=[{"price_data": price_data, "quantity": 1}],
+        success_url=success_url,
+        cancel_url=cancel_url,
+        client_reference_id=client_reference_id,
+        metadata=metadata,
+        **kwargs,
+    )
+    return session.url
+
+
 def create_portal_session(*, customer_id: str, return_url: str) -> str:
     """Crée une session du Customer Portal (gérer/annuler l'abonnement)."""
     _require_api_key()

@@ -188,7 +188,7 @@ async def register(
         "role": "user",
         "created_at": datetime.now(timezone.utc),
         "signup_ip": geo_service.client_ip(request),
-        "signup_country": geo_service.country_from_request(request),
+        "signup_country": await geo_service.resolve_country(request),
     }
     try:
         result = await db.users.insert_one(user_doc)
