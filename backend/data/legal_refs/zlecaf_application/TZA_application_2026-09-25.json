@@ -1,0 +1,58 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "TZA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-25",
+ "evidence_level": "acte communautaire EAC lu et archivé (Gazette de l'EAC, avis EAC/321/2022) ; acte ou avis tanzanien propre non retrouvé ; aucune liste nominative d'origines ; aucun barème ligne à ligne de la Tanzanie comme destination",
+ "instrument_eac": {
+  "id": "Legal Notice No. EAC/321/2022",
+  "titre": "The EAC Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA) for Category A products",
+  "autorite": "Conseil des ministres de la Communauté d'Afrique de l'Est (EAC)",
+  "fondement": "Section 112 (1) (b) de l'East African Community Customs Management Act, 2004 ; article 37 du protocole portant établissement de l'union douanière de l'EAC",
+  "publication": "East African Community Gazette, Vol. AT 1 – No. 23, Arusha, 6 septembre 2022",
+  "date": "2022-09-06",
+  "portee": "ACTE DE LA COMMUNAUTÉ, pas un acte kényan : pris par le Conseil des ministres de l'EAC sous l'EACCMA, il s'applique dans le territoire douanier de la Communauté, dont la Tanzanie est un État partenaire. Il approuve le traitement tarifaire préférentiel pour les marchandises originaires « des États parties de la ZLECAf » — une RÈGLE, sans liste nominative.",
+  "texte_archive": "sources/TZA_gazette_eac_321_2022_2022-09-06.pdf",
+  "sha256": "c5e8200c6616bf906eff7cfb8c7e8664ebf6182e026c895e63931d5332208f1b",
+  "extraits": {
+   "texte_extrait": "sources/TZA_gazette_eac_321_2022_2022-09-06.extrait.txt",
+   "sha256": "00cbfbbda6006ac453c8eab295fcebdabafd184c5facc11a9adb8ee0ffc18b3e"
+  },
+  "verbatim_en": "IN EXERCISE of the powers conferred upon the Council of Ministers by Section 112 (1) (b) of the East African Community Customs Management Act, 2004, the Council of Ministers has approved preferential tariff treatment on originating goods imported from State Parties of the African Continental Free Trade Area (AfCFTA).",
+  "traduction_fr": "En exercice des pouvoirs conférés au Conseil des ministres par la section 112 (1) (b) de la loi de 2004 sur la gestion douanière de la Communauté d'Afrique de l'Est, le Conseil des ministres a approuvé le traitement tarifaire préférentiel sur les marchandises originaires importées des États parties de la ZLECAf.",
+  "bareme_annexe": "Le barème EAC de la catégorie A est publié en annexe de l'avis (copie de 347 pages hébergée par la Kenya Revenue Authority : https://www.kra.go.ke/images/publications/EAC-PROVISIONAL-SCHEDULE-OF-TARIFF-CONCESSIONS-FOR-THE-AFRICAN-CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf). Vérifié dans zlecaf_schedule_ken.py : ce document ne nomme AUCUN pays."
+ },
+ "instrument_tanzanien": {
+  "statut": "NON RETROUVÉ",
+  "cible": "Acte ou avis d'application tanzanien (gazette de la République-Unie, avis de la Tanzania Revenue Authority) désignant les États parties admis à l'importation.",
+  "recherches": [
+   "Journal officiel de l'EAC (EAC/321/2022) : l'acte communautaire est retrouvé et archivé — mais il ne nomme aucun pays (voir instrument_eac).",
+   "Tanzania Revenue Authority (tra.go.tz, consulté le 25/09/2026) : aucune circulaire ou avis douanier ZLECAf ; le portail commercial officiel (trade.tanzania.go.tz) ne porte que la PROCÉDURE de certificat d'origine ZLECAf (côté exportation).",
+   "Finance Act 2023 (acte n° 7 de 2023, supplément au journal officiel n° 26 du 30/06/2023) : lu intégralement, ZÉRO occurrence d'AfCFTA, d'« African Continental » ou de traitement préférentiel.",
+   "Finance Act 2024 : lu, ZÉRO occurrence.",
+   "Parlement tanzanien (parliament.go.tz/acts, consulté le 25/09/2026) : la liste des actes ne mentionne aucune loi ZLECAf ; le dépôt des actes (polis.bunge.go.tz) est injoignable (HTTP 000).",
+   "TanzLII : injoignable depuis cet environnement (HTTP 000) — non forcé.",
+   "Guides tralac et PNUD (sources secondaires) : servent à repérer, ne remplacent aucun texte ; le PDF PNUD répond 403."
+  ],
+  "resultat": "Aucun acte ni avis tanzanien d'application n'a été retrouvé, et aucune liste nominative d'États parties admis. Les listes algérienne, marocaine, égyptienne et tunisienne qui nomment la Tanzanie indiquent où chercher — elles ne prouvent rien sur ce que la Tanzanie accorde."
+ },
+ "ratification": "La Tanzanie est RATIFIÉE au registre continental du dépôt (services/zlecaf_membership_status.ratification_status('TZA') → RATIFIED), base tenue sur sources continentales ; la date d'effet nationale reste à documenter.",
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — l'acte communautaire EAC/321/2022 (6 septembre 2022) est en vigueur et couvre la Tanzanie comme État partenaire de l'union douanière ; l'acte ou l'avis tanzanien propre reste introuvable",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — l'avis énonce une règle (« State Parties ») sans liste nominative ; aucune liste tanzanienne retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème de la TANZANIE comme destination n'est collecté ; l'instantané EAC du dépôt est l'offre du KENYA (destination_query_code = KE)",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "Les trois preuves du plan ne sont PAS réunies : il manque l'acte ou l'avis tanzanien propre (ou la confirmation que l'acte communautaire suffit et est appliqué), la liste nominative des origines, et le barème de la Tanzanie comme destination. AUCUN BRANCHEMENT : la Tanzanie reste au NPF dans le calcul.",
+ "ne_tranche_pas": [
+  "L'application effective de l'avis EAC/321/2022 par la Tanzanie n'est établie par aucun texte national ni avis de la TRA ; l'acte communautaire l'autorise, il ne prouve pas la mise en œuvre.",
+  "La règle « State Parties » ne dit pas quels États la Tanzanie admet effectivement (réciprocité non documentée).",
+  "Le barème de la Tanzanie comme destination n'est pas collecté : l'instantané EAC disponible est l'offre du Kenya."
+ ],
+ "remaining_work": [
+  "Chercher l'acte ou l'avis tanzanien d'application (Gazette of the United Republic of Tanzania, avis de la TRA) — le dépôt polis.bunge.go.tz et TanzLII étaient injoignables le 25/09/2026.",
+  "Si aucun texte national n'existe, établir que l'avis EAC/321/2022 est directement appliqué par la douane tanzanienne (déclaration liquidée sous régime préférentiel, ou publication TRA).",
+  "Collecter l'offre de la Tanzanie comme destination (e-Tariff Book, destination TZ) et la confronter aux règles d'origine de l'EAC."
+ ]
+}

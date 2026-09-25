@@ -1,0 +1,54 @@
+East African Community Gazette — Legal Notice No. EAC/321/2022 (extrait)
+East African Community Gazette, Vol. AT 1 – No. 23, Arusha, 6th September, 2022
+PDF archivé : sources/TZA_gazette_eac_321_2022_2022-09-06.pdf (2 pages)
+Source : https://www.rra.gov.rw/fileadmin/user_upload/EAC_Vol._AT_1_NO._23_SEPTEMBER_2022.pdf
+(listing EAC : https://www.eac.int/documents — consulté le 2026-09-25 ; eac.int renvoie 403 en
+direct, l'exemplaire lu est le miroir officiel de la Rwanda Revenue Authority)
+
+VERBATIM (anglais, tel qu'imprimé) :
+
+[page 1, sommaire]
+« Vol. AT 1 – No. 23 ARUSHA, 6th September, 2022 … CONTENTS LN. No Page • The EAC Schedule
+of Tariff Concessions for the African Continental Free Trade Area (AfCFTA) for Category A
+products 321 2 »
+
+[page 2]
+« Legal Notice No. EAC/321/2022 — EAST AFRICAN COMMUNITY GAZETTE — THE PROTOCOL ON THE
+ESTABLISHMENT OF THE EAST AFRICAN COMMUNITY CUSTOMS UNION — THE EAC SCHEDULE OF TARIFF
+CONCESSIONS FOR THE AFRICAN CONTINENTAL FREE TRADE AREA (AFCFTA) FOR CATEGORY A PRODUCTS
+(Pursuant to Article 37 of the Protocol on the Establishment of the East African Community
+Customs Union) and Section 112 (1) (b) of the East African Community Customs Management
+Act 2004. LEGAL NOTICE — IN EXERCISE of the powers conferred upon the Council of Ministers
+by Section 112 (1) (b) of the East African Community Customs Management Act, 2004, the
+Council of Ministers has approved preferential tariff treatment on originating goods
+imported from State Parties of the African Continental Free Trade Area (AfCFTA). HON. AMB.
+EZEKIEL NIBIGIRA, Chairperson Council of Ministers »
+
+TRADUCTION (français) :
+« Avis juridique n° EAC/321/2022 — GAZETTE DE LA COMMUNAUTÉ D'AFRIQUE DE L'EST — LE
+PROTOCOLE PORTANT ÉTABLISSEMENT DE L'UNION DOUANIÈRE DE LA COMMUNAUTÉ D'AFRIQUE DE L'EST —
+LE BARÈME DE CONCESSIONS TARIFAIRES DE L'EAC POUR LA ZONE DE LIBRE-ÉCHANGE CONTINENTALE
+AFRICAINE (AfCFTA) POUR LES PRODUITS DE LA CATÉGORIE A (en application de l'article 37 du
+protocole … et de la section 112 (1) (b) de la loi de 2004 sur la gestion douanière de la
+Communauté). AVIS JURIDIQUE — EN EXERCICE des pouvoirs conférés au Conseil des ministres par
+la section 112 (1) (b) … le Conseil des ministres a approuvé le traitement tarifaire
+préférentiel sur les marchandises originaires importées des États parties de la ZLECAf. »
+
+CE QUE CET EXTRAIT ÉTABLIT :
+- l'avis EAC/321/2022 est un acte de la COMMUNAUTÉ (Conseil des ministres de l'EAC), pris
+  sous l'EACCMA 2004 (section 112 (1) (b)) et l'article 37 du protocole de l'union
+  douanière — il n'est pas propre au Kenya ;
+- il approuve le traitement préférentiel pour les marchandises originaires « des États
+  parties de la ZLECAf » — une RÈGLE, sans liste nominative ;
+- il porte le barème EAC des produits de la catégorie A (publié en annexe ; la copie
+  kényane de 347 pages ne nomme aucun pays, vérifié dans zlecaf_schedule_ken.py).
+
+CE QU'IL N'ÉTABLIT PAS :
+- que la Tanzanie applique effectivement l'avis, ni par quel acte national ou avis de la
+  TRA (aucun texte tanzanien retrouvé à ce jour) ;
+- la liste nominative des origines admises par la Tanzanie ;
+- le barème ligne à ligne de la TANZANIE en tant que destination (l'instantané EAC du
+  dépôt est l'offre du KENYA, destination_query_code = KE).
+
+MÉTHODE : PDF officiel (2 pages) téléchargé le 2026-09-25 depuis le miroir RRA, lu à
+l'extraction texte ; archivé au dépôt, empreinte au registre.
