@@ -1,0 +1,81 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "CIV",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-25",
+ "evidence_level": "acte national adopté, attesté par le communiqué officiel du Conseil des ministres et le rapport d'activités 2025 du CN-ZLECAf ; texte de l'ordonnance non obtenu ; décrets et circulaires d'application annoncés en attente ; aucune liste nominative d'origines",
+ "instrument": {
+  "id": "Ordonnance n° 2025-260 du 23 avril 2025",
+  "titre": "Ordonnance relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de l'Accord portant création de la ZLECAf",
+  "adopte_le": "2025-04-23",
+  "reference_communique": "Communiqué du Conseil des ministres du mercredi 23 avril 2025 (Porte-parolat du Gouvernement)",
+  "texte_archive": "sources/CIV_communique_conseil_ministres_2025-04-23.pdf",
+  "sha256": "544fea98cf411990491bca52f13e0d9e771be57e59cc5bd8c7d9ab3cd9234def",
+  "source_url": "https://www.communication.gouv.ci/uploads/publications/174549003757.pdf",
+  "verbatim_communique": "Le Conseil a adopté une ordonnance relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de l'Accord portant création de la Zone de Libre-Echange Continentale Africaine (ZLECAf), et le projet de loi de ratification y afférent.",
+  "traduction_contexte": "L'Accord ZLECAf, ratifié par la Côte d'Ivoire en novembre 2018, vise un marché unique africain ; l'ordonnance adoptée fixe le démantèlement des produits non sensibles et un projet de loi de ratification l'accompagne.",
+  "portee_du_communique": "Établit l'adoption de l'ordonnance et le dépôt du projet de ratification ; ne publie ni le texte, ni les listes de produits, ni les États partenaires.",
+  "ratification": "Le projet de loi de ratification de l'ordonnance a été adopté par les députés (actualité officielle du ministère des Finances, 2026 : « triple quitus des députés » pour l'ARCOP, la ZLECAf et les taxes de soutien au raffinage)."
+ },
+ "application_en_attente": {
+  "constat": "Le rapport d'activités 2025 du CN-ZLECAf indique que les décrets d'application et les circulaires restaient à prendre : l'ouverture effective des frontières n'était pas acquise à la date du rapport.",
+  "sha256": "b7fb9fde7bd6cb83bb90d00c0d033e2589cc9492c256599cd27bb55cb404efa9",
+  "source_url": "https://www.cnzlecaf.gouv.ci/uploads/doc/RAPPORT_DACTIVITES_2025.pdf",
+  "pdf_non_archive": "PDF de 55 Mo non versé au dépôt ; les extraits décisifs sont archivés et scellés dans le fichier ci-dessus.",
+  "verbatim_page_61": "L'ultime étape du processus demeure la prise des décrets d'application, consécutifs à l'adoption de l'ordonnance n°2025-260 du 23 avril 2025 relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de l'Accord portant création de la ZLECAf, ainsi que l'élaboration des circulaires nécessaires, afin de permettre l'ouverture effective des frontières.",
+  "verbatim_page_59": "L'attente des décrets d'application de l'Ordonnance de démantèlement tarifaire pour consacrer l'ouverture effective des frontières dans le cadre de la ZLECAf.",
+  "texte_extrait": "sources/CIV_cnzlecaf_rapport_activites_2025.extrait.txt"
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-25",
+  "cible": "Texte de l'ordonnance n° 2025-260, décrets et circulaires d'application, et toute liste nominative d'États parties admis.",
+  "ou": [
+   {
+    "endroit": "Porte-parolat du Gouvernement — https://www.communication.gouv.ci/uploads/publications/174549003757.pdf",
+    "resultat": "POSITIF pour l'adoption de l'ordonnance et le projet de ratification (communiqué entier lu, 11 pages, PDF archivé) ; aucun partenaire nommé."
+   },
+   {
+    "endroit": "CN-ZLECAf — « Textes officiels nationaux » (https://www.cnzlecaf.gouv.ci/document/liste/fr/nationaux)",
+    "resultat": "NÉGATIF — la page ne liste que les textes de 2018 (Accord, décret de ratification, loi d'autorisation, décret de création du Comité) ; l'ordonnance de 2025 n'y figure pas."
+   },
+   {
+    "endroit": "CN-ZLECAf — Rapport d'activités 2025 (lu intégralement, 62 pages)",
+    "resultat": "POSITIF d'information, NÉGATIF pour la liste : l'ordonnance est confirmée, mais les décrets d'application et circulaires sont en attente ; la réciprocité est rappelée comme principe, jamais convertie en liste d'États."
+   },
+   {
+    "endroit": "Direction générale des Douanes — https://www.douanes.ci/info/circulaire (pages 1 à 4, 29 circulaires les plus récentes)",
+    "resultat": "NÉGATIF — aucune circulaire ZLECAf publiée à la date de consultation ; cohérent avec l'attente des textes d'application."
+   },
+   {
+    "endroit": "Journal officiel ivoirien — jo.gouv.ci",
+    "resultat": "INACCESSIBLE (HTTP 000). Le JO spécial n° 10 du 16 juillet 2025 est repéré chez un revendeur privé (profession-juriste.ci) : source secondaire, non consultée et non substituable."
+   },
+   {
+    "endroit": "Ministère des Finances — actualité sur la ratification parlementaire",
+    "resultat": "POSITIF — le projet de loi de ratification de l'ordonnance ZLECAf a été adopté par les députés ; aucune liste de partenaires."
+   },
+   {
+    "endroit": "Presse (AIP — agence d'État —, Agence Ecofin, Abidjan.net)",
+    "resultat": "Repérage seulement : confirme l'adoption de l'ordonnance sans publier la liste. Sources secondaires, jamais de preuve."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : le texte de l'ordonnance n'a pas été obtenu, et aucune liste nominative d'origines n'a été retrouvée. Le rapport officiel du CN-ZLECAf ajoute un fait décisif : les décrets d'application et circulaires nécessaires à l'ouverture effective des frontières restaient à prendre."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — adoption de l'ordonnance n° 2025-260 et ratification parlementaire établies par sources officielles ; texte de l'ordonnance non obtenu et décrets/circulaires d'application en attente selon le CN-ZLECAf",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée ; la réciprocité reste un principe",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — instantané ECOWAS (barème) archivé, non exploitable sans liste d'origines ni textes d'application",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le texte de l'ordonnance n'est pas lu : on ne sait pas quelles modalités (listes A/B/C, calendrier par groupes de pays) elle fixe exactement.",
+  "Aucun décret d'application ni circulaire douanière n'est publié à ce jour : la date d'ouverture effective des frontières n'est pas établie.",
+  "La loi de ratification existe (adoption parlementaire rapportée officiellement) mais son texte n'a pas été obtenu."
+ ],
+ "remaining_work": [
+  "Obtenir le texte de l'ordonnance n° 2025-260 (Journal officiel ivoirien ou Secrétariat exécutif du CN-ZLECAf).",
+  "Obtenir les décrets d'application et la ou les circulaires de la Direction générale des Douanes : c'est là que figureront les modalités opérationnelles et, le cas échéant, la liste des États partenaires.",
+  "Vérifier la publication de la loi de ratification au Journal officiel."
+ ]
+}
