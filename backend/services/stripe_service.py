@@ -64,6 +64,26 @@ def resolve_price_id(plan: str, cycle: str) -> str:
     return price_id
 
 
+def _tax_options() -> dict:
+    """Calcul automatique des taxes (Stripe Tax), si STRIPE_AUTOMATIC_TAX=true.
+
+    Cocher la TVA dans le tableau de bord ne suffit pas : une session Checkout
+    créée par l'API doit demander elle-même le calcul. Stripe a besoin de
+    l'adresse du client pour déterminer la taxe ; les clients professionnels
+    peuvent saisir leur numéro de TVA (autoliquidation intra-UE). Désactivé
+    par défaut : si Stripe Tax n'est pas entièrement configuré (adresse
+    d'origine, immatriculations), Stripe refuserait de créer la session.
+    """
+    if os.environ.get("STRIPE_AUTOMATIC_TAX", "false").lower() != "true":
+        return {}
+    return {
+        "automatic_tax": {"enabled": True},
+        "billing_address_collection": "required",
+        "customer_update": {"address": "auto", "name": "auto"},
+        "tax_id_collection": {"enabled": True},
+    }
+
+
 def get_or_create_customer(email: str, name: str, existing_id: str | None) -> str:
     """Retourne l'id du Customer Stripe, en le créant si nécessaire.
 
@@ -101,6 +121,7 @@ def create_checkout_session(
         subscription_data={"metadata": metadata},
         metadata=metadata,
         allow_promotion_codes=True,
+        **_tax_options(),
     )
     return session.url
 
@@ -127,6 +148,8 @@ def create_product_checkout_session(
         "currency": "eur",
         "unit_amount": amount_eur * 100,
         "product_data": {"name": label},
+        # Prix de la grille = hors taxes : la taxe éventuelle s'y ajoute.
+        "tax_behavior": "exclusive",
     }
     kwargs = {}
     if recurring:
@@ -141,6 +164,7 @@ def create_product_checkout_session(
         client_reference_id=client_reference_id,
         metadata=metadata,
         **kwargs,
+        **_tax_options(),
     )
     return session.url
 

@@ -719,3 +719,59 @@ def test_hop_count_larger_than_chain_is_clamped(monkeypatch):
 def test_invalid_hop_count_falls_back_to_one(monkeypatch):
     monkeypatch.setenv("TRUSTED_PROXY_HOPS", "beaucoup")
     assert geo_service.trusted_proxy_hops() == 1
+
+
+# ── TVA : Stripe Tax ────────────────────────────────────────────────────────
+
+
+def _capture_session(monkeypatch):
+    captured = {}
+
+    def _create(**kwargs):
+        captured.update(kwargs)
+        return type("S", (), {"url": "https://stripe.test/s"})()
+
+    monkeypatch.setenv("STRIPE_SECRET_KEY", "sk_test_x")
+    monkeypatch.setattr(stripe_service.stripe.checkout.Session, "create", _create)
+    return captured
+
+
+def _plan_session():
+    stripe_service.create_checkout_session(
+        customer_id="cus_1",
+        price_id="price_1",
+        success_url="s",
+        cancel_url="c",
+        client_reference_id="u",
+        metadata={},
+    )
+
+
+def test_automatic_tax_off_by_default(monkeypatch):
+    monkeypatch.delenv("STRIPE_AUTOMATIC_TAX", raising=False)
+    captured = _capture_session(monkeypatch)
+    _plan_session()
+    assert "automatic_tax" not in captured
+
+
+def test_automatic_tax_on_plans_and_products(monkeypatch):
+    monkeypatch.setenv("STRIPE_AUTOMATIC_TAX", "true")
+    captured = _capture_session(monkeypatch)
+    _plan_session()
+    assert captured["automatic_tax"] == {"enabled": True}
+    assert captured["billing_address_collection"] == "required"
+    assert captured["customer_update"] == {"address": "auto", "name": "auto"}
+
+    captured.clear()
+    stripe_service.create_product_checkout_session(
+        customer_id="cus_1",
+        label="Starter API",
+        amount_eur=29,
+        recurring=True,
+        success_url="s",
+        cancel_url="c",
+        client_reference_id="u",
+        metadata={},
+    )
+    assert captured["automatic_tax"] == {"enabled": True}
+    assert captured["line_items"][0]["price_data"]["tax_behavior"] == "exclusive"
