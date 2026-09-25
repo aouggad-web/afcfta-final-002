@@ -30,7 +30,7 @@ from entitlements import all_tier_entitlements
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
 from pymongo.errors import DuplicateKeyError
-from services import chargily_service, geo_service, stripe_service
+from services import chargily_service, geo_service, product_fulfillment, stripe_service
 from services.email_service import send_email
 from starlette.concurrency import run_in_threadpool
 
@@ -158,6 +158,8 @@ async def get_pricing():
     return {
         "currencies": {"stripe": "EUR", "chargily": "DZD"},
         "plans": pricing.grid(),
+        "products": pricing.products_grid(),
+        "dzd_per_eur": pricing.DZD_PER_EUR,
     }
 
 
@@ -288,8 +290,9 @@ async def _record_attempt(db, user, payload, provider: str, signals: dict) -> No
         await db.payment_attempts.insert_one(
             {
                 "user_id": user.get("_id"),
-                "plan": payload.plan,
-                "cycle": payload.cycle,
+                "plan": getattr(payload, "plan", None),
+                "cycle": getattr(payload, "cycle", None),
+                "product": getattr(payload, "product", None),
                 "provider": provider,
                 "created_at": datetime.now(timezone.utc),
                 **signals,
@@ -327,6 +330,92 @@ async def _checkout_chargily(db, user, payload: "CheckoutPayload", signals: dict
     # côté Stripe. La tentative reste tracée dans `payment_attempts`.
     await _record_attempt(db, user, payload, "chargily", signals)
     return {"url": checkout_url}
+
+
+class ProductCheckoutPayload(BaseModel):
+    product: Literal[tuple(pricing.PRODUCTS)]  # type: ignore[valid-type]
+
+
+@router.post("/product-checkout")
+async def create_product_checkout(payload: ProductCheckoutPayload, request: Request):
+    """Paiement d'un produit hors formule (API, option, rapport, formation).
+
+    Même règle de prestataire que les formules : pays d'inscription, sans choix.
+    La livraison est faite par le webhook (`services/product_fulfillment.py`).
+    """
+    db = _require_db()
+    user = await get_current_user(request)
+    await geo_service.resolve_country(request)  # remplit le cache IPinfo
+    ctx = resolve_provider(request, user)
+    if ctx["provider"] is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                "Pays d'inscription non déterminé : impossible de choisir le moyen de "
+                "paiement. Écrivez-nous à contact@afcfta-zlecaf.com."
+            ),
+        )
+    entry = pricing.product(payload.product)
+    signals = geo_service.collect_signals(request, user)
+    metadata = {"user_id": str(user["_id"]), "kind": "product", "product": payload.product}
+
+    if ctx["provider"] == "chargily":
+        if not chargily_service.is_enabled():
+            raise HTTPException(
+                status_code=status.HTTP_501_NOT_IMPLEMENTED,
+                detail="Paiement local (Algérie) bientôt disponible via Chargily.",
+            )
+        try:
+            amount_dzd = pricing.product_dzd_amount(payload.product)
+        except pricing.InvalidPrice as exc:
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc))
+        url = await run_in_threadpool(
+            lambda: chargily_service.create_checkout(
+                amount_dzd=amount_dzd,
+                success_url=_success_url(),
+                failure_url=_cancel_url(),
+                description=f"ZLECAf — {entry['label']}",
+                metadata=metadata,
+            )
+        )
+        await _record_attempt(db, user, payload, "chargily", signals)
+        return {"url": url}
+
+    customer_id = await run_in_threadpool(
+        stripe_service.get_or_create_customer,
+        user.get("email", ""),
+        user.get("name", ""),
+        user.get("stripe_customer_id"),
+    )
+    if not user.get("stripe_customer_id"):
+        await db.users.update_one(
+            {"_id": user["_id"]},
+            {"$set": {"stripe_customer_id": customer_id}},
+        )
+    url = await run_in_threadpool(
+        lambda: stripe_service.create_product_checkout_session(
+            customer_id=customer_id,
+            label=entry["label"],
+            amount_eur=entry["eur"],
+            recurring=entry["recurring"],
+            success_url=_success_url(),
+            cancel_url=_cancel_url(),
+            client_reference_id=str(user["_id"]),
+            metadata=metadata,
+        )
+    )
+    await _record_attempt(db, user, payload, "stripe", signals)
+    return {"url": url}
+
+
+def _is_product(obj: dict) -> bool:
+    return (obj.get("metadata") or {}).get("kind") == "product"
+
+
+def _invoice_subscription_id(invoice: dict) -> Optional[str]:
+    """Id d'abonnement d'une facture, selon la version d'API Stripe."""
+    parent = (invoice.get("parent") or {}).get("subscription_details") or {}
+    return invoice.get("subscription") or parent.get("subscription")
 
 
 @router.post("/portal")
@@ -515,7 +604,33 @@ async def stripe_webhook(request: Request):
     # En cas d'échec du traitement, on libère la réservation pour que le rejeu
     # Stripe refasse le travail au lieu de le sauter en « déjà traité ».
     try:
-        if event_type == "checkout.session.completed":
+        # Produits hors formule : livrés/suivis à part, sans jamais toucher à
+        # l'abonnement principal de l'utilisateur.
+        if event_type == "checkout.session.completed" and _is_product(data_obj):
+            meta = data_obj["metadata"]
+            await product_fulfillment.activate(
+                db,
+                user_id=meta.get("user_id", ""),
+                product_id=meta.get("product", ""),
+                provider="stripe",
+                subscription_id=data_obj.get("subscription"),
+            )
+        elif event_type in (
+            "customer.subscription.updated",
+            "customer.subscription.deleted",
+        ) and _is_product(data_obj):
+            status_ = "canceled" if event_type.endswith("deleted") else data_obj.get("status")
+            await product_fulfillment.update_stripe_subscription(db, data_obj.get("id"), status_)
+        elif event_type == "invoice.payment_failed" and (
+            await product_fulfillment.is_product_subscription(
+                db, _invoice_subscription_id(data_obj)
+            )
+        ):
+            await product_fulfillment.update_stripe_subscription(
+                db, _invoice_subscription_id(data_obj), "past_due"
+            )
+
+        elif event_type == "checkout.session.completed":
             meta = data_obj.get("metadata") or {}
             plan = meta.get("plan", "free")
             cycle = meta.get("cycle")
@@ -633,7 +748,11 @@ async def chargily_webhook(request: Request):
             meta = meta[0] if meta and isinstance(meta[0], dict) else {}
         user_id = meta.get("user_id", "")
 
-        if event_type == "checkout.paid":
+        if event_type == "checkout.paid" and meta.get("kind") == "product":
+            await product_fulfillment.activate(
+                db, user_id=user_id, product_id=meta.get("product", ""), provider="chargily"
+            )
+        elif event_type == "checkout.paid":
             plan = meta.get("plan", "free")
             cycle = meta.get("cycle")
             # Chargily n'a pas de notion d'abonnement récurrent (cf. docstring

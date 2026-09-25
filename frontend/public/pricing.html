@@ -339,14 +339,14 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- API B2B -->
-<div class="section" data-region="intl" style="margin-top:80px">
+<div class="section" style="margin-top:80px">
   <div class="section-eyebrow">API Commerce</div>
   <div class="section-title">Intégrez les données ZLECAf dans vos outils</div>
   <p class="section-sub">Votre ERP, plateforme e-commerce ou solution logistique peut accéder directement aux données tarifaires de 54 pays via notre API REST documentée.</p>
   <div class="api-plans">
     <div class="api-card">
       <div class="api-tag">Starter API</div>
-      <div class="api-price">29€</div>
+      <div class="api-price" data-product="api_starter">29€</div>
       <div class="api-per">/ mois · 5 000 requêtes</div>
       <div class="api-specs">
         <div class="api-spec"><strong>5 000 requêtes / mois</strong></div>
@@ -355,11 +355,11 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">Clé API dédiée</div>
         <div class="api-spec">Support communauté</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Starter API'">Obtenir une clé API</button>
+      <button class="api-cta" onclick="startProductCheckout('api_starter')">Démarrer Starter API</button>
     </div>
     <div class="api-card" style="border-color:var(--blu-b)">
       <div class="api-tag">Business API</div>
-      <div class="api-price">99€</div>
+      <div class="api-price" data-product="api_business">99€</div>
       <div class="api-per">/ mois · 50 000 requêtes</div>
       <div class="api-specs">
         <div class="api-spec"><strong>50 000 requêtes / mois</strong></div>
@@ -368,7 +368,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">IP whitelist · Logs avancés</div>
         <div class="api-spec">Intégration Postman incluse</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Business API'">Démarrer Business API</button>
+      <button class="api-cta" onclick="startProductCheckout('api_business')">Démarrer Business API</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Enterprise API</div>
@@ -387,112 +387,112 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- OPTIONS ADDITIONNELLES -->
-<div class="section" data-region="intl">
+<div class="section">
   <div class="section-eyebrow">Options à la carte</div>
   <div class="section-title">Ajoutez ce dont vous avez besoin</div>
-  <p class="section-sub">Complétez votre abonnement Pro ou Business avec des options ponctuelles, sans changer de plan.</p>
+  <p class="section-sub">Complétez votre abonnement Pro ou Business avec des options mensuelles ou ponctuelles, sans changer de plan.</p>
   <div class="addon-plans">
     <div class="api-card">
       <div class="api-tag">Utilisateur supplémentaire</div>
-      <div class="api-price">5€</div>
+      <div class="api-price" data-product="extra_seat">5€</div>
       <div class="api-per">/ mois / utilisateur</div>
       <div class="api-specs">
         <div class="api-spec">Plan Business uniquement</div>
         <div class="api-spec">Accès complet à la plateforme</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Utilisateurs supplémentaires'">Ajouter des utilisateurs</button>
+      <button class="api-cta" onclick="startProductCheckout('extra_seat')">Ajouter des utilisateurs</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Pack requêtes API</div>
-      <div class="api-price">19€</div>
+      <div class="api-price" data-product="api_pack">19€</div>
       <div class="api-per">+ 20 000 requêtes / mois</div>
       <div class="api-specs">
         <div class="api-spec">Cumulable avec tout plan API</div>
         <div class="api-spec">Activation immédiate</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Pack requêtes API'">Ajouter le pack</button>
+      <button class="api-cta" onclick="startProductCheckout('api_pack')">Ajouter le pack</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Support prioritaire</div>
-      <div class="api-price">15€</div>
+      <div class="api-price" data-product="priority_support">15€</div>
       <div class="api-per">/ mois · réponse &lt; 4h</div>
       <div class="api-specs">
         <div class="api-spec">Chat + email + téléphone</div>
         <div class="api-spec">Disponible sur Pro & Starter</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Support prioritaire'">Activer le support</button>
+      <button class="api-cta" onclick="startProductCheckout('priority_support')">Activer le support</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Formation équipe</div>
-      <div class="api-price">99€</div>
+      <div class="api-price" data-product="team_training">99€</div>
       <div class="api-per">webinar dédié · one-shot</div>
       <div class="api-specs">
         <div class="api-spec">2h en direct, jusqu'à 10 pers.</div>
         <div class="api-spec">Support de formation inclus</div>
       </div>
-      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Formation équipe'">Réserver une session</button>
+      <button class="api-cta" onclick="startProductCheckout('team_training')">Réserver une session</button>
     </div>
   </div>
 </div>
 
 <!-- RAPPORTS -->
-<div class="section" data-region="intl">
+<div class="section">
   <div class="section-eyebrow">Rapports & Intelligence</div>
   <div class="section-title">Données sectorielles AfCFTA</div>
   <p class="section-sub">Rapports PDF approfondis sur les opportunités commerciales par secteur. Générés à partir des données live de votre plateforme.</p>
   <div class="reports-grid">
-    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Rapport Agriculture'">
+    <div class="report-card" onclick="startProductCheckout('report_agri')">
       <div class="report-icon">🌾</div>
       <div class="report-meta">
         <div class="report-name">Rapport Agriculture & Agroalimentaire</div>
         <div class="report-desc">Tarifs, règles d'origine et opportunités pour 15 secteurs agricoles entre 54 pays. 40 pages. Mis à jour trimestriellement.</div>
         <div class="report-footer">
-          <span class="report-price">59€</span>
-          <button class="report-buy">Commander →</button>
+          <span class="report-price" data-product="report_agri">59€</span>
+          <button class="report-buy">Acheter →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Rapport Textile'">
+    <div class="report-card" onclick="startProductCheckout('report_textile')">
       <div class="report-icon">🧵</div>
       <div class="report-meta">
         <div class="report-name">Rapport Textile & Habillement</div>
         <div class="report-desc">Double transformation, règles d'origine et corridors logistiques pour le textile. Focus : Éthiopie, Maroc, Tunisie.</div>
         <div class="report-footer">
-          <span class="report-price">59€</span>
-          <button class="report-buy">Commander →</button>
+          <span class="report-price" data-product="report_textile">59€</span>
+          <button class="report-buy">Acheter →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Rapport Pharmaceutique'">
+    <div class="report-card" onclick="startProductCheckout('report_pharma')">
       <div class="report-icon">💊</div>
       <div class="report-meta">
         <div class="report-name">Rapport Pharmaceutique & Santé</div>
         <div class="report-desc">Tarifs préférentiels et listes de produits exemptés dans le secteur pharma AfCFTA. Critique pour l'accès aux médicaments.</div>
         <div class="report-footer">
-          <span class="report-price">89€</span>
-          <button class="report-buy">Commander →</button>
+          <span class="report-price" data-product="report_pharma">89€</span>
+          <button class="report-buy">Acheter →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Newsletter veille tarifaire'">
+    <div class="report-card" onclick="startProductCheckout('newsletter')">
       <div class="report-icon">📧</div>
       <div class="report-meta">
         <div class="report-name">Newsletter — Veille tarifaire mensuelle</div>
         <div class="report-desc">Bulletin mensuel : nouveaux accords, changements de tarifs, opportunités commerciales détectées automatiquement. Abonnement.</div>
         <div class="report-footer">
-          <span class="report-price">9€ / mois</span>
+          <span class="report-price"><span data-product="newsletter">9€</span> / mois</span>
           <button class="report-buy">S'abonner →</button>
         </div>
       </div>
     </div>
-    <div class="report-card bundle" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Pack 4 rapports'" style="grid-column:1/-1">
+    <div class="report-card bundle" onclick="startProductCheckout('report_pack')" style="grid-column:1/-1">
       <div class="report-icon">📦</div>
       <div class="report-meta">
         <div class="report-name">Pack 4 rapports sectoriels — l'année complète</div>
         <div class="report-desc">Les 4 rapports (Agriculture, Textile, Pharma + 1 rapport bonus au choix) livrés dès leur mise à jour trimestrielle.</div>
         <div class="report-footer">
-          <span class="report-price"><s>266€</s> 179€</span>
-          <button class="report-buy">Commander le pack →</button>
+          <span class="report-price"><s data-strike="report_agri,report_textile,report_pharma,report_agri">266€</s> <span data-product="report_pack">179€</span></span>
+          <button class="report-buy">Acheter le pack →</button>
         </div>
       </div>
     </div>
@@ -500,7 +500,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- CERTIFICATION -->
-<div class="section" data-region="intl">
+<div class="section">
   <div class="section-eyebrow">Formation & Certification</div>
   <div class="section-title">Devenez Expert AfCFTA certifié</div>
   <div class="cert-card">
@@ -518,10 +518,10 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <div class="cert-price-box">
       <div class="cert-price-label">Tarif lancement</div>
-      <div class="cert-price-old">199€</div>
-      <div class="cert-price-val">129€</div>
+      <div class="cert-price-old" data-strike-eur="199">199€</div>
+      <div class="cert-price-val" data-product="certification">129€</div>
       <div class="cert-price-per">accès à vie</div>
-      <button class="cert-btn" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Certification Expert AfCFTA'">M'inscrire</button>
+      <button class="cert-btn" onclick="startProductCheckout('certification')">M'inscrire</button>
     </div>
   </div>
 </div>
@@ -590,22 +590,14 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
       <div class="faq-a">Les données proviennent de sources officielles : World Bank, WTO, OEC, AfDB, FMI et le Secrétariat de l'AfCFTA. Elles sont mises à jour automatiquement chaque jour à 2h00 UTC via notre pipeline de données. Les règles d'origine couvrent 97 secteurs HS2.</div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
-      <div class="faq-q">Comment obtenir l'accès à l'API ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">L'accès API est inclus dans le plan Business. Après souscription, écrivez-nous à contact@afcfta-zlecaf.com : votre clé API vous est remise par notre équipe. La documentation interactive de l'API est disponible sur /api/docs.</div>
-    </div>
-    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Proposez-vous des tarifs spéciaux pour les institutions africaines ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Oui. Nous proposons des contrats institutionnels spéciaux pour les gouvernements, banques de développement (Afreximbank, AfDB), universités et organisations régionales africaines. Contactez-nous à contact@afcfta-zlecaf.com pour discuter d'un partenariat.</div>
-    </div>
-    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
-      <div class="faq-q">Comment fonctionne le paiement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a"><span data-region="intl">Vos paiements sont traités par Stripe : cartes Visa, Mastercard, American Express, facturation en euros (EUR), renouvellement automatique.</span> <span data-region="dz">Vos paiements sont traités par Chargily : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation des changes.</span> Le moyen de paiement est déterminé automatiquement par le pays depuis lequel vous avez créé votre compte : Chargily pour l'Algérie, Stripe pour tous les autres pays.</div>
     </div>
   </div>
 </div>
 
 <div class="stripe-note">
-  <p><strong><span data-region="intl">Paiements sécurisés via Stripe</span><span data-region="dz">Paiements sécurisés via Chargily</span></strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
+  <p><strong><span data-region="intl">Paiements sécurisés via Stripe</span><span data-region="dz">Paiements sécurisés via Chargily</span></strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs</p>
 </div>
 
 <footer>
@@ -637,6 +629,10 @@ let pricesDZD = {
 // 'EUR' (Stripe) ou 'DZD' (Chargily) — fixé par loadPaymentContext() selon le
 // prestataire imposé par le serveur ; EUR tant qu'il n'a pas répondu.
 let currentCurrency = 'EUR';
+// Produits hors formule (API, options, rapports, formation) : id → {eur, dzd},
+// rempli par loadPricing() depuis pricing.PRODUCTS. Vide = prix EUR statiques.
+let productPrices = {};
+let dzdPerEur = 150;
 
 // Charge la grille tarifaire publique depuis le backend (source unique
 // pricing.py) et re-rend les cartes. En cas d'échec, on garde silencieusement
@@ -662,6 +658,8 @@ async function loadPricing() {
       pro:     { m: byPlan.pro.dzd.monthly,     y: byPlan.pro.dzd.annual },
       biz:     { m: byPlan.business.dzd.monthly, y: byPlan.business.dzd.annual }
     };
+    (data.products || []).forEach(function (p) { productPrices[p.product] = p; });
+    if (data.dzd_per_eur) dzdPerEur = data.dzd_per_eur;
     renderPrices();
   } catch (e) {
     console.warn('Grille tarifaire serveur indisponible, repli statique conservé:', e);
@@ -847,7 +845,17 @@ async function startCheckout(plan) {
   const cycle = annual ? 'annual' : 'monthly';
   // Le prestataire (Stripe / Chargily) est choisi côté serveur selon le pays
   // d'inscription du compte : rien à envoyer ici.
-  const body = JSON.stringify({ plan: plan, cycle: cycle });
+  return launchCheckout('/api/billing/checkout', { plan: plan, cycle: cycle });
+}
+
+// Produits hors formule (API, options, rapports, formation) : même parcours,
+// prix et prestataire décidés côté serveur (pricing.PRODUCTS).
+async function startProductCheckout(product) {
+  return launchCheckout('/api/billing/product-checkout', { product: product });
+}
+
+async function launchCheckout(url, payload) {
+  const body = JSON.stringify(payload);
 
   // Safari/iOS perd le "geste utilisateur" dès qu'un await sépare le clic de
   // la navigation : window.location.href après un fetch y est alors ignoré
@@ -858,7 +866,7 @@ async function startCheckout(plan) {
   const w = window.open('', '_blank');
 
   async function postCheckout(token) {
-    return fetch('/api/billing/checkout', {
+    return fetch(url, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
@@ -943,6 +951,24 @@ function renderPrices() {
   // Formatage FR : séparateur de milliers en DZD (18 750 DZD lisible), rien en EUR.
   const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : String(n);
   document.getElementById('price-free').innerHTML = '0' + symbol + '<span>/mois</span>';
+  const productAmount = (id) => {
+    const p = productPrices[id];
+    return p ? (currentCurrency === 'DZD' ? p.dzd : p.eur) : null;
+  };
+  document.querySelectorAll('[data-product]').forEach(function (el) {
+    const amount = productAmount(el.dataset.product);
+    if (amount !== null) el.textContent = fmt(amount) + symbol;
+  });
+  document.querySelectorAll('[data-strike]').forEach(function (el) {
+    const amounts = el.dataset.strike.split(',').map(productAmount);
+    if (amounts.every(function (a) { return a !== null; })) {
+      el.textContent = fmt(amounts.reduce(function (a, b) { return a + b; }, 0)) + symbol;
+    }
+  });
+  document.querySelectorAll('[data-strike-eur]').forEach(function (el) {
+    const eur = Number(el.dataset.strikeEur);
+    el.textContent = fmt(currentCurrency === 'DZD' ? eur * dzdPerEur : eur) + symbol;
+  });
 
   // Équivalent mensuel exact : EUR à 2 décimales (110/12 = 9,17 € — se
   // réconcilie avec le total annuel, contrairement à un arrondi entier
