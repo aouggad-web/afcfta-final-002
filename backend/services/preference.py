@@ -235,17 +235,26 @@ def taux_preferentiels(
 
     etendue = PERIMETRES_NATIONAUX.get(destination_iso3.upper())
     if etendue:
+        dd_npf = _taux_npf(position, "DD")
+        dd_servi = taux_dd.get("taux") if isinstance(taux_dd, dict) else None
         for code, definition in etendue(hs_code, origine_iso3).items():
             npf = _taux_npf(position, code)
             if npf is None:
                 continue
             if isinstance(definition, dict):
-                # Réduction proportionnelle : la part restante s'applique au
-                # taux que porte la position (TPI marocaine).
+                # Réduction proportionnelle (TPI marocaine) : elle suit le sort
+                # du DI. Quand le taux préférentiel du DI atteint ou dépasse le
+                # NPF, c'est le NPF qui est servi — la TPI reste alors PLEINE,
+                # sinon le calcul mélangerait deux régimes (droit commun pour
+                # le DI, préférentiel pour la TPI). Ex. 0901110000 : 4 % contre
+                # 2,5 %.
+                if dd_npf is not None and (dd_servi is None or dd_servi >= dd_npf):
+                    continue
                 table[code] = {"taux": round(npf * definition["facteur"], 6)}
                 perimetre[code] = definition["reference"]
             else:
-                # Exonération binaire (DAPS algérien).
+                # Exonération binaire (DAPS algérien) : elle ne dépend pas du
+                # sort du DI — le plancher ne doit pas l'effacer.
                 table[code] = {"taux": 0.0}
                 perimetre[code] = definition
 

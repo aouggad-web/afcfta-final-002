@@ -2251,9 +2251,12 @@ def calculate_import_taxes(
         # TPI marocaine : la circulaire ADII 6530/223 (section III) la démantèle
         # avec le DI, sur le même calendrier (5 ans P1, 10 ans P2 à compter du
         # 01/01/2021 ; avenant 6627/223). Part restante appliquée à la TPI
-        # publiée — jamais une exonération immédiate. Le chemin socle applique
-        # la même règle par PERIMETRES_NATIONAUX.
-        if country_iso3.upper() == "MAR" and "TPI" in zlecaf_taxes and _eff_dd is not None:
+        # publiée — jamais une exonération immédiate. Elle suit le sort du DI :
+        # quand le taux préférentiel atteint ou dépasse le NPF, le plancher sert
+        # le NPF et la TPI reste PLEINE (0901110000 : 4 % contre 2,5 %), sinon
+        # le calcul mélangerait deux régimes. Le chemin socle applique la même
+        # règle par PERIMETRES_NATIONAUX.
+        if country_iso3.upper() == "MAR" and "TPI" in zlecaf_taxes and _zctx["preference_applied"]:
             from services.zlecaf_schedule_mar import tpi_preferentielle
 
             _tpi_base = zlecaf_taxes["TPI"]

@@ -48,12 +48,14 @@ HORS_LISTE = "AGO"
 CODE = "0101291000"
 #: Ligne réelle absente de la liste A publiée : la TPI y reste pleine.
 CODE_HORS_LISTE_A = "0102293100"
+#: Ligne où le DI ZLECAf (4 %) dépasse le NPF (2,5 %) : le plancher joue.
+CODE_PLANCHER = "0901110000"
 
 
-def _position() -> dict:
+def _position(dd: float = 10.0) -> dict:
     return {
         "droits": [
-            {"code": "DD", "taux": 10.0, "assiette": "CIF", "famille": "droit"},
+            {"code": "DD", "taux": dd, "assiette": "CIF", "famille": "droit"},
             {"code": "TPI", "taux": 0.25, "assiette": "CIF", "famille": "redevance"},
             {"code": "TVA", "taux": 20.0, "assiette": "CIF+DD+TPI", "famille": "tva"},
         ],
@@ -178,6 +180,41 @@ def test_la_tva_est_assise_sur_le_di_et_la_tpi_reduits():
     assert zlecaf["vat"]["base"] == 1000.0 + 40.0 + 1.0
     assert zlecaf["vat"]["amount"] == 208.2
     assert zlecaf["total_to_pay"] < npf["total_to_pay"]
+
+
+def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
+    """Huit lignes servent un DI ZLECAf au-dessus du NPF (0901110000 : 4 % vs 2,5 %).
+
+    Le DI retombe alors au NPF ; réduire quand même la TPI mélangerait deux
+    régimes — droit commun pour le DI, préférentiel pour la TPI. Le calcul
+    entier relève du droit commun, sur les deux chemins.
+    """
+    position = _position(dd=2.5)
+    table = taux_preferentiels(position, "MAR", P2, CODE_PLANCHER)["taux"]
+    # Seul le DI préférentiel est proposé : la TPI ne suit pas une préférence
+    # que le plancher écarte.
+    assert table == {"DD": {"taux": 4.0}}
+
+    contexte = resolve_zlecaf_context("MAR", P2, CODE_PLANCHER, 2.5, None)
+    assert contexte["plancher_npf"] is not None
+    assert contexte["preference_applied"] is False
+    assert contexte["dd_rate_pct"] == 2.5
+
+    socle = calculer(position, 1000.0, taux_preferentiels=table)["preference"]
+    historique = calculate_import_taxes("MAR", CODE_PLANCHER, 1000.0, origin_country=P2)
+    zlecaf = historique["zlecaf_calculation"]
+
+    assert socle["total_a_payer"] == 1233.0
+    assert zlecaf["total_to_pay"] == 1233.0
+    assert zlecaf["total_to_pay"] == historique["npf_calculation"]["total_to_pay"]
+
+    par_code = {ligne["code"]: ligne for ligne in socle["lignes"]}
+    assert par_code["DD"]["regime_applique"] == "npf_plancher"
+    assert par_code["DD"]["taux_pct"] == 2.5
+    assert par_code["TPI"]["taux_pct"] == 0.25  # TPI pleine
+    assert zlecaf["other_taxes"]["rate_pct"] == 0.25
+    assert zlecaf["dd"]["rate_pct"] == 2.5
+    assert zlecaf["vat"]["base"] == 1000.0 + 25.0 + 2.5
 
 
 def test_le_taux_servi_n_est_jamais_au_dessus_du_npf():
