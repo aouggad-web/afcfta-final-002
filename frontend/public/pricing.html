@@ -195,6 +195,11 @@ h1 em{font-style:italic;color:var(--gold)}
 .stripe-note p{font-size:12px;color:var(--dim)}
 .stripe-note strong{color:var(--muted)}
 
+/* Affichage selon la géolocalisation : loadPaymentContext() pose region-dz ou
+   region-intl sur <body>. Sans classe (pays inconnu), tout reste visible. */
+body.region-dz [data-region="intl"],body.region-intl [data-region="dz"]{display:none}
+body.region-dz .pay-methods,body.region-intl .pay-methods{grid-template-columns:1fr;max-width:640px}
+
 footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;gap:8px}
 
 @media(max-width:1000px){
@@ -228,7 +233,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <button class="nav-link" onclick="window.location.href='https://afcfta-zlecaf.com'">Calculateur</button>
     <button class="nav-link">API</button>
     <button class="nav-link">Rapports</button>
-    <button class="nav-cta">Commencer gratuitement</button>
+    <button class="nav-cta" onclick="window.location.href='/#auth=login'">Commencer gratuitement</button>
   </div>
 </nav>
 
@@ -236,7 +241,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <div class="hero">
   <div class="hero-eyebrow">Tarifs & Plans</div>
   <h1>Le commerce africain<br><em>commence ici</em></h1>
-  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. Paiement par carte partout dans le monde, et par Chargily (CIB / Edahabia) en Algérie.</p>
+  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. <span data-region="intl">Paiement par carte bancaire via Stripe, en euros.</span> <span data-region="dz">Paiement par carte CIB ou Edahabia via Chargily, en dinars.</span></p>
   <div class="billing-toggle" role="switch" tabindex="0" aria-checked="false" aria-label="Facturation annuelle" id="billing-switch" onclick="toggleBilling()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBilling();}">
     <span id="bill-monthly" style="color:var(--txt);font-weight:500">Mensuel</span>
     <div class="toggle-track" id="toggle-track">
@@ -255,7 +260,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 
   <div class="plan">
     <div class="plan-name">Free</div>
-    <div class="plan-price">0€<span>/mois</span></div>
+    <div class="plan-price" id="price-free">0€<span>/mois</span></div>
     <div class="plan-per">pour toujours · sans carte</div>
     <div class="annual-price" id="annual-free"></div>
     <div class="plan-desc">Idéal pour découvrir les opportunités commerciales AfCFTA et faire vos premiers calculs.</div>
@@ -269,7 +274,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
       <div class="plan-item no">Alertes tarifaires</div>
       <div class="plan-item no">Accès API</div>
     </div>
-    <button class="plan-btn secondary" onclick="alert('Inscription gratuite — intégration Stripe / Chargily à venir')">Commencer gratuitement</button>
+    <button class="plan-btn secondary" onclick="window.location.href='/#auth=login'">Commencer gratuitement</button>
   </div>
 
   <div class="plan">
@@ -334,7 +339,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- API B2B -->
-<div class="section" style="margin-top:80px">
+<div class="section" data-region="intl" style="margin-top:80px">
   <div class="section-eyebrow">API Commerce</div>
   <div class="section-title">Intégrez les données ZLECAf dans vos outils</div>
   <p class="section-sub">Votre ERP, plateforme e-commerce ou solution logistique peut accéder directement aux données tarifaires de 54 pays via notre API REST documentée.</p>
@@ -350,7 +355,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">Clé API dédiée</div>
         <div class="api-spec">Support communauté</div>
       </div>
-      <button class="api-cta">Obtenir une clé API</button>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Starter API'">Obtenir une clé API</button>
     </div>
     <div class="api-card" style="border-color:var(--blu-b)">
       <div class="api-tag">Business API</div>
@@ -363,7 +368,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">IP whitelist · Logs avancés</div>
         <div class="api-spec">Intégration Postman incluse</div>
       </div>
-      <button class="api-cta">Démarrer Business API</button>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Business API'">Démarrer Business API</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Enterprise API</div>
@@ -382,7 +387,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- OPTIONS ADDITIONNELLES -->
-<div class="section">
+<div class="section" data-region="intl">
   <div class="section-eyebrow">Options à la carte</div>
   <div class="section-title">Ajoutez ce dont vous avez besoin</div>
   <p class="section-sub">Complétez votre abonnement Pro ou Business avec des options ponctuelles, sans changer de plan.</p>
@@ -395,7 +400,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">Plan Business uniquement</div>
         <div class="api-spec">Accès complet à la plateforme</div>
       </div>
-      <button class="api-cta">Ajouter des utilisateurs</button>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Utilisateurs supplémentaires'">Ajouter des utilisateurs</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Pack requêtes API</div>
@@ -405,7 +410,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">Cumulable avec tout plan API</div>
         <div class="api-spec">Activation immédiate</div>
       </div>
-      <button class="api-cta">Ajouter le pack</button>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Pack requêtes API'">Ajouter le pack</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Support prioritaire</div>
@@ -415,7 +420,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <div class="api-spec">Chat + email + téléphone</div>
         <div class="api-spec">Disponible sur Pro & Starter</div>
       </div>
-      <button class="api-cta">Activer le support</button>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Support prioritaire'">Activer le support</button>
     </div>
     <div class="api-card">
       <div class="api-tag">Formation équipe</div>
@@ -431,45 +436,45 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- RAPPORTS -->
-<div class="section">
+<div class="section" data-region="intl">
   <div class="section-eyebrow">Rapports & Intelligence</div>
   <div class="section-title">Données sectorielles AfCFTA</div>
   <p class="section-sub">Rapports PDF approfondis sur les opportunités commerciales par secteur. Générés à partir des données live de votre plateforme.</p>
   <div class="reports-grid">
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Rapport Agriculture'">
       <div class="report-icon">🌾</div>
       <div class="report-meta">
         <div class="report-name">Rapport Agriculture & Agroalimentaire</div>
         <div class="report-desc">Tarifs, règles d'origine et opportunités pour 15 secteurs agricoles entre 54 pays. 40 pages. Mis à jour trimestriellement.</div>
         <div class="report-footer">
           <span class="report-price">59€</span>
-          <button class="report-buy">Acheter →</button>
+          <button class="report-buy">Commander →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Rapport Textile'">
       <div class="report-icon">🧵</div>
       <div class="report-meta">
         <div class="report-name">Rapport Textile & Habillement</div>
         <div class="report-desc">Double transformation, règles d'origine et corridors logistiques pour le textile. Focus : Éthiopie, Maroc, Tunisie.</div>
         <div class="report-footer">
           <span class="report-price">59€</span>
-          <button class="report-buy">Acheter →</button>
+          <button class="report-buy">Commander →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Rapport Pharmaceutique'">
       <div class="report-icon">💊</div>
       <div class="report-meta">
         <div class="report-name">Rapport Pharmaceutique & Santé</div>
         <div class="report-desc">Tarifs préférentiels et listes de produits exemptés dans le secteur pharma AfCFTA. Critique pour l'accès aux médicaments.</div>
         <div class="report-footer">
           <span class="report-price">89€</span>
-          <button class="report-buy">Acheter →</button>
+          <button class="report-buy">Commander →</button>
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Abonnement mensuel via Stripe / Chargily — à configurer')">
+    <div class="report-card" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Newsletter veille tarifaire'">
       <div class="report-icon">📧</div>
       <div class="report-meta">
         <div class="report-name">Newsletter — Veille tarifaire mensuelle</div>
@@ -480,14 +485,14 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         </div>
       </div>
     </div>
-    <div class="report-card bundle" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')" style="grid-column:1/-1">
+    <div class="report-card bundle" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Pack 4 rapports'" style="grid-column:1/-1">
       <div class="report-icon">📦</div>
       <div class="report-meta">
         <div class="report-name">Pack 4 rapports sectoriels — l'année complète</div>
         <div class="report-desc">Les 4 rapports (Agriculture, Textile, Pharma + 1 rapport bonus au choix) livrés dès leur mise à jour trimestrielle.</div>
         <div class="report-footer">
           <span class="report-price"><s>266€</s> 179€</span>
-          <button class="report-buy">Acheter le pack →</button>
+          <button class="report-buy">Commander le pack →</button>
         </div>
       </div>
     </div>
@@ -495,7 +500,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </div>
 
 <!-- CERTIFICATION -->
-<div class="section">
+<div class="section" data-region="intl">
   <div class="section-eyebrow">Formation & Certification</div>
   <div class="section-title">Devenez Expert AfCFTA certifié</div>
   <div class="cert-card">
@@ -516,7 +521,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
       <div class="cert-price-old">199€</div>
       <div class="cert-price-val">129€</div>
       <div class="cert-price-per">accès à vie</div>
-      <button class="cert-btn" onclick="alert('Paiement Stripe / Chargily — à configurer')">M'inscrire</button>
+      <button class="cert-btn" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Certification Expert AfCFTA'">M'inscrire</button>
     </div>
   </div>
 </div>
@@ -548,7 +553,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-eyebrow">Moyens de paiement</div>
   <div class="section-title" style="margin-bottom:24px">Un paiement adapté à votre pays</div>
   <div class="pay-methods">
-    <div class="pay-card">
+    <div class="pay-card" data-region="intl">
       <div class="pay-flag">🌍</div>
       <div>
         <h4>International — Stripe</h4>
@@ -556,12 +561,12 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         <span class="tag">Hors Algérie</span>
       </div>
     </div>
-    <div class="pay-card">
+    <div class="pay-card" data-region="dz">
       <div class="pay-flag">🇩🇿</div>
       <div>
         <h4>Algérie — Chargily</h4>
-        <p>Cartes CIB et Edahabia, facturation en dinars algériens (DZD) au taux du jour. Solution locale conforme à la réglementation des changes.</p>
-        <span class="tag">Phase de lancement</span>
+        <p>Cartes CIB et Edahabia, tarifs fixes en dinars algériens (DZD). Paiement ponctuel pour 1 mois ou 1 an, sans renouvellement automatique. Solution locale conforme à la réglementation des changes.</p>
+        <span class="tag">Algérie</span>
       </div>
     </div>
   </div>
@@ -578,15 +583,15 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Puis-je annuler à tout moment ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Oui. Tous les plans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de la période en cours, et aucun frais n'est prélevé ensuite.</div>
+      <div class="faq-a"><span data-region="intl">Oui. Tous les plans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de la période en cours, et aucun frais n'est prélevé ensuite.</span> <span data-region="dz">Il n'y a rien à annuler : les paiements Chargily sont ponctuels, sans renouvellement automatique. Votre accès dure la période payée (1 mois ou 1 an) ; pour continuer, il suffit de renouveler depuis cette page.</span></div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">D'où proviennent les données tarifaires ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Les données proviennent de sources officielles : World Bank, WTO, OEC, AfDB, FMI et le Secrétariat de l'AfCFTA. Elles sont mises à jour automatiquement chaque jour à 2h00 UTC via notre pipeline de données. Les règles d'origine couvrent 97 secteurs HS2.</div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
-      <div class="faq-q">L'API est-elle disponible immédiatement après souscription ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Oui. Après souscription au plan Business ou à un plan API, votre clé est générée immédiatement dans votre tableau de bord. La documentation complète avec exemples en Python, JavaScript et cURL est disponible sur docs.afcfta-zlecaf.com.</div>
+      <div class="faq-q">Comment obtenir l'accès à l'API ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">L'accès API est inclus dans le plan Business. Après souscription, écrivez-nous à contact@afcfta-zlecaf.com : votre clé API vous est remise par notre équipe. La documentation interactive de l'API est disponible sur /api/docs.</div>
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Proposez-vous des tarifs spéciaux pour les institutions africaines ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
@@ -594,13 +599,13 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Comment fonctionne le paiement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en euros (EUR). En Algérie, dans un premier temps, les paiements sont traités via Chargily : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé dépend de votre pays de facturation.</div>
+      <div class="faq-a"><span data-region="intl">Vos paiements sont traités par Stripe : cartes Visa, Mastercard, American Express, facturation en euros (EUR), renouvellement automatique.</span> <span data-region="dz">Vos paiements sont traités par Chargily : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation des changes.</span> Le moyen de paiement est déterminé automatiquement par le pays depuis lequel vous avez créé votre compte : Chargily pour l'Algérie, Stripe pour tous les autres pays.</div>
     </div>
   </div>
 </div>
 
 <div class="stripe-note">
-  <p><strong>Paiements sécurisés via Stripe (international) et Chargily (Algérie)</strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
+  <p><strong><span data-region="intl">Paiements sécurisés via Stripe</span><span data-region="dz">Paiements sécurisés via Chargily</span></strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
 </div>
 
 <footer>
@@ -618,7 +623,7 @@ let annual = false;
 // la grille serveur dès que possible, pour qu'un changement de pricing.py
 // n'exige plus d'édition manuelle de cette page.
 // prices : montants EUR (Stripe, hors DZ). pricesDZD : montants DZD
-// (Chargily, DZ) — un seul jeu est affiché à la fois selon le pays choisi.
+// (Chargily, DZ) — un seul jeu est affiché à la fois selon la géolocalisation.
 let prices = {
   starter: { m: 10,  y: 110  },
   pro:     { m: 25,  y: 275  },
@@ -629,9 +634,8 @@ let pricesDZD = {
   pro:     { m: 3750,  y: 41250  },
   biz:     { m: 18750, y: 206250 }
 };
-// 'EUR' (Stripe) ou 'DZD' (Chargily) — piloté par le sélecteur pays.
-// Aligné automatiquement sur DZD quand loadPaymentContext / le sélecteur
-// désigne DZ, sinon reste sur EUR.
+// 'EUR' (Stripe) ou 'DZD' (Chargily) — fixé par loadPaymentContext() selon le
+// prestataire imposé par le serveur ; EUR tant qu'il n'a pas répondu.
 let currentCurrency = 'EUR';
 
 // Charge la grille tarifaire publique depuis le backend (source unique
@@ -757,10 +761,12 @@ async function loadPaymentContext() {
     const ctx = await res.json();
     const note = document.getElementById('country-note');
     if (ctx.provider === 'chargily') {
+      document.body.classList.add('region-dz');
       currentCurrency = 'DZD';
       renderPrices();
       if (note) note.textContent = 'Paiement en dinars via Chargily (CIB / Edahabia).';
     } else if (ctx.provider === 'stripe') {
+      document.body.classList.add('region-intl');
       if (note) note.textContent = 'Paiement par carte bancaire via Stripe (EUR).';
     }
   } catch (e) {
@@ -936,6 +942,7 @@ function renderPrices() {
   const symbol = currentCurrency === 'DZD' ? ' DZD' : '€';
   // Formatage FR : séparateur de milliers en DZD (18 750 DZD lisible), rien en EUR.
   const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : String(n);
+  document.getElementById('price-free').innerHTML = '0' + symbol + '<span>/mois</span>';
 
   // Équivalent mensuel exact : EUR à 2 décimales (110/12 = 9,17 € — se
   // réconcilie avec le total annuel, contrairement à un arrondi entier
