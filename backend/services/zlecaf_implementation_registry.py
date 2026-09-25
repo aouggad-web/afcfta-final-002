@@ -18,6 +18,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import FrozenSet, Optional
 
+from services.zlecaf_schedule_egy import ORIGINES_PAR_GROUPE
+
 APPLIED = "APPLIED"
 OFFER_ONLY = "OFFER_ONLY"
 PARTNER_NOTICE_REQUIRED = "PARTNER_NOTICE_REQUIRED"
@@ -168,6 +170,29 @@ RECORDS = {
             "1/2021 (10/10/2021) : le barème lui-même ne nomme aucun pays. "
             "Trois sont sous réserve de ratification, et la liste est un "
             "plafond — voir KENYA_ORIGINS_RESERVES."
+        ),
+    ),
+    # Les deux circulaires égyptiennes (n° 38 de 2024, complétée par la n° 44
+    # de 2025) nomment 19 origines et ne réduisent que la liste A ; le taux est
+    # calculé depuis le NPF par zlecaf_schedule_egy, jamais servi depuis
+    # l'e-Tariff Book, dont la carte d'origines contredit l'acte national.
+    "EGY": ImplementationRecord(
+        destination_iso3="EGY",
+        status=APPLIED,
+        instrument_id="منشور اتفاقيات رقم 38 لسنة 2024",
+        instrument_title=(
+            "Circulaire Accords n° 38 de 2024, complétée par la n° 44 de 2025 "
+            "— activation de l'AfCFTA à l'importation en Égypte"
+        ),
+        instrument_url="https://customs.gov.eg/Upload/ECAAdminace/ECAAdminace987843099.pdf",
+        effective_from="2025-01-01",
+        accepted_origins=frozenset(ORIGINES_PAR_GROUPE),
+        tariff_dataset="EGY",
+        note=(
+            "Liste A seulement (une ligne B ou C reste au NPF), 19 origines "
+            "réparties en deux groupes de 5 et 10 ans ; chapitres 50 à 63 et "
+            "87 reportés (n° 44). Taux calculés depuis le NPF par le calendrier "
+            "national — voir EGY_rapprochement_baremes_2026-09-24.json."
         ),
     ),
     # Regulation 574/2025 is in force and contains Ethiopia's schedule, but

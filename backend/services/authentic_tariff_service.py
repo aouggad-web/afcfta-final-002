@@ -1626,6 +1626,36 @@ def _resolve_zlecaf_context(
             zlecaf_note=_src,
         )
 
+    # 2 bis. Égypte : circulaires n° 38 de 2024 et n° 44 de 2025 — liste A
+    #    seulement, chapitres 50 à 63 et 87 reportés. L'e-Tariff Book contredit
+    #    l'acte national : le taux est calculé depuis le NPF par le calendrier
+    #    national, jamais servi depuis l'offre.
+    if dest == "EGY":
+        from services.zlecaf_schedule_egy import (
+            compute_egy_zlecaf_rate,
+            origine_admise,
+        )
+
+        if not origine_admise(origin):
+            return _no_preference(
+                f"ZLECAf non notifié par l'Égypte pour {origin} (circulaires "
+                "n° 38 de 2024 et n° 44 de 2025) — taux NPF appliqué"
+            )
+        _r, _src = compute_egy_zlecaf_rate(hs_code_clean, origin, dd_rate_pct or 0)
+        eff_dd = round(_r, 6) if _r is not None else dd_rate_pct
+        applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+        return _result(
+            preferential=True,
+            preference_applied=applied,
+            dd=eff_dd,
+            daps=False,
+            regime="ZLECAF",
+            code="ZLECAF",
+            note=_src,
+            zlecaf_eligible=True,
+            zlecaf_note=_src,
+        )
+
     # 3. Afrique du Sud : activation bilatérale (hors SACU/SADC, traités en 0)
     #    + colonne AfCFTA officielle de SARS Schedule 1 Part 1. Les droits
     #    spécifiques/composés sont documentés mais restent non calculables sans

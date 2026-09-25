@@ -1,0 +1,1246 @@
+{
+ "schema_version": 1,
+ "titre": "Rapprochement des barèmes ZLECAf de l'Égypte — circulaires n° 38 et n° 44 contre e-Tariff Book",
+ "destination_iso3": "EGY",
+ "etabli_le": "2026-09-24",
+ "verified_at": "2026-09-24",
+ "sources": {
+  "instantane_ua": {
+   "artifact": "backend/data/official_preferential/EGY_afcfta_etariff_2026-08-17.json.gz",
+   "document_non_archive": "Jeu de données du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture, chemin du dépôt en clair.",
+   "sha256": "952f76d10308929cbd8b132626a7ee0d2abef650e916c9a71c9658ff20eb2230",
+   "source_url": "https://etariff.au-afcfta.org/",
+   "source_revision_date": "2021-10-26T00:00:00"
+  },
+  "tarif_national": {
+   "artifact": "backend/data/crawled/EGY_tariffs.json",
+   "document_non_archive": "Jeu de données du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture, chemin du dépôt en clair.",
+   "sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
+   "source_url": "https://www.customs.gov.eg/Services/Tarif",
+   "rebuilt_at": "2026-09-14T10:27:46.072180+00:00"
+  },
+  "fiche_determination": {
+   "artifact": "backend/data/legal_refs/zlecaf_application/EGY_application_2026-09-14.json",
+   "document_non_archive": "Fiche du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture.",
+   "sha256": "ab82eedae4dceb47c056cdd9b4bc13c83a4eebd80fbee089c5f9a11cc6635c09"
+  }
+ },
+ "regle": {
+  "valeur": "part du droit encore appliquée — groupe 5 ans : 0,00 dès le 1/1/2025 (n° 38) ; groupe 10 ans : 0,50 au 1/1/2025 et 0,40 au 1/1/2026 (n° 38, puis n° 44) — sur la seule liste A, hors chapitres 50 à 63 et 87 (n° 44)",
+  "reference_legale": "منشور اتفاقيات رقم 38 لسنة 2024 ; منشور اتفاقيات رقم 44 لسنة 2025",
+  "reference_fr": "Circulaires Accords n° 38 de 2024 et n° 44 de 2025, douane égyptienne",
+  "verbatim_ar": "يتم تطبيق التخفيض التدريجي للتعريفة الجمركية ... على مدي عشر سنوات وفقاً لمبدأ المعاملة بالمثل على أقساط سنوية متساوية علي أن تكون نسبة التخفيض فى 1/1/2025 هي 50%",
+  "verbatim_ar_44": "ويتم تطبيق التخفيض التدريجي للتعريفة الجمركية على واردات مصر من القائمة (A) من كلا من (غانا – كينيا – الكاميرون – جنوب افريقيا – ناميبيا – نيجيريا – اسواتيني – بتسوانا) على مدي 10 سنوات وفقاً لمبدأ المعاملة بالمثل على أقساط متساوية على أن تكون نسبة التخفيض 60% اعتباراً من 1/1/2026",
+  "traduction_fr": "La réduction progressive du tarif douanier est appliquée ... aux importations égyptiennes relevant de la liste (A) en provenance de Ghana, Kenya, Cameroun, Afrique du Sud, Namibie, Nigeria, Eswatini, Botswana — sur dix ans, par annuités égales, le taux de réduction étant de 60 % à compter du 1/1/2026.",
+  "portee": "Le taux de 2026 (60 %) est lu dans la n° 44 : il est la sixième annuité de la règle d'annuités égales (50 % au 1/1/2025, 60 % au 1/1/2026), confirmée par l'API tarifaire officielle pour le groupe [ب]. La n° 44 reporte les chapitres 50 à 63 et 87.",
+  "texte_archive": "sources/EGY_manshour_ittifaqiyat_38.ocr-ara.txt",
+  "sha256": "ab09a7dc0522075a664916419518162af12217a788a0de21d22572d7737f5134",
+  "extraits_44": {
+   "texte_extrait": "sources/EGY_manshour_ittifaqiyat_44_2025-12-28.lecture-ara.txt",
+   "sha256": "7a6efe6eaf683139140d46acea7783f451c818ad51156f5c77f5629d4d7b85a2"
+  },
+  "ocr_reserve": "L'OCR dégrade les chiffres arabo-indiens : lire les taux à l'image (méthode consignée dans EGY_application_2026-09-14.json)."
+ },
+ "echantillon_liste_a": [
+  {
+   "hs_code": "0102210000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  },
+  {
+   "hs_code": "0404901000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 2.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "1.0",
+     "palier_final_utilise": false,
+     "taux_pct": 1.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.8",
+     "palier_final_utilise": false,
+     "taux_pct": 0.8
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 1.0,
+    "2026": 0.8
+   }
+  },
+  {
+   "hs_code": "0101210000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0402219900",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 10.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "5.0",
+     "palier_final_utilise": false,
+     "taux_pct": 5.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "4.0",
+     "palier_final_utilise": false,
+     "taux_pct": 4.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 5.0,
+    "2026": 4.0
+   }
+  },
+  {
+   "hs_code": "0203110000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 20.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "10.0",
+     "palier_final_utilise": false,
+     "taux_pct": 10.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "8.0",
+     "palier_final_utilise": false,
+     "taux_pct": 8.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 10.0,
+    "2026": 8.0
+   }
+  },
+  {
+   "hs_code": "0203120000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 30.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "15.0",
+     "palier_final_utilise": false,
+     "taux_pct": 15.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "12.0",
+     "palier_final_utilise": false,
+     "taux_pct": 12.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 15.0,
+    "2026": 12.0
+   }
+  },
+  {
+   "hs_code": "6301100000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 35.0,
+   "instruction_zlecaf_au_portail": false,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "17.5",
+     "palier_final_utilise": false,
+     "taux_pct": 17.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "14.0",
+     "palier_final_utilise": false,
+     "taux_pct": 14.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 17.5,
+    "2026": 14.0
+   }
+  },
+  {
+   "hs_code": "0603120000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 40.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "20.0",
+     "palier_final_utilise": false,
+     "taux_pct": 20.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "16.0",
+     "palier_final_utilise": false,
+     "taux_pct": 16.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 20.0,
+    "2026": 16.0
+   }
+  },
+  {
+   "hs_code": "0804500011",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 45.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "22.5",
+     "palier_final_utilise": false,
+     "taux_pct": 22.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "18.0",
+     "palier_final_utilise": false,
+     "taux_pct": 18.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 22.5,
+    "2026": 18.0
+   }
+  },
+  {
+   "hs_code": "4201000010",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 50.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "25.0",
+     "palier_final_utilise": false,
+     "taux_pct": 25.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "20.0",
+     "palier_final_utilise": false,
+     "taux_pct": 20.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 25.0,
+    "2026": 20.0
+   }
+  },
+  {
+   "hs_code": "0805100010",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 60.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "30.0",
+     "palier_final_utilise": false,
+     "taux_pct": 30.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "24.0",
+     "palier_final_utilise": false,
+     "taux_pct": 24.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 30.0,
+    "2026": 24.0
+   }
+  },
+  {
+   "hs_code": "8703909010",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 135.0,
+   "instruction_zlecaf_au_portail": false,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "67.5",
+     "palier_final_utilise": false,
+     "taux_pct": 67.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "54.0",
+     "palier_final_utilise": false,
+     "taux_pct": 54.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 67.5,
+    "2026": 54.0
+   }
+  },
+  {
+   "hs_code": "0101290000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0101300000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0101900000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0102290000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  },
+  {
+   "hs_code": "0102310000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  },
+  {
+   "hs_code": "0102390000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  },
+  {
+   "hs_code": "0102900000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  },
+  {
+   "hs_code": "0103100000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0103910000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0103920000",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 5.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "2.5",
+     "palier_final_utilise": false,
+     "taux_pct": 2.5
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "2.0",
+     "palier_final_utilise": false,
+     "taux_pct": 2.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 2.5,
+    "2026": 2.0
+   }
+  },
+  {
+   "hs_code": "0104100010",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  },
+  {
+   "hs_code": "0104100090",
+   "categorie_publiee": "A",
+   "npf_tarif_national_pct": 0.0,
+   "instruction_zlecaf_au_portail": true,
+   "bareme_1": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": null,
+     "palier_final_utilise": true,
+     "taux_pct": 0.0
+    }
+   },
+   "bareme_2": {
+    "2025": {
+     "colonne": 5,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    },
+    "2026": {
+     "colonne": 6,
+     "expression": "0.0",
+     "palier_final_utilise": false,
+     "taux_pct": 0.0
+    }
+   },
+   "circulaire_groupe_5_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "circulaire_groupe_10_ans": {
+    "2025": 0.0,
+    "2026": 0.0
+   }
+  }
+ ],
+ "classement_lignes": {
+  "A": {
+   "codes": 4745,
+   "positions_nationales_mappees": 6624,
+   "positions_avec_instruction_zlecaf": 5369
+  },
+  "B": {
+   "codes": 376,
+   "positions_nationales_mappees": 646,
+   "positions_avec_instruction_zlecaf": 4
+  },
+  "C": {
+   "codes": 154,
+   "positions_nationales_mappees": 300,
+   "positions_avec_instruction_zlecaf": 0
+  },
+  "hors_offre": {
+   "positions_nationales_sans_ligne": 1248,
+   "positions_avec_instruction_zlecaf": 942
+  }
+ },
+ "verdict": {
+  "origines_de_la_circulaire_contre_la_carte_de_l_ua": {
+   "concordent": 4,
+   "divergent": 15,
+   "detail": [
+    {
+     "origine": "BDI",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "BWA",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "CMR",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "DZA",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": true
+    },
+    {
+     "origine": "GHA",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "GMB",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "KEN",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "LSO",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "MAR",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": true
+    },
+    {
+     "origine": "MUS",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": true
+    },
+    {
+     "origine": "MWI",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "NAM",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "NGA",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "RWA",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "SWZ",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    },
+    {
+     "origine": "TUN",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": true
+    },
+    {
+     "origine": "TZA",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "UGA",
+     "groupe_circulaire_ans": 5,
+     "bareme_ua": "2",
+     "bareme_ua_equivalent_ans": 10,
+     "concorde": false
+    },
+    {
+     "origine": "ZAF",
+     "groupe_circulaire_ans": 10,
+     "bareme_ua": "1",
+     "bareme_ua_equivalent_ans": 5,
+     "concorde": false
+    }
+   ]
+  },
+  "calendriers_publies_remappes_par_la_circulaire": {
+   "comparaisons": 18920,
+   "ecarts": []
+  },
+  "carve_out_chapitres_50_63_87": {
+   "regle": "Circulaire n° 44 : les réductions des chapitres 50 à 63 (textiles, habillement) et 87 (véhicules) sont reportées sur la liste A.",
+   "codes_liste_a_concernes": 839,
+   "codes_ou_l_ua_publie_une_reduction": 790,
+   "exemples": [
+    "500100",
+    "500200",
+    "50030010",
+    "50030090",
+    "500400",
+    "500500",
+    "500600",
+    "500710"
+   ]
+  },
+  "lecture": "Le barème 1 porte un calendrier à 5 ans pour sa liste A, le barème 2 un calendrier à 10 ans. Remappés par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2), les taux publiés reproduisent ses pourcentages : 0 écart sur les comparaisons 2025-2026. Mais la carte d'origines de l'UA contredit la circulaire (15 origines sur 19), et l'UA publie des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte : aucun barème de l'UA, tel qu'alloué, ne reproduit la circulaire. C'est l'acte national qui fait foi."
+ },
+ "point_reserve_au_proprietaire": {
+  "question": "Aucun barème de l'UA, avec sa propre carte d'origines, ne reproduit la circulaire pour ses 19 origines (15 divergent), et il publie des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte. Appliquer le repli prévu au plan : taux = NPF x part restante du calendrier de la circulaire ?",
+  "applique_dans_cette_livraison": "Oui — repli du plan (modèle algérien), liste A seulement, hors chapitres 50-63 et 87. Si les taux remappés coïncident sur 2025-2026 (0 écart), les barèmes de l'UA ne portent ni le report des chapitres ni la carte d'origines de l'acte national.",
+  "variante_ecartee": "Servir la ligne publiée du barème UA remappé par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2) : elle servirait une réduction sur les chapitres 50-63 et 87, que l'Égypte a reportée, et ferait dépendre le taux d'une offre dont la carte d'origines contredit l'acte national."
+ },
+ "ne_tranche_pas": [
+  "La circulaire n° 44 ne réénumère pas le groupe à 5 ans de la n° 38 : celui-ci est tenu pour maintenu, la n° 44 se présentant comme un complément (إلحاقاً).",
+  "La classification A/B/C provient de l'instantané e-Tariff Book (révision 2021) ; le portail douanier de 2026 marque les lignes de la liste A par les instructions ر6790/ر6791 et la corrobore, mais ce n'est pas un texte de classification opposable.",
+  "Les 4 positions nationales dont la ligne publiée est en liste B tout en portant les instructions du portail restent au NPF : elles sont signalées, pas arbitrées."
+ ]
+}

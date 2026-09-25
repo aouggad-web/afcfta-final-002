@@ -5,7 +5,7 @@
  "verification_status": "INSTRUMENT_ET_ORIGINES_VERIFIES",
  "verified_at": "2026-09-14",
  "evidence_level": "primaire — circulaires officielles téléchargées depuis customs.gov.eg, lues à l'image et recoupées par OCR arabe (tesseract -l ara), plus l'API tarifaire officielle interrogée en direct",
- "method_note": "Les deux circulaires sont des PDF scannés sans couche de texte. Elles ont été rendues en image à 200 dpi et lues, puis repassées à l'OCR arabe : les listes de pays sortent identiques par les deux voies. L'OCR dégrade en revanche les chiffres arabo-indiens (٥٠٪ rendu « ./5٠0 ») — les taux et les dates proviennent donc de la lecture d'image, les listes de pays étant confirmées deux fois.",
+ "method_note": "Les circulaires n° 36, 38 et 44 sont des PDF scannés sans couche de texte. Elles ont été rendues en image à 200 dpi et lues ; les n° 36 et 38 ont en outre été repassées à l'OCR arabe : les listes de pays sortent identiques par les deux voies. L'OCR dégrade les chiffres arabo-indiens (٥٠٪ rendu « ./5٠0 ») — les taux et les dates proviennent donc de la lecture d'image. La n° 44 (28/12/2025), retrouvée au portail le 24/09/2026, a été lue à l'image ; sa transcription est consignée dans sources/EGY_manshour_ittifaqiyat_44_2025-12-28.lecture-ara.txt.",
  "instrument": {
   "id": "منشور اتفاقيات رقم 38 لسنة 2024",
   "id_fr": "Circulaire Accords n° 38 de 2024",
@@ -19,9 +19,14 @@
    "رقم 15"
   ],
   "subject_ar": "إجراءات تفعيل اتفاق منطقة التجارة الحرة القارية الافريقية AfCFTA",
-  "url": "https://customs.gov.eg/Upload/ECAAdminace/ECAAdminace987843099.pdf",
-  "sha256": "df63823c1b15d3b2171f997aa37c905b7fcd29621471140a92c1ba53173629fc",
-  "listing_url": "https://customs.gov.eg/Legislations/Manshorat?categoryId=4"
+   "url": "https://customs.gov.eg/Upload/ECAAdminace/ECAAdminace987843099.pdf",
+   "sha256": "df63823c1b15d3b2171f997aa37c905b7fcd29621471140a92c1ba53173629fc",
+   "texte_archive": "sources/EGY_manshour_ittifaqiyat_38.pdf",
+   "extraits": {
+    "texte_extrait": "sources/EGY_manshour_ittifaqiyat_38.ocr-ara.txt",
+    "sha256": "ab09a7dc0522075a664916419518162af12217a788a0de21d22572d7737f5134"
+   },
+   "listing_url": "https://customs.gov.eg/Legislations/Manshorat?categoryId=4"
  },
  "companion_instrument": {
   "id": "منشور اتفاقيات رقم 36 لسنة 2024",
@@ -29,26 +34,51 @@
   "authority_fr": "Ministère de l'Investissement et du Commerce extérieur — secteur des accords et du commerce extérieur",
   "url": "https://customs.gov.eg/Upload/ECAAdminace/ECAAdminace732348697.pdf",
   "sha256": "790c648d0f3cf4e545cbb9fcfa71d05051e31271dc4ff60e0a852c21c1ffe012",
+  "texte_archive": "sources/EGY_manshour_ittifaqiyat_36_2024-12-22.pdf",
+  "extraits": {
+   "texte_extrait": "sources/EGY_manshour_ittifaqiyat_36_2024-12-22.ocr-ara.txt",
+   "sha256": "ccec87f1aab3510af7d68df0c56bb785af61ceda3e41279a32d6e59053a2bf64"
+  },
   "content": "Notifie l'entrée en échanges du Burundi, de l'Eswatini, du Lesotho, du Malawi, de la Gambie et de l'Ouganda sous ZLECAf et leur adhésion à l'initiative de commerce guidé lancée en octobre 2022. Renvoie à la lettre n° 536 du 4 avril 2024 et au décret présidentiel n° 212 de 2023.",
   "referenced_decree": "القرار الجمهوري رقم 212 لسنة 2023"
  },
+ "later_instrument": {
+  "id": "منشور اتفاقيات رقم 44 لسنة 2025",
+  "id_fr": "Circulaire Accords n° 44 de 2025",
+  "date": "2025-12-28",
+  "authority_fr": "Ministère des Finances — Autorité égyptienne des douanes, administration des accords arabes et africains",
+  "url": "https://customs.gov.eg/Upload/ECAAdminace/ECAAdminace579578973.pdf",
+  "sha256": "80901c5ec480d9696529e349b8670a44bc821d3756da8815038a8a378ce80ce0",
+  "texte_archive": "sources/EGY_manshour_ittifaqiyat_44_2025-12-28.pdf",
+  "extraits": {
+   "texte_extrait": "sources/EGY_manshour_ittifaqiyat_44_2025-12-28.lecture-ara.txt",
+   "sha256": "7a6efe6eaf683139140d46acea7783f451c818ad51156f5c77f5629d4d7b85a2"
+  },
+  "content": "Complète les circulaires n° 3, 6, 10, 15 et 38/2024. Pour les États ayant notifié leur adhésion à l'initiative de commerce guidé et activé les échanges, sur la liste A : elle reporte les réductions des chapitres 50 à 63 (textiles, habillement) et 87 (véhicules) ; elle applique la réduction progressive au groupe à 10 ans — huit origines : Ghana, Kenya, Cameroun, Afrique du Sud, Namibie, Nigeria, Eswatini, Botswana — par annuités égales, à 60 % à compter du 1/1/2026 ; elle confirme que les listes B et C ne sont pas entrées en vigueur.",
+  "why_it_matters": "Trouvée au portail le 24/09/2026, elle manquait à la fiche initiale : deux origines s'ajoutent (NAM, NGA), les chapitres 50-63 et 87 restent au NPF malgré une origine admise et une ligne de liste A, et le taux de 2026 (60 %) est lu dans le texte et non plus seulement dérivé de la règle des annuités égales."
+ },
  "accepted_origins": {
-  "count": 17,
-  "note": "Liste A uniquement. La circulaire précise que les listes B et C « لم تدخل حيز النفاذ بعد » — ne sont pas encore entrées en vigueur.",
+  "count": 19,
+  "note": "Liste A uniquement. La circulaire n° 38 répartit les origines en deux groupes (5 et 10 ans) ; la circulaire n° 44 du 28/12/2025, qui la complète, actualise le groupe à 10 ans (huit origines, Namibie et Nigeria ajoutés) et reporte les réductions des chapitres 50 à 63 et 87. Les listes B et C ne sont pas entrées en vigueur (n° 38 : « لم تدخل حيز النفاذ بعد » ; n° 44 : « فلم يدخلا حيز النفاذ بعد »).",
   "groupe_10_ans": {
    "dismantling_years": 10,
    "basis": "principe de réciprocité (مبدأ المعاملة بالمثل), par annuités égales",
    "reduction_rate_at_2025_01_01_pct": 50,
-   "count": 6,
+   "reduction_rate_at_2026_01_01_pct": 60,
+   "count": 8,
    "iso3": [
-    "ZAF",
-    "BWA",
     "GHA",
     "KEN",
     "CMR",
-    "SWZ"
+    "ZAF",
+    "NAM",
+    "NGA",
+    "SWZ",
+    "BWA"
    ],
-   "verbatim_ar": "جنوب افريقيا - بتسوانا - غانا - كينيا - الكاميرون - اسواتيني"
+   "source": "منشور اتفاقيات رقم 44 لسنة 2025 du 28/12/2025 — actualise le groupe à 10 ans de la circulaire n° 38",
+   "verbatim_ar": "ويتم تطبيق التخفيض التدريجي للتعريفة الجمركية على واردات مصر من القائمة (A) من كلا من (غانا – كينيا – الكاميرون – جنوب افريقيا – ناميبيا – نيجيريا – اسواتيني – بتسوانا) على مدي 10 سنوات وفقاً لمبدأ المعاملة بالمثل على أقساط متساوية على أن تكون نسبة التخفيض 60% اعتباراً من 1/1/2026",
+   "traduction_fr": "La réduction progressive du tarif douanier est appliquée aux importations égyptiennes relevant de la liste (A) en provenance de : Ghana, Kenya, Cameroun, Afrique du Sud, Namibie, Nigeria, Eswatini, Botswana — sur dix ans, selon le principe de réciprocité, par annuités égales, le taux de réduction étant de 60 % à compter du 1/1/2026."
   },
   "groupe_5_ans": {
    "dismantling_years": 5,
@@ -68,6 +98,7 @@
     "GMB",
     "UGA"
    ],
+   "source": "منشور اتفاقيات رقم 38 لسنة 2024 — non réénuméré par la n° 44, tenu pour maintenu",
    "verbatim_ar": "المملكة المغربية - رواندا - تنزانيا - موريشيوس - تونس - الجزائر - بروندى - ليسوتو - مالاوى - جامبيا - اوغندا"
   }
  },
@@ -85,10 +116,21 @@
     "code": "ر6791",
     "text_ar": "اتفاقية التجارة الحرة الافريقية القارية مجموعة [ب] تخفض 60%",
     "lecture": "groupe [ب] — réduction de 60 %, soit la tranche 2026 du groupe à 10 ans (10 %/an depuis 2021 : 50 % au 1/1/2025, 60 % au 1/1/2026)"
-   }
-  ],
-  "semantics": "Le verbe تخفض signifie « réduit ». Les pourcentages égyptiens sont donc des taux de RÉDUCTION du droit, non des reliquats. La cohérence arithmétique entre les 50 % de la circulaire au 1/1/2025 et les 60 % du portail en 2026 confirme cette lecture."
- },
+    }
+   ],
+   "semantics": "Le verbe تخفض signifie « réduit ». Les pourcentages égyptiens sont donc des taux de RÉDUCTION du droit, non des reliquats. La cohérence arithmétique entre les 50 % de la circulaire au 1/1/2025 et les 60 % du portail en 2026 confirme cette lecture."
+  },
+  "recherche_circulaire_posterieure": {
+   "consulte_le": "2026-09-24",
+   "url": "https://customs.gov.eg/Legislations/Manshorat?categoryId=4",
+   "methode": "Listing intégral des منشورات lu (2 958 entrées de 2016 à 2026) ; titres filtrés sur افريق / AFCFTA / اتفاق ; PDF voisins téléchargés et lus à l'image (200 dpi).",
+   "resultat": "POSITIF — la circulaire Accords n° 44 de 2025 (28/12/2025), absente de la fiche initiale, actualise la liste A du groupe à 10 ans (Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87. NÉGATIF pour une circulaire POSTÉRIEURE au 31/12/2025 : aucune ne modifie les listes ; les entrées AfCFTA de 2026 sont des notices de certificats et de cachets (Ghana ; COMESA : Seychelles, Zimbabwe, Malawi, Ouganda).",
+   "lists_b_c": "Toujours non entrées en vigueur au 24/09/2026 (n° 44 : « فلم يدخلا حيز النفاذ بعد »)."
+  },
+  "rapprochement_baremes": {
+   "fiche": "EGY_rapprochement_baremes_2026-09-24.json",
+   "conclusion": "Les deux barèmes de l'UA, remappés par la circulaire (groupe 5 ans → barème 1, groupe 10 ans → barème 2), reproduisent ses pourcentages : 0 écart sur 18 920 comparaisons 2025-2026. Mais la carte d'origines de l'UA contredit la circulaire pour 15 des 19 origines, et les barèmes de l'UA publient des réductions sur les chapitres 50-63 et 87 que la n° 44 reporte : aucun barème de l'UA, tel qu'alloué, ne reproduit la circulaire. Le taux est donc calculé à partir du NPF et du calendrier national (modèle algérien)."
+  },
  "data_defect_found": {
   "severity": "corrigé dans cette même branche",
   "where": "backend/data/crawled/EGY_tariffs.json — champs fta_preferences, zlecaf_instruction, official_instructions",
@@ -103,14 +145,29 @@
   "measured_before_fix": "72,6 % des entrées fta_preferences du fichier portent un code_verbatim qui ne correspond pas au code inscrit dans leur propre texte."
  },
  "gates_status": {
-  "1_instrument_national_en_vigueur": "SATISFAIT — circulaire n° 38 complétant les n° 3, 6, 10 et 15, décret présidentiel 212/2023 référencé",
-  "2_liste_officielle_origines_reciproques": "SATISFAIT — 17 origines nommées en deux groupes, avec leur calendrier et le taux de réduction en vigueur",
+  "1_instrument_national_en_vigueur": "SATISFAIT — circulaire n° 38 complétant les n° 3, 6, 10 et 15, et circulaire n° 44 du 28/12/2025 qui l'actualise ; décret présidentiel 212/2023 référencé",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT — 19 origines nommées en deux groupes, avec leur calendrier et le taux de réduction en vigueur (60 % au 1/1/2026 pour le groupe à 10 ans)",
   "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — instantané EGY de 5 275 + 5 236 lignes",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
  "remaining_work": [
   "Obtenir les circulaires n° 3, 6, 10 et 15 pour reconstituer l'historique complet des notifications d'origines.",
-  "Vérifier si une circulaire postérieure au 31/12/2025 met à jour les listes ou fait entrer en vigueur les listes B et C.",
-  "Rapprocher les deux groupes de la circulaire des deux barèmes de l'instantané e-Tariff Book, comme il a fallu le faire pour le Maroc : l'UA nomme ses barèmes « LDC Countries in a Customs Union » et « All other parties », ce qui ne recouvre pas exactement la répartition de la circulaire."
- ]
+  "Surveiller l'entrée en vigueur des listes B et C (n° 38 et n° 44 : pas encore en vigueur au 24/09/2026)."
+ ],
+ "classement_lignes": {
+  "fiche": "EGY_rapprochement_baremes_2026-09-24.json",
+  "regle": "Seule la liste A est réduite ; une ligne B ou C reste au NPF, ainsi qu'une ligne absente de l'offre publiée. La catégorie est lue à la maille publiée par l'instantané e-Tariff Book (8 puis 6 chiffres), jamais plus fin.",
+  "effectifs_instantané": {
+   "codes_liste_a": 4745,
+   "codes_liste_b": 376,
+   "codes_liste_c": 154
+  },
+  "carve_out_n44": "Chapitres 50 à 63 et 87 : réductions reportées, donc NPF même pour une origine admise et une ligne de liste A."
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "La circulaire n° 44 ne réénumère pas le groupe à 5 ans de la n° 38 : celui-ci est tenu pour maintenu, la n° 44 se présentant comme un complément (إلحاقاً).",
+  "La classification A/B/C provient de l'instantané e-Tariff Book (révision 2021) ; le portail douanier de 2026 la corrobore par ses instructions ر6790/ر6791, sans la constituer en texte de classification opposable.",
+  "Le report des chapitres 50-63 et 87 est lu comme valant pour les deux groupes d'origines ; la n° 44 ne le rattache qu'au groupe à 10 ans qu'elle met à jour."
+ ],
+ "mis_a_jour_le": "2026-09-24"
 }

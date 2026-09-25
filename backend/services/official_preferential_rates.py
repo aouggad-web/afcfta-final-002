@@ -167,6 +167,35 @@ def _carte_origines_nationale(destination: str) -> Optional[dict]:
     }
 
 
+def published_offer_category(destination_iso3: str, hs_code: str) -> Optional[str]:
+    """Catégorie A/B/C de la ligne d'offre publiée, ou None si elle est absente.
+
+    L'acte national décide seul des listes en vigueur : l'Égypte ne réduit que
+    la liste A (circulaire n° 38). Cette lecture sert à CLASSER, jamais à
+    taxer — aucun taux n'en est tiré. La résolution se fait à la maille
+    publiée par l'offre (8 puis 6 chiffres) : une ligne nationale fine est
+    couverte par la ligne d'offre qui la contient, et une ligne absente rend
+    None, ce qui laisse l'appelant au NPF.
+    """
+    dataset = _load_dataset((destination_iso3 or "").upper())
+    if dataset is None:
+        return None
+    indexes = dataset.get("_schedule_indexes")
+    if not indexes:
+        return None
+    clean_code = re.sub(r"\D", "", hs_code or "")
+    if len(clean_code) < 6:
+        return None
+    for longueur in (len(clean_code), 8, 6):
+        if longueur < 6:
+            continue
+        for index in indexes.values():
+            ligne = index.get(clean_code[:longueur])
+            if ligne is not None and ligne.get("category") is not None:
+                return ligne["category"]
+    return None
+
+
 def _offer_schedule_index(dataset: dict, origin: str) -> tuple[Optional[str], Optional[dict]]:
     """Return the (schedule id, line index) an origin is served by."""
     indexes = dataset.get("_schedule_indexes", {})
@@ -385,6 +414,15 @@ def resolve_official_preferential_rate(
 
     dataset = _load_dataset(dataset_code)
     if dataset is None:
+        return None
+
+    if dataset_code == "EGY":
+        # L'Égypte calcule son taux depuis le NPF et son calendrier national
+        # (zlecaf_schedule_egy) : la carte d'origines de l'e-Tariff Book
+        # contredit ses circulaires et ses barèmes publient des réductions sur
+        # les chapitres que la n° 44 reporte. Servir une ligne de l'offre
+        # égyptienne servirait un taux que l'acte national ne commande pas.
+        # Voir EGY_rapprochement_baremes_2026-09-24.json.
         return None
 
     if dataset_code != "ZAF":
