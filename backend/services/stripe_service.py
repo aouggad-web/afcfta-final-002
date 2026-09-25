@@ -145,6 +145,19 @@ def create_product_checkout_session(
     return session.url
 
 
+def cancel_subscription(subscription_id: str) -> None:
+    """Résilie immédiatement un abonnement (suppression de compte).
+
+    Un abonnement déjà résilié ou inconnu n'est pas une erreur : il n'y a
+    plus rien à facturer.
+    """
+    _require_api_key()
+    try:
+        stripe.Subscription.cancel(subscription_id)
+    except stripe.error.InvalidRequestError:  # type: ignore[attr-defined]
+        pass
+
+
 def create_portal_session(*, customer_id: str, return_url: str) -> str:
     """Crée une session du Customer Portal (gérer/annuler l'abonnement)."""
     _require_api_key()
