@@ -129,9 +129,10 @@ async def geo_diagnostic(request: Request):
 
     return {
         "client_ip": geo_service.client_ip(request),
-        "detected_country": geo_service.country_from_request(request),
+        "detected_country": await geo_service.resolve_country(request),
         "cloudflare_trusted": geo_service.cloudflare_is_trusted(request),
         "geoip_db_configured": bool(os.environ.get("GEOIP_DB_PATH")),
+        "ipinfo_configured": bool(os.environ.get("IPINFO_TOKEN")),
         # Relais de confiance pris en compte pour extraire l'IP du visiteur.
         # Si `client_ip` ci-dessus ne correspond pas à votre adresse publique
         # réelle, ajustez TRUSTED_PROXY_HOPS et rappelez cette route.
@@ -204,6 +205,7 @@ async def payment_context(request: Request):
         user = await get_current_user(request)
     except HTTPException:
         pass  # Visiteur non connecté : on renvoie quand même le contexte géo.
+    await geo_service.resolve_country(request)  # remplit le cache IPinfo
     ctx = resolve_provider(request, user)
     return {
         "provider": ctx["provider"],
@@ -218,6 +220,7 @@ async def create_checkout(payload: CheckoutPayload, request: Request):
     db = _require_db()
     user = await get_current_user(request)
 
+    await geo_service.resolve_country(request)  # remplit le cache IPinfo
     ctx = resolve_provider(request, user)
     signals = geo_service.collect_signals(request, user)
     logger.info(

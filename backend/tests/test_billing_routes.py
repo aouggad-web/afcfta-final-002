@@ -273,6 +273,98 @@ def test_country_unknown_when_no_source():
     assert geo_service.country_from_request(req) is None
 
 
+class _FakeIpinfoClient:
+    """Remplace httpx.AsyncClient : renvoie un pays fixe et compte les appels."""
+
+    calls = 0
+    country_code = "DZ"
+    fail = False
+
+    def __init__(self, *a, **k):
+        pass
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *exc):
+        return False
+
+    async def get(self, url, headers=None):
+        assert headers == {"Authorization": "Bearer tok"}
+        import httpx
+
+        type(self).calls += 1
+        if type(self).fail:
+            raise httpx.ConnectError("injoignable")
+        return httpx.Response(
+            200,
+            json={"country_code": type(self).country_code},
+            request=httpx.Request("GET", url),
+        )
+
+
+@pytest.fixture
+def fake_ipinfo(monkeypatch):
+    monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
+    monkeypatch.delenv("TRUST_CLOUDFLARE_HEADERS", raising=False)
+    monkeypatch.setattr(geo_service, "_geoip_reader", lambda: None)
+    monkeypatch.setattr(geo_service, "_ipinfo_cache", {})
+    monkeypatch.setattr(geo_service.httpx, "AsyncClient", _FakeIpinfoClient)
+    monkeypatch.setenv("IPINFO_TOKEN", "tok")
+    _FakeIpinfoClient.calls = 0
+    _FakeIpinfoClient.country_code = "DZ"
+    _FakeIpinfoClient.fail = False
+    return _FakeIpinfoClient
+
+
+def test_ipinfo_resolves_country_and_caches_it(fake_ipinfo):
+    import asyncio
+
+    req = _request_with({"x-forwarded-for": "41.100.0.9"})
+    assert geo_service.country_from_request(req) is None  # cache vide
+    assert asyncio.run(geo_service.resolve_country(req)) == "DZ"
+    # Les appels synchrones suivants lisent le cache, sans nouvel appel réseau.
+    assert geo_service.country_from_request(req) == "DZ"
+    assert asyncio.run(geo_service.resolve_country(req)) == "DZ"
+    assert fake_ipinfo.calls == 1
+
+
+def test_ipinfo_skipped_without_token(fake_ipinfo, monkeypatch):
+    import asyncio
+
+    monkeypatch.delenv("IPINFO_TOKEN")
+    req = _request_with({"x-forwarded-for": "41.100.0.9"})
+    assert asyncio.run(geo_service.resolve_country(req)) is None
+    assert fake_ipinfo.calls == 0
+
+
+def test_ipinfo_failure_is_unknown_and_not_cached(fake_ipinfo):
+    import asyncio
+
+    fake_ipinfo.fail = True
+    req = _request_with({"x-forwarded-for": "41.100.0.9"})
+    assert asyncio.run(geo_service.resolve_country(req)) is None
+    fake_ipinfo.fail = False
+    assert asyncio.run(geo_service.resolve_country(req)) == "DZ"
+    assert fake_ipinfo.calls == 2
+
+
+def test_checkout_uses_ipinfo_for_legacy_account(client, monkeypatch, fake_ipinfo):
+    """Compte sans pays d'inscription, aucune autre source : IPinfo tranche."""
+
+    async def _fake_user(_request):
+        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    monkeypatch.setenv("CHARGILY_ENABLED", "false")
+    resp = client.post(
+        "/billing/checkout",
+        json={"plan": "pro", "cycle": "monthly"},
+        headers={"X-Forwarded-For": "41.100.0.9"},
+    )
+    assert resp.status_code == 501  # branche Chargily (désactivée ici)
+
+
 def test_algerian_signup_forces_chargily():
     req = _request_with({})
     ctx = billing.resolve_provider(req, {"signup_country": "DZ"})
@@ -565,6 +657,7 @@ def test_geo_diagnostic_reports_what_backend_sees(client, monkeypatch):
     monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
     monkeypatch.delenv("TRUST_CLOUDFLARE_HEADERS", raising=False)
     monkeypatch.delenv("GEOIP_DB_PATH", raising=False)
+    monkeypatch.delenv("IPINFO_TOKEN", raising=False)
     resp = client.get(
         "/billing/geo-diagnostic",
         headers={"CF-IPCountry": "DZ", "X-Forwarded-For": "1.2.3.4, 41.100.0.9"},
