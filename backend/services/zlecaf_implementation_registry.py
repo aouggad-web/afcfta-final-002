@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from typing import FrozenSet, Optional
 
 from services.zlecaf_schedule_egy import ORIGINES_PAR_GROUPE
+from services.zlecaf_schedule_mar import ORIGINES_PAR_GROUPE as MAR_ORIGINES
 
 APPLIED = "APPLIED"
 OFFER_ONLY = "OFFER_ONLY"
@@ -193,6 +194,30 @@ RECORDS = {
             "réparties en deux groupes de 5 et 10 ans ; chapitres 50 à 63 et "
             "87 reportés (n° 44). Taux calculés depuis le NPF par le calendrier "
             "national — voir EGY_rapprochement_baremes_2026-09-24.json."
+        ),
+    ),
+    # Le Maroc a deux textes lus intégralement : la circulaire ADII 6530/223 du
+    # 22/01/2024 (liste A, listes P1/P2) et l'avenant 6627/223 du 09/01/2025
+    # (codes de la liste A pour la LF2025 ; P1/P2 inchangés). Le DI vient de
+    # l'e-Tariff Book sélectionné par les listes P1/P2 de la fiche ; la TPI est
+    # démantelée sur le même calendrier (zlecaf_schedule_mar).
+    "MAR": ImplementationRecord(
+        destination_iso3="MAR",
+        status=APPLIED,
+        instrument_id="6530/223",
+        instrument_title=(
+            "Circulaire ADII n° 6530/223 — Mise en œuvre de l'Accord ZLECAf "
+            "(complétée par l'avenant n° 6627/223 du 09/01/2025)"
+        ),
+        instrument_url="https://ecoactu.ma/wp-content/uploads/2024/01/circulaire_93343.pdf",
+        effective_from="2021-01-01",
+        accepted_origins=frozenset(MAR_ORIGINES),
+        tariff_dataset="MAR",
+        note=(
+            "Liste A seulement (B et C non mises en œuvre) ; 40 origines en "
+            "P1 (5 ans) et P2 (10 ans), lues dans la fiche. DI servi depuis "
+            "l'e-Tariff Book sélectionné par les listes nationales ; TPI "
+            "démantelée sur le même calendrier — voir zlecaf_schedule_mar.py."
         ),
     ),
     # Regulation 574/2025 is in force and contains Ethiopia's schedule, but

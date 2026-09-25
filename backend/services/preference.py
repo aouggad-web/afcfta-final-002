@@ -83,10 +83,36 @@ def _perimetre_dza(hs_code: str, origine: str) -> Dict[str, str]:
     return {}
 
 
+def _perimetre_mar(hs_code: str, origine: str) -> Dict[str, Any]:
+    """TPI marocaine démantelée avec le DI (circulaire ADII 6530/223, III).
+
+    Le texte soumet la liste A au démantèlement du droit d'importation ET de
+    la taxe parafiscale à l'importation, sur le même calendrier — 5 ans pour
+    P1, 10 ans pour P2, à compter du 01/01/2021. La TPI n'est donc pas
+    exonérée d'un coup comme le DAPS algérien : elle suit la part restante de
+    l'année. Le facteur est rendu ici ; l'appelant l'applique à la TPI que
+    porte la position, qu'il est seul à connaître.
+    """
+    try:
+        from services.zlecaf_schedule_mar import (
+            REFERENCE_TPI,
+            origine_admise,
+            part_restante,
+        )
+    except Exception:  # pragma: no cover - dépendance optionnelle
+        return {}
+    if not origine_admise(origine):
+        return {}
+    part = part_restante(origine)
+    if part is None or part >= 1.0:
+        return {}
+    return {"TPI": {"facteur": part, "reference": REFERENCE_TPI}}
+
+
 #: Périmètres nationaux au-delà du droit de douane. Une entrée absente signifie
 #: « seul le droit de douane est démantelé », ce qui est la figure courante —
 #: pas une règle générale, et surtout pas une déduction du moteur.
-PERIMETRES_NATIONAUX = {"DZA": _perimetre_dza}
+PERIMETRES_NATIONAUX = {"DZA": _perimetre_dza, "MAR": _perimetre_mar}
 
 #: Destinations dont le taux ZLECAf se calcule depuis le NPF par un calendrier
 #: national, faute de colonne préférentielle au socle : DZA (circulaire DGD
@@ -177,6 +203,24 @@ def taux_preferentiels(
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Barème ZLECAf KEN indisponible : %s", exc)
 
+    elif taux_dd is None and destination_iso3.upper() == "MAR":
+        # Le tarif marocain ne porte pas de colonne ZLECAf au socle : le barème
+        # vient de l'e-Tariff Book, sélectionné par les listes P1/P2 de la
+        # fiche (CARTES_ORIGINES_NATIONALES). C'est le même resolver que le
+        # chemin historique — les deux servent donc le même DI.
+        try:
+            from services.official_preferential_rates import resolve_official_preferential_rate
+
+            officiel = resolve_official_preferential_rate(destination_iso3, hs_code, origine_iso3)
+            if officiel and officiel.get("ad_valorem_rate_pct") is not None:
+                taux_dd = {"taux": officiel["ad_valorem_rate_pct"]}
+                origine_taux = (
+                    "Circulaire ADII 6530/223, liste A — e-Tariff Book, "
+                    f"barème {officiel.get('schedule')}, {officiel.get('source_column')}"
+                )
+        except Exception as exc:  # pragma: no cover - dépendance optionnelle
+            logger.warning("Barème ZLECAf MAR indisponible : %s", exc)
+
     if taux_dd is None:
         resultat["statut"] = "PREFERENCE_NON_TRACEE"
         resultat["note"] = (
@@ -191,10 +235,28 @@ def taux_preferentiels(
 
     etendue = PERIMETRES_NATIONAUX.get(destination_iso3.upper())
     if etendue:
-        for code, reference in etendue(hs_code, origine_iso3).items():
-            if _taux_npf(position, code) is not None:
+        dd_npf = _taux_npf(position, "DD")
+        dd_servi = taux_dd.get("taux") if isinstance(taux_dd, dict) else None
+        for code, definition in etendue(hs_code, origine_iso3).items():
+            npf = _taux_npf(position, code)
+            if npf is None:
+                continue
+            if isinstance(definition, dict):
+                # Réduction proportionnelle (TPI marocaine) : elle suit le sort
+                # du DI. Quand le taux préférentiel du DI atteint ou dépasse le
+                # NPF, c'est le NPF qui est servi — la TPI reste alors PLEINE,
+                # sinon le calcul mélangerait deux régimes (droit commun pour
+                # le DI, préférentiel pour la TPI). Ex. 0901110000 : 4 % contre
+                # 2,5 %.
+                if dd_npf is not None and (dd_servi is None or dd_servi >= dd_npf):
+                    continue
+                table[code] = {"taux": round(npf * definition["facteur"], 6)}
+                perimetre[code] = definition["reference"]
+            else:
+                # Exonération binaire (DAPS algérien) : elle ne dépend pas du
+                # sort du DI — le plancher ne doit pas l'effacer.
                 table[code] = {"taux": 0.0}
-                perimetre[code] = reference
+                perimetre[code] = definition
 
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat
