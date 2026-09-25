@@ -257,14 +257,14 @@ def collect_signals(request: Request, user: dict) -> dict:
     Ne bloque rien : c'est une trace, pas un contrôle. Une incohérence entre le
     pays d'inscription et le pays de paiement mérite un coup d'œil humain, pas
     un refus automatique (voyage, expatriation, VPN d'entreprise sont légitimes).
+
+    Aucune adresse IP n'est conservée (minimisation des données) : seuls les
+    pays en sont déduits, l'adresse elle-même est oubliée après la requête.
     """
-    ip = client_ip(request)
     detected = country_from_request(request)
     signup_country = user.get("signup_country")
     return {
-        "ip": ip,
         "detected_country": detected,
-        "signup_ip": user.get("signup_ip"),
         "signup_country": signup_country,
         "country_mismatch": bool(detected and signup_country and detected != signup_country),
         "via_cloudflare": cloudflare_is_trusted(request),

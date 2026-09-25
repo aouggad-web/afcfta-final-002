@@ -25,7 +25,7 @@ import FinanceTab from './components/finance/FinanceTab';
 import OpportunityReportTab from './components/reports/OpportunityReportTab';
 import ContactTab from './components/contact/ContactTab';
 import AuthModal from './components/auth/AuthModal';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -81,6 +81,13 @@ function App() {
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const { recovery } = useAuth() || {};
+
+  // Arrivée par le lien « mot de passe oublié » : ouvrir la modale sur le
+  // formulaire de nouveau mot de passe.
+  useEffect(() => {
+    if (recovery) setAuthModalOpen(true);
+  }, [recovery]);
 
   // Le lien "Démarrer un plan" de pricing.html renvoie ici avec
   // `#auth=login&next=<écran>` quand le visiteur n'est pas connecté. On lit ce

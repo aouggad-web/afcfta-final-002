@@ -23,6 +23,7 @@ from typing import Annotated, Optional
 
 from fastapi import Cookie, Depends, Header, HTTPException, status
 from pymongo import ReturnDocument
+from services import supabase_auth
 from services.user_auth_service import decode_access_token
 
 # Tariff/trade data is public information — keep data endpoints accessible
@@ -68,7 +69,7 @@ def _has_valid_jwt_session(
         token = authorization_header[7:]
     if not token:
         return False
-    return decode_access_token(token) is not None
+    return decode_access_token(token) is not None or supabase_auth.decode_token(token) is not None
 
 
 # ---------------------------------------------------------------------------
