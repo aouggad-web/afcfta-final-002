@@ -5,7 +5,7 @@
  "verification_status": "INSTRUMENT_VERIFIE_SEMANTIQUE_TRANCHEE_BAREME_MANQUANT",
  "verified_at": "2026-09-13",
  "mis_a_jour_le": "2026-09-25",
- "evidence_level": "texte officiel lu via un lecteur tiers (r.jina.ai) ; octets du PDF non archivés ; l'empreinte porte sur la transcription. Le portail tarifaire officiel, lui, est scellé dans le dépôt.",
+ "evidence_level": "texte officiel lu via lecteur tiers (r.jina.ai), octets du PDF non archivés ; l'empreinte porte sur la transcription. Le portail tarifaire officiel, lui, est scellé dans le dépôt.",
  "source": {
   "title": "Tarif Web 2026 — portail officiel de la Douane tunisienne",
   "url": "https://www.douane.gov.tn/tarifweb2026/",
@@ -82,6 +82,13 @@
   },
   "liste_C": "exclue de la préférence (3 % des lignes)",
   "regle_d_origine_non_arretee": "Les produits dont les règles d'origine détaillées ne sont pas arrêtées (« à déterminer » au tableau de l'annexe 4) restent soumis au droit commun (section V in fine)."
+ },
+ "prelevements_effet_equivalent": {
+  "statut": "CONSIGNÉ SANS BRANCHEMENT — section V du TA",
+  "regle": "Le démantèlement tunisien porte sur les droits de douane ET les prélèvements d'effet équivalent (الأداءات ذات الأثر المماثل), à l'import comme à l'export.",
+  "verbatim_ar": "يُطبّق التّخفیض التّدریجي للمعالیم الدّیوانیّة والأداءات ذات الأثر المماثل المفروضة في تونس، اعتمادا على النّسب الأساسیّة لسنة 2019 كنسب مرجعیّة، حسب تصنیف السّلع … و تصنیف البلدان الأعضاء …",
+  "traduction_fr": "La réduction progressive est appliquée aux droits de douane et aux prélèvements d'effet équivalent perçus en Tunisie, sur la base des taux de référence de 2019, selon la classification des marchandises … et la classification des États membres …",
+  "portee": "Le jour d'un branchement, le périmètre devra nommer chaque prélèvement d'effet équivalent tunisien soumis au démantèlement, comme le DAPS algérien ou la TPI marocaine — jamais le déduire. En l'état, rien n'est réduit."
  },
  "recherche_du_texte": {
   "consulte_le": "2026-09-25",

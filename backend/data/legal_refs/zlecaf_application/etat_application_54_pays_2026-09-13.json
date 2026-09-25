@@ -8,7 +8,7 @@
  "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
-  "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché ; droits de base de la ligne manquants (barème non exploitable)",
+  "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
   "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
   "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
   "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
@@ -312,7 +312,7 @@
   "TUN": {
    "niveau": "INSTRUMENT_VERIFIE_BAREME_MANQUANT",
    "preuve": "Texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), lu intégralement : les pourcentages sont des parts du droit de base 2019 — liste A 5 ans (MUS RWA EGY TZA : 80/60/40/20/0 de 2021 à 2025), liste A 10 ans (CMR GHA KEN : 90 … 40 en 2026 … 0 en 2030), listes B sur 5 et 8 ans. Tarif Web 2026 : 8 origines (CMR GHA KEN TZA ZAF NGA MUS RWA). Barème non exploitable : droits de base 2019 ligne à ligne et classement A/B/C manquants.",
-   "niveau_de_source": "texte officiel lu via un lecteur tiers (r.jina.ai) ; octets du PDF non archivés ; l'empreinte porte sur la transcription",
+   "niveau_de_source": "texte officiel lu via lecteur tiers (r.jina.ai), octets du PDF non archivés ; l'empreinte porte sur la transcription",
    "bareme_collecte": true
   },
   "TZA": {
