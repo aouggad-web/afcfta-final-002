@@ -45,7 +45,7 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <tr><th>Données</th><th>Pourquoi</th><th>Base légale</th></tr>
 <tr><td>Nom, adresse email, mot de passe (stocké chiffré, jamais en clair)</td><td>Créer et sécuriser votre compte, vous envoyer les emails liés au compte (confirmation, mot de passe oublié)</td><td>Exécution du contrat</td></tr>
 <tr><td>Version des conditions acceptées et date d'acceptation</td><td>Prouver votre consentement</td><td>Obligation légale</td></tr>
-<tr><td>Adresse IP et pays détecté à l'inscription et lors d'un paiement</td><td>Déterminer le moyen de paiement applicable à votre pays (réglementation des changes), prévenir la fraude</td><td>Obligation légale et intérêt légitime</td></tr>
+<tr><td>Pays déterminé à partir de votre adresse IP, à l'inscription et lors d'un paiement</td><td>Déterminer le moyen de paiement applicable à votre pays (réglementation des changes), prévenir la fraude. <strong>L'adresse IP elle-même n'est pas conservée</strong> : seul le pays est enregistré.</td><td>Obligation légale et intérêt légitime</td></tr>
 <tr><td>Formule souscrite, historique d'achats, statut des paiements</td><td>Fournir le service payé, facturation, comptabilité</td><td>Exécution du contrat, obligation légale</td></tr>
 <tr><td>Clés API et compteurs d'utilisation (nombre de calculs, de requêtes)</td><td>Appliquer les quotas de votre formule</td><td>Exécution du contrat</td></tr>
 <tr><td>Messages envoyés via le formulaire de contact</td><td>Vous répondre</td><td>Intérêt légitime</td></tr>
@@ -59,6 +59,7 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <div class="scroll"><table>
 <tr><th>Prestataire</th><th>Rôle</th><th>Localisation</th></tr>
 <tr><td>Supabase</td><td>Gestion des comptes (identifiants, emails de confirmation)</td><td>Union européenne</td></tr>
+<tr><td>Cloudflare</td><td>Acheminement et protection du trafic (anti-attaques), détection du pays</td><td>Réseau mondial</td></tr>
 <tr><td>Emergent</td><td>Hébergement du site et des données</td><td><mark>[pays des serveurs — à confirmer auprès d'Emergent]</mark></td></tr>
 <tr><td>Stripe</td><td>Paiements par carte (hors Algérie)</td><td>Union européenne / États-Unis</td></tr>
 <tr><td>Chargily</td><td>Paiements CIB / Edahabia (Algérie)</td><td>Algérie</td></tr>
@@ -73,7 +74,7 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <div class="scroll"><table>
 <tr><th>Données</th><th>Durée</th></tr>
 <tr><td>Compte et données associées</td><td>Tant que le compte existe ; effacées dès sa suppression</td></tr>
-<tr><td>Adresses IP (inscription, paiement, tentatives de connexion)</td><td><mark>[durée à fixer selon les obligations légales]</mark></td></tr>
+<tr><td>Adresses IP</td><td>Non conservées par nous : utilisées le temps de la requête pour déterminer votre pays, puis oubliées. Nos prestataires techniques (Cloudflare, Supabase, hébergeur) peuvent les journaliser pour la sécurité, selon leurs propres durées.</td></tr>
 <tr><td>Achats et factures</td><td><mark>[durée comptable légale à fixer]</mark>, sous forme anonymisée après suppression du compte</td></tr>
 <tr><td>Messages de contact</td><td><mark>[durée à fixer selon les obligations légales]</mark></td></tr>
 </table></div>

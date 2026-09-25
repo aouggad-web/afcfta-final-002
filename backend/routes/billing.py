@@ -283,8 +283,7 @@ async def _record_attempt(db, user, payload, provider: str, signals: dict) -> No
     """Trace la tentative de paiement et ses signaux géo, pour audit.
 
     Best-effort : une écriture d'audit ne doit jamais faire échouer un paiement.
-    Les IP sont des données personnelles — prévoir une purge périodique de cette
-    collection selon votre politique de rétention.
+    Ne contient aucune adresse IP (voir geo_service.collect_signals).
     """
     try:
         await db.payment_attempts.insert_one(

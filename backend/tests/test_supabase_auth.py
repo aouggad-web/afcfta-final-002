@@ -206,6 +206,7 @@ def test_first_session_creates_linked_account_with_consent(client, db, supabase)
     user = db.users.docs[0]
     assert user["supabase_id"] == SUB and user["name"] == "Alice Test"
     assert user["consents"][0]["version"] == "2026-09"
+    assert "signup_ip" not in user  # le pays seul est conservé, jamais l'IP
     assert "access_token" in resp.cookies
 
 

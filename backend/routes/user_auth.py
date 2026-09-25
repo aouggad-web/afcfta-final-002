@@ -181,8 +181,8 @@ async def register(
     # off the event loop so a burst of signups doesn't stall every other
     # request this worker is handling.
     password_hash = await run_in_threadpool(hash_password, payload.password)
-    # IP et pays d'inscription : signal de référence pour l'audit des paiements
-    # (une incohérence ultérieure se voit, sans jamais bloquer automatiquement).
+    # Pays d'inscription : il impose le moyen de paiement (Algérie → Chargily).
+    # Il est déduit de l'adresse IP, qui n'est pas conservée.
     from services import geo_service
 
     user_doc = {
@@ -191,7 +191,6 @@ async def register(
         "password_hash": password_hash,
         "role": "user",
         "created_at": datetime.now(timezone.utc),
-        "signup_ip": geo_service.client_ip(request),
         "signup_country": await geo_service.resolve_country(request),
     }
     try:
@@ -413,7 +412,6 @@ async def _link_or_create_supabase_user(db, request: Request, payload: dict) -> 
         "role": "user",
         "created_at": datetime.now(timezone.utc),
         "supabase_id": payload["sub"],
-        "signup_ip": geo_service.client_ip(request),
         "signup_country": await geo_service.resolve_country(request),
     }
     if metadata.get("terms_version"):

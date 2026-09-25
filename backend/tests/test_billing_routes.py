@@ -775,3 +775,12 @@ def test_automatic_tax_on_plans_and_products(monkeypatch):
     )
     assert captured["automatic_tax"] == {"enabled": True}
     assert captured["line_items"][0]["price_data"]["tax_behavior"] == "exclusive"
+
+
+def test_payment_signals_never_contain_ip_addresses(trusted_edge):
+    """Minimisation : seuls les pays sont tracés, jamais l'adresse IP."""
+    req = _request_with({"cf-ipcountry": "DZ", "x-forwarded-for": "41.100.0.9"})
+    signals = geo_service.collect_signals(req, {"signup_country": "DZ"})
+    assert "ip" not in signals and "signup_ip" not in signals
+    assert "41.100.0.9" not in str(signals)
+    assert signals["detected_country"] == "DZ"
