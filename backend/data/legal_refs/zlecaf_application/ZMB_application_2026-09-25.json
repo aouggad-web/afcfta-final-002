@@ -1,0 +1,78 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "ZMB",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-25",
+ "evidence_level": "instrument national repéré et daté par deux sources officielles (journal officiel zambien et Assemblée nationale) ; texte intégral du SI non obtenu ; aucune liste nominative d'origines retrouvée",
+ "instrument": {
+  "id": "Statutory Instrument 92 of 2024",
+  "title_etabli": "Customs and Excise (General) (Amendment) Regulations, 2024",
+  "date": "2024-12-30",
+  "gazette": "Republic of Zambia Government Gazette n° 7696 du 30/12/2024 (Vol. LX, n° 162), avis n° 1378",
+  "ce_que_le_journal_officiel_etablit": "L'existence, la date et l'intitulé officiel du SI 92 — et rien de plus : l'avis ne mentionne ni la ZLECAf ni une liste de concessions.",
+  "texte_extrait": "sources/ZMB_gazette_7696_2024-12-30.texte-extrait.txt",
+  "sha256": "19c6d2283c4428ced17319d6069575e7753c665a56f1eb48786a574bfb7b7959",
+  "supplement_non_archive": "Le supplément portant le texte du SI n'est pas versé : l'archive gazettes.africa ne le contient pas (constat consigné dans chantier_collecte_2026-09-14.json).",
+  "declaration_parlementaire": {
+   "fichier_archive": "sources/ZMB_parlement_SI92_2025-06-19.extrait.txt",
+   "sha256": "aad4d069db06eeef72e6ae57648fecd3daec2c311eddb67c8998caa88eb84d06",
+   "url": "https://www.parliament.gov.zm/node/12434",
+   "date_declaration": "2025-06-19",
+   "verbatim_en": "we finalised domestication of 90 per cent of the tariff lines through the issuance of Statutory Instrument (SI) No. 92 of 2024. Zambia can now trade under the Guided Trade Initiative (GTI) using the current provisional schedule of tariff concession, which was gazetted through SI No. 92 of 2024.",
+   "traduction_fr": "nous avons finalisé la domestication de 90 % des lignes tarifaires par l'émission du Statutory Instrument (SI) n° 92 de 2024. La Zambie peut désormais commercer dans le cadre de l'Initiative de commerce guidé (GTI) en utilisant l'actuel barème provisoire de concessions tarifaires, gazetté par le SI n° 92 de 2024.",
+   "portee": "Confirme l'objet du SI — un barème provisoire de concessions (PSTC) utilisé sous GTI — et ne nomme aucun État partie."
+  }
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-25",
+  "cible": "Texte intégral du SI 92/2024 (supplément au journal officiel) et toute liste nominative d'États parties admis (avis ZRA ou du ministère du Commerce).",
+  "ou": [
+   {
+    "endroit": "ZambiaLII — https://zambialii.org/akn/zm/act/si/2024/92/eng@2024-12-30",
+    "resultat": "HTTP 403 ; page protégée par un CAPTCHA (« Performing security verification » via r.jina.ai). Non forcé, conformément à la doctrine : un site inaccessible se signale."
+   },
+   {
+    "endroit": "Assemblée nationale de Zambie — https://www.parliament.gov.zm/node/12434",
+    "resultat": "POSITIF pour l'existence et l'objet du SI (déclaration du 19/06/2025, extrait archivé) ; aucune liste d'origines."
+   },
+   {
+    "endroit": "Rapport du Comité sur la législation et les accords internationaux (2025), Assemblée nationale",
+    "resultat": "Contexte GTI/PSTC et sensibilisation ; aucune liste d'États admis, aucun texte du SI."
+   },
+   {
+    "endroit": "Zambia Revenue Authority — https://www.zra.org.zm/",
+    "resultat": "HTTP 000 en direct ; via r.jina.ai le site répond mais sa recherche interne « AfCFTA » ne renvoie aucun résultat (2026-09-25)."
+   },
+   {
+    "endroit": "gazettes.africa — supplément au n° 7696 du 30/12/2024",
+    "resultat": "NÉGATIF — le supplément portant le texte du SI n'est pas dans l'archive."
+   },
+   {
+    "endroit": "Laws.Africa API — https://api.laws.africa/v3/akn/zm/act/si/2024/92/",
+    "resultat": "HTTP 403 (accès non ouvert)."
+   },
+   {
+    "endroit": "tralac, « Trading Under the AfCFTA – a Guide for Zambia » (source secondaire)",
+    "resultat": "Situe le SI 92 du 30/12/2024 comme le PSTC et décrit la procédure de certificat d'origine (ZRA) ; ne nomme aucun pays admis. Source de repérage, jamais de preuve."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : le texte intégral du SI n'a pas été obtenu et aucune liste nominative d'origines n'a été retrouvée. Le seul fait établi en source officielle est que le SI 92 gazette un barème (PSTC) utilisé sous GTI — comme le barème kényan, il ne nomme vraisemblablement personne, mais cela n'est pas constaté faute de texte."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — existence, date et objet établis par le journal officiel et l'Assemblée nationale ; texte intégral du SI non obtenu",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — instantané ZMB (barème) archivé, non exploitable sans liste d'origines",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le SI 92 gazette-t-il une répartition par listes (A/B/C) et un calendrier par groupes de pays, ou seulement un barème ? Le texte manque pour le dire.",
+  "L'admission des origines zambiennes procède-t-elle d'une règle (« États ayant gazetté leur PSTC et accordant la réciprocité ») ou d'une notification nominative ? Aucune source officielle lue ne le tranche.",
+  "Le SI 96 de 2025 (Customs and Excise (General) (Amendment) Regulations, 2025, 31/12/2025, gazette n° 7861) existe et pourrait modifier le dispositif ; son texte n'a pas été obtenu (ZambiaLII protégé par CAPTCHA)."
+ ],
+ "remaining_work": [
+  "Obtenir le supplément au journal officiel zambien du 30/12/2024 (texte du SI 92) — voie recommandée : demande à la Government Printer ou au Parlement, l'archive en ligne ne le portant pas.",
+  "Obtenir le SI 96 de 2025 et vérifier s'il modifie le dispositif ZLECAf.",
+  "Chercher une circulaire ou un avis de la ZRA désignant les États parties admis à l'importation en Zambie ; à défaut, constater l'absence et maintenir le taux NPF."
+ ]
+}
