@@ -261,34 +261,32 @@ def test_accepted_corridor_ignores_unverified_etl_rate_when_exact_line_is_missin
     assert context["zlecaf_rate_calculation_status"] == "NOT_AVAILABLE"
 
 
-def test_mar_et_zwe_livrent_une_offre_archivee_sans_appliquer_la_preference():
-    """Les deux ajouts à OFFER_DATASETS changent une décision publique.
+def test_zwe_livre_une_offre_archivee_sans_appliquer_la_preference():
+    """Zimbabwe reste une offre seule ; le Maroc, lui, est passé APPLIED.
 
-    Leur statut passe de NOT_AVAILABLE à OFFER_ONLY. Ce n'est pas une
-    application de préférence : le taux NPF reste servi, et une suite qui
-    n'exerçait que le Ghana et l'Éthiopie ne le vérifiait pour aucun des deux.
-
-    La décision seule ne suffit pas : elle ne rend qu'un CODE de jeu. Tant que
-    ce code ne désignait aucun fichier, les 20 527 lignes collectées restaient
-    injoignables et cette assertion passait quand même. On va donc jusqu'à la
-    ligne servie.
+    Le statut OFFER_ONLY n'applique aucune préférence : le taux NPF reste servi.
+    La décision seule ne suffit pas — elle ne rend qu'un CODE de jeu ; on va
+    donc jusqu'à la ligne servie.
     """
-    for destination, dataset in (("MAR", "MAR"), ("ZWE", "ZWE")):
-        decision = implementation_decision(destination, "KEN")
-        assert decision["applied"] is False, destination
-        assert decision["status"] == OFFER_ONLY, destination
-        assert decision["tariff_dataset"] == dataset, destination
+    decision = implementation_decision("ZWE", "KEN")
+    assert decision["applied"] is False
+    assert decision["status"] == OFFER_ONLY
+    assert decision["tariff_dataset"] == "ZWE"
 
-    marocaine = resolve_published_offer_rate("MAR", "0101210000", "KEN")
+    zimbabweenne = resolve_published_offer_rate("ZWE", "01012100", "KEN")
+    assert zimbabweenne is not None
+    assert zimbabweenne["calculation_status"] == "CALCULABLE"
+
+    # Le Maroc n'est plus une offre seule : le resolver d'affichage ne le sert
+    # plus, c'est le resolver légal qui applique les listes P1/P2.
+    assert implementation_decision("MAR", "KEN")["status"] == APPLIED
+    assert resolve_published_offer_rate("MAR", "0101210000", "KEN") is None
+    marocaine = resolve_official_preferential_rate("MAR", "0101210000", "KEN")
     assert marocaine is not None
     assert marocaine["calculation_status"] == "CALCULABLE"
     # Comparaison sur la valeur : la source écrit « 2.5 » dans une annexe et
     # « 2.50 » dans l'autre, et le barème retenu dépend de la circulaire.
     assert float(marocaine["mfn_rate_expression"]) == 2.5
-
-    zimbabweenne = resolve_published_offer_rate("ZWE", "01012100", "KEN")
-    assert zimbabweenne is not None
-    assert zimbabweenne["calculation_status"] == "CALCULABLE"
 
 
 def test_le_maroc_repartit_les_origines_selon_sa_circulaire_pas_selon_l_ua():
@@ -307,15 +305,16 @@ def test_le_maroc_repartit_les_origines_selon_sa_circulaire_pas_selon_l_ua():
     kenya = resolve_zlecaf_context("MAR", "KEN", "0101210000", 2.5, 0.0)
     burkina = resolve_zlecaf_context("MAR", "BFA", "0101210000", 2.5, 0.0)
 
-    assert kenya["zlecaf_offer_rate_source"]["schedule"] == "2"
-    assert burkina["zlecaf_offer_rate_source"]["schedule"] == "1"
-    assert kenya["zlecaf_offer_rate_pct"] != burkina["zlecaf_offer_rate_pct"]
+    assert kenya["trade_regime"] == "ZLECAF"
+    assert kenya["zlecaf_rate_source"]["schedule"] == "2"
+    assert burkina["zlecaf_rate_source"]["schedule"] == "1"
+    assert kenya["dd_rate_pct"] != burkina["dd_rate_pct"]
 
-    # L'offre reste informative : le droit exigible ne bouge pas.
+    # Le tarif est désormais appliqué : chaque taux réduit le NPF, sans plancher.
     for contexte in (kenya, burkina):
-        assert contexte["zlecaf_rate_calculation_status"] == OFFER_ONLY
-        assert contexte["preference_applied"] is False
-        assert contexte["dd_rate_pct"] == 2.5
+        assert contexte["preference_applied"] is True
+        assert contexte["plancher_npf"] is None
+        assert contexte["dd_rate_pct"] < 2.5
 
 
 def test_le_maroc_ne_sert_rien_aux_origines_absentes_de_sa_circulaire():
@@ -326,7 +325,11 @@ def test_le_maroc_ne_sert_rien_aux_origines_absentes_de_sa_circulaire():
     n'accorde pas. Le silence est ici la seule réponse vraie.
     """
     for origine in ("AGO", "MDG", "MOZ", "ZWE"):
-        assert resolve_published_offer_rate("MAR", "0101210000", origine) is None, origine
+        assert implementation_decision("MAR", origine)["applied"] is False, origine
+        assert resolve_official_preferential_rate("MAR", "0101210000", origine) is None, origine
+        contexte = resolve_zlecaf_context("MAR", origine, "0101210000", 2.5, None)
+        assert contexte["trade_regime"] != "ZLECAF", origine
+        assert contexte["dd_rate_pct"] == 2.5, origine
 
     # Contrôle en miroir : une destination sans acte national archivé continue
     # de s'appuyer sur la carte de l'UA, sans quoi cette garde effacerait des
