@@ -196,7 +196,8 @@ h1 em{font-style:italic;color:var(--gold)}
 .stripe-note strong{color:var(--muted)}
 
 /* Affichage selon la géolocalisation : loadPaymentContext() pose region-dz ou
-   region-intl sur <body>. Sans classe (pays inconnu), tout reste visible. */
+   region-intl sur <body> (region-dz aussi quand le pays n'est pas détecté).
+   Sans classe (contexte indisponible), tout reste visible. */
 body.region-dz [data-region="intl"],body.region-intl [data-region="dz"]{display:none}
 body.region-dz .pay-methods,body.region-intl .pay-methods{grid-template-columns:1fr;max-width:640px}
 
@@ -758,11 +759,21 @@ async function loadPaymentContext() {
     if (!res.ok) return;
     const ctx = await res.json();
     const note = document.getElementById('country-note');
-    if (ctx.provider === 'chargily') {
+    if (ctx.provider === 'chargily' || ctx.provider === null) {
+      // Pays non détecté : affichage Algérie / Chargily par défaut, mais le
+      // serveur refuse le paiement tant que le pays n'est pas établi — on
+      // invite donc à nous contacter.
       document.body.classList.add('region-dz');
       currentCurrency = 'DZD';
       renderPrices();
-      if (note) note.textContent = 'Paiement en dinars via Chargily (CIB / Edahabia).';
+      if (note) {
+        if (ctx.provider === null) {
+          note.innerHTML = 'Pays non détecté : pour souscrire, contactez-nous à '
+            + '<a href="mailto:contact@afcfta-zlecaf.com" style="color:inherit">contact@afcfta-zlecaf.com</a>.';
+        } else {
+          note.textContent = 'Paiement en dinars via Chargily (CIB / Edahabia).';
+        }
+      }
     } else if (ctx.provider === 'stripe') {
       document.body.classList.add('region-intl');
       if (note) note.textContent = 'Paiement par carte bancaire via Stripe (EUR).';
