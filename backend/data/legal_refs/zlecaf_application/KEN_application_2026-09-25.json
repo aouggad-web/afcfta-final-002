@@ -1,0 +1,51 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "KEN",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_ET_ORIGINES_VERIFIES",
+ "verified_at": "2026-09-25",
+ "evidence_level": "preuve nationale = publication du barème par la Kenya Revenue Authority (kra.go.ke) ; l'avis EAC/321/2022 (Gazette de l'EAC) en est le support communautaire ; origines lues dans l'Annexe 1 de la Directive ministérielle 1/2021 (extrait archivé)",
+ "instrument_national": {
+  "titre": "EAC Provisional Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA): Category A Products — publié par la KRA",
+  "url": "https://www.kra.go.ke/images/publications/EAC-PROVISIONAL-SCHEDULE-OF-TARIFF-CONCESSIONS-FOR-THE-AFRICAN-CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf",
+  "nature": "Document de 347 pages, publication de l'administration douanière kényane : c'est ELLE qui vaut preuve nationale. Le PDF n'est pas versé au dépôt ; le barème est extrait dans backend/data/zlecaf_ken/ (source de services/zlecaf_schedule_ken.py).",
+  "calendrier": "Catégorie A, dix colonnes annuelles (2021-2030), opposable au Kenya depuis le 06/09/2022.",
+  "pdf_non_archive": "PDF de 347 pages non versé ; données extraites dans le dépôt (backend/data/zlecaf_ken/bareme_categorie_a.json)."
+ },
+ "support_communautaire": {
+  "titre": "Legal Notice EAC/321/2022 — The EAC Schedule of Tariff Concessions for the AfCFTA for Category A products",
+  "publication": "East African Community Gazette, Vol. AT 1 – No. 23, Arusha, 6 septembre 2022",
+  "url": "https://www.eac.int/documents (miroir : https://www.rra.gov.rw/fileadmin/user_upload/EAC_Vol._AT_1_NO._23_SEPTEMBER_2022.pdf)",
+  "note": "Acte communautaire (Conseil des ministres de l'EAC, EACCMA s.112(1)(b) et article 37 du protocole de l'union douanière) : support et non preuve nationale. La même Gazette est archivée dans la PR Tanzanie (#531)."
+ },
+ "decision_du_proprietaire": {
+  "date": "2026-09-25",
+  "enonce": "L'EAC est un groupement entre ses membres ; l'adhésion à la ZLECAf est par pays. Chaque État de l'EAC doit prouver sa propre mise en œuvre (acte national ou publication de son administration douanière) et sa liste d'origines.",
+  "application_au_kenya": "Le Kenya satisfait l'exigence par la publication du barème par la KRA (acte de son administration douanière, URL ci-dessus), l'avis EAC n'étant que le support communautaire."
+ },
+ "origines": {
+  "source": "Annexe 1 de la Directive ministérielle 1/2021 (AfCFTA/COM/7/DIRECTIVE/FINAL, Accra, 10 octobre 2021) — 29 parties, dont le Bénin écarté faute de ratification : 28 origines opérantes.",
+  "texte_extrait": "sources/ZLECAF_origines_annexe1.source-extrait.txt",
+  "sha256": "8ae2449c62da0dff4b837d7e3426d09bd6946f7434d6082f704a1a949ca46867",
+  "fiche": "ZLECAF_origines_annexe1_2026-09-23.json",
+  "reserve": "Liste à traiter comme un PLAFOND, pas un droit acquis (Annexe datée du 10/10/2021, révision annuelle prévue au §20 non retrouvée, §16 (ii) — voir KENYA_ORIGINS_RESERVES)."
+ },
+ "concordance_dtic_sars": {
+  "source": "« Update on the AfCFTA » — the dtic / SARS, newsletter de mars 2026",
+  "extrait": "« Beyond SADC, new market access opportunities are in the following implementing countries: Ghana, Nigeria, Sierra Leone, The Gambia, Ethiopia, Cameroon, Tunisia, Algeria, Egypt, Morocco, Kenya, Rwanda, Uganda, Burundi. »",
+  "constat": "La liste sud-africaine (dtic/SARS, mars 2026) nomme le KENYA parmi les pays en application effective — concordance avec la preuve nationale kényane. Ce sont deux actes nationaux indépendants : la concordance corrobore, elle ne remplace pas la preuve kényane."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "SATISFAIT — publication du barème par la KRA (preuve nationale) ; avis EAC/321/2022 = support communautaire",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT — Annexe 1 de la Directive 1/2021 (28 origines opérantes)",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — barème EAC catégorie A, dix colonnes annuelles",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "L'Annexe 1 date d'octobre 2021 et sa révision annuelle (§20) n'a pas été retrouvée ; le §16 (ii) la fait lire comme un plafond, pas une liste acquise.",
+  "Aucune publication ne vérifie que chacun des États de l'Annexe applique effectivement la réciprocité envers le Kenya (soumission de barème ≠ mise en œuvre effective)."
+ ],
+ "remaining_work": [
+  "Rechercher une éventuelle version postérieure de l'Annexe 1 (révision annuelle prévue au §20)."
+ ]
+}

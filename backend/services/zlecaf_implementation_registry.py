@@ -148,6 +148,14 @@ KENYA_ORIGINS_RESERVES = (
 )
 
 
+# PREUVE NATIONALE KÉNYANE : la publication du barème par la KRA
+# (kra.go.ke, URL portée par le record). L'avis EAC/321/2022 (Gazette de l'EAC
+# du 06/09/2022) est le SUPPORT COMMUNAUTAIRE, pas la preuve nationale :
+# l'adhésion à la ZLECAf est par pays (décision du propriétaire, 25/09/2026).
+# Concordance : la note dtic/SARS (mars 2026) nomme le Kenya parmi les pays en
+# application effective — voir zlecaf_schedule_zaf.py (ACTIVE_PARTNERS_ZAF).
+
+
 RECORDS = {
     "KEN": ImplementationRecord(
         destination_iso3="KEN",
