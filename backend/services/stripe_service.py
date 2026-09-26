@@ -33,6 +33,21 @@ _PRICE_ENV = {
 }
 
 
+def plan_for_price(price_id: str | None) -> tuple[str, str] | None:
+    """(plan, cycle) correspondant à un price_id Stripe configuré, ou None.
+
+    Sert à connaître la formule réellement payée quand le client en change
+    depuis l'espace client Stripe (les metadata, figées à la souscription,
+    ne suivent pas ce changement).
+    """
+    if not price_id:
+        return None
+    for plan_cycle, env_name in _PRICE_ENV.items():
+        if os.environ.get(env_name) == price_id:
+            return plan_cycle
+    return None
+
+
 def _require_api_key() -> None:
     """Positionne stripe.api_key depuis l'environnement, ou 503 si absente."""
     key = os.environ.get("STRIPE_SECRET_KEY")
@@ -62,6 +77,26 @@ def resolve_price_id(plan: str, cycle: str) -> str:
             detail=f"Tarif non configuré ({env_name}).",
         )
     return price_id
+
+
+def _tax_options() -> dict:
+    """Calcul automatique des taxes (Stripe Tax), si STRIPE_AUTOMATIC_TAX=true.
+
+    Cocher la TVA dans le tableau de bord ne suffit pas : une session Checkout
+    créée par l'API doit demander elle-même le calcul. Stripe a besoin de
+    l'adresse du client pour déterminer la taxe ; les clients professionnels
+    peuvent saisir leur numéro de TVA (autoliquidation intra-UE). Désactivé
+    par défaut : si Stripe Tax n'est pas entièrement configuré (adresse
+    d'origine, immatriculations), Stripe refuserait de créer la session.
+    """
+    if os.environ.get("STRIPE_AUTOMATIC_TAX", "false").lower() != "true":
+        return {}
+    return {
+        "automatic_tax": {"enabled": True},
+        "billing_address_collection": "required",
+        "customer_update": {"address": "auto", "name": "auto"},
+        "tax_id_collection": {"enabled": True},
+    }
 
 
 def get_or_create_customer(email: str, name: str, existing_id: str | None) -> str:
@@ -101,8 +136,65 @@ def create_checkout_session(
         subscription_data={"metadata": metadata},
         metadata=metadata,
         allow_promotion_codes=True,
+        **_tax_options(),
     )
     return session.url
+
+
+def create_product_checkout_session(
+    *,
+    customer_id: str,
+    label: str,
+    amount_eur: int,
+    recurring: bool,
+    success_url: str,
+    cancel_url: str,
+    client_reference_id: str,
+    metadata: dict,
+) -> str:
+    """Checkout d'un produit hors formule (API, option, rapport…).
+
+    Le prix est passé en `price_data` depuis la grille serveur (`pricing.PRODUCTS`)
+    plutôt qu'en `price_…` pré-créé : aucune configuration Stripe par produit.
+    Produit mensuel → abonnement ; sinon paiement unique.
+    """
+    _require_api_key()
+    price_data = {
+        "currency": "eur",
+        "unit_amount": amount_eur * 100,
+        "product_data": {"name": label},
+        # Prix de la grille = hors taxes : la taxe éventuelle s'y ajoute.
+        "tax_behavior": "exclusive",
+    }
+    kwargs = {}
+    if recurring:
+        price_data["recurring"] = {"interval": "month"}
+        kwargs["subscription_data"] = {"metadata": metadata}
+    session = stripe.checkout.Session.create(
+        mode="subscription" if recurring else "payment",
+        customer=customer_id,
+        line_items=[{"price_data": price_data, "quantity": 1}],
+        success_url=success_url,
+        cancel_url=cancel_url,
+        client_reference_id=client_reference_id,
+        metadata=metadata,
+        **kwargs,
+        **_tax_options(),
+    )
+    return session.url
+
+
+def cancel_subscription(subscription_id: str) -> None:
+    """Résilie immédiatement un abonnement (suppression de compte).
+
+    Un abonnement déjà résilié ou inconnu n'est pas une erreur : il n'y a
+    plus rien à facturer.
+    """
+    _require_api_key()
+    try:
+        stripe.Subscription.cancel(subscription_id)
+    except stripe.error.InvalidRequestError:  # type: ignore[attr-defined]
+        pass
 
 
 def create_portal_session(*, customer_id: str, return_url: str) -> str:

@@ -16,7 +16,6 @@ import {
   X,
   Mail,
   User,
-  LogOut,
   Tag,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -42,7 +41,7 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
   const isFrench = language === "fr";
   const isLight = theme === "light";
   const items = NAV_ITEMS(isFrench);
-  const { user, logout } = useAuth() || {};
+  const { user } = useAuth() || {};
 
   const handleTab = (id) => {
     onTabChange && onTabChange("tab", id);
@@ -86,12 +85,12 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
           {user ? (
             <button
               className="afcfta-btn-sm afcfta-btn-secondary"
-              onClick={logout}
-              title={isFrench ? "Se déconnecter" : "Log out"}
-              data-testid="topbar-logout-btn"
+              onClick={onOpenAuth}
+              title={isFrench ? "Mon compte" : "My account"}
+              data-testid="topbar-account-btn"
               style={{ display: "flex", alignItems: "center", gap: 6 }}
             >
-              <LogOut size={14} /> {user.name}
+              <User size={14} /> {user.name}
             </button>
           ) : (
             <button

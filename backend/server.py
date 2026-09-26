@@ -405,6 +405,19 @@ async def startup_load_tariff_data():
                 "Créez l'index manuellement avant d'encaisser des paiements.",
                 e,
             )
+        try:
+            # Minimisation des données : les adresses IP ne sont plus
+            # conservées (seul le pays en est déduit). Efface celles
+            # enregistrées par les versions précédentes — sans effet ensuite.
+            await db.users.update_many(
+                {"signup_ip": {"$exists": True}}, {"$unset": {"signup_ip": ""}}
+            )
+            await db.payment_attempts.update_many(
+                {"$or": [{"ip": {"$exists": True}}, {"signup_ip": {"$exists": True}}]},
+                {"$unset": {"ip": "", "signup_ip": ""}},
+            )
+        except Exception as e:
+            logger.warning(f"Effacement des anciennes adresses IP non effectué: {e}")
 
     # Load crawled data
     try:
@@ -493,4 +506,3 @@ if build_dir.exists() and (build_dir / "index.html").exists():
         if file_path is not None:
             return FileResponse(str(file_path))
         return FileResponse(str(build_dir / "index.html"))
-

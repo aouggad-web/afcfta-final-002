@@ -15,13 +15,16 @@ Trois limites assumées, documentées ici pour éviter les fausses promesses :
    commercial (MaxMind Anonymous IP, IPQualityScore, IPinfo Privacy). On se
    contente d'enregistrer les signaux pour audit — voir `collect_signals()`.
 3. **La source géo est optionnelle.** Si aucune n'est configurée, le pays est
-   `None` et l'appelant retombe sur le choix explicite de l'utilisateur, plutôt
-   que de bloquer un paiement sur une donnée absente.
+   `None` et le checkout est refusé (voir `routes/billing.resolve_provider`).
 
 Sources supportées, par ordre de priorité :
   - en-tête `CF-IPCountry` (Cloudflare en frontal — gratuit, fiable) ;
   - base MaxMind GeoLite2 locale si `GEOIP_DB_PATH` pointe vers un .mmdb
-    (nécessite le paquet `geoip2`).
+    (nécessite le paquet `geoip2`) ;
+  - API IPinfo Lite si `IPINFO_TOKEN` est renseignée (gratuite, illimitée, pays
+    seulement — pas de détection VPN). L'appel réseau est fait par
+    `resolve_country()` (async), qui met le résultat en cache ;
+    `country_from_request()` ne lit que ce cache.
 """
 
 from __future__ import annotations
@@ -32,12 +35,20 @@ import logging
 import os
 from typing import Optional
 
+import httpx
 from fastapi import Request
 
 logger = logging.getLogger(__name__)
 
 _reader = None
 _reader_loaded = False
+
+_IPINFO_URL = "https://api.ipinfo.io/lite/{ip}"
+_IPINFO_TIMEOUT = 2.0
+_IPINFO_CACHE_MAX = 10000
+# IP → code pays ISO-2. Seuls les succès sont mis en cache : un échec réseau
+# sera retenté à la prochaine requête.
+_ipinfo_cache: dict[str, str] = {}
 
 
 def trusted_proxy_hops() -> int:
@@ -200,7 +211,44 @@ def country_from_request(request: Request) -> Optional[str]:
             return reader.country(ip).country.iso_code
         except Exception:
             return None
+
+    # 3. IPinfo Lite, via le cache rempli par resolve_country().
+    if ip:
+        return _ipinfo_cache.get(ip)
     return None
+
+
+async def resolve_country(request: Request) -> Optional[str]:
+    """Comme `country_from_request()`, mais interroge IPinfo Lite si besoin.
+
+    À appeler (await) en tête des routes qui ont besoin du pays : le résultat
+    IPinfo est mis en cache, et les appels synchrones à `country_from_request()`
+    qui suivent dans la même route le retrouvent sans nouvel appel réseau.
+    """
+    country = country_from_request(request)
+    if country:
+        return country
+    token = os.environ.get("IPINFO_TOKEN")
+    ip = client_ip(request)
+    if not token or not ip:
+        return None
+    try:
+        async with httpx.AsyncClient(timeout=_IPINFO_TIMEOUT) as client:
+            # Jeton en en-tête, pas dans l'URL : httpx journalise les URL.
+            resp = await client.get(
+                _IPINFO_URL.format(ip=ip), headers={"Authorization": f"Bearer {token}"}
+            )
+        resp.raise_for_status()
+        code = (resp.json().get("country_code") or "").upper()
+    except (httpx.HTTPError, ValueError) as exc:
+        logger.warning("IPinfo Lite: pays non résolu (%s)", type(exc).__name__)
+        return None
+    if len(code) != 2:
+        return None
+    if len(_ipinfo_cache) >= _IPINFO_CACHE_MAX:
+        _ipinfo_cache.clear()
+    _ipinfo_cache[ip] = code
+    return code
 
 
 def collect_signals(request: Request, user: dict) -> dict:
@@ -209,14 +257,14 @@ def collect_signals(request: Request, user: dict) -> dict:
     Ne bloque rien : c'est une trace, pas un contrôle. Une incohérence entre le
     pays d'inscription et le pays de paiement mérite un coup d'œil humain, pas
     un refus automatique (voyage, expatriation, VPN d'entreprise sont légitimes).
+
+    Aucune adresse IP n'est conservée (minimisation des données) : seuls les
+    pays en sont déduits, l'adresse elle-même est oubliée après la requête.
     """
-    ip = client_ip(request)
     detected = country_from_request(request)
     signup_country = user.get("signup_country")
     return {
-        "ip": ip,
         "detected_country": detected,
-        "signup_ip": user.get("signup_ip"),
         "signup_country": signup_country,
         "country_mismatch": bool(detected and signup_country and detected != signup_country),
         "via_cloudflare": cloudflare_is_trusted(request),

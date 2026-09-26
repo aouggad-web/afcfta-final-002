@@ -26,6 +26,7 @@ from entitlements import Entitlements, ModuleAccess, resolve_entitlements
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError, PyMongoError
+from services import supabase_auth
 from services.user_auth_service import decode_access_token
 
 _db = None
@@ -53,16 +54,20 @@ async def get_optional_subscriber(request: Request) -> Optional[dict]:
         return None
 
     payload = decode_access_token(token)
-    if not payload:
-        return None
+    if payload:
+        try:
+            query = {"_id": ObjectId(payload["sub"])}
+        except (InvalidId, TypeError, KeyError):
+            return None
+    else:
+        # Session Supabase : le compte Mongo est relié par `supabase_id`.
+        supabase_payload = supabase_auth.decode_token(token)
+        if not supabase_payload:
+            return None
+        query = {"supabase_id": supabase_payload["sub"]}
 
     try:
-        user_id = ObjectId(payload["sub"])
-    except (InvalidId, TypeError, KeyError):
-        return None
-
-    try:
-        return await _db.users.find_one({"_id": user_id})
+        return await _db.users.find_one(query)
     except PyMongoError:
         # Motor connects lazily, so a Mongo outage first surfaces here
         # rather than at startup — this dependency promises never to

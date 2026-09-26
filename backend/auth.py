@@ -23,6 +23,7 @@ from typing import Annotated, Optional
 
 from fastapi import Cookie, Depends, Header, HTTPException, status
 from pymongo import ReturnDocument
+from services import supabase_auth
 from services.user_auth_service import decode_access_token
 
 # Tariff/trade data is public information — keep data endpoints accessible
@@ -68,7 +69,7 @@ def _has_valid_jwt_session(
         token = authorization_header[7:]
     if not token:
         return False
-    return decode_access_token(token) is not None
+    return decode_access_token(token) is not None or supabase_auth.decode_token(token) is not None
 
 
 # ---------------------------------------------------------------------------
@@ -111,7 +112,55 @@ async def require_auth(
             detail="Invalid or inactive API key",
             headers={"WWW-Authenticate": "ApiKey"},
         )
+    _reject_if_expired(doc)
+    if doc.get("request_quota") is not None:
+        doc = await _meter_request(doc)
     return doc
+
+
+def _reject_if_expired(doc: dict) -> None:
+    """Clés vendues via Chargily (paiement ponctuel) : valables jusqu'à `expires_at`."""
+    expires_at = doc.get("expires_at")
+    if expires_at is None:
+        return
+    if expires_at.tzinfo is None:
+        # Datetime naïf renvoyé par Mongo (stocké en UTC).
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if datetime.now(timezone.utc) >= expires_at:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="API key expired — renew your API plan",
+            headers={"WWW-Authenticate": "ApiKey"},
+        )
+
+
+async def _meter_request(doc: dict) -> dict:
+    """Quota mensuel de requêtes des clés vendues (plans API, `request_quota`).
+
+    Même mécanique que check_ai_quota, sur des compteurs distincts : une clé
+    sans `request_quota` (clés créées par un admin) n'est jamais comptée.
+    """
+    period = _current_period()
+    updated = await _db["api_keys"].find_one_and_update(
+        {"_id": doc["_id"], "request_period": period},
+        {"$inc": {"request_count": 1}},
+        return_document=ReturnDocument.AFTER,
+    )
+    if updated is None:
+        updated = await _db["api_keys"].find_one_and_update(
+            {"_id": doc["_id"]},
+            {"$set": {"request_period": period, "request_count": 1}},
+            return_document=ReturnDocument.AFTER,
+        )
+    if updated.get("request_count", 0) > doc["request_quota"]:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=(
+                f"Monthly API request quota exceeded ({doc['request_quota']} "
+                "requests/month). Upgrade your API plan or wait for the next month."
+            ),
+        )
+    return updated
 
 
 async def require_admin(
@@ -188,6 +237,7 @@ async def check_ai_quota(
             detail="Invalid or inactive API key",
             headers={"WWW-Authenticate": "ApiKey"},
         )
+    _reject_if_expired(doc)
 
     if doc.get("tier") == "admin":
         return doc
