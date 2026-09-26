@@ -322,7 +322,7 @@
   },
   "UGA": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Recherche comparative du 26/09/2026 (règle « preuve nationale » suspendue par le propriétaire pour ce résultat) : l'URA ne publie NI le barème NI l'avis EAC/321/2022 (recherche interne 0 résultat ; accueil sans occurrence, HTML archivé) ; aucun acte ougandais (ULII : aucun SI ; Gazette : rien) ; aucune liste nominative ; dédouanement fondé sur COMESA + EAC (proc. 254 archivée), MTIC : opportunité d'exportation, pas d'application. Cité par l'Afrique du Sud (dtic), le Maroc et l'Égypte — indices, pas preuves. Fiche : UGA_application_2026-09-26.json.",
+   "preuve": "Recherche comparative du 26/09/2026 (règle « preuve nationale » suspendue par le propriétaire pour ce résultat) : l'URA ne publie NI le barème NI l'avis EAC/321/2022 (recherche interne 0 résultat ; accueil sans occurrence, HTML archivé) ; aucun acte ougandais (ULII : aucun SI ; Gazette : rien) ; aucune liste nominative ; dédouanement fondé sur COMESA + EAC (proc. 254 archivée), MTIC : opportunité d'exportation, pas d'application. Cité par l'Afrique du Sud (dtic), le Maroc et l'Égypte — indices, pas preuves. Fiche : UGA_application_2026-09-26.json. Recherche approfondie 26/09/2026 (4 volets) : rien de plus côté URA (sitemaps, CET 2022) ; l'offre ougandaise est déposée via le bloc EAC (déc. UA 831 du 06/02/2022, accès direct bloqué 403, à reprendre) ; ASYCUDA configuré (secondaire, préparation) ; l'Ouganda n'est pas parmi les 10 pays « actively trading » GTI (tralac, mai 2025) ; premier flux documenté = EXPORTATION ; aucune preuve d'importation.",
    "niveau_de_source": "pages probantes archivées (URA, MTIC, portail du commerce) ; aucune source ougandaise de ZLECAf",
    "bareme_collecte": false
   },

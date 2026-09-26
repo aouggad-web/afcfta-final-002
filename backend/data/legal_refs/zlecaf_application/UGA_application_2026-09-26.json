@@ -51,6 +51,28 @@
   ],
   "resultat": "Aucun acte ni avis ougandais d'application à l'importation n'a été retrouvé, et aucune liste nominative d'États parties admis."
  },
+ "recherche_approfondie_2026-09-26": {
+  "note": "Recherche à quatre volets demandée par le propriétaire (actes, douane, preuves d'importation, offres). Constats vérifiés, échecs d'accès datés.",
+  "volet_actes": [
+   "Aucun instrument strictement national (SI ougandais, Ministerial Order, notice du ministère des Finances) portant le barème ZLECAf — cohérent avec la structure juridique : la politique tarifaire extérieure de l'Ouganda relève de l'union douanière EAC (EACCMA 2004) et les préférences sont notifiées par des Legal Notices du Conseil des ministres EAC.",
+   "Décision Assemblée UA 831 (06/02/2022) : « WELCOMES the submissions of the 43 tariff offers by: … East African Community (EAC) Member States: Burundi, Kenya, Rwanda, South Sudan, Tanzania and Uganda » — l'offre ougandaise est déposée VIA LE BLOC EAC (l'offre commune EAC déjà documentée). Accès direct au texte bloqué (africanlii.org HTTP 403 le 26/09/2026), lecture via cache de recherche ; à reprendre.",
+   "L'affirmation « Gazette imprimée par l'UPPC Entebbe » (couverture de l'EAC Gazette complète) n'a PAS pu être vérifiée : le PDF de 2 pages archivé (miroir RRA) ne porte pas de couverture ; eac.int refuse l'accès (HTTP 403) et tralac est injoignable (HTTP 000) le 26/09/2026."
+  ],
+  "volet_douane_URA": [
+   "Sitemap de publications ura.go.ug (397 URLs) : 0 occurrence afcfta/fta ; page « Common External Tariff 2022 » : aucun renvoi AfCFTA ; pages publications et catégorie douane : rien (26/09/2026).",
+   "Confirme : l'URA ne publie ni barème, ni avis EAC/321, ni circulaire ZLECAf."
+  ],
+  "volet_preuves_import": [
+   "ICOYACA (ONG, secondaire, lu le 26/09/2026) : « URA has successfully configured the AfCFTA tariff schedules » dans ASYCUDA World (E-Tariff Book, 0 % automatique) ; l'Ouganda a rejoint la GTI « following the verification of its tariff schedules » — PRÉPARATION technique, aucune déclaration d'importation citée.",
+   "tralac FAQ (mai 2025, secondaire) : l'Ouganda ne figure PAS parmi les 10 pays « actively trading goods under the GTI » (fév. 2025) ; US State Dept ICS 2024 (secondaire) : « Uganda is not one of the pilot program countries ».",
+   "Premier flux ougandais documenté (déc. 2024 → Nigéria, presse) : EXPORTATION, pas importation.",
+   "VERDICT : aucune preuve d'importation sous certificat d'origine ZLECAf par l'Ouganda."
+  ],
+  "volet_offres": [
+   "au-afcfta.org : page pays Ouganda existante mais fichier Uganda_Status_coverage.xlsx en HTTP 404 (26/09/2026) ; pas de page publique « tariff offers » (HTTP 404) ; e-Tariff Book (etariff.au-afcfta.org) = application JS non vérifiable en ligne de commande (API 404).",
+   "Rapport IGC (mai 2022, secondaire) note 12 : « 45 missing tariff lines that were included in the AfCFTA Schedule of Tariff Concessions submitted by the Uganda authorities » — confirme un dépôt par les autorités ougandaises, document non primaire."
+  ]
+ },
  "concordance_et_indices_croises": {
   "cite_par": "L'Ouganda est nommé par l'Afrique du Sud (liste dtic, mars 2026, pays en application effective), le Maroc (P1) et l'Égypte (groupe 5 ans).",
   "portee": "Ces indices orientent la recherche et en font un candidat fort ; ils ne remplacent pas un acte ougandais, conformément à la règle du plan."
@@ -122,7 +144,9 @@
   "Aucune liste nominative des pays d'origine admis."
  ],
  "remaining_work": [
-  "Reprendre le portail du ministère des Finances (development.finance.go.ug/afcfta) et ugandaexports.go.ug, injoignables le 2026-09-26.",
+  "Reprendre le portail du ministère des Finances (development.finance.go.ug/afcfta), ugandaexports.go.ug et tralac (4892), injoignables le 26/09/2026.",
+  "Vérifier directement la décision Assemblée UA 831 (africanlii.org, 403 le 26/09/2026) et la couverture UPPC de l'EAC Gazette (eac.int, 403).",
+  "Vérifier la position de l'Ouganda dans l'e-Tariff Book (etariff.au-afcfta.org, application JS) et le fichier Uganda_Status_coverage.xlsx (404).",
   "Rechercher les notices de l'Uganda Gazette (UPPC) et les Statutory Instruments postérieurs à 2022.",
   "Collecter l'offre de l'Ouganda comme destination (barème national, destination UG) et la liste des États admis."
  ]
