@@ -178,7 +178,9 @@ RECORDS = {
             "origines viennent de l'Annexe 1 de la Directive ministérielle "
             "1/2021 (10/10/2021) : le barème lui-même ne nomme aucun pays. "
             "Trois sont sous réserve de ratification, et la liste est un "
-            "plafond — voir KENYA_ORIGINS_RESERVES."
+            "plafond — voir KENYA_ORIGINS_RESERVES. Barème publié par la "
+            "douane kényane (KRA) ; aucun acte national propre ; liste "
+            "d'origines continentale (Annexe 1), traitée comme un plafond."
         ),
     ),
     # Les deux circulaires égyptiennes (n° 38 de 2024, complétée par la n° 44
