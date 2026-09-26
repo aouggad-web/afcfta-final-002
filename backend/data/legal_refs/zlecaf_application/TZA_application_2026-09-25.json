@@ -4,6 +4,12 @@
  "agreement": "ZLECAf / AfCFTA",
  "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
  "verified_at": "2026-09-25",
+ "decision_du_proprietaire": {
+  "date": "2026-09-25",
+  "enonce": "L'EAC est un groupement entre ses membres ; l'adhésion à la ZLECAf est par pays. L'avis EAC/321/2022 ne suffit pas seul. Chaque État de l'EAC doit prouver sa propre mise en œuvre (acte national ou publication de son administration douanière) et sa liste d'origines.",
+  "application_a_la_tanzanie": "Aucune preuve tanzanienne propre (acte national ou publication de l'administration douanière) n'a été trouvée à ce jour : la Tanzanie RESTE AU NPF, quel que soit l'avis communautaire. Celui-ci est conservé comme support, jamais comme preuve.",
+  "portee": "Vaut pour tous les États de l'EAC. Le Kenya est traité séparément (preuve nationale : publication du barème par la KRA) ; Rwanda, Ouganda et Burundi restent à instruire un par un, avec la même exigence."
+ },
  "evidence_level": "acte communautaire EAC lu et archivé (Gazette de l'EAC, avis EAC/321/2022) ; acte ou avis tanzanien propre non retrouvé ; aucune liste nominative d'origines ; aucun barème ligne à ligne de la Tanzanie comme destination",
  "instrument_eac": {
   "id": "Legal Notice No. EAC/321/2022",
@@ -39,12 +45,12 @@
  },
  "ratification": "La Tanzanie est RATIFIÉE au registre continental du dépôt (services/zlecaf_membership_status.ratification_status('TZA') → RATIFIED), base tenue sur sources continentales ; la date d'effet nationale reste à documenter.",
  "gates_status": {
-  "1_instrument_national_en_vigueur": "PARTIEL — l'acte communautaire EAC/321/2022 (6 septembre 2022) est en vigueur et couvre la Tanzanie comme État partenaire de l'union douanière ; l'acte ou l'avis tanzanien propre reste introuvable",
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire (décision du propriétaire du 25/09/2026 : l'adhésion à la ZLECAf est par pays) ; aucune preuve tanzanienne propre (acte national ou publication de l'administration douanière)",
   "2_liste_officielle_origines_reciproques": "NON SATISFAIT — l'avis énonce une règle (« State Parties ») sans liste nominative ; aucune liste tanzanienne retrouvée",
   "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème de la TANZANIE comme destination n'est collecté ; l'instantané EAC du dépôt est l'offre du KENYA (destination_query_code = KE)",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
- "conclusion": "Les trois preuves du plan ne sont PAS réunies : il manque l'acte ou l'avis tanzanien propre (ou la confirmation que l'acte communautaire suffit et est appliqué), la liste nominative des origines, et le barème de la Tanzanie comme destination. AUCUN BRANCHEMENT : la Tanzanie reste au NPF dans le calcul.",
+ "conclusion": "Les trois preuves du plan ne sont PAS réunies, et par décision du propriétaire (25/09/2026) l'avis EAC/321/2022 ne suffit pas seul : l'adhésion à la ZLECAf est par pays. Tant qu'aucune preuve tanzanienne propre (acte national ou publication douanière), liste nominative et barème de destination ne sont trouvés, la Tanzanie reste au NPF. AUCUN BRANCHEMENT.",
  "ne_tranche_pas": [
   "L'application effective de l'avis EAC/321/2022 par la Tanzanie n'est établie par aucun texte national ni avis de la TRA ; l'acte communautaire l'autorise, il ne prouve pas la mise en œuvre.",
   "La règle « State Parties » ne dit pas quels États la Tanzanie admet effectivement (réciprocité non documentée).",
