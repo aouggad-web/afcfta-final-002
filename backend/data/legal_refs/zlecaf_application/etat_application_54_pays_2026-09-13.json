@@ -3,7 +3,8 @@
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
  "mis_a_jour_le": "2026-09-25",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé.", "niveaux": {
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Étape 5 ouverte le même jour : fiche Tanzanie livrée (TZA_application_2026-09-25.json) — l'avis EAC/321/2022 (Gazette de l'EAC du 06/09/2022) est un acte communautaire qui couvre la Tanzanie et approuve la préférence pour les « State Parties », sans liste nominative ; aucun acte ou avis tanzanien propre, aucune liste, et aucun barème de la Tanzanie comme destination — les trois preuves ne sont pas réunies, aucun branchement. Décision du propriétaire (25/09/2026) : l'adhésion à la ZLECAf est par pays ; l'avis EAC/321/2022 ne suffit pas seul — la Tanzanie reste au NPF tant qu'aucune preuve tanzanienne propre n'est trouvée.",
+ "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
   "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
@@ -314,9 +315,9 @@
    "bareme_collecte": true
   },
   "TZA": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Décision du propriétaire (25/09/2026) : l'adhésion à la ZLECAf est par pays, l'avis EAC/321/2022 ne suffit pas seul. Aucune preuve tanzanienne propre (acte national ou publication douanière) n'est trouvée, donc la Tanzanie reste au NPF. L'avis EAC/321/2022 du 06/09/2022 (Gazette de l'EAC, Conseil des ministres, EACCMA s.112(1)(b)) approuve la préférence pour les « State Parties » sans liste nominative ; aucun acte ou avis tanzanien propre (TRA, portail commercial, lois de finances 2023-2024 lues, Parlement ; TanzLII injoignable) ; aucun barème de la Tanzanie comme destination. Fiche : TZA_application_2026-09-25.json.",
+   "niveau_de_source": "primaire pour l'acte communautaire (Gazette de l'EAC archivée et scellée, lu via le miroir officiel RRA) ; acte national tanzanien non retrouvé",
    "bareme_collecte": false
   },
   "UGA": {
@@ -347,8 +348,8 @@
  "repartition": {
   "APPLIQUE": 3,
   "NON_APPLIQUE_PRESUME": 1,
-  "NON_RECHERCHE": 41,
-  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+  "NON_RECHERCHE": 40,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 5,
   "OFFRE_SEULE": 3,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
   "PREUVES_ASSEMBLEES": 1,
@@ -363,6 +364,7 @@
   "MAR_application_2026-09-13.json",
   "NGA_application_2026-09-25.json",
   "TUN_application_2026-09-13.json",
+  "TZA_application_2026-09-25.json",
   "ZMB_application_2026-09-25.json",
   "chantier_collecte_2026-09-14.json"
  ],
