@@ -3,7 +3,8 @@
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
  "mis_a_jour_le": "2026-09-25",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé.", "niveaux": {
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Étape 5 (suite) : fiche comparative Ouganda (UGA_application_2026-09-26.json) — ni barème, ni avis EAC, ni acte national, ni liste, ni preuve d'importation ; le Kenya reste le seul des quatre (KEN/RWA/TZA/UGA) à publier le barème lui-même. Aucun branchement.",
+ "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
   "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
@@ -320,9 +321,9 @@
    "bareme_collecte": false
   },
   "UGA": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Recherche comparative du 26/09/2026 (règle « preuve nationale » suspendue par le propriétaire pour ce résultat) : l'URA ne publie NI le barème NI l'avis EAC/321/2022 (recherche interne 0 résultat ; accueil sans occurrence, HTML archivé) ; aucun acte ougandais (ULII : aucun SI ; Gazette : rien) ; aucune liste nominative ; dédouanement fondé sur COMESA + EAC (proc. 254 archivée), MTIC : opportunité d'exportation, pas d'application. Cité par l'Afrique du Sud (dtic), le Maroc et l'Égypte — indices, pas preuves. Fiche : UGA_application_2026-09-26.json.",
+   "niveau_de_source": "pages probantes archivées (URA, MTIC, portail du commerce) ; aucune source ougandaise de ZLECAf",
    "bareme_collecte": false
   },
   "ZAF": {
@@ -347,8 +348,8 @@
  "repartition": {
   "APPLIQUE": 3,
   "NON_APPLIQUE_PRESUME": 1,
-  "NON_RECHERCHE": 41,
-  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+  "NON_RECHERCHE": 40,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 5,
   "OFFRE_SEULE": 3,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
   "PREUVES_ASSEMBLEES": 1,
@@ -363,6 +364,7 @@
   "MAR_application_2026-09-13.json",
   "NGA_application_2026-09-25.json",
   "TUN_application_2026-09-13.json",
+  "UGA_application_2026-09-26.json",
   "ZMB_application_2026-09-25.json",
   "chantier_collecte_2026-09-14.json"
  ],

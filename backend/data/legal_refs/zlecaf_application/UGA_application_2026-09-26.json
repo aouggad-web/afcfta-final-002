@@ -1,0 +1,129 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "UGA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-26",
+ "decision_du_proprietaire": {
+  "date": "2026-09-26",
+  "enonce": "Recherche comparative demandée, réponses oui/non appuyées par des sources archivées (empreinte) ou des recherches consignées avec leur date. La règle « preuve nationale » est suspendue jusqu'à ce résultat. Aucun branchement."
+ },
+ "evidence_level": "aucune source ougandaise de ZLECAf retrouvée, ni barème, ni avis, ni acte national ; pages probantes archivées (URA, MTIC, portail du commerce) ; l'avis EAC/321/2022 connu uniquement via le miroir RRA (PR Tanzanie)",
+ "questions_du_proprietaire": {
+  "1_bareme_complet_URA": {
+   "reponse": "NON",
+   "detail": "Aucun barème ZLECAf publié sur ura.go.ug : la recherche interne du site (« afcfta », « afcfta schedule », « EAC/321 ») ne renvoie AUCUN résultat (consigné le 2026-09-26) ; la page d'accueil (443 Ko, archivée) ne mentionne ni AfCFTA ni ZLECAf ; contrairement à la KRA, aucune publication de l'instantané EAC (347 pages) n'est trouvée sur le domaine ougandais."
+  },
+  "2_avis_EAC_321_seul": {
+   "reponse": "NON",
+   "detail": "Pas même l'avis : la recherche interne URA sur « EAC/321 » ne renvoie rien (2026-09-26). Contrairement à la RRA, qui héberge le miroir de la Gazette, l'URA ne publie ni l'avis ni le barème. L'avis n'est connu que via le miroir RRA (Gazette EAC/321/2022, PDF archivé dans la PR Tanzanie #531)."
+  },
+  "3_acte_national_propre": {
+   "reponse": "NON",
+   "detail": "Aucun acte ougandais retrouvé : avis ou circulaire de l'URA — aucun ; Statutory Instrument — ULII ne liste que les textes continentaux (l'Accord de 2018 et le protocole sur les marchandises), aucun SI ougandais de ZLECAf ; Uganda Gazette — aucune occurrence retrouvée par recherche (2026-09-26)."
+  },
+  "4_liste_nominative_origines": {
+   "reponse": "NON",
+   "detail": "Aucune liste nominative des pays d'origine admis par l'Ouganda n'a été retrouvée."
+  },
+  "5_preuves_application_import": {
+   "reponse": "NON",
+   "detail": "Aucune preuve d'application à l'importation : la procédure de dédouanement publiée (portail national du commerce, proc. 254 « import clearance at Entebbe », archivée) se fonde sur COMESA, l'EAC Customs Management Act 2004 et l'EAC CET 2022 — pas la ZLECAf ; le MTIC (page « External Trade Achievements », archivée) présente l'Accord ZLECAf comme opportunité d'exportation (« Trading commenced on 1st January 2021 »), sans application tarifaire ni statistique d'importation ; le portail du ministère des Finances (development.finance.go.ug/afcfta) est injoignable (HTTP 000, 2026-09-26) ; une tribune de 2019 du commissaire de l'URA (The Independent) est une source secondaire, piste seulement."
+  }
+ },
+ "instrument_eac": {
+  "id": "Legal Notice No. EAC/321/2022",
+  "titre": "The EAC Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA) for Category A products",
+  "date": "2022-09-06",
+  "note": "Acte du Conseil des ministres de l'EAC, applicable dans le territoire douanier dont l'Ouganda est État partenaire. Seule trace publique retrouvée : le miroir hébergé par la RRA (PDF archivé dans la PR Tanzanie #531) ; l'URA n'en publie aucune copie."
+ },
+ "instrument_national": {
+  "statut": "NON RETROUVÉ",
+  "cible": "Avis ou circulaire de l'URA, Statutory Instrument ou notice de la Gazette ougandaise portant application du barème ZLECAf, et la liste nominative des États parties admis.",
+  "recherches": [
+   "2026-09-26 — ura.go.ug : page d'accueil sans occurrence AfCFTA/ZLECAf (HTML 443 Ko archivé) ; recherche interne « afcfta », « afcfta schedule », « EAC/321 » : 0 résultat ; page « Documents at the point of entry » : 0 occurrence AfCFTA (certificat d'origine générique uniquement).",
+   "2026-09-26 — Portail national du commerce (ugandatrades.go.ug), procédure 254 (dédouanement à Entebbe) : justification légale COMESA (manuel), EAC Customs Management Act 2004, EAC CET 2022 — aucune mention ZLECAf (HTML archivé).",
+   "2026-09-26 — MTIC, « External Trade Achievements » : l'Accord ZLECAf présenté comme opportunité d'exportation ; aucune application tarifaire (HTML archivé).",
+   "2026-09-26 — ULII : aucun instrument ougandais de ZLECAf (seulement l'Accord continental de 2018 et le protocole).",
+   "2026-09-26 — development.finance.go.ug/afcfta (ministère des Finances) : injoignable, HTTP 000 ; à reprendre.",
+   "2026-09-26 — ugandaexports.go.ug (certificats d'origine) : injoignable, HTTP 000 ; à reprendre.",
+   "2026-09-26 — The Independent (10/09/2019), tribune du commissaire URA Kateshumbwa : positionnement de la douane, aucun texte ; source secondaire."
+  ],
+  "resultat": "Aucun acte ni avis ougandais d'application à l'importation n'a été retrouvé, et aucune liste nominative d'États parties admis."
+ },
+ "concordance_et_indices_croises": {
+  "cite_par": "L'Ouganda est nommé par l'Afrique du Sud (liste dtic, mars 2026, pays en application effective), le Maroc (P1) et l'Égypte (groupe 5 ans).",
+  "portee": "Ces indices orientent la recherche et en font un candidat fort ; ils ne remplacent pas un acte ougandais, conformément à la règle du plan."
+ },
+ "ratification": "L'Ouganda est RATIFIE au registre continental du dépôt (ratification_status('UGA') → RATIFIED) ; la date d'effet nationale reste à documenter.",
+ "etude_comparative": {
+  "note": "Tableau demandé par le propriétaire (5 questions × 4 pays). Sources : fiches des PR #531 (Tanzanie), #533 (Kenya), #534 (Rwanda) et la présente fiche. Seul le prouvé est rapporté.",
+  "questions": [
+   "Q1 barème complet publié par la douane nationale",
+   "Q2 publication de l'avis EAC/321/2022 (miroir)",
+   "Q3 acte national propre",
+   "Q4 liste nominative des pays d'origine admis",
+   "Q5 preuve d'application à l'importation"
+  ],
+  "KEN": {
+   "Q1": "OUI — la KRA publie l'instantané EAC (PDF 347 pages, archivé, sha 7a92fb35…) ; c'est la preuve nationale du Kenya",
+   "Q2": "OUI (implicite) — la publication KRA met en œuvre l'avis EAC/321/2022, qu'elle déborde",
+   "Q3": "OUI — publication de l'administration douanière kényane retenue comme preuve nationale (décision du propriétaire)",
+   "Q4": "NON — règle « State Parties with Provisional Schedule in Annex 1 », pas de liste nominative des pays ; la liste dtic sud-africaine est une preuve par le partenaire",
+   "Q5": "PARTIEL — publication du barème = acte d'application ; statistiques d'importation sous certificat ZLECAf non collectées"
+  },
+  "RWA": {
+   "Q1": "NON — aucune publication du barème par la RRA",
+   "Q2": "OUI — la RRA héberge le miroir de la Gazette EAC/321/2022",
+   "Q3": "NON — aucun acte rwandais propre retrouvé",
+   "Q4": "NON",
+   "Q5": "NON — portail commercial : certificat d'origine comme procédure export, pas d'application à l'importation"
+  },
+  "TZA": {
+   "Q1": "NON — aucun texte tanzanien retrouvé ; l'instantané EAC n'est pas publié par la TRA",
+   "Q2": "NON — aucune publication TRA trouvée ; l'avis n'est connu que via le miroir RRA",
+   "Q3": "NON — aucun avis ni texte TRA",
+   "Q4": "NON — la liste dtic sud-africaine ne cite pas la Tanzanie",
+   "Q5": "NON — participation au GTI (premier certificat TCCIA, 15/05/2023) = faits d'EXPORTATION, pas d'importation"
+  },
+  "UGA": {
+   "Q1": "NON",
+   "Q2": "NON — pas même l'avis",
+   "Q3": "NON",
+   "Q4": "NON",
+   "Q5": "NON — dédouanement fondé sur COMESA + EAC, MTIC : opportunité, pas d'application"
+  },
+  "lecture": "Le Kenya est le seul des quatre à publier lui-même le barème (preuve nationale complète). Le Rwanda héberge le miroir de l'avis communautaire. La Tanzanie et l'Ouganda ne publient rien. Personne ne publie de liste nominative des pays admis : ce sera un axe de recherche pour tous."
+ },
+ "sources_archivees": {
+  "ura_accueil": {
+   "texte_extrait": "sources/UGA_ura_accueil_2026-09-26.html",
+   "sha256": "2c06e3dc3e6583783f10c8241ccbb3a695a0c605850c5b6157597cf205bb9634"
+  },
+  "mtic_realisations": {
+   "texte_extrait": "sources/UGA_mtic_2026-09-26.html",
+   "sha256": "1a5485d3b4b8a0be939d79ee91ac4f07e6fa0a8933db4e17d83250d36e8aafc8"
+  },
+  "procedure_dedouanement_254": {
+   "texte_extrait": "sources/UGA_ugandatrades_procedure_254_2026-09-26.html",
+   "sha256": "9ee2a128a67d441a122a2dc9b0c64c5ce71f9678a88e1970c1ea00c147ec343a"
+  }
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire ; aucune preuve ougandaise propre",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative ; règle « State Parties » non traduite en liste",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème de l'OUGANDA comme destination ; l'instantané EAC disponible est l'offre commune EAC, collectée via la requête du Kenya",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "Les trois preuves du plan ne sont PAS réunies. Tant qu'aucune preuve ougandaise propre, liste nominative et barème de destination ne sont trouvés, l'Ouganda reste au NPF. AUCUN BRANCHEMENT.",
+ "ne_tranche_pas": [
+  "Trois actes nationaux voisins (Afrique du Sud, Maroc, Égypte) citent l'Ouganda comme partenaire : ce sont des indices, pas des preuves de ce que l'Ouganda accorde.",
+  "L'application effective par l'Ouganda n'est établie par aucun texte national, aucun avis URA ni publication du barème.",
+  "Aucune liste nominative des pays d'origine admis."
+ ],
+ "remaining_work": [
+  "Reprendre le portail du ministère des Finances (development.finance.go.ug/afcfta) et ugandaexports.go.ug, injoignables le 2026-09-26.",
+  "Rechercher les notices de l'Uganda Gazette (UPPC) et les Statutory Instruments postérieurs à 2022.",
+  "Collecter l'offre de l'Ouganda comme destination (barème national, destination UG) et la liste des États admis."
+ ]
+}
