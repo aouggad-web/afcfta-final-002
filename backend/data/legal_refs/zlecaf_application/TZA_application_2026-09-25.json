@@ -67,5 +67,11 @@
   "Chercher l'acte ou l'avis tanzanien d'application (Gazette of the United Republic of Tanzania, avis de la TRA) — le dépôt polis.bunge.go.tz et TanzLII étaient injoignables le 25/09/2026.",
   "Si aucun texte national n'existe, établir que l'avis EAC/321/2022 est directement appliqué par la douane tanzanienne (déclaration liquidée sous régime préférentiel, ou publication TRA).",
   "Collecter l'offre de la Tanzanie comme destination (e-Tariff Book, destination TZ) et la confronter aux règles d'origine de l'EAC."
- ]
+ ],
+ "complements_2026-09-27": {
+  "note": "Compléments de la recherche approfondie, vérifiés directement le 27/09/2026.",
+  "tra": "Le seul livre tarifaire publié par la TRA est le CET EAC 2022 (PDF 4,8 Mo, version mise à jour juin 2025) — aucun document AfCFTA sur tra.go.tz ; recherche interne sans résultat ; TanzLII (gazettes 2022-2026 scannées) : aucune notice AfCFTA ; gazettes.africa inaccessible (HTTP 000, 27/09).",
+  "decision_ua_831": "Assemblée UA, Déc. 831(XXXV) du 06/02/2022 (texte vérifié, archivé dans la PR Ouganda #535) : §7(b) — la Tanzanie est nommée parmi les États EAC dont l'offre tarifaire est déposée (via le bloc EAC) ; §8 : 291 offres techniquement vérifiées. Dépôt confirmé ; ce n'est pas une publication de la TRA (règle A non satisfaite).",
+  "gti_correction": "Correction d'un constat antérieur : la FAQ tralac (mise à jour mai 2025) liste la TANZANIE parmi les États « actively trading goods under the GTI » (fév. 2025) — liste de 9 noms pour « 10 State Parties » (omission de la source elle-même). La direction des flux n'est pas précisée par la source ; les faits documentés restent des exportations (certificat TCCIA, 15/05/2023). Aucune preuve d'importation."
+ }
 }
