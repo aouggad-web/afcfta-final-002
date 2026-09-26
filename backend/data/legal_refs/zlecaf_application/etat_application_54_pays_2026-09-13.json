@@ -3,7 +3,8 @@
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
  "mis_a_jour_le": "2026-09-25",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé.", "niveaux": {
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Étape 5 (suite) : fiche Rwanda livrée (RWA_application_2026-09-25.json) — l'avis EAC/321/2022 couvre le Rwanda comme État partenaire (support communautaire) mais aucune preuve rwandaise propre (acte national, liste d'origines, barème de destination) n'est trouvée ; le Rwanda reste au NPF, décision du propriétaire appliquée.",
+ "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
   "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
@@ -242,10 +243,10 @@
    "bareme_source": "ECOWAS"
   },
   "RWA": {
-   "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : EAC",
-   "niveau_de_source": "instantané e-Tariff Book",
-   "bareme_collecte": true
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Décision du propriétaire (25/09/2026) : l'adhésion à la ZLECAf est par pays, l'avis EAC/321/2022 ne suffit pas seul. Aucune preuve rwandaise propre (acte national ou publication douanière) ni liste d'origines ; la RRA (rra.gov.rw) ne publie rien de ZLECAf, le portail commercial n'a que la procédure de certificat d'origine, aucune loi rwandaise ZLECAf trouvée. Cité par l'Algérie, le Maroc, l'Égypte, la Tunisie et l'Afrique du Sud (dtic) — indices, pas preuves. Fiche : RWA_application_2026-09-25.json.",
+   "niveau_de_source": "acte communautaire EAC lu (archivé dans la PR Tanzanie) ; aucune source nationale rwandaise",
+   "bareme_collecte": false
   },
   "SDN": {
    "niveau": "NON_RECHERCHE",
@@ -347,8 +348,8 @@
  "repartition": {
   "APPLIQUE": 3,
   "NON_APPLIQUE_PRESUME": 1,
-  "NON_RECHERCHE": 41,
-  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+  "NON_RECHERCHE": 40,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 5,
   "OFFRE_SEULE": 3,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
   "PREUVES_ASSEMBLEES": 1,
@@ -362,6 +363,7 @@
   "ETH_application_2026-09-13.json",
   "MAR_application_2026-09-13.json",
   "NGA_application_2026-09-25.json",
+  "RWA_application_2026-09-25.json",
   "TUN_application_2026-09-13.json",
   "ZMB_application_2026-09-25.json",
   "chantier_collecte_2026-09-14.json"
