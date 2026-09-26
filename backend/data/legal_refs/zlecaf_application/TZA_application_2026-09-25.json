@@ -23,7 +23,7 @@
   "sha256": "c5e8200c6616bf906eff7cfb8c7e8664ebf6182e026c895e63931d5332208f1b",
   "extraits": {
    "texte_extrait": "sources/TZA_gazette_eac_321_2022_2022-09-06.extrait.txt",
-   "sha256": "00cbfbbda6006ac453c8eab295fcebdabafd184c5facc11a9adb8ee0ffc18b3e"
+   "sha256": "de0dec3e9901f6d448b6cc53009f0277c4928a88c46fd383857a662d246fca46"
   },
   "verbatim_en": "IN EXERCISE of the powers conferred upon the Council of Ministers by Section 112 (1) (b) of the East African Community Customs Management Act, 2004, the Council of Ministers has approved preferential tariff treatment on originating goods imported from State Parties of the African Continental Free Trade Area (AfCFTA).",
   "traduction_fr": "En exercice des pouvoirs conférés au Conseil des ministres par la section 112 (1) (b) de la loi de 2004 sur la gestion douanière de la Communauté d'Afrique de l'Est, le Conseil des ministres a approuvé le traitement tarifaire préférentiel sur les marchandises originaires importées des États parties de la ZLECAf.",
@@ -38,21 +38,21 @@
    "Finance Act 2023 (acte n° 7 de 2023, supplément au journal officiel n° 26 du 30/06/2023) : lu intégralement, ZÉRO occurrence d'AfCFTA, d'« African Continental » ou de traitement préférentiel.",
    "Finance Act 2024 : lu, ZÉRO occurrence.",
    "Parlement tanzanien (parliament.go.tz/acts, consulté le 25/09/2026) : la liste des actes ne mentionne aucune loi ZLECAf ; le dépôt des actes (polis.bunge.go.tz) est injoignable (HTTP 000).",
-"TanzLII : injoignable depuis cet environnement (HTTP 000) — non forcé.",
-    "Guides tralac et PNUD (sources secondaires) : servent à repérer, ne remplacent aucun texte ; le PDF PNUD répond 403.",
-    "RECHERCHE APPROFONDIE (demandée le 25/09/2026) — Tanzania Revenue Authority, « Public Notices » / « Customs Notices » : aucun avis de mise en œuvre ZLECAf ou GTI, aucune procédure d'importation sous certificat d'origine ZLECAf retrouvée (tra.go.tz ; la route /public-notices renvoie 302, aucune notice ZLECAf).",
-    "Government Gazette de Tanzanie (Government Notices 2021-2026) : gazettes.africa (gazettes/tz) injoignable (HTTP 000) ; aucun GN mentionnant « AfCFTA »/« African Continental Free Trade Area »/« Schedule of Tariff Concessions » n'a pu être contrôlé.",
-    "Ministère de l'Industrie et du Commerce (mit.go.tz) : page d'accueil réduite (1,8 Ko), aucun contenu AfCFTA exploitable ; comité national ZLECAf tanzanien non identifié.",
-    "Secrétariat de la ZLECAf (au-afcfta.org, recherche « Tanzania », consultée le 25/09/2026) : la Tanzanie figure dans le lancement du GTI (Invest in Tanzania, 23/11/2022) ; « First Tanzanian gets Certificate of Origin to trade under AfCFTA » (15/05/2023, TCCIA) ; « Ghana launches AfCFTA trade expedition to Tanzania » (juillet 2023). CE SONT DES ÉVÉNEMENTS D'EXPORTATION, pas un acte d'importation ni une liste d'origines.",
-    "EAC : aucun avis EAC ou acte tanzanien désignant la Tanzanie comme appliquant l'avis EAC/321/2022 à l'importation n'a été retrouvé."
-   ],
-   "resultat": "Aucun acte ni avis tanzanien d'application n'a été retrouvé, et aucune liste nominative d'États parties admis. Les listes algérienne, marocaine, égyptienne et tunisienne qui nomment la Tanzanie indiquent où chercher — elles ne prouvent rien sur ce que la Tanzanie accorde ; la liste sud-africaine (dtic, mars 2026) ne la cite pas. Les événements retrouvés (GTI, certificat d'origine TCCIA du 15/05/2023) relèvent de l'exportation."
+   "TanzLII : injoignable depuis cet environnement (HTTP 000) — non forcé.",
+   "Guides tralac et PNUD (sources secondaires) : servent à repérer, ne remplacent aucun texte ; le PDF PNUD répond 403.",
+   "RECHERCHE APPROFONDIE (demandée le 25/09/2026) — Tanzania Revenue Authority, « Public Notices » / « Customs Notices » : aucun avis de mise en œuvre ZLECAf ou GTI, aucune procédure d'importation sous certificat d'origine ZLECAf retrouvée (tra.go.tz ; la route /public-notices renvoie 302, aucune notice ZLECAf).",
+   "Government Gazette de Tanzanie (Government Notices 2021-2026) : gazettes.africa (gazettes/tz) injoignable (HTTP 000) ; aucun GN mentionnant « AfCFTA »/« African Continental Free Trade Area »/« Schedule of Tariff Concessions » n'a pu être contrôlé.",
+   "Ministère de l'Industrie et du Commerce (mit.go.tz) : page d'accueil réduite (1,8 Ko), aucun contenu AfCFTA exploitable ; comité national ZLECAf tanzanien non identifié.",
+   "Secrétariat de la ZLECAf (au-afcfta.org, recherche « Tanzania », consultée le 25/09/2026) : la Tanzanie figure dans le lancement du GTI (Invest in Tanzania, 23/11/2022) ; « First Tanzanian gets Certificate of Origin to trade under AfCFTA » (15/05/2023, TCCIA) ; « Ghana launches AfCFTA trade expedition to Tanzania » (juillet 2023). CE SONT DES ÉVÉNEMENTS D'EXPORTATION, pas un acte d'importation ni une liste d'origines.",
+   "EAC : aucun avis EAC ou acte tanzanien désignant la Tanzanie comme appliquant l'avis EAC/321/2022 à l'importation n'a été retrouvé."
+  ],
+  "resultat": "Aucun acte ni avis tanzanien d'application n'a été retrouvé, et aucune liste nominative d'États parties admis. Les listes algérienne, marocaine, égyptienne et tunisienne qui nomment la Tanzanie indiquent où chercher — elles ne prouvent rien sur ce que la Tanzanie accorde ; la liste sud-africaine (dtic, mars 2026) ne la cite pas. Les événements retrouvés (GTI, certificat d'origine TCCIA du 15/05/2023) relèvent de l'exportation."
  },
  "ratification": "La Tanzanie est RATIFIÉE au registre continental du dépôt (services/zlecaf_membership_status.ratification_status('TZA') → RATIFIED), base tenue sur sources continentales ; la date d'effet nationale reste à documenter.",
  "gates_status": {
   "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire (décision du propriétaire du 25/09/2026 : l'adhésion à la ZLECAf est par pays) ; aucune preuve tanzanienne propre (acte national ou publication de l'administration douanière)",
   "2_liste_officielle_origines_reciproques": "NON SATISFAIT — l'avis énonce une règle (« State Parties ») sans liste nominative ; aucune liste tanzanienne retrouvée",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème de la TANZANIE comme destination n'est collecté ; l'instantané du dépôt est l'OFFRE COMMUNE EAC (collectée via la requête du Kenya, destination_query_code = KE)",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — barème commun EAC collecté (offre de l'union douanière) ; son application par la Tanzanie n'est pas établie",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
  "conclusion": "Les trois preuves du plan ne sont PAS réunies, et par décision du propriétaire (25/09/2026) l'avis EAC/321/2022 ne suffit pas seul : l'adhésion à la ZLECAf est par pays. Tant qu'aucune preuve tanzanienne propre (acte national ou publication douanière), liste nominative et barème de destination ne sont trouvés, la Tanzanie reste au NPF. AUCUN BRANCHEMENT.",
@@ -62,7 +62,7 @@
   "Ces indices ne remplacent pas un acte tanzanien.",
   "L'application effective de l'avis EAC/321/2022 par la Tanzanie n'est établie par aucun texte national ni avis de la TRA ; l'acte communautaire l'autorise, il ne prouve pas la mise en œuvre.",
   "La règle « State Parties » ne dit pas quels États la Tanzanie admet effectivement (réciprocité non documentée).",
-  "Le barème de la Tanzanie comme destination n'est pas collecté : l'instantané EAC disponible est l'offre commune EAC, collectée via la requête du Kenya."
+  "Le barème commun EAC est collecté (offre de l'union douanière), mais son application par la Tanzanie n'est pas établie."
  ],
  "remaining_work": [
   "Chercher l'acte ou l'avis tanzanien d'application (Gazette of the United Republic of Tanzania, avis de la TRA) — le dépôt polis.bunge.go.tz et TanzLII étaient injoignables le 25/09/2026.",

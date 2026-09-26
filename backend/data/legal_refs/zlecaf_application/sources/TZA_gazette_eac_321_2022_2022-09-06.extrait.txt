@@ -48,7 +48,7 @@ CE QU'IL N'ÉTABLIT PAS :
   TRA (aucun texte tanzanien retrouvé à ce jour) ;
 - la liste nominative des origines admises par la Tanzanie ;
 - le barème ligne à ligne de la TANZANIE en tant que destination (l'instantané EAC du
-  dépôt est l'offre du KENYA, destination_query_code = KE).
+  dépôt est l'offre commune EAC (collectée via la requête du Kenya, destination_query_code = KE).
 
 MÉTHODE : PDF officiel (2 pages) téléchargé le 2026-09-25 depuis le miroir RRA, lu à
 l'extraction texte ; archivé au dépôt, empreinte au registre.
