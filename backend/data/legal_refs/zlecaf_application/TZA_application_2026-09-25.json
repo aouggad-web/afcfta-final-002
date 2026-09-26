@@ -5,10 +5,9 @@
  "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
  "verified_at": "2026-09-25",
  "decision_du_proprietaire": {
-  "date": "2026-09-25",
-  "enonce": "L'EAC est un groupement entre ses membres ; l'adhésion à la ZLECAf est par pays. L'avis EAC/321/2022 ne suffit pas seul. Chaque État de l'EAC doit prouver sa propre mise en œuvre (acte national ou publication de son administration douanière) et sa liste d'origines.",
-  "application_a_la_tanzanie": "Aucune preuve tanzanienne propre (acte national ou publication de l'administration douanière) n'a été trouvée à ce jour : la Tanzanie RESTE AU NPF, quel que soit l'avis communautaire. Celui-ci est conservé comme support, jamais comme preuve.",
-  "portee": "Vaut pour tous les États de l'EAC. Le Kenya est traité séparément (preuve nationale : publication du barème par la KRA) ; Rwanda, Ouganda et Burundi restent à instruire un par un, avec la même exigence."
+  "date": "2026-09-26",
+  "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
+  "application_a_la_tanzanie": "Non satisfaite : la douane nationale ne publie pas le barème complet. La Tanzanie reste au NPF."
  },
  "evidence_level": "acte communautaire EAC lu et archivé (Gazette de l'EAC, avis EAC/321/2022) ; acte ou avis tanzanien propre non retrouvé ; aucune liste nominative d'origines ; aucun barème ligne à ligne de la Tanzanie comme destination",
  "instrument_eac": {
