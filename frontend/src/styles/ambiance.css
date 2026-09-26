@@ -10,21 +10,92 @@
      derrière les titres, seulement une bande de velours du Kasaï sur le
      bord supérieur ; ses petits losanges alternent le bleu et le vert de
      Ghardaïa.
-   - Bande kente de 4 px en haut de l'écran.
+   - Tissage kente (couleurs panafricaines) sur les bordures, jamais
+     derrière le texte : bande de 10 px en haut de l'écran, lisière verticale
+     de la barre latérale, bas de la barre mobile, haut des fenêtres, et
+     soulignés des titres de Statistiques.
 
    Fichier généré par scripts/build_ambiance_css.py : modifier le script,
    puis régénérer. */
 
-/* Bande kente — 4 px, en haut de chaque écran */
+/* Bande kente — en haut de chaque écran */
 .kente-band {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 200;
-  height: 4px;
-  background: repeating-linear-gradient(90deg,
-    #C8102E 0px, #C8102E 9px, #FCDD09 9px, #FCDD09 18px, #007A3D 18px, #007A3D 27px,
-    #0D0800 27px, #0D0800 32px, #E8890C 32px, #E8890C 41px, #0D0800 41px, #0D0800 46px);
+  height: 10px;
+  background: linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px);
+  box-shadow: 0 1px 0 rgba(212,137,26,0.55);
   pointer-events: none;
+}
+
+/* Lisière kente verticale sur le bord droit de la barre latérale */
+.afcfta-sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 5px;
+  background: linear-gradient(90deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient(180deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px);
+  pointer-events: none;
+}
+
+/* Barre du haut (mobile / tablette) : kente sous la barre */
+.afcfta-topHeader {
+  border-bottom: 0;
+}
+.afcfta-topHeader::after {
+  content: "";
+  display: block;
+  height: 5px;
+  background: linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px);
+}
+
+/* Fenêtres (connexion, Mon compte…) : kente en tête */
+[role="dialog"]::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  pointer-events: none;
+}
+
+/* Soulignés kente des titres (Statistiques) : plus affirmés */
+.stats-kente-bar {
+  height: 5px !important;
+  background: linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px) !important;
 }
 
 /* Fond de page : trame zellige sur le conteneur principal */

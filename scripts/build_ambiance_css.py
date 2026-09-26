@@ -64,9 +64,23 @@ def kasai(fond, motif, bleu, vert):
     return uri(24, 10, g)
 
 
-KENTE = """repeating-linear-gradient(90deg,
-    #C8102E 0px, #C8102E 9px, #FCDD09 9px, #FCDD09 18px, #007A3D 18px, #007A3D 27px,
-    #0D0800 27px, #0D0800 32px, #E8890C 32px, #E8890C 41px, #0D0800 41px, #0D0800 46px)"""
+def kente(sens):
+    """Tissage kente : blocs rouge, or, vert, orange séparés de fils noirs,
+    avec un fil sombre au milieu de la bande pour l'effet de trame.
+    `sens` : 90deg (bande horizontale) ou 180deg (lisière verticale)."""
+    travers = "180deg" if sens == "90deg" else "90deg"
+    return f"""linear-gradient({travers},
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
+  repeating-linear-gradient({sens},
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px)"""
+
+
+KENTE = kente("90deg")
+KENTE_V = kente("180deg")
+KENTE_H = 10  # épaisseur de la bande du haut (px)
 
 # Or saharien en sombre, terre de Tlemcen en clair ; bleu et vert de Ghardaïa
 # en retrait : pleins dans la bande, discrets dans le fond (ruban, fond
@@ -97,19 +111,62 @@ css = f"""/* ══════════════════════�
      derrière les titres, seulement une bande de velours du Kasaï sur le
      bord supérieur ; ses petits losanges alternent le bleu et le vert de
      Ghardaïa.
-   - Bande kente de 4 px en haut de l'écran.
+   - Tissage kente (couleurs panafricaines) sur les bordures, jamais
+     derrière le texte : bande de 10 px en haut de l'écran, lisière verticale
+     de la barre latérale, bas de la barre mobile, haut des fenêtres, et
+     soulignés des titres de Statistiques.
 
    Fichier généré par scripts/build_ambiance_css.py : modifier le script,
    puis régénérer. */
 
-/* Bande kente — 4 px, en haut de chaque écran */
+/* Bande kente — en haut de chaque écran */
 .kente-band {{
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 200;
-  height: 4px;
+  height: {KENTE_H}px;
   background: {KENTE};
+  box-shadow: 0 1px 0 rgba(212,137,26,0.55);
   pointer-events: none;
+}}
+
+/* Lisière kente verticale sur le bord droit de la barre latérale */
+.afcfta-sidebar::after {{
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 5px;
+  background: {KENTE_V};
+  pointer-events: none;
+}}
+
+/* Barre du haut (mobile / tablette) : kente sous la barre */
+.afcfta-topHeader {{
+  border-bottom: 0;
+}}
+.afcfta-topHeader::after {{
+  content: "";
+  display: block;
+  height: 5px;
+  background: {KENTE};
+}}
+
+/* Fenêtres (connexion, Mon compte…) : kente en tête */
+[role="dialog"]::before {{
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: {KENTE};
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  pointer-events: none;
+}}
+
+/* Soulignés kente des titres (Statistiques) : plus affirmés */
+.stats-kente-bar {{
+  height: 5px !important;
+  background: {KENTE} !important;
 }}
 
 /* Fond de page : trame zellige sur le conteneur principal */
