@@ -8,6 +8,7 @@ vert de Ghardaïa. Modifier ici les géométries, les couleurs et les opacités
 (SOMBRE, CLAIR), puis régénérer.
 """
 
+import math
 import sys
 import urllib.parse
 
@@ -17,22 +18,41 @@ def uri(w, h, corps):
     return 'url("data:image/svg+xml,' + urllib.parse.quote(s, safe="=:/,'() .") + '")'
 
 
-T = 56  # côté du carreau de fond
+T = 80  # côté du carreau de fond
 
 
-def etoile_croix(trait, bleu, vert):
-    """Étoile et croix : deux carrés entrelacés au centre et aux coins, le
-    réseau classique du zellige. Au cœur de chaque étoile, un petit carreau
-    plein, bleu au centre, vert aux coins : la touche de Ghardaïa."""
+def _etoile(cx, cy, r):
+    """Étoile à 8 branches (deux carrés superposés) : 16 sommets alternant la
+    pointe (r) et le creux entre deux pointes."""
+    creux = r * math.cos(math.pi / 4) / math.cos(math.pi / 8)
+    pts = []
+    for k in range(16):
+        a = math.pi / 8 * k - math.pi / 2
+        rr = r if k % 2 == 0 else creux
+        pts.append(f"{cx + rr * math.cos(a):.2f},{cy + rr * math.sin(a):.2f}")
+    return " ".join(pts)
+
+
+def _octogone(cx, cy, r):
+    return " ".join(
+        f"{cx + r * math.cos(math.pi / 8 + math.pi / 4 * k):.2f},"
+        f"{cy + r * math.sin(math.pi / 8 + math.pi / 4 * k):.2f}"
+        for k in range(8)
+    )
+
+
+def khatam(ruban, fond_etoile, coeur):
+    """Khatam de Tlemcen : étoiles à 8 branches dont les pointes se touchent,
+    bordées d'un double ruban doré (effet d'entrelacs), un octogone bleu au
+    cœur. Les croix apparaissent en creux entre les étoiles. Intensités basses :
+    le motif doit rester lisible sans gêner la lecture des chiffres."""
+    r = T / 4 * math.sqrt(2)  # pointes jointives sur les diagonales
     g = ""
-    for x, y in ((T // 2, T // 2), (0, 0), (T, 0), (0, T), (T, T)):
-        s = 14
-        g += f"<rect x='{x - s}' y='{y - s}' width='{2 * s}' height='{2 * s}'/>"
-        g += f"<rect x='{x - s}' y='{y - s}' width='{2 * s}' height='{2 * s}' transform='rotate(45 {x} {y})'/>"
-    coeurs = f"<rect x='{T // 2 - 3}' y='{T // 2 - 3}' width='6' height='6' transform='rotate(45 {T // 2} {T // 2})' fill='{bleu}'/>"
-    for x, y in ((0, 0), (T, 0), (0, T), (T, T)):
-        coeurs += f"<rect x='{x - 3}' y='{y - 3}' width='6' height='6' transform='rotate(45 {x} {y})' fill='{vert}'/>"
-    return uri(T, T, f"<g fill='none' stroke='{trait}' stroke-width='1'>{g}</g>{coeurs}")
+    for x, y in ((T / 2, T / 2), (0, 0), (T, 0), (0, T), (T, T)):
+        g += f"<polygon points='{_etoile(x, y, r)}' fill='{fond_etoile}' stroke='{ruban}' stroke-width='1.6'/>"
+        g += f"<polygon points='{_etoile(x, y, r * 0.78)}' fill='none' stroke='{ruban}' stroke-width='1'/>"
+        g += f"<polygon points='{_octogone(x, y, r * 0.36)}' fill='{coeur}' stroke='{ruban}' stroke-width='0.8'/>"
+    return uri(T, T, g)
 
 
 def kasai(fond, motif, bleu, vert):
@@ -49,13 +69,15 @@ KENTE = """repeating-linear-gradient(90deg,
     #0D0800 27px, #0D0800 32px, #E8890C 32px, #E8890C 41px, #0D0800 41px, #0D0800 46px)"""
 
 # Or saharien en sombre, terre de Tlemcen en clair ; bleu et vert de Ghardaïa
-# en retrait : pleins dans la bande, à peine visibles dans le fond.
+# en retrait : pleins dans la bande, discrets dans le fond (ruban, fond
+# d'étoile, cœur). Priorité à la lisibilité : ne monter ces opacités qu'en
+# vérifiant le contraste du texte posé sur les cartes.
 SOMBRE = {
-    "fond": ("rgba(212,137,26,0.10)", "rgba(74,144,200,0.16)", "rgba(62,160,110,0.14)"),
+    "fond": ("rgba(212,137,26,0.16)", "rgba(14,138,122,0.045)", "rgba(27,108,168,0.13)"),
     "bande": ("#1B1206", "#D4891A", "#4A90C8", "#3EA06E"),
 }
 CLAIR = {
-    "fond": ("rgba(156,63,21,0.10)", "rgba(36,104,160,0.12)", "rgba(40,120,80,0.11)"),
+    "fond": ("rgba(138,75,18,0.13)", "rgba(14,138,122,0.035)", "rgba(27,108,168,0.085)"),
     "bande": ("#F3E6CC", "#8A4B12", "#2F6FA8", "#2E7D57"),
 }
 
@@ -69,8 +91,8 @@ css = f"""/* ══════════════════════�
    Couche ornementale seule, chargée après les thèmes : elle ne touche
    ni aux couleurs du texte, ni aux polices, ni aux composants.
 
-   - Fond de page : réseau étoile-et-croix du zellige, filaire, avec au
-     cœur des étoiles un petit carreau bleu ou vert de Ghardaïa.
+   - Fond de page : khatam de Tlemcen, étoiles à 8 branches bordées d'un
+     double ruban doré, octogone bleu au cœur, croix en creux.
    - Bandeaux (en-têtes de section, Statistiques, accueil) : aucun pavage
      derrière les titres, seulement une bande de velours du Kasaï sur le
      bord supérieur ; ses petits losanges alternent le bleu et le vert de
@@ -92,11 +114,11 @@ css = f"""/* ══════════════════════�
 
 /* Fond de page : trame zellige sur le conteneur principal */
 .zellige-najm {{
-  background-image: {etoile_croix(*SOMBRE['fond'])};
+  background-image: {khatam(*SOMBRE['fond'])};
   background-size: {T}px {T}px;
 }}
 html.theme-light .zellige-najm {{
-  background-image: {etoile_croix(*CLAIR['fond'])};
+  background-image: {khatam(*CLAIR['fond'])};
 }}
 
 /* Bandeaux : pas de pavage derrière les titres, fond opaque */
