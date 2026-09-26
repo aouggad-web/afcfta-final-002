@@ -8,9 +8,10 @@
  "instrument_national": {
   "titre": "EAC Provisional Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA): Category A Products — publié par la KRA",
   "url": "https://www.kra.go.ke/images/publications/EAC-PROVISIONAL-SCHEDULE-OF-TARIFF-CONCESSIONS-FOR-THE-AFRICAN-CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf",
-  "nature": "Document de 347 pages, publication de l'administration douanière kényane : c'est ELLE qui vaut preuve nationale. Le PDF n'est pas versé au dépôt ; le barème est extrait dans backend/data/zlecaf_ken/ (source de services/zlecaf_schedule_ken.py).",
+  "nature": "Document de 347 pages, publication de l'administration douanière kényane : c'est ELLE qui vaut preuve nationale. PDF archivé dans le dépôt (ci-dessous) ; le barème est par ailleurs extrait dans backend/data/zlecaf_ken/ (source de services/zlecaf_schedule_ken.py).",
   "calendrier": "Catégorie A, dix colonnes annuelles (2021-2030), opposable au Kenya depuis le 06/09/2022.",
-  "pdf_non_archive": "PDF de 347 pages non versé ; données extraites dans le dépôt (backend/data/zlecaf_ken/bareme_categorie_a.json)."
+  "texte_archive": "sources/KEN_bareme_KRA_afcfta_categorie_A.pdf",
+  "sha256": "7a92fb35c5bba0e637deecb6d7d5eb309ecbbdefa84fecae67a56aa75f0ecaeb"
  },
  "support_communautaire": {
   "titre": "Legal Notice EAC/321/2022 — The EAC Schedule of Tariff Concessions for the AfCFTA for Category A products",
