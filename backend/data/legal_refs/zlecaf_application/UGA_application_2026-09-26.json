@@ -130,12 +130,16 @@
   "procedure_dedouanement_254": {
    "texte_extrait": "sources/UGA_ugandatrades_procedure_254_2026-09-26.html",
    "sha256": "9ee2a128a67d441a122a2dc9b0c64c5ce71f9678a88e1970c1ea00c147ec343a"
+  },
+  "decision_ua_831": {
+   "texte_extrait": "sources/AU_assembly_dec_831_2022-02-06.pdf",
+   "sha256": "80678a82c1702ed5b1250dff6f072221a829be0be7de4aedc17a19b3e446487d"
   }
  },
  "gates_status": {
   "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire ; aucune preuve ougandaise propre",
   "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative ; règle « State Parties » non traduite en liste",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème de l'OUGANDA comme destination ; l'instantané EAC disponible est l'offre commune EAC, collectée via la requête du Kenya",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — l'outil officiel e-Tariff Book expose des lignes pour UG (vérifié le 27/09/2026, 47 lignes « milk ») ; à collecter ligne à ligne ; ce n'est pas une publication de la douane ougandaise",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
  "conclusion": "Les trois preuves du plan ne sont PAS réunies. Tant qu'aucune preuve ougandaise propre, liste nominative et barème de destination ne sont trouvés, l'Ouganda reste au NPF. AUCUN BRANCHEMENT.",
@@ -145,10 +149,15 @@
   "Aucune liste nominative des pays d'origine admis."
  ],
  "remaining_work": [
-  "Reprendre le portail du ministère des Finances (development.finance.go.ug/afcfta), ugandaexports.go.ug et tralac (4892), injoignables le 26/09/2026.",
-  "Vérifier directement la décision Assemblée UA 831 (africanlii.org, 403 le 26/09/2026) et la couverture UPPC de l'EAC Gazette (eac.int, 403).",
-  "Vérifier la position de l'Ouganda dans l'e-Tariff Book (etariff.au-afcfta.org, application JS) et le fichier Uganda_Status_coverage.xlsx (404).",
-  "Rechercher les notices de l'Uganda Gazette (UPPC) et les Statutory Instruments postérieurs à 2022.",
-  "Collecter l'offre de l'Ouganda comme destination (barème national, destination UG) et la liste des États admis."
- ]
+  "Reprendre le portail du ministère des Finances (development.finance.go.ug/afcfta), ugandaexports.go.ug et gazettes (injoignables les 26-27/09/2026).",
+  "Collecter ligne à ligne l'offre de destination UG depuis l'e-Tariff Book officiel (données exposées, non collectées).",
+  "Rechercher les notices de l'Uganda Gazette (UPPC) et les Statutory Instruments postérieurs à 2022."
+ ],
+ "complements_2026-09-27": {
+  "note": "Compléments de la recherche approfondie, vérifiés directement le 27/09/2026.",
+  "decision_ua_831": "Assemblée UA, Déc. 831(XXXV) du 06/02/2022, texte intégral (117 p.) téléchargé via le miroir web.archive.org d'amaniafrica-et.org (africanlii 403 en direct) et archivé : §7(b) « WELCOMES the submissions of the 43 tariff offers by: … b. East African Community (EAC) Member States: Burundi, Kenya, Rwanda, South Sudan, Tanzania and Uganda » ; §8 : 291 offres techniquement vérifiées. L'offre ougandaise est donc déposée VIA LE BLOC EAC — c'est l'offre commune EAC déjà documentée, pas une publication de l'URA.",
+  "e_tariff_book": "Outil officiel du Secrétariat (etariff.au-afcfta.org, API prod-afcfta-api.azurewebsites.net) : entrée UG — « EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions » ; recherche countryFrom EAC → countryTo UG (« milk ») : 47 lignes tarifaires consultables (schedule 1, rév. 1). L'offre de destination est donc consultable dans l'outil officiel, MAIS ce n'est ni une publication de la douane ougandaise (règle A non satisfaite) ni un jeu de données ligne à ligne collecté.",
+  "ura_plus_profond": "Le seul livre tarifaire URA est le CET EAC 2022 (PDF 560 pages, Legal Notice EAC/117/2022) — pas l'AfCFTA ; aucun PDF du barème AfCFTA sur un domaine .go.ug (27/09/2026).",
+  "gti": "FAQ tralac (mise à jour mai 2025) vérifiée : l'Ouganda est bien ABSENT de la liste des États « actively trading goods under the GTI » (fév. 2025) ; la liste ne compte que 9 noms pour « 10 State Parties » (omission de la source elle-même)."
+ }
 }
