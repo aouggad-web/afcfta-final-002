@@ -1,0 +1,19 @@
+Rwanda Revenue Authority — page d'accueil publique, consultée le 2026-09-25
+Source : https://www.rra.gov.rw/ (HTML archivé : sources/RWA_rra_accueil_2026-09-25.html)
+
+CONSTAT (relevé du 25/09/2026) :
+- la page d'accueil publique de la RRA (49 Ko) ne porte AUCUNE occurrence de
+  « AfCFTA » ni de « ZLECAf » ;
+- c'est pourtant la RRA qui héberge le miroir de la Gazette de l'EAC (Vol. AT 1
+  n° 23, 06/09/2022) contenant l'avis EAC/321/2022 — l'acte COMMUNautaire —
+  archive déjà versée dans la PR Tanzanie (#531) ;
+- le Rwanda Trade Portal (rwandatrade.rw/Tariffs) est injoignable depuis cet
+  environnement le 25/09/2026 (HTTP 000).
+
+CE QUE CELA ÉTABLIT : rien sur une mise en œuvre rwandaise propre de la
+préférence à l'importation ; en particulier, aucun avis douanier RRA ZLECAf n'a
+été trouvé sur la page consultée.
+
+MÉTHODE : page officielle téléchargée et archivée ; l'absence d'occurrence est
+un indice, pas une preuve d'absence (recherche à poursuivre sur les « Public
+Notices » / « Customs Notices » de la RRA et à la Gazette officielle du Rwanda).

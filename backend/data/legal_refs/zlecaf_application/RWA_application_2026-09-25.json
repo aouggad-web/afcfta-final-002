@@ -1,0 +1,64 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "RWA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-25",
+ "sources_archivees": {
+  "rra_accueil_extrait": {
+   "texte_extrait": "sources/RWA_rra_recherche_2026-09-25.extrait.txt",
+   "sha256": "2103449bd807dae3444dc376c66d187c1fea0ee09316a975fe109b38f4738ab3"
+  },
+  "rra_accueil_html": {
+   "texte_extrait": "sources/RWA_rra_accueil_2026-09-25.html",
+   "sha256": "4470c158f10dd4e17958c874fa3a9cff5a1784f68ae1343d1afe25ad2f71e083"
+  }
+ },
+ "decision_du_proprietaire": {
+  "date": "2026-09-25",
+  "enonce": "L'EAC est un groupement entre ses membres ; l'adhésion à la ZLECAf est par pays. L'avis EAC/321/2022 ne suffit pas seul. Chaque État de l'EAC doit prouver sa propre mise en œuvre (acte national ou publication de son administration douanière) et sa liste d'origines.",
+  "application_au_rwanda": "Aucune preuve rwandaise propre (acte national ou publication de la douane) n'a été trouvée à ce jour : le Rwanda reste au NPF, quel que soit l'avis communautaire. Celui-ci est conservé comme support, jamais comme preuve."
+ },
+ "evidence_level": "acte communautaire EAC lu (avis EAC/321/2022, archivé dans la PR Tanzanie #531) ; acte ou avis rwandais propre non retrouvé ; aucune liste nominative d'origines ; aucun barème ligne à ligne du Rwanda comme destination ; recherches antérieures consignées dans chantier_collecte_2026-09-14.json",
+ "instrument_eac": {
+  "id": "Legal Notice No. EAC/321/2022",
+  "titre": "The EAC Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA) for Category A products",
+  "date": "2022-09-06",
+  "note": "Acte du Conseil des ministres de l'EAC (EACCMA s.112(1)(b) et article 37 du protocole de l'union douanière) : support communautaire, applicable dans le territoire douanier dont le Rwanda est État partenaire. Il approuve la préférence pour les « State Parties » — une règle, sans liste nominative. Même document archivé dans la PR Tanzanie (#531) : sources/TZA_gazette_eac_321_2022_2022-09-06.pdf (le miroir est hébergé par la RRA)."
+ },
+ "instrument_national": {
+  "statut": "NON RETROUVÉ",
+  "cible": "Ministerial Order ou Customs Regulations rwandais portant application du barème ZLECAf, et la liste nominative des États parties admis.",
+  "recherches": [
+   "Rwanda Revenue Authority — recherche du 25/09/2026 : la page d'accueil publique (rra.gov.rw, 49 Ko) ne mentionne ni AfCFTA ni ZLECAf (HTML archivé) ; aucun « Public Notice » douanier ZLECAf retrouvé. La RRA héberge pourtant le miroir de la Gazette EAC.",
+   "Rwanda Trade Portal (rwandatrade.rw/Tariffs) : injoignable le 25/09/2026 (HTTP 000) ; recherche antérieure du 15/09/2026 consignée au chantier — la ZLECAf n'y apparaît que comme PROCÉDURE « certificate of origin », sans régime préférentiel d'importation ni liste d'origines.",
+   "Official Gazette of the Republic of Rwanda : balayage antérieur consigné au chantier (121 numéros 2023-2025, aucune occurrence de ZLECAf — attendu : acte absent de ces numéros).",
+   "Finance Acts / lois du Rwanda : aucune mention AfCFTA identifiée à ce jour.",
+   "Secrétariat de la ZLECAf : le Rwanda est MEMBRE FONDATEUR du Guided Trade Initiative (premier envoi de café vers le Ghana en octobre 2022) — fait d'EXPORTATION, pas un acte d'importation ni une liste."
+  ],
+  "resultat": "Aucun acte ni avis rwandais d'application à l'importation n'a été retrouvé, et aucune liste nominative d'États parties admis."
+ },
+ "concordance_et_indices_croises": {
+  "cite_par": "Le Rwanda est nommé par l'Algérie, le Maroc (P1), l'Égypte (groupe 5 ans), la Tunisie (tarif officiel 2026) et l'Afrique du Sud (liste dtic, mars 2026, qui le compte parmi les pays en application effective).",
+  "portee": "Ces indices orientent la recherche et en font un candidat fort ; ils ne remplacent pas un acte rwandais, conformément à la règle du plan."
+ },
+ "particularite_eac_comesa": "L'articulation avec l'EAC et le COMESA est explicite au Rwanda : les concessions ZLECAf ne valent qu'en dehors de ces régimes. Toute future liste devra se lire en soustraction des partenaires EAC et COMESA, non isolément.",
+ "ratification": "Le Rwanda est RATIFIE au registre continental du dépôt (ratification_status('RWA') → RATIFIED) ; la date d'effet nationale reste à documenter.",
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire ; aucune preuve rwandaise propre",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative ; règle « State Parties » et articulation EAC/COMESA non traduites en liste",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème du Rwanda comme destination ; l'instantané EAC est l'offre commune EAC, collectée via la requête du Kenya",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "Les trois preuves du plan ne sont PAS réunies, et par décision du propriétaire (25/09/2026) l'avis EAC ne suffit pas seul. Tant qu'aucune preuve rwandaise propre, liste nominative et barème de destination ne sont trouvés, le Rwanda reste au NPF. AUCUN BRANCHEMENT.",
+ "ne_tranche_pas": [
+  "Cinq actes nationaux voisins (Algérie, Maroc, Égypte, Tunisie, Afrique du Sud) citent le Rwanda comme partenaire : ce sont des indices, pas des preuves de ce que le Rwanda accorde.",
+  "L'application effective par le Rwanda n'est établie par aucun texte national ni avis RRA.",
+  "Aucune liste nominative ; et la soustraction EAC/COMESA n'est pas documentée en liste."
+ ],
+ "remaining_work": [
+  "Obtenir un Ministerial Order ou des Customs Regulations rwandais portant application du barème ZLECAf, et la liste des États admis.",
+  "Rechercher les « Public Notices » de la RRA et la Gazette officielle du Rwanda (actes postérieurs à 2025 non couverts par le balayage antérieur).",
+  "Collecter l'offre du Rwanda comme destination (e-Tariff Book, destination RW) et l'articuler aux règles EAC/COMESA."
+ ]
+}
