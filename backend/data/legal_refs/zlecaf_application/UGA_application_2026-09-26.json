@@ -6,7 +6,8 @@
  "verified_at": "2026-09-26",
  "decision_du_proprietaire": {
   "date": "2026-09-26",
-  "enonce": "Recherche comparative demandée, réponses oui/non appuyées par des sources archivées (empreinte) ou des recherches consignées avec leur date. La règle « preuve nationale » est suspendue jusqu'à ce résultat. Aucun branchement."
+  "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
+  "application_ouganda": "Non satisfaite : la douane nationale ne publie pas le barème complet. L'Ouganda reste au NPF."
  },
  "evidence_level": "aucune source ougandaise de ZLECAf retrouvée, ni barème, ni avis, ni acte national ; pages probantes archivées (URA, MTIC, portail du commerce) ; l'avis EAC/321/2022 connu uniquement via le miroir RRA (PR Tanzanie)",
  "questions_du_proprietaire": {
@@ -89,8 +90,8 @@
   ],
   "KEN": {
    "Q1": "OUI — la KRA publie l'instantané EAC (PDF 347 pages, archivé, sha 7a92fb35…) ; c'est la preuve nationale du Kenya",
-   "Q2": "OUI (implicite) — la publication KRA met en œuvre l'avis EAC/321/2022, qu'elle déborde",
-   "Q3": "OUI — publication de l'administration douanière kényane retenue comme preuve nationale (décision du propriétaire)",
+   "Q2": "non établi — la publication KRA met en œuvre l'avis EAC/321/2022, mais rien n'établit qu'elle publie l'avis lui-même",
+   "Q3": "NON — aucun acte national propre (loi/décret kényan) ; la règle A est satisfaite par la seule publication KRA du barème complet",
    "Q4": "NON — règle « State Parties with Provisional Schedule in Annex 1 », pas de liste nominative des pays ; la liste dtic sud-africaine est une preuve par le partenaire",
    "Q5": "PARTIEL — publication du barème = acte d'application ; statistiques d'importation sous certificat ZLECAf non collectées"
   },
@@ -105,7 +106,7 @@
    "Q1": "NON — aucun texte tanzanien retrouvé ; l'instantané EAC n'est pas publié par la TRA",
    "Q2": "NON — aucune publication TRA trouvée ; l'avis n'est connu que via le miroir RRA",
    "Q3": "NON — aucun avis ni texte TRA",
-   "Q4": "NON — la liste dtic sud-africaine ne cite pas la Tanzanie",
+   "Q4": "NON — aucune liste nominative des origines admises par la Tanzanie ; la note dtic/SARS ne la cite pas (piste seulement)",
    "Q5": "NON — participation au GTI (premier certificat TCCIA, 15/05/2023) = faits d'EXPORTATION, pas d'importation"
   },
   "UGA": {
@@ -115,7 +116,7 @@
    "Q4": "NON",
    "Q5": "NON — dédouanement fondé sur COMESA + EAC, MTIC : opportunité, pas d'application"
   },
-  "lecture": "Le Kenya est le seul des quatre à publier lui-même le barème (preuve nationale complète). Le Rwanda héberge le miroir de l'avis communautaire. La Tanzanie et l'Ouganda ne publient rien. Personne ne publie de liste nominative des pays admis : ce sera un axe de recherche pour tous."
+  "lecture": "Au sens de la règle A (26/09/2026), le Kenya est le seul des quatre dont la douane publie le barème complet (règle satisfaite). Le Rwanda héberge le miroir de l'avis communautaire, ce qui ne suffit pas. La Tanzanie et l'Ouganda ne publient rien. Personne ne publie de liste nominative des pays admis : ce sera un axe de recherche pour tous."
  },
  "sources_archivees": {
   "ura_accueil": {
