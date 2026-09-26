@@ -60,6 +60,92 @@ class InvalidPrice(ValueError):
     """Raised when a resolved amount is misconfigured (bad override, below min)."""
 
 
+# Produits hors formule (API, options, rapports, formation). Montant EUR revu ;
+# le montant DZD suit la même règle que la grille ci-dessus (DZD_PER_EUR par
+# euro), surchargeable par `CHARGILY_PRICE_<ID>` (ex. CHARGILY_PRICE_API_STARTER).
+# "recurring" = facturé chaque mois (abonnement Stripe ; côté Chargily, un
+# paiement ponctuel couvre 30 jours). "api_request_quota" = produit livré
+# automatiquement sous forme de clé API avec ce quota mensuel de requêtes.
+DZD_PER_EUR = 150
+
+PRODUCTS: Dict[str, dict] = {
+    "api_starter": {
+        "label": "Starter API",
+        "eur": 29,
+        "recurring": True,
+        "api_request_quota": 5000,
+    },
+    "api_business": {
+        "label": "Business API",
+        "eur": 99,
+        "recurring": True,
+        "api_request_quota": 50000,
+    },
+    "api_pack": {"label": "Pack requêtes API (+20 000 / mois)", "eur": 19, "recurring": True},
+    "extra_seat": {"label": "Utilisateur supplémentaire", "eur": 5, "recurring": True},
+    "priority_support": {"label": "Support prioritaire", "eur": 15, "recurring": True},
+    "newsletter": {"label": "Newsletter — veille tarifaire", "eur": 9, "recurring": True},
+    "team_training": {"label": "Formation équipe", "eur": 99, "recurring": False},
+    "report_agri": {
+        "label": "Rapport Agriculture & Agroalimentaire",
+        "eur": 59,
+        "recurring": False,
+    },
+    "report_textile": {"label": "Rapport Textile & Habillement", "eur": 59, "recurring": False},
+    "report_pharma": {"label": "Rapport Pharmaceutique & Santé", "eur": 89, "recurring": False},
+    "report_pack": {"label": "Pack 4 rapports sectoriels", "eur": 179, "recurring": False},
+    "certification": {
+        "label": "Certification Expert Commerce AfCFTA",
+        "eur": 129,
+        "recurring": False,
+    },
+}
+
+
+class UnknownProduct(KeyError):
+    """Raised when a product id is not part of the published catalogue."""
+
+
+def product(product_id: str) -> dict:
+    """Catalogue entry for a product id (read-only use)."""
+    if product_id not in PRODUCTS:
+        raise UnknownProduct(product_id)
+    return PRODUCTS[product_id]
+
+
+def product_dzd_amount(product_id: str) -> int:
+    """Chargily DZD amount for a product: env override or EUR × DZD_PER_EUR."""
+    entry = product(product_id)
+    env_name = f"CHARGILY_PRICE_{product_id.upper()}"
+    raw = os.environ.get(env_name)
+    if raw is not None and raw.strip() != "":
+        try:
+            amount = int(raw)
+        except ValueError as exc:
+            raise InvalidPrice(f"{env_name}={raw!r} n'est pas un entier DZD.") from exc
+    else:
+        amount = entry["eur"] * DZD_PER_EUR
+    if amount < CHARGILY_MIN_DZD:
+        raise InvalidPrice(
+            f"Montant DZD sous le minimum Chargily ({CHARGILY_MIN_DZD}) : {product_id}={amount}."
+        )
+    return amount
+
+
+def products_grid() -> List[dict]:
+    """The product catalogue as JSON-serialisable rows, for the pricing page."""
+    return [
+        {
+            "product": product_id,
+            "label": entry["label"],
+            "recurring": entry["recurring"],
+            "eur": entry["eur"],
+            "dzd": product_dzd_amount(product_id),
+        }
+        for product_id, entry in PRODUCTS.items()
+    ]
+
+
 def _require_plan_cycle(plan: str, cycle: str) -> None:
     if plan not in _GRID or cycle not in CYCLES:
         raise UnknownPlanCycle(f"{plan}/{cycle}")

@@ -86,7 +86,15 @@ export default function AfcftaSidebar({
         {user ? (
           <div className="afcfta-nav-item" style={{ marginBottom: 8, cursor: "default" }} data-testid="sidebar-user-info">
             <span className="afcfta-nav-icon"><User size={16} strokeWidth={1.7} /></span>
-            <span className="afcfta-nav-label" style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis" }}>{user.name}</span>
+            <button
+              className="afcfta-nav-label"
+              onClick={onOpenAuth}
+              title={isFrench ? "Mon compte" : "My account"}
+              data-testid="sidebar-account-btn"
+              style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", background: "none", border: "none", color: "inherit", cursor: "pointer", textAlign: "left", padding: 0, font: "inherit" }}
+            >
+              {user.name}
+            </button>
             <button
               onClick={logout}
               aria-label={isFrench ? "Se déconnecter" : "Log out"}

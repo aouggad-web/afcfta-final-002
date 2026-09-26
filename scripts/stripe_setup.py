@@ -136,6 +136,7 @@ def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
             currency=CURRENCY,
             unit_amount=amount,
             recurring={"interval": interval},
+            tax_behavior="exclusive",  # prix affichés hors taxes
             lookup_key=lookup_key,
             transfer_lookup_key=True,  # détache la lookup_key de l'ancien Price
             metadata={"app": APP_TAG, "plan": plan["slug"], "cycle": cycle},
@@ -161,6 +162,7 @@ def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
         currency=CURRENCY,
         unit_amount=amount,
         recurring={"interval": interval},
+        tax_behavior="exclusive",  # prix affichés hors taxes
         lookup_key=lookup_key,
         transfer_lookup_key=True,  # réassigne la lookup_key si un ancien prix la portait
         metadata={"app": APP_TAG, "plan": plan["slug"], "cycle": cycle},

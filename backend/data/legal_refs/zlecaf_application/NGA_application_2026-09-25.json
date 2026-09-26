@@ -1,0 +1,85 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "NGA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-25",
+ "evidence_level": "gazettage du PSTC daté et attesté par le Secrétariat de la ZLECAf et le rapport officiel du FMITI ; texte de la gazette non obtenu ; admission par RÈGLE (« AfCFTA State Parties »), aucune liste nominative",
+ "instrument": {
+  "id": "Provisional Schedule of Tariff Concessions (PSTC) — gazettée en avril 2025",
+  "id_fr": "Barème provisoire de concessions tarifaires du Nigeria",
+  "date_gazettage": "2025-04-14",
+  "rang": "23e État partie de la ZLECAf à gazetter son PSTC (annonce du Secrétariat)",
+  "source_au": {
+   "titre": "Nigeria Gazettes Its AfCFTA Tariff Commitments, Advancing Implementation Efforts",
+   "url": "https://au-afcfta.org/2025/04/nigeria-gazettes-its-afcfta-tariff-commitments-advancing-implementation-efforts/",
+   "publiee_le": "2025-04-14",
+   "texte_extrait": "sources/NGA_au_afcfta_gazette_2025-04-14.extrait.txt",
+   "sha256": "e2449c80266d15ce9a47a40c04075838932ae10a5f10c97e73eb8c131774c4cc",
+   "verbatim_en": "Congratulations to the Federal Republic of Nigeria on gazetting its AfCFTA Provisional Schedule of Tariff Concessions (PSTCs)! Nigeria becomes the 23rd AfCFTA State Party to gazette its PSTCs. … confirming that Nigeria will grant preferential tariff treatment to eligible goods upon importation, in line with its commitments under the AfCFTA Agreement.",
+   "traduction_fr": "Félicitations à la République fédérale du Nigeria pour le gazettage de son barème provisoire de concessions tarifaires (PSTC) de la ZLECAf ! Le Nigeria devient le 23e État partie à gazetter son PSTC. … confirmant que le Nigeria accordera un traitement tarifaire préférentiel aux produits éligibles à l'importation, conformément à ses engagements."
+  },
+  "source_nationale": {
+   "titre": "Nigeria AfCFTA Achievements Report 2025 — Federal Ministry of Industry, Trade and Investment",
+   "url": "https://fmiti.gov.ng/wp-content/uploads/2026/01/Nigeria-AfCFTA-Achievements-2025.pdf",
+   "texte_extrait": "sources/NGA_fmiti_rapport_2025.extrait.txt",
+   "sha256": "9dadc0b8df10f1963e5c61686c129e8787916c0f8a35c9c337d8e29949a68568",
+   "pdf_non_archive": "PDF de 7,6 Mo non versé au dépôt ; extraits décisifs archivés et scellés.",
+   "verbatim_en": "Gazetted Nigeria's Provisional Schedule of Tariff Concessions for Trade in Goods. … Nigeria provides similar preferential treatment to digital products originating in AfCFTA State Parties.",
+   "traduction_fr": "A gazetté le barème provisoire de concessions tarifaires du Nigeria pour le commerce des marchandises. … Le Nigeria accorde un traitement préférentiel similaire aux produits numériques originaires des États parties de la ZLECAf."
+  },
+  "gazette_non_obtenue": "Le texte et le numéro de la gazette fédérale portant le PSTC n'ont pas été obtenus : l'archive gazettes.africa ne contient pas la gazette d'avril 2025 (constat du chantier de collecte et vérification du 2026-09-25), et le portail tarifaire NCS « AfCFTA CET » (cet.customs.gov.ng/afcfta-cet) est protégé par un CAPTCHA Cloudflare (HTTP 403) — non forcé."
+ },
+ "regle_d_admission": {
+  "enonce": "Traitement préférentiel aux produits éligibles des « AfCFTA State Parties » (rapport FMITI) ; la formulation connue de la réciprocité — « bénéfice réciproque avec les États parties ayant également gazetté leur barème » — provient de communiqués, pas du texte de la gazette.",
+  "statut": "RÈGLE SANS LISTE, termes non tranchés : « State Parties » ne distingue pas les États ayant ratifié de ceux ayant gazetté et accordant la réciprocité — l'écart entre les deux lectures dépasse vingt pays.",
+  "consequence": "Faute de texte, aucun corridor bilatéral ne peut être établi : le niveau reste NOTIFICATION_PARTENAIRES_REQUISE."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-25",
+  "cible": "Texte de la gazette fédérale portant le PSTC, et circulaire de la Nigeria Customs Service désignant les États parties admis.",
+  "ou": [
+   {
+    "endroit": "Secrétariat de la ZLECAf — annonce du 14/04/2025",
+    "resultat": "POSITIF pour le gazettage et la date ; aucun partenaire nommé."
+   },
+   {
+    "endroit": "FMITI — Nigeria AfCFTA Achievements Report 2025 (16 pages, lu intégralement)",
+    "resultat": "POSITIF pour le gazettage et l'objet ; admission par règle (« AfCFTA State Parties »), aucune liste."
+   },
+   {
+    "endroit": "gazettes.africa — Nigéria, 2025",
+    "resultat": "NÉGATIF — la gazette d'avril 2025 n'est pas dans l'archive ; cinq numéros de 2025 lus antérieurement (27, 196, 9, 89, 115 pages) ne mentionnent ni ZLECAf ni concessions tarifaires."
+   },
+   {
+    "endroit": "Nigeria Customs Service — https://customs.gov.ng (site et rubriques règles/circulaires)",
+    "resultat": "NÉGATIF — aucune circulaire ZLECAf retrouvée ; le portail tarifaire « AfCFTA CET » (cet.customs.gov.ng/afcfta-cet) répond 403 (CAPTCHA Cloudflare), non forcé."
+   },
+   {
+    "endroit": "Nigerian Office for Trade Negotiations (NOTN)",
+    "resultat": "Aucun document de gazette ou de liste d'origines retrouvé par la recherche."
+   },
+   {
+    "endroit": "Presse et portails (Businessday, Guardian, regtech, etc.)",
+    "resultat": "Repérage seulement : confirment le gazettage d'avril 2025, sans publier ni le texte ni une liste. Sources secondaires, jamais de preuve."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points : le texte de la gazette n'a pas été obtenu et aucune liste nominative d'États parties admis n'a été retrouvée. Le Nigeria énonce une règle d'admission, pas une liste — et les termes de cette règle ne sont pas lisibles sur un texte primaire."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — gazettage du PSTC daté et attesté (Secrétariat de la ZLECAf + FMITI) ; texte de la gazette non obtenu",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — règle sans liste, termes non tranchés",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — instantané ECOWAS (barème) archivé, non exploitable sans liste d'origines ni texte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le texte de la gazette fédérale d'avril 2025 n'est pas lu : on ne sait pas s'il comporte une répartition par listes, un calendrier ou une clause de réciprocité opposable.",
+  "« AfCFTA State Parties » n'est pas univoque : États ayant ratifié (une cinquantaine) ou États ayant gazetté et accordant la réciprocité (environ vingt à ce jour) ? Aucun texte lu ne le tranche.",
+  "Aucune circulaire d'application de la Nigeria Customs Service désignant les origines admises n'a été retrouvée."
+ ],
+ "remaining_work": [
+  "Obtenir la gazette fédérale du Nigeria portant le PSTC (avril 2025) — Federal Government Printer ou Nigeria Customs Service.",
+  "Obtenir une circulaire NCS ou une note du FMITI/NOTN désignant les États parties admis à l'importation, ou constater l'absence.",
+  "Re-tenter le portail « AfCFTA CET » (cet.customs.gov.ng/afcfta-cet) depuis un accès non bloqué, ou en demander la documentation à la NCS."
+ ]
+}
