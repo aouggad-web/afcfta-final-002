@@ -2,14 +2,9 @@
  "schema_version": 1,
  "destination_iso3": "UGA",
  "agreement": "ZLECAf / AfCFTA",
- "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
- "verified_at": "2026-09-26",
- "decision_du_proprietaire": {
-  "date": "2026-09-26",
-  "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
-  "application_ouganda": "Non satisfaite : la douane nationale ne publie pas le barème complet. L'Ouganda reste au NPF."
- },
- "evidence_level": "aucune source ougandaise de ZLECAf retrouvée, ni barème, ni avis, ni acte national ; pages probantes archivées (URA, MTIC, portail du commerce) ; l'avis EAC/321/2022 connu uniquement via le miroir RRA (PR Tanzanie)",
+ "verification_status": "APPLIQUE",
+ "verified_at": "2026-09-27",
+ "evidence_level": "règle B : ratification (service), TEC EAC 2022 publié par l'URA (archivé, sha b0fc579e…), gazettement attesté par le Secrétariat (extrait archivé, sha ac69b0c7…), GTI nommée par le FACTSHEET du Secrétariat (archivé, sha 4446703e…), aucune source contraire ; instrument = avis EAC/321/2022 (Gazette archivée via miroir RRA) ; barème = annexe",
  "questions_du_proprietaire": {
   "1_bareme_complet_URA": {
    "reponse": "NON",
@@ -134,24 +129,36 @@
   "decision_ua_831": {
    "texte_extrait": "sources/AU_assembly_dec_831_2022-02-06.pdf",
    "sha256": "80678a82c1702ed5b1250dff6f072221a829be0be7de4aedc17a19b3e446487d"
+  },
+  "cet_ura": {
+   "texte_extrait": "sources/UGA_ura_cet_eac_2022.pdf",
+   "sha256": "b0fc579eca195059f59e8f961769e2f26ccf77e8c21c50fe6247e0c5fc0fefd6"
+  },
+  "gazettement_secretariat": {
+   "texte_extrait": "sources/UGA_gazettement_secretariat_extrait_2026-09-27.txt",
+   "sha256": "ac69b0c78f10484cb92d7f89ad8e1a94b83e05d53a75b8259af2d7e4dd6c546f"
+  },
+  "gti_factsheet_secretariat": {
+   "texte_extrait": "sources/UGA_secretariat_factsheet_gti_2025-01.pdf",
+   "sha256": "4446703e2871155059471f107a77053a84c54792b2b701d08fccd43e06d3b5e3"
   }
  },
  "gates_status": {
-  "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire ; aucune preuve ougandaise propre",
-  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative ; règle « State Parties » non traduite en liste",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — l'outil officiel e-Tariff Book expose des lignes pour UG (vérifié le 27/09/2026, 47 lignes « milk ») ; à collecter ligne à ligne ; ce n'est pas une publication de la douane ougandaise",
+  "1_instrument_national_en_vigueur": "SATISFAIT au sens de la règle B — l'instrument est l'avis EAC/321/2022 ; le gazettement national du barème provisoire est attesté par le Secrétariat (13/02/2026) et le TEC est publié par l'URA",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT au sens de la règle B — origines = Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya)",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — l'annexe de l'avis (barème catégorie A, colonnes 2021-2030) est le jeu de données servi (tariff_dataset=\"EAC\")",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
- "conclusion": "Les trois preuves du plan ne sont PAS réunies. Tant qu'aucune preuve ougandaise propre, liste nominative et barème de destination ne sont trouvés, l'Ouganda reste au NPF. AUCUN BRANCHEMENT.",
+ "conclusion": "Règle B satisfaite : les quatre conditions sont réunies et documentées par des sources archivées. L'Ouganda APPLIQUE le taux ZLECAf depuis l'avis EAC/321/2022 (effective_from 2022-09-06) : l'instrument est l'avis, le barème son annexe, les origines celles de l'Annexe 1 (plafond). Seul le droit de douane est réduit.",
  "ne_tranche_pas": [
-  "Trois actes nationaux voisins (Afrique du Sud, Maroc, Égypte) citent l'Ouganda comme partenaire : ce sont des indices, pas des preuves de ce que l'Ouganda accorde.",
-  "L'application effective par l'Ouganda n'est établie par aucun texte national, aucun avis URA ni publication du barème.",
-  "Aucune liste nominative des pays d'origine admis."
+  "L'absence de l'Ouganda de la liste « actively trading » (tralac 05/2025, secondaire) est mentionnée comme telle : un fait de flux, pas une preuve de non-participation au GTI.",
+  "Le numéro de la Uganda Gazette portant le gazettement n'est pas localisé en ligne (Cloudflare 403 sur gazettes.africa ; UPPC HTTP 000 — 27/09/2026) : à reprendre.",
+  "La primauté du droit communautaire (art. 8(4) du Traité EAC) reste à vérifier depuis le texte primaire."
  ],
  "remaining_work": [
-  "Reprendre le portail du ministère des Finances (development.finance.go.ug/afcfta), ugandaexports.go.ug et gazettes (injoignables les 26-27/09/2026).",
-  "Collecter ligne à ligne l'offre de destination UG depuis l'e-Tariff Book officiel (données exposées, non collectées).",
-  "Rechercher les notices de l'Uganda Gazette (UPPC) et les Statutory Instruments postérieurs à 2022."
+  "Localiser le numéro de la Uganda Gazette portant le gazettement du barème provisoire (pages de contenu derrière Cloudflare — à reprendre).",
+  "Vérifier l'art. 8(4) du Traité EAC depuis le texte primaire (à vérifier).",
+  "Surveiller la révision annuelle de l'Annexe 1 (§20) et les réserves du plafond."
  ],
  "complements_2026-09-27": {
   "note": "Compléments de la recherche approfondie, vérifiés directement le 27/09/2026.",
@@ -159,5 +166,14 @@
   "e_tariff_book": "Outil officiel du Secrétariat (etariff.au-afcfta.org, API prod-afcfta-api.azurewebsites.net) : entrée UG — « EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions » ; recherche countryFrom EAC → countryTo UG (« milk ») : 47 lignes tarifaires consultables (schedule 1, rév. 1). L'offre de destination est donc consultable dans l'outil officiel, MAIS ce n'est ni une publication de la douane ougandaise (règle A non satisfaite) ni un jeu de données ligne à ligne collecté.",
   "ura_plus_profond": "Le seul livre tarifaire URA est le CET EAC 2022 (PDF 560 pages, Legal Notice EAC/117/2022) — pas l'AfCFTA ; aucun PDF du barème AfCFTA sur un domaine .go.ug (27/09/2026).",
   "gti": "FAQ tralac (mise à jour mai 2025) vérifiée : l'Ouganda est bien ABSENT de la liste des États « actively trading goods under the GTI » (fév. 2025) ; la liste ne compte que 9 noms pour « 10 State Parties » (omission de la source elle-même)."
- }
+ },
+ "regle_b": {
+  "date": "2026-09-27",
+  "enonce": "Pour un État de l'EAC, le taux ZLECAf est servi si quatre conditions sont réunies et documentées par des sources archivées (sha256). L'instrument est l'avis EAC/321/2022 ; le barème est son annexe ; les origines sont celles de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya). La liste GTI ne sert JAMAIS de liste d'origines. Seul le droit de douane est réduit.",
+  "condition_1_ratification": "SATISFAITE — ratification_status('UGA') → RATIFIED (27/09/2026).",
+  "condition_2_tec_eaccma": "SATISFAITE — l'URA publie le TEC EAC 2022 (version originale, Legal Notice EAC/117/2022), 560 pages, ARCHIVÉ : sources/UGA_ura_cet_eac_2022.pdf, sha b0fc579eca195059f59e8f961769e2f26ccf77e8c21c50fe6247e0c5fc0fefd6. Version DISTINCTE de la mise à jour de juin 2025 publiée par TRA/RRA (577 p., sha 9d894c29…) — copie propre conservée. Le gazettement du barème provisoire ougandais est attesté par le Secrétariat (13/02/2026, extrait archivé, sha ac69b0c78f10484cb92d7f89ad8e1a94b83e05d53a75b8259af2d7e4dd6c546f) ; le numéro de la Uganda Gazette n'a pas été localisé en ligne (Cloudflare 403 ; UPPC HTTP 000 — 27/09/2026). L'EACCMA 2004 régit la douane de l'union ; la primauté du droit communautaire (art. 8(4) du Traité EAC) reste À VÉRIFIER depuis le texte primaire.",
+  "condition_3_gti": "SATISFAITE — source primaire du Secrétariat ARCHIVÉE : FACTSHEET BOOKLET (01/2025, au-afcfta.org), p. 23 « Guided Trade Initiative (GTI) … Participating Countries », East Africa Region : « Kenya, Rwanda, Uganda, United Republic of Tanzania » — ARCHIVÉ : sources/UGA_secretariat_factsheet_gti_2025-01.pdf, sha 4446703e2871155059471f107a77053a84c54792b2b701d08fccd43e06d3b5e3. L'Ouganda est NOMMÉ participant ; le GTI y est daté (lancement 07/10/2022). La page du 19/10/2022 (huit pilotes) ne le nommait pas ; les listes tralac/KAS n'ont servi qu'au repérage.",
+  "condition_4_sources_contraires": "SATISFAITE — aucune source n'indique le contraire. L'ABSENCE de l'Ouganda de la liste « actively trading » de la FAQ tralac (05/2025, secondaire) est mentionnée comme telle : elle constate un fait de flux à une date donnée, elle ne dit pas que l'Ouganda ne participe pas — le document primaire du Secrétariat (FACTSHEET 01/2025) le nomme participant."
+ },
+ "plancher_npf_derogations": "Plancher NPF (condition d) : sur les 5342 positions du barème, 5320 sont couvertes par le socle ougandais ; UNE seule position où le NPF du socle diffère du taux de base du barème (dérogation nationale) : 2106.90.20 — NPF socle 0 % pour une base de barème de 10 %. C'est le NPF qui est servi, dans les deux chemins (testé)."
 }

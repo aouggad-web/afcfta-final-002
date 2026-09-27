@@ -162,7 +162,7 @@ KENYA_ORIGINS_RESERVES = (
 # celles de l'Annexe 1 de la Directive 1/2021 (plafond). Défini une seule
 # fois ici — aucun chargement de données ; les étapes suivantes y ajouteront
 # les États prouvés.
-DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA", "RWA"})
+DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA", "RWA", "UGA"})
 
 
 RECORDS = {
@@ -237,6 +237,33 @@ RECORDS = {
             "https://www.rra.gov.rw/fileadmin/user_upload/"
             "COMMON_EXTERNAL_TARIFF__Updated_June_2025.pdf"
         ),
+        effective_from="2022-09-06",
+        accepted_origins=KENYA_ACCEPTED_ORIGINS,
+        tariff_dataset="EAC",
+        note=(
+            "Règle B (27/09/2026) — les quatre conditions sont documentées "
+            "dans la fiche et docs/METHODE_EAC_REGLE_B_2026-09-27.md. Taux "
+            "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
+            "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
+            "le droit de douane est réduit. Information indicative."
+        ),
+    ),
+    # Ouganda (règle B, 27/09/2026) : les quatre conditions sont documentées
+    # dans la fiche UGA (PR #535). Preuve ougandaise : le TEC EAC 2022 publié
+    # par l'URA (archivé, sha dans la fiche — version originale EAC/117/2022,
+    # distincte de la mise à jour de juin 2025 publiée par TRA/RRA) et le
+    # gazettement attesté par le Secrétariat (13/02/2026) ; le FACTSHEET du
+    # Secrétariat (01/2025) nomme l'Ouganda parmi les GTI Participating
+    # Countries. L'avis EAC/321/2022 est l'instrument, le barème son annexe.
+    "UGA": ImplementationRecord(
+        destination_iso3="UGA",
+        status=APPLIED,
+        instrument_id="EAC/321/2022",
+        instrument_title=(
+            "EAC Legal Notice EAC/321/2022 — implementation of Category A "
+            "AfCFTA tariff concessions"
+        ),
+        instrument_url=("https://ura.go.ug/en/download/" "common-external-tariff-2022-version/"),
         effective_from="2022-09-06",
         accepted_origins=KENYA_ACCEPTED_ORIGINS,
         tariff_dataset="EAC",
