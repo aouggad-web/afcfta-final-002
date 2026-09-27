@@ -123,3 +123,34 @@ def test_d_bis_le_kenya_rest_sur_le_meme_plancher():
 
     hist = calculate_import_taxes("KEN", "21069020", 10000, apply_zlecaf=True, origin_country="GHA")
     assert hist["rates"]["effective_zlecaf_rate_pct"] == 0.0
+
+
+@besoin_socle
+def test_e_l_application_ougandaise_ne_commence_pas_avant_le_13_fevrier_2026():
+    """Le Secrétariat attestait encore en février 2026 une PRÉPARATION à
+    « commence trading » : l'application ougandaise est datée au plus tôt du
+    gazettement (2026-02-13, date d'attestation). Avant : NPF, dans le chemin
+    daté du résolveur officiel ; à partir de cette date : la préférence est
+    servie. Le socle (date du jour, postérieure au 13/02/2026) sert."""
+    from datetime import date
+
+    from services.official_preferential_rates import resolve_official_preferential_rate
+    from services.zlecaf_schedule_ken import ligne_du_journal_officiel
+
+    # Avant le 13/02/2026 : rien — même si la colonne du barème existe.
+    assert (
+        ligne_du_journal_officiel("02011000", "GHA", date(2026, 2, 12), destination_iso3="UGA")
+        is None
+    )
+    assert resolve_official_preferential_rate("UGA", "02011000", "GHA", as_of_year=2025) is None
+
+    # À partir du 13/02/2026 : servie.
+    apres = ligne_du_journal_officiel("02011000", "GHA", date(2026, 2, 13), destination_iso3="UGA")
+    assert apres is not None and apres["ad_valorem_rate_pct"] > 0.0
+    anne_2026 = resolve_official_preferential_rate("UGA", "02011000", "GHA", as_of_year=2026)
+    assert anne_2026 is not None and anne_2026["ad_valorem_rate_pct"] > 0.0
+
+    # Le socle (date du jour) sert — le chemin daté aussi pour la même ligne.
+    position, _ = socle.position("UGA", "02011000")
+    soc = taux_preferentiels(position, "UGA", "GHA", "02011000")
+    assert soc["applique"] is True

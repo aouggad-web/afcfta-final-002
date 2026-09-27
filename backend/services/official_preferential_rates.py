@@ -413,10 +413,20 @@ def resolve_official_preferential_rate(
         # EAC/321/2022) : c'est lui qui fait foi, pas l'e-Tariff Book, qui en
         # diverge sur 275 lignes. Le barème n'est chargé que pour ces
         # destinations.
+        # Porte temporelle : l'application d'un État ne vaut qu'à partir de
+        # son effective_from (ex. Ouganda : 2026-02-13, date d'attestation du
+        # gazettement par le Secrétariat) — avant, NPF.
+        record = decision["record"]
+        jour = date(as_of_year, 12, 31) if as_of_year else date.today()
+        eff = record.effective_from
+        if eff:
+            annee, mois, jour_eff = (int(x) for x in eff.split("-"))
+            if jour < date(annee, mois, jour_eff):
+                return None
         from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
-        jour = date(as_of_year, 12, 31) if as_of_year else None
-        return ligne_du_journal_officiel(clean_code, origin, jour, destination_iso3=country)
+        jour_bar = date(as_of_year, 12, 31) if as_of_year else None
+        return ligne_du_journal_officiel(clean_code, origin, jour_bar, destination_iso3=country)
 
     dataset = _load_dataset(dataset_code)
     if dataset is None:

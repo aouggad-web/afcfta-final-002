@@ -264,7 +264,9 @@ RECORDS = {
             "AfCFTA tariff concessions"
         ),
         instrument_url=("https://ura.go.ug/en/download/" "common-external-tariff-2022-version/"),
-        effective_from="2022-09-06",
+        # Date d'attestation du gazettement par le Secrétariat (communiqué du
+        # 13/02/2026) ; date exacte de la Uganda Gazette à localiser.
+        effective_from="2026-02-13",
         accepted_origins=KENYA_ACCEPTED_ORIGINS,
         tariff_dataset="EAC",
         note=(

@@ -199,6 +199,14 @@ def taux_preferentiels(
                 compute_ken_zlecaf_rate,
                 reserve_regle_d_origine,
             )
+            import datetime as _dt
+
+            eff = decision["record"].effective_from
+            if eff:
+                annee, mois, jour_eff = (int(x) for x in eff.split("-"))
+                if _dt.date.today() < _dt.date(annee, mois, jour_eff):
+                    # L'application de l'État n'a pas commencé : NPF.
+                    taux, libelle = None, None
 
             taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
             if taux is not None:

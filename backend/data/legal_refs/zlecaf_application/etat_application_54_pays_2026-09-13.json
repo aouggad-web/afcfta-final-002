@@ -1,497 +1,480 @@
 {
- "schema_version": 1,
- "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
- "etabli_le": "2026-09-13",
- "mis_a_jour_le": "2026-09-25",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Documentation Kenya (25/09/2026) : preuve nationale = publication du barème par la KRA, l'avis EAC = support communautaire, concordance dtic/SARS (mars 2026) — fiche KEN_application_2026-09-25.json. Aucun changement de calcul. Application de la règle B à la Tanzanie (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — la Tanzanie passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Un plancher NPF protège la dérogation nationale 2106.90.20. Aucun autre pays n'est anticipé. Application de la règle B au Rwanda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — le Rwanda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Aucun autre pays n'est anticipé. Étape 5 (suite) : fiche comparative Ouganda (UGA_application_2026-09-26.json) — ni barème, ni avis EAC, ni acte national, ni liste, ni preuve d'importation ; le Kenya reste le seul des quatre (KEN/RWA/TZA/UGA) à publier le barème lui-même. Aucun branchement. Application de la règle B à l'Ouganda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées, dont le FACTSHEET du Secrétariat qui nomme l'Ouganda parmi les participants au GTI — l'Ouganda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument. Aucun autre pays n'est anticipé.",
- "niveaux": {
-  "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
-  "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
-  "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
-  "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
-  "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
-  "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
-  "NON_RECHERCHE": "aucune recherche menée à ce jour",
-  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": "origines admises publiées au tarif officiel, sens du taux préférentiel non tranché",
-  "INSTRUMENT_RAPPORTE_NON_PRIMAIRE": "instrument nommé et liste rapportée, mais sur sources secondaires seulement"
- },
- "pays": {
-  "AGO": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "BDI": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "BEN": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "BFA": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "BWA": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "CAF": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "CIV": {
-   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Ordonnance n° 2025-260 du 23/04/2025 (adoption attestée par le communiqué officiel du Conseil des ministres, archivé) et ratification parlementaire ; le rapport d'activités 2025 du CN-ZLECAf indique que les décrets d'application et circulaires restaient à prendre, et aucune liste nominative d'origines n'a été retrouvée (recherche du 25/09/2026 : CN-ZLECAf, douanes.ci, JO inaccessible). Fiche : CIV_application_2026-09-25.json.",
-   "niveau_de_source": "primaire pour l'adoption et le projet de ratification (communiqué du Conseil des ministres + rapport CN-ZLECAf archivés et scellés) ; texte de l'ordonnance non obtenu",
-   "bareme_collecte": true,
-   "bareme_source": "ECOWAS"
-  },
-  "CMR": {
-   "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : CEMAC",
-   "niveau_de_source": "instantané e-Tariff Book",
-   "bareme_collecte": true
-  },
-  "COD": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "COG": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "COM": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "CPV": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "DJI": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "DZA": {
-   "niveau": "PREUVES_ASSEMBLEES",
-   "preuve": "Circulaire 482/DGD/SP/D.042/24 du 22/10/2024, application au 01/11/2024. Régime par défaut liste A éliminée au 1.1.2025 ; régime de réciprocité sur 10 ans pour 13 pays nommés, identiques à la liste P2 marocaine. DAPS exonéré. 1 458 lignes gelées faute de règles d'origine.",
-   "niveau_de_source": "primaire — texte intégral de la circulaire archivé",
-   "bareme_collecte": false
-  },
-  "EGY": {
-   "niveau": "APPLIQUE",
-   "preuve": "Circulaires Accords n° 38 (compl. n° 3, 6, 10, 15) et n° 44 du 28/12/2025, douane égyptienne : liste A seulement, 19 origines en deux groupes — 10 ans à 50 % de réduction au 1/1/2025 et 60 % au 1/1/2026 (GHA KEN CMR ZAF NAM NGA SWZ BWA), 5 ans à 100 % au 1/1/2025 (MAR RWA TZA MUS TUN DZA BDI LSO MWI GMB UGA). Chapitres 50 à 63 et 87 reportés. Listes B et C non entrées en vigueur. Taux calculés depuis le NPF (la carte d'origines de l'e-Tariff Book contredit l'acte national pour 15 origines sur 19).",
-   "niveau_de_source": "primaire — trois PDF officiels customs.gov.eg archivés et scellés (n° 36, 38, 44), lus à l'image ; API tarifaire interrogée en direct ; rapprochement des barèmes de l'UA consigné",
-   "bareme_collecte": true
-  },
-  "ERI": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "ETH": {
-   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Règlement du Conseil des ministres n° 574/2025, Federal Negarit Gazette n° 55 du 14 juillet 2025, lu dans le Gazette lui-même et non plus sur source secondaire. Barème effectif au 1er janvier 2021 ; seule la catégorie A est réduite. L'article 3(2) délègue la liste des origines à un avis du Ministry of Trade and Regional Integration, qui n'a pas été obtenu.",
-   "niveau_de_source": "primaire — dispositif du Gazette archivé et scellé",
-   "bareme_collecte": true,
-   "bareme_source": "ETH"
-  },
-  "GAB": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "GHA": {
-   "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : ECOWAS",
-   "niveau_de_source": "instantané e-Tariff Book",
-   "bareme_collecte": true
-  },
-  "GIN": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "GMB": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "GNB": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "GNQ": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "KEN": {
-   "niveau": "APPLIQUE",
-   "preuve": "Règle B (27/09/2026) : les quatre conditions sont réunies — ratifié (RATIFIED) ; TEC + EACCMA appliqués ; GTI : source primaire du Secrétariat archivée (communiqué 19/10/2022 — Kenya parmi les huit participants, lancement 07/10/2022) ; aucune source contraire. Preuve : publication du barème par la KRA (kra.go.ke), PDF archivé ; l'avis EAC/321/2022 est l'instrument et le barème son annexe ; origines = Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Fiche : KEN_application_2026-09-25.json.",
-   "niveau_de_source": "primaire — barème KRA (données extraites dans le dépôt) + Annexe 1 archivée ; avis EAC lu (Gazette) comme support",
-   "bareme_collecte": true,
-   "bareme_source": "EAC"
-  },
-  "LBR": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "LBY": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "LSO": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "MAR": {
-   "niveau": "APPLIQUE",
-   "preuve": "Circulaire ADII 6530/223 du 22/01/2024 (avenant 6627/223 du 09/01/2025), 40 origines (P1 27 / P2 13), démantèlement depuis le 01/01/2021 ; liste A seulement. La TPI est démantelée avec le DI sur le même calendrier (p. 2 et 6) : taux = part restante × TPI publiée. Aucune notification postérieure modifiant P1/P2 retrouvée au 25/09/2026.",
-   "niveau_de_source": "primaire — 3 circulaires lues intégralement (dont les 2 avenants), SHA-256 consignés ; barème ligne à ligne et TPI dans les deux chemins de calcul",
-   "bareme_collecte": true
-  },
-  "MDG": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "MLI": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "MOZ": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "MRT": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "MUS": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "MWI": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "NAM": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "NER": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "NGA": {
-   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "PSTC gazettée le 14/04/2025 (23e État partie), attestée par le Secrétariat de la ZLECAf et le rapport du FMITI ; admission par RÈGLE (« AfCFTA State Parties »), jamais par une liste. Recherche du 25/09/2026 : texte de la gazette non obtenu (gazette d'avril absente de gazettes.africa ; portail NCS « AfCFTA CET » en CAPTCHA Cloudflare, non forcé) et aucune circulaire NCS retrouvée. Fiche : NGA_application_2026-09-25.json.",
-   "niveau_de_source": "primaire pour le gazettage et la date (annonce du Secrétariat + rapport FMITI, extraits archivés et scellés) ; texte de la gazette non obtenu",
-   "bareme_collecte": true,
-   "bareme_source": "ECOWAS"
-  },
-  "RWA": {
-   "niveau": "APPLIQUE",
-   "preuve": "Règle B (27/09/2026) satisfaite : (1) ratification — ratification_status('RWA') → RATIFIED ; (2) TEC + EACCMA — le tarif publié par la RRA est le TEC EAC 2022 (577 p., archivé, sha 9d894c29…, identique à la copie TRA) ; (3) GTI — source primaire du Secrétariat archivée (communiqué 19/10/2022, sha d53bbbd6…, cité depuis la fiche Kenya) : le Rwanda est nommé parmi les huit participants ; (4) aucune source contraire — la concordance dtic est une concordance, pas une preuve. Instrument : avis EAC/321/2022 (Gazette archivée) ; barème : son annexe ; origines : Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Plancher NPF : 1 dérogation nationale (2106.90.20). Fiche : RWA_application_2026-09-25.json.",
-   "niveau_de_source": "primaire — Gazette EAC archivée, TEC RRA archivé, communiqué Secrétariat archivé",
-   "bareme_collecte": true,
-   "bareme_source": "EAC"
-  },
-  "SDN": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "SEN": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "SLE": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "SOM": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "SSD": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "STP": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "SWZ": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "SYC": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "TCD": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "TGO": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
-  },
-  "TUN": {
-   "niveau": "INSTRUMENT_VERIFIE_BAREME_MANQUANT",
-   "preuve": "Texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), lu intégralement : les pourcentages sont des parts du droit de base 2019 — liste A 5 ans (MUS RWA EGY TZA : 80/60/40/20/0 de 2021 à 2025), liste A 10 ans (CMR GHA KEN : 90 … 40 en 2026 … 0 en 2030), listes B sur 5 et 8 ans. Tarif Web 2026 : 8 origines (CMR GHA KEN TZA ZAF NGA MUS RWA). Barème non exploitable : droits de base 2019 ligne à ligne et classement A/B/C manquants.",
-   "niveau_de_source": "texte officiel lu via lecteur tiers (r.jina.ai), octets du PDF non archivés ; l'empreinte porte sur la transcription",
-   "bareme_collecte": true
-  },
-  "TZA": {
-   "niveau": "APPLIQUE",
-   "preuve": "Règle B (27/09/2026) satisfaite : (1) ratification — ratification_status('TZA') → RATIFIED ; (2) TEC + EACCMA — le tarif publié par la TRA est le TEC EAC 2022 (577 p., archivé, sha 9d894c29…) ; (3) GTI — source primaire du Secrétariat archivée (communiqué 19/10/2022, sha d53bbbd6…, cité depuis la fiche Kenya) : la Tanzanie est nommée parmi les huit participants ; (4) aucune source contraire — l'omission dtic est mentionnée comme telle. Instrument : avis EAC/321/2022 (Gazette archivée) ; barème : son annexe ; origines : Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Plancher NPF : 1 dérogation nationale (2106.90.20, NPF socle 0 % pour une base de 10 %). Fiche : TZA_application_2026-09-25.json.",
-   "niveau_de_source": "primaire — Gazette EAC archivée, TEC TRA archivé, communiqué Secrétariat archivé",
-   "bareme_collecte": true,
-   "bareme_source": "EAC"
-  },
-  "UGA": {
-   "niveau": "APPLIQUE",
-   "preuve": "Règle B (27/09/2026) satisfaite : (1) ratification — ratification_status('UGA') → RATIFIED ; (2) TEC + EACCMA — le TEC EAC 2022 publié par l'URA (560 p., archivé, sha b0fc579e…) et le gazettement du barème provisoire attesté par le Secrétariat (13/02/2026, extrait archivé, sha ac69b0c7…) ; (3) GTI — FACTSHEET du Secrétariat (01/2025, p. 23, archivé, sha 4446703e…) : l'Ouganda est nommé parmi les GTI Participating Countries ; (4) aucune source contraire — l'absence de la liste « actively trading » (tralac, secondaire) est mentionnée comme telle. Instrument : avis EAC/321/2022 ; barème : son annexe ; origines : Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Plancher NPF : 1 dérogation (2106.90.20). Fiche : UGA_application_2026-09-26.json.",
-   "niveau_de_source": "primaire — Gazette EAC archivée, TEC URA archivé, FACTSHEET et communiqué du Secrétariat archivés",
-   "bareme_collecte": true,
-   "bareme_source": "EAC"
-  },
-  "ZAF": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": true
-  },
-  "ZMB": {
-   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "SI 92/2024 du 30/12/2024 (gazette n° 7696), dont l'objet est confirmé par l'Assemblée nationale (19/06/2025) : domestication de 90 % des lignes, barème provisoire utilisé sous GTI. Recherche du 25/09/2026 : texte intégral non obtenu (ZambiaLII sous CAPTCHA, supplément absent de gazettes.africa) et aucune liste nominative d'origines retrouvée ; un SI 96/2025 existe, texte à obtenir. Fiche : ZMB_application_2026-09-25.json.",
-   "niveau_de_source": "primaire pour l'existence et l'objet (journal officiel + Assemblée nationale, extraits archivés) ; texte du SI non obtenu",
-   "bareme_collecte": true
-  },
-  "ZWE": {
-   "niveau": "NON_APPLIQUE_PRESUME",
-   "preuve": "offre tarifaire non encore publiée au Journal officiel selon la presse zimbabwéenne ; SI 140-142/2026 sans rapport avec la ZLECAf",
-   "niveau_de_source": "secondaire — à confirmer auprès de ZIMRA",
-   "bareme_collecte": true
-  }
- },
- "repartition": {
-  "APPLIQUE": 6,
-  "NON_APPLIQUE_PRESUME": 1,
-  "NON_RECHERCHE": 39,
-  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
-  "OFFRE_SEULE": 2,
-  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
-  "PREUVES_ASSEMBLEES": 1,
-  "INSTRUMENT_VERIFIE_BAREME_MANQUANT": 1
- },
- "fiches_detaillees": [
-  "CIV_application_2026-09-25.json",
-  "DZA_application_2026-09-14.json",
-  "EGY_application_2026-09-14.json",
-  "EGY_rapprochement_baremes_2026-09-24.json",
-  "ETH_application_2026-09-13.json",
-  "KEN_application_2026-09-25.json",
-  "MAR_application_2026-09-13.json",
-  "NGA_application_2026-09-25.json",
-  "RWA_application_2026-09-25.json",
-  "TUN_application_2026-09-13.json",
-  "TZA_application_2026-09-25.json",
-  "UGA_application_2026-09-26.json",
-  "ZMB_application_2026-09-25.json",
-  "chantier_collecte_2026-09-14.json"
- ],
- "recoupements_reciprocite": {
-  "note": "La réciprocité est un principe fondateur de l'accord. Croiser les listes vérifiées la met à l'épreuve : une asymétrie n'est pas une erreur de collecte, c'est un fait juridique à constater.",
-  "MAR_accorde_a": [
-   "BDI",
-   "BFA",
-   "BWA",
-   "CAF",
-   "CIV",
-   "CMR",
-   "COD",
-   "COG",
-   "COM",
-   "CPV",
-   "DZA",
-   "EGY",
-   "ETH",
-   "GAB",
-   "GHA",
-   "GIN",
-   "GMB",
-   "GNB",
-   "GNQ",
-   "KEN",
-   "LSO",
-   "MLI",
-   "MRT",
-   "MUS",
-   "MWI",
-   "NAM",
-   "NER",
-   "NGA",
-   "RWA",
-   "SEN",
-   "SLE",
-   "SWZ",
-   "SYC",
-   "TCD",
-   "TGO",
-   "TUN",
-   "TZA",
-   "UGA",
-   "ZAF",
-   "ZMB"
-  ],
-  "EGY_accorde_a": [
-   "BDI",
-   "BWA",
-   "CMR",
-   "DZA",
-   "GHA",
-   "GMB",
-   "KEN",
-   "LSO",
-   "MAR",
-   "MUS",
-   "MWI",
-   "NAM",
-   "NGA",
-   "RWA",
-   "SWZ",
-   "TUN",
-   "TZA",
-   "UGA",
-   "ZAF"
-  ],
-  "TUN_accorde_a": [
-   "CMR",
-   "GHA",
-   "KEN",
-   "MUS",
-   "NGA",
-   "RWA",
-   "TZA",
-   "ZAF"
-  ],
-  "reciproques_confirmees": [
-   {
-    "paire": "MAR <-> EGY",
-    "constat": "Le Maroc classe l'Égypte en P1 (5 ans) et l'Égypte classe le Maroc dans son groupe à 5 ans. Réciprocité pleine et cohérente."
-   },
-   {
-    "paire": "MAR <-> DZA",
-    "constat": "La liste algérienne de réciprocité et la liste P2 marocaine sont rigoureusement identiques : les mêmes treize pays, aucune différence. Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes, produisent la même énumération — la règle sous-jacente est objective, et les deux déterminations se valident l'une l'autre."
-   }
-  ],
-  "asymetries_constatees": [
-   {
-    "paire": "TUN -> MAR",
-    "constat": "L'Égypte et le Maroc accordent la ZLECAf à la Tunisie ; la Tunisie ne publie de préférence ZLECAf ni pour le Maroc ni pour l'Égypte. Elle sert le Maroc sous accord bilatéral et Agadir."
-   },
-   {
-    "paire": "TUN vs EGY/MAR",
-    "constat": "Tunisie : 8 origines publiées. Égypte : 17. Maroc : 40. Les périmètres diffèrent d'un facteur cinq."
-   },
-   {
-    "paire": "DZA -> EGY",
-    "constat": "L'Égypte classe l'Algérie à cinq ans avec 100 % de réduction au 1er janvier 2025 ; l'Algérie élimine sa liste A à la même date. Réciprocité symétrique."
-   }
-  ],
-  "intersection_des_trois": [
-   "CMR",
-   "GHA",
-   "KEN",
-   "MUS",
-   "RWA",
-   "TZA",
-   "ZAF"
-  ],
-  "accordee_par_MAR_et_EGY_mais_pas_TUN": [
-   "BDI",
-   "BWA",
-   "DZA",
-   "GMB",
-   "LSO",
-   "MWI",
-   "SWZ",
-   "TUN",
-   "UGA"
-  ]
- }
+    "schema_version": 1,
+    "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
+    "etabli_le": "2026-09-13",
+    "mis_a_jour_le": "2026-09-25",
+    "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Documentation Kenya (25/09/2026) : preuve nationale = publication du barème par la KRA, l'avis EAC = support communautaire, concordance dtic/SARS (mars 2026) — fiche KEN_application_2026-09-25.json. Aucun changement de calcul. Application de la règle B à la Tanzanie (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — la Tanzanie passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Un plancher NPF protège la dérogation nationale 2106.90.20. Aucun autre pays n'est anticipé. Application de la règle B au Rwanda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — le Rwanda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Aucun autre pays n'est anticipé. Étape 5 (suite) : fiche comparative Ouganda (UGA_application_2026-09-26.json) — ni barème, ni avis EAC, ni acte national, ni liste, ni preuve d'importation ; le Kenya reste le seul des quatre (KEN/RWA/TZA/UGA) à publier le barème lui-même. Aucun branchement. Application de la règle B à l'Ouganda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées, dont le FACTSHEET du Secrétariat qui nomme l'Ouganda parmi les participants au GTI — l'Ouganda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument. Aucun autre pays n'est anticipé.",
+    "niveaux": {
+        "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
+        "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
+        "INSTRUMENT_VERIFIE_BAREME_MANQUANT": "acte national vérifié et sens du taux tranché, barème ligne à ligne manquant (droits de base, classement A/B/C)",
+        "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
+        "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
+        "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
+        "NON_RECHERCHE": "aucune recherche menée à ce jour",
+        "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": "origines admises publiées au tarif officiel, sens du taux préférentiel non tranché",
+        "INSTRUMENT_RAPPORTE_NON_PRIMAIRE": "instrument nommé et liste rapportée, mais sur sources secondaires seulement",
+    },
+    "pays": {
+        "AGO": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "BDI": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "BEN": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "BFA": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "BWA": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "CAF": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "CIV": {
+            "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+            "preuve": "Ordonnance n° 2025-260 du 23/04/2025 (adoption attestée par le communiqué officiel du Conseil des ministres, archivé) et ratification parlementaire ; le rapport d'activités 2025 du CN-ZLECAf indique que les décrets d'application et circulaires restaient à prendre, et aucune liste nominative d'origines n'a été retrouvée (recherche du 25/09/2026 : CN-ZLECAf, douanes.ci, JO inaccessible). Fiche : CIV_application_2026-09-25.json.",
+            "niveau_de_source": "primaire pour l'adoption et le projet de ratification (communiqué du Conseil des ministres + rapport CN-ZLECAf archivés et scellés) ; texte de l'ordonnance non obtenu",
+            "bareme_collecte": true,
+            "bareme_source": "ECOWAS",
+        },
+        "CMR": {
+            "niveau": "OFFRE_SEULE",
+            "preuve": "barème archivé : CEMAC",
+            "niveau_de_source": "instantané e-Tariff Book",
+            "bareme_collecte": true,
+        },
+        "COD": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "COG": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "COM": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "CPV": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "DJI": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "DZA": {
+            "niveau": "PREUVES_ASSEMBLEES",
+            "preuve": "Circulaire 482/DGD/SP/D.042/24 du 22/10/2024, application au 01/11/2024. Régime par défaut liste A éliminée au 1.1.2025 ; régime de réciprocité sur 10 ans pour 13 pays nommés, identiques à la liste P2 marocaine. DAPS exonéré. 1 458 lignes gelées faute de règles d'origine.",
+            "niveau_de_source": "primaire — texte intégral de la circulaire archivé",
+            "bareme_collecte": false,
+        },
+        "EGY": {
+            "niveau": "APPLIQUE",
+            "preuve": "Circulaires Accords n° 38 (compl. n° 3, 6, 10, 15) et n° 44 du 28/12/2025, douane égyptienne : liste A seulement, 19 origines en deux groupes — 10 ans à 50 % de réduction au 1/1/2025 et 60 % au 1/1/2026 (GHA KEN CMR ZAF NAM NGA SWZ BWA), 5 ans à 100 % au 1/1/2025 (MAR RWA TZA MUS TUN DZA BDI LSO MWI GMB UGA). Chapitres 50 à 63 et 87 reportés. Listes B et C non entrées en vigueur. Taux calculés depuis le NPF (la carte d'origines de l'e-Tariff Book contredit l'acte national pour 15 origines sur 19).",
+            "niveau_de_source": "primaire — trois PDF officiels customs.gov.eg archivés et scellés (n° 36, 38, 44), lus à l'image ; API tarifaire interrogée en direct ; rapprochement des barèmes de l'UA consigné",
+            "bareme_collecte": true,
+        },
+        "ERI": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "ETH": {
+            "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+            "preuve": "Règlement du Conseil des ministres n° 574/2025, Federal Negarit Gazette n° 55 du 14 juillet 2025, lu dans le Gazette lui-même et non plus sur source secondaire. Barème effectif au 1er janvier 2021 ; seule la catégorie A est réduite. L'article 3(2) délègue la liste des origines à un avis du Ministry of Trade and Regional Integration, qui n'a pas été obtenu.",
+            "niveau_de_source": "primaire — dispositif du Gazette archivé et scellé",
+            "bareme_collecte": true,
+            "bareme_source": "ETH",
+        },
+        "GAB": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "GHA": {
+            "niveau": "OFFRE_SEULE",
+            "preuve": "barème archivé : ECOWAS",
+            "niveau_de_source": "instantané e-Tariff Book",
+            "bareme_collecte": true,
+        },
+        "GIN": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "GMB": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "GNB": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "GNQ": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "KEN": {
+            "niveau": "APPLIQUE",
+            "preuve": "Règle B (27/09/2026) : les quatre conditions sont réunies — ratifié (RATIFIED) ; TEC + EACCMA appliqués ; GTI : source primaire du Secrétariat archivée (communiqué 19/10/2022 — Kenya parmi les huit participants, lancement 07/10/2022) ; aucune source contraire. Preuve : publication du barème par la KRA (kra.go.ke), PDF archivé ; l'avis EAC/321/2022 est l'instrument et le barème son annexe ; origines = Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Fiche : KEN_application_2026-09-25.json.",
+            "niveau_de_source": "primaire — barème KRA (données extraites dans le dépôt) + Annexe 1 archivée ; avis EAC lu (Gazette) comme support",
+            "bareme_collecte": true,
+            "bareme_source": "EAC",
+        },
+        "LBR": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "LBY": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "LSO": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "MAR": {
+            "niveau": "APPLIQUE",
+            "preuve": "Circulaire ADII 6530/223 du 22/01/2024 (avenant 6627/223 du 09/01/2025), 40 origines (P1 27 / P2 13), démantèlement depuis le 01/01/2021 ; liste A seulement. La TPI est démantelée avec le DI sur le même calendrier (p. 2 et 6) : taux = part restante × TPI publiée. Aucune notification postérieure modifiant P1/P2 retrouvée au 25/09/2026.",
+            "niveau_de_source": "primaire — 3 circulaires lues intégralement (dont les 2 avenants), SHA-256 consignés ; barème ligne à ligne et TPI dans les deux chemins de calcul",
+            "bareme_collecte": true,
+        },
+        "MDG": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "MLI": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "MOZ": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "MRT": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "MUS": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "MWI": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "NAM": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "NER": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "NGA": {
+            "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+            "preuve": "PSTC gazettée le 14/04/2025 (23e État partie), attestée par le Secrétariat de la ZLECAf et le rapport du FMITI ; admission par RÈGLE (« AfCFTA State Parties »), jamais par une liste. Recherche du 25/09/2026 : texte de la gazette non obtenu (gazette d'avril absente de gazettes.africa ; portail NCS « AfCFTA CET » en CAPTCHA Cloudflare, non forcé) et aucune circulaire NCS retrouvée. Fiche : NGA_application_2026-09-25.json.",
+            "niveau_de_source": "primaire pour le gazettage et la date (annonce du Secrétariat + rapport FMITI, extraits archivés et scellés) ; texte de la gazette non obtenu",
+            "bareme_collecte": true,
+            "bareme_source": "ECOWAS",
+        },
+        "RWA": {
+            "niveau": "APPLIQUE",
+            "preuve": "Règle B (27/09/2026) satisfaite : (1) ratification — ratification_status('RWA') → RATIFIED ; (2) TEC + EACCMA — le tarif publié par la RRA est le TEC EAC 2022 (577 p., archivé, sha 9d894c29…, identique à la copie TRA) ; (3) GTI — source primaire du Secrétariat archivée (communiqué 19/10/2022, sha d53bbbd6…, cité depuis la fiche Kenya) : le Rwanda est nommé parmi les huit participants ; (4) aucune source contraire — la concordance dtic est une concordance, pas une preuve. Instrument : avis EAC/321/2022 (Gazette archivée) ; barème : son annexe ; origines : Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Plancher NPF : 1 dérogation nationale (2106.90.20). Fiche : RWA_application_2026-09-25.json.",
+            "niveau_de_source": "primaire — Gazette EAC archivée, TEC RRA archivé, communiqué Secrétariat archivé",
+            "bareme_collecte": true,
+            "bareme_source": "EAC",
+        },
+        "SDN": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "SEN": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "SLE": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "SOM": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "SSD": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "STP": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "SWZ": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "SYC": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "TCD": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "TGO": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": false,
+        },
+        "TUN": {
+            "niveau": "INSTRUMENT_VERIFIE_BAREME_MANQUANT",
+            "preuve": "Texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), lu intégralement : les pourcentages sont des parts du droit de base 2019 — liste A 5 ans (MUS RWA EGY TZA : 80/60/40/20/0 de 2021 à 2025), liste A 10 ans (CMR GHA KEN : 90 … 40 en 2026 … 0 en 2030), listes B sur 5 et 8 ans. Tarif Web 2026 : 8 origines (CMR GHA KEN TZA ZAF NGA MUS RWA). Barème non exploitable : droits de base 2019 ligne à ligne et classement A/B/C manquants.",
+            "niveau_de_source": "texte officiel lu via lecteur tiers (r.jina.ai), octets du PDF non archivés ; l'empreinte porte sur la transcription",
+            "bareme_collecte": true,
+        },
+        "TZA": {
+            "niveau": "APPLIQUE",
+            "preuve": "Règle B (27/09/2026) satisfaite : (1) ratification — ratification_status('TZA') → RATIFIED ; (2) TEC + EACCMA — le tarif publié par la TRA est le TEC EAC 2022 (577 p., archivé, sha 9d894c29…) ; (3) GTI — source primaire du Secrétariat archivée (communiqué 19/10/2022, sha d53bbbd6…, cité depuis la fiche Kenya) : la Tanzanie est nommée parmi les huit participants ; (4) aucune source contraire — l'omission dtic est mentionnée comme telle. Instrument : avis EAC/321/2022 (Gazette archivée) ; barème : son annexe ; origines : Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Plancher NPF : 1 dérogation nationale (2106.90.20, NPF socle 0 % pour une base de 10 %). Fiche : TZA_application_2026-09-25.json.",
+            "niveau_de_source": "primaire — Gazette EAC archivée, TEC TRA archivé, communiqué Secrétariat archivé",
+            "bareme_collecte": true,
+            "bareme_source": "EAC",
+        },
+        "UGA": {
+            "niveau": "APPLIQUE",
+            "preuve": "Règle B (27/09/2026) satisfaite : (1) ratification — ratification_status('UGA') → RATIFIED ; (2) TEC + EACCMA — le TEC EAC 2022 publié par l'URA (560 p., archivé, sha b0fc579e…) et le gazettement du barème provisoire attesté par le Secrétariat (13/02/2026, extrait archivé, sha ac69b0c7…) ; (3) GTI — FACTSHEET du Secrétariat (01/2025, p. 23, archivé, sha 4446703e…) : l'Ouganda est nommé parmi les GTI Participating Countries ; (4) aucune source contraire — l'absence de la liste « actively trading » (tralac, secondaire) est mentionnée comme telle. Instrument : avis EAC/321/2022 ; barème : son annexe ; origines : Annexe 1 Directive 1/2021, plafond. Application datée au plus tôt du gazettement (effective_from = 2026-02-13, attestation du Secrétariat) et non de l'avis EAC de 2022 : le moteur refuse toute préférence UGA antérieure (testé). Seul le droit de douane est réduit. Plancher NPF : 1 dérogation (2106.90.20). Fiche : UGA_application_2026-09-26.json.",
+            "niveau_de_source": "primaire — Gazette EAC archivée, TEC URA archivé, FACTSHEET et communiqué du Secrétariat archivés",
+            "bareme_collecte": true,
+            "bareme_source": "EAC",
+        },
+        "ZAF": {
+            "niveau": "NON_RECHERCHE",
+            "preuve": "",
+            "niveau_de_source": "",
+            "bareme_collecte": true,
+        },
+        "ZMB": {
+            "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+            "preuve": "SI 92/2024 du 30/12/2024 (gazette n° 7696), dont l'objet est confirmé par l'Assemblée nationale (19/06/2025) : domestication de 90 % des lignes, barème provisoire utilisé sous GTI. Recherche du 25/09/2026 : texte intégral non obtenu (ZambiaLII sous CAPTCHA, supplément absent de gazettes.africa) et aucune liste nominative d'origines retrouvée ; un SI 96/2025 existe, texte à obtenir. Fiche : ZMB_application_2026-09-25.json.",
+            "niveau_de_source": "primaire pour l'existence et l'objet (journal officiel + Assemblée nationale, extraits archivés) ; texte du SI non obtenu",
+            "bareme_collecte": true,
+        },
+        "ZWE": {
+            "niveau": "NON_APPLIQUE_PRESUME",
+            "preuve": "offre tarifaire non encore publiée au Journal officiel selon la presse zimbabwéenne ; SI 140-142/2026 sans rapport avec la ZLECAf",
+            "niveau_de_source": "secondaire — à confirmer auprès de ZIMRA",
+            "bareme_collecte": true,
+        },
+    },
+    "repartition": {
+        "APPLIQUE": 6,
+        "NON_APPLIQUE_PRESUME": 1,
+        "NON_RECHERCHE": 39,
+        "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+        "OFFRE_SEULE": 2,
+        "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
+        "PREUVES_ASSEMBLEES": 1,
+        "INSTRUMENT_VERIFIE_BAREME_MANQUANT": 1,
+    },
+    "fiches_detaillees": [
+        "CIV_application_2026-09-25.json",
+        "DZA_application_2026-09-14.json",
+        "EGY_application_2026-09-14.json",
+        "EGY_rapprochement_baremes_2026-09-24.json",
+        "ETH_application_2026-09-13.json",
+        "KEN_application_2026-09-25.json",
+        "MAR_application_2026-09-13.json",
+        "NGA_application_2026-09-25.json",
+        "RWA_application_2026-09-25.json",
+        "TUN_application_2026-09-13.json",
+        "TZA_application_2026-09-25.json",
+        "UGA_application_2026-09-26.json",
+        "ZMB_application_2026-09-25.json",
+        "chantier_collecte_2026-09-14.json",
+    ],
+    "recoupements_reciprocite": {
+        "note": "La réciprocité est un principe fondateur de l'accord. Croiser les listes vérifiées la met à l'épreuve : une asymétrie n'est pas une erreur de collecte, c'est un fait juridique à constater.",
+        "MAR_accorde_a": [
+            "BDI",
+            "BFA",
+            "BWA",
+            "CAF",
+            "CIV",
+            "CMR",
+            "COD",
+            "COG",
+            "COM",
+            "CPV",
+            "DZA",
+            "EGY",
+            "ETH",
+            "GAB",
+            "GHA",
+            "GIN",
+            "GMB",
+            "GNB",
+            "GNQ",
+            "KEN",
+            "LSO",
+            "MLI",
+            "MRT",
+            "MUS",
+            "MWI",
+            "NAM",
+            "NER",
+            "NGA",
+            "RWA",
+            "SEN",
+            "SLE",
+            "SWZ",
+            "SYC",
+            "TCD",
+            "TGO",
+            "TUN",
+            "TZA",
+            "UGA",
+            "ZAF",
+            "ZMB",
+        ],
+        "EGY_accorde_a": [
+            "BDI",
+            "BWA",
+            "CMR",
+            "DZA",
+            "GHA",
+            "GMB",
+            "KEN",
+            "LSO",
+            "MAR",
+            "MUS",
+            "MWI",
+            "NAM",
+            "NGA",
+            "RWA",
+            "SWZ",
+            "TUN",
+            "TZA",
+            "UGA",
+            "ZAF",
+        ],
+        "TUN_accorde_a": ["CMR", "GHA", "KEN", "MUS", "NGA", "RWA", "TZA", "ZAF"],
+        "reciproques_confirmees": [
+            {
+                "paire": "MAR <-> EGY",
+                "constat": "Le Maroc classe l'Égypte en P1 (5 ans) et l'Égypte classe le Maroc dans son groupe à 5 ans. Réciprocité pleine et cohérente.",
+            },
+            {
+                "paire": "MAR <-> DZA",
+                "constat": "La liste algérienne de réciprocité et la liste P2 marocaine sont rigoureusement identiques : les mêmes treize pays, aucune différence. Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes, produisent la même énumération — la règle sous-jacente est objective, et les deux déterminations se valident l'une l'autre.",
+            },
+        ],
+        "asymetries_constatees": [
+            {
+                "paire": "TUN -> MAR",
+                "constat": "L'Égypte et le Maroc accordent la ZLECAf à la Tunisie ; la Tunisie ne publie de préférence ZLECAf ni pour le Maroc ni pour l'Égypte. Elle sert le Maroc sous accord bilatéral et Agadir.",
+            },
+            {
+                "paire": "TUN vs EGY/MAR",
+                "constat": "Tunisie : 8 origines publiées. Égypte : 17. Maroc : 40. Les périmètres diffèrent d'un facteur cinq.",
+            },
+            {
+                "paire": "DZA -> EGY",
+                "constat": "L'Égypte classe l'Algérie à cinq ans avec 100 % de réduction au 1er janvier 2025 ; l'Algérie élimine sa liste A à la même date. Réciprocité symétrique.",
+            },
+        ],
+        "intersection_des_trois": ["CMR", "GHA", "KEN", "MUS", "RWA", "TZA", "ZAF"],
+        "accordee_par_MAR_et_EGY_mais_pas_TUN": [
+            "BDI",
+            "BWA",
+            "DZA",
+            "GMB",
+            "LSO",
+            "MWI",
+            "SWZ",
+            "TUN",
+            "UGA",
+        ],
+    },
 }
