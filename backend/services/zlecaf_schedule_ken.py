@@ -196,15 +196,11 @@ def ligne_du_journal_officiel(
     """
     jour = as_of or datetime.date.today()
     # Porte temporelle (règle B) : l'application d'un État ne vaut qu'à partir
-    # de son effective_from — avant, aucune préférence (ex. Ouganda :
-    # 2026-02-13, date d'attestation du gazettement par le Secrétariat).
-    from services.zlecaf_implementation_registry import RECORDS
+    # de son effective_from — avant, aucune préférence.
+    from services.zlecaf_implementation_registry import application_commencee
 
-    record = RECORDS.get(destination_iso3)
-    if record and record.effective_from:
-        annee, mois, jour_eff = (int(x) for x in record.effective_from.split("-"))
-        if jour < datetime.date(annee, mois, jour_eff):
-            return None
+    if not application_commencee(destination_iso3, jour):
+        return None
     taux, _ = compute_ken_zlecaf_rate(hs_code, origin_iso3, jour)
     if taux is None:
         return None

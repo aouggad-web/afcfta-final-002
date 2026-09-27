@@ -14,6 +14,7 @@ a preferential calculation.
 """
 
 from __future__ import annotations
+from datetime import date
 
 from dataclasses import dataclass
 from typing import FrozenSet, Optional
@@ -163,6 +164,17 @@ KENYA_ORIGINS_RESERVES = (
 # fois ici — aucun chargement de données ; les étapes suivantes y ajouteront
 # les États prouvés.
 DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA", "RWA", "UGA"})
+
+
+def application_commencee(destination_iso3: str, jour: date) -> bool:
+    """Règle B : l'application d'un État ne vaut qu'à partir de son
+    effective_from — vrai en l'absence de date, ou à partir de la date
+    effective (ex. Ouganda : 2026-02-13, attestation du gazettement)."""
+    record = RECORDS.get((destination_iso3 or "").upper())
+    if not record or not record.effective_from:
+        return True
+    annee, mois, jour_eff = (int(x) for x in record.effective_from.split("-"))
+    return jour >= date(annee, mois, jour_eff)
 
 
 RECORDS = {

@@ -154,3 +154,38 @@ def test_e_l_application_ougandaise_ne_commence_pas_avant_le_13_fevrier_2026():
     position, _ = socle.position("UGA", "02011000")
     soc = taux_preferentiels(position, "UGA", "GHA", "02011000")
     assert soc["applique"] is True
+
+
+def test_f_la_porte_temporelle_est_une_fonction_unique():
+    """application_commencee : faux avant le gazettement, vrai à partir ;
+    les destinations sans condition particulière (KEN) passent dès 2022."""
+    from datetime import date
+
+    from services.zlecaf_implementation_registry import application_commencee
+
+    assert application_commencee("UGA", date(2026, 2, 12)) is False
+    assert application_commencee("UGA", date(2026, 2, 13)) is True
+    assert application_commencee("KEN", date(2022, 1, 1)) is True
+
+
+@besoin_socle
+def test_g_le_socle_ne_sert_pas_l_ouganda_avant_l_attestation(monkeypatch):
+    """Date du jour simulée avant le 13/02/2026 : le socle ne sert aucune
+    préférence UGA — le couloir est resté fermé (NPF, rien de tracé).
+
+    Le socle lit `datetime.date.today()` via le module `datetime` (importé
+    localement sous le nom `_dt`, même objet) : on patche le module une fois
+    pour toutes les lectures de la fonction testée."""
+    import datetime
+
+    class JourFixe(datetime.date):
+        @classmethod
+        def today(cls):
+            return cls(2026, 2, 12)
+
+    monkeypatch.setattr(datetime, "date", JourFixe)
+
+    position, _ = socle.position("UGA", "02011000")
+    decision = taux_preferentiels(position, "UGA", "GHA", "02011000")
+    assert decision["applique"] is False
+    assert decision["taux"] == {}
