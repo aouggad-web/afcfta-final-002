@@ -151,6 +151,8 @@ KENYA_ORIGINS_RESERVES = (
 # Preuve kényane : la publication du barème par la KRA (kra.go.ke, URL portée
 # par le record). L'avis EAC/321/2022 (Gazette de l'EAC du 06/09/2022) est
 # l'instrument, le barème son annexe.
+# Concordance : la note dtic/SARS (mars 2026) nomme le Kenya parmi les pays en
+# application effective — voir zlecaf_schedule_zaf.py (ACTIVE_PARTNERS_ZAF).
 
 
 # Règle B (propriétaire, 27/09/2026) : pour un État de l'EAC, le taux ZLECAf
@@ -160,7 +162,7 @@ KENYA_ORIGINS_RESERVES = (
 # celles de l'Annexe 1 de la Directive 1/2021 (plafond). Défini une seule
 # fois ici — aucun chargement de données ; les étapes suivantes y ajouteront
 # les États prouvés.
-DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA"})
+DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA", "RWA"})
 
 
 RECORDS = {
@@ -218,6 +220,34 @@ RECORDS = {
     # de 2025) nomment 19 origines et ne réduisent que la liste A ; le taux est
     # calculé depuis le NPF par zlecaf_schedule_egy, jamais servi depuis
     # l'e-Tariff Book, dont la carte d'origines contredit l'acte national.
+    # Rwanda (règle B, 27/09/2026) : les quatre conditions sont documentées
+    # dans la fiche RWA (PR #534). Preuve rwandaise : le TEC EAC 2022 publié
+    # par la RRA (archivé, sha dans la fiche — identique octet par octet à la
+    # copie TRA : un même fichier communautaire publié par deux douanes) ;
+    # l'avis EAC/321/2022 est l'instrument, le barème son annexe.
+    "RWA": ImplementationRecord(
+        destination_iso3="RWA",
+        status=APPLIED,
+        instrument_id="EAC/321/2022",
+        instrument_title=(
+            "EAC Legal Notice EAC/321/2022 — implementation of Category A "
+            "AfCFTA tariff concessions"
+        ),
+        instrument_url=(
+            "https://www.rra.gov.rw/fileadmin/user_upload/"
+            "COMMON_EXTERNAL_TARIFF__Updated_June_2025.pdf"
+        ),
+        effective_from="2022-09-06",
+        accepted_origins=KENYA_ACCEPTED_ORIGINS,
+        tariff_dataset="EAC",
+        note=(
+            "Règle B (27/09/2026) — les quatre conditions sont documentées "
+            "dans la fiche et docs/METHODE_EAC_REGLE_B_2026-09-27.md. Taux "
+            "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
+            "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
+            "le droit de douane est réduit. Information indicative."
+        ),
+    ),
     "EGY": ImplementationRecord(
         destination_iso3="EGY",
         status=APPLIED,
