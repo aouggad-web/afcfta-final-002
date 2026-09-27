@@ -132,7 +132,9 @@ def _offer_schedule_year(as_of_year: int) -> int:
 # ce que la douane applique. Pour une importation vers cette destination, le
 # second fait foi — y compris pour un affichage seulement informatif, sinon on
 # montre à l'opérateur un calendrier que sa douane n'appliquera pas.
-_FICHES_APPLICATION = Path(__file__).resolve().parents[1] / "data" / "legal_refs" / "zlecaf_application"
+_FICHES_APPLICATION = (
+    Path(__file__).resolve().parents[1] / "data" / "legal_refs" / "zlecaf_application"
+)
 CARTES_ORIGINES_NATIONALES = {"MAR": "MAR_application_2026-09-13.json"}
 
 
@@ -153,7 +155,7 @@ def _carte_origines_nationale(destination: str) -> Optional[dict]:
     fiche = json.loads(chemin.read_text(encoding="utf-8"))
     origines: dict[str, str] = {}
     for cle, bareme in (("P1", "1"), ("P2", "2")):
-        for iso in (fiche.get("accepted_origins", {}).get(cle, {}).get("iso3") or []):
+        for iso in fiche.get("accepted_origins", {}).get(cle, {}).get("iso3") or []:
             origines[iso] = bareme
     if not origines:
         return None
@@ -404,13 +406,16 @@ def resolve_official_preferential_rate(
             return None
         dataset_code = decision["tariff_dataset"]
 
-    if country == "KEN":
-        # Le Kenya a un barème gazetté (Legal Notice EAC/321/2022) : c'est lui
-        # qui fait foi, pas l'e-Tariff Book, qui en diverge sur 275 lignes.
-        from services.zlecaf_schedule_ken import ligne_du_journal_officiel
+    from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
+    from services.zlecaf_schedule_ken import ligne_du_journal_officiel
+
+    if country in DESTINATIONS_REGLE_B_EAC:
+        # Règle B (27/09/2026) : l'État a un barème gazetté (Legal Notice
+        # EAC/321/2022) : c'est lui qui fait foi, pas l'e-Tariff Book, qui en
+        # diverge sur 275 lignes.
 
         jour = date(as_of_year, 12, 31) if as_of_year else None
-        return ligne_du_journal_officiel(clean_code, origin, jour)
+        return ligne_du_journal_officiel(clean_code, origin, jour, destination_iso3=country)
 
     dataset = _load_dataset(dataset_code)
     if dataset is None:
