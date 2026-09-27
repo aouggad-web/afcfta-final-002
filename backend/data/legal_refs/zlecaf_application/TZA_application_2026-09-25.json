@@ -2,14 +2,9 @@
  "schema_version": 1,
  "destination_iso3": "TZA",
  "agreement": "ZLECAf / AfCFTA",
- "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
- "verified_at": "2026-09-25",
- "decision_du_proprietaire": {
-  "date": "2026-09-26",
-  "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
-  "application_a_la_tanzanie": "Non satisfaite : la douane nationale ne publie pas le barème complet. La Tanzanie reste au NPF."
- },
- "evidence_level": "acte communautaire EAC lu et archivé (Gazette de l'EAC, avis EAC/321/2022) ; acte ou avis tanzanien propre non retrouvé ; aucune liste nominative d'origines ; aucun barème ligne à ligne de la Tanzanie comme destination",
+ "verification_status": "APPLIQUE",
+ "verified_at": "2026-09-27",
+ "evidence_level": "règle B : ratification (service), TEC EAC 2022 publié par la TRA (archivé, sha 9d894c29…), GTI nommée par le Secrétariat (communiqué 19/10/2022 archivé, sha d53bbbd6…, via la fiche Kenya), aucune source contraire ; instrument = avis EAC/321/2022 (Gazette archivée via miroir RRA, PR #531) ; barème = annexe (backend/data/zlecaf_ken/bareme_categorie_a.json)",
  "instrument_eac": {
   "id": "Legal Notice No. EAC/321/2022",
   "titre": "The EAC Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA) for Category A products",
@@ -49,29 +44,34 @@
  },
  "ratification": "La Tanzanie est RATIFIÉE au registre continental du dépôt (services/zlecaf_membership_status.ratification_status('TZA') → RATIFIED), base tenue sur sources continentales ; la date d'effet nationale reste à documenter.",
  "gates_status": {
-  "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire (décision du propriétaire du 25/09/2026 : l'adhésion à la ZLECAf est par pays) ; aucune preuve tanzanienne propre (acte national ou publication de l'administration douanière)",
-  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — l'avis énonce une règle (« State Parties ») sans liste nominative ; aucune liste tanzanienne retrouvée",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — barème commun EAC collecté (offre de l'union douanière) ; son application par la Tanzanie n'est pas établie",
+  "1_instrument_national_en_vigueur": "SATISFAIT au sens de la règle B — l'instrument est l'avis EAC/321/2022, dont l'application tanzanienne est établie par les conditions 2 et 3 (TEC publié par la TRA ; GTI)",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT au sens de la règle B — origines = Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya)",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — l'annexe de l'avis (barème catégorie A, colonnes 2021-2030) est le jeu de données servi (tariff_dataset=\"EAC\")",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
- "conclusion": "Les trois preuves du plan ne sont PAS réunies, et par décision du propriétaire (25/09/2026) l'avis EAC/321/2022 ne suffit pas seul : l'adhésion à la ZLECAf est par pays. Tant qu'aucune preuve tanzanienne propre (acte national ou publication douanière), liste nominative et barème de destination ne sont trouvés, la Tanzanie reste au NPF. AUCUN BRANCHEMENT.",
+ "conclusion": "Règle B satisfaite : les quatre conditions sont réunies et documentées par des sources archivées. La Tanzanie APPLIQUE le taux ZLECAf depuis l'avis EAC/321/2022 (effective_from 2022-09-06) : l'instrument est l'avis, le barème son annexe, les origines celles de l'Annexe 1 (plafond). Seul le droit de douane est réduit.",
  "ne_tranche_pas": [
-  "Quatre actes nationaux traitent la Tanzanie comme partenaire ZLECAf à l'importation, sur base de réciprocité : Algérie (circulaire DGD 482/2024), Maroc (circulaire ADII 6530/223, P1), Égypte (circulaire n° 38, groupe 5 ans), Tunisie (tarif officiel 2026).",
-  "La liste sud-africaine (dtic, mars 2026) ne la cite pas.",
-  "Ces indices ne remplacent pas un acte tanzanien.",
-  "L'application effective de l'avis EAC/321/2022 par la Tanzanie n'est établie par aucun texte national ni avis de la TRA ; l'acte communautaire l'autorise, il ne prouve pas la mise en œuvre.",
-  "La règle « State Parties » ne dit pas quels États la Tanzanie admet effectivement (réciprocité non documentée).",
-  "Le barème commun EAC est collecté (offre de l'union douanière), mais son application par la Tanzanie n'est pas établie."
+  "L'omission de la Tanzanie par la liste dtic/SARS (mars 2026) n'est pas une preuve contraire : elle est mentionnée comme telle.",
+  "Les faits GTI documentés (certificat TCCIA du 15/05/2023, etc.) restent des exportations ; ils n'entrent pas dans la condition 3, qui est établie par le communiqué du Secrétariat.",
+  "La primauté du droit communautaire (art. 8(4) du Traité EAC) reste à vérifier depuis le texte primaire."
  ],
  "remaining_work": [
-  "Chercher l'acte ou l'avis tanzanien d'application (Gazette of the United Republic of Tanzania, avis de la TRA) — le dépôt polis.bunge.go.tz et TanzLII étaient injoignables le 25/09/2026.",
-  "Si aucun texte national n'existe, établir que l'avis EAC/321/2022 est directement appliqué par la douane tanzanienne (déclaration liquidée sous régime préférentiel, ou publication TRA).",
-  "Collecter l'offre de la Tanzanie comme destination (e-Tariff Book, destination TZ) et la confronter aux règles d'origine de l'EAC."
+  "Vérifier l'art. 8(4) du Traité EAC depuis le texte primaire (à vérifier).",
+  "Surveiller la révision annuelle de l'Annexe 1 (§20) et les réserves du plafond."
  ],
  "complements_2026-09-27": {
   "note": "Compléments de la recherche approfondie, vérifiés directement le 27/09/2026.",
   "tra": "Le seul livre tarifaire publié par la TRA est le CET EAC 2022 (PDF 4,8 Mo, version mise à jour juin 2025) — aucun document AfCFTA sur tra.go.tz ; recherche interne sans résultat ; TanzLII (gazettes 2022-2026 scannées) : aucune notice AfCFTA ; gazettes.africa inaccessible (HTTP 000, 27/09).",
   "decision_ua_831": "Assemblée UA, Déc. 831(XXXV) du 06/02/2022 (texte vérifié, archivé dans la PR Ouganda #535) : §7(b) — la Tanzanie est nommée parmi les États EAC dont l'offre tarifaire est déposée (via le bloc EAC) ; §8 : 291 offres techniquement vérifiées. Dépôt confirmé ; ce n'est pas une publication de la TRA (règle A non satisfaite).",
   "gti_correction": "Correction d'un constat antérieur : la FAQ tralac (mise à jour mai 2025) liste la TANZANIE parmi les États « actively trading goods under the GTI » (fév. 2025) — liste de 9 noms pour « 10 State Parties » (omission de la source elle-même). La direction des flux n'est pas précisée par la source ; les faits documentés restent des exportations (certificat TCCIA, 15/05/2023). Aucune preuve d'importation."
- }
+ },
+ "regle_b": {
+  "date": "2026-09-27",
+  "enonce": "Pour un État de l'EAC, le taux ZLECAf est servi si quatre conditions sont réunies et documentées par des sources archivées (sha256). L'instrument est l'avis EAC/321/2022 ; le barème est son annexe ; les origines sont celles de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya). La liste GTI ne sert JAMAIS de liste d'origines. Seul le droit de douane est réduit.",
+  "condition_1_ratification": "SATISFAITE — ratification_status('TZA') → RATIFIED (27/09/2026).",
+  "condition_2_tec_eaccma": "SATISFAITE — le tarif publié par la TRA est le TEC EAC 2022 (version mise à jour juin 2025), 577 pages, ARCHIVÉ : sources/TZA_tra_cet_eac_2022_maj_2025-06.pdf, sha 9d894c290304a75b2a77db3d16eabc73aa172eeb3a09a0d76668e6fc95b9af9f, URL https://www.tra.go.tz/images/uploads/pages/CET_2022_VERSION_Updated_June_2025.pdf (couverture vérifiée : « EAC CUSTOMS UNION COMMON EXTERNAL TARIFF 2022 VERSION, Annex 1 to the Protocol… »). L'EACCMA 2004 régit la douane de l'union ; la primauté du droit communautaire (art. 8(4) du Traité EAC) reste À VÉRIFIER depuis le texte primaire.",
+  "condition_3_gti": "SATISFAITE — source primaire du Secrétariat ARCHIVÉE : sources/KEN_gti_secretariat_extrait_2026-09-27.txt (sha d53bbbd6ef641b306afab26889af3ce50e2899716b025d78621863f69804c2a8, communiqué au-afcfta.org du 19/10/2022) : « Rwanda is among eight state parties - Cameroon, Egypt, Ghana, Kenya, Mauritius, Rwanda, Tanzania and Tunisia - participating in the AfCFTA Guided Trade Initiative ». La Tanzanie est nommée parmi les huit participants. Cité depuis la fiche Kenya (PR #533), sans doublon d'archive.",
+  "condition_4_sources_contraires": "SATISFAITE — aucune source n'indique le contraire. L'OMISSION de la Tanzanie par la liste sud-africaine (dtic/SARS, mars 2026) est mentionnée comme telle : une omission n'est pas une preuve contraire, et les listes de réciprocité des partenaires ne sont jamais des preuves."
+ },
+ "plancher_npf_derogations": "Plancher NPF (condition d) : sur les 5342 positions du barème, 5320 sont couvertes par le socle tanzanien ; UNE seule position où le NPF du socle diffère du taux de base du barème (dérogation nationale) : 2106.90.20 — NPF socle 0 % pour une base de barème de 10 %. C'est le NPF qui est servi, dans les deux chemins (testé)."
 }
