@@ -7,37 +7,62 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script>
+  // Même thème que l'application (clair / sombre), avant l'affichage.
+  try { if (localStorage.getItem('zlecaf_theme') === 'light') document.documentElement.classList.add('theme-light'); } catch (e) {}
+</script>
 <style>
 :root{
   --ink:#08090d;--ink2:#0f1018;--ink3:#161820;
   --b:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.11);--b3:rgba(255,255,255,0.18);
-  --txt:#e2e6f8;--muted:#5a5f7a;--dim:#252840;
+  --txt:#e2e6f8;--muted:#9097ae;--dim:#6a7088;
   --gold:#d4a336;--gold2:#f0bf5a;--gold-bg:rgba(212,163,54,0.08);--gold-b:rgba(212,163,54,0.25);
   --grn:#22c97a;--grn-bg:rgba(34,201,122,0.08);--grn-b:rgba(34,201,122,0.22);
   --blu:#4a8eff;--blu-bg:rgba(74,142,255,0.08);--blu-b:rgba(74,142,255,0.22);
   --pur:#9a64ff;--pur-bg:rgba(154,100,255,0.08);--pur-b:rgba(154,100,255,0.22);
   --red:#ff5566;
+  --head:#fff;--nav-bg:rgba(8,9,13,0.92);
   --r:14px;--rsm:8px;
+}
+/* Thème clair — même palette parchemin que l'application (theme-light.css).
+   Classe posée par le script en tête de page d'après le choix fait dans
+   l'application (localStorage « zlecaf_theme »). */
+html.theme-light{
+  --ink:#F7F1E6;--ink2:#FFFDF8;--ink3:#F1E9DA;
+  --b:rgba(36,31,24,0.08);--b2:rgba(36,31,24,0.14);--b3:rgba(36,31,24,0.22);
+  --txt:#241F18;--muted:#6B5D4A;--dim:#8A7A66;
+  --gold:#8F5C08;--gold2:#AF4718;--gold-bg:rgba(143,92,8,0.08);--gold-b:rgba(143,92,8,0.28);
+  --grn:#0F7A4A;--grn-bg:rgba(15,122,74,0.08);--grn-b:rgba(15,122,74,0.25);
+  --blu:#0266A0;--blu-bg:rgba(2,102,160,0.07);--blu-b:rgba(2,102,160,0.22);
+  --pur:#6B45D6;--pur-bg:rgba(107,69,214,0.07);--pur-b:rgba(107,69,214,0.22);
+  --head:#241F18;--nav-bg:rgba(255,253,248,0.92);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--txt);min-height:100vh;overflow-x:hidden;position:relative}
 
-/* ── FOND ZELLIGE (étoile Najm de Tlemcen) sur toute la page ── */
+/* ambiance:zellige:debut — généré par scripts/build_ambiance_css.py, ne pas éditer */
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='rgba(212%2C163%2C54%2C0.05)' stroke-width='0.6'%3E%3Cpolygon points='30%2C8 34%2C22 48%2C18 38%2C28 52%2C32 38%2C36 48%2C46 34%2C42 30%2C56 26%2C42 12%2C46 22%2C36 8%2C32 22%2C28 12%2C18 26%2C22'/%3E%3Crect x='18' y='18' width='24' height='24' transform='rotate(45 30 30)'/%3E%3C/g%3E%3C/svg%3E");
-  background-size:60px 60px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpolygon points='40.00,11.72 48.28,20.00 60.00,20.00 60.00,31.72 68.28,40.00 60.00,48.28 60.00,60.00 48.28,60.00 40.00,68.28 31.72,60.00 20.00,60.00 20.00,48.28 11.72,40.00 20.00,31.72 20.00,20.00 31.72,20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='40.00,17.94 46.46,24.40 55.60,24.40 55.60,33.54 62.06,40.00 55.60,46.46 55.60,55.60 46.46,55.60 40.00,62.06 33.54,55.60 24.40,55.60 24.40,46.46 17.94,40.00 24.40,33.54 24.40,24.40 33.54,24.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='49.41,43.90 43.90,49.41 36.10,49.41 30.59,43.90 30.59,36.10 36.10,30.59 43.90,30.59 49.41,36.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,-28.28 8.28,-20.00 20.00,-20.00 20.00,-8.28 28.28,0.00 20.00,8.28 20.00,20.00 8.28,20.00 0.00,28.28 -8.28,20.00 -20.00,20.00 -20.00,8.28 -28.28,0.00 -20.00,-8.28 -20.00,-20.00 -8.28,-20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,-22.06 6.46,-15.60 15.60,-15.60 15.60,-6.46 22.06,0.00 15.60,6.46 15.60,15.60 6.46,15.60 0.00,22.06 -6.46,15.60 -15.60,15.60 -15.60,6.46 -22.06,0.00 -15.60,-6.46 -15.60,-15.60 -6.46,-15.60' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='9.41,3.90 3.90,9.41 -3.90,9.41 -9.41,3.90 -9.41,-3.90 -3.90,-9.41 3.90,-9.41 9.41,-3.90' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,-28.28 88.28,-20.00 100.00,-20.00 100.00,-8.28 108.28,0.00 100.00,8.28 100.00,20.00 88.28,20.00 80.00,28.28 71.72,20.00 60.00,20.00 60.00,8.28 51.72,0.00 60.00,-8.28 60.00,-20.00 71.72,-20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,-22.06 86.46,-15.60 95.60,-15.60 95.60,-6.46 102.06,0.00 95.60,6.46 95.60,15.60 86.46,15.60 80.00,22.06 73.54,15.60 64.40,15.60 64.40,6.46 57.94,0.00 64.40,-6.46 64.40,-15.60 73.54,-15.60' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='89.41,3.90 83.90,9.41 76.10,9.41 70.59,3.90 70.59,-3.90 76.10,-9.41 83.90,-9.41 89.41,-3.90' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,51.72 8.28,60.00 20.00,60.00 20.00,71.72 28.28,80.00 20.00,88.28 20.00,100.00 8.28,100.00 0.00,108.28 -8.28,100.00 -20.00,100.00 -20.00,88.28 -28.28,80.00 -20.00,71.72 -20.00,60.00 -8.28,60.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,57.94 6.46,64.40 15.60,64.40 15.60,73.54 22.06,80.00 15.60,86.46 15.60,95.60 6.46,95.60 0.00,102.06 -6.46,95.60 -15.60,95.60 -15.60,86.46 -22.06,80.00 -15.60,73.54 -15.60,64.40 -6.46,64.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='9.41,83.90 3.90,89.41 -3.90,89.41 -9.41,83.90 -9.41,76.10 -3.90,70.59 3.90,70.59 9.41,76.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,51.72 88.28,60.00 100.00,60.00 100.00,71.72 108.28,80.00 100.00,88.28 100.00,100.00 88.28,100.00 80.00,108.28 71.72,100.00 60.00,100.00 60.00,88.28 51.72,80.00 60.00,71.72 60.00,60.00 71.72,60.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,57.94 86.46,64.40 95.60,64.40 95.60,73.54 102.06,80.00 95.60,86.46 95.60,95.60 86.46,95.60 80.00,102.06 73.54,95.60 64.40,95.60 64.40,86.46 57.94,80.00 64.40,73.54 64.40,64.40 73.54,64.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='89.41,83.90 83.90,89.41 76.10,89.41 70.59,83.90 70.59,76.10 76.10,70.59 83.90,70.59 89.41,76.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3C/svg%3E");
+  background-size:80px 80px;
 }
+html.theme-light body::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpolygon points='40.00,11.72 48.28,20.00 60.00,20.00 60.00,31.72 68.28,40.00 60.00,48.28 60.00,60.00 48.28,60.00 40.00,68.28 31.72,60.00 20.00,60.00 20.00,48.28 11.72,40.00 20.00,31.72 20.00,20.00 31.72,20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='40.00,17.94 46.46,24.40 55.60,24.40 55.60,33.54 62.06,40.00 55.60,46.46 55.60,55.60 46.46,55.60 40.00,62.06 33.54,55.60 24.40,55.60 24.40,46.46 17.94,40.00 24.40,33.54 24.40,24.40 33.54,24.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='49.41,43.90 43.90,49.41 36.10,49.41 30.59,43.90 30.59,36.10 36.10,30.59 43.90,30.59 49.41,36.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,-28.28 8.28,-20.00 20.00,-20.00 20.00,-8.28 28.28,0.00 20.00,8.28 20.00,20.00 8.28,20.00 0.00,28.28 -8.28,20.00 -20.00,20.00 -20.00,8.28 -28.28,0.00 -20.00,-8.28 -20.00,-20.00 -8.28,-20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,-22.06 6.46,-15.60 15.60,-15.60 15.60,-6.46 22.06,0.00 15.60,6.46 15.60,15.60 6.46,15.60 0.00,22.06 -6.46,15.60 -15.60,15.60 -15.60,6.46 -22.06,0.00 -15.60,-6.46 -15.60,-15.60 -6.46,-15.60' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='9.41,3.90 3.90,9.41 -3.90,9.41 -9.41,3.90 -9.41,-3.90 -3.90,-9.41 3.90,-9.41 9.41,-3.90' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,-28.28 88.28,-20.00 100.00,-20.00 100.00,-8.28 108.28,0.00 100.00,8.28 100.00,20.00 88.28,20.00 80.00,28.28 71.72,20.00 60.00,20.00 60.00,8.28 51.72,0.00 60.00,-8.28 60.00,-20.00 71.72,-20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,-22.06 86.46,-15.60 95.60,-15.60 95.60,-6.46 102.06,0.00 95.60,6.46 95.60,15.60 86.46,15.60 80.00,22.06 73.54,15.60 64.40,15.60 64.40,6.46 57.94,0.00 64.40,-6.46 64.40,-15.60 73.54,-15.60' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='89.41,3.90 83.90,9.41 76.10,9.41 70.59,3.90 70.59,-3.90 76.10,-9.41 83.90,-9.41 89.41,-3.90' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,51.72 8.28,60.00 20.00,60.00 20.00,71.72 28.28,80.00 20.00,88.28 20.00,100.00 8.28,100.00 0.00,108.28 -8.28,100.00 -20.00,100.00 -20.00,88.28 -28.28,80.00 -20.00,71.72 -20.00,60.00 -8.28,60.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,57.94 6.46,64.40 15.60,64.40 15.60,73.54 22.06,80.00 15.60,86.46 15.60,95.60 6.46,95.60 0.00,102.06 -6.46,95.60 -15.60,95.60 -15.60,86.46 -22.06,80.00 -15.60,73.54 -15.60,64.40 -6.46,64.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='9.41,83.90 3.90,89.41 -3.90,89.41 -9.41,83.90 -9.41,76.10 -3.90,70.59 3.90,70.59 9.41,76.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,51.72 88.28,60.00 100.00,60.00 100.00,71.72 108.28,80.00 100.00,88.28 100.00,100.00 88.28,100.00 80.00,108.28 71.72,100.00 60.00,100.00 60.00,88.28 51.72,80.00 60.00,71.72 60.00,60.00 71.72,60.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,57.94 86.46,64.40 95.60,64.40 95.60,73.54 102.06,80.00 95.60,86.46 95.60,95.60 86.46,95.60 80.00,102.06 73.54,95.60 64.40,95.60 64.40,86.46 57.94,80.00 64.40,73.54 64.40,64.40 73.54,64.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='89.41,83.90 83.90,89.41 76.10,89.41 70.59,83.90 70.59,76.10 76.10,70.59 83.90,70.59 89.41,76.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3C/svg%3E");
+}
+/* ambiance:zellige:fin */
 body>*{position:relative;z-index:1}
 
 /* top gradient line */
 .stripe{height:10px;background:linear-gradient(180deg,transparent 46%,rgba(13,8,0,.3) 46%,rgba(13,8,0,.3) 54%,transparent 54%),repeating-linear-gradient(90deg,#C8102E 0 12px,#0D0800 12px 14px,#FCDD09 14px 26px,#0D0800 26px 28px,#007A3D 28px 40px,#0D0800 40px 42px,#E8890C 42px 54px,#0D0800 54px 56px);width:100%;box-shadow:0 1px 0 rgba(212,137,26,.55)}
 
-nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:62px;border-bottom:1px solid var(--b2);background:rgba(8,9,13,0.92);backdrop-filter:blur(12px);position:sticky;top:2px;z-index:100}
-.nav-logo{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:62px;border-bottom:1px solid var(--b2);background:var(--nav-bg);backdrop-filter:blur(12px);position:sticky;top:2px;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--head);text-decoration:none;display:flex;align-items:center;gap:10px}
 .nav-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),#8b5e1c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-style:italic}
 .nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:7px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
 .nav-link:hover{color:var(--txt);background:var(--b)}
+.theme-toggle{font-size:16px;line-height:1;padding:6px 10px}
+.theme-toggle .theme-icon::before{content:'☀'}
+html.theme-light .theme-toggle .theme-icon::before{content:'☾'}
 .nav-cta{background:var(--gold);color:var(--ink);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
 .nav-cta:hover{background:var(--gold2)}
 
@@ -49,7 +74,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg fill='none' stroke='rgba(212%2C163%2C54%2C0.10)' stroke-width='1'%3E%3Cpolygon points='150%2C30 172%2C110 240%2C90 186%2C140 260%2C160 186%2C180 240%2C230 172%2C210 150%2C290 128%2C210 60%2C230 114%2C180 40%2C160 114%2C140 60%2C90 128%2C110'/%3E%3Crect x='90' y='90' width='120' height='120' transform='rotate(45 150 150)'/%3E%3Ccircle cx='150' cy='150' r='40'/%3E%3C/g%3E%3C/svg%3E");
   background-size:contain;background-repeat:no-repeat;background-position:center}
 .hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:var(--gold-bg);border:1px solid var(--gold-b);border-radius:100px}
-h1{font-family:'Fraunces',serif;font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;margin-bottom:16px}
+h1{font-family:'Fraunces',serif;font-size:clamp(32px,5vw,52px);font-weight:900;color:var(--head);letter-spacing:-1.5px;line-height:1.08;margin-bottom:16px}
 h1 em{font-style:italic;color:var(--gold)}
 .hero-sub{font-size:16px;font-weight:300;color:var(--muted);max-width:540px;margin:0 auto 32px;line-height:1.7}
 .billing-toggle{display:inline-flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid var(--b2);border-radius:100px;padding:5px 18px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
@@ -71,14 +96,14 @@ h1 em{font-style:italic;color:var(--gold)}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='none' stroke='rgba(212%2C163%2C54%2C0.035)' stroke-width='0.5'%3E%3Crect x='5' y='5' width='30' height='30'/%3E%3Crect x='5' y='5' width='30' height='30' transform='rotate(45 20 20)'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3C/g%3E%3C/svg%3E");
   background-size:40px 40px}
 .plan>*{position:relative;z-index:1}
-.plan:hover{border-color:var(--b2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.35)}
+.plan:hover{border-color:var(--b2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.18)}
 .plan.featured{border:1.5px solid var(--gold-b);background:linear-gradient(160deg,rgba(212,163,54,0.06) 0%,var(--ink2) 50%);box-shadow:0 0 0 1px var(--gold-b),0 16px 40px rgba(212,163,54,0.08)}
 .plan.featured::before{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;pointer-events:none;z-index:0;opacity:.8;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='rgba(212%2C163%2C54%2C0.14)' stroke-width='1'%3E%3Cpolygon points='80%2C16 92%2C58 128%2C48 100%2C74 138%2C86 100%2C98 128%2C124 92%2C114 80%2C156 68%2C114 32%2C124 60%2C98 22%2C86 60%2C74 32%2C48 68%2C58'/%3E%3Crect x='48' y='48' width='64' height='64' transform='rotate(45 80 80)'/%3E%3C/g%3E%3C/svg%3E");
   background-size:contain;background-repeat:no-repeat}
 .plan-pop-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:1px;padding:3px 14px;border-radius:0 0 8px 8px}
 .plan-name{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;margin-top:10px}
-.plan-price{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.plan-price{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--head);letter-spacing:-2px;line-height:1;margin-bottom:4px}
 .plan-price span{font-size:16px;font-weight:400;color:var(--muted);letter-spacing:0}
 .plan-per{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px}
 .annual-price{font-size:12px;color:var(--grn);height:18px;transition:.2s}
@@ -94,7 +119,7 @@ h1 em{font-style:italic;color:var(--gold)}
 /* section wrappers */
 .section{max-width:1180px;margin:0 auto;padding:64px 24px 0}
 .section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
-.section-title{font-family:'Fraunces',serif;font-size:clamp(24px,3.5vw,36px);font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:8px;display:inline-flex;align-items:center;gap:14px}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(24px,3.5vw,36px);font-weight:900;color:var(--head);letter-spacing:-1px;margin-bottom:8px;display:inline-flex;align-items:center;gap:14px}
 /* petit ornement najm à côté des titres de section */
 .section-title::before{content:'';width:22px;height:22px;flex-shrink:0;opacity:.9;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgba(212%2C163%2C54%2C0.85)' stroke-width='1'%3E%3Cpolygon points='12%2C2 14%2C9 21%2C7 16%2C12 21%2C17 14%2C15 12%2C22 10%2C15 3%2C17 8%2C12 3%2C7 10%2C9'/%3E%3C/g%3E%3C/svg%3E");
@@ -113,7 +138,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .api-card{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:22px;transition:border-color .18s,transform .18s,box-shadow .18s}
 .api-card:hover{border-color:var(--b2);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,0.3)}
 .api-tag{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:10px}
-.api-price{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:3px}
+.api-price{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--head);letter-spacing:-1px;margin-bottom:3px}
 .api-per{font-size:12px;color:var(--muted);margin-bottom:14px}
 .api-specs{display:flex;flex-direction:column;gap:7px}
 .api-spec{font-size:12px;color:var(--muted);display:flex;gap:7px}
@@ -134,7 +159,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .report-card.bundle{border-color:var(--grn-b);background:linear-gradient(135deg,rgba(34,201,122,0.06),var(--ink2))}
 .report-icon{width:44px;height:44px;border-radius:10px;background:var(--gold-bg);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .report-meta{flex:1}
-.report-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:3px}
+.report-name{font-size:14px;font-weight:600;color:var(--head);margin-bottom:3px}
 .report-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px}
 .report-footer{display:flex;align-items:center;justify-content:space-between}
 .report-price{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--gold)}
@@ -149,7 +174,7 @@ h1 em{font-style:italic;color:var(--gold)}
   background-size:contain;background-repeat:no-repeat}
 .cert-card>*{position:relative;z-index:1}
 .cert-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--pur);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
-.cert-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:8px}
+.cert-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--head);letter-spacing:-.5px;margin-bottom:8px}
 .cert-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;max-width:480px}
 .cert-features{display:flex;gap:10px;flex-wrap:wrap}
 .cert-feat{font-size:12px;padding:4px 10px;background:var(--pur-bg);border:1px solid var(--pur-b);border-radius:5px;color:var(--pur)}
@@ -163,7 +188,7 @@ h1 em{font-style:italic;color:var(--gold)}
 
 /* affiliate */
 .affiliate-strip{background:var(--ink2);border:1px solid var(--grn-b);border-radius:var(--r);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px}
-.aff-left h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.aff-left h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--head);margin-bottom:4px}
 .aff-left p{font-size:13px;color:var(--muted);line-height:1.6}
 .aff-stat{text-align:center;padding:0 16px;border-left:1px solid var(--b2)}
 .aff-stat-val{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--grn)}
@@ -175,7 +200,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .faq{display:flex;flex-direction:column;gap:8px;margin-top:0}
 .faq-item{background:var(--ink2);border:1px solid var(--b);border-radius:var(--rsm);overflow:hidden}
 .faq-q{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;font-weight:500;color:var(--txt)}
-.faq-q:hover{background:rgba(255,255,255,0.02)}
+.faq-q:hover{background:var(--b)}
 .faq-chevron{color:var(--muted);transition:transform .2s;flex-shrink:0}
 .faq-item.open .faq-chevron{transform:rotate(180deg)}
 .faq-a{display:none;padding:0 18px 16px;font-size:13px;color:var(--muted);line-height:1.75;border-top:1px solid var(--b)}
@@ -186,7 +211,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .pay-methods{max-width:1180px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .pay-card{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:22px;display:flex;align-items:center;gap:16px}
 .pay-flag{font-size:26px;flex-shrink:0}
-.pay-card h4{font-size:14px;color:#fff;margin-bottom:4px}
+.pay-card h4{font-size:14px;color:var(--head);margin-bottom:4px}
 .pay-card p{font-size:12px;color:var(--muted);line-height:1.6}
 .pay-card .tag{display:inline-block;margin-top:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);background:var(--gold-bg);border:1px solid var(--gold-b);padding:2px 8px;border-radius:4px}
 
@@ -234,6 +259,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <button class="nav-link" onclick="window.location.href='https://afcfta-zlecaf.com'">Calculateur</button>
     <button class="nav-link">API</button>
     <button class="nav-link">Rapports</button>
+    <button class="nav-link theme-toggle" onclick="toggleTheme()" aria-label="Changer de thème (clair / sombre)" title="Thème clair / sombre"><span class="theme-icon"></span></button>
     <button class="nav-cta" onclick="window.location.href='/#auth=login'">Commencer gratuitement</button>
   </div>
 </nav>
@@ -608,6 +634,12 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </footer>
 
 <script>
+// Bascule clair / sombre, mémorisée pour toute l'application.
+function toggleTheme() {
+  const light = document.documentElement.classList.toggle('theme-light');
+  try { localStorage.setItem('zlecaf_theme', light ? 'light' : 'dark'); } catch (e) {}
+}
+
 let annual = false;
 
 // Repli affiché tant que /api/billing/pricing n'a pas répondu (ou en cas
