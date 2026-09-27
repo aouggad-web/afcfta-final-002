@@ -2,14 +2,14 @@
  "schema_version": 1,
  "destination_iso3": "BDI",
  "agreement": "ZLECAf / AfCFTA",
- "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verification_status": "OFFRE_SEULE",
  "verified_at": "2026-09-27",
  "decision_du_proprietaire": {
   "date": "2026-09-26",
   "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
   "application_burundi": "Non satisfaite : la douane nationale ne publie pas le barème complet (et son site est en panne). Le Burundi reste au NPF."
  },
- "evidence_level": "site de l'OBR en panne (erreur Joomla archivée) ; aucune trace indexée d'une publication AfCFTA par l'OBR ; ratification burundaise identifiée (Loi n°1/17 du 17/06/2021, BOB n°6ter/2021 — à revérifier, amategeko.gov.bi 503) ; e-Tariff Book officiel : lignes BI sans données ZLECAf",
+ "evidence_level": "règle B : condition 4 NON satisfaite (le Secrétariat décrit une préparation en août 2026) ; date d'application non établie ; offre commune EAC archivée (Gazette via miroir RRA) ; loi de ratification archivée ; FACTSHEET GTI (répertoire partagé avec la fiche Ouganda)",
  "questions_cinq": {
   "1_bareme_complet_OBR": {
    "reponse": "NON",
@@ -55,21 +55,20 @@
   }
  },
  "gates_status": {
-  "1_instrument_national_en_vigueur": "NON SATISFAIT — règle A : l'OBR ne publie pas le barème complet (site en panne, aucune trace indexée) ; la loi de ratification ne fixe pas le barème",
-  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — l'e-Tariff officiel expose PARTIELLEMENT l'offre BI (catégorie A sur certaines lignes, vérifié le 27/09/2026) ; à collecter ligne à ligne ; ce n'est pas une publication de la douane burundaise",
+  "1_instrument_national_en_vigueur": "NON ÉTABLI — aucun acte national d'application daté ; obr.bi en panne empêche de vérifier le TEC publié par l'OBR",
+  "2_liste_officielle_origines_reciproques": "NON ÉTABLI — aucune liste burundaise ; le plafond Annexe 1 ne vaut que pour un État dont l'application est établie",
+  "3_bareme_au_niveau_de_la_ligne": "NON ÉTABLI — l'annexe de l'avis est le barème commun, mais l'application burundaise n'est pas datée ; l'e-Tariff officiel n'expose pas de données ZLECAf pour BI (années vides, 27/09/2026)",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
- "conclusion": "Les trois preuves du plan ne sont PAS réunies ; la règle A n'est pas satisfaite. Tant qu'aucune publication de l'OBR, liste nominative et barème de destination ne sont trouvés, le Burundi reste au NPF. AUCUN BRANCHEMENT.",
+ "conclusion": "Règle B NON satisfaite : la condition 4 est contrariée par le communiqué du Secrétariat (août 2026 : préparation, feuille de route à élaborer) et la date d'application réelle n'est pas établie. Le Burundi reste au NPF, niveau OFFRE_SEULE : l'offre commune EAC est archivée, mais la participation au GTI ne prouve pas l'application des taux. AUCUN BRANCHEMENT. Aucune entrée au registre ni dans DESTINATIONS_REGLE_B_EAC.",
  "ne_tranche_pas": [
-  "Le classement dtic sud-africain (« implementing ») est un indice, pas une preuve de ce que le Burundi accorde.",
-  "La présence dans l'expansion GTI 2023/2024 (secondaire) ne documente aucune importation.",
-  "La panne d'obr.bi et l'indisponibilité d'amategeko.gov.bi empêchent de conclure à l'absence définitive d'actes : à reprendre quand joignables."
+  "Les listes secondaires (tralac 09/02/2026, dtic mars 2026) affirmant le gazettement burundais ne sont pas vérifiables sur primaire : à reprendre (amategeko.gov.bi 503 ; Doc. EX.CL/1667 sur archives.au.int injoignable).",
+  "La date d'application ne sera fixée que par une source primaire datée ; on ne la déduit jamais de la liste GTI."
  ],
  "remaining_work": [
-  "Reprendre obr.bi et amategeko.gov.bi quand joignables (en direct), pour complémenter les copies d'archive déjà archivées.",
-  "Collecter ligne à ligne l'offre de destination BI exposée dans l'e-Tariff officiel (catégorie A, partiellement renseignée).",
-  "Surveiller l'e-Tariff Book (lignes BI incomplètes) et les bulletins OBR pour une éventuelle ventilation ZLECAf."
+  "Reprendre obr.bi (TEC de l'OBR, sha) et amategeko.gov.bi (notices du Bulletin officiel) quand joignables.",
+  "Chercher un communiqué du Secrétariat postérieur au 06/08/2026 attestant le commencement burundais, ou le rapport AU nommant les 24 États « gazetted » (Doc. EX.CL/1667, archives.au.int — injoignable le 27/09/2026).",
+  "À application datée établie : ajouter BDI à DESTINATIONS_REGLE_B_EAC avec effective_from = cette date, entrée RECORDS et tests (modèle Ouganda, dont la porte temporelle)."
  ],
  "complements_2026-09-27": {
   "note": "Compléments de la recherche approfondie (4 volets), vérifiés directement le 27/09/2026, sources retrouvées via web.archive.org (obr.bi et amategeko.gov.bi étant indisponibles en direct).",
@@ -86,5 +85,14 @@
    "GTI : Burundi listé parmi les 31 pays participants au 30/10/2023 (KAS/UNECA, secondaire) mais ABSENT de la liste « actively trading » (tralac 05/2025)."
   ],
   "depots_officiels": "Décision UA 831 (archivée dans #535) : §7(b) — le Burundi est nommé parmi les offres déposées via le bloc EAC ; §8 — 291 offres techniquement vérifiées. Page au-afcfta.org/countries-report/burundi/ existe mais ses 4 fichiers xlsx sont en HTTP 404 (27/09/2026)."
+ },
+ "regle_b": {
+  "date": "2026-09-27",
+  "enonce": "Pour un État de l'EAC, le taux ZLECAf est servi si quatre conditions sont réunies et documentées par des sources archivées (sha256). L'instrument est l'avis EAC/321/2022 ; le barème est son annexe ; les origines sont celles de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond. La liste GTI ne sert JAMAIS de liste d'origines. Seul le droit de douane est réduit. FIGURER DANS LA LISTE GTI NE PROUVE PAS QUE LE PAYS APPLIQUE SES TAUX : il faut une source primaire datée du gazettement ou du commencement (l'Ouganda y figurait dès janvier 2025 et le Secrétariat le disait encore en préparation en février 2026).",
+  "condition_1_ratification": "SATISFAITE — ratification_status('BDI') → RATIFIED (27/09/2026). Texte archivé : Loi n°1/17 du 17/06/2021 (BOB n°6ter/2021, p. 986-987).",
+  "condition_2_tec_eaccma": "À VÉRIFIER — obr.bi est en panne (erreur Joomla, page de 182 octets archivée) depuis le 27/09/2026 : aucun sha du TEC publié par l'OBR ne peut être calculé ; aucun rapprochement avec les copies TRA/URA (sha 9d894c29… et b0fc579e…) n'est possible à ce jour. À reprendre quand le site sera joignable.",
+  "condition_3_gti": "SATISFAITE au sens du repérage — le FACTSHEET du Secrétariat déjà archivé (sources/UGA_secretariat_factsheet_gti_2025-01.pdf, sha 4446703e2871155059471f107a77053a84c54792b2b701d08fccd43e06d3b5e3, p. 23, « GTI Participating Countries », Central Africa Region) nomme le Burundi. Cité depuis la fiche Ouganda (PR #535), sans doublon d'archive. MAIS la participation au GTI ne prouve pas l'application des taux.",
+  "condition_4_sources_contraires": "NON SATISFAITE (source contraire directe) — communiqué du Secrétariat du 06/08/2026 (mission du Champion et du SG à Bujumbura, lu directement le 27/09/2026, extrait archivé : sources/BDI_mission_secretariat_extrait_2026-09-27.txt, sha 5855a6145f40d24293cccb8e4cb6f87b50084aba1c14c3b93e2e75f4cc4025f7) : « A technical team will develop a country profile and an implementation roadmap for Burundi » et « The Minister reaffirmed Burundi's readiness to implement the Agreement » — le Secrétariat décrit une PRÉPARATION, pas une application.",
+  "date_application_reelle": "NON ÉTABLIE — aucune source primaire datée (gazettement, communiqué de commencement, premier envoi attesté) n'a été trouvée. Les recherches du 27/09/2026 : communiqués du Secrétariat (AFIRM EAC 13/06/2026 : évaluation ; mission Bujumbura 06/08/2026 : préparation) ; gazettes.africa/gazettes/bi : 404 (le pays n'y figure pas) ; amategeko.gov.bi : 503 (maintenance) ; tralac Daily News 09/02/2026 et newsletter dtic mars 2026 listent le Burundi parmi les États « gazetted/implementing » — SECONDAIRES, non vérifiables sur primaire (les rapports AU correspondants sont inaccessibles et ne nomment pas le Burundi). AUCUNE DATE N'EST DÉDUITE."
  }
 }
