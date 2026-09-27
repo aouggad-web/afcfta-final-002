@@ -195,6 +195,12 @@ def ligne_du_journal_officiel(
     kényane applique.
     """
     jour = as_of or datetime.date.today()
+    # Porte temporelle (règle B) : l'application d'un État ne vaut qu'à partir
+    # de son effective_from — avant, aucune préférence.
+    from services.zlecaf_implementation_registry import application_commencee
+
+    if not application_commencee(destination_iso3, jour):
+        return None
     taux, _ = compute_ken_zlecaf_rate(hs_code, origin_iso3, jour)
     if taux is None:
         return None

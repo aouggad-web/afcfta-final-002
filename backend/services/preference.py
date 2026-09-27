@@ -199,8 +199,12 @@ def taux_preferentiels(
                 compute_ken_zlecaf_rate,
                 reserve_regle_d_origine,
             )
+            from services.zlecaf_implementation_registry import application_commencee
+            import datetime as _dt
 
-            taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
+            taux, libelle = None, None
+            if application_commencee(destination_iso3, _dt.date.today()):
+                taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
             if taux is not None:
                 # Plancher NPF (règle B, condition d) : une préférence ne doit
                 # jamais dépasser le NPF du socle — dérogation nationale
