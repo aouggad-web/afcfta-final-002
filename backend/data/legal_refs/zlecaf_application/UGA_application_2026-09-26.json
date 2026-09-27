@@ -175,5 +175,32 @@
   "condition_3_gti": "SATISFAITE — source primaire du Secrétariat ARCHIVÉE : FACTSHEET BOOKLET (01/2025, au-afcfta.org), p. 23 « Guided Trade Initiative (GTI) … Participating Countries », East Africa Region : « Kenya, Rwanda, Uganda, United Republic of Tanzania » — ARCHIVÉ : sources/UGA_secretariat_factsheet_gti_2025-01.pdf, sha 4446703e2871155059471f107a77053a84c54792b2b701d08fccd43e06d3b5e3. L'Ouganda est NOMMÉ participant ; le GTI y est daté (lancement 07/10/2022). La page du 19/10/2022 (huit pilotes) ne le nommait pas ; les listes tralac/KAS n'ont servi qu'au repérage.",
   "condition_4_sources_contraires": "SATISFAITE — aucune source n'indique le contraire. DEUX constats mentionnés comme tels : (a) l'absence de l'Ouganda de la liste « actively trading » de la FAQ tralac (05/2025, secondaire) — un fait de flux à une date donnée, pas une preuve de non-participation ; (b) le communiqué du Secrétariat du 13/02/2026 présente le gazettement comme une préparation « to commence trading » : l'application ougandaise est donc DATÉE AU PLUS TÔT DU GAZETTEMENT (2026-02-13, date d'attestation) et NON de l'avis EAC de 2022. Le registre porte effective_from = 2026-02-13 et le moteur refuse toute préférence UGA pour une date antérieure (testé)."
  },
- "plancher_npf_derogations": "Plancher NPF (condition d) : sur les 5342 positions du barème, 5320 sont couvertes par le socle ougandais ; UNE seule position où le NPF du socle diffère du taux de base du barème (dérogation nationale) : 2106.90.20 — NPF socle 0 % pour une base de barème de 10 %. C'est le NPF qui est servi, dans les deux chemins (testé)."
+ "plancher_npf_derogations": "Plancher NPF (condition d) : sur les 5342 positions du barème, 5320 sont couvertes par le socle ougandais ; UNE seule position où le NPF du socle diffère du taux de base du barème (dérogation nationale) : 2106.90.20 — NPF socle 0 % pour une base de barème de 10 %. C'est le NPF qui est servi, dans les deux chemins (testé).",
+ "contexte_secondaire": {
+  "note": "Sources secondaires de contexte — jamais de preuve ; elles ne modifient ni le registre, ni effective_from (13/02/2026), ni les conditions de la règle B. Chaque page ouverte avant citation (27/09/2026).",
+  "entrees": [
+   {
+    "titre": "The Exchange, « Uganda Trails EAC Neighbours In AfCFTA Roll Out »",
+    "url": "https://theexchange.africa/uganda-trails-eac-neighbours-in-afcfta-roll-out/",
+    "date_publication": "2023-03-25",
+    "consulte_le": "2026-09-27",
+    "constat": "Début 2023, l'Ouganda ne commerçait pas encore sous la ZLECAf."
+   },
+   {
+    "titre": "U.S. Department of State, 2024 Investment Climate Statement: Uganda",
+    "url": "https://www.state.gov/reports/2024-investment-climate-statements/uganda",
+    "date_publication": "2024",
+    "consulte_le": "2026-09-27",
+    "constat": "« as of April 2024… Uganda is not one of the pilot program countries » (texte vérifié sur la page)."
+   },
+   {
+    "titre": "ICOYACA (article non daté)",
+    "url": "https://icoyacaafrica.org/news/view/38",
+    "date_publication": "non daté",
+    "consulte_le": "2026-09-27",
+    "constat": "L'URA a configuré les barèmes ZLECAf dans ASYCUDA."
+   }
+  ],
+  "synthese": "Ces sources secondaires concordent avec la date retenue : aucune application ougandaise avant 2025-2026."
+ }
 }
