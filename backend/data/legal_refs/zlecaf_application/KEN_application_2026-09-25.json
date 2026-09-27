@@ -20,9 +20,9 @@
   "note": "Acte communautaire (Conseil des ministres de l'EAC, EACCMA s.112(1)(b) et article 37 du protocole de l'union douanière) : support et non preuve nationale. La même Gazette est archivée dans la PR Tanzanie (#531)."
  },
  "decision_du_proprietaire": {
-  "date": "2026-09-26",
-  "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
-  "application_au_kenya": "Le Kenya la SATISFAIT (Q1 du tableau comparatif) : la KRA publie elle-même le barème complet (PDF 347 pages, archivé, sha 7a92fb35…) ; l'avis EAC n'est que le support communautaire et aucun acte national propre (loi/décret) n'est requis pour ce critère."
+  "date": "2026-09-27",
+  "enonce": "Règle B : pour un État de l'EAC, le taux ZLECAf est servi si quatre conditions sont réunies et documentées par des sources archivées (sha256) — (1) ratification de l'Accord ; (2) application du TEC et de la loi douanière EACCMA, dont la primauté du droit communautaire (art. 8(4) du Traité EAC, à vérifier depuis le texte primaire) ; (3) participation au Guided Trade Initiative selon le Secrétariat de la ZLECAf (source primaire archivée ; tralac sert seulement à repérer) ; (4) aucune source n'indique le contraire. L'instrument est l'avis EAC/321/2022 ; le barème est son annexe ; les origines sont celles de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya). La liste GTI ne sert JAMAIS de liste d'origines. Seul le droit de douane est réduit.",
+  "application_au_kenya": "Les quatre conditions sont réunies : (1) RATIFIED ; (2) le barème publié par la KRA applique le TEC (bandes 2022) sous l'EACCMA ; (3) source primaire du Secrétariat ARCHIVÉE — communiqué au-afcfta.org du 19/10/2022 : le Kenya figure parmi les huit États participants au GTI (lancé le 07/10/2022, voir chantier_collecte_2026-09-14.json) et y a exporté ses premières marchandises (batteries Exide vers le Ghana) ; sha d53bbbd6… ; (4) aucune source contraire trouvée. Voir docs/METHODE_EAC_REGLE_B_2026-09-27.md."
  },
  "origines": {
   "source": "Annexe 1 de la Directive ministérielle 1/2021 (AfCFTA/COM/7/DIRECTIVE/FINAL, Accra, 10 octobre 2021) — 29 parties, dont le Bénin écarté faute de ratification : 28 origines opérantes.",
@@ -48,5 +48,11 @@
  ],
  "remaining_work": [
   "Rechercher une éventuelle version postérieure de l'Annexe 1 (révision annuelle prévue au §20)."
- ]
+ ],
+ "sources_archivees": {
+  "gti_secretariat": {
+   "texte_extrait": "sources/KEN_gti_secretariat_extrait_2026-09-27.txt",
+   "sha256": "d53bbbd6ef641b306afab26889af3ce50e2899716b025d78621863f69804c2a8"
+  }
+ }
 }
