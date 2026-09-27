@@ -2,8 +2,8 @@
  "schema_version": 1,
  "destination_iso3": "RWA",
  "agreement": "ZLECAf / AfCFTA",
- "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
- "verified_at": "2026-09-25",
+ "verification_status": "APPLIQUE",
+ "verified_at": "2026-09-27",
  "sources_archivees": {
   "rra_accueil_extrait": {
    "texte_extrait": "sources/RWA_rra_recherche_2026-09-25.extrait.txt",
@@ -14,12 +14,7 @@
    "sha256": "4470c158f10dd4e17958c874fa3a9cff5a1784f68ae1343d1afe25ad2f71e083"
   }
  },
- "decision_du_proprietaire": {
-  "date": "2026-09-26",
-  "enonce": "Règle A : pour un État de l'EAC, la preuve nationale est la publication du barème complet par sa propre administration douanière. L'avis EAC/321/2022 seul, ou son hébergement en miroir, ne suffit pas. Cette décision remplace la formulation du 25/09.",
-  "application_au_rwanda": "Non satisfaite : la douane nationale ne publie pas le barème complet. Le Rwanda reste au NPF."
- },
- "evidence_level": "acte communautaire EAC lu (avis EAC/321/2022, archivé dans la PR Tanzanie #531) ; acte ou avis rwandais propre non retrouvé ; aucune liste nominative d'origines ; aucun barème ligne à ligne du Rwanda comme destination ; recherches antérieures consignées dans chantier_collecte_2026-09-14.json",
+ "evidence_level": "règle B : ratification (service), TEC EAC 2022 publié par la RRA (archivé, sha 9d894c29…, identique à la copie TRA), GTI nommé par le Secrétariat (communiqué 19/10/2022 archivé, sha d53bbbd6…, via la fiche Kenya), aucune source contraire ; instrument = avis EAC/321/2022 (Gazette archivée via miroir RRA) ; barème = annexe (backend/data/zlecaf_ken/bareme_categorie_a.json)",
  "instrument_eac": {
   "id": "Legal Notice No. EAC/321/2022",
   "titre": "The EAC Schedule of Tariff Concessions for the African Continental Free Trade Area (AfCFTA) for Category A products",
@@ -45,21 +40,20 @@
  "particularite_eac_comesa": "L'articulation avec l'EAC et le COMESA est explicite au Rwanda : les concessions ZLECAf ne valent qu'en dehors de ces régimes. Toute future liste devra se lire en soustraction des partenaires EAC et COMESA, non isolément.",
  "ratification": "Le Rwanda est RATIFIE au registre continental du dépôt (ratification_status('RWA') → RATIFIED) ; la date d'effet nationale reste à documenter.",
  "gates_status": {
-  "1_instrument_national_en_vigueur": "NON SATISFAIT — l'avis EAC/321/2022 n'est qu'un support communautaire ; aucune preuve rwandaise propre",
-  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative ; règle « State Parties » et articulation EAC/COMESA non traduites en liste",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème du Rwanda comme destination ; l'instantané EAC est l'offre commune EAC, collectée via la requête du Kenya",
+  "1_instrument_national_en_vigueur": "SATISFAIT au sens de la règle B — l'instrument est l'avis EAC/321/2022, dont l'application rwandaise est établie par les conditions 2 et 3 (TEC publié par la RRA ; GTI)",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT au sens de la règle B — origines = Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya)",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — l'annexe de l'avis (barème catégorie A, colonnes 2021-2030) est le jeu de données servi (tariff_dataset=\"EAC\")",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
- "conclusion": "Les trois preuves du plan ne sont PAS réunies, et par décision du propriétaire (25/09/2026) l'avis EAC ne suffit pas seul. Tant qu'aucune preuve rwandaise propre, liste nominative et barème de destination ne sont trouvés, le Rwanda reste au NPF. AUCUN BRANCHEMENT.",
+ "conclusion": "Règle B satisfaite : les quatre conditions sont réunies et documentées par des sources archivées. Le Rwanda APPLIQUE le taux ZLECAf depuis l'avis EAC/321/2022 (effective_from 2022-09-06) : l'instrument est l'avis, le barème son annexe, les origines celles de l'Annexe 1 (plafond). Seul le droit de douane est réduit.",
  "ne_tranche_pas": [
-  "Cinq actes nationaux voisins (Algérie, Maroc, Égypte, Tunisie, Afrique du Sud) citent le Rwanda comme partenaire : ce sont des indices, pas des preuves de ce que le Rwanda accorde.",
-  "L'application effective par le Rwanda n'est établie par aucun texte national ni avis RRA.",
-  "Aucune liste nominative ; et la soustraction EAC/COMESA n'est pas documentée en liste."
+  "La concordance dtic/SARS est une concordance, pas une preuve : la condition 3 est établie par le communiqué du Secrétariat.",
+  "L'articulation EAC/COMESA reste vraie pour les régimes préexistants ; elle ne réduit pas le périmètre règle B, qui porte sur les seules origines de l'Annexe 1.",
+  "La primauté du droit communautaire (art. 8(4) du Traité EAC) reste à vérifier depuis le texte primaire."
  ],
  "remaining_work": [
-  "Obtenir un Ministerial Order ou des Customs Regulations rwandais portant application du barème ZLECAf, et la liste des États admis.",
-  "Rechercher les « Public Notices » de la RRA et la Gazette officielle du Rwanda (actes postérieurs à 2025 non couverts par le balayage antérieur).",
-  "Collecter l'offre du Rwanda comme destination (e-Tariff Book, destination RW) et l'articuler aux règles EAC/COMESA."
+  "Vérifier l'art. 8(4) du Traité EAC depuis le texte primaire (à vérifier).",
+  "Surveiller la révision annuelle de l'Annexe 1 (§20) et les réserves du plafond."
  ],
  "complements_2026-09-27": {
   "note": "Compléments de la recherche approfondie, vérifiés directement le 27/09/2026.",
@@ -67,5 +61,14 @@
   "amategeko": "API officielle amategeko.gov.rw (27/09/2026) : requêtes « AfCFTA », « Continental Free Trade », « tariff concessions » — aucun arrêté ministériel rwandais portant le barème ou la liste des pays admis ; seulement l'Accord ZLECAf (ratification, JO 2018) et l'accord d'accueil du Secrétariat à Kigali (23/02/2024).",
   "injoignables": "mif.gov.rw et rwandatrade.rw : HTTP 000 (27/09/2026, récidive).",
   "decision_ua_831": "Assemblée UA, Déc. 831(XXXV) du 06/02/2022 (texte vérifié, archivé dans la PR Ouganda #535) : §7(b) — le Rwanda est nommé parmi les États EAC dont l'offre est déposée (via le bloc EAC) ; §8 : 291 offres techniquement vérifiées. Règle A toujours non satisfaite."
- }
+ },
+ "regle_b": {
+  "date": "2026-09-27",
+  "enonce": "Pour un État de l'EAC, le taux ZLECAf est servi si quatre conditions sont réunies et documentées par des sources archivées (sha256). L'instrument est l'avis EAC/321/2022 ; le barème est son annexe ; les origines sont celles de l'Annexe 1 de la Directive 1/2021, traitées comme un plafond (mêmes réserves que le Kenya). La liste GTI ne sert JAMAIS de liste d'origines. Seul le droit de douane est réduit.",
+  "condition_1_ratification": "SATISFAITE — ratification_status('RWA') → RATIFIED (27/09/2026).",
+  "condition_2_tec_eaccma": "SATISFAITE — le tarif publié par la RRA est le TEC EAC 2022 (version mise à jour juin 2025), 577 pages, ARCHIVÉ : sources/RWA_rra_cet_eac_2022_maj_2025-06.pdf, sha 9d894c290304a75b2a77db3d16eabc73aa172eeb3a09a0d76668e6fc95b9af9f, URL https://www.rra.gov.rw/fileadmin/user_upload/COMMON_EXTERNAL_TARIFF__Updated_June_2025.pdf. Remarque d'administration double : ce fichier est IDENTIQUE octet par octet à celui publié par la TRA (même sha, archivé dans la PR Tanzanie #531) — un même document communautaire publié par deux douanes. L'EACCMA 2004 régit la douane de l'union ; la primauté du droit communautaire (art. 8(4) du Traité EAC) reste À VÉRIFIER depuis le texte primaire.",
+  "condition_3_gti": "SATISFAITE — la même source primaire du Secrétariat que pour le Kenya : sources/KEN_gti_secretariat_extrait_2026-09-27.txt (sha d53bbbd6ef641b306afab26889af3ce50e2899716b025d78621863f69804c2a8, communiqué au-afcfta.org du 19/10/2022) : « Rwanda is among eight state parties - Cameroon, Egypt, Ghana, Kenya, Mauritius, Rwanda, Tanzania and Tunisia - participating in the AfCFTA Guided Trade Initiative » — le Rwanda est NOMMÉ, et sa première expédition (Igire Coffee, café vers le Ghana) y est datée. Cité depuis la fiche Kenya (PR #533), sans doublon d'archive.",
+  "condition_4_sources_contraires": "SATISFAITE — aucune source n'indique le contraire. Le Rwanda figure dans la liste dtic/SARS (mars 2026) — une concordance, pas une preuve ; les listes de réciprocité des partenaires ne sont jamais des preuves."
+ },
+ "plancher_npf_derogations": "Plancher NPF (condition d) : sur les 5342 positions du barème, 5320 sont couvertes par le socle rwandais ; UNE seule position où le NPF du socle diffère du taux de base du barème (dérogation nationale) : 2106.90.20 — NPF socle 0 % pour une base de barème de 10 %. C'est le NPF qui est servi, dans les deux chemins (testé)."
 }
