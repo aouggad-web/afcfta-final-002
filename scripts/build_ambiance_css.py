@@ -213,3 +213,24 @@ html.theme-light .zellige-najm {{
 sortie = sys.argv[1] if len(sys.argv) > 1 else "frontend/src/styles/ambiance.css"
 open(sortie, "w", encoding="utf-8").write(css)
 print("écrit", sortie, len(css), "octets")
+
+# Page tarifs (HTML statique, hors application React) : même zellige, injecté
+# entre ses marqueurs. Ignoré quand on écrit ailleurs (vérification à blanc).
+TARIFS = "frontend/public/pricing.html"
+DEBUT = "/* ambiance:zellige:debut — généré par scripts/build_ambiance_css.py, ne pas éditer */\n"
+FIN = "/* ambiance:zellige:fin */"
+if len(sys.argv) == 1:
+    page = open(TARIFS, encoding="utf-8").read()
+    avant, reste = page.split(DEBUT, 1)
+    _, apres = reste.split(FIN, 1)
+    bloc = f"""body::before{{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:{khatam(*SOMBRE['fond'])};
+  background-size:{T}px {T}px;
+}}
+html.theme-light body::before{{
+  background-image:{khatam(*CLAIR['fond'])};
+}}
+"""
+    open(TARIFS, "w", encoding="utf-8").write(avant + DEBUT + bloc + FIN + apres)
+    print("zellige injecté dans", TARIFS)
