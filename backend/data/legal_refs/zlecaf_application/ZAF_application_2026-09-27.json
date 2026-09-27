@@ -1,0 +1,66 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "ZAF",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-27",
+ "note_cadre": "L'Afrique du Sud ne relève PAS de la règle B (qui vise les États de l'EAC) : elle est traitée comme destination potentiellement APPLIQUE au sens du plan général (§2). SACU = union douanière automatique dans le moteur (franchise intra-SACU 0 %) ; la question est l'application du barème ZLECAf vis-à-vis des origines HORS SACU.",
+ "verification_cinq_questions": {
+  "1_bareme_publice_SARS": {
+   "reponse": "OUI",
+   "detail": "Colonne « AfCFTA » dans la Part 1 du Schedule No. 1 du Customs and Excise Act, 1964, avec taux préférentiels par ligne. Sources primaires datées (Notices R. au Government Gazette) : R.4281/R.4286/R.4287 (GG 50045, 26/01/2024 — substitution de lignes et création de la General Note O « Duties on goods to which the AfCFTA relates ») ; R.4599/R.4601 (05/04/2024 — réduction des taux AfCFTA, rétroactive au 31/01/2024) ; phasedowns annuels R.5622 (06/12/2024, effet 01/01/2025) et R.6710 (03/10/2025, effet 01/01/2026) ; page « Tariff Amendments 2026 » SARS active (20/09/2026). Gazette fondateur : R.1433 (GG 44049, 31/12/2020)."
+  },
+  "2_gazettement_offre_sacu": {
+   "reponse": "OUI",
+   "detail": "L'offre conjointe SACU (90 % du tarif, approuvée par le Conseil des ministres ZLECAf le 31/05/2023 à Nairobi) a été GAZETTÉE par la ZAF le 26/01/2024 (GG 50045), effet 31/01/2024. Confirmation officielle : réponse ministérielle NW640 (02/05/2025) — « South Africa fulfilled these legal requirements when it gazetted the SACU Provisional Schedule of Tariff Concessions on 26 January 2024 »."
+  },
+  "3_date_application": {
+   "reponse": "31 JANVIER 2024",
+   "detail": "Page AfCFTA officielle du dtic (lue, extrait archivé sha a362a1a4…) : « South Africa commenced preferential trade under the AfCFTA on 31 January 2024, following the gazetting of the SACU joint offer… in terms of Section 48 of the Customs and Excise Act, 1964 » ; lancement officiel par le président Ramaphosa au port de Durban le 31/01/2024 (expéditions vers Ghana et Kenya). La newsletter dtic (mars 2026, extrait archivé sha f9a06b8c…) confirme : « gazetted the SACU [Schedule] on 26 January 2024 and officially launched preferential trade on 31 January 2024 »."
+  },
+  "4_preuves_application": {
+   "reponse": "OUI",
+   "detail": "Statistiques officielles dtic (janv. 2024 – déc. 2025) : exportations préférentielles ≈ R2,3 Md (Ghana, Kenya, Égypte, Rwanda, Maroc) et importations préférentielles ≈ R1,8 Md (café, thé, cacao, fruits, acier) ; preuve que le régime d'IMPORTATION s'applique : la suspension unilatérale du traitement préférentiel du thé kényan (R.6594, 12/09/2025). Général Note O : les États partenaires éligibles sont ajoutés par Gazette au fil de leurs gazettements (Maroc/Burundi/Ouganda R.5879 21/02/2025 ; Gambie R.6233 30/05/2025 ; Nigeria R.6595 12/09/2025 ; Éthiopie R.6756 24/10/2025)."
+  },
+  "5_portee": {
+   "reponse": "APPLIQUE, avec périmètre",
+   "detail": "La ZLECAf ne s'applique qu'aux origines HORS SADC-SACU « started implementing » : 14+ pays non-SADC listés par le dtic (Algérie, Burundi, Cameroun, Égypte, Ghana, Gambie, Kenya, Maroc, Rwanda, Tunisie, Ouganda, + Nigeria, Éthiopie, Sierra Leone...). Le commerce avec le Botswana/Lesotho/Namibie/Eswatini reste SACU (0 % automatique), avec les autres SADC sous le Protocole SADC (non automatique dans le moteur). Barème PROVISOIRE (90 % des lignes, catégorie B démarrée le 01/01/2026) ; General Note O prévoit une suspension unilatérale si réciprocité insuffisante."
+  }
+ },
+ "sacu_dans_le_moteur": "SACU est déjà une union douanière automatique dans le moteur (services/regional_blocs.py) : BWA, LSO, NAM, SWZ échangent avec la ZAF à 0 %, indépendamment de la ZLECAf — la ZLECAf ne doit JAMAIS se substituer à cette franchise intra-SACU.",
+ "sources_archivees": {
+  "dtic_page_afcfta": {
+   "texte_extrait": "sources/ZAF_dtic_page_afcfta.extrait.txt",
+   "sha256": "a362a1a4609650ba2ac95fac3990cb807a2dc2e20b2d21de9515d390a0575f1f"
+  },
+  "dtic_newsletter_2026_03": {
+   "texte_extrait": "sources/ZAF_dtic_newsletter_2026-03.extrait.txt",
+   "sha256": "f9a06b8cefa7e4f9a3bd5933556b9906208c41d1be03fc5f2c83809c9eabaa54"
+  }
+ },
+ "recherches_consignees": [
+  "2026-09-27 — SARS : Notices R. citées ci-dessus (colonnes AfCFTA au Schedule No. 1, General Note O, phasedowns) — repérage via agent de recherche ; les PDF SARS eux-mêmes n'ont pas été téléchargés et scellés à ce stade (à faire pour la PR d'application).",
+  "2026-09-27 — dtic : page AfCFTA officielle + newsletter mars 2026, lues via Jina Reader (téléchargement direct bloqué par certificat TLS non conforme — consigné, sans contournement), extraits archivés.",
+  "2026-09-27 — tralac (héberge la newsletter dtic) : injoignable en direct (HTTP 000).",
+  "2026-09-27 — réponse ministérielle NW640 (02/05/2025) et CW1054 (24 pays « started implementing ») : repérage PMG.",
+  "2026-09-27 — SAnews 31/01/2024 (lancement Durban) : repérage."
+ ],
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "SATISFAIT au sens du plan §2 — barème AfCFTA gazetté dans le Schedule No. 1 (Customs and Excise Act) depuis le 26/01/2024, en vigueur depuis le 31/01/2024, maintenu à jour (Notices R. 2024-2026)",
+  "2_liste_officielle_origines_reciproques": "PARTIEL — la General Note O liste les États partenaires éligibles, ajoutés par Gazette au fil de leurs gazettements (liste dynamique : 14+ pays non-SADC) ; à transcrire en liste dans le dépôt",
+  "3_bareme_au_niveau_de_la_ligne": "À COLLECTER — la colonne AfCFTA du Schedule No. 1 est publiée par SARS mais pas encore extraite ligne à ligne dans le dépôt (pas de jeu de données comme zlecaf_ken)",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "L'Afrique du Sud APPLIQUE le barème ZLECAf comme destination (hors SACU/SADC) depuis le 31/01/2024, avec preuves statistiques officielles. Pour passer à APPLIQUE dans le moteur, il reste : (a) extraire la colonne AfCFTA du Schedule No. 1 en jeu de données vérifié (comme zlecaf_ken) ; (b) transcrire la liste des États éligibles de la General Note O ; (c) coder le périmètre « hors SACU-SADC » ; (d) tests des deux chemins. Niveau provisoire : NOTIFICATION_PARTENAIRES_REQUISE (preuves réunies mais branchement non encore fait).",
+ "ne_tranche_pas": [
+  "Le barème reste PROVISOIRE (PSTC, 90 %) ; l'offre finale SACU n'est pas encore adoptée par le Sommet UA.",
+  "La General Note O permet une suspension unilatérale (déjà utilisée contre le thé kényan, R.6594 12/09/2025) : les taux peuvent changer par Gazette.",
+  "Les PDF SARS et le texte intégral de la General Note O restent à sceller (sha) pour la PR d'application."
+ ],
+ "remaining_work": [
+  "Télécharger et sceller les Notices R. pertinentes (GG 50045 et suivantes) depuis sars.gov.za.",
+  "Extraire la colonne AfCFTA du Schedule No. 1 en jeu de données (backend/data/zlecaf_zaf/) et créer services/zlecaf_schedule_zaf.py (le fichier existe déjà pour la liste dtic ACTIVE_PARTNERS_ZAF — à étendre).",
+  "Transcrire la liste General Note O (États éligibles) et coder le périmètre hors SACU/SADC.",
+  "Tests : ZAF ← Égypte/Ghana/Kenya (taux lu, deux chemins) ; ZAF ← BWA/LSO/NAM/SWZ (SACU 0 %, jamais ZLECAf) ; ZAF ← origine hors liste General Note O (NPF)."
+ ]
+}
