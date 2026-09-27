@@ -124,7 +124,7 @@ DESTINATIONS_A_CALENDRIER_NATIONAL = frozenset({"DZA", "EGY"})
 
 def _destination_regle_b_eac(destination_iso3: str) -> bool:
     """Règle B (27/09/2026) : destinations EAC dont le taux ZLECAf est servi —
-    l'ensemble est défini une seule fois dans zlecaf_schedule_ken."""
+    l'ensemble est défini une seule fois dans zlecaf_implementation_registry."""
     from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
 
     return destination_iso3.upper() in DESTINATIONS_REGLE_B_EAC

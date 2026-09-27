@@ -148,12 +148,6 @@ KENYA_ORIGINS_RESERVES = (
 )
 
 
-# RÈGLE B (propriétaire, 27/09/2026) : pour un État de l'EAC, le taux ZLECAf
-# est servi si quatre conditions sont réunies — ratification de l'Accord,
-# application du TEC et de l'EACCMA (primauté du droit communautaire, art. 8(4)
-# du Traité EAC, à vérifier depuis le texte primaire), participation au GTI
-# selon le Secrétariat de la ZLECAf (source primaire archivée), aucune source
-# contraire. Voir docs/METHODE_EAC_REGLE_B_2026-09-27.md.
 # Preuve kényane : la publication du barème par la KRA (kra.go.ke, URL portée
 # par le record). L'avis EAC/321/2022 (Gazette de l'EAC du 06/09/2022) est
 # l'instrument, le barème son annexe.
@@ -168,7 +162,7 @@ KENYA_ORIGINS_RESERVES = (
 # celles de l'Annexe 1 de la Directive 1/2021 (plafond). Défini une seule
 # fois ici — aucun chargement de données ; les étapes suivantes y ajouteront
 # les États prouvés.
-DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "RWA"})
+DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA", "RWA"})
 
 
 RECORDS = {
@@ -186,6 +180,32 @@ RECORDS = {
             "CONTINENTAL-FREE-TRADE-AREA-AfCFTA-CATEGORY-A-PRODUCTS.pdf"
         ),
         effective_from="2021-01-01",
+        accepted_origins=KENYA_ACCEPTED_ORIGINS,
+        tariff_dataset="EAC",
+        note=(
+            "Règle B (27/09/2026) — les quatre conditions sont documentées "
+            "dans la fiche et docs/METHODE_EAC_REGLE_B_2026-09-27.md. Taux "
+            "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
+            "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
+            "le droit de douane est réduit. Information indicative."
+        ),
+    ),
+    # Tanzanie (règle B, 27/09/2026) : les quatre conditions sont documentées
+    # dans la fiche TZA (PR #531). Preuve tanzanienne : le TEC EAC 2022 publié
+    # par la TRA (archivé, sha dans la fiche) ; l'avis EAC/321/2022 est
+    # l'instrument, le barème son annexe.
+    "TZA": ImplementationRecord(
+        destination_iso3="TZA",
+        status=APPLIED,
+        instrument_id="EAC/321/2022",
+        instrument_title=(
+            "EAC Legal Notice EAC/321/2022 — implementation of Category A "
+            "AfCFTA tariff concessions"
+        ),
+        instrument_url=(
+            "https://www.tra.go.tz/images/uploads/pages/" "CET_2022_VERSION_Updated_June_2025.pdf"
+        ),
+        effective_from="2022-09-06",
         accepted_origins=KENYA_ACCEPTED_ORIGINS,
         tariff_dataset="EAC",
         note=(

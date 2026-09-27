@@ -407,12 +407,13 @@ def resolve_official_preferential_rate(
         dataset_code = decision["tariff_dataset"]
 
     from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
-    from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
     if country in DESTINATIONS_REGLE_B_EAC:
         # Règle B (27/09/2026) : l'État a un barème gazetté (Legal Notice
         # EAC/321/2022) : c'est lui qui fait foi, pas l'e-Tariff Book, qui en
-        # diverge sur 275 lignes.
+        # diverge sur 275 lignes. Le barème n'est chargé que pour ces
+        # destinations.
+        from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
         jour = date(as_of_year, 12, 31) if as_of_year else None
         return ligne_du_journal_officiel(clean_code, origin, jour, destination_iso3=country)
