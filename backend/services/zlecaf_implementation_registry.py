@@ -161,6 +161,16 @@ KENYA_ORIGINS_RESERVES = (
 # application effective — voir zlecaf_schedule_zaf.py (ACTIVE_PARTNERS_ZAF).
 
 
+# Règle B (propriétaire, 27/09/2026) : pour un État de l'EAC, le taux ZLECAf
+# est servi si quatre conditions sont réunies (ratification, TEC + EACCMA,
+# participation au GTI selon le Secrétariat, aucune source contraire).
+# L'instrument est l'avis EAC/321/2022, le barème son annexe, les origines
+# celles de l'Annexe 1 de la Directive 1/2021 (plafond). Défini une seule
+# fois ici — aucun chargement de données ; les étapes suivantes y ajouteront
+# les États prouvés.
+DESTINATIONS_REGLE_B_EAC = frozenset({"KEN"})
+
+
 RECORDS = {
     "KEN": ImplementationRecord(
         destination_iso3="KEN",

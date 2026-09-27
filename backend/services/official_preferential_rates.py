@@ -406,10 +406,8 @@ def resolve_official_preferential_rate(
             return None
         dataset_code = decision["tariff_dataset"]
 
-    from services.zlecaf_schedule_ken import (
-        DESTINATIONS_REGLE_B_EAC,
-        ligne_du_journal_officiel,
-    )
+    from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
+    from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
     if country in DESTINATIONS_REGLE_B_EAC:
         # Règle B (27/09/2026) : l'État a un barème gazetté (Legal Notice

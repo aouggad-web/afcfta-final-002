@@ -26,20 +26,21 @@ Valeur de chaque condition. « à vérifier » = information non vérifiée à c
 
 | État | C1 ratification | C2 TEC + EACCMA | C3 GTI (Secrétariat) | C4 source contraire | Verdict règle B |
 |---|---|---|---|---|---|
-| Kenya (KEN) | RATIFIED | OUI — barème KRA applique le TEC sous l'EACCMA | OUI — pilote GTI (2021) ; « actively trading » (tralac 05/2025, repérage) ; **source primaire Secrétariat à archiver** | aucune trouvée | **satisfaite** (APPLIQUE, PR #533) |
+| Kenya (KEN) | RATIFIED | OUI — barème KRA applique le TEC sous l'EACCMA | **OUI — source primaire du Secrétariat archivée** (communiqué du 19/10/2022 : Kenya parmi les huit États participants ; sha `d53bbbd6…`) ; « actively trading » (tralac 05/2025, repérage) | aucune trouvée | **satisfaite** (APPLIQUE, PR #533) |
 | Tanzanie (TZA) | RATIFIED | OUI — TEC EAC 2022 publié (CET 2022, maj juin 2025) | participant (KAS 30/10/2023, secondaire) ; « actively trading » (tralac 05/2025) ; **source primaire Secrétariat à archiver — à vérifier** | aucune trouvée | à l'étape 2 (PR #531) |
 | Rwanda (RWA) | RATIFIED | OUI — TEC EAC 2022 publié (CET 2022) | participant (KAS 30/10/2023, secondaire) ; « actively trading » (tralac 05/2025) ; **source primaire Secrétariat à archiver — à vérifier** | aucune trouvée | à vérifier (PR #534) |
 | Ouganda (UGA) | RATIFIED | OUI — TEC EAC 2022 publié (CET 2022, 560 p.) | listé participant (KAS 30/10/2023, secondaire) ; **absent** de la liste « actively trading » (tralac 05/2025) ; **source primaire Secrétariat à archiver — à vérifier** | absence de la liste « active » — à apprécier, pas une contre-indication formelle | à vérifier (PR #535) |
 | Burundi (BDI) | RATIFIED (Loi n°1/17 du 17/06/2021, BOB n°6ter/2021, archivée) | OUI — TEC EAC 2022 publié | phase 2 (KAS 30/10/2023, secondaire) ; **absent** de la liste « actively trading » (tralac 05/2025) ; **à vérifier (source primaire)** | absence de la liste « active » — à apprécier | à vérifier (PR #536) |
-| Soudan du Sud (SS) | **contradiction à résoudre** : le service `ratification_status('SS')` renvoie RATIFIED, mais des sources secondaires (UNDP 10/2023) indiquent une non-ratification à cette date ; le propriétaire indique « non ratifié » | à vérifier | à vérifier | — | **non satisfaite tant que C1 n'est pas établie** |
+| Soudan du Sud (SSD) | **SIGNED_NOT_RATIFIED** — non ratifié (`ratification_status('SSD')`, codes ISO3) | à vérifier | à vérifier | — | **non satisfaite** (condition 1) |
 | RD Congo (COD) | RATIFIED (service) | **application du TEC à établir** (membre EAC depuis 2022) | à vérifier | à vérifier | non établie |
-| Somalie (SO) | RATIFIED (service, à confirmer — adhésion EAC 2024) | **application du TEC à établir** | à vérifier | à vérifier | non établie |
+| Somalie (SOM) | RATIFIED — **valeur par défaut du service (pays non listé)**, à confirmer sur la liste de statut du dépôt AU | **application du TEC à établir** | à vérifier | à vérifier | non établie |
 
 ## 4. Réserves et points à vérifier
 
 - **Art. 8(4) du Traité EAC (primauté du droit communautaire)** : la clause est couramment citée sous ce numéro, mais le **texte primaire** n'a pas pu être téléchargé à ce jour (eac.int : 403 ; eacj.org et foreign.go.tz : téléchargements vides). **À vérifier depuis le texte primaire avant toute application.**
 - **Condition 3** : la participation au GTI doit être établie par une **source primaire du Secrétariat de la ZLECAf, archivée (sha256)**. Les listes tralac/KAS/UNECA servent seulement à repérer. Sources candidates : communiqués du Secrétariat (au-afcfta.org), page pays par pays (`au-afcfta.org/countries-report/<iso>/`) — fichiers xlsx en 404 au 26-27/09/2026.
-- **SS** : contradiction entre le service (RATIFIED) et les sources secondaires/le propriétaire (non ratifié). À résoudre sur la liste de statut du dépôt AU avant toute application.
+- **Soudan du Sud** : `ratification_status('SSD')` → SIGNED_NOT_RATIFIED — non ratifié (interrogé avec les codes ISO3, 27/09/2026).
+- **Somalie** : le service renvoie RATIFIED **par défaut** (pays non listé dans ses ensembles) — à confirmer sur la liste de statut du dépôt AU.
 - **RDC et Somalie** : l'application du TEC y est à établir (double appartenance/adhésion récente) ; aucune application de la règle B avant établissement.
 - La liste GTI ne sert **jamais** de liste d'origines ; les origines restent celles de l'Annexe 1 de la Directive 1/2021 (plafond).
 - Seul le droit de douane est réduit ; tous les autres prélèvements nationaux restent dus.

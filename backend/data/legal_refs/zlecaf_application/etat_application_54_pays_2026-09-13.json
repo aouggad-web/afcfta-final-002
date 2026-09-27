@@ -158,7 +158,7 @@
   },
   "KEN": {
    "niveau": "APPLIQUE",
-   "preuve": "Règle B (27/09/2026) : les quatre conditions sont réunies — ratifié (RATIFIED) ; TEC + EACCMA appliqués ; GTI (pilote 2021, « actively trading » tralac 05/2025 — source primaire du Secrétariat à archiver) ; aucune source contraire. Preuve : publication du barème par la KRA (kra.go.ke), PDF archivé ; l'avis EAC/321/2022 est l'instrument et le barème son annexe ; origines = Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Fiche : KEN_application_2026-09-25.json.",
+   "preuve": "Règle B (27/09/2026) : les quatre conditions sont réunies — ratifié (RATIFIED) ; TEC + EACCMA appliqués ; GTI : source primaire du Secrétariat archivée (communiqué 19/10/2022 — Kenya parmi les huit participants, lancement 07/10/2022) ; aucune source contraire. Preuve : publication du barème par la KRA (kra.go.ke), PDF archivé ; l'avis EAC/321/2022 est l'instrument et le barème son annexe ; origines = Annexe 1 Directive 1/2021, plafond. Seul le droit de douane est réduit. Fiche : KEN_application_2026-09-25.json.",
    "niveau_de_source": "primaire — barème KRA (données extraites dans le dépôt) + Annexe 1 archivée ; avis EAC lu (Gazette) comme support",
    "bareme_collecte": true,
    "bareme_source": "EAC"

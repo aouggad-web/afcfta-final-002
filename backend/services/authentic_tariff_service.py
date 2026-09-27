@@ -1812,10 +1812,8 @@ def _resolve_zlecaf_context(
         preferential_rate_source=source,
         preferential_rate_calculation_status=official_rate["calculation_status"],
     )
-    from services.zlecaf_schedule_ken import (
-        DESTINATIONS_REGLE_B_EAC,
-        reserve_regle_d_origine,
-    )
+    from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
+    from services.zlecaf_schedule_ken import reserve_regle_d_origine
 
     if dest in DESTINATIONS_REGLE_B_EAC and applied:
         # Même réserve que le moteur du socle : rubrique sans règle d'origine
