@@ -20,8 +20,8 @@
    "detail": "Aucun miroir de l'avis EAC/321/2022 sur un domaine burundais ; l'avis n'est publié que par l'EAC et hébergé en miroir par d'autres douanes (rra.gov.rw)."
   },
   "3_acte_national_propre": {
-   "reponse": "NON pour le barème",
-   "detail": "Ratification identifiée : Loi n°1/17 du 17/06/2021 portant ratification de l'Accord ZLECAf, BOB n°6ter/2021 (amategeko.gov.bi — site en 503 le 27/09/2026, texte non téléchargeable, à revérifier) ; dépôt de l'instrument le 26/08/2021 (liste de statut AU/tralac). Aucun avis ou circulaire OBR, aucun arrêté ministériel portant le barème tarifaire ou la liste des pays admis."
+   "reponse": "NON pour le barème (ratification seule, texte vérifié et archivé)",
+   "detail": "Loi n°1/17 du 17/06/2021 (BOB n°6ter/2021 p. 986-987, PDF intégral archivé) : ratification SEULE — deux articles, aucune disposition d'application. Aucun avis OBR, aucun arrêté portant le barème ou la liste des pays admis ; la Stratégie nationale (04/12/2023) n'est pas un instrument tarifaire."
   },
   "4_liste_nominative_origines": {
    "reponse": "NON",
@@ -29,7 +29,7 @@
   },
   "5_preuves_application_import": {
    "reponse": "NON",
-   "detail": "Aucune preuve directe. Indirect et secondaire : présence du Burundi dans l'expansion de la GTI 2023/2024 (trade.gov 17/04/2024 ; tralac 2024) ; mais il ne figure PAS dans la liste des États « actively trading » de la FAQ tralac (mai 2025). Aucun communiqué du ministère du Commerce, aucune statistique douanière ZLECAf."
+   "detail": "Aucune. Bulletins OBR : ventilation par CER sans ligne ZLECAf ; rapport EAC 2024 (secondaire) : Burundi ABSENT des flux ZLECAf actifs (seuls KE/RW/TZ/UG) ; GTI : listé au 30/10/2023 (KAS/UNECA) mais absent de « actively trading » (tralac 05/2025) ; préparation documentée (GTI 16/04/2024, PNUD 03/2024, PAPSS 2026, MoU Tchad 2025)."
   }
  },
  "instrument_eac": {
@@ -38,18 +38,26 @@
   "date": "2022-09-06",
   "note": "Acte du Conseil des ministres de l'EAC, applicable dans le territoire douanier dont le Burundi est État partenaire. Seule trace publique : miroir RRA (archivé dans la PR Tanzanie #531) et copie tralac ; l'OBR n'en publie aucune copie."
  },
- "ratification": "Le Burundi est RATIFIE au registre continental du dépôt (ratification_status('BDI') → RATIFIED) ; la loi nationale est la Loi n°1/17 du 17/06/2021 (BOB n°6ter/2021, dépôt 26/08/2021) — texte à télécharger quand amategeko.gov.bi sera joignable.",
- "e_tariff_book_2026-09-27": "Outil officiel du Secrétariat (API vérifiée directement) : countryFrom EAC → countryTo BI (« milk ») : 47 lignes tarifaires retournées, mais afCFTACategory vide et colonnes year1 à year13 toutes vides — AUCUNE donnée préférentielle ZLECAf exposée pour le Burundi (même requête pour UG : données présentes).",
+ "ratification": "Le Burundi est RATIFIE au registre continental du dépôt (ratification_status('BDI') → RATIFIED). Texte national VÉRIFIÉ ET ARCHIVÉ : Loi n°1/17 du 17/06/2021 portant ratification par l'État du Burundi de l'Accord ZLECAf, BOB n°6ter/2021 p. 986-987 (PDF intégral du BOB archivé ; « En vigueur » selon amategeko.gov.bi, 503 en direct le 27/09/2026) ; ratification SEULE — deux articles, aucune disposition d'application tarifaire.",
+ "e_tariff_book_2026-09-27": "Outil officiel du Secrétariat (API vérifiée directement le 27/09/2026) : countryFrom EAC → countryTo BI — CORRECTION d'un premier test : la recherche « milk » renvoie 47 lignes aux années vides, MAIS la recherche « cement » renvoie 81 lignes dont 29 avec catégorie ZLECAf renseignée (ex. ciment 25210000 : MFN 10 %, catégorie A, colonnes year1 à year10 = 9 % à 0 %). L'offre de destination BI est donc PARTIELLEMENT exposée dans l'outil officiel (catégorie A sur certaines lignes) : données à collecter ligne à ligne, et ce n'est pas une publication de la douane burundaise (règle A toujours non satisfaite).",
  "sources_archivees": {
   "obr_panne": {
    "texte_extrait": "sources/BDI_obr_panne_2026-09-27.html",
    "sha256": "61484107d4ada9af8f22c7610183c0ec2be7d2857007c77e904b18c74dfba5c9"
+  },
+  "loi_ratification_bob": {
+   "texte_extrait": "sources/BDI_loi_1_17_bob_6ter_2021.pdf",
+   "sha256": "d60a1bf7a395891daf275c5e2e47c8501246275b5a9f4128323a296ff666b358"
+  },
+  "obr_atelier_roo_zlecaf": {
+   "texte_extrait": "sources/BDI_obr_atelier_roo_zlecaf_2025-05-20.html",
+   "sha256": "5951b26f8cff95afddcb102ebbf5a1850f769f17872392ed4ea5fc4a4190c677"
   }
  },
  "gates_status": {
   "1_instrument_national_en_vigueur": "NON SATISFAIT — règle A : l'OBR ne publie pas le barème complet (site en panne, aucune trace indexée) ; la loi de ratification ne fixe pas le barème",
   "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème du BURUNDI comme destination ; l'e-Tariff officiel expose des lignes BI mais sans données ZLECAf (années vides)",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — l'e-Tariff officiel expose PARTIELLEMENT l'offre BI (catégorie A sur certaines lignes, vérifié le 27/09/2026) ; à collecter ligne à ligne ; ce n'est pas une publication de la douane burundaise",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
  "conclusion": "Les trois preuves du plan ne sont PAS réunies ; la règle A n'est pas satisfaite. Tant qu'aucune publication de l'OBR, liste nominative et barème de destination ne sont trouvés, le Burundi reste au NPF. AUCUN BRANCHEMENT.",
@@ -59,8 +67,24 @@
   "La panne d'obr.bi et l'indisponibilité d'amategeko.gov.bi empêchent de conclure à l'absence définitive d'actes : à reprendre quand joignables."
  ],
  "remaining_work": [
-  "Reprendre obr.bi et amategeko.gov.bi quand joignables : vérifier le texte de la Loi n°1/17 (BOB n°6ter/2021) et chercher avis OBR / arrêtés portant le barème ZLECAf.",
-  "Surveiller l'e-Tariff Book officiel : les lignes BI pourraient être renseignées (elles sont vides au 27/09/2026).",
-  "Rechercher les communiqués du ministère burundais du Commerce et les statistiques douanières ZLECAf."
- ]
+  "Reprendre obr.bi et amategeko.gov.bi quand joignables (en direct), pour complémenter les copies d'archive déjà archivées.",
+  "Collecter ligne à ligne l'offre de destination BI exposée dans l'e-Tariff officiel (catégorie A, partiellement renseignée).",
+  "Surveiller l'e-Tariff Book (lignes BI incomplètes) et les bulletins OBR pour une éventuelle ventilation ZLECAf."
+ ],
+ "complements_2026-09-27": {
+  "note": "Compléments de la recherche approfondie (4 volets), vérifiés directement le 27/09/2026, sources retrouvées via web.archive.org (obr.bi et amategeko.gov.bi étant indisponibles en direct).",
+  "obr": [
+   "Seule page AfCFTA jamais publiée par l'OBR (CDX archive.org, filtre complet) : article d'actualité n°2258 du 20/05/2025 — atelier de SENSIBILISATION aux règles d'origine ZLECAf (OBR/OMD/JICA), archivé ; aucun communiqué, aucun PDF AfCFTA (filtre CDX « afcfta » : 0 résultat).",
+   "Le guide RoO (24 p., archivé) et le communiqué TEC EAC 2022 (id 1601, PDF archivé) : AUCUNE mention AfCFTA/ZLECAf (texte extrait et vérifié).",
+   "Bulletins trimestriels de l'OBR : flux ventilés par CER (CAE, COMESA, CEPGL, CEEAC, UE) — aucune ligne ZLECAf."
+  ],
+  "loi_ratification": "Loi n°1/17 du 17/06/2021 (BOB n°6ter/2021, p. 986-987) : « Article 1 : L'Etat du Burundi ratifie l'Accord… ; Article 2 : la présente loi entre en vigueur le jour de sa promulgation » — ratification seule. Aucun autre texte juridique ZLECAf (exa, obr.bi, amategeko via archive) ; la Stratégie nationale de mise en œuvre (lancée le 04/12/2023, mctit.gov.bi) n'est pas un instrument tarifaire.",
+  "application": [
+   "Aucun flux ZLECAf documenté par une source officielle burundaise (ni import, ni export).",
+   "Le rapport EAC Trade & Investment Report 2024 (secondaire) : sous préférences ZLECAf, seuls Kenya, Rwanda, Tanzanie et Ouganda ont des expéditions actives — le Burundi est ABSENT.",
+   "Préparation documentée (non application) : séance d'information GTI du ministère (16/04/2024), atelier PNUD/Secrétariat/PAPSS (03/2024), BurundiPay et adhésion PAPSS en cours (BRB, 2026), MoU Burundi–Tchad (25/02/2025, exportations prévues).",
+   "GTI : Burundi listé parmi les 31 pays participants au 30/10/2023 (KAS/UNECA, secondaire) mais ABSENT de la liste « actively trading » (tralac 05/2025)."
+  ],
+  "depots_officiels": "Décision UA 831 (archivée dans #535) : §7(b) — le Burundi est nommé parmi les offres déposées via le bloc EAC ; §8 — 291 offres techniquement vérifiées. Page au-afcfta.org/countries-report/burundi/ existe mais ses 4 fichiers xlsx sont en HTTP 404 (27/09/2026)."
+ }
 }

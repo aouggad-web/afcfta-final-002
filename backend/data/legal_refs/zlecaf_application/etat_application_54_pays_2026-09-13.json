@@ -24,8 +24,8 @@
   },
   "BDI": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Étape Burundi (27/09/2026) : règle A non satisfaite — l'OBR ne publie pas le barème complet (site en panne, erreur Joomla archivée, sha 61484107…) ; aucune trace indexée d'une publication AfCFTA (guide RoO EAC/COMESA et TEC EAC 2022 seulement) ; ratification : Loi n°1/17 du 17/06/2021 (BOB n°6ter/2021, dépôt 26/08/2021, texte à revérifier — amategeko.gov.bi 503) ; aucune liste nominative ; e-Tariff officiel : lignes BI sans données ZLECAf (années vides) ; GTI : expansion 2023/2024 (secondaire), absent de la liste « actively trading » 05/2025 ; dtic : « implementing » (indice). Fiche : BDI_application_2026-09-27.json.",
-   "niveau_de_source": "panne d'obr.bi archivée ; aucune source burundaise de ZLECAf retrouvée ; ratification à revérifier",
+   "preuve": "Étape Burundi (27/09/2026) : règle A non satisfaite — l'OBR ne publie pas le barème (site en panne, archivé ; seule page AfCFTA jamais publiée = atelier de sensibilisation 20/05/2025, archivé ; guide RoO et TEC 2022 sans mention AfCFTA). Ratification VÉRIFIÉE ET ARCHIVÉE : Loi n°1/17 du 17/06/2021 (BOB n°6ter/2021 p. 986-987) — ratification seule. Aucune liste nominative ; aucune application (bulletins OBR sans ligne ZLECAf ; rapport EAC 2024 : Burundi absent des flux) ; e-Tariff officiel : offre BI partiellement exposée (cat. A sur certaines lignes, à collecter). dtic « implementing » = indice. Fiche : BDI_application_2026-09-27.json.",
+   "niveau_de_source": "primaire — loi de ratification archivée (BOB), archives obr.bi vérifiées ; aucune source d'application",
    "bareme_collecte": false
   },
   "BEN": {
