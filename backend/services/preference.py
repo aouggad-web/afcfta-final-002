@@ -124,7 +124,7 @@ DESTINATIONS_A_CALENDRIER_NATIONAL = frozenset({"DZA", "EGY"})
 
 def _destination_regle_b_eac(destination_iso3: str) -> bool:
     """Règle B (27/09/2026) : destinations EAC dont le taux ZLECAf est servi —
-    l'ensemble est défini une seule fois dans zlecaf_schedule_ken."""
+    l'ensemble est défini une seule fois dans zlecaf_implementation_registry."""
     from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
 
     return destination_iso3.upper() in DESTINATIONS_REGLE_B_EAC
@@ -202,6 +202,13 @@ def taux_preferentiels(
 
             taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
             if taux is not None:
+                # Plancher NPF (règle B, condition d) : une préférence ne doit
+                # jamais dépasser le NPF du socle — dérogation nationale
+                # éventuelle (ex. 2106.90.20, NPF 0 % pour une base de 10 %).
+                npf = _taux_npf(position, "DD")
+                if npf is not None and taux > npf:
+                    taux = npf
+                    libelle = f"{libelle} ; plancher NPF du socle appliqué"
                 taux_dd = {"taux": taux}
                 origine_taux = libelle
                 # Servie, mais pas nécessairement accordée : voir la réserve.
