@@ -122,6 +122,14 @@ PERIMETRES_NATIONAUX = {"DZA": _perimetre_dza, "MAR": _perimetre_mar}
 DESTINATIONS_A_CALENDRIER_NATIONAL = frozenset({"DZA", "EGY"})
 
 
+def _destination_regle_b_eac(destination_iso3: str) -> bool:
+    """Règle B (27/09/2026) : destinations EAC dont le taux ZLECAf est servi —
+    l'ensemble est défini une seule fois dans zlecaf_implementation_registry."""
+    from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
+
+    return destination_iso3.upper() in DESTINATIONS_REGLE_B_EAC
+
+
 def taux_preferentiels(
     position: Dict[str, Any],
     destination_iso3: str,
@@ -180,8 +188,8 @@ def taux_preferentiels(
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Calendrier ZLECAf %s indisponible : %s", destination_iso3.upper(), exc)
 
-    elif taux_dd is None and destination_iso3.upper() == "KEN":
-        # Le tarif kényan ne porte pas de colonne ZLECAf : le barème est publié
+    elif taux_dd is None and _destination_regle_b_eac(destination_iso3):
+        # Règle B (27/09/2026). Le tarif kényan ne porte pas de colonne ZLECAf : le barème est publié
         # à part, par la Legal Notice EAC/321/2022. Contrairement au calendrier
         # algérien, celui-ci ne prend PAS le taux NPF — il lit une colonne
         # annuelle, et une position hors barème rend None plutôt que de se
@@ -191,9 +199,20 @@ def taux_preferentiels(
                 compute_ken_zlecaf_rate,
                 reserve_regle_d_origine,
             )
+            from services.zlecaf_implementation_registry import application_commencee
+            import datetime as _dt
 
-            taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
+            taux, libelle = None, None
+            if application_commencee(destination_iso3, _dt.date.today()):
+                taux, libelle = compute_ken_zlecaf_rate(hs_code, origine_iso3)
             if taux is not None:
+                # Plancher NPF (règle B, condition d) : une préférence ne doit
+                # jamais dépasser le NPF du socle — dérogation nationale
+                # éventuelle (ex. 2106.90.20, NPF 0 % pour une base de 10 %).
+                npf = _taux_npf(position, "DD")
+                if npf is not None and taux > npf:
+                    taux = npf
+                    libelle = f"{libelle} ; plancher NPF du socle appliqué"
                 taux_dd = {"taux": taux}
                 origine_taux = libelle
                 # Servie, mais pas nécessairement accordée : voir la réserve.

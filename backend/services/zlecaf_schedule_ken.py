@@ -180,7 +180,10 @@ def reserve_regle_d_origine(hs_code: str) -> Optional[str]:
 
 
 def ligne_du_journal_officiel(
-    hs_code: str, origin_iso3: str, as_of: Optional[datetime.date] = None
+    hs_code: str,
+    origin_iso3: str,
+    as_of: Optional[datetime.date] = None,
+    destination_iso3: str = "KEN",
 ) -> Optional[dict]:
     """La ligne du barème gazetté, sous la forme que rend le résolveur des
     taux officiels — pour que le chemin historique serve le Journal officiel,
@@ -192,13 +195,19 @@ def ligne_du_journal_officiel(
     kényane applique.
     """
     jour = as_of or datetime.date.today()
+    # Porte temporelle (règle B) : l'application d'un État ne vaut qu'à partir
+    # de son effective_from — avant, aucune préférence.
+    from services.zlecaf_implementation_registry import application_commencee
+
+    if not application_commencee(destination_iso3, jour):
+        return None
     taux, _ = compute_ken_zlecaf_rate(hs_code, origin_iso3, jour)
     if taux is None:
         return None
     annee = min(max(jour.year, PREMIERE_ANNEE), DERNIERE_ANNEE)
     return {
         "hs_code": _normaliser(hs_code).replace(".", ""),
-        "country_iso3": "KEN",
+        "country_iso3": destination_iso3,
         "agreement": "AfCFTA",
         "source_title": _BAREME["_instrument"],
         "source_date": OPPOSABLE_A_PARTIR_DU.isoformat(),
