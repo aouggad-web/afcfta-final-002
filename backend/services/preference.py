@@ -122,6 +122,14 @@ PERIMETRES_NATIONAUX = {"DZA": _perimetre_dza, "MAR": _perimetre_mar}
 DESTINATIONS_A_CALENDRIER_NATIONAL = frozenset({"DZA", "EGY"})
 
 
+def _destination_regle_b_eac(destination_iso3: str) -> bool:
+    """Règle B (27/09/2026) : destinations EAC dont le taux ZLECAf est servi —
+    l'ensemble est défini une seule fois dans zlecaf_schedule_ken."""
+    from services.zlecaf_schedule_ken import DESTINATIONS_REGLE_B_EAC
+
+    return destination_iso3.upper() in DESTINATIONS_REGLE_B_EAC
+
+
 def taux_preferentiels(
     position: Dict[str, Any],
     destination_iso3: str,
@@ -180,8 +188,8 @@ def taux_preferentiels(
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Calendrier ZLECAf %s indisponible : %s", destination_iso3.upper(), exc)
 
-    elif taux_dd is None and destination_iso3.upper() == "KEN":
-        # Le tarif kényan ne porte pas de colonne ZLECAf : le barème est publié
+    elif taux_dd is None and _destination_regle_b_eac(destination_iso3):
+        # Règle B (27/09/2026). Le tarif kényan ne porte pas de colonne ZLECAf : le barème est publié
         # à part, par la Legal Notice EAC/321/2022. Contrairement au calendrier
         # algérien, celui-ci ne prend PAS le taux NPF — il lit une colonne
         # annuelle, et une position hors barème rend None plutôt que de se

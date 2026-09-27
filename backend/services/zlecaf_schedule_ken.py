@@ -179,8 +179,20 @@ def reserve_regle_d_origine(hs_code: str) -> Optional[str]:
     return None
 
 
+# Règle B (propriétaire, 27/09/2026) : pour un État de l'EAC, le taux ZLECAf
+# est servi si quatre conditions sont réunies (ratification, TEC + EACCMA,
+# participation au GTI selon le Secrétariat, aucune source contraire).
+# L'instrument est l'avis EAC/321/2022, le barème son annexe, les origines
+# celles de l'Annexe 1 de la Directive 1/2021 (plafond). Défini une seule
+# fois ici ; les étapes suivantes y ajouteront les États prouvés.
+DESTINATIONS_REGLE_B_EAC = frozenset({"KEN"})
+
+
 def ligne_du_journal_officiel(
-    hs_code: str, origin_iso3: str, as_of: Optional[datetime.date] = None
+    hs_code: str,
+    origin_iso3: str,
+    as_of: Optional[datetime.date] = None,
+    destination_iso3: str = "KEN",
 ) -> Optional[dict]:
     """La ligne du barème gazetté, sous la forme que rend le résolveur des
     taux officiels — pour que le chemin historique serve le Journal officiel,
@@ -198,7 +210,7 @@ def ligne_du_journal_officiel(
     annee = min(max(jour.year, PREMIERE_ANNEE), DERNIERE_ANNEE)
     return {
         "hs_code": _normaliser(hs_code).replace(".", ""),
-        "country_iso3": "KEN",
+        "country_iso3": destination_iso3,
         "agreement": "AfCFTA",
         "source_title": _BAREME["_instrument"],
         "source_date": OPPOSABLE_A_PARTIR_DU.isoformat(),

@@ -1812,10 +1812,14 @@ def _resolve_zlecaf_context(
         preferential_rate_source=source,
         preferential_rate_calculation_status=official_rate["calculation_status"],
     )
-    if dest == "KEN" and applied:
+    from services.zlecaf_schedule_ken import (
+        DESTINATIONS_REGLE_B_EAC,
+        reserve_regle_d_origine,
+    )
+
+    if dest in DESTINATIONS_REGLE_B_EAC and applied:
         # Même réserve que le moteur du socle : rubrique sans règle d'origine
-        # arrêtée à l'Appendice IV (décembre 2023), que le Kenya n'exclut pas.
-        from services.zlecaf_schedule_ken import reserve_regle_d_origine
+        # arrêtée à l'Appendice IV (décembre 2023), que l'État n'exclut pas.
 
         contexte["zlecaf_reserve"] = reserve_regle_d_origine(hs_code_clean)
     return contexte
