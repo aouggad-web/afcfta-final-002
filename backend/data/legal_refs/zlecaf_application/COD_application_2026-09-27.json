@@ -1,0 +1,69 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "COD",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-27",
+ "evidence_level": "ratification vérifiée (article du ministère du Commerce archivé) ; TEC EAC non appliqué (repérage daté) ; offre congolaise DISTINCTE de l'offre EAC ; barème DGDA au stade de projet de loi ; aucune source primaire datée d'application ; DGDA injoignable (DNS SERVFAIL, 27/09/2026)",
+ "questions_cinq": {
+  "1_bareme_complet_DGDA": {
+   "reponse": "NON",
+   "detail": "Aucun barème ZLECAf ligne à ligne publié par la DGDA. dgda.cd est injoignable (DNS SERVFAIL / HTTP 000, 27/09/2026) ; le CDX d'archive.org ne montre aucune page tarif du site. Ce que la DGDA a produit : un tarif douanier national actualisé (nomenclature SH 2017, présenté le 26/07/2023) — sans colonnes ZLECAf."
+  },
+  "2_offre_deposee": {
+   "reponse": "OUI — mais une offre n'est pas une application",
+   "detail": "La RDC a déposé ses listes de concessions (6 439 lignes, dont 209 exclusions, travail coordonné par la DGDA — article du ministère archivé). Elle a soumis une OFFRE TARIFAIRE DISTINCTE de celle de l'EAC (The EastAfrican, 13/07/2024 ; CEA déc. 2025) — hors TEC, l'union douanière EAC n'y est pas effective."
+  },
+  "3_tec_eac_applique": {
+   "reponse": "NON — en cours, pas appliqué",
+   "detail": "Les tarifs nationaux congolais (bandes 0/5/10/20 %) ne reflètent pas les bandes CET 0/10/25/35 % (USDA GAIN KE2022-0006, mai 2022 ; ECDPM DP 341, 2023 : la RDC « must now adjust its national regulations ») ; la RDC n'avait pas déposé ses lois de finances du cycle CET 2025 (Tanzania Times, 22/07/2025). La connexion au Territoire douanier unique (SCT, nov. 2025) est une plateforme, pas un régime tarifaire."
+  },
+  "4_gazettement_ou_commencement_date": {
+   "reponse": "NON TROUVÉ",
+   "detail": "Aucun arrêté ministériel, aucune publication au Journal officiel de la RDC, aucun communiqué DATÉ du Secrétariat annonçant un gazettement ou un commencement. Le document du ministère du Commerce (« La RDC dans la ZLECAf : enjeux et perspectives », ZLECAF.pdf, archivé sha ad78f535…) est un article de vulgarisation signé du cabinet du Ministre : ratification et listes de concessions seulement — aucun barème, aucun arrêté, aucune date d'application. Le « Tarif des droits et taxes à l'importation intégrant le démantèlement tarifaire ZLECAf » est explicitement un PROJET, devant être « voté au Parlement et promulgué sous forme de loi tarifaire » (texte DGDA via cache, non daté ; page 404 le 27/09/2026)."
+  },
+  "5_preuves_application_import": {
+   "reponse": "NON",
+   "detail": "Aucune preuve d'importation sous préférences ZLECAf. Au GTI : la RDC figure sur les listes de participants (répertoire FACTSHEET du Secrétariat), mais elle ne figurait pas parmi les 10 États commerçant effectivement (tralac FAQ 05/2025) et le GTI a été clôturé en avril 2025 ; en Afrique centrale, seuls le Cameroun et le Rwanda ont commercé (CEA, déc. 2025)."
+  }
+ },
+ "instrument_eac": {
+  "non_applicable": "La RDC étant hors union douanière effective (TEC non appliqué) et ayant déposé une offre distincte, l'avis EAC/321/2022 ne lui est pas transposable : c'est précisément pourquoi l'offre congolaise individuelle ne peut pas être servie par le barème EAC."
+ },
+ "sources_archivees": {
+  "article_ministere_commerce": {
+   "texte_extrait": "sources/COD_commerce_gouv_zlecaf_article.pdf",
+   "sha256": "ad78f535de822fdf08f7fd006c3801e8dffed1a33958177c5d5d19204c8eaa1f"
+  },
+  "offre_individuelle_extrait": {
+   "texte_extrait": "sources/COD_offre_individuelle_extrait.txt",
+   "sha256": "e7ab3d74e4a5fed1ada576c4dbf7608b2035f54c1b6ed432cd0758ed67d49ab2"
+  }
+ },
+ "recherches_consignees": [
+  "2026-09-27 — dgda.cd : DNS SERVFAIL (curl + Jina) ; CDX archive.org : 15 URL archivées, aucune page tarif.",
+  "2026-09-27 — mail.commerce.gouv.cd/lib/ZLECAF.pdf : téléchargé et lu (8 p., article de vulgarisation, archivé).",
+  "2026-09-27 — au-afcfta.org countries-report/drc : rapports services seulement (xlsx 11/2022 ; Status_coverage.xlsx 404) ; FACTSHEET 01/2025 introuvable en ligne (404 sur les chemins testés).",
+  "2026-09-27 — e-Tariff Book : statut « soumis et vérifié » de la RDC non vérifiable (API non documentée, 404 sur les endpoints testés).",
+  "2026-09-27 — presse et rapports de repérage datés : USDA GAIN 05/2022 ; ECDPM DP 341 (2023) ; The EastAfrican 13/07/2024 ; Tanzania Times 22/07/2025 ; CEA déc. 2025 ; Habari Network 15/11/2025 (SCT).",
+  "2026-09-27 — LibreGrandLac (texte DGDA, via cache Exa ; page 404) : le tarif intégrant le démantèlement ZLECAf est un projet devant passer par une loi tarifaire.",
+  "2026-09-27 — primature.gouv.cd (Conseil national ZLECAf du 03/04/2025, via cache Exa ; page 404) : démantèlement progressif sur 10 ans des listes déposées."
+ ],
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — aucun acte national d'application ; le barème ZLECAf congolais reste un projet de loi",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste congolaise d'origines admises",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucun barème de la RDC comme destination ; l'offre individuelle déposée n'est pas publiée ligne à ligne par la DGDA",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "Règle B NON satisfaite et indices concordants de NON-application : TEC EAC non appliqué, offre distincte déposée mais non publiée ligne à ligne, barème national au stade de projet, aucune source primaire datée de gazettement ou de commencement, aucune preuve d'importation. La RDC reste au NPF, niveau NON_APPLIQUE_PRESUME. AUCUN BRANCHEMENT.",
+ "ne_tranche_pas": [
+  "Le dépôt des listes de concessions (6 439 lignes) est un préalable, pas une application.",
+  "Le document du ministère du Commerce est de communication : il n'établit ni barème ni date.",
+  "La participation aux listes GTI ne prouve aucun commerce effectif congolais (absente des 10 « actively trading »)."
+ ],
+ "remaining_work": [
+  "Reprendre dgda.cd quand joignable : chercher la loi tarifaire intégrant le démantèlement ZLECAf et une publication ligne à ligne.",
+  "Suivre la progression de la loi tarifaire au Parlement congolais (projet DGDA).",
+  "Vérifier le statut de l'offre congolaise dans l'e-Tariff Book (API non documentée) et toute notification officielle de la RDC au Secrétariat."
+ ]
+}
