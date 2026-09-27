@@ -38,6 +38,10 @@
   "offre_individuelle_extrait": {
    "texte_extrait": "sources/COD_offre_individuelle_extrait.txt",
    "sha256": "e7ab3d74e4a5fed1ada576c4dbf7608b2035f54c1b6ed432cd0758ed67d49ab2"
+  },
+  "autres_groupements": {
+   "texte_extrait": "sources/COD_autres_groupements_extrait_2026-09-27.txt",
+   "sha256": "f9a62dc1116d561bcbbf40494de942a713eadbe9f4c1faa398c86fb78a4f0c8a"
   }
  },
  "recherches_consignees": [
@@ -65,5 +69,13 @@
   "Reprendre dgda.cd quand joignable : chercher la loi tarifaire intégrant le démantèlement ZLECAf et une publication ligne à ligne.",
   "Suivre la progression de la loi tarifaire au Parlement congolais (projet DGDA).",
   "Vérifier le statut de l'offre congolaise dans l'e-Tariff Book (API non documentée) et toute notification officielle de la RDC au Secrétariat."
- ]
+ ],
+ "autres_groupements_economiques": {
+  "note": "Vérification demandée par le propriétaire (27/09/2026) : la RDC appartient à plusieurs blocs régionaux — vérifier si l'un d'eux établit une application tarifaire susceptible de se confondre avec la ZLECAf.",
+  "comesa": "MEMBRE. Régime Simplifié du Commerce (STR) : décret interministériel du 10/03/2025 (communiqué COMESA du 17/04/2025, lu, extrait archivé) — franchise de droits de douane limitée aux produits éligibles du STR pour les petits commerçants transfrontaliers. Pas un démantèlement ZLECAf, pas de barème ligne à ligne. NB : le moteur traite COMESA comme zone de libre-échange NON automatique (les listes sensibles du bloc ne sont pas connues du calculateur) — la RDC reste donc au NPF vis-à-vis des partenaires COMESA hors ZLECAf.",
+  "sadc": "MEMBRE, mais accession à la ZLELibre SADC EN COURS : réunions de haut niveau de Kinshasa (27/04-01/05/2026, communiqué SADC du 30/04/2026, lu, extrait archivé) — « draft roadmap to guide the DRC's accession process ». La RDC n'appartient PAS encore à la zone de libre-échange SADC.",
+  "eac": "MEMBRE depuis 2022 ; TEC NON appliqué (bandes nationales 0/5/10/20 % ≠ CET) et offre ZLECAf distincte de celle de l'EAC — voir fiche.",
+  "ceeac": "MEMBRE historique ; aucune zone de libre-échange opérationnelle dotée d'un barème.",
+  "conclusion": "Aucun de ces groupements n'établit une application ZLECAf congolaise : le STR COMESA est sectoriel (petits commerçants), l'accession SADC est en cours, le TEC EAC n'est pas appliqué. Le niveau NON_APPLIQUE_PRESUME est maintenu."
+ }
 }
