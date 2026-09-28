@@ -361,7 +361,23 @@ def _liquider(
                     ),
                 }
             else:
-                droit = dict(droit, taux=remise.get("taux"), specifique=remise.get("specifique"))
+                # La remise remplace le droit entier, pas seulement ses
+                # composantes : composé, plafond et verbatim de la colonne
+                # préférentielle voyagent avec — un composé sans règle de
+                # départage reste REGLE_COMPOSEE_NON_ETABLIE (jamais un
+                # montant), et le plafond appliqué est celui de la colonne
+                # préférentielle, jamais celui du NPF.
+                droit = dict(
+                    droit,
+                    taux=remise.get("taux"),
+                    specifique=remise.get("specifique"),
+                    compose=remise.get("compose", False),
+                    regle_composee=(
+                        remise.get("regle_composee") if remise.get("compose") else None
+                    ),
+                    expression_brute=remise.get("expression_brute"),
+                    plafond_ad_valorem_pct=remise.get("plafond_ad_valorem_pct"),
+                )
                 ligne["taux_pct"] = droit["taux"]
                 ligne["regime_applique"] = "preference"
 
@@ -389,8 +405,11 @@ def _liquider(
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")
-        if taux == 0 and specifique is None and isinstance(droit.get("assiette"), str) and (
-            droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+")
+        if (
+            taux == 0
+            and specifique is None
+            and isinstance(droit.get("assiette"), str)
+            and (droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+"))
         ):
             # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
             # particulier sur la base FOB des pays SACU : une franchise

@@ -1,0 +1,16 @@
+ARCHIVE DE RECHERCHE — newsletter officielle du dtic (mars 2026), lue via Jina Reader le 27/09/2026
+URL : https://www.thedtic.gov.za/wp-content/uploads/Newsletter-on-the-AfCFTA-March-2026.pdf
+(le téléchargement direct échoue : certificat TLS du domaine non conforme pour
+python-urllib — lecture via Jina Reader, sans contournement)
+
+VERBATIM :
+« Active Implementation: 25 countries have started preferential trade on 90%
+coverage of tariff books. »
+« Market Note: South Africa's new market access focuses on 14 non-SADC countries,
+as trade with SADC partners continues under existing protocols. »
+« South Africa gazetted the Southern African Customs Union (SACU) [Schedule] on
+26 January 2024 and officially launched preferential trade on 31 January 2024. »
+« Trade Balance (Jan 2024 – Dec 2025) • Total Exports: R2.3 billion … Top
+Destinations: Ghana, Kenya, Egypt, Rwanda, and Morocco. • Total Imports: R1.8
+billion … »
+« 4 countries, namely Benin, Libya, South Sudan and Sudan are yet to ratify. »

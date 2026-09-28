@@ -44,11 +44,31 @@ def _colonne_de_la_position(position: Dict[str, Any]) -> Optional[Dict[str, Any]
     if isinstance(valeur, (int, float)):
         return {"taux": float(valeur)}
     if isinstance(valeur, dict):
+        if (
+            valeur.get("compose")
+            and valeur.get("taux") is not None
+            and valeur.get("specifique") is not None
+        ):
+            # Droit composé (« 40% or 240c/kg ») : les deux composantes
+            # sortent ; le moteur refuse de liquider sans règle de départage
+            # au lieu de servir le seul ad valorem.
+            return {
+                "taux": float(valeur["taux"]),
+                "specifique": valeur["specifique"],
+                "compose": True,
+                "expression_brute": valeur.get("expression_brute") or "",
+            }
         if valeur.get("taux") is not None:
             return {"taux": float(valeur["taux"])}
         specifique = valeur.get("specifique")
         if isinstance(specifique, dict) and specifique.get("montant") is not None:
-            return {"taux": None, "specifique": specifique}
+            col = {"taux": None, "specifique": specifique}
+            # « 180c/kg with a maximum of 38,4 % » : la borne voyage avec la
+            # colonne — jamais le plafond du NPF à sa place.
+            if valeur.get("plafond_ad_valorem_pct") is not None:
+                col["plafond_ad_valorem_pct"] = float(valeur["plafond_ad_valorem_pct"])
+                col["expression_brute"] = valeur.get("expression_brute") or ""
+            return col
     return None
 
 
@@ -151,20 +171,70 @@ def taux_preferentiels(
     if union:
         return union
 
+    if destination_iso3.upper() == "ZAF":
+        # Défaut corrigé (règle ZAF) : le socle portait la colonne AfCFTA de
+        # la ZAF sans contrôler l'origine. La liste des partenaires et leurs
+        # dates d'entrée viennent de la General Note O du Schedule No. 1 —
+        # même contrôle que le chemin historique.
+        from services.zlecaf_schedule_zaf import (
+            zaf_partner_active,
+            zaf_suspension_active,
+        )
+
+        origine_zaf = (origine_iso3 or "").upper()
+        if zaf_suspension_active(origine_zaf, hs_code):
+            # Suspension unilatérale (ex. R.6594 : thé 0902.40 du Kenya, à
+            # partir du 12/09/2025) — NPF, avec la notice.
+            return {
+                "applique": False,
+                "regime": "ZLECAF",
+                "statut": "PREFERENCE_SUSPENDUE",
+                "note": (
+                    "Préférence ZLECAf suspendue par l'Afrique du Sud pour "
+                    "cette ligne (Notice R.6594, GG 53334 du 12/09/2025) — "
+                    "taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
+        if not zaf_partner_active(origine_zaf):
+            return {
+                "applique": False,
+                "regime": "ZLECAF",
+                "statut": "PENDING_PARTNER",
+                "note": (
+                    "ZLECAf ratifié mais échanges préférentiels pas encore "
+                    "activés avec l'Afrique du Sud pour cette origine "
+                    "(General Note O du Schedule No. 1) — taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
+
     from services.zlecaf_implementation_registry import implementation_decision
 
-    decision = implementation_decision(destination_iso3, origine_iso3)
+    if destination_iso3.upper() == "ZAF":
+        # L'Afrique du Sud échappe au registre, comme dans le chemin
+        # historique : son application est établie par les Notices R. du
+        # Schedule No. 1 (General Note O), pas par la règle B EAC. La branche
+        # ZAF ci-dessous sert le même taux que l'historique.
+        decision = None
+    else:
+        decision = implementation_decision(destination_iso3, origine_iso3)
     resultat = {
         "applique": False,
         "regime": "ZLECAF",
-        "statut": decision["status"],
-        "note": decision["note"],
+        "statut": decision["status"] if decision else "PENDING_PARTNER",
+        "note": decision["note"] if decision else "",
         "taux": {},
         "perimetre": {},
     }
-    if not decision.get("applied"):
+    if decision is not None and not decision.get("applied"):
         return resultat
 
+    # Pour la ZAF, la colonne socle ne doit JAMAIS être servie sans le
+    # contrôle d'origine (effectué ci-dessus) : la branche ZAF sert le même
+    # résolveur que l'historique.
     taux_dd = _colonne_de_la_position(position)
     origine_taux = "colonne préférentielle de la position (socle)"
 
@@ -277,6 +347,21 @@ def taux_preferentiels(
                 table[code] = {"taux": 0.0}
                 perimetre[code] = definition
 
+    if destination_iso3.upper() == "ZAF":
+        # La préférence est servie : le statut reflète l'application, avec la
+        # source (General Note O) et la date d'entrée du partenaire.
+        from services.zlecaf_schedule_zaf import DATES_ENTREE_ZAF
+
+        resultat["statut"] = "APPLIED"
+        # L'origine est normalisée en majuscules une seule fois (origine_zaf,
+        # en tête de la branche ZAF) ; si le corridor est actif, sa date
+        # existe dans DATES_ENTREE_ZAF — aucune valeur générique n'est inventée.
+        resultat["note"] = (
+            "Préférence ZLECAf accordée par l'Afrique du Sud à "
+            f"{origine_zaf} depuis le {DATES_ENTREE_ZAF[origine_zaf]} "
+            "(General Note O du Schedule No. 1, Customs and Excise Act) — "
+            "colonne AfCFTA du socle."
+        )
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat
 
