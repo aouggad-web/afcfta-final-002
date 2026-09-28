@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-28T12:33:22.800347+00:00",
+  "construit_le": "2026-09-28T12:49:08.317575+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -153,7 +153,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BWA_tariffs.json",
       "source_sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
-      "socle_sha256": "cb94a8b9fbe1bbf99b1231d9ad532161ec3b7e9a39960a5f8306860997fe7753",
+      "socle_sha256": "b66e085e114560dc5625eaf9a12bed4e9ca48c8b945c2ee53e9f2872cb3a1678",
       "collecte": "2026-08-29T13:26:22.991310",
       "etat": "PARTIEL",
       "familles": [
@@ -165,7 +165,7 @@
         "droits_liquidables": 8494,
         "positions_liquidables": 8494,
         "preferentiels": 42945,
-        "preferentiels_specifiques": 615,
+        "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 1,
@@ -966,7 +966,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LSO_tariffs.json",
       "source_sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
-      "socle_sha256": "b933f9995dfdae03c7faeb4af1153dd15fd8b804361ad8f8ebd5e8f33eb660ab",
+      "socle_sha256": "d8a693d976ee2e91209801a2f305cca08e60c25297b4bf261ff0a621aeed691f",
       "collecte": "2026-08-29T13:26:24.395497",
       "etat": "PARTIEL",
       "familles": [
@@ -978,7 +978,7 @@
         "droits_liquidables": 8494,
         "positions_liquidables": 8494,
         "preferentiels": 42945,
-        "preferentiels_specifiques": 615,
+        "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 1,
@@ -1261,7 +1261,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NAM_tariffs.json",
       "source_sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
-      "socle_sha256": "9004d3231b8c7359db9bff313e4607300c45caacd787c9eb4dec1776cc237822",
+      "socle_sha256": "5edd18b82cb05cb50d85cf64ac55a9563f07d0122cf28dedbe9915b3f4b709bc",
       "collecte": "2026-08-29T13:26:27.028702",
       "etat": "PARTIEL",
       "familles": [
@@ -1273,7 +1273,7 @@
         "droits_liquidables": 8494,
         "positions_liquidables": 8494,
         "preferentiels": 42945,
-        "preferentiels_specifiques": 615,
+        "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 1,
@@ -1624,7 +1624,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SWZ_tariffs.json",
       "source_sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
-      "socle_sha256": "b6b75d19d99b97fd7bae630448740f9e3972d807faf58da47e6c9c164524e42d",
+      "socle_sha256": "6664ad012cac2a438a7d49fbd9d7a066378d6b2b86a71ad02fb7f4f22cf1de45",
       "collecte": "2026-08-29T13:26:25.757181",
       "etat": "PARTIEL",
       "familles": [
@@ -1636,7 +1636,7 @@
         "droits_liquidables": 8494,
         "positions_liquidables": 8494,
         "preferentiels": 42945,
-        "preferentiels_specifiques": 615,
+        "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 1,
@@ -1659,7 +1659,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SYC_tariffs.json",
       "source_sha256": "c99030a8bf2eab13d6710a1109c00a0991417be3dcecea7a8435b45622fd92ef",
-      "socle_sha256": "f1bc375361a59e30714f83671ccdfb858d4d5701c99cb63388ea3fb79479da60",
+      "socle_sha256": "14c80c849818377b5ba646180e5cc1d7a0ca235e77538a8a9b1918b29147d6ca",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [
@@ -1671,7 +1671,7 @@
         "droits_liquidables": 6006,
         "positions_liquidables": 6006,
         "preferentiels": 90049,
-        "preferentiels_specifiques": 2673,
+        "preferentiels_specifiques": 2700,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 13,
