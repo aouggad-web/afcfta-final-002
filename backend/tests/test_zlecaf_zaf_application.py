@@ -136,3 +136,67 @@ def test_f_le_socle_donne_ne_servit_pas_le_nigeria_avant_son_entree(monkeypatch,
         assert decision["taux"]["DD"]["taux"] == 2.0
     else:
         assert decision["taux"] == {}
+
+
+def test_g_la_suspension_r6594_suit_sa_date_et_son_origine():
+    """Suspension unilatérale (R.6594, GG 53334, 12/09/2025) : thé 0902.40 du
+    Kenya suspendu à partir du 12/09/2025 ; pas avant ; pas pour une autre
+    origine ; pas pour une autre ligne."""
+    from services.zlecaf_schedule_zaf import zaf_suspension_active
+
+    assert zaf_suspension_active("KEN", "0902.40", datetime.date(2025, 9, 11)) is False
+    assert zaf_suspension_active("KEN", "0902.40", datetime.date(2025, 9, 12)) is True
+    assert zaf_suspension_active("KEN", "09024000", datetime.date(2026, 9, 27)) is True
+    # Le café (0901) n'est pas suspendu.
+    assert zaf_suspension_active("KEN", "0901", datetime.date(2026, 9, 27)) is False
+    # La suspension ne vise que le Kenya.
+    assert zaf_suspension_active("EGY", "0902.40", datetime.date(2026, 9, 27)) is False
+
+
+@besoin_socle
+def test_h_le_the_kenyan_suspends_vers_le_npf_avec_la_notice():
+    """Socle : thé 0902.40 du Kenya = NPF avec la note citant R.6594."""
+    position, _ = socle.position("ZAF", "09024000")
+    decision = taux_preferentiels(position, "ZAF", "KEN", "09024000")
+    assert decision["applique"] is False
+    assert decision["taux"] == {}
+    assert "R.6594" in decision["note"]
+
+
+def test_h_bis_le_chemin_historique_porte_la_meme_notice_de_suspension():
+    """Historique (résolveur de contexte) : même note R.6594, préférence non
+    appliquée."""
+    from services.authentic_tariff_service import resolve_zlecaf_context
+
+    ctx = resolve_zlecaf_context("ZAF", "KEN", "090240", 10.0, None)
+    assert ctx["preference_applied"] is False
+    assert "R.6594" in ctx["trade_regime_note"]
+
+
+@besoin_socle
+def test_i_une_ligne_kenyane_non_suspendue_sert_le_taux_afcfta():
+    """Contraste : sur une ligne ad valorem non suspendue (72191490), le
+    Kenya reçoit bien le taux AfCFTA (2 % contre un NPF de 10 %) — le même
+    dans les deux chemins."""
+    position, _ = socle.position("ZAF", CODE)
+    soc = taux_preferentiels(position, "ZAF", "KEN", CODE)
+    assert soc["applique"] is True and soc["taux"]["DD"]["taux"] == 2.0
+    hist = calculate_import_taxes(
+        "ZAF", CODE, 10000, apply_zlecaf=True, origin_country="KEN", fob_value=10000
+    )
+    assert hist["rates"]["effective_zlecaf_rate_pct"] == 2.0
+
+
+@besoin_socle
+def test_j_le_cafe_kenyan_sert_son_droit_specifique_afcfta():
+    """Le café 0901 porte un droit SPÉCIFIQUE dans la colonne AfCFTA de SARS
+    (2,4 c/kg) : servi tel quel (jamais aplati en ad valorem), sans
+    suspension."""
+    position, _ = socle.position("ZAF", "09012100")
+    decision = taux_preferentiels(position, "ZAF", "KEN", "09012100")
+    assert decision["applique"] is True
+    assert decision["statut"] == "APPLIED"
+    dd = decision["taux"]["DD"]
+    assert dd["taux"] is None
+    assert dd["specifique"]["brut"] == "2,4c/kg"
+    assert "R.6594" not in decision["note"]  # pas une suspension : un droit spécifique

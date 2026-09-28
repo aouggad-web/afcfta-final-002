@@ -156,8 +156,26 @@ def taux_preferentiels(
         # la ZAF sans contrôler l'origine. La liste des partenaires et leurs
         # dates d'entrée viennent de la General Note O du Schedule No. 1 —
         # même contrôle que le chemin historique.
-        from services.zlecaf_schedule_zaf import zaf_partner_active
+        from services.zlecaf_schedule_zaf import (
+            zaf_partner_active,
+            zaf_suspension_active,
+        )
 
+        if zaf_suspension_active(origine_iso3, hs_code):
+            # Suspension unilatérale (ex. R.6594 : thé 0902.40 du Kenya, à
+            # partir du 12/09/2025) — NPF, avec la notice.
+            return {
+                "applique": False,
+                "regime": "ZLECAF",
+                "statut": "PREFERENCE_SUSPENDUE",
+                "note": (
+                    "Préférence ZLECAf suspendue par l'Afrique du Sud pour "
+                    "cette ligne (Notice R.6594, GG 53334 du 12/09/2025) — "
+                    "taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
         if not zaf_partner_active(origine_iso3):
             return {
                 "applique": False,
@@ -196,7 +214,7 @@ def taux_preferentiels(
     # Pour la ZAF, la colonne socle ne doit JAMAIS être servie sans le
     # contrôle d'origine (effectué ci-dessus) : la branche ZAF sert le même
     # résolveur que l'historique.
-    taux_dd = None if destination_iso3.upper() == "ZAF" else _colonne_de_la_position(position)
+    taux_dd = _colonne_de_la_position(position)
     origine_taux = "colonne préférentielle de la position (socle)"
 
     if taux_dd is None and destination_iso3.upper() in DESTINATIONS_A_CALENDRIER_NATIONAL:
@@ -253,36 +271,6 @@ def taux_preferentiels(
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Barème ZLECAf KEN indisponible : %s", exc)
 
-    elif taux_dd is None and destination_iso3.upper() == "ZAF":
-        # L'Afrique du Sud applique le barème ZLECAf (SARS Schedule 1 Part 1,
-        # colonne AfCFTA, gazetté le 26/01/2024) pour les origines non-SACU/
-        # SADC dont l'avis est entré en vigueur (General Note O — même
-        # contrôle et même résolveur que le chemin historique, pour que les
-        # deux chemins servent le même taux). Le plancher NPF s'applique
-        # comme pour les autres destinations : une préférence ne dépasse
-        # jamais le NPF du socle.
-        try:
-            from services.official_preferential_rates import (
-                resolve_official_preferential_rate,
-            )
-            from services.zlecaf_schedule_zaf import zaf_partner_active
-
-            if zaf_partner_active(origine_iso3):
-                officiel = resolve_official_preferential_rate(destination_iso3, hs_code)
-                if officiel and officiel.get("ad_valorem_rate_pct") is not None:
-                    taux = officiel["ad_valorem_rate_pct"]
-                    npf = _taux_npf(position, "DD")
-                    if npf is not None and taux > npf:
-                        taux = npf
-                    taux_dd = {"taux": taux}
-                    origine_taux = (
-                        f"SARS Schedule 1 Part 1, colonne AfCFTA "
-                        f"({officiel.get('source_title')}, colonne "
-                        f"{officiel.get('source_column')})"
-                    )
-        except Exception as exc:  # pragma: no cover - dépendance optionnelle
-            logger.warning("Barème ZLECAf ZAF indisponible : %s", exc)
-
     elif taux_dd is None and destination_iso3.upper() == "MAR":
         # Le tarif marocain ne porte pas de colonne ZLECAf au socle : le barème
         # vient de l'e-Tariff Book, sélectionné par les listes P1/P2 de la
@@ -338,6 +326,18 @@ def taux_preferentiels(
                 table[code] = {"taux": 0.0}
                 perimetre[code] = definition
 
+    if destination_iso3.upper() == "ZAF":
+        # La préférence est servie : le statut reflète l'application, avec la
+        # source (General Note O) et la date d'entrée du partenaire.
+        from services.zlecaf_schedule_zaf import DATES_ENTREE_ZAF
+
+        resultat["statut"] = "APPLIED"
+        resultat["note"] = (
+            "Préférence ZLECAf accordée par l'Afrique du Sud à "
+            f"{origine_iso3} depuis le {DATES_ENTREE_ZAF.get(origine_iso3, '31 janvier 2024')} "
+            "(General Note O du Schedule No. 1, Customs and Excise Act) — "
+            "colonne AfCFTA du socle."
+        )
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat
 

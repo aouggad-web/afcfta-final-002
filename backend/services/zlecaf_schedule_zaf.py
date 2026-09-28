@@ -35,6 +35,7 @@ SACU, pas sous la ZLECAf ; ils sont volontairement exclus de cette liste.
 
 from __future__ import annotations
 
+import re
 from datetime import date
 
 # ISO3 -> date d'entrée en vigueur de l'avis qui a ajouté le partenaire.
@@ -63,11 +64,38 @@ DATES_ENTREE_ZAF = {
 ACTIVE_PARTNERS_ZAF = frozenset(DATES_ENTREE_ZAF)
 
 
+#: Suspensions unilatérales de la préférence, par la ZAF, à partir d'une
+#: date — Notice R.6594 (GG 53334, 12/09/2025) : traitement préférentiel
+#: suspendu sur le thé 0902.40 importé du Kenya. (Code partenaire, préfixe
+#: de sous-position HS) -> date d'effet.
+SUSPENSIONS_ZAF = {
+    ("KEN", "0902.40"): "2025-09-12",
+}
+
+
+def zaf_suspension_active(origin_iso3: str, hs_code: str, jour: date | None = None) -> bool:
+    """True si la préférence est SUSPENDUE pour cette origine/ligne à la date
+    donnée (aujourd'hui par défaut) : le code HS commence par la
+    sous-position suspendue et la date d'effet est passée."""
+    origine = (origin_iso3 or "").upper()
+    for (pays, sous_position), date_effet in SUSPENSIONS_ZAF.items():
+        if origine != pays:
+            continue
+        if not re.sub(r"\D", "", hs_code or "").startswith(re.sub(r"\D", "", sous_position)):
+            continue
+        if jour is None:
+            jour = date.today()
+        annee, mois, jour_eff = (int(x) for x in date_effet.split("-"))
+        if jour >= date(annee, mois, jour_eff):
+            return True
+    return False
+
+
 def zaf_partner_active(origin_iso3: str, jour: date | None = None) -> bool:
     """True si la préférence ZLECAf sud-africaine vaut pour ce partenaire à
     la date donnée (aujourd'hui par défaut) : le partenaire doit figurer à
     la General Note O ET la date d'entrée en vigueur de son avis de
-    ceint être passée."""
+    entrée en vigueur soit passée."""
     date_entree = DATES_ENTREE_ZAF.get((origin_iso3 or "").upper())
     if date_entree is None:
         return False

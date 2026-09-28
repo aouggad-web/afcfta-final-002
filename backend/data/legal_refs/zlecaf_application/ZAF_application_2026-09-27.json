@@ -35,7 +35,7 @@
    "implementation_code": "DATES_ENTREE_ZAF (services/zlecaf_schedule_zaf.py) : ISO3 -> date d'entrée en vigueur de l'avis ; zaf_partner_active(origin, jour) contrôle l'origine ET la date ; ACTIVE_PARTNERS_ZAF conservé (frozenset des clés).",
    "archives": {
     "r5879_morocco_burundi_uganda": {
-     "fichier": "sources/ZAF_r5879_gg52150_morocco_burundi_uganda_2025-02-21.pdf",
+     "fichier": "sources/ZAF_r5879_gg_52150_2025-02-21.pdf",
      "sha256": "83f8c1776cdcfea70ab345be14b1aacdb8ee0d3cf4c52b667538695b1f25e6ec"
     },
     "r6233_gambie": {
@@ -79,7 +79,7 @@
    "sha256": "dfeb13bcad0ead0ed63f882124844646ab4fd4d3fb3a338a6a84f4552435b34a"
   },
   "r5879_morocco_burundi_uganda": {
-   "texte_extrait": "sources/ZAF_r5879_gg52150_morocco_burundi_uganda_2025-02-21.pdf",
+   "texte_extrait": "sources/ZAF_r5879_gg_52150_2025-02-21.pdf",
    "sha256": "83f8c1776cdcfea70ab345be14b1aacdb8ee0d3cf4c52b667538695b1f25e6ec"
   },
   "r6233_gambie": {
