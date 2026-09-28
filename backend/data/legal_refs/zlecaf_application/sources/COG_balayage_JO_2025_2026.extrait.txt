@@ -1,0 +1,42 @@
+Balayage du Journal officiel de la République du Congo (Congo-Brazzaville)
+via gazettes.africa — exécuté le 2026-09-28
+===========================================================================
+MÉTHODE : téléchargement de chaque numéro PDF au motif
+https://archive.gazettes.africa/archive/cg/<annee>/cg-journal-officiel-dated-<AAAA-MM-JJ>-no-<N>.pdf
+puis extraction de texte (pypdf) et recherche de : ZLECA, ZLECAF,
+« libre-échange continentale », « Zone de libre », « préférentiel ».
+
+COUVERTURE : 2025 — 51 numéros lus (n° 1 au n° 51 sauf lacune non constatée) ;
+2026 — 42 numéros lus (n° 1 au n° 39 au 24/09/2026) ; 1 échec de lecture
+(n° 16 du 16/04/2026 : « Stream has ended unexpectedly », PDF tronqué —
+à re-télécharger). Total : 93 numéros, ~2 700 pages.
+
+RÉSULTATS POSITIFS (aucun acte de démantèlement tarifaire retrouvé) :
+- JO n° 14 du 03/04/2025 (60 p.) : UNIQUEMENT une mention de contexte
+  (« progrès dans la mise en œuvre de la ZLECAF ») dans un rapport de
+  politique économique CEMAC. Pas un acte d'application.
+- JO n° 29 du 16/07/2026 (37 p.) : Décret n° 2026-229 du 26/06/2026
+  relatif aux attributions du ministre du commerce, des approvisionnements
+  et de la consommation, chargé de la ZLECAf — titre 4 « Au titre de la
+  zone de libre-échange continentale africaine » : piloter l'opération-
+  nalisation, « accélérer l'harmonisation … pour la mise en œuvre
+  effective de l'accord ». C'est un décret d'ORGANISATION MINISTÉRIELLE,
+  pas un acte de démantèlement tarifaire. Archivé :
+  COG_JO_29_2026-07-16_decret_2026-229_attributions_ministre_ZLECAf.pdf
+  sha256 f13f3019981c9ecdc7ea5d91304b0b77fbf8254d149ddd4f6f06450c1d78c39a
+- JO n° 36 du 03/09/2026 (80 p.) : publication du Traité ATIDI (signé par
+  la ministre chargée de la ZLECAf) ; pas d'acte tarifaire ZLECAf.
+- JO n° 37 du 10/09/2026 (74 p.) : stratégie PNA (mention ZLECAf) et
+  décret n° 2026-317 (nominations au cabinet du ministre chargé de la
+  ZLECAf). Pas d'acte tarifaire ZLECAf.
+- Les occurrences de « préférentiel » en 2025 (n° 20, 27, 33, 44) visent
+  des régimes étrangers à la ZLECAf (traités Badea/Russie, transports des
+  personnes handicapées, droit OHADA).
+
+CONSTAT : sur la couverture 2025-2026 du JO congolais, AUCUN décret,
+arrêté ou circulaire de démantèlement tarifaire ZLECAf, et AUCUNE liste
+d'origines admises. La circulaire N°009/MCAZ/2025 « Application de la
+ZLECAf — Instructions aux services », affichée sur le site du ministère
+(commerce.gouv.cg/fr/textes-juridiques/), N'EST PAS publiée au JO ni
+téléchargeable via l'API du ministère (endpoint /api/documents : 13
+documents, la circulaire 009/MCAZ/2025 n'y figure pas).

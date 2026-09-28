@@ -1,0 +1,85 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "COG",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification établie sur source primaire (loi n° 2-2019 du 07/02/2019, J.O. n° 9-2019 lu intégralement) ; organisation ministérielle dédiée établie (décret n° 2026-229 lu au J.O. n° 29-2026) ; un balayage de 93 numéros du J.O. 2025-2026 n'a trouvé AUCUN acte de démantèlement tarifaire ; une circulaire « N°009/MCAZ/2025 — Application de la ZLECAf — Instructions aux services » est AFFICHÉE par le ministère du Commerce mais son texte n'est ni publié au J.O. ni téléchargeable",
+ "instrument": {
+  "id": "Loi n° 2-2019 du 7 février 2019",
+  "title_etabli": "autorisant la ratification de l'accord portant création de la zone de libre-échange continentale africaine",
+  "date": "2019-02-07",
+  "gazette": "Journal officiel de la République du Congo n° 9-2019, du jeudi 28 février 2019, p. 211",
+   "texte_extrait": "sources/COG_JO_9_2019_loi_2_2019_ratification_ZLECAf.pdf ; extrait lisible de la loi et du décret : sources/COG_loi_2_2019_et_decret_2019_32.texte-extrait.txt",
+  "sha256": "8c033e2f61ce0bc6db6643c8507491541caa87f7cc17e6cdaeb4dafb6aa24d97",
+  "sha256_extrait": "69d1603b22892c579f48c410d03373b91cf993e0908a4916b1d32278bbfb5d1b",
+  "verbatim": "Article premier : Est autorisée la ratification de l'accord portant création de la zone de libre-échange continentale africaine, dont le texte est annexé à la présente loi.",
+  "instrument_2": {
+   "id": "Décret n° 2019-32 du 7 février 2019",
+   "title_etabli": "portant ratification de l'accord portant création de la zone de libre-échange continentale africaine",
+   "gazette": "J.O. n° 9-2019, p. 249-250"
+  },
+  "instrument_3": {
+   "id": "Décret n° 2019-160 du 26 juin 2019",
+   "title_etabli": "portant création, attributions, organisation et fonctionnement de la commission nationale de suivi et d'évaluation de la mise en oeuvre de l'accord portant création de la zone de libre-échange continentale africaine (ZLECAf)",
+   "gazette": "J.O. du 11 juillet 2019, p. 691 (PDF lu : sources/COG_decret_2019_160_commission_ZLECAf.pdf, sha a6fbec0f…)"
+  },
+  "instrument_4": {
+   "id": "Décret n° 2026-229 du 26 juin 2026",
+   "title_etabli": "relatif aux attributions du ministre du commerce, des approvisionnements et de la consommation, chargé de la zone de libre-échange continentale africaine",
+   "gazette": "J.O. n° 29-2026 du 16/07/2026, p. 810-811 (PDF lu et archivé : sources/COG_JO_29_2026-07-16_decret_2026-229_attributions_ministre_ZLECAf.pdf, sha f13f3019…)",
+   "verbatim_titre_4": "Au titre de la zone de libre-échange continentale africaine : coordonner, sur le plan national, l'animation et la dynamisation des institutions et des organes de mise en œuvre… ; piloter l'opérationnalisation de la zone de libre-échange continentale africaine ; accélérer l'harmonisation des politiques, stratégies et prise des mesures appropriées pour la mise en œuvre effective de l'accord.",
+   "portee": "Décret d'ATTRIBUTIONS ministérielles : le pilotage est confié au ministère, mais aucun taux, calendrier ni liste d'origines n'y figure."
+  },
+  "instrument_en_attente": {
+   "id": "Circulaire N°009/MCAZ/2025",
+   "title_etabli": "Application de la ZLECAf — Instructions aux services",
+   "date": "2025",
+   "source_affichage": "https://www.commerce.gouv.cg/fr/textes-juridiques/ — fiche : « Instructions opérationnelles aux services douaniers et commerciaux pour la mise en œuvre des préférences tarifaires dans le cadre de la ZLECAf. »",
+   "statut": "AFFICHÉE MAIS INACCESSIBLE : les boutons « Consulter »/« Télécharger » sont des attributs sans lien (span, pas des <a>), et l'API du ministère (api.prod.commerce.gouv.cg/api/documents, 13 documents listés) ne contient PAS cette circulaire. Tentatives de slug direct en 404. Consignée comme INSTRUMENT_RAPPORTE_NON_PRIMAIRE pour le volet application."
+  }
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Texte de la circulaire N°009/MCAZ/2025 ; tout acte de démantèlement tarifaire ZLECAf au J.O. ; liste nominative des origines admises ; barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Ministère du Commerce, des Approvisionnements et de la Consommation, chargé de la ZLECAf — commerce.gouv.cg (textes juridiques + API documents)",
+    "resultat": "POSITIF D'EXISTENCE pour la circulaire 009/MCAZ/2025 (fiche officielle), NÉGATIF pour son texte : non téléchargeable, absente de l'API (13 documents dont la ratification J.O. 9/2019, le décret 2019-160, le guide ITC). Archivé : sources/COG_commerce_gouv_textes_juridiques_2026-09-28.extrait.txt (sha 4014f062…)."
+   },
+   {
+    "endroit": "J.O. de la République du Congo via gazettes.africa — balayage intégral 2025 (51 numéros) et 2026 (42 numéros, n° 1-39 au 24/09/2026)",
+    "resultat": "NÉGATIF pour tout acte de démantèlement tarifaire ZLECAf — méthode : téléchargement des PDF au motif archive.gazettes.africa/archive/cg/<annee>/cg-journal-officiel-dated-<date>-no-<n>.pdf, extraction pypdf, recherche « ZLECA », « libre-échange continentale », « préférentiel ». Détail complet dans sources/COG_balayage_JO_2025_2026.extrait.txt (sha b8b4a702…). 1 échec de lecture (n° 16 du 16/04/2026, PDF tronqué). Les seules occurrences ZLECAf sont : un rapport de politique économique CEMAC (J.O. 14/2025), le décret d'attributions 2026-229 (J.O. 29/2026), le traité ATIDI (J.O. 36/2026), une stratégie d'assainissement (J.O. 37/2026) et des nominations."
+   },
+   {
+    "endroit": "UNICONGO (patronat congolais) — page ZLECAf",
+    "resultat": "INDICE DE PRÉPARATION — atelier national de formation avancée sur les règles d'origine ZLECAf à Brazzaville du 29/09 au 03/10/2025 (OMD) : « La mise en oeuvre de la ZLECAF au Congo étant imminente selon le calendrier établi… ». Le patronat situe la mise en œuvre comme IMMINENTE, pas effective. Archivé : sources/COG_unicongo_atelier_roo_2025-10.extrait.txt (sha 48677630…)."
+   },
+   {
+    "endroit": "DGDDI (douanes congolaises, finances.gouv.cg)",
+    "resultat": "NÉGATIF — page de présentation lue : aucune circulaire ni note tarifaire ZLECAf publiée en ligne."
+   },
+   {
+    "endroit": "CIMAF/EMAC — l'acte CEMAC de révision du TEC et du Tarif Préfèrentiel Généralisé (cemac.int)",
+    "resultat": "CONTEXTE COMMUNAUTAIRE UNIQUEMENT — archivé avec note (sources/CEMAC_acte_revision_TEC_tarif_preferentiel_generalise_scan.pdf, sha 0e4122e3…) ; ne vaut pas instrument national et ne se confond pas avec la ZLECAf."
+   }
+  ],
+  "resultat": "MOITIÉ POSITIF : la ratification est PLEINEMENT établie sur sources primaires lues (loi 2-2019, décret 2019-32, décret 2019-160), et le dispositif institutionnel est récent et actif (ministre dédié par décret 2026-229 ; circulaire 009/MCAZ/2025 affichée). MAIS l'acte d'application tarifaire n'est PAS obtenu (circulaire introuvable, aucun acte au J.O. 2025-2026) et aucune liste nominative d'origines ni barème national n'existent en accès public. Le niveau NOTIFICATION_PARTENAIRES_REQUISE est retenu : le gazettage de l'application n'est pas établi, la liste des origines admises (si elle existe dans la circulaire) n'est pas publiée."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — ratification et institutions établies par sources primaires ; l'instrument d'application (circulaire 009/MCAZ/2025, « instructions aux services douaniers et commerciaux pour la mise en œuvre des préférences tarifaires ») est rapporté officiellement mais son texte n'est ni publié ni obtenu",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative publiée ; la circulaire pourrait en contenir une, mais elle n'est pas accessible",
+  "3_bareme_au_niveau_de_la_ligne": "ABSENT — aucun barème national ZLECAf publié ; l'offre CEMAC adoptée au niveau continental n'est pas nationalisée en ligne",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le contenu de la circulaire N°009/MCAZ/2025 : contient-elle des taux, un calendrier, une liste d'États admis ? Le texte manque pour le dire.",
+  "La date d'entrée en application effective du tarif préférentiel ZLECAf au Congo : la DGDDI ne publie rien, le J.O. 2025-2026 balayé ne porte aucun acte tarifaire.",
+  "L'articulation avec le TEC CEMAC révisé : un acte CEMAC ne vaut pas application nationale ZLECAf."
+ ],
+ "remaining_work": [
+  "Obtenir la circulaire N°009/MCAZ/2025 auprès du ministère du Commerce congolais (contact direct ou api.prod.commerce.gouv.cg) — c'est le document qui déterminera si le Congo applique le tarif préférentiel et à quels partenaires.",
+  "Re-télécharger le J.O. n° 16 du 16/04/2026 (PDF tronqué) pour compléter le balayage.",
+  "Vérifier la publication éventuelle de l'offre/répartition par listes au J.O. 2026 (n° 40 et suivants)."
+ ]
+}
