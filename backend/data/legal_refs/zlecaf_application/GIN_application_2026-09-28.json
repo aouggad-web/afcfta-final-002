@@ -1,0 +1,91 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GIN",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "chaîne de ratification vérifiée sur la base officielle du Journal Officiel SGG (décret D/2018/120/PRG/SGG du 20/07/2018, « Publié au JO 2018-07 ») ; JO 2018 n°07-08-09 archivé mais non extractible (scan sans OCR disponible) ; texte du décret transcrit par la source privée GuinéeLex et croisé avec la liste officielle SGG ; commission nationale CONAZLECAf vérifiée sur le JO officiel 2023-03 (arrêté A/2023/1090, texte intégral extrait) ; AUCUN acte tarifaire d'application, aucune liste d'origines ; offre CEDEAO (26/10/2021) archivée en OFFER_ONLY — pas un acte national.",
+ "instrument": {
+  "id": "Décret D/2018/120/PRG/SGG du 20 juillet 2018",
+  "title_etabli": "Portant ratification de l'accord portant création de la zone de libre-échange continentale africaine (mars 2018)",
+  "date": "2018-07-20",
+  "gazette": "Journal Officiel de la République de Guinée, n°2018-07 (base officielle SGG : « Publié au JO 2018-07 »)",
+  "texte_extrait": "sources/GIN_decret_D2018_120_ratification_et_CNZLECAF_texte-extrait.txt",
+  "sha256": "e974792a3a9a76036b78522ee16d21a377a68727eedb5f6ffa5fc619c68c589a",
+  "source_url": "https://journal-officiel.sgg.gov.gn/fr/recherche.html?field_titre=libre+échange+continentale (listing officiel) ; transcription : https://guineelex.com/decrets-arretes/d-2018-120-prg-sgg.html",
+  "pdf_jo_archive": "sources/GIN_JO_2018_n07-08-09_decret_D2018_120_ratification_ZLECAf.pdf (JO complet 2018 n°07-08-09, 64 pages, SCAN — pypdf n'en extrait aucune ligne ; OCR non disponible sur la machine, r.jina.ai rend 64 pages sans texte)",
+  "sha256_pdf_jo": "d336986a91cbc3c0dd4748b44177d937b9b07e74fc1f527c80396e110d3ecb19",
+  "verbatim_article_1er_transcription_guineelex": "Est ratifié l'Accord portant création de la Zone de Libre-Echange Continentale Africaine (mars 2018).",
+  "chain_de_ratification": [
+   "Loi L/2018/016/AN du 18 juin 2018 autorisant la ratification (base SGG : « Non publié au JO » ; transcription GuinéeLex : https://guineelex.com/lois/l-2018-016-an/ — « Texte intégral à paraître »)",
+   "Décret D/2018/119/PRG/SGG du 20 juillet 2018 portant promulgation de la loi L/2018/016/AN",
+   "Décret D/2018/120/PRG/SGG du 20 juillet 2018 portant ratification (Publié au JO 2018-07)"
+  ],
+  "instrument_institutionnel": {
+   "id": "Arrêté A/2023/1090/PM/SGG du 24 mars 2023",
+   "objet": "Portant modification de l'arrêté A/2018/5669/PM/CAB/SGG du 11 septembre 2018, relatif à la création, attributions, composition et fonctionnement de la Commission Nationale de la Zone de Libre Echange Continentale Africaine (CONAZLECAf)",
+   "gazette": "Journal Officiel 2023-03",
+   "pdf_archive": "sources/GIN_JO_2023_n03_arrete_A2023_1090_cn_zlecaf.pdf",
+   "sha256_pdf": "a151eb88dc11b180dbdbb212c8da0e35bebb1ca9ed6936a2532e20c6add4be56",
+   "texte_extrait": "sources/GIN_JO_2023_n03_arrete_A2023_1090_cn_zlecaf.pdf.texte-extrait.txt (JO 2023-03 complet, 200 pages extraites)",
+   "sha256_texte": "4579a93d13fd15477cc5e127077af5b895b8642f32e9347de8d65aa42d9091ea",
+   "verbatim_article_2": "La Commission Nationale de la Zone de Libre-Échange Continentale Africaine est un cadre consultatif et technique qui a pour objet, la conduite des négociations commerciales Internationales de la Guinée et particulièrement celles de la ZLECAf.",
+   "source_url": "https://journal-officiel.sgg.gov.gn/JO/2023/guinee-jo-2023-03.pdf"
+  }
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte tarifaire d'application ZLECAf (décret/arrêté/instruction douanière de démantèlement) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Journal Officiel officiel SGG — https://journal-officiel.sgg.gov.gn/fr/recherche.html (GET : field_titre, field_inkeyword, dates, types, thèmes)",
+    "resultat": "POSITIF pour la chaîne de ratification (4 textes listés : loi L/2018/016/AN non publiée au JO, décret D/2018/120 publié au JO 2018-07, arrêtés A/2018/5669 et A/2023/1090) ; NÉGATIF pour tout acte tarifaire d'application."
+   },
+   {
+    "endroit": "JO 2018 n°07-08-09 (PDF officiel, https://journal-officiel.sgg.gov.gn/JO/2018/guinee-jo-2018-07-08-09.pdf)",
+    "resultat": "ARCHIVÉ mais SCAN : 64 pages, extraction pypdf vide (63 caractères de couverture) ; r.jina.ai rend les 64 pages sans texte. Le décret D/2018/120 n'est PAS lisible sur le primaire archivé ; la transcription GuinéeLex (privée) est croisée avec le listing officiel SGG."
+   },
+   {
+    "endroit": "JO 2023-03 (PDF officiel, https://journal-officiel.sgg.gov.gn/JO/2023/guinee-jo-2023-03.pdf)",
+    "resultat": "POSITIF — texte intégral de l'arrêté A/2023/1090 extrait (CONAZLECAf, attributions : négociation, pas d'application tarifaire)."
+   },
+   {
+    "endroit": "Douane guinéenne et ministère du commerce — douane.gov.gn, douanes.gov.gn",
+    "resultat": "INACCESSIBLE — DNS en échec (HTTP 000), testé le 2026-09-28. Recherche DuckDuckGo site:gov.gn « libre échange continentale »/ZLECAf : AUCUN résultat."
+   },
+   {
+    "endroit": "gazettes.africa — https://gazettes.africa/gazettes/gn/2025 (via r.jina.ai)",
+    "resultat": "NÉGATIF — 404 : gazettes.africa ne couvre pas la Guinée (liste relevée le 2026-09-28)."
+   },
+   {
+    "endroit": "Statut officiel de ratification UA (archivé, sha 29b2fe2b…)",
+    "resultat": "POSITIF pour le dépôt : Guinea — signature 21/03/2018, ratification 31/07/2018, dépôt 16/10/2018."
+   },
+   {
+    "endroit": "Initiative du commerce guidé (GTI) — extrait archivé du Secrétariat ZLECAf dans le dépôt (sources/KEN_gti_secretariat_extrait_2026-09-27.txt)",
+    "resultat": "REFUTATION — « Rwanda is among eight state parties - Cameroon, Egypt, Ghana, Kenya, Mauritius, Rwanda, Tanzania and Tunisia » : la Guinée n'appartient PAS aux huit participants du GTI initial ; l'hypothèse « Guinée membre fondateur du GTI » est infirmée sur la source du Secrétariat."
+   },
+   {
+    "endroit": "Corroboration — liste de dépôt UA déjà versée au dépôt (sources/AU_liste_depot_2026-05-22.pdf, état au 22/05/2026)",
+    "resultat": "CONFIRMÉ — dates identiques pour GIN (ratification/dépôt : 31/07/2018 / dépôt 16/10/2018) ; aucune mise à jour des dépôts entre le 19/09/2023 et le 22/05/2026 pour ce pays."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : aucun acte tarifaire d'application et aucune liste nominative d'origines. La ratification est établie (listing officiel SGG + dépôt UA), mais le texte du décret de ratification n'est pas lisible sur le JO archivé (scan sans OCR) — transcription privée croisée."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — ratification établie (décret D/2018/120 du 20/07/2018, « Publié au JO 2018-07 » selon la base officielle SGG) et CONAZLECAf en vigueur (arrêté A/2023/1090, JO 2023-03, texte lu) ; AUCUN acte d'application tarifaire ; texte du décret non lisible sur primaire (scan)",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre régionale CEDEAO (adoptée 26/10/2021) archivée : backend/data/official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz (OFFER_ONLY) ; l'offre régionale n'est pas un acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le contenu exact du décret D/2018/120 repose sur une transcription privée (GuinéeLex) croisée avec le listing officiel SGG : le primaire scanné reste non OCRisé.",
+  "L'existence d'une instruction douanière interne (SYDONIA) ne peut être exclue : les sites douane.gov.gn/douanes.gov.gn sont hors ligne.",
+  "L'attribution de la Guinée à l'offre CEDEAO suit le cadre régional de négociation ; aucun texte national repéré ne le confirme expressément."
+ ],
+ "remaining_work": [
+  "OCRiser le JO 2018 n°07-08-09 (ou obtenir le décret D/2018/120 sur une autre source officielle) pour lire le décret de ratification sur primaire.",
+  "Retrouver un éventuel instrument d'application tarifaire (post-2018) au JO guinéen : balayer les sommaires JO 2018-2026 pour « démantèlement », « tarif préférentiel », « ZLECA ».",
+  "Réinterroger la douane guinéenne lorsque son site sera de nouveau en ligne."
+ ]
+}
