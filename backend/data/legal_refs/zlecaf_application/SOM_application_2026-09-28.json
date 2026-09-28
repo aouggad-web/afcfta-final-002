@@ -1,0 +1,61 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "SOM",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-28",
+ "evidence_level": "Ratification vérifiée sur primaire (dépôt de l'instrument le 04/09/2026 — communiqué officiel du Secrétariat ZLECAf, 50e État partie) ; AUCUN instrument d'application, aucun barème soumis, aucune configuration douanière — la séquence d'application est explicitement inachevée au 18/08/2026 (communiqué officiel du Secrétariat).",
+ "instrument": {
+  "id": "Instrument de ratification de l'Accord ZLECAf déposé le 4 septembre 2026 (50e État partie) — aucun acte national d'application",
+  "title_etabli": "Dépôt du seul instrument de ratification ; pas de gazettage, pas de calendrier tarifaire soumis, pas de notice douanière",
+  "date": "2026-09-04",
+  "gazette": "Aucune — la gazette fédérale somalienne n'a pas été consultable en ligne ; aucun texte national retrouvé",
+  "texte_extrait": "sources/SOM_secretariat_depot_ratification_2026-09-04.extrait.txt",
+  "sha256": "32a9c95e75b12999bd50d66f8e1e4fcd1eb3143c1b970e79365811fa134a1fab",
+  "verbatim_en": "« the Federal Republic of Somalia deposited its Instrument of Ratification of the Agreement Establishing the African Continental Free Trade Area (AfCFTA) on 4 September 2026, becoming the 50th State Party » — « 54 Signatories. 50 State Parties. »",
+  "traduction_fr": "« la République fédérale de Somalie a déposé son instrument de ratification de l'Accord instituant la ZLECAf le 4 septembre 2026, devenant le 50e État partie » — « 54 signataires. 50 États parties. »"
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application somalien (domestication du livre tarifaire, configuration des tarifs préférentiels par la douane) et liste nominative des origines admises.",
+  "ou": [
+   {
+    "endroit": "Secrétariat de la ZLECAf — communiqué « Somalia Becomes 50th State Party » (04/09/2026)",
+    "resultat": "RATIFICATION ÉTABLIE — dépôt le 04/09/2026. Archivé : sources/SOM_secretariat_depot_ratification_2026-09-04.extrait.txt."
+   },
+   {
+    "endroit": "Secrétariat de la ZLECAf — communiqué « From Ratification to the First Shipment » (Mogadiscio, 18/08/2026)",
+    "resultat": "NON-APPLICATION ÉTABLIE — le Secrétariat fixe la séquence encore à accomplir : dépôt de l'instrument ; DOMESTICATION du livre tarifaire électronique ; CONFIGURATION des tarifs préférentiels par l'administration douanière ; achèvement des concessions CAE. Le ministre du Commerce (17/08/2026) : « Five East African countries have already submitted their schedules. I would like Somalia to be the sixth. » — la Somalie n'a PAS soumis son calendrier. Archivé : sources/SOM_secretariat_visite_mogadiscio_2026-08-20.extrait.txt."
+   },
+   {
+    "endroit": "Livre tarifaire électronique officiel de la ZLECAf (API prod-afcfta-api.azurewebsites.net, /Region/GetRegions)",
+    "resultat": "NÉGATIF — la Somalie est absente des 52 entrées (aucun code SO) : aucun calendrier publié, ni national ni communautaire à son nom. Archivé : sources/ZLECAF_etariff_api_regions_2026-09-28.json."
+   },
+   {
+    "endroit": "Liste du dépositaire UA (au.int, arrêtée au 22/05/2026)",
+    "resultat": "COHÉRENT — Somalie : signature 21/03/2018, ni ratification ni dépôt à cette date ; le dépôt ultérieur du 04/09/2026 porte le total à 50 (49 + Somalie). Archivée : sources/AU_liste_depot_2026-05-22.pdf."
+   },
+   {
+    "endroit": "Recherche en somali (heshiiska ganacsiga xorta Afrika ; Wasaaradda Arrimaha Gudaha / ministère du Commerce)",
+    "resultat": "Repérage seulement — presse somalienne (Goobjoog 30/07/2026, Horseed) : adhésion officielle et approbation parlementaire ; aucune gazette ni notice douanière retrouvée. Sources secondaires, jamais de preuve."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points : aucun acte national d'application (la séquence dépôt → domestication du tarif → configuration douanière est explicitement inachevée au 18/08/2026) et aucune liste nominative d'origines. La non-application à l'importation est présumée au 28/09/2026, 24 jours après le dépôt."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON — pas de gazettage, pas de domestication du tarif ; seul l'instrument de ratification est déposé (04/09/2026)",
+  "2_liste_officielle_origines_reciproques": "NON — aucune liste ; le calendrier somalien n'est pas soumis",
+  "3_bareme_au_niveau_de_la_ligne": "NON — la Somalie est absente du livre tarifaire officiel de la ZLECAf ; aucun barème collecté",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La date effective de l'approbation parlementaire (octobre 2025, source presse non primarisée).",
+  "Le contenu du calendrier CAE auquel la Somalie pourrait adhérer en tant que Partenaire de la CAE : l'offre CAE (EAC) est celle des six membres ayant ratifié, pas celle de la Somalie.",
+  "L'existence éventuelle d'un texte de domestication postérieur au 18/08/2026 non publié en ligne (gazette fédérale somalienne non accessible en ligne)."
+ ],
+ "remaining_work": [
+  "Suivre la domestication du livre tarifaire et la configuration tarifaire de la douane somalienne annoncées comme étapes par le Secrétariat.",
+  "Obtenir la gazette fédérale somalienne portant la ratification ou la domestication (Bulletin officiel inaccessible en ligne ; tenter le ministère du Commerce et de l'Industrie à Mogadiscio).",
+  "Vérifier la soumission du calendrier somalien (6e de la CAE) et le collecter au moment où il sera publié."
+ ]
+}
