@@ -200,3 +200,64 @@ def test_j_le_cafe_kenyan_sert_son_droit_specifique_afcfta():
     assert dd["taux"] is None
     assert dd["specifique"]["brut"] == "2,4c/kg"
     assert "R.6594" not in decision["note"]  # pas une suspension : un droit spécifique
+
+
+@besoin_socle
+def test_m_le_compose_afcfta_020110_n_est_pas_liquide():
+    """020110 (Égypte, valeur FOB fournie) : la colonne AfCFTA porte
+    « 40% or 240c/kg » — composé sans règle de départage, comme le NPF : la
+    ligne reste REGLE_COMPOSEE_NON_ETABLIE, jamais un montant ad valorem de
+    40 %."""
+    from services.calcul import calculer
+
+    position, _ = socle.position("ZAF", "02011000")
+    table = taux_preferentiels(position, "ZAF", "EGY", "02011000")
+    dd = table["taux"]["DD"]
+    assert dd["compose"] is True
+    assert dd["expression_brute"] == "40% or 240c/kg"
+
+    resultat = calculer(position, 10000.0, valeur_fob=10000.0, taux_preferentiels=table["taux"])
+    ligne_dd = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    assert ligne_dd["statut"] == "REGLE_COMPOSEE_NON_ETABLIE"
+    assert ligne_dd["montant"] is None
+    assert any(m["motif"] == "REGLE_COMPOSEE_NON_ETABLIE" for m in resultat["preference"]["manques"])
+
+
+@besoin_socle
+def test_m_bis_le_plafond_afcfta_04021010_mord_a_384():
+    """04021010 (Égypte, 1 000 kg, FOB 1 000) : la colonne AfCFTA porte
+    « 180c/kg with a maximum of 38,4 % » — le spécifique (1,80 ZAR/kg ×
+    1 000 = 1 800) est borné par le plafond AFcfta de la colonne
+    (38,4 % × 1 000 = 384), jamais par celui du NPF (96 %)."""
+    from services.calcul import calculer
+
+    position, _ = socle.position("ZAF", "04021010")
+    table = taux_preferentiels(position, "ZAF", "EGY", "04021010")
+    dd = table["taux"]["DD"]
+    assert dd["taux"] is None
+    assert dd["specifique"]["brut"] == "180c/kg"
+    assert dd["plafond_ad_valorem_pct"] == 38.4
+
+    resultat = calculer(
+        position,
+        1000.0,
+        quantite=1000.0,
+        valeur_fob=1000.0,
+        taux_preferentiels=table["taux"],
+    )
+    ligne_dd = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    assert ligne_dd["statut"] == "CALCULE"
+    assert ligne_dd["montant"] == 384.0
+    assert ligne_dd["plafond_ad_valorem_pct"] == 38.4
+    assert ligne_dd["plafond_applique"] is True
+
+
+@besoin_socle
+def test_n_l_origine_minuscule_obtient_sa_vraie_date():
+    """« mar » (minuscule) : la note cite la date de R.5879 (2025-02-21), pas
+    une valeur générique."""
+    position, _ = socle.position("ZAF", "72191490")
+    decision = taux_preferentiels(position, "ZAF", "mar", "72191490")
+    assert decision["applique"] is True
+    assert decision["statut"] == "APPLIED"
+    assert "2025-02-21" in decision["note"]

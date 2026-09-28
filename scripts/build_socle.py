@@ -1152,7 +1152,29 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 # la forme : 181 lignes sud-africaines opposent un « 8c/kg » NPF
                 # à un « 3,2c/kg » AfCFTA. N'en garder que le taux perdrait le
                 # droit préférentiel de toutes ces positions.
-                if d["taux"] is None and d.get("specifique"):
+                if d["taux"] is not None and d.get("specifique"):
+                    # Droit COMPOSÉ dans une colonne préférentielle
+                    # (« 40% or 240c/kg » — 140 entrées AfCFTA du crawl SARS) :
+                    # les DEUX composantes se conservent, avec le verbatim.
+                    # Servir 40 % ad valorem seul remplacerait le droit composé
+                    # entier et nierait la liquider : c'est au moteur de
+                    # refuser faute de règle de départage
+                    # (REGLE_COMPOSEE_NON_ETABLIE), pas au socle d'amputer.
+                    prefs[regime] = {
+                        "taux": d["taux"],
+                        "specifique": lire_specifique(d["specifique"])
+                        or {
+                            "brut": str(d["specifique"]),
+                            "montant": None,
+                            "motif": "expression non lisible",
+                        },
+                        "compose": True,
+                        "expression_brute": d.get("expression_brute") or "",
+                    }
+                    if d.get("plafond_ad_valorem_pct") is not None:
+                        prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
+                    compteurs["preferentiels_specifiques"] += 1
+                elif d["taux"] is None and d.get("specifique"):
                     prefs[regime] = {
                         "taux": None,
                         "specifique": lire_specifique(d["specifique"])
@@ -1162,6 +1184,12 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                             "motif": "expression non lisible",
                         },
                     }
+                    # « 180c/kg with a maximum of 38,4 % » (colonne AfCFTA) : la
+                    # borne fait partie du droit — la perdre servirait le
+                    # spécifique sans plafond, là où la source en énonce un.
+                    if d.get("plafond_ad_valorem_pct") is not None:
+                        prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
+                        prefs[regime]["expression_brute"] = d.get("expression_brute") or ""
                     compteurs["preferentiels_specifiques"] += 1
                 elif d["taux"] is None and d.get("note"):
                     # UN TAUX ABSENT DOIT DIRE POURQUOI. La source mauricienne

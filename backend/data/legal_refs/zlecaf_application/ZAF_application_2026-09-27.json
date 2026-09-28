@@ -55,7 +55,7 @@
   "exclusions": "Membres de la SACU (Botswana, Lesotho, Namibie, Eswatini) : union douanière automatique (LIBRE_CIRCULATION 0 %), jamais la ZLECAf (FAQ dtic Q1, verbatim). Autres membres de la SADC : protocole SADC (non automatique dans le moteur — NPF tant que les listes sensibles ne sont pas connues).",
   "suspension": {
    "fait": "R.6594 (GG 53334, 12/09/2025) : suspension du traitement préférentiel du thé 0902.40 importé du Kenya (archivé, sha 98e0b529…).",
-   "moteur": "VÉRIFIÉ : le moteur n'en tient PAS compte — le jeu de données SARS n'est pas amputé de la ligne 0902.40 ; à traiter dans remaining_work (mécanisme de suspensions datées), sans le coder dans cette PR."
+   "moteur": "APPLIQUÉE depuis cette PR : SUSPENSIONS_ZAF (services/zlecaf_schedule_zaf.py) — la préférence suspendue sert le NPF dans les DEUX chemins de calcul, avec la notice citant R.6594 (testé : thé 0902.40 du Kenya = NPF ; ligne non suspendue = taux AfCFTA)."
   },
   "concordance": {
    "dtic_newsletter_mars_2026": "extrait archivé (sha f9a06b8c…) : « 25 countries have started preferential trade on 90% coverage » ; « gazetted the SACU [Schedule] on 26 January 2024 and officially launched preferential trade on 31 January 2024 » — concordance, pas preuve.",
@@ -119,7 +119,7 @@
   "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — colonne AfCFTA du Schedule No. 1 servie par le jeu de données SARS du dépôt (les deux chemins)",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
- "conclusion": "APPLIQUE : la ZAF applique le barème ZLECAf (hors SACU/SADC) depuis le 31/01/2024 — acte national gazetté, liste des origines datée (General Note O), barème ligne à ligne servis par les deux chemins de calcul. Les suspensions ponctuelles (thé kényan R.6594) ne sont pas encore traitées par le moteur : remaining_work.",
+ "conclusion": "APPLIQUE : la ZAF applique le barème ZLECAf (hors SACU/SADC) depuis le 31/01/2024 — acte national gazetté (Notices R.), liste des origines datée (General Note O), barème ligne à ligne servis par les deux chemins de calcul. Les droits composés (« X% or Yc/kg ») et plafonnés (« Yc/kg with a maximum of X% ») de la colonne AfCFTA sont conservés et traités comme le NPF (refus REGLE_COMPOSEE_NON_ETABLIE ; plafond de la colonne). La suspension R.6594 (thé 0902.40 du Kenya) est appliquée dans les deux chemins depuis cette PR.",
  "ne_tranche_pas": [
   "Le barème reste PROVISOIRE (PSTC, 90 %) ; l'offre finale SACU n'est pas encore adoptée par le Sommet UA.",
   "La General Note O permet une suspension unilatérale (thé kényan, R.6594) : les taux peuvent changer par Gazette.",
@@ -127,7 +127,7 @@
  ],
  "remaining_work": [
   "Sceller R.4281 (lignes tarifaires du GG 50045), R.4294 (correction), R.5622 et R.6710 (phasedowns).",
-  "Traiter les suspensions ponctuelles (R.6594 : thé 0902.40 du Kenya — le moteur ne l'ampute pas) : mécanisme de suspensions datées ou amputation du jeu de données.",
-  "Surveiller les nouvelles Notices d'inclusion et la future offre finale SACU (adoption Sommet UA attendue)."
+  "Surveiller les nouvelles Notices d'inclusion (General Note O) et la future offre finale SACU (adoption Sommet UA attendue).",
+  "Synchroniser le crawl du socle (23/09) avec le jeu de données SARS AfCFTA (06/08/2026) : certaines lignes (ex. 630800, AfCFTA nul dans le crawl) divergent entre les deux sources — le taux effectif reste identique (NPF), les métadonnées d'écart non."
  ]
 }

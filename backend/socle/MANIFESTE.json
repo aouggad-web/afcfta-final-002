@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-23T13:27:33.391386+00:00",
+  "construit_le": "2026-09-28T12:33:22.800347+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1883,7 +1883,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "c69466f9f50285c3354981ba7b4c23fc83dea2925753300cf42ec7e004de574c",
+      "socle_sha256": "8ddebacbb0f854aed678d4810f8716164233c8b8697b11a713668b91a6f83840",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1895,7 +1895,7 @@
         "droits_liquidables": 8494,
         "positions_liquidables": 8494,
         "preferentiels": 42945,
-        "preferentiels_specifiques": 615,
+        "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 1,

@@ -44,11 +44,31 @@ def _colonne_de_la_position(position: Dict[str, Any]) -> Optional[Dict[str, Any]
     if isinstance(valeur, (int, float)):
         return {"taux": float(valeur)}
     if isinstance(valeur, dict):
+        if (
+            valeur.get("compose")
+            and valeur.get("taux") is not None
+            and valeur.get("specifique") is not None
+        ):
+            # Droit composé (« 40% or 240c/kg ») : les deux composantes
+            # sortent ; le moteur refuse de liquider sans règle de départage
+            # au lieu de servir le seul ad valorem.
+            return {
+                "taux": float(valeur["taux"]),
+                "specifique": valeur["specifique"],
+                "compose": True,
+                "expression_brute": valeur.get("expression_brute") or "",
+            }
         if valeur.get("taux") is not None:
             return {"taux": float(valeur["taux"])}
         specifique = valeur.get("specifique")
         if isinstance(specifique, dict) and specifique.get("montant") is not None:
-            return {"taux": None, "specifique": specifique}
+            col = {"taux": None, "specifique": specifique}
+            # « 180c/kg with a maximum of 38,4 % » : la borne voyage avec la
+            # colonne — jamais le plafond du NPF à sa place.
+            if valeur.get("plafond_ad_valorem_pct") is not None:
+                col["plafond_ad_valorem_pct"] = float(valeur["plafond_ad_valorem_pct"])
+                col["expression_brute"] = valeur.get("expression_brute") or ""
+            return col
     return None
 
 
@@ -161,7 +181,8 @@ def taux_preferentiels(
             zaf_suspension_active,
         )
 
-        if zaf_suspension_active(origine_iso3, hs_code):
+        origine_zaf = (origine_iso3 or "").upper()
+        if zaf_suspension_active(origine_zaf, hs_code):
             # Suspension unilatérale (ex. R.6594 : thé 0902.40 du Kenya, à
             # partir du 12/09/2025) — NPF, avec la notice.
             return {
@@ -176,7 +197,7 @@ def taux_preferentiels(
                 "taux": {},
                 "perimetre": {},
             }
-        if not zaf_partner_active(origine_iso3):
+        if not zaf_partner_active(origine_zaf):
             return {
                 "applique": False,
                 "regime": "ZLECAF",
@@ -328,13 +349,39 @@ def taux_preferentiels(
 
     if destination_iso3.upper() == "ZAF":
         # La préférence est servie : le statut reflète l'application, avec la
-        # source (General Note O) et la date d'entrée du partenaire.
+        # source (General Note O) et la date d'entrée du partenaire. Le
+        # statut est posé APRÈS le plancher : si le taux AfCFTA n'est pas
+        # plus bas que le NPF (les deux ad valorem), c'est le NPF qui est
+        # servi — comme le chemin historique (plancher_npf).
         from services.zlecaf_schedule_zaf import DATES_ENTREE_ZAF
 
+        dd_servi = table.get("DD") or {}
+        taux_zaf = dd_servi.get("taux")
+        npf = _taux_npf(position, "DD")
+        if (
+            taux_zaf is not None
+            and dd_servi.get("specifique") is None
+            and npf is not None
+            and taux_zaf >= npf
+        ):
+            return {
+                "applique": False,
+                "regime": "ZLECAF",
+                "statut": "PLANCHER_NPF",
+                "note": (
+                    f"Le taux préférentiel ({taux_zaf:g} %) est supérieur au "
+                    f"NPF ({npf:g} %) : NPF servi — préférence ZLECAf écartée."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
         resultat["statut"] = "APPLIED"
+        # L'origine est normalisée en majuscules une seule fois (origine_zaf,
+        # en tête de la branche ZAF) ; si le corridor est actif, sa date
+        # existe dans DATES_ENTREE_ZAF — aucune valeur générique n'est inventée.
         resultat["note"] = (
             "Préférence ZLECAf accordée par l'Afrique du Sud à "
-            f"{origine_iso3} depuis le {DATES_ENTREE_ZAF.get(origine_iso3, '31 janvier 2024')} "
+            f"{origine_zaf} depuis le {DATES_ENTREE_ZAF[origine_zaf]} "
             "(General Note O du Schedule No. 1, Customs and Excise Act) — "
             "colonne AfCFTA du socle."
         )
