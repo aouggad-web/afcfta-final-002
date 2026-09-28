@@ -1,0 +1,60 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "BEN",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-28",
+ "evidence_level": "décret n° 2020-535 du 11/11/2020 créant le Comité national de suivi de la ZLECAf lu en source primaire (SGG) : la préparation organisationnelle existe, aucun acte de démantèlement tarifaire ni liste d'origines n'a été retrouvé sur les plateformes officielles ; concordance d'indices secondaires (ratification béninoise non déposée selon les tables de suivi, atelier RoO OMD d'avril 2025 de « mise en œuvre »)",
+ "instrument": {
+  "id": "Décret n° 2020-535 du 11 novembre 2020",
+  "title_etabli": "portant création, organisation et attributions du Comité national de suivi de la zone de libre-échange continentale africaine",
+  "date": "2020-11-11",
+  "gazette": "Publié sur la plateforme du Secrétariat général du Gouvernement (sgg.gouv.bj/doc/decret-2020-535/) ; numéro du Journal officiel non affiché sur la page",
+  "texte_extrait": "sources/BEN_decret_2020-535_comite_national_ZLECAf.pdf",
+  "sha256": "846095898fcd632616a61a81920c4d585183af50226ca8a77e08eef0c61ae850",
+  "ce_que_le_texte_etablit": "Article 1er : création du Comité national de suivi de la ZLECAf ; article 2 : mission de COORDINATION des réflexions et actions « pouvant permettre une participation de qualité du Bénin au processus de mise en œuvre » ; article 4 : la Cellule d'appui conduit « les négociations préalables et l'opérationnalisation ». Aucun article ne fixe de démantèlement tarifaire, de taux, de calendrier ni de liste d'origines.",
+  "portee": "Acte d'ORGANISATION (comité + cellule de suivi), pas un acte d'application tarifaire."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Loi de ratification de l'Accord ZLECAf ; décret/arrêté/circulaire douanière portant libéralisation tarifaire ZLECAf ; liste nominative des origines admises ; barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "SGG du Bénin — documenthèques Lois, Décrets et Accords (https://sgg.gouv.bj/documentheque/)",
+    "resultat": "NÉGATIF — aucun texte ZLECAf autre que le décret n° 2020-535 (comité) ; la recherche par mots-clés du site ne filtre pas les résultats (renvoie une liste par défaut) ; balayage des intitulés de la documenthèque « Accords » (12 items, aucun ZLECAf) : sources/BEN_sgg_accords_liste_2026-09-28.extrait.txt (sha 78278d4f…). L'acte de ratification béninois n'y est pas visible."
+   },
+   {
+    "endroit": "Journal officiel du Bénin — https://journalofficiel.gouv.bj/rechercher?q=zlecaf (et variantes « libre », « continental », « ratification »)",
+    "resultat": "NÉGATIF — « Aucun journal ne correspond à ce élément » pour les quatre requêtes (rendu complet via r.jina.ai) : sources/BEN_JO_recherche_zlecaf_neg_2026-09-28.extrait.txt (sha e8dc7ea9…). Couverture : moteur du portail JO ; l'absence ne vaut preuve que pour ce moteur."
+   },
+   {
+    "endroit": "Direction de la Législation et de la Codification — https://textes.justice.bj/?s=zlecaf (et « libre-échange », « continental », « Zone de libre »)",
+    "resultat": "NÉGATIF — « Aucun document trouvé ! » pour les quatre requêtes : sources/BEN_textes_justice_bj_recherche_neg.extrait.txt (sha a49b4262…). Cette base recense les conventions et lois ratifiées par le Bénin : l'Accord ZLECAf n'y apparaît pas (ni sa loi de ratification)."
+   },
+   {
+    "endroit": "OMD — communiqué du 22/04/2025 « L'OMD renforce les capacités des Douanes du Bénin pour la mise en œuvre des règles d'origine de la ZLECAf »",
+    "resultat": "INDICE SECONDAIRE — atelier national de sensibilisation à Cotonou du 14 au 16/04/2025 (douanes béninoises, ministère de l'Industrie, secteur privé), organisé OMD/JICA : le vocabulaire (« application efficace des tarifs préférentiels », « démantèlement tarifaire progressif ») est prospectif. Source : sources/BEN_wco_atelier_roo_2025-04.extrait.txt (sha 5c100da8…). Jamais une preuve d'application."
+   },
+   {
+    "endroit": "Presse béninoise (La Nation, 2024-2025) et briefings syndicaux LRS/tradeunionsinafcfta",
+    "resultat": "Repérage seulement : « la réticence du Bénin à ratifier l'accord qu'il a signé depuis 2021 se justifiait par l'incertitude sur ces effets » (La Nation). Les tables de ratification (tables de suivi tralac/UA) ne comptabilisent pas de dépôt béninois à la date de leur dernière édition consultable. Sources secondaires, jamais de preuve."
+   }
+  ],
+  "resultat": "NÉGATIF sur les trois points du plan : pas de loi de ratification retrouvée (la base officielle textes.justice.bj des conventions ratifiées ne contient PAS l'Accord ZLECAf), aucun acte de démantèlement tarifaire, aucune liste d'origines, aucun barème national. Seul fait primaire : le décret n° 2020-535 crée le comité de suivi et parle d'« opérationnalisation » à venir. Indices concordants (base des ratifications vide, ateliers de sensibilisation en 2025, presse) : le Bénin n'applique pas encore le tarif préférentiel ZLECAf à l'importation — niveau NON_APPLIQUE_PRESUME."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT pour l'application tarifaire — seul le décret n° 2020-535 (comité de suivi) est établi en source primaire ; loi de ratification introuvable sur les bases officielles",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "ABSENT — aucun barème national ZLECAf ; l'instantané ECOWAS/CEDEAO du e-Tariff Book couvre l'offre régionale, sans application nationale béninoise démontrée",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La ratification béninoise : signé le 07/07/2019 à Niamey, l'Accord n'apparaît dans aucune base officielle béninoise consultée (textes.justice.bj, SGG, JO) ; son dépôt éventuel auprès de l'UA n'est pas établi ici — seule la vérification du statut de dépôt UA peut trancher.",
+  "Un décret ou une circulaire douanière de 2025-2026 non publiés en ligne pourraient exister : l'absence en ligne ne vaut pas absence en droit pour les textes non publiés sur ces plateformes."
+ ],
+ "remaining_work": [
+  "Vérifier le statut de dépôt du Bénin auprès de la Commission de l'UA (traités de l'UA, état des signatures et ratifications de l'Accord ZLECAf).",
+  "Demander au SGG/à la Direction de la Législation la référence exacte de la loi de ratification, si elle existe.",
+  "Surveiller la Direction générale des Douanes (douanes.gouv.bj) pour une circulaire de mise en œuvre du démantèlement tarifaire ZLECAf."
+ ]
+}
