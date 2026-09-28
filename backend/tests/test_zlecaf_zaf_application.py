@@ -220,7 +220,9 @@ def test_m_le_compose_afcfta_020110_n_est_pas_liquide():
     ligne_dd = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
     assert ligne_dd["statut"] == "REGLE_COMPOSEE_NON_ETABLIE"
     assert ligne_dd["montant"] is None
-    assert any(m["motif"] == "REGLE_COMPOSEE_NON_ETABLIE" for m in resultat["preference"]["manques"])
+    assert any(
+        m["motif"] == "REGLE_COMPOSEE_NON_ETABLIE" for m in resultat["preference"]["manques"]
+    )
 
 
 @besoin_socle
