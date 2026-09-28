@@ -1,0 +1,79 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GAB",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "chaîne de ratification vérifiée sur la base officielle du Journal Officiel de la République Gabonaise (loi n°0003/2019 du 16/07/2019, texte intégral lu) ; instruments institutionnels vérifiés sur la même base (Arrêté n°0020/PM/MTCPMEI du 24/01/2020, Comité National ZLECAf ; Décision n°000841/MCPME du 01/09/2022, Cellule de Coordination ZLECAF) ; AUCUN acte tarifaire d'application, aucune liste nominative d'origines ; offre régionale CEMAC (26/10/2021) archivée en OFFER_ONLY — pas un acte national.",
+ "instrument": {
+  "id": "Loi n° 0003/2019 du 16 juillet 2019",
+  "title_etabli": "Autorisant la ratification de l'Accord portant création de la Zone de Libre-Echange Continentale Africaine adopté le 21 mars 2018 à Kigali",
+  "date": "2019-07-16",
+  "gazette": "Journal Officiel de la République Gabonaise (texte consulté sur la base officielle du JO, rubrique Lois et Règlements)",
+  "texte_extrait": "sources/GAB_LOI_003_2019_ratification_ZLECAf_texte-extrait.txt",
+  "sha256": "6e5668722df9c6c5fd0a3d19665aeb6eed10f949ccd6c77432f464914061e59c",
+  "source_url": "https://journal-officiel.ga/5577-003-2019/",
+  "verbatim_article_1": "La présente loi, prise en application des articles 106 et 107 de la Constitution, porte autorisation de la ratification de l'Accord portant création de la Zone de Libre-Echange Continentale Africaine adopté le 21 mars 2018 à Kigali.",
+  "verbatim_article_2": "Est autorisée, la ratification de l'Accord portant création de la Zone de Libre-Echange Continentale Africaine adopté le 21 mars 2018 à Kigali.",
+  "note_date": "Le titre porte « loi n° 003/2019 du 16/07/2019 » ; la page officielle indique « Fait à Libreville, le 17 juillet 2019 » ; la Décision 000841/MCPME la cite « loi n°0003/2019 du 17 juillet 2019 » — divergence de date interne non tranchée.",
+  "instruments_institutionnels": [
+   {
+    "id": "Arrêté n° 0020/PM/MTCPMEI du 24 janvier 2020",
+    "objet": "Création, attributions, organisation et fonctionnement du Comité National de la Zone de Libre-échange Continentale Africaine",
+    "url": "https://journal-officiel.ga/5103-0020-pm-mtcpmei-/"
+   },
+   {
+    "id": "Décision n° 000841/MCPME du 1er septembre 2022",
+    "objet": "Création, attributions, organisation et fonctionnement de la Cellule de Coordination, de Suivi et d'Accompagnement de la mise en œuvre de l'Accord commercial de la ZLECAF et des engagements internationaux pris par le Gabon en matière commerciale",
+    "url": "https://journal-officiel.ga/19142-000841-mcpme/"
+   }
+  ]
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte tarifaire d'application ZLECAf (décret/arrêté de démantèlement, instruction douanière) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Base officielle du Journal Officiel gabonais — https://journal-officiel.ga/recherche (POST), mots-clés : « ZLECA », « ZLECAF », « libre-échange », « libre », « continental », « démantèlement », « tarifaire », « préférences », « dédouanement », « CEMAC », « commerce », « taxe », « douane »",
+    "resultat": "POSITIF pour la ratification et les deux instruments institutionnels (lois/arrêtés/décisions en vigueur) ; NÉGATIF pour tout acte tarifaire : « ZLECA » zéro résultat, « démantèlement » zéro résultat, « préférences » zéro résultat ; les résultats « tarifaire » (115) et « dédouanement » (3) ne contiennent aucun texte ZLECAf. Contrôle de bon fonctionnement du moteur effectué (« commerce » : 1444 résultats)."
+   },
+   {
+    "endroit": "Direction Générale des Douanes et Droits Indirects — douanes.ga et www.douanes.ga",
+    "resultat": "INACCESSIBLE — DNS en échec (HTTP 000), testé le 2026-09-28."
+   },
+   {
+    "endroit": "gazettes.africa — https://gazettes.africa/gazettes/ga/2025 (via r.jina.ai)",
+    "resultat": "NÉGATIF — 404 : gazettes.africa ne couvre pas le Gabon (liste des pays couverts relevée le 2026-09-28)."
+   },
+   {
+    "endroit": "Statut officiel de ratification UA — https://au.int/sites/default/files/treaties/36437-sl-AGREEMENT_ESTABLISHING_THE_AFRICAN_CONTINENTAL_FREE_TRADE_AREA_0.pdf (archivé)",
+    "resultat": "POSITIF pour le dépôt : Gabon — signature 21/03/2018, ratification 02/07/2019, dépôt 07/07/2019."
+   },
+   {
+    "endroit": "Recherches web (DuckDuckGo via r.jina.ai)",
+    "resultat": "Repérage secondaire seulement : UNECA (fr/gab-afcfta), au-afcfta.org (partenariat ZLECAf-Gabon, 06/2026), presse gabonaise. Aucune circulaire douanière ni liste d'origines."
+   },
+   {
+    "endroit": "Corroboration — liste de dépôt UA déjà versée au dépôt (sources/AU_liste_depot_2026-05-22.pdf, état au 22/05/2026)",
+    "resultat": "CONFIRMÉ — dates identiques pour GAB (ratification/dépôt : 02/07/2019 / dépôt 07/07/2019) ; aucune mise à jour des dépôts entre le 19/09/2023 et le 22/05/2026 pour ce pays."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : aucun acte tarifaire d'application et aucune liste nominative d'origines. La base officielle du JO gabonais (textes « en vigueur ») a été interrogée de manière extensive et fonctionnelle ; seuls la loi de ratification et deux instruments institutionnels (comité national 2020, cellule de coordination 2022) existent en ligne."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — loi de ratification n°0003/2019 et instruments institutionnels vérifiés sur la base officielle du JO ; AUCUN acte d'application tarifaire",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre régionale CEMAC (adoptée 26/10/2021) archivée dans le dépôt : backend/data/official_preferential/CEMAC_afcfta_etariff_2026-08-17.json.gz (legal_effect_status=OFFER_ONLY, execution_authorized=false) ; l'offre régionale n'est pas un acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Les instructions douanières internes (non publiées au JO) ne sont pas exclus : la base journal-officiel.ga indexe les textes législatifs et réglementaires, pas nécessairement les notes de service de la douane ; douanes.ga étant hors ligne, l'échec de vérification est consigné sans conclusion.",
+  "L'attribution du Gabon à l'offre CEMAC suit le cadre régional de négociation ; aucun texte national repéré ne le confirme expressément.",
+  "La divergence de date interne de la loi (16 vs 17 juillet 2019) n'est pas tranchée."
+ ],
+ "remaining_work": [
+  "Contacter ou retrouver la Direction Générale des Douanes et Droits Indirects (site hors ligne) pour toute instruction ZLECAf au SYDONIA.",
+  "Surveiller journal-officiel.ga pour un futur décret/arrêté de démantèlement tarifaire.",
+  "Vérifier sur source primaire la participation éventuelle du Gabon à la phase élargie de l'Initiative du commerce guidé (GTI)."
+ ]
+}
