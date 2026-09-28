@@ -1,0 +1,70 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GMB",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification/dépôt établis par la liste officielle de l'UA (dépôt 16/04/2019) ; communiqué OFFICIEL de la Gambia Revenue Authority du 24/09/2024 décrivant un atelier de SENSIBILISATION à l'application de l'AfCFTA (stade préparatoire) ; AUCUN acte national d'application obtenu, aucune liste d'origines, gazette inaccessible en ligne ; offre régionale CEDEAO (26/10/2021) archivée en OFFER_ONLY — pas un acte national.",
+ "instrument": {
+  "id": "AUCUN ACTE NATIONAL D'APPLICATION OBTENU — ratification déposée à l'UA le 16/04/2019 (liste officielle UA)",
+  "title_etabli": "Dépôt de l'instrument de ratification de l'Accord ZLECAf par la Gambie",
+  "date": "2019-04-16",
+  "gazette": "Gambia Gazette — NON ACCESSIBLE EN LIGNE (ni sur gazettes.africa, qui ne couvre pas le pays, ni par recherche web)",
+  "texte_extrait": "sources/GMB_GRA_communique_atelier_sensibilisation_afcfta_2024-09-24.extrait.txt",
+  "sha256": "c3d5153ac5d212c958522dd04b58182190436c430ca8b82743613306bc480b04",
+  "source_url": "https://www.gra.gm/news/35ab1b55-7f1c-11ef-b086-029254d29bb1 (communiqué GRA officiel, 24/09/2024) ; dépôt : https://au.int/sites/default/files/treaties/36437-sl-AGREEMENT_ESTABLISHING_THE_AFRICAN_CONTINENTAL_FREE_TRADE_AREA_0.pdf",
+  "verbatim_GRA_2024": "Today, September 24, 2024, the Gambia Revenue Authority (GRA), led by its Commissioner General, Mr. Yankuba Darboe, participated in a sensitisation workshop on the African Continental Free Trade Agreement (AfCFTA). The event, hosted by the Ministry of Trade, Industry, Regional Integration, and Employment… focusing on the benefits and implementation of AfCFTA in The Gambia.",
+  "porteé_du_communique": "Établit que la GRA adapte ses procédures « pour s'aligner » sur le cadre AfCFTA (stade de préparation/sensibilisation en septembre 2024) ; ne nomme aucun acte tarifaire, aucun partenaire, aucune date d'application."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application (gazettement, acte parlementaire, circulaire douanière GRA) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Gambia Revenue Authority — https://www.gra.gm (rubrique Downloads intégrale, lue le 2026-09-28 : formulaires, Customs & Excise Act, Customs & Excise Regulations 2025, Post Clearance Audit Regulations 2024, brochures douanières)",
+    "resultat": "NÉGATIF — aucun document AfCFTA/ZLECAf, aucune colonne tarifaire préférentielle, aucune circulaire ZLECAf. Seul le communiqué du 24/09/2024 (atelier de sensibilisation) mentionne l'AfCFTA."
+   },
+   {
+    "endroit": "Douane en ligne GRA — https://asycuda.gra.gm/asyworld/public/services?form=tariff",
+    "resultat": "PAGE ACCESSIBLE mais sans contenu exploitable (8 Ko, pas de mention AfCFTA/ZeLCA/préférentiel dans le HTML) — recherche tarifaire non fonctionnelle à distance le 2026-09-28."
+   },
+   {
+    "endroit": "Gambia Gazette — recherche DuckDuckGo « Gambia Gazette » + AfCFTA/Continental Free Trade ratification",
+    "resultat": "NÉGATIF — aucun résultat. gazettes.africa ne couvre pas la Gambie (404 relevé le 2026-09-28). L'acte parlementaire de ratification (avril 2019) et un éventuel gazettement restent introuvables en ligne."
+   },
+   {
+    "endroit": "Ministère du commerce — motie.gov.gm (certificat TLS invalide ; www en échec ; http sans réponse ; nassa.gov.gm en échec)",
+    "resultat": "INACCESSIBLE — échec consigné le 2026-09-28."
+   },
+   {
+    "endroit": "Statut officiel de ratification UA (archivé, sha 29b2fe2b…)",
+    "resultat": "POSITIF pour le dépôt : Gambia — signature 21/03/2018, ratification 11/04/2019, dépôt 16/04/2019."
+   },
+   {
+    "endroit": "Recherches web (DuckDuckGo via r.jina.ai)",
+    "resultat": "Aucune source primaire supplémentaire ; aucune offre tarifaire nationale Gambie repérée."
+   },
+   {
+    "endroit": "Corroboration — liste de dépôt UA déjà versée au dépôt (sources/AU_liste_depot_2026-05-22.pdf, état au 22/05/2026)",
+    "resultat": "CONFIRMÉ — dates identiques pour GMB (ratification/dépôt : 11/04/2019 / dépôt 16/04/2019) ; aucune mise à jour des dépôts entre le 19/09/2023 et le 22/05/2026 pour ce pays."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : aucun acte national d'application et aucune liste nominative d'origines. Le seul signal officiel disponible (GRA, 24/09/2024) décrit un stade de sensibilisation/préparation, sans instrument publié."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT POUR L'APPLICATION — dépôt de ratification établi (UA, 16/04/2019) ; aucun acte d'application obtenu ; gazette inaccessible ; communiqué GRA 24/09/2024 au stade de sensibilisation",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre régionale CEDEAO (adoptée 26/10/2021) archivée : backend/data/official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz (OFFER_ONLY) ; l'offre régionale n'est pas un acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Un éventuel gazettement national (par ex. d'un acte de ratification ou de l'offre CEDEAO) ne peut être exclu : la Gambia Gazette n'est pas accessible en ligne ; l'échec est consigné sans conclusion.",
+  "La date d'application effective (si elle existe) n'est pas établie : le communiqué GRA de 2024 décrit une préparation.",
+  "L'attribution de la Gambie à l'offre CEDEAO suit le cadre régional de négociation ; aucun texte national repéré ne le confirme expressément."
+ ],
+ "remaining_work": [
+  "Accéder à la Gambia Gazette (Gouvernement Printer, Banjul) pour tout gazettement AfCFTA/ZLECAf 2019-2026.",
+  "Vérifier l'acte de ratification parlementaire d'avril 2019 (National Assembly de Gambie) sur source primaire.",
+  "Réinterroger gra.gm et motie.gov.gm (site à corriger) pour une future circulaire/notice tarifaire ZLECAf."
+ ]
+}
