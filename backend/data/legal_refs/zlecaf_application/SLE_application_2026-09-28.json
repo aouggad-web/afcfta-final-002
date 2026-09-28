@@ -1,0 +1,69 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "SLE",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "Gazettage du calendrier de commitments ZLECAf attesté par communiqué présidentiel officiel (State House, 21/01/2026) et, en repérage, par le Secrétariat (26e État partie, cat. A, 30/06/2026) ; TEXTE DE LA GAZETTE NON OBTENU ; offre = CEDEAO (26/10/2021) ; aucune liste nominative d'origines lue.",
+ "instrument": {
+  "id": "Calendrier des engagements ZLECAf de la Sierra Leone (catégorie A) — gazetté, numéro et date de la Sierra Leone Gazette NON OBTENUS",
+  "title_etabli": "Gazettage attesté, gazette introuvable en ligne : gazettes.africa ne porte AUCUN numéro SL 2026 (0 gazettes) et seulement 2 numéros en 2025",
+  "date": "avant le 2026-01-21 (date du communiqué présidentiel l'attestant)",
+  "gazette": "Sierra Leone Government Gazette — numéro, date et texte NON OBTENUS",
+  "texte_extrait": "sources/SLE_statehouse_davos_2026-01-21.extrait.txt",
+  "sha256": "ed74dd9f030f209d9f6076647a1b5847e596f911ef8b5ec98df4f851e7715e75",
+  "verbatim_en": "« announcing the country's historic achievement as the first nation to complete and gazette its National AfCFTA Readiness Assessment and Schedule of Commitments » (Président Julius Maada Bio, Forum Friends of the AfCFTA, Davos, 21 janvier 2026)",
+  "traduction_fr": "« annonçant la réalisation historique du pays : première nation à avoir achevé et gazetté son Évaluation nationale de disponibilité ZLECAf et son Calendrier d'engagements »"
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Numéro et texte de la Sierra Leone Gazette portant le calendrier ZLECAf ; notice NRA (douane) désignant les origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "State House de Sierra Leone (statehouse.gov.sl — source primaire présidentielle), 21/01/2026",
+    "resultat": "POSITIF pour le gazettage — « first nation to complete and gazette its National AfCFTA Readiness Assessment and Schedule of Commitments » ; aucun numéro de gazette, aucun partenaire nommé."
+   },
+   {
+    "endroit": "SierraLoaded (presse, REPÉRAGE SEULEMENT), 02/07/2026",
+    "resultat": "Repérage — selon la presse, le SG Wamkele Mene a salué à Abuja (18e Conseil des ministres, 30/06/2026) la Sierra Leone comme « 26th State Party » à gazetter son « AfCFTA Tariff Schedule under Category A ». Archivé : sources/SLE_sierraloaded_26eEtatPartie_2026-07-02.extrait.txt. Jamais preuve."
+   },
+   {
+    "endroit": "Secrétariat de la ZLECAf — Freetown, 15/10/2025 (au-afcfta.org)",
+    "resultat": "Repérage — félicitations pour la Readiness Assessment (1re sous AFIRM) ; PAS de mention de gazettage à cette date. Archivé : sources/SLE_au_secretariat_freetown_2025-10-15.extrait.txt."
+   },
+   {
+    "endroit": "gazettes.africa — Sierra Leone (inventaire par années)",
+    "resultat": "NÉGATIF — 2026 : « 0 gazettes » ; 2025 : 2 documents (n° 3 du 16/01/2025) ; 2024 : 75 documents listés. Le numéro 2026 portant le calendrier n'est PAS dans l'archive. Inventaire archivé : sources/SLE_gazettes_africa_inventaire_2026-09-28.extrait.txt."
+   },
+   {
+    "endroit": "National Revenue Authority (nra.gov.sl) — rubriques Notices et Customs Duty",
+    "resultat": "NÉGATIF — aucune notice ZLECAf ; la page « Customs Duty » décrit le tarif extérieur à 6 bandes (0/5/10/15/20/30 %) SANS colonne ni régime préférentiel ZLECAf. Archivées : sources/SLE_nra_customs_duty_page_2026-09-28.extrait.txt, sources/SLE_nra_notices_page_2026-09-28.extrait.txt."
+   },
+   {
+    "endroit": "Secrétariat de la ZLECAf — livre tarifaire électronique officiel (API regions)",
+    "resultat": "OFFRE ÉTABLIE — « Sierra Leone is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer … included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021 » ; aucune offre nationale SL. Archivé : sources/ZLECAF_etariff_api_regions_2026-09-28.json."
+   },
+   {
+    "endroit": "Liste du dépositaire UA (au.int, 22/05/2026)",
+    "resultat": "RATIFICATION — Sierra Leone : signature 02/07/2018, ratification 19/04/2019, dépôt 30/04/2019. Archivée : sources/AU_liste_depot_2026-05-22.pdf."
+   }
+  ],
+  "resultat": "Gazettage attesté sur primaire présidentiel (21/01/2026), mais le TEXTE de la gazette n'est pas obtenu et aucune liste nominative d'origines admises n'a été retrouvée. La NRA ne publie aucun régime préférentiel ZLECAf en ligne. Le niveau ne peut pas dépasser NOTIFICATION_PARTENAIRES_REQUISE faute de texte lu."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — gazettage du calendrier attesté par communiqué présidentiel officiel (21/01/2026) et, en repérage, par le Secrétariat (26e État partie, 30/06/2026) ; numéro, date et TEXTE de la gazette non obtenus",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative lue ; le texte gazetté (cat. A) n'est pas accessible",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — calendrier CEDEAO (26/10/2021) dans le livre tarifaire officiel (API, archivée) et instantané au dépôt (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz) ; non exécutable sans le texte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La contradiction apparente entre « first nation » (Davos, 21/01/2026) et « 26th State Party » (Abuja, 30/06/2026, via presse) : la première formule porte sur l'ensemble Readiness Assessment + calendrier, la seconde sur le gazettage du barème cat. A ; seul le texte de la gazette trancherait.",
+  "Le contenu exact du calendrier gazetté (part des lignes, chapitres reportés, clause de réciprocité éventuelle).",
+  "L'application pratique à l'importation par la NRA (aucun dédouanement préférentiel documenté)."
+ ],
+ "remaining_work": [
+  "Obtenir la Sierra Leone Government Gazette 2026 portant le calendrier cat. A (Government Printer, Freetown ; gazettes.africa n'a aucun numéro 2026).",
+  "Obtenir une notice NRA ou un texte du Ministry of Trade and Industry désignant les origines admises à l'importation.",
+  "Retenter gazettes.africa/sierra-leone/2026 (l'archive a souffert d'un incendie documenté sur le site)."
+ ]
+}
