@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "AGO",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "offre tarifaire soumise et adoptée au niveau continental (25/06/2024, Zanzibar) mais JAMAIS publiée au Diário da República (constat de novembre 2024, non contredit en 2026) ; aucun instrument national d'application retrouvé ; aucune liste nominative d'origines",
+ "instrument": {
+  "id": "aucun instrument national d'application identifié",
+  "offre": "Offre tarifaire angolaise au commerce des marchandises (calendrier de démantèlement, catégorie A — 97 % des produits), approuvée le 25 juin 2024 par la 14e réunion du Conseil des ministres responsables du commerce de la ZCLCA à Zanzibar",
+  "date": "2024-06-25",
+  "gazette": "AUCUNE — non publiée au Diário da República selon le constat du journal angolais Expansão (édition 803, 22/11/2024) ; aucune publication retrouvée depuis",
+  "texte_extrait": "sources/AGO_expansao_2024-11-23.extrait.txt",
+  "sha256": "96ef9280c1f16ff5d407098764cdced39fb4a5a2bba1721c51dfae87e20e9fad",
+  "verbatim_pt": "Angola apresentou a sua lista de concessões tarifárias para o comércio de mercadorias, com o calendário de desmantelamento das taxas na importação de 97% dos produtos da Categoria A (bens não sensíveis), documentos que foram aprovados no dia 25 de Junho, na 14ª reunião de conselho dos ministros responsáveis pelo comércio da ZCLCA, em Zanzibar. Mas, cinco meses depois, ainda não publicou estes dois documentos em Diário da República (DR), acto que oficializa o processo.",
+  "traduction_fr": "L'Angola a présenté sa liste de concessions tarifaires pour le commerce des marchandises, avec le calendrier de démantèlement des taxes à l'importation de 97 % des produits de la catégorie A (biens non sensibles), documents approuvés le 25 juin, lors de la 14e réunion du Conseil des ministres responsables du commerce de la ZCLCA, à Zanzibar. Mais, cinq mois plus tard, il n'a toujours pas publié ces deux documents au Diário da República (DR), acte qui officialise le processus.",
+  "verbatim_pt_2": "o princípio da reciprocidade dita que somente os Estados-parte com quadro legal/procedimentos concluídos, permitindo acesso ao seu mercado, pode, por sua vez, ter acesso aos outros mercados, sob regime preferencial da ZCLCA",
+  "traduction_fr_2": "le principe de réciprocité dispose que seuls les États parties dont le cadre légal et les procédures sont conclus, permettant l'accès à leur marché, peuvent à leur tour accéder aux autres marchés, sous le régime préférentiel de la ZCLCA",
+  "portee": "Source de presse économique angolaise (Expansão) — NIVEAU SECONDAIRE, utilisée comme repérage et comme constat d'absence daté, jamais comme preuve de l'absence définitive. L'absence au Diário da República n'est établie qu'au 22 novembre 2024."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Décret/Portaria/Decreto Presidencial portant publication de l'offre tarifaire ZCLCA au Diário da República ; tout avis douanier (AGT/minfin) désignant les origines admises ; barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "gazettes.africa — Angola (https://gazettes.africa/gazettes/ao)",
+    "resultat": "NÉGATIF STRUCTUREL — l'archive ne contient AUCUNE gazette angolaise pour 2025 (« 0 gazettes ») et s'arrête aux années 2011-2020. L'année 2026 n'y figure même pas. Fichier : sources/AGO_gazettes_africa_2025.extrait.txt (sha 563b570f…). Le Diário da República ne peut pas y être balayé."
+   },
+   {
+    "endroit": "Lex.AO (https://lex.ao) — base des diplomas angolais",
+    "resultat": "NÉGATIF — catégorie « Ministério da Indústria e Comércio » 2025 : 5 décrets exécutifs, tous sans rapport (pôle industriel de Catumbela, régime d'incentive à la production nationale, règles d'importation de produits pré-emballés, fonds social du ministère, réglementation du prix des PME) ; 2024 : 1 item ; aucune mention ZCLCA/AfCFTA dans les catégories Présidence 2026 et accueil (fichier : sources/AGO_lexao_mindcom_2025.extrait.txt, sha 99c80d9a…). Couverture partielle de lex.ao : ne vaut pas balayage du Diário da República."
+   },
+   {
+    "endroit": "Recherche web en portugais (DuckDuckGo via r.jina.ai) : « Zona de Comércio Livre Continental » + « Diário da República » + decreto/portaria",
+    "resultat": "POSITIF D'INFORMATION UNIQUEMENT — article Expansão du 22-23/11/2024 (cit) : offre adoptée en juin 2024 mais non publiée au DR ; l'Angola « est dehors » du commerce préférentiel. Aucune trace de publication ultérieure en 2025-2026."
+   },
+   {
+    "endroit": "Imprensa Nacional de Angola (imprensanacional.gov.ao)",
+    "resultat": "NON INTERROGEABLE — portail de publication officielle identifié mais les numéros du Diário da República ne sont pas accessibles en plein texte depuis cet environnement ; aucune recherche possible. Consigné comme échec d'accès, non comme absence."
+   },
+   {
+    "endroit": "AGT (douanes/impôts angolais, agt.minfin.gov.ao) et minfin.gov.ao",
+    "resultat": "NÉGATIF — aucune circulaire ou note tarifaire ZCLCA retrouvée sur les pages accessibles ; le site AGT n'était pas résolvable via le proxy de lecture (r.jina.ai, 2026-09-28)."
+   },
+   {
+    "endroit": "UECA/CEA (uneca.org) et Secrétariat ZLECAf (au-afcfta.org)",
+    "resultat": "NÉGATIF pour un instrument — l'ECA rapporte la validation de la STRATÉGIE NATIONALE de mise en œuvre de la ZLECAf (forum national 14-16/10/2025, validation finale 23/06/2026, avec appui ECA/Global Affairs Canada). Une stratégie n'est pas un acte de démantèlement tarifaire et ne nomme aucune origine admise. Source : https://www.uneca.org/stories/angola-validates-afcfta-strategy-to-leverage-market-access-opportunities (repérage, non archivée comme preuve)."
+   },
+   {
+    "endroit": "CIAM/Forum SADC (ciam.gov.ao, noticia 3911)",
+    "resultat": "HORS CHAMP — la proposition tarifaire de 5 408 lignes citée par cette source officielle angolaise concerne l'ACCÈS À LA ZLE DE LA SADC (offre SADC, complétée à 6 007 lignes), PAS l'offre ZLECAf. Ne pas confondre les deux régimes."
+   }
+  ],
+  "resultat": "NÉGATIF sur les trois points du plan : aucun acte national d'application au Diário da República (absence attestée en novembre 2024, non contredite), aucune liste nominative d'origines, aucun barème ligne à ligne national. L'offre existe au niveau continental (adoptée 25/06/2024) mais sa nationalisation n'est pas établie. Le commerce préférentiel ZLECAf vers/depuis l'Angola ne peut pas être calculé : tout échange y resterait au taux NPF tant que la publication au DR n'est pas constatée."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — aucune publication de l'offre au Diário da República établie ; le constat d'absence de novembre 2024 (presse économique) n'a pas été contredit, mais il n'est pas re-vérifiable faute d'accès plein-texte au DR",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée ; la presse angolaise cite le principe de réciprocité comme condition d'accès",
+  "3_bareme_au_niveau_de_la_ligne": "ABSENT — offre continentale adoptée mais jamais nationalisée ; aucun barème national ZCLCA disponible",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "L'offre tarifaire ZCLCA angolaise a-t-elle été publiée au Diário da República après le 22/11/2024 ? Le Diário n'étant pas balayable en ligne depuis cet environnement, la question reste ouverte — seule une vérification directe auprès de l'Imprensa Nacional peut la trancher.",
+  "L'Angola applique-t-il depuis 2026 le régime SADC-FTE (adhésion en cours en 2025) dont le tarif préférentiel couvre certains partenaires communs avec la ZLECAf ? Ne pas confondre : aucune donnée SADC collectée ici."
+ ],
+ "remaining_work": [
+  "Obtenir confirmation directe de l'Imprensa Nacional de Angola (ou du Diário da República en ligne) : l'offre tarifaire ZCLCA a-t-elle été publiée, et sous quel numéro ?",
+  "En cas de publication : récupérer le décret/la résolution portant le calendrier de démantèlement et le barème ligne à ligne (offre AGO, catégorie A).",
+  "Chercher une note de service de l'AGT désignant les États admis à l'importation ; à défaut, constater l'absence et maintenir le taux NPF."
+ ]
+}
