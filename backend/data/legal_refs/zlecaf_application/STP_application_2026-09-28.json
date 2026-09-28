@@ -1,0 +1,65 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "STP",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-28",
+ "evidence_level": "Pauta aduaneira nationale EN VIGUEUR vérifiée sur primaire (Diário da República N.º 60 du 30/11/2023, publiée sur le portail officiel guce.gov.st) : colonnes D.I, IEC, IVA, CEEAC, UA — AUCUNE colonne ZLECAf ; ratification vérifiée (dépôt 27/06/2019) ; STP absent du livre tarifaire officiel de la ZLECAf.",
+ "instrument": {
+  "id": "AUCUN instrument d'application ZLECAf — la pauta aduaneira nationale (D.R. N.º 60 du 30/11/2023) ne comporte pas de préférence ZLECAf",
+  "title_etabli": "Pauta Aduaneira de São Tomé e Príncipe, publiée au Diário da República N.º 60 du 30 novembre 2023 (I Série), reproduite chapitre par chapitre sur le Portal do Comércio officiel (guce.gov.st/pauta-aduaneira)",
+  "date": "2023-11-30",
+  "gazette": "Diário da República de São Tomé e Príncipe, I Série, N.º 60, 30/11/2023 (mention imprimée en tête de chaque chapitre)",
+  "texte_extrait": "sources/STP_pauta_cap1_DR60_2023-11-30.pdf",
+  "sha256": "83612dfa99fac55367fc2e7b43a88523910cec1cdc9ec880bd6405235a2f81b6",
+  "verbatim_pt": "« Código da Nomenclatura   Designação de mercadoria   UC   Imposições Aduaneiras   RG RP   D.I  IEC  IVA  CEEAC   UA   %   % » (en-tête de colonnes, chapitres 1, 2 et 39 vérifiés)",
+  "traduction_fr": "« Code de la nomenclature — Désignation de la marchandise — UC — Impositions douanières — RG RP — D.I, IEC, IVA, CEEAC, UA — % — % » : aucune colonne ZLECAf/Zona de Comércio Livre Continental Africaine."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application ZLECAf (décret/diploma) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Portal do Comércio officiel (guce.gov.st) — Pauta Aduaneira, chapitres PDF",
+    "resultat": "DÉCISIF ET NÉGATIF — la pauta en vigueur (D.R. N.º 60 du 30/11/2023) expose ligne à ligne les colonnes D.I, IEC, IVA, CEEAC et UA ; AUCUNE colonne ZLECAf. Chapitres 1 et 39 archivés : sources/STP_pauta_cap1_DR60_2023-11-30.pdf (sha 83612dfa…), sources/STP_pauta_cap39_DR60_2023-11-30.pdf (sha 79b3443c…) ; page du portail : sources/STP_guce_pauta_aduaneira_page_2026-09-28.extrait.txt."
+   },
+   {
+    "endroit": "guce.gov.st — Legislação e Diplomas Legais et Notícias",
+    "resultat": "NÉGATIF — corpus législatif (code douanier, régime des infractions, avantages fiscaux, CPLP…) sans aucun diploma ZLECAf ; aucune nouvelle ZLECAf. "
+   },
+   {
+    "endroit": "Autoridade Geral Aduaneira (aga.st) — page aga-informa/1 (accueil et législation bloqués par CAPTCHA Cloudflare, non forcés)",
+    "resultat": "NÉGATIF — la page accessible décrit les réformes DL n.º 9/2024 (statut AGA) et DL n.º 10/2024 (infractions fiscales douanières) ; aucune mention ZLECAf. Archivé : sources/STP_aga_informa_reformes_2024.extrait.txt."
+   },
+   {
+    "endroit": "Livre tarifaire électronique officiel de la ZLECAf (API /Region/GetRegions)",
+    "resultat": "NÉGATIF — São Tomé-et-Príncipe absent des 52 entrées : aucun calendrier national soumis ni publié. Archivé : sources/ZLECAF_etariff_api_regions_2026-09-28.json."
+   },
+   {
+    "endroit": "Liste du dépositaire UA (au.int, 22/05/2026)",
+    "resultat": "RATIFICATION — São Tomé & Príncipe : signature 21/03/2018, ratification 28/05/2019, dépôt 27/06/2019. Archivée : sources/AU_liste_depot_2026-05-22.pdf."
+   },
+   {
+    "endroit": "Diário da República — recherche « ZLECA » / « zona de comércio livre » (DDG ; le journal n'a pas de portail textuel public, page Facebook officielle seulement)",
+    "resultat": "AUCUN RÉSULTAT — aucun diploma ZLECAf localisé ; échec de consultation directe du journal consigné."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points, avec une preuve positive de non-application tarifaire : la pauta nationale en vigueur ne comporte aucune colonne ZLECAf (la préférence CEEAC, elle, y figure), aucun diploma d'application n'a été retrouvé et STP n'a soumis aucun calendrier. La non-application est présumée."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON — aucun acte d'application ZLECAf ; la pauta en vigueur (D.R. 60/2023) est sans colonne ZLECAf",
+  "2_liste_officielle_origines_reciproques": "NON — aucune liste nominative ; aucune règle d'admission lue",
+  "3_bareme_au_niveau_de_la_ligne": "NON — pas de barème ZLECAf national ; STP absent du livre tarifaire officiel",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La signification exacte de la colonne « UA » de la pauta (le texte ne l'explicite pas dans les extraits lus) — constaté verbatim sans interprétation ; dans tous les cas aucune colonne n'est libellée ZLECAf.",
+  "Une mise à jour tarifaire postérieure au 30/11/2023 publiée hors guce.gov.st (l'AGA, compétente depuis le DL 9/2024, est inaccessible — CAPTCHA).",
+  "Un diploma ZLECAf éventuel publié dans un numéro du Diário da República non indexé en ligne."
+ ],
+ "remaining_work": [
+  "Traverser le CAPTCHA de l'AGA (www.aga.st/legislacao) ou solliciter l'Autoridade Geral Aduaneira pour un éventuel diplome d'application ZLECAf postérieur au 30/11/2023.",
+  "Obtenir les numéros 2024-2026 du Diário da República (page Facebook officielle ou imprimerie nationale) pour une recherche exhaustive « ZLECA ».",
+  "Suivre la première soumission d'un calendrier STP au livre tarifaire officiel de la ZLECAf."
+ ]
+}
