@@ -349,32 +349,9 @@ def taux_preferentiels(
 
     if destination_iso3.upper() == "ZAF":
         # La préférence est servie : le statut reflète l'application, avec la
-        # source (General Note O) et la date d'entrée du partenaire. Le
-        # statut est posé APRÈS le plancher : si le taux AfCFTA n'est pas
-        # plus bas que le NPF (les deux ad valorem), c'est le NPF qui est
-        # servi — comme le chemin historique (plancher_npf).
+        # source (General Note O) et la date d'entrée du partenaire.
         from services.zlecaf_schedule_zaf import DATES_ENTREE_ZAF
 
-        dd_servi = table.get("DD") or {}
-        taux_zaf = dd_servi.get("taux")
-        npf = _taux_npf(position, "DD")
-        if (
-            taux_zaf is not None
-            and dd_servi.get("specifique") is None
-            and npf is not None
-            and taux_zaf >= npf
-        ):
-            return {
-                "applique": False,
-                "regime": "ZLECAF",
-                "statut": "PLANCHER_NPF",
-                "note": (
-                    f"Le taux préférentiel ({taux_zaf:g} %) est supérieur au "
-                    f"NPF ({npf:g} %) : NPF servi — préférence ZLECAf écartée."
-                ),
-                "taux": {},
-                "perimetre": {},
-            }
         resultat["statut"] = "APPLIED"
         # L'origine est normalisée en majuscules une seule fois (origine_zaf,
         # en tête de la branche ZAF) ; si le corridor est actif, sa date

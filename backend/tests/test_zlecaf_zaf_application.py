@@ -263,3 +263,20 @@ def test_n_l_origine_minuscule_obtient_sa_vraie_date():
     assert decision["applique"] is True
     assert decision["statut"] == "APPLIED"
     assert "2025-02-21" in decision["note"]
+
+
+@besoin_socle
+def test_o_zero_percent_egale_zero_percent_sert_applied():
+    """Égypte sur une ligne à 0 % NPF ET 0 % AfCFTA (010121) : la préférence
+    est servie (APPLIED) — égal au NPF n'est pas « supérieur au NPF », et le
+    mot n'apparaît dans aucune note."""
+    position, _ = socle.position("ZAF", "010121")
+    decision = taux_preferentiels(position, "ZAF", "EGY", "010121")
+    assert decision["applique"] is True
+    assert decision["statut"] == "APPLIED"
+    assert decision["taux"]["DD"]["taux"] == 0.0
+    notes = " ".join(
+        str(decision.get(k, "") or "")
+        for k in ("note", "perimetre")
+    ) + " ".join(str(v) for v in decision["perimetre"].values())
+    assert "supérieur" not in notes
