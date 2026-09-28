@@ -125,7 +125,7 @@
    "decouverte": "L'offre ECOWAS (couvrant le NIGERIA comme destination) est consultable ligne à ligne dans l'e-Tariff Book officiel (API vérifiée, requête « cement ») : 88 résultats, dont 31 en catégorie A, et 14 d'entre eux avec un NPF de 5 %. L'exemple de la décroissance 5 % → 0 % est la CASTINE (2521.00.00.00, catégorie A, NPF 5 %, année1 4,5 % → année10 0 %). Le ciment (2523.10, 2523.21, 2523.29, 2523.90) n'a AUCUNE catégorie dans l'offre, avec un NPF de 20 % (10 % pour le clinker 2523.10). L'entrée régionale dit verbatim « ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021 » (16 pays, Mauritanie incluse).",
    "archive": {
     "texte_extrait": "sources/NGA_etariff_ecowas_offre_2026-09-28.extrait.txt",
-    "sha256": "554a5c2334fe3122be062c60fe61c38433a0852d9394f2168ccf6d6a5273f003"
+    "sha256": "778d329e436a4c3ee42380ded14d57748d0afbddc750c117c034ec5c60506f49"
    }
   },
   "corridor_fmiti_mai_2026": {
