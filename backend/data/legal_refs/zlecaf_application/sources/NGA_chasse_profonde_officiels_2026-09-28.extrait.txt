@@ -1,0 +1,22 @@
+ARCHIVE DE RECHERCHE — chasse profonde journaux officiels et institutions (28/09/2026)
+
+1. CEDEAO (Commission, ecowas.int, 15/04/2025, lu via webfetch) : visite de courtoisie de la
+   Commissaire Massandjé Toure-Litse à la ministre nigériane Oduwole — préparation d'ECOMOTI ;
+   AUCUNE mention du gazettement ni d'un numéro de gazette. Les « Official Journals » de la
+   CEDEAO sont accessibles sur ecowas.int mais concernent le Journal officiel de la CEDEAO,
+   pas la gazette nigériane.
+
+2. Business Post Nigeria (15/04/2025, lu via webfetch, source secondaire datée) :
+   « The Nigerian government has officially gazetted and transmitted the ECOWAS Schedule of
+   Tariff Offers for Trade in Goods under the AfCFTA to the AfCFTA Secretariat. » — l'offre
+   gazettée et transmise EST LE CALENDRIER ECOWAS, signé par le président Tinubu, transmis
+   avant la 16e réunion du Conseil des ministres (Kinshasa). Éclairage décisif : le
+   document gazetté nigérian est le calendrier ECOWAS — d'où ECOWAS → NG dans l'e-Tariff
+   officiel. Aucun numéro de gazette cité.
+
+3. NCS, page « Circulars » (customs.gov.ng/publications/circulars, Jina) : aucune circulaire
+   ZLECAf/AfCFTA listée à ce stade.
+
+4. NigeriaLII / nigeriatradehub.gov.ng : rien d'exploitable (tradehub : 0 octet ; NCS
+   CET-Tariff : Excel « Awaiting upload », PDF CET-SCHEDULES-1.pdf = 59 Mo scanné sans
+   texte exploitable).
