@@ -109,5 +109,14 @@
   "archives_trouvees": [
    "tralac infographie (janvier 2026) : Burundi parmi les 24 « gazetted » — secondaire, archivé : sources/BDI_tralac_infographie_2026-01.extrait.txt, sha e788aa190893e9add0b61d2188a0bf43960a43769b0027c65b46974154b892e2."
   ]
+ },
+ "indice_primaire_partenaire": {
+  "acte": "Notice R.5879, Government Gazette 52150, 21/02/2025 (Afrique du Sud, SARS). Titre : « Amendment to Schedule No. 1, by the substitution of paragraph 1 of General Note O, to include Morocco, Burundi and Uganda as part of the State Parties in the AfCFTA Agreement ».",
+  "url": "https://www.sars.gov.za/legal-lsec-ce-ta-2025-02-r5879-gg-52150-sch-1-1-1941-general-note-o-to-include-morocco-burundi-and-uganda-in-the-afcfta-21-february-2025/",
+  "archive": {
+   "texte_extrait": "sources/ZAF_r5879_gg_52150_2025-02-21.pdf",
+   "sha256": "83f8c1776cdcfea70ab345be14b1aacdb8ee0d3cf4c52b667538695b1f25e6ec"
+  },
+  "portee": "Acte de l'Afrique du Sud : il prouve que la SACU accorde sa préférence aux produits burundais depuis le 21/02/2025. Il ne prouve pas que le Burundi applique la ZLECAf à ses propres importations. Il est en contradiction avec le communiqué du Secrétariat du 06/08/2026 (feuille de route à élaborer). Indice, pas preuve."
  }
 }
