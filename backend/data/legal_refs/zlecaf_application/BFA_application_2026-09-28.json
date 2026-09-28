@@ -1,0 +1,64 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "BFA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "membre CEDEAO couvert par l'offre ECOWAS du 26/10/2021 ; une décision n° 04 du Conseil constitutionnel relative à la ZLECAf existe sur le site officiel du Conseil mais est un scan illisible (pas d'OCR disponible) ; aucun acte national de démantèlement tarifaire ni liste d'origines retrouvés",
+ "instrument": {
+  "id": "décision n° 04 du Conseil constitutionnel (relative à la ZLECAf) — identité exacte NON établie",
+  "title_etabli": "INTITULÉ NON LU — PDF sans couche de texte",
+  "date": null,
+  "gazette": null,
+  "texte_extrait": "sources/BFA_decision_CC_04_ZLECAf_scan.pdf (scan 12 pages, sans couche de texte) ; note de lecture : sources/BFA_decision_CC_04_note_lecture.txt",
+  "sha256": "9aeb6c619eb107dff5b8714bbc0f885f4944d766962c6aca55f2628dee159d72",
+  "limite": "PDF v1.2, 5 418 007 octets, 12 pages, hébergé par le Conseil constitutionnel (conseil-constitutionnel.gov.bf). 0 flux de texte détecté sur 36 flux compressés ; ni tesseract ni ocrmypdf disponibles dans l'environnement de vérification : le contenu n'a PAS été lu. L'objet exact (vraisemblablement le contrôle de constitutionnalité d'un texte de ratification, d'après le snippet de recherche citant l'article 5 de l'Accord) reste SUPPOSÉ, non prouvé."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Loi/décret burkinabè portant mise en œuvre du démantèlement tarifaire ZLECAf ; arrêté ou note de service des douanes (douanes.bf) ; liste nominative des origines admises ; barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Conseil constitutionnel du Burkina Faso — https://www.conseil-constitutionnel.gov.bf/fileadmin/decision_04_zone_libre_echange_continentale_africaine.pdf",
+    "resultat": "POSITIF D'EXISTENCE — décision n° 04 « zone libre échange continentale africaine » hébergée sur le site officiel, téléchargée et scellée (12 pages). ILLISIBLE (scan sans OCR possible dans cet environnement) : ni l'objet exact, ni la date, ni la portée ne sont établis."
+   },
+   {
+    "endroit": "Direction Générale du Commerce (DGC, dgc-commerce.com — MICA)",
+    "resultat": "POSITIF D'ORGANISATION — la DGC affiche une « Stratégie Nationale de Mise en Œuvre de la ZLECAf au Burkina Faso » (2023, DGC/DCE, 88 pages) comme document prioritaire et annonce : « La DGC annonce la finalisation des protocoles tarifaires avec les principaux partenaires commerciaux africains, ouvrant la voie à des échanges préférentiels élargis dès le second semestre 2026 ». Les liens « Consulter » et « Télécharger » de la carte ZLECAf sont DES ATTRIBUTS href=\"#\" NON COMPLÉTÉS dans le HTML : le PDF de la stratégie n'est PAS téléchargeable (Drive de la carte « Documents à la une » pointant vers un autre document, et lien Drive de la stratégie bloqué par le propriétaire : « the owner hasn't given you permission to download this file »). Archivé : sources/BFA_dgc_commerce_presentation_2026.extrait.txt (sha e7433d66…). Une stratégie/annonce n'est pas un acte tarifaire et ne nomme aucun partenaire."
+   },
+   {
+    "endroit": "Douanes du Burkina Faso — https://www.douanes.bf/ (et douane.bf/sydoniabf)",
+    "resultat": "NON INTERROGEABLE PROPREMENT — certificat TLS invalide (ERR_CERT_AUTHORITY_INVALID, consigné) ; accès via curl -k : page d'accueil lue (50,8 Ko) mais aucune circulaire/notice ZLECAf retrouvée dans les liens ; la rubrique téléchargements ne contient pas de note ZLECAf."
+   },
+   {
+    "endroit": "Journal officiel du Faso (balayage)",
+    "resultat": "NÉGATIF PAR DÉFAUT D'ACCÈS — le J.O. du Faso n'est pas couvert par gazettes.africa (pays absents de la liste) et n'a pas de site plein-texte accessible ; aucun acte ZLECAf du Faso n'a donc pu être balayé au JO. Constat d'échec d'accès, PAS un constat d'absence."
+   },
+   {
+    "endroit": "Code des douanes du Burkina Faso (loi n° 003-2025/ALT du 24/03/2025, promulguée par décret n° 2025-0413/PRES du 07/04/2025 — repéré via Scribd, source secondaire)",
+    "resultat": "Repérage seulement : le nouveau code douanier de 2025 n'a pas été lu ; rien n'indique qu'il porte un régime ZLECAf. À vérifier dans le texte intégral."
+   },
+   {
+    "endroit": "Recherches web (DuckDuckGo via r.jina.ai) : stratégie ZLECAf Burkina + arrêté/décret démantèlement",
+    "resultat": "AUCUN acte national de démantèlement tarifaire retrouvé ; l'offre applicable au Burkina reste l'OFFRE ECOWAS (26/10/2021), comme pour les autres membres de la CEDEAO."
+   }
+  ],
+  "resultat": "NÉGATIF sur les trois points du plan : pas d'acte national de démantèlement tarifaire retrouvé, aucune liste nominative d'origines, pas de barème national ligne à ligne. Le niveau OFFRE_SEULE est retenu : l'offre ECOWAS couvre le Burkina, une décision du Conseil constitutionnel relative à la ZLECAf existe (non lue), mais rien n'établit l'application nationale effective du tarif préférentiel à l'importation."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — aucune publication d'un acte de démantèlement tarifaire ; la décision CC n° 04 (objet supposé : ratification) est illisible et ne saurait constituer un acte tarifaire",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — instantané ECOWAS (barème) archivé dans le dépôt, non exploitable sans instrument national ni liste d'origines",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "L'objet exact de la décision n° 04 du Conseil constitutionnel (ratification ? autre ?) et sa date : OCR à réaliser dès qu'un environnement avec tesseract (-l fra) est disponible.",
+  "La portée exacte des « protocoles tarifaires finalisés avec les principaux partenaires commerciaux africains » annoncés par la DGC pour le second semestre 2026 : aucun document publié ne les détaille.",
+  "L'application éventuelle du tarif ZLECAf par SYDONIA (déclaration en douane) sans publication : seule une preuve de terrain peut le trancher."
+ ],
+ "remaining_work": [
+  "OCR de BFA_decision_CC_04_ZLECAf_scan.pdf (tesseract -l fra) et identification de la décision dans le J.O. du Faso.",
+  "Obtenir le PDF de la Stratégie nationale ZLECAf (Demander à la DGC/DCE ; le lien Drive est fermé et les liens de la carte sont vides).",
+  "Vérifier dans le code des douanes 2025 (loi 003-2025/ALT) toute référence au régime préférentiel ZLECAf, et chercher une circulaire de la douane."
+ ]
+}

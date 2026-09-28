@@ -1,0 +1,24 @@
+BFA_decision_CC_04_ZLECAf_scan.pdf — note de lecture (2026-09-28)
+=================================================================
+URL : https://www.conseil-constitutionnel.gov.bf/fileadmin/decision_04_zone_libre_echange_continentale_africaine.pdf
+Consulté le : 2026-09-28. HTTP 200, 5 418 007 octets, PDF v1.2, 12 pages.
+SHA-256 du PDF : 9aeb6c619eb107dff5b8714bbc0f885f4944d766962c6aca55f2628dee159d72
+
+Nature supposée (ancre de recherche uniquement, non vérifiée sur le texte) :
+décision n° 04 du Conseil constitutionnel du Burkina Faso relative à la
+Zone de libre-échange continentale africaine (contrôle de constitutionnalité
+d'un texte de ratification, d'après le nom de fichier et le snippet de
+recherche qui cite l'article 5 de l'Accord ZLECAf — principes, CER piliers,
+géométrie variable).
+
+LIMITE TECHNIQUE CONSIGNÉE : le PDF est un SCAN SANS COUCHE DE TEXTE
+(0 flux de texte détecté sur 36 flux compressés) et l'environnement de
+vérification ne dispose ni de tesseract ni d'ocrmypdf : AUCUNE OCR n'a pu
+être produite. Le contenu page à page n'est donc PAS lu. Ce fichier ne
+constate que l'existence, l'hébergement officiel (conseil-constitutionnel.gov.bf)
+et l'impossibilité technique de lecture dans cet environnement.
+
+Ce que cela n'établit PAS : ni le numéro exact de la décision, ni l'objet
+exact (probablement la ratification, mais non prouvé), ni la date, ni la
+portée. À lire par OCR dès qu'un environnement avec tesseract (-l fra) est
+disponible, ou sur le J.O. du Faso.
