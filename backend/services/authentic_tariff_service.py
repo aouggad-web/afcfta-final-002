@@ -1673,8 +1673,8 @@ def _resolve_zlecaf_context(
         if not zaf_partner_active(origin):
             return _no_preference(
                 "ZLECAf ratifié mais échanges préférentiels pas encore activés "
-                "avec l'Afrique du Sud (newsletter AfCFTA dtic/SARS, mars 2026) "
-                "— taux NPF appliqué"
+                "avec l'Afrique du Sud pour cette origine (General Note O du "
+                "Schedule No. 1) — taux NPF appliqué"
             )
         official_rate = resolve_official_preferential_rate(dest, hs_code_clean)
         eff_dd = official_rate.get("ad_valorem_rate_pct") if official_rate else None
