@@ -1,0 +1,51 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "SSD",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-28",
+ "evidence_level": "Liste officielle du dépositaire (UA, arrêtée au 22/05/2026) : le Soudan du Sud a SIGNÉ (21/03/2018) mais n'a NI ratifié NI déposé ; cohérence arithmétique vérifiée avec le comptage officiel du Secrétariat au 04/09/2026 (50 États parties = 49 au 22/05/2026 + Somalie).",
+ "instrument": {
+  "id": "AUCUN — aucun instrument national de ratification ni d'application",
+  "title_etabli": "Signature seule (Kigali, 21/03/2018) ; les colonnes « date of ratification » et « date deposited » de la liste du dépositaire sont vides pour South Sudan",
+  "date": "AUCUN — sans objet (signature seule, 2018-03-21)",
+  "gazette": "Aucune recherchée au-delà de la liste du dépositaire — sans ratification, aucun acte d'application ne peut exister",
+  "texte_extrait": "sources/AU_liste_depot_2026-05-22.pdf",
+  "sha256": "e38d01042f01ec33e7ac188aaf37b24eccfca7b91493d8804205f0d344a2a68b",
+  "verbatim_en": "« 46 South Sudan 21/03/2018 - - » et, en pied de liste : « Total countries : 55 of signature : 54 of ratification : 49 of deposit : 49 »",
+  "traduction_fr": "« 46 Soudan du Sud 21/03/2018 – – » ; « Total pays : 55 ; signature : 54 ; ratification : 49 ; dépôt : 49 »"
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "État de ratification 2026 puis, s'il y avait ratification, acte national d'application et liste des origines.",
+  "ou": [
+   {
+    "endroit": "Dépositaire officiel — UA, « List of Countries Which Have Signed, Ratified/Acceded to the Agreement Establishing the AfCFTA », arrêtée au 22/05/2026",
+    "resultat": "DÉCISIF ET NÉGATIF — South Sudan : signature 21/03/2018, « date of ratification/accession : - », « date deposited : - ». PDF archivé : sources/AU_liste_depot_2026-05-22.pdf."
+   },
+   {
+    "endroit": "Secrétariat de la ZLECAf — communiqué du 04/09/2026 (dépôt somalien)",
+    "resultat": "COHÉRENCE — « 54 Signatories. 50 State Parties » au 04/09/2026 : 49 États parties au 22/05/2026 + la Somalie = 50 ; le Soudan du Sud n'y figure pas. Archivé : sources/SOM_secretariat_depot_ratification_2026-09-04.extrait.txt."
+   },
+   {
+    "endroit": "Livre tarifaire électronique officiel de la ZLECAf (API /Region/GetRegions)",
+    "resultat": "PRÉCAUTION DE LECTURE — l'API classe SS sous l'union douanière CAE (offre CAE adoptée) : cela décrit l'OFFRE tarifaire communautaire, PAS la qualité d'État partie ni une application nationale. Aucun instrument soudanais du Sud. Archivé : sources/ZLECAF_etariff_api_regions_2026-09-28.json."
+   }
+  ],
+  "resultat": "NÉGATIF et définitif à ce stade : sans ratification ni dépôt (état au 22/05/2026, non contredit au 28/09/2026 par le comptage du Secrétariat), aucun acte national d'application ni liste d'origines ne peuvent exister. La non-application est présumée."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON — pas de ratification, donc pas d'application possible ; signature seule",
+  "2_liste_officielle_origines_reciproques": "NON — inapplicable sans État partie",
+  "3_bareme_au_niveau_de_la_ligne": "NON — aucune offre nationale ; le classement CAE dans l'API officielle est une métadonnée d'offre, non un barème soudanais du Sud exécutable",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Une ratification éventuelle POSTÉRIEURE au 22/05/2026 : le comptage « 50 State Parties » du 04/09/2026 l'exclut jusqu'à cette date ; au-delà, seule une mise à jour de la liste du dépositaire ou un communiqué du Secrétariat la pourrait établir.",
+  "Le calendrier tarifaire que le Soudan du Sud utiliserait en cas de ratification (offre CAE vs offre nationale)."
+ ],
+ "remaining_work": [
+  "Re-vérifier la liste du dépositaire UA (au.int, PDF Status List) après sa prochaine mise à jour.",
+  "En cas de ratification : obtenir l'instrument (loi/arrêté de ratification soudanais du Sud), puis l'acte d'application et la liste d'origines."
+ ]
+}
