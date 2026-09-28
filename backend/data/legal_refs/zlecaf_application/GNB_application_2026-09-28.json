@@ -1,0 +1,66 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GNB",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification/dépôt établis par la liste officielle de l'UA (dépôt 31/08/2022) et corroborés par l'annonce officielle du MNE (Facebook, 28/09/2022, relais presse — jamais le texte de l'acte) ; communiqué OFFICIEL de la Direção-Geral das Alfândegas (DGA, 01/06/2026) au stade de formation sur les règles d'origine ZCLCA ; site officiel de la DGA : législation douanière = CEDEAO/UEMOA/OMA UNIQUEMENT, aucune norme ZCLCA ; AUCUN acte d'application obtenu ; offre CEDEAO (26/10/2021) archivée en OFFER_ONLY — pas un acte national.",
+ "instrument": {
+  "id": "AUCUN ACTE NATIONAL D'APPLICATION OBTENU — dépôt de l'instrument de ratification annoncé par le MNE le 28/09/2022",
+  "title_etabli": "Dépôt de l'instrument de ratification de l'Accord ZLECAf par la Guinée-Bissau (44e État partie selon la presse, repris du MNE)",
+  "date": "2022-08-31",
+  "gazette": "Boletim Oficial da Guiné-Bissau — NON ACCESSIBLE EN LIGNE (aucun portail officiel trouvé ; gazettes.africa ne couvre pas le pays)",
+  "texte_extrait": "sources/GNB_DGA_workshop_regras_origem_ZCLCA_2026-06-01.extrait.txt",
+  "sha256": "c947a81c9112f71807a8c7c8b5477af8372843f6b012fb25c53757409ef183eb",
+  "source_url": "https://alfandegas.mef.gw/alfandega-da-guine-bissau-acolhe-workshop-regional-de-formacao-de-formadores-sobre-regras-de-origem/ ; dépôt : https://au.int/sites/default/files/treaties/36437-sl-AGREEMENT_ESTABLISHING_THE_AFRICAN_CONTINENTAL_FREE_TRADE_AREA_0.pdf",
+  "verbatim_DGA_2026": "O Diretor-Geral destacou que o principal objetivo da formação é reforçar os conhecimentos e as competências técnicas dos quadros aduaneiros no desenvolvimento e implementação das políticas comerciais ligadas às Regras de Origem, particularmente no contexto da Zona de Comércio Livre Continental Africana (ZCLCA).",
+  "portee_du_communique": "Établit le stade de formation/capacitation (juin 2026) de la DGA sur les règles d'origine ZCLCA ; ne nomme aucun acte tarifaire, aucun partenaire, aucune date d'application."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national de ratification et d'application (résolution de l'Assembleia Nacional Popular, décret, pauta/notice douanière ZCLCA) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Direção-Geral das Alfândegas (DGA) — https://alfandegas.mef.gw et https://dga.mef.gw (rubriques Pauta Aduaneira et Legislação lues intégralement le 2026-09-28)",
+    "resultat": "NÉGATIF pour l'application — la rubrique Legislação n'expose que : Code des douanes CEDEAO, TEC-CEDEAO-2017, règlements CEDEAO/UEMOA, législation OMA/OMC ; AUCUN texte ZCLCA/AfCFTA. La rubrique Pauta Aduaneira ne cite aucun traitement préférentiel ZLECAf. Le communiqué DGA du 01/06/2026 (workshop règles d'origine ZCLCA, programme UE-OMD « Origine en Afrique ») atteste le stade de formation."
+   },
+   {
+    "endroit": "Boletim Oficial da Guiné-Bissau — portails testés : boletimoficial.gw et www.imprensanacional.gw (HTTP 000) ; recherche site:.gw ZCLCA/comércio livre continental",
+    "resultat": "NÉGATIF — aucun portail officiel du BO en ligne trouvé ; aucun résultat gouvernemental (.gw) sur la ZCLCA. FAOLEX héberge des BO scannés (gbs235605, gbs222186) mais aucun repérage de la ratification ZCLCA n'y a été fait à ce stade."
+   },
+   {
+    "endroit": "Annonce de ratification du MNE (28/09/2022) — relais Forbes África Lusófona/Lusa/Visão/O Democrata",
+    "resultat": "REPÉRAGE SEULEMENT (sources secondaires) : « já depositou o seu instrumento de ratificação » (message officiel MNE relayé par presse) ; numéro d'acte national (résolution ANP/décret) et publication au BO jamais cités. Jamais de preuve."
+   },
+   {
+    "endroit": "gazettes.africa — https://gazettes.africa/gazettes/gw/2025 (via r.jina.ai)",
+    "resultat": "NÉGATIF — 404 : gazettes.africa ne couvre pas la Guinée-Bissau (liste relevée le 2026-09-28)."
+   },
+   {
+    "endroit": "Statut officiel de ratification UA (archivé, sha 29b2fe2b…)",
+    "resultat": "POSITIF pour le dépôt : Guinea-Bissau — signature 08/02/2019, ratification 08/08/2022, dépôt 31/08/2022."
+   },
+   {
+    "endroit": "Corroboration — liste de dépôt UA déjà versée au dépôt (sources/AU_liste_depot_2026-05-22.pdf, état au 22/05/2026)",
+    "resultat": "CONFIRMÉ — dates identiques pour GNB (ratification/dépôt : 08/08/2022 / dépôt 31/08/2022) ; aucune mise à jour des dépôts entre le 19/09/2023 et le 22/05/2026 pour ce pays."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : ni l'acte national de ratification (numéro/BO) ni un acte d'application tarifaire ni une liste nominative d'origines. Le site officiel des douanes expose une législation exclusivement CEDEAO/UEMOA/OMA et documente un stade de formation ZCLCA (juin 2026)."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT POUR L'APPLICATION — dépôt de ratification établi (UA 31/08/2022) mais acte national (numéro/BO) introuvable ; aucun acte d'application ; DGA au stade de formation (06/2026)",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre régionale CEDEAO (adoptée 26/10/2021) archivée : backend/data/official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz (OFFER_ONLY) ; l'offre régionale n'est pas un acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le numéro et le contenu de l'acte national de ratification (résolution ANP ou décret) et sa publication au Boletim Oficial ne sont pas établis.",
+  "Un éventuel gazettement de l'offre CEDEAO au Boletim Oficial ne peut être exclu (BO non accessible en ligne).",
+  "L'attribution de la Guinée-Bissau à l'offre CEDEAO suit le cadre régional de négociation ; aucun texte national repéré ne le confirme expressément."
+ ],
+ "remaining_work": [
+  "Retrouver l'acte national de ratification dans le Boletim Oficial da Guiné-Bissau (2022) — collection papier ou FAOLEX (balayer les BO 2022).",
+  "Surveiller alfandegas.mef.gw (pauta, legislação, notícias) pour un futur traitement préférentiel ZCLCA.",
+  "Vérifier sur source primaire CEDEAO l'attribution de la Guinée-Bissau à l'offre régionale ZLECAf."
+ ]
+}
