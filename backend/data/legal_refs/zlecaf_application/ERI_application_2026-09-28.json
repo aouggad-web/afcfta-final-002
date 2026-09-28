@@ -1,0 +1,53 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "ERI",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-28",
+ "evidence_level": "primaire continental — Rapport de progrès ZLECAf du Conseil des ministres de l'UA (EX.CL/1625 (XLVII), juillet 2025) : « The State of Eritrea has yet to sign the Agreement » ; corroboré en 2026 par la newsletter officielle dtic/SARS (mars 2026, déjà archivée dans le dépôt) et par le registre continental du dépôt (ratification_status('ERI') → NOT_SIGNED).",
+ "instrument": {
+  "id": "aucun — l'Érythrée n'est PAS signataire de l'Accord ZLECAf",
+  "title_etabli": "AUCUN instrument national d'application possible : l'État d'Érythrée n'a pas signé l'Accord, donc ne l'a pas ratifié et ne peut avoir aucun acte national d'application.",
+  "date": null,
+  "gazette": null,
+  "texte_extrait": "sources/ERI_au_ex_cl_1625_progress_report_2025-07_2026-09-28.pdf",
+  "sha256": "8200d624e5348374d7cd96e5c3c9cff7f645abbba5d3bee77c661e591aa565dc"
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "État de la signature/ratification de l'Accord ZLECAf par l'Érythrée en 2026 ; tout acte national d'application éventuel.",
+  "ou": [
+   {
+    "endroit": "Rapport de progrès ZLECAf du Conseil de l'UA, EX.CL/1625 (XLVII), juillet 2025 (archives.au.int, récupéré via web.archive.org le 28/09/2026 — archives.au.int et au.int en direct sont injoignables depuis ce poste, échec consigné)",
+    "resultat": "« As of July 2025, 49 out of 54 signatory Member States have ratified the AfCFTA Agreement and submitted their instruments of ratification to the African Union Commission (AUC). The State of Eritrea has yet to sign the Agreement to complete its full continental subscription to the Agreement. »"
+   },
+   {
+    "endroit": "Exa (web_search_exa) : « Eritrea AfCFTA 2025 2026 signed ratified status »",
+    "resultat": "tralac (SECONDAIRE) : « Status of AfCFTA ratification » au 04/09/2026 — 50 signataires ont déposé, « Only one signatory to the Agreement is outstanding: Eritrea » ; aucun fait contraire sur primaire."
+   },
+   {
+    "endroit": "Registre continental du dépôt (backend/services/zlecaf_membership_status.py, source : newsletter dtic/SARS mars 2026)",
+    "resultat": "ratification_status('ERI') → NOT_SIGNED (« 54 of the 55 AU members have signed (except Eritrea) »)."
+   },
+   {
+    "endroit": "Recherche d'acte national érythréen (gazette érythréenne, ministère du commerce)",
+    "resultat": "SANS OBJET : un État non signataire ne peut avoir aucun acte national d'application. Aucune recherche d'acte n'est menée au-delà du constat de non-signature."
+   }
+  ],
+  "resultat": "L'Érythrée n'a pas signé l'Accord ZLECAf — constaté sur primaire continental en juillet 2025 (EX.CL/1625) et non contredit en 2026 (tralac au 04/09/2026, secondaire ; registre du dépôt). Aucun instrument national d'application n'existe ni ne peut exister. Le niveau NON_APPLIQUE_PRESUME porte sur l'application : elle est exclue de plein droit tant que l'Érythrée n'a pas signé ET ratifié."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON — aucun instrument possible : l'Érythrée n'est pas signataire de l'Accord",
+  "2_liste_officielle_origines_reciproques": "NON — sans objet (aucune application, donc aucune liste d'origines admises)",
+  "3_bareme_au_niveau_de_la_ligne": "NON — sans objet",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Une éventuelle signature/ratification érythréenne POSTÉRIEURE à juillet 2025 : la corroboration de 2026 est secondaire (tralac) ; une ratification future changerait le niveau et devrait être prouvée par une source primaire (UA, gazette érythréenne)."
+ ],
+ "remaining_work": [
+  "À chaque mise à jour : re-vérifier le statut sur primaire continental (rapports du Conseil de l'UA, archives.au.int — injoignable en direct le 28/09/2026, à reprendre) ou sur la liste officielle des signataires de l'UA.",
+  "Ne JAMAIS servir un taux ZLECAf pour destination ERI : le registre NOT_SIGNED est le garde-fou ; aucune exception n'est prévue."
+ ],
+ "justification_niveau": "Source primaire datée (rapport officiel du Conseil de l'UA, juillet 2025, archivé sha 8200d624…) : l'Érythrée n'a pas signé. Sans signature, ni ratification, ni offre, ni application — NON_APPLIQUE_PRESUME, tenu sur la source la plus forte disponible et non contredit au 28/09/2026."
+}
