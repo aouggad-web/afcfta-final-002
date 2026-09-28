@@ -1,0 +1,33 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GHA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-28",
+ "note_cadre": "Le Ghana est membre de la CEDEAO ; son offre ZLECAf est L'OFFRE ECOWAS (déposée et adoptée le 26/10/2021), gazettée au niveau national (preuve indirecte seulement).",
+ "constats": {
+  "ratification": "RATIFIED (ratification_status('GHA')).",
+  "gazettement_national": "NUMÉRO INTROUVABLE. Aucun avis de la Ghana Gazette gazettant la PSTC ECOWAS n'a été localisé (gazettes.africa/gh sans annexe tarifaire). Preuves INDIRECTES datées : SARS General Note O (GG 50045, 26/01/2024) liste « Ghana — 31 août 2023 » parmi les États « implemented the PSTC » ; lettre SARS aux opérateurs (01/02/2024) : le Ghana a « finalised the necessary domestic legislation ».",
+  "bareme": "La GRA ne publie PAS de colonne AfCFTA dans son HS Code public (Import Duty/VAT/Excise/NHIL). L'offre ECOWAS → GH est servie par l'e-Tariff officiel (identique → NG : 88 résultats « cement », 31 cat. A ; ciment 2523.x sans catégorie, NPF 20 %, clinker 10 %) — collecte ligne à ligne dans le dépôt restante.",
+  "application_import": "OUI, datée (sources primaires du Secrétariat) : café Igire (Rwanda → Ghana, consigne KIA 30/09/2022, lancée 07/10/2022) ; batteries Exide (Kenya → Ghana, oct.-déc. 2022) ; thé Ketepa (arrivé mi-déc. 2022) ; plainte NTB AfCFTA-000-104 (import de batteries), réunion GRA 07/05/2026.",
+  "origines": "Admission par RÈGLE (State Parties + règles d'origine), pas de liste nominative."
+ },
+ "sources_archivees": {
+  "recherche_import": {
+   "texte_extrait": "sources/GHA_recherche_import_2026-09-28.extrait.txt",
+   "sha256": "f3432b731cb275aaeb342b8187c2fd932ebea56b58f5ce82b19b3e4a15f1c6b8"
+  }
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — le gazettement national est attesté indirectement (SARS 2024) mais le numéro de la Ghana Gazette n'est pas retrouvé",
+  "2_liste_officielle_origines_reciproques": "NON — admission par règle (State Parties/RoO), pas de liste nominative",
+  "3_bareme_au_niveau_de_la_ligne": "À COLLECTER — l'offre ECOWAS→GH est consultable dans l'e-Tariff (identique NG), pas encore extraite dans le dépôt",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "Le Ghana IMPORTE réellement sous ZLECAf (preuves datées 2022-2026) mais sans numéro de gazette public ni barème ligne à ligne collecté dans le dépôt. Niveau NOTIFICATION_PARTENAIRES_REQUISE (l'application à l'importation est constatée, la liste nominative et la collecte du barème manquent). Aucun branchement.",
+ "remaining_work": [
+  "Retrouver le numéro de la Ghana Gazette du gazettement PSTC.",
+  "Collecter l'offre ECOWAS→GH ligne à ligne dans le dépôt (comme zlecaf_ken).",
+  "Documenter les preuves d'importation individuelles (dates, certificats) dans le dépôt."
+ ]
+}

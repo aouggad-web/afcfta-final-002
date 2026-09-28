@@ -1,0 +1,21 @@
+ARCHIVE DE RECHERCHE — Ghana (28/09/2026, tous canaux : Exa, Jina, webfetch, API e-Tariff)
+
+PREUVES D'IMPORTATION SOUS ZLECAf (datées, sources primaires du Secrétariat) :
+- Café Igire (Rwanda → Ghana) : 1er certificat d'origine AfCFTA rwandais, consigne
+  reçue à KIA le 30/09/2022, lancée le 07/10/2022 — au-afcfta.org (19/10/2022).
+- Batteries Exide / Associated Battery Manufacturers (Kenya → Ghana) : 2 conteneurs
+  expédiés oct.-déc. 2022 — au-afcfta.org (19/10/2022).
+- Thé Ketepa (Kenya → Ghana) : expédié 05/10/2022, arrivé mi-déc. 2022 (rapport KAS/GTI).
+- Plainte NTB AfCFTA-000-104 (import de batteries, Mauvaise ligne HS) — réunion GRA du 07/05/2026.
+
+GAZETTEMENT NATIONAL : NUMÉRO INTROUVABLE. gazettes.africa/gazettes/gh n'offre pas
+d'annexe tarifaire AfCFTA. Preuves INDIRECTES datées : SARS « General Note O » (GG 50045,
+26/01/2024) liste « Ghana — 31 août 2023 » parmi les États ayant mis en œuvre leur PSTC ;
+lettre SARS aux opérateurs (01/02/2024) : le Ghana a « finalised the necessary domestic
+legislation ». Le critère d'admission GTI (tralac 29/02/2024) exige le gazettage national.
+
+BARÈME : la GRA ne publie PAS de colonne AfCFTA (il existe le HS Code public : Import Duty/
+VAT/Excise/NHIL, sans AfCFTA). L'offre ECOWAS → GH est consultable dans l'e-Tariff officiel
+(identique → NG : 88 résultats « cement », 31 cat. A ; ciment 2523.x sans catégorie).
+
+ORIGINES : par RÈGLE (State Parties + règles d'origine), pas de liste nominative.
