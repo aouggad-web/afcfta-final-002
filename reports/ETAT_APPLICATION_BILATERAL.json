@@ -329,9 +329,9 @@
      "ambiguite": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
     },
     "progres_2026-09-28": {
-     "recherche_menee": "Preuves d'IMPORTATION sous ZLECAf, datées (sources primaires du Secrétariat) : café Igire (Rwanda→Ghana, consigne KIA 30/09/2022, lancée 07/10/2022) ; batteries Exide (Kenya→Ghana, oct.-déc. 2022) ; thé Ketepa (arrivé mi-déc. 2022) ; plainte NTB AfCFTA-000-104 résolue par la GRA le 07/05/2026. Gazettement national attesté INDIRECTEMENT (SARS General Note O, GG 50045, 26/01/2024 « Ghana — 31 août 2023 » ; lettre SARS 01/02/2024) ; numéro de la Ghana Gazette introuvable (gazettes.africa/gh lacunaire).",
-     "bareme": "La GRA ne publie pas de colonne AfCFTA ; l'offre ECOWAS → GH est servie par l'e-Tariff officiel (identique → NG), collecte ligne à ligne restante.",
-     "manque_inchange": "L'acte national ghanéen (numéro de gazette) et toute liste nominative ; l'ambiguïté de « State Parties » persiste."
+     "recherche_menee": "Premiers ENVOIS GTI vers le Ghana (certificats d'origine émis au départ) : café Igire (Rwanda, export 30/09/2022) et batteries Exide (Kenya) — Secrétariat 19/10/2022 et 09/10/2023 ; traitement à l'arrivée non documenté. Gazettement attesté par la General Note O (R.4287, GG 50045, 26/01/2024 : « Ghana — 31 August 2023 ») ; numéro de la Ghana Gazette introuvable.",
+     "bareme": "Offre ECOWAS ARCHIVÉE dans le dépôt (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz, destination GH) — bareme_collecte = true.",
+     "manque_inchange": "L'acte national ghanéen (numéro de gazette), toute liste nominative, et un dédouanement préférentiel GRA documenté."
     }
    },
    "CMR": {
