@@ -1,0 +1,68 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "COD",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_RAPPORTE_NON_PRIMAIRE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "deux instruments de STRUCTURE identifiés au sommaire du J.O. RDC sur leganet.be (loi n° 21/002 du 14/04/2021 autorisant la ratification ; ordonnance n° 21/060 du 28/07/2021 instituant le CN-ZLECAF) — sommaires officiels mais textes intégraux non obtenus ; aucun acte de démantèlement tarifaire ni liste d'origines retrouvés",
+ "instrument": {
+  "id": "Loi n° 21/002 du 14 avril 2021",
+  "title_etabli": "autorisant la ratification par la République Démocratique du Congo de l'Accord portant création de la Zone de Libre-Echange Continentale Africaine (ZLECAF)",
+  "date": "2021-04-14",
+  "gazette": "Journal officiel de la RDC, édition du 01/05/2021, col. 10 (sommaire)",
+  "texte_extrait": "sources/COD_JOrdc_sommaire_01-05-2021_loi_21_002.extrait.txt",
+  "sha256": "9f3e678e51178fca0f57523e4de8a1641245d5c715c926d3bca1ced29c4a9de5",
+  "instrument_2": {
+   "id": "Ordonnance n° 21/060 du 28 juillet 2021",
+   "title_etabli": "portant institution du Comité National de Mise en Œuvre de la Zone de Libre-Echange Continentale Africaine en République Démocratique du Congo, «CN-ZLECAF» en sigle",
+   "date": "2021-07-28",
+   "gazette": "Journal officiel de la RDC, édition du 15/09/2021, col. 10 (sommaire)",
+   "texte_extrait": "sources/COD_JOrdc_sommaire_15-09-2021_ord_21_060.extrait.txt",
+   "sha256": "8752e1179b6f7ced3866ce7181d910c906aa34995efae5c96b396bafd77c7fa1"
+  },
+  "portee": "Les deux instruments établis par les SOMMAIRES officiels du J.O. RDC (leganet.be, miroir du J.O.) : ce sont des instruments de ratification et d'organisation (comité), aucun des deux n'est un acte de démantèlement tarifaire. Les textes intégraux ne sont pas en ligne sur leganet (le J.O. du 01/05/2021 et du 15/09/2021 n'y sont pas proposés en PDF aux motifs testés)."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Textes intégraux de la loi 21/002 et de l'ordonnance 21/060 ; tout décret/arrêté de démantèlement tarifaire ZLECAf ; note de service de la DGDA/OFIDA désignant les origines admises ; barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "LEGANET.CD — sommaires du J.O. RDC 2021, 2022, 2023 (https://www.leganet.be/JO.htm)",
+    "resultat": "POSITIF pour les deux instruments de structure (voir instrument) ; NÉGATIF pour tout acte tarifaire : les 17 sommaires 2022 et 6 sommaires 2023 lus ne contiennent AUCUNE mention de la ZLECAf. Balayage consigné : sources/COD_balayage_leganet_JO_2021_2023.extrait.txt (sha 0bb73ba2…). Le J.O. 2024-2026 n'est pas sur leganet."
+   },
+   {
+    "endroit": "DGDA (douane.gouv.cd) — recherche interne « zlecaf » et rubrique Actualités",
+    "resultat": "NÉGATIF pour un acte — une seule ressource : le compte rendu de la 8e Réunion des Directeurs Généraux des Douanes des États Parties de la ZLECAF (09/08/2024, participation du DG adjoint) : participation institutionnelle, pas d'application. La Direction du Tarif et des Règles d'origine existe (page lue et archivée : inspection des règles d'origine préférentielle, mise à jour des tarifs des droits et taxes « des marchandises éligibles aux règles d'origine préférentielle ») mais publie ni barème ZLECAf ni liste d'origines. Archivé : sources/COD_dgda_recherche_zlecaf_2026-09-28.extrait.txt (sha b028a48a…), sources/COD_dgda_direction_tarif_roo.extrait.txt (sha c9a3e23e…)."
+   },
+   {
+    "endroit": "gazettes.africa — RDC (https://gazettes.africa/gazettes/cd)",
+    "resultat": "ÉCHEC D'ACCÈS — la page répond HTTP 500 (erreur serveur), la RDC n'est pas dans la liste des 24 pays couverts. Pas de balayage possible ; non déduit de l'absence."
+   },
+   {
+    "endroit": "Assemblée nationale RDC — session de juillet 2026 (opinion-info.cd, presse) : trois lois de ratification adoptées le 08/07/2026",
+    "resultat": "HORS CHAMP — les trois accords ratifiés en juillet 2026 sont l'Accord international sur le cacao, Shelter Afrique et l'APEG avec les Émirats arabes unis. PAS la ZLECAf. Archivé : sources/COD_opinioninfo_ratifications_2026-07.extrait.txt (sha eadc6cd3…)."
+   },
+   {
+    "endroit": "Recherches web (DuckDuckGo via r.jina.ai) : « RDC ZLECAf ordonnance OFIDA/DGDA tarif préférentiel »",
+    "resultat": "AUCUN acte national de démantèlement tarifaire ni liste d'origines retrouvés ; la loi de ratification (janvier 2021) et l'ordonnance CN-ZLECAF sont confirmées par la presse congolaise de l'époque (grandslacsnews, acp.cd : adoption à l'Assemblée le 22/01/2021, Sénat le 02/04/2021) — repérage cohérent avec le sommaire du J.O."
+   }
+  ],
+  "resultat": "MOITIÉ NÉGATIF : les instruments de structure (ratification + comité national) sont établis par des sommaires officiels du J.O. mais leurs textes intégraux manquent ; aucun acte de démantèlement tarifaire, aucune liste d'origines, aucun barème ZLECAf. La RATIFICATION est établie indirectement (sommaire officiel) mais l'APPLICATION TARIFAIRE ne l'est pas : niveau INSTRUMENT_RAPPORTE_NON_PRIMAIRE pour le seul volet ratification."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — ratification autorisée par la loi n° 21/002 (sommaire J.O. 01/05/2021, col. 10) et comité CN-ZLECAF institué (ordonnance n° 21/060, sommaire 15/09/2021) ; textes intégraux non obtenus ; aucun acte tarifaire d'application",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "ABSENT — la DGDA ne publie pas de barème ZLECAf ; l'offre RDC est adoptée au niveau continental (26/10/2021) sans nationalisation vérifiable",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le contenu exact de la loi 21/002 (texte annexé ? conditions ?) et de l'ordonnance 21/060 (composition et missions du CN-ZLECAF) : sommaires seulement.",
+  "La date d'entrée en vigueur de la ratification congolaise côté UA (les tables secondaires donnent un dépôt le 23/02/2022, non vérifiable ici).",
+  "Un régime opérationnel dans SYDONIA/ASYCUDA à la DGDA sans publication web : seul le terrain peut le trancher."
+ ],
+ "remaining_work": [
+  "Obtenir les textes intégraux de la loi n° 21/002 et de l'ordonnance n° 21/060 (J.O. RDC imprimé, SGG Kinshasa, ou le J.O. 2021 en PDF ailleurs).",
+  "Balayer les sommaires du J.O. RDC 2024-2026 (non couverts par leganet) pour tout acte tarifaire ZLECAf.",
+  "Demander à la DGDA (Direction du Tarif et des Règles d'origine) la circulaire éventuelle d'application du tarif préférentiel ZLECAf et la liste des États admis."
+ ]
+}

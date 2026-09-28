@@ -1,0 +1,31 @@
+Balayage LEGANET.CD (Journal officiel de la RDC, sommaires en ligne)
+— exécuté le 2026-09-28
+===========================================================================
+MÉTHODE : lecture des sommaires du JO RDC publiés sur leganet.be
+(JO.htm, puis chaque page « sommaire » de 2021, 2022, 2023 via r.jina.ai),
+recherche de « ZLECAF » / « libre-échange continentale ».
+
+RÉSULTATS POSITIFS (sources primaires, sommaires officiels du JO) :
+- SOMMAIRE du 01/05/2021 : « 14 avril 2021 – Loi n° 21/002 autorisant la
+  ratification par la République Démocratique du Congo de l'Accord portant
+  création de la Zone de Libre-Echange Continentale Africaine (ZLECAF),
+  col. 10. » → archive : COD_JOrdc_sommaire_01-05-2021_loi_21_002.extrait.txt
+  (texte intégral de la loi NON disponible sur leganet ; le JO du 01/05/2021
+  n'y est pas proposé en PDF au motif testé).
+- SOMMAIRE du 15/09/2021 : « 28 juillet 2021 – Ordonnance n° 21/060 portant
+  institution du Comité National de Mise en Œuvre de la Zone de
+  Libre-Echange Continentale Africaine en République Démocratique du
+  Congo, «CN-ZLECAF» en sigle, col. 10. » → archive :
+  COD_JOrdc_sommaire_15-09-2021_ord_21_060.extrait.txt
+
+RÉSULTATS NÉGATIFS :
+- Les 17 sommaires 2022 et les 6 sommaires 2023 lus (couverture leganet
+  lacunaire mais totale sur les numéros présents) : AUCUNE occurrence.
+- Pas de décret/arrêté de démantèlement tarifaire ZLECAf, pas de liste
+  d'origines admises dans les sommaires consultés.
+- La RDC n'est pas couverte par gazettes.africa (la page /gazettes/cd
+  répond HTTP 500).
+
+LIMITE : leganet ne publie que des sommaires et des textes choisis ; le
+JO RDC 2024-2026 n'y figure pas. Le texte intégral de la loi 21/002 et de
+l'ordonnance 21/060 reste à obtenir (JO RDC imprimé ou dépôt officiel).
