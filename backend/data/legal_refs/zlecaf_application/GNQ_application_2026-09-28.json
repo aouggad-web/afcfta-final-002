@@ -1,0 +1,66 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GNQ",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification/dépôt établis par la liste officielle de l'UA (dépôt 02/07/2019) ; AUCUN acte national d'application obtenu, aucune liste d'origines ; Gaceta Oficial introuvable en ligne ; signal secondaire (UNECA, 12/06/2024) : stratégie nationale d'application VALIDÉE en atelier, à présenter au gouvernement pour adoption — cohérent avec une non-application ; offre régionale CEMAC (26/10/2021) archivée en OFFER_ONLY — pas un acte national.",
+ "instrument": {
+  "id": "AUCUN ACTE NATIONAL D'APPLICATION OBTENU — ratification déposée à l'UA le 02/07/2019 (liste officielle UA)",
+  "title_etabli": "Dépôt de l'instrument de ratification de l'Accord ZLECAf par la Guinée équatoriale",
+  "date": "2019-07-02",
+  "gazette": "Gaceta Oficial de Guinea Ecuatorial — NON ACCESSIBLE EN LIGNE (aucun portail officiel trouvé ; gazettes.africa ne couvre pas le pays)",
+  "texte_extrait": "sources/GNQ_uneca_strategie_nationale_2024-06-12.extrait.txt",
+  "sha256": "a74616df545690ca0f5a4dd78481f70ed38ac7f858a726b283c21d61338fb11a",
+  "source_url": "dépôt : https://au.int/sites/default/files/treaties/36437-sl-AGREEMENT_ESTABLISHING_THE_AFRICAN_CONTINENTAL_FREE_TRADE_AREA_0.pdf ; signal secondaire : https://www.uneca.org/stories/equatorial-guinea-adopts-its-national-strategy-for-implementing-the-afcfta-and-takes-a-big",
+  "portee_de_l_archive": "L'archive UNECA est une SOURCE SECONDAIRE (repérage uniquement, étiquetée comme telle dans le fichier) : elle établit qu'au 12/06/2024 la stratégie nationale d'application de l'AfCFTA venait d'être VALIDÉE en atelier technique et que le Ministère du commerce « présenterait le document au gouvernement pour adoption » — aucune loi/décret adopté à cette date selon ce récit."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national de ratification (loi/décret publié à la Gaceta Oficial) et acte d'application tarifaire + liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Gaceta Oficial de Guinea Ecuatorial — recherche DuckDuckGo « Gaceta Oficial » « Guinea Ecuatorial » + site/descarga PDF (via r.jina.ai)",
+    "resultat": "NÉGATIF — aucun portail officiel de la Gaceta Oficial équato-guinéenne trouvé en ligne (les résultats renvoient aux gazettes de Cuba, Panama, Bolivie, Venezuela). Échec consigné."
+   },
+   {
+    "endroit": "Recherche en espagnol — « Guinea Ecuatorial » « Zona de Libre Comercio Continental Africana » ratificación ley/decreto (DuckDuckGo via r.jina.ai)",
+    "resultat": "NÉGATIF — aucun résultat. Aucun acte national (ni ratification, ni application) repéré en ligne."
+   },
+   {
+    "endroit": "Recherche en anglais — Equatorial Guinea AfCFTA ratification / ratifies / Gaceta (DuckDuckGo via r.jina.ai)",
+    "resultat": "REPÉRAGE SEULEMENT : UNECA (stratégie nationale validée 12/06/2024), tralac (infographie de statut), rapports UNECA/négociations — tous secondaires ; aucun instrument national."
+   },
+   {
+    "endroit": "gazettes.africa — https://gazettes.africa/gazettes/gq/2025 (via r.jina.ai)",
+    "resultat": "NÉGATIF — 404 : gazettes.africa ne couvre pas la Guinée équatoriale (liste relevée le 2026-09-28)."
+   },
+   {
+    "endroit": "Statut officiel de ratification UA (archivé, sha 29b2fe2b…)",
+    "resultat": "POSITIF pour le dépôt : Equatorial Guinea — signature 21/03/2018, ratification 28/06/2019, dépôt 02/07/2019."
+   },
+   {
+    "endroit": "Corroboration — liste de dépôt UA déjà versée au dépôt (sources/AU_liste_depot_2026-05-22.pdf, état au 22/05/2026)",
+    "resultat": "CONFIRMÉ — dates identiques pour GNQ (ratification/dépôt : 28/06/2019 / dépôt 02/07/2019) ; aucune mise à jour des dépôts entre le 19/09/2023 et le 22/05/2026 pour ce pays."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : aucun acte national (ratification ou application) localisable en ligne et aucune liste nominative d'origines. Le signal secondaire UNECA (2024) décrit une stratégie nationale en cours d'adoption gouvernementale, sans texte adopté ni liste."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT POUR L'APPLICATION — dépôt de ratification établi (UA 02/07/2019) ; aucun acte d'application ; Gaceta Oficial inaccessible en ligne ; stratégie nationale non encore adoptée selon UNECA (12/06/2024, secondaire)",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre régionale CEMAC (adoptée 26/10/2021) archivée : backend/data/official_preferential/CEMAC_afcfta_etariff_2026-08-17.json.gz (OFFER_ONLY) ; l'offre régionale n'est pas un acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le texte et même l'existence d'un acte national de ratification publié à la Gaceta Oficial ne sont pas établis (gazette hors ligne).",
+  "Un éventuel instrument d'application interne (douane, SYDONIA) ne peut être exclu : aucun canal officiel en ligne n'a pu être interrogé.",
+  "L'attribution de la Guinée équatoriale à l'offre CEMAC suit le cadre régional de négociation ; aucun texte national repéré ne le confirme expressément.",
+  "L'état réel d'avancement après le 12/06/2024 (adoption de la stratégie ?) n'est pas vérifié sur source primaire."
+ ],
+ "remaining_work": [
+  "Accéder à la Gaceta Oficial de Guinea Ecuatorial (papier ou dépôt officiel) pour l'acte de ratification 2019 et tout acte d'application.",
+  "Vérifier si la stratégie nationale a été adoptée par le gouvernement depuis 2024 (source primaire : ministère du commerce/Ministerio de Hacienda).",
+  "Vérifier sur source primaire CEMAC l'attribution de la Guinée équatoriale à l'offre régionale ZLECAf."
+ ]
+}
