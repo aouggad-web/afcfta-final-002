@@ -1,0 +1,83 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "COM",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "PREUVES_ASSEMBLEES",
+ "verified_at": "2026-09-28",
+ "evidence_level": "primaire pour la ratification et le cadre légal ; primaire pour l'absence de publication douanière (constat d'absence archivé) ; offre exposée dans l'outil officiel du Secrétariat. RIEN N'ÉTABLIT l'application effective des taux ZLECAf à l'importation comorienne : pas de circulaire douanière, pas de liste d'origines, pas de barème national.",
+ "instrument": {
+  "id": "Décret n°23-017/PR du 11 février 2023 portant promulgation de la loi n°23-001/AU autorisant le Président de l'Union à ratifier l'Accord portant création de la ZLECAF",
+  "title_etabli": "Le décret de promulgation est ÉTABLI sur le portail officiel de publication de l'Union des Comores (Munganyo, tenu par la Direction de la communication du gouvernement) : « Décret N°23-017/PR du 11 février 2023 — Portant promulgation loi N°23-001/AU autorisant le Président de l'Union à Ratifier l'Accord portant création de la Zone de Libre Echange Continentale Africaine (ZLECAF) ». Le PDF (1 page, scan) est archivé ; il est SANS COUCHE TEXTE et aucun OCR n'est installé ici : le corps de la loi n'est PAS lisible au 28/09/2026. Deuxième instrument : Décret n°23-031/PR du 15 avril 2023 portant création, attributions, organisation et fonctionnement du Comité National de la ZLECAf (PDF 6 p., archivé).",
+  "date": "2023-02-11 (décret de promulgation) ; Comité national : 2023-04-15",
+  "gazette": "Journal officiel de l'Union des Comores — numéro du JO non imprimé sur les fiches Munganyo ; gazettes.africa ne couvre pas les Comores (404 sur /gazettes/km)",
+  "texte_extrait": "aucun extrait de texte lisible pour l'instrument de ratification (scan sans OCR) — le cadre d'application tarifaire est établi séparément par le Code des douanes consolidé 2024 : sources/COM_code_douanes_2024_art33_34_art263_origine_preferentielle_2026-09-28.texte-extrait.txt",
+  "sha256": "590c8c9430c6b2acddf586ada953e30629841f1ae7c2ed9a5c2bd5d118a5b378",
+  "instruments_associes": [
+   {
+    "id": "Décret n°23-031/PR du 15 avril 2023 — Comité National ZLECAf",
+    "fichier": "sources/COM_decret_23-031_comite_national_zlecaf_2026-09-28.pdf",
+    "sha256": "cca14ef871132bd0b82a9d1fa11aa72816e2e1de42df0d72e2cd2a1245165028",
+    "url": "https://www.munganyo.km/decrees/52",
+    "note": "Scan 6 pages sans couche texte ; existence et titre établis par la fiche officielle du portail."
+   },
+   {
+    "id": "Code des Douanes de l'Union des Comores, version consolidée 2024 (Loi n°15-016/AU révisée par la Loi n°23-022/AU adoptée le 26/12/2023, promulguée par le Décret n°24-001/PR du 26/01/2024)",
+    "fichier_pdf_integral": "sources/COM_code_douanes_consolide_2024_justice_gouv_km_2026-09-28.pdf",
+    "sha256_pdf": "1fb7a8397782d1fffdcc984c29bc3f6a7ddd0f17cf60d4e9c606ed56f2a13bca",
+    "url": "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf",
+    "extrait": "sources/COM_code_douanes_2024_art33_34_art263_origine_preferentielle_2026-09-28.texte-extrait.txt",
+    "sha256_extrait": "b72b00bc908420aaaa3bab851e7015271b01b1b02589c08d9cff8fca2decea97",
+    "portee": "Article 33 : « Pour l'application d'un tarif douanier préférentiel à l'entrée sur le territoire national, les règles déterminant si un produit est originaire d'un état membre d'une « Communauté Economique Régionale, Initiative d'Intégration Economique régionale ou autre Accord de Partenariat Economique », auquel les Comores sont partie prenante, comme le Marché commun pour l'Afrique orientale et australe (COMESA), la Zone de Libre Echange Continentale Africaine (ZLECAF), la SADC, la GAFTA, la CENSAD et autres, sont définies dans chaque Protocole respectif » ; article 34 : règles d'origine préférentielles « accordées unilatéralement et sur base de réciprocité » ; article 263 : traitement tarifaire préférentiel sous régime de transformation. CADRE LÉGAL seulement : le Code renvoie aux protocoles, il ne publie ni barème ZLECAf ni liste d'origines."
+   }
+  ]
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application ZLECAf comorien au-delà de la ratification ; liste nominative des origines admises à l'importation ; barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Munganyo (munganyo.km) — portail officiel de publication des décrets de l'Union des Comores, via Exa puis lecture directe des fiches /decrees/38 et /decrees/52",
+    "resultat": "Décret n°23-017/PR (promulgation de la loi de ratification ZLECAF) et Décret n°23-031/PR (Comité national ZLECAf) localisés et PDF téléchargés depuis le storage officiel du portail. AUCUN décret d'application tarifaire ZLECAf listé."
+   },
+   {
+    "endroit": "Ministère de la Justice (justice.gouv.km) — « Législation et textes officiels »",
+    "resultat": "Code des douanes consolidé 2024 récupéré (420 p., avec couche texte) : articles 32-34 et 263 établis. La recherche interne du site est un formulaire applicatif (aucun résultat rendu pour « libre-échange continentale ») ; échec consigné, la base reste à interroger type par type."
+   },
+   {
+    "endroit": "Douane comorienne (www.douane.gov.km) — accueil, Déclaration, Textes internationaux, Taxes douanières, Communiqués",
+    "resultat": "CONSTAT D'ABSENCE archivé (sources/COM_douane_gov_km_recherche_2026-09-28.extrait.txt) : aucune mention ZLECAf/AfCFTA sur le site ; les rubriques « Textes internationaux », « Taxes douanières » et « Communiqués » renvoient des contenus VIDES. Aucun barème, aucune liste d'origines, aucune circulaire."
+   },
+   {
+    "endroit": "gazettes.africa (méthode du dépôt)",
+    "resultat": "404 sur https://gazettes.africa/gazettes/km/2023 — les Comores ne sont pas couvertes par gazettes.africa."
+   },
+   {
+    "endroit": "e-Tariff Book du Secrétariat (API production, 28/09/2026, destination KM, origine KE, recherche 25.02) — archivé : sources/ZLECAF_etariff_destinations_KM_TD_TG_SC_2026-09-28.json",
+    "resultat": "L'outil officiel expose une offre propre KM (regionCode KM, catégorie A ; ligne 25.02 : year1 18 % → year5 10 %). C'est l'offre déposée par les Comores (adoptée le 17/01/2024 selon la source e-Tariff Book du 2024-01-17 déjà connue du dépôt), PAS une preuve d'application nationale."
+   },
+   {
+    "endroit": "GTI (FACTSHEET du Secrétariat, janv. 2025, déjà archivé dans le dépôt : sources/UGA_secretariat_factsheet_gti_2025-01.pdf, sha 4446703e…)",
+    "resultat": "Les Comores figurent dans les « Island States » du GTI. La participation au GTI ne prouve pas l'application des taux."
+   }
+  ],
+  "resultat": "Ratification primaire établie (décret de promulgation du 11/02/2023 sur le portail officiel ; loi n°23-001/AU du 06/02/2023, dont le corps n'est pas lisible — scan). Cadre légal d'origine préférentielle établi dans le Code des douanes 2024 (arts 33-34 : renvoi aux protocoles, dont ZLECAF). AUCUN acte d'application tarifaire, AUCUNE liste nominative d'origines, AUCUN barème national ZLECAf retrouvés — la douane comorienne ne publie rien sur le sujet. L'offre comorienne (catégorie A) est exposée dans l'outil officiel du Secrétariat."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — ratification promulguée (décret 23-017/PR du 11/02/2023, existence établie sur portail officiel, texte non lisible) ; Code des douanes 2024 en vigueur avec cadre d'origine préférentielle ; AUCUN acte d'application tarifaire retrouvé",
+  "2_liste_officielle_origines_reciproques": "NON ÉTABLI — aucune liste comorienne ; l'article 33 du Code des douanes renvoie aux protocoles (admission par règle), et le plafond Annexe 1 ne vaut que pour un État dont l'application est établie",
+  "3_bareme_au_niveau_de_la_ligne": "NON ÉTABLI AU NIVEAU NATIONAL — offre propre exposée dans l'e-Tariff officiel (catégorie A, ex. 25.02 : 18 % → 10 %), mais aucune publication douanienne ou ministérielle comorienne du barème ni des années de démantèlement",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La date d'entrée en application des taux ZLECAf aux Comores : aucune source primaire datée ne la fixe ; elle ne sera JAMAIS déduite de l'offre e-Tariff ni de la liste GTI.",
+  "Le contenu de la loi n°23-001/AU (scan sans couche texte, OCR indisponible) : à transcrire à l'occasion.",
+  "La numérotation exacte du Journal officiel de l'Union des Comores portant le décret (les fiches Munganyo ne l'impriment pas)."
+ ],
+ "remaining_work": [
+  "OCRiser les deux décrets (23-017/PR et 23-031/PR) quand un outil OCR sera disponible, et extraire le texte de la loi n°23-001/AU.",
+  "Reprendre la base « Législation et textes officiels » de justice.gouv.km (arrêtés/décrets, toutes catégories) à la recherche d'un acte d'application tarifaire ZLECAf.",
+  "Rechercher une circulaire/note de service de la Direction Générale des Douanes comorienne (site officiel et son fil actualités, douane@douane.gov.km) postérieure à 2023.",
+  "Collecter l'offre KM complète ligne à ligne depuis l'e-Tariff Book si un jour l'application nationale est établie (script collect_afcfta_etariff_book.py, la destination KM n'est pas dans OFFERS)."
+ ],
+ "justification_niveau": "PREUVES_ASSEMBLEES : la chaîne ratification (primaire) → cadre légal d'origine (primaire, Code des douanes 2024) → offre déposée (outil officiel du Secrétariat) est assemblée, mais la condition 1 est incomplète (pas d'acte d'application tarifaire) et les conditions 2 et 3 sont non satisfaites au niveau national. AUCUN BRANCHEMENT."
+}
