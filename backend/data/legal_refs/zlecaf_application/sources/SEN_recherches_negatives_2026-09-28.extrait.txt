@@ -1,0 +1,7 @@
+Recherches vie-publique.sn (API /api/search) et douanes.sn — 2026-09-28
+API: https://www.vie-publique.sn/api/search?q=ZLECAf => total 5 (aucun acte d'application; podcast, loi 2019-01, discours)
+API: q='zone de libre-échange continentale' => total 7 (JO 7164 du 23/02/2019, loi 2019-01)
+API: q='zone de commerce libre' => total 17 (aucun acte d'application ZLECAf)
+API: q='comité ZLECAf' => total 2 (loi 2019-01, article)
+API: q='certificat d'origine' => JO 7890 du 07/03/2026 = certificat de conformité ENVIRONNEMENTALE (hors ZLECAf)
+douanes.sn /?s=ZLECAf : page 'Résultats de recherche pour ZLECAf' — AUCUN résultat de contenu (seules occurrences dans les URLs de recherche)

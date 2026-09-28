@@ -1,0 +1,64 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "SEN",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "Ratification vérifiée sur primaire (loi n° 2019-01, J.O. n° 7164 du 23/02/2019) ; offre = CEDEAO (26/10/2021) ; AUCUN instrument national d'application (loi/décret/arrêté/note douanière) retrouvé ; aucune liste nominative d'origines.",
+ "instrument": {
+  "id": "Loi n° 2019-01 du 31 janvier 2019 autorisant le Président de la République à ratifier l'Accord portant création de la ZLECAf (signé à Kigali le 21/03/2018)",
+  "title_etabli": "Loi d'autorisation de ratification — acte national le plus récent établi sur primaire ; publié au J.O. n° 7164 du 23 février 2019",
+  "date": "2019-01-31",
+  "gazette": "Journal Officiel de la République du Sénégal n° 7164 du 23/02/2019 (page vie-publique.sn/documents/1115/JO-7164-du-23-fevrier-2019)",
+  "texte_extrait": "sources/SEN_loi_2019-01_ratification_zlecaf.pdf",
+  "sha256": "8cc9ea9bc268cd6fa5817d0003bed725e75f0c40fb9136f085bc707ea8257c5a",
+  "remarque_texte": "PDF officiel (86 pages, scanné, non OCR-isable en l'état) téléchargé depuis vie-publique.sn (page archivée : sources/SEN_viepublique_loi_2019-01_page.html). C'est un acte de RATIFICATION, pas un instrument d'application tarifaire."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application ZLECAf (décret, arrêté, note de service douanière) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "douanes.sn (moteur interne du site des Douanes sénégalaises, /?s=ZLECAf)",
+    "resultat": "NÉGATIF — page « Résultats de recherche pour « ZLECAf » » sans aucun contenu (les seules occurrences du mot sont dans les URLs de recherche) ; aucune note de service ni circulaire ZLECAf publiée en ligne. Archivé : sources/SEN_douanes_sn_recherche_ZLECAf_2026-09-28.html."
+   },
+   {
+    "endroit": "vie-publique.sn (portail officiel indexant le JORF — API /api/search)",
+    "resultat": "NÉGATIF pour l'application — requêtes « ZLECAf », « zone de libre-échange continentale », « zone de commerce libre », « comité ZLECAf », « tarif préférentiel », « démantèlement », « certificat d'origine » : aucun acte d'application (seuls la loi 2019-01, le J.O. n° 7164, des discours et un podcast) ; le J.O. n° 7890 du 07/03/2026 qui matche « certificat d'origine » porte sur des certificats de conformité ENVIRONNEMENTALE. Extraits archivés : sources/SEN_recherches_negatives_2026-09-28.extrait.txt."
+   },
+   {
+    "endroit": "Secrétariat de la ZLECAf — livre tarifaire électronique officiel (API prod-afcfta-api.azurewebsites.net, requête importateur SN)",
+    "resultat": "OFFRE ÉTABLIE — le Sénégal est porté par l'OFFRE CEDEAO (Directive ministérielle du 26/10/2021), pas par un barème national : requête EG vers SN renvoie le calendrier CEDEAO (schedule 1) avec démantèlements cat. A ligne à ligne (ex. 2523.30 ciment alumineux, cat. A, TF 10, an 1 : 18,0). Archivé : sources/SEN_etariff_api_requete_EG_vers_SN_2026-09-28.json ; instantané complet au dépôt : official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz."
+   },
+   {
+    "endroit": "Liste du dépositaire UA (au.int, « List of countries which have signed, ratified/acceded », arrêtée au 22/05/2026)",
+    "resultat": "RATIFICATION — Sénégal : signature 21/03/2018, ratification 12/03/2019, dépôt 02/04/2019. Archivée : sources/AU_liste_depot_2026-05-22.pdf."
+   },
+   {
+    "endroit": "OMD — dépêche « WCO supports Senegal Customs in implementing AfCFTA rules of origin » (mai 2025)",
+    "resultat": "CONTEXTE (repérage, pas preuve) — atelier national de SENSIBILISATION aux règles d'origine ZLECAf tenu à Dakar du 8 au 10/04/2025 avec la douane, le ministère de l'Industrie et du Commerce, ASEPEX, COSEC : la mise en œuvre des règles d'origine était encore en phase de renforcement des capacités en 2025. Archivé : sources/SEN_omd_atelier_regles_origine_2025-04.extrait.txt."
+   },
+   {
+    "endroit": "Annonce d'un « lancement des échanges » sénégalais en 2022 (pistes de départ)",
+    "resultat": "NON ÉTABLI SUR PRIMAIRE — aucune annonce officielle (ministère, douane, vie-publique) ni dédouanement préférentiel documenté ; le Sénégal ne figure pas parmi les huit participants initiaux du GTI (07/10/2022, Accra). Aucun acte national trouvé ; l'annonce pressée de 2022 ne constitue pas un instrument."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points : aucun acte national d'application (douanes.sn et l'index JORF de vie-publique.sn silencieux au-delà de la ratification) et aucune liste nominative d'origines. Le Sénégal est entré par l'offre collective CEDEAO ; aucun dédouanement préférentiel à l'importation n'est établi."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON — seule la loi de ratification (2019-01) est établie ; aucun décret, arrêté ou note douanière d'application retrouvé",
+  "2_liste_officielle_origines_reciproques": "NON — aucune liste nominative ; admission éventuelle par règle CEDEAO/État parties, sans texte national lu",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — calendrier CEDEAO (26/10/2021) dans le livre tarifaire officiel de la ZLECAf (requête SN archivée) et instantané au dépôt (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz) ; OFFRE, jamais exécutable sans instrument national et liste d'origines",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "L'existence éventuelle d'un décret ou d'une note de service douanière ZLECAf non publiés en ligne (douanes.sn ne publie pas toutes ses notes) — absence de preuve, pas preuve d'absence au-delà du périmètre consulté.",
+  "La portée exacte, au Sénégal, de la règle d'admission CEDEAO (« bénéfice réciproque avec les États parties ») : aucun texte sénégalais lu ne la formule.",
+  "Le contenu du PDF scanné de la loi 2019-01 au-delà de l'objet attesté par le portail (non OCR-isé)."
+ ],
+ "remaining_work": [
+  "Solliciter la Direction générale des Douanes et du Droits indirects (douanes.sn) pour obtenir une éventuelle note de service ZLECAf ou son constat d'absence.",
+  "Fouiller les JORF 2022-2026 hors index de vie-publique.sn (Imprimerie nationale du Sénégal) pour un décret d'application ou la création d'un comité national ZLECAf.",
+  "Si un instrument apparaît, rapprocher son barème de l'instantané ECOWAS archivé (5 578 lignes) ligne à ligne."
+ ]
+}
