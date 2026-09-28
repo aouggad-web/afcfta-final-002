@@ -8,9 +8,12 @@ and included in the Ministerial Directive on Provisional Schedule of Tariff
 Concessions on 26 October 2021. The ECOWAS tariff concessions also include
 Mauritania. » (pays : BJ, BF, CV, CI, GM, GH, GN, GW, LR, ML, NE, NG, SN, SL, TG, MR)
 
-EXEMPLE (ciment) : 88 lignes retournées pour « cement », dont 31 avec
-afCFTACategory « A », timeFrame 10, mfnRate 5 %, année1 4,5 % → année10 0 % —
-les TAUX DE CONCESSION (pas le MFN) par ligne, décroissance sur dix ans.
+EXEMPLE : 88 résultats retournés pour « cement », dont 31 en catégorie A
+(afCFTACategory), et 14 d'entre eux avec un NPF de 5 %. L'exemple de la
+décroissance 5 % → 0 % est la CASTINE (2521.00.00.00, catégorie A, NPF 5 %,
+année1 4,5 % → année10 0 %). Le CIMENT (2523.10, 2523.21, 2523.29, 2523.90)
+n'a AUCUNE catégorie dans l'offre, avec un NPF de 20 % (10 % pour le
+clinker 2523.10).
 
 NOTE : c'est l'OFFRE RÉGIONALE ECOWAS, que le Nigeria a gazettée en avril 2025 ;
 la collecte ligne à ligne dans le dépôt reste à faire (comme zlecaf_ken).

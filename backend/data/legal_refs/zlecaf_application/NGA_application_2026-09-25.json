@@ -24,9 +24,12 @@
    "url": "https://fmiti.gov.ng/wp-content/uploads/2026/01/Nigeria-AfCFTA-Achievements-2025.pdf",
    "texte_extrait": "sources/NGA_fmiti_rapport_2025.extrait.txt",
    "sha256": "9dadc0b8df10f1963e5c61686c129e8787916c0f8a35c9c337d8e29949a68568",
-   "pdf_non_archive": "PDF de 7,6 Mo non versé au dépôt ; extraits décisifs archivés et scellés.",
    "verbatim_en": "Gazetted Nigeria's Provisional Schedule of Tariff Concessions for Trade in Goods. … Nigeria provides similar preferential treatment to digital products originating in AfCFTA State Parties.",
-   "traduction_fr": "A gazetté le barème provisoire de concessions tarifaires du Nigeria pour le commerce des marchandises. … Le Nigeria accorde un traitement préférentiel similaire aux produits numériques originaires des États parties de la ZLECAf."
+   "traduction_fr": "A gazetté le barème provisoire de concessions tarifaires du Nigeria pour le commerce des marchandises. … Le Nigeria accorde un traitement préférentiel similaire aux produits numériques originaires des États parties de la ZLECAf.",
+   "pdf_archive": {
+    "texte_extrait": "sources/NGA_fmiti_accomplissements_2025.pdf",
+    "sha256": "957c3a0b9120fe7a3117ac4b643f0d6d6be1ad79ae5216e4d0be29abe2127cf9"
+   }
   },
   "gazette_non_obtenue": "Le texte et le numéro de la gazette fédérale portant le PSTC n'ont pas été obtenus : l'archive gazettes.africa ne contient pas la gazette d'avril 2025 (constat du chantier de collecte et vérification du 2026-09-25), et le portail tarifaire NCS « AfCFTA CET » (cet.customs.gov.ng/afcfta-cet) est protégé par un CAPTCHA Cloudflare (HTTP 403) — non forcé."
  },
@@ -119,10 +122,10 @@
    "Numéro de la Federal Republic Gazette du 14/04/2025 : toujours non obtenu."
   ],
   "etariff_ecowas": {
-   "decouverte": "L'offre ECOWAS (couvrant le NIGERIA comme destination) est consultable ligne à ligne dans l'e-Tariff Book officiel (API vérifiée, requête « cement ») : 88 résultats, dont 31 en catégorie A, 14 d'entre eux avec un NPF de 5 %. L'exemple de la décroissance 5 % → 0 % est la CASTINE (2521.00.00.00, cat. A, NPF 5, année1 4,5 → année10 0). Le ciment 2523.10, 2523.21, 2523.29, 2523.90 n'a AUCUNE catégorie dans l'offre, avec un NPF de 20 % (10 % pour le clinker 2523.10). L'entrée régionale dit verbatim « ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021 » (16 pays, Mauritanie incluse).",
+   "decouverte": "L'offre ECOWAS (couvrant le NIGERIA comme destination) est consultable ligne à ligne dans l'e-Tariff Book officiel (API vérifiée, requête « cement ») : 88 résultats, dont 31 en catégorie A, et 14 d'entre eux avec un NPF de 5 %. L'exemple de la décroissance 5 % → 0 % est la CASTINE (2521.00.00.00, catégorie A, NPF 5 %, année1 4,5 % → année10 0 %). Le ciment (2523.10, 2523.21, 2523.29, 2523.90) n'a AUCUNE catégorie dans l'offre, avec un NPF de 20 % (10 % pour le clinker 2523.10). L'entrée régionale dit verbatim « ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021 » (16 pays, Mauritanie incluse).",
    "archive": {
     "texte_extrait": "sources/NGA_etariff_ecowas_offre_2026-09-28.extrait.txt",
-    "sha256": "b19afa0e4bbe7a8d5e2175b2fe8ce71cd6f069643f6d065b07ddf942492c5039"
+    "sha256": "554a5c2334fe3122be062c60fe61c38433a0852d9394f2168ccf6d6a5273f003"
    }
   },
   "corridor_fmiti_mai_2026": {
@@ -133,7 +136,7 @@
    }
   },
   "chasse_profonde_officiels": {
-   "conclusion": "Le document gazetté nigérian est le CALENDRIER ECOWAS d'offres tarifaires (Business Post 15/04/2025, lu : « officially gazetted and transmitted the ECOWAS Schedule of Tariff Offers ») — d'où ECOWAS → NG dans l'e-Tariff officiel. Aucun numéro de gazette cité ; CEDEAO (15/04/2025) : visite de courtoisie sans mention ; circulaires NCS : rien ; NigeriaLII/Trade Hub : rien d'exploitable.",
+   "conclusion": "Selon Business Post (source secondaire), le document gazetté serait le calendrier ECOWAS d'offres tarifaires (« officially gazetted and transmitted the ECOWAS Schedule of Tariff Offers », lu) — d'où ECOWAS → NG dans l'e-Tariff officiel. Aucun numéro de gazette cité ; CEDEAO (15/04/2025) : visite de courtoisie sans mention ; circulaires NCS : rien ; NigeriaLII/Trade Hub : rien d'exploitable.",
    "archive": {
     "texte_extrait": "sources/NGA_chasse_profonde_officiels_2026-09-28.extrait.txt",
     "sha256": "171647f1be5adf104457a7880a73c256dc00e4f006b82b175c85d89fb7336004"
