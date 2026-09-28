@@ -1,0 +1,65 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "SWZ",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "PREUVES_ASSEMBLEES",
+ "verified_at": "2026-09-28",
+ "evidence_level": "Chaîne légale nationale vérifiée sur primaire (Customs and Excise Act 1971, s. 47(1) : les Schedules sud-africains « as amended from time to time » sont réputés Schedules de la loi eswatinienne) + instruments sud-africains d'application archivés au dépôt (General Note O, R.4287 GG 50045 du 26/01/2024) + offre SACU adoptée (livre tarifaire officiel) ; AUCUN gazettage eswatinien propre retrouvé (gazettes.africa SZ : 0 numéro postérieur à 2017 ; hôtes gouvernementaux inaccessibles).",
+ "instrument": {
+  "id": "Customs and Excise Act, 1971 (Eswatini, alors Swaziland), s. 47(1) — incorporation mutatis mutandis des Schedules sud-africains, dont les amendements ZLECAf (General Note O, R.4287, GG 50045, 26/01/2024)",
+  "title_etabli": "Chaîne d'application : loi eswatinienne (texte communiqué par l'État à l'OMPI, vérifié passage par passage dans la fiche SWZ_assiette_DD_2026-09-23.json) + Schedule No. 1 sud-africain amendé ZLECAf (archivé au dépôt : sources/ZAF_r4287_gg50045_general_note_O_2024-01-26.pdf)",
+  "date": "1971 (loi) ; 2024-01-26 (amendement ZLECAf du Schedule incorporé)",
+  "gazette": "AUCUNE Government Gazette d'Eswatini retrouvée (gazettes.africa/gazettes/sz : 0 numéro 2018-2026, archive ne couvrant que 1976-2017) ; l'application transite par les Government Gazettes sud-africaines (GG 50045, GG 52150, GG 54820)",
+  "texte_extrait": "sources/SWZ_assiette_DD.source-extrait.txt",
+  "sha256": "9eb309304d35d98b4fb7736ceb8853ef89ace03c7de53ac66ed4954f1680aa69",
+  "verbatim_en": "« Notwithstanding the date of commencement of this Act the Schedules to the Cus- toms and Excise Act, No. 91 of 1964 of the Republic as amended from time to time, pub- lished in English prior to the commencement of this Act shall mutatis mutandis be deemed to be the correspondingly numbered Schedules to this Act » (s. 47(1))",
+  "traduction_fr": "« Nonobstant la date d'entrée en vigueur de la présente loi, les Schedules du Customs and Excise Act n° 91 de 1964 de la République, tels qu'amendés de temps à autre, publiés en anglais avant l'entrée en vigueur, sont réputés mutatis mutandis les Schedules correspondants de la présente loi »"
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Gazettage eswatinien propre du régime ZLECAf (Legal Notice, notice ERS) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "gazettes.africa — Eswatini (années 2023, 2024, 2025, 2026)",
+    "resultat": "NÉGATIF — « 0 gazettes » pour chaque année consultée ; l'archive ne couvre l'Eswatini que de 1976 à 2017 (constat déjà consigné dans SWZ_assiette_DD_2026-09-23.json)."
+   },
+   {
+    "endroit": "Eswatini Revenue Authority (www.ers.org.sz/CustomExcise)",
+    "resultat": "ÉCHEC CONSIGNÉ — page en erreur (« a client-side exception has occurred ») ; précédemment chaîne TLS incomplète côté serveur (fiche SWZ_assiette_DD). Aucune notice ZLECAf lisible en ligne."
+   },
+   {
+    "endroit": "Hôtes gouvernementaux eswatiens (gov.sz, swazigov.gov.sz)",
+    "resultat": "ÉCHEC CONSIGNÉ — connexion expirée / réinitialisée (direct et via r.jina.ai) ; le SDOC SI de gov.sz signalé par la recherche n'a pas pu être ouvert. Non forcé."
+   },
+   {
+    "endroit": "Eswatini Trade Information Portal (eswatinitradeportal.com — portail officiel de commerce)",
+    "resultat": "PRATIQUE ÉTABLIE — le portail publie les Government Gazettes SUD-AFRICAINES comme instruments du tarif applicable : R.5878 (GG 52150) substituant l'Appendice IV de l'Annexe 2 (règles d'origine) Part F — appendice ZLECAf ; R.7578 (GG 54820, 12/06/2026) amendant le Schedule No. 1 avec effet rétroactif 01/09-31/12/2025. Archivés : sources/SWZ_portail_R5878_GG52150_roo_2025.extrait.txt (sha fdea8c2b…), sources/SWZ_portail_R7578_GG54820_2026-06-12.extrait.txt (sha a9b2d196…)."
+   },
+   {
+    "endroit": "Livre tarifaire électronique officiel de la ZLECAf (API /Region/GetRegions)",
+    "resultat": "OFFRE ÉTABLIE — Eswatini porté par l'OFFRE SACU (« SACU submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions », dernière révision 28/06/2023) ; aucune offre nationale SZ. Archivé : sources/ZLECAF_etariff_api_regions_2026-09-28.json ; instantané tarifaire SACU/ZA au dépôt : official_preferential/ZAF_afcfta_2026-08-06.json.gz (Schedule 1 Part 1, colonne AfCFTA)."
+   },
+   {
+    "endroit": "Liste du dépositaire UA (au.int, 22/05/2026)",
+    "resultat": "RATIFICATION — Eswatini : signature 21/03/2018, ratification 21/06/2018, dépôt 02/07/2018 (l'un des premiers). Archivée : sources/AU_liste_depot_2026-05-22.pdf."
+   }
+  ],
+  "resultat": "Liste nominative d'origines NON lue au niveau eswatinien : l'admission suit la règle du General Note O sud-africain (« AfCFTA State Parties » avec activations pays par pays), réputée intégrée au droit eswatinien par s. 47(1). Aucun instrument eswatinien propre, aucune notice ERS. Les preuves sont assemblées mais la matérialité à la frontière eswatinienne n'est pas documentée."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — chaîne légale nationale vérifiée (Customs and Excise Act 1971, s. 47(1), texte OMPI) incorporant les amendements ZLECAf du Schedule No. 1 sud-africain (R.4287 GG 50045, 26/01/2024, archivé au dépôt) ; AUCUN gazettage eswatinien propre retrouvé",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — admission par RÈGLE (State Parties, General Note O sud-africaine) ; pas de liste nominative eswatinienne ; activations pays attestées par les R. ultérieures du dépôt (Gambie, Nigeria, Éthiopie)",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre SACU adoptée (rév. 28/06/2023) ; barème ligne à ligne disponible via le Schedule 1 sud-africain (official_preferential/ZAF_afcfta_2026-08-06.json.gz) réputé eswatinien par s. 47(1) ; exécution NON autorisée pour SWZ sans matérialité documentée",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La portée EXACTE de s. 47(1) pour les amendements POSTÉRIEURS à 1971 : le texte dit « as amended from time to time », mais la doctrine d'incorporation automatique des Schedules récents n'est pas tranchée par un texte eswatinien lu (la fiche SWZ_assiette_DD note la même réserve pour la valeur).",
+  "Le traitement effectif des envois ZLECAf par l'ERS à l'importation (aucun dédouanement préférentiel documenté).",
+  "Le contenu du SDOC SI de gov.sz repéré par la recherche mais inaccessible (serveur injoignable, non forcé)."
+ ],
+ "remaining_work": [
+  "Réessayer les hôtes gouvernementaux eswatiens (gov.sz, swazigov.gov.sz, ers.org.sz) depuis un autre réseau, et le SDOC SI signalé.",
+  "Obtenir toute Legal Notice eswatinienne ZLECAf (Government Printer, Mbabane) ou constater officiellement l'absence.",
+  "Documenter un dédouanement préférentiel ERS (ou l'usage du Schedule 1 sud-africain colonne AfCFTA à la frontière eswatinienne)."
+ ]
+}

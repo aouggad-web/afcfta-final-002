@@ -1,0 +1,2436 @@
+Title: Announcement_1742483229.pdf
+
+URL Source: https://www.eswatinitradeportal.com/kcfinder/upload/files/Announcement_1742483229.pdf
+
+Published Time: Thu, 20 Mar 2025 15:07:09 GMT
+
+Number of Pages: 41
+
+Markdown Content:
+Government Gazette No. 52150 CUSTOMS AND EXCISE ACT, 1964. 
+
+# No. R. 5878 AMENDMENT OF SCHEDULE NO. 1 (NO. 1/1942) 
+
+In terms of section 48 of the Customs and Excise Act, 1964, Schedule No. 1 to the said Act is hereby amended, to the extent set out in the Schedule hereto. 
+
+ENOCH GODONGWANA 
+
+MINISTER OF FINANCE 
+
+SCHEDULE 
+
+By the substitution of Appendix IV to Annex 2 on Rules of Origin in Part F in the General Notes in Schedule No. 1 of the following: 
+
+INTRODUCTORY NOTES TO THIS APPENDIX REGARDING WORKING AND PROCESSING CARRIED OUT ON NON-ORIGINATING MATERIALS THAT CONFERS ORIGINATING STATUS 
+
+GENERAL 
+
+Note 1 
+
+1.1  The rules set out in Column 3 of this Appendix are the minimum conditions required for the concerned products to be considered as sufficiently worked or processed within the meaning of paragraph 2 of Article 6 of Annex 2 on Rules of Origin. 
+
+1.2  All examples given in these Introductory Notes are for the purpose of explanation only. They are not legally binding to State Parties. 
+
+Note 2 
+
+2.1  : The first two columns in the Appendix describe the product obtained. The first column gives the Chapter, heading or subheading as it is used in the Harmonized System (HS). The second column gives the description of goods as it is used in the HS for that Chapter, heading or subheading. For each entry in the first two columns a rule is specified in Column 3. Where, in some cases, the entry in the first column is preceded by an “ex”, this signifies that the rules in Column 3 apply only to the part of that Chapter, heading or subheading as described in Column 2. 
+
+2.2  : Where a Chapter or several headings are grouped together in Column 1 and the description of products in Column 2 is therefore given in general terms, the adjacent rules in Column 3 apply to all products which, under the HS are classified in the headings of the Chapter or in any of the headings or subheadings grouped together in Column 1. 
+
+2.3  : Where there are different rules in Column 3 applying to different tariffs within a heading or subheading, each indent contains the description of that part of the heading or subheading covered  by the adjacent  rules  in Column 3. 
+
+2.4  :Where a Chapter, heading or sub-heading, in Column 1, or any text of this Appendix, is in square brackets that is an indication that the rule for that Chapter, heading or subheading in Column 3, or that text, is yet to be agreed by the AfCFTA Negotiating Institutions. 
+
+# Date: 2025-02-21 2.5  : Where a Chapter, heading or subheading, in Column 1 has an asterisk, the value of non-originating materials will be automatically reduced from 60% to 55% threshold at the end of a five (5) year period starting 1 January 2021. 
+
+Note 3 
+
+3.1  : The provisions of Article 4(b) of Annex 2 on Rules of Origin concerning products having acquired originating status which are used in the manufacture of other products apply regardless of whether this status has been acquired inside the factory where these products are used or in a factory in another State Party. 
+
+Example 1: An engine of heading 84.07, for which the rule may state that the value of non-originating materials which may be incorporated may not exceed a certain percentage of the ex-works price, is made from ‘other alloy steel roughly shaped by forging’ of heading ex 72.24. 
+
+If this forging has been undertaken in a State Party from a non-originating ingot, it has already acquired originating status by virtue of the rule applicable to products of HS Chapter 72 in this Appendix. The forging can then count as originating in the value calculation for the engine regardless of whether it was produced in the same factory or in another factory in another State Party. The value of the non-originating ingot is thus not taken into account when adding up the value of the non-originating materials used. 
+
+3.2  : The rule in Column 3 represents the minimum amount of working or processing required and the carrying out of more working or processing also confers originating status. Conversely, the carrying out of less working or processing cannot confer originating status. Thus, if a rule provides that non-originating material at a certain level of manufacture may be used, the use of such material at an earlier stage of manufacture is allowed and the use of such material at a later stage is not. 
+
+3.3  : When a rule in Column 3 specifies that a product may be manufactured from more than one material, this means that any one or more materials may be used. It does not require that all the materials listed must be used. 
+
+Example 2: The rule for fabrics of headings 52.08 to 52.12 provides that natural fibres may be used and that chemical materials, among other materials, may also be used. This does not mean that both have to be used; it is possible to use one or the other or both. 
+
+3.4  : Where a rule in Column 3 specifies that a product must be manufactured from a particular material, the condition obviously does not prevent the use of other materials which, because of their inherent nature, cannot satisfy the rule. (See also Note 6.2 below in relation to textiles). 
+
+Example 3: In the case of an article of apparel of ex Chapter 62 made from non-woven materials, if the use of only non-originating yarn is allowed for this class of article, it is not possible to start from non-woven cloth, even if non-woven cloths cannot normally be made from yarn. In such cases, the starting material would normally be at the stage before yarn, that is, the fibre stage. 
+
+“SPECIFIC PROCESSES” 
+
+Note 4 
+
+4.1  : For the purposes of headings 27.07 and 27.13 the following are the “specific processes”: 
+
+a)  vacuum distillation; 
+
+b)  redistillation by a very thorough fractionation process; 
+
+c)  cracking; 
+
+d)  reforming; e)  extraction by means of selective solvents; 
+
+f)  the process comprising all the following operations: processing with concentrated sulphuric acid, oleum or sulphuric anhydride; neutralisation with alkaline agents; decolorisation and purification with naturally active earth, activated earth, activated charcoal or bauxite; 
+
+g)  polymerisation; 
+
+h)  alkylation; and 
+
+i)  isomerisation. 
+
+4.2  : For the purposes of headings 27.10, 27.11 and 27.12, the following are the specific processes: 
+
+a)  vacuum distillation; 
+
+b)  redistillation by a very thorough fractionation process; 
+
+c)  cracking; 
+
+d)  reforming; 
+
+e)  extraction by means of selective solvents; 
+
+f)  the process comprising all the following operations: processing with concentrated sulphuric acid, oleum or sulphuric anhydride; neutralisation with alkaline agents; decolorisation and purification with naturally active earth, activated earth, activated charcoal or bauxite; 
+
+g)  polymerisation; 
+
+h)  alkylation; 
+
+i)  isomerisation; 
+
+j)  in respect of heavy oils falling within heading ex 27.10 only, desulphurisation with hydrogen resulting in a reduction of at least 85 per cent of the sulphur content of the products processed (ASTM D 1266-59 T method); 
+
+k)  in respect of products falling within heading 27.10 only, deparaffining by a process excluding filtering; 
+
+l)  in respect of heavy oils falling within heading ex 27.10 only, treatment with hydrogen at a pressure of more than 20 bar and a temperature of more than 250 °C with the use of a catalyst, excluding to effect desulphurisation, when the hydrogen constitutes an active element in a chemical reaction. The further treatment with hydrogen of lubricating oils of heading ex 27.10 (e.g. hydrofinishing or decolorisation) in order, more especially, to improve colour or stability shall not, however, be deemed to be a specific process; 
+
+m)  in respect of fuel oils falling within heading ex 27.10 only, atmospheric distillation, on condition that less than 30 per cent of these products distils, by volume, including losses, at 300 °C by the ASTM D 86 method; and 
+
+n)  in respect of heavy oils excluding gas oils and fuel oils falling within heading ex 27.10 only, treatment by means of a high-frequency electrical brush-discharge. 
+
+4.3  : For the purposes of heading 27.07 and 27.13 simple operations such as cleaning, decanting, desalting, water separation, filtering, colouring, marking, obtaining a sulphur content as a result of mixing products with different sulphur contents, any combination of these operations or like operations do not confer origin. 
+
+TEXTILES 
+
+Note 5 
+
+5.1  : The term “natural fibres” is used in this Appendix to refer to fibres excluding artificial or synthetic fibres. It is restricted to the stages before spinning takes place, including waste, and, unless otherwise specified, includes fibres that have been carded, combed or otherwise processed but not spun. 5.2  : The term “natural fibres” includes horsehair of Heading 05.03, silk of headings 50.02 and 50.03 as well as the wool fibres, fine or coarse animal hair of headings 51.01 to 51.05, the cotton fibres of headings 52.01 to 52.03 and the other vegetable fibres of headings 53.01 to 53.05. 
+
+5.3  : The terms “textile pulp”, “chemical materials” and “paper-making materials” are used in this Appendix to describe the materials not classified in Chapters 50 to 63, which can be used to manufacture artificial, synthetic or paper fibres or yarns. 
+
+5.4  : The term “man-made staple fibres” is used in this Appendix to refer to synthetic or artificial filament tow, staple fibres or waste, of headings 55.01 to 55.07. 
+
+Note 6 
+
+6.1  : The rules set out in Column 3 shall not be applied to any basic textile materials, used in the manufacture of this product, which, taken together, represent [X] per cent or less of the total mass of all the basic textile materials used. (See also Notes 6.3 and 6.4 below). 
+
+6.2  : However, the tolerance mentioned in Note 6.1 may only be applied to mixed products which have been made from two or more basic textile materials. 
+
+The following are the basic textile materials: 
+
+# - silk, 
+
+# - wool, 
+
+# - coarse animal hair, 
+
+# - fine animal hair, 
+
+# - horsehair, 
+
+# - cotton, 
+
+# - paper-making materials and paper, 
+
+# - flax, 
+
+# - true hemp, 
+
+# - jute and other textile bast fibres, 
+
+# - sisal and other textile fibres of the genus Agave, 
+
+# - coconut, abaca, ramie and other vegetable textile fibres, 
+
+# - synthetic man-made filaments, artificial man-made filaments, 
+
+# - synthetic man-made staple fibres of polypropylene, 
+
+# - synthetic man-made staple fibres of polyester, - synthetic man-made staple fibres of polyamide, 
+
+# - synthetic man-made staple fibres of polyacrylonitrile, 
+
+# - synthetic man-made staple fibres of polyimide, 
+
+# - synthetic man-made staple fibres of polytetrafluoroethylene, 
+
+# - synthetic man-made staple fibres of polyphenylene sulphide, 
+
+# - synthetic man-made staple fibres of polyvinyl chloride, 
+
+# - other synthetic man-made staple fibres, 
+
+# - artificial man-made staple fibres of viscose, 
+
+# - other artificial man-made staple fibres, 
+
+# - yarn made of polyurethane segmented with flexible segments of polyether whether or not gimped, 
+
+# - yarn made of polyurethane segmented with flexible segments of polyester whether or not gimped, 
+
+# - products of heading 56.05 (metallised yarn) incorporating strip consisting of a core of aluminium foil or of a core of plastic film whether or not coated with aluminium powder, of a width not exceeding 5 mm, sandwiched by means of a transparent or coloured adhesive between two layers of plastic film, 
+
+# - other products of heading 56.05. 
+
+Example 4: A yarn of heading 52.05 made from cotton fibres of heading 52.03 and synthetic staple fibres of heading 55.06 is a mixed yarn. Therefore, non- originating synthetic staple fibres that do not satisfy the origin rules (which may require manufacture from chemical materials or textile pulp) may be used up to a mass of [X] per cent of the yarn. 
+
+Example 5: A woollen fabric of heading 51.12 made from woollen yarn of heading 51.07 and synthetic yarn of staple fibres of Heading 55.09 is a mixed fabric. Therefore, synthetic yarn which does not satisfy the origin rules (which may require manufacture from chemical materials or textile pulp) or woollen yarn that does not satisfy the origin rules (which require manufacture from natural fibres, not carded or combed or other otherwise prepared for spinning) or a combination of the two may be used provided their total mass does not exceed [X] per cent of the mass of the fabric. 
+
+Example 6: Tufted textile fabric of heading 58.02 made from cotton yarn of heading 52.05 and cotton fabric of heading 52.10 is only a mixed product if the cotton fabric is itself a mixed fabric being made from yarns classified in two separate headings or if the cotton yarn used are themselves mixtures. 
+
+Example 7: Where the tufted fabric concerned has been made from cotton yarn of heading 52.05 and synthetic fabric of heading 54.07, then, obviously, the yarns used are two separate basic textile materials and the tufted textile fabric is accordingly a mixed product. 
+
+6.3  : In case of products incorporating yarn made of polyurethane segmented with flexible segments of polyether whether or not gimped” this tolerance is [X] per cent in respect of this yarn. 
+
+6.4  : In the case of products incorporating “strip consisting of a core of aluminium foil or of a core of plastic film whether or not coated with aluminium powder, of a width not exceeding 5 mm, sandwiched by means of an adhesive between two layers of plastic film”, this tolerance is [X] per cent in respect of this strip. Note 7 
+
+7.1  : Textile materials, with the exception of linings and interlinings, which do not satisfy the rule set out in Column 3 for the made-up product concerned may be used provided that they are classified in a heading excluding that of the product and that their value does not exceed [X] per cent of the ex-works price of the product. 
+
+7.2  : Without prejudice to Note 6.3, materials which are not classified within Chapters 50 to 63 may be used freely in the manufacture of textile products, whether or not they contain textiles. 
+
+Example 8: Where a rule in the Appendix provides that for particular textile items yarn must be used, this does not prevent the use of metal items, such as buttons, because buttons are not classified within Chapters 50 to 63. For the same reason, it does not prevent the use of slide-fasteners, even though slide-fasteners normally contain textiles. 
+
+7.3  : Where a percentage rule applies, the value of materials which are not classified within Chapters 50 to 63 must be taken into account when calculating the value of the non-originating materials incorporated. 
+
+CHEMICAL PROCESSING RULES TO CONFER ORIGINATING STATUS 
+
+Note 8 
+
+Notes to Section VI of the Harmonized System 
+
+Products of the Chemical or Allied Industries (Chapters 28 to 38) 
+
+8.1  : Rules 1 through 7 of this Section confer origin to goods of any Chapter, heading or sub-heading in this Section, except as otherwise specified in those rules. 
+
+8.2  : Notwithstanding Note 8.1, goods shall be originating if they meet the applicable change in tariff classification or the percentage value content of non-originating material specified in Column 3 of the Appendix. 
+
+Rule 1: Chemical Reaction Origin 
+
+8.3  : Goods of Chapters 28 through 38, which are subject to a chemical reaction, shall be treated as originating if the chemical reaction occurred in the territory of one or more of the State Parties. 
+
+8.4  : For purposes of this section, a "chemical reaction" is a process (including a biochemical process) that results in a molecule with a new structure by breaking intramolecular bonds and by forming new intramolecular bonds, or by altering thespatial arrangement of atoms in a molecule. 
+
+8.5  : The following are not considered to be chemical reactions for the purposes of determining whether a product is an originating good: 
+
+(a)  dissolution in water or in other solvents; 
+
+(b)  the elimination of solvents including solvent water; or 
+
+(c)  the addition or elimination of water of crystallization. 
+
+Rule 2: Purification Origin 
+
+8.6  : Goods of Chapters 28 through 38 that are subject to purification shall be treated as originating provided that one of the following occurs in the territory of one or more of the State Parties: 
+
+(a)  Purification of goods resulting in the elimination of [X] percent of the content of existing impurities; or 
+
+(b)  The reduction or elimination of impurities resulting in goods suitable for one or more of the following applications: (i)  Pharmaceutical, medicinal, cosmetic, veterinary, or food grade substances; 
+
+(ii)  Chemical products and reagents for analytical, diagnostic or laboratory uses; 
+
+(iii)  Elements and components for use in micro-elements; 
+
+(iv)  Specialised optical uses; 
+
+(v)  Non toxic uses for health and safety; 
+
+(vi)  Biotechnical use; 
+
+(vii)  Carriers used in a separation process; or 
+
+(viii)  Nuclear grade uses. 
+
+Rule 3: Mixtures and Blends 
+
+8.7  : Goods of Chapters 30, 31, 33 through 38, except for heading 38.08, shall be treated as originating if the deliberate and proportionally controlled mixing or blending (including dispersing) of materials to conform to predetermined specifications which results in the production of goods having physical or chemical characteristics which are relevant to the purposes or uses of the good and are different from the input materials, occurs in the territory of one or more of the State Parties. 
+
+Rule 4: Change in Particle Size 
+
+8.8  : Goods of Chapters 30, 31 and 33, shall be treated as originating if the following occurs in the territory of one or more of the State Parties: 
+
+the deliberate and controlled modification in particle size of goods, including micronizing by dissolving a polymer and subsequent precipitation, excluding by merely crushing or pressing, resulting in goods having a defined particle size, defined particle size distribution or defined surface area, which is relevant to the purposes of the resulting good and have different physical or chemical characteristics from the input materials is considered to be origin conferring. 
+
+Rule 5: Standards Materials 
+
+8.9  : Goods of Chapters 28 through 38, shall be treated as originating if the production of these materials occurs in the territory of one or more of the State Parties. 
+
+8.10  : For the purposes of this Note “standards materials” (including standard solutions) are preparations suitable for analytical, calibrating or referencing uses and having precise degrees of purity or proportions, which are certified by the manufacturer. 
+
+Rule 6: Isomer Separation 
+
+8.11  : Goods of Chapters 28 through 38, shall be treated as originating if the isolation or separation of isomers from mixtures of isomers occurs in the territory of one or more of the State Parties. 
+
+Rule 7: Separation Prohibition 
+
+8.12  : Goods that undergo a change from one classification to another in the territory of one or more of the State Parties as a result of the separation of one or more materials from a man-made mixture shall not be treated as originating unless the isolated material underwent a chemical reaction in the territory of one or more of the State Parties. 
+
+CHAPTER 87 
+
+Note 9 9.1  In the case of road tractors for semi-trailers of a vehicle mass not exceeding1600 kg (subheading ex 8701.20); motor vehicles for the transport of ten or more persons, including the driver, of a vehicle mass not exceeding 2000 kg (subheadings ex 8702.10 and ex 8702.90); motor cars and other motor vehicles principally designed for the transport of persons (excluding those of heading 87.02) including station wagons and racing cars (heading 87.03); other motor vehicles for the transport of goods of a vehicle mass not exceeding 2000 kg or a G.V.M. not exceeding 3500 kg or of a mass not exceeding 1600 kg or a G.V.M. not exceeding 3500 kg per chassis fitted with a cab (subheadings ex 8704.21, ex 8704.31 and ex 8704.90); bodies (including cabs), for the motor vehicles of heading 87.01 to 87.05: 
+
+Manufacture or assembly of the vehicle or body entails that the floor panels, body sides and roof panels must be attached to each other and the engine, transmission, axles, radiators, suspension components, steering mechanisms, braking or electrical equipment or instrumentation must be fitted to the floor panels or chassis frame of the vehicle. 
+
+9.2  In the case of road tractors for semi-trailers of a vehicle mass exceeding 1600 kg (subheading ex 8701.20); motor vehicles for the transport of ten or more persons, including the driver, of a vehicle mass exceeding 2000 kg (subheadings ex 8702.10 and ex 8702.90); Other motor vehicles for the transport of goods of a vehicle mass exceeding 2000 kg or a G.V.M. exceeding 3500 kg or of a mass exceeding 1600 kg or a G.V.M. exceeding 3500 kg per chassis fitted with a cab (Subheadings ex 8704.21, ex 8704.22, ex 8704.23, ex 8704.31, ex 8704.32 and ex 8704.90): 
+
+Manufacture or assembly of the vehicle entails that the cab or body must be attached to the chassis frame and the engine, transmission, axles, radiators, suspension components, steering mechanisms, braking or electrical equipment or instrumentation must be fitted to the floor panels or chassis frame of the vehicle. 
+
+9.3  In the case of chassis fitted with engines, for the motor vehicles of headings 87.01 to 87.05 (heading 87.06); the engine, transmission, axles, radiators, suspension components, steering mechanisms, braking or electrical equipment or instrumentation must be fitted to the floor panels or chassis frame .
+
+1
+
+HS Chapter, Heading or Sub- Heading 
+
+2
+
+Description of Product 
+
+3
+
+Working or processing, carried out on non-originating materials, which confers originating status 
+
+Chapter 1  Live animals  All animals of this Chapter must be wholly obtained 
+
+Chapter 2  Meat and edible meat offal  Manufacture in which all materials of Chapters 1 and 2 used must be wholly obtained 
+
+Chapter 3  Fish and crustaceans, molluscs and other aquatic invertebrates  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Ex0305.69  Salted snoek  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years after which the materials from HS Chapter 3 used are wholly obtained 
+
+Chapter 4  Dairy produce; birds' eggs; natural honey; edible products of animal origin, not elsewhere specified or included 
+
+Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+04.01  Milk and cream, not concentrated nor containing added sugar or other sweetening matter 
+
+Manufacture in which materials used must be wholly obtained 
+
+04.03  Buttermilk, curdled milk and cream, yoghurt, kephir and other fermented or acidified milk and cream, whether or not concentrated or containing added sugar or other sweetening matter or flavoured or containing added fruit, nuts or cocoa 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years, after which manufacture in which materials of headings 04.01 and 04.02 used are wholly obtained 
+
+ex0403.20  Yoghurt containing added spices, coffee or coffee extracts, plants, parts of plants, cereals or bakers’ wares 
+
+Manufacture from materials of any heading excluding that of the product 04.06  Cheese and curd  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years, after which manufacture in which materials of headings 04.01 and 04.02 used are wholly obtained 
+
+0406.30  Processed cheese, not grated or powdered  Manufacture in which the value of all the materials used does not exceed 40% of the ex-works price of the product 
+
+ex0410.10  Edible insects and preparations thereof  Materials of chapters 1 and 2 must be wholly obtained 
+
+Chapter 5  Products of animal origin, not elsewhere specified or included  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Chapter 6  Live trees and other plants; bulbs, roots and the like; cut flowers and ornamental foliage 
+
+Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Chapter 7  Edible vegetables and certain roots and tubers  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Chapter 8  Edible fruit and nuts; peel of citrus fruit or melons  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Ex-Chapter 9  Coffee, tea, maté and spices  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+09.10  Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices  Manufacture in which materials used must be wholly obtained 
+
+0910.91  Mixtures referred to in Note 1(b) to this Chapter  Manufacture in which materials used must be wholly obtained 
+
+0910.99  Other  Manufacture in which materials used must be wholly obtained 
+
+Chapter 10  Cereals  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Ex-Chapter 11  Products of the milling industry; malt; starches; inulin; wheat gluten  Manufacture in which all materials of Chapters 7, 8 and 10 used must be wholly obtained 
+
+11.01  Wheat or meslin flour  Manufacture from materials of any heading excluding that of the product, subject to a review after five years 
+
+1103.11  Cereal groats and meal of wheat  Manufacture from materials of any heading excluding that of the product 
+
+11.04  Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled) (excluding rice of heading 10.06); germ of cereals, whole, rolled, flaked or ground 
+
+Manufacture in which all materials used must be wholly obtained 
+
+11.05  Flour, meal, powder, flakes, granules and pellets of potatoes  Manufacture in which all materials used must be wholly obtained 
+
+11.06  Flour, meal and powder of the dried leguminous vegetables of heading 07.13, of sago or of roots or tubers of heading 07.14 or of the products of Chapter 8 
+
+Manufacture in which all materials used must be wholly obtained 
+
+11.07  Malt, whether or not roasted  Manufacture in which all materials used must be wholly obtained 
+
+1108.11  Wheat starch  Manufacture from materials of any heading excluding that of the product 
+
+11.09  Wheat gluten, whether or not dried  Manufacture from materials of any heading excluding that of the product 
+
+Chapter 12  Oil seeds and oleaginous fruits; miscellaneous grains, seeds and fruit; industrial or medicinal plants; straw and fodder 
+
+Manufacture in which all materials of this Chapter used must be wholly obtained Ex-Chapter 13  Lac; gums, resins and other vegetable saps and extracts  Manufacture in which all materials used must be wholly obtained 
+
+13.02  Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products 
+
+Manufacture from materials of any heading excluding that of the product 
+
+Chapter 14  Vegetable plaiting materials; vegetable products not elsewhere specified or included 
+
+Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Ex-Chapter 15  Animal or vegetable fats and oils and their cleavage products; prepared edible fats; animal or vegetable waxes 
+
+Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+15.04  Fats and oils and their fractions, of fish or marine mammals, whether or not refined, but not chemically modified 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+15.05  Wool grease and fatty substances derived therefrom (including lanolin)  Manufacture from materials of any heading excluding that of the product 
+
+15.06  Other animal fats and oils and their fractions, whether or not refined, but not chemically modified 
+
+Manufacture from materials of any heading excluding that of the product 
+
+15.07  Soya-bean oil and its fractions, whether or not refined, but not chemically modified 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+15.11  Palm oil and its fractions, whether or not refined, but not chemically modified  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+Ex-15.12  Sunflower-seed or safflower oil and fractions thereof, whether or not refined, but not chemically modified 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+15.14  Rape, colza or mustard oil and fractions thereof, whether or not refined, but not chemically modified 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+15.16  Animal or vegetable fats and oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+15.17  Margarine; edible mixtures or preparations of animal or vegetable fats or oils or of fractions of different fats or oils of this Chapter (excluding edible fats or oils or their fractions of heading 15.16) 
+
+Manufacture from materials of any heading excluding that of the product 
+
+15.18  Animal or vegetable fats and oils and their fractions, boiled, oxidised, dehydrated, sulphurised, blown, polymerised by heat in vacuum or in inert gas or otherwise chemically modified (excluding those of heading 15.16); inedible mixtures or preparationsof animal or vegetable fats or oils or of fractions of different fats or oils of this Chapter, not elsewhere specified or included 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review 
+
+15.20  Glycerol, crude; glycerol waters and lyes  Manufacture from materials of any heading excluding that of the product 
+
+15.21  Vegetable waxes (excluding triglycerides), beeswax, other insect waxes and spermaceti, whether or not refined or coloured 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which manufacture in which materials used are wholly obtained further to subject to an objective review Chapter 16  Preparations of meat, of fish or of crustaceans, molluscs or other aquatic invertebrates 
+
+Manufacture in which all materials of Chapters 1, 2 and 3 used must be wholly obtained 
+
+ex1601.00  Sausages and similar products, of insects; food preparations based on these products 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product 
+
+ex1602.10  Homogenised preparations of insects  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product 
+
+ex1602.90  Other preparations of insects  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product 
+
+16.04  Prepared or preserved fish; caviar and caviar substitutes prepared from fish eggs  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years, after which manufacture in which the materials from Chapter 3 are wholly obtained used are wholly obtained 
+
+16.05  Crustaceans, molluscs and other aquatic invertebrates, prepared or preserved  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years, after which manufacture in which the materials from Chapter 3 are wholly obtained used are wholly obtained 
+
+Chapter 17  Sugars and sugar confectionery  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+17.02  Other sugars, including chemically pure lactose, maltose, glucose and fructose, in solid form; sugar syrups not containing added flavouring or colouring matter; artificial honey, whether or not mixed with natural honey; caramel 
+
+Manufacture in which the value of non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years subject to review based on the review mechanism agreed by the Council of Ministers. 
+
+17.04  Sugar confectionery (including white chocolate), not containing cocoa  Manufacture in which the value of non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years subject to review based on the review mechanism agreed by the Council of Ministers. 
+
+Chapter 18  Cocoa and cocoa preparations  Manufacture in which all materials of Chapters 17 and 18 used must be wholly obtained 
+
+Ex-Chapter 19  Preparations of cereals, flour, starch, or milk; pastrycooks products  Manufacture from materials of any heading excluding that of the product provided that the wheat products of Chapter 11 used must be originating 
+
+19.01  Malt extract: food preparations of flour, groats, meal, starch or malt extract, not containing cocoa or containing less than 40 per cent by mass of cocoa calculated on a totally defatted basis, not elsewhere specified or included; food preparations of goods of headings 04.01 to 04.04, not containing cocoa or containing less than 5 per cent by mass of cocoa calculated on a totally defatted basis, not elsewhere specified or included 
+
+Manufacture from materials of any heading excluding that of the product 
+
+19.03  Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, pearls, siftings or in similar forms 
+
+Manufacture from material of any heading except that of the product 
+
+Chapter 20  Preparations of vegetables, fruit, nuts or other parts of plants  Manufacture in which all the vegetables, fruit, nuts or other parts of plants used must be wholly obtained 
+
+2009.81  Cranberry (vaccinium macrocarpon, vaccinium oxycoccos, vaccinium vitis-idea) juice 
+
+Manufacture in which the value of non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years, after which manufacture in which all the vegetables, fruit, nuts or other parts of plants used must be wholly obtained 2009.89  Other  Manufacture in which all the vegetables, fruit, nuts or other parts of plants used must be wholly obtained 
+
+Ex. 2009.89  Mangosteen’s juice, Kiwi juice, Persimmon juice, Carambola juice, Bush tucker juice 
+
+Manufacture in which the value of non-originating materials used does not exceed 60% of the ex-works price of the product for 5 years, after which manufacture in which all the vegetables, fruit, nuts or other parts of plants used must be wholly obtained 
+
+2009.90  Mixture of juices  Manufacture in which all the vegetables, fruit, nuts or other parts of plants used must be wholly obtained 
+
+Ex-Chapter 21  Miscellaneous edible preparations  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+21.01  Extracts, essences and concentrates, of coffee, tea or maté and preparations with a basis of these products or with a basis of coffee, tea or maté; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof 
+
+Manufacture in which materials of Chapter 9 used must be wholly obtained 
+
+21.02  Yeasts (active or inactive); other single-cell micro- organisms, dead (but not including vaccines of heading 30.02); prepared baking powders 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+21.05  Ice cream and other edible ice, whether or not containing cocoa  Manufacture in which materials of Chapters 2, 4, 7, 8, 17 and 18 used must be originating 
+
+Ex-Chapter 22  Beverages, spirits and vinegar  Manufacture from materials of any heading excluding that of the product 
+
+22.01  Waters, including natural or artificial mineral waters and aerated waters, not containing added sugar or other sweetening matter nor flavoured; ice and snow 
+
+Manufacture in which all the materials must be wholly obtained 
+
+Ex-22.02  Waters, including mineral waters and aerated waters, containing added sugar or other sweetening matter or flavoured, and (excluding fruit or vegetable juices of heading 20.09) 
+
+Manufacture from materials of any heading excluding that of the product in which materials of Chapters 4, 17, 18 and heading 22.01 used must be originating 
+
+2202.91  Non-alcoholic beer  Manufacture from materials of any heading excluding that of the product 
+
+22.04  Wine of fresh grapes, including fortified wines; grape must (excluding that of heading 20.09) 
+
+Manufacture from materials of any heading except that of the product and in which any grapes and other materials derived from grapes used must be wholly obtained 
+
+22.05  Vermouth and other wine of fresh grapes flavoured with plants or aromatic substances 
+
+Manufacture from materials of any heading except that of the product and in which any grapes and other materials derived from grapes used must be wholly obtained 
+
+Ex-22.06  Palm wine  Manufacture in which all the materials must be wholly obtained 
+
+22.07  Undenatured ethyl alcohol of an alcoholic strength by volume of 80 per cent vol. or higher; ethyl alcohol and other spirits, denatured, of any strength 
+
+Manufacture from materials of any heading except that of the product in which any grapes or material derived from grapes and materials of Chapter 17 used must be wholly obtained 
+
+22.08  Undenatured ethyl alcohol of an alcoholic strength by volume of less than 80 per cent vol.; spirits, liqueurs and other spirituous beverages 
+
+Manufacture from materials of any heading except that of the product in which any grapes or any material derived from grapes and materials of Chapter 17 used must be wholly obtained 
+
+22.09  Vinegar and substitutes for vinegar obtained from acetic acid  Manufacture from materials of any heading except that of the product and in which any grapes or materials obtained from grapes must be wholly obtained Chapter 23  Residues and waste from the food industries; prepared animal fodder  Manufacture from materials of any heading but materials of Chapters 2, 3, 4, 10, 11, 12 and 17 used must be originating 
+
+23.01  Flours, meals, and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves 
+
+Manufacture in which the value of non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which materials from HS Chapter 2, 3, 4, 10, 11, 12 and 17 are originating 
+
+23.09  Preparations of a kind used in animal feeding  Manufacture in which the value of non-originating materials used does not exceed 60% of the ex-works price of the product for 3 years, after which materials from HS Chapter 2, 3, 4, 10, 11, 12 and 17 are originating 
+
+Chapter 24  Tobacco and manufactured tobacco substitutes  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+24.02  Cigars, cheroots, cigarillos and cigarettes, of tobacco or of tobacco substitutes  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product provided that mass of non-originating materials from heading 2401 used does not exceed 30% of the mass of tobacco used in the product. 
+
+24.03  Other manufactured tobacco and manufactured tobacco substitutes; "homogenised" or "reconstituted" tobacco; tobacco extracts and essences 
+
+Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product provided that the mass of non-originating materials from heading 2401 used does not exceed 30% of the mass of tobacco used in the product. 
+
+Chapter 25  Salt; sulphur; earths and stone; plastering materials, lime, and cement  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Chapter 26  Ores, slag, and ash  Manufacture in which all the materials must be wholly obtained 
+
+Ex-Chapter 27  Mineral fuels, mineral oils, and products of their distillation; bituminous substances; mineral waxes 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 40% of the ex-works price of the product 
+
+27.01  Coal: briquettes, ovoids and similar solid fuels manufactured from coal  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+27.07  Oils and other products of the distillation of high temperature coal tar; similar products in which the mass of the aromatic constituents exceeds that of the non-aromatic constituents 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+27.09  Petroleum oils and oils obtained from bituminous minerals, crude  Manufacture in which all the materials must be wholly obtained 
+
+27.10  Petroleum oils and oils obtained from bituminous minerals (excluding crude); preparations not elsewhere specified or included, containing by mass 70 per cent or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations; waste oils 
+
+Operations of refining and / or one or more specific process(es) 
+
+or 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 50% of the ex-works price of the product 
+
+Ex-27.11  Petroleum gases and other gaseous hydrocarbons  Operations of refining and/or one or more specific process(es) 
+
+or 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 50% of the ex-works price of the product 2711.11 
+
+2711.21 
+
+Natural gas  Manufacture in which all materials used are wholly obtained 
+
+27.12  Petroleum jelly; paraffin wax; microcrystalline petroleum wax, slack wax, ozokerite, lignite wax, peat wax, other mineral waxes, and similar products obtained by synthesis or by other processes, whether or not coloured 
+
+Operations of refining and/or one or more specific process(es) 
+
+or 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 50% of the ex-works price of the product 
+
+27.13  Petroleum coke, petroleum bitumen and other residues of petroleum oils or of oils obtained from bituminous minerals 
+
+Operations of refining and/or one or more specific process(es) 
+
+or 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 50% of the ex-works price of the product 
+
+27.16  Electrical energy  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+Ex-Chapter 28  Inorganic chemicals; organic or inorganic compounds of precious metals, of rare-earth metals, of radioactive elements or of isotopes 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix. 
+
+28.05  Alkali or alkaline-earth metals; rare-earth metals, scandium, and yttrium, whether or not intermixed or interalloyed; mercury 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 29  Organic chemicals  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex2909.60  Acetal and hemiacetal peroxides  Manufacture from materials of any heading except from 2911 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 30  Pharmaceutical products  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix ex3006.93  Beverages having a placebo effect  Manufacture from materials of any heading excluding that of the product in which materials of Chapters 4, 17, 18 and heading 22.01 used must be originating 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 31  Fertilizers  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 32  Tanning or dyeing extracts; tannins and their derivatives; dyes, pigments and other colouring matter; paints and varnishes; putty and other mastics; inks 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 33  Essential oils and resinoids; perfumery, cosmetic or toilet preparations  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 34  Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modelling pastes, "dental waxes" and dental preparations with a basis of plaster 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 35  Albuminoidal substances; modified starches; glues; enzymes  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix Chapter 36  Explosives; pyrotechnic, products; matches; pyrophoric alloys; certain combustible preparations 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 37  Photographic or cinematographic goods  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Chapter 38  Miscellaneous chemical products  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3816.00  Dolomite ramming mix  Manufacture in which all materials of Chapter 25 used must be wholly obtained 
+
+3822.11  Diagnostic or laboratory reagents on a backing, prepared diagnostic or laboratory reagents whether or not on a backing, whether or not put up in the form of kits, for malaria 
+
+Manufacture from materials of any heading, except that of the product and of HS3002 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+3822.12  Diagnostic reagents and kits including zika and other diseases transmitted by mosquitoes of the genus Aedes 
+
+Manufacture from materials of any heading, except that of the product and of HS3002 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+3822.13  Diagnostic or laboratory reagents on a backing, prepared diagnostic or laboratory reagents whether or not on a backing, whether or not put up in the form of kits, for blood-grouping 
+
+Manufacture from materials of any heading, except that of the product and of HS3002 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+3822.19  Other diagnostic or laboratory reagents on a backing, prepared diagnostic or laboratory reagents whether or not on a backing, whether or not put up in the form of kits 
+
+Manufacture from materials of any heading, except that of the product and of HS3002 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 3822.90  Other certified materials  Manufacture from materials of any heading, except that of the product and of HS3002 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.11  Mixtures containing halogenated derivatives of chlorofluorocarbons, whether or not containing hydrochlorofluorocarbons, perfluorocarbons or hydrofluorocarbons 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.12  Mixtures containing hydrobromofluorocarbons (HBFCs)  Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.13  Mixtures containing carbon tetrachloride  Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.14  Mixtures containing halogenated derivatives of chlorofluorocarbons, containing 1,1,1- trichloroethane (methyl chloroform) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.20  Mixtures containing bromochlorodifluoromethane (Halon-1211), bromotrifluoromethane (Halon-1301) or dibromotetrafluoroethanes (Halon-2402) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.31  Mixtures containing hydrochlorofluorocarbons (HCFCs), whether or not containing perfluorocarbons (PFCs) or hydrofluorocarbons (HFCs), but not containing chlorofluorocarbons (CFCs): Containing substances of subheadings 2903.41 to 2903.48 
+
+Manufacture from materials of any Heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix ex3827.32  Mixtures containing hydrochlorofluorocarbons (HCFCs), whether or not containing perfluorocarbons (PFCs) or hydrofluorocarbons (HFCs), but not containing chlorofluorocarbons (CFCs): Other, containing substances of subheadings 2903.71 to 2903.75 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.39  Mixtures containing hydrochlorofluorocarbons (HCFCs), whether or not containing perfluorocarbons (PFCs) or hydrofluorocarbons (HFCs), but not containing chlorofluorocarbons (CFCs): Other 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.40  Mixtures containing methyl bromide (bromomethane) or bromochloromethane  Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.51  Mixtures containing Containing trifluoromethane (HFC-23) or perfluorocarbons (PFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Containing trifluoromethane (HFC-23) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.59  Mixtures containing Containing trifluoromethane (HFC-23) or perfluorocarbons (PFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.61  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Containing 15 % or more by mass of 1,1,1- trifluoroethane (HFC-143a) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.62  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other, not included in the subheading above, containing 55 % or more by mass of pentafluoroethane (HFC- 125) but not containing unsaturated fluorinated derivatives of acyclic hydrocarbons (HFOs) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix ex3827.63  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other, not included in the subheadings above, containing 40 % or more by mass of pentafluoroethane (HFC-125) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.64  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other, not included in the subheadings above, containing 30 % or more by mass of 1,1,1,2-tetrafluoroethane (HFC-134a) but not containing unsaturated fluorinated derivatives of acyclic hydrocarbons (HFOs) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.65  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other, not included in the subheadings above, containing 20 % or more by mass of difluoromethane (HFC-32) and 20 % or more by mass of pentafluoroethane (HFC-125) 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.68  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other, not included in the subheadings above, containing substances of subheadings 2903.41 to 2903.48 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.69  Mixtures Containing other hydrofluorocarbons (HFCs) but not containing chlorofluorocarbons (CFCs) or hydrochlorofluorocarbons (HCFCs): Other 
+
+Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+ex3827.90  Other mixtures, not elsewhere specified  Manufacture from materials of any heading, except that of the product and of 3824 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Chemical processing rules as per Introductory Note 8 to this Appendix 
+
+Ex-Chapter 39  Plastics and articles thereof  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+39.15  Waste, parings and scrap, of plastics  Manufacture in which all materials of this Chapter used must be wholly obtained Ex-Chapter 40  Rubber and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+40.01  Natural rubber, balata, gutta-percha, guayule,chicle and similar natural gums, in primary forms or in plates, sheets or strip 
+
+Manufacture in which all the materials used must be wholly obtained 
+
+40.12  Retreaded or used pneumatic tyres of rubber; solid or cushion tyres, tyre treads and tyre flaps, of rubber 
+
+Retreading of used tyres 
+
+Ex-Chapter 41  Raw hides and skins (excluding furskins) and leather  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+41.04  Tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared 
+
+Manufacture in which materials of headings 41.01 to 
+
+41.03 used are wholly obtained 
+
+41.05  Tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared 
+
+Manufacture in which materials of headings 41.01 to 
+
+41.03 used are wholly obtained 
+
+41.06  Tanned or crust hides and skins of other animals, without wool or hair on, whether or not split, but not further prepared 
+
+Manufacture in which materials of headings 41.01 to 
+
+41.03 used are wholly obtained 
+
+41.07 to 41.13  Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split (excluding leather of heading 41.14) 
+
+Manufacture in which materials of headings 41.01 to 
+
+41.03 used are wholly obtained 
+
+41.14  Chamois (including combination chamois) leather; patent leather and laminated leather; metallised leather 
+
+Manufacture from materials of any heading excluding that of the product 
+
+Chapter 42  Articles of leather; saddlery and harness; travel goods, handbags and similar containers; articles of animal gut (excluding silk-worm gut) 
+
+Manufacture from any other heading for a period of 5 years, after which manufacture from any other heading provided that the materials from HS Chapter 41 are originating 
+
+Chapter 43  Furskins and artificial fur; manufactures thereof  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-Chapter 44  Wood and articles of wood; wood charcoal  Manufacture from materials of any heading, except that of the product 
+
+44.01  Fuel wood, in logs, in billets, in twigs, in faggots or in similar forms; wood in chips or particles; sawdust and wood waste and scrap, whether or not agglomerated in logs, briquettes, pellets or similar forms 
+
+Materials of this Chapter used must be wholly obtained 
+
+44.02  Wood charcoal (including shell or nut charcoal), whether or not agglomerated  Materials of this Chapter used must be wholly obtained 
+
+44.03  Wood in the rough, whether or not stripped of bark or sapwood, or roughly squared 
+
+Materials of this Chapter used must be wholly obtained 
+
+4404.20  Non-coniferous  Materials of this heading used must be wholly obtained 
+
+44.05  Wood wool; wood flour  Materials of this Chapter used must be wholly obtained 
+
+4406.12 
+
+4406.92 
+
+Non-coniferous  Materials of this heading used must be wholly obtained 4407.21 
+
+4407.22 
+
+4407.23 
+
+4407.25 
+
+4407.26 
+
+4407.27 
+
+4407.29 
+
+Tropical woods  Materials of this heading used must be wholly obtained 
+
+4408.31  Dark red meranti, light red meranti and meranti bakau  Materials of this heading used must be wholly obtained 
+
+4408.39  Other  Materials of this heading used must be wholly obtained 
+
+4409.22  Of tropical wood  Materials of this heading used must be wholly obtained 
+
+4412.31  With at least one outer ply of tropical wood  Manufacture in which materials of tropical woods of this Chapter used must be wholly obtained 
+
+Chapter 45  Cork and articles of cork  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 46  Manufactures of straw, of esparto or of other plaiting materials; basketware and wickerwork 
+
+Manufacture from materials of any heading excluding that of the product provided that materials of Chapter14 are wholly obtained 
+
+Chapter 47  Pulp of wood or of other fibrous cellulosic material; recovered (waste and scrap) paper or paperboard 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 48  Paper and paperboard; articles of paper pulp, of paper or of paperboard  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 49  Printed books, newspapers, pictures and other products of the printing industry; manuscripts, typescripts and plans 
+
+Manufacture from materials of any heading excluding that of the product 
+
+Ex-Chapter 50  Silk  Manufacture from materials of any heading excluding that of the product 
+
+50.01  Silk-worm cocoons suitable for reeling  Manufacture from materials of any heading except that of the product 
+
+or 
+
+Printing accompanied by at least two preparatory or finishing operations (such as scouring, bleaching, mercerising, heat setting, raising, calendering, shrink resistance processing, permanent finishing, decatizing, impregnating, mending and burling) where the value of the unprinted fabric used does not exceed 50% of the ex- works price of the product 50.03  Silk waste (including cocoons unsuitable for reeling, yarn waste and garnetted stock) 
+
+Manufacture from materials of any heading except that of the product 
+
+or 
+
+Carding or combing of silk waste 
+
+50.04  Silk yarn (excluding yarn spun from silk waste) not put up for retail sale  Manufacture from materials of any heading except that of the product 
+
+or 
+
+Manufacture from raw silk or silk waste, other natural fibers or chemical materials of textile pulp 
+
+50.05  Yarn spun from silk waste, not put up for retail sale  Manufacture from materials of any heading except that of the product 
+
+or 
+
+Manufacture from raw silk or silk waste, other natural fibers or chemical materials of textile pulp 
+
+50.07  Woven fabrics of silk or of silk waste  Manufacture from materials of any heading except that of the product 
+
+Ex-Chapter 51  Wool, fine or coarse animal hair; horsehair yarn and woven fabric  Manufacture from materials of any heading excluding that of the product 
+
+[51.11]  Woven fabrics of carded wool or of carded fine animal hair  Yet to be agreed 
+
+[51.12]  Woven fabrics of combed wool or of combed fine animal hair  Yet to be agreed 
+
+[51.13]  Woven fabrics of coarse animal hair or of horsehair  Yet to be agreed 
+
+Ex-Chapter 52  Cotton  Manufacture in which all materials used must be wholly obtained 
+
+[52.04]  Cotton sewing thread, whether or not put up for retail sale  Yet to be agreed 
+
+[52.05]  Cotton yarn (excluding sewing thread), containing 85 per cent or more by mass of cotton, not put up for retail sale 
+
+Yet to be agreed 
+
+[52.06]  Cotton yarn (excluding sewing thread), containing less than 85 per cent by mass of cotton, not put up for retail sale 
+
+Yet to be agreed 
+
+[52.07]  Cotton yarn (excluding sewing thread) put up for retail sale  Yet to be agreed 
+
+[52.08]  Woven fabrics of cotton, containing 85 per cent or more by mass of cotton, of a mass not exceeding 200 g/m² 
+
+Yet to be agreed 
+
+[52.09]  Woven fabrics of cotton, containing 85 per cent or more by mass of cotton, of a mass exceeding 200 g/m² 
+
+Yet to be agreed 
+
+[52.10]  Woven fabrics of cotton, containing less than 85 per cent by mass of cotton, mixed mainly or solely with man-made fibres, of a mass not exceeding 200 g/m² 
+
+Yet to be agreed 
+
+[52.11]  Woven fabrics of cotton, containing less than 85 per cent by mass of cotton, mixed mainly or solely with man-made fibres, of a mass exceeding 200 g/m² 
+
+Yet to be agreed 
+
+[52.12]  Other woven fabrics of cotton  Yet to be agreed 
+
+Ex-Chapter 53  Other vegetable textile fibres; paper yarn and woven fabrics of paper yarn  Manufacture from materials of any heading excluding that of the product 53.06  Flax yarn  Manufacture from materials classified in a heading excluding that of the product 
+
+or 
+
+Spinning of natural fibres or extrusion of man-made fibres accompanied by spinning 
+
+53.07  Yarn of jute or of other textile bast fibres of heading 53.03  Manufacture from materials classified in a heading excluding that of the product 
+
+or 
+
+Spinning of natural fibres or extrusion of man-made fibres accompanied by spinning 
+
+53.08  Yarn of other vegetable textile fibres; paper yarn  Manufacture from materials classified in a heading excluding that of the product 
+
+or 
+
+Spinning of natural fibres or extrusion of man-made fibres accompanied by spinning 
+
+[53.09]  Woven fabrics of flax  Yet to be agreed 
+
+53.10  Woven fabrics of jute or of other textile bast fibres of heading 53.03  Manufacture from materials classified in a heading excluding that of the product 
+
+or 
+
+Manufacture from: 
+
+# - natural fibres; 
+
+# - man-made staple fibres not carded or combed or otherwise prepared for spinning; 
+
+# - chemical Materials or textile pulp; or 
+
+# - paper 
+
+or 
+
+Printing accompanied by at least two preparatory or finishing operations (such as scouring, bleaching, mercerising, heat setting, raising, calendaring, shrink resistance processing, permanent finishing, decatising, impregnating, mending and burling) where the value of the unprinted fabric used does not exceed 50% of the ex-works price of the product 
+
+53.11  Woven fabrics of other vegetable textile fibres; woven fabrics of paper yarn  Manufacture from materials classified in a heading excluding that of the product 
+
+or 
+
+Manufacture from: 
+
+# - natural fibres; 
+
+# - man-made staple fibres not carded or combed or otherwise prepared for spinning; 
+
+# - chemical materials or textile pulp; or 
+
+# - paper 
+
+or 
+
+Printing accompanied by at least two preparatory or finishing operations (such as scouring, bleaching, mercerising, heat setting, raising, calendaring, shrink resistance processing, permanent finishing, decatising, impregnating, mending and burling) where the value of the unprinted fabric used does not exceed 50% of the ex-works price of the product 
+
+Chapter 54  Man-made filaments; strip and the like of man-made textile materials  Manufacture from materials of any heading excluding that of the product [54.07]  Woven fabrics of synthetic filament yarn, including woven fabrics obtained from materials of heading 54.04 
+
+Yet to be agreed 
+
+[54.08]  Woven fabrics of artificial filament yarn, including woven fabrics obtained from materials of heading 54.05 
+
+Yet to be agreed 
+
+Chapter 55  Man-made staple fibres  Manufacture from materials of any heading excluding that of the product 
+
+[55.12]  Woven fabrics of synthetic staple fibres, containing 85 per cent or more by mass of synthetic staple fibres 
+
+Yet to be agreed 
+
+[55.13]  Woven fabrics of synthetic staple fibres, containing less than 85 per cent by mass of such fibres, mixed mainly or solely with cotton, of a mass not exceeding 170 g/m² 
+
+Yet to be agreed 
+
+[55.14]  Woven fabrics of synthetic staple fibres, containing less than 85 per cent by mass of such fibres, mixed mainly or solely with cotton, of a mass exceeding 170 g/m² 
+
+Yet to be agreed 
+
+[55.15]  Other woven fabrics of synthetic staple fibres  Yet to be agreed 
+
+[55.16]  Woven fabrics of artificial staple fibres  Yet to be agreed 
+
+Ex-Chapter 56  Wadding, felt and nonwovens; special yarns; twine, cordage, ropes and cables and articles thereof 
+
+Manufacture from materials of any heading excluding that of the product. 
+
+56.01  Wadding of textile materials and articles thereof; textile fibres, not exceeding 5 mm in length (flock), textile dust and mill neps 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 50% of the ex-works price of the product 
+
+Chapter 57  Carpets and other textile floor coverings  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture from: 
+
+- yarn; 
+
+- synthetic or artificial filament yarn; 
+
+- natural fibres; or 
+
+- man-made staple fibres not carded or combed or otherwise processed for spinning 
+
+Ex-Chapter 58  Special woven fabrics; tufted textile fabrics; lace; tapestries; trimmings; embroidery 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture from natural fibers; man-made staple fibers not carded or combed or otherwise prepared for spinning; chemical materials or textile pulp or paper 
+
+or 
+
+Printing accompanied by at least two preparatory or finishing operations (such as scouring, bleaching, mercerizing, heat setting, raising, calendering, shrink resistance processing, permanent finishing, decatizing, impregnating, mending and burling) where the value of the unprinted fabric used does not exceed 50% of the ex- works price of the Product 
+
+[58.01]  Woven pile fabrics and chenille fabrics (excluding fabrics of heading 58.02 or 58.06) 
+
+Yet to be agreed [58.02]  Terry towelling and similar woven terry fabrics (excluding narrow fabrics of heading 58.06); tufted textile fabrics (excluding products of heading 57.03) 
+
+Yet to be agreed 
+
+[58.03]  Gauze (excluding narrow fabrics of heading 58.06)  Yet to be agreed 
+
+[58.04]  Tulles and other net fabrics (excluding woven, knitted or crocheted fabrics); lace in the piece, in strips or in motifs (excluding fabrics of heading 60.02 to 60.06) 
+
+Yet to be agreed 
+
+58.05  Hand-woven tapestries of the type Gobelins, Flanders, Aubusson, Beauvais and the like, and needle-worked tapestries (for example, petit point, cross stitch), whether or not made up 
+
+Manufacture from materials of any heading excluding that of the product 
+
+[58.06]  Narrow woven fabrics (excluding goods of heading 58.07); narrow fabrics consisting of warp without weft assembled by means of an adhesive (bolducs) 
+
+Yet to be agreed 
+
+58.08  Braids in the piece; ornamental trimmings in the piece, without embroidery (excluding knitted or crocheted); tassels, pompons and similar articles 
+
+Manufacture from materials of any heading excluding that of the product 
+
+58.09  Woven fabrics of metal thread and woven fabrics of metallised yarn of heading 56.05, of a kind used in apparel, as furnishing fabrics or for similar purposes, not elsewhere specified or included 
+
+Manufacture from materials of any heading excluding that of the product 
+
+[58.10]  Embroidery in the piece, in strips or in motifs  Yet to be agreed 
+
+Chapter 59  Impregnated, coated, covered or laminated textile fabrics; textile articles of a kind suitable for industrial use 
+
+Manufacture from materials of any heading excluding that of the product 
+
+[Chapter 60]  Knitted or crocheted fabrics  Yet to be agreed 
+
+[Chapter 61]  Articles of apparel and clothing accessories, knitted or crocheted  Manufacture from yarn, subject to a review after 5 years 
+
+Chapter 62  Articles of apparel and clothing accessories, not knitted or crocheted  Manufacture from yarn, subject to a review after 5 years 
+
+62.03 
+
+6203.11 
+
+6203.31 
+
+6203.41 
+
+Men's or boys' suits, ensembles, jackets, blazers, trousers, bib and brace overalls, breeches, and shorts (excluding swimwear). 
+
+-- Of wool or fine animal hair 
+
+-- Of wool or fine animal hair 
+
+-- Jackets and blazers: Of wool or fine animal hair 
+
+Manufacture from materials of any heading excluding that of the product, subject to a review after 5 years 
+
+62.07 
+
+6207.19 
+
+Men's or boys' singlets and other vests, underpants, briefs, nightshirts, pyjamas, bathrobes, dressing gowns and similar article 
+
+# - Underpants 
+
+-- Of other textile materials 
+
+# - Nightshirts and pyjamas: 
+
+Manufacture from materials of any heading excluding that of the product, subject to a review after 5 years 6207.22 
+
+6207.29 
+
+6207.99 
+
+-- Of man-made fibres 
+
+-- Of other textile materials 
+
+Other: 
+
+-- Of other textile materials 
+
+62.08 
+
+6208.11 
+
+6208.19 
+
+6208.22 
+
+6208.29 
+
+Women's or girls' singlets and other vests, slips, petticoats, briefs, panties, nightdresses, pyjamas, négligés, bathrobes, dressing gowns and similar articles. 
+
+# - Slips and petticoats: 
+
+-- Of man-made fibres 
+
+-- Of other textile materials 
+
+# - Nightdresses and pyjamas 
+
+-- Of man-made fibres 
+
+Manufacture from materials of any heading excluding that of the product, subject to a review after 5 years 
+
+62.12 
+
+6212.10 
+
+6212.20 
+
+6212.30 
+
+6212.90 
+
+Brassières, girdles, corsets, braces, suspenders, garters and similar articles and parts thereof, whether or not knitted or crocheted: 
+
+# - Brassières 
+
+# - Girdles and panty-girdles 
+
+# - Corselettes 
+
+# - Other 
+
+Manufacture from materials of any heading excluding that of the product, subject to a review after 5 years 
+
+Ex-CHAPTER 63  Other made-up textile articles; sets; worn clothing and worn textile articles; rags  Manufacture from materials of any heading excluding that of the product 
+
+[63.01]  Blankets and travelling rugs: 
+
+- Of felt, or non-wovens  Yet to be agreed 
+
+- Other: embroidered  Yet to be agreed 
+
+- Other  Yet to be agreed 
+
+[63.02]  Bed linen, table linen, toilet linen and kitchen linen: 
+
+- Of felt, or non-wovens  Yet to be agreed 
+
+- Other: embroidered  Yet to be agreed 
+
+- Other  Yet to be agreed 
+
+[63.03]  Curtains (including drapes) and interior blinds; curtain or bed valances:  Yet to be agreed 
+
+- Of felt, of non-wovens  Yet to be agreed 
+
+- Other: embroidered  Yet to be agreed 
+
+- Other  Yet to be agreed [63.04]  Other furnishing articles (excluding those of heading 94.04): 
+
+- Of felt, of non-wovens  Yet to be agreed 
+
+- Other: embroidered  Yet to be agreed 
+
+- Other  Yet to be agreed 
+
+[63.05]  Sacks and bags, of a kind used for the packing of goods  Yet to be agreed 
+
+[63.06]  Tarpaulins, awnings and sunblinds; tents; sails for boats, sailboards or landcraft; camping goods: 
+
+Yet to be agreed 
+
+-Of felt, of non-wovens 
+
+-Other 
+
+Yet to be agreed 
+
+Yet to be agreed 
+
+63.07  Other made-up articles, including dress patterns  Manufacture in which the value of all the materials used does not exceed 50% of the ex-works price of the product 
+
+63.08  Sets consisting of woven fabric and yarn, whether or not with accessories, for making up into rugs, tapestries, embroidered tablecloths or serviettes, or similar textile articles, put up in packings for retail sale 
+
+Each item in the set must satisfy the rule which would apply to it if it were not included in the set. However, non-originating articles may be incorporated provided their total value does not exceed 15% of the ex-works price of the set 
+
+63.09  Worn clothing and other worn articles  No rule (no trade allowed under the AfCFTA preferential regime under this heading) 
+
+63.10  Used or new rags, scrap twine, cordage, rope and cables and worn-out articles of twine, cordage, rope, or cables, of textile materials 
+
+No rule (no trade allowed under the AfCFTA preferential regime under this heading) 
+
+ex-CHAPTER 64  Footwear, gaiters and the like; parts of such articles  Manufacture from materials of any heading excluding that of the product and in which uppers of heading 64.06 must be originating 
+
+Ex-64.06  Parts of footwear (including uppers whether or not attached to soles (excluding outer soles)); removable in-soles, heel cushions and similar articles; gaiters, leggings and similar articles, and parts thereof 
+
+Manufacture from materials of any heading excluding that of the product 
+
+6406.10  Uppers and parts thereof, excluding stiffeners  Manufacture from materials of any heading excluding that of the product and in which materials of Chapter 41 used must be originating 
+
+Chapter 65  Headgear and parts thereof  Manufacture from materials of any heading excluding that of the product 
+
+Chapter 66  Umbrellas, sun umbrellas, walking-sticks, seat- sticks, whips, riding-crops and parts thereof 
+
+Manufacture from materials of any heading excluding that of the product 
+
+Chapter 67  Prepared feathers and down and articles made of feathers or of down; artificial flowers; articles of human hair 
+
+Manufacture from materials of any heading excluding that of the product 
+
+Chapter 68  Articles of stone, plaster, cement, asbestos, mica or similar materials  Manufacture from materials of any heading excluding that of the product 
+
+68.01  Setts, curbstones, and flagstones, of natural stone (except slate)  Manufacture from materials of any heading excluding that of the product 
+
+68.02  Worked monumental or building stone (excluding slate) and articles thereof (excluding goods of heading 68.01); mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially coloured granules, chippings and powder, of natural stone (including slate) 
+
+Manufacture in which all materials used must be wholly obtained 68.03  Worked slate  Manufacture in with all materials used must be wholly obtained 
+
+68.09  Articles of plaster or of compositions based on plaster  Manufacture from materials of any sub-heading excluding that of the product 
+
+6810.91  Prefabricated structural components for building or civil engineering  Manufacture from materials of any sub-heading excluding that of the product 
+
+6810.99  Other  Manufacture from materials of any sub-heading excluding that of the product 
+
+68.14  Worked mica and articles of mica, including agglomerated or reconstituted mica, whether or not on a support of paper, paperboard or other materials 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture from worked mica (including agglomerated or reconstituted mica) 
+
+Chapter 69  Ceramic products  Manufacture from materials of any heading excluding that of the product 
+
+Chapter 70  Glass and glassware  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-70.06  Glass plate substrate coated with dielectric thin film, semi-conductor grade in accordance with SEMMI standards 
+
+Manufacture from non-coated glass plate substrate of heading 70.06 
+
+Chapter 71  Natural or cultured pearls, precious or semi-precious stones, precious metals, metals clad with precious metal and articles thereof; imitation jewelry; coin 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+7101.10  Natural pearls  Manufacture in which materials of this Chapter used must be wholly obtained 
+
+7101.21  Unworked cultured pearls  Manufacture in which materials of this Chapter used must be wholly obtained 
+
+7101.22  Worked cultured pearls  Manufacture from unworked, precious, or semi-precious stones 
+
+71.02  Diamonds, whether or not worked, but not mounted or set  Manufacture from unworked, precious or semi-precious stones 
+
+Ex-71.03  Precious stones (excluding diamonds) and semi- precious stones, whether or not worked or graded but not strung, mounted or set; ungraded precious stones (excluding diamonds) and semi-precious stones, temporarily strung for convenience of transport 
+
+Manufacture from unworked, precious, or semi-precious stones 
+
+Ex-7103.10 
+
+Ex-7103.99 
+
+Tanzanite  Manufacture in which all materials used must be wholly obtained 
+
+7106.10  -Powder  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+7106.91  -Unwrought  Manufacture in which all materials of this Chapter used must be wholly obtained 
+
+71.07  Base metals clad with silver, not further worked than semi-manufactured  Manufacture from metals clad with silver unwrought 
+
+71.08  Gold (including gold plated with platinum) unwrought or in semi-manufactured forms, or in powder form 
+
+Manufacture in which all materials used must be wholly obtained 
+
+7108.13  Plated, semi-manufactured (excluding plated) or in powder form  Manufacture from metals clad with precious metals, unwrought 
+
+71.09  Base metals or silver, clad with gold, not further worked than semi-manufactured  Manufacture from metals clad with gold, unwrought 7110.11  Platinum 
+
+- Unwrought or in powder form 
+
+Manufacture in which all materials used must be wholly obtained 
+
+7110.21  Palladium 
+
+- Unwrought or in powder form 
+
+Manufacture in which all materials used must be wholly obtained 
+
+7110.31  Rhodium 
+
+- Unwrought or in powder form 
+
+Manufacture in which all materials used must be wholly obtained 
+
+7110.41  Iridium, osmium and ruthenium 
+
+- Unwrought or in powder form 
+
+Manufacture in which all materials used must be wholly obtained 
+
+71.11  Base metals, silver or gold, clad with platinum, not further worked than semi-manufactured 
+
+Manufacture from metals clad with gold, unwrought 
+
+Chapter 72  Iron and steel  Manufacture from materials of any heading excluding that of the product 
+
+Chapter 73  Articles of iron or steel  Manufacture from materials of any heading excluding that of the product 
+
+Chapter 74  Copper and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-Chapter 75  Nickel and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+75.02  Unwrought nickel  Manufacture in which all materials used must be wholly obtained 
+
+Ex-Chapter 76  Aluminum and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+Ex 76.01  Aluminium alloys  Manufacture from materials of any heading except that of the product 
+
+or 
+
+Manufacture by thermo or electrolytic treatment from unalloyed aluminium or waste and scrap of aluminium 
+
+Ex-Chapter 78  Lead and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+Ex 7801.99  Lead alloys  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture from unwrought lead, not alloyed 
+
+Ex-Chapter 79  Zinc and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+79.03  Zinc dust, powders and flakes  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product Ex-Chapter 80  Tin and articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+8001.20  Tin alloys  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture from unwrought tin, not alloyed 
+
+Ex-80.03  Tin wire  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture from bars, rods and profiles of tin 
+
+Chapter 81  Other base metals; cermets; articles thereof  Manufacture from materials of any heading excluding that of the product 
+
+Ex-Chapter 82  Tools, implements, cutlery, spoons and forks, of base metal; parts thereof of base metal 
+
+Manufacture from materials of any heading excluding that of the product 
+
+82.11  Knives with cutting blades, serrated or not (including pruning knives), (excluding knives of heading 82.08), and blades therefor 
+
+Manufacture from materials of any heading, except that of the product. However, knife blades of base metal may be used 
+
+8212.10  Razors  Manufacture from materials of any sub-heading, except that of the product 
+
+8212.20  Safety razor blades, including razor blade blanks in strips  Manufacture from materials of any heading 
+
+82.13  Scissors, tailors' shears and similar shears, and blades therefor  Manufacture from materials of any heading 
+
+Chapter 83  Miscellaneous articles of base metal  Manufacture from materials of any heading, except that of the product 
+
+Ex-Chapter 84  Nuclear reactors, boilers, machinery and mechanical appliances; parts thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the Product 
+
+84.01  Nuclear reactors; fuel elements (cartridges), non-irradiated, for nuclear reactors; machinery and apparatus for isotopic separation 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.02  Steam or other vapour generating boilers(excluding central heating hot water boilers capable also of producing low pressure steam); super-heated water boilers 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.03  Central heating boilers (excluding those of heading 84.02)  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.04  Auxiliary plant for use with boilers of heading84.02 or 84.03 (for example, economisers, super-heaters, soot removers, gas recoverers); condensers for steam or other vapour power units 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.05  Producer gas or water gas generators, with or without their purifiers; acetylene gas generators and similar water process gas generators, with or without their purifiers 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.06  Steam turbines and other vapour turbines  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.07  Spark-ignition reciprocating or rotary internal combustion piston engine  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.08  Compression-ignition internal combustion piston engines (diesel or semi-diesel engines) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.09  Parts suitable for use solely or principally with the engines of heading 84.07 or 84.08 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.11  Turbojets, turbo-propellers and other gas turbines  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 84.12  Other engines and motors  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.13  Pumps for liquids, whether or not fitted with a measuring device; liquid elevators  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.14*  Air or vacuum pumps, air or other gas compressors and fans; ventilating or recycling hoods incorporating a fan, whether or not fitted with filters 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.15*  Air conditioning machines, comprising a motor- driven fan and elements for changing the temperature and humidity, including those machines in which the humidity cannot be separately regulated 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.16  Furnace burners for liquid fuel, for pulverised solid fuel or for gas; mechanical stokers, including their mechanical grates, mechanical ash dischargers and similar appliances 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.17  Industrial or laboratory furnaces and ovens, including incinerators, non-electric  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.18*  Refrigerators, freezers and other refrigerating or freezing equipment, electric or other; heat pumps (excluding air conditioning machines of heading 84.15) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-84.19  Machinery, plant, or laboratory equipment, whether or not electrically heated (excluding furnaces,ovens and other equipment of heading 85.14), for the treatment of materials by a process involving a change of temperature such as heating, cooking, roasting, distilling, rectifying, sterilising, pasteurising, steaming, drying, evaporating, vaporising, condensing or cooling (excluding machinery or plant of a kind used for domestic purposes); instantaneous or storage water heaters, non-electric 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8419.11*  Instantaneous gas water heaters  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.20  Calendering or other rolling machines (excluding those for metals or glass), and cylinders therefor 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-84.21  Centrifuges, including centrifugal dryers; filtering or purifying machinery and apparatus, for liquids or gases 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8421.21*  Machinery and apparatus for filtering or purifying water  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.22*  Dish washing machines; machinery for cleaning or drying bottles or other containers; machinery for filling, closing, sealing or labelling bottles, cans, boxes, bags or other containers; machinery for capsuling bottles, jars, tubes and similar containers; other packing or wrapping machinery (including heat-shrink wrapping machinery); machinery for aerating beverages 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.23  Massmeters (excluding balances of a sensitivity of 5 cg or better), including mass piece-operated counting or checking machines; mass pieces of all kinds 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.24  Mechanical appliances (whether or not hand- operated) for projecting, dispersing or spraying liquids or powders; fire extinguishers, whether or not charged; spray guns and similar appliances; steam or sand blasting machines and similar jet projecting machines 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.27  Fork-lift trucks; other works trucks fitted with lifting or handling equipment  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.33  Harvesting or threshing machinery, including straw or fodder balers; grass or hay mowers; machines for cleaning, sorting or grading eggs, fruit or other agricultural produce (excluding machinery of heading 84.37) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 84.49  Machinery for the manufacture or finishing of felt or nonwovens in the piece or in shapes, including machinery for making felt hats; blocks for making hats 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.50*  Household or laundry-type washing machines, including machines which both wash and dry 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.51*  Machinery (excluding machines of heading 84.50) for washing, cleaning, wringing, drying, ironing, pressing (including fusing presses), bleaching, dyeing, dressing, finishing, coating or impregnating textile yarns, fabrics or made-up textile articles and machines for applying the paste to the base fabric or other support used in the manufacture of floor coverings such as linoleum; machines for reeling, unreeling, folding, cutting or pinking textile fabrics 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.52  Sewing machines (excluding book-sewing machines of heading 84.40); furniture, bases and covers specially designed for sewing machines; sewing machine needles 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.53  Machinery for preparing, tanning or working hides, skins or leather or for making or repairing footwear or other articles of hides, skins or leather (excluding sewing machines) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.54  Converters, ladles, ingot moulds and casting machines, of a kind used in metallurgy or in metal foundries 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.55  Metal-rolling mills and rolls therefor  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.56  Machine-tools for working any material by removal of material, by laser or other light or photon beam, ultrasonic, electro-discharge, electro-chemical, electron beam, ionic-beam or plasma arc processes; waterjet cutting machines 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.57  Machining centres, unit construction machines (single station) and multi-station transfer machines, for working metal 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.58  Lathes (including turning centres) for removing metal  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.59  Machine-tools (including way-type unit head machines) for drilling, boring, milling, threading, or tapping by removing metal (excluding lathes (including turning centres) of heading 84.58) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.60  Machine-tools for deburring, sharpening, grinding, honing, lapping, polishing, or otherwise finishing metal or cermets by means of grinding stones, abrasives or polishing products (excluding gear cutting, gear grinding or gear finishing machines of heading 84.61) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.61  Machine-tools for planing, shaping, slotting, broaching, gear cutting, gear grinding or gear finishing, sawing, cutting-off and other machine- tools working by removing metal or cermets, not elsewhere specified or included 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.62  Machine-tools (including presses) for working metal by forging, hammering or die-stamping; machine- tools (including presses) for working metal by bending, folding, straightening, flattening, shearing, punching or notching; presses for working metal or metal carbides, not specified above 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.63  Other machine-tools for working metal or cermets, without removing material  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.64  Machine-tools for working stone, ceramics, concrete, asbestos-cement or like mineral materials or for cold-working glass 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.65  Machine-tools (including machines for nailing, stapling, glueing or otherwise assembling) for working wood, cork, bone, hard rubber, hard plastics, or similar hard materials 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 84.66  Parts and accessories suitable for use solely or principally with the machines of headings 84.56 to 84.65, including work or tool holders, self-opening dieheads, dividing heads and other special attachments for the machines; tool holders for any type of tool for working in the hand 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.67  Tools for working in the hand, pneumatic, hydraulic or with self-contained electric or non-electric motor 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.68  Machinery and apparatus for soldering, brazing, or welding, whether or not capable of cutting (excluding those of heading 85.15); gas-operated surface tempering machines and appliances 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.70  Calculating machines and pocket-size data recording, reproducing, and displaying machines with calculating functions; accounting machines, postage-franking machines, ticket-issuing machines, and similar machines, incorporating a calculating device; cash registers 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.71  Automatic data processing machines and units thereof; magnetic or optical readers, machines for transcribing data onto data media in coded form and machines for processing such data, not elsewhere specified, or included 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.72  Other office machines (for example, hectograph or stencil duplicating machines, addressing machines, automatic banknote dispensers, coin-sorting machines, coin-counting or wrapping machines, pencil-sharpening machines, perforating or stapling machines) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.74  Machinery for sorting, screening, separating, washing, crushing, grinding, mixing, or kneading earth, stone, ores or other mineral substances, in solid (including powder or paste) form; machinery for agglomerating, shaping or moulding solid mineral fuels, ceramic paste, unhardened cements, plastering materials or other mineral products in powder or paste form; machines for forming foundry moulds of sand 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.75  Machines for assembling electric or electronic lamps, tubes, or valves or flash-bulbs, in glass envelopes; machines for manufacturing or hot working glass or glassware 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.76  Automatic goods-vending machines (for example, postage stamp, cigarette, food, or beverage machines), including money-changing machines 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.77  Machinery for working rubber or plastics or for the manufacture of products from these materials, not specified or included elsewhere in this Chapter 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.78  Machinery for preparing or making up tobacco, not specified or included elsewhere in this Chapter 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.79  Machines and mechanical appliances having individual functions, not specified, or included elsewhere in this Chapter 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+ex8479.20  Machinery for the extraction or preparation of microbial fats and oils  Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Manufacture from materials of any heading excluding that of the product, except from 8438 
+
+84.80  Moulding boxes for metal foundry; mould bases; moulding patterns; moulds for metal (excluding ingot moulds), metal carbides, glass, mineral Materials, rubber, or plastics 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+84.81  Taps, cocks, valves and similar appliances for pipes, boiler shells, tanks, vats, or the like, including pressure-reducing valves and thermostatically controlled valves 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 84.82  Ball or roller bearings  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.83  Transmission shafts (including cam shafts and crank shafts) and cranks; bearing housings and plain shaft bearings; gears and gearing; ball or roller screws; gear boxes and other speed changers, including torque converters; flywheels and pulleys, including pulley blocks; clutches and shaft couplings (including universal joints) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.84  Gaskets and similar joints of metal sheeting combined with other material or of two or more layers of metal; sets or assortments of gaskets and similar joints, dissimilar in composition, put up in pouches, envelopes, or similar packings; mechanical seals 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8485.10  Machines for additive manufacturing by metal deposit (3D printers)  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8485.20  Machines for additive manufacturing by plastics or rubber deposit (3D printers)  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8485.30  Machines for additive manufacturing by plaster, cement, ceramics or glass deposit (3D printers) 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8485.80  Machines for additive manufacturing (3D printers) not covered by 8485.10, 8485.20 and 8485.30 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8485.90  Parts of machines for additive manufacturing (3D printers)  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.86  Machines and apparatus of a kind used solely or principally for the manufacture of semiconductor boules or wafers, semiconductor devices, electronic integrated circuits or flat panel displays; machines and apparatus specified in Note 9(C) to this Chapter; parts and accessories 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+84.87  Machinery parts, not containing electrical connectors, insulators, coils, contacts or other electrical features, not specified or included elsewhere in this Chapter 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 85  Electrical machinery and equipment and parts thereof; sound recorders and reproducers, television image and sound recorders and reproducers, and parts and accessories of such articles 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+85.06  Primary cells and primary batteries  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.13  Portable electric lamps designed to function by their own source of energy (for example, dry batteries, accumulators, magnetos) (excluding lighting equipment of heading 85.12) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.14  Industrial or laboratory electric furnaces and ovens (including those functioning by induction or dielectric loss); other industrial or laboratory equipment for the heat treatment of Materials by induction or dielectric loss 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 85.15  Electric (including electrically heated gas), laser or other light or photon beam, ultrasonic, electron beam, magnetic pulse or plasma arc soldering, brazing or welding machines and apparatus, whether or not capable of cutting; electric machines and apparatus for hot spraying of metals or cermets 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.16  Electric instantaneous or storage water heaters and immersion heaters; electric space heating apparatus and soil heating apparatus; electro-thermic hair-dressing apparatus (for example, hair dryers, hair curlers, curling tong heaters) and hand dryers; electric smoothing irons; other electro-thermic appliances of a kind used for domestic purposes; electric heating resistors (excluding those of heading 85.45) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.17  Telephone sets, including telephones for cellular networks or for other wireless networks; other apparatus for the transmission or reception of voice, images or other data, including apparatus for communication in a wired or wireless network (such as a local or wide area network) (excluding transmission or reception apparatus of heading 84.43, 85.25, 85.27 or 85.28) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.18  Microphones and stands therefor; loudspeakers, whether or not mounted in their enclosures; headphones and earphones, whether or not combined with a microphone, and sets consisting of a microphone and one or more loudspeakers; audio- frequency electric amplifiers; electric sound amplifier sets 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.19  Sound recording or sound reproducing apparatus  Manufacture from materials of any heading, except that of the product 
+
+85.23  Discs, tapes, solid-state non-volatile storage devices, "smart cards" and other media for the recording of sound or of other phenomena, whether or not recorded, including matrices and masters for the Production of discs (excluding products of Chapter 37) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.25  Transmission apparatus for radio- broadcasting or television, whether or not incorporating reception apparatus or sound recording or reproducing apparatus; television cameras, digital cameras and video camera recorders 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.26  Radar apparatus, radio navigational aid apparatus and radio remote control apparatus 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.28  Monitors and projectors, not incorporating television reception apparatus; reception apparatus for television, whether or not incorporating radio-broadcast receivers or sound or video recording or reproducing apparatus 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.29  Parts suitable for use solely or principally with the apparatus of headings 85.25 to 85.28 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 85.30  Electrical signalling, safety or traffic control equipment for railways, tramways, roads, inland waterways, parking facilities, port installations or airfields (excluding those of heading 86.08) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.31  Electric sound or visual signalling apparatus (for example, bells, sirens, indicator panels, burglar or fire alarms) (excluding those of heading 85.12 or 85.30) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.32  Electrical capacitors, fixed, variable or adjustable (pre-set)  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.33  Electrical resistors (including rheostats and potentiometers) (excluding heating resistors) 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.37  Boards, panels, consoles, desks, cabinets and other bases, equipped with two or more apparatus of heading 85.35 or 85.36, for electric control or the distribution of electricity, including those incorporating instruments or apparatus of Chapter 90, and numerical control apparatus (excluding switching apparatus of Heading 85.17 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.38  Parts suitable for use solely or principally with the apparatus of Heading 85.35, 85.36 or 85.37 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+8539.51  Light-emitting diode (LED) modules  Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Manufacture from materials of any heading, except that of the product and 8543 
+
+ex8539.90  Parts of electric filament or discharge lamps  Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+or 
+
+Manufacture from materials of any heading, except that of the product and 8543 
+
+8540.11  Colour  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+8540.12  Monochrome  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 85.41  Diodes, transistors, and similar semi-conductor devices; photosensitive semiconductor devices, including photo-voltaic cells whether or not assembled in modules or made up into panels; light- emitting diodes (LED); mounted piezo-electric crystals 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.43  Electrical machines and apparatus, having individual functions, not specified or included elsewhere in this chapter 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.45  Carbon electrodes, carbon brushes, lamp carbons, battery carbons and other articles of graphite or other carbon, with or without metal, of a kind used for electrical purposes 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.46  Electrical insulators of any material  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+85.47  Insulating fittings for electrical machines, appliances, or equipment, being fittings wholly of insulating material apart from any minor components of metal (for example, threaded sockets) incorporated during moulding solely for purposes of assembly (excluding insulators of heading 85.46); electrical conduit tubing and joints therefor, of base metal lined with insulating material 
+
+Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+8549.21  Electrical and electronic waste and scrap of a kind used principally for the recovery of precious metal containing primary cells, primary batteries, electric accumulators, mercury-switches, glass from cathode-ray tubes or other activated glass, or electrical or electronic components containing cadmium, mercury, lead or polychlorinated biphenyls (PCBs) 
+
+Materials of this heading used must be wholly obtained 
+
+8549.29  Electrical and electronic waste and scrap of a kind used principally for the recovery of precious metal excluding those contained in 8549.21 
+
+Materials of this heading used must be wholly obtained 
+
+8549.31  Electrical and electronic waste and scrap consisting of other electrical and electronic assemblies and printed circuit boards containing primary cells, primary batteries, electric accumulators, mercury- switches, glass from cathode-ray tubes or other activated glass, or electrical or electronic components containing cadmium, mercury, lead or polychlorinated biphenyls (PCBs) 
+
+Materials of this heading used must be wholly obtained 
+
+8549.91  Electrical and electronic waste and scrap, not mentioned elsewhere not containing primary cells, primary batteries, electric accumulators, mercury-switches, glass from cathode-ray tubes or other activated glass, or electrical or electronic components containing cadmium, mercury, lead or polychlorinated biphenyls (PCBs) 
+
+Materials of this heading used must be wholly obtained 
+
+Chapter 86  Railway or tramway locomotives, rolling stock and parts thereof; railway or tramway track fixtures and fittings and parts thereof; mechanical (including electro-mechanical) traffic signalling equipment of all kinds 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-Chapter 87  Vehicles (excluding railway or tramway rolling stock), and parts and accessories thereof 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product, with a review after 5 years 87.01  Tractors (excluding tractors of heading 87.09)  Yet to be agreed 
+
+87.02  Motor vehicles for the transport of ten or more persons, including the driver  Manufacture in which the value of all the non-originating materials used does not exceed 60% of the ex-works price of the product subject to review after 5 years 
+
+87.03  Motor cars and other motor vehicles principally designed for the transport of persons (excluding those of heading 87.02), including station wagons and racing cars 
+
+Yet to be agreed 
+
+87.04  Motor vehicles for the transport of goods  Yet to be agreed 
+
+87.05  Special purpose motor vehicles, excluding those principally designed for the transport of persons or goods (for example, breakdown lorries, crane lorries, fire fighting vehicles, concrete- mixer lorries, road sweeper lorries, spraying lorries, mobile workshops, mobile radiological units) 
+
+Yet to be agreed 
+
+87.06  Chassis fitted with engines, for the motor vehicles of Headings 87.01 to 87.05  Yet to be agreed 
+
+87.07  Bodies (including cabs), for the motor vehicles of Headings 8701 to 8705  Yet to be agreed 
+
+87.08  Parts and accessories of the motor vehicles of Headings 8701 to 8705  Yet to be agreed 
+
+87.09  Works trucks, self-propelled, not fitted with lifting or handling equipment, of the type used in factories, warehouses, dock areas or airports for short distance transport of goods; tractors of the type used on railway station platforms; parts of the foregoing vehicles 
+
+Manufacture in which the value of the materials used does not exceed 65% of the ex-works price of the product, subject to review after 5 years 
+
+87.10  Tanks and other armored fighting vehicles, motorised, whether or not fitted with weapons, and parts of such vehicles 
+
+Yet to be agreed 
+
+87.11  Motorcycles (including mopeds) and cycles fitted with an auxiliary motor, with or without sidecars; sidecars 
+
+Yet to be agreed 
+
+87.12  Bicycles and other cycles (including delivery tri- cycles), not motorised  Yet to be agreed 
+
+87.14  Parts and accessories of vehicles of headings 87.11 to 87.13  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+87.15  Baby carriages and parts thereof  Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+87.16  Trailers and Semi-Trailers  Manufacture in which the value of all the non-originating materials used does not exceed 65% of the ex-works price of the product 
+
+Chapter 88  Aircraft, spacecraft, and parts thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.10  Unmanned aircraft designed for the carriage of passengers  Manufacture from materials of any heading excluding that of the product, except from 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 8806.21  Unmanned aircraft excluding designed for the carriage of passengers, for remote-controlled flight only with maximum take-off mass not more than 250 g 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.22  Unmanned aircraft excluding designed for the carriage of passengers, for remote-controlled flight only with maximum take-off mass more than 250 g but not more than 7 kg 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.23  Unmanned aircraft excluding designed for the carriage of passengers, for remote-controlled flight only with maximum take-off mass more than 7 kg but not more than 25 kg 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.24  Unmanned aircraft excluding designed for the carriage of passengers, for remote-controlled flight only with maximum take-off mass more than 25 kg but not more than 150 kg 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.29  Unmanned aircraft excluding designed for the carriage of passengers, for remote-controlled flight only, not covered by 8806.21, 8806.22, 8806.23 and 8806.24 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.91  Unmanned aircraft not designed for the carriage of passengers, not for remote-controlled flight only, with maximum take-off mass not more than 250 g 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.92  Unmanned aircraft not designed for the carriage of passengers, not for remote-controlled flight only, with maximum take-off mass more than 250 g but not more than 7 kg 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.93  Unmanned aircraft not designed for the carriage of passengers, not for remote-controlled flight only, with maximum take-off mass more than 7 kg but not more than 25 kg 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.94  Unmanned aircraft not designed for the carriage of passengers, not for remote-controlled flight only, with maximum take-off mass more than 25 kg but not more than 150 kg 
+
+Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+8806.99  Unmmaned, not elsewhere specified  Manufacture from materials of any heading excluding that of the product, except from 8525 and 8802 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 8807.10  Propellers and rotors and parts thereof  Manufacture from materials of any heading, except that of the product and of 8803 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+8807.90  Other parts of aircrafts and spacecrafts  Manufacture from materials of any heading, except that of the product and of 8803 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 89  Ships, boats and floating structures  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 90  Optical, photographic, cinematographic, measuring, checking, precision, medical or surgical instruments and apparatus; parts and accessories thereof 
+
+Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+ex9021.10  Base metals articles specially designed for use exclusively for orthopedic or fracture appliances 
+
+Manufacture from materials of any heading excluding that of the product, except from 7317, 7318, 8108 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+ex9021.29  Base metals articles specially designed for use exclusively for dental fittings  Manufacture from materials of any heading excluding that of the product, except from 7317, 7318, 8108 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+ex9022.21  Apparatus based on the use of alpha, beta, gamma or other ionising radiations, for medical, surgical, dental or veterinary uses 
+
+Manufacture from materials of any heading, except that of the product and of 9018 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+ex9022.29  Apparatus based on the use of alpha, beta, gamma or other ionising radiations, for other uses than those covered by 9022.21 
+
+Manufacture from materials of any heading, except that of the product and of 9018 
+
+or 
+
+Manufacture in which the value of the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 91  Clocks and watches and parts thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 92  Musical instruments; parts and accessories of such articles  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 93  Arms and ammunition; parts and accessories thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product Chapter 94  Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; lamps and lighting fittings, not elsewhere specified or included; illuminated signs, illuminated name-plates and the like; prefabricated buildings 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+94.03  Other furniture and parts thereof  Manufacture from materials of any heading, except that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Chapter 95  Toys, games and sports requisites; parts and accessories thereof  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-Chapter 96  Miscellaneous manufactured articles  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 60% of the ex-works price of the product 
+
+Ex-9601.10  Worked ivory and articles of ivory  Manufacture in which all materials of headings 05.07 and 05.08 used must be wholly obtained 
+
+Chapter 97  Works of art, collectors' pieces and antiques  Manufacture from materials of any heading excluding that of the product 
+
+or 
+
+Manufacture in which the value of all the materials used does not exceed 40% of the ex-works price of the product
