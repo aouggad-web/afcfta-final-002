@@ -1,0 +1,16 @@
+ARCHIVE DE RECHERCHE — e-Tariff Book officiel du Secrétariat (API vérifiée le 28/09/2026)
+API : https://prod-afcfta-api.azurewebsites.net (POST /TariffSchedule/TariffScheduleSearch)
+Requête : countryFrom ECOWAS → countryTo NG (« cement ») — l'offre ECOWAS couvre
+le Nigeria comme destination.
+
+ENTRÉE RÉGION (verbatim) : « ECOWAS submitted their tariff offer and it was adopted
+and included in the Ministerial Directive on Provisional Schedule of Tariff
+Concessions on 26 October 2021. The ECOWAS tariff concessions also include
+Mauritania. » (pays : BJ, BF, CV, CI, GM, GH, GN, GW, LR, ML, NE, NG, SN, SL, TG, MR)
+
+EXEMPLE (ciment) : 88 lignes retournées pour « cement », dont 31 avec
+afCFTACategory « A », timeFrame 10, mfnRate 5 %, année1 4,5 % → année10 0 % —
+les TAUX DE CONCESSION (pas le MFN) par ligne, décroissance sur dix ans.
+
+NOTE : c'est l'OFFRE RÉGIONALE ECOWAS, que le Nigeria a gazettée en avril 2025 ;
+la collecte ligne à ligne dans le dépôt reste à faire (comme zlecaf_ken).

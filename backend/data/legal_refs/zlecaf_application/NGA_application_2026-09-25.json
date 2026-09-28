@@ -81,5 +81,49 @@
   "Obtenir la gazette fédérale du Nigeria portant le PSTC (avril 2025) — Federal Government Printer ou Nigeria Customs Service.",
   "Obtenir une circulaire NCS ou une note du FMITI/NOTN désignant les États parties admis à l'importation, ou constater l'absence.",
   "Re-tenter le portail « AfCFTA CET » (cet.customs.gov.ng/afcfta-cet) depuis un accès non bloqué, ou en demander la documentation à la NCS."
- ]
+ ],
+ "complements_2026-09-28": {
+  "note": "Recherche du 28/09/2026 (tous canaux : Exa, Jina Reader, web.archive.org, webfetch) — mise à jour substantielle.",
+  "portail_afcfta_cet_ncs": {
+   "decouverte": "La NCS publie un portail « Tariff & CET Lookup » avec une page dédiée AFCFTA CET : demo-cet.customs.gov.ng/afcfta-cet — 6 571 lignes, colonnes ID (droit d'importation), VAT, LVY, EXC, par version.",
+   "reserve": "Les valeurs visibles (ex. 0101.21.00.00 : 5 % ; 0101.29.00.00 : 10 %) correspondent aux taux du CET — le caractère PRÉFÉRENTIEL du livre n'est PAS établi (application JS, 30 lignes visibles ; portail principal cet.customs.gov.ng derrière Cloudflare).",
+   "archive": {
+    "texte_extrait": "sources/NGA_ncs_afcfta_cet_portail_2026-09-28.extrait.txt",
+    "sha256": "59d00ce76a9ad78fbace8dac4580ac0c45f3781076f46896c290d61bc8c4ed74"
+   }
+  },
+  "secretariat_14_04_2025": {
+   "verbatim": "« Nigeria becomes the 23rd AfCFTA State Party to gazette its PSTCs… confirming that Nigeria will grant preferential tariff treatment to eligible goods upon importation » — engagement d'APPLICATION À L'IMPORTATION énoncé par le Secrétariat, sans numéro de gazette.",
+   "archive": {
+    "texte_extrait": "sources/NGA_secretariat_gazettement_2025-04-14.extrait.txt",
+    "sha256": "4ba7c592fc34948867020b4c51b6364711c8cd80deb26f9deff57c133f588124"
+   }
+  },
+  "rapport_fmiti_2025": {
+   "contenu": "Rapport officiel « Nigeria AfCFTA Achievements 2025 » (FMITI, janv. 2026, 16 p. archivé) : gazettement de la PSTC confirmé ; à l'export, le NCS (autorité compétente désignée) a émis des Certificats d'Origine ZLECAf à cinq entreprises le 25/05/2025 (corridor aérien Abuja→Nairobi), arrivées le 26/05/2025 et « the goods received preferential tariff treatment » AU KENYA ; « Nigeria's gazetting … materially reduced the duties payable on Nigerian goods entering Kenya and South Africa » (réciprocité).",
+   "archive": {
+    "fichier": "sources/NGA_fmiti_accomplissements_2025.pdf",
+    "sha256": "957c3a0b9120fe7a3117ac4b643f0d6d6be1ad79ae5216e4d0be29abe2127cf9"
+   }
+  },
+  "presse_guardian_2025_04_15": {
+   "detail": "Le président Tinubu signe le calendrier ECOWAS d'offres tarifaires (0 % sur 90 %) et la PSTC est gazettée le même jour (14/04/2025) ; premier envoi nigérian sous ZLECAf en juillet 2024 — source secondaire datée.",
+   "archive": {
+    "texte_extrait": "sources/NGA_guardian_gazettement_2025-04-15.extrait.txt",
+    "sha256": "c7f3c96acd8ff03a3e19e2102825ca81898402d055f8281364c53948c15a3bf7"
+   }
+  },
+  "echecs_d_acces": [
+   "gazettes.africa/gazettes/ng : 404/422 (Jina timeout) ; CDX archive.org : 0 capture officialGazette/ng.",
+   "cet.customs.gov.ng : Cloudflare (CAPTCHA) ; demo-cet en direct : 403 (urllib) — lecture via Jina uniquement.",
+   "Numéro de la Federal Republic Gazette du 14/04/2025 : toujours non obtenu."
+  ],
+  "etariff_ecowas": {
+   "decouverte": "L'offre ECOWAS (couvrant le NIGERIA comme destination) est consultable ligne à ligne dans l'e-Tariff Book officiel (API vérifiée) : catégorie A, décroissance sur 10 ans depuis le MFN (ex. ciment : 5 % → 0 %) ; l'entrée régionale dit verbatim « ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive … on 26 October 2021 » (16 pays, Mauritanie incluse).",
+   "archive": {
+    "texte_extrait": "sources/NGA_etariff_ecowas_offre_2026-09-28.extrait.txt",
+    "sha256": "b19afa0e4bbe7a8d5e2175b2fe8ce71cd6f069643f6d065b07ddf942492c5039"
+   }
+  }
+ }
 }
