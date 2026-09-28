@@ -1,0 +1,42 @@
+ARCHIVE DE RECHERCHE — Ghana (28/09/2026) — envois GTI, gazettement, barème
+
+PREMIERS ENVOIS GTI VERS LE GHANA (certificats d'origine émis AU DÉPART — le
+traitement à l'arrivée par la douane ghanéenne n'est PAS documenté comme un
+dédouanement préférentiel) :
+
+1. Source primaire du Secrétariat, « A year of trading under AfCFTA – a Rwandan
+businesswoman's story » (au-afcfta.org, 09/10/2023) :
+URL https://au-afcfta.org/2023/10/a-year-of-trading-under-afcfta-a-rwandan-businesswomans-story/
+VERBATIM : « Rwanda exported its first consignment of goods to Ghana, on September
+30, 2022, under the AfCFTA Guided Trade Initiative… The first AfCFTA Certificate
+of Origin for Rwanda was issued to Igire Coffee… for coffee products destined for
+Ghana. » — le 30/09/2022 est la date d'EXPORT ; le certificat provient du Rwanda.
+Le même article note que « some mistakes occurred at the Customs Office in Ghana
+because the staff wasn't familiar with the exact tariffs, and it was only
+identified after clearance and delivery of products » — un dédouanement est
+intervenu, mais sa nature préférentielle n'est pas établie.
+
+2. Source primaire du Secrétariat, « What is the AfCFTA Guided Trade Initiative all
+about? » (au-afcfta.org, 19/10/2022) :
+URL https://au-afcfta.org/2022/10/what-is-the-afcfta-guided-trade-initiative-all-about/
+VERBATIM : « Earlier, Kenya also exported its first goods, Exide batteries, under
+the AfCFTA Agreement to Ghana. » ; le GTI « will be officially launched Friday,
+October 7 » (lancement à Accra le 07/10/2022). « Rwanda is among eight state
+parties – Cameroon, Egypt, Ghana, Kenya, Mauritius, Rwanda, Tanzania, and Tunisia –
+participating in the AfCFTA Guided Trade Initiative. »
+
+GAZETTEMENT NATIONAL : numéro de la Ghana Gazette INTROUVABLE. Indice PRIMAIRE
+daté (Afrique du Sud) : General Note O du Schedule No. 1 (Notice R.4287, GG 50045,
+26/01/2024, archivée dans le dépôt, sha 83efeaf9…) porte verbatim la liste des
+États « have implemented the Provisional Schedules of Tariff Concessions » avec,
+pour le Ghana, la date « 31 August 2023 ».
+
+BARÈME : la GRA ne publie pas de colonne AfCFTA dans son HS Code public. Le barème
+est l'OFFRE ECOWAS, ARCHIVÉE dans le dépôt (destination GH) :
+official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz (5 578 lignes,
+4 979 en catégorie A + 599 non spécifiées, collecté le 17/08/2026).
+
+ORIGINES : admission par RÈGLE, sans liste nominative.
+
+FAITS RETIRÉS (sources secondaires sans verbatim archivable) : thé Ketepa
+(rapport KAS/GTI) ; plainte NTB AfCFTA-000-104 ; lettre SARS du 01/02/2024.

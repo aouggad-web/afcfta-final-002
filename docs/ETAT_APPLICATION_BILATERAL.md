@@ -1,7 +1,7 @@
 # État d'application de la ZLECAf entre pays
 
 > Généré par `scripts/build_bilateral_application_matrix.py` — ne pas éditer à la main.
-> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-15.
+> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-28.
 
 ## Ce que ce tableau répond
 
@@ -21,11 +21,11 @@ titre de la réciprocité. Le sens du flux change donc le droit.
 
 | État | Couples | Sens |
 |---|---:|---|
-| `ACCORDEE` | 109 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
+| `ACCORDEE` | 117 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
 | `ADMISSION_PAR_REGLE` | 96 | La destination admet les origines par un CRITÈRE et non par une liste nominative. La règle est citée ; elle n'est pas résolue ici, car ses termes sont ambigus et la résoudre par supposition accorderait une préférence que personne n'a constatée. |
 | `DESTINATION_NON_ETABLIE` | 2213 | Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence. |
 | `MEME_PAYS` | 54 | Origine et destination confondues. |
-| `NON_ACCORDEE` | 179 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
+| `NON_ACCORDEE` | 171 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
 | `ORIGINE_NON_RATIFIANTE` | 265 | L'origine n'a pas déposé ses instruments de ratification : aucune préférence ZLECAf ne peut lui être accordée, quelle que soit la destination. |
 
 Les 2213 couples `DESTINATION_NON_ETABLIE` sont le déficit d'information que
@@ -50,11 +50,11 @@ accorderait une préférence que personne n'a constatée.
 | Destination | Origines admises | Instrument | Niveau de preuve |
 |---|---:|---|---|
 | **Algérie** (DZA) | 9 | Circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024 | primaire — texte intégral archivé |
-| **Égypte** (EGY) | 17 | منشور اتفاقيات رقم 38 لسنة 2024 | primaire — PDF officiels douane égyptienne, OCR arabe |
-| **Kenya** (KEN) | 21 | EAC/321/2022 | primaire (revue antérieure du dépôt) |
+| **Égypte** (EGY) | 19 | منشور اتفاقيات رقم 38 لسنة 2024 | primaire — PDF officiels douane égyptienne, OCR arabe |
+| **Kenya** (KEN) | 28 | EAC/321/2022 | primaire (revue antérieure du dépôt) |
 | **Maroc** (MAR) | 40 | Circulaire ADII n° 6530/223 du 2024-01-22 | primaire — circulaire lue intégralement, SHA-256 consigné |
 | **Tunisie** (TUN) | 8 | Tarif Web 2026, douane.gov.tn | primaire — portail tarifaire officiel scellé dans le dépôt |
-| **Afrique du Sud** (ZAF) | 14 | « Update on the AfCFTA », the dtic / SARS, newsletter mars 2026 | officielle — publication gouvernementale, non un acte réglementaire |
+| **Afrique du Sud** (ZAF) | 13 | « Update on the AfCFTA », the dtic / SARS, newsletter mars 2026 | officielle — publication gouvernementale, non un acte réglementaire |
 
 **Réserve — Tunisie** : Les origines sont établies, mais le SENS du taux préférentiel publié ne l'est pas (40 % affiché contre 36 % de NPF). Une case ACCORDEE dit ici que la Tunisie sert cette origine sous régime ZLECAf, pas quel droit en résulte.
 
@@ -68,7 +68,7 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 |---|---|---|---|---|---|---|
 | **Algérie** | — | ✅ | ✅ | ❌ | ✅ | ✅ |
 | **Égypte** | ✅ 5 ans | — | ✅ 10 ans | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans |
-| **Kenya** | ❌ | ❌ | — | ❌ | ❌ | ❌ |
+| **Kenya** | ❌ | ✅ | — | ❌ | ❌ | ❌ |
 | **Maroc** | ✅ 5 ans | ✅ 5 ans | ✅ 10 ans | — | ✅ 5 ans | ✅ 10 ans |
 | **Tunisie** | ❌ | ❌ | ✅ | ❌ | — | ✅ |
 | **Afrique du Sud** | ✅ | ✅ | ✅ | ✅ | ✅ | — |
@@ -77,28 +77,28 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 
 ## Ce que le croisement révèle
 
-**6 réciprocités confirmées** — les deux sens sont établis :
+**7 réciprocités confirmées** — les deux sens sont établis :
 
 - Algérie ↔ Égypte
 - Algérie ↔ Afrique du Sud
+- Égypte ↔ Kenya
 - Égypte ↔ Maroc
 - Égypte ↔ Afrique du Sud
 - Maroc ↔ Afrique du Sud
 - Tunisie ↔ Afrique du Sud
 
-**9 asymétries** — un sens accorde, l'autre non :
+**8 asymétries** — un sens accorde, l'autre non :
 
 - **Algérie → Kenya** : DZA admet KEN à son tarif ZLECAf, KEN n'admet pas DZA.
 - **Maroc → Algérie** : MAR admet DZA à son tarif ZLECAf, DZA n'admet pas MAR.
 - **Algérie → Tunisie** : DZA admet TUN à son tarif ZLECAf, TUN n'admet pas DZA.
-- **Égypte → Kenya** : EGY admet KEN à son tarif ZLECAf, KEN n'admet pas EGY.
 - **Égypte → Tunisie** : EGY admet TUN à son tarif ZLECAf, TUN n'admet pas EGY.
 - **Maroc → Kenya** : MAR admet KEN à son tarif ZLECAf, KEN n'admet pas MAR.
 - **Tunisie → Kenya** : TUN admet KEN à son tarif ZLECAf, KEN n'admet pas TUN.
 - **Afrique du Sud → Kenya** : ZAF admet KEN à son tarif ZLECAf, KEN n'admet pas ZAF.
 - **Maroc → Tunisie** : MAR admet TUN à son tarif ZLECAf, TUN n'admet pas MAR.
 
-Kenya est le receveur de 5 de ces 9 asymétries : ces pays l'admettent à leur tarif ZLECAf,
+Kenya est le receveur de 4 de ces 8 asymétries : ces pays l'admettent à leur tarif ZLECAf,
 sa propre liste ne les admet pas. Un exportateur dans ce sens peut invoquer
 la ZLECAf ; dans le sens inverse, en l'état des listes vérifiées, non.
 
@@ -122,7 +122,7 @@ Là où aucune liste n'est publiée, aucune source documentaire ne peut trancher
 | **CIV** | `NOTIFICATION_PARTENAIRES_REQUISE` | La liste nominative des partenaires acceptés. L'ordonnance pose la réciprocité en condition sans nommer aucun pays. | Texte intégral de l'ordonnance n° 2025-260 du 23 avril 2025 au Journal officiel de la République de Côte d'Ivoire, et sa loi de ratification. À défaut, l'arrêté ou la circulaire de la Direction générale des douanes désignant les origines admises. |
 | **NGA** | `NOTIFICATION_PARTENAIRES_REQUISE` | Le texte de la gazette lui-même, et la confirmation que la règle de réciprocité y est bien formulée ainsi — la formulation connue provient de communiqués, non du texte. | Federal Republic of Nigeria Official Gazette portant la PSTC, avril 2025. |
 | **ZMB** | `NOTIFICATION_PARTENAIRES_REQUISE` | Le texte du Statutory Instrument n° 92 de 2024. Son intitulé officiel est désormais établi en source primaire — « Customs and Excise (General) (Amendment) Regulations, 2024 » — et il ne nomme pas la ZLECAf : l'attribution reste à vérifier dans le texte, ainsi que toute liste d'origines. | Texte intégral du Statutory Instrument n° 92 of 2024, pour vérifier s'il comporte une liste d'États parties admis. |
-| **GHA** | `OFFRE_SEULE` | L'acte national ghanéen lui-même, et toute liste d'origines. Le dépôt ne tient à ce jour que l'instantané CEDEAO du e-Tariff Book. | Legislative Instrument ou Customs (AfCFTA) Regulations du Ghana, et la circulaire d'application de la Ghana Revenue Authority. |
+| **GHA** | `NOTIFICATION_PARTENAIRES_REQUISE` | L'acte national ghanéen lui-même, et toute liste d'origines. Le dépôt ne tient à ce jour que l'instantané CEDEAO du e-Tariff Book. | Legislative Instrument ou Customs (AfCFTA) Regulations du Ghana, et la circulaire d'application de la Ghana Revenue Authority. |
 | **CMR** | `OFFRE_SEULE` | L'acte national camerounais d'application à l'IMPORTATION et sa liste d'origines. Ce qui est établi concerne l'exportation. | Circulaire ou note de service de la Direction générale des douanes du Cameroun portant application du tarif ZLECAf à l'importation. |
 | **RWA** | `OFFRE_SEULE` | L'acte national et la liste des origines admises. Aucune liste officielle n'a été retrouvée. | Ministerial Order ou Customs Regulations rwandais portant application du barème ZLECAf, et la liste d'États parties admis. |
 
