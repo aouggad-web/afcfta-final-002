@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "titre": "État d'application de la ZLECAf entre pays, couple par couple",
- "genere_le": "2026-09-15",
+ "genere_le": "2026-09-28",
  "genere_par": "scripts/build_bilateral_application_matrix.py",
  "avertissement": "La ratification est continentale, l'application est bilatérale. Une case ACCORDEE atteste que l'acte national de la destination nomme cette origine ; elle ne dispense ni de la preuve d'origine ZLECAf ni de la vérification en douane.",
  "methode": "Trois conditions, dans cet ordre : acte national d'application lu en source primaire ; liste nominative des origines qu'il admet ; confrontation à la carte continentale du e-Tariff Book. Les listes sont lues à leur source d'autorité dans le dépôt, jamais recopiées.",
@@ -23,13 +23,13 @@
    "fiche": "DZA_application_2026-09-14.json"
   },
   "EGY": {
-   "origines_admises": 17,
+   "origines_admises": 19,
    "instrument": "منشور اتفاقيات رقم 38 لسنة 2024",
    "niveau_de_preuve": "primaire — PDF officiels douane égyptienne, OCR arabe",
    "fiche": "EGY_application_2026-09-14.json"
   },
   "KEN": {
-   "origines_admises": 21,
+   "origines_admises": 28,
    "instrument": "EAC/321/2022",
    "niveau_de_preuve": "primaire (revue antérieure du dépôt)",
    "fiche": null
@@ -48,7 +48,7 @@
    "reserve": "Les origines sont établies, mais le SENS du taux préférentiel publié ne l'est pas (40 % affiché contre 36 % de NPF). Une case ACCORDEE dit ici que la Tunisie sert cette origine sous régime ZLECAf, pas quel droit en résulte."
   },
   "ZAF": {
-   "origines_admises": 14,
+   "origines_admises": 13,
    "instrument": "« Update on the AfCFTA », the dtic / SARS, newsletter mars 2026",
    "niveau_de_preuve": "officielle — publication gouvernementale, non un acte réglementaire",
    "fiche": null,
@@ -118,11 +118,11 @@
   "ZWE"
  ],
  "repartition_des_couples": {
-  "ACCORDEE": 109,
+  "ACCORDEE": 117,
   "ADMISSION_PAR_REGLE": 96,
   "DESTINATION_NON_ETABLIE": 2213,
   "MEME_PAYS": 54,
-  "NON_ACCORDEE": 179,
+  "NON_ACCORDEE": 171,
   "ORIGINE_NON_RATIFIANTE": 265
  },
  "couverture_pct": 9.88,
@@ -135,6 +135,7 @@
   "confirmees": [
    "DZA<->EGY",
    "DZA<->ZAF",
+   "EGY<->KEN",
    "EGY<->MAR",
    "EGY<->ZAF",
    "MAR<->ZAF",
@@ -155,11 +156,6 @@
     "accorde_par": "DZA",
     "non_accorde_par": "TUN",
     "lecture": "DZA admet TUN à son tarif ZLECAf, TUN n'admet pas DZA."
-   },
-   {
-    "accorde_par": "EGY",
-    "non_accorde_par": "KEN",
-    "lecture": "EGY admet KEN à son tarif ZLECAf, KEN n'admet pas EGY."
    },
    {
     "accorde_par": "EGY",
@@ -303,7 +299,7 @@
     "correction_2026-09-15": "Cette fiche portait « SI 92/2024 portant gazettage de la Provisional Schedule of Tariff Concessions », formule reprise de sources secondaires. Le journal officiel obtenu ne la soutient pas : il intitule le SI 92 « Customs and Excise (General) (Amendment) Regulations, 2024 » et ne mentionne la ZLECAf nulle part. L'affirmation est retirée jusqu'à lecture du texte."
    },
    "GHA": {
-    "statut": "OFFRE_SEULE",
+    "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
     "etabli": [
      "Le Ghana figure parmi les 19 pays ayant gazetté leur barème au 20 octobre 2024, selon la publication gouvernementale sud-africaine.",
      "Membre fondateur du Guided Trade Initiative, lancé à Accra le 7 octobre 2022.",
@@ -331,6 +327,11 @@
      "source": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
      "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
      "ambiguite": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
+    },
+    "progres_2026-09-28": {
+     "recherche_menee": "Preuves d'IMPORTATION sous ZLECAf, datées (sources primaires du Secrétariat) : café Igire (Rwanda→Ghana, consigne KIA 30/09/2022, lancée 07/10/2022) ; batteries Exide (Kenya→Ghana, oct.-déc. 2022) ; thé Ketepa (arrivé mi-déc. 2022) ; plainte NTB AfCFTA-000-104 résolue par la GRA le 07/05/2026. Gazettement national attesté INDIRECTEMENT (SARS General Note O, GG 50045, 26/01/2024 « Ghana — 31 août 2023 » ; lettre SARS 01/02/2024) ; numéro de la Ghana Gazette introuvable (gazettes.africa/gh lacunaire).",
+     "bareme": "La GRA ne publie pas de colonne AfCFTA ; l'offre ECOWAS → GH est servie par l'e-Tariff officiel (identique → NG), collecte ligne à ligne restante.",
+     "manque_inchange": "L'acte national ghanéen (numéro de gazette) et toute liste nominative ; l'ambiguïté de « State Parties » persiste."
     }
    },
    "CMR": {
@@ -3003,16 +3004,18 @@
     "demantelement": "5 ans"
    },
    "NAM": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "منشور اتفاقيات رقم 38 لسنة 2024"
+    "etat": "ACCORDEE",
+    "fondement": "منشور اتفاقيات رقم 38 لسنة 2024",
+    "demantelement": "10 ans"
    },
    "NER": {
     "etat": "NON_ACCORDEE",
     "fondement": "منشور اتفاقيات رقم 38 لسنة 2024"
    },
    "NGA": {
-    "etat": "NON_ACCORDEE",
-    "fondement": "منشور اتفاقيات رقم 38 لسنة 2024"
+    "etat": "ACCORDEE",
+    "fondement": "منشور اتفاقيات رقم 38 لسنة 2024",
+    "demantelement": "10 ans"
    },
    "RWA": {
     "etat": "ACCORDEE",
@@ -4690,7 +4693,7 @@
     "fondement": "EAC/321/2022"
    },
    "EGY": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "ERI": {
@@ -4718,7 +4721,7 @@
     "fondement": "EAC/321/2022"
    },
    "GNB": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "GNQ": {
@@ -4745,7 +4748,7 @@
     "fondement": "EAC/321/2022"
    },
    "MDG": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "MLI": {
@@ -4761,11 +4764,11 @@
     "fondement": "EAC/321/2022"
    },
    "MUS": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "MWI": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "NAM": {
@@ -4813,7 +4816,7 @@
     "fondement": "EAC/321/2022"
    },
    "SYC": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "TCD": {
@@ -4841,7 +4844,7 @@
     "fondement": "EAC/321/2022"
    },
    "ZMB": {
-    "etat": "NON_ACCORDEE",
+    "etat": "ACCORDEE",
     "fondement": "EAC/321/2022"
    },
    "ZWE": {
@@ -9899,7 +9902,7 @@
     "fondement": "« Update on the AfCFTA », the dtic / SARS, newsletter mars 2026"
    },
    "SLE": {
-    "etat": "ACCORDEE",
+    "etat": "NON_ACCORDEE",
     "fondement": "« Update on the AfCFTA », the dtic / SARS, newsletter mars 2026"
    },
    "SOM": {
