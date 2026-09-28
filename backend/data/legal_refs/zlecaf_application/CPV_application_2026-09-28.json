@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "CPV",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification vérifiée sur texte primaire intégral (BO n°22, I Série, 25-02-2020, l'Accord ZCLCA publié en portugais en annexe de la résolution) ; instrument institutionnel vérifié (Comité National de Implantação da ZCLCA, Resolução 12/2025, BO n°11/2025) ; AUCUN acte national d'application tarifaire, aucune liste nominative d'origines ; l'offre régionale CEDEAO (26/10/2021) est archivée dans le dépôt en OFFER_ONLY et n'est PAS un acte national.",
+ "instrument": {
+  "id": "Resolução nº 151/IX/2020 (Assembleia Nacional), approuvée le 07-02-2020",
+  "title_etabli": "Aprova, para ratificação, o Acordo que cria a Zona de Comércio Livre Continental Africana (ZCLCA) — African Continental Free Trade Area (ACFTA) — e respetivos Protocolos, assinados em Kigali em 21-03-2018",
+  "date": "2020-02-25",
+  "gazette": "Boletim Oficial n.º 22, I Série, da República de Cabo Verde, de 25 de fevereiro de 2020",
+  "texte_extrait": "sources/CPV_BO22_Iserie_2020-02-25_resolucao151_IX_2020.extrait.txt",
+  "sha256": "292dd1f2e3b416895af2a7d68e0aa2339b6a9d36960998494f0c0a502cb96578",
+  "pdf_archive": "sources/CPV_BO22_Iserie_2020-02-25_resolucao151_IX_2020.pdf (BO complet, 34 pages)",
+  "sha256_pdf": "ba750c407c6034f5803cdee53d0492b5782ec344923052e4195299bc8b8eb9cd",
+  "source_url": "https://boe.incv.cv/Bulletins/View?id=45053 (téléchargé via https://boe.incv.cv/Bulletins/Download/3132)",
+  "verbatim_article_1": "São aprovados, para ratificação, o Acordo que cria a Zona de Comércio Livre Continental Africana (ZCLCA) designada em inglês - African Continental Free Trade Area (ACFTA) e respetivos Protocolos, assinados no dia 21 de março de 2018, na Cimeira extraordinária dos Chefes de Estado e de Governos da União Africana, em Kigali, Ruanda, cujos textos em português se publicam em anexo à presente Resolução, da qual fazem parte integrante.",
+  "verbatim_article_2": "A presente Resolução entra em vigor no dia seguinte ao da sua publicação, e o Acordo e respetivos Protocolos referidos no artigo anterior produzem efeitos em conformidade com o que neles se estipula.",
+  "instrument_secondaire_institutionnel": "Resolução n.º 12/2025, de 19 de fevereiro (Conselho de Ministros) — Define a composição, competência e o funcionamento da Comissão Nacional do Comércio, incluant le Comité Nacional de Implementação da ZCLCA (CNIZ). BO n.º 11, I Série, de 19-02-2025. PDF : sources/CPV_BO11_Iserie_resolucao12_2025_comissao_nacional_comercio_2026-09-28.pdf (sha256 64e8e93ec16307cea3748e8b4183698298eccb66cbbdd8fdf5adae6e49c3589f) ; texte : sources/CPV_BO11_Iserie_resolucao12_2025_comissao_nacional_comercio_2026-09-28.txt (sha256 1025c16246140bbeabcc4172df0345adc4250e4a01e2cf9567019786d5332a9a). URL : https://boe.incv.cv/Bulletins/View?id=73919."
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application tarifaire (décret/arrêté/circulaire douanière de démantèlement ZLECAf) et liste nominative des origines admises à l'importation.",
+  "ou": [
+   {
+    "endroit": "Boletim Oficial — recherche plein-texte sur https://boe.incv.cv/Bulletins (paramètre Query), requêtes : « ZCLCA », « ACFTA », « AfCFTA », « ZLECA », « Comércio Livre Continental », « Zona de Livre Comércio », « remissão tarifária »",
+    "resultat": "POSITIF pour la ratification (id 45053, Resolução 151/IX/2020) et l'institution du CNIZ (id 73919, Resolução 12/2025) ; NÉGATIF pour tout acte tarifaire : « ACFTA » ne renvoie que la résolution de ratification, « AfCFTA » et « ZLECA » aucun résultat, « remissão tarifária » aucun résultat. Résultats « Zona de Comércio Livre » contrôlés un à un (12 fiches) : rien sur la ZLECAf (plans directeurs municipaux, codes, ENAPOR, biodiversité marine…)."
+   },
+   {
+    "endroit": "Contrôle ciblé : Portaria Conjunta n.º 12/2026 (BO n°17 I Série 12-02-2026), apparue dans une recherche web « ZCLCA tarifa » — https://boe.incv.cv/Bulletins/View/89733",
+    "resultat": "NÉGATIF — c'est le règlement tarifaire portuaire d'ENAPOR, sans rapport avec la ZLECAf."
+   },
+   {
+    "endroit": "Ancienne douane alfandegas.gov.cv et site actuel de la DGA (portaldocomercio.gov.cv, domaine alfandegas.gov.cv ne résout plus ; testé 2026-09-28)",
+    "resultat": "INACCESSIBLE — DNS en échec (HTTP 000) sur alfandegas.gov.cv et www.alfandegas.gov.cv. Le portail du commerce (portaldocomercio.gov.cv) n'affiche aucun texte ZCLCA dans la rubrique douane (recherche DuckDuckGo site: négative)."
+   },
+   {
+    "endroit": "gazettes.africa — https://gazettes.africa/gazettes/cv/2025 (via r.jina.ai)",
+    "resultat": "NÉGATIF — 404 : gazettes.africa ne couvre pas le Cabo Verde (liste des pays couverts relevée le 2026-09-28 : DZ, AO, BW, CG, SZ, GH, KE, LS, MW, MU, MA, MZ, NA, NG, RW, SN, SC, SL, SO, ZA, TZ, UG, ZM, ZW + organismes régionaux)."
+   },
+   {
+    "endroit": "Statut officiel de ratification UA — https://au.int/sites/default/files/treaties/36437-sl-AGREEMENT_ESTABLISHING_THE_AFRICAN_CONTINENTAL_FREE_TRADE_AREA_0.pdf (archivé)",
+    "resultat": "POSITIF pour le dépôt : Cape Verde — signature 21/03/2018, ratification 13/11/2020, dépôt 05/02/2022. Ne constitue pas un acte d'application."
+   },
+   {
+    "endroit": "Recherches web générales (DuckDuckGo via r.jina.ai ; Google via r.jina.ai — cette dernière stoppée par CAPTCHA le 2026-09-28)",
+    "resultat": "Aucune circulaire douanière ZLECAf ni liste d'origines repérée ; aucune source primaire supplémentaire."
+   },
+   {
+    "endroit": "Corroboration — liste de dépôt UA déjà versée au dépôt (sources/AU_liste_depot_2026-05-22.pdf, état au 22/05/2026)",
+    "resultat": "CONFIRMÉ — dates identiques pour CPV (ratification/dépôt : 13/11/2020 / dépôt 05/02/2022) ; aucune mise à jour des dépôts entre le 19/09/2023 et le 22/05/2026 pour ce pays."
+   }
+  ],
+  "resultat": "NÉGATIF sur les deux points du plan : aucun acte national d'application tarifaire et aucune liste nominative d'origines n'ont été retrouvés. Le portail officiel du Boletim Oficial a été interrogé exhaustivement par plein-texte. La ratification et l'organisation institutionnelle (CNIZ) sont, elles, établies sur texte primaire."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — ratification établie par texte primaire publié au BO (résolution 151/IX/2020, entrée en vigueur le 26-02-2020) et comité national d'implantation créé (résolution 12/2025) ; AUCUN acte d'application tarifaire trouvé",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — offre régionale CEDEAO (adoptée 26/10/2021) archivée dans le dépôt : backend/data/official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz (legal_effect_status=OFFER_ONLY, execution_authorized=false) ; l'offre régionale n'est pas un acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le Cabo Verde n'a pas mis en service une colonne tarifaire ZLECAf vérifiable : on ne sait pas si un instrument d'application existe en interne (SYDONIA) sans publication.",
+  "L'attribution du Cabo Verde à l'offre CEDEAO suit le cadre régional de négociation ; aucun texte national repéré ne le confirme expressément.",
+  "La date de dépôt de l'instrument de ratification (05/02/2022) repose sur la liste officielle de l'UA au 19/09/2023 ; un dépôt ultérieur ne peut être exclu."
+ ],
+ "remaining_work": [
+  "Surveiller le Boletim Oficial (boe.incv.cv) et le portail du commerce portaldocomercio.gov.cv pour un futur décret/arrêté de démantèlement tarifaire ZLECAf et une circulaire de la Direction-Geral das Alfândegas.",
+  "Obtenir confirmation officielle de la participation du Cabo Verde à l'offre CEDEAO ZLECAf (source primaire CEDEAO ou nationale)."
+ ]
+}
