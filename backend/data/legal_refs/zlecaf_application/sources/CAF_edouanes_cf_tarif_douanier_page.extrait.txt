@@ -1,0 +1,67 @@
+Title: edouanes – République centrafricaine
+
+URL Source: https://edouanes.cf/customs/tariff?lang=&navbarActive=tools
+
+Markdown Content:
+[Connexion](https://edouanes.cf/sso/login?ui_locales=fr)
+
+[FR](https://edouanes.cf/customs/tariff?navbarActive=tools&lang=fr "FR")[EN](https://edouanes.cf/customs/tariff?navbarActive=tools&lang=en "EN")
+
+[![Image 1: Style](https://edouanes.cf/assets/logo-9b1c6eac894c77717ee846ec99411623.svg)](https://edouanes.cf/?lang=fr)
+
+Toggle navigation
+
+*   [Accueil](https://edouanes.cf/?lang=fr)
+*   [Services](https://edouanes.cf/customs/tariff?lang=&navbarActive=tools#)
+    *   [Dossier Virtuel Transactionnel (DVT)](https://edouanes.cf/tvf?navbarActive=services) [Calcul des Taxes applicables](https://edouanes.cf/taxation-simulation?navbarActive=services) [Editeur de règle de Taxation](https://edouanes.cf/rimm-tax?navbarActive=services)   
+
+*   [Information/Outils](https://edouanes.cf/customs/tariff?lang=&navbarActive=tools#)
+    *   Guides/Procédures [Obtention d'un compte edouanes](https://edouanes.cf/wu/registration/index?lang=fr&navbarActive=tools) [Processus DVT, DEC ou DIC et DPI](https://edouanes.cf/assets/downloads/Processus%20DVT-DPI%20-D%C3%A9claration%20en%20RCA.pdf) [Gestion des comptes edouanes](https://edouanes.cf/assets/downloads/edouanes%20RCA%20-%20Guide%20de%20gestion%20des%20comptes%20utilisateurs.pdf) [Frais de dossier des DIC et DEC](https://edouanes.cf/assets/downloads/Frais%20de%20dossiers%20DIC%20et%20DEC%20selon%20Arr%C3%AAt%C3%A9%2026%20juin%202012.pdf) [Guide utilisateur DVT/DIC/DEC/DPI](https://edouanes.cf/assets/downloads/Guide%20soumission%20DIC%20DEC%20DPI.pdf)   Outils [Tarif Douanier](https://edouanes.cf/customs/tariff?lang=&navbarActive=tools) [Taux de change douaniers](https://edouanes.cf/customs/rates/search?lang=&navbarActive=tools) [Codification](https://edouanes.cf/aide/codification?lang=&navbarActive=tools)   Téléchargements [Importations soumises à DPIV](https://edouanes.cf/assets/downloads/Marchandises%20soumises%20%C3%A0%20D%C3%A9claration%20Pr%C3%A9alable%20%C3%A0%20l'Importation%20et%20liste%20d'exemptions.pdf) [DVT Excel pour saisie hors connexion](https://edouanes.cf/assets/downloads/DVT%20Excel%20RCA_v1.2.xls) [Déclaration éléments relatifs à la valeur (DV)](https://edouanes.cf/assets/downloads/D%C3%A9claration%20de%20Valeur%20(DV).pdf) [Informations minimales exigées](https://edouanes.cf/assets/downloads/Aide-m%C3%A9moire%20-%20Informations%20minimales%20exig%C3%A9es%20concernant%20la%20description%20des%20marchandises_V1.pdf) [Demande de Modification (DM)](https://edouanes.cf/assets/downloads/Demande%20de%20Modification%20(DM).pdf) [Formulaire de Litige (FL)](https://edouanes.cf/assets/downloads/Formulaire%20de%20Litige%20(FL).pdf) [Note dinformation sur le papier sécurisé](https://edouanes.cf/assets/downloads/Note%20d'Information%20Facturation%20Papier%20s%C3%A9curis%C3%A9.pdf)     
+
+![Image 2](https://edouanes.cf/assets/Coat_of_arms_of_the_Central_African_Republic-f61efc764348af31865fd1341912f04b.svg)
+
+*   [Accueil](https://edouanes.cf/)
+*    Tarif 
+
+# Tarif Douanier
+
+ Cette section contient le tarif complet qui peut être consulté en ligne ou téléchargé dans un format imprimable. La consultation en ligne permet de naviguer à travers les sections, chapitres, abréviations & symboles ainsi que les règles générales pour l'interprétation du tarif. Un outil de recherche est également disponible pour rechercher un chapitre ou une position tarifaire spécifique à l'aide d'un ou plusieurs mots clefs 
+
+*   [Abréviations & Symboles](https://edouanes.cf/customs/tariff/abbreviations)
+*   [Règles générales pour l'interprétation du tarif](https://edouanes.cf/customs/tariff/rules)
+
+ Mot clé  
+
+ Code SH  
+
+Tous Au moins un
+
+Services
+
+[Dossier Virtuel Transactionnel (DVT)](https://edouanes.cf/tvf?navbarActive=services)
+
+[Calcul des Taxes applicables](https://edouanes.cf/taxation-simulation?navbarActive=services)
+
+[Editeur de règle de Taxation](https://edouanes.cf/rimm-tax?navbarActive=services)
+
+Guides/Procédures
+
+[Obtention d'un compte edouanes](https://edouanes.cf/wu/registration/index?lang=fr&navbarActive=tools)
+
+[Processus DVT, DEC ou DIC et DPI](https://edouanes.cf/assets/downloads/Processus%20DVT-DPI%20-D%C3%A9claration%20en%20RCA.pdf)
+
+[Gestion des comptes edouanes](https://edouanes.cf/assets/downloads/edouanes%20RCA%20-%20Guide%20de%20gestion%20des%20comptes%20utilisateurs.pdf)
+
+[Frais de dossier des DIC et DEC](https://edouanes.cf/assets/downloads/Frais%20de%20dossiers%20DIC%20et%20DEC%20selon%20Arr%C3%AAt%C3%A9%2026%20juin%202012.pdf)
+
+[Guide utilisateur DVT/DIC/DEC/DPI](https://edouanes.cf/assets/downloads/Guide%20soumission%20DIC%20DEC%20DPI.pdf)
+
+Outils
+
+[Tarif Douanier](https://edouanes.cf/customs/tariff?lang=&navbarActive=tools)
+
+[Taux de change douaniers](https://edouanes.cf/customs/rates/search?lang=&navbarActive=tools)
+
+[Codification](https://edouanes.cf/aide/codification?lang=&navbarActive=tools)
+
+[![Image 3](https://edouanes.cf/assets/powered-by-logo-6c2a2a38380e1219d98c8f0496800d93.svg)](http://www.webbfontaine.com/)

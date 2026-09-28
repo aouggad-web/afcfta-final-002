@@ -1,0 +1,56 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "CAF",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NON_APPLIQUE_PRESUME",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification centrafricaine de l'Accord ZLECAf établie indirectement (tables de suivi, dépôt le 05/02/2022 — source secondaire) ; aucune source primaire nationales d'application retrouvée ; le portail douanier edouanes.cf sert un tarif en ligne mais n'affiche aucun régime ZLECAf",
+ "instrument": {
+  "id": "aucun instrument national d'application identifié",
+  "title_etabli": null,
+  "date": null,
+  "gazette": null
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Ordonnance/loi centrafricaine de ratification (texte), tout acte de mise en œuvre du démantèlement tarifaire ZLECAf, note de service douanière désignant les origines admises, barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Portail douanier centrafricain edouanes.cf — section « Tarif Douanier » (https://edouanes.cf/customs/tariff)",
+    "resultat": "NÉGATIF — le portail offre le tarif complet en ligne (consultation, recherche par position SH, règles générales) mais NE PROPOSE AUCUN RÉGIME PRÉFÉRENTIEL ZLECAf : ni colonne préférentielle, ni sélecteur d'accord, ni mention dans les règles générales du tarif. Archivé : sources/CAF_edouanes_cf_tarif_douanier_page.extrait.txt (sha 08381436…). Un tarif national sans régime préférentiel ZLECAf signifie : toute importation y est taxée au taux CEMAC/NPF."
+   },
+   {
+    "endroit": "UNESCO — plateforme de suivi des politiques, page RCA « L'intégration de la ZLECAf »",
+    "resultat": "INDICE SECONDAIRE UNIQUEMENT — « La République Centrafricaine est devenue Etat partie à cet Accord en Septembre 2020 » ; formations FAFECA (mars 2024) pour « apprendre à gérer leurs produits sur les marchés » ; propos du point focal national (industrie) : « si nous nous engageons à mettre en œuvre les outils et les mécanismes… ». Vocabulaire de préparation. Archivé : sources/CAF_unesco_page_ZLECAf.extrait.txt (sha 398a5ff0…)."
+   },
+   {
+    "endroit": "Journal officiel de la RCA",
+    "resultat": "NÉGATIF PAR DÉFAUT D'ACCÈS — pas de J.O. centrafricain plein-texte accessible ; la RCA n'est pas couverte par gazettes.africa. Aucun balayage possible : échec d'accès consigné, PAS un constat d'absence au J.O."
+   },
+   {
+    "endroit": "Recherches web (DuckDuckGo via r.jina.ai) : « Centrafrique ZLECAf ratification », « centrafricaine ZLECAf douane/tarif/arrêté »",
+    "resultat": "AUCUN acte national d'application retrouvé en français ; seules des pages génériques de l'Accord et des guides OMD ressortent."
+   },
+   {
+    "endroit": "Acte CEMAC (communauté) : révision du TEC et Tarif Préfèrentiel Généralisé — cemac.int, acte de 18 pages",
+    "resultat": "CONTEXTE COMMUNAUTAIRE UNIQUEMENT — acte CEMAC archivé (scan sans OCR possible) : sources/CEMAC_acte_revision_TEC_tarif_preferentiel_generalise_scan.pdf (sha 0e4122e3…) avec note de lecture. Un acte CEMAC ne vaut pas instrument national d'application de la ZLECAf (règle posée pour le Cameroun dans chantier_collecte_2026-09-14.json) et le Tarif Préfèrentiel Généralisé CEMAC n'est pas le régime ZLECAf."
+   }
+  ],
+  "resultat": "NÉGATIF sur les trois points du plan : ni texte de ratification (le JO centrafricain étant inaccessible), ni acte d'application tarifaire, ni liste d'origines, ni barème ZLECAf. Indices concordants (état partie depuis 2020 selon les tables de suivi ; site douanier sans régime ZLECAf ; vocabulaire de préparation) : la Centrafrique n'applique pas, à ce jour constaté, le tarif préférentiel ZLECAf à l'importation — niveau NON_APPLIQUE_PRESUME."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — aucun acte national d'application retrouvé ; le texte de ratification lui-même n'a pas été obtenu",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée",
+  "3_bareme_au_niveau_de_la_ligne": "ABSENT — le tarif en ligne de la douane centrafricaine (edouanes.cf) ne comporte pas de colonne/régime ZLECAf",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La date exacte et l'instrument de ratification centrafricain (loi ou ordonnance, numéro, J.O.) : les tables secondaires donnent un dépôt le 05/02/2022, non vérifiable sur source primaire faute d'accès au J.O.",
+  "Un démantèlement tarifaire appliqué opérationnellement sans publication en ligne (SYDONIA) : seul le terrain peut le trancher."
+ ],
+ "remaining_work": [
+  "Obtenir le texte de ratification centrafricain au J.O. de la RCA (numéro et date).",
+  "Interroger la Direction générale des douanes et des droits indirects (edouanes.cf) sur l'existence d'une circulaire ZLECAf et de colonnes préférentielles dans SYDONIA.",
+  "Surveiller la CEMAC pour l'harmonisation TEC/ZLECAf, en la distinguant explicitement du Tarif Préfèrentiel Généralisé."
+ ]
+}
