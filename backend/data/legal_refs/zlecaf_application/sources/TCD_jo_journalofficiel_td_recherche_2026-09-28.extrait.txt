@@ -1,0 +1,8 @@
+CONSULTATION — Journal Officiel de la République du Tchad (https://journalofficiel.td), le 2026-09-28.
+
+MÉTHODES ET ÉCHECS :
+1. Accueil https://journalofficiel.td/fr — lu via r.jina.ai : portail en ligne, PDFs de numéros hébergés en storage supabase (ex. 2026/05, 2026/06). Archivé en copie d'écran texte ci-dessous (édition via r.jina.ai).
+2. Recherche plein texte https://journalofficiel.td/fr/recherche?q=ZLECAF — la page ne rend que le formulaire ; les résultats sont chargés en JS (shadow DOM). Trois tentatives via r.jina.ai (dont x-wait-for-selector) : AUCUN résultat rendu. Curl direct : Cloudflare « Just a moment... » (challenge managé). ÉCHEC CONSIGNÉ : la recherche plein texte du JO tchadien n'a pas pu être exécutée.
+3. Exa : aucun texte tchadien de ZLECAf indexé sur journalofficiel.td.
+4. Le portail annonce des numéros de 1958 à nos jours ; la loi de ratification tchadienne (le Tchad figure parmi les 27 États déposants à la Décision Ext/Assembly/AU/Dec.1-3(XII) du 07/07/2019, archivée : sources/AU_ext_assembly_dec_1-3_xii_niamey_2019-07-07_2026-09-28.pdf) et tout acte d'application restent à retrouver DANS les numéros (recherche page par page à reprendre).
+

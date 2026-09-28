@@ -1,0 +1,66 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "TCD",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification établie sur primaire continental (Décision Ext/Assembly/AU/Dec.1-3(XII) du 07/07/2019 : le Tchad parmi les 27 États déposants) ; AUCUN acte national d'application retrouvé ; la recherche dans le Journal officiel tchadien en ligne a ÉCHOUÉ (consigné) ; offre CEMAC exposée dans l'outil officiel du Secrétariat (jamais une preuve d'application).",
+ "instrument": {
+  "id": "aucun acte national d'application retrouvé — ratification établie par la Décision de l'UA",
+  "title_etabli": "Décision Ext/Assembly/AU/Dec.1-3(XII), Douzième session extraordinaire de la Conférence de l'UA, Niamey, 7 juillet 2019, §4 : « FÉLICITE les vingt-sept (27) États parties qui ont déposé leurs instruments de ratification de l'Accord sur la ZLECAf auprès du président de la Commission de l'UA, à savoir […] le Tchad, […] » — preuve primaire continentale de la ratification tchadienne. Le texte tchadien de ratification (loi publiée au JORT-like tchadien) n'a pas été retrouvé en ligne.",
+  "date": "2019-07-07 (décision UA constatant le dépôt) — le dépôt lui-même est antérieur (le Tchad est dans le lot des 22 premiers déposants ayant permis l'entrée en vigueur du 30/05/2019)",
+  "gazette": "Journal Officiel de la République du Tchad (journalofficiel.td) — portail en ligne mais recherche plein texte inaccessible (échec consigné)",
+  "texte_extrait": "sources/TCD_jo_journalofficiel_td_recherche_2026-09-28.extrait.txt",
+  "sha256": "9e50f6289c98e7722a1183bee7802a402949ce2bb68f5cc476ef94d8034c32a9",
+  "decision_uA_archivee": {
+   "fichier": "sources/AU_ext_assembly_dec_1-3_xii_niamey_2019-07-07_2026-09-28.pdf",
+   "sha256": "b27e94ce3cf67d7e812d5e051c02a9429174b271338a01b5c78ef73453471b20",
+   "url": "https://www.au.int/sites/default/files/decisions/37553-ext_assembly_au_dec_1-3_xii_f.pdf (au.int et archives.au.int injoignables en direct le 28/09/2026 ; copie récupérée via web.archive.org)",
+   "note": "Acte de l'Union africaine : il prouve la RATIFICATION tchadienne, pas une application nationale des taux."
+  }
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national tchadien d'application ZLECAf (loi/décret/arrêté/circulaire douanière), liste nominative des origines admises à l'importation, barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Journal Officiel de la République du Tchad (https://journalofficiel.td/fr) — accueil lu via r.jina.ai",
+    "resultat": "Portail officiel en ligne (numéros de 1958 à nos jours, PDFs hébergés en storage supabase). La recherche plein texte /fr/recherche?q=ZLECAF ne rend que le formulaire (résultats chargés en JS, shadow DOM) ; trois tentatives via r.jina.ai et curl direct (Cloudflare « Just a moment... ») : ÉCHEC TOTAL consigné. La loi de ratification et tout acte d'application restent à retrouver page par page dans les numéros 2018-2026."
+   },
+   {
+    "endroit": "Exa (web_search_exa) : « Tchad loi ratification ZLECAf journal officiel 2018 2019 », « Tchad arrêté/décret ZLECAf application tarifaire catégorie A », « Tchad douanes ZLECAf SYDONIA circulaire »",
+    "resultat": "AUCUN texte tchadien d'application. Résultats de repérage seulement : presse (ialtchad 10/05/2022 : atelier de validation de la stratégie nationale ZLECAf ; lepaystchad 28/06/2022 : recommandations au gouvernement ; lendjampost 21/03/2023 et tchadinfos 2023-2025 : sensibilisations, SYDONIA World) — SECONDAIRES, jamais de preuve. ATTENTION piège corrigé : un résultat « Loi n°22/AN/18/8ème L portant ratification… ZLECAF » est celui de la RÉPUBLIQUE DE DJIBOUTI (journalofficiel.dj), pas du Tchad."
+   },
+   {
+    "endroit": "GTI (FACTSHEET du Secrétariat, janv. 2025, déjà archivé dans le dépôt : sources/UGA_secretariat_factsheet_gti_2025-01.pdf, sha 4446703e…)",
+    "resultat": "Le Tchad figure dans la « Central Africa Region » du GTI (avec Burundi, Cameroun, CAR, RDC, Guinée équatoriale, Gabon, Congo). La participation au GTI ne prouve pas l'application des taux."
+   },
+   {
+    "endroit": "e-Tariff Book du Secrétariat (API production, 28/09/2026, destination TD, origine KE, recherche 25.02) — archivé : sources/ZLECAF_etariff_destinations_KM_TD_TG_SC_2026-09-28.json",
+    "resultat": "L'outil officiel expose pour TD une offre du bloc CEMAC (regionCode CEMAC, catégorie A ; ligne 25.02 : year1 9,0 % → year5 5,0 %). C'est l'OFFRE déposée pour le bloc CEMAC (l'instantané du dépôt official_preferential/CEMAC_afcfta_etariff_2026-08-17.json.gz couvre le Cameroun comme destination représentative), PAS une preuve d'application tchadienne."
+   },
+   {
+    "endroit": "Code des douanes CEMAC (vertic.org, repérage)",
+    "resultat": "Territoire douanier commun CEMAC (dont le Tchad) : le droit de douane s'applique au tarif commun — mais AUCUNE disposition ZLECAf identifiée dans les extraits consultés ; la CEMAC n'a pas de démantèlement ZLECAf commun publié."
+   }
+  ],
+  "resultat": "RIEN n'est trouvé au niveau national tchadien : pas d'acte d'application, pas de liste nominative d'origines, pas de barème. La ratification est établie par la Décision UA de Niamey (07/07/2019, archivée). Le JO tchadien en ligne existe mais sa recherche plein texte est inopérante depuis ce poste (Cloudflare + JS) — échec consigné avec URL, méthode et date. L'offre CEMAC (catégorie A) est exposée dans l'outil officiel du Secrétariat."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON ÉTABLI — aucun acte national tchadien d'application retrouvé (ratification seule, prouvée par la Décision UA 1-3(XII)) ; la recherche JO a échoué sur obstacle technique",
+  "2_liste_officielle_origines_reciproques": "NON ÉTABLI — aucune liste tchadienne ; le plafond Annexe 1 ne vaut que pour un État dont l'application est établie",
+  "3_bareme_au_niveau_de_la_ligne": "NON ÉTABLI — offre CEMAC exposée dans l'e-Tariff officiel (catégorie A), mais aucune application tchadienne datée ; l'instantané CEMAC du dépôt est OFFER_ONLY (destination représentative Cameroun)",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "L'existence éventuelle d'une circulaire de la Direction Générale des Douanes et Droits Indirects tchadienne (SYDONIA World, codes additionnels ZLECAf) : SYDONIA World est opérationnel depuis le 15/09/2022 (presse) mais aucune note ZLECAf n'a été retrouvée — l'absence constatée vaut « introuvable en ligne », pas « inexistant ».",
+  "La date d'application des taux ZLECAf par le Tchad : aucune source primaire datée ; elle ne sera JAMAIS déduite de l'offre CEMAC, de la liste GTI ni de la presse.",
+  "Le texte tchadien de ratification et son numéro au Journal officiel : à retrouver page par page dans journalofficiel.td."
+ ],
+ "remaining_work": [
+  "Reprendre journalofficiel.td (recherche plein texte ou navigation année par année 2018-2026) pour y chercher la loi de ratification et tout acte d'application ZLECAf — l'échec du 28/09/2026 est consigné dans sources/TCD_jo_journalofficiel_td_recherche_2026-09-28.extrait.txt.",
+  "Chercher une note de service/circulaire de la DGDDI tchadienne (sydonia, dédouanement) mentionnant la ZLECAf, y compris hors ligne.",
+  "Si l'application tchadienne est un jour établie : collecter l'offre CEMAC pour destination TD (script collect_afcfta_etariff_book.py) et reconsidérer le niveau avec les quatre gates."
+ ],
+ "justification_niveau": "OFFRE_SEULE, modèle Burundi : la ratification est établie (Décision UA archivée), une offre existe pour le bloc CEMAC dans l'outil officiel, mais AUCUN acte national tchadien d'application n'a été retrouvé et la recherche du JO a échoué sur obstacle technique consigné. La participation au GTI ne prouve pas l'application des taux. AUCUN BRANCHEMENT."
+}
