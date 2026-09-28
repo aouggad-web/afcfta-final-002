@@ -1,0 +1,6 @@
+CONSULTATION — Journal officiel de la République togolaise (https://www.jo.gouv.tg), le 2026-09-28.
+
+MÉTHODES ET ÉCHECS :
+1. /Lois : liste paginée limitée (années récentes) ; pas de loi 2018-027 visible.
+2. /recherche_jo (recherche JO avancée 1906-2026) : requêtes GET testées avec les paramètres exposés par le formulaire (title=finances + année 2024 — témoin censé matcher la loi de finances 2024 ; title=ratification ; title=ZLECAF ; field_corps_du_texte_value=libre + année 2018). TOUTES renvoient « Nous n'avons pas trouvé d'éléments correspondants », y compris le témoin positif : la recherche GET du JO togolais est INOPÉRANTE. ÉCHEC CONSIGNÉ.
+3. Numéro du JORT de publication de la loi n°2018-027 du décembre 2018 (ratification ZLECAf) : NON RETROUVÉ en ligne au 28/09/2026. La loi n'est connue que par : (a) une copie PDF hébergée sur un site privé (theresedonu.com), SANS couche texte (extraction pypdf vide, OCR indisponible) — archivée : sources/TGO_loi_2018-027_ratification_copie_non_primaire_2026-09-28.pdf ; (b) Togo First 07/12/2018 (presse : adoption parlementaire le 06/12/2018, 13e État à ratifier) ; (c) la communication officielle de la délégation togolaise à l'OMC (ldevc_21oct22, doc. rédigé par M. BATCHASSI, Directeur du commerce extérieur) : adoption parlementaire le 16/12/2018, dépôt de l'instrument le 02/04/2019.

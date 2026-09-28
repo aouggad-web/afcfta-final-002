@@ -1,0 +1,78 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "TGO",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_RAPPORTE_NON_PRIMAIRE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "ratification RAPPORTÉE sans primaire : loi n°2018-027 de décembre 2018 connue par une copie PDF hébergée sur un site PRIVÉ (theresedonu.com, sans couche texte, OCR indisponible), par la presse (Togo First, 07/12/2018) et par la communication officielle de la délégation togolaise à l'OMC ; le dépôt est établi sur primaire continental (Décision UA de Niamey, 07/07/2019) ; le numéro du JORT est NON RETROUVÉ (recherche du JO togolais inopérante, échec consigné) ; application opérationnelle attestée par un communiqué officiel du ministère (codes additionnels ZLECAf configurés) — jamais un instrument tarifaire publié.",
+ "instrument": {
+  "id": "Loi n°2018-027 du décembre 2018 autorisant la ratification de l'Accord ZLECAf (RAPPORTÉE — copie non primaire)",
+  "title_etabli": "La loi est rapportée par trois sources : (1) une copie PDF hébergée sur le site privé theresedonu.com (4 pages, SANS couche texte — extraction pypdf vide, aucun OCR installé ici ; le fichier porte un titre de fichier ERRONÉ « Juridictions commerciales » mais contient, d'après l'extrait d'index Exa, « LOI N°2018-027 DU … DÉCEMBRE 2018 AUTORISANT LA RATIFICATION L'ACCORD … LIBRE-ECHANGE CONTINENTALE AFRICAINE » et une « Loi n°2018-028 ») ; (2) Togo First 07/12/2018 (presse : « Ce jeudi 06 décembre 2018, la représentation nationale du Togo a adopté la loi autorisant la ratification de l'accord » ; le Togo est le 13e État à ratifier) ; (3) la communication officielle de la délégation togolaise à l'OMC (ldevc_21oct22, rédigée par M. BATCHASSI, Directeur du commerce extérieur) : « 16 Décembre 2018 : le Parlement togolais adopte un projet de loi autorisant le Chef de l'État à ratifier l'Accord ; 02 Avril 2019 : Dépôt de l'instrument de ratification de l'Accord à l'Union Africaine ». NOTE : les dates de l'adoption parlementaire divergent (06/12/2018 Togo First ; 16/12/2018 OMC) — non tranché.",
+  "date": "2018-12 (adoption parlementaire) ; dépôt à l'UA : 2019-04-02",
+  "gazette": "Journal Officiel de la République Togolaise (jo.gouv.tg) — NUMÉRO NON RETROUVÉ : la recherche avancée du site est inopérante (échec consigné dans sources/TGO_jort_recherche_2026-09-28.extrait.txt)",
+  "texte_extrait": "sources/TGO_loi_2018-027_ratification_copie_non_primaire_2026-09-28.pdf",
+  "sha256": "ab1759679a34948dedbc699c26ecb0b57f0f21dcf21dbb0c64134215fd4a2665",
+  "decision_uA_archivee": {
+   "fichier": "sources/AU_ext_assembly_dec_1-3_xii_niamey_2019-07-07_2026-09-28.pdf",
+   "sha256": "b27e94ce3cf67d7e812d5e051c02a9429174b271338a01b5c78ef73453471b20",
+   "url": "https://www.au.int/sites/default/files/decisions/37553-ext_assembly_au_dec_1-3_xii_f.pdf (au.int injoignable en direct le 28/09/2026 ; copie via web.archive.org)",
+   "portee": "§4 : le Togo est nommé parmi les 27 États parties ayant déposé leurs instruments de ratification — primaire continental, prouve la RATIFICATION, pas une application nationale des taux."
+  }
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national togolais d'application ZLECAf (décret/arrêté/circulaire douanière portant le barème ou les codes additionnels), liste nominative des origines admises à l'importation, barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Journal officiel de la République togolaise (https://www.jo.gouv.tg) — /Lois, /recherche, /recherche_jo",
+    "resultat": "Site officiel en ligne (« version intégrale des journaux officiels parus au Togo de 1920 à nos jours »). La recherche GET des deux vues renvoie « Nous n'avons pas trouvé d'éléments correspondants » MÊME POUR UN TÉMOIN CENSÉ MATCHER (title=finances + année 2024, loi de finances 2024 connue) : la recherche du JO togolais est INOPÉRANTE. Échec consigné (sources/TGO_jort_recherche_2026-09-28.extrait.txt). Aucun numéro du JORT ni acte d'application ZLECAf retrouvé en ligne."
+   },
+   {
+    "endroit": "Ministère du commerce (commerce.gouv.tg) — communiqué du 07/05/2025 (formation des commissionnaires en douane agréés, 06-07/05/2025) — archivé : sources/TGO_commerce_gouv_tg_formation_transitaires_2025-05-06.extrait.txt",
+    "resultat": "COMMUNIQUÉ OFFICIEL (primaire d'un ministère) : le ministère a formé ~40 commissionnaires en douane « sur la liste des concessions tarifaires de la catégorie A dans le cadre de l'accord de la ZLECAf » et sur « l'utilisation des codes additionnels configurés à cet effet suivant les catégorisations des accords de la ZLECAf ». Établit une OPÉRATIONNALISATION (codes additionnels configurés dans le système de dédouanement) — ce n'est NI un instrument tarifaire publié NI une liste d'origines."
+   },
+   {
+    "endroit": "Communication officielle de la délégation togolaise à l'OMC (ldevc_21oct22, 21/10/2022) — archivée : sources/TGO_wto_ldevc_21oct22_communication_gvt_2026-09-28.pdf",
+    "resultat": "« Ratification de l'Accord : 16 Décembre 2018 : le Parlement togolais adopte un projet de loi ; 02 Avril 2019 : Dépôt de l'instrument de ratification » ; « Elaboration de la liste de concessions tarifaires (transmise à la CEDEAO) » — l'offre togolaise est passée par le bloc CEDEAO."
+   },
+   {
+    "endroit": "InterCom Togo (intercom.tg) — /zlecaf, /tarifs/accords, /reglementations/textes/accord-zlecaf",
+    "resultat": "Plateforme PRIVÉE et indépendante (« éditée par ITSDB CENTER LLC à Lomé », selon sa page A-propos) — SECONDAIRE malgré l'intitulé « Portail National du Commerce » : je l'ai signalé explicitement. Elle confirme le cadre (offre CEDEAO, preuves d'origine : certificat 12 mois, déclaration d'origine sur facture, déclaration du fournisseur) et la liste des sources, mais rien de primaire."
+   },
+   {
+    "endroit": "Office togolais des recettes (otr.tg) — rubrique « TARIFS DES DOUANES » et « Journal Officiel RT »",
+    "resultat": "L'OTR ne publie que le TEC CEDEAO (TEC CEDEAO actualisé 10/11/2025, 10,89 Mo ; TEC CEDEAO 2022 ; parties 1/4/5 de 2018) : AUCUN barème ZLECAf. Le lien « Journal Officiel RT » de l'OTR renvoie une page sans contenu. Aucun acte d'application, aucune liste d'origines."
+   },
+   {
+    "endroit": "GTI (FACTSHEET du Secrétariat, janv. 2025, déjà archivé dans le dépôt : sources/UGA_secretariat_factsheet_gti_2025-01.pdf, sha 4446703e…)",
+    "resultat": "Le Togo figure dans la « West Africa Region » du GTI (avec Côte d'Ivoire, Ghana, Guinée-Bissau, Nigeria, Sénégal, Sierra Leone, Gambie). La participation au GTI ne prouve pas l'application des taux."
+   },
+   {
+    "endroit": "e-Tariff Book du Secrétariat (API production, 28/09/2026, destination TG, origine KE, recherche 25.02) — archivé : sources/ZLECAF_etariff_destinations_KM_TD_TG_SC_2026-09-28.json",
+    "resultat": "L'outil officiel expose pour TG l'offre du bloc CEDEAO (regionCode ECOWAS, catégorie A ; ligne 25.02 : year1 4,5 % → year5 2,5 %). C'est l'OFFRE CEDEAO (instantané du dépôt official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz, destination représentative Ghana), PAS une preuve d'application togolaise."
+   },
+   {
+    "endroit": "Exa (web_search_exa) : « Togo loi autorisant la ratification ZLECAf JORT », « OTR Togo ZLECAf codes additionnels »",
+    "resultat": "Aucun acte national d'application trouvé. Résultats : Togo First (presse, 07/12/2018), theresedonu.com (copie privée), pages du ministère du commerce (formation 2025, liste d'engagements services). Rien de primaire sur le barème ou les origines."
+   }
+  ],
+  "resultat": "La RATIFICATION est bien établie mais son INSTRUMENT n'est connu que par copie non primaire (site privé sans couche texte) et par la presse ; le numéro du JORT est introuvable (recherche du JO inopérante, échec consigné). L'APPLICATION opérationnelle est attestée par un communiqué officiel du ministère du commerce (codes additionnels ZLECAf configurés, formation catégorie A, mai 2025), mais AUCUN instrument tarifaire publié, AUCUNE liste nominative d'origines togolaise, AUCUN barème national ZLECAf n'ont été retrouvés. L'offre du bloc CEDEAO est exposée dans l'outil officiel du Secrétariat."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — ratification établie (dépôt 02/04/2019, Décision UA 1-3(XII) archivée) mais la loi n°2018-027 n'est connue que par copie non primaire et sans texte lisible ; AUCUN acte d'application tarifaire retrouvé",
+  "2_liste_officielle_origines_reciproques": "NON ÉTABLI — aucune liste togolaise ; les preuves d'origine (certificat, déclaration sur facture, déclaration du fournisseur) sont décrites par des sources secondaires (InterCom privé) ; le plafond Annexe 1 ne vaut que pour un État dont l'application est établie",
+  "3_bareme_au_niveau_de_la_ligne": "NON ÉTABLI — offre CEDEAO exposée dans l'e-Tariff officiel (catégorie A) et TEC CEDEAO publié par l'OTR, mais aucun barème ZLECAf national publié par l'OTR ou le ministère",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "La date exacte de l'adoption parlementaire de la loi n°2018-027 : 06/12/2018 (Togo First) contre 16/12/2018 (délégation togolaise à l'OMC) — les deux sources divergent, aucune n'est le JORT ; non tranché.",
+  "L'existence d'un arrêté ou d'une note de service de l'OTR/DGDDI togolaise configurant les codes additionnels ZLECAf : le communiqué ministériel du 07/05/2025 l'affirme, le texte n'a pas été retrouvé.",
+  "La date d'application des taux ZLECAf par le Togo à l'importation : aucune source primaire datée ; elle ne sera JAMAIS déduite de l'offre CEDEAO, de la liste GTI ni du communiqué de formation."
+ ],
+ "remaining_work": [
+  "Retrouver la loi n°2018-027 ET son numéro au Journal Officiel de la République Togolaise : la recherche de jo.gouv.tg est inopérante (échec consigné dans sources/TGO_jort_recherche_2026-09-28.extrait.txt) — à reprendre (POST ou navigation des numéros, ou légitogo.gouv.tg).",
+  "Retrouver l'acte togolais configurant les codes additionnels ZLECAf (arrêté OT/DGDDI/OTR), si publié.",
+  "Si l'application togolaise est un jour établie sur primaire : reconsidérer le niveau avec les quatre gates et l'offre CEDEAO (instantané déjà archivé)."
+ ],
+ "justification_niveau": "INSTRUMENT_RAPPORTE_NON_PRIMAIRE : la loi de ratification existe (rapportée par presse, communication OMC et copie privée archivée, sha ab175967…) et le dépôt est établi sur primaire continental (Décision UA de Niamey archivée), mais le texte national n'est disponible par AUCUNE source primaire (JORT introuvable) et aucun acte d'application tarifaire n'a été retrouvé. AUCUN BRANCHEMENT."
+}
