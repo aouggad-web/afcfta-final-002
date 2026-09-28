@@ -86,7 +86,7 @@
   "note": "Recherche du 28/09/2026 (tous canaux : Exa, Jina Reader, web.archive.org, webfetch) — mise à jour substantielle.",
   "portail_afcfta_cet_ncs": {
    "decouverte": "La NCS publie un portail « Tariff & CET Lookup » avec une page dédiée AFCFTA CET : demo-cet.customs.gov.ng/afcfta-cet — 6 571 lignes, colonnes ID (droit d'importation), VAT, LVY, EXC, par version.",
-   "reserve": "Les valeurs visibles (ex. 0101.21.00.00 : 5 % ; 0101.29.00.00 : 10 %) correspondent aux taux du CET — le caractère PRÉFÉRENTIEL du livre n'est PAS établi (application JS, 30 lignes visibles ; portail principal cet.customs.gov.ng derrière Cloudflare).",
+   "reserve": "Les valeurs visibles (ex. 0101.21.00.00 : 5 % ; 0101.29.00.00 : 10 %) correspondent aux taux du CET — le caractère PRÉFÉRENTIEL du livre n'est PAS établi (application JS, 30 lignes visibles ; portail principal cet.customs.gov.ng derrière Cloudflare). Lecture via Jina Reader : REPÉRAGE, NON VÉRIFIÉ sur le portail lui-même.",
    "archive": {
     "texte_extrait": "sources/NGA_ncs_afcfta_cet_portail_2026-09-28.extrait.txt",
     "sha256": "59d00ce76a9ad78fbace8dac4580ac0c45f3781076f46896c290d61bc8c4ed74"
@@ -100,14 +100,14 @@
    }
   },
   "rapport_fmiti_2025": {
-   "contenu": "Rapport officiel « Nigeria AfCFTA Achievements 2025 » (FMITI, janv. 2026, 16 p. archivé) : gazettement de la PSTC confirmé ; à l'export, le NCS (autorité compétente désignée) a émis des Certificats d'Origine ZLECAf à cinq entreprises le 25/05/2025 (corridor aérien Abuja→Nairobi), arrivées le 26/05/2025 et « the goods received preferential tariff treatment » AU KENYA ; « Nigeria's gazetting … materially reduced the duties payable on Nigerian goods entering Kenya and South Africa » (réciprocité).",
+   "contenu": "Rapport officiel « Nigeria AfCFTA Achievements 2025 » (FMITI, archivé, 16 p., sha 957c3a0b…) — VERBATIM p. 6 : « Nigeria gazetted the Provisional Schedule of Tariff Concessions for Trade in Goods in April 2025, to trade goods under AfCFTA terms, as outlined in Articles 8–9 of the Protocol on Trade in Goods, on tariff liberalisation. Implication: Nigeria now applies preferential and reduced tariffs on goods originating in Africa. » — DÉCLARATION MINISTÉRIELLE GÉNÉRALE : sans date d'effet, sans liste d'origines.",
    "archive": {
     "fichier": "sources/NGA_fmiti_accomplissements_2025.pdf",
     "sha256": "957c3a0b9120fe7a3117ac4b643f0d6d6be1ad79ae5216e4d0be29abe2127cf9"
    }
   },
   "presse_guardian_2025_04_15": {
-   "detail": "Le président Tinubu signe le calendrier ECOWAS d'offres tarifaires (0 % sur 90 %) et la PSTC est gazettée le même jour (14/04/2025) ; premier envoi nigérian sous ZLECAf en juillet 2024 — source secondaire datée.",
+   "detail": "Le président Tinubu signe le calendrier ECOWAS d'offres tarifaires (0 % sur 90 %) et la PSTC est gazettée le même jour (14/04/2025) ; premier envoi nigérian sous ZLECAf en juillet 2024 — source secondaire datée. Lecture via Jina Reader : REPÉRAGE, NON VÉRIFIÉ sur le texte officiel.",
    "archive": {
     "texte_extrait": "sources/NGA_guardian_gazettement_2025-04-15.extrait.txt",
     "sha256": "c7f3c96acd8ff03a3e19e2102825ca81898402d055f8281364c53948c15a3bf7"
@@ -119,10 +119,24 @@
    "Numéro de la Federal Republic Gazette du 14/04/2025 : toujours non obtenu."
   ],
   "etariff_ecowas": {
-   "decouverte": "L'offre ECOWAS (couvrant le NIGERIA comme destination) est consultable ligne à ligne dans l'e-Tariff Book officiel (API vérifiée) : catégorie A, décroissance sur 10 ans depuis le MFN (ex. ciment : 5 % → 0 %) ; l'entrée régionale dit verbatim « ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive … on 26 October 2021 » (16 pays, Mauritanie incluse).",
+   "decouverte": "L'offre ECOWAS (couvrant le NIGERIA comme destination) est consultable ligne à ligne dans l'e-Tariff Book officiel (API vérifiée, requête « cement ») : 88 résultats, dont 31 en catégorie A, 14 d'entre eux avec un NPF de 5 %. L'exemple de la décroissance 5 % → 0 % est la CASTINE (2521.00.00.00, cat. A, NPF 5, année1 4,5 → année10 0). Le ciment 2523.10, 2523.21, 2523.29, 2523.90 n'a AUCUNE catégorie dans l'offre, avec un NPF de 20 % (10 % pour le clinker 2523.10). L'entrée régionale dit verbatim « ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021 » (16 pays, Mauritanie incluse).",
    "archive": {
     "texte_extrait": "sources/NGA_etariff_ecowas_offre_2026-09-28.extrait.txt",
     "sha256": "b19afa0e4bbe7a8d5e2175b2fe8ce71cd6f069643f6d065b07ddf942492c5039"
+   }
+  },
+  "corridor_fmiti_mai_2026": {
+   "contenu": "FMITI, « One Year of the Nigeria – East/Southern Africa Air Cargo Corridor » (mai 2026, 19 p., hébergé par tralac, ARCHIVÉ, sha 00a944576ad45a0dcafa94ab893bfdc7c4a650e6fd8ab182e22aec7a498b3900) — vérifié page par page : p. 3 « the corridor was launched on Africa Day, 25 May 2025 » ; p. 9 « the Nigeria Customs Service, as the Designated Competent Authority issued AfCFTA Certificates of Origin to the five exporting businesses » et « Upon arrival in Nairobi, Kenya on 26 May 2025, the goods received preferential tariff treatment » ; p. 14 « Nigeria's gazetting of the Provisional Schedule of Tariff Concessions in April 2025 materially reduced the duties payable on Nigerian goods entering Kenya and South Africa ». Faits côté EXPORTATION + réciprocité du Kenya.",
+   "archive": {
+    "fichier": "sources/NGA_fmiti_corridor_mai_2026.pdf",
+    "sha256": "00a944576ad45a0dcafa94ab893bfdc7c4a650e6fd8ab182e22aec7a498b3900"
+   }
+  },
+  "chasse_profonde_officiels": {
+   "conclusion": "Le document gazetté nigérian est le CALENDRIER ECOWAS d'offres tarifaires (Business Post 15/04/2025, lu : « officially gazetted and transmitted the ECOWAS Schedule of Tariff Offers ») — d'où ECOWAS → NG dans l'e-Tariff officiel. Aucun numéro de gazette cité ; CEDEAO (15/04/2025) : visite de courtoisie sans mention ; circulaires NCS : rien ; NigeriaLII/Trade Hub : rien d'exploitable.",
+   "archive": {
+    "texte_extrait": "sources/NGA_chasse_profonde_officiels_2026-09-28.extrait.txt",
+    "sha256": "171647f1be5adf104457a7880a73c256dc00e4f006b82b175c85d89fb7336004"
    }
   }
  }
