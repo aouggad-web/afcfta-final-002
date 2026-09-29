@@ -23,4 +23,5 @@ def test_non_listed_country_not_active():
 
 
 def test_active_partners_count():
-    assert len(ACTIVE_PARTNERS_ZAF) == 14
+    # Sierra Leone retirée : absente de la General Note O (aucune Notice R.)
+    assert len(ACTIVE_PARTNERS_ZAF) == 13

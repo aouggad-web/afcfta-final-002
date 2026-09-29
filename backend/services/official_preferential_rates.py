@@ -415,8 +415,8 @@ def resolve_official_preferential_rate(
         # destinations.
         from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
-        jour = date(as_of_year, 12, 31) if as_of_year else None
-        return ligne_du_journal_officiel(clean_code, origin, jour, destination_iso3=country)
+        jour_bar = date(as_of_year, 12, 31) if as_of_year else None
+        return ligne_du_journal_officiel(clean_code, origin, jour_bar, destination_iso3=country)
 
     dataset = _load_dataset(dataset_code)
     if dataset is None:
