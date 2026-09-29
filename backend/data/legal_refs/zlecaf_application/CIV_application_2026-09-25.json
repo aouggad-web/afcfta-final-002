@@ -16,7 +16,7 @@
   "verbatim_communique": "Le Conseil a adopté une ordonnance relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de l'Accord portant création de la Zone de Libre-Echange Continentale Africaine (ZLECAf), et le projet de loi de ratification y afférent.",
   "traduction_contexte": "L'Accord ZLECAf, ratifié par la Côte d'Ivoire en novembre 2018, vise un marché unique africain ; l'ordonnance adoptée fixe le démantèlement des produits non sensibles et un projet de loi de ratification l'accompagne.",
   "portee_du_communique": "Établit l'adoption de l'ordonnance et le dépôt du projet de ratification ; ne publie ni le texte, ni les listes de produits, ni les États partenaires.",
-  "ratification": "En Commission des affaires économiques et financières (CAEF) du Sénat, adoption à l'unanimité le 08/06/2026 du projet de loi portant ratification de l'ordonnance n° 2025-260 (presse archivée, sources/CIV_cinews_senat_caef_2026-06-08.html — secondaire) ; le site officiel du CN-ZLECAf (repérage, rendu JS non archivable) rapporte « Ratification par le parlement (Assemblée Nationale et Sénat) de l'Ordonnance n°2025-260 du 23 avril 2025. » ; texte de la loi non obtenu, promulgation non établie."
+  "ratification": "Adoption du projet de loi portant ratification de l'ordonnance n° 2025-260 par la commission des affaires économiques et financières (CAEF) du Sénat le 08/06/2026 (presse archivée, sources/CIV_cinews_senat_caef_2026-06-08.html — secondaire) ; le titre de l'actualité du site officiel du CN-ZLECAf (repérage, rendu JS non archivable) parle seul d'une adoption « à l'unanimité » ; le même site rapporte « Ratification par le parlement (Assemblée Nationale et Sénat) de l'Ordonnance n°2025-260 du 23 avril 2025. » ; texte de la loi non obtenu, promulgation non établie."
  },
  "application_en_attente": {
   "constat": "Le rapport d'activités 2025 du CN-ZLECAf indique que les décrets d'application et les circulaires restaient à prendre : l'ouverture effective des frontières n'était pas acquise à la date du rapport.",
@@ -70,7 +70,7 @@
      "endroit": "FratMat (repérage, secondaire) — https://www.fratmat.info/article/2643583/economie/zlecafmise-en-uvre-le-comite-national-fait-le-point-des-avancees-et-fixe-les-priorites-du-second-semestre — archivé : sources/CIV_fratmat_comite_technique_2026-07-29.html",
      "texte_archive": "sources/CIV_fratmat_comite_technique_2026-07-29.html",
      "sha256": "1fca6a27197afaa720b7d931bac7cf5c6230ea22152ffaa9ab309bb360034d51",
-     "resultat": "Compte rendu (presse) de la 4e réunion statutaire du Comité technique du CN-ZLECAf (29/07/2026) : « Ce texte a été adopté les 26 mars et 8 juin 2026 […] le ministre du Commerce, de l'Industrie et de l'Artisanat a transmis au ministre chargé du Budget les projets de décrets ainsi que l'ensemble de la documentation y afférente. » — au 29/07/2026, les décrets d'application n'étaient pas pris ; jamais preuve."
+     "resultat": "Compte rendu (presse) de la 4e réunion statutaire du Comité technique du CN-ZLECAf (29/07/2026) : « Ce texte a été adopté les 26 mars et 8 juin 2026 […] le ministre du Commerce, de l'Industrie et de l'Artisanat a transmis au ministre chargé du Budget les projets de décrets ainsi que l'ensemble de la documentation y afférente. » — au 29/07/2026, seuls des projets de décrets avaient été transmis au ministre chargé du Budget ; jamais preuve."
     },
     {
      "endroit": "CINEWS (repérage, secondaire) — https://cinews.ci/commande-publique-zlecaf-raffinage-le-senat-adopte-en-commission-trois-projets/ — archivé : sources/CIV_cinews_senat_caef_2026-06-08.html",
@@ -91,7 +91,7 @@
      "resultat": "INACCESSIBLE (HTTP 000, 2026-09-29). Le JO spécial n° 10 du 16 juillet 2025 reste repéré chez un revendeur privé ; sa fiche produit (profession-juriste.ci) renvoie aujourd'hui 404."
     }
    ],
-   "resultat": "NÉGATIF sur les deux cibles du jour : aucun décret d'application publié (au 29/07/2026, seuls des projets de décrets étaient transmis au ministre chargé du Budget), aucune circulaire douanière ZLECAf, aucune liste nominative d'origines. La ratification progresse (commission CAEF du Sénat, 08/06/2026) mais sur sources repérées seulement ; aucun texte sur primaire archivable. Niveau inchangé."
+   "resultat": "NON TROUVÉ (et non « non publié » : la recherche n'est pas concluante — JO inaccessible, la page douanes.ci ne vaut pas gazette des décrets) sur les deux cibles du jour : aucun décret d'application retrouvé (au 29/07/2026, seuls des projets de décrets étaient transmis au ministre chargé du Budget), aucune circulaire douanière ZLECAf retrouvée, aucune liste nominative d'origines retrouvée. La ratification progresse (commission CAEF du Sénat, 08/06/2026) mais sur sources repérées seulement ; aucun texte sur primaire archivable. Niveau inchangé."
   },
   "gates_status": {
   "1_instrument_national_en_vigueur": "PARTIEL — adoption de l'ordonnance n° 2025-260 et ratification parlementaire établies par sources officielles ; texte de l'ordonnance non obtenu et décrets/circulaires d'application en attente selon le CN-ZLECAf",
@@ -100,9 +100,9 @@
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
 "ne_tranche_pas": [
-   "Le texte de l'ordonnance n'est pas lu : on ne sait pas quelles modalités (listes A/B/C, calendrier par groupes de pays) elle fixe exactement.",
-   "Aucun décret d'application ni circulaire douanière n'est publié au 2026-09-29 (re-vérification datée) : la date d'ouverture effective des frontières n'est pas établie.",
-   "La loi de ratification : l'adoption en commission CAEF du Sénat le 08/06/2026 et la « ratification par le parlement » rapportée par le CN-ZLECAf sont des sources archivées secondaires ou repérées non archivables ; le texte de la loi, sa promulgation et sa publication au JO ne sont pas établis."
+  "Le texte de l'ordonnance n'est pas lu : on ne sait pas quelles modalités (listes A/B/C, calendrier par groupes de pays) elle fixe exactement.",
+  "Aucun décret d'application ni circulaire douanière ZLECAf retrouvés au 2026-09-29 (recherche non concluante, re-vérification datée : JO inaccessible, la page des circulaires de douanes.ci ne vaut pas gazette des décrets) : la date d'ouverture effective des frontières n'est pas établie.",
+  "La loi de ratification : l'adoption en commission CAEF du Sénat le 08/06/2026 et la « ratification par le parlement » rapportée par le CN-ZLECAf sont des sources archivées secondaires ou repérées non archivables ; le texte de la loi, sa promulgation et sa publication au JO ne sont pas établis."
   ],
   "remaining_work": [
    "Obtenir le texte de l'ordonnance n° 2025-260 (Journal officiel ivoirien ou Secrétariat exécutif du CN-ZLECAf).",
