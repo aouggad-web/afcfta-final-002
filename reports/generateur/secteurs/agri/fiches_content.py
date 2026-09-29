@@ -1,4 +1,5 @@
 from fiche import *
+from contradictions import ref
 
 FAO = 'FAOSTAT QCL (MAJ 23/12/2025)'
 F = []
@@ -26,7 +27,7 @@ F.append(dict(num=1, sid='S01', name='Animaux vivants & viandes', hs='01, 02, 16
 F.append(dict(num=2, sid='S02', name='Pêche & aquaculture', hs='03, 16.03-16.05',
  lead="Troisième poste d'exportation agricole du continent, la filière halieutique a déjà son champion industriel : le Maroc, qui exporte plus de poisson transformé que tout le reste de l'Afrique réunie.",
  kp=[('6,4 Md$', 'exportations africaines de poissons et crustacés (moyenne 2019-2023)', 'AATM 2025'), ('2,3 Mt', 'production aquacole 2022 (1,9 % du monde) ; 2,8 Mt attendues en 2032', 'FAO SOFIA 2024'),
-     ('2,61 Md$', 'poisson transformé exporté par le Maroc (2023)', 'SaaS — UNIDO IDSB'), ('848 M$', 'importations de poisson transformé de la Côte d\'Ivoire (2023)', 'SaaS — UNIDO IDSB')],
+     ('2,61 Md$', 'poisson transformé exporté par le Maroc (2023)', 'SaaS — UNIDO IDSB'), ('848 M$', 'importations de poisson transformé de la Côte d\'Ivoire (2023) ; conserves seules (SH 1604) : 46 M$ selon BACI' + ref('C25'), 'SaaS — UNIDO IDSB ; OEC/BACI')],
  marche=["Les captures continentales africaines (3,3 Mt, 29 % du total mondial des eaux intérieures) nourrissent les marchés locaux ; la valeur ajoutée se concentre dans la conserve "
          "(thon, sardine) et le congelé. Côte d'Ivoire (848 M$), Égypte (626 M$), Maroc (289 M$) et Ghana (214 M$) sont les premiers importateurs de poisson transformé.",
          "L'aquaculture égyptienne (tilapia) représenterait à elle seule 1,9 Mt en 2032 selon la FAO : c'est le seul pôle aquacole africain d'échelle industrielle."],

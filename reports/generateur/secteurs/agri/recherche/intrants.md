@@ -428,7 +428,7 @@ Ces points sont des inférences tirées des faits ci-dessus, pas des données so
 
 ---
 
-## Principales contradictions à trancher
+## Principales contradictions (exposées dans le rapport, non tranchées)
 1. **L'objectif de 50 kg/ha vient d'Abuja (2006), pas de Nairobi (2024).** Nairobi fixe le triplement de la production et de l'utilisation d'engrais d'ici 2034.
 2. **Tracteurs pour 1 000 ha en Afrique** : moins de 2 (FAO, cité en 2019) contre 28 (autre étude).
 3. **Pic de l'urée et prix du DAP** : les indices diffèrent entre la Banque mondiale, l'OMC et l'IFDC.

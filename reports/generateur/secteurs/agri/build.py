@@ -50,7 +50,8 @@ else:
     if ED == 'negoce':
         story += ch_annex_countries() + pb
     m = ch_method(edition=True)
-    story += m[:1] + [methode_verif()] + m[1:] + pb + ch_lexique()
+    from contradictions import annexe as ch_contradictions
+    story += m[:1] + [methode_verif()] + m[1:] + pb + ch_contradictions(ED) + pb + ch_lexique()
     story = renumeroter(story)
 doc = ReportDoc(out)
 if ED:

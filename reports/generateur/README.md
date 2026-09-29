@@ -43,10 +43,10 @@ par type d'opérateur (`Rapport_Agriculture_Agroalimentaire_Plan_<Profil>_ZLECAf
 
 | Édition | Public | Contenu propre | Pages |
 |---|---|---|---|
-| 01-A Producteurs | cultures, élevage, pêche | fiches SH 01-14, cibles brutes, chaîne du froid et semences | 43 |
-| 01-B Industriels | agro-industrie, transformation | fiches SH 15-24, cibles transformées, énergie, emballages, champions | 41 |
-| 01-C Négoce | traders, distributeurs | offres, Top 25, formalités et paiements, logistique, annexe pays | 41 |
-| 01-D Intrants | engrais, aliments, semences, machines | marchés, régimes et homologations, besoins, PPP et hubs | 26 |
+| 01-A Producteurs | cultures, élevage, pêche | fiches SH 01-14, cibles brutes, chaîne du froid et semences | 47 |
+| 01-B Industriels | agro-industrie, transformation | fiches SH 15-24, cibles transformées, énergie, emballages, champions | 45 |
+| 01-C Négoce | traders, distributeurs | offres, Top 25, formalités et paiements, logistique, annexe pays | 45 |
+| 01-D Intrants | engrais, aliments, semences, machines | marchés, régimes et homologations, besoins, PPP et hubs | 29 |
 
 Chaque édition garde le pays focus (`--pays-focus`) et renumérote ses chapitres (`secteurs/agri/editions.py`).
 
@@ -93,7 +93,11 @@ avec `RG_DIR` (dossier de travail), `RG_REPO`, `RG_RACINE`, `RG_POLICES` et `RG_
 ## Consolidation des statistiques
 
 - Chaque chiffre publié porte sa source et sa date (légende de tableau ou de figure).
-- Deux sources qui divergent sont citées toutes les deux, avec l'écart ; le rapport n'arbitre pas en silence.
+- Deux sources qui divergent sont citées toutes les deux, avec l'écart ; le rapport n'arbitre pas, ni en silence ni ouvertement.
+  Dans les plans d'action, chaque contradiction est exposée en annexe 4 (`secteurs/agri/contradictions.py`) : valeurs, sources,
+  dates et statuts côte à côte, écart, explications possibles non tranchées, et ce qui permettrait de trancher.
+  Les codes C viennent des notes de recherche ; les codes N sont calculés par `cibles.py` quand la SH6 citée est marginale
+  alors que sa position SH4 pèse plus que le seuil de marché (ex. thé en Algérie : 0,7 M$ en 0902.40, 63 M$ pour la position 0902).
 - Les données miroir (BACI) sont signalées quand le pays ne déclare pas ses importations.
 - Ce qui n'est pas vérifié est marqué « à confirmer » (par exemple, un taux de DAPS dont l'édition de la loi de finances n'est pas retrouvée).
 

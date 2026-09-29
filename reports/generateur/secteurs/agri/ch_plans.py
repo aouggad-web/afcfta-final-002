@@ -5,6 +5,7 @@ taux proviennent exclusivement de cibles.json (voir ch_verif.py).
 """
 from layout import *
 from ch_verif import *
+from contradictions import ref, code_nomenclature
 import json
 import statistics as stt
 
@@ -33,7 +34,12 @@ def cibles_filiere(sid, n=4):
         out.append(f"<b>Créneau seulement</b> — {PAYS.get(x['o'], x['o'])} → {DEST.get(x['d'], PAYS.get(x['d'], x['d']))}, {lib(x['hs']).lower()} : {fr(x['motifs'][0])}.")
     faux = [x for x in CB['audit'] if x['verdict'] == 'REJETÉE' and sid_of(x['hs']) == sid][:1]
     for x in faux:
-        out.append(f"<b><font color='#C0493D'>Fausse piste</font></b> — {PAYS.get(x['o'], x['o'])} → {DEST.get(x['d'], PAYS.get(x['d'], x['d']))}, {lib(x['hs']).lower()} : {fr(x['motifs'][0])}.")
+        c = code_nomenclature(x['d'], x['hs'])
+        if c:  # SH6 citée marginale mais position SH4 importante : contradiction exposée, pas « fausse piste »
+            out.append(f"<b><font color='#C0493D'>Contradiction</font></b> — {PAYS.get(x['o'], x['o'])} → {DEST.get(x['d'], PAYS.get(x['d'], x['d']))}, {lib(x['hs']).lower()} : "
+                       f"{fmt_m(x['imp_dest'])} M$ importés en {sh(x['hs'])}, mais {fmt_m(x['sh4']['imp_dest'])} M$ pour la position {x['hs'][:4]}" + ref(c) + '.')
+        else:
+            out.append(f"<b><font color='#C0493D'>Fausse piste</font></b> — {PAYS.get(x['o'], x['o'])} → {DEST.get(x['d'], PAYS.get(x['d'], x['d']))}, {lib(x['hs']).lower()} : {fr(x['motifs'][0])}.")
     if not sel:
         out.insert(0, "Aucune cible de la filière ne passe en 2026 les trois filtres (marge servie, marché ≥ 5 M$, offre ≥ 5 M$) sur les cinq destinations appliquées : "
                       "l'enjeu est ailleurs (marchés sans préférence, catégorie B à partir de 2030, mesures non tarifaires).")
@@ -84,7 +90,7 @@ def ch_froid(num=8):
     fl = [chapter(num, 'Chaîne du froid, semences et périssables'),
           P("Pour un producteur de fruits, de légumes, de viande, de lait ou de poisson, la préférence tarifaire ne vaut que si le produit arrive vendable. "
             "Le froid est la première condition d'accès aux marchés africains — et le premier poste de coût après le fret.", LEAD)]
-    fl.append(kpis([('23,0 %', 'pertes entre récolte et détail en Afrique subsaharienne (2023), la région la plus touchée ; 13,3 % dans le monde', 'FAO, ODD 12.3.1'),
+    fl.append(kpis([('23,0 %', 'pertes entre récolte et détail en Afrique subsaharienne (2023) selon la FAO ; les agriculteurs déclarent 1,4 à 5,9 % pour le maïs (LSMS-ISA)' + ref('C01'), 'FAO, ODD 12.3.1 ; Banque mondiale'),
                     ('25,4 %', 'pertes mondiales sur les fruits et légumes (2023) ; céréales et légumineuses : 8,4 %', 'FAO, ODD 12.3.1'),
                     ('3 $/h', 'branchement d\'un reefer 40\' au port de Mombasa (≈ 72 $/jour), tarif du 15/09/2025', 'KPA, barème officiel'),
                     ('+58 %', 'surcharge reefer sur la manutention d\'un 40\' à Durban (2 271 ZAR + 3 917 ZAR), T1 2026', 'Transnet DGT, barème officiel')], cols=4))
@@ -93,8 +99,8 @@ def ch_froid(num=8):
             ['Branchement reefer, Mombasa', '2 $/h (20\'), 3 $/h (40\') ; manutention export 60 / 90 $', '15/09/2025', 'KPA (primaire)'],
             ['Manutention reefer, Durban', '40\' : 3 917 ZAR + surcharge reefer 2 271 ZAR ; électricité 754 ZAR/jour', 'T1 2026', 'Transnet DGT (primaire)'],
             ['Surcoût reefer / conteneur sec', '+40 à 80 % sur les routes égyptiennes', '31/08/2026', 'Transitaire (secondaire)'],
-            ['Surcharge de guerre, agrumes égyptiens', '3 000 à 5 000 $ par conteneur selon un exportateur ; 100 à 300 $ selon un transitaire', 'saison 2025/26', 'Presse (secondaire) — contradiction'],
-            ['Transit Kenya → Europe', '18-20 jours avant la crise, 40-45 jours par le Cap', '09/2024', 'FPEAK via presse (secondaire)'],
+            ['Surcharge de guerre, agrumes égyptiens', '3 000 à 5 000 $ par conteneur selon un exportateur ; 100 à 300 $ selon un transitaire', 'saison 2025/26', Paragraph('Presse (secondaire)' + ref('C02'), TD)],
+            ['Transit Kenya → Europe', '18-20 jours avant la crise, 40-45 jours par le Cap (FPEAK) ; +10 à 14 jours seulement selon d\'autres sources', '09/2024 ; 2025-26', Paragraph('Presse (secondaire)' + ref('C03'), TD)],
             ['Pénurie de reefers', 'Jusqu\'à 55 % de la demande de pointe non couverte à Durban et Mombasa', '2024', 'ONE via presse (secondaire)'],
             ['Séjour des conteneurs à Mombasa', '104 h à l\'import (objectif 48 h) ; attente avant accostage > 50 h', 'S1 2025', 'Observatoire du corridor Nord (primaire)']]
     fl.append(Paragraph(f'Tableau {num}.1 — Les coûts du froid sur les corridors documentés', CAP))
@@ -107,8 +113,8 @@ def ch_froid(num=8):
             ['Maroc', '≈ 2,2 Mt (secondaire, sans source officielle)', 'Service Atlas DP World Agadir–Casablanca–Londres (1 000 reefers 40\', 11/2025) ; Ifria (IFC, 9,4 M$)'],
             ['Égypte', 'Capacité officielle non publiée', 'DP World × Elsewedy : 25 000 palettes, 29 M$, 6th of October City (2025-2026)'],
             ['Kenya', 'ARCH : 18 000 t ; Cold Solutions : ≈ 20 000 palettes', 'Cold Solutions : +19 M$ pour Mombasa (01/2026) ; ≈ 1 000 unités solaires (UNCDF)'],
-            ['Afrique du Sud', '400 000 à 600 000 positions palettes (estimation du secteur ; un modèle donne 745 000)', 'Maersk Belcon, Le Cap : 10 088 palettes, 240 prises reefer (10/2025)'],
-            ['Nigeria', '300 000 m³ (2023) ; < 1 000 camions frigorifiques opérationnels', 'ColdHubs : > 50 chambres solaires, 42 000 t sauvées']]
+            ['Afrique du Sud', Paragraph('400 000 à 600 000 positions palettes (estimation du secteur) ; 745 000 selon un autre modèle' + ref('C04'), TD), 'Maersk Belcon, Le Cap : 10 088 palettes, 240 prises reefer (10/2025)'],
+            ['Nigeria', Paragraph('300 000 m³ (2023) ; < 1 000 camions frigorifiques opérationnels, pour un besoin de 25 000 (NAN) ou de 5 000 (OTACCWA)' + ref('C05'), TD), 'ColdHubs : > 50 chambres solaires, 42 000 t sauvées']]
     fl.append(Paragraph(f'Tableau {num}.2 — Froid : capacités et projets par pays', CAP))
     fl.append(table(rows, [26 * mm, 70 * mm, CW - 96 * mm], font=7))
     fl.append(Paragraph('Sources : ministère algérien de l\'Agriculture (2021) ; IIF/IIR (16/05/2025) ; BEI ; Engineering News (28/10/2025) ; Daily News Egypt (17/09/2025) ; The National (04/09/2025) ; ColdHubs (2025). '
@@ -117,9 +123,9 @@ def ch_froid(num=8):
     fl.append(h2(f'{num}.3 Les corridors routiers des périssables'))
     fl += bullets([
         '<b>Route atlantique Agadir–Dakar</b> : ≈ 3 500 km, 9 à 10 jours de camion. La ligne RoRo Agadir–Dakar (52-56 h, 120 camions par rotation, 45 000-50 000 MAD aller-retour) '
-        'a été annoncée en décembre 2024 ; en janvier 2026, elle n\'était <b>toujours pas opérationnelle</b> selon Le360, alors que d\'autres sources la disaient lancée — à vérifier avant tout plan de transport.',
+        'a été annoncée en décembre 2024 ; en janvier 2026, elle n\'était <b>toujours pas opérationnelle</b> selon Le360, alors que FreshPlaza la disait lancée en janvier 2025 — deux versions à confronter avant tout plan de transport' + ref('C06') + '.',
         '<b>El Guerguerat</b> : hausse de 171 % des taxes mauritaniennes de passage (dédouanement d\'un gros porteur de 70 000 à 190 000 MRU, 01/2024) et surtaxe saisonnière sur la tomate et l\'oignon.',
-        '<b>Corridor Nord (Mombasa–Kampala)</b> : 70 h médianes de Mombasa à Malaba (observatoire, S1 2025) ; le gouvernement kényan cite 76-80 h et vise 36-48 h par la suppression des barrages (04/2026).',
+        '<b>Corridor Nord (Mombasa–Kampala)</b> : 70 h médianes de Mombasa à Malaba (observatoire, S1 2025) ; le gouvernement kényan cite 76-80 h (04/2026)' + ref('C27') + ' et vise 36-48 h par la suppression des barrages.',
         '<b>Beitbridge (Afrique du Sud–Zimbabwe)</b> : ≈ 38 h de traversée pour un poids lourd en septembre 2026 (+69,5 % en un mois ; secondaire).',
         '<b>Accord ATP</b> : seuls le Maroc et la Tunisie sont parties en Afrique — les certificats de transport sous température dirigée ne sont pas reconnus ailleurs.'], sym='●')
     fl.append(h2(f'{num}.4 Semences : un marché informel, des droits faibles, des homologations lourdes'))
@@ -130,11 +136,12 @@ def ch_froid(num=8):
     fl.append(Paragraph(f'Tableau {num}.3 — Droits NPF → ZLECAf 2026 sur les semences (origine admise représentative)', CAP))
     fl.append(table(rows, [52 * mm] + [(CW - 52 * mm) / 5] * 5, align_right_from=1))
     fl.append(Paragraph('Source : calculateurs du SaaS, toutes lignes nationales (origines : Tunisie pour l\'Algérie et l\'Égypte, Égypte pour le Kenya et le Maroc, Ghana pour la SACU). '
-                        'Algérie : un DAPS de 70 % sur 0701.10 figure dans le registre du SaaS (tarif d\'usage 2020) ; il est incohérent avec la politique semencière et reste à confirmer.', SRC))
+                        'Algérie, plants de pomme de terre : le registre du SaaS (tarif d\'usage 2020) porte un DAPS de 70 % sur 0701.10, alors que le relevé DGD du 29/08/2026 ne mentionne que DD 5 %, TVA, TCS et PRCT ; '
+                        'les deux sources sont citées, sans arbitrage' + ref('C09') + '.', SRC))
     fl += bullets([
-        '<b>Un marché de 3,15 Md$ (2025)</b> selon Mordor Intelligence (secondaire), mais les petits exploitants tirent <b>90,2 %</b> de leurs semences des circuits informels ; les agro-dealers en fournissent ≈ 2,5 % (McGuire & Sperling, republié par CRS en 12/2025).',
+        '<b>Un marché de 3,15 Md$ (Mordor Intelligence) ou 3,28 Md$ (Research and Markets) en 2025</b> (secondaire)' + ref('C07') + ', mais les petits exploitants tirent <b>90,2 %</b> de leurs semences des circuits informels ; les agro-dealers en fournissent ≈ 2,5 % (McGuire & Sperling, republié par CRS en 12/2025).',
         '<b>Harmonisation régionale</b> : catalogue COMESA de 119 variétés, commercialisables dans les 21 États sans nouveaux essais (règlement transposé dans 11 États, 06/2025) ; catalogue SADC de 96 variétés ; règlement CEDEAO C/REG.4/05/2008.',
-        '<b>Plants de pomme de terre</b> : l\'Égypte est le 2<super>e</super> importateur mondial (110-150 kt par saison) ; les volumes algériens importés divergent selon les sources (50 000 à 150 000 t) et la production locale de plants atteint 263 000 t (2024).',
+        '<b>Plants de pomme de terre</b> : l\'Égypte est le 2<super>e</super> importateur mondial (110-150 kt par saison) ; les volumes algériens importés divergent selon les sources (50 000 à 150 000 t par an ; « 80 % d\'autosuffisance » contre « 70 % importés »)' + ref('C08') + ' et la production locale de plants atteint 263 000 t (2024).',
         '<b>Vigilance</b> : les « exportations égyptiennes de plants » (0701.10) relevées par BACI doivent être lues avec prudence — l\'Égypte importe massivement cette position ; '
         'des plants réexportés ne sont pas originaires au sens de la ZLECAf.'], sym='●')
     return fl
@@ -147,17 +154,17 @@ def ch_couts(num=8):
             "sur un produit transformé. Les données comparables restent rares ; celles qui existent sont datées et leurs contradictions sont signalées.", LEAD)]
     rows = [['Pays', 'Électricité entreprises ($/kWh, 12/2025)', 'Autres données 2026 (régulateur, presse)'],
             ['Algérie', '0,035', 'Fin de la subvention du gaz au-delà de 200 M m³/an (2025-2026), 100 M m³ en 2027-2028, 40 M m³ à partir de 2029'],
-            ['Égypte', '0,038', 'Gaz industriel « autres industries » 6,50-6,75 $/MMBtu (05/2026) ; tarif commercial jusqu\'à 2,79 EGP/kWh (07/2026) — contradiction avec GPP'],
-            ['Nigeria', '0,050', 'Band A NERC 209,5 NGN/kWh ; diesel 1 800-1 900 NGN/l ; effondrements du réseau (01/2026) — GPP sous-estime le coût réel'],
+            ['Égypte', '0,038', Paragraph('Gaz industriel « autres industries » 6,50-6,75 $/MMBtu (05/2026) ; tarif commercial jusqu\'à 2,79 EGP/kWh (07/2026), contre 1,94 EGP pour GPP' + ref('C11'), TD)],
+            ['Nigeria', '0,050', Paragraph('Band A NERC 209,5 NGN/kWh (≈ 0,14 $), contre 65,8 NGN pour GPP' + ref('C10') + ' ; diesel 1 800-1 900 NGN/l ; effondrements du réseau (01/2026)', TD)],
             ['Afrique du Sud', '0,105', '+8,76 % (Eskom, 04/2026) ; 476 jours consécutifs sans délestage'],
             ['Maroc', '0,110', 'Moyenne tension 0,74-1,42 DH/kWh selon la plage horaire ; refonte ANRE prévue au 01/03/2027'],
             ['Tunisie', '0,116', 'Haute tension : 179-332 millimes/kWh selon la plage (STEG, tarif 2022)'],
-            ['Ghana', '0,137', '+3,49 % au 01/07/2026 ; délestages contestés (contradiction presse / ECG)'],
+            ['Ghana', '0,137', Paragraph('+3,49 % au 01/07/2026 ; plan de délestage de 800 MW annoncé par la presse, démenti par ECG' + ref('C12'), TD)],
             ['Kenya', '0,175', 'Gazole 242,92 KES/l en mai-juin 2026, 222,86 en juillet-août'],
             ['Côte d\'Ivoire', '0,235', 'Plus haut niveau de l\'échantillon (à recouper avec la grille CIE/ANARE)']]
-    fl.append(Paragraph(f'Tableau {num}.1 — Énergie industrielle : un écart de 1 à 7 entre pays', CAP))
+    fl.append(Paragraph(f'Tableau {num}.1 — Énergie industrielle : un écart de 1 à 7 entre pays selon GPP (les tarifs réglementaires divergent, voir la colonne de droite)', CAP))
     fl.append(table(rows, [26 * mm, 40 * mm, CW - 66 * mm], font=7))
-    fl.append(Paragraph('Source : GlobalPetrolPrices, tarif « business » (1 GWh/an, taxes comprises), décembre 2025 ; régulateurs et presse cités (2026). À lire comme des ordres de grandeur.', SRC))
+    fl.append(Paragraph('Source : GlobalPetrolPrices, tarif « business » (1 GWh/an, taxes comprises), daté de décembre 2025 par les pages pays mais présenté comme une « moyenne 2023-2026 » sur d\'autres pages du site (ambiguïté non levée) ; régulateurs et presse cités (2026). À lire comme des ordres de grandeur.', SRC))
     fl.append(h2(f'{num}.1 Emballages et choc d\'Ormuz'))
     fl += bullets([
         '<b>Fer-blanc</b> : 850-1 200 $/t (moyenne mondiale, 06/2026) ; boîte alimentaire de 400 g : 0,20-0,35 $ l\'unité en Afrique (estimation commerciale, secondaire). '
@@ -178,7 +185,7 @@ def ch_couts(num=8):
             ['SIFCA, Bidco, Promasidor', 'Chiffres non vérifiés', 'Palme, huiles, lait en poudre ; 5 à 36 pays', 'À vérifier']]
     fl.append(table(rows, [36 * mm, 38 * mm, 58 * mm, CW - 132 * mm], font=7))
     fl += bullets([
-        '<b>Cajou</b> : 732 000 t transformées en Afrique de l\'Ouest en 2025 (+51 %), dont ≈ 600 000 t en Côte d\'Ivoire (taux de transformation de 43 %) — African Cashew Alliance.',
+        '<b>Cajou</b> : 732 000 t transformées en Afrique de l\'Ouest en 2025 (+51 %), dont ≈ 600 000 t en Côte d\'Ivoire selon l\'African Cashew Alliance, 659 579 t selon une autre source' + ref('C13') + ' (taux de transformation de 43 %).',
         '<b>Cacao</b> : ≈ 42 % des fèves ivoiriennes broyées localement (capacité ≈ 900 kt) ; broyage mondial en baisse à 4,60 Mt en 2024/25 (ICCO).',
         '<b>Huile de palme</b> : le Nigeria consomme 2,1-2,2 Mt d\'huiles pour ≈ 1,9 Mt produites ; Presco et Okomu investissent dans l\'extension des plantations.',
         '<b>Financements</b> : protocole Afreximbank-ZLECAf-PAM d\'au moins 2 Md$ sur 3 ans pour agro-transformateurs et négociants ; alliance SAPZ de 3 Md$ (BAD, Afreximbank).'], sym='●')
@@ -198,7 +205,7 @@ def ch_formalites(num=6):
             ['Afrique du Sud', 'SARS (enregistrement préalable)', 'Premiers envois certifiés le 31/01/2024', 'n.d.'],
             ['Ghana', 'Douane GRA + GNCCI (visite d\'usine si transformation)', 'Portail ICUMS', '≈ 5 jours ouvrés (produits entièrement obtenus)'],
             ['Nigeria', 'Nigeria Customs Service', 'Portail Nigeria Trade Hub', '24 h (09/2026, contre > 5 jours)'],
-            ['Algérie', 'Contradiction : douane (DGD) ou CACI puis visa douanier', 'n.d.', 'Validité 6 ou 12 mois selon les sources']]
+            ['Algérie', Paragraph('Deux versions : douane (DGD) ou CACI puis visa douanier' + ref('C23'), TD), 'n.d.', 'Validité 6 ou 12 mois selon les sources']]
     fl.append(Paragraph(f'Tableau {num}.1 — Preuve d\'origine : autorités et délais', CAP))
     fl.append(table(rows, [24 * mm, 64 * mm, 50 * mm, CW - 138 * mm], font=7))
     fl.append(Paragraph('Sources : tralac (guide Égypte, 07/2026) ; TelQuel (20/06/2024) ; KRA ; SARS ; ODI (09/2024) ; allAfrica (11/09/2026) ; DGD (site indisponible le 29/09/2026) et CACI. '
@@ -241,8 +248,8 @@ def ch_intrants_marche(num=1):
           P("L'Afrique produit de l'engrais mais en utilise peu, importe son maïs et son soja pour nourrir une filière avicole en forte croissance, et mécanise lentement. "
             "Le choc d'Ormuz de 2026 a rappelé la dépendance du continent aux intrants importés du Golfe.", LEAD)]
     fl.append(kpis([('< 25 kg/ha', 'engrais utilisés en Afrique (2024), contre 135 kg/ha dans le monde ; 17-19 kg/ha en Afrique subsaharienne', 'UA, sommet de Nairobi (05/2024)'),
-                    ('64,2 Mt', 'aliments composés produits en Afrique en 2025 (+11,5 %, la plus forte croissance mondiale)', 'Alltech Agri-Food Outlook 2026'),
-                    ('3,5-5,2 Md$', 'marché africain des machines agricoles (2025), selon les cabinets', 'Mordor et autres (secondaire)'),
+                    ('64,2 Mt', 'aliments composés produits en Afrique en 2025 (+11,5 % ; « +12 % » dans un autre extrait)' + ref('C22'), 'Alltech Agri-Food Outlook 2026'),
+                    ('3,5-5,2 Md$', 'marché africain des machines agricoles (2025), selon les cabinets' + ref('C19'), 'Mordor et autres (secondaire)'),
                     ('< 170 M$', 'levées de l\'agtech africaine en 2025 (−20 %)', 'Briter, 03/2026')], cols=4))
     fl.append(Spacer(1, 4))
     M = CB['intrants_marches']
@@ -259,8 +266,8 @@ def ch_intrants_marche(num=1):
     fl += bullets([
         '<b>Objectifs</b> : 50 kg/ha est la cible d\'Abuja (2006) ; le sommet de Nairobi (05/2024) vise le triplement de la production et de l\'utilisation d\'engrais d\'ici 2034.',
         '<b>Producteurs</b> : OCP (114 Md MAD de CA en 2025, Afrique = 18 % du CA engrais au S1 2025) ; Dangote (3 Mt/an d\'urée au Nigeria, projet de 3 Mt à Gode en Éthiopie) ; '
-        'Égypte (3,54 Mt d\'azotés exportés en 2024, taxe à l\'export en 05/2026) ; Algérie (3,6 Mt/an de capacité d\'urée ; 3,53 Mt d\'azotés exportés en 2023).',
-        '<b>Prix</b> : fermeture d\'Ormuz le 28/02/2026 ; urée de ≈ 400 à 850 $/t en avril (OMC), 453 $/t en juin ; mais 933 à 1 059 $/t rendue en Tanzanie, au Malawi et en Afrique du Sud en juillet (AMIS, à vérifier). '
+        'Égypte (3,54 Mt d\'azotés exportés en 2024, taxe à l\'export en 05/2026) ; Algérie (3,2 à 3,6 Mt/an de capacité d\'urée selon la capacité attribuée à Sorfert' + ref('C16') + ' ; 3,53 Mt d\'azotés exportés en 2023).',
+        '<b>Prix</b> : fermeture d\'Ormuz le 28/02/2026 ; urée de ≈ 400 à 850 $/t en avril (OMC), puis 453 $/t en juin (moyenne OMC) contre 630 $/t (FOB Moyen-Orient, IFDC)' + ref('C14') + ' ; ' '933 à 1 059 $/t rendue en Tanzanie, au Malawi et en Afrique du Sud en juillet (AMIS, à vérifier). '
         '8 pays africains parmi les 18 économies les plus vulnérables (OMC, 10/07/2026).',
         '<b>Subventions</b> : Kenya (sac de 50 kg à 2 500 puis 2 000 KES ; 32,2 millions de sacs en 4 saisons) ; Nigeria (1,1 Mt visées en 2026) ; Éthiopie (plafond de 84 Md ETB en 2025/26).'], sym='●')
     return fl
@@ -308,7 +315,7 @@ def ch_intrants_besoins(num=3):
              ['Irrigation localisée', 'Maroc : > 600 000 ha au goutte-à-goutte ; SunCulture : > 85 000 systèmes solaires', 'Agrimaroc ; Ecofin, 09/2026']]
     fl.append(Paragraph(f'Tableau {num}.1 — Où se trouve la demande d\'intrants', CAP))
     fl.append(table(rows, [40 * mm, 92 * mm, CW - 132 * mm], font=7))
-    fl.append(Paragraph('Parc de tracteurs : « moins de 2 pour 1 000 ha » (FAO, 2019) et « 28 pour 1 000 ha » (autre étude) sont incompatibles — aucun chiffre n\'est retenu.', SRC))
+    fl.append(Paragraph('Parc de tracteurs : « moins de 2 pour 1 000 ha » (FAO, 2019) et « 28 pour 1 000 ha » (autre étude) sont incompatibles ; les deux sont exposés, sans arbitrage' + ref('C18') + '.', SRC))
     fl.append(h2(f'{num}.1 Hubs de distribution et partenariats public-privé'))
     fl += bullets([
         '<b>Zones spéciales de transformation agro-industrielle (SAPZ)</b> : 538 M$ pour la phase 1 au Nigeria (BAD 210 M$, BID 150 M$, FIDA 100 M$, FVC 60 M$) ; 28 États candidats à la phase 2 ; alliance SAPZ de 3 Md$.',
@@ -400,7 +407,8 @@ def about_edition(ed):
           P(f"Ce document est l'une des quatre éditions par profil d'opérateur du rapport Agriculture & agroalimentaire ZLECAf (T3 2026). Il s'adresse aux {e['public']}. "
             "Les quatre éditions partagent un tronc commun (cadre ZLECAf, tarifs, règles d'origine) et une même base de cibles vérifiées ; chacune ne garde que ce qui est utile à son public."),
           P("Les données proviennent de la plateforme SaaS ZLECAf (barèmes nationaux, offres de l'<i>e-Tariff Book</i>, règles d'origine de l'Appendice IV, calculateurs des taux servis, "
-            "formalités recensées) et des flux OEC/BACI 2023-2024, croisés avec des sources publiques datées. Les chiffres de source secondaire sont signalés comme tels.")]
+            "formalités recensées) et des flux OEC/BACI 2023-2024, croisés avec des sources publiques datées. Les chiffres de source secondaire sont signalés comme tels. "
+            "Quand deux sources divergent, les deux valeurs sont données et la contradiction est exposée en annexe 4, sans être tranchée.")]
     if ed in FILIERES:
         from ch_front import SECTORS_TABLE
         rows = [['N°', 'Filière', 'Chapitres / positions SH']] + [list(r) for r in SECTORS_TABLE if f'S{r[0]}' in FILIERES[ed]]

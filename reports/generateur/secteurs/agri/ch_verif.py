@@ -135,11 +135,13 @@ def methode_verif():
         '<b>1. Le taux servi, ligne par ligne.</b> Chaque SH6 est évaluée sur toutes ses lignes nationales (8 à 10 chiffres) par les calculateurs du SaaS. '
         'Une préférence qui ne couvre qu\'une partie des lignes est signalée (exemple : pâtes au Maroc, seules les 2 lignes déjà à 2,5 % sont libéralisées, les 2 lignes à 40 % restent au NPF).',
         f'<b>2. Un marché réel.</b> La destination doit importer au moins {s["marche"] / 1e6:.0f} M$ par an du produit (moyenne OEC/BACI {s["annees"][0]}-{s["annees"][-1]}). '
-        'Exemple : oranges égyptiennes au Maroc — 40 points de marge, mais 1,4 M$ importés par an (et 51 M$ exportés) : cible rejetée. '
+        'Exemple : oranges égyptiennes au Maroc — 40 points de marge, mais 1,4 M$ importés par an : cible rejetée (le Maroc exporte 51 M$ d\'oranges et 562 M$ d\'agrumes, surtout des petits agrumes). '
+        'Quand la SH6 citée est marginale mais que sa position SH4 pèse davantage, l\'écart est exposé comme une contradiction de nomenclature, sans être tranché. '
         'Si la destination exporte davantage qu\'elle n\'importe, la cible est classée « créneau » et non « débouché » (exemple : dattes algériennes en Égypte, 17 M$ importés contre 101 M$ exportés).',
         f'<b>3. Une offre réelle.</b> L\'origine doit exporter au moins {s["offre"] / 1e6:.0f} M$ par an du produit ; une origine qui importe plus de la moitié de ce qu\'elle exporte est signalée (réexportation possible, origine à prouver).',
         '<b>4. Les barrières non tarifaires.</b> Les formalités recensées par le SaaS (F.A.P algériennes, formalités douanières égyptiennes) sont affichées ; les plus lourdes (licences, autorisations techniques, monopoles) sont signalées.',
-        '<b>5. Le motif « pourquoi maintenant » est calculé</b> (taux 2026 du calendrier), jamais saisi à la main.'],
+        '<b>5. Le motif « pourquoi maintenant » est calculé</b> (taux 2026 du calendrier), jamais saisi à la main.',
+        '<b>6. Les contradictions sont exposées, pas tranchées.</b> Quand deux sources divergent, les deux valeurs sont données et l\'écart est détaillé en annexe (codes C et N).'],
         bg=GREEN_L, bar=GREEN, title_color=GREEN)
 
 
@@ -150,6 +152,10 @@ def errata(n=None, filtre_chap=None):
     lst = [x for x in CB['audit'] if not filtre_chap or filtre_chap[0] <= x['hs'][:2] <= filtre_chap[1]]
     for x in lst[:n]:
         mot = fr('; '.join(x['motifs'])) or 'confirmée'
+        if x.get('sh4') and x['verdict'] != 'RETENUE' and any('trop petit' in m for m in x['motifs']) and x['sh4']['imp_dest'] >= CB['seuils']['marche']:
+            from contradictions import code_nomenclature, ref
+            mot += (f" <font color='#C0493D'>⚠ mais la position {x['hs'][:4]} pèse {fmt_m(x['sh4']['imp_dest'])} M$ importés</font>"
+                    + ref(code_nomenclature(x['d'], x['hs'])))
         rows.append([Paragraph(f"{PAYS.get(x['o'], x['o'])} → {DEST.get(x['d'], PAYS.get(x['d'], x['d']))} : {lib(x['hs'])} ({sh(x['hs'])})", TD),
                      Paragraph(f"{fmt_t(x['npf'])} → {fmt_t(x['pref'])} % [{x['lignes']}]", TD),
                      Paragraph(f"<b><font color='{col[x['verdict']]}'>{x['verdict'].capitalize()}</font></b>", TD), Paragraph(mot, st('er', fontSize=6.6, leading=8.2))])

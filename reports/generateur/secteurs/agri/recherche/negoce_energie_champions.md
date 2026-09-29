@@ -119,7 +119,7 @@
 | Côte d'Ivoire | 0,235 | La plus élevée de l'échantillon (à recouper avec la grille CIE/ANARE) |
 | Ghana | 0,137 | PURC : **+3,49 %** au 01/07/2026 pour toutes les catégories, dont le *special load tariff* (hypothèses : 11,2228 GHS/USD ; gaz à 7,97 USD/MMBtu ; mix 79,1 % thermique). Tarifs inchangés au T4 2026. Sources : https://www.citinewsroom.com/2026/06/electricity-tariffs-up-3-49-water-0-85-effective-july-1/ ; https://www.myjoyonline.com/purc-keeps-electricity-and-water-tariffs-unchanged-for-fourth-quarter-of-2026/ (secondaire) |
 
-⚠ Deux pages de GPP (liste, et Égypte/Nigeria) présentent les chiffres comme des « moyennes 2023-2026 », alors que les pages pays les datent de décembre 2025. On retient **décembre 2025** (pages pays : https://www.globalpetrolprices.com/Egypt/electricity_prices/, https://www.globalpetrolprices.com/Nigeria/electricity_prices/).
+⚠ Deux pages de GPP (liste, et Égypte/Nigeria) présentent les chiffres comme des « moyennes 2023-2026 », alors que les pages pays les datent de décembre 2025. Les deux datations sont possibles et ne sont pas tranchées ; le rapport cite « GPP, décembre 2025 », date des pages pays, en signalant l'ambiguïté (pages pays : https://www.globalpetrolprices.com/Egypt/electricity_prices/, https://www.globalpetrolprices.com/Nigeria/electricity_prices/).
 
 ### B2. Gaz industriel et délestages
 

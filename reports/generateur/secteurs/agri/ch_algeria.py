@@ -116,7 +116,9 @@ def ch_algeria():
     fl += tableau_cibles(filtre(CB['classement'], dest=['DZA'], n=12), CB['classement'],
                          'Tableau 9.2 — Sourcings africains vérifiés pour l\'Algérie : droit de douane NPF → ZLECAf 2026, marché et offre réels')
     fl.append(Paragraph('Le DAPS éventuel est en outre exonéré sous ZLECAf (listes A et B). La Côte d\'Ivoire, l\'Éthiopie et l\'Ouganda ne sont pas activés en Algérie : leurs produits (café, cacao, bananes) restent au NPF. '
-                        'Abandonnés après vérification (édition précédente) : thé noir du Rwanda, de Tanzanie et du Kenya, huile de tournesol de Tanzanie, poulet congelé d\'Égypte — marché algérien de la position inférieur à 5 M$ par an (OEC 2023-2024).', SRC))
+                        'Écarts exposés, non tranchés : les cibles publiées dans l\'édition précédente sur le thé noir en vrac (0902.40) et les morceaux de poulet congelés (0207.14) '
+                        f"visaient des sous-positions que l\'Algérie importe peu, alors que la position entière pèse davantage (thé : {fmt_m(CB['reperes']['DZA_imp_0902'])} M$, surtout du thé vert, que les fournisseurs africains activés n\'exportent presque pas). "
+                        'Les deux lectures sont données en annexe 4 (codes N). L\'huile de tournesol raffinée (1512.19) reste sous le seuil même pour la position entière (4,6 M$).', SRC))
     fl.append(PageBreak())
     fl.append(h2('9.3 Une industrie agroalimentaire en essor et ses champions'))
     fl.append(kpis([
@@ -209,7 +211,7 @@ def ch_algeria():
         '<b>Importateurs</b> : sourcer en Afrique les produits où la préférence, le marché et l\'offre sont vérifiés — ' +
         ', '.join(f"{lib(x['hs']).lower()} ({PAYS[x['o']]})" for x in imp_dz) +
         ' — en exigeant le certificat d\'origine ZLECAf, seul moyen d\'obtenir à la fois la baisse du droit et l\'exonération du DAPS. '
-        'Le thé, le poulet congelé et l\'huile de tournesol, cités dans l\'édition précédente, sont abandonnés : marché algérien de la position citée inférieur à 5 M$ par an (thé noir en vrac : 0,7 M$ ; poulet congelé : 0,2 M$ ; huile de tournesol raffinée : 1,4 M$), voir l\'audit.',
+        'Le thé mérite une lecture double : l\'Algérie n\'importe que 0,7 M$ de thé noir en vrac, la sous-position citée dans l\'édition précédente, mais ' + f"{fmt_m(CB['reperes']['DZA_imp_0902'])} M$ de thé au total, surtout du thé vert, que le Kenya, le Rwanda et la Tanzanie n\'exportent presque pas. " + 'Même écart pour le poulet congelé : 0,2 M$ en morceaux, 10 M$ en poulets entiers (sans marge servie, annexe 4). L\'huile de tournesol reste sous le seuil même pour la position entière (4,6 M$ par an).',
         '<b>Exportateurs</b> : la seule cible directe vérifiée est l\'Égypte pour les boissons sucrées (30 → 0 %, sous réserve d\'un sucre originaire). Dattes, sucre et farine vers l\'Égypte sont des créneaux '
         '(l\'Égypte est exportatrice nette) ; le Maroc maintient 40 % sur les dattes et ne libéralise qu\'une partie des lignes de pâtes et de biscuits. Les débouchés de volume restent hors préférence : '
         'Niger, Mauritanie, Libye, Tunisie, et l\'urée en Afrique australe et de l\'Est.',

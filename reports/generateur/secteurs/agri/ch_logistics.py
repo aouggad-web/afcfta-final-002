@@ -1,4 +1,5 @@
 from layout import *
+from contradictions import ref
 C = S + 'charts/'
 
 def landed(fob, t_per_evp, freight_evp, thc_o, thc_d, other_evp, ins_rate, war_cargo, duty, levies, days, fin=0.10):
@@ -161,7 +162,7 @@ def ch_logistics():
     fl.append(P("Même lorsque la destination applique le droit NPF à toutes les origines, un fournisseur africain peut l'emporter par la distance, le délai, le coût "
                 "de production ou la défaillance d'un concurrent pris dans une zone de conflit. Ces flux sont à saisir dès 2026, sans attendre l'ouverture des préférences."))
     rows = [['Flux', 'Régime à destination', 'Concurrent', 'Avantage africain', 'Indicateur'],
-            ['Conserves de poisson marocaines → Côte d\'Ivoire, Sénégal, Ghana', 'NPF CEDEAO pour tous (20 %)', 'Thaïlande, Chine', 'Distance (≈ 2 700-3 250 nm contre > 8 500), délai −30 j', 'Conserves (SH 1604) : Ghana 80 M$, Côte d\'Ivoire 46 M$, Sénégal 14 M$ ; le Maroc y vend déjà 27 M$ (BACI 2023-2024)'],
+            ['Conserves de poisson marocaines → Côte d\'Ivoire, Sénégal, Ghana', 'NPF CEDEAO pour tous (20 %)', 'Thaïlande, Chine', 'Distance (≈ 2 700-3 250 nm contre > 8 500), délai −30 j', Paragraph('Côte d\'Ivoire : 848 M$ de « poisson transformé » (UNIDO 2023) mais 46 M$ de conserves SH 1604 (BACI 2023-2024) ; Ghana 80 M$, Sénégal 14 M$ ; le Maroc y vend déjà 27 M$' + ref('C25'), TD)],
             ['Concentré de tomate égyptien → Nigeria, Ghana', 'NPF CEDEAO', 'Chine (≈ 70 % du marché africain)', 'Port-Saïd–Lagos ≈ 5 100 nm contre ≈ 10 500 depuis Shanghai ; tomate locale abondante', 'Afrique de l\'Ouest : > 61 % des importations africaines de concentré'],
             ['Maïs, riz de Tanzanie, d\'Ouganda, de Zambie → Kenya, Malawi, Zimbabwe', 'Franchise CAE / SADC ; TEC de 35-50 % pour les tiers', 'Mer Noire, Asie, Amériques', 'Transport terrestre ; pas de surprime mer Noire ni de détour', 'Maïs de la Zambie −54 % en 2024 : flux régionaux à sécuriser'],
             ['Engrais phosphatés (Maroc) et urée (Nigeria, Égypte) → Afrique de l\'Est et de l\'Ouest', 'Droits nuls ou faibles', 'Golfe (Ormuz fermé)', 'Aucune exposition à Ormuz ; l\'Afrique est exportatrice nette (14,7 Md$)', 'Urée : 455 → 850 $/t (avril 2026)'],

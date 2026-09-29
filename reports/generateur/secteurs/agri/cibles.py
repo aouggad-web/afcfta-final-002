@@ -179,3 +179,35 @@ for hs in list(dict.fromkeys(top + EXTRAS.get(F, []))):
 json.dump(res, open(os.environ['RG_DIR'] + '/cibles.json', 'w'), ensure_ascii=False, indent=1)
 for x in res['focus']['exportations']:
     print(f"FOCUS {x['verdict']:8} {x['d']} {x['hs']} {x['npf']}->{x['pref']} [{x['lignes']}] imp {x['imp_dest']/1e6:6.1f} exp_o {x['exp_orig']/1e6:6.1f} {'; '.join(x['motifs'])[:90]}")
+
+# Contexte de nomenclature des cibles auditées : la SH6 citée peut être marginale alors que la position SH4 porte un vrai commerce
+# (ex. thé noir en vrac 0902.40 contre thé vert 0902.20 en Algérie). L'écart est exposé, pas tranché : verdict sur la SH6 citée,
+# et verdict séparé sur la sous-position voisine la plus importée.
+for a in res['audit']:
+    imp_d, exp_o = m.imp(a['d']), m.exp(a['o'])
+    sous = sorted(((v, h) for h, v in imp_d.items() if h[:4] == a['hs'][:4]), reverse=True)
+    a['sh4'] = dict(imp_dest=sum(v for v, _ in sous), exp_orig=sum(v for h, v in exp_o.items() if h[:4] == a['hs'][:4]),
+                    principales=[(h, v) for v, h in sous[:3]])
+    a['voisine'] = None
+    for v, h in sous:
+        if h != a['hs'] and v >= vc.SEUIL_MARCHE:
+            n, r, src, k, nl = pref_ligne(a['o'], a['d'], h)
+            vv, motifs, ind = vc.verdict(a['o'], a['d'], h, n, r, m, (k, nl))
+            a['voisine'] = dict(hs=h, npf=n, pref=r, lignes=f'{k}/{nl}', verdict=vv, motifs=motifs, **ind)
+            break
+
+# Repères de marché cités dans le texte (confrontés à d'autres sources dans le registre des contradictions)
+def _sh(pays, pre, sens):
+    d = m.imp(pays) if sens == 'imp' else m.exp(pays)
+    return sum(v for h, v in d.items() if h.startswith(pre))
+
+
+res['reperes'] = {'MAR_exp_080510': _sh('MAR', '080510', 'exp'), 'MAR_exp_0805': _sh('MAR', '0805', 'exp'),
+                  'CIV_imp_1604': _sh('CIV', '1604', 'imp'), 'CIV_imp_0303': _sh('CIV', '0303', 'imp'), 'CIV_imp_0304': _sh('CIV', '0304', 'imp'),
+                  'DZA_imp_0902': _sh('DZA', '0902', 'imp')}
+json.dump(res, open(os.environ['RG_DIR'] + '/cibles.json', 'w'), ensure_ascii=False, indent=1)
+for a in res['audit']:
+    if a['voisine']:
+        w = a['voisine']
+        print(f"NOMENCL {a['o']}->{a['d']} {a['hs']} {a['verdict']} imp6 {a['imp_dest']/1e6:.1f} imp4 {a['sh4']['imp_dest']/1e6:.1f} | voisine {w['hs']} {w['verdict']} {w['npf']}->{w['pref']} imp {w['imp_dest']/1e6:.1f} exp_o {w['exp_orig']/1e6:.1f} {w['motifs'][:1]}")
+print(res['reperes'])
