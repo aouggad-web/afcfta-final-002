@@ -1,0 +1,162 @@
+{
+ "schema_version": 1,
+ "titre": "Rapprochement des barèmes ZLECAf de la Tunisie — texte TA n°016/2023, Tarif Web 2026 de la douane et e-Tariff Book",
+ "destination_iso3": "TUN",
+ "etabli_le": "2026-09-29",
+ "verified_at": "2026-09-29",
+ "sources": {
+  "texte_national": {
+   "texte_extrait": "sources/TUN_texte_016_2023_2023-04-06.lecture-ara.txt",
+   "sha256": "cdebe29a57c00f8cc7f3a77b566783e852ae37eb5fd8157f5624c1cf107040a9",
+   "note": "Transcription du texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), déjà au dépôt ; les octets du PDF original ne sont toujours pas archivés (voir TUN_application_2026-09-13.json)."
+  },
+  "tarif_national": {
+   "artifact": "backend/data/crawled/TUN_tariffs.json",
+   "document_non_archive": "Jeu de données du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture, chemin du dépôt en clair.",
+   "sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
+   "source_url": "https://www.douane.gov.tn/tarifweb2026/",
+   "extracted_at": "2026-08-30",
+   "lignes": 17542
+  },
+  "instantane_ua": {
+   "artifact": "backend/data/official_preferential/TUN_afcfta_etariff_2026-08-17.json.gz",
+   "document_non_archive": "Jeu de données du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture, chemin du dépôt en clair.",
+   "sha256": "ec39414a3b18f866c10139bffff55f2cd14337097ec70efb4cfd1fd96fbcc573",
+   "source_url": "https://etariff.au-afcfta.org/",
+   "source_revision_date": "2022-09-20T00:00:00",
+   "lignes_par_calendrier": 9373,
+   "categories": {
+    "A": 8223,
+    "B": 804,
+    "C": 346
+   }
+  },
+  "fiche_determination": {
+   "artifact": "backend/data/legal_refs/zlecaf_application/TUN_application_2026-09-13.json",
+   "document_non_archive": "Fiche du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture.",
+   "sha256": "b94f091b3ec28c42e5258e7b701dfe49089a614ffdd04855e35423e367d70252"
+  }
+ },
+ "regle": {
+  "calendrier_du_texte": {
+   "article": "Texte TA n°016/2023, section V-2 (à l'importation)",
+   "verbatim_ar": "یُطبّق التّخفیض التّدریجي للمعالیم الدّیوانیّة والأداءات ذات الأثر المماثل المفروضة في تونس، اعتمادا على النّسب الأساسیّة لسنة 2019 […] كنسب مرجعیّة",
+   "traduction_fr": "La réduction progressive des droits de douane et des taxes d'effet équivalent perçus en Tunisie s'applique sur la base des taux de base de 2019, pris comme taux de référence.",
+   "liste_A_5_ans_MUS_RWA_EGY_TZA": {
+    "2021": 80,
+    "2022": 60,
+    "2023": 40,
+    "2024": 20,
+    "2025": 0
+   },
+   "liste_A_10_ans_CMR_GHA_KEN": {
+    "2021": 90,
+    "2022": 80,
+    "2023": 70,
+    "2024": 60,
+    "2025": 50,
+    "2026": 40,
+    "2027": 30,
+    "2028": 20,
+    "2029": 10,
+    "2030": 0
+   },
+   "liste_B_5_ans_MUS_RWA_EGY_TZA": {
+    "2026": 80,
+    "2027": 60,
+    "2028": 40,
+    "2029": 20,
+    "2030": 0
+   },
+   "liste_B_8_ans_CMR_GHA_KEN": {
+    "2026": 87.5,
+    "2027": 75,
+    "2028": 62.5,
+    "2029": 50,
+    "2030": 37.5,
+    "2031": 25,
+    "2032": 12.5,
+    "2033": 0
+   },
+   "unite": "pourcentage du droit de base 2019 à appliquer (coefficient), pas un taux de droit",
+   "portee": "Le droit ZLECAf dû à l'importation en Tunisie est le coefficient de l'année, appliqué au droit de base 2019 de la ligne ; le coefficient dépend de la liste (A ou B) et du groupe de pays (5 ou 10 ans pour la liste A, 5 ou 8 ans pour la liste B)."
+  }
+ },
+ "constats": {
+  "1_le_tarif_web_2026_applique_le_texte": {
+   "resultat": "OUI, ligne à ligne. Le Tarif Web 2026 publie, sous la zone « ZLECAf », exactement les coefficients 2026 du texte, et seulement eux.",
+   "motifs_observes": [
+    {
+     "lignes": 11806,
+     "CMR_GHA_KEN_NGA_ZAF": "40 %",
+     "TZA": "0 %",
+     "MUS_RWA": "non publiés",
+     "lecture": "liste A — coefficient 2026 du groupe à 10 ans (40) ; groupe à 5 ans échu (0)"
+    },
+    {
+     "lignes": 1018,
+     "CMR_GHA_KEN": "40 %",
+     "TZA": "0 %",
+     "NGA_ZAF": "non publiés",
+     "MUS_RWA": "non publiés",
+     "lecture": "liste A, sans le Nigeria ni l'Afrique du Sud"
+    },
+    {
+     "lignes": 1148,
+     "CMR_GHA_KEN_NGA_ZAF": "87.5 %",
+     "TZA_MUS_RWA": "80 %",
+     "lecture": "liste B — coefficients 2026 : 87,5 (8 ans) et 80 (5 ans)"
+    },
+    {
+     "lignes": 103,
+     "CMR_GHA_KEN": "87.5 %",
+     "TZA_MUS_RWA": "80 %",
+     "NGA_ZAF": "non publiés",
+     "lecture": "liste B, sans le Nigeria ni l'Afrique du Sud"
+    },
+    {
+     "lignes": 3467,
+     "toutes_origines": "aucune préférence ZLECAf publiée",
+     "lecture": "liste C (exclusions) ou lignes non couvertes"
+    }
+   ],
+   "portee": "C'est une preuve d'APPLICATION à l'importation sur source officielle de la douane : les coefficients du texte TA n°016/2023 sont servis au tarif, par origine et par ligne. Ils confirment aussi quel groupe s'applique à quel pays : 10 ans pour le Cameroun, le Ghana et le Kenya, 5 ans pour la Tanzanie, Maurice et le Rwanda."
+  },
+  "2_le_classement_a_b_c_de_l_e_tariff_concorde": {
+   "methode": "Rattachement des 17 542 lignes nationales (11 chiffres) aux lignes e-Tariff par leurs 9 premiers chiffres : 13 446 rattachées, 4 096 sans correspondance (nomenclatures différentes).",
+   "resultat": {
+    "e_tariff_A": {
+     "motif_A_au_tarif": 9109,
+     "aucune_preference_au_tarif": 2596
+    },
+    "e_tariff_B": {
+     "motif_B_au_tarif": 1175,
+     "motif_A_au_tarif": 1,
+     "aucune_preference_au_tarif": 60
+    },
+    "e_tariff_C": {
+     "aucune_preference_au_tarif": 505
+    }
+   },
+   "lecture": "Aucune ligne classée A par l'e-Tariff ne reçoit le motif B au tarif, et aucune ligne C ne reçoit de préférence. Une seule contradiction A/B (ligne classée B, servie en A). Le classement A/B/C de l'e-Tariff peut donc servir de classement de l'offre tunisienne, sous réserve des 2 656 lignes A ou B sans préférence publiée."
+  },
+  "3_le_calendrier_par_pays_de_l_e_tariff_contredit_le_texte": {
+   "e_tariff": "calendrier 1 (liste A sur 5 ans, liste B sur 10 ans) pour CM, GH, KE, NG, ZA, EG, MU… ; calendrier 2 (liste A sur 10 ans, liste B sur 13 ans) pour RW, TZ et les autres PMA",
+   "texte_et_tarif": "10 ans pour CMR, GHA, KEN ; 5 ans pour MUS, RWA, EGY, TZA ; liste B sur 5 ou 8 ans à partir de 2026",
+   "decision": "Le texte national et le Tarif Web font foi. Le calendrier par pays de l'e-Tariff n'est PAS utilisable pour la Tunisie ; seul son classement A/B/C l'est."
+  },
+  "4_le_droit_de_base_2019_reste_a_etablir": {
+   "resultat": "NON ÉTABLI. Le taux de base de l'e-Tariff est égal au droit NPF actuel du Tarif Web sur 7 929 lignes, supérieur sur 909 et inférieur sur 3 915 (693 non comparables).",
+   "exemple": "01061100003 : base e-Tariff 36 %, NPF actuel 15 %, coefficient ZLECAf publié 40 %.",
+   "lecture": "Rien dans le dépôt ne permet d'affirmer que le taux de base de l'e-Tariff est le « droit de base 2019 » visé par le texte. Sans ce droit ligne à ligne, le droit ZLECAf dû (coefficient × droit de base 2019) ne peut pas être calculé."
+  }
+ },
+ "verdict": "Le texte TA n°016/2023 est appliqué au Tarif Web 2026 de la douane, par origine et par ligne. Le classement A/B/C de l'e-Tariff concorde avec le tarif, mais son calendrier par pays est faux pour la Tunisie. Restent bloquants pour tout calcul : (1) le droit de base 2019 ligne à ligne ; (2) les 2 596 lignes classées A et 60 lignes classées B par l'e-Tariff sans préférence ZLECAf au Tarif Web ; (3) la liste nominative des taxes d'effet équivalent visées par la section V du texte ; (4) l'acte qui ajoute le Nigeria et l'Afrique du Sud. Niveau inchangé : INSTRUMENT_VERIFIE_BAREME_MANQUANT. Aucun changement de calcul.",
+ "decision_du_proprietaire": "À prendre : faire collecter (a) le tarif douanier tunisien en vigueur en 2019 (source officielle) pour le droit de base ligne à ligne, (b) la liste des taxes d'effet équivalent visées par la section V du texte, (c) l'acte ajoutant le Nigeria et l'Afrique du Sud ; puis trancher le sort des 2 656 lignes A/B sans préférence publiée. Aucun calcul avant ces quatre points.",
+ "ne_tranche_pas": [
+  "Les 2 596 lignes classées A et les 60 lignes classées B par l'e-Tariff qui ne portent aucune préférence ZLECAf au Tarif Web.",
+  "L'acte qui ajoute le Nigeria et l'Afrique du Sud (servis au tarif, absents du texte de 2023), et l'absence de l'Égypte de la zone ZLECAf du tarif (0 ligne).",
+  "La non-publication des coefficients de Maurice et du Rwanda sur les lignes de liste A (coefficient 0 attendu en 2026 selon le texte, publié pour la seule Tanzanie).",
+  "La liste nominative des taxes d'effet équivalent visées par la section V du texte."
+ ]
+}
