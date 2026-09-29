@@ -15,6 +15,7 @@ pip install -r reports/generateur/requirements.txt
 python reports/generateur/generer.py pharma                    # focus Algérie (défaut)
 python reports/generateur/generer.py chimie --pays-focus SEN   # focus Sénégal
 python reports/generateur/generer.py agri --etapes pdf         # réassembler le PDF sans réextraire
+python reports/generateur/generer.py agri --edition toutes     # 4 plans d'action par profil (agri)
 python -m pytest reports/generateur/tests
 cd reports/generateur && python -m commun.sources              # état des sources (gratuites / payantes)
 ```
@@ -35,14 +36,42 @@ Chaque rapport contient un chapitre consacré au pays demandé par l'utilisateur
   flux OEC par chapitre et premiers débouchés africains, puis la liste des recherches à mener avant diffusion.
   Le reste du rapport (synthèse, recommandations) garde la rédaction de l'édition : à relire pour un autre pays.
 
+## Plans d'action par profil (agriculture)
+
+`--edition producteurs|industriels|negoce|intrants|toutes` produit, à partir du même tronc commun, un plan d'action
+par type d'opérateur (`Rapport_Agriculture_Agroalimentaire_Plan_<Profil>_ZLECAf_<édition>.pdf`) :
+
+| Édition | Public | Contenu propre | Pages |
+|---|---|---|---|
+| 01-A Producteurs | cultures, élevage, pêche | fiches SH 01-14, cibles brutes, chaîne du froid et semences | 43 |
+| 01-B Industriels | agro-industrie, transformation | fiches SH 15-24, cibles transformées, énergie, emballages, champions | 41 |
+| 01-C Négoce | traders, distributeurs | offres, Top 25, formalités et paiements, logistique, annexe pays | 41 |
+| 01-D Intrants | engrais, aliments, semences, machines | marchés, régimes et homologations, besoins, PPP et hubs | 26 |
+
+Chaque édition garde le pays focus (`--pays-focus`) et renumérote ses chapitres (`secteurs/agri/editions.py`).
+
+**Aucune cible n'est saisie à la main.** `secteurs/agri/cibles.py` (étape d'extraction) confronte chaque couple
+origine × destination × SH6 à trois filtres (`commun/verif_cibles.py`) :
+
+1. taux servi par les calculateurs du SaaS sur **toutes** les lignes nationales (préférence partielle signalée) ;
+2. marché réel : importations de la destination ≥ 5 M$/an (OEC/BACI, moyenne 2023-2024 ; `RG_SEUIL_MARCHE`) ;
+   si la destination exporte plus qu'elle n'importe, la cible est un « créneau », pas un débouché ;
+3. offre réelle : exportations de l'origine ≥ 5 M$/an (`RG_SEUIL_OFFRE`) ; réexportation possible signalée.
+
+Les formalités recensées par le SaaS (F.A.P algériennes, formalités égyptiennes) sont jointes à chaque cible.
+Les cibles de l'édition précédente sont auditées (`AUDIT`) et le verdict est publié. Le pays focus est aussi vérifié
+comme exportateur (`focus` dans `cibles.json`). Cas d'école : oranges égyptiennes au Maroc, 40 points de marge
+mais 1,4 M$ importés par an : cible rejetée.
+
 ## Organisation
 
 ```
-generer.py              CLI : secteur, --pays-focus, --etapes extraction,graphiques,pdf
+generer.py              CLI : secteur, --pays-focus, --edition, --etapes extraction,graphiques,pdf
 commun/polices.py       polices statiques instanciées (noms internes distincts : le gras s'affiche)
 commun/oec.py           client OEC tesseract (BACI HS 2017) avec cache disque, codage SH du module Statistiques
 commun/sources.py       registre des sources gratuites et payantes, clés lues dans l'environnement
 commun/pays_focus.py    chapitre pays focus (module approfondi ou générique)
+commun/verif_cibles.py  verdict des cibles : taux servi × marché réel × offre réelle (OEC/BACI)
 secteurs/<secteur>/     scripts d'extraction, graphiques, chapitres (ch_*.py), layout.py, cover.py, build.py
 secteurs/<secteur>/figees/     données figées de l'édition (extractions ponctuelles, fond de carte, graphique repris)
 secteurs/<secteur>/recherche/  notes de recherche documentaire datées et sourcées (base de faits des chapitres)

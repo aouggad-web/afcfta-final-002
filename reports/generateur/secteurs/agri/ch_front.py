@@ -127,7 +127,7 @@ def ch_recos():
     fl.append(PageBreak())
     return fl
 
-def ch_method():
+def ch_method(edition=False):
     fl = [chapter('A2', 'Annexe 2 — Note de méthodologie')]
     blocks = [
         ('1. Périmètre', "15 filières couvrant les chapitres 01 à 24 du Système harmonisé (tableau p. 2). 54 pays : 40 disposent d'un barème national intégré au SaaS "
@@ -152,6 +152,9 @@ def ch_method():
         ('8. Qualité des données et limites', "Le module Opportunités du SaaS contient des éléments non sourcés (profils de repli, potentiels générés par IA, fichiers de zones franches de type gabarit) : ils n'ont pas été utilisés comme données. "
                                                  "Les chiffres provenant de sources secondaires sont signalés. Les moyennes de lignes ne mesurent pas les flux réels ; une marge préférentielle ne garantit ni la compétitivité ni le respect des MNT et des normes SPS. "
                                                  "Les listes d'origines sont traitées comme des plafonds (révision annuelle non publiée).")]
+    if edition:  # plans d'action : les cibles ne viennent plus du balayage du rapport unique mais de cibles.py (encadré)
+        blocks = [(t, b.replace("Les taux des chapitres 2, 6 et 7 sont calculés", "Les taux servis sont calculés").replace(
+            "Le balayage du chapitre 7 porte sur 7 270 couples ligne × corridor.", "Les cibles sont vérifiées selon la méthode de l'encadré ci-dessus.")) for t, b in blocks]
     for t, b in blocks:
         fl.append(Paragraph(t, st('mh', fontName='DMSans-Bold', fontSize=8.8, leading=11, textColor=INK, spaceBefore=4, spaceAfter=1))); fl.append(Paragraph(b, st('mbd', fontSize=8, leading=10.8, alignment=TA_JUSTIFY, spaceAfter=2)))
     fl.append(Paragraph('Principales sources', H3))

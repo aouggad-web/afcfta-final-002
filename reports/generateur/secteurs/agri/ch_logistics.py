@@ -133,7 +133,8 @@ def ch_logistics():
     gap1 = china['total'] - egy_rs['total']
     fl.append(P(f"<b>Lecture.</b> À prix FOB égal, le concentré égyptien arrive à Mombasa avec un avantage de ≈ {fmt(gap1)} $/t par la mer Rouge et de ≈ {fmt(china['total'] - egy_cap['total'])} $/t même par le Cap. "
                 f"Le fournisseur chinois devrait vendre ≈ {fmt(gap1 / 1.4)} $/t moins cher départ usine pour compenser — soit plus de {int(gap1 / 1.4 / 10)} % de son prix. "
-                "La préférence (21 points de droit) pèse davantage que le surcoût de guerre."))
+                "La préférence (21 points de droit) pèse davantage que le surcoût de guerre. <b>Taille du marché</b> : le Kenya n'importe que ≈ 7,6 M$ de concentré par an "
+                "(l'Égypte en exporte 108 M$ ; OEC/BACI, moyenne 2023-2024) — une cible vérifiée mais modeste, à combiner avec l'Afrique de l'Ouest (Nigeria 64 M$, Ghana 59 M$, hors préférence)."))
     # Cas 2
     fl.append(Paragraph('Cas 2 — Sardines en conserve livrées à Abidjan : sans préférence (NPF pour tous), l\'avantage de la proximité', H3))
     tha = landed(2400, 18, 2100 + 265, 150, 185, 150, 0.003, 0.0, 0.20, 0.0722, 38)
@@ -153,12 +154,14 @@ def ch_logistics():
     fl.append(Paragraph(f"Point mort : l'avantage marocain disparaît si les sardines thaïlandaises sont ≈ {fmt(g2() / 1.28)} $/t moins chères départ usine (≈ {g2() / 1.28 / 24:.1f} % du prix).".replace('.', ',', 1) if False else f"Point mort : l'avantage marocain disparaît si les sardines thaïlandaises sont ≈ {fmt(g2() / 1.28)} $/t moins chères départ usine (≈ {fmt(g2() / 1.28 / 24, 1)} % du prix).", SRC))
     fl.append(P(f"<b>Lecture.</b> Sans aucun avantage tarifaire, le fournisseur marocain gagne ≈ {fmt(tha['total'] - mar['total'])} $/t "
                 f"({(1 - mar['total'] / tha['total']) * 100:.1f} % du coût rendu) grâce au fret, à l'assurance, au portage financier et aux droits prélevés sur une valeur CAF plus faible — sans compter "
-                "30 jours de délai en moins, des séries plus courtes et un réassort plus fréquent. C'est l'avantage structurel des fournisseurs africains de proximité, que la ZLECAf viendra amplifier."))
+                "30 jours de délai en moins, des séries plus courtes et un réassort plus fréquent. C'est l'avantage structurel des fournisseurs africains de proximité, que la ZLECAf viendra amplifier. "
+                "<b>Marché réel</b> : la Côte d'Ivoire n'importe que ≈ 11,5 M$ de sardines en conserve par an, dont ≈ 8,2 M$ déjà marocaines — l'avantage est acquis ; "
+                "le débouché à conquérir est le Ghana (≈ 50 M$, dont 15 M$ marocains). Source : OEC/BACI, moyenne 2023-2024."))
     fl.append(h2('8.6 Opportunités hors préférence : l\'avantage compétitif africain'))
     fl.append(P("Même lorsque la destination applique le droit NPF à toutes les origines, un fournisseur africain peut l'emporter par la distance, le délai, le coût "
                 "de production ou la défaillance d'un concurrent pris dans une zone de conflit. Ces flux sont à saisir dès 2026, sans attendre l'ouverture des préférences."))
     rows = [['Flux', 'Régime à destination', 'Concurrent', 'Avantage africain', 'Indicateur'],
-            ['Conserves de poisson marocaines → Côte d\'Ivoire, Sénégal, Ghana', 'NPF CEDEAO pour tous (20 %)', 'Thaïlande, Chine', 'Distance (≈ 2 700-3 250 nm contre > 8 500), délai −30 j', 'Côte d\'Ivoire : 848 M$ d\'importations (UNIDO 2023)'],
+            ['Conserves de poisson marocaines → Côte d\'Ivoire, Sénégal, Ghana', 'NPF CEDEAO pour tous (20 %)', 'Thaïlande, Chine', 'Distance (≈ 2 700-3 250 nm contre > 8 500), délai −30 j', 'Conserves (SH 1604) : Ghana 80 M$, Côte d\'Ivoire 46 M$, Sénégal 14 M$ ; le Maroc y vend déjà 27 M$ (BACI 2023-2024)'],
             ['Concentré de tomate égyptien → Nigeria, Ghana', 'NPF CEDEAO', 'Chine (≈ 70 % du marché africain)', 'Port-Saïd–Lagos ≈ 5 100 nm contre ≈ 10 500 depuis Shanghai ; tomate locale abondante', 'Afrique de l\'Ouest : > 61 % des importations africaines de concentré'],
             ['Maïs, riz de Tanzanie, d\'Ouganda, de Zambie → Kenya, Malawi, Zimbabwe', 'Franchise CAE / SADC ; TEC de 35-50 % pour les tiers', 'Mer Noire, Asie, Amériques', 'Transport terrestre ; pas de surprime mer Noire ni de détour', 'Maïs de la Zambie −54 % en 2024 : flux régionaux à sécuriser'],
             ['Engrais phosphatés (Maroc) et urée (Nigeria, Égypte) → Afrique de l\'Est et de l\'Ouest', 'Droits nuls ou faibles', 'Golfe (Ormuz fermé)', 'Aucune exposition à Ormuz ; l\'Afrique est exportatrice nette (14,7 Md$)', 'Urée : 455 → 850 $/t (avril 2026)'],

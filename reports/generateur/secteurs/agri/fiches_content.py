@@ -271,7 +271,7 @@ F.append(dict(num=15, sid='S15', name='Tabac', hs='24',
  sources='FAOSTAT 2024 ; Equity Axis (TIMB) ; Ecofin ; allAfrica (06/2026) ; SaaS ZLECAf (barèmes, offres, registre d\'application, Appendice IV).'))
 
 
-def synth_table():
+def synth_table(sids=None):
     import json as _j
     sc = _j.load(open(S + 'scan.json')); f24 = _j.load(open(S + 'fao2024.json'))
     LAB = {'DZA|TUN': 'Algérie (std)', 'DZA|GHA': 'Algérie (récipr.)', 'KEN|GHA': 'Kenya', 'MAR|EGY': 'Maroc P1', 'MAR|GHA': 'Maroc P2', 'EGY|TUN': 'Égypte 5 ans', 'EGY|GHA': 'Égypte 10 ans', 'ZAF|GHA': 'SACU'}
@@ -280,6 +280,8 @@ def synth_table():
             'S11': 'Cacao et sucre africains', 'S12': 'CTH (farine originaire)', 'S13': 'Fruits et légumes WO', 'S14': 'CTH ; raisin WO', 'S15': 'WO ; cigarettes ≤ 60 %'}
     rows = [['Filière', 'Production africaine (part mondiale)', 'Règle d\'origine', 'Meilleurs corridors servis (marge moy.)']]
     for f in F:
+        if sids and f['sid'] not in sids:
+            continue
         sid = f['sid']; x = f24.get(sid)
         prod = '—'
         if x:
@@ -289,8 +291,10 @@ def synth_table():
         rows.append([Paragraph(f"<b>{f['num']:02d}</b> {f['name']}", TD), prod, RULE[sid], ' ; '.join(f"{n} {m:.0f} pts".replace('.', ',') for m, n in best)])
     return table(rows, [52 * mm, 40 * mm, 44 * mm, CW - 136 * mm])
 
-def ch_fiches():
-    fl = [chapter(6, 'Fiches filières : 15 secteurs, marchés et cibles'),
+def ch_fiches(sids=None, verif=False):
+    """sids : sous-ensemble de filières (éditions par profil) ; verif : cibles générées depuis cibles.json (verif_cibles)."""
+    sel = [f for f in F if not sids or f['sid'] in sids]
+    fl = [chapter(6, f'Fiches filières : {len(sel)} secteurs, marchés et cibles'),
           P("Chaque fiche croise les données du SaaS (barèmes, offres, règles d'origine, registre d'application, demande d'importation BACI, capacités UNIDO) avec les "
             "statistiques publiques les plus récentes (FAOSTAT 2024, ICCO, OIC, Banque mondiale, AATM 2025). Les <b>cibles</b> sont formulées comme des couples « origine vers destination » "
             "où la préférence est légalement opposable en 2026, avec le taux NPF et le taux ZLECAf effectivement servis, sauf mention contraire.", LEAD),
@@ -300,11 +304,16 @@ def ch_fiches():
               '<b>Kenya (CAE)</b> : barème CAE catégorie A (−60 % en 2026) pour les 28 origines de l\'Annexe 1 (CEDEAO, CEMAC, Égypte, Madagascar, Malawi, Maurice, Seychelles, Zambie, RDC).',
               '<b>SACU</b> : colonne AfCFTA pour 14 partenaires actifs. <b>Algérie</b> (9 partenaires) : calendrier standard (Égypte, Maurice, Rwanda, Tanzanie, Tunisie) — liste A à 0 % depuis 2025, liste B −20 % en 2026 ; calendrier de réciprocité (Afrique du Sud, Cameroun, Ghana, Kenya) — liste A −60 %, liste B −12,5 % en 2026 ; liste C au droit commun.'],
               bg=BLUE_L, bar=BLUE, title_color=BLUE),
-          Spacer(1, 2), Paragraph('Tableau 6.1 (fiches p. 19 à 33) — Les 15 filières en un coup d\'œil', CAP), synth_table(),
+          Spacer(1, 2), Paragraph(f'Tableau 6.1 — Les {len(sel)} filières en un coup d\'œil', CAP), synth_table(sids),
           Paragraph('Sources : FAOSTAT 2024 (2023 pour le sucre et l\'huile de palme) ; SaaS ZLECAf (Appendice IV ; balayage des taux servis, chapitre 7). Marge : réduction moyenne servie sur l\'ensemble des lignes de la filière.', SRC),
           PageBreak()]
-    for f in F:
-        fl += fiche(**f)
+    if verif:
+        from ch_plans import cibles_filiere
+        fl[1] = P("Chaque fiche croise les données du SaaS (barèmes, offres, règles d'origine, demande d'importation BACI) avec les statistiques publiques les plus récentes. "
+                  "Les <b>cibles</b> sont générées automatiquement : un couple « origine → destination » n'est retenu que si la préférence est servie en 2026 sur les lignes nationales, "
+                  "si la destination importe au moins 5 M$ par an du produit et si l'origine en exporte au moins autant (OEC/BACI 2023-2024). Les créneaux et fausses pistes sont signalés.", LEAD)
+    for f in sel:
+        fl += fiche(**(dict(f, cibles=cibles_filiere(f['sid'])) if verif else f))
     return fl
 
 # --- Cibles recalculées ligne par ligne avec les calculateurs du SaaS (taux servis au 27/09/2026) ---

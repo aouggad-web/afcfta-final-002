@@ -1,6 +1,50 @@
 from layout import *
 import json
+from ch_verif import CB, filtre, tableau_cibles, lib, sh, fmt_m, fmt_t, fr, PAYS
 C = S + 'charts/'
+
+# Règle d'origine (Appendice IV) des produits algériens souvent cités
+ORIGINE = {'080410': ('ok', 'entièrement obtenues'), '110311': ('ok', 'changement de position (blé importé admis)'), '110100': ('ok', 'changement de position'),
+           '190219': ('ok', 'si la semoule est originaire'), '190531': ('ok', 'si la farine est originaire'), '070190': ('ok', 'entièrement obtenues'),
+           '200290': ('si', 'si tomates algériennes'), '121292': ('ok', 'entièrement obtenue'), '220110': ('ok', 'entièrement obtenues'),
+           '220210': ('non', 'non, sauf sucre africain'), '170199': ('non', 'non : raffiné à partir de brut importé'), '180690': ('non', 'non : cacao et sucre non africains')}
+COUL = {'ok': '#1E8C5A', 'si': '#C8952B', 'non': '#C0493D'}
+
+
+def tableau_focus_export():
+    ex = CB['focus']['exportations']
+    hs_l = list(dict.fromkeys(x['hs'] for x in ex if x['exp_orig'] >= 3e6 or x['hs'] in ORIGINE))
+    dests = ['EGY', 'MAR', 'ZAF']
+    rows = [['Produit algérien (SH)', 'Export. DZA (M$/an)', 'Égypte', 'Maroc*', 'SACU', 'Verdict', 'Origine']]
+    col = {'RETENUE': '#1E8C5A', 'CRÉNEAU': '#C8952B', 'REJETÉE': '#C0493D'}
+    for hs in hs_l:
+        c = {x['d']: x for x in ex if x['hs'] == hs}
+        cell = []
+        for d in dests:
+            x = c.get(d)
+            if not x or x['npf'] is None:
+                cell.append('n.d.'); continue
+            t = f"{fmt_t(x['npf'])} → {fmt_t(x['pref'])} %" if x['pref'] < x['npf'] else f"{fmt_t(x['npf'])} % (aucune)"
+            n, tot = x['lignes'].split('/')
+            t += f" [{n}/{tot}]" if n != tot and n != '0' else ''
+            cell.append(Paragraph(f"<font color='{col[x['verdict']]}'>{t}</font><br/><font size=5.8 color='#5E6273'>marché {fmt_m(x['imp_dest'])} M$</font>", TD))
+        best = next((v for v in ('RETENUE', 'CRÉNEAU') if any(c[d]['verdict'] == v for d in dests if d in c)), 'REJETÉE')
+        qui = ', '.join(('SACU' if d == 'ZAF' else PAYS[d]) for d in dests if d in c and c[d]['verdict'] == best) if best != 'REJETÉE' else ''
+        motif = ''
+        if best == 'REJETÉE':
+            ms = [m for d in dests if d in c for m in c[d]['motifs']]
+            motif = 'offre algérienne insuffisante' if any(m.startswith('offre') for m in ms) else ('marchés trop petits' if all('trop petit' in m or 'aucune' in m for m in ms) else fr(ms[0]))
+            if all(m.startswith('aucune') for d in dests if d in c for m in c[d]['motifs'][:1]):
+                motif = 'aucune marge servie'
+        v = f"<b><font color='{col[best]}'>{best.capitalize()}</font></b>" + (f' : {qui}' if qui else f' — {motif}')
+        o = ORIGINE.get(hs)
+        rows.append([Paragraph(f"{lib(hs)} ({sh(hs)})", TD), fmt_m(c[dests[0]]['exp_orig']), *cell, Paragraph(v, TD),
+                     Paragraph(f"<font color='{COUL[o[0]]}'>{o[1]}</font>" if o else '—', st('og', fontSize=6.4, leading=8))])
+    return [Paragraph('Tableau 9.3 — Produits algériens : taux servis ligne par ligne en 2026, marché de destination et verdict', CAP),
+            table(rows, [36 * mm, 15 * mm, 23 * mm, 23 * mm, 23 * mm, 27 * mm, CW - 147 * mm], font=7),
+            Paragraph('Source : calculateurs du SaaS (toutes les lignes nationales ; [k/n] = lignes réduites sur lignes de la SH6), OEC/BACI moyenne 2023-2024, Appendice IV (règles d\'origine). '
+                      'Mêmes seuils que les autres tableaux de cibles : marché ≥ 5 M$, offre ≥ 5 M$ ; « créneau » = destination exportatrice nette. '
+                      '*Maroc : relations diplomatiques rompues depuis août 2021 et frontière terrestre fermée depuis 1994 : risque politique majeur.', SRC)]
 TAX = {t['lab']: t for t in json.load(open(S + 'dza_tax.json'))}
 
 def fmt(x, d=0):
@@ -11,22 +55,6 @@ def cif_cost(fob, t_evp, freight_evp, days, ins=0.003, fin=0.10):
     fr = freight_evp / t_evp
     cif = (fob + fr) * (1 + ins)
     return fr, cif, fob * fin * days / 365
-
-# ---------------- Cas DZ-2 : thé noir importé à Alger ----------------
-def tea_case(fob_lka=2150, freight_mult=1.0, war_rs=1500, fin=0.10, t_evp=20):
-    cases = {
-        'Tanzanie via le Cap (ZLECAf, standard)': (2150, (2261 + 265) * freight_mult, 28, 0.0),
-        'Tanzanie via mer Rouge (ZLECAf, standard)': (2150, (1545 + 265) * freight_mult + war_rs, 14, 0.0),
-        'Kenya via le Cap (ZLECAf, réciprocité)': (2150, (2290 + 265) * freight_mult, 29, 12.0),
-        'Sri Lanka via le Cap (NPF)': (fob_lka, (2744 + 265) * freight_mult, 34, 30.0),
-    }
-    out = {}
-    for k, (fob, fr_evp, days, dd) in cases.items():
-        fr, cif, finc = cif_cost(fob, t_evp, fr_evp, days, fin=fin)
-        taxes = cif * (dd + 2 + 3) / 100
-        dest = (200 + 150) / t_evp
-        out[k] = dict(fob=fob, fr=fr, cif=cif, dd=cif * dd / 100, lev=cif * 5 / 100, dest=dest, fin=finc, total=cif + taxes + dest + finc, days=days)
-    return out
 
 # ---------------- Cas DZ-1 : urée vers Durban ----------------
 def urea_case(prem=7.0, fob=450, mult=1.3415, hull=28e6, t=55000):
@@ -85,24 +113,10 @@ def ch_algeria():
                      'Source : SaaS ZLECAf — calculateur DZA (DD, DAPS et exonération, PRCT 2 %, TCS 3 %, TIC) ; TVA à 9 % ou 19 %, récupérable, exclue. '
                      'Hors mesures temporaires des lois de finances (LF 2026 : DD de 5 % sur viandes et volailles, café vert exonéré de TVA et de TIC jusqu\'au 31/12/2026). '
                      'Les régimes particuliers (industries de transformation) peuvent modifier le DAPS du sucre brut.', maxh=100 * mm))
-    rows = [['Besoin algérien', 'Fournisseur africain activé', 'Charge NPF', 'Charge ZLECAf', 'Commentaire']]
-    data = [('Thé noir et vert', 'Rwanda, Tanzanie (standard) ; Kenya (réciprocité)', 'Thé noir', 'std', 'Kenya : 17 % ; voir cas DZ-2'),
-            ('Huile de tournesol', 'Tanzanie (1er producteur africain)', 'Huile de tournesol', 'std', 'Raffinage local possible (règle VA60)'),
-            ('Poulet congelé', 'Égypte (2,6 Mt produites)', 'Poulet congelé', 'std', 'LF 2026 : DD national à 5 %'),
-            ('Aliments du bétail', 'Tunisie, Tanzanie', 'Aliments du bétail', 'std', 'Intrant avicole'),
-            ('Sucre brut', 'Maurice, Tanzanie ; Afrique du Sud', 'Sucre brut', 'std', 'DAPS 100 % exonéré'),
-            ('Riz, pois chiches, lentilles', 'Égypte, Tanzanie', 'Riz', 'std', 'TVA réduite à 9 % (légumineuses)'),
-            ('Pâte de cacao', 'Cameroun, Ghana (réciprocité)', 'Pâte de cacao', 'rcp', 'Chocolaterie algérienne ; CIV non activée'),
-            ('Cajou', 'Tanzanie', 'Cajou', 'std', 'TIC de 30 % maintenue'),
-            ('Viande bovine congelée', 'Tanzanie (liste B)', 'Viande bovine congelée', 'std', 'DAPS 30 % exonéré ; LF 2026 à 5 %'),
-            ('Poisson congelé', 'Égypte, Tunisie, Maurice', 'Poisson congelé', 'std', '')]
-    for a, b, k, cal, c in data:
-        t = TAX[k]
-        rows.append([a, b, f"{fmt(t['npf']['total_hors_tva'])} %", Paragraph(f"<b><font color='#1E8C5A'>{fmt(t[cal]['total_hors_tva'])} %</font></b>", TD), c])
-    fl.append(Paragraph('Tableau 9.2 — Dix sourcings africains prioritaires pour l\'Algérie (charge fiscale hors TVA, % CAF)', CAP))
-    fl.append(table(rows, [34 * mm, 50 * mm, 18 * mm, 20 * mm, CW - 122 * mm]))
-    fl.append(Paragraph('Source : calculateur DZA du SaaS, taux au 27/09/2026. Conditions : origine prouvée (certificat ZLECAf) et partenaire activé. '
-                        'La Côte d\'Ivoire, l\'Éthiopie et l\'Ouganda ne sont pas activés : leurs produits (café, cacao, bananes) restent au NPF.', SRC))
+    fl += tableau_cibles(filtre(CB['classement'], dest=['DZA'], n=12), CB['classement'],
+                         'Tableau 9.2 — Sourcings africains vérifiés pour l\'Algérie : droit de douane NPF → ZLECAf 2026, marché et offre réels')
+    fl.append(Paragraph('Le DAPS éventuel est en outre exonéré sous ZLECAf (listes A et B). La Côte d\'Ivoire, l\'Éthiopie et l\'Ouganda ne sont pas activés en Algérie : leurs produits (café, cacao, bananes) restent au NPF. '
+                        'Abandonnés après vérification (édition précédente) : thé noir du Rwanda, de Tanzanie et du Kenya, huile de tournesol de Tanzanie, poulet congelé d\'Égypte — marché algérien de la position inférieur à 5 M$ par an (OEC 2023-2024).', SRC))
     fl.append(PageBreak())
     fl.append(h2('9.3 Une industrie agroalimentaire en essor et ses champions'))
     fl.append(kpis([
@@ -132,32 +146,17 @@ def ch_algeria():
         '<b>Une marque devenue phénomène</b> : la pâte à tartiner de Cebon est passée de 8 à 80 t par jour après un engouement viral sur les réseaux sociaux (2024-2025). L\'Union européenne en a bloqué l\'importation fin 2024, faute d\'agrément sanitaire pour le lait algérien ; la marque s\'est tournée vers le Moyen-Orient.',
         '<b>Les marchés africains où l\'Algérie est absente</b> (préparations au chocolat, 2024) : Libye 87 M$, Maroc 53 M$, Afrique du Sud 52 M$, Maurice 17 M$, Égypte 14 M$, Nigeria 11 M$.',
         '<b>Rendre le produit originaire</b> : la règle du chapitre 18 n\'impose l\'origine qu\'au cacao et au sucre — pas aux noisettes ni au lait. En sourçant la pâte de cacao au Ghana ou au Cameroun (15 → 6 % en Algérie) et le sucre en Afrique (brut mauricien ou tanzanien à 0 %, DAPS exonéré, puis raffiné en Algérie — originaire par cumul, sous réserve de la documentation d\'origine), '
-        'El Mordjene accède à la SACU à 6,8 % au lieu de 17 %.',
-        '<b>Vigilance</b> : l\'Égypte classe cette ligne en liste B (10 % maintenus) ; la Libye n\'a pas ratifié l\'Accord ; le Maroc reste fermé politiquement. La notoriété d\'une marque se protège : dépôt de marque dans les pays cibles (OAPI pour l\'Afrique francophone, ARIPO pour l\'anglophone).'],
+        'El Mordjene accède à la SACU à 6,8 % au lieu de 17 % (taux vérifié ligne par ligne).',
+        '<b>Vigilance</b> : cible prospective — l\'Algérie n\'exportait que 0,4 M$ de préparations au chocolat par an en 2023-2024 (OEC) ; l\'Égypte classe cette ligne en liste B (10 % maintenus) ; la Libye n\'a pas ratifié l\'Accord ; le Maroc reste fermé politiquement. La notoriété d\'une marque se protège : dépôt de marque dans les pays cibles (OAPI pour l\'Afrique francophone, ARIPO pour l\'anglophone).'],
         bg=GOLD_L, bar=GOLD))
     fl.append(PageBreak())
     # ---- 9.3 export
     fl.append(h2('9.4 L\'Algérie exportatrice : où et quoi vendre'))
-    fl.append(P("L'Algérie n'est admise comme origine que dans trois des cinq destinations qui appliquent la ZLECAf : l'<b>Égypte</b> (groupe « 5 ans », liste A à 0 %), "
-                "le <b>Maroc</b> (liste P1) et la <b>SACU</b> (partenaire actif). Elle n'est pas sur la liste d'origines du Kenya. Et une préférence ne sert que si le produit est originaire : "
-                "plusieurs fleurons algériens transforment des matières importées."))
-    rows = [['Produit algérien (SH)', 'Égypte', 'Maroc*', 'SACU', 'Origine ZLECAf ?'],
-            ['Dattes (0804.10)', '1 → 0 %', '40 % (hors A)', '0 %', Paragraph('<font color="#1E8C5A"><b>Oui</b></font> — entièrement obtenues', TD)],
-            ['Semoule de blé (1103.11)', '2 → 0 %', '70 % (hors A)', '20 %', Paragraph('<font color="#1E8C5A"><b>Oui</b></font> — changement de position (blé importé admis)', TD)],
-            ['Pâtes (1902.19)', '15 % (liste B)', '→ 0 %', '40 %', Paragraph('<font color="#1E8C5A"><b>Oui</b></font> si la semoule est originaire', TD)],
-            ['Biscuits (1905.31)', '15 % (liste B)', '→ 0 %', '21 %', Paragraph('<font color="#1E8C5A"><b>Oui</b></font> si la farine est originaire', TD)],
-            ['Pommes de terre (0701.90)', '5 → 0 %', '40 → 0 %', '—', Paragraph('<font color="#1E8C5A"><b>Oui</b></font>', TD)],
-            ['Concentré de tomate (2002.90)', '5 → 0 %', 'hors A', '37 %', Paragraph('<font color="#C8952B"><b>Si</b></font> tomates algériennes (pas de reconditionnement)', TD)],
-            ['Caroube (1212.92)', '2 → 0 %', '—', '20 → 8 %', Paragraph('<font color="#1E8C5A"><b>Oui</b></font>', TD)],
-            ['Eaux minérales (2201.10)', '—', '30 → 0 %', '—', Paragraph('<font color="#1E8C5A"><b>Oui</b></font> — entièrement obtenues', TD)],
-            ['Boissons sucrées (2202.10)', '30 → 0 %', '—', 'spécifique', Paragraph('<font color="#C0493D"><b>Non</b></font>, sauf sucre africain (matières du ch. 17 originaires)', TD)],
-            ['Sucre raffiné (1701.99)', '5 → 0 %', '30 % (hors A)', 'spécifique', Paragraph('<font color="#C0493D"><b>Non</b></font> — raffiné à partir de brut importé', TD)],
-            ['Pâte à tartiner, chocolat (1806.90)', '10 % (liste B)', 'non servi', '17 → 6,8 %', Paragraph('<font color="#C0493D"><b>Non</b></font> — cacao et sucre non africains', TD)],
-            ['Urée (3102.10)', '0 %', '2,5 → 0 %', '0 %', Paragraph('Hors périmètre SH 01-24 ; droits déjà nuls — voir cas DZ-1', TD)]]
-    fl.append(Paragraph('Tableau 9.3 — Produits algériens : taux ZLECAf servis en 2026 et respect de la règle d\'origine', CAP))
-    fl.append(table(rows, [40 * mm, 24 * mm, 24 * mm, 20 * mm, CW - 108 * mm]))
-    fl.append(Paragraph('Source : calculateurs du SaaS (Égypte : circulaires 38/2024 et 44/2025 ; Maroc : circulaire 6530/223 ; SACU : colonne AfCFTA) et Appendice IV. '
-                        '*Maroc : relations diplomatiques rompues depuis août 2021 et frontière terrestre fermée depuis 1994 ; des flux subsistent (dattes : 50 M$ en 2024 selon BACI) mais le risque politique est majeur.', SRC))
+    fl.append(P("L'Algérie est admise comme origine en <b>Égypte</b>, au <b>Maroc</b> et dans la <b>SACU</b> ; elle n'est pas sur la liste d'origines du Kenya. "
+                "Le tableau ci-dessous confronte ses principales exportations agricoles (et les produits souvent cités) au taux réellement servi, ligne par ligne, et au marché de chaque destination. "
+                "Le résultat corrige l'édition précédente : l'Égypte, premier débouché préférentiel, est exportatrice nette de dattes, de sucre et de farine ; "
+                "le Maroc maintient 40 % sur les dattes ; pâtes et biscuits n'y sont libéralisés que sur une partie des lignes, et l'offre algérienne (3 M$ par an) reste marginale."))
+    fl += tableau_focus_export()
     fl.append(figure(C + 'a3_demand.png', 'Figure 9.3 — Demande d\'importation africaine 2024 et part captée par l\'Algérie',
                      'Source : SaaS ZLECAf — CEPII BACI via OEC (dza_commerce_baci.json), importations africaines hors Algérie ; flux avec la Libye sous-estimés.', maxh=56 * mm))
     ABS = json.load(open(S + 'dza_absent.json'))
@@ -172,7 +171,7 @@ def ch_algeria():
     fl.append(Paragraph('Source : SaaS ZLECAf — sous-module « Algérie · industrie et marchés » (fiche produit, filtre : importations > 1 M$ et part algérienne < 1 %), CEPII BACI 2024.', SRC))
     fl.append(PageBreak())
     # ---- 9.4 cas chiffrés
-    fl.append(h2('9.5 Trois cas chiffrés, hypothèses et sensibilités'))
+    fl.append(h2('9.5 Deux cas chiffrés, hypothèses et sensibilités'))
     fl.append(Paragraph('Cas DZ-1 — Urée algérienne livrée à Durban face à l\'urée du Golfe (hors préférence : droits nuls pour tous)', H3))
     u = urea_case(7.0)
     rows = [['$/tonne (vraquier Supramax, 55 000 t)', 'Algérie (Arzew) via Gibraltar et le Cap', 'Golfe via Ormuz'],
@@ -188,31 +187,6 @@ def ch_algeria():
                      'Hypothèses (H) : coque Supramax 28 M$ ; distances par tronçons searoute (±5 %) ; fret : formule vrac du SaaS (7 + 0,004 × nm) × 0,82 × 1,3415 (multiplicateur au 13/08/2026). '
                      'Au-delà d\'une surprime de ≈ 1,9 %, l\'urée algérienne est moins chère rendue en Afrique australe — sans compter la sécurité d\'approvisionnement. '
                      'Débouchés 2024 : Afrique du Sud 325 M$, Zambie 182 M$, Malawi 104 M$, Togo 78 M$, Mozambique 75 M$, Tanzanie 63 M$ ; part algérienne : 0,5 %.', maxh=56 * mm))
-    fl.append(PageBreak())
-    fl.append(Paragraph('Cas DZ-2 — Thé noir livré à Alger : fournisseur africain préférentiel contre fournisseur asiatique au NPF', H3))
-    tc = tea_case()
-    keys = list(tc)
-    rows = [['$/tonne'] + [Paragraph(f'<b>{k}</b>', TH) for k in keys]]
-    for lab, k in [('Prix FOB (hypothèse identique : 2 150 $/t, prix moyen Mombasa 2025)', 'fob'), ('Fret + surcharges (20 t par EVP)', 'fr'), ('Valeur CAF (assurance 0,3 %)', 'cif'),
-                   ('Droit de douane', 'dd'), ('PRCT 2 % + TCS 3 %', 'lev'), ('Manutention et frais Alger', 'dest'), ('Portage financier (10 %/an)', 'fin'), ('Coût rendu hors TVA', 'total')]:
-        rows.append([Paragraph(f'<b>{lab}</b>' if k == 'total' else lab, TD)] + [Paragraph(f'<b>{fmt(tc[x][k])}</b>' if k == 'total' else fmt(tc[x][k]), TDR) for x in keys])
-    base = tc['Sri Lanka via le Cap (NPF)']['total']
-    rows.append([Paragraph('<b>Écart vs Sri Lanka</b>', TD)] + [Paragraph(f"<b><font color='#1E8C5A'>{fmt(tc[x]['total'] - base)} $/t</font></b>", TDR) for x in keys])
-    fl.append(table(rows, [52 * mm] + [(CW - 52 * mm) / 4] * 4, zebra=False, extra=[('BACKGROUND', (0, 8), (-1, 8), GREEN_L)]))
-    fl.append(Paragraph('Hypothèses (H) : fret SaaS 2024 (Tanzanie→Algérie 1 545 $/EVP, Kenya→Algérie 1 520 $/EVP, via Suez) ; routes par le Cap recalculées avec la formule du SaaS (175 + 0,255 × nm) : '
-                        'Dar es-Salaam ≈ 8 180 nm, Mombasa ≈ 8 295 nm, Colombo ≈ 10 080 nm ; surcharge carburant d\'urgence 265 $/EVP ; surcharge de guerre mer Rouge 1 500 $/EVP ; '
-                        'taux ZLECAf : calculateur DZA (thé 0902.40 : 0 % standard, 12 % réciprocité, 30 % NPF) ; TVA 19 % récupérable exclue.', SRC))
-    # sensitivity table
-    def gap(**kw):
-        r = tea_case(**kw); return r['Sri Lanka via le Cap (NPF)']['total'] - r['Tanzanie via le Cap (ZLECAf, standard)']['total']
-    sens = [('Scénario central', gap()), ('Thé sri-lankais 15 % plus cher (qualité Ceylan)', gap(fob_lka=2150 * 1.15)),
-            ('Thé sri-lankais 15 % moins cher', gap(fob_lka=2150 * 0.85)), ('Fret +30 % (toutes routes)', gap(freight_mult=1.3)),
-            ('Fret −30 %', gap(freight_mult=0.7)), ('Taux de portage 15 %', gap(fin=0.15)), ('Conteneur chargé à 16 t', gap(t_evp=16))]
-    rows = [['Test de sensibilité (Tanzanie via le Cap vs Sri Lanka via le Cap)', 'Avantage tanzanien ($/t)']] + [[a, Paragraph(f'<b>{fmt(b)}</b>', TDR)] for a, b in sens]
-    be = gap(fob_lka=2150) / 1.35
-    fl.append(table(rows, [110 * mm, CW - 110 * mm]))
-    fl.append(Paragraph(f'Point mort : le thé sri-lankais devrait être ≈ {fmt(be)} $/t moins cher départ usine (−{be / 2150 * 100:.0f} %) pour égaliser le thé tanzanien rendu à Alger. '.replace('.', ',') +
-                        'Le calendrier de réciprocité réduit l\'avantage du Kenya (12 % de droit en 2026, 0 % en 2030).', SRC))
     fl.append(PageBreak())
     fl.append(Paragraph('Cas DZ-3 — Pâtes livrées à Niamey : Transsaharienne, voie maritime par Cotonou ou concurrent turc (même droit pour tous)', H3))
     pc = pasta_case(); keys = list(pc)
@@ -230,12 +204,16 @@ def ch_algeria():
         'Risques : insécurité sur les axes sahéliens (blocus du JNIM au Mali), prélèvement AES, tensions diplomatiques entre l\'Algérie et les pays de l\'AES depuis avril 2025 — à suivre avant tout engagement de volume.'],
         bg=BLUE_L, bar=BLUE, title_color=BLUE))
     fl.append(h2('9.6 Feuille de route pour les opérateurs algériens'))
+    imp_dz = [x for x in filtre(CB['classement'], dest=['DZA'], n=40) if not any(m.startswith('réexportation') for m in x['motifs'])][:6]  # origines productrices
     fl += bullets([
-        '<b>Importateurs</b> : basculer le sourcing du thé, de l\'huile de tournesol, du sucre brut, des aliments du bétail et d\'une partie des volailles vers les partenaires « standard » (Égypte, Tanzanie, Tunisie, Maurice, Rwanda), '
-        'en exigeant le certificat d\'origine ZLECAf — seul moyen d\'obtenir à la fois la baisse du droit et l\'exonération du DAPS.',
-        '<b>Exportateurs</b> : prioriser l\'Égypte (liste A à 0 %) pour les dattes, la semoule, les pommes de terre et la caroube ; la SACU pour la caroube ; les pâtes et biscuits vers les marchés sans préférence mais proches '
-        '(Niger, Mauritanie, Libye, Tunisie). Vérifier l\'origine : sucre raffiné, boissons sucrées et pâte à tartiner ne sont pas originaires en l\'état.',
-        '<b>Industriels</b> : sécuriser des matières africaines pour rendre originaires les produits sucrés (sucre de Maurice, de Tanzanie ou d\'Égypte, sous calendrier standard) et chocolatés (pâte de cacao du Cameroun ou du Ghana) ; '
+        '<b>Importateurs</b> : sourcer en Afrique les produits où la préférence, le marché et l\'offre sont vérifiés — ' +
+        ', '.join(f"{lib(x['hs']).lower()} ({PAYS[x['o']]})" for x in imp_dz) +
+        ' — en exigeant le certificat d\'origine ZLECAf, seul moyen d\'obtenir à la fois la baisse du droit et l\'exonération du DAPS. '
+        'Le thé, le poulet congelé et l\'huile de tournesol, cités dans l\'édition précédente, sont abandonnés : marché algérien de la position citée inférieur à 5 M$ par an (thé noir en vrac : 0,7 M$ ; poulet congelé : 0,2 M$ ; huile de tournesol raffinée : 1,4 M$), voir l\'audit.',
+        '<b>Exportateurs</b> : la seule cible directe vérifiée est l\'Égypte pour les boissons sucrées (30 → 0 %, sous réserve d\'un sucre originaire). Dattes, sucre et farine vers l\'Égypte sont des créneaux '
+        '(l\'Égypte est exportatrice nette) ; le Maroc maintient 40 % sur les dattes et ne libéralise qu\'une partie des lignes de pâtes et de biscuits. Les débouchés de volume restent hors préférence : '
+        'Niger, Mauritanie, Libye, Tunisie, et l\'urée en Afrique australe et de l\'Est.',
+        '<b>Industriels</b> : sécuriser des matières africaines pour rendre originaires les produits sucrés (sucre brut sud-africain ou mauricien) et chocolatés (pâte de cacao du Cameroun ou du Ghana) ; '
         'l\'urée et les engrais azotés constituent la meilleure carte algérienne de 2026 sur les marchés d\'Afrique australe et de l\'Est.',
         '<b>Logistique</b> : utiliser les lignes maritimes vers Abidjan, Lomé et Cotonou pour l\'Afrique de l\'Ouest, le poste frontalier ouvert en 2018 et la route Tindouf-Zouérate (en construction) vers la Mauritanie, et suivre le chantier de la ligne ferroviaire Alger-Tamanrasset (livraison annoncée vers 2030).'])
     return fl
