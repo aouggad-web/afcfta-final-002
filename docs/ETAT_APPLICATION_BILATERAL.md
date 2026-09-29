@@ -1,7 +1,7 @@
 # État d'application de la ZLECAf entre pays
 
 > Généré par `scripts/build_bilateral_application_matrix.py` — ne pas éditer à la main.
-> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-28.
+> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-29.
 
 ## Ce que ce tableau répond
 
