@@ -34,7 +34,7 @@
   "fiche_determination": {
    "artifact": "backend/data/legal_refs/zlecaf_application/TUN_application_2026-09-13.json",
    "document_non_archive": "Fiche du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture.",
-   "sha256": "5867fe2566a0128b36229c3cabc73c89f3bf0b9e1c4c2b78445aa775c5c0a5aa"
+   "sha256": "b94f091b3ec28c42e5258e7b701dfe49089a614ffdd04855e35423e367d70252"
   }
  },
  "regle": {
@@ -151,8 +151,8 @@
    "lecture": "Rien dans le dépôt ne permet d'affirmer que le taux de base de l'e-Tariff est le « droit de base 2019 » visé par le texte. Sans ce droit ligne à ligne, le droit ZLECAf dû (coefficient × droit de base 2019) ne peut pas être calculé."
   }
  },
- "verdict": "Le texte TA n°016/2023 est appliqué au Tarif Web 2026 de la douane, par origine et par ligne. Le classement A/B/C de l'e-Tariff concorde avec le tarif, mais son calendrier par pays est faux pour la Tunisie. Le seul chaînon manquant pour calculer le droit ZLECAf est le droit de base 2019 ligne à ligne. Niveau inchangé : INSTRUMENT_VERIFIE_BAREME_MANQUANT. Aucun changement de calcul.",
- "decision_du_proprietaire": "À prendre : faire collecter le tarif douanier tunisien en vigueur en 2019 (source officielle) pour établir le droit de base ligne à ligne.",
+ "verdict": "Le texte TA n°016/2023 est appliqué au Tarif Web 2026 de la douane, par origine et par ligne. Le classement A/B/C de l'e-Tariff concorde avec le tarif, mais son calendrier par pays est faux pour la Tunisie. Restent bloquants pour tout calcul : (1) le droit de base 2019 ligne à ligne ; (2) les 2 596 lignes classées A et 60 lignes classées B par l'e-Tariff sans préférence ZLECAf au Tarif Web ; (3) la liste nominative des taxes d'effet équivalent visées par la section V du texte ; (4) l'acte qui ajoute le Nigeria et l'Afrique du Sud. Niveau inchangé : INSTRUMENT_VERIFIE_BAREME_MANQUANT. Aucun changement de calcul.",
+ "decision_du_proprietaire": "À prendre : faire collecter (a) le tarif douanier tunisien en vigueur en 2019 (source officielle) pour le droit de base ligne à ligne, (b) la liste des taxes d'effet équivalent visées par la section V du texte, (c) l'acte ajoutant le Nigeria et l'Afrique du Sud ; puis trancher le sort des 2 656 lignes A/B sans préférence publiée. Aucun calcul avant ces quatre points.",
  "ne_tranche_pas": [
   "Les 2 596 lignes classées A et les 60 lignes classées B par l'e-Tariff qui ne portent aucune préférence ZLECAf au Tarif Web.",
   "L'acte qui ajoute le Nigeria et l'Afrique du Sud (servis au tarif, absents du texte de 2023), et l'absence de l'Égypte de la zone ZLECAf du tarif (0 ligne).",
