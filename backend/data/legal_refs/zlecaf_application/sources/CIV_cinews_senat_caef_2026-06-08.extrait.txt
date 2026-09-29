@@ -1,0 +1,32 @@
+CINEWS — « Commande publique, ZLECAf, raffinage : Le Sénat adopte en commission trois
+projets » (publié le 09/06/2026, article du 08/06/2026)
+SOURCE SECONDAIRE (presse) — REPÉRAGE UNIQUEMENT, JAMAIS PREUVE.
+URL : https://cinews.ci/commande-publique-zlecaf-raffinage-le-senat-adopte-en-commission-trois-projets/
+Consulté le : 2026-09-29 (page entière capturée : sources/CIV_cinews_senat_caef_2026-06-08.html)
+Page : corps de l'article (le HTML archivé porte la page entière ; verbatims ci-dessous relevés
+dans le corps).
+
+VERBATIM (français, tel qu'imprimé) :
+
+1) « La Commission des affaires économiques et financières (CAEF) du Sénat a adopté, lundi
+8 juin 2026 à Yamoussoukro, trois projets de loi portant ratification d'ordonnances relatives
+à la réforme de la commande publique, à la mise en œuvre de la Zone de libre-échange
+continentale africaine (ZLECAf) et à l'abrogation de la taxe de soutien au développement de
+l'activité de raffinage. »
+
+2) « Le deuxième projet de loi concerne la ratification de l'ordonnance n°2025-260 du 23 avril
+2025 relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non
+sensibles dans le cadre de la ZLECAf. »
+
+3) « Les produits concernés, représentant 90 % des lignes tarifaires de la catégorie dite
+« non sensible », bénéficieront progressivement d'une suppression des droits de douane dans
+le cadre des échanges intra-africains. »
+
+TRADUCTION / PORTÉE :
+- adoption EN COMMISSION (CAEF du Sénat) le 08/06/2026 du projet de loi ratifiant
+  l'ordonnance n° 2025-260 — ce n'est pas, en l'état du compte rendu, une adoption en
+  séance plénière ni une promulgation ;
+- périmètre rapporté : 90 % des lignes tarifaires de la catégorie « non sensible » ;
+- source secondaire : sert à repérer l'avancement, jamais à établir un gate.
+
+MÉTHODE : page HTML capturée en direct (curl), empreinte sha256 consignée dans la fiche.
