@@ -1,0 +1,27 @@
+Zambia Monitor — « Zambia finalizes tariff concessions, begins implementation of African
+Continental Free Trade Area pact » (17/02/2025, par Augustine Sichula)
+SOURCE SECONDAIRE (presse) — REPÉRAGE UNIQUEMENT, JAMAIS PREUVE.
+URL : https://www.zambiamonitor.com/zambia-finalizes-tariff-concessions-begins-implementation-of-african-continental-free-trade-area-pact/
+Consulté le : 2026-09-29 (page entière capturée : sources/ZMB_zambiamonitor_mcti_2025-02-17.html)
+
+VERBATIM (anglais, tel qu'imprimé) :
+
+1) « Zambia has officially gazetted its Provisional Schedule of Tariff Concessions under the
+African Continental Free Trade Area (AfCFTA) Agreement, paving the way for trade under the
+continental pact. The concessions, enacted through Statutory Instrument (SI) No. 92 of
+December 30, 2024, mark Zambia's readiness to participate in AfCFTA, following the earlier
+introduction of SI No. 94. Ministry of Commerce, Trade, and Industry Principal Public
+Relations Officer, Everness Nankala, confirmed the development in a statement issued in
+Lusaka on Monday, saying the move expands Zambia's preferential market access beyond
+COMESA and SADC. »
+
+TRADUCTION / PORTÉE :
+- la presse cite la porte-parole du ministère zambien du Commerce (MCTI) : le PSTC
+  zambien a été gazetté par le SI n° 92 du 30/12/2024 ;
+- aucun État partenaire n'est nommé ; le texte du SI n'est pas reproduit ;
+- concorde avec la déclaration parlementaire du 19/06/2025 (archivée, primaire) et avec
+  le communiqué du ministère des Affaires étrangères du 10/03/2025 (mofaic.gov.zm,
+  repéré le 2026-09-29 via lecteur tiers — accès direct HTTP 000, non archivable).
+
+MÉTHODE : page HTML capturée en direct (curl), empreinte sha256 consignée dans la fiche.
+La source est un média privé : elle sert à REPÉRER l'état du dossier, jamais à l'établir.
