@@ -36,11 +36,13 @@ logger = logging.getLogger(__name__)
 COLONNE_ZLECAF = "AFCFTA"
 
 
-def _colonne_de_la_position(position: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def _colonne_de_la_position(
+    position: Dict[str, Any], colonne: str = COLONNE_ZLECAF
+) -> Optional[Dict[str, Any]]:
     """Rendre la colonne ZLECAf telle que le socle la porte : un taux ad
     valorem, ou un montant spécifique. Les deux formes existent — l'Afrique du
     Sud oppose « 8c/kg » en NPF à « 3,2c/kg » sous ZLECAf."""
-    valeur = (position.get("preferentiels") or {}).get(COLONNE_ZLECAF)
+    valeur = (position.get("preferentiels") or {}).get(colonne)
     if isinstance(valeur, (int, float)):
         return {"taux": float(valeur)}
     if isinstance(valeur, dict):
@@ -235,7 +237,16 @@ def taux_preferentiels(
     # Pour la ZAF, la colonne socle ne doit JAMAIS être servie sans le
     # contrôle d'origine (effectué ci-dessus) : la branche ZAF sert le même
     # résolveur que l'historique.
-    taux_dd = _colonne_de_la_position(position)
+    colonne = COLONNE_ZLECAF
+    if destination_iso3.upper() == "SYC":
+        # S.I. 113 of 2022 : une sous-colonne AfCFTA par année, 2022 à 2026.
+        # Hors de cette plage, aucune colonne : rien n'est servi.
+        import datetime as _dt
+
+        from services.zlecaf_schedule_syc import colonne_de_l_annee
+
+        colonne = colonne_de_l_annee(_dt.date.today().year)
+    taux_dd = _colonne_de_la_position(position, colonne) if colonne else None
     origine_taux = "colonne préférentielle de la position (socle)"
 
     if taux_dd is None and destination_iso3.upper() in DESTINATIONS_A_CALENDRIER_NATIONAL:
