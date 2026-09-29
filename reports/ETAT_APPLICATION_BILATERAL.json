@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "titre": "État d'application de la ZLECAf entre pays, couple par couple",
- "genere_le": "2026-09-28",
+ "genere_le": "2026-09-29",
  "genere_par": "scripts/build_bilateral_application_matrix.py",
  "avertissement": "La ratification est continentale, l'application est bilatérale. Une case ACCORDEE atteste que l'acte national de la destination nomme cette origine ; elle ne dispense ni de la preuve d'origine ZLECAf ni de la vérification en douane.",
  "methode": "Trois conditions, dans cet ordre : acte national d'application lu en source primaire ; liste nominative des origines qu'il admet ; confrontation à la carte continentale du e-Tariff Book. Les listes sont lues à leur source d'autorité dans le dépôt, jamais recopiées.",

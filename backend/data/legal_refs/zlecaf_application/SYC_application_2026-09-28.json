@@ -4,7 +4,7 @@
  "agreement": "ZLECAf / AfCFTA",
  "verification_status": "APPLIQUE",
  "verified_at": "2026-09-28",
- "evidence_level": "primaire intégral — Customs Management (Tariff and Classification of Goods) Regulations, 2022 (S.I. 113 of 2022), Supplement to Official Gazette [28 octobre 2022], pris sous la section 270 du Customs Management Act, 2011 : instrument en vigueur, LISTE NOMINATIVE des origines (Schedule VI, 38 États parties) et BARÈME LIGNE À LIGNE (sous-colonne AfCFTA à cinq millésimes 2022-2026) dans le même texte réglementaire.",
+ "evidence_level": "primaire intégral — Customs Management (Tariff and Classification of Goods) Regulations, 2022 (S.I. 113 of 2022), Supplement to Official Gazette [28 octobre 2022], pris sous la section 270 du Customs Management Act, 2011 : instrument en vigueur, LISTE NOMINATIVE des origines (Schedule VI « List of African Continental Free Trade Area (AfCFTA) Member States », 38 entrées) et BARÈME LIGNE À LIGNE (sous-colonne AfCFTA à cinq millésimes 2022-2026) dans le même texte réglementaire.",
  "instrument": {
   "id": "S.I. 113 of 2022 — Customs Management (Tariff and Classification of Goods) Regulations, 2022",
   "title_etabli": "Customs Management (Tariff and Classification of Goods) Regulations, 2022, made this 27th day of October 2022 by NAADIR HASSAN, Minister of Finance, National Planning and Trade, en vertu de la section 270 du Customs Management Act, 2011 (Act 22 of 2011) ; Supplement to Official Gazette [28th October, 2022], 827 pages ; en vigueur le 1er novembre 2022 (regulation 1 : « shall come into operation on 1st November, 2022 »).",
@@ -38,17 +38,13 @@
    {
     "endroit": "nationalassembly.sc (S.I. 113 of 2022) et tradeportal.sc (S.I. 55 de 2024)",
     "resultat": "Le S.I. 113 of 2022 est bien l'instrument de base ; il est modifié par S.I. 7 of 2024, S.I. 55 of 2024 (No.2), S.I. 14 of 2025 — les modifications portent des lignes de nomenclature (ex. 8706.0010 châssis VE) en conservant la même structure de colonnes. Cohérent avec la fiche SYC_treize_colonnes du 19/09/2026, qui porte déjà S.I. 7 of 2024 en partie."
-   },
-   {
-    "endroit": "e-Tariff Book du Secrétariat (API production, 28/09/2026, destination SC, origine KE, recherche 25.02) — archivé : sources/ZLECAF_etariff_destinations_KM_TD_TG_SC_2026-09-28.json",
-    "resultat": "L'outil officiel expose bien une offre SC (regionCode SC, catégorie A) mais avec les années VIDES : le taux réel ne se prend pas dans l'e-Tariff, il est dans le S.I. 113 de 2022 — ce qui confirme que la source nationale est le texte réglementaire, pas l'outil continental."
    }
   ],
-  "resultat": "Tout a été trouvé : instrument (S.I. 113 of 2022, en vigueur 01/11/2022), liste officielle des origines (Schedule VI : 38 États parties, ÉNUMÉRÉS, dont le Togo et le Tchad — sans les Comores, encore non ratifiante à la date du texte), barème ligne à ligne (sous-colonne AfCFTA à cinq millésimes sur les 6 019 lignes à huit chiffres). Vérification du jour cohérente avec la fiche SYC_treize_colonnes_calendrier_zlecaf_et_valeur_2026-09-19.json (déjà établie sur la copie SRC)."
+  "resultat": "Tout a été trouvé : instrument (S.I. 113 of 2022, en vigueur 01/11/2022), liste officielle des origines (Schedule VI, intitulée « List of African Continental Free Trade Area (AfCFTA)  Member State s » dans le texte — 38 entrées numérotées, dont le Togo et le Tchad — sans les Comores, encore non ratifiante à la date du texte), barème ligne à ligne (sous-colonne AfCFTA à cinq millésimes sur les 6 019 lignes à huit chiffres). Vérification du jour cohérente avec la fiche SYC_treize_colonnes_calendrier_zlecaf_et_valeur_2026-09-19.json (déjà établie sur la copie SRC)."
  },
  "gates_status": {
   "1_instrument_national_en_vigueur": "ÉTABLI — S.I. 113 of 2022, pris sous s.270 du Customs Management Act 2011, en vigueur le 01/11/2022, modifié ensuite (S.I. 7/2024, 55/2024, 14/2025) sans changer la structure ZLECAf",
-  "2_liste_officielle_origines_reciproques": "ÉTABLI — Schedule VI : liste fermée de 38 États parties nominativement énumérés dans l'instrument lui-même. RÉSERVE DE SÉMANTIQUE : c'est une liste d'États parties de la ZLECAf (admission par règle), pas une liste de partenaires dont l'application réciproque serait vérifiée bilatéralement — elle est néanmoins la liste officielle des origines admises par l'instrument seychellois",
+  "2_liste_officielle_origines_reciproques": "ÉTABLI — Schedule VI, intitulée « List of African Continental Free Trade Area (AfCFTA)  Member State s » : liste fermée de 38 entrées nominativement énumérées dans l'instrument lui-même ; le règlement 2(6), qui la désigne, les nomme « State Parties » (« The list of African Continental Free Trade Area (AfCFTA) State Parties are specified in Schedule VI. »). RÉSERVE DE SÉMANTIQUE : c'est une liste d'États parties de la ZLECAf (admission par règle), pas une liste de partenaires dont l'application réciproque serait vérifiée bilatéralement — elle est néanmoins la liste officielle des origines admises par l'instrument seychellois",
   "3_bareme_au_niveau_de_la_ligne": "ÉTABLI — sous-colonne AfCFTA 2022-2026 sur chaque ligne à huit chiffres du Schedule I Part III (barème intégralement porté dans le dépôt depuis la fiche du 19/09/2026 ; aucune année au-delà de 2026 : rien n'est reconduit)",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
@@ -62,5 +58,5 @@
   "Traiter les S.I. modificatifs 2025-2026 (S.I. 14 of 2025 et suivants) sur le barème si de nouvelles lignes ZLECAf sont ajoutées.",
   "RÉSERVE DE SÉMANTIQUE — la Schedule VI est une liste d'États parties (admission par règle) : si le moteur exige la sémantique « liste de partenaires d'application effective » (modèle General Note O sud-africain), dégrader la porte origines de ce pays en conséquence."
  ],
- "justification_niveau": "Un seul texte réglementaire national, en vigueur depuis le 01/11/2022, porte ET la liste des origines ET le barème ligne à ligne : c'est la définition même de l'application. Le PDF intégral est archivé (sha 605bc651…), les pages clés extraites avec empreinte, et l'e-Tariff officiel confirme une offre SC dont les taux ne sont pas exposés (ils sont dans le S.I.)."
+ "justification_niveau": "Un seul texte réglementaire national, en vigueur depuis le 01/11/2022, porte ET la liste des origines ET le barème ligne à ligne : c'est la définition même de l'application. Le PDF intégral est archivé (sha 605bc651…) et les pages clés extraites avec empreinte (sha 1a81cc0e…)."
 }
