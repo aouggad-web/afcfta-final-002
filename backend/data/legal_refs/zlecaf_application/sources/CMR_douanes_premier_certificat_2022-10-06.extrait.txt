@@ -1,0 +1,28 @@
+DOUANES CAMEROUNAISES — « ZONE DE LIBRE-ECHANGE CONTINENTALE AFRICAINE le top départ »
+(premier certificat d'origine ZLECAf délivré — article n° 6582, octobre 2022)
+SOURCE OFFICIELLE : administration des douanes du Cameroun (douanes.cm).
+URL : http://www.douanes.cm/douanes-cameroun/6582/delivrance-du-tout-premier-certificat-dorigine-zlecaf/
+Consulté le : 2026-09-29 (page entière capturée en direct :
+sources/CMR_douanes_premier_certificat_2022-10-06.html).
+Note de transport : douanes.cm présente un certificat TLS jugé trop faible par curl
+(les requêtes https échouent) ; cette page a été téléchargée en HTTP non chiffré,
+SANS désactivation de la vérification TLS — l'empreinte sha256 couvre les octets reçus.
+
+VERBATIM (français, tel qu'imprimé) :
+
+1) « Dans le détail de l'historique, en date du 06 octobre 2022, le Chef du Bureau
+Principal des Douanes Hors Classe de Douala Aéroport, Achille OLEME, a procédé à la
+signature et à la délivrance du tout premier certificat d'origine ZLECAF à
+l'exportation des marchandises produites localement par le GIC AFATEX. Lesdites
+marchandises, d'un poids total de 155 kilogrammes à destination du Ghana, étaient
+constituées de thé de gingembre, de safous et d'ananas séchés. »
+
+TRADUCTION / PORTÉE :
+- établit la date (06/10/2022), le premier certificat d'origine ZLECAf délivré par la
+  douane camerounaise, et la destination (Ghana) ;
+- s'agit d'un acte À L'EXPORTATION : rien dans la publication ne concerne l'admission
+  d'origines à l'importation ni une liste de partenaires ;
+- l'exportation suit « l'ouverture officielle » du régime — la page ne cite aucun
+  texte national d'application.
+
+MÉTHODE : page HTML capturée en direct (curl), empreinte sha256 consignée dans la fiche.

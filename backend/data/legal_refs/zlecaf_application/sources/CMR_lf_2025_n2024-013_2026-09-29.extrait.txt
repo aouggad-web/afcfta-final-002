@@ -1,0 +1,30 @@
+Cameroun — Loi N° 2024/013 du 23 décembre 2024 portant loi de finances de la
+République du Cameroun pour l'exercice 2025 (contrôle NÉGATIF daté)
+Consulté le : 2026-09-29.
+URL OFFICIELLE 1 (scan, Direction générale des Impôts) :
+https://impots.cm/sites/default/files/documents/loi_n_2024_013_du_23_12_2024-web.pdf
+SHA256 DU PDF ORIGINAL (scan, sans couche texte) :
+e3d1c4ce54bbd8ee1536b1b7ec3d95eb840a4c25931297c3871782f2e614c546
+URL OFFICIELLE 2 (copie à couche texte, Présidence de la République) :
+https://www.prc.cm/files/cf/48/1f/2fe1a9841fec83a1f97992a679fc9468.pdf
+SHA256 DE LA COPIE À COUCHE TEXTE :
+386dd1c8c5bd6f480554d88195f270da703fe5d261f94689cbeb7b8409f50348
+PDF NON VERSÉS AU DÉPÔT (règle : un PDF entier seulement quand il prouve un fait) ;
+copies conservées hors dépôt : ~/Downloads/Cameroun/CMR_lf_2025_n2024-013.pdf (scan)
+et ~/Downloads/Cameroun/CMR_lf_2025_n2024-013_copie_prc.pdf (couche texte).
+
+PAGE DE TITRE (page 1 de la copie à couche texte, tel qu'extrait) :
+« REPUBLIQUE DU CAMEROUN PAIX -TRAVAIL -PATRIE / 2024/013 23 DEC 2024 / LOI N°
+2024/013 DU [...] PORTANT LOI DE FINANCES DE LA REPUBLIQUE DU CAMEROUN POUR
+L'EXERCICE 2025 / Le Parlement a délibéré et adopté, le / Président de la République
+promulgue la loi dont la teneur suit : / www.prc.cm »
+
+RÉSULTAT DE LA RECHERCHE : sur la copie à couche texte (109 pages lisibles sur 110),
+extraction pypdf intégrale — occurrences relevées : ZLECA 0, Zlecaf 0, AfCFTA 0,
+continental 0. Le texte porte bien la loi (56 occurrences de « Article ») ; la couche
+texte est authentique. Aucune disposition tarifaire ZLECAf dans la loi de finances 2025.
+
+PORTÉE : la LF 2025 ne porte pas le mécanisme tarifaire ZLECAf à l'importation. Contrôle
+négatif daté, sans acte d'application parallèle à écarter (la circulaire douanière d'application
+de la LF 2025 n'a pas été retrouvée sur douanes.cm — la dernière circulaire publiée pour une
+loi de finances y est la n° 410 du 18/05/2026, portant la LF 2026).
