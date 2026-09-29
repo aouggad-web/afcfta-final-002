@@ -7,7 +7,8 @@
  "evidence_level": "offre tarifaire archivée (instantané e-Tariff Book CEMAC) et faits d'application documentés par l'administration douanière elle-même — mais à l'EXPORTATION seulement ; à l'IMPORTATION : aucun acte national retrouvé, contrôles négatifs datés sur les textes budgétaires et douaniers 2025-2026 ; aucune liste nominative d'origines",
  "offre_tarifaire": {
   "instrument": "Instantané e-Tariff Book du Secrétariat de la ZLECAf, offre CEMAC (le Cameroun est membre CEMAC)",
-  "texte_archive": "../../official_preferential/CEMAC_afcfta_etariff_2026-08-17.json.gz",
+  "artifact": "backend/data/official_preferential/CEMAC_afcfta_etariff_2026-08-17.json.gz",
+  "document_non_archive": "Jeu de données du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture, chemin du dépôt en clair.",
   "sha256": "ba6f1043cb5016332dff65de15a22b6011f990ca0b88c064c10b2720dbccd261",
   "collecte_le": "2026-08-17",
   "portee": "Barème ligne à ligne au format de l'offre continentale ; OFFRE SEULE : elle n'est pas un acte national camerounais et ne nomme pas de partenaires."
