@@ -21,6 +21,12 @@ ENV PATH="/opt/venv/bin:$PATH"
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
+# Commit servi, lu par GET /api/version : .git est exclu de l'image
+# (.dockerignore), il doit donc être passé à la construction :
+#   GIT_SHA=$(git rev-parse HEAD) docker compose build
+ARG GIT_SHA=""
+ENV GIT_SHA=${GIT_SHA}
+
 WORKDIR /app
 COPY --chown=appuser:appuser . /app
 

@@ -59,3 +59,40 @@ def test_fob_superieure_a_la_cif_reste_une_erreur_de_saisie(client):
 
     assert r.status_code == 422, r.text
     assert "valeur_fob" in str(r.json()["detail"])
+
+
+def _bases_fob_reglementaires(reponse):
+    return [
+        li["base_value"]
+        for li in reponse.json()["regulatory_cost"]["line_items"]
+        if li.get("calculation_method") == "PERCENTAGE_OF_FOB"
+    ]
+
+
+def test_les_frais_assis_sur_la_fob_utilisent_la_valeur_fob_fournie(client):
+    """CMR : frais de prestataire en % de la FOB (verified_provider_fees.json)."""
+    sans = client.get("/authentic-tariffs/calculate/CMR/01011010", params={"value": 1000})
+    avec = client.get(
+        "/authentic-tariffs/calculate/CMR/01011010", params={"value": 1000, "fob_value": 800}
+    )
+
+    assert sans.status_code == avec.status_code == 200
+    # Sans FOB fournie, l'assiette reste le CIF, comme avant.
+    assert _bases_fob_reglementaires(sans) == [1000]
+    assert _bases_fob_reglementaires(avec) == [800]
+
+
+def test_la_route_de_compatibilite_accepte_la_valeur_fob():
+    from routes.postgres_tariffs import router as router_postgres
+
+    app = FastAPI()
+    app.include_router(router_postgres)
+    compat = TestClient(app, raise_server_exceptions=False)
+    params = {"country_iso3": "ZAF", "hs6": CODE, "value": 1000}
+
+    sans = compat.post("/postgres-tariffs/calculate", params=params)
+    avec = compat.post("/postgres-tariffs/calculate", params={**params, "fob_value": 800})
+
+    assert sans.status_code == 422
+    assert sans.json()["detail"]["code"] == "VALEUR_FOB_REQUISE"
+    assert avec.status_code == 200, avec.text

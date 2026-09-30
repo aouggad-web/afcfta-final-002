@@ -57,18 +57,28 @@ async def health_check():
     }
 
 
-def empreinte_socle(manifeste: dict) -> str:
+def _sha256_fichier(chemin: str):
+    try:
+        with open(chemin, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()
+    except OSError:
+        return None
+
+
+def empreinte_socle(manifeste: dict, tables: dict) -> str:
     """Empreinte stable du socle : `construit_le` change à chaque build, pas elle.
 
     Calculée sur les empreintes pays (socle et source) et non sur le fichier
     brut, pour qu'un même socle reconstruit ailleurs (production) donne la
-    même valeur que celui du dépôt.
+    même valeur que celui du dépôt. `tables` porte l'empreinte des tables
+    annexes lues en direct pendant le calcul (devises, TVA nationale) : elles
+    changent le résultat sans figurer dans les empreintes pays.
     """
     pays = {
         iso: [entree.get("socle_sha256"), entree.get("source_sha256")]
         for iso, entree in manifeste.get("pays", {}).items()
     }
-    canon = json.dumps(pays, sort_keys=True, separators=(",", ":"))
+    canon = json.dumps({"pays": pays, "tables": tables}, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canon.encode("utf-8")).hexdigest()
 
 
@@ -92,7 +102,13 @@ async def version():
                 for entree in pays.values()
                 if os.path.exists(os.path.join(socle.SOCLE_DIR, entree.get("fichier", "")))
             ),
-            "empreinte": empreinte_socle(manifeste),
+            "empreinte": empreinte_socle(
+                manifeste,
+                {
+                    os.path.basename(chemin): _sha256_fichier(chemin)
+                    for chemin in (socle.DEVISES, socle.TVA_NATIONALE)
+                },
+            ),
         }
     except Exception as exc:
         socle_info = {"erreur": str(exc)}

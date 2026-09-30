@@ -114,11 +114,21 @@ def test_empreinte_socle_stable_quand_seule_la_date_change():
     """Le build réécrit `construit_le` : l'empreinte ne doit pas en dépendre."""
     empreinte_socle = _load_health_module().empreinte_socle
     pays = {"MUS": {"socle_sha256": "a", "source_sha256": "b", "fichier": "MUS.json"}}
+    tables = {"devises_pays.json": "d", "tva_nationale.json": "t"}
     avant = {"construit_le": "2026-09-28T12:00:00+00:00", "pays": pays}
     apres = {"construit_le": "2026-09-30T08:00:00+00:00", "pays": pays}
-    assert empreinte_socle(avant) == empreinte_socle(apres)
+    assert empreinte_socle(avant, tables) == empreinte_socle(apres, tables)
     modifie = {"pays": {"MUS": {"socle_sha256": "c", "source_sha256": "b"}}}
-    assert empreinte_socle(avant) != empreinte_socle(modifie)
+    assert empreinte_socle(avant, tables) != empreinte_socle(modifie, tables)
+
+
+def test_empreinte_socle_couvre_les_tables_lues_en_direct():
+    """Une TVA nationale ou une devise modifiée change le calcul : l'empreinte aussi."""
+    empreinte_socle = _load_health_module().empreinte_socle
+    manifeste = {"pays": {"ZAF": {"socle_sha256": "a", "source_sha256": "b"}}}
+    tva_avant = {"devises_pays.json": "d", "tva_nationale.json": "t1"}
+    tva_apres = {"devises_pays.json": "d", "tva_nationale.json": "t2"}
+    assert empreinte_socle(manifeste, tva_avant) != empreinte_socle(manifeste, tva_apres)
 
 
 def test_health_logic():
