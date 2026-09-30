@@ -314,6 +314,11 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     description: calcul.position?.designation || null,
 
     normal_tariff_rate: pctToFraction(dd?.taux_pct),
+    // Même champ que le chemin historique : le droit NPF en %, absent s'il
+    // n'est pas publié (jamais un 0 de repli).
+    npf_dd_rate_pct: typeof dd?.taux_pct === 'number' && Number.isFinite(dd.taux_pct)
+      ? dd.taux_pct
+      : null,
     normal_tariff_amount: dutyAmount,
     zlecaf_tariff_rate: hasPreference ? pctToFraction(ddPref?.taux_pct) : null,
     zlecaf_tariff_amount: zlecafDutyAmount,

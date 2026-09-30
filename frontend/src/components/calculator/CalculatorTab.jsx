@@ -23,7 +23,7 @@ import CalculationMethodStatus from './CalculationMethodStatus';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import DataStatusBanner from '../common/DataStatusBanner';
-import DismantlementSchedule from './DismantlementSchedule';
+import ExplicationZlecaf from './ExplicationZlecaf';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
@@ -317,6 +317,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   };
 
   const t = texts[language];
+  // Préférence documentée dont le total égale le NPF (ZAF/02071290 depuis
+  // l'Égypte : 82 % des deux côtés) : afficher « −0.0 % » ferait croire à un gain.
+  const sansAvantageZlecaf = zlecafTotalTaxRatePct(result) !== null
+    && (result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result) < 0.05;
 
   // Code SH6 « pur » : on n'affiche les positions nationales avoisinantes que
   // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
@@ -681,6 +685,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // strictement informatif, jamais utilisé dans un calcul.
           zlecaf_offer_rate_pct: zlecafAvailability.offerRatePct,
           zlecaf_offer_rate_expression: zlecafAvailability.offerRateExpression,
+          zlecaf_offer_rate_source: zlecafAvailability.offerRateExpression
+            ? authenticResult.zlecaf_offer_rate_source || null
+            : null,
 
           // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
           taxes_breakdown: neutralizeZlecafBreakdown(
@@ -1861,12 +1868,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-[var(--gold)] text-xs font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
                   <p className="text-3xl font-bold text-[var(--gold)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
+                      ? (sansAvantageZlecaf
+                        ? '0.0%'
+                        : `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`)
                       : '—'}
                   </p>
                   <p className="text-[var(--gold)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
+                      ? (sansAvantageZlecaf
+                        ? (language === 'fr' ? 'Aucun avantage sur cette ligne' : 'No advantage on this line')
+                        : (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate'))
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr' ? 'À vérifier' : 'To verify')
                         : (language === 'fr' ? 'Non disponible' : 'Unavailable')}
@@ -1888,6 +1899,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               </div>
+              <ExplicationZlecaf result={result} language={language} />
               <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
                 Simulation informative — non opposable à l’administration douanière.
               </p>
@@ -1912,15 +1924,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </CardContent>
           </Card>
 
-          {/* Schéma de démantèlement ZLECAf */}
-          {result && destinationCountry && hsCode && isDisplayableZlecafResult(result) && (
-            <DismantlementSchedule
-              countryIso3={destinationCountry}
-              hs6={hsCode.replace(/[.\s]/g, '').slice(0, 6)}
-              npfRate={result.customs_duty_rate ?? result.dd_rate_pct ?? result.tariff_rate ?? 0}
-              language={language}
-            />
-          )}
+          {/* Pas de schéma de démantèlement ici : le seul disponible est le
+              canevas générique SH2 (`/api/dismantlement`), qui contredit le taux
+              officiel de la ligne (ZAF/02071290 : 32,8 % « en 2026 » contre 82 %
+              au tarif SARS). Le taux réel est expliqué dans l'encadré ZLECAf. */}
 
           {/* Détail des taxes */}
           {result.taxes_detail && result.taxes_detail.length > 0 && (
