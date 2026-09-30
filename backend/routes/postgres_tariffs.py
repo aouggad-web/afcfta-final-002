@@ -130,6 +130,7 @@ async def calculate_tariffs(
             cif_value=value,
             language="fr",
             origin=None,
+            fob_value=None,
             calculation_date=None,
             remission_eligibility=RemissionEligibility.ELIGIBILITY_UNKNOWN,
             authorization_reference=None,

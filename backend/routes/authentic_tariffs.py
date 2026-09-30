@@ -746,6 +746,9 @@ async def calculate_taxes_get_endpoint(
     value: float = Query(10000, description="CIF value in USD"),
     language: str = Query("fr", description="Language: fr or en"),
     origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)"),
+    fob_value: Optional[float] = Query(
+        None, gt=0, description="Valeur FOB en USD — requise pour l'Afrique du Sud (SACU)"
+    ),
     calculation_date: Optional[date] = Query(None, description="Legal calculation date"),
     remission_eligibility: RemissionEligibility = Query(RemissionEligibility.ELIGIBILITY_UNKNOWN),
     authorization_reference: Optional[str] = Query(None),
@@ -766,6 +769,7 @@ async def calculate_taxes_get_endpoint(
         cif_value=value,
         language=language,
         origin=origin,
+        fob_value=fob_value,
         calculation_date=calculation_date,
         remission_eligibility=remission_eligibility,
         authorization_reference=authorization_reference,
