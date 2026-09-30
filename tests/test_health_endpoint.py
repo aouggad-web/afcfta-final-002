@@ -75,6 +75,52 @@ def test_detailed_health_endpoint_no_502():
     print("✅ /health/status retourne 200 avec 'components' (pas de 502 Bad Gateway)")
 
 
+def _load_health_module():
+    health_path = backend_path / "routes" / "health.py"
+    spec = importlib.util.spec_from_file_location("backend.routes.health", health_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_version_endpoint():
+    """/version renvoie le commit du code chargé et l'état du socle, sans auth."""
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    module = _load_health_module()
+    app = FastAPI()
+    app.include_router(module.router)
+
+    with TestClient(app) as client:
+        response = client.get("/version")
+
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert "backend_sha" in data
+    socle = data["socle"]
+    assert socle["pays"] == 54
+    assert len(socle["empreinte"]) == 64
+    assert 0 <= socle["fichiers_presents"] <= socle["pays"]
+
+
+def test_version_reprend_git_sha(monkeypatch):
+    """Un GIT_SHA posé au build prime sur le HEAD du clone (image sans .git)."""
+    monkeypatch.setenv("GIT_SHA", "abc1234")
+    assert _load_health_module().BACKEND_SHA == "abc1234"
+
+
+def test_empreinte_socle_stable_quand_seule_la_date_change():
+    """Le build réécrit `construit_le` : l'empreinte ne doit pas en dépendre."""
+    empreinte_socle = _load_health_module().empreinte_socle
+    pays = {"MUS": {"socle_sha256": "a", "source_sha256": "b", "fichier": "MUS.json"}}
+    avant = {"construit_le": "2026-09-28T12:00:00+00:00", "pays": pays}
+    apres = {"construit_le": "2026-09-30T08:00:00+00:00", "pays": pays}
+    assert empreinte_socle(avant) == empreinte_socle(apres)
+    modifie = {"pays": {"MUS": {"socle_sha256": "c", "source_sha256": "b"}}}
+    assert empreinte_socle(avant) != empreinte_socle(modifie)
+
+
 def test_health_logic():
     """
     Test de la logique du health check sans serveur

@@ -2,6 +2,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { execSync } from 'child_process';
 
 // Configuration HMR (Hot Module Replacement) — CAUSE DU BUG « l'app revient au
 // dashboard / la page se recharge toute seule chaque minute ».
@@ -62,6 +63,20 @@ const _resolvedBackendUrl =
 // behavior must survive unchanged — this must not invent a new default.
 if (_resolvedBackendUrl) {
   process.env.VITE_BACKEND_URL = _resolvedBackendUrl;
+}
+// Commit du frontend servi, figé dans le bundle au build et exposé dans
+// index.html (`<meta name="build-sha">`) : `curl <domaine> | grep build-sha`
+// le compare à `GET /api/version` (commit du backend) sans exécuter de JS.
+if (!process.env.VITE_BUILD_SHA) {
+  let sha = process.env.GITHUB_SHA || '';
+  if (!sha) {
+    try {
+      sha = execSync('git rev-parse HEAD', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim();
+    } catch {
+      sha = '';
+    }
+  }
+  process.env.VITE_BUILD_SHA = sha || 'inconnu';
 }
 // The dev-server proxy target is Node-only config (never exposed to the
 // browser bundle), so it keeps its own localhost default independently.
