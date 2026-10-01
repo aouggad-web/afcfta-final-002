@@ -21,6 +21,7 @@ from typing import FrozenSet, Optional
 
 from services.zlecaf_schedule_egy import ORIGINES_PAR_GROUPE
 from services.zlecaf_schedule_mar import ORIGINES_PAR_GROUPE as MAR_ORIGINES
+from services.zlecaf_schedule_syc import ORIGINES_SCHEDULE_VI as SYC_ORIGINES
 
 APPLIED = "APPLIED"
 OFFER_ONLY = "OFFER_ONLY"
@@ -330,6 +331,31 @@ RECORDS = {
             "P1 (5 ans) et P2 (10 ans), lues dans la fiche. DI servi depuis "
             "l'e-Tariff Book sélectionné par les listes nationales ; TPI "
             "démantelée sur le même calendrier — voir zlecaf_schedule_mar.py."
+        ),
+    ),
+    # Les Seychelles : un seul règlement porte l'instrument, la liste des
+    # origines (Schedule VI) et le barème (sous-colonne AfCFTA 2022-2026) —
+    # fiche SYC_application_2026-09-28.json.
+    "SYC": ImplementationRecord(
+        destination_iso3="SYC",
+        status=APPLIED,
+        instrument_id="S.I. 113 of 2022",
+        instrument_title=(
+            "Customs Management (Tariff and Classification of Goods) "
+            "Regulations, 2022 — Seychelles"
+        ),
+        instrument_url=(
+            "https://src.gov.sc/wp-content/uploads/2025/10/"
+            "SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf"
+        ),
+        effective_from="2022-11-01",
+        accepted_origins=SYC_ORIGINES,
+        # Le barème est la sous-colonne AfCFTA du socle, pas un jeu e-Tariff.
+        tariff_dataset=None,
+        note=(
+            "S.I. 113 of 2022 : origines de la Schedule VI (38 États), taux de "
+            "la sous-colonne AfCFTA de l'année (2022 à 2026, rien au-delà). "
+            "Seul le droit de douane est réduit. Information indicative."
         ),
     ),
     # Regulation 574/2025 is in force and contains Ethiopia's schedule, but
