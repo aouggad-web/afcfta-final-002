@@ -267,14 +267,6 @@ except ImportError:
     REGIONAL_DATA_AVAILABLE = False
 
 try:
-    from .regional_calculator import router as regional_calculator_router
-
-    REGIONAL_CALCULATOR_AVAILABLE = True
-except ImportError:
-    regional_calculator_router = None
-    REGIONAL_CALCULATOR_AVAILABLE = False
-
-try:
     from .investment_intelligence import router as investment_intelligence_router
 
     INVESTMENT_INTELLIGENCE_AVAILABLE = True
@@ -576,10 +568,6 @@ def register_routes(api_router: APIRouter):
     if REGIONAL_DATA_AVAILABLE:
         api_router.include_router(
             regional_data_router, tags=["Regional Data Inventory"], dependencies=_auth
-        )
-    if REGIONAL_CALCULATOR_AVAILABLE:
-        api_router.include_router(
-            regional_calculator_router, tags=["Regional Calculator"], dependencies=_auth
         )
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(

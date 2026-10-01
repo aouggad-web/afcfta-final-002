@@ -83,34 +83,6 @@ type TariffLine {
   active: Boolean!
 }
 
-input TariffCalculationInput {
-  originCountry: String!
-  destinationCountry: String!
-  hsCode: String!
-  goodsValueUsd: Float!
-}
-
-type TariffCalculationResult {
-  originCountry: String!
-  destinationCountry: String!
-  hsCode: String!
-  goodsValueUsd: Float!
-  tariffRatePct: Float!
-  dutyAmountUsd: Float!
-  totalLandedCostUsd: Float!
-  appliedScheme: String!
-  notes: [String!]!
-}
-
-type BulkCalculationResult {
-  operationId: String!
-  totalRequests: Int!
-  successCount: Int!
-  errorCount: Int!
-  results: [TariffCalculationResult!]!
-  processingTimeMs: Float!
-}
-
 # ===========================================================================
 # HS Code & Product Search types
 # ===========================================================================
@@ -408,11 +380,6 @@ type Query {
     regions: [RegionalBloc!]!
     metrics: [String!]
   ): RegionalComparison!
-
-  # Bulk tariff calculation
-  bulkTariffCalculation(
-    calculations: [TariffCalculationInput!]!
-  ): BulkCalculationResult!
 
   # Personalized recommendations
   getPersonalizedRecommendations(
