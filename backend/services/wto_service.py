@@ -320,51 +320,6 @@ class WTOService:
             logger.error(f"WTO API error: {str(e)}")
             return None
 
-    async def get_afcfta_tariff_comparison(self, country_code: str, hs_code: str) -> Optional[Dict]:
-        """
-        Compare MFN tariff vs AfCFTA tariff (typically 0%)
-
-        Args:
-            country_code: ISO3 country code
-            hs_code: HS product code
-
-        Returns:
-            Comparison showing tariff reduction potential
-        """
-        mfn_data = self.get_tariff_data(country_code, hs_code=hs_code)
-
-        if not mfn_data or not mfn_data.get("data"):
-            return None
-
-        # Extract MFN rate
-        mfn_rate = None
-        dataset = mfn_data["data"].get("Dataset", {})
-        series = dataset.get("Series", [])
-        for entry in series:
-            for record in entry.get("Obs", []):
-                if record.get("Value") is not None:
-                    mfn_rate = float(record["Value"])
-                    break
-            if mfn_rate is not None:
-                break
-
-        if mfn_rate is None:
-            return None
-
-        # AfCFTA rate is typically 0% for most products (after full implementation)
-        afcfta_rate = 0.0
-
-        return {
-            "country": country_code,
-            "hs_code": hs_code,
-            "mfn_rate_percent": mfn_rate,
-            "afcfta_rate_percent": afcfta_rate,
-            "tariff_reduction_percent": mfn_rate - afcfta_rate,
-            "savings_description": f"Économie de {mfn_rate:.1f}% sous la ZLECAf",
-            "source": "WTO + AfCFTA TRS",
-            "timestamp": datetime.utcnow().isoformat(),
-        }
-
     def get_latest_available_year(self, country_code: str) -> Optional[str]:
         """
         Get the latest year with available tariff data

@@ -56,13 +56,6 @@ class InvestmentRecommendationRequest(BaseModel):
     )
 
 
-class SACUImportCostRequest(BaseModel):
-    cif_value: float = Field(..., gt=0, description="CIF value in ZAR")
-    hs_chapter: str = Field(..., description="HS chapter (2-digit, e.g. '87')")
-    destination: str = Field(..., description="ISO3 destination country within SADC")
-    origin: str = Field(default="INTL", description="ISO3 origin country ('INTL' for non-SADC)")
-
-
 # ---------------------------------------------------------------------------
 # Service accessor (lazy import)
 # ---------------------------------------------------------------------------
@@ -196,25 +189,6 @@ async def get_sacu_revenue_sharing():
         }
     except Exception as exc:
         logger.error(f"SACU revenue sharing failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-@router.post("/regions/sacu/import-cost")
-async def calculate_sacu_import_cost(request: SACUImportCostRequest):
-    """
-    Calculate total landed cost for an import at a SACU port of entry.
-
-    Applies SACU CET, SADC preferences (if applicable), and VAT.
-    """
-    try:
-        return _get_sadc().calculate_sacu_import_cost(
-            cif_value=request.cif_value,
-            hs_chapter=request.hs_chapter,
-            destination=request.destination,
-            origin=request.origin,
-        )
-    except Exception as exc:
-        logger.error(f"SACU import cost calculation failed: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
 
 

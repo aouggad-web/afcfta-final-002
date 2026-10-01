@@ -861,7 +861,6 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
                 "backend/services/authentic_tariff_service.py::load_crawled_position_index",
                 "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
                 "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
-                "backend/routes/enhanced_calculator.py::_load_dza_authentic_line",
             ],
             "import_and_normalization_scripts": pipeline_scripts,
         },

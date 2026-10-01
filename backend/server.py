@@ -79,7 +79,6 @@ from entitlement_guard import set_database as set_entitlement_guard_db
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
-from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
@@ -321,7 +320,7 @@ async def startup_load_tariff_data():
     # Set up database indexes for performance
     await _setup_database_indexes()
 
-    # Wire database into auth and calculator
+    # Wire database into auth
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
@@ -329,7 +328,6 @@ async def startup_load_tariff_data():
     if set_billing_db is not None:
         set_billing_db(db)
     await _seed_admin_account()
-    set_calculator_db(db)
 
     # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
     # qu'une fois (Stripe garantit une livraison at-least-once).

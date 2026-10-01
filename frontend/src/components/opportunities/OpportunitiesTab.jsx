@@ -1,11 +1,11 @@
 /**
  * Opportunities Tab — main container
- * 8 sub-tabs: Analyse IA · Substitution · Simulateur ZLECAf · Comparateur
- * bilatéral · Vue d'ensemble · Chaînes de Valeur · Par Produit · Comparaison
+ * 6 sub-tabs: Analyse IA · Substitution · Vue d'ensemble · Chaînes de Valeur
+ * · Par Produit · Comparaison
  */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator, TrendingUp } from 'lucide-react';
+import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, TrendingUp } from 'lucide-react';
 
 import AIAnalysis from './AIAnalysis';
 import StrategicFlows from './StrategicFlows';
@@ -14,8 +14,6 @@ import ValueChains from './ValueChains';
 import ProductAnalysisView from './ProductAnalysisView';
 import CountryComparison from './CountryComparison';
 import OpportunitySummary from './OpportunitySummary';
-import ZlecafImpactSimulator from './ZlecafImpactSimulator';
-import BilateralTariffComparator from './BilateralTariffComparator';
 
 // Les libellés vivaient ici en deux listes parallèles, une par langue. Toute
 // nouvelle langue en aurait demandé une troisième, et tout renommage devait
@@ -26,8 +24,6 @@ const TABS = [
   { id: 'ai',           icon: Sparkles },
   { id: 'strategic',    icon: TrendingUp },
   { id: 'substitution', icon: ArrowLeftRight },
-  { id: 'simulator',    icon: Calculator },
-  { id: 'bilateral',    icon: Scale },
   { id: 'summary',      icon: BarChart3 },
   { id: 'valueChains',  icon: Layers },
   { id: 'byProduct',    icon: Package },
@@ -63,8 +59,6 @@ export default function OpportunitiesTab({ language = 'fr' }) {
       case 'ai':           return <AIAnalysis language={lang} />;
       case 'strategic':    return <StrategicFlows language={lang} initialCountry={handoffCountry} />;
       case 'substitution': return <SubstitutionAnalysis language={lang} initialCountry={handoffCountry} />;
-      case 'simulator':    return <ZlecafImpactSimulator language={lang} />;
-      case 'bilateral':    return <BilateralTariffComparator language={lang} />;
       case 'summary':      return <OpportunitySummary language={lang} />;
       case 'valueChains':  return <ValueChains language={lang} />;
       case 'byProduct':    return <ProductAnalysisView language={lang} />;

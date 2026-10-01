@@ -42,13 +42,6 @@ def get_enhanced_statistics() -> Dict:
     return corrections.get("enhanced_statistics", {})
 
 
-# Get tariff corrections
-def get_tariff_corrections() -> Dict:
-    """Get updated tariff rates for normal and zlecaf"""
-    corrections = load_corrections_data()
-    return corrections.get("tariff_corrections", {})
-
-
 # Load customs data
 def load_customs_data():
     """Load African customs administrations data"""

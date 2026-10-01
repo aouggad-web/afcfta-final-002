@@ -8,7 +8,6 @@ Provides intelligence endpoints for all 7 North African countries:
 Endpoints:
   GET  /api/regions/north-africa/countries            # All 7 country profiles
   GET  /api/regions/uma/intelligence                  # UMA regional intelligence
-  GET  /api/tariffs/north-africa/{country_code}       # Country tariff profile
   GET  /api/investment/north-africa/zones             # All SEZ data
   GET  /api/investment/north-africa/zones/{cc}        # Country-specific SEZs
   GET  /api/trade/north-africa/agreements             # Trade agreement matrix
@@ -27,7 +26,6 @@ logger = logging.getLogger(__name__)
 # ── Routers ──────────────────────────────────────────────────────────────────
 
 regions_router = APIRouter(prefix="/regions", tags=["North Africa Regions"])
-tariffs_router = APIRouter(prefix="/tariffs", tags=["North Africa Tariffs"])
 investment_router = APIRouter(prefix="/investment", tags=["North Africa Investment"])
 trade_router = APIRouter(prefix="/trade", tags=["North Africa Trade"])
 
@@ -61,22 +59,6 @@ def _constants():
         "data_sources": UMA_DATA_SOURCES,
         "sector_strengths": UMA_SECTOR_STRENGTHS,
         "multilang": MULTILANG_NAMES,
-    }
-
-
-def _tariff_structures():
-    from crawlers.countries.north_africa.tariff_structures import (
-        MOROCCO_TARIFFS,
-        get_all_profiles,
-        get_country_tariff_profile,
-        get_regional_tariff_comparison,
-    )
-
-    return {
-        "get_profile": get_country_tariff_profile,
-        "get_all": get_all_profiles,
-        "compare": get_regional_tariff_comparison,
-        "morocco_bands": MOROCCO_TARIFFS,
     }
 
 
@@ -186,16 +168,13 @@ async def get_uma_intelligence():
     """
     try:
         c = _constants()
-        ts = _tariff_structures()
         iz = _investment_zones()
 
         zone_summary = iz["summary"]()
-        all_profiles = ts["get_all"]()
 
         intelligence = {}
         for code in c["countries"]:
             meta = c["metadata"].get(code, {})
-            profile = all_profiles.get(code, {})
             intelligence[code] = {
                 "country": code,
                 "name_en": meta.get("name_en", code),
@@ -207,8 +186,6 @@ async def get_uma_intelligence():
                 "corporate_tax_rate": c["cit_rates"].get(code),
                 "investment_law": c["investment_laws"].get(code, ""),
                 "sector_strengths": c["sector_strengths"].get(code, []),
-                "tariff_bands": profile.get("bands", {}),
-                "data_quality": profile.get("data_quality", "unknown"),
                 "data_reliability": meta.get("data_reliability", "unknown"),
                 "special_zones_count": len(iz["get_zones"](code)),
             }
@@ -309,20 +286,14 @@ async def compare_countries(
         None,
         description="Comma-separated ISO-3 codes (e.g. MAR,EGY,TUN). Defaults to all 7.",
     ),
-    chapter: Optional[int] = Query(
-        None,
-        description="HS chapter (1-97) for tariff comparison.",
-    ),
 ):
     """
     Cross-country comparison of key trade and investment metrics.
 
-    Includes VAT, corporate tax, investment law, sector strengths,
-    and optionally a tariff comparison for a specific HS chapter.
+    Includes VAT, corporate tax, investment law and sector strengths.
     """
     try:
         c = _constants()
-        ts = _tariff_structures()
 
         target_codes = (
             [cc.strip().upper() for cc in countries.split(",")] if countries else c["countries"]
@@ -342,70 +313,10 @@ async def compare_countries(
                 "sector_strengths": c["sector_strengths"].get(code, []),
                 "data_reliability": meta.get("data_reliability", "unknown"),
             }
-            if chapter is not None:
-                from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
 
-                comparison[code]["indicative_dd_rate_chapter"] = get_chapter_rate(code, chapter)
-
-        return {
-            "comparison": comparison,
-            "chapter_compared": chapter,
-            "note": "Tariff rates are indicative MFN averages for the HS chapter band.",
-        }
+        return {"comparison": comparison}
     except Exception as exc:
         logger.error(f"compare_countries failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-# ── /api/tariffs/north-africa/{country_code} ─────────────────────────────────
-
-
-@tariffs_router.get("/north-africa/{country_code}")
-async def get_country_tariff_profile(country_code: str):
-    """
-    Get the full tariff profile for a North African country.
-
-    Returns tariff bands, VAT, additional taxes, preferential agreements,
-    special regimes, and data quality metadata.
-
-    Path parameter:
-    - country_code: ISO-3 code (MAR, EGY, TUN, DZA, LBY, SDN, MRT)
-    """
-    try:
-        ts = _tariff_structures()
-        profile = ts["get_profile"](country_code.upper())
-        if profile is None:
-            raise HTTPException(
-                status_code=404,
-                detail=(
-                    f"Country '{country_code}' not found. "
-                    "Valid codes: MAR, EGY, TUN, DZA, LBY, SDN, MRT"
-                ),
-            )
-        return profile
-    except HTTPException:
-        raise
-    except Exception as exc:
-        logger.error(f"get_country_tariff_profile({country_code}) failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-@tariffs_router.get("/north-africa")
-async def get_all_north_africa_tariffs():
-    """
-    Get tariff profiles for all 7 North African countries in a single call.
-
-    Also includes the Morocco reference tariff bands for comparison.
-    """
-    try:
-        ts = _tariff_structures()
-        return {
-            "region": "North Africa",
-            "morocco_reference_bands": ts["morocco_bands"],
-            "country_profiles": ts["get_all"](),
-        }
-    except Exception as exc:
-        logger.error(f"get_all_north_africa_tariffs failed: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
 
 
@@ -511,7 +422,6 @@ async def get_trade_agreements(
     """
     try:
         c = _constants()
-        ts = _tariff_structures()
 
         agreements_db = {
             "MAR": [
@@ -793,6 +703,5 @@ async def get_trade_agreements(
 # ── Mount sub-routers onto the main router ────────────────────────────────────
 
 router.include_router(regions_router)
-router.include_router(tariffs_router)
 router.include_router(investment_router)
 router.include_router(trade_router)

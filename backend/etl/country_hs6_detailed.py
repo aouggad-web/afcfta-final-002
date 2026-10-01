@@ -1324,85 +1324,9 @@ COUNTRY_HS6_DETAILED.update(EAC_SADC_HS6_DETAILED)  # +22 pays EAC/COMESA/SADC (
 COUNTRY_HS6_DETAILED.update(NORTH_AFRICA_HS6_DETAILED)  # +7 pays Afrique du Nord
 
 
-# Statistiques des données
-def get_detailed_tariff_stats():
-    """Retourne les statistiques des tarifs détaillés"""
-    total_countries = len(COUNTRY_HS6_DETAILED)
-    total_hs6_codes = sum(len(tariffs) for tariffs in COUNTRY_HS6_DETAILED.values())
-    total_sub_positions = sum(
-        len(hs6_data.get("sub_positions", {}))
-        for tariffs in COUNTRY_HS6_DETAILED.values()
-        for hs6_data in tariffs.values()
-    )
-    return {
-        "total_countries": total_countries,
-        "total_hs6_codes": total_hs6_codes,
-        "total_sub_positions": total_sub_positions,
-        "countries": list(COUNTRY_HS6_DETAILED.keys()),
-    }
-
-
 # =============================================================================
 # FONCTIONS D'ACCÈS AUX SOUS-POSITIONS
 # =============================================================================
-
-
-def get_detailed_tariff(country_code: str, hs_code: str) -> Optional[Dict]:
-    """
-    Obtenir le tarif détaillé avec sous-positions pour un pays et code HS
-
-    Args:
-        country_code: Code ISO3 du pays
-        hs_code: Code HS (6-12 chiffres)
-
-    Returns:
-        Dict avec taux par défaut et sous-positions, ou None
-    """
-    country_code = country_code.upper()
-    hs6 = hs_code[:6].zfill(6)
-
-    country_tariffs = COUNTRY_HS6_DETAILED.get(country_code, {})
-    return country_tariffs.get(hs6)
-
-
-def get_sub_position_rate(country_code: str, full_code: str) -> Tuple[Optional[float], str, str]:
-    """
-    Obtenir le taux spécifique pour une sous-position nationale
-
-    Args:
-        country_code: Code ISO3 du pays
-        full_code: Code complet (8-12 chiffres)
-
-    Returns:
-        Tuple (taux ou None, description, source)
-    """
-    country_code = country_code.upper()
-    hs6 = full_code[:6].zfill(6)
-
-    country_tariffs = COUNTRY_HS6_DETAILED.get(country_code, {})
-    hs6_data = country_tariffs.get(hs6)
-
-    if not hs6_data:
-        return (None, "", "Non disponible")
-
-    # Chercher la sous-position exacte
-    sub_positions = hs6_data.get("sub_positions", {})
-
-    # Essayer différents formats de code
-    for sp_code, sp_data in sub_positions.items():
-        # Normaliser les codes pour comparaison
-        sp_normalized = sp_code.replace(".", "").replace(" ", "")
-        full_normalized = full_code.replace(".", "").replace(" ", "")
-
-        if (
-            sp_normalized == full_normalized
-            or sp_normalized.startswith(full_normalized)
-            or full_normalized.startswith(sp_normalized)
-        ):
-            return (sp_data["dd"], sp_data.get("description_fr", ""), f"Sous-position {sp_code}")
-
-    # Retourner le taux par défaut si pas de sous-position trouvée
-    return (hs6_data["default_dd"], hs6_data.get("description_fr", ""), "Taux par défaut HS6")
 
 
 def get_all_sub_positions(country_code: str, hs6_code: str) -> List[Dict]:

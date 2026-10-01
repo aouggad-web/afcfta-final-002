@@ -142,31 +142,6 @@ class TestSACURevenueSharingEndpoint:
         assert "revenue_sharing_formula" in data or "error" in data
 
 
-class TestSACUImportCostEndpoint:
-    def test_import_cost_200(self):
-        payload = {
-            "cif_value": 1000.0,
-            "hs_chapter": "87",
-            "destination": "ZAF",
-            "origin": "INTL",
-        }
-        resp = client.post("/api/regions/sacu/import-cost", json=payload)
-        assert resp.status_code == 200
-
-    def test_import_cost_fields(self):
-        payload = {"cif_value": 1000.0, "hs_chapter": "84", "destination": "ZAF"}
-        resp = client.post("/api/regions/sacu/import-cost", json=payload)
-        data = resp.json()
-        assert "total_landed_cost" in data or "error" in data
-
-    def test_import_cost_automotive(self):
-        payload = {"cif_value": 10000.0, "hs_chapter": "87", "destination": "ZAF", "origin": "INTL"}
-        resp = client.post("/api/regions/sacu/import-cost", json=payload)
-        data = resp.json()
-        if "customs_duty" in data:
-            assert data["customs_duty"] == 2500.0  # 25% CET
-
-
 # ===========================================================================
 # Country-specific endpoints
 # ===========================================================================

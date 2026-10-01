@@ -356,17 +356,6 @@ class SADCIntelligenceService:
         except ImportError:
             return {"error": "SACU framework data not available"}
 
-    def calculate_sacu_import_cost(
-        self, cif_value: float, hs_chapter: str, destination: str, origin: str = "INTL"
-    ) -> Dict[str, Any]:
-        """Calculate landed cost for an import at a SACU entry port."""
-        try:
-            from crawlers.countries.sacu_customs_union import calculate_total_import_cost
-
-            return calculate_total_import_cost(cif_value, hs_chapter, destination, origin)
-        except ImportError:
-            return {"error": "SACU calculation module not available"}
-
     # ==================== Trade Protocols ====================
 
     def get_trade_protocols(self, protocol: Optional[str] = None) -> Dict[str, Any]:
