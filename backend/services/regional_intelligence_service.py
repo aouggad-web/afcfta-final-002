@@ -748,7 +748,6 @@ class RegionalIntelligenceService:
                     "agreement": "EU Association Agreement + US FTA",
                     "key_sectors": ["Automotive", "Aerospace", "Agriculture", "Textiles"],
                     "port": "Tanger-Med (largest in Africa - 9M TEU capacity)",
-                    "dd_reduction": "0% on industrial goods",
                     "notes": "Most integrated EU supply chain partner in North Africa",
                 },
                 "tun_deep_integration": {
@@ -756,7 +755,6 @@ class RegionalIntelligenceService:
                     "agreement": "EU Association Agreement (most advanced in region)",
                     "key_sectors": ["Textiles", "Automotive components", "ICT", "Olive oil"],
                     "port": "Tunis-La Goulette",
-                    "dd_reduction": "0% on industrial goods",
                     "notes": "Preparing DCFTA (Deep Comprehensive FTA) for deeper integration",
                 },
                 "egy_eu_partnership": {
@@ -764,7 +762,6 @@ class RegionalIntelligenceService:
                     "agreement": "EU Partnership Agreement",
                     "key_sectors": ["Textiles", "Chemicals", "Food"],
                     "port": "Port Said, Alexandria",
-                    "dd_reduction": "Progressive reduction",
                     "notes": "Also benefits from QIZ for US market access",
                 },
             },

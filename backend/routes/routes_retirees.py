@@ -57,6 +57,8 @@ ROUTES_RETIREES = [
     ("GET", "/tariffs/north-africa/{country_code}", CALCUL),
     ("POST", "/crawlers/north-africa/optimal-route", None),
     ("GET", "/crawlers/north-africa/preferential-matrix/{hs_code}", None),
+    ("GET", "/trade/north-africa/agreements", None),
+    ("GET", "/regions/sadc/protocols", None),
     # Collecte qui réécrivait les tarifs sourcés, et résumés qui en sortaient.
     ("POST", "/tariff-data/collect", None),
     ("POST", "/tariff-data/collect/{country_code}", None),

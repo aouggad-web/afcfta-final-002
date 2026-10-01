@@ -27,7 +27,6 @@ Endpoints:
   GET  /api/analysis/sadc-vs-cemac                       # Cross-regional comparison
   POST /api/regions/sadc/investment-recommendation       # Investment location ranking
   GET  /api/regions/sadc/freshness                       # Data freshness status
-  GET  /api/regions/sadc/protocols                       # Trade protocols
 """
 
 import logging
@@ -143,20 +142,6 @@ async def get_sadc_data_freshness():
         return report.to_dict()
     except Exception as exc:
         logger.error(f"SADC data freshness failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-@router.get("/regions/sadc/protocols")
-async def get_sadc_trade_protocols(
-    protocol: Optional[str] = Query(
-        None, description="Specific protocol key (e.g. sadc_trade_protocol)"
-    )
-):
-    """Return SADC trade agreements and protocols."""
-    try:
-        return _get_sadc().get_trade_protocols(protocol=protocol)
-    except Exception as exc:
-        logger.error(f"SADC protocols failed: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
 
 

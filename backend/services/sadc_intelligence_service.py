@@ -354,26 +354,6 @@ class SADCIntelligenceService:
         except ImportError:
             return {"error": "SACU framework data not available"}
 
-    # ==================== Trade Protocols ====================
-
-    def get_trade_protocols(self, protocol: Optional[str] = None) -> Dict[str, Any]:
-        """Return SADC trade agreements and protocols."""
-        try:
-            from crawlers.countries.sadc.trade_protocols import SADC_TRADE_PROTOCOLS
-        except ImportError:
-            return {"error": "Trade protocols data not available"}
-
-        if protocol:
-            data = SADC_TRADE_PROTOCOLS.get(protocol)
-            if not data:
-                return {
-                    "error": f"Protocol not found: {protocol}",
-                    "available": list(SADC_TRADE_PROTOCOLS.keys()),
-                }
-            return data
-
-        return SADC_TRADE_PROTOCOLS
-
     # ==================== Cross-Regional Comparison ====================
 
     def compare_sadc_eac(self) -> Dict[str, Any]:
@@ -428,14 +408,13 @@ class SADCIntelligenceService:
                     "gdp_usd_billion": 120,
                     "population_million": 60,
                     "currency": "XAF (CFA Franc – shared with UEMOA)",
-                    "common_external_tariff": "TEC CEMAC (4 bands: 5%, 10%, 20%, 30%)",
+                    "common_external_tariff": "TEC CEMAC",
                 },
             },
             "key_differences": [
                 "SADC: much larger economy and population",
                 "CEMAC: monetary union with single currency",
                 "SADC: deeper integration via SACU customs union",
-                "CEMAC: simpler 4-band CET vs SADC's varied national schedules",
             ],
             "connectivity": {
                 "countries_in_both": [],

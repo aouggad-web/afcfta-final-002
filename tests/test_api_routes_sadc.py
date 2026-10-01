@@ -344,18 +344,3 @@ class TestInvestmentRecommendationEndpoint:
     def test_recommendation_missing_sector_422(self):
         resp = client.post("/api/regions/sadc/investment-recommendation", json={})
         assert resp.status_code == 422
-
-
-# ===========================================================================
-# Trade protocols
-# ===========================================================================
-
-
-class TestTradeProtocolsEndpoint:
-    def test_protocols_200(self):
-        resp = client.get("/api/regions/sadc/protocols")
-        assert resp.status_code == 200
-
-    def test_specific_protocol(self):
-        resp = client.get("/api/regions/sadc/protocols?protocol=sadc_trade_protocol")
-        assert resp.status_code == 200

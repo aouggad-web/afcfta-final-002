@@ -267,31 +267,6 @@ class TestSADCCrossRegionalComparisons:
 
 
 # ===========================================================================
-# Trade protocols
-# ===========================================================================
-
-
-class TestSADCTradeProtocols:
-    def setup_method(self):
-        from services.sadc_intelligence_service import SADCIntelligenceService
-
-        self.svc = SADCIntelligenceService()
-
-    def test_all_protocols_returns_dict(self):
-        result = self.svc.get_trade_protocols()
-        assert isinstance(result, dict)
-
-    def test_specific_protocol(self):
-        result = self.svc.get_trade_protocols(protocol="sadc_trade_protocol")
-        if "error" not in result:
-            assert "tariff_elimination" in result
-
-    def test_invalid_protocol_returns_error(self):
-        result = self.svc.get_trade_protocols(protocol="nonexistent_protocol")
-        assert "error" in result
-
-
-# ===========================================================================
 # Country tariff data
 # ===========================================================================
 

@@ -63,6 +63,16 @@ CLES_DE_TAUX_SAISIS = {
     "national_taxes",
     "tariff_bands",
     "common_taxes",
+    "dd_reduction",
+}
+
+# Un taux saisi peut aussi se cacher dans un texte (« TEC CEMAC (4 bands: 5%,
+# 10%...) ») : aucune valeur texte ne doit contenir de pourcentage.
+POURCENTAGE = re.compile(r"\d\s*%")
+
+# Pourcentages hors du périmètre du calculateur, reportés au lot finance.
+POURCENTAGES_HORS_PERIMETRE = {
+    "/api/regions/sacu/customs-union": "partage des recettes douanières SACU",
 }
 
 
@@ -182,6 +192,17 @@ def _cles(objet):
             yield from _cles(valeur)
 
 
+def _textes(objet):
+    if isinstance(objet, dict):
+        for valeur in objet.values():
+            yield from _textes(valeur)
+    elif isinstance(objet, list):
+        for valeur in objet:
+            yield from _textes(valeur)
+    elif isinstance(objet, str):
+        yield objet
+
+
 @pytest.mark.parametrize(
     "chemin",
     [
@@ -192,11 +213,14 @@ def _cles(objet):
         "/api/regions/north-africa/countries",
         "/api/regions/north-africa/compare",
         "/api/regions/uma/intelligence",
+        "/api/crawlers/north-africa/trade-flows",
+        "/api/analysis/sadc-vs-cemac",
     ],
 )
 def test_route_vivante_sans_taux_saisi(api_router, chemin):
     # Routes gardées (métadonnées, données des fichiers crawlés) dont on a
-    # retiré les taux écrits dans le code : TVA, bandes de droits, taxes.
+    # retiré les taux écrits dans le code : TVA, bandes de droits, taxes,
+    # réductions préférentielles.
     from auth import require_admin, require_auth
 
     app = FastAPI()
@@ -207,6 +231,8 @@ def test_route_vivante_sans_taux_saisi(api_router, chemin):
 
     assert reponse.status_code == 200, reponse.text
     assert CLES_DE_TAUX_SAISIS & set(_cles(reponse.json())) == set()
+    if chemin not in POURCENTAGES_HORS_PERIMETRE:
+        assert [t for t in _textes(reponse.json()) if POURCENTAGE.search(t)] == []
 
 
 @pytest.mark.parametrize("module", MODULES_RETIRES)
