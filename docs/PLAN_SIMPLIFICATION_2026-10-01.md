@@ -16,7 +16,7 @@
 
 | # | Objectif | Ce que l'utilisateur ou le propriétaire voit à la fin | Critère d'acceptation |
 |---|---|---|---|
-| **O1** | Le calculateur répond **d'abord** à « la ZLECAf s'applique-t-elle entre ces deux pays ? » | Une carte-verdict en tête des résultats : **5 réponses possibles**, une couleur, une phrase, la preuve (acte, date, lien), puis le montant | 100 % des 2 916 couples ont **un seul** verdict, servi par **une seule** source ; l'interface ne calcule aucun statut |
+| **O1** | Le calculateur répond **d'abord** à « la ZLECAf s'applique-t-elle entre ces deux pays ? » | Une carte-verdict en tête des résultats : **5 réponses possibles**, une couleur, une phrase, la preuve (acte, date, lien), puis le montant | 100 % des 2 862 couples de pays distincts ont **un seul** verdict, servi par **une seule** source ; l'interface ne calcule aucun statut |
 | **O2** | Un seul chemin de calcul, un seul socle, une seule source par information | Le même montant, quelle que soit la route ou l'écran | 1 route de calcul, 1 appel dans l'interface, 0 repli silencieux, 1 fichier faisant foi par type d'information |
 | **O3** | Le propriétaire sait **ce qui manque, pays par pays** | Un tableau unique, régénéré automatiquement : tarif, TVA, assiettes, formalités, preuves ZLECAf, accords | 54 lignes, aucune case vide « inconnue », une priorité par pays |
 | **O4** | Comparer ZLECAf / GZALE / accords bilatéraux / communauté économique, et dire lequel est **le plus avantageux** | Pour un couple : un tableau des régimes ouverts, leur statut, leur montant, la règle d'origine, et le régime le moins coûteux mis en avant | Aucun taux d'un régime servi sous le nom d'un autre ; « plus avantageux » choisi **uniquement** parmi les régimes au statut « appliqué » |
@@ -74,7 +74,8 @@ Trois défauts qui touchent directement l'utilisateur :
 (`backend/socle/`, `backend/services/calcul.py`, `preference.py`), mais
 l'ancien chemin n'a pas été retiré et l'interface a **grossi** :
 `CalculatorTab.jsx` est passé de 2 016 à **2 522 lignes**, et le dossier
-`components/calculator/` compte 6 737 lignes. L'interface interroge d'abord le
+`components/calculator/` compte 7 081 lignes de `.js`/`.jsx` de production
+(8 699 tests et CSS compris). L'interface interroge d'abord le
 nouveau moteur pour **2 pays seulement**, l'ancien pour 38 (§ 3.1).
 
 ### 1.3 Trop de documents pour une seule direction
@@ -128,8 +129,8 @@ seul l'affichage manque.
 
 Sous la carte, une ligne pour le **sens inverse** (D → O), puisque la question
 posée est « entre ces deux pays » et que la réciprocité n'est pas garantie
-(8 asymétries déjà constatées, ex. Algérie → Kenya accordé, Kenya → Algérie
-non).
+(8 asymétries déjà constatées, ex. Kenya → Algérie accordé par l'Algérie,
+Algérie → Kenya non accordé par le Kenya).
 
 **Le verdict dépend aussi de la date d'importation.** Les dates d'entrée en
 vigueur diffèrent selon le pays d'origine (dates par origine pour l'Afrique du
@@ -146,11 +147,11 @@ liste de l'UA. Le lot O1-a la recalculera.
 | Même union douanière | 148 |
 | 1 — Appliquée | 189 |
 | 2 — Documentée, preuve manquante | 323 |
-| 3 — Offre seulement | 1 365, dont 1 234 où **personne n'a encore cherché** l'acte national |
-| 4 — Ratifiée, sans offre | 94 |
+| 3 — Offre seulement | ≈ 1 412, dont ≈ 1 281 où **personne n'a encore cherché** l'acte national |
+| 4 — Ratifiée, sans offre | ≈ 47 (Djibouti seul) |
 | 5 — Non applicable | 743, dont 580 pour défaut de ratification et 163 pour origine non admise |
 
-Le chiffre qui oriente la collecte est celui du verdict 3 : **1 234 couples
+Le chiffre qui oriente la collecte est celui du verdict 3 : **≈ 1 281 couples
 sont « offre seulement » faute de recherche**, et non faute d'acte. La carte le
 dit (« application non encore vérifiée »), pour ne pas laisser croire qu'une
 recherche a conclu à l'absence d'acte.
@@ -162,19 +163,24 @@ verdict(O, D, date) :
   0. O et D dans la même union douanière                           → cas particulier « union douanière »
   1. O ou D non ratifiant (BEN, ERI, LBY, SDN, SOM, SSD au 22/05/2026) → 5 Non applicable
   2. D a une liste vérifiée ET O n'y figure pas                     → 5 Non applicable
-  3. D au niveau APPLIQUE, O sur la liste de D, barème ligne présent → 1 Appliquée
+  3. D au niveau APPLIQUE et O sur la liste de D                    → 1 Appliquée
   4. D a un acte national vérifié ou rapporté (niveaux du verdict 2
-     ci-dessous), ou admet les origines par une règle (GHA, NGA),
-     ou est APPLIQUE mais la ligne manque au barème                  → 2 Documentée, preuve manquante
+     ci-dessous), ou admet les origines par une règle (GHA, NGA)     → 2 Documentée, preuve manquante
   5. D a une offre adoptée par l'UA (e-Tariff Book)                 → 3 Offre seulement
   6. sinon                                                          → 4 Ratifiée, sans offre
 ```
+
+**Le verdict est juridique et porte sur le couple ; l'état de la ligne est
+séparé.** Pour un verdict 1, la réponse indique en plus, pour le code SH
+demandé, si la ligne figure au barème (`ligne au barème` / `ligne hors barème
+— NPF`, ex. liste B ou C). La matrice ne stocke qu'un verdict par couple ; le
+code SH n'entre que dans le calcul.
 
 Correspondance avec les neuf niveaux actuels du fichier d'état :
 
 | Niveau actuel | Verdict |
 |---|---|
-| `APPLIQUE` (+ origine admise + ligne au barème) | 1 |
+| `APPLIQUE` (+ origine admise) | 1 |
 | `PREUVES_ASSEMBLEES`, `INSTRUMENT_VERIFIE_BAREME_MANQUANT`, `NOTIFICATION_PARTENAIRES_REQUISE`, `ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE`, `INSTRUMENT_RAPPORTE_NON_PRIMAIRE` | 2 |
 | `OFFRE_SEULE` ; `NON_RECHERCHE` ou `NON_APPLIQUE_PRESUME` **avec** offre UA | 3 |
 | `NON_RECHERCHE` **sans** offre UA | 4 |
@@ -195,8 +201,10 @@ L'utilisateur, lui, n'en voit que cinq.
      archivé. Un code absent de la table donne « inconnu », plus jamais
      « ratifié » par défaut ;
    - **offre tarifaire** : une ligne par pays (soumise, adoptée, aucune), y
-     compris le « aucune offre » explicite de DJI, ERI, LBY, SDN, SOM, et le cas
-     STP à trancher.
+     compris le « aucune offre » explicite de DJI, ERI, LBY, SDN, SOM — la
+     liste exhaustive du rapport UA EX.CL/1625 (juillet 2025), qui n'inclut
+     **pas** São Tomé-et-Príncipe : son absence du e-Tariff Book ne vaut pas
+     absence d'offre.
 2. `zlecaf_implementation_registry.RECORDS` est **lu depuis les fiches**, plus
    écrit à la main — c'est déjà la règle 6 du plan d'application (« une liste
    recopiée dans le code est refusée »).
@@ -235,7 +243,7 @@ Défauts d'affichage relevés, corrigés dans le même lot :
 
 | Lot | Livrable | Acceptation |
 |---|---|---|
-| O1-a | Tables ratification + offre ; `verdict` ajouté à la matrice générée ; test de cohérence registre / état / matrice ; test « matrice à jour » | 2 916 couples, chacun un verdict ; Somalie non ratifiante ; aucun défaut « ratifié » ; les divergences du § 1.1 disparaissent ; test CI rouge si elles reviennent |
+| O1-a | Tables ratification + offre ; `verdict` ajouté à la matrice générée ; test de cohérence registre / état / matrice ; test « matrice à jour » | les 2 862 couples de pays distincts ont chacun un verdict (les 54 couples d'un pays avec lui-même restent `MEME_PAYS`) ; Somalie non ratifiante ; aucun défaut « ratifié » ; les divergences du § 1.1 disparaissent ; test CI rouge si elles reviennent |
 | O1-b | `RECORDS` lu depuis les fiches ; Seychelles branchées ; Algérie servie par `POST /calcul` | plus aucune liste d'origines écrite dans `zlecaf_implementation_registry.py` ; un test DZA←EGY sur la route unique |
 | O1-c | Champ `verdict` dans la réponse de la route de calcul | un test par verdict (5 tests), plus un test sens inverse |
 | O1-d | Carte-verdict + écran replié | le premier écran tient sans défilement sur mobile ; aucun statut calculé côté interface |
@@ -264,13 +272,21 @@ Deux d'entre elles servent des chiffres qui ne viennent d'aucune source :
 (`enhanced_calculator_v3.py:241`). Elles sont à retirer **en premier**.
 
 **Pourquoi la bascule vers la route unique s'est arrêtée** — le commentaire de
-`CalculatorTab.jsx:448-477` le dit, et c'est la clé d'O2 : l'interface
-**n'envoie pas** à `POST /calcul` la devise du CIF, le taux de change ni la
-**valeur FOB** (la SACU liquide sur le FOB : 41 % des positions sud-africaines
-répondent `VALEUR_FOB_REQUISE`), ni les réponses du formulaire de remise
-kényane. Ce n'est pas un problème de moteur : **ce sont quatre champs de
-formulaire.** Une fois ces champs envoyés, `SOCLE_EN_PREMIER` peut couvrir les
-52 pays servis, et l'ancien chemin peut être retiré.
+`CalculatorTab.jsx:448-477` le dit, et c'est la clé d'O2. Deux manques, de
+nature différente :
+
+1. **côté interface** : `POST /calcul` accepte déjà `devise_cif`,
+   `taux_de_change` et `valeur_fob` (`routes/calcul.py:51-93`), mais
+   l'interface ne les envoie pas. Or la SACU liquide sur le FOB : 41 % des
+   positions sud-africaines répondent `VALEUR_FOB_REQUISE`. Trois champs de
+   formulaire ;
+2. **côté moteur** : la remise kényane n'existe que sur l'ancien chemin.
+   `DemandeCalcul` n'a aucun champ de remise et `services/calcul.py` aucune
+   logique correspondante. Il faut le schéma **et** le traitement avant de
+   basculer le Kenya.
+
+Ces deux manques comblés, `SOCLE_EN_PREMIER` peut couvrir les 52 pays servis,
+et l'ancien chemin peut être retiré.
 
 **Les jeux de données lus à l'exécution :**
 
@@ -279,14 +295,16 @@ formulaire.** Une fois ces champs envoyés, `SOCLE_EN_PREMIER` peut couvrir les
 | `backend/data/crawled/*_tariffs.json` | 53 fichiers, 779 Mo — sortie du crawler | **source** du socle |
 | `backend/socle/<ISO>.json` | non versionné, construit par `build_socle.py` | **seul lu par le calcul** |
 | `backend/data/*_tariffs.json` | 40 fichiers ETL, 391 Mo, encore lus par l'ancien chemin | retirés du calcul |
-| `backend/data/tariffs/` | 40 fichiers, 336 Mo — copie à l'octet près du précédent ; `routes/tariff_data.py:97-102` **écrit** un fichier à la demande quand il manque | supprimé |
+| `backend/data/tariffs/` | 39 fichiers, 336 Mo — **pas** une simple copie : 36 identiques au précédent, pas de DZA, et des écarts à qualifier (TVA GNB 15 % contre 19 %, TCD 19,25 % contre 18 %) ; `routes/tariff_data.py:97-102` **écrit** un fichier à la demande quand il manque | écarts qualifiés, puis supprimé après la bascule |
 | `backend/data/crawled_normalized/` | ~2 Go, construit au démarrage ou dans l'image | supprimé avec l'ancien chemin (O5-e) |
 | `engine/output/` | gabarit de mars 2026, sans les fichiers chargés | supprimé |
 | PostgreSQL | consulté en premier quand configuré ; contenu non reproductible depuis le dépôt | projection du socle, ou rien |
 
-Morts à l'exécution, à retirer sans risque : 99 fichiers `*_progress_*` (61 Mo),
-`tariff_engine/` (non importé), `data/archive/` et `backend/data/archive/`
-(664 Mo).
+Morts à l'exécution : `tariff_engine/` (non importé), `data/archive/` et
+`backend/data/archive/` (664 Mo). Les 99 fichiers `*_progress_*` (61 Mo) ne
+sont lus par aucun calcul, mais **restent** : les constructeurs EGY et DZA
+(`build_egy_tariffs_official.py:424`) et la reprise du crawl algérien
+(`algeria_conformepro_scraper.py:570`) s'en servent.
 
 **Taille de la chaîne de calcul** : les fichiers du relevé du 15/09 font
 11 865 lignes (contre 11 191), et le nouveau chemin en ajoute ~2 380
@@ -329,9 +347,9 @@ Tout autre lecteur est supprimé.
 | Lot | Livrable | Acceptation |
 |---|---|---|
 | O2-0 | retrait immédiat des deux routes qui inventent un taux (GraphQL `bulkTariffCalculation`, `regional-calculator`) | aucune route ne renvoie un taux qui ne vient pas d'un fichier tracé |
-| O2-a | l'interface envoie devise, taux de change, valeur FOB et réponses de remise à `POST /calcul` | `SOCLE_EN_PREMIER` couvre les 52 pays servis ; les 23 cas du corpus figé passent sur la route unique |
+| O2-a | l'interface envoie devise, taux de change et valeur FOB à `POST /calcul` ; la remise kényane est portée au schéma `DemandeCalcul` et liquidée par le moteur, avec tests | `SOCLE_EN_PREMIER` couvre les 52 pays servis ; les 23 cas du corpus figé passent sur la route unique |
 | O2-b | retrait de `GET /authentic-tariffs/calculate`, `POST /calculate-tariff`, `regulatory-engine`, des `enhanced_calculator*` et du repli dans l'interface | une seule route de calcul ; la chaîne passe **sous** 11 191 lignes (niveau du 15/09), puis vers la cible de ~1 500 |
-| O2-c | retrait de `backend/data/tariffs/`, des `*_tariffs.json` du calcul, de `engine/output/`, des reliquats morts | aucun lecteur d'exécution hors socle (test) ; plus d'écriture de fichier à la demande |
+| O2-c | retrait de `backend/data/tariffs/` (écarts qualifiés d'abord), des `*_tariffs.json` du calcul, de `engine/output/`, des reliquats morts (hors fichiers de progression des crawls) | aucun lecteur d'exécution hors socle (test) ; plus d'écriture de fichier à la demande |
 | O2-d | `docs/README.md` « par où commencer » ; archivage des plans remplacés | 5 documents vivants ; chaque document archivé dit par quoi il est remplacé |
 
 ---
@@ -413,10 +431,12 @@ Deux faits commandent la conception :
 Tirés des données du dépôt, sans calcul supplémentaire :
 
 - **Tunisie ← Algérie, Maroc, Égypte** : le tarif tunisien ne leur accorde
-  **pas** la ZLECAf (seules 8 origines y sont admises), mais leur accorde la
-  GZALE à 0 % sur plus de 10 000 lignes. Pour ces trois flux, la GZALE n'est
-  pas seulement le régime le plus avantageux : c'est **le seul** régime
-  préférentiel ouvert.
+  **pas** la ZLECAf (seules 8 origines y sont admises), mais publie pour eux
+  une préférence à 0 % sur plus de 10 000 lignes, rattachée à **plusieurs**
+  accords : GZALE + accord bilatéral TUN–DZA (Algérie) ; GZALE + Agadir +
+  accord bilatéral TUN–MAR (Maroc) ; GZALE + Agadir (Égypte). Le comparatif
+  doit distinguer ces accords — et leurs règles d'origine — au lieu de tout
+  ranger sous la GZALE ; la ZLECAf, elle, n'est pas ouverte sur ces flux.
 - **Libye et Soudan** n'ont **pas ratifié** la ZLECAf (liste UA du 22/05/2026).
   Avec l'Égypte, la Tunisie, le Maroc et l'Algérie, seule la GZALE, ou le
   COMESA, ou un accord bilatéral peut jouer.
@@ -520,7 +540,7 @@ Semaine 1      O2-0  retrait des deux routes qui inventent un taux (une journée
 Semaine 2      O1-b/c  registre lu depuis les fiches, SYC, DZA, verdict dans l'API
                O5-a/b  une construction, démarrage fail-closed, health
 Semaine 3      O1-d  carte-verdict et écran replié
-               O2-a  les quatre champs manquants → les 52 pays sur la route unique
+               O2-a  trois champs d'interface + remise kényane au moteur → les 52 pays sur la route unique
 Semaine 4      O2-b/c/d  retrait de l'ancien chemin, des copies de données, rangement des documents
                O5-c/d  rapports planifiés, procédure d'exploitation
 Semaine 5-6    O4-a/b/c  registre des accords, accords ouverts, colonnes déjà collectées
@@ -609,7 +629,7 @@ dont **tous** les droits ont un taux et une assiette.
 | SLE | complet · 6129 | **absente** | 100 % | par ligne | établie | oui | oui | non recherché |
 | SOM | partiel · 11545 | 2026-06-16 | 100 % | **absente** | établie | non | **aucune** | non recherché |
 | SSD | partiel · 5935 | 2026-02-18 ⚠ | 99 % | par ligne | **absente** | non | oui | non recherché |
-| STP | complet · 5388 | 2026-07-05 | 100 % | par ligne | établie | oui | **aucune** | non recherché |
+| STP | complet · 5388 | 2026-07-05 | 100 % | par ligne | établie | oui | oui (absente du e-Tariff Book) | non recherché |
 | SWZ | partiel · 8589 | 2026-08-29 | 99 % | **absente** | établie | oui | oui | non recherché |
 | SYC | partiel · 6019 | 2026-09-19 | 100 % | **absente** | établie | oui | oui | appliquée |
 | TCD | complet · 5239 | 2026-02-19 ⚠ | 100 % | par ligne | établie | oui | oui | non recherché |
@@ -637,7 +657,10 @@ dont **tous** les droits ont un taux et une assiette.
    liste d'origines (CIV, ETH, GHA, NGA, ZMB) ; Tunisie sans barème ; Algérie
    et Seychelles prouvées mais pas branchées sur la route unique.
 
-**Formalités et réglementation** : le socle n'en porte pour aucun pays. Dans
-les fichiers crawlés, seuls l'Algérie et le Maroc ont des formalités par ligne,
-et la Tunisie sa réglementation : 51 pays n'ont ni l'un ni l'autre. C'est
-pourquoi la colonne n'est pas répétée dans le tableau.
+**Formalités et réglementation** : le socle ne porte de formalités pour aucun
+pays (dans les fichiers crawlés, seuls l'Algérie et le Maroc en ont par
+ligne). Il porte en revanche de la réglementation pour deux pays :
+**26 502 restrictions égyptiennes** et **62 interdictions libyennes**
+(`build_socle.py:1289-1299`) ; la Tunisie a la sienne dans le crawl, non
+reprise au socle. Le rapport d'O3 aura donc une colonne réglementation par
+pays, et non un constat global.
