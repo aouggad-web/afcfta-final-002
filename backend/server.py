@@ -98,11 +98,6 @@ from services.crawled_data_service import crawled_service
 from services.tariff_data_service import tariff_service
 from services.user_auth_service import hash_password, verify_password
 
-try:
-    from notifications import NotificationManager
-except ImportError:
-    NotificationManager = None
-
 # =============================================================================
 # CONFIGURATION
 # =============================================================================
@@ -131,17 +126,6 @@ if mongo_url:
         db = None
 else:
     logger.warning("MONGO_URL not set. Running without database.")
-
-# Notification Manager
-notification_manager = None
-if NotificationManager:
-    try:
-        notification_manager = NotificationManager()
-        logger.info(
-            f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}"
-        )
-    except Exception as e:
-        logger.warning(f"Notification manager initialization failed: {e}")
 
 # =============================================================================
 # FASTAPI APP SETUP
@@ -201,9 +185,6 @@ try:
             "/api/redoc",
             "/api/health",
             "/api/",
-            "/api/tariff-data/collect",
-            "/api/crawl",
-            "/api/crawl/start",
             # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
             # ni jeton CSRF — authentifiés par leur propre signature.
             "/api/billing/webhook",
@@ -248,19 +229,6 @@ try:
     init_export_db(db)
 except ImportError:
     pass
-
-# Initialize crawl orchestrator
-try:
-    from services.crawl_orchestrator import init_orchestrator
-
-    init_orchestrator(
-        db_client=client,
-        notification_manager=notification_manager,
-        max_concurrency=5,
-    )
-    logger.info("Crawl orchestrator initialized")
-except Exception as e:
-    logger.warning(f"Crawl orchestrator initialization failed: {e}")
 
 # =============================================================================
 # STARTUP EVENTS
@@ -443,18 +411,11 @@ async def startup_load_tariff_data():
                 f"{stats['total_positions']:,} positions loaded"
             )
         else:
-            logger.info("No pre-collected tariff data found. Running initial collection...")
-            from services.tariff_data_collector import TariffDataCollector
-
-            collector = TariffDataCollector()
-            result = collector.collect_all_countries()
-            logger.info(
-                f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries"
-            )
-            tariff_service.load(force=True)
-            stats = tariff_service.get_stats()
-            logger.info(
-                f"Tariff data service ready after collection: {stats['countries']} countries"
+            # Aucun fichier n'est généré au démarrage : sans backend/data/tariffs,
+            # les données tarifaires sont INDISPONIBLES, jamais synthétisées.
+            logger.warning(
+                "backend/data/tariffs absent ou vide : données tarifaires INDISPONIBLES "
+                "(aucune collecte lancée au démarrage)."
             )
     except Exception as e:
         logger.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")

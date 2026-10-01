@@ -163,14 +163,6 @@ except ImportError:
     EXPORT_ROUTER_AVAILABLE = False
 
 try:
-    from .crawl import router as crawl_router
-
-    CRAWL_AVAILABLE = True
-except ImportError:
-    crawl_router = None
-    CRAWL_AVAILABLE = False
-
-try:
     from .tariff_data import router as tariff_data_router
 
     TARIFF_DATA_AVAILABLE = True
@@ -523,8 +515,6 @@ def register_routes(api_router: APIRouter):
         )
     if EXPORT_ROUTER_AVAILABLE:
         api_router.include_router(export_router, tags=["Export"], dependencies=_auth)
-    if CRAWL_AVAILABLE:
-        api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_admin)
     if TARIFF_DATA_AVAILABLE:
         api_router.include_router(
             tariff_data_router,

@@ -250,19 +250,5 @@ class TestRegulatoryEngineErrorHandling:
         print(f"✅ Invalid code handled correctly: {data['error']}")
 
 
-class TestRegulatoryEngineSummary:
-    """Tests for country summary endpoint"""
-
-    def test_country_summary(self):
-        """Test fetching country summary for DZA"""
-        response = requests.get(f"{BASE_URL}/api/regulatory-engine/summary/DZA")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["success"] == True
-        assert data["country_iso3"] == "DZA"
-        assert "summary" in data
-        print(f"✅ Country summary fetched for DZA")
-
-
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])

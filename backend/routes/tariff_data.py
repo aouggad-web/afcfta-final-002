@@ -5,9 +5,8 @@ import logging
 import os
 import re
 import zipfile
-from typing import Annotated, List, Optional
+from typing import Optional
 
-from auth import require_admin
 from entitlement_guard import require_module
 from etl.hs_sections_headings import (
     get_hs4_heading,
@@ -17,7 +16,6 @@ from etl.hs_sections_headings import (
 )
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, StreamingResponse
-from pydantic import BaseModel
 from services.tariff_data_collector import get_collector
 
 logger = logging.getLogger(__name__)
@@ -33,47 +31,11 @@ router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 # save_country_tariffs() — expensive and a disk write, unlike the rest of
 # this router. They keep the metered require_module("tools") in addition to
 # the router-level gate, so a Starter caller can't bypass its 10/day tools
-# cap by hitting these instead of the admin-only /collect endpoints.
+# cap by hitting these.
 _tools_metered = [Depends(require_module("tools"))]
 
 EXPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "exports")
 TARIFFS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tariffs")
-
-
-class CollectRequest(BaseModel):
-    country_codes: Optional[List[str]] = None
-    all_countries: bool = False
-
-
-@router.post("/collect")
-async def collect_tariff_data(
-    request: CollectRequest, key_doc: Annotated[dict, Depends(require_admin)] = None
-):
-    collector = get_collector()
-
-    if request.all_countries:
-        result = await collector.collect_all_countries()
-    elif request.country_codes:
-        result = await collector.collect_all_countries(country_codes=request.country_codes)
-    else:
-        raise HTTPException(
-            status_code=400, detail="Provide country_codes or set all_countries=true"
-        )
-
-    return result
-
-
-@router.post("/collect/{country_code}")
-async def collect_single_country(
-    country_code: str, key_doc: Annotated[dict, Depends(require_admin)] = None
-):
-    collector = get_collector()
-    try:
-        result = await collector.collect_and_save_country(country_code.upper())
-        return result
-    except Exception as e:
-        logger.error(f"Error collecting tariff data for {country_code}: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @router.get("/countries")

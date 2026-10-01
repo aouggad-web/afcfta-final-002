@@ -10,7 +10,7 @@ import sys
 import time
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 # Use append (not insert) to avoid shadowing the backend 'api' package
 # which takes higher priority when placed earlier in sys.path.
@@ -253,14 +253,6 @@ class RegulatoryEngineService:
             source_file=data.get("source_file"),
             last_updated=data.get("last_updated"),
         )
-
-    def get_country_summary(self, country_iso3: str) -> Optional[Dict[str, Any]]:
-        """Retourne le résumé d'un pays"""
-        summary_path = self.data_dir / f"{country_iso3.upper()}_summary.json"
-        if summary_path.exists():
-            with open(summary_path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        return None
 
 
 # Instance singleton
