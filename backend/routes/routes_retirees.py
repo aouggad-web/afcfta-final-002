@@ -11,6 +11,8 @@ sur une route vivante dont le gabarit le capterait (ex.
 /dismantlement/summary/{pays} face à /dismantlement/{pays}/{sh6}).
 """
 
+import re
+
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
@@ -90,3 +92,19 @@ for _methode, _chemin, _remplacement in ROUTES_RETIREES:
     router.add_api_route(
         _chemin, _reponse_410(_remplacement), methods=[_methode], include_in_schema=False
     )
+
+
+def exemptions_csrf():
+    """Couples (méthode, motif) des chemins retirés appelés par une méthode non
+    sûre. Ils ne modifient rien et ne renvoient aucune donnée : le jeton CSRF n'y
+    protège rien, et sans exemption un POST sans jeton recevrait 403 au lieu du
+    410 qui indique la route de remplacement."""
+    return [
+        (methode, re.compile("/".join(_motif_segment(s) for s in ("/api" + chemin).split("/"))))
+        for methode, chemin, _ in ROUTES_RETIREES
+        if methode not in ("GET", "HEAD", "OPTIONS")
+    ]
+
+
+def _motif_segment(segment):
+    return "[^/]+" if segment.startswith("{") else re.escape(segment)

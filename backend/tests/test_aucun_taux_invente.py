@@ -131,6 +131,22 @@ def test_chemin_retire_repond_410_sans_donnee(api_router, methode, gabarit, remp
     assert corps["remplacement"] == remplacement
 
 
+def test_l_application_repond_410_sans_jeton_csrf_et_protege_les_routes_vivantes():
+    # Application de production, middlewares compris : un client de l'API qui
+    # poste sans jeton CSRF sur un chemin retiré doit lire le 410 et la route de
+    # remplacement, pas un 403 ; une route vivante reste protégée.
+    from server import app
+
+    client = TestClient(app)
+    statuts = {
+        gabarit: client.request(methode, "/api" + _chemin_concret(gabarit), json={}).status_code
+        for methode, gabarit, _ in ROUTES_RETIREES
+    }
+
+    assert {g: s for g, s in statuts.items() if s != 410} == {}
+    assert client.post("/api/calcul", json={}).status_code == 403
+
+
 def test_les_chemins_retires_ne_masquent_aucune_route_vivante(api_router):
     client = _client(routes_retirees_router)
     masquees = [

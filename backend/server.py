@@ -80,6 +80,7 @@ from entitlement_guard import set_database as set_entitlement_guard_db
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
 from routes.contact import set_database as set_contact_db
+from routes.routes_retirees import exemptions_csrf as exemptions_csrf_routes_retirees
 from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
 
@@ -189,6 +190,9 @@ try:
             "/api/billing/webhook",
             "/api/billing/chargily/webhook",
         ],
+        # Routes retirées (lot O2-0) : 410 sans donnée ni effet ; sans jeton,
+        # un client de l'API doit lire la route de remplacement, pas un 403.
+        exempt_routes=exemptions_csrf_routes_retirees(),
     )
     # Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
     # Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
