@@ -133,6 +133,7 @@ except ImportError:
     faostat_router = None
     FAOSTAT_AVAILABLE = False
 from .calcul import router as calcul_router
+from .routes_retirees import router as routes_retirees_router
 
 try:
     from .gemini_analysis import router as gemini_router
@@ -436,6 +437,11 @@ def register_routes(api_router: APIRouter):
     if RULES_OF_ORIGIN_DATA_LOADED:
         init_rules_data(RULES_OF_ORIGIN_DATA, ORIGIN_TYPES)
         _logger.info("Rules of Origin data initialized successfully")
+
+    # Routes retirées (lot O2-0) : 410 et route sourcée de remplacement, sans
+    # donnée. Montées en premier pour l'emporter sur un gabarit vivant qui
+    # capterait le même chemin.
+    api_router.include_router(routes_retirees_router)
 
     # Health endpoints remain public (no auth required)
     api_router.include_router(health_router, tags=["Health"])

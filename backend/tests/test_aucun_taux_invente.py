@@ -2,20 +2,83 @@
 Lot O2-0 du plan de simplification : aucune route ne sert un taux qui ne vient
 pas d'un fichier tracé.
 
-Deux routes en servaient un, et sont retirées :
+Les routes qui en servaient un sont retirées (liste : routes/routes_retirees.py),
+notamment :
   - GraphQL `bulkTariffCalculation` : taux fixe de 5 % étiqueté « AfCFTA
     preferential », quels que soient le couple et la position ;
   - `/api/regional-calculator/*` (`services/enhanced_calculator_v3.py`) :
     médiane d'une bande de taux écrite à la main quand le taux n'était pas
-    fourni, et GZALE ajoutée aux accords de tous les pays, CEMAC comprise.
+    fourni, et GZALE ajoutée aux accords de tous les pays, CEMAC comprise ;
+  - l'ancien calculateur (`/api/calculate-tariff`, `/api/calculate/detailed`,
+    `/api/enhanced-calculator`), les taux par chapitre ou saisis
+    (`/api/country-tariffs`, `/api/hs6-tariffs/*`, `/api/country-hs6-tariffs/*`,
+    `/api/tariffs/detailed`), les calendriers et régimes génériques
+    (`/api/dismantlement/impact`, `/api/regions/sacu/import-cost`,
+    `/api/tariffs/north-africa`, `/api/crawlers/north-africa/optimal-route`) ;
+  - la collecte qui réécrivait les tarifs sourcés (`/api/crawl/*`,
+    `/api/tariff-data/collect`).
 
-Ces tests échouent si l'une d'elles revient.
+Un chemin retiré répond 410 avec la route sourcée de remplacement, sans
+donnée. Ces tests échouent si l'une de ces routes ou de ces sources revient.
 """
 
 import importlib.util
+import re
 
+import pytest
 from fastapi import APIRouter, FastAPI
+from fastapi.routing import APIRoute
 from fastapi.testclient import TestClient
+from routes import register_routes
+from routes.routes_retirees import ROUTES_RETIREES
+from routes.routes_retirees import router as routes_retirees_router
+
+MODULES_RETIRES = [
+    "services.enhanced_calculator_v3",
+    "routes.regional_calculator",
+    "routes.calculator",
+    "routes.enhanced_calculator",
+    "services.enhanced_calculator_service",
+    "routes.crawl",
+    "services.crawl_orchestrator",
+    "crawlers.scraper_factory",
+    "crawlers.countries.generic_scraper",
+    "crawlers.countries.north_africa.tariff_structures",
+    "etl.country_hs6_tariffs",
+    "etl.country_hs6_tariffs_cedeao_cemac",
+    "etl.country_hs6_tariffs_eac_sadc",
+    "etl.country_hs6_tariffs_north_other",
+    "tax_rates",
+]
+
+
+GESTIONNAIRES_410 = {r.endpoint for r in routes_retirees_router.routes}
+
+
+def _chemin_concret(gabarit):
+    return re.sub(r"\{[^}]+\}", "KEN", gabarit)
+
+
+def _client(router):
+    app = FastAPI()
+    app.include_router(router)
+    return TestClient(app)
+
+
+@pytest.fixture(scope="module")
+def api_router():
+    api_router = APIRouter(prefix="/api")
+    register_routes(api_router)
+    return api_router
+
+
+def _routes_vivantes(api_router):
+    return [
+        (m, r.path)
+        for r in api_router.routes
+        if isinstance(r, APIRoute) and r.endpoint not in GESTIONNAIRES_410
+        for m in r.methods
+    ]
 
 
 def test_graphql_ne_renvoie_aucun_taux_de_calcul():
@@ -49,16 +112,36 @@ def test_graphql_ne_renvoie_aucun_taux_de_calcul():
     assert "tariffRatePct" not in GRAPHQL_SCHEMA_SDL
 
 
-def test_aucune_route_regional_calculator_montee():
-    from routes import register_routes
+def test_aucune_route_vivante_ne_sert_un_chemin_retire(api_router):
+    vivantes = set(_routes_vivantes(api_router))
+    retirees = {(m, "/api" + c) for m, c, _ in ROUTES_RETIREES}
 
-    api_router = APIRouter(prefix="/api")
-    register_routes(api_router)
-    chemins = [route.path for route in api_router.routes]
-
-    assert "/api/calcul" in chemins
-    assert [c for c in chemins if c.startswith("/api/regional-calculator")] == []
+    assert ("POST", "/api/calcul") in vivantes
+    assert vivantes & retirees == set()
 
 
-def test_calculateur_regional_v3_retire():
-    assert importlib.util.find_spec("services.enhanced_calculator_v3") is None
+@pytest.mark.parametrize("methode,gabarit,remplacement", ROUTES_RETIREES)
+def test_chemin_retire_repond_410_sans_donnee(api_router, methode, gabarit, remplacement):
+    reponse = _client(api_router).request(methode, "/api" + _chemin_concret(gabarit), json={})
+    corps = reponse.json()
+
+    assert reponse.status_code == 410
+    assert set(corps) == {"code", "message", "remplacement"}
+    assert corps["code"] == "ROUTE_RETIREE"
+    assert corps["remplacement"] == remplacement
+
+
+def test_les_chemins_retires_ne_masquent_aucune_route_vivante(api_router):
+    client = _client(routes_retirees_router)
+    masquees = [
+        (m, chemin)
+        for m, chemin in _routes_vivantes(api_router)
+        if client.request(m, _chemin_concret(chemin).removeprefix("/api")).status_code == 410
+    ]
+
+    assert masquees == []
+
+
+@pytest.mark.parametrize("module", MODULES_RETIRES)
+def test_source_de_taux_inventes_retiree(module):
+    assert importlib.util.find_spec(module) is None
