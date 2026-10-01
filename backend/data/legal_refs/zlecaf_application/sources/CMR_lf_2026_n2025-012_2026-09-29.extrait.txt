@@ -1,0 +1,31 @@
+Cameroun — Loi N° 2025/012 du 17 décembre 2025 portant loi de finances de la
+République du Cameroun pour l'exercice 2026 (contrôle NÉGATIF daté)
+Consulté le : 2026-09-29.
+URL OFFICIELLE (page porteuse) : https://www.prc.cm/fr/multimedia/documents/10557-loi-n-2025-012-of-17-12-2025
+PDF ORIGINAL (téléchargé en direct depuis prc.cm, Présidence de la République) :
+https://www.prc.cm/files/c0/a1/8a/f2384c46567a032046599c65f95c5aa6.pdf
+SHA256 DU PDF ORIGINAL : 4196d9683db72f0cd1fa07f7a6ad39f306e727823695edf60ab0f3d74e055da8
+PDF NON VERSÉ AU DÉPÔT (règle : un PDF entier seulement quand il prouve un fait) ;
+copie conservée hors dépôt : ~/Downloads/Cameroun/CMR_lf_2026_n2025-012.pdf (151 p., 112 Mo).
+
+PAGE DE TITRE (OCR de la page 1 — le PDF est un scan sans couche texte) :
+« REPUBLIQUE DU CAMEROUN PAIX - TRAVAIL - PATRIE / 2025/012 / LOI N° [...] PORTANT
+LOI DE FINANCES DE LA REPUBLIQUE DU CAMEROUN POUR L'EXERCICE 2026 / Le Parlement
+a délibéré et adopté, le / Président de la République promulgue la loi dont la teneur
+suit : »
+— OCR p. 2 : « PREMIÈRE PARTIE — CONDITIONS GÉNÉRALES DE L'ÉQUILIBRE BUDGÉTAIRE ET
+FINANCIER — ARTICLE PREMIER. La présente loi a pour objet d'évaluer les ressources et
+les charges de l'Etat [...] pour l'année 2026. »
+
+RÉSULTAT DE LA RECHERCHE : le PDF est un scan intégral sans couche texte (151 pages,
+aucun caractère extractible par pypdf) — la lecture OCR de l'intégralité de la loi
+n'a pas été menée. Le contrôle négatif sur les dispositions douanières de la LF 2026
+est porté par la CIRCULAIRE D'APPLICATION de la Direction générale des Douanes
+(n° 410/MINFI/DGD du 18/05/2026, OCR intégral de 37 pages archivé en extrait
+parallèle) : elle énumère les dix-huit mesures douanières nouvelles de la loi
+(articles 5 à 20) et AUCUNE ne porte un dispositif tarifaire ZLECAf ni une liste
+d'origines.
+
+PORTÉE : aucun mécanisme tarifaire ZLECAf à l'importation établi pour la LF 2026 ;
+l'absence de dispositif est attestée pour la partie douanière (via la circulaire de la
+DGD), pas pour l'intégralité des 151 pages de la loi.

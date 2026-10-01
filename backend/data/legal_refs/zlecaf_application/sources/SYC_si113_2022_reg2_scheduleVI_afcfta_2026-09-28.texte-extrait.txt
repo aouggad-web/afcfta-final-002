@@ -1,0 +1,343 @@
+SOURCE : Customs Management (Tariff and Classification of Goods) Regulations, 2022 (S.I. 113 of 2022), Supplement to Official Gazette [28 octobre 2022], 827 p.
+URL : https://www.tradeportal.sc/wp-content/uploads/2023/12/SI-113-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf (copie vérifiée du jour ; copie SRC citée : https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf)
+CONSULTÉ LE : 2026-09-28. Extrait = extraction pypdf des pages 12 (règlement 2), 405-406 (liste des schedules), 408 (en-tête treize colonnes avec sous-colonne AfCFTA 2022-2026), 821-827 (Schedules III-VI et signature). Le PDF intégral est archivé : sources/SYC_si113_2022_tradeportal_2026-09-28.pdf.
+
+
+========== PAGE 12 ==========
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                           1088 
+    
+ REPUBLIC OF SEYCHELLES                              SUPPLEMENT TO OFFICIAL GAZETTE                                                       SI 
+ 
+S.I. 113  of 2022  
+ 
+CUSTOMS MANGEMENT ACT, 2011  
+ 
+(Act 22 of 2011 ) 
+ 
+Customs Management (Tariff and Classification of Goods) Regulations, 2022  
+ 
+    In the exercise of powers conferred by section 270 of the Customs Management Act 2011 the Minister of Finance , National Planning and  Trade 
+hereby makes the following Regulations — 
+ 
+Citation and commencement  
+ 
+1. These Regulations may be cited as the Customs Management  (Tariff and Classification of Goods) Regulations, 2022  and shall come 
+into operation on 1st November,  2022.  
+ 
+Tariff and classification of goods  
+ 
+2.(1)   The tariff and classification of goods including general rules for the interpretation are specified in Schedule I.  
+ 
+(2)   The preferential rates of duty for goods originating from Member states of the Ind ian Ocean Commission are specified in Schedule II.  
+ 
+(3)   The list of Common Market for Eastern and Southern Africa (COMESA) Free Trade Area Member States are specified in Schedule  III. 
+ 
+(4)   The list of Southern African Development  Community (SADC) Free Trade Area Member States are specified in Schedule  IV. 
+ 
+(5)   The list of European Union Member States (EU) and Eastern and  Southern African (ESA) Member S tates forming part of the Interim 
+Economic Partnership Agreement are specified in Schedule  V. 
+ 
+(6)   The list of African Continental Free Trade Area (AfCFTA) State Parties are specified in Schedule  VI. 
+ 
+Repeal of S.I. 23 of 2018  
+ 
+The Customs Management (Tariff and Classification of Goods) Regulations, 2018 is hereby repealed.  
+========== PAGE 405 ==========
+ 
+ 
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                            1481  
+                                     
+REPUBLIC OF SEYCHELLES                              SUPPLEMENT TO OFFICIAL GAZETTE                                                                                                   SI 
+ 
+  
+Heading  HS Code  Description of goods  Unit of 
+Qty Rate of Duty  
+MFN  COMESA 
+FTA  European 
+Union & UK  SADC FTA  AfCFTA  
+2022  2023  2024  2025  2026  2022  2023  2024  2025  2026  
+                 
+ 4823.2000  - Filter paper and paperboard  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4823.4000  - Rolls, sheets and dials, printed 
+for self -recording apparatus  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+  - Trays, dishes, plates, cups and 
+the like, of paper or paperboard :                
+ 4823.6100  - -  Of bamboo  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4823.6900  - -  Other  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4823.7000  - Moulded or pressed articles of 
+paper pulp  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4823.9000  - Other  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 
+========== PAGE 406 ==========
+ 
+ 
+ 
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                            1482  
+                                     
+REPUBLIC OF SEYCHELLES                              SUPPLEMENT TO OFFICIA L GAZETTE                                                                                                   SI 
+ 
+ Chapter 49 
+ 
+ 
+Printed books, newspapers, pictures and other products  
+of the printing industry; manuscripts, typescripts and plans  
+ 
+Notes.  
+ 
+1.- This Chapter does not cover :  
+ 
+(a) Photographic negatives or positives on transparent bases (Chapter 37);  
+ 
+(b) Maps, plans or globes, in relief, whether or not printed (heading 90.23);  
+ 
+(c) Playing cards or other goods of Chapter 95; or  
+ 
+(d) Original engravings, prints or lithographs (heading 97.02), postage or rev enue stamps, stamp -postmarks, first -day covers, postal 
+stationery or the like of heading 97.04, antiques of an age exceeding one hundred years or other articles of Chapter 97.  
+ 
+2.- For the purposes of Chapter 49, the term “printed” also means reproduced b y means of a duplicating machine, produced under the control 
+of an automatic data processing machine, embossed, photographed, photocopied, thermocopied or typewritten.  
+ 
+3.- Newspapers, journals and periodicals which are bound otherwise than in paper, and sets of newspapers, journals or periodicals comprising 
+more than one number under a single cover are to be classified in heading 49.01, whether or not containing advertising materi al.  
+  
+========== PAGE 408 ==========
+ 
+ 
+ 
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                            1484  
+                                     
+REPUBLIC OF SEYCHELLES                              SUPPLEMENT TO OFFICIA L GAZETTE                                                                                                   SI 
+ 
+ Heading  HS Code  Description of goods  Unit 
+of 
+Qty Rate of Duty  
+MFN  COMESA 
+FTA  European 
+Union & 
+UK SADC FTA  AfCFTA  
+2022  2023  2024  2025  2026  2022  2023  2024  2025  2026  
+49.01   Printed books, brochures, leaflets 
+and similar printed matter, 
+whether or not in single sheets.                
+ 4901.1000  - In single sheets, whether or not 
+folded  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+  - Other :                
+ 4901.9100  --  Dictionaries and encyclopaedias, 
+and serial instalments thereof  No. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4901.9900  - -  Other  No. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+                 
+49.02   Newspapers, journals and 
+periodicals, whether or not 
+illustrated or containing 
+advertising material.                
+ 4902.1000  - Appearing at least four times a week  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4902.9000  - Other  No. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+                 
+49.03  4903.0000  Children's picture, drawing or 
+colouring books  No. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+                 
+49.04  4904.0000  Music, printed or in manuscript, 
+whether or not bound or 
+illustrated.  Kg. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+                 
+49.05   Maps and hydrographic or similar 
+charts of all kinds, including 
+atlases, wall maps, topographical 
+plans and globes, printed.                
+ 4905.2000  - In book form  No. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 4905.9000  - Other  No. 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 0% 
+ 
+========== PAGE 821 ==========
+ 
+[28th October, 2022]                                                                        Customs Management Act                                                                                      1897  
+                                      
+REPUBLIC OF SEYCHELLES                                       SUPPLEMENT TO OFFICIAL GAZETTE                                                                                                 SI 
+ 
+ SCHEDULE II I 
+ 
+List of COMESA  Free Trade Area Member States  
+ 
+1. Arab Republic of Egypt  
+2. Republic of Burundi  
+3. Republic of Comoros  
+4. Republic of Djibouti  
+5. Republic of Kenya  
+6. Republic of Madagascar  
+7. Republic of Malawi  
+8. Republic of Mauritius  
+9. Republic of Rwanda  
+10. Republic of Seychelles  
+11. Republic of Sudan  
+12. Republic of Zambia  
+13. Republic of Zimbabwe  
+14. Republic of Tunisia  
+15. The Great Socialist People’s Libyan Arab Jamahiriya  
+========== PAGE 822 ==========
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                                 1898  
+                                       
+REPUBLIC OF SEYCHELLES                                           SUPPLEMENT TO OFFICIAL GAZETTE                                                                                                                          SI 
+ SCHEDULE IV  
+ 
+ 
+List of SADC Free Trade Area Member State s 
+ 
+ 
+1. Democratic Republic of Madagascar  
+2. Kingdom of Lesotho  
+3. Namibia  
+4. Republic of Botswana  
+5. Republic of Malawi  
+6. Republic of Mauritius  
+7. Republic of Mozambique  
+8. Republic of Seychelles  
+9. Republic of South Africa  
+10. Republic of Tanzania  
+11. Republic of Zambia  
+12. Republic of Zimbabwe  
+13. United Republic of Tanzania  
+ 
+ 
+========== PAGE 823 ==========
+[28th October, 2022]                                                                   Customs Management Act                                                                           1899  
+                                       
+REPUBLIC OF SEYCHELLES                                           SUPPLEMENT TO OFFICIAL GAZETTE                                                                                SI 
+ 
+  
+SCHEDULE  V 
+ 
+ 
+I. List of European Union Member States and the EuropeanCommunity  
+ 
+ 
+1. Ireland  
+2. Kingdom ofNetherlands  
+3. Republic ofCroatia  
+4. Republic ofMalta  
+5. The CzechRepublic  
+6. The Federal Republic ofGermany  
+7. The FrenchRepublic  
+8. The Grand Duchy ofLuxembourg  
+9. The Hellenic Republic(Greece)  
+10. The ItalianRepublic  
+11. The Kingdom ofBelgium  
+12. The Kingdom ofDenmark  
+13. The Republic ofEstonia  
+14. The Kingdom ofSpain  
+15. The Kingdom ofSweden  
+16. The Portuguese  Republic  
+ 
+========== PAGE 824 ==========
+[28th October, 2022]                                                                   Customs Management Act                                                                           1900  
+                                       
+REPUBLIC OF SEYCHELLES                                           SUPPLEMENT TO OFFICIAL GAZETTE                                                                                SI 
+ 
+  
+17. The Republic ofAustria  
+18. The Republic of  Bulgaria  
+19. The Republic of Cyprus  
+20. The Republic of Finland  
+21. The Republic of Hungary  
+22. The Republic of Latvia  
+23. The Republic of Lithuania  
+24. The Republic of Romania  
+25. The Republic of Slovenia  
+26. The Republic of Poland  
+27. The Slovak Republic  
+28. The European Community, on other part  
+ 
+ 
+II. List of ESA Member States  
+ 
+ 
+1. Democratic Republic of Madagascar  
+2. The Federal Islamic Republic of Comoros  
+3. The Republic of Mauritius  
+4. The Republic of Seychelles  
+5. The Republic of Zimbabwe  
+========== PAGE 825 ==========
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                                 1901  
+                                       
+REPUBLIC OF SEYCHELLES                                           SUPPLEMENT TO OFFICIAL GAZETTE                                                                                                                          SI 
+ 
+ SCHEDULE VI 
+ 
+List of African Continental Free Trade Area (AfCFTA)  Member State s 
+ 
+ 
+1. Arab Republic of Egypt  
+2. Central African Republic  
+3. Equatorial Guinea  
+4. Kingdom of Eswatini  
+5. Kingdom of Lesotho  
+6. Republic of Angola  
+7. Republic of Burkina Faso  
+8. Republic of Burundi  
+9. Republic of Cameroon  
+10. Republic of Chad  
+11. Republic of the Congo  
+12. Republic of Djibouti  
+13. Republic of Ethiopia  
+14. Republic of Gambia  
+15. Republic of Gabon  
+16. Republic of Ghana  
+17. Republic of Guinea  
+========== PAGE 826 ==========
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                                 1902  
+                                       
+REPUBLIC OF SEYCHELLES                                           SUPPLEMENT TO OFFICIAL GAZETTE                                                                                                                          SI 
+ 
+ 18. Republic of Ivory Coast  
+19. Republic of Kenya  
+20. Republic of Malawi  
+21. Republic of Mali  
+22. Republic of Mauritania  
+23. Republic of Mauritius  
+24. Republic of Namibia  
+25. Republic of Niger  
+26. Republic of Nigeria  
+27. Republic of Rwanda  
+28. Republic of Sao Tome and Principe  
+29. Republic of Senegal  
+30. Republic of S ierra Leone  
+31. Republic of South Africa  
+32. Republic of Togo  
+33. Republic of Tunisia  
+34. Republic of Uganda  
+35. Republic of Zambia  
+36. Republic of Zimbabwe  
+37. Sahrawi Arab Democratic Republic  
+38. Socialist Republic of Algeria  
+========== PAGE 827 ==========
+ 
+[28th October, 2022]                                                                   Customs Management Act                                                                                           1903  
+    
+ REPUBLIC OF SEYCHELLES                              SUPPLEMENT TO OFFICIAL GAZETTE                                                       SI 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+MADE this 27th day of October, 2022.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+NAADIR HASSAN  
+MINISTER OF FINANCE,  
+NATIONAL PLANNING AND TRADE  
+ 

@@ -1668,13 +1668,22 @@ def _resolve_zlecaf_context(
     #    quantité : ils ne sont jamais aplatis en leur seule composante ad valorem.
     if dest == "ZAF":
         from services.official_preferential_rates import resolve_official_preferential_rate
-        from services.zlecaf_schedule_zaf import zaf_partner_active
+        from services.zlecaf_schedule_zaf import (
+            zaf_partner_active,
+            zaf_suspension_active,
+        )
 
+        if zaf_suspension_active(origin, hs_code_clean):
+            return _no_preference(
+                "Préférence ZLECAf suspendue par l'Afrique du Sud pour cette "
+                "ligne (Notice R.6594, GG 53334 du 12/09/2025) — taux NPF "
+                "appliqué"
+            )
         if not zaf_partner_active(origin):
             return _no_preference(
                 "ZLECAf ratifié mais échanges préférentiels pas encore activés "
-                "avec l'Afrique du Sud (newsletter AfCFTA dtic/SARS, mars 2026) "
-                "— taux NPF appliqué"
+                "avec l'Afrique du Sud pour cette origine (General Note O du "
+                "Schedule No. 1) — taux NPF appliqué"
             )
         official_rate = resolve_official_preferential_rate(dest, hs_code_clean)
         eff_dd = official_rate.get("ad_valorem_rate_pct") if official_rate else None

@@ -2,8 +2,8 @@
  "schema_version": 1,
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
- "mis_a_jour_le": "2026-09-25",
- "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Documentation Kenya (25/09/2026) : preuve nationale = publication du barème par la KRA, l'avis EAC = support communautaire, concordance dtic/SARS (mars 2026) — fiche KEN_application_2026-09-25.json. Aucun changement de calcul. Application de la règle B à la Tanzanie (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — la Tanzanie passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Un plancher NPF protège la dérogation nationale 2106.90.20. Aucun autre pays n'est anticipé. Application de la règle B au Rwanda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — le Rwanda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Aucun autre pays n'est anticipé. Étape 5 (suite) : fiche comparative Ouganda (UGA_application_2026-09-26.json) — ni barème, ni avis EAC, ni acte national, ni liste, ni preuve d'importation ; le Kenya reste le seul des quatre (KEN/RWA/TZA/UGA) à publier le barème lui-même. Aucun branchement. Application de la règle B à l'Ouganda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées, dont le FACTSHEET du Secrétariat qui nomme l'Ouganda parmi les participants au GTI — l'Ouganda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument. Aucun autre pays n'est anticipé. Étape RDC (27/09/2026) : règle B non satisfaite — le TEC EAC n'y est pas appliqué, l'offre congolaise est distincte de celle de l'EAC, le barème DGDA reste un projet de loi tarifaire, aucune source primaire datée d'application ; la RDC passe à NON_APPLIQUE_PRESUME, sans branchement.",
+ "mis_a_jour_le": "2026-10-01",
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json). Mis à jour le 24 septembre : l'Égypte passe à APPLIQUE — la circulaire n° 44 de 2025 (28/12/2025), retrouvée au portail, actualise la liste des origines (19 : Namibie et Nigeria ajoutés), fixe la réduction à 60 % au 1/1/2026 et reporte les chapitres 50 à 63 et 87 ; le rapprochement des barèmes de l'UA est consigné dans EGY_rapprochement_baremes_2026-09-24.json. Puis le 25 septembre : la Tunisie et le Maroc — la Tunisie passe à INSTRUMENT_VERIFIE_BAREME_MANQUANT (texte d'application TA n°016/2023 du 06/04/2023 retrouvé, lu intégralement (153 pages) et transcrit ; sens du pourcentage tranché par le texte : des parts du droit de base 2019 ; droits de base 2019 et classement A/B/C encore manquants) ; le Maroc passe à APPLIQUE (la circulaire ADII 6530/223 soumet la liste A au démantèlement du DI ET de la TPI sur le même calendrier — 5 ans P1, 10 ans P2 ; les deux chemins de calcul servent le même taux, l'assiette de TVA (CIF+DD+TPI) suit la TPI réduite, et aucune notification postérieure modifiant P1/P2 n'a été retrouvée). L'étape 4 est ouverte le même jour : fiche Zambie livrée (ZMB_application_2026-09-25.json) — SI 92/2024 daté et documenté (journal officiel + Assemblée nationale), texte intégral et liste d'origines toujours manquants, niveau inchangé. Étape 4 poursuivie : fiche Côte d'Ivoire livrée (CIV_application_2026-09-25.json) — ordonnance n° 2025-260 adoptée et ratification parlementaire attestées, mais décrets d'application et circulaires en attente selon le rapport 2025 du CN-ZLECAf, aucune liste d'origines ; niveau inchangé. Étape 4 poursuivie : fiche Nigeria livrée (NGA_application_2026-09-25.json) — PSTC gazettée le 14/04/2025 (23e État partie) attestée par le Secrétariat de la ZLECAf et le rapport du FMITI, admission par règle (« AfCFTA State Parties »), texte de la gazette non obtenu et aucune liste nominative ; niveau inchangé. Documentation Kenya (25/09/2026) : preuve nationale = publication du barème par la KRA, l'avis EAC = support communautaire, concordance dtic/SARS (mars 2026) — fiche KEN_application_2026-09-25.json. Aucun changement de calcul. Application de la règle B à la Tanzanie (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — la Tanzanie passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Un plancher NPF protège la dérogation nationale 2106.90.20. Aucun autre pays n'est anticipé. Application de la règle B au Rwanda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées — le Rwanda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument, le barème de son annexe et les origines de l'Annexe 1 de la Directive 1/2021 traitées comme un plafond. Aucun autre pays n'est anticipé. Étape 5 (suite) : fiche comparative Ouganda (UGA_application_2026-09-26.json) — ni barème, ni avis EAC, ni acte national, ni liste, ni preuve d'importation ; le Kenya reste le seul des quatre (KEN/RWA/TZA/UGA) à publier le barème lui-même. Aucun branchement. Application de la règle B à l'Ouganda (27/09/2026) : les quatre conditions sont réunies et documentées par des sources archivées, dont le FACTSHEET du Secrétariat qui nomme l'Ouganda parmi les participants au GTI — l'Ouganda passe au niveau APPLIQUE avec l'avis EAC/321/2022 comme instrument. Aucun autre pays n'est anticipé. Application de la règle B au Burundi (27/09/2026) : la condition 4 est contrariée par le communiqué du Secrétariat du 06/08/2026, qui décrit une préparation (feuille de route à élaborer), et la date d'application réelle n'est pas établie — le Burundi reste au NPF, niveau OFFRE_SEULE, sans entrée au registre. Aucun autre pays n'est anticipé. Application de la ZLECAf pour l'Afrique du Sud (27/09/2026) : acte national gazetté (Notices R. du Schedule No. 1), liste des origines datée (General Note O) et barème ligne à ligne servis par les deux chemins, avec le contrôle d'origine ajouté au socle — la ZAF passe au niveau APPLIQUE. Écart signalé : la Sierra Leone, citée par la newsletter du dtic, est absente des Notices et reste au NPF. Étape Ghana (28/09/2026) : premiers envois GTI vers le Ghana (café Igire, batteries Exide — certificats émis au départ, traitement à l'arrivée non documenté) ; gazettement attesté par la General Note O (R.4287, 26/01/2024) et la participation au GTI (Secrétariat 19/10/2022) ; barème = offre ECOWAS archivée — le Ghana monte à NOTIFICATION_PARTENAIRES_REQUISE, sans branchement. 28 septembre 2026 : les Seychelles passent à APPLIQUE — le S.I. 113 of 2022 (en vigueur le 01/11/2022) porte dans un seul texte la liste des origines (Schedule VI « List of African Continental Free Trade Area (AfCFTA) Member States », 38 entrées, désignées « State Parties » par le règlement 2(6)) et le barème ligne à ligne (sous-colonne AfCFTA 2022-2026 sur 6 019 lignes) ; réserve de sémantique consignée dans la fiche (liste d'États parties, pas de partenaires vérifiés bilatéralement). Reprise Côte d'Ivoire (29/09/2026) : décrets d'application et circulaire douanière ZLECAf introuvables (recherche non concluante — JO inaccessible ; au 29/07/2026 les projets de décrets étaient seulement transmis au ministre chargé du Budget, presse archivée, sha 1fca6a27…) ; adoption du projet de loi de ratification par la commission CAEF du Sénat le 08/06/2026 (presse archivée, sha fa5d74ad…) — l'unanimité n'est rapportée que par le titre de l'actualité du CN-ZLECAf (repérage, rendu JS non archivable), qui rapporte aussi la ratification AN+Sénat ; aucune liste nominative d'origines ; niveau inchangé. Rapprochement Tunisie (29/09/2026) : le Tarif Web 2026 de la douane sert ligne à ligne les coefficients du texte TA n°016/2023 (40 % liste A et 87,5 % liste B pour le Cameroun, le Ghana et le Kenya ; 0 % et 80 % pour la Tanzanie) ; le classement A/B/C de l'e-Tariff concorde avec le tarif, son calendrier par pays non ; restent à établir le droit de base 2019 ligne à ligne, le sort des lignes A/B sans préférence publiée et la liste des taxes d'effet équivalent — niveau inchangé (TUN_rapprochement_baremes_2026-09-29.json). Reprise Zambie (29/09/2026) : le supplément du 30/12/2024 portant le texte du SI 92 reste absent de gazettes.africa (re-vérifié ; seule la gazette de notices n° 7696, archivée en octets réels) ; le SI 96/2025 est obtenu et lu intégralement — trois dispositions procédurales, aucun rapport avec la ZLECAf ; barème d'offre consulté sur le portail du CN-ZLECAf ivoirien mais NON VERSÉ AU DÉPÔT (document anonyme, rattaché à la Zambie seulement par l'URL et une concordance avec l'instantané e-Tariff déjà archivé : 5 199 codes communs ; identité avec le PSTC gazetté non établie) ; aucune liste nominative d'origines ; niveau inchangé. Reprise Cameroun (29/09/2026) : contrôles négatifs datés en extraits scellés (règle : PDF entier seulement quand il prouve un fait — PDFs originaux conservés hors dépôt, sha256 consignés) — LF 2025 (loi 2024/013, copie à couche texte : ZLECA 0, AfCFTA 0), LF 2026 (loi 2025/012, scan sans couche texte : contrôle porté par la circulaire d'application), circulaire 410/MINFI/DGD du 18/05/2026 (OCR intégral ; téléchargée en HTTP non chiffré — certificat TLS du site refusé par les clients, sans désactivation de vérification TLS ; mention contextuelle seulement, aucune des 18 mesures douanières ne porte la ZLECAf) ; rubrique des textes nationaux de douanes.cm muette ; l'application documentée par la douane reste à l'EXPORTATION (premier certificat ZLECAf 06/10/2022, GIC AFATEX, 155 kg vers le Ghana — article n° 6582 archivé en entier, sha 295762a4… ; tea estates 19/10/2022, article n° 6927 archivé, sha 07f38247…) et l'importation sous GTI (Kribi, 02/07/2023) n'est documentée que par repérage (cncc.cm HTTP 000) ; aucune liste nominative d'origines ; niveau inchangé. Étape RDC (27/09/2026, retouchée le 01/10/2026) : règle B non satisfaite — le TEC EAC n'y est pas appliqué, l'offre congolaise est distincte de celle de l'EAC, le barème DGDA reste un projet de loi tarifaire, aucune source primaire datée d'application ; la RDC passe à NON_APPLIQUE_PRESUME, sans branchement.",
  "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
@@ -23,9 +23,9 @@
    "bareme_collecte": false
   },
   "BDI": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
+   "niveau": "OFFRE_SEULE",
+   "preuve": "Règle B non satisfaite (27/09/2026) : (1) ratifié — RATIFIED, Loi n°1/17 du 17/06/2021 archivée ; (2) TEC de l'OBR non vérifiable (obr.bi en panne) ; (3) Burundi nommé dans les GTI Participating Countries (FACTSHEET du Secrétariat 01/2025, archivé, répertoire fiche Ouganda) ; (4) SOURCE CONTRAIRE : le communiqué du Secrétariat du 06/08/2026 (mission Bujumbura, extrait archivé, sha 5855a614…) décrit une préparation (« implementation roadmap » à élaborer). DATE D'APPLICATION NON ÉTABLIE — aucune déduction. Les listes secondaires (tralac 02/2026, dtic 03/2026) affirmant le gazettement ne sont pas vérifiables sur primaire. Niveau OFFRE_SEULE : l'offre commune EAC est archivée, la participation au GTI ne prouve pas l'application. Fiche : BDI_application_2026-09-27.json.",
+   "niveau_de_source": "primaire — loi de ratification archivée, communiqué du Secrétariat archivé (préparation) ; aucune source d'application",
    "bareme_collecte": false
   },
   "BEN": {
@@ -54,21 +54,21 @@
   },
   "CIV": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Ordonnance n° 2025-260 du 23/04/2025 (adoption attestée par le communiqué officiel du Conseil des ministres, archivé) et ratification parlementaire ; le rapport d'activités 2025 du CN-ZLECAf indique que les décrets d'application et circulaires restaient à prendre, et aucune liste nominative d'origines n'a été retrouvée (recherche du 25/09/2026 : CN-ZLECAf, douanes.ci, JO inaccessible). Fiche : CIV_application_2026-09-25.json.",
-   "niveau_de_source": "primaire pour l'adoption et le projet de ratification (communiqué du Conseil des ministres + rapport CN-ZLECAf archivés et scellés) ; texte de l'ordonnance non obtenu",
+   "preuve": "Ordonnance n° 2025-260 du 23/04/2025 (adoption attestée par le communiqué officiel du Conseil des ministres, archivé) ; ratification parlementaire en progression — adoption du projet de loi de ratification par la commission CAEF du Sénat le 08/06/2026 (presse archivée : CINEWS sha fa5d74ad…, FratMat sha 1fca6a27…) ; l'unanimité n'est rapportée que par le titre de l'actualité du site du CN-ZLECAf (repérage, rendu JS, accès direct 403, non archivable), qui rapporte aussi « Ratification par le parlement (Assemblée Nationale et Sénat) de l'Ordonnance n°2025-260 du 23 avril 2025. » ; re-vérification du 29/09/2026 : aucun décret d'application retrouvé (au 29/07/2026 seuls des projets de décrets transmis au ministre chargé du Budget), aucune circulaire douanière ZLECAf retrouvée sur douanes.ci (circulaires + textes réglementaires, zéro mention), aucune liste nominative d'origines retrouvée, JO inaccessible (HTTP 000) — recherche non concluante, pas une preuve de non-publication. Fiche : CIV_application_2026-09-25.json.",
+   "niveau_de_source": "primaire pour l'adoption et le projet de ratification (communiqué du Conseil des ministres + rapport CN-ZLECAf archivés et scellés) ; avancement de la ratification sur presse archivée (CINEWS, FratMat) et site CN-ZLECAf non archivable ; texte de l'ordonnance non obtenu",
    "bareme_collecte": true,
    "bareme_source": "ECOWAS"
   },
   "CMR": {
    "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : CEMAC",
-   "niveau_de_source": "instantané e-Tariff Book",
+   "preuve": "Niveau OFFRE_SEULE confirmé par contrôles négatifs datés (29/09/2026) — extraits scellés (URL officielle + sha256 du PDF original + page de titre), PDF intégraux non versés au dépôt : LF 2026 (loi 2025/012, prc.cm, scan 151 p. sans couche texte, sha 4196d968…) — contrôle porté par la circulaire d'application de la DGD ; LF 2025 (loi 2024/013, copie prc.cm à couche texte, 109/110 p. lisibles, sha 386dd1c8…) — ZLECA 0, AfCFTA 0 ; circulaire 410/MINFI/DGD du 18/05/2026 (douanes.cm, scan OCR intégral hors dépôt, sha 13b0ea5a… — téléchargée en HTTP non chiffré, certificat TLS du site refusé par les clients, sans désactivation de vérification TLS) — unique mention ZLECAf contextuelle, aucune des 18 mesures douanières ne porte un dispositif ZLECAf ; rubrique des textes nationaux de douanes.cm muette. L'offre CEMAC reste archivée (instantané e-Tariff, empreinte vérifiée). L'application documentée par la douane est à l'EXPORTATION (premier certificat ZLECAf 06/10/2022, GIC AFATEX, 155 kg vers le Ghana — article douanes.cm n° 6582 archivé en entier, sha 295762a4… ; tea estates 19/10/2022, article n° 6927 archivé, sha 07f38247…) ; article douanes.cm archivé en entier, sha 07f38247…) ; l'importation sous GTI (résine tunisienne à Kribi, 02/07/2023) est repérée sur le site du CNSC, inaccessible en direct (HTTP 000) — repérage non archivable. Aucun acte national, aucune liste nominative d'origines. Fiche : CMR_application_2026-09-29.json.",
+   "niveau_de_source": "offre archivée (instantané e-Tariff CEMAC) ; contrôles négatifs datés sur textes primaires en extraits scellés (sha256 des originaux consignés, PDFs hors dépôt) ; application documentée à l'exportation sur le site de la douane (deux articles archivés) ; importation GTI sur repérage non archivable",
    "bareme_collecte": true
   },
   "COD": {
    "niveau": "NON_APPLIQUE_PRESUME",
-   "preuve": "Étape RDC (27/09/2026) : règle B non satisfaite. (1) ratifiée — RATIFIED (dépôt 20/04/2022, vérifié dans l'article du ministère du Commerce archivé, sha ad78f535…) ; (2) TEC EAC NON appliqué — les tarifs nationaux congolais (0/5/10/20 %) ne suivent pas les bandes CET 0/10/25/35 % (USDA GAIN 05/2022 ; ECDPM 2023) ; la RDC a soumis une OFFRE TARIFAIRE DISTINCTE de celle de l'EAC (The EastAfrican 13/07/2024 ; CEA déc. 2025) ; (3) DGDA ne publie aucun barème ZLECAf (dgda.cd DNS SERVFAIL 27/09/2026) ; le tarif intégrant le démantèlement ZLECAf est un PROJET en attente de loi tarifaire (texte DGDA via cache) ; (4) le document du ministère du Commerce (ZLECAF.pdf, archivé) est de vulgarisation, sans barème ni arrêté ; aucune source primaire datée de gazettement ni de commencement. Aucune preuve d'application à l'importation. Fiche : COD_application_2026-09-27.json.",
-   "niveau_de_source": "primaire — article du ministère du Commerce archivé ; le reste en repérage daté (presse spécialisée, rapports)",
+   "preuve": "Étape RDC (27/09/2026, retouchée le 01/10/2026) : règle B non satisfaite. (1) ratifiée — liste du dépositaire (Commission de l'UA, au 22/05/2026, archivée, sha e38d0104…) : signature 21/03/2018, ratification 28/01/2022, dépôt 23/02/2022 ; (2) TEC EAC NON appliqué — les tarifs nationaux congolais (0/5/10/20 %) ne suivent pas les bandes CET 0/10/25/35 % (USDA GAIN 05/2022 ; ECDPM 2023, repérage) ; la RDC a soumis une OFFRE TARIFAIRE DISTINCTE de celle de l'EAC (The EastAfrican 13/07/2024 ; CEA déc. 2025, repérage) ; (3) la DGDA ne publie aucun barème ZLECAf (dgda.cd DNS SERVFAIL 27/09/2026) ; le tarif intégrant le démantèlement ZLECAf est un PROJET en attente de loi tarifaire (texte DGDA via cache) ; (4) l'article du ministère du Commerce (ZLECAF.pdf, archivé, sha ad78f535…) est de vulgarisation, sans barème ni arrêté ; aucune source primaire datée de gazettement ni de commencement. Aucune preuve d'application à l'importation. Fiche : COD_application_2026-09-27.json.",
+   "niveau_de_source": "primaire — liste UA des ratifications et article du ministère du Commerce, archivés ; le reste en repérage daté (presse spécialisée, rapports)",
    "bareme_collecte": false
   },
   "COG": {
@@ -127,10 +127,11 @@
    "bareme_collecte": false
   },
   "GHA": {
-   "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : ECOWAS",
-   "niveau_de_source": "instantané e-Tariff Book",
-   "bareme_collecte": true
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Étape Ghana (28/09/2026) : premiers ENVOIS GTI vers le Ghana — café Igire (Rwanda, export 30/09/2022) et batteries Exide (Kenya), certificats d'origine émis AU DÉPART, traitement à l'arrivée non documenté ; gazettement attesté par la General Note O (R.4287, GG 50045 du 26/01/2024 : « Ghana — 31 August 2023 » parmi les États ayant mis en œuvre leur PSTC) et la participation au GTI (Secrétariat, 19/10/2022) ; numéro de la Ghana Gazette introuvable ; barème = offre ECOWAS ARCHIVÉE (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz, destination GH). Origines par règle. Fiche : GHA_application_2026-09-28.json.",
+   "niveau_de_source": "primaire (Secrétariat 2022/2023) — envois GTI ; R.4287 SARS archivée",
+   "bareme_collecte": true,
+   "bareme_source": "ECOWAS"
   },
   "GIN": {
    "niveau": "NON_RECHERCHE",
@@ -237,7 +238,7 @@
   },
   "NGA": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "PSTC gazettée le 14/04/2025 (23e État partie), attestée par le Secrétariat de la ZLECAf et le rapport du FMITI ; admission par RÈGLE (« AfCFTA State Parties »), jamais par une liste. Recherche du 25/09/2026 : texte de la gazette non obtenu (gazette d'avril absente de gazettes.africa ; portail NCS « AfCFTA CET » en CAPTCHA Cloudflare, non forcé) et aucune circulaire NCS retrouvée. Fiche : NGA_application_2026-09-25.json.",
+   "preuve": "PSTC gazettée le 14/04/2025 (23e État partie), attestée par le Secrétariat de la ZLECAf et le rapport du FMITI ; admission par RÈGLE (« AfCFTA State Parties »), jamais par une liste. Recherche du 25/09/2026 : texte de la gazette non obtenu (gazette d'avril absente de gazettes.africa ; portail NCS « AfCFTA CET » en CAPTCHA Cloudflare, non forcé) et aucune circulaire NCS retrouvée. Complément du 28/09/2026 (tous canaux) : l'offre ECOWAS couvrant le Nigeria comme destination est consultable ligne à ligne dans l'e-Tariff officiel (cat. A, décroissance 10 ans, archivé) ; le NCS publie un portail « AFCFTA CET » de 6 571 lignes (valeurs CET — caractère préférentiel non établi, archivé) ; le rapport officiel FMITI « Achievements 2025 » (archivé, sha 957c3a0b…, p. 6 : déclaration ministérielle générale du gazettement d'avril 2025, sans date d'effet ni liste d'origines) et le rapport FMITI mai 2026 sur le corridor (hébergé par tralac, archivé, sha 00a94457…, p. 3/9/14 : COO ZLECAf émises par le NCS le 25/05/2025, application par le Kenya — côté exportation). Texte de la gazette toujours non obtenu (gazettes.africa/ng bloqué) — niveau inchangé. Fiche : NGA_application_2026-09-25.json. Chasse profonde dans les officiels (28/09/2026) : selon Business Post (source secondaire), le document gazetté serait le calendrier ECOWAS d'offres tarifaires, signé par le président Tinubu (15/04/2025 ; CEDEAO 15/04/2025 : visite sans mention ; circulaires NCS : rien) — d'où ECOWAS → NG dans l'e-Tariff. Numéro de gazette toujours non publié en ligne.",
    "niveau_de_source": "primaire pour le gazettage et la date (annonce du Secrétariat + rapport FMITI, extraits archivés et scellés) ; texte de la gazette non obtenu",
    "bareme_collecte": true,
    "bareme_source": "ECOWAS"
@@ -292,10 +293,10 @@
    "bareme_collecte": false
   },
   "SYC": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": false
+   "niveau": "APPLIQUE",
+   "preuve": "S.I. 113 of 2022 — Customs Management (Tariff and Classification of Goods) Regulations, 2022, Supplement to Official Gazette du 28/10/2022, pris sous la section 270 du Customs Management Act 2011, en vigueur au 01/11/2022. La regulation 2(6) (« The list of African Continental Free Trade Area (AfCFTA) State Parties are specified in Schedule VI. ») renvoie les origines ZLECAf à la Schedule VI, intitulée « List of African Continental Free Trade Area (AfCFTA)  Member State s » (38 entrées énumérées nominativement — sans les Comores, non ratifiante à la date du texte) ; le barème porte une sous-colonne « AfCFTA 2022-2026 » ligne à ligne sur les 6 019 lignes à huit chiffres. PDF intégral archivé (tradeportal.sc, 827 p., sha 605bc651…), extrait scellé (sha 1a81cc0e…). RÉSERVE DE SÉMANTIQUE : la Schedule VI est une liste d'États parties (admission par règle), pas une liste de partenaires dont l'application réciproque serait vérifiée bilatéralement. Fiche : SYC_application_2026-09-28.json.",
+   "niveau_de_source": "primaire — instrument réglementaire intégral archivé et scellé (copie tradeportal.sc + copie SRC du 19/09/2026)",
+   "bareme_collecte": true
   },
   "TCD": {
    "niveau": "NON_RECHERCHE",
@@ -311,7 +312,7 @@
   },
   "TUN": {
    "niveau": "INSTRUMENT_VERIFIE_BAREME_MANQUANT",
-   "preuve": "Texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), lu intégralement : les pourcentages sont des parts du droit de base 2019 — liste A 5 ans (MUS RWA EGY TZA : 80/60/40/20/0 de 2021 à 2025), liste A 10 ans (CMR GHA KEN : 90 … 40 en 2026 … 0 en 2030), listes B sur 5 et 8 ans. Tarif Web 2026 : 8 origines (CMR GHA KEN TZA ZAF NGA MUS RWA). Barème non exploitable : droits de base 2019 ligne à ligne et classement A/B/C manquants.",
+   "preuve": "Texte TA n°016/2023 du 06/04/2023 (النشرية الرسمية للديوانة n° 973), lu intégralement : les pourcentages sont des parts du droit de base 2019 — liste A 5 ans (MUS RWA EGY TZA : 80/60/40/20/0 de 2021 à 2025), liste A 10 ans (CMR GHA KEN : 90 … 40 en 2026 … 0 en 2030), listes B sur 5 et 8 ans. Tarif Web 2026 : 8 origines (CMR GHA KEN TZA ZAF NGA MUS RWA). Rapprochement du 29/09/2026 : le Tarif Web 2026 applique ces coefficients par origine et par ligne ; le classement A/B/C de l'e-Tariff concorde avec le tarif. Restent bloquants pour tout calcul : (1) le droit de base 2019 ligne à ligne ; (2) les 2 596 lignes classées A et 60 lignes classées B par l'e-Tariff sans préférence ZLECAf au Tarif Web ; (3) la liste nominative des taxes d'effet équivalent visées par la section V du texte ; (4) l'acte qui ajoute le Nigeria et l'Afrique du Sud. (TUN_rapprochement_baremes_2026-09-29.json).",
    "niveau_de_source": "texte officiel lu via lecteur tiers (r.jina.ai), octets du PDF non archivés ; l'empreinte porte sur la transcription",
    "bareme_collecte": true
   },
@@ -330,15 +331,16 @@
    "bareme_source": "EAC"
   },
   "ZAF": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
-   "bareme_collecte": true
+   "niveau": "APPLIQUE",
+   "preuve": "APPLIQUE (27/09/2026) : acte national — Notices R.4281/R.4286/R.4287 (GG 50045, 26/01/2024, effet 31/01/2024, section 48 du Customs and Excise Act) ; origines — General Note O §1 : liste initiale verbatim (Algérie, Cameroun, Égypte, Ghana, Kenya, Rwanda, Tunisie, 31/08/2023) + ajouts datés R.5879 (21/02/2025), R.6233 (Gambie, rétroactif 14/03/2025), R.6595 (Nigeria, rétroactif 30/05/2025), R.6756 (Éthiopie, rétroactif 14/08/2025) — transcrits dans DATES_ENTREE_ZAF ; barème — colonne AfCFTA du Schedule No. 1 (réductions R.4599/R.5622/R.6710), servis par les deux chemins (socle corrigé : contrôle d'origine ajouté) ; exclusions — SACU (union automatique 0 %) et SADC (protocole) ; suspension R.6594 (thé kényan) non encore traitée par le moteur. Écart signalé : Sierra Leone (dtic) absente des Notices (hors liste). Fiche : ZAF_application_2026-09-27.json.",
+   "niveau_de_source": "primaire — 8 Notices SARS scellées (sha256) + extraits dtic archivés",
+   "bareme_collecte": true,
+   "bareme_source": "SARS"
   },
   "ZMB": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "SI 92/2024 du 30/12/2024 (gazette n° 7696), dont l'objet est confirmé par l'Assemblée nationale (19/06/2025) : domestication de 90 % des lignes, barème provisoire utilisé sous GTI. Recherche du 25/09/2026 : texte intégral non obtenu (ZambiaLII sous CAPTCHA, supplément absent de gazettes.africa) et aucune liste nominative d'origines retrouvée ; un SI 96/2025 existe, texte à obtenir. Fiche : ZMB_application_2026-09-25.json.",
-   "niveau_de_source": "primaire pour l'existence et l'objet (journal officiel + Assemblée nationale, extraits archivés) ; texte du SI non obtenu",
+   "preuve": "SI 92/2024 du 30/12/2024 (gazette n° 7696 — PDF d'archive téléchargé en octets réels le 29/09/2026, sha 65b8c005…), dont l'objet (PSTC sous GTI) est confirmé par l'Assemblée nationale (19/06/2025) et, sur presse archivée citant le MCTI, par Zambia Monitor (17/02/2025, sha c3547803…) ; le ministère des Affaires étrangères (10/03/2025) confirme le gazettement du PSTC par le SI 92 — repérage, accès direct HTTP 000, non archivable. Re-vérification du 29/09/2026 : le supplément du 30/12/2024 (texte du SI 92) est absent de gazettes.africa (seule la gazette de notices y figure) ; ZambiaLII toujours 403/CAPTCHA ; aucune liste nominative d'origines retrouvée. Le SI 96/2025 (gazette n° 7861, texte intégral archivé, sha 5ab669cb…) est lu : trois dispositions procédurales, aucun rapport avec la ZLECAf. Un barème au format de l'offre (catégories A/B/C, ~6 259 lignes) est consultable sur le portail du CN-ZLECAf ivoirien — REPÉRAGE NON VERSÉ AU DÉPÔT (document anonyme, rattaché à la Zambie seulement par l'URL et une concordance avec l'instantané e-Tariff déjà archivé : 5 199 codes communs, base 100 % ; identité avec le PSTC gazetté non établie). Fiche : ZMB_application_2026-09-25.json.",
+   "niveau_de_source": "primaire pour l'existence et l'objet (journal officiel en octets + Assemblée nationale, extraits archivés) ; texte du SI 92 non obtenu ; barème d'offre archivé (instantané e-Tariff) ; gazettement confirmé par le MCTI sur presse archivée",
    "bareme_collecte": true
   },
   "ZWE": {
@@ -349,29 +351,34 @@
   }
  },
  "repartition": {
-  "APPLIQUE": 6,
+  "APPLIQUE": 8,
   "NON_APPLIQUE_PRESUME": 2,
-  "NON_RECHERCHE": 38,
-  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+  "NON_RECHERCHE": 35,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 5,
   "OFFRE_SEULE": 2,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 0,
   "PREUVES_ASSEMBLEES": 1,
   "INSTRUMENT_VERIFIE_BAREME_MANQUANT": 1
  },
  "fiches_detaillees": [
+  "BDI_application_2026-09-27.json",
   "CIV_application_2026-09-25.json",
   "COD_application_2026-09-27.json",
   "DZA_application_2026-09-14.json",
   "EGY_application_2026-09-14.json",
   "EGY_rapprochement_baremes_2026-09-24.json",
   "ETH_application_2026-09-13.json",
+  "GHA_application_2026-09-28.json",
   "KEN_application_2026-09-25.json",
   "MAR_application_2026-09-13.json",
   "NGA_application_2026-09-25.json",
   "RWA_application_2026-09-25.json",
+  "SYC_application_2026-09-28.json",
   "TUN_application_2026-09-13.json",
+  "TUN_rapprochement_baremes_2026-09-29.json",
   "TZA_application_2026-09-25.json",
   "UGA_application_2026-09-26.json",
+  "ZAF_application_2026-09-27.json",
   "ZMB_application_2026-09-25.json",
   "chantier_collecte_2026-09-14.json"
  ],

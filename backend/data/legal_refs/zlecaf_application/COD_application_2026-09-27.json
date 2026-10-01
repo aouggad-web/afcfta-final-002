@@ -4,7 +4,7 @@
  "agreement": "ZLECAf / AfCFTA",
  "verification_status": "NON_APPLIQUE_PRESUME",
  "verified_at": "2026-09-27",
- "evidence_level": "ratification vérifiée (article du ministère du Commerce archivé) ; TEC EAC non appliqué (repérage daté) ; offre congolaise DISTINCTE de l'offre EAC ; barème DGDA au stade de projet de loi ; aucune source primaire datée d'application ; DGDA injoignable (DNS SERVFAIL, 27/09/2026)",
+ "evidence_level": "ratification vérifiée (liste du dépositaire, Commission de l'UA, archivée) ; TEC EAC non appliqué (repérage daté) ; offre congolaise DISTINCTE de l'offre EAC ; barème DGDA au stade de projet de loi ; aucune source primaire datée d'application ; DGDA injoignable (DNS SERVFAIL, 27/09/2026)",
  "questions_cinq": {
   "1_bareme_complet_DGDA": {
    "reponse": "NON",
@@ -24,11 +24,19 @@
   },
   "5_preuves_application_import": {
    "reponse": "NON",
-   "detail": "Aucune preuve d'importation sous préférences ZLECAf. Au GTI : la RDC figure sur les listes de participants (répertoire FACTSHEET du Secrétariat), mais elle ne figurait pas parmi les 10 États commerçant effectivement (tralac FAQ 05/2025) et le GTI a été clôturé en avril 2025 ; en Afrique centrale, seuls le Cameroun et le Rwanda ont commercé (CEA, déc. 2025)."
+   "detail": "Aucune preuve d'importation sous préférences ZLECAf. Au GTI : la RDC figure sur les listes de participants (répertoire FACTSHEET du Secrétariat), mais elle ne figurait pas parmi les 10 États commerçant effectivement (tralac FAQ 05/2025) ; en Afrique centrale, seuls le Cameroun et le Rwanda ont commercé (CEA, déc. 2025)."
   }
  },
  "instrument_eac": {
   "non_applicable": "La RDC étant hors union douanière effective (TEC non appliqué) et ayant déposé une offre distincte, l'avis EAC/321/2022 ne lui est pas transposable : c'est précisément pourquoi l'offre congolaise individuelle ne peut pas être servie par le barème EAC."
+ },
+ "ratification": {
+  "source": "Liste des signatures, ratifications et dépôts de l'Accord ZLECAf, Commission de l'UA (dépositaire), au 22/05/2026",
+  "texte_archive": "sources/AU_liste_signatures_ratifications_zlecaf_2026-05-22.pdf",
+  "sha256": "e38d01042f01ec33e7ac188aaf37b24eccfca7b91493d8804205f0d344a2a68b",
+  "ligne_du_tableau": "n° 15 — Democratic Rep. of Congo — 21/03/2018 (signature) — 28/01/2022 (ratification) — 23/02/2022 (dépôt)",
+  "lecture": "signature 21/03/2018, ratification 28/01/2022, dépôt 23/02/2022",
+  "divergence": "L'article du ministère du Commerce (ZLECAF.pdf) indique un dépôt « auprès du Secrétariat, à Accra, le 20 avril 2022 » ; la date du dépositaire (23/02/2022) est retenue."
  },
  "sources_archivees": {
   "article_ministere_commerce": {
@@ -37,7 +45,7 @@
   },
   "offre_individuelle_extrait": {
    "texte_extrait": "sources/COD_offre_individuelle_extrait.txt",
-   "sha256": "e7ab3d74e4a5fed1ada576c4dbf7608b2035f54c1b6ed432cd0758ed67d49ab2"
+   "sha256": "28fd84e435b683435f6443e0a2739ce63dfb07c0293cf51193e92f791cc9426d"
   },
   "autres_groupements": {
    "texte_extrait": "sources/COD_autres_groupements_extrait_2026-09-27.txt",
