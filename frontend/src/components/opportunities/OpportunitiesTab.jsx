@@ -1,7 +1,7 @@
 /**
  * Opportunities Tab — main container
- * 6 sub-tabs: Analyse IA · Substitution · Vue d'ensemble · Chaînes de Valeur
- * · Par Produit · Comparaison
+ * 7 sub-tabs: Analyse IA · Flux stratégiques · Substitution · Vue d'ensemble
+ * · Chaînes de Valeur · Par Produit · Comparaison
  */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -53,7 +53,8 @@ describe('normalizeTaxesDetail', () => {
   });
 
   it('rapproche par intitulé la forme réelle du repli issu des données crawlées', () => {
-    // routes/calculator.py renseigne `taxes_detail[].tax` avec le NOM de la
+    // L'ancien repli /calculate-tariff (retiré au lot O2-0) renseignait
+    // `taxes_detail[].tax` avec le NOM de la
     // taxe (`t["name"]`) tandis que la ventilation garde `code` et `name`
     // séparément : sans alias par intitulé, ces lignes ressortaient sans taux
     // préférentiel et l'affichage y recopiait le taux NPF.
