@@ -95,7 +95,6 @@ except ModuleNotFoundError as e:
         raise
     set_billing_db = None
 from services.crawled_data_service import crawled_service
-from services.tariff_data_service import tariff_service
 from services.user_auth_service import hash_password, verify_password
 
 # =============================================================================
@@ -402,25 +401,6 @@ async def startup_load_tariff_data():
             logger.info("No crawled data found yet.")
     except Exception as e:
         logger.warning(f"Crawled data service startup: {e}")
-
-    # Load tariff data
-    try:
-        tariff_service.load()
-        stats = tariff_service.get_stats()
-        if stats["countries"] > 0:
-            logger.info(
-                f"Tariff data service ready: {stats['countries']} countries, "
-                f"{stats['total_positions']:,} positions loaded"
-            )
-        else:
-            # Aucun fichier n'est généré au démarrage : sans backend/data/tariffs,
-            # les données tarifaires sont INDISPONIBLES, jamais synthétisées.
-            logger.warning(
-                "backend/data/tariffs absent ou vide : données tarifaires INDISPONIBLES "
-                "(aucune collecte lancée au démarrage)."
-            )
-    except Exception as e:
-        logger.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
 
     # Start the exchange rate scheduler (updates every 4 hours, first run immediate)
     try:

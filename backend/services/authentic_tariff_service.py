@@ -1371,9 +1371,8 @@ def _resolve_zlecaf_context(
          de libre-échange — INFORMATIONNELLE, sans recalcul (règles d'origine).
       3. NPF par défaut.
 
-    Source unique de vérité : réutilise exactement les mêmes modules que
-    routes/calculator.py (zlecaf_membership_status, zlecaf_schedule_dza,
-    zlecaf_schedule_zaf, zlecaf_implementation_registry) + regional_blocs.
+    Source unique de vérité : zlecaf_membership_status, zlecaf_schedule_dza,
+    zlecaf_schedule_zaf, zlecaf_implementation_registry + regional_blocs.
 
     Retourne un dict :
       - preferential (bool)        : un régime réduit effectivement le droit de
@@ -2222,8 +2221,7 @@ def calculate_import_taxes(
     # L'avantage ZLECAf n'est accordé que si la paire origine/destination y est
     # éligible : ratification continentale (origine ET destination) + réciprocité
     # bilatérale (Algérie : 9 partenaires actifs ; Afrique du Sud : 14 partenaires
-    # actifs, SACU exclue). Source unique de vérité : _resolve_zlecaf_context, qui
-    # réutilise les mêmes modules que routes/calculator.py.
+    # actifs, SACU exclue). Source unique de vérité : _resolve_zlecaf_context.
     # Le DAPS est un droit de douane, exonéré de façon BINAIRE pour les listes (A)
     # et (B) algériennes (circulaire 482/2024), indépendamment du facteur de
     # démantèlement du DD.

@@ -22,7 +22,7 @@ Sources: Tarifs Intégrés Nationaux (TIN), SYDONIA, Administrations douanières
 Dernière mise à jour: Janvier 2025
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 # =============================================================================
 # NIGERIA (NGA) - TARIFS AVEC SOUS-POSITIONS NATIONALES

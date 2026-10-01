@@ -44,9 +44,6 @@ class TestCEMACCountryConfigs:
             "country_name_en",
             "primary_source",
             "currency",
-            "tva_rate",
-            "national_taxes",
-            "dd_bands",
         }
         for cc, info in cfg.items():
             missing = required - set(info.keys())
@@ -57,22 +54,6 @@ class TestCEMACCountryConfigs:
         for cc, info in cfg.items():
             assert "XAF" in info["currency"], f"{cc} should use XAF"
 
-    def test_all_have_cemac_dd_bands(self):
-        cfg = self._get_cemac_countries()
-        for cc, info in cfg.items():
-            assert info["dd_bands"] == [0, 5, 10, 20, 30], f"{cc} DD bands wrong"
-
-    def test_all_have_tci_national_tax(self):
-        cfg = self._get_cemac_countries()
-        for cc, info in cfg.items():
-            assert "TCI" in info["national_taxes"], f"{cc} missing TCI"
-            assert info["national_taxes"]["TCI"] == 1.0, f"{cc} TCI must be 1%"
-
-    def test_tva_rates_in_valid_range(self):
-        cfg = self._get_cemac_countries()
-        for cc, info in cfg.items():
-            assert 14.0 <= info["tva_rate"] <= 25.0, f"{cc} TVA rate out of range"
-
     def test_all_have_afcfta_agreement(self):
         cfg = self._get_cemac_countries()
         for cc, info in cfg.items():
@@ -81,24 +62,12 @@ class TestCEMACCountryConfigs:
                 "AfCFTA" in agreements or "ZLECAf" in agreements
             ), f"{cc} should include AfCFTA/ZLECAf"
 
-    # ---- Country-specific checks ----
-
-    def test_cmr_tva_is_19_25(self):
+    def test_aucun_taux_saisi_dans_la_configuration(self):
+        # Droits, TVA et taxes nationales viennent des fichiers crawlés, jamais
+        # d'une valeur écrite dans le module (la TVA du Tchad y était fausse).
         cfg = self._get_cemac_countries()
-        assert cfg["CMR"]["tva_rate"] == 19.25
-
-    def test_gnq_tva_is_15(self):
-        cfg = self._get_cemac_countries()
-        assert cfg["GNQ"]["tva_rate"] == 15.0
-
-    def test_gab_and_cog_tva_is_18(self):
-        cfg = self._get_cemac_countries()
-        assert cfg["GAB"]["tva_rate"] == 18.0
-        assert cfg["COG"]["tva_rate"] == 18.0
-
-    def test_tcd_has_ts_national_tax(self):
-        cfg = self._get_cemac_countries()
-        assert "TS" in cfg["TCD"]["national_taxes"]
+        for cc, info in cfg.items():
+            assert not {"tva_rate", "tva_note", "national_taxes", "dd_bands"} & set(info), cc
 
 
 # ==================== Data File Tests ====================
@@ -259,18 +228,8 @@ class TestCEMACRoutes:
         assert result["total_countries"] == 6
         assert "countries" in result
         assert len(result["countries"]) == 6
-
-    def test_get_cemac_countries_has_dd_bands(self):
-        from routes.cemac_crawlers import get_cemac_countries
-
-        result = get_cemac_countries()
-        assert result["dd_bands_pct"] == [0, 5, 10, 20, 30]
-
-    def test_get_cemac_countries_common_tci(self):
-        from routes.cemac_crawlers import get_cemac_countries
-
-        result = get_cemac_countries()
-        assert "TCI" in result["common_taxes"]
+        assert "dd_bands_pct" not in result
+        assert "common_taxes" not in result
 
     def test_data_summary_has_all_six_countries(self):
         from routes.cemac_crawlers import get_cemac_data_summary

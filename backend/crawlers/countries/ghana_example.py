@@ -4,16 +4,9 @@ Example: Ghana-specific customs scraper
 This file demonstrates how to create a country-specific scraper by
 inheriting from BaseScraper and implementing the required methods.
 
-To register this scraper:
-1. Ensure the file is in backend/crawlers/countries/
-2. Add _country_code class attribute
-3. The scraper will be auto-registered by the factory
-
-Usage:
-    from backend.crawlers import ScraperFactory
-
-    scraper = ScraperFactory.get_scraper("GHA")
-    result = await scraper.run()
+No factory registers it (the generic scraper factory was removed in lot O2-0
+because it only ran a collector that fabricated chapter-band rates); a real
+country scraper must be wired explicitly.
 """
 
 import logging
@@ -36,7 +29,7 @@ class GhanaScraper(BaseScraper):
     - Tariff schedules
     """
 
-    # This attribute tells the factory which country this scraper is for
+    # Country this scraper is for
     _country_code = "GHA"
 
     async def scrape(self) -> Dict[str, Any]:
@@ -230,7 +223,3 @@ class GhanaScraper(BaseScraper):
         except Exception as e:
             logger.error(f"Failed to save Ghana data: {e}")
             raise
-
-
-# Note: This scraper will be auto-registered by the factory when the module is imported
-# because it has the _country_code attribute and inherits from BaseScraper

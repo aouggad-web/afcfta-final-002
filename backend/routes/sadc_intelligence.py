@@ -168,8 +168,8 @@ async def get_sadc_trade_protocols(
 @router.get("/regions/sacu/customs-union")
 async def get_sacu_framework():
     """
-    Return the SACU Customs Union framework details including revenue sharing,
-    CET bands, and institutional overview.
+    Return the SACU Customs Union framework details including revenue sharing
+    and institutional overview.
     """
     try:
         return _get_sadc().get_sacu_framework()

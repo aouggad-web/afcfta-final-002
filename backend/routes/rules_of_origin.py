@@ -240,7 +240,7 @@ def get_rule_of_origin(hs_code: str, lang: str = "fr") -> dict:
     """Single source of truth for the rules-of-origin verdict on an HS code.
 
     Used by backend code that needs this lookup outside an HTTP request
-    (e.g. routes/calculator.py, etl/hs6_database.py), as a direct function
+    (e.g. etl/hs6_database.py), as a direct function
     call. The module's own /{hs_code} endpoint does not call this function —
     it has its own matching loop that builds its (richer) response via
     _entry_to_response. Both implement the same subheading -> heading ->

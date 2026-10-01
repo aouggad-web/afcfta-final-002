@@ -343,7 +343,6 @@ class SADCIntelligenceService:
         """Return the SACU customs union framework details."""
         try:
             from crawlers.countries.sacu_customs_union import (
-                SACU_CET_BANDS,
                 SACU_FRAMEWORK,
                 SACU_REVENUE_SHARES,
             )
@@ -351,7 +350,6 @@ class SADCIntelligenceService:
             return {
                 "framework": SACU_FRAMEWORK,
                 "revenue_shares": SACU_REVENUE_SHARES,
-                "cet_bands": {str(k): v for k, v in SACU_CET_BANDS.items()},
             }
         except ImportError:
             return {"error": "SACU framework data not available"}

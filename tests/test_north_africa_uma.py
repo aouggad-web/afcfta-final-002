@@ -3,7 +3,7 @@
 Tests for the North Africa (UMA/AMU) regional intelligence implementation.
 
 Covers:
-- uma_constants: Country metadata, trade blocs, VAT rates
+- uma_constants: Country metadata, trade blocs
 - investment_zones: SEZ data for all 7 countries
 - morocco_uma_scraper: Position generation and output schema
 - uma_member_scraper: Country derivation logic
@@ -63,16 +63,6 @@ def test_country_metadata_completeness():
         for field in required_fields:
             assert field in meta, f"{code} missing field: {field}"
     print("✅ Country metadata complete for all 7 countries")
-
-
-def test_vat_rates_all_countries():
-    """VAT rates are defined for all 7 countries and are non-negative."""
-    from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES, UMA_VAT_RATES
-
-    for code in UMA_COUNTRIES:
-        assert code in UMA_VAT_RATES, f"VAT rate missing for {code}"
-        assert UMA_VAT_RATES[code] >= 0.0, f"Negative VAT for {code}"
-    print("✅ VAT rates defined for all 7 countries")
 
 
 def test_trade_blocs_all_countries():

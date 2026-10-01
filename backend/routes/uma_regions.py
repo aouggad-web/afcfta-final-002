@@ -46,14 +46,12 @@ def _constants():
         UMA_INVESTMENT_LAWS,
         UMA_SECTOR_STRENGTHS,
         UMA_TRADE_BLOCS,
-        UMA_VAT_RATES,
     )
 
     return {
         "metadata": COUNTRY_METADATA,
         "countries": UMA_COUNTRIES,
         "trade_blocs": UMA_TRADE_BLOCS,
-        "vat_rates": UMA_VAT_RATES,
         "cit_rates": UMA_CORPORATE_TAX_RATES,
         "investment_laws": UMA_INVESTMENT_LAWS,
         "data_sources": UMA_DATA_SOURCES,
@@ -127,7 +125,6 @@ async def get_north_africa_countries(
                     "wto_member": meta.get("wto_member", False),
                     "afcfta_ratified": meta.get("afcfta_ratified", False),
                     "trade_blocs": c["trade_blocs"].get(code, []),
-                    "vat_rate": c["vat_rates"].get(code),
                     "corporate_tax_rate": c["cit_rates"].get(code),
                     "investment_law": c["investment_laws"].get(code, ""),
                     "sector_strengths": c["sector_strengths"].get(code, []),
@@ -182,7 +179,6 @@ async def get_uma_intelligence():
                 "population_m": meta.get("population_m"),
                 "uma_member": meta.get("uma_member", False),
                 "trade_blocs": c["trade_blocs"].get(code, []),
-                "vat_rate": c["vat_rates"].get(code),
                 "corporate_tax_rate": c["cit_rates"].get(code),
                 "investment_law": c["investment_laws"].get(code, ""),
                 "sector_strengths": c["sector_strengths"].get(code, []),
@@ -290,7 +286,7 @@ async def compare_countries(
     """
     Cross-country comparison of key trade and investment metrics.
 
-    Includes VAT, corporate tax, investment law and sector strengths.
+    Includes corporate tax, investment law and sector strengths.
     """
     try:
         c = _constants()
@@ -306,7 +302,6 @@ async def compare_countries(
                 "name_en": meta.get("name_en", code),
                 "gdp_bn_usd": meta.get("gdp_bn_usd"),
                 "population_m": meta.get("population_m"),
-                "vat_rate": c["vat_rates"].get(code),
                 "corporate_tax_rate": c["cit_rates"].get(code),
                 "investment_law": c["investment_laws"].get(code, ""),
                 "trade_blocs": c["trade_blocs"].get(code, []),

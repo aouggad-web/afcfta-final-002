@@ -49,7 +49,21 @@ MODULES_RETIRES = [
     "etl.country_hs6_tariffs_eac_sadc",
     "etl.country_hs6_tariffs_north_other",
     "tax_rates",
+    "crawlers.countries.uma_tariff_structures",
+    "services.north_africa_intelligence",
 ]
+
+# Clés qui portaient un taux saisi dans le code, sans fichier source.
+CLES_DE_TAUX_SAISIS = {
+    "tva_rate",
+    "vat_rate",
+    "dd_bands",
+    "dd_bands_pct",
+    "cet_bands",
+    "national_taxes",
+    "tariff_bands",
+    "common_taxes",
+}
 
 
 GESTIONNAIRES_410 = {r.endpoint for r in routes_retirees_router.routes}
@@ -156,6 +170,43 @@ def test_les_chemins_retires_ne_masquent_aucune_route_vivante(api_router):
     ]
 
     assert masquees == []
+
+
+def _cles(objet):
+    if isinstance(objet, dict):
+        for cle, valeur in objet.items():
+            yield cle
+            yield from _cles(valeur)
+    elif isinstance(objet, list):
+        for valeur in objet:
+            yield from _cles(valeur)
+
+
+@pytest.mark.parametrize(
+    "chemin",
+    [
+        "/api/crawlers/cemac/countries",
+        "/api/crawlers/cemac/data-summary",
+        "/api/crawlers/cemac/data/TCD?page_size=1",
+        "/api/regions/sacu/customs-union",
+        "/api/regions/north-africa/countries",
+        "/api/regions/north-africa/compare",
+        "/api/regions/uma/intelligence",
+    ],
+)
+def test_route_vivante_sans_taux_saisi(api_router, chemin):
+    # Routes gardées (métadonnées, données des fichiers crawlés) dont on a
+    # retiré les taux écrits dans le code : TVA, bandes de droits, taxes.
+    from auth import require_admin, require_auth
+
+    app = FastAPI()
+    app.include_router(api_router)
+    app.dependency_overrides[require_auth] = lambda: {"tier": "test"}
+    app.dependency_overrides[require_admin] = lambda: {"tier": "admin"}
+    reponse = TestClient(app).get(chemin)
+
+    assert reponse.status_code == 200, reponse.text
+    assert CLES_DE_TAUX_SAISIS & set(_cles(reponse.json())) == set()
 
 
 @pytest.mark.parametrize("module", MODULES_RETIRES)

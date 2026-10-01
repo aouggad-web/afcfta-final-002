@@ -115,20 +115,6 @@ SACU_REVENUE_SHARES = {
 }
 
 # ---------------------------------------------------------------------------
-# Common External Tariff band mapping
-# ---------------------------------------------------------------------------
-
-SACU_CET_BANDS = {
-    0.0: "raw_materials_capital_goods",
-    5.0: "intermediate_goods",
-    15.0: "final_consumer_goods",
-    20.0: "agricultural_products",
-    22.0: "textiles_and_clothing",
-    25.0: "automotive",
-    30.0: "luxury_goods",
-}
-
-# ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
 
@@ -138,7 +124,6 @@ def generate_sacu_summary() -> Dict:
     return {
         "framework": SACU_FRAMEWORK,
         "revenue_shares": SACU_REVENUE_SHARES,
-        "cet_bands": {str(k): v for k, v in SACU_CET_BANDS.items()},
         "generated_at": datetime.utcnow().isoformat(),
     }
 
