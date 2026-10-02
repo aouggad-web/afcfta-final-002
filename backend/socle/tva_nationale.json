@@ -7,11 +7,16 @@
       "libelle": "Value-Added Tax (VAT)",
       "famille": "tva",
       "taux": 15.0,
-      "assiette": "CIF+DD",
-      "source": "SARS — VAT Act 89/1991 s.13(2) ; taux relevé sur sars.gov.za",
+      "assiette": "FOBx1.10+DD",
+      "assiette_par_origine": {
+        "origines": ["BWA", "LSO", "NAM", "SWZ"],
+        "assiette": "FOB+DD",
+        "texte": "VAT Act 89/1991 s.13(2)(b) : pas de majoration de 10 % pour une origine Botswana, Lesotho, Eswatini ou Namibie importée de ces pays"
+      },
+      "source": "SARS — taux relevé sur sars.gov.za (15 %) ; assiette : VAT Act 89/1991 s.13(2)(a) — valeur en douane + droits + 10 % de la valeur en douane",
       "fiche": "backend/data/legal_refs/zlecaf_application/ZAF_taux_TVA_2026-09-17.json",
       "note": "Taux standard national, non vérifié position par position : les biens détaxés (zero-rated) et exonérés ne sont pas distingués.",
-      "reserve_assiette": "L'assiette retenue est celle que le dépôt documente (CIF+DD, VAT Act s.13(2)). La majoration appliquée par l'Afrique du Sud à la valeur en douane des marchandises venant hors SACU n'est pas établie ici : les pages SARS qui la décriraient répondent 404 au relevé du 2026-09-17. Si elle est confirmée, la TVA calculée sur une origine hors SACU est sous-évaluée."
+      "reserve_assiette": "La valeur en douane SACU est la valeur FOB (fiche ZAF_assiette_TVA_2026-10-02). Non connus du calculateur : la valeur fixée par règlement ministériel, retenue si plus élevée (réserve de la s.13(2)) ; le pays d'expédition, si bien qu'une origine BWA/LSO/SWZ/NAM expédiée d'ailleurs, majorée en droit, est servie sans majoration."
     },
     "DJI": {
       "code": "TVA",

@@ -117,7 +117,9 @@ def calcul(demande: DemandeCalcul):
             position, demande.destination, demande.origine, demande.code_sh
         )
 
-    position, complements = _completer_famille_absente(position, demande.destination, provenance)
+    position, complements = _completer_famille_absente(
+        position, demande.destination, provenance, demande.origine
+    )
 
     try:
         resultat = calculer(
@@ -239,7 +241,9 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
     return chiffrees
 
 
-def _completer_famille_absente(position: dict, destination: str, provenance: dict):
+def _completer_famille_absente(
+    position: dict, destination: str, provenance: dict, origine: Optional[str] = None
+):
     """Ajouter la TVA nationale documentée quand la source n'en porte aucune.
 
     Deux conditions, cumulatives et strictes : la couverture du pays doit
@@ -265,12 +269,19 @@ def _completer_famille_absente(position: dict, destination: str, provenance: dic
     if any((droit.get("famille") == "tva") for droit in position.get("droits") or []):
         return position, []
 
+    assiette = entree["assiette"]
+    # Assiette qui dépend de l'origine (Afrique du Sud, VAT Act s.13(2)(b) :
+    # pas de majoration de 10 % pour une origine BWA, LSO, SWZ ou NAM).
+    par_origine = entree.get("assiette_par_origine")
+    if par_origine and (origine or "").upper() in par_origine.get("origines", []):
+        assiette = par_origine["assiette"]
+
     ligne = {
         "code": entree["code"],
         "libelle": entree["libelle"],
         "famille": entree["famille"],
         "taux": entree["taux"],
-        "assiette": entree["assiette"],
+        "assiette": assiette,
         "source": entree["source"],
         "note": entree["note"],
         "classification_source": "table_nationale_documentee",
@@ -279,7 +290,7 @@ def _completer_famille_absente(position: dict, destination: str, provenance: dic
     complement = {
         "code": entree["code"],
         "taux_pct": entree["taux"],
-        "assiette": entree["assiette"],
+        "assiette": assiette,
         "source": entree["source"],
         "fiche": entree["fiche"],
         "note": entree["note"],

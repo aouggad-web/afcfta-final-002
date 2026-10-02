@@ -305,27 +305,33 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
     sans = client.post(
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
-    # La TVA sud-africaine est désormais complétée depuis sa fiche, mais son
-    # assiette est « CIF+DD » : le droit manquant l'ampute, et elle ne se
-    # liquide donc pas non plus. Rien n'étant calculable, l'état reste
-    # INDISPONIBLE — et les deux manques sont nommés avec leur cause propre,
-    # la seconde citant le composant absent plutôt que de le compter zéro.
+    # La TVA sud-africaine est complétée depuis sa fiche, sur « FOBx1.10+DD »
+    # (VAT Act s.13(2)(a)) : sans valeur FOB elle ne se liquide pas non plus.
+    # Rien n'étant calculable, l'état reste INDISPONIBLE — et les deux manques
+    # sont nommés avec leur cause propre.
     assert sans["npf"]["etat"] == "INDISPONIBLE"
     assert sans["npf"]["manques"] == [
         {"code": "DD", "motif": "QUANTITE_REQUISE"},
-        {"code": "TVA", "motif": "ASSIETTE_INCOMPLETE", "composants": ["DD"]},
+        {"code": "TVA", "motif": "VALEUR_FOB_REQUISE"},
     ]
 
     avec = client.post(
         "/calcul",
-        json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000, "quantite": 500},
+        json={
+            "destination": "ZAF",
+            "code_sh": "020830",
+            "valeur_cif": 1000,
+            "valeur_fob": 1000,
+            "quantite": 500,
+        },
     ).json()
     # Le droit lui-même : 8c/kg × 500 kg, et non 8 % de la valeur.
     lignes = {ligne["code"]: ligne for ligne in avec["npf"]["lignes"]}
     assert lignes["DD"]["montant"] == 40.0
-    # Le total porte en plus la TVA sud-africaine complétée : 15 % de 1 040.
-    assert lignes["TVA"]["montant"] == 156.0
-    assert avec["npf"]["total_droits"] == 196.0
+    # Le total porte en plus la TVA sud-africaine complétée :
+    # 15 % de (1 000 × 1,10 + 40) = 15 % de 1 140.
+    assert lignes["TVA"]["montant"] == 171.0
+    assert avec["npf"]["total_droits"] == 211.0
 
 
 @besoin_socle
@@ -395,7 +401,14 @@ def test_une_franchise_intra_union_n_exige_pas_la_quantite_d_un_droit_specifique
     inutilisable une importation dont le droit est zéro."""
     corps = client.post(
         "/calcul",
-        json={"destination": "ZAF", "origine": "BWA", "code_sh": "020830", "valeur_cif": 10000},
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            # La TVA sud-africaine porte sur la valeur FOB (VAT Act s.13(2)).
+            "valeur_fob": 10000,
+        },
     ).json()
     preference = corps["preference"]
     lignes = {ligne["code"]: ligne for ligne in preference["lignes"]}
@@ -538,11 +551,13 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
             "origine": "BWA",
             "code_sh": "010121",
             "valeur_cif": 10000,
+            "valeur_fob": 10000,
         },
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
     assert lignes["DD"]["montant"] == 0.0  # libre circulation intra-SACU
     assert lignes["TVA"]["taux_pct"] == 15.0
+    # Origine Botswana : pas de majoration de 10 % (VAT Act s.13(2)(b)).
     assert lignes["TVA"]["montant"] == 1500.0  # 15 % de (10 000 + 0)
     assert corps["preference"]["total_droits"] == 1500.0
 
@@ -553,6 +568,27 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
     assert "zero-rated" in complement["note"]
     # La ligne elle-même reste traçable jusqu'à l'affichage.
     assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
+
+
+@besoin_socle
+def test_la_tva_sud_africaine_hors_sacu_porte_sur_le_fob_majore_et_les_droits(client):
+    """VAT Act 89/1991 s.13(2)(a) : valeur en douane (FOB) + droits + 10 % de
+    la valeur en douane, pour une origine hors Botswana, Lesotho, Eswatini et
+    Namibie. Origine France : aucun régime préférentiel ne joue."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "FRA",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    dd = lignes["DD"]["montant"]
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD"
+    assert lignes["TVA"]["montant"] == pytest.approx(0.15 * (11000 + dd))
 
 
 @besoin_socle
@@ -723,7 +759,9 @@ def test_une_simulation_ne_change_jamais_le_total_servi(client):
     corps = client.post("/calcul", json=payload).json()
 
     assert all(s["applique"] is False for s in corps["simulations_regionales"])
-    assert corps["npf"]["total_a_payer"] == 209300.0
+    # Origine Mozambique (hors BWA, LSO, NAM, SWZ) : la TVA porte sur
+    # FOB × 1,10 + droits (VAT Act s.13(2)(a)).
+    assert corps["npf"]["total_a_payer"] == 210800.0
 
 
 def test_aucune_simulation_sans_origine(client):

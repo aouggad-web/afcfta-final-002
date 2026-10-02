@@ -22,11 +22,13 @@ Les sept primitives, et rien d'autre :
                              (``VALEUR_FOB_REQUISE``) plutôt qu'assumé CIF
                              — une base CIF devinée surestimerait le droit
                              d'un montant crédible et faux.
-``FOBx<FACTEUR>``            la valeur FOB multipliée par un facteur fixé
-                             par la loi (``FOBx1.10`` : TVA namibienne à
-                             l'importation, VAT Act 10/2000 s.12(2)(a) — FOB
-                             plus 10 % du FOB). Même exigence que ``FOB`` :
-                             fournie, jamais déduite du CIF.
+``FOBx<FACTEUR>[+<CODES>]``  la valeur FOB multipliée par un facteur fixé
+                             par la loi, augmentée le cas échéant des droits
+                             nommés (``FOBx1.10`` : TVA namibienne, VAT Act
+                             10/2000 s.12(2)(a) ; ``FOBx1.10+DD`` : TVA
+                             sud-africaine, VAT Act 89/1991 s.13(2)(a)). Même
+                             exigence que ``FOB`` : fournie, jamais déduite
+                             du CIF.
 ``SOMME(TOUS_SAUF_SOI)``     la somme des autres droits, **sans** la valeur
 ``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
                              désigné par son code (``%DD``)
@@ -260,14 +262,26 @@ def _assiette_de(
                 detail["composants_sans_objet"] = sans_objet
             base = cif + part
     elif assiette.startswith("FOBx"):
-        # Valeur FOB majorée d'un forfait légal (ex. Namibie : FOB + 10 %).
+        # Valeur FOB majorée d'un forfait légal (Namibie : FOB + 10 %),
+        # éventuellement augmentée de droits nommés (Afrique du Sud :
+        # « FOBx1.10+DD », VAT Act 89/1991 s.13(2)(a)).
         if valeur_fob is None:
             return None, MANQUE_FOB, detail
+        facteur_txt, _, codes = assiette[len("FOBx") :].partition("+")
         try:
-            facteur = float(assiette[len("FOBx") :])
+            facteur = float(facteur_txt)
         except ValueError:
             return None, MANQUE_ASSIETTE, detail
-        base = valeur_fob * facteur
+        part = 0.0
+        if codes:
+            part, manquants, sans_objet = _composants(
+                _codes_de_l_assiette("FOB+" + codes), montants, codes_de_la_position
+            )
+            if manquants:
+                return None, MANQUE_COMPOSANT, {"composants_absents": manquants}
+            if sans_objet:
+                detail["composants_sans_objet"] = sans_objet
+        base = valeur_fob * facteur + part
     elif assiette.startswith("FOB+"):
         # Même sémantique que « CIF+<CODES> », posée sur la valeur FOB.
         if valeur_fob is None:
