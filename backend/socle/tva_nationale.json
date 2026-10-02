@@ -11,12 +11,13 @@
       "assiette_par_origine": {
         "origines": ["BWA", "LSO", "NAM", "SWZ"],
         "assiette": "FOB+DD",
-        "texte": "VAT Act 89/1991 s.13(2)(b) : pas de majoration de 10 % pour une origine Botswana, Lesotho, Eswatini ou Namibie importée de ces pays"
+        "texte": "VAT Act 89/1991 s.13(2)(b) : pas de majoration de 10 % pour une origine Botswana, Lesotho, Eswatini ou Namibie importée de ces pays — origine et pays d'expédition doivent tous deux figurer dans cette liste"
       },
       "source": "SARS — taux relevé sur sars.gov.za (15 %) ; assiette : VAT Act 89/1991 s.13(2)(a) — valeur en douane + droits + 10 % de la valeur en douane",
       "fiche": "backend/data/legal_refs/zlecaf_application/ZAF_taux_TVA_2026-09-17.json",
+      "fiche_assiette": "backend/data/legal_refs/zlecaf_application/ZAF_assiette_TVA_2026-10-02.json",
       "note": "Taux standard national, non vérifié position par position : les biens détaxés (zero-rated) et exonérés ne sont pas distingués.",
-      "reserve_assiette": "La valeur en douane SACU est la valeur FOB (fiche ZAF_assiette_TVA_2026-10-02). Non connus du calculateur : la valeur fixée par règlement ministériel, retenue si plus élevée (réserve de la s.13(2)) ; le pays d'expédition, si bien qu'une origine BWA/LSO/SWZ/NAM expédiée d'ailleurs, majorée en droit, est servie sans majoration."
+      "reserve_assiette": "La valeur en douane SACU est la valeur FOB (fiche ZAF_assiette_TVA_2026-10-02). L'exception sans majoration exige l'origine ET le pays d'expédition dans BWA/LSO/SWZ/NAM : sans pays d'expédition déclaré, la TVA d'une telle origine reste indisponible. Non connue du calculateur : la valeur fixée par règlement ministériel, retenue si plus élevée (réserve de la s.13(2))."
     },
     "DJI": {
       "code": "TVA",
@@ -36,6 +37,7 @@
       "assiette": "FOBx1.10",
       "source": "Value-Added Tax Act 10 of 2000 (Namibie), s.6(1)(b) (taux de 15 % sur toute importation) et s.12(2)(a) (valeur d'une importation : FOB plus 10 % du FOB) — version annotée NamRA archivée",
       "fiche": "backend/data/legal_refs/zlecaf_application/NAM_taux_TVA_2026-09-18.json",
+      "fiche_assiette": "backend/data/legal_refs/zlecaf_application/NAM_assiette_TVA_2026-10-02.json",
       "note": "Taux standard national, non vérifié position par position : les importations exonérées (Schedule V) ne sont pas distinguées.",
       "reserve_assiette": "La s.12(2)(a) retient le PLUS ÉLEVÉ de « FOB + 10 % » et de la valeur de marché (« open market value ») ; le calculateur ne connaît pas cette dernière et sert FOB + 10 %. Texte consolidé jusqu'en 2011 : un amendement postérieur n'est pas vérifié."
     },

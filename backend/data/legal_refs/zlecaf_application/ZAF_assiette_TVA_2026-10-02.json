@@ -18,6 +18,6 @@
  ],
  "ce_que_cela_ne_tranche_pas": [
   "La valeur fixée par règlement ministériel (réserve de la s.13(2)), retenue si elle est plus élevée : le calculateur ne la connaît pas.",
-  "La condition « importée de ces pays » de la s.13(2)(b) : le calculateur ne connaît que l'origine, pas le pays d'expédition ; une origine BELN expédiée d'ailleurs serait majorée en droit."
+  "La condition « importée de ces pays » de la s.13(2)(b) repose sur le pays d'expédition déclaré par l'appelant (champ pays_expedition de /calcul) ; non déclaré pour une origine BWA/LSO/SWZ/NAM, la TVA reste indisponible."
  ]
 }

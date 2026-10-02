@@ -51,6 +51,16 @@ REGLEMENTAIRE = ("regulatory_compliance", "regulatory_cost", "regulatory_reporte
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
     origine: Optional[str] = Field(None, description="Pays d'origine (ISO-3)")
+    pays_expedition: Optional[str] = Field(
+        None,
+        description=(
+            "Pays d'expédition (ISO-3), quand la loi le distingue de l'origine. "
+            "Afrique du Sud, VAT Act s.13(2)(b) : la TVA n'est pas majorée de "
+            "10 % pour une origine BWA, LSO, SWZ ou NAM importée de l'un de ces "
+            "pays. Omis pour une telle origine, la TVA reste indisponible "
+            "plutôt que supposée."
+        ),
+    )
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
     valeur_cif: float = Field(..., ge=0, description="Valeur en douane")
     quantite: Optional[float] = Field(
@@ -118,7 +128,7 @@ def calcul(demande: DemandeCalcul):
         )
 
     position, complements = _completer_famille_absente(
-        position, demande.destination, provenance, demande.origine
+        position, demande.destination, provenance, demande.origine, demande.pays_expedition
     )
 
     try:
@@ -242,7 +252,11 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
 
 
 def _completer_famille_absente(
-    position: dict, destination: str, provenance: dict, origine: Optional[str] = None
+    position: dict,
+    destination: str,
+    provenance: dict,
+    origine: Optional[str] = None,
+    pays_expedition: Optional[str] = None,
 ):
     """Ajouter la TVA nationale documentée quand la source n'en porte aucune.
 
@@ -270,11 +284,18 @@ def _completer_famille_absente(
         return position, []
 
     assiette = entree["assiette"]
-    # Assiette qui dépend de l'origine (Afrique du Sud, VAT Act s.13(2)(b) :
-    # pas de majoration de 10 % pour une origine BWA, LSO, SWZ ou NAM).
+    motif_assiette = None
+    # Assiette qui dépend de l'origine ET du pays d'expédition (Afrique du Sud,
+    # VAT Act s.13(2)(b) : pas de majoration de 10 % pour une origine BWA, LSO,
+    # SWZ ou NAM importée de l'un de ces pays). Expédition inconnue : la TVA
+    # reste indisponible plutôt que de choisir une assiette au hasard.
     par_origine = entree.get("assiette_par_origine")
     if par_origine and (origine or "").upper() in par_origine.get("origines", []):
-        assiette = par_origine["assiette"]
+        if not pays_expedition:
+            assiette = None
+            motif_assiette = "PAYS_EXPEDITION_REQUIS"
+        elif pays_expedition.upper() in par_origine["origines"]:
+            assiette = par_origine["assiette"]
 
     ligne = {
         "code": entree["code"],
@@ -296,6 +317,10 @@ def _completer_famille_absente(
         "note": entree["note"],
         "motif": "FAMILLE_ABSENTE_DE_LA_SOURCE",
     }
+    if entree.get("fiche_assiette"):
+        complement["fiche_assiette"] = entree["fiche_assiette"]
+    if motif_assiette:
+        complement["motif_assiette"] = motif_assiette
     if entree.get("reserve_assiette"):
         complement["reserve_assiette"] = entree["reserve_assiette"]
     return position, [complement]

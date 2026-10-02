@@ -1,0 +1,24 @@
+ARCHIVE — Namibie : valeur d'une importation pour la TVA (relevé du 02/10/2026)
+
+Value-Added Tax Act 10 of 2000 (Namibie), version annotée NamRA (Republic of Namibia Annotated Statutes)
+Fichier : sources/nam_vatact2000.pdf (104 p.)
+sha256 : ac9b9431d1da05718cba217ab7d5f3c1470a6e9567120125fe5757cbe04199ad
+URL : https://www.namra.org.na/documents/cms/uploaded/value-added-tax-act-10-of-2000-8d9c425ffc.pdf
+
+VERBATIM (s.12, p. 26-27 du PDF) :
+« Value of import
+12. (1) In this section “free-on-board value”, in relation to an import of goods, means the price
+charged for the goods by the exporter, plus all costs and charges incidental to the sale and to
+placing the goods on board any ship or vehicle ready for exportation and any agent’s commission
+(calculated on such price, costs and charges) in respect of the goods.
+(2) For the purposes of this Act, the value of an import of goods shall be -
+(a) in the case of goods required to be cleared in terms of the Customs and Excise Act, the greater
+of -
+(i) an amount equal to the sum of -
+(aa) the free-on-board value of the goods; and
+(bb) an amount equal to 10 per cent of the amount under item (aa); or
+(ii) the open market value of that import; or
+[paragraph (a) substituted by Act 34 of 2000 and by Act 6 of 2002] »
+
+LECTURE : assiette TVA = FOB + 10 % du FOB (sans les droits de douane), ou la valeur de marché si
+elle est plus élevée. Version consolidée jusqu'à l'Amendment Act 11 of 2011.

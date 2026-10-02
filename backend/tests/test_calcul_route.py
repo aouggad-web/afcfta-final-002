@@ -404,6 +404,7 @@ def test_une_franchise_intra_union_n_exige_pas_la_quantite_d_un_droit_specifique
         json={
             "destination": "ZAF",
             "origine": "BWA",
+            "pays_expedition": "BWA",
             "code_sh": "020830",
             "valeur_cif": 10000,
             # La TVA sud-africaine porte sur la valeur FOB (VAT Act s.13(2)).
@@ -549,6 +550,7 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
         json={
             "destination": "ZAF",
             "origine": "BWA",
+            "pays_expedition": "BWA",
             "code_sh": "010121",
             "valeur_cif": 10000,
             "valeur_fob": 10000,
@@ -565,6 +567,7 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
     assert complement["code"] == "TVA"
     assert complement["motif"] == "FAMILLE_ABSENTE_DE_LA_SOURCE"
     assert "ZAF_taux_TVA" in complement["fiche"]
+    assert "ZAF_assiette_TVA" in complement["fiche_assiette"]
     assert "zero-rated" in complement["note"]
     # La ligne elle-même reste traçable jusqu'à l'affichage.
     assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
@@ -592,6 +595,46 @@ def test_la_tva_sud_africaine_hors_sacu_porte_sur_le_fob_majore_et_les_droits(cl
 
 
 @besoin_socle
+def test_une_origine_sacu_expediee_d_ailleurs_reste_majoree(client):
+    """VAT Act s.13(2)(b) : l'exception exige l'origine ET l'expédition depuis
+    BWA, LSO, SWZ ou NAM. Une origine namibienne expédiée de France est
+    majorée de 10 %."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "NAM",
+            "pays_expedition": "FRA",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD"
+
+
+@besoin_socle
+def test_sans_pays_d_expedition_la_tva_d_une_origine_sacu_reste_indisponible(client):
+    """Origine BWA sans pays d'expédition : l'assiette dépend d'une donnée
+    inconnue, la TVA n'est pas liquidée et la raison est nommée."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    preference = corps["preference"]
+    assert preference["etat"] != "COMPLET"
+    assert any(m["code"] == "TVA" for m in preference["manques"])
+    assert corps["complements_nationaux"][0]["motif_assiette"] == "PAYS_EXPEDITION_REQUIS"
+
+
+@besoin_socle
 def test_la_tva_namibienne_est_completee_sur_le_fob_majore(client):
     """VAT Act 10/2000 (Namibie), s.12(2)(a) : la valeur d'une importation est
     le FOB plus 10 % du FOB, sans les droits. Le complément porte sa fiche et
@@ -612,6 +655,7 @@ def test_la_tva_namibienne_est_completee_sur_le_fob_majore(client):
 
     complement = corps["complements_nationaux"][0]
     assert "NAM_taux_TVA" in complement["fiche"]
+    assert "NAM_assiette_TVA" in complement["fiche_assiette"]
     assert "open market value" in complement["reserve_assiette"]
 
 
