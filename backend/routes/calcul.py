@@ -51,6 +51,17 @@ REGLEMENTAIRE = ("regulatory_compliance", "regulatory_cost", "regulatory_reporte
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
     origine: Optional[str] = Field(None, description="Pays d'origine (ISO-3)")
+    pays_expedition: Optional[str] = Field(
+        None,
+        description=(
+            "Pays d'expédition (ISO-3), quand la loi le distingue de l'origine. "
+            "Afrique du Sud, VAT Act s.13(2)(b) : la TVA n'est pas majorée de "
+            "10 % pour une origine BWA, LSO, SWZ ou NAM importée de l'un de ces "
+            "pays. Omis pour une telle origine, la TVA reste indisponible "
+            "plutôt que supposée. « AUTRE » : expédiée d'un autre pays (l'interface "
+            "pose la question oui/non et transmet l'origine ou « AUTRE »)."
+        ),
+    )
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
     valeur_cif: float = Field(..., ge=0, description="Valeur en douane")
     quantite: Optional[float] = Field(
@@ -117,7 +128,9 @@ def calcul(demande: DemandeCalcul):
             position, demande.destination, demande.origine, demande.code_sh
         )
 
-    position, complements = _completer_famille_absente(position, demande.destination, provenance)
+    position, complements = _completer_famille_absente(
+        position, demande.destination, provenance, demande.origine, demande.pays_expedition
+    )
 
     try:
         resultat = calculer(
@@ -162,7 +175,11 @@ def calcul(demande: DemandeCalcul):
         resultat,
     )
     resultat.update(_regimes(preference))
-    resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
+    resultat.update(
+        _bloc_reglementaire(
+            demande.destination, demande.origine, demande.valeur_cif, demande.valeur_fob
+        )
+    )
     return resultat
 
 
@@ -239,7 +256,13 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
     return chiffrees
 
 
-def _completer_famille_absente(position: dict, destination: str, provenance: dict):
+def _completer_famille_absente(
+    position: dict,
+    destination: str,
+    provenance: dict,
+    origine: Optional[str] = None,
+    pays_expedition: Optional[str] = None,
+):
     """Ajouter la TVA nationale documentée quand la source n'en porte aucune.
 
     Deux conditions, cumulatives et strictes : la couverture du pays doit
@@ -265,12 +288,26 @@ def _completer_famille_absente(position: dict, destination: str, provenance: dic
     if any((droit.get("famille") == "tva") for droit in position.get("droits") or []):
         return position, []
 
+    assiette = entree["assiette"]
+    motif_assiette = None
+    # Assiette qui dépend de l'origine ET du pays d'expédition (Afrique du Sud,
+    # VAT Act s.13(2)(b) : pas de majoration de 10 % pour une origine BWA, LSO,
+    # SWZ ou NAM importée de l'un de ces pays). Expédition inconnue : la TVA
+    # reste indisponible plutôt que de choisir une assiette au hasard.
+    par_origine = entree.get("assiette_par_origine")
+    if par_origine and (origine or "").upper() in par_origine.get("origines", []):
+        if not pays_expedition:
+            assiette = None
+            motif_assiette = "PAYS_EXPEDITION_REQUIS"
+        elif pays_expedition.upper() in par_origine["origines"]:
+            assiette = par_origine["assiette"]
+
     ligne = {
         "code": entree["code"],
         "libelle": entree["libelle"],
         "famille": entree["famille"],
         "taux": entree["taux"],
-        "assiette": entree["assiette"],
+        "assiette": assiette,
         "source": entree["source"],
         "note": entree["note"],
         "classification_source": "table_nationale_documentee",
@@ -279,12 +316,16 @@ def _completer_famille_absente(position: dict, destination: str, provenance: dic
     complement = {
         "code": entree["code"],
         "taux_pct": entree["taux"],
-        "assiette": entree["assiette"],
+        "assiette": assiette,
         "source": entree["source"],
         "fiche": entree["fiche"],
         "note": entree["note"],
         "motif": "FAMILLE_ABSENTE_DE_LA_SOURCE",
     }
+    if entree.get("fiche_assiette"):
+        complement["fiche_assiette"] = entree["fiche_assiette"]
+    if motif_assiette:
+        complement["motif_assiette"] = motif_assiette
     if entree.get("reserve_assiette"):
         complement["reserve_assiette"] = entree["reserve_assiette"]
     return position, [complement]
@@ -322,20 +363,27 @@ def _regimes(preference: dict) -> dict:
     return resultat
 
 
-def _bloc_reglementaire(destination: str, origine: Optional[str], valeur_cif: float) -> dict:
+def _bloc_reglementaire(
+    destination: str,
+    origine: Optional[str],
+    valeur_cif: float,
+    valeur_fob: Optional[float] = None,
+) -> dict:
     """Formalités, prestataires mandatés et frais vérifiés — informatif, jamais
     additionné aux droits.
 
-    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique. Ce
-    n'est pas exact au sens douanier — le FOB exclut fret et assurance — mais
-    les deux routes doivent répondre la même chose sur la même importation :
-    corriger ici seulement ferait diverger les deux chemins juste avant de les
-    réunir. La correction, si elle vient, vaudra pour le point d'entrée commun.
+    Les frais assis sur la FOB utilisent la valeur FOB fournie ; sans elle,
+    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique avec
+    la même règle — les deux routes répondent la même chose sur la même
+    importation.
     """
     origine_iso3 = (origine or "").upper() or None
     try:
         blocs = build_regulatory_blocks(
-            destination.upper(), origine_iso3, fob_value=valeur_cif, cif_value=valeur_cif
+            destination.upper(),
+            origine_iso3,
+            fob_value=valeur_fob if valeur_fob is not None else valeur_cif,
+            cif_value=valeur_cif,
         )
     except Exception as exc:  # garde-fou : le calcul tarifaire n'en dépend pas
         logger.warning(

@@ -1,0 +1,16 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation — SWZ",
+ "verified_at": "2026-10-02",
+ "evidence_level": "primaire — VAT Act 2011, s.23, PDF archivé",
+ "regle": {
+  "valeur": "Assiette TVA = valeur en douane (FOB, SACU) + droits et taxes, TVA exclue",
+  "verbatim": "The taxable value of an import of goods is the sum of- (a) the value of the goods ascertained for the purposes of customs duty under the laws relating to customs; (b) the amount of customs duty, excise tax, and any other fiscal charge other than tax payable on those goods",
+  "portee": "Assiette de la TVA à l'importation servie par les deux chemins de calcul (table nationale du socle et profil du chemin historique).",
+  "texte_extrait": "sources/SWZ_vat_act_2011_s23_valeur_importation.texte-extrait.txt",
+  "sha256": "7bea140ed9d993b9f09460d24f9a8ab1f51c3f251a39c1feee3ca9aaa2c6a28e"
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "Les services de la s.12(3) non compris dans la valeur en douane : non connus du calculateur."
+ ]
+}

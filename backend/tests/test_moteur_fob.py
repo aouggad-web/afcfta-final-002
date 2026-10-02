@@ -144,7 +144,8 @@ def test_zaf_cascade_liquide_le_dd_sur_la_valeur_fob():
     tva = next(s for s in r["steps"] if s["code"] == "TVA")
     assert dd["base_formula"] == "FOB"
     assert dd["amount"] == 160.0
-    assert tva["base_value"] == 1160.0  # CIF + DD, la TVA reste sur CIF+DD
+    # VAT Act s.13(2)(a) : FOB × 1,10 + DD = 880 + 160.
+    assert tva["base_value"] == 1040.0
 
 
 def test_zaf_cascade_refuse_de_liquider_sans_valeur_fob():
@@ -170,3 +171,64 @@ def test_la_table_d_assiettes_pose_le_dd_sud_africain_sur_fob():
     assert zaf["assiette"] == "FOB"
     assert zaf["origine_assiette"] == "texte_primaire"
     assert "FOB" in table["_grammaire"]
+
+
+# ── Assiette « FOBx<FACTEUR> » : TVA namibienne ───────────────────────────────
+
+
+def test_la_tva_namibienne_porte_sur_le_fob_majore_de_dix_pour_cent():
+    """VAT Act 10/2000 s.12(2)(a) : FOB plus 10 % du FOB — sans les droits."""
+    pos = position(
+        droit("DD", 10, assiette="FOB", famille="droit"),
+        droit("TVA", 15, assiette="FOBx1.10", famille="tva"),
+    )
+    res = calculer(pos, 1200.0, valeur_fob=1000.0)
+    tva = lignes(res)["TVA"]
+    assert tva["base"] == pytest.approx(1100.0)
+    assert tva["montant"] == pytest.approx(165.0)
+
+
+def test_sans_valeur_fob_la_tva_namibienne_reste_indisponible():
+    pos = position(droit("TVA", 15, assiette="FOBx1.10", famille="tva"))
+    res = calculer(pos, 1200.0)
+    assert res["npf"]["etat"] != COMPLET
+    assert any(m["motif"] == VALEUR_FOB_REQUISE for m in res["npf"]["manques"])
+
+
+# ── Chemin historique : TVA des cinq pays SACU ────────────────────────────────
+
+
+@pytest.mark.parametrize(
+    "pays, taux_tva, base_attendue",
+    [
+        ("ZAF", 15, 12000.0),  # VAT Act 89/1991 s.13(2)(a) : FOB × 1,10 + DD
+        ("NAM", 15, 11000.0),  # VAT Act 10/2000 s.12(2)(a) : FOB × 1,10
+        ("LSO", 15, 11000.0),  # VAT Act 2001 s.16(1) : FOB + droits
+        ("SWZ", 15, 11000.0),  # VAT Act 2011 s.23 : FOB + droits
+        ("BWA", 14, 13000.0),  # VAT Act 2001 s.13(1)(a) : CIF + DD
+    ],
+)
+def test_cascade_historique_tva_sacu(pays, taux_tva, base_attendue):
+    from services.authentic_tariff_service import compute_tax_cascade
+
+    r = compute_tax_cascade(12000.0, {"DD": 10, "TVA": taux_tva}, pays, fob_value=10000.0)
+    dd = next(s for s in r["steps"] if s["code"] == "DD")
+    tva = next(s for s in r["steps"] if s["code"] == "TVA")
+    assert dd["base_value"] == 10000.0  # valeur en douane SACU = FOB
+    assert tva["base_value"] == base_attendue
+
+
+def test_cascade_historique_zaf_exception_sacu_exige_l_expedition():
+    from services.authentic_tariff_service import compute_tax_cascade
+
+    taux = {"DD": 0, "TVA": 15}
+    sans_majoration = compute_tax_cascade(
+        12000.0, taux, "ZAF", fob_value=10000.0, origin_iso3="BWA", pays_expedition="BWA"
+    )
+    assert sans_majoration["steps"][0]["base_value"] == 10000.0
+    majoree = compute_tax_cascade(
+        12000.0, taux, "ZAF", fob_value=10000.0, origin_iso3="NAM", pays_expedition="FRA"
+    )
+    assert majoree["steps"][0]["base_value"] == 11000.0
+    with pytest.raises(ValueError, match="pays_expedition"):
+        compute_tax_cascade(12000.0, taux, "ZAF", fob_value=10000.0, origin_iso3="BWA")

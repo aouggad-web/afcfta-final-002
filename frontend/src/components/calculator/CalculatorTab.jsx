@@ -37,7 +37,14 @@ import RegulatoryComplianceView, {
 import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
-import { buildCalculRequestBody, mapCalculToLegacyResult, moteurRendCompteDesMesures } from './unifiedCalculator';
+import {
+  buildCalculRequestBody,
+  expeditionSacuRequise,
+  mapCalculToLegacyResult,
+  moteurRendCompteDesMesures,
+  paysExpeditionPour,
+} from './unifiedCalculator';
+import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
 import { trierAvantages } from './avantagesFiscaux';
 import {
   effectiveTaxRateFromSteps,
@@ -127,6 +134,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // pas la sienne. Le rapprochement est explicite plutôt que remis à un effet
   // de bord, qui s'exécuterait après l'appel qu'il doit protéger.
   const [quantityFor, setQuantityFor] = useState(null);
+  // Afrique du Sud, VAT Act s.13(2)(b) : pour une origine BWA/LSO/NAM/SWZ,
+  // la majoration de 10 % de la TVA dépend du pays d'expédition.
+  const [expeditionSacu, setExpeditionSacu] = useState('unknown');
+  // Valeur FOB (assiette SACU), sur le même modèle : demandée seulement quand
+  // un moteur la réclame, et rattachée à la position pour laquelle elle a été
+  // saisie.
+  const [fobValue, setFobValue] = useState('');
+  const [fobFor, setFobFor] = useState(null);
   const profileRequestRef = useRef(0);
 
   // Vider le champ quand la position ou la destination change. La justesse ne
@@ -136,7 +151,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   useEffect(() => {
     setQuantity('');
     setQuantityFor(null);
+    setFobValue('');
+    setFobFor(null);
   }, [hsCode, destinationCountry, originCountry]);
+
+  useEffect(() => {
+    setExpeditionSacu('unknown');
+  }, [destinationCountry, originCountry]);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
     if (!countryCode) {
@@ -374,6 +395,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       answer: 'unknown', reference: '', validFrom: '', validTo: '',
       authorizedTariffLines: '', authorizedGoods: '',
     });
+    setExpeditionSacu('unknown');
   };
 
   const calculateTariff = async (overrideHsCode) => {
@@ -423,7 +445,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // Convertir les codes pays en ISO3
     const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
+    const paysExpedition = paysExpeditionPour(destISO3, originISO3, expeditionSacu);
     
+    // Une valeur FOB saisie pour une AUTRE position est écartée, comme la
+    // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
+    const valeurFob = fobFor === `${destISO3}|${cleanHsCode}` ? parseFloat(fobValue) : NaN;
+
     try {
       // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
       //
@@ -443,6 +470,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         quantite: quantityFor === `${destISO3}|${cleanHsCode}`
           ? parseFloat(quantity)
           : NaN,
+        paysExpedition,
+        valeurFob,
       }));
 
       // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
@@ -521,6 +550,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 value: parseFloat(value),
                 language,
                 origin: originISO3,
+                pays_expedition: paysExpedition,
+                fob_value: valeurFob > 0 ? valeurFob : undefined,
                 remission_eligibility: remissionEligibility,
                 authorization_reference: kenyaRemission.reference || undefined,
                 authorization_valid_from: kenyaRemission.validFrom || undefined,
@@ -550,9 +581,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // Le repli reste étroit à dessein : seul ce code d'erreur passe. Un
           // 422 de validation (valeur CIF invalide) et tout le reste (500,
           // délai, 401/403, réseau) remontent comme avant.
+          // `VALEUR_FOB_REQUISE` (Afrique du Sud sans valeur FOB) suit le même
+          // chemin : le moteur réclame alors la valeur FOB et l'écran ouvre
+          // son champ, au lieu d'afficher une erreur. `PAYS_EXPEDITION_REQUIS`
+          // (Afrique du Sud, origine BWA/LSO/NAM/SWZ, VAT Act s.13(2)(b)) aussi :
+          // la question oui/non reste affichée et la TVA est rendue à compléter.
           const codeErreur = authError.response?.data?.detail?.code;
           const calculIndisponible =
-            authError.response?.status === 422 && codeErreur === 'CALCULATION_UNAVAILABLE';
+            authError.response?.status === 422
+            && (
+              codeErreur === 'CALCULATION_UNAVAILABLE'
+              || codeErreur === 'VALEUR_FOB_REQUISE'
+              || codeErreur === 'PAYS_EXPEDITION_REQUIS'
+            );
           if (authError.response?.status !== 404 && !calculIndisponible) {
             throw authError;
           }
@@ -1370,6 +1411,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           )}
 
+          {expeditionSacuRequise(
+            destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry,
+            originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry,
+          ) && (
+            <ExpeditionSacuQuestion
+              value={expeditionSacu}
+              onChange={setExpeditionSacu}
+              language={language}
+            />
+          )}
+
           {/* Boutons Calculer / Réinitialiser */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
@@ -1610,6 +1662,81 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               : 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.')}
                         </p>
                       )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* VALEUR FOB — ouverte seulement quand un moteur la réclame
+                  (assiette SACU). Elle ne se déduit jamais du CIF : le fret et
+                  l'assurance n'y sont pas connus. Au plus égale au CIF, que
+                  fret et assurance complètent. */}
+              {result.valeur_fob_requise?.requise && (
+                <div
+                  className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl"
+                  data-testid="valeur-fob-requise"
+                >
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
+                    <div className="w-full">
+                      <p className="text-[var(--gold)] font-semibold text-sm">
+                        {language === 'fr'
+                          ? 'Valeur en douane FOB nécessaire'
+                          : 'FOB customs value required'}
+                      </p>
+                      <p className="text-[var(--gold)] text-xs mt-1">
+                        {language === 'fr'
+                          ? "Ce pays liquide le droit de douane sur la valeur FOB (fret et assurance internationaux exclus). Elle ne se déduit pas de la valeur CIF."
+                          : 'This country assesses customs duty on the FOB value (international freight and insurance excluded). It cannot be derived from the CIF value.'}
+                      </p>
+
+                      <div className="mt-2 space-y-1">
+                        {result.valeur_fob_requise.lignes.map((l) => (
+                          <p key={l.code} className="text-[var(--gold)] text-xs">
+                            <span className="font-mono">{l.code}</span> — {l.libelle}
+                          </p>
+                        ))}
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap items-end gap-2">
+                        <div>
+                          <label
+                            className="block text-[var(--gold)] text-xs mb-1"
+                            htmlFor="valeur-fob"
+                          >
+                            {language === 'fr'
+                              ? 'Valeur FOB (USD, au plus la valeur CIF)'
+                              : 'FOB value (USD, at most the CIF value)'}
+                          </label>
+                          <input
+                            id="valeur-fob"
+                            data-testid="valeur-fob-saisie"
+                            type="number"
+                            min="0"
+                            step="any"
+                            value={fobValue}
+                            onChange={(e) => {
+                              setFobValue(e.target.value);
+                              setFobFor(result._quantite_cle);
+                            }}
+                            className="w-40 px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
+                            placeholder="FOB"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          data-testid="valeur-fob-recalculer"
+                          onClick={() => calculateTariff()}
+                          disabled={
+                            loading
+                            || !(parseFloat(fobValue) > 0)
+                            || parseFloat(fobValue) > parseFloat(value)
+                          }
+                          className="bg-amber-600 hover:bg-amber-700"
+                        >
+                          {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -305,27 +305,33 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
     sans = client.post(
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
-    # La TVA sud-africaine est désormais complétée depuis sa fiche, mais son
-    # assiette est « CIF+DD » : le droit manquant l'ampute, et elle ne se
-    # liquide donc pas non plus. Rien n'étant calculable, l'état reste
-    # INDISPONIBLE — et les deux manques sont nommés avec leur cause propre,
-    # la seconde citant le composant absent plutôt que de le compter zéro.
+    # La TVA sud-africaine est complétée depuis sa fiche, sur « FOBx1.10+DD »
+    # (VAT Act s.13(2)(a)) : sans valeur FOB elle ne se liquide pas non plus.
+    # Rien n'étant calculable, l'état reste INDISPONIBLE — et les deux manques
+    # sont nommés avec leur cause propre.
     assert sans["npf"]["etat"] == "INDISPONIBLE"
     assert sans["npf"]["manques"] == [
         {"code": "DD", "motif": "QUANTITE_REQUISE"},
-        {"code": "TVA", "motif": "ASSIETTE_INCOMPLETE", "composants": ["DD"]},
+        {"code": "TVA", "motif": "VALEUR_FOB_REQUISE"},
     ]
 
     avec = client.post(
         "/calcul",
-        json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000, "quantite": 500},
+        json={
+            "destination": "ZAF",
+            "code_sh": "020830",
+            "valeur_cif": 1000,
+            "valeur_fob": 1000,
+            "quantite": 500,
+        },
     ).json()
     # Le droit lui-même : 8c/kg × 500 kg, et non 8 % de la valeur.
     lignes = {ligne["code"]: ligne for ligne in avec["npf"]["lignes"]}
     assert lignes["DD"]["montant"] == 40.0
-    # Le total porte en plus la TVA sud-africaine complétée : 15 % de 1 040.
-    assert lignes["TVA"]["montant"] == 156.0
-    assert avec["npf"]["total_droits"] == 196.0
+    # Le total porte en plus la TVA sud-africaine complétée :
+    # 15 % de (1 000 × 1,10 + 40) = 15 % de 1 140.
+    assert lignes["TVA"]["montant"] == 171.0
+    assert avec["npf"]["total_droits"] == 211.0
 
 
 @besoin_socle
@@ -395,7 +401,15 @@ def test_une_franchise_intra_union_n_exige_pas_la_quantite_d_un_droit_specifique
     inutilisable une importation dont le droit est zéro."""
     corps = client.post(
         "/calcul",
-        json={"destination": "ZAF", "origine": "BWA", "code_sh": "020830", "valeur_cif": 10000},
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "pays_expedition": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            # La TVA sud-africaine porte sur la valeur FOB (VAT Act s.13(2)).
+            "valeur_fob": 10000,
+        },
     ).json()
     preference = corps["preference"]
     lignes = {ligne["code"]: ligne for ligne in preference["lignes"]}
@@ -499,26 +513,25 @@ def test_la_fiscalite_interne_diverge_entre_membres_d_une_meme_union(client):
 def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
     """Le revers de la règle précédente : quand la fiscalité interne du pays
     de destination n'est pas collectée, le total ne doit pas se présenter comme
-    complet. Les cinq pays SACU sont `PENDING_OFFICIAL_COLLECTION` pour la TVA
-    (registre des sources nationales), et aucun taux ne leur est prêté. La
-    Namibie sert de témoin : son crawl ne porte aucune TVA et aucune fiche ne
-    l'établit, donc rien n'est complété et le manque reste nommé."""
+    complet. La Somalie sert de témoin : son crawl ne porte aucune TVA et
+    aucune fiche n'en établit le taux (SOM_taux_TVA : non établi), donc rien
+    n'est complété et le manque reste nommé."""
     corps = client.post(
         "/calcul",
         json={
-            "destination": "NAM",
-            "origine": "ZAF",
+            "destination": "SOM",
+            "origine": "KEN",
             "code_sh": "010121",
             "valeur_cif": 10000,
         },
     ).json()
-    preference = corps["preference"]
-    assert preference["etat"] != "COMPLET"
-    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
+    npf = corps["npf"]
+    assert npf["etat"] != "COMPLET"
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in npf["manques"]
     assert corps["complements_nationaux"] == []
     # Aucune économie n'est annoncée : comparer deux totaux incomplets
     # produirait un chiffre plausible construit sur une base inconnue.
-    assert corps["economie"] is None
+    assert corps.get("economie") is None
 
 
 @besoin_socle
@@ -536,13 +549,16 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
         json={
             "destination": "ZAF",
             "origine": "BWA",
+            "pays_expedition": "BWA",
             "code_sh": "010121",
             "valeur_cif": 10000,
+            "valeur_fob": 10000,
         },
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
     assert lignes["DD"]["montant"] == 0.0  # libre circulation intra-SACU
     assert lignes["TVA"]["taux_pct"] == 15.0
+    # Origine Botswana : pas de majoration de 10 % (VAT Act s.13(2)(b)).
     assert lignes["TVA"]["montant"] == 1500.0  # 15 % de (10 000 + 0)
     assert corps["preference"]["total_droits"] == 1500.0
 
@@ -550,9 +566,118 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
     assert complement["code"] == "TVA"
     assert complement["motif"] == "FAMILLE_ABSENTE_DE_LA_SOURCE"
     assert "ZAF_taux_TVA" in complement["fiche"]
+    assert "ZAF_assiette_TVA" in complement["fiche_assiette"]
     assert "zero-rated" in complement["note"]
     # La ligne elle-même reste traçable jusqu'à l'affichage.
     assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
+
+
+@besoin_socle
+def test_la_tva_sud_africaine_hors_sacu_porte_sur_le_fob_majore_et_les_droits(client):
+    """VAT Act 89/1991 s.13(2)(a) : valeur en douane (FOB) + droits + 10 % de
+    la valeur en douane, pour une origine hors Botswana, Lesotho, Eswatini et
+    Namibie. Origine France : aucun régime préférentiel ne joue."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "FRA",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    dd = lignes["DD"]["montant"]
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD"
+    assert lignes["TVA"]["montant"] == pytest.approx(0.15 * (11000 + dd))
+
+
+@besoin_socle
+def test_une_origine_sacu_expediee_d_ailleurs_reste_majoree(client):
+    """VAT Act s.13(2)(b) : l'exception exige l'origine ET l'expédition depuis
+    BWA, LSO, SWZ ou NAM. Une origine namibienne expédiée de France est
+    majorée de 10 %."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "NAM",
+            "pays_expedition": "FRA",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD"
+
+
+@besoin_socle
+def test_sans_pays_d_expedition_la_tva_d_une_origine_sacu_reste_indisponible(client):
+    """Origine BWA sans pays d'expédition : l'assiette dépend d'une donnée
+    inconnue, la TVA n'est pas liquidée et la raison est nommée."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    preference = corps["preference"]
+    assert preference["etat"] != "COMPLET"
+    assert any(m["code"] == "TVA" for m in preference["manques"])
+    assert corps["complements_nationaux"][0]["motif_assiette"] == "PAYS_EXPEDITION_REQUIS"
+
+
+@besoin_socle
+@pytest.mark.parametrize(
+    "pays, taux, assiette",
+    [("LSO", 15.0, "FOB+TOUS_SAUF_TVA"), ("SWZ", 15.0, "FOB+TOUS_SAUF_TVA"), ("BWA", 14.0, "CIF+DD")],
+)
+def test_la_tva_des_autres_pays_sacu_est_completee_avec_sa_fiche(client, pays, taux, assiette):
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": pays,
+            "origine": "KEN",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    complement = corps["complements_nationaux"][0]
+    assert complement["taux_pct"] == taux
+    assert complement["assiette"] == assiette
+    assert f"{pays}_assiette_TVA" in complement["fiche_assiette"]
+
+
+@besoin_socle
+def test_la_tva_namibienne_est_completee_sur_le_fob_majore(client):
+    """VAT Act 10/2000 (Namibie), s.12(2)(a) : la valeur d'une importation est
+    le FOB plus 10 % du FOB, sans les droits. Le complément porte sa fiche et
+    sa réserve (valeur de marché non connue du calculateur)."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "NAM",
+            "origine": "ZAF",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["TVA"]["taux_pct"] == 15.0
+    assert lignes["TVA"]["montant"] == 1650.0  # 15 % de (10 000 × 1,10)
+
+    complement = corps["complements_nationaux"][0]
+    assert "NAM_taux_TVA" in complement["fiche"]
+    assert "NAM_assiette_TVA" in complement["fiche_assiette"]
+    assert "open market value" in complement["reserve_assiette"]
 
 
 @besoin_socle
@@ -587,6 +712,23 @@ def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
     assert corps["regulatory_compliance"]["country_iso3"] == "CIV"
     assert "regulatory_cost_total" in corps["regulatory_cost"]
     assert "reliability" in corps["regulatory_reported"]
+
+
+@besoin_socle
+def test_les_frais_assis_sur_la_fob_suivent_la_valeur_fob_fournie(client):
+    """Même règle que le chemin historique : la FOB fournie sert d'assiette aux
+    frais en % de la FOB (CMR, verified_provider_fees.json), le CIF sinon."""
+
+    def bases(corps):
+        return [
+            ligne["base_value"]
+            for ligne in corps["regulatory_cost"]["line_items"]
+            if ligne.get("calculation_method") == "PERCENTAGE_OF_FOB"
+        ]
+
+    charge = {"destination": "CMR", "code_sh": "01011010", "valeur_cif": 1000}
+    assert bases(client.post("/calcul", json=charge).json()) == [1000]
+    assert bases(client.post("/calcul", json={**charge, "valeur_fob": 800}).json()) == [800]
 
 
 @besoin_socle
@@ -699,7 +841,9 @@ def test_une_simulation_ne_change_jamais_le_total_servi(client):
     corps = client.post("/calcul", json=payload).json()
 
     assert all(s["applique"] is False for s in corps["simulations_regionales"])
-    assert corps["npf"]["total_a_payer"] == 209300.0
+    # Origine Mozambique (hors BWA, LSO, NAM, SWZ) : la TVA porte sur
+    # FOB × 1,10 + droits (VAT Act s.13(2)(a)).
+    assert corps["npf"]["total_a_payer"] == 210800.0
 
 
 def test_aucune_simulation_sans_origine(client):

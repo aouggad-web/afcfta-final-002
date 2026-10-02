@@ -1,0 +1,16 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation — LSO",
+ "verified_at": "2026-10-02",
+ "evidence_level": "primaire — VAT Act 2001 (Act 9/2001), s.16(1), PDF archivé",
+ "regle": {
+  "valeur": "Assiette TVA = valeur en douane (FOB, SACU) + droits et taxes, TVA exclue",
+  "verbatim": "the taxable value of a taxable import of goods is the sum of - (a) the value of the goods ascertained for the purposes of customs or excise duty [...]; (b) the amount of customs or excise duty, or any other fiscal charge (other than value added tax payable under this Act), if any, payable on those goods",
+  "portee": "Assiette de la TVA à l'importation servie par les deux chemins de calcul (table nationale du socle et profil du chemin historique).",
+  "texte_extrait": "sources/LSO_vat_act_2001_s16_valeur_importation.texte-extrait.txt",
+  "sha256": "25eda2dbd32f39f24ec615e3aa497fa6ad6057802f8e713021d3c9676312dbe0"
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "Les services de la s.8(9) non compris dans la valeur en douane : non connus du calculateur."
+ ]
+}

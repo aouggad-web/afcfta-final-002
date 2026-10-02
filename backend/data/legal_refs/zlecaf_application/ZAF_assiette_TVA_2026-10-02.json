@@ -1,0 +1,23 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA sud-africaine à l'importation : valeur en douane majorée de 10 %, plus les droits ; sans majoration pour une origine Botswana, Lesotho, Eswatini ou Namibie importée de ces pays",
+ "verified_at": "2026-10-02",
+ "evidence_level": "primaire — Value-Added Tax Act 89 of 1991, s.13(2), texte consolidé au 01/08/2021 (copie hébergée par la FICR, PDF non versé, empreinte consignée) ; corroboré par le guide SARS CE-G06 (PDF archivé)",
+ "regle": {
+  "valeur": "Assiette TVA = valeur en douane (FOB, SACU) × 1,10 + droits ; origine BWA, LSO, SWZ, NAM importée de ces pays : valeur en douane + droits, sans majoration",
+  "verbatim": "the value thereof for customs duty purposes, plus any duty levied in terms of the said Act in respect of the importation of such goods, plus 10 per cent of the said value [s.13(2)(a)] — where such goods have their origin in Botswana, Lesotho, Swaziland or Namibia and are imported from such a country, the amount of the value as contemplated in paragraph (a), except that such value shall not be increased by the factor of 10 per cent [s.13(2)(b)]",
+  "portee": "Remplace l'assiette CIF+DD de la table nationale pour la ZAF : la valeur en douane SACU est la valeur FOB (SACU_assiette_DD_2026-09-17.json), et la majoration de 10 % tient lieu de transport et d'assurance.",
+  "texte_extrait": "sources/ZAF_vat_act_s13_2_valeur_importation.texte-extrait.txt",
+  "sha256": "9132176d5a0e7fb68539bdea5baa8da07658c3af0343298b5257b2caafc70193"
+ },
+ "documents_archives": [
+  {
+   "pdf_archive": "sources/ZAF_sars_guide_TVA_importation_CE-G06.pdf",
+   "sha256": "0a6552b6ee4570fe41eed781c950f4606c06caebc56dd48d56567ae67fdabff2"
+  }
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "La valeur fixée par règlement ministériel (réserve de la s.13(2)), retenue si elle est plus élevée : le calculateur ne la connaît pas.",
+  "La condition « importée de ces pays » de la s.13(2)(b) repose sur le pays d'expédition déclaré par l'appelant (champ pays_expedition de /calcul) ; non déclaré pour une origine BWA/LSO/SWZ/NAM, la TVA reste indisponible."
+ ]
+}

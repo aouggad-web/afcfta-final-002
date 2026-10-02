@@ -200,8 +200,10 @@ def test_effective_rate_reports_the_mfn_rate_when_schedule_is_higher(monkeypatch
     monkeypatch.setattr(authentic_tariff_service, "load_crawled_position_index", lambda _iso3: None)
     monkeypatch.setattr(authentic_tariff_service, "get_sub_positions", lambda *_args: [])
 
+    # La TVA sud-africaine porte sur la valeur FOB (VAT Act s.13(2)) : FOB =
+    # CIF ici (fret nul), le taux préférentiel testé n'en dépend pas.
     result = authentic_tariff_service.calculate_import_taxes(
-        "ZAF", "340700", 1000.0, origin_country="DZA"
+        "ZAF", "340700", 1000.0, origin_country="DZA", fob_value=1000.0
     )
 
     assert result["zlecaf_rate_expression"] == "4%"

@@ -1,0 +1,16 @@
+ARCHIVE — Lesotho : valeur imposable d'une importation pour la TVA (relevé du 02/10/2026)
+
+Value Added Tax Act, 2001 (Act No. 9 of 2001)
+Fichier : sources/lso_vatact2001.pdf
+sha256 : c267571dc362147a0d88a87ce0762dde50ab0e6b49b8e800f350c6ecba68dffa
+
+VERBATIM (s.16 « Taxable Value of a Taxable Import ») :
+« (1) Subject to subsection (4), the taxable value of a taxable import of goods is the sum of -
+(a) the value of the goods ascertained for the purposes of customs or excise duty under the Customs
+and Excise Act, 1982 whether or not any duty is payable on those goods;
+(b) the amount of customs or excise duty, or any other fiscal charge (other than value added tax
+payable under this Act), if any, payable on those goods; and
+(c) the value of any services to which section 8(9) applies which is not otherwise included in the
+taxable value under paragraph (a) »
+
+LECTURE : assiette TVA = valeur en douane (FOB, SACU) + droits et taxes, la TVA exclue.

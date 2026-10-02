@@ -1,0 +1,16 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation — BWA",
+ "verified_at": "2026-10-02",
+ "evidence_level": "primaire — VAT Act 2001 (Act 1/2001, amendé jusqu'à 2006), s.13(1)(a), copie WIPO archivée ; le VAT Act 2026 (en vigueur au 01/07/2026) n'est pas lu",
+ "regle": {
+  "valeur": "Assiette TVA = valeur transactionnelle + assurance et fret + droits (CIF + DD)",
+  "verbatim": "the value of an import of goods is (a) in the case of goods required to be cleared under the Customs and Excise Duty Act, an amount equal to the sum of (i) the transaction value of the goods for customs duty purposes [...]; (ii) the cost of insurance and freight; and (iii) the amount of any duty levied under the said Act in respect of the importation of such goods",
+  "portee": "Assiette de la TVA à l'importation servie par les deux chemins de calcul (table nationale du socle et profil du chemin historique).",
+  "texte_extrait": "sources/BWA_vat_act_2001_s13_valeur_importation.texte-extrait.txt",
+  "sha256": "562527a96a4b439cb062fb2523c795f34709076a7ad2c89ce2fdd09c5844f5ab"
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "Le VAT Act 2026 (PDF scanné) : la reconduction de cette assiette n'est pas vérifiée."
+ ]
+}
