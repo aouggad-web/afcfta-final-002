@@ -137,7 +137,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // saisie.
   const [fobValue, setFobValue] = useState('');
   const [fobFor, setFobFor] = useState(null);
-  const profileRequestRef = useRef(0);
 
   // Vider le champ quand la position ou la destination change. La justesse ne
   // dépend pas de cet effet — c'est `quantityFor` qui empêche une quantité de
@@ -153,27 +152,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   useEffect(() => {
     setExpeditionSacu('unknown');
   }, [destinationCountry, originCountry]);
-
-  const fetchCountryTariffProfile = useCallback(async (countryCode) => {
-    if (!countryCode) {
-      setCountryTariffProfile(null);
-      return;
-    }
-    const requestId = ++profileRequestRef.current;
-    setLoadingProfile(true);
-    try {
-      const response = await axios.get(`${API}/tariff-data/${countryCode}?limit=1`);
-      // Ignore les réponses obsolètes (ex. après une réinitialisation ou un changement de pays)
-      if (requestId !== profileRequestRef.current) return;
-      setCountryTariffProfile(response.data);
-    } catch (error) {
-      console.error('Error fetching country tariff profile:', error);
-      if (requestId !== profileRequestRef.current) return;
-      setCountryTariffProfile(null);
-    } finally {
-      if (requestId === profileRequestRef.current) setLoadingProfile(false);
-    }
-  }, []);
 
   const handleDestinationChange = useCallback((value) => {
     setDestinationCountry(value);
