@@ -15,7 +15,8 @@
     "currency_conversion": "neutralisée",
     "external_stats": "neutralisés (OEC, Banque mondiale)",
     "normalized_layer": "générée pour DZA, EGY, ETH, GHA, MUS, TUN, ZAF ; la Somalie n'a pas de crawl",
-    "harness": "scripts/diff_engines.py --cases backend/tests/fixtures/calculator_golden.json"
+    "harness": "scripts/diff_engines.py --cases backend/tests/fixtures/calculator_golden.json",
+    "harness_statut": "retiré au lot O2-0 (bbe8132c) ; récupérable par git show e42c2234:scripts/diff_engines.py ; à rebrancher sur POST /api/calcul au lot O2-a"
   },
   "notes": [
     "« Source de vérité » désigne la valeur portée par le fichier versionné le plus récent pour cette position, pas une revalidation juridique auprès de l'administration. L'audit est explicite sur ce point et ce corpus ne prétend pas davantage.",

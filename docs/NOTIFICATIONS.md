@@ -1,5 +1,9 @@
 # 📧 Guide des Notifications
 
+> Les notifications de crawl ne sont plus émises : l'orchestrateur de crawl et
+> l'initialisation de `NotificationManager` dans `server.py` sont retirés au
+> lot O2-0. Ce guide décrit l'état antérieur.
+
 ## Vue d'ensemble
 
 Le système de notifications AfCFTA supporte deux canaux:
@@ -258,10 +262,8 @@ asyncio.run(test())
 # Démarrer l'API
 uvicorn backend.server:app --reload
 
-# Lancer un crawl (qui enverra des notifications)
-curl -X POST http://localhost:8000/api/crawl/start \
-  -H "Content-Type: application/json" \
-  -d '{"country_code": "MA"}'
+# POST /api/crawl/start est retirée (lot O2-0) : elle répond 410. La collecte
+# générique qu'elle lançait réécrivait les tarifs sourcés.
 ```
 
 ## Désactiver les notifications

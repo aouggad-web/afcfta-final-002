@@ -417,6 +417,20 @@ def test_api_investment_zones_country():
     print(f"✅ GET /api/investment/north-africa/zones/MAR → {data['total_zones']} zones")
 
 
+def test_api_regional_summary():
+    """GET /api/regions/north-africa/summary returns concise overview."""
+    from fastapi.testclient import TestClient
+
+    app = _build_app()
+    with TestClient(app, raise_server_exceptions=False) as client:
+        response = client.get("/api/regions/north-africa/summary")
+    assert response.status_code == 200, f"{response.status_code}: {response.text}"
+    data = response.json()
+    assert data["total_countries"] == 7
+    assert data["combined_gdp_bn_usd"] > 0
+    print(f"✅ GET /api/regions/north-africa/summary → GDP ${data['combined_gdp_bn_usd']}B")
+
+
 def test_api_compare_countries():
     """GET /api/regions/north-africa/compare returns comparison data."""
     from fastapi.testclient import TestClient

@@ -2,6 +2,11 @@
 
 Production-ready infrastructure for scraping customs data from all 54 African countries.
 
+
+> `ScraperFactory` et `scraper_factory.py` ont été retirés au lot O2-0 : leur
+> scraper générique réécrivait les tarifs sourcés. Les exemples ci-dessous qui
+> les utilisent ne fonctionnent plus.
+
 ## 📋 Overview
 
 This infrastructure provides:
@@ -21,7 +26,6 @@ This infrastructure provides:
 backend/crawlers/
 ├── __init__.py                      # Main package exports
 ├── base_scraper.py                  # Abstract base class
-├── scraper_factory.py               # Factory pattern implementation
 ├── all_countries_registry.py        # 54 countries configuration
 ├── countries/                       # Country-specific scrapers
 │   ├── __init__.py

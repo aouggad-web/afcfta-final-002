@@ -74,7 +74,10 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             response.headers[CSRF_HEADER] = token
             return response
 
-        raw_path = request.url.path
+        # Le chemin aiguillé par le routeur, pas request.url.path : ce dernier
+        # est recoupé par urlsplit et s'arrête à un « ? » ou « # » encodé
+        # (%3F, %23), ce qui exempterait un chemin qui n'est pas le chemin servi.
+        raw_path = request.scope["path"]
         path = raw_path
         if not path.startswith("/"):
             parts = raw_path.split("/api/", 1)
