@@ -499,14 +499,14 @@ def test_la_fiscalite_interne_diverge_entre_membres_d_une_meme_union(client):
 def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
     """Le revers de la règle précédente : quand la fiscalité interne du pays
     de destination n'est pas collectée, le total ne doit pas se présenter comme
-    complet. Les cinq pays SACU sont `PENDING_OFFICIAL_COLLECTION` pour la TVA
-    (registre des sources nationales), et aucun taux ne leur est prêté. La
-    Namibie sert de témoin : son crawl ne porte aucune TVA et aucune fiche ne
-    l'établit, donc rien n'est complété et le manque reste nommé."""
+    complet. Le Botswana, le Lesotho et l'Eswatini restent hors de la table
+    nationale (`_sacu_volontairement_hors_table`), et aucun taux ne leur est
+    prêté. Le Botswana sert de témoin : son crawl ne porte aucune TVA, donc
+    rien n'est complété et le manque reste nommé."""
     corps = client.post(
         "/calcul",
         json={
-            "destination": "NAM",
+            "destination": "BWA",
             "origine": "ZAF",
             "code_sh": "010121",
             "valeur_cif": 10000,
@@ -553,6 +553,30 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
     assert "zero-rated" in complement["note"]
     # La ligne elle-même reste traçable jusqu'à l'affichage.
     assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
+
+
+@besoin_socle
+def test_la_tva_namibienne_est_completee_sur_le_fob_majore(client):
+    """VAT Act 10/2000 (Namibie), s.12(2)(a) : la valeur d'une importation est
+    le FOB plus 10 % du FOB, sans les droits. Le complément porte sa fiche et
+    sa réserve (valeur de marché non connue du calculateur)."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "NAM",
+            "origine": "ZAF",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["TVA"]["taux_pct"] == 15.0
+    assert lignes["TVA"]["montant"] == 1650.0  # 15 % de (10 000 × 1,10)
+
+    complement = corps["complements_nationaux"][0]
+    assert "NAM_taux_TVA" in complement["fiche"]
+    assert "open market value" in complement["reserve_assiette"]
 
 
 @besoin_socle

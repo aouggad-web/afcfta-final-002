@@ -1,10 +1,10 @@
 """
 Moteur de liquidation — chantier L2.
 
-Une fonction, six primitives d'assiette, un modificateur. Aucune connaissance
+Une fonction, sept primitives d'assiette, un modificateur. Aucune connaissance
 par pays : tout ce que le moteur sait d'un pays lui vient du socle.
 
-Les six primitives, et rien d'autre :
+Les sept primitives, et rien d'autre :
 
 ===========================  ================================================
 ``CIF``                      la valeur en douane
@@ -22,6 +22,11 @@ Les six primitives, et rien d'autre :
                              (``VALEUR_FOB_REQUISE``) plutôt qu'assumé CIF
                              — une base CIF devinée surestimerait le droit
                              d'un montant crédible et faux.
+``FOBx<FACTEUR>``            la valeur FOB multipliée par un facteur fixé
+                             par la loi (``FOBx1.10`` : TVA namibienne à
+                             l'importation, VAT Act 10/2000 s.12(2)(a) — FOB
+                             plus 10 % du FOB). Même exigence que ``FOB`` :
+                             fournie, jamais déduite du CIF.
 ``SOMME(TOUS_SAUF_SOI)``     la somme des autres droits, **sans** la valeur
 ``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
                              désigné par son code (``%DD``)
@@ -254,6 +259,15 @@ def _assiette_de(
             if sans_objet:
                 detail["composants_sans_objet"] = sans_objet
             base = cif + part
+    elif assiette.startswith("FOBx"):
+        # Valeur FOB majorée d'un forfait légal (ex. Namibie : FOB + 10 %).
+        if valeur_fob is None:
+            return None, MANQUE_FOB, detail
+        try:
+            facteur = float(assiette[len("FOBx") :])
+        except ValueError:
+            return None, MANQUE_ASSIETTE, detail
+        base = valeur_fob * facteur
     elif assiette.startswith("FOB+"):
         # Même sémantique que « CIF+<CODES> », posée sur la valeur FOB.
         if valeur_fob is None:
@@ -409,7 +423,7 @@ def _liquider(
             taux == 0
             and specifique is None
             and isinstance(droit.get("assiette"), str)
-            and (droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+"))
+            and (droit["assiette"] == "FOB" or droit["assiette"].startswith(("FOB+", "FOBx")))
         ):
             # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
             # particulier sur la base FOB des pays SACU : une franchise

@@ -170,3 +170,25 @@ def test_la_table_d_assiettes_pose_le_dd_sud_africain_sur_fob():
     assert zaf["assiette"] == "FOB"
     assert zaf["origine_assiette"] == "texte_primaire"
     assert "FOB" in table["_grammaire"]
+
+
+# ── Assiette « FOBx<FACTEUR> » : TVA namibienne ───────────────────────────────
+
+
+def test_la_tva_namibienne_porte_sur_le_fob_majore_de_dix_pour_cent():
+    """VAT Act 10/2000 s.12(2)(a) : FOB plus 10 % du FOB — sans les droits."""
+    pos = position(
+        droit("DD", 10, assiette="FOB", famille="droit"),
+        droit("TVA", 15, assiette="FOBx1.10", famille="tva"),
+    )
+    res = calculer(pos, 1200.0, valeur_fob=1000.0)
+    tva = lignes(res)["TVA"]
+    assert tva["base"] == pytest.approx(1100.0)
+    assert tva["montant"] == pytest.approx(165.0)
+
+
+def test_sans_valeur_fob_la_tva_namibienne_reste_indisponible():
+    pos = position(droit("TVA", 15, assiette="FOBx1.10", famille="tva"))
+    res = calculer(pos, 1200.0)
+    assert res["npf"]["etat"] != COMPLET
+    assert any(m["motif"] == VALEUR_FOB_REQUISE for m in res["npf"]["manques"])
