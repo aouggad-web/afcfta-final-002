@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -15,15 +15,13 @@ import { toast } from '../../hooks/use-toast';
 import { useHsLabel } from '../../hooks/useHsLabel';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
-import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign, RotateCcw } from 'lucide-react';
+import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign, RotateCcw } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import TaxBreakdownDual from './TaxBreakdownDual';
 import CalculationJournal from './CalculationJournal';
 import CalculationMethodStatus from './CalculationMethodStatus';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
-import MultiCountryComparison from './MultiCountryComparison';
 import DataStatusBanner from '../common/DataStatusBanner';
-import DismantlementSchedule from './DismantlementSchedule';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
@@ -94,7 +92,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [loading, setLoading] = useState(false);
   const [showHSBrowser, setShowHSBrowser] = useState(false);
   const [showDetailedBreakdown, setShowDetailedBreakdown] = useState(false);
-  const [hs6TariffInfo, setHs6TariffInfo] = useState(null);
   const [subPositions, setSubPositions] = useState(null);
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
@@ -104,8 +101,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // remplit jamais selectedSubPositionDesc, donc sans ce hook le code SH
   // reste affiché nu tant qu'aucune sélection via recherche n'a été faite.
   const { label: hsCodeSimpleLabel } = useHsLabel(hsCode, language);
-  const [countryTariffProfile, setCountryTariffProfile] = useState(null);
-  const [loadingProfile, setLoadingProfile] = useState(false);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
   const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
   const [searchResetKey, setSearchResetKey] = useState(0);
@@ -127,7 +122,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // pas la sienne. Le rapprochement est explicite plutôt que remis à un effet
   // de bord, qui s'exécuterait après l'appel qu'il doit protéger.
   const [quantityFor, setQuantityFor] = useState(null);
-  const profileRequestRef = useRef(0);
 
   // Vider le champ quand la position ou la destination change. La justesse ne
   // dépend pas de cet effet — c'est `quantityFor` qui empêche une quantité de
@@ -138,39 +132,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setQuantityFor(null);
   }, [hsCode, destinationCountry, originCountry]);
 
-  const fetchCountryTariffProfile = useCallback(async (countryCode) => {
-    if (!countryCode) {
-      setCountryTariffProfile(null);
-      return;
-    }
-    const requestId = ++profileRequestRef.current;
-    setLoadingProfile(true);
-    try {
-      const response = await axios.get(`${API}/tariff-data/${countryCode}?limit=1`);
-      // Ignore les réponses obsolètes (ex. après une réinitialisation ou un changement de pays)
-      if (requestId !== profileRequestRef.current) return;
-      setCountryTariffProfile(response.data);
-    } catch (error) {
-      console.error('Error fetching country tariff profile:', error);
-      if (requestId !== profileRequestRef.current) return;
-      setCountryTariffProfile(null);
-    } finally {
-      if (requestId === profileRequestRef.current) setLoadingProfile(false);
-    }
-  }, []);
-
   const handleDestinationChange = useCallback((value) => {
     setDestinationCountry(value);
-    fetchCountryTariffProfile(value);
-  }, [fetchCountryTariffProfile]);
+  }, []);
 
   const handleRegulatoryHsCodeChange = useCallback((e) => {
     setHsCode(e.target.value);
     setRegulatorySelectedPos(null);
     setRegulatorySelectedPosDesc(null);
   }, []);
-
-  // Remove redundant useEffect - handleDestinationChange already calls fetchCountryTariffProfile
 
   const texts = {
     fr: {
@@ -359,16 +329,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setDetailedResult(null);
     setShowHSBrowser(false);
     setShowDetailedBreakdown(false);
-    setHs6TariffInfo(null);
     setSubPositions(null);
     setRuleOfOrigin(null);
     setSelectedSubPositionDesc(null);
     setSelectedSubPositionFormalities(null);
-    setCountryTariffProfile(null);
     setRegulatorySelectedPos(null);
     setRegulatorySelectedPosDesc(null);
-    setLoadingProfile(false);
-    profileRequestRef.current++;
     setSearchResetKey((k) => k + 1);
     setKenyaRemission({
       answer: 'unknown', reference: '', validFrom: '', validTo: '',
@@ -790,13 +756,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           setSubPositions(null);
         }
         
-        // Info SH6 depuis les données authentiques
-        setHs6TariffInfo({
-          code: hs6,
-          description: authenticResult.description,
-          has_specific_tariff: true
-        });
-        
         toast({
           title: `✅ ${t.calculationSuccess}`,
           description: hasZlecafRate
@@ -864,17 +823,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         setDetailedResult(null);
         setShowDetailedBreakdown(true);
 
-        // Sous-positions et informations SH6 : données d'affichage annexes,
+        // Sous-positions : données d'affichage annexes,
         // pas des montants — un manque y reste silencieux comme sur le
         // chemin authentique.
         const hs6 = cleanHsCode.substring(0, 6);
         try {
-          let subPosResponse;
-          try {
-            subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
-          } catch (pgErr) {
-            subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destISO3}/${hs6}?language=${language}`);
-          }
+          const subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
           setSubPositions(subPosResponse.data);
         } catch (subPosError) {
           setSubPositions(null);
@@ -915,12 +869,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             : precedent));
         } catch (formalitesError) {
           // Silencieux : une formalité absente n'est pas un montant faux.
-        }
-        try {
-          const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
-          setHs6TariffInfo(hs6Response.data);
-        } catch (hs6Error) {
-          setHs6TariffInfo(null);
         }
 
         const npfEtat = calcul.npf?.etat;
@@ -1001,7 +949,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
       {/* Onglets Principal */}
       <Tabs defaultValue="calculator" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
           <TabsTrigger value="calculator" className="flex items-center gap-2" data-testid="calculator-single-tab">
             <Calculator className="w-4 h-4" />
             {language === 'fr' ? 'Calculateur' : 'Calculator'}
@@ -1009,10 +957,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <TabsTrigger value="regulatory" className="flex items-center gap-2" data-testid="calculator-regulatory-tab">
             <Scale className="w-4 h-4" />
             {language === 'fr' ? 'Réglementation' : 'Regulations'}
-          </TabsTrigger>
-          <TabsTrigger value="compare" className="flex items-center gap-2" data-testid="calculator-compare-tab">
-            <Globe className="w-4 h-4" />
-            {language === 'fr' ? 'Comparaison Multi-Pays' : 'Multi-Country Comparison'}
           </TabsTrigger>
         </TabsList>
         
@@ -1113,67 +1057,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <span className="text-[var(--afcfta-muted)]">|</span>
             <span className="text-[var(--afcfta-muted)]">{language === 'fr' ? 'Blocs:' : 'Blocs:'} CEDEAO · CEMAC · EAC · SACU · AES</span>
           </div>
-
-          {/* Profil tarifaire du pays */}
-          {loadingProfile && (
-            <div className="flex items-center justify-center gap-3 py-4">
-              <div className="w-5 h-5 border-2 border-[color-mix(in_srgb,var(--gold)_30%,transparent)] border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-[var(--afcfta-muted)]">{language === 'fr' ? 'Chargement du tarif national...' : 'Loading national tariff...'}</span>
-            </div>
-          )}
-
-          {countryTariffProfile && countryTariffProfile.summary && !loadingProfile && (
-            <div className="bg-[var(--overlay)] border border-[var(--afcfta-border)] rounded-xl overflow-hidden">
-              <div className="px-4 py-3 bg-[var(--overlay)] border-b border-[var(--afcfta-border)] flex items-center justify-between flex-wrap gap-2">
-                <span className="font-semibold text-[var(--text)] flex items-center gap-2">
-                  <span className="text-lg">{getFlag(countries.find(c => c.code === destinationCountry)?.iso2 || destinationCountry)}</span>
-                  {language === 'fr' ? 'Profil Tarifaire' : 'Tariff Profile'} - {getCountryName(destinationCountry)}
-                </span>
-                <div className="flex items-center gap-2">
-                  {TRADE_BLOCS[destinationCountry] && (
-                    <Badge variant="outline" className={`text-xs border ${getBlocColor(TRADE_BLOCS[destinationCountry])}`}>
-                      {TRADE_BLOCS[destinationCountry]}
-                    </Badge>
-                  )}
-                  <Badge className={`text-xs ${
-                    COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
-                      ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'
-                      : 'bg-[var(--overlay)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)]'
-                  } border`}>
-                    {COUNTRIES_WITH_AUTHENTIC_DATA.has(destinationCountry)
-                      ? (language === 'fr' ? 'Authentique' : 'Authentic')
-                      : (language === 'fr' ? 'Estimé' : 'Estimated')
-                    }
-                  </Badge>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 divide-x divide-[var(--afcfta-border)]">
-                <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'DD moyen' : 'Avg. duty'}</p>
-                  <p className="text-2xl font-bold text-[var(--info)] mt-1">{countryTariffProfile.summary.dd_rate_range?.avg?.toFixed(1) || '0'}%</p>
-                  <p className="text-[var(--afcfta-muted)] text-xs">{countryTariffProfile.summary.dd_rate_range?.min?.toFixed(0) || '0'}% - {countryTariffProfile.summary.dd_rate_range?.max?.toFixed(0) || '0'}%</p>
-                </div>
-                <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'TVA' : 'VAT'}</p>
-                  <p className="text-2xl font-bold text-[var(--gold)] mt-1">{countryTariffProfile.summary.vat_rate_pct || 0}%</p>
-                  <p className="text-[var(--afcfta-muted)] text-xs">{countryTariffProfile.summary.vat_source || ''}</p>
-                </div>
-                <div className="p-4 text-center">
-                  <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Autres' : 'Other'}</p>
-                  <p className="text-2xl font-bold text-[var(--danger)] mt-1">{countryTariffProfile.summary.other_taxes_pct || 0}%</p>
-                  <p className="text-[var(--afcfta-muted)] text-xs truncate">
-                    {countryTariffProfile.summary.other_taxes_detail
-                      ? Object.entries(countryTariffProfile.summary.other_taxes_detail).map(([k, v]) => `${k} ${v}%`).join(', ')
-                      : '-'}
-                  </p>
-                </div>
-              </div>
-              <div className="px-4 py-2 bg-[var(--overlay)] border-t border-[var(--afcfta-border)] flex justify-between text-xs text-[var(--afcfta-muted)]">
-                <span>{(countryTariffProfile.summary.total_positions || 0).toLocaleString()} {language === 'fr' ? 'positions' : 'positions'}</span>
-                <span>{countryTariffProfile.summary.chapters_covered || 0} {language === 'fr' ? 'chapitres' : 'chapters'}</span>
-              </div>
-            </div>
-          )}
 
           {/* Code HS */}
           <div className="space-y-3">
@@ -1819,16 +1702,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </p>
             </CardContent>
           </Card>
-
-          {/* Schéma de démantèlement ZLECAf */}
-          {result && destinationCountry && hsCode && isDisplayableZlecafResult(result) && (
-            <DismantlementSchedule
-              countryIso3={destinationCountry}
-              hs6={hsCode.replace(/[.\s]/g, '').slice(0, 6)}
-              npfRate={result.customs_duty_rate ?? result.dd_rate_pct ?? result.tariff_rate ?? 0}
-              language={language}
-            />
-          )}
 
           {/* Détail des taxes */}
           {result.taxes_detail && result.taxes_detail.length > 0 && (
@@ -2510,11 +2383,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </Card>
             )}
           </div>
-        </TabsContent>
-        
-        {/* Onglet Comparaison Multi-Pays */}
-        <TabsContent value="compare">
-          <MultiCountryComparison language={language} />
         </TabsContent>
       </Tabs>
     </div>
