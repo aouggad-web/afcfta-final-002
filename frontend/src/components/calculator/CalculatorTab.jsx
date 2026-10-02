@@ -37,7 +37,14 @@ import RegulatoryComplianceView, {
 import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
-import { buildCalculRequestBody, mapCalculToLegacyResult, moteurRendCompteDesMesures } from './unifiedCalculator';
+import {
+  buildCalculRequestBody,
+  expeditionSacuRequise,
+  mapCalculToLegacyResult,
+  moteurRendCompteDesMesures,
+  paysExpeditionPour,
+} from './unifiedCalculator';
+import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
 import { trierAvantages } from './avantagesFiscaux';
 import {
   effectiveTaxRateFromSteps,
@@ -127,6 +134,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // pas la sienne. Le rapprochement est explicite plutôt que remis à un effet
   // de bord, qui s'exécuterait après l'appel qu'il doit protéger.
   const [quantityFor, setQuantityFor] = useState(null);
+  // Afrique du Sud, VAT Act s.13(2)(b) : pour une origine BWA/LSO/NAM/SWZ,
+  // la majoration de 10 % de la TVA dépend du pays d'expédition.
+  const [expeditionSacu, setExpeditionSacu] = useState('unknown');
   const profileRequestRef = useRef(0);
 
   // Vider le champ quand la position ou la destination change. La justesse ne
@@ -137,6 +147,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setQuantity('');
     setQuantityFor(null);
   }, [hsCode, destinationCountry, originCountry]);
+
+  useEffect(() => {
+    setExpeditionSacu('unknown');
+  }, [destinationCountry, originCountry]);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
     if (!countryCode) {
@@ -374,6 +388,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       answer: 'unknown', reference: '', validFrom: '', validTo: '',
       authorizedTariffLines: '', authorizedGoods: '',
     });
+    setExpeditionSacu('unknown');
   };
 
   const calculateTariff = async (overrideHsCode) => {
@@ -423,6 +438,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // Convertir les codes pays en ISO3
     const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
+    const paysExpedition = paysExpeditionPour(destISO3, originISO3, expeditionSacu);
     
     try {
       // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
@@ -443,6 +459,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         quantite: quantityFor === `${destISO3}|${cleanHsCode}`
           ? parseFloat(quantity)
           : NaN,
+        paysExpedition,
       }));
 
       // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
@@ -521,6 +538,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 value: parseFloat(value),
                 language,
                 origin: originISO3,
+                pays_expedition: paysExpedition,
                 remission_eligibility: remissionEligibility,
                 authorization_reference: kenyaRemission.reference || undefined,
                 authorization_valid_from: kenyaRemission.validFrom || undefined,
@@ -1367,6 +1385,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <KenyaRemissionAuthorization
               value={kenyaRemission}
               onChange={setKenyaRemission}
+            />
+          )}
+
+          {expeditionSacuRequise(
+            destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry,
+            originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry,
+          ) && (
+            <ExpeditionSacuQuestion
+              value={expeditionSacu}
+              onChange={setExpeditionSacu}
+              language={language}
             />
           )}
 

@@ -495,7 +495,8 @@ async def calculate_taxes_endpoint(
         description=(
             "Pays d'expédition (ISO3). Afrique du Sud, VAT Act s.13(2)(b) : "
             "requis pour une origine BWA, LSO, SWZ ou NAM, dont la TVA n'est "
-            "pas majorée de 10 % si elle est expédiée de l'un de ces pays."
+            "pas majorée de 10 % si elle est expédiée de l'un de ces pays. "
+            "« AUTRE » : expédiée d'un autre pays."
         ),
     ),
     calculation_date: Optional[date] = Query(None, description="Legal calculation date"),

@@ -82,9 +82,30 @@ function zlecafStatusLegacy(preferenceZlecaf) {
     : 'NOT_AVAILABLE';
 }
 
-export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, cifValue, quantite }) {
+/** Origines dont la TVA sud-africaine dépend du pays d'expédition (VAT Act s.13(2)(b)). */
+export const ORIGINES_SACU_HORS_ZAF = new Set(['BWA', 'LSO', 'NAM', 'SWZ']);
+
+/** Faut-il demander le pays d'expédition ? Destination ZAF, origine BWA/LSO/NAM/SWZ. */
+export function expeditionSacuRequise(destinationISO3, originISO3) {
+  return destinationISO3 === 'ZAF' && ORIGINES_SACU_HORS_ZAF.has(originISO3);
+}
+
+/**
+ * Pays d'expédition à transmettre au moteur : l'origine elle-même si la
+ * marchandise en est expédiée (« oui »), « AUTRE » sinon (« non »), rien si la
+ * réponse est inconnue — le moteur laisse alors la TVA à compléter.
+ */
+export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
+  if (!expeditionSacuRequise(destinationISO3, originISO3)) return undefined;
+  if (reponse === 'yes') return originISO3;
+  if (reponse === 'no') return 'AUTRE';
+  return undefined;
+}
+
+export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, cifValue, quantite, paysExpedition }) {
   const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue };
   if (originISO3) body.origine = originISO3;
+  if (paysExpedition) body.pays_expedition = paysExpedition;
   // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la
   // valeur. Le champ n'est envoyé que s'il porte un nombre utilisable : une
   // saisie vide ou illisible doit laisser le moteur répondre QUANTITE_REQUISE,

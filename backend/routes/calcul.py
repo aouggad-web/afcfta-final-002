@@ -58,7 +58,8 @@ class DemandeCalcul(BaseModel):
             "Afrique du Sud, VAT Act s.13(2)(b) : la TVA n'est pas majorée de "
             "10 % pour une origine BWA, LSO, SWZ ou NAM importée de l'un de ces "
             "pays. Omis pour une telle origine, la TVA reste indisponible "
-            "plutôt que supposée."
+            "plutôt que supposée. « AUTRE » : expédiée d'un autre pays (l'interface "
+            "pose la question oui/non et transmet l'origine ou « AUTRE »)."
         ),
     )
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
