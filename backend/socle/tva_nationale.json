@@ -9,7 +9,12 @@
       "taux": 15.0,
       "assiette": "FOBx1.10+DD",
       "assiette_par_origine": {
-        "origines": ["BWA", "LSO", "NAM", "SWZ"],
+        "origines": [
+          "BWA",
+          "LSO",
+          "NAM",
+          "SWZ"
+        ],
         "assiette": "FOB+DD",
         "texte": "VAT Act 89/1991 s.13(2)(b) : pas de majoration de 10 % pour une origine Botswana, Lesotho, Eswatini ou Namibie importée de ces pays — origine et pays d'expédition doivent tous deux figurer dans cette liste"
       },
@@ -50,16 +55,42 @@
       "source": "Código do IVA (Lei n.º 7/19 de 24 de Abril), art. 19.º — « A taxa do imposto é de 14% (catorze por cento) » ; article lu sur lex.ao, le Diário da República n'ayant pas été obtenu, et corroboré par le GTIIVA du Ministère des Finances, le Portal do Contribuinte et PwC",
       "fiche": "backend/data/legal_refs/zlecaf_application/AGO_taux_TVA_2026-09-19.json",
       "note": "Taux standard national, non vérifié position par position : les opérations détaxées et exonérées du Código do IVA ne sont pas distinguées. Le tarif douanier angolais ne porte aucune TVA — c'est pourquoi cette table la complète."
+    },
+    "LSO": {
+      "code": "TVA",
+      "libelle": "Value Added Tax (VAT)",
+      "famille": "tva",
+      "taux": 15.0,
+      "assiette": "FOB+TOUS_SAUF_TVA",
+      "source": "VAT Act 2001 (Lesotho) s.19(3) et LN No. 18 of 2020 (taux de 15 %) ; s.16(1) (valeur en douane + droits et taxes, TVA exclue)",
+      "fiche": "backend/data/legal_refs/zlecaf_application/LSO_taux_TVA_2026-09-18.json",
+      "fiche_assiette": "backend/data/legal_refs/zlecaf_application/LSO_assiette_TVA_2026-10-02.json",
+      "note": "Taux standard national, non vérifié position par position : les biens détaxés et exonérés ne sont pas distingués.",
+      "reserve_assiette": "Le taux de 15 % est lu par OCR dans la LN No. 18 of 2020 (PDF scanné archivé) ; les services de la s.8(9) non compris dans la valeur en douane ne sont pas connus du calculateur."
+    },
+    "SWZ": {
+      "code": "TVA",
+      "libelle": "Value Added Tax (VAT)",
+      "famille": "tva",
+      "taux": 15.0,
+      "assiette": "FOB+TOUS_SAUF_TVA",
+      "source": "VAT Act 2011 (Eswatini) s.24(3) et LN No. 142 of 2018 (taux de 15 %) ; s.23 (valeur en douane + droits et taxes, TVA exclue)",
+      "fiche": "backend/data/legal_refs/zlecaf_application/SWZ_taux_TVA_2026-09-18.json",
+      "fiche_assiette": "backend/data/legal_refs/zlecaf_application/SWZ_assiette_TVA_2026-10-02.json",
+      "note": "Taux standard national, non vérifié position par position : les biens détaxés et exonérés ne sont pas distingués.",
+      "reserve_assiette": "Le taux de 15 % est lu par OCR dans la LN No. 142 of 2018 (PDF scanné archivé) ; les services de la s.12(3) non compris dans la valeur en douane ne sont pas connus du calculateur."
+    },
+    "BWA": {
+      "code": "TVA",
+      "libelle": "Value Added Tax (VAT)",
+      "famille": "tva",
+      "taux": 14.0,
+      "assiette": "CIF+DD",
+      "source": "BURS — avis datés (taux de 14 % depuis le 01/04/2023, confirmé sous le VAT Act 2026) ; assiette : VAT Act 2001 s.13(1)(a) (valeur transactionnelle + assurance et fret + droits)",
+      "fiche": "backend/data/legal_refs/zlecaf_application/BWA_taux_TVA_2026-09-18.json",
+      "fiche_assiette": "backend/data/legal_refs/zlecaf_application/BWA_assiette_TVA_2026-10-02.json",
+      "note": "Taux standard national, non vérifié position par position : les biens détaxés et exonérés ne sont pas distingués.",
+      "reserve_assiette": "Assiette lue dans le VAT Act 2001 (amendé jusqu'à 2006) ; le VAT Act 2026, en vigueur au 01/07/2026, n'est archivé qu'en PDF scanné illisible : sa reconduction de cette assiette n'est pas vérifiée."
     }
-  },
-  "_sacu_volontairement_hors_table": {
-    "pays": [
-      "BWA",
-      "LSO",
-      "SWZ"
-    ],
-    "motif": "L'Afrique du Sud assure le dédouanement des importations des autres membres de la SACU, dans le cadre du pool de recettes commun et de sa clé de répartition. Le Botswana, le Lesotho et l'Eswatini étant enclavés, l'essentiel de leurs importations entre par un point d'entrée sud-africain ; le reste passe par voie aérienne. Le point de liquidation réel est donc sud-africain, et c'est lui qui est traité ici.",
-    "portee": "Ce choix ne dit pas que ces trois États n'ont pas de TVA propre — ils en ont une, et elle diverge (une union douanière n'harmonise pas la fiscalité interne). Il dit que leur collecte n'est pas le chemin le plus court vers un calcul juste, et qu'aucun taux ne leur est prêté en attendant : ils restent PENDING_OFFICIAL_COLLECTION, et une importation qui les vise reste PARTIEL avec sa TVA nommée manquante.",
-    "namibie_retiree_le": "2026-10-02 — décision du propriétaire : la Namibie est servie (entrée NAM ci-dessus), son VAT Act archivé fixant le taux et l'assiette."
   }
 }

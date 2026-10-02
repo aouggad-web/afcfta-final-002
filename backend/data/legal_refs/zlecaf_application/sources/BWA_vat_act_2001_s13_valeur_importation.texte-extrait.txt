@@ -1,0 +1,18 @@
+ARCHIVE — Botswana : valeur d'une importation pour la TVA (relevé du 02/10/2026)
+
+Value Added Tax Act, 2001 (Act No. 1 of 2001), amendé jusqu'à l'Act No. 15 of 2006 — copie WIPO Lex
+URL : https://www.wipo.int/edocs/lexdocs/laws/en/bw/bw021en.pdf
+Fichier : sources/bwa_vatact2001_wipo.pdf
+sha256 : 851d68b2e2be8c9f1bb32df05875d67e5aa6c4e3b91731a94a18f85812166712
+
+VERBATIM (s.13 « Value of import ») :
+« (1) The value of an import of goods is (a) in the case of goods required to be cleared under the
+Customs and Excise Duty Act, an amount equal to the sum of (i) the transaction value of the goods
+for customs duty purposes in terms of section 75 of the Customs and Excise Duty Act; (ii) the cost
+of insurance and freight; and (iii) the amount of any duty levied under the said Act in respect of
+the importation of such goods »
+
+LECTURE : assiette TVA = valeur transactionnelle + assurance et fret + droits = CIF + DD.
+RÉSERVE : la fiche BWA_taux_TVA_2026-09-18.json fait état d'un VAT Act 2026 en vigueur au
+01/07/2026, archivé seulement en PDF scanné illisible : la reconduction de cette assiette par le
+texte de 2026 n'est pas vérifiée.

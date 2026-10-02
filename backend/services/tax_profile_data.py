@@ -54,6 +54,9 @@ _IMPORT_VAT_CIF_DD = {
 #: réintroduire une liste qui se périme dès qu'un prélèvement apparaît — c'est
 #: précisément ce qui rendait COUNTRY_TAX_PROFILES faux.
 BASE_TVA_TOUTES_TAXES = "CIF_PLUS_TOUTES_TAXES_SAUF_TVA"
+#: Même assiette posée sur la valeur FOB — valeur en douane SACU (Lesotho,
+#: Eswatini : valeur en douane augmentée de tous les droits, la TVA exclue).
+BASE_FOB_TOUTES_TAXES = "FOB_PLUS_TOUTES_TAXES_SAUF_TVA"
 
 #: Assiette de la TVA à l'importation établie sur texte primaire archivé.
 #:
@@ -226,23 +229,66 @@ COUNTRY_TAX_PROFILES = {
         },
         "source": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
     },
-    # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
-    # VAT : base = CIF + DD  (VAT Act s.13(2))
-    # ── Afrique du Sud / SACU ─────────────────────────────────────────────────
+    # ── SACU — valeur en douane = valeur FOB ─────────────────────────────────
     # Le droit de douane SACU s'assoit sur la valeur FOB — fret et assurance
     # internationaux exclus (Customs and Excise Act 91/1964, s.65-67 ;
-    # corroboré par la politique SARS SC-CR-A-03 rév. 5). Le poser « CIF »
-    # surestimait la base du fret et de l'assurance internationaux. La valeur
-    # FOB ne se déduit pas de la valeur CIF : compute_tax_cascade exige
-    # `fob_value` et refuse de liquider sans elle (fail-closed).
-    # Voir backend/data/legal_refs/zlecaf_application/SACU_assiette_DD_2026-09-17.json.
+    # corroboré par la politique SARS SC-CR-A-03 rév. 5 ; fiches
+    # SACU_assiette_DD et <PAYS>_assiette_DD). La valeur FOB ne se déduit pas
+    # de la valeur CIF : compute_tax_cascade exige `fob_value` et refuse de
+    # liquider sans elle (fail-closed). La TVA suit la loi de chaque pays.
     "ZAF": {
         "taxes_order": ["DD", "TVA"],
         "tax_bases": {
             "DD": ("FOB", []),
-            "TVA": ("CIF", ["DD"]),  # VAT Act s.13(2) : base TVA = CIF+DD
+            # VAT Act 89/1991 s.13(2)(a) : valeur en douane + droits + 10 %.
+            "TVA": ("FOBx1.10", ["DD"]),
         },
-        "source": "Customs and Excise Act 91/1964 s.65-67 + SARS SC-CR-A-03 (DD base = FOB) ; VAT Act s.13(2) (TVA base = CIF+DD)",
+        # s.13(2)(b) : pas de majoration pour une origine BWA, LSO, SWZ ou NAM
+        # importée de l'un de ces pays (origine ET expédition).
+        "assiette_tva_origine_sacu": {
+            "origines": ["BWA", "LSO", "NAM", "SWZ"],
+            "base": ("FOB", ["DD"]),
+        },
+        "source": "Customs and Excise Act 91/1964 s.65-67 (DD base = FOB) ; VAT Act 89/1991 s.13(2) (TVA base = FOB × 1,10 + DD ; FOB + DD pour une origine et une expédition BWA/LSO/SWZ/NAM) — ZAF_assiette_TVA_2026-10-02.json",
+    },
+    "NAM": {
+        "taxes_order": ["DD", "TVA"],
+        "tax_bases": {
+            "DD": ("FOB", []),
+            # VAT Act 10/2000 s.12(2)(a) : FOB + 10 % du FOB, sans les droits.
+            "TVA": ("FOBx1.10", []),
+        },
+        "source": "Customs and Excise Act 20/1998 s.75-77 (DD base = FOB) ; VAT Act 10/2000 s.12(2)(a) (TVA base = FOB × 1,10) — NAM_assiette_TVA_2026-10-02.json",
+    },
+    "LSO": {
+        "taxes_order": ["DD", "TVA"],
+        "tax_bases": {
+            "DD": ("FOB", []),
+            # VAT Act 2001 s.16(1) : valeur en douane + droits et taxes, TVA exclue.
+            "TVA": (BASE_FOB_TOUTES_TAXES, []),
+        },
+        "source": "LSO_assiette_DD (DD base = FOB) ; VAT Act 2001 s.16(1) (TVA base = valeur en douane + droits, TVA exclue) — sources/lso_vatact2001.pdf",
+    },
+    "SWZ": {
+        "taxes_order": ["DD", "TVA"],
+        "tax_bases": {
+            "DD": ("FOB", []),
+            # VAT Act 2011 s.23 : valeur en douane + droits et taxes, TVA exclue.
+            "TVA": (BASE_FOB_TOUTES_TAXES, []),
+        },
+        "source": "SWZ_assiette_DD (DD base = FOB) ; VAT Act 2011 s.23 (TVA base = valeur en douane + droits, TVA exclue) — sources/swz_vatact2011.pdf",
+    },
+    "BWA": {
+        "taxes_order": ["DD", "TVA"],
+        "tax_bases": {
+            "DD": ("FOB", []),
+            # VAT Act 2001 (Act 1/2001, amendé jusqu'à 2006) s.13(1)(a) :
+            # valeur transactionnelle + assurance et fret + droits = CIF + DD.
+            # Le VAT Act 2026 (en vigueur au 01/07/2026) n'est pas lu (PDF
+            # scanné) : voir BWA_assiette_TVA_2026-10-02.json.
+            "TVA": ("CIF", ["DD"]),
+        },
+        "source": "Customs Act 2018 s.326 et 334 (DD base = FOB) ; VAT Act 2001 s.13(1)(a) (TVA base = CIF + DD ; VAT Act 2026 non lu) — BWA_assiette_TVA_2026-10-02.json",
     },
     # ── Afrique australe et océan Indien ─────────────────────────────────────
     # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.

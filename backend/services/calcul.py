@@ -286,6 +286,17 @@ def _assiette_de(
         # Même sémantique que « CIF+<CODES> », posée sur la valeur FOB.
         if valeur_fob is None:
             return None, MANQUE_FOB, detail
+        if "TOUS_SAUF_TVA" in assiette:
+            # Lesotho (VAT Act 2001 s.16(1)), Eswatini (VAT Act 2011 s.23) :
+            # valeur en douane SACU + tous les droits, la TVA exclue.
+            rates = [e["code"] for e in echecs if e["famille"] != FAMILLE_TVA]
+            if rates:
+                return None, MANQUE_COMPOSANT, {"composants_absents": rates}
+            return (
+                valeur_fob + sum(d["montant"] for d in calcules if d["famille"] != FAMILLE_TVA),
+                None,
+                detail,
+            )
         part, manquants, sans_objet = _composants(
             _codes_de_l_assiette(assiette), montants, codes_de_la_position
         )

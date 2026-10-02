@@ -513,26 +513,25 @@ def test_la_fiscalite_interne_diverge_entre_membres_d_une_meme_union(client):
 def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
     """Le revers de la règle précédente : quand la fiscalité interne du pays
     de destination n'est pas collectée, le total ne doit pas se présenter comme
-    complet. Le Botswana, le Lesotho et l'Eswatini restent hors de la table
-    nationale (`_sacu_volontairement_hors_table`), et aucun taux ne leur est
-    prêté. Le Botswana sert de témoin : son crawl ne porte aucune TVA, donc
-    rien n'est complété et le manque reste nommé."""
+    complet. La Somalie sert de témoin : son crawl ne porte aucune TVA et
+    aucune fiche n'en établit le taux (SOM_taux_TVA : non établi), donc rien
+    n'est complété et le manque reste nommé."""
     corps = client.post(
         "/calcul",
         json={
-            "destination": "BWA",
-            "origine": "ZAF",
+            "destination": "SOM",
+            "origine": "KEN",
             "code_sh": "010121",
             "valeur_cif": 10000,
         },
     ).json()
-    preference = corps["preference"]
-    assert preference["etat"] != "COMPLET"
-    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
+    npf = corps["npf"]
+    assert npf["etat"] != "COMPLET"
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in npf["manques"]
     assert corps["complements_nationaux"] == []
     # Aucune économie n'est annoncée : comparer deux totaux incomplets
     # produirait un chiffre plausible construit sur une base inconnue.
-    assert corps["economie"] is None
+    assert corps.get("economie") is None
 
 
 @besoin_socle
@@ -632,6 +631,28 @@ def test_sans_pays_d_expedition_la_tva_d_une_origine_sacu_reste_indisponible(cli
     assert preference["etat"] != "COMPLET"
     assert any(m["code"] == "TVA" for m in preference["manques"])
     assert corps["complements_nationaux"][0]["motif_assiette"] == "PAYS_EXPEDITION_REQUIS"
+
+
+@besoin_socle
+@pytest.mark.parametrize(
+    "pays, taux, assiette",
+    [("LSO", 15.0, "FOB+TOUS_SAUF_TVA"), ("SWZ", 15.0, "FOB+TOUS_SAUF_TVA"), ("BWA", 14.0, "CIF+DD")],
+)
+def test_la_tva_des_autres_pays_sacu_est_completee_avec_sa_fiche(client, pays, taux, assiette):
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": pays,
+            "origine": "KEN",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    complement = corps["complements_nationaux"][0]
+    assert complement["taux_pct"] == taux
+    assert complement["assiette"] == assiette
+    assert f"{pays}_assiette_TVA" in complement["fiche_assiette"]
 
 
 @besoin_socle
