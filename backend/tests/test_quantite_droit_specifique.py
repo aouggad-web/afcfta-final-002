@@ -76,13 +76,20 @@ def test_sans_quantite_le_moteur_la_reclame_et_nomme_son_unite(client):
 def test_avec_la_quantite_le_droit_se_liquide_et_entre_dans_l_assiette_TVA(client):
     """Second temps : le total devient COMPLET, TVA comprise.
 
-    8c/kg × 200 kg = 16,00. La TVA sud-africaine est assise sur CIF + DD :
-    15 % de 10 016,00 = 1 502,40. Le droit spécifique n'est donc pas seulement
-    ajouté au total, il déplace l'assiette de la taxe suivante.
+    8c/kg × 200 kg = 16,00. La TVA sud-africaine est assise sur FOB × 1,10 + DD
+    (VAT Act s.13(2)(a)) : 15 % de 11 016,00 = 1 652,40. Le droit spécifique
+    n'est donc pas seulement ajouté au total, il déplace l'assiette de la taxe
+    suivante.
     """
     r = client.post(
         "/calcul",
-        json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 10000, "quantite": 200},
+        json={
+            "destination": "ZAF",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "valeur_fob": 10000,
+            "quantite": 200,
+        },
     )
     assert r.status_code == 200
     npf = r.json()["npf"]
@@ -92,12 +99,12 @@ def test_avec_la_quantite_le_droit_se_liquide_et_entre_dans_l_assiette_TVA(clien
     assert dd["montant"] == pytest.approx(16.0)
 
     tva = _ligne(r.json(), "TVA")
-    assert tva["base"] == pytest.approx(10016.0)
-    assert tva["montant"] == pytest.approx(1502.4)
+    assert tva["base"] == pytest.approx(11016.0)
+    assert tva["montant"] == pytest.approx(1652.4)
 
     assert npf["etat"] == "COMPLET"
     assert npf["manques"] == []
-    assert npf["total_a_payer"] == pytest.approx(11518.4)
+    assert npf["total_a_payer"] == pytest.approx(11668.4)
 
 
 @besoin_socle
