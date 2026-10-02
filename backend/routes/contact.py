@@ -3,7 +3,7 @@
 import logging
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, status
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from services.email_service import send_contact_admin_email
 
@@ -36,20 +36,37 @@ class ContactPayload(BaseModel):
 
 
 @router.post("")
-async def submit_contact(payload: ContactPayload, background_tasks: BackgroundTasks):
+async def submit_contact(
+    payload: ContactPayload, request: Request, background_tasks: BackgroundTasks
+):
     if _db is None:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Formulaire de contact indisponible",
         )
 
+    # Audit trail: the caller's real IP is the only reliable way to tell a
+    # genuine web submission (this route) apart from an admin notification
+    # produced some other way (a manual send_contact_admin_email() call, or a
+    # message sent straight through the SMTP mailbox). See geo_service for the
+    # X-Forwarded-For handling tied to TRUSTED_PROXY_HOPS.
+    from services import geo_service
+
+    submit_ip = geo_service.client_ip(request)
+
     doc = {
         "name": payload.name,
         "email": payload.email.lower(),
         "message": payload.message,
+        "submit_ip": submit_ip,
         "created_at": datetime.now(timezone.utc),
     }
     await _db.contact_messages.insert_one(doc)
+
+    logger.info(
+        "Contact form submitted via /api/contact "
+        f"(name={doc['name']!r}, email={doc['email']!r}, ip={submit_ip})"
+    )
 
     background_tasks.add_task(send_contact_admin_email, doc["name"], doc["email"], doc["message"])
 

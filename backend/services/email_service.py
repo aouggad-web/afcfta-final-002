@@ -74,6 +74,16 @@ def send_welcome_email(recipient: str, name: str) -> None:
 
 
 def send_contact_admin_email(name: str, email: str, message: str) -> None:
+    # Audit line emitted for EVERY call, including ones that bypass the
+    # /api/contact route (a manual invocation, a script, a REPL). The route
+    # writes each genuine web submission to the contact_messages collection
+    # first, so an admin notification that appears here with no matching DB
+    # document was triggered outside the normal flow — this log is the record
+    # of that. It is intentionally logged before the _enabled() check so the
+    # trace exists even when SMTP delivery is turned off.
+    logger.info(
+        f"Contact admin notification requested (name={name!r}, sender_email={email!r})"
+    )
     admin_email = os.environ.get("SAAS_SMTP_USER", "")
     if not admin_email:
         logger.warning(
