@@ -2215,6 +2215,16 @@ def calculate_import_taxes(
         # Fail-closed : une assiette exigée par le pays (FOB en SACU, p. ex.)
         # absente de la demande est une erreur du client, pas une panne —
         # la substituer par CIF produirait un montant crédible et faux.
+        if fob_value is None:
+            # Motif structuré, comme CALCULATION_UNAVAILABLE : l'interface le
+            # reconnaît et ne demande la valeur FOB que lorsqu'elle est réclamée.
+            detail = {
+                "code": "VALEUR_FOB_REQUISE",
+                "message": str(exc),
+                "hs_code": hs_code_clean,
+                "missing_or_non_ad_valorem_taxes": ["DD"],
+            }
+            return {"error": detail["message"], "error_detail": detail}
         return {"error": str(exc), "error_detail": str(exc)}
 
     # ── ZLECAf : éligibilité bilatérale + taux préférentiel selon l'origine ──

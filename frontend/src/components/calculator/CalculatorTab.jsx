@@ -23,7 +23,7 @@ import CalculationMethodStatus from './CalculationMethodStatus';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import DataStatusBanner from '../common/DataStatusBanner';
-import DismantlementSchedule from './DismantlementSchedule';
+import ExplicationZlecaf from './ExplicationZlecaf';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
@@ -127,6 +127,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // pas la sienne. Le rapprochement est explicite plutôt que remis à un effet
   // de bord, qui s'exécuterait après l'appel qu'il doit protéger.
   const [quantityFor, setQuantityFor] = useState(null);
+  // Valeur FOB (assiette SACU), sur le même modèle : demandée seulement quand
+  // un moteur la réclame, et rattachée à la position pour laquelle elle a été
+  // saisie.
+  const [fobValue, setFobValue] = useState('');
+  const [fobFor, setFobFor] = useState(null);
   const profileRequestRef = useRef(0);
 
   // Vider le champ quand la position ou la destination change. La justesse ne
@@ -136,6 +141,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   useEffect(() => {
     setQuantity('');
     setQuantityFor(null);
+    setFobValue('');
+    setFobFor(null);
   }, [hsCode, destinationCountry, originCountry]);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
@@ -310,6 +317,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   };
 
   const t = texts[language];
+  // Préférence documentée dont le total égale le NPF (ZAF/02071290 depuis
+  // l'Égypte : 82 % des deux côtés) : afficher « −0.0 % » ferait croire à un gain.
+  const sansAvantageZlecaf = zlecafTotalTaxRatePct(result) !== null
+    && (result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result) < 0.05;
 
   // Code SH6 « pur » : on n'affiche les positions nationales avoisinantes que
   // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
@@ -424,6 +435,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
     
+    // Une valeur FOB saisie pour une AUTRE position est écartée, comme la
+    // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
+    const valeurFob = fobFor === `${destISO3}|${cleanHsCode}` ? parseFloat(fobValue) : NaN;
+
     try {
       // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
       //
@@ -443,6 +458,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         quantite: quantityFor === `${destISO3}|${cleanHsCode}`
           ? parseFloat(quantity)
           : NaN,
+        valeurFob,
       }));
 
       // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
@@ -521,6 +537,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 value: parseFloat(value),
                 language,
                 origin: originISO3,
+                fob_value: valeurFob > 0 ? valeurFob : undefined,
                 remission_eligibility: remissionEligibility,
                 authorization_reference: kenyaRemission.reference || undefined,
                 authorization_valid_from: kenyaRemission.validFrom || undefined,
@@ -550,9 +567,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // Le repli reste étroit à dessein : seul ce code d'erreur passe. Un
           // 422 de validation (valeur CIF invalide) et tout le reste (500,
           // délai, 401/403, réseau) remontent comme avant.
+          // `VALEUR_FOB_REQUISE` (Afrique du Sud sans valeur FOB) suit le même
+          // chemin : le moteur réclame alors la valeur FOB et l'écran ouvre
+          // son champ, au lieu d'afficher une erreur.
           const codeErreur = authError.response?.data?.detail?.code;
           const calculIndisponible =
-            authError.response?.status === 422 && codeErreur === 'CALCULATION_UNAVAILABLE';
+            authError.response?.status === 422
+            && (codeErreur === 'CALCULATION_UNAVAILABLE' || codeErreur === 'VALEUR_FOB_REQUISE');
           if (authError.response?.status !== 404 && !calculIndisponible) {
             throw authError;
           }
@@ -664,6 +685,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // strictement informatif, jamais utilisé dans un calcul.
           zlecaf_offer_rate_pct: zlecafAvailability.offerRatePct,
           zlecaf_offer_rate_expression: zlecafAvailability.offerRateExpression,
+          zlecaf_offer_rate_source: zlecafAvailability.offerRateExpression
+            ? authenticResult.zlecaf_offer_rate_source || null
+            : null,
 
           // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
           taxes_breakdown: neutralizeZlecafBreakdown(
@@ -1615,6 +1639,81 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* VALEUR FOB — ouverte seulement quand un moteur la réclame
+                  (assiette SACU). Elle ne se déduit jamais du CIF : le fret et
+                  l'assurance n'y sont pas connus. Au plus égale au CIF, que
+                  fret et assurance complètent. */}
+              {result.valeur_fob_requise?.requise && (
+                <div
+                  className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl"
+                  data-testid="valeur-fob-requise"
+                >
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
+                    <div className="w-full">
+                      <p className="text-[var(--gold)] font-semibold text-sm">
+                        {language === 'fr'
+                          ? 'Valeur en douane FOB nécessaire'
+                          : 'FOB customs value required'}
+                      </p>
+                      <p className="text-[var(--gold)] text-xs mt-1">
+                        {language === 'fr'
+                          ? "Ce pays liquide le droit de douane sur la valeur FOB (fret et assurance internationaux exclus). Elle ne se déduit pas de la valeur CIF."
+                          : 'This country assesses customs duty on the FOB value (international freight and insurance excluded). It cannot be derived from the CIF value.'}
+                      </p>
+
+                      <div className="mt-2 space-y-1">
+                        {result.valeur_fob_requise.lignes.map((l) => (
+                          <p key={l.code} className="text-[var(--gold)] text-xs">
+                            <span className="font-mono">{l.code}</span> — {l.libelle}
+                          </p>
+                        ))}
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap items-end gap-2">
+                        <div>
+                          <label
+                            className="block text-[var(--gold)] text-xs mb-1"
+                            htmlFor="valeur-fob"
+                          >
+                            {language === 'fr'
+                              ? 'Valeur FOB (USD, au plus la valeur CIF)'
+                              : 'FOB value (USD, at most the CIF value)'}
+                          </label>
+                          <input
+                            id="valeur-fob"
+                            data-testid="valeur-fob-saisie"
+                            type="number"
+                            min="0"
+                            step="any"
+                            value={fobValue}
+                            onChange={(e) => {
+                              setFobValue(e.target.value);
+                              setFobFor(result._quantite_cle);
+                            }}
+                            className="w-40 px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
+                            placeholder="FOB"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          data-testid="valeur-fob-recalculer"
+                          onClick={() => calculateTariff()}
+                          disabled={
+                            loading
+                            || !(parseFloat(fobValue) > 0)
+                            || parseFloat(fobValue) > parseFloat(value)
+                          }
+                          className="bg-amber-600 hover:bg-amber-700"
+                        >
+                          {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {Array.isArray(result.regional_simulations) && result.regional_simulations.length > 0 && (
                 <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] rounded-xl">
                   <div className="flex items-start gap-3">
@@ -1769,12 +1868,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-[var(--gold)] text-xs font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
                   <p className="text-3xl font-bold text-[var(--gold)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
+                      ? (sansAvantageZlecaf
+                        ? '0.0%'
+                        : `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`)
                       : '—'}
                   </p>
                   <p className="text-[var(--gold)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
+                      ? (sansAvantageZlecaf
+                        ? (language === 'fr' ? 'Aucun avantage sur cette ligne' : 'No advantage on this line')
+                        : (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate'))
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr' ? 'À vérifier' : 'To verify')
                         : (language === 'fr' ? 'Non disponible' : 'Unavailable')}
@@ -1796,6 +1899,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               </div>
+              <ExplicationZlecaf result={result} language={language} />
               <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
                 Simulation informative — non opposable à l’administration douanière.
               </p>
@@ -1820,15 +1924,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </CardContent>
           </Card>
 
-          {/* Schéma de démantèlement ZLECAf */}
-          {result && destinationCountry && hsCode && isDisplayableZlecafResult(result) && (
-            <DismantlementSchedule
-              countryIso3={destinationCountry}
-              hs6={hsCode.replace(/[.\s]/g, '').slice(0, 6)}
-              npfRate={result.customs_duty_rate ?? result.dd_rate_pct ?? result.tariff_rate ?? 0}
-              language={language}
-            />
-          )}
+          {/* Pas de schéma de démantèlement ici : le seul disponible est le
+              canevas générique SH2 (`/api/dismantlement`), qui contredit le taux
+              officiel de la ligne (ZAF/02071290 : 32,8 % « en 2026 » contre 82 %
+              au tarif SARS). Le taux réel est expliqué dans l'encadré ZLECAf. */}
 
           {/* Détail des taxes */}
           {result.taxes_detail && result.taxes_detail.length > 0 && (

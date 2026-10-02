@@ -589,3 +589,55 @@ describe('un refus honnête ne se remplace pas par un total amputé', () => {
     expect(moteurRendCompteDesMesures({}, undefined)).toBe(true);
   });
 });
+
+describe('valeur FOB réclamée par le moteur (SACU)', () => {
+  const droitFob = (over) => ligne({ assiette: 'FOB', statut: 'VALEUR_FOB_REQUISE', base: null,
+    montant: null, ...over });
+
+  it('porte la valeur FOB quand elle est utilisable', () => {
+    expect(buildCalculRequestBody({
+      destinationISO3: 'ZAF', hsCode: '02071290', cifValue: 1000, valeurFob: 800,
+    })).toEqual({ destination: 'ZAF', code_sh: '02071290', valeur_cif: 1000, valeur_fob: 800 });
+  });
+
+  it.each([
+    ['vide', undefined],
+    ['nulle', null],
+    ['illisible', NaN],
+    ['zéro', 0],
+    ['négative', -5],
+    ['texte', '800'],
+  ])("n'envoie pas une valeur FOB %s — jamais déduite du CIF", (_, valeur) => {
+    expect(buildCalculRequestBody({
+      destinationISO3: 'ZAF', hsCode: '02071290', cifValue: 1000, valeurFob: valeur,
+    })).toEqual({ destination: 'ZAF', code_sh: '02071290', valeur_cif: 1000 });
+  });
+
+  it('ouvre le champ FOB quand le moteur la réclame', () => {
+    const calcul = {
+      npf: {
+        lignes: [droitFob({ libelle: 'General Customs Duty' })],
+        manques: [{ code: 'DD', motif: 'VALEUR_FOB_REQUISE' }],
+        etat: 'INDISPONIBLE', total_a_payer: 1000,
+      },
+    };
+    expect(mapCalculToLegacyResult(calcul, contexte).valeur_fob_requise).toEqual({
+      requise: true, lignes: [{ code: 'DD', libelle: 'General Customs Duty' }],
+    });
+  });
+
+  it.each([
+    ['sans manque', []],
+    ['pour un autre motif', [{ code: 'DD', motif: 'QUANTITE_REQUISE' }]],
+  ])("ne l'ouvre pas %s", (_, manques) => {
+    const calcul = { npf: { lignes: [ligne()], manques, etat: 'COMPLET', total_a_payer: 1200 } };
+    expect(mapCalculToLegacyResult(calcul, contexte).valeur_fob_requise.requise).toBe(false);
+  });
+
+  it('accepte le moteur quand il motive le droit par la valeur FOB manquante', () => {
+    const calcul = {
+      npf: { lignes: [droitFob()], manques: [{ code: 'DD', motif: 'VALEUR_FOB_REQUISE' }] },
+    };
+    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
+  });
+});

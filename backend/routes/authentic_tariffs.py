@@ -562,8 +562,12 @@ async def calculate_taxes_endpoint(
     # tarifaire.
     origin_iso3 = (origin or "").upper() or None
     try:
+        # Assiette FOB des frais : la valeur fournie, sinon le CIF comme avant.
         blocks = build_regulatory_blocks(
-            country, origin_iso3, fob_value=cif_value, cif_value=cif_value
+            country,
+            origin_iso3,
+            fob_value=fob_value if fob_value is not None else cif_value,
+            cif_value=cif_value,
         )
         result["regulatory_compliance"] = blocks["regulatory_compliance"]
         result["regulatory_cost"] = blocks["regulatory_cost"]
@@ -744,6 +748,9 @@ async def calculate_taxes_get_endpoint(
     value: float = Query(10000, description="CIF value in USD"),
     language: str = Query("fr", description="Language: fr or en"),
     origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)"),
+    fob_value: Optional[float] = Query(
+        None, gt=0, description="Valeur FOB en USD — requise pour l'Afrique du Sud (SACU)"
+    ),
     calculation_date: Optional[date] = Query(None, description="Legal calculation date"),
     remission_eligibility: RemissionEligibility = Query(RemissionEligibility.ELIGIBILITY_UNKNOWN),
     authorization_reference: Optional[str] = Query(None),
@@ -764,6 +771,7 @@ async def calculate_taxes_get_endpoint(
         cif_value=value,
         language=language,
         origin=origin,
+        fob_value=fob_value,
         calculation_date=calculation_date,
         remission_eligibility=remission_eligibility,
         authorization_reference=authorization_reference,
