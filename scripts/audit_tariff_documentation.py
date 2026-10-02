@@ -297,13 +297,11 @@ def resolve_artifacts(root: Path, country: str) -> Dict[str, Optional[Path]]:
         root / "frontend" / "public" / f"{country}_tarif_douanier_echantillon.csv",
     ]
     crawled = root / "backend" / "data" / "crawled" / f"{country}_tariffs.json"
-    enriched = root / "backend" / "data" / "crawled" / f"{country}_tariffs_enriched.json"
     primary = next((path for path in base_candidates if path.exists()), None)
     return {
         "primary": primary,
         "effective": crawled if crawled.exists() else primary,
         "detail": crawled if crawled.exists() else None,
-        "enriched": enriched if enriched.exists() else None,
     }
 
 
@@ -829,8 +827,6 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
                 role = "primary_runtime_artifact"
             elif related == effective:
                 role = "effective_national_artifact"
-            elif related.name.endswith("DZA_tariffs_enriched.json"):
-                role = "calculator_fallback_artifact"
             related_files.append({"path": rel(related), "role": role, "sha256": file_hash(related)})
     pipeline_scripts = (
         [
@@ -854,7 +850,6 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
             "primary_tariff_file": rel(primary),
             "effective_national_file": rel(effective),
             "detail_override_file": rel(artifacts["detail"]),
-            "enriched_fallback_file": rel(artifacts["enriched"]),
             "consumers": [
                 "backend/services/tariff_provider_service.py::get_tariff_line",
                 "backend/services/authentic_tariff_service.py::load_country_tariffs",
@@ -1016,7 +1011,6 @@ def report(result: Dict[str, Any]) -> str:
         "",
         f"- Fichier canonique parent : {runtime['primary_tariff_file']} ({coverage['parent_lines_in_primary_file']} lignes SH6).",
         f"- Fichier national effectif : {runtime['effective_national_file']} ({coverage['effective_lines']} lignes, {coverage['unique_national_codes']} codes nationaux, {coverage['unique_hs6']} SH6).",
-        f"- Fichier enrichi de repli : {runtime['enriched_fallback_file'] or 'absent'}.",
         f"- Artefacts locaux apparentés hachés : {len(result['local_related_files'])} (les CSV de validation restent secondaires).",
         "- Services/routes : TariffProviderService → authentic_tariff_service; routes /authentic-tariffs/country/...; index détaillé pour les codes nationaux.",
         f"- Import/normalisation : {', '.join(runtime['import_and_normalization_scripts']) or 'non identifié'}.",

@@ -17,7 +17,6 @@
     },
     {
       "path": "backend/data/crawled/DZA_tariffs_enriched.json",
-      "role": "calculator_fallback_artifact",
       "sha256": "3baf5dfbe8be2d6271845c04b4f3f56fa472bc2e458d1d950f09f0e6afde7ff1"
     },
     {
@@ -35,7 +34,6 @@
     "primary_tariff_file": "backend/data/DZA_tariffs.json",
     "effective_national_file": "backend/data/crawled/DZA_tariffs.json",
     "detail_override_file": "backend/data/crawled/DZA_tariffs.json",
-    "enriched_fallback_file": "backend/data/crawled/DZA_tariffs_enriched.json",
     "consumers": [
       "backend/services/tariff_provider_service.py::get_tariff_line",
       "backend/services/authentic_tariff_service.py::load_country_tariffs",

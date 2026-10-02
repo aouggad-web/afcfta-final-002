@@ -34,9 +34,3 @@ via a local `_normalize_iso2` that delegates to `to_iso2`.
   without normalizing. They work in practice only because the frontend banking
   panel always sends ISO2 (from `/banking/countries`). If anything ever passes
   ISO3 to them they will 404 / fall back.
-
-**Test the wrong path, not the happy path:** the calculator API expects fields
-`destination_country`, `origin_country`, `hs_code`, `value` (not `dest_country`/
-`value_usd`). A wrong-field request returns a 422 with only a `detail` key, which
-looks like an empty result — confirm field names before concluding a feature is
-broken.

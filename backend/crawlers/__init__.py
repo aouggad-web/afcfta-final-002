@@ -14,7 +14,6 @@ from .all_countries_registry import (
     AFRICAN_COUNTRIES_REGISTRY,
     Priority,
     Region,
-    RegionalBlock,
     get_countries_by_region,
     get_country_config,
     get_priority_countries,
@@ -24,7 +23,6 @@ from .all_countries_registry import (
 __all__ = [
     "AFRICAN_COUNTRIES_REGISTRY",
     "Region",
-    "RegionalBlock",
     "Priority",
     "get_country_config",
     "get_countries_by_region",

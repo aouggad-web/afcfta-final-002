@@ -6,9 +6,6 @@ Le système de notifications AfCFTA supporte deux canaux:
 - **Email** via SMTP (Gmail, Outlook, SendGrid, etc.)
 - **Slack** via webhooks
 
-Les notifications sont envoyées automatiquement pour:
-- ⚠️ Problèmes de validation des données
-
 ## Configuration Email
 
 ### Gmail
@@ -208,7 +205,6 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00/B00/XXX
 - Message d'erreur détaillé
 
 ### ⚠️ Validation Issues
-Envoyée quand des problèmes de qualité sont détectés.
 
 **Contenu:**
 - Job ID

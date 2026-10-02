@@ -1,7 +1,6 @@
 import csv
 import io
 import json
-import logging
 import os
 import re
 import zipfile
@@ -17,8 +16,6 @@ from etl.hs_sections_headings import (
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, StreamingResponse
 from services.tariff_data_collector import get_collector
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 

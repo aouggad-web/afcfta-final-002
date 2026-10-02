@@ -76,7 +76,6 @@ from backend.crawlers import (
     get_priority_countries,
     validate_registry,
     Region,
-    RegionalBlock,
     Priority
 )
 

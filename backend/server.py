@@ -154,7 +154,6 @@ app = FastAPI(
     openapi_url=_openapi_url,
     openapi_tags=[
         {"name": "Health", "description": "Health check and status endpoints"},
-        {"name": "Calculator", "description": "Tariff calculation endpoints"},
         {"name": "HS Codes", "description": "Harmonized System code search and lookup"},
         {"name": "Countries", "description": "Country profiles and economic data"},
         {"name": "Tariffs", "description": "Tariff data for African countries"},

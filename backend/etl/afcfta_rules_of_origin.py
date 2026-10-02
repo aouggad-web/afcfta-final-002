@@ -22,8 +22,7 @@ which is the most recent official data published by the AU Secretariat as of
 the implementation date (January 2026).
 
 DEPRECATED: superseded by backend/data/zlecaf_rules_of_origin.json and
-routes.rules_of_origin.get_rule_of_origin(), which etl/hs6_database.py now
-uses instead. This module duplicated the same PSR
+routes.rules_of_origin.get_rule_of_origin(). This module duplicated the same PSR
 data in a separate, independently maintained Python dict and had drifted
 out of sync with it (e.g. it lacked a heading-level rule for 62.03). Kept
 only for historical reference; no backend code imports it anymore.

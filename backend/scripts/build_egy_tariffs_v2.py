@@ -282,7 +282,7 @@ def main():
             "total_positions": len(tariff_lines) + total_sub,
             "lines_with_afcfta_schedule": afcfta_lines,
             "vat_rate_standard_pct": 14.0,
-            # Legacy keys consumed by tariff_data_service / calculator route
+            # Legacy keys consumed by tariff_data_service
             "vat_rate_pct": 14.0,
             "other_taxes_pct": 0.0,
             "other_taxes_detail": {},

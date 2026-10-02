@@ -169,8 +169,8 @@ Backend (backend/)
    ├ production.py                  ├ real_comparison_service.py
    ├ hs_codes.py                    ├ real_summary_service.py
    ├ statistics.py                  ├ real_trade_data_service.py  (connecteurs OEC)
-   ├ dismantlement.py               └ production_capacity_service.py
-   └ tariffs.py                          └ data/json/production_africaine.json
+                                    └ production_capacity_service.py
+                                         └ data/json/production_africaine.json
                                               (FAOSTAT/USGS/UNIDO/BM)
   country_data.py  (REAL_COUNTRY_DATA, 54 pays)
   etl/hs6_database.py  (nomenclature WCO HS)

@@ -30,7 +30,6 @@
     "primary_tariff_file": "backend/data/MAR_tariffs.json",
     "effective_national_file": "backend/data/crawled/MAR_tariffs.json",
     "detail_override_file": "backend/data/crawled/MAR_tariffs.json",
-    "enriched_fallback_file": null,
     "consumers": [
       "backend/services/tariff_provider_service.py::get_tariff_line",
       "backend/services/authentic_tariff_service.py::load_country_tariffs",
