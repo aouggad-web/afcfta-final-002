@@ -19,6 +19,7 @@ from datetime import date
 from dataclasses import dataclass
 from typing import FrozenSet, Optional
 
+from services.zlecaf_schedule_dza import ACTIVE_PARTNERS as DZA_ORIGINES
 from services.zlecaf_schedule_egy import ORIGINES_PAR_GROUPE
 from services.zlecaf_schedule_mar import ORIGINES_PAR_GROUPE as MAR_ORIGINES
 from services.zlecaf_schedule_syc import ORIGINES_SCHEDULE_VI as SYC_ORIGINES
@@ -288,6 +289,29 @@ RECORDS = {
             "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
             "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
             "le droit de douane est réduit. Information indicative."
+        ),
+    ),
+    # L'Algérie : circulaire 482/DGD/SP/D.042/24, application au 01/11/2024.
+    # Le taux est calculé depuis le NPF par le calendrier national et les
+    # listes (B) et (C) de la circulaire (zlecaf_schedule_dza) — même
+    # résolveur que le chemin historique. DAPS exonéré (listes A et B).
+    "DZA": ImplementationRecord(
+        destination_iso3="DZA",
+        status=APPLIED,
+        instrument_id="482/DGD/SP/D.042/24",
+        instrument_title=(
+            "Circulaire DGD n° 482/DGD/SP/D.042/24 du 22/10/2024 — mise en "
+            "œuvre de l'Accord ZLECAf à l'importation en Algérie"
+        ),
+        instrument_url="",
+        effective_from="2024-11-01",
+        accepted_origins=DZA_ORIGINES,
+        tariff_dataset=None,
+        note=(
+            "Neuf origines admises (circulaire 482/2024). Taux calculés depuis "
+            "le NPF par le calendrier national (listes A, B, C ; positions "
+            "gelées au droit commun) ; DAPS exonéré pour les listes A et B. "
+            "Voir DZA_application_2026-09-14.json."
         ),
     ),
     "EGY": ImplementationRecord(
