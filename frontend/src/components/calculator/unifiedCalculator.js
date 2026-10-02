@@ -82,15 +82,50 @@ function zlecafStatusLegacy(preferenceZlecaf) {
     : 'NOT_AVAILABLE';
 }
 
-export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, cifValue, quantite }) {
+/** Origines dont la TVA sud-africaine dépend du pays d'expédition (VAT Act s.13(2)(b)). */
+export const ORIGINES_SACU_HORS_ZAF = new Set(['BWA', 'LSO', 'NAM', 'SWZ']);
+
+/** Faut-il demander le pays d'expédition ? Destination ZAF, origine BWA/LSO/NAM/SWZ. */
+export function expeditionSacuRequise(destinationISO3, originISO3) {
+  return destinationISO3 === 'ZAF' && ORIGINES_SACU_HORS_ZAF.has(originISO3);
+}
+
+/**
+ * Pays d'expédition à transmettre au moteur : l'origine elle-même si la
+ * marchandise en est expédiée (« oui »), « AUTRE » sinon (« non »), rien si la
+ * réponse est inconnue — le moteur laisse alors la TVA à compléter.
+ */
+export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
+  if (!expeditionSacuRequise(destinationISO3, originISO3)) return undefined;
+  if (reponse === 'yes') return originISO3;
+  if (reponse === 'no') return 'AUTRE';
+  return undefined;
+}
+
+export function buildCalculRequestBody({
+  destinationISO3,
+  originISO3,
+  hsCode,
+  cifValue,
+  quantite,
+  valeurFob,
+  paysExpedition,
+}) {
   const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue };
   if (originISO3) body.origine = originISO3;
+  if (paysExpedition) body.pays_expedition = paysExpedition;
   // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la
   // valeur. Le champ n'est envoyé que s'il porte un nombre utilisable : une
   // saisie vide ou illisible doit laisser le moteur répondre QUANTITE_REQUISE,
   // pas être traduite en 0 — un 0 liquiderait le droit à zéro.
   if (typeof quantite === 'number' && Number.isFinite(quantite) && quantite > 0) {
     body.quantite = quantite;
+  }
+  // Même règle pour la valeur FOB (assiette SACU) : envoyée seulement si elle
+  // a été saisie, jamais déduite du CIF — le moteur la réclame sinon
+  // (VALEUR_FOB_REQUISE) au lieu de liquider le droit sur une base fausse.
+  if (typeof valeurFob === 'number' && Number.isFinite(valeurFob) && valeurFob > 0) {
+    body.valeur_fob = valeurFob;
   }
   return body;
 }
@@ -160,6 +195,22 @@ export function quantiteRequise(npf) {
     uniteAmbigue: unites.length > 1,
     lignes,
   };
+}
+
+/**
+ * Les droits que le moteur ne peut liquider faute de valeur FOB (assiette de
+ * la SACU). Le champ FOB n'est ouvert que dans ce cas : partout ailleurs, la
+ * valeur CIF suffit et une seconde valeur ne servirait qu'à se tromper.
+ */
+export function valeurFobRequise(npf) {
+  const codes = (npf?.manques || [])
+    .filter((m) => m.motif === 'VALEUR_FOB_REQUISE')
+    .map((m) => m.code);
+  if (codes.length === 0) return { requise: false, lignes: [] };
+  const lignes = (npf.lignes || [])
+    .filter((l) => codes.includes(l.code))
+    .map((l) => ({ code: l.code, libelle: l.libelle }));
+  return { requise: true, lignes };
 }
 
 function buildJournal(cifValue, lignes) {
@@ -425,6 +476,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // unité le demander. L'écran s'en sert pour n'ouvrir un champ que là où il
     // sert, et pour le libeller avec l'unité que la source publie.
     quantite_requise: quantiteRequise(npf),
+    valeur_fob_requise: valeurFobRequise(npf),
     _npf_etat: npf.etat,
     _zlecaf_etat: hasPreference ? pref.etat : null,
     _manques_npf: npf.manques || [],

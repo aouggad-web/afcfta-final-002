@@ -231,7 +231,10 @@ def test_authentic_tariff_service_customs_union_savings_stay_documented():
     produit un taux et des économies concrets, traçables par construction."""
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="BWA", fob_value=800.0)
+    # Expédiée du Botswana (VAT Act s.13(2)(b)) : sans pays d'expédition, refus.
+    result = calculate_import_taxes(
+        "ZAF", "020110", 1000, origin_country="BWA", fob_value=800.0, pays_expedition="BWA"
+    )
 
     assert result["trade_regime"] == "CUSTOMS_UNION"
     assert result["zlecaf_status"] == "DOCUMENTED"

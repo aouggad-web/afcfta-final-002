@@ -1,10 +1,10 @@
 """
 Moteur de liquidation — chantier L2.
 
-Une fonction, six primitives d'assiette, un modificateur. Aucune connaissance
+Une fonction, sept primitives d'assiette, un modificateur. Aucune connaissance
 par pays : tout ce que le moteur sait d'un pays lui vient du socle.
 
-Les six primitives, et rien d'autre :
+Les sept primitives, et rien d'autre :
 
 ===========================  ================================================
 ``CIF``                      la valeur en douane
@@ -22,6 +22,13 @@ Les six primitives, et rien d'autre :
                              (``VALEUR_FOB_REQUISE``) plutôt qu'assumé CIF
                              — une base CIF devinée surestimerait le droit
                              d'un montant crédible et faux.
+``FOBx<FACTEUR>[+<CODES>]``  la valeur FOB multipliée par un facteur fixé
+                             par la loi, augmentée le cas échéant des droits
+                             nommés (``FOBx1.10`` : TVA namibienne, VAT Act
+                             10/2000 s.12(2)(a) ; ``FOBx1.10+DD`` : TVA
+                             sud-africaine, VAT Act 89/1991 s.13(2)(a)). Même
+                             exigence que ``FOB`` : fournie, jamais déduite
+                             du CIF.
 ``SOMME(TOUS_SAUF_SOI)``     la somme des autres droits, **sans** la valeur
 ``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
                              désigné par son code (``%DD``)
@@ -254,10 +261,42 @@ def _assiette_de(
             if sans_objet:
                 detail["composants_sans_objet"] = sans_objet
             base = cif + part
+    elif assiette.startswith("FOBx"):
+        # Valeur FOB majorée d'un forfait légal (Namibie : FOB + 10 %),
+        # éventuellement augmentée de droits nommés (Afrique du Sud :
+        # « FOBx1.10+DD », VAT Act 89/1991 s.13(2)(a)).
+        if valeur_fob is None:
+            return None, MANQUE_FOB, detail
+        facteur_txt, _, codes = assiette[len("FOBx") :].partition("+")
+        try:
+            facteur = float(facteur_txt)
+        except ValueError:
+            return None, MANQUE_ASSIETTE, detail
+        part = 0.0
+        if codes:
+            part, manquants, sans_objet = _composants(
+                _codes_de_l_assiette("FOB+" + codes), montants, codes_de_la_position
+            )
+            if manquants:
+                return None, MANQUE_COMPOSANT, {"composants_absents": manquants}
+            if sans_objet:
+                detail["composants_sans_objet"] = sans_objet
+        base = valeur_fob * facteur + part
     elif assiette.startswith("FOB+"):
         # Même sémantique que « CIF+<CODES> », posée sur la valeur FOB.
         if valeur_fob is None:
             return None, MANQUE_FOB, detail
+        if "TOUS_SAUF_TVA" in assiette:
+            # Lesotho (VAT Act 2001 s.16(1)), Eswatini (VAT Act 2011 s.23) :
+            # valeur en douane SACU + tous les droits, la TVA exclue.
+            rates = [e["code"] for e in echecs if e["famille"] != FAMILLE_TVA]
+            if rates:
+                return None, MANQUE_COMPOSANT, {"composants_absents": rates}
+            return (
+                valeur_fob + sum(d["montant"] for d in calcules if d["famille"] != FAMILLE_TVA),
+                None,
+                detail,
+            )
         part, manquants, sans_objet = _composants(
             _codes_de_l_assiette(assiette), montants, codes_de_la_position
         )
@@ -409,7 +448,7 @@ def _liquider(
             taux == 0
             and specifique is None
             and isinstance(droit.get("assiette"), str)
-            and (droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+"))
+            and (droit["assiette"] == "FOB" or droit["assiette"].startswith(("FOB+", "FOBx")))
         ):
             # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
             # particulier sur la base FOB des pays SACU : une franchise

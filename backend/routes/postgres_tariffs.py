@@ -4,6 +4,7 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 """
 
 import logging
+from typing import Optional
 
 from entitlement_guard import require_calculations_quota
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -118,6 +119,12 @@ async def calculate_tariffs(
     country_iso3: str = Query(..., pattern="^[A-Za-z]{3}$", description="Country ISO3 code"),
     hs6: str = Query(..., description="HS code or exact national position (6-12 digits)"),
     value: float = Query(1000, gt=0, allow_inf_nan=False, description="Goods value"),
+    fob_value: Optional[float] = Query(
+        None,
+        gt=0,
+        allow_inf_nan=False,
+        description="Valeur FOB en USD — requise pour l'Afrique du Sud (SACU)",
+    ),
 ):
     """Compatibility URL using the same calculation boundary as authentic tariffs."""
     try:
@@ -130,6 +137,7 @@ async def calculate_tariffs(
             cif_value=value,
             language="fr",
             origin=None,
+            fob_value=fob_value,
             calculation_date=None,
             remission_eligibility=RemissionEligibility.ELIGIBILITY_UNKNOWN,
             authorization_reference=None,

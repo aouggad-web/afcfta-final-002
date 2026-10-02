@@ -10,6 +10,7 @@ from services.designation import texte_designation
 from services.tax_profile_data import (
     ASSIETTE_TVA_ETABLIE,
     ASSIETTE_TVA_NON_APPLICABLE,
+    BASE_FOB_TOUTES_TAXES,
     BASE_TVA_TOUTES_TAXES,
     COUNTRY_TAX_PROFILES,
 )
@@ -367,7 +368,12 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
 
 
 def compute_tax_cascade(
-    cif_value: float, taxes_rates: dict, country_iso3: str, fob_value: Optional[float] = None
+    cif_value: float,
+    taxes_rates: dict,
+    country_iso3: str,
+    fob_value: Optional[float] = None,
+    origin_iso3: Optional[str] = None,
+    pays_expedition: Optional[str] = None,
 ) -> dict:
     """
     Compute import taxes using the official cascade method for each country.
@@ -418,6 +424,28 @@ def compute_tax_cascade(
             taxes_order.append(code)
             tax_bases[code] = ("CIF", [])
 
+    # ── TVA sud-africaine : exception selon l'origine ET l'expédition ────────
+    # VAT Act 89/1991 s.13(2)(b) : pas de majoration de 10 % pour une origine
+    # BWA, LSO, SWZ ou NAM importée de l'un de ces pays. Expédition inconnue
+    # pour une telle origine : refus explicite plutôt qu'une assiette devinée.
+    exception_sacu = profile.get("assiette_tva_origine_sacu")
+    if exception_sacu and (origin_iso3 or "").upper() in exception_sacu["origines"]:
+        if not pays_expedition:
+            raise ValueError(
+                "pays_expedition requis : pour une origine BWA, LSO, SWZ ou NAM, "
+                "l'assiette de la TVA sud-africaine dépend du pays d'expédition "
+                "(VAT Act 89/1991 s.13(2)(b))"
+            )
+        if pays_expedition.upper() in exception_sacu["origines"]:
+            for code in taxes_order:
+                if _normalize_tax_code(code) in _ALIAS_TVA:
+                    tax_bases[code] = exception_sacu["base"]
+
+    # Une TVA assise sur tous les autres droits se liquide en dernier.
+    for code in [c for c in taxes_order if tax_bases.get(c, ("CIF", []))[0] == BASE_FOB_TOUTES_TAXES]:
+        taxes_order.remove(code)
+        taxes_order.append(code)
+
     # ── Assiette de la TVA établie sur texte primaire ────────────────────────
     # Là où un texte a été lu et archivé, il prime sur le profil codé : les
     # quatre textes disposent que l'assiette est la valeur en douane augmentée
@@ -462,7 +490,7 @@ def compute_tax_cascade(
         base_formula, add_codes = tax_bases.get(raw_code, tax_bases.get(norm_code, ("CIF", [])))
 
         # Compute the base value
-        if base_formula == "FOB":
+        if base_formula in ("FOB", BASE_FOB_TOUTES_TAXES) or base_formula.startswith("FOBx"):
             # Valeur en douane SACU : fret et assurance internationaux exclus
             # (Act 91/1964 s.65-67). Elle ne se déduit JAMAIS de la valeur CIF
             # — la part du fret et de l'assurance n'est pas connue ici. Sans
@@ -479,7 +507,16 @@ def compute_tax_cascade(
                     "valeur_fob ne peut excéder la valeur cif_value : le fret et "
                     "l'assurance ajoutés à la FOB composent la CIF"
                 )
-            base_value = fob_value
+            if base_formula == BASE_FOB_TOUTES_TAXES:
+                base_value = fob_value + sum(
+                    montant for code, montant in computed_amounts.items() if code != norm_code
+                )
+            else:
+                # « FOBx1.10 » : forfait légal (VAT Act ZAF s.13(2)(a), NAM s.12(2)(a)).
+                facteur = float(base_formula[len("FOBx") :]) if base_formula != "FOB" else 1.0
+                base_value = fob_value * facteur
+                for dep_code in add_codes:
+                    base_value += computed_amounts.get(_normalize_tax_code(dep_code), 0.0)
         elif base_formula == "DD_AMOUNT":
             # e.g. CAC = % of DD_amount
             base_value = computed_amounts.get("DD", 0.0)
@@ -503,8 +540,13 @@ def compute_tax_cascade(
         label = _TAX_LABELS.get(norm_code, _TAX_LABELS.get(raw_code, raw_code))
         if base_formula == "DD_AMOUNT":
             base_desc = "DD_montant"
-        elif base_formula == "FOB":
-            base_desc = "FOB"
+        elif base_formula == BASE_FOB_TOUTES_TAXES:
+            autres = [c for c in computed_amounts if c != norm_code]
+            base_desc = "FOB + " + " + ".join(autres) if autres else "FOB"
+        elif base_formula == "FOB" or base_formula.startswith("FOBx"):
+            base_desc = base_formula.replace("FOBx", "FOB × ")
+            if add_codes:
+                base_desc += " + " + " + ".join(add_codes)
         elif base_formula == BASE_TVA_TOUTES_TAXES:
             autres = [c for c in computed_amounts if c != norm_code]
             base_desc = "CIF + " + " + ".join(autres) if autres else "CIF"
@@ -1905,6 +1947,7 @@ def calculate_import_taxes(
     language="fr",
     origin_country=None,
     fob_value=None,
+    pays_expedition=None,
 ):
     """Calculate import taxes for a country/HS code/CIF value combination.
 
@@ -2209,12 +2252,38 @@ def calculate_import_taxes(
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     try:
         npf_cascade = compute_tax_cascade(
-            cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value
+            cif_value,
+            taxes_for_cascade,
+            country_iso3,
+            fob_value=fob_value,
+            origin_iso3=origin_country,
+            pays_expedition=pays_expedition,
         )
     except ValueError as exc:
         # Fail-closed : une assiette exigée par le pays (FOB en SACU, p. ex.)
         # absente de la demande est une erreur du client, pas une panne —
         # la substituer par CIF produirait un montant crédible et faux.
+        if fob_value is None:
+            # Motif structuré, comme CALCULATION_UNAVAILABLE : l'interface le
+            # reconnaît et ne demande la valeur FOB que lorsqu'elle est réclamée.
+            detail = {
+                "code": "VALEUR_FOB_REQUISE",
+                "message": str(exc),
+                "hs_code": hs_code_clean,
+                "missing_or_non_ad_valorem_taxes": ["DD"],
+            }
+            return {"error": detail["message"], "error_detail": detail}
+        if pays_expedition is None and "pays_expedition" in str(exc):
+            # Afrique du Sud, VAT Act s.13(2)(b) : l'assiette de la TVA d'une
+            # origine BWA/LSO/SWZ/NAM dépend du pays d'expédition. Motif
+            # structuré, reconnu par l'interface qui pose alors la question.
+            detail = {
+                "code": "PAYS_EXPEDITION_REQUIS",
+                "message": str(exc),
+                "hs_code": hs_code_clean,
+                "missing_or_non_ad_valorem_taxes": ["TVA"],
+            }
+            return {"error": detail["message"], "error_detail": detail}
         return {"error": str(exc), "error_detail": str(exc)}
 
     # ── ZLECAf : éligibilité bilatérale + taux préférentiel selon l'origine ──
@@ -2280,7 +2349,14 @@ def calculate_import_taxes(
                     f" TPI : {_tpi_base} % → {_tpi_pref} % — {_tpi_ref}."
                 )
     # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
-    zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3, fob_value=fob_value)
+    zlecaf_cascade = compute_tax_cascade(
+        cif_value,
+        zlecaf_taxes,
+        country_iso3,
+        fob_value=fob_value,
+        origin_iso3=origin_country,
+        pays_expedition=pays_expedition,
+    )
 
     # Traçabilité : un régime ZLECAf peut être éligible (`_preferential`) sans
     # qu'un taux préférentiel réel soit connu pour CETTE ligne (ex. Afrique du

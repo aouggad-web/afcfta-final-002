@@ -3,6 +3,7 @@
  "_grammaire": {
   "CIF": "valeur en douane",
   "FOB": "valeur FOB (valeur en douane SACU : fret et assurance internationaux exclus) — fournie par l'appelant, jamais déduite du CIF",
+  "FOBx<FACTEUR>": "valeur FOB multipliée par un facteur légal (FOBx1.10 : TVA namibienne, VAT Act 10/2000 s.12(2)(a)) — fournie par l'appelant, jamais déduite du CIF",
   "FOB+<CODES>": "FOB augmenté du montant des droits nommés",
   "CIF+<CODES>": "CIF augmente du montant des droits nommes",
   "CIF+TOUS_SAUF_TVA": "CIF augmente de tous les prelevements d entree, TVA exclue",
