@@ -88,7 +88,7 @@ explicitement (« pas de donnée ») plutôt que fabriquée.
 
 - Application FastAPI, titre « Système Commercial ZLECAf - API Complète » (v3.0.0). Entrée ASGI : `server:app`.
 - Charge `.env` **avant** d'importer les modules (pour que `auth.py` lise `SECRET_KEY` à temps).
-- **Middleware** : CORS (origines via `ALLOWED_ORIGINS`), `SecurityHeadersMiddleware` (CSP), `CSRFMiddleware` (exemption décidée sur le chemin aiguillé `scope["path"]` : `/api/health`, `/api/`, les webhooks de paiement `/api/billing/webhook` et `/api/billing/chargily/webhook`, appels serveur à serveur authentifiés par leur signature, et, en POST seulement, les chemins retirés au lot O2-0, qui répondent 410), `RateLimitMiddleware` (120 req/min, burst 20). Logging structuré ISO.
+- **Middleware** : CORS (origines via `ALLOWED_ORIGINS`), `SecurityHeadersMiddleware` (CSP), `CSRFMiddleware` (exempte `/api/health`, `/api/` et les webhooks de paiement `/api/billing/webhook` et `/api/billing/chargily/webhook`, appels serveur à serveur authentifiés par leur signature), `RateLimitMiddleware` (120 req/min, burst 20). Logging structuré ISO.
 - **MongoDB** (Motor) : `MONGO_URL` optionnel, pool 5–50 connexions ; indexe au démarrage `customs_data`, `tariff_lines`, `api_keys`.
 - **PostgreSQL** (optionnel) : `POSTGRES_URL`, source tarifaire canonique « postgres-first ».
 - **Auth par clé API** (`auth.py`) : header `X-API-Key`, hachage SHA-256 stocké en collection `api_keys`, deux niveaux (`require_auth`, `require_admin`). **Fallback** : si MongoDB indisponible, toutes les requêtes passent en `{"tier":"public","no_db":True}` (pratique en local/tests).
@@ -103,7 +103,7 @@ Tous les routers sont montés sous le préfixe **`/api`**. `/api/health` est pub
 | Module | Préfixe | Rôle |
 |--------|---------|------|
 | `health.py` | `/health` | Santé / statut (public) |
-| `calculator.py` | `/calculate-tariff` | retiré au lot O2-0 : la route répond 410 et renvoie vers `POST /api/calcul` |
+| `calculator.py` | `/calculate-tariff` | retiré au lot O2-0 ; le calcul passe par `POST /api/calcul` |
 | `authentic_tariffs.py` | `/authentic-tariffs` | Données tarifaires officielles par pays (résumé, ligne, sous-positions, calcul) |
 | `tariffs_calculation.py` | — | routeur démonté au lot O2-0 ; seul `get_chapter_rate` reste |
 | `rules_of_origin.py` | `/rules-of-origin` | Règles d'origine ZLECAf (Appendice IV) par code SH |
@@ -163,8 +163,8 @@ contrôle, sanctions, devises autorisées).
 
 ### 4.3 Pipeline de calcul tarifaire — `POST /api/calculate-tariff`
 
-> Retiré au lot O2-0 : `backend/routes/calculator.py` n'existe plus et la route
-> répond 410. Le calcul passe par `GET /api/authentic-tariffs/calculate`, puis
+> Retiré au lot O2-0 : `backend/routes/calculator.py` et la route n'existent
+> plus. Le calcul passe par `GET /api/authentic-tariffs/calculate`, puis
 > `POST /api/calcul` (voir § 5.3). La description ci-dessous est historique.
 
 Fichier central : `backend/routes/calculator.py`. Déroulé :

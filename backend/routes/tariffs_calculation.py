@@ -2,7 +2,7 @@
 Plus aucune route : le routeur /tariffs/* de ce module (taux par chapitre et
 TVA par défaut, sans source) est démonté (lot O2-0). Seul get_chapter_rate
 reste, parce que services/strategic_trade_service.py l'importe encore (écran
-repris au lot O2-0b).
+encore affiché).
 """
 
 

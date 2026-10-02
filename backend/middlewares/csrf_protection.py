@@ -16,11 +16,8 @@ CSRF_COOKIE = "csrf_token"
 
 
 class CSRFMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, exempt_paths: list | None = None, exempt_routes: list | None = None):
+    def __init__(self, app, exempt_paths: list | None = None):
         super().__init__(app)
-        # Couples (méthode, motif compilé) exemptés en plus des chemins exacts,
-        # pour les chemins paramétrés (ex. routes retirées qui répondent 410).
-        self.exempt_routes = list(exempt_routes or [])
         self.exempt_paths = exempt_paths or [
             "/api/docs",
             "/api/openapi.json",
@@ -74,10 +71,7 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             response.headers[CSRF_HEADER] = token
             return response
 
-        # Le chemin aiguillé par le routeur, pas request.url.path : ce dernier
-        # est recoupé par urlsplit et s'arrête à un « ? » ou « # » encodé
-        # (%3F, %23), ce qui exempterait un chemin qui n'est pas le chemin servi.
-        raw_path = request.scope["path"]
+        raw_path = request.url.path
         path = raw_path
         if not path.startswith("/"):
             parts = raw_path.split("/api/", 1)
@@ -86,10 +80,7 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             else:
                 path = "/" + raw_path.split("/", 1)[-1] if "/" in raw_path else raw_path
 
-        if path in self.exempt_paths or any(
-            request.method == methode and motif.fullmatch(path)
-            for methode, motif in self.exempt_routes
-        ):
+        if path in self.exempt_paths:
             return await call_next(request)
 
         cookie_token = request.cookies.get(CSRF_COOKIE)

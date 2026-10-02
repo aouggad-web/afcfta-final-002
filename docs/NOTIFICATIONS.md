@@ -262,7 +262,7 @@ asyncio.run(test())
 # Démarrer l'API
 uvicorn backend.server:app --reload
 
-# POST /api/crawl/start est retirée (lot O2-0) : elle répond 410. La collecte
+# POST /api/crawl/start est retirée (lot O2-0). La collecte
 # générique qu'elle lançait réécrivait les tarifs sourcés.
 ```
 
