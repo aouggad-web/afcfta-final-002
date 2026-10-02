@@ -1,11 +1,3 @@
-"""
-Plus aucune route : le routeur /tariffs/* de ce module (taux par chapitre et
-TVA par défaut, sans source) est démonté (lot O2-0). Seul get_chapter_rate
-reste, parce que services/strategic_trade_service.py l'importe encore (écran
-encore affiché).
-"""
-
-
 # Helper functions
 def get_chapter_rate(chapter: str) -> float:
     """Get the tariff rate for a chapter"""

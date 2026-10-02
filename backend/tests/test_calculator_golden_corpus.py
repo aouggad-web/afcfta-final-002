@@ -20,10 +20,7 @@ Deux familles, aux rôles distincts.
    rien n'est masqué.
 
 Seul le chemin prioritaire est exercé ici : il lit `backend/data/` et
-`backend/data/crawled/`, tous deux versionnés. Le chemin POST
-`/calculate-tariff` a été retiré (lot O2-0), avec le harnais
-`scripts/diff_engines.py` qui le comparait au chemin prioritaire ; la
-comparaison avec `POST /api/calcul` relève du lot O2-a.
+`backend/data/crawled/`, tous deux versionnés.
 """
 
 import json

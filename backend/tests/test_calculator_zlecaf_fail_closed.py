@@ -1,14 +1,7 @@
 """
-Principe « fail-closed » : une donnée NPF authentique ne constitue jamais, à
-elle seule, une preuve de préférence ZLECAf.
-
-Les tests de l'ancien endpoint /calculate-tariff (routes/calculator.py) sont
-retirés avec lui (lot O2-0). Restent ceux qui portent sur les données sources
-(aucun marqueur ZLECAf fabriqué dans les fichiers servis) et sur
-services.authentic_tariff_service.calculate_import_taxes.
+Vérifie le principe « fail-closed » : une donnée NPF authentique ne constitue
+jamais, à elle seule, une preuve de préférence ZLECAf.
 """
-
-# ==================== Données sources sans marqueur ZLECAf fabriqué ====================
 
 
 def test_gha_synthetic_zero_rate_rejected():

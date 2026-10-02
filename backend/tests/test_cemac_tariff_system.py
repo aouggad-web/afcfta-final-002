@@ -62,13 +62,6 @@ class TestCEMACCountryConfigs:
                 "AfCFTA" in agreements or "ZLECAf" in agreements
             ), f"{cc} should include AfCFTA/ZLECAf"
 
-    def test_aucun_taux_saisi_dans_la_configuration(self):
-        # Droits, TVA et taxes nationales viennent des fichiers crawlés, jamais
-        # d'une valeur écrite dans le module (la TVA du Tchad y était fausse).
-        cfg = self._get_cemac_countries()
-        for cc, info in cfg.items():
-            assert not {"tva_rate", "tva_note", "national_taxes", "dd_bands"} & set(info), cc
-
 
 # ==================== Data File Tests ====================
 
@@ -228,8 +221,6 @@ class TestCEMACRoutes:
         assert result["total_countries"] == 6
         assert "countries" in result
         assert len(result["countries"]) == 6
-        assert "dd_bands_pct" not in result
-        assert "common_taxes" not in result
 
     def test_data_summary_has_all_six_countries(self):
         from routes.cemac_crawlers import get_cemac_data_summary

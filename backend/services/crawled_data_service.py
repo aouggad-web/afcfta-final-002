@@ -23,9 +23,6 @@ class CrawledDataService:
             cls._instance._country_loaded = set()
         return cls._instance
 
-    def is_loaded(self) -> bool:
-        return self._loaded
-
     def get_available_countries(self) -> List[str]:
         return list(self._country_files.keys())
 

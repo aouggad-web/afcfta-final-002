@@ -6,8 +6,8 @@
  *    indexé par code de taxe canonique, produit par la normalisation de
  *    `services/authentic_tariff_service.py` —
  *    `{ DD: { rate, label, source, source_tax_code }, TVA: {...}, ... }` ;
- *  - chemin `POST /calcul` (adaptateur `unifiedCalculator.js`) : une LISTE
- *    `[{ code, tax, rate, observation }, ...]`.
+ *  - chemin de repli : une LISTE
+ *    `[{ tax, rate, observation }, ...]`.
  *
  * L'affichage « Détail des Taxes » n'acceptait que la liste : sur le chemin
  * authentique, `taxes_detail.length` valait `undefined`, la carte entière
@@ -33,12 +33,6 @@ const matchKey = (code) => String(code || '').trim().toUpperCase().replace(/[.\s
 /**
  * Index des taux préférentiels par taxe, sur DEUX clés : le code (`DD`) et
  * l'intitulé (`Droit de douane`).
- *
- * Le rapprochement par code seul ne suffit pas : l'ancien chemin de repli
- * `/calculate-tariff` (retiré au lot O2-0) renseignait `taxes_detail[].tax`
- * avec le NOM de la taxe alors que la ventilation garde `code` et `name`
- * séparément. Sans l'alias par intitulé, ces lignes ressortaient sans taux
- * préférentiel et l'affichage y recopiait le taux NPF.
  *
  * Le code prime : un intitulé n'écrase jamais une entrée déjà indexée.
  */

@@ -3,8 +3,7 @@ STRICTEMENT SÉPARÉS des droits et taxes du calculateur.
 
 Ces tests évitent volontairement d'importer ``routes/__init__`` (qui tire
 pymongo / le moteur réglementaire v3) : ils vérifient l'invariant au niveau du
-service source. Les deux tests qui le vérifiaient sur le modèle de réponse de
-l'ancien POST /calculate-tariff sont retirés avec lui (lot O2-0).
+service source.
 """
 
 from services.regulatory_compliance_service import (

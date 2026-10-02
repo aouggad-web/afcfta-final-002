@@ -444,7 +444,7 @@ def test_every_verified_fee_carries_a_primary_source():
 
 
 # ── build_regulatory_blocks — point d'entrée unique partagé par toutes les
-#    routes de calcul (calculator.py ET authentic_tariffs.py) ─────────────────
+#    routes de calcul ─────────────────
 
 
 def test_build_regulatory_blocks_matches_manual_composition():

@@ -1,9 +1,5 @@
 """
-Tariffs routes - routes de consultation conservées tant que le calculateur les appelle :
-/hs6-tariffs/code/{hs6} et /tariffs/sub-positions/{cc}/{hs6} (appelées par
-CalculatorTab.jsx), /tariffs/detailed-countries. Les autres routes de ce
-module, sans appelant, servaient des taux de chapitre ou de repli non sourcés
-et ont été retirées (lot O2-0).
+Tariffs routes
 """
 
 from typing import Optional

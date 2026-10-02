@@ -88,11 +88,11 @@ explicitement (« pas de donnée ») plutôt que fabriquée.
 
 - Application FastAPI, titre « Système Commercial ZLECAf - API Complète » (v3.0.0). Entrée ASGI : `server:app`.
 - Charge `.env` **avant** d'importer les modules (pour que `auth.py` lise `SECRET_KEY` à temps).
-- **Middleware** : CORS (origines via `ALLOWED_ORIGINS`), `SecurityHeadersMiddleware` (CSP), `CSRFMiddleware` (exempte `/api/health`, `/api/` et les webhooks de paiement `/api/billing/webhook` et `/api/billing/chargily/webhook`, appels serveur à serveur authentifiés par leur signature), `RateLimitMiddleware` (120 req/min, burst 20). Logging structuré ISO.
+- **Middleware** : CORS (origines via `ALLOWED_ORIGINS`), `SecurityHeadersMiddleware` (CSP), `CSRFMiddleware` (exempte `/api/health`), `RateLimitMiddleware` (120 req/min, burst 20). Logging structuré ISO.
 - **MongoDB** (Motor) : `MONGO_URL` optionnel, pool 5–50 connexions ; indexe au démarrage `customs_data`, `tariff_lines`, `api_keys`.
 - **PostgreSQL** (optionnel) : `POSTGRES_URL`, source tarifaire canonique « postgres-first ».
 - **Auth par clé API** (`auth.py`) : header `X-API-Key`, hachage SHA-256 stocké en collection `api_keys`, deux niveaux (`require_auth`, `require_admin`). **Fallback** : si MongoDB indisponible, toutes les requêtes passent en `{"tier":"public","no_db":True}` (pratique en local/tests).
-- **Démarrage** : indexes DB, injection de la DB dans `auth`/`calculator`, chargement du service de données crawlées, du service ETL, du scheduler de taux de change (toutes les 4h), de l'orchestrateur de crawl.
+- **Démarrage** : indexes DB, injection de la DB dans `auth`, chargement du service de données crawlées, du scheduler de taux de change (toutes les 4h).
 
 > ⚠️ **Problème connu (environnement)** : `server.py` importe `motor.motor_asyncio`, qui échoue actuellement avec `ImportError: cannot import name '_QUERY_OPTIONS' from 'pymongo.cursor'` (incompatibilité de versions motor/pymongo). **Conséquence** : le serveur ne démarre pas tel quel dans ce sandbox, et les tests d'intégration qui requièrent un serveur live (`test_rules_of_origin.py`, `test_smart_search_chapters.py`) ne peuvent pas s'exécuter ici. À corriger en alignant les versions `motor`/`pymongo` dans `requirements.txt`.
 
@@ -103,9 +103,7 @@ Tous les routers sont montés sous le préfixe **`/api`**. `/api/health` est pub
 | Module | Préfixe | Rôle |
 |--------|---------|------|
 | `health.py` | `/health` | Santé / statut (public) |
-| `calculator.py` | `/calculate-tariff` | retiré au lot O2-0 ; le calcul passe par `POST /api/calcul` |
 | `authentic_tariffs.py` | `/authentic-tariffs` | Données tarifaires officielles par pays (résumé, ligne, sous-positions, calcul) |
-| `tariffs_calculation.py` | — | routeur démonté au lot O2-0 ; seul `get_chapter_rate` reste |
 | `rules_of_origin.py` | `/rules-of-origin` | Règles d'origine ZLECAf (Appendice IV) par code SH |
 | `dismantlement.py` | `/dismantlement` | Calendrier de démantèlement ZLECAf par pays |
 | `hs6_database.py` | `/hs6` | Recherche SH6 (moteur de scoring texte/préfixe) |
@@ -161,32 +159,6 @@ onglet « Change ») affiche désormais deux cartes côte à côte (Import /
 Export) en plus de la carte de réglementation générale (niveau de
 contrôle, sanctions, devises autorisées).
 
-### 4.3 Pipeline de calcul tarifaire — `POST /api/calculate-tariff`
-
-> Retiré au lot O2-0 : `backend/routes/calculator.py` et la route n'existent
-> plus. Le calcul passe par `GET /api/authentic-tariffs/calculate`, puis
-> `POST /api/calcul` (voir § 5.3). La description ci-dessous est historique.
-
-Fichier central : `backend/routes/calculator.py`. Déroulé :
-
-1. **Validation des pays** : `origin_country` / `destination_country` (ISO2 ou ISO3), recherche dans `AFRICAN_COUNTRIES` ; HTTP 400 si hors ZLECAf.
-2. **Normalisation du code SH** : nettoyage (points/espaces), extraction SH6 (6 premiers chiffres), code secteur (2 chiffres).
-3. **Priorité des sources de données (3 niveaux)** :
-   - **Priorité 1 — `crawled_authentic`** : `crawled_service.lookup(dest_iso3, hs_code_clean)` → position nationale complète (taxes, avantages fiscaux, formalités, source). Précision : `national_position` (la plus fine).
-   - **Priorité 2 — `collected_verified`** : `tariff_service.get_tariff_precision_info(...)` → taux + source + précision (sous-position / hs6_country / chapitre).
-   - **Priorité 3 — `etl_fallback`** : modules ETL (`get_sub_position_rate`, `get_country_hs6_tariff`, `get_tariff_rate_for_country`). Toujours disponible.
-   Chaque niveau renseigne `data_source`, `tariff_precision`, `confidence_level` pour la traçabilité.
-4. **Extraction des taux** : NPF (droit de douane DD/DI), TVA, autres taxes (redevance statistique, prélèvements communautaires…).
-5. **Taux préférentiel ZLECAf** :
-   - Méthode générique (tous pays sauf DZA) : `zlecaf_rate = normal_rate × facteur_de_réduction` via `get_zlecaf_reduction_factor(dest_iso3, catégorie_produit)`.
-   - **Override Algérie (DZA)** : `compute_dza_zlecaf_rate()` (voir §7) remplace le facteur générique par le calendrier authentique de la circulaire DGD 482/2024.
-6. **Ventilation complète des taxes** : `backend/services/tax_computation.py` — moteur pur (sans I/O) qui calcule en cascade les bases (CIF, CIF+DD, …), résout itérativement les dépendances (la TVA dépend du DD déjà calculé), applique les plafonds, et produit `taxes_breakdown` + `taxes_summary` sous les deux régimes (NPF vs ZLECAf), avec économies.
-7. **Localisation multidevise** : conversion des montants USD → devise locale du pays (services `currencies` + `exchange_rates`) ; dégradation propre si le taux FX est indisponible.
-8. **Enrichissement règles d'origine** : `etl/afcfta_rules_of_origin.get_rule_of_origin(hs6, "fr")` (voir §6).
-9. **Données complémentaires** : top producteurs africains (OEC), données économiques (World Bank), variations de sous-positions + avertissement de taux variable.
-
-Réponse : modèle Pydantic `TariffCalculationResponse` (`backend/models.py`) — identifiants, taux & montants NPF, taux & montants ZLECAf, économies, **journaux de calcul** pas-à-pas (avec références légales), traçabilité (`data_source`, `tariff_precision`, `confidence_level`), tableau de taxes, bloc devise, règles d'origine, top producteurs, données pays.
-
 ### 4.4 Couche services (`backend/services/`)
 
 | Service | Rôle |
@@ -220,7 +192,6 @@ React 19 via CRA + **Craco** (proxy dev `/api` → `http://localhost:8000`). UI 
 ### 5.3 Flux clé — le calculateur (`components/calculator/CalculatorTab.jsx`)
 Formulaire (origine, destination, code SH 6–12 chiffres, valeur USD). Au calcul :
 1. **Priorité 1** : `GET /api/authentic-tariffs/calculate/{destISO3}/{hsCode}?value=…&language=…`
-2. **Repli** : `POST /api/calcul` (corps `{destination, origine, code_sh, valeur_cif}`), quand le chemin historique répond 404 ou 422 `CALCULATION_UNAVAILABLE` ; TUN et MUS passent d'abord par `/calcul`.
 Affichage : comparaison NPF vs ZLECAf + économies, ventilation en cascade (valeur → DD → TVA sur CIF+DD → autres taxes), journal de calcul, graphiques (Recharts), calendrier de démantèlement, panneau règles d'origine, comparaison multi-pays, export PDF/Excel. Aides à la sélection SH : `SmartHSSearch`, `HSCodeBrowser`, `ProductKeywordSearch`.
 
 ### 5.4 Autres flux
@@ -282,7 +253,7 @@ Points clés (corrige le facteur générique, faux pour l'Algérie) :
 - **Positions gelées** (textiles, véhicules) tant que les règles d'origine ne sont pas finalisées → droit commun maintenu.
 - **DAPS** (droit additionnel provisoire de sauvegarde) exonéré pour les produits des listes (A)/(B) non gelées importés depuis un partenaire actif (circulaire 482/2024, partie II-2, citant l'art. 2 de la loi de finances complémentaire 2018) — provision distincte du calendrier de démantèlement du DD lui-même.
 
-Intégration : override dans `routes/calculator.py` lorsque `dest_iso3 == "DZA"`. **Committé** sur la branche `claude/setup-github-cli-EngUf` (commit `98e0cdc1`).
+Intégration : override lorsque `dest_iso3 == "DZA"`. **Committé** sur la branche `claude/setup-github-cli-EngUf` (commit `98e0cdc1`).
 
 ### 7bis. Statut d'adhésion ZLECAf continental + partenaires actifs Afrique du Sud
 
@@ -291,7 +262,7 @@ Deux nouveaux modules généralisent, hors Algérie, la distinction « ratifié 
 - `backend/services/zlecaf_membership_status.py` (+ tests, 4) : statut de ratification par pays (ISO3), source **« Update on the AfCFTA » — newsletter the dtic/SARS, mars 2026** : Érythrée seule non signataire ; Bénin, Libye, Soudan du Sud, Soudan signataires non encore ratifiés ; tous les autres pays classés ratifiés. La source ne donne que des compteurs agrégés (50 ratifications, 48 offres tarifaires vérifiées, 25 pays en application active) sans liste nominative complète pour ces deux derniers niveaux : **aucune liste n'a donc été fabriquée** au-delà des pays explicitement cités.
 - `backend/services/zlecaf_schedule_zaf.py` (+ tests, 4) : 14 partenaires ayant effectivement déclenché l'échange de préférences ZLECAf à l'import en Afrique du Sud (Ghana, Nigeria, Sierra Leone, Gambie, Éthiopie, Cameroun, Tunisie, Algérie, Égypte, Maroc, Kenya, Rwanda, Ouganda, Burundi — même source), à l'exclusion explicite des membres de la SACU (Botswana, Lesotho, Namibie, Eswatini) qui échangent avec l'Afrique du Sud sous le régime SACU et non sous la ZLECAf (FAQ du document).
 
-Intégration dans `routes/calculator.py` : (1) si `dest_iso3 == "ZAF"` et le partenaire n'est pas dans la liste active → taux NPF ; (2) quel que soit le pays destination, si l'origine ou la destination n'a pas ratifié l'Accord → taux NPF (la non-ratification prime sur tout facteur générique ZLECAf).
+Intégration : (1) si `dest_iso3 == "ZAF"` et le partenaire n'est pas dans la liste active → taux NPF ; (2) quel que soit le pays destination, si l'origine ou la destination n'a pas ratifié l'Accord → taux NPF (la non-ratification prime sur tout facteur générique ZLECAf).
 
 
 ---

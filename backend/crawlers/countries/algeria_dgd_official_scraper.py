@@ -23,8 +23,7 @@ Ce que le module ne fait pas, délibérément :
 * il ne remplit pas ``fiscal_advantages``. Le portail publie un tableau
   « Avantages fiscaux » qui liste des taux d'exonération (D.D 0 %, T.V.A 0 %)
   rattachés à des régimes conditionnels, pas des taux applicables de plein
-  droit. ``enhanced_calculator_service`` déduit ``fiscal_advantages`` du droit
-  dû : l'y verser exonérerait tout le monde. Le tableau est conservé verbatim
+  droit. Le tableau est conservé verbatim
   dans ``tax_advantages``, sans interprétation ;
 * il ne convertit pas les taxes spécifiques en taux. Une quotité par hectolitre
   n'est pas un pourcentage ; elle est rendue telle quelle dans

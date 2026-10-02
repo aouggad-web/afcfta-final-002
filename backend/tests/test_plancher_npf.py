@@ -147,8 +147,7 @@ def test_le_plancher_survit_jusqu_aux_contrats_de_reponse_publics():
     Le champ a d'abord existé dans le seul résolveur privé : la note libre
     passait, la donnée structurée non. Un client d'API pouvait donc voir un
     taux corrigé sans aucun moyen de lire par programme lequel avait été
-    écarté ni pourquoi. On tient le chemin public (l'ancien POST
-    /calculate-tariff et son modèle de réponse sont retirés, lot O2-0).
+    écarté ni pourquoi.
     """
     from services.authentic_tariff_service import calculate_import_taxes
 

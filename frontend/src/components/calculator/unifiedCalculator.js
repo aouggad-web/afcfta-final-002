@@ -3,7 +3,7 @@
  * historique déjà consommée par `CalculatorTab` et ses composants d'affichage.
  *
  * Ce module remplace le second chemin de calcul du frontend — l'appel de
- * repli `/calculate-tariff` (`routes/calculator.py`, retiré au lot O2-0, l'une des « trois
+ * repli `/calculate-tariff` (`routes/calculator.py`, l'une des « trois
  * cascades » recensées par `docs/PLAN_CALCULATEUR_UNIQUE.md` §1.1) — sans
  * toucher au chemin `/authentic-tariffs/calculate`, qui reste pour l'instant
  * seul à fournir les avantages fiscaux, les formalités administratives et

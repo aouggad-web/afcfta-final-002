@@ -284,7 +284,7 @@ async def compare_countries(
     """
     Cross-country comparison of key trade and investment metrics.
 
-    Includes corporate tax, investment law and sector strengths.
+    Includes corporate tax, investment law, sector strengths.
     """
     try:
         c = _constants()

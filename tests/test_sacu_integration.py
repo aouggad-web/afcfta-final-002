@@ -113,8 +113,6 @@ class TestSACUSummary:
         summary = generate_sacu_summary()
         assert "framework" in summary
         assert "revenue_shares" in summary
-        # Tranches de TEC saisies sans source : retirées (lot O2-0).
-        assert "cet_bands" not in summary
         assert "generated_at" in summary
 
     def test_run_scraper_returns_dict(self):

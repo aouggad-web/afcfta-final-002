@@ -5,9 +5,8 @@ Answers the question "what data we get now" for the 6 CEMAC member states:
   CMR (Cameroon), CAF (Central African Republic), COG (Congo-Brazzaville),
   GAB (Gabon), GNQ (Equatorial Guinea), TCD (Chad)
 
-All share the CEMAC Common External Tariff (TEC CEMAC). Duty, VAT and national
-taxes are served only from the crawled files (backend/data/crawled), never from
-rates typed in this module (lot O2-0).
+All share the CEMAC Common External Tariff (TEC CEMAC) plus country-specific
+national taxes.
 
 Endpoints:
   GET /api/crawlers/cemac/countries        # CEMAC member configs
@@ -160,11 +159,10 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
         sub_positions = 0  # old-format positions are already leaf-level HS8 codes
         lines_with_sub = 0
         dd_rates = [p.get("taxes", {}).get("DD", 0) for p in lines if "DD" in p.get("taxes", {})]
-        # Sans taux au fichier, la fourchette est inconnue (None), pas 0.
         dd_range = {
-            "min": min(dd_rates) if dd_rates else None,
-            "max": max(dd_rates) if dd_rates else None,
-            "avg": round(sum(dd_rates) / len(dd_rates), 2) if dd_rates else None,
+            "min": min(dd_rates) if dd_rates else 0,
+            "max": max(dd_rates) if dd_rates else 0,
+            "avg": round(sum(dd_rates) / len(dd_rates), 2) if dd_rates else 0,
         }
         generated_at = data.get("extracted_at")
 
@@ -221,9 +219,9 @@ def get_cemac_countries():
     """
     Return the configuration of all 6 CEMAC member states.
 
-    All members share the CEMAC Common External Tariff (TEC CEMAC). Rates
-    (duty, TVA, national taxes) are read from each country's crawled file:
-    see /data-summary and /data/{country_code}.
+    All members share the CEMAC Common External Tariff (TEC CEMAC).
+    Country-specific national taxes (TVA rate, TCI, statistical levies)
+    differ per member.
     """
     countries = list(CEMAC_COUNTRIES.values())
     return {
@@ -267,8 +265,8 @@ def get_cemac_data_summary():
         "total_tariff_lines": total_lines,
         "total_sub_positions": total_sub,
         "cemac_tec_note": (
-            "All CEMAC members share the same HS nomenclature and the TEC CEMAC. "
-            "Duty, TVA and national levies: see each country's crawled file."
+            "All CEMAC members share the same HS nomenclature. "
+            "TVA and national levies differ per country."
         ),
         "countries": summaries,
     }

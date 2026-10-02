@@ -3,10 +3,6 @@ Example: Ghana-specific customs scraper
 
 This file demonstrates how to create a country-specific scraper by
 inheriting from BaseScraper and implementing the required methods.
-
-No factory registers it (the generic scraper factory was removed in lot O2-0
-because it only ran a collector that fabricated chapter-band rates); a real
-country scraper must be wired explicitly.
 """
 
 import logging
@@ -29,7 +25,6 @@ class GhanaScraper(BaseScraper):
     - Tariff schedules
     """
 
-    # Country this scraper is for
     _country_code = "GHA"
 
     async def scrape(self) -> Dict[str, Any]:

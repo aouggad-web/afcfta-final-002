@@ -1,10 +1,3 @@
-"""
-SADC Trade Statistics
-=====================
-Regional trade statistics for the Southern African Development Community
-(SADC).
-"""
-
 SADC_TRADE_STATISTICS = {
     "intra_sadc_trade_share_pct": 19,
     "total_sadc_gdp_usd_billion": 800,

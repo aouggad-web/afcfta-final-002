@@ -1,9 +1,5 @@
 # 📧 Guide des Notifications
 
-> Les notifications de crawl ne sont plus émises : l'orchestrateur de crawl et
-> l'initialisation de `NotificationManager` dans `server.py` sont retirés au
-> lot O2-0. Ce guide décrit l'état antérieur.
-
 ## Vue d'ensemble
 
 Le système de notifications AfCFTA supporte deux canaux:
@@ -191,7 +187,6 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00/B00/XXX
 ## Types de notifications
 
 ### 🚀 Crawl Started
-Envoyée au début d'un job de crawling.
 
 **Contenu:**
 - Job ID
@@ -199,7 +194,6 @@ Envoyée au début d'un job de crawling.
 - Heure de début
 
 ### ✅ Crawl Success
-Envoyée quand le crawl se termine avec succès.
 
 **Contenu:**
 - Job ID
@@ -209,7 +203,6 @@ Envoyée quand le crawl se termine avec succès.
 - Durée d'exécution
 
 ### ❌ Crawl Failed
-Envoyée en cas d'échec du crawl.
 
 **Contenu:**
 - Job ID
@@ -254,16 +247,6 @@ async def test():
     )
 
 asyncio.run(test())
-```
-
-### Test depuis l'API
-
-```bash
-# Démarrer l'API
-uvicorn backend.server:app --reload
-
-# POST /api/crawl/start est retirée (lot O2-0). La collecte
-# générique qu'elle lançait réécrivait les tarifs sourcés.
 ```
 
 ## Désactiver les notifications

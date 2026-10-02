@@ -60,7 +60,6 @@ The health endpoints provide real-time monitoring of:
 | `/api/` | GET | API welcome message |
 | `/api/countries` | GET | List all 54 ZLECAf member countries |
 | `/api/country-profile/{country_code}` | GET | Get detailed country economic profile |
-| `/api/calcul` | POST | Calculate import duties and taxes from the sourced base (`backend/socle/`) |
 | `/api/rules-of-origin/{hs_code}` | GET | Get rules of origin for HS code |
 | `/api/statistics` | GET | Get comprehensive ZLECAf statistics |
 
@@ -175,7 +174,6 @@ GET /api/export/comparison/csv?countries=KE,TZ&hs_codes=080300,080400
 ## 📧 Notification System
 
 The system supports real-time notifications via Email and Slack for:
-- Crawl job start/completion/failure events
 - Validation issues and warnings
 - System health alerts
 
@@ -362,23 +360,6 @@ curl https://your-domain.com/api/health
 
 ```bash
 curl https://your-domain.com/api/countries
-```
-
-### Calculate Tariff
-
-```bash
-# POST is protected by CSRF: fetch the cookie and the X-CSRF-Token header first.
-curl -s -c cookies.txt -D headers.txt -o /dev/null https://your-domain.com/api/countries
-TOKEN=$(grep -i '^x-csrf-token:' headers.txt | cut -d' ' -f2 | tr -d '\r')
-curl -X POST https://your-domain.com/api/calcul \
-  -b cookies.txt -H "X-CSRF-Token: $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "origine": "KEN",
-    "destination": "GHA",
-    "code_sh": "0803901000",
-    "valeur_cif": 10000
-  }'
 ```
 
 ## 🔄 Automated Data Updates
