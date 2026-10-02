@@ -60,7 +60,6 @@ The health endpoints provide real-time monitoring of:
 | `/api/` | GET | API welcome message |
 | `/api/countries` | GET | List all 54 ZLECAf member countries |
 | `/api/country-profile/{country_code}` | GET | Get detailed country economic profile |
-| `/api/calculate-tariff` | POST | Calculate tariffs between countries |
 | `/api/rules-of-origin/{hs_code}` | GET | Get rules of origin for HS code |
 | `/api/statistics` | GET | Get comprehensive ZLECAf statistics |
 
@@ -175,7 +174,6 @@ GET /api/export/comparison/csv?countries=KE,TZ&hs_codes=080300,080400
 ## 📧 Notification System
 
 The system supports real-time notifications via Email and Slack for:
-- Crawl job start/completion/failure events
 - Validation issues and warnings
 - System health alerts
 
@@ -362,19 +360,6 @@ curl https://your-domain.com/api/health
 
 ```bash
 curl https://your-domain.com/api/countries
-```
-
-### Calculate Tariff
-
-```bash
-curl -X POST https://your-domain.com/api/calculate-tariff \
-  -H "Content-Type: application/json" \
-  -d '{
-    "origin_country": "KE",
-    "destination_country": "GH",
-    "hs_code": "080300",
-    "value": 10000
-  }'
 ```
 
 ## 🔄 Automated Data Updates

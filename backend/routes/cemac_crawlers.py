@@ -5,8 +5,8 @@ Answers the question "what data we get now" for the 6 CEMAC member states:
   CMR (Cameroon), CAF (Central African Republic), COG (Congo-Brazzaville),
   GAB (Gabon), GNQ (Equatorial Guinea), TCD (Chad)
 
-All share the CEMAC Common External Tariff (TEC CEMAC) with 4 DD bands
-(5%, 10%, 20%, 30%) plus country-specific national taxes.
+All share the CEMAC Common External Tariff (TEC CEMAC) plus country-specific
+national taxes.
 
 Endpoints:
   GET /api/crawlers/cemac/countries        # CEMAC member configs
@@ -35,11 +35,7 @@ CEMAC_COUNTRIES: Dict[str, Dict[str, Any]] = {
         "country_name_en": "Cameroon",
         "primary_source": "cameroontradeportal.cm / douanes.gouv.cm",
         "currency": "XAF (FCFA)",
-        "tva_rate": 19.25,
-        "tva_note": "17.5% base + 10% CAC (Centimes Additionnels Communaux)",
-        "national_taxes": {"TCI": 1.0, "RI": 0.45, "CAC": 10.0},
         "preferential_agreements": ["AfCFTA/ZLECAf", "TEC CEMAC", "ECCAS"],
-        "dd_bands": [0, 5, 10, 20, 30],
     },
     "CAF": {
         "iso3": "CAF",
@@ -47,11 +43,7 @@ CEMAC_COUNTRIES: Dict[str, Dict[str, Any]] = {
         "country_name_en": "Central African Republic",
         "primary_source": "finances.gouv.cf / edouanes.cf",
         "currency": "XAF (FCFA)",
-        "tva_rate": 19.0,
-        "tva_note": "Standard rate",
-        "national_taxes": {"TCI": 1.0, "RS": 1.0},
         "preferential_agreements": ["AfCFTA/ZLECAf", "TEC CEMAC", "ECCAS"],
-        "dd_bands": [0, 5, 10, 20, 30],
     },
     "COG": {
         "iso3": "COG",
@@ -59,11 +51,7 @@ CEMAC_COUNTRIES: Dict[str, Dict[str, Any]] = {
         "country_name_en": "Republic of the Congo",
         "primary_source": "douanes.gouv.cg / finances.gouv.cg",
         "currency": "XAF (FCFA)",
-        "tva_rate": 18.0,
-        "tva_note": "Standard rate (surtaxe 5% possible on some goods)",
-        "national_taxes": {"TCI": 1.0, "TS": 0.2, "OHADA": 0.05},
         "preferential_agreements": ["AfCFTA/ZLECAf", "TEC CEMAC", "ECCAS"],
-        "dd_bands": [0, 5, 10, 20, 30],
     },
     "GAB": {
         "iso3": "GAB",
@@ -71,11 +59,7 @@ CEMAC_COUNTRIES: Dict[str, Dict[str, Any]] = {
         "country_name_en": "Gabon",
         "primary_source": "douanes.ga / dgi.ga",
         "currency": "XAF (FCFA)",
-        "tva_rate": 18.0,
-        "tva_note": "Standard rate (reduced 10%/5% for some sectors)",
-        "national_taxes": {"TCI": 1.0, "CIA": 0.2},
         "preferential_agreements": ["AfCFTA/ZLECAf", "TEC CEMAC", "ECCAS"],
-        "dd_bands": [0, 5, 10, 20, 30],
     },
     "GNQ": {
         "iso3": "GNQ",
@@ -83,11 +67,7 @@ CEMAC_COUNTRIES: Dict[str, Dict[str, Any]] = {
         "country_name_en": "Equatorial Guinea",
         "primary_source": "douanes.gq / finances.gq",
         "currency": "XAF (FCFA)",
-        "tva_rate": 15.0,
-        "tva_note": "Standard rate",
-        "national_taxes": {"TCI": 1.0},
         "preferential_agreements": ["AfCFTA/ZLECAf", "TEC CEMAC", "ECCAS"],
-        "dd_bands": [0, 5, 10, 20, 30],
     },
     "TCD": {
         "iso3": "TCD",
@@ -95,11 +75,7 @@ CEMAC_COUNTRIES: Dict[str, Dict[str, Any]] = {
         "country_name_en": "Chad",
         "primary_source": "finances.gouv.td",
         "currency": "XAF (FCFA)",
-        "tva_rate": 19.25,
-        "tva_note": "17.5% base + 10% Centimes Additionnels (reduced 9.9% for local goods)",
-        "national_taxes": {"TCI": 1.0, "TS": 2.0, "PUA": 0.2},
         "preferential_agreements": ["AfCFTA/ZLECAf", "TEC CEMAC", "ECCAS"],
-        "dd_bands": [0, 5, 10, 20, 30],
     },
 }
 
@@ -201,8 +177,6 @@ def _country_data_summary(country_code: str) -> Dict[str, Any]:
         "lines_with_sub_positions": lines_with_sub,
         "chapters_covered": chapters,
         "dd_rate_range": dd_range,
-        "vat_rate": cfg.get("tva_rate"),
-        "national_taxes": list(cfg.get("national_taxes", {}).keys()),
         "preferential_agreements": cfg.get("preferential_agreements", []),
         "fields_available": (
             [
@@ -245,9 +219,9 @@ def get_cemac_countries():
     """
     Return the configuration of all 6 CEMAC member states.
 
-    All members share the CEMAC Common External Tariff (TEC CEMAC) with
-    four duty bands: 5%, 10%, 20%, 30%. Country-specific national taxes
-    (TVA rate, TCI, statistical levies) differ per member.
+    All members share the CEMAC Common External Tariff (TEC CEMAC).
+    Country-specific national taxes (TVA rate, TCI, statistical levies)
+    differ per member.
     """
     countries = list(CEMAC_COUNTRIES.values())
     return {
@@ -255,10 +229,6 @@ def get_cemac_countries():
         "trade_bloc": "CEMAC",
         "total_countries": len(countries),
         "common_tariff": "TEC CEMAC (Tarif Extérieur Commun)",
-        "dd_bands_pct": [0, 5, 10, 20, 30],
-        "common_taxes": {
-            "TCI": "Taxe Communautaire d'Intégration — 1% on CIF (all members)",
-        },
         "preferential_agreements": ["AfCFTA/ZLECAf", "ECCAS", "TEC CEMAC"],
         "countries": countries,
     }
@@ -295,8 +265,8 @@ def get_cemac_data_summary():
         "total_tariff_lines": total_lines,
         "total_sub_positions": total_sub,
         "cemac_tec_note": (
-            "All CEMAC members share the same HS nomenclature and DD bands "
-            "(5/10/20/30%). TVA and national levies differ per country."
+            "All CEMAC members share the same HS nomenclature. "
+            "TVA and national levies differ per country."
         ),
         "countries": summaries,
     }
@@ -353,7 +323,6 @@ def get_cemac_country_data(
             "iso3": cc,
             "country_name": cfg["country_name_en"],
             "currency": cfg["currency"],
-            "tva_rate": cfg["tva_rate"],
         },
         "data_format": data_format,
         "generated_at": data.get("generated_at") or data.get("extracted_at"),

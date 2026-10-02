@@ -9,7 +9,6 @@ Tests for services/sadc_intelligence_service.py covering:
   - Mining intelligence
   - Transport corridor queries
   - SACU framework retrieval
-  - Trade protocol data
   - Cross-regional comparisons
   - Country tariff data loading
 """
@@ -264,31 +263,6 @@ class TestSADCCrossRegionalComparisons:
         result = self.svc.compare_sadc_cemac()
         assert "key_differences" in result
         assert len(result["key_differences"]) > 0
-
-
-# ===========================================================================
-# Trade protocols
-# ===========================================================================
-
-
-class TestSADCTradeProtocols:
-    def setup_method(self):
-        from services.sadc_intelligence_service import SADCIntelligenceService
-
-        self.svc = SADCIntelligenceService()
-
-    def test_all_protocols_returns_dict(self):
-        result = self.svc.get_trade_protocols()
-        assert isinstance(result, dict)
-
-    def test_specific_protocol(self):
-        result = self.svc.get_trade_protocols(protocol="sadc_trade_protocol")
-        if "error" not in result:
-            assert "tariff_elimination" in result
-
-    def test_invalid_protocol_returns_error(self):
-        result = self.svc.get_trade_protocols(protocol="nonexistent_protocol")
-        assert "error" in result
 
 
 # ===========================================================================

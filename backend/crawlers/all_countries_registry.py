@@ -967,86 +967,6 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
 }
 
 
-# Regional blocks membership mapping
-REGIONAL_BLOCKS: Dict[str, List[str]] = {
-    RegionalBlock.ECOWAS.value: [
-        "BEN",
-        "BFA",
-        "CPV",
-        "CIV",
-        "GMB",
-        "GHA",
-        "GIN",
-        "GNB",
-        "LBR",
-        "MLI",
-        "NER",
-        "NGA",
-        "SEN",
-        "SLE",
-        "TGO",
-    ],
-    RegionalBlock.UEMOA.value: ["BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"],
-    RegionalBlock.CEMAC.value: ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"],
-    RegionalBlock.EAC.value: ["BDI", "KEN", "RWA", "SSD", "TZA", "UGA"],
-    RegionalBlock.SACU.value: ["BWA", "LSO", "NAM", "ZAF", "SWZ"],
-    RegionalBlock.SADC.value: [
-        "AGO",
-        "BWA",
-        "COM",
-        "COD",
-        "LSO",
-        "MDG",
-        "MWI",
-        "MUS",
-        "MOZ",
-        "NAM",
-        "SYC",
-        "ZAF",
-        "SWZ",
-        "TZA",
-        "ZMB",
-        "ZWE",
-    ],
-    RegionalBlock.COMESA.value: [
-        "BDI",
-        "COM",
-        "COD",
-        "DJI",
-        "EGY",
-        "ERI",
-        "ETH",
-        "KEN",
-        "LBY",
-        "MDG",
-        "MWI",
-        "MUS",
-        "RWA",
-        "SYC",
-        "SDN",
-        "SWZ",
-        "UGA",
-        "ZMB",
-        "ZWE",
-    ],
-    RegionalBlock.AMU.value: ["DZA", "EGY", "LBY", "MRT", "MAR", "TUN", "SDN"],
-    RegionalBlock.ECCAS.value: [
-        "AGO",
-        "BDI",
-        "CMR",
-        "CAF",
-        "TCD",
-        "COG",
-        "COD",
-        "GNQ",
-        "GAB",
-        "RWA",
-        "STP",
-    ],
-    RegionalBlock.IGAD.value: ["DJI", "ERI", "ETH", "KEN", "SOM", "SSD", "SDN", "UGA"],
-}
-
-
 # Utility functions
 def get_country_config(country_code: str) -> Optional[Dict[str, Any]]:
     """
@@ -1074,19 +994,6 @@ def get_countries_by_region(region: Region) -> List[str]:
     return [
         code for code, config in AFRICAN_COUNTRIES_REGISTRY.items() if config["region"] == region
     ]
-
-
-def get_countries_by_block(block: RegionalBlock) -> List[str]:
-    """
-    Get all country codes for a specific regional economic block.
-
-    Args:
-        block: RegionalBlock enum value
-
-    Returns:
-        List of ISO3 country codes
-    """
-    return REGIONAL_BLOCKS.get(block.value, [])
 
 
 def get_priority_countries(priority: Priority) -> List[str]:
@@ -1255,100 +1162,6 @@ if not _validation_report["is_complete"]:
     logger.warning(
         f"Registry incomplete: {_validation_report['total_countries']}/54 countries registered"
     )
-
-
-# Scraper class mapping for all 54 countries
-def get_scraper_class_mapping() -> Dict[str, Any]:
-    """
-    Get scraper class mapping for all 54 African countries.
-
-    Returns:
-        Dict mapping country codes to scraper class references and configuration
-    """
-    # Lazy import to avoid circular dependency
-    from backend.crawlers.countries.generic_scraper import GenericScraper
-
-    # Initialize mapping with GenericScraper for all countries
-    scraper_mapping = {}
-
-    for country_code, config in AFRICAN_COUNTRIES_REGISTRY.items():
-        # Determine regional tariff
-        regional_tariff = None
-        blocks = config.get("blocks", [])
-
-        # Priority order for regional tariff assignment
-        if RegionalBlock.ECOWAS in blocks or RegionalBlock.UEMOA in blocks:
-            regional_tariff = "TEC CEDEAO"
-        elif RegionalBlock.EAC in blocks:
-            regional_tariff = "CET EAC"
-        elif RegionalBlock.CEMAC in blocks:
-            regional_tariff = "TDC CEMAC"
-        elif RegionalBlock.SACU in blocks:
-            regional_tariff = "SACU Common Tariff"
-
-        scraper_mapping[country_code] = {
-            "class": GenericScraper,
-            "name": config.get("name_en"),
-            "name_fr": config.get("name_fr"),
-            "vat": config.get("vat_rate", 18.0),
-            "regional_tariff": regional_tariff,
-            "priority": config.get("priority"),
-            "region": config.get("region"),
-            "customs_url": config.get("customs_url"),
-        }
-
-    return scraper_mapping
-
-
-# Cache for scraper mapping (initialized on first access)
-_scraper_mapping_cache = None
-
-
-def get_all_scrapers() -> Dict[str, Any]:
-    """
-    Get all scraper configurations with lazy initialization.
-
-    Returns:
-        Dict mapping country codes to scraper configurations
-    """
-    global _scraper_mapping_cache
-    if _scraper_mapping_cache is None:
-        _scraper_mapping_cache = get_scraper_class_mapping()
-    return _scraper_mapping_cache
-
-
-def get_scraper_config(country_code: str) -> Optional[Dict[str, Any]]:
-    """
-    Get scraper configuration for a specific country.
-
-    Args:
-        country_code: ISO3 country code (e.g., 'GHA', 'NGA')
-
-    Returns:
-        Scraper configuration dict or None if not found
-    """
-    return get_all_scrapers().get(country_code.upper())
-
-
-def create_scraper_instance(country_code: str, config: Optional[Dict[str, Any]] = None):
-    """
-    Create a scraper instance for a specific country.
-
-    Args:
-        country_code: ISO3 country code
-        config: Optional configuration overrides
-
-    Returns:
-        Scraper instance or None if country not found
-    """
-    scraper_config = get_scraper_config(country_code)
-    if not scraper_config:
-        return None
-
-    scraper_class = scraper_config["class"]
-    merged_config = {**scraper_config, **(config or {})}
-
-    return scraper_class(country_code, merged_config)
 
 
 # =============================================================================

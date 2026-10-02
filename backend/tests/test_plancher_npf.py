@@ -147,9 +147,8 @@ def test_le_plancher_survit_jusqu_aux_contrats_de_reponse_publics():
     Le champ a d'abord existé dans le seul résolveur privé : la note libre
     passait, la donnée structurée non. Un client d'API pouvait donc voir un
     taux corrigé sans aucun moyen de lire par programme lequel avait été
-    écarté ni pourquoi. On tient les deux chemins publics.
+    écarté ni pourquoi.
     """
-    from models import TariffCalculationResponse
     from services.authentic_tariff_service import calculate_import_taxes
 
     resultat = calculate_import_taxes(
@@ -159,12 +158,6 @@ def test_le_plancher_survit_jusqu_aux_contrats_de_reponse_publics():
     assert plancher is not None, "le service public perd le plancher"
     assert plancher["taux_preferentiel_ecarte_pct"] == 24.0
     assert plancher["taux_retenu_pct"] == 5.0
-
-    # Et le modèle de réponse de l'API le porte, optionnel et non requis :
-    # une position ordinaire ne doit pas être obligée de le renseigner.
-    champ = TariffCalculationResponse.model_fields.get("plancher_npf")
-    assert champ is not None, "le contrat d'API ne porte pas le champ"
-    assert not champ.is_required(), "le plancher est l'exception, pas la règle"
 
 
 def test_une_position_ordinaire_ne_porte_aucun_plancher():

@@ -140,9 +140,7 @@ def test_synthetic_southern_africa_countries_are_refused_by_doctrine(monkeypatch
     """P0-1 (audit 2026-09-01) : les fichiers nationaux synthétiques de ces pays
     (sous-positions 10 chiffres générées par template, format enhanced_v2 sans
     provenance) ont été archivés — le calcul national doit être refusé
-    explicitement, jamais effectué sur des données fabriquées. Les taux MFN HS6
-    officiels (WITS/UNCTAD-TRAINS) restent servis par l'ancien moteur
-    /calculate-tariff (priorité crawled)."""
+    explicitement, jamais effectué sur des données fabriquées."""
     result = _calc(monkeypatch, country, "010129")
 
     assert "taxes_breakdown" not in result

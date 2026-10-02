@@ -559,9 +559,7 @@ async def calculate_taxes_endpoint(
     # Bloc informatif STRICTEMENT SÉPARÉ des droits et taxes : jamais ajouté au
     # coût douanier. Fail-closed : toute erreur de données ou pays non couvert
     # laisse les trois champs à None sans jamais interrompre le calcul
-    # tarifaire. Même point d'entrée que /calculate-tariff (routes/calculator.py)
-    # afin que ces frais apparaissent quel que soit le chemin de calcul emprunté
-    # par le frontend (données "authentiques" vs registre générique).
+    # tarifaire.
     origin_iso3 = (origin or "").upper() or None
     try:
         blocks = build_regulatory_blocks(

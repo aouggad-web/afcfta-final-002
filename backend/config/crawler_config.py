@@ -4,7 +4,7 @@ Centralized configuration for DZA tariff crawler and related services.
 """
 
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -85,26 +85,6 @@ class QualityConfig:
     strict_mode: bool = False
 
 
-@dataclass
-class IntegrationConfig:
-    """Integration priority settings for the enhanced calculator."""
-
-    # Data source priority order (highest priority first)
-    source_priority: list = field(
-        default_factory=lambda: ["dza_authentic", "crawled", "tariff_service", "etl_fallback"]
-    )
-
-    # Confidence scores per data source
-    confidence_scores: dict = field(
-        default_factory=lambda: {
-            "dza_authentic": 0.98,
-            "crawled": 0.85,
-            "tariff_service": 0.75,
-            "etl_fallback": 0.60,
-        }
-    )
-
-
 # ---------------------------------------------------------------------------
 # Module-level singletons (override via environment variables if needed)
 # ---------------------------------------------------------------------------
@@ -135,7 +115,3 @@ def get_quality_config() -> QualityConfig:
         min_hs10_coverage=float(os.environ.get("DZA_QUALITY_MIN_HS10", 0.3)),
         strict_mode=os.environ.get("DZA_QUALITY_STRICT", "false").lower() == "true",
     )
-
-
-def get_integration_config() -> IntegrationConfig:
-    return IntegrationConfig()

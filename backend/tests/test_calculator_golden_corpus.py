@@ -20,10 +20,7 @@ Deux familles, aux rôles distincts.
    rien n'est masqué.
 
 Seul le chemin prioritaire est exercé ici : il lit `backend/data/` et
-`backend/data/crawled/`, tous deux versionnés. Le chemin POST dépend de
-`backend/data/crawled_normalized/` (~2 Go, non versionné) ; sa comparaison
-relève du harnais `scripts/diff_engines.py`, qui sait signaler l'absence de
-cette couche au lieu de la confondre avec un défaut.
+`backend/data/crawled/`, tous deux versionnés.
 """
 
 import json
@@ -247,73 +244,3 @@ class TestDroitServiParLeCheminPrioritaire:
         else:
             assert observed["dd_rate_pct"] == pytest.approx(expected)
             assert observed["droit_douane"] == pytest.approx(CIF * expected / 100.0)
-
-
-# --------------------------------------------------------------------------- #
-# 3. Le harnais classe correctement
-# --------------------------------------------------------------------------- #
-
-
-class TestClassementDuHarnais:
-    """Le verdict du harnais différentiel ne doit pas confondre absence et zéro."""
-
-    @staticmethod
-    def _harness():
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location(
-            "diff_engines", REPO_ROOT / "scripts" / "diff_engines.py"
-        )
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module
-
-    def test_zero_et_absence_ne_sont_pas_confondus(self):
-        harness = self._harness()
-        assert harness._close(0.0, 0.0, 0.01) is True
-        assert harness._close(None, None, 0.01) is True
-        assert harness._close(None, 0.0, 0.01) is False
-        assert harness._close(0.0, None, 0.01) is False
-
-    def test_couche_normalisee_absente_nest_pas_une_divergence(self):
-        harness = self._harness()
-        priority = {
-            "status": "ok",
-            "dd_rate_pct": 10.0,
-            "summary": {},
-            "qualification": "authentique",
-        }
-        post = {"status": "absent", "error": "aucune ventilation NPF dans la réponse"}
-
-        verdict, _ = harness.classify(priority, post, normalized_present=False)
-        assert verdict == harness.V_NORMALISE_ABSENT
-        assert verdict not in harness.DIVERGENCE_VERDICTS
-
-        verdict, _ = harness.classify(priority, post, normalized_present=True)
-        assert verdict == harness.V_ABSENT_POST
-        assert verdict in harness.DIVERGENCE_VERDICTS
-
-    def test_qualification_divergente_est_relevee_a_montants_egaux(self):
-        harness = self._harness()
-        summary = {
-            "droit_douane": 0.0,
-            "autres_taxes": 0.0,
-            "tva": 150.0,
-            "total_taxes_et_droits": 150.0,
-        }
-        priority = {
-            "status": "ok",
-            "dd_rate_pct": 0.0,
-            "summary": summary,
-            "qualification": "authentique",
-        }
-        post = {
-            "status": "ok",
-            "dd_rate_pct": 0.0,
-            "summary": summary,
-            "qualification": "indicatif",
-        }
-
-        verdict, fields = harness.classify(priority, post, normalized_present=True)
-        assert verdict == harness.V_ECART_QUALIFICATION
-        assert fields == ["qualification"]

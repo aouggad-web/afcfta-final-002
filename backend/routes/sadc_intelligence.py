@@ -27,7 +27,6 @@ Endpoints:
   GET  /api/analysis/sadc-vs-cemac                       # Cross-regional comparison
   POST /api/regions/sadc/investment-recommendation       # Investment location ranking
   GET  /api/regions/sadc/freshness                       # Data freshness status
-  GET  /api/regions/sadc/protocols                       # Trade protocols
 """
 
 import logging
@@ -54,13 +53,6 @@ class InvestmentRecommendationRequest(BaseModel):
         default="infrastructure",
         description="Ranking priority: infrastructure | tax_incentives | market_access | stability",
     )
-
-
-class SACUImportCostRequest(BaseModel):
-    cif_value: float = Field(..., gt=0, description="CIF value in ZAR")
-    hs_chapter: str = Field(..., description="HS chapter (2-digit, e.g. '87')")
-    destination: str = Field(..., description="ISO3 destination country within SADC")
-    origin: str = Field(default="INTL", description="ISO3 origin country ('INTL' for non-SADC)")
 
 
 # ---------------------------------------------------------------------------
@@ -153,20 +145,6 @@ async def get_sadc_data_freshness():
         raise HTTPException(status_code=500, detail=str(exc))
 
 
-@router.get("/regions/sadc/protocols")
-async def get_sadc_trade_protocols(
-    protocol: Optional[str] = Query(
-        None, description="Specific protocol key (e.g. sadc_trade_protocol)"
-    )
-):
-    """Return SADC trade agreements and protocols."""
-    try:
-        return _get_sadc().get_trade_protocols(protocol=protocol)
-    except Exception as exc:
-        logger.error(f"SADC protocols failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
 # ---------------------------------------------------------------------------
 # SACU endpoints
 # ---------------------------------------------------------------------------
@@ -175,8 +153,8 @@ async def get_sadc_trade_protocols(
 @router.get("/regions/sacu/customs-union")
 async def get_sacu_framework():
     """
-    Return the SACU Customs Union framework details including revenue sharing,
-    CET bands, and institutional overview.
+    Return the SACU Customs Union framework details including revenue sharing
+    and institutional overview.
     """
     try:
         return _get_sadc().get_sacu_framework()
@@ -196,25 +174,6 @@ async def get_sacu_revenue_sharing():
         }
     except Exception as exc:
         logger.error(f"SACU revenue sharing failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-@router.post("/regions/sacu/import-cost")
-async def calculate_sacu_import_cost(request: SACUImportCostRequest):
-    """
-    Calculate total landed cost for an import at a SACU port of entry.
-
-    Applies SACU CET, SADC preferences (if applicable), and VAT.
-    """
-    try:
-        return _get_sadc().calculate_sacu_import_cost(
-            cif_value=request.cif_value,
-            hs_chapter=request.hs_chapter,
-            destination=request.destination,
-            origin=request.origin,
-        )
-    except Exception as exc:
-        logger.error(f"SACU import cost calculation failed: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
 
 

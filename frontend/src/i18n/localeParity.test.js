@@ -77,7 +77,7 @@ describe('parité des locales', () => {
   it('les onglets du module Opportunités sont traduits, plus codés en dur', () => {
     // Ils vivaient dans deux listes parallèles au sein du composant ; toute
     // langue supplémentaire en aurait demandé une troisième.
-    ['ai', 'strategic', 'substitution', 'simulator', 'bilateral', 'summary',
+    ['ai', 'strategic', 'substitution', 'summary',
       'valueChains', 'byProduct', 'comparison'].forEach((id) => {
       expect(fr.opportunities.tabs[id]).toBeTruthy();
       expect(en.opportunities.tabs[id]).toBeTruthy();

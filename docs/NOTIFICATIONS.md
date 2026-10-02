@@ -7,9 +7,6 @@ Le système de notifications AfCFTA supporte deux canaux:
 - **Slack** via webhooks
 
 Les notifications sont envoyées automatiquement pour:
-- 🚀 Début de crawl
-- ✅ Succès de crawl
-- ❌ Échec de crawl
 - ⚠️ Problèmes de validation des données
 
 ## Configuration Email
@@ -187,7 +184,6 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00/B00/XXX
 ## Types de notifications
 
 ### 🚀 Crawl Started
-Envoyée au début d'un job de crawling.
 
 **Contenu:**
 - Job ID
@@ -195,7 +191,6 @@ Envoyée au début d'un job de crawling.
 - Heure de début
 
 ### ✅ Crawl Success
-Envoyée quand le crawl se termine avec succès.
 
 **Contenu:**
 - Job ID
@@ -205,7 +200,6 @@ Envoyée quand le crawl se termine avec succès.
 - Durée d'exécution
 
 ### ❌ Crawl Failed
-Envoyée en cas d'échec du crawl.
 
 **Contenu:**
 - Job ID
@@ -250,18 +244,6 @@ async def test():
     )
 
 asyncio.run(test())
-```
-
-### Test depuis l'API
-
-```bash
-# Démarrer l'API
-uvicorn backend.server:app --reload
-
-# Lancer un crawl (qui enverra des notifications)
-curl -X POST http://localhost:8000/api/crawl/start \
-  -H "Content-Type: application/json" \
-  -d '{"country_code": "MA"}'
 ```
 
 ## Désactiver les notifications

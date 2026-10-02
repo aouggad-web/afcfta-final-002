@@ -13,9 +13,7 @@ Endpoints:
   POST /api/crawlers/north-africa/jobs/{id}/cancel
   POST /api/crawlers/north-africa/sync                    # Cross-validate data
   GET  /api/crawlers/north-africa/countries               # Supported countries info
-  POST /api/crawlers/north-africa/optimal-route           # Trade route optimization
   POST /api/crawlers/north-africa/investment-analysis     # Investment location analysis
-  GET  /api/crawlers/north-africa/preferential-matrix/{hs_code}  # Per-HS agreement matrix
   GET  /api/crawlers/north-africa/trade-flows             # Regional trade flow data
   POST /api/crawlers/north-africa/opportunity-map         # Sectoral opportunity map
 """
@@ -40,30 +38,6 @@ class NorthAfricaCrawlRequest(BaseModel):
     max_headings: Optional[int] = None
     max_positions: Optional[int] = None
     resume: bool = True
-
-
-class OptimalRouteRequest(BaseModel):
-    hs_code: str = Field(..., description="HS tariff code (6-10 digits)")
-    origin_region: str = Field(
-        default="sub_saharan_africa",
-        description="Origin macro-region (sub_saharan_africa, asia, americas, europe, mena)",
-    )
-    target_market: str = Field(
-        default="europe",
-        description="Target destination market (europe, us, mena, africa, comesa)",
-    )
-    annual_volume: float = Field(
-        default=1_000_000,
-        gt=0,
-        description="Annual shipment value in USD",
-    )
-    preferences: Optional[List[str]] = Field(
-        default=None,
-        description=(
-            "Ordered list of preferences for ranking: "
-            "lowest_cost, fastest_clearance, most_reliable"
-        ),
-    )
 
 
 class InvestmentAnalysisRequest(BaseModel):
@@ -284,36 +258,6 @@ async def get_supported_countries():
 # ==================== Advanced Regional Intelligence Endpoints ====================
 
 
-@router.post("/optimal-route")
-async def find_optimal_trade_route(request: OptimalRouteRequest):
-    """
-    Find the optimal North African transit/processing country for a trade lane.
-
-    Ranks DZA, MAR, EGY, TUN by combined cost/clearance/reliability score
-    based on the stated origin region, target market, and preferences.
-
-    Body:
-    - hs_code: HS tariff code (6-10 digits)
-    - origin_region: sub_saharan_africa | asia | americas | europe | mena
-    - target_market: europe | us | mena | africa | comesa
-    - annual_volume: Annual shipment value in USD
-    - preferences: Ordered list of [lowest_cost, fastest_clearance, most_reliable]
-    """
-    try:
-        intel = _get_intelligence()
-        result = intel.optimal_trade_route(
-            hs_code=request.hs_code,
-            origin_region=request.origin_region,
-            target_market=request.target_market,
-            annual_volume=request.annual_volume,
-            preferences=request.preferences,
-        )
-        return result
-    except Exception as exc:
-        logger.error(f"Optimal route analysis failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
 @router.post("/investment-analysis")
 async def investment_location_analysis(request: InvestmentAnalysisRequest):
     """
@@ -339,28 +283,6 @@ async def investment_location_analysis(request: InvestmentAnalysisRequest):
         return result
     except Exception as exc:
         logger.error(f"Investment analysis failed: {exc}")
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-@router.get("/preferential-matrix/{hs_code}")
-async def get_preferential_matrix(hs_code: str):
-    """
-    Get the full preferential trade agreement matrix for a specific HS code.
-
-    Returns per-country applicable trade agreements with indicative rates
-    and market access details for the given HS code chapter.
-
-    Path parameter:
-    - hs_code: HS tariff code (6-10 digits)
-    """
-    try:
-        intel = _get_intelligence()
-        result = intel.get_preferential_matrix_by_hs(hs_code=hs_code)
-        return result
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
-    except Exception as exc:
-        logger.error(f"Preferential matrix lookup failed for {hs_code}: {exc}")
         raise HTTPException(status_code=500, detail=str(exc))
 
 

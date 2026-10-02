@@ -18,9 +18,7 @@ MIGRATION STATUS:
 - rules_of_origin.py: COMPLETE (Extracted from server.py)
 - hs6_database.py: COMPLETE (Full HS6 search routes)
 - authentic_tariffs.py: COMPLETE (54 countries tariff data)
-- tariffs_calculation.py: COMPLETE (Tariff calculation utilities)
 - trade_data.py: COMPLETE (WTO integration)
-- calculator.py: COMPLETE (Main tariff calculator - extracted from server.py)
 """
 
 import logging
@@ -93,7 +91,6 @@ from .statistics import router as statistics_router
 from .strategic_intelligence import router as strategic_router
 from .substitution import router as substitution_router
 from .tariffs import router as tariffs_router
-from .tariffs_calculation import router as tariffs_calc_router
 
 # Load Rules of Origin data from the authentic Appendix IV PSR JSON dataset
 try:
@@ -136,7 +133,6 @@ except ImportError:
     faostat_router = None
     FAOSTAT_AVAILABLE = False
 from .calcul import router as calcul_router
-from .calculator import router as calculator_router
 
 try:
     from .gemini_analysis import router as gemini_router
@@ -161,14 +157,6 @@ try:
 except ImportError:
     export_router = None
     EXPORT_ROUTER_AVAILABLE = False
-
-try:
-    from .crawl import router as crawl_router
-
-    CRAWL_AVAILABLE = True
-except ImportError:
-    crawl_router = None
-    CRAWL_AVAILABLE = False
 
 try:
     from .tariff_data import router as tariff_data_router
@@ -235,14 +223,6 @@ except ImportError:
     DZA_CRAWLER_AVAILABLE = False
 
 try:
-    from .enhanced_calculator import router as enhanced_calculator_router
-
-    ENHANCED_CALCULATOR_AVAILABLE = True
-except ImportError:
-    enhanced_calculator_router = None
-    ENHANCED_CALCULATOR_AVAILABLE = False
-
-try:
     from .north_africa_crawlers import router as north_africa_crawlers_router
 
     NORTH_AFRICA_CRAWLERS_AVAILABLE = True
@@ -265,14 +245,6 @@ try:
 except ImportError:
     regional_data_router = None
     REGIONAL_DATA_AVAILABLE = False
-
-try:
-    from .regional_calculator import router as regional_calculator_router
-
-    REGIONAL_CALCULATOR_AVAILABLE = True
-except ImportError:
-    regional_calculator_router = None
-    REGIONAL_CALCULATOR_AVAILABLE = False
 
 try:
     from .investment_intelligence import router as investment_intelligence_router
@@ -507,22 +479,14 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(
         authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth
     )
-    api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"], dependencies=_auth)
     if FAOSTAT_AVAILABLE:
         api_router.include_router(
             faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
         )
-    # Route unique du calculateur (socle + moteur). Le routeur historique reste
-    # monté le temps que l'interface bascule (chantier L4) ; il disparaît
-    # ensuite, avec les chemins concurrents qu'il porte.
+    # Route unique du calculateur (socle + moteur).
     api_router.include_router(
         calcul_router,
         tags=["Calculateur"],
-        dependencies=_auth + _calculator_entitlement,
-    )
-    api_router.include_router(
-        calculator_router,
-        tags=["Calculator (historique)"],
         dependencies=_auth + _calculator_entitlement,
     )
     if TRADE_DATA_AVAILABLE:
@@ -531,8 +495,6 @@ def register_routes(api_router: APIRouter):
         )
     if EXPORT_ROUTER_AVAILABLE:
         api_router.include_router(export_router, tags=["Export"], dependencies=_auth)
-    if CRAWL_AVAILABLE:
-        api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_admin)
     if TARIFF_DATA_AVAILABLE:
         api_router.include_router(
             tariff_data_router,
@@ -561,10 +523,6 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_admin)
     if DZA_CRAWLER_AVAILABLE:
         api_router.include_router(dza_crawler_router, tags=["DZA Crawler"], dependencies=_admin)
-    if ENHANCED_CALCULATOR_AVAILABLE:
-        api_router.include_router(
-            enhanced_calculator_router, tags=["Enhanced Calculator v2"], dependencies=_auth
-        )
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:
         api_router.include_router(
             north_africa_crawlers_router, tags=["North Africa Crawlers"], dependencies=_admin
@@ -576,10 +534,6 @@ def register_routes(api_router: APIRouter):
     if REGIONAL_DATA_AVAILABLE:
         api_router.include_router(
             regional_data_router, tags=["Regional Data Inventory"], dependencies=_auth
-        )
-    if REGIONAL_CALCULATOR_AVAILABLE:
-        api_router.include_router(
-            regional_calculator_router, tags=["Regional Calculator"], dependencies=_auth
         )
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(

@@ -127,17 +127,6 @@ CEMAC_CONFIG = {
     },
 }
 
-# CEMAC country VAT rates
-# CEMAC uses a harmonized external tariff (TEC) with a standard VAT of 19.25%
-CEMAC_VAT_RATES = {
-    "CMR": 19.25,  # Cameroon
-    "CAF": 19.0,  # Central African Republic
-    "TCD": 18.0,  # Chad
-    "COG": 18.0,  # Republic of the Congo
-    "GNQ": 15.0,  # Equatorial Guinea
-    "GAB": 18.0,  # Gabon
-}
-
 # Country-specific preferential agreements for cross-validation
 COMMON_HS_SECTIONS = [
     "01",  # Live animals

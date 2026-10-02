@@ -119,7 +119,6 @@ le principe retenu est : **chiffres = sources réelles, texte = IA clairement
 | **`production_capacity_service`** | 722 enregistrements FAOSTAT / USGS / UNIDO / Banque Mondiale | Capacités de production par produit |
 | **`hs6_database`** (WCO HS 2022) | ~5 800 codes SH6 | Nomenclature produit, taille de l'univers SH |
 | **Jeu commercial 2024 curé** (`TRADE_PERFORMANCE_GLOBAL_2024`) | Exports/imports par pays, OEC/BM/FMI | Vue d'ensemble continentale |
-| **Calendrier officiel de démantèlement ZLECAf** + tarifs nationaux | Annexe 1 du Protocole sur le commerce des marchandises | Simulateur ZLECAf, comparateur bilatéral |
 
 ### 4.2 Services « réels » créés / modifiés
 
@@ -155,11 +154,9 @@ le principe retenu est : **chiffres = sources réelles, texte = IA clairement
 ```
 Frontend (frontend/src/)
   App.js  (onglet "opportunities")
-   └── components/opportunities/OpportunitiesTab.jsx   (conteneur, 8 sous-onglets)
+   └── components/opportunities/OpportunitiesTab.jsx   (conteneur)
         ├── AIAnalysis.jsx ............ GET /ai/opportunities/{pays}   (MIXTE : IA + OEC)
         ├── SubstitutionAnalysis.jsx .. GET /substitution/...          (RÉEL — OEC)
-        ├── ZlecafImpactSimulator.jsx . GET /dismantlement/impact/...  (RÉEL — calendrier ZLECAf)
-        ├── BilateralTariffComparator.. GET /bilateral-tariff/...      (RÉEL — tarifs + schedule)
         ├── OpportunitySummary.jsx ..... GET /ai/summary               (RÉEL — agrégats sourcés)
         ├── ValueChains.jsx ............ GET /ai/value-chains          (⏸ à arbitrer)
         ├── ProductAnalysisView.jsx .... GET /ai/product/{hs}          (RÉEL — OEC + production)
@@ -235,10 +232,6 @@ GET /ai/product/{hs_code}
 4. **Granularité des données.**
    - Les agrégats de complémentarité/substitution sont appariés au niveau du
      **chapitre SH2**, pas du SH6 — c'est une approximation volontaire.
-   - Le simulateur ZLECAf et le comparateur bilatéral utilisent un taux NPF au
-     niveau **chapitre SH2** avec **repli par défaut (15 % puis 10 %)** quand un
-     couple pays/chapitre est manquant (la source est indiquée dans
-     `npf_rate_source`).
    - `TRADE_PERFORMANCE_GLOBAL_2024` (Vue d'ensemble) est un jeu **curé statique**
      2024 : crédible et sourcé, mais **non rafraîchi en direct** (« faire
      confiance au curateur »).

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -11,7 +10,6 @@ const API = `${BACKEND_URL}/api`;
 export default function MonitoringDashboard({ language = 'fr' }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [collecting, setCollecting] = useState(false);
   const [error, setError] = useState(null);
   const [subscriptionNotice, setSubscriptionNotice] = useState(null);
   const [sortField, setSortField] = useState('code');
@@ -24,8 +22,6 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     totalLines: "Lignes HS6",
     totalSub: "Sous-positions (HS8-12)",
     totalPositions: "Positions totales",
-    collectAll: "Collecter les 55 pays",
-    collecting: "Collecte en cours...",
     refresh: "Actualiser",
     country: "Pays",
     tariffLines: "Lignes HS6",
@@ -35,16 +31,11 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     ddAvg: "DD moy %",
     chapters: "Chapitres",
     generatedAt: "Dernière collecte",
-    noData: "Aucune donnée. Lancez une collecte.",
+    noData: "Aucune donnée.",
     success: "Collecte terminée avec succès !",
-    errorMsg: "Erreur lors de la collecte",
     subscriptionTitle: "Module réservé aux abonnés",
     coverage: "Couverture",
     withSub: "Avec sous-positions",
-    scheduler: "Planification",
-    schedulerDesc: "Collecte automatique: 1 fois par an (janvier)",
-    lastRun: "Dernière exécution",
-    nextRun: "Prochaine exécution: Janvier",
   } : {
     title: "Tariff Data Monitoring",
     subtitle: "Real-time tracking of national tariff position collection",
@@ -52,8 +43,6 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     totalLines: "HS6 Lines",
     totalSub: "Sub-positions (HS8-12)",
     totalPositions: "Total Positions",
-    collectAll: "Collect all 54 countries",
-    collecting: "Collecting...",
     refresh: "Refresh",
     country: "Country",
     tariffLines: "HS6 Lines",
@@ -63,16 +52,11 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     ddAvg: "DD avg %",
     chapters: "Chapters",
     generatedAt: "Last collected",
-    noData: "No data. Run a collection.",
+    noData: "No data.",
     success: "Collection completed successfully!",
-    errorMsg: "Error during collection",
     subscriptionTitle: "Subscribers-only module",
     coverage: "Coverage",
     withSub: "With sub-positions",
-    scheduler: "Scheduling",
-    schedulerDesc: "Automatic collection: once per year (January)",
-    lastRun: "Last run",
-    nextRun: "Next run: January",
   };
 
   const fetchStats = useCallback(async () => {
@@ -99,24 +83,6 @@ export default function MonitoringDashboard({ language = 'fr' }) {
   }, [language]);
 
   useEffect(() => { fetchStats(); }, [fetchStats]);
-
-  const handleCollectAll = async () => {
-    setCollecting(true);
-    setError(null);
-    try {
-      await axios.post(`${API}/tariff-data/collect`, { all_countries: true });
-      await fetchStats();
-    } catch (err) {
-      const refusal = entitlementRefusal(err);
-      if (refusal) {
-        setStats(null);
-      }
-      setSubscriptionNotice(refusal ? entitlementNoticeText(refusal, language) : null);
-      setError(refusal ? null : t.errorMsg);
-    } finally {
-      setCollecting(false);
-    }
-  };
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -167,9 +133,6 @@ export default function MonitoringDashboard({ language = 'fr' }) {
             <Button onClick={fetchStats} variant="outline" disabled={loading}>
               {t.refresh}
             </Button>
-            <Button onClick={handleCollectAll} disabled={collecting} className="bg-[var(--info)] hover:bg-[var(--info)] text-[var(--bg)]">
-              {collecting ? t.collecting : t.collectAll}
-            </Button>
           </div>
 
           {subscriptionNotice && (
@@ -185,16 +148,6 @@ export default function MonitoringDashboard({ language = 'fr' }) {
             </div>
           )}
           {error && <div className="border text-[var(--danger)] p-3 rounded-lg mb-4" style={{background:'rgba(239,68,68,0.1)', borderColor:'rgba(239,68,68,0.3)'}}>{error}</div>}
-
-          <Card className="mb-4" style={{background:'rgba(251,191,36,0.08)', border:'1px solid rgba(251,191,36,0.25)'}}>
-            <CardContent className="p-4 flex items-center gap-4">
-              <Badge variant="outline" className="text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs px-2 py-1">{t.scheduler}</Badge>
-              <span className="text-sm text-[var(--gold)]">{t.schedulerDesc}</span>
-              {stats?.countries?.[0]?.generated_at && (
-              <span className="text-xs text-[var(--gold)] ml-auto">{t.lastRun}: {formatDate(stats.countries[0].generated_at)}</span>
-              )}
-            </CardContent>
-          </Card>
         </CardContent>
       </Card>
 

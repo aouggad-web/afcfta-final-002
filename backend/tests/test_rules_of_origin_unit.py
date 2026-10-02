@@ -2,7 +2,7 @@
 Unit tests for the rules-of-origin single source of truth.
 
 Covers routes.rules_of_origin.get_rule_of_origin(), the function shared by
-routes/calculator.py and etl/hs6_database.py since the Phase 1 consolidation
+etl/hs6_database.py since the Phase 1 consolidation
 that retired the separate, drifting etl.afcfta_rules_of_origin dataset.
 
 Regression target: HS6 codes under heading 62.03 (men's suits) that don't

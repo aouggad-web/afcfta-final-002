@@ -444,15 +444,14 @@ def test_every_verified_fee_carries_a_primary_source():
 
 
 # ── build_regulatory_blocks — point d'entrée unique partagé par toutes les
-#    routes de calcul (calculator.py ET authentic_tariffs.py) ─────────────────
+#    routes de calcul ─────────────────
 
 
 def test_build_regulatory_blocks_matches_manual_composition():
     # Le point d'entrée unique doit produire exactement le même résultat que
     # la composition manuelle (registre + frais vérifiés + indications
     # reportées) — sans quoi une route de calcul pourrait diverger d'une
-    # autre pour le même pays (régression du bug « formalités absentes sur le
-    # chemin authentic-tariffs, présentes sur /calculate-tariff »).
+    # autre pour le même pays.
     blocks = build_regulatory_blocks("CMR", "KEN", fob_value=100000, cif_value=100000)
     assert blocks["regulatory_compliance"] is not None
     assert blocks["regulatory_cost"] is not None
