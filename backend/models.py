@@ -7,29 +7,6 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-# Closed vocabularies for documentary quality.
-QUALITY_DIMENSION_KEYS = (
-    "source",
-    "temporal_validity",
-    "classification",
-    "taxes_and_levies",
-    "preference_and_origin",
-    "formalities",
-)
-QUALITY_DIMENSION_VALUES = frozenset(
-    {"DOCUMENTED", "PARTIAL", "UNVERIFIED", "NOT_AVAILABLE", "NOT_APPLICABLE"}
-)
-OVERALL_STATUS_ALIASES = {
-    "BLOCKED_BASE_TARIFF": "CALCULATION_UNAVAILABLE",
-    "UNVERIFIED_SOURCE": "REVIEW_REQUIRED",
-    "CONFLICT_REVIEW": "REVIEW_REQUIRED",
-    "VERIFIED_COMPLETE": "INFORMATIVE_COMPLETE",
-    "VERIFIED_PARTIAL": "INFORMATIVE_PARTIAL",
-}
-OVERALL_STATUS_VALUES = frozenset(
-    {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL", "CALCULATION_UNAVAILABLE", "REVIEW_REQUIRED"}
-)
-
 
 class CountryInfo(BaseModel):
     """Country information model"""

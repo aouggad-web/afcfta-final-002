@@ -27,12 +27,11 @@ SECURITY_CHECKLIST.md ← Security audit tracking
 The platform features a Python FastAPI backend (port 8000) and a React frontend (port 5000), with API requests proxied from the frontend to the backend. While MongoDB is optional, the system primarily relies on a robust tariff data system.
 
 **Key Architectural Decisions:**
--   **Tariff Data System (Enhanced v2):** Collected tariff data in JSON format (`enhanced_v2`) serves as the single source of truth, including individual tax components, fiscal advantages, and administrative formalities. A `TariffDataService` singleton loads all collected data into memory, with auto-collection triggered if data files are absent.
+-   **Tariff Data System (Enhanced v2):** Collected tariff data in JSON format (`enhanced_v2`) serves as the single source of truth, including individual tax components, fiscal advantages, and administrative formalities.
 -   **ETL Modules:** Dedicated ETL modules manage country-specific tax details (e.g., Algeria's DAPS, DD, PRCT, TCS, TVA rates, fiscal advantages, and administrative formalities) and chapter-level tariffs, leveraging a comprehensive HS6 code database (WCO 2022).
 -   **Web Crawling System:** A sophisticated web crawling system extracts authentic, national-level tariff data from various customs websites across Africa (e.g., Algeria's conformepro.dz, Morocco's douane.gov.ma/adil, Ghana's UNIPASS, EAC CET, Egyptariffs, Nigeria's ECOWAS CET, South Africa's SARS).
     -   Crawlers handle diverse website structures, session management, and rate limiting.
     -   Crawled data is stored in `backend/data/crawled/` and normalized by `CrawledDataService` into a common schema.
-    -   The calculator prioritizes `crawled_authentic` data, falling back to `collected_verified (ETL)` and then `etl_fallback`.
 -   **Lazy Loading (CrawledDataService):** `crawled_data_service.py` now uses per-country lazy loading — at startup it only scans 54 `*_tariffs.json` files (~880 MB total) and registers paths; each country's data loads into memory only on first request. This prevents startup OOM kills.
 -   **Auth (MongoDB optional):** `auth.py` `require_auth()` now returns a public-tier context when MongoDB is unavailable (`_db is None`), allowing all tariff endpoints to serve without a DB. API-key auth only activates when MongoDB is configured.
 -   **DZA Tariff Calculation:** `authentic_tariff_service.py` now correctly calculates the full Algerian fiscal stack: DAPS (base=CIF) + DD (base=CIF) + PRCT (base=CIF) → VAT (base=CIF+DAPS+DD). DAPS and PRCT are extracted from `taxes_detail` and `other_taxes_rate` respectively, surfaced as `individual_taxes[]` in API responses.

@@ -967,86 +967,6 @@ AFRICAN_COUNTRIES_REGISTRY: Dict[str, Dict[str, Any]] = {
 }
 
 
-# Regional blocks membership mapping
-REGIONAL_BLOCKS: Dict[str, List[str]] = {
-    RegionalBlock.ECOWAS.value: [
-        "BEN",
-        "BFA",
-        "CPV",
-        "CIV",
-        "GMB",
-        "GHA",
-        "GIN",
-        "GNB",
-        "LBR",
-        "MLI",
-        "NER",
-        "NGA",
-        "SEN",
-        "SLE",
-        "TGO",
-    ],
-    RegionalBlock.UEMOA.value: ["BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"],
-    RegionalBlock.CEMAC.value: ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"],
-    RegionalBlock.EAC.value: ["BDI", "KEN", "RWA", "SSD", "TZA", "UGA"],
-    RegionalBlock.SACU.value: ["BWA", "LSO", "NAM", "ZAF", "SWZ"],
-    RegionalBlock.SADC.value: [
-        "AGO",
-        "BWA",
-        "COM",
-        "COD",
-        "LSO",
-        "MDG",
-        "MWI",
-        "MUS",
-        "MOZ",
-        "NAM",
-        "SYC",
-        "ZAF",
-        "SWZ",
-        "TZA",
-        "ZMB",
-        "ZWE",
-    ],
-    RegionalBlock.COMESA.value: [
-        "BDI",
-        "COM",
-        "COD",
-        "DJI",
-        "EGY",
-        "ERI",
-        "ETH",
-        "KEN",
-        "LBY",
-        "MDG",
-        "MWI",
-        "MUS",
-        "RWA",
-        "SYC",
-        "SDN",
-        "SWZ",
-        "UGA",
-        "ZMB",
-        "ZWE",
-    ],
-    RegionalBlock.AMU.value: ["DZA", "EGY", "LBY", "MRT", "MAR", "TUN", "SDN"],
-    RegionalBlock.ECCAS.value: [
-        "AGO",
-        "BDI",
-        "CMR",
-        "CAF",
-        "TCD",
-        "COG",
-        "COD",
-        "GNQ",
-        "GAB",
-        "RWA",
-        "STP",
-    ],
-    RegionalBlock.IGAD.value: ["DJI", "ERI", "ETH", "KEN", "SOM", "SSD", "SDN", "UGA"],
-}
-
-
 # Utility functions
 def get_country_config(country_code: str) -> Optional[Dict[str, Any]]:
     """
@@ -1074,19 +994,6 @@ def get_countries_by_region(region: Region) -> List[str]:
     return [
         code for code, config in AFRICAN_COUNTRIES_REGISTRY.items() if config["region"] == region
     ]
-
-
-def get_countries_by_block(block: RegionalBlock) -> List[str]:
-    """
-    Get all country codes for a specific regional economic block.
-
-    Args:
-        block: RegionalBlock enum value
-
-    Returns:
-        List of ISO3 country codes
-    """
-    return REGIONAL_BLOCKS.get(block.value, [])
 
 
 def get_priority_countries(priority: Priority) -> List[str]:

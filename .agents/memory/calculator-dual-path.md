@@ -10,7 +10,7 @@ description: The frontend has two calc paths.
 
 `TaxBreakdownDual.jsx` (the component with the USD ⇄ local-currency toggle) only renders when `result.taxes_breakdown?.length > 0`, and the toggle only shows when `currency.available && currency.usd_to_local_rate`.
 
-**Consequence (two real bugs that look unrelated but share this root cause):**
+**Consequence:**
 - For any destination **with** authentic data (notably **DZA**, the reference market), the UI uses the authentic path → no `currency`/`taxes_breakdown` → **local currency never displays** and the full NPF-vs-ZLECAf tax detail card is absent.
 
 **How to apply:** when a calculator change must show up in the UI for DZA (or any authentic-data country), make `/api/authentic-tariffs/calculate` reuse the same `compute_dza_zlecaf_rate` / ratification / ZAF gates AND emit `currency` + `taxes_breakdown`.

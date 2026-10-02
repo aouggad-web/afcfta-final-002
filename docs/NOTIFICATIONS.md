@@ -7,9 +7,6 @@ Le système de notifications AfCFTA supporte deux canaux:
 - **Slack** via webhooks
 
 Les notifications sont envoyées automatiquement pour:
-- 🚀 Début de crawl
-- ✅ Succès de crawl
-- ❌ Échec de crawl
 - ⚠️ Problèmes de validation des données
 
 ## Configuration Email

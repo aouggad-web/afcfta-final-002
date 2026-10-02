@@ -45,16 +45,12 @@ All scrapers inherit from `BaseScraper` which provides:
 - Retry logic with exponential backoff
 - Error handling and logging
 - Request statistics tracking
-- URL utilities
 
 **Properties**:
 - `country_code` - ISO3 country code
 - `country_name` - Country name (English)
 - `source_url` - Customs website URL
-- `region` - African region
 - `vat_rate` - VAT rate percentage
-- `regional_blocks` - Economic blocks (ECOWAS, EAC, etc.)
-- `priority` - Crawling priority (1-3)
 
 ### 3. Countries Registry
 
@@ -77,7 +73,6 @@ Complete configuration for all 54 African countries.
 from backend.crawlers import (
     get_country_config,
     get_countries_by_region,
-    get_countries_by_block,
     get_priority_countries,
     validate_registry,
     Region,
@@ -90,9 +85,6 @@ config = get_country_config("GHA")
 
 # Get countries by region
 west = get_countries_by_region(Region.WEST_AFRICA)
-
-# Get countries by block
-ecowas = get_countries_by_block(RegionalBlock.ECOWAS)
 
 # Get by priority
 high = get_priority_countries(Priority.HIGH)

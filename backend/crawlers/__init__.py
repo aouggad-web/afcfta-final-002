@@ -12,11 +12,9 @@ Main Components:
 
 from .all_countries_registry import (
     AFRICAN_COUNTRIES_REGISTRY,
-    REGIONAL_BLOCKS,
     Priority,
     Region,
     RegionalBlock,
-    get_countries_by_block,
     get_countries_by_region,
     get_country_config,
     get_priority_countries,
@@ -25,13 +23,11 @@ from .all_countries_registry import (
 
 __all__ = [
     "AFRICAN_COUNTRIES_REGISTRY",
-    "REGIONAL_BLOCKS",
     "Region",
     "RegionalBlock",
     "Priority",
     "get_country_config",
     "get_countries_by_region",
-    "get_countries_by_block",
     "get_priority_countries",
     "validate_registry",
 ]

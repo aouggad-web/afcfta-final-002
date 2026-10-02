@@ -9,7 +9,6 @@ Tests for services/sadc_intelligence_service.py covering:
   - Mining intelligence
   - Transport corridor queries
   - SACU framework retrieval
-  - Trade protocol data
   - Cross-regional comparisons
   - Country tariff data loading
 """

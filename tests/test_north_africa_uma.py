@@ -437,13 +437,13 @@ def test_api_compare_countries():
 
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get("/api/regions/north-africa/compare?countries=MAR,EGY,TUN&chapter=84")
+        response = client.get("/api/regions/north-africa/compare?countries=MAR,EGY,TUN")
     assert response.status_code == 200, f"{response.status_code}: {response.text}"
     data = response.json()
     assert "comparison" in data
     for code in ["MAR", "EGY", "TUN"]:
         assert code in data["comparison"]
-    print("✅ GET /api/regions/north-africa/compare?countries=MAR,EGY,TUN&chapter=84 → OK")
+    print("✅ GET /api/regions/north-africa/compare?countries=MAR,EGY,TUN → OK")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

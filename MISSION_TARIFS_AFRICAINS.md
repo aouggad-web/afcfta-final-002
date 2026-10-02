@@ -123,8 +123,6 @@ Le calculateur et le module Opportunités couvrent les quatre flux :
 
 ## 5. Outils d'exécution ZLECAf (existants et à consolider)
 
-- Moteur tarifaire : `POST /api/calculate-tariff` — réciprocité ZLECAf, unions
-  douanières, taux préférentiels par partenaire.
 - Couche douanière généralisée : `engine/import_charges.py` +
   `engine/customs_territory_registry.py` (régionale + nationale, couvertures
   tracées) et service national (`services.national_legal_calculation_service`).

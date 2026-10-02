@@ -3,8 +3,19 @@ Vérifie le principe « fail-closed » : une donnée NPF authentique ne constitu
 jamais, à elle seule, une preuve de préférence ZLECAf.
 """
 
+import pytest
 
-def test_gha_synthetic_zero_rate_rejected():
+
+@pytest.fixture()
+def client(monkeypatch):
+    from services.crawled_data_service import crawled_service
+
+    # crawled_service.load() n'est appelé qu'au démarrage de server.py (event
+    # de startup)
+    crawled_service.load()
+
+
+def test_gha_synthetic_zero_rate_rejected(client):
     """Ghana : `backend/data/crawled/GHA_tariffs.json` portait, sur 100 % de
     ses 5 387 lignes, la paire synthétique `zlecaf_rate=0.0`/
     `zlecaf_source="ZLECAf"` — fabriquée, non sourcée. Nettoyée physiquement
@@ -12,8 +23,6 @@ def test_gha_synthetic_zero_rate_rejected():
     exister sur le fichier."""
     from services.crawled_data_service import crawled_service
 
-    # crawled_service.load() n'est appelé qu'au démarrage de server.py.
-    crawled_service.load()
     raw = crawled_service.lookup("GHA", "010121")
     assert raw is not None
     assert raw.get("zlecaf_rate") is None, (
@@ -78,10 +87,7 @@ def test_tariffs_39_files_physically_clean_of_synthetic_zlecaf_markers():
     des lignes, pas un sondage) : les 39 fichiers `backend/data/tariffs/*.json`
     restants après l'archivage P0 du 2026-09-01 (14 synthétiques `enhanced_v2`
     + 1 copie DZA périmée retirés du service — cf. audit
-    `AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md`) — chemin PRIORITY 2,
-    servi par `tariff_data_service.py`, distinct des fichiers actifs
-    `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait partie ; les deux
-    jeux de fichiers ne se recouvrent pas) — ne portent plus AUCUN des 3
+    `AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md`) ne portent plus AUCUN des 3
     marqueurs fabriqués historiquement présents (`"ZLECAf"`,
     `"ZLECAf (produit normal)"`, `"ZLECAf (produit sensible)"` — cf. branche
     `claude/tariffs-zlecaf-synthetic-cleanup`) : ni `zlecaf_rate`, ni

@@ -58,7 +58,7 @@ explicitement (« pas de donnée ») plutôt que fabriquée.
                     ┌───────────────────────▼──────────────────────┐
                     │              Backend FastAPI (/api)            │
                     │  Auth par clé API · CORS · CSRF · Rate-limit   │
-                    │  ~40 routers (calculator, authentic_tariffs,   │
+                    │  ~40 routers (authentic_tariffs,               │
                     │  rules_of_origin, dismantlement, statistics…)  │
                     └──────┬───────────────────────────┬────────────┘
                            │                           │
