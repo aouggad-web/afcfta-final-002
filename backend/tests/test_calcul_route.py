@@ -715,6 +715,23 @@ def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
 
 
 @besoin_socle
+def test_les_frais_assis_sur_la_fob_suivent_la_valeur_fob_fournie(client):
+    """Même règle que le chemin historique : la FOB fournie sert d'assiette aux
+    frais en % de la FOB (CMR, verified_provider_fees.json), le CIF sinon."""
+
+    def bases(corps):
+        return [
+            ligne["base_value"]
+            for ligne in corps["regulatory_cost"]["line_items"]
+            if ligne.get("calculation_method") == "PERCENTAGE_OF_FOB"
+        ]
+
+    charge = {"destination": "CMR", "code_sh": "01011010", "valeur_cif": 1000}
+    assert bases(client.post("/calcul", json=charge).json()) == [1000]
+    assert bases(client.post("/calcul", json={**charge, "valeur_fob": 800}).json()) == [800]
+
+
+@besoin_socle
 def test_les_frais_reglementaires_n_entrent_jamais_dans_le_cout_douanier(client):
     """L'invariant du bloc : il est informatif. Un frais de prestataire ajouté
     au total douanier ferait payer à l'importateur une somme que la douane ne

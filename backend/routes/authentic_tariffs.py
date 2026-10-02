@@ -572,8 +572,12 @@ async def calculate_taxes_endpoint(
     # tarifaire.
     origin_iso3 = (origin or "").upper() or None
     try:
+        # Assiette FOB des frais : la valeur fournie, sinon le CIF comme avant.
         blocks = build_regulatory_blocks(
-            country, origin_iso3, fob_value=cif_value, cif_value=cif_value
+            country,
+            origin_iso3,
+            fob_value=fob_value if fob_value is not None else cif_value,
+            cif_value=cif_value,
         )
         result["regulatory_compliance"] = blocks["regulatory_compliance"]
         result["regulatory_cost"] = blocks["regulatory_cost"]

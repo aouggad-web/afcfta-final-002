@@ -175,7 +175,11 @@ def calcul(demande: DemandeCalcul):
         resultat,
     )
     resultat.update(_regimes(preference))
-    resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
+    resultat.update(
+        _bloc_reglementaire(
+            demande.destination, demande.origine, demande.valeur_cif, demande.valeur_fob
+        )
+    )
     return resultat
 
 
@@ -359,20 +363,27 @@ def _regimes(preference: dict) -> dict:
     return resultat
 
 
-def _bloc_reglementaire(destination: str, origine: Optional[str], valeur_cif: float) -> dict:
+def _bloc_reglementaire(
+    destination: str,
+    origine: Optional[str],
+    valeur_cif: float,
+    valeur_fob: Optional[float] = None,
+) -> dict:
     """Formalités, prestataires mandatés et frais vérifiés — informatif, jamais
     additionné aux droits.
 
-    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique. Ce
-    n'est pas exact au sens douanier — le FOB exclut fret et assurance — mais
-    les deux routes doivent répondre la même chose sur la même importation :
-    corriger ici seulement ferait diverger les deux chemins juste avant de les
-    réunir. La correction, si elle vient, vaudra pour le point d'entrée commun.
+    Les frais assis sur la FOB utilisent la valeur FOB fournie ; sans elle,
+    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique avec
+    la même règle — les deux routes répondent la même chose sur la même
+    importation.
     """
     origine_iso3 = (origine or "").upper() or None
     try:
         blocs = build_regulatory_blocks(
-            destination.upper(), origine_iso3, fob_value=valeur_cif, cif_value=valeur_cif
+            destination.upper(),
+            origine_iso3,
+            fob_value=valeur_fob if valeur_fob is not None else valeur_cif,
+            cif_value=valeur_cif,
         )
     except Exception as exc:  # garde-fou : le calcul tarifaire n'en dépend pas
         logger.warning(
