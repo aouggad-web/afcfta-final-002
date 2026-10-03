@@ -8,6 +8,7 @@ DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "official_preferential
 # coexistent, et confondre leurs dates masquerait une provenance fausse.
 AUGUST = "2026-08-17"
 SEPTEMBER = "2026-09-13"
+OCTOBER = "2026-10-03"
 
 EXPECTED_MINIMUM_LINES = {
     ("EAC", AUGUST): 4000,
@@ -22,6 +23,9 @@ EXPECTED_MINIMUM_LINES = {
     # sur 5 ans et sur 10 ans — d'où le seuil doublé.
     ("MAR", SEPTEMBER): 28000,
     ("ZWE", SEPTEMBER): 4000,
+    # Tunisie recollectée : l'instantané d'août n'avait pas les chapitres 29,
+    # 84 et 85, que l'API ne rend pas à la recherche par chapitre.
+    ("TUN", OCTOBER): 23000,
 }
 
 
@@ -107,3 +111,17 @@ def test_snapshots_cover_every_requested_destination():
         assert (DATA_DIR / f"{offer}_afcfta_etariff_{AUGUST}.json.gz").exists()
     for offer in ("MAR", "ZWE"):
         assert (DATA_DIR / f"{offer}_afcfta_etariff_{SEPTEMBER}.json.gz").exists()
+
+
+def test_tunisian_october_snapshot_has_the_chapters_august_missed():
+    """Le chapitre vide est relu position par position : 29, 84 et 85 sont
+    présents, et aucune ligne d'août n'a changé."""
+    def lire(date):
+        path = DATA_DIR / f"TUN_afcfta_etariff_{date}.json.gz"
+        payload = json.loads(gzip.decompress(path.read_bytes()).decode("utf-8"))
+        return {row["hs_code"]: row for row in payload["schedules"]["1"]}
+
+    aout, octobre = lire(AUGUST), lire(OCTOBER)
+    chapitres = {code[:2] for code in octobre}
+    assert {"29", "84", "85"} <= chapitres
+    assert all(octobre.get(code) == row for code, row in aout.items())

@@ -1,0 +1,25 @@
+Loi n° 2018-56 du 27 décembre 2018, portant loi de finances pour l'année 2019
+Journal Officiel de la République Tunisienne n° 104 du 28 décembre 2018 (édition française)
+Archive : data/sources/TUN/jort/LF2019_JORT_fr_2018-12-28.pdf
+
+--- Page 4547 ---
+Réduction des droits de douane et de la taxe sur la valeur ajoutée au titre des panneaux solaires
+Art. 60
+1) Est ajouté au paragraphe I du tableau « B » nouveau annexé au code de la taxe sur la valeur ajoutée un numéro 18 quater ainsi libellé :
+18 quater) les panneaux solaires relevant du numéro EX 85-41 du tarif des droits de douane.
+2) Est réduit le taux du droit de douane dû à l'importation au titre des panneaux solaires relevant du numéro EX 85-41 du tarif des droits de douane à 20%.
+
+--- Page 4554 ---
+Mesures tarifaires
+Augmentation des droits de douane pour les motocycles à deux roues
+Art. 81 :
+1) Sont relevés les taux des droits de douane, selon le tarif autonome prévu dans le tarif des droits de douane à l'importation promulgué par la loi n° 89-113 du 30 décembre 1989, tel que modifié et complété par les textes subséquents, dus sur les motocycles relevant du numéro du tarif Ex 87.11 comme suit :
+N° de la position | Numéro du tarif douanier | Désignation | Taux en %
+Ex 87.11 | 871120100 | Motocycles du type scooter, avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 50 cm3 mais n'excédant pas 125 cm3. | 30
+Ex 87.11 | 871120929 | Autres motocycles avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 50 cm3 mais n'excédant pas 125 cm3. | 30
+Ex 87.11 | 871120989 | Autres motocycles avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 125 cm3 mais n'excédant pas 250 cm3 | 30
+Ex 87.11 | 871130109 | Autres motocycles avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 250 cm3 mais n'excédant pas 380 cm3 | 30
+Ex 87.11 | 871130909 | Autres motocycles avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 380 cm3 mais n'excédant pas 500 cm3 | 30
+Ex 87.11 | 871140009 | Autres motocycles avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 500 cm3 mais n'excédant pas 800 cm3 | 30
+Ex 87.11 | 871150000 | Autres motocycles avec moteur auxiliaire à piston alternatif, d'une cylindrée excédant 800 cm3 | 30
+Ex 87.11 | 871190003 | Autres motocycles (y compris les cyclomoteurs) et cycles avec moteur auxiliaire, autre qu'électrique et autre qu'à piston alternatif, d'une cylindrée excédant 50 cm3 | 30

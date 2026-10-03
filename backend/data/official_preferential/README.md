@@ -19,7 +19,7 @@ legal_effect_status=OFFER_ONLY and execution_authorized=false:
 | ECOWAS | Ghana, Côte d'Ivoire, Nigeria |
 | CEMAC | Cameroon |
 | EGY | Egypt |
-| TUN | Tunisia |
+| TUN | Tunisia (recollected 2026-10-03: the August snapshot lacked chapters 29, 84 and 85) |
 | ETH | Ethiopia |
 | ZMB | Zambia |
 
@@ -38,6 +38,18 @@ Nigeria have domestication evidence but no official exhaustive partner list
 was found. Cameroon, Egypt, Ghana, Rwanda and Tunisia therefore remain
 offer-only in the calculator as well. Missing evidence is NOT_AVAILABLE,
 never zero.
+
+Update 2026-10-03 — Tunisia: only the e-Tariff *base rate* is used, as the
+2019 base duty of text TA n°016/2023, multiplied by the 2026 coefficient the
+customs publish in Tarif Web 2026 (services/zlecaf_schedule_tun.py, fiche
+TUN_droit_de_base_2019_2026-10-03.json). The e-Tariff country calendar is
+never served for Tunisia.
+
+Known collection gap (2026-10-03): the API returns an empty list for some
+whole-chapter searches while serving their headings one by one. Every
+snapshot dated before 2026-10-03 lacks chapter 84; MAR also lacks 29, 39 and
+85, ZMB lacks 29. The collector now re-reads an empty chapter heading by
+heading; only TUN has been recollected so far.
 
 ## Reproduction
 
