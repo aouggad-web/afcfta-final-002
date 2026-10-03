@@ -128,6 +128,7 @@ def test_october_snapshots_have_the_chapters_earlier_ones_missed():
     for offer, avant, manquants in (
         ("TUN", AUGUST, {"29", "84", "85"}),
         ("MAR", SEPTEMBER, {"29", "39", "84", "85"}),
+        ("CEMAC", AUGUST, {"84"}),
         ("EGY", AUGUST, {"84"}),
         ("ECOWAS", AUGUST, {"84"}),
     ):

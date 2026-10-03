@@ -15,7 +15,7 @@ DATASETS = {
     "ZAF": DATA_DIR / "ZAF_afcfta_2026-08-06.json.gz",
     "EAC": DATA_DIR / "EAC_afcfta_etariff_2026-08-17.json.gz",
     "ECOWAS": DATA_DIR / "ECOWAS_afcfta_etariff_2026-10-03.json.gz",
-    "CEMAC": DATA_DIR / "CEMAC_afcfta_etariff_2026-08-17.json.gz",
+    "CEMAC": DATA_DIR / "CEMAC_afcfta_etariff_2026-10-03.json.gz",
     "EGY": DATA_DIR / "EGY_afcfta_etariff_2026-10-03.json.gz",
     "TUN": DATA_DIR / "TUN_afcfta_etariff_2026-10-03.json.gz",
     "ETH": DATA_DIR / "ETH_afcfta_etariff_2026-08-17.json.gz",
