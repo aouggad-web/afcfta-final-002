@@ -60,10 +60,10 @@ def test_la_cle_de_controle_est_conservee_a_cote_du_code():
     positions = _pays("TUN")["positions"]
     assert positions["0101210001"]["cle_controle"] == "5"
     portent_une_cle = sum(1 for p in positions.values() if p.get("cle_controle"))
-    assert portent_une_cle == 17541, (
-        "une seule position est publiée sans clé par la source ; les autres "
-        "doivent toutes conserver la leur"
-    )
+    # La seule ligne « sans clé » était 4039011010 : 0403.90.11.01.0 privée de
+    # son zéro de tête. Complétée à la construction, elle porte sa clé (0).
+    assert positions["0403901101"]["cle_controle"] == "0"
+    assert portent_une_cle == 17542, "toutes les positions doivent conserver leur clé"
 
 
 @besoin_socle

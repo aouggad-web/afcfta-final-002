@@ -37,7 +37,7 @@
   "coefficients": {
    "artefact": "backend/data/zlecaf_tun/coefficients_tarifweb_2026.json",
    "document_non_archive": "Jeu dérivé de backend/data/crawled/TUN_tariffs.json par backend/scripts/extraire_coefficients_tun.py ; empreinte consignée pour la relecture.",
-   "sha256": "836d7b7e0ca204a108e5952bb917b66485a76359d1bb890f936935081e165d82",
+   "sha256": "9d68c1923af336801e71dd681adda822fbe580acfd3cace90574486ced68ebcd",
    "positions": 14075,
    "motifs": "4 : liste A (40 % ; Tanzanie 0 %), avec ou sans Nigeria et Afrique du Sud ; liste B (87,5 % ; Maurice, Rwanda, Tanzanie 80 %), avec ou sans Nigeria et Afrique du Sud"
   },
@@ -49,12 +49,13 @@
   },
   "couverture": {
    "positions_avec_coefficient": 14075,
-   "dont_droit_de_base_trouve": 13119,
-   "sans_ligne_e_tariff": 956,
+   "dont_droit_de_base_trouve": 13120,
+   "sans_ligne_e_tariff": 955,
    "base_egale_au_npf_2026": 9147,
    "base_inferieure_au_npf_2026": 3091,
    "base_superieure_au_npf_2026": 881,
-   "positions_plafonnees_au_npf_pour_au_moins_une_origine": 676
+   "positions_plafonnees_au_npf_pour_au_moins_une_origine": 676,
+   "concordance_omd": "861 des 955 positions sans ligne e-Tariff reçoivent un droit de base par la table I de l'OMD (fiche TUN_concordance_SH2022_SH2017_2026-10-03.json) ; 94 restent au NPF."
   }
  },
  "origines": {
@@ -72,10 +73,11 @@
   "ecarts_avec_le_texte": "Le Nigeria et l'Afrique du Sud sont servis par la douane sans être nommés par le texte de 2023 (acte additionnel non trouvé). L'Égypte, nommée par le texte, n'a aucune ligne au Tarif Web : elle reste au NPF. Maurice et le Rwanda ne sont publiés que sur la liste B."
  },
  "ce_que_cela_ne_tranche_pas": [
-  "La nomenclature : l'e-Tariff est en SH 2017 (ex. 854140900), le Tarif Web en SH 2022 (8541.42/8541.43). Le rattachement se fait par les 9 premiers chiffres ; une position créée ou renumérotée en 2022 n'a pas de droit de base et reste au NPF, en attendant la table de concordance du ministère.",
+  "La nomenclature : l'e-Tariff est en SH 2017, le Tarif Web en SH 2022. Rattachement par les 9 premiers chiffres, puis, à défaut, par la table I de l'OMD au SH6 quand toutes les lignes sources portent un seul taux (861 positions) ; 94 positions restent au NPF en attendant une table tunisienne à 10 chiffres.",
   "La liste nominative des taxes d'effet équivalent visées par la section V : seul le droit de douane est réduit.",
   "L'acte qui ajoute le Nigeria et l'Afrique du Sud.",
   "Les coefficients des années suivantes : rien n'est servi après 2026 tant que le Tarif Web de l'année n'est pas collecté."
  ],
- "remplace": "Le verdict « aucun calcul » de TUN_rapprochement_baremes_2026-09-29.json, levé par la décision du propriétaire ci-dessus."
+ "remplace": "Le verdict « aucun calcul » de TUN_rapprochement_baremes_2026-09-29.json, levé par la décision du propriétaire ci-dessus.",
+ "mis_a_jour_le": "2026-10-03"
 }
