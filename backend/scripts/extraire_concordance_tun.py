@@ -67,7 +67,7 @@ def main() -> None:
         par_sh6[code[:6]].add(taux)
     positions = json.loads(COEFFICIENTS.read_text(encoding="utf-8"))["positions"]
 
-    resolues, ecartees = {}, defaultdict(int)
+    resolues, non_resolues, ecartees = {}, {}, defaultdict(int)
     for code in sorted(positions):
         if code[:9] in base:
             continue
@@ -76,7 +76,18 @@ def main() -> None:
         if len(taux) == 1:
             resolues[code] = {"base": taux.pop(), "sources_sh2017": sorted(set(sources))}
         else:
-            ecartees["sans source" if not taux else "taux multiples"] += 1
+            if not sources:
+                motif = "sources non énumérées par l'OMD"
+            elif not taux:
+                motif = "SH6 inconnu de l'e-Tariff et de la table I de l'OMD"
+            else:
+                motif = "taux multiples"
+            ecartees[motif] += 1
+            non_resolues[code] = {
+                "motif": motif,
+                "sources_sh2017": sorted(set(sources)),
+                "taux_trouves": sorted(taux),
+            }
 
     resultat = {
         "_objet": (
@@ -89,6 +100,7 @@ def main() -> None:
         "_etariff_sha256": hashlib.sha256(ETARIFF.read_bytes()).hexdigest(),
         "_ecartees": dict(ecartees),
         "positions": resolues,
+        "non_resolues": non_resolues,
     }
     SORTIE.write_text(json.dumps(resultat, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     print(f"{len(resolues)} positions résolues, écartées {dict(ecartees)} -> {SORTIE}")

@@ -14,22 +14,1206 @@
   "url": "https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/table-i_en.pdf"
  },
  "resultat": {
-  "positions_sans_ligne_e_tariff": 956,
+  "positions_sans_ligne_e_tariff": 955,
   "resolues": 861,
   "dont_renumerotees_selon_l_omd": 634,
   "dont_sh6_inchange_taux_unique": 227,
   "non_resolues_taux_multiples": 83,
-  "non_resolues_sans_source": 12,
   "donnees": "backend/data/zlecaf_tun/concordance_sh2022_sh2017.json",
-  "donnees_sha256": "934d1976bcacb09f1f4cc062733836289e58f41e8dbc79414a3f22f45dbf33e8",
+  "donnees_sha256": "9e9f66736a5b783f5c4b95dc7618891064e8e654ee8d51c831338ab961e72021",
   "document_non_archive": "Jeu dérivé (table I de l'OMD + instantané e-Tariff du 03/10/2026) ; empreinte consignée pour la relecture.",
   "exemples": {
    "0307.29 (SH 2022)": "sources 0307.29 et 0307.99 (SH 2017), toutes à 36 % : base 36 %",
    "8541.43 modules photovoltaïques": "source ex 8541.40, lignes e-Tariff à 0 % et 20 % : non résolu, NPF"
-  }
+  },
+  "non_resolues_sources_non_enumerees_par_l_omd": 10,
+  "non_resolues_sh6_inconnu_de_l_e_tariff_et_de_l_omd": 1
  },
  "ce_que_cela_ne_tranche_pas": [
   "La correspondance au niveau national (10 chiffres) : la table de l'OMD est au SH6 ; la règle du taux unique évite de choisir entre deux taux, mais une table tunisienne à 10 chiffres la remplacerait.",
   "Les 14 positions que la table I renvoie à des « applicable subheadings » sans les énumérer (8524, 8541.51/59, 8549)."
- ]
+ ],
+ "lignes_restant_au_droit_normal": {
+  "_lecture": "Ces positions portent un coefficient ZLECAf au Tarif Web 2026, mais aucun droit de base 2019 n'a pu être établi sans choisir entre plusieurs taux : le droit NPF s'applique. Une table tunisienne à 10 chiffres les résoudrait.",
+  "taux_multiples": [
+   {
+    "position_tarif_web": "03072110100",
+    "designation": "Coquilles st jacques ou peignes, pétoncles ou vanneaux, autrescoquillages des genres pecten, chlamys ou placopecten vivants,destinés à la reproduction",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "030721",
+     "030791"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "03072110906",
+    "designation": "Autres coquilles st jacques ou peignes, pétoncles ou vanneaux,autres coquillages des genres pecten,chlamys ou placopectenvivants, frais ou réfrigérés",
+    "droit_npf_2026_pct": 36.0,
+    "sources_sh2017": [
+     "030721",
+     "030791"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "03072190102",
+    "designation": "Autres coquilles st jacques et autres mollusques de la famille pectinidae destinés à la reproduction",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "030721",
+     "030791"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "03072190908",
+    "designation": "Autres coquilles st jacques et autres mollusques de la famille pectinidae",
+    "droit_npf_2026_pct": 36.0,
+    "sources_sh2017": [
+     "030721",
+     "030791"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "24041990013",
+    "designation": "Produits contenant des succédanés de nicotine,destinés à une inhalation sans combustion , présentés pour le compte de  la r n t a",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "240399",
+     "382499"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "24041990024",
+    "designation": "Produits contenant des succédanés de nicotine,destinés à une inhalation sans combustion , présentés pour le compte  de la m t k",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "240399",
+     "382499"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "24041990091",
+    "designation": "Produits contenant des succédanés de nicotine,destinés à une inhalation sans combustion , présentés pour le compte d'autres personnes",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "240399",
+     "382499"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "30069300104",
+    "designation": "Placebos et trousses pour essais cliniques masqués (ou à double   insu), destinés à un essai clinique reconnu,présentés sous forme de doses, n'ayant  pas un similaire fabriqué localement",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "170490",
+     "210690",
+     "220299",
+     "382499"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "30069300900",
+    "designation": "Placebos et trousses pour essais cliniques masqués (ou à double   insu), destinés à un essai clinique reconnu,présentés sous forme de doses, ayant un similaire fabriqué localement",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "170490",
+     "210690",
+     "220299",
+     "382499"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     36.0
+    ]
+   },
+   {
+    "position_tarif_web": "44212000013",
+    "designation": "Cercueils en bois, de fabrication artisanale",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442191",
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44212000035",
+    "designation": "Cercueils en bois, , autres que de fabrication artisanale",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442191",
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999308",
+    "designation": "Paves en bois",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999400",
+    "designation": "Montures et parties de montures en bois,pour eventails et ecrans a main",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999911",
+    "designation": "Rouleaux pour store avec ou sans ressorts",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999922",
+    "designation": "Bois prepares pour allumettes",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999933",
+    "designation": "Manches pour couverts de table",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999944",
+    "designation": "Abaisse langue",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999955",
+    "designation": "Mesures de capacite",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999966",
+    "designation": "Modeles pour fonderie, en bois",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999977",
+    "designation": "Echelles",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999988",
+    "designation": "Autres ouvrages en bois,de fabrication artisanale",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "44219999999",
+    "designation": "Autres ouvrages en bois,autres que de fabrication artisanale",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "442199"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "84147000005",
+    "designation": "Enceintes de sécurité biologique étanches aux gaz, même filtrantes",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "841460",
+     "841480",
+     "842139"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "84431332009",
+    "designation": "Autres machines et appareils à imprimer, offset, neufs, alimentésen feuilles d'un format n'excédant pas 53 x 75 cm",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "844313"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "position_tarif_web": "84431334005",
+    "designation": "Autres machines et appareils à imprimer, offset, neufs, alimentésen feuilles d'un format excédant 53 x 75 cm mais n'excédant pas 75 x 107 cm",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "844313"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "position_tarif_web": "84431338007",
+    "designation": "Autres machines et appareils à imprimer, offset, neufs, alimentésen feuilles d'un format excédant 75 x 107 cm",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "844313"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "position_tarif_web": "85017200005",
+    "designation": "Machines génératrices photovoltaïques à courant continu, d'une puissance excédant  50 w",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "850131",
+     "850132",
+     "850133",
+     "850134"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100113",
+    "designation": "Reflecteurs pour stations de reception par satelitte pour la radiocommunnication",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100124",
+    "designation": "Reflecteurs d'antennes pour la radiotelecommunnication, autres que par satellite",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100135",
+    "designation": "Antennes pour la radiotelecommunnication destines a la r t t",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100146",
+    "designation": "Autres antennes pour la radiotelecommunication",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100157",
+    "designation": "Filtres et separateurs d'antennes pour la radiotelecommunnication",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100168",
+    "designation": "Dispositifs d'orientation d'antennes pour la radiotelecommunnication",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100191",
+    "designation": "Autres parties reconnaissables comme etant utilisees conjointement avec les reflecteurs et les antennes, pour la radiotelecommunnication",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177100204",
+    "designation": "Autres antennes et réflecteurs d'antennes de tous types et leurs partie",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900215",
+    "designation": "Claviers pour appareils telephoniques sans fil",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900293",
+    "designation": "Claviers pour appareils telephoniques avec fil",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900306",
+    "designation": "Autres parties d'appareils pour la telecommunication destines pour machines automatiques de traitement de l'information",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900419",
+    "designation": "Modules de la telephonie sur ip (internet protocol) utilisant le cryptage",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900420",
+    "designation": "Dispositifs de cryptage de la voix pour la telecommunication par courant porteur",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900431",
+    "designation": "Autres dispositifs de cryptage destines a etre integres dans des appareils pour la telecommunication par courant porteur",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900442",
+    "designation": "Dispositifs de cryptage du trafic transemis a travers les reseaux numeriques",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900453",
+    "designation": "Autres dispositifs de cryptage destines a etre integres dans d'autres appareils du n° 85 17",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900464",
+    "designation": "Autres assemblages electroniques pour appareils pour la telecommunication par courant porteur",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900497",
+    "designation": "Autres assemblages electriques pour les autres appareils pour la telecommunication numerique",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900511",
+    "designation": "Parties d'interphones",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900522",
+    "designation": "Autres parties d'appareils pour la telephonie par courant porteur ou numeriques",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900533",
+    "designation": "Autres parties d'appareils pour la telegraphie",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900599",
+    "designation": "Autres parties des appareils pour la telecommunication par courant porteur ou pour la telecommunication numerique",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900602",
+    "designation": "Meubles et coffrets d'appareils de radiocommunnication, pour reseau cellulaire et pour autres reseau sans fil",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900715",
+    "designation": "Dispositifs de cryptage utilises dans la radiotelephonie portative ou mobile",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900726",
+    "designation": "Dispositifs de cryptage de la voix ou/et des donnees transmises a travers les reseaux de telephonie cellulaire ou par satellite",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900737",
+    "designation": "Modules de cryptage utilises dans la station de base de radiocommunications cellulaires",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900793",
+    "designation": "Autres dispositifs de cryptage destines a etre integres dans les appareils de radiocommunnication, pour reseau cellulaire et pour autres reseau sans fil",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900806",
+    "designation": "Autres assemblages electroniques d'appareils de radiocommunnication, pour reseau cellulaire et pour autres reseau sans fil",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85177900997",
+    "designation": "Autres parties d'appareils de radio communnication pour reseau cellulaire et pour autres reseau sans fil",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "851770"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85198100102",
+    "designation": "Autres appareils d'enregistrement ou de reproduction du son et leur combinaison,utilisant un support magnétique, optique ou à semi-conducteurs, à usage industriel     (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "851950",
+     "851981"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "position_tarif_web": "85198100908",
+    "designation": "Autres appareils d'enregistrement ou de reproduction du son et leur combinaison,utilisant un support magnétique, optique ou à semi-conducteurs,autres qu' à usage industriel",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "851950",
+     "851981"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     15.0
+    ]
+   },
+   {
+    "position_tarif_web": "85299018007",
+    "designation": "Parties des articles des sous-positions 8524 11 00 et 8524 91 00",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "852990"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85299040118",
+    "designation": "Meubles, coffrets et boitiers, pour recepteurs de television portatifs ou de tables, non combines a d'autres appareils",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "852990"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85299040196",
+    "designation": "Meubles et coffrets et boitiers,pour autres recepteurs de television",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "852990"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85299040903",
+    "designation": "Meubles et coffrets et boitiers, pour autres appareils des n°s 85 24 a 85 28",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "852990"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85395100008",
+    "designation": "Modules à diodes émettrices de lumière (led)",
+    "droit_npf_2026_pct": 43.0,
+    "sources_sh2017": [
+     "853990",
+     "854370",
+     "940510",
+     "940520",
+     "940530",
+     "940540"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85414100004",
+    "designation": "Diodes emettrices de lumiere(led)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "854140"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     20.0
+    ]
+   },
+   {
+    "position_tarif_web": "85414200009",
+    "designation": "cellules photovoltaïques non assemblées en modules  ni constituées en panneau",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "854140"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     20.0
+    ]
+   },
+   {
+    "position_tarif_web": "85414300004",
+    "designation": "Cellules photovoltaïques assemblées en modules  ou constituées en panneaux",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "854140"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     20.0
+    ]
+   },
+   {
+    "position_tarif_web": "85414900004",
+    "designation": "Autres dispositifs photosensibles a semi-conducteur",
+    "droit_npf_2026_pct": 30.0,
+    "sources_sh2017": [
+     "854140"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     20.0
+    ]
+   },
+   {
+    "position_tarif_web": "85434000105",
+    "designation": "Cigarettes electroniques",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [
+     "854370"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "85434000901",
+    "designation": "Autres dispositifs de vaporisation électriques personnels",
+    "droit_npf_2026_pct": 43.0,
+    "sources_sh2017": [
+     "854370"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     15.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062110006",
+    "designation": "Multi-rotors conçus uniquement pour être téléguidés, équipés d'appareils relevant de la sous-position 8525 89 intégrés de façon permanente et destinésà capturer et enregistrer des images fixes et vidéo, d'un poids maximal au décollage  n'excédant pas 250 g",
+    "droit_npf_2026_pct": 43.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062190008",
+    "designation": "Autres véhicules aériens sans pilote, conçus uniquement pour être téléguidés, d'un poids maximal au décollage n'excédant pas 250 g",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062210001",
+    "designation": "Multi-rotors conçus uniquement pour être téléguidés, équipés d'appareils relevant de la sous-position 8525 89 intégrés de façon permanente et destinésà capturer et enregistrer des images fixes et vidéo, d'un poids maximal au décollage excédant 250 g mais n'excédant pas 7 kg",
+    "droit_npf_2026_pct": 43.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062290003",
+    "designation": "Autres véhicules aériens sans pilote, conçus uniquement pour être téléguidés, d'un poids maximal au décollage excédant 250 g mais n'excédant pas 7 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062300002",
+    "designation": "Véhicules aériens sans pilote, conçus uniquement pour être téléguidés, d'un poids maximal au décollage excédant 7 kg maisn'excédant pas 25 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062400007",
+    "designation": "Véhicules aériens sans pilote, conçus uniquement pour être téléguidés, d'un poids maximal au décollage excédant 25 kg maisn'excédant pas 150 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062910006",
+    "designation": "Autres véhicules aériens sans pilote, conçus uniquement pour être téléguidés, d'un poids à vide n'excédant pas 2 000 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880212",
+     "880220",
+     "880230",
+     "880240"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88062920000",
+    "designation": "Autres véhicules aériens sans pilote, conçus uniquement pour être téléguidés, d'un poids à vide excédant 2 000 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880212",
+     "880220",
+     "880230",
+     "880240"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88069100004",
+    "designation": "Autres véhicules aériens sans pilote, d'un poids maximal au décollage  n'excédant pas 250 g",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88069200009",
+    "designation": "Autres véhicules aériens sans pilote, d'un poids maximal au décollage  excédant 250 g mais n'excédant pas 7 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88069300004",
+    "designation": "Autres véhicules aériens sans pilote, d'un poids maximal au décollage  excédant 7 kg mais n'excédant pas 25 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88069400009",
+    "designation": "Autres véhicules aériens sans pilote, d'un poids maximal au décollage  excédant 25 kg mais n'excédant pas 150 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880220"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88069910008",
+    "designation": "Autres véhicules aériens sans pilote, d'un poids à vide n'excédant pas 2 000 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880212",
+     "880220",
+     "880230",
+     "880240"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   },
+   {
+    "position_tarif_web": "88069920002",
+    "designation": "Autres véhicules aériens sans pilote, d'un poids à vide excédant 2 000 kg",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "852580",
+     "880211",
+     "880212",
+     "880220",
+     "880230",
+     "880240"
+    ],
+    "taux_e_tariff_trouves_pct": [
+     0.0,
+     30.0
+    ]
+   }
+  ],
+  "sources_non_enumerees_par_l_omd": [
+   {
+    "position_tarif_web": "85241100001",
+    "designation": "modules d?affichage à écran plat, même comprenant des écrans tactiles,  sans pilotes ni circuits de commande, à cristaux liquides (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85241200006",
+    "designation": "Modules d'affichage à écran plat, même comprenant des écrans tactiles, sans pilotes ni circuits de commande, à diodes émettrices de lumière  organiques(oled) (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85241900001",
+    "designation": "Autre modules d'affichage à écran plat, même comprenant des écrans tactiles,sans pilotes ni circuits de commande (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85249100009",
+    "designation": "autre modules d?affichage à écran plat, même comprenant des écrans  tactiles,à cristaux liquides (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85249200004",
+    "designation": "Autre modules d'affichage à écran plat, même comprenant des écrans tactiles,à diodes émettrices de lumière organiques (oled) (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85249900009",
+    "designation": "Autre modules d'affichage à écran plat, même comprenant des écrans tactiles (2)",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85415100000",
+    "designation": "Transducteurs à semiconducteur",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85415900000",
+    "designation": "Autres dispositifs a semi-conducteurs",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85492100008",
+    "designation": "Déchets et débris électriques et électroniques,des types utilisés principalement pour la récupérationdes métaux précieux,   contenant des piles et batteries de piles électriques,   des accumulateurs électriques, des interrupteurs au mercure,  du verre de tubes cathodiqueset autres verres activés,ou",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   },
+   {
+    "position_tarif_web": "85492900008",
+    "designation": "Autres déchets et débris électriques et électroniques,des types utilisés principalement pour la récupération des métaux précieux",
+    "droit_npf_2026_pct": 15.0,
+    "sources_sh2017": [],
+    "taux_e_tariff_trouves_pct": []
+   }
+  ],
+  "sh6_inconnu_de_l_e_tariff_et_de_l_omd": [
+   {
+    "position_tarif_web": "97052300006",
+    "designation": "Autres collections et pièces de collection présentant un intérêt zoologique, botanique, minéralogique, anatomique ou paléontologique",
+    "droit_npf_2026_pct": 0.0,
+    "sources_sh2017": [
+     "970523"
+    ],
+    "taux_e_tariff_trouves_pct": []
+   }
+  ],
+  "_note_9705_23": "9705.23 n'existe pas au SH 2022 de l'OMD (9705.21, .22, .29, .31, .39 seulement) : position nationale atypique du Tarif Web, NPF 0 %."
+ },
+ "anomalie_corrigee": "La ligne « 4039011010 » du Tarif Web avait perdu son zéro de tête (0403.90.11.01.0, crème de lait caillée) : les codes sont complétés à 11 chiffres à l'extraction ; la ligne trouve désormais sa ligne e-Tariff (040390110)."
 }

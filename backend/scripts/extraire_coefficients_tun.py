@@ -68,7 +68,9 @@ def _table(sub_positions, zone, partenaires):
         if cle not in index:
             index[cle] = len(motifs)
             motifs.append(dict(sorted(motif.items())))
-        positions[ligne["hs_code"][:10]] = index[cle]
+        # Une ligne du Tarif Web a perdu son zéro de tête (« 4039011010 » pour
+        # 0403.90.11.01.0) : les positions ont toutes 11 chiffres.
+        positions[ligne["hs_code"].zfill(11)[:10]] = index[cle]
     return motifs, dict(sorted(positions.items())), accords
 
 
