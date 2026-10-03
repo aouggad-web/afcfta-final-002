@@ -93,3 +93,16 @@ def test_la_franchise_zale_est_signalee_sans_etre_calculee():
     assert "ZALE (GAFTA)" in historique["trade_regime_note"]
     socle = taux_preferentiels(_position(), "TUN", "EGY", "84713000010")
     assert socle["applique"] is False and "Agadir" in socle["note"]
+
+
+def test_la_concordance_omd_donne_le_droit_de_base_des_positions_sh2022():
+    """0307.29 (SH 2022) vient de 0307.29 et 0307.99 (SH 2017, table I de
+    l'OMD), qui portent tous deux 36 % dans l'e-Tariff : base retenue. Les
+    modules photovoltaïques 8541.43 viennent de 8541.40, à 0 % et 20 % : rien."""
+    from services.zlecaf_schedule_tun import CONCORDANCE
+
+    assert CONCORDANCE["0307291001"] == {"base": 36.0, "sources_sh2017": ["030729", "030799"]}
+    taux, libelle = compute_tun_zlecaf_rate("03072910013", "CMR", 50.0, as_of=EN_2026)
+    assert taux == 14.4 and "concordance OMD" in libelle
+    assert "8541430000" not in CONCORDANCE
+    assert compute_tun_zlecaf_rate("85414300004", "CMR", 30.0, as_of=EN_2026)[0] is None

@@ -1,0 +1,35 @@
+{
+ "schema_version": 1,
+ "objet": "Droit de base 2019 des positions tunisiennes SH 2022 absentes de l'e-Tariff (SH 2017), par la table I de corrélation de l'OMD",
+ "destination_iso3": "TUN",
+ "verified_at": "2026-10-03",
+ "evidence_level": "primaire — table I officielle de l'OMD (novembre 2020), téléchargée sur wcoomd.org et identique (même taille) à la copie versée par le propriétaire au dossier Drive « sh concordance »",
+ "regle": {
+  "valeur": "Pour une position SH 2022 sans ligne e-Tariff : sources = SH6 2017 énumérés par la table I (ou le SH6 lui-même s'il n'y figure pas) ; droit de base = le taux unique de toutes les lignes e-Tariff de ces sources ; plusieurs taux ou aucune source : non résolu (NPF)",
+  "verbatim": "TABLE I – CORRELATING THE 2022 VERSION TO THE 2017 VERSION OF THE HARMONIZED SYSTEM — November 2020",
+  "reference": "Organisation mondiale des douanes, tables de corrélation SH 2022/SH 2017, table I",
+  "portee": "services/zlecaf_schedule_tun.CONCORDANCE (data/zlecaf_tun/concordance_sh2022_sh2017.json, produit par scripts/extraire_concordance_tun.py).",
+  "fichier_archive": "sources/OMD_correlation_SH2022_SH2017_table_I.pdf",
+  "sha256": "e6aa91163b993bee6d7bf77c2a5e01914c6a9794829f9164491442ec2b1c1361",
+  "url": "https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/table-i_en.pdf"
+ },
+ "resultat": {
+  "positions_sans_ligne_e_tariff": 956,
+  "resolues": 861,
+  "dont_renumerotees_selon_l_omd": 634,
+  "dont_sh6_inchange_taux_unique": 227,
+  "non_resolues_taux_multiples": 83,
+  "non_resolues_sans_source": 12,
+  "donnees": "backend/data/zlecaf_tun/concordance_sh2022_sh2017.json",
+  "donnees_sha256": "934d1976bcacb09f1f4cc062733836289e58f41e8dbc79414a3f22f45dbf33e8",
+  "document_non_archive": "Jeu dérivé (table I de l'OMD + instantané e-Tariff du 03/10/2026) ; empreinte consignée pour la relecture.",
+  "exemples": {
+   "0307.29 (SH 2022)": "sources 0307.29 et 0307.99 (SH 2017), toutes à 36 % : base 36 %",
+   "8541.43 modules photovoltaïques": "source ex 8541.40, lignes e-Tariff à 0 % et 20 % : non résolu, NPF"
+  }
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "La correspondance au niveau national (10 chiffres) : la table de l'OMD est au SH6 ; la règle du taux unique évite de choisir entre deux taux, mais une table tunisienne à 10 chiffres la remplacerait.",
+  "Les 14 positions que la table I renvoie à des « applicable subheadings » sans les énumérer (8524, 8541.51/59, 8549)."
+ ]
+}

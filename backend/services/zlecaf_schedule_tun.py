@@ -14,7 +14,8 @@ DEUX SOURCES, UNE PAR FACTEUR :
   « ZLECAf », par position et par origine (data/zlecaf_tun/). Il ne vaut que
   pour 2026 : hors de cette année, rien n'est servi.
 * **Le droit de base 2019** est le taux de base de l'e-Tariff Book, lu au
-  niveau de la ligne à 9 chiffres. Le ministère déclare que l'offre utilise
+  niveau de la ligne à 9 chiffres (SH 2017). Pour une position SH 2022 sans
+  ligne e-Tariff, il est retrouvé par la table I de l'OMD (CONCORDANCE). Le ministère déclare que l'offre utilise
   les tarifs nationaux 2019 ; la loi de finances 2019 le confirme sur les
   lignes qu'elle modifie (art. 60 et 81). Décision du propriétaire du
   03/10/2026.
@@ -56,6 +57,12 @@ DROIT_DE_BASE_2019 = {
     ligne["hs_code"]: float(ligne["mfn_rate_expression"]) for ligne in _ETARIFF["schedules"]["1"]
 }
 
+with open(_DATA / "zlecaf_tun" / "concordance_sh2022_sh2017.json", encoding="utf-8") as f:
+    #: Positions SH 2022 sans ligne e-Tariff : droit de base retrouvé par la
+    #: table I de l'OMD, quand tous les SH6 2017 sources portent un seul taux
+    #: (scripts/extraire_concordance_tun.py).
+    CONCORDANCE = json.load(f)["positions"]
+
 LIBELLE = "Texte TA n°016/2023, section V-2 : coefficient {annee} du Tarif Web ({coef:g} %) × droit de base 2019 de l'e-Tariff ({base:g} %)"
 
 
@@ -75,10 +82,15 @@ def compute_tun_zlecaf_rate(
     if coef is None:
         return None, "Aucun coefficient ZLECAf publié au Tarif Web pour cette position et cette origine"
     base = DROIT_DE_BASE_2019.get(code[:9])
+    precision = ""
+    if base is None and code[:10] in CONCORDANCE:
+        entree = CONCORDANCE[code[:10]]
+        base = entree["base"]
+        precision = f", par concordance OMD SH 2022 → SH 2017 ({', '.join(entree['sources_sh2017'])})"
     if base is None:
         return None, "Position absente de l'e-Tariff : droit de base 2019 non établi"
     taux = round(coef * base / 100, 6)
-    libelle = LIBELLE.format(annee=annee, coef=coef, base=base)
+    libelle = LIBELLE.format(annee=annee, coef=coef, base=base) + precision
     if normal_rate_pct is not None and taux > normal_rate_pct:
         taux = float(normal_rate_pct)
         libelle = f"{libelle} ; plafonné au NPF"
