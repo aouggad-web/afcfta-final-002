@@ -184,3 +184,10 @@ def test_la_categorie_est_lue_a_la_maille_publiee_de_l_offre():
     assert published_offer_category("EGY", LIGNE_C) == "C"
     assert published_offer_category("EGY", "9999999999") is None
     assert published_offer_category("XYZ", LIGNE_A) is None
+
+
+def test_le_chapitre_84_est_classe_depuis_la_recollecte_d_octobre():
+    """L'instantané d'août n'avait aucune ligne du chapitre 84 : toutes les
+    machines restaient au NPF faute de catégorie. 8471.30 est en liste A."""
+    taux, _ = compute_egy_zlecaf_rate("84713000", A_5_ANS, 5.0, as_of=datetime.date(2026, 6, 1))
+    assert taux == 0.0
