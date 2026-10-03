@@ -28,6 +28,7 @@ EXPECTED_MINIMUM_LINES = {
     ("TUN", OCTOBER): 23000,
     # Maroc recollecté : il manquait les chapitres 29, 39, 84 et 85.
     ("MAR", OCTOBER): 36000,
+    ("ECOWAS", OCTOBER): 6000,
 }
 
 
@@ -127,6 +128,7 @@ def test_october_snapshots_have_the_chapters_earlier_ones_missed():
     for offer, avant, manquants in (
         ("TUN", AUGUST, {"29", "84", "85"}),
         ("MAR", SEPTEMBER, {"29", "39", "84", "85"}),
+        ("ECOWAS", AUGUST, {"84"}),
     ):
         ancien, octobre = _lignes(offer, avant), _lignes(offer, OCTOBER)
         assert manquants <= {code[:2] for code in octobre}
