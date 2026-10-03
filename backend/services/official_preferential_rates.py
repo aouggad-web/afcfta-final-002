@@ -382,7 +382,26 @@ def resolve_published_offer_rate(
             parent = _resolve_offer_line(dataset, country, origin, clean_code[:length], year)
             if parent is not None:
                 return {**parent, "requested_hs_code": clean_code}
+
+    if dataset_code == "ECOWAS":
+        # Position TEC 2022 sans ligne dans l'offre (TEC 2017) : concordance
+        # du Mali puis de l'OMD, retenue seulement si toutes les lignes sources
+        # portent la même offre (scripts/extraire_concordance_cedeao.py).
+        concordance = _concordance_cedeao()
+        entree = concordance["par_position_mali"].get(clean_code[:10]) or concordance["par_sh6_omd"].get(
+            clean_code[:6]
+        )
+        if entree is not None:
+            ligne = _resolve_offer_line(dataset, country, origin, entree["ligne_e_tariff"], year)
+            if ligne is not None:
+                return {**ligne, "requested_hs_code": clean_code, "concordance_tec2022_tec2017": entree}
     return None
+
+
+@lru_cache(maxsize=1)
+def _concordance_cedeao() -> dict:
+    chemin = Path(__file__).resolve().parents[1] / "data" / "zlecaf_cedeao" / "concordance_tec2022_tec2017.json"
+    return json.loads(chemin.read_text(encoding="utf-8"))
 
 
 def resolve_official_preferential_rate(

@@ -1,0 +1,41 @@
+{
+ "schema_version": 1,
+ "objet": "Rattachement des positions TEC CEDEAO 2022 sans ligne dans l'offre e-Tariff CEDEAO (rédigée sur le TEC 2017)",
+ "destination_iso3": "ECOWAS",
+ "verified_at": "2026-10-03",
+ "evidence_level": "secondaire — table du Mali (document Word du 31/10/2022, sans autorité émettrice identifiée, versé par le propriétaire au dossier Drive « sh concordance »), retenue seulement là où la table I officielle de l'OMD la confirme",
+ "regle": {
+  "valeur": "Position TEC 2022 sans ligne d'offre : (1) sources TEC 2017 données par la table du Mali, à 10 chiffres, si chaque source relève d'un SH6 que la table I de l'OMD donne pour origine ; (2) à défaut, SH6 sources de la table I de l'OMD. L'offre n'est servie que si toutes les lignes sources portent exactement la même offre (catégorie, taux de base, calendrier). Sinon : aucune offre.",
+  "verbatim": "LE TABLEAU DE CONCORDANCE DES NTS SUPPRIMEES — TEC 2017 / DESIGNATION / TEC 2022",
+  "reference": "Tableau de concordance des NTS supprimées, TEC CEDEAO 2017 → TEC CEDEAO 2022 (fichier Drive « Mali_Table_concordance_TEC2017_TEC2022.pdf »)",
+  "portee": "services/official_preferential_rates.resolve_published_offer_rate, offre ECOWAS seulement (data/zlecaf_cedeao/concordance_tec2022_tec2017.json, produit par scripts/extraire_concordance_cedeao.py).",
+  "fichier_archive": "sources/MLI_concordance_TEC2017_TEC2022_NTS_supprimees.pdf",
+  "sha256": "f26f32c67e96198417a61c2487530e7fadd5c9a63cfb4e6c9e5ea9cbbc83e6f0"
+ },
+ "recoupement_omd": {
+  "table": "sources/OMD_correlation_SH2022_SH2017_table_I.pdf",
+  "sha256": "e6aa91163b993bee6d7bf77c2a5e01914c6a9794829f9164491442ec2b1c1361",
+  "lecture": "Sur les paires de la table du Mali concernant une position absente de l'offre, 5 contredisent la table I de l'OMD (source 2017 hors des SH6 d'origine) : elles sont écartées, l'OMD faisant foi."
+ },
+ "resultat": {
+  "par_table_du_mali": 238,
+  "par_table_i_omd_sh6": 330,
+  "ecartees_mali_offres_divergentes_ou_source_absente": 8,
+  "ecartees_mali_contredites_par_l_omd": 5,
+  "ecartees_omd_offres_divergentes_ou_aucune_ligne_source": 40,
+  "donnees": "backend/data/zlecaf_cedeao/concordance_tec2022_tec2017.json",
+  "donnees_sha256": "9f8844cd5313a85ff4286d4186f963241e4b22451011496d43f42112f0a43a3c",
+  "document_non_archive": "Jeu dérivé (table du Mali + table I de l'OMD + instantané e-Tariff CEDEAO du 03/10/2026) ; empreinte consignée pour la relecture.",
+  "exemples": {
+   "0309.10.00.00 (TEC 2022)": "source 0305.10.00.00 (TEC 2017) : offre de 0305.10.00.00",
+   "8525.81.00.00 (TEC 2022)": "SH6 852581 issu de 852580 (table I de l'OMD) : offre de 8525.80.00.00",
+   "2518.20.00.00": "table du Mali contredite par l'OMD : écartée"
+  },
+  "effet_nigeria": "Tarif national au TEC 2022 : 5 332 lignes avec offre directe, 338 par cette concordance, 680 sans offre. Statut PARTNER_NOTICE_REQUIRED : affichage informatif, aucun droit réduit calculé."
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "La provenance de la table du Mali : auteur indiqué dans les métadonnées du fichier, aucune autorité émettrice (DGD Mali, Commission CEDEAO) mentionnée dans le document. Une table publiée par la Commission de la CEDEAO la remplacerait.",
+  "Les positions dont les sources portent des offres différentes : aucune offre n'est servie plutôt que d'en choisir une.",
+  "Les socles CIV, SEN et MLI (TEC 2017) correspondent directement à l'offre et ne passent pas par cette concordance."
+ ]
+}
