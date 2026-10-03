@@ -49,7 +49,8 @@ Known collection gap (2026-10-03): the API returns an empty list for some
 whole-chapter searches while serving their headings one by one. Every
 snapshot dated before 2026-10-03 lacks chapter 84; MAR also lacks 29, 39 and
 85, ZMB lacks 29. The collector now re-reads an empty chapter heading by
-heading; only TUN has been recollected so far.
+heading; TUN and MAR have been recollected (MAR is also checked against the
+Liste A of amendment 6627/223, services/zlecaf_schedule_mar.py).
 
 ## Reproduction
 

@@ -104,3 +104,26 @@ def tpi_preferentielle(
     if part is None:
         return None, None
     return round(float(tpi_base_pct) * part, 6), REFERENCE_TPI
+
+
+_LISTE_A = json.loads(
+    (Path(__file__).resolve().parents[1] / "data" / "zlecaf_mar" / "liste_a_6627-223.json").read_text(
+        encoding="utf-8"
+    )
+)
+
+
+def dans_la_liste_a(hs_code: str) -> bool:
+    """La position relève-t-elle de la liste A de l'avenant n° 6627/223 ?
+
+    Seule la liste A est démantelée (circulaire 6530/223) : une ligne que
+    l'e-Tariff classe A mais que la circulaire ne couvre pas reste au NPF.
+    Elle en relève si une position incluse une à une la couvre, ou si son
+    chapitre est entier en liste A sans qu'une exception la couvre.
+    """
+    code = "".join(ch for ch in str(hs_code) if ch.isdigit())
+    if any(code.startswith(inclus) for inclus in _LISTE_A["inclusions"]):
+        return True
+    return code[:2] in _LISTE_A["chapitres_entiers"] and not any(
+        code.startswith(exclu) for exclu in _LISTE_A["exceptions"]
+    )

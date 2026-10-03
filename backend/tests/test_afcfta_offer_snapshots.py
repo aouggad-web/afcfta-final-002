@@ -26,6 +26,8 @@ EXPECTED_MINIMUM_LINES = {
     # Tunisie recollectée : l'instantané d'août n'avait pas les chapitres 29,
     # 84 et 85, que l'API ne rend pas à la recherche par chapitre.
     ("TUN", OCTOBER): 23000,
+    # Maroc recollecté : il manquait les chapitres 29, 39, 84 et 85.
+    ("MAR", OCTOBER): 36000,
 }
 
 
@@ -113,15 +115,19 @@ def test_snapshots_cover_every_requested_destination():
         assert (DATA_DIR / f"{offer}_afcfta_etariff_{SEPTEMBER}.json.gz").exists()
 
 
-def test_tunisian_october_snapshot_has_the_chapters_august_missed():
-    """Le chapitre vide est relu position par position : 29, 84 et 85 sont
-    présents, et aucune ligne d'août n'a changé."""
-    def lire(date):
-        path = DATA_DIR / f"TUN_afcfta_etariff_{date}.json.gz"
-        payload = json.loads(gzip.decompress(path.read_bytes()).decode("utf-8"))
-        return {row["hs_code"]: row for row in payload["schedules"]["1"]}
+def _lignes(offer, date, schedule="1"):
+    path = DATA_DIR / f"{offer}_afcfta_etariff_{date}.json.gz"
+    payload = json.loads(gzip.decompress(path.read_bytes()).decode("utf-8"))
+    return {row["hs_code"]: row for row in payload["schedules"][schedule]}
 
-    aout, octobre = lire(AUGUST), lire(OCTOBER)
-    chapitres = {code[:2] for code in octobre}
-    assert {"29", "84", "85"} <= chapitres
-    assert all(octobre.get(code) == row for code, row in aout.items())
+
+def test_october_snapshots_have_the_chapters_earlier_ones_missed():
+    """Le chapitre vide est relu position par position : les chapitres
+    manquants sont présents, et aucune ligne antérieure n'a changé."""
+    for offer, avant, manquants in (
+        ("TUN", AUGUST, {"29", "84", "85"}),
+        ("MAR", SEPTEMBER, {"29", "39", "84", "85"}),
+    ):
+        ancien, octobre = _lignes(offer, avant), _lignes(offer, OCTOBER)
+        assert manquants <= {code[:2] for code in octobre}
+        assert all(octobre.get(code) == row for code, row in ancien.items())

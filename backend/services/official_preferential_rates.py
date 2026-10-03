@@ -20,7 +20,7 @@ DATASETS = {
     "TUN": DATA_DIR / "TUN_afcfta_etariff_2026-10-03.json.gz",
     "ETH": DATA_DIR / "ETH_afcfta_etariff_2026-08-17.json.gz",
     "ZMB": DATA_DIR / "ZMB_afcfta_etariff_2026-08-17.json.gz",
-    "MAR": DATA_DIR / "MAR_afcfta_etariff_2026-09-13.json.gz",
+    "MAR": DATA_DIR / "MAR_afcfta_etariff_2026-10-03.json.gz",
     "ZWE": DATA_DIR / "ZWE_afcfta_etariff_2026-09-13.json.gz",
 }
 
@@ -430,6 +430,15 @@ def resolve_official_preferential_rate(
         # égyptienne servirait un taux que l'acte national ne commande pas.
         # Voir EGY_rapprochement_baremes_2026-09-24.json.
         return None
+
+    if dataset_code == "MAR":
+        # Seule la liste A de la circulaire est démantelée : une ligne que
+        # l'e-Tariff sert mais que l'avenant n° 6627/223 ne couvre pas reste
+        # au NPF (85 lignes au 03/10/2026, ex. 0210999031).
+        from services.zlecaf_schedule_mar import dans_la_liste_a
+
+        if not dans_la_liste_a(clean_code):
+            return None
 
     if dataset_code != "ZAF":
         return _resolve_offer_line(
