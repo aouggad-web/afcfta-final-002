@@ -1105,6 +1105,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         # obligerait à la répéter six fois, et `iso` n'y est pas défini.
         cle_controle = None
         longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+        if longueur_position and len(code) == longueur_position:
+            # Un chiffre de moins que code + clé : le zéro de tête a été perdu
+            # à la collecte (Tunisie : « 4039011010 » pour 0403.90.11.01.0).
+            code = code.zfill(longueur_position + 1)
         if longueur_position and len(code) == longueur_position + 1:
             code, cle_controle = code[:longueur_position], code[longueur_position:]
 

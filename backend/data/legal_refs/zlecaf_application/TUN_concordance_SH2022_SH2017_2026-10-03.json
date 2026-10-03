@@ -20,7 +20,7 @@
   "dont_sh6_inchange_taux_unique": 227,
   "non_resolues_taux_multiples": 83,
   "donnees": "backend/data/zlecaf_tun/concordance_sh2022_sh2017.json",
-  "donnees_sha256": "9e9f66736a5b783f5c4b95dc7618891064e8e654ee8d51c831338ab961e72021",
+  "donnees_sha256": "3ac037c25f63cf499765319d8ce04f31e5f5ddcbaef45997b8d6352b75cb1888",
   "document_non_archive": "Jeu dérivé (table I de l'OMD + instantané e-Tariff du 03/10/2026) ; empreinte consignée pour la relecture.",
   "exemples": {
    "0307.29 (SH 2022)": "sources 0307.29 et 0307.99 (SH 2017), toutes à 36 % : base 36 %",
@@ -1215,5 +1215,5 @@
   ],
   "_note_9705_23": "9705.23 n'existe pas au SH 2022 de l'OMD (9705.21, .22, .29, .31, .39 seulement) : position nationale atypique du Tarif Web, NPF 0 %."
  },
- "anomalie_corrigee": "La ligne « 4039011010 » du Tarif Web avait perdu son zéro de tête (0403.90.11.01.0, crème de lait caillée) : les codes sont complétés à 11 chiffres à l'extraction ; la ligne trouve désormais sa ligne e-Tariff (040390110)."
+ "anomalie_corrigee": "La ligne « 4039011010 » du Tarif Web avait perdu son zéro de tête (0403.90.11.01.0, crème de lait caillée) : le code est complété à 11 chiffres à l'extraction des coefficients, à la construction du socle (scripts/build_socle.py) et au chargement du tarif servi (authentic_tariff_service), où la ligne rejoint son vrai SH6 0403.90 ; elle trouve sa ligne e-Tariff (040390110)."
 }

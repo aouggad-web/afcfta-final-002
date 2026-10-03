@@ -106,3 +106,19 @@ def test_la_concordance_omd_donne_le_droit_de_base_des_positions_sh2022():
     assert taux == 14.4 and "concordance OMD" in libelle
     assert "8541430000" not in CONCORDANCE
     assert compute_tun_zlecaf_rate("85414300004", "CMR", 30.0, as_of=EN_2026)[0] is None
+
+
+def test_les_sources_omd_se_poursuivent_d_une_page_a_l_autre():
+    """8462.61 continue en haut de la page suivante de la table I : ses huit
+    sources SH 2017 sont toutes relevées, pas seulement les quatre premières."""
+    from services.zlecaf_schedule_tun import CONCORDANCE
+
+    assert "846291" in CONCORDANCE["8462611000"]["sources_sh2017"]
+    assert "880240" in CONCORDANCE["8806101000"]["sources_sh2017"]
+
+
+def test_la_position_qui_avait_perdu_son_zero_de_tete_est_servie():
+    """« 4039011010 » au Tarif Web est 0403.90.11.01.0 : la position correcte
+    est trouvée et reçoit la préférence."""
+    historique = calculate_import_taxes("TUN", "04039011010", 1000.0, origin_country="CMR")
+    assert historique["rates"]["effective_zlecaf_rate_pct"] == 14.4

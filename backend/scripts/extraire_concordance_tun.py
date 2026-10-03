@@ -42,10 +42,19 @@ _SOURCE = re.compile(r"^(?:ex)?(\d{4}\.\d{2})[,;]?$")
 def lire_table_i() -> dict:
     """SH6 2022 -> SH6 2017 sources. Colonnes : 2022 (x < 150), 2017 (150-230)."""
     table: dict[str, list] = {}
+    derniere = None  # entrée 2022 en cours : elle peut se poursuivre page suivante
     for page in pymupdf.open(TABLE_I):
         mots = [m for m in page.get_text("words") if m[1] < 715]  # pied de page ôté
         gauche = sorted((m for m in mots if m[0] < 150 and _CODE.match(m[4])), key=lambda m: m[1])
         milieu = sorted((m for m in mots if 150 <= m[0] < 230), key=lambda m: (m[1], m[0]))
+        # Sources en haut de page, avant la première entrée 2022 : suite de la
+        # dernière entrée de la page précédente (ex. 8462.61, 8806.10).
+        premiere = gauche[0][1] - 2 if gauche else 715
+        if derniere is not None:
+            for m in milieu:
+                trouve = _SOURCE.match(m[4]) if m[1] < premiere else None
+                if trouve:
+                    table[derniere].append(trouve.group(1).replace(".", ""))
         for i, mot in enumerate(gauche):
             haut = mot[1] - 2
             bas = gauche[i + 1][1] - 2 if i + 1 < len(gauche) else 715
@@ -54,6 +63,7 @@ def lire_table_i() -> dict:
                 trouve = _SOURCE.match(m[4]) if haut <= m[1] < bas else None
                 if trouve:
                     sources.append(trouve.group(1).replace(".", ""))
+            derniere = mot[4].replace(".", "")
     return table
 
 

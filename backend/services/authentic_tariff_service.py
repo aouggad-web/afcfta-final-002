@@ -667,8 +667,36 @@ def load_country_tariffs(country_iso3):
         _tariff_cache[country_iso3] = None
         return None
 
+    if country_iso3 == "TUN":
+        _completer_zero_de_tete_tun(data)
     _tariff_cache[country_iso3] = data
     return data
+
+
+def _completer_zero_de_tete_tun(data):
+    """Rendre son zéro de tête à une position tunisienne qui l'a perdu.
+
+    Les positions publiées comptent 11 chiffres (10 + clé de contrôle). Une
+    ligne collectée en compte 10 : « 4039011010 » pour 0403.90.11.01.0. Elle
+    était rangée sous un SH6 « 403901 » qui n'existe pas, et la position
+    correcte restait introuvable. Elle rejoint ici la ligne de son vrai SH6.
+    """
+    lignes = data.get("tariff_lines") or []
+    par_sh6 = {ligne.get("hs6"): ligne for ligne in lignes}
+    for ligne in list(lignes):
+        sous_positions = ligne.get("sub_positions") or []
+        if not sous_positions or not all(len(sp.get("code", "")) == 10 for sp in sous_positions):
+            continue
+        for sp in sous_positions:
+            sp["code"] = sp["code"].zfill(11)
+            sp["digits"] = 11
+        sh6 = sous_positions[0]["code"][:6]
+        cible = par_sh6.get(sh6)
+        if cible is not None and cible is not ligne:
+            cible.setdefault("sub_positions", []).extend(sous_positions)
+            lignes.remove(ligne)
+        else:
+            ligne["hs6"] = sh6
 
 
 def load_nomenclature_map(country_iso3):
