@@ -27,8 +27,9 @@
    "art_60_panneaux_solaires": "EX 85.41 réduit à 20 % : l'e-Tariff porte 20 % sur 854140900 ; le Tarif Web 2026 porte 30 % sur 8541.42/8541.43.",
    "art_58_beurre": "Suspension (annexe 4 de l'art. 75 de la LF 2016) et non modification du taux : l'e-Tariff garde 36 % sur 040510110, comme le Tarif Web 2026. Non retenu comme écart.",
    "art_61_soutiens_gorge": "Exonération sous attestation du ministère de la santé, pas un taux de ligne. Non retenu.",
-   "fichier_archive": "../../../../data/sources/TUN/jort/LF2019_JORT_fr_2018-12-28.pdf",
-   "sha256": "b52660d2f115e4ceb8f8de4324b279d8aa69374858560529baf2d40d69bdc941"
+   "texte_extrait": "sources/TUN_LF2019_art60_art81.texte-extrait.txt",
+   "sha256": "844db76889fc3229878b1947cf22feb1f735060fd5495c414eeff227c44c911c",
+   "pdf_complet": "LF2019_JORT_fr_2018-12-28.pdf, au manifeste JORT du dépôt (dossier TUN/jort), SHA-256 b52660d2f115e4ceb8f8de4324b279d8aa69374858560529baf2d40d69bdc941"
   },
   "structure_des_taux": "Les taux de base de l'e-Tariff valent 0, 15, 20, 27, 30 ou 36 % ; le Tarif Web 2026 porte en plus 43 % (1 751 lignes) et 50 % (2 792 lignes), absents de l'e-Tariff."
  },
