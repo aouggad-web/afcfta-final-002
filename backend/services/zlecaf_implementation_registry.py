@@ -23,6 +23,7 @@ from services.zlecaf_schedule_dza import ACTIVE_PARTNERS as DZA_ORIGINES
 from services.zlecaf_schedule_egy import ORIGINES_PAR_GROUPE
 from services.zlecaf_schedule_mar import ORIGINES_PAR_GROUPE as MAR_ORIGINES
 from services.zlecaf_schedule_syc import ORIGINES_SCHEDULE_VI as SYC_ORIGINES
+from services.zlecaf_schedule_tun import ORIGINES_TARIF_WEB as TUN_ORIGINES
 
 APPLIED = "APPLIED"
 OFFER_ONLY = "OFFER_ONLY"
@@ -382,6 +383,31 @@ RECORDS = {
             "Seul le droit de douane est réduit. Information indicative."
         ),
     ),
+    # Tunisie : texte TA n°016/2023 (coefficients sur le droit de base 2019).
+    # Les origines sont celles auxquelles la douane publie un coefficient au
+    # Tarif Web 2026 : les participants au commerce guidé selon le ministère,
+    # Égypte exceptée. Le Nigeria et l'Afrique du Sud n'étaient pas nommés par
+    # le texte de 2023 ; l'Égypte et l'Algérie entrent déjà en franchise au
+    # titre de la ZALE (Agadir, accord bilatéral). Fiches
+    # TUN_droit_de_base_2019_2026-10-03.json, TUN_origines_servies_2026-10-03.json.
+    "TUN": ImplementationRecord(
+        destination_iso3="TUN",
+        status=APPLIED,
+        instrument_id="نص ت ع رقم 016 لسنة 2023",
+        instrument_title=(
+            "Texte TA n°016 de 2023 du 06/04/2023 — application de l'Accord "
+            "ZLECAf (Direction générale des douanes, Tunisie)"
+        ),
+        instrument_url="https://www.douane.gov.tn/wp-content/uploads/2023/04/016_2023-1.pdf",
+        effective_from="2023-04-06",
+        accepted_origins=TUN_ORIGINES,
+        tariff_dataset=None,
+        note=(
+            "Texte TA n°016/2023 : coefficient 2026 publié au Tarif Web × droit "
+            "de base 2019 (taux de base de l'e-Tariff), plafonné au NPF. Seul le "
+            "droit de douane est réduit. Information indicative."
+        ),
+    ),
     # Regulation 574/2025 is in force and contains Ethiopia's schedule, but
     # article 3(2) delegates the applicable partner list to a separate notice.
     "ETH": ImplementationRecord(
@@ -470,7 +496,6 @@ OFFER_DATASETS = {
     "GHA": "ECOWAS",
     "MAR": "MAR",
     "RWA": "EAC",
-    "TUN": "TUN",
     "ZWE": "ZWE",
 }
 

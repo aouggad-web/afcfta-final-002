@@ -1,0 +1,81 @@
+{
+ "schema_version": 1,
+ "objet": "Droit ZLECAf à l'importation en Tunisie : coefficient 2026 publié par la douane × droit de base 2019 (taux de base de l'e-Tariff), plafonné au NPF",
+ "destination_iso3": "TUN",
+ "verified_at": "2026-10-03",
+ "evidence_level": "règle : texte TA n°016/2023 (transcription, voir TUN_application_2026-09-13.json) ; coefficients : Tarif Web 2026 de la douane (collecte du dépôt) ; droit de base 2019 : e-Tariff Book, confirmé par la loi de finances 2019 (JORT n° 104 du 28/12/2018, archivé) sur les lignes qu'elle modifie.",
+ "decision_du_proprietaire": "03/10/2026 : le taux de base de l'e-Tariff est retenu comme droit de base 2019 (« le ministre a dit tarif 2019 est appliqué comme base, et ils sont en train de faire la concordance avec la version 2022 du SH »). Seul le droit de douane est réduit (règle permanente du projet).",
+ "regle": {
+  "valeur": "Droit ZLECAf = coefficient 2026 du Tarif Web (zone « ZLECAf », par position et par origine) × droit de base 2019 de la ligne e-Tariff à 9 chiffres, plafonné au droit NPF du socle",
+  "article": "Texte TA n°016/2023, section V-2 (à l'importation)",
+  "verbatim_regle": "یُطبّق التّخفیض التّدریجي للمعالیم الدّیوانیّة والأداءات ذات الأثر المماثل المفروضة في تونس، اعتمادا على النّسب الأساسیّة لسنة 2019 […] كنسب مرجعیّة",
+  "verbatim_lf2019_art60": "Est réduit le taux du droit de douane dû à l'importation au titre des panneaux solaires relevant du numéro EX 85-41 du tarif des droits de douane à 20%.",
+  "verbatim_lf2019_art81": "Sont relevés les taux des droits de douane […] dus sur les motocycles relevant du numéro du tarif Ex 87.11 comme suit : […] 871120100 […] 30",
+  "portee": "Services zlecaf_schedule_tun (moteur du socle et chemin historique). Rien n'est servi hors de 2026 (coefficients de l'année), ni pour une position sans coefficient publié pour l'origine, ni pour une position sans ligne e-Tariff.",
+  "texte_extrait": "sources/TUN_LF2019_art60_art81.texte-extrait.txt",
+  "sha256": "844db76889fc3229878b1947cf22feb1f735060fd5495c414eeff227c44c911c"
+ },
+ "preuves_du_droit_de_base_2019": {
+  "declaration_du_ministere": {
+   "verbatim": "Utilisation des tarifs nationaux 2019 (année de lancement opérationnel de la ZLECAf), en cours de transposition, en collaboration avec l'OMD, avec la nouvelle nomenclature de 2022.",
+   "reference": "Présentation « ZLECAf » du ministère (africatradeagreements.tn), diapositive 7",
+   "fichier_archive": "sources/TUN_presentation_ZLECAf.pdf",
+   "sha256": "4af7295e1004cc1880b3e52bdf532e7d68c14fc06ad39898a08c4452ab60a9fa"
+  },
+  "controle_loi_de_finances_2019": {
+   "art_81_motocycles": "Les 8 lignes relevées à 30 % portent 30 % de base dans l'e-Tariff (871120100, 871120929, 871120989, 871130109, 871130909, 871140009, 871150000, 871190003) ; le Tarif Web 2026 les porte à 43 %.",
+   "art_60_panneaux_solaires": "EX 85.41 réduit à 20 % : l'e-Tariff porte 20 % sur 854140900 ; le Tarif Web 2026 porte 30 % sur 8541.42/8541.43.",
+   "art_58_beurre": "Suspension (annexe 4 de l'art. 75 de la LF 2016) et non modification du taux : l'e-Tariff garde 36 % sur 040510110, comme le Tarif Web 2026. Non retenu comme écart.",
+   "art_61_soutiens_gorge": "Exonération sous attestation du ministère de la santé, pas un taux de ligne. Non retenu.",
+   "texte_extrait": "sources/TUN_LF2019_art60_art81.texte-extrait.txt",
+   "sha256": "844db76889fc3229878b1947cf22feb1f735060fd5495c414eeff227c44c911c",
+   "pdf_complet": "LF2019_JORT_fr_2018-12-28.pdf, au manifeste JORT du dépôt (dossier TUN/jort), SHA-256 b52660d2f115e4ceb8f8de4324b279d8aa69374858560529baf2d40d69bdc941"
+  },
+  "structure_des_taux": "Les taux de base de l'e-Tariff valent 0, 15, 20, 27, 30 ou 36 % ; le Tarif Web 2026 porte en plus 43 % (1 751 lignes) et 50 % (2 792 lignes), absents de l'e-Tariff."
+ },
+ "donnees": {
+  "coefficients": {
+   "artefact": "backend/data/zlecaf_tun/coefficients_tarifweb_2026.json",
+   "document_non_archive": "Jeu dérivé de backend/data/crawled/TUN_tariffs.json par backend/scripts/extraire_coefficients_tun.py ; empreinte consignée pour la relecture.",
+   "sha256": "836d7b7e0ca204a108e5952bb917b66485a76359d1bb890f936935081e165d82",
+   "positions": 14075,
+   "motifs": "4 : liste A (40 % ; Tanzanie 0 %), avec ou sans Nigeria et Afrique du Sud ; liste B (87,5 % ; Maurice, Rwanda, Tanzanie 80 %), avec ou sans Nigeria et Afrique du Sud"
+  },
+  "droit_de_base_2019": {
+   "artefact": "backend/data/official_preferential/TUN_afcfta_etariff_2026-10-03.json.gz",
+   "document_non_archive": "Instantané e-Tariff recollecté le 03/10/2026 : celui du 17/08/2026 n'avait aucune ligne des chapitres 29, 84 et 85 (l'API rend une liste vide à la recherche par chapitre). 2 299 lignes ajoutées, aucune ligne d'août modifiée.",
+   "sha256": "05dfdac2328839899a8f2fb8086e3ff57dc32dd59480196ae141b599922dd7e4",
+   "lignes": 11672
+  },
+  "couverture": {
+   "positions_avec_coefficient": 14075,
+   "dont_droit_de_base_trouve": 13119,
+   "sans_ligne_e_tariff": 956,
+   "base_egale_au_npf_2026": 9147,
+   "base_inferieure_au_npf_2026": 3091,
+   "base_superieure_au_npf_2026": 881,
+   "positions_plafonnees_au_npf_pour_au_moins_une_origine": 676
+  }
+ },
+ "origines": {
+  "servies": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "NGA",
+   "ZAF",
+   "TZA",
+   "MUS",
+   "RWA"
+  ],
+  "regle": "Origines auxquelles le Tarif Web 2026 publie un coefficient ; une origine sans coefficient sur une position reste au NPF.",
+  "ecarts_avec_le_texte": "Le Nigeria et l'Afrique du Sud sont servis par la douane sans être nommés par le texte de 2023 (acte additionnel non trouvé). L'Égypte, nommée par le texte, n'a aucune ligne au Tarif Web : elle reste au NPF. Maurice et le Rwanda ne sont publiés que sur la liste B."
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "La nomenclature : l'e-Tariff est en SH 2017 (ex. 854140900), le Tarif Web en SH 2022 (8541.42/8541.43). Le rattachement se fait par les 9 premiers chiffres ; une position créée ou renumérotée en 2022 n'a pas de droit de base et reste au NPF, en attendant la table de concordance du ministère.",
+  "La liste nominative des taxes d'effet équivalent visées par la section V : seul le droit de douane est réduit.",
+  "L'acte qui ajoute le Nigeria et l'Afrique du Sud.",
+  "Les coefficients des années suivantes : rien n'est servi après 2026 tant que le Tarif Web de l'année n'est pas collecté."
+ ],
+ "remplace": "Le verdict « aucun calcul » de TUN_rapprochement_baremes_2026-09-29.json, levé par la décision du propriétaire ci-dessus."
+}

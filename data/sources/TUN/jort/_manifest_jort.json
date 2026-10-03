@@ -6,7 +6,7 @@
  "count": 15,
  "documents": [
   {
-   "file": "LF2026.pdf",
+   "file": null,
    "title": "Loi de finances pour 2026 — قانون عدد 17 لسنة 2025 مؤرخ في 12 ديسمبر 2025 يتعلق بقانون المالية لسنة 2026.",
    "type": "loi_finances",
    "annee_budget": 2026,
@@ -30,12 +30,17 @@
     "الفصل 117 — من مجلة معاليم التسجيل والطابع الجبائي. - في المعلوم الإضافي الموظف على كل عملية شحن لرصيد الهاتف الجوال تساوي أو تفوق 5 دنانير. - في المعلوم على الألعاب والمسابقات التي تتم المشاركة فيها من خلال مختلف وسائل تكنولوجيات الاتصال المنصوص عليه ب",
     "الفصل 31 — ـ تعفى مادة البطاطا من: - المعلوم على الخضر والغلال الموظّف لفائدة صندوق تنمية القدرة التنافسية في قطاع الفلاحة والصيد البحري. - المعلوم لفائدة صندوق تعويض الأضرار الفلاحية الناجمة عن الجوائح الطبيعية. المحور الثالث ـ التدخلات الاجتماعية إحداث \"صندوق للنهوض بالأشخاص ذوي الإعاقة\""
    ],
-   "pdf_sha256": "f0e122b1e11880d6e28f3160796f0a67464de352ec497ff4032738ba306c21b2",
-   "pdf_bytes": 107902,
-   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)"
+   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)",
+   "pdf_retire": {
+    "le": "2026-10-03",
+    "fichier": "LF2026.pdf",
+    "pdf_sha256": "f0e122b1e11880d6e28f3160796f0a67464de352ec497ff4032738ba306c21b2",
+    "contenu_reel": "قانون عدد 38 لسنة 2008 مؤرخ في 23 جوان 2008 (accord européen sur le transport de marchandises dangereuses)",
+    "motif": "Le PDF archivé n'était pas la loi de finances annoncée (première page lue) : il est retiré. Les articles extraits ci-dessus viennent du texte intégral en ligne, pas de ce PDF."
+   }
   },
   {
-   "file": "LF2025.pdf",
+   "file": null,
    "title": "Loi de finances pour 2025 — قانون عدد 48 لسنة 2024 مؤرخ في 9 ديسمبر 2024 يتعلق بقانون المالية لسنة 2025.",
    "type": "loi_finances",
    "annee_budget": 2025,
@@ -59,12 +64,17 @@
     "الفصل 34 — ـ 1) تخفّض إلى 0% نسبة المعاليم الديوانية المستوجبة على الأدوية التي لها مثيل مصنوع محليا الموردة من قبل الصيدلية المركزية التونسية والمدرجة بالعددين 30.03 و30.04 من تعريفة المعاليم الديوانية وذلك ابتداء من غرة جانفي 2025 إلى غاية 31 ديسمبر 2026. 2) يُوقف العمل بالأداء على القيمة المضافة المستوجب على الأدوية التي لها مثيل مصنوع محليّا الموردة من قبل الصيدلية المركزية التونسية والمدرجة بالعددين 30.03 و30.04 من تعريفة المعاليم الديوانية وذلك ابتداء من غرة جانفي 2025 إلى غاية 31 ديسمبر 2026. 3) تحذ",
     "الفصل 21 — من القانون عدد 13 لسنة 2023 المؤرخ في 11 ديسمبر 2023 المتعلق بقانون المالية لسنة 2024. 2) يوقف العمل بالأداء على القيمة المضافة المستوجب عند توريد وبيع مادة القهوة المدرجة تحت البند التعريفي 09.01 ومادة الشاي المدرجة تحت البند التعريفي 09.02 من تعريفة المعاليم الديوانية عند التوريد من قبل الديوان التونسي للتجارة والأشخاص المرخص لهم من قبل الوزارة المكلفة بالتجارة. مواصلة الإصلاح الجبائي ودعم موارد الخزينة تخفيف العبء الجبائي على الأفراد ودعم العدالة الجبائية"
    ],
-   "pdf_sha256": "141e5c08b11432e26a71a5da9d6969f4d0ac089d09e08ea230293dbe99ecfe57",
-   "pdf_bytes": 87953,
-   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)"
+   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)",
+   "pdf_retire": {
+    "le": "2026-10-03",
+    "fichier": "LF2025.pdf",
+    "pdf_sha256": "141e5c08b11432e26a71a5da9d6969f4d0ac089d09e08ea230293dbe99ecfe57",
+    "contenu_reel": "page d'une loi de 2002 (article 2 complétant la loi n° 81 de 2002) — non identifiée davantage",
+    "motif": "Le PDF archivé n'était pas la loi de finances annoncée (première page lue) : il est retiré. Les articles extraits ci-dessus viennent du texte intégral en ligne, pas de ce PDF."
+   }
   },
   {
-   "file": "LF2024.pdf",
+   "file": null,
    "title": "Loi de finances pour 2024 — قانون عدد 13 لسنة 2023 مؤرخ في 11 ديسمبر 2023 يتعلق بقانون المالية لسنة 2024(1).",
    "type": "loi_finances",
    "annee_budget": 2024,
@@ -88,12 +98,17 @@
     "الفصل 49 — من القانون عدد 66 لسنة 2017 المؤرخ في 18 ديسمبر 2017 المتعلق بقانون المالية لسنة 2018 كما تم تنقيحه وإتمامه بالنصوص اللاحقة وتعوّض بما يلي: ويضبط مبلغ المعلوم كما يلي: بحساب الدينار تصنيف النزل أو الإقامة بالنسبة إلى التونسيين وحاملي جنسيات بلدان المغرب العربي بالنسبة إلى الأجانب ? نزل سياحي من صنف 2 نجوم أو نزل إقامة أو قرية سياحية أو إقامة عائلية أو نزل ذو طابع مميز أو إقامة سياحية 1 4 ? الإقامات المرحلية ? المخيمات السياحية ? الإقامات الريفية ? الاستضافات العائلية ? كلّ المحلات الأخرى المعدّة",
     "الفصل 49 — من القانون عدد 66 لسنة 2017 المؤرّخ في 18 ديسمبر 2017 المتعلق بقانون المالية لسنة 2018 كما تمّ تنقيحه وإتمامه بالنصوص اللاحقة بعبارة \"المؤسسات السياحية\". إحداث معلوم على مشتقات الحليب"
    ],
-   "pdf_sha256": "ccdc5e3ec8cd4c63bce7b296e1b568559d7f14f4a287ae9fca51605eef8f9e0f",
-   "pdf_bytes": 90866,
-   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)"
+   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)",
+   "pdf_retire": {
+    "le": "2026-10-03",
+    "fichier": "LF2024.pdf",
+    "pdf_sha256": "ccdc5e3ec8cd4c63bce7b296e1b568559d7f14f4a287ae9fca51605eef8f9e0f",
+    "contenu_reel": "قانون عدد 35 لسنة 2007 مؤرخ في 4 جوان 2007 (Office national de l'assainissement)",
+    "motif": "Le PDF archivé n'était pas la loi de finances annoncée (première page lue) : il est retiré. Les articles extraits ci-dessus viennent du texte intégral en ligne, pas de ce PDF."
+   }
   },
   {
-   "file": "LF2021.pdf",
+   "file": null,
    "title": "Loi de finances pour 2021 — قانون عدد 46 لسنة 2020 مؤرخ في 23 ديسمبر 2020 يتعلق بقانون المالية لسنة 2021",
    "type": "loi_finances",
    "annee_budget": 2021,
@@ -117,12 +132,17 @@
     "الفصل 32 — ـ 1) يمكن للمؤسسات السياحية ومؤسسات الصناعات التقليدية إيداع التصريح المتعلق بالقسط الاحتياطي الثالث المستوجب خلال سنة 2020 وكل التصاريح المتعلقة بالأقساط الاحتياطية المستوجبة خلال سنة 2021 دون دفعها. 2) يمكن للمؤسسات المنصوص عليها بالفقرة 1 من هذا الفصل إيداع خلال سنة 2021 التصريح السنوي بالضريبة المستوجبة بعنوان النتائج المحققة خلال سنة 2020 دون دفعها على أن يتم دفع الضريبة المذكورة في أجل أقصاه موفى شهر ماي 2022. كما يمكن للمؤسسات المعنية دفع الضريبة المذكورة دون تسبقة وحسب روزنامة خلاص تضبط ",
     "الفصل 36 — ـ تتحمّل الدولة معلوم الخدمة الموظف على عمليات الدفع عن بعد لمختلف الأداءات والمعاليم ومختلف الموارد العمومية بواسطة البطاقات البنكية أو بواسطة الهاتف الجوال أو تلك المترتبة عن الاستخلاصات المنجزة لدى المحاسبين العموميين بواسطة البطاقات البنكية أو البريدية باستعمال مطرفيات الدفع الالكتروني. ويحمّل هذا المعلوم على ميزانية الوزارة المكلفة بالمالية. مزيد إحكام توزيع المعلوم على المؤسسات ذات الصبغة الصناعية أو التجارية أو المهنية"
    ],
-   "pdf_sha256": "ba7a1d31562f65dbe1f3761b7bcf48d06849c481e1a733659e52f061152859c3",
-   "pdf_bytes": 140540,
-   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)"
+   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)",
+   "pdf_retire": {
+    "le": "2026-10-03",
+    "fichier": "LF2021.pdf",
+    "pdf_sha256": "ba7a1d31562f65dbe1f3761b7bcf48d06849c481e1a733659e52f061152859c3",
+    "contenu_reel": "قانون عدد 32 لسنة 2008 مؤرخ في 13 ماي 2008 (organisation des professions pharmaceutiques)",
+    "motif": "Le PDF archivé n'était pas la loi de finances annoncée (première page lue) : il est retiré. Les articles extraits ci-dessus viennent du texte intégral en ligne, pas de ce PDF."
+   }
   },
   {
-   "file": "LF2020.pdf",
+   "file": null,
    "title": "Loi de finances pour 2020 — قانون عدد 78 لسنة 2019 مؤرخ في 23 ديسمبر 2019 يتعلق بقانون المالية لسنة 2020.",
    "type": "loi_finances",
    "annee_budget": 2020,
@@ -146,12 +166,17 @@
     "الفصل 23 — من مجلة معاليم التسجيل والطابع الجبائي الفقرة IV ثالثا فيما يلي نصها: IV ثالثا- يتوقف الانتفاع بالتسجيل بالمعلوم القار المنصوص عليه بالعدد 12 ثامنا من الفقرة الأولى من هذا الفصل على التزام الديوان صلب العقد على تخصيص العقارات المقتناة للأغراض المذكورة بهذا العدد. وفي صورة إخلال الديوان بالالتزام المنصوص عليه بهذه الفقرة وذلك بالتفويت في العقارات المعنية أو باستغلالها خلافا لفحوى الالتزام يصبح مطالبا بدفع تكملة معاليم التسجيل المتخلّى عنها بموجب الامتياز مع إضافة خطايا التأخير المستوجبة طبقا للتش",
     "الفصل 23 — من مجلة معاليم التسجيل والطابع الجبائي من معلوم الترسيم العقاري\". 4) تضاف إلى أحكام"
    ],
-   "pdf_sha256": "ea76829e4774b619060e9a053ac6c85b07bc87aa76f10a0e8e4ac80796573878",
-   "pdf_bytes": 121357,
-   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)"
+   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)",
+   "pdf_retire": {
+    "le": "2026-10-03",
+    "fichier": "LF2020.pdf",
+    "pdf_sha256": "ea76829e4774b619060e9a053ac6c85b07bc87aa76f10a0e8e4ac80796573878",
+    "contenu_reel": "قانون أساسي عدد 65 لسنة 2007 مؤرخ في 18 ديسمبر 2007 (budget des collectivités locales)",
+    "motif": "Le PDF archivé n'était pas la loi de finances annoncée (première page lue) : il est retiré. Les articles extraits ci-dessus viennent du texte intégral en ligne, pas de ce PDF."
+   }
   },
   {
-   "file": "LF2019.pdf",
+   "file": "LF2019_JORT_fr_2018-12-28.pdf",
    "title": "Loi de finances pour 2019 — قانون عدد 56 لسنة 2018 مؤرخ في 27 ديسمبر 2018 يتعلق بقانون المالية لسنة 2019",
    "type": "loi_finances",
    "annee_budget": 2019,
@@ -175,9 +200,17 @@
     "الفصل 130 — فقرة 3 من هذه المجلة مستوجبا.\" ضبط قائمة المنتجات الطاقية المستهلكة الخاضعة للمعلوم لفائدة صندوق الانتقال الطاقي",
     "الفصل 13 — من القانون عدد 106 لسنة 2005 المؤرخ في 19 ديسمبر 2005 المتعلق بقانون المالية لسنة 2006 كما تم تنقيحه بالنصوص اللاحقة وتعوض بما يلي : -بمعلوم يوظف على المنتجات الطاقية المستهلكة الواردة بالجدول التالي: بيان المنتجات قيمة المعلوم البنزين الرفيع الخالي من الرصاص 1 مليم للتر الغازوال العادي 1 مليم للتر الغازوال 50 2 مليم للتر الفيول وال 1 دينار للطن المتري غاز البترول المسيل 1 دينار للطن المتري فحم البترول 2 دينار للطن المتري غاز طبيعي 0,25 مليم للوحدة الحرارية (THERMIE) كهرباء 1 مليم للكيلواط-ساعة "
    ],
-   "pdf_sha256": "22973736a3a1f1e779a29046eb52e74d961085cf25c19479122037798a409ffc",
-   "pdf_bytes": 8285793,
-   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)"
+   "source_url": "http://www.iort.gov.tn (JORT, recherche multicritères — texte intégral)",
+   "pdf_retire": {
+    "le": "2026-10-03",
+    "fichier": "LF2019.pdf",
+    "pdf_sha256": "22973736a3a1f1e779a29046eb52e74d961085cf25c19479122037798a409ffc",
+    "contenu_reel": "قانون عدد 70 لسنة 2007 يتعلق بقانون المالية لسنة 2008 (loi de finances pour 2008)",
+    "motif": "Le PDF archivé n'était pas la loi de finances annoncée (première page lue) : il est retiré. Les articles extraits ci-dessus viennent du texte intégral en ligne, pas de ce PDF."
+   },
+   "pdf_sha256": "b52660d2f115e4ceb8f8de4324b279d8aa69374858560529baf2d40d69bdc941",
+   "pdf_bytes": 3510969,
+   "pdf_origine": "Édition française du JORT n° 104 du 28/12/2018, p. 4526 et suivantes (175 pages, tableaux budgétaires compris). Copie versée par le propriétaire (Google Drive, dossier « tunisia ») le 2026-10-03 ; iort.gov.tn injoignable depuis l'environnement. Métadonnées du PDF : « Microsoft Word - 18JF104.doc », imprimé le 07/05/2019."
   },
   {
    "file": null,

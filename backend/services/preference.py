@@ -232,6 +232,14 @@ def taux_preferentiels(
         "perimetre": {},
     }
     if decision is not None and not decision.get("applied"):
+        if destination_iso3.upper() == "TUN":
+            # Algérie, Égypte, Maroc : franchise ZALE publiée, signalée sans
+            # être calculée (fiche TUN_origines_servies_2026-10-03.json).
+            from services.zlecaf_schedule_tun import note_zale
+
+            note = note_zale(hs_code, origine_iso3)
+            if note:
+                resultat["note"] = f"{resultat['note']} {note}"
         return resultat
 
     # Pour la ZAF, la colonne socle ne doit JAMAIS être servie sans le
@@ -320,6 +328,16 @@ def taux_preferentiels(
                 )
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.warning("Barème ZLECAf MAR indisponible : %s", exc)
+
+    elif taux_dd is None and destination_iso3.upper() == "TUN":
+        # Texte TA n°016/2023 : coefficient 2026 du Tarif Web × droit de base
+        # 2019 (e-Tariff), plafonné au NPF — même résolveur que l'historique.
+        from services.zlecaf_schedule_tun import compute_tun_zlecaf_rate
+
+        taux, libelle = compute_tun_zlecaf_rate(hs_code, origine_iso3, _taux_npf(position, "DD"))
+        if taux is not None:
+            taux_dd = {"taux": taux}
+            origine_taux = libelle
 
     if taux_dd is None:
         resultat["statut"] = "PREFERENCE_NON_TRACEE"

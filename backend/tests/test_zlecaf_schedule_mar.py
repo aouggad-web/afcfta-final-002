@@ -223,3 +223,21 @@ def test_le_taux_servi_n_est_jamais_au_dessus_du_npf():
         assert contexte["dd_rate_pct"] is not None
         assert contexte["dd_rate_pct"] <= 10.0
         assert contexte["plancher_npf"] is None
+
+
+def test_la_liste_a_est_celle_de_l_avenant_6627():
+    from services.zlecaf_schedule_mar import dans_la_liste_a
+
+    assert dans_la_liste_a("8471300011")  # chapitre 84 entier
+    assert dans_la_liste_a("0210999030")  # position incluse une à une
+    assert not dans_la_liste_a("0210999031")  # chapitre 02 non entier
+    assert not dans_la_liste_a("3917400010")  # exception du chapitre 39
+    assert not dans_la_liste_a("0603110000")  # exception du chapitre 06
+
+
+def test_une_ligne_hors_liste_a_reste_au_npf_meme_si_l_e_tariff_la_sert():
+    from services.official_preferential_rates import resolve_official_preferential_rate
+
+    assert resolve_official_preferential_rate("MAR", "0210999031", "TUN") is None
+    # Chapitre 84, absent de l'instantané de septembre : servi désormais.
+    assert resolve_official_preferential_rate("MAR", "8471300011", "TUN")["ad_valorem_rate_pct"] == 0.0
