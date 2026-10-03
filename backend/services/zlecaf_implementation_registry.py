@@ -385,9 +385,11 @@ RECORDS = {
     ),
     # Tunisie : texte TA n°016/2023 (coefficients sur le droit de base 2019).
     # Les origines sont celles auxquelles la douane publie un coefficient au
-    # Tarif Web 2026 — le Nigeria et l'Afrique du Sud y figurent sans être
-    # nommés par le texte de 2023 ; l'Égypte, nommée, n'y a aucune ligne.
-    # Fiche TUN_droit_de_base_2019_2026-10-03.json.
+    # Tarif Web 2026 : les participants au commerce guidé selon le ministère,
+    # Égypte exceptée. Le Nigeria et l'Afrique du Sud n'étaient pas nommés par
+    # le texte de 2023 ; l'Égypte et l'Algérie entrent déjà en franchise au
+    # titre de la ZALE (Agadir, accord bilatéral). Fiches
+    # TUN_droit_de_base_2019_2026-10-03.json, TUN_origines_servies_2026-10-03.json.
     "TUN": ImplementationRecord(
         destination_iso3="TUN",
         status=APPLIED,
