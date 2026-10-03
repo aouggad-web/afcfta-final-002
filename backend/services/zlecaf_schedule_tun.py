@@ -83,3 +83,29 @@ def compute_tun_zlecaf_rate(
         taux = float(normal_rate_pct)
         libelle = f"{libelle} ; plafonné au NPF"
     return taux, libelle
+
+
+with open(_DATA / "zlecaf_tun" / "zale_tarifweb_2026.json", encoding="utf-8") as f:
+    _ZALE = json.load(f)
+
+
+def note_zale(hs_code: str, origin_iso3: str) -> Optional[str]:
+    """Note d'information sur le régime ZALE publié pour cette ligne, ou None.
+
+    L'Algérie, l'Égypte et le Maroc n'ont aucun coefficient ZLECAf : le Tarif
+    Web les range sous la zone « ZALE » (GAFTA, Agadir, accords bilatéraux).
+    Ces régimes ne sont pas calculés ; le taux publié est seulement signalé.
+    Fiche TUN_origines_servies_2026-10-03.json.
+    """
+    origine = (origin_iso3 or "").upper()
+    code = "".join(ch for ch in str(hs_code) if ch.isdigit())
+    motif = _ZALE["positions"].get(code[:10])
+    taux = _ZALE["motifs"][motif].get(origine) if motif is not None else None
+    if taux is None:
+        return None
+    accords = ", ".join(_ZALE["accords"].get(origine, [])) or "ZALE"
+    return (
+        f"Information : la douane tunisienne publie pour cette ligne un taux de {taux:g} % "
+        f"au titre de {accords} (Tarif Web 2026). Ce régime n'est pas calculé ici : "
+        "le droit NPF est affiché."
+    )

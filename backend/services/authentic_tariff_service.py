@@ -1708,11 +1708,19 @@ def _resolve_zlecaf_context(
     #    de l'e-Tariff est faux pour la Tunisie : il n'est jamais servi.
     if dest == "TUN":
         from services.zlecaf_implementation_registry import implementation_decision
-        from services.zlecaf_schedule_tun import compute_tun_zlecaf_rate
+        from services.zlecaf_schedule_tun import compute_tun_zlecaf_rate, note_zale
 
         decision = implementation_decision(dest, origin)
         if not decision["applied"]:
-            return _no_preference(decision["note"], zlecaf_rate_status=decision["status"])
+            zale = note_zale(hs_code_clean, origin)
+            contexte = _no_preference(
+                " ".join(filter(None, (decision["note"], zale))), zlecaf_rate_status=decision["status"]
+            )
+            if zale and zale not in (contexte["trade_regime_note"] or ""):
+                # Égypte : la note COMESA occupe le bandeau ; la franchise ZALE
+                # publiée y est ajoutée, toujours sans être calculée.
+                contexte["trade_regime_note"] = f"{contexte['trade_regime_note']} {zale}"
+            return contexte
         _r, _src = compute_tun_zlecaf_rate(hs_code_clean, origin, dd_rate_pct)
         eff_dd = round(_r, 6) if _r is not None else dd_rate_pct
         applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)

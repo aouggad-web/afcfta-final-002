@@ -77,3 +77,19 @@ def test_les_deux_chemins_servent_le_meme_droit():
     assert socle["applique"] is True
     historique = calculate_import_taxes("TUN", CODE, 1000.0, origin_country="CMR")
     assert historique["rates"]["effective_zlecaf_rate_pct"] == socle["taux"]["DD"]["taux"] == 14.4
+
+
+def test_la_franchise_zale_est_signalee_sans_etre_calculee():
+    from services.zlecaf_schedule_tun import note_zale
+
+    # 8471.30 : 0 % publié pour l'Égypte (ZALE, Agadir) et l'Algérie (ZALE,
+    # accord bilatéral) ; aucune note pour une origine ZLECAf.
+    assert "0 %" in note_zale("84713000010", "EGY") and "Agadir" in note_zale("84713000010", "EGY")
+    assert "accord bilatéral TUN-DZA" in note_zale("84713000010", "DZA")
+    assert note_zale("84713000010", "CMR") is None
+
+    historique = calculate_import_taxes("TUN", "84713000010", 1000.0, origin_country="DZA")
+    assert historique["rates"]["effective_zlecaf_rate_pct"] is None
+    assert "ZALE (GAFTA)" in historique["trade_regime_note"]
+    socle = taux_preferentiels(_position(), "TUN", "EGY", "84713000010")
+    assert socle["applique"] is False and "Agadir" in socle["note"]

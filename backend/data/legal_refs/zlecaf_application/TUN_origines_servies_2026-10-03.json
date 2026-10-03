@@ -41,7 +41,7 @@
   "NGA_accorde_TUN": "non établi — Nigeria au statut PARTNER_NOTICE_REQUIRED"
  },
  "ce_que_cela_ne_tranche_pas": [
-  "Le calculateur ne sert pas les zones de libre-échange autres que la ZLECAf (ZALE, Agadir, accords bilatéraux) : pour une origine égyptienne ou algérienne, il affiche le NPF alors que le Tarif Web publie 0 % sur la plupart des lignes. Servir ces régimes demanderait leurs règles d'origine.",
+  "Le calculateur ne calcule pas les zones de libre-échange autres que la ZLECAf (ZALE, Agadir, accords bilatéraux) : pour une origine algérienne, égyptienne ou marocaine, il affiche le NPF, avec une note d'information reprenant le taux que le Tarif Web publie pour la ligne et ses accords (décision du propriétaire du 03/10/2026 ; services/zlecaf_schedule_tun.note_zale, données data/zlecaf_tun/zale_tarifweb_2026.json).",
   "L'acte qui ajoute le Nigeria et l'Afrique du Sud à l'application tunisienne."
  ]
 }

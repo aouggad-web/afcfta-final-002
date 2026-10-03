@@ -232,6 +232,14 @@ def taux_preferentiels(
         "perimetre": {},
     }
     if decision is not None and not decision.get("applied"):
+        if destination_iso3.upper() == "TUN":
+            # Algérie, Égypte, Maroc : franchise ZALE publiée, signalée sans
+            # être calculée (fiche TUN_origines_servies_2026-10-03.json).
+            from services.zlecaf_schedule_tun import note_zale
+
+            note = note_zale(hs_code, origine_iso3)
+            if note:
+                resultat["note"] = f"{resultat['note']} {note}"
         return resultat
 
     # Pour la ZAF, la colonne socle ne doit JAMAIS être servie sans le
