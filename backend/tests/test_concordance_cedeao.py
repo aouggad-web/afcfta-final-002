@@ -23,6 +23,15 @@ def test_les_cellules_du_tableau_font_foi():
     assert resolve_published_offer_rate("NGA", "8525810000", "GHA")["hs_code"] == "8525800000"
 
 
+def test_la_table_i_de_l_omd_rattache_un_sh6_absent_de_la_table_du_mali():
+    # 0709.52 (truffes, SH 2022) : absent de la table du Mali ; la table I de
+    # l'OMD le fait venir de 0709.59.
+    assert "0709520000" not in _concordance_cedeao()["par_position_mali"]
+    offre = resolve_published_offer_rate("NGA", "0709520000", "GHA")
+    assert offre["hs_code"] == "0709590000"
+    assert offre["concordance_tec2022_tec2017"]["sources_sh2017"] == ["070959"]
+
+
 def test_une_paire_du_mali_contredite_par_l_omd_n_est_pas_retenue():
     # Table du Mali : 2518.30 → 2518.20 ; la table I de l'OMD ne donne que 2518.20.
     concordance = _concordance_cedeao()
