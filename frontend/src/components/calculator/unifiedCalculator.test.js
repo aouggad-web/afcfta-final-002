@@ -13,12 +13,12 @@ const ligne = (over) => ({ code: 'DD', libelle: 'Droit de douane', famille: 'dro
 describe('buildCalculRequestBody', () => {
   it("omet l'origine quand elle est absente plutôt que d'envoyer une valeur vide", () => {
     expect(buildCalculRequestBody({ destinationISO3: 'CIV', hsCode: '7612900000', cifValue: 1000 }))
-      .toEqual({ destination: 'CIV', code_sh: '7612900000', valeur_cif: 1000 });
+      .toEqual({ destination: 'CIV', code_sh: '7612900000', valeur_cif: 1000, devise_cif: 'USD' });
   });
 
   it("porte l'origine quand elle est fournie", () => {
     expect(buildCalculRequestBody({ destinationISO3: 'CIV', originISO3: 'GHA', hsCode: '7612900000', cifValue: 1000 }))
-      .toEqual({ destination: 'CIV', origine: 'GHA', code_sh: '7612900000', valeur_cif: 1000 });
+      .toEqual({ destination: 'CIV', origine: 'GHA', code_sh: '7612900000', valeur_cif: 1000, devise_cif: 'USD' });
   });
 });
 
@@ -448,7 +448,7 @@ describe('quantité requise par un droit spécifique', () => {
 
   it("porte la quantité quand elle est utilisable", () => {
     expect(buildCalculRequestBody({ destinationISO3: 'ZAF', hsCode: '020830', cifValue: 10000, quantite: 200 }))
-      .toEqual({ destination: 'ZAF', code_sh: '020830', valeur_cif: 10000, quantite: 200 });
+      .toEqual({ destination: 'ZAF', code_sh: '020830', valeur_cif: 10000, devise_cif: 'USD', quantite: 200 });
   });
 
   it.each([
@@ -463,7 +463,7 @@ describe('quantité requise par un droit spécifique', () => {
     // montant entier du droit, pas un arrondi.
     expect(buildCalculRequestBody({
       destinationISO3: 'ZAF', hsCode: '020830', cifValue: 10000, quantite: valeur,
-    })).toEqual({ destination: 'ZAF', code_sh: '020830', valeur_cif: 10000 });
+    })).toEqual({ destination: 'ZAF', code_sh: '020830', valeur_cif: 10000, devise_cif: 'USD' });
   });
 
   it("annonce l'unité publiée par la source", () => {
@@ -597,7 +597,7 @@ describe('valeur FOB réclamée par le moteur (SACU)', () => {
   it('porte la valeur FOB quand elle est utilisable', () => {
     expect(buildCalculRequestBody({
       destinationISO3: 'ZAF', hsCode: '02071290', cifValue: 1000, valeurFob: 800,
-    })).toEqual({ destination: 'ZAF', code_sh: '02071290', valeur_cif: 1000, valeur_fob: 800 });
+    })).toEqual({ destination: 'ZAF', code_sh: '02071290', valeur_cif: 1000, devise_cif: 'USD', valeur_fob: 800 });
   });
 
   it.each([
@@ -610,7 +610,7 @@ describe('valeur FOB réclamée par le moteur (SACU)', () => {
   ])("n'envoie pas une valeur FOB %s — jamais déduite du CIF", (_, valeur) => {
     expect(buildCalculRequestBody({
       destinationISO3: 'ZAF', hsCode: '02071290', cifValue: 1000, valeurFob: valeur,
-    })).toEqual({ destination: 'ZAF', code_sh: '02071290', valeur_cif: 1000 });
+    })).toEqual({ destination: 'ZAF', code_sh: '02071290', valeur_cif: 1000, devise_cif: 'USD' });
   });
 
   it('ouvre le champ FOB quand le moteur la réclame', () => {
