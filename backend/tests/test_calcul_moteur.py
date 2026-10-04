@@ -492,6 +492,35 @@ def test_un_droit_specifique_en_devise_etrangere_exige_un_taux_de_change():
     assert ligne2["montant"] == pytest.approx(0.08 * 0.055 * 500)
 
 
+def test_un_droit_qui_publie_sa_devise_se_compare_a_elle_et_non_a_la_devise_nationale():
+    # Zimbabwe, SI 203/2022 : « 0.50 USD/L », alors que la devise nationale est
+    # le ZWG. Sur une valeur déclarée en USD, aucun taux n'est à demander.
+    usd = {"montant": 0.5, "unite_monetaire": "usd", "brut": "0.50 USD/L"}
+    d = droit("DD", None, "xQTE", "droit", specifique=usd)
+    r = calculer(position(d), 1000, quantite=10, devise_position="ZWG", devise_cif="USD")
+    assert lignes(r)["DD"]["statut"] == CALCULE
+    assert lignes(r)["DD"]["montant"] == 5.0
+    # Et l'inverse : déclarée en ZWG, la valeur exige le taux du droit en USD.
+    r2 = calculer(position(d), 1000, quantite=10, devise_position="ZWG", devise_cif="ZWG")
+    assert lignes(r2)["DD"]["statut"] == MANQUE_CHANGE
+    # Une abréviation nationale de trois lettres n'est pas une devise étrangère.
+    dhs = droit("DD", None, "xQTE", "droit", specifique={"montant": 10, "unite_monetaire": "dhs"})
+    r3 = calculer(position(dhs), 1000, quantite=10, devise_position="MAD", devise_cif="MAD")
+    assert lignes(r3)["DD"]["statut"] == CALCULE
+
+
+def test_la_devise_d_un_droit_compose_se_compare_sans_tenir_compte_de_la_casse():
+    usd = {"montant": 1.5, "unite_monetaire": "usd", "brut": "1.50 USD/kg"}
+    d = droit(
+        "DD", 40.0, "CIF", "droit",
+        specifique=usd, compose=True, regle_composee="LE_PLUS_ELEVE",
+        expression_brute="40% or US$1.50/kg",
+    )
+    r = calculer(position(d), 1000, quantite=1000, devise_position="ZWG", devise_cif="USD")
+    assert lignes(r)["DD"]["statut"] == CALCULE
+    assert lignes(r)["DD"]["montant"] == 1500.0
+
+
 def test_une_devise_identique_ou_inconnue_ne_declenche_aucune_conversion():
     d = droit("DD", None, "xQTE", "droit", specifique={"montant": 0.08, "brut": "8c/kg"})
     r = calculer(position(d), 1000, quantite=500, devise_position="ZAR", devise_cif="ZAR")
