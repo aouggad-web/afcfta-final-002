@@ -503,6 +503,9 @@ def test_un_droit_qui_publie_sa_devise_se_compare_a_elle_et_non_a_la_devise_nati
     # Et l'inverse : déclarée en ZWG, la valeur exige le taux du droit en USD.
     r2 = calculer(position(d), 1000, quantite=10, devise_position="ZWG", devise_cif="ZWG")
     assert lignes(r2)["DD"]["statut"] == MANQUE_CHANGE
+    # Omise, la devise de la valeur est celle du tarif : le taux reste exigé.
+    r_omise = calculer(position(d), 1000, quantite=10, devise_position="ZWG")
+    assert lignes(r_omise)["DD"]["statut"] == MANQUE_CHANGE
     # Une abréviation nationale de trois lettres n'est pas une devise étrangère.
     dhs = droit("DD", None, "xQTE", "droit", specifique={"montant": 10, "unite_monetaire": "dhs"})
     r3 = calculer(position(dhs), 1000, quantite=10, devise_position="MAD", devise_cif="MAD")
@@ -519,6 +522,8 @@ def test_la_devise_d_un_droit_compose_se_compare_sans_tenir_compte_de_la_casse()
     r = calculer(position(d), 1000, quantite=1000, devise_position="ZWG", devise_cif="USD")
     assert lignes(r)["DD"]["statut"] == CALCULE
     assert lignes(r)["DD"]["montant"] == 1500.0
+    r_omise = calculer(position(d), 1000, quantite=1000, devise_position="ZWG")
+    assert lignes(r_omise)["DD"]["statut"] == MANQUE_CHANGE
 
 
 def test_un_droit_compose_suit_la_regle_de_devise_du_droit_simple():
