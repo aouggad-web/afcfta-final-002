@@ -544,7 +544,7 @@ def _liquider(
             # nationale : 0.50 USD/L sur une valeur en USD ne demande aucun taux.
             devise_droit = _devise_publiee(specifique)
             facteur_ligne = (
-                _facteur_devise_specifique(devise_droit, devise_cif, taux_de_change)
+                _facteur_devise_specifique(devise_droit, devise_valeur, taux_de_change)
                 if devise_droit
                 else facteur_devise_specifique
             )
@@ -678,7 +678,7 @@ def _liquider(
             )
             devise_droit = _devise_publiee(specifique)
             facteur = (
-                _facteur_devise_specifique(devise_droit, devise_cif, taux_de_change)
+                _facteur_devise_specifique(devise_droit, devise_valeur, taux_de_change)
                 if devise_droit
                 else facteur_devise_specifique
             )
@@ -801,10 +801,6 @@ def calculer(
         # L'inverse signalerait une déclaration incohérente, pas une base.
         raise ValueError("valeur_fob doit être positive et ne pas excéder valeur_cif")
 
-    # Omise, la devise de la valeur est celle du tarif (contrat de /calcul) :
-    # un droit publié en USD ne s'additionne pas tel quel à une valeur
-    # supposée en ZWG.
-    devise_cif = devise_cif or devise_position
     droits = position.get("droits") or []
     facteur_devise = _facteur_devise_specifique(devise_position, devise_cif, taux_de_change)
     resultat = {
