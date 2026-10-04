@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-04T21:49:49.613844+00:00",
+  "construit_le": "2026-10-04T22:55:09.562669+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1222,9 +1222,9 @@
       "fichier": "MWI.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
-      "source_sha256": "1e34fc87d3de0faafe7abbf0a49d254d230ad30fb722fc574446196410dcf0b1",
-      "socle_sha256": "d771b3f760409bc66d94d542b92b752b93f93e251fb2f01776fec15418fd4684",
-      "collecte": "2026-09-19",
+      "source_sha256": "366dac8a1ee8c78161a9cc480ebc9fcbb3fd70e010d56a69be5f4ea9d0539b74",
+      "socle_sha256": "778093e08a349648981a5a6b9d4141dd52f1b9a4e85c3f00bb1476acc69f20a2",
+      "collecte": "2026-10-04",
       "etat": "PARTIEL",
       "familles": [
         "accise",
