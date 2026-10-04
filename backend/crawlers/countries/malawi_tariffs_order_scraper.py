@@ -143,6 +143,10 @@ RX_POSITION = re.compile(r"^\d{2}\.\d{2}$")
 #: Une valeur de droit : pourcentage, ou « Free » qui vaut zero.
 RX_PCT = re.compile(r"^(\d+(?:\.\d+)?)\s*%$")
 RX_ZERO = re.compile(r"^(free)$", re.I)
+#: Un droit SPECIFIQUE en dollars : « USD 15 » (per 1,000 sticks, 2402.20). Son
+#: unite de quantite s'ecrit sur les lignes suivantes : il est porte sans taux.
+RX_SPECIFIQUE = re.compile(r"^USD \d+(?:\.\d+)?$")
+RX_NOMBRE = re.compile(r"^\d+(?:\.\d+)?$")
 #: La colonne TVA ne porte pas toujours un taux : le bareme y ecrit aussi « Zero »
 #: (detaxe, VAT Act Second Schedule) et « Exempt » (exoneration, First Schedule).
 #: Les deux sont des mentions PUBLIEES, et elles ne disent pas la meme chose :
@@ -229,11 +233,15 @@ def lire_valeur(cellule: str) -> Tuple[Optional[float], Optional[str]]:
     m = RX_PCT.match(brut)
     if m:
         return float(m.group(1)), None
+    if RX_SPECIFIQUE.match(brut):
+        return None, "DROIT_SPECIFIQUE"
     return None, "EXPRESSION_NON_LUE"
 
 
 def _est_valeur(mot: str) -> bool:
-    return bool(RX_PCT.match(mot) or RX_ZERO.match(mot) or RX_MENTION_TVA.match(mot))
+    return bool(
+        RX_PCT.match(mot) or RX_ZERO.match(mot) or RX_MENTION_TVA.match(mot) or RX_SPECIFIQUE.match(mot)
+    )
 
 
 def _bandes(mots, tolerance: float = TOLERANCE_Y):
@@ -266,6 +274,11 @@ def _recoller(toks) -> List[Tuple[float, str]]:
     index = 0
     while index < len(toks):
         x0, x1, mot = toks[index]
+        # « USD » puis « 15 » : un montant, pas la moitie d'un pourcentage. Le
+        # recoudre au « 16.5% » voisin (TVA) donnait « 1516.5% » sur 2402.20.
+        if mot == "USD" and index + 1 < len(toks) and RX_NOMBRE.match(toks[index + 1][2]):
+            index += 1
+            mot, x1 = f"USD {toks[index][2]}", toks[index][1]
         while index + 1 < len(toks):
             suivant_x0, suivant_x1, suivant = toks[index + 1]
             if suivant_x0 - x1 > 4.0 or not RX_PCT.match(mot + suivant):
@@ -525,6 +538,12 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                 if brut is None:
                     continue
                 taux, motif_v = lire_valeur(brut)
+                if motif_v == "DROIT_SPECIFIQUE":
+                    # Publie et dû, mais sans unite de quantite lue : porte sans
+                    # taux plutot que perdu ou colle a la colonne voisine.
+                    gaps.append(f"{nom}_{motif_v}")
+                    taxes.append(_taxe(nom, None, brut, libelle, preferentiel=False))
+                    continue
                 if motif_v == "HORS_CHAMP_DE_LA_TVA":
                     # L'exoneration est une information PUBLIEE : on la porte,
                     # sans taux, plutot que de la laisser passer pour un oubli.

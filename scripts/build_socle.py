@@ -152,6 +152,12 @@ PREFERENTIELS = {
     # « a rate of duty of 5% lower than the rate of duty prescribed in sub column 5 ».
     # C'est une préférence par origine, pas un prélèvement.
     "COI": "COI",
+    # Malawi, colonne 5 : le PLEIN DROIT, dont les colonnes 6 à 9 sont des
+    # remises par origine (Order 2022, par. 5). C'est un taux ALTERNATIF au
+    # droit NPF (col. 6), pas un second droit : rangé parmi les droits, il
+    # s'additionnait au NPF sur 7 119 positions (25 % + 30 % sur les
+    # cigarettes 2402.20).
+    "DDPLEIN": "PLEIN_DROIT",
 }
 
 #: PAYS DONT LE CODE PUBLIÉ PORTE UNE CLÉ DE CONTRÔLE, et la longueur de la
@@ -549,15 +555,31 @@ def lire_taux(valeur):
     if isinstance(valeur, bool):
         return None
     if isinstance(valeur, (int, float)):
-        return float(valeur)
+        # Un taux n'est jamais négatif : « -1 » est le marqueur « taux
+        # variable » des crawls CEMAC (droit d'accise DA, 292 positions dans
+        # six pays). Lu tel quel, il liquidait une accise NÉGATIVE dans un
+        # total COMPLET.
+        return float(valeur) if valeur >= 0 else None
     if isinstance(valeur, str):
         v = valeur.strip().lower()
         if v in _MOTS_ZERO:
             return 0.0
         m = re.search(r"-?\d+(?:[.,]\d+)?", v)
         if m:
-            return float(m.group(0).replace(",", "."))
+            taux = float(m.group(0).replace(",", "."))
+            return taux if taux >= 0 else None
     return None
+
+
+_TAUX_PUR = re.compile(r"^\s*-?\d+(?:[.,]\d+)?\s*%?\s*$")
+
+
+def _est_un_taux(brut) -> bool:
+    """Vrai si le verbatim est un taux et rien d'autre."""
+    if isinstance(brut, (int, float)) and not isinstance(brut, bool):
+        return True
+    texte = str(brut or "").strip()
+    return texte.lower() in _MOTS_ZERO or bool(_TAUX_PUR.match(texte))
 
 
 #: Sous-unités monétaires rencontrées dans les tarifs. Un droit publié en
@@ -763,7 +785,16 @@ def droits_depuis_liste(taxes, source_defaut):
         code = row.get("tax_code") or row.get("code") or row.get("tax") or row.get("tax_name")
         libelle = row.get("tax_name") or row.get("name") or row.get("observation") or ""
         taux = lire_taux(row.get("rate") if row.get("rate") is not None else row.get("rate_pct"))
-        if taux is None:
+        if str(row.get("rate_type") or "").lower() == "specific":
+            # « rate_type: specific » (Côte d'Ivoire, PSV et SPEC, 60 droits) :
+            # « 1000 » est un montant par unité, d'unité non publiée — pas
+            # 1 000 %. Rien n'est liquidable, rien n'est affiché comme taux.
+            taux = None
+        if taux is None and _est_un_taux(row.get("raw_value")):
+            # Le verbatim ne sert de taux que s'il EST un taux (« 20 », « 5 % »,
+            # « Free »). « Rs 1,692.50/L Ab alco* » (accise mauricienne, 189
+            # droits) devenait 1,692 % ; « 0.0099 MZN Per 1 KG » (plancher ICE
+            # mozambicain, 80) devenait 0,0099 % — affichés comme des taux.
             taux = lire_taux(row.get("raw_value"))
         # Un droit peut porter DEUX composantes. Le tarif SARS publie
         # « 40% or 240c/kg » sur 140 positions : `rate_pct` 40,0 ET
