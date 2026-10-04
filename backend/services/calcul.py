@@ -216,6 +216,7 @@ def _assiette_de(
     taux_de_change: Optional[float],
     codes_de_la_position: set,
     valeur_fob: Optional[float] = None,
+    devise_valeur: Optional[str] = None,
 ):
     """Rendre (assiette, manque, détail). Une assiette introuvable ne vaut
     jamais CIF, et une assiette amputée ne se complète jamais par un zéro."""
@@ -327,12 +328,17 @@ def _assiette_de(
     plafond = droit.get("plafond")
     if plafond:
         montant_max, devise = plafond.get("montant"), plafond.get("devise")
-        if taux_de_change is None and devise:
+        # 15 000 XAF de redevance informatique (CEMAC) sur une valeur déclarée
+        # en XAF : la borne se compare telle quelle. La conversion n'est due
+        # que si les deux devises diffèrent — ou si celle de la valeur est
+        # inconnue.
+        meme_devise = bool(devise and devise_valeur and devise.upper() == devise_valeur.upper())
+        if taux_de_change is None and devise and not meme_devise:
             # Un plafond exprimé dans une autre devise que la valeur déclarée
             # exige une conversion. Sans elle, la borne est inconnue : on ne
             # l'ignore pas, on le dit.
             return None, MANQUE_CHANGE, detail
-        borne = montant_max * (taux_de_change or 1.0)
+        borne = montant_max * (1.0 if meme_devise else (taux_de_change or 1.0))
         base = min(base, borne)
     return base, None, detail
 
@@ -356,8 +362,12 @@ def _liquider(
     couverture: Optional[Dict[str, Any]] = None,
     devise_cif: Optional[str] = None,
     valeur_fob: Optional[float] = None,
+    devise_position: Optional[str] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
+    # Omise, la devise de la valeur déclarée est celle du tarif national
+    # (contrat de la route /calcul).
+    devise_valeur = devise_cif or devise_position
     calcules: List[Dict[str, Any]] = []
     manques: List[Dict[str, Any]] = []
     echecs: List[Dict[str, Any]] = []
@@ -427,6 +437,7 @@ def _liquider(
                     taux=remise.get("taux"),
                     specifique=remise.get("specifique"),
                     compose=remise.get("compose", False),
+                    cumulatif=remise.get("cumulatif", False),
                     regle_composee=(
                         remise.get("regle_composee") if remise.get("compose") else None
                     ),
@@ -478,7 +489,16 @@ def _liquider(
         manque_devise = False
         regle_composee_absente = False
         compose_departage = None
-        if (
+        cumul = None
+        if droit.get("cumulatif") and taux is not None and specifique is not None:
+            # « 40% + US$0.50/L » : les DEUX composantes sont dues. La part
+            # spécifique s'ajoute à la part ad valorem plus bas ; sans
+            # quantité, sans montant unitaire lisible ou sans conversion, le
+            # droit entier reste indisponible — jamais réduit à sa part
+            # ad valorem.
+            cumul = specifique
+            ligne["expression_brute"] = droit.get("expression_brute")
+        elif (
             droit.get("compose")
             and droit.get("regle_composee")
             and taux is not None
@@ -493,7 +513,11 @@ def _liquider(
             # À ne pas confondre avec « 40% or 240c/kg » (SARS), qui ne dit PAS
             # laquelle s'applique : celui-là reste refusé, juste en dessous.
             compose_departage = droit["regle_composee"]
-        elif droit.get("compose") and taux is not None and specifique is not None:
+        elif taux is not None and specifique is not None:
+            # Deux composantes : soit un composé (« or »), soit un cumul que le
+            # socle n'a pas marqué. Dans les deux cas, la règle qui les combine
+            # n'est pas établie : servir la seule part ad valorem rendrait un
+            # montant crédible et faux.
             # Droit composé : les deux composantes sont publiées, la règle qui
             # départage ne l'est pas. On refuse de liquider plutôt que de
             # retenir celle qui arrange — c'est la même règle que partout
@@ -560,6 +584,7 @@ def _liquider(
             taux_de_change,
             codes_de_la_position,
             valeur_fob,
+            devise_valeur,
         )
         ligne.update(detail)
         if regle_composee_absente:
@@ -587,6 +612,44 @@ def _liquider(
             montant = assiette * taux
         else:
             montant = assiette * taux / 100.0
+
+        if cumul is not None:
+            unitaire = _montant_unitaire(cumul)
+            devise_specifique = cumul.get("unite_monetaire") if isinstance(cumul, dict) else None
+            facteur = 1.0
+            motif = None
+            if unitaire is None:
+                motif = MANQUE_TAUX
+            elif quantite is None:
+                motif = MANQUE_QUANTITE
+            elif devise_specifique in (None, "unite_principale"):
+                # Publié dans la devise nationale du tarif (« 8c/kg »).
+                if facteur_devise_specifique is None:
+                    motif = MANQUE_CHANGE
+                else:
+                    facteur = facteur_devise_specifique
+            elif (devise_valeur or "").upper() != devise_specifique.upper():
+                if taux_de_change is None:
+                    motif = MANQUE_CHANGE
+                else:
+                    facteur = taux_de_change
+            ligne["composantes"] = {
+                "ad_valorem_pct": taux,
+                "specifique": cumul.get("brut") if isinstance(cumul, dict) else cumul,
+            }
+            if isinstance(cumul, dict) and cumul.get("unite_quantite"):
+                ligne["unite_quantite"] = cumul["unite_quantite"]
+            if motif:
+                ligne["statut"] = motif
+                ligne["montant"] = None
+                manques.append({"code": code, "motif": motif})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
+            montant_specifique = quantite * unitaire * facteur
+            ligne["composantes"]["ad_valorem_montant"] = round(montant, 4)
+            ligne["composantes"]["specifique_montant"] = round(montant_specifique, 4)
+            montant += montant_specifique
 
         # Départage d'un droit composé dont la règle est écrite. Les deux
         # composantes sont calculées, et la ligne nomme celle qui l'emporte :
@@ -761,6 +824,7 @@ def calculer(
             couverture,
             devise_cif,
             valeur_fob,
+            devise_position,
         ),
     }
     if valeur_fob is not None:
@@ -776,6 +840,7 @@ def calculer(
             couverture,
             devise_cif,
             valeur_fob,
+            devise_position,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont
