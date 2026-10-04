@@ -106,26 +106,28 @@ def test_le_droit_servi_est_la_colonne_6_et_le_plein_droit_reste_nomme(socle):
     « a Contracting Party of the GATT » — donc a tout membre de l'OMC. C'est elle
     qui est le droit de douane courant ; la colonne 5 est conservee a cote."""
     positions = socle["positions"]
+    # Le plein droit est une colonne ALTERNATIVE, rangee a part : parmi les
+    # droits, le moteur l'additionnait au NPF.
+    assert not any(_droits(p, "DDPLEIN") for p in positions.values())
     avec_les_deux = [
         p for p in positions.values()
-        if _droits(p, "DD") and _droits(p, "DDPLEIN")
+        if _droits(p, "DD") and "PLEIN_DROIT" in (p.get("preferentiels") or {})
     ]
     assert len(avec_les_deux) > 6000
     differentes = [
         p for p in avec_les_deux
-        if _droits(p, "DD")[0]["taux"] != _droits(p, "DDPLEIN")[0]["taux"]
+        if _droits(p, "DD")[0]["taux"] != p["preferentiels"]["PLEIN_DROIT"]["taux"]
     ]
     # Les deux colonnes divergent sur plus de la moitie du tarif : les confondre
     # donnerait un droit faux sur la majorite des positions.
     assert len(differentes) > 4000
-    plein = _droits(positions["02021000"], "DDPLEIN")[0]
+    plein = positions["02021000"]["preferentiels"]["PLEIN_DROIT"]
     npf = _droits(positions["02021000"], "DD")[0]
     assert (plein["taux"], npf["taux"]) == (15.0, 10.0)
-    assert "PLEIN DROIT" in plein["note"]
     assert "GATT" in npf["note"]
 
 
-@pytest.mark.parametrize("code_taxe", ["DD", "DDPLEIN"])
+@pytest.mark.parametrize("code_taxe", ["DD"])
 def test_le_droit_de_douane_se_liquide_sur_le_prix_normal_de_la_schedule_a(socle, code_taxe):
     trouves = [
         d for p in socle["positions"].values() for d in _droits(p, code_taxe)
@@ -301,11 +303,11 @@ def test_la_reserve_sur_la_date_de_la_consolidation_est_portee_sur_chaque_droit(
     liquident pas, il n'y a pas d'assiette a reserver."""
     droits = [
         d for p in socle["positions"].values()
-        for code in ("DD", "DDPLEIN") for d in _droits(p, code)
+        for code in ("DD",) for d in _droits(p, code)
     ]
     assert droits
     avec_taux = [d for d in droits if d.get("taux") is not None]
-    assert len(avec_taux) > 13000
+    assert len(avec_taux) > 6500
     assert all("30 juin 2018" in d["note"] for d in avec_taux)
     sans_taux = [d for d in droits if d.get("taux") is None]
     assert all("indisponible" in d["note"] or "supposé" in d["note"] for d in sans_taux)
