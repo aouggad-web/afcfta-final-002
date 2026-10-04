@@ -69,8 +69,11 @@ def lire(url: str, chemin: Path, ctx: ssl.SSLContext) -> dict:
                 return {"url": url, "releve_le": datetime.now(timezone.utc).isoformat(timespec="seconds")}
             erreur = f"HTTP {statut}" + (", page anti-robot" if page_anti_robot(raw) else "")
         except Exception as exc:  # noqa: BLE001 — l'erreur est rapportée, pas avalée
+            if isinstance(getattr(exc, "reason", exc), ssl.SSLCertVerificationError):
+                raise  # un certificat refusé ne se répare pas en réessayant
             erreur = f"{type(exc).__name__}: {exc}"
-        time.sleep(20 * (essai + 1))
+        if essai < 6:  # pas d'attente après le dernier essai
+            time.sleep(20 * (essai + 1))
     return {"url": url, "erreur": erreur}
 
 
@@ -249,10 +252,15 @@ def etape_listes(cache: Path, ctx: ssl.SSLContext) -> None:
         raw = gzip.open(cache / "listes" / f"chapitre_{c}.html.gz").read()
         rangees += [(s, c, r) for r in _liens(raw, rf"page=position&amp;section=\w+&amp;chapitre={c}&amp;range=(\d\d)")]
     with cf.ThreadPoolExecutor(max_workers=3) as ex:
-        list(ex.map(lambda x: page(f"rangee_{x[1]}{x[2]}",
-                                   f"{BASE}?page=position&section={x[0]}&chapitre={x[1]}&range={x[2]}",
-                                   f"rangee_{x[1]}{x[2]}"), rangees))
+        lues = list(ex.map(lambda x: page(f"rangee_{x[1]}{x[2]}",
+                                          f"{BASE}?page=position&section={x[0]}&chapitre={x[1]}&range={x[2]}",
+                                          f"rangee_{x[1]}{x[2]}"), rangees))
     print(f"racine {racine.get('releve_le')} ; {len(sections)} sections, {len(chapitres)} chapitres, {len(rangees)} rangées")
+    # Une rangée non lue retirerait ses codes de la liste officielle sans
+    # qu'aucune fiche ne manque : l'étape échoue, et se relance.
+    echecs = [e["url"] for e in lues if "erreur" in e]
+    if echecs:
+        raise SystemExit(f"{len(echecs)} rangées non lues, relancer « listes » :\n" + "\n".join(echecs))
 
 
 def liste_officielle(cache: Path) -> dict:
