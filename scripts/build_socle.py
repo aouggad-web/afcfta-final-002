@@ -566,7 +566,9 @@ def lire_taux(valeur):
 SOUS_UNITES = {"c": 100, "cent": 100, "cents": 100, "ct": 100}
 
 _SPECIFIQUE = re.compile(
-    r"^\s*(?P<montant>-?\d+(?:[.,]\d+)?)\s*(?P<monnaie>[A-Za-zÀ-ÿ]*)\s*(?:/\s*(?P<quantite>[A-Za-zÀ-ÿ0-9]+))?",
+    # La devise peut précéder le montant : le tarif seychellois écrit
+    # « SCR5.13/kg » (253 droits), illisibles tant que seul « 8c/kg » l'était.
+    r"^\s*(?P<prefixe>[A-Z]{3}(?=\d))?(?P<montant>-?\d+(?:[.,]\d+)?)\s*(?P<monnaie>[A-Za-zÀ-ÿ]*)\s*(?:/\s*(?P<quantite>[A-Za-zÀ-ÿ0-9]+))?",
 )
 
 
@@ -581,8 +583,11 @@ def lire_specifique(expression):
     m = _SPECIFIQUE.match(str(expression))
     if not m:
         return None
+    if m.group("prefixe") and m.group("monnaie"):
+        # « SCR5perpackof20 » : l'unité de quantité n'est pas lisible.
+        return None
     montant = float(m.group("montant").replace(",", "."))
-    monnaie = (m.group("monnaie") or "").lower()
+    monnaie = (m.group("prefixe") or m.group("monnaie") or "").lower()
     diviseur = SOUS_UNITES.get(monnaie)
     return {
         "montant": montant / diviseur if diviseur else montant,
@@ -800,6 +805,16 @@ def droits_depuis_liste(taxes, source_defaut):
             compose = False
         if specifique and row.get("rate_pct") is None:
             taux = None
+        # « 40% + US$0.50/L » (Zimbabwe, 356 droits) ou « 15%+SCR5.13/kg »
+        # (Seychelles, 5) : le « + » de la source rend les DEUX composantes
+        # dues. Sans ce marqueur, le moteur liquidait la seule part ad valorem
+        # et déclarait le total COMPLET.
+        cumulatif = (
+            not compose
+            and taux is not None
+            and bool(specifique)
+            and re.search(r"%\s*\+", brut) is not None
+        )
         out.append(
             _droit(
                 code,
@@ -815,6 +830,9 @@ def droits_depuis_liste(taxes, source_defaut):
         )
         if plafond_ad_valorem is not None:
             out[-1]["plafond_ad_valorem_pct"] = plafond_ad_valorem
+            out[-1]["expression_brute"] = brut
+        if cumulatif:
+            out[-1]["cumulatif"] = True
             out[-1]["expression_brute"] = brut
         if compose:
             # Le verbatim est ce qui permet à l'opérateur — et au relecteur —
@@ -1175,6 +1193,11 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         "compose": True,
                         "expression_brute": d.get("expression_brute") or "",
                     }
+                    if d.get("cumulatif"):
+                        # « 7%+SCR5/kg » (Seychelles, colonnes ZLECAf, SADC,
+                        # COMESA) : les deux composantes sont dues, comme au NPF.
+                        prefs[regime]["compose"] = False
+                        prefs[regime]["cumulatif"] = True
                     if d.get("plafond_ad_valorem_pct") is not None:
                         prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
                     compteurs["preferentiels_specifiques"] += 1

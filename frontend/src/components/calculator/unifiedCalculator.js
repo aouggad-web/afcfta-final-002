@@ -111,7 +111,11 @@ export function buildCalculRequestBody({
   valeurFob,
   paysExpedition,
 }) {
-  const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue };
+  // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
+  // devise serait supposée nationale, et un droit spécifique publié en dinars
+  // s'ajouterait tel quel à des dollars. Déclarée, le moteur réclame le taux
+  // de change (TAUX_DE_CHANGE_REQUIS) au lieu de mélanger deux monnaies.
+  const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue, devise_cif: 'USD' };
   if (originISO3) body.origine = originISO3;
   if (paysExpedition) body.pays_expedition = paysExpedition;
   // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la

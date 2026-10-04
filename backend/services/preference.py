@@ -47,6 +47,19 @@ def _colonne_de_la_position(
         return {"taux": float(valeur)}
     if isinstance(valeur, dict):
         if (
+            valeur.get("cumulatif")
+            and valeur.get("taux") is not None
+            and valeur.get("specifique") is not None
+        ):
+            # « 7%+SCR5/kg » : les deux composantes sont dues ; le moteur les
+            # additionne.
+            return {
+                "taux": float(valeur["taux"]),
+                "specifique": valeur["specifique"],
+                "cumulatif": True,
+                "expression_brute": valeur.get("expression_brute") or "",
+            }
+        if (
             valeur.get("compose")
             and valeur.get("taux") is not None
             and valeur.get("specifique") is not None
@@ -503,6 +516,11 @@ def _taux_colonne(position: Dict[str, Any], regime: str) -> Optional[float]:
     if isinstance(valeur, (int, float)):
         return float(valeur)
     if isinstance(valeur, dict) and valeur.get("taux") is not None:
+        if valeur.get("specifique"):
+            # « 7%+SCR5/kg » ou « 40% or 240c/kg » : le pourcentage n'est
+            # qu'une composante. Le montrer seul — et le chiffrer en
+            # remplaçant le droit entier — sous-estimerait le droit.
+            return None
         return float(valeur["taux"])
     return None
 
