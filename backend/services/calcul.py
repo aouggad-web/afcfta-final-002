@@ -141,6 +141,22 @@ def _facteur_devise_specifique(
     return taux_de_change
 
 
+#: Devises étrangères qu'un tarif peut publier pour ses droits spécifiques
+#: (« 0.50 USD/L » au Zimbabwe, « $345/MT » à l'EAC). Liste fermée : une
+#: abréviation nationale de trois lettres (« dhs », « cfa ») n'en est pas une.
+DEVISES_PUBLIEES = {"USD", "EUR"}
+
+
+def _devise_publiee(specifique: Any) -> Optional[str]:
+    """Devise étrangère que le droit publie lui-même, sinon ``None`` : le droit
+    est alors libellé dans la devise nationale du tarif (« 0.1 dinars »,
+    « 8c/kg »)."""
+    unite = specifique.get("unite_monetaire") if isinstance(specifique, dict) else None
+    if isinstance(unite, str) and unite.upper() in DEVISES_PUBLIEES:
+        return unite.upper()
+    return None
+
+
 def _montant_unitaire(specifique: Any) -> Optional[float]:
     """Rendre le montant unitaire d'un droit spécifique, déjà ramené à l'unité
     monétaire principale par le socle (« 8c/kg » vaut 0,08 et non 8).
@@ -524,7 +540,15 @@ def _liquider(
             droit = dict(droit, assiette="xQTE", plafond=None)
             ligne["assiette"] = "xQTE"
             montant_unitaire = _montant_unitaire(specifique)
-            if montant_unitaire is not None and facteur_devise_specifique is None:
+            # Un droit qui publie sa devise se compare à elle, pas à la devise
+            # nationale : 0.50 USD/L sur une valeur en USD ne demande aucun taux.
+            devise_droit = _devise_publiee(specifique)
+            facteur_ligne = (
+                _facteur_devise_specifique(devise_droit, devise_valeur, taux_de_change)
+                if devise_droit
+                else facteur_devise_specifique
+            )
+            if montant_unitaire is not None and facteur_ligne is None:
                 # Le montant unitaire est publié dans la devise nationale du
                 # tarif ; la valeur CIF est déclarée dans une autre. Sans taux
                 # de change, l'additionner reviendrait à mélanger deux
@@ -532,9 +556,7 @@ def _liquider(
                 manque_devise = True
                 taux = None
             else:
-                facteur = (
-                    facteur_devise_specifique if facteur_devise_specifique is not None else 1.0
-                )
+                facteur = facteur_ligne if facteur_ligne is not None else 1.0
                 taux = montant_unitaire * facteur if montant_unitaire is not None else None
                 if facteur != 1.0:
                     ligne["conversion_devise"] = (
@@ -644,26 +666,31 @@ def _liquider(
                 echecs.append({"code": code, "famille": ligne["famille"]})
                 lignes.append(ligne)
                 continue
-            # La composante spécifique est libellée dans SA devise — « $345/MT ».
-            # La convertir exige un taux de change dès que la valeur en douane
-            # n'est pas dans cette devise. Sans lui, les deux composantes ne sont
-            # pas comparables, et comparer des montants de devises différentes
-            # rendrait un droit faux sans le dire.
+            # La composante spécifique est libellée dans la devise qu'elle publie
+            # — « $345/MT » —, sinon dans la devise nationale du tarif : même
+            # règle que le droit spécifique simple. La convertir exige un taux
+            # de change dès que la valeur en douane n'est pas dans cette devise.
+            # Sans lui, les deux composantes ne sont pas comparables, et
+            # comparer des montants de devises différentes rendrait un droit
+            # faux sans le dire.
             devise_specifique = (
                 specifique.get("unite_monetaire") if isinstance(specifique, dict) else None
             )
-            facteur = 1.0
-            if devise_specifique and devise_cif and devise_specifique != devise_cif:
-                if taux_de_change is None:
-                    ligne["statut"] = MANQUE_CHANGE
-                    ligne["montant"] = None
-                    ligne["expression_brute"] = droit.get("expression_brute")
-                    ligne["devise_specifique"] = devise_specifique
-                    manques.append({"code": code, "motif": MANQUE_CHANGE})
-                    echecs.append({"code": code, "famille": ligne["famille"]})
-                    lignes.append(ligne)
-                    continue
-                facteur = taux_de_change
+            devise_droit = _devise_publiee(specifique)
+            facteur = (
+                _facteur_devise_specifique(devise_droit, devise_valeur, taux_de_change)
+                if devise_droit
+                else facteur_devise_specifique
+            )
+            if facteur is None:
+                ligne["statut"] = MANQUE_CHANGE
+                ligne["montant"] = None
+                ligne["expression_brute"] = droit.get("expression_brute")
+                ligne["devise_specifique"] = devise_specifique
+                manques.append({"code": code, "motif": MANQUE_CHANGE})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
             montant_specifique = quantite * unitaire * facteur
             retenu = (
                 max(montant, montant_specifique)
