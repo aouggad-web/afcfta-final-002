@@ -1060,7 +1060,6 @@ def _normalize_crawled_formalities(raw_formalities):
                 "code": item.get("code"),
                 "document_fr": item.get("document_fr", text),
                 "document_en": item.get("document_en", text),
-                "fap_official_label": item.get("fap_official_label"),
             }
         )
     return normalized
@@ -1090,34 +1089,27 @@ FORMALITES_POSITION_INTROUVABLE = "POSITION_INTROUVABLE"
 #: propriétaire, prise le 21/09/2026 — déclarée ici pour qu'elle ne soit pas
 #: reprise plus tard comme un oubli.
 #:
-#: CORRECTION D'UNE ERREUR DE MA PART, relevée par le propriétaire. J'avais
-#: rangé la « déclaration d'importation du produit » algérienne parmi ces
-#: obligations générales. C'est faux : ce n'est pas la déclaration en douane,
-#: c'est une demande adressée aux services du contrôle de la qualité du
-#: ministère du Commerce. Elle est donc PARTICULIÈRE, attachée à des
-#: marchandises précises — et le produit la sert déjà, sur 6 816 positions
-#: algériennes.
+#: La « déclaration d'importation du produit » algérienne (code 910) n'est pas
+#: l'une de ces obligations générales : c'est une demande adressée au contrôle
+#: de la qualité du ministère du Commerce, attachée à des marchandises
+#: précises — une formalité PARTICULIÈRE, servie avec son code comme les autres.
 #:
-#: 902 ET 910 SONT DES CODES DE DOCUMENTS, pas des noms de procédure : la DGD
-#: codifie ainsi les pièces de sa liste FAP — 902 « Autorisation d'admission du
-#: produit », 910 « Déclaration d'importation du produit », et de même 140,
-#: 150, 160, 210, 215. Sur les 6 816 positions portant la déclaration
-#: d'importation, 96 seulement en portent le code : les 6 720 autres ont le
-#: même libellé sans code, faute de rapprochement à la liste. Écart constaté,
-#: non corrigé ici — il n'ôte rien à l'exigence, il en retire l'identifiant.
+#: Pour ces pays, formalites_et_statut lit la fiche de la position, jamais
+#: l'agrégat SH6 : la formalité d'une position ne vaut pas pour ses voisines
+#: du même SH6. (Le chemin historique calculate_import_taxes n'est pas repris
+#: ici : l'écran algérien le quitte pour POST /calcul.)
 #:
 #: Chaque entrée exige sa preuve, relevée sur le portail. Ne jamais ajouter un
 #: pays ici « par analogie » : c'est exactement la généralisation que le Maroc a
 #: démentie sur les droits nuls.
 SOURCES_EXHAUSTIVES_FORMALITES = {
     "DZA": (
-        "conformepro.dz publie un bloc « Formalités » lorsqu'une formalité "
-        "administrative particulière (FAP) existe, et aucun bloc sinon. Vérifié "
-        "le 21/09/2026 sur un échantillon tiré au sort de 80 positions : les 60 "
-        "positions sans formalité au crawl ne portent AUCUN bloc au portail, et "
-        "19 des 20 positions avec formalité en portent un (la vingtième a échoué "
-        "en réseau). Le crawl conserve d'ailleurs le code officiel de chaque "
-        "formalité (`fap_code`, `match_status: MATCHED_DGD_FAP_LIST`)."
+        "La fiche « sous-position » de l'e-service DGD publie le tableau "
+        "« Formalités Administratives Particulières » (code, document) quand "
+        "une formalité particulière frappe la position, et aucun tableau sinon. "
+        "Vérifié sur la fiche même de chaque position : relevé des 03 et 04/10/2026, "
+        "17 345 fiches sur 17 345 codes officiels, 8 671 avec tableau, 8 674 "
+        "sans (data/dza/releve_dgd.json)."
     ),
 }
 
@@ -1160,14 +1152,20 @@ def formalites_et_statut(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     if line is None:
         return [], FORMALITES_POSITION_INTROUVABLE
+    # Une source exhaustive change la nature de la liste vide : elle cesse
+    # d'être une lacune pour devenir un constat — celui de la fiche de la
+    # position, que seule une position relevée porte. Voir
+    # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
+    if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
+        code = hs_code.replace(".", "").replace(" ", "")
+        position = load_crawled_position_index(country_iso3).get(code)
+        if position is None:
+            return [], FORMALITES_NON_ETABLIES
+        formalites = _normalize_crawled_formalities(position.get("formalities"))
+        return formalites, FORMALITES_DOCUMENTEES if formalites else FORMALITES_AUCUNE_PARTICULIERE
     formalites = line.get("administrative_formalities") or []
     if formalites:
         return formalites, FORMALITES_DOCUMENTEES
-    # Une source exhaustive change la nature de la liste vide : elle cesse
-    # d'être une lacune pour devenir un constat. Voir
-    # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
-    if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
-        return [], FORMALITES_AUCUNE_PARTICULIERE
     return [], FORMALITES_NON_ETABLIES
 
 

@@ -281,10 +281,11 @@ touche.
   autant de dispenses — la faute réparée ici, retournée.
 
   Une seule exception existe, et elle est verrouillée : l'Algérie, dont la
-  source publie ses formalités de façon exhaustive — établi par échantillon de
-  80 positions au portail, archivé dans
-  `data/dza/echantillon_formalites_portail.json`. Là, et là seulement, une
-  liste vide est un CONSTAT (« aucune formalité particulière »). Un test exige
+  source publie ses formalités de façon exhaustive — la fiche DGD de chaque
+  position porte le tableau des formalités particulières quand il en existe,
+  et aucun sinon (relevé des 17 345 fiches, `data/dza/releve_dgd.json`). Là,
+  et là seulement, une liste vide est un CONSTAT (« aucune formalité
+  particulière »), lu sur la fiche de la position. Un test exige
   que toute entrée de `SOURCES_EXHAUSTIVES_FORMALITES` porte sa preuve
   circonstanciée : **étendre ce constat par analogie transformerait 297 794
   lacunes en autant de déclarations d'absence de formalité.**
@@ -576,8 +577,9 @@ touche.
 
 - **Les formalités n'existent pour ainsi dire pas.** Aucune position du socle
   n'en porte. Deux fichiers dans `data/` : le Kenya, et un échantillon de
-  portail algérien. Le panneau réglementaire n'a rien à afficher pour 52 pays
-  sur 54. Mesuré le 23/09/2026.
+  portail algérien (remplacé le 04/10/2026 par le relevé DGD,
+  `data/dza/releve_dgd.json`). Le panneau réglementaire n'a rien à afficher
+  pour 52 pays sur 54. Mesuré le 23/09/2026.
 
 - **TROIS pays servent la TOTALITÉ de leur droit de douane depuis une moyenne
   statistique SH6** : Comores, São Tomé, Soudan. Tous de la forme

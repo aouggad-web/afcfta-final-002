@@ -2150,7 +2150,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             // Deux silences très différents, et l'opérateur doit les distinguer.
             //
             // Quand la source publie ses formalités de façon EXHAUSTIVE — c'est
-            // établi pour l'Algérie, échantillon à l'appui — une liste vide est
+            // établi pour l'Algérie, fiche DGD à l'appui — une liste vide est
             // un CONSTAT : la marchandise n'est soumise à aucune formalité
             // particulière. Dire « non établies » sous-estimerait ce que l'on
             // sait, et ferait passer une information solide pour une lacune.

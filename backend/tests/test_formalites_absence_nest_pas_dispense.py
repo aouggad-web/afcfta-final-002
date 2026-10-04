@@ -125,24 +125,30 @@ def test_une_position_servie_ne_porte_aucune_reserve():
 
 
 def test_une_source_exhaustive_dit_le_constat_pas_la_lacune(service):
-    """Algérie : le silence du portail est une information, pas un manque.
+    """Algérie : le silence de la fiche est une information, pas un manque.
 
-    `conformepro.dz` publie un bloc « Formalités » quand une formalité
-    particulière existe, et aucun bloc sinon. Vérifié le 21/09/2026 sur un
-    échantillon tiré au sort : 60 positions sans formalité au crawl, 60 fois
-    aucun bloc au portail ; 20 positions avec formalité, 19 blocs présents
-    (la vingtième a échoué en réseau).
+    La fiche DGD de chaque position publie le tableau des formalités
+    particulières quand il en existe, et aucun tableau sinon : relevé des
+    17 345 fiches, data/dza/releve_dgd.json.
 
     Le produit peut donc dire à l'opérateur quelque chose de POSITIF — cette
     marchandise n'est soumise à aucune formalité particulière — au lieu de lui
     servir une réserve qui ferait passer une information solide pour un trou.
+    Mais seulement pour une position relevée : un SH6, ou un code absent du
+    tarif DGD, n'a pas de fiche, donc pas de constat.
     """
-    _, statut = service.formalites_et_statut("DZA", "5201001000")
+    # La fiche de 1520002000 ne publie aucune formalité ; l'agrégat de son SH6
+    # en porte. Le constat est celui de la fiche.
+    _, statut = service.formalites_et_statut("DZA", "1520002000")
     assert statut == service.FORMALITES_AUCUNE_PARTICULIERE
 
-    documentees, statut = service.formalites_et_statut("DZA", "0101211100")
+    documentees, statut = service.formalites_et_statut("DZA", "0101.21.11.00")
     assert statut == service.FORMALITES_DOCUMENTEES
-    assert documentees
+    assert [f["code"] for f in documentees] == ["160", "180"]
+
+    for code in ("0804109992", "520100"):
+        attendu = ([], service.FORMALITES_NON_ETABLIES)
+        assert service.formalites_et_statut("DZA", code) == attendu, code
 
 
 def test_le_constat_ne_se_generalise_pas_aux_autres_pays(service):
