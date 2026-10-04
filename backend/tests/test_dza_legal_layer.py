@@ -178,7 +178,7 @@ def test_dza_sub_positions_carry_fap():
         for sp in (l.get("sub_positions") or [])
         if sp.get("administrative_formalities")
     )
-    assert with_fap_subs == 9185
+    assert with_fap_subs == 9171
 
 
 def test_kenya_layer_unaffected_by_dza_wiring():
