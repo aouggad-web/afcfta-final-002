@@ -521,6 +521,31 @@ def test_la_devise_d_un_droit_compose_se_compare_sans_tenir_compte_de_la_casse()
     assert lignes(r)["DD"]["montant"] == 1500.0
 
 
+def test_un_droit_compose_suit_la_regle_de_devise_du_droit_simple():
+    def compose(specifique):
+        return droit(
+            "DD", 40.0, "CIF", "droit",
+            specifique=specifique, compose=True, regle_composee="LE_PLUS_ELEVE",
+        )
+
+    # Une abréviation nationale n'est pas une devise étrangère : « dhs » sur
+    # une valeur en MAD se liquide sans taux, comme le droit simple.
+    dhs = compose({"montant": 10, "unite_monetaire": "dhs"})
+    r = calculer(position(dhs), 1000, quantite=100, devise_position="MAD", devise_cif="MAD")
+    assert lignes(r)["DD"]["statut"] == CALCULE
+    assert lignes(r)["DD"]["montant"] == 1000.0
+    # Sans devise publiée, la composante est en devise nationale : sur une
+    # valeur en USD, elle exige le taux au lieu de s'additionner telle quelle.
+    national = compose({"montant": 10})
+    r2 = calculer(position(national), 1000, quantite=100, devise_position="ZMW", devise_cif="USD")
+    assert lignes(r2)["DD"]["statut"] == MANQUE_CHANGE
+    r3 = calculer(
+        position(national), 1000, quantite=100,
+        devise_position="ZMW", devise_cif="USD", taux_de_change=0.04,
+    )
+    assert lignes(r3)["DD"]["montant"] == 400.0
+
+
 def test_une_devise_identique_ou_inconnue_ne_declenche_aucune_conversion():
     d = droit("DD", None, "xQTE", "droit", specifique={"montant": 0.08, "brut": "8c/kg"})
     r = calculer(position(d), 1000, quantite=500, devise_position="ZAR", devise_cif="ZAR")

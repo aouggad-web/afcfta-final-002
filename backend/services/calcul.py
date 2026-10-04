@@ -603,26 +603,31 @@ def _liquider(
                 echecs.append({"code": code, "famille": ligne["famille"]})
                 lignes.append(ligne)
                 continue
-            # La composante spécifique est libellée dans SA devise — « $345/MT ».
-            # La convertir exige un taux de change dès que la valeur en douane
-            # n'est pas dans cette devise. Sans lui, les deux composantes ne sont
-            # pas comparables, et comparer des montants de devises différentes
-            # rendrait un droit faux sans le dire.
+            # La composante spécifique est libellée dans la devise qu'elle publie
+            # — « $345/MT » —, sinon dans la devise nationale du tarif : même
+            # règle que le droit spécifique simple. La convertir exige un taux
+            # de change dès que la valeur en douane n'est pas dans cette devise.
+            # Sans lui, les deux composantes ne sont pas comparables, et
+            # comparer des montants de devises différentes rendrait un droit
+            # faux sans le dire.
             devise_specifique = (
                 specifique.get("unite_monetaire") if isinstance(specifique, dict) else None
             )
-            facteur = 1.0
-            if devise_specifique and devise_cif and str(devise_specifique).upper() != devise_cif.upper():
-                if taux_de_change is None:
-                    ligne["statut"] = MANQUE_CHANGE
-                    ligne["montant"] = None
-                    ligne["expression_brute"] = droit.get("expression_brute")
-                    ligne["devise_specifique"] = devise_specifique
-                    manques.append({"code": code, "motif": MANQUE_CHANGE})
-                    echecs.append({"code": code, "famille": ligne["famille"]})
-                    lignes.append(ligne)
-                    continue
-                facteur = taux_de_change
+            devise_droit = _devise_publiee(specifique)
+            facteur = (
+                _facteur_devise_specifique(devise_droit, devise_cif, taux_de_change)
+                if devise_droit
+                else facteur_devise_specifique
+            )
+            if facteur is None:
+                ligne["statut"] = MANQUE_CHANGE
+                ligne["montant"] = None
+                ligne["expression_brute"] = droit.get("expression_brute")
+                ligne["devise_specifique"] = devise_specifique
+                manques.append({"code": code, "motif": MANQUE_CHANGE})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
             montant_specifique = quantite * unitaire * facteur
             retenu = (
                 max(montant, montant_specifique)
