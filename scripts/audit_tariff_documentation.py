@@ -836,7 +836,6 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         [
             "backend/scripts/build_dza_tariffs_complete.py",
             "backend/scripts/enrich_dza_fast_json.py",
-            "backend/etl/dza_tariff_connector.py",
             "engine/converters/dza_converter.py",
             "engine/adapters/dza_conformepro_adapter.py",
         ]

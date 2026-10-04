@@ -11,23 +11,38 @@ reprenables, dont les pages brutes restent dans ``--cache`` (hors dépôt) :
            par ligne. Le tableau « Avantages fiscaux » n'est pas repris : il ne
            publie ni condition ni accord, et n'est pas servi.
 
+puis une quatrième, sans réseau, qui lit le relevé et le crawl en place :
+
+  verser   backend/data/crawled/DZA_tariffs.json prend du relevé les taxes ad
+           valorem, les formalités, la désignation et l'URL de chaque fiche ;
+           les codes absents du tarif DGD en sortent. Le « ? » qui tient la
+           place d'un caractère perdu à la mise en ligne est corrigé à la main,
+           ligne par ligne, d'après data/dza/designations_corrigees.json. Le
+           crawl est rescellé (le sceau est horodaté : relancer l'étape change
+           le fichier, même à relevé égal) et son empreinte reportée au
+           registre ; suit ``python scripts/build_socle.py DZA``.
+
 Une page anti-robot du pare-feu (≈ 2,5 Ko, renvoyée en HTTP 200) n'est jamais
 comptée comme lue : elle est relue après une pause croissante. TLS vérifié de
 bout en bout ; le serveur DGD n'envoie pas son certificat intermédiaire
 (Sectigo DV R36), fourni par data/dza/sectigo_dv_r36.crt.
 
 Usage : python scripts/releve_dgd_dza.py {listes|fiches|fichier} --cache DOSSIER
+        python scripts/releve_dgd_dza.py verser
 """
 from __future__ import annotations
 
 import argparse
 import concurrent.futures as cf
 import gzip
+import hashlib
 import json
 import re
 import ssl
+import sys
 import time
 import urllib.request
+from collections import Counter
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -37,6 +52,9 @@ SORTIE = RACINE / "data" / "dza" / "releve_dgd.json"
 INTERMEDIAIRE = RACINE / "data" / "dza" / "sectigo_dv_r36.crt"
 BASE = "https://www.douane.gov.dz/spip.php"
 UA = {"User-Agent": "Mozilla/5.0 (releve tarifaire, lecture seule)"}
+CRAWL = RACINE / "backend" / "data" / "crawled" / "DZA_tariffs.json"
+REGISTRE = RACINE / "backend" / "data" / "source_registry_v2.json"
+CORRECTIONS = RACINE / "data" / "dza" / "designations_corrigees.json"
 TABLEAUX = {
     "Taxes Ad-Valorem": "taxes",
     "Taxes spécifiques annexes": "taxes_specifiques",
@@ -339,14 +357,84 @@ def etape_fichier(cache: Path, crawl: Path) -> None:
           f" {len(entete['absents_du_tarif_dgd'])} absentes du tarif DGD")
 
 
+def etape_verser(crawl: Path) -> None:
+    sys.path.insert(0, str(RACINE / "backend"))
+    from crawlers.integrity import seal_crawled_file
+
+    r = json.loads(SORTIE.read_text(encoding="utf-8"))
+    if r["positions_non_relues"]:
+        raise SystemExit("relevé incomplet : rien n'est versé")
+    corrections = json.loads(CORRECTIONS.read_text(encoding="utf-8"))
+    c = json.loads(crawl.read_text(encoding="utf-8"))
+    anciennes = {p["hs_code"]: p for p in c["sub_positions"]}
+    positions = []
+    for code, f in sorted(r["positions"].items()):
+        p = anciennes.get(code) or {
+            "raw_code": f"{code[:2]}.{code[2:4]}.{code[4:]}", "hs_code": code,
+            "heading": f"{code[:2]}.{code[2:4]}", "chapter": code[:2],
+            "section": re.search(r"section=(\w+)", f["url"])[1],
+        }
+        # La désignation servie est celle de la fiche. Le « ? » y tient la place
+        # d'un caractère perdu à la mise en ligne : chaque ligne, et chaque
+        # Observation, est servie corrigée à la main (décision du 04/10/2026).
+        p["name"] = "\n".join(corrections["lignes"].get(ligne, ligne) for ligne in f["designation"].split("\n"))
+        taxes = {}
+        for sigle, taux, observation in f["taxes"]:
+            cle = sigle.replace(".", "")
+            if not re.fullmatch(r"[A-Z]+", cle) or cle in taxes:
+                raise SystemExit(f"{code} : sigle {sigle!r} illisible ou en double, rien n'est versé")
+            taxes[cle] = {"label_published": sigle, "rate": float(taux)}
+            if observation:
+                taxes[cle]["note"] = corrections["observations"].get(observation, observation)
+        if "?" in p["name"] + "".join(t.get("note", "") for t in taxes.values()):
+            raise SystemExit(f"{code} : « ? » non corrigé, à reprendre dans {CORRECTIONS.name} ; rien n'est versé")
+        p["taxes"] = taxes
+        p["formalities"] = [{"code": k, "text_verbatim": document} for k, document in f["formalites"]]
+        for cle in ("specific_taxes", "advantages", "tax_advantages", "source_gaps", "source_url",
+                    "source_root_url", "date_consulted"):
+            p.pop(cle, None)
+        p["source"], p["crawled_at"] = f["url"], f["releve_le"]
+        positions.append(p)
+
+    retires = ("source_root_url", "source_provenance", "stats", "progress_stats", "policy", "_integrity_seal")
+    entete = {k: v for k, v in c.items() if k not in retires and k != "sub_positions"}
+    entete.update(source="douane.gov.dz — Tarif douanier (e-service DGD)", source_url=r["source_root_url"],
+                  extracted_at=r["releve_au"], built_by="scripts/releve_dgd_dza.py verser")
+    crawl.write_text(json.dumps({**entete, "sub_positions": positions}, ensure_ascii=False, indent=1) + "\n",
+                     encoding="utf-8")
+    seal_crawled_file(str(crawl), source_url=r["source_root_url"])
+
+    lignes = Counter(k for p in positions for k in p["taxes"])
+    registre = json.loads(REGISTRE.read_text(encoding="utf-8"))
+    dza = registre["countries"]["DZA"]
+    dza.pop("coverage_gaps", None)
+    dza.update(
+        organism="Direction Générale des Douanes (DGD), e-service Tarif douanier",
+        url=r["source_root_url"], retrieved_at=r["releve_au"][:10], positions_count=len(positions),
+        sha256=hashlib.sha256(crawl.read_bytes()).hexdigest(),
+        taxes=sorted(lignes, key=lambda k: (-lignes[k], k)),
+        formalities=f"{sum(1 for p in positions if p['formalities'])} positions avec formalités "
+                    f"({len({x['code'] for p in positions for x in p['formalities']})} codes F.A.P)",
+        legal_refs=f"{sum(1 for p in positions if p.get('legal_refs'))} positions avec legal_refs "
+                   "(Code Douanes + Tarif D'Usage)",
+    )
+    REGISTRE.write_text(json.dumps(registre, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"{crawl.relative_to(RACINE)} : {len(positions)} positions,"
+          f" +{len(set(r['positions']) - set(anciennes))} −{len(set(anciennes) - set(r['positions']))}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("etape", choices=["listes", "fiches", "fichier"])
-    ap.add_argument("--cache", type=Path, required=True, help="dossier des pages brutes (hors dépôt)")
+    ap.add_argument("etape", choices=["listes", "fiches", "fichier", "verser"])
+    ap.add_argument("--cache", type=Path, help="dossier des pages brutes (hors dépôt)")
     ap.add_argument("--cafile", help="magasin de certificats racines (défaut : celui du système)")
-    ap.add_argument("--crawl", type=Path, default=RACINE / "backend" / "data" / "crawled" / "DZA_tariffs.json")
+    ap.add_argument("--crawl", type=Path, default=CRAWL)
     a = ap.parse_args()
-    if a.etape == "fichier":
+    if a.etape == "verser":
+        etape_verser(a.crawl)
+    elif a.cache is None:
+        ap.error("--cache est requis pour listes, fiches et fichier")
+    elif a.etape == "fichier":
         etape_fichier(a.cache, a.crawl)
     else:
         (etape_listes if a.etape == "listes" else etape_fiches)(a.cache, contexte_tls(a.cafile))

@@ -352,7 +352,7 @@ def normalize_dza(data: dict, iso3: str) -> List[dict]:
         for f in pos.get("formalities", []):
             if isinstance(f, dict):
                 formalities.append({
-                    "code": f.get("fap_code", ""),
+                    "code": f.get("code", ""),
                     "description": f.get("fap_official_label", f.get("text_verbatim", "")),
                     "text_verbatim": f.get("text_verbatim", ""),
                     "kind": "administrative",
