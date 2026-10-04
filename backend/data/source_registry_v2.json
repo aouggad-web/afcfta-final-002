@@ -91,43 +91,34 @@
       "notes": "6 637 positions, 97 chapitres, avec leur désignation anglaise. Assiette DD = CIF, établie par le Customs and Excise Act s.106(1) et s.113(2)(c). CONTRÔLE INTERNE : le tarif publie DEUX colonnes de droits (« General » et « M.F.N. ») ; elles concordent sur 6 637 positions sur 6 637, ce qui valide l'extraction par le document lui-même. DROITS COMPOSÉS : 61 positions « X% or US$Y/unité » ; la règle de départage est ÉNONCÉE par le texte (p. 13 : « the rate of duty yielding the higher amount of duty shall be applicable ») et donc liquidée — à la différence du tarif SARS, qui ne l'énonce pas et reste refusé. 414 positions cumulatives (« + »). SPÉCIFIQUES INCOMPARABLES : 11 positions de spiritueux opposent deux montants dans des unités différentes (« US$5.00/L or US$10.00/LAA ») ; les départager exige le titre alcoométrique, que le tarif ne porte pas — portées sans valeur liquidable, avec leur verbatim. ACCISE SANS TAUX : 116 positions mentionnent « Excise » sans en porter le taux, qui relève du tarif d'accise séparé ; portées sans taux ni assiette, jamais à zéro — les traiter comme un zéro exonérerait alcools et tabacs. COQUILLES DE LA SOURCE : neuf codes y sont écrits sans un de leurs points (« 9608.9900 ») ou avec une espace (« 5113. 00.00 ») ; ils sont reconnus et ramenés à huit chiffres, faute de quoi ils disparaissaient en silence. Aucun taux non lu."
     },
     "DZA": {
-      "organism": "Direction Générale des Douanes (DGD) via conformepro.dz, droits nuls relus sur l'e-service DGD",
-      "coverage_gaps": {
-        "missing_chapters": [
-          "22",
-          "24"
-        ],
-        "missing_sh10_codes": 207,
-        "nomenclature_present": 17115,
-        "nomenclature_official": 17322,
-        "detail": "conformepro.dz n'expose que 95 chapitres dans sa navigation : les chapitres 22 (boissons, liquides alcooliques, vinaigres) et 24 (tabacs et succédanés) en sont absents, de même que le 9614 (pipes). Le chapitre 77 est réservé par le SH et normalement vide : ce n'est pas un manque. Constat établi par la découverte d'arborescence du crawler, conservée dans backend/data/crawled/DZA_structure.json.",
-        "zlecaf_impact": "29 des 207 codes figurent dans la liste (B) des concessions ZLECAf algériennes, avec leurs taux de base 2019 connus : 2202 (8 codes, 30 et 60 %), 2401 (5 codes, 15 %), 2403 (13 codes, 30 %), 2404 (2 codes, 30 %), 9614 (1 code, 30 %). Les 178 autres relèvent de la liste (A), qui n'est énumérée nulle part — elle se définit par complément — et ne peuvent donc pas être identifiés individuellement.",
-        "operational_consequence": "Une importation d'alcool, de tabac ou de boisson sucrée vers l'Algérie ne trouve aucune ligne tarifaire. Le calculateur doit répondre donnée indisponible, jamais un taux par défaut.",
-        "resolution": "Non récupérable depuis conformepro.dz. Exige le tarif officiel de la DGD (douane.gov.dz, injoignable depuis l'environnement d'audit) ou une autre source primaire.",
-        "assessed_at": "2026-09-12"
-      },
+      "organism": "Direction Générale des Douanes (DGD), e-service Tarif douanier",
       "version": "2026.1",
       "artifact_path": "backend/data/crawled/DZA_tariffs.json",
       "artifact_url": null,
       "source_type": "official",
-      "url": "https://conformepro.dz/resources/tarif-douanier",
-      "retrieved_at": "2026-08-29",
+      "url": "https://www.douane.gov.dz/spip.php?page=tarif_douanier",
+      "retrieved_at": "2026-10-04",
       "edition": "Tarif Douanier d'Usage — édition LF 2026",
       "application_period": "2026-01-01 to 2026-12-31",
       "hs_version": "HS 2022",
       "code_digits": 10,
-      "positions_count": 17115,
-      "sha256": "273d3fa29bb2990b1c8c0244a468b019a8230d3f063dc8007536f1930ccf69f0",
+      "positions_count": 17345,
+      "sha256": "9b553e94b4bf3f893cd20b6ecac84cf8680f09f65014cd1611517dbf6ea397b3",
       "reuse_conditions": "Données publiées par la DGD pour consultation publique. Utilisation informative non opposable.",
       "legal_authority": "Code des Douanes 79-07 + Loi de Finances 2026 (JO n° 88 du 31/12/2025)",
       "validation_status": "verified",
       "taxes": [
+        "PRCT",
+        "TCS",
         "DD",
         "TVA",
-        "TCS",
-        "PRCT",
         "DAPS",
-        "TIC"
+        "TIC",
+        "TCE",
+        "TEE",
+        "DPPP",
+        "DFP",
+        "TICPV"
       ],
       "taxes_missing": [
         "TAPT",
@@ -139,8 +130,8 @@
         "TPP",
         "TPI"
       ],
-      "formalities": "9069 positions avec formalités (46 types uniques)",
-      "legal_refs": "17115 positions avec legal_refs (Code Douanes + Tarif D'Usage)",
+      "formalities": "8671 positions avec formalités (36 codes F.A.P)",
+      "legal_refs": "17212 positions avec legal_refs (Code Douanes + Tarif D'Usage)",
       "zlecaf": "APPLIED — Circulaire DGD 482/2024, 9 partenaires actifs, calendrier de démantèlement"
     },
     "TUN": {

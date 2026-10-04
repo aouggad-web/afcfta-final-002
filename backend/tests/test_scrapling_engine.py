@@ -142,13 +142,15 @@ def test_gate_scopes_to_candidate_chapters():
 
 
 def test_national_layer_detected_on_dza():
-    """Le crawlé DZA porte une couche nationale riche (TVA/TCS/PRCT/DAPS,
-    formalités, régimes) — check_national_layer doit la voir."""
+    """Le crawlé DZA porte une couche nationale riche (TVA/TCS/PRCT/DAPS et
+    formalités, relevées sur les fiches DGD) — check_national_layer doit la
+    voir. Les régimes n'y sont pas repris : la fiche ne nomme ni condition ni
+    accord."""
     raw = json.load(open(DZA_JSON, encoding="utf-8"))
     nl = quality_gate.check_national_layer(raw)
     assert nl["national_layer_present"] is True
     assert nl["positions_with_tax_beyond_dd"] > 0
-    assert nl["positions_with_advantages"] > 0
+    assert nl["positions_with_formalities"] > 0
 
 
 def test_gate_requires_national_layer_rejects_dd_only():

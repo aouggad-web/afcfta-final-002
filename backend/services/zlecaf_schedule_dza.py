@@ -35,6 +35,10 @@ with open(DATA_DIR / "list_b_codes.json", encoding="utf-8") as f:
     LIST_B_CODES = frozenset(json.load(f))
 with open(DATA_DIR / "list_c_codes.json", encoding="utf-8") as f:
     LIST_C_CODES = frozenset(json.load(f))
+# Lignes que le tarif DGD a créées depuis la circulaire en subdivisant des
+# lignes de la liste (C) : elles en restent (motif dans le fichier).
+with open(DATA_DIR / "list_c_successeurs_dgd.json", encoding="utf-8") as f:
+    LIST_C_SUCCESSEURS = frozenset(json.load(f)["codes"])
 
 # Taux DD de base 2019 (figé à l'entrée en vigueur de l'Accord, art. 23),
 # par code SH10 de la liste (B) — source : tableau détaillé « Liste (B) :
@@ -124,7 +128,7 @@ def tariff_list(hs_code_clean: str) -> str:
     """Liste (A), (B) ou (C) d'une position. (A) est la liste par défaut
     (90% des lignes), elle n'est pas énumérée explicitement par la source."""
     code10 = hs_code_clean.ljust(10, "0")[:10]
-    if code10 in LIST_C_CODES:
+    if code10 in LIST_C_CODES or code10 in LIST_C_SUCCESSEURS:
         return "C"
     if code10 in LIST_B_CODES:
         return "B"

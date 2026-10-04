@@ -84,6 +84,13 @@ def test_list_c_never_reduced():
     assert "liste (c)" in source.lower()
 
 
+def test_les_lignes_issues_d_une_ligne_de_la_liste_c_en_restent():
+    # Tomates (0702.00) et dattes (0804.10) : toutes leurs lignes sont en (C)
+    # dans la circulaire ; le tarif DGD les a subdivisées depuis.
+    for code in ("0702001100", "0702009900", "0804103000", "0804104242"):
+        assert tariff_list(code) == "C", code
+
+
 def test_frozen_textile_heading_kept_at_npf():
     assert is_frozen("5111100000")
     rate, source = compute_dza_zlecaf_rate(

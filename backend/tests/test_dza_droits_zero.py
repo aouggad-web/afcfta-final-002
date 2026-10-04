@@ -1,6 +1,6 @@
 """Algérie — 296 droits de douane à 0 %, repris à la source primaire.
 
-CE QUI ÉTAIT FAUX. La collecte algérienne ne lit pas la DGD : elle lit
+CE QUI ÉTAIT FAUX. La collecte algérienne ne lisait pas la DGD : elle lisait
 `conformepro.dz`, qui republie ses données. Ce miroir **supprime le bloc
 « Droit de douane » quand le droit vaut zéro**. Vérifié page par page :
 
@@ -32,10 +32,11 @@ CE QUE CES TESTS TIENNENT.
    faux : inventer une franchise, et pour un chapitre où la question ne se
    pose pas.
 
-3. LE RELEVÉ FAIT FOI. Chaque droit versé est adossé à sa fiche officielle,
-   archivée dans `data/dza/releve_dd_dgd.json` avec son URL. Le crawl et
-   l'archive doivent dire la même chose : une divergence signalerait une
-   écriture faite ailleurs que par le relevé.
+3. LE RELEVÉ FAIT FOI. Le crawl est versé depuis les fiches officielles,
+   archivées dans `data/dza/releve_dgd.json` avec leur URL
+   (`scripts/releve_dgd_dza.py verser`). Le crawl et le relevé doivent dire
+   la même chose : une divergence signalerait une écriture faite ailleurs
+   que par le relevé.
 """
 
 from __future__ import annotations
@@ -48,7 +49,7 @@ import pytest
 RACINE = pathlib.Path(__file__).resolve().parents[2]
 SOCLE = RACINE / "backend" / "socle" / "DZA.json"
 CRAWL = RACINE / "backend" / "data" / "crawled" / "DZA_tariffs.json"
-RELEVE = RACINE / "data" / "dza" / "releve_dd_dgd.json"
+RELEVE = RACINE / "data" / "dza" / "releve_dgd.json"
 
 # Chapitre 98 du tarif algérien — « Effets personnels ». Hors importation
 # commerciale : aucun droit de douane n'y est perçu, et la DGD n'en publie
@@ -124,21 +125,25 @@ def test_les_positions_hors_importation_commerciale_ne_sont_pas_comblees(positio
         assert droit["taux"] is None, f"{code} : un droit non publié ne se pose pas à 0"
 
 
-def test_chaque_droit_verse_est_adosse_a_sa_fiche_officielle():
-    """Le crawl et l'archive du relevé disent la même chose, code par code."""
+def test_le_crawl_est_le_releve_dgd_position_par_position():
+    """Le crawl et le relevé des fiches disent la même chose, code par code."""
     if not CRAWL.exists() or not RELEVE.exists():
         pytest.skip("crawl ou relevé absent")
     crawl = json.loads(CRAWL.read_text(encoding="utf-8"))
-    releve = json.loads(RELEVE.read_text(encoding="utf-8"))["droits"]
+    releve = json.loads(RELEVE.read_text(encoding="utf-8"))
     par_code = {x["hs_code"]: x for x in crawl["sub_positions"]}
 
-    assert len(releve) == 296
-    for code, fiche in releve.items():
-        dd = (par_code[code].get("taxes") or {}).get("DD")
-        assert dd is not None, f"{code} : droit relevé mais absent du crawl"
-        assert dd["rate"] == fiche["rate"]
-        assert dd["label_verification"] == "PUBLISHED_BY_DGD"
-        assert fiche["source_url"], f"{code} : un taux sans son URL de fiche"
+    assert releve["positions_non_relues"] == []
+    assert set(par_code) == set(releve["positions"])
+    for code, fiche in releve["positions"].items():
+        ligne = par_code[code]
+        assert {k: t["rate"] for k, t in ligne["taxes"].items()} == {
+            sigle.replace(".", ""): float(taux) for sigle, taux, _ in fiche["taxes"]
+        }, code
+        assert [[f["code"], f["text_verbatim"]] for f in ligne["formalities"]] == fiche["formalites"], code
+        assert ligne["source"] == fiche["url"], code
+    # Le seul taux que la fiche corrige : 30 % au miroir, 15 % à la DGD.
+    assert par_code["8419121000"]["taxes"]["DD"]["rate"] == 15.0
 
 
 def test_le_chapitre_98_est_bien_celui_des_effets_personnels():
