@@ -567,7 +567,7 @@ SOUS_UNITES = {"c": 100, "cent": 100, "cents": 100, "ct": 100}
 
 _SPECIFIQUE = re.compile(
     # La devise peut précéder le montant : le tarif seychellois écrit
-    # « SCR5.13/kg » (254 droits), illisibles tant que seul « 8c/kg » l'était.
+    # « SCR5.13/kg » (253 droits), illisibles tant que seul « 8c/kg » l'était.
     r"^\s*(?P<prefixe>[A-Z]{3}(?=\d))?(?P<montant>-?\d+(?:[.,]\d+)?)\s*(?P<monnaie>[A-Za-zÀ-ÿ]*)\s*(?:/\s*(?P<quantite>[A-Za-zÀ-ÿ0-9]+))?",
 )
 
@@ -1193,6 +1193,11 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         "compose": True,
                         "expression_brute": d.get("expression_brute") or "",
                     }
+                    if d.get("cumulatif"):
+                        # « 7%+SCR5/kg » (Seychelles, colonnes ZLECAf, SADC,
+                        # COMESA) : les deux composantes sont dues, comme au NPF.
+                        prefs[regime]["compose"] = False
+                        prefs[regime]["cumulatif"] = True
                     if d.get("plafond_ad_valorem_pct") is not None:
                         prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
                     compteurs["preferentiels_specifiques"] += 1

@@ -138,3 +138,19 @@ def test_la_devise_ecrite_avant_le_montant_est_lue():
         positions = json.load(f)["positions"]
     specifique = positions["02032100"]["droits"][0]["specifique"]
     assert (specifique["montant"], specifique["unite_monetaire"], specifique["unite_quantite"]) == (5.13, "scr", "kg")
+    illisible = positions["24022000"]["droits"][0]["specifique"]
+    assert illisible["brut"] == "SCR96perpackof200" and illisible["montant"] is None
+
+
+@besoin_socle
+def test_une_colonne_preferentielle_cumulative_additionne_ses_deux_composantes():
+    """Seychelles 0207.12 : ZLECAf « 7%+SCR5/kg » — 7 % × 1 000 + 5 × 10 kg.
+    Le pourcentage seul n'est pas montré en simulation régionale."""
+    from services.preference import _taux_colonne, taux_preferentiels
+
+    with open(os.path.join(SOCLE, "SYC.json"), encoding="utf-8") as f:
+        position = json.load(f)["positions"]["02071200"]
+    preference = taux_preferentiels(position, "SYC", "MUS", "02071200")
+    r = calculer(position, 1000, quantite=10, taux_preferentiels=preference["taux"], devise_position="SCR")
+    assert _ligne(r, regime="preference")["montant"] == 120.0
+    assert _taux_colonne(position, "SADC") is None
