@@ -116,6 +116,10 @@ MANQUE_FOB = "VALEUR_FOB_REQUISE"
 #: montant crédible et possiblement faux : sur la position 020110, la part
 #: spécifique l'emporte dès que la valeur unitaire passe sous 6,00 ZAR/kg.
 MANQUE_REGLE_COMPOSEE = "REGLE_COMPOSEE_NON_ETABLIE"
+#: Une position porte deux droits spécifiques dans deux unités (Tunisie
+#: 0102.29 : D.S.V. par tête, prélèvement viande au kilo). Une seule quantité
+#: saisie ne peut pas servir les deux : aucun n'est liquidé.
+MANQUE_UNITES = "UNITES_DE_QUANTITE_MULTIPLES"
 
 
 def _facteur_devise_specifique(
@@ -372,6 +376,14 @@ def _liquider(
     manques: List[Dict[str, Any]] = []
     echecs: List[Dict[str, Any]] = []
     codes_de_la_position = {d.get("code") for d in droits}
+    unites_de_quantite = {
+        d["specifique"].get("unite_quantite")
+        for d in droits
+        if isinstance(d.get("specifique"), dict)
+        and d.get("taux") is None
+        and d["specifique"].get("unite_quantite")
+        and not d.get("assiette_non_traduite")
+    }
 
     for droit in droits:
         code = droit.get("code", "?")
@@ -531,6 +543,13 @@ def _liquider(
                 ),
             }
             taux = None
+        elif taux is None and specifique is not None and droit.get("assiette_non_traduite"):
+            # L'assiette publiée n'est pas traduite (seuil d'excédent, unité
+            # non publiée) : le droit reste indisponible, jamais liquidé à une
+            # quantité dont l'unité ou la règle est inconnue.
+            ligne["specifique"] = (
+                specifique.get("brut") if isinstance(specifique, dict) else specifique
+            )
         elif taux is None and specifique is not None:
             # Garde-fou : un droit spécifique se liquide toujours à la quantité.
             # Quelle que soit l'assiette déclarée, la lire comme ad valorem
@@ -587,6 +606,9 @@ def _liquider(
             devise_valeur,
         )
         ligne.update(detail)
+        if droit.get("assiette") == "xQTE" and len(unites_de_quantite) > 1 and manque is None:
+            manque = MANQUE_UNITES
+            ligne["unites_de_la_position"] = sorted(unites_de_quantite)
         if regle_composee_absente:
             manque = MANQUE_REGLE_COMPOSEE
         elif manque_devise:
