@@ -122,13 +122,11 @@ class NorthAfricaOrchestrator:
 
     def _get_crawler(self, country_code: str, options: Dict) -> Any:
         """Instantiate the appropriate crawler for a country."""
-        from .dza_tariff_connector import DZATariffConnector
         from .egy_tariff_crawler import EGYTariffCrawler
         from .mar_tariff_crawler import MARTariffCrawler
         from .tun_tariff_crawler import TUNTariffCrawler
 
         crawler_map = {
-            "DZA": DZATariffConnector,
             "MAR": MARTariffCrawler,
             "EGY": EGYTariffCrawler,
             "TUN": TUNTariffCrawler,

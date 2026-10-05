@@ -4,7 +4,7 @@ Administrative Formalities and Document Requirements — All 54 African Countrie
 Sources per regional bloc and country:
 
 NORTH AFRICA / AMU
-  DZA  Direction Générale des Douanes (DGD) / conformepro.dz / douane.gov.dz
+  DZA  Direction Générale des Douanes (DGD) / douane.gov.dz
   EGY  Egyptian Customs Authority (ECA) — Decree 991/2015; GAPQ (plant quarantine);
        GOVS (vet); EDA (drugs) — Egyptian Drug Authority Act 2017; EOS (standards)
   LBY  Libyan Customs Authority / GNU Ministry of Finance — Law No. 10/2010

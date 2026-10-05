@@ -170,7 +170,7 @@ _ALIAS_TVA = ("TVA", "T.V.A", "VAT")
 
 
 COUNTRY_TAX_PROFILES = {
-    # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
+    # ── Algérie — DGD (douane.gov.dz) ────────────────────────────────────────
     # DAPS, DD : droits de douane (base CIF) — réduits sous ZLECAf
     # TCS : base CIF
     # TVA : base = CIF + DAPS + DD  (art. 21 CTCA)

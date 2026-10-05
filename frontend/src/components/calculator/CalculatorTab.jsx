@@ -507,10 +507,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // se remplace pas par « tous ».
       //
       // L'ALGÉRIE (bascule 2.3). Sa valeur en douane est le CIF et aucune
-      // remise ne la concerne : rien de ce qui précède ne lui manque. L'autre
-      // porte mêlait à sa position des données agrégées au SH6 par l'ETL
-      // conformepro (désignation, formalités) ; le socle ne sert que la
-      // position nationale.
+      // remise ne la concerne : rien de ce qui précède ne lui manque. Le
+      // socle est sa seule porte de calcul : l'autre n'a plus de fichier
+      // algérien à lire.
       const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS', 'DZA']);
 
       let calculSocle = null;
@@ -525,9 +524,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
           // de dégrader en silence vers une source moins vérifiée.
           //
-          // L'Algérie, elle, ne se replie jamais : l'autre porte lui servirait
-          // les agrégats SH6 conformepro. Une position absente de son socle
-          // est une erreur affichée.
+          // L'Algérie, elle, ne se replie jamais : l'autre porte n'a rien à
+          // lui servir. Une position absente de son socle est une erreur
+          // affichée, avec le message du socle.
           const statut = socleError.response?.status;
           if (destISO3 === 'DZA' || (statut !== 404 && statut !== 503)) {
             throw socleError;

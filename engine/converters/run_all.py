@@ -3,7 +3,7 @@ Exécution de tous les convertisseurs pays-spécifiques.
 
 Usage :
   python engine/converters/run_all.py            # tous les pays
-  python engine/converters/run_all.py DZA TUN    # pays sélectionnés
+  python engine/converters/run_all.py TUN MAR    # pays sélectionnés
   python engine/converters/run_all.py --list     # afficher les pays disponibles
 """
 
@@ -17,7 +17,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from converters import (
     cemac_converter,
-    dza_converter,
     eac_converter,
     ecowas_converter,
     egy_converter,
@@ -30,7 +29,6 @@ from converters import (
 # Registre : iso3 → fonction convert()
 _REGISTRY: dict[str, tuple] = {
     # Maghreb
-    "DZA": (dza_converter.convert, "Algérie — conformepro.dz", "17 115 pos."),
     "TUN": (tun_converter.convert, "Tunisie — douane.gov.tn", "17 512 pos."),
     "MAR": (mar_converter.convert, "Maroc — douane.gov.ma", "13 114 pos."),
     "EGY": (egy_converter.convert, "Égypte — customs.gov.eg", "8 746 pos."),

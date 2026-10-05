@@ -13,7 +13,6 @@ from crawlers.scrapling_engine import normalizer, quality_gate
 
 BACKEND = Path(__file__).resolve().parent.parent
 DZA_JSON = BACKEND / "data" / "crawled" / "DZA_tariffs.json"
-DZA_PIVOTS = BACKEND.parent / "frontend" / "public" / "DZA_tarif_douanier_echantillon.csv"
 
 
 # ── Normalizer ────────────────────────────────────────────────────────────────
@@ -104,18 +103,6 @@ def test_gate_dza_dataset_against_itself_passes():
     assert ref["tax_divergences_count"] == 0
     assert ref["lost_advantages"] == 0 and ref["lost_formalities"] == 0
     assert report["verdict"] == "PASS"
-
-
-def test_gate_pivots_surface_vintage_discrepancy():
-    """Les pivots CSV actuels divergent du JSON crawlé (millésimes) : le gate
-    doit le DIRE (échouer bruyamment), jamais le masquer. Ce test fige la
-    découverte ; il sera inversé en S2 quand le crawl frais aura arbitré."""
-    report = quality_gate.run_gate(DZA_JSON, None, DZA_PIVOTS)
-    piv = report["pivots_check"]
-    assert piv["pivots_checked"] >= 10
-    # Divergence connue documentée — le gate la détecte et échoue.
-    assert not piv["pivots_pass"]
-    assert report["verdict"] == "FAIL"
 
 
 def test_gate_scopes_to_candidate_chapters():

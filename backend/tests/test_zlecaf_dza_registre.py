@@ -3,12 +3,12 @@
 Le chemin historique servait déjà le calendrier algérien ; le moteur du socle,
 faute d'entrée au registre, s'arrêtait avant. Ce fichier verrouille : les neuf
 origines admises, l'exonération du DAPS, le refus d'une origine non admise et
-le même droit de douane dans les deux chemins.
+le droit de douane servi par la réponse publique de `POST /calcul`.
 """
 
 from __future__ import annotations
 
-from services.authentic_tariff_service import calculate_import_taxes
+from routes.calcul import DemandeCalcul, calcul
 from services.preference import taux_preferentiels
 from services.zlecaf_implementation_registry import APPLIED, RECORDS
 from services.zlecaf_schedule_dza import ACTIVE_PARTNERS
@@ -49,7 +49,10 @@ def test_une_origine_non_admise_reste_au_npf():
     assert resultat["taux"] == {}
 
 
-def test_les_deux_chemins_servent_le_meme_droit_de_douane():
-    socle = taux_preferentiels(_position(), "DZA", "TUN", CODE)["taux"]["DD"]["taux"]
-    historique = calculate_import_taxes("DZA", CODE, 1000.0, origin_country="TUN")
-    assert historique["rates"]["effective_zlecaf_rate_pct"] == socle
+def test_la_reponse_publique_sert_le_droit_du_registre():
+    registre = taux_preferentiels(_position(), "DZA", "TUN", CODE)["taux"]["DD"]["taux"]
+    reponse = calcul(
+        DemandeCalcul(destination="DZA", origine="TUN", code_sh=CODE, valeur_cif=1000.0)
+    )
+    dd = next(l for l in reponse["preference"]["lignes"] if l["code"] == "DD")
+    assert dd["taux_pct"] == registre
