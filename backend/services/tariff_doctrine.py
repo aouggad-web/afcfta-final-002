@@ -179,6 +179,22 @@ def evaluate_country_file(data: dict) -> Tuple[bool, str, str]:
     return True, "OK", status
 
 
+def crawl_enregistre(country_iso3: str) -> bool:
+    """Le pays a-t-il un crawl inscrit au registre des sources ?
+
+    Le registre (`source_registry_v2.json`) scelle chaque crawl : organisme,
+    URL de la source, chemin et empreinte du fichier. C'est la seule source
+    des données de consultation (sous-positions, formalités, recherche) ; le
+    fichier ETL du pays, lui, n'en est pas une condition.
+    """
+    iso3 = _validate_iso3(country_iso3)
+    with open(os.path.join(DATA_DIR, "source_registry_v2.json"), encoding="utf-8") as f:
+        entree = json.load(f).get("countries", {}).get(iso3) or {}
+    chemin = entree.get("artifact_path") or ""
+    racine = os.path.dirname(os.path.dirname(DATA_DIR))
+    return chemin.startswith("backend/data/crawled/") and os.path.exists(os.path.join(racine, chemin))
+
+
 def get_country_file_path(country_iso3: str) -> str:
     return os.path.join(DATA_DIR, f"{_validate_iso3(country_iso3)}_tariffs.json")
 

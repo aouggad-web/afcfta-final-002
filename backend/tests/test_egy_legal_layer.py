@@ -164,11 +164,10 @@ def test_egy_gazette_register_integrity():
     assert base["sha256"] == canon_sha
 
 
-def test_dza_and_kenya_unaffected_by_egy_wiring():
-    """Non-régression : DZA et KEN gardent leurs configurations."""
-    assert SUPPORTED_JURISDICTIONS["DZA"].default_currency == "DZD"
+def test_kenya_unaffected_by_egy_wiring():
+    """Non-régression : KEN garde sa configuration."""
     assert SUPPORTED_JURISDICTIONS["KEN"].default_currency == "USD"
     assert (
         SUPPORTED_JURISDICTIONS["EGY"].legal_overrides_path
-        != SUPPORTED_JURISDICTIONS["DZA"].legal_overrides_path
+        != SUPPORTED_JURISDICTIONS["KEN"].legal_overrides_path
     )

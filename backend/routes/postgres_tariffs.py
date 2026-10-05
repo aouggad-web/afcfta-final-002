@@ -70,7 +70,6 @@ async def get_sub_positions(iso3: str, hs6: str, language: str = Query("fr", pat
             "hs6": hs6,
             "total": len(positions),
             "sub_positions": positions,
-            "note": "Data from PostgreSQL - Real national tariff descriptions",
         }
     except Exception as e:
         logger.error(f"Error getting sub-positions for {iso3}/{hs6}: {e}")

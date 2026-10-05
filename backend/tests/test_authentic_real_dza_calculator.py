@@ -1,108 +1,58 @@
-"""Regression tests for the real generated DZA tariff calculator path.
+"""Regression tests for the real DZA tariff calculator path.
 
-These tests deliberately exercise the production calculator chain used by the
-frontend: authentic tariff data -> fiscal cascade -> dual-regime breakdown ->
-local-currency conversion block. They protect the calculator axis without
-introducing another calculation path.
+These tests exercise the production calculator chain used by the frontend for
+Algeria: socle (DGD crawl) -> fiscal cascade -> dual-regime breakdown, through
+the public `POST /calcul` contract. The local-currency block is computed by
+the frontend from the Banque module rate (`localiserResultat`).
 """
 
-from datetime import datetime, timezone
-
-import exchange_rates as exchange_rates_module
-from services import authentic_tariff_service as svc
+from routes.calcul import DemandeCalcul, calcul
 
 
-class _FakeRate:
-    rate = 150.0
-    source = "test_fixed_fx"
-    timestamp = datetime(2026, 1, 1, tzinfo=timezone.utc)
-
-
-class _FakeFxService:
-    def get_rate(self, base, quote):
-        assert base == "USD"
-        assert quote == "DZD"
-        return _FakeRate()
-
-
-def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
-    """DZA 0101211100 must keep the authentic calculator as the reference path.
-
-    Depuis l'audit P0 du 2026-09-01, DZA n'est plus servi par le dataset
-    généré `enhanced_v2` mais par le crawl authentique DGD/conformepro.dz
-    (voir `backend/data/archive/superseded/README.md`). Taux authentiques
-    de la sous-position (re-crawl du 2026-08-29, vérifiés sur la page
-    source) : DD 5 %, TCS 3 %, TVA 9 % sur CIF + DAPS + DD, PRCT 2 % sur
-    CIF + DD + TCS + TVA. Un partenaire ZLECAf actif (EGY) élimine le
-    DD, recalcule les bases dépendantes et alimente les montants locaux
-    DZD depuis le bloc FX.
-
-    NB : les valeurs précédentes (DD 15 %, TVA 19 %) provenaient d'un
-    fichier crawlé erroné ; la page source publie bien 5 % et 9 %.
+def test_real_dza_tariff_line_cascade_breakdown():
+    """DZA 0101211100 : taux de la fiche DGD de la sous-position — DD 5 %,
+    TCS 3 %, TVA 9 % sur CIF + DAPS + DD, PRCT 2 % sur CIF + DD + TCS + TVA.
+    Un partenaire ZLECAf actif (EGY) élimine le DD et recalcule les bases
+    dépendantes.
     """
-    monkeypatch.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService())
-
-    result = svc.calculate_import_taxes(
-        country_iso3="DZA",
-        hs_code="0101211100",
-        cif_value=1_000_000.0,
-        language="fr",
-        origin_country="EGY",
+    result = calcul(
+        DemandeCalcul(
+            destination="DZA",
+            origine="EGY",
+            code_sh="0101211100",
+            valeur_cif=1_000_000.0,
+            devise_cif="USD",
+        )
     )
+    npf = {row["code"]: row for row in result["npf"]["lignes"]}
+    pref = {row["code"]: row for row in result["preference"]["lignes"]}
+    assert set(npf) == set(pref) == {"DD", "TCS", "TVA", "PRCT"}
 
-    assert "error" not in result
-    assert result["data_source"] == "authentic_tariff"
-    assert result["data_format"] == "enhanced_v2"
-    assert result["trade_regime"] == "ZLECAF"
-    assert result["zlecaf_eligible"] is True
-    assert result["zlecaf_preference_applied"] is True
+    assert npf["DD"]["taux_pct"] == 5.0
+    assert pref["DD"]["taux_pct"] == 0.0
+    assert pref["DD"]["regime_applique"] == "preference"
+    assert npf["DD"]["montant"] == 50_000.0
+    assert pref["DD"]["montant"] == 0.0
 
-    assert result["rates"]["dd_rate_pct"] == 5.0
-    assert result["rates"]["effective_zlecaf_rate_pct"] == 0.0
-    assert result["rates"]["tcs_rate_pct"] == 3.0
-    assert result["rates"]["prct_rate_pct"] == 2.0
-    assert result["rates"]["vat_rate_pct"] == 9.0
-    assert result["rates"]["effective_rate_pct"] == 19.8
+    assert npf["TCS"]["taux_pct"] == pref["TCS"]["taux_pct"] == 3.0
+    assert npf["TCS"]["montant"] == pref["TCS"]["montant"] == 30_000.0
 
-    by_code = {row["code"]: row for row in result["taxes_breakdown"]}
-    assert set(by_code) == {"DD", "TCS", "TVA", "PRCT"}
+    assert npf["TVA"]["taux_pct"] == 9.0
+    assert npf["TVA"]["assiette"] == "CIF+DAPS+DD"
+    assert npf["TVA"]["base"] == 1_050_000.0
+    assert pref["TVA"]["base"] == 1_000_000.0
+    assert npf["TVA"]["montant"] == 94_500.0
+    assert pref["TVA"]["montant"] == 90_000.0
 
-    assert by_code["DD"]["amount_npf"] == 50_000.0
-    assert by_code["DD"]["amount_zlecaf"] == 0.0
-    assert by_code["DD"]["affected_by_zlecaf"] is True
+    assert npf["PRCT"]["taux_pct"] == 2.0
+    assert npf["PRCT"]["assiette"] == "CIF+DD+TCS+TVA"
+    assert npf["PRCT"]["base"] == 1_174_500.0
+    assert pref["PRCT"]["base"] == 1_120_000.0
+    assert npf["PRCT"]["montant"] == 23_490.0
+    assert pref["PRCT"]["montant"] == 22_400.0
 
-    assert by_code["TCS"]["amount_npf"] == 30_000.0
-    assert by_code["TCS"]["amount_zlecaf"] == 30_000.0
-    assert by_code["TCS"]["affected_by_zlecaf"] is False
-
-    assert by_code["TVA"]["base_expr"] == "CIF + DAPS + DD"
-    assert by_code["TVA"]["base_value_npf"] == 1_050_000.0
-    assert by_code["TVA"]["base_value_zlecaf"] == 1_000_000.0
-    assert by_code["TVA"]["amount_npf"] == 94_500.0
-    assert by_code["TVA"]["amount_zlecaf"] == 90_000.0
-
-    assert by_code["PRCT"]["base_expr"] == "CIF + DD + TCS + TVA"
-    assert by_code["PRCT"]["base_value_npf"] == 1_174_500.0
-    assert by_code["PRCT"]["base_value_zlecaf"] == 1_120_000.0
-    assert by_code["PRCT"]["amount_npf"] == 23_490.0
-    assert by_code["PRCT"]["amount_zlecaf"] == 22_400.0
-
-    summary = result["taxes_summary"]
-    assert summary["npf"]["total_taxes_et_droits"] == 197_990.0
-    assert summary["npf"]["cout_total"] == 1_197_990.0
-    assert summary["zlecaf"]["total_taxes_et_droits"] == 142_400.0
-    assert summary["zlecaf"]["cout_total"] == 1_142_400.0
-    assert summary["economie_droits"] == 50_000.0
-    assert summary["economie_totale"] == 55_590.0
-    assert result["savings"] == {"amount": 55_590.0, "percentage": 4.64}
-
-    currency = result["currency"]
-    assert currency["available"] is True
-    assert currency["local_code"] == "DZD"
-    assert currency["usd_to_local_rate"] == 150.0
-    assert currency["value_local"] == 150_000_000.0
-    assert by_code["DD"]["amount_npf_local"] == 7_500_000.0
-    assert by_code["TVA"]["amount_zlecaf_local"] == 13_500_000.0
-    assert currency["summary_local"]["npf"]["cout_total"] == 179_698_500.0
-    assert currency["summary_local"]["zlecaf"]["cout_total"] == 171_360_000.0
-    assert currency["summary_local"]["economie_totale"] == 8_338_500.0
+    assert result["npf"]["etat"] == result["preference"]["etat"] == "COMPLET"
+    assert result["npf"]["total_droits"] == 197_990.0
+    assert result["npf"]["total_a_payer"] == 1_197_990.0
+    assert result["preference"]["total_droits"] == 142_400.0
+    assert result["preference"]["total_a_payer"] == 1_142_400.0

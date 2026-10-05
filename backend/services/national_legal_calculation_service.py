@@ -35,7 +35,6 @@ _ROOT = Path(__file__).resolve().parents[2]
 _EAC_DATA = _ROOT / "data" / "eac"
 _EAC_LEGAL_OVERRIDES = _EAC_DATA / "legal_overrides.json"
 _EAC_GAZETTE_REGISTER = _EAC_DATA / "eac_gazette_register.json"
-_DZA_DATA = _ROOT / "data" / "dza"
 _EGY_DATA = _ROOT / "data" / "egypt"
 
 
@@ -54,22 +53,8 @@ class JurisdictionConfig:
 
 # Juridictions couvertes par la couche de vérification juridique datée.
 # - KEN  : registre EAC/Kenya (PR #307), gazette EAC.
-# - DZA  : corpus national DGD archivé (lois de finances 2020-2026, Code des
-#          douanes 79-07, notes 559/2023 et 4121/2024 — SHA-256 dans
-#          data/sources/DZA/legislation/_manifest.json). TVA/PRCT/TCS/DAPS
-#          liés par position nationale via backend/data/DZA_tariffs.json
-#          (CRAWLED_AUTHENTIC, 17 115 sous-positions 10 chiffres).
 SUPPORTED_JURISDICTIONS: Dict[str, JurisdictionConfig] = {
     "KEN": JurisdictionConfig(iso3="KEN", fiscal_data_dir=_ROOT / "data" / "kenya"),
-    "DZA": JurisdictionConfig(
-        iso3="DZA",
-        fiscal_data_dir=_DZA_DATA,
-        legal_overrides_path=_DZA_DATA / "legal_overrides.json",
-        gazette_register_path=_DZA_DATA / "dza_gazette_register.json",
-        default_currency="DZD",
-        levy_tables=(("prct", "prct"), ("tcs", "tcs"), ("daps", "daps")),
-        general_levy_tables=frozenset({"prct"}),
-    ),
     # Égypte : tarif national VERIFIED (customs.gov.eg, 8 746 sous-positions
     # 10 chiffres), TVA 14 % (VAT Law 67/2016) + taux spécifiques par position,
     # Taxe de Table (TJ/ضريبة الجدول), 225 F.A.P trilingues AR/FR/EN.

@@ -307,7 +307,7 @@ def classify_tax(code: str, name: str = "") -> Dict[str, bool]:
 # ──────────────────────────────────────────────────────────────────────────────
 
 def normalize_dza(data: dict, iso3: str) -> List[dict]:
-    """Normalise le schéma DZA (conformepro.dz)."""
+    """Normalise le schéma DZA (fiche DGD, scripts/releve_dgd_dza.py)."""
     positions = []
     for pos in data.get("sub_positions", []):
         code_clean = clean_code(pos.get("hs_code", pos.get("raw_code", "")))
@@ -352,7 +352,7 @@ def normalize_dza(data: dict, iso3: str) -> List[dict]:
         for f in pos.get("formalities", []):
             if isinstance(f, dict):
                 formalities.append({
-                    "code": f.get("fap_code", ""),
+                    "code": f.get("code", ""),
                     "description": f.get("fap_official_label", f.get("text_verbatim", "")),
                     "text_verbatim": f.get("text_verbatim", ""),
                     "kind": "administrative",

@@ -149,13 +149,15 @@ def test_le_plancher_survit_jusqu_aux_contrats_de_reponse_publics():
     taux corrigé sans aucun moyen de lire par programme lequel avait été
     écarté ni pourquoi.
     """
-    from services.authentic_tariff_service import calculate_import_taxes
+    from routes.calcul import DemandeCalcul, calcul
 
-    resultat = calculate_import_taxes(
-        "DZA", "0207121000", 100000.0, apply_zlecaf=True, origin_country="EGY"
+    resultat = calcul(
+        DemandeCalcul(destination="DZA", origine="EGY", code_sh="0207121000", valeur_cif=100000.0)
     )
-    plancher = resultat["plancher_npf"]
+    dd = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    plancher = dd.get("plancher_npf")
     assert plancher is not None, "le service public perd le plancher"
+    assert dd["regime_applique"] == "npf_plancher"
     assert plancher["taux_preferentiel_ecarte_pct"] == 24.0
     assert plancher["taux_retenu_pct"] == 5.0
 
@@ -166,9 +168,9 @@ def test_une_position_ordinaire_ne_porte_aucun_plancher():
     Sans cette borne, un client d'API ne pourrait pas distinguer « aucun taux
     n'a été écarté » d'un plancher mal renseigné.
     """
-    from services.authentic_tariff_service import calculate_import_taxes
+    from routes.calcul import DemandeCalcul, calcul
 
-    resultat = calculate_import_taxes(
-        "DZA", "2901101000", 100000.0, apply_zlecaf=True, origin_country="EGY"
+    resultat = calcul(
+        DemandeCalcul(destination="DZA", origine="EGY", code_sh="2901101000", valeur_cif=100000.0)
     )
-    assert resultat["plancher_npf"] is None
+    assert all("plancher_npf" not in l for l in resultat["preference"]["lignes"])

@@ -30,6 +30,7 @@ from services.national_legal_calculation_service import (
 )
 from services.regulatory_fee_service import build_regulatory_blocks
 from services.tariff_doctrine import (
+    crawl_enregistre,
     get_country_doctrine_status,
     not_recrawled_http_detail,
     provider_fee_flags,
@@ -80,6 +81,20 @@ def _ensure_servable_or_404(country_iso3: str) -> None:
                 "message_en": status.get("message_en"),
             },
         )
+
+
+def _ensure_consultable_or_404(country_iso3: str) -> None:
+    """Données de consultation : servies dès que le crawl du pays est enregistré.
+
+    Sous-positions, formalités et recherche se lisent sur le crawl. Seul le
+    calcul historique reste soumis à la doctrine du fichier ETL.
+    """
+    try:
+        if crawl_enregistre(country_iso3):
+            return
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    _ensure_servable_or_404(country_iso3)
 
 
 @router.get("/enrichment/countries")
@@ -191,7 +206,7 @@ async def get_sub_positions_endpoint(
     Returns:
         Liste des sous-positions avec leurs taux DD spécifiques
     """
-    _ensure_servable_or_404(country_iso3)
+    _ensure_consultable_or_404(country_iso3)
     sub_positions = get_provider().get_sub_positions(country_iso3.upper(), hs6[:6])
 
     return {
@@ -269,7 +284,7 @@ async def get_formalities_endpoint(
     Returns:
         Liste des documents/formalités requis
     """
-    _ensure_servable_or_404(country_iso3)
+    _ensure_consultable_or_404(country_iso3)
     from services.authentic_tariff_service import (
         FORMALITES_AUCUNE_PARTICULIERE,
         FORMALITES_DOCUMENTEES,
@@ -816,7 +831,7 @@ async def search_tariffs_endpoint(
     Returns:
         Liste des lignes tarifaires correspondantes
     """
-    _ensure_servable_or_404(country_iso3)
+    _ensure_consultable_or_404(country_iso3)
     results = get_provider().search_tariff_lines(
         country_iso3=country_iso3.upper(), query=q, language=language, limit=limit
     )
