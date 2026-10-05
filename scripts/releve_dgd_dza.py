@@ -249,34 +249,46 @@ def etape_listes(cache: Path, ctx: ssl.SSLContext) -> None:
     idx_path = cache / "index_listes.jsonl"
     deja = _index(idx_path)
 
-    def page(cle, url, nom):
+    def page(cle, url, nom, attendu=None):
         if cle in deja:
             return deja[cle]
-        e = lire(url, cache / "listes" / f"{nom}.html.gz", ctx)
+        chemin = cache / "listes" / f"{nom}.html.gz"
+        e = lire(url, chemin, ctx)
         e["cle"] = cle
+        # Une page rangée bien lue porte son fil d'Ariane (chapitre, rangée),
+        # même quand la rangée ne liste aucun code (rubrique supprimée du SH).
+        if "erreur" not in e and attendu:
+            fil = {n: v for n, v, _ in LIBELLE.findall(gzip.open(chemin).read().decode("utf-8", "replace"))}
+            if (fil.get("Chapitre"), fil.get("Rangée")) != attendu:
+                e["erreur"] = f"fil d'Ariane {fil} au lieu de {attendu}"
         if "erreur" not in e:
             _ecrire_index(idx_path, e)
         return e
 
-    racine = page("racine", f"{BASE}?page=tarif_douanier", "racine")
-    sections = _liens(gzip.open(cache / "listes" / "racine.html.gz").read(), r"page=chapitre&amp;section=(\w+)")
+    def lue(cle, url, nom):
+        """Page de navigation : sans elle, ses descendants manqueraient au relevé."""
+        e = page(cle, url, nom)
+        if "erreur" in e:
+            raise SystemExit(f"{url} non lue ({e['erreur']}), relancer « listes »")
+        return gzip.open(cache / "listes" / f"{nom}.html.gz").read()
+
+    sections = _liens(lue("racine", f"{BASE}?page=tarif_douanier", "racine"), r"page=chapitre&amp;section=(\w+)")
     chapitres = []
     for s in sections:
-        page(f"section_{s}", f"{BASE}?page=chapitre&section={s}", f"section_{s}")
-        raw = gzip.open(cache / "listes" / f"section_{s}.html.gz").read()
+        raw = lue(f"section_{s}", f"{BASE}?page=chapitre&section={s}", f"section_{s}")
         chapitres += [(s, c) for c in _liens(raw, rf"page=range&amp;section={s}&amp;chapitre=(\d\d)")]
     rangees = []
     for s, c in chapitres:
-        page(f"chapitre_{c}", f"{BASE}?page=range&section={s}&chapitre={c}", f"chapitre_{c}")
-        raw = gzip.open(cache / "listes" / f"chapitre_{c}.html.gz").read()
+        raw = lue(f"chapitre_{c}", f"{BASE}?page=range&section={s}&chapitre={c}", f"chapitre_{c}")
         rangees += [(s, c, r) for r in _liens(raw, rf"page=position&amp;section=\w+&amp;chapitre={c}&amp;range=(\d\d)")]
     with cf.ThreadPoolExecutor(max_workers=3) as ex:
         lues = list(ex.map(lambda x: page(f"rangee_{x[1]}{x[2]}",
                                           f"{BASE}?page=position&section={x[0]}&chapitre={x[1]}&range={x[2]}",
-                                          f"rangee_{x[1]}{x[2]}"), rangees))
-    print(f"racine {racine.get('releve_le')} ; {len(sections)} sections, {len(chapitres)} chapitres, {len(rangees)} rangées")
-    # Une rangée non lue retirerait ses codes de la liste officielle sans
-    # qu'aucune fiche ne manque : l'étape échoue, et se relance.
+                                          f"rangee_{x[1]}{x[2]}", (x[1], x[2])), rangees))
+    print(f"{len(sections)} sections, {len(chapitres)} chapitres, {len(rangees)} rangées")
+    # Une rangée non lue, ou lue sans son fil d'Ariane, retirerait ses codes de
+    # la liste officielle sans qu'aucune fiche ne manque : l'étape échoue, et
+    # se relance.
     echecs = [e["url"] for e in lues if "erreur" in e]
     if echecs:
         raise SystemExit(f"{len(echecs)} rangées non lues, relancer « listes » :\n" + "\n".join(echecs))
@@ -376,6 +388,18 @@ def etape_fichier(cache: Path, crawl: Path) -> None:
           f" {len(entete['absents_du_tarif_dgd'])} absentes du tarif DGD")
 
 
+def retraits_non_justifies(anciens: set, releve: dict) -> list:
+    """Positions du crawl que le relevé ne porte pas, sans que la page de LEUR
+    rangée ait été lue.
+
+    Une position ne quitte le crawl que si sa rangée a été lue (son intitulé
+    est au relevé) et ne la liste pas. Une section ou un chapitre mal lu
+    laisse ses rangées hors du relevé : leurs positions disparaîtraient sans
+    qu'aucune fiche ne manque.
+    """
+    return sorted(c for c in anciens - set(releve["positions"]) if c[:4] not in releve["libelles"]["rangees"])
+
+
 def etape_verser(crawl: Path) -> None:
     sys.path.insert(0, str(RACINE / "backend"))
     from crawlers.integrity import seal_crawled_file
@@ -390,6 +414,10 @@ def etape_verser(crawl: Path) -> None:
 
     c = json.loads(crawl.read_text(encoding="utf-8"))
     anciennes = {p["hs_code"]: p for p in c["sub_positions"]}
+    douteux = retraits_non_justifies(set(anciennes), r)
+    if douteux:
+        raise SystemExit(f"{len(douteux)} positions retirées sans que leur rangée ait été lue, rien n'est versé :\n"
+                         + "\n".join(douteux))
     positions = []
     for code, f in sorted(r["positions"].items()):
         p = anciennes.get(code) or {

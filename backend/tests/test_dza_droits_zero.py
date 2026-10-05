@@ -169,3 +169,34 @@ def test_le_chapitre_98_est_bien_celui_des_effets_personnels():
         # prélèvements de formalité : leur présence montre que la ligne est
         # bien collectée, et que seule la colonne du droit est vide.
         assert set(ligne["taxes"]) == {"TCS", "PRCT"}, ligne["hs_code"]
+
+
+def test_une_position_ne_quitte_le_crawl_que_si_sa_rangee_a_ete_lue():
+    """`verser` refuse de retirer une position dont la rangée n'a pas été lue.
+
+    Une section ou un chapitre lu vide ou mal lu laisse ses rangées hors du
+    relevé : leurs positions disparaîtraient du crawl sans qu'aucune fiche ne
+    manque. Seule une rangée lue, qui ne liste plus le code, justifie le
+    retrait — c'est le cas des 14 codes absents du tarif DGD.
+    """
+    import importlib.util
+
+    if not RELEVE.exists():
+        pytest.skip("relevé absent")
+    spec = importlib.util.spec_from_file_location("releve_dgd_dza", RACINE / "scripts" / "releve_dgd_dza.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    releve = json.loads(RELEVE.read_text(encoding="utf-8"))
+
+    absents = set(releve["absents_du_tarif_dgd"])
+    assert len(absents) == 14
+    assert module.retraits_non_justifies(set(releve["positions"]) | absents, releve) == []
+
+    # Le chapitre 08 manque au relevé : aucune de ses positions ne peut sortir.
+    sans_08 = {
+        "positions": {c: p for c, p in releve["positions"].items() if not c.startswith("08")},
+        "libelles": {"rangees": {r: l for r, l in releve["libelles"]["rangees"].items() if not r.startswith("08")}},
+    }
+    douteux = module.retraits_non_justifies(set(releve["positions"]) | absents, sans_08)
+    assert douteux and all(c.startswith("08") for c in douteux)
+    assert {c for c in releve["positions"] if c.startswith("08")} <= set(douteux)
