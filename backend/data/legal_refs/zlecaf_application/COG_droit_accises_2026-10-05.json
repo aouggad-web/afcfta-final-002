@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "objet": "Congo : produits soumis au droit d'accises à l'importation, taux et assiettes (accise sur valeur + droit de douane ; TVA sur valeur + DD + accise)",
+  "destination_iso3": "COG",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "secondaire — recueil des textes fiscaux à jour de la loi de finances 2023 (Sutter & Pearce - Laways), publié par UNICONGO ; loi sur le droit d'accises (LF 2020, art. 2 modifié par la LF 2022, art. 8 par la LF 2023)",
+  "source": {"url": "https://www.unicongo.cg/wp-content/uploads/2023/10/Recueil-des-textes-fiscaux-a-jour-avec-LF-2023.pdf", "institution": "Union patronale et interprofessionnelle du Congo (recueil du cabinet Sutter & Pearce - Laways)"},
+  "regle": {
+    "valeur": "Produits obligatoirement soumis (art. 2) : boissons alcoolisées du chapitre 22 hors vinaigres 17,5 % ; tabacs du chapitre 24 22,5 % ; véhicules de tourisme 87.03 hors neufs n'excédant pas 3 000 cm3 15 % ; motocycles de plus de 250 cm3 (8711.30 à 8711.50) 15 %. Assiette de l'accise : valeur en douane + droit de douane (art. 7). Assiette de la TVA : valeur + droit de douane + droit d'accises.",
+    "verbatim": "Article 2. (Modifié par la LF 2022) Produits soumis obligatoirement aux droits d’accises 1) Sont obligatoirement soumis aux droits d’accises : a- les boissons alcoolisées (chapitre 22 du tarif extérieur commun de la CEMAC), à l’exclusion des vinaigres (position 22.09) ; b- les cigares, cigarettes et autres tabacs (chapitre 24) ; c- c- les véhicules automobiles de tourisme (position 87 03) à l’exclusion des véhicules neufs n’excédant pas 3000 cm3 (positions tarifaires 870…)) ; d- les motocycles d’une cylindrée supérieure à 250 cm3 (sous-positions 87.11.30, 87.11.40, 87.11.50).",
+    "reference": "Loi sur le droit d'accises, art. 2, 7 et 8 ; loi TVA, base d'imposition des importations (recueil 2023, p. 392, 413-414)",
+    "portee": "backend/data/zlecaf_cog/droit_accises_lf2023.json, appliqué par scripts/build_socle._accises_du_cgi au seul socle COG : remplace les droits « variable » du crawl par 136 droits (37 liquidables, 99 sans taux).",
+    "texte_archive": "sources/COG_droit_accises.texte-extrait.txt",
+    "sha256": "bc7bcb2abb3580e5c97f8506e1a9d3265e4b1a85672c96ccdfd09a4c9823f622"
+  },
+  "decisions": [
+    "Véhicules de tourisme : 8703.24 (plus de 3 000 cm3, essence) soumis neuf ou d'occasion, 15 % ; les autres positions de 87.03 portées sans taux, car l'état neuf ou d'occasion n'est pas dans la position.",
+    "Parfumerie et cosmétiques (33.03, 33.04), produits alimentaires de luxe, bijoux (71), armes (93) et appareils de jeux (95.04) : l'art. 8 leur fixe 25 %, mais l'art. 2 ne les range pas parmi les produits obligatoirement soumis ; droit porté sans taux."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Les lois de finances 2024, 2025 et 2026 n'ont pas été lues : taux et liste peuvent avoir changé.",
+    "Source secondaire (recueil de cabinet), le Journal officiel n'a pas été consulté.",
+    "L'art. 7 (2) arrondit la base au millier de francs inférieur : l'arrondi n'est pas appliqué.",
+    "Position 22.06 : aucune ligne dans le socle COG."
+  ],
+  "documents_archives": [{"texte_archive": "sources/COG_droit_accises.texte-extrait.txt", "sha256": "bc7bcb2abb3580e5c97f8506e1a9d3265e4b1a85672c96ccdfd09a4c9823f622"}]
+}

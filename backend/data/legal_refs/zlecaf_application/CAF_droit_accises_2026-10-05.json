@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "objet": "Centrafrique : produits soumis au droit d'accises à l'importation, taux et assiettes (accise sur valeur + droit de douane ; TVA sur valeur + DD + accise)",
+  "destination_iso3": "CAF",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "primaire — Code général des impôts, édition officielle mise à jour 2023 (DGID), publiée par le ministère des Finances (finances.gouv.cf), art. 253, 289 bis à 293 et annexe",
+  "source": {"url": "https://www.finances.gouv.cf/sites/default/files/2023-05/CGI%20RCA%202017%20mise%20%C3%A0%20jour%202023.pdf", "institution": "Ministère des Finances et du Budget de la République centrafricaine, DGID"},
+  "regle": {
+    "valeur": "Liste : art. 289 bis ; taux : art. 292, 293 et annexe. Taux appliqués : boissons alcoolisées 25 % (bières, vins et spiritueux majorés d'un droit spécifique), boissons non alcoolisées hors eau minérale 10 %, tabacs 30 % (cigares et cigarettes majorés d'un droit spécifique), parfums et cosmétiques énumérés 25 %, bijoux (ch. 71) 25 %, armes et munitions (ch. 93, 3601) 25 %, saumons et foies, œufs et laitances de poissons 25 %, motocycles de plus de 250 cm3 12,5 %. Véhicules : taux selon l'âge. Assiette de l'accise : valeur en douane + droit de douane (art. 291). Assiette de la TVA : valeur + droit de douane + droit d'accises (art. 253).",
+    "verbatim": "Article 291.- 1) La base d’imposition au droit d’accises est établie comme suit : a) A l’importation : en ajoutant à la valeur en douane telle qu’elle est définie par le Code des Douanes de la CEMAC, le montant du droit de douane ;",
+    "reference": "CGI de la République centrafricaine (édition 2023), art. 253, 289 bis, 291, 292, 293 et annexe",
+    "portee": "backend/data/zlecaf_caf/droit_accises_cgi2023.json, appliqué par scripts/build_socle._accises_du_cgi au seul socle CAF : remplace les droits « variable » du crawl par 169 droits (118 liquidables, 51 sans taux).",
+    "texte_archive": "sources/CAF_droit_accises.texte-extrait.txt",
+    "sha256": "147e60c2861c19c5d0be6f1d9c93d0576d8f9e81a79cd31af1b66e3e3336a605"
+  },
+  "decisions": [
+    "Parfums et cosmétiques : les positions énumérées par l'annexe (33.03, 33.04, 3305.20, 3305.30, 3305.90, 33.06, 33.07) ; les shampooings (3305.10) n'y sont pas.",
+    "Bières, vins, spiritueux (22.03, 22.04, 22.08) et cigares et cigarettes (24.02) : droit ad valorem majoré d'un droit spécifique (art. 293), porté sans taux.",
+    "Véhicules 87.02, 87.03, 87.04 : l'annexe cite l'âge (0 à 15 ans, plus de 15 ans) ; droit porté sans taux.",
+    "Eaux (22.01) : l'eau minérale est exclue mais partage la position avec les eaux gazéifiées ; droit porté sans taux.",
+    "Caviar (1604.30) et foie gras (1602.20.10) : positions partagées avec les succédanés et autres préparations ; droit porté sans taux. Alcool éthylique (22.07) : non retenu comme boisson."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Art. 292 : « Les montants et taux des droits d'accises sont fixés par la loi de finances » ; les taux du CGI sont des minimums. Les lois de finances 2024 à 2026 n'ont pas été lues.",
+    "L'art. 291 (2) arrondit la base au millier de francs inférieur : l'arrondi n'est pas appliqué.",
+    "Le crawl assoyait la TVA sur CIF + DD + TCI ; l'art. 253 retient valeur + DD + accise.",
+    "Position 22.06 : aucune ligne dans le socle CAF."
+  ],
+  "documents_archives": [{"texte_archive": "sources/CAF_droit_accises.texte-extrait.txt", "sha256": "147e60c2861c19c5d0be6f1d9c93d0576d8f9e81a79cd31af1b66e3e3336a605"}]
+}
