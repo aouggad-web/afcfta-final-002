@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-05T18:54:03.388990+00:00",
+  "construit_le": "2026-10-05T19:27:40.837454+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -631,7 +631,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GAB_tariffs.json",
       "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
-      "socle_sha256": "d21aba464593f6d971adf18f3ef6b8bf91b165288e9ace720ad97f2d7ae73560",
+      "socle_sha256": "0069d49a8dcc85cefe44b63e13c7ce8d469177b1a5f3e99a5ebc27984f9dce1c",
       "collecte": "2026-02-19T22:39:52.018966",
       "etat": "PARTIEL",
       "familles": [
@@ -642,9 +642,9 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 21248,
-        "droits_liquidables": 20956,
-        "positions_liquidables": 4947,
+        "droits": 21077,
+        "droits_liquidables": 20971,
+        "positions_liquidables": 5133,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
@@ -2031,7 +2031,7 @@
       "ZWE"
     ],
     "positions": 368260,
-    "droits": 1120403,
-    "droits_liquidables": 1080802
+    "droits": 1120232,
+    "droits_liquidables": 1080817
   }
 }

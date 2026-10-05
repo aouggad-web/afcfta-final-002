@@ -1,6 +1,7 @@
 {
   "_objet": "Droit d'accises à l'importation au Cameroun : positions et taux, d'après le Code général des impôts (édition 2025), annexe II du Titre II et article 142. Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres). « taux » null : le taux dépend d'une condition que la position ne dit pas — le droit est porté, non liquidé.",
   "_fiche": "backend/data/legal_refs/zlecaf_application/CMR_droit_accises_2026-10-05.json",
+  "source": "Code général des impôts du Cameroun (édition 2025), annexe II et art. 142",
   "assiette": "CIF+DD",
   "assiette_reference": "CGI art. 138 (2) : « La base imposable au droit d'accises en ce qui concerne les importations, est établie en ajoutant à la valeur imposable […] le montant des droits de douane. »",
   "tva_assiette": "CIF+DD+DA",

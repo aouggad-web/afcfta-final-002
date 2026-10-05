@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "objet": "Gabon : produits soumis au droit d'accises à l'importation, taux et assiettes (accise sur valeur + droits et taxes d'entrée hors TVA ; TVA sur valeur + DD + accise)",
+  "destination_iso3": "GAB",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "primaire — Code général des impôts du Gabon, version consolidée publiée par la DGI (dgi.ga, avril 2025), art. 216, 249 et 250 (L.F. 2023 et 2024)",
+  "source": {"url": "https://dgi.ga/wp-content/uploads/2025/12/Gabon-CGI-2025.pdf", "institution": "Direction générale des impôts du Gabon"},
+  "regle": {
+    "valeur": "Liste et taux : art. 250. Taux fixes appliqués : parfumerie et cosmétiques 25 %, caviar et foie gras 40 %, saumon 30 %, boissons sucrées et boissons de moins de 12 % 5 % (eaux exonérées). Assiette de l'accise : valeur en douane + droits et taxes d'entrée, hors TVA. Assiette de la TVA : valeur + droits de douane + droit d'accises (art. 216).",
+    "verbatim": "Art.216.‐ La base d'imposition en ce qui concerne les importations est établie en ajoutant à la valeur du bien telle qu'elle est définie par la réglementation douanière, le montant des droits de douane et du droit d'accises. […] La base d'imposition ad valorem des produits visés à l'alinéa ci-dessus est constituée : à l'importation, par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exclusion de la TVA",
+    "reference": "CGI du Gabon, art. 216, 249 et 250",
+    "portee": "backend/data/zlecaf_gab/droit_accises_cgi2025.json, appliqué par scripts/build_socle._accises_du_cgi au seul socle GAB : remplace les 292 droits « variable » du crawl par 121 droits (15 liquidables, 106 sans taux).",
+    "texte_archive": "sources/GAB_droit_accises.texte-extrait.txt",
+    "sha256": "fce264aa674f4685f855c84dc3a6f94f77c49a23b90029247d359bfaa93ce80f"
+  },
+  "decisions": [
+    "Parfumerie et cosmétiques : toutes les positions 33.03 et 33.04 (décision du propriétaire, comme au Cameroun).",
+    "Taxe spécifique (par litre, par paquet) ou taux selon le prix d'achat (vins, champagnes) : droit porté sans taux.",
+    "Extensions de la loi de finances 2026 (véhicules, motocycles, armes) : portées sans taux — le texte n'a pas été lu, elles ne sont connues que par des sources secondaires (Deloitte, presse)."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "La loi de finances 2026 (n° 041/2025 du 29/12/2025) et la loi de finances rectificative 2026 ont modifié les taux des bières, vins, champagnes et tabacs et étendu le champ : leurs textes officiels n'ont pas été trouvés.",
+    "Les désignations du crawl GAB sont décalées d'une ligne par rapport aux codes : le rattachement se fait sur les codes SH, jamais sur les libellés.",
+    "Positions absentes du socle : saumons frais (0302.1x), fumés (0305.41), filets de saumon (0304)."
+  ],
+  "documents_archives": [{"texte_archive": "sources/GAB_droit_accises.texte-extrait.txt", "sha256": "fce264aa674f4685f855c84dc3a6f94f77c49a23b90029247d359bfaa93ce80f"}]
+}

@@ -1,0 +1,23 @@
+{
+  "_objet": "Droit d'accises à l'importation au Gabon : positions et taux, d'après le Code général des impôts (version consolidée 2025 publiée par la DGI, art. 249 et 250, L.F. 2023 et 2024). Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres). « taux » null : le taux dépend d'une condition absente de la position, comporte une taxe spécifique, ou a été modifié par la loi de finances 2026 (n° 041/2025) dont le texte n'a pas été lu — le droit est porté, non liquidé.",
+  "_fiche": "backend/data/legal_refs/zlecaf_application/GAB_droit_accises_2026-10-05.json",
+  "source": "Code général des impôts du Gabon (version consolidée DGI 2025), art. 250",
+  "assiette": "CIF+TOUS_SAUF_TVA",
+  "assiette_reference": "CGI art. 250 : « La base d'imposition ad valorem […] est constituée : à l'importation, par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exclusion de la TVA ».",
+  "tva_assiette": "CIF+DD+DA",
+  "tva_assiette_reference": "CGI art. 216 : « La base d'imposition en ce qui concerne les importations est établie en ajoutant à la valeur du bien telle qu'elle est définie par la réglementation douanière, le montant des droits de douane et du droit d'accises. »",
+  "regles": [
+    {"prefixes": ["3303", "3304"], "taux": 25.0, "reference": "art. 250 (« Produit de parfumerie et cosmétiques », 25 %) — décision du propriétaire : toutes les positions 33.03 et 33.04"},
+    {"prefixes": ["16043000", "16022010", "02073400"], "taux": 40.0, "reference": "art. 250 (« Caviar, foie gras », 40 %)"},
+    {"prefixes": ["03031100", "03031900", "03032200", "16041100"], "taux": 30.0, "reference": "art. 250 (« Saumon », 30 %)"},
+    {"prefixes": ["2202", "2206"], "taux": 5.0, "reference": "art. 250 (« Boissons sucrées et autres boissons titrant un degré d'alcool volumétrique inférieur à 12 % », 5 %) ; les eaux (22.01) sont exonérées"},
+    {"prefixes": ["2009"], "taux": null, "motif": "Jus de fruits : « boisson sucrée » (5 %) ou non selon le produit (art. 250) — non déterminable depuis la position.", "reference": "art. 250"},
+    {"prefixes": ["2203"], "taux": null, "motif": "Bières d'importation : 25 % plus une taxe spécifique par litre (180 F CFA au CGI 2025, portée à 200 F CFA par la loi de finances 2026, non lue).", "reference": "art. 250 ; loi de finances 2026"},
+    {"prefixes": ["2204", "2205"], "taux": null, "motif": "Vins et champagnes : 25 % ou 40 % selon que le prix d'achat est inférieur ou supérieur à 50 000 F CFA, plus une taxe spécifique par litre (art. 250) ; taux modifiés en 2026 (non lus).", "reference": "art. 250"},
+    {"prefixes": ["2208"], "taux": null, "motif": "Boissons titrant plus de 12 % : 30 % plus 500 F CFA par litre (art. 250) — la taxe spécifique exige le volume.", "reference": "art. 250"},
+    {"prefixes": ["2402", "2403"], "taux": null, "motif": "Cigarettes, cigares, cigarillos, tabacs : 32 % plus 250 F CFA par paquet (art. 250) — le nombre de paquets n'est pas connu.", "reference": "art. 250"},
+    {"prefixes": ["8703"], "taux": null, "motif": "Véhicules de tourisme : 5 % sauf véhicules neufs de moins de 1 500 cm3 (loi de finances 2026, connue par des sources secondaires) — l'état neuf ou d'occasion n'est pas dans la position, et le texte n'a pas été lu.", "reference": "loi de finances 2026 (n° 041/2025), non lue"},
+    {"prefixes": ["8701", "8702", "8704", "8711"], "taux": null, "motif": "Motocycles et autres véhicules automobiles : 1 % (loi de finances 2026, connue par des sources secondaires) — texte non lu.", "reference": "loi de finances 2026 (n° 041/2025), non lue", "exclusions": ["87019011"]},
+    {"prefixes": ["9301", "9302", "9303", "9304", "9305", "9306"], "taux": null, "motif": "Armes et munitions : 10 % (loi de finances 2026, connue par des sources secondaires) — texte non lu.", "reference": "loi de finances 2026 (n° 041/2025), non lue"}
+  ]
+}

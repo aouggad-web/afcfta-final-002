@@ -1,4 +1,4 @@
-"""Cameroun : droit d'accises à l'importation selon le CGI (annexe II, art. 138
+"""Cameroun et Gabon : droit d'accises à l'importation selon le CGI (annexe II, art. 138
 et 142). Fiche : CMR_droit_accises_2026-10-05.json."""
 
 import json
@@ -45,3 +45,19 @@ def test_aucun_reste_du_marquage_du_crawl(positions):
     accises = [d for p in positions.values() for d in p["droits"] if d["code"] == "DA"]
     assert len(accises) == 252
     assert all(d["source"].startswith("Code général des impôts du Cameroun") for d in accises)
+
+
+GAB = os.path.join(os.path.dirname(SOCLE), "GAB.json")
+
+
+@pytest.mark.skipif(not os.path.exists(GAB), reason="socle absent (gitignoré)")
+def test_gabon_cosmetique_au_taux_du_cgi_et_tissu_sans_accise():
+    """CGI du Gabon, art. 250 et 216 : 25 % sur valeur + droits et taxes
+    d'entrée hors TVA ; TVA sur valeur + DD + accise."""
+    with open(GAB, encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    etat, lignes = _lignes(positions["33049900"])
+    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1312.0, 328.0)
+    assert lignes["TVA"]["base"] == 1628.0 and etat == COMPLET
+    etat, lignes = _lignes(positions["52081100"])
+    assert "DA" not in lignes and etat == COMPLET

@@ -1128,11 +1128,16 @@ def sources_disponibles():
 #: positions tirées d'un repère typographique — tissus de coton, médicaments et
 #: sel compris, voitures et cosmétiques omis. La liste et les taux viennent du
 #: CGI (annexe II, art. 142) ; l'assiette de la TVA, de son art. 138 (1).
-ACCISES_CMR = os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json")
+#: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
+#: assiette de la TVA de son art. 216.
+ACCISES_PAYS = {
+    "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
+}
 
 
-def _accises_cmr(positions):
-    with open(ACCISES_CMR, encoding="utf-8") as f:
+def _accises_du_cgi(iso, positions):
+    with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
     for code, position in positions.items():
         droits = [d for d in position.get("droits") or [] if d.get("code") != "DA"]
@@ -1154,7 +1159,7 @@ def _accises_cmr(positions):
                         "taux": regle["taux"],
                         "assiette": table["assiette"],
                         "assiette_origine": "source",
-                        "source": "Code général des impôts du Cameroun (édition 2025), annexe II et art. 142",
+                        "source": table["source"],
                         "note": " ".join(
                             x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
                         ),
@@ -1507,8 +1512,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
-    if iso == "CMR":
-        _accises_cmr(positions)
+    if iso in ACCISES_PAYS:
+        _accises_du_cgi(iso, positions)
 
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur
