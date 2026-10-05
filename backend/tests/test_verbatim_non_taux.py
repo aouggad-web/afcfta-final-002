@@ -71,6 +71,10 @@ def test_aucune_accise_negative_dans_la_cemac(iso3):
         positions = json.load(f)["positions"]
     negatifs = [d for p in positions.values() for d in p["droits"] if (d.get("taux") or 0) < 0]
     assert negatifs == []
+    if iso3 == "CMR":
+        # Liste du CGI (annexe II) : le poisson 0302.69 n'y est pas.
+        assert not any(d["code"] == "DA" for d in positions["03026990"]["droits"])
+        return
     r = calculer(positions["03026990"], 1000, devise_cif="XAF")
     accise = [ligne for ligne in r["npf"]["lignes"] if ligne["code"] == "DA"][0]
     assert accise["montant"] is None and r["npf"]["etat"] != COMPLET

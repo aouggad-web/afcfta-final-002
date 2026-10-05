@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-05T10:37:53.457997+00:00",
+  "construit_le": "2026-10-05T18:54:03.388990+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -265,7 +265,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CMR_tariffs.json",
       "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
-      "socle_sha256": "84f1c451621862ff5df2182bd7204e48600e0101cbc88861f3e434e20af46033",
+      "socle_sha256": "b8ba5a6609f55430cc17fa2d8b8a82367e5e9d1c66489ebdb7d41d4af3311917",
       "collecte": "2026-02-19T22:21:31.397885",
       "etat": "PARTIEL",
       "familles": [
@@ -276,9 +276,9 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 21107,
-        "droits_liquidables": 20815,
-        "positions_liquidables": 4947,
+        "droits": 21067,
+        "droits_liquidables": 20986,
+        "positions_liquidables": 5158,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
@@ -2031,7 +2031,7 @@
       "ZWE"
     ],
     "positions": 368260,
-    "droits": 1120443,
-    "droits_liquidables": 1080631
+    "droits": 1120403,
+    "droits_liquidables": 1080802
   }
 }

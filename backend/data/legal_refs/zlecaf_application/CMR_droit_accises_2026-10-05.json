@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "objet": "Cameroun : produits soumis au droit d'accises à l'importation, taux et assiettes (accise sur CIF + DD ; TVA sur CIF + DD + accise)",
+  "destination_iso3": "CMR",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "primaire — Code général des impôts du Cameroun, édition 2025 (art. 138, 141 bis, 142 et annexe II du Titre II), et fiche officielle de la Direction générale des impôts (2025)",
+  "source": {
+    "url": "https://www.impots.cm/sites/default/files/documents/FICHE%20DA.pdf",
+    "institution": "Direction générale des impôts du Cameroun",
+    "pdf_archive": "sources/CMR_DGI_fiche_droits_accises_2025.pdf"
+  },
+  "regle": {
+    "valeur": "Liste des produits soumis : annexe II du CGI. Taux : 50 % (hydroquinone), 30 % (tabacs, pipes), 25 % (général), 12,5 % (moyen), 5 % (réduit). Assiette de l'accise : CIF + droit de douane (art. 138 (2)). Assiette de la TVA à l'importation : CIF + droit de douane + droit d'accises (art. 138 (1)).",
+    "verbatim": "Article 138.- (1) La base imposable, en ce qui concerne les importations, est obtenue en ajoutant à la valeur imposable telle qu'elle est définie par les articles 23 à 26 du Code des Douanes de la CEMAC, le montant du droit de douane et du Droit d'accises. […] (2) La base imposable au droit d'accises en ce qui concerne les importations, est établie en ajoutant à la valeur imposable […] le montant des droits de douane.",
+    "reference": "CGI (édition 2025) art. 138, 141 bis, 142 et annexe II du Titre II ; fiche DGI « Les droits d'accises » (2025)",
+    "portee": "backend/data/zlecaf_cmr/droit_accises_cgi2025.json, appliqué par scripts/build_socle._accises_cmr au seul socle CMR : remplace les 292 droits « variable » du crawl par 252 droits tirés du CGI (171 liquidables, 81 sans taux parce que le taux dépend d'une condition absente de la position), et pose la TVA sur CIF + DD + DA.",
+    "texte_archive": "sources/CMR_droit_accises.texte-extrait.txt",
+    "sha256": "c59dfc115f8b4a350d17c89f4d631cab6bc09c028713e9d03a762bc607b04d24",
+    "sha256_pdf_origine": "e1be6403dd8e97097336dda61fe859debb3770c56b9dc49803da0a56443e6e23"
+  },
+  "decisions": [
+    "Parfums et cosmétiques (annexe II, sans code) : toutes les positions 33.03 et 33.04, au taux général de 25 % — décision du propriétaire du 2026-10-05.",
+    "Véhicules : le socle (nomenclature CEMAC à 8 chiffres) distingue cylindrée et énergie, jamais l'âge ; le taux dépendant de l'âge (art. 142 (6) a)), le droit est porté sans taux sur 87.03, et sur les utilitaires, tracteurs routiers, transports en commun et remorques (soumis au-delà de 15 ans), tracteurs agricoles exclus.",
+    "Boissons alcoolisées, jus, eaux et boissons gazeuses ou sucrées, cigarettes : le droit spécifique (par centilitre selon la gamme et la contenance, ou minimum par 1 000 tiges) n'est pas calculable depuis la position : droit porté sans taux."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "L'édition 2025 est une compilation de cabinet : les ajouts de la loi de finances 2026 ne sont pas vérifiés.",
+    "La TCI ne figure pas dans l'assiette de la TVA selon l'art. 138 (1) ; le crawl l'y incluait (« CIF + DD + TCI »). Le texte du CGI est suivi.",
+    "Les emballages non retournables (droit spécifique par unité), les jeux et les communications n'ont pas de position tarifaire.",
+    "Positions de l'annexe absentes du socle (lacunes de la collecte) : saumons 0302.12/0302.19 et 0305.41, foies et œufs 0303.90, boissons fermentées 22.06.",
+    "Les autres États de la CEMAC (GAB, COG, TCD, CAF, GNQ) ont chacun leur code des impôts : non traités ici."
+  ],
+  "documents_archives": [
+    {"texte_archive": "sources/CMR_droit_accises.texte-extrait.txt", "sha256": "c59dfc115f8b4a350d17c89f4d631cab6bc09c028713e9d03a762bc607b04d24"},
+    {"pdf_archive": "sources/CMR_DGI_fiche_droits_accises_2025.pdf", "pdf_sha256": "e1be6403dd8e97097336dda61fe859debb3770c56b9dc49803da0a56443e6e23"}
+  ]
+}
