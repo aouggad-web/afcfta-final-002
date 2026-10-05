@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "objet": "TVA à l'importation aux Seychelles : 15 % sur la valeur CIF augmentée du droit d'importation et de l'accise (le prélèvement exclu)",
+  "destination_iso3": "SYC",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "primaire — Seychelles Revenue Commission (brochure « VAT on Importation » et page « Tax System »), Excise Tax (Rates) Regulations 2023 (S.I. 110 of 2023, Official Gazette) pour le périmètre de l'accise",
+  "source": {
+    "url": "https://src.gov.sc/wp-content/uploads/2022/12/VAT-on-Importation-Brochure.pdf",
+    "institution": "Seychelles Revenue Commission",
+    "pdf_archive": "sources/SYC_SRC_brochure_TVA_importation_2022.pdf"
+  },
+  "regle": {
+    "valeur": "15 % ; assiette CIF + droit d'importation + accise (où elle s'applique), prélèvement (levy) exclu",
+    "verbatim": "A VAT rate of 15% must be paid at the point of entry at the time of import on all imported goods. […] VAT on imported goods is applied on the value of the import which is the CIF (Cost, Insurance & Freight) value plus import duty and excise (where applicable). NB: Levy is not included in the calculation of VAT at importation.",
+    "reference": "SRC, brochure « Value Added Tax (VAT) on Importation » (2022) ; SRC, page « Tax System » (relevée le 2026-10-05) ; Value Added Tax Act 2010 (Act 35 of 2010), Schedule 1 (exonérations)",
+    "portee": "socle/tva_nationale.json, entrée SYC : complète la TVA, famille absente du crawl S.I. 113/2022 (couverture tva = false). L'accise n'est pas collectée : sur les 263 positions du barème S.I. 110/2023 présentes au socle, une ligne d'accise SANS taux est ajoutée avec la TVA, qui se déclare alors incomplète au lieu d'être sous-estimée.",
+    "texte_archive": "sources/SYC_TVA_importation.texte-extrait.txt",
+    "sha256": "c0a54c701ebc7820e206ee0b0ce792c211658791925153a0f40d81e53d62ecf6",
+    "sha256_pdf_origine": "e70812e6e665618c70cf1313929a46ffcdff006faeca9d7093e803fe3fa6b159"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Les importations exonérées (VAT Act 2010, Schedule 1, parties 1 et 2 : riz, lait…) ne sont pas distinguées : taux standard sur toute position.",
+    "Le texte du VAT Act 2010 lui-même n'est pas archivé : le taux et l'assiette viennent des publications de la SRC, administration qui l'applique.",
+    "Le montant de l'accise n'est pas liquidé (barème S.I. 110/2023 non collecté) ; la position 8704.90.00 du barème n'existe pas au socle (S.I. 113/2022)."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SYC_TVA_importation.texte-extrait.txt",
+      "sha256": "c0a54c701ebc7820e206ee0b0ce792c211658791925153a0f40d81e53d62ecf6"
+    },
+    {
+      "pdf_archive": "sources/SYC_SRC_brochure_TVA_importation_2022.pdf",
+      "pdf_sha256": "e70812e6e665618c70cf1313929a46ffcdff006faeca9d7093e803fe3fa6b159"
+    },
+    {
+      "document_non_archive": "S.I. 110 of 2023 (566 Ko) : https://www.tradeportal.sc/wp-content/uploads/2024/02/SI-110-2023-Excise-Tax-Rates-Regulations-2023-002.pdf",
+      "pdf_sha256": "62a9b0af30a4c72594af476e3c73397f10ee9bb00ff1a8508e2d095234438673"
+    }
+  ]
+}

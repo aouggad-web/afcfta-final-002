@@ -368,7 +368,6 @@ ASSIETTES_SOURCE = {
     "VALEUR DOUANE DINARS": ("CIF", None),
     "VALEUR DOUANE": ("CIF", None),
     "QCS": ("xQTE", None),
-    "QCI": ("xQTE", None),
     "PN (KG)": ("xQTE", None),  # poids net : droit liquidé à la quantité
     "VAL DOUANE+ SOMME DT": ("CIF+TOUS_SAUF_SOI", None),
 }
@@ -379,6 +378,10 @@ ASSIETTES_SOURCE = {
 ASSIETTES_NON_TRADUITES = {
     "PN(KG)/100 EXCES": "droit au poids avec seuil d'excédent — la règle de seuil n'est pas publiée avec la ligne",
     "VARIABLE": "la source déclare l'assiette variable",
+    # Tunisie : la « quantité complémentaire d'importation » n'a pas d'unité
+    # publiée — le champ QCI est vide sur les 17 542 positions du Tarif Web.
+    # Liquider à la quantité saisie servait 990 droits dans une unité devinée.
+    "QCI": "quantité complémentaire d'importation : unité non publiée par la source (QCI vide)",
 }
 
 
@@ -924,6 +927,21 @@ def preferences_depuis_liste(regimes, entrees, source_defaut, compteurs=None):
     return out
 
 
+def _unites_des_quantites_tun(rows, droits, qcs):
+    """Tunisie : l'assiette d'un droit spécifique NOMME sa quantité — « PN (KG) »,
+    le poids net en kilos ; « QCS », l'unité statistique de la position (« KG
+    NET », « NOMBRE », « LITRE »…). Sans elle, « 0.1 dinars » se multipliait par
+    une quantité saisie dans n'importe quelle unité."""
+    unites = {"PN (KG)": "kg", "QCS": (qcs or "").strip().lower() or None}
+    for row, d in zip([r for r in rows if isinstance(r, dict)], droits):
+        unite = unites.get(" ".join(str(row.get("assiette") or "").split()).upper())
+        if unite and d.get("specifique") and not isinstance(d["specifique"], dict):
+            lu = lire_specifique(d["specifique"])
+            if lu is not None:
+                lu["unite_quantite"] = lu["unite_quantite"] or unite
+                d["specifique"] = lu
+
+
 def lignes_du_fichier(donnees, regimes=None, compteurs=None):
     """Rendre (code, designation, unite, droits_bruts) pour les six schémas."""
     source_defaut = donnees.get("source") or donnees.get("source_name") or ""
@@ -956,6 +974,7 @@ def lignes_du_fichier(donnees, regimes=None, compteurs=None):
                 droits = droits_depuis_dict(ligne["taxes"], source_defaut)
             elif isinstance(ligne.get("taxes_import"), list):
                 droits = droits_depuis_liste(ligne["taxes_import"], source_defaut)
+                _unites_des_quantites_tun(ligne["taxes_import"], droits, ligne.get("qcs"))
             colonnes = ligne.get("preferential_rates")
             if not isinstance(colonnes, list):
                 colonnes = ligne.get("preferences")
@@ -1288,7 +1307,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     "montant": None,
                     "motif": "expression non lisible",
                 }
-            if d["specifique"] and d["taux"] is None:
+            if d["specifique"] and d["taux"] is None and not d.get("assiette_non_traduite"):
+                # Une assiette que la source décrit sans qu'on sache la traduire
+                # (« PN(KG)/100 EXCES », « QCI ») reste non traduite : la forcer
+                # à la quantité liquidait 1 156 droits tunisiens malgré leur réserve.
                 # Un droit spécifique se liquide à la quantité, jamais sur la
                 # valeur. Si l'assiette héritée dit « CIF », elle décrit le
                 # droit ad valorem de la ligne, pas celui-ci : la laisser
