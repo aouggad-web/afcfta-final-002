@@ -152,7 +152,7 @@ def test_le_chapitre_98_est_bien_celui_des_effets_personnels():
     Un chapitre 98 ne veut pas dire la même chose d'un tarif à l'autre : des
     nomenclatures y placent des dispositions de classement spéciales, d'autres
     des régimes nationaux. Ici c'est la désignation complète publiée par le
-    tarif algérien qui établit qu'il s'agit d'effets personnels — donc hors
+    tarif algérien (l'intitulé officiel du chapitre) qui établit qu'il s'agit d'effets personnels — donc hors
     importation commerciale, donc sans droit de douane à percevoir.
 
     Ce test existe pour que personne n'étende cette qualification à un autre
@@ -164,7 +164,7 @@ def test_le_chapitre_98_est_bien_celui_des_effets_personnels():
     ch98 = [x for x in crawl["sub_positions"] if x.get("chapter") == "98"]
     assert {x["hs_code"] for x in ch98} == HORS_IMPORTATION_COMMERCIALE
     for ligne in ch98:
-        assert ligne["designation_full"].startswith("Effets personnels"), ligne["hs_code"]
+        assert ligne["chapter_label"] == "Effets personnels", ligne["hs_code"]
         # Le chapitre ne perçoit pas de droit, mais il perçoit les deux
         # prélèvements de formalité : leur présence montre que la ligne est
         # bien collectée, et que seule la colonne du droit est vide.

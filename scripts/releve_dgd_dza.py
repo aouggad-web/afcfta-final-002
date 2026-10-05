@@ -36,6 +36,7 @@ import argparse
 import concurrent.futures as cf
 import gzip
 import hashlib
+import html
 import json
 import re
 import ssl
@@ -281,6 +282,23 @@ def etape_listes(cache: Path, ctx: ssl.SSLContext) -> None:
         raise SystemExit(f"{len(echecs)} rangées non lues, relancer « listes » :\n" + "\n".join(echecs))
 
 
+LIBELLE = re.compile(r"<dt>(Section|Chapitre|Rangée) (\w+)<sep> :</sep></dt><dd[^>]*>(?:<a [^>]*>)?(.*?)(?:</a>)?</dd>", re.S)
+
+
+def libelles_officiels(cache: Path) -> dict:
+    """Libellés publiés des sections, chapitres et rangées, d'après les pages rangée."""
+    out = {"sections": {}, "chapitres": {}, "rangees": {}}
+    for cle in sorted(_index(cache / "index_listes.jsonl")):
+        if cle.startswith("rangee_"):
+            raw = gzip.open(cache / "listes" / f"{cle}.html.gz").read().decode("utf-8", "replace")
+            v = {niveau: (n, html.unescape(re.sub(r"\s+", " ", texte)).strip())
+                 for niveau, n, texte in LIBELLE.findall(raw)}
+            out["sections"][v["Section"][0]] = v["Section"][1]
+            out["chapitres"][v["Chapitre"][0]] = v["Chapitre"][1]
+            out["rangees"][v["Chapitre"][0] + v["Rangée"][0]] = v["Rangée"][1]
+    return out
+
+
 def liste_officielle(cache: Path) -> dict:
     """{code: (section, rangée, désignation de liste)} d'après les pages rangée."""
     idx = _index(cache / "index_listes.jsonl")
@@ -348,6 +366,7 @@ def etape_fichier(cache: Path, crawl: Path) -> None:
         "positions_relues": len(positions),
         "positions_non_relues": manquantes,
         "absents_du_tarif_dgd": sorted(connus - set(codes)),
+        "libelles": libelles_officiels(cache),
     }
     lignes = [f"  {json.dumps(k, ensure_ascii=False)}: {json.dumps(v, ensure_ascii=False)}" for k, v in entete.items()]
     corps = [f"    {json.dumps(c)}: {json.dumps(p, ensure_ascii=False, separators=(',', ':'))}" for c, p in positions.items()]
@@ -365,6 +384,10 @@ def etape_verser(crawl: Path) -> None:
     if r["positions_non_relues"]:
         raise SystemExit("relevé incomplet : rien n'est versé")
     corrections = json.loads(CORRECTIONS.read_text(encoding="utf-8"))
+
+    def libelle(texte):
+        return corrections["libelles"].get(texte, texte)
+
     c = json.loads(crawl.read_text(encoding="utf-8"))
     anciennes = {p["hs_code"]: p for p in c["sub_positions"]}
     positions = []
@@ -378,6 +401,11 @@ def etape_verser(crawl: Path) -> None:
         # d'un caractère perdu à la mise en ligne : chaque ligne, et chaque
         # Observation, est servie corrigée à la main (décision du 04/10/2026).
         p["name"] = "\n".join(corrections["lignes"].get(ligne, ligne) for ligne in f["designation"].split("\n"))
+        # Le libellé de la rangée (position à 4 chiffres) et du chapitre, tels
+        # que la DGD les publie : la fiche commence sous la rangée. Ils
+        # remplacent la désignation hiérarchique de conformepro.
+        p["heading_label"] = libelle(r["libelles"]["rangees"][code[:4]])
+        p["chapter_label"] = libelle(r["libelles"]["chapitres"][code[:2]])
         taxes = {}
         for sigle, taux, observation in f["taxes"]:
             cle = sigle.replace(".", "")
@@ -386,12 +414,12 @@ def etape_verser(crawl: Path) -> None:
             taxes[cle] = {"label_published": sigle, "rate": float(taux)}
             if observation:
                 taxes[cle]["note"] = corrections["observations"].get(observation, observation)
-        if "?" in p["name"] + "".join(t.get("note", "") for t in taxes.values()):
+        if "?" in p["name"] + p["heading_label"] + p["chapter_label"] + "".join(t.get("note", "") for t in taxes.values()):
             raise SystemExit(f"{code} : « ? » non corrigé, à reprendre dans {CORRECTIONS.name} ; rien n'est versé")
         p["taxes"] = taxes
         p["formalities"] = [{"code": k, "text_verbatim": document} for k, document in f["formalites"]]
         for cle in ("specific_taxes", "advantages", "tax_advantages", "source_gaps", "source_url",
-                    "source_root_url", "date_consulted"):
+                    "source_root_url", "date_consulted", "description", "designation_full", "display_code"):
             p.pop(cle, None)
         p["source"], p["crawled_at"] = f["url"], f["releve_le"]
         positions.append(p)
