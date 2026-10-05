@@ -1513,7 +1513,27 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
     if iso in ACCISES_PAYS:
+        # Les compteurs par ligne lue ont déjà compté les DA du crawl : on
+        # retranche ceux qui sont retirés et on ajoute ceux qui sont posés.
+        def _da():
+            return [d for p in positions.values() for d in p.get("droits") or [] if d.get("code") == "DA"]
+
+        avant = _da()
         _accises_du_cgi(iso, positions)
+        apres = _da()
+        for lignes, signe in ((avant, -1), (apres, 1)):
+            for d in lignes:
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] += signe
+                if not d.get("assiette"):
+                    cle = "assiettes_indisponibles"
+                elif d.get("assiette_origine") == "source":
+                    cle = "assiettes_source"
+                elif d.get("assiette_origine") == "source_fichier":
+                    cle = "assiettes_fichier"
+                else:
+                    cle = "assiettes_table"
+                compteurs[cle] += signe
 
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur

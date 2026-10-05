@@ -41,9 +41,17 @@ def test_une_voiture_porte_l_accise_sans_taux_faute_d_age(positions):
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
 
 
+@pytest.mark.parametrize("code", ["34022000", "94033000", "55141100", "48181000", "95049000"])
+def test_les_produits_importes_de_l_annexe_ii_paient_le_taux_general(positions, code):
+    """Annexe II, p. 107-108 : savons et préparations de nettoyage, meubles en
+    bois, tissus 5514 à 5516, papier hygiénique, jeux 9504 — 25 % (art. 142 (5))."""
+    etat, lignes = _lignes(positions[code])
+    assert lignes["DA"]["montant"] == lignes["DA"]["base"] * 0.25 and etat == COMPLET
+
+
 def test_aucun_reste_du_marquage_du_crawl(positions):
     accises = [d for p in positions.values() for d in p["droits"] if d["code"] == "DA"]
-    assert len(accises) == 252
+    assert len(accises) == 477
     assert all(d["source"].startswith("Code général des impôts du Cameroun") for d in accises)
 
 
