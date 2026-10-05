@@ -1124,6 +1124,55 @@ def sources_disponibles():
     return sources
 
 
+#: Cameroun : le crawl marquait le droit d'accises « variable » (-1) sur 292
+#: positions tirées d'un repère typographique — tissus de coton, médicaments et
+#: sel compris, voitures et cosmétiques omis. La liste et les taux viennent du
+#: CGI (annexe II, art. 142) ; l'assiette de la TVA, de son art. 138 (1).
+#: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
+#: assiette de la TVA de son art. 216.
+ACCISES_PAYS = {
+    "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
+}
+
+
+def _accises_du_cgi(iso, positions):
+    with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        droits = [d for d in position.get("droits") or [] if d.get("code") != "DA"]
+        for regle in table["regles"]:
+            if code in regle.get("exclusions", []):
+                continue
+            if any(code.startswith(p) for p in regle["prefixes"]):
+                # Avant la TVA, qui s'assoit sur lui : le moteur liquide dans l'ordre.
+                rang = next(
+                    (i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits)
+                )
+                droits.insert(
+                    rang,
+                    {
+                        "code": "DA",
+                        "code_source": "DA",
+                        "libelle": "Droit d'accises",
+                        "famille": famille("DA"),
+                        "taux": regle["taux"],
+                        "assiette": table["assiette"],
+                        "assiette_origine": "source",
+                        "source": table["source"],
+                        "note": " ".join(
+                            x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
+                        ),
+                    }
+                )
+                break
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette"):
+                d["assiette"] = table["tva_assiette"]
+                d["note"] = table["tva_assiette_reference"]
+        position["droits"] = droits
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -1462,6 +1511,29 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["droits"] += 1
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
+
+    if iso in ACCISES_PAYS:
+        # Les compteurs par ligne lue ont déjà compté les DA du crawl : on
+        # retranche ceux qui sont retirés et on ajoute ceux qui sont posés.
+        def _da():
+            return [d for p in positions.values() for d in p.get("droits") or [] if d.get("code") == "DA"]
+
+        avant = _da()
+        _accises_du_cgi(iso, positions)
+        apres = _da()
+        for lignes, signe in ((avant, -1), (apres, 1)):
+            for d in lignes:
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] += signe
+                if not d.get("assiette"):
+                    cle = "assiettes_indisponibles"
+                elif d.get("assiette_origine") == "source":
+                    cle = "assiettes_source"
+                elif d.get("assiette_origine") == "source_fichier":
+                    cle = "assiettes_fichier"
+                else:
+                    cle = "assiettes_table"
+                compteurs[cle] += signe
 
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur
