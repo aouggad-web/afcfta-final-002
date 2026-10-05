@@ -252,6 +252,48 @@ function buildJournal(cifValue, lignes) {
  *                           tels que saisis dans le formulaire (codes bruts,
  *                           pas nécessairement ISO3 — conservés pour l'affichage).
  */
+/**
+ * Montants en monnaie locale, au taux du moteur de change du module Banque.
+ *
+ * `conversion` est la réponse de `GET /banking/forex/convert` (USD → monnaie
+ * du pays de destination) : le même service de change que l'ancien chemin
+ * de calcul. Même règle que `localize_breakdown` côté serveur : les montants
+ * deviennent bi-devises, les taux (%) ne changent pas, et un montant absent
+ * reste absent. Sans taux, le résultat est rendu tel quel, en USD seul.
+ */
+export function localiserResultat(result, conversion) {
+  const taux = conversion?.rate;
+  if (!result || !taux) return result;
+  const loc = (v) => (typeof v === 'number' ? Math.round(v * taux * 100) / 100 : null);
+  const locBloc = (bloc) => (bloc
+    ? Object.fromEntries(Object.entries(bloc).map(([k, v]) => [k, loc(v)]))
+    : null);
+  const summary = result.taxes_summary || {};
+  return {
+    ...result,
+    taxes_breakdown: (result.taxes_breakdown || []).map((b) => ({
+      ...b,
+      amount_npf_local: loc(b.amount_npf),
+      amount_zlecaf_local: loc(b.amount_zlecaf),
+    })),
+    currency: {
+      local_code: conversion.to_currency,
+      local_name: conversion.currency_name,
+      usd_to_local_rate: taux,
+      rate_source: conversion.source,
+      rate_as_of: conversion.timestamp,
+      available: true,
+      value_usd: conversion.amount,
+      value_local: conversion.converted_amount,
+      summary_local: {
+        npf: locBloc(summary.npf),
+        zlecaf: locBloc(summary.zlecaf),
+        economie_totale: loc(summary.economie_totale),
+      },
+    },
+  };
+}
+
 export function mapCalculToLegacyResult(calcul, { originCountry, destinationCountry, hsCode, cifValue }) {
   const npf = calcul.npf || { lignes: [], etat: 'INDISPONIBLE', manques: [] };
   const pref = calcul.preference || null;
@@ -382,7 +424,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // Normalisé par `normalizeTaxesDetail` à l'appel, comme le chemin
     // authentique : même fonction, même garantie (jamais de taux fabriqué).
     taxes_detail: taxesDetailSource,
-    currency: null, // conversion de devise hors périmètre du moteur de calcul
+    currency: null, // posée ensuite par `localiserResultat`, hors du moteur de calcul
 
     data_source: 'socle_unifie',
     tariff_precision: provenance.niveau === 'national' ? 'sub_position' : 'hs6_country',
