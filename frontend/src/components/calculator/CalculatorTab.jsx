@@ -975,7 +975,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           const conversion = (await axios.get(`${API}/banking/forex/convert`, {
             params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
           })).data;
-          setResult((precedent) => localiserResultat(precedent, conversion));
+          // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
+          // résultat de SA demande (même pays et position, même valeur CIF).
+          setResult((precedent) => (
+            precedent?._quantite_cle === `${destISO3}|${cleanHsCode}` && precedent.value === parseFloat(value)
+              ? localiserResultat(precedent, conversion)
+              : precedent));
         } catch (conversionError) {
           // Silencieux : les montants en USD restent justes.
         }
