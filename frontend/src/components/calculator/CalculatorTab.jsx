@@ -504,7 +504,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // Cette liste s'allonge PAYS PAR PAYS, quand le socle sert ce pays mieux
       // que l'autre porte et que rien de ce qui précède ne lui manque. Elle ne
       // se remplace pas par « tous ».
-      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS']);
+      //
+      // L'ALGÉRIE (bascule 2.3). Sa valeur en douane est le CIF et aucune
+      // remise ne la concerne : rien de ce qui précède ne lui manque. L'autre
+      // porte mêlait à sa position des données agrégées au SH6 par l'ETL
+      // conformepro (désignation, formalités) ; le socle ne sert que la
+      // position nationale.
+      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS', 'DZA']);
 
       let calculSocle = null;
       let erreurSocle = null;
@@ -517,8 +523,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // est absent ou périmé et refuse de servir. Tout le reste — 422 de
           // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
           // de dégrader en silence vers une source moins vérifiée.
+          //
+          // L'Algérie, elle, ne se replie jamais : l'autre porte lui servirait
+          // les agrégats SH6 conformepro. Une position absente de son socle
+          // est une erreur affichée.
           const statut = socleError.response?.status;
-          if (statut !== 404 && statut !== 503) {
+          if (destISO3 === 'DZA' || (statut !== 404 && statut !== 503)) {
             throw socleError;
           }
           erreurSocle = socleError;
