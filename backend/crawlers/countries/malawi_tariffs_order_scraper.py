@@ -663,16 +663,23 @@ def construire(chemin: Path) -> Dict:
         "extracted_at": date.today().isoformat(),
         "calculation_rules": {
             "order": ["DD", "EXC", "TVA", "AIT"],
-            "bases": {"DD": {"basis": "CIF", "type": "ad_valorem", "source": ACTE_DD}},
+            "bases": {
+                "DD": {"basis": "CIF", "type": "ad_valorem", "source": ACTE_DD},
+                **{
+                    code: {"basis": base, "type": "ad_valorem", "source": source_base}
+                    for code, (base, source_base) in ASSIETTES_ETABLIES.items()
+                },
+            },
             "source": (
                 "Droit de douane de la COLONNE 6, celle dont beneficie toute partie "
                 "contractante du GATT (Order, par. 5(a)(iii)) : c'est le taux NPF. La "
                 "colonne 5 est le PLEIN DROIT, conservee a part sous le code DD_PLEIN. "
                 "Assiette : prix normal de la Schedule A, marchandises livrees au port "
                 "d'introduction au Malawi, tous frais du vendeur inclus — le CIF par "
-                "son contenu, la Definition de Bruxelles par sa forme. Accise, TVA et "
-                "Advance Income Tax sont portees SANS assiette : le decret en donne le "
-                "taux, aucun texte lu n'en donne l'assiette."
+                "son contenu, la Definition de Bruxelles par sa forme. Accise : CIF + DD ; "
+                "TVA : CIF + DD + accise (VAT Act s.28, guide MRA 2022). L'Advance Income "
+                "Tax est portee SANS assiette : le decret en donne le taux, aucun texte "
+                "lu n'en donne l'assiette."
             ),
         },
         "stats": dict(
