@@ -237,6 +237,17 @@ def benchmark_infrastructure(destination_iso3: str, lang: str = "fr") -> Dict:
     }
 
 
+def _positions_socle(destination_iso3: str, prefixe: str) -> Dict[str, dict]:
+    """Positions nationales du socle (le crawl de la source) sous un préfixe."""
+    try:
+        from services import socle
+
+        positions = socle.charger(destination_iso3).get("positions", {})
+    except Exception:  # pays absent du socle : aucune position
+        return {}
+    return {code: p for code, p in positions.items() if code.startswith(prefixe)}
+
+
 def _resolve_hs6(destination_iso3: str, code: str):
     """
     Resolve a product code to an HS6 sub-heading in the destination's schedule.
@@ -263,6 +274,8 @@ def _resolve_hs6(destination_iso3: str, code: str):
             }
             - {""}
         )
+        if not hs6s:
+            hs6s = sorted({c[:6] for c in _positions_socle(destination_iso3, clean)})
         if hs6s:
             return hs6s[0], True
     except Exception:  # pragma: no cover - defensive
@@ -317,6 +330,36 @@ def tariff_benefit_analysis(
         _log.warning("tariff benefit analysis unavailable: %s", exc)
         return {"available": False, "note": str(exc)}
 
+    if not line:
+        # Pays sans ligne SH6 au fichier ETL : ses positions nationales au socle.
+        # Un seul droit de douane pour toutes : c'est le taux ; plusieurs : le
+        # taux dépend de la position, et aucun n'est choisi à sa place.
+        taux = {
+            d.get("taux")
+            for p in _positions_socle(destination_iso3, hs6).values()
+            for d in p.get("droits", [])
+            if d.get("code") == "DD"
+        }
+        if len(taux) == 1 and None not in taux:
+            line = {"dd_rate": taux.pop(), "zlecaf_rate": None}
+        elif taux == {None}:
+            return {
+                "available": False,
+                "note": f"{destination_iso3.upper()}/{hs6} : droit de douane non publié.",
+                "source": "socle",
+            }
+        elif taux:
+            publies = [f"{x:g} %" for x in sorted(x for x in taux if x is not None)]
+            if None in taux:
+                publies.append("non publié")
+            return {
+                "available": False,
+                "note": (
+                    f"{destination_iso3.upper()}/{hs6} : le droit de douane dépend de la position "
+                    f"nationale ({', '.join(publies)}) ; avantage non calculable au niveau SH6."
+                ),
+                "source": "socle",
+            }
     if not line:
         return {
             "available": False,

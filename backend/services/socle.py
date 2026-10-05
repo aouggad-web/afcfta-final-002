@@ -181,6 +181,17 @@ def normaliser_code(code: str) -> str:
     return chiffres
 
 
+def positions_nationales(iso3: str, hs6: str) -> list:
+    """Les positions nationales publiées sous un SH6 (codes de plus de six
+    chiffres), triées."""
+    hs6 = normaliser_code(hs6)[:6]
+    return [
+        {"code": code, "designation": p.get("designation")}
+        for code, p in sorted(charger(_iso3(iso3)).get("positions", {}).items())
+        if code.startswith(hs6) and len(code) > 6
+    ]
+
+
 def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
     """Rendre (position, provenance) pour un code national ou SH6.
 
@@ -222,6 +233,14 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
     if trouve is None and niveau == "national":
         hs6 = code[:6]
         trouve, niveau = positions.get(hs6), "hs6"
+    # UN SH6 QUI N'EST PAS UNE POSITION DU TARIF, mais sous lequel le tarif ne
+    # publie qu'une position nationale : c'est elle, il n'y a rien à choisir.
+    # Plusieurs : le choix revient à l'opérateur (`positions_nationales`).
+    if trouve is None and niveau == "hs6":
+        sous = positions_nationales(iso3, code)
+        if len(sous) == 1:
+            code, niveau = sous[0]["code"], "national"
+            trouve = positions[code]
     if trouve is None:
         raise KeyError(
             f"{iso3}/{code} : position absente du socle "

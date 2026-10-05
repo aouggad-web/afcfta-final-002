@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 import { Search, Globe, TrendingDown, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { normalizeTaxesDetail } from './taxesDetail';
+import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
 import { montant, montantUnite } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
@@ -106,6 +107,9 @@ const formatCurrency = (value, language) => {
   return montant(value, language);
 };
 
+// Un taux absent reste absent : jamais affiché « 0 % ».
+const pct = (v) => (v === null || v === undefined ? '—' : `${v}%`);
+
 // Regional groupings
 const REGIONS = {
   'north': ['DZA', 'EGY', 'LBY', 'MAR', 'TUN', 'MRT', 'SDN'],
@@ -124,6 +128,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [productDescription, setProductDescription] = useState('');
+  const [origin, setOrigin] = useState('');
+  const [echecs, setEchecs] = useState([]);
   
   const texts = {
     fr: {
@@ -132,6 +138,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       hsCode: 'Code HS (6-12 chiffres)',
       value: 'Valeur (USD)',
       selectCountries: 'Sélectionnez les pays à comparer',
+      origin: "Pays d'origine (la préférence ZLECAf en dépend)",
+      noOrigin: 'Sans origine — droit commun seul',
+      notCalculated: 'Non calculés',
       compare: 'Comparer',
       comparing: 'Comparaison en cours...',
       results: 'Résultats de la Comparaison',
@@ -161,6 +170,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       hsCode: 'HS Code (6-12 digits)',
       value: 'Value (USD)',
       selectCountries: 'Select countries to compare',
+      origin: 'Country of origin (AfCFTA preference depends on it)',
+      noOrigin: 'No origin — MFN only',
+      notCalculated: 'Not calculated',
       compare: 'Compare',
       comparing: 'Comparing...',
       results: 'Comparison Results',
@@ -192,8 +204,12 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   useEffect(() => {
     const loadCountries = async () => {
       try {
-        const response = await axios.get(`${API}/authentic-tariffs/countries`);
-        setAvailableCountries(response.data.countries.map(c => c.iso3));
+        // Les pays du socle, la source du calcul ; un pays sans position
+        // n'y est pas proposé.
+        const response = await axios.get(`${API}/calcul/pays`);
+        setAvailableCountries(Object.entries(response.data.pays)
+          .filter(([, p]) => p.positions > 0)
+          .map(([iso3]) => iso3));
       } catch (error) {
         console.error('Error loading countries:', error);
       }
@@ -231,66 +247,78 @@ export default function MultiCountryComparison({ language = 'fr' }) {
     
     setLoading(true);
     setResults([]);
-    
+    setEchecs([]);
+
+    // LE MÊME CALCUL QUE L'ONGLET PRINCIPAL : POST /calcul, pour chaque pays.
+    // La préférence ZLECAf dépend de l'origine ; sans origine, seul le droit
+    // commun est calculé, et la colonne ZLECAf reste vide plutôt qu'estimée.
     try {
-      const promises = selectedCountries.map(iso3 =>
-        axios.get(`${API}/authentic-tariffs/calculate/${iso3}/${hsCode}?value=${value}&language=${language}`)
-          .then(res => ({ iso3, ...res.data, success: true }))
-          .catch(err => ({ iso3, success: false, error: err.message }))
-      );
-      
-      const responses = await Promise.all(promises);
+      const cifValue = parseFloat(value);
+      const responses = await Promise.all(selectedCountries.map((iso3) =>
+        axios.post(`${API}/calcul`, buildCalculRequestBody({
+          destinationISO3: iso3,
+          originISO3: origin || undefined,
+          hsCode,
+          cifValue,
+        }))
+          .then((res) => ({ iso3, calcul: res.data }))
+          .catch((err) => {
+            const detail = err.response?.data?.detail;
+            return { iso3, erreur: typeof detail === 'string' ? detail : (detail?.message || err.message) };
+          })));
+
       const successfulResults = responses
-        .filter(r => r.success)
-        .map(r => {
-          const npfTotal = r.npf_calculation?.total_to_pay || 0;
-          const zlecafTotal = r.zlecaf_calculation?.total_to_pay || 0;
-          const savings = npfTotal - zlecafTotal;
-          
+        .filter((r) => r.calcul)
+        .map(({ iso3, calcul }) => {
+          const r = mapCalculToLegacyResult(calcul, {
+            originCountry: origin || null, destinationCountry: iso3, hsCode, cifValue,
+          });
+          const lignes = calcul.npf?.lignes || [];
+          const taux = (pred) => lignes.find(pred)?.taux_pct ?? null;
           return {
-            iso3: r.iso3,
-            iso2: ISO3_TO_ISO2[r.iso3],
-            countryName: COUNTRY_NAMES[r.iso3]?.[language] || r.iso3,
+            iso3,
+            iso2: ISO3_TO_ISO2[iso3],
+            countryName: COUNTRY_NAMES[iso3]?.[language] || iso3,
             description: r.description,
-            rates: r.rates || {},
-            // Même normalisation que le calculateur : le point d'entrée
-            // authentique renvoie `taxes_detail` en OBJET indexé par code de
-            // taxe. Stocké tel quel, `r.taxes.slice(...)` plus bas levait une
-            // TypeError et le tableau comparatif ne s'affichait pas.
+            etat: calcul.npf?.etat,
+            ddRate: taux((l) => l.code === 'DD'),
+            vatRate: taux((l) => l.famille === 'tva'),
             taxes: normalizeTaxesDetail(r.taxes_detail, r.taxes_breakdown),
-            npfTotal,
-            zlecafTotal,
-            savings,
-            savingsPercent: npfTotal > 0 ? ((savings / npfTotal) * 100).toFixed(1) : 0
+            npfTotal: r.normal_total_cost,
+            zlecafTotal: r.zlecaf_total_cost,
+            savings: r.savings,
+            savingsPercent: r.savings_percentage,
           };
         })
-        .sort((a, b) => a.zlecafTotal - b.zlecafTotal);
-      
+        // Le moins coûteux d'abord : total ZLECAf s'il est établi, sinon NPF ;
+        // un pays sans total va en fin de liste.
+        .sort((a, b) => (a.zlecafTotal ?? a.npfTotal ?? Infinity) - (b.zlecafTotal ?? b.npfTotal ?? Infinity));
+
       if (successfulResults.length > 0) {
         setProductDescription(successfulResults[0].description);
       }
-      
+
       setResults(successfulResults);
+      setEchecs(responses.filter((r) => r.erreur));
     } catch (error) {
       console.error('Comparison error:', error);
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Chart data
   const chartData = results.map(r => ({
     name: `${getFlag(r.iso2)} ${r.countryName}`,
-    'NPF': r.npfTotal - value,
-    'ZLECAf': r.zlecafTotal - value,
+    'NPF': r.npfTotal === null ? null : r.npfTotal - value,
+    'ZLECAf': r.zlecafTotal === null ? null : r.zlecafTotal - value,
     savings: r.savings
   }));
   
   // Radar data for tax rates
   const radarData = results.length > 0 ? [
-    { metric: 'DD%', ...Object.fromEntries(results.map(r => [r.countryName, r.rates.dd_rate_pct || 0])) },
-    { metric: 'TVA%', ...Object.fromEntries(results.map(r => [r.countryName, r.rates.vat_rate_pct || 0])) },
-    { metric: language === 'fr' ? 'Autres%' : 'Other%', ...Object.fromEntries(results.map(r => [r.countryName, r.rates.other_taxes_pct || 0])) }
+    { metric: 'DD%', ...Object.fromEntries(results.map(r => [r.countryName, r.ddRate])) },
+    { metric: 'TVA%', ...Object.fromEntries(results.map(r => [r.countryName, r.vatRate])) },
   ] : [];
   
   // Best country
@@ -339,6 +367,22 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             </div>
           </div>
           
+          <div className="space-y-2">
+            <Label htmlFor="compare-origin">{t.origin}</Label>
+            <select
+              id="compare-origin"
+              value={origin}
+              onChange={(e) => setOrigin(e.target.value)}
+              className="w-full h-10 rounded-md border border-[var(--afcfta-border)] bg-[var(--overlay)] px-3 text-sm text-[var(--text)]"
+              data-testid="compare-origin"
+            >
+              <option value="">{t.noOrigin}</option>
+              {availableCountries.map((iso3) => (
+                <option key={iso3} value={iso3}>{COUNTRY_NAMES[iso3]?.[language] || iso3}</option>
+              ))}
+            </select>
+          </div>
+
           {/* Country Selection by Region */}
           <div className="space-y-3">
             <Label>{t.selectCountries}</Label>
@@ -408,6 +452,15 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         </CardContent>
       </Card>
       
+      {echecs.length > 0 && (
+        <Card>
+          <CardContent className="py-4 text-sm text-[var(--afcfta-muted)]" data-testid="compare-echecs">
+            <span className="font-medium text-[var(--text)]">{t.notCalculated} :</span>{' '}
+            {echecs.map((e) => `${COUNTRY_NAMES[e.iso3]?.[language] || e.iso3} (${e.erreur})`).join(' · ')}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Results */}
       {results.length > 0 && (
         <>
@@ -441,10 +494,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm opacity-90">{t.zlecafTotal}</p>
-                    <p className="text-3xl font-bold">{formatCurrency(bestCountry.zlecafTotal, language)}</p>
+                    <p className="text-sm opacity-90">{bestCountry.zlecafTotal != null ? t.zlecafTotal : t.npfTotal}</p>
+                    <p className="text-3xl font-bold">{formatCurrency(bestCountry.zlecafTotal ?? bestCountry.npfTotal, language)}</p>
                     <Badge className="bg-[color-mix(in_srgb,var(--bg)_12%,transparent)] text-[var(--bg)] border-transparent mt-2">
-                      {t.savings}: {formatCurrency(bestCountry.savings, language)} (-{bestCountry.savingsPercent}%)
+                      {t.savings}: {formatCurrency(bestCountry.savings, language)}{bestCountry.savingsPercent != null && ` (-${bestCountry.savingsPercent}%)`}
                     </Badge>
                   </div>
                 </div>
@@ -491,10 +544,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                           </div>
                         </td>
                         <td className="text-center p-3 font-mono">
-                          {r.rates.dd_rate_pct || 0}%
+                          {pct(r.ddRate)}
                         </td>
                         <td className="text-center p-3 font-mono">
-                          {r.rates.vat_rate_pct || 0}%
+                          {pct(r.vatRate)}
                         </td>
                         <td className="p-3">
                           <div className="flex flex-wrap gap-1">
@@ -520,9 +573,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                           <div className="text-[var(--success)] font-bold">
                             {formatCurrency(r.savings, language)}
                           </div>
-                          <div className="text-xs text-[var(--afcfta-muted)]">
-                            -{r.savingsPercent}%
-                          </div>
+                          {r.savingsPercent != null && (
+                            <div className="text-xs text-[var(--afcfta-muted)]">
+                              -{r.savingsPercent}%
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}
