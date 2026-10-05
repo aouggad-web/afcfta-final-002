@@ -41,6 +41,7 @@ import {
   buildCalculRequestBody,
   expeditionSacuRequise,
   mapCalculToLegacyResult,
+  localiserResultat,
   moteurRendCompteDesMesures,
   paysExpeditionPour,
 } from './unifiedCalculator';
@@ -966,6 +967,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             : precedent));
         } catch (formalitesError) {
           // Silencieux : une formalité absente n'est pas un montant faux.
+        }
+        // LA CONVERSION EN MONNAIE LOCALE, comme sur l'ancien chemin : le moteur
+        // liquide en USD, le module Banque donne le taux (même service de
+        // change). Sans taux, l'écran reste en USD seul.
+        try {
+          const conversion = (await axios.get(`${API}/banking/forex/convert`, {
+            params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
+          })).data;
+          setResult((precedent) => localiserResultat(precedent, conversion));
+        } catch (conversionError) {
+          // Silencieux : les montants en USD restent justes.
         }
         try {
           const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
