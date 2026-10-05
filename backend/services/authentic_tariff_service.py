@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import unicodedata
 from collections import OrderedDict
 from math import isfinite
 from typing import Dict, Optional
@@ -1149,20 +1150,31 @@ def formalites_et_statut(country_iso3, hs_code):
     état honnête pour une liste vide, et l'interface doit le dire au lieu de
     se taire.
     """
-    line = get_tariff_line(country_iso3, hs_code)
-    if line is None:
-        return [], FORMALITES_POSITION_INTROUVABLE
     # Une source exhaustive change la nature de la liste vide : elle cesse
     # d'être une lacune pour devenir un constat — celui de la fiche de la
     # position, que seule une position relevée porte. Voir
     # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
+    # Tout se lit alors sur le crawl : le SH6 est connu quand une position du
+    # tarif le porte.
     if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
         code = hs_code.replace(".", "").replace(" ", "")
-        position = load_crawled_position_index(country_iso3).get(code)
+        index = load_crawled_position_index(country_iso3)
+        position = index.get(code)
         if position is None:
-            return [], FORMALITES_NON_ETABLIES
+            if any(c.startswith(code[:6]) for c in index):
+                return [], FORMALITES_NON_ETABLIES
+            return [], FORMALITES_POSITION_INTROUVABLE
         formalites = _normalize_crawled_formalities(position.get("formalities"))
         return formalites, FORMALITES_DOCUMENTEES if formalites else FORMALITES_AUCUNE_PARTICULIERE
+    line = get_tariff_line(country_iso3, hs_code)
+    if line is None:
+        # Pays sans ligne ETL : la position nationale du crawl, si elle existe.
+        position = load_crawled_position_index(country_iso3).get(
+            hs_code.replace(".", "").replace(" ", "")
+        )
+        if position is None:
+            return [], FORMALITES_POSITION_INTROUVABLE
+        line = {"administrative_formalities": _normalize_crawled_formalities(position.get("formalities"))}
     formalites = line.get("administrative_formalities") or []
     if formalites:
         return formalites, FORMALITES_DOCUMENTEES
@@ -1232,6 +1244,33 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
     }
 
 
+def _plier(texte):
+    """Minuscules sans accents : les tarifs publient « Cafe », l'opérateur tape « café »."""
+    decompose = unicodedata.normalize("NFKD", texte.lower())
+    return "".join(c for c in decompose if not unicodedata.combining(c))
+
+
+def _correspond(requete, texte):
+    """Chaque mot de la requête figure dans le texte, accents ignorés."""
+    texte = _plier(texte)
+    return all(mot in texte for mot in _plier(requete).split())
+
+
+def _pertinence(requete, texte, intitule):
+    """Clé de tri d'une position trouvée (la plus petite d'abord).
+
+    Les mots de la requête présents comme mots entiers, pluriel admis :
+    « lait » range le lait avant les laitances. Puis la place du premier
+    d'entre eux dans l'intitulé de la rangée : « sucre » range les sucres
+    (« Sucres de canne… ») avant le lait « additionné de sucre ».
+    """
+    texte, intitule = _plier(texte), _plier(intitule or texte)
+    motifs = [rf"\b{re.escape(mot)}[sx]?\b" for mot in _plier(requete).split()]
+    entiers = sum(1 for motif in motifs if re.search(motif, texte))
+    places = [m.start() for m in (re.search(motif, intitule) for motif in motifs) if m]
+    return (-entiers, min(places, default=len(intitule)))
+
+
 def search_tariff_lines(country_iso3, query, language="fr", limit=20):
     """Search tariff lines by HS code prefix or description keyword.
 
@@ -1296,6 +1335,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
     # ── 1. Crawled national/source positions (6-12 digits) ─────────────────
     crawled_index = load_crawled_position_index(country_iso3)
     if crawled_index:
+        trouves = []
         for code, sp in crawled_index.items():
             # This PR adds national positions only. Existing HS6 lines retain
             # the ETL search path's source, shape and priority unchanged.
@@ -1303,14 +1343,29 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                 continue
             if code in seen_codes:
                 continue
-            name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
-            if code.startswith(q) or q in name:
-                results.append(
-                    _build_result_from_crawled_position(code, sp, etl_positions, country_iso3)
+            # La désignation de la position, et les libellés publiés de sa
+            # rangée et de son chapitre quand la source les donne.
+            name = " ".join(
+                x
+                for x in (
+                    sp.get("name") or sp.get("description") or sp.get("designation"),
+                    sp.get("heading_label"),
+                    sp.get("chapter_label"),
                 )
-                seen_codes.add(code)
-                if len(results) >= limit:
-                    return results
+                if x
+            )
+            if code.startswith(q):
+                trouves.append((0, (0, 0), code, sp))
+            elif _correspond(q, name):
+                trouves.append((1, _pertinence(q, name, sp.get("heading_label")), code, sp))
+        # Le code d'abord, puis la pertinence, puis l'ordre du tarif.
+        for _, _, code, sp in sorted(trouves, key=lambda t: t[:3]):
+            results.append(
+                _build_result_from_crawled_position(code, sp, etl_positions, country_iso3)
+            )
+            seen_codes.add(code)
+            if len(results) >= limit:
+                return results
 
     # ── 2. ETL tariff_lines (HS6-level) ─────────────────────────────────────
     if len(results) < limit:
@@ -1319,7 +1374,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
             for line in data.get("tariff_lines", []):
                 hs6 = line.get("hs6", "")
                 desc = line.get(desc_key, line.get("description_fr", line.get("designation", "")))
-                if hs6 in seen_codes or not (hs6.startswith(q) or q in desc.lower()):
+                if hs6 in seen_codes or not (hs6.startswith(q) or _correspond(q, desc)):
                     continue
                 # Un HS6 ETL est générique : le pays a souvent plusieurs codes
                 # nationaux distincts sous ce préfixe, taxés différemment (ex.
@@ -1357,7 +1412,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
         nomenclature = load_nomenclature_map(country_iso3)
         if nomenclature:
             for code, description in nomenclature.items():
-                if code not in seen_codes and (code.startswith(q) or q in description.lower()):
+                if code not in seen_codes and (code.startswith(q) or _correspond(q, description)):
                     results.append(
                         {
                             "hs6": code[:6],

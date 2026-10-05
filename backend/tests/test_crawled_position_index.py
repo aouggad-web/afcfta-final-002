@@ -630,3 +630,22 @@ def test_calculator_uses_collected_rates_for_scalar_and_list_schemas(
     assert result["rates"]["vat_rate_pct"] == 99
     assert result["taxes_detail"]["DD"]["rate"] == 99
     assert result["taxes_detail"]["TVA"]["rate"] == 99
+
+
+@pytest.mark.parametrize(
+    "requete,chapitre",
+    [
+        ("café", "0901"),  # la DGD écrit « Cafe »
+        ("viande bovine", "0201"),  # « Viandes des animaux de l'espece bovine »
+        ("lait", "0401"),  # le lait avant les laitances (0302)
+        ("sucre", "1701"),  # les sucres avant le lait « additionné de sucre »
+    ],
+)
+def test_keyword_search_ignores_accents_and_ranks_the_named_goods_first(
+    monkeypatch, requete, chapitre
+):
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+
+    results = service.search_tariff_lines("DZA", requete, limit=20)
+
+    assert results and results[0]["national_code"].startswith(chapitre)
