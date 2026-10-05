@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "objet": "Malawi : assiette de l'accise (CIF + droit de douane) et de la TVA à l'importation (CIF + droit + accise)",
+  "destination_iso3": "MWI",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "primaire — Value Added Tax Act (Cap. 42:02) s.28, consolidation Laws.Africa au 31/12/2014, et guide officiel de la Malawi Revenue Authority (2022) qui en donne le calcul chiffré",
+  "source": {
+    "url": "https://www.mra.mw/admin/storage/downloads/TAX_GUIDE_FOR_CROSS_BORDER_TRADERS_2022_.pdf",
+    "institution": "Malawi Revenue Authority ; Laws.Africa (MalawiLII)"
+  },
+  "regle": {
+    "valeur": "Accise : CIF + droit de douane. TVA : CIF + droit de douane + accise (« all import duties and taxes, but excluding Value Added Tax »). Le taux de chaque ligne reste celui des colonnes 10 et 11 de l'Order 2022.",
+    "verbatim": "The value for determining the tax chargeable on taxable imports shall be the import value calculated in accordance with the Customs and Excise Act with the addition of all import duties and taxes, but excluding Value Added Tax. […] Duty = K500, 000 x 25% =K125, 000.00 Excise = (K500, 000 + K125, 000) x 10 % = K62, 500.00 16.5% VAT = (K500, 000 + K125, 000 + K62, 500.00) x 16.5% = K113, 437.50",
+    "reference": "Value Added Tax Act (Cap. 42:02) s.28 ; MRA, « Guide for Cross-Border Traders » (2022), p. 10-11",
+    "portee": "crawlers/countries/malawi_tariffs_order_scraper.ASSIETTES_ETABLIES → backend/data/crawled/MWI_tariffs.json (col. 10 accise, col. 11 TVA). L'Advance Income Tax (col. 12) reste sans assiette.",
+    "texte_archive": "sources/MWI_assiette_accise_TVA.texte-extrait.txt",
+    "sha256": "fb1ddd907c4e1ded486f7e3e6cd442a9fcea1b7216217aeeb738480a8374a594"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "L'Advance Income Tax (col. 12, 10 % sur 7 120 positions) : ni le VAT Act ni le guide n'en donnent l'assiette, ni ne disent si elle entre dans celle de la TVA ; le guide la calcule sans elle. Elle reste non liquidable, et les positions qui la portent restent PARTIEL.",
+    "Un amendement de la s.28 postérieur à 2014 (consolidation Laws.Africa) n'est pas vérifié.",
+    "L'accise spécifique (« USD 15 per 1,000 sticks », 2402.20) reste sans taux."
+  ],
+  "documents_archives": [
+    {"texte_archive": "sources/MWI_assiette_accise_TVA.texte-extrait.txt", "sha256": "fb1ddd907c4e1ded486f7e3e6cd442a9fcea1b7216217aeeb738480a8374a594"},
+    {"document_non_archive": "VAT Act (Cap. 42:02), Laws.Africa : https://media.malawilii.org/files/legislation/akn-mw-act-2005-7-eng-2014-12-31.pdf", "pdf_sha256": "643514d4ab8f00af00c75384886bddf1e6d0b2e7728cf88012b6fb1e66587bef"},
+    {"document_non_archive": "MRA, Guide for Cross-Border Traders (2 Mo) : https://www.mra.mw/admin/storage/downloads/TAX_GUIDE_FOR_CROSS_BORDER_TRADERS_2022_.pdf", "pdf_sha256": "2ccf6a21c7fc6f78a7802a670f242c7203ef3e843ab44a3f5dbaaf132c24d4cc"}
+  ]
+}

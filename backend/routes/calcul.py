@@ -29,6 +29,7 @@ seul contenu de `npf`/`preference` — et son indisponibilité ne fait jamais
 from __future__ import annotations
 
 import logging
+import re
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
@@ -312,7 +313,26 @@ def _completer_famille_absente(
         "note": entree["note"],
         "classification_source": "table_nationale_documentee",
     }
-    position = dict(position, droits=list(position.get("droits") or []) + [ligne])
+    ajouts = [ligne]
+    # Seychelles : la TVA s'assoit aussi sur l'accise, que le crawl ne porte
+    # pas. Sur les positions du barème d'accise, une ligne sans taux la rend
+    # visible : la TVA se déclare alors incomplète au lieu d'être sous-estimée.
+    accise = entree.get("accise_non_collectee")
+    demande = re.sub(r"\D", "", str(provenance.get("code_demande") or ""))
+    if accise and demande and any(c.startswith(demande) for c in accise["positions"]):
+        ajouts.insert(
+            0,
+            {
+                "code": "EXC",
+                "libelle": "Excise tax",
+                "famille": "accise",
+                "assiette": None,
+                "source": accise["source"],
+                "note": accise["note"],
+                "classification_source": "table_nationale_documentee",
+            },
+        )
+    position = dict(position, droits=list(position.get("droits") or []) + ajouts)
     complement = {
         "code": entree["code"],
         "taux_pct": entree["taux"],

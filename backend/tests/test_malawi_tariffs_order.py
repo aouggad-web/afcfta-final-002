@@ -141,10 +141,10 @@ def test_le_droit_de_douane_se_liquide_sur_le_prix_normal_de_la_schedule_a(socle
     assert "port or place of introduction" in origine
 
 
-@pytest.mark.parametrize("code_taxe", ["EXC", "TVA", "AIT"])
-def test_les_trois_prelevements_sans_assiette_ne_se_liquident_pas(socle, crawl, code_taxe):
-    """Le decret donne leurs TAUX, pas leur assiette, et aucun texte malawien lu
-    ici ne l'etablit. Les poser sur le CIF parce que c'est l'usage ailleurs
+@pytest.mark.parametrize("code_taxe", ["AIT"])
+def test_l_ait_sans_assiette_ne_se_liquide_pas(socle, crawl, code_taxe):
+    """Le decret donne son TAUX, pas son assiette, et aucun texte malawien lu
+    ici ne l'etablit (l'accise et la TVA ont la leur : voir le test suivant). Les poser sur le CIF parce que c'est l'usage ailleurs
     fabriquerait un montant credible et faux. Le profil generique « TVA sur
     CIF+DD » que portait backend/services/tax_profile_data.py sous la seule
     mention « Malawi Revenue Authority » a ete RETIRE pour cette raison."""
@@ -160,16 +160,25 @@ def test_les_trois_prelevements_sans_assiette_ne_se_liquident_pas(socle, crawl, 
     )
 
 
+@pytest.mark.parametrize(("code_taxe", "assiette"), [("EXC", "CIF+DD"), ("TVA", "CIF+DD+EXC")])
+def test_l_accise_et_la_tva_ont_l_assiette_du_vat_act_et_du_guide_mra(socle, code_taxe, assiette):
+    """VAT Act s.28 et guide MRA (2022) : accise sur CIF + droit, TVA sur CIF +
+    droit + accise (fiche MWI_assiette_accise_TVA_2026-10-05.json)."""
+    trouves = [d for p in socle["positions"].values() for d in _droits(p, code_taxe)]
+    assert trouves and {d.get("assiette") for d in trouves} == {assiette}
+
+
 def test_une_taxe_sans_assiette_est_declaree_et_non_liquidee(socle):
+    """Viande 0202.10 : DD 10 %, TVA 0 % sur CIF + DD ; l'AIT reste non
+    liquidée et le total n'est pas COMPLET."""
     from services.calcul import calculer
 
     resultat = calculer(socle["positions"]["02021000"], 10000.0)["npf"]
     lignes = {x["code"]: x for x in resultat["lignes"]}
     assert lignes["DD"]["montant"] == pytest.approx(1000.0)
-    for code in ("TVA", "AIT"):
-        if code in lignes:
-            assert lignes[code]["montant"] is None
-            assert lignes[code]["statut"] == "ASSIETTE_INDISPONIBLE"
+    assert lignes["TVA"]["base"] == pytest.approx(11000.0)
+    assert lignes["AIT"]["montant"] is None
+    assert lignes["AIT"]["statut"] == "ASSIETTE_INDISPONIBLE"
     assert resultat["etat"] != "COMPLET"
 
 

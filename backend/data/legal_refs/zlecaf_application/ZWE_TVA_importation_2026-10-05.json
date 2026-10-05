@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "objet": "TVA à l'importation au Zimbabwe : 15,5 % depuis le 1er janvier 2026, sur la valeur en douane augmentée des droits (surtaxe exclue)",
+  "destination_iso3": "ZWE",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "primaire — Value Added Tax Act [Chapter 23:12] (copie consolidée jusqu'à l'Act 13/2023, publiée par la ZIDA), Finance (No. 2) Act 2022 (Government Gazette), et ZIMRA Public Notice No. 7 of 2026 pour le taux en vigueur",
+  "source": {
+    "url": "https://www.zimra.co.zw/public-notices?download=4441%3Apublic-notice-07-of-2026-change-of-vat-rate-on-submission-of-return-category-a&start=20",
+    "institution": "ZIMRA ; Parlement du Zimbabwe (Government Gazette) ; ZIDA",
+    "pdf_archive": "sources/ZWE_ZIMRA_public_notice_07_2026.pdf"
+  },
+  "regle": {
+    "valeur": "15,5 % (taux général depuis le 01/01/2026) ; assiette : valeur en douane + droits perçus sous le Customs and Excise Act, surtaxe exclue",
+    "verbatim": "the change of VAT rate from 15% to 15.5% effective 01 January 2026 […] the value to be placed on the importation of goods into Zimbabwe which are entered for home consumption in terms of the Customs Act shall be deemed to be the value thereof for customs duty purposes, plus any duty, excluding surtax, levied in terms of the said Act in respect of the importation of such goods.",
+    "reference": "ZIMRA Public Notice No. 7 of 2026 (taux) ; VAT Act [Chapter 23:12] s.6(1)(b) (TVA sur les importations, taux fixé par le Charging Act) et s.12(2) (valeur) ; Finance (No. 2) Act 2022 s.17 (taux 15 % de 2023 à 2025)",
+    "portee": "socle/tva_nationale.json, entrée ZWE : complète la TVA, famille absente du crawl SI 203/2022 (couverture tva = false). Assiette CIF+DD+EXC : la valeur en douane zimbabwéenne est le CIF (assiette du droit de douane, Customs and Excise Act s.106 et s.113) ; l'accise, perçue sous le même Act, entre dans l'assiette — portée sans taux au socle, elle rend la TVA incomplète là où elle existe, plutôt que sous-estimée.",
+    "texte_archive": "sources/ZWE_TVA_importation.texte-extrait.txt",
+    "sha256": "5d9e3c490d29d8830cf1414ee13d0abccf02c99fbc5867406dbab94ca79f1f31",
+    "sha256_pdf_origine": "b8729bf9653d0086693df895a4612ffa9fd9cb80f24e26c17604a4113748167b"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Les importations détaxées ou exonérées (VAT Act s.10, s.11 et règlements de la s.78) ne sont pas distinguées : taux standard sur toute position.",
+    "Le texte du Finance Act No. 7 of 2025 (s.34, qui porte le taux à 15,5 %) n'a pas été lu : le taux vient de l'avis public de la ZIMRA qui l'applique.",
+    "Un amendement de la s.12(2) postérieur à l'Act 13/2023 n'est pas vérifié."
+  ],
+  "documents_archives": [
+    {"texte_archive": "sources/ZWE_TVA_importation.texte-extrait.txt", "sha256": "5d9e3c490d29d8830cf1414ee13d0abccf02c99fbc5867406dbab94ca79f1f31"},
+    {"pdf_archive": "sources/ZWE_ZIMRA_public_notice_07_2026.pdf", "pdf_sha256": "b8729bf9653d0086693df895a4612ffa9fd9cb80f24e26c17604a4113748167b"},
+    {"document_non_archive": "VAT Act [Chapter 23:12], copie ZIDA (850 Ko) : https://eregulations.zidainvest.com/media/Value%20Added%20Tax%20Act%20Chapter%202312.pdf", "pdf_sha256": "1da8d8116b970134858666bcdafc3c7f5190ca01f5a43fdec735a9c86a228b6d"},
+    {"document_non_archive": "Government Gazette Extraordinary No. 147 du 30/12/2022 (4 Mo) : https://archive.gazettes.africa/archive/zw/2022/zw-government-gazette-dated-2022-12-30-no-147.pdf", "pdf_sha256": "5395bb7caa2c620c3dc2699f7f2c35cc304458f1b203bf59a4408c6020f349a4"}
+  ]
+}

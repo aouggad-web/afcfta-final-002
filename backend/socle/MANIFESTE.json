@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-05T09:40:42.201779+00:00",
+  "construit_le": "2026-10-05T10:37:53.457997+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1222,9 +1222,9 @@
       "fichier": "MWI.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
-      "source_sha256": "366dac8a1ee8c78161a9cc480ebc9fcbb3fd70e010d56a69be5f4ea9d0539b74",
-      "socle_sha256": "778093e08a349648981a5a6b9d4141dd52f1b9a4e85c3f00bb1476acc69f20a2",
-      "collecte": "2026-10-04",
+      "source_sha256": "f3624e0282f846667d0fb777fd1eb9b451a11bd444cc184f65a7674200c27f63",
+      "socle_sha256": "0662c64529ff202a5934edd1f29953fabca1fb1552d08754ab1b1c73ce9486a8",
+      "collecte": "2026-10-05",
       "etat": "PARTIEL",
       "familles": [
         "accise",
@@ -1235,17 +1235,17 @@
       "compteurs": {
         "positions": 7364,
         "droits": 22150,
-        "droits_liquidables": 7117,
+        "droits_liquidables": 14782,
         "positions_liquidables": 0,
         "preferentiels": 35587,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 248,
-        "assiettes_source": 7117,
+        "assiettes_source": 14783,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
-        "assiettes_indisponibles": 14786,
+        "assiettes_indisponibles": 7120,
         "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
@@ -2032,6 +2032,6 @@
     ],
     "positions": 368260,
     "droits": 1120443,
-    "droits_liquidables": 1072966
+    "droits_liquidables": 1080631
   }
 }
