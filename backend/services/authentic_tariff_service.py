@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import unicodedata
 from collections import OrderedDict
 from math import isfinite
 from typing import Dict, Optional
@@ -1060,7 +1061,6 @@ def _normalize_crawled_formalities(raw_formalities):
                 "code": item.get("code"),
                 "document_fr": item.get("document_fr", text),
                 "document_en": item.get("document_en", text),
-                "fap_official_label": item.get("fap_official_label"),
             }
         )
     return normalized
@@ -1090,34 +1090,27 @@ FORMALITES_POSITION_INTROUVABLE = "POSITION_INTROUVABLE"
 #: propriétaire, prise le 21/09/2026 — déclarée ici pour qu'elle ne soit pas
 #: reprise plus tard comme un oubli.
 #:
-#: CORRECTION D'UNE ERREUR DE MA PART, relevée par le propriétaire. J'avais
-#: rangé la « déclaration d'importation du produit » algérienne parmi ces
-#: obligations générales. C'est faux : ce n'est pas la déclaration en douane,
-#: c'est une demande adressée aux services du contrôle de la qualité du
-#: ministère du Commerce. Elle est donc PARTICULIÈRE, attachée à des
-#: marchandises précises — et le produit la sert déjà, sur 6 816 positions
-#: algériennes.
+#: La « déclaration d'importation du produit » algérienne (code 910) n'est pas
+#: l'une de ces obligations générales : c'est une demande adressée au contrôle
+#: de la qualité du ministère du Commerce, attachée à des marchandises
+#: précises — une formalité PARTICULIÈRE, servie avec son code comme les autres.
 #:
-#: 902 ET 910 SONT DES CODES DE DOCUMENTS, pas des noms de procédure : la DGD
-#: codifie ainsi les pièces de sa liste FAP — 902 « Autorisation d'admission du
-#: produit », 910 « Déclaration d'importation du produit », et de même 140,
-#: 150, 160, 210, 215. Sur les 6 816 positions portant la déclaration
-#: d'importation, 96 seulement en portent le code : les 6 720 autres ont le
-#: même libellé sans code, faute de rapprochement à la liste. Écart constaté,
-#: non corrigé ici — il n'ôte rien à l'exigence, il en retire l'identifiant.
+#: Pour ces pays, formalites_et_statut lit la fiche de la position, jamais
+#: l'agrégat SH6 : la formalité d'une position ne vaut pas pour ses voisines
+#: du même SH6. (Le chemin historique calculate_import_taxes n'est pas repris
+#: ici : l'écran algérien le quitte pour POST /calcul.)
 #:
 #: Chaque entrée exige sa preuve, relevée sur le portail. Ne jamais ajouter un
 #: pays ici « par analogie » : c'est exactement la généralisation que le Maroc a
 #: démentie sur les droits nuls.
 SOURCES_EXHAUSTIVES_FORMALITES = {
     "DZA": (
-        "conformepro.dz publie un bloc « Formalités » lorsqu'une formalité "
-        "administrative particulière (FAP) existe, et aucun bloc sinon. Vérifié "
-        "le 21/09/2026 sur un échantillon tiré au sort de 80 positions : les 60 "
-        "positions sans formalité au crawl ne portent AUCUN bloc au portail, et "
-        "19 des 20 positions avec formalité en portent un (la vingtième a échoué "
-        "en réseau). Le crawl conserve d'ailleurs le code officiel de chaque "
-        "formalité (`fap_code`, `match_status: MATCHED_DGD_FAP_LIST`)."
+        "La fiche « sous-position » de l'e-service DGD publie le tableau "
+        "« Formalités Administratives Particulières » (code, document) quand "
+        "une formalité particulière frappe la position, et aucun tableau sinon. "
+        "Vérifié sur la fiche même de chaque position : relevé des 03 et 04/10/2026, "
+        "17 345 fiches sur 17 345 codes officiels, 8 671 avec tableau, 8 674 "
+        "sans (data/dza/releve_dgd.json)."
     ),
 }
 
@@ -1157,17 +1150,34 @@ def formalites_et_statut(country_iso3, hs_code):
     état honnête pour une liste vide, et l'interface doit le dire au lieu de
     se taire.
     """
+    # Une source exhaustive change la nature de la liste vide : elle cesse
+    # d'être une lacune pour devenir un constat — celui de la fiche de la
+    # position, que seule une position relevée porte. Voir
+    # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
+    # Tout se lit alors sur le crawl : le SH6 est connu quand une position du
+    # tarif le porte.
+    if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
+        code = hs_code.replace(".", "").replace(" ", "")
+        index = load_crawled_position_index(country_iso3)
+        position = index.get(code)
+        if position is None:
+            if any(c.startswith(code[:6]) for c in index):
+                return [], FORMALITES_NON_ETABLIES
+            return [], FORMALITES_POSITION_INTROUVABLE
+        formalites = _normalize_crawled_formalities(position.get("formalities"))
+        return formalites, FORMALITES_DOCUMENTEES if formalites else FORMALITES_AUCUNE_PARTICULIERE
     line = get_tariff_line(country_iso3, hs_code)
     if line is None:
-        return [], FORMALITES_POSITION_INTROUVABLE
+        # Pays sans ligne ETL : la position nationale du crawl, si elle existe.
+        position = load_crawled_position_index(country_iso3).get(
+            hs_code.replace(".", "").replace(" ", "")
+        )
+        if position is None:
+            return [], FORMALITES_POSITION_INTROUVABLE
+        line = {"administrative_formalities": _normalize_crawled_formalities(position.get("formalities"))}
     formalites = line.get("administrative_formalities") or []
     if formalites:
         return formalites, FORMALITES_DOCUMENTEES
-    # Une source exhaustive change la nature de la liste vide : elle cesse
-    # d'être une lacune pour devenir un constat. Voir
-    # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
-    if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
-        return [], FORMALITES_AUCUNE_PARTICULIERE
     return [], FORMALITES_NON_ETABLIES
 
 
@@ -1234,6 +1244,33 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
     }
 
 
+def _plier(texte):
+    """Minuscules sans accents : les tarifs publient « Cafe », l'opérateur tape « café »."""
+    decompose = unicodedata.normalize("NFKD", texte.lower())
+    return "".join(c for c in decompose if not unicodedata.combining(c))
+
+
+def _correspond(requete, texte):
+    """Chaque mot de la requête figure dans le texte, accents ignorés."""
+    texte = _plier(texte)
+    return all(mot in texte for mot in _plier(requete).split())
+
+
+def _pertinence(requete, texte, intitule):
+    """Clé de tri d'une position trouvée (la plus petite d'abord).
+
+    Les mots de la requête présents comme mots entiers, pluriel admis :
+    « lait » range le lait avant les laitances. Puis la place du premier
+    d'entre eux dans l'intitulé de la rangée : « sucre » range les sucres
+    (« Sucres de canne… ») avant le lait « additionné de sucre ».
+    """
+    texte, intitule = _plier(texte), _plier(intitule or texte)
+    motifs = [rf"\b{re.escape(mot)}[sx]?\b" for mot in _plier(requete).split()]
+    entiers = sum(1 for motif in motifs if re.search(motif, texte))
+    places = [m.start() for m in (re.search(motif, intitule) for motif in motifs) if m]
+    return (-entiers, min(places, default=len(intitule)))
+
+
 def search_tariff_lines(country_iso3, query, language="fr", limit=20):
     """Search tariff lines by HS code prefix or description keyword.
 
@@ -1298,6 +1335,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
     # ── 1. Crawled national/source positions (6-12 digits) ─────────────────
     crawled_index = load_crawled_position_index(country_iso3)
     if crawled_index:
+        trouves = []
         for code, sp in crawled_index.items():
             # This PR adds national positions only. Existing HS6 lines retain
             # the ETL search path's source, shape and priority unchanged.
@@ -1305,14 +1343,29 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                 continue
             if code in seen_codes:
                 continue
-            name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
-            if code.startswith(q) or q in name:
-                results.append(
-                    _build_result_from_crawled_position(code, sp, etl_positions, country_iso3)
+            # La désignation de la position, et les libellés publiés de sa
+            # rangée et de son chapitre quand la source les donne.
+            name = " ".join(
+                x
+                for x in (
+                    sp.get("name") or sp.get("description") or sp.get("designation"),
+                    sp.get("heading_label"),
+                    sp.get("chapter_label"),
                 )
-                seen_codes.add(code)
-                if len(results) >= limit:
-                    return results
+                if x
+            )
+            if code.startswith(q):
+                trouves.append((0, (0, 0), code, sp))
+            elif _correspond(q, name):
+                trouves.append((1, _pertinence(q, name, sp.get("heading_label")), code, sp))
+        # Le code d'abord, puis la pertinence, puis l'ordre du tarif.
+        for _, _, code, sp in sorted(trouves, key=lambda t: t[:3]):
+            results.append(
+                _build_result_from_crawled_position(code, sp, etl_positions, country_iso3)
+            )
+            seen_codes.add(code)
+            if len(results) >= limit:
+                return results
 
     # ── 2. ETL tariff_lines (HS6-level) ─────────────────────────────────────
     if len(results) < limit:
@@ -1321,7 +1374,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
             for line in data.get("tariff_lines", []):
                 hs6 = line.get("hs6", "")
                 desc = line.get(desc_key, line.get("description_fr", line.get("designation", "")))
-                if hs6 in seen_codes or not (hs6.startswith(q) or q in desc.lower()):
+                if hs6 in seen_codes or not (hs6.startswith(q) or _correspond(q, desc)):
                     continue
                 # Un HS6 ETL est générique : le pays a souvent plusieurs codes
                 # nationaux distincts sous ce préfixe, taxés différemment (ex.
@@ -1359,7 +1412,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
         nomenclature = load_nomenclature_map(country_iso3)
         if nomenclature:
             for code, description in nomenclature.items():
-                if code not in seen_codes and (code.startswith(q) or q in description.lower()):
+                if code not in seen_codes and (code.startswith(q) or _correspond(q, description)):
                     results.append(
                         {
                             "hs6": code[:6],

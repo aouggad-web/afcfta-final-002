@@ -8,9 +8,9 @@ ensuite à chaque pays (pivots dédiés).
 
 CLI :
     python -m crawlers.scrapling_engine.quality_gate \
-        --candidate data/crawled/DZA_tariffs.json \
-        --reference data/crawled/DZA_tariffs.json \
-        --pivots frontend/public/DZA_tarif_douanier_echantillon.csv
+        --candidate /tmp/MAR_tariffs.json \
+        --reference data/crawled/MAR_tariffs.json \
+        [--pivots frontend/public/MAR_tarif_douanier_echantillon.csv]
 Sortie : rapport JSON sur stdout ; code retour 0 = PASS, 1 = FAIL.
 """
 

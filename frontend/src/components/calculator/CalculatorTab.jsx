@@ -41,6 +41,7 @@ import {
   buildCalculRequestBody,
   expeditionSacuRequise,
   mapCalculToLegacyResult,
+  localiserResultat,
   moteurRendCompteDesMesures,
   paysExpeditionPour,
 } from './unifiedCalculator';
@@ -504,7 +505,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // Cette liste s'allonge PAYS PAR PAYS, quand le socle sert ce pays mieux
       // que l'autre porte et que rien de ce qui précède ne lui manque. Elle ne
       // se remplace pas par « tous ».
-      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS']);
+      //
+      // L'ALGÉRIE (bascule 2.3). Sa valeur en douane est le CIF et aucune
+      // remise ne la concerne : rien de ce qui précède ne lui manque. Le
+      // socle est sa seule porte de calcul : l'autre n'a plus de fichier
+      // algérien à lire.
+      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS', 'DZA']);
 
       let calculSocle = null;
       let erreurSocle = null;
@@ -517,8 +523,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // est absent ou périmé et refuse de servir. Tout le reste — 422 de
           // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
           // de dégrader en silence vers une source moins vérifiée.
+          //
+          // L'Algérie, elle, ne se replie jamais : l'autre porte n'a rien à
+          // lui servir. Une position absente de son socle est une erreur
+          // affichée, avec le message du socle.
           const statut = socleError.response?.status;
-          if (statut !== 404 && statut !== 503) {
+          if (destISO3 === 'DZA' || (statut !== 404 && statut !== 503)) {
             throw socleError;
           }
           erreurSocle = socleError;
@@ -956,6 +966,22 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             : precedent));
         } catch (formalitesError) {
           // Silencieux : une formalité absente n'est pas un montant faux.
+        }
+        // LA CONVERSION EN MONNAIE LOCALE, comme sur l'ancien chemin : le moteur
+        // liquide en USD, le module Banque donne le taux (même service de
+        // change). Sans taux, l'écran reste en USD seul.
+        try {
+          const conversion = (await axios.get(`${API}/banking/forex/convert`, {
+            params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
+          })).data;
+          // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
+          // résultat de SA demande (même pays et position, même valeur CIF).
+          setResult((precedent) => (
+            precedent?._quantite_cle === `${destISO3}|${cleanHsCode}` && precedent.value === parseFloat(value)
+              ? localiserResultat(precedent, conversion)
+              : precedent));
+        } catch (conversionError) {
+          // Silencieux : les montants en USD restent justes.
         }
         try {
           const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
@@ -2150,7 +2176,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             // Deux silences très différents, et l'opérateur doit les distinguer.
             //
             // Quand la source publie ses formalités de façon EXHAUSTIVE — c'est
-            // établi pour l'Algérie, échantillon à l'appui — une liste vide est
+            // établi pour l'Algérie, fiche DGD à l'appui — une liste vide est
             // un CONSTAT : la marchandise n'est soumise à aucune formalité
             // particulière. Dire « non établies » sous-estimerait ce que l'on
             // sait, et ferait passer une information solide pour une lacune.

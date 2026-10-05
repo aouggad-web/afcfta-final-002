@@ -24,16 +24,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 class TestCountryConfigs:
     """Tests for country-specific crawler configurations."""
 
-    def test_dza_config_structure(self):
-        from config.crawler_configs.dza_config import DZA_CONFIG
-
-        assert DZA_CONFIG["country_iso3"] == "DZA"
-        assert "tax_structure" in DZA_CONFIG
-        assert "DD" in DZA_CONFIG["tax_structure"]
-        assert "TVA" in DZA_CONFIG["tax_structure"]
-        assert "crawl_settings" in DZA_CONFIG
-        assert DZA_CONFIG["crawl_settings"]["async_enabled"] is True
-
     def test_mar_config_structure(self):
         from config.crawler_configs.mar_config import MAR_CONFIG
 
@@ -65,12 +55,11 @@ class TestCountryConfigs:
         assert "EU Association Agreement" in " ".join(TUN_CONFIG.get("preferential_agreements", []))
 
     def test_all_configs_have_data_paths(self):
-        from config.crawler_configs.dza_config import DZA_CONFIG
         from config.crawler_configs.egy_config import EGY_CONFIG
         from config.crawler_configs.mar_config import MAR_CONFIG
         from config.crawler_configs.tun_config import TUN_CONFIG
 
-        for cfg in [DZA_CONFIG, MAR_CONFIG, EGY_CONFIG, TUN_CONFIG]:
+        for cfg in [MAR_CONFIG, EGY_CONFIG, TUN_CONFIG]:
             assert "data_paths" in cfg
             assert "raw" in cfg["data_paths"]
             assert "parsed" in cfg["data_paths"]

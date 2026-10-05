@@ -17,6 +17,7 @@ from fastapi import HTTPException
 from routes import authentic_tariffs
 from services import tariff_doctrine
 from services.tariff_doctrine import (
+    crawl_enregistre,
     evaluate_country_file,
     get_country_doctrine_status,
     not_recrawled_http_detail,
@@ -98,8 +99,11 @@ def test_evaluate_refuses_unknown_status():
 # ── Statut doctrine par pays (fichiers réels) ─────────────────────────────────
 
 
-def test_doctrine_status_dza_is_servable():
-    assert get_country_doctrine_status("DZA")["status"] == "SERVABLE"
+def test_dza_is_consulted_from_its_registered_crawl():
+    # Le fichier ETL algérien (conformepro) est supprimé : l'Algérie n'est plus
+    # servie que par le crawl DGD inscrit au registre des sources.
+    assert get_country_doctrine_status("DZA")["status"] == "NO_FILE"
+    assert crawl_enregistre("DZA")
 
 
 def test_doctrine_status_synthetic_country_has_explicit_message():
@@ -180,7 +184,9 @@ def test_provider_refuses_country_even_if_postgres_has_data():
     # AGO : aucune donnée nationale conforme (synthétique archivé)
     assert provider.get_country_summary("AGO") is None
     assert provider.get_tariff_line("AGO", "010121") is None
-    assert provider.get_sub_positions("AGO", "010121") == []
+    # Les sous-positions viennent du seul crawl inscrit au registre, jamais
+    # de PostgreSQL.
+    assert {"code": "0101210010"} not in provider.get_sub_positions("AGO", "010121")
 
 
 # ── Routes : message explicite COUNTRY_NOT_RECRAWLED ──────────────────────────

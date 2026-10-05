@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildCalculRequestBody,
+  localiserResultat,
   mapCalculToLegacyResult,
   moteurRendCompteDesMesures,
 } from './unifiedCalculator';
@@ -639,5 +640,33 @@ describe('valeur FOB réclamée par le moteur (SACU)', () => {
       npf: { lignes: [droitFob()], manques: [{ code: 'DD', motif: 'VALEUR_FOB_REQUISE' }] },
     };
     expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
+  });
+});
+
+describe('localiserResultat', () => {
+  const conversion = { rate: 134, to_currency: 'DZD', currency_name: 'Dinar algérien',
+    source: 'open_er_api', timestamp: '2026-10-05T09:00:00+00:00', amount: 1000, converted_amount: 134000 };
+  const resultat = {
+    taxes_breakdown: [{ code: 'DD', amount_npf: 50, rate_npf_pct: 5, amount_zlecaf: null }],
+    taxes_summary: { npf: { droit_douane: 50, cout_total: 1101.6 }, zlecaf: null, economie_totale: null },
+  };
+
+  it('convertit les montants au taux du module Banque, sans toucher aux taux', () => {
+    const r = localiserResultat(resultat, conversion);
+    expect(r.taxes_breakdown[0]).toMatchObject({ amount_npf: 50, amount_npf_local: 6700, rate_npf_pct: 5 });
+    expect(r.currency).toMatchObject({ local_code: 'DZD', usd_to_local_rate: 134, available: true, value_local: 134000 });
+    expect(r.currency.summary_local.npf).toEqual({ droit_douane: 6700, cout_total: 147614.4 });
+  });
+
+  it('laisse absent un montant absent : aucun zéro fabriqué', () => {
+    const r = localiserResultat(resultat, conversion);
+    expect(r.taxes_breakdown[0].amount_zlecaf_local).toBeNull();
+    expect(r.currency.summary_local.zlecaf).toBeNull();
+    expect(r.currency.summary_local.economie_totale).toBeNull();
+  });
+
+  it('rend le résultat inchangé sans taux de change', () => {
+    expect(localiserResultat(resultat, null)).toBe(resultat);
+    expect(localiserResultat(resultat, { rate: null })).toBe(resultat);
   });
 });

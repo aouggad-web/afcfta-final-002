@@ -5,7 +5,7 @@ Pipeline de génération des données canoniques
 Génère les fichiers JSONL canoniques et les index de recherche
 pour le Moteur Réglementaire AfCFTA v3.
 
-Pays supportés : DZA, MAR, EGY, NGA, ZAF, KEN, CIV, GHA + tous les pays avec format enhanced_v2
+Pays supportés : MAR, EGY, NGA, ZAF, KEN, CIV, GHA + tous les pays avec format enhanced_v2
 """
 
 import json
@@ -17,16 +17,14 @@ from typing import Any, Dict, List
 # Ajouter le répertoire engine au path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from adapters.dza_adapter import DZAAdapter
 from adapters.generic_adapter import GenericAdapter, create_adapter
 from schemas.canonical_model import CanonicalTariffLine
 
 # Liste des pays majeurs à traiter en priorité
-MAJOR_COUNTRIES = ["DZA", "MAR", "EGY", "NGA", "ZAF", "KEN", "CIV", "GHA"]
+MAJOR_COUNTRIES = ["MAR", "EGY", "NGA", "ZAF", "KEN", "CIV", "GHA"]
 
 # Tous les pays disponibles dans /app/backend/data/tariffs/
 ALL_AVAILABLE_COUNTRIES = [
-    "DZA",
     "MAR",
     "EGY",
     "NGA",
@@ -90,12 +88,8 @@ class RegulatoryPipeline:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Registre des adaptateurs par pays
-        # DZA utilise son adaptateur spécifique (plus de détails)
-        # Tous les autres utilisent l'adaptateur générique
-        self.adapters = {
-            "DZA": DZAAdapter,
-        }
+        # Registre des adaptateurs par pays : tous utilisent l'adaptateur générique
+        self.adapters = {}
 
         # Ajouter les pays majeurs avec l'adaptateur générique
         for country in MAJOR_COUNTRIES:
@@ -163,11 +157,7 @@ class RegulatoryPipeline:
 
         # Créer l'adaptateur
         if iso3 in self.adapters:
-            adapter_class = self.adapters[iso3]
-            if iso3 == "DZA":
-                adapter = adapter_class()
-            else:
-                adapter = adapter_class()
+            adapter = self.adapters[iso3]()
         else:
             # Utiliser l'adaptateur générique pour les pays non enregistrés
             adapter = create_adapter(iso3)
@@ -247,7 +237,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Pipeline Moteur Réglementaire AfCFTA v3")
     parser.add_argument(
-        "--countries", nargs="+", help="Codes ISO3 des pays à traiter (ex: DZA MAR)", default=None
+        "--countries", nargs="+", help="Codes ISO3 des pays à traiter (ex: MAR TUN)", default=None
     )
     parser.add_argument("--output", help="Répertoire de sortie", default="/app/engine/output")
 

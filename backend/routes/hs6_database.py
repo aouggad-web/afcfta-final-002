@@ -3,13 +3,12 @@ HS6 Database Routes - Optimized for Data-Driven Search.
 Uses the TariffSearchEngine to provide complete and accurate tariff data.
 """
 
-import json
 import logging
-import os
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 from search.hs_code_search import get_search_engine
+from services.authentic_tariff_service import load_crawled_position_index
 
 logger = logging.getLogger(__name__)
 
@@ -107,19 +106,6 @@ def _build_search_result(code: str, data: dict, language: str, score: int) -> di
 router = APIRouter(prefix="/hs6")
 
 
-def load_algeria_nomenclature():
-    """Load Algeria nomenclature map for extended sub-position search"""
-    try:
-        data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
-        file_path = os.path.join(data_dir, "DZA_nomenclature_map.json")
-        if os.path.exists(file_path):
-            with open(file_path, "r", encoding="utf-8") as f:
-                return json.load(f)
-    except Exception as e:
-        logger.error(f"Error loading Algeria nomenclature: {e}")
-    return None
-
-
 def get_tariff_line(country: str, hs6: str) -> Optional[dict]:
     """Return basic tariff line data for a 6-digit HS code and country.
 
@@ -172,7 +158,8 @@ async def smart_search_hs6(
     """
     Smart HS6 search powered by the optimized TariffSearchEngine.
     Provides complete denominations (buffered) and real-time data loading.
-    Special handling for DZA (Algeria) with nomenclature_map lookup for extended codes.
+    Special handling for DZA (Algeria): a full national code is looked up in
+    the crawled DGD positions.
 
     Accepts ``q`` or ``query`` (alias) as the search term.  Returns results
     enriched with ``chapter_name``, ``full_position``, ``from_authentic`` and
@@ -185,12 +172,11 @@ async def smart_search_hs6(
         raise HTTPException(status_code=422, detail="Query must be at least 2 characters")
 
     try:
-        # Special case for long numeric codes (potentially Algeria extended sub-positions)
-        # Check Algeria nomenclature if query is a long numeric code (8+ digits)
+        # Code national algérien complet : la position et sa désignation sont
+        # celles de la fiche DGD, au crawl.
         if effective_q.isdigit() and len(effective_q) >= 8:
-            dza_nomenclature = load_algeria_nomenclature()
-            if dza_nomenclature and effective_q in dza_nomenclature:
-                logger.info(f"Found {effective_q} in Algeria nomenclature_map")
+            position = load_crawled_position_index("DZA").get(effective_q)
+            if position:
                 chapter = effective_q[:2]
                 chapter_name = CHAPTER_NAMES.get(language, CHAPTER_NAMES.get("fr", {})).get(
                     chapter, ""
@@ -201,10 +187,8 @@ async def smart_search_hs6(
                     "results": [
                         {
                             "code": effective_q,
-                            "description": dza_nomenclature[effective_q],
+                            "description": position["name"],
                             "country": "DZA",
-                            "duty_rate_pct": 0.0,
-                            "unit": "",
                             "chapter": chapter,
                             "chapter_name": chapter_name,
                             "full_position": (
@@ -212,11 +196,11 @@ async def smart_search_hs6(
                             ),
                             "from_authentic": True,
                             "match_type": "exact_nomenclature",
-                            "source": "algeria_nomenclature_map",
+                            "source": position["source"],
                         }
                     ],
                     "total": 1,
-                    "source": "algeria_nomenclature_map",
+                    "source": position["source"],
                 }
 
         engine = get_search_engine()

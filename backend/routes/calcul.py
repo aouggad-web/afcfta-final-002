@@ -117,6 +117,23 @@ def calcul(demande: DemandeCalcul):
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except KeyError as exc:
+        # Un SH6 qui n'est pas une position du tarif, mais sous lequel le pays
+        # publie plusieurs positions nationales : le calcul ne choisit pas
+        # l'une d'elles à la place de l'opérateur, il les nomme.
+        code = socle.normaliser_code(demande.code_sh)
+        sous = socle.positions_nationales(demande.destination, code) if len(code) == 6 else []
+        if sous:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "POSITION_NATIONALE_REQUISE",
+                    "message": (
+                        f"{demande.destination.upper()}/{code} : {len(sous)} positions nationales "
+                        "sous ce SH6 — choisir la position."
+                    ),
+                    "positions": sous,
+                },
+            ) from exc
         raise HTTPException(status_code=404, detail=str(exc).strip('"')) from exc
     except socle.SocleIndisponible as exc:
         # Un socle absent ou périmé ne se contourne pas par une autre source :

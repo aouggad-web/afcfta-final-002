@@ -220,13 +220,11 @@ async def get_supported_countries():
     Get information about all supported North African countries
     and their crawler configurations.
     """
-    from config.crawler_configs.dza_config import DZA_CONFIG
     from config.crawler_configs.egy_config import EGY_CONFIG
     from config.crawler_configs.mar_config import MAR_CONFIG
     from config.crawler_configs.tun_config import TUN_CONFIG
 
     configs = {
-        "DZA": DZA_CONFIG,
         "MAR": MAR_CONFIG,
         "EGY": EGY_CONFIG,
         "TUN": TUN_CONFIG,

@@ -813,7 +813,6 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
     related_candidates = [
         root / "backend" / "data" / f"{country}_tariffs.json",
         root / "backend" / "data" / "tariffs" / f"{country}_tariffs.json",
-        root / "backend" / "data" / "crawled" / f"{country}_tariffs_enriched.json",
         root / "data" / "archive" / "csv" / "TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
         root
         / "docs"
@@ -829,20 +828,8 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
                 role = "primary_runtime_artifact"
             elif related == effective:
                 role = "effective_national_artifact"
-            elif related.name.endswith("DZA_tariffs_enriched.json"):
-                role = "calculator_fallback_artifact"
             related_files.append({"path": rel(related), "role": role, "sha256": file_hash(related)})
-    pipeline_scripts = (
-        [
-            "backend/scripts/build_dza_tariffs_complete.py",
-            "backend/scripts/enrich_dza_fast_json.py",
-            "backend/etl/dza_tariff_connector.py",
-            "engine/converters/dza_converter.py",
-            "engine/adapters/dza_conformepro_adapter.py",
-        ]
-        if country == "DZA"
-        else []
-    )
+    pipeline_scripts = ["scripts/releve_dgd_dza.py"] if country == "DZA" else []
     result = {
         "country_iso3": country,
         "country_name": COUNTRY_NAMES.get(country, country),
@@ -866,15 +853,9 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         },
         "source": {
             "source_authority": source_name,
-            "source_title": (
-                "Tarif national intégré — données de crawl conformepro.dz"
-                if country == "DZA"
-                else source_name
-            ),
-            "source_url": source_url or ("https://conformepro.dz/" if country == "DZA" else None),
-            "source_root_url": (
-                "https://conformepro.dz/resources/tarif-douanier" if country == "DZA" else None
-            ),
+            "source_title": source_name,
+            "source_url": source_url,
+            "source_root_url": None,
             "official_authority_url": "https://www.douane.gov.dz" if country == "DZA" else None,
             "publication_date": None,
             "effective_from": None,
@@ -1081,37 +1062,6 @@ def report(result: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def write_reconciliation(root: Path, output_path: Optional[Path] = None) -> Dict[str, Any]:
-    artifacts = resolve_artifacts(root, "DZA")
-    if not artifacts["primary"] or not artifacts["effective"]:
-        raise FileNotFoundError("Fichiers DZA canonique/crawled introuvables")
-    _, canonical_raw = load_rows(artifacts["primary"])
-    _, crawled_raw = load_rows(artifacts["effective"])
-    result = reconcile_rows(
-        [normalize(row) for row in canonical_raw], [normalize(row) for row in crawled_raw]
-    )
-    result.update(
-        {
-            "country_iso3": "DZA",
-            "canonical_file": str(artifacts["primary"].relative_to(root)),
-            "crawled_file": str(artifacts["effective"].relative_to(root)),
-            "canonical_sha256": file_hash(artifacts["primary"]),
-            "crawled_sha256": file_hash(artifacts["effective"]),
-            "runtime_prefers_crawled": True,
-            "runtime_evidence": [
-                "backend/services/authentic_tariff_service.py::load_crawled_position_index",
-                "backend/services/authentic_tariff_service.py::calculate_import_taxes",
-                "backend/services/tariff_provider_service.py::get_tariff_line",
-            ],
-            "consultation_date": date.today().isoformat(),
-        }
-    )
-    output = output_path or root / "data" / "coverage" / "DZA_tariff_reconciliation.json"
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return result
-
-
 def write_wave_a(root: Path) -> Dict[str, Any]:
     countries = ["DZA", "MAR", "TUN", "EGY", "ZAF", "KEN"]
     rows = []
@@ -1148,16 +1098,12 @@ def write_wave_a(root: Path) -> Dict[str, Any]:
                 "conflicts": result["position_availability"]["positions_review_required"],
             }
         )
-    reconciliation = write_reconciliation(root)
     summary = {
         "wave": "A",
         "countries": rows,
         "consultation_date": date.today().isoformat(),
         "no_network_access": True,
         "no_rate_modification": True,
-        "dza_reconciliation_categories": {
-            key: value["count"] for key, value in reconciliation["categories"].items()
-        },
     }
     out = root / "data" / "coverage" / "WAVE_A_documentation_summary.json"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -1176,16 +1122,6 @@ def write_wave_a(root: Path) -> Dict[str, Any]:
                 **row
             )
         )
-    report_lines += [
-        "",
-        "## DZA — réconciliation",
-        "",
-        "Les catégories peuvent se chevaucher; le runtime privilégie crawled pour les positions nationales, sans arbitrer les divergences.",
-        "",
-    ]
-    report_lines += [
-        f"- {key} : **{value['count']}**" for key, value in reconciliation["categories"].items()
-    ]
     report_lines += [
         "",
         "## Règles",
@@ -1208,11 +1144,6 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--report", type=Path, default=None)
     parser.add_argument(
-        "--reconcile-dza",
-        action="store_true",
-        help="Produire la réconciliation DZA canonique/crawled",
-    )
-    parser.add_argument(
         "--batch-wave-a", action="store_true", help="Auditer DZA, MAR, TUN, EGY, ZAF et KEN"
     )
     args = parser.parse_args(argv)
@@ -1230,25 +1161,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             )
         )
         return 0
-    if args.reconcile_dza:
-        result = write_reconciliation(root, args.output)
-        print(
-            json.dumps(
-                {
-                    "country": "DZA",
-                    "output": str(
-                        args.output or root / "data/coverage/DZA_tariff_reconciliation.json"
-                    ),
-                    "categories": {
-                        key: value["count"] for key, value in result["categories"].items()
-                    },
-                },
-                ensure_ascii=False,
-            )
-        )
-        return 0
     if not args.country:
-        parser.error("country, --reconcile-dza ou --batch-wave-a requis")
+        parser.error("country ou --batch-wave-a requis")
     country = args.country.upper()
     result = audit(root, country)
     output = args.output or root / "data" / "coverage" / f"{country}_documentation_status.json"

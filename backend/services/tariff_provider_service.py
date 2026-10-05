@@ -11,7 +11,7 @@ import logging
 from typing import Callable, Dict, List, Optional
 
 from services import authentic_tariff_service as authentic_service
-from services.tariff_doctrine import get_country_doctrine_status
+from services.tariff_doctrine import crawl_enregistre, get_country_doctrine_status
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +73,15 @@ class TariffProviderService:
             logger.warning("Doctrine check failed for %s: %s", country_iso3, exc)
             return False
 
+    def _crawl_seul(self, country_iso3: str) -> bool:
+        """Pays refusé par la doctrine du fichier ETL mais dont le crawl est
+        enregistré : sous-positions et recherche se lisent sur ce crawl seul,
+        jamais sur PostgreSQL."""
+        try:
+            return self._doctrine_refused(country_iso3) and crawl_enregistre(country_iso3)
+        except ValueError:
+            return False
+
     def get_country_summary(self, country_iso3: str) -> Optional[Dict]:
         country = country_iso3.upper()
         if self._doctrine_refused(country):
@@ -98,6 +107,8 @@ class TariffProviderService:
     def get_sub_positions(self, country_iso3: str, hs6: str) -> List[Dict]:
         country = country_iso3.upper()
         hs6_code = hs6[:6]
+        if self._crawl_seul(country):
+            return authentic_service.get_sub_positions(country, hs6_code)
         if self._doctrine_refused(country):
             return []
         postgres = self._get_postgres()
@@ -126,6 +137,8 @@ class TariffProviderService:
         self, country_iso3: str, query: str, language: str = "fr", limit: int = 20
     ) -> List[Dict]:
         country = country_iso3.upper()
+        if self._crawl_seul(country):
+            return authentic_service.search_tariff_lines(country, query, language, limit)
         if self._doctrine_refused(country):
             return []
         postgres = self._get_postgres()

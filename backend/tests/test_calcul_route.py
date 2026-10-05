@@ -359,6 +359,38 @@ def test_les_demandes_invalides_sont_refusees_explicitement(client, charge, atte
 
 
 @besoin_socle
+def test_un_sh6_couvrant_des_positions_nationales_les_nomme_sans_en_choisir_une(client):
+    """020110 n'est pas une position du tarif algérien : quatre positions
+    nationales le détaillent. Le calcul les nomme au lieu d'en prendre une."""
+    reponse = client.post(
+        "/calcul", json={"destination": "DZA", "code_sh": "020110", "valeur_cif": 1000}
+    )
+    assert reponse.status_code == 422
+    detail = reponse.json()["detail"]
+    assert detail["code"] == "POSITION_NATIONALE_REQUISE"
+    assert [p["code"] for p in detail["positions"]] == [
+        "0201101100",
+        "0201101900",
+        "0201102000",
+        "0201109000",
+    ]
+    assert all(p["designation"] for p in detail["positions"])
+
+
+@besoin_socle
+def test_un_sh6_couvert_par_une_seule_position_nationale_se_calcule_sur_elle(client):
+    """L'Égypte ne publie qu'une position sous 020110 : rien à choisir, elle
+    est calculée, et la provenance dit le code et le niveau réellement servis."""
+    reponse = client.post(
+        "/calcul", json={"destination": "EGY", "code_sh": "020110", "valeur_cif": 1000}
+    )
+    assert reponse.status_code == 200
+    provenance = reponse.json()["provenance"]
+    assert provenance["code_demande"] == "0201100000"
+    assert provenance["niveau"] == "national"
+
+
+@besoin_socle
 def test_la_liste_des_pays_annonce_les_couvertures_partielles(client):
     corps = client.get("/calcul/pays").json()
     assert corps["totaux"]["pays"] == len(corps["pays"])
