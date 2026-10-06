@@ -253,14 +253,6 @@ function buildJournal(cifValue, lignes) {
 }
 
 /**
- * Transformer la réponse de `POST /calcul` dans la forme historique.
- *
- * @param {object} calcul   Corps de la réponse de `POST /calcul`.
- * @param {object} contexte `{ originCountry, destinationCountry, hsCode, cifValue }`
- *                           tels que saisis dans le formulaire (codes bruts,
- *                           pas nécessairement ISO3 — conservés pour l'affichage).
- */
-/**
  * Montants en monnaie locale, au taux du moteur de change du module Banque.
  *
  * `conversion` est la réponse de `GET /banking/forex/convert` (USD → monnaie
@@ -302,6 +294,38 @@ export function localiserResultat(result, conversion) {
   };
 }
 
+/**
+ * Pays dont le moteur ne reçoit pas le taux du module Banque :
+ * - CMR, GNQ : leur redevance informatique porte un plafond de 15 000 XAF dont
+ *   le texte CEMAC n'est pas au dépôt, et le moteur l'applique à l'assiette.
+ *   Avec un taux, elle vaudrait 0,11 USD pour 10 000 USD de CIF ;
+ * - BWA : ses droits spécifiques viennent du tarif de la SARS, en cents de
+ *   rand (« 240c/kg »). Le taux du pula les convertirait faussement.
+ * Sans taux, ces lignes restent à compléter, comme avant.
+ */
+const SANS_TAUX_DE_CHANGE = new Set(['CMR', 'GNQ', 'BWA']);
+
+/**
+ * Le taux envoyé au moteur (`taux_de_change`) : des USD pour une unité de
+ * monnaie nationale, l'inverse du taux USD → monnaie locale du module Banque.
+ * `undefined` quand il n'y a rien à convertir ou que le taux ne vaut pas pour
+ * ce pays.
+ */
+export function tauxDeChangePour(destinationISO3, conversion) {
+  if (!conversion?.rate || conversion.to_currency === 'USD' || SANS_TAUX_DE_CHANGE.has(destinationISO3)) {
+    return undefined;
+  }
+  return 1 / conversion.rate;
+}
+
+/**
+ * Transformer la réponse de `POST /calcul` dans la forme historique.
+ *
+ * @param {object} calcul   Corps de la réponse de `POST /calcul`.
+ * @param {object} contexte `{ originCountry, destinationCountry, hsCode, cifValue }`
+ *                           tels que saisis dans le formulaire (codes bruts,
+ *                           pas nécessairement ISO3 — conservés pour l'affichage).
+ */
 export function mapCalculToLegacyResult(calcul, { originCountry, destinationCountry, hsCode, cifValue }) {
   const npf = calcul.npf || { lignes: [], etat: 'INDISPONIBLE', manques: [] };
   const pref = calcul.preference || null;

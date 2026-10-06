@@ -44,6 +44,7 @@ import {
   localiserResultat,
   moteurRendCompteDesMesures,
   paysExpeditionPour,
+  tauxDeChangePour,
 } from './unifiedCalculator';
 import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
 import { trierAvantages } from './avantagesFiscaux';
@@ -452,28 +453,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
     const valeurFob = fobFor === `${destISO3}|${cleanHsCode}` ? parseFloat(fobValue) : NaN;
 
-    // LE TAUX DE CHANGE DU MODULE BANQUE, demandé avant le calcul : le moteur
-    // en a besoin pour les plafonds et les droits spécifiques publiés en
-    // monnaie nationale, et l'écran pour les montants locaux. Un seul appel
-    // pour les deux. Sans taux, ces lignes restent à compléter et l'écran en
-    // USD seul.
-    let conversion = null;
-    try {
-      conversion = (await axios.get(`${API}/banking/forex/convert`, {
-        params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
-      })).data;
-    } catch (conversionError) {
-      // Silencieux : les montants en USD restent justes.
-    }
-    // Sauf pour le Cameroun et la Guinée équatoriale : leur redevance
-    // informatique porte un plafond de 15 000 XAF dont le texte CEMAC n'est
-    // pas au dépôt, et le moteur l'applique à l'assiette. Avec un taux, elle
-    // vaudrait 0,11 USD pour 10 000 USD de CIF ; sans taux, elle reste à
-    // compléter, comme avant. À lever quand le texte aura tranché.
-    const tauxDeChange = conversion?.rate && conversion.to_currency !== 'USD'
-      && !['CMR', 'GNQ'].includes(destISO3)
-      ? 1 / conversion.rate
-      : undefined;
+    // LE TAUX DE CHANGE DU MODULE BANQUE, demandé une seule fois et seulement
+    // si le socle est interrogé : le moteur en a besoin pour les plafonds et
+    // les droits spécifiques publiés en monnaie nationale, et l'écran pour
+    // les montants locaux. Sans taux, ces lignes restent à compléter et
+    // l'écran en USD seul. Une panne du change ne fait jamais échouer le
+    // calcul : elle se lirait, plus bas, comme un refus du socle.
+    let conversionDemandee = null;
+    const demanderConversion = () => {
+      if (!conversionDemandee) {
+        conversionDemandee = axios.get(`${API}/banking/forex/convert`, {
+          params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
+        }).then((reponse) => reponse.data, () => null);
+      }
+      return conversionDemandee;
+    };
 
     try {
       // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
@@ -482,7 +476,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // `SOCLE_EN_PREMIER`, et APRÈS lui pour tous les autres. Construit une
       // seule fois : deux corps de requête écrits séparément finiraient par
       // diverger, et l'un des deux liquiderait autre chose que l'autre.
-      const demanderLeSocle = () => axios.post(`${API}/calcul`, buildCalculRequestBody({
+      const demanderLeSocle = async () => axios.post(`${API}/calcul`, buildCalculRequestBody({
         destinationISO3: destISO3,
         originISO3,
         hsCode: cleanHsCode,
@@ -496,7 +490,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           : NaN,
         paysExpedition,
         valeurFob,
-        tauxDeChange,
+        tauxDeChange: tauxDeChangePour(destISO3, await demanderConversion()),
       }));
 
       // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
@@ -992,6 +986,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // LA CONVERSION EN MONNAIE LOCALE, au taux déjà envoyé au moteur.
         // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
         // résultat de SA demande (même pays et position, même valeur CIF).
+        const conversion = await demanderConversion();
         if (conversion) {
           setResult((precedent) => (
             precedent?._quantite_cle === `${destISO3}|${cleanHsCode}` && precedent.value === parseFloat(value)

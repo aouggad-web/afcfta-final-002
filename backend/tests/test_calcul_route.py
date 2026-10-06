@@ -135,14 +135,18 @@ def test_le_module_banque_convertit_dans_la_monnaie_du_tarif():
     juste que si les deux parlent de la même monnaie — le Zimbabwe était
     converti en ZWL, retiré en 2024, quand son tarif est en ZWG."""
     from banking_system.foreign_exchange import get_currency_meta
-    from currencies.service import to_iso2
+    from currencies.service import get_by_country, to_iso2
 
-    ecarts = {
-        iso: (socle.devise_nationale(iso), get_currency_meta(to_iso2(iso))[0])
-        for iso in socle.pays_servis()
-        if socle.devise_nationale(iso)
-        and socle.devise_nationale(iso) != get_currency_meta(to_iso2(iso))[0]
-    }
+    ecarts = {}
+    for iso in socle.pays_servis():
+        devise = socle.devise_nationale(iso)
+        if not devise:
+            continue
+        # Le module Banque, et le jeu de devises que lit l'ancien chemin.
+        banque = get_currency_meta(to_iso2(iso))[0]
+        canonique = get_by_country(iso).currency_code
+        if {banque, canonique} != {devise}:
+            ecarts[iso] = (devise, banque, canonique)
     assert ecarts == {}
 
 

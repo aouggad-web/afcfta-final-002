@@ -4,6 +4,7 @@ import {
   localiserResultat,
   mapCalculToLegacyResult,
   moteurRendCompteDesMesures,
+  tauxDeChangePour,
 } from './unifiedCalculator';
 
 const contexte = { originCountry: 'GHA', destinationCountry: 'CIV', hsCode: '7612900000', cifValue: 1000 };
@@ -23,15 +24,43 @@ describe('buildCalculRequestBody', () => {
   });
 
   it('porte le taux de change du module Banque quand il est connu', () => {
-    expect(buildCalculRequestBody({ destinationISO3: 'CMR', hsCode: '03022900', cifValue: 1000, tauxDeChange: 1 / 600 }))
-      .toEqual({ destination: 'CMR', code_sh: '03022900', valeur_cif: 1000, devise_cif: 'USD', taux_de_change: 1 / 600 });
+    expect(buildCalculRequestBody({ destinationISO3: 'TCD', hsCode: '03022900', cifValue: 1000, tauxDeChange: 1 / 600 }))
+      .toEqual({ destination: 'TCD', code_sh: '03022900', valeur_cif: 1000, devise_cif: 'USD', taux_de_change: 1 / 600 });
   });
 
   it("n'invente pas de taux de change : absent ou illisible, il n'est pas envoyé", () => {
     for (const tauxDeChange of [undefined, NaN, 0, -1]) {
-      expect(buildCalculRequestBody({ destinationISO3: 'CMR', hsCode: '03022900', cifValue: 1000, tauxDeChange }))
+      expect(buildCalculRequestBody({ destinationISO3: 'TCD', hsCode: '03022900', cifValue: 1000, tauxDeChange }))
         .not.toHaveProperty('taux_de_change');
     }
+  });
+});
+
+describe('tauxDeChangePour', () => {
+  const xaf = { rate: 600, to_currency: 'XAF' };
+
+  it("envoie l'inverse du taux du module Banque : des USD pour une unité nationale", () => {
+    expect(tauxDeChangePour('TCD', xaf)).toBe(1 / 600);
+  });
+
+  it('ne convertit rien quand la monnaie locale est le dollar', () => {
+    expect(tauxDeChangePour('LBR', { rate: 1, to_currency: 'USD' })).toBeUndefined();
+  });
+
+  it("n'invente pas de taux : réponse absente ou sans taux", () => {
+    for (const conversion of [null, undefined, {}, { rate: 0, to_currency: 'XAF' }]) {
+      expect(tauxDeChangePour('TCD', conversion)).toBeUndefined();
+    }
+  });
+
+  it('ne donne pas de taux au Cameroun ni à la Guinée équatoriale (plafond de la redevance informatique non tranché)', () => {
+    expect(tauxDeChangePour('CMR', xaf)).toBeUndefined();
+    expect(tauxDeChangePour('GNQ', xaf)).toBeUndefined();
+  });
+
+  it('ne donne pas de taux au Botswana (droits spécifiques publiés en cents de rand)', () => {
+    expect(tauxDeChangePour('BWA', { rate: 13.4, to_currency: 'BWP' })).toBeUndefined();
+    expect(tauxDeChangePour('ZAF', { rate: 18, to_currency: 'ZAR' })).toBe(1 / 18);
   });
 });
 
