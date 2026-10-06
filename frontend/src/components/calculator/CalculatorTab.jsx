@@ -506,7 +506,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // QUELS PAYS. Ceux où le socle sert au moins aussi bien que l'autre porte,
       // MESURÉ : sur 300 positions par pays (CIF 10 000, origine SEN), même
       // total NPF et même statut ZLECAf, ou total que seul le socle calcule ;
-      // la SACU avec une valeur FOB. Restent sur l'autre porte, en attente :
+      // la SACU avec une valeur FOB. CAF et COG s'écartent de l'autre porte
+      // depuis le relevé de leurs accises et de leur assiette de TVA dans leur
+      // code des impôts (#598) : c'est le socle qui suit le texte. Restent sur
+      // l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
       //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB, CMR, GNQ ; BEN,
       //   GNB, SEN, TGO pour 7 positions ; RWA, TZA, UGA pour le tabac ; MAR,
