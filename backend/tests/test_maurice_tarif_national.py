@@ -97,8 +97,10 @@ def test_l_accise_entre_dans_l_assiette_de_la_tva(socle):
     assert {d.get("assiette_origine") for d in tva} == {"source"}
 
 
-def test_l_assiette_de_l_accise_reste_non_etablie_plutot_que_supposee(socle):
-    """Aucun des deux textes ne l'énonce : on ne la pose pas de mémoire."""
+def test_l_assiette_de_l_accise_vient_de_l_excise_act_et_jamais_de_memoire(socle):
+    """Ni le tarif, ni le Customs Act, ni le VAT Act ne l'énoncent : seule
+    l'Excise Act (s.2, « value at importation ») la pose, et seulement là où
+    sa First Schedule l'établit (fiche MUS_assiette_accise_2026-10-06.json)."""
     accises = [
         d
         for p in socle["positions"].values()
@@ -106,7 +108,12 @@ def test_l_assiette_de_l_accise_reste_non_etablie_plutot_que_supposee(socle):
         if d.get("code") == "EXC"
     ]
     assert accises, "le tarif publie bien des accises"
-    assert all(not d.get("assiette") for d in accises)
+    posees = [d for d in accises if d.get("assiette")]
+    assert posees and all(
+        d["assiette"] == "CIF" and d["assiette_origine"] == "regle_de_pays" and "value at importation" in d["note"]
+        for d in posees
+    )
+    assert any(not d.get("assiette") for d in accises), "véhicules d'occasion et droits spécifiques restent sans assiette"
 
 
 def test_une_tva_dont_un_composant_manque_se_declare_incomplete(socle):
