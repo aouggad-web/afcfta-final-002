@@ -1176,6 +1176,54 @@ def _accises_du_cgi(iso, positions):
         position["droits"] = droits
 
 
+def _lignes_liquidables(droits):
+    """Pour chaque ligne, dans l'ordre de liquidation : le moteur peut-il la
+    liquider ? Il lui faut un taux (ou un droit spécifique) et une assiette,
+    et que les droits que cette assiette additionne aient eux-mêmes été
+    liquidés avant elle — une TVA assise sur un DA sans taux ne l'est pas
+    (services/calcul._assiette_de : ASSIETTE_INCOMPLETE)."""
+    codes_de_la_position = {d.get("code") for d in droits}
+    # Mêmes refus que le moteur : un droit spécifique sans montant lisible, un
+    # composé sans règle de départage publiée, un droit à la quantité quand la
+    # position mêle plusieurs unités.
+    unites = {
+        d["specifique"].get("unite_quantite")
+        for d in droits
+        if isinstance(d.get("specifique"), dict)
+        and d.get("taux") is None
+        and d["specifique"].get("unite_quantite")
+        and not d.get("assiette_non_traduite")
+    }
+    liquides, echecs, resultat = set(), [], []
+    for d in droits:
+        assiette = d.get("assiette") or ""
+        ok = bool(
+            assiette
+            and (
+                d.get("taux") is not None
+                or isinstance((d.get("specifique") or {}).get("montant"), (int, float))
+            )
+            and (not d.get("compose") or d.get("regle_composee"))
+            and not (assiette == "xQTE" and len(unites) > 1)
+        )
+        if ok:
+            if assiette.startswith("%"):
+                ok = assiette[1:] in liquides
+            elif "TOUS_SAUF_TVA" in assiette:
+                ok = not any(e.get("famille") != "tva" for e in echecs)
+            elif "TOUS_SAUF_SOI" in assiette:
+                ok = not echecs
+            elif "+" in assiette:
+                nommes = [c for c in assiette.split("+", 1)[1].split("+") if c and not c.startswith("TOUS_")]
+                ok = all(c in liquides for c in nommes if c in codes_de_la_position)
+        if ok:
+            liquides.add(d.get("code"))
+        else:
+            echecs.append(d)
+        resultat.append(ok)
+    return resultat
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -1548,25 +1596,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     compteurs["droits_composes"] = sum(
         1 for p in positions.values() for d in p.get("droits") or [] if d.get("compose")
     )
-    compteurs["droits_liquidables"] = sum(
-        1
-        for p in positions.values()
-        for d in p.get("droits") or []
-        if not d.get("compose")
-        and d.get("assiette")
-        and (d.get("taux") is not None or d.get("specifique"))
-    )
-    compteurs["positions_liquidables"] = sum(
-        1
-        for p in positions.values()
-        if (p.get("droits") or [])
-        and all(
-            not d.get("compose")
-            and d.get("assiette")
-            and (d.get("taux") is not None or d.get("specifique"))
-            for d in p["droits"]
-        )
-    )
+    liquidables = {code: _lignes_liquidables(p.get("droits") or []) for code, p in positions.items()}
+    compteurs["droits_liquidables"] = sum(sum(v) for v in liquidables.values())
+    compteurs["positions_liquidables"] = sum(1 for v in liquidables.values() if v and all(v))
 
     socle = {
         "iso3": iso,

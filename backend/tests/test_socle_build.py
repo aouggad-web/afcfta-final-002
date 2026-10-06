@@ -527,3 +527,32 @@ def test_un_droit_national_ne_recoit_aucune_reserve_wits():
         "SARS Schedule No. 1 Part 1",
     )
     assert droit["note"] is None
+
+
+# ── Compteur des droits liquidables : la même règle que le moteur ─────────────
+def test_une_tva_assise_sur_une_accise_sans_taux_n_est_pas_liquidable():
+    """Le moteur refuse la TVA quand l'accise de son assiette n'a pas de taux
+    (ASSIETTE_INCOMPLETE) : le compteur du manifeste ne la compte pas non plus."""
+    droits = [
+        {"code": "DD", "famille": "droit", "taux": 30.0, "assiette": "CIF"},
+        {"code": "DA", "famille": "accise", "taux": None, "assiette": "CIF+DD"},
+        {"code": "TVA", "famille": "tva", "taux": 19.25, "assiette": "CIF+DD+DA"},
+    ]
+    assert bs._lignes_liquidables(droits) == [True, False, False]
+
+
+def test_les_refus_du_moteur_sont_repris_par_le_compteur():
+    # Composé sans règle de départage, spécifique illisible, unités mêlées.
+    assert bs._lignes_liquidables(
+        [{"code": "DD", "taux": 25.0, "specifique": {"montant": 1.0}, "compose": True, "assiette": "CIF"}]
+    ) == [False]
+    assert bs._lignes_liquidables(
+        [{"code": "DD", "taux": 25.0, "specifique": {"montant": 1.0}, "compose": True,
+          "regle_composee": "LE_PLUS_ELEVE", "assiette": "CIF"}]
+    ) == [True]
+    assert bs._lignes_liquidables([{"code": "DD", "specifique": {"montant": None}, "assiette": "xQTE"}]) == [False]
+    melange = [
+        {"code": "A", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "xQTE"},
+        {"code": "B", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "l"}, "assiette": "xQTE"},
+    ]
+    assert bs._lignes_liquidables(melange) == [False, False]
