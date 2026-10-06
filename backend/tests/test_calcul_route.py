@@ -147,7 +147,42 @@ def test_le_module_banque_convertit_dans_la_monnaie_du_tarif():
         canonique = get_by_country(iso).currency_code
         if {banque, canonique} != {devise}:
             ecarts[iso] = (devise, banque, canonique)
-    assert ecarts == {}
+    # Le Botswana sert le tarif de la SARS, en cents de rand : le taux du pula
+    # ne vaut pas pour ses droits spécifiques. L'écran ne lui en envoie aucun
+    # (SANS_TAUX_DE_CHANGE, frontend/src/components/calculator/unifiedCalculator.js).
+    assert ecarts == {"BWA": ("ZAR", "BWP", "BWP")}
+
+
+@besoin_socle
+def test_les_droits_specifiques_du_tarif_sars_sont_en_rand_ou_au_pair_du_rand():
+    """Les pays qui servent le tarif de la SARS publient leurs droits
+    spécifiques en cents de rand. Leur devise de tarif est le rand, ou une
+    monnaie au pair du rand (zone monétaire commune) — jamais une autre."""
+    au_pair = {"ZAR", "LSL", "NAD", "SZL"}
+    sars = [iso for iso in socle.pays_servis() if socle.charger(iso)["source"].get("nom") == "sars.gov.za"]
+    assert set(sars) >= {"ZAF", "BWA", "LSO", "NAM", "SWZ"}
+    assert {iso: socle.devise_nationale(iso) for iso in sars if socle.devise_nationale(iso) not in au_pair} == {}
+
+
+@besoin_socle
+def test_un_droit_specifique_botswanais_n_est_pas_converti_comme_des_pulas(client):
+    """« 8c/kg » au Botswana sont des cents de rand. Une valeur déclarée en
+    pulas, sans taux, laisse le droit à compléter au lieu de le compter en thebe."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "valeur_fob": 9000,
+            "quantite": 1000,
+            "devise_cif": "BWP",
+        },
+    ).json()
+    assert corps["provenance"]["devise_nationale"] == "ZAR"
+    dd = next(l for l in corps["npf"]["lignes"] if l["code"] == "DD")
+    assert dd["statut"] != "CALCULE"
+    assert "TAUX_DE_CHANGE_REQUIS" in {m.get("motif") for m in corps["npf"]["manques"]}
 
 
 def test_un_pays_hors_table_des_devises_ne_devine_pas_une_devise():

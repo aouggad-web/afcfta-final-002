@@ -43,8 +43,8 @@ describe('tauxDeChangePour', () => {
     expect(tauxDeChangePour('TCD', xaf)).toBe(1 / 600);
   });
 
-  it('ne convertit rien quand la monnaie locale est le dollar', () => {
-    expect(tauxDeChangePour('LBR', { rate: 1, to_currency: 'USD' })).toBeUndefined();
+  it('ne convertit rien quand le module Banque répond en dollars (son repli pour un pays inconnu)', () => {
+    expect(tauxDeChangePour('XXX', { rate: 1, to_currency: 'USD' })).toBeUndefined();
   });
 
   it("n'invente pas de taux : réponse absente ou sans taux", () => {
