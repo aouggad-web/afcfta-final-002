@@ -452,6 +452,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
     const valeurFob = fobFor === `${destISO3}|${cleanHsCode}` ? parseFloat(fobValue) : NaN;
 
+    // LE TAUX DE CHANGE DU MODULE BANQUE, demandé avant le calcul : le moteur
+    // en a besoin pour les plafonds et les droits spécifiques publiés en
+    // monnaie nationale, et l'écran pour les montants locaux. Un seul appel
+    // pour les deux. Sans taux, ces lignes restent à compléter et l'écran en
+    // USD seul.
+    let conversion = null;
+    try {
+      conversion = (await axios.get(`${API}/banking/forex/convert`, {
+        params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
+      })).data;
+    } catch (conversionError) {
+      // Silencieux : les montants en USD restent justes.
+    }
+    const tauxDeChange = conversion?.rate && conversion.to_currency !== 'USD'
+      ? 1 / conversion.rate
+      : undefined;
+
     try {
       // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
       //
@@ -473,6 +490,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           : NaN,
         paysExpedition,
         valeurFob,
+        tauxDeChange,
       }));
 
       // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
@@ -485,32 +503,27 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // scellés par empreinte, n'atteignaient jamais l'opérateur — leurs deux
       // pays étaient servis par l'autre porte.
       //
-      // POURQUOI DEUX PAYS ET NON LES CINQUANTE-QUATRE. La bascule générale a
-      // été écrite, puis restreinte : l'interface n'envoie au socle ni
-      // `devise_cif`, ni `taux_de_change`, ni `valeur_fob`. Or la valeur en
-      // douane de la SACU est la valeur FOB, jamais déduite du CIF. Mesuré sur
-      // les 1 500 premières positions sud-africaines, 616 — 41 % — répondent
-      // `VALEUR_FOB_REQUISE` : leur droit de douane devient indisponible. Le
-      // chemin historique, lui, servait un montant. Basculer l'Afrique du Sud
-      // aujourd'hui échangerait donc une préférence manquante contre un droit
-      // manquant, ce qui n'est pas un progrès.
+      // QUELS PAYS. Ceux où le socle sert au moins aussi bien que l'autre porte,
+      // MESURÉ : sur 300 positions par pays (CIF 10 000, origine SEN), même
+      // total NPF et même statut ZLECAf, ou total que seul le socle calcule ;
+      // la SACU avec une valeur FOB. Restent sur l'autre porte, en attente :
+      // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
+      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB, CMR, GNQ ; BEN,
+      //   GNB, SEN, TGO pour 7 positions ; RWA, TZA, UGA pour le tabac ; MAR,
+      //   dont 528 positions ne publient pas de TVA) ;
+      // - un total que l'autre porte rend et que le socle déclare incomplet
+      //   (ETH, EGY, SOM) ;
+      // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
       //
-      // Deux autres manques tiennent au même périmètre et justifient la même
-      // prudence : les réponses du formulaire de remise kényane
-      // (`remission_eligibility` et ses cinq champs d'autorisation) n'existent
-      // que sur le chemin historique, et `moteurRendCompteDesMesures` ne peut
-      // rien vérifier quand le chemin historique n'a pas été consulté — son
-      // garde devient vide.
-      //
-      // Cette liste s'allonge PAYS PAR PAYS, quand le socle sert ce pays mieux
-      // que l'autre porte et que rien de ce qui précède ne lui manque. Elle ne
-      // se remplace pas par « tous ».
-      //
-      // L'ALGÉRIE (bascule 2.3). Sa valeur en douane est le CIF et aucune
-      // remise ne la concerne : rien de ce qui précède ne lui manque. Le
-      // socle est sa seule porte de calcul : l'autre n'a plus de fichier
-      // algérien à lire.
-      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS', 'DZA']);
+      // L'ALGÉRIE (bascule 2.3). Le socle est sa seule porte de calcul :
+      // l'autre n'a plus de fichier algérien à lire.
+      const SOCLE_EN_PREMIER = new Set([
+        'TUN', 'MUS', 'DZA',
+        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA',
+        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD',
+        'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
+        'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
+      ]);
 
       let calculSocle = null;
       let erreurSocle = null;
@@ -967,21 +980,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         } catch (formalitesError) {
           // Silencieux : une formalité absente n'est pas un montant faux.
         }
-        // LA CONVERSION EN MONNAIE LOCALE, comme sur l'ancien chemin : le moteur
-        // liquide en USD, le module Banque donne le taux (même service de
-        // change). Sans taux, l'écran reste en USD seul.
-        try {
-          const conversion = (await axios.get(`${API}/banking/forex/convert`, {
-            params: { country_code: destISO3, amount: parseFloat(value), from_currency: 'USD' },
-          })).data;
-          // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
-          // résultat de SA demande (même pays et position, même valeur CIF).
+        // LA CONVERSION EN MONNAIE LOCALE, au taux déjà envoyé au moteur.
+        // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
+        // résultat de SA demande (même pays et position, même valeur CIF).
+        if (conversion) {
           setResult((precedent) => (
             precedent?._quantite_cle === `${destISO3}|${cleanHsCode}` && precedent.value === parseFloat(value)
               ? localiserResultat(precedent, conversion)
               : precedent));
-        } catch (conversionError) {
-          // Silencieux : les montants en USD restent justes.
         }
         try {
           const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);

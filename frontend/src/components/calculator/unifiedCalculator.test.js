@@ -21,6 +21,18 @@ describe('buildCalculRequestBody', () => {
     expect(buildCalculRequestBody({ destinationISO3: 'CIV', originISO3: 'GHA', hsCode: '7612900000', cifValue: 1000 }))
       .toEqual({ destination: 'CIV', origine: 'GHA', code_sh: '7612900000', valeur_cif: 1000, devise_cif: 'USD' });
   });
+
+  it('porte le taux de change du module Banque quand il est connu', () => {
+    expect(buildCalculRequestBody({ destinationISO3: 'CMR', hsCode: '03022900', cifValue: 1000, tauxDeChange: 1 / 600 }))
+      .toEqual({ destination: 'CMR', code_sh: '03022900', valeur_cif: 1000, devise_cif: 'USD', taux_de_change: 1 / 600 });
+  });
+
+  it("n'invente pas de taux de change : absent ou illisible, il n'est pas envoyé", () => {
+    for (const tauxDeChange of [undefined, NaN, 0, -1]) {
+      expect(buildCalculRequestBody({ destinationISO3: 'CMR', hsCode: '03022900', cifValue: 1000, tauxDeChange }))
+        .not.toHaveProperty('taux_de_change');
+    }
+  });
 });
 
 describe('mapCalculToLegacyResult — cas complet, sans préférence', () => {
