@@ -128,6 +128,24 @@ def test_la_devise_nationale_accompagne_la_provenance():
     assert provenance["devise_nationale"] == "ZAR"
 
 
+@besoin_socle
+def test_le_module_banque_convertit_dans_la_monnaie_du_tarif():
+    """L'écran envoie au moteur le taux du module Banque pour convertir les
+    plafonds et droits spécifiques publiés en monnaie nationale. Ce taux n'est
+    juste que si les deux parlent de la même monnaie — le Zimbabwe était
+    converti en ZWL, retiré en 2024, quand son tarif est en ZWG."""
+    from banking_system.foreign_exchange import get_currency_meta
+    from currencies.service import to_iso2
+
+    ecarts = {
+        iso: (socle.devise_nationale(iso), get_currency_meta(to_iso2(iso))[0])
+        for iso in socle.pays_servis()
+        if socle.devise_nationale(iso)
+        and socle.devise_nationale(iso) != get_currency_meta(to_iso2(iso))[0]
+    }
+    assert ecarts == {}
+
+
 def test_un_pays_hors_table_des_devises_ne_devine_pas_une_devise():
     assert socle.devise_nationale("XXX") is None
 
