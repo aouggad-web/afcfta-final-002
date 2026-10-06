@@ -1139,6 +1139,38 @@ ACCISES_PAYS = {
 }
 
 
+# Assiette de l'accise quand le tarif collecté ne la donne pas : une table par
+# pays, tirée de sa loi d'accise.
+ASSIETTE_ACCISE_PAYS = {
+    "MUS": os.path.join(REPO, "backend", "data", "zlecaf_mus", "assiette_accise_excise_act.json"),
+}
+
+
+def _assiette_accise(iso, positions):
+    with open(ASSIETTE_ACCISE_PAYS[iso], encoding="utf-8") as f:
+        table = json.load(f)
+    ad_valorem, occasion = set(table["ad_valorem"]), set(table["occasion"])
+    annexe = ad_valorem | occasion | set(table["specifique"])
+    for code, position in positions.items():
+        for d in position.get("droits") or []:
+            if d.get("famille") != "accise" or d.get("assiette") or d.get("taux") is None:
+                continue
+            if code in ad_valorem or (d["taux"] == 0 and code in annexe):
+                d["assiette"] = table["assiette"]
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = table["assiette_reference"]
+            elif code in occasion:
+                d["note"] = (
+                    "Véhicule d'occasion : la « value at importation » est déterminée selon des "
+                    "modalités prescrites (Excise Act s.2), non lues — non liquidable en l'état."
+                )
+            else:
+                d["note"] = (
+                    "Position absente de la First Schedule de l'Excise Act en vigueur : "
+                    "le taux collecté n'est pas confirmé — non liquidable en l'état."
+                )
+
+
 def _accises_du_cgi(iso, positions):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1536,14 +1568,22 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
-    if iso in ACCISES_PAYS:
-        # Les compteurs par ligne lue ont déjà compté les DA du crawl : on
-        # retranche ceux qui sont retirés et on ajoute ceux qui sont posés.
+    if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
+        # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
+        # retranche celles d'avant et on ajoute celles d'après.
         def _da():
-            return [d for p in positions.values() for d in p.get("droits") or [] if d.get("code") == "DA"]
+            return [
+                dict(d)
+                for p in positions.values()
+                for d in p.get("droits") or []
+                if d.get("famille") == "accise"
+            ]
 
         avant = _da()
-        _accises_du_cgi(iso, positions)
+        if iso in ACCISES_PAYS:
+            _accises_du_cgi(iso, positions)
+        if iso in ASSIETTE_ACCISE_PAYS:
+            _assiette_accise(iso, positions)
         apres = _da()
         for lignes, signe in ((avant, -1), (apres, 1)):
             for d in lignes:
