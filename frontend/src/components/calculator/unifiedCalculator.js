@@ -110,7 +110,6 @@ export function buildCalculRequestBody({
   quantite,
   valeurFob,
   paysExpedition,
-  tauxDeChange,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -131,13 +130,6 @@ export function buildCalculRequestBody({
   // (VALEUR_FOB_REQUISE) au lieu de liquider le droit sur une base fausse.
   if (typeof valeurFob === 'number' && Number.isFinite(valeurFob) && valeurFob > 0) {
     body.valeur_fob = valeurFob;
-  }
-  // Le taux du module Banque, en USD pour une unité de monnaie nationale : le
-  // moteur en a besoin pour les plafonds publiés en monnaie nationale (15 000
-  // XAF de redevance informatique) et les droits spécifiques (« 8c/kg »).
-  // Absent, il les rend indisponibles au lieu de mélanger deux monnaies.
-  if (typeof tauxDeChange === 'number' && Number.isFinite(tauxDeChange) && tauxDeChange > 0) {
-    body.taux_de_change = tauxDeChange;
   }
   return body;
 }
