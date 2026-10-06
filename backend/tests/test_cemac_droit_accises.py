@@ -69,3 +69,60 @@ def test_gabon_cosmetique_au_taux_du_cgi_et_tissu_sans_accise():
     assert lignes["TVA"]["base"] == 1628.0 and etat == COMPLET
     etat, lignes = _lignes(positions["52081100"])
     assert "DA" not in lignes and etat == COMPLET
+
+
+COG = os.path.join(os.path.dirname(SOCLE), "COG.json")
+
+
+@pytest.mark.skipif(not os.path.exists(COG), reason="socle absent (gitignoré)")
+def test_congo_tabac_au_taux_de_la_loi_et_cosmetique_sans_taux():
+    """Loi sur le droit d'accises du Congo, art. 2, 7 et 8 : tabac 22,5 % sur
+    valeur + DD ; TVA sur valeur + DD + accise. Cosmétiques hors liste de
+    l'art. 2 : droit porté sans taux. Fiche : COG_droit_accises_2026-10-05.json."""
+    with open(COG, encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    etat, lignes = _lignes(positions["24022000"])
+    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1300.0, 292.5)
+    assert lignes["TVA"]["base"] == 1592.5 and etat == COMPLET
+    _, lignes = _lignes(positions["87032410"])
+    assert lignes["DA"]["montant"] == 195.0
+    etat, lignes = _lignes(positions["33049900"])
+    assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    etat, lignes = _lignes(positions["52081100"])
+    assert "DA" not in lignes and etat == COMPLET
+
+
+CAF = os.path.join(os.path.dirname(SOCLE), "CAF.json")
+
+
+@pytest.mark.skipif(not os.path.exists(CAF), reason="socle absent (gitignoré)")
+def test_centrafrique_cosmetique_et_motocycle_au_taux_du_cgi_voiture_sans_taux():
+    """CGI de Centrafrique, art. 289 bis, 291, 292 et annexe : 25 % et 12,5 %
+    sur valeur + DD ; TVA sur valeur + DD + accise (art. 253). Véhicules :
+    taux selon l'âge. Fiche : CAF_droit_accises_2026-10-05.json."""
+    with open(CAF, encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    etat, lignes = _lignes(positions["33049900"])
+    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1300.0, 325.0)
+    assert lignes["TVA"]["base"] == 1625.0 and etat == COMPLET
+    _, lignes = _lignes(positions["87113000"])
+    assert lignes["DA"]["montant"] == 162.5
+    etat, lignes = _lignes(positions["87032410"])
+    assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    etat, lignes = _lignes(positions["52081100"])
+    assert "DA" not in lignes and etat == COMPLET
+
+
+GNQ = os.path.join(os.path.dirname(SOCLE), "GNQ.json")
+
+
+@pytest.mark.skipif(not os.path.exists(GNQ), reason="socle absent (gitignoré)")
+def test_guinee_equatoriale_droits_specifiques_sans_taux_et_tissu_sans_accise():
+    """Loi de budget 2020 : boissons et tabacs taxés par litre, degré ou unité,
+    portés sans taux. Fiche : GNQ_droit_accises_2026-10-05.json."""
+    with open(GNQ, encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    etat, lignes = _lignes(positions["22030010"])
+    assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    etat, lignes = _lignes(positions["52081100"])
+    assert "DA" not in lignes and etat == COMPLET

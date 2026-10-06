@@ -1133,6 +1133,9 @@ def sources_disponibles():
 ACCISES_PAYS = {
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
+    "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2023.json"),
+    "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
+    "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
 }
 
 

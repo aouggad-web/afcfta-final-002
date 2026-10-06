@@ -1,0 +1,34 @@
+Guinée équatoriale — impuestos especiales et TVA à l'importation : extraits (relevés le 2026-10-05)
+
+1. Guide détaillé des impôts, ministère des Finances, de l'Économie et de la Planification (2020)
+(https://www.guineainfomarket.com/wp-content/uploads/2020/10/GUIA-DETALLADA-DE-IMPUESTOS-Final.pdf,
+55 pages, sha256 f3475dfa2b476703ac6d7abe1e92411d0f993928eae7eed299ce5cae2c5c6186).
+
+Page 39 (texte) :
+
+5.3. Impuesto sobre el uso de bolsas de plástico En aplicación del apartado e) del artículo 14 de la Ley de Presupuestos de 2020, la bolsa de plástico se define como “todas las bolsas de plástico no degradables”, es decir, las bolsas que no pueden ser degradadas por organismos biológicos. El legislador ecuatoguineano se une a los esfuerzos emprendidos en algunos países africanos como Botsuana, Burundi, Marruecos, Ruanda o Camerún, que tienen por objeto restringir o incluso prohibir el uso de bolsas de plástico a fin de proteger mejor el medio ambiente. La declaración se hará en el momento del despacho de aduanas o en el momento de la comercialización. Así pues, corresponde a las empresas (deudor legal) cobrar a los contribuyentes (deudor real) y pagar al Tesoro Público. El impuesto es de 25 FCFA por unidad para el uso de bolsas de plástico. 5.4. Impuesto sobre las telecomunicaciones Los siguientes servicios de telecomunicaciones están sujetos al impuesto: • Telefonía fija a través de redes de telefónicas terrestres de cable. • Telefonía celular (GSM, 3G, 4G, 5G o similares) o satelital. • Servicio de internet por cable, satélite o redes inalámbricas. • Televisión por cable, satélite o frecuencias terrestres. • Télex, servicios de fax y otros servicios de datos. Sin embargo, en espera de aclaraciones de las autoridades fiscales, la declaración se puede efectuar en el momento del despacho de aduanas o en el momento de la comercialización. La base imponible es el valor de la importación o la venta al público, en el caso de la producción, incluidos los impuestos de importación, si los hubiera, pero excluido el impuesto sobre el valor añadido (IVA). La cantidad a ingresar en el tesoro público es igual al 10% de los servicios de telecomunicaciones prestados a los clientes. La multa o sanción será proporcional al 100% de la diferencia de la tasa que se aplicaría al producto. 5.5. Impuestos sobre el consumo o impuestos específicos Los impuestos especiales o específicos se aplican principalmente a las bebidas alcohólicas y no alcohólicas, al tabaco y a sus derivados, como se detalla a continuación:
+
+Pages 40-41 (tableau en image ; transcription de la colonne « Tasa de impuestos/importe adeudado ») :
+
+Tabaco — base : producción, envasado o importación.
+  Cinco mil (5.000) FCFA para el tabaco o productos similares.
+  Siete mil quinientos (7.500) FCFA por mil (1.000) unidades de cigarrillos o cigarrillos pequeños.
+  Diez mil (10.000) FCFA para cigarros por cada cien (100) unidades.
+Bebidas no alcohólicas — base : producción, envasado o importación.
+  Cien (100) francos CFA por litro para bebidas con azúcar, sirope añadido o energéticas. Cincuenta (50) francos CFA por litro para el resto de las bebidas de los apartados a) y b) del artículo 14.2 Párrafos a) y b).
+Bebidas alcohólicas — base : producción, envasado o importación.
+  Bebidas alcohólicas: Cincuenta (50) FCFA por grado de alcohol y por litro.
+  Además, la cerveza se grava adicionalmente con un impuesto de cien (100) FCFA por litro.
+  Bebidas alcohólicas producidas en GE: treinta (30) FCFA por grado de alcohol y por litro.
+
+2. Ley número 4/2004, de 28 de octubre, reguladora del sistema tributario
+(copie : https://leydeguinea.wordpress.com/wp-content/uploads/2014/08/ley-sistema-tributario.pdf,
+155 pages, sha256 1ccbecf0c23bba8205a3eb7045b28c91adcd1dbf08d5491437f5f00a9a3337af ; l'annexe III n'y figure pas).
+
+Page 90 :
+
+ARTÍCULO 288.- Con relación a las importaciones, la base imponible del IVA está constituida por el valor imponible definida en los artículos 23 al 26 del Código de Aduanas de la CEMAC más las cuotas de los derechos de aduanas y el derecho especial. 2) En cuanto al Derecho Especial se refiere, la base imponible está compuesta por el valor imponible aduanero más los derechos de aduanas.
+
+Page 92 :
+
+4.3 EL DERECHO ESPECIAL. ARTÍCULO 296.- El tipo general del 30% se aplica a los productos que figuran en el Anexo III. Las disposiciones arriba detalladas relativas a los sujetos pasivos, a las operaciones imponibles, a las exoneraciones y a la territorialidad son las mismas para el Derecho Especial.
