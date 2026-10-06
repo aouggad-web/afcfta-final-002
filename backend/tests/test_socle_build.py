@@ -527,3 +527,50 @@ def test_un_droit_national_ne_recoit_aucune_reserve_wits():
         "SARS Schedule No. 1 Part 1",
     )
     assert droit["note"] is None
+
+
+# ── Compteur des droits liquidables : c'est le moteur qui juge ──────────────
+def _liquidables(*droits):
+    return bs._lignes_liquidables({"droits": [dict(d, famille=d.get("famille", "droit")) for d in droits]})
+
+
+def test_une_tva_assise_sur_une_accise_sans_taux_n_est_pas_liquidable():
+    """Le moteur refuse la TVA quand l'accise de son assiette n'a pas de taux
+    (ASSIETTE_INCOMPLETE) : le compteur du manifeste ne la compte pas non plus."""
+    assert _liquidables(
+        {"code": "DD", "taux": 30.0, "assiette": "CIF"},
+        {"code": "DA", "famille": "accise", "taux": None, "assiette": "CIF+DD"},
+        {"code": "TVA", "famille": "tva", "taux": 19.25, "assiette": "CIF+DD+DA"},
+    ) == [True, False, False]
+
+
+@pytest.mark.parametrize(
+    "droit,attendu",
+    [
+        ({"code": "DD", "taux": 25.0, "specifique": {"montant": 1.0}, "compose": True, "assiette": "CIF"}, False),
+        (
+            {"code": "DD", "taux": 25.0, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "compose": True,
+             "regle_composee": "LE_PLUS_ELEVE", "assiette": "CIF"},
+            True,
+        ),
+        ({"code": "DD", "taux": None, "specifique": {"montant": None}, "assiette": "xQTE"}, False),
+        # Cas relevés en revue : cumul illisible, deux composantes sans règle,
+        # spécifique dont l'assiette n'est pas traduite.
+        ({"code": "DD", "taux": 40.0, "specifique": {"montant": None}, "cumulatif": True, "assiette": "CIF"}, False),
+        ({"code": "DD", "taux": 40.0, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "CIF"}, False),
+        (
+            {"code": "DD", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "CIF",
+             "assiette_non_traduite": True},
+            False,
+        ),
+    ],
+)
+def test_le_compteur_reprend_les_refus_du_moteur(droit, attendu):
+    assert _liquidables(droit) == [attendu]
+
+
+def test_des_unites_de_quantite_melees_ne_sont_pas_liquidables():
+    assert _liquidables(
+        {"code": "A", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "xQTE"},
+        {"code": "B", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "l"}, "assiette": "xQTE"},
+    ) == [False, False]

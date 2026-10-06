@@ -1176,6 +1176,27 @@ def _accises_du_cgi(iso, positions):
         position["droits"] = droits
 
 
+def _lignes_liquidables(position):
+    """Pour chaque ligne de la position : le moteur la liquide-t-il ? C'est le
+    moteur lui-même qui en juge (services/calcul.calculer), quantité, valeur
+    FOB et taux de change fournis : le compteur ne peut pas diverger de lui.
+    Une TVA assise sur un DA sans taux, un droit spécifique illisible, un
+    composé sans règle de départage ne comptent donc pas."""
+    droits = position.get("droits") or []
+    if not droits:
+        return []
+    backend = os.path.join(REPO, "backend")
+    if backend not in sys.path:
+        sys.path.insert(0, backend)
+    from services.calcul import calculer
+
+    lignes = calculer(position, 1000.0, quantite=1.0, taux_de_change=1.0, valeur_fob=1000.0)["npf"]["lignes"]
+    statuts = collections.defaultdict(list)
+    for ligne in lignes:
+        statuts[ligne.get("code")].append(ligne.get("statut"))
+    return [(statuts[d.get("code")] or [None]).pop(0) == "CALCULE" for d in droits]
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -1548,25 +1569,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     compteurs["droits_composes"] = sum(
         1 for p in positions.values() for d in p.get("droits") or [] if d.get("compose")
     )
-    compteurs["droits_liquidables"] = sum(
-        1
-        for p in positions.values()
-        for d in p.get("droits") or []
-        if not d.get("compose")
-        and d.get("assiette")
-        and (d.get("taux") is not None or d.get("specifique"))
-    )
-    compteurs["positions_liquidables"] = sum(
-        1
-        for p in positions.values()
-        if (p.get("droits") or [])
-        and all(
-            not d.get("compose")
-            and d.get("assiette")
-            and (d.get("taux") is not None or d.get("specifique"))
-            for d in p["droits"]
-        )
-    )
+    liquidables = {code: _lignes_liquidables(p) for code, p in positions.items()}
+    compteurs["droits_liquidables"] = sum(sum(v) for v in liquidables.values())
+    compteurs["positions_liquidables"] = sum(1 for v in liquidables.values() if v and all(v))
 
     socle = {
         "iso3": iso,
