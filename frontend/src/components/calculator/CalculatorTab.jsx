@@ -465,7 +465,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     } catch (conversionError) {
       // Silencieux : les montants en USD restent justes.
     }
+    // Sauf pour le Cameroun et la Guinée équatoriale : leur redevance
+    // informatique porte un plafond de 15 000 XAF dont le texte CEMAC n'est
+    // pas au dépôt, et le moteur l'applique à l'assiette. Avec un taux, elle
+    // vaudrait 0,11 USD pour 10 000 USD de CIF ; sans taux, elle reste à
+    // compléter, comme avant. À lever quand le texte aura tranché.
     const tauxDeChange = conversion?.rate && conversion.to_currency !== 'USD'
+      && !['CMR', 'GNQ'].includes(destISO3)
       ? 1 / conversion.rate
       : undefined;
 
