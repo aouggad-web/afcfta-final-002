@@ -128,6 +128,15 @@ ASSIETTE_TVA_ETABLIE["UGA"] = {
     ),
     "fiche": "EAC_assiette_TVA_2026-09-14.json",
 }
+ASSIETTE_TVA_ETABLIE["NGA"] = {
+    "texte": (
+        "Nigéria, Nigeria Tax Act 2025, section 150 : « the price of the taxable "
+        "supply imported plus – (a) taxes, duties and other charges levied either "
+        "outside or by reason of importation into Nigeria, other than VAT imposed "
+        "under this Act » — en vigueur le 1er janvier 2026, abroge le VAT Act"
+    ),
+    "fiche": "NGA_assiette_TVA_2026-10-07.json",
+}
 #: La Tunisie est délibérément ABSENTE de la table, bien que son texte soit lu
 #: et archivé (Code de la TVA, article 6 § II-1 : « par la valeur en douane, tous
 #: droits et taxes inclus à l'exclusion de la taxe sur la valeur ajoutée »,
@@ -218,16 +227,17 @@ COUNTRY_TAX_PROFILES = {
     },
     # ── Nigeria — NCS (customs.gov.ng, ECOWAS CET) ───────────────────────────
     # DD, ECOWAS, CISS : base = CIF
-    # VAT : base = CIF + DD  (VAITA Nigeria s.2)
+    # VAT : base = CIF + droits et taxes hors TVA (Nigeria Tax Act 2025 s.150,
+    # ASSIETTE_TVA_ETABLIE)
     "NGA": {
         "taxes_order": ["DD", "CEDEAO", "CISS", "TVA"],
         "tax_bases": {
             "DD": ("CIF", []),
             "CEDEAO": ("CIF", []),
             "CISS": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # VAITA s.2
+            "TVA": ("CIF", ["DD"]),
         },
-        "source": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
+        "source": "customs.gov.ng — Nigeria Tax Act 2025 s.150 (VAT base = CIF + droits et taxes hors TVA)",
     },
     # ── SACU — valeur en douane = valeur FOB ─────────────────────────────────
     # Le droit de douane SACU s'assoit sur la valeur FOB — fret et assurance
