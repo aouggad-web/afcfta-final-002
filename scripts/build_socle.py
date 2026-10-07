@@ -32,6 +32,7 @@ import csv
 import glob
 import hashlib
 import importlib
+import importlib.util
 import json
 import os
 import re
@@ -1240,10 +1241,21 @@ def _droits_livre_ethiopie(positions, compteurs):
     """Éthiopie : droit de douane absent du portail, repris du livre tarifaire du
     ministère des Finances (édition révisée de 2021, fiche
     ETH_droits_livre_tarifaire_2021-10-07.json). Le portail, plus récent, prime
-    partout où il publie un taux : le livre ne comble que ses cases vides."""
+    partout où il publie un taux : le livre ne comble que ses cases vides, et
+    seulement là où la sous-position n'a pas changé de portée en SH 2022."""
     with open(LIVRE_TARIFAIRE_ETH, encoding="utf-8") as f:
         livre = {r["code"].replace(".", ""): r["taux"] for r in csv.DictReader(f)}
+    # Le livre est en SH 2017, le portail en SH 2022 : une sous-position dont la
+    # table I de l'OMD (SH 2022 -> SH 2017) dit la portée modifiée n'est pas comblée.
+    spec = importlib.util.spec_from_file_location(
+        "concordance_tun", os.path.join(REPO, "backend", "scripts", "extraire_concordance_tun.py")
+    )
+    concordance = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(concordance)
+    modifiees = concordance.lire_table_i()
     for code, position in positions.items():
+        if code[:6] in modifiees:
+            continue
         for d in position.get("droits") or []:
             taux = livre.get(code[:8])
             if d.get("code") != "DD" or d.get("taux") is not None or taux in (None, "Prohibited"):

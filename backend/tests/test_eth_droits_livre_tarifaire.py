@@ -33,3 +33,9 @@ def test_le_portail_prime_sur_le_livre(positions):
     """07.13 : 15 % au livre de 2021, 5 % au portail — le portail est conservé."""
     dd = _dd(positions[next(k for k in positions if k.startswith("07131000"))])
     assert dd["taux"] == 5.0 and "Livre" not in dd["source"]
+
+
+def test_sous_position_modifiee_en_sh2022_non_comblee(positions):
+    """1211.90 figure à la table I de l'OMD : le code de 2017 peut désigner un
+    autre produit, le droit reste indisponible plutôt que repris du livre."""
+    assert _dd(positions["12119000000"])["taux"] is None
