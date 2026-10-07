@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "objet": "Nigéria : assiette de la TVA à l'importation — valeur CIF augmentée de tous les droits, taxes et charges perçus à l'importation, hors la TVA elle-même",
+  "destination_iso3": "NGA",
+  "verified_at": "2026-10-07",
+  "etabli": true,
+  "evidence_level": "primaire — Nigeria Tax Act, 2025, Gazette officielle n° 117 du 26 juin 2025, texte intégral lu (copie de la Gazette publiée par le Lagos State Internal Revenue Service)",
+  "source": {
+    "url": "https://lirs.gov.ng/assets/docs/Gazette%20-%20NIGERIA%20TAX%20ACT,%202025.pdf",
+    "institution": "République fédérale du Nigéria — Official Gazette No. 117, Vol. 112 (copie LIRS)",
+    "sha256_pdf": "f15edd3bc428d03fddbac7dae9d5c7025c161bc02a04e42e3123975553965b91"
+  },
+  "regle": {
+    "valeur": "TVA 7,5 % (s.148) assise sur la valeur CIF augmentée des droits, taxes et autres charges perçus à l'importation, à l'exclusion de la TVA (s.150) : dans le socle, CIF + DD + IAT + EXC.",
+    "verbatim": "150. The value of imported taxable supply for the purposes of Chapter Six of this Act shall be the amount which is equal to the price of the taxable supply imported plus – (a) taxes, duties and other charges levied either outside or by reason of importation into Nigeria, other than VAT imposed under this Act; and (b) costs by way of commission, parking, transport and insurance up to the port or point of entry.",
+    "reference": "Nigeria Tax Act, 2025, s.148, s.150 et s.196(k) (abrogation du Value Added Tax Act, Cap. V1) ; en vigueur le 1er janvier 2026",
+    "portee": "backend/socle/assiettes_pays.json (NGA, TVA) et ASSIETTE_TVA_ETABLIE[\"NGA\"] : la TVA passe de CIF + DD à CIF + tous droits et taxes hors TVA. Change le montant de TVA sur les 210 positions portant une IAT et les 30 portant une accise.",
+    "texte_archive": "sources/NGA_assiette_TVA.texte-extrait.txt",
+    "sha256": "2397760b92fa1c96516a8d55cd0d65ddd275d0ce7fa469af9aad9f6ca989960e"
+  },
+  "decisions": [
+    "La TVA était servie sur CIF + DD, en citant « VAITA s.2 » : référence fausse (l'ancien Value Added Tax Act fixait l'assiette en s.6, dans les mêmes termes que l'actuelle s.150), et assiette qui omettait l'IAT et l'accise.",
+    "Le texte appliqué est le Nigeria Tax Act 2025, en vigueur depuis le 1er janvier 2026, qui abroge le Value Added Tax Act (s.196(k))."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "498 taux sont vides dans la collecte customs.gov.ng (accise 357, IAT 90, TVA 51), sur 393 positions qui ne sont donc pas liquidables. Il faut recollecter le tarif ; customs.gov.ng est protégé par Cloudflare et n'est pas contourné ici.",
+    "Les prélèvements CEDEAO et CISS, présents dans le profil codé, ne figurent pas dans la collecte : ils ne sont ni liquidés ni inclus dans l'assiette de la TVA (existence et taux en 2026 non vérifiés).",
+    "La copie lue est celle de la Gazette publiée par le LIRS (administration fiscale de l'État de Lagos) ; les amendements postérieurs à la publication n'ont pas été recherchés."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/NGA_assiette_TVA.texte-extrait.txt",
+      "sha256": "2397760b92fa1c96516a8d55cd0d65ddd275d0ce7fa469af9aad9f6ca989960e"
+    }
+  ]
+}
