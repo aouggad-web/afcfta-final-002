@@ -1,0 +1,88 @@
+code_HS_10,contexte_ocr,chiffres_detectes,fiabilite
+0105.99.00.00,"HS CODE DESCRIPTION Live or Dead Birds including Frozen Poultry H.S. Code 0105.1100 — 0105.99.00.00, 0106.31.00.00 — 0106.39.00.00, 0207.11.00.00 — 0207.26.00.00 and 0210.99.00.00",,ocr_a_verifier
+0106.31.00.00,"Live or Dead Birds including Frozen Poultry H.S. Code 0105.1100 — 0105.99.00.00, 0106.31.00.00 — 0106.39.00.00, 0207.11.00.00 — 0207.26.00.00 and 0210.99.00.00 | 4 [0207.11.00.00 _|-- Not cut in pieces, fresh or chilled",4,ocr_a_verifier
+0106.39.00.00,"Live or Dead Birds including Frozen Poultry H.S. Code 0105.1100 — 0105.99.00.00, 0106.31.00.00 — 0106.39.00.00, 0207.11.00.00 — 0207.26.00.00 and 0210.99.00.00 | 4 [0207.11.00.00 _|-- Not cut in pieces, fresh or chilled",4,ocr_a_verifier
+0207.11.00.00,"Live or Dead Birds including Frozen Poultry H.S. Code 0105.1100 — 0105.99.00.00, 0106.31.00.00 — 0106.39.00.00, 0207.11.00.00 — 0207.26.00.00 and 0210.99.00.00 | 4 [0207.11.00.00 _|-- Not cut in pieces, fresh or chilled",4,ocr_a_verifier
+0207.26.00.00,"Live or Dead Birds including Frozen Poultry H.S. Code 0105.1100 — 0105.99.00.00, 0106.31.00.00 — 0106.39.00.00, 0207.11.00.00 — 0207.26.00.00 and 0210.99.00.00 | 4 [0207.11.00.00 _|-- Not cut in pieces, fresh or chilled",4,ocr_a_verifier
+0210.99.00.00,"Live or Dead Birds including Frozen Poultry H.S. Code 0105.1100 — 0105.99.00.00, 0106.31.00.00 — 0106.39.00.00, 0207.11.00.00 — 0207.26.00.00 and 0210.99.00.00 | 4 [0207.11.00.00 _|-- Not cut in pieces, fresh or chilled",4,ocr_a_verifier
+0207.12.00.00,"| 4 [0207.11.00.00 _|-- Not cut in pieces, fresh or chilled | 2 _[0207.12.00.00 0207.13.00.00 __|-- Cuts and offal, fresh or chilled","4,2",ocr_a_verifier
+0207.13.00.00,"| 2 _[0207.12.00.00 0207.13.00.00 __|-- Cuts and offal, fresh or chilled 0207.14.00.00 -- Cuts and offal, frozen",2,ocr_a_verifier
+0207.14.00.00,"0207.13.00.00 __|-- Cuts and offal, fresh or chilled 0207.14.00.00 -- Cuts and offal, frozen 0207.24.00.00 __ |-- Not cut in pieces, fresh or chilled",,ocr_a_verifier
+0207.24.00.00,"0207.14.00.00 -- Cuts and offal, frozen 0207.24.00.00 __ |-- Not cut in pieces, fresh or chilled -- Cuts and offal, fresh or chilled",,ocr_a_verifier
+0201.10.00.00,"es SOC eR Pork, Beef, H.S. Codes 0201.10.00.00 — 0204.50.00.00, 0206.10.00.00 — 0206.90.00.00, 0210.10.00.00 — 0210.20.00.00",,ocr_a_verifier
+0204.50.00.00,"es SOC eR Pork, Beef, H.S. Codes 0201.10.00.00 — 0204.50.00.00, 0206.10.00.00 — 0206.90.00.00, 0210.10.00.00 — 0210.20.00.00",,ocr_a_verifier
+0206.10.00.00,"es SOC eR Pork, Beef, H.S. Codes 0201.10.00.00 — 0204.50.00.00, 0206.10.00.00 — 0206.90.00.00, 0210.10.00.00 — 0210.20.00.00",,ocr_a_verifier
+0206.90.00.00,"es SOC eR Pork, Beef, H.S. Codes 0201.10.00.00 — 0204.50.00.00, 0206.10.00.00 — 0206.90.00.00, 0210.10.00.00 — 0210.20.00.00",,ocr_a_verifier
+0210.10.00.00,"Pork, Beef, H.S. Codes 0201.10.00.00 — 0204.50.00.00, 0206.10.00.00 — 0206.90.00.00, 0210.10.00.00 — 0210.20.00.00 is 0204.10.00.00 - Carcasses and half-carcasses of lamb, fresh or chilled",,ocr_a_verifier
+0210.20.00.00,"Pork, Beef, H.S. Codes 0201.10.00.00 — 0204.50.00.00, 0206.10.00.00 — 0206.90.00.00, 0210.10.00.00 — 0210.20.00.00 is 0204.10.00.00 - Carcasses and half-carcasses of lamb, fresh or chilled",,ocr_a_verifier
+0204.10.00.00,"0210.10.00.00 — 0210.20.00.00 is 0204.10.00.00 - Carcasses and half-carcasses of lamb, fresh or chilled - Carcasses and half-carcasses of lamb, frozen",,ocr_a_verifier
+0206.30.00.00,"Feet [0206120: 00,005 [= Cori = SA Sam ARS CSTW TORRE ea tn 0206.30.00.00 _|- Of swine, fresh or chilled Twec 01 APR mR HRF16= |0206.41.00/000505 [= Livers Sis Sim MORRIS POP] EINE RRR","00,01,16",ocr_a_verifier
+0206.49.00.00,"HRF16= |0206.41.00/000505 [= Livers Sis Sim MORRIS POP] EINE RRR 0206.49.00.00[- Other cg RAR SR OPT 48 |0206.80.00.00 _|- Other, fresh or chilled CAME","16,48",ocr_a_verifier
+0206.80.00.00,"0206.49.00.00[- Other cg RAR SR OPT 48 |0206.80.00.00 _|- Other, fresh or chilled CAME 0206.90.00.00",48,ocr_a_verifier
+0210.19.00.00,-- Bellies (streaky) and cuts thereof 0210.19.00.00 0210.20.00.00 _|- Meat of bovine animals,,ocr_a_verifier
+0407.11.00.00,0210.20.00.00 _|- Meat of bovine animals Bird Eggs H.S. Code 0407.11.00.00 — 0407.90.00.00; excluding hatching eggs of grand parent stock for breeding and research purposes,,ocr_a_verifier
+0407.90.00.00,0210.20.00.00 _|- Meat of bovine animals Bird Eggs H.S. Code 0407.11.00.00 — 0407.90.00.00; excluding hatching eggs of grand parent stock for breeding and research purposes,,ocr_a_verifier
+0407.21.00.00,"0407.11.00.00 -- Of fowls of the species Gallus domesticus 0407.21.00.00 -- Of fowls of the species Gallus domesticus Refined Végétable Oil 1507.10.00.00-1516.20.90.00, but excluding refined linseed,",,ocr_a_verifier
+1507.10.00.00,"0407.21.00.00 -- Of fowls of the species Gallus domesticus Refined Végétable Oil 1507.10.00.00-1516.20.90.00, but excluding refined linseed, IV |castor oil, olive oil and Hydrogenated vegetable fats, HS Code : 1516.20.10",,ocr_a_verifier
+1516.20.90.00,"0407.21.00.00 -- Of fowls of the species Gallus domesticus Refined Végétable Oil 1507.10.00.00-1516.20.90.00, but excluding refined linseed, IV |castor oil, olive oil and Hydrogenated vegetable fats, HS Code : 1516.20.10",,ocr_a_verifier
+1516.20.10.00,"Refined Végétable Oil 1507.10.00.00-1516.20.90.00, but excluding refined linseed, IV |castor oil, olive oil and Hydrogenated vegetable fats, HS Code : 1516.20.10.00. Crude vegetable oil are however NOT banned from import",,ocr_a_verifier
+1507.90.00.00,Crude vegetable oil are however NOT banned from importation 1507.90.00.00 1508.90.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less,5,ocr_a_verifier
+1508.90.10.00,1507.90.00.00 1508.90.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less 1508.90.90.00,5,ocr_a_verifier
+1508.90.90.00,1508.90.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less 1508.90.90.00 1509.20.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less,"5,5",ocr_a_verifier
+1509.20.10.00,1508.90.90.00 1509.20.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less Page |,5,ocr_a_verifier
+1509.30.10.00,"1509,20,00.00 |= Cheri tM On a owe Ts 1509.30.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less IMES6Hi| 1509, 30.00.0011 |= Other eS HO Wau a NMED |","20,5,6",ocr_a_verifier
+1509.40.00.00,| ae [1509.40.10 00 -- Put up for retail sale in packings with a net content of 5 litres or less E372|1509.40.00.00.. | | Other aS APRON eo es aN pata | 1509.90.10.00 -- Put up for retail sale in packings with a net cont,"00,5,5",ocr_a_verifier
+1509.90.10.00,E372|1509.40.00.00.. | | Other aS APRON eo es aN pata | 1509.90.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less 5 a Ee,"5,5",ocr_a_verifier
+1510.90.10.00,"5 a Ee 1510.90.10.00 -- Put up for retail sale in packings with a net content of 5 litres or less 1610.90.90,00 8 75| >Other) TRA ee ae MRSS eeREr TES","5,5,00,8,75",ocr_a_verifier
+1511.90.10.00,"1610.90.90,00 8 75| >Other) TRA ee ae MRSS eeREr TES 1511.90.10.00 --Fractions of oil, not fit for human consumption whether or not deodorised 1511.90.91.00 --- Put up for retail sale in packings with a net content of 5 ","00,8,75,5",ocr_a_verifier
+1511.90.91.00,"1511.90.10.00 --Fractions of oil, not fit for human consumption whether or not deodorised 1511.90.91.00 --- Put up for retail sale in packings with a net content of 5 litres or less 1511,00.99. 00;1NTE a Ottieins SRNR 2 ","5,00,1,2,2",ocr_a_verifier
+1512.19.00.00,"1511,00.99. 00;1NTE a Ottieins SRNR 2 SNS 2s 1512.19.00.00 1512.29.00.00","00,1,2,2",ocr_a_verifier
+1512.29.00.00,1512.19.00.00 1512.29.00.00 1513.19.00.00  |- Other ee,,ocr_a_verifier
+1513.19.00.00,1512.29.00.00 1513.19.00.00  |- Other ee 1513.29.00.00,,ocr_a_verifier
+1513.29.00.00,1513.19.00.00  |- Other ee 1513.29.00.00 1514.19.00.00,,ocr_a_verifier
+1514.19.00.00,1513.29.00.00 1514.19.00.00 1814.69;00.00. | Other it~. SOSA aAUNSESI Se us PSR CU (css a GO,,ocr_a_verifier
+1515.50.00.00,EES el ERe ae en DNS) Sa ee ES 1515.50.00.00 - Sesame oil and its fractions je RCE Ee) ee Ne tS aR eT |,,ocr_a_verifier
+1701.91.10.00,"Cane or beet sugar and chemically pure sucrose, in solid form containing added V_ {flavouring or colouring matters H.S.Code 1701.91.10.00 — 1701.99.90.00 in retail packs.",,ocr_a_verifier
+1701.99.90.00,"Cane or beet sugar and chemically pure sucrose, in solid form containing added V_ {flavouring or colouring matters H.S.Code 1701.91.10.00 — 1701.99.90.00 in retail packs.",,ocr_a_verifier
+1701.99.10.00,"isril| (707191190.00; Other 3 Vs iT | 58 |1701.99.10.00 _[— In powder, crystal or granule form INSSiAl ror eeso008 h(E Other 1.","3,58",ocr_a_verifier
+1802.00.00.00,"INSSiAl ror eeso008 h(E Other 1. Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 -",,ocr_a_verifier
+1803.20.00.00,"INSSiAl ror eeso008 h(E Other 1. Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 -",,ocr_a_verifier
+1804.00.10.00,"Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 - 1806.20.00.00",,ocr_a_verifier
+1804.00.90.00,"Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 - 1806.20.00.00",,ocr_a_verifier
+1805.00.10.00,"Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 - 1806.20.00.00",,ocr_a_verifier
+1805.00.90.00,"Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 - 1806.20.00.00",,ocr_a_verifier
+1806.10.00.00,"Cocoa butter, Powder & cakes H.S. Codes 1802.00.00.00 — 1803.20.00.00, VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 - 1806.20.00.00",,ocr_a_verifier
+1806.20.00.00,"VI |1804.00.10.00 — 1804.00.90.00, 1805.00.10.00 - 1805.00.90.00 and 1806.10.00.00 - 1806.20.00.00 | 60 |1804.00.10.00 _|- Fat and oil of cocoa",60,ocr_a_verifier
+1804.00.20.00,| 60 |1804.00.10.00 _|- Fat and oil of cocoa 1804 .00.20.00 - Natural cocoa butter ! | 62 |1804.00.90.00 _[- Other butter of cocoa and deodorised cocoa,"60,62",ocr_a_verifier
+2002.10.00.00,"packings, of a content exceeding 2 kg VII Tomatoes, whole or in pieces H.S. Code 2002.10.00.00 and Tomato paste or concentrates, put up for retail sale: H.S. Code 2002.90.20.00 and 2002.90.90.00",2,ocr_a_verifier
+2002.90.20.00,"VII Tomatoes, whole or in pieces H.S. Code 2002.10.00.00 and Tomato paste or concentrates, put up for retail sale: H.S. Code 2002.90.20.00 and 2002.90.90.00 2002.10.00.00 - Tomatoes, whole or in pieces",,ocr_a_verifier
+2002.90.90.00,"VII Tomatoes, whole or in pieces H.S. Code 2002.10.00.00 and Tomato paste or concentrates, put up for retail sale: H.S. Code 2002.90.20.00 and 2002.90.90.00 2002.10.00.00 - Tomatoes, whole or in pieces",,ocr_a_verifier
+2201.10.10.00,"ht ae including mineral waters and aerated Waters, containing added sugar or oi ening matter or flavoured, ice snow H.S. Codes 2201.10.10.00 — 2201.90.00.00, €r non-alcoholic beverages H.S. Codes 2202.10.00.00 — 2202.90.",,ocr_a_verifier
+2201.90.00.00,"ht ae including mineral waters and aerated Waters, containing added sugar or oi ening matter or flavoured, ice snow H.S. Codes 2201.10.10.00 — 2201.90.00.00, €r non-alcoholic beverages H.S. Codes 2202.10.00.00 — 2202.90.",,ocr_a_verifier
+2202.10.00.00,"oi ening matter or flavoured, ice snow H.S. Codes 2201.10.10.00 — 2201.90.00.00, €r non-alcoholic beverages H.S. Codes 2202.10.00.00 — 2202.90.90.00. | 70_|2207-10-70.00","70,10",ocr_a_verifier
+2202.90.90.00,"oi ening matter or flavoured, ice snow H.S. Codes 2201.10.10.00 — 2201.90.00.00, €r non-alcoholic beverages H.S. Codes 2202.10.00.00 — 2202.90.90.00. | 70_|2207-10-70.00","70,10",ocr_a_verifier
+2523.29.00.00,"sweetening matter or flavoured Bagged Cement H.S. Code 2523.29.00.00 Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00,",,ocr_a_verifier
+3004.10.00.00,"Bagged Cement H.S. Code 2523.29.00.00 Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00, 3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00",,ocr_a_verifier
+3004.31.00.00,"Bagged Cement H.S. Code 2523.29.00.00 Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00, 3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00",,ocr_a_verifier
+3004.32.00.00,"Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00, 3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00 | 75 _|3003.10.00.00",75,ocr_a_verifier
+3004.39.00.00,"Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00, 3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00 | 75 _|3003.10.00.00",75,ocr_a_verifier
+3004.90.20.00,"Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00, 3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00 | 75 _|3003.10.00.00",75,ocr_a_verifier
+3004.90.90.00,"Xx Medicament falling under Headings 3003 & HS Codes 3004.10.00.00, 3004.31.00.00, 3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00 | 75 _|3003.10.00.00",75,ocr_a_verifier
+3003.10.00.00,"3004.32.00.00, 3004.39.00.00, 3004.90.20.00, 3004.90.90.00 | 75 _|3003.10.00.00 3003.20.00.00",75,ocr_a_verifier
+3003.20.00.00,| 75 _|3003.10.00.00 3003.20.00.00 |_77_|3003.31.00.00,"75,77",ocr_a_verifier
+3003.31.00.00,3003.20.00.00 |_77_|3003.31.00.00 3003.39.00.00,77,ocr_a_verifier
+3003.39.00.00,|_77_|3003.31.00.00 3003.39.00.00 3003.41.00.00,77,ocr_a_verifier
+3003.41.00.00,3003.39.00.00 3003.41.00.00 | 80 _|3003.42.00.00,80,ocr_a_verifier
+3003.42.00.00,3003.41.00.00 | 80 _|3003.42.00.00 3003.43.00.00,80,ocr_a_verifier
+3003.43.00.00,| 80 _|3003.42.00.00 3003.43.00.00 3003.49.00.00,80,ocr_a_verifier
+3003.49.00.00,"3003.43.00.00 3003.49.00.00 3003.60.00.00 |Medicament | tic tn, TECHNICAL seaViCes | |",,ocr_a_verifier
+3003.60.00.00,"3003.49.00.00 3003.60.00.00 |Medicament | tic tn, TECHNICAL seaViCes | | 3003 00 OOLO0UNK, [Madicarrierit USgMIMMDRNN UA0N1(005 0° NON MU0)| ORRALSAWIGURNS) U8) CLV NN","00,0,0,1,0,0,8",ocr_a_verifier
+3006.92.00.00,"[20 _|3004,90.20.00 Waste pharmaceutiques H.S. Code 3006.92.00.00 3006.92.00.00 Waste Pharmaceutiques HS Code 3006.92.00.00",20,ocr_a_verifier
+3105.20.00.00,XIl_ |phosphorus and potassium (NPK) including 15 :15 :15) and any such variants HS Code 3105.20.00.00 3105.20.00.00 __|NPK Fertilizers,"15,15,15",ocr_a_verifier
+3401.11.10.00,3105.20.00.00 __|NPK Fertilizers bx | Soaps and Detergents H.S. Code 3401.11.10.00 — 3402.90.00.00 in retail packs 93 [3401.11.10.00 SG. Ca AT ee,93,ocr_a_verifier
+3402.90.00.00,3105.20.00.00 __|NPK Fertilizers bx | Soaps and Detergents H.S. Code 3401.11.10.00 — 3402.90.00.00 in retail packs 93 [3401.11.10.00 SG. Ca AT ee,93,ocr_a_verifier
+3401.30.00.00,LT ee ee a ae | 99 |3401.30.00.00 Page 3,"99,3",ocr_a_verifier
+4819.10.00.00,LSIN [HS CODE [DESCRIPTION rw and cases made from Corrugated paper and Paper boards H.S. Code 4819.10.00.00 Bibbs [804 90.00.00; over fA CRANIUM <A 9S,9,ocr_a_verifier
+7010.90.31.00,"Bibbs [804 90.00.00; over fA CRANIUM <A 9S Code 7010.90.31.00 and 7010.90.49.00 ibe [76101 9048.00,10) | Cher AAT ac AY","9,10",ocr_a_verifier
+7010.90.49.00,"Bibbs [804 90.00.00; over fA CRANIUM <A 9S Code 7010.90.31.00 and 7010.90.49.00 ibe [76101 9048.00,10) | Cher AAT ac AY","9,10",ocr_a_verifier
+7210.41.00.00,"ibe [76101 9048.00,10) | Cher AAT ac AY plated or coated --Corrugated H.S Code 7210.41.00.00 FEDERAL MINISTRY OF FINANCE ABUJAI",10,ocr_a_verifier
