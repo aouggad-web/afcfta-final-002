@@ -1,65 +1,128 @@
-code_HS_10,contexte_ocr,chiffres_detectes,fiabilite
-0102.21.00.00,"Pure-bred breeding animals (Cattle) 0 ALY | 1 mec 601 APR 206 i 0102.21.00.00 5% 6 3 Fats of bovine animals, sheep or goats, oth 3 OSE OF heading 19.03: 1502.10.00.00 10% 5%","0,1,5,6,3,3,10,5",ocr_a_verifier
-1502.10.00.00,"1 mec 601 APR 206 i 0102.21.00.00 5% 6 3 Fats of bovine animals, sheep or goats, oth 3 OSE OF heading 19.03: 1502.10.00.00 10% 5% Tallow","1,5,6,3,3,10,5",ocr_a_verifier
-1602.32.00.00,"Tallow 5 {Other prepared or preserved meat, meat offal, blood or insects: -- Of fowls 1602.32.00.00 35% 10% of the species Gallus domesticus","5,35,10",ocr_a_verifier
-1901.90.40.00,of the species Gallus domesticus (oe Malt Extract: Malted beverage powder/liquid in bulk not less than 25kg 1901.90.40.00 Food preparations not elsewhere specified or included: Stock powder 3406.90/91 00,"25,91,00",ocr_a_verifier
-2309.90.10.00,co 10 Preparations of a kind used in animal feeding: -- Preparations containing 2309.90.10.00 5% 0% added vitamins,"10,5,0",ocr_a_verifier
-2710.19.31.00,"Petroleum oils and oils obtained from bituminous minerals, other than crude: x . 12 Meant to be mixed futher 2710.19.31.00 10% 5% Page 1","12,10,5,1",ocr_a_verifier
-2710.91.00.00,"43 Petroleum Oils containing PCBs, PCTs and PBBs 2710.91.00.00 10% 5% ee eee |","43,10,5",ocr_a_verifier
-2828.50.00.00,_ -~Copper oxides and hydroxieds ty ts 2828.50.00.00 5% 0% - - i AW) Or,"5,0",ocr_a_verifier
-2836.20.00.00,- - i AW) Or 2836.20.00.00 5% 0% ; PSS oilers,"5,0",ocr_a_verifier
-2839.11.00.00,--Sodum Metasilicates Pidiccti aR RN IR 7 2839.11.00.00 5% 0% Hypochlorites; commercial calcium by h hlorites; ites;,"7,5,0",ocr_a_verifier
-2828.90.90.00,"Hypochlorites; commercial calcium by h hlorites; ites; 18 |"" ae y hypochlorites; chlorites; hypobromites 2828.90.90.00 40% 5 Carboxylix acids with additional oxygen function and their anhydrides,","18,40,5",ocr_a_verifier
-2918.99.00.00,"Carboxylix acids with additional oxygen function and their anhydrides, 49 |halides, peroxides, and peroxyacids; their halogenated, sulphonated, 2918.99.00.00 5% 0% nitrated, or nitrosated derivatives: -Other: --Other","49,5,0",ocr_a_verifier
-5931.49.00.00,acid:--Other ee organo-inorganic compounds: --Other 5931.49.00.00 2 ae organo-inorganic compounds: -Other 5931.90.00.00,2,ocr_a_verifier
-5931.90.00.00,ee organo-inorganic compounds: --Other 5931.49.00.00 2 ae organo-inorganic compounds: -Other 5931.90.00.00 - Compounds containing an unfused pyridine ring (whether or not 2933.39.00.00,2,ocr_a_verifier
-2933.39.00.00,2 ae organo-inorganic compounds: -Other 5931.90.00.00 - Compounds containing an unfused pyridine ring (whether or not 2933.39.00.00 25 hydraogenated) in the structure: --Other,"2,25",ocr_a_verifier
-3212.10.00.00,Prepared dri 32 graments (including metallic powders and flakes) dispersed in non- aqueous 3212.10.00.00 10% media: Stamping foils,"32,10",ocr_a_verifier
-3302.10.00.00,"media: Stamping foils | 34 |"" a kind used in food or drinks industries 3302.10.00.00 | 36 |"" kind used in other industries 3302.90.90.00","34,36",ocr_a_verifier
-3302.90.90.00,"| 34 |"" a kind used in food or drinks industries 3302.10.00.00 | 36 |"" kind used in other industries 3302.90.90.00 -Other organic surface-active agents, whether or not put up for retail sale: --- 3402.42.90.00","34,36",ocr_a_verifier
-3402.42.90.00,"| 36 |"" kind used in other industries 3302.90.90.00 -Other organic surface-active agents, whether or not put up for retail sale: --- 3402.42.90.00 37 Other","36,37",ocr_a_verifier
-3403.19.00.00,"release Preparations, based on lubricants) and preparations of a kind used cha for the Oil Or grease treatment of textile materials, leather, furskins or other 3403.19.00.00 10% materials, but excluding preparations cont","10,70",ocr_a_verifier
-3504.00.00.00,"Peptones and their derivatives; other protein substances and _ their 39 |derivatives not elsewhere Specified or included: hide powder, whether or not] 3504.00.00.00 10% 5% chromed (Nutrilan 150)","39,10,5",ocr_a_verifier
-3506.91.00.00,"Prepared glues and other prepared adhesives, not elsewhere specified or 40 Ss Adhesives based on polymers of headings 39.01 to 39.13 or on 3506.91.00.00 10% 5% rubber","40,10,5",ocr_a_verifier
-3701.30.00.00,"Photographic plate and films in the flat, sensitised, unexposed, of any 43 |material other than paper: Other plates and film, with any side exceeding 3701.30.00.00 20% 5% 255mm","43,20,5",ocr_a_verifier
-3814.00.10.00,"Organic composite solvents and thiners, not elsewhere specified or 49 |included, prepared paint or vanish remover: containing methane, ethane or | 3814.00.10.00 10% 5% propane chlorofluorocarbons (CFCs)","49,10,5",ocr_a_verifier
-3823.19.00.00,"90 heading 27.07 or 29.02 Seis : 5 | 5 monocarboxylic fatty acids; acid oils from refining: other 3823.19.00.00 (ae binders for foundry moulds or cores: sorbitol other than that of )2824,60.00.00] 10% | 8%","90,5,5,10,8",ocr_a_verifier
-3824.60.00.00,"(ae binders for foundry moulds or cores: sorbitol other than that of )2824,60.00.00] 10% | 8% 52 3824.60.00.00 10% 5% subheading 2905.44 FEDERAL MINISTRY OF FINANCE ABUJA","10,8,52,10,5",ocr_a_verifier
-3824.90.99.00,"other DIRECTOR, TECHNICAL SERVICES 53 3824.90.99.00 10% 5% Poly(methyl PAT at","53,10,5",ocr_a_verifier
-3906.10.00.00,Poly(methyl PAT at 54 ae pctyl pet aciyiate) ove 3906.10.00.00 5% 0% Py) \/ ea Ae NO? IID VA,"54,5,0",ocr_a_verifier
-3920.61.00.00,"Plates, sheets, film, foil, tape, strip of platics, non-cellular and not reinforced, laminated, support of similarly combined with other materials: Other of 3920.61.00.00 10% 5% Polycarbonates","10,5",ocr_a_verifier
-3923.90.00.00,"62 eyance or packaging of goods; of plastics; stoppers, lids caps and other closures, of plastics - Other : pe | 3923.90.00.00 Pes lote. articles of plastics and articles of other-matertats-oftreading so0T fo","62,0",ocr_a_verifier
-3926.90.99.00,Pes lote. articles of plastics and articles of other-matertats-oftreading so0T fo 39.14: Other 3926.90.99.00 20% 10% ga \Other: Medical gloves ahh cert,"0,20,10",ocr_a_verifier
-4803.00.00.00,"used for household or sanitary purposes, cellulose wadding and webs of cellulose fibres, whether or not creped, crinkled, embossed, perforated, 4803.00.00.00 10% o% surface colored, surface decorated or printed, in rolls",10,ocr_a_verifier
-4810.99.90.00,"Paper and paperboard, coated on one or both sides with kaolin or other | inorganic substances, with or without a binder: other 4810.99.90.00 10% 5% ) Paper, paperboard, cellulose wadding and webs of cellulose fibres, coa","10,5",ocr_a_verifier
-4811.59.10.00,"rolls of rectangular (including square) sheets, of any size, other than goods . of the kind described in heading 48.03, 48.09 or 48.10 - In rolls of a width 4811.59.10.00 40% 5% not exceeding 150mm or in the rectangular ","40,5",ocr_a_verifier
-4823.20.00.00,"Other Paper, paperboard, cellulose wadding and webs of cellulose fibres, 72 |\cut to size or shape; other articles of paper pulp, paper, paperboard, 4823.20.00.00 10% 5% cellulose wadding or webbs of cellulose fibres: Fi","72,10,5",ocr_a_verifier
-5501.20.00.00,cellulose wadding or webbs of cellulose fibres: Filter paper and paper board | FIRES filament tow: -Of polysters 5501.20.00.00 ae filament tow: -Of polysters 5503.20.00.00,,ocr_a_verifier
-5503.20.00.00,| FIRES filament tow: -Of polysters 5501.20.00.00 ae filament tow: -Of polysters 5503.20.00.00 mo filament tow: -Of polysters 5506.20.00.00,,ocr_a_verifier
-5506.20.00.00,ae filament tow: -Of polysters 5503.20.00.00 mo filament tow: -Of polysters 5506.20.00.00 ae or of other textile bast fibres of heading 53.03: Multiple (folded) | ...7 54 49 g¢,"54,49",ocr_a_verifier
-5407.20.10.00,"Woven fabrics of synthetic filament yarn, including woven fabrics obtained 78 |from materials of heading 54.04: Polypropylene fabrics, of the type used as | 5407.20.10.00 20% 5% carpet backing","78,20,5",ocr_a_verifier
-9503.30.00.00,"Synthetic staple fibres, not carded, combed or otherwise processed for spinning: acrylic or modacrylic 9503.30.00.00 10% S% 31 Synthetic staple fibres, not carded, combed or otherwise processed for ‘","10,31",ocr_a_verifier
-9906.30.00.00,"31 Synthetic staple fibres, not carded, combed or otherwise processed for ‘ spinning: acrylic or modacrylic 9906.30.00.00 10% 5% Page 7","31,10,5,7",ocr_a_verifier
-9509.21.00.00,"83 Yarn (other than sewing thread) of synthetic staplés-fisres-trot put up fo mE i : 2 retails sale: Single yarn 9509.21.00.00 10% S% aa Nonwovens, whether or not impregnated, coated, covered or laminated - :","83,2,10",ocr_a_verifier
-5803.00.10.00,"ae Gauze, other than narrow fabrics of heading 58.06: Polypropylene of the . = type used as carpet backing 5803.00.10.00 20% 5% = Used or new rags, scrap twine, cordage, rope and cables and worn out =","20,5",ocr_a_verifier
-6310.10.10.00,"Used or new rags, scrap twine, cordage, rope and cables and worn out = articles of twine, cordage, rope or cables, of textile materials: -- Mutilated 6310.10.10.00 20% 5% = rags =","20,5",ocr_a_verifier
-6507.00.00.00,"rags = 97 Head-bands, linings, covers, hat foundations, hat frames, peaks and 6507.00.00.00 10% 50h = chinstraps, for headgear =","97,10,50",ocr_a_verifier
-6808.00.00.00,"Panels, boards, tiles, blocks and similar articles of vegetables fibre, of straw a 88 jor of shavings, chips, particles, sawdust or other waste of wood, 6808.00.00.00 20% 5% agglomerated with cement, plaster or other min","88,20,5",ocr_a_verifier
-7003.19.00.00,"Cast glass and rolled glass, in sheets or profiles, whether or not having an = absorbent, reflecting or non-reflecting layer, but not otherwise worked: -- 7003.19.00.00 20% 0% Other","20,0",ocr_a_verifier
-7210.49.10.00,"eee cee products of iron or non-alloy steel, of a width of 600mm or more, clad, plated or coated ---in coils 7210.49.10.00 45% 5% Flat-rolled products of j","45,5",ocr_a_verifier
-7318.15.00.00,"screws, bolts, nuts, coach screw, screw hooks, rivets, cotters, c6otter-pins, 97 \washers and similar articles, of iron or steel: Other screws and bolts, 7318.15.00.00 20% 10% whether or not with their nuts or washers","6,97,20,10",ocr_a_verifier
-7321.11.91.00,Presented completely knocked down(CKD) or unassembled for the 100 assembly industry 7321.11.91.00 10% 5% her artic! f iron or steel: Other,"10,5",ocr_a_verifier
-7403.11.00.00,"Unrefined copper, copper anodes for electrolytic refining. es ees 103 Refined copper and copper alloys, unwrought. -- Cathodes and sections of 7403.11.00.00 cathodes",,ocr_a_verifier
-7408.19.00.00,Copper waste and scrap. Bince TOR TECRIISAL SERVICES 7408.19.00.00 20% 5% 105 rec = 1 APR 20% ° °,"20,5,1,20",ocr_a_verifier
-7601.20.00.00,407 Aluminium alloyed <I 7601.20.00.00 0% | 4 408 Aluminium waste and scrap :,"0,4",ocr_a_verifier
-7602.00.00.00,408 Aluminium waste and scrap : 7602.00.00.00 5% 0% Aluminium foil of a thickness (includi -,"5,0",ocr_a_verifier
-7607.20.10.00,"Aluminium foil of a thickness (includi - 409 eh (including backing) not exceeding 0.2 mm: 7607.20.10.00 10% 5%, = Collapsible tubular containe","10,5",ocr_a_verifier
-7612.10.00.00,"Collapsible tubular containe MBO ac es, as 7612.10.00.00 20% 5% Aluminium ;","20,5",ocr_a_verifier
-7901.11.00.00,"Un ht zinc: Zi ne ini ; 99° f oa t zinc: Zinc not alloyed -- containing by weight 99.99% or more o 7901.11.00.00 Air or vacuum pumps, air or other gas compressors and fans; ventilating or f :",99,ocr_a_verifier
-8414.30.90.00,"Air or vacuum pumps, air or other gas compressors and fans; ventilating or f : 113 recycling hoods incorporation a fan, whether or not fitted with filters: Other. 8414.30.90.00 10% o% Electronic instantaneous or storage ",10,ocr_a_verifier
-8516.60.10.00,"Electronic instantaneous or storage water heaters and immerson heaters: 114 \CKD Cookers 8516.60.10.00 20% 5% Electrical apparatus for switching or protecting eletrical circuits, or for","20,5",ocr_a_verifier
-8536.10.00.00,"Electrical apparatus for switching or protecting eletrical circuits, or for 115 |making connections to or in electical circuits: Fuses 8536.10.00.00 20% 10% Automatic circuit breaker neqny OF FINANCE ABUJA","20,10",ocr_a_verifier
-8536.20.00.00,Automatic circuit breaker neqny OF FINANCE ABUJA 116 FEE ae eCUNIC SERVICES 8536.20.00.00 20% 10% other switches SEN,"20,10",ocr_a_verifier
-8901.90.12.00,Cargo ships and similar vessels for the transport of goods: Mechanically | 121 |propelled vessels for the transport of goods by inland navigation (Of a gross | 8901.90.12.00 5% 0% | tonnage more than 500 tonnes,"5,0",ocr_a_verifier
-9020.00.00.00,"422 Other breathing appliances and gas masks, excluding protective masks having neither mechanical parts nor replaceable filters. 9020.00.00.00 Machinery and Equipment of Chapters, 84, 85 & 90 of the CET for","84,85,90",ocr_a_verifier
-9602.00.00.00,"materials; moulded or carved articles of wax, of stearin, of natural gums or natural resins or of modelling pastes, and other moulded or carved articles, | 9602.00.00.00 20% 5% not elsewhere specified or included; worked","20,5",ocr_a_verifier
+n,description,code_hs_10,taux_CECG,taux_nigeria_2026
+1,Pure-bred breeding animals (Cattle),0102.21.00.00,5%,0%
+2,Maize (corn) starch---Others,1108.12.90.00,10%,5%
+3,Fats of bovine animals, sheep or goats other than heading 15.03: Tallow,1502.10.00.00,10%,5%
+4,Other,1502.90.00.00,10%,5%
+5,Other prepared or preserved meat/meat offal/blood: of fowls Gallus domesticus,1602.32.00.00,35%,10%
+6,Malt Extract: Malted beverage powder/liquid in bulk not less than 25kg,1901.90.40.00,10%,5%
+7,Food preparations: Stock powder,2106.90.91.00,10%,5%
+8,Extracts essences and flavouring products used in drink industries,2106.90.92.00,10%,5%
+9,Other,2106.90.99.00,20%,5%
+10,Animal feeding preparations: with added vitamins,2309.90.10.00,5%,0%
+11,Animal feeding preparations: Other,2309.90.90.00,10%,5%
+12,Petroleum oils (other than crude): meant to be mixed further,2710.19.31.00,10%,5%
+13,Petroleum Oils containing PCBs PCTs and PBBs,2710.91.00.00,10%,5%
+14,Other,2710.99.00.00,10%,5%
+15,Copper oxides and hydroxides,2828.50.00.00,5%,0%
+16,Disodium carbonate,2836.20.00.00,5%,0%
+17,Sodium Metasilicates,2839.11.00.00,5%,0%
+18,Hypochlorites; commercial calcium hypochlorites; chlorites; hypobromites - Other,2828.90.90.00,10%,5%
+19,Carboxylic acids with additional oxygen function etc.: Other: Other,2918.99.00.00,5%,0%
+20,Phosphoric esters and their salts incl. lactophosphates; derivatives,2919.90.00.00,5%,0%
+21,Urenes and their derivatives; salts thereof,2924.21.00.00,5%,0%
+22,Carboxamide-function compounds; amide-function compounds of carbonic acid: Other,2924.29.00.00,5%,0%
+23,Other organo-inorganic compounds: Other,2931.49.00.00,5%,0%
+24,Other organo-inorganic compounds: Other,2931.90.00.00,5%,0%
+25,Compounds containing an unfused pyridine ring: Other,2933.39.00.00,5%,0%
+26,Compounds containing an unfused triazine ring: Other,2933.69.00.00,5%,0%
+27,Heterocyclic compounds with nitrogen hetero-atom(s) only: Other: Other,2933.99.00.00,5%,0%
+28,Nucleic acids and their salts; other heterocyclic compounds: Other: Other,2934.99.00.00,5%,0%
+29,Direct dyes and preparations based thereon,3204.14.00.00,5%,0%
+30,Synthetic organic colouring matter: Pigments and preparations,3204.17.00.00,10%,5%
+31,Prepared driers,3211.00.00.00,10%,5%
+32,Pigments (incl. metallic powders/flakes) dispersed in non-aqueous media: Stamping foils,3212.10.00.00,10%,5%
+33,Other,3212.90.00.00,10%,5%
+34,Of a kind used in food or drinks industries,3302.10.00.00,10%,5%
+35,Of kind used in perfumery,3302.90.10.00,10%,5%
+36,Of kind used in other industries,3302.90.90.00,10%,5%
+37,Other organic surface-active agents for retail sale: Other,3402.42.90.00,20%,10%
+38,Lubricating preparations (cutting-oil anti-rust mould release etc.): Other,3403.19.00.00,10%,5%
+39,Peptones and derivatives; protein substances; hide powder chromed (Nutrilan 150),3504.00.00.00,10%,5%
+40,Prepared adhesives based on polymers of headings 39.01-39.13 or rubber,3506.91.00.00,10%,5%
+41,Other,3506.99.00.00,10%,5%
+42,Enzymes; prepared enzymes: Other,3507.90.00.00,10%,0%
+43,Photographic plates and films in the flat unexposed: any side exceeding 255mm,3701.30.00.00,20%,5%
+44,Chemical preparations for photographic uses: Other,3707.90.00.00,20%,5%
+45,Activated carbon; activated natural mineral products: Other,3802.90.00.00,10%,5%
+46,Other: Other,3808.91.11.90,5%,0%
+47,Pickling preparations for metal surfaces; fluxes; soldering/brazing/welding powders,3810.10.00.00,10%,5%
+48,Containing petroleum oils: Base Oil additives,3811.21.00.00,10%,5%
+49,Organic composite solvents and thinners; paint/varnish remover with CFCs,3814.00.10.00,10%,5%
+50,Mixed alkylbenzenes and mixed alkylnaphthalenes,3817.00.00.00,10%,5%
+51,Industrial monocarboxylic fatty acids; acid oils from refining: other,3823.19.00.00,10%,5%
+52,Prepared binders for foundry moulds or cores: sorbitol other than 2905.44,3824.60.00.00,10%,5%
+53,Other,3824.90.99.00,10%,5%
+54,Poly(methyl methacrylate),3906.10.00.00,5%,0%
+55,Acrylic polymers in primary forms: Other (K57 Grade),3906.90.00.00,5%,5%
+56,Poly(ethylene terephthalate) Amorphous PET Chips,3907.60.00.61,10%,0%
+57,Plastic tubes/pipes/hoses and fittings; artificial guts (sausage casings),3917.10.00.00,10%,5%
+58,Self-adhesive plates/sheets/film/foil/tape of plastics: Other,3919.90.00.00,10%,5%
+59,Plates/sheets/film/foil of plastics non-cellular: Other of Polycarbonates,3920.61.00.00,10%,5%
+60,Of poly (vinyl butyral),3920.91.00.00,10%,5%
+61,Of other plastics,3920.99.00.00,10%,5%
+62,Articles for conveyance/packaging of goods; stoppers/lids/caps of plastics: Other,3923.90.00.00,20%,10%
+63,Other articles of plastics (heading 39.01-39.14): Other,3926.90.99.00,20%,10%
+64,Other: Medical gloves,4015.19.00.00,20%,5%
+65,Other,4016.99.00.00,10%,5%
+66,Toilet/facial tissue stock etc.: Jumbo Roll,4803.00.00.00,10%,5%
+67,Paper/paperboard for writing/printing: Medical paper,4810.13.10.00,10%,5%
+68,Paper/paperboard coated with kaolin: other,4810.99.90.00,10%,5%
+69,Paper/paperboard coated/impregnated: rolls width <=150mm (excluding floor covering),4811.59.10.00,10%,5%
+70,Other,4811.59.90.00,10%,5%
+71,Of a kind used for winding textile yarn,4822.10.00.00,10%,5%
+72,Paper/paperboard cut to size: Filter paper and paperboard,4823.20.00.00,10%,5%
+73,Synthetic filament tow: Of polyesters,5501.20.00.00,10%,5%
+74,Synthetic filament tow: Of polyesters,5503.20.00.00,10%,5%
+75,Synthetic filament tow: Of polyesters,5506.20.00.00,10%,5%
+76,Yarn of jute or textile bast fibres of heading 53.03: Multiple (folded) or cabled,5307.20.00.00,10%,5%
+77,Artificial filament yarn not for retail: of cellulose acetate (<67 decitex),5403.33.00.00,10%,5%
+78,Woven fabrics of synthetic filament yarn: Polypropylene fabrics (carpet backing),5407.20.10.00,20%,5%
+79,Synthetic filament tow: Acrylic or modacrylic,5501.30.00.00,10%,5%
+80,Synthetic staple fibres for spinning: acrylic or modacrylic,5503.30.00.00,10%,5%
+81,Synthetic staple fibres for spinning: acrylic or modacrylic,5506.30.00.00,10%,5%
+82,Other,5506.90.00.00,10%,5%
+83,Yarn of synthetic staple fibres not for retail: Single yarn,5509.21.00.00,10%,5%
+84,Nonwovens impregnated/coated/covered/laminated - Back sheet,56.03,20%,10%
+85,Gauze (other than heading 58.06): Polypropylene of the type used as carpet backing,5803.00.10.00,20%,5%
+86,Used or new rags/scrap twine/rope/cables: Mutilated rags,6310.10.10.00,20%,5%
+87,Head-bands/linings/covers/hat frames/peaks/chinstraps for headgear,6507.00.00.00,10%,5%
+88,Panels/boards/tiles of vegetable fibre/straw/wood waste agglomerated with mineral binder,6808.00.00.00,20%,5%
+89,Cast and rolled glass in sheets/profiles: Other,7003.19.00.00,20%,0%
+90,Ferrous products obtained by direct reduction of iron ore,7203.10.00.00,5%,0%
+91,Other,7203.90.00.00,5%,0%
+92,Flat-rolled iron/non-alloy steel width >=600mm hot-rolled (heading 72.08),72.08,5%,0%
+93,Flat-rolled iron/non-alloy steel thickness <0.5mm (Annealed Cold-rolled Steel),7209.18.00.00,20%,5%
+94,Flat-rolled iron/non-alloy steel width >=600mm clad/plated/coated in coils,7210.49.10.00,45%,5%
+95,Flat-rolled iron/non-alloy steel width >=600mm plated/coated with plastics: other,7210.70.90.00,20%,5%
+96,Stranded wire/ropes/cables of iron or steel: Other galvanized steel cables for electricity,7312.10.91.00,10%,5%
+97,Screws/bolts/nuts etc. of iron or steel: Other screws and bolts with nuts/washers,7318.15.00.00,20%,10%
+98,Rivets,7318.23.00.00,20%,10%
+99,Presented CKD or unassembled for the assembly industry,7321.11.11.00,10%,5%
+100,Presented CKD or unassembled for the assembly industry,7321.11.91.00,10%,5%
+101,Other articles of iron or steel: Other,7326.19.00.00,20%,10%
+102,Unrefined copper; copper anodes for electrolytic refining,7402.00.00.00,5%,0%
+103,Refined copper and copper alloys unwrought: Cathodes and sections of cathodes,7403.11.00.00,5%,0%
+104,Copper waste and scrap,7404.00.00.00,5%,0%
+105,Copper Wire: other,7408.19.00.00,20%,5%
+106,Unwrought aluminium: Aluminium not alloyed,7601.10.00.00,5%,0%
+107,Aluminium alloyed,7601.20.00.00,5%,0%
+108,Aluminium waste and scrap,7602.00.00.00,5%,0%
+109,Aluminium foil thickness <=0.2mm: Printed,7607.20.10.00,10%,5%
+110,Collapsible tubular containers,7612.10.00.00,20%,5%
+111,Aluminium cans,7612.90.10.00,10%,10%
+112,Unwrought zinc: Zinc not alloyed 99.99%+ purity,7901.11.00.00,5%,0%
+113,Air/vacuum pumps compressors fans; ventilating hoods: Other,8414.30.90.00,10%,5%
+114,Electronic instantaneous or storage water heaters: CKD Cookers,8516.60.10.00,20%,5%
+115,Electrical apparatus for switching/protecting circuits: Fuses,8536.10.00.00,20%,10%
+116,Automatic circuit breaker,8536.20.00.00,20%,10%
+117,Other switches,8536.50.00.00,20%,10%
+118,Lamp holders,8536.61.00.00,20%,10%
+119,Other apparatus,8536.90.00.00,20%,10%
+120,Railway/tramway track fixtures and fittings; signalling equipment - SKD/CKD for Assemblers only,Chapter 86,5%,0%
+121,Cargo ships for inland navigation (gross tonnage >500 tonnes),8901.90.12.00,5%,0%
+122,Other breathing appliances and gas masks,9020.00.00.00,5%,0%
+123,Machinery and Equipment of Chapters 84/85/90 (Agriculture Manufacturing Power Solid Minerals Mining Aviation of Ch.88),Chapters 84/85/90,5%,0%
+124,Machinery equipment and components for Modular Refinery,Different Chapters,5%-20%,0%
+125,Modular Surgical Operating Theatre (MSOT),94.06,20%,5%
+126,Prefabricated buildings (Greenhouse) - other,9406.90.00.00,20%,5%
+127,Worked vegetable/mineral carving material; moulded/carved articles of wax etc.; unhardened gelatin articles,9602.00.00.00,20%,5%

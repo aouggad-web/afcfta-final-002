@@ -1,20 +1,28 @@
-code_HS_10,contexte_ocr,chiffres_detectes,fiabilite
-2009.11.90.00,6 - 2028 non-alcoholic beverages) Sugar Sweetened. 2009.11.90.00 - 2202.99.90.00 N10 per Litre 2026- 2028 |Aerated Water others 2201.10.20.00 - 2201.90.00.00 | | nto pertite |,"6,10",ocr_a_verifier
-2202.99.90.00,6 - 2028 non-alcoholic beverages) Sugar Sweetened. 2009.11.90.00 - 2202.99.90.00 N10 per Litre 2026- 2028 |Aerated Water others 2201.10.20.00 - 2201.90.00.00 | | nto pertite |,"6,10",ocr_a_verifier
-2201.10.20.00,"6 - 2028 non-alcoholic beverages) Sugar Sweetened. 2009.11.90.00 - 2202.99.90.00 N10 per Litre 2026- 2028 |Aerated Water others 2201.10.20.00 - 2201.90.00.00 | | nto pertite | 2026 Beer and Stout, including other alcohol","6,10,00",ocr_a_verifier
-2201.90.00.00,"6 - 2028 non-alcoholic beverages) Sugar Sweetened. 2009.11.90.00 - 2202.99.90.00 N10 per Litre 2026- 2028 |Aerated Water others 2201.10.20.00 - 2201.90.00.00 | | nto pertite | 2026 Beer and Stout, including other alcohol","6,10,00",ocr_a_verifier
-2203.00.90.00,"2026- 2028 |Aerated Water others 2201.10.20.00 - 2201.90.00.00 | | nto pertite | 2026 Beer and Stout, including other alcoholic beverages and beer | 2203.00.10,00 - 2203.00.90.00, ,",00,ocr_a_verifier
-2206.00.10.00,"i NILL N72 per Litre not made from malt-whether fermented or not fermented. 2206.00.10.00 - 2206.00.99.00 2027 Beer and Stout, including other alcoholic beverages and beer | 2203.00.10,00 - 2203.00.90.00,","72,00",ocr_a_verifier
-2206.00.99.00,"i NILL N72 per Litre not made from malt-whether fermented or not fermented. 2206.00.10.00 - 2206.00.99.00 2027 Beer and Stout, including other alcoholic beverages and beer | 2203.00.10,00 - 2203.00.90.00,","72,00",ocr_a_verifier
-2203.00.10.00,"not made from malt-whether fermented or not fermented. 2206.00.10.00 - 2206.00.99.00 Beer and Stout, including other alcoholic beverages and beer | 2203.00.10.00 - 2203.00.90.00, NILL N80 Lit not made from malt-whether f",80,ocr_a_verifier
-2204.10.00.00,not made from malt-whether fermented or not fermented. 2206.00.10.00 - 2206.00.99.00 “elim 2028 | Wines (alcoholic) 2204.10.00.00 — 2205.90.00.00 N70 per Litre 2027 Wines (alcoholic) 2204.10.00.00 — 2205.90.00.00 N70 per,"70,70",ocr_a_verifier
-2205.90.00.00,not made from malt-whether fermented or not fermented. 2206.00.10.00 - 2206.00.99.00 “elim 2028 | Wines (alcoholic) 2204.10.00.00 — 2205.90.00.00 N70 per Litre 2027 Wines (alcoholic) 2204.10.00.00 — 2205.90.00.00 N70 per,"70,70",ocr_a_verifier
-2208.20.00.00,"ozs Wines (alcoholic) 2204.10.00.00 — 2205.90.00.00 N70 per Litre 2028 Whisky, Brandy, Vodka & Rums 2208.20.00.00 - 2208.90.00.00 N75 per Litre 2027 Whisky, Brandy, Vodka & Rums 2208.20.00.00 - 2208.90.00.00 N80 per Litr","70,75,80",ocr_a_verifier
-2208.90.00.00,"ozs Wines (alcoholic) 2204.10.00.00 — 2205.90.00.00 N70 per Litre 2028 Whisky, Brandy, Vodka & Rums 2208.20.00.00 - 2208.90.00.00 N75 per Litre 2027 Whisky, Brandy, Vodka & Rums 2208.20.00.00 - 2208.90.00.00 N80 per Litr","70,75,80",ocr_a_verifier
-2402.10.00.00,"2028 Whisky, Brandy, Vodka & Rums 2208.20.00.00 - 2208.90.00.00 N85 per Litre ee | Smoking Tobacco including Cigarettes 2402.10.00.00 — 2402.90.00.00 N6.00k per Stick pOey Smoking Tobacco including Cigarettes 2402.10.00.",85,ocr_a_verifier
-2402.90.00.00,"2028 Whisky, Brandy, Vodka & Rums 2208.20.00.00 - 2208.90.00.00 N85 per Litre ee | Smoking Tobacco including Cigarettes 2402.10.00.00 — 2402.90.00.00 N6.00k per Stick pOey Smoking Tobacco including Cigarettes 2402.10.00.",85,ocr_a_verifier
-2403.11.00.00,"chewing, snuffing tobacco and manufactured tobacco substitutes 2026 SNUS (smokeless Tobacco), Smoking Tobacco whether or not |2403.11.00.00 - 2403.99.90.00 N4,500/kg containing tobacco substitutes in any proportion N6,00","4,6",ocr_a_verifier
-2403.99.90.00,"chewing, snuffing tobacco and manufactured tobacco substitutes 2026 SNUS (smokeless Tobacco), Smoking Tobacco whether or not |2403.11.00.00 - 2403.99.90.00 N4,500/kg containing tobacco substitutes in any proportion N6,00","4,6",ocr_a_verifier
-2404.99.00.00,"containing tobacco substitutes in any proportion N6,000 per litre Tobacco Heating Products (THP), Vapour/E-Cigarettes (with or |2404.1 1.00.00 - 2404.99.00.00 N4,500/kg without Nicotine), Nicotine Pouches N6,000 per litr","6,4,6",ocr_a_verifier
-2404.11.00.00,"without Nicotine), Nicotine Pouches N6,000 per litre é 2027 Tobacco Heating Products (THP), Vapour/E-Cigarettes (with or |2404.11.00.00 - 2404.99.00.00 N4,500/kg without Nicotine), Nicotine Pouches N6,000 per litre","6,4,6",ocr_a_verifier
-3915.10.00.00,"SYN ae SG aaa ITEM DESCRIPTION }, wi ~ HSCODE | a Waste, parings and scrap, of plastics - Of polymers of ethylene | 3915.10.00.00 2 Waste, parings and scrap, of plastics - Of polymers of styrene 39 15.20.00.00","2,39",ocr_a_verifier
+annee,produit,codes_hs_10,taux_ad_valorem,taux_specifique
+2026-2028,Boissons non alcoolisées sucrées (sodas, jus de fruits, energy drinks etc.),2009.11.90.00 - 2202.99.90.00,NILL,N10 par litre
+2026-2028,Eaux gazeuses autres (aerated water),2201.10.20.00 - 2201.90.00.00,NILL,N10 par litre
+2026,Bière et stout y compris autres boissons alcoolisées et bière non issues du malt (fermentées ou non),2203.00.10.00 - 2203.00.90.00; 2206.00.10.00 - 2206.00.99.00,NILL,N72 par litre
+2027,Bière et stout y compris autres boissons alcoolisées et bière non issues du malt,2203.00.10.00 - 2203.00.90.00; 2206.00.10.00 - 2206.00.99.00,NILL,N76 par litre
+2028,Bière et stout y compris autres boissons alcoolisées et bière non issues du malt,2203.00.10.00 - 2203.00.90.00; 2206.00.10.00 - 2206.00.99.00,NILL,N80 par litre
+2026,Vins (alcoolisés),2204.10.00.00 - 2205.90.00.00,NILL,N70 par litre
+2027,Vins (alcoolisés),2204.10.00.00 - 2205.90.00.00,NILL,N70 par litre
+2028,Vins (alcoolisés),2204.10.00.00 - 2205.90.00.00,NILL,N70 par litre
+2026,Whisky Brandy Vodka & Rums,2208.20.00.00 - 2208.90.00.00,NILL,N75 par litre
+2027,Whisky Brandy Vodka & Rums,2208.20.00.00 - 2208.90.00.00,NILL,N80 par litre
+2028,Whisky Brandy Vodka & Rums,2208.20.00.00 - 2208.90.00.00,NILL,N85 par litre
+2026,Tabac à fumer y compris cigarettes,2402.10.00.00 - 2402.90.00.00,NILL,N6.00 par cigarette (« per stick »)
+2027,Tabac à fumer y compris cigarettes,2402.10.00.00 - 2402.90.00.00,NILL,N7.00 par cigarette
+2028,Tabac à fumer y compris cigarettes,2402.10.00.00 - 2402.90.00.00,NILL,N8.00 par cigarette
+2026,SNUS (tabac sans fumée) tabac à fumer avec ou sans substituts; autres tabacs à chiquer/priser; substituts du tabac,2403.11.00.00 - 2403.99.90.00,NILL,N4500 par kg ; N6000 par litre (liquides)
+2027,SNUS (tabac sans fumée) tabac à fumer avec ou sans substituts,2403.11.00.00 - 2403.99.90.00,NILL,N4500 par kg ; N6000 par litre (liquides)
+2028,SNUS (tabac sans fumée) tabac à fumer avec ou sans substituts,2403.11.00.00 - 2403.99.90.00,NILL,N4500 par kg ; N6000 par litre (liquides)
+2026,Tabac à chauffer (THP) vapotrices/e-cigarettes (avec ou sans nicotine) sachets de nicotine,2404.11.00.00 - 2404.99.00.00,NILL,N4500 par kg ; N6000 par litre (liquides)
+2027,Tabac à chauffer (THP) vapotrices/e-cigarettes (avec ou sans nicotine) sachets de nicotine,2404.11.00.00 - 2404.99.00.00,NILL,N4500 par kg ; N6000 par litre (liquides)
+2028,Tabac à chauffer (THP) vapotrices/e-cigarettes (avec ou sans nicotine) sachets de nicotine,2404.11.00.00 - 2404.99.00.00,NILL,N4500 par litre ; N6000 par litre (liquides)
+2026,Green Tax Surcharge — véhicules moteur 2000-3999 cc (inclus),Chapter 87,,2% (ad valorem)
+2026,Green Tax Surcharge — véhicules moteur 4000 cc et plus,Chapter 87,,4% (ad valorem)
+2026,Green Tax — exclusions: véhicules <2000cc; 87.02 (bus); véhicules électriques; véhicules fabriqués localement; 87.06/87.07/87.08/87.13/87.14/87.15/87.16,Chapter 87,,Exempt
+2026,Prohibition exportation (Annexe VI) — déchets et rebuts de plastiques (rPET): polymères d'éthylène,3915.10.00.00,,
+2026,Prohibition exportation — déchets de plastiques: polymères de styrène,3915.20.00.00,,
+2026,Prohibition exportation — déchets de plastiques: polymères de chlorure de vinyle,3915.30.00.00,,
+2026,Prohibition exportation — déchets de plastiques: autres plastiques,3915.90.00.00,,

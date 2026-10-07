@@ -12,10 +12,14 @@ Date de collecte : octobre 2026. Base : **TEC CEDEAO (ECOWAS CET) 2022-2027** �
    particuliers 15/30/50 %)**, colonne fiabilité (taux douteux = « a_verifier », 1 ligne).
 2. **nigeria_iat_2026.csv** — taxe d'ajustement à l'importation (IAT) 2026 : 72 des 192 lignes
    extraites par OCR (annexe scannée) ; PDF officiel complet dans `sources/`.
-3. **nigeria_national_list_2026.csv** — liste nationale 2026 (droits réduits unilatéraux) :
-   64 des 127 lignes (OCR).
+3. **nigeria_national_list_2026.csv** — liste nationale 2026 complète : **127 lignes transcrites
+   intégralement** (lecture directe de la circulaire scannée) : code HS, taux CET, taux Nigeria 2026.
 4. **nigeria_prohibition_2026.csv** — liste d'interdiction à l'importation révisée 2026 (87 codes).
-5. **nigeria_excise_2026.csv** — produits passibles d'accises (annexe IV FPM 2026).
+5. **nigeria_excise_2026.csv** — **annexe IV complète (accises 2026-2028 avec montants spécifiques)** :
+   boissons sucrées N10/L ; bière N72→N76→N80/L (2026→2028) ; vins N70/L ; spiritueux N75→N85/L ;
+   cigarettes N6→N8 par stick ; tabac substituts/THP/e-cigarettes N4 500/kg et N6 000/L des liquides ;
+   + **Green Tax** véhicules (2 % ≤3999cc, 4 % ≥4000cc, exclusions VE/bus/<2000cc) ;
+   + interdiction d'exportation des déchets rPET (3915.10–3915.90).
 6. `sources/` — TEC CEDEAO enrichi 27/03/2026, nomenclature SH 2022, circulaire FPM 2026 (PDF).
 
 ## 1. Droits de douane à l'importation (par ligne, fichier CSV)
@@ -62,8 +66,10 @@ jus de fruits, bières — détaillées dans `nigeria_prohibition_2026.csv` (OCR
 
 ## 5. Réserves
 
-- Les annexes 2026 (IAT 192 lignes, liste nationale 127 lignes, accises) proviennent d'un PDF
-  **scanné** : extraction OCR partielle (codes fiables, taux à vérifier) — le PDF officiel complet
+- **Annexes IV (accises) et II (liste nationale)** : transcrites intégralement depuis la circulaire
+  officielle scannée (lecture directe des images) — fiables. Nota : le document imprime
+  « N6.00k per stick » pour les cigarettes (2026) : montant lu tel quel, à confirmer (₦6 vs 6 kobo).
+- **Annexe I (IAT, 192 lignes)** : extraction OCR partielle (72 lignes) — le PDF officiel complet
   est fourni dans `sources/nigeria_fpm_tariff_amendments_2026.pdf`.
 - Le portail NCS (cet.customs.gov.ng) reste la référence de classification en ligne (protection
   Cloudflare, non interrogeable par script).
