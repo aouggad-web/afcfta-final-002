@@ -338,6 +338,11 @@ def code_canonique(code: str, libelle: str = "") -> str:
 
 
 def famille(code_canon: str) -> str:
+    # Tunisie : TVA/AUTO, TVA/PP, TVA/MTK… sont des TVA (« TVA VOIT.AUTOS »).
+    # Gardées sous leur code — cinq positions 87.01 en portent deux —, mais
+    # rangées dans la famille tva, que l'assiette « TOUS_SAUF_TVA » exclut.
+    if code_canon.startswith("TVA"):
+        return "tva"
     return FAMILLES.get(code_canon, "autre")
 
 
@@ -401,8 +406,10 @@ def assiette_depuis_source(brut):
         a, plafond = ASSIETTES_SOURCE[texte]
         return a, plafond, None
     # Tunisie : « VAL.DOU(D)+R(DT) GR.x » = valeur en douane augmentée des droits
+    # et taxes — Code de la TVA art. 6 § II-1 : « tous droits et taxes inclus à
+    # l'exclusion de la taxe sur la valeur ajoutée » (fiche TUN_assiette_TVA).
     if texte.startswith("VAL.DOU") and "R(DT)" in texte:
-        return "CIF+DD", None, None
+        return "CIF+TOUS_SAUF_TVA", None, None
     # Tunisie : « SOMME D.T (G=...) » = somme des droits et taxes, hors valeur
     if texte.startswith("SOMME D.T"):
         return "SOMME(TOUS_SAUF_SOI)", None, None
@@ -1171,6 +1178,28 @@ def _assiette_accise(iso, positions):
                 )
 
 
+def _ordre_tunisie(positions):
+    """Tunisie : la TVA s'assoit sur tous les droits et taxes sauf elle-même
+    (Code de la TVA art. 6) et la RPD sur la somme des droits et taxes des
+    groupes 0 à 4, TVA comprise (Tarif Web « SOMME D.T (G=0.1.2.3.4.) »). Le
+    moteur liquide dans l'ordre : TVA après les autres droits, RPD en dernier.
+    Minimum de perception de la RPD : 10 dinars par article de déclaration
+    (loi n° 87-83, art. 51, modifié par la loi n° 2012-27, art. 57)."""
+    for position in positions.values():
+        droits = position.get("droits") or []
+        rpd = [d for d in droits if d.get("code") == "RPD"]
+        tva = [d for d in droits if d.get("famille") == "tva"]
+        autres = [d for d in droits if d not in rpd and d not in tva]
+        for d in rpd:
+            if d.get("taux"):
+                d["minimum_perception"] = {"montant": 10.0, "devise": "TND"}
+            d["note"] = (
+                "3 % de la somme des droits et taxes liquidés, TVA comprise ; minimum de "
+                "perception 10 dinars par article de déclaration (loi n° 2012-27, art. 57)."
+            )
+        position["droits"] = autres + tva + rpd
+
+
 def _accises_du_cgi(iso, positions):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1567,6 +1596,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["droits"] += 1
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
+
+    if iso == "TUN":
+        _ordre_tunisie(positions)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on

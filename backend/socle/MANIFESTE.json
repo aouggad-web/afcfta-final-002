@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-06T22:43:35.531291+00:00",
+  "construit_le": "2026-10-07T00:01:09.077004+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1769,7 +1769,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TUN_tariffs.json",
       "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
-      "socle_sha256": "c2f1818596f25a7156e363ed43810775c0f64a196ec84731683cd34a5ba3dafe",
+      "socle_sha256": "ff10c172486ce512e4378ca8ba4c874e38df1f2ac06a3440da7355b919788c54",
       "collecte": "2026-08-30",
       "etat": "PARTIEL",
       "familles": [
@@ -1782,7 +1782,7 @@
       "compteurs": {
         "positions": 17542,
         "droits": 61287,
-        "droits_liquidables": 59896,
+        "droits_liquidables": 58421,
         "positions_liquidables": 16757,
         "preferentiels": 13362,
         "preferentiels_specifiques": 0,
@@ -2032,6 +2032,6 @@
     ],
     "positions": 368379,
     "droits": 1121168,
-    "droits_liquidables": 1080512
+    "droits_liquidables": 1079037
   }
 }

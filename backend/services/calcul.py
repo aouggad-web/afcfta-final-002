@@ -748,6 +748,28 @@ def _liquider(
                 ligne["plafond_applique"] = True
                 montant = borne
 
+        # Minimum de perception (Tunisie, RPD : 10 dinars par article de
+        # déclaration). Un taux nul n'est pas perçu : pas de minimum. Même règle
+        # de devise que le plafond : la borne se convertit si elle n'est pas
+        # libellée dans la devise de la valeur déclarée.
+        minimum = droit.get("minimum_perception")
+        if minimum and taux:
+            montant_min, devise = minimum.get("montant"), minimum.get("devise")
+            meme_devise = bool(devise and devise_valeur and devise.upper() == devise_valeur.upper())
+            if taux_de_change is None and devise and not meme_devise:
+                ligne["statut"] = MANQUE_CHANGE
+                ligne["montant"] = None
+                manques.append({"code": code, "motif": MANQUE_CHANGE})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
+            borne = montant_min * (1.0 if meme_devise else (taux_de_change or 1.0))
+            ligne["minimum_perception"] = round(borne, 4)
+            if montant < borne:
+                ligne["montant_avant_minimum"] = round(montant, 4)
+                ligne["minimum_applique"] = True
+                montant = borne
+
         ligne.update({"base": round(assiette, 4), "montant": round(montant, 4), "statut": CALCULE})
         # Le montant est servi, mais il est né d'une moyenne : la ligne le dit,
         # et l'état global cessera de se déclarer complet.

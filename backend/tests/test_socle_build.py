@@ -92,7 +92,7 @@ def test_d2r_n_est_pas_une_colonne_zlecaf():
         ("CIF + DD + RS + PCS", "CIF+DD+RS+PCS"),
         ("CIF+Duty+Fees", "CIF+TOUS_SAUF_TVA"),
         ("VALEUR DOUANE DINARS", "CIF"),
-        ("VAL.DOU(D)+R(DT) GR.0", "CIF+DD"),
+        ("VAL.DOU(D)+R(DT) GR.0", "CIF+TOUS_SAUF_TVA"),
         ("SOMME D.T (G=0.1.2.3.4.", "SOMME(TOUS_SAUF_SOI)"),
         ("QCS", "xQTE"),
     ],

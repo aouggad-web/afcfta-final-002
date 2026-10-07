@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "objet": "Tunisie : redevance de prestations douanières (RPD) à l'importation — 3 % de la somme des droits et taxes liquidés, TVA comprise, minimum 10 dinars par article ; et ordre de liquidation qui en découle (TVA sur tous les droits et taxes sauf elle-même)",
+  "destination_iso3": "TUN",
+  "verified_at": "2026-10-07",
+  "etabli": true,
+  "evidence_level": "primaire pour le minimum (JORT, loi n° 2012-27, art. 57) et pour l'assiette publiée (Tarif Web 2026 de la Douane) ; secondaire pour la composition de la somme (digest profiscal, exemple chiffré). Le texte de base (loi n° 87-83, art. 51, modifié par la loi n° 98-111, art. 32) n'a pas été lu.",
+  "source": {"url": "http://chaexpert.com/documents/2013%20-%20Loi%20de%20finances%20ann%C3%A9e%202013.pdf", "institution": "Journal officiel de la République tunisienne (copie)"},
+  "regle": {
+    "valeur": "RPD : 3 % de la somme des droits et taxes liquidés à l'importation (groupes 0 à 4 du Tarif Web), TVA comprise, RPD exclue ; minimum de perception 10 dinars par article de déclaration. TVA : valeur en douane + tous droits et taxes sauf la TVA (Code de la TVA art. 6, fiche TUN_assiette_TVA_2026-09-14), RPD exclue (elle n'est pas du groupe 0).",
+    "verbatim": "Art. 57 - Est abrogé le terme « cinq » mentionné au deuxième tiret de l’article 51 de la loi n° 87-83 du 31 décembre 1987 relative à la loi de finances pour l’année 1988, telle que modifiée et complétée par les textes subséquents et notamment l’article 32 de la loi n° 98-111 du 28 décembre 1998, portant loi de finances pour l’année 1999 et remplacé par le terme « dix ».",
+    "reference": "Loi n° 87-83, art. 51, modifié par la loi n° 98-111, art. 32 et la loi n° 2012-27, art. 57 ; Tarif Web 2026 (« SOMME D.T (G=0.1.2.3.4. » ; « VAL.DOU(D)+R(DT) GR.0 ») ; Code de la TVA art. 6 § II-1",
+    "portee": "scripts/build_socle._ordre_tunisie (seul socle TUN) : TVA liquidée après les autres droits, RPD en dernier avec un minimum de perception de 10 TND ; build_socle.assiette_depuis_source traduit « VAL.DOU(D)+R(DT) GR.x » par CIF+TOUS_SAUF_TVA ; les codes TVA/AUTO, TVA/PP, TVA/MTK, TVA/RNTA rangés en famille tva. services/calcul : champ minimum_perception.",
+    "texte_archive": "sources/TUN_RPD.texte-extrait.txt",
+    "sha256": "316d0f34a81976303249abbe0fe25e365c0cd071964fa8b905be74ab8f16a16b"
+  },
+  "decisions": [
+    "Le moteur additionnait pour la RPD les seuls droits déjà liquidés : placée en deuxième, elle ne portait que sur le droit de douane. Placée en dernier, elle porte sur tous les droits et taxes, TVA comprise, comme dans l'exemple chiffré du digest.",
+    "La TVA était servie sur CIF + DD, alors que le Code de la TVA dit « tous droits et taxes inclus » : le droit de consommation, le Fodec, etc. entrent désormais dans sa base."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le texte de l'article 51 de la loi n° 87-83 dans sa rédaction de la loi n° 98-111 n'a pas été lu (douane.gov.tn échoue à la vérification TLS) ; la composition exacte des « groupes 0 à 4 » n'est pas publiée.",
+    "Taxe AIR (« VAL DOUANE+ SOMME DT ») : laissée avant la TVA et la RPD, sur les droits liquidés avant elle.",
+    "Cinq positions 87.01 (tracteurs routiers) portent deux TVA (TVA/AP 19 % et TVA/AUTO 13 %) : la source ne dit pas laquelle s'applique ; les deux sont servies.",
+    "Majoration de 25 % de la base de TVA pour les importateurs non assujettis (Code de la TVA art. 6 § II-2) : non appliquée."
+  ],
+  "documents_archives": [{"texte_archive": "sources/TUN_RPD.texte-extrait.txt", "sha256": "316d0f34a81976303249abbe0fe25e365c0cd071964fa8b905be74ab8f16a16b"}]
+}
