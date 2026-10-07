@@ -1200,6 +1200,38 @@ def _ordre_tunisie(positions):
         position["droits"] = autres + tva + rpd
 
 
+def _ordre_ethiopie(positions):
+    """Éthiopie : assiettes et ordre de liquidation fixés par les textes.
+    Accise : valeur en douane + droit de douane (Excise Tax Proclamation
+    1186/2020, art. 9(2)). TVA : valeur + droit, accise et autres charges, hors
+    TVA et avance d'impôt (VAT Proclamation 1341/2024, art. 27). Surtaxe : CIF +
+    droit + TVA + accise (Council of Ministers Regulation 133/2007). WHR : 3 % de
+    la valeur CIF, importations commerciales (Income Tax Proclamation 979/2016,
+    art. 85)."""
+    assiettes = {
+        "EXC": ("CIF+DD", "Excise Tax Proclamation 1186/2020, art. 9(2) : valeur en douane + droit de douane."),
+        "TVA": (
+            "CIF+TOUS_SAUF_TVA",
+            "VAT Proclamation 1341/2024, art. 27 : valeur en douane + droit, accise et autres charges, "
+            "hors TVA et avance d'impôt sur le revenu.",
+        ),
+        "SUR": ("CIF+DD+EXC+TVA", "Council of Ministers Regulation 133/2007 : CIF + droit + TVA + accise."),
+        "WHR": (
+            "CIF",
+            "Income Tax Proclamation 979/2016, art. 85 : avance de 3 % de la valeur CIF, importations "
+            "à usage commercial, imputable sur l'impôt sur le revenu.",
+        ),
+    }
+    rang = {"EXC": 1, "TVA": 3, "SUR": 4, "WHR": 5}
+    for position in positions.values():
+        droits = position.get("droits") or []
+        for d in droits:
+            if d.get("code") in assiettes:
+                d["assiette"], d["note"] = assiettes[d["code"]]
+                d["assiette_origine"] = "regle_de_pays"
+        position["droits"] = sorted(droits, key=lambda d: rang.get(d.get("code"), 2 if d.get("code") != "DD" else 0))
+
+
 def _accises_du_cgi(iso, positions):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1599,6 +1631,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
     if iso == "TUN":
         _ordre_tunisie(positions)
+    if iso == "ETH":
+        _ordre_ethiopie(positions)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
