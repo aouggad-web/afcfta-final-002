@@ -8,7 +8,8 @@
   "source": {
     "url": "https://lirs.gov.ng/assets/docs/Gazette%20-%20NIGERIA%20TAX%20ACT,%202025.pdf",
     "institution": "République fédérale du Nigéria — Official Gazette No. 117, Vol. 112 (copie LIRS)",
-    "sha256_pdf": "f15edd3bc428d03fddbac7dae9d5c7025c161bc02a04e42e3123975553965b91"
+    "pdf_sha256": "f15edd3bc428d03fddbac7dae9d5c7025c161bc02a04e42e3123975553965b91",
+    "pdf_non_archive": "Le PDF intégral de la Gazette (215 pages, 1,7 Mo) n'est pas versé au dépôt ; seuls les articles 148, 150 et 196(k) sont archivés (voir regle.texte_archive)"
   },
   "regle": {
     "valeur": "TVA 7,5 % (s.148) assise sur la valeur CIF augmentée des droits, taxes et autres charges perçus à l'importation, à l'exclusion de la TVA (s.150) : dans le socle, CIF + DD + IAT + EXC.",
