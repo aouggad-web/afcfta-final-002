@@ -338,6 +338,11 @@ def code_canonique(code: str, libelle: str = "") -> str:
 
 
 def famille(code_canon: str) -> str:
+    # Tunisie : TVA/AUTO, TVA/PP, TVA/MTK… sont des TVA (« TVA VOIT.AUTOS »).
+    # Gardées sous leur code — cinq positions 87.01 en portent deux —, mais
+    # rangées dans la famille tva, que l'assiette « TOUS_SAUF_TVA » exclut.
+    if code_canon.startswith("TVA"):
+        return "tva"
     return FAMILLES.get(code_canon, "autre")
 
 
@@ -401,8 +406,10 @@ def assiette_depuis_source(brut):
         a, plafond = ASSIETTES_SOURCE[texte]
         return a, plafond, None
     # Tunisie : « VAL.DOU(D)+R(DT) GR.x » = valeur en douane augmentée des droits
+    # et taxes — Code de la TVA art. 6 § II-1 : « tous droits et taxes inclus à
+    # l'exclusion de la taxe sur la valeur ajoutée » (fiche TUN_assiette_TVA).
     if texte.startswith("VAL.DOU") and "R(DT)" in texte:
-        return "CIF+DD", None, None
+        return "CIF+TOUS_SAUF_TVA", None, None
     # Tunisie : « SOMME D.T (G=...) » = somme des droits et taxes, hors valeur
     if texte.startswith("SOMME D.T"):
         return "SOMME(TOUS_SAUF_SOI)", None, None
@@ -1139,6 +1146,92 @@ ACCISES_PAYS = {
 }
 
 
+# Assiette de l'accise quand le tarif collecté ne la donne pas : une table par
+# pays, tirée de sa loi d'accise.
+ASSIETTE_ACCISE_PAYS = {
+    "MUS": os.path.join(REPO, "backend", "data", "zlecaf_mus", "assiette_accise_excise_act.json"),
+}
+
+
+def _assiette_accise(iso, positions):
+    with open(ASSIETTE_ACCISE_PAYS[iso], encoding="utf-8") as f:
+        table = json.load(f)
+    ad_valorem, occasion = set(table["ad_valorem"]), set(table["occasion"])
+    annexe = ad_valorem | occasion | set(table["specifique"])
+    for code, position in positions.items():
+        for d in position.get("droits") or []:
+            if d.get("famille") != "accise" or d.get("assiette") or d.get("taux") is None:
+                continue
+            if code in ad_valorem or (d["taux"] == 0 and code in annexe):
+                d["assiette"] = table["assiette"]
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = table["assiette_reference"]
+            elif code in occasion:
+                d["note"] = (
+                    "Véhicule d'occasion : la « value at importation » est déterminée selon des "
+                    "modalités prescrites (Excise Act s.2), non lues — non liquidable en l'état."
+                )
+            else:
+                d["note"] = (
+                    "Position absente de la First Schedule de l'Excise Act en vigueur : "
+                    "le taux collecté n'est pas confirmé — non liquidable en l'état."
+                )
+
+
+def _ordre_tunisie(positions):
+    """Tunisie : la TVA s'assoit sur tous les droits et taxes sauf elle-même
+    (Code de la TVA art. 6) et la RPD sur la somme des droits et taxes des
+    groupes 0 à 4, TVA comprise (Tarif Web « SOMME D.T (G=0.1.2.3.4.) »). Le
+    moteur liquide dans l'ordre : TVA après les autres droits, RPD en dernier.
+    Minimum de perception de la RPD : 10 dinars par article de déclaration
+    (loi n° 87-83, art. 51, modifié par la loi n° 2012-27, art. 57)."""
+    for position in positions.values():
+        droits = position.get("droits") or []
+        rpd = [d for d in droits if d.get("code") == "RPD"]
+        tva = [d for d in droits if d.get("famille") == "tva"]
+        autres = [d for d in droits if d not in rpd and d not in tva]
+        for d in rpd:
+            if d.get("taux"):
+                d["minimum_perception"] = {"montant": 10.0, "devise": "TND"}
+            d["note"] = (
+                "3 % de la somme des droits et taxes liquidés, TVA comprise ; minimum de "
+                "perception 10 dinars par article de déclaration (loi n° 2012-27, art. 57)."
+            )
+        position["droits"] = autres + tva + rpd
+
+
+def _ordre_ethiopie(positions):
+    """Éthiopie : assiettes et ordre de liquidation fixés par les textes.
+    Accise : valeur en douane + droit de douane (Excise Tax Proclamation
+    1186/2020, art. 9(2)). TVA : valeur + droit, accise et autres charges, hors
+    TVA et avance d'impôt (VAT Proclamation 1341/2024, art. 27). Surtaxe : CIF +
+    droit + TVA + accise (Council of Ministers Regulation 133/2007). WHR : 3 % de
+    la valeur CIF, importations commerciales (Income Tax Proclamation 979/2016,
+    art. 85)."""
+    assiettes = {
+        "EXC": ("CIF+DD", "Excise Tax Proclamation 1186/2020, art. 9(2) : valeur en douane + droit de douane."),
+        "TVA": (
+            "CIF+TOUS_SAUF_TVA",
+            "VAT Proclamation 1341/2024, art. 27 : valeur en douane + droit, accise et autres charges, "
+            "hors TVA et avance d'impôt sur le revenu.",
+        ),
+        "SUR": ("CIF+DD+EXC+TVA", "Council of Ministers Regulation 133/2007 : CIF + droit + TVA + accise."),
+        "WHR": (
+            "CIF",
+            "Income Tax Proclamation 979/2016, art. 85 : avance de 3 % de la valeur CIF, importations "
+            "à usage commercial, imputable sur l'impôt sur le revenu.",
+        ),
+    }
+    rang = {"EXC": 1, "TVA": 3, "SUR": 4, "WHR": 5}
+    for position in positions.values():
+        droits = position.get("droits") or []
+        for d in droits:
+            if d.get("code") in assiettes:
+                d["assiette"], d["note"] = assiettes[d["code"]]
+                d["assiette_origine"] = "regle_de_pays"
+        position["droits"] = sorted(droits, key=lambda d: rang.get(d.get("code"), 2 if d.get("code") != "DD" else 0))
+
+
 def _accises_du_cgi(iso, positions):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1174,6 +1267,27 @@ def _accises_du_cgi(iso, positions):
                 d["assiette"] = table["tva_assiette"]
                 d["note"] = table["tva_assiette_reference"]
         position["droits"] = droits
+
+
+def _lignes_liquidables(position):
+    """Pour chaque ligne de la position : le moteur la liquide-t-il ? C'est le
+    moteur lui-même qui en juge (services/calcul.calculer), quantité, valeur
+    FOB et taux de change fournis : le compteur ne peut pas diverger de lui.
+    Une TVA assise sur un DA sans taux, un droit spécifique illisible, un
+    composé sans règle de départage ne comptent donc pas."""
+    droits = position.get("droits") or []
+    if not droits:
+        return []
+    backend = os.path.join(REPO, "backend")
+    if backend not in sys.path:
+        sys.path.insert(0, backend)
+    from services.calcul import calculer
+
+    lignes = calculer(position, 1000.0, quantite=1.0, taux_de_change=1.0, valeur_fob=1000.0)["npf"]["lignes"]
+    statuts = collections.defaultdict(list)
+    for ligne in lignes:
+        statuts[ligne.get("code")].append(ligne.get("statut"))
+    return [(statuts[d.get("code")] or [None]).pop(0) == "CALCULE" for d in droits]
 
 
 def construire_pays(iso, chemin, origine, assiettes_pays):
@@ -1515,14 +1629,27 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
-    if iso in ACCISES_PAYS:
-        # Les compteurs par ligne lue ont déjà compté les DA du crawl : on
-        # retranche ceux qui sont retirés et on ajoute ceux qui sont posés.
+    if iso == "TUN":
+        _ordre_tunisie(positions)
+    if iso == "ETH":
+        _ordre_ethiopie(positions)
+
+    if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
+        # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
+        # retranche celles d'avant et on ajoute celles d'après.
         def _da():
-            return [d for p in positions.values() for d in p.get("droits") or [] if d.get("code") == "DA"]
+            return [
+                dict(d)
+                for p in positions.values()
+                for d in p.get("droits") or []
+                if d.get("famille") == "accise"
+            ]
 
         avant = _da()
-        _accises_du_cgi(iso, positions)
+        if iso in ACCISES_PAYS:
+            _accises_du_cgi(iso, positions)
+        if iso in ASSIETTE_ACCISE_PAYS:
+            _assiette_accise(iso, positions)
         apres = _da()
         for lignes, signe in ((avant, -1), (apres, 1)):
             for d in lignes:
@@ -1548,25 +1675,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     compteurs["droits_composes"] = sum(
         1 for p in positions.values() for d in p.get("droits") or [] if d.get("compose")
     )
-    compteurs["droits_liquidables"] = sum(
-        1
-        for p in positions.values()
-        for d in p.get("droits") or []
-        if not d.get("compose")
-        and d.get("assiette")
-        and (d.get("taux") is not None or d.get("specifique"))
-    )
-    compteurs["positions_liquidables"] = sum(
-        1
-        for p in positions.values()
-        if (p.get("droits") or [])
-        and all(
-            not d.get("compose")
-            and d.get("assiette")
-            and (d.get("taux") is not None or d.get("specifique"))
-            for d in p["droits"]
-        )
-    )
+    liquidables = {code: _lignes_liquidables(p) for code, p in positions.items()}
+    compteurs["droits_liquidables"] = sum(sum(v) for v in liquidables.values())
+    compteurs["positions_liquidables"] = sum(1 for v in liquidables.values() if v and all(v))
 
     socle = {
         "iso3": iso,

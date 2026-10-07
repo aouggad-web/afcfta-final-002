@@ -780,11 +780,13 @@
      "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
     },
     "TVA": {
-     "assiette": "CIF+DD",
-     "origine_assiette": "profil_code"
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Nigeria Tax Act 2025, s.150 : « the price of the taxable supply imported plus – (a) taxes, duties and other charges levied either outside or by reason of importation into Nigeria, other than VAT imposed under this Act »",
+     "fiche": "NGA_assiette_TVA_2026-10-07.json"
     }
    },
-   "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; VAITA (TVA CIF+DD)"
+   "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; Nigeria Tax Act 2025 s.150 (TVA : CIF + droits et taxes hors TVA)"
   },
   "RWA": {
    "ordre": [
