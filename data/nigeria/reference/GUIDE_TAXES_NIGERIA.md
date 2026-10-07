@@ -79,6 +79,12 @@ jus de fruits, bières — détaillées dans `nigeria_prohibition_2026.csv` (OCR
 ## Sources
 
 - TEC CEDEAO enrichi 27/03/2026 : douanes.ci (apps.douanes.ci/info/tec)
-- Circulaire FPM 2026 + annexes : customs.gov.ng / policyregistry.org
+- **Ordonnance gazettée** : Customs, Excise Tariff, Etc. (Variation) Order 2026, S.I. No. 29,
+  Official Gazette No. 79 Vol. 113 du 1er mai 2026 (p. B247-B282), publiée par la NCS le
+  17-18 juillet 2026 — `sources/gazette_variation_order_2026_SI29.pdf` (23 p. scannées).
+  C'est l'instrument juridique qui varie les 1er, 3e, 5e et 6e annexes du Cap. C49 et remplace
+  l'Order de 2023 ; l'IAT de 192 lignes et les autres annexes de la circulaire du 01/04/2026 y
+  sont reprises — **vérifier la concordance ligne à ligne avec la circulaire avant publication**.
+- Circulaire FPM 2026 + annexes (01/04/2026) : `sources/nigeria_fpm_tariff_amendments_2026.pdf`
 - FPM 2023 (consolidation levies, IAT véhicules) : KPMG Nigeria / mondaq
 - Analyse FAS/USDA NI2026-0010 (résumé des annexes 2026)
