@@ -20,5 +20,10 @@ async def get_zlecaf_network(lang: str = "fr"):
     """
     reseau = construire_reseau()
     for pays in reseau["pays"]:
-        pays["nom"] = translate_country_name(pays["iso2"], lang) or pays["iso3"]
+        nom_constants = pays.pop("nom_constants")
+        traduit = translate_country_name(pays["iso2"], lang)
+        # translate_country_name renvoie le code lui-même quand il n'a pas de
+        # traduction (cas de la RASD, « EH ») : on retombe alors sur le nom
+        # de constants.AFRICAN_COUNTRIES.
+        pays["nom"] = traduit if traduit and traduit != pays["iso2"] else nom_constants
     return reseau

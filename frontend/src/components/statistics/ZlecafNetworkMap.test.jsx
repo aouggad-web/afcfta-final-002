@@ -5,15 +5,18 @@ import geo from '../../data/zlecafNetworkGeo.json';
 const RESEAU = {
   date: '2026-10-08',
   niveaux: [
-    'non_signataire', 'signe_non_ratifie', 'ratifie', 'offre_deposee',
-    'offre_acceptee', 'instrument_publie', 'deploiement',
+    'non_signataire', 'signe_non_ratifie', 'ratifie', 'offre_tarifaire',
+    'instrument_adopte', 'deploiement',
   ],
   pib_annee: 2024,
   pib_source: 'Banque mondiale (API WDI), PIB en dollars US courants',
   pays: [
     {
       iso3: 'DZA', iso2: 'DZ', nom: 'Algérie', statut: 'deploiement', pib_usd: 2.693e11,
-      preuves: [{ niveau: 'deploiement', source: 'Circulaire DGD n° 482/DGD/SP/D.042/24', url: 'https://example.org/482' }],
+      preuves: [{
+        niveau: 'deploiement', source: 'Circulaire DGD n° 482/DGD/SP/D.042/24',
+        url: 'https://example.org/482', note: 'Neuf origines admises.',
+      }],
     },
     {
       iso3: 'TUN', iso2: 'TN', nom: 'Tunisie', statut: 'deploiement', pib_usd: 5.3e10,
@@ -32,7 +35,6 @@ const RESEAU = {
     { importateur: 'DZA', origine: 'TUN', source: 'Circulaire DGD n° 482/DGD/SP/D.042/24' },
     { importateur: 'TUN', origine: 'DZA', source: 'Texte TA n°016/2023' },
   ],
-  limites: ['La source continentale ne nomme pas les 25 États en application.'],
 };
 
 vi.mock('axios', () => ({ default: { get: vi.fn() } }));
@@ -63,7 +65,7 @@ describe('ZlecafNetworkMap', () => {
     const legende = await screen.findByTestId('zn-legend-deploiement');
     expect(legende).toHaveTextContent('2');
     expect(screen.getByTestId('zn-legend-non_signataire')).toHaveTextContent('1');
-    expect(screen.getByTestId('zn-legend-offre_deposee')).toHaveTextContent('0');
+    expect(screen.getByTestId('zn-legend-offre_tarifaire')).toHaveTextContent('0');
   });
 
   it('dessine un point par capitale connue, pas pour la RASD', async () => {
@@ -72,7 +74,7 @@ describe('ZlecafNetworkMap', () => {
     expect(screen.getByTestId('zn-node-ERI')).toBeInTheDocument();
     expect(screen.queryByTestId('zn-node-ESH')).toBeNull();
     // La RASD reste dans le tableau, avec la raison de l'absence de point.
-    expect(within(screen.getByTestId('zn-row-ESH')).getByText(/aucune capitale/)).toBeInTheDocument();
+    expect(within(screen.getByTestId('zn-row-ESH')).getByText(/pas de point/)).toBeInTheDocument();
   });
 
   it('affiche statut, PIB, liaisons et preuve au survol', async () => {
@@ -99,8 +101,35 @@ describe('ZlecafNetworkMap', () => {
     fireEvent.keyDown(noeud, { key: 'Enter' });
     expect(noeud).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('link', { name: /Circulaire DGD/ })).toHaveAttribute('href', 'https://example.org/482');
+    // Épinglée, l'infobulle montre aussi la note de la preuve.
+    expect(screen.getByTestId('zn-tooltip')).toHaveTextContent('Neuf origines admises.');
     fireEvent.keyDown(noeud, { key: 'Escape' });
     expect(noeud).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  it('« Fermer » rend le focus au point épinglé', async () => {
+    render(<ZlecafNetworkMap language="fr" />);
+    const noeud = await screen.findByTestId('zn-node-DZA');
+    fireEvent.click(noeud);
+    fireEvent.click(screen.getByRole('button', { name: 'Fermer' }));
+    expect(noeud).toHaveAttribute('aria-pressed', 'false');
+    expect(document.activeElement).toBe(noeud);
+  });
+
+  it('un point sélectionné reste pleinement visible quand un statut est isolé', async () => {
+    render(<ZlecafNetworkMap language="fr" />);
+    fireEvent.click(await screen.findByTestId('zn-legend-non_signataire'));
+    expect(screen.getByTestId('zn-node-DZA')).toHaveAttribute('opacity', '0.18');
+    fireEvent.focus(screen.getByTestId('zn-node-DZA'));
+    expect(screen.getByTestId('zn-node-DZA')).toHaveAttribute('opacity', '1');
+  });
+
+  it('en anglais, les limites et la source du PIB sont traduites', async () => {
+    render(<ZlecafNetworkMap language="en" />);
+    expect(await screen.findByText(/Data limitations/)).toBeInTheDocument();
+    expect(screen.getByText(/World Bank \(WDI API\)/)).toBeInTheDocument();
+    expect(screen.queryByText(/Banque mondiale/)).toBeNull();
+    expect(screen.queryByText(/domaine public/)).toBeNull();
   });
 
   it('signale l’échec du chargement', async () => {

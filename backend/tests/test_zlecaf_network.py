@@ -14,18 +14,24 @@ from services import zlecaf_network as reseau_mod
 from services.zlecaf_membership_status import NOT_SIGNED, SIGNED_NOT_RATIFIED
 from services.zlecaf_network import (
     DEPLOIEMENT,
+    INSTRUMENT_ADOPTE,
     NIVEAUX,
     NON_SIGNATAIRE,
-    OFFRE_ACCEPTEE,
+    OFFRE_TARIFAIRE,
     SIGNE_NON_RATIFIE,
     construire_reseau,
 )
+from services.zlecaf_schedule_zaf import DATES_ENTREE_ZAF
 
 JOUR = date(2026, 10, 8)
 
 
 def _par_iso(reseau):
     return {p["iso3"]: p for p in reseau["pays"]}
+
+
+def _liens(reseau, importateur):
+    return {lien["origine"] for lien in reseau["liaisons"] if lien["importateur"] == importateur}
 
 
 def test_chaque_etat_present_une_seule_fois():
@@ -54,32 +60,48 @@ def test_non_signataire_et_non_ratifiants_priment_sur_toute_autre_mention():
     assert pays["BEN"]["statut"] == SIGNE_NON_RATIFIE
 
 
-def test_importateurs_en_vigueur_sont_en_deploiement():
+def test_deploiement_reserve_aux_importateurs_en_vigueur():
     pays = _par_iso(construire_reseau(JOUR))
-    for iso3, record in registry.RECORDS.items():
-        if record.status == registry.APPLIED and registry.application_commencee(iso3, JOUR):
-            assert pays[iso3]["statut"] == DEPLOIEMENT, iso3
+    attendus = {
+        iso3
+        for iso3, r in registry.RECORDS.items()
+        if r.status == registry.APPLIED and registry.application_commencee(iso3, JOUR)
+    } | {"ZAF"}
+    deployes = {k for k, p in pays.items() if p["statut"] == DEPLOIEMENT}
+    assert deployes == attendus
 
 
-def test_application_pas_encore_commencee_nest_pas_un_deploiement():
+def test_etre_nomme_par_un_partenaire_ne_vaut_pas_deploiement():
+    # Le Burundi est dans la General Note O sud-africaine, mais sa propre date
+    # d'application n'est pas établie (fiche BDI_application_2026-09-27.json).
+    pays = _par_iso(construire_reseau(JOUR))
+    assert "BDI" in DATES_ENTREE_ZAF
+    assert pays["BDI"]["statut"] != DEPLOIEMENT
+    assert all(p["niveau"] != DEPLOIEMENT for p in pays["BDI"]["preuves"])
+    # Le Ghana est nommé par l'Algérie et l'Afrique du Sud : liaisons, pas déploiement.
+    assert pays["GHA"]["statut"] != DEPLOIEMENT
+
+
+def test_liaisons_sud_africaines_suivent_la_date_de_chaque_notice():
+    avant = construire_reseau(date(2025, 2, 20))
+    apres = construire_reseau(date(2025, 2, 21))
+    assert "BDI" not in _liens(avant, "ZAF")
+    assert "BDI" in _liens(apres, "ZAF")
+    assert _liens(construire_reseau(date(2024, 1, 30)), "ZAF") == set()
+
+
+def test_application_pas_encore_commencee_nest_ni_liaison_ni_deploiement():
     # L'Ouganda n'applique qu'à partir du 13/02/2026 (attestation du gazettement).
-    avant = _par_iso(construire_reseau(date(2026, 1, 1)))
-    liens_uga = [
-        lien
-        for lien in construire_reseau(date(2026, 1, 1))["liaisons"]
-        if lien["importateur"] == "UGA"
-    ]
-    assert liens_uga == []
-    # Il reste en déploiement par la liste dtic de l'Afrique du Sud, qui le nomme.
-    assert avant["UGA"]["statut"] == DEPLOIEMENT
-    assert all(
-        p["source"] != registry.RECORDS["UGA"].instrument_title for p in avant["UGA"]["preuves"]
-    )
+    reseau = construire_reseau(date(2026, 1, 1))
+    assert _liens(reseau, "UGA") == set()
+    assert _par_iso(reseau)["UGA"]["statut"] != DEPLOIEMENT
 
 
-def test_annexe1_non_deployee_est_offre_acceptee():
+def test_offre_et_instrument():
     pays = _par_iso(construire_reseau(JOUR))
-    assert pays["SEN"]["statut"] == OFFRE_ACCEPTEE
+    assert pays["SEN"]["statut"] == OFFRE_TARIFAIRE  # Annexe 1
+    assert pays["ZWE"]["statut"] == OFFRE_TARIFAIRE  # barème archivé
+    assert pays["CIV"]["statut"] == INSTRUMENT_ADOPTE
 
 
 def test_liaisons_entre_ratifiants_sans_doublon_ni_boucle():
@@ -97,15 +119,22 @@ def test_liaisons_entre_ratifiants_sans_doublon_ni_boucle():
         assert pays[lien["importateur"]]["statut"] == DEPLOIEMENT
 
 
+def test_liaisons_filtrent_doublons_boucles_et_non_ratifiants(monkeypatch):
+    record = registry.RECORDS["DZA"]
+    faux = record.__class__(
+        **{**record.__dict__, "accepted_origins": record.accepted_origins | {"DZA", "BEN"}}
+    )
+    monkeypatch.setitem(registry.RECORDS, "DZA", faux)
+    origines = _liens(construire_reseau(JOUR), "DZA")
+    assert "DZA" not in origines  # boucle
+    assert "BEN" not in origines  # non ratifiant
+    assert origines == set(record.accepted_origins)
+
+
 def test_liaisons_algerie_suivent_la_circulaire():
     from services.zlecaf_schedule_dza import ACTIVE_PARTNERS
 
-    origines = {
-        lien["origine"]
-        for lien in construire_reseau(JOUR)["liaisons"]
-        if lien["importateur"] == "DZA"
-    }
-    assert origines == set(ACTIVE_PARTNERS)
+    assert _liens(construire_reseau(JOUR), "DZA") == set(ACTIVE_PARTNERS)
 
 
 def test_pib_une_seule_annee_sinon_none(tmp_path):
@@ -125,10 +154,14 @@ def test_pib_une_seule_annee_sinon_none(tmp_path):
     assert pib["ERI"] is None  # pas de 2024 : jamais la valeur de 2011
 
 
-def test_route_traduit_les_noms():
+def test_route_traduit_les_noms_et_nomme_la_rasd():
     from routes.zlecaf_network import get_zlecaf_network
 
     fr = _par_iso(asyncio.run(get_zlecaf_network(lang="fr")))
     en = _par_iso(asyncio.run(get_zlecaf_network(lang="en")))
-    assert fr["DZA"]["nom"] and en["DZA"]["nom"]
+    assert fr["DZA"]["nom"] == "Algérie"
+    assert en["DZA"]["nom"] == "Algeria"
     assert fr["DZA"]["statut"] == en["DZA"]["statut"]
+    # Sans traduction, le nom vient de constants, jamais le code ISO2.
+    assert fr["ESH"]["nom"] not in ("EH", "ESH")
+    assert "nom_constants" not in fr["ESH"]

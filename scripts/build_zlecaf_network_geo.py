@@ -113,16 +113,19 @@ NUMERIC_TO_ISO3 = {
 LAND_ONLY = {"732"}  # Sahara occidental : contour, pas de point.
 LAND_ONLY_NAMES = {"Somaliland"}  # entité sans code numérique dans world-atlas
 
-# Membres de AFRICAN_COUNTRIES sans « Admin-0 capital » dans Natural Earth :
-# ils restent dans les données (statut, tableau), sans point sur la carte.
-# Toute autre absence fait échouer la construction.
+# Membres de AFRICAN_COUNTRIES sans « Admin-0 capital » sous leur code ISO3
+# dans Natural Earth : ils restent dans les données (statut, tableau), sans
+# point sur la carte. Toute autre absence fait échouer la construction.
+# ESH : Natural Earth range le Sahara occidental sous le code SAH et ne lui
+# donne qu'une « Admin-0 capital alt » (Bir Lehlou), siège disputé — la carte
+# ne place donc aucun point plutôt que de trancher.
 SANS_CAPITALE_NE = {"ESH"}
 
 # Capitale retenue quand Natural Earth en liste plusieurs pour un même pays
-# (capitale constitutionnelle ou siège officiel des institutions). Natural
-# Earth v5.1.2 ne connaît pas Gitega, capitale politique du Burundi depuis
-# 2019 : Bujumbura, seule capitale qu'il donne, est conservée telle quelle
-# plutôt que de saisir des coordonnées à la main.
+# (capitale constitutionnelle ou siège officiel des institutions). Burundi :
+# Natural Earth v5.1.2 classe Bujumbura en « Admin-0 capital » et Gitega,
+# capitale politique depuis 2019, en simple « Admin-1 capital » ; la carte suit
+# le classement de la source (Bujumbura).
 CAPITALE_RETENUE = {
     "BEN": "Porto-Novo",
     "CIV": "Yamoussoukro",
@@ -334,10 +337,10 @@ def build(world_raw: bytes, places_raw: bytes) -> dict:
         "notes": [
             "Seul le contour des terres est tracé : aucune frontière intérieure.",
             "Terres au sud de 40° S (îles du Prince-Édouard) hors cadre.",
-            "Sahara occidental (ESH) : aucune « Admin-0 capital » dans Natural "
-            "Earth v5.1.2 ; pas de point sur la carte.",
-            "Burundi : Natural Earth v5.1.2 ne donne que Bujumbura (Gitega, "
-            "capitale politique depuis 2019, n'y figure pas).",
+            "Sahara occidental (ESH) : Natural Earth v5.1.2 ne lui donne, sous le "
+            "code SAH, qu'une capitale « alt » disputée (Bir Lehlou) ; pas de point.",
+            "Burundi : Natural Earth v5.1.2 classe Bujumbura en capitale ; Gitega, "
+            "capitale politique depuis 2019, n'y est que capitale de province.",
         ],
     }
 

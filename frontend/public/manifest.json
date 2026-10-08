@@ -5,7 +5,6 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
   "theme_color": "#1a365d",
   "background_color": "#ffffff",
   "lang": "fr",
@@ -82,7 +81,7 @@
       "name": "Opportunités d'Investissement",
       "short_name": "Opportunités",
       "description": "Découvrir les opportunités d'investissement",
-      "url": "/?tab=opportunities",
+      "url": "/?tab=reports",
       "icons": [
         {
           "src": "/icons/icon-96x96.png",

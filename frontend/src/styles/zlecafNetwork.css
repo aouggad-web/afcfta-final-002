@@ -5,9 +5,9 @@
    l'effet « éclipse » du logo (continent sombre, liseré lumineux). Ses
    couleurs ne suivent donc pas la bascule clair/sombre : ce sont les pas
    SOMBRES des séries de la marque (theme.css), validés par
-   validate_palette.js sur la surface #0C1219 — lightness, chroma,
-   séparation daltonisme et vision normale entre voisins de légende,
-   contraste ≥ 3:1 : tous PASS dans l'ordre ci-dessous.
+   validate_palette.js sur la surface #0C1219 avec --pairs all —
+   lightness, chroma, séparation daltonisme et vision normale entre toutes
+   les paires, contraste ≥ 3:1 : tous PASS.
    ================================================================ */
 
 .zn-canvas {
@@ -17,12 +17,14 @@
   --zn-gold: #D4891A;
   --zn-terra: #DE7A49;
 
-  --zn-non_signataire: #5B6678;   /* neutre : hors accord, cercle pointillé */
-  --zn-signe_non_ratifie: #EA2E41; /* rouge kente      (series-7) */
+  /* Hors accord : gris neutre, plein (signé) ou pointillé (non signé). */
+  --zn-non_signataire: #6B7688;
+  --zn-signe_non_ratifie: #6B7688;
+  /* Les seules quatre teintes de la marque qui passent validate_palette.js
+     en --pairs all (carte : deux ronds quelconques peuvent se toucher). */
   --zn-ratifie: #9D6BFE;           /* indigo / violet  (series-6) */
-  --zn-offre_deposee: #BA480B;     /* terre            (series-3) */
-  --zn-offre_acceptee: #EF4092;    /* bougainvillier   (series-4) */
-  --zn-instrument_publie: #C57D06; /* safran           (series-5) */
+  --zn-offre_tarifaire: #0C83AB;   /* bleu atlantique  (series-2) */
+  --zn-instrument_adopte: #C57D06; /* safran           (series-5) */
   --zn-deploiement: #03A762;       /* vert baobab      (series-1) */
 
   position: relative;
@@ -51,6 +53,10 @@
 .zn-node {
   cursor: pointer;
   outline: none;
+}
+
+.zn-node:focus-visible {
+  opacity: 1 !important;
 }
 
 .zn-node:focus-visible .zn-node-ring {
@@ -182,4 +188,66 @@
   color: var(--zn-gold);
   font-size: 13px;
   margin-top: 14px;
+}
+
+.zn-note {
+  font-size: 11.5px;
+  margin-top: 2px;
+}
+
+.zn-close {
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--zn-gold);
+  cursor: pointer;
+}
+
+.zn-close:focus-visible,
+.zn-legend button:focus-visible {
+  outline: 2px solid var(--zn-gold);
+  outline-offset: 2px;
+}
+
+.zn-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px 14px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--zn-muted);
+}
+
+.zn-size {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.zn-size i {
+  display: block;
+  border-radius: 50%;
+  border: 1px solid var(--zn-muted);
+}
+
+.zn-link-swatch {
+  display: inline-block;
+  width: 18px;
+  border-top: 2px solid #E8B04A;
+  opacity: 0.7;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* Téléphone : l'infobulle passe sous la carte au lieu de déborder. */
+@media (max-width: 640px) {
+  .zn-tooltip {
+    position: static;
+    transform: none !important;
+    max-width: none;
+    margin-top: 8px;
+  }
 }
