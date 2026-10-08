@@ -14,6 +14,7 @@ from services.tax_profile_data import (
     BASE_FOB_TOUTES_TAXES,
     BASE_TVA_TOUTES_TAXES,
     COUNTRY_TAX_PROFILES,
+    TAUX_TVA_LEGAUX,
 )
 
 logger = logging.getLogger(__name__)
@@ -300,6 +301,15 @@ def _find_vat_key(crawled_taxes: dict) -> Optional[str]:
         if _is_vat_code(k):
             return k
     return None
+
+
+def _tva_hors_la_loi(country_iso3, taux) -> bool:
+    """Un taux de TVA collecté que la loi du pays ne connaît pas
+    (TAUX_TVA_LEGAUX : 1 % ou 17,5 % au Nigéria) : il n'est servi ni au calcul
+    ni à la recherche, comme dans le socle."""
+    regle = TAUX_TVA_LEGAUX.get(country_iso3)
+    taux = _parse_crawled_tax_rate(taux)
+    return bool(regle) and taux is not None and taux not in regle["taux"]
 
 
 def _parse_crawled_tax_rate(value) -> Optional[float]:
@@ -1200,7 +1210,10 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
     tva = _parse_crawled_tax_rate(taxes.get("TVA"))
     if tva is None:
         tva = _parse_crawled_tax_rate(etl_position.get("vat_rate"))
-    if tva is None:
+    tva_hors_la_loi = _tva_hors_la_loi(country_iso3, tva)
+    if tva_hors_la_loi:
+        tva = None
+    elif tva is None:
         tva = 0.0
     tcs = taxes.get("TCS", {}).get("rate", 0)
     prct = taxes.get("PRCT", {}).get("rate", 0)
@@ -1211,18 +1224,23 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
     cascade_rates = {
         tax_code: details["rate"]
         for tax_code, details in taxes.items()
-        if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] > 0
+        if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] is not None and details["rate"] > 0
     }
     if dd is None:
         cascade_rates.pop("DD", None)
     elif dd > 0:
         cascade_rates["DD"] = dd
-    if tva > 0:
+    if tva_hors_la_loi:
+        cascade_rates.pop("TVA", None)
+    elif tva > 0:
         cascade_rates["TVA"] = tva
     # Métrique de référence par position : FOB = CIF ici (fret nul). Ce taux
     # affiché n'est pas une liquidation — celle-ci exige la valeur FOB réelle
-    # de l'importation (voir compute_tax_cascade, fail-closed).
+    # de l'importation (voir compute_tax_cascade, fail-closed). Sans taux de
+    # TVA servable, aucun total n'est affiché.
     ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3, fob_value=100.0)
+    if tva_hors_la_loi:
+        ref_cascade = {**ref_cascade, "effective_rate_pct": None}
     return {
         "hs6": code[:6],
         "national_code": code,
@@ -1401,6 +1419,8 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                         seen_codes.add(code)
                         if len(results) >= limit:
                             return results
+                elif _tva_hors_la_loi(country_iso3, line.get("vat_rate")):
+                    results.append({**line, "vat_rate": None, "total_taxes_pct": None})
                 else:
                     results.append(line)
                 seen_codes.add(hs6)
@@ -2230,6 +2250,14 @@ def calculate_import_taxes(
     #       LF2025 reconduit LF2026), signalée `tva_exoneree`.
     # Une position sans droit de douane ET sans TVA (ex. DZA 1001110000) reste
     # réellement incomplète et garde le garde CALCULATION_UNAVAILABLE.
+    # Un taux que la loi ne connaît pas n'est pas servi : la TVA manque.
+    if _tva_hors_la_loi(country_iso3, vat_rate_pct):
+        vat_rate_pct = None
+    for code in list(taxes_detail.keys()):
+        entree = taxes_detail[code]
+        if _is_vat_code(code) and isinstance(entree, dict) and _tva_hors_la_loi(country_iso3, entree):
+            taxes_detail[code] = {**entree, "rate": None}
+
     tva_exoneree = False
     tva_absente = False
     sens = _sens_de_la_tva_absente(country_iso3, country_data)

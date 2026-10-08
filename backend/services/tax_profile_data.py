@@ -58,6 +58,20 @@ BASE_TVA_TOUTES_TAXES = "CIF_PLUS_TOUTES_TAXES_SAUF_TVA"
 #: Eswatini : valeur en douane augmentée de tous les droits, la TVA exclue).
 BASE_FOB_TOUTES_TAXES = "FOB_PLUS_TOUTES_TAXES_SAUF_TVA"
 
+#: Taux de TVA que la loi du pays connaît, quand ils sont établis sur texte.
+#: Un taux collecté hors de cette liste n'est servi nulle part : socle
+#: (scripts/build_socle.py), recherche et autre chemin de calcul
+#: (services/authentic_tariff_service._tva_hors_la_loi), données normalisées
+#: (scripts/normalize_crawled.py). Il reste à compléter, avec ce texte en note.
+TAUX_TVA_LEGAUX = {
+    "NGA": {
+        "taux": (7.5, 0.0),
+        "loi": "Le Nigeria Tax Act 2025 ne connaît que 7,5 % (s.148) et 0 % (s.187)",
+        "fiche": "NGA_taux_TVA_2026-10-08.json",
+    },
+}
+
+
 #: Assiette de la TVA à l'importation établie sur texte primaire archivé.
 #:
 #: Quatre textes ont été lus intégralement et disposent de la même règle, dans

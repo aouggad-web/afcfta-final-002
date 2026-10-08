@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "objet": "Nigéria : taux de la TVA — 7,5 % (s.148) ou 0 % (s.187), une fourniture exonérée (s.186) n'en portant aucun ; un autre taux collecté au portail n'est pas servi",
+  "destination_iso3": "NGA",
+  "verified_at": "2026-10-08",
+  "etabli": true,
+  "evidence_level": "primaire — Nigeria Tax Act, 2025, Gazette officielle n° 117 du 26 juin 2025, texte intégral lu (copie de la Gazette publiée par le Lagos State Internal Revenue Service, même document que NGA_assiette_TVA_2026-10-07.json)",
+  "source": {
+    "url": "https://lirs.gov.ng/assets/docs/Gazette%20-%20NIGERIA%20TAX%20ACT,%202025.pdf",
+    "institution": "République fédérale du Nigéria — Official Gazette No. 117, Vol. 112 (copie LIRS)",
+    "pdf_sha256": "f15edd3bc428d03fddbac7dae9d5c7025c161bc02a04e42e3123975553965b91",
+    "pdf_non_archive": "Le PDF intégral de la Gazette (215 pages, 1,7 Mo) n'est pas versé au dépôt ; seuls les articles 148, 186(1) et (2), 187 (en-têtes) et le paragraphe 1 de l'Eleventh Schedule sont archivés (voir regle.texte_archive)"
+  },
+  "regle": {
+    "valeur": "TVA à 7,5 % (s.148) ; 0 % pour les fournitures de la s.187 ; aucune TVA pour les fournitures exonérées de la s.186. Aucun autre taux n'existe dans la loi.",
+    "verbatim": "148. Subject to the provisions of Part IV of Chapter Eight of this Act, VAT shall be charged on the value of all taxable supplies at the rate of 7.5%.",
+    "verbatim_taux_zero": "187. Subject to paragraph 2 of the Thirtenth Schedule to this Act, the following taxable supplies are charged to VAT at the rate of 0% –",
+    "verbatim_exoneration": "186.(1) The following supplies are exempt from the VAT imposed under Chapter Six of this Act –",
+    "reference": "Nigeria Tax Act, 2025, s.148, s.186(1) et (2), s.187 ; Eleventh Schedule, para. 1 ; en vigueur le 1er janvier 2026",
+    "portee": "backend/services/tax_profile_data.TAUX_TVA_LEGAUX, appliqué par scripts/build_socle.py (socle, POST /calcul), par backend/services/authentic_tariff_service._tva_hors_la_loi (recherche par mot-clé et GET /authentic-tariffs/calculate) et par scripts/normalize_crawled.normalize_nga (données normalisées des routes de consultation et d'export) : une TVA collectée au portail à un autre taux que 7,5 % ou 0 % est déclarée indisponible, le taux collecté en note. 21 positions : 1 % sur 15 (2525.10 à 2530.90, 5911.20, 6003.90), 17,5 % sur 6 (1605.58 à 1605.69). Positions servies COMPLET par le socle : 5 976 → 5 957 (19 de moins : 5911.20 et 6003.90 étaient déjà incomplètes faute d'accise).",
+    "texte_archive": "sources/NGA_taux_TVA.texte-extrait.txt",
+    "sha256": "19ef41fdf252657c31062ae3f9de4f2854f9e23df55bbd4f1b47ea1e8c6ae5b7",
+    "verbatim_suspension": "(2) Notwithstanding the provisions of Chapter Six of this Act, VAT shall not be collected on the items specified in paragraph 1 of the Eleventh Schedule to this Act except where the Minister by an order, published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order."
+  },
+  "decisions": [
+    "Ces taux viennent de la collecte du portail customs.gov.ng (backend/data/crawled/NGA_tariffs.json). La loi ne les connaît pas : ils ne sont ni servis ni ramenés à 7,5 %, car la position peut relever du taux zéro ou d'une exonération. La TVA reste à compléter jusqu'à une nouvelle collecte."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le taux applicable à ces 21 positions (7,5 %, 0 % ou exonération) n'est pas établi : le Thirteenth Schedule (taux zéro) et la s.186 (exonérations) visent des catégories de biens, pas des positions tarifaires.",
+    "s.186(2) et Eleventh Schedule, para. 1 : la TVA n'est pas perçue sur les produits pétroliers, les équipements d'énergie renouvelable, le GNC, le GPL et les autres hydrocarbures gazeux tant qu'un arrêté du ministre n'en fixe pas la date. Ce n'est pas un taux, mais une suspension : les taux servis sur ces biens (7,5 % sur 2710.19.21 gas oil, 2711.12 propane, 2711.13 butanes, par exemple) n'ont pas été vérifiés à cet égard, faute de connaître les arrêtés pris."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/NGA_taux_TVA.texte-extrait.txt",
+      "sha256": "19ef41fdf252657c31062ae3f9de4f2854f9e23df55bbd4f1b47ea1e8c6ae5b7"
+    }
+  ]
+}
