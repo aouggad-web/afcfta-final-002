@@ -1,0 +1,185 @@
+/* ================================================================
+   Carte « Réseau ZLECAf »
+
+   Le canevas de la carte est TOUJOURS nuit, dans les deux thèmes : c'est
+   l'effet « éclipse » du logo (continent sombre, liseré lumineux). Ses
+   couleurs ne suivent donc pas la bascule clair/sombre : ce sont les pas
+   SOMBRES des séries de la marque (theme.css), validés par
+   validate_palette.js sur la surface #0C1219 — lightness, chroma,
+   séparation daltonisme et vision normale entre voisins de légende,
+   contraste ≥ 3:1 : tous PASS dans l'ordre ci-dessous.
+   ================================================================ */
+
+.zn-canvas {
+  --zn-surface: #0C1219;
+  --zn-text: #EAE0D0;
+  --zn-muted: #9AA6B6;
+  --zn-gold: #D4891A;
+  --zn-terra: #DE7A49;
+
+  --zn-non_signataire: #5B6678;   /* neutre : hors accord, cercle pointillé */
+  --zn-signe_non_ratifie: #EA2E41; /* rouge kente      (series-7) */
+  --zn-ratifie: #9D6BFE;           /* indigo / violet  (series-6) */
+  --zn-offre_deposee: #BA480B;     /* terre            (series-3) */
+  --zn-offre_acceptee: #EF4092;    /* bougainvillier   (series-4) */
+  --zn-instrument_publie: #C57D06; /* safran           (series-5) */
+  --zn-deploiement: #03A762;       /* vert baobab      (series-1) */
+
+  position: relative;
+  background:
+    radial-gradient(60% 50% at 50% 40%, rgba(20, 50, 34, 0.55), transparent 70%),
+    var(--zn-surface);
+  color: var(--zn-text);
+  border-radius: 14px;
+  border: 1px solid rgba(212, 137, 26, 0.18);
+  padding: 16px;
+}
+
+.zn-map-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.zn-map-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.zn-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.zn-node:focus-visible .zn-node-ring {
+  stroke: var(--zn-text);
+  stroke-width: 0.35;
+}
+
+.zn-tooltip {
+  position: absolute;
+  z-index: 5;
+  min-width: 220px;
+  max-width: 300px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(17, 24, 32, 0.97);
+  border: 1px solid rgba(212, 137, 26, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  color: var(--zn-text);
+  font-size: 12.5px;
+  line-height: 1.45;
+  pointer-events: none;
+}
+
+.zn-tooltip.is-pinned {
+  pointer-events: auto;
+}
+
+.zn-tooltip h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.zn-tooltip .zn-muted,
+.zn-muted {
+  color: var(--zn-muted);
+}
+
+.zn-tooltip a {
+  color: var(--zn-gold);
+  text-decoration: underline;
+}
+
+.zn-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: baseline;
+  box-shadow: 0 0 0 2px var(--zn-surface);
+}
+
+.zn-swatch.is-hollow {
+  background: transparent !important;
+  border: 1.5px dashed var(--zn-non_signataire);
+}
+
+.zn-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 14px;
+}
+
+.zn-legend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--zn-text);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.zn-legend button[aria-pressed="true"] {
+  border-color: var(--zn-gold);
+  background: rgba(212, 137, 26, 0.12);
+}
+
+.zn-legend b {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.zn-footnote {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--zn-muted);
+  line-height: 1.5;
+}
+
+.zn-footnote ul {
+  margin: 4px 0 0 16px;
+  list-style: disc;
+}
+
+.zn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-top: 8px;
+}
+
+.zn-table th,
+.zn-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  vertical-align: top;
+}
+
+.zn-table th {
+  color: var(--zn-muted);
+  font-weight: 500;
+}
+
+.zn-table td.zn-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.zn-details summary {
+  cursor: pointer;
+  color: var(--zn-gold);
+  font-size: 13px;
+  margin-top: 14px;
+}

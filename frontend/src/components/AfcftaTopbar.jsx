@@ -53,7 +53,13 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
       {/* ── Brand + language bar ── */}
       <div className="afcfta-topHeader__bar">
         <div className="afcfta-topHeader__brand">
-          <div className="afcfta-topHeader__brandIcon">🌍</div>
+          <img
+            className="afcfta-topHeader__brandIcon afcfta-sidebar-brandmark"
+            src="/brand/logo.svg"
+            alt=""
+            width={32}
+            height={32}
+          />
           <span className="afcfta-topHeader__brandName">
             {isFrench ? "ZLECAf Intelligence" : "AfCFTA Intelligence"}
           </span>
