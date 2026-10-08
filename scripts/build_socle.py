@@ -28,9 +28,11 @@ Usage :
 from __future__ import annotations
 
 import collections
+import csv
 import glob
 import hashlib
 import importlib
+import importlib.util
 import json
 import os
 import re
@@ -45,6 +47,9 @@ CRAWL_DIR = os.path.join(REPO, "backend", "data", "crawled")
 ETL_DIR = os.path.join(REPO, "backend", "data")
 SOCLE_DIR = os.path.join(REPO, "backend", "socle")
 ASSIETTES_PATH = os.path.join(SOCLE_DIR, "assiettes_pays.json")
+LIVRE_TARIFAIRE_ETH = os.path.join(
+    REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "ETH_livre_tarifaire_2021.droits.csv"
+)
 
 # ── Familles de prélèvements ──────────────────────────────────────────────────
 # Les sept familles relevées dans les sources. L'ordre est celui de la
@@ -1232,6 +1237,36 @@ def _ordre_ethiopie(positions):
         position["droits"] = sorted(droits, key=lambda d: rang.get(d.get("code"), 2 if d.get("code") != "DD" else 0))
 
 
+def _droits_livre_ethiopie(positions, compteurs):
+    """Éthiopie : droit de douane absent du portail, repris du livre tarifaire du
+    ministère des Finances (édition révisée de 2021, fiche
+    ETH_droits_livre_tarifaire_2021-10-07.json). Le portail, plus récent, prime
+    partout où il publie un taux : le livre ne comble que ses cases vides, et
+    seulement là où la sous-position n'a pas changé de portée en SH 2022."""
+    with open(LIVRE_TARIFAIRE_ETH, encoding="utf-8") as f:
+        livre = {r["code"].replace(".", ""): r["taux"] for r in csv.DictReader(f)}
+    # Le livre est en SH 2017, le portail en SH 2022 : une sous-position dont la
+    # table I de l'OMD (SH 2022 -> SH 2017) dit la portée modifiée n'est pas comblée.
+    spec = importlib.util.spec_from_file_location(
+        "concordance_tun", os.path.join(REPO, "backend", "scripts", "extraire_concordance_tun.py")
+    )
+    concordance = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(concordance)
+    modifiees = concordance.lire_table_i()
+    for code, position in positions.items():
+        if code[:6] in modifiees:
+            continue
+        for d in position.get("droits") or []:
+            taux = livre.get(code[:8])
+            if d.get("code") != "DD" or d.get("taux") is not None or taux in (None, "Prohibited"):
+                continue
+            d["taux"] = 0.0 if taux == "Free" else float(taux.rstrip("%"))
+            d["libelle"] = "Droit de douane"
+            d["source"] = "Livre tarifaire du ministère des Finances, édition révisée 2021"
+            d["note"] = "Taux absent du portail douanier, repris du livre tarifaire 2021 : il a pu être modifié depuis."
+            compteurs["taux_indisponibles"] -= 1
+
+
 def _accises_du_cgi(iso, positions):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1632,6 +1667,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso == "TUN":
         _ordre_tunisie(positions)
     if iso == "ETH":
+        _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:

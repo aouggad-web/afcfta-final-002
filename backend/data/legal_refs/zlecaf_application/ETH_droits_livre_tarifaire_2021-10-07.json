@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "objet": "Éthiopie : droits de douane à l'importation du livre tarifaire du ministère des Finances (édition révisée 2021), repris là où le portail douanier n'en publie pas",
+  "destination_iso3": "ETH",
+  "verified_at": "2026-10-07",
+  "etabli": true,
+  "evidence_level": "primaire — livre tarifaire officiel du ministère des Finances (372 pages, PDF daté du 9 septembre 2021), texte intégral lu ; 6 162 positions relevées avec leur page",
+  "source": {
+    "institution": "Ministère des Finances d'Éthiopie — livre tarifaire révisé (août 2021)",
+    "pdf_sha256": "cf3ebfb68dd6528198b66a1d7738624bccb819e75aa0be5103720f93472d5327",
+    "pdf_non_archive": "Le PDF (8 Mo) a été fourni par le propriétaire du projet (Drive, dossier ethiopie ; PR #605, data/ethiopia/reference/tariff_reform_book_mofed.pdf) ; il n'est pas publié en ligne par le ministère. Seul le relevé code / taux / page est archivé (voir regle.texte_archive)"
+  },
+  "regle": {
+    "valeur": "Droit de douane ad valorem par position à 8 chiffres (Free, 5 %, 15 %, 25 %, 35 %, ou Prohibited), colonne (6) « Duty Rate » du livre.",
+    "verbatim": "0101.21 0101.2100 -- Pure-bred breeding animals U Free ; 4822.1000 - Of a kind used for winding textile yarn kg 25%",
+    "reference": "Livre tarifaire du ministère des Finances, colonnes (3) Tariff Item No. et (6) Duty Rate",
+    "portee": "scripts/build_socle._droits_livre_ethiopie (seul socle ETH) : comble le droit de douane des positions où le portail douanier n'en publie pas (1 132 positions, rapprochées par les 8 premiers chiffres du code national), sauf si leur sous-position SH6 figure à la table I de l'OMD (portée modifiée entre SH 2017 et SH 2022 : 59 positions écartées) ; le portail, plus récent, prime partout ailleurs. Positions servies COMPLET : 4 928 → 6 057.",
+    "texte_archive": "sources/ETH_livre_tarifaire_2021.droits.csv",
+    "sha256": "35e83244f0dc844c0614570811dfaa07fdeaab5a2d8312ae409cf8b6940b6d66"
+  },
+  "decisions": [
+    "Relevé fait directement sur le texte du PDF, et non sur les tableaux fournis : le tableau de la PR #605 porte environ 110 cellules polluées par des pourcentages tirés des descriptions (ex. 0401.1000 « 1%35% » pour 35 %), celui du Drive omet 30 chapitres.",
+    "Corrections de lecture : unité « l » imprimée « 1 » (chapitre 22), coquille « Feee » (1702.5000), code sans point 39209290, codes coupés par une espace (« 8703. 2150 » : 1504.2090, 8703.2150, 8703.2250, 8703.2315, 8703.2325, 8703.2440, 8703.3314), renvois « Of Tariff Item … » écartés ; 11 positions relues une à une (2716.0000, 2804.1000-4000, 5514.2100, 7319.4000, 8404.9010, 8443.3290, 9504.4000).",
+    "Contrôle : sur les 4 310 positions où portail et livre publient tous deux un taux, 4 053 concordent (94 %).",
+    "Le livre suit le SH 2017, le portail le SH 2022 : les positions dont la sous-position SH6 figure à la table I de corrélation de l'OMD (sources/OMD_correlation_SH2022_SH2017_table_I.pdf, lue par backend/scripts/extraire_concordance_tun.lire_table_i) ne sont pas comblées, leur code à 8 chiffres pouvant désigner un autre produit en 2017."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le livre date de 2021 : 257 positions (6 %) ont depuis un taux différent au portail, dans les deux sens. Les taux repris du livre peuvent donc avoir été modifiés pour une part comparable ; chacun porte la mention.",
+    "236 positions restent sans droit de douane : code à 8 chiffres absent du livre, ou sous-position modifiée en SH 2022 (59).",
+    "Le guide GUIDE_TAXES_ETHIOPIE.md de la PR #605 n'est pas utilisé : il contredit les textes archivés (accise sur CIF au lieu de CIF + droit, Proclamation 1186/2020 art. 9(2) ; TVA sous la Proclamation 285/2002, remplacée par la 1341/2024)."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ETH_livre_tarifaire_2021.droits.csv",
+      "sha256": "35e83244f0dc844c0614570811dfaa07fdeaab5a2d8312ae409cf8b6940b6d66"
+    }
+  ]
+}
