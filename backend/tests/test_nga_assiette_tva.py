@@ -18,12 +18,19 @@ def positions():
         return json.load(f)["positions"]
 
 
-def test_vin_tva_sur_cif_droit_iat_et_accise(positions):
-    """2204.21 : DD 20 %, IAT 50 %, accise 20 % sur 1 000 ; TVA sur 1 900."""
+def test_vin_tva_sur_cif_droit_et_accise(positions):
+    """2204.21 : DD 20 %, accise 20 % sur 1 000, sans IAT en 2026 ; TVA sur 1 400."""
     r = calculer(positions["2204210000"], 1000, devise_position="NGN")
     lignes = {l["code"]: l for l in r["npf"]["lignes"]}
-    assert (lignes["TVA"]["base"], lignes["TVA"]["montant"]) == (1900.0, 142.5)
+    assert (lignes["TVA"]["base"], lignes["TVA"]["montant"]) == (1400.0, 105.0)
     assert r["npf"]["etat"] == COMPLET
+
+
+def test_margarine_tva_sur_cif_droit_et_iat(positions):
+    """1517.10 : DD 20 %, IAT 20 % sur 1 000 ; TVA sur 1 400."""
+    r = calculer(positions["1517100000"], 1000, devise_position="NGN")
+    lignes = {l["code"]: l for l in r["npf"]["lignes"]}
+    assert (lignes["TVA"]["base"], lignes["TVA"]["montant"]) == (1400.0, 105.0)
 
 
 def test_tva_non_servie_si_une_taxe_de_son_assiette_est_vide(positions):

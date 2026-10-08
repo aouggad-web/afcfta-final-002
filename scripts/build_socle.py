@@ -50,6 +50,18 @@ ASSIETTES_PATH = os.path.join(SOCLE_DIR, "assiettes_pays.json")
 LIVRE_TARIFAIRE_ETH = os.path.join(
     REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "ETH_livre_tarifaire_2021.droits.csv"
 )
+IAT_NGA_2026 = os.path.join(
+    REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "NGA_SI29_2026_IAT.csv"
+)
+# Positions SH 2022 que la liste IAT désigne par un code d'une nomenclature
+# antérieure, ou sous un même code à deux taux (groupes électrogènes « basic » /
+# « soundproof ») : l'IAT n'y est pas attribuable sans deviner.
+IAT_NGA_AMBIGUS = {
+    **dict.fromkeys(["3004410000", "3004420000", "3004430000", "3004490000"], "3004.40.00.00 : 20 %"),
+    **dict.fromkeys(["6907210000", "6907220000", "6907230000", "6907300000"], "6907.90.00.00 : 15 %"),
+    **dict.fromkeys(["8903310000", "8903320000", "8903330000"], "8903.92.00.00 : 50 %"),
+    **dict.fromkeys(["8502119000", "8502129000", "8502139000", "8502209000"], "15 % (basic) ou 35 % (soundproof)"),
+}
 
 # ── Familles de prélèvements ──────────────────────────────────────────────────
 # Les sept familles relevées dans les sources. L'ordre est celui de la
@@ -1265,6 +1277,43 @@ def _droits_livre_ethiopie(positions, compteurs):
             d["source"] = "Livre tarifaire du ministère des Finances, édition révisée 2021"
             d["note"] = "Taux absent du portail douanier, repris du livre tarifaire 2021 : il a pu être modifié depuis."
             compteurs["taux_indisponibles"] -= 1
+def _iat_nigeria_2026(positions, compteurs):
+    """Nigéria : IAT de la Customs, Excise Tariff, Etc. (Variation) Order 2026
+    (S.I. 29, Gazette n° 79 du 1er mai 2026, First Schedule ; fiche
+    NGA_IAT_SI29_2026-10-08.json). Elle révoque l'Order de 2023 : une position
+    absente de la liste ne porte plus d'IAT."""
+    with open(IAT_NGA_2026, encoding="utf-8") as f:
+        liste = {r["code"].replace(".", ""): float(r["iat"]) for r in csv.DictReader(f)}
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        for d in droits:
+            if d.get("code") != "IAT":
+                continue
+            avant = d.get("taux")
+            d["source"] = "Customs, Excise Tariff, Etc. (Variation) Order 2026 (S.I. 29), First Schedule"
+            if code in IAT_NGA_AMBIGUS:
+                d["taux"] = None
+                d["note"] = (
+                    "IAT 2026 non attribuable : la liste vise cette position sous un code ancien ou à "
+                    "deux taux (" + IAT_NGA_AMBIGUS[code] + ")."
+                )
+            elif code in liste:
+                d["taux"] = liste[code]
+                d["note"] = "Liste IAT de l'Order 2026, en vigueur au 1er mai 2026."
+            else:
+                d["taux"] = 0.0
+                d["note"] = "Position absente de la liste IAT de l'Order 2026, qui révoque celui de 2023."
+            compteurs["taux_indisponibles"] += (d["taux"] is None) - (avant is None)
+            # Ciments 2523 : IAT vide au portail et « accise » égale à l'IAT de la liste,
+            # dont le total (droit + IAT) exclut une accise de même taux.
+            for e in droits:
+                if avant is None and d["taux"] and e.get("code") == "EXC" and e.get("taux") == d["taux"]:
+                    e["taux"] = None
+                    e["note"] = (
+                        "Accise du portail égale à l'IAT de la liste de l'Order 2026, IAT absente "
+                        "au portail : vraisemblablement l'IAT mal rangée, non servie deux fois."
+                    )
+                    compteurs["taux_indisponibles"] += 1
 
 
 def _accises_du_cgi(iso, positions):
@@ -1666,6 +1715,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
     if iso == "TUN":
         _ordre_tunisie(positions)
+    if iso == "NGA":
+        _iat_nigeria_2026(positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)

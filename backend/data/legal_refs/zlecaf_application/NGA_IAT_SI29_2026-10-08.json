@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "objet": "Nigéria : Import Adjustment Tax (IAT) de la Customs, Excise Tariff, Etc. (Variation) Order 2026 — 192 lignes du First Schedule ; les positions hors liste ne portent plus d'IAT",
+  "destination_iso3": "NGA",
+  "verified_at": "2026-10-08",
+  "etabli": true,
+  "evidence_level": "primaire — Federal Republic of Nigeria Official Gazette No. 79, Vol. 113, Lagos, 1st May 2026, Government Notice No. 34, S.I. No. 29 of 2026 (pages B 247-282), PDF scanné de 23 pages ; liste transcrite ligne à ligne sur les images",
+  "source": {
+    "institution": "Federal Government Printer, Lagos — Official Gazette No. 79 du 1er mai 2026 (S.I. 29)",
+    "pdf_sha256": "d5e76bb7c464222f6354e38375cc19ae130fa49f01c9ab6268342bc1ded0e891",
+    "pdf_non_archive": "PDF scanné fourni par le propriétaire du projet (PR #606, data/nigeria/reference/gazette_variation_order_2026_SI29.pdf) ; seule la transcription de la liste IAT est archivée (voir regle.texte_archive)",
+    "recoupement": "circulaire F17417//374 du ministre des Finances du 1er avril 2026, annexe I (PR #606, nigeria_fpm_tariff_amendments_2026.pdf)",
+    "circulaire_pdf_sha256": "6eeb5c869f7998508e1fa1223f77b8c254933bbc3966f87ae5e057778953d479",
+    "circulaire_non_archive": "PDF scanné de la circulaire (16,8 Mo) non versé au dépôt : il ne sert qu'au recoupement de la Gazette"
+  },
+  "regle": {
+    "valeur": "IAT par ligne selon le First Schedule de l'Order 2026 (de 5 % à 65 %), en vigueur au 1er mai 2026 ; 0 % pour les positions absentes de la liste ; indisponible pour 15 positions que la liste désigne par un code ancien ou à deux taux.",
+    "verbatim": "2.—(i) The First Schedule to the Principal Act is varied by inserting after Chapter 99 of the ECOWAS Common External Tariff 2022-2027. (a) The Import Adjustment Tax, being a detailed list of levies imposed on certain items listed in the First Schedule. [...] 6. The Customs, Excise Tariff, Etc. (Variation) Order 2023 is hereby [revoked]. 7.—(i) The First, Third and Sixth Schedules of the Principal Act varied by this Order shall come into force on the 1st of May, 2026.",
+    "verbatim_ligne": "5. Rice: In packing of more than 5 kg or in bulk | 1006.30.10.00 | 70 | 10 | 37.5 | 47.5",
+    "reference": "Customs, Excise Tariff, Etc. (Variation) Order 2026 (S.I. 29), orders 2, 6 et 7 ; First Schedule, « Revised Import Adjustment Tax (IAT) List for the implementation of ECOWAS CET (2022-2027) in Nigeria » (pages B 252-265)",
+    "portee": "scripts/build_socle._iat_nigeria_2026 (seul socle NGA). Comparé au portail collecté en février 2026 (Order 2023) : IAT identique sur 6 118 positions, modifiée sur 63, comblée sur les 90 cases vides, ramenée à 0 sur 64 positions sorties de la liste, indisponible sur 15. Positions COMPLET : 5 957 → 5 976.",
+    "texte_archive": "sources/NGA_SI29_2026_IAT.csv",
+    "sha256": "4c2126887963ef5fd6b5714632f54bb6da1a993b6ac829c908cc3c11e67b18d4"
+  },
+  "decisions": [
+    "La Gazette prime sur la circulaire du 1er avril 2026 (dernière publication officielle, décision du propriétaire du projet, 2026-10-08). Elle en diffère sur 13 lignes : codes ramenés au SH 2022 (ligne 4 : 3004.60.00.00 ; 39 : 3402.31.90.00 ; 50 : 3909.39.00.00 ; 61 : 4418.29.00.00 ; 86 : 6907.40.00.00 ; 88 : 6914.10.00.00 ; 89 : 6914.90.00.00 ; 182 : 8703.22.19.00) et IAT des véhicules d'occasion 8703 (lignes 181-186) ramenée de 20 % à 10 %.",
+    "Ligne 117 (7215.90.00.00, droit 20 %, IAT 25 %) : coupée au bas de la page scannée de la Gazette ; valeur de la circulaire, signalée dans la colonne note.",
+    "Transcription faite à l'œil sur les images : chaque ligne vérifie droit + IAT = total.",
+    "Hors liste = 0 % : l'order 6 révoque l'Order 2023.",
+    "Cas ambigus laissés indisponibles plutôt que devinés (décision du propriétaire du projet) : 3004.40, 6907.90 et 8903.92, absents de la nomenclature SH 2022 du portail ; 8502.11/12/13/20.90, à deux taux (15 % basic, 35 % soundproof).",
+    "Ciments 2523.10 et 2523.29 : IAT vide au portail et « accise » égale à l'IAT de la liste (40 % et 30 %), alors que la liste fixe le total à droit + IAT ; l'accise y est déclarée indisponible plutôt que servie deux fois."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Droit de douane : la colonne « duty » de la liste concorde avec le portail sur 180 des 181 lignes comparables ; le droit reste celui du portail.",
+    "Dès janvier 2027, les IAT (hors liste des 3 % ZLECAf) baissent chaque année jusqu'à 0 % en 2036 (order 2(i)(a)) : barème non publié.",
+    "Les accises du Fifth Schedule (en vigueur au 1er juillet 2026) et la Green Tax ne sont pas intégrées : l'accise servie reste celle du portail.",
+    "La National List à droits réduits et la liste d'interdiction (Third Schedule) ne sont pas intégrées."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/NGA_SI29_2026_IAT.csv",
+      "sha256": "4c2126887963ef5fd6b5714632f54bb6da1a993b6ac829c908cc3c11e67b18d4"
+    }
+  ]
+}
