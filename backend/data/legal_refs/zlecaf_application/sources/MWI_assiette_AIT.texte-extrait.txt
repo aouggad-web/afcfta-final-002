@@ -19,3 +19,7 @@ Malawi — Advance Income Tax à l'importation : extraits (relevés le 2026-10-0
 5. Statute Law (Miscellaneous Amendments) Act, 2021 — Act No. 15 of 2021, published 10th September 2021 (PDF scanné, https://media.malawilii.org/media/legislation/14870/source_file/3802adaffaff9cb3/mw-act-2021-15-publication-document.pdf, sha256 dda3ca5262a8259f48d9d8f4e9e191ce03ec5ce143453d26197bec729b138325), Schedule, Taxation Act, Section 104A, transcrit :
 
 Delete the words "under sections 90 and 91 of this Act" immediately after the word "issued" and substitute therefor the words "in accordance with the Tax Administration Act",
+
+6. Value Added Tax Act (Cap. 42:02), consolidation Laws.Africa au 31 décembre 2014 (https://media.malawilii.org/files/legislation/akn-mw-act-2005-7-eng-2014-12-31.pdf, sha256 643514d4ab8f00af00c75384886bddf1e6d0b2e7728cf88012b6fb1e66587bef ; même extrait que sources/MWI_assiette_accise_TVA.texte-extrait.txt) :
+
+28. Taxable value for determining Value Added Tax on imported goods The value for determining the tax chargeable on taxable imports shall be the import value calculated in accordance with the Customs and Excise Act with the addition of all import duties and taxes, but excluding Value Added Tax. [Cap. 42:01]

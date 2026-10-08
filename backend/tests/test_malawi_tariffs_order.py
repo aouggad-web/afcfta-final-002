@@ -22,8 +22,9 @@ CE QUE CES TESTS TIENNENT.
 
 4. LE DÉCRET DONNE LES TAUX DE L'ACCISE, DE LA TVA ET DE L'ADVANCE INCOME TAX,
    PAS LEUR ASSIETTE. Elle vient d'autres textes : VAT Act s.28 et guide MRA
-   pour l'accise et la TVA, Taxation Act s.102B pour l'AIT (fiches
-   MWI_assiette_accise_TVA_2026-10-05.json et MWI_assiette_AIT_2026-10-08.json).
+   pour l'accise et la TVA, Taxation Act s.102B pour l'AIT, qui entre dans
+   l'assiette de la TVA (fiches MWI_assiette_accise_TVA_2026-10-05.json et
+   MWI_assiette_AIT_2026-10-08.json).
 
 5. LE TAUX ZLECAf PORTE DEUX CONDITIONS QUE LE TEXTE ÉNONCE : l'Afrique du Sud
    en est exclue, et il exige un contenu d'origine de 35 %.
@@ -158,24 +159,25 @@ def test_l_ait_a_l_assiette_de_la_s102b(socle, crawl):
     assert {d.get("taux") for d in trouves} == {10.0, None}
 
 
-@pytest.mark.parametrize(("code_taxe", "assiette"), [("EXC", "CIF+DD"), ("TVA", "CIF+DD+EXC")])
+@pytest.mark.parametrize(("code_taxe", "assiette"), [("EXC", "CIF+DD"), ("TVA", "CIF+DD+EXC+AIT")])
 def test_l_accise_et_la_tva_ont_l_assiette_du_vat_act_et_du_guide_mra(socle, code_taxe, assiette):
     """VAT Act s.28 et guide MRA (2022) : accise sur CIF + droit, TVA sur CIF +
-    droit + accise (fiche MWI_assiette_accise_TVA_2026-10-05.json)."""
+    droit + accise (fiche MWI_assiette_accise_TVA_2026-10-05.json), plus l'AIT,
+    « charged and payable on the importation of goods » (Taxation Act s.102B(2))."""
     trouves = [d for p in socle["positions"].values() for d in _droits(p, code_taxe)]
     assert trouves and {d.get("assiette") for d in trouves} == {assiette}
 
 
-def test_viande_ait_sur_cif_hors_assiette_de_la_tva(socle):
-    """Viande 0202.10 : DD 10 %, AIT 10 % sur CIF, TVA 0 % sur CIF + DD — l'AIT,
-    acompte d'impot sur le revenu, n'entre pas dans l'assiette de la TVA."""
+def test_viande_ait_sur_cif_et_dans_l_assiette_de_la_tva(socle):
+    """Viande 0202.10 : DD 10 %, AIT 10 % sur CIF, TVA 0 % sur CIF + DD + AIT
+    (VAT Act s.28 : « all import duties and taxes »)."""
     from services.calcul import calculer
 
     resultat = calculer(socle["positions"]["02021000"], 10000.0)["npf"]
     lignes = {x["code"]: x for x in resultat["lignes"]}
     assert lignes["DD"]["montant"] == pytest.approx(1000.0)
     assert lignes["AIT"]["montant"] == pytest.approx(1000.0)
-    assert lignes["TVA"]["base"] == pytest.approx(11000.0)
+    assert lignes["TVA"]["base"] == pytest.approx(12000.0)
     assert resultat["etat"] == "COMPLET"
 
 

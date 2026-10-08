@@ -14,33 +14,37 @@
     "order_2023_pdf_sha256": "4bf275464c66069d8ae13bd8082c24147c32be3c32e6e8715662dfc71eff6955",
     "order_2023_non_archive": "Customs and Excise (Tariffs) (Amendment) (No. 3) Order 2023, Gazette du 19 mai 2023, PR #606, MWI_customs_excise_tariffs_amendment_no3_order_2023_gn19.pdf",
     "act15_2021_pdf_sha256": "dda3ca5262a8259f48d9d8f4e9e191ce03ec5ce143453d26197bec729b138325",
-    "act15_2021_non_archive": "Statute Law (Miscellaneous Amendments) Act 2021 (No. 15 of 2021), PR #606, MWI_statute_law_misc_amendments_act_2021_act15.pdf"
+    "act15_2021_non_archive": "Statute Law (Miscellaneous Amendments) Act 2021 (No. 15 of 2021), PR #606, MWI_statute_law_misc_amendments_act_2021_act15.pdf",
+    "vat_pdf_sha256": "643514d4ab8f00af00c75384886bddf1e6d0b2e7728cf88012b6fb1e66587bef",
+    "vat_non_archive": "Value Added Tax Act (Cap. 42:02) consolidé au 31/12/2014 (Laws.Africa), déjà cité par la fiche MWI_assiette_accise_TVA_2026-10-05.json"
   },
   "regle": {
     "valeur": "Advance Income Tax à l'importation : 10 % de la valeur des marchandises au point d'entrée au Malawi (assiette CIF, comme le droit de douane). Acompte d'impôt sur le revenu, imputable ; non dû sur certificat d'exemption, par un ministère, une personne exonérée, ou sous la section XXII de l'Order.",
     "verbatim": "102B. Payment of withholding tax (1) Any person who imports goods shall be required to pay withholding tax at three per centum of the value of goods at the port of entry into Malawi. [...] 8. The principal Act is amended, in section 102B— (a) subsection (1), by deleting the words \"three per centum\" appearing immediately after the words \"tax at\" and substituting therefor the words \"ten per centum\"",
-    "reference": "Taxation Act (Cap. 41:01), s.102B(1) et (3) ; Taxation (Amendment) Act 2023 (No. 17 of 2023), s.8 ; Customs and Excise (Tariffs) (Amendment) (No. 3) Order 2023, par. 2(a) ; Taxation Act s.104A (crédit), modifié par le Statute Law (Miscellaneous Amendments) Act 2021",
-    "portee": "scripts/build_socle._ait_malawi (seul socle MWI) : assiette CIF posée sur l'AIT de la colonne 12 de l'Order 2022 (7 116 lignes à 10 %). Positions COMPLET : 0 → 7 112.",
+    "reference": "Taxation Act (Cap. 41:01), s.102B(1), (2) et (3) ; Taxation (Amendment) Act 2023 (No. 17 of 2023), s.8 ; Customs and Excise (Tariffs) (Amendment) (No. 3) Order 2023, par. 2(a) ; Taxation Act s.104A (crédit), modifié par le Statute Law (Miscellaneous Amendments) Act 2021 ; Value Added Tax Act (Cap. 42:02) s.28 (assiette de la TVA)",
+    "portee": "scripts/build_socle._ait_malawi (seul socle MWI) : assiette CIF posée sur l'AIT de la colonne 12 de l'Order 2022 (7 116 lignes à 10 %), et assiette de la TVA portée à CIF + DD + accise + AIT sur les 7 120 positions qui portent l'AIT. Positions COMPLET : 0 → 7 112.",
     "texte_archive": "sources/MWI_assiette_AIT.texte-extrait.txt",
-    "sha256": "a5071f6c4d9474953a346cff50f17350f16cfb91df5e0d06d5d3c0f32efbda7c",
-    "verbatim_credit": "104A. Credit for tax deducted at source Where withholding tax has been deducted or paid under sections 102, 102A and 102B, the tax so deducted or paid shall be allowed as a credit against tax charged on assessments issued under sections 90 and 91 of this Act."
+    "sha256": "41f0394d1af47c8242d6243ce66a76de44ab2cf18ee4ac508fd333be88f4c9c4",
+    "verbatim_credit": "104A. Credit for tax deducted at source Where withholding tax has been deducted or paid under sections 102, 102A and 102B, the tax so deducted or paid shall be allowed as a credit against tax charged on assessments issued under sections 90 and 91 of this Act.",
+    "verbatim_tva": "(2) Withholding tax shall be charged and payable on the importation of goods [...] 28. Taxable value for determining Value Added Tax on imported goods The value for determining the tax chargeable on taxable imports shall be the import value calculated in accordance with the Customs and Excise Act with the addition of all import duties and taxes, but excluding Value Added Tax."
   },
   "decisions": [
     "Le conflit entre la s.102B (3 % dans la consolidation de 2014) et la colonne 12 de l'Order 2022 (10 %) est tranché par le Taxation (Amendment) Act 2023, s.8, qui porte le taux à 10 % ; l'Order (No. 3) 2023 aligne la section XXII de 3 % à 10 %.",
     "Assiette : « the value of goods at the port of entry into Malawi », soit la valeur en douane au point d'introduction — la même que celle du droit de douane (Customs and Excise Act s.111, Schedule A ; fiche MWI_colonnes_remises_et_prix_normal_2026-09-19.json).",
     "4 positions (2301.10, 7306.29, 8480.41, 8539.49.90) portent 3 % en colonne 12 de l'Order 2022, en bas de page du PDF : taux contraire à la s.102B depuis 2023, déclaré indisponible plutôt que deviné (décision du propriétaire du projet sur les cas ambigus).",
-    "L'AIT n'entre pas dans l'assiette de la TVA (VAT Act s.28 : « import duties and taxes » ; le guide MRA 2022 la calcule sans elle) : l'assiette de la TVA reste CIF + DD + accise.",
+    "L'AIT entre dans l'assiette de la TVA : la s.102B(2) la rend « charged and payable on the importation of goods », et la s.28 du VAT Act ajoute à la valeur en douane « all import duties and taxes, but excluding Value Added Tax ». L'assiette de la TVA devient CIF + DD + accise + AIT (montré par le revieweur Codex sur la PR #610, tranché sur le texte déposé PR #606). Le guide MRA 2022 (p. 11) ne contredit pas : son exemple ne comporte aucune ligne d'AIT.",
     "Imputabilité : la s.104A dispose que la retenue payée au titre de la s.102B « shall be allowed as a credit against tax charged on assessments » ; l'Act 15/2021 la maintient en renvoyant désormais au Tax Administration Act."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Le fichier collecté (backend/data/crawled/MWI_tariffs.json) porte encore l'AIT sans assiette : c'est le socle qui la pose.",
     "Les amendements de l'Order postérieurs à 2022 ne sont pas tous intégrés : l'Order (No. 3) 2023 exonère de TVA 27 sous-positions (véhicules 8702.40, 8703.80, 3926.90.10, 7321.11.10, 8516.60.91, 8704.60) et scinde la 4820.20 ; les Orders GN 10/2022 et GN 7/2024 restent à relire.",
-    "La rédaction actuelle de la s.102B(1) n'est pas lue en entier : l'Act 2023 n'y remplace que le taux, et sa modification du par. (3) (« or the importation of goods ») vise des mots absents de la consolidation 2014, donc ajoutés par un amendement intermédiaire. L'Act 15/2021 (lu) ne touche pas la s.102B ; l'Act 6/2022 ne la cite pas dans sa table des sections (lue sur une source secondaire) ; l'Act 28/2018 n'est pas lu. Un avis MRA du 22/04/2022 décrirait l'assiette comme la « Value for Duty Purposes » (rapporté par la presse et par le déposant ; page HTML non lue ici, rendue en JavaScript)."
+    "La rédaction actuelle de la s.102B(1) n'est pas lue en entier : l'Act 2023 n'y remplace que le taux, et sa modification du par. (3) (« or the importation of goods ») vise des mots absents de la consolidation 2014, donc ajoutés par un amendement intermédiaire. L'Act 15/2021 (lu) ne touche pas la s.102B ; l'Act 6/2022 ne la cite pas dans sa table des sections (lue sur une source secondaire) ; l'Act 28/2018 n'est pas lu. Un avis MRA du 22/04/2022 décrirait l'assiette comme la « Value for Duty Purposes » (rapporté par la presse et par le déposant ; page HTML non lue ici, rendue en JavaScript).",
+    "Aucun calcul officiel publié (MRA) d'une importation portant à la fois l'AIT et la TVA n'a été lu : l'inclusion de l'AIT dans l'assiette de la TVA repose sur la lettre des s.102B(2) et s.28."
   ],
   "documents_archives": [
     {
       "texte_archive": "sources/MWI_assiette_AIT.texte-extrait.txt",
-      "sha256": "a5071f6c4d9474953a346cff50f17350f16cfb91df5e0d06d5d3c0f32efbda7c"
+      "sha256": "41f0394d1af47c8242d6243ce66a76de44ab2cf18ee4ac508fd333be88f4c9c4"
     }
   ]
 }

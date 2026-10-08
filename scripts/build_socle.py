@@ -1343,6 +1343,19 @@ def _ait_malawi(positions, compteurs):
                 )
                 d["taux"] = None
                 compteurs["taux_indisponibles"] += 1
+        # L'AIT est « charged and payable on the importation of goods » (s.102B(2)) :
+        # elle entre dans « all import duties and taxes » de la TVA (VAT Act s.28).
+        if any(d.get("code") == "AIT" for d in position.get("droits") or []):
+            for d in position["droits"]:
+                if d.get("code") == "TVA":
+                    d["assiette"] = "CIF+DD+EXC+AIT"
+                    d["assiette_origine"] = "regle_de_pays"
+                    d["note"] = (
+                        "col. 11 — TVA. Assiette : Value Added Tax Act (Cap. 42:02) s.28 : « the import value "
+                        "calculated in accordance with the Customs and Excise Act with the addition of all import "
+                        "duties and taxes, but excluding Value Added Tax » ; l'Advance Income Tax en fait partie : "
+                        "« charged and payable on the importation of goods » (Taxation Act s.102B(2))."
+                    )
 
 
 def _accises_du_cgi(iso, positions):
