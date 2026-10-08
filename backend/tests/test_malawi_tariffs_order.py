@@ -20,9 +20,10 @@ CE QUE CES TESTS TIENNENT.
    transactionnelle de l'OMC. Son contenu économique est le CIF, et c'est ce que
    le socle sert ; sa forme juridique ne l'est pas, et c'est dit.
 
-4. TROIS PRÉLÈVEMENTS SONT PORTÉS SANS ASSIETTE — accise, TVA, Advance Income
-   Tax. Le décret donne leur TAUX, aucun texte malawien lu ici ne donne leur
-   assiette. Les poser sur le CIF fabriquerait un montant crédible et faux.
+4. LE DÉCRET DONNE LES TAUX DE L'ACCISE, DE LA TVA ET DE L'ADVANCE INCOME TAX,
+   PAS LEUR ASSIETTE. Elle vient d'autres textes : VAT Act s.28 et guide MRA
+   pour l'accise et la TVA, Taxation Act s.102B pour l'AIT (fiches
+   MWI_assiette_accise_TVA_2026-10-05.json et MWI_assiette_AIT_2026-10-08.json).
 
 5. LE TAUX ZLECAf PORTE DEUX CONDITIONS QUE LE TEXTE ÉNONCE : l'Afrique du Sud
    en est exclue, et il exige un contenu d'origine de 35 %.
@@ -141,23 +142,20 @@ def test_le_droit_de_douane_se_liquide_sur_le_prix_normal_de_la_schedule_a(socle
     assert "port or place of introduction" in origine
 
 
-@pytest.mark.parametrize("code_taxe", ["AIT"])
-def test_l_ait_sans_assiette_ne_se_liquide_pas(socle, crawl, code_taxe):
-    """Le decret donne son TAUX, pas son assiette, et aucun texte malawien lu
-    ici ne l'etablit (l'accise et la TVA ont la leur : voir le test suivant). Les poser sur le CIF parce que c'est l'usage ailleurs
-    fabriquerait un montant credible et faux. Le profil generique « TVA sur
-    CIF+DD » que portait backend/services/tax_profile_data.py sous la seule
-    mention « Malawi Revenue Authority » a ete RETIRE pour cette raison."""
-    porte = _taxes(crawl, code_taxe)
-    assert porte, f"{code_taxe} absent du tarif collecte"
+def test_l_ait_a_l_assiette_de_la_s102b(socle, crawl):
+    """Le decret donne son TAUX, pas son assiette : le collecteur la porte donc
+    sans assiette. C'est le socle qui la pose, sur texte primaire : Taxation Act
+    s.102B(1), « ten per centum of the value of goods at the port of entry into
+    Malawi » depuis le Taxation (Amendment) Act 2023 (fiche
+    MWI_assiette_AIT_2026-10-08.json)."""
+    porte = _taxes(crawl, "AIT")
+    assert porte, "AIT absente du tarif collecte"
     assert {t["base"] for t in porte} == {None}
-    assert all("ASSIETTE" in t["note"] for t in porte)
 
-    trouves = [d for p in socle["positions"].values() for d in _droits(p, code_taxe)]
-    assert trouves, f"{code_taxe} absent du socle"
-    assert {d.get("assiette") for d in trouves} == {None}, (
-        f"{code_taxe} a recu une assiette qu'aucun texte malawien n'etablit"
-    )
+    trouves = [d for p in socle["positions"].values() for d in _droits(p, "AIT")]
+    assert trouves, "AIT absente du socle"
+    assert {d.get("assiette") for d in trouves} == {"CIF"}
+    assert {d.get("taux") for d in trouves} == {10.0, None}
 
 
 @pytest.mark.parametrize(("code_taxe", "assiette"), [("EXC", "CIF+DD"), ("TVA", "CIF+DD+EXC")])
@@ -168,17 +166,27 @@ def test_l_accise_et_la_tva_ont_l_assiette_du_vat_act_et_du_guide_mra(socle, cod
     assert trouves and {d.get("assiette") for d in trouves} == {assiette}
 
 
-def test_une_taxe_sans_assiette_est_declaree_et_non_liquidee(socle):
-    """Viande 0202.10 : DD 10 %, TVA 0 % sur CIF + DD ; l'AIT reste non
-    liquidée et le total n'est pas COMPLET."""
+def test_viande_ait_sur_cif_hors_assiette_de_la_tva(socle):
+    """Viande 0202.10 : DD 10 %, AIT 10 % sur CIF, TVA 0 % sur CIF + DD — l'AIT,
+    acompte d'impot sur le revenu, n'entre pas dans l'assiette de la TVA."""
     from services.calcul import calculer
 
     resultat = calculer(socle["positions"]["02021000"], 10000.0)["npf"]
     lignes = {x["code"]: x for x in resultat["lignes"]}
     assert lignes["DD"]["montant"] == pytest.approx(1000.0)
+    assert lignes["AIT"]["montant"] == pytest.approx(1000.0)
     assert lignes["TVA"]["base"] == pytest.approx(11000.0)
-    assert lignes["AIT"]["montant"] is None
-    assert lignes["AIT"]["statut"] == "ASSIETTE_INDISPONIBLE"
+    assert resultat["etat"] == "COMPLET"
+
+
+def test_ait_a_3_pourcent_contraire_a_la_loi_non_servie(socle):
+    """2301.10 porte 3 % en colonne 12 de l'Order 2022 ; la s.102B fixe 10 %
+    depuis 2023 : taux declare indisponible plutot que devine."""
+    from services.calcul import calculer
+
+    resultat = calculer(socle["positions"]["23011000"], 10000.0)["npf"]
+    lignes = {x["code"]: x for x in resultat["lignes"]}
+    assert lignes["AIT"]["statut"] == "TAUX_INDISPONIBLE"
     assert resultat["etat"] != "COMPLET"
 
 

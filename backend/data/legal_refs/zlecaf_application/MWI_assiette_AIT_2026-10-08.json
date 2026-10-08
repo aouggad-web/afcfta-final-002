@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "objet": "Malawi : assiette et taux de l'Advance Income Tax à l'importation — 10 % de la valeur des marchandises au point d'entrée",
+  "destination_iso3": "MWI",
+  "verified_at": "2026-10-08",
+  "etabli": true,
+  "evidence_level": "primaire — Taxation Act (Cap. 41:01) s.102B, consolidation Laws.Africa au 31/12/2014 (texte), et Taxation (Amendment) Act 2023 (Act No. 17 of 2023, publié le 5 avril 2023), s.8, transcrit sur l'image du PDF scanné",
+  "source": {
+    "institution": "Parlement du Malawi — Taxation Act (Cap. 41:01) et Taxation (Amendment) Act 2023 ; Laws.Africa (MalawiLII)",
+    "pdf_sha256": "5ef254dfd6b4c96c3ad8fbc2482237798a58d6e416eecab09d569185f0f20726",
+    "pdf_non_archive": "PDF scanné de la Gazette (30 pages) déposé par le propriétaire du projet (PR #606, data/malawi/reference/MWI_taxation_amendment_act_2023_act17.pdf) ; seuls les passages cités sont archivés (voir regle.texte_archive)",
+    "consolidation_pdf_sha256": "447a2644acf79f084d8ea85d1dd09b7503d2736d6ab6a9f9447ce0aa8fc7df47",
+    "consolidation_non_archive": "Taxation Act consolidé au 31/12/2014 (Laws.Africa), PR #606, MWI_taxation_act_cap4101_consolidation_2014.pdf",
+    "order_2023_pdf_sha256": "4bf275464c66069d8ae13bd8082c24147c32be3c32e6e8715662dfc71eff6955",
+    "order_2023_non_archive": "Customs and Excise (Tariffs) (Amendment) (No. 3) Order 2023, Gazette du 19 mai 2023, PR #606, MWI_customs_excise_tariffs_amendment_no3_order_2023_gn19.pdf"
+  },
+  "regle": {
+    "valeur": "Advance Income Tax à l'importation : 10 % de la valeur des marchandises au point d'entrée au Malawi (assiette CIF, comme le droit de douane). Acompte d'impôt sur le revenu, imputable ; non dû sur certificat d'exemption, par un ministère, une personne exonérée, ou sous la section XXII de l'Order.",
+    "verbatim": "102B. Payment of withholding tax (1) Any person who imports goods shall be required to pay withholding tax at three per centum of the value of goods at the port of entry into Malawi. [...] 8. The principal Act is amended, in section 102B— (a) subsection (1), by deleting the words \"three per centum\" appearing immediately after the words \"tax at\" and substituting therefor the words \"ten per centum\"",
+    "reference": "Taxation Act (Cap. 41:01), s.102B(1) et (3) ; Taxation (Amendment) Act 2023 (No. 17 of 2023), s.8 ; Customs and Excise (Tariffs) (Amendment) (No. 3) Order 2023, par. 2(a)",
+    "portee": "scripts/build_socle._ait_malawi (seul socle MWI) : assiette CIF posée sur l'AIT de la colonne 12 de l'Order 2022 (7 116 lignes à 10 %). Positions COMPLET : 0 → 7 112.",
+    "texte_archive": "sources/MWI_assiette_AIT.texte-extrait.txt",
+    "sha256": "0abcc18619a24cd438f2d3c8ed5ff16bf031eab1fdb3c216fbdc7fa0496b799b"
+  },
+  "decisions": [
+    "Le conflit entre la s.102B (3 % dans la consolidation de 2014) et la colonne 12 de l'Order 2022 (10 %) est tranché par le Taxation (Amendment) Act 2023, s.8, qui porte le taux à 10 % ; l'Order (No. 3) 2023 aligne la section XXII de 3 % à 10 %.",
+    "Assiette : « the value of goods at the port of entry into Malawi », soit la valeur en douane au point d'introduction — la même que celle du droit de douane (Customs and Excise Act s.111, Schedule A ; fiche MWI_colonnes_remises_et_prix_normal_2026-09-19.json).",
+    "4 positions (2301.10, 7306.29, 8480.41, 8539.49.90) portent 3 % en colonne 12 de l'Order 2022, en bas de page du PDF : taux contraire à la s.102B depuis 2023, déclaré indisponible plutôt que deviné (décision du propriétaire du projet sur les cas ambigus).",
+    "L'AIT n'entre pas dans l'assiette de la TVA (VAT Act s.28 : « import duties and taxes » ; le guide MRA 2022 la calcule sans elle) : l'assiette de la TVA reste CIF + DD + accise."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le fichier collecté (backend/data/crawled/MWI_tariffs.json) porte encore l'AIT sans assiette : c'est le socle qui la pose.",
+    "Les amendements de l'Order postérieurs à 2022 ne sont pas tous intégrés : l'Order (No. 3) 2023 exonère de TVA 27 sous-positions (véhicules 8702.40, 8703.80, 3926.90.10, 7321.11.10, 8516.60.91, 8704.60) et scinde la 4820.20 ; les Orders GN 10/2022 et GN 7/2024 restent à relire.",
+    "La consolidation du Taxation Act s'arrête au 31/12/2014 ; les Acts 28/2018, 15/2021, 6/2022 et 36/2025 n'ont pas été relus pour la s.102B (l'Act 36/2025 lu ne la modifie pas)."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/MWI_assiette_AIT.texte-extrait.txt",
+      "sha256": "0abcc18619a24cd438f2d3c8ed5ff16bf031eab1fdb3c216fbdc7fa0496b799b"
+    }
+  ]
+}
