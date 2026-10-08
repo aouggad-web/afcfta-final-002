@@ -39,6 +39,8 @@ def test_ciment_l_accise_egale_a_l_iat_n_est_pas_servie_deux_fois(positions):
     """2523.10 : droit 10 % + IAT 40 % = 50 % selon la liste ; l'« accise » de 40 % est écartée."""
     p = positions["2523100000"]
     assert _taux(p, "IAT") == 40.0 and _taux(p, "EXC") is None
+    p = positions["2523290000"]
+    assert _taux(p, "IAT") == 30.0 and _taux(p, "EXC") is None
 
 
 def test_vehicules_d_occasion_selon_la_gazette(positions):

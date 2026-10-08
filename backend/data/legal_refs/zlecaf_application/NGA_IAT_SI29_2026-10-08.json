@@ -9,7 +9,9 @@
     "institution": "Federal Government Printer, Lagos — Official Gazette No. 79 du 1er mai 2026 (S.I. 29)",
     "pdf_sha256": "d5e76bb7c464222f6354e38375cc19ae130fa49f01c9ab6268342bc1ded0e891",
     "pdf_non_archive": "PDF scanné fourni par le propriétaire du projet (PR #606, data/nigeria/reference/gazette_variation_order_2026_SI29.pdf) ; seule la transcription de la liste IAT est archivée (voir regle.texte_archive)",
-    "recoupement": "circulaire F17417//374 du ministre des Finances du 1er avril 2026, annexe I (PR #606, nigeria_fpm_tariff_amendments_2026.pdf, sha256 6eeb5c869f7998508e1fa1223f77b8c254933bbc3966f87ae5e057778953d479)"
+    "recoupement": "circulaire F17417//374 du ministre des Finances du 1er avril 2026, annexe I (PR #606, nigeria_fpm_tariff_amendments_2026.pdf)",
+    "circulaire_pdf_sha256": "6eeb5c869f7998508e1fa1223f77b8c254933bbc3966f87ae5e057778953d479",
+    "circulaire_non_archive": "PDF scanné de la circulaire (16,8 Mo) non versé au dépôt : il ne sert qu'au recoupement de la Gazette"
   },
   "regle": {
     "valeur": "IAT par ligne selon le First Schedule de l'Order 2026 (de 5 % à 65 %), en vigueur au 1er mai 2026 ; 0 % pour les positions absentes de la liste ; indisponible pour 15 positions que la liste désigne par un code ancien ou à deux taux.",
