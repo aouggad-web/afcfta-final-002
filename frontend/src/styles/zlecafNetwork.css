@@ -17,11 +17,16 @@
   --zn-gold: #D4891A;
   --zn-terra: #DE7A49;
 
-  /* Hors accord : gris neutre, plein (signé) ou pointillé (non signé). */
+  /* Hors accord : gris neutre, plein (signé) ou cercle vide (non signé).
+     Un anneau pointillé distinct marque l'absence de PIB, quel que soit le
+     statut. */
   --zn-non_signataire: #6B7688;
   --zn-signe_non_ratifie: #6B7688;
   /* Les seules quatre teintes de la marque qui passent validate_palette.js
-     en --pairs all (carte : deux ronds quelconques peuvent se toucher). */
+     en --pairs all (carte : deux ronds quelconques peuvent se toucher). La
+     paire safran/vert tombe à 6,9 en tritanopie (bande 6-8) : l'encodage
+     secondaire exigé est l'anneau de surface de 0,22 qui sépare chaque rond
+     de ses voisins, plus la légende filtrante et le tableau. */
   --zn-ratifie: #9D6BFE;           /* indigo / violet  (series-6) */
   --zn-offre_tarifaire: #0C83AB;   /* bleu atlantique  (series-2) */
   --zn-instrument_adopte: #C57D06; /* safran           (series-5) */
@@ -112,7 +117,7 @@
 
 .zn-swatch.is-hollow {
   background: transparent !important;
-  border: 1.5px dashed var(--zn-non_signataire);
+  border: 1.5px solid var(--zn-non_signataire);
 }
 
 .zn-legend {

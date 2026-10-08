@@ -74,8 +74,17 @@ function App() {
   const [activeTab, setActiveTab] = useState(() => {
     // Raccourcis de l'application installée (manifest.json « shortcuts ») :
     // « /?tab=calculator » ouvre directement le module demandé.
-    const demande = new URLSearchParams(window.location.search).get('tab');
-    if (demande && SHORTCUT_TABS.includes(demande)) return demande;
+    const params = new URLSearchParams(window.location.search);
+    const demande = params.get('tab');
+    if (demande && SHORTCUT_TABS.includes(demande)) {
+      // Lu une fois : un simple rechargement retrouve ensuite l'onglet de la session.
+      params.delete('tab');
+      const reste = params.toString();
+      window.history.replaceState(
+        null, '', window.location.pathname + (reste ? `?${reste}` : '') + window.location.hash
+      );
+      return demande;
+    }
     return sessionStorage.getItem('zlecaf_active_tab') || 'dashboard';
   });
   useEffect(() => {

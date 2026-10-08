@@ -71,22 +71,46 @@ NIVEAUX = [
     DEPLOIEMENT,
 ]
 
-SOURCE_ADHESION = "the dtic / SARS, « Update on the AfCFTA », newsletter mars 2026"
-SOURCE_ANNEXE1 = (
-    "Directive ministérielle 1/2021 (AfCFTA/COM/7/DIRECTIVE/FINAL), Annexe 1 — "
-    "liste provisoire de concessions soumise, Conseil des ministres de la "
-    "ZLECAf, Accra, 10/10/2021"
-)
-SOURCE_ZAF = (
-    "General Note O du Schedule No. 1 (Customs and Excise Act, 1964, Afrique du "
-    "Sud), telle qu'amendée par les Notices R.4287, R.5879, R.6233, R.6595 et "
-    "R.6756 du Government Gazette"
-)
-NOTE_ZAF = (
-    "La préférence sud-africaine court à partir de la date d'effet de la Notice "
-    "qui a ajouté chaque partenaire ; les membres de la SACU échangent sous le "
-    "régime SACU, pas sous la ZLECAf."
-)
+# Libellés composés par ce module (les titres d'instruments viennent du
+# registre, tels que les textes les donnent).
+TEXTES = {
+    "fr": {
+        "adhesion": "the dtic / SARS, « Update on the AfCFTA », newsletter mars 2026",
+        "ratifie_note": "Statut par défaut des États que la source ne cite ni parmi "
+        "les non-signataires ni parmi les non-ratifiants.",
+        "annexe1": "Directive ministérielle 1/2021 (AfCFTA/COM/7/DIRECTIVE/FINAL), "
+        "Annexe 1 — liste provisoire de concessions soumise, Conseil des ministres "
+        "de la ZLECAf, Accra, 10/10/2021",
+        "bareme": "Barème tarifaire officiel de l'offre (jeu « {jeu} »)",
+        "bareme_note": "Barème archivé ; aucune preuve nationale complète "
+        "d'application n'a été vérifiée.",
+        "zaf": "General Note O du Schedule No. 1 (Customs and Excise Act, 1964, "
+        "Afrique du Sud), telle qu'amendée par les Notices R.4287, R.5879, R.6233, "
+        "R.6595 et R.6756 du Government Gazette",
+        "zaf_note": "La préférence sud-africaine court à partir de la date d'effet de "
+        "la Notice qui a ajouté chaque partenaire ; les membres de la SACU échangent "
+        "sous le régime SACU, pas sous la ZLECAf.",
+        "pib_source": "Banque mondiale (API WDI), PIB en dollars US courants",
+    },
+    "en": {
+        "adhesion": "the dtic / SARS, “Update on the AfCFTA” newsletter, March 2026",
+        "ratifie_note": "Default status of States the source names neither among "
+        "non-signatories nor among non-ratifying States.",
+        "annexe1": "Ministerial Directive 1/2021 (AfCFTA/COM/7/DIRECTIVE/FINAL), "
+        "Annex 1 — provisional schedule of concessions submitted, AfCFTA Council of "
+        "Ministers, Accra, 10/10/2021",
+        "bareme": "Official tariff schedule of the offer (dataset “{jeu}”)",
+        "bareme_note": "Schedule archived; no complete national proof of application "
+        "has been verified.",
+        "zaf": "General Note O to Schedule No. 1 (Customs and Excise Act, 1964, South "
+        "Africa), as amended by Government Gazette Notices R.4287, R.5879, R.6233, "
+        "R.6595 and R.6756",
+        "zaf_note": "South Africa's preference runs from the effective date of the "
+        "Notice that added each partner; SACU members trade under SACU, not the "
+        "AfCFTA.",
+        "pib_source": "World Bank (WDI API), GDP in current US dollars",
+    },
+}
 
 
 def _preuve(niveau: str, source: str, url: Optional[str] = None, note: Optional[str] = None):
@@ -116,9 +140,10 @@ def _date(iso: str) -> date:
     return date(annee, mois, jour)
 
 
-def construire_reseau(jour: Optional[date] = None) -> dict:
+def construire_reseau(jour: Optional[date] = None, lang: str = "fr") -> dict:
     """Statuts des États de ``AFRICAN_COUNTRIES`` et liaisons préférentielles."""
     jour = jour or date.today()
+    t = TEXTES["en" if lang == "en" else "fr"]
     iso3s = [c["iso3"] for c in AFRICAN_COUNTRIES]
     preuves: Dict[str, List[dict]] = {k: [] for k in iso3s}
 
@@ -129,24 +154,19 @@ def construire_reseau(jour: Optional[date] = None) -> dict:
     for iso3 in iso3s:
         statut = membership.ratification_status(iso3)
         if statut == membership.STATUS_NOT_SIGNED:
-            ajouter(iso3, _preuve(NON_SIGNATAIRE, SOURCE_ADHESION))
+            ajouter(iso3, _preuve(NON_SIGNATAIRE, t["adhesion"]))
         elif statut == membership.STATUS_SIGNED_NOT_RATIFIED:
-            ajouter(iso3, _preuve(SIGNE_NON_RATIFIE, SOURCE_ADHESION))
+            ajouter(iso3, _preuve(SIGNE_NON_RATIFIE, t["adhesion"]))
         else:
             ajouter(
                 iso3,
-                _preuve(
-                    RATIFIE,
-                    SOURCE_ADHESION,
-                    note="Statut par défaut des États que la source ne cite ni parmi "
-                    "les non-signataires ni parmi les non-ratifiants.",
-                ),
+                _preuve(RATIFIE, t["adhesion"], note=t["ratifie_note"]),
             )
 
     for iso3 in registry.ANNEXE1_PARTIES_2021:
         ajouter(
             iso3,
-            _preuve(OFFRE_TARIFAIRE, SOURCE_ANNEXE1, note=registry.KENYA_ORIGINS_RESERVES),
+            _preuve(OFFRE_TARIFAIRE, t["annexe1"], note=registry.KENYA_ORIGINS_RESERVES),
         )
 
     for iso3, jeu in registry.OFFER_DATASETS.items():
@@ -154,9 +174,8 @@ def construire_reseau(jour: Optional[date] = None) -> dict:
             iso3,
             _preuve(
                 OFFRE_TARIFAIRE,
-                f"Barème tarifaire officiel de l'offre (jeu « {jeu} »)",
-                note="Barème archivé ; aucune preuve nationale complète d'application "
-                "n'a été vérifiée.",
+                t["bareme"].format(jeu=jeu),
+                note=t["bareme_note"],
             ),
         )
 
@@ -191,10 +210,10 @@ def construire_reseau(jour: Optional[date] = None) -> dict:
     # Afrique du Sud : General Note O, partenaire par partenaire, à sa date d'effet.
     partenaires_zaf = {p: d for p, d in sorted(DATES_ENTREE_ZAF.items()) if _date(d) <= jour}
     if partenaires_zaf:
-        ajouter("ZAF", _preuve(DEPLOIEMENT, SOURCE_ZAF, note=NOTE_ZAF))
+        ajouter("ZAF", _preuve(DEPLOIEMENT, t["zaf"], note=t["zaf_note"]))
     for partenaire, depuis in partenaires_zaf.items():
         liaisons.append(
-            {"importateur": "ZAF", "origine": partenaire, "depuis": depuis, "source": SOURCE_ZAF}
+            {"importateur": "ZAF", "origine": partenaire, "depuis": depuis, "source": t["zaf"]}
         )
 
     ratifiants = {
@@ -237,7 +256,7 @@ def construire_reseau(jour: Optional[date] = None) -> dict:
         "date": jour.isoformat(),
         "niveaux": NIVEAUX,
         "pib_annee": int(PIB_ANNEE),
-        "pib_source": "Banque mondiale (API WDI), PIB en dollars US courants",
+        "pib_source": t["pib_source"],
         "pays": pays,
         "liaisons": liaisons_retenues,
     }

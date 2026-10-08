@@ -9,6 +9,10 @@ from translations import translate_country_name
 
 router = APIRouter()
 
+# Entités sans entrée dans translations.COUNTRY_TRANSLATIONS (qui renvoie
+# alors le code ISO2 lui-même).
+NOMS_HORS_TABLE = {"EH": {"fr": "RASD (Sahara occidental)", "en": "SADR (Western Sahara)"}}
+
 
 @router.get("/zlecaf/network")
 async def get_zlecaf_network(lang: str = "fr"):
@@ -18,12 +22,13 @@ async def get_zlecaf_network(lang: str = "fr"):
     (adhésion, registre de mise en œuvre, listes algérienne et sud-africaine) ;
     voir ``services/zlecaf_network.py``.
     """
-    reseau = construire_reseau()
+    reseau = construire_reseau(lang=lang)
     for pays in reseau["pays"]:
         nom_constants = pays.pop("nom_constants")
         traduit = translate_country_name(pays["iso2"], lang)
-        # translate_country_name renvoie le code lui-même quand il n'a pas de
-        # traduction (cas de la RASD, « EH ») : on retombe alors sur le nom
-        # de constants.AFRICAN_COUNTRIES.
-        pays["nom"] = traduit if traduit and traduit != pays["iso2"] else nom_constants
+        if traduit and traduit != pays["iso2"]:
+            pays["nom"] = traduit
+        else:
+            hors_table = NOMS_HORS_TABLE.get(pays["iso2"], {})
+            pays["nom"] = hors_table.get("en" if lang == "en" else "fr", nom_constants)
     return reseau

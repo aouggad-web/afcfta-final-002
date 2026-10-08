@@ -41,7 +41,7 @@ const TEXTS = {
     hint: 'Survolez ou sélectionnez une capitale. Cliquez une étiquette de la légende pour isoler un statut.',
     link: 'Liaison : un État applique la préférence ZLECAf aux produits de l’autre',
     size: 'PIB {year} (Md $), surface du rond',
-    sizeFloor: 'Taille minimale sous {min} Md $ ; rond vide en pointillé : PIB non disponible.',
+    sizeFloor: 'Taille minimale sous {min} Md $ ; anneau pointillé autour du rond : PIB non disponible.',
     gdp: 'PIB {year}',
     gdpNa: 'PIB {year} non disponible',
     out: 'applique la préférence à {n} État(s)',
@@ -76,7 +76,7 @@ const TEXTS = {
     hint: 'Hover or select a capital. Click a legend label to isolate a status.',
     link: 'Link: one State applies the AfCFTA preference to the other’s goods',
     size: 'GDP {year} (USD bn), circle area',
-    sizeFloor: 'Minimum size below USD {min} bn; dashed hollow circle: GDP not available.',
+    sizeFloor: 'Minimum size below USD {min} bn; dashed ring around the circle: GDP not available.',
     gdp: 'GDP {year}',
     gdpNa: 'GDP {year} not available',
     out: 'grants the preference to {n} State(s)',
@@ -153,7 +153,7 @@ function useLargeur(ref, pret) {
     const obs = new ResizeObserver(mesurer);
     obs.observe(el);
     return () => obs.disconnect();
-  }, [ref, pret]); // la carte n'existe qu'une fois les données chargées
+  }, [ref, pret]); // la carte est (re)montée à chaque jeu de données
   return largeur;
 }
 
@@ -167,7 +167,29 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
   const [focusNiveau, setFocusNiveau] = useState(null);
   const wrapRef = useRef(null);
   const nodeRefs = useRef({});
-  const largeur = useLargeur(wrapRef, Boolean(data));
+  const largeur = useLargeur(wrapRef, error ? null : data);
+  const tipRef = useRef(null);
+  const clavierRef = useRef(false);
+
+  // Épinglée au clavier : le focus entre dans l'infobulle (liens, « Fermer »).
+  useEffect(() => {
+    if (pinned && clavierRef.current) {
+      tipRef.current?.querySelector('a, [data-close]')?.focus();
+    }
+    clavierRef.current = false;
+  }, [pinned]);
+
+  // Un clic ou un toucher hors d'un point et de l'infobulle désépingle.
+  useEffect(() => {
+    if (!pinned) return undefined;
+    const surPointerDown = (e) => {
+      if (e.target.closest?.('.zn-node, .zn-tooltip')) return;
+      setPinned(null);
+      setHover(null);
+    };
+    document.addEventListener('pointerdown', surPointerDown);
+    return () => document.removeEventListener('pointerdown', surPointerDown);
+  }, [pinned]);
 
   useEffect(() => {
     let alive = true;
@@ -234,9 +256,15 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
     const iso3 = pinned;
     setPinned(null);
     if (iso3) nodeRefs.current[iso3]?.focus();
+    // Le focus rendu au point ne doit pas rouvrir l'infobulle.
+    setHover(null);
   };
   const onKey = (e, iso3) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choisir(iso3); }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      clavierRef.current = pinned !== iso3;
+      choisir(iso3);
+    }
     if (e.key === 'Escape') setPinned(null);
   };
 
@@ -276,7 +304,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
               viewBox={VIEWBOX}
               role="group"
               aria-label={txt.title}
-              onClick={(e) => { if (!e.target.closest('.zn-node')) setPinned(null); }}
+              onClick={(e) => { if (!e.target.closest('.zn-node')) { setPinned(null); setHover(null); } }}
             >
               <defs>
                 <linearGradient id="zn-rim" gradientUnits="userSpaceOnUse" x1="0" y1={VB_Y} x2="0" y2={VB_Y + VB_H}>
@@ -315,7 +343,8 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
 
               {model.noeuds.map((p) => {
                 const { x, y } = p.cap;
-                const creux = creuxNiveau(p.statut) || p.pib_usd == null;
+                const creux = creuxNiveau(p.statut);
+                const sansPib = p.pib_usd == null;
                 const label = `${p.nom} — ${NIVEAUX[p.statut][lang]} — ${pibTexte(p)}`;
                 return (
                   <g
@@ -345,9 +374,20 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
                       fill={creux ? 'none' : color(p.statut)}
                       fillOpacity=".88"
                       stroke={creux ? color(p.statut) : 'var(--zn-surface)'}
-                      strokeWidth=".22"
-                      strokeDasharray={creux ? '.4 .3' : undefined}
+                      strokeWidth={creux ? '.3' : '.22'}
                     />
+                    {sansPib && (
+                      <circle
+                        cx={x}
+                        cy={y}
+                        r={p.r + 0.4}
+                        fill="none"
+                        stroke="var(--zn-muted)"
+                        strokeWidth=".12"
+                        strokeDasharray=".35 .25"
+                        data-testid={`zn-nogdp-${p.iso3}`}
+                      />
+                    )}
                     <circle cx={x} cy={y} r=".26" fill="#F7F1E6" />
                   </g>
                 );
@@ -356,6 +396,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
 
             {tip && (
               <div
+                ref={tipRef}
                 className={`zn-tooltip${pinned ? ' is-pinned' : ''}`}
                 role="status"
                 data-testid="zn-tooltip"
@@ -395,7 +436,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
                     ))}
                 </ul>
                 {pinned && (
-                  <button type="button" className="zn-close" onClick={fermer}>
+                  <button type="button" className="zn-close" onClick={fermer} data-close>
                     {txt.close}
                   </button>
                 )}

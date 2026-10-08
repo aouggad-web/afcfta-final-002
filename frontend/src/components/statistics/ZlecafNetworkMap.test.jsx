@@ -23,6 +23,10 @@ const RESEAU = {
       preuves: [{ niveau: 'deploiement', source: 'Texte TA n°016/2023' }],
     },
     {
+      iso3: 'SSD', iso2: 'SS', nom: 'Soudan du Sud', statut: 'signe_non_ratifie', pib_usd: null,
+      preuves: [{ niveau: 'signe_non_ratifie', source: 'the dtic / SARS, mars 2026' }],
+    },
+    {
       iso3: 'ERI', iso2: 'ER', nom: 'Érythrée', statut: 'non_signataire', pib_usd: null,
       preuves: [{ niveau: 'non_signataire', source: 'the dtic / SARS, mars 2026' }],
     },
@@ -65,6 +69,7 @@ describe('ZlecafNetworkMap', () => {
     const legende = await screen.findByTestId('zn-legend-deploiement');
     expect(legende).toHaveTextContent('2');
     expect(screen.getByTestId('zn-legend-non_signataire')).toHaveTextContent('1');
+    expect(screen.getByTestId('zn-legend-signe_non_ratifie')).toHaveTextContent('1');
     expect(screen.getByTestId('zn-legend-offre_tarifaire')).toHaveTextContent('0');
   });
 
@@ -122,6 +127,67 @@ describe('ZlecafNetworkMap', () => {
     expect(screen.getByTestId('zn-node-DZA')).toHaveAttribute('opacity', '0.18');
     fireEvent.focus(screen.getByTestId('zn-node-DZA'));
     expect(screen.getByTestId('zn-node-DZA')).toHaveAttribute('opacity', '1');
+  });
+
+  it('« sans PIB » et « non signataire » ont des marques distinctes', async () => {
+    render(<ZlecafNetworkMap language="fr" />);
+    const ssd = await screen.findByTestId('zn-node-SSD');
+    const eri = screen.getByTestId('zn-node-ERI');
+    // Les deux n'ont pas de PIB : anneau pointillé pour chacun.
+    expect(screen.getByTestId('zn-nogdp-SSD')).toBeInTheDocument();
+    expect(screen.getByTestId('zn-nogdp-ERI')).toBeInTheDocument();
+    // Mais seul le non-signataire est un cercle vide ; le Soudan du Sud est plein.
+    expect(ssd.querySelector('.zn-node-ring')).toHaveAttribute('fill', 'var(--zn-signe_non_ratifie)');
+    expect(eri.querySelector('.zn-node-ring')).toHaveAttribute('fill', 'none');
+    expect(screen.queryByTestId('zn-nogdp-DZA')).toBeNull();
+  });
+
+  it('« Fermer » à la souris ferme vraiment l’infobulle', async () => {
+    render(<ZlecafNetworkMap language="fr" />);
+    fireEvent.click(await screen.findByTestId('zn-node-DZA'));
+    fireEvent.click(screen.getByRole('button', { name: 'Fermer' }));
+    expect(screen.queryByTestId('zn-tooltip')).toBeNull();
+  });
+
+  it('un toucher hors de la carte désépingle et ferme l’infobulle', async () => {
+    render(<ZlecafNetworkMap language="fr" />);
+    const noeud = await screen.findByTestId('zn-node-DZA');
+    fireEvent.mouseEnter(noeud);
+    fireEvent.click(noeud);
+    fireEvent.pointerDown(document.body);
+    expect(noeud).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.queryByTestId('zn-tooltip')).toBeNull();
+  });
+
+  it('épinglé au clavier, le focus entre dans l’infobulle ; Échap le rend', async () => {
+    render(<ZlecafNetworkMap language="fr" />);
+    const noeud = await screen.findByTestId('zn-node-DZA');
+    noeud.focus();
+    fireEvent.keyDown(noeud, { key: 'Enter' });
+    const tip = screen.getByTestId('zn-tooltip');
+    expect(tip.contains(document.activeElement)).toBe(true);
+    fireEvent.keyDown(document.activeElement, { key: 'Escape' });
+    expect(noeud).toHaveAttribute('aria-pressed', 'false');
+    expect(document.activeElement).toBe(noeud);
+  });
+
+  it('la légende des tailles suit l’échelle mesurée de la carte', async () => {
+    const orig = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function rect() {
+      return this.classList?.contains('zn-map-wrap') ? { width: 950, height: 0 } : orig.call(this);
+    };
+    try {
+      render(<ZlecafNetworkMap language="fr" />);
+      await screen.findByTestId('zn-node-DZA');
+      const vbW = Number(geo.viewBox[2]) + 9; // marge de 4,5° de chaque côté
+      const d400 = 2 * 0.2 * Math.sqrt(400) * (950 / vbW);
+      await waitFor(() =>
+        expect(screen.getByTestId('zn-sizes').querySelectorAll('i')).toHaveLength(3));
+      const cercles = screen.getByTestId('zn-sizes').querySelectorAll('i');
+      expect(parseFloat(cercles[2].style.width)).toBeCloseTo(d400, 3);
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = orig;
+    }
   });
 
   it('en anglais, les limites et la source du PIB sont traduites', async () => {

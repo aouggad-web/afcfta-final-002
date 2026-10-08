@@ -162,6 +162,21 @@ def test_route_traduit_les_noms_et_nomme_la_rasd():
     assert fr["DZA"]["nom"] == "Algérie"
     assert en["DZA"]["nom"] == "Algeria"
     assert fr["DZA"]["statut"] == en["DZA"]["statut"]
-    # Sans traduction, le nom vient de constants, jamais le code ISO2.
-    assert fr["ESH"]["nom"] not in ("EH", "ESH")
+    # Sans entrée dans la table de traduction : un nom dans la bonne langue,
+    # jamais le code ISO2.
+    assert fr["ESH"]["nom"] == "RASD (Sahara occidental)"
+    assert en["ESH"]["nom"] == "SADR (Western Sahara)"
     assert "nom_constants" not in fr["ESH"]
+
+
+def test_libelles_composes_traduits_en_anglais():
+    en = _par_iso(construire_reseau(JOUR, lang="en"))
+    fr = _par_iso(construire_reseau(JOUR, lang="fr"))
+    assert en["ZAF"]["preuves"][0]["source"].startswith("General Note O to Schedule No. 1")
+    assert fr["ZAF"]["preuves"][0]["source"].startswith("General Note O du Schedule No. 1")
+    assert "Annex 1" in next(
+        p["source"] for p in en["SEN"]["preuves"] if p["niveau"] == OFFRE_TARIFAIRE
+    )
+    assert construire_reseau(JOUR, lang="en")["pib_source"].startswith("World Bank")
+    # Les statuts ne dépendent pas de la langue.
+    assert {k: v["statut"] for k, v in en.items()} == {k: v["statut"] for k, v in fr.items()}
