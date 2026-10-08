@@ -43,6 +43,7 @@ import {
   localiserResultat,
   moteurRendCompteDesMesures,
   paysExpeditionPour,
+  reserveConversion,
   tauxDeChangePour,
 } from './unifiedCalculator';
 import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
@@ -954,9 +955,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // réserve porte sur la nature d'un taux — une moyenne statistique, pas
         // un tarif — et doit se lire, sans faire passer le calcul pour cassé.
         const codesStatistiques = calcul.npf?.lignes_base_statistique || [];
+        // Complet, mais des montants dépendent du taux de marché du module
+        // Banque : le total se lit comme indicatif tant que le taux douanier
+        // n'est pas vérifié.
+        const lignesConverties = calcul.conversion_monetaire?.lignes || [];
         let titreToast;
         let descriptionToast;
-        if (npfEtat === 'COMPLET') {
+        if (npfEtat === 'COMPLET' && lignesConverties.length) {
+          titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
+          descriptionToast = (language === 'fr'
+            ? `${destISO3} : ${lignesConverties.join(', ')} au taux de marché du module Banque — taux douanier à vérifier`
+            : `${destISO3}: ${lignesConverties.join(', ')} at the Banking module's market rate — customs rate to be checked`)
+            + (legacyResult.savings != null ? ` · ${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}` : '');
+        } else if (npfEtat === 'COMPLET') {
           titreToast = t.calculationSuccess;
           descriptionToast = legacyResult.savings != null
             ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
@@ -1474,6 +1485,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                 </div>
               )}
+
+              {(() => {
+                const reserve = reserveConversion(result, language);
+                return reserve && (
+                  <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-[var(--gold)] font-semibold text-sm">{reserve.titre}</p>
+                      <p className="text-[var(--gold)] text-sm mt-1">{reserve.texte}</p>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {result.trade_regime === 'NPF' && result.zlecaf_note && (
                 <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">

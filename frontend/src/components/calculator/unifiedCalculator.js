@@ -321,6 +321,47 @@ export function tauxDeChangePour(destinationISO3, conversion) {
 }
 
 /**
+ * La réserve à afficher quand des montants dépendent du taux envoyé au
+ * moteur : celui du module Banque, un taux de marché. Pour déterminer la
+ * valeur en douane, un Membre de l'OMC convertit au taux publié par les
+ * autorités du pays d'importation (Accord sur l'évaluation en douane, art. 9 ;
+ * fiche OMC_evaluation_en_douane_art9_2026-10-08.json). La route ne sert ce
+ * fondement que pour un Membre ; ailleurs, la réserve s'en passe.
+ * `null` quand aucun montant ne dépend du taux.
+ */
+export function reserveConversion(result, language = 'fr') {
+  const conversion = result?.conversion_monetaire;
+  if (!conversion?.lignes?.length || !(conversion.taux_de_change > 0)) return null;
+  const fr = language === 'fr';
+  const taux = (1 / conversion.taux_de_change)
+    .toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 4 });
+  const devise = conversion.devise ? ` ${conversion.devise}` : '';
+  const date = result.currency?.rate_as_of ? String(result.currency.rate_as_of).slice(0, 10) : null;
+  const lignes = conversion.lignes.join(', ');
+  const article9 = Boolean(conversion.fondement_taux_douanier);
+  if (fr) {
+    return {
+      titre: 'Montant indicatif : taux de change à vérifier',
+      texte: `${lignes} : ${conversion.lignes.length > 1 ? 'montants calculés' : 'montant calculé'} au taux de marché `
+        + `du module Banque (1 USD = ${taux}${devise}${date ? `, relevé le ${date}` : ''}). `
+        + (article9
+          ? "Pour déterminer la valeur en douane, la douane convertit au taux publié par les autorités compétentes "
+            + "du pays d'importation (Accord de l'OMC sur l'évaluation en douane, art. 9) : à vérifier avant tout usage officiel."
+          : "Le taux retenu par la douane du pays d'importation peut différer : à vérifier avant tout usage officiel."),
+    };
+  }
+  return {
+    titre: 'Indicative amount: exchange rate to be checked',
+    texte: `${lignes}: ${conversion.lignes.length > 1 ? 'amounts' : 'amount'} calculated at the Banking module's market rate `
+      + `(1 USD = ${taux}${devise}${date ? `, retrieved ${date}` : ''}). `
+      + (article9
+        ? 'To determine the customs value, customs converts at the rate published by the competent authorities of '
+          + 'the importing country (WTO Customs Valuation Agreement, Art. 9): check it before any official use.'
+        : "The rate used by the importing country's customs may differ: check it before any official use."),
+  };
+}
+
+/**
  * Transformer la réponse de `POST /calcul` dans la forme historique.
  *
  * @param {object} calcul   Corps de la réponse de `POST /calcul`.
@@ -544,6 +585,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // même quand rien ne manque.
     confidence_level: npfComplet && !complements.length ? 'very_high' : 'partial',
     complements_nationaux: complements,
+    // Lignes dont le montant dépend du taux de change envoyé — celui du
+    // module Banque, un taux de marché, pas celui de la douane — avec la
+    // monnaie du tarif. `reserveConversion` en tire la réserve affichée.
+    conversion_monetaire: calcul.conversion_monetaire
+      ? { ...calcul.conversion_monetaire, devise: provenance.devise_nationale || null }
+      : null,
 
     // État honnête propre au moteur unique, jamais réductible à un booléen :
     // `_npf_etat`/`_manques_npf` permettent d'afficher un motif, pas un 0.

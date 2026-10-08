@@ -185,6 +185,120 @@ def test_un_droit_specifique_botswanais_n_est_pas_converti_comme_des_pulas(clien
     assert "TAUX_DE_CHANGE_REQUIS" in {m.get("motif") for m in corps["npf"]["manques"]}
 
 
+@besoin_socle
+def test_les_montants_qui_dependent_du_taux_sont_nommes_avec_l_article_9(client):
+    """2009.11 en Zambie : accise publiée en kwachas par litre, valeur déclarée
+    en USD. Le taux fourni la liquide, et la TVA se calcule dessus : la réponse
+    nomme les deux, avec le fondement du taux douanier, pour que l'écran ne les
+    présente pas comme liquidées au taux de la douane."""
+    demande = {
+        "destination": "ZMB",
+        "code_sh": "20091100",
+        "valeur_cif": 10000,
+        "quantite": 1000,
+        "devise_cif": "USD",
+    }
+    avec = client.post("/calcul", json={**demande, "taux_de_change": 0.05}).json()
+    assert avec["conversion_monetaire"] == {
+        "taux_de_change": 0.05,
+        "lignes": ["EXC", "TVA"],
+        "fondement_taux_douanier": (
+            "Accord sur la mise en œuvre de l'article VII du GATT de 1994 "
+            "(évaluation en douane), article 9"
+        ),
+    }
+
+    sans = client.post("/calcul", json=demande).json()
+    assert "conversion_monetaire" not in sans
+    assert {"code": "EXC", "motif": "TAUX_DE_CHANGE_REQUIS"} in sans["npf"]["manques"]
+
+
+@besoin_socle
+def test_un_minimum_compare_sans_jouer_n_est_pas_dit_converti(client):
+    """Tunisie : la RPD porte un minimum de 10 TND, comparé au taux fourni. Sur
+    10 000 USD il ne joue pas : aucun montant ne dépend du taux, aucune réserve.
+    Sur 100 USD il joue, et la RPD vaut alors 10 TND convertis : elle est nommée."""
+    grand = client.post(
+        "/calcul",
+        json={
+            "destination": "TUN",
+            "code_sh": "0101299009",
+            "valeur_cif": 10000,
+            "devise_cif": "USD",
+            "taux_de_change": 0.34,
+        },
+    ).json()
+    assert grand["npf"]["etat"] == "COMPLET"
+    assert "conversion_monetaire" not in grand
+
+    petit = client.post(
+        "/calcul",
+        json={
+            "destination": "TUN",
+            "code_sh": "0101210001",
+            "origine": "DZA",
+            "valeur_cif": 100,
+            "quantite": 10,
+            "devise_cif": "USD",
+            "taux_de_change": 0.34,
+        },
+    ).json()
+    rpd = next(l for l in petit["npf"]["lignes"] if l["code"] == "RPD")
+    assert rpd.get("minimum_applique") is True
+    assert "RPD" in petit["conversion_monetaire"]["lignes"]
+
+
+@besoin_socle
+def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client):
+    """Guinée équatoriale, observatrice : son plafond de 15 000 XAF dépend du
+    taux, la réserve le dit, sans invoquer un accord qui ne la lie pas."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "GNQ",
+            "code_sh": "01011010",
+            "valeur_cif": 10000,
+            "devise_cif": "USD",
+            "taux_de_change": 0.0017,
+        },
+    ).json()
+    assert corps["conversion_monetaire"]["lignes"] == ["RI"]
+    assert "fondement_taux_douanier" not in corps["conversion_monetaire"]
+
+
+def test_les_non_membres_de_l_omc_sont_ceux_de_la_fiche(client):
+    """La liste servie par la route est celle que la fiche source et date."""
+    import routes_calcul_test as route
+
+    fiche = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "data",
+        "legal_refs",
+        "zlecaf_application",
+        "OMC_evaluation_en_douane_art9_2026-10-08.json",
+    )
+    with open(fiche, encoding="utf-8") as f:
+        assert route.NON_MEMBRES_OMC == set(json.load(f)["non_membres_omc"]["pays"])
+
+
+@besoin_socle
+def test_un_taux_fourni_sans_ligne_a_convertir_n_ajoute_aucune_reserve(client):
+    """Un droit ad valorem se calcule sur la valeur déclarée : le taux n'y sert
+    à rien, et la réponse ne porte aucune réserve de change."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZMB",
+            "code_sh": "02011000",
+            "valeur_cif": 10000,
+            "devise_cif": "USD",
+            "taux_de_change": 0.05,
+        },
+    ).json()
+    assert corps["npf"]["etat"] == "COMPLET"
+    assert "conversion_monetaire" not in corps
+
+
 def test_un_pays_hors_table_des_devises_ne_devine_pas_une_devise():
     assert socle.devise_nationale("XXX") is None
 

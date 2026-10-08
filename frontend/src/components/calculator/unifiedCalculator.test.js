@@ -4,6 +4,7 @@ import {
   localiserResultat,
   mapCalculToLegacyResult,
   moteurRendCompteDesMesures,
+  reserveConversion,
   tauxDeChangePour,
 } from './unifiedCalculator';
 
@@ -709,5 +710,53 @@ describe('localiserResultat', () => {
   it('rend le résultat inchangé sans taux de change', () => {
     expect(localiserResultat(resultat, null)).toBe(resultat);
     expect(localiserResultat(resultat, { rate: null })).toBe(resultat);
+  });
+});
+
+describe('reserveConversion — un montant calculé au taux de marché le dit', () => {
+  const calcul = (conversion) => ({
+    npf: { etat: 'COMPLET', lignes: [ligne(), ligne({ code: 'EXC', assiette: 'xQTE', montant: 100 })], manques: [] },
+    preference_zlecaf: { applique: false, statut: 'NOT_AVAILABLE' },
+    provenance: { niveau: 'national', devise_nationale: 'ZMW' },
+    ...(conversion ? { conversion_monetaire: conversion } : {}),
+  });
+  const article9 = "Accord sur la mise en œuvre de l'article VII du GATT de 1994 (évaluation en douane), article 9";
+
+  it('reprend les lignes et la monnaie du tarif dans le résultat', () => {
+    const r = mapCalculToLegacyResult(calcul({ taux_de_change: 0.05, lignes: ['EXC'] }), contexte);
+    expect(r.conversion_monetaire).toEqual({ taux_de_change: 0.05, lignes: ['EXC'], devise: 'ZMW' });
+    expect(mapCalculToLegacyResult(calcul(null), contexte).conversion_monetaire).toBeNull();
+  });
+
+  it("nomme les lignes, le taux de marché, sa date de relevé et l'article 9 pour un Membre de l'OMC", () => {
+    const result = {
+      conversion_monetaire: { taux_de_change: 0.05, lignes: ['EXC'], devise: 'ZMW', fondement_taux_douanier: article9 },
+      currency: { rate_as_of: '2026-10-08T09:00:00+00:00' },
+    };
+    const fr = reserveConversion(result, 'fr');
+    expect(fr.titre).toBe('Montant indicatif : taux de change à vérifier');
+    expect(fr.texte).toContain('EXC : montant calculé au taux de marché du module Banque (1 USD = 20 ZMW, relevé le 2026-10-08)');
+    expect(fr.texte).toContain("Pour déterminer la valeur en douane, la douane convertit au taux publié par les autorités compétentes du pays d'importation (Accord de l'OMC sur l'évaluation en douane, art. 9)");
+    const en = reserveConversion(result, 'en');
+    expect(en.texte).toContain('(1 USD = 20 ZMW, retrieved 2026-10-08)');
+    expect(en.texte).toContain('WTO Customs Valuation Agreement, Art. 9');
+  });
+
+  it("ne cite pas l'article 9 quand la route ne le sert pas (pays non Membre de l'OMC)", () => {
+    const r = reserveConversion({ conversion_monetaire: { taux_de_change: 1 / 600, lignes: ['RI'], devise: 'XAF' } }, 'fr');
+    expect(r.texte).not.toContain('art. 9');
+    expect(r.texte).toContain("Le taux retenu par la douane du pays d'importation peut différer");
+  });
+
+  it('accorde au pluriel et se passe de la date quand le taux ne la porte pas', () => {
+    const r = reserveConversion({ conversion_monetaire: { taux_de_change: 0.05, lignes: ['EXC', 'TVA'], devise: 'ZMW' } }, 'fr');
+    expect(r.texte).toContain('EXC, TVA : montants calculés au taux de marché du module Banque (1 USD = 20 ZMW)');
+  });
+
+  it("ne dit rien quand aucun montant ne dépend du taux", () => {
+    expect(reserveConversion({ conversion_monetaire: null }, 'fr')).toBeNull();
+    expect(reserveConversion({ conversion_monetaire: { taux_de_change: 0.05, lignes: [] } }, 'fr')).toBeNull();
+    expect(reserveConversion({ conversion_monetaire: { taux_de_change: 0, lignes: ['EXC'] } }, 'fr')).toBeNull();
+    expect(reserveConversion(null, 'fr')).toBeNull();
   });
 });

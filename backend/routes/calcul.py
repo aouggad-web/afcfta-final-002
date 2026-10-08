@@ -48,6 +48,20 @@ router = APIRouter()
 #: qu'un volet est vide alors qu'il n'a pas été consulté.
 REGLEMENTAIRE = ("regulatory_compliance", "regulatory_cost", "regulatory_reported")
 
+#: La conversion des monnaies pour déterminer la valeur en douane : au taux
+#: publié par les autorités du pays d'importation. Texte vérifié sur wto.org et
+#: archivé avec sa fiche, OMC_evaluation_en_douane_art9_2026-10-08.json.
+FONDEMENT_TAUX_DOUANIER = (
+    "Accord sur la mise en œuvre de l'article VII du GATT de 1994 "
+    "(évaluation en douane), article 9"
+)
+#: Pays du socle qui ne sont pas Membres de l'OMC, et que l'accord ne lie donc
+#: pas : huit observateurs en accession et l'Érythrée (liste et source dans la
+#: même fiche). L'article 9 n'est pas cité pour eux.
+NON_MEMBRES_OMC = frozenset({"DZA", "ERI", "ETH", "GNQ", "LBY", "SDN", "SOM", "SSD", "STP"})
+#: Écart relatif appliqué au taux pour savoir quels montants en dépendent.
+ECART_DE_TAUX = 0.01
+
 
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
@@ -168,6 +182,9 @@ def calcul(demande: DemandeCalcul):
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     resultat["provenance"] = provenance
     resultat["complements_nationaux"] = complements
+    conversion = _conversion_monetaire(position, demande, provenance, preference, resultat)
+    if conversion:
+        resultat["conversion_monetaire"] = conversion
     # Une interdiction d'importation est une RÉPONSE, et elle doit sortir comme
     # telle. Sans ce champ, une position prohibée se présente exactement comme
     # une position dont le calcul a échoué : l'opérateur lit « indisponible »
@@ -199,6 +216,62 @@ def calcul(demande: DemandeCalcul):
         )
     )
     return resultat
+
+
+def _conversion_monetaire(position, demande, provenance, preference, resultat):
+    """Les lignes dont le montant dépend du taux de change fourni.
+
+    Le moteur se sert de ce taux pour les droits spécifiques, plafonds et
+    minimums publiés dans une autre devise que la valeur déclarée, sans savoir
+    d'où il vient. Le calculateur envoie celui du module Banque, un taux de
+    marché, alors que la douane convertit au taux publié par les autorités du
+    pays d'importation : un montant qui en dépend doit le dire.
+
+    Un montant dépend du taux s'il bouge quand le taux bouge. On relance donc
+    le moteur à 1 % au-dessus et à 1 % au-dessous, et l'on retient les lignes
+    qui changent dans les deux cas. Sont ainsi nommés un droit converti, un
+    minimum ou un plafond qui joue, et les taxes calculées sur eux ; ne l'est
+    pas un minimum comparé sans jouer, qui ne change rien au montant.
+    Rendu : None quand aucun taux n'est fourni ou qu'aucune ligne n'en dépend.
+    """
+    if demande.taux_de_change is None:
+        return None
+
+    def montants(calcul):
+        return {
+            (bloc, ligne["code"]): ligne.get("montant")
+            for bloc in ("npf", "preference")
+            for ligne in (calcul.get(bloc) or {}).get("lignes", [])
+        }
+
+    def au_taux(facteur):
+        return montants(
+            calculer(
+                position,
+                demande.valeur_cif,
+                quantite=demande.quantite,
+                taux_de_change=demande.taux_de_change * facteur,
+                taux_preferentiels=preference.get("taux") or None,
+                devise_position=provenance.get("devise_nationale"),
+                devise_cif=demande.devise_cif,
+                couverture=provenance.get("couverture"),
+                valeur_fob=demande.valeur_fob,
+            )
+        )
+
+    servis = montants(resultat)
+    dessus, dessous = au_taux(1 + ECART_DE_TAUX), au_taux(1 - ECART_DE_TAUX)
+    lignes = sorted({
+        code
+        for (bloc, code), montant in servis.items()
+        if montant not in (None, dessus.get((bloc, code)), dessous.get((bloc, code)))
+    })
+    if not lignes:
+        return None
+    conversion = {"taux_de_change": demande.taux_de_change, "lignes": lignes}
+    if demande.destination not in NON_MEMBRES_OMC:
+        conversion["fondement_taux_douanier"] = FONDEMENT_TAUX_DOUANIER
+    return conversion
 
 
 def _chiffrer_simulations(simulations, position, demande, provenance, resultat):

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "objet": "Conversion des monnaies pour déterminer la valeur en douane : au taux publié par les autorités compétentes du pays d'importation (Accord de l'OMC sur l'évaluation en douane, article 9). Fonde la réserve affichée quand un montant du calculateur dépend du taux de marché du module Banque.",
+  "verified_at": "2026-10-08",
+  "etabli": true,
+  "evidence_level": "primaire quant au contenu — texte publié par l'OMC sur wto.org, qui précise : « Les textes reproduits ici n'ont pas le statut juridique des documents originaux conservés par le Secrétariat de l'OMC à Genève. » Article 9 et note de l'annexe I, en français et en anglais, recopiés tels quels.",
+  "source": {
+    "instrument": "Accord sur la mise en œuvre de l'article VII de l'Accord général sur les tarifs douaniers et le commerce de 1994",
+    "institution": "Organisation mondiale du commerce — textes juridiques des Accords du Cycle d'Uruguay",
+    "url": "https://www.wto.org/french/docs_f/legal_f/20-val_01_f.htm",
+    "url_notes_interpretatives": "https://www.wto.org/french/docs_f/legal_f/20-val_02_f.htm",
+    "url_texte_anglais": "https://www.wto.org/english/docs_e/legal_e/20-val.pdf",
+    "pdf_anglais_sha256": "c6cb2e65770955f1cd01869340a1c64a3482852b020289f81c928e7ad0eb3345",
+    "pdf_non_archive": "Le PDF anglais (156 459 octets, empreinte stable d'un téléchargement à l'autre) n'est pas versé au dépôt ; seuls l'article 9 et sa note, en français et en anglais, sont archivés (voir regle.texte_archive). Les deux pages HTML françaises ne portent pas d'empreinte : wto.org y insère à chaque requête un jeton Cloudflare horodaté (window.__CF$cv$params), qui change l'empreinte sans changer le texte.",
+    "consulte_le": "2026-10-08"
+  },
+  "regle": {
+    "valeur": "Lorsqu'une conversion de monnaie est nécessaire pour déterminer la valeur en douane, le taux de change à utiliser est celui dûment publié par les autorités compétentes du pays d'importation, en vigueur au moment de l'exportation ou de l'importation selon ce que prévoit chaque Membre. L'accord ne lie que les Membres de l'OMC.",
+    "verbatim": "1. Lorsqu'il sera nécessaire de convertir une monnaie pour déterminer la valeur en douane, le taux de change à utiliser sera celui qui aura été dûment publié par les autorités compétentes du pays d'importation concerné et reflétera de façon aussi effective que possible, pour chaque période couverte par une telle publication, la valeur courante de cette monnaie dans les transactions commerciales, exprimée dans la monnaie du pays d'importation. 2. Le taux de conversion à utiliser sera celui en vigueur au moment de l'exportation ou au moment de l'importation, selon ce qui sera prévu par chaque Membre.",
+    "verbatim_note_annexe_I": "Aux fins de l'article 9, le “moment de l'importation” peut être celui de la déclaration en douane.",
+    "verbatim_note_annexe_I_anglais": "For the purposes of Article 9, \"time of importation\" may include the time of entry for customs purposes.",
+    "reference": "Accord sur la mise en œuvre de l'article VII du GATT de 1994 (évaluation en douane), article 9 ; annexe I, note relative à l'article 9",
+    "portee": "backend/routes/calcul.py (_conversion_monetaire, champ conversion_monetaire de POST /calcul) et la réserve du calculateur (frontend/src/components/calculator/unifiedCalculator.js, reserveConversion) : un montant qui dépend du taux de marché du module Banque est signalé comme indicatif. L'article 9 n'y est cité que pour un pays d'importation Membre de l'OMC.",
+    "texte_archive": "sources/OMC_evaluation_en_douane_art9.texte-extrait.txt",
+    "sha256": "89d7fd4a33febf48d140080bad578d4177aaaf6f6599eebea583ca266fb4483e"
+  },
+  "non_membres_omc": {
+    "pays": ["DZA", "ERI", "ETH", "GNQ", "LBY", "SDN", "SOM", "SSD", "STP"],
+    "detail": "Parmi les 54 pays du socle, 45 sont Membres de l'OMC (Comores depuis le 21 août 2024). DZA, ETH, GNQ, LBY, SDN, SOM, SSD et STP sont observateurs en accession (statut ACC) ; ERI n'est ni Membre ni observateur (statut OTH). L'accord ne les lie pas : l'article 9 n'est pas cité pour eux (backend/routes/calcul.py, NON_MEMBRES_OMC).",
+    "source": "https://www.wto.org/english/thewto_e/whatis_e/tif_e/org6_e.htm (Members and Observers), données de la page : https://www.wto.org/library/news/news_vars_e.js (champ status de chaque pays)",
+    "consulte_le": "2026-10-08"
+  },
+  "decisions": [
+    "Le calculateur n'a pas encore le taux douanier publié par chaque pays : il calcule au taux de marché du module Banque, que ce module qualifie lui-même d'indicatif (backend/routes/banking.py). Les montants qui en dépendent sont servis, signalés comme indicatifs avec le taux douanier à vérifier, plutôt que laissés à compléter (décision du propriétaire du projet, 2026-10-08).",
+    "Un montant dépend du taux s'il change quand le taux change : la route relance le moteur à ±1 %. Un minimum de perception comparé sans jouer (redevance tunisienne de 10 TND, p. ex.) ne déclenche donc pas la réserve ; une TVA calculée sur une accise convertie, si."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le taux douanier de chaque pays (publication, périodicité, moment retenu : exportation ou importation) n'est pas collecté ; il reste à relever pays par pays pour remplacer le taux de marché.",
+    "L'article 9 s'applique directement quand un plafond, un minimum ou un droit composé oblige à comparer la valeur en douane à un montant en monnaie nationale. Pour un droit spécifique pur, la douane le liquide en monnaie nationale sans conversion : seule sa contre-valeur en USD dépend d'un taux. Retenir pour celle-ci le taux de l'article 9 est une déduction du projet (cohérence avec la liquidation douanière), pas une règle du texte.",
+    "Les deux versions de la note de l'annexe I n'ont pas exactement la même portée (« peut être celui de la déclaration en douane » ; « may include the time of entry for customs purposes ») : le calculateur ne s'appuie pas sur cette note.",
+    "Pour les neuf pays non Membres, la règle de conversion applicable relève de leur seule législation nationale, non relevée ici."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/OMC_evaluation_en_douane_art9.texte-extrait.txt",
+      "sha256": "89d7fd4a33febf48d140080bad578d4177aaaf6f6599eebea583ca266fb4483e"
+    }
+  ]
+}
