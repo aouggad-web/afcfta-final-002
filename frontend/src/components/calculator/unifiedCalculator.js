@@ -110,6 +110,7 @@ export function buildCalculRequestBody({
   quantite,
   valeurFob,
   paysExpedition,
+  tauxDeChange,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -130,6 +131,13 @@ export function buildCalculRequestBody({
   // (VALEUR_FOB_REQUISE) au lieu de liquider le droit sur une base fausse.
   if (typeof valeurFob === 'number' && Number.isFinite(valeurFob) && valeurFob > 0) {
     body.valeur_fob = valeurFob;
+  }
+  // Le taux du module Banque, en USD pour une unité de monnaie nationale : le
+  // moteur en a besoin pour les plafonds publiés en monnaie nationale (15 000
+  // XAF de redevance informatique) et les droits spécifiques (« 8c/kg »).
+  // Absent, il les rend indisponibles au lieu de mélanger deux monnaies.
+  if (typeof tauxDeChange === 'number' && Number.isFinite(tauxDeChange) && tauxDeChange > 0) {
+    body.taux_de_change = tauxDeChange;
   }
   return body;
 }
@@ -245,14 +253,6 @@ function buildJournal(cifValue, lignes) {
 }
 
 /**
- * Transformer la réponse de `POST /calcul` dans la forme historique.
- *
- * @param {object} calcul   Corps de la réponse de `POST /calcul`.
- * @param {object} contexte `{ originCountry, destinationCountry, hsCode, cifValue }`
- *                           tels que saisis dans le formulaire (codes bruts,
- *                           pas nécessairement ISO3 — conservés pour l'affichage).
- */
-/**
  * Montants en monnaie locale, au taux du moteur de change du module Banque.
  *
  * `conversion` est la réponse de `GET /banking/forex/convert` (USD → monnaie
@@ -294,6 +294,81 @@ export function localiserResultat(result, conversion) {
   };
 }
 
+/**
+ * Pays dont le moteur ne reçoit pas le taux du module Banque :
+ * - CMR, GNQ : leur redevance informatique porte un plafond de 15 000 XAF dont
+ *   le texte CEMAC n'est pas au dépôt, et le moteur l'applique à l'assiette.
+ *   Avec un taux, elle vaudrait 0,11 USD pour 10 000 USD de CIF ;
+ * - BWA : ses droits spécifiques viennent du tarif de la SARS, en cents de
+ *   rand (« 240c/kg »). Le taux du pula les convertirait faussement
+ *   (backend/socle/devises_pays.json le déclare en ZAR ; un test du backend
+ *   tient cet écart avec le module Banque).
+ * Sans taux, ces lignes restent à compléter, comme avant.
+ */
+const SANS_TAUX_DE_CHANGE = new Set(['CMR', 'GNQ', 'BWA']);
+
+/**
+ * Le taux envoyé au moteur (`taux_de_change`) : des USD pour une unité de
+ * monnaie nationale, l'inverse du taux USD → monnaie locale du module Banque.
+ * `undefined` quand il n'y a rien à convertir ou que le taux ne vaut pas pour
+ * ce pays.
+ */
+export function tauxDeChangePour(destinationISO3, conversion) {
+  if (!conversion?.rate || conversion.to_currency === 'USD' || SANS_TAUX_DE_CHANGE.has(destinationISO3)) {
+    return undefined;
+  }
+  return 1 / conversion.rate;
+}
+
+/**
+ * La réserve à afficher quand des montants dépendent du taux envoyé au
+ * moteur : celui du module Banque, un taux de marché. Pour déterminer la
+ * valeur en douane, un Membre de l'OMC convertit au taux publié par les
+ * autorités du pays d'importation (Accord sur l'évaluation en douane, art. 9 ;
+ * fiche OMC_evaluation_en_douane_art9_2026-10-08.json). La route ne sert ce
+ * fondement que pour un Membre ; ailleurs, la réserve s'en passe.
+ * `null` quand aucun montant ne dépend du taux.
+ */
+export function reserveConversion(result, language = 'fr') {
+  const conversion = result?.conversion_monetaire;
+  if (!conversion?.lignes?.length || !(conversion.taux_de_change > 0)) return null;
+  const fr = language === 'fr';
+  const taux = (1 / conversion.taux_de_change)
+    .toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 4 });
+  const devise = conversion.devise ? ` ${conversion.devise}` : '';
+  const date = result.currency?.rate_as_of ? String(result.currency.rate_as_of).slice(0, 10) : null;
+  const lignes = conversion.lignes.join(', ');
+  const article9 = Boolean(conversion.fondement_taux_douanier);
+  if (fr) {
+    return {
+      titre: 'Montant indicatif : taux de change à vérifier',
+      texte: `${lignes} : ${conversion.lignes.length > 1 ? 'montants calculés' : 'montant calculé'} au taux de marché `
+        + `du module Banque (1 USD = ${taux}${devise}${date ? `, relevé le ${date}` : ''}). `
+        + (article9
+          ? "Pour déterminer la valeur en douane, la douane convertit au taux publié par les autorités compétentes "
+            + "du pays d'importation (Accord de l'OMC sur l'évaluation en douane, art. 9) : à vérifier avant tout usage officiel."
+          : "Le taux retenu par la douane du pays d'importation peut différer : à vérifier avant tout usage officiel."),
+    };
+  }
+  return {
+    titre: 'Indicative amount: exchange rate to be checked',
+    texte: `${lignes}: ${conversion.lignes.length > 1 ? 'amounts' : 'amount'} calculated at the Banking module's market rate `
+      + `(1 USD = ${taux}${devise}${date ? `, retrieved ${date}` : ''}). `
+      + (article9
+        ? 'To determine the customs value, customs converts at the rate published by the competent authorities of '
+          + 'the importing country (WTO Customs Valuation Agreement, Art. 9): check it before any official use.'
+        : "The rate used by the importing country's customs may differ: check it before any official use."),
+  };
+}
+
+/**
+ * Transformer la réponse de `POST /calcul` dans la forme historique.
+ *
+ * @param {object} calcul   Corps de la réponse de `POST /calcul`.
+ * @param {object} contexte `{ originCountry, destinationCountry, hsCode, cifValue }`
+ *                           tels que saisis dans le formulaire (codes bruts,
+ *                           pas nécessairement ISO3 — conservés pour l'affichage).
+ */
 export function mapCalculToLegacyResult(calcul, { originCountry, destinationCountry, hsCode, cifValue }) {
   const npf = calcul.npf || { lignes: [], etat: 'INDISPONIBLE', manques: [] };
   const pref = calcul.preference || null;
@@ -510,6 +585,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // même quand rien ne manque.
     confidence_level: npfComplet && !complements.length ? 'very_high' : 'partial',
     complements_nationaux: complements,
+    // Lignes dont le montant dépend du taux de change envoyé — celui du
+    // module Banque, un taux de marché, pas celui de la douane — avec la
+    // monnaie du tarif. `reserveConversion` en tire la réserve affichée.
+    conversion_monetaire: calcul.conversion_monetaire
+      ? { ...calcul.conversion_monetaire, devise: provenance.devise_nationale || null }
+      : null,
 
     // État honnête propre au moteur unique, jamais réductible à un booléen :
     // `_npf_etat`/`_manques_npf` permettent d'afficher un motif, pas un 0.

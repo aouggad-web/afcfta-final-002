@@ -1,7 +1,8 @@
 {
   "_objet": "Devise nationale (ISO 4217) de chaque pays du socle — la devise dans laquelle son tarif publie les droits spécifiques (« 8c/kg », « 0.1 dinars »). Donnée de référence, pas une donnée collectée : contrairement à un taux de droit, elle ne varie pas et n'exige pas de source primaire par pays. Utilisée uniquement pour détecter un écart de devise entre une valeur CIF déclarée et un droit spécifique, et exiger alors un taux de change explicite plutôt que d'additionner deux devises.",
+  "_botswana": "BWA : ZAR et non BWP. Le tarif servi pour le Botswana est celui de la SARS (sars.gov.za), dont les droits spécifiques sont en cents de rand (« 240c/kg »). LSO, NAM et SWZ servent le même tarif, mais leur monnaie est au pair du rand.",
   "pays": {
-    "AGO": "AOA", "BDI": "BIF", "BEN": "XOF", "BFA": "XOF", "BWA": "BWP",
+    "AGO": "AOA", "BDI": "BIF", "BEN": "XOF", "BFA": "XOF", "BWA": "ZAR",
     "CAF": "XAF", "CIV": "XOF", "CMR": "XAF", "COD": "CDF", "COG": "XAF",
     "COM": "KMF", "CPV": "CVE", "DJI": "DJF", "DZA": "DZD", "EGY": "EGP",
     "ERI": "ERN", "ETH": "ETB", "GAB": "XAF", "GHA": "GHS", "GIN": "GNF",

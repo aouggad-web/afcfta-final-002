@@ -226,6 +226,22 @@ class TestBankingRoutes:
         assert payload["to_currency"] == "MAD"
         assert payload["converted_amount"] == pytest.approx(545.0)
 
+    def test_convert_to_local_currency_accepts_a_zero_amount(
+        self, client, banking_module, monkeypatch
+    ):
+        """Le calculateur demande le taux d'une valeur en douane nulle : le taux
+        sert à ses droits spécifiques, le montant converti reste 0."""
+        stub_service = StubRateService(
+            conversion_result=_make_conversion("USD", "MAD", 0.0, 0.0, 10.0)
+        )
+        monkeypatch.setattr(banking_module, "get_rate_service", lambda: stub_service)
+
+        response = client.get("/banking/forex/convert?country_code=MA&amount=0")
+        assert response.status_code == 200
+        assert response.json()["rate"] == pytest.approx(10.0)
+        assert response.json()["converted_amount"] == 0
+        assert client.get("/banking/forex/convert?country_code=MA&amount=-1").status_code == 422
+
     def test_convert_to_local_currency_returns_503_when_rate_is_missing(
         self, client, banking_module, monkeypatch
     ):

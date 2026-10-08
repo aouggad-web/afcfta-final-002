@@ -263,7 +263,7 @@ Chaque fiche se copie telle quelle comme consigne de la session de travail.
 | Lot | État | PR | Retiré | Ajouté |
 |---|---|---|---|---|
 | Jalon 0 | à faire | — | — | — |
-| O2-0 | à faire | — | — | — |
+| O2-0 | fait | #579 | `bulkTariffCalculation`, `regional-calculator`, taux saisis sans appelant | — |
 | O1-a | à faire | — | — | — |
 | O3 | à faire | — | — | — |
 | O1-b | à faire | — | — | — |
@@ -271,7 +271,7 @@ Chaque fiche se copie telle quelle comme consigne de la session de travail.
 | O5-a | à faire | — | — | — |
 | O5-b | à faire | — | — | — |
 | O1-d | à faire | — | — | — |
-| O2-a | à faire | — | — | — |
+| O2-a | en cours : 32 pays sur `/calcul` d'abord, taux de change envoyé | DZA : #590 | conversion USD → monnaie locale en double | `taux_de_change` envoyé ; 29 pays mesurés |
 | O2-b | à faire | — | — | — |
 | O2-c | à faire | — | — | — |
 | O2-d | à faire | — | — | — |
