@@ -11,3 +11,11 @@ Malawi — Advance Income Tax à l'importation : extraits (relevés le 2026-10-0
 3. Customs and Excise (Tariffs) (Amendment) (No. 3) Order, 2023 — Malawi Gazette Supplement du 19 mai 2023 (PDF scanné, https://media.malawilii.org/media/legislation/14671/source_file/cfce9a788331209f/mw-act-gn-2023-19-publication-document.pdf, sha256 4bf275464c66069d8ae13bd8082c24147c32be3c32e6e8715662dfc71eff6955), paragraphe 2(a), transcrit :
 
 (a) deleting the entry "3%" in Column 12 under Section XXII and substituting therefor, the entry "10%";
+
+4. Taxation Act (Cap. 41:01), même consolidation au 31 décembre 2014 :
+
+104A. Credit for tax deducted at source Where withholding tax has been deducted or paid under sections 102, 102A and 102B, the tax so deducted or paid shall be allowed as a credit against tax charged on assessments issued under sections 90 and 91 of this Act. [1 of 1985; 19 of 2013]
+
+5. Statute Law (Miscellaneous Amendments) Act, 2021 — Act No. 15 of 2021, published 10th September 2021 (PDF scanné, https://media.malawilii.org/media/legislation/14870/source_file/3802adaffaff9cb3/mw-act-2021-15-publication-document.pdf, sha256 dda3ca5262a8259f48d9d8f4e9e191ce03ec5ce143453d26197bec729b138325), Schedule, Taxation Act, Section 104A, transcrit :
+
+Delete the words "under sections 90 and 91 of this Act" immediately after the word "issued" and substitute therefor the words "in accordance with the Tax Administration Act",
