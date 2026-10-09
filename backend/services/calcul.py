@@ -378,6 +378,7 @@ def _liquider(
     devise_cif: Optional[str] = None,
     valeur_fob: Optional[float] = None,
     devise_position: Optional[str] = None,
+    assiette_valeur: Optional[str] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     # Omise, la devise de la valeur déclarée est celle du tarif national
@@ -749,10 +750,25 @@ def _liquider(
         # deviner, seulement à appliquer. La borne est nommée dans la ligne,
         # qu'elle morde ou non : l'opérateur doit pouvoir constater pourquoi
         # son droit s'arrête là.
+        #
+        # « La valeur en douane », c'est celle du pays : la valeur FOB en SACU
+        # (Act 91/1964 s.65-67), où tout le tarif porte cette borne. La
+        # calculer sur le CIF la relevait du fret et de l'assurance — ZAF/
+        # 04021010, CIF 10 000 et FOB 8 000 : 9 600 servis au lieu de 7 680.
+        # Sans valeur FOB, la borne est inconnue : le droit reste indisponible.
         plafond_pct = droit.get("plafond_ad_valorem_pct")
         if plafond_pct is not None:
-            borne = cif * plafond_pct / 100.0
+            if assiette_valeur == "FOB" and valeur_fob is None:
+                ligne["statut"] = MANQUE_FOB
+                ligne["montant"] = None
+                manques.append({"code": code, "motif": MANQUE_FOB})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
+            valeur_bornee = valeur_fob if assiette_valeur == "FOB" else cif
+            borne = valeur_bornee * plafond_pct / 100.0
             ligne["plafond_ad_valorem_pct"] = plafond_pct
+            ligne["plafond_valeur"] = "FOB" if assiette_valeur == "FOB" else "CIF"
             ligne["plafond_ad_valorem_montant"] = round(borne, 4)
             if montant > borne:
                 ligne["montant_avant_plafond"] = round(montant, 4)
@@ -837,6 +853,7 @@ def calculer(
     devise_cif: Optional[str] = None,
     couverture: Optional[Dict[str, Any]] = None,
     valeur_fob: Optional[float] = None,
+    assiette_valeur: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -851,6 +868,10 @@ def calculer(
     la devise nationale du tarif (« 8c/kg », en rands). Si la valeur CIF est
     déclarée dans une autre devise, l'additionner telle quelle mélangerait
     deux monnaies — voir ``_facteur_devise_specifique``.
+
+    ``assiette_valeur`` : la valeur en douane du pays (« FOB » ou « CIF »,
+    ``socle.valeur_en_douane``), sur laquelle se calcule la borne d'un droit
+    « with a maximum of X % ». Omise, la borne porte sur la valeur CIF.
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
@@ -880,6 +901,7 @@ def calculer(
             devise_cif,
             valeur_fob,
             devise_position,
+            assiette_valeur,
         ),
     }
     if valeur_fob is not None:
@@ -896,6 +918,7 @@ def calculer(
             devise_cif,
             valeur_fob,
             devise_position,
+            assiette_valeur,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont

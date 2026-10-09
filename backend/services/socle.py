@@ -37,9 +37,11 @@ SOCLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 MANIFESTE = os.path.join(SOCLE_DIR, "MANIFESTE.json")
 DEVISES = os.path.join(SOCLE_DIR, "devises_pays.json")
 TVA_NATIONALE = os.path.join(SOCLE_DIR, "tva_nationale.json")
+ASSIETTES = os.path.join(SOCLE_DIR, "assiettes_pays.json")
 
 _devises_cache: Optional[Dict[str, str]] = None
 _tva_cache: Optional[Dict[str, Dict[str, Any]]] = None
+_assiettes_cache: Optional[Dict[str, Any]] = None
 
 #: Les fichiers pays pèsent de 3 à 60 Mo. On en garde quelques-uns en mémoire,
 #: pas les cinquante-quatre.
@@ -174,6 +176,23 @@ def tva_nationale(iso3: str) -> Optional[Dict[str, Any]]:
     return _tva_cache.get(_iso3(iso3))
 
 
+def valeur_en_douane(iso3: str) -> Optional[str]:
+    """Valeur sur laquelle le pays assied son droit de douane : « FOB » pour
+    les cinq pays SACU, « CIF » ailleurs — telle que la table des assiettes
+    la pose, avec son texte. Une borne « with a maximum of 96 % » se compare à
+    cette valeur, pas à la valeur CIF déclarée. ``None`` si le pays n'est pas
+    dans la table."""
+    global _assiettes_cache
+    if _assiettes_cache is None:
+        if not os.path.exists(ASSIETTES):
+            _assiettes_cache = {}
+        else:
+            with open(ASSIETTES, encoding="utf-8") as f:
+                _assiettes_cache = json.load(f).get("pays", {})
+    dd = ((_assiettes_cache.get(_iso3(iso3)) or {}).get("taxes") or {}).get("DD") or {}
+    return dd.get("assiette") if dd.get("assiette") in ("FOB", "CIF") else None
+
+
 def normaliser_code(code: str) -> str:
     chiffres = re.sub(r"\D", "", str(code or ""))
     if len(chiffres) < 6:
@@ -258,6 +277,7 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
             "origine": donnees.get("assiettes", {}).get("origine"),
         },
         "devise_nationale": devise_nationale(iso3),
+        "valeur_en_douane": valeur_en_douane(iso3),
         "socle_version": donnees.get("socle_version"),
     }
     return trouve, provenance
@@ -265,8 +285,9 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
 
 def vider_cache() -> None:
     """Oublier les pays chargés, le manifeste et les tables (utile aux tests)."""
-    global _manifeste, _devises_cache, _tva_cache
+    global _manifeste, _devises_cache, _tva_cache, _assiettes_cache
     _cache.clear()
     _manifeste = None
     _devises_cache = None
     _tva_cache = None
+    _assiettes_cache = None

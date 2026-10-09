@@ -175,6 +175,7 @@ def calcul(demande: DemandeCalcul):
             devise_cif=demande.devise_cif,
             couverture=provenance.get("couverture"),
             valeur_fob=demande.valeur_fob,
+            assiette_valeur=provenance.get("valeur_en_douane"),
         )
     except ValueError as exc:
         # Une demande incohérente (valeur_fob excédant la valeur CIF, p. ex.)
@@ -256,6 +257,7 @@ def _conversion_monetaire(position, demande, provenance, preference, resultat):
                 devise_cif=demande.devise_cif,
                 couverture=provenance.get("couverture"),
                 valeur_fob=demande.valeur_fob,
+                assiette_valeur=provenance.get("valeur_en_douane"),
             )
         )
 
@@ -326,6 +328,7 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
                 devise_cif=demande.devise_cif,
                 couverture=provenance.get("couverture"),
                 valeur_fob=demande.valeur_fob,
+                assiette_valeur=provenance.get("valeur_en_douane"),
             )
         except Exception as exc:  # pragma: no cover - le moteur ne doit pas faire tomber la route
             logger.warning("Simulation %s non chiffrée : %s", simulation.get("regime"), exc)
