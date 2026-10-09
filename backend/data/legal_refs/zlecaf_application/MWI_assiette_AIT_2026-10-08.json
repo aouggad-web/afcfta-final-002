@@ -32,7 +32,13 @@
     "act14_2020_pdf_sha256": "e245ff0ad53225241eb9c9184dc388ea64f3d8e0a18eab08af8a7ba7f1137cf4",
     "act14_2020_non_archive": "Taxation (Amendment) Act 2020 (No. 14 of 2020), PR #606, MWI_taxation_amendment_act_2020_act14.pdf",
     "act36_2025_pdf_sha256": "8d4559cc322ce38f4c4ae71b73ba3a8ef190c1156467636d348d442d64d6baee",
-    "act36_2025_non_archive": "Taxation (Amendment) (No. 2) Act 2025 (No. 36 of 2025), copie MRA, PR #606, MWI_taxation_amendment_act_2025_act36.pdf"
+    "act36_2025_non_archive": "Taxation (Amendment) (No. 2) Act 2025 (No. 36 of 2025), copie MRA, PR #606, MWI_taxation_amendment_act_2025_act36.pdf",
+    "act12_2024_pdf_sha256": "116a8df31a5ecef5f39762ca51ebf2df41db90df8257da8fbf126a42e6cff3bb",
+    "act12_2024_non_archive": "Taxation (Amendment) Act 2024 (No. 12 of 2024), PDF scanné, eLibrary du Revenue Appeals Tribunal, PR #606, MWI_taxation_amendment_act_2024_texte.pdf",
+    "act14_2025_pdf_sha256": "7d310218de44911d3a7cdbe610769c37fc2a50339b1bf3d8eb38c33d981d489f",
+    "act14_2025_non_archive": "Taxation (Amendment) Act 2025 (No. 14 of 2025), eLibrary du Revenue Appeals Tribunal, PR #606, MWI_taxation_amendment_act_2025_act14.pdf",
+    "act17_2023_texte_pdf_sha256": "05e5a8ca32bf219b40657f84dddd861828608a710e0967e31ea1dbe6b4ea6e0a",
+    "act17_2023_texte_non_archive": "Act 17/2023, copie à texte lisible (eLibrary du Revenue Appeals Tribunal), PR #606, MWI_taxation_amendment_act_2023_act17_texte.pdf ; s.8 identique à la transcription de l'image"
   },
   "regle": {
     "valeur": "Advance Income Tax à l'importation : 10 % de la valeur des marchandises au point d'entrée au Malawi (assiette CIF, comme le droit de douane). Acompte d'impôt sur le revenu, imputable ; non dû sur certificat d'exemption, par un ministère, une personne exonérée, ou sous la section XXII de l'Order.",
@@ -50,12 +56,12 @@
     "4 positions (2301.10, 7306.29, 8480.41, 8539.49.90) portent 3 % en colonne 12 de l'Order 2022, en bas de page du PDF : taux contraire à la s.102B depuis 2023, déclaré indisponible plutôt que deviné (décision du propriétaire du projet sur les cas ambigus).",
     "L'AIT entre dans l'assiette de la TVA : la s.102B(2) la rend « charged and payable on the importation of goods », et la s.28 du VAT Act ajoute à la valeur en douane « all import duties and taxes, but excluding Value Added Tax ». L'assiette de la TVA devient CIF + DD + accise + AIT (montré par le revieweur Codex sur la PR #610, tranché sur le texte déposé PR #606). Le guide MRA 2022 (p. 11) ne contredit pas : son exemple ne comporte aucune ligne d'AIT.",
     "Imputabilité : la s.104A dispose que la retenue payée au titre de la s.102B « shall be allowed as a credit against tax charged on assessments » ; l'Act 15/2021 la maintient en renvoyant désormais au Tax Administration Act.",
-    "Amendements relus sans effet sur la règle : Taxation (Amendment) Acts 14/2020 (s.2, s.15 et annexes), 28/2018 (s.102A, pas la s.102B), 6/2022 (s.2, s.27 et annexes) et (No. 2) 36/2025 (Part IVB, s.66 à 66B et annexes), Statute Law (Misc. Amendments) Act 15/2021 (modifie la s.104A, pas la s.102B) ; Value Added Tax (Amendment) Acts 27/2018, 15/2020, 7/2022 et 18/2023 (même Gazette que l'Act 17/2023, p. 19) : aucun ne modifie la s.28 du VAT Act."
+    "Amendements relus sans effet sur la règle : Taxation (Amendment) Acts 14/2020 (s.2, s.15 et annexes), 28/2018 (s.102A, pas la s.102B), 6/2022 (s.2, s.27 et annexes) 12/2024 (s.39, 39A, 45, 76A, 91B et annexes), 14/2025 (note marginale de la s.127A et annexes) et (No. 2) 36/2025 (Part IVB, s.66 à 66B et annexes), Statute Law (Misc. Amendments) Act 15/2021 (modifie la s.104A, pas la s.102B) ; Value Added Tax (Amendment) Acts 27/2018, 15/2020, 7/2022 et 18/2023 (même Gazette que l'Act 17/2023, p. 19) : aucun ne modifie la s.28 du VAT Act."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Le fichier collecté (backend/data/crawled/MWI_tariffs.json) porte encore l'AIT sans assiette : c'est le socle qui la pose.",
     "Les amendements de l'Order postérieurs à 2022 ne sont pas tous intégrés : l'Order (No. 3) 2023 exonère de TVA 27 sous-positions (véhicules 8702.40, 8703.80, 3926.90.10, 7321.11.10, 8516.60.91, 8704.60) et scinde la 4820.20 ; les Orders GN 10/2022 et GN 7/2024 restent à relire.",
-    "Les six amendements que la consolidation Laws.Africa liste comme non appliqués (Acts 28/2018, 14/2020, 15/2021, 6/2022, 17/2023, 36/2025) sont lus ; seul l'Act 17/2023 touche la s.102B. Restent non lus : le Taxation (Amendment) Act 2025 qui précède le « (No. 2) » 36/2025 ; et les amendements de 2015 à 2017, que la consolidation (« last checked for updates: 31 December 2017 ») ne liste pas. Or l'Act 2023 vise au par. (3) les mots « or the importation of goods », absents de la consolidation 2014 : un amendement intermédiaire non lu existe donc.",
+    "Tous les amendements du Taxation Act de 2018 à 2025 repérés sont lus (Acts 28/2018, 14/2020, 15/2021, 6/2022, 17/2023, 12/2024, 14/2025, 36/2025) ; seul l'Act 17/2023 touche la s.102B. Les amendements de 2015 à 2017 sont introuvables sur les sources officielles (MalawiLII, eLibrary du Revenue Appeals Tribunal, MRA). L'un d'eux a inséré au par. (3) les mots « or the importation of goods » que l'Act 2023 supprime : il porte sur les exemptions, pas sur le taux ni sur l'assiette du par. (1), dont l'Act 2023 confirme la rédaction (« three per centum » après « tax at ») et que l'avis MRA 2022 décrit comme la « Value for Duty Purpose ».",
     "Aucun calcul officiel publié (MRA) d'une importation portant à la fois l'AIT et la TVA n'a été lu : l'inclusion de l'AIT dans l'assiette de la TVA repose sur la lettre des s.102B(2) et s.28."
   ],
   "documents_archives": [
