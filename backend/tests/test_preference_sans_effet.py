@@ -92,6 +92,18 @@ def test_la_preference_appliquee_porte_sa_regle_d_origine():
 
 
 @besoin_socle
+def test_la_regle_d_origine_se_lit_sur_le_code_normalise():
+    # Le socle accepte « 0901-11-1000 » ; la règle doit suivre le même code.
+    from routes.calcul import DemandeCalcul, calcul
+
+    reponse = calcul(
+        DemandeCalcul(destination="DZA", origine="TUN", code_sh="0901-11-1000", valeur_cif=10000)
+    )
+    assert reponse["regle_origine"]["hs6"] == "090111"
+    assert reponse["regle_origine"]["regle"]["code"] == "WO"
+
+
+@besoin_socle
 def test_sans_preference_aucune_regle_d_origine_n_est_jointe():
     from routes.calcul import DemandeCalcul, calcul
 

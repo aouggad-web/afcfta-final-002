@@ -212,7 +212,7 @@ def calcul(demande: DemandeCalcul):
     )
     resultat.update(_regimes(preference))
     if preference.get("applique") and preference.get("regime") == "ZLECAF":
-        resultat["regle_origine"] = _regle_origine(demande.code_sh)
+        resultat["regle_origine"] = _regle_origine(socle.normaliser_code(demande.code_sh))
     resultat.update(
         _bloc_reglementaire(
             demande.destination, demande.origine, demande.valeur_cif, demande.valeur_fob
