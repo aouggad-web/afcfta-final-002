@@ -417,8 +417,8 @@ def taux_preferentiels(
                 "statut": "PREFERENCE_SANS_EFFET",
                 "motif": motif,
                 "note": (
-                    f"{motif} : le taux ZLECAf de cette position est égal au droit "
-                    "NPF — aucune préférence n'est servie, taux NPF appliqué."
+                    f"{motif} : le taux ZLECAf de cette position n'est pas inférieur "
+                    "au droit NPF — aucune préférence n'est servie, taux NPF appliqué."
                 ),
                 "taux": {},
                 "perimetre": {},
@@ -431,14 +431,19 @@ def taux_preferentiels(
 
 
 def _sans_effet(table: Dict[str, Any], position: Dict[str, Any]) -> bool:
-    """Vrai si chaque prélèvement de la table est servi au taux NPF lui-même.
+    """Vrai si aucun prélèvement de la table n'est servi sous son taux NPF.
 
     Seuls les taux ad valorem se comparent : un droit spécifique ou composé
     ne se compare pas au NPF sans quantité ni valeur, et laisse la préférence
-    servie. Un NPF déjà nul n'a rien à démanteler : la préférence à 0 % n'y
-    annonce aucune réduction fictive, et reste servie. Il suffit d'un prélèvement réduit — le DAPS algérien exonéré, par
-    exemple — pour que la préférence ait un effet.
+    servie ; un NPF inconnu aussi. Un taux préférentiel au-dessus du NPF ne
+    réduit rien non plus : le moteur sert alors le NPF (`npf_plancher`) —
+    DZA/0201101100 depuis la Tunisie, 24 % au calendrier pour un NPF de 5 %.
+    Un prélèvement dont le NPF est déjà nul n'a rien à démanteler et ne
+    compte ni pour ni contre ; si tous les NPF sont nuls, la préférence reste
+    servie. Il suffit d'un prélèvement réduit — le DAPS algérien exonéré sur
+    un DAPS NPF non nul, par exemple — pour que la préférence ait un effet.
     """
+    compares = 0
     for code, entree in table.items():
         taux = entree.get("taux") if isinstance(entree, dict) else entree
         if not isinstance(taux, (int, float)) or (
@@ -446,9 +451,14 @@ def _sans_effet(table: Dict[str, Any], position: Dict[str, Any]) -> bool:
         ):
             return False
         npf = _taux_npf(position, code)
-        if not npf or abs(float(taux) - npf) > 1e-9:
+        if npf is None:
             return False
-    return bool(table)
+        if npf == 0:
+            continue
+        if float(taux) < npf - 1e-9:
+            return False
+        compares += 1
+    return compares > 0
 
 
 def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[str, Any]]:

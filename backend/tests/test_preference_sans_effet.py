@@ -46,6 +46,18 @@ def test_une_preference_qui_reduit_reste_appliquee():
     assert decision["statut"] == "APPLIED"
 
 
+@besoin_socle
+def test_un_taux_zlecaf_au_dessus_du_npf_n_est_pas_dit_applique():
+    # Viande bovine, liste (B) : 24 % au calendrier pour un DD NPF de 5 %,
+    # que le moteur sert (plancher NPF) ; le DAPS, NPF 0 %, n'a rien à réduire.
+    position, _ = socle.position("DZA", "0201101100")
+    decision = taux_preferentiels(position, "DZA", "TUN", "0201101100")
+
+    assert decision["applique"] is False
+    assert decision["statut"] == "PREFERENCE_SANS_EFFET"
+    assert decision["taux"] == {}
+
+
 def test_un_seul_prelevement_reduit_suffit():
     """Le DAPS exonéré donne un effet à la préférence, même si le DD reste au NPF."""
     from services.preference import _sans_effet
@@ -55,6 +67,13 @@ def test_un_seul_prelevement_reduit_suffit():
     assert _sans_effet({"DD": {"taux": 30.0}, "DAPS": {"taux": 0.0}}, position) is False
     # Un NPF déjà nul n'a rien à démanteler : rien n'y est fictif.
     assert _sans_effet({"DD": {"taux": 0.0}}, {"droits": [{"code": "DD", "taux": 0.0}]}) is False
+    # Un prélèvement à NPF nul est ignoré quand un autre se compare.
+    position = {"droits": [{"code": "DD", "taux": 5.0}, {"code": "DAPS", "taux": 0.0}]}
+    assert _sans_effet({"DD": {"taux": 24.0}, "DAPS": {"taux": 0.0}}, position) is True
+    assert _sans_effet({"DD": {"taux": 5.0}, "DAPS": {"taux": 0.0}}, position) is True
+    assert _sans_effet({"DD": {"taux": 2.0}, "DAPS": {"taux": 0.0}}, position) is False
+    # Un NPF inconnu ne se compare pas : la préférence reste servie.
+    assert _sans_effet({"DD": {"taux": 5.0}}, {"droits": []}) is False
 
 
 # ── La règle d'origine accompagne la préférence (audit, point 11) ─────────────
