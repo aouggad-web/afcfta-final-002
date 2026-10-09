@@ -932,5 +932,21 @@
       "product": "Produit",
       "destination": "Destination"
     }
+  },
+  "calculator": {
+    "etat": {
+      "COMPLET": "Calcul complet",
+      "INDICATIF": "Calcul indicatif",
+      "PARTIEL": "Total partiel",
+      "INDISPONIBLE": "Calcul indisponible",
+      "aide": {
+        "COMPLET": "Tous les droits et taxes de la position sont liquidés.",
+        "INDICATIF": "Tous les droits sont liquidés, mais au moins un taux est une moyenne statistique, pas un tarif national.",
+        "PARTIEL": "Des droits n'ont pas pu être liquidés : ce montant n'est pas le coût final.",
+        "INDISPONIBLE": "Aucun droit n'a pu être liquidé pour cette position."
+      },
+      "nonCalcules_one": "{{count}} droit non calculé : {{codes}}",
+      "nonCalcules_other": "{{count}} droits non calculés : {{codes}}"
+    }
   }
 }

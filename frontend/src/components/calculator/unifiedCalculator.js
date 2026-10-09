@@ -607,5 +607,6 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     _npf_etat: npf.etat,
     _zlecaf_etat: hasPreference ? pref.etat : null,
     _manques_npf: npf.manques || [],
+    _manques_zlecaf: hasPreference ? pref.manques || [] : [],
   };
 }
