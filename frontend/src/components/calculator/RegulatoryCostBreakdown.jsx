@@ -255,7 +255,12 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
     (Number(result?.normal_community_levy) || 0) +
     (Number(result?.normal_ecowas_levy) || 0) +
     (Number(result?.normal_other_taxes_total) || 0);
-  const publicSubtotal = Number(result?.normal_total_cost) || duty + vat + other;
+  // Un calcul PARTIEL ou INDISPONIBLE n'a pas de total : additionner les
+  // seules lignes connues (les manques comptés pour zéro) en fabriquerait un.
+  const totalRefuse = ['PARTIEL', 'INDISPONIBLE'].includes(result?._npf_etat);
+  const publicSubtotal = result?.normal_total_cost != null
+    ? Number(result.normal_total_cost)
+    : totalRefuse ? null : duty + vat + other;
 
   // Regroupement par ÉTAPE logistique : export (amont) vs import (aval).
   const exportLines = rc.line_items.filter((i) => i.stage === 'export');
@@ -292,7 +297,7 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
           <Row label={t.duty} value={fmt(duty, '')} />
           {result?.normal_vat_amount != null && <Row label={t.vat} value={fmt(vat, '')} />}
           <Row label={t.other} value={fmt(other, '')} />
-          <Row label={t.publicSubtotal} value={fmt(publicSubtotal, '')} strong />
+          <Row label={t.publicSubtotal} value={fmt(publicSubtotal, '') ?? '—'} strong />
         </div>
 
         {/* Encadré explicatif import vs export */}
@@ -338,7 +343,7 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
           <div className="mt-2 flex items-center justify-between">
             <span className="text-sm font-semibold text-[var(--text)]">{t.estimatedTotal}</span>
             <span className="text-right">
-              <span className="text-base font-bold text-[var(--text)]">{fmt(publicSubtotal, '')}</span>
+              <span className="text-base font-bold text-[var(--text)]">{fmt(publicSubtotal, '') ?? '—'}</span>
               {regTotal != null && complete ? (
                 <span className="text-[var(--success)]"> + {fmt(regTotal, regCcy)}</span>
               ) : (

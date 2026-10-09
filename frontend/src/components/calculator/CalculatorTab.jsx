@@ -1816,7 +1816,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 {/* Total NPF */}
                 <div className="bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
                   <p className="text-[var(--danger)] text-xs font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
-                  <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
+                  <p className="text-3xl font-bold text-[var(--danger)] mt-1">{typeof result.total_taxes_npf === 'number' ? `${result.total_taxes_npf.toFixed(1)}%` : '—'}</p>
                   <p className="text-[var(--danger)] text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
                   <div className="mt-2"><EtatCalculBadge etat={result._npf_etat} manques={result._manques_npf} compact /></div>
                 </div>
@@ -1849,8 +1849,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                   <p className="text-[var(--gold)] text-xs font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
                   <p className="text-3xl font-bold text-[var(--gold)] mt-1">
-                    {zlecafTotalTaxRatePct(result) !== null
-                      ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
+                    {zlecafTotalTaxRatePct(result) !== null && typeof result.total_taxes_npf === 'number'
+                      ? `-${(result.total_taxes_npf - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
                       : '—'}
                   </p>
                   <p className="text-[var(--gold)] text-xs mt-1">
@@ -1866,8 +1866,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
                   <p className="text-[var(--info)] text-xs font-medium">{language === 'fr' ? 'Montant économisé' : 'Amount saved'}</p>
                   <p className="text-2xl font-bold text-[var(--info)] mt-1">
-                    {zlecafTotalTaxRatePct(result) !== null
-                      ? montant((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100, language)
+                    {zlecafTotalTaxRatePct(result) !== null && typeof result.total_taxes_npf === 'number'
+                      ? montant((parseFloat(value) || 0) * (result.total_taxes_npf - zlecafTotalTaxRatePct(result)) / 100, language)
                       : '—'}
                   </p>
                   <p className="text-[var(--info)] text-xs mt-1">

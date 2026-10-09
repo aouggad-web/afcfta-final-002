@@ -18,6 +18,7 @@ import { Search, Globe, TrendingDown, CheckCircle, AlertCircle, Loader2 } from '
 import { normalizeTaxesDetail } from './taxesDetail';
 import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
 import { montant, montantUnite } from '../../utils/nombres';
+import EtatCalculBadge from './EtatCalculBadge';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -281,6 +282,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             countryName: COUNTRY_NAMES[iso3]?.[language] || iso3,
             description: r.description,
             etat: calcul.npf?.etat,
+            manques: calcul.npf?.manques || [],
+            zlecafEtat: r._zlecaf_etat,
+            zlecafManques: r._manques_zlecaf,
             ddRate: taux((l) => l.code === 'DD'),
             vatRate: taux((l) => l.famille === 'tva'),
             taxes: normalizeTaxesDetail(r.taxes_detail, r.taxes_breakdown),
@@ -322,7 +326,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   ] : [];
   
   // Best country
-  const bestCountry = results.length > 0 ? results[0] : null;
+  // Seul un pays au total établi peut être « le meilleur choix » : un total
+  // PARTIEL est refusé par le moteur (null), et n'entre pas en concurrence.
+  const bestCountry = results.find((r) => (r.zlecafTotal ?? r.npfTotal) != null) || null;
   
   return (
     <div className="space-y-6" data-testid="multi-country-comparison">
@@ -527,16 +533,16 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {results.map((r, idx) => (
+                    {results.map((r) => (
                       <tr 
                         key={r.iso3} 
-                        className={`border-b hover:bg-[var(--afcfta-card2)] ${idx === 0 ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : ''}`}
+                        className={`border-b hover:bg-[var(--afcfta-card2)] ${r === bestCountry ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))]' : ''}`}
                       >
                         <td className="p-3 font-medium">
                           <div className="flex items-center gap-2">
                             <span className="text-xl">{getFlag(r.iso2)}</span>
                             <span>{r.countryName}</span>
-                            {idx === 0 && (
+                            {r === bestCountry && (
                               <Badge className="bg-[var(--success)] text-[var(--bg)] text-xs">
                                 #1
                               </Badge>
@@ -565,9 +571,15 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                         </td>
                         <td className="text-right p-3 font-mono text-[var(--afcfta-muted)]">
                           {formatCurrency(r.npfTotal, language)}
+                          {r.npfTotal == null && (
+                            <div className="mt-1 flex justify-end"><EtatCalculBadge etat={r.etat} manques={r.manques} compact /></div>
+                          )}
                         </td>
                         <td className="text-right p-3 font-mono font-bold text-[var(--success)]">
                           {formatCurrency(r.zlecafTotal, language)}
+                          {r.zlecafTotal == null && (
+                            <div className="mt-1 flex justify-end"><EtatCalculBadge etat={r.zlecafEtat} manques={r.zlecafManques} compact /></div>
+                          )}
                         </td>
                         <td className="text-right p-3">
                           <div className="text-[var(--success)] font-bold">

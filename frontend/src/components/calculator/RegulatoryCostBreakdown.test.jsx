@@ -172,4 +172,18 @@ describe('RegulatoryCostBreakdown', () => {
     const link = screen.getByRole('link', { name: /cotecna\.example/i });
     expect(link).toHaveAttribute('href', 'https://cotecna.example/');
   });
+
+  it("n'additionne pas les lignes connues quand le calcul est PARTIEL", () => {
+    // Le moteur refuse le total (null) : le sous-total ne le reconstitue pas
+    // en comptant pour zéro les droits qu'il n'a pas pu liquider.
+    const result = {
+      ...costBlock([CALCULABLE_ITEM], { complete: true, regulatory_cost_total: 500, regulatory_cost_currency: 'USD' }),
+      normal_total_cost: null,
+      normal_vat_amount: null,
+      _npf_etat: 'PARTIEL',
+    };
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.queryByText(/^10.200$/)).toBeNull();
+    expect(screen.getAllByText('—').length).toBeGreaterThanOrEqual(2);
+  });
 });

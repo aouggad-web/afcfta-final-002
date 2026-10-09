@@ -237,13 +237,17 @@ function buildJournal(cifValue, lignes) {
   let cumulative = cifValue;
   (lignes || []).forEach((l, i) => {
     if (!estCalculee(l)) {
+      // Un droit non liquidé rend le cumul inconnu à partir de là : le
+      // reporter tel quel ferait lire en dernière ligne un coût total que
+      // le moteur refuse (audit du 2026-10-09, point 5).
+      cumulative = null;
       journal.push({
         step: i + 2, component: l.libelle, base: null, rate: '-', amount: null,
         cumulative, legal_ref: l.assiette_non_traduite || l.statut,
       });
       return;
     }
-    cumulative += l.montant;
+    cumulative = cumulative === null ? null : cumulative + l.montant;
     // Un droit spécifique (« 8c/kg ») n'a pas de taux pourcentuel : `taux_pct`
     // y est `null`, et l'afficher tel quel écrirait « null% ». Le moteur porte
     // alors `specifique` (le libellé brut publié) — l'utiliser à sa place.

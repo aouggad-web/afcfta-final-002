@@ -43,7 +43,9 @@ Trois règles gouvernent tout le reste :
    ou sans quantité ne produit pas de montant : elle produit un manque nommé, et
    le total est marqué ``PARTIEL``.
 2. **Un total partiel se dit.** Un total qui omet une accise n'est pas prudent,
-   il est faux — il doit annoncer ce qu'il omet.
+   il est faux — il doit annoncer ce qu'il omet. Hors ``COMPLET`` et
+   ``INDICATIF``, ``total_droits`` et ``total_a_payer`` valent ``None`` ; la
+   somme des seules lignes liquidées est rendue à part, ``total_partiel``.
 3. **La préférence ne réduit que les prélèvements qu'on lui désigne.** Lesquels
    relève du droit national, pas du moteur : l'Algérie exonère aussi le DAPS
    pour les produits des listes (A) et (B) admis sous ZLECAf (circulaire
@@ -831,13 +833,20 @@ def _liquider(
         etat = INDISPONIBLE
     else:
         etat = PARTIEL
+    # Un total ne se rend que s'il couvre toute la position. PARTIEL ou
+    # INDISPONIBLE, la somme des lignes liquidées n'est pas un coût : servie
+    # sous `total_droits`, elle se lisait comme tel — 1 182 positions
+    # INDISPONIBLE répondaient « 0 », soit « rien à payer » (audit du
+    # 2026-10-09, point 5). Elle passe dans `total_partiel`, à son nom.
+    total_etabli = etat in (COMPLET, INDICATIF)
     return {
         "lignes": lignes,
         "manques": manques,
         "lignes_base_statistique": [l["code"] for l in lignes if l.get("base_statistique")],
-        "total_droits": round(total, 2),
-        "total_a_payer": round(cif + total, 2),
-        "taux_effectif_pct": round(total / cif * 100, 4) if cif else None,
+        "total_droits": round(total, 2) if total_etabli else None,
+        "total_a_payer": round(cif + total, 2) if total_etabli else None,
+        "taux_effectif_pct": round(total / cif * 100, 4) if cif and total_etabli else None,
+        "total_partiel": None if total_etabli or not calcules else round(total, 2),
         "etat": etat,
     }
 

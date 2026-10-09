@@ -376,19 +376,29 @@ def test_un_total_incomplet_se_declare_partiel():
         1000,
     )
     assert r["npf"]["etat"] == PARTIEL
-    assert r["npf"]["total_droits"] == 200.0
+    # Un total partiel n'est pas un coût : il se rend à part, à son nom.
+    assert r["npf"]["total_droits"] is None
+    assert r["npf"]["total_a_payer"] is None
+    assert r["npf"]["taux_effectif_pct"] is None
+    assert r["npf"]["total_partiel"] == 200.0
     assert [m["code"] for m in r["npf"]["manques"]] == ["EXC"]
 
 
 def test_rien_de_calculable_donne_indisponible():
     r = calculer(position(droit("DD", None, None, "droit")), 1000)
     assert r["npf"]["etat"] == INDISPONIBLE
-    assert r["npf"]["total_droits"] == 0
+    # « 0 » se lisait « rien à payer » : aucun total, pas même partiel.
+    assert r["npf"]["total_droits"] is None
+    assert r["npf"]["total_a_payer"] is None
+    assert r["npf"]["total_partiel"] is None
 
 
 def test_tout_calcule_donne_complet():
     r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000)
     assert r["npf"]["etat"] == COMPLET
+    assert r["npf"]["total_droits"] == 200.0
+    assert r["npf"]["total_a_payer"] == 1200.0
+    assert r["npf"]["total_partiel"] is None
     assert all(ligne["statut"] == CALCULE for ligne in r["npf"]["lignes"])
 
 
@@ -614,7 +624,8 @@ def test_une_exoneration_sourcee_reste_complete():
 def test_une_position_sans_aucun_droit_est_indisponible_pas_complete_a_zero():
     r = calculer(position(), 1000)
     assert r["npf"]["etat"] == INDISPONIBLE
-    assert r["npf"]["total_droits"] == 0
+    assert r["npf"]["total_droits"] is None
+    assert r["npf"]["total_a_payer"] is None
     assert r["npf"]["lignes"] == []
 
 
