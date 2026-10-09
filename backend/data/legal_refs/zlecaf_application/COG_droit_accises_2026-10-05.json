@@ -4,6 +4,7 @@
   "destination_iso3": "COG",
   "verified_at": "2026-10-05",
   "etabli": true,
+  "superseded_by": "COG_droit_accises_2026-10-09.json — taux et liste refixés par la loi de finances 2026 (art. 2 et 8 nouveaux). Cette fiche reste la source de l'assiette (art. 7) et l'instantané du recueil à jour de la LF 2023.",
   "evidence_level": "secondaire — recueil des textes fiscaux à jour de la loi de finances 2023 (Sutter & Pearce - Laways), publié par UNICONGO ; loi sur le droit d'accises (LF 2020, art. 2 modifié par la LF 2022, art. 8 par la LF 2023)",
   "source": {"url": "https://www.unicongo.cg/wp-content/uploads/2023/10/Recueil-des-textes-fiscaux-a-jour-avec-LF-2023.pdf", "institution": "Union patronale et interprofessionnelle du Congo (recueil du cabinet Sutter & Pearce - Laways)"},
   "regle": {

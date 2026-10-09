@@ -75,18 +75,25 @@ COG = os.path.join(os.path.dirname(SOCLE), "COG.json")
 
 
 @pytest.mark.skipif(not os.path.exists(COG), reason="socle absent (gitignoré)")
-def test_congo_tabac_au_taux_de_la_loi_et_cosmetique_sans_taux():
-    """Loi sur le droit d'accises du Congo, art. 2, 7 et 8 : tabac 22,5 % sur
-    valeur + DD ; TVA sur valeur + DD + accise. Cosmétiques hors liste de
-    l'art. 2 : droit porté sans taux. Fiche : COG_droit_accises_2026-10-05.json."""
+def test_congo_taux_de_la_loi_de_finances_2026():
+    """Loi sur le droit d'accises du Congo, art. 2 et 8 nouveaux (LF 2026) : tabac
+    30 %, véhicule de plus de 3 000 cm3 25 %, champagne 50 %, soda 10 %, sur
+    valeur + DD ; TVA sur valeur + DD + accise. Cosmétiques et motocycles, visés
+    par l'art. 8 : 25 %. Alcool éthylique : sans taux. Fiche : COG_droit_accises_2026-10-09.json."""
     with open(COG, encoding="utf-8") as f:
         positions = json.load(f)["positions"]
     etat, lignes = _lignes(positions["24022000"])
-    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1300.0, 292.5)
-    assert lignes["TVA"]["base"] == 1592.5 and etat == COMPLET
-    _, lignes = _lignes(positions["87032410"])
-    assert lignes["DA"]["montant"] == 195.0
-    etat, lignes = _lignes(positions["33049900"])
+    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1300.0, 390.0)
+    assert lignes["TVA"]["base"] == 1690.0 and etat == COMPLET
+    assert _lignes(positions["87032410"])[1]["DA"]["montant"] == 325.0
+    assert _lignes(positions["22041010"])[1]["DA"]["taux_pct"] == 50.0
+    assert _lignes(positions["22041090"])[1]["DA"]["taux_pct"] == 25.0
+    assert _lignes(positions["22021000"])[1]["DA"]["taux_pct"] == 10.0
+    assert _lignes(positions["33049900"])[1]["DA"]["taux_pct"] == 25.0
+    assert _lignes(positions["87113000"])[1]["DA"]["taux_pct"] == 25.0
+    assert _lignes(positions["96140000"])[1]["DA"]["taux_pct"] == 30.0
+    assert _lignes(positions["29072200"])[1]["DA"]["taux_pct"] == 50.0
+    etat, lignes = _lignes(positions["22071010"])
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     etat, lignes = _lignes(positions["52081100"])
     assert "DA" not in lignes and etat == COMPLET
