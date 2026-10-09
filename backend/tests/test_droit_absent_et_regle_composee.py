@@ -253,6 +253,43 @@ def test_la_regle_or_sud_africaine_suit_la_note_b3(client):
     assert dd(5000)["montant"] == 12000.0  # 2,40 R × 5 000 kg > 3 600 R
 
 
+def _ligne_sars(brut, specifique, source="sars.gov.za"):
+    rangee = {"code": "GENERAL", "name": "General Customs Duty", "rate_pct": 60.0, "raw_value": brut,
+              "compound": True, "specific_component": specifique}
+    return _constructeur().droits_depuis_liste([rangee], source)[0]
+
+
+@pytest.mark.parametrize(
+    ("brut", "collecte", "montant"),
+    [("60% or 2 500c/kg", "500c/kg", 25.0), ("30% or 4,5c/kg", "4,5c/kg", 0.045)],
+)
+def test_la_part_specifique_sars_se_relit_sur_le_verbatim(brut, collecte, montant):
+    """« 2 500c/kg » : la collecte n'a gardé que « 500c/kg ». « 4,5c/kg » : virgule décimale."""
+    droit = _ligne_sars(brut, collecte)
+    assert droit["regle_composee"] == "LE_PLUS_ELEVE"
+    assert _constructeur().lire_specifique(droit["specifique"])["montant"] == pytest.approx(montant)
+
+
+def test_la_regle_b3_ne_vaut_que_pour_le_tarif_sars():
+    droit = _ligne_sars("40% or 240c/kg", "240c/kg", source="autre-tarif.example")
+    assert droit["compose"] and droit.get("regle_composee") is None
+
+
+@besoin_socle
+def test_la_colonne_zlecaf_composee_suit_aussi_la_note_b3():
+    """La préférence AfCFTA de 0201.10 porte la même expression : même règle."""
+    from services.calcul import calculer
+
+    position = socle.charger("ZAF")["positions"]["020110"]
+    afcfta = position["preferentiels"]["AFCFTA"]
+    assert afcfta["regle_composee"] == "LE_PLUS_ELEVE"
+    resultat = calculer(position, 10000, devise_position="ZAR", quantite=5000, valeur_fob=9000,
+                        taux_preferentiels={"DD": afcfta})
+    ligne = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    assert ligne["composantes"]["specifique_montant"] == pytest.approx(afcfta["specifique"]["montant"] * 5000)
+    assert ligne["montant"] == pytest.approx(max(afcfta["taux"] / 100 * 9000, afcfta["specifique"]["montant"] * 5000))
+
+
 @besoin_socle
 def test_la_paire_de_chaussures_reste_refusee(client):
     """« 30% or 500c/2u » : la part spécifique est due par paire, quantité que le

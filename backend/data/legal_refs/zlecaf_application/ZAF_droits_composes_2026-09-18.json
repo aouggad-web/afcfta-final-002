@@ -3,6 +3,7 @@
   "objet": "Règle de liquidation des droits composés du tarif sud-africain (SACU) — deux formes, une seule établie.",
   "verified_at": "2026-09-18",
   "etabli": false,
+  "superseded_by": "SACU_regle_or_B3_2026-10-09.json — la forme « or » est tranchée depuis le 2026-10-09 par les General Notes SARS (Schedule No. 1, B.3) : la plus élevée des deux composantes s'applique. Cette fiche reste l'instantané de la recherche du 2026-09-18.",
   "regle": null,
   "evidence_level": "primaire pour les expressions elles-mêmes (Schedule 1 Part 1, PDF officiel daté du 2026-08-28) ; AUCUNE source atteinte pour la règle qui départage la forme « or ».",
   "source": {
@@ -45,7 +46,7 @@
   },
   "reserve_majeure_sur_l_acte": "Le PDF de l'Acte 91 de 1964 utilisé ici — et cité par la fiche SACU_assiette_DD — porte en page 1 : « Legislation as at 31 July 1964 » et « Note: This is not the latest available version of this Act. » C'est le TEXTE D'ORIGINE, que la source elle-même déclare périmé. L'Acte a été amendé de nombreuses fois depuis, notamment pour l'évaluation en douane. Toute conclusion tirée de sa section 65 — dont la base FOB retenue par la fiche SACU — doit être reprise sur la version consolidée en vigueur avant d'être tenue pour acquise.",
   "ce_que_cela_ne_tranche_pas": [
-    "La règle de la forme « or » : aucune source atteinte ne l'énonce. TRANCHÉ DEPUIS le 2026-10-09 par les General Notes SARS, B.3 (« such rate of duty yielding the higher or highest amount of duty shall be applicable ») : voir la fiche SACU_regle_or_B3_2026-10-09.json.",
+    "La règle de la forme « or » : aucune source atteinte ne l'énonce.",
     "Si une note générale du tariff book la porte : les pages SARS correspondantes n'ont pas pu être lues depuis cet environnement.",
     "Le comportement des colonnes préférentielles composées (EU_UK 89, EFTA 99, MERCOSUR 140, AfCFTA 140 lignes) : elles suivent la même expression que le NPF, mais leur liquidation n'a pas été vérifiée séparément."
   ],

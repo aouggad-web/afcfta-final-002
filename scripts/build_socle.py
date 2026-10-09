@@ -870,7 +870,10 @@ def droits_depuis_liste(taxes, source_defaut):
             compose = False
         if specifique and row.get("rate_pct") is None:
             taux = None
-        compose_sars = MOTIF_COMPOSE_SARS.match(brut) if compose else None
+        source_ligne = row.get("source") or source_defaut
+        compose_sars = (
+            MOTIF_COMPOSE_SARS.match(brut) if compose and "sars.gov.za" in str(source_ligne) else None
+        )
         if compose_sars:
             # « 2 500c/kg » : la collecte a perdu le chiffre avant l'espace des
             # milliers (« 500c/kg ») ; la part spécifique se relit sur le verbatim.
