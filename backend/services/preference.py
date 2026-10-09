@@ -404,8 +404,51 @@ def taux_preferentiels(
             "(General Note O du Schedule No. 1, Customs and Excise Act) — "
             "colonne AfCFTA du socle."
         )
+    if _sans_effet(table, position):
+        # Liste gelée, hors liste A, partenaire non encore activé, plancher NPF :
+        # le calendrier rend le droit commun lui-même. Dire « ZLECAf appliquée »
+        # sur un taux égal au NPF annonçait une préférence qui ne réduit rien
+        # (DZA/8703101100 depuis la Tunisie : 30 %, économie nulle). Le motif
+        # que le calendrier donne est rendu tel quel.
+        motif = perimetre.get("DD") or origine_taux
+        resultat.update(
+            {
+                "applique": False,
+                "statut": "PREFERENCE_SANS_EFFET",
+                "motif": motif,
+                "note": (
+                    f"{motif} : le taux ZLECAf de cette position est égal au droit "
+                    "NPF — aucune préférence n'est servie, taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
+        )
+        resultat.pop("reserve", None)
+        return resultat
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat
+
+
+def _sans_effet(table: Dict[str, Any], position: Dict[str, Any]) -> bool:
+    """Vrai si chaque prélèvement de la table est servi au taux NPF lui-même.
+
+    Seuls les taux ad valorem se comparent : un droit spécifique ou composé
+    ne se compare pas au NPF sans quantité ni valeur, et laisse la préférence
+    servie. Un NPF déjà nul n'a rien à démanteler : la préférence à 0 % n'y
+    annonce aucune réduction fictive, et reste servie. Il suffit d'un prélèvement réduit — le DAPS algérien exonéré, par
+    exemple — pour que la préférence ait un effet.
+    """
+    for code, entree in table.items():
+        taux = entree.get("taux") if isinstance(entree, dict) else entree
+        if not isinstance(taux, (int, float)) or (
+            isinstance(entree, dict) and entree.get("specifique") is not None
+        ):
+            return False
+        npf = _taux_npf(position, code)
+        if not npf or abs(float(taux) - npf) > 1e-9:
+            return False
+    return bool(table)
 
 
 def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[str, Any]]:
