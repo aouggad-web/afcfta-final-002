@@ -1,0 +1,37 @@
+Congo — droit d'accises : extraits de la loi de finances 2026 (relevés le 2026-10-09)
+
+Loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026 (PDF scanné, 238 pages ;
+https://www.finances.gouv.cg/sites/default/files/documents/LOI%20DE%20FINANCES_2026.pdf,
+sha256 ebf74b5e71409f042756567efba87e933a028851a9e900960c7546121b926451), pages 162-163 de la pagination imprimée,
+transcrites sur l'image :
+
+21. Droit d'accises (loi n° 42-2019 du 30 décembre 2019 portant loi de finances pour l'année 2020)
+
+1) Soumission aux droits d'accises des nouveaux produits
+
+Article 2 (nouveau) :
+
+Sont soumis aux droits d'accises :
+
+a) à c) : Sans changement ;
+d) confiseries, glaces ;
+e) boissons énergisantes et soda ;
+f) perruques, mèches ;
+g) machines, appareils et matériels d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en télévision, et parties et accessoires de ces appareils ;
+h) yachts, bateaux et embarcations de plaisance ;
+j) métaux précieux plaqués ou doublés de métaux précieux et ouvrages en ces matières bijoux de fantaisie.
+
+2) Supprimé.
+
+Article 8 (nouveau)
+
+1) Les taux des droits d'accises sont fixés comme suit :
+
+a) confiseries, glaces, Machines, appareils et matériels d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en télévision, Yachts, Bateaux et embarcations de plaisance, métaux précieux plaqués ou doublés de métaux précieux et ouvrages en ces matières bijoux de fantaisie | 5%
+b) boissons sucrées, boissons énergisantes, Soda, mèches, perruques | 10%
+c) boissons alcoolisées, produits alimentaires de luxe, parfums et produits cosmétiques, armes et munitions, bijoux, appareils servant aux jeux de hasard et de divertissement, motocycles, véhicules automobiles de tourisme (position 87.03) à l'exclusion des véhicules neufs n'excédant pas 3000 cm3 (position tarifaire 870...) | 25%
+d) autres produits soumis aux droits d'accises | 25%
+e) tabac, pipe et accessoires | 30%
+f) champagne, hydroquinone et cosmétiques contenant de l'hydroquinone | 50%
+
+2) Supprimé.

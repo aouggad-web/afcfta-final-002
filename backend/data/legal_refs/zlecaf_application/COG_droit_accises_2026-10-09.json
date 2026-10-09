@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "objet": "Congo : produits soumis au droit d'accises à l'importation et taux, d'après la loi de finances 2026 (art. 2 et 8 nouveaux de la loi sur le droit d'accises)",
+  "destination_iso3": "COG",
+  "verified_at": "2026-10-09",
+  "etabli": true,
+  "evidence_level": "primaire — loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026 (PDF scanné publié par le ministère des Finances, pages 162-163 transcrites sur l'image)",
+  "source": {
+    "url": "https://www.finances.gouv.cg/sites/default/files/documents/LOI%20DE%20FINANCES_2026.pdf",
+    "institution": "Ministère des Finances du Congo",
+    "pdf_sha256": "ebf74b5e71409f042756567efba87e933a028851a9e900960c7546121b926451",
+    "pdf_non_archive": "PDF scanné de 238 pages déposé par le propriétaire du projet (PR #613, data/cog/reference/COG_loi_finances_2026.pdf), identique au fichier du ministère ; seules les pages 162-163 sont archivées (voir regle.texte_archive)",
+    "lf2025_pdf_sha256": "0387da0632f532f8fab4ac5eb268276a1d84d9075f501c4a64a9ae508639def7",
+    "lf2025_non_archive": "Loi de finances 2025 (loi n° 47-2024 du 30/12/2024), PR #613, COG_loi_finances_2025.pdf : son art. 8 (nouveau), p. 65, fixait tabacs 30 %, boissons alcoolisées 25 %, boissons sucrées 12,5 % ; remplacé par la LF 2026"
+  },
+  "regle": {
+    "valeur": "Tabacs (chapitre 24) 30 % ; boissons alcoolisées (chapitre 22 hors vinaigres) 25 %, champagne 50 % ; soda et boissons sucrées (22.02.10) 10 % ; perruques et mèches (67.04) 10 % ; confiseries (17.04), glaces (21.05), appareils d'enregistrement ou de reproduction du son et des images et leurs parties (85.19, 85.21, 85.22), bateaux de plaisance (89.03), plaqué de métaux précieux et bijoux de fantaisie (71.07, 71.09, 71.11, 71.17) 5 % ; véhicules de tourisme de plus de 3 000 cm3 (8703.24) 25 %. Assiette inchangée : valeur en douane + droit de douane (art. 7) ; TVA sur valeur + DD + accise.",
+    "verbatim": "Article 8 (nouveau) 1) Les taux des droits d'accises sont fixés comme suit : a) confiseries, glaces, Machines, appareils et matériels d'enregistrement ou de reproduction du son, appareils d'enregistrement ou de reproduction des images et du son en télévision, Yachts, Bateaux et embarcations de plaisance, métaux précieux plaqués ou doublés de métaux précieux et ouvrages en ces matières bijoux de fantaisie | 5% b) boissons sucrées, boissons énergisantes, Soda, mèches, perruques | 10% c) boissons alcoolisées, produits alimentaires de luxe, parfums et produits cosmétiques, armes et munitions, bijoux, appareils servant aux jeux de hasard et de divertissement, motocycles, véhicules automobiles de tourisme (position 87.03) à l'exclusion des véhicules neufs n'excédant pas 3000 cm3 (position tarifaire 870...) | 25% d) autres produits soumis aux droits d'accises | 25% e) tabac, pipe et accessoires | 30% f) champagne, hydroquinone et cosmétiques contenant de l'hydroquinone | 50%",
+    "reference": "Loi de finances 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 et 8 (nouveaux), p. 162-163 ; assiette : art. 7 (fiche COG_droit_accises_2026-10-05.json)",
+    "portee": "backend/data/zlecaf_cog/droit_accises_lf2026.json, appliqué par scripts/build_socle._accises_du_cgi au seul socle COG : 163 droits d'accises (62 liquidables, 101 sans taux). Positions liquidables : 5 140 → 5 138.",
+    "texte_archive": "sources/COG_droit_accises_lf2026.texte-extrait.txt",
+    "sha256": "1e367f0e53819894b8f0a3a12fc9ff65b7074dea7accf4edb33b0ab91234dce4"
+  },
+  "decisions": [
+    "Champagne : la nomenclature du socle a une sous-position nationale « De champagne » (2204.10.10), seule taxée à 50 % ; les autres vins mousseux (2204.10.90) à 25 %.",
+    "Soda et boissons sucrées : 22.02.10 (eaux additionnées de sucre) à 10 % ; 22.02.90 porté sans taux, car il mêle boissons énergisantes (10 %) et boissons non visées.",
+    "Motocycles : l'art. 8 (1) c les taxe à 25 %, mais l'art. 2 d, qui visait les motocycles de plus de 250 cm3, désigne désormais les confiseries et glaces ; tout le 87.11 est porté sans taux plutôt que de deviner lesquels sont soumis.",
+    "Véhicules de tourisme : 8703.24 (plus de 3 000 cm3) à 25 % neuf ou d'occasion ; les autres positions de 87.03 sans taux, l'état neuf ou d'occasion n'étant pas dans la position.",
+    "Cosmétiques, produits alimentaires de luxe, bijoux, armes, appareils de jeux : taux de 25 % (50 % à l'hydroquinone) à l'art. 8, mais absents de la liste de l'art. 2 ; droit porté sans taux, comme dans la fiche précédente.",
+    "Confiseries lues comme le 17.04 (sucreries sans cacao) ; les préparations au cacao (18.06) ne sont pas taxées faute de mention."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Date d'effet : la LF 2026 ne précise pas, dans les pages lues, une entrée en vigueur différée ; le 1er janvier 2026 est supposé.",
+    "« Pipe et accessoires » (art. 8 (1) e) : hors liste de l'art. 2, non appliqué au 96.14.",
+    "L'art. 7 (2) arrondit la base au millier de francs inférieur : l'arrondi n'est pas appliqué.",
+    "Position 22.06 : aucune ligne dans le socle COG."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/COG_droit_accises_lf2026.texte-extrait.txt",
+      "sha256": "1e367f0e53819894b8f0a3a12fc9ff65b7074dea7accf4edb33b0ab91234dce4"
+    }
+  ]
+}

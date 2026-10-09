@@ -1,0 +1,127 @@
+{
+ "_objet": "Droit d'accises à l'importation au Congo : positions et taux, d'après la loi sur le droit d'accises (créée par la loi de finances 2020), art. 2 et 8 dans leur rédaction issue de la loi de finances 2026 (loi n° 42-2025 du 31 décembre 2025, p. 162-163). Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle dont un préfixe correspond s'applique. « taux » null : le droit est porté, non liquidé.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/COG_droit_accises_2026-10-09.json",
+ "source": "Loi sur le droit d'accises du Congo, art. 2 et 8 (nouveaux), loi de finances 2026 (loi n° 42-2025 du 31/12/2025)",
+ "assiette": "CIF+DD",
+ "assiette_reference": "Art. 7 (1) a : « à l'importation : en ajoutant à la valeur en douane telle qu'elle est définie par le Code des douanes de la CEMAC, le montant du droit de douane ».",
+ "tva_assiette": "CIF+DD+DA",
+ "tva_assiette_reference": "Loi TVA, base d'imposition : « Les importations, par la valeur imposable telle qu'elle est définie par le Code des Douanes de la CEMAC, augmentée du montant du droit de douane et du droit d'accises ».",
+ "regles": [
+  {
+   "prefixes": [
+    "22041010"
+   ],
+   "taux": 50.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) f : champagne, 50 % (sous-position nationale « De champagne »)"
+  },
+  {
+   "prefixes": [
+    "2203",
+    "2204",
+    "2205",
+    "2206",
+    "2208"
+   ],
+   "taux": 25.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 a (boissons alcoolisées du chapitre 22, vinaigres exclus, sans changement) ; art. 8 (1) c, 25 %"
+  },
+  {
+   "prefixes": [
+    "24"
+   ],
+   "taux": 30.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 b (tabacs, chapitre 24, sans changement) ; art. 8 (1) e, 30 %"
+  },
+  {
+   "prefixes": [
+    "22021000"
+   ],
+   "taux": 10.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 e (boissons énergisantes et soda) ; art. 8 (1) b (boissons sucrées, boissons énergisantes, soda), 10 % — eaux additionnées de sucre (22.02.10)"
+  },
+  {
+   "prefixes": [
+    "2202"
+   ],
+   "taux": null,
+   "motif": "22.02.90 mêle boissons énergisantes (10 %) et autres boissons non alcoolisées non visées : la position ne dit pas laquelle.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 e ; art. 8 (1) b"
+  },
+  {
+   "prefixes": [
+    "6704"
+   ],
+   "taux": 10.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 f (perruques, mèches) ; art. 8 (1) b, 10 %"
+  },
+  {
+   "prefixes": [
+    "1704",
+    "2105",
+    "8519",
+    "8521",
+    "8522",
+    "8903",
+    "7107",
+    "7109",
+    "7111",
+    "7117"
+   ],
+   "taux": 5.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 d, g, h, j (confiseries, glaces ; appareils d'enregistrement ou de reproduction du son et des images, parties et accessoires ; yachts, bateaux et embarcations de plaisance ; métaux plaqués ou doublés de métaux précieux, bijoux de fantaisie) ; art. 8 (1) a, 5 %"
+  },
+  {
+   "prefixes": [
+    "870324"
+   ],
+   "taux": 25.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 c (véhicules de tourisme, à l'exclusion des neufs n'excédant pas 3 000 cm3, sans changement) ; art. 8 (1) c, 25 % — cylindrée supérieure à 3 000 cm3 : soumis neuf ou d'occasion"
+  },
+  {
+   "prefixes": [
+    "8703"
+   ],
+   "taux": null,
+   "motif": "Véhicules de tourisme : 25 %, sauf les véhicules neufs n'excédant pas 3 000 cm3 (art. 2 c) — l'état neuf ou d'occasion n'est pas dans la position.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 c ; art. 8 (1) c"
+  },
+  {
+   "prefixes": [
+    "8711"
+   ],
+   "taux": null,
+   "motif": "Motocycles : l'art. 8 (1) c les taxe à 25 %, mais l'art. 2 d, qui visait les motocycles de plus de 250 cm3, désigne désormais les confiseries et glaces ; quels motocycles sont soumis n'est plus dit.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 d ; art. 8 (1) c"
+  },
+  {
+   "prefixes": [
+    "3303",
+    "3304",
+    "16022010",
+    "16043000",
+    "03031100",
+    "03031900",
+    "03032200",
+    "03052000",
+    "7101",
+    "7102",
+    "7103",
+    "7104",
+    "7105",
+    "7106",
+    "7108",
+    "7110",
+    "7112",
+    "7113",
+    "7114",
+    "7115",
+    "7116",
+    "93",
+    "9504"
+   ],
+   "taux": null,
+   "motif": "Taux de 25 % (art. 8 (1) c : produits alimentaires de luxe, parfums et cosmétiques, armes et munitions, bijoux, appareils de jeux ; 50 % pour les cosmétiques à l'hydroquinone, art. 8 (1) f), mais ces produits ne figurent pas dans la liste de l'art. 2 : l'assujettissement est à confirmer.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 ; art. 8 (1) c, f"
+  }
+ ]
+}
