@@ -35,3 +35,9 @@ e) tabac, pipe et accessoires | 30%
 f) champagne, hydroquinone et cosmétiques contenant de l'hydroquinone | 50%
 
 2) Supprimé.
+
+Instruction d'application des dispositions fiscales de la loi n° 47-2024 du 30/12/24 portant LF 2025 (PDF à texte, 42 pages ;
+https://www.unicongo.cg/wp-content/uploads/2025/09/02.pdf, sha256 e4cf886812da693f040d1db669c28042ba6632b84a7246a04e97ea8908f522f9),
+point 27, commentaire de l'article 8 (nouveau) :
+
+Il s'agit simplement de la revalorisation des taux des droits d'accises conformément à la directive CEMAC n°03/19-UEAC-010A-CM-33 du 8 avril 2019 portant harmonisation des législations des Etats membres en matière de droits d'accises. Pour les autres produits soumis aux droits d'accises visés par cet article, l'administration fiscale se réfère à la nomenclature douanière.

@@ -97,14 +97,29 @@
    "prefixes": [
     "8711"
    ],
-   "taux": null,
-   "motif": "Motocycles : l'art. 8 (1) c les taxe à 25 %, mais l'art. 2 d, qui visait les motocycles de plus de 250 cm3, désigne désormais les confiseries et glaces ; quels motocycles sont soumis n'est plus dit.",
-   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 d ; art. 8 (1) c"
+   "taux": 25.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) c (motocycles), 25 % — tous les motocycles, sans distinction de cylindrée ; produits visés par l'art. 8 soumis selon l'instruction d'application de la LF 2025 (art. 8 nouveau, commentaire : « l'administration fiscale se réfère à la nomenclature douanière »)"
   },
   {
    "prefixes": [
     "3303",
-    "3304",
+    "3304"
+   ],
+   "taux": 25.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) c (parfums et produits cosmétiques), 25 % ; produits visés par l'art. 8 soumis selon l'instruction d'application de la LF 2025 (art. 8 nouveau, commentaire : « l'administration fiscale se réfère à la nomenclature douanière »)",
+   "reserve": "Les cosmétiques contenant de l'hydroquinone sont à 50 % (art. 8 (1) f) : la position ne le dit pas, le taux général est servi."
+  },
+  {
+   "prefixes": [
+    "7113",
+    "93",
+    "9504"
+   ],
+   "taux": 25.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) c (bijoux ; armes et munitions ; appareils servant aux jeux de hasard et de divertissement), 25 % ; produits visés par l'art. 8 soumis selon l'instruction d'application de la LF 2025 (art. 8 nouveau, commentaire : « l'administration fiscale se réfère à la nomenclature douanière »)"
+  },
+  {
+   "prefixes": [
     "16022010",
     "16043000",
     "03031100",
@@ -120,16 +135,13 @@
     "7108",
     "7110",
     "7112",
-    "7113",
     "7114",
     "7115",
-    "7116",
-    "93",
-    "9504"
+    "7116"
    ],
    "taux": null,
-   "motif": "Taux de 25 % (art. 8 (1) c : produits alimentaires de luxe, parfums et cosmétiques, armes et munitions, bijoux, appareils de jeux ; 50 % pour les cosmétiques à l'hydroquinone, art. 8 (1) f), mais ces produits ne figurent pas dans la liste de l'art. 2 : l'assujettissement est à confirmer.",
-   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 ; art. 8 (1) c, f"
+   "motif": "« Produits alimentaires de luxe » (art. 8 (1) c, 25 %) : la loi n'en donne pas la liste ; métaux et pierres précieux, orfèvrerie et ouvrages en perles : « bijoux » ou non, la loi ne le dit pas.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) c"
   }
  ]
 }
