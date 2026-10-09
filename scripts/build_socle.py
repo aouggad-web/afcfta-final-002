@@ -1354,6 +1354,48 @@ def _taux_tva_hors_la_loi(regle, positions, compteurs):
             compteurs["taux_indisponibles"] += 1
 
 
+def _ait_malawi(positions, compteurs):
+    """Malawi : Advance Income Tax à l'importation sur la valeur des marchandises
+    au point d'entrée (Taxation Act s.102B(1), taux porté de 3 % à 10 % par le
+    Taxation (Amendment) Act 2023, s.8 ; fiche MWI_assiette_AIT_2026-10-08.json).
+    Le taux reste celui de la colonne 12 de l'Order."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "AIT":
+                continue
+            if not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+            d["assiette"] = "CIF"
+            d["assiette_origine"] = "regle_de_pays"
+            d["note"] = (
+                "Taxation Act s.102B(1), modifié par le Taxation (Amendment) Act 2023 : « ten per centum "
+                "of the value of goods at the port of entry into Malawi ». Acompte d'impôt sur le revenu, "
+                "imputable ; non dû sur certificat d'exemption, par un ministère, une personne exonérée, ou "
+                "sous la section XXII de l'Order (s.102B(3))."
+            )
+            if d.get("taux") not in (None, 10.0):
+                d["note"] = (
+                    f"La colonne 12 de l'Order 2022 porte {d['taux']:g} % alors que la s.102B(1) fixe 10 % "
+                    "depuis le Taxation (Amendment) Act 2023 : taux non attribuable sans deviner."
+                )
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+        # L'AIT est « charged and payable on the importation of goods » (s.102B(2)) :
+        # elle entre dans « all import duties and taxes » de la TVA (VAT Act s.28).
+        if any(d.get("code") == "AIT" for d in position.get("droits") or []):
+            for d in position["droits"]:
+                if d.get("code") == "TVA":
+                    d["assiette"] = "CIF+DD+EXC+AIT"
+                    d["assiette_origine"] = "regle_de_pays"
+                    d["note"] = (
+                        "col. 11 — TVA. Assiette : Value Added Tax Act (Cap. 42:02) s.28 : « the import value "
+                        "calculated in accordance with the Customs and Excise Act with the addition of all import "
+                        "duties and taxes, but excluding Value Added Tax » ; l'Advance Income Tax en fait partie : "
+                        "« charged and payable on the importation of goods » (Taxation Act s.102B(2))."
+                    )
+
+
 def _accises_du_cgi(iso, positions):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1757,6 +1799,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _iat_nigeria_2026(positions, compteurs)
     if iso in _taux_tva_legaux():
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
+    if iso == "MWI":
+        _ait_malawi(positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
