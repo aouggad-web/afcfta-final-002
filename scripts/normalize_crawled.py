@@ -1224,8 +1224,21 @@ def normalize_wits_dict(data: dict, iso3: str) -> List[dict]:
     return positions
 
 
+def _taux_tva_legaux() -> dict:
+    """La table TAUX_TVA_LEGAUX de backend/services/tax_profile_data.py, partagée
+    avec scripts/build_socle.py : le socle et l'autre chemin de calcul ne servent
+    pas un taux de TVA que la loi du pays ne connaît pas."""
+    racine = str(Path(__file__).resolve().parent.parent)
+    if racine not in sys.path:
+        sys.path.insert(0, racine)
+    from backend.services.tax_profile_data import TAUX_TVA_LEGAUX
+
+    return TAUX_TVA_LEGAUX
+
+
 def normalize_nga(data: dict, iso3: str) -> List[dict]:
     """Normalise le schéma NGA (Nigeria Customs Service)."""
+    regle_tva = _taux_tva_legaux().get(iso3)
     positions = []
     for pos in data.get("positions", []):
         code_clean = clean_code(pos.get("code_clean", pos.get("code_raw", "")))
@@ -1253,6 +1266,13 @@ def normalize_nga(data: dict, iso3: str) -> List[dict]:
             elif code == "IAT":
                 canonical = "IAT"
 
+            # Un taux de TVA que la loi ne connaît pas n'est pas servi : il reste
+            # à compléter, la valeur collectée gardée dans raw_value.
+            note = None
+            if canonical == "TVA" and regle_tva and rate_pct is not None and rate_pct not in regle_tva["taux"]:
+                note = f"{regle_tva['loi']} : taux collecté à vérifier au portail."
+                rate_pct = None
+
             classification = classify_tax(canonical, t.get("name", ""))
             taxes.append({
                 "code": canonical,
@@ -1267,6 +1287,7 @@ def normalize_nga(data: dict, iso3: str) -> List[dict]:
                 "base": "",
                 "source": pos.get("source", ""),
                 "legal_ref": None,
+                **({"note": note} if note else {}),
                 **classification,
             })
 

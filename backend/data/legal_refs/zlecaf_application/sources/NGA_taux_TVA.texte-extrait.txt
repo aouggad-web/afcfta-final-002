@@ -1,0 +1,15 @@
+Nigéria — taux de la TVA : extraits (relevés le 2026-10-08)
+
+Nigeria Tax Act, 2025 (Act No. 7), Official Gazette No. 117, Vol. 112, Lagos, 26th June 2025 — copie de la Gazette publiée par le Lagos State Internal Revenue Service : https://lirs.gov.ng/assets/docs/Gazette%20-%20NIGERIA%20TAX%20ACT,%202025.pdf (sha256 f15edd3bc428d03fddbac7dae9d5c7025c161bc02a04e42e3123975553965b91).
+
+148. Subject to the provisions of Part IV of Chapter Eight of this Act, VAT shall be charged on the value of all taxable supplies at the rate of 7.5%.
+
+PART IV - EXEMPTION FROM VALUE ADDED TAX
+186.(1) The following supplies are exempt from the VAT imposed under Chapter Six of this Act – [...]
+
+187. Subject to paragraph 2 of the Thirtenth Schedule to this Act, the following taxable supplies are charged to VAT at the rate of 0% – [...]
+
+186.(2) Notwithstanding the provisions of Chapter Six of this Act, VAT shall not be collected on the items specified in paragraph 1 of the Eleventh Schedule to this Act except where the Minister by an order, published in the Official Gazette, specifies the date of collection of VAT on the items listed in the order.
+
+Eleventh Schedule, Sections 186 (2) — ITEMS ON WHICH TAX IS SUSPENDED UNDER THIS ACT
+1. Charging and collection of VAT on the following items shall commence on the date indicated by the Minister, or suspended where it is expedient to do so in the public interest, by an order issued in the Official Gazette – (a) petroleum products; (b) renewable energy equipment; (c) compressed natural gas (CNG); (d) Liquefied Petroleum Gas (LPG); and (e) other gaseous hydrocarbons.

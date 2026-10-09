@@ -571,20 +571,23 @@ def test_calculator_keeps_existing_root_sub_position_tax_precedence(monkeypatch,
 
 
 @pytest.mark.parametrize(
-    "iso3, raw_taxes",
+    "iso3, raw_taxes, tva",
     [
-        ("CIV", {"DD": 99.0, "TVA": 99.0}),
+        ("CIV", {"DD": 99.0, "TVA": 99.0}, 99),
         (
             "NGA",
             [
                 {"code": "ID", "name": "Import Duty", "rate_pct": 99.0},
-                {"code": "VAT", "name": "Value Added Tax", "rate_pct": 99.0},
+                # TVA légale au Nigéria (7,5 %) : un autre taux n'est pas servi
+                # (TAUX_TVA_LEGAUX).
+                {"code": "VAT", "name": "Value Added Tax", "rate_pct": 7.5},
             ],
+            7.5,
         ),
     ],
 )
 def test_calculator_uses_collected_rates_for_scalar_and_list_schemas(
-    monkeypatch, tmp_path, iso3, raw_taxes
+    monkeypatch, tmp_path, iso3, raw_taxes, tva
 ):
     parent_line = {
         "hs6": "010121",
@@ -627,9 +630,9 @@ def test_calculator_uses_collected_rates_for_scalar_and_list_schemas(
     result = service.calculate_import_taxes(iso3, "0101210000", 1_000)
 
     assert result["rates"]["dd_rate_pct"] == 99
-    assert result["rates"]["vat_rate_pct"] == 99
+    assert result["rates"]["vat_rate_pct"] == tva
     assert result["taxes_detail"]["DD"]["rate"] == 99
-    assert result["taxes_detail"]["TVA"]["rate"] == 99
+    assert result["taxes_detail"]["TVA"]["rate"] == tva
 
 
 @pytest.mark.parametrize(
