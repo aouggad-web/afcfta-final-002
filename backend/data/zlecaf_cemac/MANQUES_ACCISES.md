@@ -40,6 +40,7 @@ le corrigerait.
 |---|---|---|
 | Source : loi de finances 2026 (loi n° 42-2025, art. 2 et 8 nouveaux), lue sur le PDF du ministère des Finances | — | Fait (fiche COG_droit_accises_2026-10-09.json) |
 | Motocycles : taxés à 25 % par l'art. 8 (1) c, mais retirés de la liste de l'art. 2 (son point d vise désormais les confiseries) | Accise portée sans taux sur tout le 87.11 : PARTIEL | Confirmer quels motocycles sont soumis (DGID / douane) |
+| Alcool éthylique (22.07) : « boissons alcoolisées » du chapitre 22 ou non, la loi ne le dit pas | Accise portée sans taux : PARTIEL | Confirmer (DGID / douane) |
 | Boissons de la position 22.02.90 : boissons énergisantes (10 %) mêlées à des boissons non visées | Accise portée sans taux : PARTIEL | Nomenclature nationale ou question à l'utilisateur |
 | Cosmétiques, produits alimentaires de luxe, bijoux, armes, appareils de jeux : taux de 25 % à l'art. 8 (50 % à l'hydroquinone) mais absents de la liste de l'art. 2 | Droit porté sans taux : PARTIEL | Confirmer l'assujettissement (DGID / douane) |
 | Véhicules de tourisme : neufs ≤ 3 000 cm3 exonérés, l'état neuf ou d'occasion n'est pas dans la position | Accise portée sans taux sauf 8703.24 : PARTIEL | Champ « neuf / occasion » dans le calculateur |
