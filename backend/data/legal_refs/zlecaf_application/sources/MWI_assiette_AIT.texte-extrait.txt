@@ -23,3 +23,7 @@ Delete the words "under sections 90 and 91 of this Act" immediately after the wo
 6. Value Added Tax Act (Cap. 42:02), consolidation Laws.Africa au 31 décembre 2014 (https://media.malawilii.org/files/legislation/akn-mw-act-2005-7-eng-2014-12-31.pdf, sha256 643514d4ab8f00af00c75384886bddf1e6d0b2e7728cf88012b6fb1e66587bef ; même extrait que sources/MWI_assiette_accise_TVA.texte-extrait.txt) :
 
 28. Taxable value for determining Value Added Tax on imported goods The value for determining the tax chargeable on taxable imports shall be the import value calculated in accordance with the Customs and Excise Act with the addition of all import duties and taxes, but excluding Value Added Tax. [Cap. 42:01]
+
+7. Malawi Revenue Authority, avis « Implementation of Advance Income Tax on Imports », 22 avril 2022 (page https://www.mra.mw/press-releases/implementation-of-advance-income-tax-on-imports ; copie PDF rendue de la page par le déposant, PR #606, sha256 5dbfe4bdfc9a88f19ab73bf17fe39a0216ae1639945360ae9214d0d1054f19bf) :
+
+The Malawi Revenue Authority (MRA) is advising the business community and the public that from 1st May, 2022 the Customs and Excise Division will start implementing Advance Income Tax (AIT). [...] Advance income tax will be computed at entry point at the rate of 3% of the Value for Duty Purpose (VDP).
