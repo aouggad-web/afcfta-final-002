@@ -1250,11 +1250,18 @@ def _ordre_ethiopie(positions):
 
 
 def _droits_livre_ethiopie(positions, compteurs):
-    """Éthiopie : droit de douane absent du portail, repris du livre tarifaire du
-    ministère des Finances (édition révisée de 2021, fiche
-    ETH_droits_livre_tarifaire_2021-10-07.json). Le portail, plus récent, prime
-    partout où il publie un taux : le livre ne comble que ses cases vides, et
-    seulement là où la sous-position n'a pas changé de portée en SH 2022."""
+    """Éthiopie : droit de douane perdu à la collecte, rétabli par le livre
+    tarifaire du ministère des Finances (édition révisée de 2021, fiche
+    ETH_droits_livre_tarifaire_2021-10-07.json) quand le livre le dit nul.
+
+    La collecte du 05/07/2026 écartait chaque droit publié à 0 %
+    (`tax_values[i] > 0`, voir .github/workflows/veille_eth_crawl.yml) : sa
+    case vide est un 0 % du portail, pas un taux absent. Le livre le confirme,
+    « Free » sur 96 % de ces positions contre 0,4 % ailleurs. Il ne comble donc
+    que ses « Free ». Un taux non nul du livre contredit le 0 % que le portail
+    publiait très probablement : le droit reste à compléter, le conflit en
+    note, jusqu'à une collecte fraîche. Une sous-position dont la portée a
+    changé en SH 2022 n'est pas comblée."""
     with open(LIVRE_TARIFAIRE_ETH, encoding="utf-8") as f:
         livre = {r["code"].replace(".", ""): r["taux"] for r in csv.DictReader(f)}
     # Le livre est en SH 2017, le portail en SH 2022 : une sous-position dont la
@@ -1272,10 +1279,20 @@ def _droits_livre_ethiopie(positions, compteurs):
             taux = livre.get(code[:8])
             if d.get("code") != "DD" or d.get("taux") is not None or taux in (None, "Prohibited"):
                 continue
-            d["taux"] = 0.0 if taux == "Free" else float(taux.rstrip("%"))
             d["libelle"] = "Droit de douane"
+            ligne = f"{code[:4]}.{code[4:8]}"
+            if taux != "Free":
+                d["note"] = (
+                    "Droit écarté par la collecte du portail, qui omettait les taux à 0 % ; "
+                    f"le livre tarifaire 2021 porte {taux.rstrip('%')} % sous {ligne} : à vérifier au portail."
+                )
+                continue
+            d["taux"] = 0.0
             d["source"] = "Livre tarifaire du ministère des Finances, édition révisée 2021"
-            d["note"] = "Taux absent du portail douanier, repris du livre tarifaire 2021 : il a pu être modifié depuis."
+            d["note"] = (
+                "Droit écarté par la collecte du portail, qui omettait les taux à 0 % ; "
+                f"« Free » au livre tarifaire 2021 sous {ligne}."
+            )
             compteurs["taux_indisponibles"] -= 1
 def _iat_nigeria_2026(positions, compteurs):
     """Nigéria : IAT de la Customs, Excise Tariff, Etc. (Variation) Order 2026
@@ -1314,6 +1331,27 @@ def _iat_nigeria_2026(positions, compteurs):
                         "au portail : vraisemblablement l'IAT mal rangée, non servie deux fois."
                     )
                     compteurs["taux_indisponibles"] += 1
+
+
+def _taux_tva_legaux():
+    """La table TAUX_TVA_LEGAUX de backend/services/tax_profile_data.py."""
+    if REPO not in sys.path:
+        sys.path.insert(0, REPO)
+    return importlib.import_module("backend.services.tax_profile_data").TAUX_TVA_LEGAUX
+
+
+def _taux_tva_hors_la_loi(regle, positions, compteurs):
+    """Un taux de TVA collecté que la loi du pays ne connaît pas (1 % ou 17,5 %
+    sur quelques positions du portail nigérian) n'est pas servi : la TVA reste
+    à compléter, avec le taux collecté en note. Fiche : regle["fiche"]."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "TVA" or d.get("taux") is None or d["taux"] in regle["taux"]:
+                continue
+            taux_lu = f"{d['taux']:g}".replace(".", ",")
+            d["note"] = f"Taux de TVA collecté au portail : {taux_lu} %. {regle['loi']} : à vérifier au portail."
+            d["taux"] = None
+            compteurs["taux_indisponibles"] += 1
 
 
 def _ait_malawi(positions, compteurs):
@@ -1759,6 +1797,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ordre_tunisie(positions)
     if iso == "NGA":
         _iat_nigeria_2026(positions, compteurs)
+    if iso in _taux_tva_legaux():
+        _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
         _ait_malawi(positions, compteurs)
     if iso == "ETH":

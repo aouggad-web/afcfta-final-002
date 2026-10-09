@@ -1,5 +1,6 @@
-"""Éthiopie : droit de douane absent du portail, repris du livre tarifaire 2021 du
-ministère des Finances. Fiche : ETH_droits_livre_tarifaire_2021-10-07.json."""
+"""Éthiopie : droit de douane à 0 % perdu à la collecte du portail, rétabli là où
+le livre tarifaire 2021 du ministère des Finances le dit « Free ». Fiche :
+ETH_droits_livre_tarifaire_2021-10-07.json."""
 
 import json
 import os
@@ -23,10 +24,32 @@ def _dd(position):
 
 
 def test_reproducteurs_droit_du_livre(positions):
-    """0101.2100 : absent du portail, « Free » au livre (page 1)."""
+    """0101.2100 : 0 % écarté par la collecte, « Free » au livre (page 1)."""
     dd = _dd(positions["01012100000"])
     assert dd["taux"] == 0.0 and dd["source"].startswith("Livre tarifaire")
+    assert "omettait les taux à 0 %" in dd["note"]
     assert calculer(positions["01012100000"], 1000, devise_position="ETB")["npf"]["etat"] == COMPLET
+
+
+def test_un_taux_non_nul_du_livre_n_est_pas_servi(positions):
+    """0404.1000 (lactosérum) : la collecte a perdu le droit, qui était très
+    probablement un 0 % du portail ; le livre de 2021 porte 5 %. Le conflit est
+    nommé, le droit reste à compléter plutôt que servi à 5 %."""
+    dd = _dd(positions["04041000000"])
+    assert dd["taux"] is None
+    assert "le livre tarifaire 2021 porte 5 %" in dd["note"]
+    assert calculer(positions["04041000000"], 1000, devise_position="ETB")["npf"]["etat"] != COMPLET
+
+
+def test_seuls_les_free_du_livre_sont_repris(positions):
+    """Aucun droit repris du livre n'est servi à un autre taux que 0 %."""
+    repris = [
+        d["taux"]
+        for p in positions.values()
+        for d in p["droits"]
+        if d["code"] == "DD" and str(d.get("source", "")).startswith("Livre tarifaire")
+    ]
+    assert repris and set(repris) == {0.0}
 
 
 def test_le_portail_prime_sur_le_livre(positions):

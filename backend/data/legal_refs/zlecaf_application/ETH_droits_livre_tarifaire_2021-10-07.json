@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "objet": "Éthiopie : droits de douane à l'importation du livre tarifaire du ministère des Finances (édition révisée 2021), repris là où le portail douanier n'en publie pas",
+  "objet": "Éthiopie : droits de douane à 0 % perdus à la collecte du portail douanier, rétablis là où le livre tarifaire du ministère des Finances (édition révisée 2021) les dit « Free »",
   "destination_iso3": "ETH",
   "verified_at": "2026-10-07",
   "etabli": true,
@@ -14,19 +14,20 @@
     "valeur": "Droit de douane ad valorem par position à 8 chiffres (Free, 5 %, 15 %, 25 %, 35 %, ou Prohibited), colonne (6) « Duty Rate » du livre.",
     "verbatim": "0101.21 0101.2100 -- Pure-bred breeding animals U Free ; 4822.1000 - Of a kind used for winding textile yarn kg 25%",
     "reference": "Livre tarifaire du ministère des Finances, colonnes (3) Tariff Item No. et (6) Duty Rate",
-    "portee": "scripts/build_socle._droits_livre_ethiopie (seul socle ETH) : comble le droit de douane des positions où le portail douanier n'en publie pas (1 132 positions, rapprochées par les 8 premiers chiffres du code national), sauf si leur sous-position SH6 figure à la table I de l'OMD (portée modifiée entre SH 2017 et SH 2022 : 59 positions écartées) ; le portail, plus récent, prime partout ailleurs. Positions servies COMPLET : 4 928 → 6 057.",
+    "portee": "scripts/build_socle._droits_livre_ethiopie (seul socle ETH). La collecte du 05/07/2026 écartait chaque droit publié à 0 % (.github/workflows/veille_eth_crawl.yml) : 1 368 positions ont ainsi perdu leur droit de douane. Le livre ne comble que celles qu'il dit « Free » (1 088 positions, rapprochées par les 8 premiers chiffres du code national), sauf si leur sous-position SH6 figure à la table I de l'OMD (portée modifiée entre SH 2017 et SH 2022 : 59 positions écartées). Quand il porte un taux non nul (44 positions), le droit reste à compléter, le conflit en note, avec la ligne du livre en cause (le rapprochement par 8 chiffres peut viser une ligne renumérotée depuis 2021). Le portail, plus récent, prime partout où il publie un taux. Positions servies COMPLET : 4 928 → 6 013.",
     "texte_archive": "sources/ETH_livre_tarifaire_2021.droits.csv",
     "sha256": "35e83244f0dc844c0614570811dfaa07fdeaab5a2d8312ae409cf8b6940b6d66"
   },
   "decisions": [
     "Relevé fait directement sur le texte du PDF, et non sur les tableaux fournis : le tableau de la PR #605 porte environ 110 cellules polluées par des pourcentages tirés des descriptions (ex. 0401.1000 « 1%35% » pour 35 %), celui du Drive omet 30 chapitres.",
     "Corrections de lecture : unité « l » imprimée « 1 » (chapitre 22), coquille « Feee » (1702.5000), code sans point 39209290, codes coupés par une espace (« 8703. 2150 » : 1504.2090, 8703.2150, 8703.2250, 8703.2315, 8703.2325, 8703.2440, 8703.3314), renvois « Of Tariff Item … » écartés ; 11 positions relues une à une (2716.0000, 2804.1000-4000, 5514.2100, 7319.4000, 8404.9010, 8443.3290, 9504.4000).",
-    "Contrôle : sur les 4 310 positions où portail et livre publient tous deux un taux, 4 053 concordent (94 %).",
-    "Le livre suit le SH 2017, le portail le SH 2022 : les positions dont la sous-position SH6 figure à la table I de corrélation de l'OMD (sources/OMD_correlation_SH2022_SH2017_table_I.pdf, lue par backend/scripts/extraire_concordance_tun.lire_table_i) ne sont pas comblées, leur code à 8 chiffres pouvant désigner un autre produit en 2017."
+    "Contrôle : sur les 4 316 positions où portail et livre publient tous deux un taux, 4 057 concordent (94 %).",
+    "Le livre suit le SH 2017, le portail le SH 2022 : les positions dont la sous-position SH6 figure à la table I de corrélation de l'OMD (sources/OMD_correlation_SH2022_SH2017_table_I.pdf, lue par backend/scripts/extraire_concordance_tun.lire_table_i) ne sont pas comblées, leur code à 8 chiffres pouvant désigner un autre produit en 2017.",
+    "Les cases vides du portail ne sont pas un échantillon au hasard mais les 0 % que la collecte écartait : le livre y dit « Free » sur 1 145 des 1 191 positions rapprochées (96 %), contre 18 sur 4 316 (0,4 %) là où le portail publie un taux, et les 1 368 positions sans droit portent toutes « D2R : 0.0% » au portail. Seuls les « Free » sont donc repris ; un taux non nul du livre (5, 15 ou 25 %) contredirait le 0 % que le portail publiait très probablement, et reste à compléter jusqu'à une collecte fraîche (corrigé le 2026-10-08 ; la première version servait ces 44 taux comme complets)."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Le livre date de 2021 : 257 positions (6 %) ont depuis un taux différent au portail, dans les deux sens. Les taux repris du livre peuvent donc avoir été modifiés pour une part comparable ; chacun porte la mention.",
-    "236 positions restent sans droit de douane : code à 8 chiffres absent du livre, ou sous-position modifiée en SH 2022 (59).",
+    "Le livre date de 2021 : là où portail et livre publient tous deux un taux, 259 positions sur 4 316 diffèrent. Cet écart ne se transpose pas aux positions comblées, qui sont des 0 % perdus à la collecte et que le livre confirme « Free ». Les 44 positions où le livre porte un taux non nul restent à compléter jusqu'à une collecte fraîche du portail (aujourd'hui injoignable).",
+    "280 positions restent sans droit de douane : code à 8 chiffres absent du livre, sous-position modifiée en SH 2022 (59), ou taux du livre non nul en conflit avec le 0 % probable du portail (44).",
     "Le guide GUIDE_TAXES_ETHIOPIE.md de la PR #605 n'est pas utilisé : il contredit les textes archivés (accise sur CIF au lieu de CIF + droit, Proclamation 1186/2020 art. 9(2) ; TVA sous la Proclamation 285/2002, remplacée par la 1341/2024)."
   ],
   "documents_archives": [

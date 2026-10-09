@@ -14,6 +14,7 @@ from services.tax_profile_data import (
     BASE_FOB_TOUTES_TAXES,
     BASE_TVA_TOUTES_TAXES,
     COUNTRY_TAX_PROFILES,
+    TAUX_TVA_LEGAUX,
 )
 
 logger = logging.getLogger(__name__)
@@ -300,6 +301,33 @@ def _find_vat_key(crawled_taxes: dict) -> Optional[str]:
         if _is_vat_code(k):
             return k
     return None
+
+
+def _tva_hors_la_loi(country_iso3, taux) -> bool:
+    """Un taux de TVA collecté que la loi du pays ne connaît pas
+    (TAUX_TVA_LEGAUX : 1 % ou 17,5 % au Nigéria) : il n'est servi ni au calcul
+    ni à la recherche, comme dans le socle."""
+    regle = TAUX_TVA_LEGAUX.get(country_iso3)
+    taux = _parse_crawled_tax_rate(taux)
+    return bool(regle) and taux is not None and taux not in regle["taux"]
+
+
+def _retirer_tva_hors_la_loi(country_iso3, ligne):
+    """Retirer d'une ligne tarifaire un taux de TVA que la loi ne connaît pas :
+    le taux, son détail et le total qui l'inclut. Appliqué au chargement du
+    fichier ETL et aux lignes PostgreSQL ou collectées que sert get_tariff_line."""
+    if not ligne:
+        return ligne
+    retire = _tva_hors_la_loi(country_iso3, ligne.get("vat_rate"))
+    if retire:
+        ligne["vat_rate"] = None
+    for detail in ligne.get("taxes_detail") or []:
+        if _is_vat_code(str(detail.get("tax") or "")) and _tva_hors_la_loi(country_iso3, detail.get("rate")):
+            detail["rate"] = None
+            retire = True
+    if retire and "total_taxes_pct" in ligne:
+        ligne["total_taxes_pct"] = None
+    return ligne
 
 
 def _parse_crawled_tax_rate(value) -> Optional[float]:
@@ -670,6 +698,9 @@ def load_country_tariffs(country_iso3):
 
     if country_iso3 == "TUN":
         _completer_zero_de_tete_tun(data)
+    if country_iso3 in TAUX_TVA_LEGAUX:
+        for ligne in data.get("tariff_lines") or []:
+            _retirer_tva_hors_la_loi(country_iso3, ligne)
     _tariff_cache[country_iso3] = data
     return data
 
@@ -777,7 +808,7 @@ def get_tariff_line(country_iso3, hs_code):
                 ]
                 dd_rate = regulatory.get("taxes", {}).get("dd_rate")
                 vat_rate = regulatory.get("taxes", {}).get("vat_rate", country_info.get("vat_rate"))
-                return {
+                return _retirer_tva_hors_la_loi(country_iso3, {
                     "hs6": hs6,
                     "code": hs_code_clean,
                     "description_fr": regulatory.get("description", ""),
@@ -796,7 +827,7 @@ def get_tariff_line(country_iso3, hs_code):
                     "sub_positions": normalized_sub_positions,
                     "source": "postgres",
                     "data_source": "postgres",
-                }
+                })
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, "postgres-miss")
         except Exception as e:
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, f"postgres-error: {e}")
@@ -810,7 +841,7 @@ def get_tariff_line(country_iso3, hs_code):
     position = load_crawled_position_index(country_iso3).get(hs_code_clean)
     if position and len(hs_code_clean) > 6:
         taxes = _normalise_crawled_tax_details(_position_tax_payload(position))
-        return {
+        return _retirer_tva_hors_la_loi(country_iso3, {
             "hs6": hs6,
             "code": hs_code_clean,
             "description_fr": position.get("description_fr", ""),
@@ -826,7 +857,7 @@ def get_tariff_line(country_iso3, hs_code):
                 "formalities", position.get("administrative_formalities", [])
             ),
             "source": position.get("source"),
-        }
+        })
     return None
 
 
@@ -1200,7 +1231,10 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
     tva = _parse_crawled_tax_rate(taxes.get("TVA"))
     if tva is None:
         tva = _parse_crawled_tax_rate(etl_position.get("vat_rate"))
-    if tva is None:
+    tva_hors_la_loi = _tva_hors_la_loi(country_iso3, tva)
+    if tva_hors_la_loi:
+        tva = None
+    elif tva is None:
         tva = 0.0
     tcs = taxes.get("TCS", {}).get("rate", 0)
     prct = taxes.get("PRCT", {}).get("rate", 0)
@@ -1211,18 +1245,23 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
     cascade_rates = {
         tax_code: details["rate"]
         for tax_code, details in taxes.items()
-        if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] > 0
+        if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] is not None and details["rate"] > 0
     }
     if dd is None:
         cascade_rates.pop("DD", None)
     elif dd > 0:
         cascade_rates["DD"] = dd
-    if tva > 0:
+    if tva_hors_la_loi:
+        cascade_rates.pop("TVA", None)
+    elif tva > 0:
         cascade_rates["TVA"] = tva
     # Métrique de référence par position : FOB = CIF ici (fret nul). Ce taux
     # affiché n'est pas une liquidation — celle-ci exige la valeur FOB réelle
-    # de l'importation (voir compute_tax_cascade, fail-closed).
+    # de l'importation (voir compute_tax_cascade, fail-closed). Sans taux de
+    # TVA servable, aucun total n'est affiché.
     ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3, fob_value=100.0)
+    if tva_hors_la_loi:
+        ref_cascade = {**ref_cascade, "effective_rate_pct": None}
     return {
         "hs6": code[:6],
         "national_code": code,
@@ -2230,6 +2269,14 @@ def calculate_import_taxes(
     #       LF2025 reconduit LF2026), signalée `tva_exoneree`.
     # Une position sans droit de douane ET sans TVA (ex. DZA 1001110000) reste
     # réellement incomplète et garde le garde CALCULATION_UNAVAILABLE.
+    # Un taux que la loi ne connaît pas n'est pas servi : la TVA manque.
+    if _tva_hors_la_loi(country_iso3, vat_rate_pct):
+        vat_rate_pct = None
+    for code in list(taxes_detail.keys()):
+        entree = taxes_detail[code]
+        if _is_vat_code(code) and isinstance(entree, dict) and _tva_hors_la_loi(country_iso3, entree):
+            taxes_detail[code] = {**entree, "rate": None}
+
     tva_exoneree = False
     tva_absente = False
     sens = _sens_de_la_tva_absente(country_iso3, country_data)
