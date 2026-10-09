@@ -91,6 +91,8 @@ def test_congo_taux_de_la_loi_de_finances_2026():
     assert _lignes(positions["22021000"])[1]["DA"]["taux_pct"] == 10.0
     assert _lignes(positions["33049900"])[1]["DA"]["taux_pct"] == 25.0
     assert _lignes(positions["87113000"])[1]["DA"]["taux_pct"] == 25.0
+    assert _lignes(positions["96140000"])[1]["DA"]["taux_pct"] == 30.0
+    assert _lignes(positions["29072200"])[1]["DA"]["taux_pct"] == 50.0
     etat, lignes = _lignes(positions["22071010"])
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     etat, lignes = _lignes(positions["52081100"])

@@ -16,6 +16,13 @@
   },
   {
    "prefixes": [
+    "290722"
+   ],
+   "taux": 50.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) f (hydroquinone), 50 % ; produits visés par l'art. 8 soumis selon l'instruction d'application de la LF 2025"
+  },
+  {
+   "prefixes": [
     "2203",
     "2204",
     "2205",
@@ -39,6 +46,13 @@
    ],
    "taux": 30.0,
    "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 b (tabacs, chapitre 24, sans changement) ; art. 8 (1) e, 30 %"
+  },
+  {
+   "prefixes": [
+    "9614"
+   ],
+   "taux": 30.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) e (tabac, pipe et accessoires), 30 % ; produits visés par l'art. 8 soumis selon l'instruction d'application de la LF 2025"
   },
   {
    "prefixes": [
