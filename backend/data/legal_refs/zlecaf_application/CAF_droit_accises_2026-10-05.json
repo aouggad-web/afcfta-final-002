@@ -22,7 +22,7 @@
     "Caviar (1604.30) et foie gras (1602.20.10) : positions partagées avec les succédanés et autres préparations ; droit porté sans taux. Alcool éthylique (22.07) : non retenu comme boisson."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Art. 292 : « Les montants et taux des droits d'accises sont fixés par la loi de finances » ; les taux du CGI sont des minimums. Les lois de finances 2024 à 2026 n'ont pas été lues.",
+    "Art. 292 : « Les montants et taux des droits d'accises sont fixés par la loi de finances » ; les taux du CGI sont des minimums. Les lois de finances 2025 (texte publié par le ministère des Finances, sha256 9e43ac243f2e17bdd040b1a38dc9badd3314fb0607814b556302d7298b23335f) et 2026 (loi n° 25.015, PDF en deux parties, sha256 238d0f8a3df19292f75bf6f35913cb874197400e82f9ba4d5acbf4ec57d41e60 et 122b35b3b0d23e7fdd18cf1371e3a5f0008942bfd6d9052909487fa304b440a7, relu en entier le 2026-10-09) ne modifient pas les art. 289 bis à 293 ni l'annexe : les taux du CGI restent ceux servis. La loi de finances 2024 n'a pas été lue.",
     "L'art. 291 (2) arrondit la base au millier de francs inférieur : l'arrondi n'est pas appliqué.",
     "Le crawl assoyait la TVA sur CIF + DD + TCI ; l'art. 253 retient valeur + DD + accise.",
     "Position 22.06 : aucune ligne dans le socle CAF."
