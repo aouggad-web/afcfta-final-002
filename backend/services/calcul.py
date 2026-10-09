@@ -57,7 +57,11 @@ Trois règles gouvernent tout le reste :
    position qui n'a simplement rien à liquider en TVA — indiscernable d'un
    pays qui exonère réellement le produit. La couverture du pays (transmise en
    ``couverture``) dégrade alors l'état à ``PARTIEL`` et nomme la famille non
-   tracée, avant même de calculer une économie.
+   tracée, avant même de calculer une économie. À l'inverse, un pays qui
+   publie une TVA sur ses autres positions et n'en porte aucune sur celle-ci
+   ne l'a pas exonérée pour autant : la position est ``PARTIEL``
+   (``TVA_NON_PUBLIEE_POUR_LA_POSITION``). Une exonération réelle s'écrit au
+   socle comme une ligne TVA à 0 % avec sa source.
 """
 
 from __future__ import annotations
@@ -120,6 +124,13 @@ MANQUE_REGLE_COMPOSEE = "REGLE_COMPOSEE_NON_ETABLIE"
 #: 0102.29 : D.S.V. par tête, prélèvement viande au kilo). Une seule quantité
 #: saisie ne peut pas servir les deux : aucun n'est liquidé.
 MANQUE_UNITES = "UNITES_DE_QUANTITE_MULTIPLES"
+#: Le pays publie une TVA, mais pas pour cette position : la source ne dit pas
+#: si elle est exonérée ou simplement non reprise. Le Maroc en compte 528, la
+#: Côte d'Ivoire 635 (audit du 2026-10-09, point 2) — MAR/8413704000 rendait
+#: 250 de droits « COMPLET » là où la TVA en ajoute environ 2 000. Une
+#: exonération se trace au socle par une ligne TVA à 0 % qui porte sa source ;
+#: son absence pure n'est pas une exonération.
+MANQUE_TVA_NON_PUBLIEE = "TVA_NON_PUBLIEE_POUR_LA_POSITION"
 
 
 def _facteur_devise_specifique(
@@ -783,6 +794,10 @@ def _liquider(
         for cle, famille in FAMILLES_COUVERTURE.items():
             if couverture.get(cle) is False and famille not in familles_presentes:
                 manques.append({"code": famille.upper(), "motif": "NON_TRACEE_A_LA_SOURCE"})
+        # Le pays trace une TVA, mais aucune ligne TVA ne figure sur cette
+        # position : absence, pas exonération (voir MANQUE_TVA_NON_PUBLIEE).
+        if couverture.get("tva") is True and FAMILLE_TVA not in familles_presentes:
+            manques.append({"code": FAMILLE_TVA.upper(), "motif": MANQUE_TVA_NON_PUBLIEE})
 
     total = sum(d["montant"] for d in calcules)
     if not lignes:

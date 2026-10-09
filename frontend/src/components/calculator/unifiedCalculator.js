@@ -41,11 +41,15 @@ function ligneParCode(lignes) {
  * présente mais non liquidée invalide le total (`null`, pas une somme
  * amputée) ; une famille absente des lignes ET absente à la source
  * (`manques`, motif `NON_TRACEE_A_LA_SOURCE` — la dégradation que
- * `services/calcul.py` applique déjà à `etat`) rend `null` plutôt que `0`.
+ * `services/calcul.py` applique déjà à `etat`), ou absente de la seule
+ * position alors que le pays la publie ailleurs (`TVA_NON_PUBLIEE_POUR_LA_POSITION`),
+ * rend `null` plutôt que `0`.
  */
+const MOTIFS_FAMILLE_ABSENTE = ['NON_TRACEE_A_LA_SOURCE', 'TVA_NON_PUBLIEE_POUR_LA_POSITION'];
+
 function familleNonTracee(manques, famille) {
   return (manques || []).some(
-    (m) => m.code === famille.toUpperCase() && m.motif === 'NON_TRACEE_A_LA_SOURCE'
+    (m) => m.code === famille.toUpperCase() && MOTIFS_FAMILLE_ABSENTE.includes(m.motif)
   );
 }
 

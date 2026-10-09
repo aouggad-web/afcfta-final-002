@@ -19,6 +19,7 @@ from services.calcul import (
     MANQUE_COMPOSANT,
     MANQUE_QUANTITE,
     MANQUE_TAUX,
+    MANQUE_TVA_NON_PUBLIEE,
     PARTIEL,
     calculer,
 )
@@ -576,6 +577,34 @@ def test_une_famille_deja_presente_n_est_pas_signalee_en_plus():
         position(droit("DD", 20, "CIF", "droit"), droit("TVA", 14, "CIF", "tva")),
         1000,
         couverture={"droit": True, "tva": False},
+    )
+    assert r["npf"]["etat"] == COMPLET
+    assert r["npf"]["manques"] == []
+
+
+def test_une_position_sans_tva_dans_un_pays_qui_en_publie_est_partielle():
+    # MAR/8413704000 : DD 2,5 % et TPI 0 %, aucune ligne TVA alors que le
+    # Maroc en publie une sur ses autres positions. Rendu « COMPLET » à 250,
+    # le total omettait une TVA dont la source ne dit pas qu'elle est exonérée.
+    r = calculer(
+        position(droit("DD", 2.5, "CIF", "droit"), droit("TPI", 0, "CIF", "autre")),
+        10000,
+        couverture={"droit_de_douane": True, "tva": True},
+    )
+    assert r["npf"]["etat"] == PARTIEL
+    assert {"code": "TVA", "motif": MANQUE_TVA_NON_PUBLIEE} in r["npf"]["manques"]
+
+
+def test_une_exoneration_sourcee_reste_complete():
+    # L'exonération s'écrit au socle comme une ligne TVA à 0 % avec sa
+    # source : elle se distingue ainsi d'une TVA simplement non publiée.
+    r = calculer(
+        position(
+            droit("DD", 2.5, "CIF", "droit"),
+            droit("TVA", 0, "CIF+DD", "tva", source="texte d'exonération (exemple)"),
+        ),
+        10000,
+        couverture={"droit_de_douane": True, "tva": True},
     )
     assert r["npf"]["etat"] == COMPLET
     assert r["npf"]["manques"] == []
