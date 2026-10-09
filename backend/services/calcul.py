@@ -109,12 +109,11 @@ MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
 #: ne vaut jamais la valeur CIF — déduire le fret de celle-ci en inventerait
 #: une. Voir la primitive ``FOB`` en tête de module.
 MANQUE_FOB = "VALEUR_FOB_REQUISE"
-#: Le tarif publie DEUX composantes pour un même droit — « 40% or 240c/kg »,
-#: sur 140 positions sud-africaines — sans que la source dise laquelle
-#: s'applique. Le crawl a délibérément gardé le verbatim sans trancher ; le
-#: socle ne tranche pas davantage. Servir la seule part ad valorem donnerait un
-#: montant crédible et possiblement faux : sur la position 020110, la part
-#: spécifique l'emporte dès que la valeur unitaire passe sous 6,00 ZAR/kg.
+#: Le tarif publie DEUX composantes pour un même droit sans que la règle qui
+#: les départage soit établie (« 30% or 500c/2u », chaussures SACU, par paire).
+#: Servir la seule part ad valorem donnerait un montant crédible et possiblement
+#: faux. « 40% or 240c/kg » ne relève plus de ce cas : les General Notes SARS
+#: (B.3) retiennent la plus élevée, et le socle le marque (regle_composee).
 MANQUE_REGLE_COMPOSEE = "REGLE_COMPOSEE_NON_ETABLIE"
 #: Une position porte deux droits spécifiques dans deux unités (Tunisie
 #: 0102.29 : D.S.V. par tête, prélèvement viande au kilo). Une seule quantité
@@ -522,8 +521,8 @@ def _liquider(
             # élevée — ou la moins élevée — des deux composantes, et la ligne
             # dira laquelle a mordu.
             #
-            # À ne pas confondre avec « 40% or 240c/kg » (SARS), qui ne dit PAS
-            # laquelle s'applique : celui-là reste refusé, juste en dessous.
+            # « 40% or 240c/kg » (SARS) en relève aussi : la règle est dans les
+            # General Notes du Schedule No. 1 (B.3), et le socle la reporte.
             compose_departage = droit["regle_composee"]
         elif taux is not None and specifique is not None:
             # Deux composantes : soit un composé (« or »), soit un cumul que le

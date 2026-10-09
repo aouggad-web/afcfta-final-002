@@ -687,9 +687,9 @@ def _vient_de_wits(source) -> bool:
 #: 25 %/200 $ la tonne (154), 100 %/460 $ (63), 75 %/345 $ (35) et
 #: 35 %/0,40 $ le kilo (21) — sans une seule forme non reconnue.
 #:
-#: Ce cas se distingue nettement du « 40% or 240c/kg » sud-africain, que le
-#: socle REFUSE de liquider : celui-là ne dit pas laquelle des deux composantes
-#: s'applique, celui-ci le dit — « whichever is higher ».
+#: Ici la règle est dans l'expression — « whichever is higher ». Pour le
+#: « 40% or 240c/kg » sud-africain, elle est dans les General Notes SARS (B.3) :
+#: voir MOTIF_COMPOSE_SARS.
 MOTIF_COMPOSE_DESIGNATION = re.compile(
     r"([\d]+(?:[.,][\d]+)?)\s*%\s*or\s*(?:\$|USD|US\$)\s*([\d]+(?:[.,][\d]+)?)\s*/\s*"
     r"(MT|kg|t|L)\b\s*whichever\s+is\s+(higher|lower)",
@@ -697,6 +697,13 @@ MOTIF_COMPOSE_DESIGNATION = re.compile(
 )
 
 REGLES_COMPOSEES = {"higher": "LE_PLUS_ELEVE", "lower": "LE_MOINS_ELEVE"}
+
+#: Tarif SARS (SACU) : « 40% or 240c/kg ». La règle n'est pas dans la colonne mais
+#: dans les General Notes du Schedule No. 1, partie B, note 3 : chaque partie
+#: séparée par « or » est un taux complet, et s'applique « such rate of duty
+#: yielding the higher or highest amount of duty ». Seule la forme simple au kilo
+#: est retenue : « 500c/2u » (la paire) et « 55c/kg less 90% » restent non tranchés.
+MOTIF_COMPOSE_SARS = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*%\s*or\s*(\d{1,3}(?: \d{3})+|\d+(?:,\d+)?)c/kg\s*$")
 
 
 def droit_compose_depuis_designation(designation, source):
@@ -851,9 +858,9 @@ def droits_depuis_liste(taxes, source_defaut):
         # liquidait donc 96 % ad valorem là où le droit dû est 450c/kg, soit
         # environ 9 % pour du lait en poudre à 50 ZAR/kg : un facteur dix.
         #
-        # « 40% or 240c/kg » (94 positions) est l'autre forme, et celle-là ne
-        # dit pas laquelle des deux composantes s'applique. Elle reste non
-        # tranchée ; voir `compose`.
+        # « 40% or 240c/kg » (94 positions) est l'autre forme : la colonne ne dit
+        # pas laquelle des deux composantes s'applique, les General Notes SARS
+        # (B.3) le disent ; voir `compose` et MOTIF_COMPOSE_SARS.
         plafond_ad_valorem = None
         brut = str(row.get("raw_value") or "")
         borne = re.search(r"maximum of\s+([\d]+(?:[.,][\d]+)?)\s*%", brut, re.I)
@@ -863,6 +870,11 @@ def droits_depuis_liste(taxes, source_defaut):
             compose = False
         if specifique and row.get("rate_pct") is None:
             taux = None
+        compose_sars = MOTIF_COMPOSE_SARS.match(brut) if compose else None
+        if compose_sars:
+            # « 2 500c/kg » : la collecte a perdu le chiffre avant l'espace des
+            # milliers (« 500c/kg ») ; la part spécifique se relit sur le verbatim.
+            specifique = compose_sars.group(1).replace(" ", "") + "c/kg"
         # « 40% + US$0.50/L » (Zimbabwe, 356 droits) ou « 15%+SCR5.13/kg »
         # (Seychelles, 5) : le « + » de la source rend les DEUX composantes
         # dues. Sans ce marqueur, le moteur liquidait la seule part ad valorem
@@ -903,6 +915,13 @@ def droits_depuis_liste(taxes, source_defaut):
             regle = REGLES_COMPOSEES.get(str(row.get("compound_rule") or "").lower())
             if regle:
                 out[-1]["regle_composee"] = regle
+            elif compose_sars:
+                out[-1]["regle_composee"] = "LE_PLUS_ELEVE"
+                out[-1]["note"] = (
+                    "SARS, Schedule No. 1, General Notes, B.3 : « each such part shall be deemed to be a separate "
+                    "and complete rate of duty and such rate of duty yielding the higher or highest amount of duty "
+                    "shall be applicable »."
+                )
     return out
 
 
@@ -1521,8 +1540,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     # (« 40% or 240c/kg » — 140 entrées AfCFTA du crawl SARS) :
                     # les DEUX composantes se conservent, avec le verbatim.
                     # Servir 40 % ad valorem seul remplacerait le droit composé
-                    # entier et nierait la liquider : c'est au moteur de
-                    # refuser faute de règle de départage
+                    # entier : c'est au moteur de départager selon la règle
+                    # reportée (regle_composee), ou de refuser faute de règle
                     # (REGLE_COMPOSEE_NON_ETABLIE), pas au socle d'amputer.
                     prefs[regime] = {
                         "taux": d["taux"],
@@ -1535,6 +1554,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         "compose": True,
                         "expression_brute": d.get("expression_brute") or "",
                     }
+                    if d.get("regle_composee"):
+                        prefs[regime]["regle_composee"] = d["regle_composee"]
                     if d.get("cumulatif"):
                         # « 7%+SCR5/kg » (Seychelles, colonnes ZLECAf, SADC,
                         # COMESA) : les deux composantes sont dues, comme au NPF.

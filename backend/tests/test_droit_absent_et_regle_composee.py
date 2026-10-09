@@ -231,14 +231,35 @@ def test_deux_devises_ne_se_comparent_pas_sans_taux_de_change(client):
 
 
 @besoin_socle
-def test_la_regle_muette_sud_africaine_reste_refusee(client):
-    """Non-régression : « 40% or 240c/kg » ne dit pas laquelle s'applique.
+def test_la_regle_or_sud_africaine_suit_la_note_b3(client):
+    """« 40% or 240c/kg » : chaque part est un taux complet et la plus élevée
+    s'applique (SARS, Schedule No. 1, General Notes, B.3 ; fiche
+    SACU_regle_or_B3_2026-10-09.json). Base FOB (SACU)."""
 
-    Le départage ajouté ici ne vaut QUE pour les barèmes qui énoncent leur
-    règle. Celui-là ne l'énonce pas et doit continuer d'être refusé.
-    """
+    def dd(quantite):
+        reponse = client.post(
+            "/calcul",
+            json={
+                "destination": "ZAF",
+                "code_sh": "020110",
+                "valeur_cif": 10000,
+                "valeur_fob": 9000,
+                "quantite": quantite,
+            },
+        )
+        return next(l for l in reponse.json()["npf"]["lignes"] if l["code"] == "DD")
+
+    assert (dd(100)["statut"], dd(100)["montant"]) == ("CALCULE", 3600.0)  # 40 % de 9 000 > 240 R
+    assert dd(5000)["montant"] == 12000.0  # 2,40 R × 5 000 kg > 3 600 R
+
+
+@besoin_socle
+def test_la_paire_de_chaussures_reste_refusee(client):
+    """« 30% or 500c/2u » : la part spécifique est due par paire, quantité que le
+    moteur ne demande pas encore — la position reste non liquidée."""
     reponse = client.post(
-        "/calcul", json={"destination": "ZAF", "code_sh": "020110", "valeur_cif": 10000}
+        "/calcul",
+        json={"destination": "ZAF", "code_sh": "640219", "valeur_cif": 10000, "valeur_fob": 9000, "quantite": 10},
     )
     ligne = next(l for l in reponse.json()["npf"]["lignes"] if l["code"] == "DD")
     assert ligne["statut"] == "REGLE_COMPOSEE_NON_ETABLIE"
