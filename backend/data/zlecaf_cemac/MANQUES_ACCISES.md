@@ -41,7 +41,8 @@ le corrigerait.
 | Source : loi de finances 2026 (loi n° 42-2025, art. 2 et 8 nouveaux), lue sur le PDF du ministère des Finances | — | Fait (fiche COG_droit_accises_2026-10-09.json) |
 | « Produits alimentaires de luxe » : liste non donnée par la loi ; cosmétiques à l'hydroquinone (50 %) non distingués dans la position | Luxe : accise portée sans taux ; hydroquinone : taux général 25 % servi | Liste et composition à préciser (DGID / douane) |
 | Alcool éthylique (22.07) : « boissons alcoolisées » du chapitre 22 ou non, la loi ne le dit pas | Accise portée sans taux : PARTIEL | Confirmer (DGID / douane) |
-| Boissons de la position 22.02.90 : boissons énergisantes (10 %) mêlées à des boissons non visées | Accise portée sans taux : PARTIEL | Nomenclature nationale ou question à l'utilisateur |
+| Boissons des positions 22.02.10 et 22.02.90 : soda, boissons sucrées et énergisantes (10 %) mêlés à des eaux aromatisées et boissons non visées | Accise portée sans taux : PARTIEL | Nomenclature nationale ou question à l'utilisateur |
+| Billards et autres jeux (95.04.20, 95.04.90) : appareils de jeux (25 %) ou articles de jeu, non dit | Accise portée sans taux : PARTIEL | Confirmer (DGID / douane) |
 | Véhicules de tourisme : neufs ≤ 3 000 cm3 exonérés, l'état neuf ou d'occasion n'est pas dans la position | Accise portée sans taux sauf 8703.24 : PARTIEL | Champ « neuf / occasion » dans le calculateur |
 | Base arrondie au millier de francs inférieur (art. 7 (2)) | Non appliqué : écart inférieur à 1 000 F | Arrondi dans le moteur si demandé |
 | Position 22.06 absente du socle COG | Boissons fermentées sans droit ni accise | Recollecter le TEC |

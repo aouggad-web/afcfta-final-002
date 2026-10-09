@@ -77,7 +77,7 @@ COG = os.path.join(os.path.dirname(SOCLE), "COG.json")
 @pytest.mark.skipif(not os.path.exists(COG), reason="socle absent (gitignoré)")
 def test_congo_taux_de_la_loi_de_finances_2026():
     """Loi sur le droit d'accises du Congo, art. 2 et 8 nouveaux (LF 2026) : tabac
-    30 %, véhicule de plus de 3 000 cm3 25 %, champagne 50 %, soda 10 %, sur
+    30 %, véhicule de plus de 3 000 cm3 25 %, champagne 50 %, perruques 10 %, sur
     valeur + DD ; TVA sur valeur + DD + accise. Cosmétiques et motocycles, visés
     par l'art. 8 : 25 %. Alcool éthylique : sans taux. Fiche : COG_droit_accises_2026-10-09.json."""
     with open(COG, encoding="utf-8") as f:
@@ -88,13 +88,16 @@ def test_congo_taux_de_la_loi_de_finances_2026():
     assert _lignes(positions["87032410"])[1]["DA"]["montant"] == 325.0
     assert _lignes(positions["22041010"])[1]["DA"]["taux_pct"] == 50.0
     assert _lignes(positions["22041090"])[1]["DA"]["taux_pct"] == 25.0
-    assert _lignes(positions["22021000"])[1]["DA"]["taux_pct"] == 10.0
+    assert _lignes(positions["67041100"])[1]["DA"]["taux_pct"] == 10.0
+    assert _lignes(positions["71132000"])[1]["DA"]["taux_pct"] == 5.0
+    assert "DA" not in _lignes(positions["95044000"])[1]
     assert _lignes(positions["33049900"])[1]["DA"]["taux_pct"] == 25.0
     assert _lignes(positions["87113000"])[1]["DA"]["taux_pct"] == 25.0
     assert _lignes(positions["96140000"])[1]["DA"]["taux_pct"] == 30.0
     assert _lignes(positions["29072200"])[1]["DA"]["taux_pct"] == 50.0
-    etat, lignes = _lignes(positions["22071010"])
-    assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    for code in ("22071010", "22021000", "95042000"):
+        etat, lignes = _lignes(positions[code])
+        assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     etat, lignes = _lignes(positions["52081100"])
     assert "DA" not in lignes and etat == COMPLET
 
