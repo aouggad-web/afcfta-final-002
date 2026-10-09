@@ -21,6 +21,7 @@ import TaxBreakdownDual from './TaxBreakdownDual';
 import CalculationJournal from './CalculationJournal';
 import CalculationMethodStatus from './CalculationMethodStatus';
 import EtatCalculBadge from './EtatCalculBadge';
+import ReserveOrigine from './ReserveOrigine';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import DataStatusBanner from '../common/DataStatusBanner';
 import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
@@ -1502,6 +1503,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                 );
               })()}
+
+              {result.zlecaf_preference_applied && <ReserveOrigine regle={result.regle_origine} />}
 
               {result.trade_regime === 'NPF' && result.zlecaf_note && (
                 <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3">

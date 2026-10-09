@@ -577,11 +577,10 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     generic_legal_calculation: null,
     kenya_legal_calculation: null,
 
-    rules_of_origin: {
-      rule: 'ZLECAf Rules of Origin',
-      requirement: null,
-      regional_content: 40,
-    },
+    // Règle d'origine SH6 jointe par le moteur à toute préférence ZLECAf
+    // servie (Appendice IV). Le contenu régional « 40 » posé ici en dur n'était
+    // celui d'aucune position.
+    regle_origine: hasZlecaf ? calcul.regle_origine || null : null,
 
     normal_calculation_journal: buildJournal(cifValue, npfLignes),
     zlecaf_calculation_journal: hasPreference ? buildJournal(cifValue, prefLignes) : [],

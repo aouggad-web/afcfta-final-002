@@ -55,3 +55,28 @@ def test_un_seul_prelevement_reduit_suffit():
     assert _sans_effet({"DD": {"taux": 30.0}, "DAPS": {"taux": 0.0}}, position) is False
     # Un NPF déjà nul n'a rien à démanteler : rien n'y est fictif.
     assert _sans_effet({"DD": {"taux": 0.0}}, {"droits": [{"code": "DD", "taux": 0.0}]}) is False
+
+
+# ── La règle d'origine accompagne la préférence (audit, point 11) ─────────────
+@besoin_socle
+def test_la_preference_appliquee_porte_sa_regle_d_origine():
+    from routes.calcul import DemandeCalcul, calcul
+
+    reponse = calcul(
+        DemandeCalcul(destination="DZA", origine="TUN", code_sh="0901111000", valeur_cif=10000)
+    )
+    regle = reponse["regle_origine"]
+    assert regle["hs6"] == "090111"
+    assert regle["regle"]["code"] == "WO"
+    assert regle["regle"]["nom"] == {"fr": "Entièrement Obtenu", "en": "Wholly Obtained"}
+    assert "certificat d'origine ZLECAf" in regle["reserve"]
+
+
+@besoin_socle
+def test_sans_preference_aucune_regle_d_origine_n_est_jointe():
+    from routes.calcul import DemandeCalcul, calcul
+
+    reponse = calcul(
+        DemandeCalcul(destination="DZA", origine="TUN", code_sh="8703101100", valeur_cif=10000)
+    )
+    assert "regle_origine" not in reponse
