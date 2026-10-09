@@ -312,6 +312,24 @@ def _tva_hors_la_loi(country_iso3, taux) -> bool:
     return bool(regle) and taux is not None and taux not in regle["taux"]
 
 
+def _retirer_tva_hors_la_loi(country_iso3, ligne):
+    """Retirer d'une ligne tarifaire un taux de TVA que la loi ne connaît pas :
+    le taux, son détail et le total qui l'inclut. Appliqué au chargement du
+    fichier ETL et aux lignes PostgreSQL ou collectées que sert get_tariff_line."""
+    if not ligne:
+        return ligne
+    retire = _tva_hors_la_loi(country_iso3, ligne.get("vat_rate"))
+    if retire:
+        ligne["vat_rate"] = None
+    for detail in ligne.get("taxes_detail") or []:
+        if _is_vat_code(str(detail.get("tax") or "")) and _tva_hors_la_loi(country_iso3, detail.get("rate")):
+            detail["rate"] = None
+            retire = True
+    if retire and "total_taxes_pct" in ligne:
+        ligne["total_taxes_pct"] = None
+    return ligne
+
+
 def _parse_crawled_tax_rate(value) -> Optional[float]:
     """Read a rate without mutating the source-specific tax representation."""
     if isinstance(value, dict):
@@ -680,6 +698,9 @@ def load_country_tariffs(country_iso3):
 
     if country_iso3 == "TUN":
         _completer_zero_de_tete_tun(data)
+    if country_iso3 in TAUX_TVA_LEGAUX:
+        for ligne in data.get("tariff_lines") or []:
+            _retirer_tva_hors_la_loi(country_iso3, ligne)
     _tariff_cache[country_iso3] = data
     return data
 
@@ -787,7 +808,7 @@ def get_tariff_line(country_iso3, hs_code):
                 ]
                 dd_rate = regulatory.get("taxes", {}).get("dd_rate")
                 vat_rate = regulatory.get("taxes", {}).get("vat_rate", country_info.get("vat_rate"))
-                return {
+                return _retirer_tva_hors_la_loi(country_iso3, {
                     "hs6": hs6,
                     "code": hs_code_clean,
                     "description_fr": regulatory.get("description", ""),
@@ -806,7 +827,7 @@ def get_tariff_line(country_iso3, hs_code):
                     "sub_positions": normalized_sub_positions,
                     "source": "postgres",
                     "data_source": "postgres",
-                }
+                })
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, "postgres-miss")
         except Exception as e:
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, f"postgres-error: {e}")
@@ -820,7 +841,7 @@ def get_tariff_line(country_iso3, hs_code):
     position = load_crawled_position_index(country_iso3).get(hs_code_clean)
     if position and len(hs_code_clean) > 6:
         taxes = _normalise_crawled_tax_details(_position_tax_payload(position))
-        return {
+        return _retirer_tva_hors_la_loi(country_iso3, {
             "hs6": hs6,
             "code": hs_code_clean,
             "description_fr": position.get("description_fr", ""),
@@ -836,7 +857,7 @@ def get_tariff_line(country_iso3, hs_code):
                 "formalities", position.get("administrative_formalities", [])
             ),
             "source": position.get("source"),
-        }
+        })
     return None
 
 
@@ -1419,8 +1440,6 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                         seen_codes.add(code)
                         if len(results) >= limit:
                             return results
-                elif _tva_hors_la_loi(country_iso3, line.get("vat_rate")):
-                    results.append({**line, "vat_rate": None, "total_taxes_pct": None})
                 else:
                     results.append(line)
                 seen_codes.add(hs6)
