@@ -571,13 +571,13 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                         </td>
                         <td className="text-right p-3 font-mono text-[var(--afcfta-muted)]">
                           {formatCurrency(r.npfTotal, language)}
-                          {r.npfTotal == null && (
+                          {r.etat && (
                             <div className="mt-1 flex justify-end"><EtatCalculBadge etat={r.etat} manques={r.manques} compact /></div>
                           )}
                         </td>
                         <td className="text-right p-3 font-mono font-bold text-[var(--success)]">
                           {formatCurrency(r.zlecafTotal, language)}
-                          {r.zlecafTotal == null && (
+                          {r.zlecafEtat && (
                             <div className="mt-1 flex justify-end"><EtatCalculBadge etat={r.zlecafEtat} manques={r.zlecafManques} compact /></div>
                           )}
                         </td>
