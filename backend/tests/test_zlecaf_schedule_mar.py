@@ -190,10 +190,14 @@ def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
     entier relève du droit commun, sur les deux chemins.
     """
     position = _position(dd=2.5)
-    table = taux_preferentiels(position, "MAR", P2, CODE_PLANCHER)["taux"]
-    # Seul le DI préférentiel est proposé : la TPI ne suit pas une préférence
-    # que le plancher écarte.
-    assert table == {"DD": {"taux": 4.0}}
+    decision = taux_preferentiels(position, "MAR", P2, CODE_PLANCHER)
+    # Le DI préférentiel (4 %) ne réduit rien : la préférence n'est pas dite
+    # appliquée (audit du 2026-10-09, point 4), comme sur le chemin historique.
+    assert decision["statut"] == "PREFERENCE_SANS_EFFET"
+    assert decision["taux"] == {}
+    # Le moteur garde son propre plancher si la table lui est servie quand
+    # même ; la TPI ne suit pas une préférence que le plancher écarte.
+    table = {"DD": {"taux": 4.0}}
 
     contexte = resolve_zlecaf_context("MAR", P2, CODE_PLANCHER, 2.5, None)
     assert contexte["plancher_npf"] is not None
