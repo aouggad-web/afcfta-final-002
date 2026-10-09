@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-09T01:52:55.716167+00:00",
+  "construit_le": "2026-10-09T11:44:41.180090+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -153,7 +153,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BWA_tariffs.json",
       "source_sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
-      "socle_sha256": "b66e085e114560dc5625eaf9a12bed4e9ca48c8b945c2ee53e9f2872cb3a1678",
+      "socle_sha256": "e53eddfdc62d9f8a8625d1419674dcf2d7740158db8693962121162dc13b06f5",
       "collecte": "2026-08-29T13:26:22.991310",
       "etat": "PARTIEL",
       "familles": [
@@ -162,8 +162,8 @@
       "compteurs": {
         "positions": 8589,
         "droits": 8589,
-        "droits_liquidables": 8494,
-        "positions_liquidables": 8494,
+        "droits_liquidables": 8558,
+        "positions_liquidables": 8558,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
@@ -966,7 +966,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LSO_tariffs.json",
       "source_sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
-      "socle_sha256": "d8a693d976ee2e91209801a2f305cca08e60c25297b4bf261ff0a621aeed691f",
+      "socle_sha256": "0b4bc1446a1a5a3187f2854b0059cbd3b48a5bc35be9a526611168b8a6f897d3",
       "collecte": "2026-08-29T13:26:24.395497",
       "etat": "PARTIEL",
       "familles": [
@@ -975,8 +975,8 @@
       "compteurs": {
         "positions": 8589,
         "droits": 8589,
-        "droits_liquidables": 8494,
-        "positions_liquidables": 8494,
+        "droits_liquidables": 8558,
+        "positions_liquidables": 8558,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
@@ -1261,7 +1261,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NAM_tariffs.json",
       "source_sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
-      "socle_sha256": "5edd18b82cb05cb50d85cf64ac55a9563f07d0122cf28dedbe9915b3f4b709bc",
+      "socle_sha256": "798c32275a66f98717d875c4d43e62ab154c43a7c62d8ffecdabe6c1be170e2d",
       "collecte": "2026-08-29T13:26:27.028702",
       "etat": "PARTIEL",
       "familles": [
@@ -1270,8 +1270,8 @@
       "compteurs": {
         "positions": 8589,
         "droits": 8589,
-        "droits_liquidables": 8494,
-        "positions_liquidables": 8494,
+        "droits_liquidables": 8558,
+        "positions_liquidables": 8558,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
@@ -1624,7 +1624,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SWZ_tariffs.json",
       "source_sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
-      "socle_sha256": "6664ad012cac2a438a7d49fbd9d7a066378d6b2b86a71ad02fb7f4f22cf1de45",
+      "socle_sha256": "e8e3ed3a13cc4ab31e535d064bae5c1423021f309b078736944fa791c0072ead",
       "collecte": "2026-08-29T13:26:25.757181",
       "etat": "PARTIEL",
       "familles": [
@@ -1633,8 +1633,8 @@
       "compteurs": {
         "positions": 8589,
         "droits": 8589,
-        "droits_liquidables": 8494,
-        "positions_liquidables": 8494,
+        "droits_liquidables": 8558,
+        "positions_liquidables": 8558,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
@@ -1883,7 +1883,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "8ddebacbb0f854aed678d4810f8716164233c8b8697b11a713668b91a6f83840",
+      "socle_sha256": "fe81e86c0fb926242e80b73d5480bd8bbb5bc41dd0746ba999b0d110f22adcd7",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1892,8 +1892,8 @@
       "compteurs": {
         "positions": 8589,
         "droits": 8589,
-        "droits_liquidables": 8494,
-        "positions_liquidables": 8494,
+        "droits_liquidables": 8558,
+        "positions_liquidables": 8558,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
@@ -2032,6 +2032,6 @@
     ],
     "positions": 368379,
     "droits": 1121168,
-    "droits_liquidables": 1095209
+    "droits_liquidables": 1095529
   }
 }

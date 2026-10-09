@@ -1,0 +1,15 @@
+SACU — règle des droits composés « or » : extrait verbatim (relevé le 2026-10-09)
+
+SARS, Schedule No. 1 to the Customs and Excise Act, 1964 — General Notes, page 1, pied de page « Date: 2026-03-27 »
+(https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1Gen-General-Notes-to-Schedules-to-Customs-and-Excise-Act.pdf, sha256 475f2c01545f3a01f6d3942c0e4584f46e24ded9253c1f3727377c36b4c566b8) :
+
+B.
+DUTY ASSESMENT
+1.
+The expression "free" when used in the Rate of Duty column in Part 1 shall be regarded as a rate duty.
+2.
+Any amount of duty payable shall be calculated to the nearest cent. For the purposes of this paragraph one half cent shall be regarded as a whole cent.
+3.
+When a rate of duty in respect of any goods consists of two or more parts separated by the word "or", each such part shall be deemed to be a separate and complete rate of duty and such rate of duty yielding the higher or highest amount of duty shall be applicable in respect of such goods.
+4.
+A rate of duty applicable under any heading or tariff item to any unit of mass, measure, quantity or any other characteristic shall, unless otherwise provided for in such heading or tariff item, apply proportionately to any part of such unit except in the case of a unit of quantity described in the statistical column in Part 1 of Schedule No. 1 as "u" (number of units).

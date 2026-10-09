@@ -231,14 +231,72 @@ def test_deux_devises_ne_se_comparent_pas_sans_taux_de_change(client):
 
 
 @besoin_socle
-def test_la_regle_muette_sud_africaine_reste_refusee(client):
-    """Non-régression : « 40% or 240c/kg » ne dit pas laquelle s'applique.
+def test_la_regle_or_sud_africaine_suit_la_note_b3(client):
+    """« 40% or 240c/kg » : chaque part est un taux complet et la plus élevée
+    s'applique (SARS, Schedule No. 1, General Notes, B.3 ; fiche
+    SACU_regle_or_B3_2026-10-09.json). Base FOB (SACU)."""
 
-    Le départage ajouté ici ne vaut QUE pour les barèmes qui énoncent leur
-    règle. Celui-là ne l'énonce pas et doit continuer d'être refusé.
-    """
+    def dd(quantite):
+        reponse = client.post(
+            "/calcul",
+            json={
+                "destination": "ZAF",
+                "code_sh": "020110",
+                "valeur_cif": 10000,
+                "valeur_fob": 9000,
+                "quantite": quantite,
+            },
+        )
+        return next(l for l in reponse.json()["npf"]["lignes"] if l["code"] == "DD")
+
+    assert (dd(100)["statut"], dd(100)["montant"]) == ("CALCULE", 3600.0)  # 40 % de 9 000 > 240 R
+    assert dd(5000)["montant"] == 12000.0  # 2,40 R × 5 000 kg > 3 600 R
+
+
+def _ligne_sars(brut, specifique, source="sars.gov.za"):
+    rangee = {"code": "GENERAL", "name": "General Customs Duty", "rate_pct": 60.0, "raw_value": brut,
+              "compound": True, "specific_component": specifique}
+    return _constructeur().droits_depuis_liste([rangee], source)[0]
+
+
+@pytest.mark.parametrize(
+    ("brut", "collecte", "montant"),
+    [("60% or 2 500c/kg", "500c/kg", 25.0), ("30% or 4,5c/kg", "4,5c/kg", 0.045)],
+)
+def test_la_part_specifique_sars_se_relit_sur_le_verbatim(brut, collecte, montant):
+    """« 2 500c/kg » : la collecte n'a gardé que « 500c/kg ». « 4,5c/kg » : virgule décimale."""
+    droit = _ligne_sars(brut, collecte)
+    assert droit["regle_composee"] == "LE_PLUS_ELEVE"
+    assert _constructeur().lire_specifique(droit["specifique"])["montant"] == pytest.approx(montant)
+
+
+def test_la_regle_b3_ne_vaut_que_pour_le_tarif_sars():
+    droit = _ligne_sars("40% or 240c/kg", "240c/kg", source="autre-tarif.example")
+    assert droit["compose"] and droit.get("regle_composee") is None
+
+
+@besoin_socle
+def test_la_colonne_zlecaf_composee_suit_aussi_la_note_b3():
+    """La préférence AfCFTA de 0201.10 porte la même expression : même règle."""
+    from services.calcul import calculer
+
+    position = socle.charger("ZAF")["positions"]["020110"]
+    afcfta = position["preferentiels"]["AFCFTA"]
+    assert afcfta["regle_composee"] == "LE_PLUS_ELEVE"
+    resultat = calculer(position, 10000, devise_position="ZAR", quantite=5000, valeur_fob=9000,
+                        taux_preferentiels={"DD": afcfta})
+    ligne = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    assert ligne["composantes"]["specifique_montant"] == pytest.approx(afcfta["specifique"]["montant"] * 5000)
+    assert ligne["montant"] == pytest.approx(max(afcfta["taux"] / 100 * 9000, afcfta["specifique"]["montant"] * 5000))
+
+
+@besoin_socle
+def test_la_paire_de_chaussures_reste_refusee(client):
+    """« 30% or 500c/2u » : la part spécifique est due par paire, quantité que le
+    moteur ne demande pas encore — la position reste non liquidée."""
     reponse = client.post(
-        "/calcul", json={"destination": "ZAF", "code_sh": "020110", "valeur_cif": 10000}
+        "/calcul",
+        json={"destination": "ZAF", "code_sh": "640219", "valeur_cif": 10000, "valeur_fob": 9000, "quantite": 10},
     )
     ligne = next(l for l in reponse.json()["npf"]["lignes"] if l["code"] == "DD")
     assert ligne["statut"] == "REGLE_COMPOSEE_NON_ETABLIE"
