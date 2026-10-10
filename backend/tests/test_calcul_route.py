@@ -463,7 +463,8 @@ def test_la_reponse_dit_d_ou_vient_chaque_chiffre(client):
     )
     assert reponse.status_code == 200
     corps = reponse.json()
-    assert corps["npf"]["total_droits"] == 380.0
+    # DD 200 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TVA 18 % de 1 225 (fiche CIV_prelevements_TVA).
+    assert corps["npf"]["total_droits"] == 445.5
     provenance = corps["provenance"]
     assert provenance["niveau"] == "national"
     assert provenance["source"]["sha256"]
@@ -976,7 +977,8 @@ def test_un_bloc_reglementaire_en_panne_n_interrompt_pas_le_calcul(client, monke
         "/calcul",
         json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
     ).json()
-    assert corps["npf"]["total_droits"] == 380.0
+    # DD 200 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TVA 18 % de 1 225 (fiche CIV_prelevements_TVA).
+    assert corps["npf"]["total_droits"] == 445.5
     assert corps["npf"]["etat"] in {"COMPLET", "PARTIEL"}
     for cle in ("regulatory_compliance", "regulatory_cost", "regulatory_reported"):
         assert corps[cle] is None
