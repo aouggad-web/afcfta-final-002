@@ -1,0 +1,73 @@
+Libye — « Port Services Tax » 4 % et « Production Tax » 2 % : extraits (relevés le 2026-10-10 ; textes arabes lus sur l'image des pages, aucun modèle OCR arabe n'étant disponible). Les empreintes des pages HTML identifient la copie lue ; elles peuvent ne pas se reproduire, la page servie portant un jeton Cloudflare variable.
+
+1. Loi n° 19 de 1992 relative à la taxe de production, et règlement d'exécution (décision du Comité populaire général n° 943 de 1993). Compilation de la douane libyenne (https://customs.gov.ly/wp-content/uploads/2023/12/قانون-ضرائب-الإنتاج.pdf), archivée au dépôt : sources/LBY_loi_19_1992_production_texte-integral.pdf, sha256 3fd85d761fd0b8b24613d93457aa2527659edefad3a9f84fec25e95c5760d1d4.
+
+Page 1, loi n° 19 de 1992 :
+
+مادة ( 1 )
+يقصد بضريبة الإنتاج أو الاستهلاك الضريبة التي تفرض على السلع تصنيعها أو إنتاجها داخل البلاد أو على مثيلاتها المستوردة من الخارج .
+وتحدد السلع التي تخضع لهذه الضريبة وفئة الضريبة عن كل سلعة منها بقرار من اللجنة الشعبية العامة بناءً على عرض اللجنة الشعبية العامة للتخطيط والتجارة والمالية .
+وتخضع للضريبة المشار إليها السلع المستوردة أياً كان مصدرها ، وتسري في شأن احتساب الضريبة على هذه السلع ذات الأسس والقواعد المطبقة على نظيراتها من السلع المنتجة محلياً وبحيث لا تقل قيمة الضريبة المدفوعة عنها ، عما يدفع مثيلها المحلي .
+
+Page 5, décision n° 943 de 1993, art. 2 :
+
+تستحق ضريبة الإنتاج على السلعة باكتمال إنتاجها أو تصنيعها وتستحق ضريبة الاستهلاك على مثيلاتها المستوردة من الخارج باستحقاق ضريبة الواردات الجمركية ، [...]
+
+Page 6, décision n° 943 de 1993, art. 4 et art. 6, al. 2 :
+
+تقدر ضريبة الإنتاج أو الاستهلاك على السلع المنتجة محليا أو المستوردة على أساس الحجم أو الوزن أو العدد أو على أساس قيمة السلعة بسعر التكلفة .
+
+وتؤدي الضريبة على مثيلاتها من السلع المستوردة المحددة وفق قرارات اللجنة الشعبية العامة ويتم تحصيلها مع ضرائب الواردات الجمركية .
+
+2. Décision du Comité populaire général n° 6 de 2002 « بإخضاع بعض السلع لضريبة الإنتاج أو الاستهلاك وتخفيضها » (19-1-2002), texte reproduit par lawsociety.ly (fondation privée ; Journal officiel non consulté) : https://lawsociety.ly/legislation/قرار-رقم-6-لسنة-2002-م-بإخضاع-بعض-السلع-لضريب/ , page HTML sha256 5a9be006b746493412785efd9e3ed8fc2486d1f4432ddbe16b53fcd95dfbfb50.
+
+مادة 1 تخضع السلع الواردة بالجدول المرفق بهذا القرار، لضريبة الإنتاج أو الاستهلاك، وبفئة الضريبة المبينة قرين كل منها.
+مادة 2 يلغى قرار اللجنة الشعبية العامة رقم 942 لسنة 1993 افرنجي المشار إليه، كما يلغى كل حكم يخالف أحكام هذا القرار.
+
+Tableau annexé, 40 catégories nommées sans code tarifaire ; colonne « فئة الضريبة على المنتج المستورد » : taux non nuls de 7 % à 50 %, deux sous-catégories à « لا شئ » (3.أ eaux minérales thérapeutiques, 4.أ préparations pour l'alimentation des enfants et des malades) ; aucune catégorie à 2 %. Exemples :
+1. مصنوعات سكرية | 20 % | 50 %
+21. حافلات | 10 % | 30 %
+35. شامبو | 10 % | 40 %
+
+3. Décision du Conseil des ministres n° 393 de 2025 adoptant le règlement des redevances et droits souverains des ports (4-6-2025, en vigueur à sa date d'émission, art. 2), Autorité des ports et du transport maritime : http://lpma.gov.ly/ta3memat/q39325.pdf , PDF scanné de 13 pages, sha256 16d2e594942b4028ee9b5922c49f888b4a670945087e56c9da2adf47f23c4493 (non versé au dépôt).
+
+Page 4, règlement, art. 8 :
+
+مادة (8) أساس احتساب الرسم أو العائد
+[...]
+2. كمية البضائع بالطن الوزني أو المتر المكعب (أيهما أكبر).
+
+Page 9, règlement, art. 25 :
+
+مادة (25)
+عائد الرصيف
+ـ يحصل مقابل عوائد الرصيف على أساس وزن أو حجم البضائع الموردة أو المصدرة أيهما أكبر، ويستثنى من ذلك الحيوانات الحية فان العوائد تحتسب على أساس العدد وفق الاتي:
+الحاويات و البضائع الموردة | 2.00 د.ل / للطن أو المتر المكعب أيهما اكبر وبحد أدنى مبلغ ((50)) د.ل عن كل أمر تسليم
+
+Les 13 pages ont été parcourues : l'art. 32 rapporte une redevance de quai sur les hydrocarbures passant par oléoduc au « ثمن الشحنة » (0,150 LYD, unité non précisée) ; hors art. 32, aucune redevance du règlement n'est un pourcentage de la valeur des marchandises importées.
+
+4. Redevance de quai antérieure, reproduite par lawsociety.ly. Décision du Comité populaire général n° 733 de 1987 (règlement des redevances de manutention, d'entreposage et de services des ports maritimes), art. 9, page HTML sha256 fea88e3b10abc23112ca4cdf1e177eecb65558d4fe6621e0e6d1827eb78bc791 :
+
+سبعة فى الألف من القيمة الإجمالية للبضائع الواردة تحسب على أساس قيمة البضاعة س×أف وتحصل بمعرفة الميناء قبل سحب البضائع.
+
+Décision du Conseil des ministres n° 807 de 2022, art. 1, page HTML sha256 6d0265d747ee539d7c23e375132221e3dc3d66b9bb636b9c4bd7c3933fb8d46b :
+
+يوافق على زيادة قيمة عوائد المناولة والتخزين والخدمات المعمول بها حاليا بالموانئ الليبية بنسبة 100%.
+
+Le maintien de la redevance ad valorem de l'art. 9 (réduite de moitié en 2008), face à la suppression des redevances souveraines en 2011 et au règlement de 2025, n'est pas tranché.
+
+5. Décision du Comité populaire général n° 17 de 2007, visas, texte reproduit par lawsociety.ly (https://lawsociety.ly/legislation/قرار-رقم-17-لسنة-2007-م-بتقرير-بعض-الأحكام-في/), page HTML sha256 7d6c4b4c542cc68cfa2a71e79ee837e9ecf570632fdbcca039068b44d3749540 :
+
+وعلى قرار اللجنة الشعبية العامة للشعبيات رقم 3 لسنة 1373 ور، بفرض رسم مقابل خدمات التوريد.
+
+La décision n° 3 de 2005 émane du Comité populaire général des Chaabiyat ; son texte, son taux et son assiette n'ont pas été obtenus.
+
+6. Presse, secondaire : Al Bayan, 5-8-2005 (https://www.albayan.ae/economy/2005-08-05-1.92435, page HTML sha256 9c30c263249caa006f1be345d57bc437c5bdd2bd24cb2b66a5bb91c1f751721c) :
+
+القرار رقم (3) للعام 2005 بفرض رسم مقابل خدمات التوريد [...] وقرار اللجنة الشعبية العامة (103) لسنة 2005 بتعديل ضريبة الانتاج والاستهلاك على إحدى السلع وقرار اللجنة الشعبية العامة رقم (114) لسنة 2005 باخضاع بعض السلع لضرائب الانتاج والاستهلاك
+
+Les décisions n° 103 et 114 de 2005 n'ont pas été obtenues : la grille de la décision n° 6/2002 a pu être remplacée.
+
+7. Source du crawl, secondaire : PwC Worldwide Tax Summaries, Libya, Corporate, Other taxes (https://taxsummaries.pwc.com/libya/corporate/other-taxes, « Last reviewed - 31 May 2026 », consultée le 2026-10-10, page HTML sha256 9eb56ad0cc58b9c388a769e1443b337074eca09103558b44f749f9f8decc816a). La page ne mentionne ni « Port Services Tax » ni « Production Tax », ni 4 % ni 2 % ; elle signale une « service fee » de 5 %, sans citer de texte :
+
+Customs duties were abolished in 2005, except for tobacco and tobacco products. A service fee of 5% on the value on most imports also exists. There are various exemptions to this service fee, specifically under Investment Law and within the oil sector. Other dues and taxes on importation are estimated at 0.5%.

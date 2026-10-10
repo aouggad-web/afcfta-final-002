@@ -295,17 +295,14 @@ export function localiserResultat(result, conversion) {
 }
 
 /**
- * Pays dont le moteur ne reçoit pas le taux du module Banque :
- * - CMR, GNQ : leur redevance informatique porte un plafond de 15 000 XAF dont
- *   le texte CEMAC n'est pas au dépôt, et le moteur l'applique à l'assiette.
- *   Avec un taux, elle vaudrait 0,11 USD pour 10 000 USD de CIF ;
- * - BWA : ses droits spécifiques viennent du tarif de la SARS, en cents de
- *   rand (« 240c/kg »). Le taux du pula les convertirait faussement
- *   (backend/socle/devises_pays.json le déclare en ZAR ; un test du backend
- *   tient cet écart avec le module Banque).
- * Sans taux, ces lignes restent à compléter, comme avant.
+ * Pays dont le moteur ne reçoit pas le taux du module Banque : le Botswana.
+ * Ses droits spécifiques viennent du tarif de la SARS, en cents de rand
+ * (« 240c/kg »). Le taux du pula les convertirait faussement
+ * (backend/socle/devises_pays.json le déclare en ZAR ; un test du backend
+ * tient cet écart avec le module Banque). Sans taux, ces lignes restent à
+ * compléter, comme avant.
  */
-const SANS_TAUX_DE_CHANGE = new Set(['CMR', 'GNQ', 'BWA']);
+const SANS_TAUX_DE_CHANGE = new Set(['BWA']);
 
 /**
  * Le taux envoyé au moteur (`taux_de_change`) : des USD pour une unité de
