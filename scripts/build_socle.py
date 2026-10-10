@@ -1182,6 +1182,7 @@ ACCISES_PAYS = {
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
+    "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
 }
 
 
@@ -1418,7 +1419,126 @@ def _ait_malawi(positions, compteurs):
                     )
 
 
-def _accises_du_cgi(iso, positions):
+def _prelevements_senegal(positions, compteurs):
+    """Sénégal : prélèvements d'entrée selon les FAQ de la DGD (2026) « Comment
+    faire pour savoir les frais de dédouanement » et « Comment dédouaner un
+    véhicule ? » (fiche SEN_taxes_specifiques_2026-10-10.json). Le crawl
+    portait un PCS de 1 % au lieu de 0,8 %, et
+    omettait le PROMAD (2 % de la valeur en douane) et le COSEC (0,4 %, dû par
+    voie maritime seulement, liquidé comme dans les tableaux de la DGD, le mode
+    de transport n'étant pas connu du moteur). Le PUA de 0,2 % du crawl, absent
+    des tableaux de la DGD, est maintenu en attendant confirmation."""
+    note_dgd = (
+        "FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » "
+        "et tableaux des taux cumulés des véhicules."
+    )
+    for code, position in positions.items():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "PUA":
+                d["note"] = (
+                    "Prélèvement de l'Union africaine, 0,2 % (taux de la source) : absent des tableaux de la DGD, "
+                    "liquidé par la douane ivoirienne (circulaire DGD n° 2258) ; maintenu, application au Sénégal à confirmer."
+                )
+            if d.get("code") == "PCS":
+                d["taux"] = 0.8
+                d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
+            droits.append(d)
+        libelle_pos = (position.get("designation") or "").lower()
+        # Mots entiers : « usages spéciaux » n'est pas « usagé ».
+        if re.search(r"\busagée?s?\b|\bd'occasion\b", libelle_pos):
+            etat_taux = 3.0
+        elif re.search(r"\bneu(f|fs|ve|ves)\b", libelle_pos):
+            etat_taux = 1.0
+        else:
+            etat_taux = None
+        if droits and (code[:4] in ("8702", "8703", "8704", "8705") or code[:6] == "870120") and not any(d.get("code") == "DENR" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "DENR",
+                    "code_source": "DENR",
+                    "libelle": "Droit d'enregistrement des véhicules",
+                    "famille": famille("DENR"),
+                    "taux": etat_taux,
+                    "assiette": "CIF+DD+RS",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "Droit d'enregistrement : 1 % pour un véhicule neuf, 3 % d'occasion, « (Base + DD + RS) × taux » "
+                    "(" + note_dgd + ")" + (" ; état lu dans le libellé de la position." if etat_taux is not None
+                                             else " ; l'état neuf ou d'occasion n'est pas dans la position."),
+                },
+            )
+            compteurs["assiettes_table"] += 1
+            if etat_taux is None:
+                compteurs["taux_indisponibles"] += 1
+        conditionnelles = []
+        if code[:4] in ("2203", "2204", "2205", "2206", "2208") and code not in ("2206009100", "2206009900"):  # art. 412, 3°
+            conditionnelles.append((
+                "TAA", "Taxe additionnelle sur les alcools",
+                "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
+                "tableau des mesures fiscales de la DGID) : le degré et le volume ne sont pas dans la position.",
+            ))
+        if code[:6] in ("240220", "240290"):
+            conditionnelles.append((
+                "STC", "Surtaxe sur les cigarettes",
+                "Surtaxe sur les cigarettes, perçue au cordon douanier (" + note_dgd + ") : taux et assiette non publiés dans les textes lus.",
+            ))
+        if code in ("2002901100", "2002901900", "2002902000"):
+            conditionnelles.append((
+                "TCI", "Taxe conjoncturelle à l'importation",
+                "Due sur le concentré de tomate quand la valeur CAF est inférieure au prix de déclenchement (" + note_dgd + ").",
+            ))
+        for code_c, libelle_c, note_c in conditionnelles:
+            if droits and not any(d.get("code") == code_c for d in droits):
+                rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+                droits.insert(rang, {
+                    "code": code_c, "code_source": code_c, "libelle": libelle_c, "famille": famille(code_c),
+                    "taux": None, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal", "note": note_c,
+                })
+                compteurs["assiettes_table"] += 1
+                compteurs["taux_indisponibles"] += 1
+        if droits and not any(d.get("code") == "COSEC" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "COSEC",
+                    "code_source": "COSEC",
+                    "libelle": "Prélèvement au profit du Conseil sénégalais des chargeurs",
+                    "famille": famille("COSEC"),
+                    "taux": 0.4,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "COSEC 0,4 %, « uniquement par voie maritime » (" + note_dgd + ") : liquidé comme dans "
+                    "les tableaux de la DGD ; à retirer pour un transport terrestre ou aérien.",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        if droits and not any(d.get("code") == "PROMAD" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "PROMAD",
+                    "code_source": "PROMAD",
+                    "libelle": "Prélèvement pour la modernisation de l'administration des douanes",
+                    "famille": famille("PROMAD"),
+                    "taux": 2.0,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "PROMAD 2 % de la valeur en douane (" + note_dgd + ")",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        position["droits"] = droits
+
+
+def _accises_du_cgi(iso, positions, compteurs):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
     for code, position in positions.items():
@@ -1440,7 +1560,7 @@ def _accises_du_cgi(iso, positions):
                         "famille": famille("DA"),
                         "taux": regle["taux"],
                         "assiette": table["assiette"],
-                        "assiette_origine": "source",
+                        "assiette_origine": "regle_de_pays",
                         "source": table["source"],
                         "note": " ".join(
                             x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
@@ -1450,7 +1570,11 @@ def _accises_du_cgi(iso, positions):
                 break
         for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
                 d["assiette"] = table["tva_assiette"]
+                d["assiette_origine"] = "regle_de_pays"
                 d["note"] = table["tva_assiette_reference"]
         position["droits"] = droits
 
@@ -1829,6 +1953,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
 
+    if iso == "SEN":
+        _prelevements_senegal(positions, compteurs)
+
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
         # retranche celles d'avant et on ajoute celles d'après.
@@ -1842,7 +1969,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
         avant = _da()
         if iso in ACCISES_PAYS:
-            _accises_du_cgi(iso, positions)
+            _accises_du_cgi(iso, positions, compteurs)
         if iso in ASSIETTE_ACCISE_PAYS:
             _assiette_accise(iso, positions)
         apres = _da()
@@ -1865,6 +1992,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # annonçait donc plus de positions que le socle n'en porte, et c'est ce qui
     # a masqué la perte de 349 positions libyennes rabattues sur le SH6.
     # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
+    # Les passes par pays (prélèvements, accises) ajoutent des familles après la
+    # lecture : la couverture se lit sur ce qui est servi.
+    familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
     compteurs["droits_composes"] = sum(
