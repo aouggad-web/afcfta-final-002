@@ -30,7 +30,17 @@ Dossier de livrables (collecte du 10/10/2026). Sources : douanes.bf, dgi.bf, bur
 | **BCEAO / banques agréées** | Domiciliation des opérations, apurement | Frais bancaires |
 | **Agences réglementaires connectées SYLVIE** (LNSP, ARP, guichet unique, DAMF…) | Certificats sanitaires/pharma pour dédouanement | Barèmes propres à chaque agence |
 
-## 3. Contenu du dossier
+## 4. Mise à jour 2025–2026
+
+- **Loi de finances 2026** : loi n°021-2025/ALT du 27/12/2025 (en vigueur 01/01/2026, budget 3 431,5 Mds FCFA) — mesures clés (présentation DGI) :
+  - **Taxe Spécifique sur l'Importation des Armes et Munitions** (art. 24 LFI, art. 382-1 nouveau CGI) — recouvrement par les **douanes aux frontières**, compte d'affectation spéciale
+  - **Retenue à la source TVA de 30 %** (RASTVA, art. 334 CGI) élargie aux entreprises de la DGE et aux organismes payeurs de marchés publics
+  - Exo TVA élargie : bétail (bovins non reproducteurs, caprins, ovins), karité, cajou, œufs à couver, bonbonnes fibre de verre
+  - Reconduction exonération TVA/DD sur systèmes électroniques certifiés de facturation (SeCeF, art. 40) ; régime spécial d'exonération projets stratégiques ; exo patente pétroliers/entités publiques
+- **Nouveau Code des douanes** : adopté par l'ALT le **24/03/2025** (remplace le texte de 1962) — suivi électronique des camions de transit, contrôle non intrusif, paiement électronique des droits, LBC/FT, alignement AFE OMC et CKR OMD (texte intégral non encore publié en ligne — remplacera la loi 03/92 jointe)
+- **Prévisions 2026** : droits et taxes à l'importation 386,6 Mds FCFA ; à l'exportation 458,07 Mds FCFA
+
+## 5. Contenu du dossier
 | Fichier | Description |
 |---|---|
 | CODE-DES-DOUANES-BURKINA-FASO-LOI-03-92.pdf | Code des douanes du Burkina Faso (loi 03/92/ADP) |
@@ -38,5 +48,8 @@ Dossier de livrables (collecte du 10/10/2026). Sources : douanes.bf, dgi.bf, bur
 | GUIDE-TVA-IMPORTATION-BURKINA-BLOOMBERG.pdf | Guide fiscal TVA (importation, régimes suspensifs, exonérations) |
 | WTO-PROFIL-TARIFAIRE-BURKINA-2024.pdf | Profil tarifaire OMC (moyennes NPF, distribution) |
 | BURKINA-TRADE-PORTAL-PROCEDURE-DED.html.md | Procédures dédouanement/transit/export (Burkina Trade Portal) : CAD, CCI-BF, SYLVIE, ordres de transit, agréments TPC/SLE |
+| JO-N01-SPECIAL-LFI-2026-DGI.pdf | **JO spécial n°01 : Loi de finances 2026 (loi n°021-2025/ALT du 27/12/2025)** — texte intégral des mesures |
+| MESURES-FISCALES-NOUVELLES-LFI-2026-DGI.pdf | DGI : présentation des mesures nouvelles LFI 2026 (taxe armes, RASTVA 30 %, exonérations) |
+| LOI-042-2024-LFI-2025.pdf | Loi de finances 2025 (loi n°042-2024/ALT) — modifications CGI 2025 |
 
 Liens utiles : www.douanes.bf | www.dgi.bf | burkinatradeportal.bf | www.finances.gov.bf
