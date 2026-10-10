@@ -78,3 +78,13 @@ def test_positions_mixtes_sans_taux(positions):
         etat, lignes = _calcul(positions[code])
         assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     assert "DA" not in _calcul(positions["2710191100"])[1]
+
+
+def test_revue_codex_5(positions):
+    """Tracteur routier et véhicule spécial : enregistrement sans taux ;
+    cigarettes : surtaxe sans taux et TVA indisponible ; vêtements non tissés exclus."""
+    for code in ("8701202000", next(k for k in positions if k.startswith("8705"))):
+        assert _calcul(positions[code])[1]["DENR"]["statut"] == "TAUX_INDISPONIBLE"
+    etat, lignes = _calcul(positions["2402200000"])
+    assert lignes["STC"]["statut"] == "TAUX_INDISPONIBLE" and lignes["TVA"]["montant"] is None
+    assert "DA" not in _calcul(positions["6210100000"])[1]

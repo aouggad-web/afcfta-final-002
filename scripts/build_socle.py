@@ -1444,7 +1444,7 @@ def _prelevements_senegal(positions, compteurs):
                 d["taux"] = 0.8
                 d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
             droits.append(d)
-        if droits and code[:4] in ("8702", "8703", "8704") and not any(d.get("code") == "DENR" for d in droits):
+        if droits and (code[:4] in ("8702", "8703", "8704", "8705") or code[:6] == "870120") and not any(d.get("code") == "DENR" for d in droits):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(
                 rang,
@@ -1469,6 +1469,11 @@ def _prelevements_senegal(positions, compteurs):
                 "TAA", "Taxe additionnelle sur les alcools",
                 "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
                 "tableau des mesures fiscales de la DGID) : le degré et le volume ne sont pas dans la position.",
+            ))
+        if code[:4] == "2402":
+            conditionnelles.append((
+                "STC", "Surtaxe sur les cigarettes",
+                "Surtaxe sur les cigarettes, perçue au cordon douanier (" + note_dgd + ") : taux et assiette non publiés dans les textes lus.",
             ))
         if code[:6] == "200290":
             conditionnelles.append((
