@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-09T18:35:22.245557+00:00",
+  "construit_le": "2026-10-10T14:26:26.673914+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -265,7 +265,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CMR_tariffs.json",
       "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
-      "socle_sha256": "275a832ee43e12120f39b8ecd65f2ea81a5e79c013b710a4aed14d1774edeec3",
+      "socle_sha256": "fff717cbe158b8e715f1f5598ac6e55201df3bd3f196492a7d514776f58ac7cc",
       "collecte": "2026-02-19T22:21:31.397885",
       "etat": "PARTIEL",
       "familles": [
@@ -276,15 +276,15 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 21292,
-        "droits_liquidables": 20984,
-        "positions_liquidables": 5085,
+        "droits": 21293,
+        "droits_liquidables": 20983,
+        "positions_liquidables": 5084,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 154,
-        "assiettes_source": 21292,
+        "taux_indisponibles": 155,
+        "assiettes_source": 21293,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
@@ -339,7 +339,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COG_tariffs.json",
       "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
-      "socle_sha256": "9b0e0f017f5b3f21622e14fee1f46d121a343bab9972f15110503980077bac2f",
+      "socle_sha256": "c964dbb268324840c4f2141ddbc6f8714cdff3f0065f8d09aec2611a6a702cf5",
       "collecte": "2026-02-19T22:39:52.620876",
       "etat": "PARTIEL",
       "familles": [
@@ -350,15 +350,15 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 26361,
-        "droits_liquidables": 26233,
-        "positions_liquidables": 5175,
+        "droits": 26360,
+        "droits_liquidables": 26226,
+        "positions_liquidables": 5172,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 64,
-        "assiettes_source": 26361,
+        "taux_indisponibles": 67,
+        "assiettes_source": 26360,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
@@ -2032,6 +2032,6 @@
     ],
     "positions": 368379,
     "droits": 1121198,
-    "droits_liquidables": 1095629
+    "droits_liquidables": 1095621
   }
 }
