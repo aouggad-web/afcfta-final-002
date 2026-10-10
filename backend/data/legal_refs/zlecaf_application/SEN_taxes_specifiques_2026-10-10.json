@@ -19,6 +19,7 @@
   },
   "decisions": [
     "Assiette de la taxe spécifique : la FAQ véhicules de la DGD liquide « (base + DD + RS) × taux », alors que l'art. 408 du CGI vise la valeur en douane « majorée de tous les droits et taxes liquidés par la douane » : la liquidation de la DGD est suivie, l'écart signalé.",
+    "Assiette de la TVA : le CGI sénégalais la limite aux droits et taxes liquidés « au profit du budget de l'Etat », ce qui exclut les prélèvements communautaires (PCS, PCC), le COSEC et le PROMAD, comme le font les tableaux de la DGD ; la directive n° 02/98/CM/UEMOA (art. 27 a), fiche UEMOA_assiette_TVA_2026-09-14.json) vise plus largement « les droits et taxes perçus à l'entrée ». Le texte national et la liquidation de la DGD sont suivis, l'écart signalé.",
     "COSEC (0,4 %) : dû par voie maritime seulement ; le mode de transport n'étant pas connu du calculateur, il n'est pas liquidé.",
     "Produits des chapitres 33 et 34 : l'art. 441 vise « les produits relevant des chapitres 33 et 34 du tarif des douanes, notamment » les cosmétiques ; toutes les positions des deux chapitres sont taxées à 10 %.",
     "Textiles (art. 444 quater) : tissus des positions 50.07, 51.11 à 51.13, 52.08 à 52.12, 53.09 à 53.11, 54.07, 54.08, 55.12 à 55.16, chapitres 60 à 62, 63.01 à 63.04 et friperie 63.09, à 5 %."
@@ -28,7 +29,7 @@
     "Eaux et boissons 22.01 et 22.02 (hors 22.02.10), corps gras du chapitre 15, préparations de viande 16.02 : positions mêlant produits taxés et non taxés, ou exonérations selon la destination : taxe portée sans taux.",
     "Droit d'enregistrement des véhicules (1 % neuf, 3 % d'occasion), acompte BIC (3 %), prélèvement de conformité fiscale (12 %), taxe conjoncturelle à l'importation : selon l'état du véhicule ou le statut de l'importateur, non liquidés.",
     "Taxe sur les emballages plastiques (art. 444 ter) : selon le contenu et le volume, non liquidée.",
-    "Le « PUA » de 0,2 % du crawl ne figure dans aucun tableau de la DGD : retiré."
+    "Le « PUA » de 0,2 % du crawl ne figure dans aucun tableau de la DGD du Sénégal : retiré. La douane ivoirienne le liquide (circulaire DGD n° 2258) : son application au Sénégal reste à confirmer."
   ],
   "documents_archives": [
     {
