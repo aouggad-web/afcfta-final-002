@@ -1,0 +1,137 @@
+{
+ "DZA-FAP-002-ACQUITDUSERVICEDESALCOOL": {
+  "title": "Acquit du service des alcools, titres de regie (passavant,acquit-@-caution).",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C02": 3
+  }
+ },
+ "DZA-FAP-008-AUTORISATIONDADMISSIONDU": {
+  "title": "Autorisation d admission du produit",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 5,
+   "C04": 13,
+   "C05": 104,
+   "C06": 43,
+   "C07": 22,
+   "C08": 10,
+   "C09": 7,
+   "C10": 11,
+   "C11": 21,
+   "C12": 21,
+   "C13": 87,
+   "C14": 28,
+   "C16": 21
+  }
+ },
+ "DZA-FAP-010-AUTORISATIONDELIBRECIRCU": {
+  "title": "Autorisation de libre circulation",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C13": 34
+  }
+ },
+ "DZA-FAP-011-AUTORISATIONDELIVREEPARL": {
+  "title": "Autorisation delivree par le ministere de l'energie",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 234,
+   "C02": 212,
+   "C03": 148,
+   "C04": 30,
+   "C14": 39,
+   "C15": 12
+  }
+ },
+ "DZA-FAP-015-AUTORISATIONDIMPORTATION": {
+  "title": "Autorisation d'importation et d'exportation des produits sources de rayonnements ionisants (asri)",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 37
+  }
+ },
+ "DZA-FAP-017-AUTORISATIONPREALABLEALI": {
+  "title": "Autorisation prealable a l'import et/ou l'export de stupefiants et substances psychotropes(m.sante)",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 7,
+   "C02": 7,
+   "C03": 40
+  }
+ },
+ "DZA-FAP-018-AUTORISATIONPREALABLEDEL": {
+  "title": "Autorisation prealable de l'administration fiscale",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 2
+  }
+ },
+ "DZA-FAP-020-AUTORISATIONTECHNIQUEPRE": {
+  "title": "Autorisation technique prealable d'importation des produits phytosanitaires a usage agricole",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C04": 3,
+   "C13": 59
+  }
+ },
+ "DZA-FAP-023-DECLARATIONDIMPORTATIOND": {
+  "title": "Declaration d importation du produit",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 5,
+   "C04": 13,
+   "C05": 104,
+   "C06": 43,
+   "C07": 22,
+   "C08": 10,
+   "C09": 7,
+   "C10": 11,
+   "C11": 21,
+   "C12": 21,
+   "C13": 87,
+   "C14": 28,
+   "C16": 21
+  }
+ },
+ "DZA-FAP-029-LICENCEDIMPORTATIONDESAO": {
+  "title": "Licence d'importation de s.a.o",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C02": 31,
+   "C14": 6
+  }
+ },
+ "DZA-FAP-032-VISADECONTROLESANITAIREV": {
+  "title": "Visa de controle sanitaire veterinaire (m. agriculture)",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C01": 4,
+   "C03": 5,
+   "C05": 20,
+   "C13": 12,
+   "C14": 47
+  }
+ },
+ "DZA-FAP-034-VISATECHNIQUEANNUELPOURL": {
+  "title": "Visa technique annuel pour l'importation des produits pharmaceutiques",
+  "ref": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P) — Tarif Douanier d'usage DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020), pages 1-2",
+  "url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+  "groups": {
+   "C09": 4,
+   "C10": 5,
+   "C14": 14
+  }
+ }
+}
