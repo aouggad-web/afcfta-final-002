@@ -1,0 +1,21 @@
+Prélèvements communautaires exclus pour les marchandises originaires du bloc : extraits verbatim (relevés le 2026-10-10)
+
+1. UEMOA, Acte additionnel n° 04/96 instituant un régime tarifaire préférentiel transitoire des échanges au sein de l'UEMOA et son mode de financement, PDF de 28 pages (https://www.dge.gouv.ci, textes communautaires classés), sha256 75bfd8ae0c1b2dc6070e533bfe98d705050851209208223da629dab25003802b, articles 16 et 17 :
+
+« Article 16: 1/ est institué un prélèvement dénommé Prélèvement Communautaire de Solidarité (P.C.S) de 0,5 % sur la valeur en douane des marchandises importées des pays tiers par les Etats membres de l'Union. »
+
+« Article 17 : L'assiette du P.C.S. est constituée par les importations dans tous les Etats membres, de produits originaires des pays tiers' à l'Union et mis à la consommation. Sont exclus de cette assiette: - les produits originaires de l'Union; - les produits fabriqués ou obtenus dans un Etat membre de l'Union et ne remplissant pas les conditions d'origine. prévues aux articles 4, 5, 6, 7, 8, et 9 du présent acte; »
+
+2. CEDEAO, Protocole A/P1/7/96 relatif aux conditions d'application du prélèvement communautaire, Journal officiel de la CEDEAO vol. 31 (texte archivé sources/CEDEAO_prelevement_communautaire.texte-extrait.txt, sha256 529490782225d86d5a8db9ab11c33d4c165b25d7b46dc490a51d4ab4a13dda1d), articles 3 et 4 :
+
+« L'assiette du prélèvement communautaire est constituée par la valeur imposable dés marchandises importées dans la Communauté en provenance de pays tiers et mises a la consommation »
+
+« Le champ d'application ou pr é lèverneru communautaire ne comprend pas al les produits originaire.s de la rÇEDEAO (produits industriels agréés, produits du cru et produits de .l'artisanat traditionnel) b) les produits fabriqués ou obtenus dans les Etats membres mais ne remplissant pas les conditions d'origine de la CEDEAO. »
+
+3. Union africaine, décision Assembly/AU/Dec.605(XXVII), Kigali, juillet 2016 (https://au.int/sites/default/files/pages/31953-file-assembly_au_dec_605_financing_the_au.pdf, sha256 62046e4dda1c0b2e8e9c01b643af2f84f978faba89fb8fdd446c99253d8568a9) :
+
+« To institute and implement a 0.2 percent Levy on all eligible imported goods into the Continent to finance the African Union Operational , Program and Peace Support Operations Budgets starting from the year 2017; »
+
+Union africaine, « FAQs about financing of the Union » (https://au.int/sites/default/files/pages/31953-file-faq.pdf, sha256 47d365d29896f9574079fa93b6911a094b5af1a241a171d5e4c764f886504761) :
+
+« The taxable base of the AU import levy will be the value of eligible goods originating from a non-Member State imported into the territory of a Member State to be consumed in the Member State. »

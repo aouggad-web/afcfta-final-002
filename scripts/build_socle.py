@@ -81,6 +81,8 @@ FAMILLES = {
     "OHADA": "communautaire",
     "TS": "communautaire",
     "CEDEAO": "communautaire",
+    "EXIM": "redevance",
+    "SIL": "redevance",
     "RPD": "redevance",
     "IDF": "redevance",
     "RDL": "redevance",
@@ -1176,6 +1178,14 @@ def sources_disponibles():
 #: CGI (annexe II, art. 142) ; l'assiette de la TVA, de son art. 138 (1).
 #: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
 #: assiette de la TVA de son art. 216.
+#: Code du prélèvement → bloc dont les originaires en sont exclus.
+EXONERATION_ORIGINE = {"PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA"}
+#: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
+BLOCS_DESTINATION = {
+    "UEMOA": {"BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"},
+    "CEDEAO": {"BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"},
+}
+
 ACCISES_PAYS = {
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
@@ -1183,6 +1193,7 @@ ACCISES_PAYS = {
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
     "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
+    "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
 }
 
 
@@ -1612,6 +1623,73 @@ def _prelevements_senegal(positions, compteurs):
         position["droits"] = droits
 
 
+def _prelevements_ghana(positions, compteurs):
+    """Ghana : la collecte ne porte que DD, NHIL, GETFund et TVA. Prélèvements
+    à l'importation sur la valeur c.a.f. (MoFEP/IFS, « A survey of the Ghanaian
+    tax system », 2026, tableau 3.9) : ECOWAS Levy 0,5 %, AU Import Levy 0,2 %,
+    EXIM Levy 0,75 % (Act 911, s. 29, hors produits pétroliers), Special Import
+    Levy 2 % (Act 861, hors produits pétroliers, engrais, machines et
+    équipements ; chapitres 84 et 85 sans taux, faute de liste). TVA,
+    NHIL et GETFund sur une même base (GRA) : valeur en douane + droits et taxes
+    à l'importation autres que la TVA (VAT Act 2025, Act 1151, s. 45(1)). Fiche :
+    GHA_prelevements_TVA_2026-10-10.json."""
+    mofep = "MoFEP/IFS, A survey of the Ghanaian tax system (2026), tableau 3.9"
+    ajouts = [
+        ("CEDEAO", "ECOWAS Levy", 0.5, "« All imported goods from non-ECOWAS states » : non dû sur les origines CEDEAO."),
+        ("PUA", "AU Import Levy", 0.2, "African Union Import Levy Act 2017 (Act 952) : « All imported goods from non-AU states »."),
+        ("EXIM", "Export-Import Levy", 0.75, "Act 911, s. 29 : « on the dutiable value of any product imported for commercial purposes except petroleum products »."),
+        ("SIL", "Special Import Levy", 2.0, "Special Import Levy Act 2013 (Act 861) : « All imports, except for petroleum products, fertilisers, and machinery and equipment » ; produits pétroliers lus comme les positions 27.09 et 27.10, engrais comme le chapitre 31 ; exemptions de la First Schedule non relevées."),
+    ]
+    codes = "+".join(["DD"] + [c for c, _, _, _ in ajouts])
+    # Le droit d'accises (barème ACCISES_PAYS, passe suivante) entre dans la base
+    # commune ; absent de la position, il est sans objet.
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        if not droits:
+            continue
+        presents = {d.get("code") for d in droits}
+        rang = next((i + 1 for i, d in enumerate(droits) if d.get("code") == "DD"), 0)
+        for c, libelle, taux, note in ajouts:
+            if c in presents:
+                continue
+            if c == "EXIM" and code[:4] in ("2709", "2710", "2711", "2712", "2713"):
+                continue
+            if c == "SIL" and (code[:4] in ("2709", "2710") or code[:2] == "31"):
+                continue
+            if c == "SIL" and code[:2] in ("84", "85"):
+                taux = None
+                note += " Machines et équipements (chapitres 84 et 85) exclus, sans liste des positions concernées : taux non établi."
+                compteurs["taux_indisponibles"] += 1
+            droits.insert(
+                rang,
+                {
+                    "code": c,
+                    "code_source": c,
+                    "libelle": libelle,
+                    "famille": famille(c),
+                    "taux": taux,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Ghana Revenue Authority (Customs Division)",
+                    "note": f"{note} ({mofep})",
+                },
+            )
+            rang += 1
+            compteurs["assiettes_table"] += 1
+        for d in droits:
+            if d.get("code") in ("TVA", "NHIL", "GETFUND") and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
+                d["assiette"] = "CIF+" + codes + "+DA"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "VAT Act 2025 (Act 1151), s. 45(1) : « (a) the import value [...] (b) the import duties and taxes "
+                    "other than the Tax » ; GRA : « the VAT, the NHIL and the GETFund Levy are all charged on the same base »."
+                )
+        position["droits"] = droits
+
+
 def _prelevements_cote_divoire(positions, compteurs):
     """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
     taxation nationale, mise à jour du 27/03/2026 ; fiche
@@ -1713,8 +1791,10 @@ def _accises_du_cgi(iso, positions, compteurs):
                 continue
             if any(code.startswith(p) for p in regle["prefixes"]):
                 # Avant la TVA, qui s'assoit sur lui : le moteur liquide dans l'ordre.
+                # Ghana : avant le NHIL et le GETFund aussi, assis sur la même base.
+                avant = table.get("inserer_avant_familles", ["tva"])
                 rang = next(
-                    (i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits)
+                    (i for i, d in enumerate(droits) if d.get("famille") in avant), len(droits)
                 )
                 droits.insert(
                     rang,
@@ -2128,6 +2208,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_senegal(positions, compteurs)
     if iso == "CIV":
         _prelevements_cote_divoire(positions, compteurs)
+    if iso == "GHA":
+        _prelevements_ghana(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
@@ -2159,6 +2241,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 else:
                     cle = "assiettes_table"
                 compteurs[cle] += signe
+
+    # Prélèvements communautaires dont les originaires du bloc sont exclus
+    # (backend/services/exoneration_origine.py) : la route les retire selon
+    # l'origine déclarée.
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            bloc = EXONERATION_ORIGINE.get(d.get("code"))
+            if bloc and (bloc == "UA" or iso in BLOCS_DESTINATION[bloc]):
+                d["exoneration_origine"] = bloc
 
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur

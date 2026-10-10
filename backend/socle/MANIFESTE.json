@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-10T20:41:02.465300+00:00",
+  "construit_le": "2026-10-10T21:49:24.533493+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -79,7 +79,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BEN_tariffs.json",
       "source_sha256": "a62e860ec9b2e5352e26be50a7347f504f64bc697667abc8482ccbf6363f1e98",
-      "socle_sha256": "b14a96c394d2d39f2b0a243ca7a33f95fd5c3b1b4e6102c52f1a09b6a3b07b82",
+      "socle_sha256": "20be3396dacbef6318aeb0b4026fb599ea0f6d2d0e74846214ac7b68b03544b7",
       "collecte": "2026-02-19T22:39:44.817942",
       "etat": "COMPLET",
       "familles": [
@@ -116,7 +116,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BFA_tariffs.json",
       "source_sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
-      "socle_sha256": "d9928d0bbb9fefe5cf225e6a76225def50b29048d9ba859161b8a850d7b9c3c6",
+      "socle_sha256": "3fa05b4c338b919002a197a27b8459589c45165c0e4275a90b7c9205d0b9bc33",
       "collecte": "2026-02-19T22:39:46.076060",
       "etat": "COMPLET",
       "familles": [
@@ -226,7 +226,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CIV_tariffs.json",
       "source_sha256": "5126005ea179b89edb079dbf21461b67bec70234205447f26df61da17eacef2a",
-      "socle_sha256": "a99e887d4c07360e2bab45ed01f711323513a01d7e654a6028d53c6cdc16e0c8",
+      "socle_sha256": "ccf7aa293968b7c8e81fae20c946b914d551ea9162a820cb24d3402e915cabee",
       "collecte": "2026-10-10T15:57:51.291346+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -414,7 +414,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CPV_tariffs.json",
       "source_sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
-      "socle_sha256": "f0f7bf9e4f604d5bdf779bc7e574cd95479c00a8024d174c8eb4cb489533ec49",
+      "socle_sha256": "525e140735db46310e307fc7062eee7a493524b40b908a2fe43c7b23d2d297cf",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -670,27 +670,30 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GHA_tariffs.json",
       "source_sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
-      "socle_sha256": "3cd73060a3ff6819acaa60129b28ccc712c2835909d63baab6af9ad8a1a69521",
+      "socle_sha256": "cc6de58f3ca3af2eacdeaf3f0d4fe9fdeb8852cc8f81f1962e3cb3b88e9f550b",
       "collecte": "2026-06-16T22:25:05.362356",
-      "etat": "COMPLET",
+      "etat": "PARTIEL",
       "familles": [
+        "accise",
+        "communautaire",
         "droit",
         "fonds",
+        "redevance",
         "tva"
       ],
       "compteurs": {
         "positions": 11516,
-        "droits": 46064,
-        "droits_liquidables": 46064,
-        "positions_liquidables": 11516,
+        "droits": 92398,
+        "droits_liquidables": 85794,
+        "positions_liquidables": 9865,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 1651,
         "assiettes_source": 24516,
         "assiettes_fichier": 0,
-        "assiettes_table": 21548,
+        "assiettes_table": 67882,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -707,7 +710,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GIN_tariffs.json",
       "source_sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
-      "socle_sha256": "33e6bcd972a3a8f3545514c06e4820683283187a9ff965516d5ecfc13d2cf8fe",
+      "socle_sha256": "96467acd97c8189b57d998ba70b0877eaee4e25d18af73ce0018eef1b34ff273",
       "collecte": "2026-02-19T22:39:50.897093",
       "etat": "COMPLET",
       "familles": [
@@ -744,7 +747,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GMB_tariffs.json",
       "source_sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
-      "socle_sha256": "d680cb3b2a09fbad272bd40e2f6aaec3d454ba3b1a2652f3ba6895ed0da108ff",
+      "socle_sha256": "8206fda39481f7db9e973afc493b885d8d5f4f6145c83ede5ad90440130663e1",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -781,7 +784,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNB_tariffs.json",
       "source_sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef",
-      "socle_sha256": "b2cca52b26d85003b402d9c54c2cef15db049a05de63883eded3f2a406d6e121",
+      "socle_sha256": "c52cc2dadb1120722d226e339ddabfab796314d802e175ffc2b3bcd9d5910f51",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -894,7 +897,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "0846c78737c04ab6c1c434892ff7db3c4197c0b190368338d7005489abcf9ed4",
+      "socle_sha256": "5ca5b4a34bf672440190834bebf59578e99d5cab80a26f61ade910f9029efb6a",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -1075,7 +1078,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MLI_tariffs.json",
       "source_sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
-      "socle_sha256": "4d74d7bcd36b1475c7b327b2cae956aa2b15a6cc9bad20c626374386deeb50b5",
+      "socle_sha256": "8988aa4b0b1d16b147f0b954299183be1d9c03f79a05f42d560ee8b25d8687af",
       "collecte": "2026-02-19T22:39:47.238684",
       "etat": "COMPLET",
       "familles": [
@@ -1297,7 +1300,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NER_tariffs.json",
       "source_sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629",
-      "socle_sha256": "2de10e6035f6d4945bd13e0ff79f069fc27471313601bc2ff02bbf8d8ffc6cad",
+      "socle_sha256": "e7cb7e24556b66caeed82458b73ee37a4866da3ac0dce1b8ef328cb868f84fc1",
       "collecte": "2026-02-19T22:39:48.421467",
       "etat": "COMPLET",
       "familles": [
@@ -1444,7 +1447,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SEN_tariffs.json",
       "source_sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0",
-      "socle_sha256": "25c5bd557e3cf22c8f656b7d102d0dadde57bc1e4a060c91d0517fc734b0fca7",
+      "socle_sha256": "18786354f990ff4eda938e117f5d3ad96868dd0c05359062b50c6d1bc86decc1",
       "collecte": "2026-02-19T22:21:26.945091",
       "etat": "PARTIEL",
       "familles": [
@@ -1483,7 +1486,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SLE_tariffs.json",
       "source_sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
-      "socle_sha256": "4dcc8521384048b2bbeb91327f7cd0f0c33f52b527237e02658ceb4b3e3b3cec",
+      "socle_sha256": "81eaca77b0e2c5bae0486ebac9707e7c646c736fa2e78e9a52ae7661e7ee0298",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -1697,7 +1700,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TCD_tariffs.json",
       "source_sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
-      "socle_sha256": "3883fe5a7207f485310970ecd79dfbede33076024bc5f110cea44197e974b4ea",
+      "socle_sha256": "a489de07ac6f83a3f4dc9387fb43b78fddb5a78c7f9c75622f87adc0b7876f1b",
       "collecte": "2026-02-19T22:39:53.393846",
       "etat": "PARTIEL",
       "familles": [
@@ -1735,7 +1738,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TGO_tariffs.json",
       "source_sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
-      "socle_sha256": "8c3f0ccdc49159445460affa150072f35095b80c6f8b4c41be140e347d78383a",
+      "socle_sha256": "b99e5357c2a24b07009048e3c882e531456307286f313bb2b1ea14f8a51b588d",
       "collecte": "2026-02-19T22:39:49.671861",
       "etat": "COMPLET",
       "familles": [
@@ -2009,6 +2012,7 @@
       "EGY",
       "ETH",
       "GAB",
+      "GHA",
       "GNQ",
       "KEN",
       "LBY",
@@ -2035,7 +2039,7 @@
       "ZWE"
     ],
     "positions": 368631,
-    "droits": 1156017,
-    "droits_liquidables": 1129971
+    "droits": 1202351,
+    "droits_liquidables": 1169701
   }
 }
