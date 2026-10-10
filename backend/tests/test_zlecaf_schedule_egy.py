@@ -166,9 +166,14 @@ def test_le_chemin_socle_sert_le_meme_taux_que_le_chemin_historique():
     assert resultat["applique"] is True
     assert resultat["taux"]["DD"]["taux"] == attendu
 
+    # Hors liste A, le calendrier rend le NPF lui-même : la préférence ne
+    # réduit rien, et n'est donc pas annoncée comme appliquée (audit du
+    # 2026-10-09, point 4) — même verdict que le chemin historique.
     bloque = taux_preferentiels(_position(10.0), "EGY", A_10_ANS, LIGNE_B)
-    assert bloque["applique"] is True
-    assert bloque["taux"]["DD"]["taux"] == 10.0
+    assert bloque["applique"] is False
+    assert bloque["statut"] == "PREFERENCE_SANS_EFFET"
+    assert bloque["taux"] == {}
+    assert "taux NPF appliqué" in bloque["note"]
 
 
 def test_l_offre_de_l_ua_ne_sert_jamais_l_egypte():

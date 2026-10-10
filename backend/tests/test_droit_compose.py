@@ -176,3 +176,28 @@ def test_cette_forme_n_est_pas_traitee_comme_non_tranchee():
     ligne = calculer(PLAFONNE, 500000.0, quantite=10000.0)["npf"]["lignes"][0]
 
     assert ligne["statut"] != MANQUE_REGLE_COMPOSEE
+
+
+# ── La borne porte sur la valeur en douane du pays ─────────────────────────────
+#
+# Audit du 2026-10-09, point 3 : en SACU, la valeur en douane est la valeur FOB
+# (Act 91/1964 s.65-67). La borne « with a maximum of 96 % » se calculait sur
+# le CIF, et relevait le droit du fret et de l'assurance.
+
+
+def test_en_sacu_le_plafond_porte_sur_la_valeur_fob():
+    """ZAF/04021010, CIF 10 000, FOB 8 000, 50 000 kg : 96 % × 8 000 = 7 680."""
+    ligne = calculer(
+        PLAFONNE, 10000.0, quantite=50000.0, valeur_fob=8000.0, assiette_valeur="FOB"
+    )["npf"]["lignes"][0]
+
+    assert ligne["montant"] == 7680.0
+    assert ligne["plafond_applique"] is True
+    assert ligne["plafond_valeur"] == "FOB"
+
+
+def test_en_sacu_sans_valeur_fob_la_borne_n_est_pas_devinee():
+    resultat = calculer(PLAFONNE, 10000.0, quantite=50000.0, assiette_valeur="FOB")
+
+    assert resultat["npf"]["lignes"][0]["statut"] == "VALEUR_FOB_REQUISE"
+    assert resultat["npf"]["lignes"][0]["montant"] is None

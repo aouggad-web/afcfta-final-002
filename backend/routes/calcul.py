@@ -175,6 +175,7 @@ def calcul(demande: DemandeCalcul):
             devise_cif=demande.devise_cif,
             couverture=provenance.get("couverture"),
             valeur_fob=demande.valeur_fob,
+            assiette_valeur=provenance.get("valeur_en_douane"),
         )
     except ValueError as exc:
         # Une demande incohérente (valeur_fob excédant la valeur CIF, p. ex.)
@@ -210,6 +211,8 @@ def calcul(demande: DemandeCalcul):
         resultat,
     )
     resultat.update(_regimes(preference))
+    if preference.get("applique") and preference.get("regime") == "ZLECAF":
+        resultat["regle_origine"] = _regle_origine(socle.normaliser_code(demande.code_sh))
     resultat.update(
         _bloc_reglementaire(
             demande.destination, demande.origine, demande.valeur_cif, demande.valeur_fob
@@ -256,6 +259,7 @@ def _conversion_monetaire(position, demande, provenance, preference, resultat):
                 devise_cif=demande.devise_cif,
                 couverture=provenance.get("couverture"),
                 valeur_fob=demande.valeur_fob,
+                assiette_valeur=provenance.get("valeur_en_douane"),
             )
         )
 
@@ -326,6 +330,7 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
                 devise_cif=demande.devise_cif,
                 couverture=provenance.get("couverture"),
                 valeur_fob=demande.valeur_fob,
+                assiette_valeur=provenance.get("valeur_en_douane"),
             )
         except Exception as exc:  # pragma: no cover - le moteur ne doit pas faire tomber la route
             logger.warning("Simulation %s non chiffrée : %s", simulation.get("regime"), exc)
@@ -471,6 +476,55 @@ def _regimes(preference: dict) -> dict:
     else:
         resultat["preference_zlecaf"] = infos
     return resultat
+
+
+#: Ce que le moteur ne vérifie pas, et qui conditionne pourtant tout le taux
+#: préférentiel servi : l'origine de la marchandise (Annexe 2 de l'Accord,
+#: règles d'origine).
+RESERVE_ORIGINE = (
+    "Sous réserve d'un certificat d'origine ZLECAf : le taux préférentiel n'est "
+    "dû que si la marchandise satisfait la règle d'origine de sa position."
+)
+
+
+def _regle_origine(code_sh: str) -> dict:
+    """La règle d'origine SH6 de la position, jointe à toute préférence ZLECAf.
+
+    Le taux préférentiel n'est acquis que si la marchandise est originaire ;
+    le servir sans la règle laissait croire qu'il l'était. La règle vient du
+    même service que `/rules-of-origin` (Appendice IV, décembre 2023), en
+    français et en anglais ; une position que l'Appendice ne couvre pas rend
+    son statut tel quel, jamais une règle générique.
+    """
+    from routes import rules_of_origin as roo
+
+    if not roo.RULES_DATA:
+        # Hors application (appel direct, tests), le jeu de données n'a pas
+        # été remis au module par `register_routes`.
+        from routes import ORIGIN_TYPES, RULES_OF_ORIGIN_DATA
+
+        roo.init_data(RULES_OF_ORIGIN_DATA, ORIGIN_TYPES)
+    fr, en = roo.get_rule_of_origin(code_sh, "fr"), roo.get_rule_of_origin(code_sh, "en")
+
+    def regle(cle):
+        if not fr.get(cle):
+            return None
+        return {
+            "code": fr[cle]["code"],
+            "nom": {"fr": fr[cle]["name"], "en": en[cle]["name"]},
+            "explication": {"fr": fr[cle]["explanation"], "en": en[cle]["explanation"]},
+        }
+
+    return {
+        "hs6": fr["hs6_code"],
+        "statut": fr["status"],
+        "niveau": fr["source"].lower(),
+        "regle": regle("primary_rule"),
+        "regle_alternative": regle("alternative_rule"),
+        "contenu_regional_pct": fr.get("regional_content"),
+        "source": fr.get("source_detail"),
+        "reserve": RESERVE_ORIGINE,
+    }
 
 
 def _bloc_reglementaire(

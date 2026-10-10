@@ -41,11 +41,15 @@ function ligneParCode(lignes) {
  * présente mais non liquidée invalide le total (`null`, pas une somme
  * amputée) ; une famille absente des lignes ET absente à la source
  * (`manques`, motif `NON_TRACEE_A_LA_SOURCE` — la dégradation que
- * `services/calcul.py` applique déjà à `etat`) rend `null` plutôt que `0`.
+ * `services/calcul.py` applique déjà à `etat`), ou absente de la seule
+ * position alors que le pays la publie ailleurs (`TVA_NON_PUBLIEE_POUR_LA_POSITION`),
+ * rend `null` plutôt que `0`.
  */
+const MOTIFS_FAMILLE_ABSENTE = ['NON_TRACEE_A_LA_SOURCE', 'TVA_NON_PUBLIEE_POUR_LA_POSITION'];
+
 function familleNonTracee(manques, famille) {
   return (manques || []).some(
-    (m) => m.code === famille.toUpperCase() && m.motif === 'NON_TRACEE_A_LA_SOURCE'
+    (m) => m.code === famille.toUpperCase() && MOTIFS_FAMILLE_ABSENTE.includes(m.motif)
   );
 }
 
@@ -233,13 +237,17 @@ function buildJournal(cifValue, lignes) {
   let cumulative = cifValue;
   (lignes || []).forEach((l, i) => {
     if (!estCalculee(l)) {
+      // Un droit non liquidé rend le cumul inconnu à partir de là : le
+      // reporter tel quel ferait lire en dernière ligne un coût total que
+      // le moteur refuse (audit du 2026-10-09, point 5).
+      cumulative = null;
       journal.push({
         step: i + 2, component: l.libelle, base: null, rate: '-', amount: null,
         cumulative, legal_ref: l.assiette_non_traduite || l.statut,
       });
       return;
     }
-    cumulative += l.montant;
+    cumulative = cumulative === null ? null : cumulative + l.montant;
     // Un droit spécifique (« 8c/kg ») n'a pas de taux pourcentuel : `taux_pct`
     // y est `null`, et l'afficher tel quel écrirait « null% ». Le moteur porte
     // alors `specifique` (le libellé brut publié) — l'utiliser à sa place.
@@ -569,11 +577,10 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     generic_legal_calculation: null,
     kenya_legal_calculation: null,
 
-    rules_of_origin: {
-      rule: 'ZLECAf Rules of Origin',
-      requirement: null,
-      regional_content: 40,
-    },
+    // Règle d'origine SH6 jointe par le moteur à toute préférence ZLECAf
+    // servie (Appendice IV). Le contenu régional « 40 » posé ici en dur n'était
+    // celui d'aucune position.
+    regle_origine: hasZlecaf ? calcul.regle_origine || null : null,
 
     normal_calculation_journal: buildJournal(cifValue, npfLignes),
     zlecaf_calculation_journal: hasPreference ? buildJournal(cifValue, prefLignes) : [],
@@ -607,5 +614,6 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     _npf_etat: npf.etat,
     _zlecaf_etat: hasPreference ? pref.etat : null,
     _manques_npf: npf.manques || [],
+    _manques_zlecaf: hasPreference ? pref.manques || [] : [],
   };
 }

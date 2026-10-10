@@ -404,8 +404,61 @@ def taux_preferentiels(
             "(General Note O du Schedule No. 1, Customs and Excise Act) — "
             "colonne AfCFTA du socle."
         )
+    if _sans_effet(table, position):
+        # Liste gelée, hors liste A, partenaire non encore activé, plancher NPF :
+        # le calendrier rend le droit commun lui-même. Dire « ZLECAf appliquée »
+        # sur un taux égal au NPF annonçait une préférence qui ne réduit rien
+        # (DZA/8703101100 depuis la Tunisie : 30 %, économie nulle). Le motif
+        # que le calendrier donne est rendu tel quel.
+        motif = perimetre.get("DD") or origine_taux
+        resultat.update(
+            {
+                "applique": False,
+                "statut": "PREFERENCE_SANS_EFFET",
+                "motif": motif,
+                "note": (
+                    f"{motif} : le taux ZLECAf de cette position n'est pas inférieur "
+                    "au droit NPF — aucune préférence n'est servie, taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
+        )
+        resultat.pop("reserve", None)
+        return resultat
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat
+
+
+def _sans_effet(table: Dict[str, Any], position: Dict[str, Any]) -> bool:
+    """Vrai si aucun prélèvement de la table n'est servi sous son taux NPF.
+
+    Seuls les taux ad valorem se comparent : un droit spécifique ou composé
+    ne se compare pas au NPF sans quantité ni valeur, et laisse la préférence
+    servie ; un NPF inconnu aussi. Un taux préférentiel au-dessus du NPF ne
+    réduit rien non plus : le moteur sert alors le NPF (`npf_plancher`) —
+    DZA/0201101100 depuis la Tunisie, 24 % au calendrier pour un NPF de 5 %.
+    Un prélèvement dont le NPF est déjà nul n'a rien à démanteler et ne
+    compte ni pour ni contre ; si tous les NPF sont nuls, la préférence reste
+    servie. Il suffit d'un prélèvement réduit — le DAPS algérien exonéré sur
+    un DAPS NPF non nul, par exemple — pour que la préférence ait un effet.
+    """
+    compares = 0
+    for code, entree in table.items():
+        taux = entree.get("taux") if isinstance(entree, dict) else entree
+        if not isinstance(taux, (int, float)) or (
+            isinstance(entree, dict) and entree.get("specifique") is not None
+        ):
+            return False
+        npf = _taux_npf(position, code)
+        if npf is None:
+            return False
+        if npf == 0:
+            continue
+        if float(taux) < npf - 1e-9:
+            return False
+        compares += 1
+    return compares > 0
 
 
 def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[str, Any]]:

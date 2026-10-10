@@ -280,3 +280,29 @@ def test_o_zero_percent_egale_zero_percent_sert_applied():
         for k in ("note", "perimetre")
     ) + " ".join(str(v) for v in decision["perimetre"].values())
     assert "supérieur" not in notes
+
+
+@besoin_socle
+def test_o_le_plafond_npf_04021010_porte_sur_la_valeur_fob():
+    """Audit du 2026-10-09, point 3. ZAF/04021010, CIF 10 000, FOB 8 000,
+    50 000 kg, origine hors ZLECAf : 450c/kg × 50 000 = 225 000, borné à
+    96 % de la valeur en douane SACU, la FOB — 7 680, pas 9 600. La TVA
+    (FOB × 1,10 + DD, VAT Act s.13(2)(a)) suit : 15 % × 16 480 = 2 472."""
+    from routes.calcul import DemandeCalcul, calcul
+
+    reponse = calcul(
+        DemandeCalcul(
+            destination="ZAF",
+            origine="GBR",
+            code_sh="04021010",
+            valeur_cif=10000,
+            valeur_fob=8000,
+            quantite=50000,
+        )
+    )
+    lignes = {l["code"]: l for l in reponse["npf"]["lignes"]}
+    assert reponse["provenance"]["valeur_en_douane"] == "FOB"
+    assert lignes["DD"]["montant"] == 7680.0
+    assert lignes["DD"]["plafond_valeur"] == "FOB"
+    assert lignes["TVA"]["montant"] == 2472.0
+    assert reponse["npf"]["etat"] == "COMPLET"

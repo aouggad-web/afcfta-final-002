@@ -932,5 +932,35 @@
       "product": "Produit",
       "destination": "Destination"
     }
+  },
+  "calculator": {
+    "etat": {
+      "COMPLET": "Calcul complet",
+      "INDICATIF": "Calcul indicatif",
+      "PARTIEL": "Total partiel",
+      "INDISPONIBLE": "Calcul indisponible",
+      "aide": {
+        "COMPLET": "Tous les droits et taxes de la position sont liquidés.",
+        "INDICATIF": "Tous les droits sont liquidés, mais au moins un taux est une moyenne statistique, pas un tarif national.",
+        "PARTIEL": "Des droits n'ont pas pu être liquidés : ce montant n'est pas le coût final.",
+        "INDISPONIBLE": "Aucun droit n'a pu être liquidé pour cette position."
+      },
+      "nonCalcules_one": "{{count}} droit non calculé : {{codes}}",
+      "nonCalcules_other": "{{count}} droits non calculés : {{codes}}"
+    },
+    "origine": {
+      "titre": "Sous réserve d'un certificat d'origine ZLECAf",
+      "reserve": "Le taux préférentiel n'est dû que si la marchandise satisfait la règle d'origine de sa position, prouvée par un certificat d'origine ZLECAf.",
+      "regle": "Règle d'origine (SH {{hs6}}, niveau {{niveau}}) : {{nom}}",
+      "alternative": "Règle alternative : {{nom}}",
+      "contenuRegional": "Contenu régional minimal : {{pct}} %",
+      "nonEtablie": "Aucune règle d'origine n'est arrêtée pour cette position dans l'Appendice IV : la préférence reste soumise à la règle qui sera adoptée.",
+      "niveaux": {
+        "subheading": "sous-position",
+        "heading": "position",
+        "chapter": "chapitre",
+        "none": "aucun"
+      }
+    }
   }
 }

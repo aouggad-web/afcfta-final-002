@@ -43,7 +43,9 @@ Trois règles gouvernent tout le reste :
    ou sans quantité ne produit pas de montant : elle produit un manque nommé, et
    le total est marqué ``PARTIEL``.
 2. **Un total partiel se dit.** Un total qui omet une accise n'est pas prudent,
-   il est faux — il doit annoncer ce qu'il omet.
+   il est faux — il doit annoncer ce qu'il omet. Hors ``COMPLET`` et
+   ``INDICATIF``, ``total_droits`` et ``total_a_payer`` valent ``None`` ; la
+   somme des seules lignes liquidées est rendue à part, ``total_partiel``.
 3. **La préférence ne réduit que les prélèvements qu'on lui désigne.** Lesquels
    relève du droit national, pas du moteur : l'Algérie exonère aussi le DAPS
    pour les produits des listes (A) et (B) admis sous ZLECAf (circulaire
@@ -57,7 +59,11 @@ Trois règles gouvernent tout le reste :
    position qui n'a simplement rien à liquider en TVA — indiscernable d'un
    pays qui exonère réellement le produit. La couverture du pays (transmise en
    ``couverture``) dégrade alors l'état à ``PARTIEL`` et nomme la famille non
-   tracée, avant même de calculer une économie.
+   tracée, avant même de calculer une économie. À l'inverse, un pays qui
+   publie une TVA sur ses autres positions et n'en porte aucune sur celle-ci
+   ne l'a pas exonérée pour autant : la position est ``PARTIEL``
+   (``TVA_NON_PUBLIEE_POUR_LA_POSITION``). Une exonération réelle s'écrit au
+   socle comme une ligne TVA à 0 % avec sa source.
 """
 
 from __future__ import annotations
@@ -119,6 +125,13 @@ MANQUE_REGLE_COMPOSEE = "REGLE_COMPOSEE_NON_ETABLIE"
 #: 0102.29 : D.S.V. par tête, prélèvement viande au kilo). Une seule quantité
 #: saisie ne peut pas servir les deux : aucun n'est liquidé.
 MANQUE_UNITES = "UNITES_DE_QUANTITE_MULTIPLES"
+#: Le pays publie une TVA, mais pas pour cette position : la source ne dit pas
+#: si elle est exonérée ou simplement non reprise. Le Maroc en compte 528, la
+#: Côte d'Ivoire 635 (audit du 2026-10-09, point 2) — MAR/8413704000 rendait
+#: 250 de droits « COMPLET » là où la TVA en ajoute environ 2 000. Une
+#: exonération se trace au socle par une ligne TVA à 0 % qui porte sa source ;
+#: son absence pure n'est pas une exonération.
+MANQUE_TVA_NON_PUBLIEE = "TVA_NON_PUBLIEE_POUR_LA_POSITION"
 
 
 def _facteur_devise_specifique(
@@ -366,6 +379,7 @@ def _liquider(
     devise_cif: Optional[str] = None,
     valeur_fob: Optional[float] = None,
     devise_position: Optional[str] = None,
+    assiette_valeur: Optional[str] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     # Omise, la devise de la valeur déclarée est celle du tarif national
@@ -737,10 +751,25 @@ def _liquider(
         # deviner, seulement à appliquer. La borne est nommée dans la ligne,
         # qu'elle morde ou non : l'opérateur doit pouvoir constater pourquoi
         # son droit s'arrête là.
+        #
+        # « La valeur en douane », c'est celle du pays : la valeur FOB en SACU
+        # (Act 91/1964 s.65-67), où tout le tarif porte cette borne. La
+        # calculer sur le CIF la relevait du fret et de l'assurance — ZAF/
+        # 04021010, CIF 10 000 et FOB 8 000 : 9 600 servis au lieu de 7 680.
+        # Sans valeur FOB, la borne est inconnue : le droit reste indisponible.
         plafond_pct = droit.get("plafond_ad_valorem_pct")
         if plafond_pct is not None:
-            borne = cif * plafond_pct / 100.0
+            if assiette_valeur == "FOB" and valeur_fob is None:
+                ligne["statut"] = MANQUE_FOB
+                ligne["montant"] = None
+                manques.append({"code": code, "motif": MANQUE_FOB})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
+            valeur_bornee = valeur_fob if assiette_valeur == "FOB" else cif
+            borne = valeur_bornee * plafond_pct / 100.0
             ligne["plafond_ad_valorem_pct"] = plafond_pct
+            ligne["plafond_valeur"] = "FOB" if assiette_valeur == "FOB" else "CIF"
             ligne["plafond_ad_valorem_montant"] = round(borne, 4)
             if montant > borne:
                 ligne["montant_avant_plafond"] = round(montant, 4)
@@ -782,6 +811,10 @@ def _liquider(
         for cle, famille in FAMILLES_COUVERTURE.items():
             if couverture.get(cle) is False and famille not in familles_presentes:
                 manques.append({"code": famille.upper(), "motif": "NON_TRACEE_A_LA_SOURCE"})
+        # Le pays trace une TVA, mais aucune ligne TVA ne figure sur cette
+        # position : absence, pas exonération (voir MANQUE_TVA_NON_PUBLIEE).
+        if couverture.get("tva") is True and FAMILLE_TVA not in familles_presentes:
+            manques.append({"code": FAMILLE_TVA.upper(), "motif": MANQUE_TVA_NON_PUBLIEE})
 
     total = sum(d["montant"] for d in calcules)
     if not lignes:
@@ -799,13 +832,20 @@ def _liquider(
         etat = INDISPONIBLE
     else:
         etat = PARTIEL
+    # Un total ne se rend que s'il couvre toute la position. PARTIEL ou
+    # INDISPONIBLE, la somme des lignes liquidées n'est pas un coût : servie
+    # sous `total_droits`, elle se lisait comme tel — 1 182 positions
+    # INDISPONIBLE répondaient « 0 », soit « rien à payer » (audit du
+    # 2026-10-09, point 5). Elle passe dans `total_partiel`, à son nom.
+    total_etabli = etat in (COMPLET, INDICATIF)
     return {
         "lignes": lignes,
         "manques": manques,
         "lignes_base_statistique": [l["code"] for l in lignes if l.get("base_statistique")],
-        "total_droits": round(total, 2),
-        "total_a_payer": round(cif + total, 2),
-        "taux_effectif_pct": round(total / cif * 100, 4) if cif else None,
+        "total_droits": round(total, 2) if total_etabli else None,
+        "total_a_payer": round(cif + total, 2) if total_etabli else None,
+        "taux_effectif_pct": round(total / cif * 100, 4) if cif and total_etabli else None,
+        "total_partiel": None if total_etabli or not calcules else round(total, 2),
         "etat": etat,
     }
 
@@ -821,6 +861,7 @@ def calculer(
     devise_cif: Optional[str] = None,
     couverture: Optional[Dict[str, Any]] = None,
     valeur_fob: Optional[float] = None,
+    assiette_valeur: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -835,6 +876,10 @@ def calculer(
     la devise nationale du tarif (« 8c/kg », en rands). Si la valeur CIF est
     déclarée dans une autre devise, l'additionner telle quelle mélangerait
     deux monnaies — voir ``_facteur_devise_specifique``.
+
+    ``assiette_valeur`` : la valeur en douane du pays (« FOB » ou « CIF »,
+    ``socle.valeur_en_douane``), sur laquelle se calcule la borne d'un droit
+    « with a maximum of X % ». Omise, la borne porte sur la valeur CIF.
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
@@ -864,6 +909,7 @@ def calculer(
             devise_cif,
             valeur_fob,
             devise_position,
+            assiette_valeur,
         ),
     }
     if valeur_fob is not None:
@@ -880,6 +926,7 @@ def calculer(
             devise_cif,
             valeur_fob,
             devise_position,
+            assiette_valeur,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont

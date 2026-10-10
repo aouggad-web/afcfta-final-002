@@ -760,3 +760,28 @@ describe('reserveConversion — un montant calculé au taux de marché le dit', 
     expect(reserveConversion(null, 'fr')).toBeNull();
   });
 });
+
+describe('totaux refusés hors COMPLET et INDICATIF (audit du 2026-10-09, point 5)', () => {
+  it("ne présente aucun coût total sur un calcul PARTIEL, et garde l'état et les manques", () => {
+    const calcul = {
+      npf: {
+        etat: 'PARTIEL',
+        lignes: [ligne(), ligne({ code: 'TVA', famille: 'tva', taux_pct: 19, statut: 'ASSIETTE_INCOMPLETE', montant: null, base: null })],
+        manques: [{ code: 'TVA', motif: 'ASSIETTE_INCOMPLETE' }],
+        total_droits: null,
+        total_a_payer: null,
+        taux_effectif_pct: null,
+        total_partiel: 200,
+      },
+      preference_zlecaf: { applique: false, statut: 'PREFERENCE_NON_TRACEE' },
+    };
+    const r = mapCalculToLegacyResult(calcul, contexte);
+    expect(r.normal_total_cost).toBeNull();
+    expect(r.taxes_summary.npf.cout_total).toBeNull();
+    expect(r.total_taxes_npf).toBeNull();
+    expect(r._npf_etat).toBe('PARTIEL');
+    expect(r._manques_npf).toEqual([{ code: 'TVA', motif: 'ASSIETTE_INCOMPLETE' }]);
+    // Le journal ne reporte pas de cumul au-delà d'un droit non liquidé.
+    expect(r.normal_calculation_journal.map((e) => e.cumulative)).toEqual([1000, 1200, null]);
+  });
+});

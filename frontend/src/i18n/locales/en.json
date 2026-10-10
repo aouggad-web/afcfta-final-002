@@ -932,5 +932,35 @@
       "product": "Product",
       "destination": "Destination"
     }
+  },
+  "calculator": {
+    "etat": {
+      "COMPLET": "Complete calculation",
+      "INDICATIF": "Indicative calculation",
+      "PARTIEL": "Partial total",
+      "INDISPONIBLE": "Calculation unavailable",
+      "aide": {
+        "COMPLET": "Every duty and tax on this line is liquidated.",
+        "INDICATIF": "Every duty is liquidated, but at least one rate is a statistical average, not a national tariff.",
+        "PARTIEL": "Some duties could not be liquidated: this amount is not the final cost.",
+        "INDISPONIBLE": "No duty could be liquidated for this line."
+      },
+      "nonCalcules_one": "{{count}} duty not calculated: {{codes}}",
+      "nonCalcules_other": "{{count}} duties not calculated: {{codes}}"
+    },
+    "origine": {
+      "titre": "Subject to an AfCFTA certificate of origin",
+      "reserve": "The preferential rate is only due if the goods meet the rule of origin for their tariff line, proven by an AfCFTA certificate of origin.",
+      "regle": "Rule of origin (HS {{hs6}}, {{niveau}} level): {{nom}}",
+      "alternative": "Alternative rule: {{nom}}",
+      "contenuRegional": "Minimum regional content: {{pct}}%",
+      "nonEtablie": "No rule of origin has been agreed for this line in Appendix IV: the preference remains subject to the rule that will be adopted.",
+      "niveaux": {
+        "subheading": "subheading",
+        "heading": "heading",
+        "chapter": "chapter",
+        "none": "none"
+      }
+    }
   }
 }

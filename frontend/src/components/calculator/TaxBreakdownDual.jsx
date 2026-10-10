@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Layers, TrendingDown, ArrowLeftRight } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import EtatCalculBadge from './EtatCalculBadge';
 
 const CATEGORY_LABEL = {
   droit_douane: { fr: 'Droit de douane', en: 'Customs duty' },
@@ -25,6 +26,7 @@ export default function TaxBreakdownDual({
   currency,
   zlecafAvailable = true,
   language = 'fr',
+  etats = {},
 }) {
   const fr = language === 'fr';
   const hasLocal = !!(currency && currency.available && currency.usd_to_local_rate);
@@ -171,6 +173,7 @@ export default function TaxBreakdownDual({
               currency={currency}
               language={language}
               tone="red"
+              etat={etats.npf}
             />
             <SummaryCard
               title={fr ? 'Total ZLECAf' : 'Total AfCFTA'}
@@ -180,6 +183,7 @@ export default function TaxBreakdownDual({
               currency={currency}
               language={language}
               tone="emerald"
+              etat={zlecafAvailable ? etats.zlecaf : undefined}
             />
           </div>
         )}
@@ -204,7 +208,7 @@ export default function TaxBreakdownDual({
   );
 }
 
-function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
+function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone, etat }) {
   const fr = language === 'fr';
   const color = tone === 'emerald' ? 'text-[var(--success)]' : 'text-[var(--danger)]';
   const val = (k) => {
@@ -226,6 +230,7 @@ function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
   return (
     <div className="p-3 rounded-lg bg-[var(--afcfta-card2)] border border-[var(--afcfta-border)] space-y-1.5">
       <p className={`font-semibold ${color}`}>{title}</p>
+      {etat?.etat && <EtatCalculBadge etat={etat.etat} manques={etat.manques} compact />}
       <Row label={fr ? 'Droit de douane' : 'Customs duty'} k="droit_douane" />
       <Row label={fr ? 'Autres taxes' : 'Other levies'} k="autres_taxes" />
       <Row label="TVA" k="tva" />
