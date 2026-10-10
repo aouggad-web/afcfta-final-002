@@ -6,10 +6,11 @@ import json
 import os
 
 import pytest
-
 from services.calcul import COMPLET, calculer
 
-SOCLE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle", "GNQ.json")
+SOCLE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle", "GNQ.json"
+)
 besoin_socle = pytest.mark.skipif(not os.path.exists(SOCLE), reason="socle absent (gitignoré)")
 
 

@@ -6,10 +6,11 @@ import json
 import os
 
 import pytest
-
 from services.calcul import COMPLET, calculer
 
-SOCLE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle", "CMR.json")
+SOCLE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle", "CMR.json"
+)
 besoin_socle = pytest.mark.skipif(not os.path.exists(SOCLE), reason="socle absent (gitignoré)")
 
 
@@ -31,4 +32,6 @@ def test_la_redevance_est_a_un_pour_cent_sans_plafond(positions):
 def test_une_position_ordinaire_se_calcule_sans_taux_de_change(positions):
     r = calculer(positions["01011010"], 10000, devise_position="XAF")
     assert r["npf"]["etat"] == COMPLET
-    assert next(l for l in r["npf"]["lignes"] if l["code"] == "RI")["montant"] == pytest.approx(100.0)
+    assert next(l for l in r["npf"]["lignes"] if l["code"] == "RI")["montant"] == pytest.approx(
+        100.0
+    )

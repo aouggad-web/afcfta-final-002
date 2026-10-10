@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-10T07:47:34.067138+00:00",
+  "construit_le": "2026-10-10T14:27:45.939509+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -930,7 +930,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBY_tariffs.json",
       "source_sha256": "7d4c83398125910cfc50393f3c716b5c90930305aa6498e518ad798e3fd82499",
-      "socle_sha256": "d5c04e868739928863c8afd8876ec8d99c983da63d9b1d9083c44e390209df39",
+      "socle_sha256": "0497c4ad67ee5defed17e7649e23557e1dd90223118f53ade9b57ba08caf96d2",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
@@ -946,7 +946,7 @@
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 9,
+        "taux_indisponibles": 11849,
         "assiettes_source": 5858,
         "assiettes_fichier": 0,
         "assiettes_table": 0,

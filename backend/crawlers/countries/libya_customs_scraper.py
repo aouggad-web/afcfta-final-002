@@ -369,6 +369,8 @@ def extract_positions(filepath: str) -> List[Dict]:
 #: liquidables et facturerait six points sur une base que notre propre fiche
 #: juge douteuse ; les supprimer amputerait le total s'ils sont réels. Ils sont
 #: donc portés, visibles, et non liquidés — jusqu'à ce qu'une source tranche.
+#: Tranché le 2026-10-10 : aucun texte trouvé ne fonde ces taux ; le socle les sert
+#: sans taux (build_socle._tsp_tp_libye, fiche LBY_TSP_TP_taux_2026-10-10.json).
 COMPLEMENTS_NATIONAUX = [
     {
         "code": "TSP",

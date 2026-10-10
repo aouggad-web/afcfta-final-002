@@ -1410,6 +1410,46 @@ def _sans_redevance_informatique_gnq(positions, compteurs):
         position["droits"] = retenus
 
 
+#: Libye : source et motif des deux compléments nationaux du crawl, servis
+#: sans taux (fiche LBY_TSP_TP_taux_2026-10-10.json).
+TSP_TP_LIBYE = {
+    "TSP": (
+        "Aucun texte libyen trouvé (fiche LBY_TSP_TP_taux_2026-10-10.json)",
+        "Taxe des services portuaires à 4 % : aucun texte libyen trouvé ne l'établit. La page PwC d'où le "
+        "crawl la tenait (revue le 31 mai 2026) ne cite plus ni « Port Services Tax » ni 4 % ; elle signale "
+        "une « service fee » de 5 % sur la valeur de la plupart des importations, sans texte. La décision "
+        "du Comité populaire général des Chaabiyat n° 3 de 2005 (« redevance pour services "
+        "d'importation »), citée par la décision n° 17/2007, pourrait fonder un tel prélèvement ; son texte "
+        "et son taux n'ont pas été obtenus. La redevance de quai souveraine du règlement de 2025 (décision "
+        "du Conseil des ministres n° 393/2025, art. 25) est spécifique : 2,00 LYD par tonne ou par m³, le "
+        "plus élevé des deux, minimum 50 LYD par bon de livraison.",
+    ),
+    "TP": (
+        "Loi n° 19/1992 (Libye), art. 1 ; taux non établi (fiche LBY_TSP_TP_taux_2026-10-10.json)",
+        "Taxe de production ou de consommation : instituée par la loi n° 19/1992 (art. 1) sur les "
+        "marchandises importées désignées par décision, au taux fixé pour chacune ; maintien en vigueur non "
+        "confirmé. La grille de 2002 (décision n° 6/2002) en désigne 40 catégories, à des taux non nuls de "
+        "7 % à 50 % à l'importation, sans correspondance établie avec les positions du tarif ; elle a pu être "
+        "modifiée en 2005 (décisions n° 103 et 114/2005, non obtenues). Aucun texte trouvé ne fixe le taux "
+        "uniforme de 2 % du crawl.",
+    ),
+}
+
+
+def _tsp_tp_libye(positions, compteurs):
+    """Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la
+    « Production Tax » à 2 % du crawl (fiche LBY_TSP_TP_taux_2026-10-10.json).
+    Les lignes restent, sans taux, à compléter ; elles étaient déjà sans assiette."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") not in TSP_TP_LIBYE:
+                continue
+            if d.get("taux") is not None:
+                compteurs["taux_indisponibles"] += 1
+            d["taux"] = None
+            d["source"], d["note"] = TSP_TP_LIBYE[d["code"]]
+
+
 def _ait_malawi(positions, compteurs):
     """Malawi : Advance Income Tax à l'importation sur la valeur des marchandises
     au point d'entrée (Taxation Act s.102B(1), taux porté de 3 % à 10 % par le
@@ -1863,6 +1903,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _redevance_informatique_cmr(positions)
     if iso == "GNQ":
         _sans_redevance_informatique_gnq(positions, compteurs)
+    if iso == "LBY":
+        _tsp_tp_libye(positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
