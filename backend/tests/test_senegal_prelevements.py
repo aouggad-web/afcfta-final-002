@@ -54,10 +54,14 @@ def test_pcs_a_0_8_pour_cent_promad_et_cosec_sur_toutes_les_positions(positions)
     assert sum(1 for d in droits if d["code"] == "PROMAD") == len(positions)
 
 
-def test_alcools_et_tabacs_sans_taux_tant_que_la_lf_2026_n_est_pas_lue(positions):
-    for code in ("2203001000", "2402200000"):
-        etat, lignes = _calcul(positions[code])
-        assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+def test_alcools_et_tabacs_aux_taux_de_la_loi_2025_17(positions):
+    """Tableau de la DGID : alcools importés 65 %, tabac 100 % ; la taxe
+    additionnelle par litre d'alcool reste sans taux (degré et volume absents)."""
+    etat, lignes = _calcul(positions["2203001000"])
+    assert lignes["DA"]["taux_pct"] == 65.0
+    assert lignes["TAA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    assert _calcul(positions["2402200000"])[1]["DA"]["taux_pct"] == 100.0
+    assert _calcul(positions["9614000000"])[1]["DA"]["taux_pct"] == 100.0
 
 
 def test_cosmetique_et_tissu_taxes_cereale_non(positions):
@@ -70,7 +74,7 @@ def test_cosmetique_et_tissu_taxes_cereale_non(positions):
 def test_positions_mixtes_sans_taux(positions):
     """Maté (2101.20), soupes et bouillons (2104.10), pipes : sans taux ;
     carburéacteur hors des quatre carburants de l'art. 443 : pas de taxe."""
-    for code in ("2101200000", "2104101000", "9614000000", "2710124000", "2202100000", "1517909000", "0401400000", "1506000000", "1517100000", "5801100000"):
+    for code in ("2101200000", "2104101000", "2710124000", "2202100000", "1517909000", "0401400000", "1506000000", "1517100000", "5801100000", "5903100000", "0210110000", "3923210000"):
         etat, lignes = _calcul(positions[code])
         assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     assert "DA" not in _calcul(positions["2710191100"])[1]

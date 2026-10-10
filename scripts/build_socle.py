@@ -1463,6 +1463,28 @@ def _prelevements_senegal(positions, compteurs):
             )
             compteurs["assiettes_table"] += 1
             compteurs["taux_indisponibles"] += 1
+        conditionnelles = []
+        if code[:4] in ("2203", "2204", "2205", "2206", "2208"):
+            conditionnelles.append((
+                "TAA", "Taxe additionnelle sur les alcools",
+                "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
+                "tableau des mesures fiscales de la DGID) : le degré et le volume ne sont pas dans la position.",
+            ))
+        if code[:6] == "200290":
+            conditionnelles.append((
+                "TCI", "Taxe conjoncturelle à l'importation",
+                "Due sur le concentré de tomate quand la valeur CAF est inférieure au prix de déclenchement (" + note_dgd + ").",
+            ))
+        for code_c, libelle_c, note_c in conditionnelles:
+            if droits and not any(d.get("code") == code_c for d in droits):
+                rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+                droits.insert(rang, {
+                    "code": code_c, "code_source": code_c, "libelle": libelle_c, "famille": famille(code_c),
+                    "taux": None, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal", "note": note_c,
+                })
+                compteurs["assiettes_table"] += 1
+                compteurs["taux_indisponibles"] += 1
         if droits and not any(d.get("code") == "COSEC" for d in droits):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(
