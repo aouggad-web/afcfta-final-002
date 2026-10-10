@@ -1183,7 +1183,6 @@ ACCISES_PAYS = {
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
     "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
-    "CIV": os.path.join(REPO, "backend", "data", "zlecaf_civ", "droit_accises_cgi.json"),
 }
 
 
@@ -1540,62 +1539,43 @@ def _prelevements_senegal(positions, compteurs):
 
 
 def _prelevements_cote_divoire(positions, compteurs):
-    """Côte d'Ivoire : le tarif collecté (guce.gouv.ci) ne porte que le droit de
-    douane et la TVA. La circulaire DGD n° 2258 (TEC CEDEAO SH 2022) fixe la RS
-    à 1 %, le PCC à 0,5 %, le PCS à 0,8 % et le PUA à 0,2 % (fiche
-    CIV_prelevements_TVA_2026-10-10.json). Assiette de la TVA : valeur en douane
-    majorée des droits et taxes perçus à l'entrée, TVA exclue (directive
-    n° 02/98/CM/UEMOA, art. 27) ; assiette des taxes spéciales sur les boissons
-    et tabacs : valeur en douane augmentée de tous les droits et taxes hormis la
-    TVA (CGI art. 418, tableau synoptique DGI 2025)."""
-    circ = "Circulaire DGD n° 2258/MBPE/DGD (TEC CEDEAO SH 2022)"
-    ajouts = [
-        ("RS", "Redevance statistique", 1.0),
-        ("PCS", "Prélèvement communautaire de solidarité (UEMOA)", 0.8),
-        ("PCC", "Prélèvement communautaire de la CEDEAO", 0.5),
-        ("PUA", "Prélèvement de l'Union africaine", 0.2),
-    ]
-    codes_entree = "+".join(["DD"] + [c for c, _, _ in ajouts])
+    """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
+    taxation nationale, mise à jour du 27/03/2026 ; fiche
+    CIV_prelevements_TVA_2026-10-10.json). Il porte RS, PCS, PCC et PUA
+    (circulaire DGD n° 2258) mais aucune assiette. Assiette des taxes spéciales
+    du CGI art. 418 (boissons, tabacs, cosmétiques, marbres) : valeur en douane
+    augmentée de tous les droits et taxes hormis la TVA ; assiette de la TVA :
+    valeur en douane majorée des droits et taxes perçus à l'entrée (directive
+    n° 02/98/CM/UEMOA, art. 27). Le droit unique de sortie, dû à l'exportation,
+    n'entre pas dans le calcul d'une importation."""
+    entree = "DD+RS+PCS+PCC+PUA"
+    speciales = ("TSBPT", "TAB", "TCB", "TSM")
     for position in positions.values():
-        droits = position.get("droits") or []
-        if not droits:
-            continue
-        presents = {d.get("code") for d in droits}
-        rang = next((i + 1 for i, d in enumerate(droits) if d.get("code") == "DD"), 0)
-        for code, libelle, taux in ajouts:
-            if code in presents:
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "DUS":
+                compteurs["assiettes_source" if d.get("assiette") else "assiettes_indisponibles"] -= 1
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] -= 1
                 continue
-            droits.insert(
-                rang,
-                {
-                    "code": code,
-                    "code_source": code,
-                    "libelle": libelle,
-                    "famille": famille(code),
-                    "taux": taux,
-                    "assiette": "CIF",
-                    "assiette_origine": "regle_de_pays",
-                    "source": "Direction générale des douanes de Côte d'Ivoire",
-                    "note": f"{circ} : {taux:g} %",
-                },
-            )
-            rang += 1
-            compteurs["assiettes_table"] += 1
-        for d in droits:
-            if d.get("code") == "TSBPT" and d.get("assiette"):
-                d["assiette"] = "CIF+" + codes_entree
+            if d.get("code") in speciales and d.get("assiette"):
+                d["assiette"] = "CIF+" + entree
                 d["assiette_origine"] = "regle_de_pays"
                 d["note"] = (
                     "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
                     "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
                 )
+            droits.append(d)
+        presentes = [d["code"] for d in droits if d.get("code") in speciales]
+        for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
-                d["assiette"] = "CIF+" + codes_entree + "+TSBPT"
+                d["assiette"] = "+".join(["CIF", entree] + presentes)
                 d["assiette_origine"] = "regle_de_pays"
                 d["note"] = (
                     "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
                     "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
                 )
+        position["droits"] = droits
 
 
 def _accises_du_cgi(iso, positions, compteurs):

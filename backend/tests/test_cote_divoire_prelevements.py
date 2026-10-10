@@ -1,6 +1,6 @@
-"""Côte d'Ivoire : RS, PCS, PCC et PUA (circulaire DGD n° 2258), TVA sur la
-valeur en douane majorée des droits et taxes d'entrée (directive UEMOA
-n° 02/98, art. 27). Fiche : CIV_prelevements_TVA_2026-10-10.json."""
+"""Côte d'Ivoire : tarif officiel de la DGD (27/03/2026) ; RS, PCS, PCC et PUA
+(circulaire DGD n° 2258), TVA sur la valeur en douane majorée des droits et
+taxes d'entrée (directive UEMOA n° 02/98, art. 27). Fiche : CIV_prelevements_TVA_2026-10-10.json."""
 
 import json
 import os
@@ -39,18 +39,33 @@ def test_spiritueux_taxe_speciale_sur_valeur_et_droits_d_entree(positions):
     assert lignes["TVA"]["base"] == 1225.0 + lignes["TSBPT"]["montant"] and etat == "COMPLET"
 
 
-def test_toutes_les_positions_taxees_portent_les_quatre_prelevements(positions):
+def test_toutes_les_positions_portent_les_quatre_prelevements(positions):
     for p in positions.values():
         codes = {d["code"] for d in p["droits"]}
         if codes:
             assert {"RS", "PCS", "PCC", "PUA"} <= codes
 
 
-def test_taxes_speciales_art_418(positions):
-    """Cosmétiques et cigares : 10 % et 57 % sur valeur + droits d'entrée ;
-    cigarettes et voitures sans taux (base minimale, puissance fiscale)."""
-    assert _calcul(positions["3304990000"])[1]["DA"]["montant"] == 122.5
-    assert _calcul(positions["2402100000"])[1]["DA"]["taux_pct"] == 57.0
-    for code in ("2402200000", "8703231100"):
-        etat, lignes = _calcul(positions[code])
-        assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != "COMPLET"
+def test_taxes_speciales_art_418_selon_le_tarif_officiel(positions):
+    """Tarif DGD du 27/03/2026 : cosmétique 3304.99 à 15 % (TCB), cigares à
+    57 % (TAB), sur valeur + droits d'entrée ; TVA sur le tout."""
+    etat, lignes = _calcul(positions["3304990000"])
+    assert (lignes["TCB"]["base"], lignes["TCB"]["montant"]) == (1225.0, 183.75)
+    assert lignes["TVA"]["base"] == 1408.75 and etat == "COMPLET"
+    assert _calcul(positions["2402100000"])[1]["TAB"]["taux_pct"] == 57.0
+
+
+def test_codes_sans_legende_rendent_le_calcul_partiel(positions):
+    """TFS et TSS (cigarettes) : codes du tarif sans légende, assiette inconnue."""
+    etat, lignes = _calcul(positions["2402200000"])
+    assert lignes["TFS"]["montant"] is None and etat != "COMPLET"
+
+
+def test_droit_de_sortie_absent_du_calcul_d_import(positions):
+    assert not any(d["code"] == "DUS" for p in positions.values() for d in p["droits"])
+
+
+def test_viande_au_taux_du_tarif_officiel(positions):
+    """0201.10 : DD 20 % et TVA 9 % au tarif de 2026 (35 % et sans TVA au portail de février)."""
+    etat, lignes = _calcul(positions["0201100000"])
+    assert lignes["DD"]["taux_pct"] == 20.0 and lignes["TVA"]["taux_pct"] == 9.0
