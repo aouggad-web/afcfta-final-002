@@ -41,7 +41,24 @@ Dossier de livrables (collecte du 10/10/2026). Sources : douanes.sn (DGD), vie-p
 | **ANAM** | Droit de trafic maritime (redevance UEMOA, Règlement n°02/2008/CM/UEMOA art. 15) | Facturé via GAINDE 2000 |
 | **DGID (Impôts)** | Attestations (PCF, non-assujettissement, DGE) | Obligatoires pour éviter PCF 12 % / acompte BIC 3 % |
 
-## 3. Contenu du dossier
+## 3. Mise à jour fiscale 2026 (CGI édition 2025 + LF 2026)
+
+**CGI du Sénégal — édition 2025** (DGID) : intègre la loi n°2025-02 du 06/01/2025 (LFI 2025) et la loi n°2025-17 du 27/09/2025 modifiant le CGI.
+
+**Loi de finances 2026 (loi n°2025-19) — mesures douanières/fiscales clés (PLF + PLFR + Voies et Moyens) :**
+- **Droit de sortie sur les exportations de noix de cajou** : 32 FCFA/kg net (liquidation comme en matière de douane) — art. 19
+- **Relèvement taxation tabac** : de 70 % à 100 % (≈ 8,2 Mds FCFA attendus)
+- **Droits d'accises alcool** : relevés à 65 % (importés) et 40 % (produits localement)
+- **Taxation mobile money** : Contribution de Solidarité économique des opérateurs de monnaie électronique (≈ 76,5 Mds FCFA)
+- **Réactivation des droits de sortie sur les exportations d'arachide** (≈ 9 Mds FCFA) ; **taxe à l'exportation d'or** (≈ 26,3 Mds FCFA)
+- **Réactivation des droits à l'importation des téléphones portables** (≈ 18,8 Mds FCFA) ; taxe importation noix de cajou (≈ 5 Mds FCFA)
+- **Suppression des valeurs de correction** au profit des valeurs transactionnelles (riz, huile) — ≈ 29 Mds FCFA
+- Taxation des jeux de hasard (300 Mds prévus LFI, révisée à 120 Mds au PLFR)
+- Réforme en cours du **Code des Douanes** et du CGI ; Code des Investissements nouveau (loi n°2025-16)
+- TVA import 2026 : base = valeur en douane + droits et taxes liquidés (hors droits d'enregistrement et TVA) × 18 %
+- Timbre des quittances : 1 % au-delà de 100 000 FCFA (PLFR, art. 30)
+
+## 4. Contenu du dossier
 | Fichier | Description |
 |---|---|
 | FAQ-FRAIS-DEDOUANEMENT-2026.pdf | FAQ DGD : tous les droits/taxes et frais de dédouanement (07/2026) |
@@ -52,5 +69,9 @@ Dossier de livrables (collecte du 10/10/2026). Sources : douanes.sn (DGD), vie-p
 | FRAIS-TRANSIT-SENEGAL-DECOMPOSE.md | Décomposition frais transit : honoraires CDA, débours, PAD, caution |
 | PROCEDURE-IMPORT-EREGULATIONS.md | Procédure import détaillée + coûts (eregulations) |
 | MISSION-FISCALE-DOUANES-SENEGAL.html | Page fiscale douanes.sn (sommaire du système de taxation) |
+| CGI-SENEGAL-EDITION-2025.pdf | Code général des impôts, édition 2025 (DGID, à jour loi 2025-17) |
+| PLF-2026-SENEGAL.pdf | Projet de loi de finances 2026 (rapport + projet de loi) |
+| ANNEXES-VOIES-ET-MOYENS-PLF-2026.pdf | Annexes « Voies et Moyens » PLF 2026 (détail des recettes douanières/fiscales) |
+| PLFR-2026-SENEGAL.pdf | Projet de loi de finances rectificative 2026 (révisions) |
 
 Liens utiles : www.douanes.sn | douanes.douanes-senegal.com | vie-publique.sn | senegal.eregulations.org
