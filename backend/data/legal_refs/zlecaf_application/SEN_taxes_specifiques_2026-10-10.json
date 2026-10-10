@@ -24,14 +24,14 @@
     "Textiles (art. 444 quater) : tissus des positions 50.07, 51.11 à 51.13, 52.08 à 52.12, 53.09 à 53.11, 54.07, 54.08, 55.12 à 55.16, chapitres 60 à 62, 63.01 à 63.04 et friperie 63.09, à 5 %.",
     "COSEC (0,4 %) : dû par voie maritime seulement ; le mode de transport n'étant pas connu du calculateur, il est liquidé comme dans les tableaux de la DGD (cas courant à Dakar) et signalé en note.",
     "Exonérations tenant à l'importateur ou à l'usage (tissus pour la confection, corps gras pour la production, véhicules de transport public) : taux général appliqué, réserve en note. Positions mêlant produits taxés et non taxés (maté, soupes et bouillons, eaux, corps gras du chap. 15) : sans taux.",
-    "Droit d'enregistrement des véhicules (87.02 à 87.05 et tracteurs routiers 87.01.20) : 1 % neuf ou 3 % d'occasion sur valeur + DD + RS ; l'état n'étant pas dans la position, la ligne est portée sans taux et le calcul reste partiel.",
+    "Droit d'enregistrement des véhicules (87.02 à 87.05 et tracteurs routiers 87.01.20) : 1 % neuf ou 3 % d'occasion sur valeur + DD + RS ; l'état est lu dans le libellé national quand il y figure (« neuf », « usagé »), sinon la ligne est portée sans taux. Le taux cumulé officiel d'un utilitaire usagé (38,01 %) est alors reproduit.",
     "Acompte BIC (3 %) et prélèvement de conformité fiscale (12 %) : dus selon le statut de l'importateur (attestation de la DGID, rattachement à la Direction des grandes entreprises) ; non liquidés, comme l'AIRSI en Côte d'Ivoire."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Eaux et boissons 22.01 et 22.02 (hors 22.02.10), corps gras du chapitre 15, préparations de viande 16.02 : positions mêlant produits taxés et non taxés, ou exonérations selon la destination : taxe portée sans taux.",
     "Acompte BIC (3 %), prélèvement de conformité fiscale (12 %), taxe conjoncturelle à l'importation : selon l'état du véhicule ou le statut de l'importateur, non liquidés.",
     "PUA (0,2 %) : porté par la source, absent des tableaux de la DGD, liquidé par la douane ivoirienne (circulaire DGD n° 2258) : maintenu, application au Sénégal à confirmer.",
-    "Taxe additionnelle sur les alcools (800 F ou 3 000 F par litre d'alcool selon le degré) et base minimale des cigarettes (280 F par paquet de 20) : non calculables depuis la position ; la taxe additionnelle est portée sans taux.",
+    "Taxe additionnelle sur les alcools (800 F ou 3 000 F par litre d'alcool selon le degré) et base minimale des cigarettes (280 F par paquet de 20) : non calculables depuis la position ; la taxe additionnelle et le droit sur les cigarettes sont portés sans taux.",
     "Taxe conjoncturelle à l'importation sur le concentré de tomate : due quand la valeur CAF est inférieure au prix de déclenchement ; portée sans taux.",
     "Emballages plastiques non récupérables (art. 444 bis et ter) : 2,5 % de la valeur en douane sans contenu, préformes exonérées ; portés sans taux sur 39.23.21, 39.23.29 et 39.23.30, non liquidés sur les emballages contenant d'autres marchandises.",
     "Surtaxe sur les cigarettes (FAQ DGD) : taux et assiette non publiés dans les textes lus ; portée sans taux."

@@ -1444,6 +1444,8 @@ def _prelevements_senegal(positions, compteurs):
                 d["taux"] = 0.8
                 d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
             droits.append(d)
+        libelle_pos = (position.get("designation") or "").lower()
+        etat_taux = 3.0 if ("usag" in libelle_pos or "occasion" in libelle_pos) else (1.0 if "neuf" in libelle_pos else None)
         if droits and (code[:4] in ("8702", "8703", "8704", "8705") or code[:6] == "870120") and not any(d.get("code") == "DENR" for d in droits):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(
@@ -1453,16 +1455,18 @@ def _prelevements_senegal(positions, compteurs):
                     "code_source": "DENR",
                     "libelle": "Droit d'enregistrement des véhicules",
                     "famille": famille("DENR"),
-                    "taux": None,
+                    "taux": etat_taux,
                     "assiette": "CIF+DD+RS",
                     "assiette_origine": "regle_de_pays",
                     "source": "Direction générale des douanes du Sénégal",
                     "note": "Droit d'enregistrement : 1 % pour un véhicule neuf, 3 % d'occasion, « (Base + DD + RS) × taux » "
-                    "(" + note_dgd + ") ; l'état neuf ou d'occasion n'est pas dans la position.",
+                    "(" + note_dgd + ")" + (" ; état lu dans le libellé de la position." if etat_taux is not None
+                                             else " ; l'état neuf ou d'occasion n'est pas dans la position."),
                 },
             )
             compteurs["assiettes_table"] += 1
-            compteurs["taux_indisponibles"] += 1
+            if etat_taux is None:
+                compteurs["taux_indisponibles"] += 1
         conditionnelles = []
         if code[:4] in ("2203", "2204", "2205", "2206", "2208"):
             conditionnelles.append((
@@ -1470,12 +1474,12 @@ def _prelevements_senegal(positions, compteurs):
                 "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
                 "tableau des mesures fiscales de la DGID) : le degré et le volume ne sont pas dans la position.",
             ))
-        if code[:4] == "2402":
+        if code[:6] in ("240220", "240290"):
             conditionnelles.append((
                 "STC", "Surtaxe sur les cigarettes",
                 "Surtaxe sur les cigarettes, perçue au cordon douanier (" + note_dgd + ") : taux et assiette non publiés dans les textes lus.",
             ))
-        if code[:6] == "200290":
+        if code in ("2002901100", "2002901900", "2002902000"):
             conditionnelles.append((
                 "TCI", "Taxe conjoncturelle à l'importation",
                 "Due sur le concentré de tomate quand la valeur CAF est inférieure au prix de déclenchement (" + note_dgd + ").",

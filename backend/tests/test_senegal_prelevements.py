@@ -26,15 +26,13 @@ def _calcul(position):
 
 
 def test_utilitaire_reproduit_le_taux_cumule_de_la_dgd(positions):
-    """FAQ véhicules, utilitaire usagé à 10 % : 38,01 %, dont enregistrement
-    3,33 % non liquidé : 34,68 % ; plus le PUA de 0,2 % maintenu : 34,88 %."""
-    code = next(k for k in positions if k.startswith("870421") and
-                any(d["code"] == "DD" and d["taux"] == 10.0 for d in positions[k]["droits"]))
+    """FAQ véhicules, utilitaire usagé à 10 % : 38,01 % (enregistrement 3 % compris),
+    plus le PUA de 0,2 % maintenu : 38,21 %. L'état « usagé » est lu dans le libellé."""
+    code = next(k for k in positions if k.startswith("870421") and "usag" in positions[k]["designation"].lower()
+                and any(d["code"] == "DD" and d["taux"] == 10.0 for d in positions[k]["droits"]))
     etat, lignes = _calcul(positions[code])
-    assert "DA" not in lignes
-    # Enregistrement (1 % neuf, 3 % d'occasion) : état absent de la position, sans taux.
-    assert lignes["DENR"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
-    assert round(sum(l["montant"] for l in lignes.values() if l["montant"]) / 10, 2) == 34.88
+    assert "DA" not in lignes and lignes["DENR"]["taux_pct"] == 3.0
+    assert round(sum(l["montant"] for l in lignes.values()) / 10, 2) == 38.21 and etat == COMPLET
     assert lignes["PCS"]["montant"] == 8.0 and lignes["PROMAD"]["montant"] == 20.0
     assert lignes["TVA"]["base"] == 1110.0
 
@@ -60,7 +58,8 @@ def test_alcools_et_tabacs_aux_taux_de_la_loi_2025_17(positions):
     etat, lignes = _calcul(positions["2203001000"])
     assert lignes["DA"]["taux_pct"] == 65.0
     assert lignes["TAA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
-    assert _calcul(positions["2402200000"])[1]["DA"]["taux_pct"] == 100.0
+    assert _calcul(positions["2402100000"])[1]["DA"]["taux_pct"] == 100.0
+    assert _calcul(positions["2402200000"])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
     assert _calcul(positions["9614000000"])[1]["DA"]["taux_pct"] == 100.0
 
 
@@ -83,8 +82,23 @@ def test_positions_mixtes_sans_taux(positions):
 def test_revue_codex_5(positions):
     """Tracteur routier et véhicule spécial : enregistrement sans taux ;
     cigarettes : surtaxe sans taux et TVA indisponible ; vêtements non tissés exclus."""
-    for code in ("8701202000", next(k for k in positions if k.startswith("8705"))):
-        assert _calcul(positions[code])[1]["DENR"]["statut"] == "TAUX_INDISPONIBLE"
+    assert "DENR" in _calcul(positions["8701202000"])[1]
+    assert "DENR" in _calcul(positions[next(k for k in positions if k.startswith("8705"))])[1]
     etat, lignes = _calcul(positions["2402200000"])
     assert lignes["STC"]["statut"] == "TAUX_INDISPONIBLE" and lignes["TVA"]["montant"] is None
     assert "DA" not in _calcul(positions["6210100000"])[1]
+
+
+def test_revue_codex_6(positions):
+    """Libellés nationaux : tracteur routier usagé 3 %, neuf 1 % ; eau gazéifiée
+    5 %, eau plate sans taxe ; préformes et palme non alimentaire exclues ;
+    cigares sans surtaxe ; tomates autres que concentrés sans TCI."""
+    assert _calcul(positions["8701202000"])[1]["DENR"]["taux_pct"] == 3.0
+    assert _calcul(positions["8701201000"])[1]["DENR"]["taux_pct"] == 1.0
+    assert _calcul(positions["2201102000"])[1]["DA"]["taux_pct"] == 5.0
+    for code in ("2201900000", "3923301000", "1511901000"):
+        assert "DA" not in _calcul(positions[code])[1]
+    assert "STC" not in _calcul(positions["2402100000"])[1]
+    assert "TCI" not in _calcul(positions["2002909000"])[1]
+    for code in ("5905000000", "3923900000"):
+        assert _calcul(positions[code])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
