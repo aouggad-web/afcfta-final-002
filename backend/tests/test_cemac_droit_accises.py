@@ -46,6 +46,8 @@ def test_une_bouteille_a_gaz_non_industrielle_porte_l_accise_sans_taux(positions
     vides. « Autres » ne dit pas l'usage ; « pour usages industriels » n'est pas visé."""
     etat, lignes = _lignes(positions["73110090"])
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    da = next(d for d in positions["73110090"]["droits"] if d["code"] == "DA")
+    assert da["source"] == "Loi de finances 2026 du Cameroun (loi n° 2025/012), art. 10 (2)"
     etat, lignes = _lignes(positions["73110010"])
     assert "DA" not in lignes and etat == COMPLET
 
@@ -61,7 +63,10 @@ def test_les_produits_importes_de_l_annexe_ii_paient_le_taux_general(positions, 
 def test_aucun_reste_du_marquage_du_crawl(positions):
     accises = [d for p in positions.values() for d in p["droits"] if d["code"] == "DA"]
     assert len(accises) == 478
-    assert all(d["source"].startswith("Code général des impôts du Cameroun") for d in accises)
+    assert {d["source"] for d in accises} == {
+        "Code général des impôts du Cameroun (édition 2025), annexe II et art. 142",
+        "Loi de finances 2026 du Cameroun (loi n° 2025/012), art. 10 (2)",
+    }
 
 
 GAB = os.path.join(os.path.dirname(SOCLE), "GAB.json")

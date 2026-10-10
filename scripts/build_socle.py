@@ -1386,10 +1386,10 @@ def _redevance_informatique_cmr(positions):
         for d in position.get("droits") or []:
             if d.get("code") != "RI":
                 continue
+            # L'assiette reste celle de la source (CIF) : c'est la « valeur
+            # imposable » de la loi ; seuls le taux et le plafond changent.
             d["taux"] = 1.0
             d["plafond"] = None
-            d["assiette"] = "CIF"
-            d["assiette_origine"] = "regle_de_pays"
             d["source"] = "Loi de finances 2023 du Cameroun, art. 9 a)"
             d["note"] = (
                 "Loi de finances 2023, art. 9 a), maintenu par la loi de finances 2026, art. 12 a) : "
@@ -1463,7 +1463,7 @@ def _accises_du_cgi(iso, positions):
                         "taux": regle["taux"],
                         "assiette": table["assiette"],
                         "assiette_origine": "source",
-                        "source": table["source"],
+                        "source": regle.get("source", table["source"]),
                         "note": " ".join(
                             x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
                         ),
