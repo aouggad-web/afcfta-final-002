@@ -1376,6 +1376,28 @@ def _taux_tva_hors_la_loi(regle, positions, compteurs):
             compteurs["taux_indisponibles"] += 1
 
 
+def _redevance_informatique_cmr(positions):
+    """Cameroun : redevance informatique à 1 % de la valeur imposable, sans plafond
+    à l'importation (loi de finances 2023, art. 9 a), maintenu par la loi de
+    finances 2026, art. 12 a) ; fiche CMR_redevance_informatique_2026-10-09.json).
+    Le crawl porte encore 0,45 % avec un plafond de 15 000 XAF sur la base : le
+    régime de 2018, où le plafond visait déjà le montant, à l'exportation."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "RI":
+                continue
+            d["taux"] = 1.0
+            d["plafond"] = None
+            d["assiette"] = "CIF"
+            d["assiette_origine"] = "regle_de_pays"
+            d["source"] = "Loi de finances 2023 du Cameroun, art. 9 a)"
+            d["note"] = (
+                "Loi de finances 2023, art. 9 a), maintenu par la loi de finances 2026, art. 12 a) : "
+                "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
+                "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
+            )
+
+
 def _ait_malawi(positions, compteurs):
     """Malawi : Advance Income Tax à l'importation sur la valeur des marchandises
     au point d'entrée (Taxation Act s.102B(1), taux porté de 3 % à 10 % par le
@@ -1825,6 +1847,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
         _ait_malawi(positions, compteurs)
+    if iso == "CMR":
+        _redevance_informatique_cmr(positions)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)

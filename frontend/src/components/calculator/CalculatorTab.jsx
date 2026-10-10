@@ -476,10 +476,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // total NPF et même statut ZLECAf, ou total que seul le socle calcule ;
       // la SACU avec une valeur FOB. CAF et COG s'écartent de l'autre porte
       // depuis le relevé de leurs accises et de leur assiette de TVA dans leur
-      // code des impôts (#598) : c'est le socle qui suit le texte. Restent sur
-      // l'autre porte, en attente :
+      // code des impôts (#598) : c'est le socle qui suit le texte. Le Cameroun
+      // aussi : l'autre porte y sert la redevance informatique à 0,45 % (la loi
+      // de finances 2023 la porte à 1 %), met la TCI dans l'assiette de la TVA
+      // (CGI art. 138 : DD et DA seulement) et omet le droit d'accises sur 132
+      // positions. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB, CMR, GNQ ; BEN,
+      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB, GNQ ; BEN,
       //   GNB, SEN, TGO pour 7 positions ; RWA, TZA, UGA pour le tabac ; MAR,
       //   dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
@@ -491,7 +494,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA',
-        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD',
+        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);
