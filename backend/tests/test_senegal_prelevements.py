@@ -102,3 +102,11 @@ def test_revue_codex_6(positions):
     assert "TCI" not in _calcul(positions["2002909000"])[1]
     for code in ("5905000000", "3923900000"):
         assert _calcul(positions[code])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
+
+
+def test_revue_codex_7(positions):
+    """« usages spéciaux » n'est pas « usagé » ; 59.06 et 8543.70 (cigarettes
+    électroniques en SH 2017) sans taux."""
+    assert _calcul(positions["8705900000"])[1]["DENR"]["statut"] == "TAUX_INDISPONIBLE"
+    for code in ("5906910000", "8543700000"):
+        assert _calcul(positions[code])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"

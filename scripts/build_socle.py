@@ -1445,7 +1445,13 @@ def _prelevements_senegal(positions, compteurs):
                 d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
             droits.append(d)
         libelle_pos = (position.get("designation") or "").lower()
-        etat_taux = 3.0 if ("usag" in libelle_pos or "occasion" in libelle_pos) else (1.0 if "neuf" in libelle_pos else None)
+        # Mots entiers : « usages spéciaux » n'est pas « usagé ».
+        if re.search(r"\busagée?s?\b|\bd'occasion\b", libelle_pos):
+            etat_taux = 3.0
+        elif re.search(r"\bneu(f|fs|ve|ves)\b", libelle_pos):
+            etat_taux = 1.0
+        else:
+            etat_taux = None
         if droits and (code[:4] in ("8702", "8703", "8704", "8705") or code[:6] == "870120") and not any(d.get("code") == "DENR" for d in droits):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(
