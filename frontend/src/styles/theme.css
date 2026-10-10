@@ -205,6 +205,16 @@ body::before {
   box-shadow: 0 4px 14px rgba(200,83,26,0.35);
 }
 
+/* Logo « éclipse » (public/brand/logo.svg), barre latérale et bandeau
+   mobile : il porte son propre fond nuit et ses coins arrondis, le dégradé
+   et le cercle de la pastille ne s'y appliquent pas. */
+img.afcfta-sidebar-brandmark {
+  background: none;
+  border-radius: 8px;
+  padding: 0;
+  object-fit: contain;
+}
+
 .afcfta-sidebar-title {
   overflow: hidden;
   white-space: nowrap;

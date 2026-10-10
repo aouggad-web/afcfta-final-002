@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Cell } from 'recharts';
-import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid, Map as MapIcon, Award, Link2, Percent } from 'lucide-react';
+import { BarChart3, Scale, Globe, TrendingUp, Package, ArrowUpRight, ArrowDownRight, Search, LayoutGrid, Map as MapIcon, Award, Link2, Percent, Network } from 'lucide-react';
 
 // Sub-components
 import StatisticsZaubaStyle from '../StatisticsZaubaStyle';
@@ -21,6 +21,7 @@ import ProductHSSearch from '../common/ProductHSSearch';
 import CountryTradeSeries from './CountryTradeSeries';
 import ProductTreemap from './ProductTreemap';
 import AfricaTradeMap from './AfricaTradeMap';
+import ZlecafNetworkMap from './ZlecafNetworkMap';
 import RcaAnalysis from './RcaAnalysis';
 import TradeComplementarity from './TradeComplementarity';
 import PreferenceMargin from './PreferenceMargin';
@@ -60,6 +61,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       products: "Produits",
       treemap: "Cartographie",
       map: "Carte",
+      reseau: "Réseau ZLECAf",
       rca: "RCA",
       complementarity: "Complémentarité",
       preference: "Préférences ZLECAf",
@@ -80,6 +82,7 @@ export default function StatisticsTab({ language = 'fr' }) {
       products: "Products",
       treemap: "Product Map",
       map: "Map",
+      reseau: "AfCFTA network",
       rca: "RCA",
       complementarity: "Complementarity",
       preference: "AfCFTA Preferences",
@@ -115,6 +118,7 @@ export default function StatisticsTab({ language = 'fr' }) {
     { value: 'products',   icon: <Package className="h-4 w-4"   />, label: txt.products   },
     { value: 'treemap',    icon: <LayoutGrid className="h-4 w-4"/>, label: txt.treemap    },
     { value: 'map',        icon: <MapIcon className="h-4 w-4"   />, label: txt.map        },
+    { value: 'reseau',     icon: <Network className="h-4 w-4"   />, label: txt.reseau     },
     { value: 'rca',        icon: <Award className="h-4 w-4"     />, label: txt.rca        },
     { value: 'complementarity', icon: <Link2 className="h-4 w-4" />, label: txt.complementarity },
     { value: 'preference', icon: <Percent className="h-4 w-4"   />, label: txt.preference  },
@@ -296,6 +300,11 @@ export default function StatisticsTab({ language = 'fr' }) {
           {/* ── Map Tab ───────────────────────────────────────── */}
           <TabsContent value="map" className="space-y-8">
             <AfricaTradeMap language={language} />
+          </TabsContent>
+
+          {/* ── Réseau ZLECAf ─────────────────────────────────── */}
+          <TabsContent value="reseau" className="space-y-8">
+            <ZlecafNetworkMap language={language} />
           </TabsContent>
 
           {/* ── RCA Tab ───────────────────────────────────────── */}
