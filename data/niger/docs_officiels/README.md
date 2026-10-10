@@ -33,13 +33,22 @@ Dossier de livrables (collecte du 10/10/2026). Sources : douanes.gov.ne (DGD Nig
 | **Sigle SIGMAT** | Confirmation électronique d'arrivée T1 | Dédouanement transit à la frontière réduit à **~1 heure** (corridor Cotonou–Niamey) |
 | **Parcs de stationnement** (Bodjékali…) | Stationnement | Temps moyen ≈ 19 h (CNUCED 2024) |
 
-## 3. Contenu du dossier
+## 4. Mise à jour LF 2026
+
+- **Ordonnance n°2025-44 du 31/12/2025 portant loi de finances 2026** (recettes budgétaires 1 861,9 Mds FCFA, dont ~80 % fiscales ; mesures : nouvelles taxes, limitation déductibilité des charges, exonérations TVA agricole, légalité stricte des incitations fiscales et douanières subordonnées au ministre des Finances) — téléchargement : finances.gouv.ne/index.php/component/phocadownload/file/1303-ordonnance-n-2025-44 (portail à session JS — pas d'export direct)
+- **1ère rectificative LF 2026** : ordonnance n°2026-45 — finances.gouv.ne/index.php/component/phocadownload/file/1351-ordonnance-n-2026-45-premiere-rectification-de-la-loi-de-finances-2026
+- **Budget citoyen 2026** : finances.gouv.ne/index.php/component/phocadownload/file/1341-budget-citoyen-2026
+- **Rapport réformes fiscales février 2026 (CEA/UNECA)** : diagnostic et recommandations (dépenses fiscales 404,8 Mds = 3,97 % PIB en 2023 ; remboursements crédits TVA ; encadrement exonérations douanières) — inclus ci-dessous
+- Hypothèses budgétaires 2026 : pétrole brut (hausse production), uranium (SOMIDA Dasa), or (+5,2 %/an), zones économiques spéciales Niamey et Maradi
+
+## 5. Contenu du dossier
 | Fichier | Description |
 |---|---|
 | CODE-DES-DOUANES-NATIONAL-2019-LOI-2018-19.pdf | Code des douanes national (loi n°2018-19 du 27/04/2018) — JO 2019 |
 | CODE-DES-DOUANES-NIGER-2018.pdf | Code des douanes (version BWC) |
 | CODE-GENERAL-DES-IMPOTS-NIGER.pdf | Code Général des Impôts du Niger : TVA 19 %, droits d'accises, TIPP, timbres |
 | BENIN-PROCEDURE-TRACKING-BSE-BALISE.pdf | Procédure officielle Bénin Control : BSE, balise, ASE pour transit vers le Niger |
+| RAPPORT-REFORMES-FISCALES-NIGER-2026-CEA.pdf | UNECA/CEA : rapport réformes mobilisation des ressources intérieures, févr. 2026 (analyse LF 2026) |
 
 **En ligne (bloqué à la collecte)** : enquête CNUCED corridor Cotonou–Niamey 2024 (unctad.org, CAPTCHA) : unctad.org/system/files/official-document/aldc2024d5_fr.pdf
 
