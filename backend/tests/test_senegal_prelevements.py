@@ -25,16 +25,17 @@ def _calcul(position):
     return r["etat"], {l["code"]: l for l in r["lignes"]}
 
 
-def test_utilitaire_reproduit_le_taux_cumule_de_la_dgd(positions):
-    """FAQ véhicules, utilitaire usagé à 10 % : 38,01 % (enregistrement 3 % compris),
-    plus le PUA de 0,2 % maintenu : 38,21 %. L'état « usagé » est lu dans le libellé."""
-    code = next(k for k in positions if k.startswith("870421") and "usag" in positions[k]["designation"].lower()
+def test_utilitaire_usage_taxe_vehicules_et_enregistrement(positions):
+    """Utilitaire usagé à 10 % : la FAQ DGD (38,01 %) ne porte pas la taxe sur les
+    véhicules, que la loi 2025-17 étend à tous les véhicules importés (10 % sur
+    base + DD + RS = 11,1 %, et TVA sur base + DD + RS + DA). Enregistrement 3 %
+    lu dans le libellé « usagé »."""
+    code = next(k for k in positions if k.startswith("870421") and "usagé" in positions[k]["designation"].lower()
                 and any(d["code"] == "DD" and d["taux"] == 10.0 for d in positions[k]["droits"]))
     etat, lignes = _calcul(positions[code])
-    assert "DA" not in lignes and lignes["DENR"]["taux_pct"] == 3.0
-    assert round(sum(l["montant"] for l in lignes.values()) / 10, 2) == 38.21 and etat == COMPLET
+    assert lignes["DENR"]["taux_pct"] == 3.0 and lignes["DA"]["montant"] == 111.0
+    assert lignes["TVA"]["base"] == 1221.0 and etat == COMPLET
     assert lignes["PCS"]["montant"] == 8.0 and lignes["PROMAD"]["montant"] == 20.0
-    assert lignes["TVA"]["base"] == 1110.0
 
 
 def test_vehicule_de_tourisme_taxe_specifique_10_pour_cent(positions):
@@ -110,3 +111,11 @@ def test_revue_codex_7(positions):
     assert _calcul(positions["8705900000"])[1]["DENR"]["statut"] == "TAUX_INDISPONIBLE"
     for code in ("5906910000", "8543700000"):
         assert _calcul(positions[code])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
+
+
+def test_revue_codex_8(positions):
+    """Vin de palme exonéré (art. 412, 3°) ; moûts de raisin sans taux ; tapis tissés 5 %."""
+    assert not {"DA", "TAA"} & set(_calcul(positions["2206009100"])[1])
+    assert _calcul(positions["2204300000"])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
+    assert _calcul(positions["5702100000"])[1]["DA"]["taux_pct"] == 5.0
+    assert _calcul(positions["5705000000"])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"

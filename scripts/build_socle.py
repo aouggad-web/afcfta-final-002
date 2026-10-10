@@ -1474,7 +1474,7 @@ def _prelevements_senegal(positions, compteurs):
             if etat_taux is None:
                 compteurs["taux_indisponibles"] += 1
         conditionnelles = []
-        if code[:4] in ("2203", "2204", "2205", "2206", "2208"):
+        if code[:4] in ("2203", "2204", "2205", "2206", "2208") and code != "2206009100":  # vin de palme : art. 412, 3°
             conditionnelles.append((
                 "TAA", "Taxe additionnelle sur les alcools",
                 "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
