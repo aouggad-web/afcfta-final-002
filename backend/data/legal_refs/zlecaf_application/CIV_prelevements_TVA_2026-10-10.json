@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "objet": "Côte d'Ivoire : prélèvements d'entrée (RS, PCS, PCC, PUA), assiette de la TVA à l'importation et assiette de la taxe spéciale sur les boissons",
+  "destination_iso3": "CIV",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — circulaire DGD n° 2258/MBPE/DGD (TEC CEDEAO SH 2022), tableau synoptique « Impôts et taxes en Côte d'Ivoire » de la DGI (2025, CGI art. 418), directive n° 02/98/CM/UEMOA (art. 27)",
+  "source": {
+    "url": "https://www.douanes.ci",
+    "institution": "Direction générale des douanes et Direction générale des impôts de Côte d'Ivoire ; UEMOA"
+  },
+  "regle": {
+    "valeur": "Prélèvements d'entrée ajoutés au droit de douane sur toutes les positions : RS 1 %, PCS 0,8 %, PCC 0,5 %, PUA 0,2 % (valeur en douane). TVA : valeur en douane + DD + RS + PCS + PCC + PUA + taxe spéciale sur les boissons. Taxe spéciale sur les boissons : valeur en douane + DD + RS + PCS + PCC + PUA.",
+    "verbatim": "les taux de la Redevance Statistique (RS) et du Prélèvement Communautaire de la CEDEAO (PCC), inscrits au TEC CEDEAO, restent fixés respectivement à 1% et 0,5% ; le Prélèvement Communautaire de Solidarité de l'UEMOA (PCS) et le Prélèvement de l'Union Africaine (PUA) demeurent en vigueur aux taux respectifs de 0,8% et 0,2%.",
+    "reference": "Circulaire DGD n° 2258/MBPE/DGD ; CGI art. 418 (tableau synoptique DGI 2025) ; directive n° 02/98/CM/UEMOA art. 27 a)",
+    "portee": "scripts/build_socle._prelevements_cote_divoire, au seul socle CIV : le tarif collecté sur guce.gouv.ci ne portait que le droit de douane, la TVA (sur la valeur CAF seule) et quelques taxes spéciales.",
+    "texte_archive": "sources/CIV_prelevements_TVA.extrait.txt",
+    "sha256": "1842db43e9a7daf77bda5186697cf537fe336cc46d912d920682721248d479d3"
+  },
+  "decisions": [
+    "Le CGI ivoirien n'est pas publié en PDF par la DGI (lecteur en ligne seulement) : l'assiette de la TVA à l'importation suit la directive UEMOA n° 02/98 (art. 27), que le CGI transpose.",
+    "Les assiettes sont écrites en codes nommés plutôt qu'en « tous les droits sauf la TVA » : le tarif collecté porte aussi des droits de sortie (DUS) et des montants spécifiques sans assiette, qui n'entrent pas dans la base de la TVA à l'importation."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "PCS et PCC ne s'appliquent qu'aux marchandises originaires de pays tiers à l'UEMOA et à la CEDEAO : le calculateur les liquide comme pour un pays tiers.",
+    "Acompte d'impôt sur le revenu du secteur informel (AIRSI, 5 %) : selon le régime d'imposition de l'importateur, non liquidé.",
+    "Droits d'accises et taxes spéciales du CGI art. 418 (tabacs 57 %, véhicules de 13 CV et plus, parfums et cosmétiques 10 %, hydroquinone 15 %, boissons selon la nature) : seules les taxes déjà portées par le tarif collecté sont servies ; leur liste complète reste à intégrer.",
+    "Taxes nationales perçues au cordon douanier (tarif enrichi du 27 mars 2026) : non intégrées."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CIV_prelevements_TVA.extrait.txt",
+      "sha256": "1842db43e9a7daf77bda5186697cf537fe336cc46d912d920682721248d479d3"
+    },
+    {
+      "document_non_archive": "Circulaire DGD n° 2258/MBPE/DGD (TEC CEDEAO SH 2022), versée sur la PR #620 (data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf)",
+      "pdf_sha256": "c83ecbf1ec9b7cbcc64a733ae881076d5605495fa87d13062710e571f35042aa"
+    },
+    {
+      "document_non_archive": "DGI, « Impôts et taxes en Côte d'Ivoire », tableau synoptique 2025, versé sur la PR #620 (data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf)",
+      "pdf_sha256": "708b86d7165bfc748dbe133f17dd378a38a3a71448875396797ac64941ee2b2c"
+    }
+  ]
+}

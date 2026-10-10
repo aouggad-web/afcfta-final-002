@@ -1538,6 +1538,65 @@ def _prelevements_senegal(positions, compteurs):
         position["droits"] = droits
 
 
+def _prelevements_cote_divoire(positions, compteurs):
+    """Côte d'Ivoire : le tarif collecté (guce.gouv.ci) ne porte que le droit de
+    douane et la TVA. La circulaire DGD n° 2258 (TEC CEDEAO SH 2022) fixe la RS
+    à 1 %, le PCC à 0,5 %, le PCS à 0,8 % et le PUA à 0,2 % (fiche
+    CIV_prelevements_TVA_2026-10-10.json). Assiette de la TVA : valeur en douane
+    majorée des droits et taxes perçus à l'entrée, TVA exclue (directive
+    n° 02/98/CM/UEMOA, art. 27) ; assiette des taxes spéciales sur les boissons
+    et tabacs : valeur en douane augmentée de tous les droits et taxes hormis la
+    TVA (CGI art. 418, tableau synoptique DGI 2025)."""
+    circ = "Circulaire DGD n° 2258/MBPE/DGD (TEC CEDEAO SH 2022)"
+    ajouts = [
+        ("RS", "Redevance statistique", 1.0),
+        ("PCS", "Prélèvement communautaire de solidarité (UEMOA)", 0.8),
+        ("PCC", "Prélèvement communautaire de la CEDEAO", 0.5),
+        ("PUA", "Prélèvement de l'Union africaine", 0.2),
+    ]
+    codes_entree = "+".join(["DD"] + [c for c, _, _ in ajouts])
+    for position in positions.values():
+        droits = position.get("droits") or []
+        if not droits:
+            continue
+        presents = {d.get("code") for d in droits}
+        rang = next((i + 1 for i, d in enumerate(droits) if d.get("code") == "DD"), 0)
+        for code, libelle, taux in ajouts:
+            if code in presents:
+                continue
+            droits.insert(
+                rang,
+                {
+                    "code": code,
+                    "code_source": code,
+                    "libelle": libelle,
+                    "famille": famille(code),
+                    "taux": taux,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes de Côte d'Ivoire",
+                    "note": f"{circ} : {taux:g} %",
+                },
+            )
+            rang += 1
+            compteurs["assiettes_table"] += 1
+        for d in droits:
+            if d.get("code") == "TSBPT" and d.get("assiette"):
+                d["assiette"] = "CIF+" + codes_entree
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
+                    "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
+                )
+            if d.get("famille") == "tva" and d.get("assiette"):
+                d["assiette"] = "CIF+" + codes_entree + "+TSBPT"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
+                    "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
+                )
+
+
 def _accises_du_cgi(iso, positions, compteurs):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1955,6 +2014,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
     if iso == "SEN":
         _prelevements_senegal(positions, compteurs)
+    if iso == "CIV":
+        _prelevements_cote_divoire(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
