@@ -54,9 +54,12 @@ describe('tauxDeChangePour', () => {
     }
   });
 
-  it('ne donne pas de taux au Cameroun ni à la Guinée équatoriale (plafond de la redevance informatique non tranché)', () => {
-    expect(tauxDeChangePour('CMR', xaf)).toBeUndefined();
-    expect(tauxDeChangePour('GNQ', xaf)).toBeUndefined();
+  it('donne le taux à la Guinée équatoriale : la redevance recopiée du Cameroun est retirée de son socle', () => {
+    expect(tauxDeChangePour('GNQ', xaf)).toBe(1 / xaf.rate);
+  });
+
+  it('donne le taux au Cameroun : sa redevance informatique est de 1 % sans plafond à l\'importation', () => {
+    expect(tauxDeChangePour('CMR', xaf)).toBe(1 / xaf.rate);
   });
 
   it('ne donne pas de taux au Botswana (droits spécifiques publiés en cents de rand)', () => {

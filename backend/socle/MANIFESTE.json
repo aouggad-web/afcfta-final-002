@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-10T18:19:34.840821+00:00",
+  "construit_le": "2026-10-10T19:30:33.251572+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -265,7 +265,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CMR_tariffs.json",
       "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
-      "socle_sha256": "d5d011ae0db61df5ffba31a980b9bab653cb55fef26aaaa3aa84aba4fa1cf274",
+      "socle_sha256": "689dc3d382e0726d839f3cc38bb7105abf959b4302f6f4d1ac4d0ea37257379e",
       "collecte": "2026-02-19T22:21:31.397885",
       "etat": "PARTIEL",
       "familles": [
@@ -817,7 +817,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
       "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
-      "socle_sha256": "3fdf9d1f38d2f364d019592332a55198e502bde7c06fbc3445e3c6a40bf52b33",
+      "socle_sha256": "e4fd35b6c9e4858caf31f4d7c644c146cc157eb866bc985b077d43fc083b5a5a",
       "collecte": null,
       "etat": "PARTIEL",
       "familles": [
@@ -828,15 +828,15 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 20857,
-        "droits_liquidables": 20773,
+        "droits": 15618,
+        "droits_liquidables": 15534,
         "positions_liquidables": 5197,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 42,
-        "assiettes_source": 15717,
+        "assiettes_source": 10478,
         "assiettes_fichier": 0,
         "assiettes_table": 5140,
         "assiettes_indisponibles": 0,
@@ -930,7 +930,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBY_tariffs.json",
       "source_sha256": "7d4c83398125910cfc50393f3c716b5c90930305aa6498e518ad798e3fd82499",
-      "socle_sha256": "d5c04e868739928863c8afd8876ec8d99c983da63d9b1d9083c44e390209df39",
+      "socle_sha256": "0497c4ad67ee5defed17e7649e23557e1dd90223118f53ade9b57ba08caf96d2",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
@@ -946,7 +946,7 @@
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 9,
+        "taux_indisponibles": 11849,
         "assiettes_source": 5858,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
@@ -2034,7 +2034,7 @@
       "ZWE"
     ],
     "positions": 368379,
-    "droits": 1134575,
-    "droits_liquidables": 1108660
+    "droits": 1129336,
+    "droits_liquidables": 1103421
   }
 }

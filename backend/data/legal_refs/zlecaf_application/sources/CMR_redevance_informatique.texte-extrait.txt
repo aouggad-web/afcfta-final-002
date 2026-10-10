@@ -1,0 +1,18 @@
+Cameroun — redevance informatique : extraits (relevés le 2026-10-09 ; apostrophes et puces normalisées, le scan ne les distinguant pas toujours)
+
+1. Loi n° 2022/020 du 27 décembre 2022 portant loi de finances de la République du Cameroun pour l'exercice 2023 — copie certifiée conforme, Présidence de la République, Service du fichier législatif (https://www.prc.cm/files/88/24/5a/b1ba564f57146bc31c454515c0cdcbb2.pdf, sha256 027096120adaffb4a4e23061af94c4aad83c538f8206571df52ead4f575c62a0), page 6, PDF scanné, transcrit sur l'image :
+
+ARTICLE NEUVIÈME.- Redevance informatique
+Les dispositions des articles cinquièmes des lois de finances pour les exercices 2003 et 2004 ainsi que de l'article deuxième alinéa 3 de la loi de finances pour l'exercice 2018 sont modifiées et complétées ainsi qu'il suit :
+a) Le taux de la redevance de service dite « redevance informatique », instituée à l'article cinquième de la loi de finances pour l'exercice 2003, est fixé à 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à 15 000 F CFA par déclaration à l'exportation.
+
+2. Loi n° 2025/012 du 17 décembre 2025 portant loi de finances de la République du Cameroun pour l'exercice 2026 — copie certifiée conforme, Présidence de la République (https://www.prc.cm/files/c0/a1/8a/f2384c46567a032046599c65f95c5aa6.pdf, sha256 4196d9683db72f0cd1fa07f7a6ad39f306e727823695edf60ab0f3d74e055da8), page 4, PDF scanné, transcrit sur l'image :
+
+ARTICLE DOUZIÈME.- Redevance informatique
+Les dispositions de l'article neuvième de la loi de finances pour l'exercice 2023 sont modifiées et complétées ainsi qu'il suit :
+a) (sans changement) ;
+
+3. Circulaire n° 410/MINFI/DGD du 18 mai 2026 précisant les modalités d'application des dispositions douanières de la loi de finances pour l'exercice 2026 — Direction générale des douanes (http://www.douanes.cm/douanes-cameroun/wp-content/uploads/2026/05/CIRCULAIRE-N%C2%B0-410-DGD-DU-18-MAI-2026-Precisant-les-modalites-dapplication-des-dispositions-douanieres-de-la-LF-2026.pdf, sha256 13b0ea5a7a7a78b726986ace366c3060afebfa79a1d049ee0d0f80ef0df0f255), page 16, PDF scanné, transcrit sur l'image :
+
+VIII- DISPOSITIONS DE L'ARTICLE DOUZIÈME RELATIVES À LA REDEVANCE INFORMATIQUE
+Sans en modifier le taux d'imposition qui demeure fixé à 1% de la valeur imposable des marchandises importées ou exportées avec plafonnement à 15 000 F CFA par déclaration en détail à l'exportation, l'article douzième de la loi de finances pour l'exercice 2026 opère un réajustement de la répartition du produit de la redevance informatique ainsi qu'il suit :

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "objet": "Cameroun : redevance informatique à l'importation — 1 % de la valeur imposable, sans plafond ; le plafond de 15 000 F CFA ne vaut que par déclaration à l'exportation",
+  "destination_iso3": "CMR",
+  "verified_at": "2026-10-09",
+  "etabli": true,
+  "evidence_level": "primaire — lois de finances 2023 et 2026 (copies certifiées conformes de la Présidence de la République, prc.cm) et circulaire n° 410/MINFI/DGD du 18 mai 2026 (douanes.cm), PDF scannés : dispositifs transcrits sur l'image, puis relus sur l'image par une seconde lecture indépendante.",
+  "source": {
+    "instrument": "Loi n° 2022/020 du 27 décembre 2022 portant loi de finances pour l'exercice 2023, article neuvième ; maintenu par la loi n° 2025/012 du 17 décembre 2025 portant loi de finances pour l'exercice 2026, article douzième a)",
+    "institution": "Présidence de la République du Cameroun, Service du fichier législatif ; Ministère des Finances, Direction générale des douanes",
+    "url": "https://www.prc.cm/files/88/24/5a/b1ba564f57146bc31c454515c0cdcbb2.pdf",
+    "url_lf2026": "https://www.prc.cm/files/c0/a1/8a/f2384c46567a032046599c65f95c5aa6.pdf",
+    "url_circulaire_2026": "http://www.douanes.cm/douanes-cameroun/wp-content/uploads/2026/05/CIRCULAIRE-N%C2%B0-410-DGD-DU-18-MAI-2026-Precisant-les-modalites-dapplication-des-dispositions-douanieres-de-la-LF-2026.pdf",
+    "pdf_lf2023_sha256": "027096120adaffb4a4e23061af94c4aad83c538f8206571df52ead4f575c62a0",
+    "pdf_lf2026_sha256": "4196d9683db72f0cd1fa07f7a6ad39f306e727823695edf60ab0f3d74e055da8",
+    "pdf_circulaire_2026_sha256": "13b0ea5a7a7a78b726986ace366c3060afebfa79a1d049ee0d0f80ef0df0f255",
+    "pdf_non_archive": "Les trois PDF, scannés, ne sont pas versés au dépôt ; leurs dispositifs sont transcrits dans regle.texte_archive, chacun avec son URL et son empreinte.",
+    "consulte_le": "2026-10-09"
+  },
+  "regle": {
+    "valeur": "Redevance informatique à l'importation : 1 % de la valeur imposable des marchandises (assiette CIF), sans plafond. Le plafond de 15 000 F CFA porte sur le montant du prélèvement, par déclaration à l'exportation seulement.",
+    "verbatim": "a) Le taux de la redevance de service dite « redevance informatique », instituée à l'article cinquième de la loi de finances pour l'exercice 2003, est fixé à 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à 15 000 F CFA par déclaration à l'exportation.",
+    "reference": "Loi de finances 2023, art. 9 a) ; loi de finances 2026, art. 12 a) « (sans changement) » ; circulaire n° 410/MINFI/DGD du 18 mai 2026, point VIII",
+    "portee": "scripts/build_socle._redevance_informatique_cmr, socle CMR : la ligne RI passe de 0,45 % avec la base plafonnée à 15 000 XAF (relevé du crawl) à 1 % de la valeur CIF sans plafond. Le plafond rendait toute position camerounaise incalculable sans taux de change, et, avec un taux, réduisait la redevance à 67,5 XAF.",
+    "texte_archive": "sources/CMR_redevance_informatique.texte-extrait.txt",
+    "sha256": "f6c522db6221b5a6ff1a3e66d5ebc246491036ff09e2e7aacd6474b30d87d706"
+  },
+  "decisions": [
+    "Le crawl (cameroontradeportal.cm) porte « 0,45 %, plafond 15 000 XAF » sur la base. C'est le régime de la loi de finances 2018 (art. 2 al. 3 : 0,45 % à l'importation, plafond par déclaration à l'exportation), périmé depuis le 1er janvier 2023 et mal relu : le plafond y portait déjà sur le montant, et à l'exportation seulement.",
+    "« Aucun plafond à l'importation » se lit a contrario : la loi ne plafonne que la déclaration à l'exportation, et la circulaire de 2026 vise « les marchandises importées ou exportées avec plafonnement à 15 000 F CFA par déclaration en détail à l'exportation ».",
+    "La valeur imposable est la valeur en douane, de type CAF (Code des douanes CEMAC, art. 27) : l'assiette du socle reste CIF."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Les exonérations particulières (diplomatiques, conventions d'établissement, régimes d'incitation à l'investissement, régimes suspensifs) : aucun texte relevé ne dit si la redevance y est due.",
+    "Deux plafonds spéciaux antérieurs, non abrogés expressément, ne visent pas l'importation ordinaire : les déclarations de transit vers les pays voisins (loi de finances 2003) et la mise à la consommation des produits pétroliers raffinés localement (loi de finances 2018, art. 2 al. 4 m).",
+    "L'article cinquième de la loi de finances 2004, qui portait le taux à 0,45 %, n'a pas été lu.",
+    "Depuis le 1er janvier 2026, le Cameroun applique le Code des douanes harmonisé et le tarif extérieur commun harmonisé CEEAC-CEMAC (loi de finances 2026, art. 21 et 22) ; le socle repose encore sur le tarif CEMAC.",
+    "La loi de finances 2026, art. 10, fixe un barème du droit d'accises sur les véhicules importés selon leur âge, que le socle ne porte pas."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CMR_redevance_informatique.texte-extrait.txt",
+      "sha256": "f6c522db6221b5a6ff1a3e66d5ebc246491036ff09e2e7aacd6474b30d87d706"
+    }
+  ]
+}

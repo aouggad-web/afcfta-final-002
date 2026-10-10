@@ -1,0 +1,24 @@
+Guinée équatoriale — absence de redevance informatique : extraits (relevés le 2026-10-10 ; mise en page normalisée)
+
+1. Ley núm. 10/2017, de fecha 20 de noviembre (Ley de Tasas Fiscales), édition du Boletín Oficial del Estado, publiée par le Ministerio de Hacienda (https://minhacienda-gob.com/uploads/2020/04/LeydeTasasFiscales-1.pdf, sha256 3a518fad788078a828e810850b354536fca888947bcab972c82f2f1e4dcba9be). Titre :
+
+LEY NÚM. 10/2.017, de fecha 20 de Noviembre, por la que se Revisa y Actualiza la Ley Nº 2/2.007, de fecha 16 de Mayo, por las que se establecen nuevas Tasas Fiscales y se Definen las Exacciones Parafiscales en la República de Guinea Ecuatorial.-
+
+Page 140, Ministerio de Comercio, Sector de Comercio — seule ligne de la loi assise sur la valeur CIF ; aucune occurrence de « informática », SIDUNEA ou ASYCUDA dans le texte :
+
+SERVICIO DE IMPORTACIÓN DE MERCANCIAS | El 1% sobre el valor CIF que se ingresa en la arca única de la aduana | 15000+1%
+
+2. Ley Núm. /2025, de fecha 9 de diciembre, por la que se Reforma la Ley Núm. 10/2017, de fecha 20 noviembre, y se Establecen Nuevas Tasas Fiscales, Exacciones Parafiscales y Precios Públicos en la República de Guinea Ecuatorial — « LEY DE TASAS 2025 - OFICIAL », Ministerio de Hacienda (https://minhacienda-gob.com/uploads/2026/07/ley-de-tasas-2025-oficial-d1d1d4b8638a.pdf, sha256 1ed0bdd7bdca3307d0a23723e7e176dfda4d4ae24789132e774c6598ed41fef3) :
+
+Articulo 8.- Relación Jurídica Tributaria de las Tasas Fiscales y el Hecho Imponible.
+Podrá establecerse tasas fiscales por la prestación de servicios o realización de actividades en régimen de Derecho público consistentes en:
+[…]
+k) Actividades o servicios relacionados con los controles aduaneros.
+
+DISPOSICION DEROGATORIA
+PRIMERA. - Queda derogada la Ley número 10/2.017, de fecha 16 de mayo de Tasas Fiscales y se definen las Exacciones Parafiscales, en la República de Guinea Ecuatorial y cuantas disposiciones de igual o inferior rango se opongan a la presente Ley.
+
+DISPOSICIÓN FINAL
+La presente Ley, entrará en vigor a partir de 01 de enero del 2026, independientemente de la fecha de su publicación en el Boletín Oficial del Estado, y sin perjuicio de su difusión en los medios informativos nacionales.
+
+Le barème de la loi de 2025 ne contient aucune redevance informatique ni aucun prélèvement en pourcentage de la valeur CIF ; sous « Servicio de importación de mercancías », aucune ligne n'est plus inscrite.
