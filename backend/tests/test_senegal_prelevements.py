@@ -119,3 +119,13 @@ def test_revue_codex_8(positions):
     assert _calcul(positions["2204300000"])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
     assert _calcul(positions["5702100000"])[1]["DA"]["taux_pct"] == 5.0
     assert _calcul(positions["5705000000"])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
+
+
+def test_revue_codex_9(positions):
+    """Chariots automobiles (87.09.11/19) taxés comme véhicules ; 02.09 et
+    2206.00.99 (cidres et poirés exonérés mêlés) sans taux ; DA en règle de pays."""
+    assert _calcul(positions["8709110000"])[1]["DA"]["taux_pct"] == 10.0
+    for code in ("0209100000", "2206009900"):
+        assert _calcul(positions[code])[1]["DA"]["statut"] == "TAUX_INDISPONIBLE"
+    assert all(d["assiette_origine"] == "regle_de_pays"
+               for p in positions.values() for d in p["droits"] if d["code"] == "DA")
