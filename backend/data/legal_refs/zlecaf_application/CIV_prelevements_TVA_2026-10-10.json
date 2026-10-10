@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "objet": "Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la taxation nationale, 27/03/2026), prélèvements d'entrée (RS, PCS, PCC, PUA), assiette de la TVA à l'importation et des taxes spéciales du CGI art. 418",
+  "destination_iso3": "CIV",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — tarif officiel de la DGD (douanes.ci, mise à jour du 27/03/2026), circulaire DGD n° 2258/MBPE/DGD, tableau synoptique « Impôts et taxes en Côte d'Ivoire » de la DGI (2025, CGI art. 418), directive n° 02/98/CM/UEMOA (art. 27)",
+  "source": {
+    "url": "https://www.douanes.ci",
+    "institution": "Direction générale des douanes et Direction générale des impôts de Côte d'Ivoire ; UEMOA"
+  },
+  "regle": {
+    "valeur": "Source du socle CIV : tarif officiel de la DGD du 27/03/2026 (6 381 positions SH 2022), lu colonne par colonne (scripts/extraire_tec_civ.py), à la place de la collecte du portail GUCE de février 2026 (6 129 positions SH 2017, sans RS, PCS, PCC ni PUA). Droits et prélèvements tels que le tarif les porte, sur la valeur en douane : DD, RS 1 %, PCS 0,8 %, PCC 0,5 %, PUA 0,2 %. Taxes spéciales du CGI art. 418 portées par le tarif (boissons TSB, tabacs TAB 57 %, cosmétiques TCB, marbres TSM) : valeur en douane + DD + RS + PCS + PCC + PUA + TAI + TCI. TVA (0, 9 ou 18 % selon la position) : valeur en douane + DD + RS + PCS + PCC + PUA + TAI + TCI + taxes spéciales. La TCI, dont l'assiette n'est pas établie, rend ces deux assiettes indisponibles sur les positions qui la portent ; sur les positions de sucre (TPQ), toutes les assiettes sont indisponibles, le prix de déclenchement formant la base des autres droits.",
+    "verbatim": "les taux de la Redevance Statistique (RS) et du Prélèvement Communautaire de la CEDEAO (PCC), inscrits au TEC CEDEAO, restent fixés respectivement à 1% et 0,5% ; le Prélèvement Communautaire de Solidarité de l'UEMOA (PCS) et le Prélèvement de l'Union Africaine (PUA) demeurent en vigueur aux taux respectifs de 0,8% et 0,2%.",
+    "reference": "Circulaire DGD n° 2258/MBPE/DGD ; CGI art. 418 (tableau synoptique DGI 2025) ; directive n° 02/98/CM/UEMOA art. 27 a)",
+    "portee": "backend/data/crawled/CIV_tariffs.json régénéré depuis le tarif officiel (scellé, empreinte reportée dans backend/data/source_registry_v2.json) ; scripts/build_socle._prelevements_cote_divoire fixe les assiettes et écarte le droit unique de sortie (dû à l'exportation).",
+    "texte_archive": "sources/CIV_prelevements_TVA.extrait.txt",
+    "sha256": "1842db43e9a7daf77bda5186697cf537fe336cc46d912d920682721248d479d3"
+  },
+  "decisions": [
+    "Le CGI ivoirien n'est pas publié en PDF par la DGI (lecteur en ligne seulement) : l'assiette de la TVA à l'importation suit la directive UEMOA n° 02/98 (art. 27), que le CGI transpose.",
+    "Assiettes écrites en codes nommés : les codes du tarif sans légende n'entrent pas dans la base de la TVA tant que leur nature n'est pas établie.",
+    "Le droit unique de sortie (DUS) est dû à l'exportation : il n'entre pas dans le calcul d'une importation.",
+    "Écarts relevés entre la collecte de février 2026 et le tarif officiel : 429 positions SH 2022 absentes de la collecte, 177 positions de la collecte disparues du tarif, 68 droits de douane différents (viandes 35 % → 20 %, entre autres), 793 TVA différentes ou absentes.",
+    "TAI : « taxe d'ajustement à l'importation (TAI) de 10 % » (taux publié au tarif de 2026 : 10 %, ou 15 % sur 8504330000 et 8504340000) ajoutée au taux du TEC sur certaines lignes (OMC, WT/TPR/S/362, § 3.24) : liquidée sur la valeur en douane, comme le droit de douane, et comprise dans les droits d'entrée. TPQ : taxe de péréquation sur le sucre, « égale à la différence entre la valeur c.a.f. et le prix de déclenchement de la TCI », ce dernier « formant la base imposable pour les autres droits et taxes » (§ 3.26) : portée sans taux, et les autres droits de ces positions sans assiette."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "PCS et PCC ne s'appliquent qu'aux marchandises originaires de pays tiers à l'UEMOA et à la CEDEAO : le calculateur les liquide comme pour un pays tiers.",
+    "Acompte d'impôt sur le revenu du secteur informel (AIRSI, 5 %) : selon le régime d'imposition de l'importateur, non liquidé.",
+    "Codes du tarif sans légende dans le document — TUB, TUF, TUE (produits pétroliers, tarifs probablement par litre), PSS (fibres de sisal et de jute), TBG (bois en grumes), TCT (caoutchouc), TFS et TSS (tabacs), PSV (viandes et volailles : vraisemblablement le prélèvement compensatoire décrit par l'OMC, WT/TPR/S/362 § 3.26), TMP (emballages, FCFA/kg), TCI (selon un prix de déclenchement) : taux portés, assiette non établie, calcul partiel sur ces positions (la TCI, droit d'entrée, rend en outre indisponibles les taxes spéciales et la TVA).",
+    "Base minimale des cigarettes (25 000 F les 1 000 hors union douanière, annexe fiscale 2026 art. 26) : non appliquée, le nombre de cigarettes n'étant pas dans la position."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CIV_prelevements_TVA.extrait.txt",
+      "sha256": "1842db43e9a7daf77bda5186697cf537fe336cc46d912d920682721248d479d3"
+    },
+    {
+      "document_non_archive": "Circulaire DGD n° 2258/MBPE/DGD (TEC CEDEAO SH 2022), versée sur la PR #620 (data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf)",
+      "pdf_sha256": "c83ecbf1ec9b7cbcc64a733ae881076d5605495fa87d13062710e571f35042aa"
+    },
+    {
+      "document_non_archive": "DGI, « Impôts et taxes en Côte d'Ivoire », tableau synoptique 2025, versé sur la PR #620 (data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf)",
+      "pdf_sha256": "708b86d7165bfc748dbe133f17dd378a38a3a71448875396797ac64941ee2b2c"
+    },
+    {
+      "document_non_archive": "DGD, TEC CEDEAO 2022 version SYDAM World enrichi de la taxation nationale, mise à jour du 27/03/2026 (566 p.), douanes.ci ; versé sur la PR #620 (data/cote-d-ivoire/docs_officiels/TEC-CEDEAO-ENRICHI-TAXATION-NATIONALE-27-03-2026.pdf)",
+      "pdf_sha256": "420576635c74ce94ae3c8e09e393704a215f02c74e4d304cb2b0f90184a4187c"
+    },
+    {
+      "document_non_archive": "OMC, Examen des politiques commerciales, Côte d'Ivoire, WT/TPR/S/362 (2017), annexe 3 : https://www.wto.org/french/tratop_f/tpr_f/s362-03_f.pdf",
+      "pdf_sha256": "b6b4770201feb63a8b841aeb114f42d1ad0bc7f794fe943d793b92ef9a2d920e"
+    }
+  ]
+}

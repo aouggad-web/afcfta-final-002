@@ -1538,6 +1538,97 @@ def _prelevements_senegal(positions, compteurs):
         position["droits"] = droits
 
 
+def _prelevements_cote_divoire(positions, compteurs):
+    """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
+    taxation nationale, mise à jour du 27/03/2026 ; fiche
+    CIV_prelevements_TVA_2026-10-10.json). Il porte RS, PCS, PCC et PUA
+    (circulaire DGD n° 2258) mais aucune assiette. Assiette des taxes spéciales
+    du CGI art. 418 (boissons, tabacs, cosmétiques, marbres) : valeur en douane
+    augmentée de tous les droits et taxes hormis la TVA ; assiette de la TVA :
+    valeur en douane majorée des droits et taxes perçus à l'entrée (directive
+    n° 02/98/CM/UEMOA, art. 27). Le droit unique de sortie, dû à l'exportation,
+    n'entre pas dans le calcul d'une importation."""
+    entree = "DD+RS+PCS+PCC+PUA+TAI+TCI"
+    speciales = ("TSBPT", "TAB", "TCB", "TSM")
+    omc = "Examen des politiques commerciales de la Côte d'Ivoire, OMC WT/TPR/S/362 (2017), § 3.24 et 3.26"
+
+    def vers_table(d):
+        # Une assiette réécrite par la règle du pays quitte le compteur de son origine.
+        if d.get("assiette_origine") == "source":
+            compteurs["assiettes_source"] -= 1
+            compteurs["assiettes_table"] += 1
+        elif d.get("assiette_origine") == "source_fichier":
+            compteurs["assiettes_fichier"] -= 1
+            compteurs["assiettes_table"] += 1
+
+    for position in positions.values():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "TAI":
+                if not d.get("assiette"):
+                    compteurs["assiettes_indisponibles"] -= 1
+                    compteurs["assiettes_table"] += 1
+                else:
+                    vers_table(d)
+                d["libelle"] = "Taxe d'ajustement à l'importation"
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Taxe d'ajustement à l'importation, perçue sur la valeur en sus du TEC "
+                    f"({omc}) ; taux publié au tarif officiel de la DGD."
+                )
+            if d.get("code") == "TPQ" and d.get("taux") is not None:
+                d["libelle"] = "Taxe de péréquation sur le sucre"
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+                d["note"] = (
+                    "« égale à la différence entre la valeur c.a.f. et le prix de déclenchement de la TCI, ce "
+                    f"dernier formant la base imposable pour les autres droits et taxes » ({omc}) : dépend de la "
+                    "valeur déclarée et du prix de déclenchement en vigueur."
+                )
+            if d.get("code") == "DUS":
+                compteurs["assiettes_source" if d.get("assiette") else "assiettes_indisponibles"] -= 1
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] -= 1
+                continue
+            if d.get("code") in speciales and d.get("assiette"):
+                vers_table(d)
+                d["assiette"] = "CIF+" + entree
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
+                    "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
+                )
+            droits.append(d)
+        presentes = [d["code"] for d in droits if d.get("code") in speciales]
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette"):
+                vers_table(d)
+                d["assiette"] = "+".join(["CIF", entree] + presentes)
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
+                    "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
+                )
+        if any(d.get("code") == "TPQ" for d in droits):
+            # Sucre : le prix de déclenchement de la TCI, non publié, forme la base
+            # des autres droits ; les liquider sur la valeur c.a.f. sous-évaluerait.
+            for d in droits:
+                if d.get("code") == "TPQ" or not d.get("assiette"):
+                    continue
+                vers_table(d)
+                compteurs["assiettes_table"] -= 1
+                compteurs["assiettes_indisponibles"] += 1
+                d["assiette"] = None
+                d["assiette_origine"] = None
+                d["note"] = (
+                    "Base imposable : prix de déclenchement de la TCI, « ce dernier formant la base imposable "
+                    f"pour les autres droits et taxes » ({omc}) ; prix non publié."
+                )
+        position["droits"] = droits
+
+
 def _accises_du_cgi(iso, positions, compteurs):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
@@ -1955,6 +2046,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
     if iso == "SEN":
         _prelevements_senegal(positions, compteurs)
+    if iso == "CIV":
+        _prelevements_cote_divoire(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
