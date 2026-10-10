@@ -31,8 +31,10 @@ def test_utilitaire_reproduit_le_taux_cumule_de_la_dgd(positions):
     code = next(k for k in positions if k.startswith("870421") and
                 any(d["code"] == "DD" and d["taux"] == 10.0 for d in positions[k]["droits"]))
     etat, lignes = _calcul(positions[code])
-    assert etat == COMPLET and "DA" not in lignes
-    assert round(sum(l["montant"] for l in lignes.values()) / 10, 2) == 34.88
+    assert "DA" not in lignes
+    # Enregistrement (1 % neuf, 3 % d'occasion) : état absent de la position, sans taux.
+    assert lignes["DENR"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    assert round(sum(l["montant"] for l in lignes.values() if l["montant"]) / 10, 2) == 34.88
     assert lignes["PCS"]["montant"] == 8.0 and lignes["PROMAD"]["montant"] == 20.0
     assert lignes["TVA"]["base"] == 1110.0
 
@@ -42,7 +44,7 @@ def test_vehicule_de_tourisme_taxe_specifique_10_pour_cent(positions):
     TVA sur base + DD + RS + DA."""
     etat, lignes = _calcul(positions["8703100000"])
     assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1210.0, 121.0)
-    assert lignes["TVA"]["base"] == 1331.0 and etat == COMPLET
+    assert lignes["TVA"]["base"] == 1331.0 and etat != COMPLET  # enregistrement sans taux
 
 
 def test_pcs_a_0_8_pour_cent_promad_et_cosec_sur_toutes_les_positions(positions):
@@ -68,7 +70,7 @@ def test_cosmetique_et_tissu_taxes_cereale_non(positions):
 def test_positions_mixtes_sans_taux(positions):
     """Maté (2101.20), soupes et bouillons (2104.10), pipes : sans taux ;
     carburéacteur hors des quatre carburants de l'art. 443 : pas de taxe."""
-    for code in ("2101200000", "2104101000", "9614000000", "2710124000"):
+    for code in ("2101200000", "2104101000", "9614000000", "2710124000", "2202100000", "1517909000", "0401400000"):
         etat, lignes = _calcul(positions[code])
         assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     assert "DA" not in _calcul(positions["2710191100"])[1]

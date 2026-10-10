@@ -23,12 +23,14 @@
     "Produits des chapitres 33 et 34 : l'art. 441 vise « les produits relevant des chapitres 33 et 34 du tarif des douanes, notamment » les cosmétiques ; toutes les positions des deux chapitres sont taxées à 10 %.",
     "Textiles (art. 444 quater) : tissus des positions 50.07, 51.11 à 51.13, 52.08 à 52.12, 53.09 à 53.11, 54.07, 54.08, 55.12 à 55.16, chapitres 60 à 62, 63.01 à 63.04 et friperie 63.09, à 5 %.",
     "COSEC (0,4 %) : dû par voie maritime seulement ; le mode de transport n'étant pas connu du calculateur, il est liquidé comme dans les tableaux de la DGD (cas courant à Dakar) et signalé en note.",
-    "Exonérations tenant à l'importateur ou à l'usage (tissus pour la confection, corps gras pour la production, véhicules de transport public) : taux général appliqué, réserve en note. Positions mêlant produits taxés et non taxés (maté, soupes et bouillons, eaux, corps gras du chap. 15) : sans taux."
+    "Exonérations tenant à l'importateur ou à l'usage (tissus pour la confection, corps gras pour la production, véhicules de transport public) : taux général appliqué, réserve en note. Positions mêlant produits taxés et non taxés (maté, soupes et bouillons, eaux, corps gras du chap. 15) : sans taux.",
+    "Droit d'enregistrement des véhicules (87.02 à 87.04) : 1 % neuf ou 3 % d'occasion sur valeur + DD + RS ; l'état n'étant pas dans la position, la ligne est portée sans taux et le calcul reste partiel.",
+    "Acompte BIC (3 %) et prélèvement de conformité fiscale (12 %) : dus selon le statut de l'importateur (attestation de la DGID, rattachement à la Direction des grandes entreprises) ; non liquidés, comme l'AIRSI en Côte d'Ivoire."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Alcools (50 % au CGI 2025) et tabacs (70 %) : le rapport du projet de LF 2026 (loi n° 2025-19) annonce 65 % et 100 % ; le texte promulgué n'a pas été lu : taxes portées sans taux. La taxe additionnelle par litre d'alcool et la base minimale des cigarettes ne sont pas calculables depuis la position.",
     "Eaux et boissons 22.01 et 22.02 (hors 22.02.10), corps gras du chapitre 15, préparations de viande 16.02 : positions mêlant produits taxés et non taxés, ou exonérations selon la destination : taxe portée sans taux.",
-    "Droit d'enregistrement des véhicules (1 % neuf, 3 % d'occasion), acompte BIC (3 %), prélèvement de conformité fiscale (12 %), taxe conjoncturelle à l'importation : selon l'état du véhicule ou le statut de l'importateur, non liquidés.",
+    "Acompte BIC (3 %), prélèvement de conformité fiscale (12 %), taxe conjoncturelle à l'importation : selon l'état du véhicule ou le statut de l'importateur, non liquidés.",
     "Taxe sur les emballages plastiques (art. 444 ter) : selon le contenu et le volume, non liquidée.",
     "PUA (0,2 %) : porté par la source, absent des tableaux de la DGD, liquidé par la douane ivoirienne (circulaire DGD n° 2258) : maintenu, application au Sénégal à confirmer."
   ],

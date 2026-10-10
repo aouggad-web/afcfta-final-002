@@ -1432,7 +1432,7 @@ def _prelevements_senegal(positions, compteurs):
         "FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » "
         "et tableaux des taux cumulés des véhicules."
     )
-    for position in positions.values():
+    for code, position in positions.items():
         droits = []
         for d in position.get("droits") or []:
             if d.get("code") == "PUA":
@@ -1444,6 +1444,25 @@ def _prelevements_senegal(positions, compteurs):
                 d["taux"] = 0.8
                 d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
             droits.append(d)
+        if droits and code[:4] in ("8702", "8703", "8704") and not any(d.get("code") == "DENR" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "DENR",
+                    "code_source": "DENR",
+                    "libelle": "Droit d'enregistrement des véhicules",
+                    "famille": famille("DENR"),
+                    "taux": None,
+                    "assiette": "CIF+DD+RS",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "Droit d'enregistrement : 1 % pour un véhicule neuf, 3 % d'occasion, « (Base + DD + RS) × taux » "
+                    "(" + note_dgd + ") ; l'état neuf ou d'occasion n'est pas dans la position.",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+            compteurs["taux_indisponibles"] += 1
         if droits and not any(d.get("code") == "COSEC" for d in droits):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(
@@ -1482,7 +1501,7 @@ def _prelevements_senegal(positions, compteurs):
         position["droits"] = droits
 
 
-def _accises_du_cgi(iso, positions):
+def _accises_du_cgi(iso, positions, compteurs):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
     for code, position in positions.items():
@@ -1514,7 +1533,11 @@ def _accises_du_cgi(iso, positions):
                 break
         for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
                 d["assiette"] = table["tva_assiette"]
+                d["assiette_origine"] = "regle_de_pays"
                 d["note"] = table["tva_assiette_reference"]
         position["droits"] = droits
 
@@ -1909,7 +1932,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
         avant = _da()
         if iso in ACCISES_PAYS:
-            _accises_du_cgi(iso, positions)
+            _accises_du_cgi(iso, positions, compteurs)
         if iso in ASSIETTE_ACCISE_PAYS:
             _assiette_accise(iso, positions)
         apres = _da()
@@ -1932,6 +1955,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # annonçait donc plus de positions que le socle n'en porte, et c'est ce qui
     # a masqué la perte de 349 positions libyennes rabattues sur le SH6.
     # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
+    # Les passes par pays (prélèvements, accises) ajoutent des familles après la
+    # lecture : la couverture se lit sur ce qui est servi.
+    familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
     compteurs["droits_composes"] = sum(
