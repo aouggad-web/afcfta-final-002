@@ -10,26 +10,27 @@
     "institution": "Direction générale des impôts et des domaines du Sénégal ; Direction générale des douanes du Sénégal"
   },
   "regle": {
-    "valeur": "Prélèvements d'entrée liquidés par la DGD : DD (TEC CEDEAO), RS 1 %, PCS 0,8 %, PCC 0,5 %, PROMAD 2 %, COSEC 0,4 % (voie maritime seulement). Taxes spécifiques (art. 408 à 444 quinquies) : boissons gazeuses et jus 5 %, café 5 %, thé 5 %, beurres 15 %, autres corps gras et charcuteries 10 %, véhicules de tourisme 10 %, produits des chapitres 33 et 34 10 %, bouillons 15 %, textiles 5 % ; alcools et tabacs modifiés par la LF 2026. Assiette de la taxe spécifique : valeur + DD + RS (liquidation de la DGD). Assiette de la TVA (18 %) : valeur + DD + RS + taxe spécifique.",
+    "valeur": "Prélèvements d'entrée liquidés par la DGD : DD (TEC CEDEAO), RS 1 %, PCS 0,8 %, PCC 0,5 %, PROMAD 2 %, COSEC 0,4 % (voie maritime seulement, liquidé comme dans les tableaux de la DGD), PUA 0,2 % (taux de la source, maintenu). Taxes spécifiques (art. 408 à 444 quinquies) : boissons gazeuses et jus 5 %, café 5 %, thé 5 %, beurres 15 %, autres corps gras et charcuteries 10 %, véhicules de tourisme 10 %, produits des chapitres 33 et 34 10 %, bouillons 15 %, textiles 5 % ; alcools et tabacs modifiés par la LF 2026. Assiette de la taxe spécifique : valeur + DD + RS (liquidation de la DGD). Assiette de la TVA (18 %) : valeur + DD + RS + taxe spécifique.",
     "verbatim": "Pour les importations, la base imposable à la taxe sur la valeur ajoutée est constituée par la valeur en douane augmentée des droits et taxes de toute nature liquidés, au profit du budget de l’Etat, par l’Administration des douanes, à l’exclusion des droits d’enregistrement et de la taxe sur la valeur ajoutée. […] TVA 18% (Base + DD + RS) ×taux […] Droits d'accises 10% (base+ DD + RS) ×taux",
     "reference": "CGI 2025 art. 408 à 444 quinquies et base de la TVA à l'importation ; FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » et « Comment dédouaner un véhicule ? »",
-    "portee": "scripts/build_socle._prelevements_senegal (PCS ramené de 1 % à 0,8 %, PUA de 0,2 % retiré, PROMAD 2 % ajouté sur les 6 129 positions) et backend/data/zlecaf_sen/droit_accises_cgi2025.json appliqué par scripts/build_socle._accises_du_cgi au seul socle SEN (taxes spécifiques, TVA sur valeur + DD + RS + DA).",
+    "portee": "scripts/build_socle._prelevements_senegal (PCS ramené de 1 % à 0,8 %, PROMAD 2 % et COSEC 0,4 % ajoutés, PUA de 0,2 % maintenu sur les 6 129 positions) et backend/data/zlecaf_sen/droit_accises_cgi2025.json appliqué par scripts/build_socle._accises_du_cgi au seul socle SEN (taxes spécifiques, TVA sur valeur + DD + RS + DA).",
     "texte_archive": "sources/SEN_taxes_specifiques.extrait.txt",
     "sha256": "09126b9d2881c2b3e5c545f106111ebfc0831ce1f269c8c7e0876a5733441131"
   },
   "decisions": [
     "Assiette de la taxe spécifique : la FAQ véhicules de la DGD liquide « (base + DD + RS) × taux », alors que l'art. 408 du CGI vise la valeur en douane « majorée de tous les droits et taxes liquidés par la douane » : la liquidation de la DGD est suivie, l'écart signalé.",
     "Assiette de la TVA : le CGI sénégalais la limite aux droits et taxes liquidés « au profit du budget de l'Etat », ce qui exclut les prélèvements communautaires (PCS, PCC), le COSEC et le PROMAD, comme le font les tableaux de la DGD ; la directive n° 02/98/CM/UEMOA (art. 27 a), fiche UEMOA_assiette_TVA_2026-09-14.json) vise plus largement « les droits et taxes perçus à l'entrée ». Le texte national et la liquidation de la DGD sont suivis, l'écart signalé.",
-    "COSEC (0,4 %) : dû par voie maritime seulement ; le mode de transport n'étant pas connu du calculateur, il n'est pas liquidé.",
     "Produits des chapitres 33 et 34 : l'art. 441 vise « les produits relevant des chapitres 33 et 34 du tarif des douanes, notamment » les cosmétiques ; toutes les positions des deux chapitres sont taxées à 10 %.",
-    "Textiles (art. 444 quater) : tissus des positions 50.07, 51.11 à 51.13, 52.08 à 52.12, 53.09 à 53.11, 54.07, 54.08, 55.12 à 55.16, chapitres 60 à 62, 63.01 à 63.04 et friperie 63.09, à 5 %."
+    "Textiles (art. 444 quater) : tissus des positions 50.07, 51.11 à 51.13, 52.08 à 52.12, 53.09 à 53.11, 54.07, 54.08, 55.12 à 55.16, chapitres 60 à 62, 63.01 à 63.04 et friperie 63.09, à 5 %.",
+    "COSEC (0,4 %) : dû par voie maritime seulement ; le mode de transport n'étant pas connu du calculateur, il est liquidé comme dans les tableaux de la DGD (cas courant à Dakar) et signalé en note.",
+    "Exonérations tenant à l'importateur ou à l'usage (tissus pour la confection, corps gras pour la production, véhicules de transport public) : taux général appliqué, réserve en note. Positions mêlant produits taxés et non taxés (maté, soupes et bouillons, eaux, corps gras du chap. 15) : sans taux."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Alcools (50 % au CGI 2025) et tabacs (70 %) : le rapport du projet de LF 2026 (loi n° 2025-19) annonce 65 % et 100 % ; le texte promulgué n'a pas été lu : taxes portées sans taux. La taxe additionnelle par litre d'alcool et la base minimale des cigarettes ne sont pas calculables depuis la position.",
     "Eaux et boissons 22.01 et 22.02 (hors 22.02.10), corps gras du chapitre 15, préparations de viande 16.02 : positions mêlant produits taxés et non taxés, ou exonérations selon la destination : taxe portée sans taux.",
     "Droit d'enregistrement des véhicules (1 % neuf, 3 % d'occasion), acompte BIC (3 %), prélèvement de conformité fiscale (12 %), taxe conjoncturelle à l'importation : selon l'état du véhicule ou le statut de l'importateur, non liquidés.",
     "Taxe sur les emballages plastiques (art. 444 ter) : selon le contenu et le volume, non liquidée.",
-    "Le « PUA » de 0,2 % du crawl ne figure dans aucun tableau de la DGD du Sénégal : retiré. La douane ivoirienne le liquide (circulaire DGD n° 2258) : son application au Sénégal reste à confirmer."
+    "PUA (0,2 %) : porté par la source, absent des tableaux de la DGD, liquidé par la douane ivoirienne (circulaire DGD n° 2258) : maintenu, application au Sénégal à confirmer."
   ],
   "documents_archives": [
     {

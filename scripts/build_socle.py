@@ -1423,10 +1423,11 @@ def _prelevements_senegal(positions, compteurs):
     """Sénégal : prélèvements d'entrée selon les FAQ de la DGD (2026) « Comment
     faire pour savoir les frais de dédouanement » et « Comment dédouaner un
     véhicule ? » (fiche SEN_taxes_specifiques_2026-10-10.json). Le crawl
-    portait un PCS de 1 % et un « PUA » de 0,2 % que la DGD ne liquide pas, et
-    omettait le PROMAD (2 % de la valeur en douane). Le COSEC (0,4 %) n'est dû
-    que par voie maritime : le mode de transport n'étant pas connu du moteur,
-    il n'est pas liquidé."""
+    portait un PCS de 1 % au lieu de 0,8 %, et
+    omettait le PROMAD (2 % de la valeur en douane) et le COSEC (0,4 %, dû par
+    voie maritime seulement, liquidé comme dans les tableaux de la DGD, le mode
+    de transport n'étant pas connu du moteur). Le PUA de 0,2 % du crawl, absent
+    des tableaux de la DGD, est maintenu en attendant confirmation."""
     note_dgd = (
         "FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » "
         "et tableaux des taux cumulés des véhicules."
@@ -1435,12 +1436,32 @@ def _prelevements_senegal(positions, compteurs):
         droits = []
         for d in position.get("droits") or []:
             if d.get("code") == "PUA":
-                compteurs["assiettes_source" if d.get("assiette_origine") == "source" else "assiettes_table"] -= 1
-                continue
+                d["note"] = (
+                    "Prélèvement de l'Union africaine, 0,2 % (taux de la source) : absent des tableaux de la DGD, "
+                    "liquidé par la douane ivoirienne (circulaire DGD n° 2258) ; maintenu, application au Sénégal à confirmer."
+                )
             if d.get("code") == "PCS":
                 d["taux"] = 0.8
                 d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
             droits.append(d)
+        if droits and not any(d.get("code") == "COSEC" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "COSEC",
+                    "code_source": "COSEC",
+                    "libelle": "Prélèvement au profit du Conseil sénégalais des chargeurs",
+                    "famille": famille("COSEC"),
+                    "taux": 0.4,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "COSEC 0,4 %, « uniquement par voie maritime » (" + note_dgd + ") : liquidé comme dans "
+                    "les tableaux de la DGD ; à retirer pour un transport terrestre ou aérien.",
+                },
+            )
+            compteurs["assiettes_table"] += 1
         if droits and not any(d.get("code") == "PROMAD" for d in droits):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(

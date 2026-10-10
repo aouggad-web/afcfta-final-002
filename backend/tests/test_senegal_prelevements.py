@@ -26,13 +26,13 @@ def _calcul(position):
 
 
 def test_utilitaire_reproduit_le_taux_cumule_de_la_dgd(positions):
-    """FAQ véhicules, utilitaire usagé à 10 % : 38,01 %, dont COSEC 0,4 % et
-    enregistrement 3,33 % non liquidés : 34,28 %."""
+    """FAQ véhicules, utilitaire usagé à 10 % : 38,01 %, dont enregistrement
+    3,33 % non liquidé : 34,68 % ; plus le PUA de 0,2 % maintenu : 34,88 %."""
     code = next(k for k in positions if k.startswith("870421") and
                 any(d["code"] == "DD" and d["taux"] == 10.0 for d in positions[k]["droits"]))
     etat, lignes = _calcul(positions[code])
     assert etat == COMPLET and "DA" not in lignes
-    assert round(sum(l["montant"] for l in lignes.values()) / 10, 2) == 34.28
+    assert round(sum(l["montant"] for l in lignes.values()) / 10, 2) == 34.88
     assert lignes["PCS"]["montant"] == 8.0 and lignes["PROMAD"]["montant"] == 20.0
     assert lignes["TVA"]["base"] == 1110.0
 
@@ -45,9 +45,9 @@ def test_vehicule_de_tourisme_taxe_specifique_10_pour_cent(positions):
     assert lignes["TVA"]["base"] == 1331.0 and etat == COMPLET
 
 
-def test_plus_de_pua_ni_de_pcs_a_un_pour_cent(positions):
+def test_pcs_a_0_8_pour_cent_promad_et_cosec_sur_toutes_les_positions(positions):
     droits = [d for p in positions.values() for d in p["droits"]]
-    assert not any(d["code"] == "PUA" for d in droits)
+    assert sum(1 for d in droits if d["code"] == "COSEC") == len(positions)
     assert {d["taux"] for d in droits if d["code"] == "PCS"} == {0.8}
     assert sum(1 for d in droits if d["code"] == "PROMAD") == len(positions)
 
@@ -63,3 +63,12 @@ def test_cosmetique_et_tissu_taxes_cereale_non(positions):
     assert _calcul(positions["5208110000"])[1]["DA"]["taux_pct"] == 5.0
     etat, lignes = _calcul(positions["1006301000"])
     assert "DA" not in lignes and etat == COMPLET
+
+
+def test_positions_mixtes_sans_taux(positions):
+    """Maté (2101.20), soupes et bouillons (2104.10), pipes : sans taux ;
+    carburéacteur hors des quatre carburants de l'art. 443 : pas de taxe."""
+    for code in ("2101200000", "2104101000", "9614000000", "2710124000"):
+        etat, lignes = _calcul(positions[code])
+        assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    assert "DA" not in _calcul(positions["2710191100"])[1]
