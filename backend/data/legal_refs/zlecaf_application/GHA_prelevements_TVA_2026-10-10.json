@@ -1,39 +1,42 @@
 {
   "schema_version": 1,
-  "objet": "Ghana : prélèvements à l'importation (ECOWAS Levy, AU Import Levy, EXIM Levy, Special Import Levy) et assiette commune de la TVA, du NHIL et du GETFund à l'importation (VAT Act 2025, Act 1151)",
+  "objet": "Ghana : prélèvements à l'importation (ECOWAS Levy, AU Import Levy, EXIM Levy, Special Import Levy), droit d'accises (Excise Duty Act 878, First Schedule de l'Act 1108) et assiette commune de la TVA, du NHIL et du GETFund à l'importation (VAT Act 2025, Act 1151)",
   "destination_iso3": "GHA",
   "verified_at": "2026-10-10",
   "etabli": true,
-  "evidence_level": "primaire pour les taux et le périmètre des prélèvements (MoFEP/IFS 2026, tableau 3.9 ; Act 911 s. 29) et pour l'assiette commune (GRA) ; texte de l'Act 1151 s. 45 relevé sur deux reproductions concordantes, l'exemplaire du Parlement étant injoignable",
+  "evidence_level": "primaire pour les taux et le périmètre des prélèvements (MoFEP/IFS 2026, tableau 3.9 ; Act 911 s. 29) et pour l'assiette commune (GRA) ; texte de l'Act 1151 s. 45 relevé sur deux reproductions concordantes, l'exemplaire du Parlement étant injoignable ; accises : texte consolidé de l'Act 878 (Acts 903, 1093, 1108) relevé sur une reproduction, concordant avec la synthèse du collaborateur",
   "source": {
     "url": "https://gra.gov.gh/domestic-tax/tax-types/vat/",
     "institution": "Ghana Revenue Authority ; Ministry of Finance (MoFEP) ; Parlement du Ghana"
   },
   "regle": {
-    "valeur": "Prélèvements sur la valeur c.a.f., ajoutés après le droit de douane : ECOWAS Levy 0,5 %, AU Import Levy 0,2 %, EXIM Levy 0,75 % (hors produits pétroliers, positions 27.09 à 27.13), Special Import Levy 2 % (hors 27.09, 27.10 et chapitre 31 ; sans taux sur les chapitres 84 et 85, faute de liste des machines et équipements exclus). TVA 15 %, NHIL 2,5 % et GETFund 2,5 % sur une même base : valeur c.a.f. + DD + ECOWAS + AU + EXIM + SIL, les deux prélèvements n'entrant plus dans la base de la TVA.",
+    "valeur": "Prélèvements sur la valeur c.a.f., ajoutés après le droit de douane : ECOWAS Levy 0,5 %, AU Import Levy 0,2 %, EXIM Levy 0,75 % (hors produits pétroliers, positions 27.09 à 27.13), Special Import Levy 2 % (hors 27.09, 27.10 et chapitre 31 ; sans taux sur les chapitres 84 et 85, faute de liste des machines et équipements exclus). Droit d'accises (backend/data/zlecaf_gha/droit_accises_act878.json) sur la valeur c.a.f. + DD + ECOWAS + AU + EXIM + SIL (Act 878, s. 5(2)(a)). TVA 15 %, NHIL 2,5 % et GETFund 2,5 % sur une même base : valeur c.a.f. + DD + ECOWAS + AU + EXIM + SIL + accise, les deux prélèvements n'entrant plus dans la base de la TVA.",
     "verbatim": "(1) The value for determining the Tax chargeable on taxable imports of goods is (a) the import value calculated in accordance with sections 67 to 68 of the Customs Act, 2015 (Act 891); (b) the import duties and taxes other than the Tax; and (c) the cost of insurance and freight which is not included in the customs value under this subsection.",
-    "reference": "VAT Act 2025 (Act 1151) s. 45(1) ; GRA, page VAT (réformes 2026) ; MoFEP/IFS, A survey of the Ghanaian tax system (2026), tableau 3.9 ; Ghana Export-Import Bank Act 2016 (Act 911) s. 29",
-    "portee": "scripts/build_socle._prelevements_ghana ajoute les quatre prélèvements et fixe l'assiette de la TVA, du NHIL et du GETFund (auparavant CIF+DD).",
+    "reference": "VAT Act 2025 (Act 1151) s. 45(1) ; GRA, page VAT (réformes 2026) ; MoFEP/IFS, A survey of the Ghanaian tax system (2026), tableau 3.9 ; Ghana Export-Import Bank Act 2016 (Act 911) s. 29 ; Excise Duty Act 2014 (Act 878) s. 5(2)(a) et First Schedule (Act 1108)",
+    "portee": "scripts/build_socle._prelevements_ghana ajoute les quatre prélèvements et fixe l'assiette de la TVA, du NHIL et du GETFund (auparavant CIF+DD) ; scripts/build_socle._accises_du_cgi ajoute le droit d'accises (ACCISES_PAYS['GHA']).",
     "texte_archive": "sources/GHA_prelevements_TVA.extrait.txt",
-    "sha256": "191e240d360454216fc2ca1cf328856b169c0d141c510de7071e59281c6a2f20"
+    "sha256": "9de7aa509ba1850255fec1f767de3229e2226f40a4c984844888cb7b216518c4"
   },
   "decisions": [
     "Base commune de la TVA, du NHIL et du GETFund : la GRA écrit que les trois « are all charged on the same base or value » ; le NHIL et le GETFund n'entrent donc pas dans la base de la TVA (l'ancien calcul en cascade est abrogé).",
     "« import duties and taxes other than the Tax » (s. 45(1)(b)) : le droit de douane et les quatre prélèvements à l'importation entrent dans la base.",
     "EXIM Levy : l'Act 911 vise « any product imported for commercial purposes except petroleum products » ; le tableau MoFEP écrit « selected non-petroleum imported goods ». Le texte de loi prévaut : liquidé sur toutes les positions hors 27.09 à 27.13. La condition d'usage commercial tient à l'importateur : taux général.",
-    "Special Import Levy : « except for petroleum products, fertilisers, and machinery and equipment » ; les produits pétroliers sont lus comme les positions 27.09 et 27.10 et les engrais comme le chapitre 31 ; les machines et équipements, sans liste, laissent les chapitres 84 et 85 sans taux (TVA, NHIL et GETFund y deviennent indisponibles)."
+    "Special Import Levy : « except for petroleum products, fertilisers, and machinery and equipment » ; les produits pétroliers sont lus comme les positions 27.09 et 27.10 et les engrais comme le chapitre 31 ; les machines et équipements, sans liste, laissent les chapitres 84 et 85 sans taux (TVA, NHIL et GETFund y deviennent indisponibles).",
+    "Accises : la Fifth Schedule imprimée au tarif de 2016 est obsolète ; le First Schedule de l'Act 878 a été substitué en entier par l'Act 1093 puis par l'Act 1108, dont les taux sont appliqués. Les taux sont exprimés « of ex-factory price » ; à l'importation, la valeur est celle de la s. 5(2)(a).",
+    "Base de l'accise : valeur en douane + droits, taxes et redevances perçus à l'entrée autres que l'accise et la TVA ; le NHIL et le GETFund, assis sur la base de la TVA qui comprend l'accise, n'y sont pas repris (la circularité serait sans fin).",
+    "Taux sans valeur : autres eaux 2201.90 (bouteille 20 %, distillée 17,5 %, sachet 0 %), moûts 2204.30, boissons fermentées 22.06 (cidre 47,5 %, bière indigène et vin de palme non visés), sacs textiles synthétiques 6305.32 et 6305.39 ; cigarettes et cigares (part spécifique par bâtonnet) et tabacs du 24.03 (GH¢ 280/kg) : non liquidés. Les produits liquides électroniques et vaporiseurs n'ont pas de position propre dans la nomenclature du socle.",
+    "Bière (tariff 3) : taux de 47,5 % pour moins de 50 % de matière première locale, retenu pour une bière importée ; alcool dénaturé (6(c)(ii), 10 %) sous réserve de l'agrément du Commissioner-General."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "ECOWAS Levy et AU Import Levy ne sont dus que sur les marchandises de pays tiers à la CEDEAO et à l'Union africaine : le calculateur, qui ne connaît pas l'origine, les liquide comme pour un pays tiers.",
     "Exemptions de la First Schedule de l'Act 861 (éducation, agriculture, santé, etc.) : non relevées.",
-    "Accises à l'importation (Excise Duty Act 2014, Act 878, cinquième annexe) : absentes de la collecte ; le tarif versé (Act 905, 2015) est antérieur aux amendements et n'a pas été repris.",
     "Paiement anticipé de 20 % de la valeur en douane (importateurs non immatriculés à la TVA, directives GRA 2026, § 9.1) : dépend du statut de l'importateur, non liquidé.",
     "Frais d'examen (1 %, véhicules d'occasion), pénalités d'âge des véhicules et frais de prestataires (GPHA, Shippers' Authority, FDA, GSA) : hors périmètre."
   ],
   "documents_archives": [
     {
       "texte_archive": "sources/GHA_prelevements_TVA.extrait.txt",
-      "sha256": "191e240d360454216fc2ca1cf328856b169c0d141c510de7071e59281c6a2f20"
+      "sha256": "9de7aa509ba1850255fec1f767de3229e2226f40a4c984844888cb7b216518c4"
     },
     {
       "document_non_archive": "IFS et MoFEP, « A survey of the Ghanaian tax system (2026) », versé sur la PR #620 (data/ghana/docs_officiels/MOFEP-SURVEY-GHANAIAN-TAX-SYSTEM.pdf)",
@@ -42,6 +45,10 @@
     {
       "document_non_archive": "GRA, directives administratives du VAT Act 2025 (Act 1151), 31/12/2025, versées sur la PR #620 (data/ghana/docs_officiels/VAT-ADMIN-GUIDELINES-ACT-1151-GRA-2026.pdf)",
       "pdf_sha256": "d8bbe31c7c56083d438401567a60e25e0bad1d1c22057b28114770d62ce397c0"
+    },
+    {
+      "document_non_archive": "Synthèse « Fifth Schedule (Customs Act 891) / First Schedule (Excise Duty Act 878) : taux d'accises à jour », versée sur la PR #620 (data/ghana/docs_officiels/FIFTH-SCHEDULE-EXCISE-ACT-878-A-JOUR.md)",
+      "sha256": "ec5cc8408f646953195671077a83bf16ff378e2ec84ea58d899e77fefbfe7424"
     }
   ]
 }

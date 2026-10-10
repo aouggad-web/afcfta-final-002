@@ -1185,6 +1185,7 @@ ACCISES_PAYS = {
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
     "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
+    "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
 }
 
 
@@ -1632,6 +1633,8 @@ def _prelevements_ghana(positions, compteurs):
         ("SIL", "Special Import Levy", 2.0, "Special Import Levy Act 2013 (Act 861) : « All imports, except for petroleum products, fertilisers, and machinery and equipment » ; produits pétroliers lus comme les positions 27.09 et 27.10, engrais comme le chapitre 31 ; exemptions de la First Schedule non relevées."),
     ]
     codes = "+".join(["DD"] + [c for c, _, _, _ in ajouts])
+    # Le droit d'accises (barème ACCISES_PAYS, passe suivante) entre dans la base
+    # commune ; absent de la position, il est sans objet.
     for code, position in positions.items():
         droits = position.get("droits") or []
         if not droits:
@@ -1670,7 +1673,7 @@ def _prelevements_ghana(positions, compteurs):
                 if d.get("assiette_origine") == "source":
                     compteurs["assiettes_source"] -= 1
                     compteurs["assiettes_table"] += 1
-                d["assiette"] = "CIF+" + codes
+                d["assiette"] = "CIF+" + codes + "+DA"
                 d["assiette_origine"] = "regle_de_pays"
                 d["note"] = (
                     "VAT Act 2025 (Act 1151), s. 45(1) : « (a) the import value [...] (b) the import duties and taxes "
@@ -1780,8 +1783,10 @@ def _accises_du_cgi(iso, positions, compteurs):
                 continue
             if any(code.startswith(p) for p in regle["prefixes"]):
                 # Avant la TVA, qui s'assoit sur lui : le moteur liquide dans l'ordre.
+                # Ghana : avant le NHIL et le GETFund aussi, assis sur la même base.
+                avant = table.get("inserer_avant_familles", ["tva"])
                 rang = next(
-                    (i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits)
+                    (i for i, d in enumerate(droits) if d.get("famille") in avant), len(droits)
                 )
                 droits.insert(
                     rang,

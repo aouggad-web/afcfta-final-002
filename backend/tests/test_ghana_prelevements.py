@@ -54,3 +54,35 @@ def test_machines_sans_taux_de_sil(positions):
     etat, lignes = _calcul(positions[code])
     assert lignes["SIL"]["taux_pct"] is None
     assert lignes["TVA"]["montant"] is None and etat != "COMPLET"
+
+
+def test_biere_accise_sur_valeur_et_droits_d_entree(positions):
+    """Act 878, s. 5(2)(a) et tariff 3(a) : 47,5 % sur 1 000 + DD 200 + 5 + 2 + 7,5 + 20 ;
+    TVA, NHIL et GETFund sur cette base + l'accise."""
+    etat, lignes = _calcul(positions["2203001000"])
+    assert etat == "COMPLET"
+    assert lignes["DA"]["base"] == 1234.5 and lignes["DA"]["taux_pct"] == 47.5
+    for c in ("TVA", "NHIL", "GETFUND"):
+        assert lignes[c]["base"] == pytest.approx(1234.5 + 586.3875)
+
+
+def test_taux_d_accises_du_first_schedule(positions):
+    taux = {
+        code: next(d["taux"] for d in positions[code]["droits"] if d["code"] == "DA")
+        for code in ("2009111000", "2202991000", "2204100000", "2208300000", "2207101000", "2207200000", "3923210000")
+    }
+    assert taux == {
+        "2009111000": 20.0, "2202991000": 20.0, "2204100000": 45.0, "2208300000": 50.0,
+        "2207101000": 0.0, "2207200000": 10.0, "3923210000": 5.0,
+    }
+
+
+def test_cigarettes_accise_mixte_non_liquidee(positions):
+    """Tariff 7(a) : 50 % plus GH¢ 0,28 par bâtonnet ; la TVA ne se calcule pas sans l'accise."""
+    etat, lignes = _calcul(positions["2402200000"])
+    assert lignes["DA"]["montant"] is None
+    assert lignes["TVA"]["montant"] is None and etat != "COMPLET"
+
+
+def test_produit_non_accisable_sans_droit_d_accises(positions):
+    assert not any(d["code"] == "DA" for d in positions["0101210000"]["droits"])
