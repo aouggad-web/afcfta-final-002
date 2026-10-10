@@ -1,0 +1,17 @@
+Mali — tarif de la DGD, prélèvements, ISCP et assiette de la TVA à l'importation : extraits verbatim (relevés le 2026-10-10)
+
+1. « Le Tarif extérieur commun de la CEDEAO », édition du Mali (SH 2022), PDF de 448 pages créé le 28/12/2023, sha256 69c0bbe5c34027af8d4712355e5d75a0d1057fcdb0ff2d9df0a2a008b5865cf3, versé sur la PR #620 (data/mali/docs_officiels/TEC-CEDEAO-SH2023-MALI.pdf), p. 13, en-tête de colonnes et première position :
+
+« N° POSITION NTS DESIGNATION DES MARCHANDISES US DD RS PC PCS ISCP TVA TAI TCI TCP AUTRES »
+
+« 0101.21.00.00 -- Reproducteurs de race pure u 5 1 0,5 0,8 18 »
+
+Relevé sur les 6 382 positions (scripts/extraire_tec_mli.py) : RS 1 %, PC 0,5 % et PCS 0,8 % partout ; ISCP sur 183 positions ; TAI 5 % sur 170 positions ; TCI 55 % sur 4 positions (sucres) ; TCP et AUTRES vides.
+
+2. Code général des impôts du Mali, édition de la DGI mise à jour au 02/08/2017 (https://www.dgi.gouv.ml/CGI/, page HTML, sha256 32cbd24e5cbd327d8a6c1e6b327cd62de5ffda541aa1f33c80bdb52012b737f5) :
+
+« Art.198.- La base d’imposition est constituée : · pour les produits importés par la valeur CAF Franco frontière ; »
+
+« Art.199.- Sont à inclure dans la base d’imposition : · les impôts, taxes, droits et prélèvements de toute nature à l’exception de la TVA ; »
+
+« Art.243.- La base de calcul de l’Impôt Spécial sur Certains Produits est constituée : · à l’importation, par la valeur en douane majorée des droits et taxes dus à l’entrée, à l’exception de la TVA ; »

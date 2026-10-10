@@ -734,17 +734,19 @@
       "version": null,
       "artifact_path": "backend/data/crawled/MLI_tariffs.json",
       "artifact_url": null,
-      "sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
+      "sha256": "1e1fab29a09b3eb96c765280cb396b00fe623e778d3a2624a7ec8205e0c22def",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
         "DD",
-        "RS",
-        "PCS",
+        "ISCP",
         "PC-AES",
+        "PCS",
+        "RS",
+        "TAI",
+        "TCI",
         "TVA"
       ],
       "taxes_missing": [
-        "PCC",
         "PUA",
         "TIC"
       ]
