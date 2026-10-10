@@ -1398,6 +1398,18 @@ def _redevance_informatique_cmr(positions):
             )
 
 
+def _sans_redevance_informatique_gnq(positions, compteurs):
+    """Guinée équatoriale : pas de redevance informatique. Le fichier collecté
+    recopie le tarif camerounais (« derived_from »: « CMR ») et sa redevance
+    nationale ; aucune loi équato-guinéenne lue ne l'institue (Ley 10/2017 et
+    Ley de Tasas 2025 ; fiche GNQ_redevance_informatique_2026-10-10.json)."""
+    for position in positions.values():
+        droits = position.get("droits") or []
+        retenus = [d for d in droits if d.get("code") != "RI"]
+        compteurs["assiettes_source"] -= len(droits) - len(retenus)
+        position["droits"] = retenus
+
+
 def _ait_malawi(positions, compteurs):
     """Malawi : Advance Income Tax à l'importation sur la valeur des marchandises
     au point d'entrée (Taxation Act s.102B(1), taux porté de 3 % à 10 % par le
@@ -1849,6 +1861,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ait_malawi(positions, compteurs)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
+    if iso == "GNQ":
+        _sans_redevance_informatique_gnq(positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)

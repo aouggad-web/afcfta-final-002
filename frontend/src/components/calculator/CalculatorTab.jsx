@@ -480,9 +480,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // aussi : l'autre porte y sert la redevance informatique à 0,45 % (la loi
       // de finances 2023 la porte à 1 %), met la TCI dans l'assiette de la TVA
       // (CGI art. 138 : DD et DA seulement) et omet le droit d'accises sur 132
-      // positions. Restent sur l'autre porte, en attente :
+      // positions. La Guinée équatoriale de même : l'autre porte y sert la
+      // redevance informatique recopiée du fichier camerounais, qu'aucune loi
+      // équato-guinéenne n'institue, met la TCI dans l'assiette de la TVA
+      // (loi 4/2004, art. 288 : DD et droit d'accises) et omet le droit
+      // d'accises spécifique sur 13 positions. Restent sur l'autre porte, en
+      // attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB, GNQ ; BEN,
+      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB ; BEN,
       //   GNB, SEN, TGO pour 7 positions ; RWA, TZA, UGA pour le tabac ; MAR,
       //   dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
@@ -494,7 +499,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA',
-        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR',
+        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);

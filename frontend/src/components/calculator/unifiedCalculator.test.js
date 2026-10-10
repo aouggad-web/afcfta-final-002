@@ -54,8 +54,8 @@ describe('tauxDeChangePour', () => {
     }
   });
 
-  it('ne donne pas de taux à la Guinée équatoriale (redevance informatique plafonnée sans texte)', () => {
-    expect(tauxDeChangePour('GNQ', xaf)).toBeUndefined();
+  it('donne le taux à la Guinée équatoriale : la redevance recopiée du Cameroun est retirée de son socle', () => {
+    expect(tauxDeChangePour('GNQ', xaf)).toBe(1 / xaf.rate);
   });
 
   it('donne le taux au Cameroun : sa redevance informatique est de 1 % sans plafond à l\'importation', () => {

@@ -249,9 +249,19 @@ def test_un_minimum_compare_sans_jouer_n_est_pas_dit_converti(client):
 
 
 @besoin_socle
-def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client):
-    """Guinée équatoriale, observatrice : son plafond de 15 000 XAF dépend du
-    taux, la réserve le dit, sans invoquer un accord qui ne la lie pas."""
+def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client, monkeypatch):
+    """Guinée équatoriale, observatrice. Aucune de ses lignes ne dépend
+    aujourd'hui du taux : une ligne plafonnée en XAF est ajoutée pour l'essai.
+    La réserve la nomme, sans invoquer un accord qui ne lie pas le pays."""
+    vraie = socle.position
+
+    def avec_plafond(iso3, code):
+        position, provenance = vraie(iso3, code)
+        essai = {"code": "ESSAI", "famille": "communautaire", "taux": 1.0, "assiette": "CIF",
+                 "plafond": {"montant": 15000.0, "devise": "XAF"}}
+        return {**position, "droits": [*position["droits"], essai]}, provenance
+
+    monkeypatch.setattr(socle, "position", avec_plafond)
     corps = client.post(
         "/calcul",
         json={
@@ -262,7 +272,7 @@ def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client):
             "taux_de_change": 0.0017,
         },
     ).json()
-    assert corps["conversion_monetaire"]["lignes"] == ["RI"]
+    assert corps["conversion_monetaire"]["lignes"] == ["ESSAI"]
     assert "fondement_taux_douanier" not in corps["conversion_monetaire"]
 
 
