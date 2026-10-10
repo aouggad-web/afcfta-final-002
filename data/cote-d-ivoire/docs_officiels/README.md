@@ -43,7 +43,19 @@ Prix CAF de référence et taux fixés par le Conseil des Ministres avant chaque
 | **Control Union** | Prestataire privé mandaté par la Douane (prise en charge) | Selon conventions DGD |
 | **Cautions régimes suspensifs / transit** (entrepôt, admission temp., perfectionnement actif, transit vers Mali/Burkina) | Garantie des droits suspendus | Commission bancaire à la charge de l'opérateur |
 
-## 4. Contenu du dossier
+## 4. Annexe fiscale 2026 & CGI — base légale TVA import et taxes spécifiques
+
+**Loi de finances n°2025-987 du 19/12/2025** (budget 2026) + **Annexe 1 : Annexe fiscale 2026** (entrée en vigueur 05/01/2026) :
+- **TVA à l'import** : base = valeur en douane + droits et taxes (assiette fixée par le CGI, art. 362 et s.) ; taux normal **18 %** ; extension TVA aux opérations d'affacturage (art. 5) ; rationalisation des exonérations (art. 6 : jute/sisal, aliments bétail, intrants et emballages associés)
+- **Tabacs** (art. 26) : base minimum d'imposition des **cigarettes importées d'États hors union douanière relevée de 20 000 à 25 000 F/1000** (400 → 500 F le paquet de 20) ; produits locaux maintenus à 20 000 F/1000
+- **Boissons / taxes spéciales** : droits d'accises et taxes spéciales applicables aux boissons selon le tarif du CGI (art. 369 et s.) — cf. Annexe fiscale 2026 + tableau synoptique DGI
+- **Impôt plateformes de commerce en ligne** sans installation professionnelle en CI (art. 33) : CA ≥ 50 M FCFA, taux 30 % ; retenue à la source art. 92 CGI déductible
+- Affectation de la taxe télécoms : 90 % État, 3 % FAJ, 3 % contrôle trafic télécoms, 2 % ONS, 2 % ANSSI
+- Mesures transmises à la douane via **circulaire n°2026-03** (c_2389)
+
+**CGI ivoirien (édition 2025, à jour au 03/01/2026)** : la DGI le publie uniquement en **lecteur en ligne** : https://cgici.com/ (édition 2026) et https://dgi.cgici.com/ (édition 2025) — pas de PDF téléchargeable officiel. Le tableau synoptique « Impôts et taxes en Côte d'Ivoire » (édition 2025, DGI) sert de document de référence des taux.
+
+## 5. Contenu du dossier
 | Fichier | Description |
 |---|---|
 | CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf | Application du TEC CEDEAO SH 2022 (taux DD, RS, PCC, PCS, PUA) |
@@ -55,5 +67,9 @@ Prix CAF de référence et taux fixés par le Conseil des Ministres avant chaque
 | PWIC-IMPORTER-CI.html | Chaîne complète d'importation (PWIC) |
 | PWIC-SIMULATEUR-TAUX.html | Simulateur officiel : taux en vigueur (PWIC) |
 | GUCE-FAQ.md | FAQ GUCE : RFCV, BIVAC, taxes à la liquidation |
+| ANNEXE-FISCALE-2026-LOI-2025-987.pdf | Annexe fiscale 2026 (LF n°2025-987 du 19/12/2025) — TVA, DA tabacs/boissons, plateformes en ligne |
+| LOI-DE-FINANCES-2026-CI.pdf | Loi de finances n°2025-987 (budget État 2026, 17 350 Mds FCFA) |
+| CIRCULAIRE-2389-AF-2026-DOUANE.pdf | Circulaire DGD n°2026-03 : mise en œuvre des mesures AF 2026 à la douane |
+| IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf | DGI : tableau synoptique de tous les impôts/taxes et taux (édition 2025) |
 
 Liens utiles : www.douanes.ci | guce.gouv.ci | www.pwic.ci | www.gucecotedivoire.ci
