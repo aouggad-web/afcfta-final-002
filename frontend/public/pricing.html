@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Tarifs — ZLECAf Trade Calculator</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -57,7 +58,7 @@ body>*{position:relative;z-index:1}
 
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:62px;border-bottom:1px solid var(--b2);background:var(--nav-bg);backdrop-filter:blur(12px);position:sticky;top:2px;z-index:100}
 .nav-logo{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--head);text-decoration:none;display:flex;align-items:center;gap:10px}
-.nav-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),#8b5e1c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-style:italic}
+.nav-logo-mark{width:30px;height:30px;border-radius:7px;display:block;object-fit:contain}
 .nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:7px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
 .nav-link:hover{color:var(--txt);background:var(--b)}
 .theme-toggle{font-size:16px;line-height:1;padding:6px 10px}
@@ -252,7 +253,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 
 <nav>
   <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">Zf</div>
+    <img class="nav-logo-mark" src="/brand/logo.svg" alt="" width="30" height="30" />
     ZLECAf
   </a>
   <div style="display:flex;gap:4px;align-items:center">

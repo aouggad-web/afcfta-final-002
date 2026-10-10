@@ -60,6 +60,9 @@ const texts = {
   },
 };
 
+// Onglets atteignables par « ?tab= » (raccourcis du manifest PWA).
+const SHORTCUT_TABS = ['dashboard', 'calculator', 'reports'];
+
 function App() {
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
@@ -68,9 +71,22 @@ function App() {
   // revient sur SON module au lieu d'être renvoyé au dashboard. sessionStorage
   // (pas localStorage) : une nouvelle visite repart du dashboard, un simple
   // rechargement conserve la place.
-  const [activeTab, setActiveTab] = useState(
-    () => sessionStorage.getItem('zlecaf_active_tab') || 'dashboard'
-  );
+  const [activeTab, setActiveTab] = useState(() => {
+    // Raccourcis de l'application installée (manifest.json « shortcuts ») :
+    // « /?tab=calculator » ouvre directement le module demandé.
+    const params = new URLSearchParams(window.location.search);
+    const demande = params.get('tab');
+    if (demande && SHORTCUT_TABS.includes(demande)) {
+      // Lu une fois : un simple rechargement retrouve ensuite l'onglet de la session.
+      params.delete('tab');
+      const reste = params.toString();
+      window.history.replaceState(
+        null, '', window.location.pathname + (reste ? `?${reste}` : '') + window.location.hash
+      );
+      return demande;
+    }
+    return sessionStorage.getItem('zlecaf_active_tab') || 'dashboard';
+  });
   useEffect(() => {
     sessionStorage.setItem('zlecaf_active_tab', activeTab);
   }, [activeTab]);

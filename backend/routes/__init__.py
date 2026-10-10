@@ -91,6 +91,7 @@ from .statistics import router as statistics_router
 from .strategic_intelligence import router as strategic_router
 from .substitution import router as substitution_router
 from .tariffs import router as tariffs_router
+from .zlecaf_network import router as zlecaf_network_router
 
 # Load Rules of Origin data from the authentic Appendix IV PSR JSON dataset
 try:
@@ -451,6 +452,11 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
     api_router.include_router(
         statistics_router,
+        tags=["Statistics"],
+        dependencies=_auth + _stats_entitlement,
+    )
+    api_router.include_router(
+        zlecaf_network_router,
         tags=["Statistics"],
         dependencies=_auth + _stats_entitlement,
     )

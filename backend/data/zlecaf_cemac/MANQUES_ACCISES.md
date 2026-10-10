@@ -50,7 +50,7 @@ le corrigerait.
 
 | Manque | Effet | Correction |
 |---|---|---|
-| Les taux du CGI 2023 sont des minimums ; la loi de finances fixe les taux (art. 292) ; lois de finances 2024 à 2026 non lues | Taux possiblement plus élevés | Lire les lois de finances (finances.gouv.cf) |
+| Les taux du CGI 2023 sont des minimums ; la loi de finances fixe les taux (art. 292). Lois de finances 2024, 2025, 2026 et rectificatives 2024 et 2025 lues : aucune ne modifie les art. 289 bis à 293 | — | Fait (fiche CAF_droit_accises_2026-10-05.json) |
 | Droit spécifique ajouté au taux ad valorem pour les bières, vins, spiritueux, cigares et cigarettes (art. 293) | Accise portée sans taux : PARTIEL | Saisie du volume ou du nombre dans le calculateur |
 | Véhicules 87.02, 87.03, 87.04 : taux selon l'âge (0 à 15 ans, plus de 15 ans) et état neuf ou d'occasion | Accise portée sans taux : PARTIEL | Champ « âge du véhicule » (commun) |
 | Eaux 22.01 : eau minérale exclue, eaux gazéifiées soumises, même position | Porté sans taux | Question à l'utilisateur |
