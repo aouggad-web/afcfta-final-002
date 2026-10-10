@@ -1548,11 +1548,30 @@ def _prelevements_cote_divoire(positions, compteurs):
     valeur en douane majorée des droits et taxes perçus à l'entrée (directive
     n° 02/98/CM/UEMOA, art. 27). Le droit unique de sortie, dû à l'exportation,
     n'entre pas dans le calcul d'une importation."""
-    entree = "DD+RS+PCS+PCC+PUA"
+    entree = "DD+RS+PCS+PCC+PUA+TAI"
     speciales = ("TSBPT", "TAB", "TCB", "TSM")
+    omc = "Examen des politiques commerciales de la Côte d'Ivoire, OMC WT/TPR/S/362 (2017), § 3.24 et 3.26"
     for position in positions.values():
         droits = []
         for d in position.get("droits") or []:
+            if d.get("code") == "TAI":
+                if not d.get("assiette"):
+                    compteurs["assiettes_indisponibles"] -= 1
+                    compteurs["assiettes_table"] += 1
+                d["libelle"] = "Taxe d'ajustement à l'importation"
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = f"Taux du TEC « plus une taxe d'ajustement à l'importation (TAI) de 10 % » ({omc})."
+            if d.get("code") == "TPQ" and d.get("taux") is not None:
+                d["libelle"] = "Taxe de péréquation sur le sucre"
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+                d["note"] = (
+                    "« égale à la différence entre la valeur c.a.f. et le prix de déclenchement de la TCI, ce "
+                    f"dernier formant la base imposable pour les autres droits et taxes » ({omc}) : dépend de la "
+                    "valeur déclarée et du prix de déclenchement en vigueur."
+                )
             if d.get("code") == "DUS":
                 compteurs["assiettes_source" if d.get("assiette") else "assiettes_indisponibles"] -= 1
                 if d.get("taux") is None:

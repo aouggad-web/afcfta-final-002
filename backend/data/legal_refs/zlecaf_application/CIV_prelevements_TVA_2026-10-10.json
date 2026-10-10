@@ -21,12 +21,13 @@
     "Le CGI ivoirien n'est pas publié en PDF par la DGI (lecteur en ligne seulement) : l'assiette de la TVA à l'importation suit la directive UEMOA n° 02/98 (art. 27), que le CGI transpose.",
     "Assiettes écrites en codes nommés : les codes du tarif sans légende n'entrent pas dans la base de la TVA tant que leur nature n'est pas établie.",
     "Le droit unique de sortie (DUS) est dû à l'exportation : il n'entre pas dans le calcul d'une importation.",
-    "Écarts relevés entre la collecte de février 2026 et le tarif officiel : 429 positions SH 2022 absentes de la collecte, 177 positions de la collecte disparues du tarif, 68 droits de douane différents (viandes 35 % → 20 %, entre autres), 793 TVA différentes ou absentes."
+    "Écarts relevés entre la collecte de février 2026 et le tarif officiel : 429 positions SH 2022 absentes de la collecte, 177 positions de la collecte disparues du tarif, 68 droits de douane différents (viandes 35 % → 20 %, entre autres), 793 TVA différentes ou absentes.",
+    "TAI : « taxe d'ajustement à l'importation (TAI) de 10 % » ajoutée au taux du TEC sur certaines lignes (OMC, WT/TPR/S/362, § 3.24) : liquidée sur la valeur en douane, comme le droit de douane, et comprise dans les droits d'entrée. TPQ : taxe de péréquation sur le sucre, « égale à la différence entre la valeur c.a.f. et le prix de déclenchement de la TCI » (§ 3.26) : portée sans taux."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "PCS et PCC ne s'appliquent qu'aux marchandises originaires de pays tiers à l'UEMOA et à la CEDEAO : le calculateur les liquide comme pour un pays tiers.",
     "Acompte d'impôt sur le revenu du secteur informel (AIRSI, 5 %) : selon le régime d'imposition de l'importateur, non liquidé.",
-    "Codes du tarif sans légende dans le document — TUB, TUF, TUE (produits pétroliers), PSS, TAI, TBG (bois), TCT (caoutchouc), TFS et TSS (tabacs), TPQ (sucres), PSV (viandes, FCFA/kg), TMP (emballages, FCFA/kg), TCI (taxe conjoncturelle, selon un prix de déclenchement) : taux portés, assiette non établie, calcul partiel sur ces positions.",
+    "Codes du tarif sans légende dans le document — TUB, TUF, TUE (produits pétroliers, tarifs probablement par litre), PSS (fibres de sisal et de jute), TBG (bois en grumes), TCT (caoutchouc), TFS et TSS (tabacs), PSV (viandes et volailles : vraisemblablement le prélèvement compensatoire décrit par l'OMC, WT/TPR/S/362 § 3.26), TMP (emballages, FCFA/kg), TCI (selon un prix de déclenchement) : taux portés, assiette non établie, calcul partiel sur ces positions.",
     "Base minimale des cigarettes (25 000 F les 1 000 hors union douanière, annexe fiscale 2026 art. 26) : non appliquée, le nombre de cigarettes n'étant pas dans la position."
   ],
   "documents_archives": [
@@ -45,6 +46,10 @@
     {
       "document_non_archive": "DGD, TEC CEDEAO 2022 version SYDAM World enrichi de la taxation nationale, mise à jour du 27/03/2026 (566 p.), douanes.ci ; versé sur la PR #620 (data/cote-d-ivoire/docs_officiels/TEC-CEDEAO-ENRICHI-TAXATION-NATIONALE-27-03-2026.pdf)",
       "pdf_sha256": "420576635c74ce94ae3c8e09e393704a215f02c74e4d304cb2b0f90184a4187c"
+    },
+    {
+      "document_non_archive": "OMC, Examen des politiques commerciales, Côte d'Ivoire, WT/TPR/S/362 (2017), annexe 3 : https://www.wto.org/french/tratop_f/tpr_f/s362-03_f.pdf",
+      "pdf_sha256": "b6b4770201feb63a8b841aeb114f42d1ad0bc7f794fe943d793b92ef9a2d920e"
     }
   ]
 }

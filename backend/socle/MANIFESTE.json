@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-10T18:19:34.840821+00:00",
+  "construit_le": "2026-10-10T18:44:47.808350+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -225,31 +225,32 @@
       "fichier": "CIV.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CIV_tariffs.json",
-      "source_sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
-      "socle_sha256": "e653877843e79541adc2be7bfba9b577cbe1e0da990bf9be1c0a0078d11dec48",
-      "collecte": "2026-02-19T22:01:52.572505",
+      "source_sha256": "5126005ea179b89edb079dbf21461b67bec70234205447f26df61da17eacef2a",
+      "socle_sha256": "7b8bdeb1c11e66eaffaea8775b86d06d5ca3f901848cded20244b0e7dcf605ff",
+      "collecte": "2026-10-10T15:57:51.291346+00:00",
       "etat": "PARTIEL",
       "familles": [
         "accise",
         "autre",
+        "communautaire",
         "droit",
         "redevance",
         "tva"
       ],
       "compteurs": {
-        "positions": 6129,
-        "droits": 11874,
-        "droits_liquidables": 11722,
-        "positions_liquidables": 5977,
+        "positions": 6381,
+        "droits": 38555,
+        "droits_liquidables": 38337,
+        "positions_liquidables": 6192,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 60,
-        "assiettes_source": 11722,
+        "taux_indisponibles": 105,
+        "assiettes_source": 38330,
         "assiettes_fichier": 0,
-        "assiettes_table": 0,
-        "assiettes_indisponibles": 152,
+        "assiettes_table": 7,
+        "assiettes_indisponibles": 218,
         "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
@@ -2033,8 +2034,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 368379,
-    "droits": 1134575,
-    "droits_liquidables": 1108660
+    "positions": 368631,
+    "droits": 1161256,
+    "droits_liquidables": 1135275
   }
 }

@@ -69,3 +69,10 @@ def test_viande_au_taux_du_tarif_officiel(positions):
     """0201.10 : DD 20 % et TVA 9 % au tarif de 2026 (35 % et sans TVA au portail de février)."""
     etat, lignes = _calcul(positions["0201100000"])
     assert lignes["DD"]["taux_pct"] == 20.0 and lignes["TVA"]["taux_pct"] == 9.0
+
+
+def test_taxe_d_ajustement_dans_les_droits_d_entree(positions):
+    """OMC WT/TPR/S/362 § 3.24 : TAI 10 % sur la valeur, comprise dans la base de la TVA."""
+    lignes = _calcul(positions["5310100000"])[1]
+    assert lignes["TAI"]["montant"] == 100.0
+    assert lignes["TVA"]["base"] == 1225.0
