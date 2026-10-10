@@ -1,12 +1,13 @@
 {
-  "_objet": "Droit d'accises à l'importation au Cameroun : positions et taux, d'après le Code général des impôts (édition 2025), annexe II du Titre II et article 142. Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres). « taux » null : le taux dépend d'une condition que la position ne dit pas — le droit est porté, non liquidé.",
+  "_objet": "Droit d'accises à l'importation au Cameroun : positions et taux, d'après le Code général des impôts (édition officielle de la DGI mise à jour au 1er janvier 2026, loi de finances 2026 incluse), annexe II du Titre II et article 142. Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres). « taux » null : le taux dépend d'une condition que la position ne dit pas — le droit est porté, non liquidé.",
   "_fiche": "backend/data/legal_refs/zlecaf_application/CMR_droit_accises_2026-10-05.json",
-  "source": "Code général des impôts du Cameroun (édition 2025), annexe II et art. 142",
+  "source": "Code général des impôts du Cameroun (édition officielle DGI mise à jour au 1er janvier 2026), annexe II et art. 142",
   "assiette": "CIF+DD",
   "assiette_reference": "CGI art. 138 (2) : « La base imposable au droit d'accises en ce qui concerne les importations, est établie en ajoutant à la valeur imposable […] le montant des droits de douane. »",
   "tva_assiette": "CIF+DD+DA",
   "tva_assiette_reference": "CGI art. 138 (1) : « La base imposable, en ce qui concerne les importations, est obtenue en ajoutant à la valeur imposable […] le montant du droit de douane et du Droit d'accises. »",
   "regles": [
+    {"prefixes": ["73110090"], "taux": null, "motif": "Bouteilles à gaz domestique vides (taux moyen, 12,5 %, ajoutées par la loi de finances 2026) : 7311.00.90 couvre aussi d'autres récipients pour gaz comprimés non industriels, non visés ; la position ne dit pas lesquels.", "reference": "art. 142 (6) a) et annexe II (CGI édition 2026)"},
     {"prefixes": ["16022010", "16043000", "03021200", "03021900", "03031900", "03032200", "03054100", "030390", "030520"], "taux": 25.0, "reference": "annexe II (foie gras, caviar, saumons, foies œufs et laitances) ; art. 142 (5), taux général"},
     {"prefixes": ["7101", "7102", "7103", "7104", "7105", "7106", "7107", "7108", "7109", "7110", "7111", "7112", "7113", "7114", "7115", "7116", "7117"], "taux": 25.0, "reference": "annexe II (perles, pierres et métaux précieux, bijouterie, 7101 à 7117) ; art. 142 (5)"},
     {"prefixes": ["283711", "283719", "283720", "3602", "3603"], "taux": 25.0, "reference": "annexe II (cyanure, substances explosives, détonateurs) ; art. 142 (5)"},
