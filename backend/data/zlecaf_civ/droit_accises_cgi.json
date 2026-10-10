@@ -1,0 +1,16 @@
+{
+  "_objet": "Taxes spéciales du CGI art. 418 à l'importation en Côte d'Ivoire, hors boissons (déjà portées par le tarif collecté sous le code TSBPT) : positions et taux d'après le tableau synoptique de la DGI (2025) et l'annexe fiscale 2026.",
+  "_fiche": "backend/data/legal_refs/zlecaf_application/CIV_prelevements_TVA_2026-10-10.json",
+  "source": "Code général des impôts de Côte d'Ivoire, art. 418 (tableau synoptique DGI 2025)",
+  "assiette": "CIF+DD+RS+PCS+PCC+PUA",
+  "assiette_reference": "CGI art. 418 : « assises, à l'importation, sur la valeur en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA ».",
+  "tva_assiette": "CIF+DD+RS+PCS+PCC+PUA+TSBPT+DA",
+  "tva_assiette_reference": "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même ».",
+  "regles": [
+    {"prefixes": ["240220"], "taux": null, "motif": "Cigarettes : 57 % du prix de vente hors taxes, sur une base qui ne peut être inférieure à 25 000 francs les 1 000 cigarettes hors union douanière (annexe fiscale 2026, art. 26 ; circulaire DGD n° 2389) : le nombre de cigarettes n'est pas dans la position.", "reference": "CGI art. 418 (tableau synoptique DGI 2025) ; annexe fiscale 2026 art. 26"},
+    {"prefixes": ["2402", "2403", "961400"], "taux": 57.0, "reference": "CGI art. 418 (tableau synoptique DGI 2025) (cigares, cigarillos, tabac à fumer, autres tabacs et succédanés, pipes et leurs parties), 57 %"},
+    {"prefixes": ["3303", "3304"], "taux": 10.0, "reference": "CGI art. 418 (tableau synoptique DGI 2025) (produits de parfumerie et cosmétiques), 10 %", "reserve": "15 % pour les produits de beauté et cosmétiques contenant de l'hydroquinone : la composition n'est pas dans la position."},
+    {"prefixes": ["251511", "251512", "680221"], "taux": 10.0, "reference": "CGI art. 418 (tableau synoptique DGI 2025) (marbres), 10 %"},
+    {"prefixes": ["8703"], "taux": null, "motif": "Véhicules de tourisme d'une puissance de 13 chevaux ou plus : 10 % ; la puissance fiscale n'est pas dans la position.", "reference": "CGI art. 418 (tableau synoptique DGI 2025)"}
+  ]
+}

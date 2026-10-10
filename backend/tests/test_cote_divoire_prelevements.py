@@ -44,3 +44,13 @@ def test_toutes_les_positions_taxees_portent_les_quatre_prelevements(positions):
         codes = {d["code"] for d in p["droits"]}
         if codes:
             assert {"RS", "PCS", "PCC", "PUA"} <= codes
+
+
+def test_taxes_speciales_art_418(positions):
+    """Cosmétiques et cigares : 10 % et 57 % sur valeur + droits d'entrée ;
+    cigarettes et voitures sans taux (base minimale, puissance fiscale)."""
+    assert _calcul(positions["3304990000"])[1]["DA"]["montant"] == 122.5
+    assert _calcul(positions["2402100000"])[1]["DA"]["taux_pct"] == 57.0
+    for code in ("2402200000", "8703231100"):
+        etat, lignes = _calcul(positions[code])
+        assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != "COMPLET"

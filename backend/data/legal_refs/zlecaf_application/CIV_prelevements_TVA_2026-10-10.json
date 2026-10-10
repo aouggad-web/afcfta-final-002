@@ -10,7 +10,7 @@
     "institution": "Direction générale des douanes et Direction générale des impôts de Côte d'Ivoire ; UEMOA"
   },
   "regle": {
-    "valeur": "Prélèvements d'entrée ajoutés au droit de douane sur toutes les positions : RS 1 %, PCS 0,8 %, PCC 0,5 %, PUA 0,2 % (valeur en douane). TVA : valeur en douane + DD + RS + PCS + PCC + PUA + taxe spéciale sur les boissons. Taxe spéciale sur les boissons : valeur en douane + DD + RS + PCS + PCC + PUA.",
+    "valeur": "Prélèvements d'entrée ajoutés au droit de douane sur toutes les positions : RS 1 %, PCS 0,8 %, PCC 0,5 %, PUA 0,2 % (valeur en douane). TVA : valeur en douane + DD + RS + PCS + PCC + PUA + taxe spéciale sur les boissons. Taxe spéciale sur les boissons : valeur en douane + DD + RS + PCS + PCC + PUA. Taxes spéciales du CGI art. 418 hors boissons (backend/data/zlecaf_civ/droit_accises_cgi.json) : tabacs 57 % (cigarettes sans taux, base minimale par 1 000 cigarettes), parfums et cosmétiques 10 % (15 % avec hydroquinone, non distingué), marbres 10 %, véhicules de tourisme de 13 CV et plus 10 % (puissance absente de la position : sans taux).",
     "verbatim": "les taux de la Redevance Statistique (RS) et du Prélèvement Communautaire de la CEDEAO (PCC), inscrits au TEC CEDEAO, restent fixés respectivement à 1% et 0,5% ; le Prélèvement Communautaire de Solidarité de l'UEMOA (PCS) et le Prélèvement de l'Union Africaine (PUA) demeurent en vigueur aux taux respectifs de 0,8% et 0,2%.",
     "reference": "Circulaire DGD n° 2258/MBPE/DGD ; CGI art. 418 (tableau synoptique DGI 2025) ; directive n° 02/98/CM/UEMOA art. 27 a)",
     "portee": "scripts/build_socle._prelevements_cote_divoire, au seul socle CIV : le tarif collecté sur guce.gouv.ci ne portait que le droit de douane, la TVA (sur la valeur CAF seule) et quelques taxes spéciales.",
@@ -24,8 +24,8 @@
   "ce_que_cela_ne_tranche_pas": [
     "PCS et PCC ne s'appliquent qu'aux marchandises originaires de pays tiers à l'UEMOA et à la CEDEAO : le calculateur les liquide comme pour un pays tiers.",
     "Acompte d'impôt sur le revenu du secteur informel (AIRSI, 5 %) : selon le régime d'imposition de l'importateur, non liquidé.",
-    "Droits d'accises et taxes spéciales du CGI art. 418 (tabacs 57 %, véhicules de 13 CV et plus, parfums et cosmétiques 10 %, hydroquinone 15 %, boissons selon la nature) : seules les taxes déjà portées par le tarif collecté sont servies ; leur liste complète reste à intégrer.",
-    "Taxes nationales perçues au cordon douanier (tarif enrichi du 27 mars 2026) : non intégrées."
+    "Taxes nationales perçues au cordon douanier (tarif enrichi du 27 mars 2026) : non intégrées.",
+    "Véhicules de tourisme (87.03) : la taxe de 10 % ne vise que les 13 CV et plus ; la puissance fiscale n'étant pas dans la position, la taxe est portée sans taux et le calcul reste partiel."
   ],
   "documents_archives": [
     {

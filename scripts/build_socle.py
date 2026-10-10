@@ -1183,6 +1183,7 @@ ACCISES_PAYS = {
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
     "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
+    "CIV": os.path.join(REPO, "backend", "data", "zlecaf_civ", "droit_accises_cgi.json"),
 }
 
 
