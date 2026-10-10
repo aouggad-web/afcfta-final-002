@@ -734,7 +734,7 @@
       "version": null,
       "artifact_path": "backend/data/crawled/MLI_tariffs.json",
       "artifact_url": null,
-      "sha256": "1e1fab29a09b3eb96c765280cb396b00fe623e778d3a2624a7ec8205e0c22def",
+      "sha256": "268464af5f0940f9b268237a5da988d1d79cce2b6dbf07ca2f8108be574a1403",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
         "DD",

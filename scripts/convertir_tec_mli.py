@@ -45,6 +45,10 @@ for code, valeurs in sorted(tec.items()):
         detail.append({"tax_code": canon, "tax_name": nom, "rate": taux, "rate_type": "ad_valorem", "base": base})
     if not detail:
         continue
+    if "TVA" not in valeurs:
+        # Case de TVA vide : taux non renseigné, pas TVA non due.
+        canon, nom, base = NOMS["TVA"]
+        detail.append({"tax_code": canon, "tax_name": nom, "rate": None, "rate_type": "ad_valorem", "base": base})
     positions.append({
         "code": f"{code[:4]}.{code[4:6]}.{code[6:8]}.{code[8:]}", "code_clean": code, "code_length": 10,
         "designation": valeurs.get("_libelle", ""), "chapter": code[:2], "hs2": code[:2], "hs4": code[:4], "hs6": code[:6], "unit": "QA",

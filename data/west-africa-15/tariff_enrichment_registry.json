@@ -242,7 +242,7 @@
     },
     "MLI": {
       "region": "MLI_NATIONAL",
-      "national_extension_status": "NOT_AVAILABLE",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "PARTIAL",
       "other_taxes_status": "UNVERIFIED",
       "calculation_order_status": "PARTIAL",

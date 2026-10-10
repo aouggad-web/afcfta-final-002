@@ -57,3 +57,9 @@ def test_tci_sans_assiette_rend_la_tva_indisponible(positions):
 def test_tva_du_tarif_officiel(positions):
     taux = {d["code"]: d["taux"] for d in positions["0101210000"]["droits"]}
     assert taux["PCS"] == 0.8 and "PCC" not in taux
+
+
+def test_tva_vide_du_tarif_reste_indisponible(positions):
+    """9508.21 : case de TVA vide au tarif ; taux non renseigné, pas TVA non due."""
+    etat, lignes = _calcul(positions["9508210000"])
+    assert lignes["TVA"]["taux_pct"] is None and etat != "COMPLET"

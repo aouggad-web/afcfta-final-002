@@ -8,7 +8,7 @@
   "nomenclature": "TEC CEDEAO (SH 2022), édition du Mali, structure fiscale nationale",
   "data_type": "national",
   "currency": "XOF (FCFA)",
-  "extracted_at": "2026-10-10T22:29:29.510996+00:00",
+  "extracted_at": "2026-10-10T22:57:09.639310+00:00",
   "total_positions": 6382,
   "source_document": {
     "titre": "Le Tarif extérieur commun de la CEDEAO — édition du Mali (colonnes DD, RS, PC, PCS, ISCP, TVA, TAI, TCI, TCP, AUTRES), 28/12/2023",
@@ -333403,7 +333403,8 @@
         "DD": 10.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -333433,6 +333434,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -361920,7 +361928,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -361950,6 +361959,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -361969,7 +361985,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -361999,6 +362016,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362018,7 +362042,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362048,6 +362073,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362067,7 +362099,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362097,6 +362130,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362116,7 +362156,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362146,6 +362187,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362165,7 +362213,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362195,6 +362244,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362214,7 +362270,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362244,6 +362301,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362263,7 +362327,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362293,6 +362358,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -362312,7 +362384,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -362342,6 +362415,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -365561,7 +365641,8 @@
         "DD": 20.0,
         "RS": 1.0,
         "PC-AES": 0.5,
-        "PCS": 0.8
+        "PCS": 0.8,
+        "TVA": null
       },
       "taxes_detail": [
         {
@@ -365591,6 +365672,13 @@
           "rate": 0.8,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         }
       ],
       "source": "douanes.gouv.ml",
@@ -366567,10 +366655,10 @@
     }
   ],
   "_integrity_seal": {
-    "content_hash": "c27b1aa83dabb4f177aa61dae76b3475879359cb0e2ec382cdc3d8ab249a48b0",
+    "content_hash": "43007283c18b944f3d007c208e6a7fe06d9f8f08830260af8e166a8bf76c12a8",
     "source_url": "https://douanes.gouv.ml/",
     "source_hash": null,
-    "crawled_at": "2026-10-10T22:29:30.018046+00:00",
+    "crawled_at": "2026-10-10T22:57:10.453892+00:00",
     "verified": true,
     "algorithm": "SHA-256"
   }
