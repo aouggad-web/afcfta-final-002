@@ -70,7 +70,7 @@ def test_cosmetique_et_tissu_taxes_cereale_non(positions):
 def test_positions_mixtes_sans_taux(positions):
     """Maté (2101.20), soupes et bouillons (2104.10), pipes : sans taux ;
     carburéacteur hors des quatre carburants de l'art. 443 : pas de taxe."""
-    for code in ("2101200000", "2104101000", "9614000000", "2710124000", "2202100000", "1517909000", "0401400000"):
+    for code in ("2101200000", "2104101000", "9614000000", "2710124000", "2202100000", "1517909000", "0401400000", "1506000000", "1517100000", "5801100000"):
         etat, lignes = _calcul(positions[code])
         assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     assert "DA" not in _calcul(positions["2710191100"])[1]
