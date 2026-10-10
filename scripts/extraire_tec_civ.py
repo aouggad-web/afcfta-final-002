@@ -8,6 +8,9 @@ signalées « _ambigu ») et à leur position tarifaire par le quadrillage du
 tableau (lignes horizontales du PDF).
 
     python3 scripts/extraire_tec_civ.py <tarif.pdf> <sortie.json>
+
+La sortie est une table intermédiaire ; scripts/convertir_tec_civ.py en tire
+l'artefact canonique backend/data/crawled/CIV_tariffs.json et le scelle.
 """
 import pymupdf, sys, re, json
 d = pymupdf.open(sys.argv[1])

@@ -1548,9 +1548,19 @@ def _prelevements_cote_divoire(positions, compteurs):
     valeur en douane majorée des droits et taxes perçus à l'entrée (directive
     n° 02/98/CM/UEMOA, art. 27). Le droit unique de sortie, dû à l'exportation,
     n'entre pas dans le calcul d'une importation."""
-    entree = "DD+RS+PCS+PCC+PUA+TAI"
+    entree = "DD+RS+PCS+PCC+PUA+TAI+TCI"
     speciales = ("TSBPT", "TAB", "TCB", "TSM")
     omc = "Examen des politiques commerciales de la Côte d'Ivoire, OMC WT/TPR/S/362 (2017), § 3.24 et 3.26"
+
+    def vers_table(d):
+        # Une assiette réécrite par la règle du pays quitte le compteur de son origine.
+        if d.get("assiette_origine") == "source":
+            compteurs["assiettes_source"] -= 1
+            compteurs["assiettes_table"] += 1
+        elif d.get("assiette_origine") == "source_fichier":
+            compteurs["assiettes_fichier"] -= 1
+            compteurs["assiettes_table"] += 1
+
     for position in positions.values():
         droits = []
         for d in position.get("droits") or []:
@@ -1558,11 +1568,16 @@ def _prelevements_cote_divoire(positions, compteurs):
                 if not d.get("assiette"):
                     compteurs["assiettes_indisponibles"] -= 1
                     compteurs["assiettes_table"] += 1
+                else:
+                    vers_table(d)
                 d["libelle"] = "Taxe d'ajustement à l'importation"
                 d["famille"] = famille("DD")
                 d["assiette"] = "CIF"
                 d["assiette_origine"] = "regle_de_pays"
-                d["note"] = f"Taux du TEC « plus une taxe d'ajustement à l'importation (TAI) de 10 % » ({omc})."
+                d["note"] = (
+                    "Taxe d'ajustement à l'importation, perçue sur la valeur en sus du TEC "
+                    f"({omc}) ; taux publié au tarif officiel de la DGD."
+                )
             if d.get("code") == "TPQ" and d.get("taux") is not None:
                 d["libelle"] = "Taxe de péréquation sur le sucre"
                 d["taux"] = None
@@ -1578,6 +1593,7 @@ def _prelevements_cote_divoire(positions, compteurs):
                     compteurs["taux_indisponibles"] -= 1
                 continue
             if d.get("code") in speciales and d.get("assiette"):
+                vers_table(d)
                 d["assiette"] = "CIF+" + entree
                 d["assiette_origine"] = "regle_de_pays"
                 d["note"] = (
@@ -1588,11 +1604,27 @@ def _prelevements_cote_divoire(positions, compteurs):
         presentes = [d["code"] for d in droits if d.get("code") in speciales]
         for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
+                vers_table(d)
                 d["assiette"] = "+".join(["CIF", entree] + presentes)
                 d["assiette_origine"] = "regle_de_pays"
                 d["note"] = (
                     "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
                     "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
+                )
+        if any(d.get("code") == "TPQ" for d in droits):
+            # Sucre : le prix de déclenchement de la TCI, non publié, forme la base
+            # des autres droits ; les liquider sur la valeur c.a.f. sous-évaluerait.
+            for d in droits:
+                if d.get("code") == "TPQ" or not d.get("assiette"):
+                    continue
+                vers_table(d)
+                compteurs["assiettes_table"] -= 1
+                compteurs["assiettes_indisponibles"] += 1
+                d["assiette"] = None
+                d["assiette_origine"] = None
+                d["note"] = (
+                    "Base imposable : prix de déclenchement de la TCI, « ce dernier formant la base imposable "
+                    f"pour les autres droits et taxes » ({omc}) ; prix non publié."
                 )
         position["droits"] = droits
 

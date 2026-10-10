@@ -72,7 +72,32 @@ def test_viande_au_taux_du_tarif_officiel(positions):
 
 
 def test_taxe_d_ajustement_dans_les_droits_d_entree(positions):
-    """OMC WT/TPR/S/362 § 3.24 : TAI 10 % sur la valeur, comprise dans la base de la TVA."""
-    lignes = _calcul(positions["5310100000"])[1]
+    """OMC WT/TPR/S/362 § 3.24 : TAI 10 % sur la valeur, comprise dans la base de la TVA.
+    6402.19.10 : 1 000 + DD 100 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TAI 100."""
+    lignes = _calcul(positions["6402191000"])[1]
     assert lignes["TAI"]["montant"] == 100.0
     assert lignes["TVA"]["base"] == 1225.0
+
+
+def test_tci_sans_assiette_rend_la_tva_indisponible(positions):
+    """5310.10 : la TCI, droit d'entrée, n'a pas d'assiette établie ; la TVA ne se
+    calcule pas comme si elle valait zéro."""
+    etat, lignes = _calcul(positions["5310100000"])
+    assert lignes["TAI"]["montant"] == 100.0
+    assert lignes["TCI"]["montant"] is None
+    assert lignes["TVA"]["montant"] is None and etat != "COMPLET"
+
+
+def test_sucre_sans_base_tant_que_le_prix_de_declenchement_est_inconnu(positions):
+    """OMC § 3.26 : le prix de déclenchement de la TCI forme la base des autres droits."""
+    etat, lignes = _calcul(positions["1701120000"])
+    assert all(l["montant"] is None for l in lignes.values()) and etat != "COMPLET"
+
+
+def test_compteurs_d_assiette_du_manifeste(positions):
+    with open(os.path.join(os.path.dirname(SOCLE), "MANIFESTE.json"), encoding="utf-8") as f:
+        compteurs = json.load(f)["pays"]["CIV"]["compteurs"]
+    origines = [d.get("assiette_origine") if d.get("assiette") else None for p in positions.values() for d in p["droits"]]
+    assert compteurs["assiettes_source"] == origines.count("source")
+    assert compteurs["assiettes_table"] == origines.count("regle_de_pays")
+    assert compteurs["assiettes_indisponibles"] == origines.count(None)
