@@ -1,0 +1,25 @@
+{
+  "_objet": "Taxes spécifiques (droit d'accises) à l'importation au Sénégal : positions et taux, d'après le Code général des impôts (édition DGID 2025, à jour de la loi n° 2025-17 du 27 septembre 2025), art. 408 à 444 quinquies. « taux » null : le taux dépend d'une condition que la position ne dit pas, ou la LF 2026 l'a modifié sans que son texte promulgué ait été lu.",
+  "_fiche": "backend/data/legal_refs/zlecaf_application/SEN_taxes_specifiques_2026-10-10.json",
+  "source": "Code général des impôts du Sénégal (édition DGID 2025), art. 408 à 444 quinquies",
+  "assiette": "CIF+DD+RS",
+  "assiette_reference": "FAQ DGD 2026 « Comment dédouaner un véhicule ? » : droit d'accises « (base + DD + RS) × taux ». L'art. 408 du CGI vise « la valeur en douane majorée de tous les droits et taxes liquidés par la douane » : la liquidation de la DGD est suivie.",
+  "tva_assiette": "CIF+DD+RS+DA",
+  "tva_assiette_reference": "CGI : « la valeur en douane augmentée des droits et taxes de toute nature liquidés, au profit du budget de l'Etat, par l'Administration des douanes, à l'exclusion des droits d'enregistrement et de la taxe sur la valeur ajoutée » ; FAQ DGD 2026 : TVA « (Base + DD + RS + DA) × taux ». Les prélèvements communautaires (PCS, PCC), le COSEC et le PROMAD n'en font pas partie.",
+  "regles": [
+    {"prefixes": ["2203", "2204", "2205", "2206", "2207", "2208"], "taux": null, "motif": "Alcools et liquides alcoolisés : 50 % au CGI 2025 (art. 413 a), LF 2026 (loi n° 2025-19) : texte promulgué non lu ; le rapport du projet annonce 65 % à l'importation ; s'y ajoute une taxe additionnelle par litre d'alcool selon le degré, non calculable depuis la position.", "reference": "CGI 2025 art. 411 et 413 a)"},
+    {"prefixes": ["2402", "2403", "2401"], "taux": null, "motif": "Tabacs : 70 % au CGI 2025 (art. 434, LFI 2025), LF 2026 (loi n° 2025-19) : texte promulgué non lu ; le rapport du projet annonce 100 % ; base minimale de 280 FCFA par paquet de 20 cigarettes (arrêté n° 019479 du 17 août 2018) ; tabacs en vrac ou en manoques destinés à la fabrication exonérés (art. 433).", "reference": "CGI 2025 art. 408, 432 à 434"},
+    {"prefixes": ["220210", "2009"], "taux": 5.0, "reference": "CGI 2025 art. 411 (limonades, sodas et autres boissons gazéifiées sans alcool ; jus de fruits ou de légumes) et 413 b), 5 %"},
+    {"prefixes": ["2201", "2202"], "taux": null, "motif": "Eaux et autres boissons non alcoolisées : seules les eaux gazeuses, les boissons gazéifiées et les jus sont taxés (5 %, art. 411 et 413 b)) ; l'eau plate en est exclue, et ces positions mêlent les deux.", "reference": "CGI 2025 art. 411 et 413 b)"},
+    {"prefixes": ["0901", "210111", "210112"], "taux": 5.0, "reference": "CGI 2025 art. 425 et 426 (café, extraits et essences de café), 5 %"},
+    {"prefixes": ["0902", "210120"], "taux": 5.0, "reference": "CGI 2025 art. 427 et 428 (thé, extraits et essences de thé), 5 %"},
+    {"prefixes": ["0405"], "taux": 15.0, "reference": "CGI 2025 art. 429 et 431 (beurres et matières grasses du lait), 15 %"},
+    {"prefixes": ["1517", "1601"], "taux": 10.0, "reference": "CGI 2025 art. 429 et 431 (margarines et autres corps gras alimentaires ; saucisses et charcuteries), 10 %"},
+    {"prefixes": ["1501", "1502", "1503", "1504", "1507", "1509", "1510", "1511", "1512", "1513", "1514", "1515", "1516", "1602"], "taux": null, "motif": "Corps gras alimentaires (10 %, art. 431) : les huiles brutes destinées au raffinage ou à la savonnerie au Sénégal sont exonérées (art. 430), les huiles contenant au moins 60 % d'huile d'arachide sont exclues (art. 429), et 16.02 mêle charcuteries et autres préparations de viande : la position ne tranche pas.", "reference": "CGI 2025 art. 429 à 431"},
+    {"prefixes": ["8703"], "taux": 10.0, "reference": "CGI 2025 art. 439 et 440 (véhicules de tourisme), 10 % ; FAQ DGD 2026 « Comment dédouaner un véhicule ? » (droit d'accises 10 %)"},
+    {"prefixes": ["33", "34"], "taux": 10.0, "reference": "CGI 2025 art. 441 et 442 (produits relevant des chapitres 33 et 34 du tarif), 10 %"},
+    {"prefixes": ["210410"], "taux": 15.0, "reference": "CGI 2025 art. 442 ter et 442 quater (bouillons alimentaires), 15 %"},
+    {"prefixes": ["5007", "5111", "5112", "5113", "5208", "5209", "5210", "5211", "5212", "5309", "5310", "5311", "5407", "5408", "5512", "5513", "5514", "5515", "5516", "60", "61", "62", "6301", "6302", "6303", "6304", "6309"], "taux": 5.0, "reference": "CGI 2025 art. 444 quater et 444 quinquies (produits textiles tissés ou tricotés servant à l'habillement ou à l'ameublement, neufs ou usagés), 5 %", "reserve": "Exonérés : tissus acquis par un assujetti au régime réel pour la confection au Sénégal (art. 444 quater) ; condition non portée par la position."},
+    {"prefixes": ["271012", "271019"], "taux": null, "motif": "Produits pétroliers (super, essence, gasoil) : tarif spécifique par hectolitre (art. 444), non calculable depuis la valeur.", "reference": "CGI 2025 art. 443 et 444"}
+  ]
+}

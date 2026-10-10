@@ -1182,6 +1182,7 @@ ACCISES_PAYS = {
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
+    "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
 }
 
 
@@ -1416,6 +1417,48 @@ def _ait_malawi(positions, compteurs):
                         "duties and taxes, but excluding Value Added Tax » ; l'Advance Income Tax en fait partie : "
                         "« charged and payable on the importation of goods » (Taxation Act s.102B(2))."
                     )
+
+
+def _prelevements_senegal(positions, compteurs):
+    """Sénégal : prélèvements d'entrée selon les FAQ de la DGD (2026) « Comment
+    faire pour savoir les frais de dédouanement » et « Comment dédouaner un
+    véhicule ? » (fiche SEN_taxes_specifiques_2026-10-10.json). Le crawl
+    portait un PCS de 1 % et un « PUA » de 0,2 % que la DGD ne liquide pas, et
+    omettait le PROMAD (2 % de la valeur en douane). Le COSEC (0,4 %) n'est dû
+    que par voie maritime : le mode de transport n'étant pas connu du moteur,
+    il n'est pas liquidé."""
+    note_dgd = (
+        "FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » "
+        "et tableaux des taux cumulés des véhicules."
+    )
+    for position in positions.values():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "PUA":
+                compteurs["assiettes_source" if d.get("assiette_origine") == "source" else "assiettes_table"] -= 1
+                continue
+            if d.get("code") == "PCS":
+                d["taux"] = 0.8
+                d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
+            droits.append(d)
+        if droits and not any(d.get("code") == "PROMAD" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "PROMAD",
+                    "code_source": "PROMAD",
+                    "libelle": "Prélèvement pour la modernisation de l'administration des douanes",
+                    "famille": famille("PROMAD"),
+                    "taux": 2.0,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "PROMAD 2 % de la valeur en douane (" + note_dgd + ")",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        position["droits"] = droits
 
 
 def _accises_du_cgi(iso, positions):
@@ -1828,6 +1871,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
+
+    if iso == "SEN":
+        _prelevements_senegal(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
