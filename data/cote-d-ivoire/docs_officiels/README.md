@@ -71,5 +71,6 @@ Prix CAF de référence et taux fixés par le Conseil des Ministres avant chaque
 | LOI-DE-FINANCES-2026-CI.pdf | Loi de finances n°2025-987 (budget État 2026, 17 350 Mds FCFA) |
 | CIRCULAIRE-2389-AF-2026-DOUANE.pdf | Circulaire DGD n°2026-03 : mise en œuvre des mesures AF 2026 à la douane |
 | IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf | DGI : tableau synoptique de tous les impôts/taxes et taux (édition 2025) |
+| TEC-CEDEAO-ENRICHI-TAXATION-NATIONALE-27-03-2026.pdf | **Tarif officiel complet (566 p.)** : TEC CEDEAO SH 2022 enrichi des droits et taxes de la taxation nationale — codes TUB, TVA, DUS, TUE, PCC, PCS, PUA, TSB, PSV, TUF, PSS, RST, TAB, TAI, TBG, TCI, TCB, TCT, TFS, TMP, TPQ, TSM, TSS, taux par position SH (source douanes.ci) |
 
 Liens utiles : www.douanes.ci | guce.gouv.ci | www.pwic.ci | www.gucecotedivoire.ci
