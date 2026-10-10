@@ -35,7 +35,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from services import socle
+from services import exoneration_origine, socle
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import simulations_regionales, taux_preferentiels
 from services.regulatory_fee_service import build_regulatory_blocks
@@ -160,6 +160,8 @@ def calcul(demande: DemandeCalcul):
             position, demande.destination, demande.origine, demande.code_sh
         )
 
+    position, exonerations = exoneration_origine.appliquer(position, demande.origine)
+
     position, complements = _completer_famille_absente(
         position, demande.destination, provenance, demande.origine, demande.pays_expedition
     )
@@ -182,6 +184,8 @@ def calcul(demande: DemandeCalcul):
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     resultat["provenance"] = provenance
     resultat["complements_nationaux"] = complements
+    if exonerations:
+        resultat["exonerations_origine"] = exonerations
     conversion = _conversion_monetaire(position, demande, provenance, preference, resultat)
     if conversion:
         resultat["conversion_monetaire"] = conversion

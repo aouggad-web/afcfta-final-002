@@ -28,7 +28,7 @@
     "Bière (tariff 3) : taux de 47,5 % pour moins de 50 % de matière première locale, retenu pour une bière importée ; alcool dénaturé (6(c)(ii), 10 %) sous réserve de l'agrément du Commissioner-General."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "ECOWAS Levy et AU Import Levy ne sont dus que sur les marchandises de pays tiers à la CEDEAO et à l'Union africaine : le calculateur, qui ne connaît pas l'origine, les liquide comme pour un pays tiers.",
+    "ECOWAS Levy et AU Import Levy ne sont dus que sur les marchandises de pays tiers à la CEDEAO et à l'Union africaine : retirés selon l'origine déclarée (fiche ORIGINE_prelevements_communautaires_2026-10-10.json), liquidés comme pour un pays tiers sans origine.",
     "Exemptions de la First Schedule de l'Act 861 (éducation, agriculture, santé, etc.) : non relevées.",
     "Paiement anticipé de 20 % de la valeur en douane (importateurs non immatriculés à la TVA, directives GRA 2026, § 9.1) : dépend du statut de l'importateur, non liquidé.",
     "Frais d'examen (1 %, véhicules d'occasion), pénalités d'âge des véhicules et frais de prestataires (GPHA, Shippers' Authority, FDA, GSA) : hors périmètre."

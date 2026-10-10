@@ -1178,6 +1178,14 @@ def sources_disponibles():
 #: CGI (annexe II, art. 142) ; l'assiette de la TVA, de son art. 138 (1).
 #: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
 #: assiette de la TVA de son art. 216.
+#: Code du prélèvement → bloc dont les originaires en sont exclus.
+EXONERATION_ORIGINE = {"PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA"}
+#: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
+BLOCS_DESTINATION = {
+    "UEMOA": {"BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"},
+    "CEDEAO": {"BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"},
+}
+
 ACCISES_PAYS = {
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
@@ -2233,6 +2241,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 else:
                     cle = "assiettes_table"
                 compteurs[cle] += signe
+
+    # Prélèvements communautaires dont les originaires du bloc sont exclus
+    # (backend/services/exoneration_origine.py) : la route les retire selon
+    # l'origine déclarée.
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            bloc = EXONERATION_ORIGINE.get(d.get("code"))
+            if bloc and (bloc == "UA" or iso in BLOCS_DESTINATION[bloc]):
+                d["exoneration_origine"] = bloc
 
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur
