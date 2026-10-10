@@ -1,0 +1,19 @@
+Cameroun — loi de finances 2026, droit d'accises à l'importation : extrait (relevé le 2026-10-10 ; apostrophes normalisées)
+
+Loi n° 2025/012 du 17 décembre 2025 portant loi de finances de la République du Cameroun pour l'exercice 2026 — copie certifiée conforme, Présidence de la République (https://www.prc.cm/files/c0/a1/8a/f2384c46567a032046599c65f95c5aa6.pdf, sha256 4196d9683db72f0cd1fa07f7a6ad39f306e727823695edf60ab0f3d74e055da8), page 4, PDF scanné, transcrit sur l'image :
+
+ARTICLE DIXIÈME.- Droit d'accises à l'importation de certains biens.
+1. Les dispositions des articles cinquième (5) de la loi de finances pour l'exercice 2019 et de l'article sixième (2d) de la loi de finances pour l'exercice 2020 sont modifiées et complétées ainsi qu'il suit à l'importation de véhicules :
+
+Désignation | Age | Taux du droit d'accises
+Véhicules de tourisme d'une cylindrée inférieure ou égale à 2500 cm3 | de 0 à 12 ans | 0 %
+ | plus de 12 ans à 20 ans | 12,5 %
+ | plus de 20 ans | 25 %
+Véhicules de tourisme d'une cylindrée supérieure à 2500 cm3 | de 0 à 15 ans | 12, 5 % (sans changement)
+ | plus de 15 ans | 25 % (sans changement)
+Autres véhicules utilitaires, véhicules de transport en commun, remorques, tracteurs à l'exclusion de ceux agricoles quelle que soit la cylindrée | de 0 à 15 ans | 0% (sans changement)
+ | Plus de 15 ans à 20 ans | 12, 5 %
+ | Plus de 20 ans | 25 %
+Véhicules propulsés au gaz naturel comprimé ou liquéfié (GNC/GNL) | Sans distinction | 0 %
+
+2. Les bouteilles à gaz domestique vides importées sont soumises au droit d'accises ad valorem au taux réduit de 12,5 %.

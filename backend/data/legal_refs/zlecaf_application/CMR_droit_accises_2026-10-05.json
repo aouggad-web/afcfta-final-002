@@ -22,10 +22,12 @@
   "decisions": [
     "Parfums et cosmétiques (annexe II, sans code) : toutes les positions 33.03 et 33.04, au taux général de 25 % — décision du propriétaire du 2026-10-05.",
     "Véhicules : le socle (nomenclature CEMAC à 8 chiffres) distingue cylindrée et énergie, jamais l'âge ; le taux dépendant de l'âge (art. 142 (6) a)), le droit est porté sans taux sur 87.03, et sur les utilitaires, tracteurs routiers, transports en commun et remorques (soumis au-delà de 15 ans), tracteurs agricoles exclus.",
+    "Bouteilles à gaz domestique vides : 12,5 % depuis la loi de finances 2026 (art. 10 (2)). Le tarif sépare 7311.00.10 « pour usages industriels » et 7311.00.90 « autres » ; la seconde ne dit pas si la bouteille est domestique : droit porté sans taux sur 7311.00.90, la condition en note.",
+    "Véhicules, loi de finances 2026 (art. 10 (1)) : le barème reste fonction de l'âge — tourisme jusqu'à 2 500 cm3 : 0 % jusqu'à 12 ans, 12,5 % de 12 à 20 ans, 25 % au-delà ; au-delà de 2 500 cm3 : 12,5 % puis 25 % après 15 ans ; utilitaires, transports en commun, remorques et tracteurs non agricoles : 0 % jusqu'à 15 ans, 12,5 % de 15 à 20 ans, 25 % au-delà ; véhicules au GNC/GNL : 0 %. Le droit reste porté sans taux.",
     "Boissons alcoolisées, jus, eaux et boissons gazeuses ou sucrées, cigarettes : le droit spécifique (par centilitre selon la gamme et la contenance, ou minimum par 1 000 tiges) n'est pas calculable depuis la position : droit porté sans taux."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "L'édition 2025 est une compilation de cabinet : les ajouts de la loi de finances 2026 ne sont pas vérifiés.",
+    "L'édition 2025 est une compilation de cabinet. De la loi de finances 2026, seul l'article 10 (droit d'accises à l'importation des véhicules et des bouteilles à gaz) a été lu ; ses dispositions fiscales (CGI) ne l'ont pas été.",
     "La TCI ne figure pas dans l'assiette de la TVA selon l'art. 138 (1) ; le crawl l'y incluait (« CIF + DD + TCI »). Le texte du CGI est suivi.",
     "Les emballages non retournables (droit spécifique par unité), les jeux et les communications n'ont pas de position tarifaire.",
     "Positions de l'annexe absentes du socle (lacunes de la collecte) : saumons 0302.12/0302.19 et 0305.41, foies et œufs 0303.90, boissons fermentées 22.06.",
@@ -33,6 +35,7 @@
   ],
   "documents_archives": [
     {"texte_archive": "sources/CMR_droit_accises.texte-extrait.txt", "sha256": "c59dfc115f8b4a350d17c89f4d631cab6bc09c028713e9d03a762bc607b04d24"},
-    {"pdf_archive": "sources/CMR_DGI_fiche_droits_accises_2025.pdf", "pdf_sha256": "e1be6403dd8e97097336dda61fe859debb3770c56b9dc49803da0a56443e6e23"}
+    {"pdf_archive": "sources/CMR_DGI_fiche_droits_accises_2025.pdf", "pdf_sha256": "e1be6403dd8e97097336dda61fe859debb3770c56b9dc49803da0a56443e6e23"},
+    {"texte_archive": "sources/CMR_LF2026_droit_accises.texte-extrait.txt", "sha256": "a9f123b3594dbe208f5eb57aaaf47b8bb39df1013d7e3d050e31469b570c3a50"}
   ]
 }
