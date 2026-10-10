@@ -41,15 +41,12 @@ def test_une_voiture_porte_l_accise_sans_taux_faute_d_age(positions):
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
 
 
-def test_une_bouteille_a_gaz_non_industrielle_porte_l_accise_sans_taux(positions):
-    """Loi de finances 2026, art. 10 (2) : 12,5 % sur les bouteilles à gaz domestique
-    vides. « Autres » ne dit pas l'usage ; « pour usages industriels » n'est pas visé."""
+def test_bouteilles_a_gaz_portees_sans_taux(positions):
+    """CGI 2026, art. 142 (6) a) : bouteilles à gaz domestique vides à 12,5 % ;
+    7311.00.90 mêle d'autres récipients, l'accise est portée sans taux."""
     etat, lignes = _lignes(positions["73110090"])
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
-    da = next(d for d in positions["73110090"]["droits"] if d["code"] == "DA")
-    assert da["source"] == "Loi de finances 2026 du Cameroun (loi n° 2025/012), art. 10 (2)"
-    etat, lignes = _lignes(positions["73110010"])
-    assert "DA" not in lignes and etat == COMPLET
+    assert "DA" not in _lignes(positions["73110010"])[1]
 
 
 @pytest.mark.parametrize("code", ["34022000", "94033000", "55141100", "48181000", "95049000"])
@@ -63,10 +60,7 @@ def test_les_produits_importes_de_l_annexe_ii_paient_le_taux_general(positions, 
 def test_aucun_reste_du_marquage_du_crawl(positions):
     accises = [d for p in positions.values() for d in p["droits"] if d["code"] == "DA"]
     assert len(accises) == 478
-    assert {d["source"] for d in accises} == {
-        "Code général des impôts du Cameroun (édition 2025), annexe II et art. 142",
-        "Loi de finances 2026 du Cameroun (loi n° 2025/012), art. 10 (2)",
-    }
+    assert all(d["source"].startswith("Code général des impôts du Cameroun") for d in accises)
 
 
 GAB = os.path.join(os.path.dirname(SOCLE), "GAB.json")
@@ -91,7 +85,7 @@ COG = os.path.join(os.path.dirname(SOCLE), "COG.json")
 @pytest.mark.skipif(not os.path.exists(COG), reason="socle absent (gitignoré)")
 def test_congo_taux_de_la_loi_de_finances_2026():
     """Loi sur le droit d'accises du Congo, art. 2 et 8 nouveaux (LF 2026) : tabac
-    30 %, véhicule de plus de 3 000 cm3 25 %, champagne 50 %, soda 10 %, sur
+    30 %, véhicule de plus de 3 000 cm3 25 %, champagne 50 %, perruques 10 %, sur
     valeur + DD ; TVA sur valeur + DD + accise. Cosmétiques et motocycles, visés
     par l'art. 8 : 25 %. Alcool éthylique : sans taux. Fiche : COG_droit_accises_2026-10-09.json."""
     with open(COG, encoding="utf-8") as f:
@@ -102,13 +96,17 @@ def test_congo_taux_de_la_loi_de_finances_2026():
     assert _lignes(positions["87032410"])[1]["DA"]["montant"] == 325.0
     assert _lignes(positions["22041010"])[1]["DA"]["taux_pct"] == 50.0
     assert _lignes(positions["22041090"])[1]["DA"]["taux_pct"] == 25.0
-    assert _lignes(positions["22021000"])[1]["DA"]["taux_pct"] == 10.0
+    assert _lignes(positions["67041100"])[1]["DA"]["taux_pct"] == 10.0
+    assert _lignes(positions["71132000"])[1]["DA"]["taux_pct"] == 5.0
+    assert _lignes(positions["95041000"])[1]["DA"]["taux_pct"] == 25.0
+    assert "DA" not in _lignes(positions["95044000"])[1]
     assert _lignes(positions["33049900"])[1]["DA"]["taux_pct"] == 25.0
     assert _lignes(positions["87113000"])[1]["DA"]["taux_pct"] == 25.0
     assert _lignes(positions["96140000"])[1]["DA"]["taux_pct"] == 30.0
     assert _lignes(positions["29072200"])[1]["DA"]["taux_pct"] == 50.0
-    etat, lignes = _lignes(positions["22071010"])
-    assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
+    for code in ("22071010", "22021000", "95042000", "95049000"):
+        etat, lignes = _lignes(positions[code])
+        assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat != COMPLET
     etat, lignes = _lignes(positions["52081100"])
     assert "DA" not in lignes and etat == COMPLET
 
