@@ -1,0 +1,23 @@
+Ghana — prélèvements à l'importation et assiette de la TVA, du NHIL et du GETFund : extraits verbatim (relevés le 2026-10-10)
+
+1. Institute for Fiscal Studies et Ministry of Finance, Ghana, « A survey of the Ghanaian tax system (2026) », août 2026, PDF de 65 pages, sha256 b7606baf79d4571689e88ca8f8e8f795fa967f6f0cdcfe9d52e337ad03f1270a, versé sur la PR #620 (data/ghana/docs_officiels/MOFEP-SURVEY-GHANAIAN-TAX-SYSTEM.pdf), page 32 du PDF :
+
+« Import duties apply to the cost, insurance and freight (CIF) value of imports. In addition, various small taxes and levies apply specifically to imported goods. These are summarised in Table 3.9. »
+
+« Table 3.9. Levies charged on imports in Ghana Levy Base Rate AU Import Levy All imported goods from non-AU states 0.2% of the CIF value ECOWAS Levy All imported goods from non-ECOWAS states 0.5% of the CIF value Export–Import Levy Selected non-petroleum imported goods 0.75% of the CIF value Special Import Levy All imports, except for petroleum products, 2% of the CIF value fertilisers, and machinery and equipment »
+
+« Source: African Union Import Levy Act 2017 (Act 952); ECOWAS Protocol A/P1/7/96; Special Import Levy Act 2013 (Act 861) as amended; Ghana Export-Import Bank Act 2016 (Act 911); Excise Duty Act 2014 (Act 878) as amended. »
+
+2. Value Added Tax Act, 2025 (Act 1151), section 45, texte relevé sur https://www.a-tla.org/ghana/value-added-tax-act-2025-act-1151 (page HTML, sha256 eaf2c1c3e5d82d52820e6babd7424ecf259f6eeb9efb2d06e067253d885622bf) et, à l'identique, sur https://legal.ghanainfocentre.com/index.php?title=Value_Added_Tax_Act,_2025_(Act_1151) (sha256 3bc7f06f0274b1d570d595b13f8dcd373a683d30d8462d885fb3c4c3a8339885) ; l'exemplaire officiel du Parlement (repository.parliament.gh) était injoignable :
+
+« 45. Taxable value for determining Tax on imported goods and services (1) The value for determining the Tax chargeable on taxable imports of goods is (a) the import value calculated in accordance with sections 67 to 68 of the Customs Act, 2015 (Act 891); (b) the import duties and taxes other than the Tax; and (c) the cost of insurance and freight which is not included in the customs value under this subsection. »
+
+3. Ghana Revenue Authority, page « VAT » (https://gra.gov.gh/domestic-tax/tax-types/vat/, sha256 ef51aa3def686317e0f00b774e15d7160e77c0dc8b88e69cc6bd792215d3f02e) :
+
+« VAT is now calculated as 15% of the total price of an item, in addition to the 2.5% NHIL, and 2.5% GETFund Levy, also calculated on the total price. This implies that the VAT, the NHIL and the GETFund Levy are all charged on the same base or value. »
+
+« Rates For VAT Computation (After Reforms) Value Added Tax (VAT) Rate = 15% National Health Insurance Levy (NHIL) = 2.5% Ghana Education Trust Fund Levy (GETFund) = 2.5% Refunds These rates are all chargeable on the value of: Every supply of Goods and services in Ghana. Importation of goods. »
+
+4. Ghana Export-Import Bank Act, 2016 (Act 911), section 29, texte relevé sur https://www.taxlawgh.com/ghana-export-import-bank-act-911 (sha256 01874b84f53869aa1ba056c7903fa3a74d3ebdd6c1eb3ee4542b3431fc91e72b) :
+
+« Section 29 Imposition of import levy Current (1) There is imposed by this Act a levy to be paid by importers on the dutiable value of any product imported for commercial purposes except petroleum products. (2) The levy shall be 0.75 percent of the cost, insurance and freight value of the import out of which 90 percent shall form part of the sources of moneys for the Bank and 10 percent shall be paid directly to the Ghana Export Promotion Authority. »

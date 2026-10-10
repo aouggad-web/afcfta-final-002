@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-10T19:14:59.057994+00:00",
+  "construit_le": "2026-10-10T20:45:03.548598+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -670,27 +670,29 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GHA_tariffs.json",
       "source_sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
-      "socle_sha256": "3cd73060a3ff6819acaa60129b28ccc712c2835909d63baab6af9ad8a1a69521",
+      "socle_sha256": "79d4c00c7ac3dc0f5f9567afeac55589baed0aaa2d69fbc13b1c7744da2bebea",
       "collecte": "2026-06-16T22:25:05.362356",
-      "etat": "COMPLET",
+      "etat": "PARTIEL",
       "familles": [
+        "communautaire",
         "droit",
         "fonds",
+        "redevance",
         "tva"
       ],
       "compteurs": {
         "positions": 11516,
-        "droits": 46064,
-        "droits_liquidables": 46064,
-        "positions_liquidables": 11516,
+        "droits": 91992,
+        "droits_liquidables": 85496,
+        "positions_liquidables": 9892,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 1624,
         "assiettes_source": 24516,
         "assiettes_fichier": 0,
-        "assiettes_table": 21548,
+        "assiettes_table": 67476,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -2009,6 +2011,7 @@
       "EGY",
       "ETH",
       "GAB",
+      "GHA",
       "GNQ",
       "KEN",
       "LBY",
@@ -2035,7 +2038,7 @@
       "ZWE"
     ],
     "positions": 368631,
-    "droits": 1161256,
-    "droits_liquidables": 1135210
+    "droits": 1207184,
+    "droits_liquidables": 1174642
   }
 }
