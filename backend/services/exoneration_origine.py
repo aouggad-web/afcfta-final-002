@@ -27,9 +27,9 @@ BLOCS = {
 def appliquer(position: dict, origine):
     """Rendre (position, exonérations) : la position sans les prélèvements dont
     l'origine est exonérée, et la liste de ce qui a été retiré."""
+    origine = (origine or "").strip().upper()
     if not origine:
         return position, []
-    origine = origine.upper()
     gardes, retires = [], []
     for droit in position.get("droits") or []:
         bloc = droit.get("exoneration_origine")

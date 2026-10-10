@@ -38,6 +38,7 @@ def test_origine_uemoa_exoneree_des_trois():
 
 def test_origine_cedeao_hors_uemoa_paie_le_pcs():
     assert _codes("GHA") == (["DD", "PCS"], ["PCC", "PUA"])
+    assert _codes(" gha ") == (["DD", "PCS"], ["PCC", "PUA"])
 
 
 def test_origine_africaine_hors_cedeao_paie_pcs_et_pcc():
