@@ -1,0 +1,141 @@
+{
+ "_objet": "Taxes spécifiques à l'importation au Burkina Faso (taxe sur les boissons, sur les tabacs, sur la parfumerie et les cosmétiques, sur les emballages plastiques, sur le café et le thé, sur les noix de colas, sur les véhicules de 13 CV et plus, sur les armes et munitions), d'après le CGI consolidé de la DGI et la loi de finances 2026. « taux » null : le taux dépend d'une donnée que la position ne porte pas.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/BFA_prelevements_TVA_2026-10-11.json",
+ "source": "Code général des impôts du Burkina Faso (version consolidée de la DGI) ; loi de finances 2026",
+ "assiette": "CIF+DD+RS+PCS+PC-AES",
+ "assiette_reference": "CGI art. 358, 364, 370, 376, 380, 381, 382 et 382-1 : « la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l'exception de la taxe sur la valeur ajoutée ».",
+ "tva_assiette": "CIF+DD+RS+PCS+PC-AES+DA",
+ "tva_assiette_reference": "CGI art. 310, 4° : « pour les importations par la valeur en douane des marchandises augmentée des droits et taxes de porte de toute nature liquidés par l'administration des douanes ».",
+ "regles": [
+  {
+   "prefixes": [
+    "2202991000"
+   ],
+   "taux": 50.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359 II.1 (loi n°042-2023/ALT, art. 29) : « Boissons non alcoolisées énergisantes : 50% »."
+  },
+  {
+   "prefixes": [
+    "2202"
+   ],
+   "taux": 15.0,
+   "exclusions": [
+    "2202991000"
+   ],
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359 II.2 : « Autres boissons non alcoolisées : 15% »."
+  },
+  {
+   "prefixes": [
+    "2009"
+   ],
+   "taux": 15.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359 II.2 : « Autres boissons non alcoolisées : 15% » ; art. 356, 3° : seuls les jus fabriqués au Burkina Faso à partir de matières premières locales sont exonérés.",
+   "reserve": "Concentrés destinés à l'industrie de production de boissons exonérés (art. 356, 8°) : condition tenant à l'usage."
+  },
+  {
+   "prefixes": [
+    "2203",
+    "2206001000"
+   ],
+   "taux": null,
+   "motif": "Bières : 30 % en deçà de 8° d'alcool, 40 % à partir de 8° (art. 359 I.1 et I.2) ; le degré n'est pas dans la position.",
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359"
+  },
+  {
+   "prefixes": [
+    "2204",
+    "2205"
+   ],
+   "taux": 70.0,
+   "exclusions": [
+    "2204300000"
+   ],
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359 I.3 : « Vins : 70% ».",
+   "reserve": "Vins destinés à la célébration du culte exonérés (art. 356, 7°)."
+  },
+  {
+   "prefixes": [
+    "2204300000"
+   ],
+   "taux": null,
+   "motif": "Moûts de raisin : vin (70 %) au-delà de 0,5° d'alcool, boisson non alcoolisée (15 %) en deçà ; la position ne tranche pas.",
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359"
+  },
+  {
+   "prefixes": [
+    "2206009100",
+    "2206009900"
+   ],
+   "taux": 50.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359 I.4 : « Autres boissons alcoolisées titrant moins de 35° d'alcool : 50% » (boissons fermentées).",
+   "reserve": "Boissons locales produites selon les procédés traditionnels exonérées (art. 356, 6°) : production locale seulement."
+  },
+  {
+   "prefixes": [
+    "2208"
+   ],
+   "taux": null,
+   "motif": "Spiritueux : 50 % en deçà de 35° d'alcool, 70 % à partir de 35° (art. 359 I.4 et I.5) ; le degré n'est pas dans la position.",
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359"
+  },
+  {
+   "prefixes": [
+    "2402",
+    "2403"
+   ],
+   "taux": 55.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 365 (loi n°029-2022/ALT, art. 53) : « Le taux de la taxe est fixé à 55 % ».",
+   "reserve": "Base minimale de 300 FCFA pour 20 cigarettes (art. 364) : non appliquée, le nombre de cigarettes n'étant pas dans la position."
+  },
+  {
+   "prefixes": [
+    "3303",
+    "3304",
+    "3305",
+    "3307"
+   ],
+   "taux": 15.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 371 (loi n°042-2018/AN, art. 46) : taxe spécifique sur les produits de la parfumerie et des cosmétiques, « taux de 15 % »."
+  },
+  {
+   "prefixes": [
+    "0901",
+    "0902"
+   ],
+   "taux": 12.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 380, 5) (loi n°042-2023/ALT, art. 31) : taxe sur le café et le thé, « Le taux de la taxe est fixé à 12 % »."
+  },
+  {
+   "prefixes": [
+    "0802700000",
+    "080270"
+   ],
+   "taux": 10.0,
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 381, 5) : taxe sur les noix de colas, « Le taux applicable est fixé à 10 % »."
+  },
+  {
+   "prefixes": [
+    "3923"
+   ],
+   "taux": null,
+   "motif": "Emballages et sachets plastiques : 5 % d'une valeur forfaitaire fixée par unité de conditionnement et par tranche de valeur du bien emballé (art. 376 et 377), non déterminable sur la position ; plastiques servant au conditionnement du riz, du sel, de l'huile, du sucre et des médicaments exclus (art. 373).",
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 373, 376 et 377"
+  },
+  {
+   "prefixes": [
+    "8703"
+   ],
+   "taux": null,
+   "motif": "Véhicules de tourisme : 5 % à partir de 13 chevaux (art. 382) ; la puissance n'est pas dans la position.",
+   "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 382"
+  },
+  {
+   "prefixes": [
+    "93"
+   ],
+   "taux": 40.0,
+   "reference": "Loi n°021-2025/ALT du 27/12/2025 (loi de finances 2026), art. 24, art. 382-1 nouveau du CGI : taxe spécifique sur l'importation des armes et munitions, « Le taux de la taxe est fixé à 40 % » (taux confirmé par la présentation des mesures nouvelles de la DGI).",
+   "reserve": "Armes et munitions destinées aux forces de défense et de sécurité exemptées (art. 382-1, 2))."
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-10T22:57:10.908111+00:00",
+  "construit_le": "2026-10-11T20:29:08.787880+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -116,27 +116,28 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BFA_tariffs.json",
       "source_sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
-      "socle_sha256": "3fa05b4c338b919002a197a27b8459589c45165c0e4275a90b7c9205d0b9bc33",
+      "socle_sha256": "5bf1e9fafa08101f89b37aac936b95a8cb91a3d487928f43c54ce5eede151605",
       "collecte": "2026-02-19T22:39:46.076060",
-      "etat": "COMPLET",
+      "etat": "PARTIEL",
       "familles": [
+        "accise",
         "communautaire",
         "droit",
         "tva"
       ],
       "compteurs": {
         "positions": 6129,
-        "droits": 30645,
-        "droits_liquidables": 30645,
-        "positions_liquidables": 6129,
+        "droits": 30886,
+        "droits_liquidables": 30768,
+        "positions_liquidables": 6070,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 30645,
+        "taux_indisponibles": 59,
+        "assiettes_source": 24516,
         "assiettes_fichier": 0,
-        "assiettes_table": 0,
+        "assiettes_table": 6370,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -2003,6 +2004,7 @@
     "pays_partiels": [
       "AGO",
       "BDI",
+      "BFA",
       "BWA",
       "CAF",
       "CIV",
@@ -2041,7 +2043,7 @@
       "ZWE"
     ],
     "positions": 368884,
-    "droits": 1203973,
-    "droits_liquidables": 1171284
+    "droits": 1204214,
+    "droits_liquidables": 1171407
   }
 }

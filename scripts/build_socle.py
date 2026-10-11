@@ -1195,6 +1195,7 @@ ACCISES_PAYS = {
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
     "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
     "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
+    "BFA": os.path.join(REPO, "backend", "data", "zlecaf_bfa", "droit_accises_cgi2026.json"),
 }
 
 
@@ -1736,6 +1737,20 @@ def _prelevements_mali(positions, compteurs):
                 )
 
 
+def _prelevements_burkina(positions):
+    """Burkina Faso : la collecte porte un PCS de 1 % ; le taux communautaire est
+    de 0,8 % (circulaire DGD de Côte d'Ivoire n° 2258, tarif de la DGD du Mali ;
+    fiche BFA_prelevements_TVA_2026-10-11.json)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") == "PCS" and d.get("taux") == 1.0:
+                d["taux"] = 0.8
+                d["note"] = (
+                    "Prélèvement communautaire de solidarité de l'UEMOA : 0,8 % (circulaire DGD n° 2258 de Côte "
+                    "d'Ivoire : PCS « en vigueur » au taux de 0,8 % ; tarif de la DGD du Mali, colonne PCS)."
+                )
+
+
 def _prelevements_cote_divoire(positions, compteurs):
     """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
     taxation nationale, mise à jour du 27/03/2026 ; fiche
@@ -2258,6 +2273,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_ghana(positions, compteurs)
     if iso == "MLI":
         _prelevements_mali(positions, compteurs)
+    if iso == "BFA":
+        _prelevements_burkina(positions)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "objet": "Burkina Faso : PCS de l'UEMOA, taxes spécifiques à l'importation (boissons, tabacs, parfumerie et cosmétiques, emballages plastiques, café et thé, noix de colas, véhicules de 13 CV et plus, armes et munitions) et assiette de la TVA à l'importation",
+  "destination_iso3": "BFA",
+  "verified_at": "2026-10-11",
+  "etabli": true,
+  "evidence_level": "primaire — CGI consolidé de la DGI (dgi.bf, articles annotés de leurs lois modificatives jusqu'à la LF 2024) ; loi de finances 2026 (JO spécial n°01, OCR) et présentation de la DGI ; taux du PCS : circulaire DGD n° 2258 de Côte d'Ivoire et tarif de la DGD du Mali",
+  "source": {
+    "url": "https://dgi.bf/verification/CGI",
+    "institution": "Direction générale des impôts du Burkina Faso"
+  },
+  "regle": {
+    "valeur": "PCS 0,8 % au lieu de 1 % (collecte). Taxes spécifiques (backend/data/zlecaf_bfa/droit_accises_cgi2026.json, ligne DA) sur la valeur en douane + DD + RS + PCS + PC-AES : boissons non alcoolisées 15 % (énergisantes 50 %), jus 15 %, vins 70 %, autres boissons alcoolisées fermentées 50 %, tabacs 55 %, parfumerie et cosmétiques 15 %, café et thé 12 %, noix de colas 10 %, armes et munitions 40 %. TVA (18 %) sur la valeur en douane + tous les droits et taxes de porte liquidés par la douane, taxe spécifique comprise (art. 310, 4°).",
+    "verbatim": "4° pour les importations par la valeur en douane des marchandises augmentée des droits et taxes de porte de toute nature liquidés par l’administration des douanes ;",
+    "reference": "CGI du Burkina Faso, art. 310, 356, 358, 359, 364, 365, 370, 371, 373, 376, 377, 380, 381, 382 ; loi n°021-2025/ALT (LFI 2026), art. 24 (art. 382-1 du CGI)",
+    "portee": "scripts/build_socle._prelevements_burkina (PCS) ; scripts/build_socle._accises_du_cgi avec ACCISES_PAYS['BFA'] (taxes spécifiques et assiette de la TVA).",
+    "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
+    "sha256": "c54ec3201ee49ed667383e8ee8093fc2e3c719c4fc8ddef5872abb2634826a87"
+  },
+  "decisions": [
+    "Le CGI versé sur la PR #620 est le texte de 2017 (loi n°058-2017/AN) : ses taux (boissons 35/30/10 %, tabacs 45 %, cosmétiques 10 %, café et thé 10 %) ont été relevés par les lois de finances 2019 à 2024 ; la version consolidée de la DGI est suivie.",
+    "Bières (30 % ou 40 % selon le degré) et spiritueux (50 % ou 70 % selon le degré), moûts de raisin, emballages plastiques (valeur forfaitaire par unité de conditionnement) et véhicules de tourisme (puissance) : sans taux, la position ne portant pas la donnée.",
+    "Exonérations tenant à l'usage ou à la production locale (vins de culte, concentrés pour l'industrie, boissons traditionnelles locales, armes des forces de défense) : taux général, réserve en note.",
+    "La base minimale de 300 FCFA pour 20 cigarettes (art. 364) n'est pas appliquée.",
+    "Taux du PCS : le Burkina Faso n'a pas de tarif ligne par ligne au dossier ; le taux communautaire de 0,8 % est celui de la circulaire ivoirienne n° 2258 et du tarif de la DGD du Mali, concordants."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taxe sur les produits pétroliers (art. 379, tarif au litre) : non liquidée.",
+    "Prélèvement de l'Union africaine (0,2 %), mentionné par le collaborateur : absent de la collecte, non ajouté faute de texte national.",
+    "Prélèvement confédéral de l'AES (PC-AES, 0,5 %) : conservé tel que collecté ; exemption des originaires de l'AES non appliquée faute de texte officiel.",
+    "Droits de douane et TVA par position : ceux de la collecte (taux uniformes), faute de tarif national au dossier."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
+      "sha256": "c54ec3201ee49ed667383e8ee8093fc2e3c719c4fc8ddef5872abb2634826a87"
+    },
+    {
+      "document_non_archive": "Loi n°021-2025/ALT (LFI 2026), JO spécial n°01 du 2 janvier 2026, versé sur la PR #620 (data/burkina-faso/docs_officiels/JO-N01-SPECIAL-LFI-2026-DGI.pdf)",
+      "pdf_sha256": "24242939052ac8dc40b6b59e9dd5e89b5e72e5f29aaeed6362cefa97a02f7d6a"
+    },
+    {
+      "document_non_archive": "DGI, mesures fiscales nouvelles de la LFI 2026, versé sur la PR #620 (data/burkina-faso/docs_officiels/MESURES-FISCALES-NOUVELLES-LFI-2026-DGI.pdf)",
+      "pdf_sha256": "33ea6fb9fb90ec6fd8555a920a0ecca7bd7760130444a13449f7e65c76b857a1"
+    },
+    {
+      "document_non_archive": "CGI du Burkina Faso, loi n°058-2017/AN (texte de 2017), versé sur la PR #620 (data/burkina-faso/docs_officiels/CGI-BURKINA-FASO.pdf)",
+      "pdf_sha256": "adae9ba9d6a35aadbe4c9e953fe35a749486e0ba0a5b92df5d0da7bd67e27bdb"
+    }
+  ]
+}
