@@ -1,0 +1,29 @@
+Guinée — tarif de la DGD, droits et taxes d'entrée, accises et assiette de la TVA : extraits verbatim (relevés le 2026-10-11)
+
+1. DGD de Guinée, Tarif extérieur commun de la CEDEAO, SH 2022, PDF de 414 pages créé le 18/01/2022, sha256 305caa525d340046dd206c34525798f8800bb04f1daa9fe764cd4eb8eba659c9, versé sur la PR #620 (data/guinee/docs_officiels/TEC-SH2022-GUINEE.pdf), p. 13, en-tête des colonnes et première position :
+
+« PRODUITS DD RTL AC TVA PC CA DFE ** »
+
+« 0101.21.00.00 -- Reproducteurs de race pure 1 u 5 2% ex ex 0,50% 0,25% 2% »
+
+Relevé sur les 6 379 positions (scripts/extraire_tec_gin.py) : RTL 2 %, PC 0,5 %, CA 0,25 % ; AC (accises) sur 101 positions ; TVA 18 % ou « ex ».
+
+2. Ministère du Budget, arrêté du 31/03/2017 portant entrée en vigueur du TEC de la CEDEAO en République de Guinée, publié par la DGD (PDF scanné de 14 pages, sha256 3aea3577e70e0afac8c8d906b431acf1a9e7e6234b123a295d1694f37904a8c3, versé sur la PR #620, data/guinee/docs_officiels/TEC-DGD-GUINEE-2024.pdf). Texte obtenu par OCR (tesseract), scories conservées :
+
+« Article 7 : Le Droit Fiscal & I’Importation (DFI) figurant dans le tableau du Tarif des Douanes est remplacé par le Droit de Douane (DD), »
+
+« Article 9: Le tableau des Droits et Taxes applicables aux produits importés en République de Guinée comprend le Droit de Douane (DD), la Redevance pour le Traitement des Liquidations (RTL), les Accises, la Taxe sur la Valeur Ajoutée (TVA), le Prélevement Communautaire (PC) et le Centime Additionnel (CA). »
+
+« Aiticle 12: L’assiette de la TVA intégre le montant des Droits et taxes de Douane &ffectivement appliqué. »
+
+3. Code général des impôts de la République de Guinée, texte publié par le Ministère du Budget (https://mbudget.gov.gn/wp-content/uploads/2022/05/Code-General-des-Impots-2022-2.pdf, intitulé « PROJET DE CODE GÉNÉRAL DES IMPÔTS », sha256 0b29ebac94c892f385d4ed97c834d4a01f05ecc07678bcd3248f7aec92a2fe48) :
+
+« II. Les tarifs des droits d’accises sur les produits imposables importés sont fixés dans le TARIF DES DOUANES. »
+
+« Art.436.- I. La base d’imposition des produits importés en Guinée soumis à un droit d’accise ad valorem est la valeur CAF (conditions internationales de vente Coût, Assurance et Fret) majorée de l’ensemble des droits perçus au cordon douanier, à l’exception de la TVA. »
+
+« tion de la Taxe d’Enregistrement (TE) au taux de zéro virgule cinq pourcent (0,5%) et de la Redevance de Traitement et de Liquidation (RTL) au taux de deux pourcent (2%) sur la valeur CAF  »
+
+4. Ministère du Budget, « Le système fiscal guinéen » (PDF, sha256 5c2eddb6586cfb4f89ce97b5840679489e8ca12e8c563fb36adc3da63a67c7e1, versé sur la PR #620, data/guinee/docs_officiels/SYSTEME-FISCAL-GUINEEN.pdf) :
+
+« Pour les importations faites en Guinée, la base imposable à la TVA au cordon douanier est constituée par la valeur en douane augmentée des droits et taxes de toute nature liquidée par l’administration des douanes à l’exception de la TVA. »

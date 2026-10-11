@@ -667,17 +667,18 @@
       "version": null,
       "artifact_path": "backend/data/crawled/GIN_tariffs.json",
       "artifact_url": null,
-      "sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
+      "sha256": "0372c9a1faa24601236436757e1e5016655942a2c2f57f388146942b51735a4e",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
+        "CA",
+        "DA",
         "DD",
         "PCC",
-        "PUA",
+        "RTL",
         "TVA"
       ],
       "taxes_missing": [
-        "RS",
-        "PCS",
+        "PUA",
         "TIC"
       ]
     },
