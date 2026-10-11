@@ -13,7 +13,7 @@
     "valeur": "Source du socle BEN : tarif de la DGDDI (6 381 positions SH 2022), à la place de la collecte du 19/02/2026 (6 129 positions SH 2017, PCS à 1 %). D.D. et R.S. (1 %) par position ; PCS 0,8 %, PC 0,5 % et prélèvement de solidarité de l'UA (PUA) 0,2 % sur la valeur en douane ; TVA 18 % sur la valeur en douane + DD + RS + PCS + PC + PUA (directive n° 02/98/CM/UEMOA, art. 27).",
     "verbatim": "en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même.",
     "reference": "Tarif TEC-CEDEAO SH2022 de la DGDDI ; loi de finances 2026, art. 13 ; circulaire DGD n° 2258 (Côte d'Ivoire) ; directive n° 02/98/CM/UEMOA, art. 27",
-    "portee": "backend/data/crawled/BEN_tariffs.json régénéré (scripts/extraire_tec_ben.py, scripts/convertir_tec_ben.py ; scellé, empreinte au registre des sources) ; scripts/build_socle._prelevements_benin fixe l'assiette de la TVA.",
+    "portee": "backend/data/crawled/BEN_tariffs.json régénéré (scripts/extraire_tec_ben.py, scripts/convertir_tec_ben.py ; scellé, empreinte au registre des sources) ; l'assiette de la TVA est celle de la table des assiettes établies pour l'UEMOA (CIF+TOUS_SAUF_TVA, fiche UEMOA_assiette_TVA_2026-09-14.json), soit la valeur en douane + DD + RS + PCS + PC + PUA.",
     "texte_archive": "sources/BEN_prelevements_TVA.extrait.txt",
     "sha256": "f709b9677e956a88cb93c2ee7ced556e6da299aac8de0940894fc6f5b6e55a7a"
   },

@@ -27,7 +27,9 @@ AJOUTS = [
     ("PCS", "Prélèvement Communautaire de Solidarité (UEMOA)", 0.8, "CIF"),
     ("PCC", "Prélèvement Communautaire CEDEAO", 0.5, "CIF"),
     ("PUA", "Prélèvement de solidarité (Union africaine)", 0.2, "CIF"),
-    ("TVA", "Taxe sur la Valeur Ajoutée", 18.0, "variable"),
+    # Assiette laissée vide : la table des assiettes établies y place celle de la
+    # directive n° 02/98/CM/UEMOA (valeur en douane + droits et taxes d'entrée).
+    ("TVA", "Taxe sur la Valeur Ajoutée", 18.0, None),
 ]
 
 tec = json.load(open(sys.argv[1], encoding="utf-8"))

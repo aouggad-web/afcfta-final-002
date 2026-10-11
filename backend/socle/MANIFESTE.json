@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-11T21:41:48.258867+00:00",
+  "construit_le": "2026-10-11T22:14:01.516276+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -78,9 +78,9 @@
       "fichier": "BEN.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BEN_tariffs.json",
-      "source_sha256": "7aa9e717e75da098cdc60365388e2b69085a9dc256126667a8c6a4d77317d250",
-      "socle_sha256": "08a14bd291f28e8c307cd2873205b84335456f6a71340d215a9c5a7729b33941",
-      "collecte": "2026-10-11T21:41:46.882155+00:00",
+      "source_sha256": "ba9f7a7c5efd1e4faa542586474c26b597c92a8f5ccb34e1564223e983f7a872",
+      "socle_sha256": "bc51c6adff17bceba3cb8056a2cd2b21196b2ddded390ef36a6b1ab3bdae353e",
+      "collecte": "2026-10-11T22:13:59.796030+00:00",
       "etat": "PARTIEL",
       "familles": [
         "communautaire",

@@ -587,7 +587,7 @@
     "BEN": {
       "organism": "Direction Générale des Douanes — douanes.gouv.bj + TEC CEDEAO",
       "version": "2026.1",
-      "sha256": "7aa9e717e75da098cdc60365388e2b69085a9dc256126667a8c6a4d77317d250",
+      "sha256": "ba9f7a7c5efd1e4faa542586474c26b597c92a8f5ccb34e1564223e983f7a872",
       "artifact_path": "backend/data/crawled/BEN_tariffs.json",
       "artifact_url": null,
       "source_type": "regional_org",
@@ -595,7 +595,7 @@
       "retrieved_at": "2026-06-16",
       "edition": "TEC CEDEAO (Règlement C/REG.16/12/21) + taxes nationales",
       "hs_version": "HS 2022",
-      "code_digits": 13,
+      "code_digits": 10,
       "positions_count": 6381,
       "validation_status": "verified",
       "taxes": [
