@@ -23,11 +23,11 @@
     "TAI liquidée sur la valeur CAF, comme le droit de douane, et comprise dans les droits d'entrée.",
     "TCI (sucres, 55 %) : assise sur un prix de déclenchement non publié, sans assiette ; l'ISCP et la TVA des quatre positions restent indisponibles.",
     "Écarts relevés entre la collecte de février 2026 et le tarif de la DGD : 430 positions SH 2022 absentes de la collecte, 176 positions de la collecte disparues, 6 droits de douane et 242 TVA différents.",
-    "La TVA garde l'assiette « CIF+TOUS_SAUF_TVA » déjà établie pour l'UEMOA (texte primaire), que les art. 198 et 199 du CGI confirment."
+    "La TVA garde l'assiette « CIF+TOUS_SAUF_TVA » déjà établie pour l'UEMOA (texte primaire), que les art. 198 et 199 du CGI confirment.",
+    "Exemption du PC-AES pour les marchandises originaires de l'AES et de l'UEMOA, prise du même texte de presse que le prélèvement lui-même : appliquée selon l'origine déclarée (fiche UEMOA_AES_PCS_PC-AES_2026-10-11.json)."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Taux de l'ISCP et de la TVA fixés par décret ou loi de finances après décembre 2023 : non relevés ; le tarif de la DGD de 2023 fait foi.",
-    "Exemption du PC-AES pour les marchandises originaires de l'AES : rapportée par la presse, non appliquée faute de texte officiel.",
     "Taxe intérieure sur les produits pétroliers (TIPP, CGI art. 250 à 253, taux par arrêté) : absente du tarif, non liquidée.",
     "Contribution au PVI (0,75 % de la valeur FOB), redevance informatique et frais de prestataires : hors périmètre."
   ],

@@ -1,0 +1,69 @@
+Burkina Faso — TVA à l'importation, taxe sur les boissons, taxe sur le café et le thé,
+taxe sur les noix de colas, droits de douane du TEC — extraits verbatim
+=====================================================================================
+
+1. Code général des impôts (loi n° 058-2017/AN du 20 décembre 2017), édition officielle
+   de la DGI à jour de la loi de finances 2023
+   https://dgi.bf/wp-content/uploads/2023/10/CODE-GENERAL-DES-IMPOTS-2023-A-JOUR-AVEC-LA-LOI-DE-FINANCE-2023.pdf
+   PDF : sha256 01565200e1e8a9edb50aa81d225aed6b3d64ace8554feaeb9a125c3f0f8d9118
+
+   Art. 310, 4° :
+   « 4° pour les importations par la valeur en douane des marchandises augmentée des
+   droits et taxes de porte de toute nature liquidés par l’administration des douanes ; »
+
+   Art. 356 (taxe sur les boissons, exonérations) :
+   « Sont exonérées de la taxe, les fabrications ou importations portant sur les
+   produits suivants : 1° les produits médicamenteux alcoolisés ; [...] 4° les eaux, y
+   compris les eaux minérales naturelles ou artificielles et les eaux gazéifiées, non
+   additionnées de sucre ou d’autres édulcorants, ni aromatisées ; 5° les vinaigres ; »
+
+   Art. 358, al. 2 :
+   « Pour les produits importés, la taxe est assise sur la valeur en douane majorée des
+   droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la
+   valeur ajoutée. »
+
+   Art. 359, II :
+   « II. Boissons non alcoolisées
+   1. Boissons non alcoolisées énergisantes : 50%
+   2. Autres boissons non alcoolisées : 15%
+   Par boisson alcoolisée, il faut entendre toutes les boissons d’une teneur en alcool
+   supérieure à zéro virgule cinq (0,5) degré. »
+
+   Art. 380, 5) : « Le taux de la taxe est fixé à 12 %. »
+   Art. 381, 5) : « Le taux applicable est fixé à 10 %. »
+
+2. Loi n° 042-2023/ALT portant loi de finances pour l'exécution du budget de l'État,
+   exercice 2024
+   https://an.bf/storage/Loi/G4zinag0oZL5pCc7QDGCfasMCeYmf15ndbJnUZsw.pdf
+   PDF : sha256 d85732eb067368a22d0961e7520c2aa1384353f9e193cb605b93d98b1b6943c4
+
+   Article 28 (art. 356, 8°) :
+   « 8° les alcools importés au Burkina Faso pour la production de boissons ou liquides
+   alcoolisés, ainsi que les concentrés de jus de fruits ou de légumes importés et
+   destinés à l’industrie de production de boissons. Les modalités de mise en œuvre de
+   ces exonérations sont fixées par arrêté du Ministre chargé des finances. »
+
+   Article 29 (art. 359) :
+   « Il est fait application des taux suivants quelle que soit l’origine des produits :
+   I. Boissons alcoolisées
+   1. Bières titrant moins de 8° d’alcool : 30%
+   2. Bières titrant 8° d'alcool et plus : 40%
+   3. Vins : 70%
+   4. Autres boissons alcoolisées titrant moins de 35° d’alcool : 50%
+   5. Autres boissons alcoolisées titrant 35° d’alcool et plus : 70%
+   Le reste sans changement. »
+
+   Article 31 (art. 380, 4) et article 32 (art. 381, 4) :
+   « 4) La taxe est assise sur la valeur en douane des marchandises majorée des droits et
+   taxes perçus par les services de la douane, à l'exception de la taxe sur la valeur
+   ajoutée. »
+
+3. Tarif extérieur commun de l'UEMOA, édition 2022 (= TEC CEDEAO SH 2022), colonnes
+   DD RS PCS PC
+   Chapitre 7 : https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-7-Legumes-plantes-racines.pdf
+   PDF : sha256 ae81fc4880e2fbb55ec85b0e235070fe3de469d0a4db4c25714d9f9663a3f9e7
+   « 0701.90.00.00   Autres                                               kg    35      1    0,8    0,5 »
+   « 0703.10.00.00   Oignons et échalotes                                 kg    35      1    0,8    0,5 »
+   Chapitre 15 : https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-15-Graisses-huiles-animales.pdf
+   PDF : sha256 e867b93ff2e6332c32e8218d235fbab1f2bdec6969fd5130437c79a5c04582bc
+   « 1511.10.00.00   Huile brute                                        kg   10    1     0,8   0,5 »

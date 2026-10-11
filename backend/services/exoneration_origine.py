@@ -8,7 +8,11 @@ exclues (fiche ORIGINE_prelevements_communautaires_2026-10-10.json) :
   la CEDEAO » ;
 - prélèvement de 0,2 % de l'Union africaine (PUA, AU Import Levy), décision
   Assembly/AU/Dec.605(XXVII) : « eligible goods originating from a non-Member
-  State ».
+  State » ;
+- prélèvement confédéral de l'AES (PC-AES), décision du Collège des Chefs
+  d'État du 28/03/2025 (connue par la presse), art. 4 : sont exclues « les
+  marchandises originaires de l'AES » et celles « obtenues ou produites dans un
+  Etat membre d'une union douanière avec les pays de l'AES », donc de l'UEMOA.
 
 Le socle marque ces lignes (« exoneration_origine ») ; la route les retire
 quand l'origine déclarée appartient au bloc. Sans origine, elles restent dues,
@@ -21,6 +25,7 @@ BLOCS = {
     "UEMOA": UEMOA,
     "CEDEAO": ECOWAS,
     "UA": frozenset(c["iso3"] for c in AFRICAN_COUNTRIES),
+    "AES_UEMOA": frozenset({"BFA", "MLI", "NER"}) | UEMOA,
 }
 
 
