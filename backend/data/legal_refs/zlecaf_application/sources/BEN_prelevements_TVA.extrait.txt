@@ -1,0 +1,21 @@
+Bénin — tarif de la DGDDI, prélèvements et assiette de la TVA à l'importation : extraits verbatim (relevés le 2026-10-11)
+
+1. DGDDI du Bénin, « TARIF EXTERIEUR COMMUN TEC-CEDEAO SH2022 », PDF de 392 pages (export Excel du 07/11/2024), sha256 30de07bde970367c62d359aba4119d5ebae1b2f7b04b75c692dd49010d895f81, versé sur la PR #620 (data/benin/docs_officiels/TEC-CEDEAO-SH2022-TARIF-BENIN.pdf), p. 1 :
+
+« TARIF EXTERIEUR COMMUN TEC-CEDEAO SH2022 N° de posi tion N.T.S. Désignation des marchandises U.S. D.D. R.S. 01.01 Chevaux, ânes, mulets et bardots, vivants. - Chevaux : 0101.21.00.00 -- Reproducteurs de race pure u 5 1 »
+
+Relevé sur les 6 381 positions (scripts/extraire_tec_ben.py) : R.S. 1 % sur 6 378 positions (non lue sur 3 positions en bas de page) ; D.D. 0, 5, 10, 20 ou 35 %.
+
+2. Loi de finances pour la gestion 2026 du Bénin, publiée par la DGDDI (PDF scanné de 15 pages, sha256 4ba14dbd85038228b55b78eb06260620edfb877c560f25f438bb4f36e53a9290, versé sur la PR #620, data/benin/docs_officiels/LOI-DES-FINANCES-2026-BENIN.pdf). Texte obtenu par OCR (tesseract), scories conservées :
+
+« Article 13 : Les exonérations prévues aux articles 5 & 9 et 12 ci-dessus ne couvrent pas les prélévements, taxes et redevance ci-aprés : ~prélévement communautaire de solidarité (PCS) ; - prélévement communautaire (PC) ; - prélévement de solidarité (PS) : - toxe de statistique (T.STAT) : - timbre douanier (TD) : -redevonce d’aménagement urbain (RAU] : ~ taxe de voirie (TV). »
+
+3. Taux du prélèvement communautaire de solidarité de l'UEMOA et du prélèvement communautaire de la CEDEAO : circulaire DGD n° 2258/MBPE/DGD de Côte d'Ivoire (extrait archivé sources/CIV_prelevements_TVA.extrait.txt) :
+
+« les taux de la Redevance Statistique (RS) et du Prélevement Communautaire de la CEDEAO (PCC), inscrits au TEC CEDEAO, restent fixés respectivement a 1% et 0,5% ; - le Prélévement Communautaire de Solidarité de l'UEMOA (PCS) et le Prélévement de |'Union Africaine (PUA) demeurent en vigueur aux taux respectifs de 0,8% et 0,2%. Je rappelle que la taxation pour l’application du TEC de la  »
+
+4. Assiette de la TVA à l'importation, extrait archivé sources/CIV_prelevements_TVA.extrait.txt :
+
+3. Directive n° 02/98/CM/UEMOA, art. 27 a), deuxième tiret (fiche UEMOA_assiette_TVA_2026-09-14.json, texte archivé sources/UEMOA_directive_02-98-CM_TVA.ocr-fra.txt) :
+
+« en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même. »

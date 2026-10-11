@@ -5,7 +5,6 @@
   "regions": {
     "ECOWAS_CET_WA15": {
       "members": [
-        "BEN",
         "BFA",
         "CPV",
         "GIN",
@@ -82,12 +81,26 @@
         "source_name": "Tarif extérieur commun de la CEDEAO, édition du Mali (DGD, 28/12/2023)",
         "scope_note": "Positions nationales à dix chiffres et colonnes DD, RS, PC, PCS, ISCP, TVA, TAI, TCI extraites du PDF de la DGD (scripts/extraire_tec_mli.py, SHA-256 consigné) ; fiche MLI_prelevements_TVA_2026-10-10.json."
       }
+    },
+    "BEN_NATIONAL": {
+      "members": [
+        "BEN"
+      ],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 6381,
+        "national_line_digits": [
+          10
+        ],
+        "source_name": "Tarif extérieur commun TEC-CEDEAO SH2022, tarif officiel de la DGDDI du Bénin (07/11/2024)",
+        "scope_note": "Positions nationales à dix chiffres et colonnes D.D. et R.S. extraites du PDF de la DGDDI (scripts/extraire_tec_ben.py, SHA-256 consigné) ; fiche BEN_prelevements_TVA_2026-10-11.json."
+      }
     }
   },
   "countries": {
     "BEN": {
-      "region": "ECOWAS_CET_WA15",
-      "national_extension_status": "NOT_AVAILABLE",
+      "region": "BEN_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "DOCUMENTED",
       "other_taxes_status": "UNVERIFIED",
       "calculation_order_status": "PARTIAL",

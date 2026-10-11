@@ -1751,6 +1751,25 @@ def _prelevements_burkina(positions):
                 )
 
 
+def _prelevements_benin(positions, compteurs):
+    """Bénin : tarif de la DGDDI (SH 2022, D.D. et R.S.) complété du PCS, du PC,
+    du prélèvement de solidarité de l'UA et de la TVA (fiche
+    BEN_prelevements_TVA_2026-10-11.json). Le CGI du Bénin n'ayant pas pu être
+    lu, l'assiette de la TVA suit la directive n° 02/98/CM/UEMOA, art. 27 : valeur
+    en douane majorée des droits et taxes perçus à l'entrée."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("famille") == "tva" and not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+                d["assiette"] = "CIF+DD+RS+PCS+PCC+PUA"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
+                    "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
+                )
+
+
 def _prelevements_cote_divoire(positions, compteurs):
     """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
     taxation nationale, mise à jour du 27/03/2026 ; fiche
@@ -2275,6 +2294,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_mali(positions, compteurs)
     if iso == "BFA":
         _prelevements_burkina(positions)
+    if iso == "BEN":
+        _prelevements_benin(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
