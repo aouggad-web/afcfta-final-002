@@ -53,3 +53,9 @@ def test_biere_selon_le_degre_sans_taux(positions):
     etat, lignes = _calcul(positions["2203001000"])
     assert lignes["DA"]["montant"] is None
     assert lignes["TVA"]["montant"] is None and etat != "COMPLET"
+
+
+def test_concentres_destines_a_l_industrie_exoneres(positions):
+    """Art. 356, 8° : concentrés de jus destinés à l'industrie de production de boissons."""
+    assert not any(d["code"] == "DA" for d in positions["2009111000"]["droits"])
+    assert next(d["taux"] for d in positions["2009119000"]["droits"] if d["code"] == "DA") == 15.0

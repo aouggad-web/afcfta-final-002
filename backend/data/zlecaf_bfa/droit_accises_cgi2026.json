@@ -30,7 +30,29 @@
    ],
    "taux": 15.0,
    "reference": "Code général des impôts du Burkina Faso, version consolidée de la DGI (dgi.bf/verification/CGI), art. 359 II.2 : « Autres boissons non alcoolisées : 15% » ; art. 356, 3° : seuls les jus fabriqués au Burkina Faso à partir de matières premières locales sont exonérés.",
-   "reserve": "Concentrés destinés à l'industrie de production de boissons exonérés (art. 356, 8°) : condition tenant à l'usage."
+   "reserve": "Concentrés en emballages de 25 kg ou plus destinés à l'industrie (sous-positions nationales en 1000) exclus : art. 356, 8°, concentrés « destinés à l'industrie de production de boissons ».",
+   "exclusions": [
+    "2009111000",
+    "2009121000",
+    "2009191000",
+    "2009211000",
+    "2009291000",
+    "2009311000",
+    "2009391000",
+    "2009411000",
+    "2009491000",
+    "2009501000",
+    "2009611000",
+    "2009691000",
+    "2009711000",
+    "2009791000",
+    "2009811000",
+    "2009891100",
+    "2009892100",
+    "2009893100",
+    "2009899100",
+    "2009901000"
+   ]
   },
   {
    "prefixes": [
