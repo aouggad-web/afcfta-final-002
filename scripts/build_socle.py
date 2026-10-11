@@ -92,6 +92,7 @@ FAMILLES = {
     "DSV": "redevance",
     "TCL": "redevance",
     "EXC": "accise",
+    "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
     "IAT": "accise",
@@ -1690,6 +1691,51 @@ def _prelevements_ghana(positions, compteurs):
         position["droits"] = droits
 
 
+def _prelevements_mali(positions, compteurs):
+    """Mali : tarif de la DGD (TEC CEDEAO, édition du Mali, 28/12/2023 ; fiche
+    MLI_prelevements_TVA_2026-10-10.json), sans assiette pour l'ISCP, la TAI, la
+    TCI ni la TVA. CGI art. 243 : ISCP sur « la valeur en douane majorée des
+    droits et taxes dus à l'entrée, à l'exception de la TVA » ; CGI art. 198 et
+    199 : TVA sur la valeur CAF, y compris « les impôts, taxes, droits et
+    prélèvements de toute nature à l'exception de la TVA »."""
+    entree = "DD+RS+PCS+PC-AES+TAI+TCI"
+    cgi = "Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017)"
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            code = d.get("code")
+            if code in ("TAI", "ISCP", "TVA") and not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+                d["assiette_origine"] = "regle_de_pays"
+            if code == "TAI":
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["note"] = "Taxe d'ajustement à l'importation, perçue sur la valeur CAF comme le droit de douane."
+            elif code == "ISCP":
+                d["assiette"] = "CIF+" + entree
+                d["note"] = (
+                    f"{cgi}, art. 243 : « à l'importation, par la valeur en douane majorée des droits et taxes "
+                    "dus à l'entrée, à l'exception de la TVA »."
+                )
+            elif code == "TVA":
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["note"] = (
+                    f"{cgi}, art. 198 : « pour les produits importés par la valeur CAF Franco frontière » ; art. 199 : "
+                    "« Sont à inclure dans la base d'imposition : les impôts, taxes, droits et prélèvements de toute "
+                    "nature à l'exception de la TVA »."
+                )
+            elif code == "TCI":
+                d["note"] = (
+                    "Taxe conjoncturelle à l'importation : assise sur un prix de déclenchement non publié ; "
+                    "l'ISCP et la TVA de la position restent indisponibles."
+                )
+            elif code == "PC-AES":
+                d["note"] = (
+                    "Colonne PC (0,5 %) du tarif de 2023, prélèvement de la CEDEAO quittée le 29/01/2025 ; servie "
+                    "comme prélèvement confédéral de l'AES au même taux (décision du 28/03/2025)."
+                )
+
+
 def _prelevements_cote_divoire(positions, compteurs):
     """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
     taxation nationale, mise à jour du 27/03/2026 ; fiche
@@ -2210,6 +2256,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_cote_divoire(positions, compteurs)
     if iso == "GHA":
         _prelevements_ghana(positions, compteurs)
+    if iso == "MLI":
+        _prelevements_mali(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on

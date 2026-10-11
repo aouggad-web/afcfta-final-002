@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "objet": "Mali : tarif de la DGD (TEC CEDEAO, édition du Mali, 28/12/2023), prélèvements (RS, PCS, PC-AES), ISCP, TAI, TCI et assiette de la TVA à l'importation",
+  "destination_iso3": "MLI",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — tarif de la DGD (édition du Mali, colonnes par position) et Code général des impôts (DGI, art. 198, 199 et 243) ; prélèvement confédéral de l'AES : presse seulement",
+  "source": {
+    "url": "https://douanes.gouv.ml/",
+    "institution": "Direction générale des douanes et Direction générale des impôts du Mali"
+  },
+  "regle": {
+    "valeur": "Source du socle MLI : tarif de la DGD (6 382 positions SH 2022), lu colonne par colonne, à la place de la collecte du 19/02/2026 (6 129 positions SH 2017, PCS à 1 %, TVA à 18 % sur toutes les positions, sans ISCP). DD, RS 1 %, PCS 0,8 %, PC-AES 0,5 % et TAI sur la valeur CAF ; ISCP sur la valeur CAF + DD + RS + PCS + PC-AES + TAI + TCI (CGI art. 243) ; TVA (0, 5 ou 18 % selon la position) sur la valeur CAF + tous les droits et taxes autres que la TVA (CGI art. 198 et 199).",
+    "verbatim": "Art.199.- Sont à inclure dans la base d’imposition : · les impôts, taxes, droits et prélèvements de toute nature à l’exception de la TVA ;",
+    "reference": "Tarif extérieur commun de la CEDEAO, édition du Mali (28/12/2023) ; CGI du Mali, art. 198, 199 et 243",
+    "portee": "backend/data/crawled/MLI_tariffs.json régénéré depuis le tarif (scripts/extraire_tec_mli.py, scripts/convertir_tec_mli.py ; scellé, empreinte reportée dans backend/data/source_registry_v2.json) ; scripts/build_socle._prelevements_mali fixe les assiettes.",
+    "texte_archive": "sources/MLI_prelevements_TVA.extrait.txt",
+    "sha256": "3be7905b37c6729490adad77c8b9e4287f7f1a02e9827f48b101895092c28fae"
+  },
+  "decisions": [
+    "Le tarif de 2023 précède la sortie du Mali de la CEDEAO (29/01/2025) : sa colonne PC (prélèvement communautaire, 0,5 %) est servie sous le code PC-AES, prélèvement confédéral de l'AES au même taux, institué le 28/03/2025 (presse : APA, Maliweb, Koaci) ; aucun texte officiel n'a été lu.",
+    "PCS à 0,8 % (tarif de la DGD) au lieu de 1 % (collecte de février 2026).",
+    "TAI liquidée sur la valeur CAF, comme le droit de douane, et comprise dans les droits d'entrée.",
+    "TCI (sucres, 55 %) : assise sur un prix de déclenchement non publié, sans assiette ; l'ISCP et la TVA des quatre positions restent indisponibles.",
+    "Écarts relevés entre la collecte de février 2026 et le tarif de la DGD : 430 positions SH 2022 absentes de la collecte, 176 positions de la collecte disparues, 6 droits de douane et 242 TVA différents.",
+    "La TVA garde l'assiette « CIF+TOUS_SAUF_TVA » déjà établie pour l'UEMOA (texte primaire), que les art. 198 et 199 du CGI confirment."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taux de l'ISCP et de la TVA fixés par décret ou loi de finances après décembre 2023 : non relevés ; le tarif de la DGD de 2023 fait foi.",
+    "Exemption du PC-AES pour les marchandises originaires de l'AES : rapportée par la presse, non appliquée faute de texte officiel.",
+    "Taxe intérieure sur les produits pétroliers (TIPP, CGI art. 250 à 253, taux par arrêté) : absente du tarif, non liquidée.",
+    "Contribution au PVI (0,75 % de la valeur FOB), redevance informatique et frais de prestataires : hors périmètre."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/MLI_prelevements_TVA.extrait.txt",
+      "sha256": "3be7905b37c6729490adad77c8b9e4287f7f1a02e9827f48b101895092c28fae"
+    },
+    {
+      "document_non_archive": "Tarif extérieur commun de la CEDEAO, édition du Mali (SH 2022, 448 p.), versé sur la PR #620 (data/mali/docs_officiels/TEC-CEDEAO-SH2023-MALI.pdf)",
+      "pdf_sha256": "69c0bbe5c34027af8d4712355e5d75a0d1057fcdb0ff2d9df0a2a008b5865cf3"
+    }
+  ]
+}
