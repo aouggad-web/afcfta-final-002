@@ -307,7 +307,7 @@ def test_search_handles_scalar_tax_maps(monkeypatch, tmp_path):
     monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
     monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: None)
 
-    result = service.search_tariff_lines("GIN", "7612909000", limit=1)[0]
+    result = service.search_tariff_lines("GIN", "7612900000", limit=1)[0]
 
     assert result["dd_rate"] == 20
     assert result["tva_rate"] == 18
