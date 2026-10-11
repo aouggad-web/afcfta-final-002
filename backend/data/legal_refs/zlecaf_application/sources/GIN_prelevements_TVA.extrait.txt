@@ -6,7 +6,7 @@ Guinée — tarif de la DGD, droits et taxes d'entrée, accises et assiette de l
 
 « 0101.21.00.00 -- Reproducteurs de race pure 1 u 5 2% ex ex 0,50% 0,25% 2% »
 
-Relevé sur les 6 379 positions (scripts/extraire_tec_gin.py) : RTL 2 %, PC 0,5 %, CA 0,25 % ; AC (accises) sur 101 positions ; TVA 18 % ou « ex ».
+Relevé sur les 6 379 positions (scripts/extraire_tec_gin.py) : RTL 2 %, PC 0,5 %, CA 0,25 % ; AC (accises) sur 85 positions lues, dont 6 montants spécifiques servis sans taux ; DA sans taux sur les 15 positions non lues ; TVA 18 % ou « ex ».
 
 2. Ministère du Budget, arrêté du 31/03/2017 portant entrée en vigueur du TEC de la CEDEAO en République de Guinée, publié par la DGD (PDF scanné de 14 pages, sha256 3aea3577e70e0afac8c8d906b431acf1a9e7e6234b123a295d1694f37904a8c3, versé sur la PR #620, data/guinee/docs_officiels/TEC-DGD-GUINEE-2024.pdf). Texte obtenu par OCR (tesseract), scories conservées :
 

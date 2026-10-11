@@ -667,7 +667,7 @@
       "version": null,
       "artifact_path": "backend/data/crawled/GIN_tariffs.json",
       "artifact_url": null,
-      "sha256": "0372c9a1faa24601236436757e1e5016655942a2c2f57f388146942b51735a4e",
+      "sha256": "5fb3175669067e7c4dbad14fb29dbbd4c767e03da56393ffe6be13100d31ec16",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
         "CA",

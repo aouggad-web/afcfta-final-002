@@ -39,11 +39,12 @@ if os.path.exists(SORTIE):
 positions = []
 for code, valeurs in sorted(tec.items()):
     detail = []
+    lue = any(valeurs.get(c) is not None for c, *_ in COLONNES)
     for col, canon, nom, base in COLONNES:
         taux = valeurs.get(col)
-        if col == "AC" and not taux:
+        if col == "AC" and (taux == 0 or (taux is None and lue)):
             continue
-        if col == "AC" and taux > 100:
+        if col == "AC" and taux is not None and taux > 100:
             taux = None
             nom += " — montant spécifique, unité non lue"
         detail.append({"tax_code": canon, "tax_name": nom, "rate": taux, "rate_type": "ad_valorem", "base": base})
@@ -69,7 +70,7 @@ artefact = {
     "notes": [
         "Tarif de la DGD (SH 2022) remplaçant la collecte du 19 février 2026 (SH 2017, sans RTL, accises ni centime additionnel).",
         "« ex » au tarif : taxe non due (TVA à 0 %, accise omise).",
-        "15 positions dont les valeurs n'ont pas été lues (cellule coupée par un saut de page) : taux non renseignés.",
+        "15 positions dont les valeurs n'ont pas été lues (cellule coupée par un saut de page) : taux non renseignés, accise comprise.",
     ],
     "positions": positions,
 }

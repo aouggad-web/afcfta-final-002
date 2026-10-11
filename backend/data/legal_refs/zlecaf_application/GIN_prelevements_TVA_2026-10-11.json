@@ -15,7 +15,7 @@
     "reference": "Tarif TEC CEDEAO SH 2022 de la DGD ; arrêté du Ministère du Budget du 31/03/2017, art. 7, 9 et 12 ; CGI de Guinée (texte 2022), art. 436 ; Ministère du Budget, « Le système fiscal guinéen »",
     "portee": "backend/data/crawled/GIN_tariffs.json régénéré (scripts/extraire_tec_gin.py, scripts/convertir_tec_gin.py ; scellé, empreinte au registre des sources) ; scripts/build_socle._prelevements_guinee fixe les assiettes du droit d'accises et de la TVA ; RTL et CA rangés dans la famille « redevance », liquidée avant les accises.",
     "texte_archive": "sources/GIN_prelevements_TVA.extrait.txt",
-    "sha256": "66fed9f5a4b36b5862f3ee9e694a75df2c674d38c1814a1ced8a078471901a62"
+    "sha256": "b552b38d6405482eb5a140912d417f883f69bbb258f6268f7d573b1fd79c9aa4"
   },
   "decisions": [
     "Le droit fiscal à l'importation (DFI) cité par le collaborateur a été remplacé par le droit de douane (arrêté du 31/03/2017, art. 7) : il n'est pas ajouté.",
@@ -32,7 +32,7 @@
   "documents_archives": [
     {
       "texte_archive": "sources/GIN_prelevements_TVA.extrait.txt",
-      "sha256": "66fed9f5a4b36b5862f3ee9e694a75df2c674d38c1814a1ced8a078471901a62"
+      "sha256": "b552b38d6405482eb5a140912d417f883f69bbb258f6268f7d573b1fd79c9aa4"
     },
     {
       "document_non_archive": "DGD, TEC CEDEAO SH 2022, versé sur la PR #620 (data/guinee/docs_officiels/TEC-SH2022-GUINEE.pdf)",
@@ -41,6 +41,10 @@
     {
       "document_non_archive": "Arrêté du 31/03/2017 (TEC CEDEAO), versé sur la PR #620 (data/guinee/docs_officiels/TEC-DGD-GUINEE-2024.pdf)",
       "pdf_sha256": "3aea3577e70e0afac8c8d906b431acf1a9e7e6234b123a295d1694f37904a8c3"
+    },
+    {
+      "document_non_archive": "Ministère du Budget, « Le système fiscal guinéen », versé sur la PR #620 (data/guinee/docs_officiels/SYSTEME-FISCAL-GUINEEN.pdf)",
+      "pdf_sha256": "5c2eddb6586cfb4f89ce97b5840679489e8ca12e8c563fb36adc3da63a67c7e1"
     },
     {
       "document_non_archive": "CGI de Guinée (texte 2022), https://mbudget.gov.gn/wp-content/uploads/2022/05/Code-General-des-Impots-2022-2.pdf",

@@ -8,7 +8,7 @@
   "nomenclature": "TEC CEDEAO (SH 2022), tarif de la DGD de Guinée",
   "data_type": "national",
   "currency": "GNF (Franc Guinéen)",
-  "extracted_at": "2026-10-11T22:52:25.603883+00:00",
+  "extracted_at": "2026-10-11T23:08:54.008615+00:00",
   "total_positions": 6379,
   "source_document": {
     "titre": "Tarif extérieur commun de la CEDEAO, SH 2022, DGD de Guinée (colonnes DD, RTL, AC, TVA, PC, CA, DFE), 18/01/2022",
@@ -20,7 +20,7 @@
   "notes": [
     "Tarif de la DGD (SH 2022) remplaçant la collecte du 19 février 2026 (SH 2017, sans RTL, accises ni centime additionnel).",
     "« ex » au tarif : taxe non due (TVA à 0 %, accise omise).",
-    "15 positions dont les valeurs n'ont pas été lues (cellule coupée par un saut de page) : taux non renseignés."
+    "15 positions dont les valeurs n'ont pas été lues (cellule coupée par un saut de page) : taux non renseignés, accise comprise."
   ],
   "positions": [
     {
@@ -12578,6 +12578,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -12608,6 +12609,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -14231,6 +14239,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -14261,6 +14270,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -14630,6 +14646,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -14660,6 +14677,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -14972,6 +14996,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -15002,6 +15027,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -15257,6 +15289,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -15287,6 +15320,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -15542,6 +15582,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -15572,6 +15613,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -45695,6 +45743,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -45725,6 +45774,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -45809,6 +45865,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -45839,6 +45896,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -45923,6 +45987,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -45953,6 +46018,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -46208,6 +46280,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -46238,6 +46311,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -104562,6 +104642,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -104592,6 +104673,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -111345,6 +111433,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -111375,6 +111464,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -154011,6 +154107,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -154041,6 +154138,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -160338,6 +160442,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -160368,6 +160473,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -196647,6 +196759,7 @@
         "RTL": null,
         "PCC": null,
         "CA": null,
+        "DA": null,
         "TVA": null
       },
       "taxes_detail": [
@@ -196677,6 +196790,13 @@
           "rate": null,
           "rate_type": "ad_valorem",
           "base": "CIF"
+        },
+        {
+          "tax_code": "DA",
+          "tax_name": "Droit d'accises (colonne AC du tarif)",
+          "rate": null,
+          "rate_type": "ad_valorem",
+          "base": "variable"
         },
         {
           "tax_code": "TVA",
@@ -364308,10 +364428,10 @@
     }
   ],
   "_integrity_seal": {
-    "content_hash": "9437f60c1b8b15ca2ec74382d680ff5c9f418432a71a4e287635ae149eb00c7b",
+    "content_hash": "e0e57e2b5d107a0b67094e25e4542142f63cf17aec540c5e3b3b33de875be58b",
     "source_url": "https://dgd.gov.gn/",
     "source_hash": null,
-    "crawled_at": "2026-10-11T22:52:26.360859+00:00",
+    "crawled_at": "2026-10-11T23:08:54.761713+00:00",
     "verified": true,
     "algorithm": "SHA-256"
   }
