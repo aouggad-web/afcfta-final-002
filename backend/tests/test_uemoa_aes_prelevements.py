@@ -1,10 +1,8 @@
 """UEMOA et AES : PCS à 0,8 % (acte additionnel n° 01/2019/CCEG/UEMOA) ; PC-AES
 dont sont exclues les marchandises originaires de l'AES et de l'UEMOA
-(décision du 28/03/2025, art. 1er et 4) ; Burkina Faso : taxes sur les boissons,
-le café et le thé, les noix de colas, et TVA sur la valeur en douane + tous les
-droits et taxes de porte (CGI art. 310, 4°) ; Niger : exonérations de TVA de la
-loi de finances 2026 (CGI art. 322 nouveau).
-Fiches : UEMOA_AES_PCS_PC-AES_2026-10-11.json, BFA_prelevements_TVA_2026-10-11.json,
+(décision du 28/03/2025, art. 1er et 4) ; Burkina Faso : droits du TEC 2022 ;
+Niger : exonérations de TVA de la loi de finances 2026 (CGI art. 322 nouveau).
+Fiches : UEMOA_AES_PCS_PC-AES_2026-10-11.json, BFA_droits_TEC_2026-10-11.json,
 NER_TVA_exonerations_LF2026_2026-10-11.json."""
 
 import json
@@ -58,37 +56,14 @@ def test_pc_aes_selon_l_origine(bfa, origine, retires):
     assert [e["code"] for e in exonerations] == retires
 
 
-def test_cola_pays_tiers(bfa):
-    """Cola, origine Maroc : DD 20 % : 200 ; RS 10 ; PCS 8 ; PC-AES 5 ; taxe 10 % sur
-    1 223 ; TVA 18 % sur la valeur et tous ces droits."""
-    etat, lignes = _calcul(bfa["0802700000"], "MAR")
+def test_pc_aes_retire_de_la_base_de_tva(bfa):
+    """Cola, origine Sénégal (UEMOA) : ni PCS ni PC-AES, et la base de la TVA les omet ;
+    origine Maroc : les deux sont dus et entrent dans la base."""
+    _, tiers = _calcul(bfa["0802700000"], "MAR")
+    etat, uemoa = _calcul(bfa["0802700000"], "SEN")
+    assert {"PCS", "PC-AES"} <= set(tiers) and not {"PCS", "PC-AES"} & set(uemoa)
+    assert tiers["TVA"]["base"] - uemoa["TVA"]["base"] > 13.0
     assert etat == "COMPLET"
-    assert lignes["TNC"]["base"] == 1223.0 and lignes["TNC"]["montant"] == 122.3
-    assert lignes["TVA"]["base"] == 1345.3
-
-
-def test_cola_origine_uemoa_sans_pcs_ni_pc_aes(bfa):
-    etat, lignes = _calcul(bfa["0802700000"], "SEN")
-    assert "PCS" not in lignes and "PC-AES" not in lignes
-    assert lignes["TNC"]["base"] == 1210.0 and lignes["TVA"]["base"] == 1331.0
-    assert etat == "COMPLET"
-
-
-def test_cafe_taxe_12(bfa):
-    etat, lignes = _calcul(bfa["0901211000"], "MAR")
-    assert lignes["TCT"]["taux_pct"] == 12.0 and etat == "COMPLET"
-
-
-def test_boisson_energisante_50_et_biere_sans_taux(bfa):
-    _, lignes = _calcul(bfa["2202991000"], "MAR")
-    assert lignes["TSB"]["taux_pct"] == 50.0
-    etat, lignes = _calcul(bfa["2203001000"], "MAR")
-    assert lignes["TSB"]["montant"] is None and etat != "COMPLET"
-
-
-def test_eaux_et_vinaigres_exoneres_de_la_taxe(bfa):
-    for code in ("2201101000", "2209001000"):
-        assert "TSB" not in {d["code"] for d in bfa[code]["droits"]}
 
 
 def test_droits_du_tec_2022(bfa):

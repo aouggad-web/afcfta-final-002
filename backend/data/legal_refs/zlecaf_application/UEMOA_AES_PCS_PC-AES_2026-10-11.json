@@ -11,7 +11,7 @@
   },
   "regle": {
     "pcs": {
-      "valeur": "PCS à 0,8 % de la valeur en douane, au lieu de 1 % dans les collectes du Burkina, du Niger, du Bénin, du Togo et de la Guinée-Bissau (le Mali, le Sénégal et la Côte d'Ivoire portaient déjà 0,8 %).",
+      "valeur": "PCS à 0,8 % de la valeur en douane, au lieu de 1 % dans les collectes du Niger, du Bénin, du Togo et de la Guinée-Bissau (le Burkina est corrigé par sa propre passe, le Mali, le Sénégal et la Côte d'Ivoire portaient déjà 0,8 %).",
       "verbatim": "Le Prélèvement Communautaire de Solidarité (PCS) institue par l’Acte additionnel n° 04/96 du 10 mai 1996 susvisé est maintenu à 0,80 % de la valeur en douane des marchandises importées des pays tiers par les États membres de l’Union pour compter du 1 er janvier 2020.",
       "reference": "Acte additionnel n° 01/2019/CCEG/UEMOA du 12/07/2019, article premier (BO UEMOA n° 105, p. 1)",
       "portee": "scripts/build_socle._pcs_uemoa, appliqué aux huit États de l'UEMOA sur les lignes PCS à 1 %. L'exclusion des originaires de l'Union (acte 04/96, art. 17) était déjà appliquée (fiche ORIGINE_prelevements_communautaires_2026-10-10.json).",

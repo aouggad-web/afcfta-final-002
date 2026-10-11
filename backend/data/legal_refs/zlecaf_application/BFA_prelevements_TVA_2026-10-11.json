@@ -1,74 +1,51 @@
 {
   "schema_version": 1,
-  "objet": "Burkina Faso : assiette de la TVA à l'importation ; taxe sur les boissons, taxe sur le café et le thé, taxe sur les noix de colas ; trois droits du TEC",
+  "objet": "Burkina Faso : PCS de l'UEMOA, taxes spécifiques à l'importation (boissons, tabacs, parfumerie et cosmétiques, emballages plastiques, café et thé, noix de colas, véhicules de 13 CV et plus, armes et munitions) et assiette de la TVA à l'importation",
   "destination_iso3": "BFA",
   "verified_at": "2026-10-11",
   "etabli": true,
-  "evidence_level": "primaire — Code général des impôts (loi n° 058-2017/AN), édition DGI à jour de la loi de finances 2023 ; loi n° 042-2023/ALT (loi de finances 2024) ; TEC UEMOA 2022 (e-docucenter.uemoa.int)",
+  "evidence_level": "primaire — CGI consolidé de la DGI (dgi.bf, articles annotés de leurs lois modificatives jusqu'à la LF 2024) ; loi de finances 2026 (JO spécial n°01, OCR) et présentation de la DGI ; taux du PCS : circulaire DGD n° 2258 de Côte d'Ivoire et tarif de la DGD du Mali",
   "source": {
-    "url": "https://dgi.bf/wp-content/uploads/2023/10/CODE-GENERAL-DES-IMPOTS-2023-A-JOUR-AVEC-LA-LOI-DE-FINANCE-2023.pdf",
-    "institution": "Direction générale des impôts du Burkina Faso ; Assemblée législative de transition ; Commission de l'UEMOA"
+    "url": "https://dgi.bf/verification/CGI",
+    "institution": "Direction générale des impôts du Burkina Faso"
   },
   "regle": {
-    "tva": {
-      "valeur": "TVA (18 %) sur CIF+TOUS_SAUF_TVA, au lieu de CIF+DD+RS+PCS : le PC-AES et les taxes ci-dessous entrent dans la base.",
-      "verbatim": "4° pour les importations par la valeur en douane des marchandises augmentée des droits et taxes de porte de toute nature liquidés par l’administration des douanes ;",
-      "reference": "CGI art. 310, 4° (inchangé par les lois de finances 2025, art. 29, et 2026, art. 21)",
-      "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
-      "sha256": "ccfe92d72fb1d1135d7a8614702752fe56721a995036e7b0273bb56507a7dc48"
-    },
-    "taxes_a_l_importation": {
-      "valeur": "TSB : 50 % (boissons énergisantes 2202.99.10), 15 % (2202.10, 2202.91, 2202.99.90), 70 % (vins 2204.10, 2204.21, 2204.22, 2204.29.90), 50 % (2206.00.99) ; sans taux sur 2203, 2205, 2206.00.10, 2206.00.91, 2204.29.10, 2204.30, 2208 et 2009 ; aucune sur 2201 et 2209 (exonérés). Taxe sur le café et le thé : 12 % sur 09.01 et 09.02 (sans taux sur 0901.90). Taxe sur les noix de colas : 10 % sur 0802.70. Assiette : CIF+DD+RS+PCS+PC-AES. Toutes origines.",
-      "verbatim": "Pour les produits importés, la taxe est assise sur la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la valeur ajoutée.",
-      "verbatim_taux_boissons": "Il est fait application des taux suivants quelle que soit l’origine des produits : I. Boissons alcoolisées 1. Bières titrant moins de 8° d’alcool : 30% 2. Bières titrant 8° d'alcool et plus : 40% 3. Vins : 70% 4. Autres boissons alcoolisées titrant moins de 35° d’alcool : 50% 5. Autres boissons alcoolisées titrant 35° d’alcool et plus : 70% Le reste sans changement.",
-      "verbatim_cafe_cola": "Art. 380, 5) Le taux de la taxe est fixé à 12 %. Art. 381, 5) Le taux applicable est fixé à 10 %.",
-      "reference": "CGI art. 356, 358, 359, 380 et 381 ; loi n° 042-2023/ALT, art. 28, 29, 31 et 32",
-      "portee": "scripts/build_socle._prelevements_burkina.",
-      "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
-      "sha256": "ccfe92d72fb1d1135d7a8614702752fe56721a995036e7b0273bb56507a7dc48"
-    },
-    "droits_tec": {
-      "valeur": "DD : 0701.90.00.00 et 0703.10.00.00 à 35 % (collecte : 20 %) ; 1511.10.00.00 à 10 % (collecte : 5 %).",
-      "verbatim": "0703.10.00.00   Oignons et échalotes                                 kg    35      1    0,8    0,5",
-      "reference": "TEC UEMOA 2022, chapitres 7 (n° 07.01, 07.03) et 15 (n° 15.11)",
-      "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
-      "sha256": "ccfe92d72fb1d1135d7a8614702752fe56721a995036e7b0273bb56507a7dc48"
-    }
+    "valeur": "PCS 0,8 % au lieu de 1 % (collecte). Taxes spécifiques (backend/data/zlecaf_bfa/droit_accises_cgi2026.json, ligne DA) sur la valeur en douane + DD + RS + PCS + PC-AES : boissons non alcoolisées 15 % (énergisantes 50 %), jus 15 %, vins 70 %, autres boissons alcoolisées fermentées 50 %, tabacs 55 %, parfumerie et cosmétiques 15 %, café et thé 12 %, noix de colas 10 %, armes et munitions 40 %. TVA (18 %) sur la valeur en douane + tous les droits et taxes de porte liquidés par la douane, taxe spécifique comprise (art. 310, 4°).",
+    "verbatim": "4° pour les importations par la valeur en douane des marchandises augmentée des droits et taxes de porte de toute nature liquidés par l’administration des douanes ;",
+    "reference": "CGI du Burkina Faso, art. 310, 356, 358, 359, 364, 365, 370, 371, 373, 376, 377, 380, 381, 382 ; loi n°021-2025/ALT (LFI 2026), art. 24 (art. 382-1 du CGI)",
+    "portee": "scripts/build_socle._prelevements_burkina (PCS) ; scripts/build_socle._accises_du_cgi avec ACCISES_PAYS['BFA'] (taxes spécifiques et assiette de la TVA).",
+    "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
+    "sha256": "c54ec3201ee49ed667383e8ee8093fc2e3c719c4fc8ddef5872abb2634826a87"
   },
   "decisions": [
-    "Le CGI versé sur la PR #620 est la version d'origine de 2017 (café et thé à 10 %, assiettes sur la seule valeur en douane) : l'édition DGI 2023 et la loi de finances 2024 font foi.",
-    "Le CGI ne donne aucun code SH : les correspondances retenues sont celles où le libellé de la position désigne sans ambiguïté la catégorie du texte ; les autres restent sans taux, avec leur motif en note.",
-    "Les taxes sont dues « quelle que soit l'origine des produits » (art. 359) ; les art. 380 et 381 ne prévoient aucune exonération d'origine."
+    "Le CGI versé sur la PR #620 est le texte de 2017 (loi n°058-2017/AN) : ses taux (boissons 35/30/10 %, tabacs 45 %, cosmétiques 10 %, café et thé 10 %) ont été relevés par les lois de finances 2019 à 2024 ; la version consolidée de la DGI est suivie.",
+    "Bières (30 % ou 40 % selon le degré) et spiritueux (50 % ou 70 % selon le degré), moûts de raisin, emballages plastiques (valeur forfaitaire par unité de conditionnement) et véhicules de tourisme (puissance) : sans taux, la position ne portant pas la donnée.",
+    "Exonérations tenant à l'usage ou à la production locale (vins de culte, concentrés pour l'industrie, boissons traditionnelles locales, armes des forces de défense) : taux général, réserve en note.",
+    "La base minimale de 300 FCFA pour 20 cigarettes (art. 364) n'est pas appliquée.",
+    "Taux du PCS : le Burkina Faso n'a pas de tarif ligne par ligne au dossier ; le taux communautaire de 0,8 % est celui de la circulaire ivoirienne n° 2258 et du tarif de la DGD du Mali, concordants."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Contribution pour la recherche et l'innovation (LFI 2026, art. 42) : assiette contradictoire et champ SH non arrêté, non servie.",
-    "Taxe spécifique sur les armes et munitions (LFI 2026, art. 24, CGI art. 382-1, 40 % hors forces de défense) : lue sur une OCR, non servie.",
-    "Taxes sur les tabacs, cosmétiques, emballages plastiques, véhicules de 13 CV et plus, produits pétroliers : champ SH à établir, non servies.",
-    "Contribution spéciale sur la consommation (loi n° 009-2023/ALT) sur les boissons : non examinée.",
-    "Exonérations de TVA par produit (CGI art. 307-308, LFI 2026 art. 20) : non reprises ; la TVA reste à 18 % sur toutes les positions.",
-    "Lois de finances rectificatives 2024 à 2026 : non lues.",
-    "Compatibilité des taxes perçues à la seule importation avec le droit de l'UEMOA pour une origine de l'Union : non examinée."
+    "Taxe sur les produits pétroliers (art. 379, tarif au litre) : non liquidée.",
+    "Prélèvement de l'Union africaine (0,2 %), mentionné par le collaborateur : absent de la collecte, non ajouté faute de texte national.",
+    "Prélèvement confédéral de l'AES (PC-AES, 0,5 %) : conservé tel que collecté ; exemption des originaires de l'AES non appliquée faute de texte officiel.",
+    "Droits de douane et TVA par position : ceux de la collecte (taux uniformes), faute de tarif national au dossier."
   ],
   "documents_archives": [
     {
       "texte_archive": "sources/BFA_prelevements_TVA.extrait.txt",
-      "sha256": "ccfe92d72fb1d1135d7a8614702752fe56721a995036e7b0273bb56507a7dc48"
+      "sha256": "c54ec3201ee49ed667383e8ee8093fc2e3c719c4fc8ddef5872abb2634826a87"
     },
     {
-      "document_non_archive": "CGI du Burkina Faso, édition DGI 2023 (dgi.bf)",
-      "pdf_sha256": "01565200e1e8a9edb50aa81d225aed6b3d64ace8554feaeb9a125c3f0f8d9118"
+      "document_non_archive": "Loi n°021-2025/ALT (LFI 2026), JO spécial n°01 du 2 janvier 2026, versé sur la PR #620 (data/burkina-faso/docs_officiels/JO-N01-SPECIAL-LFI-2026-DGI.pdf)",
+      "pdf_sha256": "24242939052ac8dc40b6b59e9dd5e89b5e72e5f29aaeed6362cefa97a02f7d6a"
     },
     {
-      "document_non_archive": "Loi n° 042-2023/ALT, loi de finances 2024 (an.bf)",
-      "pdf_sha256": "d85732eb067368a22d0961e7520c2aa1384353f9e193cb605b93d98b1b6943c4"
+      "document_non_archive": "DGI, mesures fiscales nouvelles de la LFI 2026, versé sur la PR #620 (data/burkina-faso/docs_officiels/MESURES-FISCALES-NOUVELLES-LFI-2026-DGI.pdf)",
+      "pdf_sha256": "33ea6fb9fb90ec6fd8555a920a0ecca7bd7760130444a13449f7e65c76b857a1"
     },
     {
-      "document_non_archive": "TEC UEMOA 2022, chapitre 7",
-      "pdf_sha256": "ae81fc4880e2fbb55ec85b0e235070fe3de469d0a4db4c25714d9f9663a3f9e7"
-    },
-    {
-      "document_non_archive": "TEC UEMOA 2022, chapitre 15",
-      "pdf_sha256": "e867b93ff2e6332c32e8218d235fbab1f2bdec6969fd5130437c79a5c04582bc"
+      "document_non_archive": "CGI du Burkina Faso, loi n°058-2017/AN (texte de 2017), versé sur la PR #620 (data/burkina-faso/docs_officiels/CGI-BURKINA-FASO.pdf)",
+      "pdf_sha256": "adae9ba9d6a35aadbe4c9e953fe35a749486e0ba0a5b92df5d0da7bd67e27bdb"
     }
   ]
 }

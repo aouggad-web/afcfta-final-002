@@ -1,69 +1,39 @@
-Burkina Faso — TVA à l'importation, taxe sur les boissons, taxe sur le café et le thé,
-taxe sur les noix de colas, droits de douane du TEC — extraits verbatim
-=====================================================================================
+Burkina Faso — PCS, taxes spécifiques à l'importation et assiette de la TVA : extraits verbatim (relevés le 2026-10-11)
 
-1. Code général des impôts (loi n° 058-2017/AN du 20 décembre 2017), édition officielle
-   de la DGI à jour de la loi de finances 2023
-   https://dgi.bf/wp-content/uploads/2023/10/CODE-GENERAL-DES-IMPOTS-2023-A-JOUR-AVEC-LA-LOI-DE-FINANCE-2023.pdf
-   PDF : sha256 01565200e1e8a9edb50aa81d225aed6b3d64ace8554feaeb9a125c3f0f8d9118
+1. Direction générale des impôts, Code général des impôts du Burkina Faso, version consolidée en ligne (https://dgi.bf/verification/CGI, page HTML, sha256 84764e52faa1c42db3102e77c38785113800fc27f4def2e49c4755766e77e24c) :
 
-   Art. 310, 4° :
-   « 4° pour les importations par la valeur en douane des marchandises augmentée des
-   droits et taxes de porte de toute nature liquidés par l’administration des douanes ; »
+« Art.310.- La base imposable est constituée : - 1° pour les livraisons de produits extraits ou fabriqués au Burkina Faso, par le prix de vente réclamé au client ou par toutes les sommes, valeurs, biens ou services reçus ou à recevoir en contrepartie ; - 2° pour les travaux immobiliers, par le montant des mémoires, marchés, factures ou acomptes, y compris les travaux confiés à des sous-traitants ; - 3° pour les prestations de services, par les prix des services ou par toutes les sommes, valeurs, biens ou services reçus ou à recevoir en contrepartie ; - 4° pour les importations par la valeur en douane des marchandises augmentée des droits et taxes de porte de toute nature liquidés par l’administration des douanes ; »
 
-   Art. 356 (taxe sur les boissons, exonérations) :
-   « Sont exonérées de la taxe, les fabrications ou importations portant sur les
-   produits suivants : 1° les produits médicamenteux alcoolisés ; [...] 4° les eaux, y
-   compris les eaux minérales naturelles ou artificielles et les eaux gazéifiées, non
-   additionnées de sucre ou d’autres édulcorants, ni aromatisées ; 5° les vinaigres ; »
+« Art.358.- (Loi n°042-2018/AN du 18 décembre 2018 art. 42) Pour les produits de fabrication locale, la taxe est assise sur le montant du chiffre d’affaires hors taxe sur la valeur ajoutée. Pour les produits importés, la taxe est assise sur la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la valeur ajoutée. »
 
-   Art. 358, al. 2 :
-   « Pour les produits importés, la taxe est assise sur la valeur en douane majorée des
-   droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la
-   valeur ajoutée. »
+« Art.359.- (Loi n°042-2018/AN du 18 décembre 2018 art. 43) (Loi n°29-2022/ALT du 24 décembre 2022 art. 52) (Loi n°042-2023/ALT du 15 décembre 2023 art. 29) Il est fait application des taux suivants quelle que soit l’origine des produits : I. Boissons alcoolisées 1. Bières titrant moins de 8° d’alcool : 30% 2. Bières titrant 8° d'alcool et plus : 40% 3. Vins : 70% 4. Autres boissons alcoolisées titrant moins de 35° d’alcool : 50% 5. Autres boissons alcoolisées titrant 35° d’alcool et plus : 70% II. Boissons non alcoolisées 1. Boissons non alcoolisées énergisantes : 50% 2. Autres boissons non alcoolisées : 15% Par boisson alcoolisée, il faut entendre toutes les boissons d’une teneur en alcool supérieure à zéro virgule cinq (0,5) degré. »
 
-   Art. 359, II :
-   « II. Boissons non alcoolisées
-   1. Boissons non alcoolisées énergisantes : 50%
-   2. Autres boissons non alcoolisées : 15%
-   Par boisson alcoolisée, il faut entendre toutes les boissons d’une teneur en alcool
-   supérieure à zéro virgule cinq (0,5) degré. »
+« Art.364.- (Loi n°042-2018/AN du 18 décembre 2018 art. 44) ( Loi n°051-2019/AN du 5 décembre 2019 art. 30) (Loi n°042-2023/ALT du 15 décembre 2023 art. 30) Pour les produits de fabrication locale, la taxe est assise sur le prix de vente ex-usine, à l'exclusion de la taxe sur la valeur ajoutée. Ce prix de vente ex-usine ne peut être inférieur à 300 FCFA pour 20 cigarettes. Pour les produits importés, la taxe est assise sur la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l'exception de la taxe sur la valeur ajoutée. Cette base taxable ne peut être inférieure à 300 FCFA pour 20 cigarettes. »
 
-   Art. 380, 5) : « Le taux de la taxe est fixé à 12 %. »
-   Art. 381, 5) : « Le taux applicable est fixé à 10 %. »
+« Art.365.- ( Loi n°051-2019/AN du 5 décembre 2019 art. 31) (Loi n°029-2022/ALT du 24 décembre 2022 art. 53) Le taux de la taxe est fixé à 55 %. »
 
-2. Loi n° 042-2023/ALT portant loi de finances pour l'exécution du budget de l'État,
-   exercice 2024
-   https://an.bf/storage/Loi/G4zinag0oZL5pCc7QDGCfasMCeYmf15ndbJnUZsw.pdf
-   PDF : sha256 d85732eb067368a22d0961e7520c2aa1384353f9e193cb605b93d98b1b6943c4
+« Art.370.- (Loi n°042-2018/AN du 18 décembre 2018 art. 45) En ce qui concerne les produits de fabrication locale, la taxe est assise sur le prix hors taxe sur la valeur ajoutée. Pour les produits importés, la taxe est assise sur la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la valeur ajoutée. »
 
-   Article 28 (art. 356, 8°) :
-   « 8° les alcools importés au Burkina Faso pour la production de boissons ou liquides
-   alcoolisés, ainsi que les concentrés de jus de fruits ou de légumes importés et
-   destinés à l’industrie de production de boissons. Les modalités de mise en œuvre de
-   ces exonérations sont fixées par arrêté du Ministre chargé des finances. »
+« Art.371.- (Loi n°042-2018/AN du 18 décembre 2018 art. 46) Il est fait application d’un taux de 15 % quelle que soit l’origine du produit. »
 
-   Article 29 (art. 359) :
-   « Il est fait application des taux suivants quelle que soit l’origine des produits :
-   I. Boissons alcoolisées
-   1. Bières titrant moins de 8° d’alcool : 30%
-   2. Bières titrant 8° d'alcool et plus : 40%
-   3. Vins : 70%
-   4. Autres boissons alcoolisées titrant moins de 35° d’alcool : 50%
-   5. Autres boissons alcoolisées titrant 35° d’alcool et plus : 70%
-   Le reste sans changement. »
+« Art.376.- (Loi n°042-2018/AN du 18 décembre 2018 art. 48) Pour les emballages et sachets plastiques fabriqués au Burkina Faso, la taxe est assise sur le prix hors taxe sur la valeur ajoutée. Pour les emballages et sachets plastiques importés, la taxe est assise sur la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la valeur ajoutée. Pour les emballages et sachets plastiques biodégradables ou non biodégradables utilisés pour le conditionnement industriel direct des produits manufacturés, la taxe est assise sur les valeurs déterminées conformément au tableau ci-dessous. Valeur de l’emballage par unité de conditionnement : Valeur des marchandises (francs CFA) 1 à 200.000 200.001 à 1.000.000 1.000.001 à 5.000.000 5.000.001 et plus Tonne 20 000F 80 000F 400 000F 720 000F Carton 5000F 20 000F 100 000F 180 000F Unité 400F 1600F 8000F 14400F »
 
-   Article 31 (art. 380, 4) et article 32 (art. 381, 4) :
-   « 4) La taxe est assise sur la valeur en douane des marchandises majorée des droits et
-   taxes perçus par les services de la douane, à l'exception de la taxe sur la valeur
-   ajoutée. »
+« Art.377.- (Loi n°042-2018/AN du 18 décembre 2018 art. 49) Le taux de la taxe est fixé à 5 %. Les entreprises qui disposent d’un mécanisme efficace de récupération et d’élimination des emballages et sachets plastiques issus de la consommation de leurs produits peuvent bénéficier de réduction de 50 % de la taxe. Les conditions d’octroi de cette réduction sont fixées par arrêté conjoint des ministres en charge des finances, de l’environnement et de celui en charge du secteur d’activités concerné. Le produit de la taxe est réparti comme suit : - 20 % au budget de l’État ; - 80 % au profit du Fonds d’intervention pour l’environnement (FIE). »
 
-3. Tarif extérieur commun de l'UEMOA, édition 2022 (= TEC CEDEAO SH 2022), colonnes
-   DD RS PCS PC
-   Chapitre 7 : https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-7-Legumes-plantes-racines.pdf
-   PDF : sha256 ae81fc4880e2fbb55ec85b0e235070fe3de469d0a4db4c25714d9f9663a3f9e7
-   « 0701.90.00.00   Autres                                               kg    35      1    0,8    0,5 »
-   « 0703.10.00.00   Oignons et échalotes                                 kg    35      1    0,8    0,5 »
-   Chapitre 15 : https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-15-Graisses-huiles-animales.pdf
-   PDF : sha256 e867b93ff2e6332c32e8218d235fbab1f2bdec6969fd5130437c79a5c04582bc
-   « 1511.10.00.00   Huile brute                                        kg   10    1     0,8   0,5 »
+« Art.380.- (Loi n°042-2018/AN du 18 décembre 2018 art. 50) (Loi n°042-2023/ALT du 15 décembre 2023 art. 31) 1) La taxe sur le café et le thé, perçue au profit du budget de l’État, frappe les produits destinés à la vente et ceux réservés à la consommation personnelle de l’importateur. 2) Le redevable de la taxe est le propriétaire de la marchandise ou le déclarant en douane. 3) Le fait générateur est constitué par la mise à la consommation du café et/ou du thé au sens douanier du terme. 4) La taxe est assise sur la valeur en douane des marchandises majorée des droits et taxes perçus par les services de la douane, à l'exception de la taxe sur la valeur ajoutée. 5) Le taux de la taxe est fixé à 12 %. 6) La liquidation et le recouvrement de la taxe sont effectués comme en matière douanière. Section 3 - Taxe sur les noix de colas »
+
+« Art.381.- 1) (Loi n°042-2023/ALT du 15 décembre 2023 art. 32) La taxe sur les noix de colas, perçue au profit du budget de l’État, frappe les importations de noix de colas destinées à la vente et celles réservées à la consommation personnelle de l’importateur. 2) Le redevable de la taxe est le propriétaire de la marchandise ou le déclarant en douane. 3) Le fait générateur est constitué par la mise à la consommation de la marchandise au sens douanier du terme. 4) La taxe est assise sur la valeur en douane des marchandises majorée des droits et taxes perçus par les services de la douane, à l'exception de la taxe sur la valeur ajoutée. 5) Le taux applicable est fixé à 10 %. 6) La liquidation et le recouvrement de la taxe sont effectués comme en matière douanière. Section 4 - Taxe sur les véhicules de tourisme dont la puissance est égale ou supérieure à 13 chevaux »
+
+« Art.382.- 1) L’importation de véhicules de tourisme d’une puissance égale ou supérieure à treize (13) chevaux est soumise à une taxe perçue au profit du budget de l’État. Par véhicule de tourisme, il faut entendre les véhicules conçus pour transporter des personnes, à l’exclusion des véhicules destinés au transport public de voyageurs. 2) Sont exonérés, les véhicules acquis par : - les missions diplomatiques et consulaires, les organisations internationales ; - les associations et les organisations non gouvernementales ; - les projets et programmes. 3) Le fait générateur de la taxe est constitué par l’importation pour la mise à la consommation. 4) La base imposable est constituée par la valeur en douane majorée des droits et taxes perçus par les services de la douane, à l’exception de la taxe sur la valeur ajoutée. 5) Le taux de la taxe est fixé à 5 %. 6) La liquidation et le recouvrement de la taxe sont effectués comme en matière douanière. Chapitre 10 - Taxe unique sur les assurances Section 1 - Champ d’application »
+
+2. Loi n°021-2025/ALT du 27 décembre 2025 portant loi de finances pour l'exécution du budget de l'État, exercice 2026, Journal officiel spécial n°01 du 2 janvier 2026 (PDF scanné de 40 pages, sha256 24242939052ac8dc40b6b59e9dd5e89b5e72e5f29aaeed6362cefa97a02f7d6a, versé sur la PR #620, data/burkina-faso/docs_officiels/JO-N01-SPECIAL-LFI-2026-DGI.pdf). Texte obtenu par OCR (tesseract), scories conservées ; « 240 % » est la lecture OCR de « à 40 % » :
+
+« Article 382-1 : 1) L'importation des armes et munitions est soumise a une taxe percue au profit du budget de I’Etat. 2) Sont exemptées de la taxe, les armes et munitions destinées aux forces de défense et de sécurité. 3) Le fait générateur de la taxe est constitué par l’importation pour la mise ala consommation. 4) La base imposable est constituée par la valeur en douane majorée des droits et taxes percus par les services de la douane, a l'exception de la taxe sur la valeur ajoutée. 5) Le taux de la taxe est fixé 240 %. 6) La liquidation et le recouvrement de la taxe sont effectués comme en matiére douaniére. »
+
+DGI, présentation des mesures fiscales nouvelles de la LFI 2026 (PDF, sha256 33ea6fb9fb90ec6fd8555a920a0ecca7bd7760130444a13449f7e65c76b857a1, versé sur la PR #620, data/burkina-faso/docs_officiels/MESURES-FISCALES-NOUVELLES-LFI-2026-DGI.pdf) :
+
+« Institution d'une Taxe Spécifique sur l'Importation des Armes et Munitions Fondement Juridique Article 24 LFI 2026 Article 382-1 nouveau CGI Entrée en vigueur Objectifs Poursuivis 1 Conformité UEMOA 2 Lutte contre la prolifération Contenu Technique Événement taxable Base imposable Taux 40% Lecture Administrative (DGI) Instrument »
+
+3. Taux du prélèvement communautaire de solidarité de l'UEMOA : circulaire DGD n° 2258/MBPE/DGD de Côte d'Ivoire (extrait archivé sources/CIV_prelevements_TVA.extrait.txt) :
+
+« les taux de la Redevance Statistique (RS) et du Prélevement Communautaire de la CEDEAO (PCC), inscrits au TEC CEDEAO, restent fixés respectivement a 1% et 0,5% ; - le Prélévement Communautaire de Solidarité de l'UEMOA (PCS) et le Prélévement de |'Union Africaine (PUA) demeurent en vigueur aux taux respectifs de 0,8% et 0,2%. Je rappelle que la taxation pour l’application du TEC de la  »
