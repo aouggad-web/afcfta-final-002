@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "objet": "Prélèvements communautaires (PCS de l'UEMOA, prélèvement communautaire de la CEDEAO, prélèvement de 0,2 % de l'Union africaine) : exclusion des marchandises originaires du bloc, appliquée selon l'origine déclarée",
+  "destination_iso3": "UEMOA, CEDEAO, UA",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — acte additionnel UEMOA n° 04/96 (art. 16 et 17), protocole CEDEAO A/P1/7/96 (art. 3 et 4), décision Assembly/AU/Dec.605(XXVII) et FAQ de l'Union africaine",
+  "source": {
+    "url": "https://au.int/sites/default/files/pages/31953-file-faq.pdf",
+    "institution": "UEMOA ; CEDEAO ; Union africaine"
+  },
+  "regle": {
+    "valeur": "Les lignes PCS (pays de l'UEMOA), PCC et CEDEAO (pays de la CEDEAO) et PUA portent « exoneration_origine » (UEMOA, CEDEAO, UA) ; la route /calcul les retire quand l'origine déclarée appartient au bloc, et le dit dans « exonerations_origine ». Une base de TVA qui les nomme les traite alors comme sans objet. Sans origine déclarée, ou pour une origine tierce, elles restent dues.",
+    "verbatim": "Sont exclus de cette assiette: - les produits originaires de l'Union;",
+    "reference": "Acte additionnel n° 04/96/UEMOA, art. 17 ; protocole A/P1/7/96 de la CEDEAO, art. 4 ; décision Assembly/AU/Dec.605(XXVII)",
+    "portee": "backend/services/exoneration_origine.py ; scripts/build_socle.py (EXONERATION_ORIGINE, BLOCS_DESTINATION) ; backend/routes/calcul.py.",
+    "texte_archive": "sources/ORIGINE_prelevements_communautaires.extrait.txt",
+    "sha256": "ee64db5cbec185921ad110b6f934d0bab5e11813667dc0f6c27fe4bead660646"
+  },
+  "decisions": [
+    "L'origine déclarée à la route est celle des règles d'origine : une marchandise d'un État membre qui ne remplit pas les conditions d'origine du bloc reste hors champ du PCS et du PCC (art. 17 et art. 4 b)), cas que le calculateur ne distingue pas.",
+    "Membres de l'Union africaine : les 55 pays de backend/constants.AFRICAN_COUNTRIES ; membres de l'UEMOA et de la CEDEAO : backend/services/regional_blocs.",
+    "Le PCS n'est marqué que dans les pays de l'UEMOA, le PCC et l'ECOWAS Levy que dans ceux de la CEDEAO ; le PUA partout où il est perçu."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Produits de pays tiers mis à la consommation dans un État membre puis réexpédiés (art. 17 et art. 4 c)) : exclus du prélèvement, non distingués par le calculateur.",
+    "Exonérations propres à chaque prélèvement (aides et dons, transit) : non liquidées."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ORIGINE_prelevements_communautaires.extrait.txt",
+      "sha256": "ee64db5cbec185921ad110b6f934d0bab5e11813667dc0f6c27fe4bead660646"
+    },
+    {
+      "document_non_archive": "Acte additionnel n° 04/96 (UEMOA), https://www.dge.gouv.ci",
+      "pdf_sha256": "75bfd8ae0c1b2dc6070e533bfe98d705050851209208223da629dab25003802b"
+    },
+    {
+      "document_non_archive": "Décision Assembly/AU/Dec.605(XXVII), https://au.int/sites/default/files/pages/31953-file-assembly_au_dec_605_financing_the_au.pdf",
+      "pdf_sha256": "62046e4dda1c0b2e8e9c01b643af2f84f978faba89fb8fdd446c99253d8568a9"
+    },
+    {
+      "document_non_archive": "Union africaine, FAQs about financing of the Union, https://au.int/sites/default/files/pages/31953-file-faq.pdf",
+      "pdf_sha256": "47d365d29896f9574079fa93b6911a094b5af1a241a171d5e4c764f886504761"
+    }
+  ]
+}

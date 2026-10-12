@@ -21,7 +21,7 @@ These levies fall into four categories:
    ECOWAS (15 members — BEN BFA CPV CIV GMB GHA GIN GNB LBR MLI NER NGA SEN SLE TGO):
      CEDEAO/PCC (0.5% CIF) — ECOWAS Community Levy
      RS  (1.0% CIF) — Statistical Levy (UEMOA/ECOWAS)
-     PCS (1.0% CIF) — UEMOA Community Solidarity Levy
+     PCS (0.8% CIF) — UEMOA Community Solidarity Levy (Acte additionnel 01/2019/CCEG/UEMOA)
      PUA (0.2% CIF) — African Union Levy
    UEMOA (8 francophone members): additional RS + PCS on top of ECOWAS base
    AES (Alliance des États du Sahel — MLI BFA NER since 2025):
@@ -134,8 +134,8 @@ LEVY_DESCRIPTIONS: Dict[str, Tuple[str, str]] = {
         "Statistical Levy UEMOA/ECOWAS (1% of CIF)",
     ),
     "PCS": (
-        "Prélèvement Communautaire de Solidarité UEMOA (1% CIF)",
-        "UEMOA Community Solidarity Levy (1% of CIF)",
+        "Prélèvement Communautaire de Solidarité UEMOA (0,8 % CIF)",
+        "UEMOA Community Solidarity Levy (0.8% of CIF)",
     ),
     "PUA": ("Prélèvement Union Africaine (0.2% CIF)", "African Union Levy (0.2% of CIF)"),
     "PC_AES": (

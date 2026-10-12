@@ -58,8 +58,9 @@
    "prefixes": [
     "22021000"
    ],
-   "taux": 10.0,
-   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 e (boissons énergisantes et soda) ; art. 8 (1) b (boissons sucrées, boissons énergisantes, soda), 10 % — eaux additionnées de sucre (22.02.10)"
+   "taux": null,
+   "motif": "22.02.10 couvre les eaux additionnées de sucre ou d'autres édulcorants (soda, boissons sucrées : 10 %) mais aussi les eaux seulement aromatisées, non visées : la position ne dit pas laquelle.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 e ; art. 8 (1) b"
   },
   {
    "prefixes": [
@@ -125,12 +126,28 @@
   },
   {
    "prefixes": [
+    "711320"
+   ],
+   "taux": 5.0,
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 2 j ; art. 8 (1) a (métaux précieux plaqués ou doublés et ouvrages en ces matières), 5 % — bijoux en plaqué ou doublé de métaux précieux sur métaux communs"
+  },
+  {
+   "prefixes": [
     "7113",
     "93",
-    "9504"
+    "950410"
    ],
    "taux": 25.0,
    "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) c (bijoux ; armes et munitions ; appareils servant aux jeux de hasard et de divertissement), 25 % ; produits visés par l'art. 8 soumis selon l'instruction d'application de la LF 2025 (art. 8 nouveau, commentaire : « l'administration fiscale se réfère à la nomenclature douanière »)"
+  },
+  {
+   "prefixes": [
+    "950420",
+    "950490"
+   ],
+   "taux": null,
+   "motif": "Billards et autres jeux de 95.04 (dont les jeux fonctionnant par pièces) : « appareils servant aux jeux de hasard et de divertissement » ou articles de jeu, la position ne le dit pas. Les cartes à jouer (95.04.40) ne sont pas des appareils et ne portent pas de droit d'accises.",
+   "reference": "LF 2026 (loi n° 42-2025 du 31/12/2025), point 21 : loi sur le droit d'accises, art. 8 (1) c"
   },
   {
    "prefixes": [

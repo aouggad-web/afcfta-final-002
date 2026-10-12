@@ -587,7 +587,7 @@
     "BEN": {
       "organism": "Direction Générale des Douanes — douanes.gouv.bj + TEC CEDEAO",
       "version": "2026.1",
-      "sha256": "a62e860ec9b2e5352e26be50a7347f504f64bc697667abc8482ccbf6363f1e98",
+      "sha256": "ba9f7a7c5efd1e4faa542586474c26b597c92a8f5ccb34e1564223e983f7a872",
       "artifact_path": "backend/data/crawled/BEN_tariffs.json",
       "artifact_url": null,
       "source_type": "regional_org",
@@ -595,8 +595,8 @@
       "retrieved_at": "2026-06-16",
       "edition": "TEC CEDEAO (Règlement C/REG.16/12/21) + taxes nationales",
       "hs_version": "HS 2022",
-      "code_digits": 13,
-      "positions_count": 6129,
+      "code_digits": 10,
+      "positions_count": 6381,
       "validation_status": "verified",
       "taxes": [
         "DD",
@@ -634,34 +634,51 @@
       "version": null,
       "artifact_path": "backend/data/crawled/CIV_tariffs.json",
       "artifact_url": null,
-      "sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
+      "sha256": "5126005ea179b89edb079dbf21461b67bec70234205447f26df61da17eacef2a",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
         "DD",
         "DUS",
+        "PCC",
+        "PCS",
+        "PSS",
         "PSV",
-        "SPEC",
-        "TVA",
+        "PUA",
+        "RS",
+        "TAB",
+        "TAI",
+        "TBG",
+        "TCB",
+        "TCI",
+        "TCT",
+        "TFS",
+        "TMP",
+        "TPQ",
         "TSB_PT",
+        "TSM",
+        "TSS",
         "TUB",
-        "TUF"
+        "TUE",
+        "TUF",
+        "TVA"
       ]
     },
     "GIN": {
       "version": null,
       "artifact_path": "backend/data/crawled/GIN_tariffs.json",
       "artifact_url": null,
-      "sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
+      "sha256": "5fb3175669067e7c4dbad14fb29dbbd4c767e03da56393ffe6be13100d31ec16",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
+        "CA",
+        "DA",
         "DD",
         "PCC",
-        "PUA",
+        "RTL",
         "TVA"
       ],
       "taxes_missing": [
-        "RS",
-        "PCS",
+        "PUA",
         "TIC"
       ]
     },
@@ -718,17 +735,19 @@
       "version": null,
       "artifact_path": "backend/data/crawled/MLI_tariffs.json",
       "artifact_url": null,
-      "sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
+      "sha256": "268464af5f0940f9b268237a5da988d1d79cce2b6dbf07ca2f8108be574a1403",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
         "DD",
-        "RS",
-        "PCS",
+        "ISCP",
         "PC-AES",
+        "PCS",
+        "RS",
+        "TAI",
+        "TCI",
         "TVA"
       ],
       "taxes_missing": [
-        "PCC",
         "PUA",
         "TIC"
       ]

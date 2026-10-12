@@ -1,0 +1,160 @@
+{
+ "_objet": "Droit d'accises à l'importation au Ghana : positions et taux d'après le First Schedule de l'Excise Duty Act 2014 (Act 878), substitué par l'Act 1108 (29/12/2023), en vigueur au 11/08/2026. « taux » null : le taux dépend d'une condition que la position ne dit pas, ou il est spécifique.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/GHA_prelevements_TVA_2026-10-10.json",
+ "source": "Excise Duty Act 2014 (Act 878), First Schedule (Act 1108)",
+ "assiette": "CIF+DD+CEDEAO+PUA+EXIM+SIL",
+ "assiette_reference": "Act 878, s. 5(2)(a) : « (i) the sum of the value of the goods determined [...] for the purpose of assessing import duty [...] and (ii) the amount of taxes, duties, fees or other charges payable on the goods at the time of entry into the country other than excise duty or value added tax ». Le NHIL et le GETFund, assis sur la base de la TVA, n'en font pas partie.",
+ "tva_assiette": "CIF+DD+CEDEAO+PUA+EXIM+SIL+DA",
+ "tva_assiette_reference": "VAT Act 2025 (Act 1151), s. 45(1) : « (a) the import value [...] (b) the import duties and taxes other than the Tax » ; GRA : « the VAT, the NHIL and the GETFund Levy are all charged on the same base ».",
+ "inserer_avant_familles": [
+  "fonds",
+  "tva"
+ ],
+ "regles": [
+  {
+   "prefixes": [
+    "2009"
+   ],
+   "taux": 20.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 1(d) : « Fruit juices, including grape and vegetable juices 20% of ex-factory price »."
+  },
+  {
+   "prefixes": [
+    "220110",
+    "2201101000",
+    "2201102000"
+   ],
+   "taux": 20.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 1(a) : « Waters, including mineral water of all descriptions; aerated water [...] 20% of ex-factory price »."
+  },
+  {
+   "prefixes": [
+    "220190",
+    "2201900000"
+   ],
+   "taux": null,
+   "motif": "Autres eaux : eau en bouteille 20 % (1(a)), eau distillée en bouteille 17,5 % (1(b)), eau en sachet 0 % (1(c)) ; la position ne tranche pas.",
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 1(a) à 1(c)"
+  },
+  {
+   "prefixes": [
+    "2202"
+   ],
+   "taux": 20.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 1(a) et 2(a) : « non-alcoholic beverages; energy drinks; and other non-alcoholic drinks 20% of ex-factory price » ; « Malt drink: less than 50% local raw material 20% »."
+  },
+  {
+   "prefixes": [
+    "2203"
+   ],
+   "taux": 47.5,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 3(a) : « Beer or stout other than indigenous beer: less than 50% local raw material 47.5% of ex-factory price ».",
+   "reserve": "Taux réduits (32,5 % et 10 %) selon la part de matière première locale, condition tenant à la fabrication : taux général retenu pour une bière importée."
+  },
+  {
+   "prefixes": [
+    "2204",
+    "2205"
+   ],
+   "taux": 45.0,
+   "exclusions": [
+    "220430",
+    "2204300000"
+   ],
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 5 : « Wines, including sparkling wine 45% of ex-factory price »."
+  },
+  {
+   "prefixes": [
+    "220430",
+    "2204300000"
+   ],
+   "taux": null,
+   "motif": "Moûts de raisin : vin (45 %) s'ils sont fermentés, jus de raisin (20 %, tariff 1(d)) sinon ; la position ne tranche pas.",
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 1(d) et 5"
+  },
+  {
+   "prefixes": [
+    "2206"
+   ],
+   "taux": null,
+   "motif": "Bières autres que de malt (bière indigène exclue du tariff 3), vin de palme, cidre (47,5 %, tariff 4) et autres boissons fermentées mêlés sous la position : taux non déterminable.",
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 3 et 4"
+  },
+  {
+   "prefixes": [
+    "2207101000"
+   ],
+   "taux": 0.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 6(c)(i) : « Spirits for use solely in laboratories or compounding drugs 0% »."
+  },
+  {
+   "prefixes": [
+    "220710",
+    "2207109000"
+   ],
+   "taux": 50.0,
+   "exclusions": [
+    "2207101000"
+   ],
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 6(a) : « Spirits: distilled or rectified 50% of ex-factory price »."
+  },
+  {
+   "prefixes": [
+    "2207200000",
+    "220720"
+   ],
+   "taux": 10.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 6(c)(ii) : « Spirits denatured to the satisfaction of the Commissioner-General 10% of ex-factory price ».",
+   "reserve": "Dénaturation agréée par le Commissioner-General : condition non vérifiable sur la position."
+  },
+  {
+   "prefixes": [
+    "2208"
+   ],
+   "taux": 50.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 6(a) et 6(b) : « Spirits: distilled or rectified 50% » ; « Spirits: blended or compounded 50% of ex-factory price »."
+  },
+  {
+   "prefixes": [
+    "2402"
+   ],
+   "taux": null,
+   "motif": "Cigarettes et cigares : « 50% of ex-factory price plus GH¢0.28 per stick » ; le nombre de bâtonnets n'est pas dans la position.",
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 7(a) et 7(b)"
+  },
+  {
+   "prefixes": [
+    "2403"
+   ],
+   "taux": null,
+   "motif": "Negrohead, snuff et autres tabacs : « GH¢280 per kilogramme », droit spécifique au poids, non liquidé.",
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 7(c) et 7(d)"
+  },
+  {
+   "prefixes": [
+    "39"
+   ],
+   "taux": 5.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 9 : « Plastic and plastic products listed under Chapters 39 and 63 of the Harmonised System 5% »."
+  },
+  {
+   "prefixes": [
+    "630533",
+    "6305330000"
+   ],
+   "taux": 5.0,
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariff 9 : sacs obtenus à partir de lames de polyéthylène ou de polypropylène, produits en plastique du chapitre 63."
+  },
+  {
+   "prefixes": [
+    "630532",
+    "6305320000",
+    "630539",
+    "6305390000"
+   ],
+   "taux": null,
+   "motif": "Sacs et contenants de matières textiles synthétiques : plastique (5 %, tariff 9) ou textile (0 %, tariff 10(a)) selon la matière ; la position ne tranche pas.",
+   "reference": "Excise Duty Act 2014 (Act 878), First Schedule substitué par l'Excise Duty (Amendment) (No. 2) Act 2023 (Act 1108), tariffs 9 et 10(a)"
+  }
+ ]
+}

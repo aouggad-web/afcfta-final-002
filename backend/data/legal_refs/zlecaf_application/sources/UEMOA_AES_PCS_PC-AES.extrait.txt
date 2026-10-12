@@ -1,0 +1,40 @@
+PCS (UEMOA) et PC-AES (Confédération AES) — extraits verbatim
+==============================================================
+
+1. Acte additionnel n° 01/2019/CCEG/UEMOA du 12 juillet 2019 fixant le taux du
+   Prélèvement Communautaire de Solidarité (PCS)
+   Bulletin officiel de l'UEMOA n° 105 (2019), p. 1 du Bulletin (PDF p. 5)
+   https://www.uemoa.int/sites/default/files/bibliotheque/bulletin_officiel_ndeg105.pdf
+   PDF : sha256 ecfb039741c101724ea7ceb597fe57fc01cb9f26daf4afe8b228839fcc0f66cc (202 p.)
+
+   Article premier :
+   « Le Prélèvement Communautaire de Solidarité (PCS) institue par l’Acte additionnel
+   n° 04/96 du 10 mai 1996 susvisé est maintenu à 0,80 % de la valeur en douane des
+   marchandises importées des pays tiers par les États membres de l’Union pour compter
+   du 1 er janvier 2020. »
+
+2. Décision du Collège des Chefs d'État de la Confédération des États du Sahel (AES)
+   instituant un Prélèvement confédéral (PC-AES), Bamako, 28 mars 2025
+   Texte connu par sa seule reproduction intégrale dans la presse (aBamako, 30/03/2025) :
+   http://news.abamako.com/h/299436.html
+   Page : sha256 56606070a0e64ed41ae0cb9e21261b0bd226d24c2227584e1e82ed9dde0d8009
+   (servie en windows-1252)
+
+   Article premier (définitions) :
+   « Pays tiers: Tout pays non-membre de l'AES, à l'exclusion des pays formant une union
+   douanière avec les pays de l'AES, ou des pays liés à la Confédération AES ou à ses
+   Etats membres par des accords spécifiques prévoyant expressément l'exemption du PC-AES; »
+
+   Article 4 :
+   « Sont exclues du champ d'application du PC-AES:
+   1- les marchandises originaires de l'AES telles que définies par la législation
+   douanière définissant les règles d'origine de l'AES;
+   [...]
+   4- les marchandises obtenues ou produites dans un Etat membre d'une union douanière
+   avec les pays de l'AES, sous réserve d'une disposition expresse; »
+
+   Article 7 :
+   « Le taux du PC-AES est fixé à 0,5% de la valeur en douane des marchandises importées
+   de pays tiers. »
+
+   « Fait à Bamako, le 28 mars 2025 »

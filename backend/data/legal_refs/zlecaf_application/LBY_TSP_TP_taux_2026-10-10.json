@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "objet": "Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la « Production Tax » à 2 % servies sur chaque position ; les deux lignes restent, sans taux, à compléter",
+  "destination_iso3": "LBY",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — loi n° 19/1992 et règlement n° 943/1993 (compilation de la douane libyenne, archivée), décision du Conseil des ministres n° 393/2025 (Autorité des ports), lus sur l'image des pages et contre-vérifiés par une seconde lecture indépendante ; décisions n° 6/2002, 733/1987, 807/2022 et visas de la décision n° 17/2007 dans la reproduction de lawsociety.ly ; presse (Al Bayan, 2005) et page PwC citée par le crawl, secondaires.",
+  "source": {
+    "instrument": "Loi n° 19 de 1992 relative à la taxe de production ; décision du Comité populaire général n° 943 de 1993 (règlement d'exécution) ; décision du Comité populaire général n° 6 de 2002 ; décision du Conseil des ministres n° 393 de 2025 (règlement des redevances et droits souverains des ports)",
+    "institution": "État de Libye — douane libyenne (customs.gov.ly), Autorité des ports et du transport maritime (lpma.gov.ly)",
+    "url": "https://customs.gov.ly/wp-content/uploads/2023/12/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%B6%D8%B1%D8%A7%D8%A6%D8%A8-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC.pdf",
+    "url_decision_393_2025": "http://lpma.gov.ly/ta3memat/q39325.pdf",
+    "pdf_decision_393_2025_sha256": "16d2e594942b4028ee9b5922c49f888b4a670945087e56c9da2adf47f23c4493",
+    "pdf_non_archive": "Le scan de la décision n° 393/2025 (13 pages, 34 Mo) n'est pas versé au dépôt ; ses articles 8 et 25 sont transcrits dans regle.texte_archive, avec URL et empreinte.",
+    "fichier_archive": "sources/LBY_loi_19_1992_production_texte-integral.pdf",
+    "sha256": "3fd85d761fd0b8b24613d93457aa2527659edefad3a9f84fec25e95c5760d1d4",
+    "source_secondaire": "Al Bayan, 5-8-2005, https://www.albayan.ae/economy/2005-08-05-1.92435 (décisions n° 3, 103 et 114 de 2005)",
+    "consulte_le": "2026-10-10"
+  },
+  "regle": {
+    "valeur": "Aucun taux n'est servi pour la TSP ni pour la TP. Aucun texte libyen trouvé ne fixe la TSP à 4 % ; la redevance de quai souveraine du règlement de 2025 est spécifique (2,00 LYD par tonne ou par m³, le plus élevé des deux, minimum 50 LYD par bon de livraison). La TP a été instituée par la loi n° 19/1992 sur les marchandises importées désignées par décision, au taux fixé pour chacune ; la grille de 2002 (décision n° 6/2002 : taux non nuls de 7 % à 50 % à l'importation) a pu être modifiée en 2005, et aucune correspondance avec les positions du tarif n'est établie ; aucun texte trouvé ne fixe 2 %.",
+    "verbatim": "وتحدد السلع التي تخضع لهذه الضريبة وفئة الضريبة عن كل سلعة منها بقرار من اللجنة الشعبية العامة بناءً على عرض اللجنة الشعبية العامة للتخطيط والتجارة والمالية .",
+    "reference": "Loi n° 19/1992, art. 1 ; décision n° 943/1993, art. 2, 4 et 6 ; décision n° 6/2002, art. 1 et tableau annexé ; décision du Conseil des ministres n° 393/2025, règlement, art. 8 et 25",
+    "portee": "scripts/build_socle._tsp_tp_libye, socle LBY : les lignes TSP et TP des 5 920 positions perdent leur taux (4 % et 2 %), gardent leur libellé, renvoient à cette fiche en source et portent le motif en note. Le crawl (backend/crawlers/countries/libya_customs_scraper.py, COMPLEMENTS_NATIONAUX) les tenait de la page PwC « Other taxes », qui ne cite plus ni « Port Services Tax » ni 4 % ni 2 %, mais une « service fee » de 5 % sans texte. Les lignes étaient déjà sans assiette : le moteur continue de les déclarer ASSIETTE_INDISPONIBLE, la note portant le motif du taux ; aucun total servi ne change, le pays reste à compléter.",
+    "texte_archive": "sources/LBY_TSP_TP_taux.texte-extrait.txt",
+    "sha256": "78f755861d7004c2e030d9cf05ae1673bfc1fc517cf73dfb3bdfa7057bb27fc5"
+  },
+  "decisions": [
+    "Les deux lignes restent visibles, sans taux, plutôt que d'être retirées : une taxe de production ou de consommation à l'importation a été instituée par la loi n° 19/1992, et une « redevance pour services d'importation » (décision du Comité populaire général des Chaabiyat n° 3 de 2005) est citée par la décision n° 17/2007 ; leur taux et leur champ actuels ne sont pas établis.",
+    "Aucune assiette n'est donnée à l'une ou l'autre : aucun des textes retenus ne les rapporte à la valeur CAF. La redevance de quai du règlement de 2025 est assise sur le poids ou le volume (art. 8 et 25) ; la TP sur le volume, le poids, le nombre ou le « prix de revient » (décision n° 943/1993, art. 4), que le texte ne définit pas pour l'importé ; la redevance ad valorem sur la valeur CAF de la décision n° 733/1987 est réservée (voir ci-dessous)."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le maintien en vigueur de la loi n° 19/1992 et de ses décisions de taux après 2011 : il ne repose que sur le statut éditorial de lawsociety.ly ; le tarif douanier 2022 ne porte aucune colonne pour cette taxe.",
+    "Les décisions du Comité populaire général n° 103/2005 (modification de la taxe sur une marchandise) et n° 114/2005 (assujettissement de certaines marchandises), citées par Al Bayan le 5-8-2005, n'ont pas été obtenues : la grille de la décision n° 6/2002 a pu être remplacée.",
+    "Le texte, le taux et le sort de la décision n° 3 de 2005 (« رسم مقابل خدمات التوريد ») après la loi douanière n° 10/2010 et la décision n° 881/2019 ; son rapprochement avec la « service fee » de 5 % que signale PwC, sans texte, n'est pas établi.",
+    "Le maintien de la redevance de quai ad valorem de la décision n° 733/1987 (art. 9 : 7 ‰ de la valeur CAF des marchandises importées, réduite de moitié en 2008) face à la décision n° 161/2011 et au règlement de 2025 ; la décision du Conseil des ministres n° 807/2022 a encore relevé de 100 % les redevances de manutention, d'entreposage et de services du règlement de 1987.",
+    "Les exonérations des décisions n° 537/2021 (denrées alimentaires) et n° 539/2021 (médicaments), dont le champ n'est pas défini par position.",
+    "La décision n° 6/2002 n'a été lue que dans la reproduction de lawsociety.ly ; sa ligne 7 (vêtements : 10 % local, 7 % importé) contredit l'art. 1 de la loi n° 19/1992 et reste à vérifier au Journal officiel."
+  ],
+  "complete_les_fiches": [
+    "LBY_assiettes_recherche_2026-09-23.json : les points ouverts « Taux TSP 4 % » et « Taux TP 2 % » sont tranchés ici (aucun texte trouvé).",
+    "LBY_assiette_TSP_TP_2026-09-17.json : sa portée, qui fait porter « les prélèvements effectifs à l'importation (taxe de service/port forfaitaire, taxes sectorielles) » sur la valeur CAF, n'est pas reprise ; voir decisions."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/LBY_TSP_TP_taux.texte-extrait.txt",
+      "sha256": "78f755861d7004c2e030d9cf05ae1673bfc1fc517cf73dfb3bdfa7057bb27fc5"
+    },
+    {
+      "fichier_archive": "sources/LBY_loi_19_1992_production_texte-integral.pdf",
+      "sha256": "3fd85d761fd0b8b24613d93457aa2527659edefad3a9f84fec25e95c5760d1d4"
+    }
+  ]
+}

@@ -63,7 +63,7 @@ def test_un_socle_qui_ne_correspond_plus_a_son_empreinte_n_est_pas_servi(tmp_pat
     try:
         with open(fichier, "r+", encoding="utf-8") as f:
             contenu = json.load(f)
-            contenu["positions"]["7612900000"]["droits"][0]["taux"] = 99.0
+            contenu["positions"]["7612909000"]["droits"][0]["taux"] = 99.0
             f.seek(0)
             json.dump(contenu, f, ensure_ascii=False, separators=(",", ":"))
             f.truncate()
@@ -249,9 +249,19 @@ def test_un_minimum_compare_sans_jouer_n_est_pas_dit_converti(client):
 
 
 @besoin_socle
-def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client):
-    """Guinée équatoriale, observatrice : son plafond de 15 000 XAF dépend du
-    taux, la réserve le dit, sans invoquer un accord qui ne la lie pas."""
+def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client, monkeypatch):
+    """Guinée équatoriale, observatrice. Aucune de ses lignes ne dépend
+    aujourd'hui du taux : une ligne plafonnée en XAF est ajoutée pour l'essai.
+    La réserve la nomme, sans invoquer un accord qui ne lie pas le pays."""
+    vraie = socle.position
+
+    def avec_plafond(iso3, code):
+        position, provenance = vraie(iso3, code)
+        essai = {"code": "ESSAI", "famille": "communautaire", "taux": 1.0, "assiette": "CIF",
+                 "plafond": {"montant": 15000.0, "devise": "XAF"}}
+        return {**position, "droits": [*position["droits"], essai]}, provenance
+
+    monkeypatch.setattr(socle, "position", avec_plafond)
     corps = client.post(
         "/calcul",
         json={
@@ -262,7 +272,7 @@ def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client):
             "taux_de_change": 0.0017,
         },
     ).json()
-    assert corps["conversion_monetaire"]["lignes"] == ["RI"]
+    assert corps["conversion_monetaire"]["lignes"] == ["ESSAI"]
     assert "fondement_taux_douanier" not in corps["conversion_monetaire"]
 
 
@@ -336,8 +346,8 @@ def test_une_origine_hors_liste_admise_n_obtient_pas_la_preference():
 @besoin_socle
 def test_un_couloir_non_autorise_reste_au_npf():
     """`OFFER_ONLY` et `PARTNER_NOTICE_REQUIRED` n'autorisent aucun calcul."""
-    position, _ = socle.position("CIV", "7612900000")
-    decision = taux_preferentiels(position, "CIV", "GHA", "7612900000")
+    position, _ = socle.position("CIV", "7612909000")
+    decision = taux_preferentiels(position, "CIV", "GHA", "7612909000")
     assert decision["applique"] is False
     assert decision["statut"] in {"OFFER_ONLY", "PARTNER_NOTICE_REQUIRED", "NOT_AVAILABLE"}
 
@@ -408,7 +418,7 @@ def test_le_calendrier_algerien_rend_un_taux_trace_pas_un_echec_silencieux(monke
     code = next(
         (
             c
-            for c in ("2201101100", "0101210000", "7612900000")
+            for c in ("2201101100", "0101210000", "7612909000")
             if not is_frozen(c) and tariff_list(c) in ("A", "B")
         ),
         None,
@@ -440,7 +450,7 @@ def test_le_perimetre_algerien_couvre_le_daps_avec_sa_reference():
     code = next(
         (
             c
-            for c in ("2201101100", "0101210000", "7612900000")
+            for c in ("2201101100", "0101210000", "7612909000")
             if not is_frozen(c) and tariff_list(c) in ("A", "B")
         ),
         None,
@@ -459,11 +469,12 @@ def test_le_perimetre_algerien_couvre_le_daps_avec_sa_reference():
 def test_la_reponse_dit_d_ou_vient_chaque_chiffre(client):
     reponse = client.post(
         "/calcul",
-        json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
+        json={"destination": "CIV", "code_sh": "7612909000", "valeur_cif": 1000},
     )
     assert reponse.status_code == 200
     corps = reponse.json()
-    assert corps["npf"]["total_droits"] == 380.0
+    # DD 200 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TVA 18 % de 1 225 (fiche CIV_prelevements_TVA).
+    assert corps["npf"]["total_droits"] == 445.5
     provenance = corps["provenance"]
     assert provenance["niveau"] == "national"
     assert provenance["source"]["sha256"]
@@ -676,7 +687,7 @@ def test_une_zone_de_libre_echange_ne_donne_aucune_franchise_automatique(client)
         json={
             "destination": "CIV",
             "origine": "GHA",
-            "code_sh": "7612900000",
+            "code_sh": "7612909000",
             "valeur_cif": 10000,
         },
     ).json()
@@ -908,7 +919,7 @@ def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
         json={
             "destination": "CIV",
             "origine": "GHA",
-            "code_sh": "7612900000",
+            "code_sh": "7612909000",
             "valeur_cif": 10000,
         },
     ).json()
@@ -974,9 +985,10 @@ def test_un_bloc_reglementaire_en_panne_n_interrompt_pas_le_calcul(client, monke
     monkeypatch.setattr(module, "build_regulatory_blocks", _tombe)
     corps = client.post(
         "/calcul",
-        json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
+        json={"destination": "CIV", "code_sh": "7612909000", "valeur_cif": 1000},
     ).json()
-    assert corps["npf"]["total_droits"] == 380.0
+    # DD 200 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TVA 18 % de 1 225 (fiche CIV_prelevements_TVA).
+    assert corps["npf"]["total_droits"] == 445.5
     assert corps["npf"]["etat"] in {"COMPLET", "PARTIEL"}
     for cle in ("regulatory_compliance", "regulatory_cost", "regulatory_reported"):
         assert corps[cle] is None

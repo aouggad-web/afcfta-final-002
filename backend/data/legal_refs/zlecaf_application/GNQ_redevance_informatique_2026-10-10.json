@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "objet": "Guinée équatoriale : pas de redevance informatique à l'importation — la ligne du socle était recopiée du tarif camerounais",
+  "destination_iso3": "GNQ",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — lois sur les taxes fiscales de 2017 et de 2025 (Ministerio de Hacienda, minhacienda-gob.com), lues en entier et relues par une seconde lecture indépendante ; données et code du dépôt pour l'origine de la ligne.",
+  "source": {
+    "instrument": "Ley núm. 10/2017 de Tasas Fiscales ; Ley de Tasas de 9 de diciembre de 2025, en vigueur le 1er janvier 2026, qui l'abroge",
+    "institution": "République de Guinée équatoriale, Ministerio de Hacienda, Planificación y Desarrollo Económico",
+    "url": "https://minhacienda-gob.com/uploads/2026/07/ley-de-tasas-2025-oficial-d1d1d4b8638a.pdf",
+    "url_ley_2017": "https://minhacienda-gob.com/uploads/2020/04/LeydeTasasFiscales-1.pdf",
+    "pdf_ley_2025_sha256": "1ed0bdd7bdca3307d0a23723e7e176dfda4d4ae24789132e774c6598ed41fef3",
+    "pdf_ley_2017_sha256": "3a518fad788078a828e810850b354536fca888947bcab972c82f2f1e4dcba9be",
+    "pdf_non_archive": "Les deux PDF ne sont pas versés au dépôt ; leurs passages utiles sont transcrits dans regle.texte_archive, avec URL et empreinte.",
+    "consulte_le": "2026-10-10"
+  },
+  "regle": {
+    "valeur": "Aucune redevance informatique n'est due à l'importation en Guinée équatoriale : aucune loi équato-guinéenne lue ne l'institue. La ligne « Redevance Informatique 0,45 % CIF, plafond 15 000 XAF » du socle est retirée.",
+    "verbatim": "Podrá establecerse tasas fiscales por la prestación de servicios o realización de actividades en régimen de Derecho público consistentes en: […] k) Actividades o servicios relacionados con los controles aduaneros.",
+    "reference": "Ley de Tasas 2025, art. 8 k) (simple habilitation) et barème, sans redevance informatique ; Disposición derogatoria primera (abrogation de la Ley 10/2017) ; Ley 10/2017, barème, sans redevance informatique",
+    "portee": "scripts/build_socle._sans_redevance_informatique_gnq, socle GNQ : la ligne RI est retirée des 5 239 positions. Elle rendait toute position incalculable sans taux de change. Le fichier collecté (backend/data/crawled/GNQ_tariffs.json, « derived_from »: « CMR ») recopie position par position le tarif camerounais (backend/tariff_crawl/adapters/regional.py, BLOC_REFERENCE CEMAC → CMR), en tenant pour communautaires tous les prélèvements autres que la TVA ; la redevance informatique est pourtant une redevance nationale camerounaise (fiche CMR_redevance_informatique_2026-10-09.json).",
+    "texte_archive": "sources/GNQ_redevance_informatique.texte-extrait.txt",
+    "sha256": "c6c9f45b3dcd9851508d33da09987c06a8b9fbdee1d6a2f6f0b97f159c193a4b"
+  },
+  "decisions": [
+    "La ligne est retirée, pas déclarée à compléter : sa seule origine est la recopie du fichier camerounais, et aucune loi équato-guinéenne lue ne crée un tel prélèvement.",
+    "La seule ligne de la Ley 10/2017 assise sur la valeur CIF (« El 1% sobre el valor CIF que se ingresa en la arca única de la aduana », 15000+1 %, Ministère du Commerce) n'est pas une redevance informatique, et elle a disparu du barème de la loi de 2025 en vigueur au 1er janvier 2026."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "L'Orden ministerial n° 11 du 30 avril 2020 sur l'adoption de SIDUNEA n'a pas été lue (page vide, copies inaccessibles) ; la loi de 2025 réserve à la loi toute modification des taxes.",
+    "Les recettes « Tasa de Comercio » (71514) et « Tasa Selectiva » (71513) figurent aux lois de budget 2025 et 2026 ; leur base légale, leur taux et leur assiette en 2026 ne sont pas établis.",
+    "La loi de budget 2025 (Ley 4/2024, art. 11) réduit à 5 % le droit de douane des produits de première nécessité ; leur liste n'a pas été identifiée et le socle ne l'applique pas.",
+    "Le reste du fichier GNQ reste la recopie du tarif camerounais : le droit de douane et la TCI sont communautaires (TEC CEMAC) ; la TVA (15 %) et le droit d'accises sont nationaux et traités à part."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/GNQ_redevance_informatique.texte-extrait.txt",
+      "sha256": "c6c9f45b3dcd9851508d33da09987c06a8b9fbdee1d6a2f6f0b97f159c193a4b"
+    }
+  ]
+}

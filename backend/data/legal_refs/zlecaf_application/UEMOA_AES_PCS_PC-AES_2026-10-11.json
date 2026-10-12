@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "objet": "PCS de l'UEMOA à 0,8 % ; prélèvement confédéral de l'AES (PC-AES) : exclusion des marchandises originaires de l'AES et de l'UEMOA",
+  "destination_iso3": "BEN, BFA, CIV, GNB, MLI, NER, SEN, TGO (PCS) ; BFA, MLI, NER (PC-AES)",
+  "verified_at": "2026-10-11",
+  "etabli": true,
+  "evidence_level": "primaire pour le PCS (acte additionnel n° 01/2019/CCEG/UEMOA, Bulletin officiel de l'UEMOA n° 105) ; presse pour le PC-AES (décision du 28/03/2025 reproduite en entier par aBamako ; aucun texte officiel trouvé)",
+  "source": {
+    "url": "https://www.uemoa.int/sites/default/files/bibliotheque/bulletin_officiel_ndeg105.pdf",
+    "institution": "UEMOA ; Confédération des États du Sahel"
+  },
+  "regle": {
+    "pcs": {
+      "valeur": "PCS à 0,8 % de la valeur en douane, au lieu de 1 % dans les collectes du Niger, du Bénin, du Togo et de la Guinée-Bissau (le Burkina est corrigé par sa propre passe, le Mali, le Sénégal et la Côte d'Ivoire portaient déjà 0,8 %).",
+      "verbatim": "Le Prélèvement Communautaire de Solidarité (PCS) institue par l’Acte additionnel n° 04/96 du 10 mai 1996 susvisé est maintenu à 0,80 % de la valeur en douane des marchandises importées des pays tiers par les États membres de l’Union pour compter du 1 er janvier 2020.",
+      "reference": "Acte additionnel n° 01/2019/CCEG/UEMOA du 12/07/2019, article premier (BO UEMOA n° 105, p. 1)",
+      "portee": "scripts/build_socle._pcs_uemoa, appliqué aux huit États de l'UEMOA sur les lignes PCS à 1 %. L'exclusion des originaires de l'Union (acte 04/96, art. 17) était déjà appliquée (fiche ORIGINE_prelevements_communautaires_2026-10-10.json).",
+      "texte_archive": "sources/UEMOA_AES_PCS_PC-AES.extrait.txt",
+      "sha256": "f9bd420ea89cba0ebecaebe59a6e4a3f8418d4f14f078d3994cd3747b625912a"
+    },
+    "pc_aes": {
+      "valeur": "PC-AES (0,5 % de la valeur en douane) marqué « exoneration_origine » = AES_UEMOA au Burkina, au Mali et au Niger : la route /calcul le retire pour une origine de l'AES (Burkina, Mali, Niger) ou de l'UEMOA (Sénégal, Côte d'Ivoire, Bénin, Togo, Guinée-Bissau). Il reste dû pour toute autre origine (Ghana, Nigeria, Maroc…) et sans origine déclarée.",
+      "verbatim": "Pays tiers: Tout pays non-membre de l'AES, à l'exclusion des pays formant une union douanière avec les pays de l'AES, ou des pays liés à la Confédération AES ou à ses Etats membres par des accords spécifiques prévoyant expressément l'exemption du PC-AES;",
+      "verbatim_exclusions": "1- les marchandises originaires de l'AES telles que définies par la législation douanière définissant les règles d'origine de l'AES; [...] 4- les marchandises obtenues ou produites dans un Etat membre d'une union douanière avec les pays de l'AES, sous réserve d'une disposition expresse;",
+      "reference": "Décision du Collège des Chefs d'État de la Confédération AES instituant un Prélèvement confédéral, Bamako, 28/03/2025, art. 1er, 4 et 7 (reproduction intégrale, aBamako, 30/03/2025)",
+      "portee": "scripts/build_socle (EXONERATION_ORIGINE, BLOCS_DESTINATION) ; backend/services/exoneration_origine.BLOCS[\"AES_UEMOA\"].",
+      "texte_archive": "sources/UEMOA_AES_PCS_PC-AES.extrait.txt",
+      "sha256": "f9bd420ea89cba0ebecaebe59a6e4a3f8418d4f14f078d3994cd3747b625912a"
+    }
+  },
+  "decisions": [
+    "Le PC-AES est servi sur la foi d'un texte connu par la presse seulement (comme dans la fiche MLI_prelevements_TVA_2026-10-10.json) ; sa portée d'origine est prise du même texte, pour ne pas servir un prélèvement sans les exclusions qui l'accompagnent.",
+    "L'art. 4, 4° réserve l'exclusion des produits d'une union douanière « sous réserve d'une disposition expresse » : aucune disposition contraire n'a été trouvée ; l'UEMOA est donc exclue."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Texte officiel de la décision AES (Journal officiel, site de la Confédération) : non trouvé.",
+    "Art. 4, 2° et 3° (marchandises produites dans l'AES sans en avoir l'origine, réexpéditions) : non distingués par le calculateur.",
+    "Le PCC de la CEDEAO au Burkina et au Niger après le 29/01/2025 : non servi par les collectes, non examiné ici.",
+    "Exonération du PCS sur les produits pétroliers (acte 04/96, art. 18) : maintien non établi, non appliquée."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/UEMOA_AES_PCS_PC-AES.extrait.txt",
+      "sha256": "f9bd420ea89cba0ebecaebe59a6e4a3f8418d4f14f078d3994cd3747b625912a"
+    },
+    {
+      "document_non_archive": "Bulletin officiel de l'UEMOA n° 105 (2019), 202 p.",
+      "pdf_sha256": "ecfb039741c101724ea7ceb597fe57fc01cb9f26daf4afe8b228839fcc0f66cc"
+    },
+    {
+      "document_non_archive": "aBamako, « Décision instituant un prélèvement confédéral » (http://news.abamako.com/h/299436.html)",
+      "page_sha256": "56606070a0e64ed41ae0cb9e21261b0bd226d24c2227584e1e82ed9dde0d8009"
+    }
+  ]
+}

@@ -81,7 +81,11 @@ FAMILLES = {
     "OHADA": "communautaire",
     "TS": "communautaire",
     "CEDEAO": "communautaire",
+    "EXIM": "redevance",
+    "SIL": "redevance",
     "RPD": "redevance",
+    "RTL": "redevance",  # redevance de traitement et de liquidation (GN)
+    "CA": "redevance",  # centime additionnel (GN)
     "IDF": "redevance",
     "RDL": "redevance",
     "INFRA": "redevance",
@@ -90,6 +94,7 @@ FAMILLES = {
     "DSV": "redevance",
     "TCL": "redevance",
     "EXC": "accise",
+    "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
     "IAT": "accise",
@@ -1176,12 +1181,26 @@ def sources_disponibles():
 #: CGI (annexe II, art. 142) ; l'assiette de la TVA, de son art. 138 (1).
 #: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
 #: assiette de la TVA de son art. 216.
+#: Code du prélèvement → bloc dont les originaires en sont exclus.
+EXONERATION_ORIGINE = {"PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA"}
+#: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
+BLOCS_DESTINATION = {
+    "UEMOA": {"BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"},
+    "CEDEAO": {"BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"},
+    # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
+    # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
+    "AES_UEMOA": {"BFA", "MLI", "NER"},
+}
+
 ACCISES_PAYS = {
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
+    "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
+    "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
+    "BFA": os.path.join(REPO, "backend", "data", "zlecaf_bfa", "droit_accises_cgi2026.json"),
 }
 
 
@@ -1376,6 +1395,80 @@ def _taux_tva_hors_la_loi(regle, positions, compteurs):
             compteurs["taux_indisponibles"] += 1
 
 
+def _redevance_informatique_cmr(positions):
+    """Cameroun : redevance informatique à 1 % de la valeur imposable, sans plafond
+    à l'importation (loi de finances 2023, art. 9 a), maintenu par la loi de
+    finances 2026, art. 12 a) ; fiche CMR_redevance_informatique_2026-10-09.json).
+    Le crawl porte encore 0,45 % avec un plafond de 15 000 XAF sur la base : le
+    régime de 2018, où le plafond visait déjà le montant, à l'exportation."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "RI":
+                continue
+            # L'assiette reste celle de la source (CIF) : c'est la « valeur
+            # imposable » de la loi ; seuls le taux et le plafond changent.
+            d["taux"] = 1.0
+            d["plafond"] = None
+            d["source"] = "Loi de finances 2023 du Cameroun, art. 9 a)"
+            d["note"] = (
+                "Loi de finances 2023, art. 9 a), maintenu par la loi de finances 2026, art. 12 a) : "
+                "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
+                "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
+            )
+
+
+def _sans_redevance_informatique_gnq(positions, compteurs):
+    """Guinée équatoriale : pas de redevance informatique. Le fichier collecté
+    recopie le tarif camerounais (« derived_from »: « CMR ») et sa redevance
+    nationale ; aucune loi équato-guinéenne lue ne l'institue (Ley 10/2017 et
+    Ley de Tasas 2025 ; fiche GNQ_redevance_informatique_2026-10-10.json)."""
+    for position in positions.values():
+        droits = position.get("droits") or []
+        retenus = [d for d in droits if d.get("code") != "RI"]
+        compteurs["assiettes_source"] -= len(droits) - len(retenus)
+        position["droits"] = retenus
+
+
+#: Libye : source et motif des deux compléments nationaux du crawl, servis
+#: sans taux (fiche LBY_TSP_TP_taux_2026-10-10.json).
+TSP_TP_LIBYE = {
+    "TSP": (
+        "Aucun texte libyen trouvé (fiche LBY_TSP_TP_taux_2026-10-10.json)",
+        "Taxe des services portuaires à 4 % : aucun texte libyen trouvé ne l'établit. La page PwC d'où le "
+        "crawl la tenait (revue le 31 mai 2026) ne cite plus ni « Port Services Tax » ni 4 % ; elle signale "
+        "une « service fee » de 5 % sur la valeur de la plupart des importations, sans texte. La décision "
+        "du Comité populaire général des Chaabiyat n° 3 de 2005 (« redevance pour services "
+        "d'importation »), citée par la décision n° 17/2007, pourrait fonder un tel prélèvement ; son texte "
+        "et son taux n'ont pas été obtenus. La redevance de quai souveraine du règlement de 2025 (décision "
+        "du Conseil des ministres n° 393/2025, art. 25) est spécifique : 2,00 LYD par tonne ou par m³, le "
+        "plus élevé des deux, minimum 50 LYD par bon de livraison.",
+    ),
+    "TP": (
+        "Loi n° 19/1992 (Libye), art. 1 ; taux non établi (fiche LBY_TSP_TP_taux_2026-10-10.json)",
+        "Taxe de production ou de consommation : instituée par la loi n° 19/1992 (art. 1) sur les "
+        "marchandises importées désignées par décision, au taux fixé pour chacune ; maintien en vigueur non "
+        "confirmé. La grille de 2002 (décision n° 6/2002) en désigne 40 catégories, à des taux non nuls de "
+        "7 % à 50 % à l'importation, sans correspondance établie avec les positions du tarif ; elle a pu être "
+        "modifiée en 2005 (décisions n° 103 et 114/2005, non obtenues). Aucun texte trouvé ne fixe le taux "
+        "uniforme de 2 % du crawl.",
+    ),
+}
+
+
+def _tsp_tp_libye(positions, compteurs):
+    """Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la
+    « Production Tax » à 2 % du crawl (fiche LBY_TSP_TP_taux_2026-10-10.json).
+    Les lignes restent, sans taux, à compléter ; elles étaient déjà sans assiette."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") not in TSP_TP_LIBYE:
+                continue
+            if d.get("taux") is not None:
+                compteurs["taux_indisponibles"] += 1
+            d["taux"] = None
+            d["source"], d["note"] = TSP_TP_LIBYE[d["code"]]
+
+
 def _ait_malawi(positions, compteurs):
     """Malawi : Advance Income Tax à l'importation sur la valeur des marchandises
     au point d'entrée (Taxation Act s.102B(1), taux porté de 3 % à 10 % par le
@@ -1418,7 +1511,450 @@ def _ait_malawi(positions, compteurs):
                     )
 
 
-def _accises_du_cgi(iso, positions):
+def _prelevements_senegal(positions, compteurs):
+    """Sénégal : prélèvements d'entrée selon les FAQ de la DGD (2026) « Comment
+    faire pour savoir les frais de dédouanement » et « Comment dédouaner un
+    véhicule ? » (fiche SEN_taxes_specifiques_2026-10-10.json). Le crawl
+    portait un PCS de 1 % au lieu de 0,8 %, et
+    omettait le PROMAD (2 % de la valeur en douane) et le COSEC (0,4 %, dû par
+    voie maritime seulement, liquidé comme dans les tableaux de la DGD, le mode
+    de transport n'étant pas connu du moteur). Le PUA de 0,2 % du crawl, absent
+    des tableaux de la DGD, est maintenu en attendant confirmation."""
+    note_dgd = (
+        "FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » "
+        "et tableaux des taux cumulés des véhicules."
+    )
+    for code, position in positions.items():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "PUA":
+                d["note"] = (
+                    "Prélèvement de l'Union africaine, 0,2 % (taux de la source) : absent des tableaux de la DGD, "
+                    "liquidé par la douane ivoirienne (circulaire DGD n° 2258) ; maintenu, application au Sénégal à confirmer."
+                )
+            if d.get("code") == "PCS":
+                d["taux"] = 0.8
+                d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
+            droits.append(d)
+        libelle_pos = (position.get("designation") or "").lower()
+        # Mots entiers : « usages spéciaux » n'est pas « usagé ».
+        if re.search(r"\busagée?s?\b|\bd'occasion\b", libelle_pos):
+            etat_taux = 3.0
+        elif re.search(r"\bneu(f|fs|ve|ves)\b", libelle_pos):
+            etat_taux = 1.0
+        else:
+            etat_taux = None
+        if droits and (code[:4] in ("8702", "8703", "8704", "8705") or code[:6] == "870120") and not any(d.get("code") == "DENR" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "DENR",
+                    "code_source": "DENR",
+                    "libelle": "Droit d'enregistrement des véhicules",
+                    "famille": famille("DENR"),
+                    "taux": etat_taux,
+                    "assiette": "CIF+DD+RS",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "Droit d'enregistrement : 1 % pour un véhicule neuf, 3 % d'occasion, « (Base + DD + RS) × taux » "
+                    "(" + note_dgd + ")" + (" ; état lu dans le libellé de la position." if etat_taux is not None
+                                             else " ; l'état neuf ou d'occasion n'est pas dans la position."),
+                },
+            )
+            compteurs["assiettes_table"] += 1
+            if etat_taux is None:
+                compteurs["taux_indisponibles"] += 1
+        conditionnelles = []
+        if code[:4] in ("2203", "2204", "2205", "2206", "2208") and code not in ("2206009100", "2206009900"):  # art. 412, 3°
+            conditionnelles.append((
+                "TAA", "Taxe additionnelle sur les alcools",
+                "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
+                "tableau des mesures fiscales de la DGID) : le degré et le volume ne sont pas dans la position.",
+            ))
+        if code[:6] in ("240220", "240290"):
+            conditionnelles.append((
+                "STC", "Surtaxe sur les cigarettes",
+                "Surtaxe sur les cigarettes, perçue au cordon douanier (" + note_dgd + ") : taux et assiette non publiés dans les textes lus.",
+            ))
+        if code in ("2002901100", "2002901900", "2002902000"):
+            conditionnelles.append((
+                "TCI", "Taxe conjoncturelle à l'importation",
+                "Due sur le concentré de tomate quand la valeur CAF est inférieure au prix de déclenchement (" + note_dgd + ").",
+            ))
+        for code_c, libelle_c, note_c in conditionnelles:
+            if droits and not any(d.get("code") == code_c for d in droits):
+                rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+                droits.insert(rang, {
+                    "code": code_c, "code_source": code_c, "libelle": libelle_c, "famille": famille(code_c),
+                    "taux": None, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal", "note": note_c,
+                })
+                compteurs["assiettes_table"] += 1
+                compteurs["taux_indisponibles"] += 1
+        if droits and not any(d.get("code") == "COSEC" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "COSEC",
+                    "code_source": "COSEC",
+                    "libelle": "Prélèvement au profit du Conseil sénégalais des chargeurs",
+                    "famille": famille("COSEC"),
+                    "taux": 0.4,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "COSEC 0,4 %, « uniquement par voie maritime » (" + note_dgd + ") : liquidé comme dans "
+                    "les tableaux de la DGD ; à retirer pour un transport terrestre ou aérien.",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        if droits and not any(d.get("code") == "PROMAD" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "PROMAD",
+                    "code_source": "PROMAD",
+                    "libelle": "Prélèvement pour la modernisation de l'administration des douanes",
+                    "famille": famille("PROMAD"),
+                    "taux": 2.0,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "PROMAD 2 % de la valeur en douane (" + note_dgd + ")",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        position["droits"] = droits
+
+
+def _prelevements_ghana(positions, compteurs):
+    """Ghana : la collecte ne porte que DD, NHIL, GETFund et TVA. Prélèvements
+    à l'importation sur la valeur c.a.f. (MoFEP/IFS, « A survey of the Ghanaian
+    tax system », 2026, tableau 3.9) : ECOWAS Levy 0,5 %, AU Import Levy 0,2 %,
+    EXIM Levy 0,75 % (Act 911, s. 29, hors produits pétroliers), Special Import
+    Levy 2 % (Act 861, hors produits pétroliers, engrais, machines et
+    équipements ; chapitres 84 et 85 sans taux, faute de liste). TVA,
+    NHIL et GETFund sur une même base (GRA) : valeur en douane + droits et taxes
+    à l'importation autres que la TVA (VAT Act 2025, Act 1151, s. 45(1)). Fiche :
+    GHA_prelevements_TVA_2026-10-10.json."""
+    mofep = "MoFEP/IFS, A survey of the Ghanaian tax system (2026), tableau 3.9"
+    ajouts = [
+        ("CEDEAO", "ECOWAS Levy", 0.5, "« All imported goods from non-ECOWAS states » : non dû sur les origines CEDEAO."),
+        ("PUA", "AU Import Levy", 0.2, "African Union Import Levy Act 2017 (Act 952) : « All imported goods from non-AU states »."),
+        ("EXIM", "Export-Import Levy", 0.75, "Act 911, s. 29 : « on the dutiable value of any product imported for commercial purposes except petroleum products »."),
+        ("SIL", "Special Import Levy", 2.0, "Special Import Levy Act 2013 (Act 861) : « All imports, except for petroleum products, fertilisers, and machinery and equipment » ; produits pétroliers lus comme les positions 27.09 et 27.10, engrais comme le chapitre 31 ; exemptions de la First Schedule non relevées."),
+    ]
+    codes = "+".join(["DD"] + [c for c, _, _, _ in ajouts])
+    # Le droit d'accises (barème ACCISES_PAYS, passe suivante) entre dans la base
+    # commune ; absent de la position, il est sans objet.
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        if not droits:
+            continue
+        presents = {d.get("code") for d in droits}
+        rang = next((i + 1 for i, d in enumerate(droits) if d.get("code") == "DD"), 0)
+        for c, libelle, taux, note in ajouts:
+            if c in presents:
+                continue
+            if c == "EXIM" and code[:4] in ("2709", "2710", "2711", "2712", "2713"):
+                continue
+            if c == "SIL" and (code[:4] in ("2709", "2710") or code[:2] == "31"):
+                continue
+            if c == "SIL" and code[:2] in ("84", "85"):
+                taux = None
+                note += " Machines et équipements (chapitres 84 et 85) exclus, sans liste des positions concernées : taux non établi."
+                compteurs["taux_indisponibles"] += 1
+            droits.insert(
+                rang,
+                {
+                    "code": c,
+                    "code_source": c,
+                    "libelle": libelle,
+                    "famille": famille(c),
+                    "taux": taux,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Ghana Revenue Authority (Customs Division)",
+                    "note": f"{note} ({mofep})",
+                },
+            )
+            rang += 1
+            compteurs["assiettes_table"] += 1
+        for d in droits:
+            if d.get("code") in ("TVA", "NHIL", "GETFUND") and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
+                d["assiette"] = "CIF+" + codes + "+DA"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "VAT Act 2025 (Act 1151), s. 45(1) : « (a) the import value [...] (b) the import duties and taxes "
+                    "other than the Tax » ; GRA : « the VAT, the NHIL and the GETFund Levy are all charged on the same base »."
+                )
+        position["droits"] = droits
+
+
+def _prelevements_mali(positions, compteurs):
+    """Mali : tarif de la DGD (TEC CEDEAO, édition du Mali, 28/12/2023 ; fiche
+    MLI_prelevements_TVA_2026-10-10.json), sans assiette pour l'ISCP, la TAI, la
+    TCI ni la TVA. CGI art. 243 : ISCP sur « la valeur en douane majorée des
+    droits et taxes dus à l'entrée, à l'exception de la TVA » ; CGI art. 198 et
+    199 : TVA sur la valeur CAF, y compris « les impôts, taxes, droits et
+    prélèvements de toute nature à l'exception de la TVA »."""
+    entree = "DD+RS+PCS+PC-AES+TAI+TCI"
+    cgi = "Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017)"
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            code = d.get("code")
+            if code in ("TAI", "ISCP", "TVA") and not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+                d["assiette_origine"] = "regle_de_pays"
+            if code == "TAI":
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["note"] = "Taxe d'ajustement à l'importation, perçue sur la valeur CAF comme le droit de douane."
+            elif code == "ISCP":
+                d["assiette"] = "CIF+" + entree
+                d["note"] = (
+                    f"{cgi}, art. 243 : « à l'importation, par la valeur en douane majorée des droits et taxes "
+                    "dus à l'entrée, à l'exception de la TVA »."
+                )
+            elif code == "TVA":
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["note"] = (
+                    f"{cgi}, art. 198 : « pour les produits importés par la valeur CAF Franco frontière » ; art. 199 : "
+                    "« Sont à inclure dans la base d'imposition : les impôts, taxes, droits et prélèvements de toute "
+                    "nature à l'exception de la TVA »."
+                )
+            elif code == "TCI":
+                d["note"] = (
+                    "Taxe conjoncturelle à l'importation : assise sur un prix de déclenchement non publié ; "
+                    "l'ISCP et la TVA de la position restent indisponibles."
+                )
+            elif code == "PC-AES":
+                d["note"] = (
+                    "Colonne PC (0,5 %) du tarif de 2023, prélèvement de la CEDEAO quittée le 29/01/2025 ; servie "
+                    "comme prélèvement confédéral de l'AES au même taux (décision du 28/03/2025), dont sont exclues "
+                    "les marchandises originaires de l'AES et de l'UEMOA (art. 1er et 4)."
+                )
+
+
+def _prelevements_burkina(positions):
+    """Burkina Faso : la collecte porte un PCS de 1 % ; le taux communautaire est
+    de 0,8 % (circulaire DGD de Côte d'Ivoire n° 2258, tarif de la DGD du Mali ;
+    fiche BFA_prelevements_TVA_2026-10-11.json)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") == "PCS" and d.get("taux") == 1.0:
+                d["taux"] = 0.8
+                d["note"] = (
+                    "Prélèvement communautaire de solidarité de l'UEMOA : 0,8 % (circulaire DGD n° 2258 de Côte "
+                    "d'Ivoire : PCS « en vigueur » au taux de 0,8 % ; tarif de la DGD du Mali, colonne PCS)."
+                )
+
+
+def _pcs_uemoa(positions):
+    """PCS : 0,8 % de la valeur en douane des marchandises importées des pays
+    tiers (acte additionnel n° 01/2019/CCEG/UEMOA, art. 1er ; fiche
+    UEMOA_AES_PCS_PC-AES_2026-10-11.json). Les collectes du Niger, du Bénin, du Togo
+    et de la Guinée-Bissau portent encore 1 % (le Burkina a sa passe)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") == "PCS" and d.get("taux") == 1.0:
+                d["taux"] = 0.8
+                d["source"] = "Acte additionnel n° 01/2019/CCEG/UEMOA"
+                d["note"] = (
+                    "Acte additionnel n° 01/2019/CCEG/UEMOA, art. 1er : « maintenu à 0,80 % de la valeur en douane "
+                    "des marchandises importées des pays tiers » (la collecte portait 1 %)."
+                )
+
+
+#: Burkina Faso : droits du TEC UEMOA 2022 que la collecte de février 2026
+#: sous-évalue (fiche BFA_droits_TEC_2026-10-11.json).
+DD_TEC_BFA = {"0701900000": 35.0, "0703100000": 35.0, "1511100000": 10.0}
+
+
+def _droits_tec_burkina(positions):
+    for code, taux in DD_TEC_BFA.items():
+        for d in (positions.get(code) or {}).get("droits") or []:
+            if d.get("code") == "DD" and d.get("taux") != taux:
+                d["note"] = f"TEC UEMOA 2022 : {taux:g} % (la collecte portait {d['taux']:g} %)."
+                d["taux"] = taux
+
+
+#: Niger, loi de finances 2026 (ordonnance n° 2025-44, art. 13 ; CGI art. 322
+#: nouveau, 2°) : TVA exonérée à l'importation, par préfixe NTS.
+TVA_EXONEREE_NER = (
+    "0401", "0701", "0714", "10", "11062011", "11062012", "19011000", "22071010", "2501", "2705",
+    "27101912", "27111300", "2936", "29392000", "2941", "30", "37011000", "37021000", "38089210",
+    "38089290", "4014", "40151200", "49019910", "4902", "49070000", "84139120", "84139190",
+    "84139200", "84192000", "84249000", "87011000", "8713", "87142000", "9011", "9012", "9018",
+    "9019", "90200000", "9021",
+    # « Ex. position » 90.22 et 94.02 : seules les sous-positions dont le libellé
+    # dit l'usage médical, chirurgical, dentaire ou vétérinaire.
+    "9022130000", "9022140000", "9022210000", "9402101000", "9402900000",
+)
+#: Exonération dont le périmètre ne se lit pas dans la position.
+TVA_EXONEREE_NER_A_TRANCHER = {
+    "1006": "céréales exonérées « à l'exception du riz de luxe », que la nomenclature ne distingue pas",
+    "9022120000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+    "9022300000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+    "9022900000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+}
+
+
+def _tva_exoneree_niger(positions, compteurs):
+    """Niger : exonérations de TVA à l'importation de la loi de finances 2026
+    (fiche NER_TVA_exonerations_LF2026_2026-10-11.json)."""
+    reference = "Ordonnance n° 2025-44 (loi de finances 2026), art. 13 : CGI art. 322 nouveau, 2°"
+    for code, position in positions.items():
+        motif = next((m for p, m in TVA_EXONEREE_NER_A_TRANCHER.items() if code.startswith(p)), None)
+        exoneree = motif is None and code.startswith(TVA_EXONEREE_NER)
+        if not (motif or exoneree):
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") != "TVA" or d.get("taux") is None:
+                continue
+            if exoneree:
+                d["taux"] = 0.0
+                d["note"] = f"{reference} : « les importations et les ventes des produits énumérés »."
+            else:
+                d["taux"] = None
+                d["note"] = f"{reference} : {motif}."
+                compteurs["taux_indisponibles"] += 1
+
+
+def _prelevements_guinee(positions, compteurs):
+    """Guinée : tarif de la DGD (SH 2022 ; fiche GIN_prelevements_TVA_2026-10-11.json).
+    CGI (texte 2022 du Ministère du Budget), art. 436 : accise ad valorem sur « la valeur CAF [...] majorée de
+    l'ensemble des droits perçus au cordon douanier, à l'exception de la TVA » ;
+    TVA sur la valeur en douane augmentée des droits et taxes de toute nature
+    liquidés par la douane (arrêté du 31/03/2017, art. 12 ; Ministère du Budget)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") not in ("DA", "TVA"):
+                continue
+            if not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+            elif d.get("assiette_origine") == "source":
+                compteurs["assiettes_source"] -= 1
+                compteurs["assiettes_table"] += 1
+            d["assiette_origine"] = "regle_de_pays"
+            d.pop("assiette_non_traduite", None)
+            if d["code"] == "DA":
+                d["assiette"] = "CIF+DD+RTL+PCC+CA"
+                d["note"] = (
+                    "Code général des impôts de Guinée (texte 2022 publié par le Ministère du Budget), art. 436 : "
+                    "« la valeur CAF [...] majorée de l'ensemble des droits perçus au cordon douanier, à l'exception "
+                    "de la TVA » ; « Les tarifs des droits d'accises sur les produits imposables importés sont fixés "
+                    "dans le TARIF DES DOUANES »."
+                )
+            else:
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["note"] = (
+                    "Arrêté du 31/03/2017, art. 12 : « L'assiette de la TVA intègre le montant des Droits et taxes de "
+                    "Douane effectivement appliqué » ; valeur en douane augmentée des droits et taxes de toute nature "
+                    "liquidés par l'administration des douanes, à l'exception de la TVA (Ministère du Budget)."
+                )
+
+
+def _prelevements_cote_divoire(positions, compteurs):
+    """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
+    taxation nationale, mise à jour du 27/03/2026 ; fiche
+    CIV_prelevements_TVA_2026-10-10.json). Il porte RS, PCS, PCC et PUA
+    (circulaire DGD n° 2258) mais aucune assiette. Assiette des taxes spéciales
+    du CGI art. 418 (boissons, tabacs, cosmétiques, marbres) : valeur en douane
+    augmentée de tous les droits et taxes hormis la TVA ; assiette de la TVA :
+    valeur en douane majorée des droits et taxes perçus à l'entrée (directive
+    n° 02/98/CM/UEMOA, art. 27). Le droit unique de sortie, dû à l'exportation,
+    n'entre pas dans le calcul d'une importation."""
+    entree = "DD+RS+PCS+PCC+PUA+TAI+TCI"
+    speciales = ("TSBPT", "TAB", "TCB", "TSM")
+    omc = "Examen des politiques commerciales de la Côte d'Ivoire, OMC WT/TPR/S/362 (2017), § 3.24 et 3.26"
+
+    def vers_table(d):
+        # Une assiette réécrite par la règle du pays quitte le compteur de son origine.
+        if d.get("assiette_origine") == "source":
+            compteurs["assiettes_source"] -= 1
+            compteurs["assiettes_table"] += 1
+        elif d.get("assiette_origine") == "source_fichier":
+            compteurs["assiettes_fichier"] -= 1
+            compteurs["assiettes_table"] += 1
+
+    for position in positions.values():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "TAI":
+                if not d.get("assiette"):
+                    compteurs["assiettes_indisponibles"] -= 1
+                    compteurs["assiettes_table"] += 1
+                else:
+                    vers_table(d)
+                d["libelle"] = "Taxe d'ajustement à l'importation"
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Taxe d'ajustement à l'importation, perçue sur la valeur en sus du TEC "
+                    f"({omc}) ; taux publié au tarif officiel de la DGD."
+                )
+            if d.get("code") == "TPQ" and d.get("taux") is not None:
+                d["libelle"] = "Taxe de péréquation sur le sucre"
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+                d["note"] = (
+                    "« égale à la différence entre la valeur c.a.f. et le prix de déclenchement de la TCI, ce "
+                    f"dernier formant la base imposable pour les autres droits et taxes » ({omc}) : dépend de la "
+                    "valeur déclarée et du prix de déclenchement en vigueur."
+                )
+            if d.get("code") == "DUS":
+                compteurs["assiettes_source" if d.get("assiette") else "assiettes_indisponibles"] -= 1
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] -= 1
+                continue
+            if d.get("code") in speciales and d.get("assiette"):
+                vers_table(d)
+                d["assiette"] = "CIF+" + entree
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
+                    "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
+                )
+            droits.append(d)
+        presentes = [d["code"] for d in droits if d.get("code") in speciales]
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette"):
+                vers_table(d)
+                d["assiette"] = "+".join(["CIF", entree] + presentes)
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
+                    "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
+                )
+        if any(d.get("code") == "TPQ" for d in droits):
+            # Sucre : le prix de déclenchement de la TCI, non publié, forme la base
+            # des autres droits ; les liquider sur la valeur c.a.f. sous-évaluerait.
+            for d in droits:
+                if d.get("code") == "TPQ" or not d.get("assiette"):
+                    continue
+                vers_table(d)
+                compteurs["assiettes_table"] -= 1
+                compteurs["assiettes_indisponibles"] += 1
+                d["assiette"] = None
+                d["assiette_origine"] = None
+                d["note"] = (
+                    "Base imposable : prix de déclenchement de la TCI, « ce dernier formant la base imposable "
+                    f"pour les autres droits et taxes » ({omc}) ; prix non publié."
+                )
+        position["droits"] = droits
+
+
+def _accises_du_cgi(iso, positions, compteurs):
     with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
         table = json.load(f)
     for code, position in positions.items():
@@ -1428,8 +1964,10 @@ def _accises_du_cgi(iso, positions):
                 continue
             if any(code.startswith(p) for p in regle["prefixes"]):
                 # Avant la TVA, qui s'assoit sur lui : le moteur liquide dans l'ordre.
+                # Ghana : avant le NHIL et le GETFund aussi, assis sur la même base.
+                avant = table.get("inserer_avant_familles", ["tva"])
                 rang = next(
-                    (i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits)
+                    (i for i, d in enumerate(droits) if d.get("famille") in avant), len(droits)
                 )
                 droits.insert(
                     rang,
@@ -1440,7 +1978,7 @@ def _accises_du_cgi(iso, positions):
                         "famille": famille("DA"),
                         "taux": regle["taux"],
                         "assiette": table["assiette"],
-                        "assiette_origine": "source",
+                        "assiette_origine": "regle_de_pays",
                         "source": table["source"],
                         "note": " ".join(
                             x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
@@ -1450,7 +1988,11 @@ def _accises_du_cgi(iso, positions):
                 break
         for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
                 d["assiette"] = table["tva_assiette"]
+                d["assiette_origine"] = "regle_de_pays"
                 d["note"] = table["tva_assiette_reference"]
         position["droits"] = droits
 
@@ -1825,9 +2367,33 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
         _ait_malawi(positions, compteurs)
+    if iso == "CMR":
+        _redevance_informatique_cmr(positions)
+    if iso == "GNQ":
+        _sans_redevance_informatique_gnq(positions, compteurs)
+    if iso == "LBY":
+        _tsp_tp_libye(positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
+
+    if iso == "SEN":
+        _prelevements_senegal(positions, compteurs)
+    if iso == "CIV":
+        _prelevements_cote_divoire(positions, compteurs)
+    if iso == "GHA":
+        _prelevements_ghana(positions, compteurs)
+    if iso == "MLI":
+        _prelevements_mali(positions, compteurs)
+    if iso == "BFA":
+        _prelevements_burkina(positions)
+        _droits_tec_burkina(positions)
+    if iso == "NER":
+        _tva_exoneree_niger(positions, compteurs)
+    if iso in BLOCS_DESTINATION["UEMOA"]:
+        _pcs_uemoa(positions)
+    if iso == "GIN":
+        _prelevements_guinee(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
@@ -1842,7 +2408,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
         avant = _da()
         if iso in ACCISES_PAYS:
-            _accises_du_cgi(iso, positions)
+            _accises_du_cgi(iso, positions, compteurs)
         if iso in ASSIETTE_ACCISE_PAYS:
             _assiette_accise(iso, positions)
         apres = _da()
@@ -1860,11 +2426,23 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     cle = "assiettes_table"
                 compteurs[cle] += signe
 
+    # Prélèvements communautaires dont les originaires du bloc sont exclus
+    # (backend/services/exoneration_origine.py) : la route les retire selon
+    # l'origine déclarée.
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            bloc = EXONERATION_ORIGINE.get(d.get("code"))
+            if bloc and (bloc == "UA" or iso in BLOCS_DESTINATION[bloc]):
+                d["exoneration_origine"] = bloc
+
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur
     # annonçait donc plus de positions que le socle n'en porte, et c'est ce qui
     # a masqué la perte de 349 positions libyennes rabattues sur le SH6.
     # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
+    # Les passes par pays (prélèvements, accises) ajoutent des familles après la
+    # lecture : la couverture se lit sur ce qui est servi.
+    familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
     compteurs["droits_composes"] = sum(

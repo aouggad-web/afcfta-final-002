@@ -5,14 +5,11 @@
   "regions": {
     "ECOWAS_CET_WA15": {
       "members": [
-        "BEN",
         "BFA",
         "CPV",
-        "GIN",
         "GMB",
         "GNB",
         "LBR",
-        "MLI",
         "NER",
         "SEN",
         "SLE",
@@ -69,12 +66,54 @@
         "source_name": "Tarif des douanes de Mauritanie, édition 2021 (douanes.mr)",
         "scope_note": "Nomenclature nationale détaillée à dix chiffres, extraite du PDF officiel (SHA-256 consigné) : parseur versionné, suite de vérification V1-V6, croisement WITS à 99,2 %. Remplace le référentiel NPF SH6 WITS/UNCTAD-TRAINS. Les trois colonnes de taux (DD, RS, PC) sont les « quotités des droits et taxes » du tarif au sens de l'article 4 du Code des douanes, assises sur la valeur en douane par son article 5 § 2."
       }
+    },
+    "MLI_NATIONAL": {
+      "members": [
+        "MLI"
+      ],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 6382,
+        "national_line_digits": [
+          10
+        ],
+        "source_name": "Tarif extérieur commun de la CEDEAO, édition du Mali (DGD, 28/12/2023)",
+        "scope_note": "Positions nationales à dix chiffres et colonnes DD, RS, PC, PCS, ISCP, TVA, TAI, TCI extraites du PDF de la DGD (scripts/extraire_tec_mli.py, SHA-256 consigné) ; fiche MLI_prelevements_TVA_2026-10-10.json."
+      }
+    },
+    "BEN_NATIONAL": {
+      "members": [
+        "BEN"
+      ],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 6381,
+        "national_line_digits": [
+          10
+        ],
+        "source_name": "Tarif extérieur commun TEC-CEDEAO SH2022, tarif officiel de la DGDDI du Bénin (07/11/2024)",
+        "scope_note": "Positions nationales à dix chiffres et colonnes D.D. et R.S. extraites du PDF de la DGDDI (scripts/extraire_tec_ben.py, SHA-256 consigné) ; fiche BEN_prelevements_TVA_2026-10-11.json."
+      }
+    },
+    "GIN_NATIONAL": {
+      "members": [
+        "GIN"
+      ],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 6379,
+        "national_line_digits": [
+          10
+        ],
+        "source_name": "Tarif extérieur commun de la CEDEAO SH 2022, DGD de Guinée (18/01/2022)",
+        "scope_note": "Positions nationales à dix chiffres et colonnes DD, RTL, AC, TVA, PC, CA extraites du PDF de la DGD (scripts/extraire_tec_gin.py, SHA-256 consigné) ; fiche GIN_prelevements_TVA_2026-10-11.json."
+      }
     }
   },
   "countries": {
     "BEN": {
-      "region": "ECOWAS_CET_WA15",
-      "national_extension_status": "NOT_AVAILABLE",
+      "region": "BEN_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "DOCUMENTED",
       "other_taxes_status": "UNVERIFIED",
       "calculation_order_status": "PARTIAL",
@@ -151,8 +190,8 @@
       ]
     },
     "GIN": {
-      "region": "ECOWAS_CET_WA15",
-      "national_extension_status": "NOT_AVAILABLE",
+      "region": "GIN_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "PARTIAL",
       "other_taxes_status": "PARTIAL",
       "calculation_order_status": "PARTIAL",
@@ -228,8 +267,8 @@
       ]
     },
     "MLI": {
-      "region": "ECOWAS_CET_WA15",
-      "national_extension_status": "NOT_AVAILABLE",
+      "region": "MLI_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "PARTIAL",
       "other_taxes_status": "UNVERIFIED",
       "calculation_order_status": "PARTIAL",

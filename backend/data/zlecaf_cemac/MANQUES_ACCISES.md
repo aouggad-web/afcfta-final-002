@@ -18,9 +18,9 @@ le corrigerait.
 
 | Manque | Effet | Correction |
 |---|---|---|
-| Source : CGI édition 2025 (compilation de cabinet) ; loi de finances 2026 non vérifiée | Taux 2026 possiblement différents | Lire la loi de finances 2026 (dgb.cm) |
+| Source : CGI édition 2025 (compilation de cabinet), confrontée à l'édition officielle 2026 de la DGI | — | Fait (bouteilles à gaz ajoutées, droits spécifiques des alcools relevés, emballages supprimés) |
 | TCI retirée de l'assiette de la TVA selon l'art. 138 (1) du CGI (le crawl l'y incluait) | Écart d'environ 0,2 % de la valeur | Confirmer auprès de la DGI / douane |
-| Emballages non retournables (droit spécifique par unité) | Non liquidé | Sans position tarifaire : hors calculateur |
+| Bouteilles à gaz domestique vides (12,5 %, LF 2026) : 7311.00.90 mêle d'autres récipients non visés | Accise portée sans taux : PARTIEL | Nomenclature nationale ou question à l'utilisateur |
 | Annexe II en codes SH 2017 absents du socle (SH 2007) : ouvrages en bois 4418.73-4418.74, cercueils 4421.20 | Non soumis dans le socle | Concordance SH 2017 → SH 2007 ou recollecte du TEC |
 | Positions partiellement visées (café 0901.11 hors certaines sous-positions nationales, cure-dents 3926.90.90, ouvrages en bois 4421.90, viandes salées 0210) | Accise portée sans taux : PARTIEL | Nomenclature nationale à 11 chiffres |
 | « 324.90.00.0000 » (pipes, art. 142 (6) e) : coquille de la source, 3824.90 ou autre | Non retenu | Confirmer auprès de la DGI |
@@ -41,7 +41,8 @@ le corrigerait.
 | Source : loi de finances 2026 (loi n° 42-2025, art. 2 et 8 nouveaux), lue sur le PDF du ministère des Finances | — | Fait (fiche COG_droit_accises_2026-10-09.json) |
 | « Produits alimentaires de luxe » : liste non donnée par la loi ; cosmétiques à l'hydroquinone (50 %) non distingués dans la position | Luxe : accise portée sans taux ; hydroquinone : taux général 25 % servi | Liste et composition à préciser (DGID / douane) |
 | Alcool éthylique (22.07) : « boissons alcoolisées » du chapitre 22 ou non, la loi ne le dit pas | Accise portée sans taux : PARTIEL | Confirmer (DGID / douane) |
-| Boissons de la position 22.02.90 : boissons énergisantes (10 %) mêlées à des boissons non visées | Accise portée sans taux : PARTIEL | Nomenclature nationale ou question à l'utilisateur |
+| Boissons des positions 22.02.10 et 22.02.90 : soda, boissons sucrées et énergisantes (10 %) mêlés à des eaux aromatisées et boissons non visées | Accise portée sans taux : PARTIEL | Nomenclature nationale ou question à l'utilisateur |
+| Billards et autres jeux (95.04.20, 95.04.90) : appareils de jeux (25 %) ou articles de jeu, non dit | Accise portée sans taux : PARTIEL | Confirmer (DGID / douane) |
 | Véhicules de tourisme : neufs ≤ 3 000 cm3 exonérés, l'état neuf ou d'occasion n'est pas dans la position | Accise portée sans taux sauf 8703.24 : PARTIEL | Champ « neuf / occasion » dans le calculateur |
 | Base arrondie au millier de francs inférieur (art. 7 (2)) | Non appliqué : écart inférieur à 1 000 F | Arrondi dans le moteur si demandé |
 | Position 22.06 absente du socle COG | Boissons fermentées sans droit ni accise | Recollecter le TEC |

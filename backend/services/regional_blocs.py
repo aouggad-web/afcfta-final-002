@@ -53,10 +53,11 @@ CUSTOMS_UNION_NAMES = {
 }
 
 # ── Zones de libre-échange : franchise CONDITIONNELLE (règles d'origine) ─────
+# Burkina Faso, Mali et Niger : retrait de la CEDEAO effectif le 29/01/2025
+# (ils restent membres de l'UEMOA).
 ECOWAS = frozenset(
     {
         "BEN",
-        "BFA",
         "CPV",
         "CIV",
         "GMB",
@@ -64,8 +65,6 @@ ECOWAS = frozenset(
         "GIN",
         "GNB",
         "LBR",
-        "MLI",
-        "NER",
         "NGA",
         "SEN",
         "SLE",

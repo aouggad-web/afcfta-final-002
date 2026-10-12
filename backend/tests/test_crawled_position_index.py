@@ -482,7 +482,7 @@ def test_real_repository_regression_formats_are_consumed(monkeypatch):
 
     monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
     monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: None)
-    gin_result = service.search_tariff_lines("GIN", "7612900000", limit=1)[0]
+    gin_result = service.search_tariff_lines("GIN", "7612909000", limit=1)[0]
     nga_result = service.search_tariff_lines("NGA", "0101210000", limit=1)[0]
 
     assert gin_result["dd_rate"] == 20
