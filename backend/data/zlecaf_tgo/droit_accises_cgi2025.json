@@ -1,0 +1,172 @@
+{
+  "_objet": "Droits d'accises à l'importation au Togo : positions et taux, d'après le Code général des impôts mis à jour 2025 publié par l'OTR, art. 243 à 245. « taux » null : le taux dépend d'une donnée que la position ne porte pas.",
+  "_fiche": "backend/data/legal_refs/zlecaf_application/TGO_prelevements_TVA_2026-10-12.json",
+  "source": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 à 245",
+  "assiette": "CIF+DD+RS+PCS+PCC+PUA+PNS",
+  "assiette_reference": "CGI art. 245 : « à l'importation, par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la taxe sur la valeur ajoutée ».",
+  "tva_assiette": "CIF+DD+RS+PCS+PCC+PUA+PNS+DA",
+  "tva_assiette_reference": "CGI art. 186, 7- : « pour les importations de biens neufs ou d'occasion, par la valeur en douane augmentée des droits et taxes de toutes natures perçus par l'Administration des Douanes à l'exclusion de la taxe sur la valeur ajoutée ».",
+  "regles": [
+    {
+      "prefixes": [
+        "2203"
+      ],
+      "taux": 20.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Bières 20% »."
+    },
+    {
+      "prefixes": [
+        "2204",
+        "2205",
+        "2206",
+        "2208"
+      ],
+      "taux": 60.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Autres boissons alcoolisées 60% »."
+    },
+    {
+      "prefixes": [
+        "2207"
+      ],
+      "taux": null,
+      "motif": "Alcool éthylique : taxé à 60 % (« autres boissons alcoolisées ») s'il est destiné à la boisson ; l'usage n'est pas dans la position.",
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243"
+    },
+    {
+      "prefixes": [
+        "24"
+      ],
+      "taux": 50.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Tabacs 50% »."
+    },
+    {
+      "prefixes": [
+        "2202100000"
+      ],
+      "taux": 10.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Boissons non alcoolisées sucrées 10% » (eaux additionnées de sucre ou d'autres édulcorants ou aromatisées)."
+    },
+    {
+      "prefixes": [
+        "2202991000"
+      ],
+      "taux": 10.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Boissons gazeuses, énergétiques et énergisantes 10% »."
+    },
+    {
+      "prefixes": [
+        "2202910000",
+        "2202999000",
+        "2009"
+      ],
+      "taux": null,
+      "motif": "Boissons non alcoolisées : 10 % si gazeuses, énergisantes ou sucrées, 5 % sinon (eau exclue) ; la position ne le dit pas.",
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243"
+    },
+    {
+      "prefixes": [
+        "1101"
+      ],
+      "taux": 1.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Farine de blé 1% »."
+    },
+    {
+      "prefixes": [
+        "1501",
+        "1502",
+        "1503",
+        "1507",
+        "1508",
+        "1509",
+        "1510",
+        "1511",
+        "1512",
+        "1513",
+        "1514",
+        "1515",
+        "1516",
+        "1517"
+      ],
+      "taux": 1.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Huiles et corps gras alimentaires 1% ».",
+      "reserve": "Huiles destinées à un usage technique ou industriel non visées (« alimentaires »)."
+    },
+    {
+      "prefixes": [
+        "3303",
+        "3304",
+        "3305",
+        "3306",
+        "3307"
+      ],
+      "taux": 15.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Produits de parfumerie et cosmétiques 15% »."
+    },
+    {
+      "prefixes": [
+        "0901",
+        "210111",
+        "210112"
+      ],
+      "taux": 10.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Café 10% »."
+    },
+    {
+      "prefixes": [
+        "0902"
+      ],
+      "taux": 10.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Thé 10% »."
+    },
+    {
+      "prefixes": [
+        "210120"
+      ],
+      "taux": null,
+      "motif": "2101.20 réunit les extraits de thé (10 %) et de maté (non visé).",
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243"
+    },
+    {
+      "prefixes": [
+        "8703"
+      ],
+      "taux": null,
+      "motif": "Véhicules de tourisme : 5 % à partir de 13 chevaux ; la puissance n'est pas dans la position.",
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243"
+    },
+    {
+      "prefixes": [
+        "2104101000"
+      ],
+      "taux": 15.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Les bouillons alimentaires 15% » (préparations pour bouillons en tablettes, pains ou cubes)."
+    },
+    {
+      "prefixes": [
+        "2104109000"
+      ],
+      "taux": null,
+      "motif": "2104.10.90 réunit soupes, potages (non visés) et bouillons (15 %).",
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243"
+    },
+    {
+      "prefixes": [
+        "392321",
+        "392329"
+      ],
+      "taux": 5.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Les sachets en matière plastique 5% »."
+    },
+    {
+      "prefixes": [
+        "7102",
+        "7103",
+        "7106",
+        "7108",
+        "7110"
+      ],
+      "taux": 15.0,
+      "reference": "Code général des impôts du Togo, mis à jour 2025 (OTR), art. 243 : « Pierres et métaux précieux 15% »."
+    }
+  ]
+}

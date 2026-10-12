@@ -1,0 +1,26 @@
+Togo — tarif de l'OTR, prélèvements, accises et assiette de la TVA à l'importation : extraits verbatim (relevés le 2026-10-12)
+
+1. OTR, « TEC CEDEAO actualisé au 10/11/2025 », PDF de 478 pages, sha256 56b0e1f4fb3dbc0a806deaa2abb1b9bcd46d888bde42f2dfbdf5c080ac4a108b, versé sur la PR #620 (data/togo/docs_officiels/TEC-CEDEAO-ACTUALISE-NOV2025.pdf), p. 10 :
+
+« N° de position N.T.S. Désignation des marchandises U.S. D.D. R.S. 01.01 Chevaux, ânes, mulets et bardots, vivants. - Chevaux : 0101.21.00.00 -- Reproducteurs de race pure u 5 1  »
+
+Relevé sur les 6 379 positions (scripts/extraire_tec_tgo.py) : R.S. 1 % sur 6 378 positions ; D.D. 0 % (102), 5 % (2368), 10 % (1469), 20 % (2286), 35 % (153) ; 0304.82.00.00 sans valeur imprimée.
+
+2. OTR, « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation », PDF d'une page, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05, versé sur la PR #620 (data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf) :
+
+« TAUX DES DROITS, TAXES ET REDEVANCES APPLIQUES A L'IMPORTATION OU A L'EXPORTATION Code Désignation Taux DD Droit de Douane 5% ; 10% ; 20% ; 35% RS Redevance Statistique 1 % PCS Prélèvement Communautaire de Solidarité (U.E.M.A.O.) 0,8 % PC Prélèvement Communautaire (C.E.D.E.A.O) 0,5 % PUA Prélèvement Union Africaine 0,2% PNS Prélèvement National de Solidarité 0,5% TPI Taxe de protection des infrastructures 2000 F / la tonne indivisible sur le P.B  »
+
+3. Loi n° 2024-007 du 30/12/2024 portant loi de finances, exercice 2025 (JORT du 30/12/2024), publiée par l'OTR (otr.tg, « Loi de finances rectificative exercice 2024 et loi de finances exercice 2025 »), PDF de 68 pages, sha256 679747519993acd77a0b93d141a016dc90da4b8c75d479881c40e49f6310274d :
+
+« Art. 6-3 : L’assiette du Prélèvement National de Solidarité (PNS) est constituée par la valeur en douane des marchandises importées, originaires de pays tiers à la Communauté Economique des Etats de l’Afrique de l’Ouest (CEDEAO) et mises à la consommation au Togo. Le taux de Prélèvement National de Solidarité est fixé à 0,5% de la valeur en douane des marchandises importées. Sont exonérés du Prélèvement National de Solidarité (PNS) : a- les dons et aides destinés à l’Etat ou aux œuvres de bienfaisance ; b- les biens importés au titre de privilèges diplomatiques. Le Prélèvement National de Solidarité (PNS) est affecté au budget de l’Etat et versé sur un compte spécial du Trésor public.  »
+
+4. Code général des impôts du Togo, mis à jour 2025, publié par l'OTR (otr.tg, « Code général des impôts - Livre des procédures fiscales mis à jour 2025 »), PDF de 361 pages, sha256 7d0df3af53833e47266f4b77cf134ac3acb14bb3e8049d1bf92ac2438be4f4c3 :
+
+Art. 186 : « 7- pour les importations de biens neufs ou d'occasion, par la valeur en douane augmentée des droits et taxes de toutes natures perçus par l'Administration des Douanes à l'exclusion de la taxe sur la valeur ajoutée ;  »
+
+« Art. 195 : Le taux de la taxe sur la valeur ajoutée est un taux unique de 18% applicable à toutes les activités et à tous les produits à l’exception de ceux exonérés en vertu de l’article 180 du présent code.  »
+
+« Art. 243 : Des droits d’accises sont établis au profit du budget de l’Etat sur les produits ci-dessous énumérés et d'après les taux suivants : N° Produits Taux 1 Boissons non alcoolisées à l’exclusion de l’eau Boissons gazeuses, énergétiques et énergisantes 10% Boissons non alcoolisées sucrées 10% Autres Boissons non alcoolisées à l’exclusion de l’eau 5% 2 Boissons alcoolisées Bières 20% Autres boissons alcoolisées 60% 3 Tabacs 50% 4 Farine de blé 1% 5 Huiles et corps gras alimentaires 1% 6 Produits de parfumerie et cosmétiques 15% 7 Café 10% 8 Thé 10% 9 Les véhicules de tourisme dont la puissance est supérieure ou égale à 13 chevaux 5% 10 Les bouillons alimentaires 15% 11 Les sachets en matière plastique 5% 12 Pierres et métaux précieux 15%  »
+
+« Art. 245 : La base d’imposition des droits d’accises est constituée : - à l’importation, par la valeur en douane majorée des droits et taxes perçus à l’entrée, à l’exception de la taxe sur la valeur ajoutée ; - en régime intérieur, par le prix de vente sortie-usine, à l’exclusion de la taxe sur la valeur ajoutée.  »
+

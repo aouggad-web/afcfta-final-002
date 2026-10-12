@@ -86,6 +86,7 @@ FAMILLES = {
     "RPD": "redevance",
     "RTL": "redevance",  # redevance de traitement et de liquidation (GN)
     "CA": "redevance",  # centime additionnel (GN)
+    "PNS": "redevance",  # prélèvement national de solidarité (TG)
     "IDF": "redevance",
     "RDL": "redevance",
     "INFRA": "redevance",
@@ -1182,7 +1183,10 @@ def sources_disponibles():
 #: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
 #: assiette de la TVA de son art. 216.
 #: Code du prélèvement → bloc dont les originaires en sont exclus.
-EXONERATION_ORIGINE = {"PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA"}
+#: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
+EXONERATION_ORIGINE = {
+    "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
+}
 #: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
 BLOCS_DESTINATION = {
     "UEMOA": {"BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"},
@@ -1201,6 +1205,7 @@ ACCISES_PAYS = {
     "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
     "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
     "BFA": os.path.join(REPO, "backend", "data", "zlecaf_bfa", "droit_accises_cgi2026.json"),
+    "TGO": os.path.join(REPO, "backend", "data", "zlecaf_tgo", "droit_accises_cgi2025.json"),
 }
 
 
