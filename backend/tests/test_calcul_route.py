@@ -966,6 +966,21 @@ def test_poids_brut_et_transport_chiffrent_les_frais_par_tonne_et_par_unite(clie
 
 
 @besoin_socle
+def test_le_mode_d_acheminement_ecarte_les_frais_portuaires(client):
+    """Guinée : le port de Conakry (mer seulement) disparaît pour une importation par route."""
+
+    def frais(**extra):
+        corps = client.post(
+            "/calcul", json={"destination": "GIN", "code_sh": "0201100000", "valeur_cif": 1000, **extra}
+        ).json()
+        return {l["measure_name"] for l in corps["regulatory_cost"]["line_items"]}
+
+    port = "Port autonome de Conakry (escales, acconage, magasinage)"
+    assert port in frais()
+    assert port not in frais(mode_acheminement="ROUTE")
+
+
+@besoin_socle
 def test_les_frais_reglementaires_n_entrent_jamais_dans_le_cout_douanier(client):
     """L'invariant du bloc : il est informatif. Un frais de prestataire ajouté
     au total douanier ferait payer à l'importateur une somme que la douane ne

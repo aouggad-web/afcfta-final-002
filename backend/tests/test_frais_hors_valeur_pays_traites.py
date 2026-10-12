@@ -21,7 +21,7 @@ def test_senegal_escorte_et_port_de_dakar_sans_montant():
 
 
 def test_cote_d_ivoire_port_ecarte_par_voie_aerienne():
-    port = "Frais portuaires (Port autonome d'Abidjan / San Pedro)"
+    port = "Frais portuaires (Port autonome d'Abidjan)"
     assert port in _lignes("CIV") and port not in _lignes("CIV", "AIR")
 
 

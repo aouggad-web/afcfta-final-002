@@ -190,6 +190,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       transportTruck: "Camion",
       transportCountPlaceholder: "Nombre",
       routingPlaceholder: "Acheminement",
+      routingUnspecified: "Non précisé",
       routingSea: "Mer",
       routingRoad: "Route",
       routingAir: "Air",
@@ -269,6 +270,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       transportTruck: "Truck",
       transportCountPlaceholder: "Number",
       routingPlaceholder: "Routing",
+      routingUnspecified: "Not specified",
       routingSea: "Sea",
       routingRoad: "Road",
       routingAir: "Air",
@@ -1386,7 +1388,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <div className="space-y-2">
             <Label className="text-[var(--text)] font-medium">{t.logisticsLabel}</Label>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-              <Select value={modeAcheminement} onValueChange={setModeAcheminement}>
+              <Select
+                value={modeAcheminement || undefined}
+                onValueChange={(v) => setModeAcheminement(v === 'NON_PRECISE' ? '' : v)}
+              >
                 <SelectTrigger
                   className="bg-[var(--overlay)] border-[var(--afcfta-border)]"
                   data-testid="routing-select"
@@ -1395,6 +1400,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <SelectValue placeholder={t.routingPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="NON_PRECISE">{t.routingUnspecified}</SelectItem>
                   <SelectItem value="MER">{t.routingSea}</SelectItem>
                   <SelectItem value="ROUTE">{t.routingRoad}</SelectItem>
                   <SelectItem value="AIR">{t.routingAir}</SelectItem>

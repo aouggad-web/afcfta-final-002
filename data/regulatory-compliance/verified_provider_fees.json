@@ -762,10 +762,10 @@
       ],
       "scope_kind": "formality",
       "collector_type": "STATE_BODY",
-      "program": "Frais portuaires (Port autonome d'Abidjan / San Pedro)",
-      "scope": "Uniquement pour les marchandises débarquées à Abidjan ou San Pedro ; manutention, taxes portuaires, escales.",
+      "program": "Frais portuaires (Port autonome d'Abidjan)",
+      "scope": "Uniquement pour les marchandises débarquées au port d'Abidjan ; manutention, taxes portuaires, escales. San Pedro non couvert faute de source.",
       "providers": [],
-      "mandating_authority": "Port autonome d'Abidjan (PAA) / Port autonome de San Pedro (PASP)",
+      "mandating_authority": "Port autonome d'Abidjan (PAA)",
       "payer": "IMPORTER",
       "fee_detail": {
         "calculation_method": "AMOUNT_NOT_PUBLISHED",
