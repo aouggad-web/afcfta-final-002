@@ -1793,11 +1793,12 @@ def _droits_tec_burkina(positions):
 
 
 #: Niger, loi de finances 2026 (ordonnance n° 2025-44, art. 13 ; CGI art. 322
-#: nouveau, 2°) : TVA exonérée à l'importation, par préfixe NTS.
+#: nouveau, 2°), tableau réécrit par la première loi de finances rectificative
+#: (ordonnance n° 2026-45, art. 7) : TVA exonérée à l'importation, par préfixe NTS.
 TVA_EXONEREE_NER = (
     "0401", "0701", "0714", "10", "11062011", "11062012", "19011000", "22071010", "2501", "2705",
     "27101912", "27111300", "2936", "29392000", "2941", "30", "37011000", "37021000", "38089210",
-    "38089290", "4014", "40151200", "49019910", "4902", "49070000", "84139120", "84139190",
+    "38089290", "4014", "40151100", "42060000", "49019910", "4902", "49070000", "84139120", "84139190",
     "84139200", "84192000", "84249000", "87011000", "8713", "87142000", "9011", "9012", "9018",
     "9019", "90200000", "9021",
     # « Ex. position » 90.22 et 94.02 : seules les sous-positions dont le libellé
@@ -1814,9 +1815,9 @@ TVA_EXONEREE_NER_A_TRANCHER = {
 
 
 def _tva_exoneree_niger(positions, compteurs):
-    """Niger : exonérations de TVA à l'importation de la loi de finances 2026
-    (fiche NER_TVA_exonerations_LF2026_2026-10-11.json)."""
-    reference = "Ordonnance n° 2025-44 (loi de finances 2026), art. 13 : CGI art. 322 nouveau, 2°"
+    """Niger : exonérations de TVA à l'importation de la loi de finances 2026 et
+    de sa première rectification (fiche NER_TVA_exonerations_LF2026_2026-10-11.json)."""
+    reference = "Ordonnance n° 2026-45 (première rectification de la loi de finances 2026), art. 7 : CGI art. 322 nouveau, 2°"
     for code, position in positions.items():
         motif = next((m for p, m in TVA_EXONEREE_NER_A_TRANCHER.items() if code.startswith(p)), None)
         exoneree = motif is None and code.startswith(TVA_EXONEREE_NER)
