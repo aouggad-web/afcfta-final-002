@@ -63,3 +63,15 @@ def test_tva_vide_du_tarif_reste_indisponible(positions):
     """9508.21 : case de TVA vide au tarif ; taux non renseigné, pas TVA non due."""
     etat, lignes = _calcul(positions["9508210000"])
     assert lignes["TVA"]["taux_pct"] is None and etat != "COMPLET"
+
+
+def test_intention_d_importation_et_pvi_au_bloc_reglementaire():
+    """Hors des droits et taxes : intention d'importation 1 500 F, PVI 0,75 % de la FOB (guide CCIM)."""
+    from services.regulatory_fee_service import build_regulatory_blocks
+
+    cout = build_regulatory_blocks("MLI", None, fob_value=5_000_000, cif_value=5_500_000)["regulatory_cost"]
+    montants = {l["measure_name"]: (l["fee_status"], l["calculated_amount"]) for l in cout["line_items"]}
+    assert montants["Intention d'importation (II)"] == ("DOCUMENTED_FIXED_AMOUNT", 1_500.0)
+    assert montants["PVI — Programme de vérification des importations (vérification avant embarquement)"] == (
+        "CALCULABLE", 37_500.0,
+    )
