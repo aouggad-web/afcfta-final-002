@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-12T20:17:16.746796+00:00",
+  "construit_le": "2026-10-12T21:52:59.037611+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -751,7 +751,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GMB_tariffs.json",
       "source_sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
-      "socle_sha256": "876bbfec45a8fae953c4b2cc91b5621a048e64dc03a6cbd456a23f3ad8371e99",
+      "socle_sha256": "41a0cdb27aa445daf9d790efb7f811cc3b244edc3954fcf41b786e10c18ff038",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -902,7 +902,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "6500f30981515b729668ebf0139f8a468aaaf566b02bbfac4b85335ac9647a70",
+      "socle_sha256": "0870c1aa4c4642876c720fae004d72452332cf38b7f5205227d1fda59df04869",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -1493,7 +1493,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SLE_tariffs.json",
       "source_sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
-      "socle_sha256": "7774bd32c9ce682896bd2c847ff48cf219cd6c5e7252c885e18983aaf24fdcf2",
+      "socle_sha256": "11b06ebff6fb7d8ff6a302f4510b9abf167005ecaf1597acdd271432acc2d980",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [

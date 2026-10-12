@@ -545,9 +545,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // dépend du produit (sucre, degré d'alcool, matières grasses) ou d'un prix
       // de déclenchement, le socle déclare le total incomplet au lieu de
       // l'omettre (TGO 85 positions, SEN 173). La Gambie, le Liberia et la
-      // Sierra Leone aussi : leurs fichiers recopiaient le tarif du Bénin, dont
-      // l'autre porte sert encore la redevance statistique de 1 %, qu'aucun
-      // texte de ces pays n'institue ; le socle suit leur loi de TVA/GST
+      // Sierra Leone aussi : leurs fichiers recopiaient le tarif du Bénin et sa
+      // redevance statistique de 1 %, qu'aucun texte de ces pays n'institue ;
+      // le socle, et désormais l'autre porte, suivent leur loi de TVA/GST
       // (assiette sur tous les droits, GST libérienne à 12 %) et leurs
       // prélèvements nationaux. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
@@ -585,9 +585,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // L'Algérie, elle, ne se replie jamais : l'autre porte n'a rien à
           // lui servir. Une position absente de son socle est une erreur
           // affichée, avec le message du socle. Gambie, Liberia et Sierra
-          // Leone non plus : l'autre porte leur sert la redevance statistique
-          // et l'assiette de TVA du tarif béninois, qu'aucun de leurs textes
-          // n'établit.
+          // Leone non plus : leurs règles (sans redevance statistique, TVA de
+          // la loi) ont été établies sur le socle, et l'autre porte ne connaît
+          // aucune position qu'il n'ait pas.
           const statut = socleError.response?.status;
           if (SANS_REPLI.has(destISO3) || (statut !== 404 && statut !== 503)) {
             throw socleError;
