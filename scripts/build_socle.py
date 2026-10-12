@@ -84,6 +84,8 @@ FAMILLES = {
     "EXIM": "redevance",
     "SIL": "redevance",
     "RPD": "redevance",
+    "RTL": "redevance",  # redevance de traitement et de liquidation (GN)
+    "CA": "redevance",  # centime additionnel (GN)
     "IDF": "redevance",
     "RDL": "redevance",
     "INFRA": "redevance",
@@ -1826,6 +1828,41 @@ def _tva_exoneree_niger(positions, compteurs):
                 compteurs["taux_indisponibles"] += 1
 
 
+def _prelevements_guinee(positions, compteurs):
+    """Guinée : tarif de la DGD (SH 2022 ; fiche GIN_prelevements_TVA_2026-10-11.json).
+    CGI (texte 2022 du Ministère du Budget), art. 436 : accise ad valorem sur « la valeur CAF [...] majorée de
+    l'ensemble des droits perçus au cordon douanier, à l'exception de la TVA » ;
+    TVA sur la valeur en douane augmentée des droits et taxes de toute nature
+    liquidés par la douane (arrêté du 31/03/2017, art. 12 ; Ministère du Budget)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") not in ("DA", "TVA"):
+                continue
+            if not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+            elif d.get("assiette_origine") == "source":
+                compteurs["assiettes_source"] -= 1
+                compteurs["assiettes_table"] += 1
+            d["assiette_origine"] = "regle_de_pays"
+            d.pop("assiette_non_traduite", None)
+            if d["code"] == "DA":
+                d["assiette"] = "CIF+DD+RTL+PCC+CA"
+                d["note"] = (
+                    "Code général des impôts de Guinée (texte 2022 publié par le Ministère du Budget), art. 436 : "
+                    "« la valeur CAF [...] majorée de l'ensemble des droits perçus au cordon douanier, à l'exception "
+                    "de la TVA » ; « Les tarifs des droits d'accises sur les produits imposables importés sont fixés "
+                    "dans le TARIF DES DOUANES »."
+                )
+            else:
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["note"] = (
+                    "Arrêté du 31/03/2017, art. 12 : « L'assiette de la TVA intègre le montant des Droits et taxes de "
+                    "Douane effectivement appliqué » ; valeur en douane augmentée des droits et taxes de toute nature "
+                    "liquidés par l'administration des douanes, à l'exception de la TVA (Ministère du Budget)."
+                )
+
+
 def _prelevements_cote_divoire(positions, compteurs):
     """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
     taxation nationale, mise à jour du 27/03/2026 ; fiche
@@ -2355,6 +2392,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tva_exoneree_niger(positions, compteurs)
     if iso in BLOCS_DESTINATION["UEMOA"]:
         _pcs_uemoa(positions)
+    if iso == "GIN":
+        _prelevements_guinee(positions, compteurs)
 
     if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
         # Les compteurs par ligne lue ont déjà compté les accises du crawl : on

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "objet": "Guinée : tarif de la DGD (TEC CEDEAO SH 2022), droits et taxes d'entrée (DD, RTL, PC, CA), droit d'accises (colonne AC) et assiette de la TVA à l'importation",
+  "destination_iso3": "GIN",
+  "verified_at": "2026-10-11",
+  "etabli": true,
+  "evidence_level": "primaire — tarif de la DGD (colonnes par position), arrêté du 31/03/2017 (OCR), document « Le système fiscal guinéen » du Ministère du Budget ; base des accises et de la RTL : texte du CGI publié par le Ministère du Budget, intitulé « projet »",
+  "source": {
+    "url": "https://dgd.gov.gn/",
+    "institution": "Direction générale des douanes et Ministère du Budget de Guinée"
+  },
+  "regle": {
+    "valeur": "Source du socle GIN : tarif de la DGD (6 379 positions SH 2022), à la place de la collecte du 19/02/2026 (6 129 positions SH 2017, DD, PC et TVA seulement). DD, RTL 2 %, PC 0,5 % et CA 0,25 % sur la valeur CAF ; droit d'accises (colonne AC, code DA) sur la valeur CAF + DD + RTL + PC + CA (CGI art. 436) ; TVA (18 % ou exonérée) sur la valeur en douane + tous les droits et taxes liquidés par la douane (arrêté du 31/03/2017, art. 12).",
+    "verbatim": "La base d’imposition des produits importés en Guinée soumis à un droit d’accise ad valorem est la valeur CAF (conditions internationales de vente Coût, Assurance et Fret) majorée de l’ensemble des droits perçus au cordon douanier, à l’exception de la TVA.",
+    "reference": "Tarif TEC CEDEAO SH 2022 de la DGD ; arrêté du Ministère du Budget du 31/03/2017, art. 7, 9 et 12 ; CGI de Guinée (texte 2022), art. 436 ; Ministère du Budget, « Le système fiscal guinéen »",
+    "portee": "backend/data/crawled/GIN_tariffs.json régénéré (scripts/extraire_tec_gin.py, scripts/convertir_tec_gin.py ; scellé, empreinte au registre des sources) ; scripts/build_socle._prelevements_guinee fixe les assiettes du droit d'accises et de la TVA ; RTL et CA rangés dans la famille « redevance », liquidée avant les accises.",
+    "texte_archive": "sources/GIN_prelevements_TVA.extrait.txt",
+    "sha256": "b552b38d6405482eb5a140912d417f883f69bbb258f6268f7d573b1fd79c9aa4"
+  },
+  "decisions": [
+    "Le droit fiscal à l'importation (DFI) cité par le collaborateur a été remplacé par le droit de douane (arrêté du 31/03/2017, art. 7) : il n'est pas ajouté.",
+    "Colonne AC : accises du tarif (arrêté, art. 9 ; CGI : « Les tarifs des droits d'accises sur les produits imposables importés sont fixés dans le TARIF DES DOUANES ») ; « ex » omis ; valeurs supérieures à 100 (produits pétroliers 2710) lues comme montants spécifiques, servies sans taux.",
+    "RTL : « au taux de deux pourcent (2%) sur la valeur CAF » (CGI) ; CA (0,25 %) et PC (0,5 %) : sur la valeur CAF, comme le tarif les porte en pourcentage.",
+    "Le texte du CGI publié par le Ministère du Budget porte la mention « PROJET » ; ses articles sur les accises et la RTL sont suivis faute de version promulguée lue.",
+    "15 positions sans valeurs lues (cellules coupées par un saut de page) : taux non renseignés ; DFE (droit à la sortie) ignoré."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Régimes dérogatoires (codes minier et des investissements, droit d'entrée unique) : non liquidés.",
+    "Taxe d'ajustement à l'importation et taxe complémentaire de protection : absentes de la colonne du tarif lue.",
+    "Exemption du PC pour les originaires de la CEDEAO : appliquée selon l'origine déclarée (fiche ORIGINE_prelevements_communautaires_2026-10-10.json)."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/GIN_prelevements_TVA.extrait.txt",
+      "sha256": "b552b38d6405482eb5a140912d417f883f69bbb258f6268f7d573b1fd79c9aa4"
+    },
+    {
+      "document_non_archive": "DGD, TEC CEDEAO SH 2022, versé sur la PR #620 (data/guinee/docs_officiels/TEC-SH2022-GUINEE.pdf)",
+      "pdf_sha256": "305caa525d340046dd206c34525798f8800bb04f1daa9fe764cd4eb8eba659c9"
+    },
+    {
+      "document_non_archive": "Arrêté du 31/03/2017 (TEC CEDEAO), versé sur la PR #620 (data/guinee/docs_officiels/TEC-DGD-GUINEE-2024.pdf)",
+      "pdf_sha256": "3aea3577e70e0afac8c8d906b431acf1a9e7e6234b123a295d1694f37904a8c3"
+    },
+    {
+      "document_non_archive": "Ministère du Budget, « Le système fiscal guinéen », versé sur la PR #620 (data/guinee/docs_officiels/SYSTEME-FISCAL-GUINEEN.pdf)",
+      "pdf_sha256": "5c2eddb6586cfb4f89ce97b5840679489e8ca12e8c563fb36adc3da63a67c7e1"
+    },
+    {
+      "document_non_archive": "CGI de Guinée (texte 2022), https://mbudget.gov.gn/wp-content/uploads/2022/05/Code-General-des-Impots-2022-2.pdf",
+      "pdf_sha256": "0b29ebac94c892f385d4ed97c834d4a01f05ecc07678bcd3248f7aec92a2fe48"
+    }
+  ]
+}
