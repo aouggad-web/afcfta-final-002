@@ -521,12 +521,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // Règlement 133/2007 et la part spécifique des accises de la directive
       // 1007/2024 (4 915 totaux différents), et ne calcule pas 1 085 positions
       // que le socle liquide ; sur 11 (bière, tabacs, sacs), le socle réclame
-      // la quantité plutôt que de servir l'accise ad valorem seule. Restent sur
-      // l'autre porte, en attente :
+      // la quantité plutôt que de servir l'accise ad valorem seule. Quatre pays
+      // de l'UEMOA enfin, mesurés sur toutes leurs positions (CIF 10 000,
+      // origines CHN, MAR et SEN), où chaque écart tient à une correction
+      // établie sur texte : le Bénin, identique pour une origine tierce ; la
+      // Guinée-Bissau, PCS à 0,8 % (acte additionnel n° 01/2019) ; le Togo,
+      // accises du CGI ; le Sénégal, PCS à 0,8 %, PROMAD, COSEC et droits
+      // d'accises des FAQ de la DGD. L'autre porte y liquide aussi le PCS, le
+      // PCC et le PUA quelle que soit l'origine. Là où le taux d'une accise
+      // dépend du produit (sucre, degré d'alcool, matières grasses) ou d'un prix
+      // de déclenchement, le socle déclare le total incomplet au lieu de
+      // l'omettre (TGO 85 positions, SEN 173). Restent sur l'autre porte, en
+      // attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB ; BEN,
-      //   GNB, SEN, TGO pour 7 positions ; RWA, TZA, UGA pour le tabac ; MAR,
-      //   dont 528 positions ne publient pas de TVA) ;
+      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB ; RWA, TZA, UGA pour
+      //   le tabac ; MAR, dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
       //   (EGY, SOM) ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
@@ -535,7 +544,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // l'autre n'a plus de fichier algérien à lire.
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
-        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH',
+        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
