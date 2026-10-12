@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-12T10:05:15.730479+00:00",
+  "construit_le": "2026-10-12T13:17:53.345283+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -78,26 +78,27 @@
       "fichier": "BEN.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BEN_tariffs.json",
-      "source_sha256": "ba9f7a7c5efd1e4faa542586474c26b597c92a8f5ccb34e1564223e983f7a872",
-      "socle_sha256": "bc51c6adff17bceba3cb8056a2cd2b21196b2ddded390ef36a6b1ab3bdae353e",
-      "collecte": "2026-10-11T22:13:59.796030+00:00",
+      "source_sha256": "dec247b8c726758383f5cc7a8355f4a131b903d9f228c505a3f5c4ed39833361",
+      "socle_sha256": "71edc58736650c3cb1de78442c5eb9959628abf65ef521a3199c7b7aa8940a9d",
+      "collecte": "2026-10-12T13:17:29.931408+00:00",
       "etat": "PARTIEL",
       "familles": [
         "communautaire",
         "droit",
+        "redevance",
         "tva"
       ],
       "compteurs": {
         "positions": 6381,
-        "droits": 38286,
-        "droits_liquidables": 38280,
+        "droits": 44667,
+        "droits_liquidables": 44661,
         "positions_liquidables": 6378,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 3,
-        "assiettes_source": 31905,
+        "assiettes_source": 38286,
         "assiettes_fichier": 0,
         "assiettes_table": 6381,
         "assiettes_indisponibles": 0,
@@ -2051,7 +2052,7 @@
       "ZWE"
     ],
     "positions": 369636,
-    "droits": 1227464,
-    "droits_liquidables": 1194367
+    "droits": 1233845,
+    "droits_liquidables": 1200748
   }
 }

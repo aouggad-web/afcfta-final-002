@@ -408,7 +408,7 @@
         "calculation_method": "PER_TONNE",
         "unit_amount": 2000,
         "currency": "XOF",
-        "conditions": "2 000 FCFA par tonne indivisible de poids brut ; le poids n'est pas saisi dans le calculateur."
+        "conditions": "2 000 FCFA par tonne indivisible de poids brut ; chiffrée quand le poids brut est saisi."
       },
       "verification": {
         "date": "2026-10-12",
@@ -420,7 +420,7 @@
             "confirms": "TPI — Taxe de protection des infrastructures : 2000 F / la tonne indivisible sur le P.B."
           }
         ],
-        "notes": "Au poids : montant non calculable sans le poids brut → PARTIAL, tarif dans conditions. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+        "notes": "Au poids : CALCULABLE avec le poids brut saisi (tonne entamée due), PARTIAL sans lui. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
       }
     },
     {
@@ -438,7 +438,7 @@
         "calculation_method": "PER_TONNE",
         "unit_amount": 200,
         "currency": "XOF",
-        "conditions": "200 FCFA par tonne indivisible de poids brut ; le poids n'est pas saisi dans le calculateur."
+        "conditions": "200 FCFA par tonne indivisible de poids brut ; chiffrée quand le poids brut est saisi."
       },
       "verification": {
         "date": "2026-10-12",
@@ -450,7 +450,7 @@
             "confirms": "TP — Taxe de péage : 200 F / Tonne Indivisible sur le PB."
           }
         ],
-        "notes": "Au poids : montant non calculable sans le poids brut → PARTIAL, tarif dans conditions. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+        "notes": "Au poids : CALCULABLE avec le poids brut saisi (tonne entamée due), PARTIAL sans lui. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
       }
     },
     {
@@ -466,8 +466,13 @@
       "payer": "IMPORTER",
       "fee_detail": {
         "calculation_method": "PER_TRANSPORT_UNIT",
+        "amounts_by_transport": {
+          "CONTENEUR": 50000,
+          "VOITURE": 10000,
+          "CAMION": 20000
+        },
         "currency": "XOF",
-        "conditions": "50 000 FCFA par conteneur, 10 000 FCFA par voiture, 20 000 FCFA par camion ; le moyen de transport n'est pas saisi dans le calculateur."
+        "conditions": "50 000 FCFA par conteneur, 10 000 FCFA par voiture, 20 000 FCFA par camion ; chiffré quand le moyen de transport est saisi."
       },
       "verification": {
         "date": "2026-10-12",
@@ -479,7 +484,37 @@
             "confirms": "DPS — Droit de passage au scanner : 50.000 F / TC, 10.000 F / voiture, 20.000 F / camion."
           }
         ],
-        "notes": "Selon le moyen de transport : montant non calculable → PARTIAL, tarif dans conditions. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+        "notes": "Selon le moyen de transport : CALCULABLE avec le moyen et le nombre saisis, PARTIAL sans eux. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "BEN-RI",
+      "country_iso3": "BEN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (RI)",
+      "scope": "Perçue par déclaration en douane, quelle que soit la marchandise.",
+      "providers": [],
+      "mandating_authority": "Direction générale des douanes et droits indirects (DGDDI) du Bénin",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 10000,
+        "currency": "XOF",
+        "conditions": "10 000 FCFA par déclaration (brochure de la DGDDI, 2020)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "DGDDI du Bénin — brochure « Comment calculer les droits et taxes » (douanes.gouv.bj, 2020)",
+            "url": "https://douanes.gouv.bj/wp-content/uploads/2020/10/brochure-douane2-mobile.pdf",
+            "confirms": "« Redevance Informatique (RI), [10.000 FCFA/déclaration]. »"
+          }
+        ],
+        "notes": "Montant fixe par déclaration → DOCUMENTED_FIXED_AMOUNT ; hors des droits et taxes (fiche BEN_prelevements_TVA_2026-10-11.json), affiché à part. Montant de la brochure de 2020, non retrouvé dans un texte plus récent."
       }
     }
   ]

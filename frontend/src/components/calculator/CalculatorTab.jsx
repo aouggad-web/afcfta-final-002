@@ -45,6 +45,7 @@ import {
   paysExpeditionPour,
   reserveConversion,
   tauxDeChangePour,
+  transportRequete,
 } from './unifiedCalculator';
 import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
 import { trierAvantages } from './avantagesFiscaux';
@@ -141,6 +142,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // saisie.
   const [fobValue, setFobValue] = useState('');
   const [fobFor, setFobFor] = useState(null);
+  // Facultatifs : chiffrent les frais par tonne et par conteneur ou véhicule
+  // du bloc réglementaire (péage, scanner…), jamais les droits et taxes.
+  const [poidsBrut, setPoidsBrut] = useState('');
+  const [moyenTransport, setMoyenTransport] = useState('');
+  const [nombreUnites, setNombreUnites] = useState('1');
 
   // Vider le champ quand la position ou la destination change. La justesse ne
   // dépend pas de cet effet — c'est `quantityFor` qui empêche une quantité de
@@ -174,6 +180,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       hsCodeLabel: "Code HS (6-12 chiffres)",
       hsCodeHint: "6 chiffres = HS international | 8-12 chiffres = sous-position nationale",
       valueLabel: "Valeur de la marchandise (USD)",
+      logisticsLabel: "Poids et transport (facultatif)",
+      logisticsHint: "Chiffrent les frais par tonne, par conteneur ou véhicule (péage, scanner…), affichés à part des droits et taxes.",
+      grossWeightPlaceholder: "Poids brut (kg)",
+      transportPlaceholder: "Moyen de transport",
+      transportContainer: "Conteneur",
+      transportCar: "Voiture",
+      transportTruck: "Camion",
+      transportCountPlaceholder: "Nombre",
       calculateBtn: "Calculer avec Données Officielles",
       calculatorTitle: "Calculateur ZLECAf Complet",
       calculatorDesc: "Calculs basés sur les données officielles des organismes internationaux",
@@ -241,6 +255,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       hsCodeLabel: "HS Code (6-12 digits)",
       hsCodeHint: "6 digits = international HS | 8-12 digits = national sub-position",
       valueLabel: "Merchandise Value (USD)",
+      logisticsLabel: "Weight and transport (optional)",
+      logisticsHint: "Used to price per-tonne and per-container or per-vehicle fees (tolls, scanner…), shown apart from duties and taxes.",
+      grossWeightPlaceholder: "Gross weight (kg)",
+      transportPlaceholder: "Means of transport",
+      transportContainer: "Container",
+      transportCar: "Car",
+      transportTruck: "Truck",
+      transportCountPlaceholder: "Number",
       calculateBtn: "Calculate with Official Data",
       calculatorTitle: "Complete AfCFTA Calculator",
       calculatorDesc: "Calculations based on official data from international organizations",
@@ -350,6 +372,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setDestinationCountry('');
     setHsCode('');
     setValue('');
+    setPoidsBrut('');
+    setMoyenTransport('');
+    setNombreUnites('1');
     setResult(null);
     setDetailedResult(null);
     setShowHSBrowser(false);
@@ -420,6 +445,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // Une valeur FOB saisie pour une AUTRE position est écartée, comme la
     // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
     const valeurFob = fobFor === `${destISO3}|${cleanHsCode}` ? parseFloat(fobValue) : NaN;
+    const transport = {
+      poidsBrutKg: parseFloat(poidsBrut),
+      moyenTransport,
+      nombreUnitesTransport: parseInt(nombreUnites, 10),
+    };
 
     // LE TAUX DE CHANGE DU MODULE BANQUE, demandé une seule fois et seulement
     // si le socle est interrogé : le moteur en a besoin pour les plafonds et
@@ -459,6 +489,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         paysExpedition,
         valeurFob,
         tauxDeChange: tauxDeChangePour(destISO3, await demanderConversion()),
+        ...transport,
       }));
 
       // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
@@ -560,6 +591,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 authorization_valid_to: kenyaRemission.validTo || undefined,
                 authorization_hs_codes: kenyaRemission.authorizedTariffLines || undefined,
                 authorization_goods: kenyaRemission.authorizedGoods || undefined,
+                ...transportRequete(transport),
               },
             },
           );
@@ -1331,6 +1363,44 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--success)_30%,transparent)] focus:border-[color-mix(in_srgb,var(--success)_30%,transparent)] transition-colors"
               data-testid="cif-value-input"
             />
+          </div>
+
+          {/* Poids et transport — facultatifs, bloc réglementaire seulement */}
+          <div className="space-y-2">
+            <Label className="text-[var(--text)] font-medium">{t.logisticsLabel}</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <Input
+                type="number"
+                value={poidsBrut}
+                onChange={(e) => setPoidsBrut(e.target.value)}
+                placeholder={t.grossWeightPlaceholder}
+                min="0"
+                className="bg-[var(--overlay)] border-[var(--afcfta-border)]"
+                data-testid="gross-weight-input"
+              />
+              <Select value={moyenTransport} onValueChange={setMoyenTransport}>
+                <SelectTrigger className="bg-[var(--overlay)] border-[var(--afcfta-border)]" data-testid="transport-select">
+                  <SelectValue placeholder={t.transportPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="CONTENEUR">{t.transportContainer}</SelectItem>
+                  <SelectItem value="VOITURE">{t.transportCar}</SelectItem>
+                  <SelectItem value="CAMION">{t.transportTruck}</SelectItem>
+                </SelectContent>
+              </Select>
+              <Input
+                type="number"
+                value={nombreUnites}
+                onChange={(e) => setNombreUnites(e.target.value)}
+                placeholder={t.transportCountPlaceholder}
+                min="1"
+                step="1"
+                disabled={!moyenTransport}
+                className="bg-[var(--overlay)] border-[var(--afcfta-border)]"
+                data-testid="transport-count-input"
+              />
+            </div>
+            <p className="text-xs text-[var(--afcfta-muted)]">{t.logisticsHint}</p>
           </div>
 
           {/* Sélecteur de Positions Nationales — uniquement pour un code SH6 (6 chiffres) */}

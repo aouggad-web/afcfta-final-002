@@ -3,8 +3,8 @@ backend/data/crawled/BEN_tariffs.json, puis le scelle (backend/crawlers/integrit
 l'empreinte du fichier est à reporter dans backend/data/source_registry_v2.json.
 
 Le tarif de la DGDDI ne porte que D.D. et R.S. ; les prélèvements
-communautaires (PCS 0,8 %, PC 0,5 %, prélèvement de solidarité de l'UA 0,2 %)
-et la TVA (18 %) sont ajoutés à chaque position (fiche
+communautaires (PCS 0,8 %, PC 0,5 %, prélèvement de solidarité de l'UA 0,2 %),
+la redevance d'aménagement urbain (0,5 %) et la TVA (18 %) sont ajoutés à chaque position (fiche
 BEN_prelevements_TVA_2026-10-11.json). Le libellé est celui de la collecte
 précédente quand la position y figure : l'export Excel centre le libellé des
 cellules sur plusieurs lignes, que l'extraction tronque.
@@ -27,6 +27,7 @@ AJOUTS = [
     ("PCS", "Prélèvement Communautaire de Solidarité (UEMOA)", 0.8, "CIF"),
     ("PCC", "Prélèvement Communautaire CEDEAO", 0.5, "CIF"),
     ("PUA", "Prélèvement de solidarité (Union africaine)", 0.2, "CIF"),
+    ("RAU", "Redevance d'Aménagement Urbain", 0.5, "CIF"),
     # Assiette laissée vide : la table des assiettes établies y place celle de la
     # directive n° 02/98/CM/UEMOA (valeur en douane + droits et taxes d'entrée).
     ("TVA", "Taxe sur la Valeur Ajoutée", 18.0, None),
@@ -66,7 +67,7 @@ artefact = {
     },
     "notes": [
         "Tarif officiel de la DGDDI (SH 2022) remplaçant la collecte du 19 février 2026 (SH 2017).",
-        "PCS, PC, prélèvement de solidarité et TVA ajoutés à taux uniforme (fiche BEN_prelevements_TVA_2026-10-11.json).",
+        "PCS, PC, prélèvement de solidarité, RAU et TVA ajoutés à taux uniforme (fiche BEN_prelevements_TVA_2026-10-11.json).",
         "R.S. non lue sur 3 positions (bas de page) : taux non renseigné.",
     ],
     "positions": positions,

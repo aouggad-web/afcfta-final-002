@@ -35,6 +35,26 @@ describe('buildCalculRequestBody', () => {
         .not.toHaveProperty('taux_de_change');
     }
   });
+
+  it('porte le poids brut et le moyen de transport quand ils sont saisis', () => {
+    expect(buildCalculRequestBody({
+      destinationISO3: 'TGO', hsCode: '0201100000', cifValue: 1000,
+      poidsBrutKg: 2500, moyenTransport: 'CAMION', nombreUnitesTransport: 2,
+    })).toEqual({
+      destination: 'TGO', code_sh: '0201100000', valeur_cif: 1000, devise_cif: 'USD',
+      poids_brut_kg: 2500, moyen_transport: 'CAMION', nombre_unites_transport: 2,
+    });
+  });
+
+  it("n'envoie ni poids illisible ni moyen de transport inconnu", () => {
+    const body = buildCalculRequestBody({
+      destinationISO3: 'TGO', hsCode: '0201100000', cifValue: 1000,
+      poidsBrutKg: NaN, moyenTransport: '', nombreUnitesTransport: 3,
+    });
+    expect(body).not.toHaveProperty('poids_brut_kg');
+    expect(body).not.toHaveProperty('moyen_transport');
+    expect(body).not.toHaveProperty('nombre_unites_transport');
+  });
 });
 
 describe('tauxDeChangePour', () => {

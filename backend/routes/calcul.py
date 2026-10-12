@@ -38,7 +38,7 @@ from pydantic import BaseModel, Field
 from services import exoneration_origine, socle
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import simulations_regionales, taux_preferentiels
-from services.regulatory_fee_service import build_regulatory_blocks
+from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -116,6 +116,25 @@ class DemandeCalcul(BaseModel):
             "sur base FOB reste indisponible (`VALEUR_FOB_REQUISE`). Ne "
             "peut excéder `valeur_cif`."
         ),
+    )
+    poids_brut_kg: Optional[float] = Field(
+        None,
+        gt=0,
+        description=(
+            "Poids brut (kg). Facultatif : chiffre, dans le bloc réglementaire, "
+            "les frais par tonne (taxe de protection des infrastructures, péage). "
+            "N'entre jamais dans les droits et taxes."
+        ),
+    )
+    moyen_transport: Optional[str] = Field(
+        None,
+        description=(
+            "CONTENEUR, VOITURE ou CAMION. Facultatif : chiffre, dans le bloc "
+            "réglementaire, les frais par unité de transport (scanner)."
+        ),
+    )
+    nombre_unites_transport: Optional[int] = Field(
+        None, ge=1, description="Nombre de conteneurs ou de véhicules (1 par défaut)."
     )
 
 
@@ -216,7 +235,12 @@ def calcul(demande: DemandeCalcul):
     resultat.update(_regimes(preference))
     resultat.update(
         _bloc_reglementaire(
-            demande.destination, demande.origine, demande.valeur_cif, demande.valeur_fob
+            demande.destination,
+            demande.origine,
+            demande.valeur_cif,
+            demande.valeur_fob,
+            poids_brut_kg=demande.poids_brut_kg,
+            transport=transport_declare(demande.moyen_transport, demande.nombre_unites_transport),
         )
     )
     return resultat
@@ -482,6 +506,8 @@ def _bloc_reglementaire(
     origine: Optional[str],
     valeur_cif: float,
     valeur_fob: Optional[float] = None,
+    poids_brut_kg: Optional[float] = None,
+    transport: Optional[dict] = None,
 ) -> dict:
     """Formalités, prestataires mandatés et frais vérifiés — informatif, jamais
     additionné aux droits.
@@ -498,6 +524,8 @@ def _bloc_reglementaire(
             origine_iso3,
             fob_value=valeur_fob if valeur_fob is not None else valeur_cif,
             cif_value=valeur_cif,
+            poids_brut_kg=poids_brut_kg,
+            transport=transport,
         )
     except Exception as exc:  # garde-fou : le calcul tarifaire n'en dépend pas
         logger.warning(
