@@ -30,6 +30,48 @@
       "status": "official_downloaded",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
       "notes": "Cape Verde's excise-equivalent instrument (ICE), enacted the same day as the IVA law (Lei 21/VI/2003). Text versed to the repository as data/cpv/reference/CPV_ICE.pdf (same SHA-256); ICE rates per position come from the Pauta Aduaneira (fiche CPV_pauta_IVA_ICE_2026-10-12.json)."
+    },
+    {
+      "source_id": "CPV-PAUTA-ADUANEIRA-2022",
+      "title": "Pauta Aduaneira 2022 (Sexta Emenda do Sistema Harmonizado, SH 2017)",
+      "institution": "Direção Nacional das Receitas do Estado / Ministério das Finanças",
+      "legal_date": null,
+      "accessed_at": "2026-10-12",
+      "url": null,
+      "local_file": "../../cpv/reference/CPV_pauta_aduaneira_2022.pdf",
+      "sha256": "06fc7a3850efdd87a63efa52d598e8603139d4161f25dd79f435c9a4c5bf6e29",
+      "coverage": "DI, TC, ICE and IVA per national 10-digit position (6 135 positions)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Base of the CPV socle (scripts/extraire_pauta_cpv.py); fiche CPV_pauta_IVA_ICE_2026-10-12.json."
+    },
+    {
+      "source_id": "CPV-LEI-51-X-2025",
+      "title": "Lei n.º 51/X/2025, de 17 de abril — alteração da Pauta Aduaneira (Sétima Emenda do SH)",
+      "institution": "Assembleia Nacional / Boletim Oficial I série n.º 30",
+      "legal_date": "2025-04-17",
+      "accessed_at": "2026-10-12",
+      "url": null,
+      "local_file": "../../cpv/reference/CPV_lei_51X2025_pauta_BO30.pdf",
+      "sha256": "86d9bdaea0ab192befe503d6b65fd2750d4b92eda1f802fffc48c5ad7063ea83",
+      "coverage": "SH 2022 transposition: 110 positions deleted, 618 created or replaced",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "In force the day after publication (art. 2)."
+    },
+    {
+      "source_id": "CPV-LEI-69-X-2025-OE2026",
+      "title": "Lei n.º 69/X/2025 — Orçamento do Estado para 2026",
+      "institution": "Assembleia Nacional / Boletim Oficial I série n.º 133, suplemento 1",
+      "legal_date": "2025-12-31",
+      "accessed_at": "2026-10-12",
+      "url": null,
+      "local_file": "../../cpv/reference/CPV_boe_133_sup1_2025-12-31_lei69X2025_OE2026.pdf",
+      "sha256": "86a99336d3a0fa7e287f4f22342298b0a6cc1747bec738b2532faeeea3179fc1",
+      "coverage": "DI of 420 positions (art. 94, annex III); vehicle specific ICE (art. 89, annex II); tobacco and alcohol specific taxes (art. 90-91); electric vehicles exemption (art. 54)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Applied over the Pauta 2022 and Lei 51/X/2025 by scripts/extraire_pauta_cpv.py."
     }
   ]
 }
