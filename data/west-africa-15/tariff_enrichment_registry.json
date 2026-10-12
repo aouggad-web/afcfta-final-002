@@ -12,8 +12,7 @@
         "LBR",
         "NER",
         "SEN",
-        "SLE",
-        "TGO"
+        "SLE"
       ],
       "tariff": {
         "status": "PARTIAL",
@@ -107,6 +106,20 @@
         ],
         "source_name": "Tarif extérieur commun de la CEDEAO SH 2022, DGD de Guinée (18/01/2022)",
         "scope_note": "Positions nationales à dix chiffres et colonnes DD, RTL, AC, TVA, PC, CA extraites du PDF de la DGD (scripts/extraire_tec_gin.py, SHA-256 consigné) ; fiche GIN_prelevements_TVA_2026-10-11.json."
+      }
+    },
+    "TGO_NATIONAL": {
+      "members": [
+        "TGO"
+      ],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 6379,
+        "national_line_digits": [
+          10
+        ],
+        "source_name": "Tarif extérieur commun de la CEDEAO actualisé au 10/11/2025, OTR du Togo",
+        "scope_note": "Positions nationales à dix chiffres et colonnes D.D. et R.S. extraites du PDF de l'OTR (scripts/extraire_tec_tgo.py, SHA-256 consigné) ; fiche TGO_prelevements_TVA_2026-10-12.json."
       }
     }
   },
@@ -388,8 +401,8 @@
       ]
     },
     "TGO": {
-      "region": "ECOWAS_CET_WA15",
-      "national_extension_status": "NOT_AVAILABLE",
+      "region": "TGO_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "NOT_AVAILABLE",
       "other_taxes_status": "UNVERIFIED",
       "calculation_order_status": "NOT_AVAILABLE",

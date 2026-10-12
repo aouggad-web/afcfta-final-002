@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-11T23:09:25.920653+00:00",
+  "construit_le": "2026-10-12T09:11:41.435441+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1741,28 +1741,30 @@
       "fichier": "TGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TGO_tariffs.json",
-      "source_sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
-      "socle_sha256": "b99e5357c2a24b07009048e3c882e531456307286f313bb2b1ea14f8a51b588d",
-      "collecte": "2026-02-19T22:39:49.671861",
-      "etat": "COMPLET",
+      "source_sha256": "456a26b63049fc7184bdcfae59548785512fc134c9150abf6fd1a179f68189ae",
+      "socle_sha256": "8f5550691071b18eacb86b9ed82304257954963d0a06e788ea0292d649c2995f",
+      "collecte": "2026-10-12T09:07:50.497277+00:00",
+      "etat": "PARTIEL",
       "familles": [
+        "accise",
         "communautaire",
         "droit",
+        "redevance",
         "tva"
       ],
       "compteurs": {
-        "positions": 6129,
-        "droits": 36774,
-        "droits_liquidables": 36774,
-        "positions_liquidables": 6129,
+        "positions": 6379,
+        "droits": 44924,
+        "droits_liquidables": 44751,
+        "positions_liquidables": 6293,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 36774,
+        "taux_indisponibles": 87,
+        "assiettes_source": 38274,
         "assiettes_fichier": 0,
-        "assiettes_table": 0,
+        "assiettes_table": 6650,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -2039,6 +2041,7 @@
       "SWZ",
       "SYC",
       "TCD",
+      "TGO",
       "TUN",
       "TZA",
       "UGA",
@@ -2046,8 +2049,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 369386,
-    "droits": 1219314,
-    "droits_liquidables": 1186399
+    "positions": 369636,
+    "droits": 1227464,
+    "droits_liquidables": 1194376
   }
 }
