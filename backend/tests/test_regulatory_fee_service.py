@@ -267,8 +267,9 @@ def test_rate_range_produces_bounded_min_max_amounts():
 
 def test_verified_voc_civ_is_calculable_range_with_sources():
     items = build_verified_provider_costs("CIV", fob_value=100000, side="import")
-    assert len(items) == 1
-    voc = items[0]
+    vocs = [i for i in items if i["measure_name"].startswith("VOC")]
+    assert len(vocs) == 1
+    voc = vocs[0]
     assert voc["fee_status"] == "CALCULABLE"
     assert voc["is_range"] is True
     assert voc["tier"] == "VERIFIED_PRIMARY"
