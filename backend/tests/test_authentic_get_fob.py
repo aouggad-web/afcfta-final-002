@@ -96,3 +96,17 @@ def test_la_route_de_compatibilite_accepte_la_valeur_fob():
     assert sans.status_code == 422
     assert sans.json()["detail"]["code"] == "VALEUR_FOB_REQUISE"
     assert avec.status_code == 200, avec.text
+
+
+def test_poids_et_transport_chiffrent_le_bloc_reglementaire_comme_sur_calcul(client):
+    """Même chiffrage que POST /calcul : 2,5 t et un camion au Togo → péage
+    600 F (3 tonnes entamées), scanner 20 000 F."""
+    r = client.get(
+        "/authentic-tariffs/calculate/TGO/0201100000",
+        params={"value": 1000, "poids_brut_kg": 2500, "moyen_transport": "CAMION"},
+    )
+
+    assert r.status_code == 200, r.text
+    montants = {l["measure_name"]: l.get("calculated_amount") for l in r.json()["regulatory_cost"]["line_items"]}
+    assert montants["Taxe de péage (TP)"] == 600.0
+    assert montants["Droit de passage au scanner (DPS)"] == 20000.0

@@ -28,7 +28,7 @@ from services.national_legal_calculation_service import (
     calculate_kenya_legal_layer,
     calculate_national_legal_layer,
 )
-from services.regulatory_fee_service import build_regulatory_blocks
+from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 from services.tariff_doctrine import (
     crawl_enregistre,
     get_country_doctrine_status,
@@ -531,6 +531,13 @@ async def calculate_taxes_endpoint(
     beneficiary: Optional[str] = Query(None),
     import_purpose: Optional[str] = Query(None),
     quantity: Optional[float] = Query(None, ge=0),
+    poids_brut_kg: Optional[float] = Query(
+        None, gt=0, description="Poids brut (kg) : chiffre les frais par tonne du bloc réglementaire"
+    ),
+    moyen_transport: Optional[str] = Query(
+        None, description="CONTENEUR, VOITURE ou CAMION : chiffre les frais par unité de transport"
+    ),
+    nombre_unites_transport: Optional[int] = Query(None, ge=1, description="Nombre de conteneurs ou véhicules"),
 ):
     """
     Calculer les taxes d'importation avec données authentiques
@@ -593,6 +600,8 @@ async def calculate_taxes_endpoint(
             origin_iso3,
             fob_value=fob_value if fob_value is not None else cif_value,
             cif_value=cif_value,
+            poids_brut_kg=poids_brut_kg,
+            transport=transport_declare(moyen_transport, nombre_unites_transport),
         )
         result["regulatory_compliance"] = blocks["regulatory_compliance"]
         result["regulatory_cost"] = blocks["regulatory_cost"]
@@ -787,6 +796,9 @@ async def calculate_taxes_get_endpoint(
     beneficiary: Optional[str] = Query(None),
     import_purpose: Optional[str] = Query(None),
     quantity: Optional[float] = Query(None, ge=0),
+    poids_brut_kg: Optional[float] = Query(None, gt=0, description="Poids brut (kg)"),
+    moyen_transport: Optional[str] = Query(None, description="CONTENEUR, VOITURE ou CAMION"),
+    nombre_unites_transport: Optional[int] = Query(None, ge=1),
 ):
     """
     Version GET du calculateur (pour tests rapides)
@@ -809,6 +821,9 @@ async def calculate_taxes_get_endpoint(
         beneficiary=beneficiary,
         import_purpose=import_purpose,
         quantity=quantity,
+        poids_brut_kg=poids_brut_kg,
+        moyen_transport=moyen_transport,
+        nombre_unites_transport=nombre_unites_transport,
     )
 
 
