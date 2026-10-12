@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "objet": "Éthiopie : barème d'accise par position (annexe I de la Proclamation 1287/2023, taux spécifiques remplacés par la directive 1007/2024) et Social Welfare Levy 3 % CIF (Règlement 519/2022)",
+ "objet": "Éthiopie : barème d'accise par position (annexe I de la Proclamation 1287/2023, taux spécifiques remplacés par la directive 1007/2024) ; Social Welfare Levy 3 % CIF (Règlement 519/2022), dont la portée est fixée par la fiche ETH_surtaxe_SWL_2026-10-12.json",
  "destination_iso3": "ETH",
  "verified_at": "2026-10-12",
  "etabli": true,
@@ -10,16 +10,18 @@
   "institution": "Consolidated Excise Tax Proclamation No. 1186/2020 (as amended)"
  },
  "regle": {
-  "valeur": "Accise par position selon le Premier Schedule ; composés « X % or N Birr par litre whichever is higher » (règle LE_PLUS_ELEVE) ; cumulatifs « X % + N Birr par kg/paquet » ; SWL 3 % de la valeur CIF sur tous les biens du tarif douanier, hors base de toute autre taxe.",
+  "valeur": "Accise par position selon le Premier Schedule : sur le taux ad valorem publié par le portail, composante spécifique et règle de liquidation (« X % or N Birr par litre whichever is higher » : LE_PLUS_ELEVE ; « X % + N Birr par kg/paquet » : cumulatif) ; accise purement spécifique des sacs de caisse (103 Birr/kg). Le barème ne remplace pas un 0 % publié par le portail.",
   "verbatim": "Whereas Article 10 (2) of the Excise Tax Proclamation No. 1186/2020 (as amended) provides that inflation adjustment shall be made at least once a year on the specific rates of excise tax provided under Table 1 attached to the Proclamation [...]. 2203.0000 Beer made from malt 40% or 28 birr per litter whichever is higher ; 2402.2000 Cigarettes containing tobacco 30% + 20 birr per pack (20 sticks) ; 3923.2110/3923.2910 Shopping plastic bags 103 birr per Kg.",
   "reference": "Proclamation 1287/2023 (Negarit Gazette n° 39 du 15/09/2023, annexe I à partir de la p. 15110) ; Directive 1007/2024 ; Regulation 519/2022 ; Directive 1023/2024",
-  "portee": "scripts/build_socle._accise_ethiopie et _swl_ethiopie : barème ETH_accise_annexeI_proc1287-2023.csv, EXC ajouté aux positions sans accise chiffrée, composantes/règles portées sur les EXC du portail, SWL 3 % CIF sur toutes les positions.",
+  "portee": "scripts/build_socle._accise_ethiopie : barème ETH_accise_annexeI_proc1287-2023.csv, borné aux sous-positions nommées par l'annexe ; composantes et règles portées sur les EXC du portail qu'il confirme ; ligne EXC ajoutée aux seuls sacs de caisse 3923.21.10 et 3923.29.10. Taxe sociale : scripts/build_socle._surtaxe_et_swl_ethiopie (fiche ETH_surtaxe_SWL_2026-10-12.json).",
   "texte_archive": "sources/ETH_accise_annexeI_proc1287-2023.csv",
-  "sha256": "c9f315404d433e4e10c9faefbdd5af0bbdaa6317e6e0e39f1fdf117cf9db5604"
+  "sha256": "0eef19dd8e3cb6243c5b43a63e4349e6653723eaec3535ec14889bc80678d0ed"
  },
  "decisions": [
-  "Les lignes conditionnées hors nomenclature (véhicules selon l'âge, bières selon la teneur en matières locales, chapitre 15 selon graisses saturées, chapitre 27 restreint aux carburants, chapitre 71 restreint aux ornements, 2206/2208 selon le degré alcoolique) ne sont pas attribuées : elles restent au portail.",
-  "Les exemptions du SWL (art. 6 du règlement, directive 1023/2024) visent le bénéficiaire ou l'usage, pas la position : le taux est servi partout, la condition reste une question du déclarant.",
+  "Les lignes conditionnées hors nomenclature (véhicules selon l'âge, bières selon la teneur en matières locales, chapitre 15 selon graisses saturées, chapitre 27 restreint aux carburants, chapitre 71 restreint aux ornements) ne sont pas attribuées : elles restent au portail.",
+  "Le barème suit l'annexe à la sous-position : 17.01 sauf sucre à usage médical ; 2106.9040 (code du livre, sans équivalent au portail) ; 2202.91 et 2202.99.90 ; 2501.00.10 ; 3304.10 à 3304.30 et 3304.9990 du livre (3304.99.10 au portail) ; 3305.20, 3305.30 et 3305.9090 du livre (3305.90.10) ; 3923.2110 et 3923.2910 ; 2206.00.10 et 2208.90.10 (≤ 7 % vol., directive 1007/2024 : 40 % ou 28 Birr/L). 2204.10.00 à 30 % (teneur locale ≥ 75 %) n'est pas une condition de position et n'est pas retenu.",
+  "Une case d'accise vide au portail est un 0 % publié (collecte du 05/07/2026, zéros écartés) : le barème ne la remplace pas par le taux d'une fourchette de l'annexe (fèves de cacao dans « 1704.90 à 1806.90 », articles sans amiante 6811.8x dans « 6811.40 à 6813.20 », fils et tissus des chapitres 50 à 63…). Seule l'accise purement spécifique, que le portail ne peut afficher en pourcentage, est ajoutée.",
+  "Taxe sociale : servie seulement sur les marchandises que la surtaxe ne frappe pas (Règlement 519/2022, art. 6(2)) ; voir la fiche ETH_surtaxe_SWL_2026-10-12.json. Les exonérations de la directive 1023/2024 (bénéficiaire ou usage) ne sont pas servies par position.",
   "Le SWL n'entre dans la base d'aucune autre taxe ; il est liquidé en dernier."
  ],
  "documents": [
@@ -43,5 +45,10 @@
    "fichier": "sources/ETH_proc1287_2023.pdf",
    "url": "https://ethiolex.com/wp-content/uploads/2025/06/Proclamation-No.-1287-.pdf"
   }
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Bières selon la teneur en matières premières locales (35 % ou 23 Birr/L ; 30 % ou 21 Birr/L) : non attribuables par position, 2203 suit la ligne « beer made from malt ».",
+  "Positions où le taux du portail diffère de l'annexe : taux du portail conservé, écart dit en note, à confronter à une collecte fraîche.",
+  "Cases d'accise vides du portail couvertes par une fourchette de l'annexe (cacao, articles sans amiante, fils et tissus des chapitres 50 à 63) : 0 % du portail conservé."
  ]
 }

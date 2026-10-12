@@ -1,0 +1,32 @@
+Éthiopie — surtaxe (Règlement 133/2007) et taxe sociale (Social Welfare Levy, Règlement 519/2022) : extraits (relevés le 2026-10-12)
+
+1. Social Welfare Levy on Imported Goods Regulation No. 519/2022 (Council of Ministers), Federal Negarit Gazette, 28th Year No. 48, 22 August 2022, p. 14420-14423.
+   Copie déposée : sources/ETH_reg_519_2022_negarit.pdf (sha256 77e24d089bf9d69544f340d255e5a833312275479a19fc5bcc0a8330613f2d87, justice.gov.et) ; autre copie lue : chilot.wordpress.com (sha256 332a4f38e7ddb334b6f922b646751c83c37dc74226fc7d0028f5a40c241d6c16).
+
+Art. 2 : There shall be levied, in accordance with the provisions of this Regulation, a social welfare levy on all goods imported into Ethiopia specified in the Customs Tariffs except those exempted under Article 6 of this Regulation.
+Art. 4 : 1/ Subject to Article 6 of this Regulation, Social Welfare Levy of 3 percent shall be levied and collected on goods imported in accordance with this Regulation. 2/ The Social Welfare Levy levied on imported goods under this Regulation is in addition to any other customs duties and taxes collected under applicable laws.
+Art. 5 : 1/ The basis of computation for the Social Welfare Levy levied under this Regulation shall be the aggregate of cost, insurance and freight (CIF) value. 2/ The Social Welfare Levy shall not serve as a base for any other tax imposed on imported goods.
+Art. 6 : The following shall be exempted from the Social Welfare Levy: 1/ persons and organizations with diplomatic privileges; 2/ goods that are subject to the sur tax levied under Import Sur-Tax Council of Ministers Regulation No. 133/2007; and 3/ goods exempt by a Directive to be issued by the Ministry of Finance due to social and economic reasons.
+Art. 8 : This Regulation shall enter into force as of the 6th Day of August, 2022.
+
+2. Ministry of Finance, Tax Policy Directorate, « Import tax expenditure report: FY 2018/19 – 2020/21 », September 2022, p. 12-13 (https://www.mofed.gov.et/media/filer_public/75/62/7562def7-79b2-49ec-a658-6740a3ca561e/tax_expenditure_ethiopia_2021_22.pdf ; sha256 212dc42370e200d430dcbd690970f879b0b82558edb1b5eaef04be9e1b51fa8a).
+
+Surtax on imports
+Surtax is governed by Council of Ministers Regulation No. 133/2007. The tax is levied on imported goods at a flat rate of 10% (of the sum of the CIF value of imports, duty payable, excise payable and VAT payable). However, certain imports are exempt from surtax payments. These include:
+▪ fertilisers;
+▪ petroleum and lubricants;
+▪ motor vehicles for freight and passengers (including buses), and special-purpose motor vehicles;
+▪ aircraft, spacecraft, and parts thereof;
+▪ capital and investment goods.
+The Ministry of Finance has also excluded additional basic goods such as groundnuts, potatoes, sugar, meat and certain types of machinery from surtax payment in subsequent amendments.
+[...]
+▪ Surtax-free privileges for international organisations and their foreign personnel, under the Vienna Conventions, are part of the benchmark system. Imports by diplomats, consular officers, and their immediate family members are exempt from all surtax.
+[p. 5] Of total import tax expenditures in FY 2020/21, [...] surtax expenditures at 15% (ETB 18.4 billion).
+[p. 5] Tax exemptions for capital and investment goods and 'second schedule' preferential customs and surtax rates respectively only account for 2.3% and 1.0% of tax expenditures. [...] only a very small share of imports by value are eligible for them: 0.5% for capital goods exemptions and 1.0% for second schedule rates.
+
+3. Council of Ministers Regulation No. 133/2007 (Import Sur-Tax), reproduit par 2merkato.com (source secondaire ; extrait déjà archivé dans sources/ETH_assiettes_importation.texte-extrait.txt) :
+Scope of Application (Article 2) The Sur-tax levied under these Regulations shall apply to all goods imported into Ethiopia except those exempted under Article 5 of these Regulations: Rate of the Sur-Tax [...] Surtax of 10% shall be levied and collected on goods imported. Basis of Computation (Article 4) [...] 1. Cost, insurance, Freight (CIF) value; 2. Customs duty, value Added Tax and Excise Tax Payable on the good.
+
+4. Directive No. 1023/2024 (Ministry of Finance, 20 September 2024), copie déposée : sources/ETH_directive_1023_2024_exemptions_SWL.pdf (sha256 6d7a4758e056274b592ae97a7d0f58bec59c8435c1a1b23e5adf5372353eece3).
+Art. 3 : exemptés : 1/ goods donated from abroad to [...] education institutions; health institutions; organizations that help children, women, the elderly [...]; b/ goods donated from abroad to organizations who provide emergency aid [...]; 2/ Goods that are exempt from taxes and duties under an international agreement to which Ethiopia is a party [...]; 3/ Only defense and public security equipment [...]; 4/ Coins, bank notes, unwrought silver and gold imported by National Bank of Ethiopia.
+Art. 4 : Notwithstanding the provisions of Article 3(1) of this Directive, the following goods shall not be exempted from social development levy: a/ automobiles with less than eight passenger seats and their spare parts; b/ pickup vehicles with one or two cabins and their spare parts; c/ equipment and materials for office use.
