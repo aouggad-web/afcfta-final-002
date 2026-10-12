@@ -827,17 +827,15 @@
       "version": null,
       "artifact_path": "backend/data/crawled/CPV_tariffs.json",
       "artifact_url": null,
-      "sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
-      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "sha256": "0932a2c0f400e898ab3a11c43755a3b643afab99f58b9bedbe132a4263308881",
       "taxes": [
         "DD",
-        "RS",
         "PCC",
+        "ICE",
+        "ICES",
+        "TET",
+        "TEA",
         "TVA"
-      ],
-      "taxes_non_transposees": [
-        "PCS",
-        "PUA"
       ]
     },
     "CMR": {

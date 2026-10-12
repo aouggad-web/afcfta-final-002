@@ -544,10 +544,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // PCC et le PUA quelle que soit l'origine. Là où le taux d'une accise
       // dépend du produit (sucre, degré d'alcool, matières grasses) ou d'un prix
       // de déclenchement, le socle déclare le total incomplet au lieu de
-      // l'omettre (TGO 85 positions, SEN 173). Restent sur l'autre porte, en
-      // attente :
+      // l'omettre (TGO 85 positions, SEN 173). Le Cap-Vert, sur sa Pauta
+      // (6 579 positions, CIF 10 000, origines CHN et SEN) : l'autre porte sort
+      // la taxa comunitária et l'ICE de l'assiette de l'IVA (Regulamento do
+      // IVA, art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
+      // origine CEDEAO et refuse les 69 positions à taxe spécifique, où le
+      // socle réclame la quantité. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB ; RWA, TZA, UGA pour
+      //   trancher sur texte (CIV, GMB, SLE, LBR, GAB ; RWA, TZA, UGA pour
       //   le tabac ; MAR, dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
       //   (EGY, SOM) ;
@@ -557,7 +561,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // l'autre n'a plus de fichier algérien à lire.
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
-        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO',
+        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
