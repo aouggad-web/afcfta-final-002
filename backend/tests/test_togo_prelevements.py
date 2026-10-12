@@ -57,3 +57,16 @@ def test_pns_retire_pour_une_origine_cedeao(positions):
     assert "PNS" not in {d["code"] for d in position["droits"]}
     _, retires_hors = exoneration_origine.appliquer(positions["0201100000"], "MAR")
     assert {r["code"] for r in retires_hors} == {"PUA"}
+
+
+def test_frais_hors_valeur_dans_le_bloc_reglementaire():
+    """Redevance informatique, TPI, péage et scanner : hors des droits, affichés
+    dans le bloc réglementaire ; seule la RI (5 000 F par déclaration) est chiffrée."""
+    from services.regulatory_fee_service import build_regulatory_blocks
+
+    cout = build_regulatory_blocks("TGO", None, fob_value=1_000_000, cif_value=1_000_000)["regulatory_cost"]
+    statuts = {l["measure_name"]: (l["fee_status"], l["calculated_amount"]) for l in cout["line_items"]}
+    assert statuts["Redevance informatique (RI)"] == ("DOCUMENTED_FIXED_AMOUNT", 5000.0)
+    for frais in ("Taxe de protection des infrastructures (TPI)", "Taxe de péage (TP)", "Droit de passage au scanner (DPS)"):
+        assert statuts[frais] == ("PARTIAL", None)
+    assert cout["regulatory_cost_total"] == 5000.0 and cout["complete"] is False

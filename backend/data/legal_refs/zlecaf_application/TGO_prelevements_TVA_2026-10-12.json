@@ -26,7 +26,7 @@
     "Coquilles du tarif tolérées à la lecture : unité imprimée « 1 » à 2202.91 (bière sans alcool), R.S. imprimée « l » à 9405.91, 9405.92 et 9405.99."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Montants fixes ou au poids du tableau de l'OTR (redevance informatique 5 000 F par déclaration, taxe de protection des infrastructures 2 000 F/t, taxe de péage 200 F/t, droit de passage au scanner) : indépendants de la valeur, non liquidés.",
+    "Montants fixes ou au poids du tableau de l'OTR (redevance informatique 5 000 F par déclaration, taxe de protection des infrastructures 2 000 F/t, taxe de péage 200 F/t, droit de passage au scanner) : indépendants de la valeur, hors des droits et taxes ; affichés à part dans le bloc réglementaire (data/regulatory-compliance/verified_provider_fees.json, TGO-RI, TGO-TPI, TGO-TP, TGO-DPS), la redevance informatique chiffrée, les autres avec leur tarif.",
     "Redevance inspection et vérification (0,75 %), timbre douanier (4 %) et taxe spéciale de réexportation (1 %) : base et champ non trouvés dans un texte, non liquidés.",
     "Acompte BIC (1 % avec carte d'immatriculation, CGI art. 103) et retenue de 15 % pour défaut d'attestation de régularité fiscale : dépendent de l'importateur, non liquidés.",
     "Exonérations de TVA par produit (CGI art. 180 et annexe) et accises spécifiques sur les produits pétroliers (art. 240 à 242) : non appliquées par position.",

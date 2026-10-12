@@ -362,6 +362,125 @@
         ],
         "notes": "Taux unique 0,45% FOB (identique toutes routes) → montant unique. Plancher/plafond USD (variables par route) conservés en conditions, non appliqués cross-devise."
       }
+    },
+    {
+      "fee_id": "TGO-RI",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (RI)",
+      "scope": "Perçue par déclaration en détail (DDU), quelle que soit la marchandise.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 5000,
+        "currency": "XOF",
+        "conditions": "5 000 FCFA par déclaration (DDU), quel que soit le nombre d'articles."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "RI — Redevance Informatique : 5000 F DDU."
+          }
+        ],
+        "notes": "Montant fixe par déclaration → DOCUMENTED_FIXED_AMOUNT. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "TGO-TPI",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Taxe de protection des infrastructures (TPI)",
+      "scope": "Assise sur le poids brut, par tonne indivisible.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TONNE",
+        "unit_amount": 2000,
+        "currency": "XOF",
+        "conditions": "2 000 FCFA par tonne indivisible de poids brut ; le poids n'est pas saisi dans le calculateur."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "TPI — Taxe de protection des infrastructures : 2000 F / la tonne indivisible sur le P.B."
+          }
+        ],
+        "notes": "Au poids : montant non calculable sans le poids brut → PARTIAL, tarif dans conditions. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "TGO-TP",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Taxe de péage (TP)",
+      "scope": "Assise sur le poids brut, par tonne indivisible.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TONNE",
+        "unit_amount": 200,
+        "currency": "XOF",
+        "conditions": "200 FCFA par tonne indivisible de poids brut ; le poids n'est pas saisi dans le calculateur."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "TP — Taxe de péage : 200 F / Tonne Indivisible sur le PB."
+          }
+        ],
+        "notes": "Au poids : montant non calculable sans le poids brut → PARTIAL, tarif dans conditions. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "TGO-DPS",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Droit de passage au scanner (DPS)",
+      "scope": "Par conteneur ou véhicule scanné.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TRANSPORT_UNIT",
+        "currency": "XOF",
+        "conditions": "50 000 FCFA par conteneur, 10 000 FCFA par voiture, 20 000 FCFA par camion ; le moyen de transport n'est pas saisi dans le calculateur."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "DPS — Droit de passage au scanner : 50.000 F / TC, 10.000 F / voiture, 20.000 F / camion."
+          }
+        ],
+        "notes": "Selon le moyen de transport : montant non calculable → PARTIAL, tarif dans conditions. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
     }
   ]
 }
