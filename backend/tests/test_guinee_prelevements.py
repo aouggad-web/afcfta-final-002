@@ -62,3 +62,18 @@ def test_frais_existants_sans_montant_au_bloc_reglementaire():
         assert lignes[nom]["fee_status"] == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE"
         assert lignes[nom]["calculated_amount"] is None and lignes[nom]["tier"] == "EXISTENCE_ONLY"
     assert cout["has_unpriced_fees"] is True and cout["regulatory_cost_total"] is None
+
+
+def test_port_de_conakry_ecarte_pour_une_importation_par_route():
+    from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
+
+    def frais(mode):
+        cout = build_regulatory_blocks(
+            "GIN", None, fob_value=1000, cif_value=1000, transport=transport_declare(None, None, mode)
+        )["regulatory_cost"]
+        return {l["measure_name"] for l in cout["line_items"]}
+
+    port = "Port autonome de Conakry (escales, acconage, magasinage)"
+    assert port in frais("MER") and port in frais(None)
+    assert port not in frais("ROUTE") and port not in frais("AIR")
+    assert "Prestations du guichet unique (GUCEG)" in frais("ROUTE")

@@ -538,6 +538,9 @@ async def calculate_taxes_endpoint(
         None, description="CONTENEUR, VOITURE ou CAMION : chiffre les frais par unité de transport"
     ),
     nombre_unites_transport: Optional[int] = Query(None, ge=1, description="Nombre de conteneurs ou véhicules"),
+    mode_acheminement: Optional[str] = Query(
+        None, description="MER, ROUTE ou AIR : écarte les frais liés à un autre mode"
+    ),
 ):
     """
     Calculer les taxes d'importation avec données authentiques
@@ -601,7 +604,7 @@ async def calculate_taxes_endpoint(
             fob_value=fob_value if fob_value is not None else cif_value,
             cif_value=cif_value,
             poids_brut_kg=poids_brut_kg,
-            transport=transport_declare(moyen_transport, nombre_unites_transport),
+            transport=transport_declare(moyen_transport, nombre_unites_transport, mode_acheminement),
         )
         result["regulatory_compliance"] = blocks["regulatory_compliance"]
         result["regulatory_cost"] = blocks["regulatory_cost"]
@@ -799,6 +802,7 @@ async def calculate_taxes_get_endpoint(
     poids_brut_kg: Optional[float] = Query(None, gt=0, description="Poids brut (kg)"),
     moyen_transport: Optional[str] = Query(None, description="CONTENEUR, VOITURE ou CAMION"),
     nombre_unites_transport: Optional[int] = Query(None, ge=1),
+    mode_acheminement: Optional[str] = Query(None, description="MER, ROUTE ou AIR"),
 ):
     """
     Version GET du calculateur (pour tests rapides)
@@ -824,6 +828,7 @@ async def calculate_taxes_get_endpoint(
         poids_brut_kg=poids_brut_kg,
         moyen_transport=moyen_transport,
         nombre_unites_transport=nombre_unites_transport,
+        mode_acheminement=mode_acheminement,
     )
 
 

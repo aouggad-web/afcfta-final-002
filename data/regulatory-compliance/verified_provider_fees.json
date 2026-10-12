@@ -664,6 +664,9 @@
       "fee_id": "GIN-PAC",
       "country_iso3": "GIN",
       "side": "import",
+      "modes": [
+        "MER"
+      ],
       "scope_kind": "formality",
       "collector_type": "STATE_BODY",
       "program": "Port autonome de Conakry (escales, acconage, magasinage)",

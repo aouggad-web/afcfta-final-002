@@ -47,12 +47,23 @@ CALCULATION_METHODS = {"FIXED_AMOUNT", "PERCENTAGE_OF_FOB", "PERCENTAGE_OF_CIF",
 MOYENS_TRANSPORT = {"CONTENEUR", "VOITURE", "CAMION"}
 
 
-def transport_declare(moyen: Optional[str], nombre: Optional[int] = None) -> Optional[Dict[str, Any]]:
-    """Moyen de transport saisi, normalisé ; inconnu ou absent → None (frais non chiffré)."""
+#: Modes d'acheminement : un frais limité à certains modes (« modes » de l'entrée,
+#: port de Conakry : MER) n'apparaît pas pour un autre mode déclaré.
+MODES_ACHEMINEMENT = {"MER", "ROUTE", "AIR"}
+
+
+def transport_declare(
+    moyen: Optional[str], nombre: Optional[int] = None, mode: Optional[str] = None
+) -> Optional[Dict[str, Any]]:
+    """Transport saisi, normalisé ; une valeur inconnue est ignorée, rien de connu → None."""
+    transport: Dict[str, Any] = {}
     moyen = (moyen or "").strip().upper()
-    if moyen not in MOYENS_TRANSPORT:
-        return None
-    return {"moyen": moyen, "nombre": nombre or 1}
+    if moyen in MOYENS_TRANSPORT:
+        transport.update(moyen=moyen, nombre=nombre or 1)
+    mode = (mode or "").strip().upper()
+    if mode in MODES_ACHEMINEMENT:
+        transport["mode"] = mode
+    return transport or None
 
 # Statuts de mandat considérés comme confirmés et actuellement actifs (miroir de
 # regulatory_compliance_service._ACTIVE_MANDATE_STATUSES).
@@ -411,6 +422,11 @@ def build_verified_provider_costs(
         if entry.get("country_iso3", "").upper() != iso:
             continue
         if entry.get("side", "import") != side:
+            continue
+        # Mode d'acheminement déclaré hors des modes du frais : sans objet. Non
+        # déclaré, le frais reste affiché (avec ses conditions).
+        mode = (transport or {}).get("mode")
+        if mode and entry.get("modes") and mode not in entry["modes"]:
             continue
         detail = dict(entry.get("fee_detail") or {})
         verification = entry.get("verification") or {}

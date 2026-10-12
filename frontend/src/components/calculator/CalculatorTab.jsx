@@ -147,6 +147,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [poidsBrut, setPoidsBrut] = useState('');
   const [moyenTransport, setMoyenTransport] = useState('');
   const [nombreUnites, setNombreUnites] = useState('1');
+  const [modeAcheminement, setModeAcheminement] = useState('');
 
   // Vider le champ quand la position ou la destination change. La justesse ne
   // dépend pas de cet effet — c'est `quantityFor` qui empêche une quantité de
@@ -181,13 +182,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       hsCodeHint: "6 chiffres = HS international | 8-12 chiffres = sous-position nationale",
       valueLabel: "Valeur de la marchandise (USD)",
       logisticsLabel: "Poids et transport (facultatif)",
-      logisticsHint: "Chiffrent les frais par tonne, par conteneur ou véhicule (péage, scanner…), affichés à part des droits et taxes.",
+      logisticsHint: "Chiffrent les frais par tonne, par conteneur ou véhicule (péage, scanner…) et écartent ceux d'un autre mode d'acheminement (port pour une importation par route), à part des droits et taxes.",
       grossWeightPlaceholder: "Poids brut (kg)",
       transportPlaceholder: "Moyen de transport",
       transportContainer: "Conteneur",
       transportCar: "Voiture",
       transportTruck: "Camion",
       transportCountPlaceholder: "Nombre",
+      routingPlaceholder: "Acheminement",
+      routingSea: "Mer",
+      routingRoad: "Route",
+      routingAir: "Air",
       calculateBtn: "Calculer avec Données Officielles",
       calculatorTitle: "Calculateur ZLECAf Complet",
       calculatorDesc: "Calculs basés sur les données officielles des organismes internationaux",
@@ -256,13 +261,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       hsCodeHint: "6 digits = international HS | 8-12 digits = national sub-position",
       valueLabel: "Merchandise Value (USD)",
       logisticsLabel: "Weight and transport (optional)",
-      logisticsHint: "Used to price per-tonne and per-container or per-vehicle fees (tolls, scanner…), shown apart from duties and taxes.",
+      logisticsHint: "Used to price per-tonne and per-container or per-vehicle fees (tolls, scanner…) and to leave out fees of another routing (port fees for road imports), shown apart from duties and taxes.",
       grossWeightPlaceholder: "Gross weight (kg)",
       transportPlaceholder: "Means of transport",
       transportContainer: "Container",
       transportCar: "Car",
       transportTruck: "Truck",
       transportCountPlaceholder: "Number",
+      routingPlaceholder: "Routing",
+      routingSea: "Sea",
+      routingRoad: "Road",
+      routingAir: "Air",
       calculateBtn: "Calculate with Official Data",
       calculatorTitle: "Complete AfCFTA Calculator",
       calculatorDesc: "Calculations based on official data from international organizations",
@@ -375,6 +384,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setPoidsBrut('');
     setMoyenTransport('');
     setNombreUnites('1');
+    setModeAcheminement('');
     setResult(null);
     setDetailedResult(null);
     setShowHSBrowser(false);
@@ -450,6 +460,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       moyenTransport,
       // Number, pas parseInt : « 1.5 » doit être refusé, pas lu comme 1.
       nombreUnitesTransport: Number(nombreUnites),
+      modeAcheminement,
     };
 
     // LE TAUX DE CHANGE DU MODULE BANQUE, demandé une seule fois et seulement
@@ -1374,7 +1385,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {/* Poids et transport — facultatifs, bloc réglementaire seulement */}
           <div className="space-y-2">
             <Label className="text-[var(--text)] font-medium">{t.logisticsLabel}</Label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <Select value={modeAcheminement} onValueChange={setModeAcheminement}>
+                <SelectTrigger
+                  className="bg-[var(--overlay)] border-[var(--afcfta-border)]"
+                  data-testid="routing-select"
+                  aria-label={t.routingPlaceholder}
+                >
+                  <SelectValue placeholder={t.routingPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MER">{t.routingSea}</SelectItem>
+                  <SelectItem value="ROUTE">{t.routingRoad}</SelectItem>
+                  <SelectItem value="AIR">{t.routingAir}</SelectItem>
+                </SelectContent>
+              </Select>
               <Input
                 type="number"
                 value={poidsBrut}

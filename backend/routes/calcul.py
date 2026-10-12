@@ -136,6 +136,13 @@ class DemandeCalcul(BaseModel):
     nombre_unites_transport: Optional[int] = Field(
         None, ge=1, description="Nombre de conteneurs ou de véhicules (1 par défaut)."
     )
+    mode_acheminement: Optional[str] = Field(
+        None,
+        description=(
+            "MER, ROUTE ou AIR. Facultatif : écarte du bloc réglementaire les frais "
+            "liés à un autre mode (frais portuaires pour une importation par route)."
+        ),
+    )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
@@ -240,7 +247,9 @@ def calcul(demande: DemandeCalcul):
             demande.valeur_cif,
             demande.valeur_fob,
             poids_brut_kg=demande.poids_brut_kg,
-            transport=transport_declare(demande.moyen_transport, demande.nombre_unites_transport),
+            transport=transport_declare(
+                demande.moyen_transport, demande.nombre_unites_transport, demande.mode_acheminement
+            ),
         )
     )
     return resultat

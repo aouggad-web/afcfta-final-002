@@ -46,6 +46,12 @@ describe('buildCalculRequestBody', () => {
     });
   });
 
+  it("porte le mode d'acheminement connu, et lui seul", () => {
+    const base = { destinationISO3: 'GIN', hsCode: '0201100000', cifValue: 1000 };
+    expect(buildCalculRequestBody({ ...base, modeAcheminement: 'ROUTE' })).toHaveProperty('mode_acheminement', 'ROUTE');
+    expect(buildCalculRequestBody({ ...base, modeAcheminement: 'TRAIN' })).not.toHaveProperty('mode_acheminement');
+  });
+
   it("n'envoie ni poids illisible ni moyen de transport inconnu", () => {
     const body = buildCalculRequestBody({
       destinationISO3: 'TGO', hsCode: '0201100000', cifValue: 1000,
