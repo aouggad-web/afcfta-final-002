@@ -1,0 +1,77 @@
+Niger — Ordonnance n° 2025-44 du 31 décembre 2025 portant loi de finances pour l'année
+budgétaire 2026, article treize (art. 322 nouveau du CGI) — extrait verbatim
+=====================================================================================
+https://finances.gouv.ne/index.php/component/phocadownload/file/1303-ordonnance-n-2025-44
+PDF (47 p., couche texte) : sha256 a841c4fa47e4db2b174ea2085050b92ffd84f183039c5cfd5d4bec9a2281f42e
+Pages 11 et 12 sur 47 ; texte tiré par pdftotext -layout, pieds de page retirés.
+
+ARTICLE TREIZE : A compter du 1er janvier 2026, l’article 322 du
+Chapitre 1er et l’article 339 du Chapitre 5 du Titre 1 du Livre 2 du Code Général des
+Impôts sont modifiés comme suit :
+
+EN MATIERE DE TAXE SUR LA VALEUR AJOUTEE (TVA)
+Art.322 (nouveau) : sont exonérés de la taxe sur la valeur ajoutée :
+
+1° les affaires faites par les agriculteurs, les éleveurs et les pêcheurs dans le cadre
+normal de leur activité ;
+
+2° les importations et les ventes des produits énumérés au tableau ci-après :
+
+            Code NTS                            Désignation des produits
+Position : 04 01                  Lait et crème de lait, non concentrés ni additionnés de
+                                  sucre ou d’autres édulcorants
+Position : 07 01                  Semences de pomme de terre et pomme de terre
+Position 07 14                    Racines, tubercules et autres produits de la
+                                  position
+Chapitre : 10                     Céréales (maïs, mil, millet, sorgho, fonio, blé, riz à
+                                  l’exception du riz de luxe et autres céréales)
+
+             Code NTS                             Désignation des produits
+S/Position : 11 06 20 11 00        Farine et poudres de manioc (y compris le gari)
+S/position : 11 06 20 12 00        Semoule de manioc
+S/position : 19 01 10 00 00        Préparations pour l’alimentation des enfants,
+                                   conditionnées pour la vente au détail
+S/position : 22 07 10 10 00        Alcool éthylique à usages médicamenteux ou
+                                   pharmaceutique
+Position : 25 01                   Sel et chlorure de sodium pur…
+Position : 27 05                   Gaz de houille, gaz à l’eau…
+S/position : 27 10 19 12 00        Pétrole lampant
+S/position : 27 11 13 00 00        Gaz butane
+Position : 29 36                   Provitamines et vitamines
+S/position : 29 39 20 00 00        Quinine et ses sels
+Position : 29 41                   Antibiotiques
+Chapitre : 30                      Produits pharmaceutiques…
+S/position : 37 01 10 00 00        Plaque et films plans…pour rayon x
+S/position : 37 02 10 00 00        Pellicules photographiques sensibilisées pour rayon x
+S/position : 38 08 92 10 00        Fongicide contenant du bromométhane ou du
+                                   bromochlorométhane
+S/position 38 08 92 90 00          Autres fongicides
+Position : 40 14                   Articles d’hygiène ou de pharmacie en caoutchouc
+S/position : 40 15 12 00 00        Gants pour chirurgie
+S/position : 49 01 99 10 00        Livres, brochures et imprimés scolaires ou
+                                   scientifiques
+Position : 49 02                   Journaux et publications périodiques imprimés
+Position : 49 07 00 00 00          Timbres-poste, timbres fiscaux non oblitérés….
+S/position : 84 13 91 20 00        Parties pour pompes à bras
+S/position : 84 13 91 90 00        Parties pour autres pompes
+S/Position : 84 13 92 00 00        Parties d’élévateurs à liquides
+S/position : 84 19 20 00 00        Stérilisateurs médico-chirurgicaux ou de laboratoires
+S/position : 84 24 90 00 00        Parties d’appareils mécaniques de la sous
+                                   position 84 24 82
+S/position 87.01.10.00.00          Tracteurs à essieu simple
+Position : 87 13                   Fauteuils roulants et autres véhicules pour invalides
+S/position : 87 14 20 00 00        Parties de fauteuils roulants ou d’autres véhicules
+                                   pour invalides
+Position : 90 11 et 90 12          Microscopes
+Position : 90 18                   Instruments et appareils pour la médecine, la chirurgie
+Position : 90 19                   Appareils de mécanothérapie, de massage…
+Position : 90 20 00 00 00          Autres appareils respiratoires et masques à gaz
+Position : 90 21                   Articles et appareils d’orthopédies….
+Ex. position 90 22                 Appareils à rayon x et appareils utilisant les radiations
+                                   alpha, bêta ou gamma, pour usages médical,
+                                   chirurgical, dentaire ou vétérinaire
+Ex. position : 94 02               Mobilier pour la médecine, la chirurgie, l’art dentaire
+                                   ou vétérinaire
+3° les ventes et reventes, à l'intérieur, de viandes de boucherie, d'abats de volailles, de
+fruits et de légumes ;
+[...]
