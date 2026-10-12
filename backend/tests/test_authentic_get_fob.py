@@ -110,3 +110,16 @@ def test_poids_et_transport_chiffrent_le_bloc_reglementaire_comme_sur_calcul(cli
     montants = {l["measure_name"]: l.get("calculated_amount") for l in r.json()["regulatory_cost"]["line_items"]}
     assert montants["Taxe de péage (TP)"] == 600.0
     assert montants["Droit de passage au scanner (DPS)"] == 20000.0
+
+
+def test_le_mode_d_acheminement_ecarte_les_frais_portuaires_comme_sur_calcul(client):
+    """Guinée : port de Conakry gardé sans mode, écarté pour ROUTE."""
+
+    def frais(**extra):
+        r = client.get("/authentic-tariffs/calculate/GIN/0201100000", params={"value": 1000, **extra})
+        assert r.status_code == 200, r.text
+        return {l["measure_name"] for l in r.json()["regulatory_cost"]["line_items"]}
+
+    port = "Port autonome de Conakry (escales, acconage, magasinage)"
+    assert port in frais()
+    assert port not in frais(mode_acheminement="ROUTE")
