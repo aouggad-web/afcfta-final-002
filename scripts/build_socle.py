@@ -87,6 +87,7 @@ FAMILLES = {
     "RTL": "redevance",  # redevance de traitement et de liquidation (GN)
     "CA": "redevance",  # centime additionnel (GN)
     "PNS": "redevance",  # prélèvement national de solidarité (TG)
+    "RAU": "redevance",  # redevance d'aménagement urbain (BJ)
     "IDF": "redevance",
     "RDL": "redevance",
     "INFRA": "redevance",
