@@ -516,6 +516,178 @@
         ],
         "notes": "Montant fixe par déclaration → DOCUMENTED_FIXED_AMOUNT ; hors des droits et taxes (fiche BEN_prelevements_TVA_2026-10-11.json), affiché à part. Montant de la brochure de 2020, non retrouvé dans un texte plus récent."
       }
+    },
+    {
+      "fee_id": "MLI-II",
+      "country_iso3": "MLI",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Intention d'importation (II)",
+      "scope": "Obligatoire pour toute importation dont la valeur FOB est égale ou supérieure à 250 000 FCFA ; levée au guichet unique de la DNCC ou d'une DRCC.",
+      "providers": [],
+      "mandating_authority": "Direction nationale du commerce et de la concurrence (DNCC) du Mali",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 1500,
+        "currency": "XOF",
+        "threshold_fob_xof": 250000,
+        "conditions": "1 500 FCFA par intention d'importation, pour une valeur FOB égale ou supérieure à 250 000 FCFA (seuil non appliqué automatiquement : pas de conversion de devise)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Chambre de commerce et d'industrie du Mali (CCIM) — « Guide des démarches administratives courantes pour importer et exporter des marchandises au Mali » (versé sur la PR #620, data/mali/docs_officiels/GUIDE-IMPORT-EXPORT-MALI-DEMARCHE.pdf)",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "« Régler la somme due : 1500 F CFA par Intention d'Importation » ; « Toutes les importations dont la valeur FOB est égale ou supérieure à 250 000 FCA sont soumises à l'obligation de levée d'intention d'importation »."
+          },
+          {
+            "publisher": "Mali Trade Portal (portail officiel du commerce extérieur du Mali)",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "Procédure d'importation : intention d'importation auprès de la DNCC."
+          }
+        ],
+        "notes": "Montant fixe par document → DOCUMENTED_FIXED_AMOUNT ; hors des droits et taxes, affiché à part."
+      }
+    },
+    {
+      "fee_id": "MLI-PVI",
+      "country_iso3": "MLI",
+      "side": "import",
+      "stage": "export",
+      "scope_kind": "provider",
+      "program": "PVI — Programme de vérification des importations (vérification avant embarquement)",
+      "scope": "Importations dont la valeur FOB est égale ou supérieure à 3 000 000 FCFA ; vérification par la société habilitée par le Gouvernement.",
+      "providers": [
+        "BIVAC (Bureau Veritas)"
+      ],
+      "mandating_authority": "Gouvernement du Mali — Direction nationale du commerce et de la concurrence (DNCC)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate": 0.0075,
+        "currency": null,
+        "threshold_fob_xof": 3000000,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie ; seuil en FCFA non appliqué automatiquement (pas de conversion de devise).",
+        "conditions": "0,75 % de la valeur FOB, payé par chèque certifié en faveur du PVI, pour une valeur FOB égale ou supérieure à 3 000 000 FCFA."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Chambre de commerce et d'industrie du Mali (CCIM) — « Guide des démarches administratives courantes pour importer et exporter des marchandises au Mali » (versé sur la PR #620, data/mali/docs_officiels/GUIDE-IMPORT-EXPORT-MALI-DEMARCHE.pdf)",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "« Payer la contribution de 0,75 % de la valeur FOB de la marchandise par chèque certifié en faveur du Programme de Vérification des Importations « PVI » » ; vérification avant embarquement « dont la valeur FOB est égale ou supérieure à 3 000 000 FCA »."
+          },
+          {
+            "publisher": "Mali Trade Portal",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "PVI opéré par BIVAC : chèque certifié de 0,75 % de la valeur de la marchandise."
+          },
+          {
+            "publisher": "Bureau Veritas / Verigates — Mali flyer (2018)",
+            "url": "https://cdn1-verigates-ppd.bureauveritas.com/sites/verigates/files/2019-01/Mali%20-%20Flyer.pdf",
+            "confirms": "Exemption de vérification documentaire sous 3 000 000 XOF FOB."
+          }
+        ],
+        "notes": "Taux unique 0,75 % FOB → montant unique. Sources non datées ou de 2018 : taux en vigueur non confirmé par un texte de 2025-2026."
+      }
+    },
+    {
+      "fee_id": "GIN-RI",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (SYDONIA World)",
+      "scope": "Due à l'enregistrement de la déclaration en douane dans SYDONIA World ; en Guinée, acquittée avant la soumission de la déclaration.",
+      "providers": [],
+      "mandating_authority": "Direction générale des douanes (DGD) de Guinée",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Guinéenews, « Coopération douanière Sud-Sud : la RDC en quête de bonnes pratiques à Conakry » (15/03/2024)",
+            "url": "https://guineenews.org/2024/03/15/cooperation-douaniere-sud-sud-la-rdc-en-quete-de-bonnes-pratiques-a-conakry/?amp=1",
+            "confirms": "Réforme guinéenne permettant aux déclarants de « s'acquitter préalablement de la redevance informatique avant la soumission ou l'enregistrement de la déclaration dans SYDONIA »."
+          }
+        ],
+        "notes": "Source de presse ; texte instituant la redevance et son montant non trouvés. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GIN-GUCEG",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Prestations du guichet unique (GUCEG)",
+      "scope": "Modules E-Manifeste, E-Booking, E-Mouvement, E-Release et Port Community System, interfacés avec SYDONIA World.",
+      "providers": [],
+      "mandating_authority": "Guichet unique du commerce extérieur de Guinée (GUCEG)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Guichet unique du commerce extérieur de Guinée (GUCEG), site officiel",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Plateforme de dédouanement interfacée avec SYDONIA World : consultation des droits, taxes et redevances applicables et paiement en ligne des frais, taxes et redevances."
+          },
+          {
+            "publisher": "GUCEG — guide du module E-Voyage (versé sur la PR #620, data/guinee/docs_officiels/GUCEG-MODULE-E-VOYAGE-PROCEDURE.pdf)",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Procédures du guichet unique pour les escales et le dédouanement au port de Conakry."
+          }
+        ],
+        "notes": "Prestations facturées selon le barème du GUCEG, non publié en ligne. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GIN-PAC",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Port autonome de Conakry (escales, acconage, magasinage)",
+      "scope": "Uniquement pour les marchandises débarquées au port de Conakry (environ 90 % du commerce extérieur guinéen) ; sans objet pour une importation par route ou par air.",
+      "providers": [],
+      "mandating_authority": "Port autonome de Conakry (PAC)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "GUCEG — guide du module E-Voyage (versé sur la PR #620, data/guinee/docs_officiels/GUCEG-MODULE-E-VOYAGE-PROCEDURE.pdf)",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Escales et traitement des navires au port de Conakry par l'Autorité portuaire via le GUCEG."
+          }
+        ],
+        "notes": "Tarifs officiels du PAC non publiés dans les sources consultées ; varient selon le terminal et la marchandise. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
     }
   ]
 }

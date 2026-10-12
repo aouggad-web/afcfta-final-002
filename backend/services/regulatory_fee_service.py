@@ -120,6 +120,10 @@ def compute_fee(
         "last_verified": fee_detail.get("last_verified"),
     }
 
+    if method == "AMOUNT_NOT_PUBLISHED":
+        # Existence sourcée, barème non publié : signalé, jamais valué à zéro.
+        return {**base_result, **_unpriced(True, "amount_not_published"), "currency": currency}
+
     if method not in CALCULATION_METHODS:
         # Existence/source connues mais méthode non exploitable → partiel.
         return {
@@ -436,7 +440,8 @@ def build_verified_provider_costs(
             "collector_type": entry.get("collector_type"),
             "service": entry.get("scope"),
             "payer": payer,
-            "stage": _stage_for(payer),
+            # Étape déclarée par l'entrée (PVI : avant embarquement, même payé par l'importateur).
+            "stage": entry.get("stage") or _stage_for(payer),
             "contact": sources[0].get("url") if sources else None,
             "verification_status": verification.get("status"),
             "verification_sources": sources,
@@ -444,7 +449,8 @@ def build_verified_provider_costs(
             "conditions": detail.get("conditions"),
             "as_of": verification.get("date"),
             "side": side,
-            "tier": "VERIFIED_PRIMARY",
+            # Une existence seule (sans montant sourcé) ne porte pas le badge « vérifié ».
+            "tier": "EXISTENCE_ONLY" if verification.get("status") == "EXISTENCE_ONLY" else "VERIFIED_PRIMARY",
             **computed,
         }
         out.append(line)
@@ -493,6 +499,11 @@ def _summarise(line_items: List[Dict[str, Any]]) -> Dict[str, Any]:
         bmin[ccy] = round(bmin.get(ccy, 0.0) + float(lo), 2)
         bmax[ccy] = round(bmax.get(ccy, 0.0) + float(hi), 2)
 
+    # Un montant chiffré dans l'unité de la valeur saisie (ad valorem, sans devise)
+    # ne s'additionne pas à un montant en devise : le total combiné est alors retiré.
+    sans_devise = any(
+        i.get("fee_status") in _COMPUTED_STATUSES and not i.get("currency") for i in line_items
+    )
     has_unpriced = any(i.get("fee_status") == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE" for i in line_items)
     is_incomplete = any(i.get("fee_status") in _INCOMPLETE_STATUSES for i in line_items)
 
@@ -502,7 +513,7 @@ def _summarise(line_items: List[Dict[str, Any]]) -> Dict[str, Any]:
     regulatory_total_min = None
     regulatory_total_max = None
     regulatory_total_currency = None
-    if len(all_ccys) == 1:
+    if len(all_ccys) == 1 and not sans_devise:
         ccy = next(iter(all_ccys))
         regulatory_total_currency = ccy
         regulatory_total_min = round(provider_min.get(ccy, 0.0) + formality_min.get(ccy, 0.0), 2)
