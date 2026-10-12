@@ -567,6 +567,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);
+      // Pays que le socle sert sans jamais se replier sur l'autre porte.
+      const SANS_REPLI = new Set(['DZA', 'GMB', 'LBR', 'SLE']);
 
       let calculSocle = null;
       let erreurSocle = null;
@@ -582,9 +584,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           //
           // L'Algérie, elle, ne se replie jamais : l'autre porte n'a rien à
           // lui servir. Une position absente de son socle est une erreur
-          // affichée, avec le message du socle.
+          // affichée, avec le message du socle. Gambie, Liberia et Sierra
+          // Leone non plus : l'autre porte leur sert la redevance statistique
+          // et l'assiette de TVA du tarif béninois, qu'aucun de leurs textes
+          // n'établit.
           const statut = socleError.response?.status;
-          if (destISO3 === 'DZA' || (statut !== 404 && statut !== 503)) {
+          if (SANS_REPLI.has(destISO3) || (statut !== 404 && statut !== 503)) {
             throw socleError;
           }
           erreurSocle = socleError;
