@@ -24,35 +24,41 @@
   "Taxe sociale : servie seulement sur les marchandises que la surtaxe ne frappe pas (Règlement 519/2022, art. 6(2)) ; voir la fiche ETH_surtaxe_SWL_2026-10-12.json. Les exonérations de la directive 1023/2024 (bénéficiaire ou usage) ne sont pas servies par position.",
   "Le SWL n'entre dans la base d'aucune autre taxe ; il est liquidé en dernier."
  ],
- "documents": [
-  {
-   "fichier": "sources/ETH_excise_amended_atla.pdf",
-   "url": "https://a-tla.org/sites/default/files/2026-02/Ethiopia%20EXCISE%20TAX%20PROCLAMATION.pdf"
-  },
-  {
-   "fichier": "sources/ETH_directive_1007_2024.pdf",
-   "url": "https://justice.gov.et/am/?jet_download=04a84dce751b4d4643bfcea0ffb8bb4dcec36765"
-  },
-  {
-   "fichier": "sources/ETH_reg_519_2022_negarit.pdf",
-   "url": "https://justice.gov.et/wp-content/uploads/2025/02/ደንብ-ቁጥር-519-2014.pdf"
-  },
-  {
-   "fichier": "sources/ETH_directive_1023_2024_exemptions_SWL.pdf",
-   "url": "https://www.mofed.gov.et/media/filer_public/50/6e/506e271d-0d50-4f63-bc83-0fc78a732eb1/1023_kamaahebaraawi_lemaate_qarathe_natzaa_yatadaragu_eqaawocene_lamawasane_yawathaa_mamariyaa_quthere_1023_2017.pdf"
-  },
-  {
-   "fichier": "sources/ETH_proc1287_2023.pdf",
-   "url": "https://ethiolex.com/wp-content/uploads/2025/06/Proclamation-No.-1287-.pdf"
-  },
-  {
-   "fichier": "sources/ETH_reg_133_2007_negarit.pdf",
-   "url": "https://justice.gov.et/wp-content/uploads/2025/02/ደንብ-ቁጥር-133-1999-1.pdf"
-  }
- ],
  "ce_que_cela_ne_tranche_pas": [
   "Bières selon la teneur en matières premières locales (35 % ou 23 Birr/L ; 30 % ou 21 Birr/L) : non attribuables par position, 2203 suit la ligne « beer made from malt ».",
   "Positions où le taux du portail diffère de l'annexe : taux du portail conservé, écart dit en note, à confronter à une collecte fraîche.",
   "Cases d'accise vides du portail couvertes par une fourchette de l'annexe (cacao, articles sans amiante, fils et tissus des chapitres 50 à 63) : 0 % du portail conservé."
+ ],
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/ETH_excise_amended_atla.pdf",
+   "sha256": "5b8906219e6c9d9c0c6ee2c6b196884ab19654f2484016dd097554953ab92fdd",
+   "url": "https://a-tla.org/sites/default/files/2026-02/Ethiopia%20EXCISE%20TAX%20PROCLAMATION.pdf"
+  },
+  {
+   "fichier_archive": "sources/ETH_directive_1007_2024.pdf",
+   "sha256": "0c1590929cc7da76b2ec486011fb39ba1f7528e33fc87671bce8069cbf650db6",
+   "url": "https://justice.gov.et/am/?jet_download=04a84dce751b4d4643bfcea0ffb8bb4dcec36765"
+  },
+  {
+   "fichier_archive": "sources/ETH_reg_519_2022_negarit.pdf",
+   "sha256": "77e24d089bf9d69544f340d255e5a833312275479a19fc5bcc0a8330613f2d87",
+   "url": "https://justice.gov.et/wp-content/uploads/2025/02/ደንብ-ቁጥር-519-2014.pdf"
+  },
+  {
+   "fichier_archive": "sources/ETH_directive_1023_2024_exemptions_SWL.pdf",
+   "sha256": "6d7a4758e056274b592ae97a7d0f58bec59c8435c1a1b23e5adf5372353eece3",
+   "url": "https://www.mofed.gov.et/media/filer_public/50/6e/506e271d-0d50-4f63-bc83-0fc78a732eb1/1023_kamaahebaraawi_lemaate_qarathe_natzaa_yatadaragu_eqaawocene_lamawasane_yawathaa_mamariyaa_quthere_1023_2017.pdf"
+  },
+  {
+   "fichier_archive": "sources/ETH_proc1287_2023.pdf",
+   "sha256": "a4913555835641fb03e89285b4cd0ee4529481d8519d0f6e3898013f55ac1f9d",
+   "url": "https://ethiolex.com/wp-content/uploads/2025/06/Proclamation-No.-1287-.pdf"
+  },
+  {
+   "fichier_archive": "sources/ETH_reg_133_2007_negarit.pdf",
+   "sha256": "1655f91ec9ec2909bc733d6b7c56968d3ac929568a0cc179e39b0e33740b7ad0",
+   "url": "https://justice.gov.et/wp-content/uploads/2025/02/ደንብ-ቁጥር-133-1999-1.pdf"
+  }
  ]
 }
