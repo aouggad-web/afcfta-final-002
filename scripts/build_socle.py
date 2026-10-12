@@ -1390,26 +1390,31 @@ def _couvre_accise_eth(ligne, code):
     return bool(de) and de <= code[: len(de)] and code[: len(a)] <= a
 
 
-#: Surtaxe (Regulations 133/2007, art. 5(1)(a) et annexe) : catégories
-#: exemptées que le tarif désigne sans ambiguïté — engrais (31), pétrole et
-#: lubrifiants (27.09, 27.10, 34.03), véhicules de transport de marchandises
-#: et de personnes et véhicules à usage spécial (87.02 à 87.05), aéronefs,
-#: engins spatiaux et leurs parties (88).
-SURTAXE_EXEMPTEE_ETH = ("31", "2709", "2710", "3403", "8702", "8703", "8704", "8705", "88")
-#: Portée de l'exemption non tranchée par le texte : gaz de pétrole et autres
-#: dérivés (27.11 à 27.13), motocycles (87.11). Exclusions par directive du
-#: ministère des Finances connues seulement par son rapport (arachides 12.02,
-#: pommes de terre 07.01, sucre 17.01, viandes 02), directive non lue.
-SURTAXE_A_TRANCHER_ETH = {
-    "2711": "gaz de pétrole : « petroleum and lubricants » (art. 5) les couvre-t-il ?",
-    "2712": "vaseline, paraffine et cires de pétrole : « petroleum and lubricants » (art. 5) les couvre-t-il ?",
-    "2713": "coke et bitume de pétrole : « petroleum and lubricants » (art. 5) les couvre-t-il ?",
-    "8711": "motocycles : « motor vehicles for freight and passengers » (art. 5) les couvre-t-il ?",
-    "1202": "arachides, exclues de la surtaxe par une directive du ministère des Finances non lue",
-    "0701": "pommes de terre, exclues de la surtaxe par une directive du ministère des Finances non lue",
-    "1701": "sucre, exclu de la surtaxe par une directive du ministère des Finances non lue",
-    "02": "viandes, exclues de la surtaxe par une directive du ministère des Finances non lue",
-}
+#: Surtaxe (Regulations 133/2007, art. 5(1)(a) et annexe, version amharique
+#: qui fait foi) : engrais (31) ; « ነዳጅ » carburants — pétrole brut et huiles
+#: (27.09, 27.10), gaz de pétrole (27.11), coke de pétrole (2713.11, 2713.12) —
+#: et lubrifiants (34.03) ; « የጭነትና የሕዝብ ማመላለሻ ተሽከርካሪዎች » véhicules de
+#: fret et de transport de personnes et véhicules à usage spécial (87.02 à
+#: 87.05) ; aéronefs, engins spatiaux et leurs parties (88). Vaseline et
+#: paraffine (27.12), bitume (2713.20, 2713.90) et motocycles (87.11) n'en sont
+#: pas : surtaxe due.
+SURTAXE_EXEMPTEE_ETH = (
+    "31", "2709", "2710", "2711", "271311", "271312", "3403", "8702", "8703", "8704", "8705", "88",
+)
+#: Produits que le rapport du ministère des Finances (2022) dit exclus de la
+#: surtaxe par une directive prise en vertu de l'art. 5(2) : aucune directive
+#: trouvée, la surtaxe de l'art. 2 est servie et l'allégation dite en note.
+SURTAXE_DIRECTIVE_NON_TROUVEE_ETH = ("02", "0701", "1202", "1701")
+NOTE_VOITURES_ETH = (
+    " Voitures particulières : exemptées de surtaxe comme véhicules « for freight and passengers » "
+    "(annexe, version anglaise ; rapport du ministère des Finances : « including buses ») ; la version "
+    "amharique dit « የሕዝብ ማመላለሻ » (transport de personnes, ou transport public) : à confirmer."
+)
+NOTE_DIRECTIVE_ETH = (
+    "Le rapport du ministère des Finances sur les dépenses fiscales à l'importation (2022) dit ce produit "
+    "exclu de la surtaxe par une directive ultérieure (art. 5(2)) ; aucune directive trouvée : surtaxe "
+    "servie selon l'art. 2. "
+)
 NOTE_SURTAXE_ETH = (
     "Surtaxe de 10 % sur toute importation hors exemptions (Import Sur-Tax Council of Ministers "
     "Regulations 133/2007, Negarit Gazeta n° 23 du 11/04/2007, art. 2 à 5 et annexe). Exemptions liées "
@@ -1434,8 +1439,7 @@ def _surtaxe_et_swl_ethiopie(positions, compteurs):
     (art. 6(2)) et ne vise donc que les catégories exemptées de surtaxe.
 
     Le portail ne porte la surtaxe que sur deux positions (colonne SR) ; leur
-    taux publié est conservé. Une position dont l'exemption n'est pas
-    tranchée reçoit la surtaxe sans taux, à compléter."""
+    taux publié est conservé."""
     for code, position in positions.items():
         droits = [d for d in position.get("droits") or [] if d.get("code") != "SWL"]
         if any(d.get("code") == "SUR" for d in droits):
@@ -1443,12 +1447,11 @@ def _surtaxe_et_swl_ethiopie(positions, compteurs):
             continue
         if code.startswith(SURTAXE_EXEMPTEE_ETH):
             d = _droit("SWL", "Social Welfare Levy (taxe sociale)", 3.0, None, "Regulation 519/2022")
-            d["note"] = NOTE_SWL_ETH
+            d["note"] = NOTE_SWL_ETH + (NOTE_VOITURES_ETH if code.startswith("8703") else "")
         else:
-            motif = next((m for p, m in SURTAXE_A_TRANCHER_ETH.items() if code.startswith(p)), None)
-            d = _droit("SR", "Surtax", None if motif else 10.0, None, "Council of Ministers Regulation 133/2007")
-            d["note"] = (f"Exemption à trancher — {motif}. " if motif else "") + NOTE_SURTAXE_ETH
-            compteurs["taux_indisponibles"] += motif is not None
+            d = _droit("SR", "Surtax", 10.0, None, "Council of Ministers Regulation 133/2007")
+            directive = code.startswith(SURTAXE_DIRECTIVE_NON_TROUVEE_ETH)
+            d["note"] = (NOTE_DIRECTIVE_ETH if directive else "") + NOTE_SURTAXE_ETH
         compteurs["assiettes_table"] += 1
         position["droits"] = droits + [d]
 

@@ -53,12 +53,19 @@ def test_surtaxe_ou_taxe_sociale_jamais_les_deux(positions):
         assert "SUR" not in lignes and (lignes["SWL"]["base"], lignes["SWL"]["montant"]) == (1000.0, 30.0)
 
 
-def test_surtaxe_a_trancher_sans_taux(positions):
-    """Pommes de terre : exclues de la surtaxe par une directive non lue ; la
-    surtaxe reste à compléter, le total est partiel."""
-    sur = next(d for d in positions["07019000000"]["droits"] if d["code"] == "SUR")
-    assert sur["taux"] is None
-    assert _lignes(positions["07019000000"])[0] != COMPLET
+def test_surtaxe_selon_la_version_amharique_et_sans_directive(positions):
+    """Annexe du Règlement 133/2007, version amharique : « ነዳጅ » (carburants)
+    exempte les gaz de pétrole, pas la vaseline ni le bitume ; les motocycles
+    ne sont pas des véhicules de fret ni de transport de personnes. Pommes de
+    terre : aucune directive d'exclusion trouvée, surtaxe de 10 %."""
+    def code_de(c, code):
+        return next(d for d in positions[c]["droits"] if d["code"] == code)
+
+    assert code_de("27111910000", "SWL")["taux"] == 3.0
+    for c in ("27121000000", "27132000000", "87111030000", "07019000000"):
+        assert code_de(c, "SUR")["taux"] == 10.0
+    assert "directive" in code_de("07019000000", "SUR")["note"]
+    assert _lignes(positions["07019000000"])[0] == COMPLET
 
 
 def test_accise_bornee_aux_sous_positions_de_l_annexe(positions):
