@@ -75,3 +75,7 @@ def test_intention_d_importation_et_pvi_au_bloc_reglementaire():
     assert montants["PVI — Programme de vérification des importations (vérification avant embarquement)"] == (
         "CALCULABLE", 37_500.0,
     )
+    pvi = next(l for l in cout["line_items"] if l["measure_name"].startswith("PVI"))
+    assert pvi["stage"] == "export"  # vérification avant embarquement, payée par l'importateur
+    # 1 500 XOF et 37 500 dans l'unité de la FOB saisie ne s'additionnent pas.
+    assert cout["regulatory_cost_total"] is None
