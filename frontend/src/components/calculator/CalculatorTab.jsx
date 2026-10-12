@@ -544,11 +544,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // PCC et le PUA quelle que soit l'origine. Là où le taux d'une accise
       // dépend du produit (sucre, degré d'alcool, matières grasses) ou d'un prix
       // de déclenchement, le socle déclare le total incomplet au lieu de
-      // l'omettre (TGO 85 positions, SEN 173). Restent sur l'autre porte, en
-      // attente :
+      // l'omettre (TGO 85 positions, SEN 173). La Gambie, le Liberia et la
+      // Sierra Leone aussi : leurs fichiers recopiaient le tarif du Bénin, dont
+      // l'autre porte sert encore la redevance statistique de 1 %, qu'aucun
+      // texte de ces pays n'institue ; le socle suit leur loi de TVA/GST
+      // (assiette sur tous les droits, GST libérienne à 12 %) et leurs
+      // prélèvements nationaux. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB ; RWA, TZA, UGA pour
-      //   le tabac ; MAR, dont 528 positions ne publient pas de TVA) ;
+      //   trancher sur texte (CIV, CPV, GAB ; RWA, TZA, UGA pour le tabac ;
+      //   MAR, dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
       //   (EGY, SOM) ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
@@ -558,6 +562,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO',
+        'GMB', 'LBR', 'SLE',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
