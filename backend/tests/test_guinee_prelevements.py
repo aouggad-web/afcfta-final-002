@@ -49,3 +49,16 @@ def test_accise_sur_la_valeur_et_les_droits_d_entree(positions):
 def test_accise_specifique_des_produits_petroliers_sans_taux(positions):
     etat, lignes = _calcul(positions["2710124000"])
     assert lignes["DA"]["taux_pct"] is None and etat != "COMPLET"
+
+
+def test_frais_existants_sans_montant_au_bloc_reglementaire():
+    """Redevance informatique, GUCEG, port de Conakry : cités, montant non publié, jamais à zéro."""
+    from services.regulatory_fee_service import build_regulatory_blocks
+
+    cout = build_regulatory_blocks("GIN", None, fob_value=1000, cif_value=1000)["regulatory_cost"]
+    lignes = {l["measure_name"]: l for l in cout["line_items"]}
+    for nom in ("Redevance informatique (SYDONIA World)", "Prestations du guichet unique (GUCEG)",
+                "Port autonome de Conakry (escales, acconage, magasinage)"):
+        assert lignes[nom]["fee_status"] == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE"
+        assert lignes[nom]["calculated_amount"] is None and lignes[nom]["tier"] == "EXISTENCE_ONLY"
+    assert cout["has_unpriced_fees"] is True and cout["regulatory_cost_total"] is None

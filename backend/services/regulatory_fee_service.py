@@ -120,6 +120,10 @@ def compute_fee(
         "last_verified": fee_detail.get("last_verified"),
     }
 
+    if method == "AMOUNT_NOT_PUBLISHED":
+        # Existence sourcée, barème non publié : signalé, jamais valué à zéro.
+        return {**base_result, **_unpriced(True, "amount_not_published"), "currency": currency}
+
     if method not in CALCULATION_METHODS:
         # Existence/source connues mais méthode non exploitable → partiel.
         return {
@@ -444,7 +448,8 @@ def build_verified_provider_costs(
             "conditions": detail.get("conditions"),
             "as_of": verification.get("date"),
             "side": side,
-            "tier": "VERIFIED_PRIMARY",
+            # Une existence seule (sans montant sourcé) ne porte pas le badge « vérifié ».
+            "tier": "EXISTENCE_ONLY" if verification.get("status") == "EXISTENCE_ONLY" else "VERIFIED_PRIMARY",
             **computed,
         }
         out.append(line)

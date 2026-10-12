@@ -595,6 +595,98 @@
         ],
         "notes": "Taux unique 0,75 % FOB → montant unique. Sources non datées ou de 2018 : taux en vigueur non confirmé par un texte de 2025-2026."
       }
+    },
+    {
+      "fee_id": "GIN-RI",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (SYDONIA World)",
+      "scope": "Due à l'enregistrement de la déclaration en douane dans SYDONIA World ; en Guinée, acquittée avant la soumission de la déclaration.",
+      "providers": [],
+      "mandating_authority": "Direction générale des douanes (DGD) de Guinée",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Guinéenews, « Coopération douanière Sud-Sud : la RDC en quête de bonnes pratiques à Conakry » (15/03/2024)",
+            "url": "https://guineenews.org/2024/03/15/cooperation-douaniere-sud-sud-la-rdc-en-quete-de-bonnes-pratiques-a-conakry/?amp=1",
+            "confirms": "Réforme guinéenne permettant aux déclarants de « s'acquitter préalablement de la redevance informatique avant la soumission ou l'enregistrement de la déclaration dans SYDONIA »."
+          }
+        ],
+        "notes": "Source de presse ; texte instituant la redevance et son montant non trouvés. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GIN-GUCEG",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Prestations du guichet unique (GUCEG)",
+      "scope": "Modules E-Manifeste, E-Booking, E-Mouvement, E-Release et Port Community System, interfacés avec SYDONIA World.",
+      "providers": [],
+      "mandating_authority": "Guichet unique du commerce extérieur de Guinée (GUCEG)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Guichet unique du commerce extérieur de Guinée (GUCEG), site officiel",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Plateforme de dédouanement interfacée avec SYDONIA World : consultation des droits, taxes et redevances applicables et paiement en ligne des frais, taxes et redevances."
+          },
+          {
+            "publisher": "GUCEG — guide du module E-Voyage (versé sur la PR #620, data/guinee/docs_officiels/GUCEG-MODULE-E-VOYAGE-PROCEDURE.pdf)",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Procédures du guichet unique pour les escales et le dédouanement au port de Conakry."
+          }
+        ],
+        "notes": "Prestations facturées selon le barème du GUCEG, non publié en ligne. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GIN-PAC",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Port autonome de Conakry (escales, acconage, magasinage)",
+      "scope": "Frais portuaires des marchandises débarquées au port de Conakry (environ 90 % du commerce extérieur guinéen).",
+      "providers": [],
+      "mandating_authority": "Port autonome de Conakry (PAC)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "GUCEG — guide du module E-Voyage (versé sur la PR #620, data/guinee/docs_officiels/GUCEG-MODULE-E-VOYAGE-PROCEDURE.pdf)",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Escales et traitement des navires au port de Conakry par l'Autorité portuaire via le GUCEG."
+          }
+        ],
+        "notes": "Tarifs officiels du PAC non publiés dans les sources consultées ; varient selon le terminal et la marchandise. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
     }
   ]
 }
