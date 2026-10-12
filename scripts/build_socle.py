@@ -50,6 +50,15 @@ ASSIETTES_PATH = os.path.join(SOCLE_DIR, "assiettes_pays.json")
 LIVRE_TARIFAIRE_ETH = os.path.join(
     REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "ETH_livre_tarifaire_2021.droits.csv"
 )
+ACCISE_ETH = os.path.join(
+    REPO,
+    "backend",
+    "data",
+    "legal_refs",
+    "zlecaf_application",
+    "sources",
+    "ETH_accise_annexeI_proc1287-2023.csv",
+)
 IAT_NGA_2026 = os.path.join(
     REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "NGA_SI29_2026_IAT.csv"
 )
@@ -107,6 +116,7 @@ FAMILLES = {
     "TUF": "accise",
     "SPEC": "accise",
     "SUR": "accise",
+    "SWL": "accise",
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
@@ -1285,15 +1295,165 @@ def _ordre_ethiopie(positions):
             "Income Tax Proclamation 979/2016, art. 85 : avance de 3 % de la valeur CIF, importations "
             "à usage commercial, imputable sur l'impôt sur le revenu.",
         ),
+        "SWL": (
+            "CIF",
+            "Social Welfare Levy on Imported Goods Regulation 519/2022, art. 5 : valeur CIF.",
+        ),
     }
-    rang = {"EXC": 1, "TVA": 3, "SUR": 4, "WHR": 5}
+    rang = {"EXC": 1, "TVA": 3, "SUR": 4, "WHR": 5, "SWL": 6}
     for position in positions.values():
         droits = position.get("droits") or []
         for d in droits:
             if d.get("code") in assiettes:
-                d["assiette"], d["note"] = assiettes[d["code"]]
+                d["assiette"], note = assiettes[d["code"]]
+                d["note"] = f"{note} {d['note']}" if d.get("note") else note
                 d["assiette_origine"] = "regle_de_pays"
         position["droits"] = sorted(droits, key=lambda d: rang.get(d.get("code"), 2 if d.get("code") != "DD" else 0))
+
+
+#: Barème d'accise éthiopien (CSV ACCISE_ETH), au plus près du Premier
+#: Schedule : sous-positions nommées par l'annexe, codes du livre tarifaire
+#: rapportés au portail par leur libellé (3304.9990 → 3304.99.10). Les lignes
+#: conditionnées hors nomenclature — véhicules selon l'âge, bières selon la
+#: teneur en matières premières locales, chapitre 15 selon graisses saturées,
+#: chapitre 27 restreint à certains carburants, chapitre 71 restreint aux
+#: ornements — n'y sont pas : elles restent au portail.
+SOURCE_ACCISE_ETH = (
+    "Excise Tax Proclamation 1186/2020, Premier Schedule (annexe I de la "
+    "Proclamation 1287/2023, Negarit Gazette n° 39 du 15/09/2023) ; directive "
+    "1007/2024 pour les taux spécifiques."
+)
+
+
+def _accise_ethiopie(positions, compteurs):
+    """Éthiopie : barème d'accise consolidé (Premier Schedule tel que remplacé
+    par l'annexe I de la Proclamation 1287/2023 ; taux spécifiques remplacés
+    par la directive 1007/2024 ; fiche ETH_accise_bareme_SWL_2026-10-12.json).
+
+    Le portail publie un taux d'accise ad valorem par position ; une case vide
+    y est un 0 % publié, que la collecte écartait (voir _droits_livre_ethiopie).
+    Le barème ne le remplace donc pas par un taux tiré d'une fourchette de
+    l'annexe : il porte seulement, sur le taux publié qu'il confirme, la
+    composante spécifique et la règle de liquidation (« 40 % or 28 Birr per
+    liter whichever is higher » : LE_PLUS_ELEVE ; « 30 % + 20 Birr per pack » :
+    cumulatif). Seule exception : l'accise purement spécifique (sacs de caisse,
+    103 Birr/kg), sans part ad valorem que le portail puisse afficher."""
+    with open(ACCISE_ETH, encoding="utf-8") as f:
+        lignes = list(csv.DictReader(f))
+    for code, position in positions.items():
+        ligne = next((l for l in lignes if _couvre_accise_eth(l, code)), None)
+        if ligne is None:
+            continue
+        droits = position.get("droits") or []
+        existant = next((d for d in droits if d.get("code") == "EXC" and d.get("taux") is not None), None)
+        if existant is not None:
+            if ligne["taux_ad_valorem"] and float(ligne["taux_ad_valorem"]) != existant["taux"]:
+                existant["note"] = (
+                    f"Le barème de l'annexe I porte {ligne['taux_ad_valorem']} %"
+                    + (f" ({ligne['condition']})" if ligne["condition"] else "")
+                    + " : taux du portail conservé, à confronter."
+                )
+                continue
+            existant["source"] = SOURCE_ACCISE_ETH
+            _porter_composantes_accise(existant, ligne)
+            continue
+        if ligne["regle"] != "SPECIFIQUE" or any(d.get("code") == "EXC" for d in droits):
+            continue
+        d = _droit("EXC", "Excise Tax", None, None, SOURCE_ACCISE_ETH)
+        _porter_composantes_accise(d, ligne)
+        d["note"] = f"Accise spécifique de l'annexe I, directive 1007/2024 : {ligne['verbatim']} ({ligne['condition']})."
+        droits.append(d)
+        compteurs["assiettes_table"] += 1
+        position["droits"] = droits
+
+
+def _porter_composantes_accise(d, ligne):
+    if ligne["specifique_montant"]:
+        d["specifique"] = {
+            "montant": float(ligne["specifique_montant"]),
+            "unite_monetaire": "ETB",
+            "unite_quantite": ligne["unite_quantite"] or None,
+            "brut": ligne["verbatim"],
+        }
+    if ligne["regle"] == "LE_PLUS_ELEVE":
+        d["compose"] = True
+        d["regle_composee"] = "LE_PLUS_ELEVE"
+    elif ligne["regle"] == "CUMULATIF":
+        d["cumulatif"] = True
+    d["expression_brute"] = ligne["verbatim"] or None
+
+
+def _couvre_accise_eth(ligne, code):
+    """Vrai si la ligne du barème couvre le code de la position : bornes
+    comparées sur leur propre longueur (« 50 » à « 56 » : chapitres 50 à 56)."""
+    de, a = ligne["code_de"].strip(), ligne["code_a"].strip()
+    return bool(de) and de <= code[: len(de)] and code[: len(a)] <= a
+
+
+#: Surtaxe (Regulations 133/2007, art. 5(1)(a) et annexe, version amharique
+#: qui fait foi) : engrais (31) ; « ነዳጅ » carburants — pétrole brut et huiles
+#: (27.09, 27.10), gaz de pétrole (27.11), coke de pétrole (2713.11, 2713.12) —
+#: et lubrifiants (34.03) ; « የጭነትና የሕዝብ ማመላለሻ ተሽከርካሪዎች » véhicules de
+#: fret et de transport de personnes et véhicules à usage spécial (87.02 à
+#: 87.05) ; aéronefs, engins spatiaux et leurs parties (88). Vaseline et
+#: paraffine (27.12), bitume (2713.20, 2713.90) et motocycles (87.11) n'en sont
+#: pas : surtaxe due.
+SURTAXE_EXEMPTEE_ETH = (
+    "31", "2709", "2710", "2711", "271311", "271312", "3403", "8702", "8703", "8704", "8705", "88",
+)
+#: Produits que le rapport du ministère des Finances (2022) dit exclus de la
+#: surtaxe par une directive prise en vertu de l'art. 5(2) : aucune directive
+#: trouvée, la surtaxe de l'art. 2 est servie et l'allégation dite en note.
+SURTAXE_DIRECTIVE_NON_TROUVEE_ETH = ("02", "0701", "1202", "1701")
+NOTE_VOITURES_ETH = (
+    " Voitures particulières : exemptées de surtaxe comme véhicules « for freight and passengers » "
+    "(annexe, version anglaise ; rapport du ministère des Finances : « including buses ») ; la version "
+    "amharique dit « የሕዝብ ማመላለሻ » (transport de personnes, ou transport public) : à confirmer."
+)
+NOTE_DIRECTIVE_ETH = (
+    "Le rapport du ministère des Finances sur les dépenses fiscales à l'importation (2022) dit ce produit "
+    "exclu de la surtaxe par une directive ultérieure (art. 5(2)) ; aucune directive trouvée : surtaxe "
+    "servie selon l'art. 2. "
+)
+NOTE_SURTAXE_ETH = (
+    "Surtaxe de 10 % sur toute importation hors exemptions (Import Sur-Tax Council of Ministers "
+    "Regulations 133/2007, Negarit Gazeta n° 23 du 11/04/2007, art. 2 à 5 et annexe). Exemptions liées "
+    "à l'importateur ou à l'emploi, non servies par position : biens d'équipement (« Capital (Investment "
+    "goods) »), personnes exonérées de droits de douane (art. 5(1)(b)), taux préférentiels de la seconde "
+    "annexe (industries locales)."
+)
+NOTE_SWL_ETH = (
+    "Social Welfare Levy on Imported Goods Regulation 519/2022 : 3 % de la valeur CIF (art. 4 et 5), "
+    "sur les marchandises que la surtaxe ne frappe pas (art. 6(2) : exemptées « goods that are subject to "
+    "the sur tax ») ; n'entre dans la base d'aucune autre taxe. Exonérations par bénéficiaire ou usage de "
+    "la directive 1023/2024 (dons, accords internationaux, défense, banque centrale), non servies par "
+    "position."
+)
+
+
+def _surtaxe_et_swl_ethiopie(positions, compteurs):
+    """Éthiopie : surtaxe ou taxe sociale, l'une excluant l'autre (fiche
+    ETH_surtaxe_SWL_2026-10-12.json). Surtaxe de 10 % sur toute importation
+    hors exemptions de l'art. 5 du Règlement 133/2007 ; la taxe sociale de 3 %
+    de la valeur CIF (Règlement 519/2022) exempte ce que la surtaxe frappe
+    (art. 6(2)) et ne vise donc que les catégories exemptées de surtaxe.
+
+    Le portail ne porte la surtaxe que sur deux positions (colonne SR) ; leur
+    taux publié est conservé."""
+    for code, position in positions.items():
+        droits = [d for d in position.get("droits") or [] if d.get("code") != "SWL"]
+        if any(d.get("code") == "SUR" for d in droits):
+            position["droits"] = droits
+            continue
+        if code.startswith(SURTAXE_EXEMPTEE_ETH):
+            d = _droit("SWL", "Social Welfare Levy (taxe sociale)", 3.0, None, "Regulation 519/2022")
+            d["note"] = NOTE_SWL_ETH + (NOTE_VOITURES_ETH if code.startswith("8703") else "")
+        else:
+            d = _droit("SR", "Surtax", 10.0, None, "Council of Ministers Regulation 133/2007")
+            directive = code.startswith(SURTAXE_DIRECTIVE_NON_TROUVEE_ETH)
+            d["note"] = (NOTE_DIRECTIVE_ETH if directive else "") + NOTE_SURTAXE_ETH
+        compteurs["assiettes_table"] += 1
+        position["droits"] = droits + [d]
 
 
 def _droits_livre_ethiopie(positions, compteurs):
@@ -2382,6 +2542,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
+        _accise_ethiopie(positions, compteurs)
+        _surtaxe_et_swl_ethiopie(positions, compteurs)
         _ordre_ethiopie(positions)
 
     if iso == "SEN":

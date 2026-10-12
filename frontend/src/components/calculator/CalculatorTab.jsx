@@ -516,21 +516,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // redevance informatique recopiée du fichier camerounais, qu'aucune loi
       // équato-guinéenne n'institue, met la TCI dans l'assiette de la TVA
       // (loi 4/2004, art. 288 : DD et droit d'accises) et omet le droit
-      // d'accises spécifique sur 13 positions. Restent sur l'autre porte, en
-      // attente :
+      // d'accises spécifique sur 13 positions. L'Éthiopie aussi (mesuré sur
+      // ses 6 296 positions) : l'autre porte omet la surtaxe de 10 % du
+      // Règlement 133/2007 et la part spécifique des accises de la directive
+      // 1007/2024 (4 915 totaux différents), et ne calcule pas 1 085 positions
+      // que le socle liquide ; sur 11 (bière, tabacs, sacs), le socle réclame
+      // la quantité plutôt que de servir l'accise ad valorem seule. Restent sur
+      // l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
       //   trancher sur texte (CIV, CPV, GMB, SLE, LBR, GAB ; BEN,
       //   GNB, SEN, TGO pour 7 positions ; RWA, TZA, UGA pour le tabac ; MAR,
       //   dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
-      //   (ETH, EGY, SOM) ;
+      //   (EGY, SOM) ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
       //
       // L'ALGÉRIE (bascule 2.3). Le socle est sa seule porte de calcul :
       // l'autre n'a plus de fichier algérien à lire.
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
-        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA',
+        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
