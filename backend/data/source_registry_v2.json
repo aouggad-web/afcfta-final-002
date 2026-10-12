@@ -810,7 +810,7 @@
       "version": null,
       "artifact_path": "backend/data/crawled/TGO_tariffs.json",
       "artifact_url": null,
-      "sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
+      "sha256": "456a26b63049fc7184bdcfae59548785512fc134c9150abf6fd1a179f68189ae",
       "_shared": "BEN (UEMOA TEC)",
       "taxes": [
         "DD",
@@ -818,6 +818,7 @@
         "PCS",
         "PCC",
         "PUA",
+        "PNS",
         "TVA"
       ]
     },
