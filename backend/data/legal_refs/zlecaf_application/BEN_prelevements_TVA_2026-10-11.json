@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "objet": "Bénin : tarif officiel de la DGDDI (TEC CEDEAO SH 2022, D.D. et R.S.), prélèvements communautaires (PCS, PC, prélèvement de solidarité de l'UA) et assiette de la TVA à l'importation",
+  "objet": "Bénin : tarif officiel de la DGDDI (TEC CEDEAO SH 2022, D.D. et R.S.), prélèvements communautaires (PCS, PC, prélèvement de solidarité de l'UA), redevance d'aménagement urbain et assiette de la TVA à l'importation",
   "destination_iso3": "BEN",
-  "verified_at": "2026-10-11",
+  "verified_at": "2026-10-12",
   "etabli": true,
   "evidence_level": "primaire pour le tarif (DGDDI) et la liste des prélèvements (LF 2026, art. 13) ; taux communautaires et assiette de la TVA par les textes UEMOA et CEDEAO déjà archivés ; CGI du Bénin non lu (api.impots.bj injoignable)",
   "source": {
@@ -10,28 +10,29 @@
     "institution": "Direction générale des douanes et droits indirects du Bénin ; UEMOA ; CEDEAO"
   },
   "regle": {
-    "valeur": "Source du socle BEN : tarif de la DGDDI (6 381 positions SH 2022), à la place de la collecte du 19/02/2026 (6 129 positions SH 2017, PCS à 1 %). D.D. et R.S. (1 %) par position ; PCS 0,8 %, PC 0,5 % et prélèvement de solidarité de l'UA (PUA) 0,2 % sur la valeur en douane ; TVA 18 % sur la valeur en douane + DD + RS + PCS + PC + PUA (directive n° 02/98/CM/UEMOA, art. 27).",
+    "valeur": "Source du socle BEN : tarif de la DGDDI (6 381 positions SH 2022), à la place de la collecte du 19/02/2026 (6 129 positions SH 2017, PCS à 1 %). D.D. et R.S. (1 %) par position ; PCS 0,8 %, PC 0,5 % et prélèvement de solidarité de l'UA (PUA) 0,2 % et redevance d'aménagement urbain (RAU) 0,5 % sur la valeur en douane ; TVA 18 % sur la valeur en douane + DD + RS + PCS + PC + PUA + RAU (directive n° 02/98/CM/UEMOA, art. 27).",
     "verbatim": "en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même.",
-    "reference": "Tarif TEC-CEDEAO SH2022 de la DGDDI ; loi de finances 2026, art. 13 ; circulaire DGD n° 2258 (Côte d'Ivoire) ; directive n° 02/98/CM/UEMOA, art. 27",
-    "portee": "backend/data/crawled/BEN_tariffs.json régénéré (scripts/extraire_tec_ben.py, scripts/convertir_tec_ben.py ; scellé, empreinte au registre des sources) ; l'assiette de la TVA est celle de la table des assiettes établies pour l'UEMOA (CIF+TOUS_SAUF_TVA, fiche UEMOA_assiette_TVA_2026-09-14.json), soit la valeur en douane + DD + RS + PCS + PC + PUA.",
+    "reference": "Tarif TEC-CEDEAO SH2022 de la DGDDI ; loi de finances 2026, art. 13 ; circulaire DGD n° 2258 (Côte d'Ivoire) ; directive n° 02/98/CM/UEMOA, art. 27 ; brochure de la DGDDI « Comment calculer les droits et taxes » (2020)",
+    "portee": "backend/data/crawled/BEN_tariffs.json régénéré (scripts/extraire_tec_ben.py, scripts/convertir_tec_ben.py ; scellé, empreinte au registre des sources) ; l'assiette de la TVA est celle de la table des assiettes établies pour l'UEMOA (CIF+TOUS_SAUF_TVA, fiche UEMOA_assiette_TVA_2026-09-14.json), soit la valeur en douane + DD + RS + PCS + PC + PUA + RAU. Redevance informatique (10 000 F par déclaration) au bloc réglementaire (data/regulatory-compliance/verified_provider_fees.json, BEN-RI).",
     "texte_archive": "sources/BEN_prelevements_TVA.extrait.txt",
-    "sha256": "f709b9677e956a88cb93c2ee7ced556e6da299aac8de0940894fc6f5b6e55a7a"
+    "sha256": "dea2a599296abe8b8665fd8cb16a22b7ba7d53a9b987d84fb5344bca1aa20e3e"
   },
   "decisions": [
     "Écarts relevés entre la collecte de février 2026 et le tarif de la DGDDI : 429 positions SH 2022 absentes de la collecte, 177 disparues, 71 droits de douane différents (viandes 35 % → 20 %, jus 20 % → 35 %, entre autres), PCS 1 % → 0,8 %.",
     "Le prélèvement de solidarité (PS) de la LF 2026, art. 13, est le prélèvement de 0,2 % au profit de l'Union africaine, servi sous le code PUA.",
     "Libellés : ceux de la collecte précédente quand la position y figure (l'export Excel centre le libellé des cellules sur plusieurs lignes, que l'extraction tronque) ; sinon le libellé extrait.",
-    "R.S. non lue sur 3 positions (9405.91, 9405.92, 9405.99) : taux non renseigné, TVA indisponible."
+    "R.S. non lue sur 3 positions (9405.91, 9405.92, 9405.99) : taux non renseigné, TVA indisponible.",
+    "RAU (0,5 % de la valeur en douane) : liquidée en régime de droit commun et comprise dans la base de la TVA, d'après l'exemple chiffré de la brochure de la DGDDI (1905.20, 1 000 000 F : TVA 221 400 F, retrouvée à l'identique par le calcul)."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Taxe de statistique (T.STAT), timbre douanier, redevance d'aménagement urbain (RAU) et taxe de voirie (TV), cités par la LF 2026, art. 13 : taux non trouvés, non liquidés.",
+    "Timbre douanier (4 %, perçu sur la TCV, la taxe de statistique et la TSR) et taxe de voirie (0,15 %, cas d'exonération seulement dans la brochure) : ne frappent pas une mise à la consommation en régime de droit commun, non liquidés. Taxe de statistique (T.STAT) : taux non trouvé.",
     "Taxe sur les produits spécifiques (accises), TVA à taux zéro ou exonérée par position, acompte sur impôt sur les bénéfices (AIB, 1 % ou 3 % selon l'importateur) : CGI du Bénin non lu, non liquidés.",
     "Exemption des marchandises originaires de l'UEMOA, de la CEDEAO et de l'UA : appliquée selon l'origine déclarée (fiche ORIGINE_prelevements_communautaires_2026-10-10.json)."
   ],
   "documents_archives": [
     {
       "texte_archive": "sources/BEN_prelevements_TVA.extrait.txt",
-      "sha256": "f709b9677e956a88cb93c2ee7ced556e6da299aac8de0940894fc6f5b6e55a7a"
+      "sha256": "dea2a599296abe8b8665fd8cb16a22b7ba7d53a9b987d84fb5344bca1aa20e3e"
     },
     {
       "document_non_archive": "DGDDI, TARIF EXTERIEUR COMMUN TEC-CEDEAO SH2022, versé sur la PR #620 (data/benin/docs_officiels/TEC-CEDEAO-SH2022-TARIF-BENIN.pdf)",
@@ -40,6 +41,10 @@
     {
       "document_non_archive": "Loi de finances 2026 du Bénin, versée sur la PR #620 (data/benin/docs_officiels/LOI-DES-FINANCES-2026-BENIN.pdf)",
       "pdf_sha256": "4ba14dbd85038228b55b78eb06260620edfb877c560f25f438bb4f36e53a9290"
+    },
+    {
+      "document_non_archive": "DGDDI du Bénin, brochure « Comment calculer les droits et taxes », https://douanes.gouv.bj/wp-content/uploads/2020/10/brochure-douane2-mobile.pdf",
+      "pdf_sha256": "f7d1379eee36add5ddb2e55265989fe2ba2f8512138a59d08bb0efec69142237"
     }
   ]
 }

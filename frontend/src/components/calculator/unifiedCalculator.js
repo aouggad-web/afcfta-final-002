@@ -111,6 +111,9 @@ export function buildCalculRequestBody({
   valeurFob,
   paysExpedition,
   tauxDeChange,
+  poidsBrutKg,
+  moyenTransport,
+  nombreUnitesTransport,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -139,7 +142,30 @@ export function buildCalculRequestBody({
   if (typeof tauxDeChange === 'number' && Number.isFinite(tauxDeChange) && tauxDeChange > 0) {
     body.taux_de_change = tauxDeChange;
   }
+  // Poids brut et moyen de transport : facultatifs. Ils ne chiffrent que les
+  // frais du bloc réglementaire (par tonne, par conteneur ou véhicule), jamais
+  // les droits et taxes ; absents, ces frais restent « montant à confirmer ».
+  Object.assign(body, transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport }));
   return body;
+}
+
+/**
+ * Champs facultatifs du bloc réglementaire, communs aux deux chemins de calcul
+ * (`POST /calcul` et `/authentic-tariffs`) : seuls les nombres utilisables et
+ * un moyen de transport connu sont transmis.
+ */
+export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport }) {
+  const champs = {};
+  if (typeof poidsBrutKg === 'number' && Number.isFinite(poidsBrutKg) && poidsBrutKg > 0) {
+    champs.poids_brut_kg = poidsBrutKg;
+  }
+  if (['CONTENEUR', 'VOITURE', 'CAMION'].includes(moyenTransport)) {
+    champs.moyen_transport = moyenTransport;
+    if (Number.isInteger(nombreUnitesTransport) && nombreUnitesTransport >= 1) {
+      champs.nombre_unites_transport = nombreUnitesTransport;
+    }
+  }
+  return champs;
 }
 
 /**

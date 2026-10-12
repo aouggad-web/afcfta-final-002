@@ -1,30 +1,36 @@
 code_de,code_a,condition,taux_ad_valorem,specifique_montant,unite_quantite,regle,verbatim
-1701,1701,,10,,,,
+1701,1701,"sucre, sauf à usage médical",10,,,,
 170410,170410,,10,,,,
-170490,180690,,10,,,,
-210690,210690,2106.90.40 (poudres pour boissons) uniquement,25,,,,
+170490,180690,chocolat prêt à consommer et confiseries,10,,,,
+21069040,21069040,poudres pour boissons (code du livre tarifaire),25,,,,
 220110,220190,,10,,,,
 220210,220210,,25,,,,
-220291,220299,,25,,,,
+220291,220291,,25,,,,
+22029990,22029990,,25,,,,
 220300,220300,,40,28,litre,LE_PLUS_ELEVE,40% or 28 Birr per liter whichever is higher
-220410,220410,,30,,,,
-220420,220590,,40,,,,
+220410,220590,teneur en matières premières locales inférieure à 75 %,40,,,,
+22060010,22060010,teneur en alcool n'excédant pas 7 % vol,40,28,litre,LE_PLUS_ELEVE,40% or 28 birr per litter whichever is higher
+22089010,22089010,teneur en alcool n'excédant pas 7 % vol,40,28,litre,LE_PLUS_ELEVE,40% or 28 birr per litter whichever is higher
 240110,240130,,20,,,,
 240210,240210,,30,644,kilogram,CUMULATIF,30% + 644 Birr per kilogram
 240220,240290,paquet de 20 batonnets,30,20,pack,CUMULATIF,30% + 20 Birr per pack (20 sticks)
 240319,240399,,30,644,kilogram,CUMULATIF,30% + 644 Birr per kilogram
-250100,250100,,10,,,,
+25010010,25010010,sel,10,,,,
 330300,330300,,100,,,,
-330410,330499,,100,,,,
-330520,330599,,100,,,,
+330410,330430,,100,,,,
+33049910,33049910,"fards, crèmes de beauté (3304.9990 du livre tarifaire)",100,,,,
+330520,330530,,100,,,,
+33059010,33059010,"laques, brillantines et décolorants (3305.9090 du livre tarifaire)",100,,,,
 360410,360410,,100,,,,
-392321,392329,,,103,kilogram,SPECIFIQUE,103 Birr per kilogram
+39232110,39232110,sacs de caisse,,103,kilogram,SPECIFIQUE,103 Birr per kilogram
+39232910,39232910,sacs de caisse,,103,kilogram,SPECIFIQUE,103 Birr per kilogram
 401110,401390,,5,,,,
 50,56,,5,,,,
 57,57,,15,,,,
 58,63,,5,,,,
 670210,670290,,10,,,,
 670300,670490,,40,,,,
-681140,681320,,20,,,,
-950420,950499,,20,,,,
-950510,950599,,20,,,,
+681140,681320,amiante,20,,,,
+950420,950490,,20,,,,
+95051010,95051090,,20,,,,
+950590,950590,,20,,,,

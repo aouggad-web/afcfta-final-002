@@ -74,6 +74,10 @@ def test_droits_du_tec_2022(bfa):
 def test_niger_tva_exoneree(ner):
     tva = lambda code: next(d["taux"] for d in ner[code]["droits"] if d["code"] == "TVA")  # noqa: E731
     assert tva("1001110000") == 0.0
+    # Première rectification (ordonnance n° 2026-45, art. 7) : gants de chirurgie
+    # en 4015.11 et ouvrages en boyaux 42.06.
+    assert tva("4015110000") == 0.0 and tva("4206000000") == 0.0
+    assert tva("4015190000") == 19.0
     assert tva("9022140000") == 0.0
     assert tva("9402109000") == 19.0
     assert tva("1006301000") is None

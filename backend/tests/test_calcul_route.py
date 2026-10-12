@@ -946,6 +946,26 @@ def test_les_frais_assis_sur_la_fob_suivent_la_valeur_fob_fournie(client):
 
 
 @besoin_socle
+def test_poids_brut_et_transport_chiffrent_les_frais_par_tonne_et_par_unite(client):
+    """Togo : TPI et péage par tonne entamée, scanner par conteneur — chiffrés
+    quand le poids brut et le moyen de transport sont fournis, à part des droits."""
+
+    def montants(corps):
+        return {l["measure_name"]: l.get("calculated_amount") for l in corps["regulatory_cost"]["line_items"]}
+
+    charge = {"destination": "TGO", "code_sh": "0201100000", "valeur_cif": 1000}
+    sans = client.post("/calcul", json=charge).json()
+    assert montants(sans)["Taxe de péage (TP)"] is None
+    avec = client.post(
+        "/calcul",
+        json={**charge, "poids_brut_kg": 2500, "moyen_transport": "camion", "nombre_unites_transport": 1},
+    ).json()
+    assert montants(avec)["Taxe de péage (TP)"] == 600.0
+    assert montants(avec)["Droit de passage au scanner (DPS)"] == 20000.0
+    assert avec["npf"]["total_droits"] == sans["npf"]["total_droits"]
+
+
+@besoin_socle
 def test_les_frais_reglementaires_n_entrent_jamais_dans_le_cout_douanier(client):
     """L'invariant du bloc : il est informatif. Un frais de prestataire ajouté
     au total douanier ferait payer à l'importateur une somme que la douane ne

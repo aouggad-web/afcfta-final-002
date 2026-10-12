@@ -587,7 +587,7 @@
     "BEN": {
       "organism": "Direction Générale des Douanes — douanes.gouv.bj + TEC CEDEAO",
       "version": "2026.1",
-      "sha256": "ba9f7a7c5efd1e4faa542586474c26b597c92a8f5ccb34e1564223e983f7a872",
+      "sha256": "dec247b8c726758383f5cc7a8355f4a131b903d9f228c505a3f5c4ed39833361",
       "artifact_path": "backend/data/crawled/BEN_tariffs.json",
       "artifact_url": null,
       "source_type": "regional_org",
@@ -604,6 +604,7 @@
         "PCS",
         "PCC",
         "PUA",
+        "RAU",
         "TVA"
       ],
       "taxes_missing": [
