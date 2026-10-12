@@ -149,7 +149,7 @@ def compute_fee(
         if unit is None or currency is None:
             return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
                     "reason": "unit_amount_or_currency_missing"}
-        if not poids_brut_kg or poids_brut_kg <= 0:
+        if poids_brut_kg is None or not math.isfinite(poids_brut_kg) or poids_brut_kg <= 0:
             return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
                     "reason": "poids_brut_requis"}
         # « tonne indivisible » : toute tonne entamée est due.

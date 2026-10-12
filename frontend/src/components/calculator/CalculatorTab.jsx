@@ -448,7 +448,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     const transport = {
       poidsBrutKg: parseFloat(poidsBrut),
       moyenTransport,
-      nombreUnitesTransport: parseInt(nombreUnites, 10),
+      // Number, pas parseInt : « 1.5 » doit être refusé, pas lu comme 1.
+      nombreUnitesTransport: Number(nombreUnites),
     };
 
     // LE TAUX DE CHANGE DU MODULE BANQUE, demandé une seule fois et seulement
@@ -1374,12 +1375,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 value={poidsBrut}
                 onChange={(e) => setPoidsBrut(e.target.value)}
                 placeholder={t.grossWeightPlaceholder}
+                aria-label={t.grossWeightPlaceholder}
                 min="0"
                 className="bg-[var(--overlay)] border-[var(--afcfta-border)]"
                 data-testid="gross-weight-input"
               />
               <Select value={moyenTransport} onValueChange={setMoyenTransport}>
-                <SelectTrigger className="bg-[var(--overlay)] border-[var(--afcfta-border)]" data-testid="transport-select">
+                <SelectTrigger
+                  className="bg-[var(--overlay)] border-[var(--afcfta-border)]"
+                  data-testid="transport-select"
+                  aria-label={t.transportPlaceholder}
+                >
                   <SelectValue placeholder={t.transportPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
@@ -1393,6 +1399,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 value={nombreUnites}
                 onChange={(e) => setNombreUnites(e.target.value)}
                 placeholder={t.transportCountPlaceholder}
+                aria-label={t.transportCountPlaceholder}
                 min="1"
                 step="1"
                 disabled={!moyenTransport}

@@ -85,3 +85,11 @@ def test_frais_hors_valeur_chiffres_avec_poids_et_transport():
     assert montants["Taxe de péage (TP)"] == 2_600.0
     assert montants["Droit de passage au scanner (DPS)"] == 100_000.0
     assert cout["regulatory_cost_total"] == 133_600.0 and cout["complete"] is True
+
+
+def test_poids_non_fini_reste_partiel_sans_masquer_le_bloc():
+    from services.regulatory_fee_service import compute_fee
+
+    detail = {"calculation_method": "PER_TONNE", "unit_amount": 200, "currency": "XOF", "source": "otr.tg"}
+    r = compute_fee(detail, poids_brut_kg=float("inf"))
+    assert (r["fee_status"], r["calculated_amount"], r["reason"]) == ("PARTIAL", None, "poids_brut_requis")
