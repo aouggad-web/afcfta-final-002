@@ -1182,11 +1182,14 @@ def sources_disponibles():
 #: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
 #: assiette de la TVA de son art. 216.
 #: Code du prélèvement → bloc dont les originaires en sont exclus.
-EXONERATION_ORIGINE = {"PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA"}
+EXONERATION_ORIGINE = {"PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA"}
 #: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
 BLOCS_DESTINATION = {
     "UEMOA": {"BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"},
     "CEDEAO": {"BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"},
+    # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
+    # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
+    "AES_UEMOA": {"BFA", "MLI", "NER"},
 }
 
 ACCISES_PAYS = {
@@ -1735,7 +1738,8 @@ def _prelevements_mali(positions, compteurs):
             elif code == "PC-AES":
                 d["note"] = (
                     "Colonne PC (0,5 %) du tarif de 2023, prélèvement de la CEDEAO quittée le 29/01/2025 ; servie "
-                    "comme prélèvement confédéral de l'AES au même taux (décision du 28/03/2025)."
+                    "comme prélèvement confédéral de l'AES au même taux (décision du 28/03/2025), dont sont exclues "
+                    "les marchandises originaires de l'AES et de l'UEMOA (art. 1er et 4)."
                 )
 
 
@@ -1751,6 +1755,77 @@ def _prelevements_burkina(positions):
                     "Prélèvement communautaire de solidarité de l'UEMOA : 0,8 % (circulaire DGD n° 2258 de Côte "
                     "d'Ivoire : PCS « en vigueur » au taux de 0,8 % ; tarif de la DGD du Mali, colonne PCS)."
                 )
+
+
+def _pcs_uemoa(positions):
+    """PCS : 0,8 % de la valeur en douane des marchandises importées des pays
+    tiers (acte additionnel n° 01/2019/CCEG/UEMOA, art. 1er ; fiche
+    UEMOA_AES_PCS_PC-AES_2026-10-11.json). Les collectes du Niger, du Bénin, du Togo
+    et de la Guinée-Bissau portent encore 1 % (le Burkina a sa passe)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") == "PCS" and d.get("taux") == 1.0:
+                d["taux"] = 0.8
+                d["source"] = "Acte additionnel n° 01/2019/CCEG/UEMOA"
+                d["note"] = (
+                    "Acte additionnel n° 01/2019/CCEG/UEMOA, art. 1er : « maintenu à 0,80 % de la valeur en douane "
+                    "des marchandises importées des pays tiers » (la collecte portait 1 %)."
+                )
+
+
+#: Burkina Faso : droits du TEC UEMOA 2022 que la collecte de février 2026
+#: sous-évalue (fiche BFA_droits_TEC_2026-10-11.json).
+DD_TEC_BFA = {"0701900000": 35.0, "0703100000": 35.0, "1511100000": 10.0}
+
+
+def _droits_tec_burkina(positions):
+    for code, taux in DD_TEC_BFA.items():
+        for d in (positions.get(code) or {}).get("droits") or []:
+            if d.get("code") == "DD" and d.get("taux") != taux:
+                d["note"] = f"TEC UEMOA 2022 : {taux:g} % (la collecte portait {d['taux']:g} %)."
+                d["taux"] = taux
+
+
+#: Niger, loi de finances 2026 (ordonnance n° 2025-44, art. 13 ; CGI art. 322
+#: nouveau, 2°) : TVA exonérée à l'importation, par préfixe NTS.
+TVA_EXONEREE_NER = (
+    "0401", "0701", "0714", "10", "11062011", "11062012", "19011000", "22071010", "2501", "2705",
+    "27101912", "27111300", "2936", "29392000", "2941", "30", "37011000", "37021000", "38089210",
+    "38089290", "4014", "40151200", "49019910", "4902", "49070000", "84139120", "84139190",
+    "84139200", "84192000", "84249000", "87011000", "8713", "87142000", "9011", "9012", "9018",
+    "9019", "90200000", "9021",
+    # « Ex. position » 90.22 et 94.02 : seules les sous-positions dont le libellé
+    # dit l'usage médical, chirurgical, dentaire ou vétérinaire.
+    "9022130000", "9022140000", "9022210000", "9402101000", "9402900000",
+)
+#: Exonération dont le périmètre ne se lit pas dans la position.
+TVA_EXONEREE_NER_A_TRANCHER = {
+    "1006": "céréales exonérées « à l'exception du riz de luxe », que la nomenclature ne distingue pas",
+    "9022120000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+    "9022300000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+    "9022900000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+}
+
+
+def _tva_exoneree_niger(positions, compteurs):
+    """Niger : exonérations de TVA à l'importation de la loi de finances 2026
+    (fiche NER_TVA_exonerations_LF2026_2026-10-11.json)."""
+    reference = "Ordonnance n° 2025-44 (loi de finances 2026), art. 13 : CGI art. 322 nouveau, 2°"
+    for code, position in positions.items():
+        motif = next((m for p, m in TVA_EXONEREE_NER_A_TRANCHER.items() if code.startswith(p)), None)
+        exoneree = motif is None and code.startswith(TVA_EXONEREE_NER)
+        if not (motif or exoneree):
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") != "TVA" or d.get("taux") is None:
+                continue
+            if exoneree:
+                d["taux"] = 0.0
+                d["note"] = f"{reference} : « les importations et les ventes des produits énumérés »."
+            else:
+                d["taux"] = None
+                d["note"] = f"{reference} : {motif}."
+                compteurs["taux_indisponibles"] += 1
 
 
 def _prelevements_guinee(positions, compteurs):
@@ -2312,6 +2387,11 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_mali(positions, compteurs)
     if iso == "BFA":
         _prelevements_burkina(positions)
+        _droits_tec_burkina(positions)
+    if iso == "NER":
+        _tva_exoneree_niger(positions, compteurs)
+    if iso in BLOCS_DESTINATION["UEMOA"]:
+        _pcs_uemoa(positions)
     if iso == "GIN":
         _prelevements_guinee(positions, compteurs)
 
