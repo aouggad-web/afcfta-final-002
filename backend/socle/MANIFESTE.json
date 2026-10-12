@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-12T15:50:25.457141+00:00",
+  "construit_le": "2026-10-12T16:00:32.033315+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -595,7 +595,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ETH_tariffs.json",
       "source_sha256": "37659e6d1f3740d9d7e4f6c69406d2a4c544d9d3afe37b03d0beecc9fd886592",
-      "socle_sha256": "399398e3cf6ddcf66dc559651ab0ac712d42342681e573db884f8d2a7f48efc1",
+      "socle_sha256": "dfee9b08a289c5db2836b3431ede09ef459e31b282e479be18425abd3ba22159",
       "collecte": "2026-07-05T11:56:27.716023+00:00",
       "etat": "PARTIEL",
       "familles": [

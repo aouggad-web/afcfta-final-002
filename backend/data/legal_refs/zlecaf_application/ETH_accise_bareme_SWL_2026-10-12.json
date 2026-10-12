@@ -12,7 +12,7 @@
  "regle": {
   "valeur": "Accise par position selon le Premier Schedule : sur le taux ad valorem publié par le portail, composante spécifique et règle de liquidation (« X % or N Birr par litre whichever is higher » : LE_PLUS_ELEVE ; « X % + N Birr par kg/paquet » : cumulatif) ; accise purement spécifique des sacs de caisse (103 Birr/kg). Le barème ne remplace pas un 0 % publié par le portail.",
   "verbatim": "Whereas Article 10 (2) of the Excise Tax Proclamation No. 1186/2020 (as amended) provides that inflation adjustment shall be made at least once a year on the specific rates of excise tax provided under Table 1 attached to the Proclamation [...]. 2203.0000 Beer made from malt 40% or 28 birr per litter whichever is higher ; 2402.2000 Cigarettes containing tobacco 30% + 20 birr per pack (20 sticks) ; 3923.2110/3923.2910 Shopping plastic bags 103 birr per Kg.",
-  "reference": "Proclamation 1287/2023 (Negarit Gazette n° 39 du 15/09/2023, annexe I à partir de la p. 15110) ; Directive 1007/2024 ; Regulation 519/2022 ; Directive 1023/2024",
+  "reference": "Proclamation 1287/2023 (Negarit Gazette n° 39 du 15/09/2023, annexe I à partir de la p. 15110) ; Directive 1007/2024 ; Regulation 519/2022 ; Directive 1023/2024 ; Regulation 133/2007 (surtaxe, Negarit Gazette)",
   "portee": "scripts/build_socle._accise_ethiopie : barème ETH_accise_annexeI_proc1287-2023.csv, borné aux sous-positions nommées par l'annexe ; composantes et règles portées sur les EXC du portail qu'il confirme ; ligne EXC ajoutée aux seuls sacs de caisse 3923.21.10 et 3923.29.10. Taxe sociale : scripts/build_socle._surtaxe_et_swl_ethiopie (fiche ETH_surtaxe_SWL_2026-10-12.json).",
   "texte_archive": "sources/ETH_accise_annexeI_proc1287-2023.csv",
   "sha256": "0eef19dd8e3cb6243c5b43a63e4349e6653723eaec3535ec14889bc80678d0ed"
@@ -44,6 +44,10 @@
   {
    "fichier": "sources/ETH_proc1287_2023.pdf",
    "url": "https://ethiolex.com/wp-content/uploads/2025/06/Proclamation-No.-1287-.pdf"
+  },
+  {
+   "fichier": "sources/ETH_reg_133_2007_negarit.pdf",
+   "url": "https://justice.gov.et/wp-content/uploads/2025/02/ደንብ-ቁጥር-133-1999-1.pdf"
   }
  ],
  "ce_que_cela_ne_tranche_pas": [

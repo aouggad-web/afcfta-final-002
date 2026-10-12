@@ -4,33 +4,41 @@
  "destination_iso3": "ETH",
  "verified_at": "2026-10-12",
  "etabli": true,
- "evidence_level": "primaire pour la taxe sociale (Règlement 519/2022, Negarit Gazette n° 48 du 22/08/2022) et pour la portée de la surtaxe telle que l'administration l'applique (rapport du ministère des Finances sur les dépenses fiscales à l'importation, septembre 2022, établi sur les données de la Commission des douanes) ; secondaire pour le texte du Règlement 133/2007 (reproduction 2merkato)",
+ "evidence_level": "primaire : Import Sur-Tax Council of Ministers Regulations No. 133/2007 (Federal Negarit Gazeta n° 23 du 11/04/2007, scan officiel bilingue de justice.gov.et) ; Social Welfare Levy on Imported Goods Regulation 519/2022 (Negarit Gazette n° 48 du 22/08/2022) ; application par l'administration confirmée par le rapport du ministère des Finances sur les dépenses fiscales à l'importation (septembre 2022, données de la Commission des douanes)",
  "source": {
-  "url": "https://www.mofed.gov.et/media/filer_public/75/62/7562def7-79b2-49ec-a658-6740a3ca561e/tax_expenditure_ethiopia_2021_22.pdf",
-  "institution": "Ministère des Finances d'Éthiopie, Tax Policy Directorate"
+  "url": "https://justice.gov.et/wp-content/uploads/2025/02/ደንብ-ቁጥር-133-1999-1.pdf",
+  "institution": "Ministère de la Justice d'Éthiopie (Federal Negarit Gazeta n° 23, 11/04/2007)"
  },
  "regle": {
   "valeur": "Surtaxe : 10 % de CIF + droit de douane + accise + TVA sur toute position, sauf engrais (31), pétrole et lubrifiants (27.09, 27.10, 34.03), véhicules (87.02 à 87.05), aéronefs et engins spatiaux (88). Taxe sociale : 3 % de la valeur CIF sur ces seules positions exemptées de surtaxe, hors base des autres taxes.",
-  "verbatim": "Regulation 519/2022, art. 6 : The following shall be exempted from the Social Welfare Levy: [...] 2/ goods that are subject to the sur tax levied under Import Sur-Tax Council of Ministers Regulation No. 133/2007 ; ministère des Finances (2022) : Surtax is governed by Council of Ministers Regulation No. 133/2007. The tax is levied on imported goods at a flat rate of 10% (of the sum of the CIF value of imports, duty payable, excise payable and VAT payable). However, certain imports are exempt from surtax payments.",
-  "reference": "Council of Ministers Regulation 133/2007, art. 2, 4 et 5 ; Social Welfare Levy on Imported Goods Regulation 519/2022, art. 2, 4, 5 et 6 ; Directive 1023/2024, art. 3 et 4",
+  "verbatim": "Regulation 133/2007, art. 2 : The Sur-tax levied under these Regulations shall apply to all goods imported into Ethiopia except those exempted under Article 5 of these Regulations ; art. 5(1)(a) : goods listed in the Schedule attached to these Regulations ; Schedule : 1. Fertilizers; 2. Petroleum and lubricants; 3. Motor Vehicles for freight and passengers, and special purpose motor vehicles; 4. Aircraft, spacecraft, and parts thereof; 5. Capital (Investment goods). Regulation 519/2022, art. 6 : The following shall be exempted from the Social Welfare Levy: [...] 2/ goods that are subject to the sur tax levied under Import Sur-Tax Council of Ministers Regulation No. 133/2007",
+  "reference": "Import Sur-Tax Council of Ministers Regulations 133/2007, art. 2 à 5 et annexe ; Social Welfare Levy on Imported Goods Regulation 519/2022, art. 2, 4, 5 et 6 ; Directive 1023/2024, art. 3 et 4",
   "portee": "scripts/build_socle._surtaxe_et_swl_ethiopie (seul socle ETH) : SUR ou SWL sur chaque position, jamais les deux ; surtaxe sans taux, à compléter, sur les positions dont l'exemption n'est pas tranchée (27.11 à 27.13, 87.11, et 12.02, 07.01, 17.01, chapitre 02 exclus par une directive non lue).",
   "texte_archive": "sources/ETH_surtaxe_SWL.extrait.txt",
-  "sha256": "271ab44cb4d3b2a9b50fc67ecaebdc68259804ae9fe7419609ac562a270ea46f"
+  "sha256": "3b74781cb38b6d96b9aa129ecc19342329031b8779ced4642a41dc80f11aba17"
  },
  "decisions": [
-  "La surtaxe frappe toute importation hors exemptions (art. 2) ; le ministère des Finances le confirme en 2022 sur les données douanières (18,4 milliards ETB de surtaxe non perçue en 2020/21). La colonne SR du portail, remplie sur deux positions seulement (4015.90.90 à 10 %, 8524.99 à 5 %), ne mesure donc pas sa portée ; leurs deux taux publiés sont conservés.",
+  "La surtaxe frappe toute importation hors exemptions (Règlement 133/2007, art. 2 et 5) ; le ministère des Finances le confirme en 2022 sur les données douanières (18,4 milliards ETB de surtaxe non perçue en 2020/21). La colonne SR du portail, remplie sur deux positions seulement (4015.90.90 à 10 %, 8524.99 à 5 %), ne mesure donc pas sa portée ; leurs deux taux publiés sont conservés.",
   "Les deux taxes s'excluent : la taxe sociale exempte les marchandises soumises à la surtaxe (Règlement 519/2022, art. 6(2)). La directive 1023/2024 le confirme en creux : elle refuse l'exemption aux automobiles de moins de huit places, que la surtaxe exempte (art. 5).",
-  "Exemptions liées à l'importateur, non servies par position, dites en note : biens d'équipement et d'investissement (0,5 % des importations selon le rapport), taux préférentiels de la seconde annexe (industries locales), privilèges diplomatiques, exonérations de la directive 1023/2024.",
+  "Exemptions liées à l'importateur ou à l'emploi, non servies par position, dites en note : « Capital (Investment goods) » de l'annexe (biens d'équipement des investisseurs, 0,5 % des importations selon le rapport ; aucune liste par code dans le règlement), art. 5(1)(b) (personnes exonérées de droits de douane), taux préférentiels de la seconde annexe (industries locales), exonérations de la directive 1023/2024.",
   "Portée non tranchée par le texte : gaz de pétrole et autres dérivés (27.11 à 27.13), motocycles (87.11) ; exclusions par directive connues seulement par le rapport (arachides 12.02, pommes de terre 07.01, sucre 17.01, viandes 02) ; « certain types of machinery » non identifiées. Sur ces positions, la surtaxe est portée sans taux."
  ],
  "ce_que_cela_ne_tranche_pas": [
-  "Texte du Règlement 133/2007 au Negarit Gazette et directives d'exemption du ministère des Finances (liste des produits de base exclus), non obtenus.",
+  "Directives du ministre prises en vertu de l'art. 5(2) du Règlement 133/2007 (produits de base exclus de la surtaxe : arachides, pommes de terre, sucre, viandes, certaines machines selon le rapport de 2022), non obtenues.",
   "Le portail douanier publie la TVA et le WHR sur chaque position mais la surtaxe sur deux seulement : collecte fraîche ou avis de la Commission des douanes à confronter."
  ],
  "documents_archives": [
   {
    "texte_archive": "sources/ETH_surtaxe_SWL.extrait.txt",
-   "sha256": "271ab44cb4d3b2a9b50fc67ecaebdc68259804ae9fe7419609ac562a270ea46f"
+   "sha256": "3b74781cb38b6d96b9aa129ecc19342329031b8779ced4642a41dc80f11aba17"
+  },
+  {
+   "fichier_archive": "sources/ETH_reg_133_2007_negarit.pdf",
+   "sha256": "1655f91ec9ec2909bc733d6b7c56968d3ac929568a0cc179e39b0e33740b7ad0"
+  },
+  {
+   "fichier_archive": "sources/ETH_reg_519_2022_negarit.pdf",
+   "sha256": "77e24d089bf9d69544f340d255e5a833312275479a19fc5bcc0a8330613f2d87"
   }
  ]
 }

@@ -1390,7 +1390,7 @@ def _couvre_accise_eth(ligne, code):
     return bool(de) and de <= code[: len(de)] and code[: len(a)] <= a
 
 
-#: Surtaxe (Council of Ministers Regulation 133/2007, art. 5) : catégories
+#: Surtaxe (Regulations 133/2007, art. 5(1)(a) et annexe) : catégories
 #: exemptées que le tarif désigne sans ambiguïté — engrais (31), pétrole et
 #: lubrifiants (27.09, 27.10, 34.03), véhicules de transport de marchandises
 #: et de personnes et véhicules à usage spécial (87.02 à 87.05), aéronefs,
@@ -1411,11 +1411,11 @@ SURTAXE_A_TRANCHER_ETH = {
     "02": "viandes, exclues de la surtaxe par une directive du ministère des Finances non lue",
 }
 NOTE_SURTAXE_ETH = (
-    "Surtaxe de 10 % sur toutes les importations hors exemptions de l'art. 5 (Council of Ministers "
-    "Regulation 133/2007, art. 2 et 5 ; rapport du ministère des Finances sur les dépenses fiscales à "
-    "l'importation 2018/19-2020/21). Exemptions liées à l'importateur, non servies par position : biens "
-    "d'équipement et d'investissement, taux préférentiels de la seconde annexe (industries locales), "
-    "privilèges diplomatiques."
+    "Surtaxe de 10 % sur toute importation hors exemptions (Import Sur-Tax Council of Ministers "
+    "Regulations 133/2007, Negarit Gazeta n° 23 du 11/04/2007, art. 2 à 5 et annexe). Exemptions liées "
+    "à l'importateur ou à l'emploi, non servies par position : biens d'équipement (« Capital (Investment "
+    "goods) »), personnes exonérées de droits de douane (art. 5(1)(b)), taux préférentiels de la seconde "
+    "annexe (industries locales)."
 )
 NOTE_SWL_ETH = (
     "Social Welfare Levy on Imported Goods Regulation 519/2022 : 3 % de la valeur CIF (art. 4 et 5), "

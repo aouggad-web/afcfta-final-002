@@ -24,8 +24,31 @@ The Ministry of Finance has also excluded additional basic goods such as groundn
 [p. 5] Of total import tax expenditures in FY 2020/21, [...] surtax expenditures at 15% (ETB 18.4 billion).
 [p. 5] Tax exemptions for capital and investment goods and 'second schedule' preferential customs and surtax rates respectively only account for 2.3% and 1.0% of tax expenditures. [...] only a very small share of imports by value are eligible for them: 0.5% for capital goods exemptions and 1.0% for second schedule rates.
 
-3. Council of Ministers Regulation No. 133/2007 (Import Sur-Tax), reproduit par 2merkato.com (source secondaire ; extrait déjà archivé dans sources/ETH_assiettes_importation.texte-extrait.txt) :
-Scope of Application (Article 2) The Sur-tax levied under these Regulations shall apply to all goods imported into Ethiopia except those exempted under Article 5 of these Regulations: Rate of the Sur-Tax [...] Surtax of 10% shall be levied and collected on goods imported. Basis of Computation (Article 4) [...] 1. Cost, insurance, Freight (CIF) value; 2. Customs duty, value Added Tax and Excise Tax Payable on the good.
+3. Import Sur-Tax Council of Ministers Regulations No. 133/2007, Federal Negarit Gazeta, 13th Year No. 23, Addis Ababa, 11th April 2007, p. 3597-3598 (texte officiel bilingue, colonne anglaise transcrite sur l'image du scan).
+   Copie déposée : sources/ETH_reg_133_2007_negarit.pdf (sha256 1655f91ec9ec2909bc733d6b7c56968d3ac929568a0cc179e39b0e33740b7ad0, justice.gov.et). La reproduction de 2merkato (sources/ETH_assiettes_importation.texte-extrait.txt) concorde sur les art. 2 à 4.
+
+2. Scope of Application
+The Sur-tax levied under these Regulations shall apply to all goods imported into Ethiopia except those exempted under Article 5 of these Regulations.
+3. Rate of the Sur-tax
+Without prejudice to Article 5 of these Regulations Sur-tax of 10% shall be levied and collected on goods imported.
+4. Basis of Computation
+The basis of computation for the sur-tax levied under these Regulations shall be the Aggregate of:
+1. Cost, insurance, Freight (CIF) value;
+2. Customs duty, value Added Tax and Excise Tax Payable on the good.
+5. Exemption from the Sur-Tax
+1. The following shall be exempted from the Sur-tax:
+a) goods listed in the Schedule attached to these Regulations;
+b) goods imported by persons or organizations exempted from customs duty by law, directives or by agreement entered into by the Government.
+2. The Minister of Finance and Economic Development may at his own discretion increase or decrease the items exempted from the Sur-tax under these Regulations and issue directives for the proper implementation of these Regulations.
+6. Effective Date
+These Regulations shall enter into force as of 11 th day of April 2007.
+SCHEDULE
+ITEMS EXEMPTED FROM SUR-TAX
+1. Fertilizers;
+2. Petroleum and lubricants;
+3. Motor Vehicles for freight and passengers, and special purpose motor vehicles;
+4. Aircraft, spacecraft, and parts thereof;
+5. Capital (Investment goods).
 
 4. Directive No. 1023/2024 (Ministry of Finance, 20 September 2024), copie déposée : sources/ETH_directive_1023_2024_exemptions_SWL.pdf (sha256 6d7a4758e056274b592ae97a7d0f58bec59c8435c1a1b23e5adf5372353eece3).
 Art. 3 : exemptés : 1/ goods donated from abroad to [...] education institutions; health institutions; organizations that help children, women, the elderly [...]; b/ goods donated from abroad to organizations who provide emergency aid [...]; 2/ Goods that are exempt from taxes and duties under an international agreement to which Ethiopia is a party [...]; 3/ Only defense and public security equipment [...]; 4/ Coins, bank notes, unwrought silver and gold imported by National Bank of Ethiopia.
