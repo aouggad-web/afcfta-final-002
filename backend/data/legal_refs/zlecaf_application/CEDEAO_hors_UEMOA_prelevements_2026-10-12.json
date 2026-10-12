@@ -1,0 +1,38 @@
+{
+ "schema_version": 1,
+ "objet": "Gambie, Liberia, Sierra Leone : redevance statistique de 1 % et assiette de TVA « CIF+DD+RS+PCS » recopiées du tarif béninois, retirées ; assiette de la TVA/GST selon la loi de chaque pays ; GST libérienne à 12 % ; prélèvements nationaux ajoutés avec leurs réserves",
+ "destination_iso3": "GMB, LBR, SLE",
+ "verified_at": "2026-10-12",
+ "etabli": true,
+ "evidence_level": "primaire pour les taux et assiettes de TVA/GST (IVAT Act 2012 s.142 et 171 ; Revenue Code s.1004(d) et Tax Amendment Act 2024 ; GST Act 2009 s.14 et 26), pour le Customs User Fee libérien (Revenue Code s.1822) et pour le prélèvement UA sierra-léonais (Finance Act 2017 s.38) ; primaire-administratif pour les prélèvements gambiens (FAQ douane de la GRA)",
+ "source": {
+  "url": "https://gra.gm/custom-faqs",
+  "institution": "Lois nationales et administrations fiscales (GRA, LRA, NRA)"
+ },
+ "regle": {
+  "valeur": "TVA/GST sur la valeur en douane augmentée de tous les droits et taxes perçus à l'importation hors TVA (CIF+TOUS_SAUF_TVA) ; pas de redevance statistique ; LBR : GST 12 %, Customs User Fee 1,5 % du CIF ; GMB : processing fee 1,55 % et prélèvement UA 0,2 % du CIF ; SLE : prélèvement UA 0,2 % du CIF, hors origines de l'UA.",
+  "verbatim": "IVAT Act 2012 (Gambie), s.171(1) : the value of a taxable import is the sum of- (a) the value of the goods ascertained for the purposes of customs duty […]; (b) the amount of customs duty, excise duty, and any other fiscal charge (other than VAT) payable on the import",
+  "reference": "IVAT Act 2012 (GMB) s.142(3) et 171(1) ; Revenue Code (LBR) s.1004(d), s.1822(a), Tax Amendment Act 2024 ; GST Act 2009 (SLE) s.14(3) et 26(1), Finance Act 2017 s.38",
+  "portee": "scripts/build_socle._prelevements_cedeao_hors_uemoa (socles GMB, LBR, SLE). Le Cap-Vert, au même défaut, est traité à part sur sa Pauta Aduaneira 2022 (PR #613).",
+  "texte_archive": "sources/CEDEAO_hors_UEMOA_TVA_prelevements.extrait.txt",
+  "sha256": "d5af72f90eaaeed8a5c16f8e856e082829788e36e659337c8d4887f957524a98"
+ },
+ "decisions": [
+  "Les crawls de ces trois pays (et du Cap-Vert, traité à part) recopient le tarif du Bénin (« TEC CEDEAO appliqué par … (réf. État membre BEN) ») : la redevance statistique de 1 % et l'assiette de TVA citant RS et PCS sont béninoises. Aucun texte de ces pays ne les établit ; les lignes RS sont retirées.",
+  "Assiette de la TVA/GST : la loi de chaque pays inclut tous les droits et taxes perçus à l'importation hors TVA. En Sierra Leone, la NRA calcule la GST sur CIF + droit + accise seulement (Tax Guide 2022) : la lettre de la loi (s.26(1)(c)) est retenue, l'écart dit en note.",
+  "Liberia : GST à 12 % (Tax Amendment Act 2024, appliqué depuis le 1er avril 2025) ; le passage à 13 % au 1er mai 2026 n'est confirmé par la LRA que pour les services.",
+  "Prélèvements ajoutés avec leur réserve en note, sur décision du propriétaire du dépôt : Customs User Fee libérien 1,5 % (la pratique décrite par l'OMC diffère) ; prélèvement UA sierra-léonais 0,2 % (perception actuelle non confirmée) ; processing fee gambien 1,55 % et prélèvement UA gambien 0,2 % (FAQ GRA, base légale générale non trouvée).",
+  "Prélèvement communautaire CEDEAO maintenu à 0,5 % (protocole A/P1/7/96, art. 7) ; la FAQ GRA indique 1 % pour la Gambie, sans texte trouvé : écart dit en note."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Droits d'importation, accises et taxes spécifiques par position : non relevés.",
+  "Frais ASYCUDA sierra-léonais, forfait par déclaration : non servis par position.",
+  "Finance Act 2026 de la Sierra Leone et loi libérienne de décembre 2025 : non obtenus."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/CEDEAO_hors_UEMOA_TVA_prelevements.extrait.txt",
+   "sha256": "d5af72f90eaaeed8a5c16f8e856e082829788e36e659337c8d4887f957524a98"
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+Gambie, Liberia, Sierra Leone — TVA/GST à l'importation et prélèvements d'entrée : extraits (relevés le 2026-10-12)
+
+== GAMBIE ==
+Income and Value Added Tax Act 2012 (assembly.gm/documents/158 ; parts 82 et 93, sha256 8b96badd1a97bad24556deb8e160b6494ea5c954aec2881cc027596f25568205 et d50fdc6e90a0f93995df0e7a323af0271fbc669a663052af5ef0ad7dab350243).
+s.142(3) : « The rate of VAT is — (a) in the case of a taxable supply that is zero-rated under Part VI, zero per cent; and (b) in any other case, fifteen per cent. »
+s.171(1) : « the value of a taxable import is the sum of- (a) the value of the goods ascertained for the purposes of customs duty under the customs laws whether or not any duty is payable on the import; (b) the amount of customs duty, excise duty, and any other fiscal charge (other than VAT) payable on the import; and (c) the value of any services referred to in subsection (6) of section 143 not included in the value under paragraph (a). »
+GRA, FAQ douane (https://gra.gm/custom-faqs, sha256 496d576a8e02f23b07d38f329ac63ce608c100a98330cd70d717b9f48ba76acb) : « Other Taxes in The Computation of Duty: Excise Tax (See Table Below); Environment Tax (See Table Below); ECOWAS Levy- 1% of CIF; Processing Fee 1.55% of CIF; AU Levy- 0.20% of CIF; Import VAT 15% of CIF and Duty; and Export VAT 0%. »
+Customs and Excise Regulations 2013, reg. 308 (extrait sha256 1515d484ff737c6c8ab724d6e48847d531c20b1c9d0d2352b4a99e8d18af2d1f) : « Processing fees on a motor vehicle imported free of duty under- paragraphs (c) and (f) of section 190 (2) of the Act 1.55% of CIF value » — seul texte réglementaire trouvé pour le taux de 1,55 %.
+Protocole CEDEAO A/P1/7/96, art. 7 (sha256 68bcb50c3b739d78995ea377a26039f4df9bed2526b217f85465a25c576d80f0) : « The rate of the Community levy shall be fixed at one half percent (0.5%) of the value of imports originating from third countries. »
+
+== LIBERIA ==
+Revenue Code of Liberia, consolidé 2020 (LRA, sha256 b96f4d43bca76d72a9b7d56544049c2fe6d715ca29f15d1dae01a8d170da39bd).
+s.1004(d) : « The taxable amount of a taxable import is the sum of the following amounts— (1) The CIF Liberian Port or Customs entry value, whichever is applicable; (2) If not included in the CIF Liberian Port or Customs entry value, the value of incidental services as defined in Section 1002(c)(2); and (3) The customs duty, customs service fee, ECOWAS Trade Levy, and excise tax (if any) on import. »
+s.1822(a) : « the following services at customs ports and airports shall be 1.5% of the CIF for all imports whether duty paid or not. »
+Tax Amendment Act of 2024, Part 2, s.1(2), modifiant s.1000(b)(3) (handbill, sha256 de9a828f7ba9a3518e8e53b4dfe55b63c17438ef1c7cde9154303087c2c96302) : « (3) The rate of goods tax is 12 percent of the Section 1004 taxable amount, except that if the supply is an export of goods, the rate of tax is zero (0) percent. »
+LRA, communiqué du 7 avril 2026 (sha256 5df0d618b7d8de680604c97327d0dfdd7e8503a3cb4e9ef48acd56715adb9e7c) : « The updated framework introduces a 13 percent GST on services […] The implementation of the Act by the Liberia Revenue Authority begins on May 1 this year » — services seulement ; texte de la loi de décembre 2025 non obtenu.
+LRA Practice Note 1-2016 (sha256 710287e49f100a1203ce20871dee20fc6c954f361d61d4c01a5ce13aeae7b68a) : « Community Levy (ETL) — CIF multiplied by ETL rate (0,5%) » ; « GST — CIF plus Import Duty plus ETL plus Excise Tax plus CUF multiplied by GST rate. »
+OMC, WT/TPR/S/441 (2023), §3.32 (secondaire) : frais forfaitaires au Freeport de Monrovia, 1,2 % du CIF aux autres points d'entrée.
+
+== SIERRA LEONE ==
+Goods and Services Tax Act 2009 (Act No. 6), sha256 92ae099655fdf7ab7d96f88883f8f272ea08ff966690e5da094f196328c4bc27.
+s.14(3) : « The rate of GST applicable to a taxable supply or import is– (a) if the supply or import is zero-rated under the First Schedule, zero per cent; (b) in any other case, 15 per cent. »
+s.26(1) : « The value of an import of goods is the sum of– (a) the value of the goods for the purposes of customs duty under the Customs Act, whether or not duty is payable on the import; (b) to the extent not included under paragraph (a)– (i) the value of insurance and freight incurred in bringing the goods to Sierra Leone; and (ii) the cost of services […]; and (c) the amounts, if any, of customs duty, customs service charge or other tax or fiscal charge (other than GST) payable on the importation of the goods. »
+Finance Act 2017 (Act No. 1), s.38(1) (sha256 5882e36402511a04eeff8a2b203ac844a8a3a2c8dd4bbacf0ccf62dc4fd61885) : « There is hereby imposed on all imports into Sierra Leone, a levy at the rate of 0.2% of their value determined as follows– (a) the C.I.F value at the port of disembarkation or discharge for imports arriving by sea; […] Provided that this levy shall not apply to imports from African Union countries. »
+NRA Tax Guide 2022, §3.3 et §3.4 (sha256 1104b1be1f756d6ae93e212d1f9fa90645afdcb5d4079293c3a12fbc024000ed) : « GST (Goods not excisable) = (CIF + Import duty) x 15% » ; « ECOWAS Levy | 0.5% of CIF » ; le prélèvement UA n'y figure pas.
+
+== LES TROIS PAYS ==
+Aucune redevance statistique ad valorem : absente des lois citées, des listes officielles de la GRA (Gambie), de la NRA (Sierra Leone), de la LRA (Liberia) et des examens OMC (Liberia 2023, Sierra Leone 2025). Le taux de 1 % et l'assiette « CIF+DD+RS+PCS » du crawl viennent de la recopie du tarif béninois (« réf. État membre BEN »).

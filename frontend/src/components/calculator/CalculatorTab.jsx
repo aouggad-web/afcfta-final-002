@@ -544,15 +544,20 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // PCC et le PUA quelle que soit l'origine. Là où le taux d'une accise
       // dépend du produit (sucre, degré d'alcool, matières grasses) ou d'un prix
       // de déclenchement, le socle déclare le total incomplet au lieu de
-      // l'omettre (TGO 85 positions, SEN 173). Le Cap-Vert, sur sa Pauta
-      // (6 579 positions, CIF 10 000, origines CHN et SEN) : l'autre porte sort
-      // la taxa comunitária et l'ICE de l'assiette de l'IVA (Regulamento do
-      // IVA, art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
+      // l'omettre (TGO 85 positions, SEN 173). La Gambie, le Liberia et la
+      // Sierra Leone aussi : leurs fichiers recopiaient le tarif du Bénin, dont
+      // l'autre porte sert encore la redevance statistique de 1 %, qu'aucun
+      // texte de ces pays n'institue ; le socle suit leur loi de TVA/GST
+      // (assiette sur tous les droits, GST libérienne à 12 %) et leurs
+      // prélèvements nationaux. Le Cap-Vert, sur sa Pauta (6 579 positions,
+      // CIF 10 000, origines CHN et SEN) : l'autre porte sort la taxa
+      // comunitária et l'ICE de l'assiette de l'IVA (Regulamento do IVA,
+      // art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
       // origine CEDEAO et refuse les 69 positions à taxe spécifique, où le
       // socle réclame la quantité. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, GMB, SLE, LBR, GAB ; RWA, TZA, UGA pour
-      //   le tabac ; MAR, dont 528 positions ne publient pas de TVA) ;
+      //   trancher sur texte (CIV, GAB ; RWA, TZA, UGA pour le tabac ; MAR,
+      //   dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
       //   (EGY, SOM) ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
@@ -562,10 +567,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
+        'GMB', 'LBR', 'SLE',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);
+      // Pays que le socle sert sans jamais se replier sur l'autre porte.
+      const SANS_REPLI = new Set(['DZA', 'GMB', 'LBR', 'SLE']);
 
       let calculSocle = null;
       let erreurSocle = null;
@@ -581,9 +589,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           //
           // L'Algérie, elle, ne se replie jamais : l'autre porte n'a rien à
           // lui servir. Une position absente de son socle est une erreur
-          // affichée, avec le message du socle.
+          // affichée, avec le message du socle. Gambie, Liberia et Sierra
+          // Leone non plus : l'autre porte leur sert la redevance statistique
+          // et l'assiette de TVA du tarif béninois, qu'aucun de leurs textes
+          // n'établit.
           const statut = socleError.response?.status;
-          if (destISO3 === 'DZA' || (statut !== 404 && statut !== 503)) {
+          if (SANS_REPLI.has(destISO3) || (statut !== 404 && statut !== 503)) {
             throw socleError;
           }
           erreurSocle = socleError;
