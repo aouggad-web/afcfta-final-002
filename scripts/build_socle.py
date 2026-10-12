@@ -117,6 +117,10 @@ FAMILLES = {
     "SPEC": "accise",
     "SUR": "accise",
     "SWL": "accise",
+    "ICE": "accise",  # imposto sobre consumos especiais (CV, MZ)
+    "ICES": "accise",  # ICE spécifique par véhicule (CV)
+    "TET": "accise",  # taxe spécifique sur le tabac (CV)
+    "TEA": "accise",  # taxe spécifique sur l'alcool (CV)
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)

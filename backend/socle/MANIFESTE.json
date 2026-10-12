@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-12T20:40:49.254810+00:00",
+  "construit_le": "2026-10-12T21:25:14.479699+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -415,12 +415,12 @@
       "fichier": "CPV.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CPV_tariffs.json",
-      "source_sha256": "0932a2c0f400e898ab3a11c43755a3b643afab99f58b9bedbe132a4263308881",
-      "socle_sha256": "7a7805cd7deb0fdd7a914d651a5f0ece4a469c9f48387b03793711e9b73c1e14",
-      "collecte": "2026-10-12T20:40:47.702058+00:00",
+      "source_sha256": "1969b9c8c4214dd2b547b8000a7a957bd898d347ea1ce91b6f0cd456fb20a5fe",
+      "socle_sha256": "4982de7f40832cb209a687dbf4af0ca9dece1a7b641606a90d4c11090cb0d6a8",
+      "collecte": "2026-10-12T21:25:12.776398+00:00",
       "etat": "PARTIEL",
       "familles": [
-        "autre",
+        "accise",
         "communautaire",
         "droit",
         "tva"
@@ -439,7 +439,7 @@
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 69,
-        "sans_designation": 8,
+        "sans_designation": 0,
         "droits_specifiques": 45,
         "droits_composes": 0,
         "restrictions": 0,
@@ -1121,10 +1121,11 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MOZ_tariffs.json",
       "source_sha256": "12d0e01602ad8bdd22a0cdde5b1b4d71194fe33b4095ebee531f9e7303d35a2f",
-      "socle_sha256": "bb868f83c2ebb292b81d8de966c0086abd11258223498da9168e7c5a29a80e3e",
+      "socle_sha256": "f95711c77ff64a14716ad8373a6066e54463a1052f3d500382e04fd489287799",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
+        "accise",
         "autre",
         "droit",
         "tva"

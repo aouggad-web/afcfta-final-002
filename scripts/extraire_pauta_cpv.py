@@ -58,12 +58,16 @@ def pauta_2022(chemin):
     return sortie
 
 
+INTERTITRES = {"Subposição", "Subposições", "Posição", "Nova", "Inserir", "Subdividir", "CAPITULO", "CAPÍTULO", "Nota"}
+
+
 def lei_51(chemin):
     lignes = []
     for page in pymupdf.open(chemin):
         mots = page.get_text("words")
         codes = [m for m in mots if re.fullmatch(r"\d{4}\.\d{2}\.\d{2}", m[4]) and m[0] < 60]
-        for z in (m for m in mots if re.fullmatch(r"\d{2}", m[4]) and 100 < m[0] < 120):
+        rangs = sorted((m for m in mots if re.fullmatch(r"\d{2}", m[4]) and 100 < m[0] < 120), key=lambda m: m[1])
+        for k, z in enumerate(rangs):
             c = min(codes, key=lambda c: abs(c[1] - z[1]), default=None)
             if c is None or abs(c[1] - z[1]) > 10:
                 continue
@@ -71,6 +75,19 @@ def lei_51(chemin):
             col = {k: " ".join(m[4] for m in ligne if lo <= m[0] < hi) for k, (lo, hi) in {
                 "DI": (447, 475), "ICE": (475, 505), "IVA": (505, 535)}.items()}
             libelle = " ".join(m[4] for m in ligne if 130 < m[0] < 380)
+            if not libelle:
+                # Libellé imprimé sous la ligne des taux (1901.90.10 à .99,
+                # 2008.93, 9705.29) : lu jusqu'à la ligne suivante ou au
+                # prochain intertitre de l'annexe.
+                fin = rangs[k + 1][1] - 3 if k + 1 < len(rangs) else z[1] + 120
+                suite = []
+                for y in sorted({round(m[1]) for m in mots if z[1] + 3 < m[1] < fin and 130 < m[0] < 380}):
+                    mots_ligne = sorted((m for m in mots if abs(m[1] - y) < 2 and 130 < m[0] < 380), key=lambda m: m[0])
+                    # Un tiret ouvre l'intertitre du groupe suivant (« -- Outros »).
+                    if mots_ligne[0][4] in INTERTITRES or (suite and mots_ligne[0][4].startswith("-")):
+                        break
+                    suite += [m[4] for m in mots_ligne]
+                libelle = " ".join(suite)
             lignes.append({
                 "code": c[4].replace(".", "") + z[4], "supprimee": "suprimid" in libelle.lower(),
                 "_libelle": libelle.lstrip("- "), "DI": taux(col["DI"]), "ICE": taux(col["ICE"]),
@@ -130,6 +147,8 @@ for code, montant in ice_vehicules.items():
         pauta[code]["ICE_CVE_U"] = montant
         pauta[code]["_origine"].append("OE 2026, anexo II")
 
+sans_libelle = [code for code, v in pauta.items() if not v["_libelle"].strip()]
+assert not sans_libelle, f"positions sans libellé : {sans_libelle}"
 json.dump(pauta, open(sys.argv[4], "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(len(pauta), "positions ;", suppressions, "supprimées et", creations, "créées par la Lei 51 ;",
       len(di_oe), "DI de l'annexe III ;", sum(1 for v in ice_vehicules.values() if v), "ICE spécifiques ;",

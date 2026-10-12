@@ -827,7 +827,7 @@
       "version": null,
       "artifact_path": "backend/data/crawled/CPV_tariffs.json",
       "artifact_url": null,
-      "sha256": "0932a2c0f400e898ab3a11c43755a3b643afab99f58b9bedbe132a4263308881",
+      "sha256": "1969b9c8c4214dd2b547b8000a7a957bd898d347ea1ce91b6f0cd456fb20a5fe",
       "taxes": [
         "DD",
         "PCC",

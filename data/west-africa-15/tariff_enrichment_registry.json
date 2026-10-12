@@ -180,8 +180,8 @@
       "region": "CPV_NATIONAL",
       "national_extension_status": "DOCUMENTED",
       "vat_status": "DOCUMENTED",
-      "other_taxes_status": "NOT_AVAILABLE",
-      "calculation_order_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "NOT_AVAILABLE",
       "required_documents_status": "NOT_AVAILABLE",
@@ -192,7 +192,8 @@
       "vat_measure_path": "data/cape-verde/vat_measures.json",
       "required_document_records": [],
       "anomalies": [
-        "Le TEC est référencé depuis un autre État membre; aucune extension nationale n'est prouvée."
+        "Taxe spécifique sur l'alcool par litre (Lei 69/X/2025, art. 91) : barème absent des textes déposés, total incomplet sur les positions 2203 à 2206 et 2208.",
+        "Taxe sur les produits doces (art. 92) et taxe carbone (art. 95) : barème et champ non déposés, non servis."
       ]
     },
     "GHA": {

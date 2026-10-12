@@ -57,14 +57,13 @@ def test_cpv_archived_iva_law_hash_matches_inventory():
     assert actual_hash == primary["sha256"]
 
 
-def test_cpv_ice_source_documented_as_blocked():
-    """La loi ICE (accises) est déclarée bloquée, pas silencieusement omise."""
+def test_cpv_archived_ice_law_hash_matches_inventory():
+    """La loi ICE (accises), versée au dépôt, correspond au SHA-256 déclaré."""
     sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     ice = next(s for s in sources if s["source_id"] == "CPV-IGAE-ICE-LEI-22-VI-2003")
-    assert ice["status"] == "source_blocked"
-    assert ice["verification_status"] == "PENDING_COLLECTION"
-    assert ice["sha256"] is None
-    assert ice["local_file"] is None
+    assert ice["verification_status"] == "VERIFIED_PRIMARY_TEXT"
+    archive_path = _SOURCES_DIR / ice["local_file"]
+    assert hashlib.sha256(archive_path.read_bytes()).hexdigest() == ice["sha256"]
 
 
 def test_cpv_legal_sources_structure():

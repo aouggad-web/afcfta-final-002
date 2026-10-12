@@ -24,12 +24,12 @@
       "legal_date": "2003-07-14",
       "accessed_at": "2026-07-25",
       "url": "http://igae.cv/igae/wp-content/uploads/2019/04/Lei-22-VI-2003-de-14-de-Jul.-Regulamento-do-Imposto-sobre-Consumos-Especiais-2-Versões-Consolidadas.pdf",
-      "local_file": null,
-      "sha256": null,
-      "coverage": "Unknown — download blocked",
-      "status": "source_blocked",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Cape Verde's excise-equivalent instrument (ICE), enacted the same day as the IVA law (Lei 21/VI/2003). The host igae.cv is not in this collection environment's network allowlist ('Host not in allowlist: igae.cv'), and mf.gov.cv does not appear to mirror this specific document. Deferred to a future collection cycle with a different network configuration."
+      "local_file": "official/cpv-ice-law-2003.pdf",
+      "sha256": "cc97e8a8c780685819307843751418d1f40266a0d116fddc10a84b79bc89245f",
+      "coverage": "ICE import tax base (Art. 13: IVA import value plus all duties and taxes except ICE itself)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Cape Verde's excise-equivalent instrument (ICE), enacted the same day as the IVA law (Lei 21/VI/2003). Text versed to the repository as data/cpv/reference/CPV_ICE.pdf (same SHA-256); ICE rates per position come from the Pauta Aduaneira (fiche CPV_pauta_IVA_ICE_2026-10-12.json)."
     }
   ]
 }
