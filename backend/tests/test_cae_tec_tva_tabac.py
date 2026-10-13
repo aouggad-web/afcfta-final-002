@@ -35,22 +35,23 @@ def test_quatre_positions_du_tec(iso):
 
 
 def test_tva_tanzanienne_sur_l_accise():
-    """2402.90 : DD 35 %, accise 30 % sur valeur + DD, TVA sur la somme."""
-    etat, lignes = _calcul("TZA", "24029000")
+    """Cigarettes, 10 milliers : la TVA porte sur la valeur, le droit et l'accise."""
+    etat, lignes = _calcul("TZA", "24022010", quantite=10)
     assert etat == "COMPLET"
-    assert lignes["EXC"]["base"] == 1_350_000.0 and lignes["EXC"]["montant"] == 405_000.0
-    assert lignes["TVA"]["base"] == 1_755_000.0
+    assert lignes["TVA"]["base"] == pytest.approx(1_000_000 + lignes["DD"]["montant"] + lignes["EXC"]["montant"])
 
 
 def test_cigarettes_tanzanie_au_millier():
+    """Finance Act 2026 : 72 462,19 TZS par millier."""
     etat, _ = _calcul("TZA", "24022010")
     assert etat != "COMPLET"
     etat, lignes = _calcul("TZA", "24022010", quantite=10)
-    assert etat == "COMPLET" and lignes["EXC"]["montant"] == pytest.approx(670_761.0)
+    assert etat == "COMPLET" and lignes["EXC"]["montant"] == pytest.approx(724_621.9)
 
 
-def test_cigares_tanzanie_sans_accise():
-    assert not any(d["code"] == "EXC" for d in _positions("TZA")["24021000"]["droits"])
+@pytest.mark.parametrize("code", ["24021000", "24029000", "24031100"])
+def test_tanzanie_positions_hors_du_fourth_schedule(code):
+    assert not any(d["code"] == "EXC" for d in _positions("TZA")[code]["droits"])
 
 
 def test_tabac_ouganda_200_pour_cent():

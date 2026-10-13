@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-13T23:10:32.746033+00:00",
+  "construit_le": "2026-10-13T23:17:59.223367+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1825,7 +1825,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TZA_tariffs.json",
       "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
-      "socle_sha256": "02e1fb2abd76e8ed60ab7a185a14ab0fd5d9dcfb9ccb392a0ddc112cd2c8e793",
+      "socle_sha256": "4d5595ef080d682118990eb9553e68ef14b6216087c347f0db230365836fc90d",
       "collecte": "2026-02-18T10:54:34.697265",
       "etat": "COMPLET",
       "familles": [
@@ -1835,8 +1835,8 @@
       ],
       "compteurs": {
         "positions": 5935,
-        "droits": 11892,
-        "droits_liquidables": 11892,
+        "droits": 11890,
+        "droits_liquidables": 11890,
         "positions_liquidables": 5935,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
@@ -1845,7 +1845,7 @@
         "taux_indisponibles": 48,
         "assiettes_source": 6005,
         "assiettes_fichier": 0,
-        "assiettes_table": 5942,
+        "assiettes_table": 5940,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -2053,7 +2053,7 @@
       "ZWE"
     ],
     "positions": 370086,
-    "droits": 1241839,
-    "droits_liquidables": 1208469
+    "droits": 1241837,
+    "droits_liquidables": 1208467
   }
 }

@@ -1714,16 +1714,16 @@ TVA_CAE = {
 #: porte pas. Une position absente du barème perd son accise (« retirer »).
 TABAC_CAE = {
     "TZA": [
-        (("24022010", "24022090"), None, ("67076.10", "mil"),
-         "Excise (Management and Tariff) Act Cap. 147, Fourth Schedule (consolidation 2025), 2402.20.10 et "
-         ".90, « Other » : 67 076,10 TZS par millier de cigarettes ; les taux de 14 936,40 et 35 310,00 TZS "
-         "visent les cigarettes contenant plus de 75 % de tabac tanzanien. Quantité en milliers."),
-        (("24031900", "24039100", "24039900"), None, ("33878.88", "kg"),
-         "Cap. 147, Fourth Schedule (consolidation 2025) : « Other/Imported » 33 878,88 TZS par kg."),
-        (("24029000", "24031100"), 30.0, None,
-         "Cap. 147, Fourth Schedule (consolidation 2025) : « Imported » 30 % ; assiette art. 144 (1) (a) : "
-         "valeur en douane « taking into account the import duty payable »."),
-        (("24021000",), "retirer", None, "Cap. 147, Fourth Schedule : 2402.10 (cigares) n'y figure pas."),
+        (("24022010", "24022090"), None, ("72462.19", "mil"),
+         "Finance Act 2026 (Tanzanie, Act No. 2/2026), art. 10 (a), Fourth Schedule du Cap. 147, en vigueur au "
+         "1er juillet 2026 : cigarettes « Other » 72 462,19 TZS par millier ; les taux de 16 151,31 et "
+         "38 154,80 TZS visent les cigarettes produites localement à plus de 75 % de tabac tanzanien. "
+         "Quantité en milliers."),
+        (("24031900", "24039100", "24039900"), None, ("36609.19", "kg"),
+         "Finance Act 2026 (Tanzanie), art. 10 (a), Fourth Schedule : « Other/Imported » 36 609,19 TZS par kg."),
+        (("24021000", "24029000", "24031100"), "retirer", None,
+         "Finance Act 2026 (Tanzanie), art. 10 (a) : les positions 24.02 et 24.03 substituées au Fourth "
+         "Schedule ne comprennent pas 2402.10, 2402.90 ni 2403.11."),
     ],
     "UGA": [
         (("24022010", "24022090"), None, None,
