@@ -141,3 +141,10 @@ Taux spécifiques en vigueur au 01/07/2026 = ceux de la **FA 2026** ci-dessus ; 
 **Réponse à la question du tarif (étayée par un texte officiel)** : l'exposé des motifs de la LF 2026 fonde les « droits de douane et autres droits à l'importation » sur l'**ordonnance-loi n° 011/2012 du 21/09/2012 (tarif des droits et taxes à l'importation), telle que modifiée et complétée à ce jour** (et l'OL 012/2012 à l'export). **La RDC applique donc son tarif national, pas le TEC CAE** — aucune mesure d'application du TEC n'est citée. Le tarif national applicable = OL 011-2012 + ses modifications (déposée ; hébergement privé à remplacer par une copie DGDDI).
 
 Reste RDC : annexe/amendements de l'OL 011-2012 (révisions 2023-2025), barème d'accises détaillé du Code (loi 18-002), acte DGDDI explicite éventuel.
+
+### RDC — compléments DGDA (session 6)
+| Document | Statut | URL | SHA-256 |
+|---|---|---|---|
+| **RDC — Code des accises (loi n° 18-002 du 13/03/2018), copie DGDA** (22 p.) | **OBTENU** (douane.gouv.cd, DGDA officielle) | https://douane.gouv.cd/wp-content/uploads/2022/04/Code-des-accises.pdf | `380bc2889adeedb5fb643a6c1adc495ce57e678790da8b38904f71a0383f278c` |
+
+**Tarif SH 2022 de la DGDA** : le communiqué officiel du 30/12/2021 (« Tarif des droits et taxes à l'importation et à l'exportation aligné sur la version SH 2022 », https://douane.gouv.cd/dgda/tarif-des-droits-et-taxes-a-limportation-et-a-lexportation-aligne-sur-la-version-sh-2022/) confirme que la DGDA applique depuis le 01/01/2022 un **tarif national aligné sur le SH 2022** (déployé dans SYDONIA) — aucun fichier tarifaire public au téléchargement ; l'OL 011-2012 déposée reste le fondement légal. Liste des exonérations DGDA : https://douane.gouv.cd/wp-content/uploads/2022/03/LISTE-DES-EXONERATIONS-22-03.pdf
