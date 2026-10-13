@@ -131,3 +131,13 @@ L'ordonnance-loi n° 011-2012 (en vigueur, modifiée et complétée à ce jour �
 
 ### Statut tabac Tanzanie (pour la PR socle)
 Taux spécifiques en vigueur au 01/07/2026 = ceux de la **FA 2026** ci-dessus ; le socle doit demander l'unité (millier de bâtonnets / kg) et appliquer la base CIF + DD (art. 144(1)(a) Cap. 147).
+
+## Session 6 — RDC (priorité)
+
+| Document | Statut | URL | SHA-256 |
+|---|---|---|---|
+| **RDC — Loi n° 25/060 du 29/12/2025 portant loi de finances pour l'exercice 2026** (volet recettes, 250 p.) | **OBTENU** (budget.gouv.cd, Ministère du Budget) | https://budget.gouv.cd/wp-content/uploads/budget2026/lf_2026_recettes.pdf | `6b1f0c92f07d6fda86a1e5178da3b3924e5a838e4b56e0dec1e3f953de63bd24` |
+
+**Réponse à la question du tarif (étayée par un texte officiel)** : l'exposé des motifs de la LF 2026 fonde les « droits de douane et autres droits à l'importation » sur l'**ordonnance-loi n° 011/2012 du 21/09/2012 (tarif des droits et taxes à l'importation), telle que modifiée et complétée à ce jour** (et l'OL 012/2012 à l'export). **La RDC applique donc son tarif national, pas le TEC CAE** — aucune mesure d'application du TEC n'est citée. Le tarif national applicable = OL 011-2012 + ses modifications (déposée ; hébergement privé à remplacer par une copie DGDDI).
+
+Reste RDC : annexe/amendements de l'OL 011-2012 (révisions 2023-2025), barème d'accises détaillé du Code (loi 18-002), acte DGDDI explicite éventuel.
