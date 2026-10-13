@@ -98,3 +98,20 @@ Remarque : la consolidation est au 31/12/2023 — les modifications 2024-2026 po
 - **Burundi** : LF 2025/26 ou 2026/27, loi d'accise et barème, redevances — non obtenus (sites officiels non consultables).
 - **Soudan du Sud** : idem.
 - **RDC** : acte DGDDI sur le tarif appliqué (TEC CAE vs tarif national), tarif national, LF et barème accises — non obtenus.
+
+## Session 4 — 13/10/2026 (Burundi, Soudan du Sud, RDC)
+
+| Document | Statut | URL | SHA-256 |
+|---|---|---|---|
+| **Burundi — Loi n° 1/12 du 24/06/2025 portant Budget Général 2025/2026** (21 p.) | **OBTENU** (site officiel Ministère des Finances) | https://finances.gov.bi/wp-content/uploads/2025/06/LOI-DE-FINANCES-2025-2026.pdf | `a3b9ab303a34950f90a0d82411bd36af62202df8d09e6de932ab3414ed25a12f` |
+| **Soudan du Sud — Taxation Act 2009, Revised Edition 2021** (consolidation NRA, 112 p.) | **OBTENU** (National Revenue Authority, cms.nra.gov.ss) | https://cms.nra.gov.ss/uploads/TAXATION_ACT_2021_R_E_CONSOLIDATED_f4f9ed8876.pdf | `b245e3af4ae3c2479a7cc1931296f76f04ddde2d570b1557d601e02725a89705` |
+| **RDC — Ordonnance-loi n° 011-2012 du 21/09/2012 instituant le tarif des droits et taxes à l'importation** (10 p.) | **OBTENU** mais hébergement privé (droitcongolais.info) — le texte légal est celui-ci ; J.O. RDC 18/10/2012 n° spécial p. 59. À remplacer par une copie DGDDI/leganet.cd si disponible | https://www.droitcongolais.info/files/651.09.12-Ordonannce-loi-du-21-septembre-2012_Tarif_taxes-a-l-importation.pdf | `332b2a03e188886de555e519562a1e7f9012d2e6c59b4cbb8ebee497f9d5cc55` |
+| **RDC — Projet de loi de finances 2026** (20 p.) | **OBTENU** (budget.gouv.cd, Ministère du Budget) — PROJET, pas la loi promulguée | https://www.budget.gouv.cd/wp-content/uploads/budget2026/plf2026/document_num_1_projet_de_loi_de_finances_2026.pdf | `02250658e4dd1d5fb2b4c60a385252c3b25e6fb0df9fc162829ece4da4df50b5` |
+
+### RDC — réponse sur le tarif appliqué
+L'ordonnance-loi n° 011-2012 (en vigueur, modifiée et complétée à ce jour — elle est toujours citée comme texte de base par la loi n° 18-002 du 13/03/2018 portant Code des accises) institue le **tarif national des droits et taxes à l'importation** de la RDC. La RDC, membre CAE depuis 2022, **continue donc d'appliquer son tarif national** — aucun acte DGDDI trouvé annonçant l'application du TEC CAE. Codes des accises : loi n° 18-002 du 13/03/2018 (texte sur leganet.cd, hébergement à confirmer officiel).
+
+### Reste non obtenu
+- Burundi : loi d'accise et barème consolidés (OBR, obr.bi — à extraire de la rubrique Lois et règlements), redevances douanières.
+- Soudan du Sud : Financial Act 2025/26 (pas de PDF officiel trouvé), barème d'accise séparé (intégré au Taxation Act).
+- RDC : loi de finances 2026 promulguée (seul le PLF 2026 déposé), barème d'accises détaillé du Code 18-002 (annexe produits/taux à extraire), copie officielle DGDDI de l'OL 011-2012.
