@@ -70,3 +70,31 @@ Source : Kenya Law, page « EAC Legal Notices 2013 » (https://kenyalaw.org/kl/i
 
 ### Reste non obtenu
 Burundi, Soudan du Sud, RDC (lois de finances, accises, redevances ; question TEC vs tarif national RDC) : non traités à ce stade.
+
+## Session 3 — 13/10/2026 (suite)
+
+### 1. Tanzanie — valeur imposable de l'accise à l'importation : **RÉSOLU**
+Cap. 147, **art. 144(1)(a)** (consolidation 2025 ; art. 141 en R.E. 2019) : « the excisable value of a scheduled article shall — (a) in respect of a scheduled article imported, be the value declared and determined in accordance with the provisions of the Customs (Management and Tariff) Act **taking into account the import duty payable** ».
+**Assiette = valeur en douane (EACCMA art. 122 / Fourth Schedule OMC, soit la valeur transactionnelle CIF) + droit de douane.** Ni CIF seule, ni TVA/accise dans la base. Source : `TZ_excise_cap147_consolidated_2025_oag.pdf` (déjà déposé) et `TZ_excise_cap147_RE2019_mof.pdf`.
+
+### 2. Ouganda — taux de TVA 18 % : **NON FONDÉ SUR UN TEXTE LU**
+VAT Act Cap. 349 consolidé (déposé) : l'art. 4 « Charge of tax » ne porte pas de taux ; l'art. 78 est « Regulations and amendment of Schedules » ; le Premier Schedule liste des organisations internationales — **aucune des consolidations lues n'énonce le 18 %**. URA (document officiel « Value Added Tax 2023-24 ») applique 18 %. Reste à trouver : l'acte (loi de finances ou instrument statutaire) qui a fixé 18 % — non obtenu à cette session.
+
+### 3. Ouganda — Schedule 2 complet : **OBTENU**
+`UGA_excise_cap340_consolidated_2025-07.pdf` — Excise Duty Act (Chapter 336), legislation as at 31/12/2023 (ULII/Laws.Africa, PDF créé 17/03/2026) — SHA `986154f132dd1b7c68afc0e50e451b0caa8ce74089fcc9050b204022f80a07bd` — https://ulii.org/akn/ug/act/2014/11/eng@2023-12-31/source
+Schedule 2 intégral, dont tabac : cigarettes imported **soft cap 75 000 Ushs/1 000 bâtonnets**, **hinge lid 100 000 Ushs/1 000 bâtonnets** ; cigares/cigarillos 200 % ; + les amendements 2025 (Act 14) et 2026 (Act 22) déjà déposés modifient ce Schedule.
+Remarque : la consolidation est au 31/12/2023 — les modifications 2024-2026 portées par les deux Acts déposés doivent être lues par-dessus.
+
+### 4. Tanzanie — Finance Act 2025 : **OBTENU**
+`TZ_finance_act_2025_mof.pdf` (107 p.) — SHA `394e1f80909f5cf4546b48faa498e7413589ba0368c4b28636ddd3182c181695` — https://www.mof.go.tz/uploads/text-editor/files/FINANCE%20ACT%202025_1750842655.pdf
+
+### 5. Rwanda — loi de finances 2025/2026 : **OBTENU**
+`RWA_finance_law_2025-2026_official_gazette.pdf` (551 p., Official Gazette n° Special du 01/07/2025, loi n° 018/2025) — SHA `dbda79b22cef7731355ffa866249d4920d113ad01714b83822a31f29aadea777` — https://www.minecofin.gov.rw/fileadmin/user_upload/Minecofin/Publications/REPORTS/National_Budget/Annual_State_Finance_Laws/2025_to_2026_Original_Finance_Law/2025_-_2026_Original_Finance_Law_.pdf
+
+### 6. Reste non obtenu (raison)
+- **Tanzanie** : Finance Act 2026 (promulgué ? pas de PDF officiel trouvé) ; TRA Customs Tariff Guide 2026 (tra.go.tz non consultable pendant la session) ; RDL et CPF (textes : RDL sous Finance Act/Railways Act, CPF 10 % FOB plafonné — à confirmer sur les textes, sites TRA/MoF non répondus).
+- **Ouganda** : ordonnance/instrument fixant le 18 % (voir 2) ; prélèvements à l'importation un par un (infrastructure levy, retenue à la source 6 % Income Tax Act, prélèvement environnemental — Schedule 2) : à documenter depuis les Acts déposés.
+- **Rwanda** : guide tarifaire RRA (non trouvé) ; prélèvements à l'importation (IDL, UA 0,2 %, inspection qualité, WHT) : textes à identifier par numéro dans la LF 2025/2026 déposée ci-dessus.
+- **Burundi** : LF 2025/26 ou 2026/27, loi d'accise et barème, redevances — non obtenus (sites officiels non consultables).
+- **Soudan du Sud** : idem.
+- **RDC** : acte DGDDI sur le tarif appliqué (TEC CAE vs tarif national), tarif national, LF et barème accises — non obtenus.
