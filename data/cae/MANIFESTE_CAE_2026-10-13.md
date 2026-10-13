@@ -148,3 +148,15 @@ Reste RDC : annexe/amendements de l'OL 011-2012 (révisions 2023-2025), barème 
 | **RDC — Code des accises (loi n° 18-002 du 13/03/2018), copie DGDA** (22 p.) | **OBTENU** (douane.gouv.cd, DGDA officielle) | https://douane.gouv.cd/wp-content/uploads/2022/04/Code-des-accises.pdf | `380bc2889adeedb5fb643a6c1adc495ce57e678790da8b38904f71a0383f278c` |
 
 **Tarif SH 2022 de la DGDA** : le communiqué officiel du 30/12/2021 (« Tarif des droits et taxes à l'importation et à l'exportation aligné sur la version SH 2022 », https://douane.gouv.cd/dgda/tarif-des-droits-et-taxes-a-limportation-et-a-lexportation-aligne-sur-la-version-sh-2022/) confirme que la DGDA applique depuis le 01/01/2022 un **tarif national aligné sur le SH 2022** (déployé dans SYDONIA) — aucun fichier tarifaire public au téléchargement ; l'OL 011-2012 déposée reste le fondement légal. Liste des exonérations DGDA : https://douane.gouv.cd/wp-content/uploads/2022/03/LISTE-DES-EXONERATIONS-22-03.pdf
+
+## Session 7 — RDC : tarif par position (tiers + DGDA)
+
+| Document | Statut | URL | SHA-256 |
+|---|---|---|---|
+| **J.O. RDC n° spécial du 25/09/2012** (38 p.) — publication de l'OL n° 011-2012 et de l'OL n° 012-2012 (tarifs import/export) | **OBTENU** (leganet.cd, portail juridique officiel) | https://leganet.cd/Legislation/JO/2012/JOS.25.09.2012.pdf | `6678a90da614c8599218303655bf5231fe77bfeb407db09e378eaea8084cdb7c` |
+| **DGDA — « Droits, taxes et redevances configurés au Guichet Unique »** (SYDONIA, 6 p.) — liste officielle des codes droits/taxes/redevances liquidés à l'import (DA, TVA, ICA, redevances, bénéficiaires) | **OBTENU** (douane.gouv.cd / SYDONIA) | http://sydonia.douane.gouv.cd/tools/TaxesGU.pdf | `dc37086c0fdb245d82423e45595b88353da64d75abf598b800d8421dc04a3d0d` |
+
+### Tarif par position de la RDC — état de la recherche
+- L'**annexe tarifaire** de l'OL 011-2012 (tableau positions/taux) **n'est pas publiée en PDF téléchargeable** : le J.O. spécial du 25/09/2012 (déposé) porte les ordonnances sans le tableau ; la DGDA déploie le tarif **dans SYDONIA** (communiqué du 30/12/2021, version SH 2022).
+- **Source institutionnelle par position (HS6, droits NPF appliqués)** : **WITS/UNCTAD-TRAINS**, page pays RDC — https://wits.worldbank.org/tariff/trains/en/country/COD (Banque mondiale/UNCTAD ; données annuelles, téléchargement CSV). Aucun taux n'a été repris ici : la source est citée pour lecture/vérification.
+- Autres tiers consultés, sans table par position en accès libre : ITC MacMap (compte requis), WTO Tariff Download Facility (formulaire).
