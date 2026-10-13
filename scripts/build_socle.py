@@ -1804,6 +1804,68 @@ def _cae(iso, positions, compteurs):
         _compter_ligne(exc, compteurs, 1)
 
 
+#: Exceptions au TEC de l'exercice 2026/27 (Legal Notice EAC/160/2026), lues
+#: dans la Gazette par scripts/extraire_mesures_tec_cae_2026.py.
+MESURES_TEC_CAE = os.path.join(REPO, "data", "eac", "mesures_tec_cae_2026_27.json")
+#: La Table X amende le TEC lui-même ; les autres le suspendent pour un pays :
+#: elles passent après.
+ORDRE_TABLES_CAE = ["X", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+
+
+def _droit_mesure_cae(droit):
+    """Champs d'une ligne DD pour le droit d'une mesure EAC/160/2026."""
+    spec = droit.get("specifique")
+    champs = {"taux": droit.get("taux"), "compose": None, "regle_composee": None, "expression_brute": None,
+              "specifique": None, "assiette": "CIF", "assiette_origine": "regle_de_pays"}
+    if spec:
+        champs["specifique"] = {**spec, "brut": f"US$ {spec['montant']:g} / {spec['unite_quantite']}"}
+        if droit.get("taux") is None:
+            champs["assiette"], champs["assiette_origine"] = "xQTE", "droit_specifique"
+        else:
+            champs["compose"], champs["regle_composee"] = True, droit["regle"]
+            champs["expression_brute"] = f"{droit['taux']:g}% or US$ {spec['montant']:g} / {spec['unite_quantite']} " \
+                "whichever is higher"
+    return champs
+
+
+def _mesures_tec_cae(iso, positions, compteurs):
+    """Droits de l'exercice 2026/27 à la place du TEC (EAC/160/2026). Une mesure
+    conditionnelle (importateur, usage, sous-produit) ne change pas le droit :
+    elle est rappelée en note."""
+    with open(MESURES_TEC_CAE, encoding="utf-8") as f:
+        mesures = json.load(f)["mesures"]
+    mesures.sort(key=lambda m: ORDRE_TABLES_CAE.index(m["table"]))
+    for mesure in mesures:
+        prefixes = [c.replace(".", "") for c in mesure["positions"]]
+        ref = f"Legal Notice EAC/160/2026, Table {mesure['table']}, n° {mesure['sn']} (p. {mesure['page']})"
+        for decision in mesure["decisions"]:
+            if iso not in (decision.get("pays") or [iso if mesure["table"] in ("VIII", "IX") else None]):
+                continue
+            exclus = {c.replace(".", "") for c in decision.get("exclusions", [])}
+            applicable = decision.get("lu") and not decision.get("restriction")
+            for code, position in positions.items():
+                if not any(code.startswith(p) for p in prefixes) or any(code.startswith(x) for x in exclus):
+                    continue
+                dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None)
+                if dd is None:
+                    continue
+                if not applicable:
+                    note = f"Mesure conditionnelle, non appliquée ({ref}) : {decision['decision']}"
+                    dd["note"] = (dd.get("note", "") + " " + note).strip()
+                    continue
+                _compter_ligne(dd, compteurs, -1)
+                for cle, valeur in _droit_mesure_cae(decision["droit"]).items():
+                    if valeur is None:
+                        dd.pop(cle, None)
+                    else:
+                        dd[cle] = valeur
+                dd["libelle"] = "Droit de douane (exercice 2026/27)"
+                dd["source"] = ref
+                dd["note"] = decision["decision"] if mesure["table"] not in ("III", "IV", "V", "VI", "VII") else (
+                    f"{ref} : taux de l'en-tête de la table")
+                _compter_ligne(dd, compteurs, 1)
+
+
 def _compter_ligne(d, compteurs, signe):
     if d.get("taux") is None and not d.get("specifique"):
         compteurs["taux_indisponibles"] += signe
@@ -2752,6 +2814,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
+        _mesures_tec_cae(iso, positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _accise_ethiopie(positions, compteurs)
