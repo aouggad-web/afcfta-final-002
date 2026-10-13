@@ -129,3 +129,27 @@ def test_provider_search_uses_postgres_first(monkeypatch):
     assert len(results) == 1
     assert results[0]["national_code"] == "18010010"
     assert results[0]["source"] == "postgres"
+
+
+def test_cedeao_hors_uemoa_ne_lit_pas_les_agregats_postgres(monkeypatch):
+    """Gambie, Liberia, Sierra Leone : les agrégats PostgreSQL (redevance
+    statistique, GST libérienne à 10 %) ne sont pas servis ; ligne,
+    sous-positions et recherche passent par le service authentique corrigé."""
+    postgres = _StubPostgres()
+    postgres._line = {"hs6": "010121", "dd_rate": 16.5, "source": "postgres"}
+    postgres._sub_positions = [{"code": "0101210000", "dd": 16.5}]
+    postgres._search = [{"hs6": "010121", "dd_rate": 16.5}]
+    authentique = "services.tariff_provider_service.authentic_service"
+    monkeypatch.setattr(f"{authentique}.get_tariff_line", lambda c, h: {"source": "authentique"})
+    monkeypatch.setattr(f"{authentique}.get_sub_positions", lambda c, h: [{"source": "authentique"}])
+    monkeypatch.setattr(
+        f"{authentique}.search_tariff_lines", lambda c, q, l, n: [{"source": "authentique"}]
+    )
+
+    service = TariffProviderService(postgres_factory=lambda: postgres)
+    monkeypatch.setattr(service, "_doctrine_refused", lambda _c: False)
+    for pays in ("GMB", "LBR", "SLE"):
+        assert service.get_tariff_line(pays, "010121") == {"source": "authentique"}
+        assert service.get_sub_positions(pays, "010121") == [{"source": "authentique"}]
+        assert service.search_tariff_lines(pays, "chevaux") == [{"source": "authentique"}]
+    assert service.get_tariff_line("MAR", "010121")["source"] == "postgres"

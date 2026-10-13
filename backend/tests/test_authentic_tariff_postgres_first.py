@@ -166,3 +166,45 @@ def test_incomplete_postgres_measures_do_not_produce_zero_total(monkeypatch, mis
     result = svc.calculate_import_taxes("MAR", "1801000010", 1000)
     assert result["error_detail"]["code"] == "CALCULATION_UNAVAILABLE"
     assert "taxes_summary" not in result
+
+
+class _PostgresProviderLiberia:
+    """Mesures telles que les génère engine/converters/ecowas_converter.py :
+    redevance statistique béninoise, GST à 10 %."""
+
+    def get_regulatory_details(self, country_iso3, hs6):
+        mesures = [("DD", 5.0), ("RS", 1.0), ("PCC", 0.5), ("GST", 10.0)]
+        return {
+            "success": True,
+            "description": "Chevaux reproducteurs",
+            "taxes": {"dd_rate": 5.0, "vat_rate": 10.0},
+            "measures": [{"code": c, "name": c, "rate": t} for c, t in mesures],
+            "requirements": [],
+        }
+
+    def get_country_info(self, country_iso3):
+        return {"vat_rate": 10.0}
+
+    def get_sub_positions(self, country_iso3, hs6, language="fr"):
+        return []
+
+
+def test_postgres_first_suit_la_regle_cedeao_hors_uemoa(monkeypatch):
+    """Liberia servi par PostgreSQL : sans redevance statistique, GST de la loi
+    (12 %) sur tous les droits, Customs User Fee ajouté — comme le socle."""
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderLiberia())
+
+    line = svc.get_tariff_line("LBR", "010121")
+    assert line["data_source"] == "postgres"
+    assert line["vat_rate"] == 12.0
+    assert {d["tax"]: d["rate"] for d in line["taxes_detail"]} == {
+        "DD": 5.0, "PCC": 0.5, "GST": 12.0, "CUF": 1.5,
+    }
+
+    r = svc.calculate_import_taxes("LBR", "010121", 10000, origin_country="CHN")
+    etapes = {e["code"]: e for e in r["calculation_steps"]}
+    assert {c: e["amount"] for c, e in etapes.items() if c != "TVA"} == {
+        "DD": 500.0, "PCC": 50.0, "CUF": 150.0,
+    }
+    assert etapes["TVA"]["rate_pct"] == 12.0
+    assert etapes["TVA"]["base_value"] == 10700.0

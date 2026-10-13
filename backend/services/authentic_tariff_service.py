@@ -14,7 +14,9 @@ from services.tax_profile_data import (
     BASE_FOB_TOUTES_TAXES,
     BASE_TVA_TOUTES_TAXES,
     COUNTRY_TAX_PROFILES,
+    PRELEVEMENTS_CEDEAO_HORS_UEMOA,
     TAUX_TVA_LEGAUX,
+    TVA_CEDEAO_HORS_UEMOA,
 )
 
 logger = logging.getLogger(__name__)
@@ -145,6 +147,8 @@ def load_crawled_position_index(country_iso3: str) -> dict:
         for raw_position, parent in _iter_crawled_positions(data):
             position = _adapt_crawled_position(raw_position, parent)
             if position:
+                if country_iso3 in TVA_CEDEAO_HORS_UEMOA:
+                    _regle_cedeao_hors_uemoa(country_iso3, position)
                 index[position["hs_code"]] = position
         _cache_crawled_position_index(country_iso3, index)
         logger.info(f"Loaded crawled position index for {country_iso3}: {len(index)} entries")
@@ -161,6 +165,69 @@ def _cache_crawled_position_index(country_iso3: str, index: dict) -> None:
     _crawled_index_cache.move_to_end(country_iso3)
     while len(_crawled_index_cache) > _CRAWLED_INDEX_CACHE_MAX_COUNTRIES:
         _crawled_index_cache.popitem(last=False)
+
+
+def _regle_cedeao_hors_uemoa(country_iso3, position):
+    """Gambie, Liberia, Sierra Leone, comme le socle : leurs fichiers collectés
+    recopient le tarif du Bénin (redevance statistique de 1 %, TVA libérienne à
+    10 %), qu'aucun texte de ces pays n'établit. La redevance est retirée, la
+    TVA/GST prend le taux de la loi et les prélèvements nationaux sont ajoutés
+    (TVA_CEDEAO_HORS_UEMOA, PRELEVEMENTS_CEDEAO_HORS_UEMOA ; fiche
+    CEDEAO_hors_UEMOA_prelevements_2026-10-12.json). L'assiette de la TVA vient
+    d'ASSIETTE_TVA_ETABLIE."""
+    cle = "taxes_import" if "taxes_import" in position else "taxes"
+    taxes = position.get(cle)
+    if not isinstance(taxes, dict):
+        return
+    taux_tva = TVA_CEDEAO_HORS_UEMOA[country_iso3][0]
+    corrigees = {
+        code: (taux_tva if _is_vat_code(code) else valeur)
+        for code, valeur in taxes.items()
+        if _normalize_tax_code(code) != "RS"
+    }
+    for code, libelle, taux, _note in PRELEVEMENTS_CEDEAO_HORS_UEMOA.get(country_iso3, []):
+        corrigees[code] = {"rate": taux, "name": libelle}
+    position[cle] = corrigees
+
+
+def _regle_cedeao_hors_uemoa_ligne(country_iso3, ligne):
+    """La même règle sur une ligne tarifaire (fichier ETL ou PostgreSQL), dont
+    les taxes sont une liste {tax, rate, observation} : redevance statistique
+    retirée, TVA/GST au taux de la loi (GST libérienne publiée à 10 %),
+    prélèvements nationaux ajoutés. Appliquée là où _retirer_tva_hors_la_loi
+    l'est."""
+    if not ligne or country_iso3 not in TVA_CEDEAO_HORS_UEMOA:
+        return ligne
+    taux_tva = TVA_CEDEAO_HORS_UEMOA[country_iso3][0]
+    if ligne.get("vat_rate") is not None:
+        ligne["vat_rate"] = taux_tva
+    details = [
+        d for d in ligne.get("taxes_detail") or []
+        if _normalize_tax_code(str(d.get("tax") or "")) != "RS"
+    ]
+    for d in details:
+        if _is_vat_code(str(d.get("tax") or "")):
+            d["rate"] = taux_tva
+    presents = {d.get("tax") for d in details}
+    for code, libelle, taux, _note in PRELEVEMENTS_CEDEAO_HORS_UEMOA.get(country_iso3, []):
+        if code not in presents:
+            details.append({"tax": code, "rate": taux, "observation": libelle})
+    ligne["taxes_detail"] = details
+    taux = [d.get("rate") for d in details]
+    if "other_taxes_rate" in ligne:
+        ligne["other_taxes_rate"] = round(
+            sum(
+                d["rate"] for d in details
+                if d.get("rate") is not None
+                and d.get("tax") != "DD" and not _is_vat_code(str(d.get("tax") or ""))
+            ),
+            4,
+        )
+    if ligne.get("total_taxes_pct") is not None:
+        ligne["total_taxes_pct"] = (
+            round(sum(taux), 4) if all(t is not None for t in taux) else None
+        )
+    return ligne
 
 
 # Only allow well-formed ISO 2- or 3-letter country codes to prevent path traversal.
@@ -225,6 +292,9 @@ _TAX_LABELS = {
     "PCS": "Prélèvement Communautaire de Solidarité",
     "SUR": "Taxe Additionnelle / Accises",
     "TCL": "Taxe de Compensation des Licences",
+    "CUF": "Customs User Fee",
+    "FT": "Processing Fee",
+    "PUA": "Prélèvement de l'Union africaine",
     "D.D": "Droits de Douane",
     "T.V.A": "Taxe sur la Valeur Ajoutée",
 }
@@ -254,7 +324,7 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
         # code inconnu du profil MAR : la TVA, assise sur CIF+DD+TPI (CGI
         # art. 96), était sous-évaluée de TPI × TVA.
         return "TPI"
-    if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "VALUEADDE", "VALUE_ADDE"}:
+    if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "GST", "VALUEADDE", "VALUE_ADDE"}:
         return "TVA"
     if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
         return "TVA"
@@ -273,14 +343,15 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
     return norm
 
 
-# Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, tunisien
+# Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, GST de la
+# Gambie, du Liberia et de la Sierra Leone, tunisien
 # TVA/APTAXE) — un seul et même impôt fonctionnellement, jamais deux taxes
 # distinctes. _find_vat_key() doit être utilisé PARTOUT où un code de taxe est
 # comparé à "TVA" pour éviter (a) de rater le taux réel des pays non-DZA/MAR/
 # COM/MDG/MRT (qui utilisent IVA/VAT), et (b) de la compter deux fois — une
 # fois comme "TVA" au taux périmé de l'autre source, une fois comme sa propre
 # entrée "IVA"/"VAT" dans le détail par taxe.
-_VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI")
+_VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI", "GST")
 
 # Preferential duty columns describe an alternative trade regime. They remain
 # available verbatim on the crawled row but must never be added to the NPF tax
@@ -701,6 +772,9 @@ def load_country_tariffs(country_iso3):
     if country_iso3 in TAUX_TVA_LEGAUX:
         for ligne in data.get("tariff_lines") or []:
             _retirer_tva_hors_la_loi(country_iso3, ligne)
+    if country_iso3 in TVA_CEDEAO_HORS_UEMOA:
+        for ligne in data.get("tariff_lines") or []:
+            _regle_cedeao_hors_uemoa_ligne(country_iso3, ligne)
     _tariff_cache[country_iso3] = data
     return data
 
@@ -808,7 +882,7 @@ def get_tariff_line(country_iso3, hs_code):
                 ]
                 dd_rate = regulatory.get("taxes", {}).get("dd_rate")
                 vat_rate = regulatory.get("taxes", {}).get("vat_rate", country_info.get("vat_rate"))
-                return _retirer_tva_hors_la_loi(country_iso3, {
+                ligne = _retirer_tva_hors_la_loi(country_iso3, {
                     "hs6": hs6,
                     "code": hs_code_clean,
                     "description_fr": regulatory.get("description", ""),
@@ -828,6 +902,7 @@ def get_tariff_line(country_iso3, hs_code):
                     "source": "postgres",
                     "data_source": "postgres",
                 })
+                return _regle_cedeao_hors_uemoa_ligne(country_iso3, ligne)
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, "postgres-miss")
         except Exception as e:
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, f"postgres-error: {e}")
@@ -2409,6 +2484,19 @@ def calculate_import_taxes(
         c = _canonical_tax_code(t["code"], t.get("label", ""))
         if c not in taxes_for_cascade and t.get("rate_pct", 0) > 0 and not _is_vat_code(c):
             taxes_for_cascade[c] = t["rate_pct"]
+
+    # Gambie, Liberia, Sierra Leone : prélèvements communautaires non dus pour
+    # une origine du bloc, comme dans le socle (fiche
+    # ORIGINE_prelevements_communautaires_2026-10-10.json) — PCC pour la CEDEAO
+    # (protocole A/P1/7/96, art. 4), PUA pour l'Union africaine.
+    if country_iso3 in TVA_CEDEAO_HORS_UEMOA and origin_country:
+        from services.exoneration_origine import BLOCS
+
+        for code, bloc in (("PCC", "CEDEAO"), ("PUA", "UA")):
+            if origin_country.strip().upper() in BLOCS[bloc]:
+                taxes_for_cascade.pop(code, None)
+                taxes_detail.pop(code, None)
+                individual_taxes = [t for t in individual_taxes if t["code"] != code]
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     try:
