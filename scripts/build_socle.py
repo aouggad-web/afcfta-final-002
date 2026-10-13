@@ -2120,9 +2120,19 @@ def _prelevements_cote_divoire(positions, compteurs):
             compteurs["assiettes_fichier"] -= 1
             compteurs["assiettes_table"] += 1
 
-    for position in positions.values():
+    for code_position, position in positions.items():
         droits = []
         for d in position.get("droits") or []:
+            if d.get("code") == "TSBPT" and code_position.startswith("2002") and d.get("taux") is not None:
+                # Tomates préparées : l'art. 418 ne vise que les boissons ; aucun
+                # texte ne fonde le taux de 25 % publié dans la colonne TSB.
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+                d["note"] = (
+                    "Colonne TSB du tarif de la DGD (25 %) sur des tomates préparées : la taxe spéciale de "
+                    "l'art. 418 du CGI ne vise que les boissons (tableau synoptique DGI 2025) ; aucun texte "
+                    "trouvé pour ce taux. À compléter."
+                )
             if d.get("code") == "TAI":
                 if not d.get("assiette"):
                     compteurs["assiettes_indisponibles"] -= 1
