@@ -109,6 +109,8 @@ def test_tomates_preparees_sans_taux_de_taxe_speciale(positions):
     for code in ("2002100000", "2002902000"):
         etat, lignes = _calcul(positions[code])
         assert lignes["TSBPT"]["statut"] == "TAUX_INDISPONIBLE" and etat == "PARTIEL"
+        note = next(d["note"] for d in positions[code]["droits"] if d["code"] == "TSBPT")
+        assert "aucun texte" in note and "À compléter" in note
     etat, lignes = _calcul(positions["2009111000"])
     assert lignes["TSBPT"]["montant"] == 157.5 and etat == "COMPLET"
 

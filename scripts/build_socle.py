@@ -2165,10 +2165,13 @@ def _prelevements_cote_divoire(positions, compteurs):
                 vers_table(d)
                 d["assiette"] = "CIF+" + entree
                 d["assiette_origine"] = "regle_de_pays"
-                d["note"] = (
-                    "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
-                    "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
-                )
+                if d.get("taux") is not None:
+                    # Un taux retiré faute de texte (tomates préparées) garde sa
+                    # propre note : l'art. 418 ne le fonde pas.
+                    d["note"] = (
+                        "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
+                        "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
+                    )
             droits.append(d)
         presentes = [d["code"] for d in droits if d.get("code") in speciales]
         for d in droits:
