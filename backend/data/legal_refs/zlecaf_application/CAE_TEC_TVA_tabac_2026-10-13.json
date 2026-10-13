@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "objet": "CAE : quatre positions du TEC absentes de la collecte (7 pays), assiette de la TVA à l'importation (Rwanda, Tanzanie) et accise sur le tabac importé (Rwanda, Tanzanie, Ouganda)",
-  "destination_iso3": ["KEN", "RWA", "TZA", "UGA", "BDI", "SSD", "COD"],
+  "objet": "CAE : quatre positions du TEC absentes de la collecte (6 pays), assiette de la TVA à l'importation (Rwanda, Tanzanie) et accise sur le tabac importé (Rwanda, Tanzanie, Ouganda)",
+  "destination_iso3": ["KEN", "RWA", "TZA", "UGA", "BDI", "SSD"],
   "verified_at": "2026-10-13",
   "etabli": true,
   "evidence_level": "primaire — TEC CAE 2022 consolidé (TRA, juin 2025) ; lois TVA du Rwanda (n° 049/2023) et de la Tanzanie (VAT Act 2014) ; lois d'accise de la Tanzanie (Cap. 147, consolidation 2025), de l'Ouganda (Cap. 336 et Act 14 de 2025) et du Rwanda (n° 011/2025)",
@@ -10,7 +10,7 @@
     "institution": "Communauté d'Afrique de l'Est ; administrations fiscales du Rwanda, de la Tanzanie et de l'Ouganda"
   },
   "regle": {
-    "valeur": "TEC CAE : 5302.10 à 0 %, 5811.00 à 25 %, 9209.92 et 9209.94 à 10 % (KEN, RWA, TZA, UGA, BDI, SSD, COD). TVA à l'importation sur la valeur en douane et tous les droits et taxes sauf la TVA au Rwanda (loi 049/2023, art. 16) et en Tanzanie (VAT Act 2014, s. 9), la collecte n'y mettant que le droit de douane. Accise sur le tabac importé : Tanzanie, cigarettes 67 076,10 TZS par millier, tabacs 2403.19, 2403.91 et 2403.99 33 878,88 TZS par kg, 2402.90 et 2403.11 à 30 % sur la valeur et le droit d'importation (Cap. 147, art. 144 (1) (a)), cigares sans accise ; Ouganda, cigares et tabacs 200 % sur la valeur et le droit d'importation (Cap. 336, s. 1 (8)), cigarettes 150 000 ou 200 000 Ushs par millier selon le conditionnement ; Rwanda, cigares 160 %, cigarettes à 36 % du prix de détail TTC plus 230 FRW par paquet.",
+    "valeur": "TEC CAE : 5302.10 à 0 %, 5811.00 à 25 %, 9209.92 et 9209.94 à 10 % (KEN, RWA, TZA, UGA, BDI, SSD). TVA à l'importation sur la valeur en douane et tous les droits et taxes sauf la TVA au Rwanda (loi 049/2023, art. 16) et en Tanzanie (VAT Act 2014, s. 9), la collecte n'y mettant que le droit de douane. Accise sur le tabac importé : Tanzanie, cigarettes 67 076,10 TZS par millier, tabacs 2403.19, 2403.91 et 2403.99 33 878,88 TZS par kg, 2402.90 et 2403.11 à 30 % sur la valeur et le droit d'importation (Cap. 147, art. 144 (1) (a)), cigares sans accise ; Ouganda, cigares et tabacs 200 % sur la valeur et le droit d'importation (Cap. 336, s. 1 (8)), cigarettes 150 000 ou 200 000 Ushs par millier selon le conditionnement ; Rwanda, cigares 160 %, cigarettes à 36 % du prix de détail TTC plus 230 FRW par paquet.",
     "verbatim": "(c) the amount of any tax, levy, fee, or ﬁscal charge other than customs duty and value added tax payable on the import of the goods.",
     "reference": "TEC CAE 2022 consolidé (juin 2025), p. 280, 302 et 534 ; loi n° 049/2023 (Rwanda), art. 16 ; VAT Act 2014 (Tanzanie), s. 9 ; Excise (Management and Tariff) Act Cap. 147 (Tanzanie), art. 144 et Fourth Schedule ; Excise Duty Act Cap. 336 (Ouganda), s. 1 (8) et Schedule 2, item 1, modifié par l'Act 14 de 2025 ; loi n° 011/2025 (Rwanda), art. 6 et annexe, n° 13 et 14",
     "portee": "scripts/build_socle.py, _cae (PAYS_TEC_CAE, TEC_CAE_COMPLEMENTS, TVA_CAE, TABAC_CAE) ; le calculateur sert la Tanzanie et l'Ouganda par le socle en premier.",
@@ -31,7 +31,7 @@
     "Barèmes d'accise hors tabac (boissons, carburants, véhicules) : non revus.",
     "Exceptions au TEC de l'exercice 2026/27 (Legal Notice EAC/160/2026) et remises (EAC/161/2026) : non appliquées au socle, objet d'une PR suivante.",
     "Tanzanie, Finance Act 2026 : non obtenu ; les taux sont ceux de la consolidation 2025, que le Finance Act 2025 ne modifie pas pour le tabac.",
-    "RDC : l'application effective du TEC CAE n'est pas établie ; les quatre positions sont complétées comme le reste du TEC que le socle lui sert."
+    "RDC : non complétée. Elle applique son tarif national (ordonnance-loi n° 011-2012 du 21/09/2012, versée sur la PR #640) ; aucun acte appliquant le TEC CAE n'a été trouvé. Le socle de la RDC, construit sur le TEC CAE, est à reprendre sur ce tarif."
   ],
   "documents_archives": [
     {

@@ -26,7 +26,7 @@ def _calcul(iso, code, quantite=None):
     return r["etat"], {l["code"]: l for l in r["lignes"]}
 
 
-@pytest.mark.parametrize("iso", ["KEN", "RWA", "TZA", "UGA", "BDI", "SSD", "COD"])
+@pytest.mark.parametrize("iso", ["KEN", "RWA", "TZA", "UGA", "BDI", "SSD"])
 def test_quatre_positions_du_tec(iso):
     positions = _positions(iso)
     attendus = {"53021000": 0.0, "58110000": 25.0, "92099200": 10.0, "92099400": 10.0}

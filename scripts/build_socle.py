@@ -1691,7 +1691,9 @@ TSP_TP_LIBYE = {
 #: CAE (fiche CAE_TEC_TVA_tabac_2026-10-13.json). Quatre positions du TEC 2022
 #: que la collecte ne porte pas, lues dans sa consolidation de juin 2025
 #: (sources/TZA_tra_cet_eac_2022_maj_2025-06.pdf, page entre parenthèses).
-PAYS_TEC_CAE = {"KEN", "RWA", "TZA", "UGA", "BDI", "SSD", "COD"}
+#: La RDC n'y est pas : elle applique son tarif national (ordonnance-loi
+#: n° 011-2012 du 21/09/2012), aucun acte n'appliquant le TEC n'ayant été trouvé.
+PAYS_TEC_CAE = {"KEN", "RWA", "TZA", "UGA", "BDI", "SSD"}
 TEC_CAE_COMPLEMENTS = {
     "53021000": (0.0, "p. 280"),
     "58110000": (25.0, "p. 302"),
