@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "objet": "Cap-Vert : Pauta Aduaneira (2022, Lei 51/X/2025, OE 2026), taxa comunitária CEDEAO, ICE ad valorem et spécifique, taxes spécifiques du tabac et de l'alcool, assiette de l'IVA à l'importation",
+  "destination_iso3": "CPV",
+  "verified_at": "2026-10-12",
+  "etabli": true,
+  "evidence_level": "primaire — Pauta Aduaneira 2022 et lois publiées au Boletim Oficial (Lei 51/X/2025, Lei 69/X/2025), Regulamentos do IVA et do ICE (Leis 21/VI/2003 et 22/VI/2003)",
+  "source": {
+    "url": "https://www.mf.gov.cv/",
+    "institution": "Ministério das Finanças de Cabo Verde ; Boletim Oficial"
+  },
+  "regle": {
+    "valeur": "Source du socle CPV : Pauta Aduaneira 2022 (6 135 positions SH 2017) modifiée par la Lei 51/X/2025 (SH 2022 : 110 positions supprimées, 618 créées ou remplacées) et par l'annexe III de la Lei 69/X/2025 (DI de 420 positions), soit 6 579 positions, à la place de la transposition du TEC depuis le Bénin. DI de la Pauta sur la valeur en douane ; taxa comunitária CEDEAO (TC) 0,5 % sur la valeur en douane ; ICE ad valorem sur la valeur en douane + tous droits et taxes sauf l'ICE (Regulamento do ICE, art. 13) ; ICE spécifique de 100 000 CVE par unité sur 44 positions de véhicules (Lei 69/X/2025, art. 89 et annexe II) ; taxe spécifique de 180$00 par paquet de cigarettes (art. 90) ; IVA 15 % ou exonérée (« Is ») sur la valeur en douane + tous droits et taxes sauf l'IVA (Regulamento do IVA, art. 16) ; véhicules électriques exonérés de DI, d'ICE et d'IVA (art. 54).",
+    "verbatim": "a) Direitos de importação e quaisquer outros impostos ou taxas efectivamente devidos na importação, com excepção do próprio Imposto sobre o Valor Acrescentado;",
+    "reference": "Pauta Aduaneira 2022 ; Lei n.º 51/X/2025, de 17 de abril, art. 1 et annexe ; Lei n.º 69/X/2025 (OE 2026), art. 54, 89, 90, 91, 94, annexes II et III ; Lei n.º 21/VI/2003 (Regulamento do IVA), art. 16 et taux ; Lei n.º 22/VI/2003 (Regulamento do ICE), art. 13",
+    "portee": "backend/data/crawled/CPV_tariffs.json régénéré (scripts/extraire_pauta_cpv.py, scripts/convertir_tec_cpv.py ; scellé, empreinte au registre des sources) ; la TC, servie sous le code PCC, est retirée pour une origine CEDEAO déclarée ; le calculateur sert le Cap-Vert par le socle en premier.",
+    "texte_archive": "sources/CPV_pauta_IVA_ICE.extrait.txt",
+    "sha256": "b3e09f24d46e6dc67ddf1aaf28cdc6ceacb848ccd47b1b00ab9b692e0334daa2"
+  },
+  "decisions": [
+    "La transposition béninoise servait le DD du TEC et une redevance statistique de 1 % que la Pauta ne connaît pas ; le Cap-Vert applique ses propres DI (jusqu'à 55 %) et n'adopte le TEC que progressivement (Lei 69/X/2025, art. 94).",
+    "TC : colonne de la Pauta à 0,5 % sur toutes les positions ; inscrite comme « Taxa Comunitaria CEDEAO » reversée à la CEDEAO au budget 2026 ; servie sous le code PCC, donc retirée pour les originaires de la CEDEAO comme le prélèvement communautaire des autres États membres. La Lei 51 ne la reprend pas : 0,5 % sur les positions qu'elle crée.",
+    "« L » en colonne DI de la Lei 51 lu comme 0 : les lignes supprimées qui le portent (8418.10.00.10, 8501.61.00.10) sont à 0 dans la Pauta 2022.",
+    "« Is » en colonne IVA lu comme exonération (IVA 0) ; colonne ICE vide lue comme absence d'ICE.",
+    "ICE ad valorem : assiette de l'IVA (art. 13, 1, c) augmentée des impôts et taxes sauf l'ICE lui-même (art. 13, 3, a) ; la taxe spécifique du tabac ou de l'alcool y entre donc là où elle existe.",
+    "ICE spécifique des véhicules (annexe II) : liquidé à la quantité (CVE par unité) ; le total reste incomplet tant que le nombre d'unités n'est pas saisi.",
+    "Véhicules électriques (8703.80, 8711.60) : DI, ICE et IVA ramenés à 0 en application de l'art. 54, n.º 1 ; l'attribution relève de la DNRE (n.º 4)."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taxe spécifique sur l'alcool (art. 91) : le barème en CVE par litre « conforme disposto na Pauta » n'est pas dans les textes déposés ; ligne sans montant sur les positions 2203 à 2206 et 2208, total déclaré incomplet.",
+    "Taxe spécifique sur les produits doces (art. 92) : barème et champ absents des textes déposés, non servie.",
+    "Taxe carbone (Lei 45/X/2024, art. 80, reconduite par l'art. 95) : texte non déposé, non servie.",
+    "Exonérations conditionnelles des véhicules (Lei 69/X/2025, art. 49 à 53) et du matériel de recharge (art. 54, n.º 2 et 3) : dépendent de l'importateur ou de l'usage, non appliquées par position.",
+    "Frais indépendants de la valeur (émoluments, frais portuaires) : non relevés pour le Cap-Vert."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CPV_pauta_IVA_ICE.extrait.txt",
+      "sha256": "b3e09f24d46e6dc67ddf1aaf28cdc6ceacb848ccd47b1b00ab9b692e0334daa2"
+    },
+    {
+      "document_non_archive": "Pauta Aduaneira 2022 (data/cpv/reference/CPV_pauta_aduaneira_2022.pdf)",
+      "pdf_sha256": "06fc7a3850efdd87a63efa52d598e8603139d4161f25dd79f435c9a4c5bf6e29"
+    },
+    {
+      "document_non_archive": "Lei n.º 51/X/2025, B.O. I série n.º 30, 17/04/2025 (data/cpv/reference/CPV_lei_51X2025_pauta_BO30.pdf)",
+      "pdf_sha256": "86d9bdaea0ab192befe503d6b65fd2750d4b92eda1f802fffc48c5ad7063ea83"
+    },
+    {
+      "document_non_archive": "Lei n.º 69/X/2025 (OE 2026), B.O. I série n.º 133, supl. 1, 31/12/2025 (data/cpv/reference/CPV_boe_133_sup1_2025-12-31_lei69X2025_OE2026.pdf)",
+      "pdf_sha256": "86a99336d3a0fa7e287f4f22342298b0a6cc1747bec738b2532faeeea3179fc1"
+    },
+    {
+      "document_non_archive": "Lei n.º 21/VI/2003, Regulamento do IVA (data/cpv/reference/CPV_lei_iva.pdf)",
+      "pdf_sha256": "0c59c9208fd75ad1c213d898f64c052987a6a7fa2c2a895754f35c93f64412d4"
+    },
+    {
+      "document_non_archive": "Lei n.º 22/VI/2003, Regulamento do ICE (data/cpv/reference/CPV_ICE.pdf)",
+      "pdf_sha256": "cc97e8a8c780685819307843751418d1f40266a0d116fddc10a84b79bc89245f"
+    }
+  ]
+}

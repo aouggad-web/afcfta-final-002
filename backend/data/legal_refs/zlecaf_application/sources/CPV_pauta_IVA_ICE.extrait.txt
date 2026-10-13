@@ -1,0 +1,47 @@
+Cap-Vert — Pauta Aduaneira, taxa comunitária CEDEAO, ICE et assiette de l'IVA à l'importation : extraits verbatim (relevés le 2026-10-12)
+
+1. Pauta Aduaneira 2022, PDF de 239 pages, sha256 06fc7a3850efdd87a63efa52d598e8603139d4161f25dd79f435c9a4c5bf6e29 (data/cpv/reference/CPV_pauta_aduaneira_2022.pdf), p. 1, sous le titre « PAUTA ADUANEIRA 2022 - SEXTA EMENDA DO SISTEMA HARMONIZADO - VERSÃO (SH 2017) » :
+
+« Código Designação das Mercadorias DI TC ICE IVA 0101210000 Cavalos vivos, reprodutores de raca pura 5 0.5 Is »
+
+Relevé sur les 6 135 positions (scripts/extraire_pauta_cpv.py) : TC 0,5 sur toutes ; IVA 15 (5 675) ou « Is » (460) ; ICE imprimé sur 214 positions ; DI de 0 à 55.
+
+2. Lei n.º 51/X/2025, de 17 de abril (B.O. I série n.º 30), PDF de 103 pages, sha256 86d9bdaea0ab192befe503d6b65fd2750d4b92eda1f802fffc48c5ad7063ea83 (data/cpv/reference/CPV_lei_51X2025_pauta_BO30.pdf), p. 6 et 7 :
+
+« É aprovada a alteração à Pauta Aduaneira, resultante da Sétima Emenda do Sistema Harmonizado de Designação e de Codificação de Mercadorias, em conformidade com as recomendações do Conselho de Cooperação Aduaneira da Organização Mundial das Alfândegas de 28 de junho de 2019, de 25 de junho de 2020 e de 24 de junho de 2021, conforme o quadro anexo à presente Lei, da qual faz parte integrante. »
+
+« A presente Lei entra em vigor no dia seguinte ao da sua publicação. »
+
+« ALTERAÇÕES DA PAUTA ADUANEIRA EM DECORRÊNCIA DA APLICAÇÃO DA SETIMA EMENDA DO SISTEMA HARMONIZADO DE DESIGNAÇÃO E DE CODIFICAÇÃO DE MERCADORIAS » (colonnes : Código, Nac., Designação das mercadorias, U.C., Cl., DI, ICE, IVA, Obs.)
+
+Relevé sur les 728 lignes de l'annexe : 110 « Suprimida », 618 créées ou remplacées. « L » en colonne DI : les lignes supprimées 8418.10.00.10 et 8501.61.00.10 y portent « L » là où la Pauta 2022 imprime 0 (« 8418100010 Combin.de refrigeradores e congeladores de 2 portas exteriores,para aeronaves civis 0 0.5 »).
+
+3. Lei n.º 69/X/2025 (Orçamento do Estado para 2026), B.O. I série n.º 133, suplemento 1, 31 de dezembro de 2025, PDF de 266 pages, sha256 86a99336d3a0fa7e287f4f22342298b0a6cc1747bec738b2532faeeea3179fc1 (data/cpv/reference/CPV_boe_133_sup1_2025-12-31_lei69X2025_OE2026.pdf) :
+
+« Artigo 54.º Incentivos à mobilidade elétrica 1. Fica isenta do IVA, do ICE e DI a importação de veículos elétricos, incluindo os de duas rodas. »
+
+« Artigo 89.º Taxa específica sobre viaturas novas e usadas até 4 (quatro) anos Sem prejuízo da aplicação do ICE, nos termos da legislação em vigor, é alterada a Pauta Aduaneira, aprovada pela Lei n.º 51/X/2025, de 17 de abril, no que se refere à taxa específica em CVE/unidades, devida nas importações de viaturas novas e usadas até 4 (quatro) anos, conforme Anexo II, da presente lei, da qual é parte integrante. »
+
+« Artigo 90.º Taxa específica sobre o tabaco 1. Sem prejuízo da aplicação do ICE, nos termos da legislação em vigor, é devida, por cada maço de cigarros, uma taxa específica de 180$00 (cento e oitenta escudos). »
+
+« Artigo 91.º Taxa específica sobre o álcool 1. O montante arrecadado em relação à taxa específica em CVE/litro, devida nas importações, relativamente às bebidas alcoólicas, conforme disposto na Pauta Aduaneira, aprovada pela Lei n.º 51/X/2025, de 17 de abril, »
+
+« Artigo 94º Adoção faseada da Tarifa Externa Comum No âmbito da adoção faseada da Tarifa Externa Comum (TEC) da Comunidade Económica dos Estados da África Ocidental (CEDEAO), são alteradas as taxas de DI constantes da Pauta Aduaneira, aprovada pela Lei nº 51/X/2025, de 17 de abril, conforme o Anexo III, da presente Lei, da qual é parte integrante. »
+
+« Anexo II (A que se refere o artigo 89.º) Código Designação das Mercadorias U.C. ICE Especifica (CVE) 8701100000 Tractores de eixo único u 0 »
+
+« Anexo III (A que se refere o artigo 94.º) REDUÇÃO DA TAXA DE DIREITOS DE IMPORTAÇÃO Código Designação das Mercadorias U.C. DI (Proposta) 0301110000 »
+
+« 4. Taxa Comunitaria CEDEAO 614 971 798 4. Transferência à Organismos Internacionais - CEDEAO »
+
+Relevé : annexe III, 420 positions (DI 0 à 40) ; annexe II, 44 positions à 100 000 CVE par unité, les autres à 0.
+
+4. Lei n.º 21/VI/2003, de 14 de Julho (Regulamento do IVA), sha256 0c59c9208fd75ad1c213d898f64c052987a6a7fa2c2a895754f35c93f64412d4 (data/cpv/reference/CPV_lei_iva.pdf) :
+
+« Artigo 16º (Base do imposto na importação) 1. O valor tributável dos bens importados será o valor aduaneiro, determinado nos termos das leis e regulamentos alfandegários, adicionado dos elementos a seguir indicados, na medida em que nele não estejam compreendidos: a) Direitos de importação e quaisquer outros impostos ou taxas efectivamente devidos na importação, com excepção do próprio Imposto sobre o Valor Acrescentado; »
+
+« (Taxa do imposto) 1. A taxa do imposto é de 15%. »
+
+5. Lei n.º 22/VI/2003, de 14 de Julho (Regulamento do ICE), sha256 cc97e8a8c780685819307843751418d1f40266a0d116fddc10a84b79bc89245f (data/cpv/reference/CPV_ICE.pdf) :
+
+« Artigo 13º (Valor tributável) 1. Para determinação do Imposto sobre Consumos Especiais o valor a tributar será: » […] « c) Na importação ou na saída de regime aduaneiro suspensivo, o valor que seria determinado segundo as regras de tributação em Imposto sobre o Valor Acrescentado, ainda que isento deste; » […] « 3. O valor tributável dos produtos incluirá ainda: a) Os impostos, direitos, taxas e outras imposições com excepção do próprio Imposto sobre Consumos Especiais; »

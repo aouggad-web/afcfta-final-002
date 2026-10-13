@@ -549,10 +549,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // l'autre porte sert encore la redevance statistique de 1 %, qu'aucun
       // texte de ces pays n'institue ; le socle suit leur loi de TVA/GST
       // (assiette sur tous les droits, GST libérienne à 12 %) et leurs
-      // prélèvements nationaux. Restent sur l'autre porte, en attente :
+      // prélèvements nationaux. Le Cap-Vert, sur sa Pauta (6 579 positions,
+      // CIF 10 000, origines CHN et SEN) : l'autre porte sort la taxa
+      // comunitária et l'ICE de l'assiette de l'IVA (Regulamento do IVA,
+      // art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
+      // origine CEDEAO et refuse les 69 positions à taxe spécifique, où le
+      // socle réclame la quantité. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, CPV, GAB ; RWA, TZA, UGA pour le tabac ;
-      //   MAR, dont 528 positions ne publient pas de TVA) ;
+      //   trancher sur texte (CIV, GAB ; RWA, TZA, UGA pour le tabac ; MAR,
+      //   dont 528 positions ne publient pas de TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
       //   (EGY, SOM) ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
@@ -561,7 +566,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // l'autre n'a plus de fichier algérien à lire.
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
-        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO',
+        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
         'GMB', 'LBR', 'SLE',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',

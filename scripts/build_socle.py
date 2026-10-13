@@ -117,6 +117,10 @@ FAMILLES = {
     "SPEC": "accise",
     "SUR": "accise",
     "SWL": "accise",
+    "ICE": "accise",  # imposto sobre consumos especiais (CV, MZ)
+    "ICES": "accise",  # ICE spécifique par véhicule (CV)
+    "TET": "accise",  # taxe spécifique sur le tabac (CV)
+    "TEA": "accise",  # taxe spécifique sur l'alcool (CV)
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
@@ -398,6 +402,14 @@ ASSIETTES_SOURCE = {
     # aduaneiro augmenté des droits (§6), et l'IVA sur le valor aduaneiro
     # augmenté des droits, de l'ICE et de la sobretaxa (§7).
     "CIF+DD+ICE+SOBRETX": ("CIF+DD+ICE+SOBRETX", None),
+    # Cap-Vert — Código do ICE, art. 13 : l'ICE s'assoit sur la valeur en
+    # douane et tous les droits et taxes, lui-même exclu (DI, taxa comunitária,
+    # taxes spécifiques du tabac et de l'alcool) ;
+    # Regulamento do IVA, art. 16 : valeur en douane + tous droits sauf l'IVA.
+    "CIF+DD+PCC": ("CIF+DD+PCC", None),
+    "CIF+DD+PCC+TET": ("CIF+DD+PCC+TET", None),  # cigarettes : taxe de 180$00 par paquet
+    "CIF+DD+PCC+TEA": ("CIF+DD+PCC+TEA", None),  # boissons alcooliques : taxe par litre
+    "CIF+TOUS_SAUF_TVA": ("CIF+TOUS_SAUF_TVA", None),
     "CIF + DD + EXC": ("CIF+DD+EXC", None),
     "CIF+DUTY": ("CIF+DD", None),
     "CIF+DUTY+FEES": ("CIF+TOUS_SAUF_TVA", None),
