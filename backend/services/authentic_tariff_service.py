@@ -190,19 +190,44 @@ def _regle_cedeao_hors_uemoa(country_iso3, position):
     position[cle] = corrigees
 
 
-def _tva_legale_cedeao_hors_uemoa(country_iso3, ligne):
-    """Le taux de TVA/GST de la loi sur une ligne du fichier ETL de ces trois
-    pays (GST libérienne publiée à 10 %, 12 % selon la loi)."""
+def _regle_cedeao_hors_uemoa_ligne(country_iso3, ligne):
+    """La même règle sur une ligne tarifaire (fichier ETL ou PostgreSQL), dont
+    les taxes sont une liste {tax, rate, observation} : redevance statistique
+    retirée, TVA/GST au taux de la loi (GST libérienne publiée à 10 %),
+    prélèvements nationaux ajoutés. Appliquée là où _retirer_tva_hors_la_loi
+    l'est."""
+    if not ligne or country_iso3 not in TVA_CEDEAO_HORS_UEMOA:
+        return ligne
     taux_tva = TVA_CEDEAO_HORS_UEMOA[country_iso3][0]
-    ancien = ligne.get("vat_rate")
-    if ancien is None or ancien == taux_tva:
-        return
-    ligne["vat_rate"] = taux_tva
-    for detail in ligne.get("taxes_detail") or []:
-        if _is_vat_code(str(detail.get("tax") or "")) or detail.get("tax") == "GST":
-            detail["rate"] = taux_tva
+    if ligne.get("vat_rate") is not None:
+        ligne["vat_rate"] = taux_tva
+    details = [
+        d for d in ligne.get("taxes_detail") or []
+        if _normalize_tax_code(str(d.get("tax") or "")) != "RS"
+    ]
+    for d in details:
+        if _is_vat_code(str(d.get("tax") or "")):
+            d["rate"] = taux_tva
+    presents = {d.get("tax") for d in details}
+    for code, libelle, taux, _note in PRELEVEMENTS_CEDEAO_HORS_UEMOA.get(country_iso3, []):
+        if code not in presents:
+            details.append({"tax": code, "rate": taux, "observation": libelle})
+    ligne["taxes_detail"] = details
+    taux = [d.get("rate") for d in details]
+    if "other_taxes_rate" in ligne:
+        ligne["other_taxes_rate"] = round(
+            sum(
+                d["rate"] for d in details
+                if d.get("rate") is not None
+                and d.get("tax") != "DD" and not _is_vat_code(str(d.get("tax") or ""))
+            ),
+            4,
+        )
     if ligne.get("total_taxes_pct") is not None:
-        ligne["total_taxes_pct"] = round(ligne["total_taxes_pct"] - ancien + taux_tva, 4)
+        ligne["total_taxes_pct"] = (
+            round(sum(taux), 4) if all(t is not None for t in taux) else None
+        )
+    return ligne
 
 
 # Only allow well-formed ISO 2- or 3-letter country codes to prevent path traversal.
@@ -299,7 +324,7 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
         # code inconnu du profil MAR : la TVA, assise sur CIF+DD+TPI (CGI
         # art. 96), était sous-évaluée de TPI × TVA.
         return "TPI"
-    if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "VALUEADDE", "VALUE_ADDE"}:
+    if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "GST", "VALUEADDE", "VALUE_ADDE"}:
         return "TVA"
     if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
         return "TVA"
@@ -318,14 +343,15 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
     return norm
 
 
-# Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, tunisien
+# Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, GST de la
+# Gambie, du Liberia et de la Sierra Leone, tunisien
 # TVA/APTAXE) — un seul et même impôt fonctionnellement, jamais deux taxes
 # distinctes. _find_vat_key() doit être utilisé PARTOUT où un code de taxe est
 # comparé à "TVA" pour éviter (a) de rater le taux réel des pays non-DZA/MAR/
 # COM/MDG/MRT (qui utilisent IVA/VAT), et (b) de la compter deux fois — une
 # fois comme "TVA" au taux périmé de l'autre source, une fois comme sa propre
 # entrée "IVA"/"VAT" dans le détail par taxe.
-_VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI")
+_VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI", "GST")
 
 # Preferential duty columns describe an alternative trade regime. They remain
 # available verbatim on the crawled row but must never be added to the NPF tax
@@ -748,7 +774,7 @@ def load_country_tariffs(country_iso3):
             _retirer_tva_hors_la_loi(country_iso3, ligne)
     if country_iso3 in TVA_CEDEAO_HORS_UEMOA:
         for ligne in data.get("tariff_lines") or []:
-            _tva_legale_cedeao_hors_uemoa(country_iso3, ligne)
+            _regle_cedeao_hors_uemoa_ligne(country_iso3, ligne)
     _tariff_cache[country_iso3] = data
     return data
 
@@ -856,7 +882,7 @@ def get_tariff_line(country_iso3, hs_code):
                 ]
                 dd_rate = regulatory.get("taxes", {}).get("dd_rate")
                 vat_rate = regulatory.get("taxes", {}).get("vat_rate", country_info.get("vat_rate"))
-                return _retirer_tva_hors_la_loi(country_iso3, {
+                ligne = _retirer_tva_hors_la_loi(country_iso3, {
                     "hs6": hs6,
                     "code": hs_code_clean,
                     "description_fr": regulatory.get("description", ""),
@@ -876,6 +902,7 @@ def get_tariff_line(country_iso3, hs_code):
                     "source": "postgres",
                     "data_source": "postgres",
                 })
+                return _regle_cedeao_hors_uemoa_ligne(country_iso3, ligne)
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, "postgres-miss")
         except Exception as e:
             _log_etl_fallback("get_tariff_line", country_iso3, hs6, f"postgres-error: {e}")
