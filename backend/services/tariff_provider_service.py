@@ -12,6 +12,7 @@ from typing import Callable, Dict, List, Optional
 
 from services import authentic_tariff_service as authentic_service
 from services.tariff_doctrine import crawl_enregistre, get_country_doctrine_status
+from services.tax_profile_data import TVA_CEDEAO_HORS_UEMOA
 
 logger = logging.getLogger(__name__)
 
@@ -82,6 +83,14 @@ class TariffProviderService:
         except ValueError:
             return False
 
+    def _regle_cedeao_hors_uemoa(self, country_iso3: str) -> bool:
+        """Gambie, Liberia, Sierra Leone : les agrégats de PostgreSQL
+        (total_npf_pct servi en dd_rate) comptent encore la redevance
+        statistique béninoise et la GST libérienne à 10 %. Ligne, sous-positions
+        et recherche passent par le service authentique, qui applique la règle
+        de TVA_CEDEAO_HORS_UEMOA, y compris aux mesures lues dans PostgreSQL."""
+        return country_iso3 in TVA_CEDEAO_HORS_UEMOA
+
     def get_country_summary(self, country_iso3: str) -> Optional[Dict]:
         country = country_iso3.upper()
         if self._doctrine_refused(country):
@@ -97,7 +106,7 @@ class TariffProviderService:
         country = country_iso3.upper()
         if self._doctrine_refused(country):
             return None
-        postgres = self._get_postgres()
+        postgres = None if self._regle_cedeao_hors_uemoa(country) else self._get_postgres()
         if postgres:
             tariff_line = postgres.get_tariff_line(country, hs_code)
             if tariff_line:
@@ -107,7 +116,7 @@ class TariffProviderService:
     def get_sub_positions(self, country_iso3: str, hs6: str) -> List[Dict]:
         country = country_iso3.upper()
         hs6_code = hs6[:6]
-        if self._crawl_seul(country):
+        if self._crawl_seul(country) or self._regle_cedeao_hors_uemoa(country):
             return authentic_service.get_sub_positions(country, hs6_code)
         if self._doctrine_refused(country):
             return []
@@ -137,7 +146,7 @@ class TariffProviderService:
         self, country_iso3: str, query: str, language: str = "fr", limit: int = 20
     ) -> List[Dict]:
         country = country_iso3.upper()
-        if self._crawl_seul(country):
+        if self._crawl_seul(country) or self._regle_cedeao_hors_uemoa(country):
             return authentic_service.search_tariff_lines(country, query, language, limit)
         if self._doctrine_refused(country):
             return []
