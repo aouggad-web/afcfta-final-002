@@ -42,11 +42,11 @@
       "pdf_sha256": "9d894c290304a75b2a77db3d16eabc73aa172eeb3a09a0d76668e6fc95b9af9f"
     },
     {
-      "document_non_archive": "Loi n° 049/2023 portant TVA, Rwanda (data/sources/rwanda/official/rwa-law-049-2023-vat.pdf)",
+      "document_non_archive": "Loi n° 049/2023 portant TVA, Rwanda (rwanda/official/rwa-law-049-2023-vat.pdf, sous data/sources)",
       "pdf_sha256": "b33e9a7575a6af69b0fdcaff3928c17d8b75d17d528c1979aebb209e99d5ab01"
     },
     {
-      "document_non_archive": "Value Added Tax Act 2014, Tanzanie (data/sources/tanzania/official/tza-vat-act-2014.pdf)",
+      "document_non_archive": "Value Added Tax Act 2014, Tanzanie (tanzania/official/tza-vat-act-2014.pdf, sous data/sources)",
       "pdf_sha256": "eb18d07c2afabf00135ddcc26ea8bd039b93aa6ad4540e7472d6474c88d4e1e7"
     },
     {
