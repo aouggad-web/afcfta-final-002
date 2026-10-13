@@ -160,3 +160,9 @@ Reste RDC : annexe/amendements de l'OL 011-2012 (révisions 2023-2025), barème 
 - L'**annexe tarifaire** de l'OL 011-2012 (tableau positions/taux) **n'est pas publiée en PDF téléchargeable** : le J.O. spécial du 25/09/2012 (déposé) porte les ordonnances sans le tableau ; la DGDA déploie le tarif **dans SYDONIA** (communiqué du 30/12/2021, version SH 2022).
 - **Source institutionnelle par position (HS6, droits NPF appliqués)** : **WITS/UNCTAD-TRAINS**, page pays RDC — https://wits.worldbank.org/tariff/trains/en/country/COD (Banque mondiale/UNCTAD ; données annuelles, téléchargement CSV). Aucun taux n'a été repris ici : la source est citée pour lecture/vérification.
 - Autres tiers consultés, sans table par position en accès libre : ITC MacMap (compte requis), WTO Tariff Download Facility (formulaire).
+
+### RDC — repères tiers pour le tableau par position (session 7 bis)
+- **Scribd** : « Tarifs des droits et taxes 2021 » (RDC, tableau DGDA) — https://fr.scribd.com/document/674264286/Tarifs-des-droits-et-taxes-2021 — **images viewer-only, non téléchargeable sans compte** ; cité comme repère, non déposé (source tierce).
+- Scribd : « MODULE DU COURS SUR LE TARIF DES DROITS ET TAXES A L'IMPORTATION ET A L'EXPORTATION » (DGDA, 30 p.) — https://fr.scribd.com/document/688875408/MODULE-DU-COURS-SUR-LE-TARIF-DES-DROITS-ET-TAXES-A-L-IMPORTATION-ET-A-L-EXPORTATION — même contrainte.
+- Scribd : « Interprétation du Tarif Douanier RDC 2025 » (règles, 16 p.) — https://fr.scribd.com/document/948271025/regles-tarif-rdc-complet — même contrainte.
+- Aucune copie téléchargeable du tableau par position trouvée chez les tiers ; seule voie : compte Scribd pour la copie 2021, ou export SYDONIA DGDA, ou WITS/TRAINS (HS6).
