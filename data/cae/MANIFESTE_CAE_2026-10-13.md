@@ -115,3 +115,19 @@ L'ordonnance-loi n° 011-2012 (en vigueur, modifiée et complétée à ce jour �
 - Burundi : loi d'accise et barème consolidés (OBR, obr.bi — à extraire de la rubrique Lois et règlements), redevances douanières.
 - Soudan du Sud : Financial Act 2025/26 (pas de PDF officiel trouvé), barème d'accise séparé (intégré au Taxation Act).
 - RDC : loi de finances 2026 promulguée (seul le PLF 2026 déposé), barème d'accises détaillé du Code 18-002 (annexe produits/taux à extraire), copie officielle DGDDI de l'OL 011-2012.
+
+## Session 5 — 13/10/2026 (Tanzanie : FA 2026, Railways Act, IDL)
+
+| Document | Statut | URL | SHA-256 |
+|---|---|---|---|
+| **Tanzanie — Finance Act 2026 (Act No. 2 of 2026)**, gazette du 30/06/2026, en vigueur 01/07/2026 (57 p.) | **OBTENU** (oagmis.oag.go.tz, base officielle OAG) | https://oagmis.oag.go.tz/portal/bills/eyJpdiI6Ii9nbFkxT0NCZG1JczZaZGt4Z1pnTnc9PSIsInZhbHVlIjoid1JRbFp5ZGt3dkI4d2R5ZWVBV3ZLQT09IiwibWFjIjoiYjNmM2JhOTdjN2MwMDQ4ZDQyZjc5MWY3YzI1YjM0OTU0YzBlYWNlNjQzMDZmYTYwM2QxYmY2YWJkMzBjM2ZhZCIsInRhZyI6IiJ9/download | `ea7ad0181a36a7d23b78670e430868903a6a55e2a9d05ed2c8e77c8bd619e9f7` |
+| **Tanzanie — Railways Act, Cap. 170 R.E. 2023** (LATRA/OAG, 84 p.) | **OBTENU** | https://www.latra.go.tz/uploads/documents/sw-1768543378-RE2023-The%20Railways%20Act.pdf | `0f23e13df6964d27dccc17c20ec3fdd0363096307fce920e0cbf42ee197a0a1e` |
+
+### Ce que la Finance Act 2026 change (pour le socle)
+- **Tabac — nouveaux taux au 01/07/2026 (remplacent ceux du Cap. 147 consolidé)** : cigarettes 2402.20.10/.90 « Other » (imports) : **72 462,19 TZS par 1 000 bâtonnets** ; locales sans filtre >75 % : 16 151,31 TZS/mil ; locales avec filtre >75 % : 38 154,80 TZS/mil ; 2403.19.00 « Other/Imported » : **36 609,19 TZS/kg** ; locales >75 % : 10 388,00 TZS/kg ; 2403.91/.99 : 36 609,19 TZS/kg. Les lignes du Cap. 147 consolidé (67 076,10 / 33 878,88) sont donc **historiques** au 01/07/2026.
+- **Railway Development Levy (Railways Act Cap. 170, s. 72)** : le texte R.E. 2023 porte **1,5 % de la valeur en douane** ; la FA 2023 l'avait porté à **2 %** (FB Attorneys/Clyde & Co, sources secondaires) — **l'écart reste à trancher sur un texte** (reprint à jour ou FA 2023). FA 2026 : s. 61 ajoute des exemptions (dont préservatifs HS 4014.10.00) et précise la répartition du produit.
+- **Industrial Development Levy (IDL)** : prélèvement à l'importation institué par l'**Imports Control Act (Cap. 276), s. 18A + Schedule** — FA 2026 (s. 18-19) : ajoute l'**exonération des marchandises originaires des États partenaires CAE respectant les règles d'origine CAE** (avec clause de rétorsion) ; met à jour le Schedule (taux 5–10 % sur lignes ciblées : cahiers, filets de pêche, structures métalliques, portes/fenêtres aluminium, remorques).
+- Custom Processing Fee : **aucune trace dans la FA 2026** ; son statut actuel reste à confirmer sur les textes TRA.
+
+### Statut tabac Tanzanie (pour la PR socle)
+Taux spécifiques en vigueur au 01/07/2026 = ceux de la **FA 2026** ci-dessus ; le socle doit demander l'unité (millier de bâtonnets / kg) et appliquer la base CIF + DD (art. 144(1)(a) Cap. 147).
