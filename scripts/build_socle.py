@@ -1688,6 +1688,128 @@ TSP_TP_LIBYE = {
 }
 
 
+#: CAE (fiche CAE_TEC_TVA_tabac_2026-10-13.json). Quatre positions du TEC 2022
+#: que la collecte ne porte pas, lues dans sa consolidation de juin 2025
+#: (sources/TZA_tra_cet_eac_2022_maj_2025-06.pdf, page entre parenthèses).
+PAYS_TEC_CAE = {"KEN", "RWA", "TZA", "UGA", "BDI", "SSD", "COD"}
+TEC_CAE_COMPLEMENTS = {
+    "53021000": (0.0, "p. 280"),
+    "58110000": (25.0, "p. 302"),
+    "92099200": (10.0, "p. 534"),
+    "92099400": (10.0, "p. 534"),
+}
+#: TVA à l'importation sur la valeur et tous les droits et taxes sauf elle-même ;
+#: la collecte n'y mettait que le droit de douane.
+TVA_CAE = {
+    "RWA": "Loi n° 049/2023 portant TVA (Rwanda), art. 16 (1) (d) : « the amount of customs duty, excise, "
+    "port charges or other fiscal charges other than value added tax payable in respect of imported goods ».",
+    "TZA": "Value Added Tax Act 2014 (Tanzanie), s. 9 : valeur en douane, « (b) the amount of any customs duty "
+    "payable on the import; and (c) the amount of any tax, levy, fee, or fiscal charge other than customs duty "
+    "and value added tax payable on the import of the goods ».",
+}
+#: Accise sur le tabac importé : (préfixes, taux, spécifique, note). taux et
+#: spécifique tous deux None : le taux dépend d'une donnée que la position ne
+#: porte pas. Une position absente du barème perd son accise (« retirer »).
+TABAC_CAE = {
+    "TZA": [
+        (("24022010", "24022090"), None, ("67076.10", "mil"),
+         "Excise (Management and Tariff) Act Cap. 147, Fourth Schedule (consolidation 2025), 2402.20.10 et "
+         ".90, « Other » : 67 076,10 TZS par millier de cigarettes ; les taux de 14 936,40 et 35 310,00 TZS "
+         "visent les cigarettes contenant plus de 75 % de tabac tanzanien. Quantité en milliers."),
+        (("24031900", "24039100", "24039900"), None, ("33878.88", "kg"),
+         "Cap. 147, Fourth Schedule (consolidation 2025) : « Other/Imported » 33 878,88 TZS par kg."),
+        (("24029000", "24031100"), 30.0, None,
+         "Cap. 147, Fourth Schedule (consolidation 2025) : « Imported » 30 % ; assiette art. 144 (1) (a) : "
+         "valeur en douane « taking into account the import duty payable »."),
+        (("24021000",), "retirer", None, "Cap. 147, Fourth Schedule : 2402.10 (cigares) n'y figure pas."),
+    ],
+    "UGA": [
+        (("24022010", "24022090"), None, None,
+         "Excise Duty Act Cap. 336, Schedule 2, item 1 (a) et (b), remplacés par l'Excise Duty (Amendment) Act "
+         "2025 (Act 14) : cigarettes importées 150 000 Ushs (« soft cap ») ou 200 000 Ushs (« hinge lid ») par "
+         "1 000 ; le conditionnement n'est pas dans la position."),
+        (("24021000", "24029000", "2403"), 200.0, None,
+         "Excise Duty Act Cap. 336, Schedule 2, item 1 (c) à (f) : 200 % ; assiette s. 1 (8) : valeur en douane "
+         "et droit d'importation."),
+    ],
+    "RWA": [
+        (("24022010", "24022090", "24029000"), None, None,
+         "Loi n° 011/2025 portant droit d'accise (Rwanda), annexe, n° 13 : « 36% of retail price tax inclusive "
+         "of a pack of 20 rods plus Frw 230 per pack » ; art. 6 (1) (c). Le prix de détail n'est pas une "
+         "donnée du calcul : accise non liquidée."),
+        (("24021000",), 160.0, None, "Loi n° 011/2025 (Rwanda), annexe, n° 14 : cigares 160 %."),
+    ],
+}
+
+
+def _cae(iso, positions, compteurs):
+    """CAE : quatre positions du TEC, assiette de la TVA (RWA, TZA) et accise sur
+    le tabac (RWA, TZA, UGA). Fiche CAE_TEC_TVA_tabac_2026-10-13.json."""
+    for code, (taux, page) in TEC_CAE_COMPLEMENTS.items():
+        for d in (positions.get(code) or {}).get("droits") or []:
+            if d.get("code") == "DD" and d.get("taux") is None:
+                d["taux"] = taux
+                d["libelle"] = "Droit de douane (TEC CAE)"
+                d["source"] = "TEC CAE 2022, consolidation de juin 2025 (TRA), " + page
+                d.pop("note", None)
+                compteurs["taux_indisponibles"] -= 1
+    if iso in TVA_CAE:
+        for position in positions.values():
+            for d in position.get("droits") or []:
+                if d.get("famille") == "tva" and d.get("assiette") and d["assiette"] != "CIF+TOUS_SAUF_TVA":
+                    if d.get("assiette_origine") == "source":
+                        compteurs["assiettes_source"] -= 1
+                        compteurs["assiettes_table"] += 1
+                    d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                    d["assiette_origine"] = "regle_de_pays"
+                    d["note"] = TVA_CAE[iso]
+    for code, position in positions.items():
+        regle = next((r for r in TABAC_CAE.get(iso, []) if code.startswith(r[0])), None)
+        if regle is None:
+            continue
+        _, taux, specifique, note = regle
+        droits = position.get("droits") or []
+        exc = next((d for d in droits if d.get("code") == "EXC"), None)
+        if exc is not None:
+            _compter_ligne(exc, compteurs, -1)
+        if taux == "retirer":
+            if exc is not None:
+                droits.remove(exc)
+            continue
+        if exc is None:
+            exc = {"code": "EXC", "code_source": "EXC", "famille": famille("EXC")}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, exc)
+        exc.update(libelle="Excise duty", taux=taux, source=note.split(" : ")[0], note=note)
+        exc.pop("specifique", None)
+        if specifique:
+            montant, unite = specifique
+            exc["specifique"] = {
+                "montant": float(montant), "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                "unite_quantite": unite, "brut": f"{montant} TZS/{unite}",
+            }
+            exc["assiette"], exc["assiette_origine"] = "xQTE", "droit_specifique"
+        elif taux is None:
+            # Ni le prix de détail (RWA) ni le conditionnement (UGA) ne sont des
+            # données du calcul : pas d'assiette à servir.
+            exc["assiette"], exc["assiette_origine"] = None, None
+        else:
+            exc["assiette"], exc["assiette_origine"] = "CIF+DD", "regle_de_pays"
+        _compter_ligne(exc, compteurs, 1)
+
+
+def _compter_ligne(d, compteurs, signe):
+    if d.get("taux") is None and not d.get("specifique"):
+        compteurs["taux_indisponibles"] += signe
+    if not d.get("assiette"):
+        cle = "assiettes_indisponibles"
+    elif d.get("assiette_origine") == "source":
+        cle = "assiettes_source"
+    else:
+        cle = "assiettes_table"
+    compteurs[cle] += signe
+
+
 def _tsp_tp_libye(positions, compteurs):
     """Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la
     « Production Tax » à 2 % du crawl (fiche LBY_TSP_TP_taux_2026-10-10.json).
@@ -2609,6 +2731,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
+    if iso in PAYS_TEC_CAE:
+        _cae(iso, positions, compteurs)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _accise_ethiopie(positions, compteurs)

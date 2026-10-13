@@ -554,10 +554,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // comunitária et l'ICE de l'assiette de l'IVA (Regulamento do IVA,
       // art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
       // origine CEDEAO et refuse les 69 positions à taxe spécifique, où le
-      // socle réclame la quantité. Restent sur l'autre porte, en attente :
+      // socle réclame la quantité. La Tanzanie et l'Ouganda (5 935 positions
+      // chacun, CIF 10 000, origine CHN) : l'autre porte assied l'accise sur la
+      // seule valeur en douane, la loi sur la valeur et le droit d'importation
+      // (Cap. 147, art. 144 (1) (a) ; Cap. 336, s. 1 (8)) ; elle sort l'accise de
+      // l'assiette de la TVA tanzanienne (VAT Act 2014, s. 9) et ignore les
+      // barèmes du tabac, où le socle réclame la quantité ou déclare le total
+      // incomplet. Restent sur l'autre porte, en attente :
       // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, GAB ; RWA, TZA, UGA pour le tabac ; MAR,
-      //   dont 528 positions ne publient pas de TVA) ;
+      //   trancher sur texte (CIV, GAB ; RWA, dont la loi d'accise renvoie
+      //   l'assiette à l'EACCMA ; MAR, dont 528 positions ne publient pas de
+      //   TVA) ;
       // - un total que l'autre porte rend et que le socle déclare incomplet
       //   (EGY, SOM) ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
@@ -568,7 +575,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
         'GMB', 'LBR', 'SLE',
-        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
+        'BDI', 'COD', 'TZA', 'UGA', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);
