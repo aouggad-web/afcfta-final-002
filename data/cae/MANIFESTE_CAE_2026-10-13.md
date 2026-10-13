@@ -44,3 +44,29 @@ Ajustement à l'inflation des accises : le dernier avis trouvé est le KRA « Ad
 
 ## 17-18. Burundi, Soudan du Sud, RDC — non obtenus à ce stade
 Lois de finances, lois d'accise et redevances : serveurs officiels (Burundi finances, Soudan du Sud, RDC) non consultés faute de temps ; à faire lors d'une session dédiée. Question tarif RDC : à trancher avec un document officiel (la RDC, membre CAE depuis 2022, n'applique pas encore le TEC selon les sources publiques — à confirmer par un acte de la DGDDI).
+
+## Complément du 13/10/2026 (session 2)
+
+### Avis EAC/39/2013 — OBTENU (remise conditionnelle du Kenya, texte intégral)
+`backend/data/legal_refs/zlecaf_application/sources/EAC_legal_notice_39_2013.texte-extrait.txt` — SHA-256 `27531ed60b473a52429ce15c0b7359cb06a90de377342245b552bb01c0dbfbc1`.
+Source : Kenya Law, page « EAC Legal Notices 2013 » (https://kenyalaw.org/kl/index.php?id=4207 — page directe en 4xx aujourd'hui ; copie Wayback du 08/10/2025 utilisée). Contenu : remises approuvées par le Conseil des ministres (EACCMA 2004, s. 140 ; Duty Remission Regulations 2008) — tableau HS code / description / remise par pays (« Kenya to apply a duty rate of 10% for one year », « Uganda and Tanzania 0% for one year », etc.) ; **item 8** : CKD kits de motos (8711.10–8711.90), remise conditionnée aux fabricants produisant au moins le cadre principal ou la suspension (ou une combinaison de composants) dans la CAE. La Gazette AT1-16 du 30/06/2026 suspend certaines conditions de cet item 8 (p. 122).
+
+### Tanzanie — Excise Act Cap. 147 + Fourth Schedule à jour — OBTENU
+- `TZ_excise_cap147_consolidated_2025_oag.pdf` (108 p., ©2025 OAG, R.E. 2023 avec taux à jour) — SHA `4e874f11a067c8ebfce97797ee03ff9e470d0d9b84cd91de4f98eb033e541bac` — URL : https://a-tla.org/sites/default/files/2026-05/Tanzania%20-%20THE%20EXCISE%20%28MANAGEMENT%20AND%20TARIFF%29%20ACT%2C%20Cap.%20147.pdf
+- Version R.E. 2019 (Ministère des Finances) : `TZ_excise_cap147_RE2019_mof.pdf` — SHA `045baad38a9e506a49733d41c92553e983b204dcf1ba88c09260545bdc09f9c0` — URL : https://www.mof.go.tz/uploads/documents/en-1676545092-THE%20EXCISE%20(MANAGEMENT%20AND%20TARIFF)%20ACT,%20CAP%20147%20R.E%202019.pdf
+- **Tabac (Fourth Schedule, colonne « New Rate »)** : cigarettes 2402.20.10/.90 — sans filtre + tabac local >75 % : 14 936,40 TZS/mil ; avec filtre + tabac local >75 % : 35 310,00 TZS/mil ; **autres (imports) : 67 076,10 TZS par 1 000 bâtonnets** ; 2402.90.00 et 2403.11.00 : **30 % ad valorem** ; 2403.19.00 tabac à rouler — autres/imports : **33 878,88 TZS/kg**. Quantité attendue par le socle : milliers de bâtonnets (2402.20) et kilogrammes (2403).
+- Assiette à l'import : non lue dans le Cap. 147 (elle relève de l'EACCMA/s.17 du texte d'origine) — reste à vérifier.
+- Amendements isolés (lois 8/2020, 3/2021, 5/2022, 9/2022, 3/2023, 7/2023, 6/2024) : intégrés à la consolidation ©2025 OAG ; l'Act 9/2022 individuel est disponible (tanzlii, `tz-act-2022-9-publication-document.pdf`) — non déposé séparément. Finance Acts 2025/2026 et TRA Customs Tariff Guide 2026 : non obtenus (sites TRA/treasury non répondus).
+
+### Ouganda — OBTENU (partiel)
+- **Excise Duty (Amendment) Act 2025** (Act 14/2025) : `UGA_excise_duty_amendment_2025_act14.pdf` — SHA `ad73cefdb9e65e4229e9161ef50882b104858c9c538b0a0bd6c498ca60a9b4cd` — https://media.ulii.org/media/legislation/128248/source_file/0a168c993597403a/ug-act-2025-14-publication-document.pdf
+- **Excise Duty (Amendment) Act 2026** (Act 22/2026, gazette du 28/08/2026, 4 p.) : `UGA_excise_duty_amendment_2026_act22.pdf` — SHA `1d2c8ba1cec9d7a91e9da97a6f3bc8d44baac0c4558a8a1458179c83e3ee0a8d` — https://media.ulii.org/media/legislation/131779/source_file/e433959f43fb95a4/ug-act-2026-22-publication-document.pdf
+- **VAT Act Cap. 349 consolidé** : `UGA_vat_cap349_consolidated.pdf` — SHA `388c0abbebe3649419665c946458c117a298d9ed50c2a5b68d0ea9c6a26881ad` — https://a-tla.org/sites/default/files/2026-03/Uganda%20-%20Value%20Added%20Tax%20Chapter%20349.pdf. **L'art. 78 porte « Regulations and amendment of Schedules »** : pas d'ordonnance ministérielle fixant le 18 % trouvée ; le taux reste à fonder sur le texte (Premier Schedule/s. 14) — vérification restante.
+- URA « Tax Amendments FY 2026/27 » : `UGA_ura_tax_amendments_fy2026-27.pdf` — SHA `1c4af2fc05a22ce7b2d2600a665d45a3c44a25fe05304bc28a7cc669287a88b5` — https://ura.go.ug/en/download/tax-amendments-fy-2026-2027/
+- URA « Tax Amendments 2024/25 » : https://ura.go.ug/wp-content/uploads/2024/06/Final-Tax-amendments-2024-25.pdf (40 p.) — non déposé (résumé URA ; les actes sont déposés).
+- Schedule 2 complet (principal Excise Duty Act Cap. 340 consolidé) : l'ULII 2014/2 renvoyait 4xx — reste à télécharger.
+- 2024 : `bills.parliament.ug/attachments/Excise Duty (Amendment) Act, 2024.pdf` déposé en local (`UGA_excise_amendment_2024.pdf`, scanné, OCR imparfait) — non déposé dans le git ; à re-scanner si nécessaire.
+- Prélèvements à l'importation (infrastructure levy, retenue à la source, prélèvement environnemental) : textes non encore identifiés individuellement — couverts par les URA Tax Amendments ci-dessus à lire.
+
+### Reste non obtenu
+Burundi, Soudan du Sud, RDC (lois de finances, accises, redevances ; question TEC vs tarif national RDC) : non traités à ce stade.
