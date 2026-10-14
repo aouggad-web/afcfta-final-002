@@ -19,7 +19,7 @@
     "assiette": "TVA : CIF+TOUS_SAUF_TVA ; Taxe de Table : CIF+TOUS_SAUF_TVA, liquidée après les autres prélèvements et avant la TVA",
     "portee": "backend/socle/assiettes_pays.json (EGY : TVA et ضريبةالجدول) ; scripts/build_socle.py, _egypte (TAXE_DE_TABLE_EGY, TABAC_TAXE_DE_TABLE_EGY, TAXE_DE_TABLE_ALCOOLS_EGY, REDEVANCES_EGY, TAXE_DE_TABLE_CIGARETTES_EGY) ; le calculateur sert l'Égypte par le socle seul.",
     "texte_archive": "sources/EGY_TVA_taxe_de_table.extrait.txt",
-    "sha256": "4447c52ee138885fc99a933fd232531b67222e86130dbf67674bf3f26591f35c"
+    "sha256": "e88a10b0f6e920a8b01840edec56d51703962211e19cfdea75509e657f763b7a"
   },
   "decisions": [
     "TVA : la collecte la mettait sur la seule valeur en douane, et la table d'assiettes citait un « art. 29 (TVA base = CIF) » que la loi ne contient pas. L'art. 10 (7) l'assied sur la valeur, les droits de douane et les autres impôts et redevances ; l'art. 10 (10) y ajoute la Taxe de Table. La douane publie elle-même « 14% (من القيمة + ر.ض.جمركية) » (valeur + droits de douane) sur 7 780 lignes.",
@@ -41,7 +41,7 @@
   "documents_archives": [
     {
       "texte_archive": "sources/EGY_TVA_taxe_de_table.extrait.txt",
-      "sha256": "4447c52ee138885fc99a933fd232531b67222e86130dbf67674bf3f26591f35c"
+      "sha256": "e88a10b0f6e920a8b01840edec56d51703962211e19cfdea75509e657f763b7a"
     },
     {
       "document_non_archive": "Loi n° 67/2016 (TVA), fac-similé du JO n° 35 bis (c) du 07/09/2016, 50 pages, versé sur la PR #643 (data/egypt/docs/EGY_loi_67_2016_TVA_JO_35bis_c_2016-09-07.pdf)",

@@ -1818,8 +1818,9 @@ def _compter_ligne(d, compteurs, signe):
 
 #: Égypte (fiche EGY_TVA_taxe_de_table_2026-10-14.json). Les assiettes de la TVA
 #: et de la Taxe de Table sont dans assiettes_pays.json (loi 67/2016, art. 10 et
-#: 39) ; restent ici l'ordre des lignes, les tabacs du tableau, partie I, et la
-#: Taxe de Table que la collecte annonce sans taux.
+#: 39) ; restent ici l'ordre des lignes, les tabacs du tableau, partie I, la
+#: Taxe de Table des alcools et des cigarettes, que la collecte ne chiffre pas,
+#: et l'assiette des redevances publiées sans elle.
 TAXE_DE_TABLE_EGY = "ضريبةالجدول"
 MINIMUMS_EGY = {"ضريبةالجدول2", "VAT2"}
 TABAC_TAXE_DE_TABLE_EGY = (
@@ -1861,8 +1862,9 @@ TAXE_DE_TABLE_CIGARETTES_EGY = (
 
 
 def _egypte(positions, compteurs, donnees):
-    """Égypte : lignes publiées deux fois, tabacs, Taxe de Table sans taux, ordre
-    des lignes. Fiche EGY_TVA_taxe_de_table_2026-10-14.json."""
+    """Égypte : lignes publiées deux fois, tabacs, redevances, Taxe de Table des
+    alcools et des cigarettes, ordre des lignes. Fiche
+    EGY_TVA_taxe_de_table_2026-10-14.json."""
     instructions = {
         str(x.get("hs_code")): x.get("official_instructions") or []
         for x in donnees.get("sub_positions") or []
@@ -1900,7 +1902,7 @@ def _egypte(positions, compteurs, donnees):
                 d = {
                     "taux": taux,
                     "assiette": "CIF+TOUS_SAUF_TVA",
-                    "assiette_origine": "decision",
+                    "assiette_origine": "texte_primaire",
                     "specifique": {
                         "montant": minimum,
                         "unite_monetaire": "unite_principale",

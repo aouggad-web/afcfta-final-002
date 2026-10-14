@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-14T10:53:36.722957+00:00",
+  "construit_le": "2026-10-14T11:28:35.080300+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -526,7 +526,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/EGY_tariffs.json",
       "source_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
-      "socle_sha256": "4b296d6ae2573e9520391fe359a2cb2e26a116e4886918ff1babd2e7af0f1928",
+      "socle_sha256": "3604308fa94829331318806998f9562b020e7e3ddc0873b42483a4a1cbcc1fbd",
       "collecte": "2026-08-29T21:57:37.493425+00:00",
       "etat": "PARTIEL",
       "familles": [
