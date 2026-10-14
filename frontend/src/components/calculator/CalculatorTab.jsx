@@ -563,7 +563,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // renommé et à l'accise sur valeur + droit du socle près ; MAR laisse
       // incomplètes les positions sans TVA publiée) et le Gabon (TVA du CGI
       // art. 216 : valeur + droits de douane + droit d'accises, sans la TCI
-      // que l'autre porte y ajoute). Le Kenya (mêmes totaux) : ses remises de
+      // que l'autre porte y ajoute). Au Rwanda et en Tanzanie, le socle assied
+      // la TVA sur la valeur et tous les droits, accise comprise (loi 049/2023,
+      // art. 16 ; VAT Act 2014, s. 9), et suit les barèmes du tabac de leurs
+      // lois d'accise et de l'Ouganda. Le Kenya (mêmes totaux) : ses remises de
       // droits de la gazette EAC sont appliquées par le socle, sur autorisation
       // déclarée dans le formulaire, comme les sursis d'application de la
       // Tanzanie, de l'Ouganda, du Rwanda et du Burundi. Reste sur l'autre
