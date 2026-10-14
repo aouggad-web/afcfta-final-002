@@ -70,3 +70,21 @@ def test_amendement_du_tec_pour_tous():
 def test_exclusion_lue():
     """Table I n° 121 : Tanzanie, fils de coton à 25 % sauf 5205.23.00."""
     assert "EAC/160/2026" not in str(_dd("TZA", "52052300")[1].get("source"))
+
+
+@pytest.mark.parametrize("iso,code,source", [
+    ("UGA", "85287290", "Table II, n° 45 (p. 42)"),
+    ("UGA", "11081100", "Table II, n° 47 (p. 42)"),
+    ("UGA", "63039200", "Table VII, n° 10 (p. 65)"),
+    ("KEN", "96121090", "Table I, n° 324 (p. 39)"),
+])
+def test_colonnes_decalees_lues(iso, code, source):
+    """Pages 39, 42 et 65 : des colonnes vides décalent la position, qui reste lue."""
+    assert source in _dd(iso, code)[1]["source"]
+
+
+def test_aucune_mesure_appliquee_sans_position():
+    with open(MESURES, encoding="utf-8") as f:
+        mesures = json.load(f)["mesures"]
+    assert not [(m["table"], m["sn"]) for m in mesures if not m["positions"]
+                and any(d.get("lu") and not d.get("restriction") for d in m["decisions"])]

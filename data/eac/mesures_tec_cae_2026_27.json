@@ -8369,40 +8369,114 @@
 "table": "I",
 "sn": 321,
 "page": 39,
-"positions": [],
-"decisions": [],
+"positions": [
+"39.07"
+],
+"decisions": [
+{
+"decision": "Uganda to stay the application of the EAC CET rate and apply 10% for one year",
+"lu": true,
+"pays": [
+"UGA"
+],
+"droit": {
+"taux": 10.0
+},
+"restriction": null
+}
+],
 "description": "39.07"
 },
 {
 "table": "I",
 "sn": 322,
 "page": 39,
-"positions": [],
-"decisions": [],
+"positions": [
+"1001.99.10",
+"1001.99.90"
+],
+"decisions": [
+{
+"decision": "Uganda to stay the application of the EAC CET rate of 35% and apply a duty rate of 10% for one year",
+"lu": true,
+"pays": [
+"UGA"
+],
+"droit": {
+"taux": 10.0
+},
+"restriction": null
+}
+],
 "description": "1001.99.10 1001.99.90"
 },
 {
 "table": "I",
 "sn": 323,
 "page": 39,
-"positions": [],
-"decisions": [],
+"positions": [
+"8523.29.20",
+"8523.49.10",
+"8523.80.10"
+],
+"decisions": [
+{
+"decision": "Kenya to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year",
+"lu": true,
+"pays": [
+"KEN"
+],
+"droit": {
+"taux": 10.0
+},
+"restriction": null
+}
+],
 "description": "8523.29.20 8523.49.10 8523.80.10"
 },
 {
 "table": "I",
 "sn": 324,
 "page": 39,
-"positions": [],
-"decisions": [],
+"positions": [
+"9612.10.90"
+],
+"decisions": [
+{
+"decision": "Kenya to stay the application of the EAC CET rate and apply 35% for one year",
+"lu": true,
+"pays": [
+"KEN"
+],
+"droit": {
+"taux": 35.0
+},
+"restriction": null
+}
+],
 "description": "9612.10.90"
 },
 {
 "table": "I",
 "sn": 325,
 "page": 39,
-"positions": [],
-"decisions": [],
+"positions": [
+"7216.31.90",
+"7216.32.90",
+"7216.33.90",
+"7216.40.90"
+],
+"decisions": [
+{
+"decision": "Kenya a stay application of the EAC CET rate of 0% and apply a duty rate of 35% or US$ 350 / MT for U, I, H, L & T sections of less than 300 mm whichever is higher for one year",
+"lu": false,
+"pays": [
+"KEN"
+],
+"droit": {},
+"restriction": "35% or US$ 350 / MT for U, I, H, L & T sections of less than 300 mm whichever is higher"
+}
+],
 "description": "7216.31.90 7216.32.90 7216.33.90 7216.40.90"
 },
 {
@@ -9186,7 +9260,9 @@
 "table": "II",
 "sn": 38,
 "page": 42,
-"positions": [],
+"positions": [
+"4821.10.00"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 10% and apply a duty rate of 36% for one year",
@@ -9205,7 +9281,9 @@
 "table": "II",
 "sn": 39,
 "page": 42,
-"positions": [],
+"positions": [
+"4821.90.00"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 10% and apply a duty rate of 36% for one year",
@@ -9224,7 +9302,9 @@
 "table": "II",
 "sn": 40,
 "page": 42,
-"positions": [],
+"positions": [
+"4909.00.00"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 35% and apply a duty rate of 36% for one year",
@@ -9243,7 +9323,9 @@
 "table": "II",
 "sn": 41,
 "page": 42,
-"positions": [],
+"positions": [
+"4910.00.00"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 35% and apply a duty rate of 36% for one year",
@@ -9262,7 +9344,9 @@
 "table": "II",
 "sn": 42,
 "page": 42,
-"positions": [],
+"positions": [
+"4911.10.00"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 35% and apply a duty rate of 36% for one year",
@@ -9281,7 +9365,9 @@
 "table": "II",
 "sn": 43,
 "page": 42,
-"positions": [],
+"positions": [
+"4911.91.00"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 35% and apply a duty rate of 36% for one year",
@@ -9300,7 +9386,9 @@
 "table": "II",
 "sn": 44,
 "page": 42,
-"positions": [],
+"positions": [
+"4911.99.10"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 35% and apply a duty rate of 36% for one year",
@@ -9319,7 +9407,9 @@
 "table": "II",
 "sn": 45,
 "page": 42,
-"positions": [],
+"positions": [
+"8528.72.90"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 25% and apply a duty rate of 36% for one year",
@@ -9338,7 +9428,9 @@
 "table": "II",
 "sn": 46,
 "page": 42,
-"positions": [],
+"positions": [
+"8528.73.90"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 25% and apply a duty rate of 36% for one year",
@@ -9357,7 +9449,9 @@
 "table": "II",
 "sn": 47,
 "page": 42,
-"positions": [],
+"positions": [
+"11.08"
+],
 "decisions": [
 {
 "decision": "Uganda to stay application of EAC CET rate of 10% and apply a duty rate of 36% for one year",
@@ -28949,7 +29043,9 @@
 "table": "VII",
 "sn": 10,
 "page": 65,
-"positions": [],
+"positions": [
+"6303.92.00"
+],
 "decisions": [
 {
 "decision": "en-tête de la Table VII",
@@ -28974,7 +29070,9 @@
 "table": "VII",
 "sn": 11,
 "page": 65,
-"positions": [],
+"positions": [
+"6303.99.00"
+],
 "decisions": [
 {
 "decision": "en-tête de la Table VII",
@@ -28999,7 +29097,9 @@
 "table": "VII",
 "sn": 12,
 "page": 65,
-"positions": [],
+"positions": [
+"6304.19.00"
+],
 "decisions": [
 {
 "decision": "en-tête de la Table VII",
@@ -29024,7 +29124,9 @@
 "table": "VII",
 "sn": 13,
 "page": 65,
-"positions": [],
+"positions": [
+"6304.91.90"
+],
 "decisions": [
 {
 "decision": "en-tête de la Table VII",
@@ -29049,7 +29151,9 @@
 "table": "VIII",
 "sn": 1,
 "page": 65,
-"positions": [],
+"positions": [
+"7319.40.00"
+],
 "decisions": [
 {
 "decision": "Tanzania 10% and Rwanda 0%",
@@ -29062,7 +29166,9 @@
 "table": "VIII",
 "sn": 2,
 "page": 65,
-"positions": [],
+"positions": [
+"7319.90.00"
+],
 "decisions": [
 {
 "decision": "Rwanda: 0%",
@@ -29075,7 +29181,9 @@
 "table": "VIII",
 "sn": 3,
 "page": 65,
-"positions": [],
+"positions": [
+"8213.00.00"
+],
 "decisions": [
 {
 "decision": "Tanzania 0%",
@@ -29088,7 +29196,9 @@
 "table": "IX",
 "sn": 1,
 "page": 65,
-"positions": [],
+"positions": [
+"7319.90.00"
+],
 "decisions": [
 {
 "decision": "(a) Tanzania and Burundi: 0%; and (b) Rwanda: 10%",
@@ -29101,7 +29211,9 @@
 "table": "IX",
 "sn": 2,
 "page": 65,
-"positions": [],
+"positions": [
+"8202.10.00"
+],
 "decisions": [
 {
 "decision": "Tanzania, Burundi and Rwanda: 0%",
@@ -29114,7 +29226,9 @@
 "table": "IX",
 "sn": 3,
 "page": 65,
-"positions": [],
+"positions": [
+"8202.40.00"
+],
 "decisions": [
 {
 "decision": "Tanzania, Burundi and Rwanda: 0%",
@@ -29127,7 +29241,9 @@
 "table": "IX",
 "sn": 4,
 "page": 65,
-"positions": [],
+"positions": [
+"8202.99.00"
+],
 "decisions": [
 {
 "decision": "Tanzania 0%",
@@ -29140,7 +29256,9 @@
 "table": "IX",
 "sn": 5,
 "page": 65,
-"positions": [],
+"positions": [
+"8202.91.00"
+],
 "decisions": [
 {
 "decision": "Tanzania and Burundi: 0%",
@@ -29153,7 +29271,9 @@
 "table": "IX",
 "sn": 6,
 "page": 65,
-"positions": [],
+"positions": [
+"8203.10.00"
+],
 "decisions": [
 {
 "decision": "Tanzania, Burundi and Rwanda: 0%",
@@ -29166,7 +29286,9 @@
 "table": "IX",
 "sn": 7,
 "page": 65,
-"positions": [],
+"positions": [
+"8203.40.00"
+],
 "decisions": [
 {
 "decision": "Tanzania, Burundi and Rwanda: 0%",
@@ -29179,7 +29301,9 @@
 "table": "IX",
 "sn": 8,
 "page": 65,
-"positions": [],
+"positions": [
+"8205.20.00"
+],
 "decisions": [
 {
 "decision": "Tanzania and Burundi: 0%",
@@ -29192,7 +29316,9 @@
 "table": "IX",
 "sn": 9,
 "page": 65,
-"positions": [],
+"positions": [
+"8205.30.00"
+],
 "decisions": [
 {
 "decision": "Tanzania, Burundi and Rwanda: 0%",
@@ -29205,7 +29331,9 @@
 "table": "IX",
 "sn": 10,
 "page": 65,
-"positions": [],
+"positions": [
+"8209.00.00"
+],
 "decisions": [
 {
 "decision": "Tanzania, Burundi and Rwanda: 0%",

@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-14T09:22:41.884817+00:00",
+  "construit_le": "2026-10-14T11:02:10.060243+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -43,7 +43,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BDI_tariffs.json",
       "source_sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275",
-      "socle_sha256": "02ffae0e2967a300be06d8a41aea9b05343743409bd2154714eff120b9b66907",
+      "socle_sha256": "b4983f3206b8dbf5238cdfa01bfdae8b520e07ce10f85fcf4720cf0989d95616",
       "collecte": "2026-02-18T10:54:36.463488",
       "etat": "COMPLET",
       "familles": [
@@ -865,7 +865,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/KEN_tariffs.json",
       "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
-      "socle_sha256": "0d9d4fa1e7a9d01697412e70172098c0386427f3bda78a180234127f7e7650e6",
+      "socle_sha256": "e855b7c5f662df60a342e0972111c49c5bf19cb187278b8bbb345b0fae7a2e49",
       "collecte": "2026-02-18T10:54:33.961294",
       "etat": "COMPLET",
       "familles": [
@@ -884,9 +884,9 @@
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 48,
-        "assiettes_source": 23314,
+        "assiettes_source": 23312,
         "assiettes_fichier": 0,
-        "assiettes_table": 644,
+        "assiettes_table": 646,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -1383,7 +1383,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/RWA_tariffs.json",
       "source_sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
-      "socle_sha256": "594a9a84fefa5266ac5c0221bbea0484436e5dc0b6eb454a5a89f0735d920699",
+      "socle_sha256": "35884e357934f12328b4d4b54c9be0c934bdc3647712f5cf5acd7cbaafe1a861",
       "collecte": "2026-02-18T10:54:35.914199",
       "etat": "PARTIEL",
       "familles": [
@@ -1567,7 +1567,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SSD_tariffs.json",
       "source_sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b",
-      "socle_sha256": "1860328a3cd9a02147047568d1c132991e4350c4ebf181cb7d16b4abd6cb358c",
+      "socle_sha256": "f55dd540a4fb15ea52179fa2175e0c9ef800c415382954e7335844a6bf18a3fa",
       "collecte": "2026-02-18T10:54:36.997956",
       "etat": "COMPLET",
       "familles": [
@@ -1825,7 +1825,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TZA_tariffs.json",
       "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
-      "socle_sha256": "5a748c8f4d5122335f84ecb7db66693adcd0c898eb0d71f88b121b9356981580",
+      "socle_sha256": "9a352189671eab10f911eb389254cd819ceb683eb448769dded888224d0e7f68",
       "collecte": "2026-02-18T10:54:34.697265",
       "etat": "COMPLET",
       "familles": [
@@ -1862,7 +1862,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/UGA_tariffs.json",
       "source_sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4",
-      "socle_sha256": "9fd84f106c2c7a2bc2d855168399a2d7d765c2e7ced5a2677228df50976a4fbb",
+      "socle_sha256": "a6610028f3aa68e3c57af9622126a59c0c5b2bfed33f62da73bf7d0a25cf7720",
       "collecte": "2026-02-18T10:54:35.212682",
       "etat": "PARTIEL",
       "familles": [
@@ -1881,13 +1881,13 @@
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 50,
-        "assiettes_source": 17003,
+        "assiettes_source": 16973,
         "assiettes_fichier": 0,
-        "assiettes_table": 927,
+        "assiettes_table": 957,
         "assiettes_indisponibles": 2,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 133,
+        "droits_composes": 137,
         "restrictions": 0,
         "interdictions": 0,
         "droits_absents_completes": 4,

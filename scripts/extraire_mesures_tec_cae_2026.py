@@ -227,11 +227,18 @@ lignes = regrouper(lignes_de_tableau(document, premiere, derniere))
 mesures, entetes = [], {}
 for ligne in lignes:
     t, cel = ligne["table"], ligne["cellules"]
-    codes = CODE.findall(cel[1]) if len(cel) > 1 else []
+    # Certaines pages (42, 65) intercalent des colonnes vides : la position est
+    # dans la première cellule après le numéro qui en porte une, pas toujours la
+    # deuxième.
+    col = next((i for i in range(1, len(cel) - 1) if CODE.findall(cel[i])), None)
+    codes = CODE.findall(cel[col]) if col else []
     mesure = {"table": t, "sn": ligne["sn"], "page": ligne["page"], "positions": codes}
     if t == "I":
         mesure["decisions"] = decisions(cel[-1]) if codes else []
-        mesure["description"] = cel[2] if len(cel) > 3 else ""
+        if col:
+            mesure["description"] = next((c for c in cel[col + 1:-1] if c), "")
+        else:
+            mesure["description"] = cel[2] if len(cel) > 3 else ""
     elif t == "II":
         mesure["decisions"] = decisions(cel[-1])
     elif t in ("III", "IV", "V", "VI", "VII"):
@@ -252,6 +259,9 @@ for ligne in lignes:
                                 "droit": sans_expression(taux), "restriction": None}]
     mesures.append(mesure)
 
+sans_position = [(r["table"], r["sn"]) for r in mesures
+                 if not r["positions"] and any(d.get("lu") and not d.get("restriction") for d in r["decisions"])]
+assert not sans_position, f"mesures appliquées sans position : {sans_position}"
 json.dump({
     "source": "Legal Notice No. EAC/160/2026, EAC Gazette Vol. AT 1 No. 16 du 30/06/2026 (exercice 2026/27)",
     "pdf_sha256": hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest(),
