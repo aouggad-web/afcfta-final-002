@@ -1,0 +1,51 @@
+CAE — quatre lignes du TEC, assiette de la TVA (Rwanda, Tanzanie) et accise sur le tabac (Rwanda, Tanzanie, Ouganda) : extraits verbatim (relevés le 2026-10-13 et le 2026-10-14)
+
+1. TEC CAE 2022, consolidation de juin 2025 (TRA), PDF de 577 pages, sha256 9d894c290304a75b2a77db3d16eabc73aa172eeb3a09a0d76668e6fc95b9af9f (backend/data/legal_refs/zlecaf_application/sources/TZA_tra_cet_eac_2022_maj_2025-06.pdf), p. 280, 302 et 534 :
+
+« 5302.10.00 - True hemp raw or retted kg 0% »
+
+« 5811.00.00 Quilted textile products in the piece, composed of one or more layers of textile materials assembled with padding by stitching or otherwise, other than embroidery of heading 58.10 kg 25% »
+
+« 9209.92.00 -- Parts and accessories for the musical instruments of heading 92.02 kg 10% »
+
+« 9209.94.00 -- Parts and accessories for the musical instruments of heading 92.07 kg 10% »
+
+2. Loi n° 049/2023 portant TVA (Rwanda), sha256 b33e9a7575a6af69b0fdcaff3928c17d8b75d17d528c1979aebb209e99d5ab01 (data/sources/rwanda/official/rwa-law-049-2023-vat.pdf) :
+
+« Article 16: Basic Value for taxation of imported goods (1) The basic value for taxation of imported goods is the sum of – (a) the value of the goods as determined by customs law, whether or not customs duty is payable on such imported goods; (b) the cost of insurance and freight incurred in bringing the goods to Rwanda; (c) the cost for services which facilitated the import of goods; (d) the amount of customs duty, excise, port charges or other fiscal charges other than value added tax payable in respect of imported goods. »
+
+3. Value Added Tax Act 2014 (Tanzanie), sha256 eb18d07c2afabf00135ddcc26ea8bd039b93aa6ad4540e7472d6474c88d4e1e7 (data/sources/tanzania/official/tza-vat-act-2014.pdf) :
+
+« 9. Value of import The value of an import of goods shall be the sum of— (a) the value of goods for the purposes of customs duty under the East African Customs Management Act, whether or not duty is payable on the import; (b) the amount of any customs duty payable on the import; and (c) the amount of any tax, levy, fee, or ﬁscal charge other than customs duty and value added tax payable on the import of the goods. »
+
+4. Excise (Management and Tariff) Act Cap. 147 (Tanzanie), consolidation 2025 (OAG), sha256 4e874f11a067c8ebfce97797ee03ff9e470d0d9b84cd91de4f98eb033e541bac, versé sur la PR #640 (TZ_excise_cap147_consolidated_2025_oag.pdf), art. 144 :
+
+« 144.–(1) The excisable value of a scheduled article shall- (a) in respect of a scheduled article imported, be the value declared and determined in accordance with the provisions of the Customs (Management and Tariff) Act taking into account the import duty payable; »
+
+4 bis. Finance Act 2026 (Tanzanie), Act No. 2 of 2026 (OAG), sha256 ea7ad0181a36a7d23b78670e430868903a6a55e2a9d05ed2c8e77c8bd619e9f7, versé sur la PR #640 (TZ_finance_act_2026_act2_oag.pdf), art. 2 et 10 (colonnes « Old Excise rate » et « New Excise rate ») :
+
+« Commencement 2. This Act shall come into operation on the 1st day of July, 2026. »
+
+« Amendment of Fourth Schedule 10. The principal Act is amended in the Fourth Schedule, by- (a) deleting the whole of Headings 15.17, 17.04, 18.06, 19.05, 20.05, 20.08, 20.09, 21.03, 21.06, 22.01, 22.02, 22.03, 22.04, 22.05, 22.06, 22.08, 24.02, 24.03, 25.23, 27.10, 32.08, 34.03, 36.05 and 85.23 and substituting for them the following: »
+
+« - Cigarettes containing tobacco: 2402.20.10 --- Of length not exceeding 72mm in length including the filter tip Locally produced without filter tip and containing domestic tobacco exceeding 75% mil Tshs. 14,936.40 per mil Tshs. 16,151.3 1 per mil Locally produced with filter tip and containing domestic tobacco exceeding 75% mil Tshs. 35,310.00 per mil Tshs. 38,154.8 0 per mil Other mil Tshs. 67,076.10 per mil Tshs. 72,462.1 9 per mil 2402.20.90 --- Other Locally produced without filter tip and containing domestic tobacco exceeding 75% mil Tshs. 14,936. 40 per mil Tshs. 16,151. 31 per mil Locally produced with filter tip and containing domestic tobacco exceeding 75% mil Tshs. 35,310. 00 per mil Tshs. 38,154. 80 per mil Other mil Tshs. 67,076. 10 per mil Tshs. 72,462. 19 per mil 24.03 Other manufactured tobacco and manufactured tobacco substitutes; “homogenised” or No. 2 The Finance Act, 2026 17 “reconstituted” tobacco; tobacco extracts and essences. -Smoking tobacco, whether or not containing tobacco substitute in any propotion: 2403.19.00 -- Other (for example cut rag/filler) Locally produced containing domestic tobacco exceeding 75% kg Tshs. 9,600.0 0 per kg Tshs. 10,388. 00 per kg Other/Imported kg Tshs. 33,878. 88 per kg Tshs. 36,609. 19 per kg 2403.91.00 -- “Homogenized” or “reconstituted” tobacco kg Tshs. 33,878. 88 per kg Tshs. 36,609. 19 per kg 2403.99.00 -- Other kg Tshs. 33,878. 88 per kg Tshs. 36,609. 19 per kg »
+
+5. Excise Duty Act Cap. 336 (Ouganda), à jour au 31/12/2023 (ULII/Laws.Africa), sha256 986154f132dd1b7c68afc0e50e451b0caa8ce74089fcc9050b204022f80a07bd, versé sur la PR #640 (UGA_excise_cap340_consolidated_2025-07.pdf), s. 1 (8) et Schedule 2, item 1 :
+
+« (8) The value of an imported excisable good is the sum of the value of the good ascertained for the purposes of import duty under the laws relating to customs; and the amount of import duty payable on that good. »
+
+« (c)Cigars, cheroots, cigarillos containing tobacco 200% (d)Smoking tobacco, whether or not containing tobacco substitutes in any proportion 200% (e)Homogenised or reconstituted tobacco 200% (f)Other 200% »
+
+6. Excise Duty (Amendment) Act 2025 (Ouganda), Act 14, en vigueur au 1er juillet 2025, sha256 ad73cefdb9e65e4229e9161ef50882b104858c9c538b0a0bd6c498ca60a9b4cd, versé sur la PR #640 (UGA_excise_duty_amendment_2025_act14.pdf) :
+
+« by substituting for items 1 (a) and (b), the following— “(a) Soft cap (i) locally manufactured Ushs. 65,000 per 1000 sticks (ii) imported Ushs. 150,000 per 1000 sticks (b) Hinge lid (i) locally manufactured Ushs. 90,000 per 1000 sticks (ii) imported Ushs. 200,000 per 1000 sticks” »
+
+7. Loi n° 011/2025 portant droit d'accise (Rwanda), Official Gazette n° Special du 29/05/2025, sha256 32e34ac1be0a8c3806f24e398b4adc9ff2fb1e9256f5c290ceb05549cefd163a, versé sur la PR #640 (RWA_excise_duty_law_mai2025.pdf), art. 6 et annexe :
+
+« Article 6: Tax base (1) Without prejudice to the tax procedure applicable to the quantity of certain products and which is provided for in Article 4 – (a) the tax base for an imported product is calculated in accordance with the provisions of the East African Community Customs Act; »
+
+« (c) the tax base for cigarettes is the combination of a specific base and the retail price, tax inclusive. »
+
+« 13. Cigarettes 36% of retail price tax inclusive of a pack of 20 rods plus Frw 230 per pack 2402.20.10 2402.20.90 2402.90.00 »
+
+« 14. Cigar and similar products containing tobacco or tobacco substitutes 160% 2402.10.00 »

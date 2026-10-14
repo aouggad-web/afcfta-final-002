@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "objet": "CAE : quatre positions du TEC absentes de la collecte (6 pays), assiette de la TVA à l'importation (Rwanda, Tanzanie) et accise sur le tabac importé (Rwanda, Tanzanie, Ouganda)",
+  "destination_iso3": ["KEN", "RWA", "TZA", "UGA", "BDI", "SSD"],
+  "verified_at": "2026-10-13",
+  "etabli": true,
+  "evidence_level": "primaire — TEC CAE 2022 consolidé (TRA, juin 2025) ; lois TVA du Rwanda (n° 049/2023) et de la Tanzanie (VAT Act 2014) ; lois d'accise de la Tanzanie (Cap. 147, consolidation 2025, et Finance Act 2026), de l'Ouganda (Cap. 336 et Act 14 de 2025) et du Rwanda (n° 011/2025)",
+  "source": {
+    "url": "https://www.tra.go.tz/",
+    "institution": "Communauté d'Afrique de l'Est ; administrations fiscales du Rwanda, de la Tanzanie et de l'Ouganda"
+  },
+  "regle": {
+    "valeur": "TEC CAE : 5302.10 à 0 %, 5811.00 à 25 %, 9209.92 et 9209.94 à 10 % (KEN, RWA, TZA, UGA, BDI, SSD). TVA à l'importation sur la valeur en douane et tous les droits et taxes sauf la TVA au Rwanda (loi 049/2023, art. 16) et en Tanzanie (VAT Act 2014, s. 9), la collecte n'y mettant que le droit de douane. Accise sur le tabac importé : Tanzanie, depuis le 1er juillet 2026 (Finance Act 2026, art. 10), cigarettes 72 462,19 TZS par millier, tabacs 2403.19, 2403.91 et 2403.99 36 609,19 TZS par kg, cigares (2402.10), 2402.90 et 2403.11 sans accise ; Ouganda, cigares et tabacs 200 % sur la valeur et le droit d'importation (Cap. 336, s. 1 (8)), cigarettes 150 000 ou 200 000 Ushs par millier selon le conditionnement ; Rwanda, cigares 160 %, cigarettes à 36 % du prix de détail TTC plus 230 FRW par paquet.",
+    "verbatim": "(c) the amount of any tax, levy, fee, or ﬁscal charge other than customs duty and value added tax payable on the import of the goods.",
+    "reference": "TEC CAE 2022 consolidé (juin 2025), p. 280, 302 et 534 ; loi n° 049/2023 (Rwanda), art. 16 ; VAT Act 2014 (Tanzanie), s. 9 ; Excise (Management and Tariff) Act Cap. 147 (Tanzanie), art. 144 et Fourth Schedule, modifié par le Finance Act 2026 (Act No. 2/2026), art. 2 et 10 ; Excise Duty Act Cap. 336 (Ouganda), s. 1 (8) et Schedule 2, item 1, modifié par l'Act 14 de 2025 ; loi n° 011/2025 (Rwanda), art. 6 et annexe, n° 13 et 14",
+    "portee": "scripts/build_socle.py, _cae (PAYS_TEC_CAE, TEC_CAE_COMPLEMENTS, TVA_CAE, TABAC_CAE) ; le calculateur sert la Tanzanie et l'Ouganda par le socle en premier.",
+    "texte_archive": "sources/CAE_TEC_TVA_tabac.extrait.txt",
+    "sha256": "76cd90e46b4b690324ca7a9b975d678a6ec1dbc34c28aa060a37123679ae1e94"
+  },
+  "decisions": [
+    "Tanzanie, cigarettes : taux « Other » du Finance Act 2026 (72 462,19 TZS par millier, 67 076,10 auparavant) ; les taux de 16 151,31 et 38 154,80 TZS visent les cigarettes « locally produced » à plus de 75 % de tabac tanzanien. Liquidé à la quantité, en milliers de cigarettes.",
+    "Tanzanie, 2402.10, 2402.90 et 2403.11 : le Finance Act 2026 supprime les positions 24.02 et 24.03 du Fourth Schedule et leur substitue une liste qui ne les comprend pas (2402.90 et 2403.11 y étaient à 30 % dans la consolidation 2025) ; l'accise de la collecte est retirée. La lecture est littérale : une omission de rédaction n'est pas exclue.",
+    "Ouganda, cigarettes : le conditionnement (« soft cap » ou « hinge lid ») fixe le taux et n'est pas dans la position ; accise déclarée sans taux, total incomplet. L'Act 22 de 2026 ne modifie pas les tabacs.",
+    "Ouganda, cigares et tabacs : 200 % au lieu des 40 % de la collecte ; 2403.11 à 2403.99 en reçoivent désormais une.",
+    "Rwanda, cigarettes (2402.20.10, 2402.20.90, 2402.90.00) : le prix de détail n'est pas une donnée du calcul ; accise déclarée sans taux ni assiette, total incomplet.",
+    "Rwanda, cigares : 160 % au lieu des 36 % de la collecte, assiette de la collecte (valeur et droit de douane) conservée."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Rwanda, assiette de l'accise ad valorem à l'importation : l'art. 6 (1) (a) de la loi 011/2025 la renvoie à l'EACCMA, qui définit la valeur en douane sans y ajouter le droit ; la collecte porte valeur et droit de douane, l'autre chemin de calcul la seule valeur. Non tranché : le Rwanda reste servi par l'autre chemin.",
+    "Taux de TVA de 18 % en Ouganda : aucun texte lu n'énonce le taux (VAT Act Cap. 349, art. 24 (3) renvoie à l'art. 78 (2), qui ne le fixe pas).",
+    "Barèmes d'accise hors tabac (boissons, carburants, véhicules) : non revus.",
+    "Exceptions au TEC de l'exercice 2026/27 (Legal Notice EAC/160/2026) et remises (EAC/161/2026) : non appliquées au socle, objet d'une PR suivante.",
+    "RDC : non complétée. Elle applique son tarif national (ordonnance-loi n° 011-2012 du 21/09/2012, versée sur la PR #640) ; aucun acte appliquant le TEC CAE n'a été trouvé. Le socle de la RDC, construit sur le TEC CAE, est à reprendre sur ce tarif."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CAE_TEC_TVA_tabac.extrait.txt",
+      "sha256": "76cd90e46b4b690324ca7a9b975d678a6ec1dbc34c28aa060a37123679ae1e94"
+    },
+    {
+      "document_non_archive": "TEC CAE 2022, consolidation de juin 2025 (backend/data/legal_refs/zlecaf_application/sources/TZA_tra_cet_eac_2022_maj_2025-06.pdf)",
+      "pdf_sha256": "9d894c290304a75b2a77db3d16eabc73aa172eeb3a09a0d76668e6fc95b9af9f"
+    },
+    {
+      "document_non_archive": "Loi n° 049/2023 portant TVA, Rwanda (rwanda/official/rwa-law-049-2023-vat.pdf, sous data/sources)",
+      "pdf_sha256": "b33e9a7575a6af69b0fdcaff3928c17d8b75d17d528c1979aebb209e99d5ab01"
+    },
+    {
+      "document_non_archive": "Value Added Tax Act 2014, Tanzanie (tanzania/official/tza-vat-act-2014.pdf, sous data/sources)",
+      "pdf_sha256": "eb18d07c2afabf00135ddcc26ea8bd039b93aa6ad4540e7472d6474c88d4e1e7"
+    },
+    {
+      "document_non_archive": "Excise (Management and Tariff) Act Cap. 147, consolidation 2025 (OAG), versé sur la PR #640 (TZ_excise_cap147_consolidated_2025_oag.pdf)",
+      "pdf_sha256": "4e874f11a067c8ebfce97797ee03ff9e470d0d9b84cd91de4f98eb033e541bac"
+    },
+    {
+      "document_non_archive": "Finance Act 2026, Tanzanie (Act No. 2/2026, OAG), versé sur la PR #640 (TZ_finance_act_2026_act2_oag.pdf)",
+      "pdf_sha256": "ea7ad0181a36a7d23b78670e430868903a6a55e2a9d05ed2c8e77c8bd619e9f7"
+    },
+    {
+      "document_non_archive": "Excise Duty Act Cap. 336, à jour au 31/12/2023 (ULII), versé sur la PR #640 (UGA_excise_cap340_consolidated_2025-07.pdf)",
+      "pdf_sha256": "986154f132dd1b7c68afc0e50e451b0caa8ce74089fcc9050b204022f80a07bd"
+    },
+    {
+      "document_non_archive": "Excise Duty (Amendment) Act 2025, Act 14, Ouganda, versé sur la PR #640 (UGA_excise_duty_amendment_2025_act14.pdf)",
+      "pdf_sha256": "ad73cefdb9e65e4229e9161ef50882b104858c9c538b0a0bd6c498ca60a9b4cd"
+    },
+    {
+      "document_non_archive": "Loi n° 011/2025 portant droit d'accise, Rwanda, versé sur la PR #640 (RWA_excise_duty_law_mai2025.pdf)",
+      "pdf_sha256": "32e34ac1be0a8c3806f24e398b4adc9ff2fb1e9256f5c290ceb05549cefd163a"
+    }
+  ]
+}
