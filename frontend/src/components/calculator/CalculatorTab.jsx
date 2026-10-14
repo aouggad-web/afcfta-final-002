@@ -572,9 +572,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // Tanzanie, de l'Ouganda, du Rwanda et du Burundi. L'Égypte : le socle
       // assied la TVA et la Taxe de Table sur la valeur, les droits de douane
       // et les autres impôts (loi 67/2016, art. 10 et 39) quand l'autre porte
-      // les met sur la seule valeur, et déclare incomplètes les positions dont
-      // une redevance n'a pas d'assiette établie (chambres, assurance santé)
-      // ou dont la Taxe de Table n'est pas publiée (alcools, cigarettes).
+      // les met sur la seule valeur ; Taxe de Table des alcools au taux du
+      // tableau de 2016 et redevances des chambres sur la valeur, sur décision
+      // et avec leur réserve ; Taxe de Table des cigarettes, assise sur le prix
+      // de vente, déclarée incomplète.
       //
       // L'ALGÉRIE (bascule 2.3). Le socle est sa seule porte de calcul :
       // l'autre n'a plus de fichier algérien à lire.

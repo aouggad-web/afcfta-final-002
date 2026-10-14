@@ -1826,12 +1826,33 @@ TABAC_TAXE_DE_TABLE_EGY = (
     "Loi n° 67/2016, tableau annexé, partie I (« سلع وخدمات تخضع لضريبة الجدول فقط ») : les tabacs sont "
     "soumis à la seule Taxe de Table, que la douane publie sous « TVA ». Assiette de l'art. 39 (b)."
 )
-#: Taxe de Table due, taux non publié par la collecte : (instruction, note).
-TAXE_DE_TABLE_SANS_TAUX_EGY = {
-    "ر7065": "Instruction ر7065 de la douane : « تفرض ضريبة الجدول علي الكحول ». La collecte ne publie pas le "
-    "taux ; le tableau de la loi 67/2016 (partie II, item 3, c et d) le fixait en 2016 à 150 % avec un minimum "
-    "de 15 EGP par litre, taux que la douane publie aujourd'hui sur 2106.90.20. À compléter.",
+#: Alcools : la douane impose la Taxe de Table (instruction ر7065 « تفرض ضريبة
+#: الجدول علي الكحول ») sans en publier le taux. Taux du tableau de 2016, appliqués
+#: sur décision avec leur réserve : préfixe -> (taux %, minimum EGP/l, item).
+INSTRUCTION_ALCOOLS_EGY = "ر7065"
+TAXE_DE_TABLE_ALCOOLS_EGY = {
+    "2203": (250.0, 5.0, "item 4, bière alcoolisée : 250 % avec un minimum de 500 EGP par hectolitre (5 EGP/l)"),
+    "2204": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2205": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2206": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2208": (150.0, 15.0, "item 3 (d), spiritueux : 150 % avec un minimum de 15 EGP par litre"),
 }
+RESERVE_ALCOOLS_EGY = (
+    "Instruction ر7065 de la douane : Taxe de Table due, taux non publié. Loi n° 67/2016, tableau annexé, "
+    "partie II, {item}. Taux de 2016 appliqué sur décision, sous réserve d'une modification ultérieure du "
+    "tableau ; le minimum se liquide sur la quantité en litres."
+)
+#: Redevances publiées en % sans assiette, qu'aucun texte lu ne fixe.
+REDEVANCES_EGY = {
+    "رسممحصلةلحسابغرفةنسيج",
+    "رسممحصلةلحسابغرفةجلود",
+    "رسممحصلةلحسابغرفةدخان",
+    "تامينصحىوزارةالصحة",
+}
+RESERVE_REDEVANCES_EGY = (
+    "Publiée en % par la douane, sans assiette, et aucun texte lu ne la fixe : liquidée sur la valeur en "
+    "douane, sur décision, sous réserve."
+)
 TAXE_DE_TABLE_CIGARETTES_EGY = (
     "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
     "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
@@ -1865,24 +1886,43 @@ def _egypte(positions, compteurs, donnees):
                         famille="autre",
                         note=TABAC_TAXE_DE_TABLE_EGY,
                     )
+        for d in droits:
+            if d.get("code") in REDEVANCES_EGY and d.get("taux") is not None and not d.get("assiette"):
+                _compter_ligne(d, compteurs, -1)
+                d.update(assiette="CIF", assiette_origine="decision", note=RESERVE_REDEVANCES_EGY)
+                _compter_ligne(d, compteurs, 1)
         if not any(d.get("code") == TAXE_DE_TABLE_EGY for d in droits):
-            note, assiette = None, "CIF+TOUS_SAUF_TVA"
-            for instruction, texte in TAXE_DE_TABLE_SANS_TAUX_EGY.items():
-                if any(i.startswith(instruction) for i in instructions.get(code, [])):
-                    note = texte
-            if code.startswith("240220"):
-                note, assiette = TAXE_DE_TABLE_CIGARETTES_EGY, None
-            if note:
+            d = None
+            alcool = TAXE_DE_TABLE_ALCOOLS_EGY.get(code[:4])
+            if alcool and any(i.startswith(INSTRUCTION_ALCOOLS_EGY) for i in instructions.get(code, [])):
+                taux, minimum, item = alcool
+                brut = f"{taux:g} % (minimum {minimum:g} EGP/l)"
                 d = {
-                    "code": TAXE_DE_TABLE_EGY,
-                    "code_source": "ضريبة الجدول",
-                    "libelle": "Taxe de Table",
-                    "famille": "autre",
-                    "assiette": assiette,
-                    "assiette_origine": "texte_primaire" if assiette else None,
-                    "source": "Loi n° 67/2016 (TVA), art. 36 et tableau annexé",
-                    "note": note,
+                    "taux": taux,
+                    "assiette": "CIF+TOUS_SAUF_TVA",
+                    "assiette_origine": "decision",
+                    "specifique": {
+                        "montant": minimum,
+                        "unite_monetaire": "unite_principale",
+                        "sous_unite_source": None,
+                        "unite_quantite": "l",
+                        "brut": brut,
+                    },
+                    "compose": True,
+                    "regle_composee": "LE_PLUS_ELEVE",
+                    "expression_brute": brut,
+                    "note": RESERVE_ALCOOLS_EGY.format(item=item),
                 }
+            elif code.startswith("240220"):
+                d = {"assiette": None, "assiette_origine": None, "note": TAXE_DE_TABLE_CIGARETTES_EGY}
+            if d is not None:
+                d.update(
+                    code=TAXE_DE_TABLE_EGY,
+                    code_source="ضريبة الجدول",
+                    libelle="Taxe de Table",
+                    famille="autre",
+                    source="Loi n° 67/2016 (TVA), art. 36 et tableau annexé",
+                )
                 droits.append(d)
                 _compter_ligne(d, compteurs, 1)
         # La Taxe de Table et la TVA s'assoient sur les droits et taxes qui les

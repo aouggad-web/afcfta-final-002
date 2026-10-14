@@ -34,6 +34,10 @@ Document : Journal officiel n° 35 bis (c) du 7 septembre 2016 (الجريدة �
 
 « (١) المقصود بالقيمة هى سعر بيع المستهلك النهائى . (٢) تحصل الضريبة وضريبة الجدول عن إجمالى قيمة سعر بيع المستهلك النهائى من المنتج أو المستورد عند الإفراج الجمركى . »
 
+Tableau annexé, partie II, item 4 (JO p. 45) :
+
+« ٤ الجعة (البيرة) الكحولية القيمة ٢٥٠٪ بحد أدنى ٥٠٠ جنيه عن الهيكتولتر »
+
 8. Tarif de l'Autorité égyptienne des douanes (customs.gov.eg, collecte du 29/08/2026, backend/data/crawled/EGY_tariffs.json, sha256 4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94), lignes de taxes publiées :
 
 3303.00.00.10 : « ضريبة الوارد :  45% », « ضريبة قيمه مضافه :  14% (من القيمة + ر.ض.جمركية) », « ضريبة الجدول :  8% (من القيمة + ر.ض.جمركية) »

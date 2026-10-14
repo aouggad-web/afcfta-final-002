@@ -1,6 +1,7 @@
 """Égypte : TVA et Taxe de Table sur la valeur, les droits de douane et les
 autres impôts (loi 67/2016, art. 10 et 39), tabacs à la seule Taxe de Table,
-Taxe de Table des alcools sans taux. Fiche : EGY_TVA_taxe_de_table_2026-10-14.json."""
+Taxe de Table des alcools au taux du tableau de 2016 et redevances sur la
+valeur en douane (décisions avec réserve). Fiche : EGY_TVA_taxe_de_table_2026-10-14.json."""
 
 import json
 import os
@@ -22,8 +23,8 @@ def _positions():
         return json.load(f)["positions"]
 
 
-def _calcul(code):
-    r = calculer(_positions()[code], 1000)["npf"]
+def _calcul(code, quantite=None):
+    r = calculer(_positions()[code], 1000, quantite=quantite)["npf"]
     return r["etat"], {l["code"]: l for l in r["lignes"]}
 
 
@@ -53,15 +54,28 @@ def test_tabac_a_la_seule_taxe_de_table():
     assert tt["taux"] == 200.0 and "partie I" in tt["note"]
 
 
-@pytest.mark.parametrize("code", ["2203000000", "2208300000"])
-def test_alcool_taxe_de_table_a_completer(code):
-    """Instruction ر7065 : Taxe de Table due, taux non publié ; la TVA, qui s'y
-    assied, ne se liquide pas non plus."""
-    etat, lignes = _calcul(code)
+def test_alcool_taxe_de_table_reclame_les_litres():
+    """Instruction ر7065 : 150 % avec un minimum de 15 EGP/l (tableau de 2016,
+    sur décision) ; sans quantité, ni elle ni la TVA qui s'y assied."""
+    etat, lignes = _calcul("2208300000")
     assert etat == "PARTIEL"
-    assert lignes[TAXE_DE_TABLE]["statut"] == "TAUX_INDISPONIBLE"
-    assert "À compléter" in lignes[TAXE_DE_TABLE]["note"]
+    assert lignes[TAXE_DE_TABLE]["statut"] == "QUANTITE_REQUISE"
+    assert "sous réserve" in lignes[TAXE_DE_TABLE]["note"]
     assert lignes["TVA"]["montant"] is None
+
+
+def test_alcool_le_plus_eleve_des_deux():
+    """Whisky, 10 l : DD 3 000 % ; Taxe de Table max(150 % × 31 000, 15 × 10)."""
+    etat, lignes = _calcul("2208300000", quantite=10)
+    assert etat == "COMPLET"
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(46_500.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 30_000 + 46_500))
+
+
+def test_biere_a_son_propre_taux():
+    """Bière alcoolisée : 250 % avec un minimum de 500 EGP par hectolitre (item 4)."""
+    tt = next(d for d in _positions()["2203000000"]["droits"] if d["code"] == TAXE_DE_TABLE)
+    assert tt["taux"] == 250.0 and tt["specifique"]["montant"] == 5.0
 
 
 def test_cigarettes_taxe_de_table_sur_le_prix_de_vente():
@@ -78,9 +92,10 @@ def test_ligne_publiee_deux_fois_comptee_une_fois():
     assert lignes["TVA"]["montant"] == pytest.approx(224.0)
 
 
-def test_frais_de_chambre_sans_assiette():
-    """Textile : la redevance de la chambre n'a pas d'assiette établie ; la TVA,
-    qui s'assied sur elle, n'est pas servie sans elle."""
+def test_frais_de_chambre_sur_la_valeur():
+    """Textile : redevance de la chambre de 1 % sur la valeur en douane (décision
+    avec réserve), comprise dans l'assiette de la TVA."""
     etat, lignes = _calcul("5004000090")
-    assert etat == "PARTIEL"
-    assert lignes["TVA"]["montant"] is None
+    assert etat == "COMPLET"
+    assert "sous réserve" in lignes["رسممحصلةلحسابغرفةنسيج"]["note"]
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 50 + 10))
