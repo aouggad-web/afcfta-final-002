@@ -38,6 +38,29 @@ TOUS = sorted(PAYS.values())
 #: Code de la colonne « HS CODE » : sous-position à huit chiffres, ou position
 #: à quatre (« 20.07 », « 02.01 ») qui vaut pour toutes ses sous-positions.
 CODE = re.compile(r"(?<![\d.])(\d{4}\.\d{2}\.\d{2}|\d{2}\.\d{2})(?![\d.])")
+CHAPITRES = re.compile(r"\bChapters?\s+(\d{1,2})(?:\s+(and|to)\s+(\d{1,2}))?", re.I)
+RUBRIQUE = re.compile(r"\bHeading\s+(\d{2})\.?(\d{2})\b", re.I)
+#: Description qui restreint l'usage au-delà du libellé des positions.
+USAGE = re.compile(r"\bfor use in\b|\bfor industrial use\b|\bpurposes only\b", re.I)
+
+
+def codes_de(texte):
+    """Positions, rubriques (« Heading 8544 ») et chapitres (« Chapter 61 and
+    62 », « Chapter 50 to 60 ») d'un texte, sous forme de préfixes pointés."""
+    sortie = CODE.findall(texte) + [f"{a}.{b}" for a, b in RUBRIQUE.findall(texte)]
+    for debut, lien, fin in CHAPITRES.findall(texte):
+        if lien.lower() == "to":
+            sortie += [f"{n:02d}" for n in range(int(debut), int(fin) + 1)]
+        else:
+            sortie += [f"{int(n):02d}" for n in (debut, fin) if n]
+    return list(dict.fromkeys(sortie))
+
+
+def positions_de(texte):
+    """« 85.07 excluding 8507.60.00 » : positions avant l'exclusion, exclusions après."""
+    texte = texte.replace("\xad ", "").replace("\xad", "")
+    parties = re.split(r"\bexclu\w*|\bexcept\b", texte, maxsplit=1, flags=re.I)
+    return codes_de(parties[0]), codes_de(parties[1]) if len(parties) > 1 else []
 TAUX = re.compile(
     r"(?:(?P<pct>\d+(?:\.\d+)?)\s*%)?"
     r"(?:\s*or\s*(?:a\s+specific\s+duty\s+of\s+)?)?"
@@ -125,11 +148,18 @@ def decisions(texte):
         apres = re.sub(r"^\s*instead\s+of\s+.*$", "", apres).strip(" ;,.")
         pays = pays_de(m.group("qui"))
         restriction = " ; ".join(x for x in (entre.strip(" ,"), apres) if x) or None
-        if restriction and exclusions and re.fullmatch(r"except\b.*", restriction, re.I | re.S):
-            restriction = None  # « except HS Code 5205.23.00 » : exclusion lue, pas une condition
+        exception = None
+        if restriction and re.fullmatch(r"except\b.*", restriction, re.I | re.S):
+            # « except HS Code 5205.23.00 » : exclusion lue. « 35% except industrial
+            # or bulk energy meters imported by the Government » : le taux vaut par
+            # défaut, l'exception est rappelée en note.
+            if not exclusions:
+                exception = restriction
+            restriction = None
         sortie.append({"decision": d, "lu": taux is not None and bool(pays), "pays": pays,
                        "droit": sans_expression(taux), "restriction": restriction,
-                       **({"exclusions": exclusions} if exclusions else {})})
+                       **({"exclusions": exclusions} if exclusions else {}),
+                       **({"exception": exception} if exception else {})})
     return sortie
 
 
@@ -230,11 +260,19 @@ for ligne in lignes:
     # Certaines pages (42, 65) intercalent des colonnes vides : la position est
     # dans la première cellule après le numéro qui en porte une, pas toujours la
     # deuxième.
-    col = next((i for i in range(1, len(cel) - 1) if CODE.findall(cel[i])), None)
-    codes = CODE.findall(cel[col]) if col else []
+    col = next((i for i in range(1, len(cel) - 1) if codes_de(cel[i])), None)
+    codes, hors = positions_de(cel[col]) if col else ([], [])
     mesure = {"table": t, "sn": ligne["sn"], "page": ligne["page"], "positions": codes}
     if t == "I":
         mesure["decisions"] = decisions(cel[-1]) if codes else []
+        description = next((c for c in cel[col + 1:-1] if c), "") if col else ""
+        for d in mesure["decisions"]:
+            if hors:
+                d["exclusions"] = sorted(set(d.get("exclusions", [])) | set(hors))
+            # « Penstock pipes for use in Hydro Electric Power Projects » sur des
+            # positions de tubes en général : l'usage restreint la mesure.
+            if d.get("lu") and not d.get("restriction") and USAGE.search(description):
+                d["restriction"] = description
         if col:
             mesure["description"] = next((c for c in cel[col + 1:-1] if c), "")
         else:

@@ -1669,7 +1669,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": null
+"restriction": "Raw sugar (sugar for industrial use)"
 }
 ],
 "description": "Raw sugar (sugar for industrial use)"
@@ -1691,7 +1691,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": null
+"restriction": "Refined white sugar (sugar for industrial use)"
 }
 ],
 "description": "Refined white sugar (sugar for industrial use)"
@@ -1962,7 +1962,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": null
+"restriction": "Penstock pipes for use in Hydro Electric Power Projects"
 }
 ],
 "description": "Penstock pipes for use in Hydro Electric Power Projects"
@@ -2522,8 +2522,7 @@
 "sn": 100,
 "page": 17,
 "positions": [
-"85.07",
-"8507.60.00"
+"85.07"
 ],
 "decisions": [
 {
@@ -2535,7 +2534,10 @@
 "droit": {
 "taux": 35.0
 },
-"restriction": null
+"restriction": null,
+"exclusions": [
+"8507.60.00"
+]
 }
 ],
 "description": "Electric Accumulators"
@@ -3131,8 +3133,7 @@
 "positions": [
 "52.05",
 "52.06",
-"52.07",
-"5205.23.00"
+"52.07"
 ],
 "decisions": [
 {
@@ -3519,9 +3520,8 @@
 "sn": 134,
 "page": 23,
 "positions": [
-"6211.42.10",
-"6211.43.10",
-"6211.49.10"
+"61",
+"62"
 ],
 "decisions": [
 {
@@ -3533,7 +3533,12 @@
 "droit": {
 "taux": 35.0
 },
-"restriction": null
+"restriction": null,
+"exclusions": [
+"6211.42.10",
+"6211.43.10",
+"6211.49.10"
+]
 }
 ],
 "description": "Articles of apparel and clothing acces­ sories, knitted or crocheted and Articles of apparel and clothing accessories, not knitted or crocheted"
@@ -5180,7 +5185,7 @@
 "sn": 192,
 "page": 28,
 "positions": [
-"8544.70.00"
+"85.44"
 ],
 "decisions": [
 {
@@ -5192,7 +5197,10 @@
 "droit": {
 "taux": 35.0
 },
-"restriction": null
+"restriction": null,
+"exclusions": [
+"8544.70.00"
+]
 }
 ],
 "description": "Insulated (including enameled or anodized) wire, cable (including coaxial cable) and other insulated electric conductors, whether or not fitted with connectors; made up of individually sheathed fibres, whether or not assembled."
@@ -5666,8 +5674,42 @@
 "table": "I",
 "sn": 209,
 "page": 29,
-"positions": [],
-"decisions": [],
+"positions": [
+"50",
+"51",
+"52",
+"53",
+"54",
+"55",
+"56",
+"57",
+"58",
+"59",
+"60"
+],
+"decisions": [
+{
+"decision": "Kenya to stay the application of the EAC CET rate of 25% and apply a duty rate of 25% or US$ 0.75 / KG whichever is higher on goods of Chapter 50 to 60 excluding Chapter 57 and Heading 5904 that are currently attracting an import duty rate of 25%",
+"lu": true,
+"pays": [
+"KEN"
+],
+"droit": {
+"taux": 25.0,
+"specifique": {
+"montant": 0.75,
+"unite_monetaire": "USD",
+"unite_quantite": "kg"
+},
+"regle": "LE_PLUS_ELEVE"
+},
+"restriction": "on goods of Chapter 50 to 60 excluding Chapter 57 and Heading 5904 that are currently attracting an import duty rate of 25%",
+"exclusions": [
+"57",
+"59.04"
+]
+}
+],
 "description": "Textiles and apparels sector"
 },
 {
@@ -5811,7 +5853,6 @@
 "7318.19.00",
 "7318.23.00",
 "7318.29.00",
-"7318.15.00",
 "8302.10.00"
 ],
 "decisions": [
@@ -6099,7 +6140,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": null
+"restriction": "Postpartum mesh pants (for medical purposes only)."
 }
 ],
 "description": "Postpartum mesh pants (for medical purposes only)."
@@ -6757,7 +6798,8 @@
 "droit": {
 "taux": 35.0
 },
-"restriction": "except industrial or bulk energy meters imported by the Government or authorized persons"
+"restriction": null,
+"exception": "except industrial or bulk energy meters imported by the Government or authorized persons"
 }
 ],
 "description": "Electricity meters"
@@ -6767,9 +6809,7 @@
 "sn": 254,
 "page": 33,
 "positions": [
-"85.44",
-"8544.20.00",
-"8544.70.00"
+"85.44"
 ],
 "decisions": [
 {
@@ -6781,7 +6821,11 @@
 "droit": {
 "taux": 35.0
 },
-"restriction": null
+"restriction": null,
+"exclusions": [
+"8544.20.00",
+"8544.70.00"
+]
 }
 ],
 "description": "Electricity cables"
@@ -7527,8 +7571,28 @@
 "table": "I",
 "sn": 285,
 "page": 36,
-"positions": [],
-"decisions": [],
+"positions": [
+"57"
+],
+"decisions": [
+{
+"decision": "Kenya to stay the application of the EAC CET rate of 25% and apply 25% or USD 3 / SQM whichever is higher for one year",
+"lu": true,
+"pays": [
+"KEN"
+],
+"droit": {
+"taux": 25.0,
+"specifique": {
+"montant": 3.0,
+"unite_monetaire": "USD",
+"unite_quantite": "m2"
+},
+"regle": "LE_PLUS_ELEVE"
+},
+"restriction": null
+}
+],
 "description": "Carpets and other textile floor coverings"
 },
 {
@@ -7591,8 +7655,22 @@
 "table": "I",
 "sn": 288,
 "page": 36,
-"positions": [],
-"decisions": [],
+"positions": [
+"41"
+],
+"decisions": [
+{
+"decision": "Rwanda to stay the application of the EAC CET rate of 80% on FOB Value or US$ 0.52 / KG whichever is higher and apply a duty rate of 0% for one year",
+"lu": true,
+"pays": [
+"RWA"
+],
+"droit": {
+"taux": 0.0
+},
+"restriction": "on FOB Value or US$ 0.52 / KG whichever is higher and"
+}
+],
 "description": "Hides and skins"
 },
 {

@@ -17,7 +17,7 @@
     "institution": "Conseil des ministres de la Communauté d'Afrique de l'Est"
   },
   "regle": {
-    "valeur": "Pour l'exercice 2026/27, les droits de l'EAC/160/2026 remplacent le TEC sur les positions et pour les pays qu'il désigne : Table I (325 lignes de décisions rédigées), Table II (Ouganda, 47 lignes), Tables III (Kenya, 25 % ou 0,75 US$/kg, le plus élevé), IV et VI (Ouganda, 35 %), V et VII (Ouganda, 35 % ou 2 et 2,5 US$/kg, le plus élevé), Table X (amendements du TEC, tous les États). 1 219 décisions sans condition sont appliquées ; les décisions qui visent un importateur, un usage, un sous-produit ou une période, et les Tables VIII et IX (équipements importés par les fabricants), ne changent pas le droit et sont rappelées en note.",
+    "valeur": "Pour l'exercice 2026/27, les droits de l'EAC/160/2026 remplacent le TEC sur les positions et pour les pays qu'il désigne : Table I (325 lignes de décisions rédigées), Table II (Ouganda, 47 lignes), Tables III (Kenya, 25 % ou 0,75 US$/kg, le plus élevé), IV et VI (Ouganda, 35 %), V et VII (Ouganda, 35 % ou 2 et 2,5 US$/kg, le plus élevé), Table X (amendements du TEC, tous les États). 1 217 décisions sans condition sont appliquées ; les décisions qui visent un importateur, un usage, un sous-produit ou une période, et les Tables VIII et IX (équipements importés par les fabricants), ne changent pas le droit et sont rappelées en note.",
     "verbatim": "IN EXERCISE of the powers conferred upon the Council of Ministers by Articles 12 (3) and 39 (1) (c) of the Protocol on the Establishment of the East African Community Customs Union, the Council of Ministers has approved the following measures on customs duty rates on the items provided under The Harmonized Community Description and Coding System in Annex 1 to the Protocol:",
     "reference": "Legal Notice No. EAC/160/2026, EAC Gazette Vol. AT 1 No. 16 du 30/06/2026, Tables I à X",
     "portee": "scripts/extraire_mesures_tec_cae_2026.py (lecture de la grille du PDF) produit data/eac/mesures_tec_cae_2026_27.json ; scripts/build_socle.py, _mesures_tec_cae, l'applique au droit de douane du socle, la Table X d'abord.",
@@ -31,7 +31,10 @@
     "« Partner States » : les six États membres servis par le socle (KEN, RWA, TZA, UGA, BDI, SSD).",
     "Droits composés « X % or US$ Y / unité whichever is higher » : liquidés au plus élevé, la quantité et le taux de change étant requis, comme pour les produits sensibles du TEC.",
     "Table I n° 304 (Kenya, bananes à 0 % « for the period January and February, 2027 ») : non appliquée, période à venir ; n° 299 (Ouganda, taux répartis sans correspondance lisible avec les positions) : non appliquée.",
-    "Position lue dans la première cellule qui en porte une après le numéro : aux pages 39, 42 et 65, des colonnes vides la décalent (Table I n° 321 à 325, Table II n° 38 à 47, Tables VII à IX) ; l'extraction échoue si une décision appliquée reste sans position."
+    "Position lue dans la première cellule qui en porte une après le numéro : aux pages 39, 42 et 65, des colonnes vides la décalent (Table I n° 321 à 325, Table II n° 38 à 47, Tables VII à IX) ; l'extraction échoue si une décision appliquée reste sans position.",
+    "Cellule des positions : « Chapter 61 and 62 », « Chapter 50 to 60 » et « Heading 8544 » sont lus comme préfixes ; ce qui suit « excluding » ou « except » est exclu (Table I n° 100, 121, 134, 192, 209, 254).",
+    "Une description qui restreint l'usage au-delà du libellé des positions (« for use in Hydro Electric Power Projects », « sugar for industrial use », « for medical purposes only » : Table I n° 67, 68, 77, 226) rend la mesure conditionnelle : rappelée en note.",
+    "« 35% except industrial or bulk energy meters imported by the Government » (Table I n° 253) : le taux vaut par défaut, l'exception, qui vise un importateur, est rappelée en note."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Remises de droits sous conditions (Legal Notice EAC/161/2026) : non appliquées ; à intégrer séparément.",

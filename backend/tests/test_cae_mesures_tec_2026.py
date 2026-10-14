@@ -88,3 +88,31 @@ def test_aucune_mesure_appliquee_sans_position():
         mesures = json.load(f)["mesures"]
     assert not [(m["table"], m["sn"]) for m in mesures if not m["positions"]
                 and any(d.get("lu") and not d.get("restriction") for d in m["decisions"])]
+
+
+@pytest.mark.parametrize("iso,code,attendu", [
+    ("UGA", "85076000", "n° 50"),   # n° 100 : « 85.07 excluding 8507.60.00 »
+    ("KEN", "62114210", None),      # n° 134 : « Chapter 61 and 62 (Excluding … 6211.42.10 …) »
+    ("UGA", "85442000", None),      # n° 254 : « 85.44 Excluding 8544.20.00 8544.70.00 »
+])
+def test_exclusions_de_la_cellule_des_positions(iso, code, attendu):
+    source = _dd(iso, code)[1].get("source") or ""
+    assert ("n° 100" not in source and "n° 134" not in source and "n° 254" not in source)
+    assert attendu is None or attendu in source
+
+
+def test_chapitres_de_la_cellule_des_positions():
+    """Table I n° 134 : Kenya, chapitres 61 et 62 à 35 %."""
+    assert "n° 134" in _dd("KEN", "61091000")[1]["source"]
+
+
+def test_usage_de_la_description_restreint_la_mesure():
+    """Table I n° 77 : « Penstock pipes for use in Hydro Electric Power Projects »."""
+    _, dd = _dd("UGA", "73043100")
+    assert "EAC/160/2026" not in dd["source"] and "n° 77" in dd["note"]
+
+
+def test_taux_par_defaut_et_exception_en_note():
+    """Table I n° 253 : compteurs électriques à 35 %, sauf ceux importés par l'État."""
+    _, dd = _dd("UGA", "90283000")
+    assert dd["taux"] == 35.0 and "exception non appliquée" in dd["note"]

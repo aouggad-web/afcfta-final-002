@@ -1863,12 +1863,16 @@ def _mesures_tec_cae(iso, positions, compteurs):
                 dd["source"] = ref
                 dd["note"] = decision["decision"] if mesure["table"] not in ("III", "IV", "V", "VI", "VII") else (
                     f"{ref} : taux de l'en-tête de la table")
+                if decision.get("exception"):
+                    dd["note"] += f" — exception non appliquée par position : {decision['exception']}"
                 _compter_ligne(dd, compteurs, 1)
 
 
 def _compter_ligne(d, compteurs, signe):
     if d.get("taux") is None and not d.get("specifique"):
         compteurs["taux_indisponibles"] += signe
+    if d.get("taux") is None and d.get("specifique"):
+        compteurs["droits_specifiques"] += signe
     if not d.get("assiette"):
         cle = "assiettes_indisponibles"
     elif d.get("assiette_origine") == "source":
