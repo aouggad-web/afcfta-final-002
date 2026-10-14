@@ -1,5 +1,6 @@
 Afrique du Sud — accises à l'importation (Schedule No. 1 Part 2A et 2B) et assiette de la TVA
 Extraits verbatim. Fiche : ZAF_accises_2026-10-14.json.
+Un caractère de contrôle (0x1A) que le PDF de la Part 2B imprime devant le signe moins de la note 2 est retiré.
 
 [1] SARS, Schedule No. 1 Part 2A, en-tête (PDF daté du 2026-04-30 ; data/sources/ZAF/legislation/Sch1P2A-Schedule-No-1-Part-2A.pdf)
 SPECIFIC EXCISE DUTIES ON LOCALLY MANUFACTURED OR ON IMPORTED GOODS OF THE SAME CLASS OR KIND
@@ -11,7 +12,7 @@ SPECIFIC EXCISE DUTIES ON LOCALLY MANUFACTURED OR ON IMPORTED GOODS OF THE SAME 
 1. Any rate of ad valorem excise duty specified in this Section in respect of any goods shall apply to any such goods which are manufactured in the Republic or shall apply to imported goods of the same class or kind.
 
 [4] Même document, note 2 (b) (véhicules, articles 126.02 à 126.05)
-(b) Vehicles imported into the Republic shall be - (i) ((0,00003 x B) - 0,75)% with a maximum of 30%; and (ii) "B" means the value for the ad valorem excise duty on imported goods as prescribed in section 65(8)(a) of the Act.
+(b) Vehicles imported into the Republic shall be - (i) ((0,00003 x B) - 0,75)% with a maximum of 30%; and (ii) "B" means the value for the ad valorem excise duty on imported goods as prescribed in section 65(8)(a) of the Act.
 
 [5] Même document, article des smartphones
 124.37.05 8517.13.10 Designed for use when carried in the hand or on the person, with a value for duty purposes exceeding R2 500 9%

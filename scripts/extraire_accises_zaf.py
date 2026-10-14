@@ -75,16 +75,20 @@ def date_du_document(chemin):
     return m.group(1) if m else None
 
 
-p2a, p2b, sortie = sys.argv[1:4]
-articles = lire(p2a, "2A") + lire(p2b, "2B")
-codes = [a["sous_position"] for a in articles]
-assert len(codes) == len(set(codes)), "sous-position lue deux fois"
-json.dump({
-    "source": "SARS, Customs and Excise Act 1964, Schedule No. 1 Part 2A et Part 2B",
-    "documents": [{"partie": partie, "date": date_du_document(chemin),
-                   "sha256": hashlib.sha256(open(chemin, "rb").read()).hexdigest()}
-                  for partie, chemin in (("2A", p2a), ("2B", p2b))],
-    "articles": articles,
-}, open(sortie, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-print(len([a for a in articles if a["partie"] == "2A"]), "articles 2A ;",
-      len([a for a in articles if a["partie"] == "2B"]), "articles 2B")
+def main(p2a, p2b, sortie):
+    articles = lire(p2a, "2A") + lire(p2b, "2B")
+    codes = [a["sous_position"] for a in articles]
+    assert len(codes) == len(set(codes)), "sous-position lue deux fois"
+    json.dump({
+        "source": "SARS, Customs and Excise Act 1964, Schedule No. 1 Part 2A et Part 2B",
+        "documents": [{"partie": partie, "date": date_du_document(chemin),
+                       "sha256": hashlib.sha256(open(chemin, "rb").read()).hexdigest()}
+                      for partie, chemin in (("2A", p2a), ("2B", p2b))],
+        "articles": articles,
+    }, open(sortie, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print(len([a for a in articles if a["partie"] == "2A"]), "articles 2A ;",
+          len([a for a in articles if a["partie"] == "2B"]), "articles 2B")
+
+
+if __name__ == "__main__":
+    main(*sys.argv[1:4])

@@ -52,9 +52,38 @@ def _calcul(client, code, quantite=None, origine="CHN", expedition=None):
     return npf["etat"], {ligne["code"]: ligne for ligne in npf["lignes"]}
 
 
-def test_tous_les_articles_lus():
+def _extracteur():
+    spec = importlib.util.spec_from_file_location(
+        "extraire_accises_zaf_test", os.path.join(RACINE, "scripts", "extraire_accises_zaf.py")
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize("brut,attendu", [
+    ("34,7c/kg", {"montant": 0.347, "unite": "kg"}),
+    ("3,909c/li", {"montant": 0.03909, "unite": "li"}),
+    ("R6 041.72/kg net", {"montant": 6041.72, "unite": "kg"}),
+    ("R11.79/10cigarettes", {"montant": 11.79, "unite": "10cigarettes"}),
+    ("R149.98/li aa", {"montant": 149.98, "unite": "li aa"}),
+    ("R3.29/ml", {"montant": 3.29, "unite": "ml"}),
+    ("free", {"taux": 0.0}),
+    ("9%", {"taux": 9.0}),
+    ("(See Note 2 to this Part)", {"renvoi": "(See Note 2 to this Part)"}),
+])
+def test_lecture_des_taux(brut, attendu):
+    assert _extracteur().taux(brut) == attendu
+
+
+def test_le_parseur_reproduit_le_fichier():
+    """Les tableaux relus dans les PDF déposés redonnent data/zaf/accises_sch1_part2.json."""
+    extracteur = _extracteur()
+    legislation = os.path.join(RACINE, "data", "sources", "ZAF", "legislation")
+    articles = (extracteur.lire(os.path.join(legislation, "Sch1P2A-Schedule-No-1-Part-2A.pdf"), "2A")
+                + extracteur.lire(os.path.join(legislation, "Sch1P2B-Schedule-No-1-Part-2B.pdf"), "2B"))
     with open(ACCISES, encoding="utf-8") as f:
-        articles = json.load(f)["articles"]
+        assert articles == json.load(f)["articles"]
     assert sum(a["partie"] == "2A" for a in articles) == 140
     assert sum(a["partie"] == "2B" for a in articles) == 147
 

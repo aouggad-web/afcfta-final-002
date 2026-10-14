@@ -17,7 +17,7 @@
     "reference": "Customs and Excise Act 91 of 1964, Schedule No. 1 Part 2A (2026-04-30) et Part 2B (2025-04-01), note 1 et note 2 (b) ; s.65(8)(a) ; SARS, « Duties and Taxes for Importers » (mise à jour du 21/02/2025)",
     "portee": "scripts/extraire_accises_zaf.py lit les deux tableaux (140 articles 2A, 147 articles 2B) dans data/zaf/accises_sch1_part2.json ; scripts/build_socle.py, _accises_zaf, sert 287 lignes d'accise sur les positions de l'Afrique du Sud : 91 spécifiques liquidables à la quantité, 6 « free », 80 ad valorem, 43 par litre d'alcool absolu et 67 véhicules sans taux. backend/socle/tva_nationale.json porte l'assiette de la TVA.",
     "texte_archive": "sources/ZAF_accises.extrait.txt",
-    "sha256": "36b37292dc66b776daa283ae782b57e1025adffd6dfc318cf06745beba45c8b5"
+    "sha256": "fea7de3c795e1d491dc22c03a36ce062bbd83c22160c1bce7d12a56be5acb6c1"
   },
   "decisions": [
     "La Part 2A imprime « R/li aa » pour la bière, les spiritueux et les vins non conformes aux titres des sous-positions : le montant porte sur le litre d'alcool absolu ; sans titre alcoométrique, l'accise est déclarée sans assiette et le total incomplet.",
@@ -36,7 +36,7 @@
   "documents_archives": [
     {
       "texte_archive": "sources/ZAF_accises.extrait.txt",
-      "sha256": "36b37292dc66b776daa283ae782b57e1025adffd6dfc318cf06745beba45c8b5"
+      "sha256": "fea7de3c795e1d491dc22c03a36ce062bbd83c22160c1bce7d12a56be5acb6c1"
     },
     {
       "document_non_archive": "SARS, Schedule No. 1 Part 2A, PDF daté du 2026-04-30 (ZAF/legislation/Sch1P2A-Schedule-No-1-Part-2A.pdf, sous data/sources)",
