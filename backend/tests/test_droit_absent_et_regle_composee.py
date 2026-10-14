@@ -171,10 +171,11 @@ def test_une_absence_de_droit_se_declare_au_lieu_de_disparaitre(client):
 def test_le_bareme_de_l_EAC_se_liquide_selon_sa_propre_regle(client):
     """« Le plus élevé des deux » appliqué, et la composante retenue nommée.
 
-    Riz kényan, 75 % ou 345 $/MT. Sur 10 tonnes et 10 000 de valeur, l'ad
-    valorem l'emporte (7 500 contre 3 450) ; sur 100 tonnes, le spécifique
-    l'emporte (34 500 contre 7 500). L'opérateur doit pouvoir constater
-    laquelle a mordu.
+    Riz paddy kényan, 35 % ou 200 $/MT (Legal Notice EAC/160/2026, Table I,
+    n° 71, au lieu des 75 % ou 345 $/MT du TEC). Sur 10 tonnes et 10 000 de
+    valeur, l'ad valorem l'emporte (3 500 contre 2 000) ; sur 100 tonnes, le
+    spécifique l'emporte (20 000 contre 3 500). L'opérateur doit pouvoir
+    constater laquelle a mordu.
     """
 
     def dd(quantite):
@@ -192,13 +193,13 @@ def test_le_bareme_de_l_EAC_se_liquide_selon_sa_propre_regle(client):
         return next(l for l in r.json()["npf"]["lignes"] if l["code"] == "DD")
 
     petite = dd(10)
-    assert petite["montant"] == pytest.approx(7500.0)
+    assert petite["montant"] == pytest.approx(3500.0)
     assert petite["composante_retenue"] == "ad_valorem"
 
     grande = dd(100)
-    assert grande["montant"] == pytest.approx(34500.0)
+    assert grande["montant"] == pytest.approx(20000.0)
     assert grande["composante_retenue"] == "specifique"
-    assert grande["composantes"]["ad_valorem_montant"] == pytest.approx(7500.0)
+    assert grande["composantes"]["ad_valorem_montant"] == pytest.approx(3500.0)
 
 
 @besoin_socle
