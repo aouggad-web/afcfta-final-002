@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-13T23:17:59.223367+00:00",
+  "construit_le": "2026-10-14T00:03:33.705055+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1383,7 +1383,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/RWA_tariffs.json",
       "source_sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
-      "socle_sha256": "11e3a700f4c575c970b0edbf1104ccf44dafcbfca123cf6807af74d99b7129ac",
+      "socle_sha256": "9a6e4b31350ab827af97215835ba4f17fa2424bac323e10cb2ee64ab27bee34f",
       "collecte": "2026-02-18T10:54:35.914199",
       "etat": "PARTIEL",
       "familles": [
@@ -1825,7 +1825,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TZA_tariffs.json",
       "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
-      "socle_sha256": "4d5595ef080d682118990eb9553e68ef14b6216087c347f0db230365836fc90d",
+      "socle_sha256": "ec0d2b457e4f379652479c662165da6124b34d120592a653ceb7ba97a0eb42ff",
       "collecte": "2026-02-18T10:54:34.697265",
       "etat": "COMPLET",
       "familles": [

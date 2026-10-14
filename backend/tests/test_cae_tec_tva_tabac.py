@@ -49,6 +49,19 @@ def test_cigarettes_tanzanie_au_millier():
     assert etat == "COMPLET" and lignes["EXC"]["montant"] == pytest.approx(724_621.9)
 
 
+@pytest.mark.parametrize("code", ["24031900", "24039100", "24039900"])
+def test_tabacs_tanzanie_au_kilo(code):
+    """Finance Act 2026 : « Other/Imported » 36 609,19 TZS par kg."""
+    etat, lignes = _calcul("TZA", code, quantite=2)
+    assert etat == "COMPLET" and lignes["EXC"]["montant"] == pytest.approx(73_218.38)
+    assert lignes["EXC"]["unite_quantite"] == "kg"
+
+
+def test_reserve_d_assiette_de_la_tva():
+    tva = next(d for d in _positions("TZA")["24029000"]["droits"] if d["code"] == "TVA")
+    assert "Railway Development Levy" in tva["note"]
+
+
 @pytest.mark.parametrize("code", ["24021000", "24029000", "24031100"])
 def test_tanzanie_positions_hors_du_fourth_schedule(code):
     assert not any(d["code"] == "EXC" for d in _positions("TZA")[code]["droits"])

@@ -1704,10 +1704,14 @@ TEC_CAE_COMPLEMENTS = {
 #: la collecte n'y mettait que le droit de douane.
 TVA_CAE = {
     "RWA": "Loi n° 049/2023 portant TVA (Rwanda), art. 16 (1) (d) : « the amount of customs duty, excise, "
-    "port charges or other fiscal charges other than value added tax payable in respect of imported goods ».",
+    "port charges or other fiscal charges other than value added tax payable in respect of imported goods ». "
+    "Réserve : l'assiette servie comprend la valeur en douane et les droits liquidés ici ; les frais portuaires et "
+    "les services liés à l'importation (art. 16 (1) (c) et (d)), hors du calcul, n'y sont pas.",
     "TZA": "Value Added Tax Act 2014 (Tanzanie), s. 9 : valeur en douane, « (b) the amount of any customs duty "
     "payable on the import; and (c) the amount of any tax, levy, fee, or fiscal charge other than customs duty "
-    "and value added tax payable on the import of the goods ».",
+    "and value added tax payable on the import of the goods ». Réserve : l'assiette servie comprend la valeur en "
+    "douane et les droits liquidés ici ; la Railway Development Levy, l'Industrial Development Levy et la "
+    "Customs Processing Fee, non encore liquidées, n'y sont pas.",
 }
 #: Accise sur le tabac importé : (préfixes, taux, spécifique, note). taux et
 #: spécifique tous deux None : le taux dépend d'une donnée que la position ne
