@@ -40,6 +40,18 @@
       "verified_at": "2026-10-14 (re-téléchargé, SHA identique : SARS n'a publié aucune version plus récente à ce jour)"
     },
     {
+      "file": "legislation/Sch2-Schedule-No-2.pdf",
+      "title": "Schedule n°2 — droits anti-dumping (Part 1), compensateurs (Part 2), sauvegarde (Part 3) (date PDF 2026-07-24)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch2-Schedule-No-2.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "document_date": "2026-07-24",
+      "is_draft": false,
+      "sha256": "c34cbb0565c3914061aa8c8fc194f3861bb4355ca9218c3217821b4e7b2736c7",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00",
+      "superseded_by": "legislation/ZAF_Sch2_2026-10-09.pdf",
+      "note": "Version antérieure conservée : lue par backend/scripts/build_zaf_schedules.py et citée par backend/data/crawled/ZAF_tariffs.json ; la bascule vers la version du 2026-10-09 relève de la PR d'intégration."
+    },
+    {
       "file": "legislation/ZAF_Sch2_2026-10-09.pdf",
       "title": "Schedule n°2 — droits anti-dumping (Part 1), compensateurs (Part 2), sauvegarde (Part 3) — en-tête « Date: 2026-10-09 » (REMPLACE Sch2-Schedule-No-2.pdf du 2026-07-24, supprimé : intègre les avis R.7902, R.7937 à R.7941, R.7991)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch2-Schedule-No-2.pdf",
