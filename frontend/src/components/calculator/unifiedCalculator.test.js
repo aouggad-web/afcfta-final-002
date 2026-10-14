@@ -4,6 +4,7 @@ import {
   localiserResultat,
   mapCalculToLegacyResult,
   moteurRendCompteDesMesures,
+  remiseRequete,
   reserveConversion,
   tauxDeChangePour,
 } from './unifiedCalculator';
@@ -12,6 +13,34 @@ const contexte = { originCountry: 'GHA', destinationCountry: 'CIV', hsCode: '761
 
 const ligne = (over) => ({ code: 'DD', libelle: 'Droit de douane', famille: 'droit',
   assiette: 'CIF', taux_pct: 20, statut: 'CALCULE', base: 1000, montant: 200, ...over });
+
+describe('remiseRequete', () => {
+  it("ne transmet rien tant que l'importateur ne sait pas", () => {
+    expect(remiseRequete(null)).toBeNull();
+    expect(remiseRequete({ answer: 'unknown', reference: 'X' })).toBeNull();
+  });
+
+  it("transmet un refus sans détail d'autorisation", () => {
+    expect(remiseRequete({ answer: 'no', reference: 'X', authorizedTariffLines: '10019910' }))
+      .toEqual({ eligibilite: 'NOT_ELIGIBLE' });
+  });
+
+  it("transmet l'autorisation déclarée, lignes séparées et champs vides omis", () => {
+    expect(remiseRequete({
+      answer: 'yes', reference: ' KRA/REM/1 ', validFrom: '2026-07-01', validTo: '',
+      authorizedTariffLines: '10019910, 10019990,', authorizedGoods: 'blé',
+    })).toEqual({
+      eligibilite: 'ELIGIBLE_VERIFIED', reference: 'KRA/REM/1', debut: '2026-07-01',
+      lignes: ['10019910', '10019990'],
+    });
+  });
+
+  it('accompagne la demande au socle quand elle est fournie', () => {
+    expect(buildCalculRequestBody({
+      destinationISO3: 'KEN', hsCode: '10019910', cifValue: 1000, remise: { answer: 'no' },
+    }).remise).toEqual({ eligibilite: 'NOT_ELIGIBLE' });
+  });
+});
 
 describe('buildCalculRequestBody', () => {
   it("omet l'origine quand elle est absente plutôt que d'envoyer une valeur vide", () => {
@@ -179,6 +208,19 @@ describe('mapCalculToLegacyResult — préférence appliquée', () => {
 
   it("ne signale aucun plancher quand la préférence est servie", () => {
     expect(r.plancher_npf).toBeNull();
+  });
+
+  it('transmet la note de la ligne et les mesures EAC du socle', () => {
+    const note = 'Legal Notice EAC/161/2026, Table A, row 37 : 10 % au lieu de 35 % (TEC).';
+    const mesures = { taux_tec: 35, taux_applique: 10, eligibilite_remise: 'ELIGIBLE_VERIFIED' };
+    const avecMesure = mapCalculToLegacyResult({
+      ...calcul,
+      npf: { ...calcul.npf, lignes: calcul.npf.lignes.map((l) => (l.code === 'DD' ? { ...l, note } : l)) },
+      mesures_eac: mesures,
+    }, contexte);
+    expect(avecMesure.taxes_detail.find((t) => t.code === 'DD').note).toBe(note);
+    expect(avecMesure.mesures_eac).toEqual(mesures);
+    expect(r.mesures_eac).toBeNull();
   });
 
   it('reprend le plancher NPF posé par le moteur sur une ligne', () => {

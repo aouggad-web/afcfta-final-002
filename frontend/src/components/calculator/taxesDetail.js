@@ -73,6 +73,7 @@ export function normalizeTaxesDetail(taxesDetail, taxesBreakdown) {
         tax: item.tax || item.code,
         rate: toRate(item.rate),
         observation: item.observation || item.label || null,
+        ...(item.note ? { note: item.note } : {}),
       }));
   }
 
