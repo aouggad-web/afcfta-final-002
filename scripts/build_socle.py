@@ -1816,6 +1816,89 @@ def _compter_ligne(d, compteurs, signe):
     compteurs[cle] += signe
 
 
+#: Égypte (fiche EGY_TVA_taxe_de_table_2026-10-14.json). Les assiettes de la TVA
+#: et de la Taxe de Table sont dans assiettes_pays.json (loi 67/2016, art. 10 et
+#: 39) ; restent ici l'ordre des lignes, les tabacs du tableau, partie I, et la
+#: Taxe de Table que la collecte annonce sans taux.
+TAXE_DE_TABLE_EGY = "ضريبةالجدول"
+MINIMUMS_EGY = {"ضريبةالجدول2", "VAT2"}
+TABAC_TAXE_DE_TABLE_EGY = (
+    "Loi n° 67/2016, tableau annexé, partie I (« سلع وخدمات تخضع لضريبة الجدول فقط ») : les tabacs sont "
+    "soumis à la seule Taxe de Table, que la douane publie sous « TVA ». Assiette de l'art. 39 (b)."
+)
+#: Taxe de Table due, taux non publié par la collecte : (instruction, note).
+TAXE_DE_TABLE_SANS_TAUX_EGY = {
+    "ر7065": "Instruction ر7065 de la douane : « تفرض ضريبة الجدول علي الكحول ». La collecte ne publie pas le "
+    "taux ; le tableau de la loi 67/2016 (partie II, item 3, c et d) le fixait en 2016 à 150 % avec un minimum "
+    "de 15 EGP par litre, taux que la douane publie aujourd'hui sur 2106.90.20. À compléter.",
+}
+TAXE_DE_TABLE_CIGARETTES_EGY = (
+    "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
+    "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
+    "donnée du calcul : Taxe de Table non liquidée."
+)
+
+
+def _egypte(positions, compteurs, donnees):
+    """Égypte : lignes publiées deux fois, tabacs, Taxe de Table sans taux, ordre
+    des lignes. Fiche EGY_TVA_taxe_de_table_2026-10-14.json."""
+    instructions = {
+        str(x.get("hs_code")): x.get("official_instructions") or []
+        for x in donnees.get("sub_positions") or []
+    }
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        # Une ligne publiée deux fois (8481.80.90.90 : « ID 60 % » et « TVA 14 % »
+        # répétées) se lit en ID2/VAT2 ; la compter ferait payer le droit deux fois.
+        for double, principal in (("ID2", "DD"), ("VAT2", "TVA")):
+            d = next((x for x in droits if x.get("code") == double), None)
+            p = next((x for x in droits if x.get("code") == principal), None)
+            if d is not None and p is not None and d.get("taux") is not None and d.get("taux") == p.get("taux"):
+                _compter_ligne(d, compteurs, -1)
+                droits.remove(d)
+        if code.startswith("24"):
+            for d in droits:
+                if d.get("famille") == "tva" and d.get("taux") not in (None, 0.0, 14.0):
+                    d.update(
+                        code=TAXE_DE_TABLE_EGY,
+                        libelle="Taxe de Table (publiée sous « TVA »)",
+                        famille="autre",
+                        note=TABAC_TAXE_DE_TABLE_EGY,
+                    )
+        if not any(d.get("code") == TAXE_DE_TABLE_EGY for d in droits):
+            note, assiette = None, "CIF+TOUS_SAUF_TVA"
+            for instruction, texte in TAXE_DE_TABLE_SANS_TAUX_EGY.items():
+                if any(i.startswith(instruction) for i in instructions.get(code, [])):
+                    note = texte
+            if code.startswith("240220"):
+                note, assiette = TAXE_DE_TABLE_CIGARETTES_EGY, None
+            if note:
+                d = {
+                    "code": TAXE_DE_TABLE_EGY,
+                    "code_source": "ضريبة الجدول",
+                    "libelle": "Taxe de Table",
+                    "famille": "autre",
+                    "assiette": assiette,
+                    "assiette_origine": "texte_primaire" if assiette else None,
+                    "source": "Loi n° 67/2016 (TVA), art. 36 et tableau annexé",
+                    "note": note,
+                }
+                droits.append(d)
+                _compter_ligne(d, compteurs, 1)
+        # La Taxe de Table et la TVA s'assoient sur les droits et taxes qui les
+        # précèdent : la Taxe de Table vient après les autres prélèvements, ses
+        # minimums après elle (ils la bornent, ils ne s'y ajoutent pas), la TVA
+        # en dernier.
+        def rang(d):
+            if d.get("famille") == "tva":
+                return 3
+            if d.get("code") in MINIMUMS_EGY:
+                return 2
+            return 1 if d.get("code") == TAXE_DE_TABLE_EGY else 0
+
+        droits.sort(key=rang)
+
+
 def _tsp_tp_libye(positions, compteurs):
     """Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la
     « Production Tax » à 2 % du crawl (fiche LBY_TSP_TP_taux_2026-10-10.json).
@@ -2752,6 +2835,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
+    if iso == "EGY":
+        _egypte(positions, compteurs, donnees)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _accise_ethiopie(positions, compteurs)
