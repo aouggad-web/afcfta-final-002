@@ -1,63 +1,239 @@
 {
   "country": "ZAF",
-  "generated_at": "2026-08-30T10:55:04.790196+00:00",
-  "description": "Actes juridiques officiels sud-africains archivés avec empreintes SHA-256 (méthode DZA).",
+  "generated_at": "2026-10-14T14:00:00+00:00",
+  "description": "Actes juridiques officiels sud-africains archivés avec empreintes SHA-256 (méthode DZA). Mise à jour 2026-10-14 : Parts 3/3A-3F, 5A, 5B, 7, 7A, Rate Act 2026, VAT Act (version d'origine), remplacement du Schedule 2 (version du 2026-10-09).",
   "documents": [
     {
       "file": "legislation/sars_schedule1_part1_ch1-99.pdf",
-      "title": "SARS — Schedule n°1 Partie 1, chapitres 1-99 (tarif douanier + taux préférentiels EU/UK, EFTA, SADC, MERCOSUR, AfCFTA)",
+      "title": "SARS — Schedule n°1 Partie 1, chapitres 1-99 (tarif douanier + taux préférentiels EU/UK, EFTA, SADC, MERCOSUR, AfCFTA) — en-tête « Date: 2026-08-28 » ; intègre l'avis R.7864 du 28/08/2026 (sucre 697,92c/kg, sous-positions 1701.12/13/14/91/99, p. 97)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
       "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "document_date": "2026-08-28",
+      "effective_from": "2026-08-28",
+      "is_draft": false,
+      "useful_pages": "p. 96-97 (ch. 17, sucres, taux R.7864)",
       "sha256": "442ed3d758d741e283a7d8fa513fe53cd94a813d0ef13cafcb0a3a9c2749c65c",
-      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+      "archived_at": "2026-08-30T10:55:04.790196+00:00",
+      "verified_at": "2026-10-14 (re-téléchargé, SHA identique — aucune version plus récente publiée)"
     },
     {
       "file": "legislation/Sch1P2A-Schedule-No-1-Part-2A.pdf",
       "title": "Schedule n°1 Partie 2A — droits d'accise spécifiques (date PDF 2026-04-30)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P2A-Schedule-No-1-Part-2A.pdf",
       "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "document_date": "2026-04-30",
+      "is_draft": false,
       "sha256": "59d7f909ece3289fedc7147d6a513edf3815a7281ca27693660a09c8acf08d2e",
-      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+      "archived_at": "2026-08-30T10:55:04.790196+00:00",
+      "verified_at": "2026-10-14 (re-téléchargé, SHA identique)"
     },
     {
       "file": "legislation/Sch1P2B-Schedule-No-1-Part-2B.pdf",
-      "title": "Schedule n°1 Partie 2B — droits d'accise spécifiques (date PDF 2025-04-01)",
+      "title": "Schedule n°1 Partie 2B — accise ad valorem (en-tête « Date: 2025-04-01 »)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P2B-Schedule-No-1-Part-2B.pdf",
       "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "document_date": "2025-04-01",
+      "effective_from": "2025-04-01",
+      "is_draft": false,
       "sha256": "e9c75ab3700fb2ea6f67f5cef530f89cfd8155c8adc3abb4d5b8c9bf36777915",
-      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+      "archived_at": "2026-08-30T10:55:04.790196+00:00",
+      "verified_at": "2026-10-14 (re-téléchargé, SHA identique : SARS n'a publié aucune version plus récente à ce jour)"
     },
     {
-      "file": "legislation/Sch2-Schedule-No-2.pdf",
-      "title": "Schedule n°2 — droits anti-dumping (Part 1), compensateurs (Part 2), sauvegarde (Part 3) (date PDF 2026-07-24)",
+      "file": "legislation/ZAF_Sch2_2026-10-09.pdf",
+      "title": "Schedule n°2 — droits anti-dumping (Part 1), compensateurs (Part 2), sauvegarde (Part 3) — en-tête « Date: 2026-10-09 » (REMPLACE Sch2-Schedule-No-2.pdf du 2026-07-24, supprimé : intègre les avis R.7902, R.7937 à R.7941, R.7991)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch2-Schedule-No-2.pdf",
-      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
-      "sha256": "c34cbb0565c3914061aa8c8fc194f3861bb4355ca9218c3217821b4e7b2736c7",
-      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2026-10-09",
+      "effective_from": "2026-10-09",
+      "is_draft": false,
+      "sha256": "70b9de5e6a22568846a0943a814513480671db4397319e1d3589bae9408129e1",
+      "archived_at": "2026-10-14T14:00:00+00:00"
     },
     {
       "file": "legislation/Sch3-Schedule-No-3.pdf",
       "title": "Schedule n°3 — rebates industriels de droits de douane (date PDF 2026-06-19)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch3-Schedule-No-3.pdf",
       "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "document_date": "2026-06-19",
+      "is_draft": false,
       "sha256": "aa04c5e2b1c0fd9eba79d2986cd9efc4b91882e8d320b8eaa6df6548112d4293",
-      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+      "archived_at": "2026-08-30T10:55:04.790196+00:00",
+      "verified_at": "2026-10-14 (re-téléchargé, SHA identique)"
     },
     {
       "file": "legislation/Sch8-Schedule-No-8.pdf",
       "title": "Schedule n°8 — licences et frais (entrepôts de stockage…)",
       "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch8-Schedule-No-8.pdf",
       "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "is_draft": false,
       "sha256": "debfa1531f8f0060736d1273234d8ac8b758b7bfa65345fe1065ed665ef49142",
-      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+      "archived_at": "2026-08-30T10:55:04.790196+00:00",
+      "verified_at": "2026-10-14 (re-téléchargé, SHA identique)"
     },
     {
       "file": "legislation/itac_definitive_duties_2022-12-31.pdf",
       "title": "ITAC — mesures anti-dumping définitives en vigueur au 31/12/2022 (références Government Gazette)",
       "source_url": "https://itac.org.za/wp-content/uploads/Definitive-measures-in-place-as-on-31-December-2022-1.pdf",
       "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "document_date": "2022-12-31",
+      "is_draft": false,
       "sha256": "62a17ad67e1df31e6239b221936c8152ca9fc806c43fb47e3f13288f16745673",
       "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3_notes_sans-date.pdf",
+      "title": "Schedule n°1 Partie 3 — prélèvements environnementaux, notes générales (1 page ; aucune date dans l'en-tête du PDF)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3-Schedule-No-1-Part-3.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": null,
+      "is_draft": false,
+      "useful_pages": "p. 1 (notes applicables à l'ensemble de la Partie 3)",
+      "sha256": "7a08f19e87595468307959668f35bb27b28aa467486d25f0b5634eaf009b72e9",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3A_2024-04-01.pdf",
+      "title": "Schedule n°1 Partie 3, section A — prélèvement environnemental : sacs plastiques (en-tête « Date: 2024-04-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3A-Schedule-No-1-Part-3A.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2024-04-01",
+      "effective_from": "2024-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-3 (taux par sac)",
+      "sha256": "0a1539b75dcdc8d37ca07a131dece316a46c634a5c9883b691922e1f0bc69c30",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3B_2012-07-01.pdf",
+      "title": "Schedule n°1 Partie 3, section B — prélèvement environnemental : électricité (en-tête « Date: 2012-07-01 » ; ATTENTION : l'avis R.7903 du 11/09/2026, GG 55355, abroge le prélèvement sur l'électricité avec effet rétroactif au 01/01/2026 — le PDF SARS en ligne n'a pas été mis à jour au 14/10/2026)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3B-Schedule-No-1-Part-3B.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/secondary-legislation/tariff-amendments/tariff-amendments-2026/",
+      "document_date": "2012-07-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-3 (item 148.01)",
+      "sha256": "a6da21b975680aa73dafb2c54a7b1601c8a2bc44610262ad24bcb4646f9d7749",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3C_2024-04-01.pdf",
+      "title": "Schedule n°1 Partie 3, section C — prélèvement environnemental : ampoules d'éclairage (en-tête « Date: 2024-04-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3C-Schedule-No-1-Part-3C.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2024-04-01",
+      "effective_from": "2024-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-3 (taux par ampoule)",
+      "sha256": "ee17f976b98a3bc7fe82ddd56152e10f83bf1f45f722702c6d007a8bf5f78795",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3D_2024-04-01.pdf",
+      "title": "Schedule n°1 Partie 3, section D — prélèvement environnemental : CO₂ des véhicules de tourisme (en-tête « Date: 2024-04-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3D-Schedule-No-1-Part-3D.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2024-04-01",
+      "effective_from": "2024-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-4 (formule et taux CO₂)",
+      "sha256": "01691d5634af2a5c92523766c23435c62709f069243b682d3006a3952e588a74",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3E_2022-06-17.pdf",
+      "title": "Schedule n°1 Partie 3, section E — prélèvement environnemental : pneus (en-tête « Date: 2022-06-17 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3E-Schedule-No-1-Part-3E.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2022-06-17",
+      "effective_from": "2022-06-17",
+      "is_draft": false,
+      "useful_pages": "p. 1-13 (taux par pneu)",
+      "sha256": "95435f1ad4feb6ea90bfd2f063df1cc87d031b715c9cb07f7d98d9500326abae",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part3F_2026-03-27.pdf",
+      "title": "Schedule n°1 Partie 3, section F — prélèvement environnemental : équipements/combustibles (en-tête « Date: 2026-03-27 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P3F-Schedule-No-1-Part-3F.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2026-03-27",
+      "effective_from": "2026-03-27",
+      "is_draft": false,
+      "useful_pages": "p. 1-3",
+      "sha256": "8787b75c1daee40f7bce078f218d66089dd32b9402fbdf3d93a278d220d3d4ff",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part5A_2026-07-01.pdf",
+      "title": "Schedule n°1 Partie 5, section A — taxe sur les carburants (fuel levy) (en-tête « Date: 2026-07-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P5A-Schedule-No-1-Part-5A.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2026-07-01",
+      "effective_from": "2026-07-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-4 (montants par litre, positions 27.10)",
+      "sha256": "48f5acabafddfba3a3342d702874609d1944857414d9f925c26b7a1397365634",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part5B_2026-04-01.pdf",
+      "title": "Schedule n°1 Partie 5, section B — prélèvement Road Accident Fund (en-tête « Date: 2026-04-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P5B-Schedule-No-1-Part-5B.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2026-04-01",
+      "effective_from": "2026-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-3 (montants par litre, positions 27.10)",
+      "sha256": "55c0f1898f409bec06a7d63073861073e14fe7ecfde83aefce97f5ad93137713",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part7_2019-04-01.pdf",
+      "title": "Schedule n°1 Partie 7 — Health Promotion Levy (boissons sucrées), notes (en-tête « Date: 2019-04-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P7-Schedule-No-1-Part-7.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2019-04-01",
+      "effective_from": "2019-04-01",
+      "is_draft": false,
+      "sha256": "f326490a0dc09f9c4b0c118716cc2dc9d7d974e1e410cac8e74e149e3c67c1b3",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_Sch1_Part7A_2022-10-01.pdf",
+      "title": "Schedule n°1 Partie 7, section A — Health Promotion Levy : items et taux (en-tête « Date: 2022-10-01 »)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P7A-Schedule-No-1-Part-7A.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "document_date": "2022-10-01",
+      "effective_from": "2022-10-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-4 (montant par gramme de sucre, positions concernées)",
+      "sha256": "d23842afd6d9ee8c553acdc9a59a8104d23571a6e5b55a293e53ef6632e5861e",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_RatesAct_Act3-2026_GG54446_2026-04-01.pdf",
+      "title": "Rates and Monetary Amounts and Amendment of Revenue Laws Act, 2026 (Act n° 3 de 2026), GG 54446 du 1er avril 2026, sanctionné le 31 mars 2026 — base légale des taux d'accise et prélèvements au 1er avril 2026",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/AmendActs/Legal-LPrim-AA-2026-01-Rates-and-Monetary-Amounts-and-Amendment-of-Revenue-Laws-Act-3-of-2026-GG-54446-1-April-2026.pdf",
+      "referencing_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/amendment-acts/",
+      "document_date": "2026-04-01",
+      "effective_from": "2026-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 1-32 (amendements des taux du Schedule 1, Customs and Excise Act 1964)",
+      "sha256": "5f6e4225703d6ba2f0d19bd0911fe580f787bcab4d1f8d6f421525051366ad1e",
+      "archived_at": "2026-10-14T14:00:00+00:00"
+    },
+    {
+      "file": "legislation/ZAF_VATAct-89-1991_original-GG13307_1991-06-12.pdf",
+      "title": "Value-Added Tax Act 89 de 1991 — texte d'origine publié au GG 13307 du 12 juin 1991 (ATTENTION : ce n'est PAS la version consolidée en vigueur ; voir champ notes et la section « Non obtenus »)",
+      "source_url": "https://www.gov.za/sites/default/files/gcis_document/201505/act-89-1991s.pdf",
+      "referencing_page": "https://www.gov.za/documents/legislation/acts (Value-Added Tax Act, 1991)",
+      "document_date": "1991-06-12",
+      "effective_from": "1991-09-30",
+      "is_draft": false,
+      "useful_pages": "p. 8-9 (s.7(1) imposition, importation de biens) ; p. 14-16 (s.13) ; Schedule 1 de la loi (importations exonérées)",
+      "notes": "La version consolidée en vigueur n'est plus offerte en PDF par SARS : le lien « Act No. 89 of 1991 » de la page « Acts administered by the Commissioner » pointe vers le lecteur Lexis de SARS (https://sars.mylexisnexis.co.za/, application JavaScript sans PDF téléchargeable ni API publique). Ne pas utiliser ce PDF d'origine comme source d'un taux.",
+      "sha256": "a7f601909ce356ee115589d26c7c8b51373e934083b9425868bbaa4afb270976",
+      "archived_at": "2026-10-14T14:00:00+00:00"
     }
   ]
 }
