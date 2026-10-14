@@ -50,11 +50,12 @@ def _extracteur():
     return module
 
 
-def _calcul(client, code, quantite):
-    reponse = client.post("/calcul", json={
-        "destination": "ZAF", "code_sh": code, "valeur_cif": 11000, "valeur_fob": 10000,
-        "devise_cif": "ZAR", "origine": "CHN", "quantite": quantite,
-    })
+def _calcul(client, code, quantite, origine="CHN", expedition=None):
+    demande = {"destination": "ZAF", "code_sh": code, "valeur_cif": 11000, "valeur_fob": 10000,
+               "devise_cif": "ZAR", "origine": origine, "quantite": quantite}
+    if expedition:
+        demande["pays_expedition"] = expedition
+    reponse = client.post("/calcul", json=demande)
     assert reponse.status_code == 200
     npf = reponse.json()["npf"]
     return npf["etat"], {ligne["code"]: ligne for ligne in npf["lignes"]}
@@ -108,6 +109,14 @@ def test_essence(client):
     assert lignes["RAF"]["montant"] == pytest.approx(2_250.0)
     taxes = sum(lignes[c]["montant"] for c in ("DD", "EXS", "FLV", "RAF"))
     assert lignes["TVA"]["base"] == pytest.approx(11_000.0 + taxes)
+
+
+def test_essence_origine_sacu_sans_majoration(client):
+    """Origine et expédition Botswana : TVA sur FOB sans les 10 %, prélèvements compris."""
+    _, lignes = _calcul(client, "27101202", 1000, origine="BWA", expedition="BWA")
+    taxes = sum(lignes[c]["montant"] for c in ("DD", "EXS", "FLV", "RAF"))
+    assert lignes["FLV"]["montant"] == pytest.approx(4_290.0)
+    assert lignes["TVA"]["base"] == pytest.approx(10_000.0 + taxes)
 
 
 def test_boisson_sucree_teneur_reputee(client):
