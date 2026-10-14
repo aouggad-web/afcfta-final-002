@@ -554,12 +554,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // comunitária et l'ICE de l'assiette de l'IVA (Regulamento do IVA,
       // art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
       // origine CEDEAO et refuse les 69 positions à taxe spécifique, où le
-      // socle réclame la quantité. Restent sur l'autre porte, en attente :
-      // - un écart d'assiette de TVA ou d'accise entre les deux portes, à
-      //   trancher sur texte (CIV, GAB ; RWA, TZA, UGA pour le tabac ; MAR,
-      //   dont 528 positions ne publient pas de TVA) ;
-      // - un total que l'autre porte rend et que le socle déclare incomplet
-      //   (EGY, SOM) ;
+      // socle réclame la quantité. La Côte d'Ivoire, sur le tarif de la DGD
+      // du 27/03/2026 : l'autre porte y liquide en % de la valeur CIF des
+      // colonnes sans légende ni unité (PSV, TMP, TUB, PSS…) et le droit
+      // unique de sortie ; le socle les déclare incomplètes. La Somalie, le
+      // Maroc, le Rwanda, la Tanzanie et l'Ouganda (mêmes totaux, à un code
+      // renommé et à l'accise sur valeur + droit du socle près ; MAR laisse
+      // incomplètes les positions sans TVA publiée) et le Gabon (TVA du CGI
+      // art. 216 : valeur + droits de douane + droit d'accises, sans la TCI
+      // que l'autre porte y ajoute). Restent sur l'autre porte, en attente :
+      // - l'Égypte : la Taxe de Table et les redevances des chambres n'ont pas
+      //   encore d'assiette au socle ;
       // - le Kenya, dont la remise conditionnelle n'existe que sur l'autre porte.
       //
       // L'ALGÉRIE (bascule 2.3). Le socle est sa seule porte de calcul :
@@ -567,13 +572,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
-        'GMB', 'LBR', 'SLE',
+        'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);
       // Pays que le socle sert sans jamais se replier sur l'autre porte.
-      const SANS_REPLI = new Set(['DZA', 'GMB', 'LBR', 'SLE']);
+      const SANS_REPLI = new Set([
+        'DZA', 'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB',
+      ]);
 
       let calculSocle = null;
       let erreurSocle = null;
@@ -592,7 +599,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // affichée, avec le message du socle. Gambie, Liberia et Sierra
           // Leone non plus : leurs règles (sans redevance statistique, TVA de
           // la loi) ont été établies sur le socle, et l'autre porte ne connaît
-          // aucune position qu'il n'ait pas.
+          // aucune position qu'il n'ait pas. La Côte d'Ivoire non plus : l'autre
+          // porte n'a pas de position en plus, et lit en % des montants sans
+          // unité. Somalie, Maroc, Rwanda, Tanzanie, Ouganda et Gabon : le
+          // calcul se fait sur le socle seul, l'autre porte étant appelée à
+          // disparaître.
           const statut = socleError.response?.status;
           if (SANS_REPLI.has(destISO3) || (statut !== 404 && statut !== 503)) {
             throw socleError;
