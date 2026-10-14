@@ -105,6 +105,8 @@ FAMILLES = {
     "DSV": "redevance",
     "TCL": "redevance",
     "EXC": "accise",
+    "EXS": "accise",  # accise spécifique, Schedule 1 Part 2A (ZA)
+    "EXA": "accise",  # accise ad valorem, Schedule 1 Part 2B (ZA)
     "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
@@ -1868,6 +1870,67 @@ def _mesures_tec_cae(iso, positions, compteurs):
                 _compter_ligne(dd, compteurs, 1)
 
 
+#: Accises du tarif sud-africain (Schedule 1 Part 2A et 2B, SARS), lues par
+#: scripts/extraire_accises_zaf.py. Fiche ZAF_accises_2026-10-14.json.
+ACCISES_ZAF = os.path.join(REPO, "data", "zaf", "accises_sch1_part2.json")
+#: Customs and Excise Act 1964, s.65(8)(a) : l'accise ad valorem d'un bien
+#: importé porte sur la valeur transactionnelle majorée de 15 %, plus les droits
+#: non remis de la Part 1 et de la Part 2A, sans l'accise ad valorem elle-même.
+ASSIETTE_EXA_ZAF = "FOBx1.15+DD+EXS"
+UNITES_ACCISE_ZAF = {"kg": "kg", "li": "li", "ml": "ml", "10cigarettes": "10 cigarettes", "10sticks": "10 sticks"}
+
+
+def _accises_zaf(positions, compteurs):
+    """Afrique du Sud : accise spécifique (Part 2A, code EXS) et ad valorem
+    (Part 2B, code EXA), dues à l'importation sur les biens de même nature que
+    ceux fabriqués dans la République (Part 2, Section B, note 1)."""
+    with open(ACCISES_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for article in articles:
+        prefixe = article["sous_position"].replace(".", "")
+        code_ligne = "EXS" if article["partie"] == "2A" else "EXA"
+        source = (f"Customs and Excise Act 1964, Schedule No. 1 Part {article['partie']}, "
+                  f"article {article['article']} ({article['sous_position']})")
+        for code, position in positions.items():
+            if not code.startswith(prefixe):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": "Specific excise duty" if code_ligne == "EXS" else "Ad valorem excise duty",
+                     "taux": None, "specifique": None, "source": source, "note": article["brut"]}
+            if article.get("unite") == "li aa":
+                # Par litre d'alcool absolu : le titre alcoométrique n'est pas une
+                # donnée du calcul.
+                ligne["assiette"], ligne["assiette_origine"] = None, None
+                ligne["note"] = (f"{article['brut']} : par litre d'alcool absolu ; le titre alcoométrique "
+                                 "n'est pas une donnée du calcul, accise non liquidée.")
+            elif article.get("unite"):
+                ligne["specifique"] = {
+                    "montant": article["montant"], "unite_monetaire": "unite_principale",
+                    "sous_unite_source": None, "unite_quantite": UNITES_ACCISE_ZAF[article["unite"]],
+                    "brut": article["brut"],
+                }
+                ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            elif article.get("renvoi"):
+                # Véhicules (articles 126.02 à 126.05) : taux de ((0,00003 × B) − 0,75) %,
+                # plafonné à 30 %, B étant la valeur de la s.65(8)(a) : un taux qui
+                # dépend de la valeur n'est pas servi.
+                ligne["assiette"], ligne["assiette_origine"] = ASSIETTE_EXA_ZAF, "regle_de_pays"
+                ligne["note"] = ("Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, "
+                                 "B étant la valeur de la s.65(8)(a) ; taux fonction de la valeur, non servi.")
+            elif code_ligne == "EXA":
+                ligne["taux"] = article["taux"]
+                ligne["assiette"], ligne["assiette_origine"] = ASSIETTE_EXA_ZAF, "regle_de_pays"
+            else:
+                ligne["taux"] = article["taux"]  # « free » de la Part 2A
+                ligne["assiette"], ligne["assiette_origine"] = "FOB", "regle_de_pays"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 def _compter_ligne(d, compteurs, signe):
     if d.get("taux") is None and not d.get("specifique"):
         compteurs["taux_indisponibles"] += signe
@@ -2816,6 +2879,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
+    if iso == "ZAF":
+        _accises_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
