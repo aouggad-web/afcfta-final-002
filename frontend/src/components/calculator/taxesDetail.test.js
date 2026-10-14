@@ -52,6 +52,14 @@ describe('normalizeTaxesDetail', () => {
     }]);
   });
 
+  it('garde la note de la ligne quand elle existe', () => {
+    const [ligne] = normalizeTaxesDetail(
+      [{ code: 'DD', tax: 'DD', rate: 10, observation: 'Droit de douane', note: 'Legal Notice EAC/161/2026' }],
+      [],
+    );
+    expect(ligne.note).toBe('Legal Notice EAC/161/2026');
+  });
+
   it('rapproche par intitulé la forme réelle du repli issu des données crawlées', () => {
     const rows = normalizeTaxesDetail(
       [
