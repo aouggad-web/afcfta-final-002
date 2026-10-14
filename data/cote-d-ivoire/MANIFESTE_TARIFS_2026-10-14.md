@@ -49,3 +49,10 @@ Positions : celles où le tarif DGD du 27/03/2026 porte la taxe (colonnes TSBPT,
 - **Guichet tarifaire GUCE** (guce.gouv.ci/customs/tariff/rules) : accès SSO obligatoire.
 - **Listes TAI par position en vigueur** : arrêtés annuels non publiés en ligne.
 - **Annexe fiscale 2025 adoptée** : seul le projet (dgbf.ci) a été obtenu ; l'annexe fiscale 2026 (loi n° 2025-987) est déjà au dépôt.
+
+## Compléments d'analyse (session du 14/10/2026, lecture coordonnées du tarif 27/03/2026)
+- Concordance TSB ↔ positions établie ligne à ligne : bière 2203 = 17 % ; vins 2204/2205 = 40 % ; spiritueux 2207-2208 = 45 % ; jus 2009 = 14 % ; **tomates préparées 2002.10.00 et 2002.90.20 = DD 35 % + TSB 25 % + TVA 18 %** (p. 83 du tarif).
+- Texte fondant le TSB 25 % sur les tomates préparées : **non identifié en ligne** (le tableau DGI ne cite pas la tomate à l'art. 418 ; CGI/CIBS en lecteur en ligne uniquement). À confirmer DGD/DGI.
+- Légende officielle SYDAM (TUB, TUF, TUE, PSV, TMP, TCI, PSS) : **à demander à la DGD** — déductions dans `docs_officiels/CODES-SYDAM-SIGNIFICATION-BASES.md`.
+- Ordonnance n° 2025-260 du 23/04/2025 (démantèlement ZLECAf, 10 ans, produits non sensibles) : texte intégral non public (J.O. 2025 pas en libre accès ; biblio.cndj.ci sur abonnement) ; ratification adoptée par le Parlement le 24/08/2026 (presse) ; loi de ratification et décrets d'application non téléchargés. NB : la page PWIC est une maquette de démonstration (PANEOTECH), informations indicatives.
+- Aucun des textes déposés n'est un projet.

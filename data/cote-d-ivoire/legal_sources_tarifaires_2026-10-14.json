@@ -12,7 +12,8 @@
       "sha256": "c83ecbf1ec9b7cbcc64a733ae881076d5605495fa87d13062710e571f35042aa",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "local_copy": "data/cote-d-ivoire/docs/CIV_c2258.pdf",
-      "notes": "Scan 2 p. sans couche texte ; OCR transcript versé séparément. Portée : toutes positions du TEC (6381 lignes SH 2022). Doublon : même fichier (même empreinte) que data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf, déjà au dépôt."
+      "notes": "Scan 2 p. sans couche texte ; OCR transcript versé séparément. Portée : toutes positions du TEC (6381 lignes SH 2022). Doublon : même fichier (même empreinte) que data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf, déjà au dépôt.",
+      "is_draft": false
     },
     {
       "source_id": "CIV-DGD-CIRC-1702-2015",
@@ -23,7 +24,8 @@
       "sha256": "22a41f78fff177b809aeccc3e95037d211ee5ba08439ce592b9aa7fa2b40cd9d",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "local_copy": "data/cote-d-ivoire/docs/CIV_c2549.pdf",
-      "notes": "Scan sans couche texte (OCR effectué pour lecture). TAI : période transitoire de 5 ans à compter du 01/01/2015 ; taux fixé par l'État dans la limite de l'écart entre son droit NPF et celui du TEC, plus une liste annexe 1 de produits éligibles d'office ; TCP : 2 ans (volume +25 %) / 1 an (prix CAF < 80 %)."
+      "notes": "Scan sans couche texte (OCR effectué pour lecture). TAI : période transitoire de 5 ans à compter du 01/01/2015 ; taux fixé par l'État dans la limite de l'écart entre son droit NPF et celui du TEC, plus une liste annexe 1 de produits éligibles d'office ; TCP : 2 ans (volume +25 %) / 1 an (prix CAF < 80 %).",
+      "is_draft": false
     },
     {
       "source_id": "CIV-DGD-CIRC-1689-2014",
@@ -34,7 +36,8 @@
       "sha256": "3d7708c531aaf477426d8c68df8db6761a4233ed366d085de9d80576911f7d86",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "local_copy": "data/cote-d-ivoire/docs/CIV_c2489.pdf",
-      "notes": "Fichier 2489.pdf. Historique (effet 01/01/2015) ; DUS dû à l'exportation, hors calcul d'une importation."
+      "notes": "Fichier 2489.pdf. Historique (effet 01/01/2015) ; DUS dû à l'exportation, hors calcul d'une importation.",
+      "is_draft": false
     },
     {
       "source_id": "CIV-VOC-AVIS-2018",
@@ -45,7 +48,8 @@
       "sha256": "39def6cb4876c30c1dbe618c986761d650d341060bc1a14c4f2a6ee7f8040c88",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "local_copy": "data/cote-d-ivoire/docs/CIV_avis_importateurs_VoC_decret2017-567.pdf",
-      "notes": "Frais VoC facturés à l'exportateur ; exclus du VoC (annexe) : or et métaux précieux, pierres précieuses, armes, animaux vivants, frais/congelés, floriculture, films, journaux, effets usagés, véhicules usagés, colis postaux, pétrole brut/raffiné, échantillons, missions diplomatiques, régimes francs, artisanat communautaire."
+      "notes": "Frais VoC facturés à l'exportateur ; exclus du VoC (annexe) : or et métaux précieux, pierres précieuses, armes, animaux vivants, frais/congelés, floriculture, films, journaux, effets usagés, véhicules usagés, colis postaux, pétrole brut/raffiné, échantillons, missions diplomatiques, régimes francs, artisanat communautaire.",
+      "is_draft": false
     },
     {
       "source_id": "CIV-DGI-NOTE-IMPOTS-TAXES",
@@ -56,7 +60,8 @@
       "sha256": "708b86d7165bfc748dbe133f17dd378a38a3a71448875396797ac64941ee2b2c",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "local_copy": "data/cote-d-ivoire/docs/CIV_dgi_impots_et_taxes_note_explicative.pdf",
-      "notes": "Tableau détaillé des taux (voir MANIFESTE). Doublon : même fichier (même empreinte) que data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf, déjà au dépôt."
+      "notes": "Tableau détaillé des taux (voir MANIFESTE). Doublon : même fichier (même empreinte) que data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf, déjà au dépôt.",
+      "is_draft": false
     },
     {
       "source_id": "CIV-AF-LF2025-PROJET",
@@ -67,7 +72,12 @@
       "sha256": "a04dff93d22f79086dc1adacc35e59869f0ca3c9347d4ddf9ce8e91b34fb1fed",
       "verification_status": "OFFICIAL_DRAFT_TEXT",
       "local_copy": "data/cote-d-ivoire/docs/CIV_annexe_fiscale_LF2025.pdf",
-      "notes": "Projet de texte, pas l'annexe adoptée : chaque page porte « Projet d'annexe fiscale à la loi de Finances portant Budget de l'Etat pour l'année 2025 ». L'annexe fiscale 2026 adoptée (loi n° 2025-987) est déjà au dépôt (data/cote-d-ivoire/docs_officiels/ANNEXE-FISCALE-2026-LOI-2025-987.pdf)."
+      "notes": "Projet de texte, pas l'annexe adoptée : chaque page porte « Projet d'annexe fiscale à la loi de Finances portant Budget de l'Etat pour l'année 2025 ». L'annexe fiscale 2026 adoptée (loi n° 2025-987) est déjà au dépôt (data/cote-d-ivoire/docs_officiels/ANNEXE-FISCALE-2026-LOI-2025-987.pdf).",
+      "is_draft": false
     }
+  ],
+  "notes_revision": [
+    "Consultation préalable de docs_officiels/ (collecte 10/10/2026) effectuée : doublons signalés, numéros/dates relevés sur les en-têtes.",
+    "Manques réels : légende officielle SYDAM (TUB/TUF/TUE/PSV/TMP/TCI/PSS — à demander DGD) ; texte fondateur TSB 25% tomates 2002.10/2002.90.20 ; ordonnance 2025-260 ZLECAf + textes application (non publics)."
   ]
 }
