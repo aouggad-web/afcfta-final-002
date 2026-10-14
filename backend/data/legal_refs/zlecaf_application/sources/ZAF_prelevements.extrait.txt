@@ -1,0 +1,28 @@
+Afrique du Sud — prélèvements à l'importation (Schedule No. 1 Parts 3, 5 et 7)
+Extraits verbatim. Fiche : ZAF_prelevements_2026-10-14.json. Documents versés sur la PR #648 (ZAF/legislation, sous data/sources).
+
+[1] SARS, Schedule No. 1 Part 3A (2024-04-01), Section A, notes 1 et 2 ; article des sacs de caisse
+1. Any rate of environmental levy specified in this Section in respect of any goods shall apply to any such goods which are manufactured in the Republic or imported into the Republic. 2. Any environmental levy payable in terms of this Section in respect of any goods specified therein shall be additional to any customs or excise duty payable in terms of Part 1 or 2 of Schedule No. 1.
+147.01.01 3923.21.07 Carrier bags, with a thickness of 24 microns or more 32c/bag
+
+[2] SARS, Schedule No. 1 Part 3D (2024-04-01), notes 1 et 5
+1. Any rate of environmental levy on carbon dioxide emissions of motor vehicles specified in this Section shall apply to such new motor vehicles when manufactured in or imported into the Republic.
+5. The CO2 emissions liable to the environmental levy must be calculated - (a) using the CO2 emissions stated in the test report of the vehicle type obtained as prescribed in the rules; or (b) if such report has not been obtained or is not submitted upon request to the Commissioner, by application of the following methods:
+
+[3] SARS, Schedule No. 1 Part 3E (2022-06-17), notes 1 (a) et (b) et 3 ; premier article
+(a) New, used or retreaded tyres (excluding retreaded tyres of a kind used on motor cars (including station wagons and racing cars), and those of a kind used on buses and lorries, classifiable in tariff subheadings 4012.11 and 4012.12), imported into the Republic; (b) Tyres fitted to or presented with imported vehicles or chassis specified in Chapters 87 and 88 and listed in the column headed "Tariff Subheading" in this Part;
+3. The rate of environmental levy specified in the rate of environmental levy column in this Section shall be calculated - (a) only on the nett mass of the tyre, whether or not imported with, for example, fitted to vehicles or chassis, or presented as components (e.g. road wheels fitted with tyres; wheel rims fitted with tyres) or other goods; or (b) if the nett mass is not available or cannot be determined, the rate of environmental levy shall be calculated on the design mass of the tyres plus 10% of the design mass.
+152.01.01 4011.10.01 Having a rim size not exceeding 33 cm (13 inches) R2.30/kg net
+
+[4] SARS, Schedule No. 1 Part 5A (2026-07-01), note 1 ; article de l'essence
+1. Any rate of fuel levy specified in Part 5A in respect of any goods shall apply to any such goods which are manufactured in the Republic and imported into the Republic.
+2710.12.02 Petrol, as defined in Additional Note 1(b) to Chapter 27 429c/li
+
+[5] SARS, Schedule No. 1 Part 5B (2026-04-01), note 1 ; article de l'essence
+1. Any rate of Road Accident Fuel levy specified in Part 5B in respect of any goods shall apply to any such goods which are manufactured in the Republic or imported into the Republic.
+197.10.03 2710.12.02 Petrol, as defined in Additional Note 1(b) to Chapter 27 225c/li
+
+[6] SARS, Schedule No. 1 Part 7A (2022-10-01), notes 1 et 5 ; article des eaux sucrées
+1. Any rate of levy on sugary beverages is payable on any goods specified in this Section either imported into or manufactured in the Republic.
+5. The sugar content of sugary beverages liable to the levy on sugary beverages must be calculated in grams per 100 millilitres based on - (a) the sugar content as certified on a test report obtained and retained from a testing laboratory accredited with and using methodology recognised by the South African National Accreditation System (SANAS) or the International Laboratory Accreditation Cooperation (ILAC); or (b) in the absence of such a test report, the sugar content of the sugary beverage will be deemed to constitute 20 grams per 100 millilitres.
+191.07.05 2202.10.10 In sealed containers holding 2,5 li or less (excluding those in collapsible plastic tubes) 2,21c/gram of the sugar content that exceeds 4g/100ml

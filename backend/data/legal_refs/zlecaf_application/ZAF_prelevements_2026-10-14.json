@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "objet": "Afrique du Sud : prélèvements dus à l'importation en plus des droits des Parts 1 et 2 — environnement (Schedule No. 1 Parts 3A, 3C, 3D, 3E), taxe sur les carburants (5A), Road Accident Fund (5B), Health Promotion Levy (7A) — et leur place dans l'assiette de la TVA",
+  "destination_iso3": ["ZAF"],
+  "verified_at": "2026-10-14",
+  "etabli": true,
+  "evidence_level": "primaire — Schedule No. 1 Parts 3A, 3C, 3D, 3E, 5A, 5B et 7A publiés par SARS, versés sur la PR #648",
+  "source": {
+    "url": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+    "institution": "South African Revenue Service (SARS)"
+  },
+  "regle": {
+    "valeur": "Prélèvements par unité, en rands, liquidés à la quantité : sacs plastiques (3A, EVB) 0,32 R par sac ; lampes à filament (3C, EVL) 20 R par lampe ; pneus (3E, EVT) 2,30 R par kg net ; taxe sur les carburants (5A, FLV) et Road Accident Fund levy (5B, RAF) par litre (essence 4,29 R et 2,25 R ; « free » servi à 0 %) ; boissons sucrées prêtes à boire du 22.02 (7A, HPL) 2,21 c par gramme de sucre au-delà de 4 g/100 ml, sur la teneur réputée de 20 g/100 ml faute de rapport d'essai, soit 3,536 R par litre. Non liquidés, total incomplet : CO2 des véhicules (3D, EVC), pneus montés sur un véhicule ou une roue (3E, EVT hors chapitre 40), préparations à diluer (7A, hors 22.02). TVA : valeur en douane majorée de 10 % plus tous ces prélèvements, comme les droits et accises (FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL).",
+    "verbatim": "1. Any rate of environmental levy specified in this Section in respect of any goods shall apply to any such goods which are manufactured in the Republic or imported into the Republic.",
+    "verbatim_carburants": "1. Any rate of fuel levy specified in Part 5A in respect of any goods shall apply to any such goods which are manufactured in the Republic and imported into the Republic.",
+    "verbatim_sucre": "(b) in the absence of such a test report, the sugar content of the sugary beverage will be deemed to constitute 20 grams per 100 millilitres.",
+    "reference": "Customs and Excise Act 91 of 1964, Schedule No. 1 Part 3A (2024-04-01), 3C (2024-04-01), 3D (2024-04-01), 3E (2022-06-17), 5A (2026-07-01), 5B (2026-04-01), 7A (2022-10-01)",
+    "portee": "scripts/extraire_prelevements_zaf.py lit les sept tableaux (4, 7, 17, 222, 15, 15 et 11 articles) dans data/zaf/prelevements_sch1_parts3_5_7.json ; scripts/build_socle.py, _prelevements_zaf, sert 291 lignes sur les positions de l'Afrique du Sud ; backend/socle/tva_nationale.json porte l'assiette de la TVA.",
+    "texte_archive": "sources/ZAF_prelevements.extrait.txt",
+    "sha256": "264826bc7ae34521cc17f6cd59a1119a7d9405c0498202f7a6a351c6dacb8631"
+  },
+  "decisions": [
+    "Boissons sucrées prêtes à boire (22.02) : la teneur réputée de 20 g/100 ml (note 5 (b)) est la règle légale faute de rapport d'essai ; la note de la ligne dit qu'un rapport accrédité peut la réduire.",
+    "Préparations à diluer (18.06, 19.01, 21.06) : la teneur se calcule sur la boisson reconstituée (note 6) ; le volume reconstitué n'étant pas une donnée du calcul, la ligne est sans montant.",
+    "Pneus montés sur un véhicule ou une roue (Part 3E, note 1 (b) et (c)) : dus sur la masse nette des pneus (note 3), que le calcul ne connaît pas ; ligne sans montant sur les 198 positions concernées, total incomplet.",
+    "CO2 des véhicules (Part 3D) : émissions du rapport d'essai ou, à défaut, formule sur la cylindrée (note 5) ; ni l'un ni l'autre n'est une donnée du calcul ; ligne sans montant.",
+    "Part 3F (émissions de carbone produites dans la République) : ne porte pas sur des marchandises importées, non lue. Part 3B (électricité produite dans la République) : idem, et abrogée au 01/01/2026 (avis R.7903).",
+    "L'accise ad valorem (s.65(8)(a)) ne compte pas ces prélèvements dans son assiette : seuls les droits des Parts 1 et 2A y entrent."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taux de la Part 7A (2,21 c/g, version du 2022-10-01) : aucune version plus récente publiée par SARS au 2026-10-14 (PR #648).",
+    "Parts 3A et 3C (2024-04-01) : versions en ligne au 2026-10-14 (PR #648).",
+    "Rapport d'essai de teneur en sucre, émissions de CO2 et masse des pneus montés : données que le formulaire du calculateur ne recueille pas."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ZAF_prelevements.extrait.txt",
+      "sha256": "264826bc7ae34521cc17f6cd59a1119a7d9405c0498202f7a6a351c6dacb8631"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 3A (sacs plastiques), PDF daté du 2024-04-01, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "0a1539b75dcdc8d37ca07a131dece316a46c634a5c9883b691922e1f0bc69c30"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 3C (lampes à filament), PDF daté du 2024-04-01, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "ee17f976b98a3bc7fe82ddd56152e10f83bf1f45f722702c6d007a8bf5f78795"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 3D (CO2 des véhicules), PDF daté du 2024-04-01, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "01691d5634af2a5c92523766c23435c62709f069243b682d3006a3952e588a74"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 3E (pneus), PDF daté du 2022-06-17, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "95435f1ad4feb6ea90bfd2f063df1cc87d031b715c9cb07f7d98d9500326abae"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 5A (taxe sur les carburants), PDF daté du 2026-07-01, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "48f5acabafddfba3a3342d702874609d1944857414d9f925c26b7a1397365634"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 5B (Road Accident Fund), PDF daté du 2026-04-01, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "55c0f1898f409bec06a7d63073861073e14fe7ecfde83aefce97f5ad93137713"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 7A (Health Promotion Levy), PDF daté du 2022-10-01, versé sur la PR #648 (ZAF/legislation, sous data/sources)",
+      "pdf_sha256": "d23842afd6d9ee8c553acdc9a59a8104d23571a6e5b55a293e53ef6632e5861e"
+    }
+  ]
+}
