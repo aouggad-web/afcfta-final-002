@@ -1,7 +1,8 @@
 """Égypte : TVA et Taxe de Table sur la valeur, les droits de douane et les
 autres impôts (loi 67/2016, art. 10 et 39), tabacs à la seule Taxe de Table,
 Taxe de Table des alcools au taux du tableau de 2016 et redevances sur la
-valeur en douane (décisions avec réserve). Fiche : EGY_TVA_taxe_de_table_2026-10-14.json."""
+valeur en douane (décisions avec réserve), droits au kilo et minimums de la
+Taxe de Table publiés par la douane. Fiche : EGY_TVA_taxe_de_table_2026-10-14.json."""
 
 import json
 import os
@@ -99,3 +100,37 @@ def test_frais_de_chambre_sur_la_valeur():
     assert etat == "COMPLET"
     assert "sous réserve" in lignes["رسممحصلةلحسابغرفةنسيج"]["note"]
     assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 50 + 10))
+
+
+def test_droit_de_douane_au_kilo_reclame_la_quantite():
+    """Cigares : « 150 جنية لكل كيلو جرام صافى »."""
+    etat, lignes = _calcul("2402100010")
+    assert etat == "PARTIEL"
+    assert lignes["DD"]["statut"] == "QUANTITE_REQUISE"
+
+
+def test_tabac_droit_au_kilo_et_minimum_de_la_taxe_de_table():
+    """Cigares, 10 kg : DD 150 × 10 ; assurance santé 10 % ; Taxe de Table
+    max(200 % × (1 000 + 1 500 + 100), 50 × 10), le minimum ne s'y ajoute pas."""
+    etat, lignes = _calcul("2402100010", quantite=10)
+    assert etat == "COMPLET"
+    assert lignes["DD"]["montant"] == pytest.approx(1500.0)
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(5200.0)
+    assert "VAT2" not in lignes
+
+
+def test_le_minimum_au_kilo_l_emporte_sur_un_faible_taux():
+    """Tabac brut, 100 kg déclarés pour 1 000 EGP : DD 9 × 100, redevance 0,5 % ;
+    75 % × 1 905 < 60 × 100, le minimum est dû."""
+    etat, lignes = _calcul("2401100010", quantite=100)
+    assert etat == "COMPLET"
+    assert lignes["DD"]["montant"] == pytest.approx(900.0)
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(6000.0)
+
+
+def test_minimum_au_litre_de_2106_90_20():
+    """« بحد ادنى 15 جنية لكل لتر سائل » : 150 % × 31 000 ou 15 EGP par litre."""
+    _, lignes = _calcul("2106902000", quantite=10_000)
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(150_000.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 30_000 + 150_000))
+    assert "ضريبةالجدول2" not in lignes

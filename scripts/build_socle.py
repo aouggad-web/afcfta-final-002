@@ -1949,9 +1949,16 @@ def _compter_ligne(d, compteurs, signe):
 #: et de la Taxe de Table sont dans assiettes_pays.json (loi 67/2016, art. 10 et
 #: 39) ; restent ici l'ordre des lignes, les tabacs du tableau, partie I, la
 #: Taxe de Table des alcools et des cigarettes, que la collecte ne chiffre pas,
-#: et l'assiette des redevances publiées sans elle.
+#: l'assiette des redevances publiées sans elle, et les montants que la douane
+#: publie en EGP au kilo ou au litre.
 TAXE_DE_TABLE_EGY = "ضريبةالجدول"
 MINIMUMS_EGY = {"ضريبةالجدول2", "VAT2"}
+#: Droit de douane au kilo net (tabacs) : « 150 جنية لكل كيلو جرام صافى ».
+DD_AU_KILO_EGY = re.compile(r"^([\d.]+) جنية لكل كيلو جرام صافى$")
+#: Minimum de la Taxe de Table, publié sur la ligne qui la suit : « بحد ادنى 50
+#: جنية لكل كج مصنع صافى », « بحد ادنى 15 جنية لكل لتر سائل ».
+MINIMUM_EGY = re.compile(r"^بحد ادنى ([\d.]+) جنية لكل (كيلو جرام صافى|كج مصنع صافى|لتر سائل)$")
+UNITES_EGY = {"كيلو جرام صافى": "kg", "كج مصنع صافى": "kg", "لتر سائل": "l"}
 TABAC_TAXE_DE_TABLE_EGY = (
     "Loi n° 67/2016, tableau annexé, partie I (« سلع وخدمات تخضع لضريبة الجدول فقط ») : les tabacs sont "
     "soumis à la seule Taxe de Table, que la douane publie sous « TVA ». Assiette de l'art. 39 (b)."
@@ -1992,12 +1999,24 @@ TAXE_DE_TABLE_CIGARETTES_EGY = (
 
 def _egypte(positions, compteurs, donnees):
     """Égypte : lignes publiées deux fois, tabacs, redevances, Taxe de Table des
-    alcools et des cigarettes, ordre des lignes. Fiche
+    alcools et des cigarettes, droits au kilo et minimums de la Taxe de Table,
+    ordre des lignes. Fiche
     EGY_TVA_taxe_de_table_2026-10-14.json."""
     instructions = {
         str(x.get("hs_code")): x.get("official_instructions") or []
         for x in donnees.get("sub_positions") or []
     }
+    publiees = {str(x.get("hs_code")): x.get("taxes") or {} for x in donnees.get("sub_positions") or []}
+
+    def specifique(montant, unite, brut):
+        return {
+            "montant": float(montant),
+            "unite_monetaire": "unite_principale",
+            "sous_unite_source": None,
+            "unite_quantite": unite,
+            "brut": brut,
+        }
+
     for code, position in positions.items():
         droits = position.get("droits") or []
         # Une ligne publiée deux fois (8481.80.90.90 : « ID 60 % » et « TVA 14 % »
@@ -2056,10 +2075,39 @@ def _egypte(positions, compteurs, donnees):
                 )
                 droits.append(d)
                 _compter_ligne(d, compteurs, 1)
+        taxes = publiees.get(code, {})
+        dd = next((x for x in droits if x.get("code") == "DD"), None)
+        brut = ((taxes.get("ID") or {}).get("raw") or "").strip()
+        m = DD_AU_KILO_EGY.match(brut)
+        if m and dd is not None and dd.get("taux") is None and not dd.get("specifique"):
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(
+                assiette="xQTE",
+                assiette_origine="droit_specifique",
+                specifique=specifique(m[1], "kg", brut),
+                expression_brute=brut,
+            )
+            _compter_ligne(dd, compteurs, 1)
+        # Le minimum publié sur sa propre ligne borne la Taxe de Table, il ne
+        # s'y ajoute pas : la plus élevée des deux est due (tableau, « القيمة
+        # (٢٠٠٪) بحد أدنى ٥٠ جنيهًا لكل كجم مصنع »).
+        tt = next((x for x in droits if x.get("code") == TAXE_DE_TABLE_EGY), None)
+        for minimum in [x for x in droits if x.get("code") in MINIMUMS_EGY]:
+            brut = ((taxes.get(minimum.get("code_source")) or {}).get("raw") or "").strip()
+            m = MINIMUM_EGY.match(brut)
+            if not m or minimum.get("taux") is not None or tt is None or tt.get("taux") is None or tt.get("specifique"):
+                continue
+            tt.update(
+                specifique=specifique(m[1], UNITES_EGY[m[2]], brut),
+                compose=True,
+                regle_composee="LE_PLUS_ELEVE",
+                expression_brute=f"{tt['taux']:g} % ; {brut}",
+            )
+            _compter_ligne(minimum, compteurs, -1)
+            droits.remove(minimum)
         # La Taxe de Table et la TVA s'assoient sur les droits et taxes qui les
-        # précèdent : la Taxe de Table vient après les autres prélèvements, ses
-        # minimums après elle (ils la bornent, ils ne s'y ajoutent pas), la TVA
-        # en dernier.
+        # précèdent : la Taxe de Table vient après les autres prélèvements, un
+        # minimum qui n'a pas pu lui être joint après elle, la TVA en dernier.
         def rang(d):
             if d.get("famille") == "tva":
                 return 3
