@@ -210,6 +210,19 @@ describe('mapCalculToLegacyResult — préférence appliquée', () => {
     expect(r.plancher_npf).toBeNull();
   });
 
+  it('transmet la note de la ligne et les mesures EAC du socle', () => {
+    const note = 'Legal Notice EAC/161/2026, Table A, row 37 : 10 % au lieu de 35 % (TEC).';
+    const mesures = { taux_tec: 35, taux_applique: 10, eligibilite_remise: 'ELIGIBLE_VERIFIED' };
+    const avecMesure = mapCalculToLegacyResult({
+      ...calcul,
+      npf: { ...calcul.npf, lignes: calcul.npf.lignes.map((l) => (l.code === 'DD' ? { ...l, note } : l)) },
+      mesures_eac: mesures,
+    }, contexte);
+    expect(avecMesure.taxes_detail.find((t) => t.code === 'DD').note).toBe(note);
+    expect(avecMesure.mesures_eac).toEqual(mesures);
+    expect(r.mesures_eac).toBeNull();
+  });
+
   it('reprend le plancher NPF posé par le moteur sur une ligne', () => {
     const plancher = { taux_preferentiel_ecarte_pct: 4, taux_retenu_pct: 0, motif: 'NPF servi.' };
     const avecPlancher = mapCalculToLegacyResult(

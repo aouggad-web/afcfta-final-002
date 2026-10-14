@@ -190,6 +190,23 @@ def test_la_route_applique_la_remise_sur_autorisation(client):
 
 
 @besoin_socle
+def test_une_reference_faite_d_espaces_n_est_pas_une_autorisation(client):
+    remise = {
+        "eligibilite": "ELIGIBLE_VERIFIED",
+        "reference": "   ",
+        "debut": "2026-07-01",
+        "fin": "2027-06-30",
+        "lignes": ["10019910"],
+    }
+    reponse = client.post(
+        "/calcul",
+        json={"destination": "KEN", "code_sh": "10019910", "valeur_cif": 1000, "remise": remise},
+    ).json()
+    assert _ligne_dd(reponse)["taux_pct"] == 35.0
+    assert reponse["mesures_eac"]["eligibilite_remise"] == "AUTHORIZATION_REQUIRED"
+
+
+@besoin_socle
 def test_la_route_reclame_la_surface_pour_un_sursis_mixte(client):
     reponse = client.post(
         "/calcul", json={"destination": "TZA", "code_sh": "68021000", "valeur_cif": 1000}

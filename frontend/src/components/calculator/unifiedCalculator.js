@@ -495,8 +495,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     economie_totale: economie,
   };
 
+  // La note de la ligne porte ce que le taux seul ne dit pas : la mesure
+  // qui l'a modifié (Legal Notice EAC), la remise écartée et pourquoi, ce
+  // qui reste à compléter.
   const taxesDetailSource = npfLignes.map((l) => ({
     code: l.code, tax: l.code, rate: l.taux_pct ?? null, observation: l.libelle,
+    ...(l.note ? { note: l.note } : {}),
   }));
 
   const provenance = calcul.provenance || {};
@@ -617,6 +621,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     national_legal_calculation: null,
     generic_legal_calculation: null,
     kenya_legal_calculation: null,
+    mesures_eac: calcul.mesures_eac ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',

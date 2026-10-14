@@ -2086,6 +2086,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           {tax.observation && (
                             <p className="text-[var(--afcfta-muted)] text-sm">{tax.observation}</p>
                           )}
+                          {tax.note && (
+                            <p className="text-[var(--afcfta-muted)] text-xs">{tax.note}</p>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-4">

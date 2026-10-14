@@ -100,6 +100,9 @@ def appliquer(
     EAC en vigueur, et le relevé de ces mesures (``None`` s'il n'y en a pas)."""
     destination = destination.upper()
     le = le or aujourdhui()
+    # Une référence faite d'espaces n'en est pas une : le résolveur ne teste
+    # que sa présence, et l'accepterait comme une autorisation.
+    reference = (reference or "").strip() or None
     # Une mesure de la gazette nomme l'État partenaire qui la reçoit : celle du
     # Kenya ne vaut pas pour la Tanzanie, même au sein du même TEC.
     mesures = [m for m in _mesures() if m.jurisdiction.strip().upper() == destination]
