@@ -11,8 +11,8 @@
       "url": "https://www.douanes.ci/sites/default/files/base_documentaire/c_2258.pdf",
       "sha256": "c83ecbf1ec9b7cbcc64a733ae881076d5605495fa87d13062710e571f35042aa",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
-      "local_copy": "data/cote-d-ivoire/docs/CIV_c2258.pdf",
-      "notes": "Scan 2 p. sans couche texte ; OCR transcript versé séparément. Portée : toutes positions du TEC (6381 lignes SH 2022). Doublon : même fichier (même empreinte) que data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf, déjà au dépôt.",
+      "local_copy": "data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf",
+      "notes": "Scan 2 p. sans couche texte ; OCR transcript versé séparément. Portée : toutes positions du TEC (6381 lignes SH 2022). Fichier déjà au dépôt (même empreinte) : copie locale sous docs_officiels/, non versée une seconde fois.",
       "is_draft": false
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "source_id": "CIV-DGD-CIRC-1689-2014",
-      "official_title": "Circulaire n° 1689/Mpm8/Oco/ou du 29/12/2014 — Positions tarifaires des espèces de bois et produits ligneux soumis à DUS à l'exportation (chapitre 44) + tableau de concordance en annexe",
+      "official_title": "Circulaire n° 1689/MPMB/DGD du 29/12/2014 — Positions tarifaires des espèces de bois et produits ligneux soumis à DUS à l'exportation (chapitre 44) + tableau de concordance en annexe",
       "institution": "Direction Générale des Douanes (douanes.ci)",
       "legal_date": "2014-12-29",
       "url": "https://www.douanes.ci/sites/default/files/tec/circulaires/2489.pdf",
@@ -48,7 +48,7 @@
       "sha256": "39def6cb4876c30c1dbe618c986761d650d341060bc1a14c4f2a6ee7f8040c88",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "local_copy": "data/cote-d-ivoire/docs/CIV_avis_importateurs_VoC_decret2017-567.pdf",
-      "notes": "Frais VoC facturés à l'exportateur ; exclus du VoC (annexe) : or et métaux précieux, pierres précieuses, armes, animaux vivants, frais/congelés, floriculture, films, journaux, effets usagés, véhicules usagés, colis postaux, pétrole brut/raffiné, échantillons, missions diplomatiques, régimes francs, artisanat communautaire.",
+      "notes": "Frais VoC facturés à l'exportateur ; exclus du VoC (annexe) : or et métaux précieux, pierres précieuses, armes, animaux vivants, poissons, viandes, légumes et fruits frais, floriculture, films, journaux, effets usagés, véhicules usagés, colis postaux, pétrole brut ou partiellement raffiné, échantillons, missions diplomatiques, régimes francs, artisanat communautaire.",
       "is_draft": false
     },
     {
@@ -59,8 +59,8 @@
       "url": "https://dgi.gouv.ci/assets/documents/IMPOTS%20ET%20TAXES%20EN%20COTE%20D'IVOIRE%20.pdf",
       "sha256": "708b86d7165bfc748dbe133f17dd378a38a3a71448875396797ac64941ee2b2c",
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
-      "local_copy": "data/cote-d-ivoire/docs/CIV_dgi_impots_et_taxes_note_explicative.pdf",
-      "notes": "Tableau détaillé des taux (voir MANIFESTE). Doublon : même fichier (même empreinte) que data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf, déjà au dépôt.",
+      "local_copy": "data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf",
+      "notes": "Tableau détaillé des taux (voir MANIFESTE). Fichier déjà au dépôt (même empreinte) : copie locale sous docs_officiels/, non versée une seconde fois.",
       "is_draft": false
     },
     {
