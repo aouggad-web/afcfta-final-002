@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "objet": "Afrique du Sud : accises à l'importation (Customs and Excise Act 1964, Schedule No. 1 Part 2A, spécifiques, et Part 2B, ad valorem), assiette de l'accise ad valorem (s.65(8)(a)) et accises comprises dans l'assiette de la TVA",
+  "destination_iso3": ["ZAF"],
+  "verified_at": "2026-10-14",
+  "etabli": true,
+  "evidence_level": "primaire pour les taux (Schedule No. 1 Part 2A du 2026-04-30 et Part 2B du 2025-04-01, SARS) et pour l'assiette de la TVA (page officielle SARS) ; assiette de l'accise ad valorem lue dans une copie consolidée non officielle de la loi (VERTIC), la consolidation officielle n'étant publiée que dans le lecteur Lexis de SARS",
+  "source": {
+    "url": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+    "institution": "South African Revenue Service (SARS)"
+  },
+  "regle": {
+    "valeur": "Accise spécifique (Part 2A, code EXS) et accise ad valorem (Part 2B, code EXA), dues à l'importation sur les biens de même nature que ceux fabriqués dans la République (Part 2, Section B, note 1). EXS : montant par unité imprimé au tableau, ramené en rands (« 34,7c/kg » : 0,347 R/kg ; « R11.79/10cigarettes » : 11,79 R par 10 cigarettes), liquidé à la quantité ; par litre d'alcool absolu (« R/li aa »), non liquidée, le titre alcoométrique n'étant pas une donnée du calcul. EXA : taux imprimé (7 % ou 9 %) sur la valeur transactionnelle majorée de 15 %, plus le droit de douane et l'accise spécifique non remis, sans l'accise ad valorem elle-même (s.65(8)(a) : FOBx1.15+DD+EXS) ; véhicules des articles 126.02 à 126.05, taux de ((0,00003 × B) − 0,75) % plafonné à 30 %, non servi. TVA : valeur en douane majorée de 10 % plus « any non-rebated duties levied on the goods », accises comprises (FOBx1.10+DD+EXS+EXA ; FOB+DD+EXS+EXA pour une origine et une expédition BWA, LSO, NAM, SWZ).",
+    "verbatim": "(8) (a) Notwithstanding the provisions of subsections (1) and (4), the value for the purposes of the duty specified in Section B of Part 2 of Schedule 1 shall, in respect of imported goods (other than goods entered in terms of item 412.18 of Schedule 4), be the transaction value thereof plus 15 per cent of such value, plus any non-rebated customs duty payable in terms of Part 1 and Section A of Part 2 of Schedule 1 on such goods, but excluding the duty specified in the said Section B of Part 2 of Schedule 1 on such goods.",
+    "verbatim_note_1_part_2b": "1. Any rate of ad valorem excise duty specified in this Section in respect of any goods shall apply to any such goods which are manufactured in the Republic or shall apply to imported goods of the same class or kind.",
+    "verbatim_tva_sars": "[(Customs Value + 10% thereof) + (any non-rebated duties levied on the goods)] x 15% = [ATV] x 15% = VAT payable.",
+    "reference": "Customs and Excise Act 91 of 1964, Schedule No. 1 Part 2A (2026-04-30) et Part 2B (2025-04-01), note 1 et note 2 (b) ; s.65(8)(a) ; SARS, « Duties and Taxes for Importers » (mise à jour du 21/02/2025)",
+    "portee": "scripts/extraire_accises_zaf.py lit les deux tableaux (140 articles 2A, 147 articles 2B) dans data/zaf/accises_sch1_part2.json ; scripts/build_socle.py, _accises_zaf, sert 287 lignes d'accise sur les positions de l'Afrique du Sud : 91 spécifiques liquidables à la quantité, 6 « free », 80 ad valorem, 43 par litre d'alcool absolu et 67 véhicules sans taux. backend/socle/tva_nationale.json porte l'assiette de la TVA.",
+    "texte_archive": "sources/ZAF_accises.extrait.txt",
+    "sha256": "36b37292dc66b776daa283ae782b57e1025adffd6dfc318cf06745beba45c8b5"
+  },
+  "decisions": [
+    "La Part 2A imprime « R/li aa » pour la bière, les spiritueux et les vins non conformes aux titres des sous-positions : le montant porte sur le litre d'alcool absolu ; sans titre alcoométrique, l'accise est déclarée sans assiette et le total incomplet.",
+    "Véhicules (Part 2B, articles 126.02 à 126.05) : le taux dépend de la valeur B elle-même ; il n'est pas servi, le total est incomplet.",
+    "« free » de la Part 2A (kérosène d'aviation, solvants marqués…) : servi à 0 %.",
+    "Les sous-positions définies par une valeur (« with a value for duty purposes exceeding R2 500 ») sont des positions nationales du tarif : la valeur est déjà dans le code.",
+    "L'accise n'est pas réduite par une préférence tarifaire : elle frappe les biens importés de même nature que les biens fabriqués dans la République, quelle que soit l'origine."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Texte officiel de la s.65(8)(a) : lu dans la copie consolidée de VERTIC, qui reproduit la rédaction de la loi n° 52 de 1986 ; une proposition de loi a envisagé de supprimer le mot « non-rebated » (sans effet sur le calcul, le droit de douane servi n'étant pas remis). À confirmer sur la consolidation officielle (lecteur Lexis de SARS).",
+    "Part 2B : version en ligne du 2025-04-01, aucune version 2026 publiée au 2026-10-14 (vérifié sur la PR #648).",
+    "Prélèvements des Parts 3 (environnement : sacs, ampoules, CO₂ des véhicules, pneus), 5A (taxe sur les carburants), 5B (Road Accident Fund) et 7 (Health Promotion Levy) : déposés sur la PR #648, non encore servis ; ils entrent eux aussi dans l'assiette de la TVA.",
+    "Droits anti-dumping et compensateurs (Schedule No. 2) : non servis.",
+    "Remises et ristournes (Schedules No. 3 à 6) : non appliquées."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ZAF_accises.extrait.txt",
+      "sha256": "36b37292dc66b776daa283ae782b57e1025adffd6dfc318cf06745beba45c8b5"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 2A, PDF daté du 2026-04-30 (ZAF/legislation/Sch1P2A-Schedule-No-1-Part-2A.pdf, sous data/sources)",
+      "pdf_sha256": "59d7f909ece3289fedc7147d6a513edf3815a7281ca27693660a09c8acf08d2e"
+    },
+    {
+      "document_non_archive": "SARS, Schedule No. 1 Part 2B, PDF daté du 2025-04-01 (ZAF/legislation/Sch1P2B-Schedule-No-1-Part-2B.pdf, sous data/sources)",
+      "pdf_sha256": "e9c75ab3700fb2ea6f67f5cef530f89cfd8155c8adc3abb4d5b8c9bf36777915"
+    },
+    {
+      "document_non_archive": "SARS, « Duties and Taxes for Importers », page consultée le 2026-10-14 (south_africa/official/sars-duties-and-taxes-for-importers_2026-10-14.html, sous data/sources)",
+      "pdf_sha256": "db486cb8f1b12f3dd16a4a65db25875dc4ec551d3ba76703a54057aa3015b6a1"
+    },
+    {
+      "document_non_archive": "Customs and Excise Act 91 of 1964, copie consolidée non officielle, VERTIC : https://www.vertic.org/media/National%20Legislation/South_Africa/ZA_Customs_Excise_Act_1964.pdf",
+      "pdf_sha256": "d2e9652939b2d8a1ae2a944940d6c22036c02959df06aecec356081f554571c0"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+Afrique du Sud — accises à l'importation (Schedule No. 1 Part 2A et 2B) et assiette de la TVA
+Extraits verbatim. Fiche : ZAF_accises_2026-10-14.json.
+
+[1] SARS, Schedule No. 1 Part 2A, en-tête (PDF daté du 2026-04-30 ; data/sources/ZAF/legislation/Sch1P2A-Schedule-No-1-Part-2A.pdf)
+SPECIFIC EXCISE DUTIES ON LOCALLY MANUFACTURED OR ON IMPORTED GOODS OF THE SAME CLASS OR KIND
+
+[2] Même document, article des cigarettes
+104.30.07 2402.20.90 Other R11.79/10cigarettes
+
+[3] SARS, Schedule No. 1 Part 2B, Section B, note 1 (PDF daté du 2025-04-01 ; data/sources/ZAF/legislation/Sch1P2B-Schedule-No-1-Part-2B.pdf)
+1. Any rate of ad valorem excise duty specified in this Section in respect of any goods shall apply to any such goods which are manufactured in the Republic or shall apply to imported goods of the same class or kind.
+
+[4] Même document, note 2 (b) (véhicules, articles 126.02 à 126.05)
+(b) Vehicles imported into the Republic shall be - (i) ((0,00003 x B) - 0,75)% with a maximum of 30%; and (ii) "B" means the value for the ad valorem excise duty on imported goods as prescribed in section 65(8)(a) of the Act.
+
+[5] Même document, article des smartphones
+124.37.05 8517.13.10 Designed for use when carried in the hand or on the person, with a value for duty purposes exceeding R2 500 9%
+
+[6] Customs and Excise Act 91 of 1964, s.65(8)(a) — copie consolidée publiée par VERTIC (https://www.vertic.org/media/National%20Legislation/South_Africa/ZA_Customs_Excise_Act_1964.pdf), non officielle ; la consolidation officielle n'est publiée que dans le lecteur Lexis de SARS (https://sars.mylexisnexis.co.za/)
+(8) (a) Notwithstanding the provisions of subsections (1) and (4), the value for the purposes of the duty specified in Section B of Part 2 of Schedule 1 shall, in respect of imported goods (other than goods entered in terms of item 412.18 of Schedule 4), be the transaction value thereof plus 15 per cent of such value, plus any non-rebated customs duty payable in terms of Part 1 and Section A of Part 2 of Schedule 1 on such goods, but excluding the duty specified in the said Section B of Part 2 of Schedule 1 on such goods.
+
+[7] SARS, « Duties and Taxes for Importers » (https://www.sars.gov.za/customs-and-excise/duties-and-taxes/duties-and-taxes-for-importers/, mise à jour du 21/02/2025, consultée le 2026-10-14 ; data/sources/south_africa/official/sars-duties-and-taxes-for-importers_2026-10-14.html)
+[(Customs Value + 10% thereof) + (any non-rebated duties levied on the goods)] x 15% = [ATV] x 15% = VAT payable.
