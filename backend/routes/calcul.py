@@ -30,12 +30,14 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Optional
+from datetime import date
+from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from services import exoneration_origine, socle
+from engine.schemas.legal_override import RemissionEligibility
+from services import exoneration_origine, mesures_eac, socle
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import simulations_regionales, taux_preferentiels
 from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
@@ -61,6 +63,21 @@ FONDEMENT_TAUX_DOUANIER = (
 NON_MEMBRES_OMC = frozenset({"DZA", "ERI", "ETH", "GNQ", "LBY", "SDN", "SOM", "SSD", "STP"})
 #: Écart relatif appliqué au taux pour savoir quels montants en dépendent.
 ECART_DE_TAUX = 0.01
+
+
+class AutorisationRemise(BaseModel):
+    """Ce que l'importateur déclare d'une remise de droits de la gazette EAC.
+
+    La remise ne s'applique que si l'autorisation est datée, en vigueur le jour
+    du calcul et nomme la ligne tarifaire exacte (voir ``services.mesures_eac``)."""
+
+    eligibilite: RemissionEligibility = RemissionEligibility.ELIGIBILITY_UNKNOWN
+    reference: Optional[str] = Field(None, description="Référence de l'autorisation officielle")
+    debut: Optional[date] = Field(None, description="Début de validité de l'autorisation")
+    fin: Optional[date] = Field(None, description="Fin de validité de l'autorisation")
+    lignes: List[str] = Field(
+        default_factory=list, description="Lignes tarifaires exactes que l'autorisation nomme"
+    )
 
 
 class DemandeCalcul(BaseModel):
@@ -143,6 +160,13 @@ class DemandeCalcul(BaseModel):
             "liés à un autre mode (frais portuaires pour une importation par route)."
         ),
     )
+    remise: Optional[AutorisationRemise] = Field(
+        None,
+        description=(
+            "Autorisation de remise de droits (gazette EAC). Omise, une remise "
+            "subordonnée à une autorisation n'est pas appliquée et la réponse le dit."
+        ),
+    )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
@@ -180,6 +204,20 @@ def calcul(demande: DemandeCalcul):
         # il rend le service indisponible, et le dit.
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
+    # Les mesures de la gazette EAC fixent le taux du TEC, c'est-à-dire le NPF :
+    # la préférence et les simulations régionales se comparent au taux modifié.
+    remise = demande.remise or AutorisationRemise()
+    position, mesures = mesures_eac.appliquer(
+        position,
+        demande.destination,
+        socle.normaliser_code(demande.code_sh),
+        eligibilite=remise.eligibilite,
+        reference=remise.reference,
+        debut=remise.debut,
+        fin=remise.fin,
+        lignes=remise.lignes,
+    )
+
     preference = {"applique": False, "statut": "ORIGINE_NON_FOURNIE", "taux": {}}
     if demande.origine:
         preference = taux_preferentiels(
@@ -212,6 +250,8 @@ def calcul(demande: DemandeCalcul):
     resultat["complements_nationaux"] = complements
     if exonerations:
         resultat["exonerations_origine"] = exonerations
+    if mesures:
+        resultat["mesures_eac"] = mesures
     conversion = _conversion_monetaire(position, demande, provenance, preference, resultat)
     if conversion:
         resultat["conversion_monetaire"] = conversion

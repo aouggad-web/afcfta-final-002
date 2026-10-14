@@ -4,6 +4,7 @@ import {
   localiserResultat,
   mapCalculToLegacyResult,
   moteurRendCompteDesMesures,
+  remiseRequete,
   reserveConversion,
   tauxDeChangePour,
 } from './unifiedCalculator';
@@ -12,6 +13,34 @@ const contexte = { originCountry: 'GHA', destinationCountry: 'CIV', hsCode: '761
 
 const ligne = (over) => ({ code: 'DD', libelle: 'Droit de douane', famille: 'droit',
   assiette: 'CIF', taux_pct: 20, statut: 'CALCULE', base: 1000, montant: 200, ...over });
+
+describe('remiseRequete', () => {
+  it("ne transmet rien tant que l'importateur ne sait pas", () => {
+    expect(remiseRequete(null)).toBeNull();
+    expect(remiseRequete({ answer: 'unknown', reference: 'X' })).toBeNull();
+  });
+
+  it("transmet un refus sans détail d'autorisation", () => {
+    expect(remiseRequete({ answer: 'no', reference: 'X', authorizedTariffLines: '10019910' }))
+      .toEqual({ eligibilite: 'NOT_ELIGIBLE' });
+  });
+
+  it("transmet l'autorisation déclarée, lignes séparées et champs vides omis", () => {
+    expect(remiseRequete({
+      answer: 'yes', reference: ' KRA/REM/1 ', validFrom: '2026-07-01', validTo: '',
+      authorizedTariffLines: '10019910, 10019990,', authorizedGoods: 'blé',
+    })).toEqual({
+      eligibilite: 'ELIGIBLE_VERIFIED', reference: 'KRA/REM/1', debut: '2026-07-01',
+      lignes: ['10019910', '10019990'],
+    });
+  });
+
+  it('accompagne la demande au socle quand elle est fournie', () => {
+    expect(buildCalculRequestBody({
+      destinationISO3: 'KEN', hsCode: '10019910', cifValue: 1000, remise: { answer: 'no' },
+    }).remise).toEqual({ eligibilite: 'NOT_ELIGIBLE' });
+  });
+});
 
 describe('buildCalculRequestBody', () => {
   it("omet l'origine quand elle est absente plutôt que d'envoyer une valeur vide", () => {

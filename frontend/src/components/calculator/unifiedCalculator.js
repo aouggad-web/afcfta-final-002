@@ -115,6 +115,7 @@ export function buildCalculRequestBody({
   moyenTransport,
   nombreUnitesTransport,
   modeAcheminement,
+  remise,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -147,7 +148,27 @@ export function buildCalculRequestBody({
   // frais du bloc réglementaire (par tonne, par conteneur ou véhicule), jamais
   // les droits et taxes ; absents, ces frais restent « montant à confirmer ».
   Object.assign(body, transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }));
+  const autorisation = remiseRequete(remise);
+  if (autorisation) body.remise = autorisation;
   return body;
+}
+
+/**
+ * Réponse au formulaire de remise de droits (gazette EAC, Kenya) dans la forme
+ * que `POST /calcul` attend. « Je ne sais pas » et un formulaire absent ne
+ * transmettent rien : le serveur tient alors l'éligibilité pour inconnue et
+ * n'applique pas la remise. Les champs vides sont omis plutôt qu'envoyés vides.
+ */
+export function remiseRequete(remise) {
+  if (!remise || !['yes', 'no'].includes(remise.answer)) return null;
+  if (remise.answer === 'no') return { eligibilite: 'NOT_ELIGIBLE' };
+  const autorisation = { eligibilite: 'ELIGIBLE_VERIFIED' };
+  if (remise.reference?.trim()) autorisation.reference = remise.reference.trim();
+  if (remise.validFrom) autorisation.debut = remise.validFrom;
+  if (remise.validTo) autorisation.fin = remise.validTo;
+  const lignes = (remise.authorizedTariffLines || '').split(',').map((l) => l.trim()).filter(Boolean);
+  if (lignes.length) autorisation.lignes = lignes;
+  return autorisation;
 }
 
 /**
