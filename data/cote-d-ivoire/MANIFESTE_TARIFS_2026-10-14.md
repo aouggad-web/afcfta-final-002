@@ -55,4 +55,4 @@ Positions : celles où le tarif DGD du 27/03/2026 porte la taxe (colonnes TSBPT,
 - Texte fondant le TSB 25 % sur les tomates préparées : **non identifié en ligne** (le tableau DGI ne cite pas la tomate à l'art. 418 ; CGI/CIBS en lecteur en ligne uniquement). À confirmer DGD/DGI.
 - Légende officielle SYDAM (TUB, TUF, TUE, PSV, TMP, TCI, PSS) : **à demander à la DGD** — déductions dans `docs_officiels/CODES-SYDAM-SIGNIFICATION-BASES.md`.
 - Ordonnance n° 2025-260 du 23/04/2025 (démantèlement ZLECAf, 10 ans, produits non sensibles) : texte intégral non public (J.O. 2025 pas en libre accès ; biblio.cndj.ci sur abonnement) ; ratification adoptée par le Parlement le 24/08/2026 (presse) ; loi de ratification et décrets d'application non téléchargés. NB : la page PWIC est une maquette de démonstration (PANEOTECH), informations indicatives.
-- Aucun des textes déposés n'est un projet.
+- Un seul texte déposé est un projet : l'annexe fiscale 2025 (CIV-AF-LF2025-PROJET, « Projet d'annexe fiscale » sur chaque page) ; les autres sont des textes adoptés ou publiés.

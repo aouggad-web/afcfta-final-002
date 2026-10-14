@@ -73,7 +73,7 @@
       "verification_status": "OFFICIAL_DRAFT_TEXT",
       "local_copy": "data/cote-d-ivoire/docs/CIV_annexe_fiscale_LF2025.pdf",
       "notes": "Projet de texte, pas l'annexe adoptée : chaque page porte « Projet d'annexe fiscale à la loi de Finances portant Budget de l'Etat pour l'année 2025 ». L'annexe fiscale 2026 adoptée (loi n° 2025-987) est déjà au dépôt (data/cote-d-ivoire/docs_officiels/ANNEXE-FISCALE-2026-LOI-2025-987.pdf).",
-      "is_draft": false
+      "is_draft": true
     }
   ],
   "notes_revision": [
