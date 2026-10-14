@@ -247,7 +247,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": "on Electric and Hybrid vehicles and"
+"restriction": null
 }
 ],
 "description": "Electric and Hybrid vehicles"
@@ -269,7 +269,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": "on Electric Motorcycles and"
+"restriction": null
 }
 ],
 "description": "Electric Motorcycle"
@@ -3252,7 +3252,7 @@
 },
 "regle": "LE_PLUS_ELEVE"
 },
-"restriction": "on refined edible oils"
+"restriction": null
 }
 ],
 "description": "Refined edible oils."
@@ -7316,7 +7316,7 @@
 "droit": {
 "taux": 35.0
 },
-"restriction": "on Hollow Sections"
+"restriction": null
 }
 ],
 "description": "Hollow Sections"
@@ -7691,7 +7691,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": "on Electric and Hybrid Buses"
+"restriction": null
 }
 ],
 "description": "Electric and Hybrid Buses"
@@ -7715,7 +7715,7 @@
 "droit": {
 "taux": 0.0
 },
-"restriction": "on Electric and Hybrid Trucks"
+"restriction": null
 }
 ],
 "description": "Electric and Hybrid trucks"

@@ -44,6 +44,11 @@ RUBRIQUE = re.compile(r"\bHeading\s+(\d{2})\.?(\d{2})\b", re.I)
 USAGE = re.compile(r"\bfor use in\b|\bfor industrial use\b|\bpurposes only\b", re.I)
 
 
+def _produit(texte):
+    """Libellé réduit à ses lettres, sans pluriel final, pour comparer deux libellés."""
+    return re.sub(r"[^a-z]", "", texte.lower()).rstrip("s")
+
+
 def codes_de(texte):
     """Positions, rubriques (« Heading 8544 ») et chapitres (« Chapter 61 and
     62 », « Chapter 50 to 60 ») d'un texte, sous forme de préfixes pointés."""
@@ -273,6 +278,11 @@ for ligne in lignes:
             # positions de tubes en général : l'usage restreint la mesure.
             if d.get("lu") and not d.get("restriction") and USAGE.search(description):
                 d["restriction"] = description
+            # « on Electric and Hybrid vehicles » sur la ligne « Electric and Hybrid
+            # vehicles » : la décision redit le produit, elle ne le restreint pas.
+            elif d.get("restriction") and _produit(re.sub(r"^\s*on\s+|\s+and\s*$", "", d["restriction"],
+                                                            flags=re.I)) == _produit(description):
+                d["restriction"] = None
         if col:
             mesure["description"] = next((c for c in cel[col + 1:-1] if c), "")
         else:

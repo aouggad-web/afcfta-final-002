@@ -116,3 +116,9 @@ def test_taux_par_defaut_et_exception_en_note():
     """Table I n° 253 : compteurs électriques à 35 %, sauf ceux importés par l'État."""
     _, dd = _dd("UGA", "90283000")
     assert dd["taux"] == 35.0 and "exception non appliquée" in dd["note"]
+
+
+def test_decision_qui_redit_le_produit():
+    """Table I n° 10 : Rwanda, « on Electric Motorcycles », ligne « Electric Motorcycle »."""
+    _, dd = _dd("RWA", "87116000")
+    assert dd["taux"] == 0.0 and "n° 10" in dd["source"]
