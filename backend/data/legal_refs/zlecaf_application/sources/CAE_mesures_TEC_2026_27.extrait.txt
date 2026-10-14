@@ -1,0 +1,23 @@
+CAE — exceptions au TEC de l'exercice 2026/27 (Legal Notice EAC/160/2026) : extraits verbatim (relevés le 2026-10-14)
+
+EAC Gazette Vol. AT 1 No. 16 du 30/06/2026, PDF de 122 pages, sha256 555b8fdd7cc817ae5f729762913c5f8205e503a28170bad86a8a0f66e4c93907 (data/sources/eac/official/EAC_Vol_AT_1_No_16_2026-06-30.pdf), texte de la page normalisé (espaces, césures) ; la page est indiquée entre crochets.
+
+[p. 3] « IN EXERCISE of the powers conferred upon the Council of Ministers by Articles 12 (3) and 39 (1) (c) of the Protocol on the Establishment of the East African Community Customs Union, the Council of Ministers has approved the following measures on customs duty rates on the items provided under The Harmonized Community Description and Coding System in Annex 1 to the Protocol: »
+
+[p. 3] « 3 8523.52.00 Smart cards (a) Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% on imports by the National Identification Authority for one year; and (b) Rwanda to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% for one year »
+
+[p. 12] « 63 1701.12.90 Other beet sugar Rwanda to stay the application of the EAC CET and apply import duty rate of 25% instead of 100% or US$ 460 / MT whichever is higher for one year »
+
+[p. 9] « 36 2005.80.00 Sweet corn (Zea mays var. saccharata) Kenya to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 250 / MT whichever is higher for one year »
+
+[p. 6] « 8517.13.00 8517.14.00 Mobile phones (a) Uganda to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year »
+
+[p. 42] « TABLE III: THE REPUBLIC OF KENYA TO STAY THE APPLICATION OF EAC CET RATE ON THE SPECIFIED PRODUCTS BELOW AND APPLY A DUTY RATE OF 25% OR US$ 0.75 / KG WHICHEVER IS HIGHER FOR ONE YEAR »
+
+[p. 50] « TABLE IV: THE REPUBLIC OF UGANDA TO STAY OF APPLICATION OF THE EAC CET IN RESPECT OF SPECIFIED PRODUCTS BELOW AND APPLY A DUTY RATE OF 35% FOR ONE YEAR »
+
+[p. 65] « TABLE VIII: SPECIFIED PARTNER STATES ARE GRANTED A STAY APPLICATION OF THE EAC CET AND ARE TO APPLY THE SPECIFIED RATES ON EQUIPMENT TO MANUFACTURE GARMENTS AND OTHER TEXTILE MADE UP PRODUCTS IMPORTED BY THE MANUFACTURERS OF GARMENTS AND OTHER TEXTILE MADE UP PRODUCTS FOR ONE YEAR (FY 2026 / 2027) »
+
+[p. 65] « TABLE X: AMENDMENT TO DUTY RATES IN THE EAC CET S/N HS CODE ITEM DESCRIPTION DECISION 1. 2102.10.00 - Active yeasts Amend EAC CET duty rate from 25% to “25% or US$ 0.66 / KG whichever is higher” »
+
+Relevé (scripts/extraire_mesures_tec_cae_2026.py, data/eac/mesures_tec_cae_2026_27.json) : Table I 325 lignes, Table II 47, III 293, IV 267, V 34, VI 233, VII 13, VIII 3, IX 10, X 10 ; 1 215 décisions appliquées sans condition, 23 décisions conditionnelles (importateur, usage, sous-produit, période) rappelées en note, 14 non lues (Tables VIII et IX, équipements « imported by the manufacturers » ; Table I n° 245, « 35% or US$ 1000 / MT » sans règle de départage).
