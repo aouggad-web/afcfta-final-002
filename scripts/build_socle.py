@@ -2087,6 +2087,17 @@ TAXE_DE_TABLE_LIQUIDE_EGY = (
     "des précédentes. Cumul (16 EGP/ml) ou répétition (4 EGP/ml) : les instructions ne le tranchent pas — "
     "Taxe de Table non liquidée."
 )
+#: Taxe de Table que la douane subordonne à l'usage de la marchandise, par
+#: instruction : instruction -> (code de l'usage, libellé, remplace la TVA).
+#: ر7018 : « 5 % بدلا من 14% ق.ض » — au lieu de la TVA de 14 %. Le taux est lu
+#: dans le texte de l'instruction ; l'usage est déclaré au calcul.
+USAGES_EGY = {
+    "ر7009": ("HUILE_NON_SUBVENTIONNEE", "Huile alimentaire non subventionnée", False),
+    "ر7018": ("USAGE_DOMESTIQUE", "Usage domestique", True),
+    "ر7027": ("PESTICIDE_AGRICOLE", "Pesticide agricole", False),
+    "ر7100": ("ENGRAIS", "Engrais", False),
+}
+TAUX_INSTRUCTION_EGY = re.compile(r"([\d.]+)\s*%")
 TAXE_DE_TABLE_CIGARETTES_EGY = (
     "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
     "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
@@ -2192,6 +2203,35 @@ def _egypte(positions, compteurs, donnees):
                 )
                 droits.append(d)
                 _compter_ligne(d, compteurs, 1)
+        usages = []
+        for texte in instructions.get(code, []):
+            if texte[:5] not in USAGES_EGY:
+                continue
+            usage, libelle, remplace_tva = USAGES_EGY[texte[:5]]
+            usages.append(
+                {
+                    "code": usage,
+                    "libelle": libelle,
+                    "instruction": texte[:5],
+                    "texte": texte,
+                    "ajouter": [
+                        {
+                            "code": TAXE_DE_TABLE_EGY,
+                            "code_source": "ضريبة الجدول",
+                            "libelle": "Taxe de Table",
+                            "famille": "autre",
+                            "taux": float(TAUX_INSTRUCTION_EGY.search(texte)[1]),
+                            "assiette": "CIF+TOUS_SAUF_TVA",
+                            "assiette_origine": "texte_primaire",
+                            "source": SOURCE_INSTRUCTIONS_EGY,
+                            "note": f"Instruction {texte[:5]} de la douane, sur usage déclaré : « {texte} ».",
+                        }
+                    ],
+                    "retirer": ["TVA"] if remplace_tva else [],
+                }
+            )
+        if usages:
+            position["usages"] = usages
         taxes = publiees.get(code, {})
         dd = next((x for x in droits if x.get("code") == "DD"), None)
         brut = ((taxes.get("ID") or {}).get("raw") or "").strip()

@@ -132,6 +132,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // saisie.
   const [fobValue, setFobValue] = useState('');
   const [fobFor, setFobFor] = useState(null);
+  // Usage de la marchandise, quand le tarif y subordonne un prélèvement
+  // (Égypte : Taxe de Table d'un pesticide agricole, d'un engrais…). Même
+  // règle que la quantité : rattaché à la position pour laquelle il est déclaré.
+  const [usage, setUsage] = useState('');
+  const [usageFor, setUsageFor] = useState(null);
   // Facultatifs : chiffrent les frais par tonne et par conteneur ou véhicule
   // du bloc réglementaire (péage, scanner…), jamais les droits et taxes.
   const [poidsBrut, setPoidsBrut] = useState('');
@@ -148,6 +153,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setQuantityFor(null);
     setFobValue('');
     setFobFor(null);
+    setUsage('');
+    setUsageFor(null);
   }, [hsCode, destinationCountry, originCountry]);
 
   useEffect(() => {
@@ -491,6 +498,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         tauxDeChange: tauxDeChangePour(destISO3, await demanderConversion()),
         ...transport,
         remise: destISO3 === 'KEN' ? kenyaRemission : null,
+        usage: usageFor === `${destISO3}|${cleanHsCode}` ? usage : null,
       }))).data;
       const legacyResult = mapCalculToLegacyResult(calcul, {
         originCountry,
@@ -1289,6 +1297,68 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               : 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.')}
                         </p>
                       )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* USAGE DE LA MARCHANDISE — ouvert seulement quand le tarif y
+                  subordonne un prélèvement (Égypte : instructions ر7009,
+                  ر7018, ر7027, ر7100). Sans déclaration, le régime courant est
+                  liquidé ; l'usage déclaré, lui, l'est avec son prélèvement. */}
+              {result.usages?.possibles?.length > 0 && (
+                <div
+                  className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl"
+                  data-testid="usage-declare"
+                >
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
+                    <div className="w-full">
+                      <p className="text-[var(--gold)] font-semibold text-sm">
+                        {language === 'fr'
+                          ? 'Prélèvement selon l\'usage de la marchandise'
+                          : 'Levy depending on the use of the goods'}
+                      </p>
+                      <p className="text-[var(--gold)] text-xs mt-1">
+                        {result.usages.applique
+                          ? (language === 'fr' ? 'Usage déclaré appliqué : ' : 'Declared use applied: ')
+                            + (result.usages.possibles.find((u) => u.code === result.usages.applique)?.libelle || result.usages.applique)
+                          : (language === 'fr'
+                            ? 'Aucun usage déclaré : le régime courant est calculé.'
+                            : 'No use declared: the standard regime is calculated.')}
+                      </p>
+                      <div className="mt-2 space-y-1">
+                        {result.usages.possibles.map((u) => (
+                          <p key={u.code} className="text-[var(--gold)] text-xs" dir="auto">
+                            <span className="font-semibold">{u.libelle}</span> — {u.texte}
+                          </p>
+                        ))}
+                      </div>
+                      <div className="mt-3 flex flex-wrap items-end gap-2">
+                        <select
+                          data-testid="usage-saisi"
+                          value={usageFor === result._quantite_cle ? usage : (result.usages.applique || '')}
+                          onChange={(e) => {
+                            setUsage(e.target.value);
+                            setUsageFor(result._quantite_cle);
+                          }}
+                          className="px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
+                        >
+                          <option value="">{language === 'fr' ? 'Aucun de ces usages' : 'None of these uses'}</option>
+                          {result.usages.possibles.map((u) => (
+                            <option key={u.code} value={u.code}>{u.libelle}</option>
+                          ))}
+                        </select>
+                        <Button
+                          type="button"
+                          data-testid="usage-recalculer"
+                          onClick={() => calculateTariff()}
+                          disabled={loading}
+                          className="bg-amber-600 hover:bg-amber-700"
+                        >
+                          {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>

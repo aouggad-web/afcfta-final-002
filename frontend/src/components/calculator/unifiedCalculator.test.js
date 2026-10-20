@@ -768,3 +768,19 @@ describe('reserveConversion — un montant calculé au taux de marché le dit', 
     expect(reserveConversion(null, 'fr')).toBeNull();
   });
 });
+
+describe("usage déclaré de la marchandise (Égypte, Taxe de Table)", () => {
+  const base = { destinationISO3: 'EGY', hsCode: '2801100000', cifValue: 1000 };
+
+  it("n'envoie l'usage que s'il est déclaré", () => {
+    expect(buildCalculRequestBody(base).usage).toBeUndefined();
+    expect(buildCalculRequestBody({ ...base, usage: '' }).usage).toBeUndefined();
+    expect(buildCalculRequestBody({ ...base, usage: 'PESTICIDE_AGRICOLE' }).usage).toBe('PESTICIDE_AGRICOLE');
+  });
+
+  it('transmet le bloc des usages possibles au résultat', () => {
+    const usages = { possibles: [{ code: 'PESTICIDE_AGRICOLE', libelle: 'Pesticide agricole' }], applique: null };
+    const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1100 }, usages };
+    expect(mapCalculToLegacyResult(calcul, contexte).usages).toEqual(usages);
+  });
+});

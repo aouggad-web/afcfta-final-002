@@ -110,6 +110,7 @@ export function buildCalculRequestBody({
   nombreUnitesTransport,
   modeAcheminement,
   remise,
+  usage,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -144,6 +145,10 @@ export function buildCalculRequestBody({
   Object.assign(body, transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }));
   const autorisation = remiseRequete(remise);
   if (autorisation) body.remise = autorisation;
+  // L'usage déclaré (Égypte : pesticide agricole, engrais…), parmi ceux que
+  // le moteur a nommés pour la position. Non déclaré, rien n'est envoyé : le
+  // régime courant est liquidé.
+  if (typeof usage === 'string' && usage) body.usage = usage;
   return body;
 }
 
@@ -579,6 +584,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     regulatory_cost: calcul.regulatory_cost ?? null,
     regulatory_reported: calcul.regulatory_reported ?? null,
     mesures_eac: calcul.mesures_eac ?? null,
+    usages: calcul.usages ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',
