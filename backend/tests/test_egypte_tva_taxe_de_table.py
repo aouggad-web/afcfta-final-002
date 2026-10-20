@@ -145,12 +145,13 @@ def test_tabac_chauffe_taxe_de_table_de_l_instruction():
     assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 200 + 100 + 3600))
 
 
-def test_liquide_de_cigarette_electronique_n_est_pas_complet():
-    """2404.12.00.10 : quatre instructions de 4 EGP/ml, cumul non tranché — la
-    Taxe de Table est déclarée, sans taux, et le total n'est pas complet."""
-    etat, lignes = _calcul("2404120010", quantite=1)
-    assert etat == "PARTIEL"
-    assert lignes[TAXE_DE_TABLE]["montant"] is None
+def test_liquide_de_cigarette_electronique_quatre_instructions_cumulees():
+    """2404.12.00.10 : ر7059, ر7061, ر7062, ر7067, 4 EGP/ml chacune, cumulées
+    (décision du 20/10/2026) : 16 EGP/ml ; 10 ml pour 1 000 EGP."""
+    etat, lignes = _calcul("2404120010", quantite=10)
+    assert etat == "COMPLET"
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(160.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 200 + 100 + 160))
     assert "ر7067" in lignes[TAXE_DE_TABLE]["note"]
 
 
