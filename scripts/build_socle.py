@@ -2073,6 +2073,31 @@ RESERVE_REDEVANCES_EGY = (
     "Publiée en % par la douane, sans assiette, et aucun texte lu ne la fixe : liquidée sur la valeur en "
     "douane, sur décision, sous réserve."
 )
+#: Taxe de Table que la douane impose par instruction, sans la publier parmi les
+#: taxes de la position (2404). Tabac chauffé : ر7058, « 1800 جنيه على الكيلو
+#: جرام صافى ». Liquide des cigarettes électroniques : ر7059, ر7061, ر7062 et
+#: ر7067, chacune « 4 جنيه لكل مليليتر سائل », les trois dernières « en plus »
+#: des précédentes : cumulées sur décision du 20/10/2026 (16 EGP/ml).
+INSTRUCTION_TABAC_CHAUFFE_EGY = "ر7058"
+TABAC_CHAUFFE_EGY = re.compile(r"بواقع ([\d.]+) جنيه على الكيلو جرام صافى")
+INSTRUCTIONS_LIQUIDE_EGY = ("ر7059", "ر7061", "ر7062", "ر7067")
+LIQUIDE_EGY = re.compile(r"بواقع ([\d.]+) جنيه لكل مليليتر سائل")
+SOURCE_INSTRUCTIONS_EGY = "customs.gov.eg — instructions de la position (Autorité égyptienne des douanes)"
+TAXE_DE_TABLE_LIQUIDE_EGY = (
+    "Instructions {codes} de la douane : Taxe de Table de 4 EGP par millilitre de liquide chacune, les dernières "
+    "« en plus » des précédentes. Cumulées sur décision du 20/10/2026, sous réserve : {total} EGP par millilitre."
+)
+#: Taxe de Table que la douane subordonne à l'usage de la marchandise, par
+#: instruction : instruction -> (code de l'usage, libellé, remplace la TVA).
+#: ر7018 : « 5 % بدلا من 14% ق.ض » — au lieu de la TVA de 14 %. Le taux est lu
+#: dans le texte de l'instruction ; l'usage est déclaré au calcul.
+USAGES_EGY = {
+    "ر7009": ("HUILE_NON_SUBVENTIONNEE", "Huile alimentaire non subventionnée", False),
+    "ر7018": ("USAGE_DOMESTIQUE", "Usage domestique", True),
+    "ر7027": ("PESTICIDE_AGRICOLE", "Pesticide agricole", False),
+    "ر7100": ("ENGRAIS", "Engrais", False),
+}
+TAUX_INSTRUCTION_EGY = re.compile(r"([\d.]+)\s*%")
 TAXE_DE_TABLE_CIGARETTES_EGY = (
     "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
     "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
@@ -2148,16 +2173,71 @@ def _egypte(positions, compteurs, donnees):
                 }
             elif code.startswith("240220"):
                 d = {"assiette": None, "assiette_origine": None, "note": TAXE_DE_TABLE_CIGARETTES_EGY}
+            consignes = [i for i in instructions.get(code, []) if i[:5] == INSTRUCTION_TABAC_CHAUFFE_EGY]
+            liquide = [i for i in instructions.get(code, []) if i[:5] in INSTRUCTIONS_LIQUIDE_EGY]
+            m = TABAC_CHAUFFE_EGY.search(consignes[0]) if consignes else None
+            if d is None and m:
+                brut = consignes[0]
+                d = {
+                    "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique",
+                    "specifique": specifique(m[1], "kg", brut),
+                    "expression_brute": brut,
+                    "note": f"Instruction {INSTRUCTION_TABAC_CHAUFFE_EGY} de la douane : {m[1]} EGP par kilo net.",
+                    "source": SOURCE_INSTRUCTIONS_EGY,
+                }
+            elif d is None and liquide:
+                total = sum(float(LIQUIDE_EGY.search(i)[1]) for i in liquide)
+                brut = " ; ".join(liquide)
+                d = {
+                    "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique",
+                    "specifique": specifique(total, "ml", brut),
+                    "expression_brute": brut,
+                    "note": TAXE_DE_TABLE_LIQUIDE_EGY.format(
+                        codes=", ".join(i[:5] for i in liquide), total=f"{total:g}"
+                    ),
+                    "source": SOURCE_INSTRUCTIONS_EGY,
+                }
             if d is not None:
+                d.setdefault("source", "Loi n° 67/2016 (TVA), art. 36 et tableau annexé")
                 d.update(
                     code=TAXE_DE_TABLE_EGY,
                     code_source="ضريبة الجدول",
                     libelle="Taxe de Table",
                     famille="autre",
-                    source="Loi n° 67/2016 (TVA), art. 36 et tableau annexé",
                 )
                 droits.append(d)
                 _compter_ligne(d, compteurs, 1)
+        usages = []
+        for texte in instructions.get(code, []):
+            if texte[:5] not in USAGES_EGY:
+                continue
+            usage, libelle, remplace_tva = USAGES_EGY[texte[:5]]
+            usages.append(
+                {
+                    "code": usage,
+                    "libelle": libelle,
+                    "instruction": texte[:5],
+                    "texte": texte,
+                    "ajouter": [
+                        {
+                            "code": TAXE_DE_TABLE_EGY,
+                            "code_source": "ضريبة الجدول",
+                            "libelle": "Taxe de Table",
+                            "famille": "autre",
+                            "taux": float(TAUX_INSTRUCTION_EGY.search(texte)[1]),
+                            "assiette": "CIF+TOUS_SAUF_TVA",
+                            "assiette_origine": "texte_primaire",
+                            "source": SOURCE_INSTRUCTIONS_EGY,
+                            "note": f"Instruction {texte[:5]} de la douane, sur usage déclaré : « {texte} ».",
+                        }
+                    ],
+                    "retirer": ["TVA"] if remplace_tva else [],
+                }
+            )
+        if usages:
+            position["usages"] = usages
         taxes = publiees.get(code, {})
         dd = next((x for x in droits if x.get("code") == "DD"), None)
         brut = ((taxes.get("ID") or {}).get("raw") or "").strip()

@@ -17,9 +17,9 @@
     "verbatim_taxe_de_table": "Art. 39 (b) : « بالنسبة للسلع والخدمات المستوردة : القيمة التى تتخذ أساسًا لربط الضريبة الجمركية مضافًا إليها الضريبة الجمركية وغيرها من الضرائب والرسوم المفروضة . وذلك كله ما لم ينص فى الجدول المرافق على خلاف ذلك . »",
     "reference": "Loi n° 67/2016 relative à la TVA, art. 10 (7) et (10), art. 36, art. 39 et tableau annexé (parties I et II), JO n° 35 bis (c) du 07/09/2016, p. 12, 13, 23, 24, 39, 40, 44 et 45",
     "assiette": "TVA : CIF+TOUS_SAUF_TVA ; Taxe de Table : CIF+TOUS_SAUF_TVA, liquidée après les autres prélèvements et avant la TVA",
-    "portee": "backend/socle/assiettes_pays.json (EGY : TVA et ضريبةالجدول) ; scripts/build_socle.py, _egypte (TAXE_DE_TABLE_EGY, TABAC_TAXE_DE_TABLE_EGY, TAXE_DE_TABLE_ALCOOLS_EGY, REDEVANCES_EGY, TAXE_DE_TABLE_CIGARETTES_EGY, DD_AU_KILO_EGY, MINIMUM_EGY) ; le calculateur sert l'Égypte par le socle seul.",
+    "portee": "backend/socle/assiettes_pays.json (EGY : TVA et ضريبةالجدول) ; scripts/build_socle.py, _egypte (USAGES_EGY, TAXE_DE_TABLE_EGY, TABAC_TAXE_DE_TABLE_EGY, TAXE_DE_TABLE_ALCOOLS_EGY, REDEVANCES_EGY, TAXE_DE_TABLE_CIGARETTES_EGY, DD_AU_KILO_EGY, MINIMUM_EGY, INSTRUCTION_TABAC_CHAUFFE_EGY, INSTRUCTIONS_LIQUIDE_EGY) ; backend/services/usages.py ; le calculateur sert l'Égypte par le socle seul.",
     "texte_archive": "sources/EGY_TVA_taxe_de_table.extrait.txt",
-    "sha256": "e88a10b0f6e920a8b01840edec56d51703962211e19cfdea75509e657f763b7a"
+    "sha256": "dc52b9c657ba2a0fe0d76ac78d03af1137447cd164902a6aaff63078dd6fc7be"
   },
   "decisions": [
     "TVA : la collecte la mettait sur la seule valeur en douane, et la table d'assiettes citait un « art. 29 (TVA base = CIF) » que la loi ne contient pas. L'art. 10 (7) l'assied sur la valeur, les droits de douane et les autres impôts et redevances ; l'art. 10 (10) y ajoute la Taxe de Table. La douane publie elle-même « 14% (من القيمة + ر.ض.جمركية) » (valeur + droits de douane) sur 7 780 lignes.",
@@ -28,6 +28,8 @@
     "Alcools (2203, 2204, 2205, 2206, 2208 : 19 positions portant l'instruction ر7065 « تفرض ضريبة الجدول علي الكحول ») : la collecte ne publie pas le taux. Sur décision du 14/10/2026, le taux du tableau de 2016 est appliqué, avec sa réserve en note : bière alcoolisée 250 % avec un minimum de 500 EGP par hectolitre (partie II, item 4), vins et boissons fermentées 150 % avec un minimum de 15 EGP par litre (item 3 c), spiritueux 150 % avec un minimum de 15 EGP par litre (item 3 d) — taux que la douane publie aujourd'hui sur 2106.90.20 (même item 3 d). Le plus élevé des deux s'applique ; le minimum se liquide sur la quantité en litres, réclamée au calcul.",
     "Cigarettes (2402.20) : Taxe de Table de 50 % du prix de vente au consommateur plus 275 à 525 piastres par paquet (tableau, partie I, item 1 (b) 3). Le prix de vente n'est pas une donnée du calcul : ligne ajoutée sans taux ni assiette.",
     "Montants publiés en EGP par la douane, lus en droit spécifique : droit de douane au kilo net sur 23 positions de tabac (« 150 جنية لكل كيلو جرام صافى », de 6,1 à 150 EGP/kg), liquidé sur la quantité ; minimum de la Taxe de Table, publié sur la ligne qui la suit (16 tabacs, de 16 à 60 EGP par kilo net ou par kilo de produit manufacturé ; 2106.90.20 et 3302.10.10, 15 EGP par litre), joint à la Taxe de Table dont il est le plancher : la plus élevée des deux est due, comme le tableau l'écrit (« القيمة (٢٠٠٪) بحد أدنى ٥٠ جنيهًا لكل كجم مصنع »).",
+    "Tabac chauffé et liquide des cigarettes électroniques (2404) : la douane impose la Taxe de Table par instruction, sans la publier parmi les taxes de la position. 2404.11.00.00 : instruction ر7058, 1 800 EGP par kilo net, liquidée sur la quantité. 2404.12.00.10 et 2404.19.00.10 : instructions ر7059, ر7061, ر7062 et ر7067, chacune 4 EGP par millilitre de liquide et les trois dernières « en plus » (« بالاضافة ل ») des précédentes ; les quatre sont cumulées sur décision du 20/10/2026, sous réserve : 16 EGP par millilitre, liquidés sur la quantité. La TVA de 14 % publiée par la douane est conservée.",
+    "Taxe de Table subordonnée à l'usage, imposée par instruction : 0,5 % sur une huile alimentaire non subventionnée (ر7009, 55 positions), 5 % au lieu de la TVA de 14 % à usage domestique (ر7018, « بدلا من 14% ق.ض », 9 positions), 5 % pour un pesticide agricole (ر7027, 713 positions) ou un engrais (ر7100, 39 positions). Sur décision du 20/10/2026, l'usage est déclaré au calcul (champ `usage` de POST /calcul) : déclaré, la Taxe de Table est liquidée sur l'assiette de l'art. 39 (b), avant la TVA, ou à sa place pour ر7018 ; non déclaré, le régime courant est liquidé et la réponse nomme les usages possibles.",
     "8481.80.90.90 : la douane publie deux fois « ID 60 % » et « TVA 14 % » ; la seconde occurrence (ID2, VAT2) est retirée, elle aurait fait payer le droit et la TVA deux fois.",
     "Droits de douane de 1 200 % à 3 000 % sur les alcools : publiés tels quels par la douane (et 300 % pour les établissements touristiques, instruction ر6512) ; conservés.",
     "Frais perçus pour le compte des chambres (textile 1 %, cuir 5 %, tabac 0,5 %) et contribution à l'assurance santé (10 %) : publiés en % sans assiette, et aucun texte lu ne la fixe. Sur décision du 14/10/2026, liquidés sur la valeur en douane, réserve en note ; la TVA et la Taxe de Table, qui s'assoient sur eux, redeviennent calculables. L'assurance santé publiée par 20 cigarettes (2402.20) reste sans taux."
@@ -37,12 +39,13 @@
     "Sodas et bière sans alcool : le tableau de 2016 (partie II, notes 1 et 2) assied leur Taxe de Table de 8 % sur le prix de vente au consommateur ; la douane publie aujourd'hui « (من القيمة + ر.ض.جمركية) ». La base publiée par la douane est suivie ; la note de 2016 n'a pas été confrontée à une modification ultérieure.",
     "Cigarettes : la douane publie une TVA de 14 % que le tableau de 2016 (partie I, « Taxe de Table seule ») ne prévoit pas ; conservée telle que publiée.",
     "Taxe de Table au litre sur l'alcool éthylique (2207, 3 positions), TVA au litre ou à la tonne sur les produits pétroliers (12 positions) et assurance santé par 20 cigarettes (2 positions) : non lues en droit spécifique ; ces lignes restent sans taux.",
+    "Liquide des cigarettes électroniques (2404.12.00.10, 2404.19.00.10) : le cumul des quatre instructions de 4 EGP par millilitre est une décision, pas une lecture établie de la douane. À revoir si la douane publie le montant total.",
     "Modifications du tableau postérieures à 2016 : non dépouillées ; les taux servis sont ceux que la douane publie."
   ],
   "documents_archives": [
     {
       "texte_archive": "sources/EGY_TVA_taxe_de_table.extrait.txt",
-      "sha256": "e88a10b0f6e920a8b01840edec56d51703962211e19cfdea75509e657f763b7a"
+      "sha256": "dc52b9c657ba2a0fe0d76ac78d03af1137447cd164902a6aaff63078dd6fc7be"
     },
     {
       "document_non_archive": "Loi n° 67/2016 (TVA), fac-similé du JO n° 35 bis (c) du 07/09/2016, 50 pages, versé sur la PR #643 (data/egypt/docs/EGY_loi_67_2016_TVA_JO_35bis_c_2016-09-07.pdf)",

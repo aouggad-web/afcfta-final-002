@@ -6,7 +6,7 @@ participation au GTI selon le Secrétariat, aucune source contraire). Pour la
 Tanzanie, elles sont documentées dans TZA_application_2026-09-25.json (PR #531).
 
 Ces tests verrouillent les quatre obligations de l'étape 2 :
-(a) une origine admise hors EAC lit le même taux dans les deux chemins ;
+(a) une origine admise hors EAC lit le taux du barème ;
 (b) une origine intra-EAC relève de l'union douanière, jamais de la ZLECAf ;
 (c) une origine hors Annexe 1 reste au NPF ;
 (d) le plancher NPF : le socle tanzanien peut être PLUS BAS que le barème
@@ -23,7 +23,6 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from services import socle  # noqa: E402
-from services.authentic_tariff_service import calculate_import_taxes  # noqa: E402
 from services.preference import taux_preferentiels  # noqa: E402
 from services.zlecaf_schedule_ken import compute_ken_zlecaf_rate  # noqa: E402
 
@@ -42,21 +41,17 @@ EN_2026 = datetime.date(2026, 9, 27)
 
 @besoin_socle
 @pytest.mark.parametrize("code", ["02011000", "25232100"])
-def test_a_une_origine_admie_lit_le_meme_taux_dans_les_deux_chemins(code):
-    """Tanzanie ← Ghana (hors EAC, Annexe 1) : le socle et le chemin
-    historique servent le même taux, lu dans la même colonne du barème."""
+def test_a_une_origine_admie_lit_le_taux_du_bareme(code):
+    """Tanzanie ← Ghana (hors EAC, Annexe 1) : le socle sert le taux lu dans
+    la colonne du barème."""
     position, _ = socle.position("TZA", code)
     soc = taux_preferentiels(position, "TZA", "GHA", code)
     assert soc["applique"] is True
     assert soc["regime"] == "ZLECAF"
 
-    hist = calculate_import_taxes("TZA", code, 10000, apply_zlecaf=True, origin_country="GHA")
-    assert hist["zlecaf_preference_applied"] is True
 
     taux_socle = soc["taux"]["DD"]["taux"]
-    taux_historique = hist["rates"]["effective_zlecaf_rate_pct"]
-    assert taux_socle == taux_historique > 0.0
-
+    assert taux_socle > 0.0
     # Et ce taux est bien celui que le barème publie pour 2026.
     attendu, _ = compute_ken_zlecaf_rate(code, "GHA", EN_2026)
     assert taux_socle == attendu
@@ -89,8 +84,7 @@ def test_c_une_origine_hors_annexe_1_rest_au_npf():
 def test_d_le_plancher_npf_sert_le_socle_quand_il_est_plus_bas():
     """2106.90.20 : dérogation nationale — le NPF tanzanien du socle est
     0 % pour une base de barème de 10 %. En 2026 (sixième annuité)
-    le barème porterait encore un taux positif : c'est le NPF qui est servi,
-    dans les deux chemins."""
+    le barème porterait encore un taux positif : c'est le NPF qui est servi."""
     position, _ = socle.position("TZA", "21069020")
     npf_socle = position["droits"][0]["taux"]
     assert npf_socle == 0.0  # la dérogation nationale, lue dans le socle
@@ -104,17 +98,12 @@ def test_d_le_plancher_npf_sert_le_socle_quand_il_est_plus_bas():
     assert soc["taux"]["DD"]["taux"] == npf_socle
     assert "plancher NPF du socle" in soc["perimetre"]["DD"]
 
-    hist = calculate_import_taxes("TZA", "21069020", 10000, apply_zlecaf=True, origin_country="GHA")
-    assert hist["rates"]["effective_zlecaf_rate_pct"] == npf_socle
-
 
 @besoin_socle
 def test_d_bis_le_kenya_rest_sur_le_meme_plancher():
     """Le plancher est commun aux destinations règle B : la même position
-    tanzanienne sert 0 % au Kenya aussi — les deux chemins concordent."""
+    tanzanienne sert 0 % au Kenya aussi ."""
     position, _ = socle.position("KEN", "21069020")
     soc = taux_preferentiels(position, "KEN", "GHA", "21069020")
     assert soc["taux"]["DD"]["taux"] == 0.0
 
-    hist = calculate_import_taxes("KEN", "21069020", 10000, apply_zlecaf=True, origin_country="GHA")
-    assert hist["rates"]["effective_zlecaf_rate_pct"] == 0.0

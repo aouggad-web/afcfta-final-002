@@ -2,7 +2,6 @@
 
 import pytest
 
-from services import authentic_tariff_service
 from services.national_position_selection import (
     NationalPositionRequired,
     select_calculation_position,
@@ -51,14 +50,3 @@ def test_empty_enumeration_does_not_invent_a_national_position():
         select_calculation_position("00000010", [])
 
 
-@pytest.mark.parametrize("code", ["000000", "00000099"])
-def test_authentic_service_stops_before_tax_fallback(monkeypatch, code):
-    monkeypatch.setattr(authentic_tariff_service, "get_sub_positions", lambda *args: POSITIONS)
-
-    def forbidden_fallback(*args):
-        pytest.fail("A rejected position must not reach tariff fallback")
-
-    monkeypatch.setattr(authentic_tariff_service, "load_country_tariffs", forbidden_fallback)
-    result = authentic_tariff_service.calculate_import_taxes("ZZZ", code, 100)
-    assert result["error_detail"]["candidate_count"] == 2
-    assert "npf_calculation" not in result

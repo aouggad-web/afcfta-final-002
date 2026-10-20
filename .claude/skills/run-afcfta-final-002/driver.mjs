@@ -62,9 +62,8 @@ try {
     await page.fill('[data-testid=hs-code-simple-input]', code);
     await page.fill('[data-testid=cif-value-input]', cif);
     await page.screenshot({ path: `${SHOTS}/saisie.png` });
-    // Selon le pays, l'écran liquide par POST /api/calcul (socle) ou par
-    // GET /api/authentic-tariffs/calculate (chemin historique).
-    const reponse = page.waitForResponse((r) => /\/api\/(calcul$|authentic-tariffs\/calculate\/)/.test(new URL(r.url()).pathname), { timeout: 60000 });
+    // L'écran liquide par POST /api/calcul (le socle), pour tous les pays.
+    const reponse = page.waitForResponse((r) => /\/api\/calcul$/.test(new URL(r.url()).pathname), { timeout: 60000 });
     await page.click('[data-testid=calculate-tariff-button]');
     await reponse;
     // Le bouton reste désactivé (« Calcul en cours… ») jusqu'à la fin de tous les appels.

@@ -3,7 +3,6 @@ import {
   buildCalculRequestBody,
   localiserResultat,
   mapCalculToLegacyResult,
-  moteurRendCompteDesMesures,
   remiseRequete,
   reserveConversion,
   tauxDeChangePour,
@@ -649,61 +648,6 @@ describe('quantité requise par un droit spécifique', () => {
   });
 });
 
-describe('un refus honnête ne se remplace pas par un total amputé', () => {
-  // Le chemin historique refuse la position (`CALCULATION_UNAVAILABLE`) en
-  // nommant les mesures qui lui manquent. Le moteur ne prend le relais que
-  // s'il rend compte de chacune — qu'il la liquide, ou qu'il dise pourquoi
-  // il ne la liquide pas.
-  it("accepte le moteur quand il liquide la mesure réclamée", () => {
-    const calcul = { npf: { lignes: [ligne()], manques: [] } };
-    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
-  });
-
-  it("accepte le moteur quand il motive explicitement le manque", () => {
-    const calcul = {
-      npf: {
-        lignes: [ligne({ statut: 'QUANTITE_REQUISE', montant: null })],
-        manques: [{ code: 'DD', motif: 'QUANTITE_REQUISE' }],
-      },
-    };
-    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
-  });
-
-  it("refuse le moteur quand il passe la mesure sous silence", () => {
-    // Cas réel : DZA/2710122400. Le socle ne porte aucune ligne de droit ;
-    // le moteur rend 12 444,00 « COMPLET » avec TCS, TVA et PRCT et pas un
-    // centime de droit de douane. 2 936 positions sur 12 pays sont dans ce
-    // cas. Accepter ce total afficherait un montant amputé là où l'autre
-    // chemin refusait honnêtement de calculer.
-    const calcul = {
-      npf: {
-        lignes: [
-          ligne({ code: 'TCS', famille: 'accise', taux_pct: 3, montant: 300 }),
-          ligne({ code: 'TVA', famille: 'tva', taux_pct: 19, montant: 1900 }),
-        ],
-        manques: [],
-        etat: 'COMPLET',
-      },
-    };
-    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(false);
-  });
-
-  it('exige que TOUTES les mesures réclamées soient couvertes, pas une seule', () => {
-    const calcul = {
-      npf: { lignes: [ligne()], manques: [{ code: 'TVA', motif: 'TAUX_INDISPONIBLE' }] },
-    };
-    expect(moteurRendCompteDesMesures(calcul, ['DD', 'TVA'])).toBe(true);
-    expect(moteurRendCompteDesMesures(calcul, ['DD', 'TVA', 'EXC'])).toBe(false);
-  });
-
-  it("n'a rien à vérifier quand aucune mesure n'était réclamée", () => {
-    // Le repli sur 404 (pays sans donnée authentique) ne nomme aucune mesure :
-    // la garde ne doit pas y bloquer un calcul parfaitement légitime.
-    expect(moteurRendCompteDesMesures({ npf: { lignes: [], manques: [] } }, [])).toBe(true);
-    expect(moteurRendCompteDesMesures({}, undefined)).toBe(true);
-  });
-});
-
 describe('valeur FOB réclamée par le moteur (SACU)', () => {
   const droitFob = (over) => ligne({ assiette: 'FOB', statut: 'VALEUR_FOB_REQUISE', base: null,
     montant: null, ...over });
@@ -746,13 +690,6 @@ describe('valeur FOB réclamée par le moteur (SACU)', () => {
   ])("ne l'ouvre pas %s", (_, manques) => {
     const calcul = { npf: { lignes: [ligne()], manques, etat: 'COMPLET', total_a_payer: 1200 } };
     expect(mapCalculToLegacyResult(calcul, contexte).valeur_fob_requise.requise).toBe(false);
-  });
-
-  it('accepte le moteur quand il motive le droit par la valeur FOB manquante', () => {
-    const calcul = {
-      npf: { lignes: [droitFob()], manques: [{ code: 'DD', motif: 'VALEUR_FOB_REQUISE' }] },
-    };
-    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
   });
 });
 
@@ -829,5 +766,21 @@ describe('reserveConversion — un montant calculé au taux de marché le dit', 
     expect(reserveConversion({ conversion_monetaire: { taux_de_change: 0.05, lignes: [] } }, 'fr')).toBeNull();
     expect(reserveConversion({ conversion_monetaire: { taux_de_change: 0, lignes: ['EXC'] } }, 'fr')).toBeNull();
     expect(reserveConversion(null, 'fr')).toBeNull();
+  });
+});
+
+describe("usage déclaré de la marchandise (Égypte, Taxe de Table)", () => {
+  const base = { destinationISO3: 'EGY', hsCode: '2801100000', cifValue: 1000 };
+
+  it("n'envoie l'usage que s'il est déclaré", () => {
+    expect(buildCalculRequestBody(base).usage).toBeUndefined();
+    expect(buildCalculRequestBody({ ...base, usage: '' }).usage).toBeUndefined();
+    expect(buildCalculRequestBody({ ...base, usage: 'PESTICIDE_AGRICOLE' }).usage).toBe('PESTICIDE_AGRICOLE');
+  });
+
+  it('transmet le bloc des usages possibles au résultat', () => {
+    const usages = { possibles: [{ code: 'PESTICIDE_AGRICOLE', libelle: 'Pesticide agricole' }], applique: null };
+    const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1100 }, usages };
+    expect(mapCalculToLegacyResult(calcul, contexte).usages).toEqual(usages);
   });
 });

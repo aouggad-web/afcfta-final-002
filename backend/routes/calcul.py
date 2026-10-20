@@ -37,7 +37,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from engine.schemas.legal_override import RemissionEligibility
-from services import exoneration_origine, mesures_eac, socle
+from services import exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import simulations_regionales, taux_preferentiels
 from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
@@ -167,6 +167,14 @@ class DemandeCalcul(BaseModel):
             "subordonnée à une autorisation n'est pas appliquée et la réponse le dit."
         ),
     )
+    usage: Optional[str] = Field(
+        None,
+        description=(
+            "Usage déclaré de la marchandise, parmi ceux que la réponse nomme dans "
+            "`usages.possibles` (Égypte : PESTICIDE_AGRICOLE, ENGRAIS, USAGE_DOMESTIQUE, "
+            "HUILE_NON_SUBVENTIONNEE). Omis, le régime courant est liquidé."
+        ),
+    )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
@@ -218,6 +226,8 @@ def calcul(demande: DemandeCalcul):
         lignes=remise.lignes,
     )
 
+    position, bloc_usages = usages.appliquer(position, demande.usage)
+
     preference = {"applique": False, "statut": "ORIGINE_NON_FOURNIE", "taux": {}}
     if demande.origine:
         preference = taux_preferentiels(
@@ -252,6 +262,8 @@ def calcul(demande: DemandeCalcul):
         resultat["exonerations_origine"] = exonerations
     if mesures:
         resultat["mesures_eac"] = mesures
+    if bloc_usages:
+        resultat["usages"] = bloc_usages
     conversion = _conversion_monetaire(position, demande, provenance, preference, resultat)
     if conversion:
         resultat["conversion_monetaire"] = conversion

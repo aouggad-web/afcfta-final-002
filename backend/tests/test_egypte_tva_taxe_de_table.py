@@ -134,3 +134,89 @@ def test_minimum_au_litre_de_2106_90_20():
     assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(150_000.0)
     assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 30_000 + 150_000))
     assert "ضريبةالجدول2" not in lignes
+
+
+def test_tabac_chauffe_taxe_de_table_de_l_instruction():
+    """2404.11 : instruction ر7058, 1 800 EGP par kilo net ; 2 kg pour 1 000 EGP :
+    DD 20 %, assurance santé 10 %, Taxe de Table 3 600, TVA 14 % sur le tout."""
+    etat, lignes = _calcul("2404110000", quantite=2)
+    assert etat == "COMPLET"
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(3600.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 200 + 100 + 3600))
+
+
+def test_liquide_de_cigarette_electronique_quatre_instructions_cumulees():
+    """2404.12.00.10 : ر7059, ر7061, ر7062, ر7067, 4 EGP/ml chacune, cumulées
+    (décision du 20/10/2026) : 16 EGP/ml ; 10 ml pour 1 000 EGP."""
+    etat, lignes = _calcul("2404120010", quantite=10)
+    assert etat == "COMPLET"
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(160.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 200 + 100 + 160))
+    assert "ر7067" in lignes[TAXE_DE_TABLE]["note"]
+
+
+# ── Taxe de Table selon l'usage déclaré (instructions ر7009, ر7018, ر7027, ر7100)
+def _calcul_usage(code, usage):
+    from services import usages
+
+    position, bloc = usages.appliquer(_positions()[code], usage)
+    r = calculer(position, 1000)["npf"]
+    return bloc, {ligne["code"]: ligne for ligne in r["lignes"]}
+
+
+def test_sans_usage_declare_le_regime_courant_et_les_usages_nommes():
+    bloc, lignes = _calcul_usage("2801100000", None)
+    assert TAXE_DE_TABLE not in lignes
+    assert bloc["applique"] is None
+    assert [u["code"] for u in bloc["possibles"]] == ["PESTICIDE_AGRICOLE"]
+
+
+def test_pesticide_agricole_taxe_de_table_de_5_pour_cent():
+    """ر7027 : DD 2 %, Taxe de Table 5 % × 1 020, TVA 14 % × 1 071."""
+    bloc, lignes = _calcul_usage("2801100000", "PESTICIDE_AGRICOLE")
+    assert bloc["applique"] == "PESTICIDE_AGRICOLE"
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(51.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * 1071)
+
+
+def test_usage_domestique_taxe_de_table_au_lieu_de_la_tva():
+    """ر7018 : « 5 % بدلا من 14% ق.ض » — 5 % au lieu de la TVA."""
+    _, lignes = _calcul_usage("3401190010", "USAGE_DOMESTIQUE")
+    assert "TVA" not in lignes
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(0.05 * 1600)
+
+
+def test_huile_non_subventionnee_et_engrais():
+    _, huile = _calcul_usage("1507100010", "HUILE_NON_SUBVENTIONNEE")
+    assert huile[TAXE_DE_TABLE]["taux_pct"] == 0.5
+    _, engrais = _calcul_usage("3102100000", "ENGRAIS")
+    assert engrais[TAXE_DE_TABLE]["taux_pct"] == 5.0
+
+
+def test_un_usage_etranger_a_la_position_reste_sans_effet():
+    bloc, lignes = _calcul_usage("3102100000", "USAGE_DOMESTIQUE")
+    assert bloc["applique"] is None and TAXE_DE_TABLE not in lignes
+
+
+def test_la_route_recoit_l_usage_et_le_dit():
+    import importlib.util
+    import sys
+
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    chemin = os.path.join(os.path.dirname(SOCLE), "routes", "calcul.py")
+    spec = importlib.util.spec_from_file_location("routes_calcul_usages_egy", chemin)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["routes_calcul_usages_egy"] = module
+    spec.loader.exec_module(module)
+    app = FastAPI()
+    app.include_router(module.router)
+    client = TestClient(app)
+
+    demande = {"destination": "EGY", "code_sh": "2801100000", "valeur_cif": 1000}
+    sans = client.post("/calcul", json=demande).json()
+    assert sans["usages"]["applique"] is None
+    avec = client.post("/calcul", json={**demande, "usage": "PESTICIDE_AGRICOLE"}).json()
+    assert avec["usages"]["applique"] == "PESTICIDE_AGRICOLE"
+    assert avec["npf"]["total_a_payer"] == pytest.approx(1220.94)
