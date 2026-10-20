@@ -299,7 +299,13 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
       </CardHeader>
       <CardContent>
         <div className="zn-canvas">
-          <div className="zn-map-wrap" ref={wrapRef}>
+          <div
+            className="zn-map-wrap"
+            ref={wrapRef}
+            // La hauteur de la carte suit sa largeur : on borne la largeur pour
+            // que la carte entière tienne dans la fenêtre.
+            style={{ maxWidth: `min(880px, calc(70vh * ${VB_W / VB_H}))` }}
+          >
             <svg
               viewBox={VIEWBOX}
               role="group"
