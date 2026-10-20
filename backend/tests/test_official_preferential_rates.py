@@ -2,7 +2,6 @@ import gzip
 import json
 from importlib import import_module
 
-from services import authentic_tariff_service
 from services.authentic_tariff_service import resolve_zlecaf_context
 from services.official_preferential_rates import (
     DATASETS,
@@ -176,39 +175,6 @@ def test_sars_writer_emits_deterministic_gzip(tmp_path):
 
     assert output.read_bytes() == first
     assert json.loads(gzip.decompress(first)) == payload
-
-
-def test_effective_rate_reports_the_mfn_rate_when_schedule_is_higher(monkeypatch):
-    line = {
-        "dd_rate": 0.0,
-        "vat_rate": 15.0,
-        "zlecaf_rate": None,
-        "other_taxes_rate": 0.0,
-        "taxes_detail": {},
-        "description_fr": "Produit test",
-        "description_en": "Test product",
-        "fiscal_advantages": [],
-        "administrative_formalities": [],
-    }
-    monkeypatch.setattr(authentic_tariff_service, "_get_postgres_provider", lambda: None)
-    monkeypatch.setattr(
-        authentic_tariff_service,
-        "load_country_tariffs",
-        lambda _iso3: {"generated_at": "2026-08-17"},
-    )
-    monkeypatch.setattr(authentic_tariff_service, "get_tariff_line", lambda *_args: dict(line))
-    monkeypatch.setattr(authentic_tariff_service, "load_crawled_position_index", lambda _iso3: None)
-    monkeypatch.setattr(authentic_tariff_service, "get_sub_positions", lambda *_args: [])
-
-    # La TVA sud-africaine porte sur la valeur FOB (VAT Act s.13(2)) : FOB =
-    # CIF ici (fret nul), le taux préférentiel testé n'en dépend pas.
-    result = authentic_tariff_service.calculate_import_taxes(
-        "ZAF", "340700", 1000.0, origin_country="DZA", fob_value=1000.0
-    )
-
-    assert result["zlecaf_rate_expression"] == "4%"
-    assert result["zlecaf_preference_applied"] is False
-    assert result["rates"]["effective_zlecaf_rate_pct"] == 0.0
 
 
 def test_offer_and_domestication_without_partner_notice_never_calculate():

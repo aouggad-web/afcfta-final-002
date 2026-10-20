@@ -145,23 +145,59 @@ def _complementarity(
     return flows[:5], total_potential, matched_import_base
 
 
+def _ecart_dd_zlecaf(destination_iso3: str, origine_iso3: str, hs6: str) -> Optional[float]:
+    """Écart en points entre le droit de douane NPF et le droit ZLECAf, lu au
+    socle comme le fait POST /calcul (mesures EAC, préférence de
+    services/preference.py).
+
+    Rend None quand l'écart n'est pas déterminé : SH6 absent du socle, droit
+    non ad valorem, préférence non tracée au socle, ou positions nationales du
+    SH6 dont les écarts diffèrent — le calcul ne choisit pas une position à la
+    place de l'opérateur. Rend 0 quand aucune préférence ZLECAf ne réduit le
+    droit aujourd'hui (couloir non ouvert, offre seule, notification du
+    partenaire attendue, union douanière déjà en libre circulation, taux ZLECAf
+    égal au NPF)."""
+    from services import mesures_eac, socle
+    from services.preference import taux_preferentiels
+
+    try:
+        try:
+            codes = [socle.position(destination_iso3, hs6)[1]["code_demande"]]
+        except KeyError:
+            codes = [p["code"] for p in socle.positions_nationales(destination_iso3, hs6)]
+        ecarts = set()
+        for code in codes:
+            position, _ = socle.position(destination_iso3, code)
+            position, _ = mesures_eac.appliquer(position, destination_iso3, code)
+            dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None)
+            if dd is None or dd.get("taux") is None or dd.get("specifique"):
+                return None
+            preference = taux_preferentiels(position, destination_iso3, origine_iso3, code)
+            if preference.get("statut") == "PREFERENCE_NON_TRACEE":
+                return None
+            taux = dd["taux"]
+            if preference.get("applique") and preference.get("regime") == "ZLECAF":
+                pref = (preference.get("taux") or {}).get("DD") or {}
+                if set(pref) != {"taux"} or pref["taux"] is None:
+                    return None
+                taux = pref["taux"]
+            ecarts.add(max(dd["taux"] - taux, 0.0))
+    except (KeyError, ValueError, socle.SocleIndisponible) as exc:
+        logger.debug(f"socle {destination_iso3}/{hs6} : {exc}")
+        return None
+    return ecarts.pop() if len(ecarts) == 1 else None
+
+
 def _tariff_savings_for_flows(
     flows: List[Dict], origin_iso3: str, destination_iso3: str
 ) -> Tuple[float, int, int]:
-    """Real ZLECAf vs NPF duty saving for each supplier→buyer flow.
-
-    Calls the same calculation engine as the Calculateur tab
-    (services/authentic_tariff_service.calculate_import_taxes), which already
-    encodes bilateral ZLECAf reciprocity (ratification + real implementation
-    evidence, see zlecaf_active_implementers.py) — a flow only contributes a
-    saving when a preference genuinely reduces the duty for that HS6/pair.
+    """Économie de droit de douane ZLECAf par rapport au NPF sur chaque filière
+    fournisseur→acheteur, calculée sur le socle (_ecart_dd_zlecaf).
 
     Returns (total_saving_usd, flows_with_usable_tariff_data, total_flows).
-    Never fabricates: a flow with no crawled/ETL tariff line for the
-    destination simply contributes 0 and is excluded from the coverage count.
+    Never fabricates: a flow whose saving the socle does not determine
+    contributes 0 and is excluded from the coverage count.
     """
-    from services.authentic_tariff_service import calculate_import_taxes
-
     total_saving = 0.0
     covered = 0
     for flow in flows:
@@ -169,23 +205,10 @@ def _tariff_savings_for_flows(
         value_usd = flow.get("potential_usd", 0) or 0
         if not hs6 or len(hs6) != 6 or value_usd <= 0:
             continue
-        try:
-            result = calculate_import_taxes(
-                destination_iso3, hs6, value_usd, apply_zlecaf=True, origin_country=origin_iso3
-            )
-        except Exception as exc:
-            logger.debug(f"tariff lookup failed for {destination_iso3}/{hs6}: {exc}")
+        ecart = _ecart_dd_zlecaf(destination_iso3, origin_iso3, hs6)
+        if ecart is None:
             continue
-        if not result or "error" in result:
-            continue
-        rates = result.get("rates", {})
-        dd_pct = rates.get("dd_rate_pct")
-        zlecaf_dd_pct = rates.get("zlecaf_rate_pct")
-        if dd_pct is None or zlecaf_dd_pct is None or not result.get("zlecaf_preference_applied"):
-            covered += 1  # tariff data found, even if no reduction applies
-            continue
-        saving = max(dd_pct - zlecaf_dd_pct, 0) / 100.0 * value_usd
-        total_saving += saving
+        total_saving += ecart / 100.0 * value_usd
         covered += 1
     return total_saving, covered, len(flows)
 
@@ -243,10 +266,8 @@ async def compare_countries(country_a: str, country_b: str, lang: str = "fr") ->
     econ_a = _economic(iso_a)
     econ_b = _economic(iso_b)
 
-    # Real tariff savings (NPF vs ZLECAf) on the top matched flows — same
-    # calculation engine as the Calculateur tab (authentic_tariff_service),
-    # so the bilateral ZLECAf reciprocity rules (ratification + real
-    # implementation evidence) are honoured rather than assumed.
+    # Real tariff savings (NPF vs ZLECAf) on the top matched flows, read on
+    # the socle with the same preference rules as POST /calcul.
     saving_ab, covered_ab, total_ab = _tariff_savings_for_flows(a_supply, iso_a, iso_b)
     saving_ba, covered_ba, total_ba = _tariff_savings_for_flows(b_supply, iso_b, iso_a)
     tariff_savings_usd = saving_ab + saving_ba

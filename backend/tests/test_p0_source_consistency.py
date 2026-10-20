@@ -25,48 +25,6 @@ def local_sources(monkeypatch):
     monkeypatch.setattr(currency_service, "get_by_country", lambda _: None)
 
 
-@pytest.mark.parametrize(
-    "country,code,duty",
-    [
-        ("EGY", "0207110000", 30),
-        # Tunisie : la POSITION, sans la clé de contrôle. Ces deux lignes
-        # portaient « 90031100003 » et « 73090090109 » — la position suivie du
-        # chiffre que le déclarant saisit avec elle sur la déclaration en
-        # douane. Le socle s'indexait sur le tout ; il s'indexe désormais sur
-        # la position, et la clé (3 et 9) l'accompagne à part. Le droit
-        # contrôlé ne change pas : 10 % et 30 %.
-        ("TUN", "9003110000", 10),
-        ("TUN", "7309009010", 30),
-    ],
-)
-def test_collected_duty_agrees_in_listing_rate_and_amount(country, code, duty):
-    positions = svc.get_sub_positions(country, code[:6])
-    assert next(p for p in positions if p["code"] == code)["dd_rate"] == duty
-    result = svc.calculate_import_taxes(country, code, 1000, origin_country="SEN")
-    assert "error" not in result, result
-    assert result["rates"]["dd_rate_pct"] == duty
-    dd = next(t for t in result["taxes_breakdown"] if t["code"] == "DD")
-    assert dd["rate_npf_pct"] == duty
-    assert dd["amount_npf"] == duty * 10
-
-
-@pytest.mark.parametrize(
-    "country,code",
-    [
-        ("KEN", "04011000"),
-        ("MAR", "0405100010"),
-        ("ZAF", "020830"),
-        ("ETH", "01013000000"),
-        ("TUN", "01012100015"),
-    ],
-)
-def test_missing_or_specific_tax_does_not_produce_complete_total(country, code):
-    result = svc.calculate_import_taxes(country, code, 1000, origin_country="SEN")
-    assert result["error_detail"]["code"] == "CALCULATION_UNAVAILABLE"
-    assert "taxes_summary" not in result
-    assert "npf_calculation" not in result
-
-
 # L'Algérie ne se calcule plus que par `POST /calcul` : ses deux cas y sont tenus.
 def test_dza_collected_duty_agrees_in_listing_rate_and_amount():
     from routes.calcul import DemandeCalcul, calcul

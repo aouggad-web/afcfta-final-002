@@ -16,7 +16,6 @@ import { useHsLabel } from '../../hooks/useHsLabel';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign, RotateCcw } from 'lucide-react';
-import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import TaxBreakdownDual from './TaxBreakdownDual';
 import CalculationJournal from './CalculationJournal';
 import CalculationMethodStatus from './CalculationMethodStatus';
@@ -28,7 +27,6 @@ import NationalPositionsSelector from '../NationalPositionsSelector';
 import MultiCountryComparison from './MultiCountryComparison';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
-import TariffDocumentationPanel from './TariffDocumentationPanel';
 import RegulatoryComplianceView, {
   hasActiveMandatedProvider,
   hasUnpricedActiveProviderFees,
@@ -41,21 +39,14 @@ import {
   expeditionSacuRequise,
   mapCalculToLegacyResult,
   localiserResultat,
-  moteurRendCompteDesMesures,
   paysExpeditionPour,
   reserveConversion,
   tauxDeChangePour,
-  transportRequete,
 } from './unifiedCalculator';
 import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
-import { trierAvantages } from './avantagesFiscaux';
 import {
-  effectiveTaxRateFromSteps,
   isCustomsDutyTax,
   isDisplayableZlecafResult,
-  neutralizeZlecafBreakdown,
-  neutralizeZlecafSummary,
-  resolveZlecafAvailability,
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
 import { montant } from '../../utils/nombres';
@@ -100,7 +91,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [hsCode, setHsCode] = useState('');
   const [value, setValue] = useState('');
   const [result, setResult] = useState(null);
-  const [detailedResult, setDetailedResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showHSBrowser, setShowHSBrowser] = useState(false);
   const [showDetailedBreakdown, setShowDetailedBreakdown] = useState(false);
@@ -388,7 +378,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setNombreUnites('1');
     setModeAcheminement('');
     setResult(null);
-    setDetailedResult(null);
     setShowHSBrowser(false);
     setShowDetailedBreakdown(false);
     setSubPositions(null);
@@ -482,13 +471,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     };
 
     try {
-      // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
-      //
-      // Il sert AVANT le chemin historique pour les pays de
-      // `SOCLE_EN_PREMIER`, et APRÈS lui pour tous les autres. Construit une
-      // seule fois : deux corps de requête écrits séparément finiraient par
-      // diverger, et l'un des deux liquiderait autre chose que l'autre.
-      const demanderLeSocle = async () => axios.post(`${API}/calcul`, buildCalculRequestBody({
+      // UN SEUL CALCUL : le socle (`POST /calcul`), pour tous les pays. Une
+      // position absente ou un socle indisponible s'affichent en erreur, avec
+      // le message du socle : aucune autre source ne prend le relais.
+      const calcul = (await axios.post(`${API}/calcul`, buildCalculRequestBody({
         destinationISO3: destISO3,
         originISO3,
         hsCode: cleanHsCode,
@@ -505,598 +491,117 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         tauxDeChange: tauxDeChangePour(destISO3, await demanderConversion()),
         ...transport,
         remise: destISO3 === 'KEN' ? kenyaRemission : null,
-      }));
+      }))).data;
+      const legacyResult = mapCalculToLegacyResult(calcul, {
+        originCountry,
+        destinationCountry,
+        hsCode: cleanHsCode,
+        cifValue: parseFloat(value),
+      });
 
-      // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
-      //
-      // L'ordre était inverse, et il coûtait cher. Le chemin historique
-      // `/authentic-tariffs` sert une quarantaine de pays ; tant qu'il passait
-      // devant, tout ce que le socle vérifie ne parvenait qu'aux autres. La
-      // colonne algérienne du tarif tunisien (13 362 positions) et les douze
-      // régimes préférentiels mauriciens, établis sur source primaire et
-      // scellés par empreinte, n'atteignaient jamais l'opérateur — leurs deux
-      // pays étaient servis par l'autre porte.
-      //
-      // QUELS PAYS. Ceux où le socle sert au moins aussi bien que l'autre porte,
-      // MESURÉ : sur 300 positions par pays (CIF 10 000, origine SEN), même
-      // total NPF et même statut ZLECAf, ou total que seul le socle calcule ;
-      // la SACU avec une valeur FOB. CAF et COG s'écartent de l'autre porte
-      // depuis le relevé de leurs accises et de leur assiette de TVA dans leur
-      // code des impôts (#598) : c'est le socle qui suit le texte. Le Cameroun
-      // aussi : l'autre porte y sert la redevance informatique à 0,45 % (la loi
-      // de finances 2023 la porte à 1 %), met la TCI dans l'assiette de la TVA
-      // (CGI art. 138 : DD et DA seulement) et omet le droit d'accises sur 132
-      // positions. La Guinée équatoriale de même : l'autre porte y sert la
-      // redevance informatique recopiée du fichier camerounais, qu'aucune loi
-      // équato-guinéenne n'institue, met la TCI dans l'assiette de la TVA
-      // (loi 4/2004, art. 288 : DD et droit d'accises) et omet le droit
-      // d'accises spécifique sur 13 positions. L'Éthiopie aussi (mesuré sur
-      // ses 6 296 positions) : l'autre porte omet la surtaxe de 10 % du
-      // Règlement 133/2007 et la part spécifique des accises de la directive
-      // 1007/2024 (4 915 totaux différents), et ne calcule pas 1 085 positions
-      // que le socle liquide ; sur 11 (bière, tabacs, sacs), le socle réclame
-      // la quantité plutôt que de servir l'accise ad valorem seule. Quatre pays
-      // de l'UEMOA enfin, mesurés sur toutes leurs positions (CIF 10 000,
-      // origines CHN, MAR et SEN), où chaque écart tient à une correction
-      // établie sur texte : le Bénin, identique pour une origine tierce ; la
-      // Guinée-Bissau, PCS à 0,8 % (acte additionnel n° 01/2019) ; le Togo,
-      // accises du CGI ; le Sénégal, PCS à 0,8 %, PROMAD, COSEC et droits
-      // d'accises des FAQ de la DGD. L'autre porte y liquide aussi le PCS, le
-      // PCC et le PUA quelle que soit l'origine. Là où le taux d'une accise
-      // dépend du produit (sucre, degré d'alcool, matières grasses) ou d'un prix
-      // de déclenchement, le socle déclare le total incomplet au lieu de
-      // l'omettre (TGO 85 positions, SEN 173). La Gambie, le Liberia et la
-      // Sierra Leone aussi : leurs fichiers recopiaient le tarif du Bénin et sa
-      // redevance statistique de 1 %, qu'aucun texte de ces pays n'institue ;
-      // le socle, et désormais l'autre porte, suivent leur loi de TVA/GST
-      // (assiette sur tous les droits, GST libérienne à 12 %) et leurs
-      // prélèvements nationaux. Le Cap-Vert, sur sa Pauta (6 579 positions,
-      // CIF 10 000, origines CHN et SEN) : l'autre porte sort la taxa
-      // comunitária et l'ICE de l'assiette de l'IVA (Regulamento do IVA,
-      // art. 16 : tous droits et taxes sauf l'IVA), perçoit la TC sur une
-      // origine CEDEAO et refuse les 69 positions à taxe spécifique, où le
-      // socle réclame la quantité. La Côte d'Ivoire, sur le tarif de la DGD
-      // du 27/03/2026 : l'autre porte y liquide en % de la valeur CIF des
-      // colonnes sans légende ni unité (PSV, TMP, TUB, PSS…) et le droit
-      // unique de sortie ; le socle les déclare incomplètes. La Somalie, le
-      // Maroc, le Rwanda, la Tanzanie et l'Ouganda (mêmes totaux, à un code
-      // renommé et à l'accise sur valeur + droit du socle près ; MAR laisse
-      // incomplètes les positions sans TVA publiée) et le Gabon (TVA du CGI
-      // art. 216 : valeur + droits de douane + droit d'accises, sans la TCI
-      // que l'autre porte y ajoute). Au Rwanda et en Tanzanie, le socle assied
-      // la TVA sur la valeur et tous les droits, accise comprise (loi 049/2023,
-      // art. 16 ; VAT Act 2014, s. 9), et suit les barèmes du tabac de leurs
-      // lois d'accise et de l'Ouganda. Le Kenya (mêmes totaux) : ses remises de
-      // droits de la gazette EAC sont appliquées par le socle, sur autorisation
-      // déclarée dans le formulaire, comme les sursis d'application de la
-      // Tanzanie, de l'Ouganda, du Rwanda et du Burundi. L'Égypte : le socle
-      // assied la TVA et la Taxe de Table sur la valeur, les droits de douane
-      // et les autres impôts (loi 67/2016, art. 10 et 39) quand l'autre porte
-      // les met sur la seule valeur ; Taxe de Table des alcools au taux du
-      // tableau de 2016 et redevances des chambres sur la valeur, sur décision
-      // et avec leur réserve ; Taxe de Table des cigarettes, assise sur le prix
-      // de vente, déclarée incomplète.
-      //
-      // L'ALGÉRIE (bascule 2.3). Le socle est sa seule porte de calcul :
-      // l'autre n'a plus de fichier algérien à lire.
-      const SOCLE_EN_PREMIER = new Set([
-        'TUN', 'MUS', 'DZA',
-        'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
-        'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB', 'KEN', 'EGY',
-        'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
-        'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
-        'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
-      ]);
-      // Pays que le socle sert sans jamais se replier sur l'autre porte.
-      const SANS_REPLI = new Set([
-        'DZA', 'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB', 'KEN', 'EGY',
-      ]);
+      setResult({
+        ...legacyResult,
+        taxes_detail: normalizeTaxesDetail(legacyResult.taxes_detail, legacyResult.taxes_breakdown),
+        // La clé qui rattache une quantité à SA position. Construite ici, à
+        // l'endroit exact où l'appel est fait, et relue telle quelle par le
+        // champ de saisie : la reconstruire ailleurs à partir des champs
+        // d'affichage (qui peuvent porter un code ISO2) la ferait diverger,
+        // et la quantité saisie serait silencieusement écartée à chaque fois.
+        _quantite_cle: `${destISO3}|${cleanHsCode}`,
+      });
+      setShowDetailedBreakdown(true);
 
-      let calculSocle = null;
-      let erreurSocle = null;
-      if (SOCLE_EN_PREMIER.has(destISO3)) {
-        try {
-          calculSocle = (await demanderLeSocle()).data;
-        } catch (socleError) {
-          // Deux refus seulement justifient le repli, et ce sont des ABSENCES,
-          // pas des pannes : 404, la position n'est pas au socle ; 503, le socle
-          // est absent ou périmé et refuse de servir. Tout le reste — 422 de
-          // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
-          // de dégrader en silence vers une source moins vérifiée.
-          //
-          // L'Algérie, elle, ne se replie jamais : l'autre porte n'a rien à
-          // lui servir. Une position absente de son socle est une erreur
-          // affichée, avec le message du socle. Gambie, Liberia et Sierra
-          // Leone non plus : leurs règles (sans redevance statistique, TVA de
-          // la loi) ont été établies sur le socle, et l'autre porte ne connaît
-          // aucune position qu'il n'ait pas. La Côte d'Ivoire non plus : l'autre
-          // porte n'a pas de position en plus, et lit en % des montants sans
-          // unité. Somalie, Maroc, Rwanda, Tanzanie, Ouganda, Gabon, Kenya et
-          // Égypte : le calcul se fait sur le socle seul, l'autre porte étant appelée à
-          // disparaître.
-          const statut = socleError.response?.status;
-          if (SANS_REPLI.has(destISO3) || (statut !== 404 && statut !== 503)) {
-            throw socleError;
-          }
-          erreurSocle = socleError;
-          console.log(`ℹ️ Position absente du socle pour ${destISO3} (${statut}) - repli sur le chemin historique`);
-        }
+      // Sous-positions : données d'affichage annexes, pas des montants — un
+      // manque y reste silencieux.
+      const hs6 = cleanHsCode.substring(0, 6);
+      try {
+        const subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+        setSubPositions(subPosResponse.data);
+      } catch (subPosError) {
+        setSubPositions(null);
       }
-
-      // PRIORITÉ 2 : le chemin historique, quand le socle ne sert pas.
-      let authenticResult = null;
-      let useAuthenticData = false;
-      // Renseignées seulement quand le chemin historique refuse la position
-      // faute de savoir liquider une mesure : elles conditionnent l'acceptation
-      // de la réponse du moteur.
-      let mesuresReclamees = [];
-      let erreurAuthentique = null;
-      
-      // Le chemin historique n'est CONSULTÉ que si le socle n'a pas servi.
-      if (!calculSocle) {
-        try {
-          const remissionEligibility = kenyaRemission.answer === 'no'
-            ? 'NOT_ELIGIBLE'
-            : kenyaRemission.answer === 'yes'
-              ? 'ELIGIBLE_VERIFIED'
-              : 'ELIGIBILITY_UNKNOWN';
-          const authenticResponse = await axios.get(
-            `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}`,
-            {
-              params: {
-                value: parseFloat(value),
-                language,
-                origin: originISO3,
-                pays_expedition: paysExpedition,
-                fob_value: valeurFob > 0 ? valeurFob : undefined,
-                remission_eligibility: remissionEligibility,
-                authorization_reference: kenyaRemission.reference || undefined,
-                authorization_valid_from: kenyaRemission.validFrom || undefined,
-                authorization_valid_to: kenyaRemission.validTo || undefined,
-                authorization_hs_codes: kenyaRemission.authorizedTariffLines || undefined,
-                authorization_goods: kenyaRemission.authorizedGoods || undefined,
-                ...transportRequete(transport),
-              },
-            },
-          );
-          authenticResult = authenticResponse.data;
-          useAuthenticData = true;
-          console.log('✅ Using AUTHENTIC tariff data for', destISO3);
-        } catch (authError) {
-          // Un 404 — route absente ou pays/position sans donnée authentique —
-          // est le seul signal qui justifie le repli vers le moteur unifié :
-          // c'est une absence de donnée, pas une panne. Tout le reste (500,
-          // délai dépassé, 401/403, erreur réseau) remonte au `catch` externe
-          // et s'affiche à l'utilisateur, plutôt que de dégrader en silence
-          // vers un calcul qui ignore les avantages fiscaux et les formalités.
-          // Un 422 `CALCULATION_UNAVAILABLE` n'est pas une panne : c'est le
-          // chemin historique qui dit ne pas savoir liquider cette position —
-          // typiquement un droit spécifique (« 8c/kg »), qu'il ne sait pas
-          // calculer faute de paramètre de quantité. Le moteur unique, lui,
-          // le liquide dès qu'on lui donne la quantité. Laisser ce cas remonter
-          // en erreur revenait à refuser un calcul que le dépôt sait faire.
-          //
-          // Le repli reste étroit à dessein : seul ce code d'erreur passe. Un
-          // 422 de validation (valeur CIF invalide) et tout le reste (500,
-          // délai, 401/403, réseau) remontent comme avant.
-          // `VALEUR_FOB_REQUISE` (Afrique du Sud sans valeur FOB) suit le même
-          // chemin : le moteur réclame alors la valeur FOB et l'écran ouvre
-          // son champ, au lieu d'afficher une erreur. `PAYS_EXPEDITION_REQUIS`
-          // (Afrique du Sud, origine BWA/LSO/NAM/SWZ, VAT Act s.13(2)(b)) aussi :
-          // la question oui/non reste affichée et la TVA est rendue à compléter.
-          const codeErreur = authError.response?.data?.detail?.code;
-          const calculIndisponible =
-            authError.response?.status === 422
-            && (
-              codeErreur === 'CALCULATION_UNAVAILABLE'
-              || codeErreur === 'VALEUR_FOB_REQUISE'
-              || codeErreur === 'PAYS_EXPEDITION_REQUIS'
-            );
-          if (authError.response?.status !== 404 && !calculIndisponible) {
-            throw authError;
+      // LES FORMALITÉS. Le socle porte des MONTANTS, pas les formalités
+      // administratives : elles sont demandées ici, en annexe, comme les
+      // sous-positions. Un manque y reste silencieux, parce qu'une formalité
+      // absente n'est pas un montant faux.
+      try {
+        const formalitesResponse = await axios.get(
+          `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
+        );
+        const formalites = formalitesResponse.data?.formalities || [];
+        // Le STATUT accompagne la liste, et il est transmis même quand elle
+        // est vide : c'est lui qui empêche l'écran de se taire, et le
+        // silence de se lire « aucune obligation ».
+        const statutFormalites = formalitesResponse.data?.statut || null;
+        const reserveFormalites = formalitesResponse.data?.reserve || null;
+        setResult((precedent) => (precedent
+          ? {
+            ...precedent,
+            // La liste se remplace À CHAQUE RÉPONSE, y compris vide. La
+            // garder quand la nouvelle est vide ferait afficher les
+            // documents de la position PRÉCÉDENTE sous le statut de la
+            // nouvelle — et, la liste n'étant plus vide, supprimerait
+            // justement l'avertissement que ce lot installe.
+            administrative_formalities: formalites,
+            formalites_statut: statutFormalites,
+            formalites_reserve: reserveFormalites,
           }
-          if (calculIndisponible) {
-            // Ce que l'autre chemin a nommé comme manquant. Le moteur devra en
-            // rendre compte, sinon son total est refusé et l'erreur d'origine
-            // est rétablie — voir `moteurRendCompteDesMesures`.
-            mesuresReclamees = authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || [];
-            erreurAuthentique = authError;
-          }
-          console.log(
-            calculIndisponible
-              ? `ℹ️ Position non liquidable par le chemin authentique pour ${destISO3} (${(authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || []).join(', ')}) - passage au moteur unique`
-              : `ℹ️ Authentic tariff data not available for ${destISO3} - falling back to calculated data`
-          );
-        }
+          : precedent));
+      } catch (formalitesError) {
+        // Silencieux : une formalité absente n'est pas un montant faux.
       }
-      
-      if (useAuthenticData && authenticResult) {
-        // Transformer les données authentiques au format attendu par l'UI
-        const npfCalc = authenticResult.npf_calculation || {};
-        const zlecafCalc = authenticResult.zlecaf_calculation || {};
-        const savings = authenticResult.savings || {};
-        const rates = authenticResult.rates || {};
-        const cifValue = parseFloat(value);
-        const zlecafAvailability = resolveZlecafAvailability(authenticResult);
-        const hasZlecafRate = zlecafAvailability.available;
-        const totalTaxesZlecaf = hasZlecafRate
-          ? effectiveTaxRateFromSteps(authenticResult.calculation_steps_zlecaf, cifValue)
-          : null;
-        
-        // Construire le résultat au format compatible
-        const transformedResult = {
-          origin_country: originCountry,
-          // Code ISO3 de l'origine : la carte des colonnes préférentielles
-          // doit savoir QUEL partenaire est concerné pour écarter celles qui
-          // en nomment un autre.
-          origin_country_iso3: originISO3,
-          destination_country: destinationCountry,
-          hs_code: cleanHsCode,
-          hs6_code: authenticResult.hs6 || cleanHsCode.substring(0, 6),
-          value: cifValue,
-          
-          // Tarifs
-          normal_tariff_rate: (rates.dd_rate_pct || 0) / 100,
-          // Droit NPF tel que la source le donne, SANS le `|| 0` ci-dessus :
-          // un droit absent doit rester absent. Comparer une colonne
-          // préférentielle à un zéro de repli ferait passer toute colonne non
-          // nulle pour un désavantage.
-          npf_dd_rate_pct:
-            typeof rates.dd_rate_pct === 'number' && Number.isFinite(rates.dd_rate_pct)
-              ? rates.dd_rate_pct
-              : null,
-          normal_tariff_amount: npfCalc.dd?.amount || 0,
-          zlecaf_tariff_rate: hasZlecafRate
-            ? zlecafAvailability.effectiveRatePct / 100
-            : null,
-          zlecaf_tariff_amount: hasZlecafRate ? (zlecafCalc.dd?.amount ?? 0) : null,
-          
-          // TVA
-          normal_vat_rate: (rates.vat_rate_pct || 0) / 100,
-          normal_vat_amount: npfCalc.vat?.amount || 0,
-          zlecaf_vat_rate: hasZlecafRate ? (rates.vat_rate_pct || 0) / 100 : null,
-          zlecaf_vat_amount: hasZlecafRate ? (zlecafCalc.vat?.amount ?? 0) : null,
-          
-          // Autres taxes
-          normal_other_taxes_total: npfCalc.other_taxes?.amount || 0,
-          zlecaf_other_taxes_total: hasZlecafRate ? (zlecafCalc.other_taxes?.amount ?? 0) : null,
-          
-          // Totaux
-          normal_total_cost: npfCalc.total_to_pay || 0,
-          zlecaf_total_cost: hasZlecafRate ? (zlecafCalc.total_to_pay ?? null) : null,
-          
-          // Taux effectif = total_taxes / CIF × 100 (cascade réelle, PAS somme de taux)
-          total_taxes_npf: rates.effective_rate_pct || rates.total_rate_pct || 0,
-          total_taxes_zlecaf: totalTaxesZlecaf,
-          
-          // Économies
-          savings: hasZlecafRate ? (savings.amount ?? 0) : null,
-          savings_percentage: hasZlecafRate ? (savings.percentage ?? 0) : null,
-          total_savings_with_taxes: hasZlecafRate ? (savings.amount ?? 0) : null,
-          total_savings_percentage: hasZlecafRate ? (savings.percentage ?? 0) : null,
-          
-          // Précision et source
-          tariff_precision: 'authentic_data',
-          data_source: 'authentic_tariff',
-
-          // Régime commercial applicable (union douanière, ZLECAf, ZLE conditionnelle, NPF)
-          trade_regime: authenticResult.trade_regime || null,
-          trade_regime_code: authenticResult.trade_regime_code || null,
-          trade_regime_note: authenticResult.trade_regime_note || null,
-          preferential_regime_applied: authenticResult.preferential_regime_applied === true,
-          // Éligibilité ZLECAf (réciprocité bilatérale + ratification continentale)
-          zlecaf_eligible: authenticResult.zlecaf_eligible === true,
-          zlecaf_preference_applied: authenticResult.zlecaf_preference_applied === true,
-          zlecaf_note: authenticResult.zlecaf_note || null,
-          zlecaf_reserve: authenticResult.zlecaf_reserve || null,
-          // Renseigné uniquement quand le taux préférentiel dépassait le NPF
-          // et a donc été écarté. Sans ce report, l'opérateur verrait un taux
-          // qui ne correspond pas au barème sans savoir pourquoi.
-          plancher_npf: authenticResult.plancher_npf || null,
-          zlecaf_status: zlecafAvailability.status,
-          zlecaf_rate_expression: authenticResult.zlecaf_rate_expression || null,
-          zlecaf_rate_source: authenticResult.zlecaf_rate_source || null,
-          zlecaf_rate_calculation_status:
-            authenticResult.zlecaf_rate_calculation_status || null,
-          // Taux publié au e-Tariff Book officiel de la ZLECAf mais non
-          // vérifié comme applicable (OFFER_ONLY/PARTNER_NOTICE_REQUIRED) —
-          // strictement informatif, jamais utilisé dans un calcul.
-          zlecaf_offer_rate_pct: zlecafAvailability.offerRatePct,
-          zlecaf_offer_rate_expression: zlecafAvailability.offerRateExpression,
-
-          // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
-          taxes_breakdown: neutralizeZlecafBreakdown(
-            authenticResult.taxes_breakdown,
-            hasZlecafRate,
-          ),
-          taxes_summary: neutralizeZlecafSummary(
-            authenticResult.taxes_summary,
-            hasZlecafRate,
-          ),
-          currency: authenticResult.currency || null,
-          calculation_profile_status: authenticResult.calculation_profile_status || 'default',
-          cascade_legal_source: authenticResult.cascade_legal_source || null,
-          
-          // Détails des taxes — le chemin authentique renvoie un OBJET indexé
-          // par code de taxe, l'affichage attend une liste : sans cette
-          // normalisation, `taxes_detail.length` valait `undefined` et toute
-          // la carte « Détail des Taxes » (donc la colonne ZLECAf par taxe)
-          // disparaissait.
-          taxes_detail: normalizeTaxesDetail(
-            authenticResult.taxes_detail,
-            authenticResult.taxes_breakdown,
-          ),
-          
-          // Avantages fiscaux
-          fiscal_advantages: authenticResult.fiscal_advantages || [],
-          
-          // Formalités administratives
-          administrative_formalities: authenticResult.administrative_formalities || [],
-          
-          // Sous-positions
-          has_sub_positions: authenticResult.has_sub_positions || false,
-          sub_position_count: authenticResult.sub_position_count || 0,
-          sub_position: authenticResult.sub_position,
-          
-          // Règles d'origine (placeholder - à récupérer séparément si nécessaire)
-          rules_of_origin: {
-            rule: 'ZLECAf Rules of Origin',
-            requirement: language === 'fr' ? 'Certificat d\'origine ZLECAf requis' : 'AfCFTA Certificate of Origin required',
-            regional_content: 40
-          },
-          
-          // Journal de calcul NPF — généré par le moteur cascade (vraies bases par pays)
-          normal_calculation_journal: (() => {
-            const cif = parseFloat(value);
-            const steps = authenticResult.calculation_steps || [];
-            const legalSource = authenticResult.cascade_legal_source || `Tarif officiel ${destISO3}`;
-            const journal = [
-              { step: 1, component: 'Valeur CIF', base: cif, rate: '-', amount: cif, cumulative: cif, legal_ref: 'Incoterms 2020' }
-            ];
-            steps.forEach((s, i) => {
-              journal.push({
-                step: i + 2,
-                component: s.label || s.code,
-                base: s.base_value,
-                base_formula: s.base_formula,
-                rate: `${s.rate_pct}%`,
-                amount: s.amount,
-                cumulative: s.cumulative,
-                legal_ref: legalSource,
-              });
-            });
-            return journal;
-          })(),
-          
-          // Journal de calcul ZLECAf — moteur cascade avec DD préférentiel
-          zlecaf_calculation_journal: hasZlecafRate ? (() => {
-            const cif = parseFloat(value);
-            const steps = authenticResult.calculation_steps_zlecaf || [];
-            const legalSource = authenticResult.cascade_legal_source || `Tarif ZLECAf ${destISO3}`;
-            const journal = [
-              { step: 1, component: 'Valeur CIF', base: cif, rate: '-', amount: cif, cumulative: cif, legal_ref: 'Incoterms 2020' }
-            ];
-            steps.forEach((s, i) => {
-              journal.push({
-                step: i + 2,
-                component: s.label || s.code,
-                base: s.base_value,
-                base_formula: s.base_formula,
-                rate: `${s.rate_pct}%`,
-                amount: s.amount,
-                cumulative: s.cumulative,
-                legal_ref: s.code === 'DD' ? `ZLECAf — ${legalSource}` : legalSource,
-              });
-            });
-            return journal;
-          })() : [],
-          
-          computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
-          last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
-          confidence_level: 'very_high',
-          kenya_legal_calculation: authenticResult.kenya_legal_calculation || null,
-
-          // Formalités, prestataires mandatés et frais réglementaires — bloc
-          // informatif strictement séparé des droits/taxes (voir
-          // RegulatoryCostBreakdown / RegulatoryComplianceView / RegulatoryReportedIndications).
-          // Sans ce report explicite, ces champs — présents dans la réponse API
-          // authentique — étaient silencieusement perdus lors de la
-          // reconstruction manuelle de `transformedResult`.
-          regulatory_compliance: authenticResult.regulatory_compliance || null,
-          regulatory_cost: authenticResult.regulatory_cost || null,
-          regulatory_reported: authenticResult.regulatory_reported || null,
-          national_legal_calculation: authenticResult.national_legal_calculation || null,
-          generic_legal_calculation: authenticResult.generic_legal_calculation || authenticResult.legal_calculation || null
-        };
-        
-        setResult(transformedResult);
-        setDetailedResult(authenticResult);
-        setShowDetailedBreakdown(true);
-        
-        // Récupérer les sous-positions authentiques depuis PostgreSQL
-        const hs6 = cleanHsCode.substring(0, 6);
-        try {
-          // Try PostgreSQL API first (has real descriptions)
-          let subPosResponse;
-          try {
-            subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
-          } catch (pgErr) {
-            // Fallback to old API
-            subPosResponse = await axios.get(`${API}/authentic-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
-          }
-          setSubPositions(subPosResponse.data);
-        } catch (subPosError) {
-          setSubPositions(null);
-        }
-        
-        toast({
-          title: `✅ ${t.calculationSuccess}`,
-          description: hasZlecafRate
-            ? `${t.potentialSavings}: ${formatCurrency(savings.amount ?? 0)} (Données officielles ${destISO3})`
-            : (authenticResult.zlecaf_status === 'OFFER_ONLY' || authenticResult.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
-              ? (language === 'fr'
-                ? `Offre tarifaire ZLECAf publiée pour ${destISO3}${zlecafAvailability.offerRateExpression ? ` (${zlecafAvailability.offerRateExpression})` : ''} — non vérifiée comme applicable, à confirmer avec les douanes locales (calcul NPF conservé)`
-                : `Published AfCFTA tariff offer for ${destISO3}${zlecafAvailability.offerRateExpression ? ` (${zlecafAvailability.offerRateExpression})` : ''} — not verified as applicable, confirm with local customs (MFN calculation retained)`)
-            : authenticResult.zlecaf_rate_expression
-              ? (language === 'fr'
-                ? `Taux officiel ZLECAf : ${authenticResult.zlecaf_rate_expression} — quantité requise, total non calculé (${destISO3})`
-                : `Official AfCFTA rate: ${authenticResult.zlecaf_rate_expression} — quantity required, total not calculated (${destISO3})`)
-            : (language === 'fr'
-              ? `Taux ZLECAf non disponible pour cette ligne — calcul NPF conservé (${destISO3})`
-              : `AfCFTA rate unavailable for this line — MFN calculation retained (${destISO3})`),
-        });
-        
-      } else {
-        // Pays sans chemin `/authentic-tariffs` : le calcul passe par la
-        // route unique du moteur (chantier L3), plus par l'ancien
-        // `/calculate-tariff` (`routes/calculator.py`) qui fabriquait des
-        // montants sur un profil générique. Aucun repli supplémentaire —
-        // une erreur ici remonte au `catch` externe et s'affiche, elle ne
-        // bascule pas silencieusement vers une autre source.
-        // DEUX CHEMINS ARRIVENT ICI, ET IL FAUT LES DISTINGUER.
-        //
-        // Pour un pays de `SOCLE_EN_PREMIER`, le socle a DÉJÀ été interrogé
-        // plus haut : s'il n'a rien rendu, c'est que les deux portes ont
-        // refusé, et l'erreur du socle reprend sa place plutôt qu'un écran
-        // vide. Pour tous les autres pays, il n'a PAS encore été consulté —
-        // c'est ici, après le refus du chemin historique, que sa réponse est
-        // demandée, exactement comme avant ce lot. Aucun repli
-        // supplémentaire : une erreur remonte au `catch` externe et s'affiche,
-        // elle ne bascule pas en silence vers une autre source.
-        if (!calculSocle) {
-          if (erreurSocle) {
-            throw erreurSocle;
-          }
-          calculSocle = (await demanderLeSocle()).data;
-        }
-        const calcul = calculSocle;
-        // Un refus honnête ne se remplace pas par un total amputé. Si le
-        // moteur ne dit rien d'une mesure que l'autre chemin réclamait, sa
-        // réponse est écartée et l'erreur d'origine reprend sa place.
-        if (!moteurRendCompteDesMesures(calcul, mesuresReclamees)) {
-          throw erreurAuthentique;
-        }
-        const legacyResult = mapCalculToLegacyResult(calcul, {
-          originCountry,
-          destinationCountry,
-          hsCode: cleanHsCode,
-          cifValue: parseFloat(value),
-        });
-
-        setResult({
-          ...legacyResult,
-          taxes_detail: normalizeTaxesDetail(legacyResult.taxes_detail, legacyResult.taxes_breakdown),
-          // La clé qui rattache une quantité à SA position. Construite ici, à
-          // l'endroit exact où l'appel est fait, et relue telle quelle par le
-          // champ de saisie : la reconstruire ailleurs à partir des champs
-          // d'affichage (qui peuvent porter un code ISO2) la ferait diverger,
-          // et la quantité saisie serait silencieusement écartée à chaque fois.
-          _quantite_cle: `${destISO3}|${cleanHsCode}`,
-        });
-        setDetailedResult(null);
-        setShowDetailedBreakdown(true);
-
-        // Sous-positions : données d'affichage annexes,
-        // pas des montants — un manque y reste silencieux comme sur le
-        // chemin authentique.
-        const hs6 = cleanHsCode.substring(0, 6);
-        try {
-          const subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
-          setSubPositions(subPosResponse.data);
-        } catch (subPosError) {
-          setSubPositions(null);
-        }
-        // LES FORMALITÉS SURVIVENT AU CHANGEMENT DE PRIORITÉ.
-        //
-        // Le socle porte des MONTANTS, pas les formalités administratives.
-        // Basculer sur lui sans plus rien demander les aurait fait disparaître
-        // pour les 40 pays que l'autre chemin servait — une régression de
-        // produit déguisée en gain de rigueur. Elles sont donc redemandées
-        // ici, en annexe, comme les sous-positions : un manque y reste
-        // silencieux, parce qu'une formalité absente n'est pas un montant faux.
-        //
-        // Les « avantages fiscaux » du même chemin, eux, ne sont PAS repris :
-        // voir le commentaire sur `fiscal_advantages` plus bas.
-        try {
-          const formalitesResponse = await axios.get(
-            `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
-          );
-          const formalites = formalitesResponse.data?.formalities || [];
-          // Le STATUT accompagne la liste, et il est transmis même quand elle
-          // est vide : c'est lui qui empêche l'écran de se taire, et le
-          // silence de se lire « aucune obligation ».
-          const statutFormalites = formalitesResponse.data?.statut || null;
-          const reserveFormalites = formalitesResponse.data?.reserve || null;
-          setResult((precedent) => (precedent
-            ? {
-              ...precedent,
-              // La liste se remplace À CHAQUE RÉPONSE, y compris vide. La
-              // garder quand la nouvelle est vide ferait afficher les
-              // documents de la position PRÉCÉDENTE sous le statut de la
-              // nouvelle — et, la liste n'étant plus vide, supprimerait
-              // justement l'avertissement que ce lot installe.
-              administrative_formalities: formalites,
-              formalites_statut: statutFormalites,
-              formalites_reserve: reserveFormalites,
-            }
+      // LA CONVERSION EN MONNAIE LOCALE, au taux déjà envoyé au moteur.
+      // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
+      // résultat de SA demande (même pays et position, même valeur CIF).
+      const conversion = await demanderConversion();
+      if (conversion) {
+        setResult((precedent) => (
+          precedent?._quantite_cle === `${destISO3}|${cleanHsCode}` && precedent.value === parseFloat(value)
+            ? localiserResultat(precedent, conversion)
             : precedent));
-        } catch (formalitesError) {
-          // Silencieux : une formalité absente n'est pas un montant faux.
-        }
-        // LA CONVERSION EN MONNAIE LOCALE, au taux déjà envoyé au moteur.
-        // Deux calculs peuvent se chevaucher : la conversion ne s'applique qu'au
-        // résultat de SA demande (même pays et position, même valeur CIF).
-        const conversion = await demanderConversion();
-        if (conversion) {
-          setResult((precedent) => (
-            precedent?._quantite_cle === `${destISO3}|${cleanHsCode}` && precedent.value === parseFloat(value)
-              ? localiserResultat(precedent, conversion)
-              : precedent));
-        }
-
-        const npfEtat = calcul.npf?.etat;
-        // INDICATIF n'est pas un échec : toutes les lignes sont liquidées. La
-        // réserve porte sur la nature d'un taux — une moyenne statistique, pas
-        // un tarif — et doit se lire, sans faire passer le calcul pour cassé.
-        const codesStatistiques = calcul.npf?.lignes_base_statistique || [];
-        // Complet, mais des montants dépendent du taux de marché du module
-        // Banque : le total se lit comme indicatif tant que le taux douanier
-        // n'est pas vérifié.
-        const lignesConverties = calcul.conversion_monetaire?.lignes || [];
-        let titreToast;
-        let descriptionToast;
-        if (npfEtat === 'COMPLET' && lignesConverties.length) {
-          titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
-          descriptionToast = (language === 'fr'
-            ? `${destISO3} : ${lignesConverties.join(', ')} au taux de marché du module Banque — taux douanier à vérifier`
-            : `${destISO3}: ${lignesConverties.join(', ')} at the Banking module's market rate — customs rate to be checked`)
-            + (legacyResult.savings != null ? ` · ${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}` : '');
-        } else if (npfEtat === 'COMPLET') {
-          titreToast = t.calculationSuccess;
-          descriptionToast = legacyResult.savings != null
-            ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
-            : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`;
-        } else if (npfEtat === 'INDICATIF') {
-          titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
-          descriptionToast = language === 'fr'
-            ? `${destISO3} : ${codesStatistiques.join(', ') || '—'} repose sur une moyenne statistique SH6 (WITS/TRAINS), pas sur un tarif national — montant indicatif`
-            : `${destISO3}: ${codesStatistiques.join(', ') || '—'} rests on an HS6 statistical average (WITS/TRAINS), not a national tariff — indicative amount`;
-        } else {
-          titreToast = language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation';
-          descriptionToast = language === 'fr'
-            ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
-            : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`;
-        }
-        toast({
-          title: titreToast,
-          description: descriptionToast,
-          variant: npfEtat === 'COMPLET' || npfEtat === 'INDICATIF' ? 'default' : 'destructive',
-        });
       }
+
+      const npfEtat = calcul.npf?.etat;
+      // INDICATIF n'est pas un échec : toutes les lignes sont liquidées. La
+      // réserve porte sur la nature d'un taux — une moyenne statistique, pas
+      // un tarif — et doit se lire, sans faire passer le calcul pour cassé.
+      const codesStatistiques = calcul.npf?.lignes_base_statistique || [];
+      // Complet, mais des montants dépendent du taux de marché du module
+      // Banque : le total se lit comme indicatif tant que le taux douanier
+      // n'est pas vérifié.
+      const lignesConverties = calcul.conversion_monetaire?.lignes || [];
+      let titreToast;
+      let descriptionToast;
+      if (npfEtat === 'COMPLET' && lignesConverties.length) {
+        titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
+        descriptionToast = (language === 'fr'
+          ? `${destISO3} : ${lignesConverties.join(', ')} au taux de marché du module Banque — taux douanier à vérifier`
+          : `${destISO3}: ${lignesConverties.join(', ')} at the Banking module's market rate — customs rate to be checked`)
+          + (legacyResult.savings != null ? ` · ${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}` : '');
+      } else if (npfEtat === 'COMPLET') {
+        titreToast = t.calculationSuccess;
+        descriptionToast = legacyResult.savings != null
+          ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
+          : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`;
+      } else if (npfEtat === 'INDICATIF') {
+        titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
+        descriptionToast = language === 'fr'
+          ? `${destISO3} : ${codesStatistiques.join(', ') || '—'} repose sur une moyenne statistique SH6 (WITS/TRAINS), pas sur un tarif national — montant indicatif`
+          : `${destISO3}: ${codesStatistiques.join(', ') || '—'} rests on an HS6 statistical average (WITS/TRAINS), not a national tariff — indicative amount`;
+      } else {
+        titreToast = language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation';
+        descriptionToast = language === 'fr'
+          ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
+          : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`;
+      }
+      toast({
+        title: titreToast,
+        description: descriptionToast,
+        variant: npfEtat === 'COMPLET' || npfEtat === 'INDICATIF' ? 'default' : 'destructive',
+      });
     } catch (error) {
       console.error('Calculation error:', error);
       setResult(null);
-      setDetailedResult(null);
       setShowDetailedBreakdown(false);
       const detail = error.response?.data?.detail;
       toast({
@@ -1575,11 +1080,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <div>
                     <CardTitle className="text-xl text-[var(--text)] flex items-center gap-2">
                       {t.detailedResults}
-                      {result.data_source === 'authentic_tariff' && (
-                        <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)] border text-xs">
-                          {language === 'fr' ? 'Données Officielles' : 'Official Data'}
-                        </Badge>
-                      )}
                     </CardTitle>
                     <CardDescription className="text-[var(--afcfta-muted)] flex items-center gap-2 mt-1">
                       <span className="text-lg">{getFlag(result.origin_country)}</span>
@@ -1929,8 +1429,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
-              <TariffDocumentationPanel result={result} language={language} />
-
               {/* Bandeau Valeur CIF + Code HS sélectionné */}
               <div className="mb-6 p-4 bg-[image:var(--lift)] rounded-xl border border-[var(--afcfta-border)]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1966,7 +1464,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <div className="flex-1">
                       <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Produit' : 'Product'}</p>
                       <p className="text-sm text-[var(--text)] truncate">
-                        {selectedSubPositionDesc || detailedResult?.description || result.description || (language === 'fr' ? 'Position sélectionnée' : 'Selected position')}
+                        {selectedSubPositionDesc || result.description || (language === 'fr' ? 'Position sélectionnée' : 'Selected position')}
                       </p>
                     </div>
                   </div>
@@ -2349,111 +1847,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         : 'Formalities at HS6 level. Select a national sub-position for position-specific formalities (10 digits).'}
                     </p>
                   )}
-                </CardContent>
-              </Card>
-            );
-          })()}
-
-          {/* ── COLONNES PRÉFÉRENTIELLES PUBLIÉES PAR LE TARIF DE DESTINATION ──
-              `fiscal_advantages` porte TOUTES les colonnes que le tarif de
-              destination publie, quel que soit le partenaire : pour la
-              Tunisie, le Koweït, la Palestine, l'Union européenne, la
-              Turquie... Les afficher toutes sous un titre « Avantages ZLECAf »,
-              avec un coche vert et sans le taux, disait trois choses fausses —
-              le partenaire, le régime, et le sens de la colonne (sur
-              TUN/27101981100, droit NPF 0 %, les colonnes nommées valent 50 %).
-              On ne retient donc que celles qui nomment l'origine choisie ; les
-              autres sont comptées et déclarées, jamais nommées ni affichées. */}
-          {(() => {
-            const tri = trierAvantages(
-              result.fiscal_advantages,
-              result.origin_country_iso3 || result.origin_country || originCountry,
-              result.npf_dd_rate_pct ?? null,
-            );
-            const retenus = [...tri.pourLOrigine, ...tri.generaux];
-            if (retenus.length === 0 && tri.autresPartenaires === 0) return null;
-            const origineNom = getCountryName(
-              result.origin_country_iso3 || result.origin_country || originCountry,
-            );
-            return (
-              <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)]">
-                      <Shield className="w-5 h-5 text-[var(--text)]" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg text-[var(--text)]">
-                        {language === 'fr'
-                          ? 'Colonnes préférentielles publiées'
-                          : 'Published preferential columns'}
-                      </CardTitle>
-                      <CardDescription className="text-[var(--afcfta-muted)]">
-                        {language === 'fr'
-                          ? `Tarif de destination, colonnes au nom de ${origineNom} — montrées, jamais appliquées`
-                          : `Destination tariff, columns named for ${origineNom} — shown, never applied`}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {retenus.map((entree, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-3 p-3 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)]"
-                      >
-                        {entree.reduitLeDroit === true ? (
-                          <CheckCircle className="w-5 h-5 text-[var(--success)] shrink-0 mt-0.5" />
-                        ) : (
-                          <Info className="w-5 h-5 text-[var(--afcfta-muted)] shrink-0 mt-0.5" />
-                        )}
-                        <div className="min-w-0">
-                          <div className="text-[var(--text)]">
-                            {entree.libelle}
-                            {entree.taux !== null && (
-                              <span className="ml-2 font-mono text-[var(--text)]">
-                                {entree.taux} %
-                              </span>
-                            )}
-                          </div>
-                          {entree.reduitLeDroit === false && (
-                            <div className="text-xs text-[var(--gold)] mt-1">
-                              {language === 'fr'
-                                ? `Cette colonne ne réduit pas le droit NPF de la position (${result.npf_dd_rate_pct} %).`
-                                : `This column does not reduce the position's MFN duty (${result.npf_dd_rate_pct}%).`}
-                            </div>
-                          )}
-                          {entree.taux === null && (
-                            <div className="text-xs text-[var(--afcfta-muted)] mt-1">
-                              {language === 'fr'
-                                ? 'Taux non donné par la source.'
-                                : 'Rate not given by the source.'}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  {retenus.length === 0 && (
-                    <p className="text-sm text-[var(--afcfta-muted)]">
-                      {language === 'fr'
-                        ? `Le tarif de destination ne publie aucune colonne au nom de ${origineNom} sur cette position.`
-                        : `The destination tariff publishes no column named for ${origineNom} on this position.`}
-                    </p>
-                  )}
-                  {tri.autresPartenaires > 0 && (
-                    <p className="text-xs text-[var(--afcfta-muted)] mt-3 border-t border-[var(--afcfta-border)] pt-2">
-                      {language === 'fr'
-                        ? `${tri.autresPartenaires} autre(s) colonne(s) préférentielle(s) publiée(s) sur cette position concernent d'autres partenaires : elles ne s'appliquent pas à une importation en provenance de ${origineNom} et ne sont pas affichées.`
-                        : `${tri.autresPartenaires} other preferential column(s) published on this position concern other partners: they do not apply to an import from ${origineNom} and are not shown.`}
-                    </p>
-                  )}
-                  <p className="text-xs text-[var(--afcfta-muted)] mt-2">
-                    {language === 'fr'
-                      ? "Colonnes telles que le tarif de destination les publie. La franchise reste subordonnée aux règles d'origine de l'accord, que ce moteur ne vérifie pas : le certificat d'origine reste à produire."
-                      : 'Columns as published by the destination tariff. Relief remains subject to the agreement\'s rules of origin, which this engine does not verify: the certificate of origin is still required.'}
-                  </p>
                 </CardContent>
               </Card>
             );

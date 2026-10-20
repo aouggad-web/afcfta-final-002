@@ -5,7 +5,7 @@ du droit d'importation et de la taxe parafiscale à l'importation, sur le même
 calendrier — 5 ans pour P1, 10 ans pour P2 à compter du 01/01/2021. L'avenant
 n° 6627/223 du 09/01/2025 actualise les codes de la liste A et répète la règle.
 Ce fichier verrouille : les 40 origines lues dans la fiche, le calendrier, la
-réduction de la TPI dans les deux chemins de calcul, l'assiette de TVA
+réduction de la TPI, l'assiette de TVA
 (CIF+DD+TPI, CGI Maroc art. 96) et le plafond NPF.
 """
 
@@ -17,10 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from services.authentic_tariff_service import (
-    calculate_import_taxes,
-    resolve_zlecaf_context,
-)
+from services.authentic_tariff_service import resolve_zlecaf_context
 from services.calcul import calculer
 from services.preference import taux_preferentiels
 from services.zlecaf_implementation_registry import APPLIED, RECORDS, implementation_decision
@@ -126,14 +123,13 @@ def test_une_origine_hors_liste_ne_reduit_ni_di_ni_tpi():
     assert resultat["applique"] is False
     assert resultat["taux"] == {}
 
-    historique = calculate_import_taxes("MAR", CODE, 1000.0, origin_country=HORS_LISTE)
-    # Aucun régime préférentiel n'est calculé : le bloc ZLECAf reste vide et la
-    # TPI pleine (0,25 % → 2,50 sur 1 000).
-    assert historique["zlecaf_calculation"] is None
-    npf = historique["npf_calculation"]
-    assert npf["other_taxes"]["rate_pct"] == 0.25
-    assert npf["other_taxes"]["amount"] == 2.5
-    assert npf["total_to_pay"] == 1323.0
+    # Aucun régime préférentiel n'est calculé : la TPI reste pleine (0,25 % →
+    # 2,50 sur 1 000).
+    npf = calculer(position, 1000.0)["npf"]
+    par_code = {ligne["code"]: ligne for ligne in npf["lignes"]}
+    assert par_code["TPI"]["taux_pct"] == 0.25
+    assert par_code["TPI"]["montant"] == 2.5
+    assert npf["total_a_payer"] == 1323.0
 
 
 def test_une_ligne_hors_liste_a_ne_reduit_ni_di_ni_tpi():
@@ -144,42 +140,30 @@ def test_une_ligne_hors_liste_a_ne_reduit_ni_di_ni_tpi():
     assert resultat["applique"] is False
     assert resultat["taux"] == {}
 
-    historique = calculate_import_taxes("MAR", CODE_HORS_LISTE_A, 1000.0, origin_country=P2)
-    assert historique["zlecaf_calculation"] is None
-    npf = historique["npf_calculation"]
-    assert npf["other_taxes"]["amount"] == 2.5
-    assert npf["dd"]["rate_pct"] == 200.0
 
-
-def test_les_deux_chemins_servent_le_meme_taux_et_le_meme_total():
-    """Socle et historique lisent le même calendrier : même DI, même TPI, même total."""
+def test_le_socle_sert_le_di_la_tpi_et_le_total_du_calendrier():
+    """Le socle lit le calendrier : DI 4 %, TPI 0,1 %, total 1 249,20."""
     table = taux_preferentiels(_position(), "MAR", P2, CODE)["taux"]
     socle = calculer(_position(), 1000.0, taux_preferentiels=table)["preference"]
-    historique = calculate_import_taxes("MAR", CODE, 1000.0, origin_country=P2)
 
     assert socle is not None and socle["total_a_payer"] == 1249.2
-    assert historique["zlecaf_calculation"]["total_to_pay"] == 1249.2
-    assert socle["total_a_payer"] == historique["zlecaf_calculation"]["total_to_pay"]
 
     par_code = {ligne["code"]: ligne for ligne in socle["lignes"]}
-    zlecaf = historique["zlecaf_calculation"]
-    assert par_code["DD"]["taux_pct"] == zlecaf["dd"]["rate_pct"] == 4.0
-    assert par_code["TPI"]["taux_pct"] == zlecaf["other_taxes"]["rate_pct"] == 0.1
+    assert par_code["DD"]["taux_pct"] == 4.0
+    assert par_code["TPI"]["taux_pct"] == 0.1
 
 
 def test_la_tva_est_assise_sur_le_di_et_la_tpi_reduits():
     """CGI Maroc art. 96 : TVA = CIF + DD + TPI, recalculée quand la TPI baisse."""
-    resultat = calculate_import_taxes("MAR", CODE, 1000.0, origin_country=P2)
-
-    npf = resultat["npf_calculation"]
-    zlecaf = resultat["zlecaf_calculation"]
-    assert npf["vat"]["base"] == 1000.0 + 100.0 + 2.5
-    assert npf["vat"]["amount"] == 220.5
-    assert zlecaf["dd"]["amount"] == 40.0
-    assert zlecaf["other_taxes"]["amount"] == 1.0
-    assert zlecaf["vat"]["base"] == 1000.0 + 40.0 + 1.0
-    assert zlecaf["vat"]["amount"] == 208.2
-    assert zlecaf["total_to_pay"] < npf["total_to_pay"]
+    table = taux_preferentiels(_position(), "MAR", P2, CODE)["taux"]
+    resultat = calculer(_position(), 1000.0, taux_preferentiels=table)
+    tva_npf = next(ligne for ligne in resultat["npf"]["lignes"] if ligne["code"] == "TVA")
+    tva_zlecaf = next(ligne for ligne in resultat["preference"]["lignes"] if ligne["code"] == "TVA")
+    assert tva_npf["base"] == 1000.0 + 100.0 + 2.5
+    assert tva_npf["montant"] == 220.5
+    assert tva_zlecaf["base"] == 1000.0 + 40.0 + 1.0
+    assert tva_zlecaf["montant"] == 208.2
+    assert resultat["preference"]["total_a_payer"] < resultat["npf"]["total_a_payer"]
 
 
 def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
@@ -187,7 +171,7 @@ def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
 
     Le DI retombe alors au NPF ; réduire quand même la TPI mélangerait deux
     régimes — droit commun pour le DI, préférentiel pour la TPI. Le calcul
-    entier relève du droit commun, sur les deux chemins.
+    entier relève du droit commun.
     """
     position = _position(dd=2.5)
     table = taux_preferentiels(position, "MAR", P2, CODE_PLANCHER)["taux"]
@@ -201,20 +185,13 @@ def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
     assert contexte["dd_rate_pct"] == 2.5
 
     socle = calculer(position, 1000.0, taux_preferentiels=table)["preference"]
-    historique = calculate_import_taxes("MAR", CODE_PLANCHER, 1000.0, origin_country=P2)
-    zlecaf = historique["zlecaf_calculation"]
 
     assert socle["total_a_payer"] == 1233.0
-    assert zlecaf["total_to_pay"] == 1233.0
-    assert zlecaf["total_to_pay"] == historique["npf_calculation"]["total_to_pay"]
 
     par_code = {ligne["code"]: ligne for ligne in socle["lignes"]}
     assert par_code["DD"]["regime_applique"] == "npf_plancher"
     assert par_code["DD"]["taux_pct"] == 2.5
     assert par_code["TPI"]["taux_pct"] == 0.25  # TPI pleine
-    assert zlecaf["other_taxes"]["rate_pct"] == 0.25
-    assert zlecaf["dd"]["rate_pct"] == 2.5
-    assert zlecaf["vat"]["base"] == 1000.0 + 25.0 + 2.5
 
 
 def test_le_taux_servi_n_est_jamais_au_dessus_du_npf():

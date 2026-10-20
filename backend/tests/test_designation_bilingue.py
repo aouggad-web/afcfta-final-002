@@ -16,10 +16,7 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from services.designation import texte_designation  # noqa: E402
-from services.authentic_tariff_service import (  # noqa: E402
-    calculate_import_taxes,
-    get_sub_positions,
-)
+from services.authentic_tariff_service import get_sub_positions  # noqa: E402
 
 PAYS_BILINGUES = ["LBY", "MUS", "MWI", "SYC", "ZMB", "ZWE"]
 CRAWLS = os.path.join(
@@ -59,16 +56,6 @@ def test_les_sous_positions_portent_du_texte(iso):
                 assert isinstance(
                     p[champ], str
                 ), f"{iso} {p.get('code')} : {champ} n'est pas du texte"
-
-
-def test_le_calcul_de_maurice_porte_une_designation_texte():
-    resultat = calculate_import_taxes(
-        "MUS", "900311", 1000, apply_zlecaf=True, origin_country="KEN"
-    )
-    sous_position = resultat.get("sub_position") or {}
-    for champ in ("description", "description_fr", "description_en"):
-        if champ in sous_position:
-            assert isinstance(sous_position[champ], str)
 
 
 def test_le_moteur_du_socle_rend_une_designation_texte():
