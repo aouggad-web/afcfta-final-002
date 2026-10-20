@@ -1,0 +1,35 @@
+{
+  "country": "SACU",
+  "generated_at": "2026-10-20T23:30:00+00:00",
+  "description": "Textes communs SACU : accord SACU 2002 amendé (sacu.int) et accord monétaire multilatéral 1992 (copie archivée, original centralbank.org.sz injoignable depuis ce réseau).",
+  "documents": [
+    {
+      "file": "legislation/SACU_Agreement2002_amended_2013-04-12.pdf",
+      "title": "Southern African Customs Union Agreement 2002 (As amended on 12 April 2013) — version consolidée officielle avec Article 7A et Annex A",
+      "source_url": "https://www.sacu.int/uploads/documents/6a7ae39b41cba945b083e93a2e1a103d7cee629c.pdf",
+      "referencing_page": "https://www.sacu.int/what-we-do/sacu-agreements",
+      "document_date": "2013-04-12",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "p. 6 (Art. 1 Definitions) ; p. 10 (Art. 7A Summit) ; p. 18 (Art. 18, 19, 20, 21) ; p. 20 (Art. 22, 26) ; p. 24 (Art. 31 dont 31.4, Art. 32) ; p. 26 (Art. 34)",
+      "sha256": "03185fa1891ca4b05bfdecfc01d5a0986f34b76943ed9b24ee8551d57b8e8bdf",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/SACU_AccordMonetaryMultilateral_1992_copie-archivee.pdf",
+      "title": "Multilateral Monetary Agreement between the Government of the Kingdom of Lesotho, the Government of the Republic of Namibia, the Government of the Republic of South Africa and the Government of the Kingdom of Swaziland (1992) — copie archivée (original centralbank.org.sz injoignable depuis ce réseau) ; scan sans couche texte",
+      "source_url": "https://www.centralbank.org.sz/wp-content/uploads/2021/03/MultilateralMonetaryAgreement-optimized.pdf",
+      "referencing_page": "https://www.centralbank.org.sz/ (Central Bank of Eswatini)",
+      "document_date": "1992",
+      "effective_from": "1992-07-01",
+      "is_draft": false,
+      "useful_pages": "Art. 2 LEGAL TENDER (parité/cours légal : Art. 2(1)-(2)) ; Art. 8 (compensatory payments, rand circulating as legal tender)",
+      "sha256": "f992ef464a14b7132167a0a0e666fcfa3609d4d46f04d4f5020b1768e36f8f84",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00",
+      "scanne": true,
+      "archive_url": "http://web.archive.org/web/20250711051038/https://www.centralbank.org.sz/wp-content/uploads/2021/03/MultilateralMonetaryAgreement-optimized.pdf"
+    }
+  ]
+}

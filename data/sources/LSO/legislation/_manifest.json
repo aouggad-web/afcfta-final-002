@@ -1,0 +1,87 @@
+{
+  "country": "LSO",
+  "generated_at": "2026-10-20T23:30:00+00:00",
+  "description": "Textes officiels Lesotho (RSL). Note : le serveur rsl.org.ls tronque les PDF > 5 Mo ; le Customs and Excise Act 1982 a été récupéré via copie archivée (l'original renvoie un fichier incomplet).",
+  "documents": [
+    {
+      "file": "legislation/LSO_CustomsExciseAct10-1982_copie-archivee.pdf",
+      "title": "Customs and Excise Act No. 10 of 1982 (Lesotho) — copie archivée (l'original rsl.org.ls est servi tronqué, téléchargements interrompus à 5 Mo) ; scan sans couche texte",
+      "source_url": "https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf",
+      "referencing_page": "https://www.rsl.org.ls/customs-excise-laws",
+      "document_date": "1982",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "dispositions douanes/transit",
+      "sha256": "45722bb12a3b9145cd14984791bdf63d3754cb778ca46b19e2c388f178c568d1",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00",
+      "scanne": true,
+      "archive_url": "http://web.archive.org/web/20260411184253/https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf"
+    },
+    {
+      "file": "legislation/LSO_CEAmendmentAct3_1984.pdf",
+      "title": "Customs and Excise Amendment Act 3 of 1984 (Lesotho)",
+      "source_url": "https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Amendment%20Act%203%201984.pdf",
+      "referencing_page": "https://www.rsl.org.ls/customs-excise-laws",
+      "document_date": "1984",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "p. 1-4",
+      "sha256": "fd8d0e63909d9ca6b251e9971ff813ce0d5388c11eb1f77ee175c2ac37745e6d",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/LSO_VATAct2001_2001.pdf",
+      "title": "Value Added Tax Act 2001 (Act No. 9 of 2001, Lesotho)",
+      "source_url": "https://www.rsl.org.ls/sites/default/files/2026-09/VAT%20ACT%20-%202001.pdf",
+      "referencing_page": "https://www.rsl.org.ls/value-added-tax-vat",
+      "document_date": "2001",
+      "effective_from": "2003-08-01",
+      "is_draft": false,
+      "useful_pages": "p. 16 (s.16(1) taxable value of a taxable import)",
+      "sha256": "c267571dc362147a0d88a87ce0762dde50ab0e6b49b8e800f350c6ecba68dffa",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/LSO_VATAmendmentAct6_2003.pdf",
+      "title": "Value Added Tax (Amendment) Act No. 6 of 2003 (Lesotho) — zero-rating, taux prescrits par règlement",
+      "source_url": "https://www.rsl.org.ls/sites/default/files/2026-09/VAT%20Act%20Amendments%20Act%206%202003.pdf",
+      "referencing_page": "https://www.rsl.org.ls/value-added-tax-vat",
+      "document_date": "2003",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "p. 8 (les taux prescrits par règlement)",
+      "sha256": "7925480d70b08d2a920190f963d1ad32b2a991d1360a833e83726e2d8f2389ab",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/LSO_ExciseBill2021_isdraft.pdf",
+      "title": "Excise Bill 2021 (Lesotho) — PROJET de loi, jamais déposé comme texte en vigueur",
+      "source_url": "https://www.rsl.org.ls/sites/default/files/2024-05/EXCISE%20BILL%202021-Final.pdf",
+      "referencing_page": "https://www.rsl.org.ls/customs-excise-laws",
+      "document_date": "2021",
+      "effective_from": null,
+      "is_draft": true,
+      "useful_pages": "p. 1-54",
+      "sha256": "64d4e8df1bd39c807e36699a22198b85778c18b9686c281aa7d5bff19169a47c",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/LSO_RSL_page_VAT_consultee-2026-10-20.html",
+      "title": "Page RSL « Value Added Tax » (copie HTML consultée le 2026-10-20 ; taux en vigueur 15 % affiché sur les pages RSL)",
+      "source_url": "https://www.rsl.org.ls/value-added-tax-vat",
+      "referencing_page": "https://www.rsl.org.ls/value-added-tax-vat",
+      "document_date": "2026-10-20 (consultation)",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "page entière",
+      "sha256": "b29c3b1d93742580c572d467d95880e6c86684de0b34ca1d5fc2bafe121098aa",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    }
+  ]
+}

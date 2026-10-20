@@ -1,0 +1,59 @@
+{
+  "country": "BWA",
+  "generated_at": "2026-10-20T23:30:00+00:00",
+  "description": "Textes officiels Botswana (BURS) : Customs Act 2018, Excise Duty Act 2018 (avec tarif d'accise), VAT Act 2026 et législation subsidiaire TVA.",
+  "documents": [
+    {
+      "file": "legislation/BWA_CustomsAct2018_2018-08-27.pdf",
+      "title": "Customs Act, 2018 (No. 29 of 2018) — Supplement A, Botswana Government Extraordinary Gazette dated 27th August, 2018",
+      "source_url": "https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws?download=750:customs-act-duty",
+      "referencing_page": "https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws",
+      "document_date": "2018-08-27",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "s.4 (application aux États SACU) ; dispositions transit/dédouanement",
+      "sha256": "aee00dc94f3a32087a1ec35f8342131f89cfe94fb268f35ab6c62c614c70e044",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/BWA_ExciseDutyAct2018_sans-date.pdf",
+      "title": "Excise Duty Act, 2018 (A.671) — loi + tarif d'accise national complet (Schedule No. 1) ; aucune date de Gazette lisible dans l'en-tête",
+      "source_url": "https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws?download=752:excise-duty-act",
+      "referencing_page": "https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws",
+      "document_date": "2018 (année seule lisible)",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "p. 7 (« unit of account ») ; p. 71 (s.58 fuel levy) ; p. 129 (2204.21.41 = UA3.61/li) ; p. 138 (2402.20.90 = UA7.15/10 cigarettes) ; p. 144 (3303.00.90 = 7 %)",
+      "sha256": "6fa71a0e9055df23d4213e9d8a482171dff972f184acfa8d4353760bd2942019",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/BWA_VATAct2026_2026-07-01.pdf",
+      "title": "Value Added Tax Act, 2026 (No. 15 of 2026) — Supplement A, Botswana Government Extraordinary Gazette dated 1st July, 2026 — version texte (pas un scan)",
+      "source_url": "https://www.burs.org.bw/index.php/tax/tax-laws-2026?download=958:value-added-tax-act-2026",
+      "referencing_page": "https://www.burs.org.bw/index.php/tax/tax-laws-2026",
+      "document_date": "2026-07-01",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "p. 12 (s.7(1)-(2) imposition, taux 14 %) ; p. 23 (s.30(1) value of import)",
+      "sha256": "50f058cb502ffc02937ef13d14c723715b19e78c487c3627e8b66c6597cf81b1",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/BWA_VAT_Cap50-03_subsidiary_sans-date.pdf",
+      "title": "Chapter 50:03 Value Added Tax — Subsidiary Legislation (Exemption Regulations, Tax Period Regulations) ; aucune date lisible",
+      "source_url": "https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws?download=21:cap-50-03-value-added-tax-act-subsidiary-legislation",
+      "referencing_page": "https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws",
+      "document_date": "aucune date lisible",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "p. 1-6",
+      "sha256": "1a34451561ef35749febf6791dca76cfe16e1003ea5b545aa1a0a0252c19e05f",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    }
+  ]
+}
