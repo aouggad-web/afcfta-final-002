@@ -523,7 +523,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // manque y reste silencieux.
       const hs6 = cleanHsCode.substring(0, 6);
       try {
-        const subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+        const subPosResponse = await axios.get(`${API}/consultation/${destISO3}/sous-positions/${hs6}`);
         setSubPositions(subPosResponse.data);
       } catch (subPosError) {
         setSubPositions(null);
