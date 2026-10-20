@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "objet": "Égypte : assiette de la TVA et de la Taxe de Table (ضريبة الجدول) à l'importation, tabacs et alcools du tableau annexé à la loi n° 67/2016",
+  "destination_iso3": [
+    "EGY"
+  ],
+  "verified_at": "2026-10-14",
+  "etabli": true,
+  "evidence_level": "primaire — loi n° 67/2016 (TVA), fac-similé du Journal officiel n° 35 bis (c) du 07/09/2016 ; tarif publié par l'Autorité égyptienne des douanes (customs.gov.eg)",
+  "source": {
+    "url": "https://www.eta.gov.eg/sites/default/files/2024-03/vat-law_no.67-2016.pdf",
+    "institution": "Egyptian Tax Authority (mise en ligne du Journal officiel) ; Autorité égyptienne des douanes"
+  },
+  "regle": {
+    "valeur": "TVA à l'importation sur la valeur en douane, les droits de douane, les autres impôts et redevances perçus et, pour les marchandises du tableau annexé, la Taxe de Table (art. 10 (7) et (10)). Taxe de Table à l'importation sur la valeur en douane, les droits de douane et les autres impôts et redevances perçus, sauf disposition contraire du tableau (art. 39 (b)). Tabacs : Taxe de Table seule (tableau, partie I).",
+    "verbatim_tva": "Art. 10 (10), ثانيًا (أ) : « السلع المستوردة : القيمة المتخذة أساسًا لتحديد الضريبة الجمركية مضافًا إليها الضرائب الجمركية وغيرها من الضرائب والرسوم المفروضة ، وضريبة الجدول . »",
+    "verbatim_taxe_de_table": "Art. 39 (b) : « بالنسبة للسلع والخدمات المستوردة : القيمة التى تتخذ أساسًا لربط الضريبة الجمركية مضافًا إليها الضريبة الجمركية وغيرها من الضرائب والرسوم المفروضة . وذلك كله ما لم ينص فى الجدول المرافق على خلاف ذلك . »",
+    "reference": "Loi n° 67/2016 relative à la TVA, art. 10 (7) et (10), art. 36, art. 39 et tableau annexé (parties I et II), JO n° 35 bis (c) du 07/09/2016, p. 12, 13, 23, 24, 39, 40, 44 et 45",
+    "assiette": "TVA : CIF+TOUS_SAUF_TVA ; Taxe de Table : CIF+TOUS_SAUF_TVA, liquidée après les autres prélèvements et avant la TVA",
+    "portee": "backend/socle/assiettes_pays.json (EGY : TVA et ضريبةالجدول) ; scripts/build_socle.py, _egypte (TAXE_DE_TABLE_EGY, TABAC_TAXE_DE_TABLE_EGY, TAXE_DE_TABLE_ALCOOLS_EGY, REDEVANCES_EGY, TAXE_DE_TABLE_CIGARETTES_EGY, DD_AU_KILO_EGY, MINIMUM_EGY) ; le calculateur sert l'Égypte par le socle seul.",
+    "texte_archive": "sources/EGY_TVA_taxe_de_table.extrait.txt",
+    "sha256": "e88a10b0f6e920a8b01840edec56d51703962211e19cfdea75509e657f763b7a"
+  },
+  "decisions": [
+    "TVA : la collecte la mettait sur la seule valeur en douane, et la table d'assiettes citait un « art. 29 (TVA base = CIF) » que la loi ne contient pas. L'art. 10 (7) l'assied sur la valeur, les droits de douane et les autres impôts et redevances ; l'art. 10 (10) y ajoute la Taxe de Table. La douane publie elle-même « 14% (من القيمة + ر.ض.جمركية) » (valeur + droits de douane) sur 7 780 lignes.",
+    "Taxe de Table : la collecte la portait sans assiette (182 lignes en %, non liquidées). L'art. 39 (b) l'assied sur la valeur, les droits de douane et les autres impôts et redevances, et la douane publie « (من القيمة + ر.ض.جمركية) » sur ces lignes. Elle est liquidée après les autres prélèvements, la TVA en dernier ; ses minimums par litre ou par kilo la bornent, ils ne s'y ajoutent pas.",
+    "Tabacs (chapitre 24) : le tableau, partie I, les soumet à « ضريبة الجدول فقط ». La douane en publie le taux sous « TVA » (75 %, 100 %, 200 %, 225 %, 50 %, avec un minimum au kilo) ; ces lignes sont servies comme Taxe de Table, sur l'assiette de l'art. 39. Les taux de 2016 (cigares 200 %, minimum 50 EGP/kg ; cigares toscans 200 %, minimum 35 EGP/kg) sont ceux que la douane publie ; ceux des tabacs bruts et de 2403 ont changé depuis, et c'est le taux publié qui est servi.",
+    "Alcools (2203, 2204, 2205, 2206, 2208 : 19 positions portant l'instruction ر7065 « تفرض ضريبة الجدول علي الكحول ») : la collecte ne publie pas le taux. Sur décision du 14/10/2026, le taux du tableau de 2016 est appliqué, avec sa réserve en note : bière alcoolisée 250 % avec un minimum de 500 EGP par hectolitre (partie II, item 4), vins et boissons fermentées 150 % avec un minimum de 15 EGP par litre (item 3 c), spiritueux 150 % avec un minimum de 15 EGP par litre (item 3 d) — taux que la douane publie aujourd'hui sur 2106.90.20 (même item 3 d). Le plus élevé des deux s'applique ; le minimum se liquide sur la quantité en litres, réclamée au calcul.",
+    "Cigarettes (2402.20) : Taxe de Table de 50 % du prix de vente au consommateur plus 275 à 525 piastres par paquet (tableau, partie I, item 1 (b) 3). Le prix de vente n'est pas une donnée du calcul : ligne ajoutée sans taux ni assiette.",
+    "Montants publiés en EGP par la douane, lus en droit spécifique : droit de douane au kilo net sur 23 positions de tabac (« 150 جنية لكل كيلو جرام صافى », de 6,1 à 150 EGP/kg), liquidé sur la quantité ; minimum de la Taxe de Table, publié sur la ligne qui la suit (16 tabacs, de 16 à 60 EGP par kilo net ou par kilo de produit manufacturé ; 2106.90.20 et 3302.10.10, 15 EGP par litre), joint à la Taxe de Table dont il est le plancher : la plus élevée des deux est due, comme le tableau l'écrit (« القيمة (٢٠٠٪) بحد أدنى ٥٠ جنيهًا لكل كجم مصنع »).",
+    "8481.80.90.90 : la douane publie deux fois « ID 60 % » et « TVA 14 % » ; la seconde occurrence (ID2, VAT2) est retirée, elle aurait fait payer le droit et la TVA deux fois.",
+    "Droits de douane de 1 200 % à 3 000 % sur les alcools : publiés tels quels par la douane (et 300 % pour les établissements touristiques, instruction ر6512) ; conservés.",
+    "Frais perçus pour le compte des chambres (textile 1 %, cuir 5 %, tabac 0,5 %) et contribution à l'assurance santé (10 %) : publiés en % sans assiette, et aucun texte lu ne la fixe. Sur décision du 14/10/2026, liquidés sur la valeur en douane, réserve en note ; la TVA et la Taxe de Table, qui s'assoient sur eux, redeviennent calculables. L'assurance santé publiée par 20 cigarettes (2402.20) reste sans taux."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taux de la Taxe de Table sur les alcools et assiette des redevances des chambres et de l'assurance santé : appliqués sur décision, pas établis sur un texte en vigueur lu (taux de 2016 pour les alcools, valeur en douane pour les redevances). À revoir dès qu'un texte ou une publication de la douane les fixe.",
+    "Sodas et bière sans alcool : le tableau de 2016 (partie II, notes 1 et 2) assied leur Taxe de Table de 8 % sur le prix de vente au consommateur ; la douane publie aujourd'hui « (من القيمة + ر.ض.جمركية) ». La base publiée par la douane est suivie ; la note de 2016 n'a pas été confrontée à une modification ultérieure.",
+    "Cigarettes : la douane publie une TVA de 14 % que le tableau de 2016 (partie I, « Taxe de Table seule ») ne prévoit pas ; conservée telle que publiée.",
+    "Taxe de Table au litre sur l'alcool éthylique (2207, 3 positions), TVA au litre ou à la tonne sur les produits pétroliers (12 positions) et assurance santé par 20 cigarettes (2 positions) : non lues en droit spécifique ; ces lignes restent sans taux.",
+    "Modifications du tableau postérieures à 2016 : non dépouillées ; les taux servis sont ceux que la douane publie."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/EGY_TVA_taxe_de_table.extrait.txt",
+      "sha256": "e88a10b0f6e920a8b01840edec56d51703962211e19cfdea75509e657f763b7a"
+    },
+    {
+      "document_non_archive": "Loi n° 67/2016 (TVA), fac-similé du JO n° 35 bis (c) du 07/09/2016, 50 pages, versé sur la PR #643 (data/egypt/docs/EGY_loi_67_2016_TVA_JO_35bis_c_2016-09-07.pdf)",
+      "pdf_sha256": "33097e10d26d20a3ccb3045a80799e1ca7a0a49027164290fd0d87ec976f3548"
+    },
+    {
+      "document_non_archive": "Tarif de l'Autorité égyptienne des douanes, collecte du 29/08/2026 (backend/data/crawled/EGY_tariffs.json)",
+      "pdf_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94"
+    }
+  ]
+}

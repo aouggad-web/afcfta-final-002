@@ -569,23 +569,27 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // lois d'accise et de l'Ouganda. Le Kenya (mêmes totaux) : ses remises de
       // droits de la gazette EAC sont appliquées par le socle, sur autorisation
       // déclarée dans le formulaire, comme les sursis d'application de la
-      // Tanzanie, de l'Ouganda, du Rwanda et du Burundi. Reste sur l'autre
-      // porte, en attente, l'Égypte : la Taxe de Table et les redevances des
-      // chambres n'ont pas encore d'assiette au socle.
+      // Tanzanie, de l'Ouganda, du Rwanda et du Burundi. L'Égypte : le socle
+      // assied la TVA et la Taxe de Table sur la valeur, les droits de douane
+      // et les autres impôts (loi 67/2016, art. 10 et 39) quand l'autre porte
+      // les met sur la seule valeur ; Taxe de Table des alcools au taux du
+      // tableau de 2016 et redevances des chambres sur la valeur, sur décision
+      // et avec leur réserve ; Taxe de Table des cigarettes, assise sur le prix
+      // de vente, déclarée incomplète.
       //
       // L'ALGÉRIE (bascule 2.3). Le socle est sa seule porte de calcul :
       // l'autre n'a plus de fichier algérien à lire.
       const SOCLE_EN_PREMIER = new Set([
         'TUN', 'MUS', 'DZA',
         'BFA', 'GIN', 'MLI', 'NER', 'GHA', 'NGA', 'ETH', 'BEN', 'GNB', 'SEN', 'TGO', 'CPV',
-        'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB', 'KEN',
+        'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB', 'KEN', 'EGY',
         'BDI', 'COD', 'CAF', 'COG', 'TCD', 'SSD', 'CMR', 'GNQ',
         'AGO', 'COM', 'MDG', 'MOZ', 'MRT', 'STP', 'ZMB', 'ZWE', 'SYC', 'LBY', 'SDN', 'MWI',
         'BWA', 'LSO', 'NAM', 'SWZ', 'ZAF',
       ]);
       // Pays que le socle sert sans jamais se replier sur l'autre porte.
       const SANS_REPLI = new Set([
-        'DZA', 'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB', 'KEN',
+        'DZA', 'GMB', 'LBR', 'SLE', 'CIV', 'SOM', 'MAR', 'RWA', 'TZA', 'UGA', 'GAB', 'KEN', 'EGY',
       ]);
 
       let calculSocle = null;
@@ -607,8 +611,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           // la loi) ont été établies sur le socle, et l'autre porte ne connaît
           // aucune position qu'il n'ait pas. La Côte d'Ivoire non plus : l'autre
           // porte n'a pas de position en plus, et lit en % des montants sans
-          // unité. Somalie, Maroc, Rwanda, Tanzanie, Ouganda, Gabon et Kenya :
-          // le calcul se fait sur le socle seul, l'autre porte étant appelée à
+          // unité. Somalie, Maroc, Rwanda, Tanzanie, Ouganda, Gabon, Kenya et
+          // Égypte : le calcul se fait sur le socle seul, l'autre porte étant appelée à
           // disparaître.
           const statut = socleError.response?.status;
           if (SANS_REPLI.has(destISO3) || (statut !== 404 && statut !== 503)) {

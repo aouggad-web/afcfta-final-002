@@ -2028,6 +2028,179 @@ def _compter_ligne(d, compteurs, signe):
     compteurs[cle] += signe
 
 
+#: Égypte (fiche EGY_TVA_taxe_de_table_2026-10-14.json). Les assiettes de la TVA
+#: et de la Taxe de Table sont dans assiettes_pays.json (loi 67/2016, art. 10 et
+#: 39) ; restent ici l'ordre des lignes, les tabacs du tableau, partie I, la
+#: Taxe de Table des alcools et des cigarettes, que la collecte ne chiffre pas,
+#: l'assiette des redevances publiées sans elle, et les montants que la douane
+#: publie en EGP au kilo ou au litre.
+TAXE_DE_TABLE_EGY = "ضريبةالجدول"
+MINIMUMS_EGY = {"ضريبةالجدول2", "VAT2"}
+#: Droit de douane au kilo net (tabacs) : « 150 جنية لكل كيلو جرام صافى ».
+DD_AU_KILO_EGY = re.compile(r"^([\d.]+) جنية لكل كيلو جرام صافى$")
+#: Minimum de la Taxe de Table, publié sur la ligne qui la suit : « بحد ادنى 50
+#: جنية لكل كج مصنع صافى », « بحد ادنى 15 جنية لكل لتر سائل ».
+MINIMUM_EGY = re.compile(r"^بحد ادنى ([\d.]+) جنية لكل (كيلو جرام صافى|كج مصنع صافى|لتر سائل)$")
+UNITES_EGY = {"كيلو جرام صافى": "kg", "كج مصنع صافى": "kg", "لتر سائل": "l"}
+TABAC_TAXE_DE_TABLE_EGY = (
+    "Loi n° 67/2016, tableau annexé, partie I (« سلع وخدمات تخضع لضريبة الجدول فقط ») : les tabacs sont "
+    "soumis à la seule Taxe de Table, que la douane publie sous « TVA ». Assiette de l'art. 39 (b)."
+)
+#: Alcools : la douane impose la Taxe de Table (instruction ر7065 « تفرض ضريبة
+#: الجدول علي الكحول ») sans en publier le taux. Taux du tableau de 2016, appliqués
+#: sur décision avec leur réserve : préfixe -> (taux %, minimum EGP/l, item).
+INSTRUCTION_ALCOOLS_EGY = "ر7065"
+TAXE_DE_TABLE_ALCOOLS_EGY = {
+    "2203": (250.0, 5.0, "item 4, bière alcoolisée : 250 % avec un minimum de 500 EGP par hectolitre (5 EGP/l)"),
+    "2204": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2205": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2206": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2208": (150.0, 15.0, "item 3 (d), spiritueux : 150 % avec un minimum de 15 EGP par litre"),
+}
+RESERVE_ALCOOLS_EGY = (
+    "Instruction ر7065 de la douane : Taxe de Table due, taux non publié. Loi n° 67/2016, tableau annexé, "
+    "partie II, {item}. Taux de 2016 appliqué sur décision, sous réserve d'une modification ultérieure du "
+    "tableau ; le minimum se liquide sur la quantité en litres."
+)
+#: Redevances publiées en % sans assiette, qu'aucun texte lu ne fixe.
+REDEVANCES_EGY = {
+    "رسممحصلةلحسابغرفةنسيج",
+    "رسممحصلةلحسابغرفةجلود",
+    "رسممحصلةلحسابغرفةدخان",
+    "تامينصحىوزارةالصحة",
+}
+RESERVE_REDEVANCES_EGY = (
+    "Publiée en % par la douane, sans assiette, et aucun texte lu ne la fixe : liquidée sur la valeur en "
+    "douane, sur décision, sous réserve."
+)
+TAXE_DE_TABLE_CIGARETTES_EGY = (
+    "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
+    "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
+    "donnée du calcul : Taxe de Table non liquidée."
+)
+
+
+def _egypte(positions, compteurs, donnees):
+    """Égypte : lignes publiées deux fois, tabacs, redevances, Taxe de Table des
+    alcools et des cigarettes, droits au kilo et minimums de la Taxe de Table,
+    ordre des lignes. Fiche
+    EGY_TVA_taxe_de_table_2026-10-14.json."""
+    instructions = {
+        str(x.get("hs_code")): x.get("official_instructions") or []
+        for x in donnees.get("sub_positions") or []
+    }
+    publiees = {str(x.get("hs_code")): x.get("taxes") or {} for x in donnees.get("sub_positions") or []}
+
+    def specifique(montant, unite, brut):
+        return {
+            "montant": float(montant),
+            "unite_monetaire": "unite_principale",
+            "sous_unite_source": None,
+            "unite_quantite": unite,
+            "brut": brut,
+        }
+
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        # Une ligne publiée deux fois (8481.80.90.90 : « ID 60 % » et « TVA 14 % »
+        # répétées) se lit en ID2/VAT2 ; la compter ferait payer le droit deux fois.
+        for double, principal in (("ID2", "DD"), ("VAT2", "TVA")):
+            d = next((x for x in droits if x.get("code") == double), None)
+            p = next((x for x in droits if x.get("code") == principal), None)
+            if d is not None and p is not None and d.get("taux") is not None and d.get("taux") == p.get("taux"):
+                _compter_ligne(d, compteurs, -1)
+                droits.remove(d)
+        if code.startswith("24"):
+            for d in droits:
+                if d.get("famille") == "tva" and d.get("taux") not in (None, 0.0, 14.0):
+                    d.update(
+                        code=TAXE_DE_TABLE_EGY,
+                        libelle="Taxe de Table (publiée sous « TVA »)",
+                        famille="autre",
+                        note=TABAC_TAXE_DE_TABLE_EGY,
+                    )
+        for d in droits:
+            if d.get("code") in REDEVANCES_EGY and d.get("taux") is not None and not d.get("assiette"):
+                _compter_ligne(d, compteurs, -1)
+                d.update(assiette="CIF", assiette_origine="decision", note=RESERVE_REDEVANCES_EGY)
+                _compter_ligne(d, compteurs, 1)
+        if not any(d.get("code") == TAXE_DE_TABLE_EGY for d in droits):
+            d = None
+            alcool = TAXE_DE_TABLE_ALCOOLS_EGY.get(code[:4])
+            if alcool and any(i.startswith(INSTRUCTION_ALCOOLS_EGY) for i in instructions.get(code, [])):
+                taux, minimum, item = alcool
+                brut = f"{taux:g} % (minimum {minimum:g} EGP/l)"
+                d = {
+                    "taux": taux,
+                    "assiette": "CIF+TOUS_SAUF_TVA",
+                    "assiette_origine": "texte_primaire",
+                    "specifique": {
+                        "montant": minimum,
+                        "unite_monetaire": "unite_principale",
+                        "sous_unite_source": None,
+                        "unite_quantite": "l",
+                        "brut": brut,
+                    },
+                    "compose": True,
+                    "regle_composee": "LE_PLUS_ELEVE",
+                    "expression_brute": brut,
+                    "note": RESERVE_ALCOOLS_EGY.format(item=item),
+                }
+            elif code.startswith("240220"):
+                d = {"assiette": None, "assiette_origine": None, "note": TAXE_DE_TABLE_CIGARETTES_EGY}
+            if d is not None:
+                d.update(
+                    code=TAXE_DE_TABLE_EGY,
+                    code_source="ضريبة الجدول",
+                    libelle="Taxe de Table",
+                    famille="autre",
+                    source="Loi n° 67/2016 (TVA), art. 36 et tableau annexé",
+                )
+                droits.append(d)
+                _compter_ligne(d, compteurs, 1)
+        taxes = publiees.get(code, {})
+        dd = next((x for x in droits if x.get("code") == "DD"), None)
+        brut = ((taxes.get("ID") or {}).get("raw") or "").strip()
+        m = DD_AU_KILO_EGY.match(brut)
+        if m and dd is not None and dd.get("taux") is None and not dd.get("specifique"):
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(
+                assiette="xQTE",
+                assiette_origine="droit_specifique",
+                specifique=specifique(m[1], "kg", brut),
+                expression_brute=brut,
+            )
+            _compter_ligne(dd, compteurs, 1)
+        # Le minimum publié sur sa propre ligne borne la Taxe de Table, il ne
+        # s'y ajoute pas : la plus élevée des deux est due (tableau, « القيمة
+        # (٢٠٠٪) بحد أدنى ٥٠ جنيهًا لكل كجم مصنع »).
+        tt = next((x for x in droits if x.get("code") == TAXE_DE_TABLE_EGY), None)
+        for minimum in [x for x in droits if x.get("code") in MINIMUMS_EGY]:
+            brut = ((taxes.get(minimum.get("code_source")) or {}).get("raw") or "").strip()
+            m = MINIMUM_EGY.match(brut)
+            if not m or minimum.get("taux") is not None or tt is None or tt.get("taux") is None or tt.get("specifique"):
+                continue
+            tt.update(
+                specifique=specifique(m[1], UNITES_EGY[m[2]], brut),
+                compose=True,
+                regle_composee="LE_PLUS_ELEVE",
+                expression_brute=f"{tt['taux']:g} % ; {brut}",
+            )
+            _compter_ligne(minimum, compteurs, -1)
+            droits.remove(minimum)
+        # La Taxe de Table et la TVA s'assoient sur les droits et taxes qui les
+        # précèdent : la Taxe de Table vient après les autres prélèvements, un
+        # minimum qui n'a pas pu lui être joint après elle, la TVA en dernier.
+        def rang(d):
+            if d.get("famille") == "tva":
+                return 3
+            if d.get("code") in MINIMUMS_EGY:
+                return 2
+            return 1 if d.get("code") == TAXE_DE_TABLE_EGY else 0
+
+        droits.sort(key=rang)
+
+
 def _tsp_tp_libye(positions, compteurs):
     """Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la
     « Production Tax » à 2 % du crawl (fiche LBY_TSP_TP_taux_2026-10-10.json).
@@ -2968,6 +3141,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
+    if iso == "EGY":
+        _egypte(positions, compteurs, donnees)
     if iso == "ETH":
         _droits_livre_ethiopie(positions, compteurs)
         _accise_ethiopie(positions, compteurs)
