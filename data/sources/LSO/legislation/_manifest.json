@@ -4,19 +4,20 @@
   "description": "Textes officiels Lesotho (RSL). Note : le serveur rsl.org.ls tronque les PDF > 5 Mo ; le Customs and Excise Act 1982 a été récupéré via copie archivée (l'original renvoie un fichier incomplet).",
   "documents": [
     {
-      "file": "legislation/LSO_CustomsExciseAct10-1982_copie-archivee.pdf",
-      "title": "Customs and Excise Act No. 10 of 1982 (Lesotho) — copie archivée (l'original rsl.org.ls est servi tronqué, téléchargements interrompus à 5 Mo) ; scan sans couche texte",
+      "file": "legislation/LSO_CustomsExciseAct10-1982_1982_copie-archivee.pdf",
+      "title": "Customs and Excise Act No. 10 of 1982 (Lesotho) — copie archivée complète (98/98 pages, %%EOF vérifié, s.124 Repeals en dernière page) ; l'original rsl.org.ls est servi tronqué (téléchargements coupés à 5 Mo) ; scan sans couche texte",
       "source_url": "https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf",
       "referencing_page": "https://www.rsl.org.ls/customs-excise-laws",
       "document_date": "1982",
       "effective_from": null,
       "is_draft": false,
-      "useful_pages": "dispositions douanes/transit",
+      "useful_pages": "p. 1-98 (dispositions douanes, transit, home use) ; transcription OCR jointe",
       "sha256": "45722bb12a3b9145cd14984791bdf63d3754cb778ca46b19e2c388f178c568d1",
       "archived_at": "2026-10-20T23:30:00+00:00",
       "verified_at": "2026-10-20T23:30:00+00:00",
       "scanne": true,
-      "archive_url": "http://web.archive.org/web/20260411184253/https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf"
+      "archive_url": "http://web.archive.org/web/20260411184253/https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf",
+      "note_original_tronque": "original RSL tronqué : https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf renvoie un fichier incomplet (coupé à 5 Mo) ; copie archivée utilisée"
     },
     {
       "file": "legislation/LSO_CEAmendmentAct3_1984.pdf",

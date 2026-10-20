@@ -1,3 +1,5 @@
+== transcription OCR non officielle — SACU_AccordMonetaryMultilateral_1992_copie-archivee.pdf (28 pages, ordre cma_01→cma_28)
+----- page cma_01_0.png
 MULTILATERAL MONETARY AGREEMENT
 
 BETWEEN THE
@@ -12,6 +14,7 @@ AND THE
 
 GOVERNMENT OF THE KINGDOM OF SWAZILAND
 
+----- page cma_02_1.png
 PREAMBLE
 
 The Government of the Kingdom of Lesotho, the Government of the Republic of
@@ -40,6 +43,7 @@ policy and the control of its financial institutions;
 
 Have agreed as follows:
 
+----- page cma_03_2.png
 ARTICLE 1
 
 DEFINITIONS
@@ -73,6 +77,7 @@ CMA regulatory bodies (to be defined)
 “exchange control provisions” means the exchange control laws, regulations
 and Exchange Control Rulings of the Contracting Parties;
 
+----- page cma_04_3.png
 “financial institutions’ means a bank other than the central banks of the
 Contracting Parties, building society, insurer, pension fund of any corporate
 body or institution which accepts money from the public and which on account
@@ -108,6 +113,7 @@ exchange or foreign exchange assets;
 
 “Rand currency” means the notes issued by the South African Reserve Bank
 and coin issued by the South African Mint Company (Pty) Ltd;
+----- page cma_05_4.png
 “South Africa” means the Republic of South Africa;
 
 “South African Reserve Bank’ means the central bank of South Africa
@@ -137,6 +143,7 @@ form of —
 Provided that any arrangements in respect of any national note and coin
 
 issues other than rand currency shall be subject to prior agreement
+----- page cma_06_5.png
 between the Government of South Africa and the issuing Government.
 Such agreements shall define the area in which the respective
 currencies shall constitute legal tender: Provided further that such notes
@@ -164,6 +171,7 @@ transfer of funds may be, is or has been to evade any such requirements
 prescribed or measures introduced by any other Contracting Party, it shall
 
 consult such other Contracting Party with a view to rectifying the matter.
+----- page cma_07_6.png
 ARTICLE 4
 
 ACCESS TO THE CMA GAPITAL AND MONEY MARKETS AND RELATED
@@ -195,6 +203,7 @@ shall in special circumstances cause the South African Reserve Bank to
 
 make available to such Government temporary central banking credit
 
+----- page cma_08_7.png
 10
 
 facilities in such forms and amounts and on such terms as may be
@@ -233,6 +242,7 @@ accruing to its residents, shall, subject to its exchange control provisions,
 
 be sold to an authorised dealer appointed by it.
 
+----- page cma_09_8.png
 11
 
 The CMA member states as well as the authorised dealers in the CMA
@@ -255,6 +265,7 @@ authorised in writing by the responsible authorities of the Contracting
 Parties pursuant to this Article, shall remain in full force and effect
 
 irrespective of such amendment.
+----- page cma_10_9.png
 12
 
 ARTICLE 6
@@ -292,6 +303,7 @@ upon it in terms of the relevant country legislation relating to financial
 stability of banks and non-bank financial institutions and/or any other law
 designed to promote the soundness and stability of the financial system
 by minimising systemic risks.
+----- page cma_11_10.png
 13
 
 For the purposes of subsection 3, the CMA regulatory bodies may
@@ -301,6 +313,7 @@ a) ensure financial stability as a condition in which an economy’s
 mechanisms for pricing, allocating, and managing risks (credit, liquidity,
 counterparty, market) function well enough to contribute to the
 performance of the economy.
+----- page cma_12_11.png
 (1)
 
 2)
@@ -343,6 +356,7 @@ clearing or settlement systems; and
 (b) participate in the integrated cross-border payment system
 
 infrastructure to effect cross border payments
+----- page cma_13_12.png
 1 (a)
 
 (b)
@@ -385,6 +399,7 @@ The amounts shall be annually increased or decreased, as the case may
 be, rounded to the nearest one hundred thousand Rand, in accordance
 
 with the following provisions —
+----- page cma_14_13.png
 (i)
 
 (ii)
@@ -429,6 +444,7 @@ compensatory payments in respect of any period subsequent to such
 date shall be subject to negotiation between the Government of South
 
 Africa and the other Government concerned.
+----- page cma_15_14.png
 17
 
 Should this Agreement terminate or a Contracting Party withdraw from
@@ -438,6 +454,7 @@ Contracting Party withdrawing in the case of withdrawal, to the date
 upon which such termination or withdrawal, as the case may be,
 becomes effective, and shall be payable by the government of South
 Africa pro rata to such date and within three months thereof.
+----- page cma_16_15.png
 18
 
 ARTICLE 9
@@ -472,6 +489,7 @@ Each Contracting Party shall be represented on the Commission by one
 representative and such advisers as it may appoint and decisions of the
 
 Commission shall be by consensus of the appointed representatives.
+----- page cma_17_16.png
 19
 
 (It is therefore suggested that each contracting party shall be
@@ -513,6 +531,7 @@ long as possible in advance of any change in its monetary or foreign
 exchange policies or in the administration thereof, including any
 
 amendments of the exchange control provisions which could affect the
+----- page cma_18_17.png
 3 (a)
 
 20
@@ -557,6 +576,7 @@ shall set forth the nature of the dispute, the nature of the relief sought
 
 and the name of the arbitrator appointed by such Contracting Party.
 
+----- page cma_19_18.png
 21
 
 (b) The other Party to the dispute shall within 30 days of such notice appoint
@@ -620,6 +640,7 @@ a casting vote in addition to a deliberative vote.
 The tribunal shall afford both Parties to the dispute a fair hearing and
 
 may render an award by default.
+----- page cma_20_19.png
 22
 
 (e) The deliberations of the tribunal shall remain secret, unless the Parties to
@@ -675,6 +696,7 @@ arbitration proceedings and the costs of the tribunal shall be borne by
 them in equal shares: Provided that in the event of disagreement
 
 between the Parties as to the amount or division or the procedures for
+----- page cma_21_20.png
 23
 
 the payment of any costs, the tribunal shall at the request of either Party
@@ -715,6 +737,7 @@ withdrawal, as the case may be, becomes effective, be without prejudice
 and subject to the performance of any rights or obligations already
 
 accrued or incurred in terms of this Agreement prior to such date.
+----- page cma_22_21.png
 24
 
 Upon termination of this Agreement or upon withdrawal from it, the
@@ -754,6 +777,7 @@ South Africa and another Contracting Party requesting an
 exchange in terms of sub-article (6);
 
 (d) in making any payments —
+----- page cma_23_22.png
 1
 
 25
@@ -790,6 +814,7 @@ following the date of dispatch thereof; and
 
 (c) if delivered by hand, at the time and date of such delivery.
 
+----- page cma_24_23.png
 26°
 
 The address of each Contracting Party shall, until otherwise designated
@@ -844,6 +869,7 @@ P O Box 443
 Mbabane
 
 Fax: 268 404 3187
+----- page cma_25_24.png
 27
 
 ARTICLE 12
@@ -870,6 +896,7 @@ For the Government of the Republic of Namibia ...................ccceeceseee eee
 
 For the Government of the Kingdom of Lesotho
 
+----- page cma_26_25.png
 28
 
 INSTRUMENT OF CONFIRMATION OF THE REPUBLIC OF NAMIBIA’S
@@ -906,6 +933,7 @@ Government of the Republic of South Africa and the Government of the
 
 Kingdom of Swaziland hereby confirm the accession of the Government of the
 
+----- page cma_27_26.png
 29
 
 Republic of Namibia to the Multilateral Monetary Agreement with effect from the
@@ -929,6 +957,7 @@ OF
 
 ON BEHALF OF THE GOVERNRMENT OF THE KINGDOM OF SWAZILAND
 
+----- page cma_28_27.png
 30
 
 INSTRUMENT OF ACCESSION
@@ -964,18 +993,4 @@ year 1992. :
 LIBERTINE AMATHILA
 ACTING MINISTER OF FOREIGN AFFARIS
 GOVERNMENT OF THE REPUBLIC OF NAMIBIA
-
-MULTILATERAL MONETARY AGREEMENT
-
-BETWEEN THE
-
-GOVERNMENT OF THE KINGDOM OF LESOTHO,
-
-THE GOVERNMENT OF THE REPUBLIC OF NAMIBIA,
-
-THE GOVERNMENT OF THE REPUBLIC OF SOUTH AFRICA
-
-AND THE
-
-GOVERNMENT OF THE KINGDOM OF SWAZILAND
 
