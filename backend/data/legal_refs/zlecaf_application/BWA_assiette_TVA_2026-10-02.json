@@ -1,16 +1,18 @@
 {
  "schema_version": 1,
  "objet": "Assiette de la TVA à l'importation — BWA",
- "verified_at": "2026-10-02",
- "evidence_level": "primaire — VAT Act 2001 (Act 1/2001, amendé jusqu'à 2006), s.13(1)(a), copie WIPO archivée ; le VAT Act 2026 (en vigueur au 01/07/2026) n'est pas lu",
+ "verified_at": "2026-10-20",
+ "evidence_level": "primaire — VAT Act 2026 (Act 15/2026), s.30(1), en vigueur au 01/07/2026 (Statutory Instrument No. 95 of 2026), texte BURS déposé sur la PR #654 ; même assiette que le VAT Act 2001 (Act 1/2001, amendé jusqu'à 2006), s.13(1)(a), copie WIPO archivée",
  "regle": {
   "valeur": "Assiette TVA = valeur transactionnelle + assurance et fret + droits de douane et d'accise (CIF + DD + EXS + EXA)",
   "verbatim": "the value of an import of goods is (a) in the case of goods required to be cleared under the Customs and Excise Duty Act, an amount equal to the sum of (i) the transaction value of the goods for customs duty purposes [...]; (ii) the cost of insurance and freight; and (iii) the amount of any duty levied under the said Act in respect of the importation of such goods",
   "portee": "Assiette de la TVA à l'importation servie par les deux chemins de calcul (table nationale du socle et profil du chemin historique).",
   "texte_extrait": "sources/BWA_vat_act_2001_s13_valeur_importation.texte-extrait.txt",
-  "sha256": "7677fd1366e308b31ff4419eebc6f6e813dd5453a4d4a79d73416f0c4d012a0b"
+  "sha256": "b3f53f6b33227202db92501ff619257453c046e35d9b922838dbd64f1f247588",
+  "verbatim_vat_act_2026_s30": "the value of an import of goods shall be the total of the following amounts — (a) the value of the goods for duty purposes under the customs legislation, whether or not any duty is payable on the import; (b) to the extent not included under paragraph (a) — (i) the cost of insurance and freight incurred in bringing the goods to Botswana, and (ii) the cost of services treated as part of the import of the goods under section 22 (3); and (c) the amount of any duty and other fiscal charge, other than VAT, and any fee or other charge payable in respect of the import.",
+  "verbatim_si_95_2026": "2. The Value Added Tax Act shall come into operation on 1st July, 2026."
  },
  "ce_que_cela_ne_tranche_pas": [
-  "Le VAT Act 2026 (PDF scanné) : la reconduction de cette assiette n'est pas vérifiée."
+  "Services de la s.22(3) compris dans l'import (s.30(1)(b)(ii)) et frais « fee or other charge » de la s.30(1)(c) : non connus du calcul."
  ]
 }
