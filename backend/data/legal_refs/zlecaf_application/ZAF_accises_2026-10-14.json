@@ -29,7 +29,7 @@
   "ce_que_cela_ne_tranche_pas": [
     "Texte officiel de la s.65(8)(a) : lu dans la copie consolidée de VERTIC, qui reproduit la rédaction de la loi n° 52 de 1986 ; une proposition de loi a envisagé de supprimer le mot « non-rebated » (sans effet sur le calcul, le droit de douane servi n'étant pas remis). À confirmer sur la consolidation officielle (lecteur Lexis de SARS).",
     "Part 2B : version en ligne du 2025-04-01, aucune version 2026 publiée au 2026-10-14 (vérifié sur la PR #648).",
-    "Prélèvements des Parts 3 (environnement : sacs, ampoules, CO₂ des véhicules, pneus), 5A (taxe sur les carburants), 5B (Road Accident Fund) et 7 (Health Promotion Levy) : déposés sur la PR #648, non encore servis ; ils entrent eux aussi dans l'assiette de la TVA.",
+    "Prélèvements des Parts 3 (environnement), 5A (taxe sur les carburants), 5B (Road Accident Fund) et 7 (Health Promotion Levy) : servis par la fiche ZAF_prelevements_2026-10-14.json ; ils entrent aussi dans l'assiette de la TVA.",
     "Droits anti-dumping et compensateurs (Schedule No. 2) : non servis.",
     "Remises et ristournes (Schedules No. 3 à 6) : non appliquées."
   ],

@@ -107,6 +107,13 @@ FAMILLES = {
     "EXC": "accise",
     "EXS": "accise",  # accise spécifique, Schedule 1 Part 2A (ZA)
     "EXA": "accise",  # accise ad valorem, Schedule 1 Part 2B (ZA)
+    "EVB": "accise",  # prélèvement environnemental, sacs plastiques, Part 3A (ZA)
+    "EVL": "accise",  # prélèvement environnemental, lampes à filament, Part 3C (ZA)
+    "EVC": "accise",  # prélèvement environnemental, CO2 des véhicules, Part 3D (ZA)
+    "EVT": "accise",  # prélèvement environnemental, pneus, Part 3E (ZA)
+    "FLV": "accise",  # taxe sur les carburants, Part 5A (ZA)
+    "RAF": "accise",  # Road Accident Fund levy, Part 5B (ZA)
+    "HPL": "accise",  # Health Promotion Levy, boissons sucrées, Part 7A (ZA)
     "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
@@ -1931,6 +1938,82 @@ def _accises_zaf(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Prélèvements du tarif sud-africain (Schedule 1 Parts 3A, 3C, 3D, 3E, 5A, 5B
+#: et 7A), lus par scripts/extraire_prelevements_zaf.py. Fiche
+#: ZAF_prelevements_2026-10-14.json.
+PRELEVEMENTS_ZAF = os.path.join(REPO, "data", "zaf", "prelevements_sch1_parts3_5_7.json")
+CODES_PRELEVEMENTS_ZAF = {
+    "3A": ("EVB", "Environmental levy (plastic bags)"),
+    "3C": ("EVL", "Environmental levy (electric filament lamps)"),
+    "3D": ("EVC", "Environmental levy (CO2 emissions of motor vehicles)"),
+    "3E": ("EVT", "Environmental levy (tyres)"),
+    "5A": ("FLV", "Fuel levy"),
+    "5B": ("RAF", "Road Accident Fund levy"),
+    "7A": ("HPL", "Health promotion levy (sugary beverages)"),
+}
+#: Part 7A, note 5 (b) : sans rapport d'essai, une boisson sucrée est réputée
+#: contenir 20 g de sucre pour 100 ml.
+SUCRE_REPUTE_ZAF = 20
+UNITES_PRELEVEMENT_ZAF = {"li": "li", "bag": "sac", "kg": "kg", "lamp": "lampe"}
+
+
+def _prelevements_zaf(positions, compteurs):
+    """Afrique du Sud : prélèvements environnementaux, taxe sur les carburants,
+    Road Accident Fund levy et Health Promotion Levy, dus à l'importation en
+    plus des droits des Parts 1 et 2."""
+    with open(PRELEVEMENTS_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for article in articles:
+        code_ligne, libelle = CODES_PRELEVEMENTS_ZAF[article["partie"]]
+        prefixe = article["sous_position"].replace(".", "")
+        source = (f"Customs and Excise Act 1964, Schedule No. 1 Part {article['partie']}, "
+                  f"article {article['article']} ({article['sous_position']})")
+        for code, position in positions.items():
+            if not code.startswith(prefixe):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": None,
+                     "assiette_origine": None, "source": source, "note": article["brut"]}
+            montant, unite = article.get("montant"), article.get("unite")
+            if article["partie"] == "3E" and not prefixe.startswith("40"):
+                # Pneus montés sur un véhicule ou une roue : le prélèvement porte sur
+                # la masse nette des pneus (note 3), qui n'est pas une donnée du calcul.
+                montant = None
+                ligne["note"] = (f"{article['brut']} sur la masse nette des pneus montés (Part 3E, note 3) ; "
+                                 "masse des pneus non connue du calcul, prélèvement non liquidé.")
+            elif article.get("par_g_km_co2"):
+                ligne["note"] = (f"{article['brut']} : émissions de CO2 du rapport d'essai ou, à défaut, "
+                                 "de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement "
+                                 "non liquidé.")
+            elif article.get("par_gramme_de_sucre"):
+                if prefixe.startswith("2202"):
+                    # Boisson prête à boire : teneur réputée de la note 5 (b), par litre.
+                    montant = round((SUCRE_REPUTE_ZAF - article["seuil_g_100ml"])
+                                    * article["par_gramme_de_sucre"] * 10, 6)
+                    unite = "li"
+                    ligne["note"] = (f"{article['brut']} ; teneur réputée de 20 g/100 ml faute de rapport "
+                                     "d'essai (Part 7A, note 5 (b)) : 16 g × 2,21 c par 100 ml, soit "
+                                     f"{montant:g} R par litre. Un rapport d'essai accrédité peut la réduire.")
+                else:
+                    ligne["note"] = (f"{article['brut']} : préparation à diluer, teneur calculée sur la "
+                                     "boisson reconstituée (Part 7A, note 6) ; volume non connu du calcul, "
+                                     "prélèvement non liquidé.")
+            if article.get("taux") is not None:
+                ligne["taux"], ligne["assiette"], ligne["assiette_origine"] = article["taux"], "FOB", "regle_de_pays"
+            elif montant is not None:
+                ligne["specifique"] = {
+                    "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                    "unite_quantite": UNITES_PRELEVEMENT_ZAF[unite], "brut": article["brut"],
+                }
+                ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 def _compter_ligne(d, compteurs, signe):
     if d.get("taux") is None and not d.get("specifique"):
         compteurs["taux_indisponibles"] += signe
@@ -3054,6 +3137,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso == "ZAF":
         _accises_zaf(positions, compteurs)
+        _prelevements_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
