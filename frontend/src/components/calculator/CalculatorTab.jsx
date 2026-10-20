@@ -528,13 +528,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       } catch (subPosError) {
         setSubPositions(null);
       }
-      // LES FORMALITÉS. Le socle porte des MONTANTS, pas les formalités
-      // administratives : elles sont demandées ici, en annexe, comme les
-      // sous-positions. Un manque y reste silencieux, parce qu'une formalité
-      // absente n'est pas un montant faux.
+      // LES FORMALITÉS, lues au socle comme les sous-positions. Un manque y
+      // reste silencieux, parce qu'une formalité absente n'est pas un montant
+      // faux.
       try {
         const formalitesResponse = await axios.get(
-          `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
+          `${API}/consultation/${destISO3}/formalites/${cleanHsCode}`
         );
         const formalites = formalitesResponse.data?.formalities || [];
         // Le STATUT accompagne la liste, et il est transmis même quand elle
@@ -1905,9 +1904,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             {form.code}
                           </Badge>
                           <div className="flex-1 min-w-0">
-                            <p className="text-[var(--text)] text-sm">
+                            {/* Égypte : le texte officiel est l'arabe ; la
+                                traduction, reprise d'un autre fichier, se dit
+                                non officielle. */}
+                            {form.traduction_non_officielle && (
+                              <p dir="auto" className="text-[var(--text)] text-sm">{form.texte}</p>
+                            )}
+                            <p className={form.traduction_non_officielle ? 'text-[var(--afcfta-muted)] text-xs mt-1' : 'text-[var(--text)] text-sm'}>
                               {language === 'fr' ? (form.document_fr || form.document_en) : (form.document_en || form.document_fr)}
+                              {form.traduction_non_officielle && (
+                                <span className="italic">
+                                  {language === 'fr' ? ' — traduction non officielle' : ' — unofficial translation'}
+                                </span>
+                              )}
                             </p>
+                            {form.base_legale && (
+                              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{form.base_legale}</p>
+                            )}
                             {(form.authority_fr || form.authority_en) && (
                               <p className="text-[var(--afcfta-muted)] text-xs mt-1">
                                 {language === 'fr' ? form.authority_fr : form.authority_en}

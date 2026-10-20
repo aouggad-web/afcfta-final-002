@@ -11,6 +11,14 @@ from fastapi import APIRouter, HTTPException
 
 from services import socle
 from services.designation import texte_designation
+from services.formalites import (
+    FORMALITES_AUCUNE_PARTICULIERE,
+    FORMALITES_DOCUMENTEES,
+    FORMALITES_NON_ETABLIES,
+    FORMALITES_POSITION_INTROUVABLE,
+    RESERVES_FORMALITES,
+    SOURCES_EXHAUSTIVES_FORMALITES,
+)
 
 router = APIRouter(prefix="/consultation")
 
@@ -60,5 +68,43 @@ def sous_positions(iso3: str, hs6: str):
         "hs6": socle.normaliser_code(hs6)[:6],
         "total": len(lignes),
         "sub_positions": lignes,
+        "source": "socle",
+    }
+
+
+@router.get(
+    "/{iso3}/formalites/{code}",
+    summary="Formalités administratives de la position, lues au socle",
+)
+def formalites(iso3: str, code: str):
+    """LE STATUT ACCOMPAGNE TOUJOURS LA LISTE. Une liste vide ne dit pas
+    pourquoi elle l'est : la source peut n'avoir rien publié (non établies),
+    ou dire qu'il n'y a rien à présenter (aucune formalité particulière)."""
+    iso3 = iso3.upper()
+    try:
+        position, provenance = socle.position(iso3, code)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except socle.SocleIndisponible as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except KeyError:
+        position, provenance = None, {}
+
+    liste = (position or {}).get("formalites") or []
+    if position is None:
+        statut = FORMALITES_POSITION_INTROUVABLE
+    elif liste:
+        statut = FORMALITES_DOCUMENTEES
+    elif position.get("formalites_aucune") or iso3 in SOURCES_EXHAUSTIVES_FORMALITES:
+        statut = FORMALITES_AUCUNE_PARTICULIERE
+    else:
+        statut = FORMALITES_NON_ETABLIES
+    return {
+        "success": True,
+        "country_iso3": iso3,
+        "hs_code": provenance.get("code_demande", code),
+        "formalities": liste,
+        "statut": statut,
+        "reserve": RESERVES_FORMALITES.get(statut),
         "source": "socle",
     }

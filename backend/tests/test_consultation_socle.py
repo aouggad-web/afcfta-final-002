@@ -1,5 +1,6 @@
 """Consultation du tarif par le socle : les sous-positions proposées à l'écran
-sont celles que POST /calcul sait liquider."""
+sont celles que POST /calcul sait liquider, et les formalités sont celles que
+la source publie pour la position."""
 
 import importlib.util
 import os
@@ -14,7 +15,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "EGY")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "EGY", "DZA", "MAR", "KEN")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -65,3 +66,39 @@ def test_memes_positions_que_le_calcul_en_reclame(client):
 def test_pays_hors_socle_et_code_invalide(client):
     assert client.get("/consultation/XXX/sous-positions/010121").status_code == 503
     assert client.get("/consultation/EGY/sous-positions/12").status_code == 422
+
+
+def _formalites(client, iso, code):
+    reponse = client.get(f"/consultation/{iso}/formalites/{code}")
+    assert reponse.status_code == 200
+    return reponse.json()
+
+
+def test_algerie_la_fiche_dgd_de_la_position(client):
+    corps = _formalites(client, "DZA", "0101.21.11.00")
+    assert corps["statut"] == "DOCUMENTEES" and corps["reserve"] is None
+    assert [f["code"] for f in corps["formalities"]] == ["160", "180"]
+    # Source exhaustive : une fiche sans tableau est un constat, pas une lacune.
+    corps = _formalites(client, "DZA", "1520002000")
+    assert corps["statut"] == "AUCUNE_FORMALITE_PARTICULIERE" and corps["formalities"] == []
+
+
+def test_egypte_l_arabe_officiel_et_la_traduction_signalee(client):
+    formalite = _formalites(client, "EGY", "0101210000")["formalities"][0]
+    assert formalite["texte"].startswith(formalite["code"])
+    assert formalite["traduction_non_officielle"] is True
+    assert formalite["document_fr"] != formalite["texte"]
+
+
+def test_maroc_le_constat_n_est_que_celui_de_la_source(client):
+    """« Aucun document à présenter » est publié par l'ADIL pour la position ;
+    une position sans mention reste « non établies »."""
+    assert _formalites(client, "MAR", "0902100000")["statut"] == "AUCUNE_FORMALITE_PARTICULIERE"
+    corps = _formalites(client, "MAR", "0201100011")
+    assert corps["statut"] == "NON_ETABLIES" and "absence d'obligation" in corps["reserve"]
+
+
+def test_sans_source_et_position_introuvable(client):
+    assert _formalites(client, "KEN", "01012900")["statut"] == "NON_ETABLIES"
+    corps = _formalites(client, "MAR", "9999999999")
+    assert corps["statut"] == "POSITION_INTROUVABLE" and corps["reserve"]

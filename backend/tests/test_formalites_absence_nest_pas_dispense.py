@@ -99,7 +99,7 @@ def test_la_route_porte_le_statut_et_la_reserve():
     from server import app
 
     client = TestClient(app)
-    reponse = client.get("/api/authentic-tariffs/country/KEN/formalities/01012900")
+    reponse = client.get("/api/consultation/KEN/formalites/01012900")
     if reponse.status_code == 404:
         pytest.skip("le Kenya n'est pas servi par ce chemin dans cet environnement")
     corps = reponse.json()
@@ -115,7 +115,7 @@ def test_une_position_servie_ne_porte_aucune_reserve():
     from server import app
 
     client = TestClient(app)
-    reponse = client.get("/api/authentic-tariffs/country/MAR/formalities/0101210000")
+    reponse = client.get("/api/consultation/MAR/formalites/0101210000")
     if reponse.status_code == 404:
         pytest.skip("le Maroc n'est pas servi par ce chemin dans cet environnement")
     corps = reponse.json()
