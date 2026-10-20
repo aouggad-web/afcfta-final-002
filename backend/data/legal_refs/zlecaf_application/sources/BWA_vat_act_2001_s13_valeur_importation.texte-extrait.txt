@@ -12,7 +12,9 @@ for customs duty purposes in terms of section 75 of the Customs and Excise Duty 
 of insurance and freight; and (iii) the amount of any duty levied under the said Act in respect of
 the importation of such goods »
 
-LECTURE : assiette TVA = valeur transactionnelle + assurance et fret + droits = CIF + DD.
+LECTURE : assiette TVA = valeur transactionnelle + assurance et fret + droits perçus en vertu du
+Customs and Excise Duty Act, droits de douane et d'accise = CIF + DD + EXS + EXA (accises servies
+depuis le 20/10/2026, fiche SACU_accises_BLNE_2026-10-20.json).
 RÉSERVE : la fiche BWA_taux_TVA_2026-09-18.json fait état d'un VAT Act 2026 en vigueur au
 01/07/2026, archivé seulement en PDF scanné illisible : la reconduction de cette assiette par le
 texte de 2026 n'est pas vérifiée.

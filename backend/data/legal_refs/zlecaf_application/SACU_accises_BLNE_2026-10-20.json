@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "objet": "Botswana, Lesotho, Namibie, Eswatini : accises à l'importation aux taux communs de la SACU (tarif sud-africain, Schedule No. 1 Part 2A et 2B), valeur de l'accise ad valorem selon chaque loi nationale",
+  "destination_iso3": ["BWA", "LSO", "NAM", "SWZ"],
+  "verified_at": "2026-10-20",
+  "etabli": true,
+  "evidence_level": "primaire pour la règle des taux communs (accord SACU 2002 amendé, copie sacu.int) et pour les règles de valeur (lois nationales déposées sur la PR #654) ; aucun tarif d'accise national en vigueur n'a été obtenu pour les quatre pays, les taux servis sont ceux du tarif sud-africain",
+  "source": {
+    "url": "https://www.sacu.int/uploads/documents/6a7ae39b41cba945b083e93a2e1a103d7cee629c.pdf",
+    "institution": "Southern African Customs Union"
+  },
+  "regle": {
+    "valeur": "Accise spécifique (EXS) et ad valorem (EXA) du tarif sud-africain servies sur les positions de BWA, LSO, NAM et SWZ, aux mêmes taux et dans les mêmes unités que pour l'Afrique du Sud (fiche ZAF_accises_2026-10-14.json), en rands. Valeur de l'EXA : NAM et SWZ, FOBx1.15+DD+EXS ; LSO, FOBx1.15+DD ; BWA, prix de gros sur le marché botswanais, inconnu du calcul : EXA non liquidée, total incomplet. TVA du Botswana : CIF+DD+EXS+EXA (VAT Act 2001, s.13(1)(a)(iii), « any duty levied under the said Act », droits de douane et d'accise). LSO et SWZ : accises déjà comprises dans FOB+TOUS_SAUF_TVA ; NAM : FOBx1.10, sans les droits.",
+    "verbatim": "The Ministers responsible for Finance in all Member States shall meet and agree on the rates of specific excise and ad valorem excise duties and specific customs and ad valorem customs duties to be applied to goods grown, produced or manufactured in or imported into the Common customs Area.",
+    "verbatim_art22": "Except as otherwise provided in this Agreement Member States shall apply similar legislation with regard to customs and excise duties.",
+    "verbatim_swz_part2a": "In terms of section 48 of the Customs and Excise Act, 1964, Part 2A of Schedule No. 1 to the said Act is hereby amended, with effect from 1 January 2022, to the extent set out in the Schedule hereto. DR DAVID MASONDO DEPUTY MINISTER OF FINANCE",
+    "verbatim_bwa_unite_de_compte": "\"unit of account\" means a monetary sum equal to a unit of the currency in circulation in the remainder of the common customs area;",
+    "verbatim_bwa_s69": "For the purpose of assessing the duty on any goods manufactured in or outside Botswana and specified in Section B of Part 2 of Schedule No. 1, the excise value thereof shall, subject to the provisions of this section, be taken to be the full and final market price [...] to any merchant wholesaler in Botswana [...] plus any non-rebated duty payable in terms of Section A of Part 2 of Schedule No. 1 on such goods",
+    "verbatim_nam_s75_9_a": "the value for the purposes of the duty specified in Section B of Part 2 of Schedule 1 shall, in respect of imported goods [...], be the transaction value thereof plus 15 per cent of such value, plus any non-rebated customs duty payable in terms of Part 1 and Section A of Part 2 of Schedule 1 on such goods, but excluding the duty on such goods specified in that Section B.",
+    "verbatim_swz_s65_7_a": "the value for purposes of the duty specified in Section B of Part 2 of Schedule No. 1 shall, in respect of imported goods [...], be the transaction value thereof plus fifteen percent of such value, plus any non-rebated customs duty payable in terms of Part 1 and Section A of Part 2 of Schedule No. 1 on such goods, but excluding the duty specified in Section B of Part 2 of Schedule No. 1 on such goods.",
+    "verbatim_lso_s67_6_a": "the value for fiscal and Customs duty purposes of any imported goods specified in section B of Part 2 of Schedule No. 1 [...] shall be the normal price thereof plus 15 per cent of such price, plus any non-rebated fiscal and Customs duty payable in terms of part I of Schedule No. 1 on such goods, but excluding the fiscal and Customs duty specified in the said Section B of part 2 of Schedule No. 1 on such goods.",
+    "reference": "Accord SACU 2002 (amendé le 12/04/2013), art. 21.1 (p. 19) et 22 (p. 20) ; ERS, Schedule No. 1 Part 2A (avis SARS, effet 01/01/2022) ; Excise Duty Act 2018 (Botswana), s.2 et s.69(1) ; Customs and Excise Act 20/1998 (Namibie), s.75(9)(a) ; Customs and Excise Act 1971 (Eswatini), s.65(7)(a) ; Customs and Excise Act 10/1982 (Lesotho), s.67(6)(a)",
+    "portee": "scripts/build_socle.py, _accises_zaf(positions, compteurs, iso) et ASSIETTE_EXA_SACU : les 287 lignes d'accise de l'Afrique du Sud sur les positions de BWA, LSO, NAM et SWZ ; backend/socle/tva_nationale.json porte l'assiette de la TVA du Botswana.",
+    "texte_archive": "sources/SACU_accises_BLNE.extrait.txt",
+    "sha256": "16f7eb1fa4cddceb23b29116eeca14234bed4936b40e9d9fd209a2cda551a908"
+  },
+  "decisions": [
+    "Taux : ceux du tarif sud-africain de 2026, choisis comme taux communs (art. 21.1). Aucun tarif national en vigueur n'a été obtenu : le Lesotho et la Namibie n'en publient pas, l'Eswatini publie les avis sud-africains, le barème du Botswana (Excise Duty Act 2018) est celui de 2018.",
+    "Monnaie : les montants spécifiques sont ceux du tarif sud-africain, en rands. Le Botswana libelle les siens en unités de compte égales au rand (s.2) : devise ZAR, une valeur en pula exige un taux de change. LSO, NAM et SWZ : montants lus dans la monnaie nationale, au pair du rand (backend/socle/devises_pays.json, inchangé).",
+    "Botswana : la valeur de l'accise ad valorem est un prix de gros sur le marché botswanais (s.69(1), biens fabriqués au Botswana ou hors du Botswana) ; elle n'est pas déduite de la valeur déclarée, l'accise est déclarée sans assiette et le total incomplet.",
+    "Lesotho : la s.67(6)(a) de 1982 n'ajoute que les droits de la Part 1 ; ses modifications postérieures n'ont pas été obtenues.",
+    "Comme pour l'Afrique du Sud, l'accise n'est pas réduite par une préférence tarifaire ; une marchandise déjà dédouanée dans un autre État de la SACU relève de l'art. 19 (PR #651)."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taux nationaux propres : un écart avec le tarif sud-africain (arrêtés de modification du barème du Botswana depuis 2018, tarif en ligne de la Namibie) n'est pas connu.",
+    "Marchandise fabriquée dans un autre État de la SACU : l'accise a pu être perçue à la fabrication ; le calcul la sert à destination, comme il le fait déjà pour l'Afrique du Sud.",
+    "Prélèvements nationaux (carburants, alcool et tabac, environnement) des quatre pays : taux 2026 non obtenus, non servis.",
+    "Loi douanière du Lesotho : copie archivée d'un scan, lue par OCR."
+  ]
+}

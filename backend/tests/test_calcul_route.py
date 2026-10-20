@@ -850,7 +850,7 @@ def test_sans_pays_d_expedition_la_tva_d_une_origine_sacu_reste_indisponible(cli
 @besoin_socle
 @pytest.mark.parametrize(
     "pays, taux, assiette",
-    [("LSO", 15.0, "FOB+TOUS_SAUF_TVA"), ("SWZ", 15.0, "FOB+TOUS_SAUF_TVA"), ("BWA", 14.0, "CIF+DD")],
+    [("LSO", 15.0, "FOB+TOUS_SAUF_TVA"), ("SWZ", 15.0, "FOB+TOUS_SAUF_TVA"), ("BWA", 14.0, "CIF+DD+EXS+EXA")],
 )
 def test_la_tva_des_autres_pays_sacu_est_completee_avec_sa_fiche(client, pays, taux, assiette):
     corps = client.post(
