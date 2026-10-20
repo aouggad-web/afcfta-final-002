@@ -98,6 +98,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
+  // Nombre de positions nationales servies sous le SH6 saisi, et pour quel pays.
+  const [positionsSh6, setPositionsSh6] = useState(null);
   const [selectedSubPositionFormalities, setSelectedSubPositionFormalities] = useState(null);
   // Repli en mode saisie directe (hors recherche intelligente) : celle-ci ne
   // remplit jamais selectedSubPositionDesc, donc sans ce hook le code SH
@@ -203,6 +205,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       potentialSavings: "Économie potentielle",
       calculationError: "Erreur de calcul",
       calculating: "Calcul en cours...",
+      choosePosition: "Choisissez une position nationale",
       detailedResults: "Résultats Détaillés",
       completeComparison: "Comparaison Complète: Valeur + DD + TVA + Autres Taxes",
       merchandiseValue: "Valeur marchandise",
@@ -283,6 +286,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       potentialSavings: "Potential Savings",
       calculationError: "Calculation Error",
       calculating: "Calculating...",
+      choosePosition: "Choose a national position",
       detailedResults: "Detailed Results",
       completeComparison: "Complete Comparison: Value + Duties + VAT + Other Taxes",
       merchandiseValue: "Merchandise Value",
@@ -340,6 +344,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
   const hsCodeDigits = hsCode.replace(/\D/g, '');
   const isHs6Only = hsCodeDigits.length === 6;
+  // Plusieurs positions nationales sous le SH6 saisi : le calcul attend que
+  // l'opérateur choisisse la sienne. Le compte vaut pour le pays et le SH6
+  // pour lesquels la liste a été chargée, et pour eux seuls.
+  const positionRequise = isHs6Only
+    && positionsSh6?.cle === `${destinationCountry}|${hsCodeDigits}`
+    && positionsSh6.total > 1;
 
   const getSectorName = (hsCode) => {
     const sector = hsCode.substring(0, 2);
@@ -1027,6 +1037,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 setHsCode(code);
                 setSelectedSubPositionDesc(description);
               }}
+              onPositionsLoaded={({ countryCode, hs6, total }) => setPositionsSh6({ cle: `${countryCode}|${hs6}`, total })}
             />
           )}
 
@@ -1052,7 +1063,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
               onClick={() => calculateTariff()}
-              disabled={loading}
+              disabled={loading || positionRequise}
               data-testid="calculate-tariff-button"
               className="flex-1 h-14 text-lg font-bold bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6] shadow-lg hover:shadow-xl transition-all"
             >
@@ -1060,6 +1071,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <>
                   <div className="w-5 h-5 border-2 border-[var(--overlay-border)] border-t-white rounded-full animate-spin mr-2"></div>
                   {t.calculating}
+                </>
+              ) : positionRequise ? (
+                <>
+                  <Calculator className="w-5 h-5 mr-2" />
+                  {t.choosePosition}
                 </>
               ) : (
                 <>

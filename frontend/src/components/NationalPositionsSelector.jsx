@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -19,6 +19,7 @@ export default function NationalPositionsSelector({
   cifValue,
   language = 'fr',
   onPositionSelect,
+  onPositionsLoaded,
   selectedPosition
 }) {
   const [positions, setPositions] = useState([]);
@@ -73,6 +74,10 @@ export default function NationalPositionsSelector({
   };
 
   const t = texts[language] || texts.fr;
+  // Tenu dans une référence : une fonction recréée à chaque rendu du parent
+  // relancerait sinon le chargement.
+  const signalerChargement = useRef(onPositionsLoaded);
+  signalerChargement.current = onPositionsLoaded;
 
   const toggleDescription = (idx) => {
     setExpandedDescriptions(prev => ({
@@ -95,11 +100,14 @@ export default function NationalPositionsSelector({
       const response = await axios.get(
         `${API}/consultation/${countryCode}/sous-positions/${hs6Code.substring(0, 6)}`
       );
-      setPositions(response.data.sub_positions || []);
+      const servies = response.data.sub_positions || [];
+      setPositions(servies);
+      signalerChargement.current?.({ countryCode, hs6: hs6Code.substring(0, 6), total: servies.length });
     } catch (err) {
       console.error('Error fetching positions:', err);
       setError(t.loadError);
       setPositions([]);
+      signalerChargement.current?.({ countryCode, hs6: hs6Code.substring(0, 6), total: 0 });
     } finally {
       setLoading(false);
     }
