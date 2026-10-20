@@ -2073,6 +2073,20 @@ RESERVE_REDEVANCES_EGY = (
     "Publiée en % par la douane, sans assiette, et aucun texte lu ne la fixe : liquidée sur la valeur en "
     "douane, sur décision, sous réserve."
 )
+#: Taxe de Table que la douane impose par instruction, sans la publier parmi les
+#: taxes de la position (2404). Tabac chauffé : ر7058, « 1800 جنيه على الكيلو
+#: جرام صافى ». Liquide des cigarettes électroniques : ر7059, ر7061, ر7062 et
+#: ر7067, chacune « 4 جنيه لكل مليليتر سائل », les trois dernières « en plus »
+#: des précédentes — cumul ou répétition, les instructions ne le disent pas.
+INSTRUCTION_TABAC_CHAUFFE_EGY = "ر7058"
+TABAC_CHAUFFE_EGY = re.compile(r"بواقع ([\d.]+) جنيه على الكيلو جرام صافى")
+INSTRUCTIONS_LIQUIDE_EGY = ("ر7059", "ر7061", "ر7062", "ر7067")
+SOURCE_INSTRUCTIONS_EGY = "customs.gov.eg — instructions de la position (Autorité égyptienne des douanes)"
+TAXE_DE_TABLE_LIQUIDE_EGY = (
+    "Instructions {codes} de la douane : Taxe de Table de 4 EGP par millilitre de liquide, chacune « en plus » "
+    "des précédentes. Cumul (16 EGP/ml) ou répétition (4 EGP/ml) : les instructions ne le tranchent pas — "
+    "Taxe de Table non liquidée."
+)
 TAXE_DE_TABLE_CIGARETTES_EGY = (
     "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
     "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
@@ -2148,13 +2162,33 @@ def _egypte(positions, compteurs, donnees):
                 }
             elif code.startswith("240220"):
                 d = {"assiette": None, "assiette_origine": None, "note": TAXE_DE_TABLE_CIGARETTES_EGY}
+            consignes = [i for i in instructions.get(code, []) if i[:5] == INSTRUCTION_TABAC_CHAUFFE_EGY]
+            liquide = [i[:5] for i in instructions.get(code, []) if i[:5] in INSTRUCTIONS_LIQUIDE_EGY]
+            m = TABAC_CHAUFFE_EGY.search(consignes[0]) if consignes else None
+            if d is None and m:
+                brut = consignes[0]
+                d = {
+                    "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique",
+                    "specifique": specifique(m[1], "kg", brut),
+                    "expression_brute": brut,
+                    "note": f"Instruction {INSTRUCTION_TABAC_CHAUFFE_EGY} de la douane : {m[1]} EGP par kilo net.",
+                    "source": SOURCE_INSTRUCTIONS_EGY,
+                }
+            elif d is None and liquide:
+                d = {
+                    "assiette": None,
+                    "assiette_origine": None,
+                    "note": TAXE_DE_TABLE_LIQUIDE_EGY.format(codes=", ".join(liquide)),
+                    "source": SOURCE_INSTRUCTIONS_EGY,
+                }
             if d is not None:
+                d.setdefault("source", "Loi n° 67/2016 (TVA), art. 36 et tableau annexé")
                 d.update(
                     code=TAXE_DE_TABLE_EGY,
                     code_source="ضريبة الجدول",
                     libelle="Taxe de Table",
                     famille="autre",
-                    source="Loi n° 67/2016 (TVA), art. 36 et tableau annexé",
                 )
                 droits.append(d)
                 _compter_ligne(d, compteurs, 1)

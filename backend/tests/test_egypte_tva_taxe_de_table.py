@@ -134,3 +134,21 @@ def test_minimum_au_litre_de_2106_90_20():
     assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(150_000.0)
     assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 30_000 + 150_000))
     assert "ضريبةالجدول2" not in lignes
+
+
+def test_tabac_chauffe_taxe_de_table_de_l_instruction():
+    """2404.11 : instruction ر7058, 1 800 EGP par kilo net ; 2 kg pour 1 000 EGP :
+    DD 20 %, assurance santé 10 %, Taxe de Table 3 600, TVA 14 % sur le tout."""
+    etat, lignes = _calcul("2404110000", quantite=2)
+    assert etat == "COMPLET"
+    assert lignes[TAXE_DE_TABLE]["montant"] == pytest.approx(3600.0)
+    assert lignes["TVA"]["montant"] == pytest.approx(0.14 * (1000 + 200 + 100 + 3600))
+
+
+def test_liquide_de_cigarette_electronique_n_est_pas_complet():
+    """2404.12.00.10 : quatre instructions de 4 EGP/ml, cumul non tranché — la
+    Taxe de Table est déclarée, sans taux, et le total n'est pas complet."""
+    etat, lignes = _calcul("2404120010", quantite=1)
+    assert etat == "PARTIEL"
+    assert lignes[TAXE_DE_TABLE]["montant"] is None
+    assert "ر7067" in lignes[TAXE_DE_TABLE]["note"]

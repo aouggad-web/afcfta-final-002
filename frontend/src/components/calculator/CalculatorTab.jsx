@@ -604,6 +604,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       setResult(null);
       setShowDetailedBreakdown(false);
       const detail = error.response?.data?.detail;
+      // Un SH6 sous lequel le tarif publie plusieurs positions nationales :
+      // le calcul ne choisit pas à la place de l'opérateur. Ce n'est pas une
+      // panne — la position se choisit dans « Positions Tarifaires
+      // Nationales », affiché sous le code SH6.
+      if (detail?.code === 'POSITION_NATIONALE_REQUISE') {
+        toast({
+          title: language === 'fr' ? 'Position nationale requise' : 'National position required',
+          description: language === 'fr'
+            ? `${detail.positions?.length || 'Plusieurs'} positions nationales sous ce code SH6 : choisissez la vôtre dans la liste « Positions Tarifaires Nationales », puis relancez le calcul.`
+            : `${detail.positions?.length || 'Several'} national positions under this HS6 code: choose yours in the "National Tariff Positions" list, then calculate again.`,
+        });
+        return;
+      }
       toast({
         title: t.calculationError,
         description: typeof detail === 'string' ? detail : (detail?.message || t.calculationError),
