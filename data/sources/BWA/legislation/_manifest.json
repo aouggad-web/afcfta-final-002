@@ -37,10 +37,11 @@
       "document_date": "2026-07-01",
       "effective_from": null,
       "is_draft": false,
-      "useful_pages": "p. 12 (s.7(1)-(2) imposition, taux 14 %) ; p. 23 (s.30(1) value of import)",
+      "useful_pages": "p. 12 (s.7(1)-(2) imposition, taux 14 %) ; p. 23 (s.30(1) value of import) ; p. 82 (Statutory Instrument No. 95 of 2026 — Value Added Tax Act (Part Commencement Date) Order, 2026, Published on 30th June, 2026 : « The Value Added Tax Act shall come into operation on 1st July, 2026. ») ; p. 83 (SI No. 96 of 2026 — Customs (Amendment) Act Commencement Order, même effet 1er juillet 2026)",
       "sha256": "50f058cb502ffc02937ef13d14c723715b19e78c487c3627e8b66c6597cf81b1",
       "archived_at": "2026-10-20T23:30:00+00:00",
-      "verified_at": "2026-10-20T23:30:00+00:00"
+      "verified_at": "2026-10-20T23:30:00+00:00",
+      "notes": "L'arrêté de mise en vigueur SI 95/2026 est publié dans le même Supplement A de la Gazette (30-06-2026) que la loi : il figure aux pages 82-83 du PDF déposé (fichier d'origine non modifié). Aucun PDF autonome de l'arrêté ni d'avis public BURS du 1er juillet 2026 n'a été trouvé sur burs.org.bw (voir PR « Non obtenus »)."
     },
     {
       "file": "legislation/BWA_VAT_Cap50-03_subsidiary_sans-date.pdf",
