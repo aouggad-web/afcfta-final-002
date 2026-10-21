@@ -30,14 +30,17 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Optional
+from datetime import date
+from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from services import exoneration_origine, socle
+from engine.schemas.legal_override import RemissionEligibility
+from services import exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
-from services.preference import simulations_regionales, taux_preferentiels
+from services.preference import marchandise_dedouanee_sacu, simulations_regionales, taux_preferentiels
+from services.regional_blocs import SACU, same_customs_union
 from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 
 logger = logging.getLogger(__name__)
@@ -63,6 +66,21 @@ NON_MEMBRES_OMC = frozenset({"DZA", "ERI", "ETH", "GNQ", "LBY", "SDN", "SOM", "S
 ECART_DE_TAUX = 0.01
 
 
+class AutorisationRemise(BaseModel):
+    """Ce que l'importateur déclare d'une remise de droits de la gazette EAC.
+
+    La remise ne s'applique que si l'autorisation est datée, en vigueur le jour
+    du calcul et nomme la ligne tarifaire exacte (voir ``services.mesures_eac``)."""
+
+    eligibilite: RemissionEligibility = RemissionEligibility.ELIGIBILITY_UNKNOWN
+    reference: Optional[str] = Field(None, description="Référence de l'autorisation officielle")
+    debut: Optional[date] = Field(None, description="Début de validité de l'autorisation")
+    fin: Optional[date] = Field(None, description="Fin de validité de l'autorisation")
+    lignes: List[str] = Field(
+        default_factory=list, description="Lignes tarifaires exactes que l'autorisation nomme"
+    )
+
+
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
     origine: Optional[str] = Field(None, description="Pays d'origine (ISO-3)")
@@ -75,6 +93,16 @@ class DemandeCalcul(BaseModel):
             "pays. Omis pour une telle origine, la TVA reste indisponible "
             "plutôt que supposée. « AUTRE » : expédiée d'un autre pays (l'interface "
             "pose la question oui/non et transmet l'origine ou « AUTRE »)."
+        ),
+    )
+    deja_dedouane_sacu: bool = Field(
+        False,
+        description=(
+            "Destination SACU (ZAF, BWA, LSO, NAM, SWZ) seulement : la "
+            "marchandise, d'origine tierce, a déjà été dédouanée dans un autre "
+            "État de la SACU (port d'entrée sud-africain, par exemple). Accord "
+            "SACU 2002, art. 19 : ni droit de douane ni accise ne sont perçus à "
+            "nouveau ; la TVA de destination reste due."
         ),
     )
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
@@ -143,6 +171,21 @@ class DemandeCalcul(BaseModel):
             "liés à un autre mode (frais portuaires pour une importation par route)."
         ),
     )
+    remise: Optional[AutorisationRemise] = Field(
+        None,
+        description=(
+            "Autorisation de remise de droits (gazette EAC). Omise, une remise "
+            "subordonnée à une autorisation n'est pas appliquée et la réponse le dit."
+        ),
+    )
+    usage: Optional[str] = Field(
+        None,
+        description=(
+            "Usage déclaré de la marchandise, parmi ceux que la réponse nomme dans "
+            "`usages.possibles` (Égypte : PESTICIDE_AGRICOLE, ENGRAIS, USAGE_DOMESTIQUE, "
+            "HUILE_NON_SUBVENTIONNEE). Omis, le régime courant est liquidé."
+        ),
+    )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
@@ -180,11 +223,36 @@ def calcul(demande: DemandeCalcul):
         # il rend le service indisponible, et le dit.
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
+    # Les mesures de la gazette EAC fixent le taux du TEC, c'est-à-dire le NPF :
+    # la préférence et les simulations régionales se comparent au taux modifié.
+    remise = demande.remise or AutorisationRemise()
+    position, mesures = mesures_eac.appliquer(
+        position,
+        demande.destination,
+        socle.normaliser_code(demande.code_sh),
+        eligibilite=remise.eligibilite,
+        reference=remise.reference,
+        debut=remise.debut,
+        fin=remise.fin,
+        lignes=remise.lignes,
+    )
+
+    position, bloc_usages = usages.appliquer(position, demande.usage)
+
     preference = {"applique": False, "statut": "ORIGINE_NON_FOURNIE", "taux": {}}
     if demande.origine:
         preference = taux_preferentiels(
             position, demande.destination, demande.origine, demande.code_sh
         )
+    if demande.deja_dedouane_sacu:
+        if demande.destination.upper() not in SACU:
+            raise HTTPException(
+                status_code=422,
+                detail="deja_dedouane_sacu : réservé à une destination de la SACU (ZAF, BWA, LSO, NAM, SWZ).",
+            )
+        # Une origine SACU relève déjà de la libre circulation (art. 18).
+        if not same_customs_union(demande.origine, demande.destination):
+            preference = marchandise_dedouanee_sacu(demande.destination)
 
     position, exonerations = exoneration_origine.appliquer(position, demande.origine)
 
@@ -212,6 +280,10 @@ def calcul(demande: DemandeCalcul):
     resultat["complements_nationaux"] = complements
     if exonerations:
         resultat["exonerations_origine"] = exonerations
+    if mesures:
+        resultat["mesures_eac"] = mesures
+    if bloc_usages:
+        resultat["usages"] = bloc_usages
     conversion = _conversion_monetaire(position, demande, provenance, preference, resultat)
     if conversion:
         resultat["conversion_monetaire"] = conversion

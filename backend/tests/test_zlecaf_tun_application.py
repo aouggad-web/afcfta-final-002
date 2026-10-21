@@ -2,18 +2,19 @@
 
 Fiche : TUN_droit_de_base_2019_2026-10-03.json. Ce fichier verrouille : le
 produit des deux facteurs, le plafond NPF, le refus hors 2026, le refus d'une
-origine non publiée, le contrôle par la loi de finances 2019 et le même droit
-dans les deux chemins.
+origine non publiée, le contrôle par la loi de finances 2019 et le droit servi
+par le socle.
 """
 
 from __future__ import annotations
 
 import datetime
+import os
 
 import pytest
 
 import services.zlecaf_schedule_tun as module_tun
-from services.authentic_tariff_service import calculate_import_taxes
+from services import socle
 from services.preference import taux_preferentiels
 from services.zlecaf_implementation_registry import APPLIED, RECORDS, implementation_decision
 from services.zlecaf_schedule_tun import (
@@ -72,11 +73,10 @@ def test_la_loi_de_finances_2019_confirme_le_droit_de_base():
     datetime.date.today().year != module_tun.ANNEE_DES_COEFFICIENTS,
     reason="coefficients publiés pour 2026 seulement",
 )
-def test_les_deux_chemins_servent_le_meme_droit():
+def test_le_socle_sert_le_droit_du_calendrier():
     socle = taux_preferentiels(_position(), "TUN", "CMR", CODE)
     assert socle["applique"] is True
-    historique = calculate_import_taxes("TUN", CODE, 1000.0, origin_country="CMR")
-    assert historique["rates"]["effective_zlecaf_rate_pct"] == socle["taux"]["DD"]["taux"] == 14.4
+    assert socle["taux"]["DD"]["taux"] == 14.4
 
 
 def test_la_franchise_zale_est_signalee_sans_etre_calculee():
@@ -88,9 +88,6 @@ def test_la_franchise_zale_est_signalee_sans_etre_calculee():
     assert "accord bilatéral TUN-DZA" in note_zale("84713000010", "DZA")
     assert note_zale("84713000010", "CMR") is None
 
-    historique = calculate_import_taxes("TUN", "84713000010", 1000.0, origin_country="DZA")
-    assert historique["rates"]["effective_zlecaf_rate_pct"] is None
-    assert "ZALE (GAFTA)" in historique["trade_regime_note"]
     socle = taux_preferentiels(_position(), "TUN", "EGY", "84713000010")
     assert socle["applique"] is False and "Agadir" in socle["note"]
 
@@ -117,8 +114,16 @@ def test_les_sources_omd_se_poursuivent_d_une_page_a_l_autre():
     assert "880240" in CONCORDANCE["8806101000"]["sources_sh2017"]
 
 
+
+
+@pytest.mark.skipif(
+    datetime.date.today().year != module_tun.ANNEE_DES_COEFFICIENTS,
+    reason="coefficients publiés pour 2026 seulement",
+)
+@pytest.mark.skipif(not os.path.exists(os.path.join(socle.SOCLE_DIR, "TUN.json")), reason="socle absent")
 def test_la_position_qui_avait_perdu_son_zero_de_tete_est_servie():
-    """« 4039011010 » au Tarif Web est 0403.90.11.01.0 : la position correcte
-    est trouvée et reçoit la préférence."""
-    historique = calculate_import_taxes("TUN", "04039011010", 1000.0, origin_country="CMR")
-    assert historique["rates"]["effective_zlecaf_rate_pct"] == 14.4
+    """« 4039011010 » au Tarif Web est 0403.90.11.01.0 : le socle trouve la
+    position, clé de contrôle comprise, et lui sert la préférence."""
+    position, provenance = socle.position("TUN", "04039011010")
+    assert provenance["code_demande"] == "0403901101"
+    assert taux_preferentiels(position, "TUN", "CMR", "04039011010")["taux"]["DD"]["taux"] == 14.4

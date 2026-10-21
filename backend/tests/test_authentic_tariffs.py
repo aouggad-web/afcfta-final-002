@@ -54,80 +54,6 @@ class TestAuthenticTariffsCountriesList:
         ), f"Expected at least 5 major countries, found: {found_countries}"
 
 
-class TestAuthenticTariffsCalculate:
-    """Test /api/authentic-tariffs/calculate/{country}/{hs_code} - Calcul détaillé"""
-
-    def test_calculate_tariff_mar_cacao(self):
-        """Test calculation for Morocco, cacao (HS 180100), value 50000 USD"""
-        response = requests.get(
-            f"{BASE_URL}/api/authentic-tariffs/calculate/MAR/180100?value=50000&language=fr"
-        )
-        assert response.status_code == 200
-
-        data = response.json()
-        # Verify structure
-        assert "hs_code" in data
-        assert "description" in data
-        assert "cif_value" in data
-        assert data["cif_value"] == 50000
-
-        # Verify NPF calculation
-        assert "npf_calculation" in data
-        npf = data["npf_calculation"]
-        assert "dd" in npf
-        assert "vat" in npf
-        assert "total_to_pay" in npf
-
-        # Verify ZLECAf calculation
-        assert "zlecaf_calculation" in data
-        zlecaf = data["zlecaf_calculation"]
-        assert zlecaf["dd"]["exempt"] == True
-        assert zlecaf["dd"]["amount"] == 0
-
-        # Verify savings
-        assert "savings" in data
-        assert data["savings"]["amount"] > 0, "ZLECAf should provide savings"
-
-    def test_calculate_tariff_nga(self):
-        """Test calculation for Nigeria"""
-        response = requests.get(
-            f"{BASE_URL}/api/authentic-tariffs/calculate/NGA/870323?value=10000&language=fr"
-        )
-        assert response.status_code == 200
-
-        data = response.json()
-        assert data["country_iso3"] == "NGA"
-        assert "npf_calculation" in data
-        assert "zlecaf_calculation" in data
-
-    def test_calculate_tariff_egy(self):
-        """Test calculation for Egypt"""
-        response = requests.get(
-            f"{BASE_URL}/api/authentic-tariffs/calculate/EGY/100199?value=25000&language=en"
-        )
-        assert response.status_code == 200
-
-        data = response.json()
-        assert data["country_iso3"] == "EGY"
-        assert data["currency"] == "USD"
-
-    def test_calculate_tariff_nonexistent_country(self):
-        """Should return 404 for non-existent country"""
-        response = requests.get(f"{BASE_URL}/api/authentic-tariffs/calculate/XXX/180100?value=1000")
-        assert response.status_code == 404
-
-    def test_calculate_tariff_catch_all_hs_code(self):
-        """Code 999999 is valid - it's a catch-all 'Commodities not specified' category"""
-        response = requests.get(f"{BASE_URL}/api/authentic-tariffs/calculate/MAR/999999?value=1000")
-        # 999999 actually exists as a catch-all category
-        assert response.status_code == 200
-        data = response.json()
-        assert (
-            "not specified" in data["description"].lower()
-            or "commodities" in data["description"].lower()
-        )
-
-
 class TestAuthenticTariffsCountrySummary:
     """Test /api/authentic-tariffs/country/{country}/summary - Résumé du pays"""
 
@@ -252,40 +178,6 @@ class TestAuthenticTariffsTariffLine:
         tariff_line = data["tariff_line"]
         assert "hs6" in tariff_line
         assert "dd_rate" in tariff_line
-
-
-class TestAuthenticTariffsSavingsCalculation:
-    """Test that ZLECAf savings are calculated correctly"""
-
-    def test_savings_calculation_correct(self):
-        """Verify savings = NPF total - ZLECAf total"""
-        response = requests.get(
-            f"{BASE_URL}/api/authentic-tariffs/calculate/MAR/180100?value=100000&language=fr"
-        )
-        assert response.status_code == 200
-
-        data = response.json()
-        npf_total = data["npf_calculation"]["total_to_pay"]
-        zlecaf_total = data["zlecaf_calculation"]["total_to_pay"]
-        savings = data["savings"]["amount"]
-
-        # Savings should be NPF - ZLECAf
-        expected_savings = round(npf_total - zlecaf_total, 2)
-        assert (
-            abs(savings - expected_savings) < 0.01
-        ), f"Savings mismatch: {savings} vs {expected_savings}"
-
-    def test_zlecaf_dd_is_zero(self):
-        """ZLECAf should exempt customs duties (DD)"""
-        response = requests.get(
-            f"{BASE_URL}/api/authentic-tariffs/calculate/GHA/870323?value=50000"
-        )
-        assert response.status_code == 200
-
-        data = response.json()
-        zlecaf_dd = data["zlecaf_calculation"]["dd"]
-        assert zlecaf_dd["exempt"] == True
-        assert zlecaf_dd["amount"] == 0
 
 
 if __name__ == "__main__":

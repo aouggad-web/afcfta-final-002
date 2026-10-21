@@ -7,7 +7,7 @@
       "libelle": "Value-Added Tax (VAT)",
       "famille": "tva",
       "taux": 15.0,
-      "assiette": "FOBx1.10+DD",
+      "assiette": "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL",
       "assiette_par_origine": {
         "origines": [
           "BWA",
@@ -15,10 +15,10 @@
           "NAM",
           "SWZ"
         ],
-        "assiette": "FOB+DD",
+        "assiette": "FOB+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL",
         "texte": "VAT Act 89/1991 s.13(2)(b) : pas de majoration de 10 % pour une origine Botswana, Lesotho, Eswatini ou Namibie importée de ces pays — origine et pays d'expédition doivent tous deux figurer dans cette liste"
       },
-      "source": "SARS — taux relevé sur sars.gov.za (15 %) ; assiette : VAT Act 89/1991 s.13(2)(a) — valeur en douane + droits + 10 % de la valeur en douane",
+      "source": "SARS — taux relevé sur sars.gov.za (15 %) ; assiette : VAT Act 89/1991 s.13(2)(a) — valeur en douane + droits + 10 % de la valeur en douane ; accises des Parts 2A et 2B et prélèvements des Parts 3, 5 et 7 compris (« any non-rebated duties levied on the goods », SARS, Duties and Taxes for Importers ; fiches ZAF_accises_2026-10-14.json et ZAF_prelevements_2026-10-14.json)",
       "fiche": "backend/data/legal_refs/zlecaf_application/ZAF_taux_TVA_2026-09-17.json",
       "fiche_assiette": "backend/data/legal_refs/zlecaf_application/ZAF_assiette_TVA_2026-10-02.json",
       "note": "Taux standard national, non vérifié position par position : les biens détaxés (zero-rated) et exonérés ne sont pas distingués.",

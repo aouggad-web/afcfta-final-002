@@ -66,12 +66,6 @@ export const apiV2 = {
       body: JSON.stringify({ query, filters, pagination }),
     }),
 
-  bulkTariffCalculation: (products, routes) =>
-    apiFetch('/api/v2/tariffs/bulk', {
-      method: 'POST',
-      body: JSON.stringify({ products, routes }),
-    }),
-
   bulkInvestmentAnalysis: (opportunities, criteria) =>
     apiFetch('/api/v2/investment/bulk-analysis', {
       method: 'POST',

@@ -19,7 +19,8 @@ Deux familles, aux rôles distincts.
    le xfail strict imposera alors de retirer le marqueur. Rien n'est désactivé,
    rien n'est masqué.
 
-Seul le chemin prioritaire est exercé ici : il lit `backend/data/` et
+Le droit servi est lu sur le socle (`backend/socle/`), seul chemin de calcul
+depuis le 20/10/2026 ; les citations, dans `backend/data/` et
 `backend/data/crawled/`, tous deux versionnés.
 """
 
@@ -187,24 +188,21 @@ class TestCitationsDuCorpus:
 
 
 def _priority_dd(country: str, code: str):
-    """Droit rendu par le chemin prioritaire, ou l'échec rencontré."""
-    from services import authentic_tariff_service as svc
+    """Droit rendu par le calcul (le socle, comme `POST /calcul`), ou l'échec
+    rencontré."""
+    from services import socle
+    from services.calcul import calculer
 
     try:
-        result = svc.calculate_import_taxes(
-            country, code, CIF, language="fr", origin_country=ORIGIN
-        )
+        position, _ = socle.position(country, code)
+        npf = calculer(position, CIF)["npf"]
     except Exception as exc:
         return {"outcome": "exception", "detail": f"{type(exc).__name__}: {exc}"}
 
-    if result.get("error"):
-        return {"outcome": "absent", "detail": str(result["error"])}
-
-    return {
-        "outcome": "ok",
-        "dd_rate_pct": (result.get("rates") or {}).get("dd_rate_pct"),
-        "droit_douane": ((result.get("taxes_summary") or {}).get("npf") or {}).get("droit_douane"),
-    }
+    dd = next((ligne for ligne in npf["lignes"] if ligne["code"] == "DD"), None)
+    if dd is None:
+        return {"outcome": "absent", "detail": "aucune ligne DD au socle"}
+    return {"outcome": "ok", "dd_rate_pct": dd.get("taux_pct"), "droit_douane": dd.get("montant")}
 
 
 def _expected_marker(case):

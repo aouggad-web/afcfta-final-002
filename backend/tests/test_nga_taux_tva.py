@@ -61,10 +61,10 @@ def test_l_autre_chemin_ne_sert_pas_non_plus_ces_taux():
     assert tva["0101210000"]["rate_pct"] == 7.5
 
 
-def test_ni_la_recherche_ni_l_autre_porte_ne_servent_ces_taux(monkeypatch):
-    """La recherche par mot-clé et GET /authentic-tariffs/calculate lisent la
-    collecte brute : la TVA à 17,5 % n'y est ni affichée, ni comptée dans un
-    total, ni liquidée. Une position ordinaire garde ses 7,5 %."""
+def test_la_recherche_ne_sert_pas_ces_taux(monkeypatch):
+    """La recherche par mot-clé lit la collecte brute : la TVA à 17,5 % n'y est
+    ni affichée, ni comptée dans un total. Une position ordinaire garde ses
+    7,5 %."""
     from services import authentic_tariff_service as svc
 
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
@@ -72,8 +72,6 @@ def test_ni_la_recherche_ni_l_autre_porte_ne_servent_ces_taux(monkeypatch):
     assert ligne["tva_rate"] is None and ligne["total_rate"] is None
     assert svc.search_tariff_lines("NGA", "Bolting cloth")  # un taux absent ne fait plus planter la recherche
 
-    refus = svc.calculate_import_taxes("NGA", "1605580000", 10000)
-    assert refus["error_detail"]["missing_or_non_ad_valorem_taxes"] == ["TVA"]
     assert next(
         r for r in svc.search_tariff_lines("NGA", "1605100000") if r.get("national_code") == "1605100000"
     )["tva_rate"] == 7.5

@@ -1,0 +1,2447 @@
+{
+ "source": "SARS, Customs and Excise Act 1964, Schedule No. 1 Part 2A et Part 2B",
+ "documents": [
+  {
+   "partie": "2A",
+   "date": "2026-04-30",
+   "sha256": "59d7f909ece3289fedc7147d6a513edf3815a7281ca27693660a09c8acf08d2e"
+  },
+  {
+   "partie": "2B",
+   "date": "2025-04-01",
+   "sha256": "e9c75ab3700fb2ea6f67f5cef530f89cfd8155c8adc3abb4d5b8c9bf36777915"
+  }
+ ],
+ "articles": [
+  {
+   "partie": "2A",
+   "article": "104.01.05",
+   "sous_position": "1901.90.13",
+   "libelle": "Preparations for making alcoholic beverages (excluding those of subheading 1901.90.20) as defined in Additional Note 2 to Chapter 19",
+   "brut": "34,7c/kg",
+   "montant": 0.347,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.01.10",
+   "sous_position": "1901.90.20",
+   "libelle": "Traditional African beer powder as defined in Additional Note 1 to Chapter 19",
+   "brut": "34,7c/kg",
+   "montant": 0.347,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.05.10",
+   "sous_position": "2106.90.13",
+   "libelle": "Preparations for making alcoholic beverages as defined in Additional Note 1 to Chapter 21",
+   "brut": "34,7c/kg",
+   "montant": 0.347,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.10.10",
+   "sous_position": "2203.00.05",
+   "libelle": "Traditional African beer as defined in Additional Note 1 to Chapter 22",
+   "brut": "7,82c/li",
+   "montant": 0.0782,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.10.20",
+   "sous_position": "2203.00.90",
+   "libelle": "Other",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.01",
+   "sous_position": "2204.10",
+   "libelle": "Sparkling wine",
+   "brut": "R19.68/li",
+   "montant": 19.68,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.03",
+   "sous_position": "2204.21.41",
+   "libelle": "With an alcoholic strength of at least 4.5 per cent  by volume but not exceeding 16.5 per cent by vol.",
+   "brut": "R6.15/li",
+   "montant": 6.15,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.04",
+   "sous_position": "2204.21.42",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.05",
+   "sous_position": "2204.21.51",
+   "libelle": "With an alcoholic strength of at least 15 per cent by volume but not exceeding 22 per cent by vol.",
+   "brut": "R10.38/li",
+   "montant": 10.38,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.06",
+   "sous_position": "2204.21.52",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.13",
+   "sous_position": "2204.22.41",
+   "libelle": "With an alcoholic strength of at least 4.5 per cent by volume but not exceeding 16.5 per cent by vol.",
+   "brut": "R6.15/li",
+   "montant": 6.15,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.15",
+   "sous_position": "2204.22.42",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.17",
+   "sous_position": "2204.22.51",
+   "libelle": "With an alcoholic strength of at least 15 per cent by volume but not exceeding 22 per cent by vol.",
+   "brut": "R10.38/li",
+   "montant": 10.38,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.19",
+   "sous_position": "2204.22.52",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.21",
+   "sous_position": "2204.29.41",
+   "libelle": "With an alcoholic strength of at least 4.5 per cent by volume but not exceeding 16.5 per cent by vol.",
+   "brut": "R6.15/li",
+   "montant": 6.15,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.23",
+   "sous_position": "2204.29.42",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.25",
+   "sous_position": "2204.29.51",
+   "libelle": "With an alcoholic strength of at least 15 per cent by volume but not exceeding 22 per cent by vol.",
+   "brut": "R10.38/li",
+   "montant": 10.38,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.15.27",
+   "sous_position": "2204.29.52",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.01",
+   "sous_position": "2205.10.10",
+   "libelle": "Sparkling",
+   "brut": "R19.68/li",
+   "montant": 19.68,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.03",
+   "sous_position": "2205.10.21",
+   "libelle": "With an alcoholic strength of at least 4.5 per cent by volume but not exceeding 15 per cent by vol.",
+   "brut": "R6.15/li",
+   "montant": 6.15,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.04",
+   "sous_position": "2205.10.22",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.05",
+   "sous_position": "2205.10.31",
+   "libelle": "With an alcoholic strength of at least 15 per cent by volume but not exceeding 22 per cent by vol.",
+   "brut": "R10.38/li",
+   "montant": 10.38,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.06",
+   "sous_position": "2205.10.32",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.09",
+   "sous_position": "2205.90.21",
+   "libelle": "With an alcoholic strength of at least 4.5 per cent by volume but not exceeding 15 per cent by vol.",
+   "brut": "R6.15/li",
+   "montant": 6.15,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.10",
+   "sous_position": "2205.90.22",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.11",
+   "sous_position": "2205.90.31",
+   "libelle": "With an alcoholic strength of at least 15 per cent by volume but not exceeding 22 per cent by vol.",
+   "brut": "R10.38/li",
+   "montant": 10.38,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.16.12",
+   "sous_position": "2205.90.32",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.03",
+   "sous_position": "2206.00.05",
+   "libelle": "Sparkling fermented fruit or mead beverages; mixtures of sparkling fermented beverages derived from the fermentation of fruit or honey; mixtures of sparkling fermented fruit or mead beverages and non-alcoholic beverages",
+   "brut": "R19.68/li",
+   "montant": 19.68,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.05",
+   "sous_position": "2206.00.15",
+   "libelle": "Traditional African beer as defined in Additional Note 1 to Chapter 22",
+   "brut": "7,82c/li",
+   "montant": 0.0782,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.07",
+   "sous_position": "2206.00.17",
+   "libelle": "Other fermented beverages, unfortified, with an alcoholic strength of less than 2.5 per cent by volume",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.09",
+   "sous_position": "2206.00.19",
+   "libelle": "Other fermented beverages of non-malted cereal grains, unfortified, with an alcoholic strength of at least 2.5 per cent by volume but not exceeding 9 per cent by vol.",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.11",
+   "sous_position": "2206.00.21",
+   "libelle": "Other mixtures of fermented beverages of non-malted cereal grains and non-alcoholic beverages, unfortified, with an alcoholic strength of at least 2.5 per cent by volume but not exceeding 9 per cent by vol.",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.15",
+   "sous_position": "2206.00.81",
+   "libelle": "Other fermented apple or pear beverages, unfortified, with an alcoholic strength of at least 2.5 per cent by volume but not exceeding 15 per cent by vol.",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.16",
+   "sous_position": "2206.00.82",
+   "libelle": "Other fermented fruit beverages and mead beverages, including mixtures of fermented beverages derived from the fermentation of fruit or honey, unfortified, with an alcoholic strength of at least 2.5 per cent by volume but not exceeding 15 per cent by vol.",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.17",
+   "sous_position": "2206.00.83",
+   "libelle": "Other fermented apple or pear beverages, fortified, with an alcoholic strength of at least 15 per cent by volume but not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.21",
+   "sous_position": "2206.00.84",
+   "libelle": "Other fermented fruit beverages and mead beverages including mixtures of fermented beverages derived from the fermentation of fruit or honey, fortified, with an alcoholic strength of at least 15 per cent by volume not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.22",
+   "sous_position": "2206.00.85",
+   "libelle": "Other mixtures of fermented fruit or mead beverages and non-alcoholic beverages, unfortified, with an alcoholic strength of at least 2.5 per cent by volume but not exceeding 15 per cent by vol.",
+   "brut": "R149.98/li aa",
+   "montant": 149.98,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.25",
+   "sous_position": "2206.00.87",
+   "libelle": "Other mixtures of fermented fruit or mead beverages and non-alcoholic beverages, fortified, with an alcoholic strength of at least 15 per cent by volume but not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.17.90",
+   "sous_position": "2206.00.90",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.21.01",
+   "sous_position": "2207.10",
+   "libelle": "Undenatured ethyl alcohol of an alcoholic strength by volume of 80 per cent vol. or higher",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.21.03",
+   "sous_position": "2207.20",
+   "libelle": "Ethyl alcohol and other spirits, denatured, of any strength",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.01",
+   "sous_position": "2208.20.11",
+   "libelle": "Brandy as defined in Additional Note 7 to Chapter 22",
+   "brut": "R272.55/li aa",
+   "montant": 272.55,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.02",
+   "sous_position": "2208.20.19",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.03",
+   "sous_position": "2208.20.91",
+   "libelle": "Brandy as defined in Additional Note 7 to Chapter 22",
+   "brut": "R272.55/li aa",
+   "montant": 272.55,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.04",
+   "sous_position": "2208.20.99",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.05",
+   "sous_position": "2208.30.10",
+   "libelle": "In containers holding 2 li or less",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.07",
+   "sous_position": "2208.30.90",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.09",
+   "sous_position": "2208.40.10",
+   "libelle": "In containers holding 2 li or less",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.11",
+   "sous_position": "2208.40.90",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.13",
+   "sous_position": "2208.50.10",
+   "libelle": "In containers holding 2 li or less",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.15",
+   "sous_position": "2208.50.90",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.17",
+   "sous_position": "2208.60.10",
+   "libelle": "In containers holding 2 li or less",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.19",
+   "sous_position": "2208.60.90",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.21",
+   "sous_position": "2208.70.21",
+   "libelle": "With an alcoholic strength by volume exceeding 15 per cent by vol. but not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.22",
+   "sous_position": "2208.70.22",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.23",
+   "sous_position": "2208.70.91",
+   "libelle": "With an alcoholic strength by volume exceeding 15 per cent by vol. but not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.24",
+   "sous_position": "2208.70.92",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.25",
+   "sous_position": "2208.90.21",
+   "libelle": "With an alcoholic strength by volume exceeding 15 per cent by vol. but not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.26",
+   "sous_position": "2208.90.22",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.27",
+   "sous_position": "2208.90.91",
+   "libelle": "With an alcoholic strength by volume exceeding 15 per cent by vol. but not exceeding 23 per cent by vol.",
+   "brut": "R121.13/li aa",
+   "montant": 121.13,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.23.28",
+   "sous_position": "2208.90.92",
+   "libelle": "Other",
+   "brut": "R302.84/li aa",
+   "montant": 302.84,
+   "unite": "li aa"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.01",
+   "sous_position": "2402.10.10",
+   "libelle": "Imported from Switzerland",
+   "brut": "R6 041.72/kg net",
+   "montant": 6041.72,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.03",
+   "sous_position": "2402.10.90",
+   "libelle": "Other",
+   "brut": "R6 041.72/kg net",
+   "montant": 6041.72,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.05",
+   "sous_position": "2402.20.10",
+   "libelle": "Imported from Switzerland",
+   "brut": "R11.79/10cigarettes",
+   "montant": 11.79,
+   "unite": "10cigarettes"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.07",
+   "sous_position": "2402.20.90",
+   "libelle": "Other",
+   "brut": "R11.79/10cigarettes",
+   "montant": 11.79,
+   "unite": "10cigarettes"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.09",
+   "sous_position": "2402.90.12",
+   "libelle": "Imported from Switzerland",
+   "brut": "R6 041.72/kg net",
+   "montant": 6041.72,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.11",
+   "sous_position": "2402.90.14",
+   "libelle": "Other",
+   "brut": "R6 041.72/kg net",
+   "montant": 6041.72,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.13",
+   "sous_position": "2402.90.22",
+   "libelle": "Imported from Switzerland",
+   "brut": "R11.79/10cigarettes",
+   "montant": 11.79,
+   "unite": "10cigarettes"
+  },
+  {
+   "partie": "2A",
+   "article": "104.30.15",
+   "sous_position": "2402.90.24",
+   "libelle": "Other",
+   "brut": "R11.79/10cigarettes",
+   "montant": 11.79,
+   "unite": "10cigarettes"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.01",
+   "sous_position": "2403.11",
+   "libelle": "Water pipe tobacco specified in Subheading Note 1 to Chapter 24",
+   "brut": "R332.26/kg net",
+   "montant": 332.26,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.02",
+   "sous_position": "2403.19.10",
+   "libelle": "Pipe tobacco in immediate packings of a content of less than 5 kg",
+   "brut": "R332.26/kg net",
+   "montant": 332.26,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.03",
+   "sous_position": "2403.19.20",
+   "libelle": "Other pipe tobacco",
+   "brut": "R332.26/kg net",
+   "montant": 332.26,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.05",
+   "sous_position": "2403.19.30",
+   "libelle": "Cigarette tobacco",
+   "brut": "R529.99/kg",
+   "montant": 529.99,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.07",
+   "sous_position": "2403.91.20",
+   "libelle": "Imported from Switzerland",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.09",
+   "sous_position": "2403.91.80",
+   "libelle": "Other",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.15",
+   "sous_position": "2403.99.30",
+   "libelle": "Other cigarette tobacco substitutes",
+   "brut": "R529.99/kg",
+   "montant": 529.99,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.17",
+   "sous_position": "2403.99.40",
+   "libelle": "Other pipe tobacco substitutes",
+   "brut": "R332.26/kg net",
+   "montant": 332.26,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.35.19",
+   "sous_position": "2403.99.90",
+   "libelle": "Other",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.01",
+   "sous_position": "2404.11.11",
+   "libelle": "Imported from Switzerland, put up for retail sale in the form of sticks",
+   "brut": "R8.84/10sticks",
+   "montant": 8.84,
+   "unite": "10sticks"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.03",
+   "sous_position": "2404.11.13",
+   "libelle": "Imported from Switzerland, other",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.05",
+   "sous_position": "2404.11.15",
+   "libelle": "Other, put up for retail sale in the form of sticks",
+   "brut": "R8.84/10sticks",
+   "montant": 8.84,
+   "unite": "10sticks"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.07",
+   "sous_position": "2404.11.19",
+   "libelle": "Other",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.11",
+   "sous_position": "2404.11.91",
+   "libelle": "Put up for retail sale in the form of sticks",
+   "brut": "R8.84/10sticks",
+   "montant": 8.84,
+   "unite": "10sticks"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.13",
+   "sous_position": "2404.11.99",
+   "libelle": "Other",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.14",
+   "sous_position": "2404.12",
+   "libelle": "Other, containing nicotine",
+   "brut": "R3.29/ml",
+   "montant": 3.29,
+   "unite": "ml"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.16",
+   "sous_position": "2404.19.10",
+   "libelle": "Containing nicotine substitutes",
+   "brut": "R3.29/ml",
+   "montant": 3.29,
+   "unite": "ml"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.19",
+   "sous_position": "2404.19.20",
+   "libelle": "Other, put up for retail sale in the form of sticks",
+   "brut": "R8.84/10sticks",
+   "montant": 8.84,
+   "unite": "10sticks"
+  },
+  {
+   "partie": "2A",
+   "article": "104.37.21",
+   "sous_position": "2404.19.90",
+   "libelle": "Other",
+   "brut": "R1 105.40/kg",
+   "montant": 1105.4,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.03",
+   "sous_position": "2710.12.02",
+   "libelle": "Petrol, as defined in Additional Note 1(b) to Chapter 27",
+   "brut": "3,909c/li",
+   "montant": 0.03909,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.09",
+   "sous_position": "2710.12.07",
+   "libelle": "Aviation kerosene, as defined in Additional Note 1(d) to Chapter 27",
+   "brut": "free",
+   "taux": 0.0
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.13",
+   "sous_position": "2710.12.15",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, marked",
+   "brut": "free",
+   "taux": 0.0
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.15",
+   "sous_position": "2710.12.26",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, unmarked",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.17",
+   "sous_position": "2710.12.30",
+   "libelle": "Distillate fuel, as defined in Additional Note 1(g) to Chapter 27",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.19",
+   "sous_position": "2710.12.37",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, marked",
+   "brut": "free",
+   "taux": 0.0
+  },
+  {
+   "partie": "2A",
+   "article": "105.10.21",
+   "sous_position": "2710.12.39",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, unmarked",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "105.13.09",
+   "sous_position": "2710.19.07",
+   "libelle": "Aviation kerosene, as defined in Additional Note 1(d) to Chapter 27",
+   "brut": "free",
+   "taux": 0.0
+  },
+  {
+   "partie": "2A",
+   "article": "105.13.13",
+   "sous_position": "2710.19.15",
+   "libelle": "Illuminating kerosene, a defined in Additional Note 1(f) to Chapter 27, marked",
+   "brut": "free",
+   "taux": 0.0
+  },
+  {
+   "partie": "2A",
+   "article": "105.13.15",
+   "sous_position": "2710.19.26",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f), unmarked",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "105.13.17",
+   "sous_position": "2710.19.30",
+   "libelle": "Distillate fuel, as defined in Additional Note 1(g) to Chapter 27",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "105.13.19",
+   "sous_position": "2710.19.37",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, marked",
+   "brut": "free",
+   "taux": 0.0
+  },
+  {
+   "partie": "2A",
+   "article": "105.13.21",
+   "sous_position": "2710.19.39",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, unmarked",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.01",
+   "sous_position": "2903.14",
+   "libelle": "Carbon tetrachloride",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.02",
+   "sous_position": "2903.19.10",
+   "libelle": "1,1,1-Trichloroethane (methyl chloroform)",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.03",
+   "sous_position": "2903.76.05",
+   "libelle": "Bromochlorodifluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.04",
+   "sous_position": "2903.76.10",
+   "libelle": "Bromotrifluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.05",
+   "sous_position": "2903.76.15",
+   "libelle": "Dibromotetrafluoroethanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.06",
+   "sous_position": "2903.77.05",
+   "libelle": "Trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.08",
+   "sous_position": "2903.77.10",
+   "libelle": "Dichlorodifluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.10",
+   "sous_position": "2903.77.15",
+   "libelle": "Trichlorotrifluoroethanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.12",
+   "sous_position": "2903.77.20",
+   "libelle": "Dichlorotetrafluoroethanes and chloropentafluoroethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.14",
+   "sous_position": "2903.77.25",
+   "libelle": "Chlorotrifluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.16",
+   "sous_position": "2903.77.30",
+   "libelle": "Pentachlorofluoroethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.18",
+   "sous_position": "2903.77.35",
+   "libelle": "Tetrachlorodifluoroethanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.20",
+   "sous_position": "2903.77.40",
+   "libelle": "Heptachlorofluoropropanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.22",
+   "sous_position": "2903.77.45",
+   "libelle": "Hexachlorodifluoropropanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.24",
+   "sous_position": "2903.77.50",
+   "libelle": "Pentachlorotrifluoropropane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.26",
+   "sous_position": "2903.77.55",
+   "libelle": "Tetrachlorotetrafluoropropanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.28",
+   "sous_position": "2903.77.60",
+   "libelle": "Trichloropentafluoropropanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.30",
+   "sous_position": "2903.77.65",
+   "libelle": "Dichlorohexafluoropropanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.10.32",
+   "sous_position": "2903.77.70",
+   "libelle": "Chloroheptafluoropropanes",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.03",
+   "sous_position": "3827.11.05",
+   "libelle": "Containing acyclic hydrocarbons, perhalogenated only with fluorine and chlorine (excluding those containing chlorodifluoromethane, dichlorodifluoromethane or trichlorofluoromethane)",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.06",
+   "sous_position": "3827.11.11",
+   "libelle": "Containing dichlorodifluoromethane and 1,1-difluoroethane (R-500)",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.07",
+   "sous_position": "3827.11.13",
+   "libelle": "Containing chlorodifluoromethane and chloropentafluoroethane (R-502)",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.15",
+   "sous_position": "3827.11.80",
+   "libelle": "Other, containing dichlorodifluoromethane or trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.16",
+   "sous_position": "3827.11.85",
+   "libelle": "Other, containing perhalogenated derivatives of acyclic hydrocarbons containing two or more different halogens",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.28",
+   "sous_position": "3827.12.80",
+   "libelle": "Other, containing dichlorodifluoromethane or trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.29",
+   "sous_position": "3827.12.85",
+   "libelle": "Other, containing perhalogenated derivatives of acyclic hydrocarbons containing two or more different halogens",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.31",
+   "sous_position": "3827.20.80",
+   "libelle": "Other, containing dichlorodifluoromethane or trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.33",
+   "sous_position": "3827.20.85",
+   "libelle": "Other, containing perhalogenated derivatives of acyclic hydrocarbons containing two or more different halogens",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.35",
+   "sous_position": "3827.32",
+   "libelle": "Other, containing substances of subheadings 2903.71 to 2903.75",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.37",
+   "sous_position": "3827.39.05",
+   "libelle": "Containing acyclic hydrocarbons, perhalogenated only with fluorine and chlorine (excluding those containing chlorodifluoromethane, dichlorodifluoromethane or trichlorofluoromethane)",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.39",
+   "sous_position": "3827.39.80",
+   "libelle": "Other, containing dichlorodifluoromethane or trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.41",
+   "sous_position": "3827.39.85",
+   "libelle": "Other, containing perhalogenated derivatives of acyclic hydrocarbons containing two or more different halogens",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.59",
+   "sous_position": "3827.40.80",
+   "libelle": "Other, containing dichlorodifluoromethane or trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.61",
+   "sous_position": "3827.40.85",
+   "libelle": "Other, containing perhalogenated derivatives of acyclic hydrocarbons containing two or more different halogens",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.63",
+   "sous_position": "3827.90.80",
+   "libelle": "Other, containing dichlorodifluoromethane or trichlorofluoromethane",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "106.50.65",
+   "sous_position": "3827.90.85",
+   "libelle": "Other, containing perhalogenated derivatives of acyclic hydrocarbons containing two or more different halogens",
+   "brut": "500c/kg",
+   "montant": 5.0,
+   "unite": "kg"
+  },
+  {
+   "partie": "2A",
+   "article": "108.20.40",
+   "sous_position": "3826.00.10",
+   "libelle": "Biodiesel as defined in Additional Note 1(a) to Chapter 38",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "108.20.50",
+   "sous_position": "3826.00.90",
+   "libelle": "Other",
+   "brut": "3,817c/li",
+   "montant": 0.03817,
+   "unite": "li"
+  },
+  {
+   "partie": "2A",
+   "article": "116.10.10",
+   "sous_position": "8543.40.10",
+   "libelle": "Presented with vaping liquid, whether or not containing nicotine",
+   "brut": "R3.29/ml",
+   "montant": 3.29,
+   "unite": "ml"
+  },
+  {
+   "partie": "2B",
+   "article": "118.15.01",
+   "sous_position": "3303.00.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "118.20.01",
+   "sous_position": "3304.10.90",
+   "libelle": "Other",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "118.20.03",
+   "sous_position": "3304.20.90",
+   "libelle": "Other",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "118.20.05",
+   "sous_position": "3304.30.90",
+   "libelle": "Other",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "118.20.07",
+   "sous_position": "3304.91.90",
+   "libelle": "Other",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "118.20.09",
+   "sous_position": "3304.99.90",
+   "libelle": "Other",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "118.33.01",
+   "sous_position": "3604.10",
+   "libelle": "Fireworks",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "120.10.01",
+   "sous_position": "4303.10",
+   "libelle": "Articles of apparel and clothing accessories",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "120.15.01",
+   "sous_position": "4304.00.10",
+   "libelle": "Articles of apparel and clothing accessories",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.05.01",
+   "sous_position": "8415.10.10",
+   "libelle": "Of a kind used for buildings, compressor operated, having a rated cooling capacity not exceeding 8,8kW",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.05.03",
+   "sous_position": "8415.10.20",
+   "libelle": "Of a kind used for buildings, not compressor operated, having a rated cooling capacity not exceeding 8,8kW",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.05.05",
+   "sous_position": "8415.81.10",
+   "libelle": "Of a kind used for buildings, having a rated cooling capacity not exceeding 8,8kW",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.05.07",
+   "sous_position": "8415.82.10",
+   "libelle": "Of a kind used for buildings, having a rated cooling capacity not exceeding 8,8kW",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.05.09",
+   "sous_position": "8415.83.10",
+   "libelle": "Of a kind used for buildings, having a rated cooling capacity not exceeding 8,8kW",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.05.11",
+   "sous_position": "8415.90.05",
+   "libelle": "Indoor units and outdoor units for machines of subheadings 8415.10.10 and 8415.10.20",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.11.01",
+   "sous_position": "8471.30.10",
+   "libelle": "Having a screen with any side exceeding 45 cm",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.11.05",
+   "sous_position": "8471.41.10",
+   "libelle": "Having a screen with any side exceeding 45 cm",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.11.09",
+   "sous_position": "8471.49.10",
+   "libelle": "Having a screen with any side exceeding 45 cm",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.37.01",
+   "sous_position": "8517.11",
+   "libelle": "Line telephone sets with cordless handsets",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.37.05",
+   "sous_position": "8517.13.10",
+   "libelle": "Designed for use when carried in the hand or on the person, with a value for duty purposes exceeding R2 500",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.37.07",
+   "sous_position": "8517.14.10",
+   "libelle": "Designed for use when carried in the hand or on the person, with a value for duty purposes exceeding R2 500",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.37.11",
+   "sous_position": "8517.62.20",
+   "libelle": "Apparatus designed for use when carried in the hand or on the person (excluding two-way radios), with a value for duty purposes exceeding R2 500",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.37.15",
+   "sous_position": "8517.69.10",
+   "libelle": "Apparatus designed for use when carried in the hand or on the person, with a value for duty purposes exceeding R2 500",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.40.01",
+   "sous_position": "8518.21",
+   "libelle": "Single loudspeakers, mounted in their enclosures",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.40.03",
+   "sous_position": "8518.22",
+   "libelle": "Multiple loudspeakers, mounted in the same enclosure",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.40.05",
+   "sous_position": "8518.29",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.40.07",
+   "sous_position": "8518.40",
+   "libelle": "Audio-frequency electric amplifiers",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.40.09",
+   "sous_position": "8518.50",
+   "libelle": "Electric sound amplifiers sets",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.45.01",
+   "sous_position": "8519.81.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.45.03",
+   "sous_position": "8519.89.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.55.02",
+   "sous_position": "8521.90.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.66.03",
+   "sous_position": "8525.81.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.66.05",
+   "sous_position": "8525.82.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.66.07",
+   "sous_position": "8525.83.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.66.09",
+   "sous_position": "8525.89.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.01",
+   "sous_position": "8527.13.10",
+   "libelle": "Domestic apparatus",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.03",
+   "sous_position": "8527.19.10",
+   "libelle": "Domestic apparatus",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.05",
+   "sous_position": "8527.21",
+   "libelle": "Combined with sound recording or reproducing apparatus",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.07",
+   "sous_position": "8527.29",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.09",
+   "sous_position": "8527.91.10",
+   "libelle": "Domestic apparatus",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.11",
+   "sous_position": "8527.92.10",
+   "libelle": "Domestic apparatus",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.70.13",
+   "sous_position": "8527.99.10",
+   "libelle": "Domestic apparatus",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.25",
+   "sous_position": "8528.49.10",
+   "libelle": "Colour, with a screen size not exceeding 3 m x 4 m",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.27",
+   "sous_position": "8528.49.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.29",
+   "sous_position": "8528.52.20",
+   "libelle": "Colour, with screen size exceeding 3 m x 4 m",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.31",
+   "sous_position": "8528.52.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.33",
+   "sous_position": "8528.59.15",
+   "libelle": "Colour, with a screen size exceeding 3 m x 4 m",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.35",
+   "sous_position": "8528.59.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.37",
+   "sous_position": "8528.69.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.38",
+   "sous_position": "8528.71.10",
+   "libelle": "With a value for duty purposes not exceeding R5 000",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.40",
+   "sous_position": "8528.71.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.41",
+   "sous_position": "8528.72.20",
+   "libelle": "Incorporating a cathode-ray tube (CRT)",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.43",
+   "sous_position": "8528.72.50",
+   "libelle": "Other, with a screen size exceeding 3 m x 4 m",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.45",
+   "sous_position": "8528.72.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.47",
+   "sous_position": "8528.73.20",
+   "libelle": "Incorporating a cathode-ray tube (CRT)",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.49",
+   "sous_position": "8528.73.50",
+   "libelle": "Other, with a screen size exceeding 3 m x 4 m",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "124.75.51",
+   "sous_position": "8528.73.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.01",
+   "sous_position": "8702.10.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.03",
+   "sous_position": "8702.10.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.09",
+   "sous_position": "8702.20.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.11",
+   "sous_position": "8702.20.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.13",
+   "sous_position": "8702.30.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.15",
+   "sous_position": "8702.30.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.17",
+   "sous_position": "8702.40.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.19",
+   "sous_position": "8702.40.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.21",
+   "sous_position": "8702.90.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.02.23",
+   "sous_position": "8702.90.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.01",
+   "sous_position": "8703.10",
+   "libelle": "Vehicles specially designed for travelling on snow; golf cars and similar vehicles",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.03",
+   "sous_position": "8703.21.23",
+   "libelle": "Vehicles of the open body tubular frame type, with an engine capacity not exceeding 250 cm³ and a vehicle mass not exceeding 250 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.05",
+   "sous_position": "8703.21.60",
+   "libelle": "Vehicles with motorcycle-type handlebars and hand-operated controls",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.07",
+   "sous_position": "8703.21.70",
+   "libelle": "Six or eight-wheeled vehicles, chain-driven and hand operated through an integral gearbox and differential unit",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.08",
+   "sous_position": "8703.21.75",
+   "libelle": "Other, with a vehicle mass exceeding 250 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.09",
+   "sous_position": "8703.21.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.11",
+   "sous_position": "8703.22.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.13",
+   "sous_position": "8703.23.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.15",
+   "sous_position": "8703.24.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.17",
+   "sous_position": "8703.31.70",
+   "libelle": "Of a vehicle mass not exceeding 600 kg (excluding hearses)",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.19",
+   "sous_position": "8703.31.80",
+   "libelle": "Six or eight-wheeled vehicles with skid steering systems, chain-driven and operated through an integral gearbox and differential unit, of a vehicle mass exceeding 600 kg and of a cylinder capacity not exceeding 1000 cm³",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.20",
+   "sous_position": "8703.31.85",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.21",
+   "sous_position": "8703.31.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.23",
+   "sous_position": "8703.32.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.25",
+   "sous_position": "8703.33.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.27",
+   "sous_position": "8703.40.31",
+   "libelle": "Other with a cylinder capacity not exceeding 1 000 cm3",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.29",
+   "sous_position": "8703.40.75",
+   "libelle": "Other, with a vehicle mass exceeding 250 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.31",
+   "sous_position": "8703.40.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.33",
+   "sous_position": "8703.50.85",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.35",
+   "sous_position": "8703.50.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.37",
+   "sous_position": "8703.60.31",
+   "libelle": "Other with a cylinder capacity not exceeding 1 000 cm3",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.39",
+   "sous_position": "8703.60.75",
+   "libelle": "Other, with a vehicle mass exceeding 250 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.41",
+   "sous_position": "8703.60.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.43",
+   "sous_position": "8703.70.85",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.45",
+   "sous_position": "8703.70.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.47",
+   "sous_position": "8703.80.31",
+   "libelle": "With a mass not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.49",
+   "sous_position": "8703.80.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.03.51",
+   "sous_position": "8703.90.90",
+   "libelle": "Other",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.01",
+   "sous_position": "8704.21.70",
+   "libelle": "Other, of a vehicle mass not exceeding 600 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.02",
+   "sous_position": "8704.21.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm³ (excluding the vehicles of subheading 8704.21.77)",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.05",
+   "sous_position": "8704.21.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 1 100 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.10",
+   "sous_position": "8704.21.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.13",
+   "sous_position": "8704.21.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.20",
+   "sous_position": "8704.31.50",
+   "libelle": "Three-wheeled vehicles with motorcycle type steering systems and engines of a cylinder capacity not exceeding 550 cm³, and equipped with motor vehicle type differentials and reverse gears",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.30",
+   "sous_position": "8704.31.70",
+   "libelle": "Other (excluding off-the-road logging trucks and three-wheeled vehicles) of a vehicle mass not exceeding 600 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.35",
+   "sous_position": "8704.31.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm³ (excluding the vehicles of subheading 8704.31.77)",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.37",
+   "sous_position": "8704.31.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.41",
+   "sous_position": "8704.31.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.43",
+   "sous_position": "8704.31.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.44",
+   "sous_position": "8704.41.70",
+   "libelle": "Other, of a vehicle mass not exceeding 600 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.45",
+   "sous_position": "8704.41.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm³ (excluding the vehicles of subheading 8704.41.77)",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.46",
+   "sous_position": "8704.41.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 1 100 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.47",
+   "sous_position": "8704.41.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.48",
+   "sous_position": "8704.41.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.51",
+   "sous_position": "8704.51.50",
+   "libelle": "Three-wheeled vehicles with motorcycles type steering systems and engines of a cylinder capacity not exceeding 550 cm3, and equipped with motor vehicles type differentials and reverse gears",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.53",
+   "sous_position": "8704.51.70",
+   "libelle": "Other (excluding off-the-road logging trucks and three-wheeled vehicles) of a vehicle mass not exceeding 600 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.55",
+   "sous_position": "8704.51.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm3 (excluding the vehicles of subheading 8704.31.77)",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.57",
+   "sous_position": "8704.51.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.59",
+   "sous_position": "8704.51.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.61",
+   "sous_position": "8704.51.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.65",
+   "sous_position": "8704.60.05",
+   "libelle": "Golf carts, pedestrian type",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.67",
+   "sous_position": "8704.60.10",
+   "libelle": "With a mass not exceeding 800 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.69",
+   "sous_position": "8704.60.30",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M not exceeding 3 500 kg or of a mass not exceeding 1 600 kg or a G.V.M not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.71",
+   "sous_position": "8704.60.40",
+   "libelle": "Other, (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a GVM not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a GVM not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.70",
+   "sous_position": "8704.90.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.04.75",
+   "sous_position": "8704.90.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.05.01",
+   "sous_position": "8706.00.15",
+   "libelle": "Other, of a vehicle mass not exceeding 1 600 kg or of a G.V.M. not exceeding 3 500 kg",
+   "brut": "(See Note 2 to this Part)",
+   "renvoi": "(See Note 2 to this Part)"
+  },
+  {
+   "partie": "2B",
+   "article": "126.10.01",
+   "sous_position": "8711.20.90",
+   "libelle": "Other",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.10.03",
+   "sous_position": "8711.30",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity exceeding 250 cm3 but not exceeding 500 cm3",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.10.05",
+   "sous_position": "8711.40",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity exceeding 500 cm3 but not exceeding 800 cm3",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.10.07",
+   "sous_position": "8711.50",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity exceeding 800 cm3",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.10.09",
+   "sous_position": "8711.90.20",
+   "libelle": "Other, of a cylinder capacity of 200 cm3 or more but not exceeding 800 cm3",
+   "brut": "7%",
+   "taux": 7.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.10.11",
+   "sous_position": "8711.90.30",
+   "libelle": "Other, of a cylinder capacity exceeding 800 cm3",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "126.20.01",
+   "sous_position": "8903.99.10",
+   "libelle": "Water scooters and the like",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.10.01",
+   "sous_position": "9302.00.10",
+   "libelle": "Revolvers",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.10.03",
+   "sous_position": "9302.00.25",
+   "libelle": "Other, semi-automatic",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.10.05",
+   "sous_position": "9302.00.29",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.10.07",
+   "sous_position": "9302.00.39",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.01",
+   "sous_position": "9303.10",
+   "libelle": "Muzzle-loading firearms",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.03",
+   "sous_position": "9303.20.11",
+   "libelle": "Pump-action",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.05",
+   "sous_position": "9303.20.12",
+   "libelle": "Semi-automatic",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.07",
+   "sous_position": "9303.20.13",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.09",
+   "sous_position": "9303.20.20",
+   "libelle": "Shotguns, multiple barrel, including combination guns",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.11",
+   "sous_position": "9303.30.10",
+   "libelle": "Single-shot",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.13",
+   "sous_position": "9303.30.20",
+   "libelle": "Semi-automatic",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.15.15",
+   "sous_position": "9303.30.90",
+   "libelle": "Other",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "129.20.01",
+   "sous_position": "9304.00.20",
+   "libelle": "Other spring, air or gas guns or pistols",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "130.10.03",
+   "sous_position": "9504.30.10",
+   "libelle": "Games of skill or chance",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "130.10.07",
+   "sous_position": "9504.50.20",
+   "libelle": "Video game consoles from which the image is reproduced on a television receiver, a monitor or other external screen or surface",
+   "brut": "9%",
+   "taux": 9.0
+  },
+  {
+   "partie": "2B",
+   "article": "130.15.01",
+   "sous_position": "9506.32",
+   "libelle": "Balls",
+   "brut": "9%",
+   "taux": 9.0
+  }
+ ]
+}

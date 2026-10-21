@@ -487,7 +487,7 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
     sans = client.post(
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
-    # La TVA sud-africaine est complétée depuis sa fiche, sur « FOBx1.10+DD »
+    # La TVA sud-africaine est complétée depuis sa fiche, sur la valeur FOB majorée de 10 % et les droits
     # (VAT Act s.13(2)(a)) : sans valeur FOB elle ne se liquide pas non plus.
     # Rien n'étant calculable, l'état reste INDISPONIBLE — et les deux manques
     # sont nommés avec leur cause propre.
@@ -803,7 +803,7 @@ def test_la_tva_sud_africaine_hors_sacu_porte_sur_le_fob_majore_et_les_droits(cl
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
     dd = lignes["DD"]["montant"]
-    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD"
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL"
     assert lignes["TVA"]["montant"] == pytest.approx(0.15 * (11000 + dd))
 
 
@@ -824,7 +824,7 @@ def test_une_origine_sacu_expediee_d_ailleurs_reste_majoree(client):
         },
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
-    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD"
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL"
 
 
 @besoin_socle

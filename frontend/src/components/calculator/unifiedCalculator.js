@@ -1,13 +1,7 @@
 /**
- * Adaptateur du moteur unique (`POST /calcul`, chantier L3) vers la forme
- * historique déjà consommée par `CalculatorTab` et ses composants d'affichage.
- *
- * Ce module remplace le second chemin de calcul du frontend — l'appel de
- * repli `/calculate-tariff` (`routes/calculator.py`, l'une des « trois
- * cascades » recensées par `docs/PLAN_CALCULATEUR_UNIQUE.md` §1.1) — sans
- * toucher au chemin `/authentic-tariffs/calculate`, qui reste pour l'instant
- * seul à fournir les avantages fiscaux, les formalités administratives et
- * les frais réglementaires : le moteur unifié ne les calcule pas encore.
+ * Adaptateur du moteur unique (`POST /calcul`) — seul calcul des droits et
+ * taxes du frontend — vers la forme déjà consommée par `CalculatorTab` et
+ * ses composants d'affichage.
  *
  * Règle tenue ici comme dans le moteur : un montant INDISPONIBLE ne devient
  * jamais un zéro affiché. Une ligne que le moteur n'a pas pu liquider est
@@ -102,6 +96,17 @@ export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
   return undefined;
 }
 
+/** États membres de la SACU (accord SACU 2002). */
+export const PAYS_SACU = new Set(['ZAF', 'BWA', 'LSO', 'NAM', 'SWZ']);
+
+/**
+ * Faut-il demander si la marchandise est déjà dédouanée dans un autre État de
+ * la SACU (art. 19 de l'accord) ? Pour une destination SACU seulement.
+ */
+export function dedouanementSacuPropose(destinationISO3) {
+  return PAYS_SACU.has(destinationISO3);
+}
+
 export function buildCalculRequestBody({
   destinationISO3,
   originISO3,
@@ -110,11 +115,14 @@ export function buildCalculRequestBody({
   quantite,
   valeurFob,
   paysExpedition,
+  dejaDedouaneSacu,
   tauxDeChange,
   poidsBrutKg,
   moyenTransport,
   nombreUnitesTransport,
   modeAcheminement,
+  remise,
+  usage,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -123,6 +131,11 @@ export function buildCalculRequestBody({
   const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue, devise_cif: 'USD' };
   if (originISO3) body.origine = originISO3;
   if (paysExpedition) body.pays_expedition = paysExpedition;
+  // Le moteur refuse ce champ hors SACU (422) : il n'est envoyé que coché,
+  // et pour une destination SACU.
+  if (dejaDedouaneSacu === true && dedouanementSacuPropose(destinationISO3)) {
+    body.deja_dedouane_sacu = true;
+  }
   // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la
   // valeur. Le champ n'est envoyé que s'il porte un nombre utilisable : une
   // saisie vide ou illisible doit laisser le moteur répondre QUANTITE_REQUISE,
@@ -147,13 +160,36 @@ export function buildCalculRequestBody({
   // frais du bloc réglementaire (par tonne, par conteneur ou véhicule), jamais
   // les droits et taxes ; absents, ces frais restent « montant à confirmer ».
   Object.assign(body, transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }));
+  const autorisation = remiseRequete(remise);
+  if (autorisation) body.remise = autorisation;
+  // L'usage déclaré (Égypte : pesticide agricole, engrais…), parmi ceux que
+  // le moteur a nommés pour la position. Non déclaré, rien n'est envoyé : le
+  // régime courant est liquidé.
+  if (typeof usage === 'string' && usage) body.usage = usage;
   return body;
 }
 
 /**
- * Champs facultatifs du bloc réglementaire, communs aux deux chemins de calcul
- * (`POST /calcul` et `/authentic-tariffs`) : seuls les nombres utilisables et
- * un moyen de transport connu sont transmis.
+ * Réponse au formulaire de remise de droits (gazette EAC, Kenya) dans la forme
+ * que `POST /calcul` attend. « Je ne sais pas » et un formulaire absent ne
+ * transmettent rien : le serveur tient alors l'éligibilité pour inconnue et
+ * n'applique pas la remise. Les champs vides sont omis plutôt qu'envoyés vides.
+ */
+export function remiseRequete(remise) {
+  if (!remise || !['yes', 'no'].includes(remise.answer)) return null;
+  if (remise.answer === 'no') return { eligibilite: 'NOT_ELIGIBLE' };
+  const autorisation = { eligibilite: 'ELIGIBLE_VERIFIED' };
+  if (remise.reference?.trim()) autorisation.reference = remise.reference.trim();
+  if (remise.validFrom) autorisation.debut = remise.validFrom;
+  if (remise.validTo) autorisation.fin = remise.validTo;
+  const lignes = (remise.authorizedTariffLines || '').split(',').map((l) => l.trim()).filter(Boolean);
+  if (lignes.length) autorisation.lignes = lignes;
+  return autorisation;
+}
+
+/**
+ * Champs facultatifs du bloc réglementaire de `POST /calcul` : seuls les
+ * nombres utilisables et un moyen de transport connu sont transmis.
  */
 export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }) {
   const champs = {};
@@ -171,38 +207,6 @@ export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTran
     champs.mode_acheminement = modeAcheminement;
   }
   return champs;
-}
-
-/**
- * Le moteur rend-il vraiment compte de chaque mesure que l'autre chemin a
- * déclarée manquante ?
- *
- * Cette question n'est pas rhétorique. Le chemin historique refuse une
- * position quand une mesure lui manque (`CALCULATION_UNAVAILABLE`). Le moteur,
- * lui, ne liquide que les lignes que le socle porte : si le socle ne porte
- * AUCUNE ligne de droit pour cette position, il n'a rien à réclamer et rend un
- * total COMPLET — sans droit de douane, sans le dire.
- *
- * Mesuré sur le socle du 2026-09-18 : 2 936 positions (0,82 %) réparties sur
- * 12 pays sont dans ce cas. Exemple : DZA/2710122400, où `/calcul` sert
- * 12 444,00 « COMPLET » avec TCS, TVA et PRCT, et pas un centime de droit de
- * douane, alors que le pays est déclaré comme le couvrant.
- *
- * Basculer sur le moteur sans cette vérification remplacerait donc un refus
- * honnête par un total amputé — exactement ce qu'un calculateur douanier ne
- * doit jamais faire. Une mesure est « prise en compte » si le moteur la
- * liquide OU s'il dit explicitement pourquoi il ne la liquide pas. Le silence
- * ne compte pas.
- */
-export function moteurRendCompteDesMesures(calcul, codesManquants) {
-  const codes = (codesManquants || []).filter(Boolean);
-  if (codes.length === 0) return true;
-  const npf = calcul?.npf || {};
-  const connus = new Set([
-    ...(npf.lignes || []).map((l) => l.code),
-    ...(npf.manques || []).map((m) => m.code),
-  ]);
-  return codes.every((code) => connus.has(code));
 }
 
 /**
@@ -474,8 +478,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     economie_totale: economie,
   };
 
+  // La note de la ligne porte ce que le taux seul ne dit pas : la mesure
+  // qui l'a modifié (Legal Notice EAC), la remise écartée et pourquoi, ce
+  // qui reste à compléter.
   const taxesDetailSource = npfLignes.map((l) => ({
     code: l.code, tax: l.code, rate: l.taux_pct ?? null, observation: l.libelle,
+    ...(l.note ? { note: l.note } : {}),
   }));
 
   const provenance = calcul.provenance || {};
@@ -577,10 +585,9 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_offer_rate_pct: null,
     zlecaf_offer_rate_expression: null,
 
-    // Le moteur unifié ne calcule pas encore ces trois blocs (chantier
-    // distinct de L1-L3) : listes vides et objets nuls, jamais une valeur
-    // inventée à leur place.
-    fiscal_advantages: [],
+    // Les formalités et les sous-positions sont demandées à part par
+    // `CalculatorTab` : listes vides et objets nuls d'ici là, jamais une
+    // valeur inventée à leur place.
     administrative_formalities: [],
     has_sub_positions: false,
     sub_position_count: 0,
@@ -593,9 +600,8 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     regulatory_compliance: calcul.regulatory_compliance ?? null,
     regulatory_cost: calcul.regulatory_cost ?? null,
     regulatory_reported: calcul.regulatory_reported ?? null,
-    national_legal_calculation: null,
-    generic_legal_calculation: null,
-    kenya_legal_calculation: null,
+    mesures_eac: calcul.mesures_eac ?? null,
+    usages: calcul.usages ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',
