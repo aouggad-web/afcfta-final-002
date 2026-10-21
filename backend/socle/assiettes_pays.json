@@ -299,6 +299,7 @@
   "EGY": {
    "ordre": [
     "DD",
+    "ضريبةالجدول",
     "TVA"
    ],
    "taxes": {
@@ -307,11 +308,19 @@
      "origine_assiette": "profil_code"
     },
     "TVA": {
-     "assiette": "CIF",
-     "origine_assiette": "profil_code"
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Loi n° 67/2016 (TVA), JO n° 35 bis (c) du 07/09/2016, art. 10 (7) : valeur des marchandises importées = valeur retenue pour le droit de douane « مضافًا إليها الضرائب الجمركية وغيرها من الضرائب والرسوم المفروضة » ; art. 10 (10), ثانيًا (أ) : pour les marchandises du tableau annexé, « وضريبة الجدول » s'y ajoute",
+     "fiche": "EGY_TVA_taxe_de_table_2026-10-14.json"
+    },
+    "ضريبةالجدول": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Loi n° 67/2016, art. 39 (b) : marchandises importées — valeur retenue pour le droit de douane « مضافًا إليها الضريبة الجمركية وغيرها من الضرائب والرسوم المفروضة », sauf disposition contraire du tableau annexé ; base publiée par la douane : « من القيمة + ر.ض.جمركية »",
+     "fiche": "EGY_TVA_taxe_de_table_2026-10-14.json"
     }
    },
-   "reference_legale": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)"
+   "reference_legale": "Loi n° 67/2016 (TVA), JO n° 35 bis (c) du 07/09/2016 : TVA à l'importation sur la valeur en douane, les droits de douane, les autres impôts et redevances et la Taxe de Table (art. 10 (7) et (10)) ; Taxe de Table sur la valeur en douane, les droits de douane et les autres impôts et redevances (art. 39 (b)) — fiche EGY_TVA_taxe_de_table_2026-10-14.json"
   },
   "ETH": {
    "ordre": [

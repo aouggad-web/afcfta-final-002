@@ -1,13 +1,7 @@
 /**
- * Adaptateur du moteur unique (`POST /calcul`, chantier L3) vers la forme
- * historique déjà consommée par `CalculatorTab` et ses composants d'affichage.
- *
- * Ce module remplace le second chemin de calcul du frontend — l'appel de
- * repli `/calculate-tariff` (`routes/calculator.py`, l'une des « trois
- * cascades » recensées par `docs/PLAN_CALCULATEUR_UNIQUE.md` §1.1) — sans
- * toucher au chemin `/authentic-tariffs/calculate`, qui reste pour l'instant
- * seul à fournir les avantages fiscaux, les formalités administratives et
- * les frais réglementaires : le moteur unifié ne les calcule pas encore.
+ * Adaptateur du moteur unique (`POST /calcul`) — seul calcul des droits et
+ * taxes du frontend — vers la forme déjà consommée par `CalculatorTab` et
+ * ses composants d'affichage.
  *
  * Règle tenue ici comme dans le moteur : un montant INDISPONIBLE ne devient
  * jamais un zéro affiché. Une ligne que le moteur n'a pas pu liquider est
@@ -128,6 +122,7 @@ export function buildCalculRequestBody({
   nombreUnitesTransport,
   modeAcheminement,
   remise,
+  usage,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -167,6 +162,10 @@ export function buildCalculRequestBody({
   Object.assign(body, transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }));
   const autorisation = remiseRequete(remise);
   if (autorisation) body.remise = autorisation;
+  // L'usage déclaré (Égypte : pesticide agricole, engrais…), parmi ceux que
+  // le moteur a nommés pour la position. Non déclaré, rien n'est envoyé : le
+  // régime courant est liquidé.
+  if (typeof usage === 'string' && usage) body.usage = usage;
   return body;
 }
 
@@ -189,9 +188,8 @@ export function remiseRequete(remise) {
 }
 
 /**
- * Champs facultatifs du bloc réglementaire, communs aux deux chemins de calcul
- * (`POST /calcul` et `/authentic-tariffs`) : seuls les nombres utilisables et
- * un moyen de transport connu sont transmis.
+ * Champs facultatifs du bloc réglementaire de `POST /calcul` : seuls les
+ * nombres utilisables et un moyen de transport connu sont transmis.
  */
 export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }) {
   const champs = {};
@@ -209,38 +207,6 @@ export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTran
     champs.mode_acheminement = modeAcheminement;
   }
   return champs;
-}
-
-/**
- * Le moteur rend-il vraiment compte de chaque mesure que l'autre chemin a
- * déclarée manquante ?
- *
- * Cette question n'est pas rhétorique. Le chemin historique refuse une
- * position quand une mesure lui manque (`CALCULATION_UNAVAILABLE`). Le moteur,
- * lui, ne liquide que les lignes que le socle porte : si le socle ne porte
- * AUCUNE ligne de droit pour cette position, il n'a rien à réclamer et rend un
- * total COMPLET — sans droit de douane, sans le dire.
- *
- * Mesuré sur le socle du 2026-09-18 : 2 936 positions (0,82 %) réparties sur
- * 12 pays sont dans ce cas. Exemple : DZA/2710122400, où `/calcul` sert
- * 12 444,00 « COMPLET » avec TCS, TVA et PRCT, et pas un centime de droit de
- * douane, alors que le pays est déclaré comme le couvrant.
- *
- * Basculer sur le moteur sans cette vérification remplacerait donc un refus
- * honnête par un total amputé — exactement ce qu'un calculateur douanier ne
- * doit jamais faire. Une mesure est « prise en compte » si le moteur la
- * liquide OU s'il dit explicitement pourquoi il ne la liquide pas. Le silence
- * ne compte pas.
- */
-export function moteurRendCompteDesMesures(calcul, codesManquants) {
-  const codes = (codesManquants || []).filter(Boolean);
-  if (codes.length === 0) return true;
-  const npf = calcul?.npf || {};
-  const connus = new Set([
-    ...(npf.lignes || []).map((l) => l.code),
-    ...(npf.manques || []).map((m) => m.code),
-  ]);
-  return codes.every((code) => connus.has(code));
 }
 
 /**
@@ -619,10 +585,9 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_offer_rate_pct: null,
     zlecaf_offer_rate_expression: null,
 
-    // Le moteur unifié ne calcule pas encore ces trois blocs (chantier
-    // distinct de L1-L3) : listes vides et objets nuls, jamais une valeur
-    // inventée à leur place.
-    fiscal_advantages: [],
+    // Les formalités et les sous-positions sont demandées à part par
+    // `CalculatorTab` : listes vides et objets nuls d'ici là, jamais une
+    // valeur inventée à leur place.
     administrative_formalities: [],
     has_sub_positions: false,
     sub_position_count: 0,
@@ -635,10 +600,8 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     regulatory_compliance: calcul.regulatory_compliance ?? null,
     regulatory_cost: calcul.regulatory_cost ?? null,
     regulatory_reported: calcul.regulatory_reported ?? null,
-    national_legal_calculation: null,
-    generic_legal_calculation: null,
-    kenya_legal_calculation: null,
     mesures_eac: calcul.mesures_eac ?? null,
+    usages: calcul.usages ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',

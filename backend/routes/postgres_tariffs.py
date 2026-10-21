@@ -4,11 +4,8 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 """
 
 import logging
-from typing import Optional
 
-from entitlement_guard import require_calculations_quota
-from fastapi import APIRouter, Depends, HTTPException, Query
-from routes.authentic_tariffs import calculate_taxes_endpoint
+from fastapi import APIRouter, HTTPException, Query
 from services.authentic_tariff_service import (
     get_administrative_formalities,
     get_available_countries,
@@ -20,8 +17,6 @@ from services.authentic_tariff_service import (
     get_taxes_detail,
     search_tariff_lines,
 )
-
-from engine.schemas.legal_override import RemissionEligibility
 
 logger = logging.getLogger(__name__)
 
@@ -110,48 +105,6 @@ async def search_commodities(
         }
     except Exception as e:
         logger.error(f"Error searching {iso3} for '{q}': {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
-
-
-@router.post("/calculate", dependencies=[Depends(require_calculations_quota())])
-async def calculate_tariffs(
-    country_iso3: str = Query(..., pattern="^[A-Za-z]{3}$", description="Country ISO3 code"),
-    hs6: str = Query(..., description="HS code or exact national position (6-12 digits)"),
-    value: float = Query(1000, gt=0, allow_inf_nan=False, description="Goods value"),
-    fob_value: Optional[float] = Query(
-        None,
-        gt=0,
-        allow_inf_nan=False,
-        description="Valeur FOB en USD — requise pour l'Afrique du Sud (SACU)",
-    ),
-):
-    """Compatibility URL using the same calculation boundary as authentic tariffs."""
-    try:
-        # Keep the legacy query names while sharing doctrine, selection errors,
-        # legal layers and provenance. Dependency injection is enforced above;
-        # a direct Python call does not execute the target route's dependencies.
-        return await calculate_taxes_endpoint(
-            country_iso3=country_iso3.upper(),
-            hs_code=hs6,
-            cif_value=value,
-            language="fr",
-            origin=None,
-            fob_value=fob_value,
-            calculation_date=None,
-            remission_eligibility=RemissionEligibility.ELIGIBILITY_UNKNOWN,
-            authorization_reference=None,
-            authorization_valid_from=None,
-            authorization_valid_to=None,
-            authorization_hs_codes=None,
-            authorization_goods=None,
-            beneficiary=None,
-            import_purpose=None,
-            quantity=None,
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error calculating tariffs: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 

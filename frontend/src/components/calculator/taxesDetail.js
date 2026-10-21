@@ -1,18 +1,6 @@
 /**
- * Normalisation de `taxes_detail` — le calculateur reçoit CE champ sous deux
- * formes selon le chemin de calcul emprunté par le frontend :
- *
- *  - chemin « authentique » (`/authentic-tariffs/calculate/...`) : un OBJET
- *    indexé par code de taxe canonique, produit par la normalisation de
- *    `services/authentic_tariff_service.py` —
- *    `{ DD: { rate, label, source, source_tax_code }, TVA: {...}, ... }` ;
- *  - chemin de repli : une LISTE
- *    `[{ tax, rate, observation }, ...]`.
- *
- * L'affichage « Détail des Taxes » n'acceptait que la liste : sur le chemin
- * authentique, `taxes_detail.length` valait `undefined`, la carte entière
- * disparaissait et, avec elle, la colonne des taux ZLECAf par taxe. On
- * ramène donc les deux formes au même tableau, sans jamais fabriquer de taux.
+ * Normalisation de `taxes_detail` (liste `[{ tax, rate, observation }, ...]`
+ * servie par `mapCalculToLegacyResult`) pour la carte « Détail des Taxes ».
  *
  * Le taux préférentiel par taxe est repris de `taxes_breakdown`
  * (`rate_zlecaf_pct`) quand la ventilation le fournit : c'est la seule source
@@ -74,17 +62,6 @@ export function normalizeTaxesDetail(taxesDetail, taxesBreakdown) {
         rate: toRate(item.rate),
         observation: item.observation || item.label || null,
         ...(item.note ? { note: item.note } : {}),
-      }));
-  }
-
-  if (taxesDetail && typeof taxesDetail === 'object') {
-    return Object.entries(taxesDetail)
-      .filter(([, info]) => info && typeof info === 'object')
-      .map(([code, info]) => withZlecafRate({
-        code,
-        tax: info.source_tax_code || code,
-        rate: toRate(info.rate),
-        observation: info.label || info.name || null,
       }));
   }
 

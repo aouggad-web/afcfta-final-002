@@ -108,66 +108,6 @@ def test_get_sub_positions_prefers_postgres(monkeypatch):
     assert positions[0]["dd_rate"] == 5.0
 
 
-def test_calculate_import_taxes_uses_postgres_when_etl_unavailable(monkeypatch):
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderSuccess())
-    monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: None)
-    monkeypatch.setattr(
-        svc,
-        "load_crawled_position_index",
-        lambda iso3: {"1801000010": {"taxes": {"DD": {"rate": 99.0}}}},
-    )
-
-    result = svc.calculate_import_taxes("MAR", "1801000010", 1000.0)
-
-    assert "error" not in result
-    assert result["rates"]["dd_rate_pct"] == 5.0
-    assert result["sub_position"]["code"] == "1801000010"
-
-
-def test_calculation_keeps_exact_measures_not_listing_aggregate(monkeypatch):
-    from decimal import Decimal
-
-    calls = []
-
-    class Provider(_PostgresProviderSuccess):
-        def get_regulatory_details(self, country_iso3, hs6):
-            calls.append(hs6)
-            result = super().get_regulatory_details(country_iso3, hs6)
-            result["taxes"]["dd_rate"] = Decimal("5.0" if len(hs6) > 6 else "99.0")
-            result["taxes"]["vat_rate"] = Decimal("20.0")
-            return result
-
-        def get_sub_positions(self, country_iso3, hs6, language="fr"):
-            rows = super().get_sub_positions(country_iso3, hs6, language)
-            rows[0]["dd"] = 99  # Test sentinel: aggregate must not override the measure.
-            return rows
-
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: Provider())
-    monkeypatch.setattr(svc, "load_country_tariffs", lambda *_: None)
-    monkeypatch.setattr(svc, "load_crawled_position_index", lambda *_: {})
-    monkeypatch.setattr(svc, "load_nomenclature_map", lambda *_: None)
-    result = svc.calculate_import_taxes("MAR", "1801000010", 1000)
-    assert "1801000010" in calls
-    assert result["rates"]["dd_rate_pct"] == 5
-
-
-@pytest.mark.parametrize("missing", ["dd_rate", "vat_rate"])
-def test_incomplete_postgres_measures_do_not_produce_zero_total(monkeypatch, missing):
-    class Provider(_PostgresProviderSuccess):
-        def get_regulatory_details(self, country_iso3, hs6):
-            result = super().get_regulatory_details(country_iso3, hs6)
-            result["taxes"][missing] = None
-            return result
-
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: Provider())
-    monkeypatch.setattr(svc, "load_country_tariffs", lambda *_: None)
-    monkeypatch.setattr(svc, "load_crawled_position_index", lambda *_: {})
-    monkeypatch.setattr(svc, "load_nomenclature_map", lambda *_: None)
-    result = svc.calculate_import_taxes("MAR", "1801000010", 1000)
-    assert result["error_detail"]["code"] == "CALCULATION_UNAVAILABLE"
-    assert "taxes_summary" not in result
-
-
 class _PostgresProviderLiberia:
     """Mesures telles que les génère engine/converters/ecowas_converter.py :
     redevance statistique béninoise, GST à 10 %."""
@@ -189,22 +129,3 @@ class _PostgresProviderLiberia:
         return []
 
 
-def test_postgres_first_suit_la_regle_cedeao_hors_uemoa(monkeypatch):
-    """Liberia servi par PostgreSQL : sans redevance statistique, GST de la loi
-    (12 %) sur tous les droits, Customs User Fee ajouté — comme le socle."""
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderLiberia())
-
-    line = svc.get_tariff_line("LBR", "010121")
-    assert line["data_source"] == "postgres"
-    assert line["vat_rate"] == 12.0
-    assert {d["tax"]: d["rate"] for d in line["taxes_detail"]} == {
-        "DD": 5.0, "PCC": 0.5, "GST": 12.0, "CUF": 1.5,
-    }
-
-    r = svc.calculate_import_taxes("LBR", "010121", 10000, origin_country="CHN")
-    etapes = {e["code"]: e for e in r["calculation_steps"]}
-    assert {c: e["amount"] for c, e in etapes.items() if c != "TVA"} == {
-        "DD": 500.0, "PCC": 50.0, "CUF": 150.0,
-    }
-    assert etapes["TVA"]["rate_pct"] == 12.0
-    assert etapes["TVA"]["base_value"] == 10700.0

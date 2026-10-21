@@ -14,7 +14,7 @@ Ces tests verrouillent :
     la General Note O — elle ne reçoit pas de préférence ;
 (c) SACU : union douanière, jamais la ZLECAf ;
 (d) la Tanzanie, absente de la General Note O : NPF ;
-(e) le même taux dans les deux chemins pour une origine admise ;
+(e) le taux AfCFTA pour une origine admise ;
 (f) le chemin socle avec la date du jour simulée avant/après l'entrée du
     Nigeria.
 """
@@ -28,7 +28,6 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from services import socle  # noqa: E402
-from services.authentic_tariff_service import calculate_import_taxes  # noqa: E402
 from services.preference import taux_preferentiels  # noqa: E402
 from services.zlecaf_schedule_zaf import DATES_ENTREE_ZAF, zaf_partner_active  # noqa: E402
 
@@ -98,19 +97,12 @@ def test_d_la_tanzanie_absente_de_la_general_note_o_est_au_npf():
 
 
 @besoin_socle
-def test_e_meme_taux_dans_les_deux_chemins_pour_une_origine_admie():
-    """Égypte (liste initiale) : le socle et le chemin historique servent le
-    même taux de la colonne AfCFTA (2 % contre un NPF de 10 %)."""
+def test_e_une_origine_admise_sert_le_taux_afcfta():
+    """Égypte (liste initiale) : le socle sert le taux de la colonne AfCFTA (2 % contre un NPF de 10 %)."""
     position, _ = socle.position("ZAF", CODE)
     soc = taux_preferentiels(position, "ZAF", "EGY", CODE)
     assert soc["applique"] is True
     assert soc["taux"]["DD"]["taux"] == 2.0
-
-    hist = calculate_import_taxes(
-        "ZAF", CODE, 10000, apply_zlecaf=True, origin_country="EGY", fob_value=10000
-    )
-    assert hist["zlecaf_preference_applied"] is True
-    assert hist["rates"]["effective_zlecaf_rate_pct"] == 2.0
 
 
 @besoin_socle
@@ -176,15 +168,10 @@ def test_h_bis_le_chemin_historique_porte_la_meme_notice_de_suspension():
 @besoin_socle
 def test_i_une_ligne_kenyane_non_suspendue_sert_le_taux_afcfta():
     """Contraste : sur une ligne ad valorem non suspendue (72191490), le
-    Kenya reçoit bien le taux AfCFTA (2 % contre un NPF de 10 %) — le même
-    dans les deux chemins."""
+    Kenya reçoit bien le taux AfCFTA (2 % contre un NPF de 10 %)."""
     position, _ = socle.position("ZAF", CODE)
     soc = taux_preferentiels(position, "ZAF", "KEN", CODE)
     assert soc["applique"] is True and soc["taux"]["DD"]["taux"] == 2.0
-    hist = calculate_import_taxes(
-        "ZAF", CODE, 10000, apply_zlecaf=True, origin_country="KEN", fob_value=10000
-    )
-    assert hist["rates"]["effective_zlecaf_rate_pct"] == 2.0
 
 
 @besoin_socle

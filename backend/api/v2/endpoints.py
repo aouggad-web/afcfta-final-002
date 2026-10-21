@@ -9,7 +9,6 @@ import sys
 import time
 import uuid
 from datetime import datetime, timezone
-from importlib import import_module
 from pathlib import Path
 from typing import Any, Optional
 
@@ -23,8 +22,6 @@ from search.investment_search import InvestmentOpportunitySearch  # type: ignore
 _ENGINE_DIR = Path(__file__).resolve().parents[3] / "engine"
 if str(_ENGINE_DIR) not in sys.path:
     sys.path.insert(0, str(_ENGINE_DIR))
-
-CanonicalTariffLine = import_module("schemas.canonical_model").CanonicalTariffLine
 
 # ---------------------------------------------------------------------------
 # Internal imports (backend/ is on sys.path)
@@ -77,29 +74,6 @@ class ComprehensiveSearchRequest(BaseModel):
     query: str
     filters: SearchFilters = Field(default_factory=SearchFilters)
     pagination: Pagination = Field(default_factory=Pagination)
-
-
-class ProductItem(BaseModel):
-    hs_code: str
-    description: str
-
-
-class RouteItem(BaseModel):
-    origin: str
-    destination: str
-
-
-class BulkTariffRequest(BaseModel):
-    products: list[ProductItem]
-    routes: list[RouteItem]
-
-
-class CalculationRequest(BaseModel):
-    line: CanonicalTariffLine
-    cif_value: float = Field(..., gt=0)
-    quantity: Optional[float] = Field(default=None, gt=0)
-    currency: str = Field(default="LOCAL", min_length=3, max_length=12)
-    regime: str = Field(default="NPF", pattern="^(NPF|ZLECAF)$")
 
 
 class OpportunityItem(BaseModel):
@@ -191,30 +165,6 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
         "execution_time_ms": elapsed_ms,
         "pagination": {"page": page, "limit": limit},
     }
-
-
-@router.post("/calculations", summary="Canonical v4 tariff calculation")
-async def calculate_tariff_v2(request: CalculationRequest) -> dict[str, Any]:
-    raise HTTPException(
-        status_code=503,
-        detail={
-            "code": "VERIFIED_TARIFF_PROVIDER_REQUIRED",
-            "data_status": "NOT_AVAILABLE",
-            "message": "Calculation unavailable until server-verified national tariff data is connected.",
-        },
-    )
-
-
-@router.post("/bulk/tariff-calculations", summary="Bulk tariff calculation")
-async def bulk_tariff_calculations(request: BulkTariffRequest) -> dict[str, Any]:
-    raise HTTPException(
-        status_code=503,
-        detail={
-            "code": "VERIFIED_TARIFF_PROVIDER_REQUIRED",
-            "data_status": "NOT_AVAILABLE",
-            "message": "Calculation unavailable until server-verified national tariff data is connected.",
-        },
-    )
 
 
 @router.post(

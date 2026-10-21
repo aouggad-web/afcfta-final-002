@@ -305,13 +305,3 @@ def test_la_preference_reste_servie_mais_porte_sa_reserve():
     assert "reserve" not in sans
 
 
-def test_le_chemin_historique_porte_la_meme_reserve():
-    """L'interface calcule le Kenya d'abord par le chemin historique : sans la
-    réserve à cet endroit, l'opérateur ne la verrait pas."""
-    from services.authentic_tariff_service import calculate_import_taxes
-
-    avec = calculate_import_taxes("KEN", "51111100", 10000, apply_zlecaf=True, origin_country="GHA")
-    assert avec["zlecaf_preference_applied"] is True
-    assert "51.11" in avec["zlecaf_reserve"]
-    sans = calculate_import_taxes("KEN", "02011000", 10000, apply_zlecaf=True, origin_country="GHA")
-    assert sans["zlecaf_reserve"] is None
