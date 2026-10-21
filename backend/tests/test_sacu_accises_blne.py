@@ -102,3 +102,16 @@ def test_valeur_en_pula_exige_un_taux_de_change(client):
     """Unités de compte du Botswana = rand : une valeur en pula ne s'y additionne pas sans taux."""
     _, lignes = _calcul(client, "BWA", "24022090", quantite=500, devise="BWP")
     assert lignes["EXS"]["statut"] == "TAUX_DE_CHANGE_REQUIS"
+
+
+def test_deja_dedouane_sacu_l_accise_du_botswana_n_est_pas_due(client):
+    """Art. 19 : préférence nulle sur l'accise ad valorem, sans assiette connue ;
+    rien n'est dû et la TVA se liquide."""
+    reponse = client.post("/calcul", json={
+        "destination": "BWA", "code_sh": "33030090", "valeur_cif": 11000, "valeur_fob": 10000,
+        "devise_cif": "ZAR", "origine": "CHN", "deja_dedouane_sacu": True,
+    })
+    assert reponse.status_code == 200
+    lignes = {ligne["code"]: ligne for ligne in reponse.json()["preference"]["lignes"]}
+    assert lignes["EXA"]["montant"] == 0.0
+    assert lignes["TVA"]["base"] == pytest.approx(11_000.0)
