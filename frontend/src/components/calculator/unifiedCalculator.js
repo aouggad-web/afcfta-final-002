@@ -96,6 +96,17 @@ export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
   return undefined;
 }
 
+/** États membres de la SACU (accord SACU 2002). */
+export const PAYS_SACU = new Set(['ZAF', 'BWA', 'LSO', 'NAM', 'SWZ']);
+
+/**
+ * Faut-il demander si la marchandise est déjà dédouanée dans un autre État de
+ * la SACU (art. 19 de l'accord) ? Pour une destination SACU seulement.
+ */
+export function dedouanementSacuPropose(destinationISO3) {
+  return PAYS_SACU.has(destinationISO3);
+}
+
 export function buildCalculRequestBody({
   destinationISO3,
   originISO3,
@@ -104,6 +115,7 @@ export function buildCalculRequestBody({
   quantite,
   valeurFob,
   paysExpedition,
+  dejaDedouaneSacu,
   tauxDeChange,
   poidsBrutKg,
   moyenTransport,
@@ -119,6 +131,11 @@ export function buildCalculRequestBody({
   const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue, devise_cif: 'USD' };
   if (originISO3) body.origine = originISO3;
   if (paysExpedition) body.pays_expedition = paysExpedition;
+  // Le moteur refuse ce champ hors SACU (422) : il n'est envoyé que coché,
+  // et pour une destination SACU.
+  if (dejaDedouaneSacu === true && dedouanementSacuPropose(destinationISO3)) {
+    body.deja_dedouane_sacu = true;
+  }
   // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la
   // valeur. Le champ n'est envoyé que s'il porte un nombre utilisable : une
   // saisie vide ou illisible doit laisser le moteur répondre QUANTITE_REQUISE,

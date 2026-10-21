@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "objet": "SACU : marchandise d'origine tierce déjà dédouanée dans un autre État membre (accord SACU 2002, art. 19) — ni droit de douane ni accise perçus à nouveau par l'État de destination",
+  "destination_iso3": ["ZAF", "BWA", "LSO", "NAM", "SWZ"],
+  "verified_at": "2026-10-14",
+  "etabli": true,
+  "evidence_level": "primaire : texte de l'accord SACU 2002 tel qu'amendé le 12 avril 2013, copie publiée par le gouvernement du Botswana ; la version de sacu.int n'est pas joignable depuis l'environnement de vérification",
+  "source": {
+    "url": "https://gobotswana.com/media/pdf/trade-agreements/SACU-Agreement-2002.pdf",
+    "institution": "Gouvernement du Botswana (copie de l'accord SACU 2002, amendé le 12 avril 2013)"
+  },
+  "regle": {
+    "valeur": "Champ deja_dedouane_sacu de /calcul, pour une destination de la SACU et une origine hors SACU (ou non fournie) : le droit de douane (DD) et les accises (EXS, EXA) sont servis à 0 % (art. 19 : « shall not impose any duties »). Restent dus la TVA du pays de destination et ses prélèvements nationaux (taxe sur les carburants, Road Accident Fund, prélèvements environnementaux, Health Promotion Levy pour l'Afrique du Sud), aucun texte ne les rattachant au pot commun des droits de douane, d'accise et additionnels (art. 32). Une origine SACU relève de la libre circulation de l'art. 18 (droit de douane seul) : le champ ne la change pas.",
+    "verbatim": "Except as otherwise provided in this Agreement, a Member State shall not impose any duties on goods which were imported from outside the Common Customs Area on importation of such goods from the area of any other Member State.",
+    "verbatim_art_31_4": "When goods imported by a Member State from outside the Common Customs Area under a preferential agreement are exported to another Member State, the normal import duty applicable to such goods when imported into the rest of the Common Customs Area will be charged. Any difference between the normal duty and the duty originally charged on these goods shall be paid into the Common Revenue Pool.",
+    "verbatim_art_32": "All customs, excise and additional duties collected in the Common Customs Area shall be paid into the Common Revenue Pool in accordance with Article 33 within three (3) months of the end of the quarter of a financial year.",
+    "reference": "Southern African Customs Union Agreement 2002 (As amended on 12 April 2013), art. 1, 18.1, 19, 31.4 et 32",
+    "portee": "backend/services/preference.py, marchandise_dedouanee_sacu ; backend/routes/calcul.py, champ deja_dedouane_sacu (422 hors destination SACU) ; formulaire : case affichée pour une destination SACU seulement.",
+    "texte_archive": "sources/SACU_art19.extrait.txt",
+    "sha256": "8b815775a17462cc3ca2fb199e15dbb9350bd23b92b0dec82e4c1d42762d4ba3"
+  },
+  "decisions": [
+    "Le champ est déclaratif : le calculateur ne peut savoir si la marchandise a été dédouanée pour la consommation dans un autre État membre ou seulement acheminée en transit sous douane jusqu'à la frontière. Le pays d'expédition ne suffit pas à le déduire.",
+    "« any duties » : l'art. 1 renvoie aux droits de douane et d'accise définis par chaque législation nationale ; les deux sont versés au pot commun (art. 32). DD, EXS et EXA sont donc servis à 0 %.",
+    "La TVA de destination reste calculée sur l'assiette nationale de la table tva_nationale.json."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Art. 31.4 : une marchandise entrée dans la SACU à un taux préférentiel doit, réexpédiée vers un autre État membre, la différence avec le droit normal. Le taux payé au premier dédouanement n'est pas connu du calculateur : la différence n'est pas calculée, la note de la réponse le signale.",
+    "Prélèvements nationaux de l'État de destination (taxe sur les carburants, prélèvements environnementaux…) : maintenus, faute de texte établissant qu'ils relèvent du pot commun ou qu'ils sont remis à la réimportation intra-SACU.",
+    "Valeur imposable à la TVA d'une marchandise déjà dédouanée ailleurs (prix intra-SACU, droits déjà payés compris ou non) : l'assiette nationale est appliquée à la valeur saisie.",
+    "Procédures nationales (BURS, RSL, NamRA, ERS) appliquant l'art. 19 : demandées au collecteur, non déposées au 2026-10-14."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SACU_art19.extrait.txt",
+      "sha256": "8b815775a17462cc3ca2fb199e15dbb9350bd23b92b0dec82e4c1d42762d4ba3"
+    },
+    {
+      "document_non_archive": "Southern African Customs Union Agreement 2002 (As amended on 12 April 2013), PDF de 40 pages : https://gobotswana.com/media/pdf/trade-agreements/SACU-Agreement-2002.pdf",
+      "pdf_sha256": "478f6cc00f811d0cbdb5f960076105beb1cea004a3b1721a4481f1ea7860709b"
+    }
+  ]
+}
