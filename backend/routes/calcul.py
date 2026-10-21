@@ -39,7 +39,8 @@ from pydantic import BaseModel, Field
 from engine.schemas.legal_override import RemissionEligibility
 from services import exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
-from services.preference import simulations_regionales, taux_preferentiels
+from services.preference import marchandise_dedouanee_sacu, simulations_regionales, taux_preferentiels
+from services.regional_blocs import SACU, same_customs_union
 from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 
 logger = logging.getLogger(__name__)
@@ -92,6 +93,16 @@ class DemandeCalcul(BaseModel):
             "pays. Omis pour une telle origine, la TVA reste indisponible "
             "plutôt que supposée. « AUTRE » : expédiée d'un autre pays (l'interface "
             "pose la question oui/non et transmet l'origine ou « AUTRE »)."
+        ),
+    )
+    deja_dedouane_sacu: bool = Field(
+        False,
+        description=(
+            "Destination SACU (ZAF, BWA, LSO, NAM, SWZ) seulement : la "
+            "marchandise, d'origine tierce, a déjà été dédouanée dans un autre "
+            "État de la SACU (port d'entrée sud-africain, par exemple). Accord "
+            "SACU 2002, art. 19 : ni droit de douane ni accise ne sont perçus à "
+            "nouveau ; la TVA de destination reste due."
         ),
     )
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
@@ -233,6 +244,15 @@ def calcul(demande: DemandeCalcul):
         preference = taux_preferentiels(
             position, demande.destination, demande.origine, demande.code_sh
         )
+    if demande.deja_dedouane_sacu:
+        if demande.destination.upper() not in SACU:
+            raise HTTPException(
+                status_code=422,
+                detail="deja_dedouane_sacu : réservé à une destination de la SACU (ZAF, BWA, LSO, NAM, SWZ).",
+            )
+        # Une origine SACU relève déjà de la libre circulation (art. 18).
+        if not same_customs_union(demande.origine, demande.destination):
+            preference = marchandise_dedouanee_sacu(demande.destination)
 
     position, exonerations = exoneration_origine.appliquer(position, demande.origine)
 

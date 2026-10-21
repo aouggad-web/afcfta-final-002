@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "country": "CIV",
+  "as_of": "2026-10-14",
+  "docs": [
+    {
+      "source_id": "CIV-DGD-CIRC-2258-2023",
+      "official_title": "Circulaire n° 2258/MBPE/DGD du 31/07/2023 — Application du TEC CEDEAO basé sur le SH 2022 à compter du 08/08/2023 (catégories 0, 5, 10, 20 et 35 %, RS 1 %, PCC 0,5 %, PCS 0,8 %, PUA 0,2 % ; taxation ad valorem)",
+      "institution": "Direction Générale des Douanes (douanes.ci)",
+      "legal_date": "2023-07-31",
+      "url": "https://www.douanes.ci/sites/default/files/base_documentaire/c_2258.pdf",
+      "sha256": "c83ecbf1ec9b7cbcc64a733ae881076d5605495fa87d13062710e571f35042aa",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "local_copy": "data/cote-d-ivoire/docs_officiels/CIRCULAIRE-2258-2023-TEC-CEDEAO-SH2022.pdf",
+      "notes": "Scan 2 p. sans couche texte ; OCR transcript versé séparément. Portée : toutes positions du TEC (6381 lignes SH 2022). Fichier déjà au dépôt (même empreinte) : copie locale sous docs_officiels/, non versée une seconde fois.",
+      "is_draft": false
+    },
+    {
+      "source_id": "CIV-DGD-CIRC-1702-2015",
+      "official_title": "Circulaire n° 1702/MPMB/DGD du 13/02/2015 (fichier 2549.pdf) — Mesures Complémentaires de Protection (TAI et TCP), Règlement CEDEAO C/REG.1/09/13",
+      "institution": "Direction Générale des Douanes (douanes.ci)",
+      "legal_date": "2015-02-13",
+      "url": "https://www.douanes.ci/sites/default/files/tec/circulaires/2549.pdf",
+      "sha256": "22a41f78fff177b809aeccc3e95037d211ee5ba08439ce592b9aa7fa2b40cd9d",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "local_copy": "data/cote-d-ivoire/docs/CIV_c2549.pdf",
+      "notes": "Scan sans couche texte (OCR effectué pour lecture). TAI : période transitoire de 5 ans à compter du 01/01/2015 ; taux fixé par l'État dans la limite de l'écart entre son droit NPF et celui du TEC, plus une liste annexe 1 de produits éligibles d'office ; TCP : 2 ans (volume +25 %) / 1 an (prix CAF < 80 %).",
+      "is_draft": false
+    },
+    {
+      "source_id": "CIV-DGD-CIRC-1689-2014",
+      "official_title": "Circulaire n° 1689/MPMB/DGD du 29/12/2014 — Positions tarifaires des espèces de bois et produits ligneux soumis à DUS à l'exportation (chapitre 44) + tableau de concordance en annexe",
+      "institution": "Direction Générale des Douanes (douanes.ci)",
+      "legal_date": "2014-12-29",
+      "url": "https://www.douanes.ci/sites/default/files/tec/circulaires/2489.pdf",
+      "sha256": "3d7708c531aaf477426d8c68df8db6761a4233ed366d085de9d80576911f7d86",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "local_copy": "data/cote-d-ivoire/docs/CIV_c2489.pdf",
+      "notes": "Fichier 2489.pdf. Historique (effet 01/01/2015) ; DUS dû à l'exportation, hors calcul d'une importation.",
+      "is_draft": false
+    },
+    {
+      "source_id": "CIV-VOC-AVIS-2018",
+      "official_title": "Avis aux importateurs — Programme de Vérification de la Conformité (VoC), décret n° 2017-567 du 06/09/2017 : honoraires des 4 prestataires (BIVAC, Cotecna, Intertek, SGS) Route A 0,45 % / B 0,40 % / C 0,30 % FOB avec minima, pénalité 50 % CAF, liste des produits exclus",
+      "institution": "Ministère du Commerce / SEPMBPE (gucecotedivoire.ci)",
+      "legal_date": "2018-02-13",
+      "url": "https://www.gucecotedivoire.ci/pwic/wp-content/uploads/LOIS/Avis%20aux%20importateurs%20de%20marchandises%20en%20RCI_opt.pdf",
+      "sha256": "39def6cb4876c30c1dbe618c986761d650d341060bc1a14c4f2a6ee7f8040c88",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "local_copy": "data/cote-d-ivoire/docs/CIV_avis_importateurs_VoC_decret2017-567.pdf",
+      "notes": "Frais VoC facturés à l'exportateur ; exclus du VoC (annexe) : or et métaux précieux, pierres précieuses, armes, animaux vivants, poissons, viandes, légumes et fruits frais, floriculture, films, journaux, effets usagés, véhicules usagés, colis postaux, pétrole brut ou partiellement raffiné, échantillons, missions diplomatiques, régimes francs, artisanat communautaire.",
+      "is_draft": false
+    },
+    {
+      "source_id": "CIV-DGI-NOTE-IMPOTS-TAXES",
+      "official_title": "« Impôts et taxes en Côte d'Ivoire » — note explicative DGI, édition 2025 (129 p.) : droits d'accises art. 403-418 CGI (produits pétroliers, eau, boissons, tabacs, cartouches, marbres/véhicules ≥13 CV/parfumerie), taxes spécifiques art. 421+",
+      "institution": "Direction Générale des Impôts (dgi.gouv.ci)",
+      "legal_date": null,
+      "url": "https://dgi.gouv.ci/assets/documents/IMPOTS%20ET%20TAXES%20EN%20COTE%20D'IVOIRE%20.pdf",
+      "sha256": "708b86d7165bfc748dbe133f17dd378a38a3a71448875396797ac64941ee2b2c",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "local_copy": "data/cote-d-ivoire/docs_officiels/IMPOTS-ET-TAXES-CI-TABLEAU-SYNOPTIQUE-2025.pdf",
+      "notes": "Tableau détaillé des taux (voir MANIFESTE). Fichier déjà au dépôt (même empreinte) : copie locale sous docs_officiels/, non versée une seconde fois.",
+      "is_draft": false
+    },
+    {
+      "source_id": "CIV-AF-LF2025-PROJET",
+      "official_title": "Projet d'annexe fiscale à la loi de finances 2025 (dgbf.ci, 150 p.) — dont art. 19 : tabacs (min 50 % CEDEAO/UEMOA, plafond 150 % UEMOA) ; taxe spéciale sport 5→7 % ; taxe solidarité SIDA/tabagisme 2→6 %",
+      "institution": "Direction Générale du Budget (dgbf.ci)",
+      "legal_date": null,
+      "url": "https://www.dgbf.ci/wp-content/uploads/2024/11/Annexe1-Annexe-Fiscale.pdf",
+      "sha256": "a04dff93d22f79086dc1adacc35e59869f0ca3c9347d4ddf9ce8e91b34fb1fed",
+      "verification_status": "OFFICIAL_DRAFT_TEXT",
+      "local_copy": "data/cote-d-ivoire/docs/CIV_annexe_fiscale_LF2025.pdf",
+      "notes": "Projet de texte, pas l'annexe adoptée : chaque page porte « Projet d'annexe fiscale à la loi de Finances portant Budget de l'Etat pour l'année 2025 ». L'annexe fiscale 2026 adoptée (loi n° 2025-987) est déjà au dépôt (data/cote-d-ivoire/docs_officiels/ANNEXE-FISCALE-2026-LOI-2025-987.pdf).",
+      "is_draft": true
+    }
+  ],
+  "notes_revision": [
+    "Consultation préalable de docs_officiels/ (collecte 10/10/2026) effectuée : doublons signalés, numéros/dates relevés sur les en-têtes.",
+    "Manques réels : légende officielle SYDAM (TUB/TUF/TUE/PSV/TMP/TCI/PSS — à demander DGD) ; texte fondateur TSB 25% tomates 2002.10/2002.90.20 ; ordonnance 2025-260 ZLECAf + textes application (non publics)."
+  ]
+}

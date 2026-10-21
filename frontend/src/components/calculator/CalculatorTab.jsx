@@ -36,6 +36,7 @@ import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
 import {
   buildCalculRequestBody,
+  dedouanementSacuPropose,
   expeditionSacuRequise,
   mapCalculToLegacyResult,
   localiserResultat,
@@ -44,6 +45,7 @@ import {
   tauxDeChangePour,
 } from './unifiedCalculator';
 import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
+import DedouanementSacuQuestion from './DedouanementSacuQuestion';
 import {
   isCustomsDutyTax,
   isDisplayableZlecafResult,
@@ -129,6 +131,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // Afrique du Sud, VAT Act s.13(2)(b) : pour une origine BWA/LSO/NAM/SWZ,
   // la majoration de 10 % de la TVA dépend du pays d'expédition.
   const [expeditionSacu, setExpeditionSacu] = useState('unknown');
+  // SACU, accord de 2002, art. 19 : marchandise déjà dédouanée dans un autre
+  // État membre. Proposée pour une destination SACU seulement.
+  const [dejaDedouaneSacu, setDejaDedouaneSacu] = useState(false);
   // Valeur FOB (assiette SACU), sur le même modèle : demandée seulement quand
   // un moteur la réclame, et rattachée à la position pour laquelle elle a été
   // saisie.
@@ -162,6 +167,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   useEffect(() => {
     setExpeditionSacu('unknown');
   }, [destinationCountry, originCountry]);
+
+  useEffect(() => {
+    setDejaDedouaneSacu(false);
+  }, [destinationCountry]);
 
   const handleDestinationChange = useCallback((value) => {
     setDestinationCountry(value);
@@ -409,6 +418,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       authorizedTariffLines: '', authorizedGoods: '',
     });
     setExpeditionSacu('unknown');
+    setDejaDedouaneSacu(false);
   };
 
   const calculateTariff = async (overrideHsCode) => {
@@ -504,6 +514,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           ? parseFloat(quantity)
           : NaN,
         paysExpedition,
+        dejaDedouaneSacu,
         valeurFob,
         tauxDeChange: tauxDeChangePour(destISO3, await demanderConversion()),
         ...transport,
@@ -1045,6 +1056,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <KenyaRemissionAuthorization
               value={kenyaRemission}
               onChange={setKenyaRemission}
+            />
+          )}
+
+          {dedouanementSacuPropose(
+            destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry,
+          ) && (
+            <DedouanementSacuQuestion
+              checked={dejaDedouaneSacu}
+              onChange={setDejaDedouaneSacu}
+              language={language}
             />
           )}
 

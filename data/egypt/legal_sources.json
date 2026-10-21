@@ -23,6 +23,17 @@
       "sha256": null,
       "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
       "notes": "Article 3 fixe le taux standard à 14 % depuis l'exercice 2017/2018 ; article 10(7) définit l'assiette à l'importation."
+    },
+    {
+      "source_id": "EGY-ETA-VAT-LAW-67-2016-JO-SCAN",
+      "official_title": "Loi n° 67 de 2016 portant loi sur la TVA — scan du Journal officiel égyptien n° 35 bis (c) du 07/09/2016 (arabe, 50 pages)",
+      "institution": "Egyptian Tax Authority (mise en ligne du fac-similé du Journal officiel)",
+      "legal_date": "2016-09-07",
+      "url": "https://www.eta.gov.eg/sites/default/files/2024-03/vat-law_no.67-2016.pdf",
+      "sha256": "33097e10d26d20a3ccb3045a80799e1ca7a0a49027164290fd0d87ec976f3548",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "local_copy": "data/egypt/docs/EGY_loi_67_2016_TVA_JO_35bis_c_2016-09-07.pdf",
+      "notes": "En-tête de chaque page : الجريدة الرسمية، العدد 35 مكرر (ج)، 7 سبتمبر 2016 = le fac-similé de la publication au Journal officiel. Complète l'entrée EGY-ETA-VAT-LAW-67-2016 (traduction anglaise ETA). Article 3 : taux standard 14 % depuis 2017/2018 ; article 10(7) : assiette à l'importation. NB : le PDF de la Chambre des députés (fra.gov.eg, texte consolidé) rejette les téléchargements (WAF)."
     }
   ]
 }

@@ -464,6 +464,39 @@ def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[
     }
 
 
+def marchandise_dedouanee_sacu(destination_iso3: str) -> Dict[str, Any]:
+    """Marchandise d'origine tierce déjà dédouanée dans un autre État de la SACU.
+
+    Accord SACU 2002, art. 19 : un État membre n'impose aucun droit sur une
+    marchandise importée de l'extérieur de la zone douanière commune quand
+    elle lui arrive d'un autre État membre. Droit de douane et accises (pot
+    commun, art. 32) ont été perçus au premier dédouanement ; restent dus la
+    TVA du pays de destination et ses prélèvements nationaux, faute de texte
+    les rattachant au pot commun. Fiche : SACU_art19_2026-10-14.json.
+    """
+    from services.regional_blocs import CUSTOMS_UNION_NAMES
+
+    libelle = CUSTOMS_UNION_NAMES["SACU"]
+    reference = "Accord SACU 2002, art. 19 (droits perçus au premier dédouanement dans la SACU)"
+    return {
+        "applique": True,
+        "regime": "UNION_DOUANIERE",
+        "code_bloc": "SACU",
+        "libelle_bloc": libelle,
+        "statut": "DEJA_DEDOUANEE_SACU",
+        "note": (
+            f"Marchandise déjà dédouanée dans un autre État de la {libelle} : "
+            f"{destination_iso3.upper()} ne perçoit ni droit de douane ni accise "
+            "(accord SACU 2002, art. 19). La TVA du pays de destination et ses "
+            "prélèvements nationaux restent dus. Réserve (art. 31.4) : si la "
+            "marchandise est entrée dans la SACU à un taux préférentiel, la "
+            "différence avec le droit normal est due — elle n'est pas calculée ici."
+        ),
+        "taux": {"DD": {"taux": 0.0}, "EXS": {"taux": 0.0}, "EXA": {"taux": 0.0}},
+        "perimetre": {"DD": reference, "EXS": reference, "EXA": reference},
+    }
+
+
 #: Régimes régionaux dont le socle porte une colonne ET dont le roster est
 #: sourcé dans le dépôt (``regional_blocs``). ``EU_UK``, ``EFTA`` et
 #: ``MERCOSUR`` en sont absents : leurs colonnes existent bien au socle
