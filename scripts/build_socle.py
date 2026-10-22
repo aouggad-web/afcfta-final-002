@@ -114,6 +114,8 @@ FAMILLES = {
     "FLV": "accise",  # taxe sur les carburants, Part 5A (ZA)
     "RAF": "accise",  # Road Accident Fund levy, Part 5B (ZA)
     "HPL": "accise",  # Health Promotion Levy, boissons sucrées, Part 7A (ZA)
+    "EVN": "accise",  # prélèvement environnemental, Part 3 (NA)
+    "ATL": "accise",  # Alcohol and Tobacco Levy (SZ)
     "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
@@ -1885,12 +1887,26 @@ ACCISES_ZAF = os.path.join(REPO, "data", "zaf", "accises_sch1_part2.json")
 #: non remis de la Part 1 et de la Part 2A, sans l'accise ad valorem elle-même.
 ASSIETTE_EXA_ZAF = "FOBx1.15+DD+EXS"
 UNITES_ACCISE_ZAF = {"kg": "kg", "li": "li", "ml": "ml", "10cigarettes": "10 cigarettes", "10sticks": "10 sticks"}
+#: Les autres États de la SACU appliquent les taux d'accise communs (accord
+#: SACU 2002, art. 21 et 22), ceux du tarif sud-africain ; fiche
+#: SACU_accises_BLNE_2026-10-20.json. Seule la valeur de l'accise ad valorem
+#: relève de chaque loi nationale : (assiette, référence). Botswana : prix de
+#: gros sur le marché botswanais, que le calcul ne connaît pas.
+ASSIETTE_EXA_SACU = {
+    "ZAF": (ASSIETTE_EXA_ZAF, "s.65(8)(a)"),
+    "NAM": ("FOBx1.15+DD+EXS", "Customs and Excise Act 20/1998 (Namibie), s.75(9)(a)"),
+    "SWZ": ("FOBx1.15+DD+EXS", "Customs and Excise Act 1971 (Eswatini), s.65(7)(a)"),
+    "LSO": ("FOBx1.15+DD", "Customs and Excise Act 10/1982 (Lesotho), s.67(6)(a)"),
+    "BWA": (None, "Excise Duty Act 2018 (Botswana), s.69(1)"),
+}
 
 
-def _accises_zaf(positions, compteurs):
+def _accises_zaf(positions, compteurs, iso="ZAF"):
     """Afrique du Sud : accise spécifique (Part 2A, code EXS) et ad valorem
     (Part 2B, code EXA), dues à l'importation sur les biens de même nature que
-    ceux fabriqués dans la République (Part 2, Section B, note 1)."""
+    ceux fabriqués dans la République (Part 2, Section B, note 1). Mêmes taux
+    pour les autres États de la SACU, sur la valeur de leur loi nationale."""
+    assiette_exa, ref_valeur = ASSIETTE_EXA_SACU[iso]
     with open(ACCISES_ZAF, encoding="utf-8") as f:
         articles = json.load(f)["articles"]
     for article in articles:
@@ -1898,6 +1914,8 @@ def _accises_zaf(positions, compteurs):
         code_ligne = "EXS" if article["partie"] == "2A" else "EXA"
         source = (f"Customs and Excise Act 1964, Schedule No. 1 Part {article['partie']}, "
                   f"article {article['article']} ({article['sous_position']})")
+        if iso != "ZAF":
+            source = f"Taux commun SACU (accord SACU 2002, art. 21 et 22) : {source}"
         for code, position in positions.items():
             if not code.startswith(prefixe):
                 continue
@@ -1924,12 +1942,18 @@ def _accises_zaf(positions, compteurs):
                 # Véhicules (articles 126.02 à 126.05) : taux de ((0,00003 × B) − 0,75) %,
                 # plafonné à 30 %, B étant la valeur de la s.65(8)(a) : un taux qui
                 # dépend de la valeur n'est pas servi.
-                ligne["assiette"], ligne["assiette_origine"] = ASSIETTE_EXA_ZAF, "regle_de_pays"
+                ligne["assiette"] = assiette_exa
+                ligne["assiette_origine"] = "regle_de_pays" if assiette_exa else None
                 ligne["note"] = ("Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, "
-                                 "B étant la valeur de la s.65(8)(a) ; taux fonction de la valeur, non servi.")
+                                 f"B étant la valeur de la {ref_valeur} ; taux fonction de la valeur, non servi.")
+            elif code_ligne == "EXA" and assiette_exa is None:
+                ligne["taux"] = article["taux"]
+                ligne["assiette"], ligne["assiette_origine"] = None, None
+                ligne["note"] = (f"{article['brut']} sur la valeur de la {ref_valeur} : prix de gros sur le "
+                                 "marché botswanais, inconnu du calcul ; accise non liquidée.")
             elif code_ligne == "EXA":
                 ligne["taux"] = article["taux"]
-                ligne["assiette"], ligne["assiette_origine"] = ASSIETTE_EXA_ZAF, "regle_de_pays"
+                ligne["assiette"], ligne["assiette_origine"] = assiette_exa, "regle_de_pays"
             else:
                 ligne["taux"] = article["taux"]  # « free » de la Part 2A
                 ligne["assiette"], ligne["assiette_origine"] = "FOB", "regle_de_pays"
@@ -2009,6 +2033,62 @@ def _prelevements_zaf(positions, compteurs):
                     "unite_quantite": UNITES_PRELEVEMENT_ZAF[unite], "brut": article["brut"],
                 }
                 ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Prélèvements nationaux dus à l'importation au Botswana, en Namibie et en
+#: Eswatini, dont le taux en vigueur n'est pas collecté (fiche
+#: SACU_accises_BLNE_2026-10-20.json) : la ligne est servie sans taux, le total
+#: est incomplet plutôt que présenté comme complet. Fuel levy et prélèvement
+#: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
+#: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
+#: reprises. Lesotho : aucun prélèvement à l'importation documenté.
+#: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
+PRELEVEMENTS_SACU_NON_COLLECTES = {
+    "BWA": [
+        ("FLV", "Fuel levy", {"5A"}, None,
+         "Excise Duty Act 2018 (Botswana), s.2 : « fuel levy » (Schedule No. 1 Part 5)", ""),
+    ],
+    "NAM": [
+        ("FLV", "Fuel levy", {"5A"}, None,
+         "Customs and Excise Act 20/1998 (Namibie), s.2 : « fuel levy » (Schedule 1 Part 5)", ""),
+        ("EVN", "Environmental levy", {"3A", "3C", "3D", "3E"}, None,
+         "Customs and Excise Act 20/1998 (Namibie), s.58A(1) (Schedule 1 Part 3)", ""),
+    ],
+    "SWZ": [
+        ("ATL", "Alcohol and Tobacco Levy",
+         ("2203", "2204", "2205", "2206", "2208", "2402", "240311", "240319", "240399"),
+         "FOB+DD+EXS+EXA",
+         "Alcohol and Tobacco Levy Act 2019 (Eswatini), s.3(1)(b), s.4(2) et annexe, item 1",
+         "7 % à l'annexe de la loi de 2019 (boissons alcoolisées hors bière traditionnelle, cigares, "
+         "cigarettes, tabac à pipe et à priser) ; "),
+    ],
+}
+
+
+def _prelevements_sacu_non_collectes(iso, positions, compteurs):
+    """Botswana, Namibie, Eswatini : prélèvements nationaux à l'importation
+    déclarés sans taux sur leurs positions, faute de barème en vigueur."""
+    with open(PRELEVEMENTS_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for code_ligne, libelle, perimetre, assiette, source, note in PRELEVEMENTS_SACU_NON_COLLECTES[iso]:
+        if isinstance(perimetre, set):
+            prefixes = tuple(a["sous_position"].replace(".", "") for a in articles if a["partie"] in perimetre)
+        else:
+            prefixes = perimetre
+        for code, position in positions.items():
+            if not code.startswith(prefixes):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": assiette,
+                     "assiette_origine": "regle_de_pays" if assiette else None, "source": source,
+                     "note": note + "taux en vigueur non collecté : prélèvement dû à l'importation, "
+                                    "non liquidé, total incomplet."}
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(rang, ligne)
             _compter_ligne(ligne, compteurs, 1)
@@ -3308,8 +3388,11 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
+    if iso in ASSIETTE_EXA_SACU:
+        _accises_zaf(positions, compteurs, iso)
+    if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
+        _prelevements_sacu_non_collectes(iso, positions, compteurs)
     if iso == "ZAF":
-        _accises_zaf(positions, compteurs)
         _prelevements_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)

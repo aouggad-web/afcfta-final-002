@@ -485,8 +485,16 @@ def _liquider(
         if (
             taux == 0
             and specifique is None
-            and isinstance(droit.get("assiette"), str)
-            and (droit["assiette"] == "FOB" or droit["assiette"].startswith(("FOB+", "FOBx")))
+            and (
+                (
+                    isinstance(droit.get("assiette"), str)
+                    and (droit["assiette"] == "FOB" or droit["assiette"].startswith(("FOB+", "FOBx")))
+                )
+                # Préférence nulle sur une ligne sans assiette connue (accise
+                # ad valorem du Botswana, sur un prix de gros : accord SACU
+                # art. 19) : rien n'est dû, quelle que soit la base.
+                or (droit.get("assiette") is None and ligne.get("regime_applique") == "preference")
+            )
         ):
             # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
             # particulier sur la base FOB des pays SACU : une franchise
