@@ -46,7 +46,6 @@ def test_les_positions_muettes_etaient_des_positions_supprimees(positions):
 
 def test_une_position_nouvelle_est_servie_sans_droit_invente(positions):
     nouvelle = positions["0902100010"]
-    assert nouvelle["designation"].startswith("contenant des composants du cannabis")
     (dd,) = nouvelle["droits"]
     assert dd["code"] == "DD" and dd["taux"] is None
     assert "à compléter" in dd["note"]
@@ -56,3 +55,26 @@ def test_une_position_nouvelle_est_servie_sans_droit_invente(positions):
 def test_le_sh6_redecoupe_propose_les_nouvelles_positions():
     codes = [p["code"] for p in socle.positions_nationales("MAR", "090210")]
     assert codes == ["0902100010", "0902100090"]
+
+
+def test_la_designation_d_une_position_nouvelle_dit_la_marchandise(positions):
+    """« autres » seul ne dit pas qu'il s'agit de thé : la désignation remonte
+    les titres publiés, et un libellé SH6 emprunté porte sa source."""
+    designation = positions["0902100090"]["designation"]
+    assert designation["fr"].startswith("Thé, même aromatisé — Thé vert")
+    assert designation["fr"].endswith("— autres")
+    titre, sh6, ligne = designation["hierarchie"]
+    assert (titre["code"], ligne["code"]) == ("0902", "0902100090")
+    assert titre["source"] == ligne["source"] == "douane.gov.ma/adil — nomenclature"
+    assert sh6["code"] == "090210" and sh6["source"].startswith("libellé SH6 emprunté")
+    # Un titre à huit chiffres publié tient lieu de titre SH6 : rien d'emprunté.
+    beurre = positions["0405100091"]["designation"]["hierarchie"]
+    assert [n["code"] for n in beurre] == ["0405", "04051000", "0405100091"]
+
+
+def test_la_provenance_distingue_la_date_des_codes_de_celle_des_taux():
+    _, nouvelle = socle.position("MAR", "0902100090")
+    assert nouvelle["dates"] == {"codes": "2026-10-21", "taux": None}
+    assert nouvelle["nomenclature"]["releve_le"] == "2026-10-21"
+    _, ancienne = socle.position("MAR", "0101210000")
+    assert ancienne["dates"] == {"codes": "2026-10-21", "taux": "2026-02-11"}

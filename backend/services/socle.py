@@ -259,8 +259,29 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
         },
         "devise_nationale": devise_nationale(iso3),
         "socle_version": donnees.get("socle_version"),
+        "dates": _dates(donnees, code),
     }
+    publiee = donnees.get("nomenclature_publiee")
+    if publiee:
+        provenance["nomenclature"] = {
+            cle: publiee.get(cle) for cle in ("nom", "releve_le", "fichier", "sha256", "positions_publiees")
+        }
     return trouve, provenance
+
+
+def _dates(donnees: dict, code: str) -> dict:
+    """La date des CODES et celle des TAUX, qui peuvent différer.
+
+    Ordinairement, les deux viennent du même relevé. Quand le socle suit une
+    nomenclature publiée après le relevé des droits (Maroc), les codes datent
+    de cette nomenclature, et une position qu'elle seule porte n'a pas de
+    taux relevé : sa date de taux est absente, pas celle du relevé."""
+    collecte = str((donnees.get("source") or {}).get("collecte") or "")[:10] or None
+    publiee = donnees.get("nomenclature_publiee") or {}
+    return {
+        "codes": publiee.get("releve_le") or collecte,
+        "taux": None if code in (publiee.get("ajoutees") or ()) else collecte,
+    }
 
 
 def vider_cache() -> None:

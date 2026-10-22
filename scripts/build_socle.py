@@ -2209,6 +2209,37 @@ NOTE_POSITION_NOUVELLE_MAR = (
 )
 
 
+SOURCE_NOMENCLATURE_MAR = "douane.gov.ma/adil — nomenclature"
+
+
+def _texte_adil(texte):
+    """Le texte ADIL, sauts de ligne (« \\r », « £ ») rendus en espaces."""
+    return " ".join(texte.replace("\r", " ").replace("£", " ").split())
+
+
+def _designation_hierarchique_maroc(code, publiees, titres, libelles_sh6):
+    """La désignation d'une position nouvelle, du titre de position à la ligne.
+
+    Le libellé terminal de l'ADIL (« autres ») ne dit pas de quelle
+    marchandise il s'agit. Les titres sont ceux dont le code est un préfixe de
+    la position : rien n'est déduit de l'indentation publiée, qui n'est pas
+    fiable. Quand l'ADIL ne publie de titre ni à six ni à huit chiffres
+    (0902.10), le libellé SH6 emprunté le remplace, sa source nommée ; un
+    titre à huit chiffres tient lieu de titre SH6 (0405.10.00 « Beurre »)."""
+    niveaux = []
+    for longueur in (4, 6, 8):
+        prefixe = code[:longueur]
+        if prefixe in titres:
+            niveaux.append({"code": prefixe, "texte": _texte_adil(titres[prefixe]), "source": SOURCE_NOMENCLATURE_MAR})
+        elif longueur == 6 and code[:8] not in titres and (libelles_sh6.get(prefixe) or {}).get("fr"):
+            emprunt = libelles_sh6[prefixe]
+            niveaux.append(
+                {"code": prefixe, "texte": emprunt["fr"], "source": f"libellé SH6 emprunté — {emprunt.get('fr_source')}"}
+            )
+    niveaux.append({"code": code, "texte": _texte_adil(publiees[code]), "source": SOURCE_NOMENCLATURE_MAR})
+    return {"fr": " — ".join(n["texte"] for n in niveaux), "hierarchie": niveaux}
+
+
 def _nomenclature_maroc(positions, compteurs, collecte):
     """Aligner les positions sur la nomenclature publiée : retirer celles
     qu'elle ne porte plus, ajouter celles qui manquent, SANS droit connu.
@@ -2235,9 +2266,10 @@ def _nomenclature_maroc(positions, compteurs, collecte):
     note = NOTE_POSITION_NOUVELLE_MAR.format(
         date=_date_fr(nomenclature["releve_le"]), collecte=_date_fr(collecte[:10])
     )
+    libelles_sh6 = charger_libelles_sh6()
     for code in ajoutees:
         positions[code] = {
-            "designation": publiees[code],
+            "designation": _designation_hierarchique_maroc(code, publiees, nomenclature["titres"], libelles_sh6),
             "hs6": code[:6],
             "chapitre": code[:2],
             "droits": [
@@ -2249,16 +2281,17 @@ def _nomenclature_maroc(positions, compteurs, collecte):
                     "taux": None,
                     "assiette": assiettes.most_common(1)[0][0],
                     "assiette_origine": "regle_de_pays",
-                    "source": "douane.gov.ma/adil — nomenclature",
+                    "source": SOURCE_NOMENCLATURE_MAR,
                     "note": note,
                 }
             ],
-            "source": "douane.gov.ma/adil — nomenclature",
+            "source": SOURCE_NOMENCLATURE_MAR,
         }
         _compter_ligne(positions[code]["droits"][0], compteurs, 1)
     compteurs["positions_retirees_nomenclature"] = len(retirees)
     compteurs["positions_ajoutees_nomenclature"] = len(ajoutees)
     return {
+        "nom": SOURCE_NOMENCLATURE_MAR,
         "fichier": os.path.relpath(NOMENCLATURE_MAR, REPO),
         "sha256": sha256(NOMENCLATURE_MAR),
         "releve_le": nomenclature["releve_le"],
