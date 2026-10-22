@@ -11,7 +11,6 @@ from services.authentic_tariff_service import (
     get_available_countries,
     get_country_summary,
 )
-from services.authentic_tariff_service import get_sub_positions as get_facade_sub_positions
 from services.authentic_tariff_service import (
     get_tariff_line,
     get_taxes_detail,
@@ -51,23 +50,6 @@ async def get_country_info(iso3: str):
         raise
     except Exception as e:
         logger.error(f"Error getting country {iso3}: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
-
-
-@router.get("/country/{iso3}/sub-positions/{hs6}")
-async def get_sub_positions(iso3: str, hs6: str, language: str = Query("fr", pattern="^(fr|en)$")):
-    """Sous-positions nationales via la facade tarifaire."""
-    try:
-        positions = get_facade_sub_positions(iso3, hs6, language=language)
-        return {
-            "success": True,
-            "country_iso3": iso3.upper(),
-            "hs6": hs6,
-            "total": len(positions),
-            "sub_positions": positions,
-        }
-    except Exception as e:
-        logger.error(f"Error getting sub-positions for {iso3}/{hs6}: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 

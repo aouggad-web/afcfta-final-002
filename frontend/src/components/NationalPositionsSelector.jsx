@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { ChevronDown, ChevronUp, Package, Check, DollarSign, Percent, FileText, AlertCircle, TrendingUp, TrendingDown, Info, Car, Leaf, Cog, Zap, Maximize2, Minimize2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Package, Check, DollarSign, Percent, FileText, AlertCircle, TrendingUp, TrendingDown, Car, Leaf, Cog, Zap, Maximize2, Minimize2 } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -19,6 +19,7 @@ export default function NationalPositionsSelector({
   cifValue,
   language = 'fr',
   onPositionSelect,
+  onPositionsLoaded,
   selectedPosition
 }) {
   const [positions, setPositions] = useState([]);
@@ -26,7 +27,6 @@ export default function NationalPositionsSelector({
   const [expanded, setExpanded] = useState(true);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
   const [error, setError] = useState(null);
-  const [apiNote, setApiNote] = useState(null);
 
   const texts = {
     fr: {
@@ -74,6 +74,10 @@ export default function NationalPositionsSelector({
   };
 
   const t = texts[language] || texts.fr;
+  // Tenu dans une référence : une fonction recréée à chaque rendu du parent
+  // relancerait sinon le chargement.
+  const signalerChargement = useRef(onPositionsLoaded);
+  signalerChargement.current = onPositionsLoaded;
 
   const toggleDescription = (idx) => {
     setExpandedDescriptions(prev => ({
@@ -89,40 +93,25 @@ export default function NationalPositionsSelector({
     
     setLoading(true);
     setError(null);
-    setApiNote(null);
     
     try {
-      // Try PostgreSQL API first (has real descriptions)
-      let response;
-      try {
-        response = await axios.get(
-          `${API}/postgres-tariffs/country/${countryCode}/sub-positions/${hs6Code.substring(0, 6)}`,
-          { params: { language } }
-        );
-      } catch (pgErr) {
-        // Fallback to optimized smart search if PG is missing
-        response = await axios.get(
-          `${API}/hs6/smart-search`,
-          { params: { q: hs6Code.substring(0, 6), country_code: countryCode, include_sub_positions: true } }
-        );
-      }
-      
-      const data = response.data;
-      if (data.results || (data.success && data.sub_positions)) {
-        const results = data.results || data.sub_positions;
-        setPositions(results);
-        setApiNote(data.note || (language === 'fr' ? data.note_fr : data.note_en));
-      } else {
-        setPositions([]);
-      }
+      // Les positions nationales du socle : celles que POST /calcul sait
+      // liquider, et elles seules. Aucune autre source ne prend le relais.
+      const response = await axios.get(
+        `${API}/consultation/${countryCode}/sous-positions/${hs6Code.substring(0, 6)}`
+      );
+      const servies = response.data.sub_positions || [];
+      setPositions(servies);
+      signalerChargement.current?.({ countryCode, hs6: hs6Code.substring(0, 6), total: servies.length });
     } catch (err) {
       console.error('Error fetching positions:', err);
       setError(t.loadError);
       setPositions([]);
+      signalerChargement.current?.({ countryCode, hs6: hs6Code.substring(0, 6), total: 0 });
     } finally {
       setLoading(false);
     }
-  }, [countryCode, hs6Code, language, t.loadError]);
+  }, [countryCode, hs6Code, t.loadError]);
 
   useEffect(() => {
     if (countryCode && hs6Code && hs6Code.length >= 6) {
@@ -182,13 +171,6 @@ export default function NationalPositionsSelector({
 
       {expanded && (
         <CardContent className="pt-0 space-y-4">
-          {apiNote && (
-            <div className="flex items-start gap-2 p-3 bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_22%,transparent)]">
-              <Info className="w-4 h-4 text-[var(--info)] mt-0.5 flex-shrink-0" />
-              <p className="text-sm text-[var(--info)]">{apiNote}</p>
-            </div>
-          )}
-
           {loading && (
             <div className="flex items-center justify-center py-8">
               <div className="w-8 h-8 border-2 border-[var(--violet)] border-t-transparent rounded-full animate-spin"></div>

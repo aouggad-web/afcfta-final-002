@@ -134,6 +134,7 @@ except ImportError:
     faostat_router = None
     FAOSTAT_AVAILABLE = False
 from .calcul import router as calcul_router
+from .consultation import router as consultation_router
 
 try:
     from .gemini_analysis import router as gemini_router
@@ -487,6 +488,8 @@ def register_routes(api_router: APIRouter):
         tags=["Calculateur"],
         dependencies=_auth + _calculator_entitlement,
     )
+    # Consultation du tarif, servie par le même socle que le calcul.
+    api_router.include_router(consultation_router, tags=["Consultation"], dependencies=_auth)
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth

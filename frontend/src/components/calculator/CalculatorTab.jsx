@@ -100,6 +100,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [useSmartSearch, setUseSmartSearch] = useState(true);
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
+  // Nombre de positions nationales servies sous le SH6 saisi, et pour quel pays.
+  const [positionsSh6, setPositionsSh6] = useState(null);
   const [selectedSubPositionFormalities, setSelectedSubPositionFormalities] = useState(null);
   // Repli en mode saisie directe (hors recherche intelligente) : celle-ci ne
   // remplit jamais selectedSubPositionDesc, donc sans ce hook le code SH
@@ -212,6 +214,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       potentialSavings: "Économie potentielle",
       calculationError: "Erreur de calcul",
       calculating: "Calcul en cours...",
+      choosePosition: "Choisissez une position nationale",
       detailedResults: "Résultats Détaillés",
       completeComparison: "Comparaison Complète: Valeur + DD + TVA + Autres Taxes",
       merchandiseValue: "Valeur marchandise",
@@ -292,6 +295,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       potentialSavings: "Potential Savings",
       calculationError: "Calculation Error",
       calculating: "Calculating...",
+      choosePosition: "Choose a national position",
       detailedResults: "Detailed Results",
       completeComparison: "Complete Comparison: Value + Duties + VAT + Other Taxes",
       merchandiseValue: "Merchandise Value",
@@ -349,6 +353,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
   const hsCodeDigits = hsCode.replace(/\D/g, '');
   const isHs6Only = hsCodeDigits.length === 6;
+  // Plusieurs positions nationales sous le SH6 saisi : le calcul attend que
+  // l'opérateur choisisse la sienne. Le compte vaut pour le pays et le SH6
+  // pour lesquels la liste a été chargée, et pour eux seuls.
+  const positionRequise = isHs6Only
+    && positionsSh6?.cle === `${destinationCountry}|${hsCodeDigits}`
+    && positionsSh6.total > 1;
 
   const getSectorName = (hsCode) => {
     const sector = hsCode.substring(0, 2);
@@ -534,18 +544,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // manque y reste silencieux.
       const hs6 = cleanHsCode.substring(0, 6);
       try {
-        const subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
+        const subPosResponse = await axios.get(`${API}/consultation/${destISO3}/sous-positions/${hs6}`);
         setSubPositions(subPosResponse.data);
       } catch (subPosError) {
         setSubPositions(null);
       }
-      // LES FORMALITÉS. Le socle porte des MONTANTS, pas les formalités
-      // administratives : elles sont demandées ici, en annexe, comme les
-      // sous-positions. Un manque y reste silencieux, parce qu'une formalité
-      // absente n'est pas un montant faux.
+      // LES FORMALITÉS, lues au socle comme les sous-positions. Un manque y
+      // reste silencieux, parce qu'une formalité absente n'est pas un montant
+      // faux.
       try {
         const formalitesResponse = await axios.get(
-          `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
+          `${API}/consultation/${destISO3}/formalites/${cleanHsCode}`
         );
         const formalites = formalitesResponse.data?.formalities || [];
         // Le STATUT accompagne la liste, et il est transmis même quand elle
@@ -1039,6 +1048,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 setHsCode(code);
                 setSelectedSubPositionDesc(description);
               }}
+              onPositionsLoaded={({ countryCode, hs6, total }) => setPositionsSh6({ cle: `${countryCode}|${hs6}`, total })}
             />
           )}
 
@@ -1074,7 +1084,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
               onClick={() => calculateTariff()}
-              disabled={loading}
+              disabled={loading || positionRequise}
               data-testid="calculate-tariff-button"
               className="flex-1 h-14 text-lg font-bold bg-[image:var(--active-fill)] hover:opacity-90 text-[#F7F1E6] shadow-lg hover:shadow-xl transition-all"
             >
@@ -1082,6 +1092,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <>
                   <div className="w-5 h-5 border-2 border-[var(--overlay-border)] border-t-white rounded-full animate-spin mr-2"></div>
                   {t.calculating}
+                </>
+              ) : positionRequise ? (
+                <>
+                  <Calculator className="w-5 h-5 mr-2" />
+                  {t.choosePosition}
                 </>
               ) : (
                 <>
@@ -1926,9 +1941,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             {form.code}
                           </Badge>
                           <div className="flex-1 min-w-0">
-                            <p className="text-[var(--text)] text-sm">
+                            {/* Égypte : le texte officiel est l'arabe ; la
+                                traduction, reprise d'un autre fichier, se dit
+                                non officielle. */}
+                            {form.traduction_non_officielle && (
+                              <p dir="auto" className="text-[var(--text)] text-sm">{form.texte}</p>
+                            )}
+                            <p className={form.traduction_non_officielle ? 'text-[var(--afcfta-muted)] text-xs mt-1' : 'text-[var(--text)] text-sm'}>
                               {language === 'fr' ? (form.document_fr || form.document_en) : (form.document_en || form.document_fr)}
+                              {form.traduction_non_officielle && (
+                                <span className="italic">
+                                  {language === 'fr' ? ' — traduction non officielle' : ' — unofficial translation'}
+                                </span>
+                              )}
                             </p>
+                            {form.base_legale && (
+                              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{form.base_legale}</p>
+                            )}
                             {(form.authority_fr || form.authority_en) && (
                               <p className="text-[var(--afcfta-muted)] text-xs mt-1">
                                 {language === 'fr' ? form.authority_fr : form.authority_en}
