@@ -8,10 +8,10 @@
   "source": {
     "institution": "Federal Government Printer, Lagos — Official Gazette No. 79 du 1er mai 2026 (S.I. 29)",
     "pdf_sha256": "d5e76bb7c464222f6354e38375cc19ae130fa49f01c9ab6268342bc1ded0e891",
-    "pdf_archive": "sources/NGA_SI29_2026_Gazette79.pdf (PDF scanné de 23 pages, fourni par le propriétaire du projet ; versé depuis la PR #606)",
+    "pdf_archive": "NGA_SI29_2026_Gazette79.pdf, déclaré dans documents_archives (PDF scanné de 23 pages, fourni par le propriétaire du projet ; versé depuis la PR #606)",
     "recoupement": "circulaire F17417/III/374 du ministre des Finances du 1er avril 2026, annexe I",
     "circulaire_pdf_sha256": "6eeb5c869f7998508e1fa1223f77b8c254933bbc3966f87ae5e057778953d479",
-    "circulaire_archive": "sources/NGA_circulaire_FPM_2026-04-01.pdf (PDF scanné de 33 pages ; versé depuis la PR #606)"
+    "circulaire_archive": "NGA_circulaire_FPM_2026-04-01.pdf, déclaré dans documents_archives (PDF scanné de 33 pages ; versé depuis la PR #606)"
   },
   "regle": {
     "valeur": "IAT par ligne selon le First Schedule de l'Order 2026 (de 5 % à 65 %), en vigueur au 1er mai 2026 ; 0 % pour les positions absentes de la liste ; indisponible pour 15 positions que la liste désigne par un code ancien ou à deux taux.",
