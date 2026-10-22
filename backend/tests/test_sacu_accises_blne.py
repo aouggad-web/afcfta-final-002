@@ -61,14 +61,38 @@ def _ligne_du_socle(iso, code, code_ligne):
 @pytest.mark.parametrize("pays", ["BWA", "LSO", "NAM", "SWZ"])
 def test_cigarettes_au_taux_sud_africain(client, pays):
     """2402.20.90 : R11,79 par 10 cigarettes, comme en Afrique du Sud ; 500 × 10 cigarettes."""
-    etat, lignes = _calcul(client, pays, "24022090", quantite=500)
-    assert etat == "COMPLET"
+    _, lignes = _calcul(client, pays, "24022090", quantite=500)
     assert lignes["EXS"]["montant"] == pytest.approx(5_895.0)
     assert "Taux commun SACU" in _ligne_du_socle(pays, "24022090", "EXS")["source"]
 
 
+def test_eswatini_le_prelevement_alcool_tabac_rend_le_total_incomplet(client):
+    """Alcohol and Tobacco Levy Act 2019 : dû à l'importation, taux en vigueur
+    non collecté ; ni le prélèvement ni la TVA, qui l'inclut, ne sont liquidés."""
+    etat, lignes = _calcul(client, "SWZ", "24022090", quantite=500)
+    assert etat != "COMPLET"
+    assert lignes["ATL"]["statut"] == "TAUX_INDISPONIBLE"
+    assert lignes["TVA"]["montant"] is None
+
+
+@pytest.mark.parametrize("pays,code_ligne", [("BWA", "FLV"), ("NAM", "FLV"), ("NAM", "EVN")])
+def test_prelevements_nationaux_non_collectes(client, pays, code_ligne):
+    """Fuel levy (BWA, NAM) et prélèvement environnemental (NAM) : déclarés
+    sans taux, le total est incomplet."""
+    code = "27101202" if code_ligne == "FLV" else "40111001"
+    etat, lignes = _calcul(client, pays, code, quantite=1000)
+    assert etat != "COMPLET"
+    assert lignes[code_ligne]["montant"] is None
+
+
+@pytest.mark.parametrize("pays", ["BWA", "LSO", "NAM"])
+def test_cigarettes_sans_prelevement_national_documente(client, pays):
+    etat, _ = _calcul(client, pays, "24022090", quantite=500)
+    assert etat == "COMPLET"
+
+
 def test_tva_du_botswana_avec_l_accise(client):
-    """VAT Act 2001 s.13(1)(a)(iii) : CIF + droits de douane et d'accise."""
+    """VAT Act 2026 s.30(1) : CIF + droits de douane et d'accise."""
     _, lignes = _calcul(client, "BWA", "24022090", quantite=500)
     assert lignes["TVA"]["base"] == pytest.approx(11_000.0 + 4_500.0 + 5_895.0)
 

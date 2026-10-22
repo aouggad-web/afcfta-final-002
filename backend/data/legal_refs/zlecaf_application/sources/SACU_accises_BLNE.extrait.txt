@@ -26,6 +26,40 @@ VERBATIM (p. 1) :
 Act is hereby amended, with effect from 1 January 2022, to the extent set out in the Schedule
 hereto. DR DAVID MASONDO DEPUTY MINISTER OF FINANCE »
 
+7. Prélèvements nationaux à l'importation (taux en vigueur non collectés)
+
+Botswana — Excise Duty Act 2018 (fichier, URL et sha256 au point 3)
+VERBATIM (s.2, p. 5) :
+« "fuel levy" means any duty leviable under Part 5 of Schedule No. 1 on any goods which have been
+manufactured in, or imported into Botswana; »
+
+Namibie — Customs and Excise Act 20 of 1998 (fichier, URL et sha256 au point 4)
+VERBATIM (s.2, p. 11) :
+« "fuel levy" means any duty leviable under Part 5 of Schedule 1 and on any goods, which have been
+manufactured in or imported into Namibia; »
+VERBATIM (s.58A(1), p. 72) :
+« A levy to be known as the environmental levy shall be leviable on goods imported into and goods
+manufactured in Namibia as may be specified in any item of Part 3 of Schedule No. 1. »
+
+Eswatini — Alcohol and Tobacco Levy Act, 2019 (scan ; transcription OCR non officielle)
+URL : https://www.ers.org.sz/documents/Alcohol-And-Tobacco-Levy-Act.pdf
+Fichier : data/sources/SWZ/legislation/SWZ_AlcoholTobaccoLevyAct_2019-08-23.pdf
+sha256 : a6b655fda466e8a161907fd9618164d9d6184e68204bf4f6add0f198043d53b8
+VERBATIM (s.3(1), OCR) : « An alcohol and tobacco levy shall be levied and charged on- (a) the
+taxable goods manufactured in Eswatini, and (b) the import of taxable goods »
+VERBATIM (s.4(2), OCR) : « The taxable value of an import of taxable goods is the sum of- (a) the
+value of the goods ascertained for the purposes of customs duty under the laws relating to customs,
+plus (b) the amount of customs duty, excise tax and any other fiscal charge, other than Value Added
+Tax payable on those taxable goods »
+VERBATIM (Schedule, item 1, OCR) : « The following goods imported into Eswatini - (a) alcoholic
+beverages of all kinds other than traditional beer seven (7) per cent (b) manufactured tobacco in the
+form of cigars, cheroots, cigarillos, cigarettes, pipe tobacco and snuff seven (7) per cent »
+
+Eswatini — Fuel Tax Act, 2022 (scan, OCR) : la taxe porte « on the sale of fuel by a wholesaler »
+(s.4(1)), non sur l'importation : elle n'est pas déclarée à l'importation.
+Fichier : data/sources/SWZ/legislation/SWZ_FuelTaxAct11-2022_2022.pdf
+sha256 : d8bc5763facdfc53ae4b7eb450bdca77913dda05e284a580280b46e9f1fef2bb
+
 LECTURE : avis sud-africain (loi sud-africaine de 1964, vice-ministre sud-africain des Finances,
 taux en rands) que l'ERS publie comme tarif d'accise de l'Eswatini.
 
@@ -104,3 +138,8 @@ LECTURE :
 - Valeur de l'accise ad valorem : NAM et SWZ, FOB × 1,15 + DD + accise spécifique (comme l'Afrique du
   Sud) ; LSO, FOB × 1,15 + DD (Part 1 seulement, texte de 1982) ; BWA, prix de gros sur le marché
   botswanais, inconnu du calcul.
+- Prélèvements nationaux dus à l'importation, taux en vigueur non collectés : déclarés sans taux
+  (total incomplet) — fuel levy du Botswana et de la Namibie (positions de la Part 5A sud-africaine),
+  prélèvement environnemental de la Namibie (Parts 3A, 3C, 3D, 3E), Alcohol and Tobacco Levy de
+  l'Eswatini (2203 à 2206, 2208, 2402, 2403.11, 2403.19, 2403.99 ; 7 % à l'annexe de 2019, taux en
+  vigueur non confirmé). Lesotho : aucun prélèvement à l'importation documenté.

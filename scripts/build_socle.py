@@ -114,6 +114,8 @@ FAMILLES = {
     "FLV": "accise",  # taxe sur les carburants, Part 5A (ZA)
     "RAF": "accise",  # Road Accident Fund levy, Part 5B (ZA)
     "HPL": "accise",  # Health Promotion Levy, boissons sucrées, Part 7A (ZA)
+    "EVN": "accise",  # prélèvement environnemental, Part 3 (NA)
+    "ATL": "accise",  # Alcohol and Tobacco Levy (SZ)
     "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
@@ -2036,6 +2038,62 @@ def _prelevements_zaf(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Prélèvements nationaux dus à l'importation au Botswana, en Namibie et en
+#: Eswatini, dont le taux en vigueur n'est pas collecté (fiche
+#: SACU_accises_BLNE_2026-10-20.json) : la ligne est servie sans taux, le total
+#: est incomplet plutôt que présenté comme complet. Fuel levy et prélèvement
+#: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
+#: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
+#: reprises. Lesotho : aucun prélèvement à l'importation documenté.
+#: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
+PRELEVEMENTS_SACU_NON_COLLECTES = {
+    "BWA": [
+        ("FLV", "Fuel levy", {"5A"}, None,
+         "Excise Duty Act 2018 (Botswana), s.2 : « fuel levy » (Schedule No. 1 Part 5)", ""),
+    ],
+    "NAM": [
+        ("FLV", "Fuel levy", {"5A"}, None,
+         "Customs and Excise Act 20/1998 (Namibie), s.2 : « fuel levy » (Schedule 1 Part 5)", ""),
+        ("EVN", "Environmental levy", {"3A", "3C", "3D", "3E"}, None,
+         "Customs and Excise Act 20/1998 (Namibie), s.58A(1) (Schedule 1 Part 3)", ""),
+    ],
+    "SWZ": [
+        ("ATL", "Alcohol and Tobacco Levy",
+         ("2203", "2204", "2205", "2206", "2208", "2402", "240311", "240319", "240399"),
+         "FOB+DD+EXS+EXA",
+         "Alcohol and Tobacco Levy Act 2019 (Eswatini), s.3(1)(b), s.4(2) et annexe, item 1",
+         "7 % à l'annexe de la loi de 2019 (boissons alcoolisées hors bière traditionnelle, cigares, "
+         "cigarettes, tabac à pipe et à priser) ; "),
+    ],
+}
+
+
+def _prelevements_sacu_non_collectes(iso, positions, compteurs):
+    """Botswana, Namibie, Eswatini : prélèvements nationaux à l'importation
+    déclarés sans taux sur leurs positions, faute de barème en vigueur."""
+    with open(PRELEVEMENTS_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for code_ligne, libelle, perimetre, assiette, source, note in PRELEVEMENTS_SACU_NON_COLLECTES[iso]:
+        if isinstance(perimetre, set):
+            prefixes = tuple(a["sous_position"].replace(".", "") for a in articles if a["partie"] in perimetre)
+        else:
+            prefixes = perimetre
+        for code, position in positions.items():
+            if not code.startswith(prefixes):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": assiette,
+                     "assiette_origine": "regle_de_pays" if assiette else None, "source": source,
+                     "note": note + "taux en vigueur non collecté : prélèvement dû à l'importation, "
+                                    "non liquidé, total incomplet."}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 def _compter_ligne(d, compteurs, signe):
     if d.get("taux") is None and not d.get("specifique"):
         compteurs["taux_indisponibles"] += signe
@@ -3332,6 +3390,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
+    if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
+        _prelevements_sacu_non_collectes(iso, positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
