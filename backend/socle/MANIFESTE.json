@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-20T23:57:08.579447+00:00",
+  "construit_le": "2026-10-22T00:17:00.153855+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -488,7 +488,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DZA_tariffs.json",
       "source_sha256": "e189e6149f335a11d0f640d1302041948767f68e6f4f621dd789a93e90469132",
-      "socle_sha256": "cfb3114fd6e4a2906e75ce615756fe18adbc1b467d3a658eac4057eaaeaf39f2",
+      "socle_sha256": "e7784e394fd04d9c86ca776616dd4a4acebd8e7b12628065657e9ccc4e0b90fc",
       "collecte": "2026-10-04T06:51:48+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -527,7 +527,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/EGY_tariffs.json",
       "source_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
-      "socle_sha256": "9d791ea40a751784d4046e3348ddfce77ff068fc21efe00a82b8636f8c333759",
+      "socle_sha256": "87121858f26fa0cc4886432454ada56842febddd3c064362524dc2c41bf9425c",
       "collecte": "2026-08-29T21:57:37.493425+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -1014,7 +1014,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MAR_tariffs.json",
       "source_sha256": "0debb92e473cf0288db5ab04fcea846a192669905dcf2712923be666c8fb62d5",
-      "socle_sha256": "04fe6c3789d0c64dfaadd391fae222235403f91ae1136654c9a08d155cacfdc0",
+      "socle_sha256": "23f17bacd14bd5c75736766e6c0a0ae68af1fb64772af21a0135d08a77458780",
       "collecte": "2026-02-11T22:41:08.772056",
       "etat": "PARTIEL",
       "familles": [
@@ -1163,7 +1163,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MRT_tariffs.json",
       "source_sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
-      "socle_sha256": "48556dee795d79d7a453a2d2e45a33ea93b4ea0e7a9c7740743912ee9b3eee75",
+      "socle_sha256": "54567896de136961387af40610f02b4e07873bfc6ff0118b7308c8e839787ba3",
       "collecte": "2026-09-18T00:00:00+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1201,7 +1201,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
       "source_sha256": "d4c7cd661c7dfe9f9fef0721e8cee0c4e84dac5981ab77521ee249c4ae5e8675",
-      "socle_sha256": "e8919683df691662feb20073b9df1b7db6e651ac71759f00046a0ed22463b8c0",
+      "socle_sha256": "b788b49533e8cded58f8354617ff4e0c7dabb05547264552f8c86803e9590e8c",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
@@ -1790,7 +1790,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TUN_tariffs.json",
       "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
-      "socle_sha256": "ff10c172486ce512e4378ca8ba4c874e38df1f2ac06a3440da7355b919788c54",
+      "socle_sha256": "0b7f9a8ce43fa6b8156dd6cd5f46d9adc1999dec46c5ca4453b69c5cd7982026",
       "collecte": "2026-08-30",
       "etat": "PARTIEL",
       "familles": [

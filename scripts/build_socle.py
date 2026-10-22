@@ -2127,6 +2127,98 @@ TAXE_DE_TABLE_CIGARETTES_EGY = (
 )
 
 
+#: Formalités administratives publiées par la source, position par position.
+#: Maroc (ADIL) : l'en-tête de la rubrique n'est pas une formalité ; la mention
+#: « aucun document à présenter et aucune norme à respecter » est un constat de
+#: la source, porté comme tel (`formalites_aucune`).
+EN_TETE_FORMALITES_MAR = "Documents et Normes à l'Import."
+AUCUNE_FORMALITE_MAR = '"AUCUN DOCUMENT A PRéSENTERETAUCUNE NORME A RESPECTER."'
+#: Égypte : la douane publie ses instructions en arabe. L'ancien fichier ETL en
+#: porte une traduction française et anglaise, sans source officielle : elle
+#: n'accompagne le texte que si le code et le texte arabe sont les mêmes.
+TRADUCTIONS_EGY = os.path.join(ETL_DIR, "EGY_tariffs.json")
+
+
+def _traductions_egy():
+    with open(TRADUCTIONS_EGY, encoding="utf-8") as f:
+        lignes = json.load(f).get("tariff_lines") or []
+    return {
+        (x["code"], x["document_ar"].strip()): (x.get("document_fr"), x.get("document_en"))
+        for ligne in lignes
+        for x in ligne.get("administrative_formalities") or []
+        if x.get("code") and x.get("document_ar")
+    }
+
+
+def _formalite(iso, item, traductions):
+    """Une formalité de la source dans la forme commune, ou None."""
+    if isinstance(item, str):
+        texte = item.strip()
+        if not texte or texte in (EN_TETE_FORMALITES_MAR, AUCUNE_FORMALITE_MAR):
+            return None
+        return {"code": None, "texte": texte, "document_fr": texte, "document_en": texte}
+    if not isinstance(item, dict):
+        return None
+    if "code_verbatim" in item:  # Égypte
+        code, texte = item["code_verbatim"], (item.get("text_verbatim") or "").strip()
+        arabe = texte.split("-", 1)[1].strip() if texte.startswith(code + "-") else texte
+        fr, en = traductions.get((code, arabe), (None, None))
+        f = {"code": code, "texte": texte, "document_fr": fr or texte, "document_en": en or texte}
+        if fr or en:
+            f["traduction_non_officielle"] = True
+        return f
+    if "sigle" in item:  # Maurice
+        texte = item.get("verbatim") or item["sigle"]
+        libelle = f"{item['sigle']} — {item['organisme']}" if item.get("organisme") else texte
+        return {"code": item["sigle"], "texte": texte, "document_fr": libelle, "document_en": libelle}
+    if "type" in item and "description" in item:  # Mauritanie
+        return {
+            "code": item["type"],
+            "texte": item["description"],
+            "document_fr": item["description"],
+            "document_en": item["description"],
+            "base_legale": item.get("base_legale"),
+        }
+    texte = (item.get("text_verbatim") or item.get("description") or "").strip()  # Algérie, Tunisie
+    if not texte:
+        return None
+    return {"code": item.get("code"), "texte": texte, "document_fr": texte, "document_en": texte}
+
+
+def _formalites(iso, donnees, positions):
+    """Porter sur chaque position les formalités que la source publie pour elle
+    (`formalities`, ou `reglementation_import` en Tunisie)."""
+    traductions = _traductions_egy() if iso == "EGY" else {}
+    longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+    for cle in ("positions", "sub_positions"):
+        for ligne in donnees.get(cle, []) or []:
+            if not isinstance(ligne, dict):
+                continue
+            brutes = ligne.get("formalities") or ligne.get("reglementation_import")
+            if not isinstance(brutes, list) or not brutes:
+                continue
+            code = nettoyer_code(
+                ligne.get("code_clean"),
+                ligne.get("hs_code"),
+                ligne.get("code"),
+                ligne.get("code_raw"),
+                ligne.get("national_code"),
+                ligne.get("hs6"),
+            )
+            if longueur_position and len(code) == longueur_position:
+                code = code.zfill(longueur_position + 1)
+            if longueur_position and len(code) == longueur_position + 1:
+                code = code[:longueur_position]
+            position = positions.get(code)
+            if position is None:
+                continue
+            formalites = [f for f in (_formalite(iso, x, traductions) for x in brutes) if f]
+            if formalites:
+                position["formalites"] = formalites
+            elif AUCUNE_FORMALITE_MAR in brutes:
+                position["formalites_aucune"] = True
+
+
 def _egypte(positions, compteurs, donnees):
     """Égypte : lignes publiées deux fois, tabacs, redevances, Taxe de Table des
     alcools et des cigarettes, droits au kilo et minimums de la Taxe de Table,
@@ -3221,6 +3313,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
+    _formalites(iso, donnees, positions)
     if iso == "TUN":
         _ordre_tunisie(positions)
     if iso == "NGA":
