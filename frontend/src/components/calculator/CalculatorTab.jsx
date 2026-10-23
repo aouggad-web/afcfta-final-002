@@ -1058,7 +1058,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           )}
 
-          {remiseEacProposee(destinationCountry) && (
+          {remiseEacProposee(
+            destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry,
+          ) && (
             <KenyaRemissionAuthorization
               value={kenyaRemission}
               onChange={setKenyaRemission}
