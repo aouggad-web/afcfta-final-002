@@ -445,7 +445,9 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                         selectCountry(c.code);
                       }}
                       onMouseEnter={() => setActiveIndex(i)}
-                      className={`flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-[var(--text)] ${i === activeIndex ? 'bg-[color-mix(in_srgb,var(--gold)_14%,var(--afcfta-card))]' : ''}`}
+                      // Surlignage commun aux options de l'application (theme.css).
+                      data-highlighted={i === activeIndex ? '' : undefined}
+                      className="flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-[var(--text)]"
                     >
                       <span aria-hidden="true">{getFlag(c.iso2 || c.code)}</span>
                       <span className="flex-1 font-medium">{c.name}</span>
