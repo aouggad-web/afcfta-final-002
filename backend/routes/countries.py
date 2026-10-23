@@ -281,8 +281,6 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         profile.projections["imf_gdp_growth"] = imf_growth
         profile.projections["imf_inflation"] = imf_inflation
         profile.projections["imf_gov_debt"] = imf_proj.get("gov_debt") or {}
-        profile.projections["imf_fiscal_balance"] = imf_proj.get("fiscal_balance") or {}
-        profile.projections["imf_current_account"] = imf_proj.get("current_account") or {}
         profile.projections["imf_source"] = imf_svc.source_label()
 
         # Projection de l'ANNÉE EN COURS (WEO), au lieu d'une « Projection
@@ -305,6 +303,31 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         if gov_debt.get(last_year) is not None:
             profile.total_debt_pct_gdp = gov_debt[last_year]
             profile.projections["debt_year"] = int(last_year)
+
+    # Position extérieure (Banque mondiale), chaque valeur avec sa vraie année ;
+    # rien pour les pays que la BM ne couvre pas — jamais inventé.
+    # Dette extérieure (International Debt Statistics) : ratio au RNB et encours
+    # en US$ de la même année.
+    ext_ratio = wb.get("external_debt_pct_gni")
+    ext_stock = wb.get("external_debt_usd")
+    if ext_ratio or ext_stock:
+        ext_year = (ext_ratio or ext_stock)["year"]
+        profile.projections["external_debt"] = {
+            "year": ext_year,
+            "pct_gni": ext_ratio["value"] if ext_ratio else None,
+            "usd": wb_macro_service.get_series(iso3_code, "external_debt_usd").get(ext_year),
+        }
+    # Réserves de change (or compris) et couverture en mois d'importations,
+    # celle-ci avec sa propre année (souvent publiée un an plus tard).
+    reserves = wb.get("reserves_usd")
+    if reserves:
+        months = wb.get("reserves_import_months")
+        profile.projections["reserves"] = {
+            "year": reserves["year"],
+            "usd": reserves["value"],
+            "import_months": months["value"] if months else None,
+            "import_months_year": months["year"] if months else None,
+        }
 
     # Indicateurs sociaux. Pour chacun, on prend la DERNIÈRE année réellement
     # disponible à la Banque Mondiale (API auto-actualisée) et on affiche CETTE

@@ -1,9 +1,9 @@
 """
 Service — Projections FMI (World Economic Outlook).
 
-Sert les séries WEO du FMI (croissance du PIB réel, inflation, dette publique,
-solde budgétaire, compte courant — incluant les PROJECTIONS pluriannuelles que
-la Banque mondiale ne publie pas), produites par ``etl/imf_weo_projections.py``.
+Sert les séries WEO du FMI (croissance du PIB réel, inflation, dette publique —
+incluant les PROJECTIONS pluriannuelles que la Banque mondiale ne publie pas),
+produites par ``etl/imf_weo_projections.py``.
 Alimente le bloc prospectif de la fiche pays.
 """
 
@@ -27,9 +27,9 @@ def _load() -> Dict:
 
 def get_projections(iso3: str) -> Optional[Dict]:
     """
-    Retourne ``{"gdp_growth": {year: %}, "inflation": {year: %}, "gov_debt": …,
-    "fiscal_balance": …, "current_account": …}`` (séries WEO, % ou % du PIB)
-    pour un pays, ou ``None`` si absent. Années en clés string, valeurs float.
+    Retourne ``{"gdp_growth": {year: %}, "inflation": {year: %}, "gov_debt":
+    {year: % du PIB}}`` (séries WEO) pour un pays, ou ``None`` si absent. Années
+    en clés string, valeurs float.
     """
     return _load().get("data", {}).get((iso3 or "").upper())
 

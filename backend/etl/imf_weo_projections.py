@@ -11,8 +11,6 @@ Indicateurs :
   * ``NGDP_RPCH``    — croissance du PIB réel (variation annuelle, %)
   * ``PCPIPCH``      — inflation, prix moyens à la consommation (variation, %)
   * ``GGXWDG_NGDP``  — dette brute des administrations publiques (% du PIB)
-  * ``GGXCNL_NGDP``  — capacité/besoin de financement des APU (% du PIB)
-  * ``BCA_NGDPD``    — solde du compte courant (% du PIB)
 
 Le millésime du WEO (ex. « World Economic Outlook (October 2026) ») est lu
 dans le catalogue ``/indicators`` de l'API et reporté dans ``metadata.source``.
@@ -54,15 +52,11 @@ _INDICATORS = {
     "gdp_growth": "NGDP_RPCH",  # croissance PIB réel (%)
     "inflation": "PCPIPCH",  # inflation prix conso (%)
     "gov_debt": "GGXWDG_NGDP",  # dette brute des APU (% PIB)
-    "fiscal_balance": "GGXCNL_NGDP",  # solde budgétaire des APU (% PIB)
-    "current_account": "BCA_NGDPD",  # solde du compte courant (% PIB)
 }
 _INDICATOR_LABELS = {
     "gdp_growth": "NGDP_RPCH — croissance PIB réel (%)",
     "inflation": "PCPIPCH — inflation prix à la consommation (%)",
     "gov_debt": "GGXWDG_NGDP — dette brute des administrations publiques (% PIB)",
-    "fiscal_balance": "GGXCNL_NGDP — capacité/besoin de financement des APU (% PIB)",
-    "current_account": "BCA_NGDPD — solde du compte courant (% PIB)",
 }
 _DEFAULT_SOURCE = "IMF World Economic Outlook (DataMapper API)"
 

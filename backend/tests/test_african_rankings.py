@@ -73,3 +73,34 @@ def test_profile_exposes_african_rankings():
     assert p.african_rankings["population"]["rank"] == 1
     for key in ("gdp", "hdi", "gov_debt", "gdp_growth_projection"):
         assert key in p.african_rankings, key
+
+
+def test_external_debt_and_reserves_ranked_same_year():
+    """Dette extérieure : 1 = ratio au RNB le plus faible ; réserves : 1 = encours
+    le plus élevé ; chaque fois parmi les pays publiant la même année."""
+    for key, src, higher in (
+        ("external_debt", "external_debt_pct_gni", False),
+        ("reserves", "reserves_usd", True),
+    ):
+        year = svc.get_rankings("DZA")[key]["year"]
+        values = {
+            iso: wb_macro_service.get_series(iso, src).get(year)
+            for iso in wb_macro_service.all_countries_iso3()
+        }
+        values = {iso: v for iso, v in values.items() if v is not None}
+        best = (max if higher else min)(values, key=values.get)
+        assert svc.get_rankings(best)[key] == {"rank": 1, "total": len(values), "year": year}
+
+
+def test_profile_shows_external_debt_and_reserves_not_fiscal_balance():
+    from routes.countries import get_country_profile
+
+    pr = asyncio.run(get_country_profile("DZA")).projections
+    debt = pr["external_debt"]
+    assert debt["year"] >= 2024 and debt["pct_gni"] > 0 and debt["usd"] > 0
+    assert pr["reserves"]["usd"] > 0 and pr["reserves"]["year"] >= 2024
+    assert "imf_fiscal_balance" not in pr and "imf_current_account" not in pr
+    # Seychelles : pays à revenu élevé, hors International Debt Statistics.
+    syc = asyncio.run(get_country_profile("SYC"))
+    assert "external_debt" not in syc.projections
+    assert "external_debt" not in syc.african_rankings

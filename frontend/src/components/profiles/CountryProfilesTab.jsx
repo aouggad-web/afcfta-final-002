@@ -47,10 +47,10 @@ const formatNumber = (number) => {
   return new Intl.NumberFormat('en-US').format(number);
 };
 
-// Pourcentage localisé (« 3,8 % » / « 3.8% »), signé pour les soldes.
-const pct = (value, language, signed = false) => {
+// Pourcentage localisé (« 3,8 % » / « 3.8% »).
+const pct = (value, language) => {
   if (value == null) return null;
-  const n = `${signed && value > 0 ? '+' : ''}${chiffres(value, language, 1)}`;
+  const n = chiffres(value, language, 1);
   return estAnglais(language) ? `${n}%` : `${n}\u00a0%`;
 };
 
@@ -58,13 +58,15 @@ const meta = (...parts) => parts.filter(Boolean).join(' · ');
 
 // Recherche de pays : sans accents ni casse (« cote d'ivoire », « ethiopie »).
 const sansAccents = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-const lastYearValue = (series, year) => (series ? series[year] ?? null : null);
+
+// Pays de l'UEMOA : réserves de change mises en commun à la BCEAO, sans série
+// nationale à la Banque mondiale.
+const UEMOA = ['BEN', 'BFA', 'CIV', 'GNB', 'MLI', 'NER', 'SEN', 'TGO'];
 
 const growthTone = (v) => (v == null ? 'afcfta-muted' : v >= 5 ? 'success' : v >= 3 ? 'info' : 'terra');
 const inflationTone = (v) => (v == null ? 'afcfta-muted' : v > 15 ? 'danger' : v > 7 ? 'terra' : 'success');
 const unemploymentTone = (v) => (v == null ? 'afcfta-muted' : v > 25 ? 'danger' : v > 15 ? 'terra' : 'success');
 const debtTone = (v) => (v == null ? 'afcfta-muted' : v > 80 ? 'danger' : v > 60 ? 'terra' : v > 40 ? 'gold' : 'success');
-const balanceTone = (v) => (v == null ? 'afcfta-muted' : v >= 0 ? 'success' : v >= -3 ? 'gold' : 'terra');
 const debtLabel = (v, t) => (v <= 40 ? t.debtLow : v <= 60 ? t.debtModerate : v <= 80 ? t.debtHigh : t.debtCritical);
 
 // Tuile d'indicateur : libellé (avec l'année réelle de la donnée), valeur,
@@ -140,11 +142,15 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       wbSource: "Banque mondiale",
       iloWb: "OIT / Banque mondiale",
       imfWeo: "FMI, WEO",
-      publicFinance: "Finances publiques & développement humain",
+      publicFinance: "Dette, réserves de change & développement humain",
       publicDebt: "Dette publique",
       ofGdp: "du PIB",
-      fiscalBalance: "Solde budgétaire",
-      currentAccount: "Compte courant",
+      externalDebt: "Dette extérieure",
+      ofGni: "du RNB",
+      idsSource: "Banque mondiale (IDS)",
+      fxReserves: "Réserves de change",
+      importMonths: "mois d'importations",
+      reservesPooled: "Mises en commun à la BCEAO (UEMOA)",
       hdi: "IDH",
       debtLow: "risque faible",
       debtModerate: "risque modéré",
@@ -236,11 +242,15 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       wbSource: "World Bank",
       iloWb: "ILO / World Bank",
       imfWeo: "IMF, WEO",
-      publicFinance: "Public finance & human development",
+      publicFinance: "Debt, FX reserves & human development",
       publicDebt: "Public debt",
       ofGdp: "of GDP",
-      fiscalBalance: "Fiscal balance",
-      currentAccount: "Current account",
+      externalDebt: "External debt",
+      ofGni: "of GNI",
+      idsSource: "World Bank (IDS)",
+      fxReserves: "FX reserves",
+      importMonths: "months of imports",
+      reservesPooled: "Pooled at the BCEAO (WAEMU)",
       hdi: "HDI",
       debtLow: "low risk",
       debtModerate: "moderate risk",
@@ -317,7 +327,9 @@ export default function CountryProfilesTab({ language = 'fr' }) {
   const rankings = countryProfile?.african_rankings || {};
   // Props de rang africain d'un indice, à étaler sur une StatTile.
   const rankOf = (key) => (rankings[key] ? { rank: rankings[key], rankLabel: t.africaRank } : {});
-  const lastYear = new Date().getFullYear() - 1;
+  const extDebt = proj.external_debt;
+  const extDebtUsd = extDebt?.usd != null ? montantUnite(extDebt.usd / 1000000000, 'B', language, 1) : null;
+  const reserves = proj.reserves;
 
   useEffect(() => {
     fetchCountries();
@@ -557,7 +569,8 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               <p className="mt-2 text-xs text-[var(--afcfta-muted)]">{t.rankLegend}</p>
             </section>
 
-            {/* SECTION: Finances publiques (FMI WEO) & développement humain (PNUD) */}
+            {/* SECTION: Dette publique (FMI WEO), dette extérieure et réserves de change
+                (Banque mondiale), développement humain (PNUD) */}
             <section className={PANEL}>
               <SectionTitle>{t.publicFinance}</SectionTitle>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -569,18 +582,27 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   {...rankOf('gov_debt')}
                 />
                 <StatTile
-                  tone={balanceTone(lastYearValue(proj.imf_fiscal_balance, lastYear))}
-                  label={`${t.fiscalBalance} ${lastYear}`}
-                  value={pct(lastYearValue(proj.imf_fiscal_balance, lastYear), language, true)}
-                  meta={`${t.ofGdp} · ${t.imfWeo}`}
-                  {...rankOf('fiscal_balance')}
+                  tone="info"
+                  label={`${t.externalDebt} ${extDebt?.year || ''}`}
+                  value={extDebt?.pct_gni != null ? pct(extDebt.pct_gni, language) : extDebtUsd}
+                  meta={extDebt?.pct_gni != null ? meta(t.ofGni, extDebtUsd, t.idsSource) : t.idsSource}
+                  {...rankOf('external_debt')}
                 />
                 <StatTile
-                  tone={balanceTone(lastYearValue(proj.imf_current_account, lastYear))}
-                  label={`${t.currentAccount} ${lastYear}`}
-                  value={pct(lastYearValue(proj.imf_current_account, lastYear), language, true)}
-                  meta={`${t.ofGdp} · ${t.imfWeo}`}
-                  {...rankOf('current_account')}
+                  tone="atlantic"
+                  label={`${t.fxReserves} ${reserves?.year || ''}`}
+                  value={reserves?.usd != null ? montantUnite(reserves.usd / 1000000000, 'B', language, 1) : null}
+                  meta={
+                    reserves
+                      ? meta(
+                          reserves.import_months != null
+                            ? `${chiffres(reserves.import_months, language, 1)} ${t.importMonths}${reserves.import_months_year !== reserves.year ? ` (${reserves.import_months_year})` : ''}`
+                            : null,
+                          t.wbSource
+                        )
+                      : UEMOA.includes(countryProfile.country_code) ? t.reservesPooled : t.wbSource
+                  }
+                  {...rankOf('reserves')}
                 />
                 <StatTile
                   tone="violet"
@@ -669,14 +691,12 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               )}
             </div>
 
-            {/* SECTION: Perspectives FMI (WEO : croissance, inflation, dette, soldes) */}
+            {/* SECTION: Perspectives FMI (WEO : croissance, inflation, dette publique) */}
             {proj.imf_gdp_growth && (() => {
               const rows = [
                 { key: 'imf_gdp_growth', label: language === 'fr' ? 'Croissance du PIB réel' : 'Real GDP growth' },
                 { key: 'imf_inflation', label: t.inflation },
                 { key: 'imf_gov_debt', label: `${t.publicDebt} (${t.ofGdp})` },
-                { key: 'imf_fiscal_balance', label: `${t.fiscalBalance} (${t.ofGdp})`, signed: true },
-                { key: 'imf_current_account', label: `${t.currentAccount} (${t.ofGdp})`, signed: true },
               ].filter((r) => proj[r.key] && Object.keys(proj[r.key]).length);
               const nowY = new Date().getFullYear();
               // Union des années de toutes les séries, sur l'horizon WEO utile
@@ -708,7 +728,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             <td className="p-2 pr-4 min-w-[13rem] text-[var(--text)] font-medium">{r.label}</td>
                             {years.map((y) => (
                               <td key={y} className={`p-2 text-right tabular-nums ${y < nowY ? 'text-[var(--text)]' : 'text-[var(--text-soft)]'}`}>
-                                {pct(proj[r.key][y], language, r.signed) ?? '—'}
+                                {pct(proj[r.key][y], language) ?? '—'}
                               </td>
                             ))}
                           </tr>
