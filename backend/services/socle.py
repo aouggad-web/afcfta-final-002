@@ -10,14 +10,15 @@ fichier dont l'empreinte ne correspond pas au manifeste n'est pas servi.** Un
 socle périmé devient inerte, au lieu de rendre en silence des montants qui ne
 correspondent plus à la donnée collectée.
 
-**Portée de cette garantie :** deux empreintes sont vérifiées au chargement,
-pas une seule — celle du socle contre le manifeste, et celle du fichier
+**Portée de cette garantie :** les empreintes sont vérifiées au chargement :
+celle du socle contre le manifeste, et celle du fichier
 source du crawl (versionné, donc toujours présent) contre l'empreinte que le
 manifeste a enregistrée au moment de la construction. La première seule
 laisserait passer un crawl remplacé sans reconstruction : deux fichiers de
 socle identiques, une source différente entre-temps. Les deux vérifications
 n'ont lieu qu'au chargement d'un pays absent du cache — pas à chaque requête,
-ce que le cache existe précisément pour éviter.
+ce que le cache existe précisément pour éviter. Si une nomenclature publiée
+complète le crawl, son empreinte est également vérifiée avant la mise en cache.
 
 La remontée au parent SH6 est possible mais jamais implicite : le niveau réel
 de la position servie accompagne toujours le résultat.
@@ -120,6 +121,24 @@ def charger(iso3: str) -> dict:
 
     with open(chemin, encoding="utf-8") as f:
         donnees = json.load(f)
+    # Une nomenclature publiée est une seconde source du socle : un crawl
+    # inchangé ne garantit pas que ses codes et désignations soient à jour.
+    publiee = donnees.get("nomenclature_publiee")
+    if publiee:
+        fichier = publiee.get("fichier")
+        attendue = publiee.get("sha256")
+        source_nomenclature = os.path.join(RACINE, fichier) if fichier else None
+        if (
+            not source_nomenclature
+            or not attendue
+            or not os.path.isfile(source_nomenclature)
+            or _sha256(source_nomenclature) != attendue
+        ):
+            raise SocleIndisponible(
+                f"{iso3} : la nomenclature source est absente ou a changé depuis "
+                "la construction du socle. Il n'est pas servi — le régénérer : "
+                "python3 scripts/build_socle.py"
+            )
     _cache[iso3] = donnees
     _cache.move_to_end(iso3)
     while len(_cache) > _MAX_PAYS_EN_CACHE:

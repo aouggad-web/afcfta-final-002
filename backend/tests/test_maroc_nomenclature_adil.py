@@ -78,3 +78,31 @@ def test_la_provenance_distingue_la_date_des_codes_de_celle_des_taux():
     assert nouvelle["nomenclature"]["releve_le"] == "2026-10-21"
     _, ancienne = socle.position("MAR", "0101210000")
     assert ancienne["dates"] == {"codes": "2026-10-21", "taux": "2026-02-11"}
+
+
+@pytest.mark.parametrize("alteration", ["modifiee", "absente"])
+def test_une_nomenclature_modifiee_ou_absente_invalide_le_socle(tmp_path, monkeypatch, alteration):
+    """Le crawl inchangé ne suffit pas : la nomenclature est aussi une source."""
+    from pathlib import Path
+
+    entree = socle.manifeste()["pays"]["MAR"]
+    crawl = tmp_path / entree["source_fichier"]
+    crawl.parent.mkdir(parents=True, exist_ok=True)
+    crawl.symlink_to(Path(RACINE) / entree["source_fichier"])
+    nomenclature = tmp_path / "data/morocco/adil_nomenclature_2026-10-21.json"
+    nomenclature.parent.mkdir(parents=True, exist_ok=True)
+    nomenclature.write_bytes(Path(NOMENCLATURE).read_bytes())
+    monkeypatch.setattr(socle, "RACINE", str(tmp_path))
+    socle.vider_cache()
+    try:
+        # Le même socle reste chargeable tant que les deux sources correspondent.
+        assert socle.charger("MAR")["nomenclature_publiee"]
+        socle.vider_cache()
+        if alteration == "modifiee":
+            nomenclature.write_text('{}', encoding="utf-8")
+        else:
+            nomenclature.unlink()
+        with pytest.raises(socle.SocleIndisponible, match="nomenclature"):
+            socle.charger("MAR")
+    finally:
+        socle.vider_cache()
