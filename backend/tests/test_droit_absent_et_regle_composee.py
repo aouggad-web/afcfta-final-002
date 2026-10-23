@@ -155,9 +155,9 @@ def test_plus_aucune_position_ne_se_sert_sans_droit():
 
 @besoin_socle
 def test_une_absence_de_droit_se_declare_au_lieu_de_disparaitre(client):
-    """Maroc 0405100010 : la source ne publie AUCUNE taxe (`taxes: {}`)."""
+    """Égypte 0206800000 : la source publie la TVA, mais aucun droit de douane."""
     reponse = client.post(
-        "/calcul", json={"destination": "MAR", "code_sh": "0405100010", "valeur_cif": 10000}
+        "/calcul", json={"destination": "EGY", "code_sh": "0206800000", "valeur_cif": 10000}
     )
     assert reponse.status_code == 200
     npf = reponse.json()["npf"]

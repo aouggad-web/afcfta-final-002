@@ -2277,6 +2277,115 @@ def _formalites(iso, donnees, positions):
                 position["formalites_aucune"] = True
 
 
+#: Maroc : la nomenclature que le portail ADIL publie aujourd'hui. Le relevé des
+#: droits (11/02/2026) porte des positions que le tarif a depuis redécoupées, et
+#: ignore celles qui les remplacent ; les fiches de ces dernières ne sont pas
+#: accessibles à la collecte (pare-feu du portail, 21/10/2026).
+NOMENCLATURE_MAR = os.path.join(REPO, "data", "morocco", "adil_nomenclature_2026-10-21.json")
+NOTE_POSITION_NOUVELLE_MAR = (
+    "Position publiée par la nomenclature du portail ADIL au {date}, absente du "
+    "relevé des droits du {collecte} : droits et taxes à compléter. Le total ne "
+    "peut pas être servi."
+)
+
+
+SOURCE_NOMENCLATURE_MAR = "douane.gov.ma/adil — nomenclature"
+
+
+def _texte_adil(texte):
+    """Le texte ADIL, sauts de ligne (« \\r », « £ ») rendus en espaces."""
+    return " ".join(texte.replace("\r", " ").replace("£", " ").split())
+
+
+def _designation_hierarchique_maroc(code, publiees, titres, libelles_sh6):
+    """La désignation d'une position nouvelle, du titre de position à la ligne.
+
+    Le libellé terminal de l'ADIL (« autres ») ne dit pas de quelle
+    marchandise il s'agit. Les titres sont ceux dont le code est un préfixe de
+    la position : rien n'est déduit de l'indentation publiée, qui n'est pas
+    fiable. Quand l'ADIL ne publie de titre ni à six ni à huit chiffres
+    (0902.10), le libellé SH6 emprunté le remplace, sa source nommée ; un
+    titre à huit chiffres tient lieu de titre SH6 (0405.10.00 « Beurre »)."""
+    niveaux = []
+    for longueur in (4, 6, 8):
+        prefixe = code[:longueur]
+        if prefixe in titres:
+            niveaux.append({"code": prefixe, "texte": _texte_adil(titres[prefixe]), "source": SOURCE_NOMENCLATURE_MAR})
+        elif longueur == 6 and code[:8] not in titres and (libelles_sh6.get(prefixe) or {}).get("fr"):
+            emprunt = libelles_sh6[prefixe]
+            niveaux.append(
+                {"code": prefixe, "texte": emprunt["fr"], "source": f"libellé SH6 emprunté — {emprunt.get('fr_source')}"}
+            )
+    niveaux.append({"code": code, "texte": _texte_adil(publiees[code]), "source": SOURCE_NOMENCLATURE_MAR})
+    return {"fr": " — ".join(n["texte"] for n in niveaux), "hierarchie": niveaux}
+
+
+def _nomenclature_maroc(positions, compteurs, collecte):
+    """Aligner les positions sur la nomenclature publiée : retirer celles
+    qu'elle ne porte plus, ajouter celles qui manquent, SANS droit connu.
+
+    Les 142 positions dont le relevé ne portait aucune taxe sont toutes parmi
+    les retirées : le portail était muet parce qu'elles n'existaient plus.
+    Rendre le bloc qui trace l'opération dans le socle."""
+    with open(NOMENCLATURE_MAR, encoding="utf-8") as f:
+        nomenclature = json.load(f)
+    publiees = nomenclature["positions"]
+    retirees = sorted(set(positions) - set(publiees))
+    ajoutees = sorted(set(publiees) - set(positions))
+    for code in retirees:
+        for d in positions.pop(code)["droits"]:
+            _compter_ligne(d, compteurs, -1)
+            if d.get("libelle") == "Droit de douane — taux absent de la source":
+                compteurs["droits_absents_completes"] -= 1
+    assiettes = collections.Counter(
+        d.get("assiette")
+        for p in positions.values()
+        for d in p["droits"]
+        if d.get("famille") == "droit" and d.get("assiette")
+    )
+    note = NOTE_POSITION_NOUVELLE_MAR.format(
+        date=_date_fr(nomenclature["releve_le"]), collecte=_date_fr(collecte[:10])
+    )
+    libelles_sh6 = charger_libelles_sh6()
+    for code in ajoutees:
+        positions[code] = {
+            "designation": _designation_hierarchique_maroc(code, publiees, nomenclature["titres"], libelles_sh6),
+            "hs6": code[:6],
+            "chapitre": code[:2],
+            "droits": [
+                {
+                    "code": "DD",
+                    "code_source": "DD",
+                    "libelle": "Droit de douane — taux à compléter",
+                    "famille": "droit",
+                    "taux": None,
+                    "assiette": assiettes.most_common(1)[0][0],
+                    "assiette_origine": "regle_de_pays",
+                    "source": SOURCE_NOMENCLATURE_MAR,
+                    "note": note,
+                }
+            ],
+            "source": SOURCE_NOMENCLATURE_MAR,
+        }
+        _compter_ligne(positions[code]["droits"][0], compteurs, 1)
+    compteurs["positions_retirees_nomenclature"] = len(retirees)
+    compteurs["positions_ajoutees_nomenclature"] = len(ajoutees)
+    return {
+        "nom": SOURCE_NOMENCLATURE_MAR,
+        "fichier": os.path.relpath(NOMENCLATURE_MAR, REPO),
+        "sha256": sha256(NOMENCLATURE_MAR),
+        "releve_le": nomenclature["releve_le"],
+        "positions_publiees": len(publiees),
+        "retirees": retirees,
+        "ajoutees": ajoutees,
+    }
+
+
+def _date_fr(iso_date):
+    annee, mois, jour = iso_date.split("-")
+    return f"{jour}/{mois}/{annee}"
+
+
 def _egypte(positions, compteurs, donnees):
     """Égypte : lignes publiées deux fois, tabacs, redevances, Taxe de Table des
     alcools et des cigarettes, droits au kilo et minimums de la Taxe de Table,
@@ -3372,6 +3481,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
     _formalites(iso, donnees, positions)
+    nomenclature_publiee = None
+    if iso == "MAR":
+        nomenclature_publiee = _nomenclature_maroc(positions, compteurs, donnees.get("extracted_at") or "")
     if iso == "TUN":
         _ordre_tunisie(positions)
     if iso == "NGA":
@@ -3561,6 +3673,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         # date de construction vit au manifeste, qui n'est pas empreint.
         "positions": positions,
     }
+    if nomenclature_publiee:
+        socle["nomenclature_publiee"] = nomenclature_publiee
     if iso in CLE_DE_CONTROLE_SUFFIXE:
         # Posée seulement pour les pays concernés : les 53 autres fichiers
         # restent alors identiques au bit près, et le manifeste ne signale que
