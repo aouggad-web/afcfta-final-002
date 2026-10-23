@@ -139,3 +139,25 @@ def test_deja_dedouane_sacu_l_accise_du_botswana_n_est_pas_due(client):
     lignes = {ligne["code"]: ligne for ligne in reponse.json()["preference"]["lignes"]}
     assert lignes["EXA"]["montant"] == 0.0
     assert lignes["TVA"]["base"] == pytest.approx(11_000.0)
+
+
+def test_botswana_le_prelevement_sur_l_alcool_rend_le_total_incomplet(client):
+    """Control of Goods (Intoxicating Liquor (Levy)) Regulations, règl. 2(b) :
+    dû à l'importation, taux en vigueur non établi ; la TVA, qui l'inclut
+    (VAT Act 2026 s.30(1)(c)), n'est pas liquidée."""
+    etat, lignes = _calcul(client, "BWA", "22030005", quantite=1000)
+    assert etat != "COMPLET"
+    assert lignes["ALV"]["statut"] == "TAUX_INDISPONIBLE"
+    assert lignes["TVA"]["montant"] is None
+    assert _ligne_du_socle("BWA", "19019020", "ALV")["assiette"] == "CIF+DD"
+
+
+def test_eswatini_la_biere_traditionnelle_est_hors_du_prelevement(client):
+    """Annexe de la loi de 2019, item 1(a) : « other than traditional beer »."""
+    etat, lignes = _calcul(client, "SWZ", "22030005", quantite=1000)
+    assert "ATL" not in lignes
+    assert etat == "COMPLET"
+    with open(os.path.join(RACINE, "backend", "socle", "SWZ.json"), encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    assert not any(d["code"] == "ATL" for d in positions["22060015"]["droits"])
+    assert any(d["code"] == "ATL" for d in positions["22030090"]["droits"])

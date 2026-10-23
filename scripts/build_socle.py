@@ -116,6 +116,7 @@ FAMILLES = {
     "HPL": "accise",  # Health Promotion Levy, boissons sucrées, Part 7A (ZA)
     "EVN": "accise",  # prélèvement environnemental, Part 3 (NA)
     "ATL": "accise",  # Alcohol and Tobacco Levy (SZ)
+    "ALV": "accise",  # prélèvement sur l'alcool importé (BW)
     "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
@@ -2045,11 +2046,17 @@ def _prelevements_zaf(positions, compteurs):
 #: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
 #: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
 #: reprises. Lesotho : aucun prélèvement à l'importation documenté.
+#: Botswana, alcool : fiche BWA_prelevement_alcool_2026-10-23.json.
 #: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
 PRELEVEMENTS_SACU_NON_COLLECTES = {
     "BWA": [
         ("FLV", "Fuel levy", {"5A"}, None,
          "Excise Duty Act 2018 (Botswana), s.2 : « fuel levy » (Schedule No. 1 Part 5)", ""),
+        ("ALV", "Levy on intoxicating liquor",
+         ("19019020", "2203", "2204", "2205", "2206", "2207", "2208"),
+         "CIF+DD",
+         "Control of Goods (Intoxicating Liquor (Levy)) Regulations 2008 (Botswana), règl. 2(b), 3(b) et annexe",
+         "30 % au texte de 2008 (S.I. 91 et 111 de 2008), modifié depuis ; "),
     ],
     "NAM": [
         ("FLV", "Fuel levy", {"5A"}, None,
@@ -2068,6 +2075,15 @@ PRELEVEMENTS_SACU_NON_COLLECTES = {
 }
 
 
+#: Positions du périmètre que le texte exclut. Eswatini : l'annexe de la loi de
+#: 2019 (item 1(a)) vise « alcoholic beverages of all kinds other than
+#: traditional beer » ; le tarif isole la bière traditionnelle africaine en
+#: 2203.00.05 et 2206.00.15.
+EXCLUSIONS_PRELEVEMENTS_SACU = {
+    ("SWZ", "ATL"): ("22030005", "22060015"),
+}
+
+
 def _prelevements_sacu_non_collectes(iso, positions, compteurs):
     """Botswana, Namibie, Eswatini : prélèvements nationaux à l'importation
     déclarés sans taux sur leurs positions, faute de barème en vigueur."""
@@ -2078,8 +2094,9 @@ def _prelevements_sacu_non_collectes(iso, positions, compteurs):
             prefixes = tuple(a["sous_position"].replace(".", "") for a in articles if a["partie"] in perimetre)
         else:
             prefixes = perimetre
+        exclues = EXCLUSIONS_PRELEVEMENTS_SACU.get((iso, code_ligne), ())
         for code, position in positions.items():
-            if not code.startswith(prefixes):
+            if not code.startswith(prefixes) or code in exclues:
                 continue
             droits = position.setdefault("droits", [])
             if any(d.get("code") == code_ligne for d in droits):

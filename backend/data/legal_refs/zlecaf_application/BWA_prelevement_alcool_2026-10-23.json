@@ -1,0 +1,38 @@
+{
+ "schema_version": 1,
+ "objet": "Botswana : prélèvement sur l'alcool importé (Control of Goods (Intoxicating Liquor (Levy)) Regulations), déclaré sans taux",
+ "destination_iso3": "BWA",
+ "verified_at": "2026-10-23",
+ "etabli": true,
+ "evidence_level": "primaire pour l'existence du prélèvement, sa valeur et les boissons visées (texte des Regulations reproduit par FAOLEX, FAO) ; taux en vigueur non établi : 30 % au texte de 2008, modifié depuis (55 %, puis 35 % selon la presse, date non établie), aucun texte officiel à jour obtenu",
+ "source": {
+  "url": "https://faolex.fao.org/docs/pdf/bot215566.pdf",
+  "institution": "FAO — FAOLEX (reproduction du texte publié au Botswana : S.I. 91, 2008 et S.I. 111, 2008)"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/BWA_ControlOfGoods_IntoxicatingLiquorLevy_Regulations_2008.pdf",
+   "sha256": "b7735b3f264ef2dc7e790cc14d504df97f4c48902c1a6e27defd45a7864af2fc"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne ALV « Levy on intoxicating liquor » servie sans taux sur les positions 1901.90.20 (poudre de bière traditionnelle africaine) et 22.03 à 22.08 ; assiette CIF+DD (valeur en douane, transport et assurance, droit de douane ; TVA exclue). La TVA du Botswana (VAT Act 2026, s.30(1)(c) : « any duty and other fiscal charge, other than VAT ») inclut le prélèvement : CIF+DD+EXS+EXA+FLV+ALV. Le total de ces positions est donc incomplet.",
+  "reference": "Control of Goods (Intoxicating Liquor (Levy)) Regulations (Botswana), 31st October 2008, règl. 2(b), 3(b), 4, 5 et annexe",
+  "verbatim_reg_2": "A person who– (a) manufactures intoxicating liquor specified in the Schedule shall pay a levy at a rate of 30 per cent on the price paid or payable for such goods when sold for home consumption; (b) imports intoxicating liquor specified in the Schedule shall pay a levy at a rate of 30 per cent on the value.",
+  "verbatim_reg_3b": "imported, shall be the value for customs duty purposes in terms of section 75 of the Customs and Excise Duty Act plus the customs duty paid or payable on the goods transport and insurance costs, exclusive of Value Added Tax (VAT) liable on the goods.",
+  "verbatim_reg_4": "The levy under regulation 2 shall be collected by the Botswana Unified Revenue Service and credited to the Levy on Alcoholic Beverages Fund",
+  "verbatim_annexe": "Traditional African beer powder as defined in Chapter 19. Beer made from malt. Wine of fresh grapes, including fortified wines; grape must exclude that of Heading No. 20.09 Vermouth and other wine of fresh grapes flavoured with plants or aromatic substances. Other fermented beverages (for example cider, perry, mead); mixtures of fermented beverages and mixtures of fermented beverages and non-alcoholic beverages, not elsewhere specified or included. Undenatured ethyl alcohol strength by volume of 80 per cent vol. or higher; ethyl alcohol and other spirits, denatured, of any strength. Undenatured ethyl alcohol of an alcoholic strength by volume of less than 80 per cent vol; spirit liqueurs and other spirituous beverages; compound alcoholic preparation of a kind used for the manufacture of beverages.",
+  "texte_extrait": "sources/BWA_prelevement_alcool_2008.texte-extrait.txt",
+  "sha256": "af17d2616a1c56413fa9a03a958ba1380a7f9542cd6fa0f34e652ba13458750a",
+  "portee": "scripts/build_socle.py, PRELEVEMENTS_SACU_NON_COLLECTES[\"BWA\"] (ligne ALV) ; backend/socle/tva_nationale.json (assiette de la TVA du Botswana)."
+ },
+ "decisions": [
+  "Taux : non servi. Le texte de 2008 porte 30 % ; il a été relevé depuis (55 % en 2015 selon la presse) puis abaissé (35 % selon la presse, date non établie). Faute de texte officiel à jour, la ligne est déclarée sans taux et le total est incomplet, plutôt que liquidé à un taux périmé.",
+  "Positions : l'annexe nomme les boissons par les libellés des positions du tarif (« Beer made from malt », « Wine of fresh grapes »…) sans leurs codes dans la reproduction FAOLEX. Elles correspondent aux positions 22.03 à 22.08, et la poudre de bière traditionnelle à la sous-position 1901.90.20 du tarif.",
+  "Valeur : la règl. 3(b) renvoie à la s.75 du Customs and Excise Duty Act, remplacé par le Customs Act 2018 ; valeur en douane plus transport et assurance plus droit de douane, soit CIF+DD dans le calcul."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Taux en vigueur du prélèvement.",
+  "Exclusions de la règl. 5 : alcool réexporté et quantités en franchise des bagages de voyageurs, non distinguées par le calcul."
+ ]
+}
