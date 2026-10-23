@@ -344,13 +344,13 @@ COUNTRY_TAX_PROFILES = {
         "taxes_order": ["DD", "TVA"],
         "tax_bases": {
             "DD": ("FOB", []),
-            # VAT Act 2001 (Act 1/2001, amendé jusqu'à 2006) s.13(1)(a) :
-            # valeur transactionnelle + assurance et fret + droits = CIF + DD.
-            # Le VAT Act 2026 (en vigueur au 01/07/2026) n'est pas lu (PDF
-            # scanné) : voir BWA_assiette_TVA_2026-10-02.json.
+            # VAT Act 2026 s.30(1), en vigueur au 01/07/2026 (SI 95/2026), comme
+            # le VAT Act 2001 s.13(1)(a) : valeur en douane + assurance et fret
+            # + droits = CIF + DD (ce chemin ne sert pas d'accise). Voir
+            # BWA_assiette_TVA_2026-10-02.json.
             "TVA": ("CIF", ["DD"]),
         },
-        "source": "Customs Act 2018 s.326 et 334 (DD base = FOB) ; VAT Act 2001 s.13(1)(a) (TVA base = CIF + DD ; VAT Act 2026 non lu) — BWA_assiette_TVA_2026-10-02.json",
+        "source": "Customs Act 2018 s.326 et 334 (DD base = FOB) ; VAT Act 2026 s.30(1) et VAT Act 2001 s.13(1)(a) (TVA base = CIF + DD) — BWA_assiette_TVA_2026-10-02.json",
     },
     # ── Afrique australe et océan Indien ─────────────────────────────────────
     # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.

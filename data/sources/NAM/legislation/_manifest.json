@@ -1,0 +1,46 @@
+{
+  "country": "NAM",
+  "generated_at": "2026-10-20T23:30:00+00:00",
+  "description": "Textes officiels Namibie (NamRA). Serveur namra.org.na instable (connexions refusées intermittentes) ; téléchargements réussis avec relances.",
+  "documents": [
+    {
+      "file": "legislation/NAM_CustomsExciseAct20-1998_1998-08-01.pdf",
+      "title": "Customs and Excise Act 20 of 1998 (Namibie), version consolidée annotée — GG 1900, en vigueur 1 August 1998 (GN 186/1998), tel qu'amendé",
+      "source_url": "https://www.namra.org.na/documents/cms/uploaded/customs-and-excise-act-20-of-1998-f7d50fd10e.pdf",
+      "referencing_page": "https://www.namra.org.na/customs-excise",
+      "document_date": "1998-08-01",
+      "effective_from": "1998-08-01",
+      "is_draft": false,
+      "useful_pages": "p. 6 (table : s.53 fuel levy, s.57 fuel levy customs union, s.58A-58B environmental levy) ; p. 52 (s.40(9) fuel levy payable on entry for home consumption) ; p. 72 (s.58A-58B texte) ; p. 92 (s.81(1) currency conversion)",
+      "sha256": "8996df0fbe4df7402f94240134ea5b2c3e7598f3a2eb308258de82c5a309d7ea",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/NAM_VATAct10-2000_2000-11-27.pdf",
+      "title": "Value-Added Tax Act 10 of 2000 (Namibie), version consolidée annotée — GG 2337, en vigueur 27 November 2000 (GN 220/2000), tel qu'amendé",
+      "source_url": "https://www.namra.org.na/documents/cms/uploaded/valueadded-tax-act-10-of-2000-0d8c7ed7fc.pdf",
+      "referencing_page": "https://www.namra.org.na/customs-excise",
+      "document_date": "2000-11-27",
+      "effective_from": "2000-11-27",
+      "is_draft": false,
+      "useful_pages": "p. 27 (s.12(2) value of an import : FOB + 10 % ou open market value, le plus élevé)",
+      "sha256": "0e7496e94ebcf8ef4c70207cb688eb1243f0625103be28cf8d9f0f6d84492dd2",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/NAM_ImportationOfGoodsGuidelines_sans-date.pdf",
+      "title": "NamRA — Importation of Goods Guidelines ; aucune date lisible",
+      "source_url": "https://www.namra.org.na/documents/cms/uploaded/importation-of-goods-guidelines-9cb5fdcdee.pdf",
+      "referencing_page": "https://www.namra.org.na/customs-excise",
+      "document_date": "aucune date lisible",
+      "effective_from": null,
+      "is_draft": false,
+      "useful_pages": "chap. 2 (Importation of goods, déclaration home use)",
+      "sha256": "72db2445efdcd8ab90236719aaa2ed1298a575088d4ff2b94bb0bfe682354497",
+      "archived_at": "2026-10-20T23:30:00+00:00",
+      "verified_at": "2026-10-20T23:30:00+00:00"
+    }
+  ]
+}
