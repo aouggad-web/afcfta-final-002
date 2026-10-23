@@ -64,23 +64,39 @@ def kasai(fond, motif, bleu, vert):
     return uri(24, 10, g)
 
 
-def kente(sens):
-    """Tissage kente : blocs rouge, or, vert, orange séparés de fils noirs,
-    avec un fil sombre au milieu de la bande pour l'effet de trame.
-    `sens` : 90deg (bande horizontale) ou 180deg (lisière verticale)."""
+def kente_couches(sens):
+    """Les deux couches du tissage kente : le fil sombre au milieu de la bande
+    (effet de trame), puis les blocs rouge, or, vert, orange séparés de fils
+    noirs. `sens` : 90deg (bande horizontale) ou 180deg (lisière verticale)."""
     travers = "180deg" if sens == "90deg" else "90deg"
-    return f"""linear-gradient({travers},
-    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%),
-  repeating-linear-gradient({sens},
+    return [
+        f"""linear-gradient({travers},
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%)""",
+        f"""repeating-linear-gradient({sens},
     #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
     #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
     #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
-    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px)"""
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px)""",
+    ]
+
+
+def kente(sens):
+    """Tissage kente (bande ou lisière), en une valeur de `background`."""
+    return ",\n  ".join(kente_couches(sens))
+
+
+def kente_bords(sens, bords, taille):
+    """Bandes kente posées sur des bords précis d'un cadre : `bords` liste les
+    positions (top/bottom ou left/right), `taille` la taille de chaque bande."""
+    return ",\n  ".join(
+        f"{c} {bord} / {taille} no-repeat" for bord in bords for c in kente_couches(sens)
+    )
 
 
 KENTE = kente("90deg")
 KENTE_V = kente("180deg")
 KENTE_H = 10  # épaisseur de la bande du haut (px)
+CADRE = 8  # épaisseur du cadre kente des panneaux (px)
 
 # Or saharien en sombre, terre de Tlemcen en clair ; bleu et vert de Ghardaïa
 # en retrait : pleins dans la bande, discrets dans le fond (ruban, fond
@@ -113,8 +129,11 @@ css = f"""/* ══════════════════════�
      Ghardaïa.
    - Tissage kente (couleurs panafricaines) sur les bordures, jamais
      derrière le texte : bande de 10 px en haut de l'écran, lisière verticale
-     de la barre latérale, bas de la barre mobile, haut des fenêtres, et
-     soulignés des titres de Statistiques.
+     de la barre latérale, bas de la barre mobile, haut des fenêtres,
+     soulignés des titres de Statistiques, et cadre des modules (.kente-cadre).
+   - Cadre de module (.kente-cadre) : kente sur les quatre bords, khatam à
+     l'intérieur ; le texte se pose sur des panneaux opaques, jamais
+     directement sur le pavage.
 
    Fichier généré par scripts/build_ambiance_css.py : modifier le script,
    puis régénérer. */
@@ -167,6 +186,35 @@ css = f"""/* ══════════════════════�
 .stats-kente-bar {{
   height: 5px !important;
   background: {KENTE} !important;
+}}
+
+/* Cadre de module : kente sur les quatre bords (bande horizontale en haut et
+   en bas, lisière verticale à gauche et à droite), khatam à l'intérieur. Le
+   contenu se pose sur des panneaux opaques : le pavage ne passe jamais
+   derrière le texte. */
+.kente-cadre {{
+  position: relative;
+  padding: {CADRE}px;
+  border-radius: 16px;
+  background-color: var(--afcfta-card2);
+  background-image: {khatam(*SOMBRE['fond'])};
+  background-size: {T}px {T}px;
+}}
+html.theme-light .kente-cadre {{
+  background-image: {khatam(*CLAIR['fond'])};
+}}
+.kente-cadre::before, .kente-cadre::after {{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}}
+.kente-cadre::before {{
+  background: {kente_bords("90deg", ("top", "bottom"), f"100% {CADRE}px")};
+}}
+.kente-cadre::after {{
+  background: {kente_bords("180deg", ("left", "right"), f"{CADRE}px 100%")};
 }}
 
 /* Fond de page : trame zellige sur le conteneur principal */
