@@ -45,6 +45,9 @@ from services.regulatory_fee_service import build_regulatory_blocks, transport_d
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+#: La couverture du socle ne liquide rien : elle reste hors du quota de calculs,
+#: que `routes/__init__.py` pose sur `router` seul.
+router_couverture = APIRouter()
 
 #: Les trois champs du bloc réglementaire, nommés une fois pour que la réponse
 #: les porte tous les trois ou aucun — un bloc à moitié servi laisserait croire
@@ -623,7 +626,7 @@ def _bloc_reglementaire(
     return {cle: blocs[cle] for cle in REGLEMENTAIRE}
 
 
-@router.get("/calcul/pays", summary="Pays servis par le socle, et leur couverture")
+@router_couverture.get("/calcul/pays", summary="Pays servis par le socle, et leur couverture")
 def pays():
     try:
         servis = socle.pays_servis()
