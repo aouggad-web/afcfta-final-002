@@ -44,6 +44,8 @@ class CountryEconomicProfile(BaseModel):
     risk_ratings: Dict[str, Any] = {}
     customs: Dict[str, Any] = {}
     infrastructure_ranking: Dict[str, Any] = {}
+    # Rangs africains des indices majeurs : {indice: {rank, total, year}}
+    african_rankings: Dict[str, Any] = {}
     ongoing_projects: List[Dict[str, Any]] = []
 
 

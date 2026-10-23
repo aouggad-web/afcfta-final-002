@@ -849,7 +849,7 @@ img.afcfta-sidebar-brandmark {
 
 [role="listbox"],
 [data-radix-popper-content-wrapper] > div {
-  background: #182030 !important;
+  background: var(--afcfta-card) !important;
   border: 1px solid rgba(200,83,26,0.2) !important;
   border-radius: 10px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.55);

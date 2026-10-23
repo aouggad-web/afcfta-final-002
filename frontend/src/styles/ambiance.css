@@ -12,8 +12,11 @@
      Ghardaïa.
    - Tissage kente (couleurs panafricaines) sur les bordures, jamais
      derrière le texte : bande de 10 px en haut de l'écran, lisière verticale
-     de la barre latérale, bas de la barre mobile, haut des fenêtres, et
-     soulignés des titres de Statistiques.
+     de la barre latérale, bas de la barre mobile, haut des fenêtres,
+     soulignés des titres de Statistiques, et cadre des modules (.kente-cadre).
+   - Cadre de module (.kente-cadre) : kente sur les quatre bords, khatam à
+     l'intérieur ; le texte se pose sur des panneaux opaques, jamais
+     directement sur le pavage.
 
    Fichier généré par scripts/build_ambiance_css.py : modifier le script,
    puis régénérer. */
@@ -96,6 +99,61 @@
     #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
     #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
     #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px) !important;
+}
+
+/* Cadre de module : kente sur les quatre bords (bande horizontale en haut et
+   en bas, lisière verticale à gauche et à droite), khatam à l'intérieur. Le
+   contenu se pose sur des panneaux opaques : le pavage ne passe jamais
+   derrière le texte. */
+.kente-cadre {
+  position: relative;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: var(--afcfta-card2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpolygon points='40.00,11.72 48.28,20.00 60.00,20.00 60.00,31.72 68.28,40.00 60.00,48.28 60.00,60.00 48.28,60.00 40.00,68.28 31.72,60.00 20.00,60.00 20.00,48.28 11.72,40.00 20.00,31.72 20.00,20.00 31.72,20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='40.00,17.94 46.46,24.40 55.60,24.40 55.60,33.54 62.06,40.00 55.60,46.46 55.60,55.60 46.46,55.60 40.00,62.06 33.54,55.60 24.40,55.60 24.40,46.46 17.94,40.00 24.40,33.54 24.40,24.40 33.54,24.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='49.41,43.90 43.90,49.41 36.10,49.41 30.59,43.90 30.59,36.10 36.10,30.59 43.90,30.59 49.41,36.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,-28.28 8.28,-20.00 20.00,-20.00 20.00,-8.28 28.28,0.00 20.00,8.28 20.00,20.00 8.28,20.00 0.00,28.28 -8.28,20.00 -20.00,20.00 -20.00,8.28 -28.28,0.00 -20.00,-8.28 -20.00,-20.00 -8.28,-20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,-22.06 6.46,-15.60 15.60,-15.60 15.60,-6.46 22.06,0.00 15.60,6.46 15.60,15.60 6.46,15.60 0.00,22.06 -6.46,15.60 -15.60,15.60 -15.60,6.46 -22.06,0.00 -15.60,-6.46 -15.60,-15.60 -6.46,-15.60' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='9.41,3.90 3.90,9.41 -3.90,9.41 -9.41,3.90 -9.41,-3.90 -3.90,-9.41 3.90,-9.41 9.41,-3.90' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,-28.28 88.28,-20.00 100.00,-20.00 100.00,-8.28 108.28,0.00 100.00,8.28 100.00,20.00 88.28,20.00 80.00,28.28 71.72,20.00 60.00,20.00 60.00,8.28 51.72,0.00 60.00,-8.28 60.00,-20.00 71.72,-20.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,-22.06 86.46,-15.60 95.60,-15.60 95.60,-6.46 102.06,0.00 95.60,6.46 95.60,15.60 86.46,15.60 80.00,22.06 73.54,15.60 64.40,15.60 64.40,6.46 57.94,0.00 64.40,-6.46 64.40,-15.60 73.54,-15.60' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='89.41,3.90 83.90,9.41 76.10,9.41 70.59,3.90 70.59,-3.90 76.10,-9.41 83.90,-9.41 89.41,-3.90' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,51.72 8.28,60.00 20.00,60.00 20.00,71.72 28.28,80.00 20.00,88.28 20.00,100.00 8.28,100.00 0.00,108.28 -8.28,100.00 -20.00,100.00 -20.00,88.28 -28.28,80.00 -20.00,71.72 -20.00,60.00 -8.28,60.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,57.94 6.46,64.40 15.60,64.40 15.60,73.54 22.06,80.00 15.60,86.46 15.60,95.60 6.46,95.60 0.00,102.06 -6.46,95.60 -15.60,95.60 -15.60,86.46 -22.06,80.00 -15.60,73.54 -15.60,64.40 -6.46,64.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='9.41,83.90 3.90,89.41 -3.90,89.41 -9.41,83.90 -9.41,76.10 -3.90,70.59 3.90,70.59 9.41,76.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,51.72 88.28,60.00 100.00,60.00 100.00,71.72 108.28,80.00 100.00,88.28 100.00,100.00 88.28,100.00 80.00,108.28 71.72,100.00 60.00,100.00 60.00,88.28 51.72,80.00 60.00,71.72 60.00,60.00 71.72,60.00' fill='rgba(14,138,122,0.045)' stroke='rgba(212,137,26,0.16)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,57.94 86.46,64.40 95.60,64.40 95.60,73.54 102.06,80.00 95.60,86.46 95.60,95.60 86.46,95.60 80.00,102.06 73.54,95.60 64.40,95.60 64.40,86.46 57.94,80.00 64.40,73.54 64.40,64.40 73.54,64.40' fill='none' stroke='rgba(212,137,26,0.16)' stroke-width='1'/%3E%3Cpolygon points='89.41,83.90 83.90,89.41 76.10,89.41 70.59,83.90 70.59,76.10 76.10,70.59 83.90,70.59 89.41,76.10' fill='rgba(27,108,168,0.13)' stroke='rgba(212,137,26,0.16)' stroke-width='0.8'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+html.theme-light .kente-cadre {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpolygon points='40.00,11.72 48.28,20.00 60.00,20.00 60.00,31.72 68.28,40.00 60.00,48.28 60.00,60.00 48.28,60.00 40.00,68.28 31.72,60.00 20.00,60.00 20.00,48.28 11.72,40.00 20.00,31.72 20.00,20.00 31.72,20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='40.00,17.94 46.46,24.40 55.60,24.40 55.60,33.54 62.06,40.00 55.60,46.46 55.60,55.60 46.46,55.60 40.00,62.06 33.54,55.60 24.40,55.60 24.40,46.46 17.94,40.00 24.40,33.54 24.40,24.40 33.54,24.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='49.41,43.90 43.90,49.41 36.10,49.41 30.59,43.90 30.59,36.10 36.10,30.59 43.90,30.59 49.41,36.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,-28.28 8.28,-20.00 20.00,-20.00 20.00,-8.28 28.28,0.00 20.00,8.28 20.00,20.00 8.28,20.00 0.00,28.28 -8.28,20.00 -20.00,20.00 -20.00,8.28 -28.28,0.00 -20.00,-8.28 -20.00,-20.00 -8.28,-20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,-22.06 6.46,-15.60 15.60,-15.60 15.60,-6.46 22.06,0.00 15.60,6.46 15.60,15.60 6.46,15.60 0.00,22.06 -6.46,15.60 -15.60,15.60 -15.60,6.46 -22.06,0.00 -15.60,-6.46 -15.60,-15.60 -6.46,-15.60' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='9.41,3.90 3.90,9.41 -3.90,9.41 -9.41,3.90 -9.41,-3.90 -3.90,-9.41 3.90,-9.41 9.41,-3.90' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,-28.28 88.28,-20.00 100.00,-20.00 100.00,-8.28 108.28,0.00 100.00,8.28 100.00,20.00 88.28,20.00 80.00,28.28 71.72,20.00 60.00,20.00 60.00,8.28 51.72,0.00 60.00,-8.28 60.00,-20.00 71.72,-20.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,-22.06 86.46,-15.60 95.60,-15.60 95.60,-6.46 102.06,0.00 95.60,6.46 95.60,15.60 86.46,15.60 80.00,22.06 73.54,15.60 64.40,15.60 64.40,6.46 57.94,0.00 64.40,-6.46 64.40,-15.60 73.54,-15.60' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='89.41,3.90 83.90,9.41 76.10,9.41 70.59,3.90 70.59,-3.90 76.10,-9.41 83.90,-9.41 89.41,-3.90' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='0.00,51.72 8.28,60.00 20.00,60.00 20.00,71.72 28.28,80.00 20.00,88.28 20.00,100.00 8.28,100.00 0.00,108.28 -8.28,100.00 -20.00,100.00 -20.00,88.28 -28.28,80.00 -20.00,71.72 -20.00,60.00 -8.28,60.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='0.00,57.94 6.46,64.40 15.60,64.40 15.60,73.54 22.06,80.00 15.60,86.46 15.60,95.60 6.46,95.60 0.00,102.06 -6.46,95.60 -15.60,95.60 -15.60,86.46 -22.06,80.00 -15.60,73.54 -15.60,64.40 -6.46,64.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='9.41,83.90 3.90,89.41 -3.90,89.41 -9.41,83.90 -9.41,76.10 -3.90,70.59 3.90,70.59 9.41,76.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3Cpolygon points='80.00,51.72 88.28,60.00 100.00,60.00 100.00,71.72 108.28,80.00 100.00,88.28 100.00,100.00 88.28,100.00 80.00,108.28 71.72,100.00 60.00,100.00 60.00,88.28 51.72,80.00 60.00,71.72 60.00,60.00 71.72,60.00' fill='rgba(14,138,122,0.035)' stroke='rgba(138,75,18,0.13)' stroke-width='1.6'/%3E%3Cpolygon points='80.00,57.94 86.46,64.40 95.60,64.40 95.60,73.54 102.06,80.00 95.60,86.46 95.60,95.60 86.46,95.60 80.00,102.06 73.54,95.60 64.40,95.60 64.40,86.46 57.94,80.00 64.40,73.54 64.40,64.40 73.54,64.40' fill='none' stroke='rgba(138,75,18,0.13)' stroke-width='1'/%3E%3Cpolygon points='89.41,83.90 83.90,89.41 76.10,89.41 70.59,83.90 70.59,76.10 76.10,70.59 83.90,70.59 89.41,76.10' fill='rgba(27,108,168,0.085)' stroke='rgba(138,75,18,0.13)' stroke-width='0.8'/%3E%3C/svg%3E");
+}
+.kente-cadre::before, .kente-cadre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.kente-cadre::before {
+  background: linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%) top / 100% 8px no-repeat,
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px) top / 100% 8px no-repeat,
+  linear-gradient(180deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%) bottom / 100% 8px no-repeat,
+  repeating-linear-gradient(90deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px) bottom / 100% 8px no-repeat;
+}
+.kente-cadre::after {
+  background: linear-gradient(90deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%) left / 8px 100% no-repeat,
+  repeating-linear-gradient(180deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px) left / 8px 100% no-repeat,
+  linear-gradient(90deg,
+    transparent 46%, rgba(13,8,0,0.3) 46%, rgba(13,8,0,0.3) 54%, transparent 54%) right / 8px 100% no-repeat,
+  repeating-linear-gradient(180deg,
+    #C8102E 0px, #C8102E 12px, #0D0800 12px, #0D0800 14px,
+    #FCDD09 14px, #FCDD09 26px, #0D0800 26px, #0D0800 28px,
+    #007A3D 28px, #007A3D 40px, #0D0800 40px, #0D0800 42px,
+    #E8890C 42px, #E8890C 54px, #0D0800 54px, #0D0800 56px) right / 8px 100% no-repeat;
 }
 
 /* Fond de page : trame zellige sur le conteneur principal */
