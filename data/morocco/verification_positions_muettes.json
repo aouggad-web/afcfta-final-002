@@ -189,5 +189,10 @@
   "7408212100": "RIEN_PUBLIE",
   "8504402000": "RIEN_PUBLIE",
   "8504409980": "RIEN_PUBLIE"
+ },
+ "elucidation": {
+  "etablie_le": "2026-10-21",
+  "source": "data/morocco/adil_nomenclature_2026-10-21.json — nomenclature publiée par le portail ADIL",
+  "constat": "Aucune des 142 positions n'est publiée par la nomenclature ADIL du 21/10/2026 : toutes ont été redécoupées en positions plus fines (exemple : 0902.10.00.00 remplacée par 0902.10.00.10 et 0902.10.00.90). Le portail était muet parce que ces positions n'existaient plus au tarif. Elles sont retirées du socle ; l'hypothèse ci-dessus est caduque."
  }
 }

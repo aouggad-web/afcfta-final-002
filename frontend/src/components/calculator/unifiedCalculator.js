@@ -612,7 +612,8 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     normal_calculation_journal: buildJournal(cifValue, npfLignes),
     zlecaf_calculation_journal: hasPreference ? buildJournal(cifValue, prefLignes) : [],
     computation_order_ref: `Socle unifié — ${provenance.source?.nom || destinationCountry}`,
-    last_verified: provenance.source?.collecte ? String(provenance.source.collecte).slice(0, 10) : null,
+    // La date des TAUX : celle des codes peut être plus récente (provenance.dates).
+    last_verified: provenance.dates ? provenance.dates.taux : (provenance.source?.collecte ? String(provenance.source.collecte).slice(0, 10) : null),
     // Un complément national est un taux standard de pays, pas une donnée de
     // ligne : il rend le calcul complet sans le rendre certain — un bien
     // détaxé y recevrait le taux plein. La confiance reste donc « partielle »

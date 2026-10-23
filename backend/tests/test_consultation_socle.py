@@ -93,7 +93,7 @@ def test_egypte_l_arabe_officiel_et_la_traduction_signalee(client):
 def test_maroc_le_constat_n_est_que_celui_de_la_source(client):
     """« Aucun document à présenter » est publié par l'ADIL pour la position ;
     une position sans mention reste « non établies »."""
-    assert _formalites(client, "MAR", "0902100000")["statut"] == "AUCUNE_FORMALITE_PARTICULIERE"
+    assert _formalites(client, "MAR", "2201100090")["statut"] == "AUCUNE_FORMALITE_PARTICULIERE"
     corps = _formalites(client, "MAR", "0201100011")
     assert corps["statut"] == "NON_ETABLIES" and "absence d'obligation" in corps["reserve"]
 
