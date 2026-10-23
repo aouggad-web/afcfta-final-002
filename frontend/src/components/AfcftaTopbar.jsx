@@ -96,16 +96,17 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
               data-testid="topbar-account-btn"
               style={{ display: "flex", alignItems: "center", gap: 6 }}
             >
-              <User size={14} /> {user.name}
+              <User size={14} /> <span className="afcfta-account-label">{user.name}</span>
             </button>
           ) : (
             <button
               className="afcfta-btn-sm afcfta-btn-secondary"
               onClick={onOpenAuth}
+              aria-label={isFrench ? "Connexion" : "Login"}
               data-testid="topbar-login-btn"
               style={{ display: "flex", alignItems: "center", gap: 6 }}
             >
-              <User size={14} /> {isFrench ? "Connexion" : "Login"}
+              <User size={14} /> <span className="afcfta-account-label">{isFrench ? "Connexion" : "Login"}</span>
             </button>
           )}
           {onThemeToggle && (
