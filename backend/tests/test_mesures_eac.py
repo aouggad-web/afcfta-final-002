@@ -8,6 +8,7 @@ mesures relevées couvrent l'année budgétaire EAC 2026/27.
 
 import importlib.util
 import os
+import re
 import sys
 from datetime import date
 
@@ -86,11 +87,38 @@ def test_une_autorisation_expiree_ne_suffit_pas():
 
 
 def test_une_mesure_du_kenya_ne_vaut_pas_pour_un_autre_etat_partenaire():
-    position = _position(taux=35.0)
-    assert mesures_eac.appliquer(position, "TZA", "10019910", le=LE, **AUTORISATION) == (
+    # Rivets 8308.20 : remise accordée au seul Kenya (EAC/161/2026, Table A, ligne 101).
+    position = _position(taux=25.0)
+    autorisation = dict(AUTORISATION, lignes=["83082000"])
+    assert mesures_eac.appliquer(position, "TZA", "83082000", le=LE, **autorisation) == (
         position,
         None,
     )
+
+
+def _autorise(code):
+    return dict(AUTORISATION, reference="URA/REM/2026/001", lignes=[code])
+
+
+@pytest.mark.parametrize("etat,code,tec,attendu", [
+    ("UGA", "85393100", 25.0, 0.0),   # ligne 2 : LED et CFL non assemblées
+    ("UGA", "35052000", 35.0, 10.0),  # ligne 61 : « from 35% and 10% to 10% and 0% »
+    ("TZA", "48041990", 10.0, 0.0),   # ligne 35 : 4804.19.00 publié, sous-position entière
+    ("BDI", "10019910", 35.0, 0.0),   # ligne 37(b) : blé, Burundi et Rwanda à 0 %
+])
+def test_remises_de_l_eac_161_hors_kenya(etat, code, tec, attendu):
+    position, bloc = mesures_eac.appliquer(_position(taux=tec), etat, code, le=LE, **_autorise(code))
+    assert _dd(position)["taux"] == attendu
+    assert "Legal Notice EAC/161/2026" in _dd(position)["note"]
+    sans, _ = mesures_eac.appliquer(_position(taux=tec), etat, code, le=LE)
+    assert _dd(sans)["taux"] == tec
+
+
+def test_remises_divergentes_sur_une_meme_ligne_le_taux_n_est_pas_servi():
+    """4819.10 en Ouganda : 0 % (ligne 44), 10 % (ligne 77), 25 % (ligne 97)
+    selon la fabrication ; l'autorisation ne dit pas laquelle."""
+    position, _ = mesures_eac.appliquer(_position(taux=35.0), "UGA", "48191000", le=LE, **_autorise("48191000"))
+    assert _dd(position)["taux"] is None
 
 
 def test_hors_de_sa_periode_une_mesure_ne_change_rien():
@@ -214,3 +242,23 @@ def test_la_route_reclame_la_surface_pour_un_sursis_mixte(client):
     dd = _ligne_dd(reponse)
     assert dd["statut"] == "QUANTITE_REQUISE"
     assert dd["unite_quantite"] == "m2"
+
+
+@pytest.mark.skipif(
+    not os.path.exists(os.path.join(os.path.dirname(__file__), "..", "socle", "UGA.json")),
+    reason="socle absent (gitignoré)",
+)
+def test_le_script_reproduit_les_remises_de_l_eac_161():
+    """scripts/extraire_remises_eac_161_2026.py redonne les mesures du fichier."""
+    import json
+
+    racine = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    spec = importlib.util.spec_from_file_location(
+        "extraire_remises_eac_161_test", os.path.join(racine, "scripts", "extraire_remises_eac_161_2026.py")
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    with open(os.path.join(racine, "data", "eac", "legal_overrides.json"), encoding="utf-8") as f:
+        fichier = [m for m in json.load(f)["measures"] if re.search(r"^EAC-161-2026-REMISSION-.*-R\w+$", m["measure_id"])]
+    assert module.mesures_161() == fichier
+    assert len(fichier) == 302
