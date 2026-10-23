@@ -8,7 +8,7 @@
   "source": {
     "institution": "Ministère des Finances d'Éthiopie — livre tarifaire révisé (août 2021)",
     "pdf_sha256": "cf3ebfb68dd6528198b66a1d7738624bccb819e75aa0be5103720f93472d5327",
-    "pdf_non_archive": "Le PDF (8 Mo) a été fourni par le propriétaire du projet (Drive, dossier ethiopie ; PR #605, data/ethiopia/reference/tariff_reform_book_mofed.pdf) ; il n'est pas publié en ligne par le ministère. Seul le relevé code / taux / page est archivé (voir regle.texte_archive)"
+    "pdf_archive": "ETH_livre_tarifaire_2021.pdf, déclaré dans documents_archives (PDF de 372 pages fourni par le propriétaire du projet, non publié en ligne par le ministère ; versé depuis la PR #605)"
   },
   "regle": {
     "valeur": "Droit de douane ad valorem par position à 8 chiffres (Free, 5 %, 15 %, 25 %, 35 %, ou Prohibited), colonne (6) « Duty Rate » du livre.",
@@ -34,6 +34,10 @@
     {
       "texte_archive": "sources/ETH_livre_tarifaire_2021.droits.csv",
       "sha256": "35e83244f0dc844c0614570811dfaa07fdeaab5a2d8312ae409cf8b6940b6d66"
+    },
+    {
+      "fichier_archive": "sources/ETH_livre_tarifaire_2021.pdf",
+      "sha256": "cf3ebfb68dd6528198b66a1d7738624bccb819e75aa0be5103720f93472d5327"
     }
   ]
 }
