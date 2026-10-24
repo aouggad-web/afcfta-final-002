@@ -43,6 +43,11 @@ _FIELDS = {
     "InternetUsers": "internet_users_pct",
     "ElectricityAccess": "electricity_access_pct",
     "FemaleLaborForce": "female_labor_force_pct",
+    # Position extérieure (IDS / WDI) — bloc « Dette & réserves » du Profil Pays.
+    "ExternalDebt": "external_debt_usd",
+    "ExternalDebtGNI": "external_debt_pct_gni",
+    "Reserves": "reserves_usd",
+    "ReservesImportMonths": "reserves_import_months",
 }
 
 _cache: Optional[Dict] = None

@@ -4,7 +4,9 @@
  *   • la recherche de pays, en plus du menu déroulant : sans accents ni
  *     casse, par code ISO, au clavier, et un message quand rien ne correspond ;
  *   • le rang africain s'affiche avec son dénominateur et son année, et chaque
- *     tuile porte l'année réelle de sa valeur, jamais une année figée.
+ *     tuile porte l'année réelle de sa valeur, jamais une année figée ;
+ *   • dette extérieure et réserves de change remplacent le solde budgétaire et
+ *     le compte courant.
  */
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -43,10 +45,13 @@ const PROFILE = {
     debt_year: 2025,
     hdi_year: 2023,
     hdi_source: 'PNUD RDH 2025',
+    external_debt: { year: 2024, pct_gni: 2.67, usd: 6898271361 },
+    reserves: { year: 2025, usd: 76825229205, import_months: 11.63, import_months_year: 2025 },
   },
   african_rankings: {
     gdp: { rank: 4, total: 52, year: 2025 },
     hdi: { rank: 3, total: 54, year: 2023 },
+    external_debt: { rank: 1, total: 47, year: 2024 },
   },
   infrastructure_ranking: {},
   ongoing_projects: [],
@@ -104,5 +109,17 @@ describe('Profils Pays — classement africain et années réelles', () => {
     expect(screen.getByText('Croissance 2025')).toBeInTheDocument();
     expect(screen.getByText('IDH 2023')).toBeInTheDocument();
     expect(screen.queryByText(/Inflation 2024|Chômage 2024|IDH 2024/)).not.toBeInTheDocument();
+  });
+
+  it('montre la dette extérieure et les réserves de change, plus le solde ni le compte courant', async () => {
+    render(<CountryProfilesTab language="fr" />);
+    await waitFor(() => expect(axios.get).toHaveBeenCalled());
+    await userEvent.type(screen.getByRole('combobox', { name: 'Rechercher un pays' }), 'alg{Enter}');
+
+    expect(await screen.findByText('Dette extérieure 2024')).toBeInTheDocument();
+    expect(screen.getByLabelText('Rang Afrique 2024 : 1/47')).toHaveTextContent('#1/47');
+    expect(screen.getByText('Réserves de change 2025')).toBeInTheDocument();
+    expect(screen.getByText(/11,6 mois d'importations/)).toBeInTheDocument();
+    expect(screen.queryByText(/Solde budgétaire|Compte courant/)).not.toBeInTheDocument();
   });
 });

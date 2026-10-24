@@ -46,12 +46,10 @@ def test_profile_exposes_imf_projections(monkeypatch):
     assert pr["gdp_growth_projection_2026"] == f"{imf_2026:.1f}%"
 
 
-def test_weo_vintage_and_fiscal_series_loaded():
-    """Le fichier WEO porte son millésime et les séries dette/solde/compte courant."""
+def test_weo_vintage_and_debt_series_loaded():
+    """Le fichier WEO porte son millésime et la série de dette publique."""
     assert "World Economic Outlook (" in imf.source_label()
     proj = imf.get_projections("DZA")
-    for key in ("gov_debt", "fiscal_balance", "current_account"):
-        assert proj[key], key
     assert 0 < proj["gov_debt"]["2025"] < 500
 
 

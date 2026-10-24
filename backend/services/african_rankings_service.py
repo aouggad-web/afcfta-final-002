@@ -7,10 +7,10 @@ une valeur 2022 n'est jamais comparée à des valeurs 2025. Les ex aequo
 partagent leur rang (classement « 1, 2, 2, 4 »).
 
 1 = valeur la plus élevée, sauf pour l'inflation, le chômage et la dette
-publique, où 1 = la plus faible.
+(publique ou extérieure), où 1 = la plus faible.
 
-Sources : Banque mondiale (WDI, dataset auto-actualisé), FMI (WEO), PNUD
-(RDH 2025) et Banque mondiale (LPI 2023, dimension infrastructure).
+Sources : Banque mondiale (WDI et IDS, dataset auto-actualisé), FMI (WEO),
+PNUD (RDH 2025) et Banque mondiale (LPI 2023, dimension infrastructure).
 """
 
 from datetime import datetime
@@ -33,14 +33,14 @@ _WB_INDICES = {
     "life_expectancy": ("life_expectancy_years", True),
     "internet_users": ("internet_users_pct", True),
     "electricity_access": ("electricity_access_pct", True),
+    "external_debt": ("external_debt_pct_gni", False),
+    "reserves": ("reserves_usd", True),
 }
 
 # indice -> (série WEO, année relative à l'année en cours, plus élevé = mieux)
 _IMF_INDICES = {
     "gdp_growth_projection": ("gdp_growth", 0, True),
     "gov_debt": ("gov_debt", -1, False),
-    "fiscal_balance": ("fiscal_balance", -1, True),
-    "current_account": ("current_account", -1, True),
 }
 
 # IDH du dataset Profils Pays : PNUD, RDH 2025 (année de référence 2023).

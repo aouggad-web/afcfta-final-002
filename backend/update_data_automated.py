@@ -151,6 +151,13 @@ class DataUpdater:
             ("GDP_growth", "NY.GDP.MKTP.KD.ZG", "2020:2025"),  # GDP growth (%)
             ("Inflation", "FP.CPI.TOTL.ZG", "2020:2025"),  # Inflation (annual %)
             ("Unemployment", "SL.UEM.TOTL.ZS", "2020:2025"),  # Unemployment (%)
+            # Position extérieure — bloc « Dette & réserves » du Profil Pays.
+            # Dette extérieure : International Debt Statistics (pays à revenu
+            # faible et intermédiaire seulement ; pas de valeur pour les autres).
+            ("ExternalDebt", "DT.DOD.DECT.CD", "2020:2025"),  # encours dette ext. (US$)
+            ("ExternalDebtGNI", "DT.DOD.DECT.GN.ZS", "2020:2025"),  # dette ext. (% RNB)
+            ("Reserves", "FI.RES.TOTL.CD", "2020:2025"),  # réserves totales, or compris (US$)
+            ("ReservesImportMonths", "FI.RES.TOTL.MO", "2020:2025"),  # réserves en mois d'import.
             # Indicateurs sociaux Banque Mondiale (WDI) — alimentent le bloc
             # « Indicateurs sociaux » du Profil Pays. Chacun affiché avec sa
             # VRAIE année (fin des étiquettes d'année figées/inventées).
