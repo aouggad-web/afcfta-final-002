@@ -121,6 +121,30 @@ def test_remises_divergentes_sur_une_meme_ligne_le_taux_n_est_pas_servi():
     assert _dd(position)["taux"] is None
 
 
+@pytest.mark.parametrize("etat,code,tec,attendu", [
+    ("KEN", "56049000", 10.0, 0.0),   # EAC/168, S/N 1 : intrants textiles du Kenya
+    ("RWA", "04022100", 60.0, 0.0),   # EAC/173, S/N 1 : liste du Rwanda à 0 %
+    ("BDI", "32159090", 25.0, 10.0),  # EAC/172, S/N 31 : deux codes, un taux chacun
+    ("BDI", "33021000", 10.0, 0.0),   # EAC/172, S/N 31 (et S/N 255, même taux)
+    ("RWA", "44101100", 25.0, 10.0),  # EAC/163, S/N 3 : « Granted Rwanda ... at 10% »
+    ("UGA", "64061090", 10.0, 0.0),   # EAC/170, S/N 14 : 6406.10.00 publié, subdivisé
+])
+def test_remises_des_listes_eac_162_a_173(etat, code, tec, attendu):
+    position, _ = mesures_eac.appliquer(_position(taux=tec), etat, code, le=LE, **_autorise(code))
+    assert _dd(position)["taux"] == attendu
+    sans, _ = mesures_eac.appliquer(_position(taux=tec), etat, code, le=LE)
+    assert _dd(sans)["taux"] == tec
+
+
+def test_une_decision_de_l_eac_163_ne_vaut_que_pour_les_etats_qu_elle_nomme():
+    # Panneaux de particules : remise accordée au seul Rwanda.
+    position = _position(taux=25.0)
+    assert mesures_eac.appliquer(position, "UGA", "44101100", le=LE, **_autorise("44101100")) == (
+        position,
+        None,
+    )
+
+
 def test_hors_de_sa_periode_une_mesure_ne_change_rien():
     position = _position(taux=35.0)
     assert mesures_eac.appliquer(
@@ -262,3 +286,20 @@ def test_le_script_reproduit_les_remises_de_l_eac_161():
         fichier = [m for m in json.load(f)["measures"] if re.search(r"^EAC-161-2026-REMISSION-.*-R\w+$", m["measure_id"])]
     assert module.mesures_161() == fichier
     assert len(fichier) == 302
+
+
+def test_le_script_reproduit_les_listes_des_eac_162_a_173():
+    """scripts/extraire_remises_eac_162_173_2026.py relit les tableaux du PDF déposé."""
+    import json
+
+    racine = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    spec = importlib.util.spec_from_file_location(
+        "extraire_remises_eac_162_173_test",
+        os.path.join(racine, "scripts", "extraire_remises_eac_162_173_2026.py"),
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    with open(os.path.join(racine, "data", "eac", "legal_overrides.json"), encoding="utf-8") as f:
+        fichier = [m for m in json.load(f)["measures"] if re.search(r"^EAC-1(6[2-9]|7[0-3])-2026-REMISSION-", m["measure_id"])]
+    assert module.mesures_162_173() == fichier
+    assert len(fichier) == 1091

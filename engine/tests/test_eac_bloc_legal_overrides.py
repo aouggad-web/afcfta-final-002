@@ -27,12 +27,13 @@ def test_all_measures_load_and_are_distributed_across_jurisdictions():
     by_jur = {}
     for m in measures:
         by_jur[m.jurisdiction] = by_jur.get(m.jurisdiction, 0) + 1
-    # Remises de l'EAC/161/2026, Table A : KEN 3, TZA 79, RWA 57, UGA 149, BDI 14.
-    assert by_jur["KEN"] == 20
-    assert by_jur["TZA"] == 85
-    assert by_jur["RWA"] == 60
-    assert by_jur["UGA"] == 151
-    assert by_jur["BDI"] == 15
+    # Remises de l'EAC/161/2026, Table A : KEN 3, TZA 79, RWA 57, UGA 149, BDI 14 ;
+    # listes des EAC/162 à EAC/173/2026 : KEN 18, TZA 121, RWA 449, UGA 117, BDI 386.
+    assert by_jur["KEN"] == 38
+    assert by_jur["TZA"] == 206
+    assert by_jur["RWA"] == 509
+    assert by_jur["UGA"] == 268
+    assert by_jur["BDI"] == 401
 
 
 def test_tanzania_vitenge_stay_applies():

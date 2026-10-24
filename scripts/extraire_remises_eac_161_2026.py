@@ -226,7 +226,7 @@ SPEC = [
 #: Lignes non intégrées, et pourquoi.
 ECARTEES = {
     "1, 3, 4, 6, 57, 58, 59, 60, 79, 80, 110, 113, 114, 125, 128": "« Various » : aucun code SH publié dans la table",
-    "24, 26, 27, 28": "listes d'intrants publiées par les Legal Notices EAC/163 à EAC/171/2026, à extraire séparément",
+    "24, 26, 27, 28": "listes d'intrants publiées par les Legal Notices EAC/163 à EAC/171/2026, relevées par scripts/extraire_remises_eac_162_173_2026.py",
     "8": "Mechanically Deboned Chicken Paste : aucun code SH publié",
     "71(b)": "traitement préférentiel des produits kényans et tanzaniens fabriqués avec du sucre à 10 %, pas une remise à l'importation",
     "130": "aucun État partenaire désigné (« Granted remission of duty to apply a duty rate of 10% »)",
