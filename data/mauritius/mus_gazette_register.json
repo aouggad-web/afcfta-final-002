@@ -1,64 +1,49 @@
 {
  "jurisdiction": "MUS",
  "as_of": "2026-09-06",
- "coverage_complete": true,
+ "coverage_complete": false,
  "coverage_window": {
-  "from": "2017-07-01",
+  "from": "2026-04-01",
   "to": null,
-  "note": "Corpus : MRA Integrated Tariff Schedule HS2022 (Maurice) + corpus fiscal par position nationale."
+  "note": "Only the MRA tariff as at 01 April 2026 is executable; earlier dates require an archived official schedule."
  },
  "regional_cet_applicable": false,
- "regional_note": "COMESA/SADC — zone de libre-échange (pas d'union douanière)",
  "base_tariff_documentation": {
-  "source_id": "MUS-CANONICAL-TARIFF",
-  "source_name": "MRA Integrated Tariff Schedule HS2022 (Maurice)",
+  "source_id": "MUS-MRA-TARIFF-20260401",
+  "source_name": "MRA Integrated Tariff Schedule, as at 01 April 2026",
   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
   "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
-  "verification_status": "VERIFIED",
-  "data_status": "VERIFIED",
-  "hs_version": "HS2022 — sous-positions nationales",
-  "effective_from": "2017-07-01",
+  "verification_status": "PARTIAL",
+  "data_status": "PARTIAL",
+  "hs_version": "HS2022",
+  "effective_from": "2026-04-01",
   "national_positions": 6073,
-  "verification": {
-   "verified_on": "2026-09-06",
-   "method": "Extraction des lignes sans colonne TVA publiée du tarif MRA Integrated Tariff Schedule HS2022 + génération vat_exemptions consommées par le moteur (treatment EXEMPT).",
-   "si_rule": null,
-   "pdf_sha256": null
-  }
+  "extraction_date": "2026-06-15",
+  "transformation_trace": "National tariff fields extracted without imputing blank VAT values."
  },
- "preference_and_origin_status": "DOCUMENTED",
- "preference_evidence": {
-  "instrument": "ZLECAf — partenaire actif de l'Algérie",
-  "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
- },
+ "preference_and_origin_status": "NOT_AVAILABLE",
+ "preference_evidence": null,
+ "known_data_gaps": [
+  "VAT is NOT_AVAILABLE where the MRA tariff VAT field is blank; no independent official exemption schedule is present.",
+  "Environmental and tourism levies are unmodeled and unverified.",
+  "Historical VAT, excise, and tariff schedules before 2026-04-01 are unavailable.",
+  "Mauritian AfCFTA implementing instrument, accepted origins, line schedule, and effective date are unavailable.",
+  "Mauritius-specific import formalities and exact HS scopes are unavailable."
+ ],
  "documents": [
   {
-   "file": "MUS_tariffs.json (canonique)",
-   "title": "MRA Integrated Tariff Schedule HS2022 (Maurice) — 4779 lignes",
+   "file": "backend/data/MUS_tariffs.json",
+   "title": "MRA Integrated Tariff Schedule, as at 01 April 2026",
    "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
-   "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+   "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "extraction_date": "2026-06-15",
+   "effective_date": "2026-04-01"
   }
- ],
- "sources_officielles": [
-  "https://au-afcfta.org (Secrétariat ZLECAf — UA)",
-  "https://au.int/fr (Union africaine — ZLECAf)",
-  "https://mra.mu/index.php/taxes-and-duty/customs (MRA — autorité officielle)",
-  "https://taxsummaries.pwc.com/mauritius/corporate/other-taxes (PwC, revu 2026-06-15)",
-  "https://www.mra.mu/download/TariffInfo010426.pdf",
-  "https://www.tralac.org/resources.html (tralac Trade Law Centre)"
  ],
  "verification_nationale": {
   "as_of": "2026-09-06",
-  "status": "EXHAUSTIVE_VERIFIED",
+  "status": "REVIEW_REQUIRED",
   "sub_positions_unique": 6073,
-  "schedule1_unique_codes": null,
-  "schedule2_sensitive_items": null,
-  "duplicates_schedule1_ignored": null,
-  "codes_merged_recovered": null,
-  "compound_rates_structured": null,
-  "npf_note": null,
-  "zlecaf_afcfta": null,
-  "zlecaf_npf_crosscheck": null,
-  "note_corrections": "1 309 lignes / 1 508 sous-positions sans TVA publiée dans le tarif MRA HS2022 documentées comme exonérations explicites par position (66 enregistrements par chapitre, codes SP explicites — jamais comblées au taux standard) ; cadre : Value Added Tax Act 1998 (PwC Mauritius)."
+  "note": "Partial coverage only. Blank VAT cells are not legal evidence of exemption."
  }
 }

@@ -112,6 +112,13 @@ class NationalFiscalStore:
         précise exige une revue humaine, comme pour toute mesure sans
         correspondance HS vérifiable ailleurs dans le moteur.
         """
+        unavailable = [
+            r
+            for r in _active(self.vat.get("vat_unavailable", []), on_date)
+            if r.get("hs_codes_explicit") and _hs_match(r, hs_code)
+        ]
+        if unavailable:
+            return None
         exempt = [
             r
             for r in _active(self.vat.get("vat_exemptions", []), on_date)
@@ -177,6 +184,7 @@ def calculate_national_customs(
     base_tariff_documentation: Optional[dict] = None,
     preference_and_origin_status: str = "UNVERIFIED",
     regional_cet_applicable: bool = True,
+    known_data_gaps: Optional[Iterable[str]] = None,
 ) -> dict:
     # Ensure context jurisdiction matches the input jurisdiction to prevent
     # accidental application of another jurisdiction's measures (e.g., Kenya
@@ -196,12 +204,21 @@ def calculate_national_customs(
         preference_and_origin_status=preference_and_origin_status,
         regional_cet_applicable=regional_cet_applicable,
     )
+    if not coverage_complete:
+        override["quality_dimensions"]["taxes_and_levies"] = "PARTIAL"
+        if any("formalities" in gap.lower() for gap in (known_data_gaps or [])):
+            override["quality_dimensions"]["formalities"] = "NOT_AVAILABLE"
+        override["overall_status"] = "INFORMATIVE_PARTIAL"
+        override["known_data_gaps"] = list(
+            dict.fromkeys(override.get("known_data_gaps", []) + list(known_data_gaps or []))
+        )
     customs_rate = override["applicable_customs_rate"]
     customs_duty = round(customs_value * customs_rate / 100, 2)
 
     excise = 0.0
     excise_lines = []
     missing = list(override["missing_elements"])
+    missing.extend(known_data_gaps or [])
     for row in fiscal_store.excise_rates(on_date, hs_code):
         rate = _pct(row.get("rate"))
         if rate is None:
@@ -209,7 +226,16 @@ def calculate_national_customs(
                 f"{row['record_id']}: specific or mixed excise needs quantity/unit data."
             )
             continue
-        basis = customs_value + customs_duty
+        declared_basis = str(row.get("rate_basis", "")).upper()
+        if "PLUS CUSTOMS DUTY" in declared_basis or "PLUS DUTY" in declared_basis:
+            basis = customs_value + customs_duty
+            basis_description = "customs value plus customs duty"
+        elif "CIF" in declared_basis or "CUSTOMS VALUE" in declared_basis:
+            basis = customs_value
+            basis_description = "customs value (CIF)"
+        else:
+            missing.append(f"{row['record_id']}: unsupported or undocumented excise basis.")
+            continue
         amount = round(basis * rate / 100, 2)
         excise += amount
         excise_lines.append(
@@ -231,7 +257,7 @@ def calculate_national_customs(
                 "effective_from": row.get("effective_from"),
                 "effective_to": row.get("effective_to"),
                 "documentation_status": "PARTIAL",
-                "assumptions": ["ad valorem excise applied to customs value plus duty"],
+                "assumptions": [f"ad valorem excise applied to {basis_description}"],
                 "data_gaps": ["official archive and independent comparison pending"],
             }
         )
@@ -271,10 +297,11 @@ def calculate_national_customs(
         missing.append("No verified VAT measure matched the product and date.")
 
     known_levies = sum(entry["amount"] for entry in levy_amounts.values() if entry is not None)
-    verified_total = round(customs_duty + excise + (vat or 0) + known_levies, 2)
+    known_subtotal = round(customs_duty + excise + (vat or 0) + known_levies, 2)
+    verified_total = known_subtotal if vat is not None and not missing else None
     status = override["calculation_status"]
     if missing and status != "CONFLICT_REVIEW":
-        status = "VERIFIED_PARTIAL"
+        status = "REVIEW_REQUIRED" if vat is None else "VERIFIED_PARTIAL"
     sources = set(override["sources_used"])
     sources.update(r["source_id"] for r in excise_lines)
     if vat_row:
@@ -284,9 +311,9 @@ def calculate_national_customs(
             sources.add(entry["source_id"])
 
     warning = None
-    if status == "VERIFIED_PARTIAL":
+    if status in {"VERIFIED_PARTIAL", "REVIEW_REQUIRED"}:
         warning = (
-            f"Droits et taxes vérifiés : {verified_total:,.2f} {currency_code}. "
+            f"Sous-total des seuls éléments disponibles : {known_subtotal:,.2f} {currency_code}. "
             "Résultat partiel : une dérogation tarifaire EAC ou une condition "
             "susceptible d’affecter ce produit reste à vérifier. "
             "Le total ne doit pas être utilisé pour une déclaration en douane."
@@ -323,6 +350,7 @@ def calculate_national_customs(
             if key not in {"idf", "rdl"} and value is not None
         },
         "verified_total": verified_total,
+        "known_components_subtotal": known_subtotal,
         "missing_elements": list(dict.fromkeys(missing)),
         "calculation_status": status,
         "sources_used": sorted(sources),

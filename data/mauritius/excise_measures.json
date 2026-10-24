@@ -7,9 +7,9 @@
    "record_id": "MUS-EXCISE_EXCIS-5_0",
    "rate": "5.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "87044111",
@@ -129,15 +129,22 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-10_0",
    "rate": "10.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "87042111",
@@ -240,15 +247,22 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-15_0",
    "rate": "15.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "09019000",
@@ -306,15 +320,22 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-25_0",
    "rate": "25.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "84181010",
@@ -347,15 +368,22 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-30_0",
    "rate": "30.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "16043100",
@@ -366,15 +394,22 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-100_0",
    "rate": "100.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "87114010",
@@ -384,15 +419,22 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-230_0",
    "rate": "230.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-04-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_SCHEDULE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "24031100",
@@ -409,11 +451,20 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "source_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+   "source_extraction_date": "2026-06-15",
+   "source_effective_date": "2026-04-01",
+   "transformation_trace": "Numeric excise rate and national HS scope extracted from the published tariff column; basis preserved as CIF.",
+   "source_hash_scope": "normalized canonical extraction: backend/data/MUS_tariffs.json",
+   "source_document_sha256": null
   }
  ],
  "provenance": {
-  "source": "backend/data/MUS_tariffs.json (VERIFIED)",
-  "canonical_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+  "canonical_path": "backend/data/MUS_tariffs.json",
+  "canonical_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+  "source_effective_date": "2026-04-01",
+  "source_extraction_date": "2026-06-15"
  }
 }

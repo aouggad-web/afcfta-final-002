@@ -568,9 +568,9 @@ async def calculate_taxes_endpoint(
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
-            # None → la devise par défaut de la juridiction s'applique
-            # (KEN → USD, DZA → DZD via JurisdictionConfig).
-            currency_code=None,
+            # The public input is USD.  Keep it in USD unless this route has a
+            # sourced, dated conversion (it currently does not).
+            currency_code="USD",
         )
     else:
         # Destinations hors registre EAC : façade régionale/nationale générique.

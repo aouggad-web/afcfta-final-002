@@ -189,6 +189,7 @@ def calculate_national_legal_layer(
         base_tariff_documentation=register.get("base_tariff_documentation"),
         preference_and_origin_status=register.get("preference_and_origin_status", "UNVERIFIED"),
         regional_cet_applicable=register.get("regional_cet_applicable", True),
+        known_data_gaps=register.get("known_data_gaps", []),
     )
 
 
