@@ -142,33 +142,6 @@ class TariffProviderService:
                 ]
         return authentic_service.get_sub_positions(country, hs6_code)
 
-    def search_tariff_lines(
-        self, country_iso3: str, query: str, language: str = "fr", limit: int = 20
-    ) -> List[Dict]:
-        country = country_iso3.upper()
-        if self._crawl_seul(country) or self._regle_cedeao_hors_uemoa(country):
-            return authentic_service.search_tariff_lines(country, query, language, limit)
-        if self._doctrine_refused(country):
-            return []
-        postgres = self._get_postgres()
-        if postgres:
-            results = postgres.search_commodities(country, query, limit, language)
-            if results:
-                return [
-                    {
-                        "hs6": row.get("hs6"),
-                        "national_code": row.get("code"),
-                        "description_fr": row.get("description_fr") or row.get("description"),
-                        "description_en": row.get("description_en") or row.get("description"),
-                        "dd_rate": row.get("dd_rate"),
-                        "zlecaf_rate": row.get("zlecaf_rate"),
-                        "savings": row.get("savings"),
-                        "source": "postgres",
-                    }
-                    for row in results
-                ]
-        return authentic_service.search_tariff_lines(country, query, language, limit)
-
 
 _tariff_provider = None
 

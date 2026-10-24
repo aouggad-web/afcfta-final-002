@@ -2,7 +2,6 @@
 Unit tests for code quality refactoring (Priority 2 & 3).
 
 Tests cover:
-- hs6_database: CHAPTER_NAMES constant, scoring helpers, smart search logic
 - upgrade_to_enhanced_v2: _migrate_country helper functions
 - cameroon_cemac_scraper: _process_page_positions helper
 - cache_service: key generation and TTL lookup
@@ -10,7 +9,7 @@ Tests cover:
 These tests run entirely in-process and do not require a live server.
 """
 
-import importlib
+import importlib.util
 import os
 import sys
 
@@ -21,179 +20,9 @@ _backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _backend_dir not in sys.path:
     sys.path.insert(0, _backend_dir)
 
-# Import the hs6_database module directly (not via the routes package, which
-# would trigger a cascade of optional dependencies such as faostat / fitz).
-import importlib.util as _ilu
-
-_hs6_db_spec = _ilu.spec_from_file_location(
-    "hs6_database_direct",
-    os.path.join(_backend_dir, "routes", "hs6_database.py"),
-)
-_hs6_db = _ilu.module_from_spec(_hs6_db_spec)
-
-# Stub out the fastapi dependency to avoid a heavyweight import during tests.
-# We temporarily install the stub only if fastapi is not already in sys.modules,
-# then restore the original state after exec_module() so other test files that
-# do `from fastapi.testclient import TestClient` are not affected.
-import types as _types
-
-_fastapi_stub = _types.ModuleType("fastapi")
-_fastapi_stub.APIRouter = type(
-    "APIRouter",
-    (),
-    {
-        "__init__": lambda self, *a, **kw: None,
-        "get": lambda self, *a, **kw: (lambda f: f),
-    },
-)
-_fastapi_stub.HTTPException = type("HTTPException", (Exception,), {})
-_fastapi_stub.Query = lambda *a, **kw: None
-_fastapi_original = sys.modules.get("fastapi", None)
-if _fastapi_original is None:
-    sys.modules["fastapi"] = _fastapi_stub
-
-_hs6_db_spec.loader.exec_module(_hs6_db)
-
-# Restore sys.modules to its pre-stub state so we don't shadow the real fastapi
-# package for other test modules collected in the same pytest session.
-if _fastapi_original is None:
-    sys.modules.pop("fastapi", None)
-else:
-    sys.modules["fastapi"] = _fastapi_original
-
-CHAPTER_NAMES = _hs6_db.CHAPTER_NAMES
-_score_code_match = _hs6_db._score_code_match
-_score_text_match = _hs6_db._score_text_match
-_build_search_result = _hs6_db._build_search_result
 
 # Optional: fitz may not be installed in the CI environment
 _fitz_available = importlib.util.find_spec("fitz") is not None
-
-
-# =============================================================================
-# hs6_database – CHAPTER_NAMES & scoring helpers
-# =============================================================================
-
-
-class TestChapterNames:
-    """CHAPTER_NAMES module-level constant in routes.hs6_database."""
-
-    def test_chapter_names_has_fr_and_en(self):
-        assert "fr" in CHAPTER_NAMES
-        assert "en" in CHAPTER_NAMES
-
-    def test_chapter_names_fr_covers_key_chapters(self):
-        fr = CHAPTER_NAMES["fr"]
-        # Chapter 01 (live animals) and 84 (machinery) must exist
-        assert "01" in fr
-        assert "84" in fr
-        assert "97" in fr
-
-    def test_chapter_names_en_matches_fr_keys(self):
-        assert set(CHAPTER_NAMES["fr"].keys()) == set(CHAPTER_NAMES["en"].keys())
-
-    def test_chapter_names_no_empty_values(self):
-        for lang, chapters in CHAPTER_NAMES.items():
-            for ch, name in chapters.items():
-                assert name, f"Empty chapter name for {lang}/{ch}"
-
-
-class TestScoreCodeMatch:
-    """_score_code_match: numeric prefix scoring helper."""
-
-    def test_exact_prefix_match_returns_positive(self):
-        assert _score_code_match("760110", "76") > 0
-
-    def test_non_matching_code_returns_zero(self):
-        assert _score_code_match("010110", "76") == 0
-
-    def test_longer_prefix_has_lower_score(self):
-        score_short = _score_code_match("760110", "76")
-        score_long = _score_code_match("760110", "7601")
-        # Shorter prefix yields a higher (or equal) score
-        assert score_short >= score_long
-
-    def test_exact_six_digit_match(self):
-        assert _score_code_match("760110", "760110") > 0
-
-    def test_code_not_starting_with_query_zero(self):
-        assert _score_code_match("760110", "761") == 0
-
-
-class TestScoreTextMatch:
-    """_score_text_match: text relevance scoring helper."""
-
-    def test_exact_phrase_gives_high_score(self):
-        score = _score_text_match("aluminium et ouvrages", "aluminium")
-        assert score >= 50
-
-    def test_no_match_returns_zero(self):
-        assert _score_text_match("aluminium et ouvrages", "café") == 0
-
-    def test_partial_word_match_gives_low_positive_score(self):
-        # "alum" is a partial match for "aluminium"
-        score = _score_text_match("aluminium et ouvrages", "alum")
-        assert score > 0
-
-    def test_two_matching_words_score_higher_than_zero(self):
-        score = _score_text_match("aluminium et ouvrages divers", "aluminium ouvrages")
-        assert score > 0
-
-    def test_case_insensitive(self):
-        score_lower = _score_text_match("Aluminium Et Ouvrages", "aluminium")
-        assert score_lower > 0
-
-    def test_non_overlapping_query_returns_zero(self):
-        assert _score_text_match("produits chimiques inorganiques", "café thé") == 0
-
-
-class TestBuildSearchResult:
-    """_build_search_result: result dict builder."""
-
-    def _sample_data(self):
-        return {
-            "description_fr": "Aluminium et ouvrages",
-            "description_en": "Aluminium and articles",
-        }
-
-    def test_result_contains_required_fields(self):
-        result = _build_search_result("760110", self._sample_data(), "fr", score=55)
-        for field in (
-            "code",
-            "description",
-            "chapter",
-            "chapter_name",
-            "full_position",
-            "position_4",
-            "score",
-        ):
-            assert field in result, f"Missing field: {field}"
-
-    def test_result_code_matches_input(self):
-        result = _build_search_result("760110", self._sample_data(), "fr", score=55)
-        assert result["code"] == "760110"
-
-    def test_result_chapter_is_two_digits(self):
-        result = _build_search_result("760110", self._sample_data(), "fr", score=55)
-        assert result["chapter"] == "76"
-
-    def test_result_position_4_is_four_digits(self):
-        result = _build_search_result("760110", self._sample_data(), "fr", score=55)
-        assert result["position_4"] == "7601"
-
-    def test_result_description_uses_requested_language(self):
-        result_fr = _build_search_result("760110", self._sample_data(), "fr", score=1)
-        result_en = _build_search_result("760110", self._sample_data(), "en", score=1)
-        assert "aluminium" in result_fr["description"].lower()
-        assert "aluminium" in result_en["description"].lower()
-
-    def test_full_position_contains_chapter_number(self):
-        result = _build_search_result("760110", self._sample_data(), "fr", score=1)
-        assert "76" in result["full_position"]
-
-    def test_score_is_preserved(self):
-        result = _build_search_result("760110", self._sample_data(), "fr", score=123)
-        assert result["score"] == 123
 
 
 # =============================================================================

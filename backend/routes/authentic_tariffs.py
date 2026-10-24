@@ -401,39 +401,6 @@ async def get_country_tariff_system_endpoint(country_iso3: str):
     }
 
 
-@router.get("/search/{country_iso3}")
-async def search_tariffs_endpoint(
-    country_iso3: str,
-    q: str = Query(..., min_length=2, description="Search query"),
-    language: str = Query("fr", description="Language: fr or en"),
-    limit: int = Query(20, le=100, description="Max results"),
-):
-    """
-    Rechercher dans les lignes tarifaires d'un pays
-
-    Args:
-        country_iso3: Code ISO3 du pays
-        q: Requête de recherche (code HS ou description)
-        language: Langue
-        limit: Nombre max de résultats
-
-    Returns:
-        Liste des lignes tarifaires correspondantes
-    """
-    _ensure_consultable_or_404(country_iso3)
-    results = get_provider().search_tariff_lines(
-        country_iso3=country_iso3.upper(), query=q, language=language, limit=limit
-    )
-
-    return {
-        "success": True,
-        "country_iso3": country_iso3.upper(),
-        "query": q,
-        "total": len(results),
-        "results": results,
-    }
-
-
 def register_routes(api_router):
     """Register authentic tariff routes with the main API router"""
     api_router.include_router(router)

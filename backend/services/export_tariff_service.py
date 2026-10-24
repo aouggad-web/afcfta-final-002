@@ -3,8 +3,8 @@ Export tariff engine — cascade de calcul à l'export, par pays.
 ================================================================
 
 Chaque pays a son propre système tarifaire à l'import ET à l'export.
-Le moteur import existe déjà (`authentic_tariff_service.compute_tax_cascade`,
-profils par pays `COUNTRY_TAX_PROFILES`). Ce module apporte le pendant export :
+Le calcul import est servi par POST /calcul (`services.calcul`, socle).
+Ce module apporte le pendant export :
 
 - taxes et redevances d'export réelles par position nationale, lues dans les
   données officielles crawlées (ex. douane.gov.tn — Tarif Web) ;

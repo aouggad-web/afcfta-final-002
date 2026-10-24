@@ -7,7 +7,13 @@ ETL, crawl, table de nomenclature), dont des codes que le tarif en vigueur ne
 publie plus.
 """
 
-from fastapi import APIRouter, HTTPException
+import functools
+import json
+import os
+import re
+import unicodedata
+
+from fastapi import APIRouter, HTTPException, Query
 
 from services import socle
 from services.designation import texte_designation
@@ -21,6 +27,8 @@ from services.formalites import (
 )
 
 router = APIRouter(prefix="/consultation")
+
+DONNEES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
 
 def _droit_de_douane(position: dict) -> dict:
@@ -68,6 +76,86 @@ def sous_positions(iso3: str, hs6: str):
         "hs6": socle.normaliser_code(hs6)[:6],
         "total": len(lignes),
         "sub_positions": lignes,
+        "source": "socle",
+    }
+
+
+@functools.lru_cache(maxsize=1)
+def _libelles_internationaux():
+    """Intitulés des positions SH4 (anglais) et libellés SH6 empruntés (français,
+    anglais). Ils servent à TROUVER une ligne que le tarif ne désigne que par
+    son dernier niveau (« Other ») ; ils ne remplacent jamais sa désignation."""
+    with open(os.path.join(DONNEES, "hs4_headings_en.json"), encoding="utf-8") as f:
+        sh4 = json.load(f)
+    with open(os.path.join(DONNEES, "hs6_designations_fr_en.json"), encoding="utf-8") as f:
+        sh6 = json.load(f)["libelles"]
+    return sh4, sh6
+
+
+def _pli(texte: str) -> str:
+    """Le texte sans accents ni casse : « Chaussures » se trouve par « chaussure »."""
+    decompose = unicodedata.normalize("NFKD", texte or "")
+    return "".join(c for c in decompose if not unicodedata.combining(c)).lower()
+
+
+@router.get(
+    "/{iso3}/recherche",
+    summary="Positions du tarif par code ou par mots de la désignation, lues au socle",
+)
+def recherche(iso3: str, q: str = Query(..., min_length=2), limit: int = Query(25, ge=1, le=100)):
+    """Un code (« 0902 », « 0902.10 ») cherche les positions qui commencent par
+    lui ; des mots cherchent les positions dont la désignation les contient
+    tous. Seul le droit de douane du socle accompagne chaque position : le
+    total des droits et taxes est celui de POST /calcul, et de lui seul."""
+    try:
+        positions = socle.charger(iso3)["positions"]
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except socle.SocleIndisponible as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    sh4, sh6 = _libelles_internationaux()
+    if re.fullmatch(r"[\d.\s]*\d[\d.\s]*", q):
+        prefixe = re.sub(r"\D", "", q)
+        trouves = sorted(code for code in positions if code.startswith(prefixe))
+    else:
+        # Chaque mot doit commencer un mot de la désignation, et tous dans la
+        # même langue : « thé vert » ne trouve ni « the » ni « invertebrates ».
+        motifs = [re.compile(rf"\b{mot}") for mot in re.findall(r"\w+", _pli(q)) if len(mot) >= 2]
+        trouves = []
+        for code in sorted(positions) if motifs else ():
+            designation = positions[code].get("designation")
+            libelle = sh6.get(code[:6]) or {}
+            francais = _pli(f'{texte_designation(designation, "fr")} {libelle.get("fr") or ""}')
+            anglais = _pli(
+                f'{texte_designation(designation, "en")} {libelle.get("en") or ""} {sh4.get(code[:4]) or ""}'
+            )
+            if any(all(m.search(texte) for m in motifs) for texte in (francais, anglais)):
+                trouves.append(code)
+
+    lignes = []
+    for code in trouves[:limit]:
+        position = positions[code]
+        designation = position.get("designation")
+        lignes.append({
+            "code": code,
+            "hs6": code[:6],
+            "digits": len(code),
+            "description_fr": texte_designation(designation, "fr"),
+            "description_en": texte_designation(designation, "en"),
+            # L'intitulé de la position SH4 situe une ligne que le tarif ne
+            # désigne que par son dernier niveau. Les libellés SH6 empruntés ne
+            # sont pas affichés : certains portent le niveau national du tarif
+            # qui les a fournis (1006.10 « de semence »).
+            "intitule_sh4": sh4.get(code[:4]),
+            **_droit_de_douane(position),
+        })
+    return {
+        "success": True,
+        "country_iso3": iso3.upper(),
+        "q": q,
+        "total": len(trouves),
+        "results": lignes,
         "source": "socle",
     }
 

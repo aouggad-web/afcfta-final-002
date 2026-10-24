@@ -16,7 +16,6 @@ MIGRATION STATUS:
 - substitution.py: COMPLETE
 - gemini_analysis.py: COMPLETE (NOW WITH CACHE)
 - rules_of_origin.py: COMPLETE (Extracted from server.py)
-- hs6_database.py: COMPLETE (Full HS6 search routes)
 - authentic_tariffs.py: COMPLETE (54 countries tariff data)
 - trade_data.py: COMPLETE (WTO integration)
 """
@@ -79,7 +78,6 @@ except ImportError:
 from .authentic_tariffs import router as authentic_tariffs_router
 from .countries import router as countries_router
 from .etl import router as etl_router
-from .hs6_database import router as hs6_db_router
 from .hs_codes import router as hs_codes_router
 from .industrie_nationale import router as industrie_nationale_router
 from .logistics import router as logistics_router
@@ -475,7 +473,6 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(
         rules_router, tags=["Rules of Origin"], dependencies=_auth + _roo_entitlement
     )
-    api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
     api_router.include_router(
         authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth
     )

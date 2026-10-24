@@ -5,7 +5,7 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 
 import logging
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from services.authentic_tariff_service import (
     get_administrative_formalities,
     get_available_countries,
@@ -14,7 +14,6 @@ from services.authentic_tariff_service import (
 from services.authentic_tariff_service import (
     get_tariff_line,
     get_taxes_detail,
-    search_tariff_lines,
 )
 
 logger = logging.getLogger(__name__)
@@ -65,28 +64,6 @@ async def get_commodity_details(iso3: str, code: str):
         raise
     except Exception as e:
         logger.error(f"Error getting commodity {iso3}/{code}: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
-
-
-@router.get("/country/{iso3}/search")
-async def search_commodities(
-    iso3: str,
-    q: str = Query(..., min_length=2, description="Search query"),
-    limit: int = Query(50, ge=1, le=200),
-    language: str = Query("fr", pattern="^(fr|en)$"),
-):
-    """Recherche de marchandises par description"""
-    try:
-        results = search_tariff_lines(iso3, q, limit=limit, language=language)
-        return {
-            "success": True,
-            "query": q,
-            "country_iso3": iso3.upper(),
-            "total": len(results),
-            "results": results,
-        }
-    except Exception as e:
-        logger.error(f"Error searching {iso3} for '{q}': {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
