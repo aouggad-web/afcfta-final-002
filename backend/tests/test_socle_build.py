@@ -376,6 +376,15 @@ def test_la_table_d_assiettes_conserve_ses_references_legales():
         assert t.get("texte"), f"{iso} : une assiette établie doit citer son texte"
     # Somalie : l'assiette du droit de douane est établie sur le tarif national
     # (valeur en douane), distincte des assiettes de TVA ci-dessus.
+    # Une assiette établie sans sa détermination archivée serait une règle sans source.
+    refs = os.path.join(REPO, "backend", "data", "legal_refs", "zlecaf_application")
+    for iso, code, t in etablies:
+        if t.get("fiche"):
+            assert os.path.exists(os.path.join(refs, t["fiche"])), f"{iso}/{code} : {t['fiche']}"
+    # Tunisie : l'article 6 du Code de la TVA est lu (fiche TUN_assiette_TVA),
+    # mais il majore l'assiette de 25 % pour le non-assujetti, statut que le
+    # calculateur ne recueille pas ; il ne peut donc pas être cité comme établi.
+    assert pays["TUN"]["taxes"]["TVA"]["origine_assiette"] != "texte_primaire"
     som = {code: t for iso, code, t in etablies if iso == "SOM"}
     assert som["DD"]["assiette"] == "CIF"
     assert som["DD"].get("texte"), "SOM : une assiette établie doit citer son texte"

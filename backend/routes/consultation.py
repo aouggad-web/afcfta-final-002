@@ -12,6 +12,7 @@ import json
 import os
 import re
 import unicodedata
+from collections import OrderedDict
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -98,6 +99,37 @@ def _pli(texte: str) -> str:
     return "".join(c for c in decompose if not unicodedata.combining(c)).lower()
 
 
+#: {ISO3: (positions du socle, [(code, français plié, anglais en minuscules)])},
+#: borné comme le cache du socle.
+_textes = OrderedDict()
+
+
+def _textes_cherchables(iso3: str, positions: dict) -> list:
+    """Les textes de chaque position, préparés une fois par chargement du socle.
+
+    Le français est plié (sans accents) ; l'anglais garde ses accents, pour que
+    « thé » ne trouve pas l'article « the »."""
+    cle = iso3.upper()
+    deja = _textes.get(cle)
+    if deja is not None and deja[0] is positions:
+        _textes.move_to_end(cle)
+        return deja[1]
+    sh4, sh6 = _libelles_internationaux()
+    textes = []
+    for code in sorted(positions):
+        designation = positions[code].get("designation")
+        libelle = sh6.get(code[:6]) or {}
+        francais = _pli(f'{texte_designation(designation, "fr")} {libelle.get("fr") or ""}')
+        anglais = (
+            f'{texte_designation(designation, "en")} {libelle.get("en") or ""} {sh4.get(code[:4]) or ""}'
+        ).lower()
+        textes.append((code, francais, anglais))
+    _textes[cle] = (positions, textes)
+    while len(_textes) > socle._MAX_PAYS_EN_CACHE:
+        _textes.popitem(last=False)
+    return textes
+
+
 @router.get(
     "/{iso3}/recherche",
     summary="Positions du tarif par code ou par mots de la désignation, lues au socle",
@@ -114,24 +146,36 @@ def recherche(iso3: str, q: str = Query(..., min_length=2), limit: int = Query(2
     except socle.SocleIndisponible as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
-    sh4, sh6 = _libelles_internationaux()
+    sh4, _sh6 = _libelles_internationaux()
     if re.fullmatch(r"[\d.\s]*\d[\d.\s]*", q):
         prefixe = re.sub(r"\D", "", q)
         trouves = sorted(code for code in positions if code.startswith(prefixe))
     else:
         # Chaque mot doit commencer un mot de la désignation, et tous dans la
         # même langue : « thé vert » ne trouve ni « the » ni « invertebrates ».
-        motifs = [re.compile(rf"\b{mot}") for mot in re.findall(r"\w+", _pli(q)) if len(mot) >= 2]
-        trouves = []
-        for code in sorted(positions) if motifs else ():
-            designation = positions[code].get("designation")
-            libelle = sh6.get(code[:6]) or {}
-            francais = _pli(f'{texte_designation(designation, "fr")} {libelle.get("fr") or ""}')
-            anglais = _pli(
-                f'{texte_designation(designation, "en")} {libelle.get("en") or ""} {sh4.get(code[:4]) or ""}'
-            )
-            if any(all(m.search(texte) for m in motifs) for texte in (francais, anglais)):
-                trouves.append(code)
+        # Les nombres mêlés aux mots (« 87.03 voiture ») bornent le code.
+        mots = re.findall(r"\w+", q.lower())
+        prefixe = "".join(mot for mot in mots if mot.isdigit())
+        mots = [mot for mot in mots if not mot.isdigit() and len(mot) >= 2]
+        # Par langue : (débuts de mot, mots entiers, pluriel en -s/-x admis).
+        langues = [
+            [(re.compile(rf"\b{re.escape(m)}"), re.compile(rf"\b{re.escape(m)}[sx]?\b")) for m in termes]
+            for termes in ([_pli(mot) for mot in mots], mots)
+        ]
+        classes = []
+        for code, *textes in _textes_cherchables(iso3, positions) if mots else ():
+            if not code.startswith(prefixe):
+                continue
+            accords = [
+                all(entier.search(texte) for _, entier in motifs)
+                for motifs, texte in zip(langues, textes)
+                if all(debut.search(texte) for debut, _ in motifs)
+            ]
+            if accords:
+                # En tête, les positions où les mots figurent en entier
+                # (« thé » avant « théophylline ») ; par code dans chaque groupe.
+                classes.append((not any(accords), code))
+        trouves = [code for _, code in sorted(classes)]
 
     lignes = []
     for code in trouves[:limit]:

@@ -317,43 +317,6 @@ class PostgresTariffService:
             ],
         }
 
-    def search_commodities(
-        self, country_iso3: str, query: str, limit: int = 50, language: str = "fr"
-    ) -> List[Dict]:
-        """Full-text search for commodities"""
-        search_query = """
-            SELECT national_code, hs6, description_fr, description_en, 
-                   total_npf_pct, total_zlecaf_pct, savings_pct,
-                   ts_rank(to_tsvector('french', description_fr), plainto_tsquery('french', :query)) as rank
-            FROM commodities
-            WHERE country_iso3 = :iso3 
-              AND to_tsvector('french', description_fr) @@ plainto_tsquery('french', :query)
-            ORDER BY rank DESC
-            LIMIT :limit
-        """
-
-        results = self._execute_query(
-            search_query, {"iso3": country_iso3.upper(), "query": query, "limit": limit}
-        )
-
-        return [
-            {
-                "code": r["national_code"],
-                "hs6": r["hs6"],
-                "description_fr": r["description_fr"],
-                "description_en": r["description_en"] or r["description_fr"],
-                "description": (
-                    r["description_fr"]
-                    if language == "fr"
-                    else (r["description_en"] or r["description_fr"])
-                ),
-                "dd_rate": r["total_npf_pct"],
-                "zlecaf_rate": r["total_zlecaf_pct"],
-                "savings": r["savings_pct"],
-            }
-            for r in results
-        ]
-
     def get_regulatory_details(self, country_iso3: str, hs6: str) -> Dict:
         """Read measures and requirements for exactly one commodity."""
         from services.national_position_selection import (

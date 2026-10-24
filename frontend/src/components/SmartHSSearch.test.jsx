@@ -63,12 +63,12 @@ describe('SmartHSSearch', () => {
     await waitFor(() => expect(onRuleOfOriginLoad).toHaveBeenCalledWith({ regle: 'WO' }));
   });
 
-  it("sans pays de destination, n'interroge rien", async () => {
+  it("sans pays de destination, n'interroge rien et le dit", async () => {
     render(<SmartHSSearch value="" onChange={vi.fn()} destinationCountry="" />);
 
     await userEvent.type(screen.getByTestId('hs-search-input'), 'café');
 
-    expect(await screen.findByText('Aucun résultat trouvé')).toBeInTheDocument();
+    expect(await screen.findByText('Choisissez d’abord le pays de destination')).toBeInTheDocument();
     expect(axios.get).not.toHaveBeenCalled();
   });
 });

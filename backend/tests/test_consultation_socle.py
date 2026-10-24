@@ -128,7 +128,24 @@ def test_recherche_par_mots_sans_accents_ni_casse(client):
 def test_recherche_un_mot_commence_un_mot_de_la_designation(client):
     """« vert » ne trouve pas « invertebrates », ni « thé » l'article anglais."""
     assert all(r["code"].startswith("0902") for r in _recherche(client, "MAR", "thé vert")["results"])
+    the = _recherche(client, "MAR", "thé", limit=100)
+    assert the["total"] < 200 and any(r["code"].startswith("0902") for r in the["results"])
     assert _recherche(client, "TUN", "..")["total"] == 0
+
+
+def test_recherche_un_code_mele_aux_mots_borne_le_code(client):
+    corps = _recherche(client, "MAR", "87.03 voiture")
+    assert corps["total"] >= 1 and all(r["code"].startswith("8703") for r in corps["results"])
+
+
+def test_recherche_textes_prepares_une_fois_par_chargement(client):
+    module = sys.modules["routes_consultation_test"]
+    positions = socle.charger("KEN")["positions"]
+    _recherche(client, "KEN", "coffee")
+    assert module._textes["KEN"][0] is positions
+    premier = module._textes["KEN"][1]
+    _recherche(client, "KEN", "tea")
+    assert module._textes["KEN"][1] is premier
 
 
 def test_recherche_l_intitule_sh4_situe_une_ligne_sans_designation_propre(client):
@@ -177,3 +194,14 @@ def test_les_anciennes_routes_de_recherche_sont_retirees():
     assert "/authentic-tariffs/search/{country_iso3}" not in chemins
     assert "/postgres-tariffs/country/{iso3}/search" not in chemins
     assert "/authentic-tariffs/countries" in chemins  # le routeur est bien celui-là
+
+
+def test_recherche_les_mots_entiers_d_abord_puis_par_code(client):
+    """« thé » : le thé (0902) avant « théophylline » (2939), bien que 2939
+    vienne après 0902 et 0302 avant ; dans chaque groupe, l'ordre du code."""
+    codes = [r["code"] for r in _recherche(client, "MAR", "thé", limit=100)["results"]]
+    the = [c for c in codes if c.startswith("0902")]
+    assert codes[: len(the)] == the == sorted(the)
+    assert codes.index(next(c for c in codes if c.startswith("2939"))) > len(the)
+    reste = codes[len(the):]
+    assert any(c < the[0] for c in reste)  # un début de mot classé plus bas que son code

@@ -159,67 +159,6 @@ class TestHS6Statistics:
         )
 
 
-class TestHS6Info:
-    """Tests for /api/hs6/info/{hs_code} endpoint"""
-
-    def test_get_info_vehicle_code(self):
-        """Get info for vehicle code 870323"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/870323")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["code"] == "870323"
-        assert "description" in data
-        assert data["chapter"] == "87"
-        print(f"✅ Info for 870323: {data['description'][:50]}...")
-
-    def test_get_info_coffee_code(self):
-        """Get info for coffee code 090111"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/090111")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["code"] == "090111"
-        assert "category" in data
-        print(f"✅ Info for 090111: {data['description'][:50]}...")
-
-    def test_get_info_steel_code(self):
-        """Get info for steel code from chapter 72"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/720110")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["chapter"] == "72"
-        print(f"✅ Info for 720110: {data['description'][:50]}...")
-
-    def test_get_info_leather_code(self):
-        """Get info for leather code from chapter 41"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/410411")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["chapter"] == "41"
-        print(f"✅ Info for 410411: {data['description'][:50]}...")
-
-    def test_get_info_textile_code(self):
-        """Get info for textile code from chapter 52"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/520100")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["chapter"] == "52"
-        print(f"✅ Info for 520100: {data['description'][:50]}...")
-
-    def test_get_info_ship_code(self):
-        """Get info for ship code from chapter 89"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/890110")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["chapter"] == "89"
-        print(f"✅ Info for 890110: {data['description'][:50]}...")
-
-    def test_get_info_nonexistent_code(self):
-        """Non-existent code should return 404"""
-        response = requests.get(f"{BASE_URL}/api/hs6/info/999999")
-        assert response.status_code == 404
-        print(f"✅ Non-existent code 999999 returns 404")
-
-
 class TestHS6SubPositions:
     """Tests for /api/hs6/suggestions/{hs_code} endpoint"""
 

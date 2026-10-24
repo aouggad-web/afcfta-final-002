@@ -29,6 +29,7 @@ export default function SmartHSSearch({
     fr: {
       searchPlaceholder: "Rechercher par code ou mot-clé (ex: voiture, 870323, café)",
       noResults: "Aucun résultat trouvé",
+      chooseDestination: "Choisissez d’abord le pays de destination",
       selectSubPosition: "Sélectionner cette sous-position",
       sensitivity: "Sensibilité",
       category: "Catégorie",
@@ -41,6 +42,7 @@ export default function SmartHSSearch({
     en: {
       searchPlaceholder: "Search by code or keyword (e.g.: car, 870323, coffee)",
       noResults: "No results found",
+      chooseDestination: "Choose the destination country first",
       selectSubPosition: "Select this sub-position",
       sensitivity: "Sensitivity",
       category: "Category",
@@ -240,7 +242,7 @@ export default function SmartHSSearch({
 
         {showResults && searchResults.length === 0 && searchQuery.length >= 2 && !loading && (
           <div className="absolute z-50 w-full mt-1 bg-[var(--afcfta-card)] border border-[var(--afcfta-border)] rounded-lg shadow-lg p-4 text-center text-[var(--afcfta-muted)]">
-            {t.noResults}
+            {destinationCountry ? t.noResults : t.chooseDestination}
           </div>
         )}
       </div>
