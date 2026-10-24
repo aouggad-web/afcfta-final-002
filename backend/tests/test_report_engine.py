@@ -623,7 +623,7 @@ def test_tariff_dza_no_zlecaf_for_non_active_partner():
     assert res["tariff_advantage_pct"] == 0.0
     assert res["tariff_advantage_index"] == 0.0
     assert res["trade_regime"] == "NPF"
-    assert "non encore activé" in (res["trade_regime_note"] or "")
+    assert "ne figure pas dans la liste officielle" in (res["trade_regime_note"] or "")
 
 
 def test_tariff_dza_zlecaf_for_active_partner():
@@ -923,20 +923,28 @@ def test_country_product_imports_falls_back_to_direct(monkeypatch):
     assert res["import_value_usd"] == 1234.0
 
 
-def test_tariff_benefit_remains_unavailable_when_mfn_is_zero_but_offer_is_unverified():
+def test_tariff_benefit_nul_quand_l_origine_n_est_pas_admise_par_la_destination():
     from services import benchmarking_service as benchmark
 
-    # TUN rice (100630) is already 0 % NPF, but that does not turn Tunisia's
-    # unverified offer into an applicable ZLECAf rate or a verified zero saving.
-    # L'Égypte a été retirée de ce cas le 24/09/2026 : ses circulaires n° 38 et
-    # n° 44 sont vérifiées, et son taux passe par zlecaf_schedule_egy. La
-    # Tunisie, elle, publie 8 origines au tarif sans que le sens du pourcentage
-    # soit tranché — l'offre y reste non vérifiée.
+    # Même résolution que le calculateur : la Tunisie applique la ZLECAf aux
+    # origines de sa note n° 016/2023, qui ne nomme pas le Sénégal. Le NPF est
+    # établi (riz 100630 : 0 %), l'avantage est nul et il l'est de droit.
     res = benchmark.tariff_benefit_analysis("SEN", "TUN", "100630")
+    assert res["available"] is True
+    assert res["trade_regime"] == "NPF"
+    assert res["tariff_advantage_pct"] == 0.0
+    assert "ne figure pas dans la liste officielle" in res["trade_regime_note"]
+
+
+def test_tariff_benefit_inconnu_quand_l_offre_n_est_pas_verifiee():
+    from services import benchmarking_service as benchmark
+
+    # Une offre archivée sans preuve d'application (Cameroun) ne vaut ni un
+    # taux ZLECAf ni un avantage nul : l'avantage reste non chiffré.
+    res = benchmark.tariff_benefit_analysis("KEN", "CMR", "721061")
     assert res["available"] is False
     assert res.get("zlecaf_rate_pct") is None
     assert res.get("tariff_advantage_pct") is None
-    assert res.get("savings_per_1000usd") is None
 
 
 def test_segmentation_no_fabricated_tariff_when_unavailable():

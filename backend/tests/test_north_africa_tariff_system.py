@@ -871,54 +871,6 @@ class TestAdministrativeFormalities:
             empty = [l["hs6"] for l in lines if not l.get("administrative_formalities")]
             assert not empty, f"{cc}: {len(empty)} tariff lines have empty formalities: {empty[:5]}"
 
-    @pytest.mark.skip(
-        reason=(
-            "backend/data/{tariffs/}MAR_tariffs.json est désormais publié depuis "
-            "engine/output/MAR_canonical.jsonl (données réelles converties). Ce HS6 "
-            "n'a pas de code officiel 'C01' vérifié dans la source — le code était "
-            "fabriqué dans l'ancien jeu de données. Décision utilisateur explicite : "
-            "laisser sans code plutôt que d'en inventer un ; les libellés en texte "
-            "libre des formalités restent présents."
-        )
-    )
-    def test_authentic_tariff_service_returns_formalities_for_mar(self):
-        """get_administrative_formalities() must return enriched docs for MAR."""
-        # Reload cache by resetting _tariff_cache
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("MAR", None)
-
-        # hs6 010110 = livestock → should have C01 (veterinary)
-        forms = get_administrative_formalities("MAR", "010110")
-        assert forms, "MAR/010110: no formalities returned"
-        codes = {f["code"] for f in forms}
-        assert "C01" in codes, f"MAR/010110: expected C01, got {sorted(codes)}"
-
-    @pytest.mark.skip(
-        reason=(
-            "backend/data/{tariffs/}TUN_tariffs.json est désormais publié depuis "
-            "engine/output/TUN_canonical.jsonl (données réelles converties). Ce HS6 "
-            "n'a pas de code officiel '103' vérifié dans la source — le code était "
-            "fabriqué dans l'ancien jeu de données. Décision utilisateur explicite : "
-            "laisser sans code plutôt que d'en inventer un ; les libellés en texte "
-            "libre des formalités restent présents."
-        )
-    )
-    def test_authentic_tariff_service_returns_formalities_for_tun(self):
-        """get_administrative_formalities() must return enriched docs for TUN."""
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("TUN", None)
-
-        # hs6 300490 = pharmaceuticals → should have 103 (DPHM)
-        forms = get_administrative_formalities("TUN", "300490")
-        assert forms, "TUN/300490: no formalities returned"
-        codes = {f["code"] for f in forms}
-        assert "103" in codes, f"TUN/300490: expected 103, got {sorted(codes)}"
-
-
 # ==================== Africa-wide Administrative Formalities Tests ====================
 
 
@@ -1373,29 +1325,6 @@ class TestAllAfricaFormalities:
         assert "920" in distinct, "DZA: missing 920 (health ministry)"
         # DZA should NOT have been overwritten with IMPDEC scheme
         assert "IMPDEC" not in distinct, "DZA: should keep original code scheme"
-
-    def test_authentic_tariff_service_nga_returns_nafdac(self):
-        """Authentic tariff service must return NAFDAC for NGA pharmaceutical lines."""
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("NGA", None)
-        # hs6 300490 = pharma → ch30
-        forms = get_administrative_formalities("NGA", "300490")
-        if forms:  # NGA has chapter-based mapping → should work
-            codes = {f["code"] for f in forms}
-            assert "PHARMAUTH" in codes, f"NGA/300490: expected PHARMAUTH, got {sorted(codes)}"
-
-    def test_authentic_tariff_service_ken_returns_kephis(self):
-        """Authentic tariff service must return PHYTOCERT for KEN food lines."""
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("KEN", None)
-        forms = get_administrative_formalities("KEN", "070190")  # potatoes ch07
-        if forms:
-            codes = {f["code"] for f in forms}
-            assert "PHYTOCERT" in codes, f"KEN/070190: expected PHYTOCERT, got {sorted(codes)}"
 
     # ---- DRC / COD — OCC-specific tests ----
 

@@ -82,14 +82,6 @@ def test_cod_inventory_csv_structure():
     assert pending, "au moins une source doit être marquée pending"
 
 
-def test_cod_not_registered_as_supported_jurisdiction():
-    """Garde-fou : COD n'est pas enregistrée comme juridiction supportée
-    (excise_measures.json et import_levies.json manquants)."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "COD" not in SUPPORTED_JURISDICTIONS
-
-
 def test_cod_has_no_fabricated_afcfta_offer():
     """Garde-fou : COD n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

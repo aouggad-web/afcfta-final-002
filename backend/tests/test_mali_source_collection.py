@@ -79,13 +79,6 @@ def test_mli_inventory_csv_structure():
     assert len(rows) >= 2
 
 
-def test_mli_not_registered_as_supported_jurisdiction():
-    """Garde-fou : MLI n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "MLI" not in SUPPORTED_JURISDICTIONS
-
-
 def test_mli_has_no_fabricated_afcfta_offer():
     """Garde-fou : MLI n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

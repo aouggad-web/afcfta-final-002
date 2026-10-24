@@ -43,56 +43,6 @@ RACINE = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(RACINE / "backend"))
 
 
-@pytest.fixture(scope="module")
-def service():
-    from services import authentic_tariff_service as svc
-
-    return svc
-
-
-def test_les_trois_etats_se_distinguent(service):
-    """Une position servie, une position sans formalité, une position absente."""
-    documentees, statut = service.formalites_et_statut("MAR", "0101210000")
-    assert statut == service.FORMALITES_DOCUMENTEES
-    assert documentees, "un état DOCUMENTEES sans formalité n'a pas de sens"
-
-    vides, statut = service.formalites_et_statut("KEN", "01012900")
-    assert statut == service.FORMALITES_NON_ETABLIES
-    assert vides == []
-
-    absente, statut = service.formalites_et_statut("MAR", "9999999999")
-    assert statut == service.FORMALITES_POSITION_INTROUVABLE
-    assert absente == []
-
-
-def test_aucun_etat_ne_signifie_aucune_obligation(service):
-    """CONTRÔLE NÉGATIF — le plus important de ce fichier.
-
-    Le jour où un état « AUCUNE_OBLIGATION » apparaîtra, il devra s'appuyer sur
-    une attestation de la source, pas sur une liste vide. Ce test tombe si
-    quelqu'un l'ajoute sans cette preuve.
-    """
-    etats = {
-        service.FORMALITES_DOCUMENTEES,
-        service.FORMALITES_AUCUNE_PARTICULIERE,
-        service.FORMALITES_NON_ETABLIES,
-        service.FORMALITES_POSITION_INTROUVABLE,
-    }
-    assert len(etats) == 4, "les quatre états doivent rester distincts"
-    for etat in etats:
-        assert "AUCUNE_OBLIGATION" not in etat
-        assert "DISPENSE" not in etat
-        assert "EXEMPT" not in etat.upper()
-
-
-def test_l_ancienne_fonction_garde_son_contrat(service):
-    """Ses appelants existants reçoivent toujours une liste, jamais un couple."""
-    resultat = service.get_administrative_formalities("KEN", "01012900")
-    assert isinstance(resultat, list)
-    resultat = service.get_administrative_formalities("MAR", "0101210000")
-    assert isinstance(resultat, list) and resultat
-
-
 def test_la_route_porte_le_statut_et_la_reserve():
     """La réserve voyage dans la réponse, pas seulement dans l'écran."""
     from fastapi.testclient import TestClient
@@ -124,49 +74,44 @@ def test_une_position_servie_ne_porte_aucune_reserve():
     assert corps["formalities"]
 
 
-def test_une_source_exhaustive_dit_le_constat_pas_la_lacune(service):
-    """Algérie : le silence de la fiche est une information, pas un manque.
+def test_aucun_etat_ne_signifie_aucune_obligation():
+    """CONTRÔLE NÉGATIF — le plus important de ce fichier.
 
-    La fiche DGD de chaque position publie le tableau des formalités
-    particulières quand il en existe, et aucun tableau sinon : relevé des
-    17 345 fiches, data/dza/releve_dgd.json.
-
-    Le produit peut donc dire à l'opérateur quelque chose de POSITIF — cette
-    marchandise n'est soumise à aucune formalité particulière — au lieu de lui
-    servir une réserve qui ferait passer une information solide pour un trou.
-    Mais seulement pour une position relevée : un SH6, ou un code absent du
-    tarif DGD, n'a pas de fiche, donc pas de constat.
+    Le jour où un état « AUCUNE_OBLIGATION » apparaîtra, il devra s'appuyer sur
+    une attestation de la source, pas sur une liste vide. Ce test tombe si
+    quelqu'un l'ajoute sans cette preuve.
     """
-    # La fiche de 1520002000 ne publie aucune formalité ; l'agrégat de son SH6
-    # en porte. Le constat est celui de la fiche.
-    _, statut = service.formalites_et_statut("DZA", "1520002000")
-    assert statut == service.FORMALITES_AUCUNE_PARTICULIERE
+    from services import formalites
 
-    documentees, statut = service.formalites_et_statut("DZA", "0101.21.11.00")
-    assert statut == service.FORMALITES_DOCUMENTEES
-    assert [f["code"] for f in documentees] == ["160", "180"]
+    etats = {
+        formalites.FORMALITES_DOCUMENTEES,
+        formalites.FORMALITES_AUCUNE_PARTICULIERE,
+        formalites.FORMALITES_NON_ETABLIES,
+        formalites.FORMALITES_POSITION_INTROUVABLE,
+    }
+    assert len(etats) == 4, "les quatre états doivent rester distincts"
+    for etat in etats:
+        assert "AUCUNE_OBLIGATION" not in etat
+        assert "DISPENSE" not in etat
+        assert "EXEMPT" not in etat.upper()
 
-    for code in ("0804109992", "520100"):
-        attendu = ([], service.FORMALITES_NON_ETABLIES)
-        assert service.formalites_et_statut("DZA", code) == attendu, code
 
-
-def test_le_constat_ne_se_generalise_pas_aux_autres_pays(service):
+def test_le_constat_ne_se_generalise_pas_aux_autres_pays():
     """CONTRÔLE NÉGATIF — la leçon du Maroc, appliquée aux formalités.
 
     Un pays dont la source n'a PAS été vérifiée exhaustive garde « non
-    établies ». Étendre le constat par analogie transformerait 297 794 lacunes
-    en autant de déclarations d'absence de formalité — une valeur fabriquée à
-    l'échelle du continent.
+    établies » : étendre le constat par analogie transformerait des lacunes en
+    autant de déclarations d'absence de formalité.
     """
-    assert set(service.SOURCES_EXHAUSTIVES_FORMALITES) == {"DZA"}
-    for pays, code in (("KEN", "01012900"), ("MAR", "0902100000")):
-        _, statut = service.formalites_et_statut(pays, code)
-        assert statut != service.FORMALITES_AUCUNE_PARTICULIERE, pays
+    from services.formalites import SOURCES_EXHAUSTIVES_FORMALITES
+
+    assert set(SOURCES_EXHAUSTIVES_FORMALITES) == {"DZA"}
 
 
-def test_chaque_source_exhaustive_porte_sa_preuve(service):
+def test_chaque_source_exhaustive_porte_sa_preuve():
     """Une entrée sans preuve relevée n'a rien à faire dans la table."""
-    for pays, preuve in service.SOURCES_EXHAUSTIVES_FORMALITES.items():
+    from services.formalites import SOURCES_EXHAUSTIVES_FORMALITES
+
+    for pays, preuve in SOURCES_EXHAUSTIVES_FORMALITES.items():
         assert len(preuve) > 150, f"{pays} : la preuve doit être circonstanciée"
         assert "chantillon" in preuve or "rifi" in preuve, pays

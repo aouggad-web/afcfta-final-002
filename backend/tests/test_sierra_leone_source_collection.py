@@ -94,16 +94,6 @@ def test_sle_vat_measures_schema():
     assert "vat_rates" in data
 
 
-def test_sle_not_registered_as_supported_jurisdiction():
-    """Garde-fou : SLE n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "SLE" not in SUPPORTED_JURISDICTIONS
-
-
 def test_sle_has_no_fabricated_afcfta_offer():
     """Garde-fou : SLE n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

@@ -85,13 +85,6 @@ def test_civ_readme_documents_base_article_gap():
     assert "pas" in readme.lower() and "directement" in readme.lower()
 
 
-def test_civ_not_registered_as_supported_jurisdiction():
-    """Garde-fou : CIV n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "CIV" not in SUPPORTED_JURISDICTIONS
-
-
 def test_civ_has_no_fabricated_afcfta_offer():
     """Garde-fou : CIV n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

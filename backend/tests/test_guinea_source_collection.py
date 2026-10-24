@@ -137,16 +137,6 @@ def test_gin_excise_zero_rated_categories():
     assert all(r["rate"] == 0 for r in zero_records)
 
 
-def test_gin_not_registered_as_supported_jurisdiction():
-    """Garde-fou : GIN n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "GIN" not in SUPPORTED_JURISDICTIONS
-
-
 def test_gin_has_no_fabricated_afcfta_offer():
     """Garde-fou : GIN n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

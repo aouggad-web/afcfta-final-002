@@ -61,31 +61,3 @@ def test_l_autre_chemin_ne_sert_pas_non_plus_ces_taux():
     assert tva["0101210000"]["rate_pct"] == 7.5
 
 
-def test_la_ligne_tarifaire_et_le_detail_des_taxes_ne_servent_pas_ces_taux(monkeypatch):
-    """GET /authentic-tariffs/country/NGA/line/… et /taxes/… lisent la ligne
-    ETL, PostgreSQL ou collectée : le taux n'y figure plus, ni dans le total."""
-    import asyncio
-
-    from routes import authentic_tariffs
-    from services import authentic_tariff_service as svc
-
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
-    ligne = asyncio.run(authentic_tariffs.get_tariff_line_endpoint("NGA", "160558", "fr"))["tariff_line"]
-    assert ligne["vat_rate"] is None and ligne["total_taxes_pct"] is None
-    taxes = asyncio.run(authentic_tariffs.get_taxes_detail_endpoint("NGA", "252510", "fr"))["taxes"]
-    assert [t["rate"] for t in taxes if t["tax"] == "VAT"] == [None]
-    assert svc.get_tariff_line("NGA", "160510")["vat_rate"] == 7.5
-
-    class PostgreSQL:
-        def get_regulatory_details(self, *_):
-            return {"success": True, "measures": [{"code": "VAT", "rate": 17.5}], "taxes": {"vat_rate": 17.5}}
-
-        def get_country_info(self, *_):
-            return {}
-
-        def get_sub_positions(self, *_):
-            return []
-
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: PostgreSQL())
-    ligne = svc.get_tariff_line("NGA", "1605580000")
-    assert ligne["vat_rate"] is None and [t["rate"] for t in ligne["taxes_detail"]] == [None]

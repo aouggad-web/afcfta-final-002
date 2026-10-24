@@ -2,8 +2,7 @@
 
 #: Taux de TVA que la loi du pays connaît, quand ils sont établis sur texte.
 #: Un taux collecté hors de cette liste n'est servi nulle part : socle
-#: (scripts/build_socle.py), ancien service de consultation
-#: (services/authentic_tariff_service._tva_hors_la_loi), données normalisées
+#: (scripts/build_socle.py), données normalisées
 #: (scripts/normalize_crawled.py). Il reste à compléter, avec ce texte en note.
 TAUX_TVA_LEGAUX = {
     "NGA": {

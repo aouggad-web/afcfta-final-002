@@ -133,15 +133,6 @@ def test_rwa_excise_measures_schema():
     assert "excise_rates" in data
 
 
-def test_rwa_registered_as_supported_jurisdiction():
-    """RWA est désormais enregistrée comme juridiction supportée (couche légale
-    nationale générée par backend/scripts/build_jurisdiction_files.py)."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "RWA" in SUPPORTED_JURISDICTIONS
-    assert SUPPORTED_JURISDICTIONS["RWA"].default_currency == "RWF"
-
-
 def test_rwa_has_no_fabricated_afcfta_offer():
     """Garde-fou : RWA n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

@@ -89,13 +89,6 @@ def test_sen_inventory_csv_structure():
     assert len(rows) >= 2
 
 
-def test_sen_not_registered_as_supported_jurisdiction():
-    """Garde-fou : SEN n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "SEN" not in SUPPORTED_JURISDICTIONS
-
-
 def test_sen_has_no_fabricated_afcfta_offer():
     """Garde-fou : SEN n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

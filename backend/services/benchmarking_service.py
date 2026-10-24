@@ -262,26 +262,38 @@ def _resolve_hs6(destination_iso3: str, code: str):
     if len(clean) >= 6:
         return clean[:6], False
     # Find a real HS6 line whose code starts with the given HS4/HS5 prefix.
-    try:
-        from services.authentic_tariff_service import load_country_tariffs
-
-        data = load_country_tariffs(destination_iso3) or {}
-        hs6s = sorted(
-            {
-                (ln.get("hs6") or "")
-                for ln in data.get("tariff_lines", [])
-                if (ln.get("hs6") or "").startswith(clean)
-            }
-            - {""}
-        )
-        if not hs6s:
-            hs6s = sorted({c[:6] for c in _positions_socle(destination_iso3, clean)})
-        if hs6s:
-            return hs6s[0], True
-    except Exception:  # pragma: no cover - defensive
-        pass
+    hs6s = sorted({c[:6] for c in _positions_socle(destination_iso3, clean)})
+    if hs6s:
+        return hs6s[0], True
     # Last resort: pad with zeros (may not exist -> caller degrades gracefully).
     return clean.ljust(6, "0"), True
+
+
+#: Refus de préférence qui établissent le NPF : l'avantage est nul, et il l'est
+#: de droit. Les autres refus (offre seule, avis aux partenaires requis,
+#: préférence non tracée, preuve absente) laissent l'avantage inconnu.
+_NPF_ETABLI = ("PENDING_PARTNER", "PREFERENCE_SUSPENDUE")
+
+
+def _npf_etabli(destination_iso3: str, origin_iso3: str, preference: dict) -> bool:
+    """Le NPF est-il établi, et non seulement appliqué faute de preuve ?
+
+    Il l'est quand la destination applique la ZLECAf avec une liste officielle
+    d'origines admises qui ne nomme pas cette origine (l'Algérie, circulaire
+    482/2024, pour la Guinée-Bissau)."""
+    if preference.get("statut") in _NPF_ETABLI:
+        return True
+    if preference.get("statut") != "NOT_AVAILABLE":
+        return False
+    from services.zlecaf_implementation_registry import APPLIED, implementation_decision
+
+    decision = implementation_decision(destination_iso3, origin_iso3) or {}
+    record = decision.get("record")
+    return bool(
+        record is not None
+        and record.status == APPLIED
+        and (origin_iso3 or "").upper() not in record.accepted_origins
+    )
 
 
 def tariff_benefit_analysis(
@@ -293,17 +305,17 @@ def tariff_benefit_analysis(
     Computes the REAL tariff advantage of the preferential regime applicable to
     the ORIGIN/DESTINATION pair vs the national (MFN) rate.
 
-    The tariff applied is the *destination* (importer) country's duty. The
-    national duty rate (``dd_rate``) comes straight from the platform's
-    authentic tariff dataset, and the preferential rate goes through the SAME
-    regime resolution as the calculator (``resolve_zlecaf_context``): customs
-    unions, continental ratification, bilateral activation (Algeria grants
-    ZLECAf rates to its active partners only — DGD circular 482/2024 — and
-    South Africa to its activated partners). An origin outside those lists
-    gets the MFN rate, hence a ZERO advantage — never the generic line rate.
+    The tariff applied is the *destination* (importer) country's duty, read on
+    its national positions in the socle, and the preferential rate goes through
+    the SAME resolution as the calculator (``POST /calcul`` :
+    ``services.preference.taux_preferentiels``) : customs unions, bilateral
+    activation (Algeria grants ZLECAf rates to its admitted origins only — DGD
+    circular 482/2024 — and South Africa to its activated partners), national
+    schedules, MFN floor.
 
-    No fabrication: if the destination has no tariff line for the product, the
-    block is returned ``available: False`` — never an invented rate.
+    No fabrication: if the destination has no position for the product, or if
+    the rate depends on the national position, the block is returned
+    ``available: False`` — never an invented rate.
 
     Returns: {
         available, zlecaf_rate_pct (= applied preferential rate),
@@ -320,94 +332,64 @@ def tariff_benefit_analysis(
         return {
             "available": False,
             "note": "Code produit invalide pour la recherche tarifaire.",
-            "source": "authentic_tariff_service",
+            "source": "socle",
         }
-    try:
-        from services.authentic_tariff_service import get_tariff_line
-
-        line = get_tariff_line(destination_iso3, hs6)
-    except Exception as exc:
-        _log.warning("tariff benefit analysis unavailable: %s", exc)
-        return {"available": False, "note": str(exc)}
-
-    if not line:
-        # Pays sans ligne SH6 au fichier ETL : ses positions nationales au socle.
-        # Un seul droit de douane pour toutes : c'est le taux ; plusieurs : le
-        # taux dépend de la position, et aucun n'est choisi à sa place.
-        taux = {
-            d.get("taux")
-            for p in _positions_socle(destination_iso3, hs6).values()
-            for d in p.get("droits", [])
-            if d.get("code") == "DD"
-        }
-        if len(taux) == 1 and None not in taux:
-            line = {"dd_rate": taux.pop(), "zlecaf_rate": None}
-        elif taux == {None}:
-            return {
-                "available": False,
-                "note": f"{destination_iso3.upper()}/{hs6} : droit de douane non publié.",
-                "source": "socle",
-            }
-        elif taux:
-            publies = [f"{x:g} %" for x in sorted(x for x in taux if x is not None)]
-            if None in taux:
-                publies.append("non publié")
-            return {
-                "available": False,
-                "note": (
-                    f"{destination_iso3.upper()}/{hs6} : le droit de douane dépend de la position "
-                    f"nationale ({', '.join(publies)}) ; avantage non calculable au niveau SH6."
-                ),
-                "source": "socle",
-            }
-    if not line:
+    positions = _positions_socle(destination_iso3, hs6)
+    if not positions:
         return {
             "available": False,
             "note": (
-                f"Aucune ligne tarifaire pour {destination_iso3.upper()}/{hs6} "
-                "dans le barème national ; avantage tarifaire non calculable."
+                f"Aucune position pour {destination_iso3.upper()}/{hs6} "
+                "dans le tarif national ; avantage tarifaire non calculable."
             ),
-            "source": "authentic_tariff_service",
+            "source": "socle",
         }
 
-    national = line.get("dd_rate")
-    zlecaf = line.get("zlecaf_rate")
+    from services.preference import taux_preferentiels
+
+    # Une issue par position nationale : (droit NPF, régime, taux appliqué,
+    # statut, note). Une seule issue pour toutes : c'est celle du SH6 ;
+    # plusieurs : elle dépend de la position, et aucune n'est choisie à sa place.
+    issues = {}
+    for code, position in positions.items():
+        npf = next(
+            (d.get("taux") for d in position.get("droits", []) if d.get("code") == "DD"),
+            None,
+        )
+        preference = taux_preferentiels(position, destination_iso3, origin_iso3, code)
+        if preference.get("applique"):
+            regime = "CUSTOMS_UNION" if preference.get("regime") == "UNION_DOUANIERE" else "ZLECAF"
+            applique = (preference.get("taux", {}).get("DD") or {}).get("taux")
+        elif npf is not None and _npf_etabli(destination_iso3, origin_iso3, preference):
+            regime, applique = "NPF", npf
+        else:
+            regime, applique = "NPF", None
+        issue = (npf, regime, applique, preference.get("statut"), preference.get("code_bloc"))
+        issues.setdefault(issue, preference.get("note"))
+
+    if len(issues) > 1:
+        npf_publies = sorted({i[0] for i in issues if i[0] is not None})
+        return {
+            "available": False,
+            "hs6_used": hs6,
+            "hs6_resolved": hs6_resolved,
+            "note": (
+                f"{destination_iso3.upper()}/{hs6} : le droit de douane ou la préférence "
+                f"dépend de la position nationale (NPF {', '.join(f'{x:g} %' for x in npf_publies) or 'non publié'}) ; "
+                "avantage non calculable au niveau SH6."
+            ),
+            "source": "socle",
+        }
+
+    (national, regime, applied, rate_status, bloc), regime_note = next(iter(issues.items()))
     if national is None:
         return {
             "available": False,
-            "note": "Taux de droit de douane national indisponible pour ce produit.",
-            "source": "authentic_tariff_service",
+            "note": f"{destination_iso3.upper()}/{hs6} : droit de douane non publié.",
+            "source": "socle",
         }
     national = float(national)
-
-    # Résolution du régime préférentiel réellement applicable à la paire
-    # origine/destination — même source de vérité que le calculateur
-    # (activation bilatérale DZA/ZAF, unions douanières, ratification).
-    try:
-        from services.authentic_tariff_service import resolve_zlecaf_context
-
-        ctx = resolve_zlecaf_context(
-            destination_iso3,
-            origin_iso3,
-            hs6,
-            national,
-            float(zlecaf) if zlecaf is not None else None,
-        )
-    except Exception as exc:
-        _log.warning("preferential regime resolution failed: %s", exc)
-        return {
-            "available": False,
-            "note": f"Régime préférentiel non résolu ({exc}) ; avantage non calculable.",
-            "source": "authentic_tariff_service",
-        }
-
-    regime = ctx["trade_regime"]
-    applied = ctx["dd_rate_pct"]
-    rate_status = ctx.get("zlecaf_rate_calculation_status")
-    # OFFER_ONLY/PARTNER_NOTICE_REQUIRED : offre publiée ou domestication sans
-    # liste de partenaires vérifiée — jamais assez pour modéliser un avantage
-    # tarifaire chiffré, au même titre qu'une absence totale de source.
-    if rate_status in ("NOT_AVAILABLE", "OFFER_ONLY", "PARTNER_NOTICE_REQUIRED") or applied is None:
+    if applied is None:
         return {
             "available": False,
             "hs6_used": hs6,
@@ -418,13 +400,10 @@ def tariff_benefit_analysis(
             "savings_per_1000usd": None,
             "tariff_advantage_index": None,
             "trade_regime": regime,
-            "trade_regime_code": ctx.get("trade_regime_code"),
-            "trade_regime_note": ctx.get("trade_regime_note"),
-            "note": (
-                ctx.get("zlecaf_note")
-                or "Taux ZLECAf exact non vérifié pour cette ligne — avantage non calculable."
-            ),
-            "source": "authentic_tariff_service",
+            "trade_regime_code": None,
+            "trade_regime_note": regime_note,
+            "note": regime_note or "Taux ZLECAf exact non vérifié pour cette ligne — avantage non calculable.",
+            "source": "socle",
         }
     applied = float(applied)
 
@@ -433,7 +412,6 @@ def tariff_benefit_analysis(
     # Normalised contribution to composite reward (a 20% duty saving -> 1.0).
     advantage_index = round(min(advantage / 20.0, 1.0), 3)
 
-    regime_note = ctx.get("trade_regime_note")
     if regime in ("ZLECAF", "CUSTOMS_UNION"):
         regime_label = "ZLECAf" if regime == "ZLECAF" else "union douanière"
         narrative = (
@@ -463,9 +441,9 @@ def tariff_benefit_analysis(
         "savings_per_1000usd": round(savings, 2),
         "tariff_advantage_index": advantage_index,
         "trade_regime": regime,
-        "trade_regime_code": ctx.get("trade_regime_code"),
+        "trade_regime_code": bloc or ("ZLECAF" if regime == "ZLECAF" else None),
         "trade_regime_note": regime_note,
         "narrative": narrative,
-        "source": line.get("dd_source") or "authentic_tariff_service (barème national + ZLECAf)",
+        "source": "socle (tarif national + préférence du calculateur)",
         "note": note,
     }

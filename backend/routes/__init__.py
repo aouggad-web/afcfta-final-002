@@ -16,7 +16,6 @@ MIGRATION STATUS:
 - substitution.py: COMPLETE
 - gemini_analysis.py: COMPLETE (NOW WITH CACHE)
 - rules_of_origin.py: COMPLETE (Extracted from server.py)
-- authentic_tariffs.py: COMPLETE (54 countries tariff data)
 - trade_data.py: COMPLETE (WTO integration)
 """
 
@@ -75,7 +74,6 @@ except ImportError:
     news_router = None
     NEWS_AVAILABLE = False
 
-from .authentic_tariffs import router as authentic_tariffs_router
 from .countries import router as countries_router
 from .etl import router as etl_router
 from .hs_codes import router as hs_codes_router
@@ -334,14 +332,6 @@ except ImportError:
     INSURANCE_AVAILABLE = False
 
 try:
-    from .postgres_tariffs import router as postgres_tariffs_router
-
-    POSTGRES_TARIFFS_AVAILABLE = True
-except ImportError:
-    postgres_tariffs_router = None
-    POSTGRES_TARIFFS_AVAILABLE = False
-
-try:
     from api.graphql.schema import router as graphql_router
 
     GRAPHQL_AVAILABLE = True
@@ -473,9 +463,6 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(
         rules_router, tags=["Rules of Origin"], dependencies=_auth + _roo_entitlement
     )
-    api_router.include_router(
-        authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth
-    )
     if FAOSTAT_AVAILABLE:
         api_router.include_router(
             faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
@@ -578,10 +565,6 @@ def register_routes(api_router: APIRouter):
             insurance_router,
             tags=["Insurance"],
             dependencies=_auth,
-        )
-    if POSTGRES_TARIFFS_AVAILABLE:
-        api_router.include_router(
-            postgres_tariffs_router, tags=["PostgreSQL Tariffs"], dependencies=_auth
         )
     if GRAPHQL_AVAILABLE:
         api_router.include_router(graphql_router, tags=["GraphQL"], dependencies=_auth)

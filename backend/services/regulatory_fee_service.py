@@ -569,9 +569,8 @@ def merge_regulatory_cost(
     Concatène toutes les lignes (chacune conserve son ``side``) et re-agrège les
     drapeaux de complétude et les totaux (bornés min/max) via ``_summarise``,
     sans jamais additionner de devises hétérogènes. Renvoie None si tout est
-    vide. Fonction commune à toutes les routes de calcul (ex.
-    authentic_tariffs.py) : la ventilation réglementaire ne doit jamais
-    dépendre du chemin de calcul emprunté par le frontend.
+    vide. Fonction commune aux routes de calcul (POST /calcul) : la ventilation
+    réglementaire ne doit jamais dépendre du chemin emprunté par le frontend.
     """
     merged_items: List[Dict[str, Any]] = []
     for side in (cost_import, cost_export):

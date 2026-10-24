@@ -24,7 +24,9 @@ depuis le 20/10/2026 ; les citations, dans `backend/data/` et
 `backend/data/crawled/`, tous deux versionnés.
 """
 
+import functools
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -53,10 +55,28 @@ def _neutralise_devise(monkeypatch):
 # --------------------------------------------------------------------------- #
 
 
-def _crawled_entry(country: str, code: str):
-    from services.authentic_tariff_service import load_crawled_position_index
+@functools.lru_cache(maxsize=None)
+def _index_crawl(country: str) -> dict:
+    """Positions du fichier collecté, par code national (chiffres seuls)."""
+    chemin = REPO_ROOT / "backend" / "data" / "crawled" / f"{country}_tariffs.json"
+    if not chemin.exists():
+        return {}
+    donnees = json.loads(chemin.read_text(encoding="utf-8"))
+    lignes = list(donnees.get("positions") or []) + list(donnees.get("sub_positions") or [])
+    for ligne in donnees.get("tariff_lines") or []:
+        lignes += ligne.get("sub_positions") or []
+    index = {}
+    for entree in lignes:
+        for cle in ("hs_code", "code_clean", "code", "national_code", "raw_code", "code_raw", "hs6"):
+            code = re.sub(r"\D", "", str(entree.get(cle) or ""))
+            if len(code) >= 6:
+                index[code] = entree
+                break
+    return index
 
-    return (load_crawled_position_index(country) or {}).get(code)
+
+def _crawled_entry(country: str, code: str):
+    return _index_crawl(country).get(code)
 
 
 def _tax_entry(entry: dict, taxes_key: str, tax_code: str):
