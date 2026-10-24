@@ -107,6 +107,17 @@ export function dedouanementSacuPropose(destinationISO3) {
   return PAYS_SACU.has(destinationISO3);
 }
 
+/**
+ * États partenaires de la CAE auxquels la gazette accorde des remises de droits
+ * (Legal Notice EAC/161/2026, Table A) : le formulaire d'autorisation leur est
+ * proposé.
+ */
+export const PAYS_REMISES_EAC = new Set(['KEN', 'UGA', 'RWA', 'TZA', 'BDI']);
+
+export function remiseEacProposee(destinationISO3) {
+  return PAYS_REMISES_EAC.has(destinationISO3);
+}
+
 export function buildCalculRequestBody({
   destinationISO3,
   originISO3,

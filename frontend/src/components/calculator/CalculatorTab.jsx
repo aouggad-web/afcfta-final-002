@@ -37,6 +37,7 @@ import { normalizeTaxesDetail } from './taxesDetail';
 import {
   buildCalculRequestBody,
   dedouanementSacuPropose,
+  remiseEacProposee,
   expeditionSacuRequise,
   mapCalculToLegacyResult,
   localiserResultat,
@@ -170,6 +171,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
   useEffect(() => {
     setDejaDedouaneSacu(false);
+    // Une autorisation de remise vaut pour l'État qui l'a délivrée.
+    setKenyaRemission({
+      answer: 'unknown', reference: '', validFrom: '', validTo: '',
+      authorizedTariffLines: '', authorizedGoods: '',
+    });
   }, [destinationCountry]);
 
   const handleDestinationChange = useCallback((value) => {
@@ -518,7 +524,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         valeurFob,
         tauxDeChange: tauxDeChangePour(destISO3, await demanderConversion()),
         ...transport,
-        remise: destISO3 === 'KEN' ? kenyaRemission : null,
+        remise: remiseEacProposee(destISO3) ? kenyaRemission : null,
         usage: usageFor === `${destISO3}|${cleanHsCode}` ? usage : null,
       }))).data;
       const legacyResult = mapCalculToLegacyResult(calcul, {
@@ -1052,7 +1058,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           )}
 
-          {['KEN', 'KE'].includes(destinationCountry) && (
+          {remiseEacProposee(
+            destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry,
+          ) && (
             <KenyaRemissionAuthorization
               value={kenyaRemission}
               onChange={setKenyaRemission}

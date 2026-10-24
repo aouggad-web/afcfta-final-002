@@ -38,7 +38,7 @@
     "Une décision qui redit seulement le produit de la ligne (« on Electric and Hybrid vehicles » sur la ligne « Electric and Hybrid vehicles » : Table I n° 9, 10, 124, 275, 289, 290) n'est pas restreinte."
   ],
   "ce_que_cela_ne_tranche_pas": [
-    "Remises de droits sous conditions (Legal Notice EAC/161/2026) : non appliquées ; à intégrer séparément.",
+    "Remises de droits sous conditions (Legal Notice EAC/161/2026, Table A) : relevées dans data/eac/legal_overrides.json pour le Kenya, l'Ouganda, le Rwanda, la Tanzanie et le Burundi, appliquées par services.mesures_eac sur autorisation déclarée qui nomme la ligne ; lignes « Various », listes des Legal Notices EAC/163 à EAC/171/2026, ligne 8 (sans code) et ligne 130 (sans État) non intégrées.",
     "Table I n° 245 (Kenya, « 35% or US$ 1000 / MT » sans règle de départage) : non lue.",
     "Tables VIII et IX : taux réservés aux fabricants de vêtements et de chaussures, non appliqués par position.",
     "Les mesures prennent fin avec l'exercice 2026/27 (30 juin 2027) : à remplacer par l'avis de l'exercice suivant.",

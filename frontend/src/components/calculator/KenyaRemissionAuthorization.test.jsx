@@ -32,3 +32,12 @@ describe('KenyaRemissionAuthorization', () => {
     expect(screen.queryByTestId('kenya-authorization-details')).not.toBeInTheDocument();
   });
 });
+
+describe('remises EAC', () => {
+  it('le formulaire est proposé aux cinq États de la Table A de l’EAC/161/2026', async () => {
+    const { remiseEacProposee } = await import('./unifiedCalculator');
+    expect(['KEN', 'UGA', 'RWA', 'TZA', 'BDI'].every(remiseEacProposee)).toBe(true);
+    expect(remiseEacProposee('SSD')).toBe(false);
+    expect(remiseEacProposee('ZAF')).toBe(false);
+  });
+});
