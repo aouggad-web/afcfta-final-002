@@ -86,35 +86,6 @@ class TestAuthenticTariffsCountrySummary:
         assert response.status_code == 404
 
 
-class TestAuthenticTariffsSearch:
-    """Test /api/authentic-tariffs/search/{country}?q=query - Recherche"""
-
-    def test_search_cacao_mar(self):
-        """Search for 'cacao' in Morocco tariffs"""
-        response = requests.get(f"{BASE_URL}/api/authentic-tariffs/search/MAR?q=cacao&language=fr")
-        assert response.status_code == 200
-
-        data = response.json()
-        assert data["success"] == True
-        assert data["country_iso3"] == "MAR"
-        assert "results" in data
-        assert len(data["results"]) > 0, "Should find cacao products"
-
-    def test_search_by_hs_code(self):
-        """Search by partial HS code"""
-        response = requests.get(f"{BASE_URL}/api/authentic-tariffs/search/NGA?q=1801&language=en")
-        assert response.status_code == 200
-
-        data = response.json()
-        assert len(data["results"]) > 0
-
-    def test_search_min_query_length(self):
-        """Query must be at least 2 characters"""
-        response = requests.get(f"{BASE_URL}/api/authentic-tariffs/search/MAR?q=a")
-        # FastAPI validates min_length=2
-        assert response.status_code == 422
-
-
 class TestAuthenticTariffsSubPositions:
     """Test /api/authentic-tariffs/country/{country}/sub-positions/{hs6}"""
 

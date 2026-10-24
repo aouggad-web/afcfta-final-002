@@ -2,6 +2,7 @@
 sont celles que POST /calcul sait liquider, et les formalités sont celles que
 la source publie pour la position."""
 
+import importlib
 import importlib.util
 import os
 import sys
@@ -15,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "EGY", "DZA", "MAR", "KEN")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "EGY", "DZA", "MAR", "KEN", "ZAF")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -102,3 +103,119 @@ def test_sans_source_et_position_introuvable(client):
     assert _formalites(client, "KEN", "01012900")["statut"] == "NON_ETABLIES"
     corps = _formalites(client, "MAR", "9999999999")
     assert corps["statut"] == "POSITION_INTROUVABLE" and corps["reserve"]
+
+
+def _recherche(client, iso3, q, **params):
+    reponse = client.get(f"/consultation/{iso3}/recherche", params={"q": q, **params})
+    assert reponse.status_code == 200
+    return reponse.json()
+
+
+def test_recherche_par_code_lue_au_socle(client):
+    corps = _recherche(client, "TUN", "0902.10")
+    assert corps["source"] == "socle"
+    codes = [r["code"] for r in corps["results"]]
+    assert codes == sorted(codes) and codes and all(c.startswith("090210") for c in codes)
+    assert set(codes) <= set(socle.charger("TUN")["positions"])
+
+
+def test_recherche_par_mots_sans_accents_ni_casse(client):
+    assert _recherche(client, "KEN", "café")["results"] == _recherche(client, "KEN", "CAFE")["results"]
+    corps = _recherche(client, "MAR", "thé vert")
+    assert corps["total"] >= 1 and all(r["code"].startswith("0902") for r in corps["results"])
+
+
+def test_recherche_un_mot_commence_un_mot_de_la_designation(client):
+    """« vert » ne trouve pas « invertebrates », ni « thé » l'article anglais."""
+    assert all(r["code"].startswith("0902") for r in _recherche(client, "MAR", "thé vert")["results"])
+    the = _recherche(client, "MAR", "thé", limit=100)
+    assert the["total"] < 200 and any(r["code"].startswith("0902") for r in the["results"])
+    assert _recherche(client, "TUN", "..")["total"] == 0
+
+
+def test_recherche_un_code_mele_aux_mots_borne_le_code(client):
+    corps = _recherche(client, "MAR", "87.03 voiture")
+    assert corps["total"] >= 1 and all(r["code"].startswith("8703") for r in corps["results"])
+
+
+def test_recherche_textes_prepares_une_fois_par_chargement(client):
+    module = sys.modules["routes_consultation_test"]
+    positions = socle.charger("KEN")["positions"]
+    _recherche(client, "KEN", "coffee", langue="en")
+    assert module._textes["KEN"][0] is positions
+    premier = module._textes["KEN"][2]
+    _recherche(client, "KEN", "tea", langue="en")
+    assert module._textes["KEN"][2] is premier
+    assert module._textes["KEN"][1] == "en"  # KEN publie en anglais
+
+
+def test_recherche_l_intitule_sh4_situe_une_ligne_sans_designation_propre(client):
+    """« Other » sous 2402 : trouvée par « cigarettes », située par l'intitulé SH4."""
+    corps = _recherche(client, "ZAF", "cigarettes", limit=2, langue="en")
+    assert corps["total"] > len(corps["results"]) == 2
+    ligne = corps["results"][0]
+    assert ligne["hs6"] == ligne["code"][:6] and ligne["digits"] == len(ligne["code"])
+    assert "cigarettes" in ligne["intitule_sh4"].lower()
+
+
+def test_recherche_ne_sert_que_le_droit_de_douane(client):
+    """Ni total ni TVA : le montant des droits et taxes est celui de POST /calcul."""
+    ligne = _recherche(client, "KEN", "coffee", langue="en")["results"][0]
+    assert set(ligne) == {
+        "code", "hs6", "digits", "description_fr", "description_en", "intitule_sh4", "dd_rate", "dd_expression"
+    }
+
+
+def test_recherche_pays_invalide_ou_hors_socle(client):
+    assert client.get("/consultation/zz/recherche", params={"q": "cafe"}).status_code == 422
+    assert client.get("/consultation/XXX/recherche", params={"q": "cafe"}).status_code == 503
+    assert client.get("/consultation/KEN/recherche", params={"q": "a"}).status_code == 422
+
+
+@pytest.mark.parametrize(
+    "module, nom",
+    [
+        ("services.authentic_tariff_service", "compute_tax_cascade"),
+        ("services.authentic_tariff_service", "search_tariff_lines"),
+        ("services.tariff_provider_service", "TariffProviderService.search_tariff_lines"),
+        ("services.tax_profile_data", "COUNTRY_TAX_PROFILES"),
+    ],
+)
+def test_l_ancienne_cascade_et_l_ancienne_recherche_sont_retirees(module, nom):
+    """Une seule recherche (celle-ci) et un seul calcul (POST /calcul)."""
+    objet = importlib.import_module(module)
+    for partie in nom.split("."):
+        objet = getattr(objet, partie, None)
+    assert objet is None
+    assert importlib.util.find_spec("routes.hs6_database") is None
+
+
+def test_les_anciennes_routes_de_recherche_sont_retirees():
+    chemins = {r.path for nom in ("authentic_tariffs", "postgres_tariffs") for r in _route(nom).routes}
+    assert "/authentic-tariffs/search/{country_iso3}" not in chemins
+    assert "/postgres-tariffs/country/{iso3}/search" not in chemins
+    assert "/authentic-tariffs/countries" in chemins  # le routeur est bien celui-là
+
+
+def test_recherche_les_mots_entiers_d_abord_puis_par_code(client):
+    """« thé » : le thé (0902) avant « théophylline » (2939), bien que 2939
+    vienne après 0902 et 0302 avant ; dans chaque groupe, l'ordre du code."""
+    codes = [r["code"] for r in _recherche(client, "MAR", "thé", limit=100)["results"]]
+    the = [c for c in codes if c.startswith("0902")]
+    assert codes[: len(the)] == the == sorted(the)
+    assert codes.index(next(c for c in codes if c.startswith("2939"))) > len(the)
+    reste = codes[len(the):]
+    assert any(c < the[0] for c in reste)  # un début de mot classé plus bas que son code
+
+
+def test_recherche_dans_la_langue_de_l_interface(client):
+    """Français : le tarif en français ; anglais : le tarif en anglais."""
+    assert _recherche(client, "DZA", "lait")["total"] > 0
+    assert _recherche(client, "DZA", "lait", langue="en")["total"] == 0
+    assert _recherche(client, "DZA", "milk", langue="en")["total"] > 0  # libellés SH6 anglais
+    assert _recherche(client, "KEN", "coffee", langue="en")["total"] > 0
+    assert _recherche(client, "KEN", "coffee")["total"] == 0
+    assert _recherche(client, "KEN", "café")["total"] > 0  # libellés SH6 français
+    corps = _recherche(client, "MAR", "tea", langue="en")
+    assert corps["langue"] == "en" and corps["results"][0]["code"].startswith("0902")
+    assert client.get("/consultation/KEN/recherche", params={"q": "tea", "langue": "de"}).status_code == 422
