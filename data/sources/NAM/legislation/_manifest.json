@@ -55,6 +55,48 @@
       "sha256": "018daa33f05e7832f213a732d84f5470dc146ca5a51cc82f3180ea1c1ff87102",
       "archived_at": "2026-10-24T21:19:19+00:00",
       "verified_at": "2026-10-24T21:19:19+00:00"
+    },
+    {
+      "file": "legislation/NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+      "title": "Government Notices No. 225 (Amendment of Part 5A of Schedule No. 1 : Fuel Levy) et No. 226 (Amendment of Schedule No. 1 : Part 3, Environmental Levy) of 2019 (Namibie) — Government Gazette No. 6967 du 2 août 2019",
+      "source_url": "https://archive.gazettes.africa/archive/na/2019/na-government-gazette-dated-2019-08-02-no-6967.pdf",
+      "referencing_page": "https://gazettes.africa/akn/na/officialGazette/government-gazette/2019-08-02/6967/eng@2019-08-02",
+      "document_date": "2019-07-12",
+      "effective_from": "2019-08-02",
+      "is_draft": false,
+      "useful_pages": "p. 1-2 (GN 225, fuel levy : 2710.12.02 essence et 2710.12.30 distillats 90c/li ; 2710.12.26 pétrole lampant et 2710.12.39 solvants 120c/li ; 3826.00.10 biodiesel 90c/li, 3826.00.90 120c/li) ; p. 2-13 (GN 226, Part 3 Sections A à D : lampes, huiles lubrifiantes N$1.80/li, sacs plastiques N$0.50/sac, piles 5 %, émissions de CO2 des véhicules N$40 par g/km au-delà du seuil, pneus et roues N$10.00 par pneu)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa). GN 225 en vigueur à sa publication ; GN 226 à son dépôt devant l'Assemblée nationale (taxation proposal 2019/2020). Aucune modification postérieure des Parts 3 et 5 dans les Gazettes archivées de 2019 à 2026, hors GN 131/2020 et GN 215/2022.",
+      "sha256": "24067c3d312b0323ecd016d37e64d2a1ba70065bd672c164afa417f1f05ccb25",
+      "archived_at": "2026-10-24T21:53:30+00:00",
+      "verified_at": "2026-10-24T21:53:30+00:00"
+    },
+    {
+      "file": "legislation/NAM_FuelLevy_GN131-2020_2020-06-12.pdf",
+      "title": "Government Notice No. 131 of 2020 : Amendment of Part 5A of Schedule No. 1 (fuel levy sur le pétrole lampant) (Namibie) — Government Gazette No. 7239 du 12 juin 2020",
+      "source_url": "https://archive.gazettes.africa/archive/na/2020/na-government-gazette-dated-2020-06-12-no-7239.pdf",
+      "referencing_page": "https://gazettes.africa/akn/na/officialGazette/government-gazette/2020-06-12/7239/eng@2020-06-12",
+      "document_date": "2020-05-29",
+      "effective_from": "2020-04-27",
+      "is_draft": false,
+      "useful_pages": "p. 1 (GN 131 : « withdrawing the fuel levy of 120 cents per litre imposed on illuminating kerosene under tariff heading “2710.12.26”, reducing the fuel levy to 0 cents per litre with effect from 27 April 2020 »)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa). Le même numéro contient les GN 132 (Part 2 Section A, accises), 133 et 134 (Schedules 6 et 2), sans rapport avec les prélèvements.",
+      "sha256": "616bbaed25fc74c820647acf4766c113ee2301d3782cfc0344f6513cecf4ea94",
+      "archived_at": "2026-10-24T21:53:30+00:00",
+      "verified_at": "2026-10-24T21:53:30+00:00"
+    },
+    {
+      "file": "legislation/NAM_FuelLevy_GN215-2022_2022-08-01.pdf",
+      "title": "Government Notice No. 215 of 2022 : Amendment of Part 5 (Fuel Levy) of Schedule 1 (Namibie) — Government Gazette No. 7868 du 1er août 2022",
+      "source_url": "https://archive.gazettes.africa/archive/na/2022/na-government-gazette-dated-2022-08-01-no-7868.pdf",
+      "referencing_page": "https://gazettes.africa/akn/na/officialGazette/government-gazette/2022-08-01/7868/eng@2022-08-01",
+      "document_date": "2022-07-22",
+      "effective_from": "2022-05-04",
+      "is_draft": false,
+      "useful_pages": "p. 1-2 (fuel levy de 45c/li sur l'essence, les distillats et le biodiesel, « with retrospective effect from 4 May 2022 to 3 August 2022 »)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa). Mesure temporaire : passé le 3 août 2022, les taux de la GN 225/2019 s'appliquent de nouveau. Le texte dit « Part 5 » là où la GN 225/2019 dit « Part 5A » (mêmes articles 195.xx).",
+      "sha256": "576753e9a26b8569654134030ab63abd15574e4882928f9f5800b5a8d98ffcf0",
+      "archived_at": "2026-10-24T21:53:30+00:00",
+      "verified_at": "2026-10-24T21:53:30+00:00"
     }
   ]
 }
