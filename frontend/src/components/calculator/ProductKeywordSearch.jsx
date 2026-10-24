@@ -52,7 +52,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
     try {
       // Les positions du socle : celles que POST /calcul sait liquider.
       const res = await axios.get(`${API}/consultation/${iso3}/recherche`, {
-        params: { q, limit: 25 }
+        params: { q, limit: 25, langue: language === 'en' ? 'en' : 'fr' }
       });
       setResults(res.data.results || []);
       setTotal(res.data.total || 0);

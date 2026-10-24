@@ -141,16 +141,17 @@ def test_recherche_un_code_mele_aux_mots_borne_le_code(client):
 def test_recherche_textes_prepares_une_fois_par_chargement(client):
     module = sys.modules["routes_consultation_test"]
     positions = socle.charger("KEN")["positions"]
-    _recherche(client, "KEN", "coffee")
+    _recherche(client, "KEN", "coffee", langue="en")
     assert module._textes["KEN"][0] is positions
-    premier = module._textes["KEN"][1]
-    _recherche(client, "KEN", "tea")
-    assert module._textes["KEN"][1] is premier
+    premier = module._textes["KEN"][2]
+    _recherche(client, "KEN", "tea", langue="en")
+    assert module._textes["KEN"][2] is premier
+    assert module._textes["KEN"][1] == "en"  # KEN publie en anglais
 
 
 def test_recherche_l_intitule_sh4_situe_une_ligne_sans_designation_propre(client):
     """« Other » sous 2402 : trouvée par « cigarettes », située par l'intitulé SH4."""
-    corps = _recherche(client, "ZAF", "cigarettes", limit=2)
+    corps = _recherche(client, "ZAF", "cigarettes", limit=2, langue="en")
     assert corps["total"] > len(corps["results"]) == 2
     ligne = corps["results"][0]
     assert ligne["hs6"] == ligne["code"][:6] and ligne["digits"] == len(ligne["code"])
@@ -159,7 +160,7 @@ def test_recherche_l_intitule_sh4_situe_une_ligne_sans_designation_propre(client
 
 def test_recherche_ne_sert_que_le_droit_de_douane(client):
     """Ni total ni TVA : le montant des droits et taxes est celui de POST /calcul."""
-    ligne = _recherche(client, "KEN", "coffee")["results"][0]
+    ligne = _recherche(client, "KEN", "coffee", langue="en")["results"][0]
     assert set(ligne) == {
         "code", "hs6", "digits", "description_fr", "description_en", "intitule_sh4", "dd_rate", "dd_expression"
     }
@@ -205,3 +206,16 @@ def test_recherche_les_mots_entiers_d_abord_puis_par_code(client):
     assert codes.index(next(c for c in codes if c.startswith("2939"))) > len(the)
     reste = codes[len(the):]
     assert any(c < the[0] for c in reste)  # un début de mot classé plus bas que son code
+
+
+def test_recherche_dans_la_langue_de_l_interface(client):
+    """Français : le tarif en français ; anglais : le tarif en anglais."""
+    assert _recherche(client, "DZA", "lait")["total"] > 0
+    assert _recherche(client, "DZA", "lait", langue="en")["total"] == 0
+    assert _recherche(client, "DZA", "milk", langue="en")["total"] > 0  # libellés SH6 anglais
+    assert _recherche(client, "KEN", "coffee", langue="en")["total"] > 0
+    assert _recherche(client, "KEN", "coffee")["total"] == 0
+    assert _recherche(client, "KEN", "café")["total"] > 0  # libellés SH6 français
+    corps = _recherche(client, "MAR", "tea", langue="en")
+    assert corps["langue"] == "en" and corps["results"][0]["code"].startswith("0902")
+    assert client.get("/consultation/KEN/recherche", params={"q": "tea", "langue": "de"}).status_code == 422

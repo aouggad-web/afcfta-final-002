@@ -38,7 +38,7 @@ describe('ProductKeywordSearch', () => {
     expect(await screen.findByText('1 / 13', { exact: false })).toBeInTheDocument();
     expect(axios.get).toHaveBeenCalledWith(
       expect.stringMatching(/\/api\/consultation\/ZAF\/recherche$/),
-      { params: { q: 'cigarettes', limit: 25 } },
+      { params: { q: 'cigarettes', limit: 25, langue: 'fr' } },
     );
     expect(screen.getByText('2402 — Cigars, cheroots, cigarillos and cigarettes')).toBeInTheDocument();
     expect(screen.getByText('DD 45 %, min. 1 500 R/kg')).toBeInTheDocument();
@@ -46,6 +46,18 @@ describe('ProductKeywordSearch', () => {
 
     await userEvent.click(screen.getByText('24021090'));
     expect(onSelect).toHaveBeenCalledWith('24021090', 'Other', LIGNE);
+  });
+
+  it("en anglais, cherche dans le tarif en anglais", async () => {
+    axios.get.mockResolvedValue({ data: { results: [LIGNE], total: 1 } });
+    render(<ProductKeywordSearch destinationCountry="KE" language="en" onSelect={vi.fn()} />);
+
+    await userEvent.type(screen.getByRole('textbox'), 'coffee');
+
+    await waitFor(() => expect(axios.get).toHaveBeenCalledWith(
+      expect.stringMatching(/\/api\/consultation\/KEN\/recherche$/),
+      { params: { q: 'coffee', limit: 25, langue: 'en' } },
+    ));
   });
 
   it("sans pays de destination, ne cherche pas et le dit", async () => {

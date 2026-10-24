@@ -52,7 +52,7 @@ describe('SmartHSSearch', () => {
     expect(await screen.findByText('0902100010')).toBeInTheDocument();
     expect(axios.get).toHaveBeenCalledWith(
       expect.stringMatching(/\/api\/consultation\/MAR\/recherche$/),
-      { params: { q: 'thé vert', limit: 25 } },
+      { params: { q: 'thé vert', limit: 25, langue: 'fr' } },
     );
     expect(screen.getByText('DD: 32.5%')).toBeInTheDocument();
     expect(screen.getByText('0902 — Tea, whether or not flavoured')).toBeInTheDocument();

@@ -89,7 +89,7 @@ export default function SmartHSSearch({
           }
           // Les positions du socle : celles que POST /calcul sait liquider.
           const response = await axios.get(`${API}/consultation/${iso3}/recherche`, {
-            params: { q: query, limit: 25 },
+            params: { q: query, limit: 25, langue: language === 'en' ? 'en' : 'fr' },
           });
           if (requestId === latestRequestRef.current) {
             setSearchResults(response.data.results || []);
@@ -110,7 +110,7 @@ export default function SmartHSSearch({
       }, 300);
       searchTimeoutRef.current = timer;
     },
-    [destinationCountry]
+    [destinationCountry, language]
   );
 
   const loadSuggestions = async (hsCode) => {

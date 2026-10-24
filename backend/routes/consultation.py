@@ -99,45 +99,74 @@ def _pli(texte: str) -> str:
     return "".join(c for c in decompose if not unicodedata.combining(c)).lower()
 
 
-#: {ISO3: (positions du socle, [(code, français plié, anglais en minuscules)])},
+#: Mots-outils qui disent la langue d'un tarif publié en texte simple.
+_MOTS_OUTILS = {
+    "fr": {"de", "des", "du", "la", "le", "les", "et", "pour", "autres"},
+    "en": {"the", "of", "and", "or", "for", "with", "other"},
+}
+
+#: {ISO3: (positions du socle, langue du texte publié, {langue: [(code, texte plié)]})},
 #: borné comme le cache du socle.
 _textes = OrderedDict()
 
 
-def _textes_cherchables(iso3: str, positions: dict) -> list:
-    """Les textes de chaque position, préparés une fois par chargement du socle.
+def _langue_publiee(positions: dict) -> str:
+    """La langue des désignations publiées en texte simple, sans indication de
+    langue : celle dont les mots-outils dominent dans le tarif."""
+    compte = {"fr": 0, "en": 0}
+    for position in positions.values():
+        designation = position.get("designation")
+        if isinstance(designation, str):
+            for mot in re.findall(r"\w+", designation.lower()):
+                for langue, outils in _MOTS_OUTILS.items():
+                    compte[langue] += mot in outils
+    return "en" if compte["en"] > compte["fr"] else "fr"
 
-    Le français est plié (sans accents) ; l'anglais garde ses accents, pour que
-    « thé » ne trouve pas l'article « the »."""
+
+def _textes_cherchables(iso3: str, positions: dict):
+    """La langue du texte publié et, par langue, le texte plié de chaque
+    position, préparés une fois par chargement du socle.
+
+    Un texte n'est cherché que dans sa langue : la désignation dans cette
+    langue (ou le texte publié s'il l'est), le libellé SH6 emprunté dans cette
+    langue et, en anglais, l'intitulé SH4."""
     cle = iso3.upper()
     deja = _textes.get(cle)
     if deja is not None and deja[0] is positions:
         _textes.move_to_end(cle)
-        return deja[1]
+        return deja[1], deja[2]
     sh4, sh6 = _libelles_internationaux()
-    textes = []
+    publiee = _langue_publiee(positions)
+    textes = {"fr": [], "en": []}
     for code in sorted(positions):
         designation = positions[code].get("designation")
         libelle = sh6.get(code[:6]) or {}
-        francais = _pli(f'{texte_designation(designation, "fr")} {libelle.get("fr") or ""}')
-        anglais = (
-            f'{texte_designation(designation, "en")} {libelle.get("en") or ""} {sh4.get(code[:4]) or ""}'
-        ).lower()
-        textes.append((code, francais, anglais))
-    _textes[cle] = (positions, textes)
+        for langue in textes:
+            if isinstance(designation, dict):
+                propre = designation.get(langue) or ""
+            else:
+                propre = designation if langue == publiee and isinstance(designation, str) else ""
+            intitule = (sh4.get(code[:4]) or "") if langue == "en" else ""
+            textes[langue].append((code, _pli(f"{propre} {libelle.get(langue) or ''} {intitule}")))
+    _textes[cle] = (positions, publiee, textes)
     while len(_textes) > socle._MAX_PAYS_EN_CACHE:
         _textes.popitem(last=False)
-    return textes
+    return publiee, textes
 
 
 @router.get(
     "/{iso3}/recherche",
     summary="Positions du tarif par code ou par mots de la désignation, lues au socle",
 )
-def recherche(iso3: str, q: str = Query(..., min_length=2), limit: int = Query(25, ge=1, le=100)):
+def recherche(
+    iso3: str,
+    q: str = Query(..., min_length=2),
+    limit: int = Query(25, ge=1, le=100),
+    langue: str = Query("fr", pattern="^(fr|en)$"),
+):
     """Un code (« 0902 », « 0902.10 ») cherche les positions qui commencent par
     lui ; des mots cherchent les positions dont la désignation les contient
-    tous. Seul le droit de douane du socle accompagne chaque position : le
+    tous, dans la langue de l'interface (``langue``). Seul le droit de douane du socle accompagne chaque position : le
     total des droits et taxes est celui de POST /calcul, et de lui seul."""
     try:
         positions = socle.charger(iso3)["positions"]
@@ -151,30 +180,20 @@ def recherche(iso3: str, q: str = Query(..., min_length=2), limit: int = Query(2
         prefixe = re.sub(r"\D", "", q)
         trouves = sorted(code for code in positions if code.startswith(prefixe))
     else:
-        # Chaque mot doit commencer un mot de la désignation, et tous dans la
-        # même langue : « thé vert » ne trouve ni « the » ni « invertebrates ».
-        # Les nombres mêlés aux mots (« 87.03 voiture ») bornent le code.
-        mots = re.findall(r"\w+", q.lower())
+        # Chaque mot doit commencer un mot du texte dans la langue demandée,
+        # sans accents ni casse. Les nombres mêlés aux mots (« 87.03 voiture »)
+        # bornent le code.
+        mots = re.findall(r"\w+", _pli(q))
         prefixe = "".join(mot for mot in mots if mot.isdigit())
         mots = [mot for mot in mots if not mot.isdigit() and len(mot) >= 2]
-        # Par langue : (débuts de mot, mots entiers, pluriel en -s/-x admis).
-        langues = [
-            [(re.compile(rf"\b{re.escape(m)}"), re.compile(rf"\b{re.escape(m)}[sx]?\b")) for m in termes]
-            for termes in ([_pli(mot) for mot in mots], mots)
-        ]
+        # (début de mot, mot entier — pluriel en -s/-x admis) pour chaque mot.
+        motifs = [(re.compile(rf"\b{re.escape(m)}"), re.compile(rf"\b{re.escape(m)}[sx]?\b")) for m in mots]
         classes = []
-        for code, *textes in _textes_cherchables(iso3, positions) if mots else ():
-            if not code.startswith(prefixe):
-                continue
-            accords = [
-                all(entier.search(texte) for _, entier in motifs)
-                for motifs, texte in zip(langues, textes)
-                if all(debut.search(texte) for debut, _ in motifs)
-            ]
-            if accords:
+        for code, texte in _textes_cherchables(iso3, positions)[1][langue] if mots else ():
+            if code.startswith(prefixe) and all(debut.search(texte) for debut, _ in motifs):
                 # En tête, les positions où les mots figurent en entier
                 # (« thé » avant « théophylline ») ; par code dans chaque groupe.
-                classes.append((not any(accords), code))
+                classes.append((not all(entier.search(texte) for _, entier in motifs), code))
         trouves = [code for _, code in sorted(classes)]
 
     lignes = []
@@ -198,6 +217,7 @@ def recherche(iso3: str, q: str = Query(..., min_length=2), limit: int = Query(2
         "success": True,
         "country_iso3": iso3.upper(),
         "q": q,
+        "langue": langue,
         "total": len(trouves),
         "results": lignes,
         "source": "socle",
