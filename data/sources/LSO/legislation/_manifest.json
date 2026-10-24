@@ -83,6 +83,76 @@
       "sha256": "b29c3b1d93742580c572d467d95880e6c86684de0b34ca1d5fc2bafe121098aa",
       "archived_at": "2026-10-20T23:30:00+00:00",
       "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/LSO_TobaccoAlcoholicProductsLevyAct1-2023_2023-01-27.pdf",
+      "title": "Tobacco and Alcoholic Products Levy Act, 2023 (Act No. 1 of 2023, Lesotho) — Lesotho Government Gazette Vol. 68 No. 4 du 27 janvier 2023",
+      "source_url": "https://archive.gazettes.africa/archive/ls/2023/ls-government-gazette-dated-2023-01-27-no-4.pdf",
+      "referencing_page": "https://gazettes.africa/akn/ls/officialGazette/government-gazette/2023-01-27/4/eng@2023-01-27",
+      "document_date": "2023-01-27",
+      "effective_from": "2023-03-01",
+      "is_draft": false,
+      "useful_pages": "p. 31-34 du Gazette (s.2 définitions, s.3 imposition, s.6 importation, s.7 valeur imposable à l'importation, annexe : alcoholic products 15 %, tobacco products 30 %)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa) ; mise en vigueur au 1er mars 2023 par la LN 22/2023 ; barème modifié par les LN 89/2023 et 58/2025.",
+      "sha256": "6548415f20b3d0fdfcde47d787033bb7c1edb3cfb3a7454643e5abfed886c2d2",
+      "archived_at": "2026-10-24T21:19:07+00:00",
+      "verified_at": "2026-10-24T21:19:07+00:00"
+    },
+    {
+      "file": "legislation/LSO_TAPL_CommencementNotice_LN22-2023_2023-02-17.pdf",
+      "title": "Tobacco and Alcoholic Products Levy Commencement Notice, 2023 (Legal Notice No. 22 of 2023) — Lesotho Government Gazette No. 10 du 17 février 2023",
+      "source_url": "https://archive.gazettes.africa/archive/ls/2023/ls-government-gazette-dated-2023-02-17-no-10.pdf",
+      "referencing_page": "https://gazettes.africa/akn/ls/officialGazette/government-gazette/2023-02-17/10/eng@2023-02-17",
+      "document_date": "2023-02-08",
+      "effective_from": "2023-03-01",
+      "is_draft": false,
+      "useful_pages": "p. 102-103 du Gazette (LN 22/2023 : « appoint the 1st of March, 2023 as the date on which the Tobacco and Alcoholic Products Levy Act No. 1 of 2023 shall come into operation »)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa) ; le numéro contient d'autres avis sans rapport.",
+      "sha256": "f988e17823496595338dd17a9d82a47c13a5117a2d1a8d2a2074eab7f2ae07c2",
+      "archived_at": "2026-10-24T21:19:07+00:00",
+      "verified_at": "2026-10-24T21:19:07+00:00"
+    },
+    {
+      "file": "legislation/LSO_TAPL_AmendmentSchedule_LN89-2023_2023-09-08.pdf",
+      "title": "Tobacco and Alcoholic Products Levy (Amendment of Schedule) Regulations, 2023 (Legal Notice No. 89 of 2023) — Lesotho Government Gazette Vol. 68 No. 68 du 8 septembre 2023",
+      "source_url": "https://archive.gazettes.africa/archive/ls/2023/ls-government-gazette-dated-2023-09-08-no-68.pdf",
+      "referencing_page": "https://gazettes.africa/akn/ls/officialGazette/government-gazette/2023-09-08/68/eng@2023-09-08",
+      "document_date": "2023-09-08",
+      "effective_from": "2023-10-01",
+      "is_draft": false,
+      "useful_pages": "p. 1019 du Gazette (reg. 2 : « deleting “30%” and “15%” and substituting “15%” and 7.5%” respectively »)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa) ; abrogé par la LN 58/2025.",
+      "sha256": "ba065ba212bcf73fe7d7851af519cc031bf13644f029a44cc16b9f0512fcd075",
+      "archived_at": "2026-10-24T21:19:07+00:00",
+      "verified_at": "2026-10-24T21:19:07+00:00"
+    },
+    {
+      "file": "legislation/LSO_TAPL_AmendmentSchedule_LN58-2025_2025-03-28.pdf",
+      "title": "Tobacco and Alcoholic Products Levy (Amendment of Schedule) Regulations, 2025 (Legal Notice No. 58 of 2025) — Lesotho Government Gazette Vol. 70 No. 25 du 28 mars 2025",
+      "source_url": "https://archive.gazettes.africa/archive/ls/2025/ls-government-gazette-dated-2025-03-28-no-25.pdf",
+      "referencing_page": "https://gazettes.africa/akn/ls/officialGazette/government-gazette/2025-03-28/25/eng@2025-03-28",
+      "document_date": "2025-03-28",
+      "effective_from": "2025-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 463 du Gazette (reg. 2 : « deleting ‘‘15%’’ and ‘‘7.5%’’ and substituting ‘‘20%’’ and ‘‘10%’’ respectively » ; reg. 3 : abrogation de la LN 89/2023)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa). Barème en vigueur : tobacco products 20 %, alcoholic products 10 % (concordant avec la page TAPL du RSL relevée par moteur de recherche, page retirée du site au 2026-10-24). Aucune modification postérieure dans les 84 numéros de 2025 archivés par Gazettes.Africa (20 numéros manquants) ; les numéros de 2026 n'y sont pas archivés.",
+      "sha256": "417c6418b250dd7163d2c289fd359b0625dd9e4dd65872a8bd478e3e52c938aa",
+      "archived_at": "2026-10-24T21:19:07+00:00",
+      "verified_at": "2026-10-24T21:19:07+00:00"
+    },
+    {
+      "file": "legislation/LSO_VATAmendmentRegulations_LN30-2021_2021-03-12.pdf",
+      "title": "Value Added Tax (Amendment) Regulations, 2021 (Legal Notice No. 30 of 2021) — Lesotho Government Gazette Vol. 66 No. 25 du 12 mars 2021",
+      "source_url": "https://archive.gazettes.africa/archive/ls/2021/ls-government-gazette-dated-2021-03-12-no-25.pdf",
+      "referencing_page": "https://gazettes.africa/akn/ls/officialGazette/government-gazette/2021-03-12/25/eng@2021-03-12",
+      "document_date": "2021-03-05",
+      "effective_from": "2021-04-01",
+      "is_draft": false,
+      "useful_pages": "p. 495 du Gazette (reg. 2 : regulation 6(1)(b) des VAT Regulations 2003, « 9% » remplacé par « 10% »)",
+      "notes": "Copie du Government Gazette (texte lisible) archivée par Gazettes.Africa (Laws.Africa) ; le RSL publie le même texte en scan. Taux non standard ; le taux standard (15 %, LN 18/2020) n'est pas modifié.",
+      "sha256": "125df5c8e564d51eea3babe8b231d69ef3167e273cc1149a290c364008ba3e8e",
+      "archived_at": "2026-10-24T21:19:07+00:00",
+      "verified_at": "2026-10-24T21:19:07+00:00"
     }
   ]
 }

@@ -41,6 +41,20 @@
       "sha256": "72db2445efdcd8ab90236719aaa2ed1298a575088d4ff2b94bb0bfe682354497",
       "archived_at": "2026-10-20T23:30:00+00:00",
       "verified_at": "2026-10-20T23:30:00+00:00"
+    },
+    {
+      "file": "legislation/NAM_ExciseSch1Part2A_GN111-2026_2026-03-23.pdf",
+      "title": "Government Notice No. 111 of 2026 : Amendment of Part 2A of Schedule No. 1 of the Customs and Excise Act, 1998 (Namibie) — Government Gazette No. 8871 du 23 mars 2026",
+      "source_url": "https://archive.gazettes.africa/archive/na/2026/na-government-gazette-dated-2026-03-23-no-8871.pdf",
+      "referencing_page": "https://gazettes.africa/akn/na/officialGazette/government-gazette/2026-03-23/8871/eng@2026-03-23",
+      "document_date": "2026-03-11",
+      "effective_from": "2026-02-25",
+      "is_draft": false,
+      "useful_pages": "p. 1-7 (barème d'accise, articles 104.01 à 104.37 : boissons, tabac, produits à inhaler)",
+      "notes": "Copie du Government Gazette archivée par Gazettes.Africa (Laws.Africa). Le sommaire porte « Customs and Excise Act, 1981 » et le dispositif « amend Part 1 of Schedule No. 1 » ; le titre de l'avis et le barème sont ceux de la Part 2A (droits d'accise). Les 88 articles sont identiques au barème sud-africain (SARS, Part 2A) servi au socle. Avis antérieurs de même objet : GN 27/2024 (Gazette 8327) et GN 97/2025 (Gazette 8634).",
+      "sha256": "018daa33f05e7832f213a732d84f5470dc146ca5a51cc82f3180ea1c1ff87102",
+      "archived_at": "2026-10-24T21:19:19+00:00",
+      "verified_at": "2026-10-24T21:19:19+00:00"
     }
   ]
 }
