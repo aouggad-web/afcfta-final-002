@@ -49,6 +49,7 @@ def client():
 
     app = FastAPI()
     app.include_router(module.router)
+    app.include_router(module.router_couverture)
     return TestClient(app)
 
 
