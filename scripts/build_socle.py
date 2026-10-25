@@ -3096,65 +3096,6 @@ def _lignes_liquidables(position):
     return [(statuts[d.get("code")] or [None]).pop(0) == "CALCULE" for d in droits]
 
 
-#: Namibie : colonne AfCFTA de son propre tarif (GN 391/2024, amendé par le
-#: GN 174/2026 ; scripts/extraire_zlecaf_nam.py), à la place de la colonne
-#: sud-africaine reprise par la collecte. Fiche NAM_zlecaf_2026-10-25.json.
-ZLECAF_NAM = os.path.join(REPO, "data", "nam", "zlecaf_gn391_2024.json")
-
-
-def colonne_afcfta_nam(expression):
-    """« free », « 13,2% », « 3,3c/kg », « 270c/kg with a maximum of 57,6% »,
-    « 40% or 240c/kg » sous la forme d'une colonne préférentielle du socle.
-
-    Les General Notes namibiennes archivées ne donnent pas la règle qui
-    départage « X% or Yc/kg » : le composé reste sans règle, le moteur ne le
-    liquide pas. Une formule « less N% » n'est pas lue."""
-    e = expression.strip()
-    if e.lower() == "free":
-        return {"taux": 0.0}
-    if " less " in e:
-        return {"taux": None, "motif": "formule « less » non liquidée", "expression_brute": e}
-    nombre = r"(\d+(?:,\d+)?)"
-    if m := re.fullmatch(nombre + "%", e):
-        return {"taux": float(m.group(1).replace(",", "."))}
-    if m := re.fullmatch(nombre + "% or (.+)", e):
-        return {"taux": float(m.group(1).replace(",", ".")), "specifique": lire_specifique(m.group(2)),
-                "compose": True, "expression_brute": e}
-    if m := re.fullmatch(r"(.+) with a maximum of " + nombre + "%", e):
-        return {"taux": None, "specifique": lire_specifique(m.group(1)),
-                "plafond_ad_valorem_pct": float(m.group(2).replace(",", ".")), "expression_brute": e}
-    specifique = lire_specifique(e)
-    if specifique is None:
-        raise ValueError(f"colonne AfCFTA namibienne illisible : {e!r}")
-    return {"taux": None, "specifique": specifique}
-
-
-def _colonne_afcfta_nam(positions, compteurs):
-    """Remplace la colonne AfCFTA de chaque position par celle du tarif
-    namibien. Une ligne namibienne non subdivisée (2710.19) vaut pour les
-    lignes sud-africaines qu'elle couvre ; une position qu'aucune ligne du
-    GN 391/2024 ne couvre n'a plus de colonne AfCFTA."""
-    with open(ZLECAF_NAM, encoding="utf-8") as f:
-        lignes = json.load(f)
-    for code, position in positions.items():
-        prefs = position.get("preferentiels") or {}
-        ancienne = prefs.pop("AFCFTA", None)
-        if ancienne is not None:
-            compteurs["preferentiels"] -= 1
-            compteurs["preferentiels_specifiques"] -= bool(ancienne.get("specifique"))
-        ligne = next((code[:n] for n in range(len(code), 5, -1) if code[:n] in lignes), None)
-        if ligne:
-            colonne = colonne_afcfta_nam(lignes[ligne]["afcfta"])
-            colonne["source"] = lignes[ligne]["source"] + ("" if ligne == code else f", ligne {ligne}")
-            prefs["AFCFTA"] = colonne
-            compteurs["preferentiels"] += 1
-            compteurs["preferentiels_specifiques"] += bool(colonne.get("specifique"))
-        if prefs:
-            position["preferentiels"] = prefs
-        else:
-            position.pop("preferentiels", None)
-
-
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -3522,8 +3463,6 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_sacu_non_collectes(iso, positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
-    if iso == "NAM":
-        _colonne_afcfta_nam(positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)

@@ -18,9 +18,10 @@ No. 8731 du 04/09/2025). Fiche : NAM_zlecaf_2026-10-25.json.
   celle de la publication de l'avis qui inscrit l'État, pas la date imprimée
   en regard de son nom.
 
-Les taux sont ceux de la colonne AfCFTA namibienne (GN 391/2024, amendé par le
-GN 174/2026), portés par le socle (scripts/build_socle.py, ZLECAF_NAM).
-Les membres de la SADC échangent sous le Protocole SADC (Note O.6).
+Les taux sont ceux de la colonne AfCFTA du tarif commun SACU le plus à jour,
+portée par le socle (décision du 25/10/2026) : la colonne du GN 391/2024
+namibien, arrêtée en 2024, est moins récente. Les membres de la SADC
+échangent sous le Protocole SADC (Note O.6).
 """
 
 from __future__ import annotations

@@ -125,7 +125,7 @@
       "effective_from": "2024-12-20",
       "is_draft": false,
       "useful_pages": "2-718",
-      "notes": "Part 1 du Schedule No. 1 substituée, six colonnes de droits : General, EU/UK, EFTA, SADC, MERCOSUR, AfCFTA. Pages en mode paysage, lues par coordonnées (scripts/extraire_zlecaf_nam.py).",
+      "notes": "Part 1 du Schedule No. 1 substituée, six colonnes de droits : General, EU/UK, EFTA, SADC, MERCOSUR, AfCFTA. Colonne arrêtée au stade de 2024 ; le calculateur sert la colonne AfCFTA du tarif commun SACU le plus à jour (décision du 25/10/2026, fiche NAM_zlecaf_2026-10-25.json).",
       "sha256": "bb13d6be4d532cac3c9b71cb02e0dfd522b129cd2e91eea44da27f5a2131fcf1",
       "archived_at": "2026-10-25T15:51:33+00:00",
       "verified_at": "2026-10-25T15:51:33+00:00"
