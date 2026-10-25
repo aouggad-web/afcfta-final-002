@@ -140,6 +140,7 @@ FAMILLES = {
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
+    "MID": "accise",  # MID levy, Excise Act s.3A (MU)
     "TVA": "tva",
     "PRCT": "post_tva",
     "WHR": "post_tva",
@@ -1745,6 +1746,46 @@ def _redevance_informatique_cmr(positions):
                 "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
                 "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
             )
+
+
+#: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
+#: MRA du 01.10.2026), en roupies par unité ; fiche MUS_mid_levy_2026-10-25.json.
+MID_MUS = {
+    "27011100": (0.30, "kg"), "27011200": (0.30, "kg"), "27011900": (0.30, "kg"),
+    "27101931": (0.30, "litre"), "27101939": (0.30, "litre"), "27101969": (0.30, "litre"),
+    "27111310": (0.30, "kg"), "27111320": (0.30, "kg"), "27111390": (0.30, "kg"),
+}
+
+
+def _mid_levy_maurice(positions, compteurs):
+    """La MID levy entre dans l'assiette de la TVA (VAT Act 1998, s.13 (c))."""
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        mid = next((d for d in droits if d.get("code") == "MID"), None)
+        if not mid:
+            continue
+        _compter_ligne(mid, compteurs, -1)
+        if code in MID_MUS:
+            montant, unite = MID_MUS[code]
+            brut = f"{montant * 100:g} cents per {unite}"
+            mid.update(taux=None, assiette="xQTE", assiette_origine="droit_specifique", specifique={
+                "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                "unite_quantite": unite, "brut": brut})
+            mid["note"] = f"Excise Act s.3A et First Schedule, Part II : « {brut} »."
+        elif mid.get("taux") == 0:
+            # Montant nul quelle que soit l'assiette : CIF ne bloque pas la TVA.
+            mid.update(assiette="CIF", assiette_origine="regle_de_pays")
+            mid["note"] = "Excise Act s.3A et First Schedule, Part II : MID levy à 0."
+        _compter_ligne(mid, compteurs, 1)
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette") == "CIF+DD+EXC":
+                _compter_ligne(d, compteurs, -1)
+                d.update(assiette="CIF+DD+EXC+MID", assiette_origine="regle_de_pays")
+                d["note"] = (
+                    "VAT Act 1998 s.13 : valeur en douane + droit de douane + accise + MID levy ; "
+                    "les CO2 et energy levies ne sont pas collectés."
+                )
+                _compter_ligne(d, compteurs, 1)
 
 
 #: Mauritanie : droits d'accises à l'importation (CGI, art. 263, rédaction de la loi
@@ -4038,6 +4079,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _sans_redevance_informatique_gnq(positions, compteurs)
     if iso in _regles_cedeao_hors_uemoa()[0]:
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
+    if iso == "MUS":
+        _mid_levy_maurice(positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
     if iso == "LBR":
