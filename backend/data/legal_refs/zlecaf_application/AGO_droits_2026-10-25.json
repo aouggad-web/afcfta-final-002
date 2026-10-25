@@ -1,0 +1,43 @@
+{
+ "schema_version": 1,
+ "objet": "Angola : droit de douane de 2026 (Lei n.º 14/25, OGE 2026) — taux de l'Anexo III et taux minimum de 5 %, appliqués à la Pauta Aduaneira de 2024",
+ "destination_iso3": "AGO",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Lei n.º 14/25 du 30 décembre 2025, Diário da República I Série n.º 244, servi par le Ministère des Finances (couche texte)",
+ "source": {
+  "url": "https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw41/mje2/~edisp/minfin5216784.pdf",
+  "institution": "Ministério das Finanças de Angola ; Assembleia Nacional"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/AGO_Lei14-25_OGE2026.pdf",
+   "sha256": "a99bf947bd3f5c7767ad2a4280c2483f51754520414930e90f4d2ba76c78004c"
+  },
+  {
+   "fichier_archive": "sources/AGO_Lei14-25_anexo_III.csv",
+   "sha256": "174ae07d0cbb97d24fd7e921d85c0c719cbe794adb77df24a3565aea810f325a"
+  }
+ ],
+ "regle": {
+  "valeur": "Droit de douane (DD) du Regime Geral pour 2026 : le taux de l'Anexo III de la Lei n.º 14/25 pour les 1 100 codes qu'il énumère (dont 1 048 présents dans la Pauta 2024 servie) ; ailleurs le taux de la Pauta 2024, relevé à 5 % lorsqu'il est inférieur à 5 % et non « Livre ». Une position de la Pauta 2024 que l'Anexo III subdivise en codes nouveaux (8 positions : 0206.49, 0207.27, 0207.44, 0207.45, 0207.54, 0504.00, 1006.30, 8903.99) n'a plus de taux propre : droit déclaré indisponible, les taux des sous-positions en note.",
+  "reference": "Lei n.º 14/25 (OGE 2026), art. 31.º n.º 3, n.º 6 et Anexo III, art. 43.º ; Instruções Preliminares de la Pauta (Decreto Legislativo Presidencial n.º 1/24), art. 43.º n.º 1",
+  "verbatim_art31_3": "Sem prejuízo das mercadorias livres de direitos aduaneiros, das mercadorias que gozam de benefícios fiscais e aduaneiros, bem como das mercadorias importadas pelo Estado, nos termos da Pauta Aduaneira dos Direitos de Importação do Sistema Harmonizado, a taxa mínima de direitos aduaneiros para o Exercício Económico 2026 é fixada em 5%.",
+  "verbatim_art31_6": "São alterados os Quadros I e II, sobre as mercadorias proibidas e restritas constantes das Instruções Preliminares da Pauta, conforme o Anexo II, bem como as taxas que incidem sobre os códigos pautais conforme o Anexo III, ambos da presente Lei.",
+  "verbatim_anexo_III_titre": "ANEXO III — A que se refere o n.º 6 do artigo 31.º - Sobre a Alteração das Taxas dos Direitos de Importação da Pauta Aduaneira. Código | Designação das mercadorias | UQ | D.I OGE2025 (%)",
+  "verbatim_lei14_25_art43": "A presente Lei entra em vigor a 1 de Janeiro de 2026.",
+  "verbatim_ipp_art43_1": "Os benefícios fiscais aduaneiros automáticos e reais [...] são os indicados à taxa LIVRE (0%), na coluna 4 da mesma.",
+  "portee": "scripts/build_socle.py, DROITS_AGO_2026 et _droits_angola_2026 ; l'Anexo III est relevé dans sources/AGO_Lei14-25_anexo_III.csv (code, unité, taux, page du Diário, désignation)."
+ },
+ "decisions": [
+  "L'Anexo III a été relevé sur la couche texte du Diário (pages 23182 à 23224) : 1 100 codes à huit chiffres, chacun avec son taux. Contrôle à l'écran de la page 23206 ; taux relevés dans {Livre, 0, 5, 10, 20, 25, 30, 40, 50}. La colonne s'intitule « D.I OGE2025 (%) » : ce sont les taux que l'art. 31.º n.º 6 de la loi de 2026 fixe.",
+  "Taux minimum : l'art. 31.º n.º 3 réserve les marchandises libres de droits et celles qui « gozam de benefícios fiscais e aduaneiros » ; l'art. 43.º n.º 1 des Instruções Preliminares nomme comme bénéfices les seuls taux « Livre (0%) ». Les taux de 1 % et 2 % passent donc à 5 % ; les exceptions par régime (importations de l'État, déclaration d'exclusivité à 5 %) ne sont pas distinguées.",
+  "Codes de l'Anexo III absents de la Pauta 2024 servie (52) : nouvelles sous-positions (abats de volaille 0207.xx.49, .81 à .83, 0206.29.20 à .40, 0206.49.10 à .90, 0504.00.10 et .90, 1006.30.10 à .90, 1701.99.11, 4901.99.90, 8903.99.10 et .90) et trois codes que la lecture optique de 2024 n'a pas restitués (2933.91.00, 7211.90.00, 8485.90.00). Ils ne sont pas servis ; seule la position à six chiffres qu'ils subdivisent, lorsqu'elle existe au socle (code en 00), perd son taux.",
+  "Correspondance par code exact uniquement : un code du socle probablement mal lu en 2024 (7211.50.00, sans existence au SH 2022, voisin de 7211.90.00) n'est pas renuméroté ; son taux de 2 % passe au minimum de 5 %, qui est aussi celui de 7211.90.00 à l'Anexo III."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Le caractère annuel du taux minimum (« para o Exercício Económico 2026 ») : il cesse au 31 décembre 2026 sauf nouvelle loi ; les taux de l'Anexo III modifient la Pauta sans limite de temps.",
+  "Les Quadros I et II (marchandises prohibées et restreintes) modifiés par l'Anexo II : non repris ici.",
+  "Les exonérations de l'art. 31.º n.º 5 (livres littéraires, biens diplomatiques), hors emolumentos gerais aduaneiros : non distinguées."
+ ]
+}
