@@ -1,0 +1,53 @@
+{
+ "schema_version": 1,
+ "objet": "Sierra Leone : accise à l'importation (Excise Act 1982, First Schedule modifiée par les Finance Acts 2021, 2024, 2025 et 2026)",
+ "destination_iso3": "SLE",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Finance Acts publiés au Sierra Leone Gazette (copies du Ministry of Finance et de la National Revenue Authority)",
+ "source": {
+  "url": "http://webtestcms.nra.gov.sl/uploads/The_Finance_Act_2026_121df05d9b.pdf",
+  "institution": "National Revenue Authority / Ministry of Finance, Sierra Leone"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/SLE_FinanceAct_2021.pdf",
+   "sha256": "f659b25e9d9816713ec024db85c1ca8ad4597d968a00b24d0446dfaf5f04a7d8"
+  },
+  {
+   "fichier_archive": "sources/SLE_FinanceAct_2024.pdf",
+   "sha256": "5314b7e510cfa9d39ae25391e8f8f13ae8d0689fc1503d0ec9602a1960712a20"
+  },
+  {
+   "fichier_archive": "sources/SLE_FinanceAct_2025.pdf",
+   "sha256": "3e05fc9d932106fc5b1dad946854583b140afd782dda6f639afbf1672a610cf5"
+  },
+  {
+   "fichier_archive": "sources/SLE_FinanceAct_2026.pdf",
+   "sha256": "372edaf9bae9bc3f1a45d26ab4175e15cdbbc9be958a4135d8ba6dd8abc810cf"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne EXC (accise) liquidée : bière de malt Le15 par litre (import, < 10 %) ; tabac non fabriqué et autres tabacs fabriqués NLe98 par kg ; cigares NLe38 par paquet ; cigarettes NLe3 par paquet de 20 ; ciments NLe10 par 50 kg ; pétrole lampant NLe2,0, essence et gazole NLe5,0, fuel-oil NLe7,40, huiles lubrifiantes NLe4,00 par litre ; sacs en polyéthylène Le16 par kg. Déclarée sans liquidation : vins, vermouths, autres boissons fermentées, spiritueux et alcool éthylique (taux selon le titre alcoométrique), boissons et jus sucrés (taux par gramme de sucre), cigarettes et cigares en succédanés et shisha, huile de palme, margarine, savons, acides gras et clous (taux ad valorem de 5 à 20 %, valeur imposable non établie).",
+  "reference": "Excise Act 1982 (Act No. 6 of 1982), s.5(b) et First Schedule ; Finance Act 2021, s.4 ; Finance Act 2024, s.4 ; Finance Act 2025, s.4 ; Finance Act 2026, s.3",
+  "verbatim_fa2025_s5": "The excise duty on any goods except those permitted by law to be delivered free from excise duty shall become due and payable to the Commissioner General- (a) within 21 days after - (i) delivery of the goods for home consumption from a factory or warehouse; (ii) withdrawal of the goods by the manufacturer from his factory or warehouse [...]; (b) at the time of importation or ex-warehouse of such goods.",
+  "verbatim_fa2026_s3": "24.01 Unmanufactured tobacco NLe98 per kg ; 24.02 Cigars, cheroots, cigarillos, containing tobacco or tobacco substitutes NLe38 per packet ; Cigarette containing tobacco NLe3 per packet of 20 sticks ; 24.03 Other manufactured tobacco [...] NLe98 per kg ; Shisha [...] NLe98 per kg and NLe225 per litre ; 24.04 Electronic cigarettes (device) NLe0.75 per ml ; Cartridge for use in electronic cigarettes NLe1.20 per unit ; 25.23 Portland cement, cement fondu, slag cement, super sulphate cement and other hydraulic cement whether or not coloured, or the form of clinker NLe 10.0 per 50kg ; 27.10 A. Kerosene NLe2.0 per litre B. Petrol NLe5.0 per litre C. Diesel NLe5.0 per litre D. Fuel oil NLe7.40 per litre E. Lubricating oils NLe4.00 per litre",
+  "verbatim_fa2024_s4": "2203 Beer made from malt [...] <10 [...] Import Le0.015 per cl or Le15 per litre ; 2204, 2205, 2206, 2208 : Import Le10 per litre (<10), Le12 (>10 but <=20), Le14 (>=20=<30), Le16 (>30=<40), Le22 (>40) ; 2207 22071090 Extra Neutral Alcohol (when used to produce other alcohols) >=95 Import Le22 per litre (if imported as raw materials excise to be paid on sales of finished product) ; 20.09 Non-Alcoholic beverages (with added sugar content less than 10 gram per litre) Le0.0 per gram of sugar ; (with added sugar content of at least 10 gram per litre) Le0.03 per gram of sugar ; 39.23 A. polyethene (plastic) bags B. plastic bottle (packed with beverage, excluding water) Le16.0 per kg",
+  "verbatim_fa2021_s4": "15.11 Vegetable oil and its fractions, whether or not refined, but not chemically modified [...] 10% ; 1517.10.90 Magarine [...] 10% ; 34.01 Soaps [...] 20% ; 29.15 2915.60.00 Palmitic acid, steric acid their salts & esters 20% ; 38.23 3823.11.00 Industrial monocarboxylic fatty acid oils 20% ; 73.17 7317.00.10.00 Nails 5%",
+  "verbatim_gst_act_2009_s26": "The value of an import of goods is the sum of– (a) the value of the goods for the purposes of customs duty [...] (c) the amounts, if any, of customs duty, customs service charge or other tax or fiscal charge (other than GST) payable on the importation of the goods.",
+  "portee": "scripts/build_socle.py, ACCISES_SLE, ACCISES_SLE_NON_LIQUIDEES et _accises_sierra_leone ; la ligne EXC précède la GST, dont l'assiette (CIF + tous droits hors TVA) l'inclut."
+ },
+ "decisions": [
+  "Taux en vigueur au 25/10/2026 : ceux du Finance Act 2026 (items 24.01 à 24.04, 25.23, 27.10), à défaut du Finance Act 2024 (headings 2203 à 2208, 20.09, 39.23), à défaut du Finance Act 2021 (items 15.11, 15.17, 34.01, 29.15, 38.23, 73.17). Les Finance Acts 2022 et 2023 ne modifient que des items remplacés depuis. Le Finance Act 2025 ne modifie à l'importation que les items 24.01 à 24.04, remplacés par le Finance Act 2026.",
+  "Montants en leones (« Le » et « NLe » désignent la nouvelle leone depuis la redénomination de 2022 : le pétrole lampant passe de Le 0,81 en 2024 à NLe2,0 en 2026).",
+  "Rattachements au tarif servi (TEC CEDEAO) : pétrole lampant 2710.19.12 ; essence 2710.12.40 et 2710.12.50 (l'essence d'aviation 2710.12.30 n'est pas reprise) ; gazole 2710.19.21 ; fuel-oils 2710.19.22 à 2710.19.25 ; huiles lubrifiantes 2710.19.31, .32, .39.10 et .39.90 (graisses 2710.19.33 exclues) ; sacs 3923.21 et 3923.29. Les bouteilles « packed with beverage » (39.23 B) ne sont pas reprises : remplies, elles suivent le classement de la boisson.",
+  "Bière de malt (2203) : le tableau du Finance Act 2024 ne prévoit à l'importation que la tranche < 10 % (Le15 par litre), liquidée. Vins, vermouths, autres boissons fermentées et spiritueux : taux par tranche de titre alcoométrique, titre non connu du calcul ; ligne déclarée sans liquidation. Le vin de palme (2206.00.91) ne figure pas au tableau de 2024 : pas de ligne.",
+  "Accises ad valorem du Finance Act 2021 (huile de palme 1511.90, margarine 1517.10, savons 3401.11, 3401.19 et 3401.20, acides 2915.60, 2915.70 et 3823.11, clous 7317.00.10) : taux repris, valeur imposable non établie faute du texte de l'Excise Act 1982 ; ligne déclarée sans liquidation.",
+  "Cigarettes électroniques et cartouches (24.04) : le tarif servi n'a pas de position 24.04 ; non reprises. Véhicules d'une valeur d'au moins 50 000 USD (accise de 20 %, s.3A, Finance Act 2019, non obtenu) : condition de valeur unitaire, non reprise."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les items de la First Schedule de 1982 et des Finance Acts 2017 à 2020 non modifiés depuis n'ont pas été vus (Finance Act 2019 et texte consolidé non obtenus).",
+  "Un Finance Act de mi-exercice 2026 n'a pas été recherché au-delà des copies du Ministry of Finance et de la NRA.",
+  "Les droits de douane nationaux modifiés par les Finance Acts 2025 et 2026 (riz, barres de fer, gaz, eau embouteillée, contreplaqué, clous) ne sont pas traités ici."
+ ]
+}
