@@ -1,0 +1,1267 @@
+{
+ "source": "Government Gazettes de Namibie : GN 100/2016, GN 225/2019, GN 226/2019, GN 131/2020",
+ "articles": [
+  {
+   "partie": "3A",
+   "sous_position": "8539.21.45",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "8539.21.90",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "8539.22.45",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "8539.22.90",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "8539.29.50",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "8539.29.57",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "8539.29.90",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 3.0,
+   "unite": "lamp",
+   "brut": "N$ 3.00/lamp"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "4011",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3A",
+   "sous_position": "4012",
+   "page": 2,
+   "source": "NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "5A",
+   "sous_position": "2710.12.02",
+   "page": 2,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.9,
+   "unite": "li",
+   "brut": "90c/li"
+  },
+  {
+   "partie": "5A",
+   "sous_position": "2710.12.26",
+   "page": 2,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.0,
+   "unite": "li",
+   "brut": "0c/li (GN 131/2020, depuis le 27/04/2020)"
+  },
+  {
+   "partie": "5A",
+   "sous_position": "2710.12.30",
+   "page": 2,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.9,
+   "unite": "li",
+   "brut": "90c/li"
+  },
+  {
+   "partie": "5A",
+   "sous_position": "2710.12.39",
+   "page": 2,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.2,
+   "unite": "li",
+   "brut": "120c/li"
+  },
+  {
+   "partie": "5A",
+   "sous_position": "3826.00.10",
+   "page": 2,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.9,
+   "unite": "li",
+   "brut": "90c/li"
+  },
+  {
+   "partie": "5A",
+   "sous_position": "3826.00.90",
+   "page": 2,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.2,
+   "unite": "li",
+   "brut": "120c/li"
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.10",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.20.10",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.20.20",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.30",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.91",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.92",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.93",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.94",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8701.95",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.10.10",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.10.81",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.10.85",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.10.87",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.10.90",
+   "page": 4,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.20.10",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.20.81",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.20.85",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.20.87",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.20.90",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.30.81",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.30.85",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.30.87",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.30.90",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.90.81",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.90.85",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.90.87",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8702.90.90",
+   "page": 5,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.23",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.25",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.27",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.60",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.70",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.75",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.21.90",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.22.25",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.22.27",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.22.90",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.23.25",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.23.27",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.23.90",
+   "page": 6,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.24.25",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.24.27",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.24.90",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.31.25",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.31.27",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.31.70",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.31.80",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.31.85",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.31.90",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.32.25",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.32.27",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.32.90",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.33.25",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.33.27",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.33.90",
+   "page": 7,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.90.25",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.90.27",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8703.90.90",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.10.25",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.10.90",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.10",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.40",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.70",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.75",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.77",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.81",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.83",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.21.90",
+   "page": 8,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.22.10",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.22.20",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.22.90",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.23.10",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.23.20",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.23.90",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.30",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.50",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.70",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.75",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.77",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.81",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.83",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.31.90",
+   "page": 9,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.32.10",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.32.90",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.90.30",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.90.81",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.90.83",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3B",
+   "sous_position": "8704.90.90",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "brut": "N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km",
+   "par_g_km_co2": true
+  },
+  {
+   "partie": "3C",
+   "sous_position": "8708.70.11",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3C",
+   "sous_position": "8708.70.19",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3C",
+   "sous_position": "8708.70.21",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3C",
+   "sous_position": "8708.70.23",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3C",
+   "sous_position": "8708.70.29",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3C",
+   "sous_position": "8708.70.90",
+   "page": 10,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 10.0,
+   "unite": "tyre",
+   "brut": "N$10.00 per tyre"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.47",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.49",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.52",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.55",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.57",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.60",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.70",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.80",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.12.90",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.19",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.20",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.99",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "2710.91",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 1.8,
+   "unite": "li",
+   "brut": "N$1.80/Li"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "3923.21.07",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.5,
+   "unite": "bag",
+   "brut": "N$ 0.50/bag"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "3923.21.17",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.5,
+   "unite": "bag",
+   "brut": "N$ 0.50/bag"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "3923.29.40",
+   "page": 11,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.5,
+   "unite": "bag",
+   "brut": "N$ 0.50/bag"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "3923.29.50",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "montant": 0.5,
+   "unite": "bag",
+   "brut": "N$ 0.50/bag"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.10.05",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.10.10",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.10.25",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.10.90",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.30.05",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.30.10",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.30.25",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.30.90",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.40.05",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.40.10",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.40.25",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.40.90",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.50.05",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.50.10",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.50.25",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.50.90",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.60.05",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.60.10",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.60.25",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.60.90",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.80.05",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.80.10",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.80.25",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.80.40",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8506.80.90",
+   "page": 12,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8548.10",
+   "page": 13,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  },
+  {
+   "partie": "3D",
+   "sous_position": "8548.90",
+   "page": 13,
+   "source": "NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "taux": 5.0,
+   "brut": "5%"
+  }
+ ]
+}

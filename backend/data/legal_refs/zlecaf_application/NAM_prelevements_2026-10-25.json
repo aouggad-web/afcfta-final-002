@@ -1,0 +1,53 @@
+{
+ "schema_version": 1,
+ "objet": "Namibie : fuel levy (Schedule No. 1 Part 5A) et prélèvements environnementaux (Part 3) dus à l'importation",
+ "destination_iso3": "NAM",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Government Notices publiés au Government Gazette de Namibie (copies archivées par Gazettes.Africa), parcourus de 2016 à 2026",
+ "source": {
+  "url": "https://archive.gazettes.africa/archive/na/2019/na-government-gazette-dated-2019-08-02-no-6967.pdf",
+  "institution": "Government Gazette of the Republic of Namibia (copie Gazettes.Africa)"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "sha256": "a456f651f8698bffd7eed4d8192ddf09165dd3e788aac67ff0d743e45e94c817"
+  },
+  {
+   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "sha256": "24067c3d312b0323ecd016d37e64d2a1ba70065bd672c164afa417f1f05ccb25"
+  },
+  {
+   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_FuelLevy_GN131-2020_2020-06-12.pdf",
+   "sha256": "616bbaed25fc74c820647acf4766c113ee2301d3782cfc0344f6513cecf4ea94"
+  },
+  {
+   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_FuelLevy_GN215-2022_2022-08-01.pdf",
+   "sha256": "576753e9a26b8569654134030ab63abd15574e4882928f9f5800b5a8d98ffcf0"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne FLV (fuel levy) : essence 2710.12.02 et distillats 2710.12.30 à 90c/li, solvants 2710.12.39 à 120c/li, biodiesel 3826.00.10 à 90c/li et 3826.00.90 à 120c/li, pétrole lampant 2710.12.26 à 0. Ligne EVN (prélèvement environnemental) : lampes à filament N$3.00 par lampe (Section A), pneus des positions 40.11 et 40.12 N$10.00 par pneu (Section A), roues équipées de pneus 8708.70 N$10.00 par pneu (Section C), huiles lubrifiantes, huiles de 2710.20 et huiles usagées N$1.80 par litre, sacs plastiques N$0.50 par sac (Section D) ; piles (Section D, 5 %) et émissions de CO2 des véhicules (Section B) déclarées sans liquidation.",
+  "reference": "Customs and Excise Act 20/1998 (Namibie), Schedule No. 1 : Part 5A (GN 225/2019, GN 131/2020) ; Part 3, Section A (GN 100/2016), Sections B, C et D (GN 226/2019)",
+  "verbatim_gn225_2019": "2710.12.02 Petrol, as defined in Additional Note 1(b) to Chapter 27 90c/li ; 2710.12.26 Illuminating kerosene, as defined in Additional Note 1 (f) to Chapter 27, unmarked 120c/li ; 2710.12.30 Distillate fuel, as defined in Additional Note 1(g) to Chapter 27 90c/li ; 2710.12.39 Specified aliphatic hydrocarbons solvents, as defined in Additional Note 1(ij) to Chapter 27 unmarked 120c/li ; 3826.00.10 Biodiesel as specified in Additional Note 1(a) to Chapter 38 90c/li ; 3826.00.90 Other biodiesel 120c/li",
+  "verbatim_gn131_2020": "I have amended Part 5A of Schedule No. 1 to that Act by withdrawing the fuel levy of 120 cents per litre imposed on illuminating kerosene under tariff heading “2710.12.26”, reducing the fuel levy to 0 cents per litre with effect from 27 April 2020.",
+  "verbatim_gn215_2022": "amended Part 5 (Fuel Levy) of Schedule 1 of that Act, with retrospective effect from 4 May 2022 to 3 August 2022",
+  "verbatim_gn100_2016": "149.04 4011.0000 4012.0000 New pneumatic tyres (all) Retreaded or Used pneumatic tyres (all) N$10.00 per tyre N$10.00 per tyre ; lampes 8539.21.45 à 8539.29.90 : N$ 3.00/lamp",
+  "verbatim_gn226_2019_notes": "6. For the purposes of Environmental Levy on tyres under tariff sub heading 4012, tyre treads and tyre flaps of rubber used in the manufacture of tyres, classifiable under tariff sub heading 4012.90 are excluded from the Levy. [...] 8. Any Environmental Levy payable in terms of this Schedule in respect of batteries, lubricant oils, motor vehicle carbon emission and plastic carrier bags specified therein shall be additional to any Customs or Excise Levy payable in terms of Part 1 and Part 2 of Schedule No. 1 and VAT. 9. The Carbon Emission Levy is a once off Levy.",
+  "texte_extrait_script": "scripts/extraire_prelevements_nam.py lit les tableaux des Gazettes et écrit data/nam/prelevements_sch1_parts3_5.json (153 articles).",
+  "portee": "scripts/build_socle.py, PRELEVEMENTS_NAM et _prelevements_nam ; ces lignes remplacent les lignes FLV et EVN sans taux de PRELEVEMENTS_SACU_NON_COLLECTES. TVA namibienne inchangée (FOBx1.10)."
+ },
+ "decisions": [
+  "Taux en vigueur : ceux de la GN 225/2019 (fuel levy) et de la GN 226/2019 (Sections B à D), avec la Section A de la GN 100/2016. La GN 131/2020 ramène le pétrole lampant à 0 depuis le 27/04/2020. La GN 215/2022 n'a valu que du 4 mai au 3 août 2022. Aucune autre modification des Parts 3 et 5 dans les Gazettes archivées de 2016 à 2026 (0 à 34 numéros manquants selon l'année).",
+  "Série 2710.12 / 2710.19 : les textes de 2019 nomment les sous-positions 2710.12.xx ; le tarif servi dédouble cette série en 2710.19.xx sous les mêmes définitions, et le tarif sud-africain y porte aussi sa fuel levy. Le prélèvement est porté sur les deux séries. « 2710.19 Other » (Section D), résiduel en 2019, couvrirait aujourd'hui les carburants de la série dédoublée : il n'est pas repris.",
+  "Lignes de titre : 3923.2 et 3923.21 portent un taux dans le tableau mais ont des sous-positions listées ; seules les feuilles (3923.21.07, 3923.21.17, 3923.29.40, 3923.29.50) sont retenues.",
+  "Piles (Section D, 5 %) : la Section D ne dit pas sur quelle valeur porte le taux ; assiette non établie, prélèvement déclaré non liquidé.",
+  "CO2 des véhicules (Section B) : N$40 ou N$45 par g/km au-delà de 120 ou 140 g/km selon la ligne ; émissions non connues du calcul, prélèvement déclaré non liquidé. Déchets de piles 8548.10 et 8548.90 (codes de 2019) : sans position correspondante au tarif servi (HS 2022, position 85.49), non repris.",
+  "Monnaie : montants en dollars namibiens, au pair du rand comme les autres montants spécifiques du socle namibien."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Une position qui porte un droit spécifique dans une autre unité que le prélèvement (graisse lubrifiante : droit au kilo, prélèvement au litre) ne se liquide pas, le calcul ne recevant qu'une quantité.",
+  "Les numéros du Gazette manquants à l'archive (jusqu'à 34 par an) n'ont pas été vus."
+ ]
+}
