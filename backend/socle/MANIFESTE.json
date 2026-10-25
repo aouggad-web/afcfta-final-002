@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-25T21:30:42.649758+00:00",
+  "construit_le": "2026-10-25T22:25:57.135256+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -2067,11 +2067,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 370523,
-    "droits": 1245117,
-    "droits_liquidables": 1210834
-    "positions": 370215,
-    "droits": 1244501,
-    "droits_liquidables": 1210234
+    "positions": 370537,
+    "droits": 1245211,
+    "droits_liquidables": 1210971
   }
 }
