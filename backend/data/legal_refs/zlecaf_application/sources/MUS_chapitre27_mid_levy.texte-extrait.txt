@@ -1,0 +1,356 @@
+Maurice — chapitre 27 du tarif intégré et MID levy : extraits verbatim (relevés le 2026-10-25)
+
+1. Customs Tariff Schedules (Integrated Tariff), MRA Customs, « As at 01 October 2026 »
+(https://www.mra.mu/download/TariffInf011026.pdf, 810 pages, sha256 c631ca50bfe4d5e8117983c35822af2dca858aa19285f5ce7d25de23141b035a).
+Pages 156 à 162, couche texte (pdftotext -layout), lignes vides retirées :
+
+  3.-       For the purposes of subheadings 2707.10, 2707.20, 2707.30 and 2707.40 the terms "benzol (benzene)", "toluol (toluene)", "xylol (xylenes)" and
+            "naphthalene" apply to products which contain more than 50% by weight of benzene, toluene, xylenes, naphthalene respectively.
+  4.-       For the purposes of subheading 2710.12, “light oils and preparations” are those of which 90% or more by volume (including losses) distil at 210º C
+            according to the ISO 3405 method (equivalent to the ASTM D 86 method).
+  5.-       For the purposes of the subheadings of heading 27.10, the term “biodiesel” means mono-alkyl esters of fatty acids of a kind used as a fuel, derived
+            from animal, vegetable or microbial fats and oils whether or not used.
+                                                                                                              -------------------
+Heading   H.S. Code                Description                 Statisti   General   Excise    Levy      VAT   COMESA* COMESA* SADC      IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                                 cal                 Duty                      Group I Group II                        N            YE
+                                                                Unit
+                                                                            %        %                   %      %          %        %   %      %      %       %      %     %     %        %      %
+ 27.01                 Coal; briquettes, ovoids and similar
+                       solid fuels manufactured from coal.
+                       - Coal, whether or not pulverised,
+                       but not agglomerated:
+                                                                            0        0       30 cents    15     0             0     0    0     0       0      0      0     0      0       0       0
+          2701.11.00   -- Anthracite                             kg
+                                                                                              per kg
+                                                                            0        0       30 cents    15     0             0     0    0     0       0      0      0     0      0       0       0
+          2701.12.00   -- Bituminous coal                        kg
+                                                                                              per kg
+                                                                            0        0       30 cents    15     0             0     0    0     0       0      0      0     0      0       0       0
+          2701.19.00   -- Other coal                             kg
+                                                                                              per kg
+                                                                            0                            15     0             0     0    0     0       0      0      0     0      0       0       0
+          2701.20.00   - Briquettes, ovoids and similar          kg
+                       solid fuels manufactured from coal
+ 27.02                 Lignite, whether or not
+                       agglomerated, excluding jet.
+                                                                            0                            15     0             0     0    0     0       0      0      0     0      0       0       0
+          2702.10.00   - Lignite, whether or not pulverised,     kg
+                       but not agglomerated
+                                                                            0                            15     0             0     0    0     0       0      0      0     0      0       0       0
+          2702.20.00   - Agglomerated lignite                    kg
+ 27.03                 Peat (including peat litter), whether
+                       or not agglomerated:
+                                                                                                                                                                                                        NPPO
+          2703.00.10   --- Substrate for use as growing          kg         0                           EXM     0             0     0    0     0       0      0      0     0      0       0       0
+                       medium
+                                                                                                                    - 156 -
+Heading   H.S. Code                 Description                Statisti   General   Excise   Levy   VAT   COMESA* COMESA* SADC    IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                                 cal                 Duty                  Group I Group II                      N            YE
+                                                                Unit
+                                                                            %        %              %       %         %       %   %      %      %       %      %     %     %        %      %
+                                                                                                                                                                                                  NPPO
+          2703.00.90   --- Other                                 kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+                                                                            0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+ 27.04    2704.00.00   Coke and semi-coke of coal, of            kg
+                       lignite or of peat, whether or not
+                       agglomerated; retort carbon.
+                                                                            0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+ 27.05    2705.00.00   Coal gas, water gas, producer gas         kg
+                       and similar gases, other than
+                       petroleum gases and other
+                       gaseous hydrocarbons.
+                                                                                                                          0   0    0
+ 27.06    2706.00.00   Tar distilled from coal, from lignite     kg         0                       15      0                            0       0      0      0     0      0       0       0
+                       or from peat, and other mineral
+                       tars, whether or not dehydrated or
+                       partially distilled, including
+                       reconstituted tars
+ 27.07                 Oils and other products of the
+                       distillation of high temperature coal
+                       tar; similar products in which the
+                       weight of the aromatic constituents
+                       exceeds that of the non-aromatic
+                       constituents.
+                                                                                                                          0   0    0
+          2707.10.00   - Benzol (benzene)                        kg         0                       15      0                            0       0      0      0     0      0       0       0     DCCB
+                                                                                                                          0   0    0
+          2707.20.00   - Toluol (toluene)                        kg         0                       15      0                            0       0      0      0     0      0       0       0     DCCB
+                                                                                                                          0   0    0
+          2707.30.00   - Xylol (xylenes)                         kg         0                       15      0                            0       0      0      0     0      0       0       0     DCCB
+                                                                                                                          0   0    0
+          2707.40.00   - Naphthalene                             kg         0                       15      0                            0       0      0      0     0      0       0       0     DCCB
+                                                                                                                          0   0    0
+          2707.50.00   - Other aromatic hydrocarbon              kg         0                       15      0                            0       0      0      0     0      0       0       0     DCCB
+                       mixtures of which 65% or more by
+                       volume (including losses) distils at
+                       250OC by the ISO 3405 method
+                       (equivalent to the ASTM D 86
+                       method)
+                       - Other:
+                                                                                                                - 157 -
+Heading   H.S. Code                  Description               Statisti   General   Excise   Levy   VAT   COMESA* COMESA* SADC    IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                                 cal                 Duty                  Group I Group II                      N            YE
+                                                                Unit
+                                                                            %        %              %       %         %       %   %      %      %       %      %     %     %        %      %
+                                                                                                                      0       0   0
+          2707.91.00   -- Creosote oils                          kg         0                       15      0                            0       0      0      0     0      0       0       0
+                                                                                                                          0   0    0
+          2707.99.00   -- Other                                  kg         0                       15      0                            0       0      0      0     0      0       0       0
+ 27.08                 Pitch and pitch coke, obtained from
+                       coal tar or from other mineral tars.
+                                                                            0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+          2708.10.00   - Pitch                                   kg
+                                                                            0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+          2708.20.00   - Pitch coke                              kg
+ 27.09    2709.00.00   Petroleum oils and oils obtained          kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                       from bituminous minerals, crude.
+ 27.10                 Petroleum oils and oils obtained
+                       from bituminous minerals, other
+                       than crude; preparations not
+                       elsewhere specified or included,
+                       containing by weight 70% or more
+                       of petroleum oils or of oils obtained
+                       from bituminous minerals, these
+                       oils being the basic constituents of
+                       the preparations; waste oils.
+                       - Petroleum oils and oils obtained
+                       from bituminous minerals (other
+                       than crude) and preparations not
+                       elsewhere specified or included,
+                       containing by weight 70% or more
+                       of petroleum oils or of oils obtained
+                       from bituminous minerals, these
+                       oils being the basic constituents of
+                       the preparations, other than those
+                       containing biodesel and other than
+                       waste oils:
+                       -- Light oils and preparations:
+          2710.12.10   --- White spirit                          kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+                                                                                                                - 158 -
+Heading   H.S. Code                    Description             Statisti   General    Excise      Levy       VAT   COMESA* COMESA* SADC    IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                                 cal                  Duty                         Group I Group II                      N            YE
+                                                                Unit
+                                                                            %          %                    %       %         %       %   %      %      %       %      %     %     %        %      %
+          2710.12.90   --- Other                                  L         0                               15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                       -- Other:
+                       --- Motor spirits, including aviation
+                       spirit:
+          2710.19.11   ---- Aviation spirit                       L         0          0                    15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+          2710.19.19   ---- Other (Mogas)                         L         0       Rs 9.87/L      0        15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+          2710.19.20   --- Spirit type jet fuel                   L         0          0                    15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                       --- Kerosene, including kerosene
+                       type jet fuel:
+                                                                                                30 cents
+          2710.19.31   ---- Jet fuel                              L         0          0                    0       0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                                                                                                per litre
+                                                                                                30 cents
+          2710.19.39   ---- Other                                 L         0          0                    0       0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                                                                                                per litre
+                       --- Other medium oils and
+                       preparations:
+          2710.19.41   ---- Oils                                 kg         0                               15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+          2710.19.42   ---- Greases                              kg         0                               15      0             0   0    0     0       0      0      0     0      0       0       0
+          2710.19.50   --- Gas oils                               L         0          Rs          0        15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                                                                                     4.22/L
+                       --- Fuel oils :
+          2710.19.61   ---- Marine Residual Fuel Oil for          L         0          0           0        15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                       bunkering (RMG 380 – 700 or
+                       RMK 380 – 700) as per ISO 8217
+                       Fuel Standard, Fifth Edition 2012
+          2710.19.69   ---- Other                                 L         0          0        30 cents    15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                                                                                                per litre
+                                                                                                                        - 159 -
+Heading   H.S. Code                   Description               Statisti   General   Excise   Levy   VAT   COMESA* COMESA* SADC    IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                                  cal                 Duty                  Group I Group II                      N            YE
+                                                                 Unit
+                                                                             %        %              %       %         %       %   %      %      %       %      %     %     %        %      %
+                       --- Lubricating oils, other heavy oils
+                       and preparations:
+                                                                                                                                                                0
+          2710.19.71   ---- Oils                                  kg         0                       15      0             0   0    0     0       0      0            0      0       0       0
+          2710.19.72   ---- Greases                               kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+          2710.20.00   - Petroleum oils and oils obtained         kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+                       from bituminous minerals (other
+                       than crude) and preparations not
+                       elsewhere specified or included,
+                       containing by weight 70% or more
+                       of petroleum oils or more of
+                       petroleum oils or of oils obtained
+                       from bituminous minerals, these
+                       oils being the basic constituents of
+                       the preparations, containing
+                       biodiesel, other than waste oils
+                       - Waste oils:
+                                                                             0                       15      0             0   0    0     0       0      0      0     0      0       0       0     MIC +
+          2710.91.00   -- Containing polychlorinated              kg
+                                                                                                                                                                                                   DCCB
+                       biphenyls (PCBs), polychlorinated
+                       terphenyls (PCTs) or
+                       polybrominated biphenyls (PBBs)
+                                                                             0                       15      0             0   0    0     0       0      0      0     0      0       0       0     MIC
+          2710.99.00   -- Other                                   kg
+ 27.11                 Petroleum gases and other
+                       gaseous hydrocarbons.
+                       - Liquefied:
+                                                                                                                               0    0
+          2711.11.00   -- Natural gas                             kg         0                       15      0             0              0       0      0      0     0      0       0       0
+                                                                                                                           0   0    0
+          2711.12.00   -- Propane                                 kg         0                       15      0                            0       0      0      0     0      0       0       0
+                       -- Butanes:
+                                                                                                                 - 160 -
+Heading   H.S. Code                 Description                   Statisti   General   Excise    Levy      VAT   COMESA* COMESA* SADC    IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                                    cal                 Duty                      Group I Group II                      N            YE
+                                                                   Unit
+                                                                               %        %                  %       %         %       %   %      %      %       %      %     %     %        %      %
+                                                                                                                             0       0   0
+          2711.13.10   --- In bulk for filling of cylinders not     kg         0        0       30 cents   0       0                            0       0      0      0     0      0       0       0
+                       exceeding 12 kg for domestic use                                          per kg
+                                                                                                                                 0   0    0
+          2711.13.20   --- In cylinders not exceeding 12 kg         kg         0        0       30 cents   0       0                            0       0      0      0     0      0       0       0
+                       for domestic use                                                          per kg
+                                                                                                                                 0   0    0
+          2711.13.90   --- Other                                    kg         0        0       30 cents   15      0                            0       0      0      0     0      0       0       0
+                                                                                                 per kg
+                                                                                                                                 0   0    0
+          2711.14.00   -- Ethylene, propylene, butylene             kg         0                           15      0                            0       0      0      0     0      0       0       0     DCCB
+                       and butadiene
+                                                                                                                                 0   0    0
+          2711.19.00   -- Other                                     kg         0                           15      0                            0       0      0      0     0      0       0       0
+                       - In gaseous state:
+                                                                               0                           15      0             0   0    0     0       0      0      0     0      0       0       0
+          2711.21.00   -- Natural gas                               kg
+                                                                               0                           15      0             0   0    0     0       0      0      0     0      0       0       0
+          2711.29.00   -- Other                                     kg
+ 27.12                 Petroleum jelly; paraffin wax,
+                       micro-crystalline petroleum wax,
+                       slack wax, ozo-kerite, lignite wax,
+                       peat wax, other mineral waxes,
+                       and similar products obtained by
+                       synthesis or by other processes,
+                       whether or not coloured.
+                                                                                                                                 0   0    0
+          2712.10.00   - Petroleum jelly                            kg         0                           15      0                            0       0      0      0     0      0       0       0
+                                                                                                                                 0   0    0
+          2712.20.00   - Paraffin wax containing by weight          kg         0                           15      0                            0       0      0      0     0      0       0       0
+                       less than 0.75% of oil
+                                                                                                                                 0   0    0
+          2712.90.00   - Other                                      kg         0                           15      0                            0       0      0      0     0      0       0       0
+ 27.13                 Petroleum coke, petroleum
+                       bitumen and other residues of
+                       petroleum oils or of oils obtained
+                       from bituminous minerals.
+                       - Petroleum coke:
+                                                                               0                           15      0             0   0    0     0       0      0      0     0      0       0       0
+          2713.11.00   -- Not calcined                              kg
+                                                                                                                       - 161 -
+Heading   H.S. Code                  Description             Statisti   General   Excise   Levy   VAT   COMESA* COMESA* SADC    IOC   INDIA PAKISTA   EC   TÜRKI   UK   CHINA   AfCFTA   UAE   Agency
+                                                               cal                 Duty                  Group I Group II                      N            YE
+                                                              Unit
+                                                                          %        %              %       %         %       %   %      %      %       %      %     %     %        %      %
+                                                                          0                       15      0         0       0   0      0      0       0      0     0     0        0      0
+          2713.12.00   -- Calcined                             kg
+          2713.20.00   - Petroleum bitumen                     kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+          2713.90.00   - Other residues of petroleum oils      kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+                       or of oils obtained from bituminous
+                       minerals
+ 27.14                 Bitumen and asphalt, natural;
+                       bituminous or oil shale and tar
+                       sands; asphaltites and asphaltic
+                       rocks.
+          2714.10.00   - Bituminous or oil shale and tar       kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+                       sands
+          2714.90.00   - Other                                 kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+ 27.15    2715.00.00   Bituminous mixtures based on            kg         0                       15      0             0   0    0     0       0      0      0     0      0       0       0
+                       natural asphalt, on natural
+                       bitumen, on petroleum bitumen, on
+                       mineral tar or on mineral tar pitch
+                       (for example, bituminous mastics,
+                       cut-backs).
+ 27.16                 Electrical energy (optional            1000
+                       heading)                               kw/h
+                                                                                                              - 162 -
+
+2. Excise Act 1994, version consolidée MRA, en-tête « 01.10.2026 » (https://www.mra.mu/download/ExciseAct.pdf, sha256 250d99ea77bc7d019f0daf223ba17484a9a42b6bdb7df348fdb4061edc8306c7).
+
+Page 17 — section 3A :
+      3A   CHARGE TO MID LEVY
+           (1)       A MID levy shall be chargeable on the excisable goods specified in Part II of the First
+                     Schedule,169where they are for home consumption.
+           (2)       The MID levy shall –
+                     (a)    be computed by reference to the taxable base of the goods at the rate corresponding to those
+                            goods as specified in Part II of the First Schedule; and
+
+Pages 267 à 270 — First Schedule, Part II – MID levy :
+                                                                                                                     267
+                                           PART II – MID LEVY724725
+         Column 1                       Column 2                    Column 3        Column 4           Column 5
+  Heading      H.S. Code             Excisable Goods                Statistical    Taxable Base       Rate of MID
+                                                                       Unit                              Levy
+27.01                      Coal; briquettes, ovoids and similar
+                           solid fuels manufactured from coal.
+                           - Coal, whether or not pulverised, but
+                           not agglomerated:
+             2701.11.00    -- Anthracite                               Kg         Specific duty per 30 cents per kg
+                                                                                  kg
+             2701.12.00    -- Bituminous coal                          Kg         Specific duty per 30 cents per kg
+                                                                                  kg
+             2701.19.00    -- Other coal                               Kg         Specific duty per 30 cents per kg
+                                                                                  kg
+27.10                      Petroleum oils and oils obtained
+                           from bituminous minerals, other than
+                           crude; preparations not elsewhere
+                           specified or included, containing by
+                           weight 70% or more of petroleum
+                           oils or of oils obtained from
+                           bituminous minerals, these oils being
+                           the basic constituents of the
+                           preparations; waste oils.
+                           - Petroleum oils and oils obtained
+                           from bituminous minerals (other than
+                           crude)    and   preparations     not
+                           elsewhere specified or included,
+                                                                                                                      268
+       Column 1                          Column 2                Column 3        Column 4            Column 5
+Heading      H.S. Code                Excisable Goods            Statistical    Taxable Base        Rate of MID
+                                                                    Unit                               Levy
+                         containing by weight 70% or more of
+                         petroleum oils or of oils obtained
+                         from bituminous minerals, these oils
+                         being the basic constituents of the
+                         preparations, other than those
+                         containing biodiesel and other than
+                         waste oils:
+                         -- Other:
+                         --- Motor spirits, including aviation
+                         spirit:
+           2710.19.19    ---- Other (Mogas)                          L         Specific duty per        0
+                                                                               litre
+                         --- Kerosene, including kerosene
+                         type jet fuel:
+           2710.19.31    ---- Jet fuel                               L         Specific duty per   30 cents   per
+                                                                               litre               litre
+           2710.19.39    ---- Other                                  L         Specific duty per   30 cents   per
+                                                                               litre               litre
+           2710.19.50    --- Gas oils                                L         Specific duty per        0
+                                                                               litre
+                         --- Fuel oils :
+                                                                                                                    269
+         Column 1                          Column 2                   Column 3        Column 4           Column 5
+  Heading      H.S. Code                Excisable Goods               Statistical    Taxable Base       Rate of MID
+                                                                         Unit                              Levy
+             2710.19.61    ---- Marine Residual Fuel Oil for              L         Specific duty per         0
+                           bunkering (RMG 380 – 700 or RMK                          litre
+                           380 – 700) as per ISO 8217 Fuel
+                           Standard, Fifth Edition 2012
+             2710.19.69    ---- Other                                     L         Specific duty per 30 cents      per
+                                                                                    litre             litre
+27.11                      Petroleum gases and other gaseous
+                           hydrocarbons.
+726
+                           -- Butanes
+             2711.13.10     ---In bulk for filling of cylinders not      Kg         Specific duty per   30 cents per kg
+                           exceeding 12 kg for domestic use                         kg
+             2711.13.20    ---In cylinders not exceeding 12 kg           Kg         Specific duty per   30 cents per kg
+                           for domestic use                                         kg
+             2711.13.90    --- Other                                     Kg         Specific duty per   30 cents per kg
+                                                                                    kg

@@ -1206,9 +1206,9 @@
       "fichier": "MUS.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
-      "source_sha256": "d4c7cd661c7dfe9f9fef0721e8cee0c4e84dac5981ab77521ee249c4ae5e8675",
-      "socle_sha256": "eb94e43b46c1b9bb809f48651651067d8d792fe6e937cf750b9a6b9a9702d30d",
-      "collecte": "2026-09-18",
+      "source_sha256": "0bd42a7bf80dc80ea102173d67566efad0a9c6f659ab67bf15e1f0ccae3211ec",
+      "socle_sha256": "f87e24fd859c3b828991926d9f03393776d507a94daf7791f94e8255c1784947",
+      "collecte": "2026-10-25",
       "etat": "PARTIEL",
       "familles": [
         "accise",
@@ -1216,25 +1216,25 @@
         "tva"
       ],
       "compteurs": {
-        "positions": 6941,
-        "droits": 14545,
-        "droits_liquidables": 14012,
-        "positions_liquidables": 6670,
-        "preferentiels": 83176,
+        "positions": 6955,
+        "droits": 14639,
+        "droits_liquidables": 14133,
+        "positions_liquidables": 6702,
+        "preferentiels": 83452,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 142,
-        "assiettes_source": 13819,
+        "taux_indisponibles": 130,
+        "assiettes_source": 13898,
         "assiettes_fichier": 0,
-        "assiettes_table": 455,
-        "assiettes_indisponibles": 262,
+        "assiettes_table": 488,
+        "assiettes_indisponibles": 253,
         "sans_designation": 0,
-        "droits_specifiques": 59,
+        "droits_specifiques": 68,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
-        "droits_absents_completes": 9,
+        "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
@@ -2066,8 +2066,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 370215,
-    "droits": 1244501,
-    "droits_liquidables": 1210229
+    "positions": 370229,
+    "droits": 1244595,
+    "droits_liquidables": 1210350
   }
 }
