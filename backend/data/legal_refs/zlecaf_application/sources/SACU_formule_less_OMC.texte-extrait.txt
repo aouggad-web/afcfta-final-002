@@ -1,0 +1,47 @@
+SACU — « formula duties » : extraits verbatim des examens de politique commerciale de l'OMC (relevés le 2026-10-25)
+Texte extrait par pdftotext -layout ; mise en page conservée.
+
+1. WTO Secretariat, Trade Policy Review — Southern African Customs Union, WT/TPR/S/324, 30 September 2015
+(https://www.wto.org/english/tratop_e/tpr_e/s324_e.pdf, sha256 64f71316c10230690d06e88d7f21ca13cd79da974edffca661cb21b9f5b1d3ff ; non archivé, 0,3 Mo) :
+
+3.19. As at the time of the previous TPR of SACU, variable (formula) duties are levied on
+corn-flour, preserved tomatoes, cherries, and two kinds of tobacco (Table 3.3). They pursue the
+objective of maintaining domestic prices above a certain level and protecting local industry against
+low international prices. They are based on a relationship between the f.o.b. import prices and
+reference prices. In other words: they are inversely proportional to import prices.3
+[…]
+Table 3.3 Formula (variable) duties, 2015
+HS heading          Product description                               Duty
+1901.9010           Corn flour                                        10% or 55c/kg less 90%
+2002.1090           Other tomatoes prepared or preserved              110c/kg less 80% with a maximum of 37%
+                    otherwise than by vinegar or acetic acid
+2006.0030           Cherries, drained or glacé                        20% or 215c/kg less 80%
+2401.1000           Tobacco, not stemmed or stripped                  860c/kg less 85% with a maximum of 44%
+2401.2000           Tobacco, partly or wholly stemmed or              15% or 860c/kg less 85%
+                    stripped
+
+Source:        WTO Secretariat, based on tariff information from the South African Revenue Service (SARS).
+
+
+2. WTO Secretariat, Trade Policy Review — Southern African Customs Union, WT/TPR/S/447, 20 September 2023
+(https://www.wto.org/english/tratop_e/tpr_e/s447-01_e.pdf, sha256 8cf7cd292511edf42a1bec422b770cfee0e4f13f9e6457bba744299a37d0aaa5 ; non archivé, 1,1 Mo) :
+
+      Formula dutiesd, they apply to:                                                                   5
+        Corn flour (HS 19019010)                                                        10% or 55 cents/kg less 90%
+        Other tomatoes prepared or preserved otherwise than by vinegar or               110 cents/kg less 80% with a
+        acetic acid (HS 20021090)                                                                  maximum of 37%
+        Cherries, drained or glacé (HS 20060030)                                       20% or 215 cents/kg less 80%
+        Tobacco, not stemmed or stripped (HS 24011000)                                 860 cents/kg less 85%, with a
+                                                                                                   maximum of 44%
+       Tobacco, partly or wholly stemmed or stripped (HS 24012000)                   15% or 860 cents/kg less 85%
+
+[…]
+d              Formula duties combine a reference price, and a formula that makes the duty inversely proportional
+               to the import price.
+[…]
+footwear, and fish products. Formula duties remain on five categories of products: corn flour, other
+tomatoes, cherries, and two types of tobacco. Formula duties aim at ensuring that import prices be
+at least equal (i.e. higher or equal) to the reference price set by the authorities for each category of
+product. The ultimate objective is to protect local industries against lower international prices. As
+their name indicates, formula duties are based on a formula that makes them inversely proportional
+to import prices.57

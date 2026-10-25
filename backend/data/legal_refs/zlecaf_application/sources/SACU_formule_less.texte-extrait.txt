@@ -1,0 +1,54 @@
+SACU — formule « Yc/kg less N% [with a maximum of M%] » : extraits verbatim (relevés le 2026-10-25)
+
+1. SARS, Schedule No. 1 to the Customs and Excise Act, 1964 — General Notes, page 1, pied de page « Date: 2026-03-27 »
+(https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1Gen-General-Notes-to-Schedules-to-Customs-and-Excise-Act.pdf,
+ exemplaire du dépôt data/sacu/reference/ZAF_SARS_schedule1_general_notes_2023.pdf, sha256 475f2c01545f3a01f6d3942c0e4584f46e24ded9253c1f3727377c36b4c566b8 ;
+ texte extrait par pdftotext -layout, espaces de mise en page réduites) :
+
+B. DUTY ASSESMENT
+1. The expression "free" when used in the Rate of Duty column in Part 1 shall be regarded as a rate duty.
+2. Any amount of duty payable shall be calculated to the nearest cent. For the purposes of this paragraph one half cent shall be regarded as a whole cent.
+3. When a rate of duty in respect of any goods consists of two or more parts separated by the word "or", each such part shall be deemed to be a separate and complete rate of duty and such rate of duty
+yielding the higher or highest amount of duty shall be applicable in respect of such goods.
+4. A rate of duty applicable under any heading or tariff item to any unit of mass, measure, quantity or any other characteristic shall, unless otherwise provided for in such heading or tariff item, apply
+proportionately to any part of such unit except in the case of a unit of quantity described in the statistical column in Part 1 of Schedule No. 1 as "u" (number of units).
+5. Any duties on imported goods specified in Part 2, 3 and 5 of this Schedule are additional to any duties specified in Part 1 of the said Schedule in respect of such goods.
+C. VALUE FOR DUTY PURPOSES
+The expression "value for duty purposes" has the meaning assigned thereto in section 65.
+[…]
+G. ABBREVIATIONS AND SYMBOLS
+[…]
+5 c means "cent"
+53 % means "per cent AD VALOREM"
+54 / means "unless the context otherwise indicates, per."
+
+2. SARS, Schedule No. 1, Part 1 (Chapters 1 to 99), pied de page « Date: 2026-10-16 »
+(https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf,
+ téléchargé le 2026-10-25, sha256 fbc5e9bf7a8d1c633aeec31207744fc21b4654cbca9d2468aaa425afcd0479fa ; non archivé, 2,8 Mo).
+Colonnes : General | EU / UK | EFTA | SADC | MERCOSUR | AfCFTA. Mise en page de pdftotext -layout conservée :
+
+Heading /      CD      Article Description                                                           Statistical                                     Rate of Duty
+Subheading                                                                                              Unit        General      EU / UK      EFTA          SADC     MERCOSUR     AfCFTA
+
+1901.90.10         7   --       Corn flour                                                                   kg        10% or        free        10% or        free       10% or 55c/kg     4% or
+                                                                                                                       55c/kg less               55c/kg less              less 90%          22c/kg less
+                                                                                                                       90%                       90%                                        36%
+
+2002.10.90         4   --       Other                                                                     kg        110c/kg         free        110c/kg       free       110c/kg less   110c/kg
+                                                                                                                    less 80%                    less 80%                 80% with a     less 80%
+                                                                                                                    with a                      with a                   maximum of     with a
+                                                                                                                    maximum                     maximum                  37%            maximum
+                                                                                                                    of 37%                      of 37%                                  of 37%
+
+2006.00.30         0   -        Cherries, drained or glacé                                                  kg       20% or         free        20% or         free       20% or 215c/kg    8% or
+                                                                                                                     215c/kg                    215c/kg                   less 80%          86c/kg less
+                                                                                                                     less 80%                   less 80%                                    32%
+
+2401.10            2   -        Tobacco, not stemmed or stripped                                            kg      860c/kg       free        860c/kg       free       860c/kg less     344c/kg
+                                                                                                                    less 85%                  less 85%                 85% with a       less 34%
+                                                                                                                    with a                    with a                   maximum of       with a
+                                                                                                                    maximum                   maximum                  44%              maximum
+                                                                                                                    of 44%                    of 44%                                    of 17,6%
+2401.20            7   -        Tobacco, partly or wholly stemmed or stripped                               kg      15% or        free        15% or        free       15% or 860c/kg   6% or
+                                                                                                                    860c/kg                   860c/kg                  less 85%         344c/kg
+                                                                                                                    less 85%                  less 85%                                  less 34%

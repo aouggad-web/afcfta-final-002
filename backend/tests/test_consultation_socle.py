@@ -222,3 +222,13 @@ def test_l_ancienne_table_de_profils_est_retiree():
     from services import tax_profile_data
 
     assert not hasattr(tax_profile_data, "COUNTRY_TAX_PROFILES")
+
+
+def test_un_droit_compose_se_lit_en_entier(client):
+    """« 10% or 55c/kg less 90% » (ZAF 1901.90.10) : 10 % n'est qu'une
+    composante. L'écran n'affiche le taux que s'il est le droit entier ; ici,
+    l'expression."""
+    lignes = client.get("/consultation/ZAF/sous-positions/190190").json()["sub_positions"]
+    ligne = next(l for l in lignes if l["code"] == "19019010")
+    assert ligne["dd_rate"] is None
+    assert ligne["dd_expression"] == "10% or 55c/kg less 90%"

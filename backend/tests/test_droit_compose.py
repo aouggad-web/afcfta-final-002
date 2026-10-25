@@ -176,3 +176,23 @@ def test_cette_forme_n_est_pas_traitee_comme_non_tranchee():
     ligne = calculer(PLAFONNE, 500000.0, quantite=10000.0)["npf"]["lignes"][0]
 
     assert ligne["statut"] != MANQUE_REGLE_COMPOSEE
+
+
+# Le plafond se prend sur la valeur en douane, pas sur la valeur CIF. En SACU,
+# la « value for duty purposes » est FOB (fiche SACU_assiette_DD_2026-09-17) :
+# borner à 96 % du CIF surestimait le droit dès qu'un fret était déclaré.
+PLAFONNE_FOB = dict(PLAFONNE, droits=[dict(PLAFONNE["droits"][0], assiette_valeur="FOB")])
+
+
+def test_le_plafond_se_prend_sur_la_valeur_fob():
+    """1 000 kg, CIF 1 200, FOB 1 000 : 4 500 bornés à 96 % × 1 000 = 960, pas 1 152."""
+    resultat = calculer(PLAFONNE_FOB, 1200.0, quantite=1000.0, valeur_fob=1000.0)
+    ligne = resultat["npf"]["lignes"][0]
+    assert ligne["montant"] == 960.0
+    assert ligne["plafond_ad_valorem_montant"] == 960.0
+
+
+def test_sans_valeur_fob_le_plafond_ne_se_devine_pas():
+    ligne = calculer(PLAFONNE_FOB, 1200.0, quantite=1000.0)["npf"]["lignes"][0]
+    assert ligne["statut"] == "VALEUR_FOB_REQUISE"
+    assert ligne["montant"] is None
