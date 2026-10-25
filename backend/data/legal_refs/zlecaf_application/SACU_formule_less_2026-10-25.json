@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "objet": "SACU (Afrique du Sud, Botswana, Lesotho, Namibie, Eswatini) : un taux « Yc/kg less N% [with a maximum of M%] » se liquide à Yc/kg × quantité diminué de N % de la valeur en douane, borné à M % de cette même valeur (SARS, Schedule No. 1, General Notes, G.53, C et B.3)",
+  "verified_at": "2026-10-25",
+  "etabli": true,
+  "evidence_level": "primaire — General Notes du Schedule No. 1 au Customs and Excise Act 1964 (édition SARS datée du 2026-03-27) et Schedule No. 1, Part 1 (édition SARS datée du 2026-10-16) ; la portée du mot « less » se lit sur la définition du symbole « % », les General Notes ne la définissent pas autrement. Corroboration secondaire indépendante : examens de politique commerciale de la SACU par le Secrétariat de l'OMC (WT/TPR/S/324, 2015 ; WT/TPR/S/447, 2023), qui décrivent ces cinq droits comme des « formula duties » fondées sur le prix FOB et inversement proportionnelles au prix d'importation",
+  "source": {
+    "institution": "South African Revenue Service (SARS), autorité douanière qui publie le tarif commun de la SACU",
+    "url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1Gen-General-Notes-to-Schedules-to-Customs-and-Excise-Act.pdf",
+    "pdf_sha256": "475f2c01545f3a01f6d3942c0e4584f46e24ded9253c1f3727377c36b4c566b8",
+    "pdf_non_archive": "PDF de 515 pages déposé au dépôt (data/sacu/reference/ZAF_SARS_schedule1_general_notes_2023.pdf, PR #613) ; seuls les passages B, C et G.53 sont archivés (voir regle.texte_archive)",
+    "url_part_1": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
+    "pdf_part_1_sha256": "fbc5e9bf7a8d1c633aeec31207744fc21b4654cbca9d2468aaa425afcd0479fa",
+    "pdf_part_1_non_archive": "Téléchargé le 2026-10-25 (2,8 Mo, pied de page « Date: 2026-10-16 ») ; les lignes des cinq positions sont archivées dans le même extrait. Elles sont identiques aux `raw_value` du crawl SARS."
+  },
+  "sources_secondaires": [
+    {
+      "institution": "Organisation mondiale du commerce, Secrétariat — Trade Policy Review: Southern African Customs Union, WT/TPR/S/324 (30 septembre 2015), §3.19 et tableau 3.3",
+      "url": "https://www.wto.org/english/tratop_e/tpr_e/s324_e.pdf",
+      "pdf_sha256": "64f71316c10230690d06e88d7f21ca13cd79da974edffca661cb21b9f5b1d3ff",
+      "pdf_non_archive": "Téléchargé le 2026-10-25 (0,3 Mo) ; seuls le §3.19 et le tableau 3.3 sont archivés (voir documents_archives)"
+    },
+    {
+      "institution": "Organisation mondiale du commerce, Secrétariat — Trade Policy Review: Southern African Customs Union, WT/TPR/S/447 (20 septembre 2023), §3.15 et tableau 3.1",
+      "url": "https://www.wto.org/english/tratop_e/tpr_e/s447-01_e.pdf",
+      "pdf_sha256": "8cf7cd292511edf42a1bec422b770cfee0e4f13f9e6457bba744299a37d0aaa5",
+      "pdf_non_archive": "Téléchargé le 2026-10-25 (1,1 Mo) ; seuls le tableau 3.1, sa note d et le §3.15 sont archivés (voir documents_archives)"
+    }
+  ],
+  "regle": {
+    "valeur": "Droit = max(0 ; Y × quantité − N % × valeur en douane), borné à M % × valeur en douane quand la colonne énonce « with a maximum of M% ». Séparé par « or » (« X% or Yc/kg less N% »), ce taux est une part complète que la note B.3 compare à X % × valeur : la plus élevée s'applique. La valeur en douane est la « value for duty purposes » (s.65), soit la valeur FOB des pays SACU (fiche SACU_assiette_DD_2026-09-17.json). Les trois pourcentages portent sur cette même valeur.",
+    "verbatim": "G. ABBREVIATIONS AND SYMBOLS […] 53 % means \"per cent AD VALOREM\"",
+    "verbatim_valeur": "C. VALUE FOR DUTY PURPOSES The expression \"value for duty purposes\" has the meaning assigned thereto in section 65.",
+    "verbatim_or": "3. When a rate of duty in respect of any goods consists of two or more parts separated by the word \"or\", each such part shall be deemed to be a separate and complete rate of duty and such rate of duty yielding the higher or highest amount of duty shall be applicable in respect of such goods.",
+    "colonne_recomposee": "2002.10.90 […] Other | kg | 110c/kg less 80% with a maximum of 37% | free | 110c/kg less 80% with a maximum of 37% | free | 110c/kg less 80% with a maximum of 37% | 110c/kg less 80% with a maximum of 37% — colonnes General | EU / UK | EFTA | SADC | MERCOSUR | AfCFTA, recomposées depuis la mise en page du PDF (le texte tel qu'extrait est archivé).",
+    "verbatim_omc_2015": "3.19. […] They are based on a relationship between the f.o.b. import prices and reference prices. In other words: they are inversely proportional to import prices.",
+    "verbatim_omc_2023": "Formula duties aim at ensuring that import prices be at least equal (i.e. higher or equal) to the reference price set by the authorities for each category of product. […] As their name indicates, formula duties are based on a formula that makes them inversely proportional to import prices.",
+    "reference": "SARS, Schedule No. 1, General Notes, G (Abbreviations and symbols) note 53, C (Value for duty purposes) et B (Duty assessment) note 3 ; Schedule No. 1, Part 1, positions 1901.90.10, 2002.10.90, 2006.00.30, 2401.10 et 2401.20",
+    "portee": "scripts/build_socle.MOTIF_DEDUCTION_SARS et MOTIF_COMPOSE_SARS (socles ZAF, BWA, LSO, NAM, SWZ) : `deduction_ad_valorem_pct` et `assiette_valeur` (FOB) sur 5 positions par pays, au NPF et dans les colonnes EFTA, MERCOSUR et AfCFTA (20 expressions par pays) ; backend/services/calcul._net_de_deduction. Positions liquidables par pays : +3 (les trois formes « or », désormais tranchées par la B.3). Le plafond de tout droit SARS « with a maximum of M% » (46 positions par pays) se prend sur la même valeur ; la colonne AfCFTA garde sa règle B.3 (backend/services/preference) ; le droit en rands s'arrondit au cent (B.2).",
+    "texte_archive": "sources/SACU_formule_less.texte-extrait.txt",
+    "sha256": "3185a4ebc79115e76be592ffbd850819f97953bad8b074e9c80621077f96faac"
+  },
+  "decisions": [
+    "« less N% » se lit comme N % de la valeur en douane, non comme une réduction de N % de la part spécifique : la note G.53 donne au symbole « % » de la colonne des taux le sens « per cent AD VALOREM », sans exception pour ce contexte.",
+    "La colonne AfCFTA confirme cette lecture. Elle reproduit chaque taux NPF multiplié par 0,4, terme à terme : « 860c/kg less 85% with a maximum of 44% » devient « 344c/kg less 34% with a maximum of 17,6% », et « 10% or 55c/kg less 90% » devient « 4% or 22c/kg less 36% ». Lus en valeur, les deux droits AfCFTA valent exactement 0,4 fois le NPF. Lue comme une réduction de la part spécifique, la colonne AfCFTA donnerait 344 × 0,66 = 227c/kg contre 860 × 0,15 = 129c/kg au NPF : un droit préférentiel supérieur au droit commun.",
+    "L'OMC confirme cette lecture indépendamment des General Notes : ces cinq droits sont des « formula duties » fondées sur le prix FOB et « inversely proportional to import prices » (WT/TPR/S/324 §3.19 ; WT/TPR/S/447 §3.15). « 110c/kg moins 80 % de la valeur » s'écrit 0,8 × (137,5c − prix FOB unitaire) : le droit décroît avec le prix et s'annule au prix de référence (137,5c/kg). La lecture concurrente (110c/kg réduits de 80 %, soit 22c/kg) donnerait un droit indépendant du prix, ce que l'OMC exclut. La liste OMC des formula duties (cinq positions) est exactement celle du crawl.",
+    "Plancher à zéro : au-dessus du prix de référence (1,375 R/kg pour 2002.10.90, 10,12 R/kg pour 2401.10), la formule est négative. Aucun texte ne le dit expressément, mais B.2 parle d'un « amount of duty payable », et l'objet du droit selon l'OMC est de porter le prix d'importation « at least equal » au prix de référence : au-delà, il n'y a rien à percevoir. Le moteur sert 0 et marque la ligne `formule_negative`. Dans la forme « or », la B.3 retient de toute façon la part ad valorem, toujours positive.",
+    "Conséquence pratique, à connaître : les prix de référence datent d'une époque où ils mordaient. Aux prix d'importation actuels (plusieurs R/kg pour les tomates préparées, plusieurs dizaines pour le tabac), le droit NPF de 2002.10.90 et de 2401.10 est nul, et celui des trois formes « or » est leur part ad valorem.",
+    "Le plafond « with a maximum of M% » de ces lignes porte sur la même valeur en douane (FOB) que la déduction, non sur la valeur CIF. Il porte sur le droit net : appliqué au spécifique avant déduction, min(110c × q ; 37 % × V) − 80 % × V serait négatif dans tous les cas (au plus 37 % × V − 80 % × V), et le droit toujours nul.",
+    "Sans valeur FOB, la ligne reste VALEUR_FOB_REQUISE : jamais la seule part spécifique.",
+    "Toute autre expression en « less » n'est pas liquidée (taux et part spécifique absents, motif en note) : hors tarif SARS, la lecture de G.53 ne vaut pas ; dans le tarif SARS, une unité autre que le kilo, un pourcentage écrit autrement (« 12.5% », « 80 % ») ou une part spécifique perdue à la collecte ne sont pas lus avec certitude. Sans ce garde-fou, le 80 de `rate_pct` serait servi à 80 % ad valorem.",
+    "Séparateur de milliers : « 2 500c/kg » se relit sur le verbatim quand la part spécifique ouvre l'expression (formes « with a maximum » et « less »), comme pour la forme « or ».",
+    "Colonnes AfCFTA « X% or Yc/kg less N% » (1901.90.10, 2006.00.30, 2401.20) : backend/services/preference transmet désormais la règle B.3 que porte la colonne ; elles se liquident comme le NPF.",
+    "Le plafond des 46 positions « Yc/kg with a maximum of M% » sans déduction se prend lui aussi sur la valeur en douane (FOB) : `assiette_valeur` est posé sur tout droit plafonné. Sans valeur FOB, la ligne rend VALEUR_FOB_REQUISE.",
+    "B.2 : le droit de douane SARS liquidé en rands s'arrondit au cent le plus proche, la moitié comptant pour un cent entier."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Les General Notes ne définissent pas le mot « less » lui-même. Aucun texte de droit primaire ne l'énonce en toutes lettres : la lecture repose sur G.53, sur la cohérence des colonnes et sur les examens de l'OMC, qui sont des rapports du Secrétariat et non le tarif.",
+    "Le plancher à zéro est une lecture (voir decisions), non une règle citée.",
+    "B.2 (arrondi au cent, la moitié comptant pour un cent entier) n'est appliquée qu'au droit de douane SARS liquidé en rands. Un montant dans une autre devise, les accises et les prélèvements nationaux gardent l'arrondi du moteur (quatre décimales)."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SACU_formule_less.texte-extrait.txt",
+      "sha256": "3185a4ebc79115e76be592ffbd850819f97953bad8b074e9c80621077f96faac"
+    },
+    {
+      "texte_archive": "sources/SACU_formule_less_OMC.texte-extrait.txt",
+      "sha256": "a52e25016a5b37df829f8fea63970b35a06a011beaf57b474b02719213aefb38"
+    }
+  ]
+}
