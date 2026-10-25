@@ -67,12 +67,15 @@ def _colonne_de_la_position(
             # Droit composé (« 40% or 240c/kg ») : les deux composantes
             # sortent ; le moteur refuse de liquider sans règle de départage
             # au lieu de servir le seul ad valorem.
-            return {
+            col = {
                 "taux": float(valeur["taux"]),
                 "specifique": valeur["specifique"],
                 "compose": True,
                 "expression_brute": valeur.get("expression_brute") or "",
             }
+            if valeur.get("deduction_ad_valorem_pct") is not None:
+                col["deduction_ad_valorem_pct"] = float(valeur["deduction_ad_valorem_pct"])
+            return col
         if valeur.get("taux") is not None:
             return {"taux": float(valeur["taux"])}
         specifique = valeur.get("specifique")
@@ -83,6 +86,10 @@ def _colonne_de_la_position(
             if valeur.get("plafond_ad_valorem_pct") is not None:
                 col["plafond_ad_valorem_pct"] = float(valeur["plafond_ad_valorem_pct"])
                 col["expression_brute"] = valeur.get("expression_brute") or ""
+            # « 344c/kg less 34% » : la déduction aussi — sans elle, la colonne
+            # servirait le spécifique entier.
+            if valeur.get("deduction_ad_valorem_pct") is not None:
+                col["deduction_ad_valorem_pct"] = float(valeur["deduction_ad_valorem_pct"])
             return col
     return None
 

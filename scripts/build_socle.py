@@ -683,9 +683,23 @@ REGLES_COMPOSEES = {"higher": "LE_PLUS_ELEVE", "lower": "LE_MOINS_ELEVE"}
 #: Tarif SARS (SACU) : « 40% or 240c/kg ». La règle n'est pas dans la colonne mais
 #: dans les General Notes du Schedule No. 1, partie B, note 3 : chaque partie
 #: séparée par « or » est un taux complet, et s'applique « such rate of duty
-#: yielding the higher or highest amount of duty ». Seule la forme simple au kilo
-#: est retenue : « 500c/2u » (la paire) et « 55c/kg less 90% » restent non tranchés.
-MOTIF_COMPOSE_SARS = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*%\s*or\s*(\d{1,3}(?: \d{3})+|\d+(?:,\d+)?)c/kg\s*$")
+#: yielding the higher or highest amount of duty ». Seule la forme au kilo est
+#: retenue : « 500c/2u » (la paire) reste non tranché. « 55c/kg less 90% » est un
+#: taux complet lui aussi — voir MOTIF_DEDUCTION_SARS.
+MOTIF_COMPOSE_SARS = re.compile(
+    r"^\s*\d+(?:[.,]\d+)?\s*%\s*or\s*(\d{1,3}(?: \d{3})+|\d+(?:,\d+)?)c/kg"
+    r"(?:\s+less\s+\d+(?:,\d+)?%)?\s*$"
+)
+
+#: « 110c/kg less 80% with a maximum of 37% », « 10% or 55c/kg less 90% » : dans
+#: la colonne des taux, « % » signifie « per cent AD VALOREM » (General Notes,
+#: G.53), sur la « value for duty purposes » (C.). La part spécifique est donc
+#: diminuée de 80 % de la valeur en douane — et non de 80 % d'elle-même. La
+#: colonne AfCFTA le confirme : « 344c/kg less 34% with a maximum of 17,6% » est
+#: le NPF « 860c/kg less 85% with a maximum of 44% » multiplié par 0,4, terme à
+#: terme, ce qui n'est vrai que de cette lecture. Fiche
+#: SACU_formule_less_2026-10-25.json.
+MOTIF_DEDUCTION_SARS = re.compile(r"c/kg\s+less\s+(\d+(?:,\d+)?)%", re.I)
 
 
 def droit_compose_depuis_designation(designation, source):
@@ -853,6 +867,17 @@ def droits_depuis_liste(taxes, source_defaut):
         if specifique and row.get("rate_pct") is None:
             taux = None
         source_ligne = row.get("source") or source_defaut
+        # « 110c/kg less 80% » : sans sa déduction, la part spécifique surestime
+        # le droit de 80 % de la valeur. La déduction se conserve ; hors tarif
+        # SARS, sa lecture (G.53) n'est pas établie et rien n'est liquidable.
+        deduction = MOTIF_DEDUCTION_SARS.search(brut) if specifique else None
+        deduction_ad_valorem = None
+        note = row.get("note")
+        if deduction and "sars.gov.za" in str(source_ligne):
+            deduction_ad_valorem = float(deduction.group(1).replace(",", "."))
+        elif deduction:
+            taux, specifique, compose, plafond_ad_valorem = None, None, False, None
+            note = f"« {brut} » : la portée de « less » n'est pas établie pour cette source."
         compose_sars = (
             MOTIF_COMPOSE_SARS.match(brut) if compose and "sars.gov.za" in str(source_ligne) else None
         )
@@ -877,7 +902,7 @@ def droits_depuis_liste(taxes, source_defaut):
                 taux,
                 row.get("base") or row.get("assiette"),
                 row.get("source") or source_defaut,
-                note=row.get("note"),
+                note=note,
                 specifique=specifique,
                 qualite=row.get("source_quality"),
                 classification=row.get("classification_source"),
@@ -886,6 +911,8 @@ def droits_depuis_liste(taxes, source_defaut):
         if plafond_ad_valorem is not None:
             out[-1]["plafond_ad_valorem_pct"] = plafond_ad_valorem
             out[-1]["expression_brute"] = brut
+        if deduction_ad_valorem is not None:
+            out[-1]["deduction_ad_valorem_pct"] = deduction_ad_valorem
         if cumulatif:
             out[-1]["cumulatif"] = True
             out[-1]["expression_brute"] = brut
@@ -3258,6 +3285,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         prefs[regime]["cumulatif"] = True
                     if d.get("plafond_ad_valorem_pct") is not None:
                         prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
+                    if d.get("deduction_ad_valorem_pct") is not None:
+                        prefs[regime]["deduction_ad_valorem_pct"] = d["deduction_ad_valorem_pct"]
                     compteurs["preferentiels_specifiques"] += 1
                 elif d["taux"] is None and d.get("specifique"):
                     prefs[regime] = {
@@ -3275,6 +3304,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     if d.get("plafond_ad_valorem_pct") is not None:
                         prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
                         prefs[regime]["expression_brute"] = d.get("expression_brute") or ""
+                    if d.get("deduction_ad_valorem_pct") is not None:
+                        prefs[regime]["deduction_ad_valorem_pct"] = d["deduction_ad_valorem_pct"]
                     compteurs["preferentiels_specifiques"] += 1
                 elif d["taux"] is None and d.get("note"):
                     # UN TAUX ABSENT DOIT DIRE POURQUOI. La source mauricienne
@@ -3315,6 +3346,12 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     "montant": None,
                     "motif": "expression non lisible",
                 }
+            if d.get("deduction_ad_valorem_pct") is not None:
+                # « less 80% » se déduit de la valeur en douane : celle que
+                # l'assiette du pays donne au droit (FOB en SACU), retenue
+                # avant que la part spécifique ne fasse passer le droit à la
+                # quantité. Les colonnes préférentielles s'y rapportent aussi.
+                d["assiette_valeur"] = d["assiette"]
             if d["specifique"] and d["taux"] is None and not d.get("assiette_non_traduite"):
                 # Une assiette que la source décrit sans qu'on sache la traduire
                 # (« PN(KG)/100 EXCES », « QCI ») reste non traduite : la forcer

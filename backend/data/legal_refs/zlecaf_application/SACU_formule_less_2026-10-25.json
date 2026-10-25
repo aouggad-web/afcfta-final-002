@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "objet": "SACU (Afrique du Sud, Botswana, Lesotho, Namibie, Eswatini) : un taux « Yc/kg less N% [with a maximum of M%] » se liquide à Yc/kg × quantité diminué de N % de la valeur en douane, borné à M % de cette même valeur (SARS, Schedule No. 1, General Notes, G.53, C et B.3)",
+  "verified_at": "2026-10-25",
+  "etabli": true,
+  "evidence_level": "primaire — General Notes du Schedule No. 1 au Customs and Excise Act 1964 (édition SARS datée du 2026-03-27) et Schedule No. 1, Part 1 (édition SARS datée du 2026-10-16) ; la portée du mot « less » se lit sur la définition du symbole « % », les General Notes ne la définissent pas autrement",
+  "source": {
+    "institution": "South African Revenue Service (SARS), autorité douanière qui publie le tarif commun de la SACU",
+    "url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1Gen-General-Notes-to-Schedules-to-Customs-and-Excise-Act.pdf",
+    "pdf_sha256": "475f2c01545f3a01f6d3942c0e4584f46e24ded9253c1f3727377c36b4c566b8",
+    "pdf_non_archive": "PDF de 515 pages déposé au dépôt (data/sacu/reference/ZAF_SARS_schedule1_general_notes_2023.pdf, PR #613) ; seuls les passages B, C et G.53 sont archivés (voir regle.texte_archive)",
+    "url_part_1": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
+    "pdf_part_1_sha256": "fbc5e9bf7a8d1c633aeec31207744fc21b4654cbca9d2468aaa425afcd0479fa",
+    "pdf_part_1_non_archive": "Téléchargé le 2026-10-25 (2,8 Mo, pied de page « Date: 2026-10-16 ») ; les lignes des cinq positions sont archivées dans le même extrait. Elles sont identiques aux `raw_value` du crawl SARS."
+  },
+  "regle": {
+    "valeur": "Droit = max(0 ; Y × quantité − N % × valeur en douane), borné à M % × valeur en douane quand la colonne énonce « with a maximum of M% ». Séparé par « or » (« X% or Yc/kg less N% »), ce taux est une part complète que la note B.3 compare à X % × valeur : la plus élevée s'applique. La valeur en douane est la « value for duty purposes » (s.65), soit la valeur FOB des pays SACU (fiche SACU_assiette_DD_2026-09-17.json). Les trois pourcentages portent sur cette même valeur.",
+    "verbatim": "G. ABBREVIATIONS AND SYMBOLS […] 53 % means \"per cent AD VALOREM\"",
+    "verbatim_valeur": "C. VALUE FOR DUTY PURPOSES The expression \"value for duty purposes\" has the meaning assigned thereto in section 65.",
+    "verbatim_or": "3. When a rate of duty in respect of any goods consists of two or more parts separated by the word \"or\", each such part shall be deemed to be a separate and complete rate of duty and such rate of duty yielding the higher or highest amount of duty shall be applicable in respect of such goods.",
+    "verbatim_colonne": "2002.10.90 […] Other | kg | 110c/kg less 80% with a maximum of 37% | free | 110c/kg less 80% with a maximum of 37% | free | 110c/kg less 80% with a maximum of 37% | 110c/kg less 80% with a maximum of 37%",
+    "reference": "SARS, Schedule No. 1, General Notes, G (Abbreviations and symbols) note 53, C (Value for duty purposes) et B (Duty assessment) note 3 ; Schedule No. 1, Part 1, positions 1901.90.10, 2002.10.90, 2006.00.30, 2401.10 et 2401.20",
+    "portee": "scripts/build_socle.MOTIF_DEDUCTION_SARS et MOTIF_COMPOSE_SARS (socles ZAF, BWA, LSO, NAM, SWZ) : `deduction_ad_valorem_pct` et `assiette_valeur` (FOB) sur 5 positions par pays, au NPF et dans les colonnes EFTA, MERCOSUR et AfCFTA (20 expressions par pays) ; backend/services/calcul._net_de_deduction. Positions liquidables par pays : +3 (les trois formes « or », désormais tranchées par la B.3).",
+    "texte_archive": "sources/SACU_formule_less.texte-extrait.txt",
+    "sha256": "3185a4ebc79115e76be592ffbd850819f97953bad8b074e9c80621077f96faac"
+  },
+  "decisions": [
+    "« less N% » se lit comme N % de la valeur en douane, non comme une réduction de N % de la part spécifique : la note G.53 donne au symbole « % » de la colonne des taux le sens « per cent AD VALOREM », sans exception pour ce contexte.",
+    "La colonne AfCFTA confirme cette lecture. Elle reproduit chaque taux NPF multiplié par 0,4, terme à terme : « 860c/kg less 85% with a maximum of 44% » devient « 344c/kg less 34% with a maximum of 17,6% », et « 10% or 55c/kg less 90% » devient « 4% or 22c/kg less 36% ». Lus en valeur, les deux droits AfCFTA valent exactement 0,4 fois le NPF. Lue comme une réduction de la part spécifique, la colonne AfCFTA donnerait 344 × 0,66 = 227c/kg contre 860 × 0,15 = 129c/kg au NPF : un droit préférentiel supérieur au droit commun.",
+    "Plancher à zéro : pour une valeur unitaire assez haute (au-delà de 1,375 R/kg pour 2002.10.90, de 10,12 R/kg pour 2401.10), la formule est négative. Le texte ne le dit pas expressément, mais B.2 parle d'un « amount of duty payable » : un droit négatif n'en est pas un. Le moteur sert 0 et marque la ligne `formule_negative`. Dans la forme « or », la B.3 retient de toute façon la part ad valorem, toujours positive.",
+    "Le plafond « with a maximum of M% » de ces lignes porte sur la même valeur en douane (FOB) que la déduction, non sur la valeur CIF.",
+    "Sans valeur FOB, la ligne reste VALEUR_FOB_REQUISE : jamais la seule part spécifique.",
+    "Hors tarif SARS, une expression « less N% » n'est pas liquidée (taux et part spécifique absents, motif en note) : la lecture de G.53 est propre au Schedule No. 1."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Les General Notes ne définissent pas le mot « less » lui-même ; la lecture repose sur G.53 et sur la cohérence des colonnes, sans texte, guide SARS ni rapport ITAC qui l'énonce en toutes lettres. Une recherche web du 2026-10-25 n'en a pas trouvé.",
+    "Le plancher à zéro est une lecture (voir decisions), non une règle citée.",
+    "B.2 (arrondi au cent le plus proche) n'est pas appliquée ici : le moteur arrondit à quatre décimales, comme pour tous les droits.",
+    "Colonnes AfCFTA « X% or Yc/kg less N% » (1901.90.10, 2006.00.30, 2401.20) : le socle porte la règle B.3 et la déduction, mais backend/services/preference._colonne_de_la_position ne transmet pas `regle_composee` pour un composé. Ces colonnes restent donc REGLE_COMPOSEE_NON_ETABLIE sur la route ZLECAf, comme les autres composés « or » de la colonne AfCFTA (test_zlecaf_zaf_application.test_m). C'est un refus, pas une surestimation.",
+    "Le plafond des 46 positions « Yc/kg with a maximum of M% » sans déduction reste calculé sur la valeur CIF. Cela relève d'une autre correction."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SACU_formule_less.texte-extrait.txt",
+      "sha256": "3185a4ebc79115e76be592ffbd850819f97953bad8b074e9c80621077f96faac"
+    }
+  ]
+}

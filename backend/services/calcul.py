@@ -346,6 +346,26 @@ def _assiette_de(
     return base, None, detail
 
 
+def _net_de_deduction(
+    montant_specifique: float, deduction_pct: float, valeur: float, ligne: Dict[str, Any]
+) -> float:
+    """« 110c/kg less 80% » : la part spécifique diminuée de 80 % de la valeur en
+    douane — « % » means « per cent AD VALOREM » (SARS, General Notes, G.53 ;
+    fiche SACU_formule_less_2026-10-25.json).
+
+    Sur une valeur unitaire assez haute (au-delà de 1,375 R/kg pour 2002.10.90),
+    la formule passe sous zéro. Un droit négatif n'existe pas : rien n'est dû,
+    et la ligne dit pourquoi."""
+    deduction = valeur * deduction_pct / 100.0
+    ligne["deduction_ad_valorem_pct"] = deduction_pct
+    ligne["deduction_ad_valorem_montant"] = round(deduction, 4)
+    net = montant_specifique - deduction
+    if net < 0:
+        ligne["formule_negative"] = True
+        return 0.0
+    return net
+
+
 #: Famille socle → clé de couverture pays (`couverture` du manifeste). Une
 #: position peut liquider tout ce qu'elle porte et rester malgré tout
 #: incomplète si son pays ne trace pas une famille entière — c'est le cas des
@@ -454,6 +474,7 @@ def _liquider(
                     ),
                     expression_brute=remise.get("expression_brute"),
                     plafond_ad_valorem_pct=remise.get("plafond_ad_valorem_pct"),
+                    deduction_ad_valorem_pct=remise.get("deduction_ad_valorem_pct"),
                 )
                 ligne["taux_pct"] = droit["taux"]
                 ligne["regime_applique"] = "preference"
@@ -613,6 +634,23 @@ def _liquider(
             devise_valeur,
         )
         ligne.update(detail)
+        # « 110c/kg less 80% » : la déduction porte sur la valeur en douane, que
+        # le socle nomme (`assiette_valeur`, FOB en SACU). Introuvable, la ligne
+        # reste indisponible — jamais servie à sa seule part spécifique.
+        deduction_pct = droit.get("deduction_ad_valorem_pct")
+        valeur_deduction = None
+        if deduction_pct is not None and manque is None:
+            valeur_deduction, manque, _ = _assiette_de(
+                dict(droit, assiette=droit.get("assiette_valeur"), plafond=None),
+                cif,
+                calcules,
+                echecs,
+                quantite,
+                taux_de_change,
+                codes_de_la_position,
+                valeur_fob,
+                devise_valeur,
+            )
         if droit.get("assiette") == "xQTE" and len(unites_de_quantite) > 1 and manque is None:
             manque = MANQUE_UNITES
             ligne["unites_de_la_position"] = sorted(unites_de_quantite)
@@ -639,6 +677,8 @@ def _liquider(
         # douane — le taux est un pourcentage.
         if droit.get("assiette") == "xQTE":
             montant = assiette * taux
+            if deduction_pct is not None:
+                montant = _net_de_deduction(montant, deduction_pct, valeur_deduction, ligne)
         else:
             montant = assiette * taux / 100.0
 
@@ -721,6 +761,12 @@ def _liquider(
                 lignes.append(ligne)
                 continue
             montant_specifique = quantite * unitaire * facteur
+            if deduction_pct is not None:
+                # « 10% or 55c/kg less 90% » : la B.3 compare deux taux
+                # complets, donc la part spécifique nette de sa déduction.
+                montant_specifique = _net_de_deduction(
+                    montant_specifique, deduction_pct, valeur_deduction, ligne
+                )
             retenu = (
                 max(montant, montant_specifique)
                 if compose_departage == "LE_PLUS_ELEVE"
@@ -747,7 +793,10 @@ def _liquider(
         # son droit s'arrête là.
         plafond_pct = droit.get("plafond_ad_valorem_pct")
         if plafond_pct is not None:
-            borne = cif * plafond_pct / 100.0
+            # Une formule « less N% with a maximum of M% » prend ses deux
+            # pourcentages sur la même valeur en douane.
+            base_plafond = valeur_deduction if valeur_deduction is not None else cif
+            borne = base_plafond * plafond_pct / 100.0
             ligne["plafond_ad_valorem_pct"] = plafond_pct
             ligne["plafond_ad_valorem_montant"] = round(borne, 4)
             if montant > borne:
