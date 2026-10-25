@@ -1,27 +1,19 @@
 """
-AfCFTA API v2 – enhanced endpoints for comprehensive search, bulk operations,
-analytics, AI recommendations and mobile quick-lookup.
+AfCFTA API v2 – enhanced endpoints for bulk operations,
+analytics and AI recommendations.
 """
 
 from __future__ import annotations
 
-import sys
-import time
 import uuid
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any, Optional
 
 from analytics.dashboard_generator import DashboardGenerator  # type: ignore
 from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
-from search.hs_code_search import get_search_engine  # type: ignore
 from search.investment_search import InvestmentOpportunitySearch  # type: ignore
-
-_ENGINE_DIR = Path(__file__).resolve().parents[3] / "engine"
-if str(_ENGINE_DIR) not in sys.path:
-    sys.path.insert(0, str(_ENGINE_DIR))
 
 # ---------------------------------------------------------------------------
 # Internal imports (backend/ is on sys.path)
@@ -49,7 +41,6 @@ except Exception:
 # ---------------------------------------------------------------------------
 _regional_engine = RegionalAnalyticsEngine()
 _dashboard_gen = DashboardGenerator()
-_hs_search = get_search_engine()
 _inv_search = InvestmentOpportunitySearch()
 
 router = APIRouter(prefix="/v2")
@@ -57,23 +48,6 @@ router = APIRouter(prefix="/v2")
 # ---------------------------------------------------------------------------
 # Pydantic models
 # ---------------------------------------------------------------------------
-
-
-class SearchFilters(BaseModel):
-    countries: list[str] = Field(default_factory=list)
-    sectors: list[str] = Field(default_factory=list)
-    hs_chapters: list[int] = Field(default_factory=list)
-
-
-class Pagination(BaseModel):
-    page: int = Field(default=1, ge=1)
-    limit: int = Field(default=20, ge=1, le=100)
-
-
-class ComprehensiveSearchRequest(BaseModel):
-    query: str
-    filters: SearchFilters = Field(default_factory=SearchFilters)
-    pagination: Pagination = Field(default_factory=Pagination)
 
 
 class OpportunityItem(BaseModel):
@@ -106,65 +80,6 @@ class UserProfile(BaseModel):
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
-
-
-@router.post("/search/comprehensive", summary="Multi-dimensional comprehensive search")
-async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str, Any]:
-    """Search across products (HS codes), countries and investment opportunities."""
-    start = time.perf_counter()
-
-    # HS code / product search
-    products = _hs_search.search(request.query, limit=10)
-    if request.filters.hs_chapters:
-        products = [
-            p for p in products if p.get("chapter") in request.filters.hs_chapters
-        ]
-
-    # Country filter applied to investment search
-    inv_criteria: dict[str, Any] = {}
-    if request.filters.countries:
-        inv_criteria["geographic"] = {"country": request.filters.countries[0]}
-    if request.filters.sectors:
-        inv_criteria["sectoral"] = {"primary": request.filters.sectors[0]}
-
-    investment_opportunities = (
-        _inv_search.search(inv_criteria) if inv_criteria else _inv_search.search({})
-    )
-
-    # Country matches (simple substring on query)
-    country_matches = [
-        c
-        for c in [
-            "Nigeria",
-            "Kenya",
-            "South Africa",
-            "Ethiopia",
-            "Egypt",
-            "Ghana",
-            "Morocco",
-            "Tanzania",
-            "Senegal",
-            "Côte d'Ivoire",
-        ]
-        if request.query.lower() in c.lower()
-    ]
-
-    # Pagination
-    page = request.pagination.page
-    limit = request.pagination.limit
-    offset = (page - 1) * limit
-    paginated_products = products[offset : offset + limit]
-
-    elapsed_ms = round((time.perf_counter() - start) * 1000, 2)
-    return {
-        "query": request.query,
-        "products": paginated_products,
-        "countries": country_matches,
-        "investment_opportunities": investment_opportunities[:limit],
-        "total_count": len(products) + len(investment_opportunities),
-        "execution_time_ms": elapsed_ms,
-        "pagination": {"page": page, "limit": limit},
-    }
 
 
 @router.post(
@@ -285,36 +200,3 @@ async def ai_recommendations(profile: UserProfile) -> dict[str, Any]:
     }
 
 
-@router.get("/mobile/quick-lookup", summary="Mobile-optimised quick tariff lookup")
-async def mobile_quick_lookup(
-    hs_code: Optional[str] = Query(default=None, description="HS code to look up"),
-    country: Optional[str] = Query(default=None, description="Destination country"),
-) -> dict[str, Any]:
-    """Lightweight endpoint optimised for mobile clients – returns minimal tariff info."""
-    if not hs_code and not country:
-        raise HTTPException(
-            status_code=400, detail="Provide at least hs_code or country"
-        )
-
-    result: dict[str, Any] = {"query": {"hs_code": hs_code, "country": country}}
-
-    if hs_code:
-        matches = _hs_search.search(hs_code, limit=3)
-        result["hs_info"] = matches[0] if matches else None
-        result["tariff_summary"] = {
-            "mfn_rate_pct": None,
-            "afcfta_rate_pct": None,
-            "data_status": "NOT_AVAILABLE",
-            "note": "Verified national tariff data is not connected to this endpoint.",
-        }
-
-    if country:
-        opps = _inv_search.get_by_country(country)
-        result["investment_snapshot"] = {
-            "country": country,
-            "opportunity_count": len(opps),
-            "top_sectors": list({o["sector"] for o in opps})[:3],
-        }
-
-    result["generated_at"] = datetime.now(timezone.utc).isoformat()
-    return result
