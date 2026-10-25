@@ -11,19 +11,19 @@
  },
  "documents_archives": [
   {
-   "fichier_archive": "../../../../data/sources/LSO/legislation/LSO_TobaccoAlcoholicProductsLevyAct1-2023_2023-01-27.pdf",
+   "fichier_archive": "sources/LSO_TobaccoAlcoholicProductsLevyAct1-2023_2023-01-27.pdf",
    "sha256": "6548415f20b3d0fdfcde47d787033bb7c1edb3cfb3a7454643e5abfed886c2d2"
   },
   {
-   "fichier_archive": "../../../../data/sources/LSO/legislation/LSO_TAPL_CommencementNotice_LN22-2023_2023-02-17.pdf",
+   "fichier_archive": "sources/LSO_TAPL_CommencementNotice_LN22-2023_2023-02-17.pdf",
    "sha256": "f988e17823496595338dd17a9d82a47c13a5117a2d1a8d2a2074eab7f2ae07c2"
   },
   {
-   "fichier_archive": "../../../../data/sources/LSO/legislation/LSO_TAPL_AmendmentSchedule_LN89-2023_2023-09-08.pdf",
+   "fichier_archive": "sources/LSO_TAPL_AmendmentSchedule_LN89-2023_2023-09-08.pdf",
    "sha256": "ba065ba212bcf73fe7d7851af519cc031bf13644f029a44cc16b9f0512fcd075"
   },
   {
-   "fichier_archive": "../../../../data/sources/LSO/legislation/LSO_TAPL_AmendmentSchedule_LN58-2025_2025-03-28.pdf",
+   "fichier_archive": "sources/LSO_TAPL_AmendmentSchedule_LN58-2025_2025-03-28.pdf",
    "sha256": "417c6418b250dd7163d2c289fd359b0625dd9e4dd65872a8bd478e3e52c938aa"
   }
  ],
