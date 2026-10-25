@@ -62,6 +62,9 @@ ACCISE_ETH = os.path.join(
 IAT_NGA_2026 = os.path.join(
     REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "NGA_SI29_2026_IAT.csv"
 )
+DROITS_AGO_2026 = os.path.join(
+    REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "AGO_Lei14-25_anexo_III.csv"
+)
 # Positions SH 2022 que la liste IAT désigne par un code d'une nomenclature
 # antérieure, ou sous un même code à deux taux (groupes électrogènes « basic » /
 # « soundproof ») : l'IAT n'y est pas attribuable sans deviner.
@@ -1532,6 +1535,40 @@ def _droits_nationaux_sle(positions):
                 d["taux"] = regle[1]
                 d["source"] = "Customs Tariff Act 1978, Schedule, Part II (Finance Act 2026, s.2)"
                 d["note"] = f"Taux national de la Part II, item {regle[2]}, en vigueur au 1er janvier 2026."
+
+
+def _droits_angola_2026(positions, compteurs):
+    """Angola : droit de douane de 2026 (Lei n.º 14/25, OGE 2026 ; fiche
+    AGO_droits_2026-10-25.json). Taux de l'Anexo III (art. 31.º n.º 6) ; ailleurs,
+    minimum de 5 % (art. 31.º n.º 3), « Livre » excepté. Une position de la Pauta
+    2024 que l'Anexo III subdivise en codes qu'elle n'a pas perd son taux."""
+    with open(DROITS_AGO_2026, encoding="utf-8") as f:
+        anexo = {r["code"]: r for r in csv.DictReader(f, delimiter=";")}
+    subdivisions = collections.defaultdict(list)
+    for code, r in anexo.items():
+        if code not in positions:
+            taux = "Livre" if r["taux"] == "Livre" else f"{r['taux']} %"
+            subdivisions[code[:6]].append(f"{code[:4]}.{code[4:6]}.{code[6:]} : {taux}")
+    for code, position in positions.items():
+        dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None)
+        if dd is None:
+            continue
+        _compter_ligne(dd, compteurs, -1)
+        avant = "illisible" if dd["taux"] is None else f"{dd['taux']:g} %"
+        if code in anexo:
+            r = anexo[code]
+            dd["taux"] = 0.0 if r["taux"] in ("Livre", "0") else float(r["taux"])
+            dd["source"] = "Lei n.º 14/25 (OGE 2026), art. 31.º n.º 6 et Anexo III"
+            dd["note"] = f"Taux de l'Anexo III (Diário, p. {r['page_diario']}) ; Pauta 2024 : {avant}."
+        elif code.endswith("00") and subdivisions.get(code[:6]):
+            dd["taux"] = None
+            dd["note"] = ("L'Anexo III de la Lei n.º 14/25 subdivise cette position : "
+                          f"{', '.join(subdivisions[code[:6]])}. Taux à lire sur la sous-position.")
+        elif dd["taux"] is not None and 0 < dd["taux"] < 5:
+            dd["taux"] = 5.0
+            dd["source"] = "Lei n.º 14/25 (OGE 2026), art. 31.º n.º 3"
+            dd["note"] = f"Taux minimum de 5 % pour 2026 ; Pauta 2024 : {avant}."
+        _compter_ligne(dd, compteurs, 1)
 
 
 def _taux_tva_legaux():
@@ -3840,6 +3877,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _iat_nigeria_2026(positions, compteurs)
     if iso == "SLE":
         _droits_nationaux_sle(positions)
+    if iso == "AGO":
+        _droits_angola_2026(positions, compteurs)
     if iso in _taux_tva_legaux():
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
