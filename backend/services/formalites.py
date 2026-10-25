@@ -1,6 +1,5 @@
 """Statuts des formalités administratives, et sources qui les publient de
-façon exhaustive. Partagés par la consultation du socle (routes/consultation.py)
-et l'ancien service (services/authentic_tariff_service.py)."""
+façon exhaustive, lus par la consultation du socle (routes/consultation.py)."""
 
 #: États d'une demande de formalités. Les trois se confondaient en une liste
 #: vide, et cette confusion est la plus coûteuse du produit : une absence

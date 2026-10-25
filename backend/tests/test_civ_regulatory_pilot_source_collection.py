@@ -144,12 +144,6 @@ def test_civ_readme_documents_403_and_partial():
     assert "pending_primary_archive" in readme
 
 
-def test_civ_not_registered_as_supported_jurisdiction():
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "CIV" not in SUPPORTED_JURISDICTIONS
-
-
 def test_civ_has_no_fabricated_afcfta_offer():
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 

@@ -11,12 +11,9 @@ import os
 import re
 import sys
 
-import pytest
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from services.designation import texte_designation  # noqa: E402
-from services.authentic_tariff_service import get_sub_positions  # noqa: E402
 
 PAYS_BILINGUES = ["LBY", "MUS", "MWI", "SYC", "ZMB", "ZWE"]
 CRAWLS = os.path.join(
@@ -43,19 +40,6 @@ def test_la_langue_demandee_si_elle_existe_sinon_le_texte_publie():
     assert texte_designation(publie, "fr") == "-- Of plastics"  # rien n'est traduit
     assert texte_designation({"en": "x", "fr": "y", "verbatim": "x"}, "fr") == "y"
     assert texte_designation("déjà du texte") == "déjà du texte"
-
-
-@pytest.mark.parametrize("iso", PAYS_BILINGUES)
-def test_les_sous_positions_portent_du_texte(iso):
-    hs6 = _hs6_bilingue(iso)
-    positions = get_sub_positions(iso, hs6)
-    assert positions, f"{iso} : aucune sous-position pour {hs6}"
-    for p in positions:
-        for champ in ("description", "description_fr", "description_en", "name"):
-            if champ in p:
-                assert isinstance(
-                    p[champ], str
-                ), f"{iso} {p.get('code')} : {champ} n'est pas du texte"
 
 
 def test_le_moteur_du_socle_rend_une_designation_texte():

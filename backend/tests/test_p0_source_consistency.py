@@ -8,8 +8,6 @@ from pathlib import Path
 
 import currencies.service as currency_service
 import pytest
-from services import authentic_tariff_service as svc
-
 ROOT = Path(__file__).resolve().parents[2]
 _MODULE_PATH = ROOT / "scripts" / "normalize_crawled.py"
 _spec = importlib.util.spec_from_file_location("normalize_crawled", _MODULE_PATH)
@@ -21,7 +19,6 @@ normalize_gha_canonical = _mod.normalize_gha_canonical
 
 @pytest.fixture(autouse=True)
 def local_sources(monkeypatch):
-    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
     monkeypatch.setattr(currency_service, "get_by_country", lambda _: None)
 
 
@@ -29,8 +26,6 @@ def local_sources(monkeypatch):
 def test_dza_collected_duty_agrees_in_listing_rate_and_amount():
     from routes.calcul import DemandeCalcul, calcul
 
-    positions = svc.get_sub_positions("DZA", "220110")
-    assert next(p for p in positions if p["code"] == "2201101100")["dd_rate"] == 30
     result = calcul(
         DemandeCalcul(destination="DZA", origine="SEN", code_sh="2201101100", valeur_cif=1000)
     )
@@ -55,11 +50,6 @@ def test_dza_missing_duty_does_not_produce_complete_total():
     )
     assert result["npf"]["etat"] == "PARTIEL"
     assert "DD" in {m["code"] for m in result["npf"]["manques"]}
-
-
-@pytest.mark.parametrize("expression", ["10 USD/kg", "10% or 5 EUR/kg", "-2%", True, float("nan")])
-def test_non_ad_valorem_or_invalid_expression_is_not_parsed_as_percent(expression):
-    assert svc._parse_crawled_tax_rate(expression) is None
 
 
 def test_ghana_normalization_preserves_all_national_children_and_zero_duties():

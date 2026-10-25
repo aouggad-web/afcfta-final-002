@@ -132,15 +132,6 @@ def test_tza_excise_measures_schema():
     assert "excise_rates" in data
 
 
-def test_tza_registered_as_supported_jurisdiction():
-    """TZA est désormais enregistrée comme juridiction supportée (couche légale
-    nationale générée par backend/scripts/build_jurisdiction_files.py)."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "TZA" in SUPPORTED_JURISDICTIONS
-    assert SUPPORTED_JURISDICTIONS["TZA"].default_currency == "TZS"
-
-
 def test_tza_has_no_fabricated_afcfta_offer():
     """Garde-fou : TZA n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

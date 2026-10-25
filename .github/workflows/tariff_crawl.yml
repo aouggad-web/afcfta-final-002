@@ -177,7 +177,7 @@ jobs:
           git fetch origin main
           git checkout -B "$BRANCH" origin/main
           # IMPORTANT : les datasets vivent dans backend/data/crawled (lu par
-          # authentic_tariff_service). Cette étape tourne à la RACINE du repo
+          # scripts/build_socle.py). Cette étape tourne à la RACINE du repo
           # (pas de working-directory: backend) -> chemin backend/ explicite.
           # FUSION par code SH (jamais d'écrasement) : un crawl par tranches
           # (MAR/TUN) remplace ses chapitres et conserve le reste du fichier.

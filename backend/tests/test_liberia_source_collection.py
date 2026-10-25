@@ -133,16 +133,6 @@ def test_lbr_vat_measures_schema():
     assert "vat_rates" in data
 
 
-def test_lbr_not_registered_as_supported_jurisdiction():
-    """Garde-fou : LBR n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "LBR" not in SUPPORTED_JURISDICTIONS
-
-
 def test_lbr_has_no_fabricated_afcfta_offer():
     """Garde-fou : LBR n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

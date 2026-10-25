@@ -29,7 +29,6 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from services import authentic_tariff_service  # noqa: E402
 from services import socle  # noqa: E402
 
 RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -87,17 +86,6 @@ def test_les_deux_formes_saisies_resolvent_la_meme_position(saisi):
     assert provenance["niveau"] == "national"
     assert position["cle_controle"] == "5"
     assert position["designation"].startswith("Chevaux de course")
-
-
-@besoin_socle
-def test_le_selecteur_affiche_la_position_et_non_la_position_plus_sa_cle():
-    """« HS11 digits » était une affirmation fausse sur l'écran."""
-    proposees = authentic_tariff_service.get_sub_positions("TUN", "010121", language="fr")
-    assert proposees, "la position sentinelle doit se résoudre"
-    for entree in proposees:
-        assert len(entree["code"]) == 10, f"code affiché hors format : {entree['code']}"
-        assert entree["digits"] == 10
-        assert entree["cle_controle"]
 
 
 # ─────────────────────────────────────────────────────────────────────────────

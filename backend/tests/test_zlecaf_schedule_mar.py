@@ -17,7 +17,6 @@ from pathlib import Path
 
 import pytest
 
-from services.authentic_tariff_service import resolve_zlecaf_context
 from services.calcul import calculer
 from services.preference import taux_preferentiels
 from services.zlecaf_implementation_registry import APPLIED, RECORDS, implementation_decision
@@ -179,11 +178,6 @@ def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
     # que le plancher écarte.
     assert table == {"DD": {"taux": 4.0}}
 
-    contexte = resolve_zlecaf_context("MAR", P2, CODE_PLANCHER, 2.5, None)
-    assert contexte["plancher_npf"] is not None
-    assert contexte["preference_applied"] is False
-    assert contexte["dd_rate_pct"] == 2.5
-
     socle = calculer(position, 1000.0, taux_preferentiels=table)["preference"]
 
     assert socle["total_a_payer"] == 1233.0
@@ -195,11 +189,13 @@ def test_le_plancher_npf_sur_le_di_laisse_la_tpi_pleine():
 
 
 def test_le_taux_servi_n_est_jamais_au_dessus_du_npf():
+    position = _position()
     for origine in (P1, P2, HORS_LISTE):
-        contexte = resolve_zlecaf_context("MAR", origine, CODE, 10.0, None)
-        assert contexte["dd_rate_pct"] is not None
-        assert contexte["dd_rate_pct"] <= 10.0
-        assert contexte["plancher_npf"] is None
+        table = taux_preferentiels(position, "MAR", origine, CODE)["taux"]
+        resultat = calculer(position, 1000.0, taux_preferentiels=table)
+        servi = resultat.get("preference") or resultat["npf"]
+        dd = next(ligne for ligne in servi["lignes"] if ligne["code"] == "DD")
+        assert dd["taux_pct"] is not None and dd["taux_pct"] <= 10.0
 
 
 def test_la_liste_a_est_celle_de_l_avenant_6627():

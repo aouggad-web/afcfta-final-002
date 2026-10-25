@@ -48,7 +48,7 @@ def test_la_methode_est_declaree(rapport):
     """Un chiffre dont la méthode n'est pas écrite n'est pas opposable."""
     methode = rapport["methode"]
     assert methode["source"]
-    assert methode["canonisation"] == ("services.authentic_tariff_service._canonical_tax_code")
+    assert methode["canonisation"] == "scripts/build_socle.code_canonique"
     assert methode["limite"], "le périmètre non couvert doit être nommé"
 
 

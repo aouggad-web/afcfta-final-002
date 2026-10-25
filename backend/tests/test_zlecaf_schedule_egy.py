@@ -14,7 +14,6 @@ import datetime
 import json
 from pathlib import Path
 
-from services.authentic_tariff_service import resolve_zlecaf_context
 from services.official_preferential_rates import (
     published_offer_category,
     resolve_official_preferential_rate,
@@ -110,9 +109,7 @@ def test_une_origine_hors_liste_reste_au_npf():
         assert "non notifié" in motif
         assert implementation_decision("EGY", origine)["applied"] is False
 
-    contexte = resolve_zlecaf_context("EGY", "FRA", LIGNE_A, 5.0, None)
-    assert contexte["trade_regime"] != "ZLECAF"
-    assert contexte["dd_rate_pct"] == 5.0
+    assert taux_preferentiels(_position(5.0), "EGY", "FRA", LIGNE_A)["applique"] is False
 
 
 def test_une_ligne_de_liste_b_ou_c_reste_au_npf():
@@ -122,11 +119,6 @@ def test_une_ligne_de_liste_b_ou_c_reste_au_npf():
         taux, motif = compute_egy_zlecaf_rate(code, A_10_ANS, 10.0, datetime.date(2026, 6, 1))
         assert taux == 10.0, code
         assert "hors liste A" in motif
-
-    contexte = resolve_zlecaf_context("EGY", A_10_ANS, LIGNE_B, 10.0, None)
-    assert contexte["trade_regime"] == "ZLECAF"
-    assert contexte["dd_rate_pct"] == 10.0
-    assert contexte["preference_applied"] is False
 
 
 def test_les_chapitres_50_a_63_et_87_restent_au_npf():
@@ -149,17 +141,7 @@ def test_le_taux_preferentiel_n_est_jamais_au_dessus_du_npf():
                     assert 0.0 <= taux <= npf, (origine, code, npf, annee)
 
 
-def test_le_chemin_historique_sert_le_calendrier_national():
-    attendu, _ = compute_egy_zlecaf_rate(LIGNE_A, A_10_ANS, 5.0)
-    contexte = resolve_zlecaf_context("EGY", A_10_ANS, LIGNE_A, 5.0, None)
-
-    assert contexte["trade_regime"] == "ZLECAF"
-    assert contexte["dd_rate_pct"] == attendu
-    assert contexte["preference_applied"] == (attendu < 5.0)
-    assert contexte["plancher_npf"] is None
-
-
-def test_le_chemin_socle_sert_le_meme_taux_que_le_chemin_historique():
+def test_le_chemin_socle_sert_le_calendrier_national():
     attendu, _ = compute_egy_zlecaf_rate(LIGNE_A, A_10_ANS, 5.0)
     resultat = taux_preferentiels(_position(5.0), "EGY", A_10_ANS, LIGNE_A)
 

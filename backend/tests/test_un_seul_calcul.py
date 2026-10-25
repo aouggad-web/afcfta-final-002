@@ -10,13 +10,11 @@ revienne sans qu'on le voie.
 from fastapi.routing import APIRoute
 
 #: Routes dont le chemin parle de calcul et qui restent légitimes : le calcul
-#: lui-même, la couverture du socle, et les droits à l'EXPORTATION — un autre
-#: impôt, sur une autre opération.
+#: lui-même et la couverture du socle. (Le calcul des droits à l'exportation de
+#: l'ancien service est retiré ; un calcul export reviendra sur le socle.)
 AUTORISEES = {
     ("POST", "/api/calcul"),
     ("GET", "/api/calcul/pays"),
-    ("GET", "/api/authentic-tariffs/export-calculate/{country_iso3}/{hs_code}"),
-    ("POST", "/api/authentic-tariffs/export-calculate"),
 }
 
 

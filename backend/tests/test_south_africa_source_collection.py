@@ -99,17 +99,6 @@ def test_inventory_csv_has_required_columns_and_extracted_schedule_row():
     )
 
 
-def test_zaf_registered_as_supported_jurisdiction():
-    """ZAF est désormais enregistrée comme juridiction supportée : la couche
-    fiscale nationale (TVA, accises, prélèvements, registre gazette par position
-    nationale) est générée par backend/scripts/build_jurisdiction_files.py à
-    partir du canonique."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "ZAF" in SUPPORTED_JURISDICTIONS
-    assert SUPPORTED_JURISDICTIONS["ZAF"].default_currency == "ZAR"
-
-
 def test_zaf_category_registry_remains_separate_from_exact_rate_registry():
     """Schedule 1 fournit des taux exacts, pas des catégories A/B/C : il ne
     doit donc pas être injecté dans le registre de classification nationale."""

@@ -91,16 +91,6 @@ def test_ner_vat_measures_schema():
     assert "vat_rates" in data
 
 
-def test_ner_not_registered_as_supported_jurisdiction():
-    """Garde-fou : NER n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "NER" not in SUPPORTED_JURISDICTIONS
-
-
 def test_ner_has_no_fabricated_afcfta_offer():
     """Garde-fou : NER n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

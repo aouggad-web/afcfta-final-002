@@ -82,13 +82,6 @@ def test_sen_inventory_csv_structure():
     assert pending, "au moins une source doit être marquée pending"
 
 
-def test_sen_not_registered_as_supported_jurisdiction():
-    """Garde-fou : SEN n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "SEN" not in SUPPORTED_JURISDICTIONS
-
-
 def test_sen_has_no_fabricated_afcfta_offer():
     """Garde-fou : SEN n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
@@ -142,13 +135,6 @@ def test_ben_inventory_csv_structure():
         "notes",
     }
     assert required_columns <= set(rows[0].keys())
-
-
-def test_ben_not_registered_as_supported_jurisdiction():
-    """Garde-fou : BEN n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "BEN" not in SUPPORTED_JURISDICTIONS
 
 
 def test_ben_has_no_fabricated_afcfta_offer():
@@ -208,13 +194,6 @@ def test_mli_inventory_csv_structure():
     assert pending, "au moins une source doit être marquée pending"
 
 
-def test_mli_not_registered_as_supported_jurisdiction():
-    """Garde-fou : MLI n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "MLI" not in SUPPORTED_JURISDICTIONS
-
-
 def test_mli_has_no_fabricated_afcfta_offer():
     """Garde-fou : MLI n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
@@ -260,13 +239,6 @@ def test_civ_vat_measures_standard_rate():
     assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
 
 
-def test_civ_not_registered_as_supported_jurisdiction():
-    """Garde-fou : CIV n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "CIV" not in SUPPORTED_JURISDICTIONS
-
-
 # ============================================================================
 # Burkina Faso (BFA)
 # ============================================================================
@@ -279,13 +251,6 @@ def test_bfa_vat_measures_standard_rate():
     standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
     assert standard["rate"] == "18%"
     assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
-
-
-def test_bfa_not_registered_as_supported_jurisdiction():
-    """Garde-fou : BFA n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "BFA" not in SUPPORTED_JURISDICTIONS
 
 
 # ============================================================================
@@ -302,13 +267,6 @@ def test_tgo_vat_measures_standard_rate():
     assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
 
 
-def test_tgo_not_registered_as_supported_jurisdiction():
-    """Garde-fou : TGO n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "TGO" not in SUPPORTED_JURISDICTIONS
-
-
 # ============================================================================
 # Niger (NER)
 # ============================================================================
@@ -323,13 +281,6 @@ def test_ner_vat_measures_standard_rate():
     assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
 
 
-def test_ner_not_registered_as_supported_jurisdiction():
-    """Garde-fou : NER n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "NER" not in SUPPORTED_JURISDICTIONS
-
-
 # ============================================================================
 # Guinea-Bissau (GNB)
 # ============================================================================
@@ -342,13 +293,6 @@ def test_gnb_vat_measures_standard_rate():
     standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
     assert standard["rate"] == "18%"
     assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
-
-
-def test_gnb_not_registered_as_supported_jurisdiction():
-    """Garde-fou : GNB n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "GNB" not in SUPPORTED_JURISDICTIONS
 
 
 # ============================================================================

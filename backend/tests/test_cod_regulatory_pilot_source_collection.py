@@ -172,12 +172,6 @@ def test_cod_readme_documents_403_and_bivac():
     assert "BIVAC" in readme
 
 
-def test_cod_not_registered_as_supported_jurisdiction():
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "COD" not in SUPPORTED_JURISDICTIONS
-
-
 def test_cod_has_no_fabricated_afcfta_offer():
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 

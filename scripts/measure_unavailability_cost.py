@@ -236,7 +236,7 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
     return {
         "methode": {
             "source": "backend/data/crawled/*_tariffs.json, tels que collectés",
-            "canonisation": "services.authentic_tariff_service._canonical_tax_code",
+            "canonisation": "scripts/build_socle.code_canonique",
             "taxes_decisives": list(TAXES_DECISIVES),
             "note": (
                 "Mesure du coût de la règle 2 de l'option (A) : une seule taxe "

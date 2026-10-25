@@ -172,31 +172,6 @@ def test_recherche_pays_invalide_ou_hors_socle(client):
     assert client.get("/consultation/KEN/recherche", params={"q": "a"}).status_code == 422
 
 
-@pytest.mark.parametrize(
-    "module, nom",
-    [
-        ("services.authentic_tariff_service", "compute_tax_cascade"),
-        ("services.authentic_tariff_service", "search_tariff_lines"),
-        ("services.tariff_provider_service", "TariffProviderService.search_tariff_lines"),
-        ("services.tax_profile_data", "COUNTRY_TAX_PROFILES"),
-    ],
-)
-def test_l_ancienne_cascade_et_l_ancienne_recherche_sont_retirees(module, nom):
-    """Une seule recherche (celle-ci) et un seul calcul (POST /calcul)."""
-    objet = importlib.import_module(module)
-    for partie in nom.split("."):
-        objet = getattr(objet, partie, None)
-    assert objet is None
-    assert importlib.util.find_spec("routes.hs6_database") is None
-
-
-def test_les_anciennes_routes_de_recherche_sont_retirees():
-    chemins = {r.path for nom in ("authentic_tariffs", "postgres_tariffs") for r in _route(nom).routes}
-    assert "/authentic-tariffs/search/{country_iso3}" not in chemins
-    assert "/postgres-tariffs/country/{iso3}/search" not in chemins
-    assert "/authentic-tariffs/countries" in chemins  # le routeur est bien celui-là
-
-
 def test_recherche_les_mots_entiers_d_abord_puis_par_code(client):
     """« thé » : le thé (0902) avant « théophylline » (2939), bien que 2939
     vienne après 0902 et 0302 avant ; dans chaque groupe, l'ordre du code."""
@@ -219,3 +194,29 @@ def test_recherche_dans_la_langue_de_l_interface(client):
     corps = _recherche(client, "MAR", "tea", langue="en")
     assert corps["langue"] == "en" and corps["results"][0]["code"].startswith("0902")
     assert client.get("/consultation/KEN/recherche", params={"q": "tea", "langue": "de"}).status_code == 422
+
+
+@pytest.mark.parametrize(
+    "module",
+    [
+        "services.authentic_tariff_service",
+        "services.tariff_provider_service",
+        "services.postgres_tariff_service",
+        "services.national_legal_calculation_service",
+        "services.export_tariff_service",
+        "engine.national_customs_calculation",
+        "routes.authentic_tariffs",
+        "routes.postgres_tariffs",
+        "routes.hs6_database",
+    ],
+)
+def test_l_ancien_service_est_retire(module):
+    """Une seule recherche (celle-ci), une seule consultation, un seul calcul
+    (POST /calcul) : l'ancien service et ses routes ne reviennent pas."""
+    assert importlib.util.find_spec(module) is None
+
+
+def test_l_ancienne_table_de_profils_est_retiree():
+    from services import tax_profile_data
+
+    assert not hasattr(tax_profile_data, "COUNTRY_TAX_PROFILES")

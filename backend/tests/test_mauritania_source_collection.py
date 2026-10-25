@@ -156,16 +156,6 @@ def test_mrt_excise_specific_duty_petroleum():
     assert petrol["rate"] == 5.7
 
 
-def test_mrt_not_registered_as_supported_jurisdiction():
-    """Garde-fou : MRT n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "MRT" not in SUPPORTED_JURISDICTIONS
-
-
 def test_mrt_has_no_fabricated_afcfta_offer():
     """Garde-fou : MRT n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

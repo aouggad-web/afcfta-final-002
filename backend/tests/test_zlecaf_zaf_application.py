@@ -155,16 +155,6 @@ def test_h_le_the_kenyan_suspends_vers_le_npf_avec_la_notice():
     assert "R.6594" in decision["note"]
 
 
-def test_h_bis_le_chemin_historique_porte_la_meme_notice_de_suspension():
-    """Historique (résolveur de contexte) : même note R.6594, préférence non
-    appliquée."""
-    from services.authentic_tariff_service import resolve_zlecaf_context
-
-    ctx = resolve_zlecaf_context("ZAF", "KEN", "090240", 10.0, None)
-    assert ctx["preference_applied"] is False
-    assert "R.6594" in ctx["trade_regime_note"]
-
-
 @besoin_socle
 def test_i_une_ligne_kenyane_non_suspendue_sert_le_taux_afcfta():
     """Contraste : sur une ligne ad valorem non suspendue (72191490), le

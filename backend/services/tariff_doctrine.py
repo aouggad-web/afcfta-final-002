@@ -9,8 +9,8 @@ Doctrine tarifaire du projet (README §« Doctrine tarifaire : re-collecte offic
 - priorité aux sources gouvernementales (douanes nationales) puis aux sources
   officielles intergouvernementales (TEC régionaux, Banque mondiale/WITS-TRAINS).
 
-Ce module est le point de contrôle unique (« gate ») partagé par tous les chemins
-de service tarifaire (authentic_tariff_service, tariff_provider_service, routes).
+Ce module est le point de contrôle unique (« gate ») des fichiers collectés
+servis par services/crawled_data_service.py.
 Un fichier pays n'est servable que s'il satisfait :
 
 1. `data_format` ∈ SERVABLE_DATA_FORMATS ;

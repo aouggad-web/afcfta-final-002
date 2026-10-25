@@ -136,16 +136,6 @@ def test_cmr_inventory_csv_structure():
     assert pending, "au moins une source doit être marquée pending"
 
 
-def test_cmr_registered_as_supported_jurisdiction():
-    """CMR est désormais enregistrée comme juridiction supportée (couche légale
-    nationale générée par backend/scripts/build_jurisdiction_files.py — TVA,
-    accises, prélèvements et registre gazette par position nationale)."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "CMR" in SUPPORTED_JURISDICTIONS
-    assert SUPPORTED_JURISDICTIONS["CMR"].default_currency == "XAF"
-
-
 def test_cmr_has_no_fabricated_afcfta_offer():
     """Garde-fou : CMR n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
