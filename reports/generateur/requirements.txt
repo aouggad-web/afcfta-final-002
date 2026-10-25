@@ -1,0 +1,5 @@
+reportlab>=4.0
+matplotlib>=3.7
+numpy
+fonttools>=4.40
+httpx>=0.24

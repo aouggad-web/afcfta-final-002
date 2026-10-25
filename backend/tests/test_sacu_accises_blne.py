@@ -83,7 +83,7 @@ def test_prelevements_nationaux_non_collectes(client, pays, code_ligne):
     assert lignes[code_ligne]["montant"] is None
 
 
-@pytest.mark.parametrize("pays", ["BWA", "LSO", "NAM"])
+@pytest.mark.parametrize("pays", ["BWA", "NAM"])
 def test_cigarettes_sans_prelevement_national_documente(client, pays):
     etat, _ = _calcul(client, pays, "24022090", quantite=500)
     assert etat == "COMPLET"
@@ -212,3 +212,35 @@ def test_le_script_reproduit_les_prelevements_namibiens():
     spec.loader.exec_module(module)
     with open(os.path.join(RACINE, "data", "nam", "prelevements_sch1_parts3_5.json"), encoding="utf-8") as f:
         assert module.articles() == json.load(f)["articles"]
+
+
+def test_lesotho_prelevement_de_20_pct_sur_le_tabac(client):
+    """Tobacco and Alcoholic Products Levy Act 2023, s.7(2) : valeur en douane,
+    droits hors TVA, transport et assurance ; LN 58/2025 : tabac 20 %. La TVA
+    (FOB + tous droits hors TVA) l'inclut."""
+    etat, lignes = _calcul(client, "LSO", "24022090", quantite=500)
+    assert etat == "COMPLET"
+    tapl = lignes["TAPL"]
+    assert tapl["taux_pct"] == 20.0
+    assert tapl["base"] == pytest.approx(11_000 + lignes["DD"]["montant"] + lignes["EXS"]["montant"])
+    assert lignes["TVA"]["base"] == pytest.approx(
+        10_000 + lignes["DD"]["montant"] + lignes["EXS"]["montant"] + tapl["montant"]
+    )
+
+
+def test_lesotho_prelevement_de_10_pct_sur_l_alcool_hors_biere_traditionnelle(client):
+    """s.2 : « alcoholic products » exclut la bière traditionnelle ; LN 58/2025 : 10 %."""
+    _, lignes = _calcul(client, "LSO", "22042141", quantite=1000)
+    assert lignes["TAPL"]["taux_pct"] == 10.0
+    _, lignes = _calcul(client, "LSO", "22030005", quantite=1000)
+    assert "TAPL" not in lignes
+    with open(os.path.join(RACINE, "backend", "socle", "LSO.json"), encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    assert not any(d["code"] == "TAPL" for d in positions["22060015"]["droits"])
+
+
+@pytest.mark.parametrize("code", ["220710", "24041111"])
+def test_lesotho_ethanol_et_produits_a_inhaler_hors_du_prelevement(code):
+    with open(os.path.join(RACINE, "backend", "socle", "LSO.json"), encoding="utf-8") as f:
+        droits = json.load(f)["positions"][code]["droits"]
+    assert not any(d["code"] == "TAPL" for d in droits)

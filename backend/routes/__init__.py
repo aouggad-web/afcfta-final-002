@@ -198,14 +198,6 @@ except ImportError:
     REGULATORY_QA_AVAILABLE = False
 
 try:
-    from .search import router as search_router
-
-    SEARCH_AVAILABLE = True
-except ImportError:
-    search_router = None
-    SEARCH_AVAILABLE = False
-
-try:
     from .cache import router as cache_router
 
     CACHE_ROUTER_AVAILABLE = True
@@ -504,8 +496,6 @@ def register_routes(api_router: APIRouter):
         )
     if REGULATORY_QA_AVAILABLE:
         api_router.include_router(regulatory_qa_router, tags=["Regulatory QA"], dependencies=_auth)
-    if SEARCH_AVAILABLE:
-        api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
         api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_admin)
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:

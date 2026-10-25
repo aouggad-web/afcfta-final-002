@@ -60,12 +60,6 @@ async function apiFetch(path, options = {}, timeoutMs = DEFAULT_TIMEOUT_MS) {
 }
 
 export const apiV2 = {
-  comprehensiveSearch: (query, filters = {}, pagination = { page: 1, limit: 10 }) =>
-    apiFetch('/api/v2/search/comprehensive', {
-      method: 'POST',
-      body: JSON.stringify({ query, filters, pagination }),
-    }),
-
   bulkInvestmentAnalysis: (opportunities, criteria) =>
     apiFetch('/api/v2/investment/bulk-analysis', {
       method: 'POST',

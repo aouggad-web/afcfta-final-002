@@ -18,3 +18,8 @@ exclude =
     .venv,
     venv,
     frontend
+# Rapports sectoriels : les scripts de graphiques partagent un préambule chargé par exec()
+# (noms définis dynamiquement, invisibles pour l'analyse statique).
+per-file-ignores =
+    reports/generateur/secteurs/*: F821
+    reports/generateur/_travail/*: F821

@@ -41,6 +41,6 @@
     "Loi douanière du Lesotho : copie archivée d'un scan, lue par OCR.",
     "Taux en vigueur de la fuel levy (BWA), du prélèvement sur l'alcool (BWA) et de l'Alcohol and Tobacco Levy (SWZ) : non collectés. Namibie : fiche NAM_prelevements_2026-10-25.json.",
     "Bière traditionnelle : exclue de l'ATL par l'annexe de la loi de 2019 (item 1(a), « other than traditional beer ») ; le prélèvement n'est pas déclaré sur 2203.00.05 et 2206.00.15 (« Traditional African beer as defined in Additional Note 1 to Chapter 22 »). La définition de la loi (s.2 : bière de sorgho ou de maïs, buganu, imjemane, bière africaine déclarée comme telle sous la loi sur les licences) et celle de la note tarifaire ne coïncident pas mot pour mot.",
-    "Lesotho : aucun prélèvement national à l'importation documenté dans les textes déposés ; son absence n'est pas prouvée."
+    "Lesotho : le prélèvement sur le tabac et l'alcool (Act 1/2023) est servi par la fiche LSO_prelevement_tabac_alcool_2026-10-25.json ; aucun autre prélèvement national à l'importation n'est documenté."
   ]
 }
