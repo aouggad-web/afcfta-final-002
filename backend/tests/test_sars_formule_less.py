@@ -96,6 +96,25 @@ def test_hors_tarif_sars_la_formule_n_est_pas_liquidable():
     assert "less" in droit["note"]
 
 
+@pytest.mark.parametrize(
+    ("brut", "specifique"),
+    [
+        ("110c/kg less 12.5% with a maximum of 37%", "110c/kg"),  # point décimal
+        ("110c/kg less 80 % with a maximum of 37%", "110c/kg"),  # espace avant %
+        ("110c/li less 80% with a maximum of 37%", "110c/li"),  # autre unité
+        ("10% or 55c/li less 90%", "55c/li"),
+        ("110c/kg less 80% with a maximum of 37%", None),  # spécifique perdu à la collecte
+    ],
+)
+def test_une_formule_less_non_lue_n_est_jamais_servie(brut, specifique):
+    """Une déduction non lue ne laisse ni le spécifique entier, ni le « 80 » de
+    `rate_pct` servi à 80 % ad valorem."""
+    droit = _rangee(brut, 80.0, specifique)
+    assert droit["taux"] is None and droit.get("specifique") is None
+    assert droit.get("deduction_ad_valorem_pct") is None
+    assert "less" in droit["note"]
+
+
 # ── Liquidation ──────────────────────────────────────────────────────────────
 #
 # 1 000 kg de tomates (2002.10.90), FOB 1 000 R, CIF 1 200 R. Dû :

@@ -868,16 +868,18 @@ def droits_depuis_liste(taxes, source_defaut):
             taux = None
         source_ligne = row.get("source") or source_defaut
         # « 110c/kg less 80% » : sans sa déduction, la part spécifique surestime
-        # le droit de 80 % de la valeur. La déduction se conserve ; hors tarif
-        # SARS, sa lecture (G.53) n'est pas établie et rien n'est liquidable.
+        # le droit de 80 % de la valeur. La déduction se conserve. Toute autre
+        # expression en « less » — hors tarif SARS, autre unité, autre écriture
+        # du pourcentage, part spécifique perdue à la collecte (le 80 de
+        # `rate_pct` serait alors servi à 80 %) — n'est pas liquidable.
         deduction = MOTIF_DEDUCTION_SARS.search(brut) if specifique else None
         deduction_ad_valorem = None
         note = row.get("note")
         if deduction and "sars.gov.za" in str(source_ligne):
             deduction_ad_valorem = float(deduction.group(1).replace(",", "."))
-        elif deduction:
+        elif re.search(r"\bless\b", brut, re.I):
             taux, specifique, compose, plafond_ad_valorem = None, None, False, None
-            note = f"« {brut} » : la portée de « less » n'est pas établie pour cette source."
+            note = f"« {brut} » : la portée de « less » n'est pas établie pour cette forme ou cette source."
         compose_sars = (
             MOTIF_COMPOSE_SARS.match(brut) if compose and "sars.gov.za" in str(source_ligne) else None
         )
