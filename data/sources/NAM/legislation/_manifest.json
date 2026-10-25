@@ -97,6 +97,72 @@
       "sha256": "576753e9a26b8569654134030ab63abd15574e4882928f9f5800b5a8d98ffcf0",
       "archived_at": "2026-10-24T21:53:30+00:00",
       "verified_at": "2026-10-24T21:53:30+00:00"
+    },
+    {
+      "file": "legislation/NAM_GeneralNotesSch1_GN390-2024_2024-12-20.pdf",
+      "title": "Government Notice No. 390 of 2024 — Amendment of Schedules and General Notes to Schedule No. 1: Customs and Excise Act, 1998 (Government Gazette No. 8542)",
+      "source_url": "https://archive.gazettes.africa/archive/na/2024/na-government-gazette-dated-2024-12-20-no-8542.pdf",
+      "referencing_page": "https://gazettes.africa/gazettes/na/2024",
+      "document_date": "2024-10-21",
+      "effective_from": "2024-12-20",
+      "is_draft": false,
+      "useful_pages": [
+        21,
+        22,
+        23
+      ],
+      "notes": "General Note O (AfCFTA) : origines non-SADC (Algeria, Cameroon, Egypt, Ghana, Kenya, Rwanda, Tunisia, datées du 31 August 2023), Notes 3 à 8 ; General Note P (colonnes).",
+      "sha256": "fd6dc3bceed9235544d5ede7a5aa860ebfa1234ef6b5d76206ff1e3184440e49",
+      "archived_at": "2026-10-25T15:51:33+00:00",
+      "verified_at": "2026-10-25T15:51:33+00:00"
+    },
+    {
+      "file": "legislation/NAM_TarifSch1Part1_GN391-2024_2024-12-20.pdf",
+      "title": "Government Notice No. 391 of 2024 — Substitution of Part 1 of Schedule No. 1: Customs and Excise Act, 1998 (Government Gazette No. 8543)",
+      "source_url": "https://archive.gazettes.africa/archive/na/2024/na-government-gazette-dated-2024-12-20-no-8543.pdf",
+      "referencing_page": "https://gazettes.africa/gazettes/na/2024",
+      "document_date": "2024-10-21",
+      "effective_from": "2024-12-20",
+      "is_draft": false,
+      "useful_pages": "2-718",
+      "notes": "Part 1 du Schedule No. 1 substituée, six colonnes de droits : General, EU/UK, EFTA, SADC, MERCOSUR, AfCFTA. Pages en mode paysage, lues par coordonnées (scripts/extraire_zlecaf_nam.py).",
+      "sha256": "bb13d6be4d532cac3c9b71cb02e0dfd522b129cd2e91eea44da27f5a2131fcf1",
+      "archived_at": "2026-10-25T15:51:33+00:00",
+      "verified_at": "2026-10-25T15:51:33+00:00"
+    },
+    {
+      "file": "legislation/NAM_GeneralNoteO_GN229-2025_2025-09-04.pdf",
+      "title": "Government Notice No. 229 of 2025 — Amendment of Government Notice No. 390 of 20 December 2024: Customs and Excise Act, 1998 (Government Gazette No. 8731)",
+      "source_url": "https://archive.gazettes.africa/archive/na/2025/na-government-gazette-dated-2025-09-04-no-8731.pdf",
+      "referencing_page": "https://gazettes.africa/gazettes/na/2025",
+      "document_date": "2025-08-19",
+      "effective_from": "2025-09-04",
+      "is_draft": false,
+      "useful_pages": [
+        1
+      ],
+      "notes": "Insère « Gambia » à la General Note O, avec la date « 14 March 2024 » (l'Afrique du Sud porte 14 March 2025, R.6233).",
+      "sha256": "185ceb1160a86fb1dfa9b8251bf509c2ae19107525871e4fc506372113768e9d",
+      "archived_at": "2026-10-25T15:51:33+00:00",
+      "verified_at": "2026-10-25T15:51:33+00:00"
+    },
+    {
+      "file": "legislation/NAM_TarifSch1Part1_GN174-2026_2026-06-04.pdf",
+      "title": "Government Notice No. 174 of 2026 — Amendment of Part 1 of Schedule No. 1 of Customs and Excise Act, 1998 (Government Gazette No. 8936)",
+      "source_url": "https://archive.gazettes.africa/archive/na/2026/na-government-gazette-dated-2026-06-04-no-8936.pdf",
+      "referencing_page": "https://gazettes.africa/gazettes/na/2026",
+      "document_date": "2026-05-06",
+      "effective_from": "2026-06-04",
+      "is_draft": false,
+      "useful_pages": [
+        1,
+        2,
+        3
+      ],
+      "notes": "Amende la Part 1 : 0307.39.20/30/40 supprimées, 0307.32.20/30/40 insérées, 17.01, 1001.91/99 et 1101.00 substitués (colonne AfCFTA comprise). En vigueur à la publication.",
+      "sha256": "045c86a90e71722cd8ee858db9f6b09b299f66834793683afb06e7da4f35fae1",
+      "archived_at": "2026-10-25T15:51:33+00:00",
+      "verified_at": "2026-10-25T15:51:33+00:00"
     }
   ]
 }

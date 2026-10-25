@@ -226,13 +226,32 @@ def taux_preferentiels(
                 "perimetre": {},
             }
 
+    if destination_iso3.upper() == "NAM":
+        # Règle SACU (25/10/2026) : General Note O namibienne (GN 390/2024,
+        # GN 229/2025), colonne AfCFTA de son propre tarif (GN 391/2024,
+        # GN 174/2026, portée par le socle).
+        from services.zlecaf_schedule_nam import nam_partner_active
+
+        if not nam_partner_active(origine_iso3):
+            return {
+                "applique": False,
+                "regime": "ZLECAF",
+                "statut": "PENDING_PARTNER",
+                "note": (
+                    "Origine absente de la General Note O du Schedule No. 1 "
+                    "namibien (GN 390/2024, GN 229/2025) — taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
+
     from services.zlecaf_implementation_registry import implementation_decision
 
-    if destination_iso3.upper() == "ZAF":
-        # L'Afrique du Sud échappe au registre, comme dans le chemin
-        # historique : son application est établie par les Notices R. du
-        # Schedule No. 1 (General Note O), pas par la règle B EAC. La branche
-        # ZAF ci-dessous sert le même taux que l'historique.
+    if destination_iso3.upper() in ("ZAF", "NAM"):
+        # L'Afrique du Sud et la Namibie échappent au registre : leur
+        # application est établie par la General Note O de leur Schedule
+        # No. 1, pas par la règle B EAC. La branche ZAF ci-dessous sert le
+        # même taux que l'historique.
         decision = None
     else:
         decision = implementation_decision(destination_iso3, origine_iso3)
@@ -269,6 +288,13 @@ def taux_preferentiels(
         colonne = colonne_de_l_annee(_dt.date.today().year)
     taux_dd = _colonne_de_la_position(position, colonne) if colonne else None
     origine_taux = "colonne préférentielle de la position (socle)"
+    if destination_iso3.upper() == "NAM" and taux_dd and not taux_dd.get("specifique"):
+        # Note O.3 : la colonne AfCFTA ne vaut que plus basse que le droit
+        # général (5208.41 : 31,2 % contre 22 %).
+        npf = _taux_npf(position, "DD")
+        if npf is not None and taux_dd["taux"] > npf:
+            taux_dd = {"taux": npf}
+            origine_taux = f"{origine_taux} ; plancher NPF du socle appliqué (Note O.3)"
 
     if taux_dd is None and destination_iso3.upper() in DESTINATIONS_A_CALENDRIER_NATIONAL:
         try:
@@ -403,6 +429,16 @@ def taux_preferentiels(
             f"{origine_zaf} depuis le {DATES_ENTREE_ZAF[origine_zaf]} "
             "(General Note O du Schedule No. 1, Customs and Excise Act) — "
             "colonne AfCFTA du socle."
+        )
+    if destination_iso3.upper() == "NAM":
+        from services.zlecaf_schedule_nam import DATES_ENTREE_NAM
+
+        resultat["statut"] = "APPLIED"
+        resultat["note"] = (
+            "Préférence ZLECAf accordée par la Namibie à "
+            f"{origine_iso3.upper()} depuis le {DATES_ENTREE_NAM[origine_iso3.upper()]} "
+            "(General Note O du Schedule No. 1, Customs and Excise Act, 1998) — "
+            "colonne AfCFTA du tarif namibien (GN 391/2024, GN 174/2026)."
         )
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat

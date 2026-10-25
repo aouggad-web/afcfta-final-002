@@ -1,0 +1,56 @@
+{
+ "schema_version": 1,
+ "objet": "Namibie : préférence ZLECAf à l'importation (General Note O et colonne AfCFTA du Schedule No. 1 namibien)",
+ "destination_iso3": "NAM",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Government Notices publiés au Government Gazette de Namibie (copies archivées par Gazettes.Africa), parcourus de 2024 à 2026",
+ "source": {
+  "url": "https://archive.gazettes.africa/archive/na/2024/na-government-gazette-dated-2024-12-20-no-8542.pdf",
+  "institution": "Government Gazette of the Republic of Namibia (copie Gazettes.Africa)"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/NAM_GeneralNotesSch1_GN390-2024_2024-12-20.pdf",
+   "sha256": "fd6dc3bceed9235544d5ede7a5aa860ebfa1234ef6b5d76206ff1e3184440e49"
+  },
+  {
+   "fichier_archive": "sources/NAM_TarifSch1Part1_GN391-2024_2024-12-20.pdf",
+   "sha256": "bb13d6be4d532cac3c9b71cb02e0dfd522b129cd2e91eea44da27f5a2131fcf1"
+  },
+  {
+   "fichier_archive": "sources/NAM_GeneralNoteO_GN229-2025_2025-09-04.pdf",
+   "sha256": "185ceb1160a86fb1dfa9b8251bf509c2ae19107525871e4fc506372113768e9d"
+  },
+  {
+   "fichier_archive": "sources/NAM_TarifSch1Part1_GN174-2026_2026-06-04.pdf",
+   "sha256": "045c86a90e71722cd8ee858db9f6b09b299f66834793683afb06e7da4f35fae1"
+  }
+ ],
+ "regle": {
+  "valeur": "Règle SACU (validée le 25/10/2026) remplie : la Namibie a publié une General Note O qui nomme ses origines, une colonne AfCFTA dans la Part 1 de son Schedule No. 1, et les avis qui les mettent en vigueur. Origines : Algérie, Cameroun, Égypte, Ghana, Kenya, Rwanda, Tunisie depuis le 20/12/2024 (GN 390/2024), Gambie depuis le 04/09/2025 (GN 229/2025). Taux : colonne AfCFTA du GN 391/2024, amendée par le GN 174/2026, servie à la place de la colonne sud-africaine.",
+  "reference": "Customs and Excise Act 20/1998 (Namibie), Schedule No. 1 : General Note O (GN 390/2024, amendée par le GN 229/2025) ; Part 1 (GN 391/2024, amendée par le GN 174/2026)",
+  "verbatim_note_o_1": "In this Note and for the purposes of Schedule No. 1, the expression “AfCFTA”, “AFCFTA State” or “State Parties” shall refer to the following non-SADC Member States that have implemented the Provisional Schedules of Tariff Concessions: Country Date Algeria 31 August 2023 Cameroon 31 August 2023 Egypt 31 August 2023 Ghana 31 August 2023 Kenya 31 August 2023 Rwanda 31 August 2023 Tunisia 31 August 2023",
+  "verbatim_note_o_3": "Any rate of duty specified in the AfCFTA column in respect of any heading or subheading of Part 1 of Schedule No. 1 which is lower than the rate of duty specified in the General column applies to imported goods to which such heading or subheading relates if such goods originate in the AfCFTA States or a specified AfCFTA State and comply with the other requirements of the AfCFTA Agreement.",
+  "verbatim_note_o_6": "AfCFTA State Parties will qualify for the preferential rate contained in the AfCFTA column from the date these State Parties are listed in Note 1 by Notice published in the Government Gazette. SADC countries, that are part of the SADC Trade Protocol, will continue to trade under the SADC Trade Protocol.",
+  "verbatim_gn229_2025": "I amend Part 1 of the Schedule to Government No. 390 of 20 December 2024, item numbered O titled, Duties on goods to which African Continental Free Trade Area relates, by the insertion of the expression “Gambia” and the date 14 March 2024 directly opposite it, after the expression “Ghana”.",
+  "verbatim_gn391_2024": "I substitute Part 1 of Schedule No. 1 to the Customs and Excise Act, 1998 (Act No. 20 of 1998) as set out in the Schedule. [...] Rate of Duty General EU/UK EFTA SADC MERCOSUR AfCFTA",
+  "verbatim_gn174_2026": "(a) amend Part 1 of Schedule No. 1 of that Act as set out in the Schedule; and (b) determine that the notice comes into operation on the date of its publication. [...] 0307.32.20 [...] 25% free free free 25% 10%",
+  "texte_extrait_script": "scripts/extraire_zlecaf_nam.py lit les 718 pages du GN 391/2024 par coordonnées, applique le GN 174/2026 et écrit data/nam/zlecaf_gn391_2024.json (8 503 lignes terminales).",
+  "portee": "scripts/build_socle.py, ZLECAF_NAM et _colonne_afcfta_nam (colonne AFCFTA du socle namibien) ; backend/services/zlecaf_schedule_nam.py (origines et dates) ; backend/services/preference.py (branche NAM, hors registre comme la ZAF)."
+ },
+ "decisions": [
+  "Date d'accès des origines : la Note O.6 la fixe à la publication de l'avis qui inscrit l'État, soit le 20/12/2024 pour les sept premières (GN 390/2024, signé le 21/10/2024) et le 04/09/2025 pour la Gambie (GN 229/2025). Les dates imprimées en regard des noms (31 August 2023, 14 March 2024) ne sont pas retenues.",
+  "Gambie : le GN 229/2025 porte « 14 March 2024 », l'Afrique du Sud « 14 March 2025 » (R.6233). L'écart, probablement une coquille, ne change pas la date retenue (publication du 04/09/2025).",
+  "Taux : colonne AfCFTA du texte namibien, et non celle du tarif sud-africain que le socle reprenait. Le GN 391/2024 n'a pas été mis à jour depuis, hors GN 174/2026 : sa colonne est plus élevée que la colonne sud-africaine de 2026 sur de nombreuses lignes (85.39.21.45 : 12 % contre 8 %).",
+  "Note O.3 : la colonne AfCFTA ne vaut que plus basse que le droit général. Quand elle dépasse le NPF servi (3407.00, 5208.41, 6308.00), le NPF est appliqué.",
+  "Lignes : une ligne namibienne non subdivisée (2710.19) vaut pour les lignes sud-africaines qu'elle couvre. 66 positions du socle n'ont aucune ligne namibienne qui les couvre (découpages sud-africains postérieurs, par exemple 0804.50.11, 4411.12.31) : pas de colonne AfCFTA, préférence non tracée. 4414.00 et 9401.91.20 sont imprimées sans taux General à côté des lignes qui les remplacent : écartées.",
+  "Droits composés « X% or Yc/kg » : les General Notes namibiennes archivées (GN 390/2024) ne donnent pas la règle de départage (la règle sud-africaine B.3 n'y figure pas) ; le composé reste sans règle et n'est pas liquidé. Formules « less N% » : non liquidées.",
+  "Origines SACU : régime de l'union douanière, inchangé. Origines SADC : Protocole SADC (Note O.6), hors de cette préférence."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Le NPF namibien servi reste celui du tarif sud-africain de 2026 ; le droit général du GN 391/2024 s'en écarte sur quelques lignes (sucre 17.01 : 436,38c/kg au GN 174/2026 contre 483,72c/kg au socle).",
+  "La règle de départage des droits composés au tarif namibien (General Notes de 1998, non archivées).",
+  "Les numéros du Gazette manquants à l'archive Gazettes.Africa n'ont pas été vus."
+ ]
+}
