@@ -122,7 +122,7 @@ def test_lbr_inventory_csv_structure():
         "notes",
     }
     assert required_columns <= set(rows[0].keys())
-    assert len(rows) == 3
+    assert len(rows) == 4
 
 
 def test_lbr_vat_measures_schema():

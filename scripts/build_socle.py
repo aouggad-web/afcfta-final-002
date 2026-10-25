@@ -3393,6 +3393,51 @@ def _accises_liberia(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Angola : Imposto Especial de Consumo à l'importation (Lei n.º 16/21, Anexo I ;
+#: spiritueux et tabac remplacés pour 2026 par la Lei n.º 14/25, art. 34.º et
+#: Anexo IV). Codes de 2021 reportés sur la Pauta 2024 (SH 2022). Fiche
+#: AGO_IEC_2026-10-25.json. (positions, taux %, référence).
+IEC_AGO = (
+    (("220210",), 3.0, "Lei n.º 16/21, Anexo I, 2202.10.00"),
+    (("220291", "220299", "2203"), 4.0, "Lei n.º 16/21, Anexo I, 2202.91.00, 2202.99.00, 2203.00.00"),
+    (("220410", "220421", "220422", "220429", "2205", "2206"), 8.0, "Lei n.º 16/21, Anexo I, 22.04 à 22.06"),
+    (("2207",), 15.0, "Lei n.º 16/21, Anexo I, 22.07"),
+    (("2208",), 25.0, "Lei n.º 14/25 (OGE 2026), art. 34.º et Anexo IV, 22.08"),
+    (("2401", "2402", "2403"), 50.0, "Lei n.º 14/25 (OGE 2026), art. 34.º et Anexo IV, 24.01 à 24.03"),
+    (("36041000",), 19.0, "Lei n.º 16/21, Anexo I, 3604.10.00"),
+    (("39232110", "39232910"), 2.0, "Lei n.º 16/21, Anexo I, 3923.21.10 et 3923.29.10"),
+    (("39232190", "39232990"), 19.0, "Lei n.º 16/21, Anexo I, 3923.21.90 et 3923.29.90"),
+    (("4012",), 19.0, "Lei n.º 16/21, Anexo I, 40.12"),
+    (("7113", "7114"), 15.0, "Lei n.º 16/21, Anexo I, 71.13 et 71.14"),
+    (("87032449", "87032459", "87033359", "87033369", "87042110", "87042111", "87042113", "87042114"), 5.0,
+     "Lei n.º 16/21, Anexo I, 8703.24, 8703.33 et 8704.21"),
+    (("8801", "88021100", "88022000", "890321", "890322", "890323", "890331", "890332", "890333"), 20.0,
+     "Lei n.º 16/21, Anexo I, 88.01, 88.02 et 89.03"),
+    (("93032000", "93033000"), 50.0, "Lei n.º 16/21, Anexo I, 9303.20.00 et 9303.30.00"),
+    (("9701", "9702", "9703", "9704", "9705", "9706"), 5.0, "Lei n.º 16/21, Anexo I, 97.01 à 97.06"),
+)
+
+
+def _iec_angola(positions, compteurs):
+    """Angola : IEC dû au desembaraço aduaneiro (art. 8.º), sur le valor
+    aduaneiro (art. 7.º n.º 1 b)), avant l'IVA dont l'assiette le comprend."""
+    for code, position in positions.items():
+        regle = next((r for r in IEC_AGO if code.startswith(r[0])), None)
+        if regle is None:
+            continue
+        _, taux, reference = regle
+        ligne = {"code": "EXC", "code_source": "IEC", "famille": famille("EXC"),
+                 "libelle": "Imposto Especial de Consumo", "taux": taux, "specifique": None,
+                 "assiette": "CIF", "assiette_origine": "regle_de_pays", "source": reference,
+                 "note": "Lei n.º 16/21, art. 7.º n.º 1 b) : valor aduaneiro des biens importés. Exonérations "
+                         "de l'art. 6.º (matières premières et usage médical sous déclaration d'exclusivité, "
+                         "véhicules électriques, etc.) non distinguées."}
+        droits = position.setdefault("droits", [])
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -3760,6 +3805,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso == "LBR":
         _accises_liberia(positions, compteurs)
+    if iso == "AGO":
+        _iec_angola(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:

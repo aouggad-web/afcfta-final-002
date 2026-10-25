@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "objet": "Angola : Imposto Especial de Consumo à l'importation (Lei n.º 16/21 du 19 juillet 2021, Anexo I ; spiritueux et tabac fixés pour 2026 par la Lei n.º 14/25, OGE 2026, art. 34.º et Anexo IV)",
+ "destination_iso3": "AGO",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Diário da República I Série n.º 134 du 19/07/2021 (Lei n.º 16/21, copie lex.ao du Diário scanné) et I Série n.º 244 du 30/12/2025 (Lei n.º 14/25, servi par le Ministère des Finances)",
+ "source": {
+  "url": "https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw41/mje2/~edisp/minfin5216784.pdf",
+  "institution": "Ministério das Finanças de Angola ; Assembleia Nacional"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/AGO_Lei16-21_IEC.pdf",
+   "sha256": "e7120a61bf0669e45a02e6e21c87d326cb882fae7349b578a720df2a3d787488"
+  },
+  {
+   "fichier_archive": "sources/AGO_Lei14-25_OGE2026.pdf",
+   "sha256": "a99bf947bd3f5c7767ad2a4280c2483f51754520414930e90f4d2ba76c78004c"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne EXC (IEC), ad valorem sur le valor aduaneiro (CIF), avant l'IVA. Eaux sucrées ou aromatisées (2202.10) 3 % ; bière sans alcool et autres boissons non alcooliques (2202.91, 2202.99), bière de malt (22.03) 4 % ; vins (22.04, hors moûts 2204.30), vermouths (22.05), autres boissons fermentées (22.06) 8 % ; alcool éthylique (22.07) 15 % ; spiritueux (22.08) 25 % ; tabac (24.01 à 24.03) 50 % ; feux d'artifice (3604.10) 19 % ; sacs d'emballage en plastique (3923.21.10, 3923.29.10) 2 % ; autres sacs et sachets en polymères (3923.21.90, 3923.29.90) 19 % ; pneumatiques rechapés ou usagés (40.12) 19 % ; bijouterie et orfèvrerie (71.13, 71.14) 15 % ; voitures « Outros » de plus de 3 000 cm³ essence (8703.24.49, 8703.24.59) et de plus de 2 500 cm³ diesel (8703.33.59, 8703.33.69), pickups et fourgons (8704.21.10, .11, .13, .14) 5 % ; ballons et planeurs (88.01), hélicoptères et avions de 2 000 kg au plus (8802.11, 8802.20), voiliers et bateaux à moteur in-bord (8903.21 à 8903.33) 20 % ; fusils et carabines de chasse ou de tir (9303.20, 9303.30) 50 % ; objets d'art, de collection et antiquités (97.01 à 97.06) 5 %.",
+  "reference": "Lei n.º 16/21, art. 2.º, 5.º, 6.º, 7.º n.º 1 b), 8.º n.º 1 b), 11.º et Anexo I ; Lei n.º 14/25 (OGE 2026), art. 34.º et Anexo IV ; Código do IVA (Lei n.º 7/19), art. 18.º a)",
+  "verbatim_art7": "O valor tributável sujeito a Imposto Especial de Consumo é: [...] b) Para os bens importados, o valor aduaneiro; [...] e) Para os derivados do petróleo, o Imposto incide sobre o custo de produção.",
+  "verbatim_art8": "O Imposto Especial de Consumo é devido e torna-se exigível: [...] b) Nas importações, no momento de desembaraço aduaneiro; [...] e) Quanto aos derivados do petróleo, o Imposto é exigível no momento em que os bens são postos à disposição dos adquirentes.",
+  "verbatim_art11": "As taxas do Imposto Especial de Consumo correspondem às constantes das tabelas dos Anexos I e II da presente Lei.",
+  "verbatim_art17": "São revogadas as Leis n.º 8/19, de 24 de Abril, e n.º 18/19, de 13 de Agosto.",
+  "verbatim_anexo_I": "2202.10.00 - Águas, incluindo as águas minerais e as águas gaseificadas, adicionadas de açúcar ou de outros edulcorantes ou aromatizadas 3 ; 2202.91.00 -- Cerveja sem álcool 4 ; 2202.99.00 -- Outras 4 ; 2203.00.00 Cervejas de malte 4 ; 2204.10.10 -- Champanhe 8 ; 2204.10.90 -- Outros 8 ; 2204.21.00 8 ; 2204.22.00 8 ; 2204.29.00 8 ; 2205.10.00 8 ; 2205.90.00 8 ; 2206.00.00 8 ; 2207.10.00 15 ; 2207.20 15 ; 2207.20.10 15 ; 2207.20.19 15 ; 2208.20.00 à 2208.90.00 8 ; 2401.10.00 à 2403.99.00 25 ; 3604.10.00 - Fogo de artifício 19 ; 3923.21.10 --- Sacos de quaisquer dimensões destinados exclusivamente para embalar produtos, excepto os de transporte 2 ; 3923.21.90 --- Outros 19 ; 3923.29.10 2 ; 3923.29.90 --- Outros 19 ; 3926.90.90 -- Outras (palhinhas de plástico) 19 ; 4012.11.00 à 4012.90.00 19 ; 7113.11.00 à 7114.20.00 15 ; 8703.24.49 ---- Outros - Novos 5 ; 8703.24.59 ---- Outros - Usados 5 ; 8703.33.59 --- Outros Novos 5 ; 8703.33.69 ---- Outros Usados 5 ; 8704.21.10 ---- Do tipo Pickup e Furgão, de cilindrada não superior a 5000 cm³ - Novos 5 ; 8704.21.11 [...] superior a 5000 cm³ - Novos 5 ; 8704.21.15 [...] não superior a 5000 cm³ - Usados 5 ; 8704.21.16 [...] superior a 5000 cm³ - Usados 5 ; 8801.00.00 20 ; 8802.11.00 De peso não superior a 2 000 kg, sem carga (vazios) 20 ; 8802.20.00 Aviões e outros veículos aéreos, de peso não superior a 2 000 kg, sem carga (vazios) 20 ; 8903.91.00 Barcos a vela, mesmo com motor auxiliar 20 ; 8903.92.00 Barcos a motor, excepto com motor fora-de-borda 20 ; 89.03.99.90 Outros 20 ; 9303.20.00 50 ; 9303.30.00 50 ; 9701.10.00 à 9706.00.00 5",
+  "verbatim_lei14_25_art34": "Durante o Exercício Económico de 2026, as taxas do Imposto Especial de Consumo aplicáveis às bebidas espirituosas, tabaco e seus derivados são as constantes do Anexo IV da presente Lei.",
+  "verbatim_lei14_25_anexo_IV": "2208.20.00 - Aguardentes de vinho ou de bagaço de uvas 25 ; 2208.30.00 - Uísques 25 ; 2208.40.00 25 ; 2208.50.00 - Gin e genebra 25 ; 2208.60.00 - Vodca 25 ; 2208.70.00 - Licores 25 ; 2208.90.00 - Outros 25 ; 2401.10.00 - Tabaco não destalado 50 ; 2401.20.00 50 ; 2401.30.00 50 ; 2402.10.00 - Charutos e cigarrilhas, que contenham tabaco 50 ; 2402.20.00 - Cigarros que contenham tabaco 50 ; 2402.90.00 - Outros 50 ; 2403.11.00 50 ; 2403.19.00 50 ; 2403.91.00 50 ; 2403.99.00 50",
+  "verbatim_civa_art18": "O valor tributável dos bens importados é o valor aduaneiro, determinado nos termos da legislação aduaneira, adicionado dos elementos a seguir indicados, na medida em que nele não estejam compreendidos: a) Direitos de importação, impostos ou taxas efectivamente devidos na importação, com excepção do próprio Imposto Sobre o Valor Acrescentado;",
+  "portee": "scripts/build_socle.py, IEC_AGO et _iec_angola ; l'IVA de socle/tva_nationale.json (assiette CIF+TOUS_SAUF_TVA) comprend la ligne EXC."
+ },
+ "decisions": [
+  "Taux de 2026 : Anexo IV de la Lei n.º 14/25 pour 22.08 et 24.01 à 24.03 (25 % et 50 %, au lieu de 8 % et 25 % à l'Anexo I) ; Anexo I de la Lei n.º 16/21 pour le reste. Aucune autre modification de la Lei n.º 16/21 n'a été trouvée (liste des textes du Ministère des Finances, lex.ao).",
+  "Le Diário de 2021 est scanné, sans couche texte : l'Anexo I (pages 5670 à 5673) et l'Anexo II (pages 5673 et 5674) ont été lus à l'écran. La Lei n.º 14/25 porte une couche texte.",
+  "Codes de 2021 (Pauta de 2019) reportés sur la Pauta 2024 (SH 2022) : les voitures « Outros » neuves et d'occasion gardent leurs codes 8703.24.49/59 et 8703.33.59/69 (les codes .41/.51 et .51/.61 sont les ambulances et corbillards, non visés) ; les pickups et fourgons, ventilés en 2021 à 5 000 cm³ et en 2024 à 3 500 cm³, sont pris en entier (8704.21.10, .11, .13 et .14 ; .12 et .19 « Outros » non visés) ; 8903.91 (voiliers) devient 8903.21 à 8903.23 et 8903.92 (bateaux à moteur in-bord) 8903.31 à 8903.33 ; 9701.10 et 9701.90 couvrent les six sous-positions 9701 du SH 2022, 9705.00 et 9706.00 leurs sous-positions.",
+  "Non repris : la sous-position nationale 89.03.99.90 (son pendant en 2024, 8903.93 et 8903.99, ne se reconstitue pas sans la Pauta de 2019) ; 3926.90.90 « Outras (palhinhas de plástico) » (en 2024, 3926.90.50 « Outras » regroupe bien d'autres objets que les pailles) ; 3923.29.30 « Sacos para féretros », code de 2024 absent de l'Anexo I ; 24.04 (position du SH 2022 absente des deux annexes) ; moûts de raisin 2204.30, absents de l'Anexo I.",
+  "Produits pétroliers (Anexo II) non repris : l'IEC y porte sur le coût de production (art. 7.º n.º 1 e)) et n'est exigible qu'à la mise à disposition des acquéreurs (art. 8.º n.º 1 e)), pas au dédouanement."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les exonérations de l'art. 6.º (matières premières de l'industrie nationale et usage médical ou d'enseignement sous déclaration d'exclusivité, véhicules électriques, biens d'usage personnel, etc.) : le taux est servi sans les distinguer.",
+  "La Lei n.º 14/25 modifie aussi le droit de douane (taux minimum de 5 % pour 2026, art. 31.º n.º 3, et nouveaux taux de l'Anexo III) : sujet distinct, non traité ici.",
+  "Le caractère annuel de l'art. 34.º : à partir du 1er janvier 2027, les taux de l'Anexo I reviennent pour 22.08 et le tabac, sauf nouvelle loi de finances."
+ ]
+}

@@ -7,17 +7,18 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
       "source_sha256": "c4334b5d93b46e0173688b1753577cc8ae40571d4289fdbbf0930a2020b67500",
-      "socle_sha256": "94e4c1b6c2c1220c92e17195c7fe1b5f460f678c8d42352bac930ad984e3255e",
+      "socle_sha256": "4d5788f8cb89bb3ed3bd0fac93aeef57d6d669fd549f86d478b3934f431ba10b",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [
+        "accise",
         "autre",
         "droit"
       ],
       "compteurs": {
         "positions": 5959,
-        "droits": 11918,
-        "droits_liquidables": 11896,
+        "droits": 12010,
+        "droits_liquidables": 11988,
         "positions_liquidables": 5937,
         "preferentiels": 11918,
         "preferentiels_specifiques": 0,
@@ -26,7 +27,7 @@
         "taux_indisponibles": 22,
         "assiettes_source": 11893,
         "assiettes_fichier": 0,
-        "assiettes_table": 0,
+        "assiettes_table": 92,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -904,7 +905,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "2fee61d2bc7370bfc4610d1f3749f6edbcdd37658e2ec8b4e158c146710c4d36",
+      "socle_sha256": "ba4cbbc587ae2c02234cc5698b70c40b15e5d2f6c1dffaedfe8a89fd96b6e08a",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -2063,7 +2064,7 @@
       "ZWE"
     ],
     "positions": 370215,
-    "droits": 1244302,
-    "droits_liquidables": 1209901
+    "droits": 1244394,
+    "droits_liquidables": 1209993
   }
 }

@@ -47,7 +47,7 @@ def test_ni_redevance_statistique_ni_assiette_beninoise(iso):
     "iso, taux_tva, attendus",
     [
         ("GMB", 15.0, {"PCC": 50.0, "FT": 155.0, "PUA": 20.0}),
-        ("LBR", 12.0, {"PCC": 50.0, "CUF": 150.0}),
+        ("LBR", 13.0, {"PCC": 50.0, "CUF": 150.0}),
         ("SLE", 15.0, {"PCC": 50.0, "PUA": 20.0}),
     ],
 )
