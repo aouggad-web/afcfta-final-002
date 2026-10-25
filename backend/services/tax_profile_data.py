@@ -19,10 +19,9 @@ TAUX_TVA_LEGAUX = {
 TVA_CEDEAO_HORS_UEMOA = {
     "GMB": (15.0, "Income and Value Added Tax Act 2012, s.142(3) et 171(1) : valeur en douane augmentée du droit "
                   "de douane, du droit d'accise « and any other fiscal charge (other than VAT) payable on the import »."),
-    "LBR": (12.0, "Revenue Code, s.1004(d) : CIF augmenté du droit de douane, du customs service fee, de l'ECOWAS "
-                  "Trade Levy et de l'accise ; taux 12 % (Tax Amendment Act 2024, appliqué depuis le 1er avril 2025). "
-                  "La LRA annonce 13 % depuis le 1er mai 2026 pour les services ; pour les biens, le texte de la loi "
-                  "de décembre 2025 n'a pas été obtenu."),
+    "LBR": (13.0, "Revenue Code, s.1004(d) : CIF augmenté du droit de douane, du customs service fee, de l'ECOWAS "
+                  "Trade Levy et de l'accise ; taux 13 % (s.1000(b)(3), Tax Amendment Act de décembre 2025), "
+                  "appliqué depuis le 1er mai 2026 (avis LRA PSA/LRA-01/FY 2026 ; fiche LBR_taux_GST_2026-10-25.json)."),
     "SLE": (15.0, "Goods and Services Tax Act 2009, s.14(3) et 26(1) : valeur en douane augmentée du droit de "
                   "douane, du customs service charge « or other tax or fiscal charge (other than GST) ». La NRA "
                   "(Tax Guide 2022) calcule la GST sur CIF + droit + accise seulement : la lettre de la loi est "
