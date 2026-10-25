@@ -59,10 +59,11 @@ def test_tva_du_tarif_officiel(positions):
     assert taux["PCS"] == 0.8 and "PCC" not in taux
 
 
-def test_tva_vide_du_tarif_reste_indisponible(positions):
-    """9508.21 : case de TVA vide au tarif ; taux non renseigné, pas TVA non due."""
+def test_tva_vide_du_tarif_prend_le_taux_de_droit_commun(positions):
+    """9508.21 : case de TVA vide au tarif, position absente des listes du CGI
+    (art. 195 IV, point D) : 18 % (art. 229), pas TVA non due."""
     etat, lignes = _calcul(positions["9508210000"])
-    assert lignes["TVA"]["taux_pct"] is None and etat != "COMPLET"
+    assert lignes["TVA"]["taux_pct"] == 18.0 and etat == "COMPLET"
 
 
 def test_intention_d_importation_et_pvi_au_bloc_reglementaire():

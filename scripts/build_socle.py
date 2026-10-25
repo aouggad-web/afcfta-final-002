@@ -3301,6 +3301,16 @@ def _prelevements_mali(positions, compteurs):
                     "« Sont à inclure dans la base d'imposition : les impôts, taxes, droits et prélèvements de toute "
                     "nature à l'exception de la TVA »."
                 )
+                if d.get("taux") is None:
+                    # Case TVA vide du tarif de 2023 (8708.22, 9508.21 à 9508.40,
+                    # 9701.29), positions absentes des listes du CGI (art. 195 IV,
+                    # point D) : taux de droit commun.
+                    d["taux"] = 18.0
+                    compteurs["taux_indisponibles"] -= 1
+                    d["note"] += (
+                        f" Art. 229 : « 18 % pour les autres produits et les services non exonérés » ; la case "
+                        "TVA du tarif de la DGD est vide sur cette position."
+                    )
             elif code == "TCI":
                 d["note"] = (
                     "Taxe conjoncturelle à l'importation : assise sur un prix de déclenchement non publié ; "
