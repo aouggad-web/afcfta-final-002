@@ -117,6 +117,7 @@ FAMILLES = {
     "EVN": "accise",  # prélèvement environnemental, Part 3 (NA)
     "ATL": "accise",  # Alcohol and Tobacco Levy (SZ)
     "ALV": "accise",  # prélèvement sur l'alcool importé (BW)
+    "TAPL": "accise",  # Tobacco and Alcoholic Products Levy (LS)
     "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
@@ -1985,7 +1986,7 @@ def _prelevements_zaf(positions, compteurs):
 #: est incomplet plutôt que présenté comme complet. Fuel levy et prélèvement
 #: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
 #: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
-#: reprises. Lesotho : aucun prélèvement à l'importation documenté.
+#: reprises. Lesotho : prélèvement sur le tabac et l'alcool, voir TAPL_LESOTHO.
 #: Botswana, alcool : fiche BWA_prelevement_alcool_2026-10-23.json.
 #: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
 PRELEVEMENTS_SACU_NON_COLLECTES = {
@@ -2046,6 +2047,39 @@ def _prelevements_sacu_non_collectes(iso, positions, compteurs):
                      "assiette_origine": "regle_de_pays" if assiette else None, "source": source,
                      "note": note + "taux en vigueur non collecté : prélèvement dû à l'importation, "
                                     "non liquidé, total incomplet."}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Lesotho : Tobacco and Alcoholic Products Levy Act 2023 (Act 1/2023, en vigueur
+#: le 01/03/2023 par la LN 22/2023), barème de la LN 58/2025 au 01/04/2025
+#: (fiche LSO_prelevement_tabac_alcool_2026-10-25.json). « Alcoholic products »
+#: (s.2) exclut la bière traditionnelle, isolée en 2203.00.05 et 2206.00.15 ;
+#: l'éthanol (22.07) et les produits à inhaler (24.04) sont laissés hors du
+#: périmètre. (positions, taux %, positions exclues)
+TAPL_LESOTHO = (
+    (("2203", "2204", "2205", "2206", "2208"), 10.0, ("22030005", "22060015")),
+    (("2401", "2402", "2403"), 20.0, ()),
+)
+
+
+def _prelevement_tapl_lesotho(positions, compteurs):
+    """Lesotho : prélèvement sur les produits du tabac et les boissons
+    alcoolisées importés, sur la valeur en douane, les services accessoires
+    (transport, assurance) et les droits hors TVA (s.7(2))."""
+    for prefixes, taux, exclues in TAPL_LESOTHO:
+        for code, position in positions.items():
+            if not code.startswith(prefixes) or code in exclues:
+                continue
+            droits = position.setdefault("droits", [])
+            ligne = {"code": "TAPL", "code_source": "TAPL", "famille": famille("TAPL"),
+                     "libelle": "Tobacco and Alcoholic Products Levy", "taux": taux, "specifique": None,
+                     "assiette": "CIF+DD+EXS+EXA", "assiette_origine": "regle_de_pays",
+                     "source": "Tobacco and Alcoholic Products Levy Act 2023 (Lesotho), s.6 et s.7(2) ; "
+                               "barème : LN 58/2025, en vigueur le 01/04/2025",
+                     "note": "Valeur imposable : valeur en douane, droits et charges fiscales hors TVA, "
+                             "transport et assurance (s.7(2)). Comprise dans l'assiette de la TVA."}
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(rang, ligne)
             _compter_ligne(ligne, compteurs, 1)
@@ -3461,6 +3495,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
         _prelevements_sacu_non_collectes(iso, positions, compteurs)
+    if iso == "LSO":
+        _prelevement_tapl_lesotho(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
