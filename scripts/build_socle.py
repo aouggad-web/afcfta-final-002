@@ -1505,6 +1505,35 @@ def _iat_nigeria_2026(positions, compteurs):
                     compteurs["taux_indisponibles"] += 1
 
 
+#: Sierra Leone : Part II du Schedule du Customs Tariff Act 1978, abrogée et
+#: remplacée par le Finance Act 2026, s.2 (fiche SLE_droits_nationaux_2026-10-25.json).
+#: Seules les lignes que le tarif servi (TEC CEDEAO, SH 2017) isole sans les
+#: déborder. (positions, taux %, item de la Part II)
+DROITS_NATIONAUX_SLE = (
+    (("040711", "040719", "040721", "040729", "040790"), 35.0, "i, imported eggs"),
+    (("2103200000",), 35.0, "ii, imported tomato ketchup and other tomato sauces"),
+    (("2104109000",), 35.0, "iv, imported maggi cube"),
+    (("220110", "220190", "2202100000"), 35.0, "v, imported bottled water"),
+    (("271112", "271113", "271119"), 0.0, "vi, LPG (butane/propane)"),
+    (("4404200000",), 35.0, "vii, wooden poles"),
+    (("4412100000", "4412310000", "4412330000"), 35.0, "viii, imported plywood"),
+    (("7317009000",), 30.0, "x, imported nails"),
+    (("732111", "7321900000"), 0.0, "xi, LPG stoves and others (including accessories)"),
+)
+
+
+def _droits_nationaux_sle(positions):
+    for code, position in positions.items():
+        regle = next((r for r in DROITS_NATIONAUX_SLE if code.startswith(r[0])), None)
+        if regle is None:
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") == "DD":
+                d["taux"] = regle[1]
+                d["source"] = "Customs Tariff Act 1978, Schedule, Part II (Finance Act 2026, s.2)"
+                d["note"] = f"Taux national de la Part II, item {regle[2]}, en vigueur au 1er janvier 2026."
+
+
 def _taux_tva_legaux():
     """La table TAUX_TVA_LEGAUX de backend/services/tax_profile_data.py."""
     if REPO not in sys.path:
@@ -3545,6 +3574,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ordre_tunisie(positions)
     if iso == "NGA":
         _iat_nigeria_2026(positions, compteurs)
+    if iso == "SLE":
+        _droits_nationaux_sle(positions)
     if iso in _taux_tva_legaux():
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":

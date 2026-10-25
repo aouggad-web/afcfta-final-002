@@ -1,0 +1,34 @@
+{
+ "schema_version": 1,
+ "objet": "Sierra Leone : taux nationaux de la Part II du Customs Tariff Act 1978 (Finance Act 2026, s.2)",
+ "destination_iso3": "SLE",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Finance Act 2026 publié au Sierra Leone Gazette Extraordinary n° 3 du 07/01/2026 (copie de la National Revenue Authority)",
+ "source": {
+  "url": "http://webtestcms.nra.gov.sl/uploads/The_Finance_Act_2026_121df05d9b.pdf",
+  "institution": "National Revenue Authority, Sierra Leone"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/SLE_FinanceAct_2026.pdf",
+   "sha256": "372edaf9bae9bc3f1a45d26ab4175e15cdbbc9be958a4135d8ba6dd8abc810cf"
+  }
+ ],
+ "regle": {
+  "valeur": "Droit de douane national à la place du taux du TEC CEDEAO : œufs (04.07) 35 % ; tomato ketchup (2103.20) 35 % ; bouillons en cube (2104.10.90) 35 % ; eaux en bouteille (2201.10, 2201.90, 2202.10) 35 % ; GPL (2711.12, 2711.13, 2711.19) 0 % ; échalas et perches (4404.20) 35 % ; contreplaqués (4412.10, 4412.31, 4412.33) 35 % ; clous (7317.00.90) 30 % ; réchauds à gaz et leurs parties (7321.11, 7321.90) 0 %.",
+  "reference": "Customs Tariff Act 1978 (Act No. 16 of 1978), Schedule, Part II, abrogée et remplacée par le Finance Act 2026 (Act No. 1 of 2026), s.2, en vigueur au 1er janvier 2026 (s.1)",
+  "verbatim_fa2026_s2": "The Schedule to the Customs Tariff Act 1978 is amended by repealing and replacing Part II with the following new Part. PART II [...] i 040711, 040719, 040721, 040729, 040790 Imported eggs 35% ; ii 2103.20.00 Imported tomato ketchup and other tomato sauces 35% ; iii 2103.90.90 Imported tomato paste 35% ; iv 2104.10.90 Imported maggi cube 35% ; v 2201.10, 2201.90, 2202.10 Imported bottled water 35% ; vi 2711.19, 2711.12, 2711.13 LPG (butane/propane) (i) for a general mixture; (ii) for propane (iii) for butane 0% ; vii 4404.20.00 Wooden poles 35% ; viii 4412.10.00, 4412.31.00, 4412.33.00 Imported plywood 35% ; ix 73110010 LPG Cylinders (6kg - 12kg) 0% ; x 7317.00.90 Imported nails 30% ; xi 7321.11.10, 7321.11.90, 7321.19.90, 7321.90, 84137099 LPG stoves and others (including accessories) 0% ; xii 8541.42.00, 8541.43.00, 8541.49.00 for solar panel (< 300W) 0% ; xiii 8541.41.00, 8539.51.00, 8539.52.00 for solar home system (accessories and component parts) 0%",
+  "portee": "scripts/build_socle.py, DROITS_NATIONAUX_SLE et _droits_nationaux_sle : taux du DD remplacé, source et note portées sur la ligne."
+ },
+ "decisions": [
+  "La Part II est remplacée en entier : les items des Parts II antérieures (Finance Act 2025 : riz, barres de fer, gaz de cuisine) qui n'y figurent plus ne valent plus ; leurs positions restent au taux du TEC.",
+  "Le tarif servi suit le TEC CEDEAO en SH 2017. Ne sont repris que les items dont les codes isolent une ou plusieurs positions servies sans les déborder.",
+  "Non repris, faute de position servie qui leur corresponde exactement : 2103.90.90 (concentré de tomates ; la position servie 2103.90.99 couvre toutes les autres sauces), 7311.00.10 (bouteilles de GPL de 6 à 12 kg ; 7311.00.00 couvre tous les récipients pour gaz), 7321.19.90 et 8413.70.99 (subdivisions nationales plus étroites que 7321.19.00 et 8413.70.00), 8541.42, 8541.43, 8541.49, 8541.41, 8539.51 et 8539.52 (codes du SH 2022, condition de puissance ou d'usage ; le tarif servi a 8541.40 et 8539.50 du SH 2017).",
+  "7321.11 (« 7321.11.10, 7321.11.90 ») couvre toute la sous-position des appareils de cuisson à gaz : les quatre positions servies 7321.11.11 à 7321.11.99 sont reprises."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les autres dispositions du Schedule (Part I, taux par position) ne sont pas lues ; le tarif servi reste le TEC CEDEAO tel que collecté.",
+  "Un Finance Act de mi-exercice 2026 n'a pas été recherché au-delà des copies du Ministry of Finance et de la NRA."
+ ]
+}
