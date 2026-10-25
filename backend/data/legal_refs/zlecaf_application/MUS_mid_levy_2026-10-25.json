@@ -1,0 +1,37 @@
+{
+ "schema_version": 1,
+ "objet": "Maurice : chapitre 27 du tarif intégré (colonne « Levy ») et MID levy à l'importation (Excise Act s.3A, First Schedule Part II)",
+ "destination_iso3": "MUS",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire — Customs Tariff Schedules (Integrated Tariff) de la MRA, « As at 01 October 2026 », pages 156 à 162 ; Excise Act 1994, version consolidée MRA du 01.10.2026, s.3A et First Schedule Part II",
+ "source": {
+  "url": "https://www.mra.mu/download/TariffInf011026.pdf",
+  "institution": "Mauritius Revenue Authority"
+ },
+ "regle": {
+  "valeur": "Les pages du chapitre 27 portent une colonne « Levy » entre « Excise Duty » et « VAT ». Lue, elle rend au chapitre 27 sa TVA (15 % ou 0 selon la position), ses préférences et le droit de douane des 9 positions qui n'en avaient pas. MID levy servie en droit spécifique : 30 cents le kilo sur la houille (2701.11.00, 2701.12.00, 2701.19.00) et le butane (2711.13.10, 2711.13.20, 2711.13.90), 30 cents le litre sur le carburéacteur et le pétrole lampant (2710.19.31, 2710.19.39) et les fiouls autres que de soute (2710.19.69) ; 0 sur l'essence Mogas, le gasoil et le fioul de soute. La TVA de ces positions s'assoit sur CIF + droit + accise + MID levy.",
+  "reference": "Excise Act 1994, s.3A et First Schedule, Part II ; Value Added Tax Act 1998, s.13 (c)",
+  "verbatim_s3A": "(1) A MID levy shall be chargeable on the excisable goods specified in Part II of the First Schedule, where they are for home consumption. (2) The MID levy shall – (a) be computed by reference to the taxable base of the goods at the rate corresponding to those goods as specified in Part II of the First Schedule",
+  "verbatim_tarif": "Heading H.S. Code Description Statistical Unit General Excise Duty Levy VAT COMESA* Group I […] 2701.11.00 -- Anthracite kg 0 0 30 cents per kg 15 0 0 0 0 0 0 0 0 0 0 0 0",
+  "verbatim_vat_s13": "The value shall, in respect of goods imported by any person, be the sum of - (a) the customs value of the goods; (b) the customs duty and excise duty payable on the goods; (c) the MID levy; (d) the CO2 levy; and (e) the levy on energy consumption.",
+  "portee": "backend/crawlers/countries/mauritius_mra_scraper.py (colonne Levy, code MID) ; scripts/build_socle.py, MID_MUS et _mid_levy_maurice.",
+  "texte_archive": "sources/MUS_chapitre27_mid_levy.texte-extrait.txt",
+  "sha256": "d5edb8afe0fecaed8bcb37ca9bb4c1562f0433028bd25d74394205e91b885ba0"
+ },
+ "decisions": [
+  "Le collecteur lisait les pages du chapitre 27 avec le plan des autres pages : la TVA tombait dans la cellule « Levy », vide sur la plupart des lignes, et chaque préférence prenait la valeur de la colonne précédente (la TVA à 15 % devenait la préférence COMESA Group I). Les 9 lignes dont la levy porte « 30 cents » étaient écartées sans taux.",
+  "Le collecteur lit désormais l'édition du 01.10.2026 (TariffInf011026.pdf), celle du 13.08.2026 n'étant plus publiée ; hors chapitre 27, l'édition nouvelle ajoute 27 codes et en retire 13 (1901.90, 1905.90, 2106.90, 2201.10, 2201.90, 2202.10, 3923.30, 84.18).",
+  "MID levy à 0 : assiette CIF posée pour ne pas bloquer la TVA, le montant étant nul quelle qu'elle soit."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "La CO2 levy (Part III, selon les émissions du véhicule) et la levy on energy consumption, qui entrent aussi dans l'assiette de la TVA : non servies.",
+  "Le paiement différé de 30 jours de la MID levy sur les produits pétroliers importés par la State Trading Corporation (s.3B) : sans effet sur le montant."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/MUS_chapitre27_mid_levy.texte-extrait.txt",
+   "sha256": "d5edb8afe0fecaed8bcb37ca9bb4c1562f0433028bd25d74394205e91b885ba0"
+  }
+ ]
+}

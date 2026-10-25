@@ -74,12 +74,12 @@
       "alt_gazette": "https://www.veritaszim.net/sites/veritas_d/files/SI%202022-203%20Customs%20and%20Excise%20(Tariff)%20Notice,%202022%20Tariff%20Handbook.pdf"
     },
     "MUS": {
-      "url": "https://www.mra.mu/download/TariffInf130826.pdf",
+      "url": "https://www.mra.mu/download/TariffInf011026.pdf",
       "institution": "Mauritius Revenue Authority (mra.mu)",
       "annee": "2026",
-      "sha256": "26c0e4c6764096639bfb3cbc4dd683eb389c99d45758d2344f7df17c9e65fe11",
-      "taille_octets": 16916985,
-      "pages": 807,
+      "sha256": "c631ca50bfe4d5e8117983c35822af2dca858aa19285f5ce7d25de23141b035a",
+      "taille_octets": 17002440,
+      "pages": 810,
       "structure": "tarif intégré (nomenclature + taux)"
     },
     "MWI": {
