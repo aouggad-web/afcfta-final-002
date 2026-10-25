@@ -62,6 +62,9 @@ ACCISE_ETH = os.path.join(
 IAT_NGA_2026 = os.path.join(
     REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "NGA_SI29_2026_IAT.csv"
 )
+DROITS_AGO_2026 = os.path.join(
+    REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "AGO_Lei14-25_anexo_III.csv"
+)
 # Positions SH 2022 que la liste IAT désigne par un code d'une nomenclature
 # antérieure, ou sous un même code à deux taux (groupes électrogènes « basic » /
 # « soundproof ») : l'IAT n'y est pas attribuable sans deviner.
@@ -1609,6 +1612,40 @@ def _droits_nationaux_sle(positions):
                 d["taux"] = regle[1]
                 d["source"] = "Customs Tariff Act 1978, Schedule, Part II (Finance Act 2026, s.2)"
                 d["note"] = f"Taux national de la Part II, item {regle[2]}, en vigueur au 1er janvier 2026."
+
+
+def _droits_angola_2026(positions, compteurs):
+    """Angola : droit de douane de 2026 (Lei n.º 14/25, OGE 2026 ; fiche
+    AGO_droits_2026-10-25.json). Taux de l'Anexo III (art. 31.º n.º 6) ; ailleurs,
+    minimum de 5 % (art. 31.º n.º 3), « Livre » excepté. Une position de la Pauta
+    2024 que l'Anexo III subdivise en codes qu'elle n'a pas perd son taux."""
+    with open(DROITS_AGO_2026, encoding="utf-8") as f:
+        anexo = {r["code"]: r for r in csv.DictReader(f, delimiter=";")}
+    subdivisions = collections.defaultdict(list)
+    for code, r in anexo.items():
+        if code not in positions:
+            taux = "Livre" if r["taux"] == "Livre" else f"{r['taux']} %"
+            subdivisions[code[:6]].append(f"{code[:4]}.{code[4:6]}.{code[6:]} : {taux}")
+    for code, position in positions.items():
+        dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None)
+        if dd is None:
+            continue
+        _compter_ligne(dd, compteurs, -1)
+        avant = "illisible" if dd["taux"] is None else f"{dd['taux']:g} %"
+        if code in anexo:
+            r = anexo[code]
+            dd["taux"] = 0.0 if r["taux"] in ("Livre", "0") else float(r["taux"])
+            dd["source"] = "Lei n.º 14/25 (OGE 2026), art. 31.º n.º 6 et Anexo III"
+            dd["note"] = f"Taux de l'Anexo III (Diário, p. {r['page_diario']}) ; Pauta 2024 : {avant}."
+        elif code.endswith("00") and subdivisions.get(code[:6]):
+            dd["taux"] = None
+            dd["note"] = ("L'Anexo III de la Lei n.º 14/25 subdivise cette position : "
+                          f"{', '.join(subdivisions[code[:6]])}. Taux à lire sur la sous-position.")
+        elif dd["taux"] is not None and 0 < dd["taux"] < 5:
+            dd["taux"] = 5.0
+            dd["source"] = "Lei n.º 14/25 (OGE 2026), art. 31.º n.º 3"
+            dd["note"] = f"Taux minimum de 5 % pour 2026 ; Pauta 2024 : {avant}."
+        _compter_ligne(dd, compteurs, 1)
 
 
 def _taux_tva_legaux():
@@ -3433,6 +3470,51 @@ def _accises_liberia(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Angola : Imposto Especial de Consumo à l'importation (Lei n.º 16/21, Anexo I ;
+#: spiritueux et tabac remplacés pour 2026 par la Lei n.º 14/25, art. 34.º et
+#: Anexo IV). Codes de 2021 reportés sur la Pauta 2024 (SH 2022). Fiche
+#: AGO_IEC_2026-10-25.json. (positions, taux %, référence).
+IEC_AGO = (
+    (("220210",), 3.0, "Lei n.º 16/21, Anexo I, 2202.10.00"),
+    (("220291", "220299", "2203"), 4.0, "Lei n.º 16/21, Anexo I, 2202.91.00, 2202.99.00, 2203.00.00"),
+    (("220410", "220421", "220422", "220429", "2205", "2206"), 8.0, "Lei n.º 16/21, Anexo I, 22.04 à 22.06"),
+    (("2207",), 15.0, "Lei n.º 16/21, Anexo I, 22.07"),
+    (("2208",), 25.0, "Lei n.º 14/25 (OGE 2026), art. 34.º et Anexo IV, 22.08"),
+    (("2401", "2402", "2403"), 50.0, "Lei n.º 14/25 (OGE 2026), art. 34.º et Anexo IV, 24.01 à 24.03"),
+    (("36041000",), 19.0, "Lei n.º 16/21, Anexo I, 3604.10.00"),
+    (("39232110", "39232910"), 2.0, "Lei n.º 16/21, Anexo I, 3923.21.10 et 3923.29.10"),
+    (("39232190", "39232990"), 19.0, "Lei n.º 16/21, Anexo I, 3923.21.90 et 3923.29.90"),
+    (("4012",), 19.0, "Lei n.º 16/21, Anexo I, 40.12"),
+    (("7113", "7114"), 15.0, "Lei n.º 16/21, Anexo I, 71.13 et 71.14"),
+    (("87032449", "87032459", "87033359", "87033369", "87042110", "87042111", "87042113", "87042114"), 5.0,
+     "Lei n.º 16/21, Anexo I, 8703.24, 8703.33 et 8704.21"),
+    (("8801", "88021100", "88022000", "890321", "890322", "890323", "890331", "890332", "890333"), 20.0,
+     "Lei n.º 16/21, Anexo I, 88.01, 88.02 et 89.03"),
+    (("93032000", "93033000"), 50.0, "Lei n.º 16/21, Anexo I, 9303.20.00 et 9303.30.00"),
+    (("9701", "9702", "9703", "9704", "9705", "9706"), 5.0, "Lei n.º 16/21, Anexo I, 97.01 à 97.06"),
+)
+
+
+def _iec_angola(positions, compteurs):
+    """Angola : IEC dû au desembaraço aduaneiro (art. 8.º), sur le valor
+    aduaneiro (art. 7.º n.º 1 b)), avant l'IVA dont l'assiette le comprend."""
+    for code, position in positions.items():
+        regle = next((r for r in IEC_AGO if code.startswith(r[0])), None)
+        if regle is None:
+            continue
+        _, taux, reference = regle
+        ligne = {"code": "EXC", "code_source": "IEC", "famille": famille("EXC"),
+                 "libelle": "Imposto Especial de Consumo", "taux": taux, "specifique": None,
+                 "assiette": "CIF", "assiette_origine": "regle_de_pays", "source": reference,
+                 "note": "Lei n.º 16/21, art. 7.º n.º 1 b) : valor aduaneiro des biens importés. Exonérations "
+                         "de l'art. 6.º (matières premières et usage médical sous déclaration d'exclusivité, "
+                         "véhicules électriques, etc.) non distinguées."}
+        droits = position.setdefault("droits", [])
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -3784,6 +3866,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _iat_nigeria_2026(positions, compteurs)
     if iso == "SLE":
         _droits_nationaux_sle(positions)
+    if iso == "AGO":
+        _droits_angola_2026(positions, compteurs)
     if iso in _taux_tva_legaux():
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
@@ -3798,6 +3882,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tsp_tp_libye(positions, compteurs)
     if iso == "LBR":
         _accises_liberia(positions, compteurs)
+    if iso == "AGO":
+        _iec_angola(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
