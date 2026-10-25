@@ -1,0 +1,43 @@
+{
+ "schema_version": 1,
+ "objet": "Libéria : accise à l'importation (Liberia Revenue Code, chapitre 11 et Schedule 1, modifiés par le Tax Amendment Act de décembre 2025)",
+ "destination_iso3": "LBR",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Liberia Revenue Code As Amended (consolidation 2020) et Tax Amendment Act de décembre 2025, publiés par la Liberia Revenue Authority",
+ "source": {
+  "url": "https://revenue.lra.gov.lr/wp-content/uploads/2026/04/LRC-Amendment-December-2025.pdf",
+  "institution": "Liberia Revenue Authority"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/LBR_RevenueCode_2020.pdf",
+   "sha256": "b96f4d43bca76d72a9b7d56544049c2fe6d715ca29f15d1dae01a8d170da39bd"
+  },
+  {
+   "fichier_archive": "sources/LBR_TaxAmendmentAct_Dec2025.pdf",
+   "sha256": "6d498c8d05fa33a8386bc4d2439efeaced5aa283c0c0ab984c3dd1fbc8a98d88"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne EXC (accise), en dollars US. Spécifique : jus (20.09) 0,45 $/l ; eaux non sucrées (22.01) 0,15 $/l ; eaux sucrées et autres boissons non alcooliques (22.02) 0,45 $/l ; bière, vins, vermouths, autres boissons fermentées (22.03 à 22.06) 1,00 $/l ; spiritueux (22.08) 3,00 $/l ; tabac non fabriqué (24.01) et autres tabacs fabriqués (24.03) 25,00 $/kg ; cigares et cigarettes (2402.10, 2402.20) 0,50 $ par paquet de 20 ; autres (2402.90) 0,25 $ par unité. Ad valorem sur CIF + droit + redevances + prélèvement CEDEAO : pipes (96.14) 50 % ; cosmétiques (33.03, 33.04, 33.05, 33.07) 20 % ; sucre (1701.99.10, 1701.99.90) 5 % ; bijouterie (71.13 à 71.18) 10 % ; jeux (95.04) 30 %.",
+  "reference": "Liberia Revenue Code As Amended, s.1104(b), 1105(b), 1109(b), 1110(a) et (c), 1160(b), Schedule 1 ; Liberia Tax Amendment Act of December 2025, Schedule 1",
+  "verbatim_s1110": "(a) The tax base for excisable goods with respect to which fixed excise tax rates have been established shall be defined as the volume of excisable goods produced or imported in physical terms. [...] (c) When excisable goods for which ad valorem excise tax rates have been established are imported, the tax base shall be defined as CIF value and import duty, customs service charge, ECOWAS levy and any other duties, with the exception of VAT/GST.",
+  "verbatim_s1004_d": "The taxable amount of a taxable import is the sum of the following amounts— (1) The CIF Liberian Port or Customs entry value [...] (3) The customs duty, customs service fee, ECOWAS Trade Levy, and excise tax (if any) on import.",
+  "verbatim_schedule1_2020": "9614 Smoking pipes (including pipe bowls) and cigar or cigarette holders, and parts thereof (i.e. hookah utensils) 50% ; 33 Cosmetics and cosmetic aids including perfumes, toilet preparation, hair products and nail products (soap, toothpaste, toilet tissues and disinfectants are not cosmetics or cosmetic aids) 20% ; 1701.99.10.00 / 1701.99.90.00 Cane or beet sugar and chemically pure sucrose, in solid form 5% ; 8703 Luxury vehicles [...] minimum of a CIF value of US$60,000.00 for a new car or US$30,000.00 for a used car 10% ; 7113-7118 Jewelry, goldsmiths' and silversmiths' wares and other articles 10% ; 9504 Video game consoles and machines, articles for funfair, table or parlor games [...] 30%",
+  "verbatim_schedule1_dec2025": "Proposed — Imported : 2203 Beer made from malt $1.00/L ; 2204 $1.00/L ; 2205 $1.00/L ; 2206 $1.00/L ; 2208 $3.00/L ; 2009 Juices [...] $0.45/L ; 2201 Waters [...] not containing added sugar $0.15/L ; 2202 Waters [...] containing added sugar [...] and other non-alcoholic beverages $0.45/L ; 2401 Unmanufactured tobacco $25.00/Kg ; Cigarettes, of tobacco or tobacco substitutes $0.50/pack of 20 sticks ; Cigars, cheroots, cigarillos $0.50/pack of 20 sticks ; 2402 Others of heading 2402 $0.25/stick ; 2403 Other manufactured tobacco [...] $25.00/Kg ; 2404 [...] $15.00/Kg ; 8543.40.10 E-Cigarettes [...] $0.10/mL. Part 3: This Act shall take effect immediately upon publication to handbill.",
+  "portee": "scripts/build_socle.py, ACCISES_LBR, ACCISES_LBR_AD_VALOREM et _accises_liberia ; la ligne EXC précède la GST, dont l'assiette (CIF + tous droits hors GST) l'inclut."
+ },
+ "decisions": [
+  "Taux à l'importation : ceux du Schedule 1 du Tax Amendment Act de décembre 2025 (colonne « Proposed », adoptée ; imprimé le 01/04/2026, en vigueur à la publication) pour les lignes qu'il énumère ; ceux du Schedule 1 de la consolidation 2020 pour les autres. Le Tax Amendment Act de décembre 2024 ne modifiait que les headings 22.03 à 22.08, remplacés depuis.",
+  "Le PDF de 2025 est scanné, sans couche texte : le Schedule 1 (page 11) a été lu à l'écran.",
+  "Les taux ad valorem du Schedule 1 de 2020 occupent une cellule commune aux colonnes « Imported » et « Local » (comme le tabac, au même taux pour les deux) : cosmétiques 20 %. Le dépliant de la LRA mis en ligne en septembre 2026 indique 10 % à l'importation, mais reprend aussi des taux du tabac abrogés : le texte du Code est retenu.",
+  "Cosmétiques : le Schedule vise le chapitre 33 en le limitant aux cosmétiques, parfums, préparations de toilette, produits capillaires et pour ongles, hors dentifrice ; positions retenues 33.03, 33.04, 33.05 et 33.07. Bijouterie : 71.13 à 71.18, comme le texte (71.18 compris).",
+  "Non repris : 24.04 et 8543.40.10 (codes du SH 2022 absents du tarif servi, SH 2017) ; véhicules de luxe 87.03 (condition de valeur CIF unitaire, 60 000 $ neuf ou 30 000 $ d'occasion, que le calcul ne connaît pas)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "L'indexation automatique des taux spécifiques à partir du 1er janvier 2027 (s.1108(e)) : taux de 2026 servis.",
+  "Le taux de la GST servi (12 %) n'est pas réexaminé ici.",
+  "Les accises citées par le dépliant de la LRA hors du Schedule (monosodium glutamate 30 %, terre et pierre, amiante 35 %) : aucun texte de loi trouvé, non reprises."
+ ]
+}

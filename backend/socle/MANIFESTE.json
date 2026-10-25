@@ -904,10 +904,11 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "0870c1aa4c4642876c720fae004d72452332cf38b7f5205227d1fda59df04869",
+      "socle_sha256": "2fee61d2bc7370bfc4610d1f3749f6edbcdd37658e2ec8b4e158c146710c4d36",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
+        "accise",
         "autre",
         "communautaire",
         "droit",
@@ -915,8 +916,8 @@
       ],
       "compteurs": {
         "positions": 6129,
-        "droits": 24516,
-        "droits_liquidables": 24516,
+        "droits": 24636,
+        "droits_liquidables": 24636,
         "positions_liquidables": 6129,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
@@ -925,10 +926,10 @@
         "taux_indisponibles": 0,
         "assiettes_source": 12258,
         "assiettes_fichier": 0,
-        "assiettes_table": 12258,
+        "assiettes_table": 12378,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
-        "droits_specifiques": 0,
+        "droits_specifiques": 79,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
@@ -2060,7 +2061,7 @@
       "ZWE"
     ],
     "positions": 370215,
-    "droits": 1244072,
-    "droits_liquidables": 1209828
+    "droits": 1244192,
+    "droits_liquidables": 1209948
   }
 }

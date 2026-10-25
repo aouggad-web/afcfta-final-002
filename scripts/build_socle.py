@@ -3196,6 +3196,58 @@ def _lignes_liquidables(position):
     return [(statuts[d.get("code")] or [None]).pop(0) == "CALCULE" for d in droits]
 
 
+#: Libéria : accise à l'importation (Liberia Revenue Code, ch. 11, Schedule 1 de
+#: la consolidation 2020 ; lignes remplacées par le Tax Amendment Act de
+#: décembre 2025, publié le 01/04/2026). Fiche LBR_accises_2026-10-25.json.
+#: Spécifiques, en dollars US : (positions, montant, unité de quantité, barème).
+ACCISES_LBR = (
+    (("2009",), 0.45, "li", "US$0.45/L"),
+    (("2201",), 0.15, "li", "US$0.15/L"),
+    (("2202",), 0.45, "li", "US$0.45/L"),
+    (("2203", "2204", "2205", "2206"), 1.0, "li", "US$1.00/L"),
+    (("2208",), 3.0, "li", "US$3.00/L"),
+    (("2401", "2403"), 25.0, "kg", "US$25.00/Kg"),
+    (("2402100000",), 0.5, "paquet de 20", "US$0.50 / pack of 20 sticks"),
+    (("2402200000",), 0.5, "paquet de 20 cigarettes", "US$0.50 / pack of 20 sticks"),
+    (("2402900000",), 0.25, "unité", "US$0.25 / stick"),
+)
+#: Ad valorem, s.1110(c) : (positions, taux %, ligne du Schedule 1 de 2020).
+ACCISES_LBR_AD_VALOREM = (
+    (("9614",), 50.0, "9614, smoking pipes and cigar or cigarette holders"),
+    (("3303", "3304", "3305", "3307"), 20.0, "33, cosmetics and cosmetic aids"),
+    (("1701991000", "1701999000"), 5.0, "1701.99.10.00 et 1701.99.90.00, sugar"),
+    (("7113", "7114", "7115", "7116", "7117", "7118"), 10.0, "7113-7118, jewelry"),
+    (("9504",), 30.0, "9504, gambling equipment"),
+)
+
+
+def _accises_liberia(positions, compteurs):
+    """Libéria : accise due à l'importation (s.1105(b)), avant la GST."""
+    base = {"code": "EXC", "code_source": "EXC", "famille": famille("EXC"), "libelle": "Excise tax"}
+    for code, position in positions.items():
+        ligne = None
+        for prefixes, montant, unite, brut in ACCISES_LBR:
+            if code.startswith(prefixes):
+                ligne = {**base, "taux": None, "specifique": {
+                    "montant": montant, "unite_monetaire": "USD", "sous_unite_source": None,
+                    "unite_quantite": unite, "brut": brut}, "assiette": "xQTE", "assiette_origine": "droit_specifique",
+                    "source": "Liberia Revenue Code, ch. 11, Schedule 1 (Tax Amendment Act of December 2025)",
+                    "note": f"{brut} à l'importation, en dollars US (s.1110(a) : volume importé)."}
+                break
+        for prefixes, taux, article in ACCISES_LBR_AD_VALOREM:
+            if ligne is None and code.startswith(prefixes):
+                ligne = {**base, "taux": taux, "specifique": None, "assiette": "CIF+DD+PCC+CUF",
+                         "assiette_origine": "regle_de_pays",
+                         "source": f"Liberia Revenue Code, ch. 11, Schedule 1 ({article})",
+                         "note": "s.1110(c) : valeur CIF, droit de douane, redevances douanières, prélèvement "
+                                 "CEDEAO et autres droits, hors GST."}
+        if ligne:
+            droits = position.setdefault("droits", [])
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -3557,6 +3609,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
+    if iso == "LBR":
+        _accises_liberia(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:

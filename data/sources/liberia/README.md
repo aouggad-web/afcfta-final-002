@@ -10,7 +10,7 @@ Collecte délibérément incomplète et signalée à risque : la base légale (g
 - **Services tax taux standard 10%** — Section 1021(b)(1).
 - **Surtaxe télécommunications +5%** (soit 15% combiné sur les services télécom) — Section 1021(b)(2).
 - **Exportations taux zéro** — Section 1000(b)(3).
-- **Structure du régime d'accises** (Sections 1108-1114) : cadre confirmé (taux spécifiques/ad valorem/hybrides, exportations à taux zéro, base d'imposition), mais le barème réel des taux (« Schedule I ») **n'apparaît pas** dans l'extraction texte du document consolidé — probablement une annexe distincte non incluse dans ce PDF.
+- **Régime d'accises** (Sections 1102-1114 et Schedule 1, page 114 de la consolidation) : barème vérifié le 2026-10-25, mis à jour par le Tax Amendment Act de décembre 2025 (`official/lbr-tax-amendment-act-dec-2025.pdf`, scanné, lu à l'écran) ; voir la fiche `backend/data/legal_refs/zlecaf_application/LBR_accises_2026-10-25.json`.
 
 ## Alerte sincérité : taux potentiellement obsolète
 
@@ -24,7 +24,7 @@ Une source secondaire (vatcalc.com) affirme que le taux goods/services tax est p
 
 ## Ce qui n'a PAS été collecté
 
-- **Barème détaillé des accises** (Schedule I) : cadre structurel vérifié, taux par produit non trouvés dans le texte accessible.
+- **Barème détaillé des accises** : collecté le 2026-10-25 (voir plus haut).
 - **Tarif Extérieur Commun (TEC) CEDEAO** : non archivé.
 - **Confirmation du taux actuel** (10% vs 12% potentiel) : voir alerte ci-dessus.
 
