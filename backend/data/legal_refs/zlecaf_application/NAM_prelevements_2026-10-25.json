@@ -11,19 +11,19 @@
  },
  "documents_archives": [
   {
-   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
+   "fichier_archive": "sources/NAM_EnvironmentalLevy_GN100-2016_2016-05-30.pdf",
    "sha256": "a456f651f8698bffd7eed4d8192ddf09165dd3e788aac67ff0d743e45e94c817"
   },
   {
-   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
+   "fichier_archive": "sources/NAM_FuelLevy_EnvironmentalLevy_GN225-226-2019_2019-08-02.pdf",
    "sha256": "24067c3d312b0323ecd016d37e64d2a1ba70065bd672c164afa417f1f05ccb25"
   },
   {
-   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_FuelLevy_GN131-2020_2020-06-12.pdf",
+   "fichier_archive": "sources/NAM_FuelLevy_GN131-2020_2020-06-12.pdf",
    "sha256": "616bbaed25fc74c820647acf4766c113ee2301d3782cfc0344f6513cecf4ea94"
   },
   {
-   "fichier_archive": "../../../../data/sources/NAM/legislation/NAM_FuelLevy_GN215-2022_2022-08-01.pdf",
+   "fichier_archive": "sources/NAM_FuelLevy_GN215-2022_2022-08-01.pdf",
    "sha256": "576753e9a26b8569654134030ab63abd15574e4882928f9f5800b5a8d98ffcf0"
   }
  ],
