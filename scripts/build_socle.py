@@ -1980,13 +1980,14 @@ def _prelevements_zaf(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
-#: Prélèvements nationaux dus à l'importation au Botswana, en Namibie et en
+#: Prélèvements nationaux dus à l'importation au Botswana et en
 #: Eswatini, dont le taux en vigueur n'est pas collecté (fiche
 #: SACU_accises_BLNE_2026-10-20.json) : la ligne est servie sans taux, le total
 #: est incomplet plutôt que présenté comme complet. Fuel levy et prélèvement
 #: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
 #: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
-#: reprises. Lesotho : prélèvement sur le tabac et l'alcool, voir TAPL_LESOTHO.
+#: reprises. Namibie : voir PRELEVEMENTS_NAM. Lesotho : prélèvement sur le tabac
+#: et l'alcool, voir TAPL_LESOTHO.
 #: Botswana, alcool : fiche BWA_prelevement_alcool_2026-10-23.json.
 #: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
 PRELEVEMENTS_SACU_NON_COLLECTES = {
@@ -1998,12 +1999,6 @@ PRELEVEMENTS_SACU_NON_COLLECTES = {
          "CIF+DD",
          "Control of Goods (Intoxicating Liquor (Levy)) Regulations 2008 (Botswana), règl. 2(b), 3(b) et annexe",
          "30 % au texte de 2008 (S.I. 91 et 111 de 2008), modifié depuis ; "),
-    ],
-    "NAM": [
-        ("FLV", "Fuel levy", {"5A"}, None,
-         "Customs and Excise Act 20/1998 (Namibie), s.2 : « fuel levy » (Schedule 1 Part 5)", ""),
-        ("EVN", "Environmental levy", {"3A", "3C", "3D", "3E"}, None,
-         "Customs and Excise Act 20/1998 (Namibie), s.58A(1) (Schedule 1 Part 3)", ""),
     ],
     "SWZ": [
         ("ATL", "Alcohol and Tobacco Levy",
@@ -2047,6 +2042,77 @@ def _prelevements_sacu_non_collectes(iso, positions, compteurs):
                      "assiette_origine": "regle_de_pays" if assiette else None, "source": source,
                      "note": note + "taux en vigueur non collecté : prélèvement dû à l'importation, "
                                     "non liquidé, total incomplet."}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Namibie : fuel levy (Part 5A) et prélèvements environnementaux (Part 3) de la
+#: Schedule No. 1 nationale, lus par scripts/extraire_prelevements_nam.py dans
+#: les Gazettes (GN 100/2016, GN 225/2019, GN 226/2019, GN 131/2020). Fiche
+#: NAM_prelevements_2026-10-25.json.
+PRELEVEMENTS_NAM = os.path.join(REPO, "data", "nam", "prelevements_sch1_parts3_5.json")
+LIBELLES_PRELEVEMENTS_NAM = {
+    "5A": ("FLV", "Fuel levy"),
+    "3A": ("EVN", "Environmental levy (electric filament lamps, tyres)"),
+    "3B": ("EVN", "Environmental levy (CO2 emissions of motor vehicles)"),
+    "3C": ("EVN", "Environmental levy (road wheels fitted with tyres)"),
+    "3D": ("EVN", "Environmental levy (lubricant oils, plastic bags, batteries)"),
+}
+UNITES_PRELEVEMENT_NAM = {"li": "li", "bag": "sac", "lamp": "lampe", "tyre": "pneu"}
+#: Les textes de 2019 nomment la série 2710.12.xx ; le tarif servi la dédouble
+#: en 2710.19.xx, sous les mêmes définitions (« as defined in Additional Note 1 »),
+#: et le tarif sud-africain y porte sa propre fuel levy : le prélèvement suit.
+#: « 2710.19 Other » de la Section D, résiduel en 2019, couvrirait aujourd'hui
+#: les carburants de cette série dédoublée : il n'est pas repris. Les pneus
+#: rechapés ou usagés excluent les chapes et flaps de 4012.90 (Section B, note 6).
+SERIE_DEDOUBLEE_NAM = ("2710.12.", "2710.19.")
+EXCLUSIONS_PRELEVEMENTS_NAM = {("3D", "2710.19"): (), ("3A", "4012"): ("401290",)}
+
+
+def _prelevements_nam(positions, compteurs):
+    """Namibie : fuel levy et prélèvements environnementaux dus à l'importation."""
+    with open(PRELEVEMENTS_NAM, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for article in articles:
+        cle = (article["partie"], article["sous_position"])
+        if cle in EXCLUSIONS_PRELEVEMENTS_NAM and not EXCLUSIONS_PRELEVEMENTS_NAM[cle]:
+            continue
+        exclues = EXCLUSIONS_PRELEVEMENTS_NAM.get(cle, ())
+        code_ligne, libelle = LIBELLES_PRELEVEMENTS_NAM[article["partie"]]
+        prefixes = [article["sous_position"]]
+        if article["sous_position"].startswith(SERIE_DEDOUBLEE_NAM[0]):
+            prefixes.append(article["sous_position"].replace(*SERIE_DEDOUBLEE_NAM))
+        prefixes = tuple(p.replace(".", "") for p in prefixes)
+        source = (f"Customs and Excise Act 20/1998 (Namibie), Schedule No. 1 Part "
+                  f"{article['partie'][0]}{'' if article['partie'] == '5A' else ' Section ' + article['partie'][1]}, "
+                  f"{article['sous_position']} ({article['source']}, p. {article['page']})")
+        for code, position in positions.items():
+            if not code.startswith(prefixes) or code.startswith(exclues):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": None,
+                     "assiette_origine": None, "source": source, "note": article["brut"]}
+            if article.get("par_g_km_co2"):
+                ligne["note"] = (f"{article['brut']} : émissions de CO2 du certificat du constructeur ou, à "
+                                 "défaut, de la cylindrée (Section B, note 5) ; non connues du calcul, "
+                                 "prélèvement non liquidé. Prélèvement unique (note 9).")
+            elif article.get("taux") is not None:
+                ligne["taux"] = article["taux"]
+                ligne["note"] = (f"{article['brut']} : la valeur sur laquelle porte ce taux n'est pas définie par "
+                                 "la Section D ; assiette non établie, prélèvement non liquidé.")
+            elif article.get("montant") == 0:
+                ligne["taux"], ligne["assiette"], ligne["assiette_origine"] = 0.0, "FOB", "regle_de_pays"
+            else:
+                ligne["specifique"] = {
+                    "montant": article["montant"], "unite_monetaire": "unite_principale",
+                    "sous_unite_source": None, "unite_quantite": UNITES_PRELEVEMENT_NAM[article["unite"]],
+                    "brut": article["brut"],
+                }
+                ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(rang, ligne)
             _compter_ligne(ligne, compteurs, 1)
@@ -3495,6 +3561,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
         _prelevements_sacu_non_collectes(iso, positions, compteurs)
+    if iso == "NAM":
+        _prelevements_nam(positions, compteurs)
     if iso == "LSO":
         _prelevement_tapl_lesotho(positions, compteurs)
     if iso == "ZAF":

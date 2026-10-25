@@ -75,12 +75,10 @@ def test_eswatini_le_prelevement_alcool_tabac_rend_le_total_incomplet(client):
     assert lignes["TVA"]["montant"] is None
 
 
-@pytest.mark.parametrize("pays,code_ligne", [("BWA", "FLV"), ("NAM", "FLV"), ("NAM", "EVN")])
+@pytest.mark.parametrize("pays,code_ligne", [("BWA", "FLV")])
 def test_prelevements_nationaux_non_collectes(client, pays, code_ligne):
-    """Fuel levy (BWA, NAM) et prélèvement environnemental (NAM) : déclarés
-    sans taux, le total est incomplet."""
-    code = "27101202" if code_ligne == "FLV" else "40111001"
-    etat, lignes = _calcul(client, pays, code, quantite=1000)
+    """Fuel levy du Botswana : déclarée sans taux, le total est incomplet."""
+    etat, lignes = _calcul(client, pays, "27101202", quantite=1000)
     assert etat != "COMPLET"
     assert lignes[code_ligne]["montant"] is None
 
@@ -161,6 +159,59 @@ def test_eswatini_la_biere_traditionnelle_est_hors_du_prelevement(client):
         positions = json.load(f)["positions"]
     assert not any(d["code"] == "ATL" for d in positions["22060015"]["droits"])
     assert any(d["code"] == "ATL" for d in positions["22030090"]["droits"])
+
+
+@pytest.mark.parametrize("code,montant", [
+    ("27101202", 900.0),  # essence, 90c/li (GN 225/2019)
+    ("27101930", 900.0),  # distillats, série 2710.19 dédoublée
+    ("38260090", 1200.0),  # autre biodiesel, 120c/li
+])
+def test_namibie_fuel_levy(client, code, montant):
+    _, lignes = _calcul(client, "NAM", code, quantite=1000)
+    assert lignes["FLV"]["montant"] == pytest.approx(montant)
+
+
+def test_namibie_petrole_lampant_sans_fuel_levy_depuis_2020():
+    """GN 131/2020 : fuel levy du pétrole lampant ramenée à 0 au 27/04/2020."""
+    assert _ligne_du_socle("NAM", "27101226", "FLV")["taux"] == 0.0
+
+
+@pytest.mark.parametrize("code,quantite,montant", [
+    ("40111001", 4, 40.0),      # pneus neufs, N$10.00 par pneu (Section A)
+    ("87087011", 4, 40.0),      # roues équipées, N$10.00 par pneu (Section C)
+    ("39232107", 1000, 500.0),  # sacs, N$0.50 par sac (Section D)
+    ("85392145", 100, 300.0),   # lampes, N$3.00 par lampe (Section A)
+])
+def test_namibie_prelevements_environnementaux(client, code, quantite, montant):
+    etat, lignes = _calcul(client, "NAM", code, quantite=quantite)
+    assert etat == "COMPLET"
+    assert lignes["EVN"]["montant"] == pytest.approx(montant)
+
+
+@pytest.mark.parametrize("code", ["85061005", "87032390"])
+def test_namibie_piles_et_co2_non_liquides(client, code):
+    """Piles : assiette du taux de 5 % non définie ; CO2 : émissions inconnues."""
+    etat, lignes = _calcul(client, "NAM", code, quantite=1)
+    assert etat != "COMPLET"
+    assert lignes["EVN"]["montant"] is None
+
+
+def test_namibie_chapes_de_pneus_hors_du_prelevement():
+    """Section B, note 6 : chapes et flaps de 4012.90 exclus."""
+    with open(os.path.join(RACINE, "backend", "socle", "NAM.json"), encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    assert not any(d["code"] == "EVN" for d in positions["401290"]["droits"])
+    assert any(d["code"] == "EVN" for d in positions["401211"]["droits"])
+
+
+def test_le_script_reproduit_les_prelevements_namibiens():
+    spec = importlib.util.spec_from_file_location(
+        "extraire_prelevements_nam_test", os.path.join(RACINE, "scripts", "extraire_prelevements_nam.py")
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    with open(os.path.join(RACINE, "data", "nam", "prelevements_sch1_parts3_5.json"), encoding="utf-8") as f:
+        assert module.articles() == json.load(f)["articles"]
 
 
 def test_lesotho_prelevement_de_20_pct_sur_le_tabac(client):
