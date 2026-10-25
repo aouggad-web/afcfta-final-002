@@ -25,6 +25,7 @@ import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import MultiCountryComparison from './MultiCountryComparison';
+import ExportCalculator from './ExportCalculator';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
 import RegulatoryComplianceView, {
@@ -694,7 +695,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
       {/* Onglets Principal */}
       <Tabs defaultValue="calculator" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsList className="grid w-full grid-cols-4 mb-4">
           <TabsTrigger value="calculator" className="flex items-center gap-2" data-testid="calculator-single-tab">
             <Calculator className="w-4 h-4" />
             {language === 'fr' ? 'Calculateur' : 'Calculator'}
@@ -706,6 +707,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <TabsTrigger value="compare" className="flex items-center gap-2" data-testid="calculator-compare-tab">
             <Globe className="w-4 h-4" />
             {language === 'fr' ? 'Comparaison Multi-Pays' : 'Multi-Country Comparison'}
+          </TabsTrigger>
+          <TabsTrigger value="export" className="flex items-center gap-2" data-testid="calculator-export-tab">
+            <Package className="w-4 h-4" />
+            Export
           </TabsTrigger>
         </TabsList>
         
@@ -2283,6 +2288,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         {/* Onglet Comparaison Multi-Pays */}
         <TabsContent value="compare">
           <MultiCountryComparison language={language} />
+        </TabsContent>
+
+        <TabsContent value="export">
+          <ExportCalculator language={language} />
         </TabsContent>
       </Tabs>
     </div>

@@ -969,6 +969,77 @@ def _unites_des_quantites_tun(rows, droits, qcs):
                 d["specifique"] = lu
 
 
+#: Droit unique de sortie ivoirien (DUS), par début de code : ce que la
+#: procédure de dédouanement de la DGD (docs_officiels/PROCEDURE-DEDOUANEMENT-
+#: IMPORT-EXPORT-MARITIME.pdf, « Liste des marchandises soumises au DUS »)
+#: établit au-delà du chiffre que le tarif publie sans unité. « Les prix CAF et
+#: les taux sont fixés par le Conseil des ministres avant le début de chaque
+#: campagne » : le prix CAF de référence n'est pas collecté, aucune de ces
+#: assiettes n'est donc liquidable, sauf le karité, droit spécifique.
+#: (préfixes, taux retenu ou None, spécifique, note)
+DUS_CIV = [
+    (("0901", "2101"), "taux", None,
+     "Procédure DGD : « CAFE (TAUX = 5% DU PRIX CAF DE REFERENCE) ». Le prix CAF de référence est fixé en "
+     "Conseil des ministres à chaque campagne : non collecté."),
+    (("1801", "1802", "1803", "1804", "1805", "1806"), "taux", None,
+     "Procédure DGD : « CACAO (TAUX = 14.6 % DU PRIX CAF DE REFERENCE POUR LA FEVE) ». Le prix CAF de "
+     "référence est fixé en Conseil des ministres à chaque campagne : non collecté."),
+    (("1207991",), None, "10 FCFA/kg",
+     "Procédure DGD : « GRAINE DE KARITE 10 F / KG » — droit spécifique ; le tarif du 27/03/2026 publie « 10 » "
+     "sans unité."),
+    (("0801",), None, None,
+     "Procédure DGD : « NOIX DE CAJOU (PAR CAMPAGNE) » — taux et prix fixés à chaque campagne ; le tarif du "
+     "27/03/2026 publie « 10 » sans unité."),
+    (("080270",), None, None,
+     "La procédure DGD publie « NOIX DE COLAS 10,2 F / KG », le tarif du 27/03/2026 « 14 » sans unité : les "
+     "deux ne s'accordent pas."),
+    (("44",), "taux", None,
+     "Procédure DGD : « BOIS PAR CUBAGE ET ESPECE » — l'assiette (cubage et espèce) n'est pas collectée."),
+]
+
+
+def droits_export_du_fichier(iso, donnees):
+    """Droits et taxes à l'EXPORTATION, par code national : ``{code: [droits]}``.
+
+    Deux collectes en portent ligne par ligne : la Tunisie (``taxes_export``,
+    Tarif Web) et la Côte d'Ivoire (colonne DUS du tarif SYDAM). Le code de la
+    source est gardé tel quel : « DD/PET.BR » est un droit de sortie, pas le
+    droit de douane de l'import."""
+    source = donnees.get("source") or donnees.get("source_name") or ""
+    sortie = {}
+    if iso == "TUN":
+        for ligne in donnees.get("sub_positions") or []:
+            rows = [r for r in ligne.get("taxes_export") or [] if isinstance(r, dict)]
+            code = nettoyer_code(ligne.get("hs_code"))
+            if not rows or not code:
+                continue
+            droits = droits_depuis_liste(rows, source)
+            _unites_des_quantites_tun(rows, droits, ligne.get("qcs"))
+            for row, d in zip(rows, droits):
+                d.update(code=str(row.get("code")), famille="export")
+            sortie[code] = [{k: v for k, v in d.items() if v is not None} for d in droits]
+    elif iso == "CIV":
+        for ligne in donnees.get("positions") or []:
+            code = nettoyer_code(ligne.get("code_clean"), ligne.get("hs_code"), ligne.get("code"))
+            for row in ligne.get("taxes_detail") or []:
+                if not isinstance(row, dict) or row.get("tax_code") != "DUS" or not code:
+                    continue
+                regle = next((r for r in DUS_CIV if code.startswith(r[0])), None)
+                taux = lire_taux(row.get("rate"))
+                note = "Assiette « variable » au tarif : non établie."
+                specifique = None
+                if regle:
+                    _, garde, brut, note = regle
+                    taux = taux if garde == "taux" else None
+                    specifique = lire_specifique(brut) if brut else None
+                d = _droit("DUS", row.get("tax_name") or "Droit Unique de Sortie", taux, None, source, note=note)
+                d.update(code="DUS", famille="export")
+                if specifique:
+                    d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
+                sortie.setdefault(code, []).append({k: v for k, v in d.items() if v is not None})
+    return sortie
+
+
 def lignes_du_fichier(donnees, regimes=None, compteurs=None):
     """Rendre (code, designation, unite, droits_bruts) pour les six schémas."""
     source_defaut = donnees.get("source") or donnees.get("source_name") or ""
@@ -3539,6 +3610,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
     # Les passes par pays (prélèvements, accises) ajoutent des familles après la
     # lecture : la couverture se lit sur ce qui est servi.
+    # Droits de sortie : servis à part (`droits_export`), jamais mêlés aux droits
+    # de l'importation qu'ils ne concernent pas.
+    longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+    for code, droits in droits_export_du_fichier(iso, donnees).items():
+        if longueur_position and len(code) in (longueur_position, longueur_position + 1):
+            code = code.zfill(longueur_position + 1)[:longueur_position]
+        if code in positions:
+            positions[code]["droits_export"] = droits
+            compteurs["positions_export"] = compteurs.get("positions_export", 0) + 1
     familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
