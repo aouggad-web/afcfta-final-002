@@ -2,7 +2,7 @@
 
 Le socle servait 5 619 positions SH6 issues d'une moyenne WITS/UNCTAD-TRAINS,
 SANS AUCUNE désignation. Le tarif national (Customs Tariff Schedules, HS 2022,
-807 pages, mra.mu) en porte 6 941 à huit chiffres, avec leur libellé, leur unité
+810 pages, mra.mu) en porte 6 955 à huit chiffres, avec leur libellé, leur unité
 statistique, quinze colonnes de taux et l'organisme délivrant le document exigé.
 
 Ces tests tiennent les pièges qui ont été relevés en lisant le document, et les
