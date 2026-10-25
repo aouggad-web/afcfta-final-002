@@ -17,12 +17,14 @@
     {
       "institution": "Organisation mondiale du commerce, Secrétariat — Trade Policy Review: Southern African Customs Union, WT/TPR/S/324 (30 septembre 2015), §3.19 et tableau 3.3",
       "url": "https://www.wto.org/english/tratop_e/tpr_e/s324_e.pdf",
-      "pdf_sha256": "64f71316c10230690d06e88d7f21ca13cd79da974edffca661cb21b9f5b1d3ff"
+      "pdf_sha256": "64f71316c10230690d06e88d7f21ca13cd79da974edffca661cb21b9f5b1d3ff",
+      "pdf_non_archive": "Téléchargé le 2026-10-25 (0,3 Mo) ; seuls le §3.19 et le tableau 3.3 sont archivés (voir documents_archives)"
     },
     {
       "institution": "Organisation mondiale du commerce, Secrétariat — Trade Policy Review: Southern African Customs Union, WT/TPR/S/447 (20 septembre 2023), §3.15 et tableau 3.1",
       "url": "https://www.wto.org/english/tratop_e/tpr_e/s447-01_e.pdf",
-      "pdf_sha256": "8cf7cd292511edf42a1bec422b770cfee0e4f13f9e6457bba744299a37d0aaa5"
+      "pdf_sha256": "8cf7cd292511edf42a1bec422b770cfee0e4f13f9e6457bba744299a37d0aaa5",
+      "pdf_non_archive": "Téléchargé le 2026-10-25 (1,1 Mo) ; seuls le tableau 3.1, sa note d et le §3.15 sont archivés (voir documents_archives)"
     }
   ],
   "regle": {
