@@ -10,11 +10,13 @@ revienne sans qu'on le voie.
 from fastapi.routing import APIRoute
 
 #: Routes dont le chemin parle de calcul et qui restent légitimes : le calcul
-#: lui-même et la couverture du socle. (Le calcul des droits à l'exportation de
-#: l'ancien service est retiré ; un calcul export reviendra sur le socle.)
+#: lui-même, le calcul des droits de sortie (un autre impôt, liquidé par le même
+#: moteur sur le socle) et leur couverture.
 AUTORISEES = {
     ("POST", "/api/calcul"),
     ("GET", "/api/calcul/pays"),
+    ("POST", "/api/calcul/export"),
+    ("GET", "/api/calcul/export/pays"),
 }
 
 
@@ -55,3 +57,5 @@ def test_seul_le_calcul_decompte_le_quota():
     }
     assert _porte_le_quota(routes[("POST", "/api/calcul")])
     assert not _porte_le_quota(routes[("GET", "/api/calcul/pays")])
+    assert _porte_le_quota(routes[("POST", "/api/calcul/export")])
+    assert not _porte_le_quota(routes[("GET", "/api/calcul/export/pays")])
