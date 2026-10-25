@@ -725,5 +725,458 @@
   "27111320",
   "27111390",
   "39233010"
- ]
+ ],
+ "montants_specifiques": {
+  "22030019": {
+   "montant": 58.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 58.10 per litre"
+  },
+  "22030099": {
+   "montant": 80.65,
+   "unite_quantite": "litre",
+   "brut": "Rs 80.65 per litre"
+  },
+  "22041010": {
+   "montant": 1352.8,
+   "unite_quantite": "litre",
+   "brut": "Rs 1,352.80 per litre"
+  },
+  "22041092": {
+   "montant": 204.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 204.60 per litre"
+  },
+  "22041099": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22042112": {
+   "montant": 337.45,
+   "unite_quantite": "litre",
+   "brut": "Rs 337.45 per litre"
+  },
+  "22042119": {
+   "montant": 337.45,
+   "unite_quantite": "litre",
+   "brut": "Rs 337.45 per litre"
+  },
+  "22042191": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22042193": {
+   "montant": 204.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 204.60 per litre"
+  },
+  "22042199": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22042210": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22042292": {
+   "montant": 204.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 204.60 per litre"
+  },
+  "22042299": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22042911": {
+   "montant": 116.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 116.60 per litre"
+  },
+  "22042919": {
+   "montant": 162.15,
+   "unite_quantite": "litre",
+   "brut": "Rs 162.15 per litre"
+  },
+  "22042921": {
+   "montant": 337.45,
+   "unite_quantite": "litre",
+   "brut": "Rs 337.45 per litre"
+  },
+  "22042929": {
+   "montant": 337.45,
+   "unite_quantite": "litre",
+   "brut": "Rs 337.45 per litre"
+  },
+  "22042930": {
+   "montant": 202.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 202.60 per litre"
+  },
+  "22042991": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22042993": {
+   "montant": 204.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 204.60 per litre"
+  },
+  "22042999": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22051092": {
+   "montant": 204.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 204.60 per litre"
+  },
+  "22051099": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22059011": {
+   "montant": 116.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 116.60 per litre"
+  },
+  "22059019": {
+   "montant": 162.15,
+   "unite_quantite": "litre",
+   "brut": "Rs 162.15 per litre"
+  },
+  "22059092": {
+   "montant": 204.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 204.60 per litre"
+  },
+  "22059099": {
+   "montant": 284.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 284.10 per litre"
+  },
+  "22060012": {
+   "montant": 34.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 34.10 per litre"
+  },
+  "22060019": {
+   "montant": 47.05,
+   "unite_quantite": "litre",
+   "brut": "Rs 47.05 per litre"
+  },
+  "22060021": {
+   "montant": 100.8,
+   "unite_quantite": "litre",
+   "brut": "Rs 100.80 per litre"
+  },
+  "22060029": {
+   "montant": 100.8,
+   "unite_quantite": "litre",
+   "brut": "Rs 100.80 per litre"
+  },
+  "22060039": {
+   "montant": 47.05,
+   "unite_quantite": "litre",
+   "brut": "Rs 47.05 per litre"
+  },
+  "22060042": {
+   "montant": 58.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 58.10 per litre"
+  },
+  "22060049": {
+   "montant": 80.65,
+   "unite_quantite": "litre",
+   "brut": "Rs 80.65 per litre"
+  },
+  "22060059": {
+   "montant": 64.0,
+   "unite_quantite": "litre",
+   "brut": "Rs 64 per litre"
+  },
+  "22060062": {
+   "montant": 72.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 72.60 per litre"
+  },
+  "22060064": {
+   "montant": 100.8,
+   "unite_quantite": "litre",
+   "brut": "Rs 100.80 per litre"
+  },
+  "22060065": {
+   "montant": 156.7,
+   "unite_quantite": "litre",
+   "brut": "Rs 156.70 per litre"
+  },
+  "22060066": {
+   "montant": 156.7,
+   "unite_quantite": "litre",
+   "brut": "Rs 156.70 per litre"
+  },
+  "22060072": {
+   "montant": 34.1,
+   "unite_quantite": "litre",
+   "brut": "Rs 34.10 per litre"
+  },
+  "22060074": {
+   "montant": 47.05,
+   "unite_quantite": "litre",
+   "brut": "Rs 47.05 per litre"
+  },
+  "22060075": {
+   "montant": 100.8,
+   "unite_quantite": "litre",
+   "brut": "Rs 100.80 per litre"
+  },
+  "22060076": {
+   "montant": 100.8,
+   "unite_quantite": "litre",
+   "brut": "Rs 100.80 per litre"
+  },
+  "22060082": {
+   "montant": 88.0,
+   "unite_quantite": "litre",
+   "brut": "Rs 88 per litre"
+  },
+  "22060084": {
+   "montant": 122.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 122.60 per litre"
+  },
+  "22060085": {
+   "montant": 183.9,
+   "unite_quantite": "litre",
+   "brut": "Rs 183.90 per litre"
+  },
+  "22060086": {
+   "montant": 183.9,
+   "unite_quantite": "litre",
+   "brut": "Rs 183.90 per litre"
+  },
+  "22060092": {
+   "montant": 146.3,
+   "unite_quantite": "litre",
+   "brut": "Rs 146.30 per litre"
+  },
+  "22060094": {
+   "montant": 202.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 202.60 per litre"
+  },
+  "22060099": {
+   "montant": 202.6,
+   "unite_quantite": "litre",
+   "brut": "Rs 202.60 per litre"
+  },
+  "22089022": {
+   "montant": 75.75,
+   "unite_quantite": "litre",
+   "brut": "Rs 75.75 per litre"
+  },
+  "22089029": {
+   "montant": 75.75,
+   "unite_quantite": "litre",
+   "brut": "Rs 75.75 per litre"
+  },
+  "24021010": {
+   "montant": 16611.0,
+   "unite_quantite": "millier d'unités",
+   "brut": "Rs 16,611 per thousand units"
+  },
+  "24021090": {
+   "montant": 28447.0,
+   "unite_quantite": "kg",
+   "brut": "Rs 28,447 per kg"
+  },
+  "24022000": {
+   "montant": 8237.0,
+   "unite_quantite": "millier d'unités",
+   "brut": "Rs 8,237 per thousand units"
+  },
+  "24029010": {
+   "montant": 16611.0,
+   "unite_quantite": "millier d'unités",
+   "brut": "Rs 16,611 per thousand units"
+  },
+  "24029090": {
+   "montant": 8237.0,
+   "unite_quantite": "millier d'unités",
+   "brut": "Rs 8,237 per thousand units"
+  },
+  "27101919": {
+   "montant": 9.87,
+   "unite_quantite": "litre",
+   "brut": "Rs 9.87 per litre"
+  },
+  "27101950": {
+   "montant": 4.22,
+   "unite_quantite": "litre",
+   "brut": "Rs 4.22 per litre"
+  }
+ },
+ "specifiques_non_liquidables": {
+  "teneur_en_sucre": {
+   "raison": "le montant dépend de la teneur en sucre du produit, que le calcul ne reçoit pas",
+   "codes": {
+    "04029910": "15 cents per gram of sugar",
+    "04032010": "15 cents per gram of sugar",
+    "04039010": "15 cents per gram of sugar",
+    "17021110": "15 cents per gram of sugar",
+    "17021910": "15 cents per gram of sugar",
+    "17022010": "15 cents per gram of sugar",
+    "17023010": "15 cents per gram of sugar",
+    "17024010": "15 cents per gram of sugar",
+    "17025010": "15 cents per gram of sugar",
+    "17026010": "15 cents per gram of sugar",
+    "17029010": "15 cents per gram of sugar",
+    "17049010": "15 cents per gram of sugar",
+    "18062010": "15 cents per gram of sugar",
+    "18063110": "15 cents per gram of sugar",
+    "18063210": "15 cents per gram of sugar",
+    "18069091": "15 cents per gram of sugar",
+    "20091100": "15 cents per gram of sugar",
+    "20091200": "15 cents per gram of sugar",
+    "20091900": "15 cents per gram of sugar",
+    "20092100": "15 cents per gram of sugar",
+    "20092900": "15 cents per gram of sugar",
+    "20093100": "15 cents per gram of sugar",
+    "20093900": "15 cents per gram of sugar",
+    "20094100": "15 cents per gram of sugar",
+    "20094900": "15 cents per gram of sugar",
+    "20095000": "15 cents per gram of sugar",
+    "20096190": "15 cents per gram of sugar",
+    "20096990": "15 cents per gram of sugar",
+    "20097100": "15 cents per gram of sugar",
+    "20097900": "15 cents per gram of sugar",
+    "20098100": "15 cents per gram of sugar",
+    "20098900": "15 cents per gram of sugar",
+    "20099000": "15 cents per gram of sugar",
+    "21050010": "15 cents per gram of sugar",
+    "21069060": "15 cents per gram of sugar",
+    "21069070": "15 cents per gram of sugar",
+    "22021012": "15 cents per gram of sugar",
+    "22021013": "15 cents per gram of sugar plus Rs 2 per can",
+    "22021019": "15 cents per gram of sugar",
+    "22021091": "15 cents per gram of sugar",
+    "22021099": "15 cents per gram of sugar",
+    "22029110": "15 cents per gram of sugar plus Rs 2 per can",
+    "22029190": "15 cents per gram of sugar",
+    "22029910": "15 cents per gram of sugar",
+    "22029920": "15 cents per gram of sugar",
+    "22029930": "15 cents per gram of sugar",
+    "22029940": "15 cents per gram of sugar",
+    "22029950": "15 cents per gram of sugar",
+    "22029960": "15 cents per gram of sugar",
+    "22029970": "15 cents per gram of sugar",
+    "22029990": "15 cents per gram of sugar",
+    "22083090": "15 cents per gram of sugar",
+    "22084030": "15 cents per gram of sugar",
+    "22084040": "15 cents per gram of sugar"
+   }
+  },
+  "canette": {
+   "raison": "le montant s'ajoute d'un droit par canette, que le calcul ne reçoit pas à côté du volume",
+   "codes": {
+    "22030011": "Rs 58.10 per litre plus Rs 2 per can",
+    "22030091": "Rs 80.65 per litre plus Rs 2 per can",
+    "22041091": "Rs 204.60 per litre plus Rs 2 per can",
+    "22041093": "Rs 284.10 per litre plus Rs 2 per can",
+    "22042111": "Rs 337.45 per litre plus Rs 2 per can",
+    "22042113": "Rs 337.45 per litre plus Rs 2 per can",
+    "22042192": "Rs 204.60 per litre plus Rs 2 per can",
+    "22042194": "Rs 284.10 per litre plus Rs 2 per can",
+    "22042291": "Rs 204.60 per litre plus Rs 2 per can",
+    "22042293": "Rs 284.10 per litre plus Rs 2 per can",
+    "22042992": "Rs 204.60 per litre plus Rs 2 per can",
+    "22042994": "Rs 284.10 per litre plus Rs 2 per can",
+    "22051091": "Rs 204.60 per litre plus Rs 2 per can",
+    "22051093": "Rs 284.10 per litre plus Rs 2 per can",
+    "22059091": "Rs 204.60 per litre plus Rs 2 per can",
+    "22059093": "Rs 284.10 per litre plus Rs 2 per can",
+    "22060011": "Rs 34.10 per litre plus Rs 2 per can",
+    "22060013": "Rs 47.05 per litre plus Rs 2 per can",
+    "22060031": "Rs 47.05 per litre plus Rs 2 per can",
+    "22060041": "Rs 58.10 per litre plus Rs 2 per can",
+    "22060043": "Rs 80.65 per litre plus Rs 2 per can",
+    "22060051": "Rs 64 per litre plus Rs 2 per can",
+    "22060061": "Rs 72.60 per litre plus Rs 2 per can",
+    "22060063": "Rs 100.80 per litre plus Rs 2 per can",
+    "22060071": "Rs 34.10 per litre plus Rs 2 per can",
+    "22060073": "Rs 47.05 per litre plus Rs 2 per can",
+    "22060081": "Rs 88 per litre plus Rs 2 per can",
+    "22060083": "Rs 122.60 per litre plus Rs 2 per can",
+    "22060091": "Rs 146.30 per litre plus Rs 2 per can",
+    "22060093": "Rs 202.60 per litre plus Rs 2 per can",
+    "22060095": "Rs 202.60 per litre plus Rs 2 per can",
+    "22089021": "Rs 75.75 per litre plus Rs 2 per can",
+    "22089023": "Rs 75.75 per litre plus Rs 2 per can"
+   }
+  },
+  "alcool_pur": {
+   "raison": "le montant porte sur le litre d'alcool pur et dépend du titre alcoométrique, que le calcul ne reçoit pas",
+   "codes": {
+    "22082011": "Rs 1,692.50 per litre absolute alcohol",
+    "22082019": "Rs 2,705.70 per litre absolute alcohol",
+    "22082021": "Rs 1,692.50 per litre absolute alcohol",
+    "22082022": "Rs 2,705.70 per litre absolute alcohol",
+    "22082029": "Rs 2,705.70 per litre absolute alcohol",
+    "22082090": "Rs 2,705.70 per litre absolute alcohol",
+    "22083010": "Rs 1,692.50 per litre absolute alcohol",
+    "22084010": "Rs 876.15 per litre absolute alcohol",
+    "22084020": "Rs 876.15 per litre absolute alcohol",
+    "22084090": "Rs 876.15 per litre absolute alcohol",
+    "22085011": "Rs 876.15 per litre absolute alcohol",
+    "22085019": "Rs 876.15 per litre absolute alcohol",
+    "22085021": "Rs 876.15 per litre absolute alcohol",
+    "22085029": "Rs 876.15 per litre absolute alcohol",
+    "22085091": "Rs 2,705.70 per litre absolute alcohol",
+    "22085099": "Rs 2,705.70 per litre absolute alcohol",
+    "22086011": "Rs 1,692.50 per litre absolute alcohol",
+    "22086019": "Rs 2,705.70 per litre absolute alcohol",
+    "22086020": "Rs 876.15 per litre absolute alcohol",
+    "22086030": "Rs 2,705.70 per litre absolute alcohol",
+    "22086090": "Rs 2,705.70 per litre absolute alcohol",
+    "22087011": "Rs 876.15 per litre absolute alcohol plus Rs 2 per can",
+    "22087019": "Rs 876.15 per litre absolute alcohol",
+    "22087090": "Rs 876.15 per litre absolute alcohol",
+    "22089011": "Rs 1,692.50 per litre absolute alcohol",
+    "22089012": "Rs 2,705.70 per litre absolute alcohol",
+    "22089019": "Rs 2,705.70 per litre absolute alcohol",
+    "22089031": "Rs 1,692.50 per litre absolute alcohol",
+    "22089039": "Rs 2,705.70 per litre absolute alcohol",
+    "22089091": "Rs 2,705.70 per litre absolute alcohol",
+    "22089092": "Rs 2,705.70 per litre absolute alcohol plus Rs 2 per can",
+    "22089093": "Rs 2,705.70 per litre absolute alcohol plus Rs 2 per can",
+    "22089099": "Rs 2,705.70 per litre absolute alcohol"
+   }
+  },
+  "proportion": {
+   "raison": "le montant dépend du volume de spiritueux entrant dans le produit, que le calcul ne reçoit pas",
+   "codes": {
+    "22089061": "At the rate applicable to the spirits calculated in proportion to the volume of spirits used in the production",
+    "22089069": "At the rate applicable to the spirits calculated in proportion to the volume of spirits used in the production"
+   }
+  },
+  "moteur": {
+   "raison": "le taux porte sur la valeur des moteurs hors-bord, que le calcul ne reçoit pas",
+   "codes": {
+    "89031119": "50% on the value of the outboard motors",
+    "89031919": "50% on the value of the outboard motors",
+    "89032119": "50% on the value of the outboard motors",
+    "89032219": "50% on the value of the outboard motors",
+    "89032319": "50% on the value of the outboard motors",
+    "89039319": "50% on the value of the outboard motors",
+    "89039919": "50% on the value of the outboard motors"
+   }
+  }
+ }
 }
