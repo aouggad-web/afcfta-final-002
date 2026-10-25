@@ -904,7 +904,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "2fee61d2bc7370bfc4610d1f3749f6edbcdd37658e2ec8b4e158c146710c4d36",
+      "socle_sha256": "ba4cbbc587ae2c02234cc5698b70c40b15e5d2f6c1dffaedfe8a89fd96b6e08a",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
