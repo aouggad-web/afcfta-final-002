@@ -1,0 +1,33 @@
+{
+ "schema_version": 1,
+ "objet": "Mali : TVA à 18 % sur les 11 positions dont la case TVA du tarif de la DGD (2023) est vide",
+ "destination_iso3": "MLI",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire — Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017), art. 195 IV, point D et art. 229 ; tarif de la DGD (TEC CEDEAO, édition du Mali, 28/12/2023)",
+ "source": {
+  "url": "https://www.dgi.gouv.ml/CGI/",
+  "institution": "Direction générale des impôts du Mali"
+ },
+ "regle": {
+  "valeur": "TVA à 18 % sur 8708.22.00.00 (pare-brises), 9508.21.00.00 à 9508.29.00.00, 9508.30.00.00 et 9508.40.00.00 (manèges, attractions foraines, théâtres ambulants) et 9701.29.00.00 (œuvres d'art « autres »), dont la case TVA est vide dans le tarif de la DGD alors que les positions voisines portent 18. Le CGI soumet les importations à la TVA (art. 189, 2°), au taux de 18 % hors produits exonérés (art. 195, point IV) et produits au taux réduit (point D), listés par position tarifaire : aucune de ces positions n'y figure.",
+  "reference": "CGI du Mali, art. 189, 195 (point IV) et 229 ; liste des produits au taux réduit (point D)",
+  "verbatim": "Art.229.- (Loi n°11-078) Les taux de la TVA sont fixés ainsi qu'il suit : · 5 % pour les produits visés au point D de la sous-section 1 de la section 1 du chapitre 1 du titre 2 du CGI ci-dessus ; · 18 % pour les autres produits et les services non exonérés en application des dispositions du point IV (Produits) de l'article 195 du CGI ci-dessus.",
+  "portee": "scripts/build_socle._prelevements_mali : une TVA sans taux reçoit 18 %.",
+  "texte_archive": "sources/MLI_tva_cases_vides.texte-extrait.txt",
+  "sha256": "0618644155e225dd2ca2b0a9a299674cf74f2debdba87b11b633d59a2f36a997"
+ },
+ "decisions": [
+  "Case vide lue comme une omission du tarif et non comme une exonération : l'exonération est une liste fermée du CGI (art. 195, point IV), où ces positions ne figurent pas.",
+  "L'exonération des ventes d'œuvres d'art originales par l'artiste (art. 195, I, 8°) vise une vente, non une importation ; elle n'est pas appliquée à 9701.29."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les modifications des listes de l'art. 195 et du point D par les lois de finances postérieures à l'édition 2017 du CGI : non relevées, comme pour le reste de la TVA malienne."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/MLI_tva_cases_vides.texte-extrait.txt",
+   "sha256": "0618644155e225dd2ca2b0a9a299674cf74f2debdba87b11b633d59a2f36a997"
+  }
+ ]
+}
