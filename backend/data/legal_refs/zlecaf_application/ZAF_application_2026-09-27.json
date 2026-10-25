@@ -1,0 +1,133 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "ZAF",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "APPLIQUE",
+ "verified_at": "2026-09-27",
+ "note_cadre": "L'Afrique du Sud ne relève PAS de la règle B (États de l'EAC) : elle est traitée au sens du plan général (§2). SACU = union douanière automatique dans le moteur (franchise intra-SACU 0 %) ; la ZLECAf ne s'applique qu'aux origines HORS SACU/SADC.",
+ "application": {
+  "acte_national": {
+   "description": "Notices R.4281, R.4286 et R.4287, Government Gazette 50045 du 26/01/2024, en vigueur le 31/01/2024 (section 48 du Customs and Excise Act, 1964). R.4287 substitue la General Note O (liste des États partenaires) ; R.4286 amende les règles d'origine (Part F) ; R.4281 change les droits (colonne AfCFTA).",
+   "archives": {
+    "r4287_general_note_O": {
+     "fichier": "sources/ZAF_r4287_gg50045_general_note_O_2024-01-26.pdf",
+     "sha256": "83efeaf92664ba3d84c98fa20c87a8195fd3189f5536d7c7f9de9e492b10b301"
+    },
+    "r4286_regles_origine": {
+     "fichier": "sources/ZAF_r4286_gg50045_roo_part_f_2024-01-26.pdf",
+     "sha256": "54c3c7c5d5249e5ce8bf238af39c5621752b273b3cd4fac4c60ba01dfc2a1c45"
+    }
+   },
+   "remarque": "R.4281 (lignes tarifaires du même GG) et R.4294 (avis de correction du 31/01/2024) repérées sur les listes SARS, à sceller dans un complément."
+  },
+  "bareme": {
+   "description": "Colonne « AfCFTA » de la Part 1 du Schedule No. 1, servie par le jeu de données SARS du dépôt (résolveur official_preferential_rates — chemin historique ET socle depuis cette PR). Réductions annuelles gazettées : R.4599 (05/04/2024, rétroactive au 31/01/2024), R.5622 (06/12/2024, en vigueur 01/01/2025), R.6710 (03/10/2025, en vigueur 01/01/2026).",
+   "archives": {
+    "r4599_reduction": {
+     "fichier": "sources/ZAF_r4599_gg50431_reduction_afcfta_2024-04-05.pdf",
+     "sha256": "dfeb13bcad0ead0ed63f882124844646ab4fd4d3fb3a338a6a84f4552435b34a"
+    }
+   },
+   "note": "R.5622 et R.6710 repérées (listes SARS 2024/2025), à sceller dans un complément."
+  },
+  "origines_admises": {
+   "description": "General Note O §1 — liste initiale lue dans le PDF de R.4287 (verbatim) : « Algeria, Cameroon, Egypt, Ghana, Kenya, Rwanda, Tunisia », chacun daté « 31 August 2023 » ; la préférence sud-africaine court à partir du gazettement (31/01/2024). Ajouts datés : R.5879 (21/02/2025 : Maroc, Burundi, Ouganda), R.6233 (Gambie — effet rétroactif au 14/03/2025, publiée 30/05/2025), R.6595 (Nigeria — effet rétroactif au 30/05/2025, publiée 12/09/2025), R.6756 (Éthiopie — effet rétroactif au 14/08/2025, publiée 24/10/2025).",
+   "implementation_code": "DATES_ENTREE_ZAF (services/zlecaf_schedule_zaf.py) : ISO3 -> date d'entrée en vigueur de l'avis ; zaf_partner_active(origin, jour) contrôle l'origine ET la date ; ACTIVE_PARTNERS_ZAF conservé (frozenset des clés).",
+   "archives": {
+    "r5879_morocco_burundi_uganda": {
+     "fichier": "sources/ZAF_r5879_gg_52150_2025-02-21.pdf",
+     "sha256": "83f8c1776cdcfea70ab345be14b1aacdb8ee0d3cf4c52b667538695b1f25e6ec"
+    },
+    "r6233_gambie": {
+     "fichier": "sources/ZAF_r6233_gg52750_gambie_2025-05-30.pdf",
+     "sha256": "21ef2aa80f8341e68afb0c2dc6f447736f6da2ba7021dedaa961acff00005e1a"
+    },
+    "r6595_nigeria": {
+     "fichier": "sources/ZAF_r6595_gg53334_nigeria_2025-09-12.pdf",
+     "sha256": "fc5a43eab0fbc663e5e21d5c7022a4db13da0dd3c7811dee32d4f023ef83646d"
+    },
+    "r6756_ethiopie": {
+     "fichier": "sources/ZAF_r6756_gg53572_ethiopie_2025-10-24.pdf",
+     "sha256": "2337acfcccb329ced036ea89dcdd544f3b9057cc5cadd834c3a741217fb1e27d"
+    }
+   }
+  },
+  "exclusions": "Membres de la SACU (Botswana, Lesotho, Namibie, Eswatini) : union douanière automatique (LIBRE_CIRCULATION 0 %), jamais la ZLECAf (FAQ dtic Q1, verbatim). Autres membres de la SADC : protocole SADC (non automatique dans le moteur — NPF tant que les listes sensibles ne sont pas connues).",
+  "suspension": {
+   "fait": "R.6594 (GG 53334, 12/09/2025) : suspension du traitement préférentiel du thé 0902.40 importé du Kenya (archivé, sha 98e0b529…).",
+   "moteur": "APPLIQUÉE depuis cette PR : SUSPENSIONS_ZAF (services/zlecaf_schedule_zaf.py) — la préférence suspendue sert le NPF dans les DEUX chemins de calcul, avec la notice citant R.6594 (testé : thé 0902.40 du Kenya = NPF ; ligne non suspendue = taux AfCFTA)."
+  },
+  "concordance": {
+   "dtic_newsletter_mars_2026": "extrait archivé (sha f9a06b8c…) : « 25 countries have started preferential trade on 90% coverage » ; « gazetted the SACU [Schedule] on 26 January 2024 and officially launched preferential trade on 31 January 2024 » — concordance, pas preuve.",
+   "reponse_parlementaire_NW640_02_05_2025": "« South Africa fulfilled these legal requirements when it gazetted the SACU Provisional Schedule of Tariff Concessions on 26 January 2024 » — concordance, pas preuve.",
+   "tanzanie_absente": "La Tanzanie est ABSENTE de la General Note O (elle applique la ZLECAf elle-même, règle B, mais la ZAF ne lui accorde pas la préférence) — noté comme tel, ZAF←TZA = NPF (testé).",
+   "ecart_sierra_leone": "La newsletter dtic cite la Sierra Leone parmi les « implementing » ; AUCUNE Notice R. (listes 2024/2025/2026 scannées) ne l'ajoute à la General Note O — hors liste, ZAF←SLE = NPF (testé)."
+  }
+ },
+ "sacu_dans_le_moteur": "SACU est déjà une union douanière automatique dans le moteur (services/regional_blocs.py) : BWA, LSO, NAM, SWZ échangent avec la ZAF à 0 %, indépendamment de la ZLECAf — la ZLECAf ne doit JAMAIS se substituer à cette franchise intra-SACU.",
+ "sources_archivees": {
+  "r4287_general_note_O": {
+   "texte_extrait": "sources/ZAF_r4287_gg50045_general_note_O_2024-01-26.pdf",
+   "sha256": "83efeaf92664ba3d84c98fa20c87a8195fd3189f5536d7c7f9de9e492b10b301"
+  },
+  "r4286_regles_origine": {
+   "texte_extrait": "sources/ZAF_r4286_gg50045_roo_part_f_2024-01-26.pdf",
+   "sha256": "54c3c7c5d5249e5ce8bf238af39c5621752b273b3cd4fac4c60ba01dfc2a1c45"
+  },
+  "r4599_reduction": {
+   "texte_extrait": "sources/ZAF_r4599_gg50431_reduction_afcfta_2024-04-05.pdf",
+   "sha256": "dfeb13bcad0ead0ed63f882124844646ab4fd4d3fb3a338a6a84f4552435b34a"
+  },
+  "r5879_morocco_burundi_uganda": {
+   "texte_extrait": "sources/ZAF_r5879_gg_52150_2025-02-21.pdf",
+   "sha256": "83f8c1776cdcfea70ab345be14b1aacdb8ee0d3cf4c52b667538695b1f25e6ec"
+  },
+  "r6233_gambie": {
+   "texte_extrait": "sources/ZAF_r6233_gg52750_gambie_2025-05-30.pdf",
+   "sha256": "21ef2aa80f8341e68afb0c2dc6f447736f6da2ba7021dedaa961acff00005e1a"
+  },
+  "r6595_nigeria": {
+   "texte_extrait": "sources/ZAF_r6595_gg53334_nigeria_2025-09-12.pdf",
+   "sha256": "fc5a43eab0fbc663e5e21d5c7022a4db13da0dd3c7811dee32d4f023ef83646d"
+  },
+  "r6756_ethiopie": {
+   "texte_extrait": "sources/ZAF_r6756_gg53572_ethiopie_2025-10-24.pdf",
+   "sha256": "2337acfcccb329ced036ea89dcdd544f3b9057cc5cadd834c3a741217fb1e27d"
+  },
+  "r6594_suspension_the_kenya": {
+   "texte_extrait": "sources/ZAF_r6594_gg53334_suspension_the_kenya_2025-09-12.pdf",
+   "sha256": "98e0b5297c7a539bc8b7e652e17ded363804e6d4fbc57a6384d5973d65cc9ab3"
+  },
+  "dtic_page_afcfta": {
+   "texte_extrait": "sources/ZAF_dtic_page_afcfta.extrait.txt",
+   "sha256": "a362a1a4609650ba2ac95fac3990cb807a2dc2e20b2d21de9515d390a0575f1f"
+  },
+  "dtic_newsletter_2026_03": {
+   "texte_extrait": "sources/ZAF_dtic_newsletter_2026-03.extrait.txt",
+   "sha256": "f9a06b8cefa7e4f9a3bd5933556b9906208c41d1be03fc5f2c83809c9eabaa54"
+  }
+ },
+ "recherches_consignees": [
+  "2026-09-27 — SARS : Notices R. listées depuis les pages « tariff-amendments 2024/2025/2026 » (scannées via Jina Reader) ; 8 PDF téléchargés et scellés.",
+  "2026-09-27 — dtic : page AfCFTA officielle + newsletter mars 2026, lues via Jina Reader (téléchargement direct bloqué par certificat TLS non conforme — consigné, sans contournement), extraits archivés.",
+  "2026-09-27 — tralac (héberge la newsletter dtic) : injoignable en direct (HTTP 000).",
+  "2026-09-27 — réponse ministérielle NW640 (02/05/2025), CW1054, SAnews 31/01/2024 : repérage."
+ ],
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "SATISFAIT — Notices R.4281/4286/4287 (GG 50045, 26/01/2024, effet 31/01/2024), barème maintenu par les Notices 2024-2026",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT — General Note O §1 (liste initiale verbatim + ajouts datés, transcrits dans DATES_ENTREE_ZAF)",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — colonne AfCFTA du Schedule No. 1 servie par le jeu de données SARS du dépôt (les deux chemins)",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "APPLIQUE : la ZAF applique le barème ZLECAf (hors SACU/SADC) depuis le 31/01/2024 — acte national gazetté (Notices R.), liste des origines datée (General Note O), barème ligne à ligne servis par les deux chemins de calcul. Les droits composés (« X% or Yc/kg ») et plafonnés (« Yc/kg with a maximum of X% ») de la colonne AfCFTA sont conservés et traités comme le NPF (refus REGLE_COMPOSEE_NON_ETABLIE ; plafond de la colonne). La suspension R.6594 (thé 0902.40 du Kenya) est appliquée dans les deux chemins depuis cette PR.",
+ "ne_tranche_pas": [
+  "Le barème reste PROVISOIRE (PSTC, 90 %) ; l'offre finale SACU n'est pas encore adoptée par le Sommet UA.",
+  "La General Note O permet une suspension unilatérale (thé kényan, R.6594) : les taux peuvent changer par Gazette.",
+  "R.4281, R.4294, R.5622, R.6710 restent à sceller (repérées)."
+ ],
+ "remaining_work": [
+  "Sceller R.4281 (lignes tarifaires du GG 50045), R.4294 (correction), R.5622 et R.6710 (phasedowns).",
+  "Surveiller les nouvelles Notices d'inclusion (General Note O) et la future offre finale SACU (adoption Sommet UA attendue).",
+  "Synchroniser le crawl du socle (23/09) avec le jeu de données SARS AfCFTA (06/08/2026) : certaines lignes (ex. 630800, AfCFTA nul dans le crawl) divergent entre les deux sources — le taux effectif reste identique (NPF), les métadonnées d'écart non."
+ ]
+}

@@ -11,7 +11,7 @@ fichiers du dépôt portent réellement.
 Principe de méthode
 -------------------
 Les codes de taxes sont canonicalisés par **la fonction du dépôt**
-(`services.authentic_tariff_service._canonical_tax_code`), jamais par une
+(`scripts/build_socle.code_canonique`, celle du socle que lit le calculateur), jamais par une
 heuristique propre à ce script. C'est délibéré : un inventaire qui classerait
 les taxes autrement que le calculateur mesurerait un déficit que la correction
 ne comblerait pas. Cinq tentatives de recherche par mots-clés ont produit cinq
@@ -70,13 +70,10 @@ SANS_ASSIETTE = "SANS_ASSIETTE"
 
 
 def _repo_helpers():
-    """Canonisation et exclusions : celles du dépôt, pas celles de ce script."""
-    from services.authentic_tariff_service import (
-        _PREFERENTIAL_RATE_CODES,
-        _canonical_tax_code,
-    )
+    """Canonisation et exclusions : celles du socle, pas celles de ce script."""
+    import build_socle
 
-    return _canonical_tax_code, set(_PREFERENTIAL_RATE_CODES)
+    return build_socle.code_canonique, set(build_socle.PREFERENTIELS)
 
 
 def positions(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -326,7 +323,7 @@ def inventory(countries: Optional[Iterable[str]] = None) -> Dict[str, Any]:
     return {
         "metadata": {
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "canonisation": "services.authentic_tariff_service._canonical_tax_code",
+            "canonisation": "scripts/build_socle.code_canonique",
             "exclusions": sorted(preferential),
             "note": (
                 "Le rapport décrit ce que les fichiers portent. Une taxe absente n'est "

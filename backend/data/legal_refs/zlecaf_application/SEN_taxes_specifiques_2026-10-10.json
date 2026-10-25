@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "objet": "Sénégal : prélèvements d'entrée (PCS, PROMAD, COSEC) et taxes spécifiques (droit d'accises) à l'importation, taux et assiettes (taxe spécifique sur valeur + DD + RS ; TVA sur valeur + DD + RS + taxe spécifique)",
+  "destination_iso3": "SEN",
+  "verified_at": "2026-10-10",
+  "etabli": true,
+  "evidence_level": "primaire — Code général des impôts du Sénégal, édition DGID 2025 (art. 408 à 444 quinquies et base de la TVA à l'importation), et FAQ officielles de la Direction générale des douanes (2026)",
+  "source": {
+    "url": "https://www.dgid.sn/storage/docs/CGI-2025.pdf",
+    "institution": "Direction générale des impôts et des domaines du Sénégal ; Direction générale des douanes du Sénégal"
+  },
+  "regle": {
+    "valeur": "Prélèvements d'entrée liquidés par la DGD : DD (TEC CEDEAO), RS 1 %, PCS 0,8 %, PCC 0,5 %, PROMAD 2 %, COSEC 0,4 % (voie maritime seulement, liquidé comme dans les tableaux de la DGD), PUA 0,2 % (taux de la source, maintenu). Taxes spécifiques (art. 408 à 444 quinquies) : boissons gazeuses et jus 5 %, café 5 %, thé 5 %, beurres 15 %, autres corps gras et charcuteries 10 %, tous les véhicules importés 10 % (loi 2025-17), produits des chapitres 33 et 34 10 %, bouillons 15 %, textiles 5 % ; alcools importés 65 % et tabacs 100 % (loi 2025-17, tableau de la DGID), taxe additionnelle par litre d'alcool sans taux. Assiette de la taxe spécifique : valeur + DD + RS (liquidation de la DGD). Assiette de la TVA (18 %) : valeur + DD + RS + taxe spécifique, plus la taxe additionnelle sur les alcools, la surtaxe sur les cigarettes et la TCI quand elles sont dues.",
+    "verbatim": "Pour les importations, la base imposable à la taxe sur la valeur ajoutée est constituée par la valeur en douane augmentée des droits et taxes de toute nature liquidés, au profit du budget de l’Etat, par l’Administration des douanes, à l’exclusion des droits d’enregistrement et de la taxe sur la valeur ajoutée. […] TVA 18% (Base + DD + RS) ×taux […] Droits d'accises 10% (base+ DD + RS) ×taux",
+    "reference": "CGI 2025 art. 408 à 444 quinquies et base de la TVA à l'importation ; FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » et « Comment dédouaner un véhicule ? »",
+    "portee": "scripts/build_socle._prelevements_senegal (PCS ramené de 1 % à 0,8 %, PROMAD 2 % et COSEC 0,4 % ajoutés, PUA de 0,2 % maintenu sur les 6 129 positions) et backend/data/zlecaf_sen/droit_accises_cgi2025.json appliqué par scripts/build_socle._accises_du_cgi au seul socle SEN (taxes spécifiques, TVA sur valeur + DD + RS + DA).",
+    "texte_archive": "sources/SEN_taxes_specifiques.extrait.txt",
+    "sha256": "8ab71af0b3ecb81c0d91a94bd79fdd88b5c2739df4cc255e7783edf7878b411a"
+  },
+  "decisions": [
+    "Assiette de la taxe spécifique : la FAQ véhicules de la DGD liquide « (base + DD + RS) × taux », alors que l'art. 408 du CGI vise la valeur en douane « majorée de tous les droits et taxes liquidés par la douane » : la liquidation de la DGD est suivie, l'écart signalé.",
+    "Assiette de la TVA : le CGI sénégalais la limite aux droits et taxes liquidés « au profit du budget de l'Etat », ce qui exclut les prélèvements communautaires (PCS, PCC), le COSEC et le PROMAD, comme le font les tableaux de la DGD ; la directive n° 02/98/CM/UEMOA (art. 27 a), fiche UEMOA_assiette_TVA_2026-09-14.json) vise plus largement « les droits et taxes perçus à l'entrée ». Le texte national et la liquidation de la DGD sont suivis, l'écart signalé.",
+    "Produits des chapitres 33 et 34 : l'art. 441 vise « les produits relevant des chapitres 33 et 34 du tarif des douanes, notamment » les cosmétiques ; toutes les positions des deux chapitres sont taxées à 10 %.",
+    "Textiles (art. 444 quater) : tissus des positions 50.07, 51.11 à 51.13, 52.08 à 52.12, 53.09 à 53.11, 54.07, 54.08, 55.12 à 55.16, chapitres 60 à 62, 63.01 à 63.04 et friperie 63.09, à 5 %.",
+    "COSEC (0,4 %) : dû par voie maritime seulement ; le mode de transport n'étant pas connu du calculateur, il est liquidé comme dans les tableaux de la DGD (cas courant à Dakar) et signalé en note.",
+    "Droit d'enregistrement des véhicules (87.02 à 87.05 et tracteurs routiers 87.01.20) : 1 % neuf ou 3 % d'occasion sur valeur + DD + RS ; l'état est lu dans le libellé national quand il y figure (« neuf », « usagé »), sinon la ligne est portée sans taux. Le taux cumulé officiel d'un utilitaire usagé (38,01 %) est alors reproduit.",
+    "Acompte BIC (3 %) et prélèvement de conformité fiscale (12 %) : dus selon le statut de l'importateur (attestation de la DGID, rattachement à la Direction des grandes entreprises) ; non liquidés, comme l'AIRSI en Côte d'Ivoire.",
+    "Exonérations tenant à l'importateur ou à l'usage (tissus pour la confection, corps gras pour la production) : taux général appliqué, réserve en note. Positions mêlant produits taxés et non taxés : sans taux.",
+    "Taxe sur les véhicules : étendue à « tous les véhicules importés au Sénégal » par la loi 2025-17 (art. 439 nouveau) ; appliquée aux véhicules automobiles (87.01 à 87.05) et aux motocycles (87.11). Les tableaux de la FAQ DGD, antérieurs, ne la liquident que sur les véhicules de tourisme."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Eaux et boissons 22.01 et 22.02 (hors 22.02.10), corps gras du chapitre 15, préparations de viande 16.02 : positions mêlant produits taxés et non taxés, ou exonérations selon la destination : taxe portée sans taux.",
+    "Acompte BIC (3 %), prélèvement de conformité fiscale (12 %), taxe conjoncturelle à l'importation : selon l'état du véhicule ou le statut de l'importateur, non liquidés.",
+    "PUA (0,2 %) : porté par la source, absent des tableaux de la DGD, liquidé par la douane ivoirienne (circulaire DGD n° 2258) : maintenu, application au Sénégal à confirmer.",
+    "Taxe additionnelle sur les alcools (800 F ou 3 000 F par litre d'alcool selon le degré) et base minimale des cigarettes (280 F par paquet de 20) : non calculables depuis la position ; la taxe additionnelle et le droit sur les cigarettes sont portés sans taux.",
+    "Taxe conjoncturelle à l'importation sur le concentré de tomate : due quand la valeur CAF est inférieure au prix de déclenchement ; portée sans taux.",
+    "Emballages plastiques non récupérables (art. 444 bis et ter) : 2,5 % de la valeur en douane sans contenu, préformes exonérées ; portés sans taux sur 39.23.21, 39.23.29 et 39.23.30, non liquidés sur les emballages contenant d'autres marchandises.",
+    "Surtaxe sur les cigarettes (FAQ DGD) : taux et assiette non publiés dans les textes lus ; portée sans taux."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SEN_taxes_specifiques.extrait.txt",
+      "sha256": "8ab71af0b3ecb81c0d91a94bd79fdd88b5c2739df4cc255e7783edf7878b411a"
+    },
+    {
+      "document_non_archive": "Code général des impôts du Sénégal, édition DGID 2025 (340 p.), https://www.dgid.sn/storage/docs/CGI-2025.pdf ; versé sur la PR #620 (data/senegal/docs_officiels/CGI-SENEGAL-EDITION-2025.pdf)",
+      "pdf_sha256": "dd900a24f25431de76b16ede89ffb8c80fe4cba63b64f054ee1b82e2bc6064dd"
+    },
+    {
+      "document_non_archive": "DGD, FAQ « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » (2026), versée sur la PR #620 (data/senegal/docs_officiels/FAQ-FRAIS-DEDOUANEMENT-2026.pdf)",
+      "pdf_sha256": "e41d018105907faa0baaabbaaa747b044f8ddb6385704cf14c694648904ad1f8"
+    },
+    {
+      "document_non_archive": "DGD, FAQ « Comment dédouaner un véhicule ? » (2026), versée sur la PR #620 (data/senegal/docs_officiels/FAQ-DEDOUANEMENT-VEHICULE-2026.pdf)",
+      "pdf_sha256": "24785b51e75fe4311beafce30ed990a9b11a2fa2181d03699dd97a2f776dd9c1"
+    },
+    {
+      "document_non_archive": "DGID, « Lois et règlements » : https://www.dgid.sn/loi-reglement (tableau des mesures fiscales récentes)",
+      "pdf_sha256": "9cb3bfe9b151e304e1c5e3b45a1147a7bcfbf03206ab03d70b505ba17144e89f"
+    },
+    {
+      "document_non_archive": "Loi n° 2025-17 du 27 septembre 2025, Journal officiel n° 7853 du 2 octobre 2025",
+      "pdf_sha256": "719efd7b3c2dc9427fb33f08b4bcaebdd14631fe14ed8d62a8c8fa74959c9b7f"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+ "schema_version": 1,
+ "objet": "Lesotho : prélèvement sur les produits du tabac et les boissons alcoolisées importés (Tobacco and Alcoholic Products Levy Act 2023)",
+ "destination_iso3": "LSO",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : loi, avis de mise en vigueur et règlements de barème publiés au Lesotho Government Gazette (copies archivées par Gazettes.Africa)",
+ "source": {
+  "url": "https://archive.gazettes.africa/archive/ls/2023/ls-government-gazette-dated-2023-01-27-no-4.pdf",
+  "institution": "Lesotho Government Gazette (copie Gazettes.Africa)"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/LSO_TobaccoAlcoholicProductsLevyAct1-2023_2023-01-27.pdf",
+   "sha256": "6548415f20b3d0fdfcde47d787033bb7c1edb3cfb3a7454643e5abfed886c2d2"
+  },
+  {
+   "fichier_archive": "sources/LSO_TAPL_CommencementNotice_LN22-2023_2023-02-17.pdf",
+   "sha256": "f988e17823496595338dd17a9d82a47c13a5117a2d1a8d2a2074eab7f2ae07c2"
+  },
+  {
+   "fichier_archive": "sources/LSO_TAPL_AmendmentSchedule_LN89-2023_2023-09-08.pdf",
+   "sha256": "ba065ba212bcf73fe7d7851af519cc031bf13644f029a44cc16b9f0512fcd075"
+  },
+  {
+   "fichier_archive": "sources/LSO_TAPL_AmendmentSchedule_LN58-2025_2025-03-28.pdf",
+   "sha256": "417c6418b250dd7163d2c289fd359b0625dd9e4dd65872a8bd478e3e52c938aa"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne TAPL « Tobacco and Alcoholic Products Levy » : 10 % sur les positions 22.03, 22.04, 22.05, 22.06 et 22.08, hors bière traditionnelle (2203.00.05, 2206.00.15) ; 20 % sur les positions 24.01, 24.02 et 24.03. Assiette CIF+DD+EXS+EXA. La TVA du Lesotho (FOB+TOUS_SAUF_TVA) l'inclut.",
+  "reference": "Tobacco and Alcoholic Products Levy Act 2023 (Act No. 1 of 2023), s.2, s.3, s.6, s.7(2) et annexe ; LN 22/2023 (mise en vigueur) ; LN 58/2025 (barème)",
+  "verbatim_s6": "A person who imports tobacco or alcoholic products or both shall pay a levy set out in the Schedule.",
+  "verbatim_s7_2": "the taxable value of a taxable import of tobacco or alcoholic products shall be the sum of - (a) the value of the tobacco or alcoholic products ascertained for purposes of customs or excise under the Customs and Excise Act, 1982 whether or not any other duty is payable on those products; (b) the amount of customs or excise duty or any other fiscal charge other than value added tax payable on these products; and (c) the value of any service incidental to import of tobacco or alcoholic products including any service giving rise to commission, packaging, transportation insurance or warranty expenses payable on, or by reason of the import.",
+  "verbatim_s2": "“alcoholic products” means intoxicating spirits or alcoholic beverages excluding home-made brews or traditional beer ; “tobacco products” means tobacco, cigars, cigarettes and any other preparation or substitute",
+  "verbatim_ln22_2023": "appoint the 1st of March, 2023 as the date on which the Tobacco and Alcoholic Products Levy Act No. 1 of 2023 shall come into operation.",
+  "verbatim_ln58_2025": "The Schedule to the Tobacco and Alcoholic Products Levy Act is amended by deleting ‘‘15%’’ and ‘‘7.5%’’ and substituting ‘‘20%’’ and ‘‘10%’’ respectively.",
+  "portee": "scripts/build_socle.py, TAPL_LESOTHO et _prelevement_tapl_lesotho ; backend/socle/tva_nationale.json (assiette de la TVA du Lesotho, inchangée)."
+ },
+ "decisions": [
+  "Taux : 20 % pour le tabac et 10 % pour l'alcool, en vigueur depuis le 01/04/2025 (LN 58/2025). L'annexe de 2023 portait 15 % pour l'alcool (item 1) et 30 % pour le tabac (item 2) ; la LN 89/2023 les a ramenés à 7,5 % et 15 % au 01/10/2023 ; la LN 58/2025 remplace « 15% » et « 7.5% » par « 20% » et « 10% », dans l'ordre de l'annexe modifiée (tabac, alcool), et abroge la LN 89/2023. La page TAPL du RSL, relevée par moteur de recherche avant son retrait, donne les mêmes taux.",
+  "Assiette : CIF (valeur en douane et services accessoires, s.7(2)(a) et (c)) plus les droits de douane et d'accise (s.7(2)(b)) : CIF+DD+EXS+EXA. Aucun autre prélèvement fiscal à l'importation n'est servi au Lesotho.",
+  "Alcool : boissons des positions 22.03 à 22.06 et 22.08. La bière traditionnelle, exclue par la s.2, est isolée au tarif en 2203.00.05 et 2206.00.15. L'éthanol de la position 22.07 n'est pas soumis au prélèvement (décision du 25/10/2026).",
+  "Tabac : positions 24.01 à 24.03. Les produits à inhaler de la position 24.04 ne sont pas soumis au prélèvement (décision du 25/10/2026), malgré « any other preparation or substitute » de la s.2."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Une modification du barème postérieure au 28/03/2025 : les numéros du Gazette de 2025 archivés n'en contiennent pas (20 numéros manquants), ceux de 2026 ne sont pas archivés.",
+  "La juste valeur marchande (s.7(1)) retenue quand la contrepartie est absente ou inférieure : inconnue du calcul."
+ ]
+}

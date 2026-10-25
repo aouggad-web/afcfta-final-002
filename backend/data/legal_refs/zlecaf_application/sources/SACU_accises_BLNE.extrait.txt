@@ -1,0 +1,145 @@
+ARCHIVE — SACU hors Afrique du Sud (Botswana, Lesotho, Namibie, Eswatini) : taux d'accise communs et valeur de l'accise ad valorem (relevé du 20/10/2026)
+
+Fichiers déposés par la PR #654 (zlecaf/SACU-BLNE-textes-2026-10-20), data/sources/<ISO3>/legislation/.
+
+1. Southern African Customs Union Agreement 2002 (As amended on 12 April 2013)
+URL : https://www.sacu.int/uploads/documents/6a7ae39b41cba945b083e93a2e1a103d7cee629c.pdf
+Fichier : data/sources/SACU/legislation/SACU_Agreement2002_amended_2013-04-12.pdf
+sha256 : 03185fa1891ca4b05bfdecfc01d5a0986f34b76943ed9b24ee8551d57b8e8bdf
+
+VERBATIM (Article 21.1, p. 19) :
+« The Ministers responsible for Finance in all Member States shall meet and agree on the rates of
+specific excise and ad valorem excise duties and specific customs and ad valorem customs duties to
+be applied to goods grown, produced or manufactured in or imported into the Common customs Area. »
+
+VERBATIM (Article 22, p. 20) :
+« Except as otherwise provided in this Agreement Member States shall apply similar legislation with
+regard to customs and excise duties. »
+
+2. Eswatini — Schedule No. 1 Part 2A publiée par l'Eswatini Revenue Service
+URL : https://www.ers.org.sz/documents/Schedule1Part2A.pdf
+Fichier : data/sources/SWZ/legislation/SWZ_Sch1_Part2A_avis_sans-date.pdf
+sha256 : 75fa30baf603cd95e8b688f528f39f612c33e6373e019143663c19b3ac759a55
+
+VERBATIM (p. 1) :
+« In terms of section 48 of the Customs and Excise Act, 1964, Part 2A of Schedule No. 1 to the said
+Act is hereby amended, with effect from 1 January 2022, to the extent set out in the Schedule
+hereto. DR DAVID MASONDO DEPUTY MINISTER OF FINANCE »
+
+7. Prélèvements nationaux à l'importation (taux en vigueur non collectés)
+
+Botswana — Excise Duty Act 2018 (fichier, URL et sha256 au point 3)
+VERBATIM (s.2, p. 5) :
+« "fuel levy" means any duty leviable under Part 5 of Schedule No. 1 on any goods which have been
+manufactured in, or imported into Botswana; »
+
+Namibie — Customs and Excise Act 20 of 1998 (fichier, URL et sha256 au point 4)
+VERBATIM (s.2, p. 11) :
+« "fuel levy" means any duty leviable under Part 5 of Schedule 1 and on any goods, which have been
+manufactured in or imported into Namibia; »
+VERBATIM (s.58A(1), p. 72) :
+« A levy to be known as the environmental levy shall be leviable on goods imported into and goods
+manufactured in Namibia as may be specified in any item of Part 3 of Schedule No. 1. »
+
+Eswatini — Alcohol and Tobacco Levy Act, 2019 (scan ; transcription OCR non officielle)
+URL : https://www.ers.org.sz/documents/Alcohol-And-Tobacco-Levy-Act.pdf
+Fichier : data/sources/SWZ/legislation/SWZ_AlcoholTobaccoLevyAct_2019-08-23.pdf
+sha256 : a6b655fda466e8a161907fd9618164d9d6184e68204bf4f6add0f198043d53b8
+VERBATIM (s.3(1), OCR) : « An alcohol and tobacco levy shall be levied and charged on- (a) the
+taxable goods manufactured in Eswatini, and (b) the import of taxable goods »
+VERBATIM (s.4(2), OCR) : « The taxable value of an import of taxable goods is the sum of- (a) the
+value of the goods ascertained for the purposes of customs duty under the laws relating to customs,
+plus (b) the amount of customs duty, excise tax and any other fiscal charge, other than Value Added
+Tax payable on those taxable goods »
+VERBATIM (Schedule, item 1, OCR) : « The following goods imported into Eswatini - (a) alcoholic
+beverages of all kinds other than traditional beer seven (7) per cent (b) manufactured tobacco in the
+form of cigars, cheroots, cigarillos, cigarettes, pipe tobacco and snuff seven (7) per cent »
+
+Eswatini — Fuel Tax Act, 2022 (scan, OCR) : la taxe porte « on the sale of fuel by a wholesaler »
+(s.4(1)), non sur l'importation : elle n'est pas déclarée à l'importation.
+Fichier : data/sources/SWZ/legislation/SWZ_FuelTaxAct11-2022_2022.pdf
+sha256 : d8bc5763facdfc53ae4b7eb450bdca77913dda05e284a580280b46e9f1fef2bb
+
+LECTURE : avis sud-africain (loi sud-africaine de 1964, vice-ministre sud-africain des Finances,
+taux en rands) que l'ERS publie comme tarif d'accise de l'Eswatini.
+
+3. Botswana — Excise Duty Act 2018
+URL : https://www.burs.org.bw/index.php/treaties-and-legislation/legislation/revenue-laws?download=752:excise-duty-act
+Fichier : data/sources/BWA/legislation/BWA_ExciseDutyAct2018_sans-date.pdf
+sha256 : 6fa71a0e9055df23d4213e9d8a482171dff972f184acfa8d4353760bd2942019
+
+VERBATIM (s.2, p. 7) :
+« "unit of account" means a monetary sum equal to a unit of the currency in circulation in the
+remainder of the common customs area; »
+
+VERBATIM (Schedule No. 1, p. 115) :
+« PART 2A Specific Excise Duties on Imported goods of the same class or kind PART 2B Ad Valorem
+Excise Duties on imported goods of the same class or kind »
+
+VERBATIM (s.69(1), p. 77-78) :
+« For the purpose of assessing the duty on any goods manufactured in or outside Botswana and
+specified in Section B of Part 2 of Schedule No. 1, the excise value thereof shall, subject to the
+provisions of this section, be taken to be the full and final market price (before deduction of any
+discounts other than cash discounts) at which, at the time of sale, such or similar goods are freely
+offered for sale, for consumption in Botswana, for purposes of trade in the principal markets of
+Botswana in the ordinary course of trade, in the usual wholesale quantities and in the condition and
+the usual packing ready for sale in the retail trade, to any merchant wholesaler in Botswana not
+deemed to be related under fully competitive conditions, plus the cost of packing and packages and
+all other expenses incidental to placing the goods on any vehicle for delivery to the purchaser,
+plus any non-rebated duty payable in terms of Section A of Part 2 of Schedule No. 1 on such goods,
+but excluding the non-rebated duty payable in terms of Section B of Part 2 of Schedule No. 1 or any
+sales tax payable on such goods »
+
+4. Namibie — Customs and Excise Act 20 of 1998 (version consolidée annotée NamRA)
+URL : https://www.namra.org.na/documents/cms/uploaded/customs-and-excise-act-20-of-1998-f7d50fd10e.pdf
+Fichier : data/sources/NAM/legislation/NAM_CustomsExciseAct20-1998_1998-08-01.pdf
+sha256 : 8996df0fbe4df7402f94240134ea5b2c3e7598f3a2eb308258de82c5a309d7ea
+
+VERBATIM (s.75(9)(a), p. 82) :
+« Notwithstanding subsections (1) and (4), the value for the purposes of the duty specified in
+Section B of Part 2 of Schedule 1 shall, in respect of imported goods (other than goods entered in
+terms of item 412.18 of Schedule 4), be the transaction value thereof plus 15 per cent of such
+value, plus any non-rebated customs duty payable in terms of Part 1 and Section A of Part 2 of
+Schedule 1 on such goods, but excluding the duty on such goods specified in that Section B. »
+
+5. Eswatini — Customs and Excise Act 1971 (version consolidée ERS)
+URL : https://www.ers.org.sz/documents/CustomsandExciseAct1971.pdf
+Fichier : data/sources/SWZ/legislation/SWZ_CustomsExciseAct_1971.pdf
+sha256 : 693a038fc0da17edf67173aa7ba8525091d04dfce8024a7400356e3f1bc4c074
+
+VERBATIM (s.65(7)(a), p. 71-72) :
+« Notwithstanding subsections (1) and (4), the value for purposes of the duty specified in Section B
+of Part 2 of Schedule No. 1 shall, in respect of imported goods other than goods entered in terms of
+item 412.18 of Schedule No. 4, be the transaction value thereof plus fifteen percent of such value,
+plus any non-rebated customs duty payable in terms of Part 1 and Section A of Part 2 of Schedule
+No. 1 on such goods, but excluding the duty specified in Section B of Part 2 of Schedule No. 1 on
+such goods. (Amended A.11/1988.) »
+
+6. Lesotho — Customs and Excise Act No. 10 of 1982 (scan ; copie archivée, l'original RSL étant servi tronqué)
+URL : https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf
+Archive : http://web.archive.org/web/20260411184253/https://www.rsl.org.ls/sites/default/files/2024-07/Customs%20and%20Excise%20Act%20No10%201982.pdf
+Fichier : data/sources/LSO/legislation/LSO_CustomsExciseAct10-1982_1982_copie-archivee.pdf
+sha256 : 45722bb12a3b9145cd14984791bdf63d3754cb778ca46b19e2c388f178c568d1
+
+VERBATIM (s.67(6)(a), page de scan 57 ; transcription OCR non officielle) :
+« (6) (a) Notwithstanding the provisions of subsections (1) and (4), the value for fiscal and
+Customs duty purposes of any imported goods specified in section B of Part 2 of Schedule No. 1
+(other than pearls, precious and semi-precious metals or articles containing or manufactured of
+such pearls, precious and semi-precious stones, precious metals or rolled precious metals, entered
+under schedule No. 4) shall be the normal price thereof plus 15 per cent of such price, plus any
+non-rebated fiscal and Customs duty payable in terms of part I of Schedule No. 1 on such goods, but
+excluding the fiscal and Customs duty specified in the said Section B of part 2 of Schedule No. 1 on
+such goods. »
+
+LECTURE :
+- Taux : ceux du tarif sud-africain (Schedule No. 1 Part 2A et 2B, fiche ZAF_accises_2026-10-14.json),
+  communs aux cinq États (art. 21.1 et 22) ; l'Eswatini publie les avis sud-africains, le Botswana
+  libelle ses droits en unités de compte, égales au rand.
+- Valeur de l'accise ad valorem : NAM et SWZ, FOB × 1,15 + DD + accise spécifique (comme l'Afrique du
+  Sud) ; LSO, FOB × 1,15 + DD (Part 1 seulement, texte de 1982) ; BWA, prix de gros sur le marché
+  botswanais, inconnu du calcul.
+- Prélèvements nationaux dus à l'importation, taux en vigueur non collectés : déclarés sans taux
+  (total incomplet) — fuel levy du Botswana et de la Namibie (positions de la Part 5A sud-africaine),
+  prélèvement environnemental de la Namibie (Parts 3A, 3C, 3D, 3E), Alcohol and Tobacco Levy de
+  l'Eswatini (2203 à 2206, 2208, 2402, 2403.11, 2403.19, 2403.99 ; 7 % à l'annexe de 2019, taux en
+  vigueur non confirmé). Lesotho : aucun prélèvement à l'importation documenté.

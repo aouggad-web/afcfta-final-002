@@ -1,0 +1,30 @@
+ARCHIVE — deux documents officiels de l'Union africaine (tri des PR #547 à #569, 29/09/2026)
+
+Ces deux PDF ne changent le niveau d'aucun pays. Ils servent de référence
+continentale : état des signatures et ratifications, avancement de la mise en œuvre.
+
+1. Liste des signatures, ratifications et dépôts de l'Accord ZLECAf, au 22/05/2026
+   Fichier : AU_liste_signatures_ratifications_zlecaf_2026-05-22.pdf
+   sha256 : e38d01042f01ec33e7ac188aaf37b24eccfca7b91493d8804205f0d344a2a68b
+   URL : https://au.int/sites/default/files/treaties/36437-sl-AGREEMENT_ESTABLISHING_THE_AFRICAN_CONTINENTAL_FREE_TRADE_AREA_1.pdf
+   Vérification : téléchargé depuis au.int le 29/09/2026, identique octet pour octet.
+   VERBATIM (pied de liste) : « Total countries : 55 of signature : 54 of ratification : 49
+   of deposit : 49 » ; « ENTERED INTO FORCE ON 30th MAY 2019 ».
+
+2. Rapport de progrès de la ZLECAf, Conseil exécutif de l'UA, EX.CL/1625(XLVII)
+   (47e session ordinaire, 9 juin – 11 juillet 2025, Malabo)
+   Fichier : AU_EX_CL_1625_XLVII_rapport_progres_zlecaf_2025-07.pdf
+   sha256 : 8200d624e5348374d7cd96e5c3c9cff7f645abbba5d3bee77c661e591aa565dc
+   Provenance : récupéré par le collaborateur via web.archive.org (archives.au.int
+   injoignable) ; URL exacte non consignée. Identité établie par la cote et l'en-tête
+   de l'UA imprimés dans le document.
+   VERBATIM :
+   - « As of July 2025, 49 out of 54 signatory Member States have ratified the AfCFTA
+     Agreement […] The State of Eritrea has yet to sign the Agreement »
+   - « 49 Provisional Schedules of Tariff Concessions (PSTCs) have been submitted, and
+     48 of them have been adopted. However, six countries (Libya, Sudan, Eritrea,
+     Somalia, Djibouti, and the Sahrawi Republic) have yet to submit offers. »
+   - « the Secretariat has received gazette notices from 24 State Parties that have
+     completed the domestication process for the implementation of the AfCFTA »
+     (la liste nominative des 24 n'est pas donnée dans ce rapport)
+   - « The Guided Trade Initiative (GTI) expanded from 7 to 39 participating countries »

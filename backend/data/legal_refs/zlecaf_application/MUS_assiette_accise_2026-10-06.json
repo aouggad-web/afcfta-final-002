@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "objet": "Maurice : base du droit d'accise ad valorem à l'importation — « value at importation » = valeur au sens du Customs Act (CIF), sauf véhicules d'occasion",
+  "destination_iso3": "MUS",
+  "verified_at": "2026-10-06",
+  "etabli": true,
+  "evidence_level": "primaire — Excise Act 1994, version consolidée publiée par la MRA (01.10.2026), s.2 et First Schedule (colonne « Taxable Base »)",
+  "source": {"url": "https://www.mra.mu/download/ExciseAct.pdf", "institution": "Mauritius Revenue Authority"},
+  "regle": {
+    "valeur": "Assiette de l'accise ad valorem à l'importation : CIF (valeur au sens du Customs Act), sans le droit de douane. Véhicules d'occasion : valeur « déterminée selon des modalités prescrites », non lue.",
+    "verbatim": "“value at importation” means- (a) in the case of second hand motor vehicles, the value determined in such manner as may be prescribed; (b) in any other case, the value under the Customs Act;",
+    "reference": "Excise Act 1994, s.2 ; First Schedule, colonne 4 « Taxable Base » (« Ad valorem or value at importation »)",
+    "portee": "backend/data/zlecaf_mus/assiette_accise_excise_act.json, appliqué par scripts/build_socle._assiette_accise au seul socle MUS : 396 accises du crawl reçoivent l'assiette CIF (taux ad valorem hors véhicules d'occasion, et tout taux nul de l'annexe) ; 129 restent sans assiette (véhicules d'occasion à taux non nul, positions absentes de l'annexe en vigueur).",
+    "texte_archive": "sources/MUS_assiette_accise.texte-extrait.txt",
+    "sha256": "8858bc5f78c09163c57cbd46cc744c8b39baff78fe835911a9c47c7c512c0e79"
+  },
+  "decisions": [
+    "Les 362 taux ad valorem du crawl relus dans la First Schedule en vigueur concordent tous.",
+    "Taux nul (droit spécifique à 0, ambulances, véhicules frigorifiques…) : l'assiette n'influe sur aucun montant, CIF est posé pour ne pas bloquer la TVA."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Véhicules d'occasion : le règlement qui fixe leur valeur n'a pas été lu (Excise Act s.2 (a)).",
+    "Réfrigérateurs 84.18 et 8704.31.11 : taux du crawl sans ligne correspondante relevée dans la First Schedule en vigueur — portés sans assiette.",
+    "Droits spécifiques (par litre, par gramme de sucre, par millier) : non liquidés, la quantité n'est pas saisie."
+  ],
+  "documents_archives": [{"texte_archive": "sources/MUS_assiette_accise.texte-extrait.txt", "sha256": "8858bc5f78c09163c57cbd46cc744c8b39baff78fe835911a9c47c7c512c0e79"}]
+}

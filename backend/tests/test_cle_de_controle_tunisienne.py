@@ -29,7 +29,6 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from services import authentic_tariff_service  # noqa: E402
 from services import socle  # noqa: E402
 
 RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -60,10 +59,10 @@ def test_la_cle_de_controle_est_conservee_a_cote_du_code():
     positions = _pays("TUN")["positions"]
     assert positions["0101210001"]["cle_controle"] == "5"
     portent_une_cle = sum(1 for p in positions.values() if p.get("cle_controle"))
-    assert portent_une_cle == 17541, (
-        "une seule position est publiée sans clé par la source ; les autres "
-        "doivent toutes conserver la leur"
-    )
+    # La seule ligne « sans clé » était 4039011010 : 0403.90.11.01.0 privée de
+    # son zéro de tête. Complétée à la construction, elle porte sa clé (0).
+    assert positions["0403901101"]["cle_controle"] == "0"
+    assert portent_une_cle == 17542, "toutes les positions doivent conserver leur clé"
 
 
 @besoin_socle
@@ -87,17 +86,6 @@ def test_les_deux_formes_saisies_resolvent_la_meme_position(saisi):
     assert provenance["niveau"] == "national"
     assert position["cle_controle"] == "5"
     assert position["designation"].startswith("Chevaux de course")
-
-
-@besoin_socle
-def test_le_selecteur_affiche_la_position_et_non_la_position_plus_sa_cle():
-    """« HS11 digits » était une affirmation fausse sur l'écran."""
-    proposees = authentic_tariff_service.get_sub_positions("TUN", "010121", language="fr")
-    assert proposees, "la position sentinelle doit se résoudre"
-    for entree in proposees:
-        assert len(entree["code"]) == 10, f"code affiché hors format : {entree['code']}"
-        assert entree["digits"] == 10
-        assert entree["cle_controle"]
 
 
 # ─────────────────────────────────────────────────────────────────────────────

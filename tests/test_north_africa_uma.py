@@ -3,8 +3,7 @@
 Tests for the North Africa (UMA/AMU) regional intelligence implementation.
 
 Covers:
-- uma_constants: Country metadata, trade blocs, VAT rates
-- tariff_structures: Morocco reference bands, country profiles, chapter rates
+- uma_constants: Country metadata, trade blocs
 - investment_zones: SEZ data for all 7 countries
 - morocco_uma_scraper: Position generation and output schema
 - uma_member_scraper: Country derivation logic
@@ -66,16 +65,6 @@ def test_country_metadata_completeness():
     print("✅ Country metadata complete for all 7 countries")
 
 
-def test_vat_rates_all_countries():
-    """VAT rates are defined for all 7 countries and are non-negative."""
-    from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES, UMA_VAT_RATES
-
-    for code in UMA_COUNTRIES:
-        assert code in UMA_VAT_RATES, f"VAT rate missing for {code}"
-        assert UMA_VAT_RATES[code] >= 0.0, f"Negative VAT for {code}"
-    print("✅ VAT rates defined for all 7 countries")
-
-
 def test_trade_blocs_all_countries():
     """Trade bloc memberships are defined for all 7 countries."""
     from crawlers.countries.north_africa.uma_constants import UMA_COUNTRIES, UMA_TRADE_BLOCS
@@ -105,101 +94,6 @@ def test_multilang_names():
         assert "ar" in names, f"Arabic name missing for {code}"
         assert "en" in names, f"English name missing for {code}"
     print("✅ Multi-language names (AR + EN) present for all 7 countries")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 2. Tariff Structures Tests
-# ─────────────────────────────────────────────────────────────────────────────
-
-
-def test_morocco_reference_bands():
-    """Morocco tariff bands match the specification."""
-    from crawlers.countries.north_africa.tariff_structures import MOROCCO_TARIFFS
-
-    assert MOROCCO_TARIFFS["raw_materials"] == 2.5
-    assert MOROCCO_TARIFFS["intermediate_goods"] == 10.0
-    assert MOROCCO_TARIFFS["final_goods"] == 25.0
-    assert MOROCCO_TARIFFS["agricultural"] == 40.0
-    assert MOROCCO_TARIFFS["luxury_goods"] == 45.0
-    print("✅ Morocco reference tariff bands correct")
-
-
-def test_get_country_tariff_profile_all_7():
-    """Tariff profiles exist for all 7 countries."""
-    from crawlers.countries.north_africa.tariff_structures import get_country_tariff_profile
-
-    for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
-        profile = get_country_tariff_profile(code)
-        assert profile is not None, f"Profile missing for {code}"
-        assert "bands" in profile, f"'bands' missing in {code} profile"
-        assert "vat" in profile, f"'vat' missing in {code} profile"
-    print("✅ Tariff profiles present for all 7 countries")
-
-
-def test_get_country_tariff_profile_unknown():
-    """get_country_tariff_profile returns None for unknown country."""
-    from crawlers.countries.north_africa.tariff_structures import get_country_tariff_profile
-
-    assert get_country_tariff_profile("ZZZ") is None
-    print("✅ Unknown country returns None")
-
-
-def test_get_chapter_rate_agricultural():
-    """Chapter 1-24 returns agricultural rate for Morocco."""
-    from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
-
-    rate = get_chapter_rate("MAR", 10)  # Chapter 10 = Cereals
-    assert rate == 40.0, f"Expected 40.0, got {rate}"
-    print("✅ Chapter 10 (cereals) → agricultural rate 40.0% for MAR")
-
-
-def test_get_chapter_rate_machinery():
-    """Chapter 84 returns final_goods rate."""
-    from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
-
-    rate = get_chapter_rate("MAR", 84)
-    assert rate == 25.0, f"Expected 25.0, got {rate}"
-    print("✅ Chapter 84 (machinery) → final_goods rate 25.0% for MAR")
-
-
-def test_get_chapter_rate_unknown_country():
-    """Unknown country returns 0.0."""
-    from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
-
-    rate = get_chapter_rate("ZZZ", 84)
-    assert rate == 0.0
-    print("✅ Unknown country get_chapter_rate → 0.0")
-
-
-def test_get_regional_tariff_comparison():
-    """Regional comparison returns rates for all 7 countries."""
-    from crawlers.countries.north_africa.tariff_structures import get_regional_tariff_comparison
-
-    comparison = get_regional_tariff_comparison(84)
-    for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
-        assert code in comparison, f"{code} missing from comparison"
-        assert isinstance(comparison[code], float)
-    print("✅ Regional tariff comparison covers all 7 countries")
-
-
-def test_algeria_higher_than_morocco_intermediates():
-    """Algeria intermediate goods rate > Morocco (import substitution)."""
-    from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
-
-    mar_rate = get_chapter_rate("MAR", 39)  # Plastics (intermediate)
-    dza_rate = get_chapter_rate("DZA", 39)
-    assert dza_rate > mar_rate, f"Expected DZA ({dza_rate}) > MAR ({mar_rate}) for intermediates"
-    print(f"✅ Algeria ({dza_rate}%) > Morocco ({mar_rate}%) for intermediate goods")
-
-
-def test_libya_lower_rates_reconstruction():
-    """Libya rates are lower than Morocco (reconstruction incentives)."""
-    from crawlers.countries.north_africa.tariff_structures import get_chapter_rate
-
-    mar_rate = get_chapter_rate("MAR", 84)  # Machinery (final goods)
-    lby_rate = get_chapter_rate("LBY", 84)
-    assert lby_rate < mar_rate, f"Expected LBY ({lby_rate}) < MAR ({mar_rate}) for final goods"
-    print(f"✅ Libya ({lby_rate}%) < Morocco ({mar_rate}%) for final goods (reconstruction)")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -492,32 +386,6 @@ def test_api_uma_intelligence():
     print("✅ GET /api/regions/uma/intelligence → full intelligence data")
 
 
-def test_api_tariffs_country_morocco():
-    """GET /api/tariffs/north-africa/MAR returns Morocco tariff profile."""
-    from fastapi.testclient import TestClient
-
-    app = _build_app()
-    with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get("/api/tariffs/north-africa/MAR")
-    assert response.status_code == 200, f"{response.status_code}: {response.text}"
-    data = response.json()
-    assert data["country"] == "MAR"
-    assert "bands" in data
-    assert data["bands"]["agricultural"] == 40.0
-    print("✅ GET /api/tariffs/north-africa/MAR → Morocco profile")
-
-
-def test_api_tariffs_country_unknown():
-    """GET /api/tariffs/north-africa/XYZ returns 404."""
-    from fastapi.testclient import TestClient
-
-    app = _build_app()
-    with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get("/api/tariffs/north-africa/XYZ")
-    assert response.status_code == 404
-    print("✅ GET /api/tariffs/north-africa/XYZ → 404")
-
-
 def test_api_investment_zones():
     """GET /api/investment/north-africa/zones returns all zones."""
     from fastapi.testclient import TestClient
@@ -549,39 +417,6 @@ def test_api_investment_zones_country():
     print(f"✅ GET /api/investment/north-africa/zones/MAR → {data['total_zones']} zones")
 
 
-def test_api_trade_agreements():
-    """GET /api/trade/north-africa/agreements returns agreements matrix."""
-    from fastapi.testclient import TestClient
-
-    app = _build_app()
-    with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get("/api/trade/north-africa/agreements")
-    assert response.status_code == 200, f"{response.status_code}: {response.text}"
-    data = response.json()
-    assert "agreements_by_country" in data
-    assert "key_multilateral" in data
-    for code in ["MAR", "EGY", "TUN", "DZA", "LBY", "SDN", "MRT"]:
-        assert code in data["agreements_by_country"], f"{code} missing from agreements"
-    print("✅ GET /api/trade/north-africa/agreements → all 7 countries covered")
-
-
-def test_api_trade_agreements_single_country():
-    """GET /api/trade/north-africa/agreements?country_code=EGY returns Egypt."""
-    from fastapi.testclient import TestClient
-
-    app = _build_app()
-    with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get("/api/trade/north-africa/agreements?country_code=EGY")
-    assert response.status_code == 200, f"{response.status_code}: {response.text}"
-    data = response.json()
-    assert data["country"] == "EGY"
-    agreements = data["agreements"]
-    names = [a["name"] for a in agreements]
-    assert any("COMESA" in n for n in names), f"COMESA not in {names}"
-    assert any("QIZ" in n for n in names), f"QIZ not in {names}"
-    print("✅ GET /api/trade/north-africa/agreements?country_code=EGY → COMESA + QIZ")
-
-
 def test_api_regional_summary():
     """GET /api/regions/north-africa/summary returns concise overview."""
     from fastapi.testclient import TestClient
@@ -602,14 +437,13 @@ def test_api_compare_countries():
 
     app = _build_app()
     with TestClient(app, raise_server_exceptions=False) as client:
-        response = client.get("/api/regions/north-africa/compare?countries=MAR,EGY,TUN&chapter=84")
+        response = client.get("/api/regions/north-africa/compare?countries=MAR,EGY,TUN")
     assert response.status_code == 200, f"{response.status_code}: {response.text}"
     data = response.json()
     assert "comparison" in data
     for code in ["MAR", "EGY", "TUN"]:
         assert code in data["comparison"]
-        assert "indicative_dd_rate_chapter" in data["comparison"][code]
-    print("✅ GET /api/regions/north-africa/compare?countries=MAR,EGY,TUN&chapter=84 → OK")
+    print("✅ GET /api/regions/north-africa/compare?countries=MAR,EGY,TUN → OK")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

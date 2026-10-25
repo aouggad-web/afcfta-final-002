@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "objet": "Origines auxquelles la Tunisie sert la préférence ZLECAf à l'importation, et sort de l'Égypte, de l'Algérie et de l'Afrique du Sud",
+ "destination_iso3": "TUN",
+ "verified_at": "2026-10-03",
+ "evidence_level": "Tarif Web 2026 de la douane (collecte du dépôt, préférences par partenaire) et portail du ministère du Commerce (texte extrait archivé).",
+ "regle": {
+  "valeur": "Origines servies : CMR, GHA, KEN, TZA, MUS, RWA, NGA, ZAF — les participants à l'initiative du commerce guidé, Égypte exceptée",
+  "verbatim": "En 2024, 24 nouveaux pays membres de la ZLECAF vont rejoindre les 10 pays déjà participants à l'initiative du commerce guidé (Tunisie, Égypte, Ghana, Cameroun, Rwanda, Kenya, Tanzanie, Maurice, Afrique du Sud, Nigéria).",
+  "reference": "Portail « Accords commerciaux avec l'Afrique » du ministère du Commerce et du Développement des Exportations, page ZLECAf, consultée le 03/10/2026",
+  "portee": "RECORDS['TUN'].accepted_origins (services/zlecaf_schedule_tun.ORIGINES_TARIF_WEB) : origines auxquelles le Tarif Web 2026 publie un coefficient ZLECAf. Elles coïncident avec la liste du commerce guidé, Égypte exceptée.",
+  "texte_extrait": "sources/TUN_ministere_commerce_guide.texte-extrait.txt",
+  "sha256": "101005d3b2322fa956cc37447f460a7fdfa5311969772d82a4b252cd2c7111e9",
+  "page_html_sha256_non_archive": "d75067955c0a3333677113f6bcb1aaced23160672b501d1cf016300e50cf60cc",
+  "document_non_archive": "La page HTML entière n'est pas versée ; seul l'extrait l'est."
+ },
+ "par_origine": {
+  "NGA_et_ZAF": {
+   "decision": "SERVIES",
+   "motif": "Absents du texte TA n°016/2023 (avril 2023), mais participants au commerce guidé selon le ministère, et servis par la douane au Tarif Web 2026 sous la zone « ZLECAf » : 12 955 lignes chacun (11 807 à 40 %, 1 148 à 87,5 %).",
+   "reserve": "L'acte national qui les ajoute n'a pas été trouvé ; la preuve est l'application par la douane elle-même."
+  },
+  "EGY": {
+   "decision": "PAS DE PRÉFÉRENCE ZLECAf — régime plus favorable déjà appliqué",
+   "constat": "Le Tarif Web 2026 ne publie aucun coefficient ZLECAf pour l'Égypte, mais la range sous la zone « ZALE » (« ZALE (GAFTA) », « Accord d'Agadir ») sur 10 632 lignes : 10 608 à 0 %, 14 à 89 %, 10 à 80 %.",
+   "lecture": "L'Égypte, nommée par le texte de 2023 et participante au commerce guidé, est importée en Tunisie au titre de la ZALE et de l'accord d'Agadir, qui donnent déjà la franchise sur la quasi-totalité des lignes."
+  },
+  "DZA": {
+   "decision": "PAS DE PRÉFÉRENCE ZLECAf — régime plus favorable déjà appliqué",
+   "constat": "Aucun coefficient ZLECAf ; zone « ZALE » (« ZALE (GAFTA) », « accord bilatéral TUN-DZA ») sur 13 362 lignes, toutes à 0 %.",
+   "lecture": "L'Algérie n'est ni nommée par le texte de 2023 ni participante au commerce guidé selon le ministère ; ses produits entrent en franchise au titre de la ZALE et de l'accord bilatéral."
+  },
+  "ZAF": {
+   "decision": "SERVIE (voir NGA_et_ZAF)"
+  }
+ },
+ "reciprocite_constatee_au_depot": {
+  "DZA_accorde_TUN": "oui — circulaire 482/2024 (services/zlecaf_schedule_dza.ACTIVE_PARTNERS)",
+  "EGY_accorde_TUN": "oui — groupe à 5 ans (circulaires 38/2024 et 44/2025)",
+  "ZAF_accorde_TUN": "oui — depuis le 31/01/2024 (General Note O)",
+  "NGA_accorde_TUN": "non établi — Nigeria au statut PARTNER_NOTICE_REQUIRED"
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "Le calculateur ne calcule pas les zones de libre-échange autres que la ZLECAf (ZALE, Agadir, accords bilatéraux) : pour une origine algérienne, égyptienne ou marocaine, il affiche le NPF, avec une note d'information reprenant le taux que le Tarif Web publie pour la ligne et ses accords (décision du propriétaire du 03/10/2026 ; services/zlecaf_schedule_tun.note_zale, données data/zlecaf_tun/zale_tarifweb_2026.json).",
+  "L'acte qui ajoute le Nigeria et l'Afrique du Sud à l'application tunisienne."
+ ]
+}

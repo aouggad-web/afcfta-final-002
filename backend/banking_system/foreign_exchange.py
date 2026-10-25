@@ -1273,7 +1273,7 @@ _CURRENCY_META: Dict[str, Tuple[str, str, str]] = {
     "ZA": ("ZAR", "Rand sud-africain", "freely_convertible"),
     "AO": ("AOA", "Kwanza angolais", "non_convertible"),
     "ZM": ("ZMW", "Kwacha zambien", "partially_convertible"),
-    "ZW": ("ZWL", "Dollar zimbabwéen", "non_convertible"),
+    "ZW": ("ZWG", "Zimbabwe Gold (ZiG)", "non_convertible"),
     "BW": ("BWP", "Pula botswanaise", "freely_convertible"),
     "MW": ("MWK", "Kwacha malawien", "partially_convertible"),
     "MZ": ("MZN", "Metical mozambicain", "partially_convertible"),

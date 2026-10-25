@@ -1,0 +1,39 @@
+Republic of Zambia Government Gazette n° 7861 (31/12/2025) — supplément portant le
+texte intégral du Statutory Instrument No. 96 of 2025
+SOURCE : https://archive.gazettes.africa/archive/zm/2025/zm-government-gazette-dated-2025-12-31-no-7861.pdf
+Consulté le : 2026-09-29. PDF de 61 pages téléchargé en direct (octets archivés :
+sources/ZMB_gazette_7861_2025-12-31.pdf). Extrait = pages 41 (texte du SI 96) et 1
+(avis n° 1735 listant les SI publiés en supplément).
+
+VERBATIM (anglais, tel qu'imprimé — l'OCR du PDF imprime quelques lettres fautives
+qui sont restituées ici telles quelles) :
+
+1) [PDF p. 41] « GOVERNMENT OF ZAMBIA STATUTORY INSTRUMENT  NO. 96 of  2025 The
+Customs and Excise Act ( Laws, Volume 18, Cap 322)  The Customs and Excise
+(General) (Amendment) Regulations, 2025 IN EXERCISE  of the powers contained in
+section 198 of the Customs and Excise Act, the following Regulations are made: »
+
+2) [PDF p. 41] « (2) These Regulations shall come into operation on 1st January, 2026 »
+
+3) [PDF p. 41, tout le dispositif] « 2. Regulation 14(2) of the principal Regulations is
+amended by the deletion of the words “(exclusive of Saturdays and Sundays and any
+public holiday)”. 3. Regulation 14A of the principal Regulations is amended by the
+deletion of subregulation (1) and the substitution therefor of the following: (1) Subject
+to the provisions of section 32B of the Act, entry of goods prior to the goods’ arrival
+at a customs port shall be made to the Customs Services Division at any time before
+the arrival of the goods. 4. Regulation 19 of the principal Regulations is amended by
+the deletion of the words “(exclusive of Saturdays and Sundays and any public
+holiday)”. »
+
+TRADUCTION / PORTÉE :
+- le SI 96 of 2025 est un texte de trois dispositions procédurales (délais d'enregistrement
+  des déclarations, réglementations 14, 14A et 19 des Customs and Excise (General)
+  Regulations, 2000) ;
+- il ne porte AUCUNE disposition tarifaire, ne mentionne ni la ZLECAf ni l'AfCFTA ni un
+  barème de concessions, et ne nomme aucun État partie ;
+- il est en vigueur le 1er janvier 2026 ;
+- la question ouverte « le SI 96 de 2025 modifie-t-il le dispositif ZLECAf ? » est donc
+  TRANCHÉE PAR LE TEXTE : non.
+
+MÉTHODE : lecture du PDF de l'archive gazettes.africa (octets archivés et scellés),
+extraction pypdf, verbatim relu contre le texte extrait.

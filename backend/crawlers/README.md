@@ -7,7 +7,6 @@ Production-ready infrastructure for scraping customs data from all 54 African co
 This infrastructure provides:
 
 - **Abstract base class** for all scrapers with common functionality
-- **Factory pattern** for dynamic scraper creation
 - **Complete registry** of all 54 African countries with metadata
 - **Rate limiting** and retry logic for robust scraping
 - **MongoDB integration** with motor (async)
@@ -21,7 +20,6 @@ This infrastructure provides:
 backend/crawlers/
 ├── __init__.py                      # Main package exports
 ├── base_scraper.py                  # Abstract base class
-├── scraper_factory.py               # Factory pattern implementation
 ├── all_countries_registry.py        # 54 countries configuration
 ├── countries/                       # Country-specific scrapers
 │   ├── __init__.py
@@ -29,58 +27,6 @@ backend/crawlers/
 │   └── [other country scrapers]
 └── validators/                      # Data validators
     └── __init__.py
-```
-
-## 🚀 Quick Start
-
-### Basic Usage
-
-```python
-from backend.crawlers import ScraperFactory
-
-# Get scraper for a specific country
-scraper = ScraperFactory.get_scraper("GHA")
-result = await scraper.run()
-
-print(f"Success: {result.success}")
-print(f"Records scraped: {result.records_scraped}")
-print(f"Duration: {result.duration_seconds}s")
-```
-
-### With MongoDB
-
-```python
-from motor.motor_asyncio import AsyncIOMotorClient
-from backend.crawlers import ScraperFactory
-
-# Connect to MongoDB
-client = AsyncIOMotorClient("mongodb://localhost:27017")
-
-# Create scraper with database
-scraper = ScraperFactory.get_scraper("GHA", db_client=client)
-
-# Run the scraper
-async with scraper:
-    result = await scraper.run()
-    print(f"Saved {result.records_saved} records")
-```
-
-### Custom Configuration
-
-```python
-from backend.crawlers import ScraperFactory, ScraperConfig
-
-# Configure scraper behavior
-config = ScraperConfig(
-    country_code="NGA",
-    max_retries=5,
-    retry_delay=3.0,
-    timeout=60.0,
-    rate_limit_calls=10,
-    rate_limit_period=60.0
-)
-
-scraper = ScraperFactory.get_scraper("NGA", config=config)
 ```
 
 ## 📦 Components
@@ -99,45 +45,12 @@ All scrapers inherit from `BaseScraper` which provides:
 - Retry logic with exponential backoff
 - Error handling and logging
 - Request statistics tracking
-- URL utilities
 
 **Properties**:
 - `country_code` - ISO3 country code
 - `country_name` - Country name (English)
 - `source_url` - Customs website URL
-- `region` - African region
 - `vat_rate` - VAT rate percentage
-- `regional_blocks` - Economic blocks (ECOWAS, EAC, etc.)
-- `priority` - Crawling priority (1-3)
-
-### 2. ScraperFactory
-
-Factory for creating and managing scrapers.
-
-**Methods**:
-
-```python
-# Get single scraper
-scraper = ScraperFactory.get_scraper("GHA")
-
-# Get by priority
-high_priority = ScraperFactory.get_priority_scrapers("HIGH")
-
-# Get by region
-west_africa = ScraperFactory.get_region_scrapers("WEST_AFRICA")
-
-# Get by economic block
-ecowas = ScraperFactory.get_block_scrapers("ECOWAS")
-
-# Get multiple countries
-scrapers = ScraperFactory.get_multiple_scrapers(["GHA", "NGA", "KEN"])
-
-# Get all 54 countries
-all_scrapers = ScraperFactory.get_all_scrapers()
-
-# Registry statistics
-stats = ScraperFactory.get_registry_stats()
-```
 
 ### 3. Countries Registry
 
@@ -160,7 +73,6 @@ Complete configuration for all 54 African countries.
 from backend.crawlers import (
     get_country_config,
     get_countries_by_region,
-    get_countries_by_block,
     get_priority_countries,
     validate_registry,
     Region,
@@ -173,9 +85,6 @@ config = get_country_config("GHA")
 
 # Get countries by region
 west = get_countries_by_region(Region.WEST_AFRICA)
-
-# Get countries by block
-ecowas = get_countries_by_block(RegionalBlock.ECOWAS)
 
 # Get by priority
 high = get_priority_countries(Priority.HIGH)
@@ -198,7 +107,6 @@ from ..base_scraper import BaseScraper
 class GhanaScraper(BaseScraper):
     """Ghana customs scraper"""
     
-    # Required: tells factory which country
     _country_code = "GHA"
     
     async def scrape(self) -> Dict[str, Any]:
@@ -228,18 +136,6 @@ class GhanaScraper(BaseScraper):
             upsert=True
         )
         return 1 if result.upserted_id or result.modified_count > 0 else 0
-```
-
-### Step 2: Auto-Registration
-
-The scraper is automatically registered when the module is imported, thanks to the `_country_code` attribute.
-
-### Step 3: Use Your Scraper
-
-```python
-# Your custom scraper is now available
-scraper = ScraperFactory.get_scraper("GHA")
-# Returns GhanaScraper instance instead of GenericScraper
 ```
 
 ## 🌍 Country Registry
@@ -307,7 +203,6 @@ config = ScraperConfig(
 ### Statistics Tracking
 
 ```python
-scraper = ScraperFactory.get_scraper("GHA")
 await scraper.run()
 
 stats = scraper.get_stats()
@@ -369,95 +264,12 @@ python test_scraper_infrastructure.py
 
 Tests cover:
 - Registry completeness (54 countries)
-- Scraper creation and configuration
-- Bulk operations (priority, region, block)
-- Generic scraper functionality
-- Factory registry system
-- Properties and utilities
-
-## 📝 Examples
-
-### Example 1: Scrape High Priority Countries
-
-```python
-import asyncio
-from backend.crawlers import ScraperFactory
-
-async def scrape_high_priority():
-    scrapers = ScraperFactory.get_priority_scrapers("HIGH")
-    
-    for scraper in scrapers:
-        print(f"Scraping {scraper.country_name}...")
-        async with scraper:
-            result = await scraper.run()
-            if result.success:
-                print(f"  ✓ Success: {result.records_scraped} records")
-            else:
-                print(f"  ✗ Failed: {result.error}")
-
-asyncio.run(scrape_high_priority())
-```
-
-### Example 2: Scrape ECOWAS Countries
-
-```python
-import asyncio
-from backend.crawlers import ScraperFactory, RegionalBlock
-from motor.motor_asyncio import AsyncIOMotorClient
-
-async def scrape_ecowas():
-    client = AsyncIOMotorClient("mongodb://localhost:27017")
-    scrapers = ScraperFactory.get_block_scrapers(
-        RegionalBlock.ECOWAS,
-        db_client=client
-    )
-    
-    results = []
-    for scraper in scrapers:
-        async with scraper:
-            result = await scraper.run()
-            results.append(result)
-    
-    # Summary
-    successful = sum(1 for r in results if r.success)
-    print(f"Scraped {successful}/{len(results)} ECOWAS countries")
-
-asyncio.run(scrape_ecowas())
-```
-
-### Example 3: Parallel Scraping
-
-```python
-import asyncio
-from backend.crawlers import ScraperFactory
-
-async def scrape_country(country_code):
-    scraper = ScraperFactory.get_scraper(country_code)
-    async with scraper:
-        return await scraper.run()
-
-async def scrape_parallel():
-    countries = ["GHA", "NGA", "KEN", "ZAF", "EGY"]
-    
-    # Scrape in parallel
-    results = await asyncio.gather(
-        *[scrape_country(code) for code in countries]
-    )
-    
-    for result in results:
-        status = "✓" if result.success else "✗"
-        print(f"{status} {result.country_code}: {result.duration_seconds:.2f}s")
-
-asyncio.run(scrape_parallel())
-```
 
 ## 🛠️ Advanced Usage
 
 ### Custom HTTP Headers
 
 ```python
-scraper = ScraperFactory.get_scraper("GHA")
-
 # Add custom headers for specific request
 response = await scraper.fetch(
     url="https://example.com/api",
@@ -468,8 +280,6 @@ response = await scraper.fetch(
 ### Form Submissions
 
 ```python
-scraper = ScraperFactory.get_scraper("GHA")
-
 # POST form data
 response = await scraper.fetch(
     url="https://example.com/search",
@@ -481,8 +291,6 @@ response = await scraper.fetch(
 ### JSON APIs
 
 ```python
-scraper = ScraperFactory.get_scraper("GHA")
-
 # Fetch JSON directly
 data = await scraper.fetch_json("https://api.example.com/tariffs")
 ```
@@ -509,7 +317,6 @@ Required packages (from `backend/requirements.txt`):
 See the docstrings in each module for detailed API documentation:
 
 - `base_scraper.py` - BaseScraper class and utilities
-- `scraper_factory.py` - ScraperFactory and GenericScraper
 - `all_countries_registry.py` - Country configurations and utilities
 
 ## 🤝 Contributing
@@ -520,9 +327,6 @@ To add a new country scraper:
 2. Inherit from `BaseScraper`
 3. Set `_country_code` class attribute
 4. Implement `scrape()`, `validate()`, and `save_to_db()`
-5. Test with `ScraperFactory.get_scraper(country_code)`
-
-The scraper will be automatically registered!
 
 ## 📄 License
 

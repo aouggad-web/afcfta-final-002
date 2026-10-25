@@ -16,11 +16,7 @@ MIGRATION STATUS:
 - substitution.py: COMPLETE
 - gemini_analysis.py: COMPLETE (NOW WITH CACHE)
 - rules_of_origin.py: COMPLETE (Extracted from server.py)
-- hs6_database.py: COMPLETE (Full HS6 search routes)
-- authentic_tariffs.py: COMPLETE (54 countries tariff data)
-- tariffs_calculation.py: COMPLETE (Tariff calculation utilities)
 - trade_data.py: COMPLETE (WTO integration)
-- calculator.py: COMPLETE (Main tariff calculator - extracted from server.py)
 """
 
 import logging
@@ -78,10 +74,8 @@ except ImportError:
     news_router = None
     NEWS_AVAILABLE = False
 
-from .authentic_tariffs import router as authentic_tariffs_router
 from .countries import router as countries_router
 from .etl import router as etl_router
-from .hs6_database import router as hs6_db_router
 from .hs_codes import router as hs_codes_router
 from .industrie_nationale import router as industrie_nationale_router
 from .logistics import router as logistics_router
@@ -93,7 +87,7 @@ from .statistics import router as statistics_router
 from .strategic_intelligence import router as strategic_router
 from .substitution import router as substitution_router
 from .tariffs import router as tariffs_router
-from .tariffs_calculation import router as tariffs_calc_router
+from .zlecaf_network import router as zlecaf_network_router
 
 # Load Rules of Origin data from the authentic Appendix IV PSR JSON dataset
 try:
@@ -136,7 +130,8 @@ except ImportError:
     faostat_router = None
     FAOSTAT_AVAILABLE = False
 from .calcul import router as calcul_router
-from .calculator import router as calculator_router
+from .calcul import router_couverture as calcul_couverture_router
+from .consultation import router as consultation_router
 
 try:
     from .gemini_analysis import router as gemini_router
@@ -161,14 +156,6 @@ try:
 except ImportError:
     export_router = None
     EXPORT_ROUTER_AVAILABLE = False
-
-try:
-    from .crawl import router as crawl_router
-
-    CRAWL_AVAILABLE = True
-except ImportError:
-    crawl_router = None
-    CRAWL_AVAILABLE = False
 
 try:
     from .tariff_data import router as tariff_data_router
@@ -211,36 +198,12 @@ except ImportError:
     REGULATORY_QA_AVAILABLE = False
 
 try:
-    from .search import router as search_router
-
-    SEARCH_AVAILABLE = True
-except ImportError:
-    search_router = None
-    SEARCH_AVAILABLE = False
-
-try:
     from .cache import router as cache_router
 
     CACHE_ROUTER_AVAILABLE = True
 except ImportError:
     cache_router = None
     CACHE_ROUTER_AVAILABLE = False
-
-try:
-    from .dza_crawler import router as dza_crawler_router
-
-    DZA_CRAWLER_AVAILABLE = True
-except ImportError:
-    dza_crawler_router = None
-    DZA_CRAWLER_AVAILABLE = False
-
-try:
-    from .enhanced_calculator import router as enhanced_calculator_router
-
-    ENHANCED_CALCULATOR_AVAILABLE = True
-except ImportError:
-    enhanced_calculator_router = None
-    ENHANCED_CALCULATOR_AVAILABLE = False
 
 try:
     from .north_africa_crawlers import router as north_africa_crawlers_router
@@ -265,14 +228,6 @@ try:
 except ImportError:
     regional_data_router = None
     REGIONAL_DATA_AVAILABLE = False
-
-try:
-    from .regional_calculator import router as regional_calculator_router
-
-    REGIONAL_CALCULATOR_AVAILABLE = True
-except ImportError:
-    regional_calculator_router = None
-    REGIONAL_CALCULATOR_AVAILABLE = False
 
 try:
     from .investment_intelligence import router as investment_intelligence_router
@@ -367,14 +322,6 @@ try:
 except ImportError:
     insurance_router = None
     INSURANCE_AVAILABLE = False
-
-try:
-    from .postgres_tariffs import router as postgres_tariffs_router
-
-    POSTGRES_TARIFFS_AVAILABLE = True
-except ImportError:
-    postgres_tariffs_router = None
-    POSTGRES_TARIFFS_AVAILABLE = False
 
 try:
     from api.graphql.schema import router as graphql_router
@@ -490,6 +437,11 @@ def register_routes(api_router: APIRouter):
         tags=["Statistics"],
         dependencies=_auth + _stats_entitlement,
     )
+    api_router.include_router(
+        zlecaf_network_router,
+        tags=["Statistics"],
+        dependencies=_auth + _stats_entitlement,
+    )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
     api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     api_router.include_router(
@@ -503,36 +455,25 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(
         rules_router, tags=["Rules of Origin"], dependencies=_auth + _roo_entitlement
     )
-    api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
-    api_router.include_router(
-        authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth
-    )
-    api_router.include_router(tariffs_calc_router, tags=["Tariff Calculations"], dependencies=_auth)
     if FAOSTAT_AVAILABLE:
         api_router.include_router(
             faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
         )
-    # Route unique du calculateur (socle + moteur). Le routeur historique reste
-    # monté le temps que l'interface bascule (chantier L4) ; il disparaît
-    # ensuite, avec les chemins concurrents qu'il porte.
+    # Route unique du calculateur (socle + moteur).
     api_router.include_router(
         calcul_router,
         tags=["Calculateur"],
         dependencies=_auth + _calculator_entitlement,
     )
-    api_router.include_router(
-        calculator_router,
-        tags=["Calculator (historique)"],
-        dependencies=_auth + _calculator_entitlement,
-    )
+    api_router.include_router(calcul_couverture_router, tags=["Calculateur"], dependencies=_auth)
+    # Consultation du tarif, servie par le même socle que le calcul.
+    api_router.include_router(consultation_router, tags=["Consultation"], dependencies=_auth)
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth
         )
     if EXPORT_ROUTER_AVAILABLE:
         api_router.include_router(export_router, tags=["Export"], dependencies=_auth)
-    if CRAWL_AVAILABLE:
-        api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_admin)
     if TARIFF_DATA_AVAILABLE:
         api_router.include_router(
             tariff_data_router,
@@ -555,16 +496,8 @@ def register_routes(api_router: APIRouter):
         )
     if REGULATORY_QA_AVAILABLE:
         api_router.include_router(regulatory_qa_router, tags=["Regulatory QA"], dependencies=_auth)
-    if SEARCH_AVAILABLE:
-        api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
         api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_admin)
-    if DZA_CRAWLER_AVAILABLE:
-        api_router.include_router(dza_crawler_router, tags=["DZA Crawler"], dependencies=_admin)
-    if ENHANCED_CALCULATOR_AVAILABLE:
-        api_router.include_router(
-            enhanced_calculator_router, tags=["Enhanced Calculator v2"], dependencies=_auth
-        )
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:
         api_router.include_router(
             north_africa_crawlers_router, tags=["North Africa Crawlers"], dependencies=_admin
@@ -576,10 +509,6 @@ def register_routes(api_router: APIRouter):
     if REGIONAL_DATA_AVAILABLE:
         api_router.include_router(
             regional_data_router, tags=["Regional Data Inventory"], dependencies=_auth
-        )
-    if REGIONAL_CALCULATOR_AVAILABLE:
-        api_router.include_router(
-            regional_calculator_router, tags=["Regional Calculator"], dependencies=_auth
         )
     if INVESTMENT_INTELLIGENCE_AVAILABLE:
         api_router.include_router(
@@ -626,10 +555,6 @@ def register_routes(api_router: APIRouter):
             insurance_router,
             tags=["Insurance"],
             dependencies=_auth,
-        )
-    if POSTGRES_TARIFFS_AVAILABLE:
-        api_router.include_router(
-            postgres_tariffs_router, tags=["PostgreSQL Tariffs"], dependencies=_auth
         )
     if GRAPHQL_AVAILABLE:
         api_router.include_router(graphql_router, tags=["GraphQL"], dependencies=_auth)

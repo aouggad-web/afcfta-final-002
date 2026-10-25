@@ -46,8 +46,8 @@ def _mfn_rate_pct(hs_code: str) -> Optional[float]:
     """
     Taux NPF (proxy continental par chapitre SH) en pourcentage.
 
-    Réutilise la table chapitre->taux, source unique de vérité déjà utilisée
-    par le calculateur tarifaire. Import paresseux : ``services`` ne dépend pas
+    Réutilise la table chapitre->taux.
+    Import paresseux : ``services`` ne dépend pas
     de ``routes`` au chargement (évite tout import circulaire).
     """
     chapter = _normalize_hs(hs_code)[:2]

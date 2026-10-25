@@ -1,0 +1,33 @@
+ARCHIVE — Afrique du Sud : valeur retenue pour la TVA à l'importation (relevé du 02/10/2026)
+
+1. Value-Added Tax Act 89 of 1991, section 13(2) — texte consolidé au 01/08/2021
+   URL : https://disasterlaw.ifrc.org/sites/default/files/media/disaster_law/2021-10/89%20of%201991%20VALUE-ADDED%20TAX%20ACT_2021.08.01%20-%20to%20date.pdf
+   sha256 du PDF (250 p., non versé au dépôt) : 7b9012372368d1ae5fcf7df581733124957a44a441f3d4f0a2cb2b3d7eb08093
+   VERBATIM (p. 93-94) :
+   « (2) For the purposes of this Act the value to be placed on the importation of goods into the
+   Republic shall be deemed to be –
+   (a) where such goods are entered or are required to be entered for home consumption in terms of
+   the Customs and Excise Act, the value thereof for customs duty purposes, plus any duty levied
+   in terms of the said Act in respect of the importation of such goods, plus 10 per cent of the said
+   value; or
+   (b) where such goods have their origin in Botswana, Lesotho, Swaziland or Namibia and are imported
+   from such a country, the amount of the value as contemplated in paragraph (a), except that such
+   value shall not be increased by the factor of 10 per cent: »
+   Réserve du même article : « Provided that where the Minister has made a regulation determining the
+   value of such goods for the purposes of this section, the greater of such determined value or the
+   value declared on importation shall be used instead of the value for customs purposes. »
+
+2. SARS, guide « Value-Added Tax Levied on the Importation of Goods into South Africa » (CE-G06)
+   URL : https://www.sars.gov.za/wp-content/uploads/Ops/Guides/Legal-CE-G06-Value-added-tax-levied-on-the-importation-of-goods-into-South-Africa.pdf
+   Fichier : ZAF_sars_guide_TVA_importation_CE-G06.pdf
+   sha256 : 0a6552b6ee4570fe41eed781c950f4606c06caebc56dd48d56567ae67fdabff2
+   VERBATIM (§ 5.1) : « [(Customs Value + 10% thereof) + (any non-rebated duties levied on the goods)]
+   = ATV. ATV × 15% = VAT payable. » ; « The 10% upliftment is not an amount payable to SARS, but
+   represents an amount in lieu of transport and insurance costs which is used for calculating the ATV. »
+   ; exemple 2 (origine BELN) : « Customs value R1 000 — 10% of customs value Not applicable — Duty Not
+   applicable – SACU — Added tax value (ATV) R1 000 ».
+   NB : le guide indique lui-même « This guide has no binding legal effect » ; il corrobore la loi.
+
+LECTURE : la valeur en douane SACU est la valeur FOB (fiche SACU_assiette_DD_2026-09-17.json).
+Assiette TVA = FOB × 1,10 + droits ; origine Botswana, Lesotho, Eswatini ou Namibie importée de ces
+pays = FOB + droits, sans majoration.

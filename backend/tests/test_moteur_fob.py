@@ -133,27 +133,6 @@ def test_le_total_indisponible_n_calcule_pas_une_economie():
     assert r["economie"] is None
 
 
-# ── Le moteur historique (cascade codée) ─────────────────────────────────────
-
-
-def test_zaf_cascade_liquide_le_dd_sur_la_valeur_fob():
-    from services.authentic_tariff_service import compute_tax_cascade
-
-    r = compute_tax_cascade(1000.0, {"DD": 20, "TVA": 15}, "ZAF", fob_value=800.0)
-    dd = next(s for s in r["steps"] if s["code"] == "DD")
-    tva = next(s for s in r["steps"] if s["code"] == "TVA")
-    assert dd["base_formula"] == "FOB"
-    assert dd["amount"] == 160.0
-    assert tva["base_value"] == 1160.0  # CIF + DD, la TVA reste sur CIF+DD
-
-
-def test_zaf_cascade_refuse_de_liquider_sans_valeur_fob():
-    from services.authentic_tariff_service import compute_tax_cascade
-
-    with pytest.raises(ValueError, match="valeur_fob"):
-        compute_tax_cascade(1000.0, {"DD": 20, "TVA": 15}, "ZAF")
-
-
 # ── La table d'assiettes du socle ────────────────────────────────────────────
 
 
@@ -170,3 +149,25 @@ def test_la_table_d_assiettes_pose_le_dd_sud_africain_sur_fob():
     assert zaf["assiette"] == "FOB"
     assert zaf["origine_assiette"] == "texte_primaire"
     assert "FOB" in table["_grammaire"]
+
+
+# ── Assiette « FOBx<FACTEUR> » : TVA namibienne ───────────────────────────────
+
+
+def test_la_tva_namibienne_porte_sur_le_fob_majore_de_dix_pour_cent():
+    """VAT Act 10/2000 s.12(2)(a) : FOB plus 10 % du FOB — sans les droits."""
+    pos = position(
+        droit("DD", 10, assiette="FOB", famille="droit"),
+        droit("TVA", 15, assiette="FOBx1.10", famille="tva"),
+    )
+    res = calculer(pos, 1200.0, valeur_fob=1000.0)
+    tva = lignes(res)["TVA"]
+    assert tva["base"] == pytest.approx(1100.0)
+    assert tva["montant"] == pytest.approx(165.0)
+
+
+def test_sans_valeur_fob_la_tva_namibienne_reste_indisponible():
+    pos = position(droit("TVA", 15, assiette="FOBx1.10", famille="tva"))
+    res = calculer(pos, 1200.0)
+    assert res["npf"]["etat"] != COMPLET
+    assert any(m["motif"] == VALEUR_FOB_REQUISE for m in res["npf"]["manques"])

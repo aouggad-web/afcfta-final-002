@@ -131,7 +131,21 @@ def _search_payload(origin: str, destination: str, search_text: str) -> dict:
 
 def _collect_schedule(destination: str, region: str, origin: str, schedule: str) -> list[dict]:
     def collect_chapter(chapter: int):
-        return _request_json(SEARCH_URL, _search_payload(origin, destination, f"{chapter:02d}"))
+        rows = _request_json(SEARCH_URL, _search_payload(origin, destination, f"{chapter:02d}"))
+        if any(not row.get("isHeading") for row in rows):
+            return rows
+        # L'API rend une liste vide sur certains chapitres entiers (84 pour
+        # toutes les offres, 29 et 85 pour la Tunisie, 39 pour le Maroc —
+        # constaté le 03/10/2026) alors qu'elle sert leurs positions une à
+        # une. Un chapitre vide est donc relu position par position.
+        rows = []
+        for heading in range(1, 100):
+            rows.extend(
+                _request_json(
+                    SEARCH_URL, _search_payload(origin, destination, f"{chapter:02d}{heading:02d}")
+                )
+            )
+        return rows
 
     rows_by_code = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:

@@ -49,6 +49,7 @@ def client():
 
     app = FastAPI()
     app.include_router(module.router)
+    app.include_router(module.router_couverture)
     return TestClient(app)
 
 
@@ -63,7 +64,7 @@ def test_un_socle_qui_ne_correspond_plus_a_son_empreinte_n_est_pas_servi(tmp_pat
     try:
         with open(fichier, "r+", encoding="utf-8") as f:
             contenu = json.load(f)
-            contenu["positions"]["7612900000"]["droits"][0]["taux"] = 99.0
+            contenu["positions"]["7612909000"]["droits"][0]["taux"] = 99.0
             f.seek(0)
             json.dump(contenu, f, ensure_ascii=False, separators=(",", ":"))
             f.truncate()
@@ -128,6 +129,187 @@ def test_la_devise_nationale_accompagne_la_provenance():
     assert provenance["devise_nationale"] == "ZAR"
 
 
+@besoin_socle
+def test_le_module_banque_convertit_dans_la_monnaie_du_tarif():
+    """L'écran envoie au moteur le taux du module Banque pour convertir les
+    plafonds et droits spécifiques publiés en monnaie nationale. Ce taux n'est
+    juste que si les deux parlent de la même monnaie — le Zimbabwe était
+    converti en ZWL, retiré en 2024, quand son tarif est en ZWG."""
+    from banking_system.foreign_exchange import get_currency_meta
+    from currencies.service import get_by_country, to_iso2
+
+    ecarts = {}
+    for iso in socle.pays_servis():
+        devise = socle.devise_nationale(iso)
+        if not devise:
+            continue
+        # Le module Banque, et le jeu de devises que lit l'ancien chemin.
+        banque = get_currency_meta(to_iso2(iso))[0]
+        canonique = get_by_country(iso).currency_code
+        if {banque, canonique} != {devise}:
+            ecarts[iso] = (devise, banque, canonique)
+    # Le Botswana sert le tarif de la SARS, en cents de rand : le taux du pula
+    # ne vaut pas pour ses droits spécifiques. L'écran ne lui en envoie aucun
+    # (SANS_TAUX_DE_CHANGE, frontend/src/components/calculator/unifiedCalculator.js).
+    assert ecarts == {"BWA": ("ZAR", "BWP", "BWP")}
+
+
+@besoin_socle
+def test_les_droits_specifiques_du_tarif_sars_sont_en_rand_ou_au_pair_du_rand():
+    """Les pays qui servent le tarif de la SARS publient leurs droits
+    spécifiques en cents de rand. Leur devise de tarif est le rand, ou une
+    monnaie au pair du rand (zone monétaire commune) — jamais une autre."""
+    au_pair = {"ZAR", "LSL", "NAD", "SZL"}
+    sars = [iso for iso in socle.pays_servis() if socle.charger(iso)["source"].get("nom") == "sars.gov.za"]
+    assert set(sars) >= {"ZAF", "BWA", "LSO", "NAM", "SWZ"}
+    assert {iso: socle.devise_nationale(iso) for iso in sars if socle.devise_nationale(iso) not in au_pair} == {}
+
+
+@besoin_socle
+def test_un_droit_specifique_botswanais_n_est_pas_converti_comme_des_pulas(client):
+    """« 8c/kg » au Botswana sont des cents de rand. Une valeur déclarée en
+    pulas, sans taux, laisse le droit à compléter au lieu de le compter en thebe."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "valeur_fob": 9000,
+            "quantite": 1000,
+            "devise_cif": "BWP",
+        },
+    ).json()
+    assert corps["provenance"]["devise_nationale"] == "ZAR"
+    dd = next(l for l in corps["npf"]["lignes"] if l["code"] == "DD")
+    assert dd["statut"] != "CALCULE"
+    assert "TAUX_DE_CHANGE_REQUIS" in {m.get("motif") for m in corps["npf"]["manques"]}
+
+
+@besoin_socle
+def test_les_montants_qui_dependent_du_taux_sont_nommes_avec_l_article_9(client):
+    """2009.11 en Zambie : accise publiée en kwachas par litre, valeur déclarée
+    en USD. Le taux fourni la liquide, et la TVA se calcule dessus : la réponse
+    nomme les deux, avec le fondement du taux douanier, pour que l'écran ne les
+    présente pas comme liquidées au taux de la douane."""
+    demande = {
+        "destination": "ZMB",
+        "code_sh": "20091100",
+        "valeur_cif": 10000,
+        "quantite": 1000,
+        "devise_cif": "USD",
+    }
+    avec = client.post("/calcul", json={**demande, "taux_de_change": 0.05}).json()
+    assert avec["conversion_monetaire"] == {
+        "taux_de_change": 0.05,
+        "lignes": ["EXC", "TVA"],
+        "fondement_taux_douanier": (
+            "Accord sur la mise en œuvre de l'article VII du GATT de 1994 "
+            "(évaluation en douane), article 9"
+        ),
+    }
+
+    sans = client.post("/calcul", json=demande).json()
+    assert "conversion_monetaire" not in sans
+    assert {"code": "EXC", "motif": "TAUX_DE_CHANGE_REQUIS"} in sans["npf"]["manques"]
+
+
+@besoin_socle
+def test_un_minimum_compare_sans_jouer_n_est_pas_dit_converti(client):
+    """Tunisie : la RPD porte un minimum de 10 TND, comparé au taux fourni. Sur
+    10 000 USD il ne joue pas : aucun montant ne dépend du taux, aucune réserve.
+    Sur 100 USD il joue, et la RPD vaut alors 10 TND convertis : elle est nommée."""
+    grand = client.post(
+        "/calcul",
+        json={
+            "destination": "TUN",
+            "code_sh": "0101299009",
+            "valeur_cif": 10000,
+            "devise_cif": "USD",
+            "taux_de_change": 0.34,
+        },
+    ).json()
+    assert grand["npf"]["etat"] == "COMPLET"
+    assert "conversion_monetaire" not in grand
+
+    petit = client.post(
+        "/calcul",
+        json={
+            "destination": "TUN",
+            "code_sh": "0101210001",
+            "origine": "DZA",
+            "valeur_cif": 100,
+            "quantite": 10,
+            "devise_cif": "USD",
+            "taux_de_change": 0.34,
+        },
+    ).json()
+    rpd = next(l for l in petit["npf"]["lignes"] if l["code"] == "RPD")
+    assert rpd.get("minimum_applique") is True
+    assert "RPD" in petit["conversion_monetaire"]["lignes"]
+
+
+@besoin_socle
+def test_l_article_9_n_est_pas_cite_pour_un_pays_non_membre_de_l_omc(client, monkeypatch):
+    """Guinée équatoriale, observatrice. Aucune de ses lignes ne dépend
+    aujourd'hui du taux : une ligne plafonnée en XAF est ajoutée pour l'essai.
+    La réserve la nomme, sans invoquer un accord qui ne lie pas le pays."""
+    vraie = socle.position
+
+    def avec_plafond(iso3, code):
+        position, provenance = vraie(iso3, code)
+        essai = {"code": "ESSAI", "famille": "communautaire", "taux": 1.0, "assiette": "CIF",
+                 "plafond": {"montant": 15000.0, "devise": "XAF"}}
+        return {**position, "droits": [*position["droits"], essai]}, provenance
+
+    monkeypatch.setattr(socle, "position", avec_plafond)
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "GNQ",
+            "code_sh": "01011010",
+            "valeur_cif": 10000,
+            "devise_cif": "USD",
+            "taux_de_change": 0.0017,
+        },
+    ).json()
+    assert corps["conversion_monetaire"]["lignes"] == ["ESSAI"]
+    assert "fondement_taux_douanier" not in corps["conversion_monetaire"]
+
+
+def test_les_non_membres_de_l_omc_sont_ceux_de_la_fiche(client):
+    """La liste servie par la route est celle que la fiche source et date."""
+    import routes_calcul_test as route
+
+    fiche = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "data",
+        "legal_refs",
+        "zlecaf_application",
+        "OMC_evaluation_en_douane_art9_2026-10-08.json",
+    )
+    with open(fiche, encoding="utf-8") as f:
+        assert route.NON_MEMBRES_OMC == set(json.load(f)["non_membres_omc"]["pays"])
+
+
+@besoin_socle
+def test_un_taux_fourni_sans_ligne_a_convertir_n_ajoute_aucune_reserve(client):
+    """Un droit ad valorem se calcule sur la valeur déclarée : le taux n'y sert
+    à rien, et la réponse ne porte aucune réserve de change."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZMB",
+            "code_sh": "02011000",
+            "valeur_cif": 10000,
+            "devise_cif": "USD",
+            "taux_de_change": 0.05,
+        },
+    ).json()
+    assert corps["npf"]["etat"] == "COMPLET"
+    assert "conversion_monetaire" not in corps
+
+
 def test_un_pays_hors_table_des_devises_ne_devine_pas_une_devise():
     assert socle.devise_nationale("XXX") is None
 
@@ -165,8 +347,8 @@ def test_une_origine_hors_liste_admise_n_obtient_pas_la_preference():
 @besoin_socle
 def test_un_couloir_non_autorise_reste_au_npf():
     """`OFFER_ONLY` et `PARTNER_NOTICE_REQUIRED` n'autorisent aucun calcul."""
-    position, _ = socle.position("CIV", "7612900000")
-    decision = taux_preferentiels(position, "CIV", "GHA", "7612900000")
+    position, _ = socle.position("CIV", "7612909000")
+    decision = taux_preferentiels(position, "CIV", "GHA", "7612909000")
     assert decision["applique"] is False
     assert decision["statut"] in {"OFFER_ONLY", "PARTNER_NOTICE_REQUIRED", "NOT_AVAILABLE"}
 
@@ -237,7 +419,7 @@ def test_le_calendrier_algerien_rend_un_taux_trace_pas_un_echec_silencieux(monke
     code = next(
         (
             c
-            for c in ("2201101100", "0101210000", "7612900000")
+            for c in ("2201101100", "0101210000", "7612909000")
             if not is_frozen(c) and tariff_list(c) in ("A", "B")
         ),
         None,
@@ -269,7 +451,7 @@ def test_le_perimetre_algerien_couvre_le_daps_avec_sa_reference():
     code = next(
         (
             c
-            for c in ("2201101100", "0101210000", "7612900000")
+            for c in ("2201101100", "0101210000", "7612909000")
             if not is_frozen(c) and tariff_list(c) in ("A", "B")
         ),
         None,
@@ -288,11 +470,12 @@ def test_le_perimetre_algerien_couvre_le_daps_avec_sa_reference():
 def test_la_reponse_dit_d_ou_vient_chaque_chiffre(client):
     reponse = client.post(
         "/calcul",
-        json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
+        json={"destination": "CIV", "code_sh": "7612909000", "valeur_cif": 1000},
     )
     assert reponse.status_code == 200
     corps = reponse.json()
-    assert corps["npf"]["total_droits"] == 380.0
+    # DD 200 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TVA 18 % de 1 225 (fiche CIV_prelevements_TVA).
+    assert corps["npf"]["total_droits"] == 445.5
     provenance = corps["provenance"]
     assert provenance["niveau"] == "national"
     assert provenance["source"]["sha256"]
@@ -305,27 +488,33 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
     sans = client.post(
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
-    # La TVA sud-africaine est désormais complétée depuis sa fiche, mais son
-    # assiette est « CIF+DD » : le droit manquant l'ampute, et elle ne se
-    # liquide donc pas non plus. Rien n'étant calculable, l'état reste
-    # INDISPONIBLE — et les deux manques sont nommés avec leur cause propre,
-    # la seconde citant le composant absent plutôt que de le compter zéro.
+    # La TVA sud-africaine est complétée depuis sa fiche, sur la valeur FOB majorée de 10 % et les droits
+    # (VAT Act s.13(2)(a)) : sans valeur FOB elle ne se liquide pas non plus.
+    # Rien n'étant calculable, l'état reste INDISPONIBLE — et les deux manques
+    # sont nommés avec leur cause propre.
     assert sans["npf"]["etat"] == "INDISPONIBLE"
     assert sans["npf"]["manques"] == [
         {"code": "DD", "motif": "QUANTITE_REQUISE"},
-        {"code": "TVA", "motif": "ASSIETTE_INCOMPLETE", "composants": ["DD"]},
+        {"code": "TVA", "motif": "VALEUR_FOB_REQUISE"},
     ]
 
     avec = client.post(
         "/calcul",
-        json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000, "quantite": 500},
+        json={
+            "destination": "ZAF",
+            "code_sh": "020830",
+            "valeur_cif": 1000,
+            "valeur_fob": 1000,
+            "quantite": 500,
+        },
     ).json()
     # Le droit lui-même : 8c/kg × 500 kg, et non 8 % de la valeur.
     lignes = {ligne["code"]: ligne for ligne in avec["npf"]["lignes"]}
     assert lignes["DD"]["montant"] == 40.0
-    # Le total porte en plus la TVA sud-africaine complétée : 15 % de 1 040.
-    assert lignes["TVA"]["montant"] == 156.0
-    assert avec["npf"]["total_droits"] == 196.0
+    # Le total porte en plus la TVA sud-africaine complétée :
+    # 15 % de (1 000 × 1,10 + 40) = 15 % de 1 140.
+    assert lignes["TVA"]["montant"] == 171.0
+    assert avec["npf"]["total_droits"] == 211.0
 
 
 @besoin_socle
@@ -350,6 +539,38 @@ def test_sans_origine_aucune_preference_n_est_supposee(client):
 )
 def test_les_demandes_invalides_sont_refusees_explicitement(client, charge, attendu):
     assert client.post("/calcul", json=charge).status_code == attendu
+
+
+@besoin_socle
+def test_un_sh6_couvrant_des_positions_nationales_les_nomme_sans_en_choisir_une(client):
+    """020110 n'est pas une position du tarif algérien : quatre positions
+    nationales le détaillent. Le calcul les nomme au lieu d'en prendre une."""
+    reponse = client.post(
+        "/calcul", json={"destination": "DZA", "code_sh": "020110", "valeur_cif": 1000}
+    )
+    assert reponse.status_code == 422
+    detail = reponse.json()["detail"]
+    assert detail["code"] == "POSITION_NATIONALE_REQUISE"
+    assert [p["code"] for p in detail["positions"]] == [
+        "0201101100",
+        "0201101900",
+        "0201102000",
+        "0201109000",
+    ]
+    assert all(p["designation"] for p in detail["positions"])
+
+
+@besoin_socle
+def test_un_sh6_couvert_par_une_seule_position_nationale_se_calcule_sur_elle(client):
+    """L'Égypte ne publie qu'une position sous 020110 : rien à choisir, elle
+    est calculée, et la provenance dit le code et le niveau réellement servis."""
+    reponse = client.post(
+        "/calcul", json={"destination": "EGY", "code_sh": "020110", "valeur_cif": 1000}
+    )
+    assert reponse.status_code == 200
+    provenance = reponse.json()["provenance"]
+    assert provenance["code_demande"] == "0201100000"
+    assert provenance["niveau"] == "national"
 
 
 @besoin_socle
@@ -395,7 +616,15 @@ def test_une_franchise_intra_union_n_exige_pas_la_quantite_d_un_droit_specifique
     inutilisable une importation dont le droit est zéro."""
     corps = client.post(
         "/calcul",
-        json={"destination": "ZAF", "origine": "BWA", "code_sh": "020830", "valeur_cif": 10000},
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "pays_expedition": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            # La TVA sud-africaine porte sur la valeur FOB (VAT Act s.13(2)).
+            "valeur_fob": 10000,
+        },
     ).json()
     preference = corps["preference"]
     lignes = {ligne["code"]: ligne for ligne in preference["lignes"]}
@@ -459,7 +688,7 @@ def test_une_zone_de_libre_echange_ne_donne_aucune_franchise_automatique(client)
         json={
             "destination": "CIV",
             "origine": "GHA",
-            "code_sh": "7612900000",
+            "code_sh": "7612909000",
             "valeur_cif": 10000,
         },
     ).json()
@@ -499,26 +728,25 @@ def test_la_fiscalite_interne_diverge_entre_membres_d_une_meme_union(client):
 def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
     """Le revers de la règle précédente : quand la fiscalité interne du pays
     de destination n'est pas collectée, le total ne doit pas se présenter comme
-    complet. Les cinq pays SACU sont `PENDING_OFFICIAL_COLLECTION` pour la TVA
-    (registre des sources nationales), et aucun taux ne leur est prêté. La
-    Namibie sert de témoin : son crawl ne porte aucune TVA et aucune fiche ne
-    l'établit, donc rien n'est complété et le manque reste nommé."""
+    complet. La Somalie sert de témoin : son crawl ne porte aucune TVA et
+    aucune fiche n'en établit le taux (SOM_taux_TVA : non établi), donc rien
+    n'est complété et le manque reste nommé."""
     corps = client.post(
         "/calcul",
         json={
-            "destination": "NAM",
-            "origine": "ZAF",
+            "destination": "SOM",
+            "origine": "KEN",
             "code_sh": "010121",
             "valeur_cif": 10000,
         },
     ).json()
-    preference = corps["preference"]
-    assert preference["etat"] != "COMPLET"
-    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
+    npf = corps["npf"]
+    assert npf["etat"] != "COMPLET"
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in npf["manques"]
     assert corps["complements_nationaux"] == []
     # Aucune économie n'est annoncée : comparer deux totaux incomplets
     # produirait un chiffre plausible construit sur une base inconnue.
-    assert corps["economie"] is None
+    assert corps.get("economie") is None
 
 
 @besoin_socle
@@ -536,13 +764,16 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
         json={
             "destination": "ZAF",
             "origine": "BWA",
+            "pays_expedition": "BWA",
             "code_sh": "010121",
             "valeur_cif": 10000,
+            "valeur_fob": 10000,
         },
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
     assert lignes["DD"]["montant"] == 0.0  # libre circulation intra-SACU
     assert lignes["TVA"]["taux_pct"] == 15.0
+    # Origine Botswana : pas de majoration de 10 % (VAT Act s.13(2)(b)).
     assert lignes["TVA"]["montant"] == 1500.0  # 15 % de (10 000 + 0)
     assert corps["preference"]["total_droits"] == 1500.0
 
@@ -550,9 +781,118 @@ def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
     assert complement["code"] == "TVA"
     assert complement["motif"] == "FAMILLE_ABSENTE_DE_LA_SOURCE"
     assert "ZAF_taux_TVA" in complement["fiche"]
+    assert "ZAF_assiette_TVA" in complement["fiche_assiette"]
     assert "zero-rated" in complement["note"]
     # La ligne elle-même reste traçable jusqu'à l'affichage.
     assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
+
+
+@besoin_socle
+def test_la_tva_sud_africaine_hors_sacu_porte_sur_le_fob_majore_et_les_droits(client):
+    """VAT Act 89/1991 s.13(2)(a) : valeur en douane (FOB) + droits + 10 % de
+    la valeur en douane, pour une origine hors Botswana, Lesotho, Eswatini et
+    Namibie. Origine France : aucun régime préférentiel ne joue."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "FRA",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    dd = lignes["DD"]["montant"]
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL"
+    assert lignes["TVA"]["montant"] == pytest.approx(0.15 * (11000 + dd))
+
+
+@besoin_socle
+def test_une_origine_sacu_expediee_d_ailleurs_reste_majoree(client):
+    """VAT Act s.13(2)(b) : l'exception exige l'origine ET l'expédition depuis
+    BWA, LSO, SWZ ou NAM. Une origine namibienne expédiée de France est
+    majorée de 10 %."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "NAM",
+            "pays_expedition": "FRA",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL"
+
+
+@besoin_socle
+def test_sans_pays_d_expedition_la_tva_d_une_origine_sacu_reste_indisponible(client):
+    """Origine BWA sans pays d'expédition : l'assiette dépend d'une donnée
+    inconnue, la TVA n'est pas liquidée et la raison est nommée."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    preference = corps["preference"]
+    assert preference["etat"] != "COMPLET"
+    assert any(m["code"] == "TVA" for m in preference["manques"])
+    assert corps["complements_nationaux"][0]["motif_assiette"] == "PAYS_EXPEDITION_REQUIS"
+
+
+@besoin_socle
+@pytest.mark.parametrize(
+    "pays, taux, assiette",
+    [("LSO", 15.0, "FOB+TOUS_SAUF_TVA"), ("SWZ", 15.0, "FOB+TOUS_SAUF_TVA"), ("BWA", 14.0, "CIF+DD+EXS+EXA+FLV+ALV")],
+)
+def test_la_tva_des_autres_pays_sacu_est_completee_avec_sa_fiche(client, pays, taux, assiette):
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": pays,
+            "origine": "KEN",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    complement = corps["complements_nationaux"][0]
+    assert complement["taux_pct"] == taux
+    assert complement["assiette"] == assiette
+    assert f"{pays}_assiette_TVA" in complement["fiche_assiette"]
+
+
+@besoin_socle
+def test_la_tva_namibienne_est_completee_sur_le_fob_majore(client):
+    """VAT Act 10/2000 (Namibie), s.12(2)(a) : la valeur d'une importation est
+    le FOB plus 10 % du FOB, sans les droits. Le complément porte sa fiche et
+    sa réserve (valeur de marché non connue du calculateur)."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "NAM",
+            "origine": "ZAF",
+            "code_sh": "010121",
+            "valeur_cif": 12000,
+            "valeur_fob": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["TVA"]["taux_pct"] == 15.0
+    assert lignes["TVA"]["montant"] == 1650.0  # 15 % de (10 000 × 1,10)
+
+    complement = corps["complements_nationaux"][0]
+    assert "NAM_taux_TVA" in complement["fiche"]
+    assert "NAM_assiette_TVA" in complement["fiche_assiette"]
+    assert "open market value" in complement["reserve_assiette"]
 
 
 @besoin_socle
@@ -580,13 +920,65 @@ def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
         json={
             "destination": "CIV",
             "origine": "GHA",
-            "code_sh": "7612900000",
+            "code_sh": "7612909000",
             "valeur_cif": 10000,
         },
     ).json()
     assert corps["regulatory_compliance"]["country_iso3"] == "CIV"
     assert "regulatory_cost_total" in corps["regulatory_cost"]
     assert "reliability" in corps["regulatory_reported"]
+
+
+@besoin_socle
+def test_les_frais_assis_sur_la_fob_suivent_la_valeur_fob_fournie(client):
+    """Même règle que le chemin historique : la FOB fournie sert d'assiette aux
+    frais en % de la FOB (CMR, verified_provider_fees.json), le CIF sinon."""
+
+    def bases(corps):
+        return [
+            ligne["base_value"]
+            for ligne in corps["regulatory_cost"]["line_items"]
+            if ligne.get("calculation_method") == "PERCENTAGE_OF_FOB"
+        ]
+
+    charge = {"destination": "CMR", "code_sh": "01011010", "valeur_cif": 1000}
+    assert bases(client.post("/calcul", json=charge).json()) == [1000]
+    assert bases(client.post("/calcul", json={**charge, "valeur_fob": 800}).json()) == [800]
+
+
+@besoin_socle
+def test_poids_brut_et_transport_chiffrent_les_frais_par_tonne_et_par_unite(client):
+    """Togo : TPI et péage par tonne entamée, scanner par conteneur — chiffrés
+    quand le poids brut et le moyen de transport sont fournis, à part des droits."""
+
+    def montants(corps):
+        return {l["measure_name"]: l.get("calculated_amount") for l in corps["regulatory_cost"]["line_items"]}
+
+    charge = {"destination": "TGO", "code_sh": "0201100000", "valeur_cif": 1000}
+    sans = client.post("/calcul", json=charge).json()
+    assert montants(sans)["Taxe de péage (TP)"] is None
+    avec = client.post(
+        "/calcul",
+        json={**charge, "poids_brut_kg": 2500, "moyen_transport": "camion", "nombre_unites_transport": 1},
+    ).json()
+    assert montants(avec)["Taxe de péage (TP)"] == 600.0
+    assert montants(avec)["Droit de passage au scanner (DPS)"] == 20000.0
+    assert avec["npf"]["total_droits"] == sans["npf"]["total_droits"]
+
+
+@besoin_socle
+def test_le_mode_d_acheminement_ecarte_les_frais_portuaires(client):
+    """Guinée : le port de Conakry (mer seulement) disparaît pour une importation par route."""
+
+    def frais(**extra):
+        corps = client.post(
+            "/calcul", json={"destination": "GIN", "code_sh": "0201100000", "valeur_cif": 1000, **extra}
+        ).json()
+        return {l["measure_name"] for l in corps["regulatory_cost"]["line_items"]}
+
+    port = "Port autonome de Conakry (escales, acconage, magasinage)"
+    assert port in frais()
+    assert port not in frais(mode_acheminement="ROUTE")
 
 
 @besoin_socle
@@ -629,9 +1021,10 @@ def test_un_bloc_reglementaire_en_panne_n_interrompt_pas_le_calcul(client, monke
     monkeypatch.setattr(module, "build_regulatory_blocks", _tombe)
     corps = client.post(
         "/calcul",
-        json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
+        json={"destination": "CIV", "code_sh": "7612909000", "valeur_cif": 1000},
     ).json()
-    assert corps["npf"]["total_droits"] == 380.0
+    # DD 200 + RS 10 + PCS 8 + PCC 5 + PUA 2 + TVA 18 % de 1 225 (fiche CIV_prelevements_TVA).
+    assert corps["npf"]["total_droits"] == 445.5
     assert corps["npf"]["etat"] in {"COMPLET", "PARTIEL"}
     for cle in ("regulatory_compliance", "regulatory_cost", "regulatory_reported"):
         assert corps[cle] is None
@@ -699,7 +1092,9 @@ def test_une_simulation_ne_change_jamais_le_total_servi(client):
     corps = client.post("/calcul", json=payload).json()
 
     assert all(s["applique"] is False for s in corps["simulations_regionales"])
-    assert corps["npf"]["total_a_payer"] == 209300.0
+    # Origine Mozambique (hors BWA, LSO, NAM, SWZ) : la TVA porte sur
+    # FOB × 1,10 + droits (VAT Act s.13(2)(a)).
+    assert corps["npf"]["total_a_payer"] == 210800.0
 
 
 def test_aucune_simulation_sans_origine(client):

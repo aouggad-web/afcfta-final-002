@@ -19,7 +19,6 @@ import logging
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
-from urllib.parse import urljoin
 
 import httpx
 from pydantic import BaseModel, Field
@@ -176,34 +175,14 @@ class BaseScraper(ABC):
         return self._country_config["name_en"]
 
     @property
-    def country_name_fr(self) -> str:
-        """Get country name in French"""
-        return self._country_config["name_fr"]
-
-    @property
     def source_url(self) -> str:
         """Get primary customs data source URL"""
         return self._country_config["customs_url"]
 
     @property
-    def region(self) -> str:
-        """Get country region"""
-        return self._country_config["region"]
-
-    @property
     def vat_rate(self) -> float:
         """Get country VAT rate"""
         return self._country_config["vat_rate"]
-
-    @property
-    def regional_blocks(self) -> List[str]:
-        """Get regional economic blocks country belongs to"""
-        return [block.value for block in self._country_config["blocks"]]
-
-    @property
-    def priority(self) -> int:
-        """Get crawling priority level"""
-        return self._country_config["priority"].value
 
     @property
     def database(self) -> Optional[AsyncIOMotorDatabase]:
@@ -518,21 +497,6 @@ class BaseScraper(ABC):
         elif isinstance(data, list):
             return len(data)
         return 1
-
-    def make_absolute_url(self, url: str, base: Optional[str] = None) -> str:
-        """
-        Convert relative URL to absolute.
-
-        Args:
-            url: URL to convert
-            base: Base URL (uses source_url if not provided)
-
-        Returns:
-            Absolute URL
-        """
-        if url.startswith(("http://", "https://")):
-            return url
-        return urljoin(base or self.source_url, url)
 
     def get_stats(self) -> Dict[str, Any]:
         """

@@ -140,3 +140,13 @@ def test_l_unite_de_quantite_est_lue_sur_un_vocabulaire_ferme():
     assert mwi._unite([(318.0, "4")]) == ""
     assert mwi._unite([(318.0, "heading")]) == ""
     assert mwi._unite([(200.0, "Other")]) == ""
+
+
+def test_un_montant_en_dollars_n_est_pas_recousu_au_pourcentage_voisin():
+    """2402.20, page 95 : « USD 15 » (accise, col. 10) puis « 16.5% » (TVA,
+    col. 11), à 2,6 unités l'un de l'autre. Les recoudre donnait une TVA de
+    1 516,5 % et perdait l'accise. Coordonnées relevées sur le décret."""
+    toks = [(505.0, 518.0, "USD"), (520.66, 530.68, "15"), (533.26, 559.05, "16.5%"), (563.0, 576.0, "10%")]
+    assert mwi._recoller(toks) == [(505.0, "USD 15"), (533.26, "16.5%"), (563.0, "10%")]
+    assert mwi.lire_valeur("USD 15") == (None, "DROIT_SPECIFIQUE")
+    assert mwi._est_valeur("USD 15")

@@ -57,14 +57,13 @@ def test_cpv_archived_iva_law_hash_matches_inventory():
     assert actual_hash == primary["sha256"]
 
 
-def test_cpv_ice_source_documented_as_blocked():
-    """La loi ICE (accises) est déclarée bloquée, pas silencieusement omise."""
+def test_cpv_archived_ice_law_hash_matches_inventory():
+    """La loi ICE (accises), versée au dépôt, correspond au SHA-256 déclaré."""
     sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     ice = next(s for s in sources if s["source_id"] == "CPV-IGAE-ICE-LEI-22-VI-2003")
-    assert ice["status"] == "source_blocked"
-    assert ice["verification_status"] == "PENDING_COLLECTION"
-    assert ice["sha256"] is None
-    assert ice["local_file"] is None
+    assert ice["verification_status"] == "VERIFIED_PRIMARY_TEXT"
+    archive_path = _SOURCES_DIR / ice["local_file"]
+    assert hashlib.sha256(archive_path.read_bytes()).hexdigest() == ice["sha256"]
 
 
 def test_cpv_legal_sources_structure():
@@ -72,7 +71,7 @@ def test_cpv_legal_sources_structure():
     data = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))
     assert data["schema_version"] == "1.0"
     assert data["country"] == "CPV"
-    assert len(data["sources"]) == 2
+    assert len(data["sources"]) == 5
 
 
 def test_cpv_inventory_csv_structure():
@@ -93,7 +92,7 @@ def test_cpv_inventory_csv_structure():
         "notes",
     }
     assert required_columns <= set(rows[0].keys())
-    assert len(rows) == 2
+    assert len(rows) == 5
 
 
 def test_cpv_vat_measures_schema():
@@ -102,16 +101,6 @@ def test_cpv_vat_measures_schema():
     assert data["schema_version"] == "1.0"
     assert data["country"] == "CPV"
     assert "vat_rates" in data
-
-
-def test_cpv_not_registered_as_supported_jurisdiction():
-    """Garde-fou : CPV n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "CPV" not in SUPPORTED_JURISDICTIONS
 
 
 def test_cpv_has_no_fabricated_afcfta_offer():
@@ -123,3 +112,21 @@ def test_cpv_has_no_fabricated_afcfta_offer():
 
     assert "CPV" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("CPV")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
+
+
+def test_cpv_toutes_les_sources_archivees_correspondent_a_leur_empreinte():
+    """Chaque source déclarée archivée (loi, Pauta, lois de 2025) a son fichier et son SHA-256."""
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+    for source in sources:
+        chemin = _SOURCES_DIR / source["local_file"]
+        assert hashlib.sha256(chemin.read_bytes()).hexdigest() == source["sha256"], source["source_id"]
+
+
+def test_cpv_inventaire_csv_aligne_sur_legal_sources():
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+    with open(_SOURCES_DIR / "inventory.csv", encoding="utf-8", newline="") as f:
+        lignes = {r["id"]: r for r in csv.DictReader(f)}
+    assert set(lignes) == {s["source_id"] for s in sources}
+    for source in sources:
+        assert (lignes[source["source_id"]]["local_file"], lignes[source["source_id"]]["sha256"]) == (
+            source["local_file"], source["sha256"])

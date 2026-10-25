@@ -21,6 +21,7 @@ None), jamais 0.
 """
 
 import json
+import math
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -41,7 +42,28 @@ FEE_STATUSES = {
 
 # Méthodes de calcul reconnues. L'assiette (base) est explicite dans le nom :
 # FOB = valeur déclarée franco à bord ; CIF = valeur coût-assurance-fret.
-CALCULATION_METHODS = {"FIXED_AMOUNT", "PERCENTAGE_OF_FOB", "PERCENTAGE_OF_CIF"}
+CALCULATION_METHODS = {"FIXED_AMOUNT", "PERCENTAGE_OF_FOB", "PERCENTAGE_OF_CIF", "PER_TONNE", "PER_TRANSPORT_UNIT"}
+#: Moyens de transport du droit par unité (scanner du Togo, p. ex.).
+MOYENS_TRANSPORT = {"CONTENEUR", "VOITURE", "CAMION"}
+
+
+#: Modes d'acheminement : un frais limité à certains modes (« modes » de l'entrée,
+#: port de Conakry : MER) n'apparaît pas pour un autre mode déclaré.
+MODES_ACHEMINEMENT = {"MER", "ROUTE", "AIR"}
+
+
+def transport_declare(
+    moyen: Optional[str], nombre: Optional[int] = None, mode: Optional[str] = None
+) -> Optional[Dict[str, Any]]:
+    """Transport saisi, normalisé ; une valeur inconnue est ignorée, rien de connu → None."""
+    transport: Dict[str, Any] = {}
+    moyen = (moyen or "").strip().upper()
+    if moyen in MOYENS_TRANSPORT:
+        transport.update(moyen=moyen, nombre=nombre or 1)
+    mode = (mode or "").strip().upper()
+    if mode in MODES_ACHEMINEMENT:
+        transport["mode"] = mode
+    return transport or None
 
 # Statuts de mandat considérés comme confirmés et actuellement actifs (miroir de
 # regulatory_compliance_service._ACTIVE_MANDATE_STATUSES).
@@ -68,12 +90,19 @@ def compute_fee(
     fob_value: Optional[float] = None,
     cif_value: Optional[float] = None,
     fee_exists: bool = False,
+    poids_brut_kg: Optional[float] = None,
+    transport: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Normalise un descriptif de frais en ligne de coût, fail-closed.
 
     ``fee_detail`` : descriptif STRUCTURÉ optionnel (calculation_method, rate,
     fixed_amount, minimum_amount, maximum_amount, currency, effective_date,
     source, conditions). Absent → aucun montant fabriqué.
+
+    ``poids_brut_kg`` : poids brut déclaré, pour un frais par tonne
+    indivisible (PER_TONNE). ``transport`` : {"moyen": CONTENEUR|VOITURE|CAMION,
+    "nombre": n}, pour un frais par unité de transport (PER_TRANSPORT_UNIT).
+    Absents, ces frais restent PARTIAL, jamais valués à zéro.
 
     ``fee_exists`` : vrai lorsque l'existence d'un paiement est confirmée (ex.
     prestataire mandaté actif) sans descriptif chiffré — pour distinguer
@@ -102,6 +131,10 @@ def compute_fee(
         "last_verified": fee_detail.get("last_verified"),
     }
 
+    if method == "AMOUNT_NOT_PUBLISHED":
+        # Existence sourcée, barème non publié : signalé, jamais valué à zéro.
+        return {**base_result, **_unpriced(True, "amount_not_published"), "currency": currency}
+
     if method not in CALCULATION_METHODS:
         # Existence/source connues mais méthode non exploitable → partiel.
         return {
@@ -125,6 +158,33 @@ def compute_fee(
             "fee_status": "DOCUMENTED_FIXED_AMOUNT",
             "calculated_amount": round(float(amount), 2),
         }
+
+    if method == "PER_TONNE":
+        unit = fee_detail.get("unit_amount")
+        if unit is None or currency is None:
+            return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
+                    "reason": "unit_amount_or_currency_missing"}
+        if poids_brut_kg is None or not math.isfinite(poids_brut_kg) or poids_brut_kg <= 0:
+            return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
+                    "reason": "poids_brut_requis"}
+        # « tonne indivisible » : toute tonne entamée est due.
+        tonnes = math.ceil(float(poids_brut_kg) / 1000.0)
+        return {**base_result, "fee_status": "CALCULABLE", "calculated_amount": round(tonnes * float(unit), 2),
+                "quantity_basis": {"poids_brut_kg": poids_brut_kg, "tonnes_indivisibles": tonnes}}
+
+    if method == "PER_TRANSPORT_UNIT":
+        montants = fee_detail.get("amounts_by_transport") or {}
+        moyen = (transport or {}).get("moyen")
+        nombre = (transport or {}).get("nombre") or 1
+        if currency is None or not montants:
+            return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
+                    "reason": "amounts_or_currency_missing"}
+        if moyen not in montants:
+            return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
+                    "reason": "moyen_transport_requis"}
+        return {**base_result, "fee_status": "CALCULABLE",
+                "calculated_amount": round(float(montants[moyen]) * int(nombre), 2),
+                "quantity_basis": {"moyen_transport": moyen, "nombre": int(nombre)}}
 
     # Méthodes en pourcentage — assiette obligatoire (règle 3).
     # Le taux peut être unique (rate) ou une FOURCHETTE route-dépendante
@@ -345,6 +405,8 @@ def build_verified_provider_costs(
     fob_value: Optional[float] = None,
     cif_value: Optional[float] = None,
     side: str = "import",
+    poids_brut_kg: Optional[float] = None,
+    transport: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
     """Lignes de coût CALCULABLES issues de frais VÉRIFIÉS sur source primaire.
 
@@ -361,6 +423,11 @@ def build_verified_provider_costs(
             continue
         if entry.get("side", "import") != side:
             continue
+        # Mode d'acheminement déclaré hors des modes du frais : sans objet. Non
+        # déclaré, le frais reste affiché (avec ses conditions).
+        mode = (transport or {}).get("mode")
+        if mode and entry.get("modes") and mode not in entry["modes"]:
+            continue
         detail = dict(entry.get("fee_detail") or {})
         verification = entry.get("verification") or {}
         # Source obligatoire (règle 1) : la 1re URL de vérification.
@@ -371,7 +438,10 @@ def build_verified_provider_costs(
         # Seuil de déclenchement : sous le seuil, la VOC ne s'applique pas. On ne
         # convertit pas de devise ; le seuil est appliqué uniquement si l'assiette
         # est exprimée dans la même devise que le seuil (prudence anti-FX).
-        computed = compute_fee(detail, fob_value=fob_value, cif_value=cif_value, fee_exists=True)
+        computed = compute_fee(
+            detail, fob_value=fob_value, cif_value=cif_value, fee_exists=True,
+            poids_brut_kg=poids_brut_kg, transport=transport,
+        )
         # Nature du percepteur : "provider" (prestataire privé mandaté) par défaut,
         # ou "formality" quand le frais est un prélèvement PUBLIC/étatique (ex. la
         # redevance de l'OCC, organisme d'État de la RDC), même si une part est
@@ -386,7 +456,8 @@ def build_verified_provider_costs(
             "collector_type": entry.get("collector_type"),
             "service": entry.get("scope"),
             "payer": payer,
-            "stage": _stage_for(payer),
+            # Étape déclarée par l'entrée (PVI : avant embarquement, même payé par l'importateur).
+            "stage": entry.get("stage") or _stage_for(payer),
             "contact": sources[0].get("url") if sources else None,
             "verification_status": verification.get("status"),
             "verification_sources": sources,
@@ -394,7 +465,8 @@ def build_verified_provider_costs(
             "conditions": detail.get("conditions"),
             "as_of": verification.get("date"),
             "side": side,
-            "tier": "VERIFIED_PRIMARY",
+            # Une existence seule (sans montant sourcé) ne porte pas le badge « vérifié ».
+            "tier": "EXISTENCE_ONLY" if verification.get("status") == "EXISTENCE_ONLY" else "VERIFIED_PRIMARY",
             **computed,
         }
         out.append(line)
@@ -443,6 +515,11 @@ def _summarise(line_items: List[Dict[str, Any]]) -> Dict[str, Any]:
         bmin[ccy] = round(bmin.get(ccy, 0.0) + float(lo), 2)
         bmax[ccy] = round(bmax.get(ccy, 0.0) + float(hi), 2)
 
+    # Un montant chiffré dans l'unité de la valeur saisie (ad valorem, sans devise)
+    # ne s'additionne pas à un montant en devise : le total combiné est alors retiré.
+    sans_devise = any(
+        i.get("fee_status") in _COMPUTED_STATUSES and not i.get("currency") for i in line_items
+    )
     has_unpriced = any(i.get("fee_status") == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE" for i in line_items)
     is_incomplete = any(i.get("fee_status") in _INCOMPLETE_STATUSES for i in line_items)
 
@@ -452,7 +529,7 @@ def _summarise(line_items: List[Dict[str, Any]]) -> Dict[str, Any]:
     regulatory_total_min = None
     regulatory_total_max = None
     regulatory_total_currency = None
-    if len(all_ccys) == 1:
+    if len(all_ccys) == 1 and not sans_devise:
         ccy = next(iter(all_ccys))
         regulatory_total_currency = ccy
         regulatory_total_min = round(provider_min.get(ccy, 0.0) + formality_min.get(ccy, 0.0), 2)
@@ -492,9 +569,8 @@ def merge_regulatory_cost(
     Concatène toutes les lignes (chacune conserve son ``side``) et re-agrège les
     drapeaux de complétude et les totaux (bornés min/max) via ``_summarise``,
     sans jamais additionner de devises hétérogènes. Renvoie None si tout est
-    vide. Fonction commune à toutes les routes de calcul (ex. calculator.py,
-    authentic_tariffs.py) : la ventilation réglementaire ne doit jamais
-    dépendre du chemin de calcul emprunté par le frontend.
+    vide. Fonction commune aux routes de calcul (POST /calcul) : la ventilation
+    réglementaire ne doit jamais dépendre du chemin emprunté par le frontend.
     """
     merged_items: List[Dict[str, Any]] = []
     for side in (cost_import, cost_export):
@@ -513,6 +589,8 @@ def build_regulatory_blocks(
     *,
     fob_value: Optional[float] = None,
     cif_value: Optional[float] = None,
+    poids_brut_kg: Optional[float] = None,
+    transport: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Optional[Dict[str, Any]]]:
     """Compose les trois blocs réglementaires (compliance/cost/reported) pour
     une paire origine/destination — fail-closed : toute erreur de données
@@ -536,8 +614,10 @@ def build_regulatory_blocks(
     cost_export = build_regulatory_cost(
         origin_compliance, fob_value=fob_value, cif_value=cif_value, side="export"
     )
+    # Poids et transport : ceux de l'importation, donc du seul pays de destination.
     verified_items = build_verified_provider_costs(
-        dest_iso3, fob_value=fob_value, cif_value=cif_value, side="import"
+        dest_iso3, fob_value=fob_value, cif_value=cif_value, side="import",
+        poids_brut_kg=poids_brut_kg, transport=transport,
     )
     if origin_iso3:
         verified_items = verified_items + build_verified_provider_costs(

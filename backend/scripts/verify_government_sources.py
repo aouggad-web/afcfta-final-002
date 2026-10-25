@@ -122,55 +122,6 @@ async def verify_tun(positions):
         await scraper._close_client()
 
 
-async def verify_dza(positions):
-    """Vérifie les positions DZA contre la source officielle du crawl :
-    chaque position crawlée porte son `source_url` exact (conformepro.dz —
-    republication vérifiable du tarif DGD douane.gov.dz). On relit la page
-    officielle et on compare chaque taux publié au taux stocké."""
-    import httpx
-    from bs4 import BeautifulSoup
-
-    TAX_LABELS = ("Droit de douane", "TVA", "TCS", "PRCT", "DAPS", "TIC")
-    results = []
-    async with httpx.AsyncClient(
-        headers={"User-Agent": "Mozilla/5.0"}, timeout=30, follow_redirects=True
-    ) as client:
-        for pos in positions:
-            code = str(pos.get("hs_code", pos.get("raw_code", ""))).replace(".", "")
-            stored_taxes = pos.get("taxes", {}) if isinstance(pos.get("taxes"), dict) else {}
-            result = {
-                "hs_code": code,
-                "stored_dd_rate_pct": (stored_taxes.get("DD") or {}).get("rate"),
-                "official_dd_rate_pct": None,
-                "source_url": pos.get("source_url"),
-            }
-            try:
-                r = await client.get(pos.get("source_url"))
-                result["http_status"] = r.status_code
-                soup = BeautifulSoup(r.text, "html.parser")
-                official = {}
-                for vs in soup.select("div.vstack"):
-                    text = vs.get_text(" ", strip=True)
-                    for label in TAX_LABELS:
-                        if text.startswith(label):
-                            m = re.match(rf"{re.escape(label)}\s*([\d.,]+)\s*%?", text)
-                            if m:
-                                official[label] = float(m.group(1).replace(",", "."))
-                            break
-                result["official_taxes"] = official
-                # rapprochement sur le Droit de douane
-                result["official_dd_rate_pct"] = official.get("Droit de douane")
-                result["match"] = (
-                    result["official_dd_rate_pct"] is not None
-                    and result["stored_dd_rate_pct"] is not None
-                    and abs(result["official_dd_rate_pct"] - result["stored_dd_rate_pct"]) < 0.001
-                )
-            except Exception as e:
-                result["error"] = str(e)
-            results.append(result)
-    return results, "https://conformepro.dz/resources/tarif-douanier (données DGD douane.gov.dz)"
-
-
 async def verify_mar(positions):
     """Vérifie les positions MAR contre www.douane.gov.ma/adil (ADIL officiel)
     en réutilisant le parseur de production (DI, TPI, TVA, PRL...)."""
@@ -270,7 +221,6 @@ async def verify_egy(positions):
 
 VERIFIERS = {
     "TUN": verify_tun,
-    "DZA": verify_dza,
     "MAR": verify_mar,
     "EGY": verify_egy,
 }

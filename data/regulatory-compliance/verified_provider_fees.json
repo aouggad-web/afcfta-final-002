@@ -362,6 +362,525 @@
         ],
         "notes": "Taux unique 0,45% FOB (identique toutes routes) → montant unique. Plancher/plafond USD (variables par route) conservés en conditions, non appliqués cross-devise."
       }
+    },
+    {
+      "fee_id": "TGO-RI",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (RI)",
+      "scope": "Perçue par déclaration en détail (DDU), quelle que soit la marchandise.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 5000,
+        "currency": "XOF",
+        "conditions": "5 000 FCFA par déclaration (DDU), quel que soit le nombre d'articles."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "RI — Redevance Informatique : 5000 F DDU."
+          }
+        ],
+        "notes": "Montant fixe par déclaration → DOCUMENTED_FIXED_AMOUNT. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "TGO-TPI",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Taxe de protection des infrastructures (TPI)",
+      "scope": "Assise sur le poids brut, par tonne indivisible.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TONNE",
+        "unit_amount": 2000,
+        "currency": "XOF",
+        "conditions": "2 000 FCFA par tonne indivisible de poids brut ; chiffrée quand le poids brut est saisi."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "TPI — Taxe de protection des infrastructures : 2000 F / la tonne indivisible sur le P.B."
+          }
+        ],
+        "notes": "Au poids : CALCULABLE avec le poids brut saisi (tonne entamée due), PARTIAL sans lui. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "TGO-TP",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Taxe de péage (TP)",
+      "scope": "Assise sur le poids brut, par tonne indivisible.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TONNE",
+        "unit_amount": 200,
+        "currency": "XOF",
+        "conditions": "200 FCFA par tonne indivisible de poids brut ; chiffrée quand le poids brut est saisi."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "TP — Taxe de péage : 200 F / Tonne Indivisible sur le PB."
+          }
+        ],
+        "notes": "Au poids : CALCULABLE avec le poids brut saisi (tonne entamée due), PARTIAL sans lui. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "TGO-DPS",
+      "country_iso3": "TGO",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Droit de passage au scanner (DPS)",
+      "scope": "Par conteneur ou véhicule scanné.",
+      "providers": [],
+      "mandating_authority": "Office togolais des recettes (OTR) — Commissariat des douanes et droits indirects",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TRANSPORT_UNIT",
+        "amounts_by_transport": {
+          "CONTENEUR": 50000,
+          "VOITURE": 10000,
+          "CAMION": 20000
+        },
+        "currency": "XOF",
+        "conditions": "50 000 FCFA par conteneur, 10 000 FCFA par voiture, 20 000 FCFA par camion ; chiffré quand le moyen de transport est saisi."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Office togolais des recettes (OTR) — tableau officiel « Taux des droits, taxes et redevances appliqués à l'importation ou à l'exportation » (versé sur la PR #620, data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf, sha256 78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05)",
+            "url": "https://www.otr.tg/",
+            "confirms": "DPS — Droit de passage au scanner : 50.000 F / TC, 10.000 F / voiture, 20.000 F / camion."
+          }
+        ],
+        "notes": "Selon le moyen de transport : CALCULABLE avec le moyen et le nombre saisis, PARTIAL sans eux. Montant indépendant de la valeur et de la position : hors du calcul des droits et taxes (fiche TGO_prelevements_TVA_2026-10-12.json, « ce_que_cela_ne_tranche_pas »), affiché ici à part."
+      }
+    },
+    {
+      "fee_id": "BEN-RI",
+      "country_iso3": "BEN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (RI)",
+      "scope": "Perçue par déclaration en douane, quelle que soit la marchandise.",
+      "providers": [],
+      "mandating_authority": "Direction générale des douanes et droits indirects (DGDDI) du Bénin",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 10000,
+        "currency": "XOF",
+        "conditions": "10 000 FCFA par déclaration (brochure de la DGDDI, 2020)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "DGDDI du Bénin — brochure « Comment calculer les droits et taxes » (douanes.gouv.bj, 2020)",
+            "url": "https://douanes.gouv.bj/wp-content/uploads/2020/10/brochure-douane2-mobile.pdf",
+            "confirms": "« Redevance Informatique (RI), [10.000 FCFA/déclaration]. »"
+          }
+        ],
+        "notes": "Montant fixe par déclaration → DOCUMENTED_FIXED_AMOUNT ; hors des droits et taxes (fiche BEN_prelevements_TVA_2026-10-11.json), affiché à part. Montant de la brochure de 2020, non retrouvé dans un texte plus récent."
+      }
+    },
+    {
+      "fee_id": "MLI-II",
+      "country_iso3": "MLI",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Intention d'importation (II)",
+      "scope": "Obligatoire pour toute importation dont la valeur FOB est égale ou supérieure à 250 000 FCFA ; levée au guichet unique de la DNCC ou d'une DRCC.",
+      "providers": [],
+      "mandating_authority": "Direction nationale du commerce et de la concurrence (DNCC) du Mali",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 1500,
+        "currency": "XOF",
+        "threshold_fob_xof": 250000,
+        "conditions": "1 500 FCFA par intention d'importation, pour une valeur FOB égale ou supérieure à 250 000 FCFA (seuil non appliqué automatiquement : pas de conversion de devise)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Chambre de commerce et d'industrie du Mali (CCIM) — « Guide des démarches administratives courantes pour importer et exporter des marchandises au Mali » (versé sur la PR #620, data/mali/docs_officiels/GUIDE-IMPORT-EXPORT-MALI-DEMARCHE.pdf)",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "« Régler la somme due : 1500 F CFA par Intention d'Importation » ; « Toutes les importations dont la valeur FOB est égale ou supérieure à 250 000 FCA sont soumises à l'obligation de levée d'intention d'importation »."
+          },
+          {
+            "publisher": "Mali Trade Portal (portail officiel du commerce extérieur du Mali)",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "Procédure d'importation : intention d'importation auprès de la DNCC."
+          }
+        ],
+        "notes": "Montant fixe par document → DOCUMENTED_FIXED_AMOUNT ; hors des droits et taxes, affiché à part."
+      }
+    },
+    {
+      "fee_id": "MLI-PVI",
+      "country_iso3": "MLI",
+      "side": "import",
+      "stage": "export",
+      "scope_kind": "provider",
+      "program": "PVI — Programme de vérification des importations (vérification avant embarquement)",
+      "scope": "Importations dont la valeur FOB est égale ou supérieure à 3 000 000 FCFA ; vérification par la société habilitée par le Gouvernement.",
+      "providers": [
+        "BIVAC (Bureau Veritas)"
+      ],
+      "mandating_authority": "Gouvernement du Mali — Direction nationale du commerce et de la concurrence (DNCC)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate": 0.0075,
+        "currency": null,
+        "threshold_fob_xof": 3000000,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie ; seuil en FCFA non appliqué automatiquement (pas de conversion de devise).",
+        "conditions": "0,75 % de la valeur FOB, payé par chèque certifié en faveur du PVI, pour une valeur FOB égale ou supérieure à 3 000 000 FCFA."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Chambre de commerce et d'industrie du Mali (CCIM) — « Guide des démarches administratives courantes pour importer et exporter des marchandises au Mali » (versé sur la PR #620, data/mali/docs_officiels/GUIDE-IMPORT-EXPORT-MALI-DEMARCHE.pdf)",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "« Payer la contribution de 0,75 % de la valeur FOB de la marchandise par chèque certifié en faveur du Programme de Vérification des Importations « PVI » » ; vérification avant embarquement « dont la valeur FOB est égale ou supérieure à 3 000 000 FCA »."
+          },
+          {
+            "publisher": "Mali Trade Portal",
+            "url": "https://mali.tradeportal.org/objective/113?l=fr",
+            "confirms": "PVI opéré par BIVAC : chèque certifié de 0,75 % de la valeur de la marchandise."
+          },
+          {
+            "publisher": "Bureau Veritas / Verigates — Mali flyer (2018)",
+            "url": "https://cdn1-verigates-ppd.bureauveritas.com/sites/verigates/files/2019-01/Mali%20-%20Flyer.pdf",
+            "confirms": "Exemption de vérification documentaire sous 3 000 000 XOF FOB."
+          }
+        ],
+        "notes": "Taux unique 0,75 % FOB → montant unique. Sources non datées ou de 2018 : taux en vigueur non confirmé par un texte de 2025-2026."
+      }
+    },
+    {
+      "fee_id": "GIN-RI",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance informatique (SYDONIA World)",
+      "scope": "Due à l'enregistrement de la déclaration en douane dans SYDONIA World ; en Guinée, acquittée avant la soumission de la déclaration.",
+      "providers": [],
+      "mandating_authority": "Direction générale des douanes (DGD) de Guinée",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Guinéenews, « Coopération douanière Sud-Sud : la RDC en quête de bonnes pratiques à Conakry » (15/03/2024)",
+            "url": "https://guineenews.org/2024/03/15/cooperation-douaniere-sud-sud-la-rdc-en-quete-de-bonnes-pratiques-a-conakry/?amp=1",
+            "confirms": "Réforme guinéenne permettant aux déclarants de « s'acquitter préalablement de la redevance informatique avant la soumission ou l'enregistrement de la déclaration dans SYDONIA »."
+          }
+        ],
+        "notes": "Source de presse ; texte instituant la redevance et son montant non trouvés. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GIN-GUCEG",
+      "country_iso3": "GIN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Prestations du guichet unique (GUCEG)",
+      "scope": "Modules E-Manifeste, E-Booking, E-Mouvement, E-Release et Port Community System, interfacés avec SYDONIA World.",
+      "providers": [],
+      "mandating_authority": "Guichet unique du commerce extérieur de Guinée (GUCEG)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Guichet unique du commerce extérieur de Guinée (GUCEG), site officiel",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Plateforme de dédouanement interfacée avec SYDONIA World : consultation des droits, taxes et redevances applicables et paiement en ligne des frais, taxes et redevances."
+          },
+          {
+            "publisher": "GUCEG — guide du module E-Voyage (versé sur la PR #620, data/guinee/docs_officiels/GUCEG-MODULE-E-VOYAGE-PROCEDURE.pdf)",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Procédures du guichet unique pour les escales et le dédouanement au port de Conakry."
+          }
+        ],
+        "notes": "Prestations facturées selon le barème du GUCEG, non publié en ligne. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GIN-PAC",
+      "country_iso3": "GIN",
+      "side": "import",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Port autonome de Conakry (escales, acconage, magasinage)",
+      "scope": "Uniquement pour les marchandises débarquées au port de Conakry (environ 90 % du commerce extérieur guinéen) ; sans objet pour une importation par route ou par air.",
+      "providers": [],
+      "mandating_authority": "Port autonome de Conakry (PAC)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "GNF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "GUCEG — guide du module E-Voyage (versé sur la PR #620, data/guinee/docs_officiels/GUCEG-MODULE-E-VOYAGE-PROCEDURE.pdf)",
+            "url": "https://guceg.gov.gn",
+            "confirms": "Escales et traitement des navires au port de Conakry par l'Autorité portuaire via le GUCEG."
+          }
+        ],
+        "notes": "Tarifs officiels du PAC non publiés dans les sources consultées ; varient selon le terminal et la marchandise. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "SEN-ESCORTE",
+      "country_iso3": "SEN",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Frais d'escorte douanière",
+      "scope": "Le cas échéant, quand la marchandise est escortée par la douane (transit, opérations commerciales particulières).",
+      "providers": [],
+      "mandating_authority": "Direction générale des douanes (DGD) du Sénégal",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "XOF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Direction générale des douanes du Sénégal — FAQ « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » (07/2026 ; versée sur la PR #620, data/senegal/docs_officiels/FAQ-FRAIS-DEDOUANEMENT-2026.pdf)",
+            "url": "https://www.douanes.sn/",
+            "confirms": "« Les frais liés aux opérations d'escorte sont fixés par l'arrêté n°07928/MEFP/DGD/DRCI du 30 mai 2016 »."
+          }
+        ],
+        "notes": "Montant fixé par l'arrêté n° 07928/MEFP/DGD/DRCI du 30/05/2016, non lu ; dû seulement si une escorte est requise. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "SEN-PAD",
+      "country_iso3": "SEN",
+      "side": "import",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Frais portuaires (Port autonome de Dakar)",
+      "scope": "Uniquement pour les marchandises débarquées au port de Dakar ; manutention et taxes portuaires.",
+      "providers": [],
+      "mandating_authority": "Port autonome de Dakar (PAD)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "XOF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Direction générale des douanes du Sénégal — FAQ « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » (07/2026 ; versée sur la PR #620, data/senegal/docs_officiels/FAQ-FRAIS-DEDOUANEMENT-2026.pdf)",
+            "url": "https://www.douanes.sn/",
+            "confirms": "« Il existe d'autres frais comme les honoraires des Commissionnaires en douane agréés et les frais portuaires dont la gestion relève d'autres administrations »."
+          }
+        ],
+        "notes": "Tarifs officiels du PAD non lus. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "CIV-PAA",
+      "country_iso3": "CIV",
+      "side": "import",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Frais portuaires (Port autonome d'Abidjan)",
+      "scope": "Uniquement pour les marchandises débarquées au port d'Abidjan ; manutention, taxes portuaires, escales. San Pedro non couvert faute de source.",
+      "providers": [],
+      "mandating_authority": "Port autonome d'Abidjan (PAA)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "XOF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Douanes ivoiriennes — « Procédure de dédouanement à l'import et à l'export (voie maritime) » (versée sur la PR #620, data/cote-d-ivoire/docs_officiels/PROCEDURE-DEDOUANEMENT-IMPORT-EXPORT-MARITIME.pdf)",
+            "url": "https://www.douanes.ci/",
+            "confirms": "Dédouanement maritime au port d'Abidjan : enlèvement après paiement des frais portuaires."
+          }
+        ],
+        "notes": "Tarifs officiels du PAA non lus. Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
+    },
+    {
+      "fee_id": "GHA-IDF",
+      "country_iso3": "GHA",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Import Declaration Form (MOTI)",
+      "scope": "Formulaire de déclaration d'importation du ministère du Commerce et de l'Industrie, déposé avant le dédouanement.",
+      "providers": [],
+      "mandating_authority": "Ministry of Trade and Industry (MOTI), Ghana",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 5,
+        "currency": "GHS",
+        "conditions": "5 GHS par formulaire, déposé manuellement ou par voie électronique."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "U.S. International Trade Administration — Ghana Country Commercial Guide, Import Requirements and Documentation (versé sur la PR #620, data/ghana/docs_officiels/TRADE-GOV-IMPORT-REQUIREMENTS-GHANA.md)",
+            "url": "https://www.trade.gov/country-commercial-guides/ghana-import-requirements-and-documentation",
+            "confirms": "« Importer or importer's agent submits an Import Declaration Form from the MOTI, manually or electronically (GHS 5). »"
+          }
+        ],
+        "notes": "Montant fixe par formulaire → DOCUMENTED_FIXED_AMOUNT ; source gouvernementale américaine reprenant la procédure ghanéenne."
+      }
+    },
+    {
+      "fee_id": "GHA-GPHA",
+      "country_iso3": "GHA",
+      "side": "import",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Port dues cargo (GPHA, conteneurs pleins)",
+      "scope": "Uniquement pour les marchandises débarquées à Tema ou Takoradi ; droit portuaire par conteneur plein à l'import.",
+      "providers": [],
+      "mandating_authority": "Ghana Ports and Harbours Authority (GPHA)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TRANSPORT_UNIT",
+        "amounts_by_transport": {},
+        "currency": "USD",
+        "conditions": "Conteneur plein : 70,07 USD (20 pieds), 132,50 USD (40 pieds), 154,68 USD (45 pieds) ; vrac sec 2,66 à 4,66 USD/t. Non chiffré : la taille du conteneur n'est pas saisie dans le calculateur."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "GPHA — Port Tariffs, Seaports of Ghana, August 2023 (IMS_PR_008 ; versé sur la PR #620, data/ghana/docs_officiels/GPHA-PORT-TARIFFS-2023.pdf)",
+            "url": "https://www.ghanaports.gov.gh/",
+            "confirms": "Ligne 1B3001 « Stuffed Container » : 70.07 (20'), 132.50 (40'), 154.68 (45') US$, « Applicable to Import and Transit only »."
+          }
+        ],
+        "notes": "Barème publié mais dépendant de la taille du conteneur, non saisie → PARTIAL avec le barème en conditions."
+      }
+    },
+    {
+      "fee_id": "BFA-SYLVIE",
+      "country_iso3": "BFA",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Prestations SYLVIE (Système de liaison virtuelle import-export, SOGESY)",
+      "scope": "Titres et documents d'importation émis par la plateforme SYLVIE, interconnectée à SYDONIA.",
+      "providers": [],
+      "mandating_authority": "SOGESY — Société de gestion du système SYLVIE (Burkina Faso)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "AMOUNT_NOT_PUBLISHED",
+        "currency": "XOF",
+        "conditions": "Frais existant ; montant non publié dans les sources consultées (barème à obtenir auprès de l'organisme)."
+      },
+      "verification": {
+        "date": "2026-10-12",
+        "status": "EXISTENCE_ONLY",
+        "sources": [
+          {
+            "publisher": "Burkina24, « Importation et exportation : SYLVIE pour réduire coûts et formalités »",
+            "url": "https://burkina24.com/?p=109777",
+            "confirms": "Plateforme SYLVIE émettant les documents requis pour le dédouanement ; gratuité limitée aux trois premiers mois de lancement."
+          },
+          {
+            "publisher": "OMC — notification de licences d'importation du Burkina Faso (19/12/2025)",
+            "url": "https://lic-public.wto.org/en/product-categories/1085/procedure",
+            "confirms": "Déclaration préalable d'importation (DPI) exigée dès 500 000 FCFA FOB, délivrée gratuitement par la DCGU/CI."
+          }
+        ],
+        "notes": "Barème SOGESY non publié ; la DPI elle-même est gratuite (OMC, 2025). Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
+      }
     }
   ]
 }

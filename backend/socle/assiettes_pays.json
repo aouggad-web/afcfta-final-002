@@ -3,6 +3,7 @@
  "_grammaire": {
   "CIF": "valeur en douane",
   "FOB": "valeur FOB (valeur en douane SACU : fret et assurance internationaux exclus) — fournie par l'appelant, jamais déduite du CIF",
+  "FOBx<FACTEUR>": "valeur FOB multipliée par un facteur légal (FOBx1.10 : TVA namibienne, VAT Act 10/2000 s.12(2)(a)) — fournie par l'appelant, jamais déduite du CIF",
   "FOB+<CODES>": "FOB augmenté du montant des droits nommés",
   "CIF+<CODES>": "CIF augmente du montant des droits nommes",
   "CIF+TOUS_SAUF_TVA": "CIF augmente de tous les prelevements d entree, TVA exclue",
@@ -298,6 +299,7 @@
   "EGY": {
    "ordre": [
     "DD",
+    "ضريبةالجدول",
     "TVA"
    ],
    "taxes": {
@@ -306,11 +308,19 @@
      "origine_assiette": "profil_code"
     },
     "TVA": {
-     "assiette": "CIF",
-     "origine_assiette": "profil_code"
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Loi n° 67/2016 (TVA), JO n° 35 bis (c) du 07/09/2016, art. 10 (7) : valeur des marchandises importées = valeur retenue pour le droit de douane « مضافًا إليها الضرائب الجمركية وغيرها من الضرائب والرسوم المفروضة » ; art. 10 (10), ثانيًا (أ) : pour les marchandises du tableau annexé, « وضريبة الجدول » s'y ajoute",
+     "fiche": "EGY_TVA_taxe_de_table_2026-10-14.json"
+    },
+    "ضريبةالجدول": {
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Loi n° 67/2016, art. 39 (b) : marchandises importées — valeur retenue pour le droit de douane « مضافًا إليها الضريبة الجمركية وغيرها من الضرائب والرسوم المفروضة », sauf disposition contraire du tableau annexé ; base publiée par la douane : « من القيمة + ر.ض.جمركية »",
+     "fiche": "EGY_TVA_taxe_de_table_2026-10-14.json"
     }
    },
-   "reference_legale": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)"
+   "reference_legale": "Loi n° 67/2016 (TVA), JO n° 35 bis (c) du 07/09/2016 : TVA à l'importation sur la valeur en douane, les droits de douane, les autres impôts et redevances et la Taxe de Table (art. 10 (7) et (10)) ; Taxe de Table sur la valeur en douane, les droits de douane et les autres impôts et redevances (art. 39 (b)) — fiche EGY_TVA_taxe_de_table_2026-10-14.json"
   },
   "ETH": {
    "ordre": [
@@ -779,11 +789,13 @@
      "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
     },
     "TVA": {
-     "assiette": "CIF+DD",
-     "origine_assiette": "profil_code"
+     "assiette": "CIF+TOUS_SAUF_TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "Nigeria Tax Act 2025, s.150 : « the price of the taxable supply imported plus – (a) taxes, duties and other charges levied either outside or by reason of importation into Nigeria, other than VAT imposed under this Act »",
+     "fiche": "NGA_assiette_TVA_2026-10-07.json"
     }
    },
-   "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; VAITA (TVA CIF+DD)"
+   "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; Nigeria Tax Act 2025 s.150 (TVA : CIF + droits et taxes hors TVA)"
   },
   "RWA": {
    "ordre": [

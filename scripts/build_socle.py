@@ -28,9 +28,11 @@ Usage :
 from __future__ import annotations
 
 import collections
+import csv
 import glob
 import hashlib
 import importlib
+import importlib.util
 import json
 import os
 import re
@@ -45,6 +47,30 @@ CRAWL_DIR = os.path.join(REPO, "backend", "data", "crawled")
 ETL_DIR = os.path.join(REPO, "backend", "data")
 SOCLE_DIR = os.path.join(REPO, "backend", "socle")
 ASSIETTES_PATH = os.path.join(SOCLE_DIR, "assiettes_pays.json")
+LIVRE_TARIFAIRE_ETH = os.path.join(
+    REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "ETH_livre_tarifaire_2021.droits.csv"
+)
+ACCISE_ETH = os.path.join(
+    REPO,
+    "backend",
+    "data",
+    "legal_refs",
+    "zlecaf_application",
+    "sources",
+    "ETH_accise_annexeI_proc1287-2023.csv",
+)
+IAT_NGA_2026 = os.path.join(
+    REPO, "backend", "data", "legal_refs", "zlecaf_application", "sources", "NGA_SI29_2026_IAT.csv"
+)
+# Positions SH 2022 que la liste IAT désigne par un code d'une nomenclature
+# antérieure, ou sous un même code à deux taux (groupes électrogènes « basic » /
+# « soundproof ») : l'IAT n'y est pas attribuable sans deviner.
+IAT_NGA_AMBIGUS = {
+    **dict.fromkeys(["3004410000", "3004420000", "3004430000", "3004490000"], "3004.40.00.00 : 20 %"),
+    **dict.fromkeys(["6907210000", "6907220000", "6907230000", "6907300000"], "6907.90.00.00 : 15 %"),
+    **dict.fromkeys(["8903310000", "8903320000", "8903330000"], "8903.92.00.00 : 50 %"),
+    **dict.fromkeys(["8502119000", "8502129000", "8502139000", "8502209000"], "15 % (basic) ou 35 % (soundproof)"),
+}
 
 # ── Familles de prélèvements ──────────────────────────────────────────────────
 # Les sept familles relevées dans les sources. L'ordre est celui de la
@@ -64,7 +90,13 @@ FAMILLES = {
     "OHADA": "communautaire",
     "TS": "communautaire",
     "CEDEAO": "communautaire",
+    "EXIM": "redevance",
+    "SIL": "redevance",
     "RPD": "redevance",
+    "RTL": "redevance",  # redevance de traitement et de liquidation (GN)
+    "CA": "redevance",  # centime additionnel (GN)
+    "PNS": "redevance",  # prélèvement national de solidarité (TG)
+    "RAU": "redevance",  # redevance d'aménagement urbain (BJ)
     "IDF": "redevance",
     "RDL": "redevance",
     "INFRA": "redevance",
@@ -73,6 +105,20 @@ FAMILLES = {
     "DSV": "redevance",
     "TCL": "redevance",
     "EXC": "accise",
+    "EXS": "accise",  # accise spécifique, Schedule 1 Part 2A (ZA)
+    "EXA": "accise",  # accise ad valorem, Schedule 1 Part 2B (ZA)
+    "EVB": "accise",  # prélèvement environnemental, sacs plastiques, Part 3A (ZA)
+    "EVL": "accise",  # prélèvement environnemental, lampes à filament, Part 3C (ZA)
+    "EVC": "accise",  # prélèvement environnemental, CO2 des véhicules, Part 3D (ZA)
+    "EVT": "accise",  # prélèvement environnemental, pneus, Part 3E (ZA)
+    "FLV": "accise",  # taxe sur les carburants, Part 5A (ZA)
+    "RAF": "accise",  # Road Accident Fund levy, Part 5B (ZA)
+    "HPL": "accise",  # Health Promotion Levy, boissons sucrées, Part 7A (ZA)
+    "EVN": "accise",  # prélèvement environnemental, Part 3 (NA)
+    "ATL": "accise",  # Alcohol and Tobacco Levy (SZ)
+    "ALV": "accise",  # prélèvement sur l'alcool importé (BW)
+    "TAPL": "accise",  # Tobacco and Alcoholic Products Levy (LS)
+    "ISCP": "accise",
     "DA": "accise",
     "TIC": "accise",
     "IAT": "accise",
@@ -83,6 +129,11 @@ FAMILLES = {
     "TUF": "accise",
     "SPEC": "accise",
     "SUR": "accise",
+    "SWL": "accise",
+    "ICE": "accise",  # imposto sobre consumos especiais (CV, MZ)
+    "ICES": "accise",  # ICE spécifique par véhicule (CV)
+    "TET": "accise",  # taxe spécifique sur le tabac (CV)
+    "TEA": "accise",  # taxe spécifique sur l'alcool (CV)
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
@@ -152,6 +203,12 @@ PREFERENTIELS = {
     # « a rate of duty of 5% lower than the rate of duty prescribed in sub column 5 ».
     # C'est une préférence par origine, pas un prélèvement.
     "COI": "COI",
+    # Malawi, colonne 5 : le PLEIN DROIT, dont les colonnes 6 à 9 sont des
+    # remises par origine (Order 2022, par. 5). C'est un taux ALTERNATIF au
+    # droit NPF (col. 6), pas un second droit : rangé parmi les droits, il
+    # s'additionnait au NPF sur 7 119 positions (25 % + 30 % sur les
+    # cigarettes 2402.20).
+    "DDPLEIN": "PLEIN_DROIT",
 }
 
 #: PAYS DONT LE CODE PUBLIÉ PORTE UNE CLÉ DE CONTRÔLE, et la longueur de la
@@ -332,6 +389,11 @@ def code_canonique(code: str, libelle: str = "") -> str:
 
 
 def famille(code_canon: str) -> str:
+    # Tunisie : TVA/AUTO, TVA/PP, TVA/MTK… sont des TVA (« TVA VOIT.AUTOS »).
+    # Gardées sous leur code — cinq positions 87.01 en portent deux —, mais
+    # rangées dans la famille tva, que l'assiette « TOUS_SAUF_TVA » exclut.
+    if code_canon.startswith("TVA"):
+        return "tva"
     return FAMILLES.get(code_canon, "autre")
 
 
@@ -353,6 +415,14 @@ ASSIETTES_SOURCE = {
     # aduaneiro augmenté des droits (§6), et l'IVA sur le valor aduaneiro
     # augmenté des droits, de l'ICE et de la sobretaxa (§7).
     "CIF+DD+ICE+SOBRETX": ("CIF+DD+ICE+SOBRETX", None),
+    # Cap-Vert — Código do ICE, art. 13 : l'ICE s'assoit sur la valeur en
+    # douane et tous les droits et taxes, lui-même exclu (DI, taxa comunitária,
+    # taxes spécifiques du tabac et de l'alcool) ;
+    # Regulamento do IVA, art. 16 : valeur en douane + tous droits sauf l'IVA.
+    "CIF+DD+PCC": ("CIF+DD+PCC", None),
+    "CIF+DD+PCC+TET": ("CIF+DD+PCC+TET", None),  # cigarettes : taxe de 180$00 par paquet
+    "CIF+DD+PCC+TEA": ("CIF+DD+PCC+TEA", None),  # boissons alcooliques : taxe par litre
+    "CIF+TOUS_SAUF_TVA": ("CIF+TOUS_SAUF_TVA", None),
     "CIF + DD + EXC": ("CIF+DD+EXC", None),
     "CIF+DUTY": ("CIF+DD", None),
     "CIF+DUTY+FEES": ("CIF+TOUS_SAUF_TVA", None),
@@ -362,7 +432,6 @@ ASSIETTES_SOURCE = {
     "VALEUR DOUANE DINARS": ("CIF", None),
     "VALEUR DOUANE": ("CIF", None),
     "QCS": ("xQTE", None),
-    "QCI": ("xQTE", None),
     "PN (KG)": ("xQTE", None),  # poids net : droit liquidé à la quantité
     "VAL DOUANE+ SOMME DT": ("CIF+TOUS_SAUF_SOI", None),
 }
@@ -373,6 +442,10 @@ ASSIETTES_SOURCE = {
 ASSIETTES_NON_TRADUITES = {
     "PN(KG)/100 EXCES": "droit au poids avec seuil d'excédent — la règle de seuil n'est pas publiée avec la ligne",
     "VARIABLE": "la source déclare l'assiette variable",
+    # Tunisie : la « quantité complémentaire d'importation » n'a pas d'unité
+    # publiée — le champ QCI est vide sur les 17 542 positions du Tarif Web.
+    # Liquider à la quantité saisie servait 990 droits dans une unité devinée.
+    "QCI": "quantité complémentaire d'importation : unité non publiée par la source (QCI vide)",
 }
 
 
@@ -392,8 +465,10 @@ def assiette_depuis_source(brut):
         a, plafond = ASSIETTES_SOURCE[texte]
         return a, plafond, None
     # Tunisie : « VAL.DOU(D)+R(DT) GR.x » = valeur en douane augmentée des droits
+    # et taxes — Code de la TVA art. 6 § II-1 : « tous droits et taxes inclus à
+    # l'exclusion de la taxe sur la valeur ajoutée » (fiche TUN_assiette_TVA).
     if texte.startswith("VAL.DOU") and "R(DT)" in texte:
-        return "CIF+DD", None, None
+        return "CIF+TOUS_SAUF_TVA", None, None
     # Tunisie : « SOMME D.T (G=...) » = somme des droits et taxes, hors valeur
     if texte.startswith("SOMME D.T"):
         return "SOMME(TOUS_SAUF_SOI)", None, None
@@ -401,13 +476,13 @@ def assiette_depuis_source(brut):
 
 
 def charger_assiettes_pays():
-    if not os.path.exists(ASSIETTES_PATH):
-        _reconstruire_assiettes_pays()
+    """La table d'assiettes versionnée ; absente ou illisible, la construction s'arrête."""
     try:
         return _lire_assiettes_pays()
-    except (OSError, json.JSONDecodeError, ValueError):
-        _reconstruire_assiettes_pays()
-        return _lire_assiettes_pays()
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        raise SystemExit(
+            f"[build_socle] {os.path.relpath(ASSIETTES_PATH, REPO)} absent ou illisible : {exc}"
+        ) from exc
 
 
 def _lire_assiettes_pays():
@@ -417,66 +492,6 @@ def _lire_assiettes_pays():
     if not isinstance(pays, dict):
         raise ValueError("table d'assiettes non conforme")
     return pays
-
-
-def _assiette_depuis_profil(formule, ajouts):
-    if formule == "DD_AMOUNT":
-        return "MONTANT_DD"
-    if formule == "CIF_PLUS_TOUTES_TAXES_SAUF_TVA":
-        return "CIF+TOUS_SAUF_TVA"
-    base = str(formule or "").strip() or "CIF"
-    dependances = [str(code).strip().upper() for code in (ajouts or []) if code]
-    return "+".join([base, *dependances]) if dependances else base
-
-
-def _reconstruire_assiettes_pays():
-    """Reconstruire la table d'assiettes depuis les sources versionnées du dépôt."""
-    if REPO not in sys.path:
-        sys.path.insert(0, REPO)
-
-    try:
-        profils = importlib.import_module("backend.services.tax_profile_data")
-    except Exception as exc:
-        raise RuntimeError("impossible de charger backend.services.tax_profile_data") from exc
-
-    ASSIETTE_TVA_ETABLIE = profils.ASSIETTE_TVA_ETABLIE
-    COUNTRY_TAX_PROFILES = profils.COUNTRY_TAX_PROFILES
-
-    print(
-        f"[build_socle] {os.path.relpath(ASSIETTES_PATH, REPO)} absent : reconstruction "
-        "depuis COUNTRY_TAX_PROFILES",
-        file=sys.stderr,
-    )
-
-    pays = {}
-    for iso, profil in sorted(COUNTRY_TAX_PROFILES.items()):
-        taxes = {}
-        for code, spec in (profil.get("tax_bases") or {}).items():
-            if not isinstance(spec, (list, tuple)) or len(spec) != 2:
-                raise ValueError(f"profil fiscal invalide pour {iso}/{code}")
-            formule, ajouts = spec
-            taxes[code_canonique(code, code) or code] = {
-                "assiette": _assiette_depuis_profil(formule, ajouts),
-                "origine_assiette": "table_codee",
-            }
-
-        regle_tva = ASSIETTE_TVA_ETABLIE.get(iso)
-        if regle_tva:
-            taxes.setdefault("TVA", {}).update(
-                {
-                    "assiette": "CIF+TOUS_SAUF_TVA",
-                    "origine_assiette": "texte_primaire",
-                    "texte": regle_tva["texte"],
-                    "fiche": regle_tva.get("fiche"),
-                }
-            )
-
-        pays[iso] = {
-            "reference_legale": profil.get("source", ""),
-            "taxes": taxes,
-        }
-
-    _ecrire_json_atomique(ASSIETTES_PATH, {"pays": pays}, ensure_ascii=False, indent=2)
 
 
 def _entree_exploitable(entree):
@@ -549,15 +564,31 @@ def lire_taux(valeur):
     if isinstance(valeur, bool):
         return None
     if isinstance(valeur, (int, float)):
-        return float(valeur)
+        # Un taux n'est jamais négatif : « -1 » est le marqueur « taux
+        # variable » des crawls CEMAC (droit d'accise DA, 292 positions dans
+        # six pays). Lu tel quel, il liquidait une accise NÉGATIVE dans un
+        # total COMPLET.
+        return float(valeur) if valeur >= 0 else None
     if isinstance(valeur, str):
         v = valeur.strip().lower()
         if v in _MOTS_ZERO:
             return 0.0
         m = re.search(r"-?\d+(?:[.,]\d+)?", v)
         if m:
-            return float(m.group(0).replace(",", "."))
+            taux = float(m.group(0).replace(",", "."))
+            return taux if taux >= 0 else None
     return None
+
+
+_TAUX_PUR = re.compile(r"^\s*-?\d+(?:[.,]\d+)?\s*%?\s*$")
+
+
+def _est_un_taux(brut) -> bool:
+    """Vrai si le verbatim est un taux et rien d'autre."""
+    if isinstance(brut, (int, float)) and not isinstance(brut, bool):
+        return True
+    texte = str(brut or "").strip()
+    return texte.lower() in _MOTS_ZERO or bool(_TAUX_PUR.match(texte))
 
 
 #: Sous-unités monétaires rencontrées dans les tarifs. Un droit publié en
@@ -566,7 +597,9 @@ def lire_taux(valeur):
 SOUS_UNITES = {"c": 100, "cent": 100, "cents": 100, "ct": 100}
 
 _SPECIFIQUE = re.compile(
-    r"^\s*(?P<montant>-?\d+(?:[.,]\d+)?)\s*(?P<monnaie>[A-Za-zÀ-ÿ]*)\s*(?:/\s*(?P<quantite>[A-Za-zÀ-ÿ0-9]+))?",
+    # La devise peut précéder le montant : le tarif seychellois écrit
+    # « SCR5.13/kg » (253 droits), illisibles tant que seul « 8c/kg » l'était.
+    r"^\s*(?P<prefixe>[A-Z]{3}(?=\d))?(?P<montant>-?\d+(?:[.,]\d+)?)\s*(?P<monnaie>[A-Za-zÀ-ÿ]*)\s*(?:/\s*(?P<quantite>[A-Za-zÀ-ÿ0-9]+))?",
 )
 
 
@@ -581,8 +614,11 @@ def lire_specifique(expression):
     m = _SPECIFIQUE.match(str(expression))
     if not m:
         return None
+    if m.group("prefixe") and m.group("monnaie"):
+        # « SCR5perpackof20 » : l'unité de quantité n'est pas lisible.
+        return None
     montant = float(m.group("montant").replace(",", "."))
-    monnaie = (m.group("monnaie") or "").lower()
+    monnaie = (m.group("prefixe") or m.group("monnaie") or "").lower()
     diviseur = SOUS_UNITES.get(monnaie)
     return {
         "montant": montant / diviseur if diviseur else montant,
@@ -633,9 +669,9 @@ def _vient_de_wits(source) -> bool:
 #: 25 %/200 $ la tonne (154), 100 %/460 $ (63), 75 %/345 $ (35) et
 #: 35 %/0,40 $ le kilo (21) — sans une seule forme non reconnue.
 #:
-#: Ce cas se distingue nettement du « 40% or 240c/kg » sud-africain, que le
-#: socle REFUSE de liquider : celui-là ne dit pas laquelle des deux composantes
-#: s'applique, celui-ci le dit — « whichever is higher ».
+#: Ici la règle est dans l'expression — « whichever is higher ». Pour le
+#: « 40% or 240c/kg » sud-africain, elle est dans les General Notes SARS (B.3) :
+#: voir MOTIF_COMPOSE_SARS.
 MOTIF_COMPOSE_DESIGNATION = re.compile(
     r"([\d]+(?:[.,][\d]+)?)\s*%\s*or\s*(?:\$|USD|US\$)\s*([\d]+(?:[.,][\d]+)?)\s*/\s*"
     r"(MT|kg|t|L)\b\s*whichever\s+is\s+(higher|lower)",
@@ -643,6 +679,13 @@ MOTIF_COMPOSE_DESIGNATION = re.compile(
 )
 
 REGLES_COMPOSEES = {"higher": "LE_PLUS_ELEVE", "lower": "LE_MOINS_ELEVE"}
+
+#: Tarif SARS (SACU) : « 40% or 240c/kg ». La règle n'est pas dans la colonne mais
+#: dans les General Notes du Schedule No. 1, partie B, note 3 : chaque partie
+#: séparée par « or » est un taux complet, et s'applique « such rate of duty
+#: yielding the higher or highest amount of duty ». Seule la forme simple au kilo
+#: est retenue : « 500c/2u » (la paire) et « 55c/kg less 90% » restent non tranchés.
+MOTIF_COMPOSE_SARS = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*%\s*or\s*(\d{1,3}(?: \d{3})+|\d+(?:,\d+)?)c/kg\s*$")
 
 
 def droit_compose_depuis_designation(designation, source):
@@ -758,7 +801,16 @@ def droits_depuis_liste(taxes, source_defaut):
         code = row.get("tax_code") or row.get("code") or row.get("tax") or row.get("tax_name")
         libelle = row.get("tax_name") or row.get("name") or row.get("observation") or ""
         taux = lire_taux(row.get("rate") if row.get("rate") is not None else row.get("rate_pct"))
-        if taux is None:
+        if str(row.get("rate_type") or "").lower() == "specific":
+            # « rate_type: specific » (Côte d'Ivoire, PSV et SPEC, 60 droits) :
+            # « 1000 » est un montant par unité, d'unité non publiée — pas
+            # 1 000 %. Rien n'est liquidable, rien n'est affiché comme taux.
+            taux = None
+        if taux is None and _est_un_taux(row.get("raw_value")):
+            # Le verbatim ne sert de taux que s'il EST un taux (« 20 », « 5 % »,
+            # « Free »). « Rs 1,692.50/L Ab alco* » (accise mauricienne, 189
+            # droits) devenait 1,692 % ; « 0.0099 MZN Per 1 KG » (plancher ICE
+            # mozambicain, 80) devenait 0,0099 % — affichés comme des taux.
             taux = lire_taux(row.get("raw_value"))
         # Un droit peut porter DEUX composantes. Le tarif SARS publie
         # « 40% or 240c/kg » sur 140 positions : `rate_pct` 40,0 ET
@@ -788,9 +840,9 @@ def droits_depuis_liste(taxes, source_defaut):
         # liquidait donc 96 % ad valorem là où le droit dû est 450c/kg, soit
         # environ 9 % pour du lait en poudre à 50 ZAR/kg : un facteur dix.
         #
-        # « 40% or 240c/kg » (94 positions) est l'autre forme, et celle-là ne
-        # dit pas laquelle des deux composantes s'applique. Elle reste non
-        # tranchée ; voir `compose`.
+        # « 40% or 240c/kg » (94 positions) est l'autre forme : la colonne ne dit
+        # pas laquelle des deux composantes s'applique, les General Notes SARS
+        # (B.3) le disent ; voir `compose` et MOTIF_COMPOSE_SARS.
         plafond_ad_valorem = None
         brut = str(row.get("raw_value") or "")
         borne = re.search(r"maximum of\s+([\d]+(?:[.,][\d]+)?)\s*%", brut, re.I)
@@ -800,6 +852,24 @@ def droits_depuis_liste(taxes, source_defaut):
             compose = False
         if specifique and row.get("rate_pct") is None:
             taux = None
+        source_ligne = row.get("source") or source_defaut
+        compose_sars = (
+            MOTIF_COMPOSE_SARS.match(brut) if compose and "sars.gov.za" in str(source_ligne) else None
+        )
+        if compose_sars:
+            # « 2 500c/kg » : la collecte a perdu le chiffre avant l'espace des
+            # milliers (« 500c/kg ») ; la part spécifique se relit sur le verbatim.
+            specifique = compose_sars.group(1).replace(" ", "") + "c/kg"
+        # « 40% + US$0.50/L » (Zimbabwe, 356 droits) ou « 15%+SCR5.13/kg »
+        # (Seychelles, 5) : le « + » de la source rend les DEUX composantes
+        # dues. Sans ce marqueur, le moteur liquidait la seule part ad valorem
+        # et déclarait le total COMPLET.
+        cumulatif = (
+            not compose
+            and taux is not None
+            and bool(specifique)
+            and re.search(r"%\s*\+", brut) is not None
+        )
         out.append(
             _droit(
                 code,
@@ -816,6 +886,9 @@ def droits_depuis_liste(taxes, source_defaut):
         if plafond_ad_valorem is not None:
             out[-1]["plafond_ad_valorem_pct"] = plafond_ad_valorem
             out[-1]["expression_brute"] = brut
+        if cumulatif:
+            out[-1]["cumulatif"] = True
+            out[-1]["expression_brute"] = brut
         if compose:
             # Le verbatim est ce qui permet à l'opérateur — et au relecteur —
             # de constater que le droit a deux composantes, sans que le socle
@@ -827,6 +900,13 @@ def droits_depuis_liste(taxes, source_defaut):
             regle = REGLES_COMPOSEES.get(str(row.get("compound_rule") or "").lower())
             if regle:
                 out[-1]["regle_composee"] = regle
+            elif compose_sars:
+                out[-1]["regle_composee"] = "LE_PLUS_ELEVE"
+                out[-1]["note"] = (
+                    "SARS, Schedule No. 1, General Notes, B.3 : « each such part shall be deemed to be a separate "
+                    "and complete rate of duty and such rate of duty yielding the higher or highest amount of duty "
+                    "shall be applicable »."
+                )
     return out
 
 
@@ -875,6 +955,21 @@ def preferences_depuis_liste(regimes, entrees, source_defaut, compteurs=None):
     return out
 
 
+def _unites_des_quantites_tun(rows, droits, qcs):
+    """Tunisie : l'assiette d'un droit spécifique NOMME sa quantité — « PN (KG) »,
+    le poids net en kilos ; « QCS », l'unité statistique de la position (« KG
+    NET », « NOMBRE », « LITRE »…). Sans elle, « 0.1 dinars » se multipliait par
+    une quantité saisie dans n'importe quelle unité."""
+    unites = {"PN (KG)": "kg", "QCS": (qcs or "").strip().lower() or None}
+    for row, d in zip([r for r in rows if isinstance(r, dict)], droits):
+        unite = unites.get(" ".join(str(row.get("assiette") or "").split()).upper())
+        if unite and d.get("specifique") and not isinstance(d["specifique"], dict):
+            lu = lire_specifique(d["specifique"])
+            if lu is not None:
+                lu["unite_quantite"] = lu["unite_quantite"] or unite
+                d["specifique"] = lu
+
+
 def lignes_du_fichier(donnees, regimes=None, compteurs=None):
     """Rendre (code, designation, unite, droits_bruts) pour les six schémas."""
     source_defaut = donnees.get("source") or donnees.get("source_name") or ""
@@ -907,6 +1002,7 @@ def lignes_du_fichier(donnees, regimes=None, compteurs=None):
                 droits = droits_depuis_dict(ligne["taxes"], source_defaut)
             elif isinstance(ligne.get("taxes_import"), list):
                 droits = droits_depuis_liste(ligne["taxes_import"], source_defaut)
+                _unites_des_quantites_tun(ligne["taxes_import"], droits, ligne.get("qcs"))
             colonnes = ligne.get("preferential_rates")
             if not isinstance(colonnes, list):
                 colonnes = ligne.get("preferences")
@@ -1056,6 +1152,1984 @@ def sources_disponibles():
     return sources
 
 
+#: Cameroun : le crawl marquait le droit d'accises « variable » (-1) sur 292
+#: positions tirées d'un repère typographique — tissus de coton, médicaments et
+#: sel compris, voitures et cosmétiques omis. La liste et les taux viennent du
+#: CGI (annexe II, art. 142) ; l'assiette de la TVA, de son art. 138 (1).
+#: Gabon : même marquage du crawl ; liste et taux du CGI gabonais (art. 250),
+#: assiette de la TVA de son art. 216.
+#: Code du prélèvement → bloc dont les originaires en sont exclus.
+#: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
+EXONERATION_ORIGINE = {
+    "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
+}
+#: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
+BLOCS_DESTINATION = {
+    "UEMOA": {"BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"},
+    "CEDEAO": {"BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"},
+    # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
+    # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
+    "AES_UEMOA": {"BFA", "MLI", "NER"},
+}
+
+ACCISES_PAYS = {
+    "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
+    "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2026.json"),
+    "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
+    "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
+    "SEN": os.path.join(REPO, "backend", "data", "zlecaf_sen", "droit_accises_cgi2025.json"),
+    "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
+    "BFA": os.path.join(REPO, "backend", "data", "zlecaf_bfa", "droit_accises_cgi2026.json"),
+    "TGO": os.path.join(REPO, "backend", "data", "zlecaf_tgo", "droit_accises_cgi2025.json"),
+}
+
+
+# Assiette de l'accise quand le tarif collecté ne la donne pas : une table par
+# pays, tirée de sa loi d'accise.
+ASSIETTE_ACCISE_PAYS = {
+    "MUS": os.path.join(REPO, "backend", "data", "zlecaf_mus", "assiette_accise_excise_act.json"),
+}
+
+
+def _assiette_accise(iso, positions):
+    with open(ASSIETTE_ACCISE_PAYS[iso], encoding="utf-8") as f:
+        table = json.load(f)
+    ad_valorem, occasion = set(table["ad_valorem"]), set(table["occasion"])
+    annexe = ad_valorem | occasion | set(table["specifique"])
+    for code, position in positions.items():
+        for d in position.get("droits") or []:
+            if d.get("famille") != "accise" or d.get("assiette") or d.get("taux") is None:
+                continue
+            if code in ad_valorem or (d["taux"] == 0 and code in annexe):
+                d["assiette"] = table["assiette"]
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = table["assiette_reference"]
+            elif code in occasion:
+                d["note"] = (
+                    "Véhicule d'occasion : la « value at importation » est déterminée selon des "
+                    "modalités prescrites (Excise Act s.2), non lues — non liquidable en l'état."
+                )
+            else:
+                d["note"] = (
+                    "Position absente de la First Schedule de l'Excise Act en vigueur : "
+                    "le taux collecté n'est pas confirmé — non liquidable en l'état."
+                )
+
+
+def _ordre_tunisie(positions):
+    """Tunisie : la TVA s'assoit sur tous les droits et taxes sauf elle-même
+    (Code de la TVA art. 6) et la RPD sur la somme des droits et taxes des
+    groupes 0 à 4, TVA comprise (Tarif Web « SOMME D.T (G=0.1.2.3.4.) »). Le
+    moteur liquide dans l'ordre : TVA après les autres droits, RPD en dernier.
+    Minimum de perception de la RPD : 10 dinars par article de déclaration
+    (loi n° 87-83, art. 51, modifié par la loi n° 2012-27, art. 57)."""
+    for position in positions.values():
+        droits = position.get("droits") or []
+        rpd = [d for d in droits if d.get("code") == "RPD"]
+        tva = [d for d in droits if d.get("famille") == "tva"]
+        autres = [d for d in droits if d not in rpd and d not in tva]
+        for d in rpd:
+            if d.get("taux"):
+                d["minimum_perception"] = {"montant": 10.0, "devise": "TND"}
+            d["note"] = (
+                "3 % de la somme des droits et taxes liquidés, TVA comprise ; minimum de "
+                "perception 10 dinars par article de déclaration (loi n° 2012-27, art. 57)."
+            )
+        position["droits"] = autres + tva + rpd
+
+
+def _ordre_ethiopie(positions):
+    """Éthiopie : assiettes et ordre de liquidation fixés par les textes.
+    Accise : valeur en douane + droit de douane (Excise Tax Proclamation
+    1186/2020, art. 9(2)). TVA : valeur + droit, accise et autres charges, hors
+    TVA et avance d'impôt (VAT Proclamation 1341/2024, art. 27). Surtaxe : CIF +
+    droit + TVA + accise (Council of Ministers Regulation 133/2007). WHR : 3 % de
+    la valeur CIF, importations commerciales (Income Tax Proclamation 979/2016,
+    art. 85)."""
+    assiettes = {
+        "EXC": ("CIF+DD", "Excise Tax Proclamation 1186/2020, art. 9(2) : valeur en douane + droit de douane."),
+        "TVA": (
+            "CIF+TOUS_SAUF_TVA",
+            "VAT Proclamation 1341/2024, art. 27 : valeur en douane + droit, accise et autres charges, "
+            "hors TVA et avance d'impôt sur le revenu.",
+        ),
+        "SUR": ("CIF+DD+EXC+TVA", "Council of Ministers Regulation 133/2007 : CIF + droit + TVA + accise."),
+        "WHR": (
+            "CIF",
+            "Income Tax Proclamation 979/2016, art. 85 : avance de 3 % de la valeur CIF, importations "
+            "à usage commercial, imputable sur l'impôt sur le revenu.",
+        ),
+        "SWL": (
+            "CIF",
+            "Social Welfare Levy on Imported Goods Regulation 519/2022, art. 5 : valeur CIF.",
+        ),
+    }
+    rang = {"EXC": 1, "TVA": 3, "SUR": 4, "WHR": 5, "SWL": 6}
+    for position in positions.values():
+        droits = position.get("droits") or []
+        for d in droits:
+            if d.get("code") in assiettes:
+                d["assiette"], note = assiettes[d["code"]]
+                d["note"] = f"{note} {d['note']}" if d.get("note") else note
+                d["assiette_origine"] = "regle_de_pays"
+        position["droits"] = sorted(droits, key=lambda d: rang.get(d.get("code"), 2 if d.get("code") != "DD" else 0))
+
+
+#: Barème d'accise éthiopien (CSV ACCISE_ETH), au plus près du Premier
+#: Schedule : sous-positions nommées par l'annexe, codes du livre tarifaire
+#: rapportés au portail par leur libellé (3304.9990 → 3304.99.10). Les lignes
+#: conditionnées hors nomenclature — véhicules selon l'âge, bières selon la
+#: teneur en matières premières locales, chapitre 15 selon graisses saturées,
+#: chapitre 27 restreint à certains carburants, chapitre 71 restreint aux
+#: ornements — n'y sont pas : elles restent au portail.
+SOURCE_ACCISE_ETH = (
+    "Excise Tax Proclamation 1186/2020, Premier Schedule (annexe I de la "
+    "Proclamation 1287/2023, Negarit Gazette n° 39 du 15/09/2023) ; directive "
+    "1007/2024 pour les taux spécifiques."
+)
+
+
+def _accise_ethiopie(positions, compteurs):
+    """Éthiopie : barème d'accise consolidé (Premier Schedule tel que remplacé
+    par l'annexe I de la Proclamation 1287/2023 ; taux spécifiques remplacés
+    par la directive 1007/2024 ; fiche ETH_accise_bareme_SWL_2026-10-12.json).
+
+    Le portail publie un taux d'accise ad valorem par position ; une case vide
+    y est un 0 % publié, que la collecte écartait (voir _droits_livre_ethiopie).
+    Le barème ne le remplace donc pas par un taux tiré d'une fourchette de
+    l'annexe : il porte seulement, sur le taux publié qu'il confirme, la
+    composante spécifique et la règle de liquidation (« 40 % or 28 Birr per
+    liter whichever is higher » : LE_PLUS_ELEVE ; « 30 % + 20 Birr per pack » :
+    cumulatif). Seule exception : l'accise purement spécifique (sacs de caisse,
+    103 Birr/kg), sans part ad valorem que le portail puisse afficher."""
+    with open(ACCISE_ETH, encoding="utf-8") as f:
+        lignes = list(csv.DictReader(f))
+    for code, position in positions.items():
+        ligne = next((l for l in lignes if _couvre_accise_eth(l, code)), None)
+        if ligne is None:
+            continue
+        droits = position.get("droits") or []
+        existant = next((d for d in droits if d.get("code") == "EXC" and d.get("taux") is not None), None)
+        if existant is not None:
+            if ligne["taux_ad_valorem"] and float(ligne["taux_ad_valorem"]) != existant["taux"]:
+                existant["note"] = (
+                    f"Le barème de l'annexe I porte {ligne['taux_ad_valorem']} %"
+                    + (f" ({ligne['condition']})" if ligne["condition"] else "")
+                    + " : taux du portail conservé, à confronter."
+                )
+                continue
+            existant["source"] = SOURCE_ACCISE_ETH
+            _porter_composantes_accise(existant, ligne)
+            continue
+        if ligne["regle"] != "SPECIFIQUE" or any(d.get("code") == "EXC" for d in droits):
+            continue
+        d = _droit("EXC", "Excise Tax", None, None, SOURCE_ACCISE_ETH)
+        _porter_composantes_accise(d, ligne)
+        d["note"] = f"Accise spécifique de l'annexe I, directive 1007/2024 : {ligne['verbatim']} ({ligne['condition']})."
+        droits.append(d)
+        compteurs["assiettes_table"] += 1
+        position["droits"] = droits
+
+
+def _porter_composantes_accise(d, ligne):
+    if ligne["specifique_montant"]:
+        d["specifique"] = {
+            "montant": float(ligne["specifique_montant"]),
+            "unite_monetaire": "ETB",
+            "unite_quantite": ligne["unite_quantite"] or None,
+            "brut": ligne["verbatim"],
+        }
+    if ligne["regle"] == "LE_PLUS_ELEVE":
+        d["compose"] = True
+        d["regle_composee"] = "LE_PLUS_ELEVE"
+    elif ligne["regle"] == "CUMULATIF":
+        d["cumulatif"] = True
+    d["expression_brute"] = ligne["verbatim"] or None
+
+
+def _couvre_accise_eth(ligne, code):
+    """Vrai si la ligne du barème couvre le code de la position : bornes
+    comparées sur leur propre longueur (« 50 » à « 56 » : chapitres 50 à 56)."""
+    de, a = ligne["code_de"].strip(), ligne["code_a"].strip()
+    return bool(de) and de <= code[: len(de)] and code[: len(a)] <= a
+
+
+#: Surtaxe (Regulations 133/2007, art. 5(1)(a) et annexe, version amharique
+#: qui fait foi) : engrais (31) ; « ነዳጅ » carburants — pétrole brut et huiles
+#: (27.09, 27.10), gaz de pétrole (27.11), coke de pétrole (2713.11, 2713.12) —
+#: et lubrifiants (34.03) ; « የጭነትና የሕዝብ ማመላለሻ ተሽከርካሪዎች » véhicules de
+#: fret et de transport de personnes et véhicules à usage spécial (87.02 à
+#: 87.05) ; aéronefs, engins spatiaux et leurs parties (88). Vaseline et
+#: paraffine (27.12), bitume (2713.20, 2713.90) et motocycles (87.11) n'en sont
+#: pas : surtaxe due.
+SURTAXE_EXEMPTEE_ETH = (
+    "31", "2709", "2710", "2711", "271311", "271312", "3403", "8702", "8703", "8704", "8705", "88",
+)
+#: Produits que le rapport du ministère des Finances (2022) dit exclus de la
+#: surtaxe par une directive prise en vertu de l'art. 5(2) : aucune directive
+#: trouvée, la surtaxe de l'art. 2 est servie et l'allégation dite en note.
+SURTAXE_DIRECTIVE_NON_TROUVEE_ETH = ("02", "0701", "1202", "1701")
+NOTE_VOITURES_ETH = (
+    " Voitures particulières : exemptées de surtaxe comme véhicules « for freight and passengers » "
+    "(annexe, version anglaise ; rapport du ministère des Finances : « including buses ») ; la version "
+    "amharique dit « የሕዝብ ማመላለሻ » (transport de personnes, ou transport public) : à confirmer."
+)
+NOTE_DIRECTIVE_ETH = (
+    "Le rapport du ministère des Finances sur les dépenses fiscales à l'importation (2022) dit ce produit "
+    "exclu de la surtaxe par une directive ultérieure (art. 5(2)) ; aucune directive trouvée : surtaxe "
+    "servie selon l'art. 2. "
+)
+NOTE_SURTAXE_ETH = (
+    "Surtaxe de 10 % sur toute importation hors exemptions (Import Sur-Tax Council of Ministers "
+    "Regulations 133/2007, Negarit Gazeta n° 23 du 11/04/2007, art. 2 à 5 et annexe). Exemptions liées "
+    "à l'importateur ou à l'emploi, non servies par position : biens d'équipement (« Capital (Investment "
+    "goods) »), personnes exonérées de droits de douane (art. 5(1)(b)), taux préférentiels de la seconde "
+    "annexe (industries locales)."
+)
+NOTE_SWL_ETH = (
+    "Social Welfare Levy on Imported Goods Regulation 519/2022 : 3 % de la valeur CIF (art. 4 et 5), "
+    "sur les marchandises que la surtaxe ne frappe pas (art. 6(2) : exemptées « goods that are subject to "
+    "the sur tax ») ; n'entre dans la base d'aucune autre taxe. Exonérations par bénéficiaire ou usage de "
+    "la directive 1023/2024 (dons, accords internationaux, défense, banque centrale), non servies par "
+    "position."
+)
+
+
+def _surtaxe_et_swl_ethiopie(positions, compteurs):
+    """Éthiopie : surtaxe ou taxe sociale, l'une excluant l'autre (fiche
+    ETH_surtaxe_SWL_2026-10-12.json). Surtaxe de 10 % sur toute importation
+    hors exemptions de l'art. 5 du Règlement 133/2007 ; la taxe sociale de 3 %
+    de la valeur CIF (Règlement 519/2022) exempte ce que la surtaxe frappe
+    (art. 6(2)) et ne vise donc que les catégories exemptées de surtaxe.
+
+    Le portail ne porte la surtaxe que sur deux positions (colonne SR) ; leur
+    taux publié est conservé."""
+    for code, position in positions.items():
+        droits = [d for d in position.get("droits") or [] if d.get("code") != "SWL"]
+        if any(d.get("code") == "SUR" for d in droits):
+            position["droits"] = droits
+            continue
+        if code.startswith(SURTAXE_EXEMPTEE_ETH):
+            d = _droit("SWL", "Social Welfare Levy (taxe sociale)", 3.0, None, "Regulation 519/2022")
+            d["note"] = NOTE_SWL_ETH + (NOTE_VOITURES_ETH if code.startswith("8703") else "")
+        else:
+            d = _droit("SR", "Surtax", 10.0, None, "Council of Ministers Regulation 133/2007")
+            directive = code.startswith(SURTAXE_DIRECTIVE_NON_TROUVEE_ETH)
+            d["note"] = (NOTE_DIRECTIVE_ETH if directive else "") + NOTE_SURTAXE_ETH
+        compteurs["assiettes_table"] += 1
+        position["droits"] = droits + [d]
+
+
+def _droits_livre_ethiopie(positions, compteurs):
+    """Éthiopie : droit de douane perdu à la collecte, rétabli par le livre
+    tarifaire du ministère des Finances (édition révisée de 2021, fiche
+    ETH_droits_livre_tarifaire_2021-10-07.json) quand le livre le dit nul.
+
+    La collecte du 05/07/2026 écartait chaque droit publié à 0 %
+    (`tax_values[i] > 0`, voir .github/workflows/veille_eth_crawl.yml) : sa
+    case vide est un 0 % du portail, pas un taux absent. Le livre le confirme,
+    « Free » sur 96 % de ces positions contre 0,4 % ailleurs. Il ne comble donc
+    que ses « Free ». Un taux non nul du livre contredit le 0 % que le portail
+    publiait très probablement : le droit reste à compléter, le conflit en
+    note, jusqu'à une collecte fraîche. Une sous-position dont la portée a
+    changé en SH 2022 n'est pas comblée."""
+    with open(LIVRE_TARIFAIRE_ETH, encoding="utf-8") as f:
+        livre = {r["code"].replace(".", ""): r["taux"] for r in csv.DictReader(f)}
+    # Le livre est en SH 2017, le portail en SH 2022 : une sous-position dont la
+    # table I de l'OMD (SH 2022 -> SH 2017) dit la portée modifiée n'est pas comblée.
+    spec = importlib.util.spec_from_file_location(
+        "concordance_tun", os.path.join(REPO, "backend", "scripts", "extraire_concordance_tun.py")
+    )
+    concordance = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(concordance)
+    modifiees = concordance.lire_table_i()
+    for code, position in positions.items():
+        if code[:6] in modifiees:
+            continue
+        for d in position.get("droits") or []:
+            taux = livre.get(code[:8])
+            if d.get("code") != "DD" or d.get("taux") is not None or taux in (None, "Prohibited"):
+                continue
+            d["libelle"] = "Droit de douane"
+            ligne = f"{code[:4]}.{code[4:8]}"
+            if taux != "Free":
+                d["note"] = (
+                    "Droit écarté par la collecte du portail, qui omettait les taux à 0 % ; "
+                    f"le livre tarifaire 2021 porte {taux.rstrip('%')} % sous {ligne} : à vérifier au portail."
+                )
+                continue
+            d["taux"] = 0.0
+            d["source"] = "Livre tarifaire du ministère des Finances, édition révisée 2021"
+            d["note"] = (
+                "Droit écarté par la collecte du portail, qui omettait les taux à 0 % ; "
+                f"« Free » au livre tarifaire 2021 sous {ligne}."
+            )
+            compteurs["taux_indisponibles"] -= 1
+def _iat_nigeria_2026(positions, compteurs):
+    """Nigéria : IAT de la Customs, Excise Tariff, Etc. (Variation) Order 2026
+    (S.I. 29, Gazette n° 79 du 1er mai 2026, First Schedule ; fiche
+    NGA_IAT_SI29_2026-10-08.json). Elle révoque l'Order de 2023 : une position
+    absente de la liste ne porte plus d'IAT."""
+    with open(IAT_NGA_2026, encoding="utf-8") as f:
+        liste = {r["code"].replace(".", ""): float(r["iat"]) for r in csv.DictReader(f)}
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        for d in droits:
+            if d.get("code") != "IAT":
+                continue
+            avant = d.get("taux")
+            d["source"] = "Customs, Excise Tariff, Etc. (Variation) Order 2026 (S.I. 29), First Schedule"
+            if code in IAT_NGA_AMBIGUS:
+                d["taux"] = None
+                d["note"] = (
+                    "IAT 2026 non attribuable : la liste vise cette position sous un code ancien ou à "
+                    "deux taux (" + IAT_NGA_AMBIGUS[code] + ")."
+                )
+            elif code in liste:
+                d["taux"] = liste[code]
+                d["note"] = "Liste IAT de l'Order 2026, en vigueur au 1er mai 2026."
+            else:
+                d["taux"] = 0.0
+                d["note"] = "Position absente de la liste IAT de l'Order 2026, qui révoque celui de 2023."
+            compteurs["taux_indisponibles"] += (d["taux"] is None) - (avant is None)
+            # Ciments 2523 : IAT vide au portail et « accise » égale à l'IAT de la liste,
+            # dont le total (droit + IAT) exclut une accise de même taux.
+            for e in droits:
+                if avant is None and d["taux"] and e.get("code") == "EXC" and e.get("taux") == d["taux"]:
+                    e["taux"] = None
+                    e["note"] = (
+                        "Accise du portail égale à l'IAT de la liste de l'Order 2026, IAT absente "
+                        "au portail : vraisemblablement l'IAT mal rangée, non servie deux fois."
+                    )
+                    compteurs["taux_indisponibles"] += 1
+
+
+def _taux_tva_legaux():
+    """La table TAUX_TVA_LEGAUX de backend/services/tax_profile_data.py."""
+    if REPO not in sys.path:
+        sys.path.insert(0, REPO)
+    return importlib.import_module("backend.services.tax_profile_data").TAUX_TVA_LEGAUX
+
+
+def _taux_tva_hors_la_loi(regle, positions, compteurs):
+    """Un taux de TVA collecté que la loi du pays ne connaît pas (1 % ou 17,5 %
+    sur quelques positions du portail nigérian) n'est pas servi : la TVA reste
+    à compléter, avec le taux collecté en note. Fiche : regle["fiche"]."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "TVA" or d.get("taux") is None or d["taux"] in regle["taux"]:
+                continue
+            taux_lu = f"{d['taux']:g}".replace(".", ",")
+            d["note"] = f"Taux de TVA collecté au portail : {taux_lu} %. {regle['loi']} : à vérifier au portail."
+            d["taux"] = None
+            compteurs["taux_indisponibles"] += 1
+
+
+def _redevance_informatique_cmr(positions):
+    """Cameroun : redevance informatique à 1 % de la valeur imposable, sans plafond
+    à l'importation (loi de finances 2023, art. 9 a), maintenu par la loi de
+    finances 2026, art. 12 a) ; fiche CMR_redevance_informatique_2026-10-09.json).
+    Le crawl porte encore 0,45 % avec un plafond de 15 000 XAF sur la base : le
+    régime de 2018, où le plafond visait déjà le montant, à l'exportation."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "RI":
+                continue
+            # L'assiette reste celle de la source (CIF) : c'est la « valeur
+            # imposable » de la loi ; seuls le taux et le plafond changent.
+            d["taux"] = 1.0
+            d["plafond"] = None
+            d["source"] = "Loi de finances 2023 du Cameroun, art. 9 a)"
+            d["note"] = (
+                "Loi de finances 2023, art. 9 a), maintenu par la loi de finances 2026, art. 12 a) : "
+                "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
+                "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
+            )
+
+
+def _regles_cedeao_hors_uemoa():
+    """TVA_CEDEAO_HORS_UEMOA et PRELEVEMENTS_CEDEAO_HORS_UEMOA de
+    backend/services/tax_profile_data.py, partagées avec l'ancien chemin."""
+    if REPO not in sys.path:
+        sys.path.insert(0, REPO)
+    profils = importlib.import_module("backend.services.tax_profile_data")
+    return profils.TVA_CEDEAO_HORS_UEMOA, profils.PRELEVEMENTS_CEDEAO_HORS_UEMOA
+
+
+NOTE_PCC_GMB = (
+    "Prélèvement communautaire CEDEAO : 0,5 % (protocole A/P1/7/96, art. 7) sur les importations hors CEDEAO. "
+    "La FAQ douane de la GRA indique « ECOWAS Levy- 1% of CIF », sans texte trouvé."
+)
+
+
+def _prelevements_cedeao_hors_uemoa(iso, positions, compteurs):
+    """Gambie, Liberia, Sierra Leone : les crawls recopient le tarif
+    du Bénin (« réf. État membre BEN ») avec sa redevance statistique de 1 % et
+    son assiette de TVA « CIF+DD+RS+PCS », béninoises. Aucun texte de ces pays
+    ne les établit (fiche CEDEAO_hors_UEMOA_prelevements_2026-10-12.json) : la
+    redevance est retirée, la TVA/GST prend l'assiette et le taux de la loi
+    nationale, et les prélèvements nationaux connus sont ajoutés avec leur
+    réserve en note. La TVA est liquidée en dernier."""
+    regles_tva, prelevements = _regles_cedeao_hors_uemoa()
+    taux_tva, note_tva = regles_tva[iso]
+    for position in positions.values():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "RS":
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                continue
+            if d.get("code") == "TVA":
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
+                d["taux"] = taux_tva
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["assiette_origine"] = "regle_de_pays"
+                d["source"] = "fiche CEDEAO_hors_UEMOA_prelevements_2026-10-12.json"
+                d["note"] = note_tva
+            elif d.get("code") == "PCC" and iso == "GMB":
+                d["note"] = NOTE_PCC_GMB
+            droits.append(d)
+        for code, libelle, taux, note in prelevements.get(iso, []):
+            d = _droit(code, libelle, taux, "CIF", "fiche CEDEAO_hors_UEMOA_prelevements_2026-10-12.json")
+            d["assiette_origine"] = "regle_de_pays"
+            d["note"] = note
+            compteurs["assiettes_table"] += 1
+            droits.append(d)
+        position["droits"] = [d for d in droits if d.get("famille") != "tva"] + [
+            d for d in droits if d.get("famille") == "tva"
+        ]
+
+
+def _sans_redevance_informatique_gnq(positions, compteurs):
+    """Guinée équatoriale : pas de redevance informatique. Le fichier collecté
+    recopie le tarif camerounais (« derived_from »: « CMR ») et sa redevance
+    nationale ; aucune loi équato-guinéenne lue ne l'institue (Ley 10/2017 et
+    Ley de Tasas 2025 ; fiche GNQ_redevance_informatique_2026-10-10.json)."""
+    for position in positions.values():
+        droits = position.get("droits") or []
+        retenus = [d for d in droits if d.get("code") != "RI"]
+        compteurs["assiettes_source"] -= len(droits) - len(retenus)
+        position["droits"] = retenus
+
+
+#: Libye : source et motif des deux compléments nationaux du crawl, servis
+#: sans taux (fiche LBY_TSP_TP_taux_2026-10-10.json).
+TSP_TP_LIBYE = {
+    "TSP": (
+        "Aucun texte libyen trouvé (fiche LBY_TSP_TP_taux_2026-10-10.json)",
+        "Taxe des services portuaires à 4 % : aucun texte libyen trouvé ne l'établit. La page PwC d'où le "
+        "crawl la tenait (revue le 31 mai 2026) ne cite plus ni « Port Services Tax » ni 4 % ; elle signale "
+        "une « service fee » de 5 % sur la valeur de la plupart des importations, sans texte. La décision "
+        "du Comité populaire général des Chaabiyat n° 3 de 2005 (« redevance pour services "
+        "d'importation »), citée par la décision n° 17/2007, pourrait fonder un tel prélèvement ; son texte "
+        "et son taux n'ont pas été obtenus. La redevance de quai souveraine du règlement de 2025 (décision "
+        "du Conseil des ministres n° 393/2025, art. 25) est spécifique : 2,00 LYD par tonne ou par m³, le "
+        "plus élevé des deux, minimum 50 LYD par bon de livraison.",
+    ),
+    "TP": (
+        "Loi n° 19/1992 (Libye), art. 1 ; taux non établi (fiche LBY_TSP_TP_taux_2026-10-10.json)",
+        "Taxe de production ou de consommation : instituée par la loi n° 19/1992 (art. 1) sur les "
+        "marchandises importées désignées par décision, au taux fixé pour chacune ; maintien en vigueur non "
+        "confirmé. La grille de 2002 (décision n° 6/2002) en désigne 40 catégories, à des taux non nuls de "
+        "7 % à 50 % à l'importation, sans correspondance établie avec les positions du tarif ; elle a pu être "
+        "modifiée en 2005 (décisions n° 103 et 114/2005, non obtenues). Aucun texte trouvé ne fixe le taux "
+        "uniforme de 2 % du crawl.",
+    ),
+}
+
+
+#: CAE (fiche CAE_TEC_TVA_tabac_2026-10-13.json). Quatre positions du TEC 2022
+#: que la collecte ne porte pas, lues dans sa consolidation de juin 2025
+#: (sources/TZA_tra_cet_eac_2022_maj_2025-06.pdf, page entre parenthèses).
+#: La RDC n'y est pas : elle applique son tarif national (ordonnance-loi
+#: n° 011-2012 du 21/09/2012), aucun acte n'appliquant le TEC n'ayant été trouvé.
+PAYS_TEC_CAE = {"KEN", "RWA", "TZA", "UGA", "BDI", "SSD"}
+TEC_CAE_COMPLEMENTS = {
+    "53021000": (0.0, "p. 280"),
+    "58110000": (25.0, "p. 302"),
+    "92099200": (10.0, "p. 534"),
+    "92099400": (10.0, "p. 534"),
+}
+#: TVA à l'importation sur la valeur et tous les droits et taxes sauf elle-même ;
+#: la collecte n'y mettait que le droit de douane.
+TVA_CAE = {
+    "RWA": "Loi n° 049/2023 portant TVA (Rwanda), art. 16 (1) (d) : « the amount of customs duty, excise, "
+    "port charges or other fiscal charges other than value added tax payable in respect of imported goods ». "
+    "Réserve : l'assiette servie comprend la valeur en douane et les droits liquidés ici ; les frais portuaires et "
+    "les services liés à l'importation (art. 16 (1) (c) et (d)), hors du calcul, n'y sont pas.",
+    "TZA": "Value Added Tax Act 2014 (Tanzanie), s. 9 : valeur en douane, « (b) the amount of any customs duty "
+    "payable on the import; and (c) the amount of any tax, levy, fee, or fiscal charge other than customs duty "
+    "and value added tax payable on the import of the goods ». Réserve : l'assiette servie comprend la valeur en "
+    "douane et les droits liquidés ici ; la Railway Development Levy, l'Industrial Development Levy et la "
+    "Customs Processing Fee, non encore liquidées, n'y sont pas.",
+}
+#: Accise sur le tabac importé : (préfixes, taux, spécifique, note). taux et
+#: spécifique tous deux None : le taux dépend d'une donnée que la position ne
+#: porte pas. Une position absente du barème perd son accise (« retirer »).
+TABAC_CAE = {
+    "TZA": [
+        (("24022010", "24022090"), None, ("72462.19", "mil"),
+         "Finance Act 2026 (Tanzanie, Act No. 2/2026), art. 10 (a), Fourth Schedule du Cap. 147, en vigueur au "
+         "1er juillet 2026 : cigarettes « Other » 72 462,19 TZS par millier ; les taux de 16 151,31 et "
+         "38 154,80 TZS visent les cigarettes produites localement à plus de 75 % de tabac tanzanien. "
+         "Quantité en milliers."),
+        (("24031900", "24039100", "24039900"), None, ("36609.19", "kg"),
+         "Finance Act 2026 (Tanzanie), art. 10 (a), Fourth Schedule : « Other/Imported » 36 609,19 TZS par kg."),
+        (("24021000", "24029000", "24031100"), "retirer", None,
+         "Finance Act 2026 (Tanzanie), art. 10 (a) : les positions 24.02 et 24.03 substituées au Fourth "
+         "Schedule ne comprennent pas 2402.10, 2402.90 ni 2403.11."),
+    ],
+    "UGA": [
+        (("24022010", "24022090"), None, None,
+         "Excise Duty Act Cap. 336, Schedule 2, item 1 (a) et (b), remplacés par l'Excise Duty (Amendment) Act "
+         "2025 (Act 14) : cigarettes importées 150 000 Ushs (« soft cap ») ou 200 000 Ushs (« hinge lid ») par "
+         "1 000 ; le conditionnement n'est pas dans la position."),
+        (("24021000", "24029000", "2403"), 200.0, None,
+         "Excise Duty Act Cap. 336, Schedule 2, item 1 (c) à (f) : 200 % ; assiette s. 1 (8) : valeur en douane "
+         "et droit d'importation."),
+    ],
+    "RWA": [
+        (("24022010", "24022090", "24029000"), None, None,
+         "Loi n° 011/2025 portant droit d'accise (Rwanda), annexe, n° 13 : « 36% of retail price tax inclusive "
+         "of a pack of 20 rods plus Frw 230 per pack » ; art. 6 (1) (c). Le prix de détail n'est pas une "
+         "donnée du calcul : accise non liquidée."),
+        (("24021000",), 160.0, None, "Loi n° 011/2025 (Rwanda), annexe, n° 14 : cigares 160 %."),
+    ],
+}
+
+
+def _cae(iso, positions, compteurs):
+    """CAE : quatre positions du TEC, assiette de la TVA (RWA, TZA) et accise sur
+    le tabac (RWA, TZA, UGA). Fiche CAE_TEC_TVA_tabac_2026-10-13.json."""
+    for code, (taux, page) in TEC_CAE_COMPLEMENTS.items():
+        for d in (positions.get(code) or {}).get("droits") or []:
+            if d.get("code") == "DD" and d.get("taux") is None:
+                d["taux"] = taux
+                d["libelle"] = "Droit de douane (TEC CAE)"
+                d["source"] = "TEC CAE 2022, consolidation de juin 2025 (TRA), " + page
+                d.pop("note", None)
+                compteurs["taux_indisponibles"] -= 1
+    if iso in TVA_CAE:
+        for position in positions.values():
+            for d in position.get("droits") or []:
+                if d.get("famille") == "tva" and d.get("assiette") and d["assiette"] != "CIF+TOUS_SAUF_TVA":
+                    if d.get("assiette_origine") == "source":
+                        compteurs["assiettes_source"] -= 1
+                        compteurs["assiettes_table"] += 1
+                    d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                    d["assiette_origine"] = "regle_de_pays"
+                    d["note"] = TVA_CAE[iso]
+    for code, position in positions.items():
+        regle = next((r for r in TABAC_CAE.get(iso, []) if code.startswith(r[0])), None)
+        if regle is None:
+            continue
+        _, taux, specifique, note = regle
+        droits = position.get("droits") or []
+        exc = next((d for d in droits if d.get("code") == "EXC"), None)
+        if exc is not None:
+            _compter_ligne(exc, compteurs, -1)
+        if taux == "retirer":
+            if exc is not None:
+                droits.remove(exc)
+            continue
+        if exc is None:
+            exc = {"code": "EXC", "code_source": "EXC", "famille": famille("EXC")}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, exc)
+        exc.update(libelle="Excise duty", taux=taux, source=note.split(" : ")[0], note=note)
+        exc.pop("specifique", None)
+        if specifique:
+            montant, unite = specifique
+            exc["specifique"] = {
+                "montant": float(montant), "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                "unite_quantite": unite, "brut": f"{montant} TZS/{unite}",
+            }
+            exc["assiette"], exc["assiette_origine"] = "xQTE", "droit_specifique"
+        elif taux is None:
+            # Ni le prix de détail (RWA) ni le conditionnement (UGA) ne sont des
+            # données du calcul : pas d'assiette à servir.
+            exc["assiette"], exc["assiette_origine"] = None, None
+        else:
+            exc["assiette"], exc["assiette_origine"] = "CIF+DD", "regle_de_pays"
+        _compter_ligne(exc, compteurs, 1)
+
+
+#: Exceptions au TEC de l'exercice 2026/27 (Legal Notice EAC/160/2026), lues
+#: dans la Gazette par scripts/extraire_mesures_tec_cae_2026.py.
+MESURES_TEC_CAE = os.path.join(REPO, "data", "eac", "mesures_tec_cae_2026_27.json")
+#: La Table X amende le TEC lui-même ; les autres le suspendent pour un pays :
+#: elles passent après.
+ORDRE_TABLES_CAE = ["X", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+
+
+def _droit_mesure_cae(droit):
+    """Champs d'une ligne DD pour le droit d'une mesure EAC/160/2026."""
+    spec = droit.get("specifique")
+    champs = {"taux": droit.get("taux"), "compose": None, "regle_composee": None, "expression_brute": None,
+              "specifique": None, "assiette": "CIF", "assiette_origine": "regle_de_pays"}
+    if spec:
+        champs["specifique"] = {**spec, "brut": f"US$ {spec['montant']:g} / {spec['unite_quantite']}"}
+        if droit.get("taux") is None:
+            champs["assiette"], champs["assiette_origine"] = "xQTE", "droit_specifique"
+        else:
+            champs["compose"], champs["regle_composee"] = True, droit["regle"]
+            champs["expression_brute"] = f"{droit['taux']:g}% or US$ {spec['montant']:g} / {spec['unite_quantite']} " \
+                "whichever is higher"
+    return champs
+
+
+def _mesures_tec_cae(iso, positions, compteurs):
+    """Droits de l'exercice 2026/27 à la place du TEC (EAC/160/2026). Une mesure
+    conditionnelle (importateur, usage, sous-produit) ne change pas le droit :
+    elle est rappelée en note."""
+    with open(MESURES_TEC_CAE, encoding="utf-8") as f:
+        mesures = json.load(f)["mesures"]
+    mesures.sort(key=lambda m: ORDRE_TABLES_CAE.index(m["table"]))
+    for mesure in mesures:
+        prefixes = [c.replace(".", "") for c in mesure["positions"]]
+        ref = f"Legal Notice EAC/160/2026, Table {mesure['table']}, n° {mesure['sn']} (p. {mesure['page']})"
+        for decision in mesure["decisions"]:
+            if iso not in (decision.get("pays") or [iso if mesure["table"] in ("VIII", "IX") else None]):
+                continue
+            exclus = {c.replace(".", "") for c in decision.get("exclusions", [])}
+            applicable = decision.get("lu") and not decision.get("restriction")
+            for code, position in positions.items():
+                if not any(code.startswith(p) for p in prefixes) or any(code.startswith(x) for x in exclus):
+                    continue
+                dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None)
+                if dd is None:
+                    continue
+                if not applicable:
+                    note = f"Mesure conditionnelle, non appliquée ({ref}) : {decision['decision']}"
+                    dd["note"] = (dd.get("note", "") + " " + note).strip()
+                    continue
+                _compter_ligne(dd, compteurs, -1)
+                for cle, valeur in _droit_mesure_cae(decision["droit"]).items():
+                    if valeur is None:
+                        dd.pop(cle, None)
+                    else:
+                        dd[cle] = valeur
+                dd["libelle"] = "Droit de douane (exercice 2026/27)"
+                dd["source"] = ref
+                dd["note"] = decision["decision"] if mesure["table"] not in ("III", "IV", "V", "VI", "VII") else (
+                    f"{ref} : taux de l'en-tête de la table")
+                if decision.get("exception"):
+                    dd["note"] += f" — exception non appliquée par position : {decision['exception']}"
+                _compter_ligne(dd, compteurs, 1)
+
+
+#: Accises du tarif sud-africain (Schedule 1 Part 2A et 2B, SARS), lues par
+#: scripts/extraire_accises_zaf.py. Fiche ZAF_accises_2026-10-14.json.
+ACCISES_ZAF = os.path.join(REPO, "data", "zaf", "accises_sch1_part2.json")
+#: Customs and Excise Act 1964, s.65(8)(a) : l'accise ad valorem d'un bien
+#: importé porte sur la valeur transactionnelle majorée de 15 %, plus les droits
+#: non remis de la Part 1 et de la Part 2A, sans l'accise ad valorem elle-même.
+ASSIETTE_EXA_ZAF = "FOBx1.15+DD+EXS"
+UNITES_ACCISE_ZAF = {"kg": "kg", "li": "li", "ml": "ml", "10cigarettes": "10 cigarettes", "10sticks": "10 sticks"}
+#: Les autres États de la SACU appliquent les taux d'accise communs (accord
+#: SACU 2002, art. 21 et 22), ceux du tarif sud-africain ; fiche
+#: SACU_accises_BLNE_2026-10-20.json. Seule la valeur de l'accise ad valorem
+#: relève de chaque loi nationale : (assiette, référence). Botswana : prix de
+#: gros sur le marché botswanais, que le calcul ne connaît pas.
+ASSIETTE_EXA_SACU = {
+    "ZAF": (ASSIETTE_EXA_ZAF, "s.65(8)(a)"),
+    "NAM": ("FOBx1.15+DD+EXS", "Customs and Excise Act 20/1998 (Namibie), s.75(9)(a)"),
+    "SWZ": ("FOBx1.15+DD+EXS", "Customs and Excise Act 1971 (Eswatini), s.65(7)(a)"),
+    "LSO": ("FOBx1.15+DD", "Customs and Excise Act 10/1982 (Lesotho), s.67(6)(a)"),
+    "BWA": (None, "Excise Duty Act 2018 (Botswana), s.69(1)"),
+}
+
+
+def _accises_zaf(positions, compteurs, iso="ZAF"):
+    """Afrique du Sud : accise spécifique (Part 2A, code EXS) et ad valorem
+    (Part 2B, code EXA), dues à l'importation sur les biens de même nature que
+    ceux fabriqués dans la République (Part 2, Section B, note 1). Mêmes taux
+    pour les autres États de la SACU, sur la valeur de leur loi nationale."""
+    assiette_exa, ref_valeur = ASSIETTE_EXA_SACU[iso]
+    with open(ACCISES_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for article in articles:
+        prefixe = article["sous_position"].replace(".", "")
+        code_ligne = "EXS" if article["partie"] == "2A" else "EXA"
+        source = (f"Customs and Excise Act 1964, Schedule No. 1 Part {article['partie']}, "
+                  f"article {article['article']} ({article['sous_position']})")
+        if iso != "ZAF":
+            source = f"Taux commun SACU (accord SACU 2002, art. 21 et 22) : {source}"
+        for code, position in positions.items():
+            if not code.startswith(prefixe):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": "Specific excise duty" if code_ligne == "EXS" else "Ad valorem excise duty",
+                     "taux": None, "specifique": None, "source": source, "note": article["brut"]}
+            if article.get("unite") == "li aa":
+                # Par litre d'alcool absolu : le titre alcoométrique n'est pas une
+                # donnée du calcul.
+                ligne["assiette"], ligne["assiette_origine"] = None, None
+                ligne["note"] = (f"{article['brut']} : par litre d'alcool absolu ; le titre alcoométrique "
+                                 "n'est pas une donnée du calcul, accise non liquidée.")
+            elif article.get("unite"):
+                ligne["specifique"] = {
+                    "montant": article["montant"], "unite_monetaire": "unite_principale",
+                    "sous_unite_source": None, "unite_quantite": UNITES_ACCISE_ZAF[article["unite"]],
+                    "brut": article["brut"],
+                }
+                ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            elif article.get("renvoi"):
+                # Véhicules (articles 126.02 à 126.05) : taux de ((0,00003 × B) − 0,75) %,
+                # plafonné à 30 %, B étant la valeur de la s.65(8)(a) : un taux qui
+                # dépend de la valeur n'est pas servi.
+                ligne["assiette"] = assiette_exa
+                ligne["assiette_origine"] = "regle_de_pays" if assiette_exa else None
+                ligne["note"] = ("Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, "
+                                 f"B étant la valeur de la {ref_valeur} ; taux fonction de la valeur, non servi.")
+            elif code_ligne == "EXA" and assiette_exa is None:
+                ligne["taux"] = article["taux"]
+                ligne["assiette"], ligne["assiette_origine"] = None, None
+                ligne["note"] = (f"{article['brut']} sur la valeur de la {ref_valeur} : prix de gros sur le "
+                                 "marché botswanais, inconnu du calcul ; accise non liquidée.")
+            elif code_ligne == "EXA":
+                ligne["taux"] = article["taux"]
+                ligne["assiette"], ligne["assiette_origine"] = assiette_exa, "regle_de_pays"
+            else:
+                ligne["taux"] = article["taux"]  # « free » de la Part 2A
+                ligne["assiette"], ligne["assiette_origine"] = "FOB", "regle_de_pays"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Prélèvements du tarif sud-africain (Schedule 1 Parts 3A, 3C, 3D, 3E, 5A, 5B
+#: et 7A), lus par scripts/extraire_prelevements_zaf.py. Fiche
+#: ZAF_prelevements_2026-10-14.json.
+PRELEVEMENTS_ZAF = os.path.join(REPO, "data", "zaf", "prelevements_sch1_parts3_5_7.json")
+CODES_PRELEVEMENTS_ZAF = {
+    "3A": ("EVB", "Environmental levy (plastic bags)"),
+    "3C": ("EVL", "Environmental levy (electric filament lamps)"),
+    "3D": ("EVC", "Environmental levy (CO2 emissions of motor vehicles)"),
+    "3E": ("EVT", "Environmental levy (tyres)"),
+    "5A": ("FLV", "Fuel levy"),
+    "5B": ("RAF", "Road Accident Fund levy"),
+    "7A": ("HPL", "Health promotion levy (sugary beverages)"),
+}
+#: Part 7A, note 5 (b) : sans rapport d'essai, une boisson sucrée est réputée
+#: contenir 20 g de sucre pour 100 ml.
+SUCRE_REPUTE_ZAF = 20
+UNITES_PRELEVEMENT_ZAF = {"li": "li", "bag": "sac", "kg": "kg", "lamp": "lampe"}
+
+
+def _prelevements_zaf(positions, compteurs):
+    """Afrique du Sud : prélèvements environnementaux, taxe sur les carburants,
+    Road Accident Fund levy et Health Promotion Levy, dus à l'importation en
+    plus des droits des Parts 1 et 2."""
+    with open(PRELEVEMENTS_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for article in articles:
+        code_ligne, libelle = CODES_PRELEVEMENTS_ZAF[article["partie"]]
+        prefixe = article["sous_position"].replace(".", "")
+        source = (f"Customs and Excise Act 1964, Schedule No. 1 Part {article['partie']}, "
+                  f"article {article['article']} ({article['sous_position']})")
+        for code, position in positions.items():
+            if not code.startswith(prefixe):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": None,
+                     "assiette_origine": None, "source": source, "note": article["brut"]}
+            montant, unite = article.get("montant"), article.get("unite")
+            if article["partie"] == "3E" and not prefixe.startswith("40"):
+                # Pneus montés sur un véhicule ou une roue : le prélèvement porte sur
+                # la masse nette des pneus (note 3), qui n'est pas une donnée du calcul.
+                montant = None
+                ligne["note"] = (f"{article['brut']} sur la masse nette des pneus montés (Part 3E, note 3) ; "
+                                 "masse des pneus non connue du calcul, prélèvement non liquidé.")
+            elif article.get("par_g_km_co2"):
+                ligne["note"] = (f"{article['brut']} : émissions de CO2 du rapport d'essai ou, à défaut, "
+                                 "de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement "
+                                 "non liquidé.")
+            elif article.get("par_gramme_de_sucre"):
+                if prefixe.startswith("2202"):
+                    # Boisson prête à boire : teneur réputée de la note 5 (b), par litre.
+                    montant = round((SUCRE_REPUTE_ZAF - article["seuil_g_100ml"])
+                                    * article["par_gramme_de_sucre"] * 10, 6)
+                    unite = "li"
+                    ligne["note"] = (f"{article['brut']} ; teneur réputée de 20 g/100 ml faute de rapport "
+                                     "d'essai (Part 7A, note 5 (b)) : 16 g × 2,21 c par 100 ml, soit "
+                                     f"{montant:g} R par litre. Un rapport d'essai accrédité peut la réduire.")
+                else:
+                    ligne["note"] = (f"{article['brut']} : préparation à diluer, teneur calculée sur la "
+                                     "boisson reconstituée (Part 7A, note 6) ; volume non connu du calcul, "
+                                     "prélèvement non liquidé.")
+            if article.get("taux") is not None:
+                ligne["taux"], ligne["assiette"], ligne["assiette_origine"] = article["taux"], "FOB", "regle_de_pays"
+            elif montant is not None:
+                ligne["specifique"] = {
+                    "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                    "unite_quantite": UNITES_PRELEVEMENT_ZAF[unite], "brut": article["brut"],
+                }
+                ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Prélèvements nationaux dus à l'importation au Botswana, en Namibie et en
+#: Eswatini, dont le taux en vigueur n'est pas collecté (fiche
+#: SACU_accises_BLNE_2026-10-20.json) : la ligne est servie sans taux, le total
+#: est incomplet plutôt que présenté comme complet. Fuel levy et prélèvement
+#: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
+#: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
+#: reprises. Lesotho : prélèvement sur le tabac et l'alcool, voir TAPL_LESOTHO.
+#: Botswana, alcool : fiche BWA_prelevement_alcool_2026-10-23.json.
+#: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
+PRELEVEMENTS_SACU_NON_COLLECTES = {
+    "BWA": [
+        ("FLV", "Fuel levy", {"5A"}, None,
+         "Excise Duty Act 2018 (Botswana), s.2 : « fuel levy » (Schedule No. 1 Part 5)", ""),
+        ("ALV", "Levy on intoxicating liquor",
+         ("19019020", "2203", "2204", "2205", "2206", "2207", "2208"),
+         "CIF+DD",
+         "Control of Goods (Intoxicating Liquor (Levy)) Regulations 2008 (Botswana), règl. 2(b), 3(b) et annexe",
+         "30 % au texte de 2008 (S.I. 91 et 111 de 2008), modifié depuis ; "),
+    ],
+    "NAM": [
+        ("FLV", "Fuel levy", {"5A"}, None,
+         "Customs and Excise Act 20/1998 (Namibie), s.2 : « fuel levy » (Schedule 1 Part 5)", ""),
+        ("EVN", "Environmental levy", {"3A", "3C", "3D", "3E"}, None,
+         "Customs and Excise Act 20/1998 (Namibie), s.58A(1) (Schedule 1 Part 3)", ""),
+    ],
+    "SWZ": [
+        ("ATL", "Alcohol and Tobacco Levy",
+         ("2203", "2204", "2205", "2206", "2208", "2402", "240311", "240319", "240399"),
+         "FOB+DD+EXS+EXA",
+         "Alcohol and Tobacco Levy Act 2019 (Eswatini), s.3(1)(b), s.4(2) et annexe, item 1",
+         "7 % à l'annexe de la loi de 2019 (boissons alcoolisées hors bière traditionnelle, cigares, "
+         "cigarettes, tabac à pipe et à priser) ; "),
+    ],
+}
+
+
+#: Positions du périmètre que le texte exclut. Eswatini : l'annexe de la loi de
+#: 2019 (item 1(a)) vise « alcoholic beverages of all kinds other than
+#: traditional beer » ; le tarif isole la bière traditionnelle africaine en
+#: 2203.00.05 et 2206.00.15.
+EXCLUSIONS_PRELEVEMENTS_SACU = {
+    ("SWZ", "ATL"): ("22030005", "22060015"),
+}
+
+
+def _prelevements_sacu_non_collectes(iso, positions, compteurs):
+    """Botswana, Namibie, Eswatini : prélèvements nationaux à l'importation
+    déclarés sans taux sur leurs positions, faute de barème en vigueur."""
+    with open(PRELEVEMENTS_ZAF, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for code_ligne, libelle, perimetre, assiette, source, note in PRELEVEMENTS_SACU_NON_COLLECTES[iso]:
+        if isinstance(perimetre, set):
+            prefixes = tuple(a["sous_position"].replace(".", "") for a in articles if a["partie"] in perimetre)
+        else:
+            prefixes = perimetre
+        exclues = EXCLUSIONS_PRELEVEMENTS_SACU.get((iso, code_ligne), ())
+        for code, position in positions.items():
+            if not code.startswith(prefixes) or code in exclues:
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": assiette,
+                     "assiette_origine": "regle_de_pays" if assiette else None, "source": source,
+                     "note": note + "taux en vigueur non collecté : prélèvement dû à l'importation, "
+                                    "non liquidé, total incomplet."}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Lesotho : Tobacco and Alcoholic Products Levy Act 2023 (Act 1/2023, en vigueur
+#: le 01/03/2023 par la LN 22/2023), barème de la LN 58/2025 au 01/04/2025
+#: (fiche LSO_prelevement_tabac_alcool_2026-10-25.json). « Alcoholic products »
+#: (s.2) exclut la bière traditionnelle, isolée en 2203.00.05 et 2206.00.15 ;
+#: l'éthanol (22.07) et les produits à inhaler (24.04) sont laissés hors du
+#: périmètre. (positions, taux %, positions exclues)
+TAPL_LESOTHO = (
+    (("2203", "2204", "2205", "2206", "2208"), 10.0, ("22030005", "22060015")),
+    (("2401", "2402", "2403"), 20.0, ()),
+)
+
+
+def _prelevement_tapl_lesotho(positions, compteurs):
+    """Lesotho : prélèvement sur les produits du tabac et les boissons
+    alcoolisées importés, sur la valeur en douane, les services accessoires
+    (transport, assurance) et les droits hors TVA (s.7(2))."""
+    for prefixes, taux, exclues in TAPL_LESOTHO:
+        for code, position in positions.items():
+            if not code.startswith(prefixes) or code in exclues:
+                continue
+            droits = position.setdefault("droits", [])
+            ligne = {"code": "TAPL", "code_source": "TAPL", "famille": famille("TAPL"),
+                     "libelle": "Tobacco and Alcoholic Products Levy", "taux": taux, "specifique": None,
+                     "assiette": "CIF+DD+EXS+EXA", "assiette_origine": "regle_de_pays",
+                     "source": "Tobacco and Alcoholic Products Levy Act 2023 (Lesotho), s.6 et s.7(2) ; "
+                               "barème : LN 58/2025, en vigueur le 01/04/2025",
+                     "note": "Valeur imposable : valeur en douane, droits et charges fiscales hors TVA, "
+                             "transport et assurance (s.7(2)). Comprise dans l'assiette de la TVA."}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+def _compter_ligne(d, compteurs, signe):
+    if d.get("taux") is None and not d.get("specifique"):
+        compteurs["taux_indisponibles"] += signe
+    if d.get("taux") is None and d.get("specifique"):
+        compteurs["droits_specifiques"] += signe
+    if not d.get("assiette"):
+        cle = "assiettes_indisponibles"
+    elif d.get("assiette_origine") == "source":
+        cle = "assiettes_source"
+    else:
+        cle = "assiettes_table"
+    compteurs[cle] += signe
+
+
+#: Égypte (fiche EGY_TVA_taxe_de_table_2026-10-14.json). Les assiettes de la TVA
+#: et de la Taxe de Table sont dans assiettes_pays.json (loi 67/2016, art. 10 et
+#: 39) ; restent ici l'ordre des lignes, les tabacs du tableau, partie I, la
+#: Taxe de Table des alcools et des cigarettes, que la collecte ne chiffre pas,
+#: l'assiette des redevances publiées sans elle, et les montants que la douane
+#: publie en EGP au kilo ou au litre.
+TAXE_DE_TABLE_EGY = "ضريبةالجدول"
+MINIMUMS_EGY = {"ضريبةالجدول2", "VAT2"}
+#: Droit de douane au kilo net (tabacs) : « 150 جنية لكل كيلو جرام صافى ».
+DD_AU_KILO_EGY = re.compile(r"^([\d.]+) جنية لكل كيلو جرام صافى$")
+#: Minimum de la Taxe de Table, publié sur la ligne qui la suit : « بحد ادنى 50
+#: جنية لكل كج مصنع صافى », « بحد ادنى 15 جنية لكل لتر سائل ».
+MINIMUM_EGY = re.compile(r"^بحد ادنى ([\d.]+) جنية لكل (كيلو جرام صافى|كج مصنع صافى|لتر سائل)$")
+UNITES_EGY = {"كيلو جرام صافى": "kg", "كج مصنع صافى": "kg", "لتر سائل": "l"}
+TABAC_TAXE_DE_TABLE_EGY = (
+    "Loi n° 67/2016, tableau annexé, partie I (« سلع وخدمات تخضع لضريبة الجدول فقط ») : les tabacs sont "
+    "soumis à la seule Taxe de Table, que la douane publie sous « TVA ». Assiette de l'art. 39 (b)."
+)
+#: Alcools : la douane impose la Taxe de Table (instruction ر7065 « تفرض ضريبة
+#: الجدول علي الكحول ») sans en publier le taux. Taux du tableau de 2016, appliqués
+#: sur décision avec leur réserve : préfixe -> (taux %, minimum EGP/l, item).
+INSTRUCTION_ALCOOLS_EGY = "ر7065"
+TAXE_DE_TABLE_ALCOOLS_EGY = {
+    "2203": (250.0, 5.0, "item 4, bière alcoolisée : 250 % avec un minimum de 500 EGP par hectolitre (5 EGP/l)"),
+    "2204": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2205": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2206": (150.0, 15.0, "item 3 (c), vins et boissons fermentées : 150 % avec un minimum de 15 EGP par litre"),
+    "2208": (150.0, 15.0, "item 3 (d), spiritueux : 150 % avec un minimum de 15 EGP par litre"),
+}
+RESERVE_ALCOOLS_EGY = (
+    "Instruction ر7065 de la douane : Taxe de Table due, taux non publié. Loi n° 67/2016, tableau annexé, "
+    "partie II, {item}. Taux de 2016 appliqué sur décision, sous réserve d'une modification ultérieure du "
+    "tableau ; le minimum se liquide sur la quantité en litres."
+)
+#: Redevances publiées en % sans assiette, qu'aucun texte lu ne fixe.
+REDEVANCES_EGY = {
+    "رسممحصلةلحسابغرفةنسيج",
+    "رسممحصلةلحسابغرفةجلود",
+    "رسممحصلةلحسابغرفةدخان",
+    "تامينصحىوزارةالصحة",
+}
+RESERVE_REDEVANCES_EGY = (
+    "Publiée en % par la douane, sans assiette, et aucun texte lu ne la fixe : liquidée sur la valeur en "
+    "douane, sur décision, sous réserve."
+)
+#: Taxe de Table que la douane impose par instruction, sans la publier parmi les
+#: taxes de la position (2404). Tabac chauffé : ر7058, « 1800 جنيه على الكيلو
+#: جرام صافى ». Liquide des cigarettes électroniques : ر7059, ر7061, ر7062 et
+#: ر7067, chacune « 4 جنيه لكل مليليتر سائل », les trois dernières « en plus »
+#: des précédentes : cumulées sur décision du 20/10/2026 (16 EGP/ml).
+INSTRUCTION_TABAC_CHAUFFE_EGY = "ر7058"
+TABAC_CHAUFFE_EGY = re.compile(r"بواقع ([\d.]+) جنيه على الكيلو جرام صافى")
+INSTRUCTIONS_LIQUIDE_EGY = ("ر7059", "ر7061", "ر7062", "ر7067")
+LIQUIDE_EGY = re.compile(r"بواقع ([\d.]+) جنيه لكل مليليتر سائل")
+SOURCE_INSTRUCTIONS_EGY = "customs.gov.eg — instructions de la position (Autorité égyptienne des douanes)"
+TAXE_DE_TABLE_LIQUIDE_EGY = (
+    "Instructions {codes} de la douane : Taxe de Table de 4 EGP par millilitre de liquide chacune, les dernières "
+    "« en plus » des précédentes. Cumulées sur décision du 20/10/2026, sous réserve : {total} EGP par millilitre."
+)
+#: Taxe de Table que la douane subordonne à l'usage de la marchandise, par
+#: instruction : instruction -> (code de l'usage, libellé, remplace la TVA).
+#: ر7018 : « 5 % بدلا من 14% ق.ض » — au lieu de la TVA de 14 %. Le taux est lu
+#: dans le texte de l'instruction ; l'usage est déclaré au calcul.
+USAGES_EGY = {
+    "ر7009": ("HUILE_NON_SUBVENTIONNEE", "Huile alimentaire non subventionnée", False),
+    "ر7018": ("USAGE_DOMESTIQUE", "Usage domestique", True),
+    "ر7027": ("PESTICIDE_AGRICOLE", "Pesticide agricole", False),
+    "ر7100": ("ENGRAIS", "Engrais", False),
+}
+TAUX_INSTRUCTION_EGY = re.compile(r"([\d.]+)\s*%")
+TAXE_DE_TABLE_CIGARETTES_EGY = (
+    "Loi n° 67/2016, tableau annexé, partie I, item 1 (b) 3 : cigarettes, 50 % du prix de vente au "
+    "consommateur final plus 275, 425 ou 525 piastres par paquet selon ce prix. Le prix de vente n'est pas une "
+    "donnée du calcul : Taxe de Table non liquidée."
+)
+
+
+#: Formalités administratives publiées par la source, position par position.
+#: Maroc (ADIL) : l'en-tête de la rubrique n'est pas une formalité ; la mention
+#: « aucun document à présenter et aucune norme à respecter » est un constat de
+#: la source, porté comme tel (`formalites_aucune`).
+EN_TETE_FORMALITES_MAR = "Documents et Normes à l'Import."
+AUCUNE_FORMALITE_MAR = '"AUCUN DOCUMENT A PRéSENTERETAUCUNE NORME A RESPECTER."'
+#: Égypte : la douane publie ses instructions en arabe. L'ancien fichier ETL en
+#: porte une traduction française et anglaise, sans source officielle : elle
+#: n'accompagne le texte que si le code et le texte arabe sont les mêmes.
+TRADUCTIONS_EGY = os.path.join(ETL_DIR, "EGY_tariffs.json")
+
+
+def _traductions_egy():
+    with open(TRADUCTIONS_EGY, encoding="utf-8") as f:
+        lignes = json.load(f).get("tariff_lines") or []
+    return {
+        (x["code"], x["document_ar"].strip()): (x.get("document_fr"), x.get("document_en"))
+        for ligne in lignes
+        for x in ligne.get("administrative_formalities") or []
+        if x.get("code") and x.get("document_ar")
+    }
+
+
+def _formalite(iso, item, traductions):
+    """Une formalité de la source dans la forme commune, ou None."""
+    if isinstance(item, str):
+        texte = item.strip()
+        if not texte or texte in (EN_TETE_FORMALITES_MAR, AUCUNE_FORMALITE_MAR):
+            return None
+        return {"code": None, "texte": texte, "document_fr": texte, "document_en": texte}
+    if not isinstance(item, dict):
+        return None
+    if "code_verbatim" in item:  # Égypte
+        code, texte = item["code_verbatim"], (item.get("text_verbatim") or "").strip()
+        arabe = texte.split("-", 1)[1].strip() if texte.startswith(code + "-") else texte
+        fr, en = traductions.get((code, arabe), (None, None))
+        f = {"code": code, "texte": texte, "document_fr": fr or texte, "document_en": en or texte}
+        if fr or en:
+            f["traduction_non_officielle"] = True
+        return f
+    if "sigle" in item:  # Maurice
+        texte = item.get("verbatim") or item["sigle"]
+        libelle = f"{item['sigle']} — {item['organisme']}" if item.get("organisme") else texte
+        return {"code": item["sigle"], "texte": texte, "document_fr": libelle, "document_en": libelle}
+    if "type" in item and "description" in item:  # Mauritanie
+        return {
+            "code": item["type"],
+            "texte": item["description"],
+            "document_fr": item["description"],
+            "document_en": item["description"],
+            "base_legale": item.get("base_legale"),
+        }
+    texte = (item.get("text_verbatim") or item.get("description") or "").strip()  # Algérie, Tunisie
+    if not texte:
+        return None
+    return {"code": item.get("code"), "texte": texte, "document_fr": texte, "document_en": texte}
+
+
+def _formalites(iso, donnees, positions):
+    """Porter sur chaque position les formalités que la source publie pour elle
+    (`formalities`, ou `reglementation_import` en Tunisie)."""
+    traductions = _traductions_egy() if iso == "EGY" else {}
+    longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+    for cle in ("positions", "sub_positions"):
+        for ligne in donnees.get(cle, []) or []:
+            if not isinstance(ligne, dict):
+                continue
+            brutes = ligne.get("formalities") or ligne.get("reglementation_import")
+            if not isinstance(brutes, list) or not brutes:
+                continue
+            code = nettoyer_code(
+                ligne.get("code_clean"),
+                ligne.get("hs_code"),
+                ligne.get("code"),
+                ligne.get("code_raw"),
+                ligne.get("national_code"),
+                ligne.get("hs6"),
+            )
+            if longueur_position and len(code) == longueur_position:
+                code = code.zfill(longueur_position + 1)
+            if longueur_position and len(code) == longueur_position + 1:
+                code = code[:longueur_position]
+            position = positions.get(code)
+            if position is None:
+                continue
+            formalites = [f for f in (_formalite(iso, x, traductions) for x in brutes) if f]
+            if formalites:
+                position["formalites"] = formalites
+            elif AUCUNE_FORMALITE_MAR in brutes:
+                position["formalites_aucune"] = True
+
+
+#: Maroc : la nomenclature que le portail ADIL publie aujourd'hui. Le relevé des
+#: droits (11/02/2026) porte des positions que le tarif a depuis redécoupées, et
+#: ignore celles qui les remplacent ; les fiches de ces dernières ne sont pas
+#: accessibles à la collecte (pare-feu du portail, 21/10/2026).
+NOMENCLATURE_MAR = os.path.join(REPO, "data", "morocco", "adil_nomenclature_2026-10-21.json")
+NOTE_POSITION_NOUVELLE_MAR = (
+    "Position publiée par la nomenclature du portail ADIL au {date}, absente du "
+    "relevé des droits du {collecte} : droits et taxes à compléter. Le total ne "
+    "peut pas être servi."
+)
+
+
+SOURCE_NOMENCLATURE_MAR = "douane.gov.ma/adil — nomenclature"
+
+
+def _texte_adil(texte):
+    """Le texte ADIL, sauts de ligne (« \\r », « £ ») rendus en espaces."""
+    return " ".join(texte.replace("\r", " ").replace("£", " ").split())
+
+
+def _designation_hierarchique_maroc(code, publiees, titres, libelles_sh6):
+    """La désignation d'une position nouvelle, du titre de position à la ligne.
+
+    Le libellé terminal de l'ADIL (« autres ») ne dit pas de quelle
+    marchandise il s'agit. Les titres sont ceux dont le code est un préfixe de
+    la position : rien n'est déduit de l'indentation publiée, qui n'est pas
+    fiable. Quand l'ADIL ne publie de titre ni à six ni à huit chiffres
+    (0902.10), le libellé SH6 emprunté le remplace, sa source nommée ; un
+    titre à huit chiffres tient lieu de titre SH6 (0405.10.00 « Beurre »)."""
+    niveaux = []
+    for longueur in (4, 6, 8):
+        prefixe = code[:longueur]
+        if prefixe in titres:
+            niveaux.append({"code": prefixe, "texte": _texte_adil(titres[prefixe]), "source": SOURCE_NOMENCLATURE_MAR})
+        elif longueur == 6 and code[:8] not in titres and (libelles_sh6.get(prefixe) or {}).get("fr"):
+            emprunt = libelles_sh6[prefixe]
+            niveaux.append(
+                {"code": prefixe, "texte": emprunt["fr"], "source": f"libellé SH6 emprunté — {emprunt.get('fr_source')}"}
+            )
+    niveaux.append({"code": code, "texte": _texte_adil(publiees[code]), "source": SOURCE_NOMENCLATURE_MAR})
+    return {"fr": " — ".join(n["texte"] for n in niveaux), "hierarchie": niveaux}
+
+
+def _nomenclature_maroc(positions, compteurs, collecte):
+    """Aligner les positions sur la nomenclature publiée : retirer celles
+    qu'elle ne porte plus, ajouter celles qui manquent, SANS droit connu.
+
+    Les 142 positions dont le relevé ne portait aucune taxe sont toutes parmi
+    les retirées : le portail était muet parce qu'elles n'existaient plus.
+    Rendre le bloc qui trace l'opération dans le socle."""
+    with open(NOMENCLATURE_MAR, encoding="utf-8") as f:
+        nomenclature = json.load(f)
+    publiees = nomenclature["positions"]
+    retirees = sorted(set(positions) - set(publiees))
+    ajoutees = sorted(set(publiees) - set(positions))
+    for code in retirees:
+        for d in positions.pop(code)["droits"]:
+            _compter_ligne(d, compteurs, -1)
+            if d.get("libelle") == "Droit de douane — taux absent de la source":
+                compteurs["droits_absents_completes"] -= 1
+    assiettes = collections.Counter(
+        d.get("assiette")
+        for p in positions.values()
+        for d in p["droits"]
+        if d.get("famille") == "droit" and d.get("assiette")
+    )
+    note = NOTE_POSITION_NOUVELLE_MAR.format(
+        date=_date_fr(nomenclature["releve_le"]), collecte=_date_fr(collecte[:10])
+    )
+    libelles_sh6 = charger_libelles_sh6()
+    for code in ajoutees:
+        positions[code] = {
+            "designation": _designation_hierarchique_maroc(code, publiees, nomenclature["titres"], libelles_sh6),
+            "hs6": code[:6],
+            "chapitre": code[:2],
+            "droits": [
+                {
+                    "code": "DD",
+                    "code_source": "DD",
+                    "libelle": "Droit de douane — taux à compléter",
+                    "famille": "droit",
+                    "taux": None,
+                    "assiette": assiettes.most_common(1)[0][0],
+                    "assiette_origine": "regle_de_pays",
+                    "source": SOURCE_NOMENCLATURE_MAR,
+                    "note": note,
+                }
+            ],
+            "source": SOURCE_NOMENCLATURE_MAR,
+        }
+        _compter_ligne(positions[code]["droits"][0], compteurs, 1)
+    compteurs["positions_retirees_nomenclature"] = len(retirees)
+    compteurs["positions_ajoutees_nomenclature"] = len(ajoutees)
+    return {
+        "nom": SOURCE_NOMENCLATURE_MAR,
+        "fichier": os.path.relpath(NOMENCLATURE_MAR, REPO),
+        "sha256": sha256(NOMENCLATURE_MAR),
+        "releve_le": nomenclature["releve_le"],
+        "positions_publiees": len(publiees),
+        "retirees": retirees,
+        "ajoutees": ajoutees,
+    }
+
+
+def _date_fr(iso_date):
+    annee, mois, jour = iso_date.split("-")
+    return f"{jour}/{mois}/{annee}"
+
+
+def _egypte(positions, compteurs, donnees):
+    """Égypte : lignes publiées deux fois, tabacs, redevances, Taxe de Table des
+    alcools et des cigarettes, droits au kilo et minimums de la Taxe de Table,
+    ordre des lignes. Fiche
+    EGY_TVA_taxe_de_table_2026-10-14.json."""
+    instructions = {
+        str(x.get("hs_code")): x.get("official_instructions") or []
+        for x in donnees.get("sub_positions") or []
+    }
+    publiees = {str(x.get("hs_code")): x.get("taxes") or {} for x in donnees.get("sub_positions") or []}
+
+    def specifique(montant, unite, brut):
+        return {
+            "montant": float(montant),
+            "unite_monetaire": "unite_principale",
+            "sous_unite_source": None,
+            "unite_quantite": unite,
+            "brut": brut,
+        }
+
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        # Une ligne publiée deux fois (8481.80.90.90 : « ID 60 % » et « TVA 14 % »
+        # répétées) se lit en ID2/VAT2 ; la compter ferait payer le droit deux fois.
+        for double, principal in (("ID2", "DD"), ("VAT2", "TVA")):
+            d = next((x for x in droits if x.get("code") == double), None)
+            p = next((x for x in droits if x.get("code") == principal), None)
+            if d is not None and p is not None and d.get("taux") is not None and d.get("taux") == p.get("taux"):
+                _compter_ligne(d, compteurs, -1)
+                droits.remove(d)
+        if code.startswith("24"):
+            for d in droits:
+                if d.get("famille") == "tva" and d.get("taux") not in (None, 0.0, 14.0):
+                    d.update(
+                        code=TAXE_DE_TABLE_EGY,
+                        libelle="Taxe de Table (publiée sous « TVA »)",
+                        famille="autre",
+                        note=TABAC_TAXE_DE_TABLE_EGY,
+                    )
+        for d in droits:
+            if d.get("code") in REDEVANCES_EGY and d.get("taux") is not None and not d.get("assiette"):
+                _compter_ligne(d, compteurs, -1)
+                d.update(assiette="CIF", assiette_origine="decision", note=RESERVE_REDEVANCES_EGY)
+                _compter_ligne(d, compteurs, 1)
+        if not any(d.get("code") == TAXE_DE_TABLE_EGY for d in droits):
+            d = None
+            alcool = TAXE_DE_TABLE_ALCOOLS_EGY.get(code[:4])
+            if alcool and any(i.startswith(INSTRUCTION_ALCOOLS_EGY) for i in instructions.get(code, [])):
+                taux, minimum, item = alcool
+                brut = f"{taux:g} % (minimum {minimum:g} EGP/l)"
+                d = {
+                    "taux": taux,
+                    "assiette": "CIF+TOUS_SAUF_TVA",
+                    "assiette_origine": "texte_primaire",
+                    "specifique": {
+                        "montant": minimum,
+                        "unite_monetaire": "unite_principale",
+                        "sous_unite_source": None,
+                        "unite_quantite": "l",
+                        "brut": brut,
+                    },
+                    "compose": True,
+                    "regle_composee": "LE_PLUS_ELEVE",
+                    "expression_brute": brut,
+                    "note": RESERVE_ALCOOLS_EGY.format(item=item),
+                }
+            elif code.startswith("240220"):
+                d = {"assiette": None, "assiette_origine": None, "note": TAXE_DE_TABLE_CIGARETTES_EGY}
+            consignes = [i for i in instructions.get(code, []) if i[:5] == INSTRUCTION_TABAC_CHAUFFE_EGY]
+            liquide = [i for i in instructions.get(code, []) if i[:5] in INSTRUCTIONS_LIQUIDE_EGY]
+            m = TABAC_CHAUFFE_EGY.search(consignes[0]) if consignes else None
+            if d is None and m:
+                brut = consignes[0]
+                d = {
+                    "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique",
+                    "specifique": specifique(m[1], "kg", brut),
+                    "expression_brute": brut,
+                    "note": f"Instruction {INSTRUCTION_TABAC_CHAUFFE_EGY} de la douane : {m[1]} EGP par kilo net.",
+                    "source": SOURCE_INSTRUCTIONS_EGY,
+                }
+            elif d is None and liquide:
+                total = sum(float(LIQUIDE_EGY.search(i)[1]) for i in liquide)
+                brut = " ; ".join(liquide)
+                d = {
+                    "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique",
+                    "specifique": specifique(total, "ml", brut),
+                    "expression_brute": brut,
+                    "note": TAXE_DE_TABLE_LIQUIDE_EGY.format(
+                        codes=", ".join(i[:5] for i in liquide), total=f"{total:g}"
+                    ),
+                    "source": SOURCE_INSTRUCTIONS_EGY,
+                }
+            if d is not None:
+                d.setdefault("source", "Loi n° 67/2016 (TVA), art. 36 et tableau annexé")
+                d.update(
+                    code=TAXE_DE_TABLE_EGY,
+                    code_source="ضريبة الجدول",
+                    libelle="Taxe de Table",
+                    famille="autre",
+                )
+                droits.append(d)
+                _compter_ligne(d, compteurs, 1)
+        usages = []
+        for texte in instructions.get(code, []):
+            if texte[:5] not in USAGES_EGY:
+                continue
+            usage, libelle, remplace_tva = USAGES_EGY[texte[:5]]
+            usages.append(
+                {
+                    "code": usage,
+                    "libelle": libelle,
+                    "instruction": texte[:5],
+                    "texte": texte,
+                    "ajouter": [
+                        {
+                            "code": TAXE_DE_TABLE_EGY,
+                            "code_source": "ضريبة الجدول",
+                            "libelle": "Taxe de Table",
+                            "famille": "autre",
+                            "taux": float(TAUX_INSTRUCTION_EGY.search(texte)[1]),
+                            "assiette": "CIF+TOUS_SAUF_TVA",
+                            "assiette_origine": "texte_primaire",
+                            "source": SOURCE_INSTRUCTIONS_EGY,
+                            "note": f"Instruction {texte[:5]} de la douane, sur usage déclaré : « {texte} ».",
+                        }
+                    ],
+                    "retirer": ["TVA"] if remplace_tva else [],
+                }
+            )
+        if usages:
+            position["usages"] = usages
+        taxes = publiees.get(code, {})
+        dd = next((x for x in droits if x.get("code") == "DD"), None)
+        brut = ((taxes.get("ID") or {}).get("raw") or "").strip()
+        m = DD_AU_KILO_EGY.match(brut)
+        if m and dd is not None and dd.get("taux") is None and not dd.get("specifique"):
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(
+                assiette="xQTE",
+                assiette_origine="droit_specifique",
+                specifique=specifique(m[1], "kg", brut),
+                expression_brute=brut,
+            )
+            _compter_ligne(dd, compteurs, 1)
+        # Le minimum publié sur sa propre ligne borne la Taxe de Table, il ne
+        # s'y ajoute pas : la plus élevée des deux est due (tableau, « القيمة
+        # (٢٠٠٪) بحد أدنى ٥٠ جنيهًا لكل كجم مصنع »).
+        tt = next((x for x in droits if x.get("code") == TAXE_DE_TABLE_EGY), None)
+        for minimum in [x for x in droits if x.get("code") in MINIMUMS_EGY]:
+            brut = ((taxes.get(minimum.get("code_source")) or {}).get("raw") or "").strip()
+            m = MINIMUM_EGY.match(brut)
+            if not m or minimum.get("taux") is not None or tt is None or tt.get("taux") is None or tt.get("specifique"):
+                continue
+            tt.update(
+                specifique=specifique(m[1], UNITES_EGY[m[2]], brut),
+                compose=True,
+                regle_composee="LE_PLUS_ELEVE",
+                expression_brute=f"{tt['taux']:g} % ; {brut}",
+            )
+            _compter_ligne(minimum, compteurs, -1)
+            droits.remove(minimum)
+        # La Taxe de Table et la TVA s'assoient sur les droits et taxes qui les
+        # précèdent : la Taxe de Table vient après les autres prélèvements, un
+        # minimum qui n'a pas pu lui être joint après elle, la TVA en dernier.
+        def rang(d):
+            if d.get("famille") == "tva":
+                return 3
+            if d.get("code") in MINIMUMS_EGY:
+                return 2
+            return 1 if d.get("code") == TAXE_DE_TABLE_EGY else 0
+
+        droits.sort(key=rang)
+
+
+def _tsp_tp_libye(positions, compteurs):
+    """Libye : aucun texte trouvé ne fonde la « Port Services Tax » à 4 % ni la
+    « Production Tax » à 2 % du crawl (fiche LBY_TSP_TP_taux_2026-10-10.json).
+    Les lignes restent, sans taux, à compléter ; elles étaient déjà sans assiette."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") not in TSP_TP_LIBYE:
+                continue
+            if d.get("taux") is not None:
+                compteurs["taux_indisponibles"] += 1
+            d["taux"] = None
+            d["source"], d["note"] = TSP_TP_LIBYE[d["code"]]
+
+
+def _ait_malawi(positions, compteurs):
+    """Malawi : Advance Income Tax à l'importation sur la valeur des marchandises
+    au point d'entrée (Taxation Act s.102B(1), taux porté de 3 % à 10 % par le
+    Taxation (Amendment) Act 2023, s.8 ; fiche MWI_assiette_AIT_2026-10-08.json).
+    Le taux reste celui de la colonne 12 de l'Order."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "AIT":
+                continue
+            if not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+            d["assiette"] = "CIF"
+            d["assiette_origine"] = "regle_de_pays"
+            d["note"] = (
+                "Taxation Act s.102B(1), modifié par le Taxation (Amendment) Act 2023 : « ten per centum "
+                "of the value of goods at the port of entry into Malawi ». Acompte d'impôt sur le revenu, "
+                "imputable ; non dû sur certificat d'exemption, par un ministère, une personne exonérée, ou "
+                "sous la section XXII de l'Order (s.102B(3))."
+            )
+            if d.get("taux") not in (None, 10.0):
+                d["note"] = (
+                    f"La colonne 12 de l'Order 2022 porte {d['taux']:g} % alors que la s.102B(1) fixe 10 % "
+                    "depuis le Taxation (Amendment) Act 2023 : taux non attribuable sans deviner."
+                )
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+        # L'AIT est « charged and payable on the importation of goods » (s.102B(2)) :
+        # elle entre dans « all import duties and taxes » de la TVA (VAT Act s.28).
+        if any(d.get("code") == "AIT" for d in position.get("droits") or []):
+            for d in position["droits"]:
+                if d.get("code") == "TVA":
+                    d["assiette"] = "CIF+DD+EXC+AIT"
+                    d["assiette_origine"] = "regle_de_pays"
+                    d["note"] = (
+                        "col. 11 — TVA. Assiette : Value Added Tax Act (Cap. 42:02) s.28 : « the import value "
+                        "calculated in accordance with the Customs and Excise Act with the addition of all import "
+                        "duties and taxes, but excluding Value Added Tax » ; l'Advance Income Tax en fait partie : "
+                        "« charged and payable on the importation of goods » (Taxation Act s.102B(2))."
+                    )
+
+
+def _prelevements_senegal(positions, compteurs):
+    """Sénégal : prélèvements d'entrée selon les FAQ de la DGD (2026) « Comment
+    faire pour savoir les frais de dédouanement » et « Comment dédouaner un
+    véhicule ? » (fiche SEN_taxes_specifiques_2026-10-10.json). Le crawl
+    portait un PCS de 1 % au lieu de 0,8 %, et
+    omettait le PROMAD (2 % de la valeur en douane) et le COSEC (0,4 %, dû par
+    voie maritime seulement, liquidé comme dans les tableaux de la DGD, le mode
+    de transport n'étant pas connu du moteur). Le PUA de 0,2 % du crawl, absent
+    des tableaux de la DGD, est maintenu en attendant confirmation."""
+    note_dgd = (
+        "FAQ DGD 2026 « Comment faire pour savoir les frais de dédouanement de ma marchandise ? » "
+        "et tableaux des taux cumulés des véhicules."
+    )
+    for code, position in positions.items():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "PUA":
+                d["note"] = (
+                    "Prélèvement de l'Union africaine, 0,2 % (taux de la source) : absent des tableaux de la DGD, "
+                    "liquidé par la douane ivoirienne (circulaire DGD n° 2258) ; maintenu, application au Sénégal à confirmer."
+                )
+            if d.get("code") == "PCS":
+                d["taux"] = 0.8
+                d["note"] = "Prélèvement communautaire de solidarité : 0,8 % (" + note_dgd + ")"
+            droits.append(d)
+        libelle_pos = (position.get("designation") or "").lower()
+        # Mots entiers : « usages spéciaux » n'est pas « usagé ».
+        if re.search(r"\busagée?s?\b|\bd'occasion\b", libelle_pos):
+            etat_taux = 3.0
+        elif re.search(r"\bneu(f|fs|ve|ves)\b", libelle_pos):
+            etat_taux = 1.0
+        else:
+            etat_taux = None
+        if droits and (code[:4] in ("8702", "8703", "8704", "8705") or code[:6] == "870120") and not any(d.get("code") == "DENR" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "DENR",
+                    "code_source": "DENR",
+                    "libelle": "Droit d'enregistrement des véhicules",
+                    "famille": famille("DENR"),
+                    "taux": etat_taux,
+                    "assiette": "CIF+DD+RS",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "Droit d'enregistrement : 1 % pour un véhicule neuf, 3 % d'occasion, « (Base + DD + RS) × taux » "
+                    "(" + note_dgd + ")" + (" ; état lu dans le libellé de la position." if etat_taux is not None
+                                             else " ; l'état neuf ou d'occasion n'est pas dans la position."),
+                },
+            )
+            compteurs["assiettes_table"] += 1
+            if etat_taux is None:
+                compteurs["taux_indisponibles"] += 1
+        conditionnelles = []
+        if code[:4] in ("2203", "2204", "2205", "2206", "2208") and code not in ("2206009100", "2206009900"):  # art. 412, 3°
+            conditionnelles.append((
+                "TAA", "Taxe additionnelle sur les alcools",
+                "800 F par litre d'alcool au-delà de 6° et jusqu'à 15°, 3 000 F au-delà de 15° (CGI art. 413 ; "
+                "tableau des mesures fiscales de la DGID) : le degré et le volume ne sont pas dans la position.",
+            ))
+        if code[:6] in ("240220", "240290"):
+            conditionnelles.append((
+                "STC", "Surtaxe sur les cigarettes",
+                "Surtaxe sur les cigarettes, perçue au cordon douanier (" + note_dgd + ") : taux et assiette non publiés dans les textes lus.",
+            ))
+        if code in ("2002901100", "2002901900", "2002902000"):
+            conditionnelles.append((
+                "TCI", "Taxe conjoncturelle à l'importation",
+                "Due sur le concentré de tomate quand la valeur CAF est inférieure au prix de déclenchement (" + note_dgd + ").",
+            ))
+        for code_c, libelle_c, note_c in conditionnelles:
+            if droits and not any(d.get("code") == code_c for d in droits):
+                rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+                droits.insert(rang, {
+                    "code": code_c, "code_source": code_c, "libelle": libelle_c, "famille": famille(code_c),
+                    "taux": None, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal", "note": note_c,
+                })
+                compteurs["assiettes_table"] += 1
+                compteurs["taux_indisponibles"] += 1
+        if droits and not any(d.get("code") == "COSEC" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "COSEC",
+                    "code_source": "COSEC",
+                    "libelle": "Prélèvement au profit du Conseil sénégalais des chargeurs",
+                    "famille": famille("COSEC"),
+                    "taux": 0.4,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "COSEC 0,4 %, « uniquement par voie maritime » (" + note_dgd + ") : liquidé comme dans "
+                    "les tableaux de la DGD ; à retirer pour un transport terrestre ou aérien.",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        if droits and not any(d.get("code") == "PROMAD" for d in droits):
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(
+                rang,
+                {
+                    "code": "PROMAD",
+                    "code_source": "PROMAD",
+                    "libelle": "Prélèvement pour la modernisation de l'administration des douanes",
+                    "famille": famille("PROMAD"),
+                    "taux": 2.0,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Direction générale des douanes du Sénégal",
+                    "note": "PROMAD 2 % de la valeur en douane (" + note_dgd + ")",
+                },
+            )
+            compteurs["assiettes_table"] += 1
+        position["droits"] = droits
+
+
+def _prelevements_ghana(positions, compteurs):
+    """Ghana : la collecte ne porte que DD, NHIL, GETFund et TVA. Prélèvements
+    à l'importation sur la valeur c.a.f. (MoFEP/IFS, « A survey of the Ghanaian
+    tax system », 2026, tableau 3.9) : ECOWAS Levy 0,5 %, AU Import Levy 0,2 %,
+    EXIM Levy 0,75 % (Act 911, s. 29, hors produits pétroliers), Special Import
+    Levy 2 % (Act 861, hors produits pétroliers, engrais, machines et
+    équipements ; chapitres 84 et 85 sans taux, faute de liste). TVA,
+    NHIL et GETFund sur une même base (GRA) : valeur en douane + droits et taxes
+    à l'importation autres que la TVA (VAT Act 2025, Act 1151, s. 45(1)). Fiche :
+    GHA_prelevements_TVA_2026-10-10.json."""
+    mofep = "MoFEP/IFS, A survey of the Ghanaian tax system (2026), tableau 3.9"
+    ajouts = [
+        ("CEDEAO", "ECOWAS Levy", 0.5, "« All imported goods from non-ECOWAS states » : non dû sur les origines CEDEAO."),
+        ("PUA", "AU Import Levy", 0.2, "African Union Import Levy Act 2017 (Act 952) : « All imported goods from non-AU states »."),
+        ("EXIM", "Export-Import Levy", 0.75, "Act 911, s. 29 : « on the dutiable value of any product imported for commercial purposes except petroleum products »."),
+        ("SIL", "Special Import Levy", 2.0, "Special Import Levy Act 2013 (Act 861) : « All imports, except for petroleum products, fertilisers, and machinery and equipment » ; produits pétroliers lus comme les positions 27.09 et 27.10, engrais comme le chapitre 31 ; exemptions de la First Schedule non relevées."),
+    ]
+    codes = "+".join(["DD"] + [c for c, _, _, _ in ajouts])
+    # Le droit d'accises (barème ACCISES_PAYS, passe suivante) entre dans la base
+    # commune ; absent de la position, il est sans objet.
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        if not droits:
+            continue
+        presents = {d.get("code") for d in droits}
+        rang = next((i + 1 for i, d in enumerate(droits) if d.get("code") == "DD"), 0)
+        for c, libelle, taux, note in ajouts:
+            if c in presents:
+                continue
+            if c == "EXIM" and code[:4] in ("2709", "2710", "2711", "2712", "2713"):
+                continue
+            if c == "SIL" and (code[:4] in ("2709", "2710") or code[:2] == "31"):
+                continue
+            if c == "SIL" and code[:2] in ("84", "85"):
+                taux = None
+                note += " Machines et équipements (chapitres 84 et 85) exclus, sans liste des positions concernées : taux non établi."
+                compteurs["taux_indisponibles"] += 1
+            droits.insert(
+                rang,
+                {
+                    "code": c,
+                    "code_source": c,
+                    "libelle": libelle,
+                    "famille": famille(c),
+                    "taux": taux,
+                    "assiette": "CIF",
+                    "assiette_origine": "regle_de_pays",
+                    "source": "Ghana Revenue Authority (Customs Division)",
+                    "note": f"{note} ({mofep})",
+                },
+            )
+            rang += 1
+            compteurs["assiettes_table"] += 1
+        for d in droits:
+            if d.get("code") in ("TVA", "NHIL", "GETFUND") and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
+                d["assiette"] = "CIF+" + codes + "+DA"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "VAT Act 2025 (Act 1151), s. 45(1) : « (a) the import value [...] (b) the import duties and taxes "
+                    "other than the Tax » ; GRA : « the VAT, the NHIL and the GETFund Levy are all charged on the same base »."
+                )
+        position["droits"] = droits
+
+
+def _prelevements_mali(positions, compteurs):
+    """Mali : tarif de la DGD (TEC CEDEAO, édition du Mali, 28/12/2023 ; fiche
+    MLI_prelevements_TVA_2026-10-10.json), sans assiette pour l'ISCP, la TAI, la
+    TCI ni la TVA. CGI art. 243 : ISCP sur « la valeur en douane majorée des
+    droits et taxes dus à l'entrée, à l'exception de la TVA » ; CGI art. 198 et
+    199 : TVA sur la valeur CAF, y compris « les impôts, taxes, droits et
+    prélèvements de toute nature à l'exception de la TVA »."""
+    entree = "DD+RS+PCS+PC-AES+TAI+TCI"
+    cgi = "Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017)"
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            code = d.get("code")
+            if code in ("TAI", "ISCP", "TVA") and not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+                d["assiette_origine"] = "regle_de_pays"
+            if code == "TAI":
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["note"] = "Taxe d'ajustement à l'importation, perçue sur la valeur CAF comme le droit de douane."
+            elif code == "ISCP":
+                d["assiette"] = "CIF+" + entree
+                d["note"] = (
+                    f"{cgi}, art. 243 : « à l'importation, par la valeur en douane majorée des droits et taxes "
+                    "dus à l'entrée, à l'exception de la TVA »."
+                )
+            elif code == "TVA":
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["note"] = (
+                    f"{cgi}, art. 198 : « pour les produits importés par la valeur CAF Franco frontière » ; art. 199 : "
+                    "« Sont à inclure dans la base d'imposition : les impôts, taxes, droits et prélèvements de toute "
+                    "nature à l'exception de la TVA »."
+                )
+            elif code == "TCI":
+                d["note"] = (
+                    "Taxe conjoncturelle à l'importation : assise sur un prix de déclenchement non publié ; "
+                    "l'ISCP et la TVA de la position restent indisponibles."
+                )
+            elif code == "PC-AES":
+                d["note"] = (
+                    "Colonne PC (0,5 %) du tarif de 2023, prélèvement de la CEDEAO quittée le 29/01/2025 ; servie "
+                    "comme prélèvement confédéral de l'AES au même taux (décision du 28/03/2025), dont sont exclues "
+                    "les marchandises originaires de l'AES et de l'UEMOA (art. 1er et 4)."
+                )
+
+
+def _prelevements_burkina(positions):
+    """Burkina Faso : la collecte porte un PCS de 1 % ; le taux communautaire est
+    de 0,8 % (circulaire DGD de Côte d'Ivoire n° 2258, tarif de la DGD du Mali ;
+    fiche BFA_prelevements_TVA_2026-10-11.json)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") == "PCS" and d.get("taux") == 1.0:
+                d["taux"] = 0.8
+                d["note"] = (
+                    "Prélèvement communautaire de solidarité de l'UEMOA : 0,8 % (circulaire DGD n° 2258 de Côte "
+                    "d'Ivoire : PCS « en vigueur » au taux de 0,8 % ; tarif de la DGD du Mali, colonne PCS)."
+                )
+
+
+def _pcs_uemoa(positions):
+    """PCS : 0,8 % de la valeur en douane des marchandises importées des pays
+    tiers (acte additionnel n° 01/2019/CCEG/UEMOA, art. 1er ; fiche
+    UEMOA_AES_PCS_PC-AES_2026-10-11.json). Les collectes du Niger, du Bénin, du Togo
+    et de la Guinée-Bissau portent encore 1 % (le Burkina a sa passe)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") == "PCS" and d.get("taux") == 1.0:
+                d["taux"] = 0.8
+                d["source"] = "Acte additionnel n° 01/2019/CCEG/UEMOA"
+                d["note"] = (
+                    "Acte additionnel n° 01/2019/CCEG/UEMOA, art. 1er : « maintenu à 0,80 % de la valeur en douane "
+                    "des marchandises importées des pays tiers » (la collecte portait 1 %)."
+                )
+
+
+#: Burkina Faso : droits du TEC UEMOA 2022 que la collecte de février 2026
+#: sous-évalue (fiche BFA_droits_TEC_2026-10-11.json).
+DD_TEC_BFA = {"0701900000": 35.0, "0703100000": 35.0, "1511100000": 10.0}
+
+
+def _droits_tec_burkina(positions):
+    for code, taux in DD_TEC_BFA.items():
+        for d in (positions.get(code) or {}).get("droits") or []:
+            if d.get("code") == "DD" and d.get("taux") != taux:
+                d["note"] = f"TEC UEMOA 2022 : {taux:g} % (la collecte portait {d['taux']:g} %)."
+                d["taux"] = taux
+
+
+#: Niger, loi de finances 2026 (ordonnance n° 2025-44, art. 13 ; CGI art. 322
+#: nouveau, 2°), tableau réécrit par la première loi de finances rectificative
+#: (ordonnance n° 2026-45, art. 7) : TVA exonérée à l'importation, par préfixe NTS.
+TVA_EXONEREE_NER = (
+    "0401", "0701", "0714", "10", "11062011", "11062012", "19011000", "22071010", "2501", "2705",
+    "27101912", "27111300", "2936", "29392000", "2941", "30", "37011000", "37021000", "38089210",
+    "38089290", "4014", "40151100", "42060000", "49019910", "4902", "49070000", "84139120", "84139190",
+    "84139200", "84192000", "84249000", "87011000", "8713", "87142000", "9011", "9012", "9018",
+    "9019", "90200000", "9021",
+    # « Ex. position » 90.22 et 94.02 : seules les sous-positions dont le libellé
+    # dit l'usage médical, chirurgical, dentaire ou vétérinaire.
+    "9022130000", "9022140000", "9022210000", "9402101000", "9402900000",
+)
+#: Exonération dont le périmètre ne se lit pas dans la position.
+TVA_EXONEREE_NER_A_TRANCHER = {
+    "1006": "céréales exonérées « à l'exception du riz de luxe », que la nomenclature ne distingue pas",
+    "9022120000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+    "9022300000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+    "9022900000": "« Ex. position 90 22 » : usage médical non dit par le libellé",
+}
+
+
+def _tva_exoneree_niger(positions, compteurs):
+    """Niger : exonérations de TVA à l'importation de la loi de finances 2026 et
+    de sa première rectification (fiche NER_TVA_exonerations_LF2026_2026-10-11.json)."""
+    reference = "Ordonnance n° 2026-45 (première rectification de la loi de finances 2026), art. 7 : CGI art. 322 nouveau, 2°"
+    for code, position in positions.items():
+        motif = next((m for p, m in TVA_EXONEREE_NER_A_TRANCHER.items() if code.startswith(p)), None)
+        exoneree = motif is None and code.startswith(TVA_EXONEREE_NER)
+        if not (motif or exoneree):
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") != "TVA" or d.get("taux") is None:
+                continue
+            if exoneree:
+                d["taux"] = 0.0
+                d["note"] = f"{reference} : « les importations et les ventes des produits énumérés »."
+            else:
+                d["taux"] = None
+                d["note"] = f"{reference} : {motif}."
+                compteurs["taux_indisponibles"] += 1
+
+
+def _prelevements_guinee(positions, compteurs):
+    """Guinée : tarif de la DGD (SH 2022 ; fiche GIN_prelevements_TVA_2026-10-11.json).
+    CGI (texte 2022 du Ministère du Budget), art. 436 : accise ad valorem sur « la valeur CAF [...] majorée de
+    l'ensemble des droits perçus au cordon douanier, à l'exception de la TVA » ;
+    TVA sur la valeur en douane augmentée des droits et taxes de toute nature
+    liquidés par la douane (arrêté du 31/03/2017, art. 12 ; Ministère du Budget)."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") not in ("DA", "TVA"):
+                continue
+            if not d.get("assiette"):
+                compteurs["assiettes_indisponibles"] -= 1
+                compteurs["assiettes_table"] += 1
+            elif d.get("assiette_origine") == "source":
+                compteurs["assiettes_source"] -= 1
+                compteurs["assiettes_table"] += 1
+            d["assiette_origine"] = "regle_de_pays"
+            d.pop("assiette_non_traduite", None)
+            if d["code"] == "DA":
+                d["assiette"] = "CIF+DD+RTL+PCC+CA"
+                d["note"] = (
+                    "Code général des impôts de Guinée (texte 2022 publié par le Ministère du Budget), art. 436 : "
+                    "« la valeur CAF [...] majorée de l'ensemble des droits perçus au cordon douanier, à l'exception "
+                    "de la TVA » ; « Les tarifs des droits d'accises sur les produits imposables importés sont fixés "
+                    "dans le TARIF DES DOUANES »."
+                )
+            else:
+                d["assiette"] = "CIF+TOUS_SAUF_TVA"
+                d["note"] = (
+                    "Arrêté du 31/03/2017, art. 12 : « L'assiette de la TVA intègre le montant des Droits et taxes de "
+                    "Douane effectivement appliqué » ; valeur en douane augmentée des droits et taxes de toute nature "
+                    "liquidés par l'administration des douanes, à l'exception de la TVA (Ministère du Budget)."
+                )
+
+
+def _prelevements_cote_divoire(positions, compteurs):
+    """Côte d'Ivoire : tarif officiel de la DGD (TEC CEDEAO 2022 enrichi de la
+    taxation nationale, mise à jour du 27/03/2026 ; fiche
+    CIV_prelevements_TVA_2026-10-10.json). Il porte RS, PCS, PCC et PUA
+    (circulaire DGD n° 2258) mais aucune assiette. Assiette des taxes spéciales
+    du CGI art. 418 (boissons, tabacs, cosmétiques, marbres) : valeur en douane
+    augmentée de tous les droits et taxes hormis la TVA ; assiette de la TVA :
+    valeur en douane majorée des droits et taxes perçus à l'entrée (directive
+    n° 02/98/CM/UEMOA, art. 27). Le droit unique de sortie, dû à l'exportation,
+    n'entre pas dans le calcul d'une importation."""
+    entree = "DD+RS+PCS+PCC+PUA+TAI+TCI"
+    speciales = ("TSBPT", "TAB", "TCB", "TSM")
+    omc = "Examen des politiques commerciales de la Côte d'Ivoire, OMC WT/TPR/S/362 (2017), § 3.24 et 3.26"
+
+    def vers_table(d):
+        # Une assiette réécrite par la règle du pays quitte le compteur de son origine.
+        if d.get("assiette_origine") == "source":
+            compteurs["assiettes_source"] -= 1
+            compteurs["assiettes_table"] += 1
+        elif d.get("assiette_origine") == "source_fichier":
+            compteurs["assiettes_fichier"] -= 1
+            compteurs["assiettes_table"] += 1
+
+    for code_position, position in positions.items():
+        droits = []
+        for d in position.get("droits") or []:
+            if d.get("code") == "TSBPT" and code_position.startswith("2002") and d.get("taux") is not None:
+                # Tomates préparées : l'art. 418 ne vise que les boissons ; aucun
+                # texte ne fonde le taux de 25 % publié dans la colonne TSB.
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+                d["note"] = (
+                    "Colonne TSB du tarif de la DGD (25 %) sur des tomates préparées : la taxe spéciale de "
+                    "l'art. 418 du CGI ne vise que les boissons (tableau synoptique DGI 2025) ; aucun texte "
+                    "trouvé pour ce taux. À compléter."
+                )
+            if d.get("code") == "TAI":
+                if not d.get("assiette"):
+                    compteurs["assiettes_indisponibles"] -= 1
+                    compteurs["assiettes_table"] += 1
+                else:
+                    vers_table(d)
+                d["libelle"] = "Taxe d'ajustement à l'importation"
+                d["famille"] = famille("DD")
+                d["assiette"] = "CIF"
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Taxe d'ajustement à l'importation, perçue sur la valeur en sus du TEC "
+                    f"({omc}) ; taux publié au tarif officiel de la DGD."
+                )
+            if d.get("code") == "TPQ" and d.get("taux") is not None:
+                d["libelle"] = "Taxe de péréquation sur le sucre"
+                d["taux"] = None
+                compteurs["taux_indisponibles"] += 1
+                d["note"] = (
+                    "« égale à la différence entre la valeur c.a.f. et le prix de déclenchement de la TCI, ce "
+                    f"dernier formant la base imposable pour les autres droits et taxes » ({omc}) : dépend de la "
+                    "valeur déclarée et du prix de déclenchement en vigueur."
+                )
+            if d.get("code") == "DUS":
+                compteurs["assiettes_source" if d.get("assiette") else "assiettes_indisponibles"] -= 1
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] -= 1
+                continue
+            if d.get("code") in speciales and d.get("assiette"):
+                vers_table(d)
+                d["assiette"] = "CIF+" + entree
+                d["assiette_origine"] = "regle_de_pays"
+                if d.get("taux") is not None:
+                    # Un taux retiré faute de texte (tomates préparées) garde sa
+                    # propre note : l'art. 418 ne le fonde pas.
+                    d["note"] = (
+                        "CGI art. 418 (tableau synoptique DGI 2025) : « assises, à l'importation, sur la valeur "
+                        "en douane des produits importés, augmentée de tous les droits et taxes hormis la TVA »."
+                    )
+            droits.append(d)
+        presentes = [d["code"] for d in droits if d.get("code") in speciales]
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette"):
+                vers_table(d)
+                d["assiette"] = "+".join(["CIF", entree] + presentes)
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = (
+                    "Directive n° 02/98/CM/UEMOA, art. 27 a) : « par la valeur en douane majorée des droits "
+                    "et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »."
+                )
+        if any(d.get("code") == "TPQ" for d in droits):
+            # Sucre : le prix de déclenchement de la TCI, non publié, forme la base
+            # des autres droits ; les liquider sur la valeur c.a.f. sous-évaluerait.
+            for d in droits:
+                if d.get("code") == "TPQ" or not d.get("assiette"):
+                    continue
+                vers_table(d)
+                compteurs["assiettes_table"] -= 1
+                compteurs["assiettes_indisponibles"] += 1
+                d["assiette"] = None
+                d["assiette_origine"] = None
+                d["note"] = (
+                    "Base imposable : prix de déclenchement de la TCI, « ce dernier formant la base imposable "
+                    f"pour les autres droits et taxes » ({omc}) ; prix non publié."
+                )
+        position["droits"] = droits
+
+
+def _accises_du_cgi(iso, positions, compteurs):
+    with open(ACCISES_PAYS[iso], encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        droits = [d for d in position.get("droits") or [] if d.get("code") != "DA"]
+        for regle in table["regles"]:
+            if code in regle.get("exclusions", []):
+                continue
+            if any(code.startswith(p) for p in regle["prefixes"]):
+                # Avant la TVA, qui s'assoit sur lui : le moteur liquide dans l'ordre.
+                # Ghana : avant le NHIL et le GETFund aussi, assis sur la même base.
+                avant = table.get("inserer_avant_familles", ["tva"])
+                rang = next(
+                    (i for i, d in enumerate(droits) if d.get("famille") in avant), len(droits)
+                )
+                droits.insert(
+                    rang,
+                    {
+                        "code": "DA",
+                        "code_source": "DA",
+                        "libelle": "Droit d'accises",
+                        "famille": famille("DA"),
+                        "taux": regle["taux"],
+                        "assiette": table["assiette"],
+                        "assiette_origine": "regle_de_pays",
+                        "source": table["source"],
+                        "note": " ".join(
+                            x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
+                        ),
+                    }
+                )
+                break
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette"):
+                if d.get("assiette_origine") == "source":
+                    compteurs["assiettes_source"] -= 1
+                    compteurs["assiettes_table"] += 1
+                d["assiette"] = table["tva_assiette"]
+                d["assiette_origine"] = "regle_de_pays"
+                d["note"] = table["tva_assiette_reference"]
+        position["droits"] = droits
+
+
+def _lignes_liquidables(position):
+    """Pour chaque ligne de la position : le moteur la liquide-t-il ? C'est le
+    moteur lui-même qui en juge (services/calcul.calculer), quantité, valeur
+    FOB et taux de change fournis : le compteur ne peut pas diverger de lui.
+    Une TVA assise sur un DA sans taux, un droit spécifique illisible, un
+    composé sans règle de départage ne comptent donc pas."""
+    droits = position.get("droits") or []
+    if not droits:
+        return []
+    backend = os.path.join(REPO, "backend")
+    if backend not in sys.path:
+        sys.path.insert(0, backend)
+    from services.calcul import calculer
+
+    lignes = calculer(position, 1000.0, quantite=1.0, taux_de_change=1.0, valeur_fob=1000.0)["npf"]["lignes"]
+    statuts = collections.defaultdict(list)
+    for ligne in lignes:
+        statuts[ligne.get("code")].append(ligne.get("statut"))
+    return [(statuts[d.get("code")] or [None]).pop(0) == "CALCULE" for d in droits]
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -1105,6 +3179,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         # obligerait à la répéter six fois, et `iso` n'y est pas défini.
         cle_controle = None
         longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+        if longueur_position and len(code) == longueur_position:
+            # Un chiffre de moins que code + clé : le zéro de tête a été perdu
+            # à la collecte (Tunisie : « 4039011010 » pour 0403.90.11.01.0).
+            code = code.zfill(longueur_position + 1)
         if longueur_position and len(code) == longueur_position + 1:
             code, cle_controle = code[:longueur_position], code[longueur_position:]
 
@@ -1152,7 +3230,36 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 # la forme : 181 lignes sud-africaines opposent un « 8c/kg » NPF
                 # à un « 3,2c/kg » AfCFTA. N'en garder que le taux perdrait le
                 # droit préférentiel de toutes ces positions.
-                if d["taux"] is None and d.get("specifique"):
+                if d["taux"] is not None and d.get("specifique"):
+                    # Droit COMPOSÉ dans une colonne préférentielle
+                    # (« 40% or 240c/kg » — 140 entrées AfCFTA du crawl SARS) :
+                    # les DEUX composantes se conservent, avec le verbatim.
+                    # Servir 40 % ad valorem seul remplacerait le droit composé
+                    # entier : c'est au moteur de départager selon la règle
+                    # reportée (regle_composee), ou de refuser faute de règle
+                    # (REGLE_COMPOSEE_NON_ETABLIE), pas au socle d'amputer.
+                    prefs[regime] = {
+                        "taux": d["taux"],
+                        "specifique": lire_specifique(d["specifique"])
+                        or {
+                            "brut": str(d["specifique"]),
+                            "montant": None,
+                            "motif": "expression non lisible",
+                        },
+                        "compose": True,
+                        "expression_brute": d.get("expression_brute") or "",
+                    }
+                    if d.get("regle_composee"):
+                        prefs[regime]["regle_composee"] = d["regle_composee"]
+                    if d.get("cumulatif"):
+                        # « 7%+SCR5/kg » (Seychelles, colonnes ZLECAf, SADC,
+                        # COMESA) : les deux composantes sont dues, comme au NPF.
+                        prefs[regime]["compose"] = False
+                        prefs[regime]["cumulatif"] = True
+                    if d.get("plafond_ad_valorem_pct") is not None:
+                        prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
+                    compteurs["preferentiels_specifiques"] += 1
+                elif d["taux"] is None and d.get("specifique"):
                     prefs[regime] = {
                         "taux": None,
                         "specifique": lire_specifique(d["specifique"])
@@ -1162,6 +3269,12 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                             "motif": "expression non lisible",
                         },
                     }
+                    # « 180c/kg with a maximum of 38,4 % » (colonne AfCFTA) : la
+                    # borne fait partie du droit — la perdre servirait le
+                    # spécifique sans plafond, là où la source en énonce un.
+                    if d.get("plafond_ad_valorem_pct") is not None:
+                        prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
+                        prefs[regime]["expression_brute"] = d.get("expression_brute") or ""
                     compteurs["preferentiels_specifiques"] += 1
                 elif d["taux"] is None and d.get("note"):
                     # UN TAUX ABSENT DOIT DIRE POURQUOI. La source mauricienne
@@ -1202,7 +3315,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     "montant": None,
                     "motif": "expression non lisible",
                 }
-            if d["specifique"] and d["taux"] is None:
+            if d["specifique"] and d["taux"] is None and not d.get("assiette_non_traduite"):
+                # Une assiette que la source décrit sans qu'on sache la traduire
+                # (« PN(KG)/100 EXCES », « QCI ») reste non traduite : la forcer
+                # à la quantité liquidait 1 156 droits tunisiens malgré leur réserve.
                 # Un droit spécifique se liquide à la quantité, jamais sur la
                 # valeur. Si l'assiette héritée dit « CIF », elle décrit le
                 # droit ad valorem de la ligne, pas celui-ci : la laisser
@@ -1355,35 +3471,119 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["taux_indisponibles"] += 1
             compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
+    _formalites(iso, donnees, positions)
+    nomenclature_publiee = None
+    if iso == "MAR":
+        nomenclature_publiee = _nomenclature_maroc(positions, compteurs, donnees.get("extracted_at") or "")
+    if iso == "TUN":
+        _ordre_tunisie(positions)
+    if iso == "NGA":
+        _iat_nigeria_2026(positions, compteurs)
+    if iso in _taux_tva_legaux():
+        _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
+    if iso == "MWI":
+        _ait_malawi(positions, compteurs)
+    if iso == "CMR":
+        _redevance_informatique_cmr(positions)
+    if iso == "GNQ":
+        _sans_redevance_informatique_gnq(positions, compteurs)
+    if iso in _regles_cedeao_hors_uemoa()[0]:
+        _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
+    if iso == "LBY":
+        _tsp_tp_libye(positions, compteurs)
+    if iso in ASSIETTE_EXA_SACU:
+        _accises_zaf(positions, compteurs, iso)
+    if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
+        _prelevements_sacu_non_collectes(iso, positions, compteurs)
+    if iso == "LSO":
+        _prelevement_tapl_lesotho(positions, compteurs)
+    if iso == "ZAF":
+        _prelevements_zaf(positions, compteurs)
+    if iso in PAYS_TEC_CAE:
+        _cae(iso, positions, compteurs)
+        _mesures_tec_cae(iso, positions, compteurs)
+    if iso == "EGY":
+        _egypte(positions, compteurs, donnees)
+    if iso == "ETH":
+        _droits_livre_ethiopie(positions, compteurs)
+        _accise_ethiopie(positions, compteurs)
+        _surtaxe_et_swl_ethiopie(positions, compteurs)
+        _ordre_ethiopie(positions)
+
+    if iso == "SEN":
+        _prelevements_senegal(positions, compteurs)
+    if iso == "CIV":
+        _prelevements_cote_divoire(positions, compteurs)
+    if iso == "GHA":
+        _prelevements_ghana(positions, compteurs)
+    if iso == "MLI":
+        _prelevements_mali(positions, compteurs)
+    if iso == "BFA":
+        _prelevements_burkina(positions)
+        _droits_tec_burkina(positions)
+    if iso == "NER":
+        _tva_exoneree_niger(positions, compteurs)
+    if iso in BLOCS_DESTINATION["UEMOA"]:
+        _pcs_uemoa(positions)
+    if iso == "GIN":
+        _prelevements_guinee(positions, compteurs)
+
+    if iso in ACCISES_PAYS or iso in ASSIETTE_ACCISE_PAYS:
+        # Les compteurs par ligne lue ont déjà compté les accises du crawl : on
+        # retranche celles d'avant et on ajoute celles d'après.
+        def _da():
+            return [
+                dict(d)
+                for p in positions.values()
+                for d in p.get("droits") or []
+                if d.get("famille") == "accise"
+            ]
+
+        avant = _da()
+        if iso in ACCISES_PAYS:
+            _accises_du_cgi(iso, positions, compteurs)
+        if iso in ASSIETTE_ACCISE_PAYS:
+            _assiette_accise(iso, positions)
+        apres = _da()
+        for lignes, signe in ((avant, -1), (apres, 1)):
+            for d in lignes:
+                if d.get("taux") is None:
+                    compteurs["taux_indisponibles"] += signe
+                if not d.get("assiette"):
+                    cle = "assiettes_indisponibles"
+                elif d.get("assiette_origine") == "source":
+                    cle = "assiettes_source"
+                elif d.get("assiette_origine") == "source_fichier":
+                    cle = "assiettes_fichier"
+                else:
+                    cle = "assiettes_table"
+                compteurs[cle] += signe
+
+    # Prélèvements communautaires dont les originaires du bloc sont exclus
+    # (backend/services/exoneration_origine.py) : la route les retire selon
+    # l'origine déclarée.
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            bloc = EXONERATION_ORIGINE.get(d.get("code"))
+            if bloc and (bloc == "UA" or iso in BLOCS_DESTINATION[bloc]):
+                d["exoneration_origine"] = bloc
+
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur
     # annonçait donc plus de positions que le socle n'en porte, et c'est ce qui
     # a masqué la perte de 349 positions libyennes rabattues sur le SH6.
     # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
+    # Les passes par pays (prélèvements, accises) ajoutent des familles après la
+    # lecture : la couverture se lit sur ce qui est servi.
+    familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
     compteurs["droits_composes"] = sum(
         1 for p in positions.values() for d in p.get("droits") or [] if d.get("compose")
     )
-    compteurs["droits_liquidables"] = sum(
-        1
-        for p in positions.values()
-        for d in p.get("droits") or []
-        if not d.get("compose")
-        and d.get("assiette")
-        and (d.get("taux") is not None or d.get("specifique"))
-    )
-    compteurs["positions_liquidables"] = sum(
-        1
-        for p in positions.values()
-        if (p.get("droits") or [])
-        and all(
-            not d.get("compose")
-            and d.get("assiette")
-            and (d.get("taux") is not None or d.get("specifique"))
-            for d in p["droits"]
-        )
-    )
+    liquidables = {code: _lignes_liquidables(p) for code, p in positions.items()}
+    compteurs["droits_liquidables"] = sum(sum(v) for v in liquidables.values())
+    compteurs["positions_liquidables"] = sum(1 for v in liquidables.values() if v and all(v))
 
     socle = {
         "iso3": iso,
@@ -1466,6 +3666,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         # date de construction vit au manifeste, qui n'est pas empreint.
         "positions": positions,
     }
+    if nomenclature_publiee:
+        socle["nomenclature_publiee"] = nomenclature_publiee
     if iso in CLE_DE_CONTROLE_SUFFIXE:
         # Posée seulement pour les pays concernés : les 53 autres fichiers
         # restent alors identiques au bit près, et le manifeste ne signale que

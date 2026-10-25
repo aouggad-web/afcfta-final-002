@@ -38,8 +38,8 @@ CE QUE CE SCRIPT NE FAIT PAS. Il n'écrit rien, ne corrige rien, ne suppose
 rien. Il mesure, il classe, et il produit l'ordre de travail : la liste exacte
 des positions à relire à la source primaire, avec la source que le socle leur
 attribue. La relecture, elle, se fait PAYS PAR PAYS — chaque portail a sa
-navigation — puis se verse avec un script de fusion dédié, sur le modèle de
-`scripts/recolter_dd_manquants_dza.py` et `scripts/fusionner_dd_dgd_dza.py`.
+navigation — puis se verse avec un collecteur dédié, sur le modèle de
+`scripts/releve_dgd_dza.py` (relevé des fiches, puis étape `verser`).
 
     python3 scripts/diagnostic_zeros_perdus.py
     python3 scripts/diagnostic_zeros_perdus.py --pays ETH --ordre /tmp/ETH.json
@@ -105,7 +105,7 @@ EXAMENS_FAITS = {
         "examiné le 20/09/2026 — 296 droits RÉCUPÉRÉS à l'e-service DGD. Le "
         "miroir conformepro.dz supprimait le bloc « Droit de douane » quand il "
         "valait zéro. Reste 3 positions du chapitre « Effets personnels », "
-        "hors importation commerciale. Voir data/dza/releve_dd_dgd.json."
+        "hors importation commerciale. Voir data/dza/releve_dgd.json."
     ),
 }
 

@@ -343,7 +343,6 @@ class SADCIntelligenceService:
         """Return the SACU customs union framework details."""
         try:
             from crawlers.countries.sacu_customs_union import (
-                SACU_CET_BANDS,
                 SACU_FRAMEWORK,
                 SACU_REVENUE_SHARES,
             )
@@ -351,41 +350,9 @@ class SADCIntelligenceService:
             return {
                 "framework": SACU_FRAMEWORK,
                 "revenue_shares": SACU_REVENUE_SHARES,
-                "cet_bands": {str(k): v for k, v in SACU_CET_BANDS.items()},
             }
         except ImportError:
             return {"error": "SACU framework data not available"}
-
-    def calculate_sacu_import_cost(
-        self, cif_value: float, hs_chapter: str, destination: str, origin: str = "INTL"
-    ) -> Dict[str, Any]:
-        """Calculate landed cost for an import at a SACU entry port."""
-        try:
-            from crawlers.countries.sacu_customs_union import calculate_total_import_cost
-
-            return calculate_total_import_cost(cif_value, hs_chapter, destination, origin)
-        except ImportError:
-            return {"error": "SACU calculation module not available"}
-
-    # ==================== Trade Protocols ====================
-
-    def get_trade_protocols(self, protocol: Optional[str] = None) -> Dict[str, Any]:
-        """Return SADC trade agreements and protocols."""
-        try:
-            from crawlers.countries.sadc.trade_protocols import SADC_TRADE_PROTOCOLS
-        except ImportError:
-            return {"error": "Trade protocols data not available"}
-
-        if protocol:
-            data = SADC_TRADE_PROTOCOLS.get(protocol)
-            if not data:
-                return {
-                    "error": f"Protocol not found: {protocol}",
-                    "available": list(SADC_TRADE_PROTOCOLS.keys()),
-                }
-            return data
-
-        return SADC_TRADE_PROTOCOLS
 
     # ==================== Cross-Regional Comparison ====================
 
@@ -441,14 +408,13 @@ class SADCIntelligenceService:
                     "gdp_usd_billion": 120,
                     "population_million": 60,
                     "currency": "XAF (CFA Franc – shared with UEMOA)",
-                    "common_external_tariff": "TEC CEMAC (4 bands: 5%, 10%, 20%, 30%)",
+                    "common_external_tariff": "TEC CEMAC",
                 },
             },
             "key_differences": [
                 "SADC: much larger economy and population",
                 "CEMAC: monetary union with single currency",
                 "SADC: deeper integration via SACU customs union",
-                "CEMAC: simpler 4-band CET vs SADC's varied national schedules",
             ],
             "connectivity": {
                 "countries_in_both": [],

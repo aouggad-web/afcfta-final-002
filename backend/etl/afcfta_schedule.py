@@ -377,47 +377,6 @@ def get_dismantlement_schedule(
     return result
 
 
-def compute_impact_projection(
-    npf_rate: float,
-    category: str,
-    is_ldc: bool,
-    trade_value: float,
-) -> List[Dict]:
-    """
-    Projette l'économie de droits de douane année par année pour un flux
-    commercial récurrent de ``trade_value`` (USD) sur un produit donné.
-
-    Pour chaque année du calendrier de démantèlement:
-      droit NPF        = trade_value × npf_rate / 100   (constant)
-      droit ZLECAf     = trade_value × rate(année) / 100
-      économie         = droit NPF − droit ZLECAf
-      économie cumulée = somme des économies annuelles
-
-    Hypothèse: même valeur échangée chaque année (flux récurrent), ce qui rend
-    le cumul interprétable comme l'économie totale sur la période de transition.
-    """
-    schedule = compute_annual_schedule(npf_rate, category, is_ldc)
-    duty_npf = trade_value * npf_rate / 100.0
-    cumulative = 0.0
-    rows: List[Dict] = []
-    for entry in schedule:
-        duty_zlecaf = trade_value * entry["rate"] / 100.0
-        saving = duty_npf - duty_zlecaf
-        cumulative += saving
-        rows.append(
-            {
-                "year": entry["year"],
-                "calendar_year": entry["calendar_year"],
-                "zlecaf_rate": entry["rate"],
-                "duty_npf": round(duty_npf, 2),
-                "duty_zlecaf": round(duty_zlecaf, 2),
-                "annual_saving": round(saving, 2),
-                "cumulative_saving": round(cumulative, 2),
-            }
-        )
-    return rows
-
-
 def _classification_source_label(source: Optional[str], lang: str) -> Optional[str]:
     labels = {
         CLASSIFICATION_SOURCE_NATIONAL: {

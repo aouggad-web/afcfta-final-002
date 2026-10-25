@@ -14,12 +14,16 @@ a preferential calculation.
 """
 
 from __future__ import annotations
+from datetime import date
 
 from dataclasses import dataclass
 from typing import FrozenSet, Optional
 
+from services.zlecaf_schedule_dza import ACTIVE_PARTNERS as DZA_ORIGINES
 from services.zlecaf_schedule_egy import ORIGINES_PAR_GROUPE
 from services.zlecaf_schedule_mar import ORIGINES_PAR_GROUPE as MAR_ORIGINES
+from services.zlecaf_schedule_syc import ORIGINES_SCHEDULE_VI as SYC_ORIGINES
+from services.zlecaf_schedule_tun import ORIGINES_TARIF_WEB as TUN_ORIGINES
 
 APPLIED = "APPLIED"
 OFFER_ONLY = "OFFER_ONLY"
@@ -148,12 +152,6 @@ KENYA_ORIGINS_RESERVES = (
 )
 
 
-# RÈGLE B (propriétaire, 27/09/2026) : pour un État de l'EAC, le taux ZLECAf
-# est servi si quatre conditions sont réunies — ratification de l'Accord,
-# application du TEC et de l'EACCMA (primauté du droit communautaire, art. 8(4)
-# du Traité EAC, à vérifier depuis le texte primaire), participation au GTI
-# selon le Secrétariat de la ZLECAf (source primaire archivée), aucune source
-# contraire. Voir docs/METHODE_EAC_REGLE_B_2026-09-27.md.
 # Preuve kényane : la publication du barème par la KRA (kra.go.ke, URL portée
 # par le record). L'avis EAC/321/2022 (Gazette de l'EAC du 06/09/2022) est
 # l'instrument, le barème son annexe.
@@ -168,7 +166,18 @@ KENYA_ORIGINS_RESERVES = (
 # celles de l'Annexe 1 de la Directive 1/2021 (plafond). Défini une seule
 # fois ici — aucun chargement de données ; les étapes suivantes y ajouteront
 # les États prouvés.
-DESTINATIONS_REGLE_B_EAC = frozenset({"KEN"})
+DESTINATIONS_REGLE_B_EAC = frozenset({"KEN", "TZA", "RWA", "UGA"})
+
+
+def application_commencee(destination_iso3: str, jour: date) -> bool:
+    """Règle B : l'application d'un État ne vaut qu'à partir de son
+    effective_from — vrai en l'absence de date, ou à partir de la date
+    effective (ex. Ouganda : 2026-02-13, attestation du gazettement)."""
+    record = RECORDS.get((destination_iso3 or "").upper())
+    if not record or not record.effective_from:
+        return True
+    annee, mois, jour_eff = (int(x) for x in record.effective_from.split("-"))
+    return jour >= date(annee, mois, jour_eff)
 
 
 RECORDS = {
@@ -196,10 +205,116 @@ RECORDS = {
             "le droit de douane est réduit. Information indicative."
         ),
     ),
+    # Tanzanie (règle B, 27/09/2026) : les quatre conditions sont documentées
+    # dans la fiche TZA (PR #531). Preuve tanzanienne : le TEC EAC 2022 publié
+    # par la TRA (archivé, sha dans la fiche) ; l'avis EAC/321/2022 est
+    # l'instrument, le barème son annexe.
+    "TZA": ImplementationRecord(
+        destination_iso3="TZA",
+        status=APPLIED,
+        instrument_id="EAC/321/2022",
+        instrument_title=(
+            "EAC Legal Notice EAC/321/2022 — implementation of Category A "
+            "AfCFTA tariff concessions"
+        ),
+        instrument_url=(
+            "https://www.tra.go.tz/images/uploads/pages/" "CET_2022_VERSION_Updated_June_2025.pdf"
+        ),
+        effective_from="2022-09-06",
+        accepted_origins=KENYA_ACCEPTED_ORIGINS,
+        tariff_dataset="EAC",
+        note=(
+            "Règle B (27/09/2026) — les quatre conditions sont documentées "
+            "dans la fiche et docs/METHODE_EAC_REGLE_B_2026-09-27.md. Taux "
+            "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
+            "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
+            "le droit de douane est réduit. Information indicative."
+        ),
+    ),
     # Les deux circulaires égyptiennes (n° 38 de 2024, complétée par la n° 44
     # de 2025) nomment 19 origines et ne réduisent que la liste A ; le taux est
     # calculé depuis le NPF par zlecaf_schedule_egy, jamais servi depuis
     # l'e-Tariff Book, dont la carte d'origines contredit l'acte national.
+    # Rwanda (règle B, 27/09/2026) : les quatre conditions sont documentées
+    # dans la fiche RWA (PR #534). Preuve rwandaise : le TEC EAC 2022 publié
+    # par la RRA (archivé, sha dans la fiche — identique octet par octet à la
+    # copie TRA : un même fichier communautaire publié par deux douanes) ;
+    # l'avis EAC/321/2022 est l'instrument, le barème son annexe.
+    "RWA": ImplementationRecord(
+        destination_iso3="RWA",
+        status=APPLIED,
+        instrument_id="EAC/321/2022",
+        instrument_title=(
+            "EAC Legal Notice EAC/321/2022 — implementation of Category A "
+            "AfCFTA tariff concessions"
+        ),
+        instrument_url=(
+            "https://www.rra.gov.rw/fileadmin/user_upload/"
+            "COMMON_EXTERNAL_TARIFF__Updated_June_2025.pdf"
+        ),
+        effective_from="2022-09-06",
+        accepted_origins=KENYA_ACCEPTED_ORIGINS,
+        tariff_dataset="EAC",
+        note=(
+            "Règle B (27/09/2026) — les quatre conditions sont documentées "
+            "dans la fiche et docs/METHODE_EAC_REGLE_B_2026-09-27.md. Taux "
+            "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
+            "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
+            "le droit de douane est réduit. Information indicative."
+        ),
+    ),
+    # Ouganda (règle B, 27/09/2026) : les quatre conditions sont documentées
+    # dans la fiche UGA (PR #535). Preuve ougandaise : le TEC EAC 2022 publié
+    # par l'URA (archivé, sha dans la fiche — version originale EAC/117/2022,
+    # distincte de la mise à jour de juin 2025 publiée par TRA/RRA) et le
+    # gazettement attesté par le Secrétariat (13/02/2026) ; le FACTSHEET du
+    # Secrétariat (01/2025) nomme l'Ouganda parmi les GTI Participating
+    # Countries. L'avis EAC/321/2022 est l'instrument, le barème son annexe.
+    "UGA": ImplementationRecord(
+        destination_iso3="UGA",
+        status=APPLIED,
+        instrument_id="EAC/321/2022",
+        instrument_title=(
+            "EAC Legal Notice EAC/321/2022 — implementation of Category A "
+            "AfCFTA tariff concessions"
+        ),
+        instrument_url=("https://ura.go.ug/en/download/" "common-external-tariff-2022-version/"),
+        # Date d'attestation du gazettement par le Secrétariat (communiqué du
+        # 13/02/2026) ; date exacte de la Uganda Gazette à localiser.
+        effective_from="2026-02-13",
+        accepted_origins=KENYA_ACCEPTED_ORIGINS,
+        tariff_dataset="EAC",
+        note=(
+            "Règle B (27/09/2026) — les quatre conditions sont documentées "
+            "dans la fiche et docs/METHODE_EAC_REGLE_B_2026-09-27.md. Taux "
+            "fixé par l'avis EAC/321/2022 (barème commun de l'EAC). Origines : "
+            "Annexe 1 de la Directive 1/2021, traitée comme un plafond. Seul "
+            "le droit de douane est réduit. Information indicative."
+        ),
+    ),
+    # L'Algérie : circulaire 482/DGD/SP/D.042/24, application au 01/11/2024.
+    # Le taux est calculé depuis le NPF par le calendrier national et les
+    # listes (B) et (C) de la circulaire (zlecaf_schedule_dza) — même
+    # résolveur que le chemin historique. DAPS exonéré (listes A et B).
+    "DZA": ImplementationRecord(
+        destination_iso3="DZA",
+        status=APPLIED,
+        instrument_id="482/DGD/SP/D.042/24",
+        instrument_title=(
+            "Circulaire DGD n° 482/DGD/SP/D.042/24 du 22/10/2024 — mise en "
+            "œuvre de l'Accord ZLECAf à l'importation en Algérie"
+        ),
+        instrument_url="",
+        effective_from="2024-11-01",
+        accepted_origins=DZA_ORIGINES,
+        tariff_dataset=None,
+        note=(
+            "Neuf origines admises (circulaire 482/2024). Taux calculés depuis "
+            "le NPF par le calendrier national (listes A, B, C ; positions "
+            "gelées au droit commun) ; DAPS exonéré pour les listes A et B. "
+            "Voir DZA_application_2026-09-14.json."
+        ),
+    ),
     "EGY": ImplementationRecord(
         destination_iso3="EGY",
         status=APPLIED,
@@ -241,6 +356,56 @@ RECORDS = {
             "P1 (5 ans) et P2 (10 ans), lues dans la fiche. DI servi depuis "
             "l'e-Tariff Book sélectionné par les listes nationales ; TPI "
             "démantelée sur le même calendrier — voir zlecaf_schedule_mar.py."
+        ),
+    ),
+    # Les Seychelles : un seul règlement porte l'instrument, la liste des
+    # origines (Schedule VI) et le barème (sous-colonne AfCFTA 2022-2026) —
+    # fiche SYC_application_2026-09-28.json.
+    "SYC": ImplementationRecord(
+        destination_iso3="SYC",
+        status=APPLIED,
+        instrument_id="S.I. 113 of 2022",
+        instrument_title=(
+            "Customs Management (Tariff and Classification of Goods) "
+            "Regulations, 2022 — Seychelles"
+        ),
+        instrument_url=(
+            "https://src.gov.sc/wp-content/uploads/2025/10/"
+            "SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf"
+        ),
+        effective_from="2022-11-01",
+        accepted_origins=SYC_ORIGINES,
+        # Le barème est la sous-colonne AfCFTA du socle, pas un jeu e-Tariff.
+        tariff_dataset=None,
+        note=(
+            "S.I. 113 of 2022 : origines de la Schedule VI (38 États), taux de "
+            "la sous-colonne AfCFTA de l'année (2022 à 2026, rien au-delà). "
+            "Seul le droit de douane est réduit. Information indicative."
+        ),
+    ),
+    # Tunisie : texte TA n°016/2023 (coefficients sur le droit de base 2019).
+    # Les origines sont celles auxquelles la douane publie un coefficient au
+    # Tarif Web 2026 : les participants au commerce guidé selon le ministère,
+    # Égypte exceptée. Le Nigeria et l'Afrique du Sud n'étaient pas nommés par
+    # le texte de 2023 ; l'Égypte et l'Algérie entrent déjà en franchise au
+    # titre de la ZALE (Agadir, accord bilatéral). Fiches
+    # TUN_droit_de_base_2019_2026-10-03.json, TUN_origines_servies_2026-10-03.json.
+    "TUN": ImplementationRecord(
+        destination_iso3="TUN",
+        status=APPLIED,
+        instrument_id="نص ت ع رقم 016 لسنة 2023",
+        instrument_title=(
+            "Texte TA n°016 de 2023 du 06/04/2023 — application de l'Accord "
+            "ZLECAf (Direction générale des douanes, Tunisie)"
+        ),
+        instrument_url="https://www.douane.gov.tn/wp-content/uploads/2023/04/016_2023-1.pdf",
+        effective_from="2023-04-06",
+        accepted_origins=TUN_ORIGINES,
+        tariff_dataset=None,
+        note=(
+            "Texte TA n°016/2023 : coefficient 2026 publié au Tarif Web × droit "
+            "de base 2019 (taux de base de l'e-Tariff), plafonné au NPF. Seul le "
+            "droit de douane est réduit. Information indicative."
         ),
     ),
     # Regulation 574/2025 is in force and contains Ethiopia's schedule, but
@@ -331,7 +496,6 @@ OFFER_DATASETS = {
     "GHA": "ECOWAS",
     "MAR": "MAR",
     "RWA": "EAC",
-    "TUN": "TUN",
     "ZWE": "ZWE",
 }
 

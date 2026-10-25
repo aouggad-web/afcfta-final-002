@@ -1,0 +1,39 @@
+Cameroun — Circulaire N° 410/MINFI/DGD du 18 mai 2026 précisant les modalités
+d'application des dispositions douanières de la Loi N° 2025/012 du 17 décembre 2025
+portant loi de finances pour l'exercice 2026 (contrôle NÉGATIF daté)
+Consulté le : 2026-09-29.
+URL OFFICIELLE (page porteuse) :
+http://www.douanes.cm/douanes-cameroun/8365/circulaire-n410-minfi-dgd-du-18-mai-2026-precisant-les-modalites-dapplication-des-dispositions-douanieres-de-la-loi-n2025-012-du-17-decembre-2025-portant-loi-de-finances-de-la-rep/
+PDF ORIGINAL (téléchargé en direct depuis douanes.cm) :
+https://www.douanes.cm/douanes-cameroun/wp-content/uploads/2026/05/CIRCULAIRE-N°-410-DGD-DU-18-MAI-2026-Precisant-les-modalites-dapplication-des-dispositions-douanieres-de-la-LF-2026.pdf
+SHA256 DU PDF ORIGINAL :
+13b0ea5a7a7a78b726986ace366c3060afebfa79a1d049ee0d0f80ef0df0f255
+PDF NON VERSÉ AU DÉPÔT (règle : un PDF entier seulement quand il prouve un fait) ;
+copie conservée hors dépôt : ~/Downloads/Cameroun/CMR_circulaire_410_MINFI_DGD_2026-05-18.pdf
+(37 p., scannée sans couche texte) ; OCR intégral hors dépôt :
+~/Downloads/Cameroun/CMR_circulaire_410_ocr_integral.txt.
+
+PAGE DE TITRE (OCR de la page 1) :
+« REPUBLIQUE DU CAMEROUN / MINISTERE DES FINANCES / DIRECTION GENERALE DES DOUANES /
+CIRCULAIRE N° 410 /MINFI/DGD DU 18 MAI 2026 / Précisant les modalités d'application des
+dispositions douanières de la loi N° 2025/012 du 17 décembre 2025 portant loi de finances
+de la République du Cameroun pour l'exercice 2026 / La présente Circulaire précise les
+modalités d'application des mesures douanières nouvelles contenues dans la Loi N°
+2025/012 du 17 décembre 2025 [...] »
+
+RÉSULTAT DE LA RECHERCHE (OCR intégral des 37 pages, lecteur macOS Vision) :
+une seule occurrence de « ZLECAf », CONTEXTUELLE (p. 1, consolidation budgétaire) —
+VERBATIM : « l'accroissement de la charge liée aux dépenses fiscales résultant de la
+mise en œuvre des différents accords commerciaux et douaniers signés par le Cameroun,
+notamment l'Accord de Partenariat Economique avec l'Union Européenne et la Grande
+Bretagne (APE), la Zone de [Libre-Echange] Continentale Africaine (ZLECAf) et le
+redimensionnement de l'Union Economique des Etats de l'Afrique Centrale (UEAC) »
+— l'OCR imprime « Zone de Liban Eohanesse » pour « Zone de Libre-Echange »
+(défaillance de lecture consignée) ; crochets de restitution.
+Aucune des dix-huit mesures douanières nouvelles de la loi (articles 5 à 20) ne porte
+un dispositif tarifaire ZLECAf, ni une liste d'origines ; aucune occurrence de
+« AfCFTA », « préférent » ou « exonér » dans l'OCR (0 chacune).
+
+PORTÉE : la circulaire douanière d'application de la LF 2026 ne met en œuvre aucun
+mécanisme tarifaire ZLECAf à l'importation ; l'unique mention confirme seulement que
+la ZLECAf pèse dans les dépenses fiscales de l'État.

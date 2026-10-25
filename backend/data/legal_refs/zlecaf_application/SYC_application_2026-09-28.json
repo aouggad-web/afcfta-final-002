@@ -1,0 +1,62 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "SYC",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "APPLIQUE",
+ "verified_at": "2026-09-28",
+ "evidence_level": "primaire intégral — Customs Management (Tariff and Classification of Goods) Regulations, 2022 (S.I. 113 of 2022), Supplement to Official Gazette [28 octobre 2022], pris sous la section 270 du Customs Management Act, 2011 : instrument en vigueur, LISTE NOMINATIVE des origines (Schedule VI « List of African Continental Free Trade Area (AfCFTA) Member States », 38 entrées) et BARÈME LIGNE À LIGNE (sous-colonne AfCFTA à cinq millésimes 2022-2026) dans le même texte réglementaire.",
+ "instrument": {
+  "id": "S.I. 113 of 2022 — Customs Management (Tariff and Classification of Goods) Regulations, 2022",
+  "title_etabli": "Customs Management (Tariff and Classification of Goods) Regulations, 2022, made this 27th day of October 2022 by NAADIR HASSAN, Minister of Finance, National Planning and Trade, en vertu de la section 270 du Customs Management Act, 2011 (Act 22 of 2011) ; Supplement to Official Gazette [28th October, 2022], 827 pages ; en vigueur le 1er novembre 2022 (regulation 1 : « shall come into operation on 1st November, 2022 »).",
+  "date": "2022-10-27 (fait le 27/10/2022, gazette [28/10/2022], en vigueur 01/11/2022)",
+  "gazette": "Supplement to Official Gazette, Republic of Seychelles, [28 October 2022] — numéro de la gazette non imprimé dans le texte extrait ; l'instrument est identifié par son numéro S.I. 113 of 2022",
+  "texte_extrait": "sources/SYC_si113_2022_reg2_scheduleVI_afcfta_2026-09-28.texte-extrait.txt",
+  "sha256": "1a81cc0ea416e1983dc2ccbeb8dd78a3a3ae7813e812a3e7a4e991d10a85f31d",
+  "pdf_integral_archive": {
+   "fichier": "sources/SYC_si113_2022_tradeportal_2026-09-28.pdf",
+   "sha256": "605bc65193e5b16fb2f0960b56287c1a2238712a54aa2a567ac920aa8d57b693",
+   "url": "https://www.tradeportal.sc/wp-content/uploads/2023/12/SI-113-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf",
+   "note": "Copie du portail national du commerce seychellois (tradeportal.sc), 19 140 508 octets, différente à l'octet près de la copie SRC citée par la fiche SYC_treize_colonnes du 19/09/2026 (sha 8eb2452b…, URL https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf). Deux copies du même instrument ; le texte extrait du jour provient de la copie tradeportal."
+  }
+ },
+ "recherche_du_texte_et_des_origines": {
+  "consulte_le": "2026-09-28",
+  "cible": "Acte national d'application ZLECAf seychellois, liste des origines admises à l'importation, barème ligne à ligne.",
+  "ou": [
+   {
+    "endroit": "Exa (web_search_exa) : « Seychelles Revenue Commission AfCFTA preferential tariff gazette »",
+    "resultat": "Le S.I. 113 of 2022 identifié dès le premier résultat, avec sa structure « AfCFTA » sub-column et sa Schedule VI."
+   },
+   {
+    "endroit": "PDF intégral du S.I. 113 of 2022 (827 p.), extraction pypdf des 827 pages",
+    "resultat": " regulation 2(6) : « The list of African Continental Free Trade Area (AfCFTA) State Parties are specified in Schedule VI. » ; en-tête du barème : « Rate of Duty : MFN | COMESA FTA | European Union & UK | SADC FTA 2022-2026 | AfCFTA 2022-2026 » ; Schedule VI p. 1901-1902 de la gazette : 38 États parties énumérés ; signature du ministre le 27/10/2022."
+   },
+   {
+    "endroit": "gazette.sc (Official Gazette, rubrique S.I.s 2022)",
+    "resultat": "La liste des S.I. 2022 ne rend que le squelette (rendu JS) ; le numéro de gazette du 28/10/2022 n'a pas été imprimé depuis le site. Non bloquant : l'instrument est identifié par son numéro S.I. et son contenu."
+   },
+   {
+    "endroit": "nationalassembly.sc (S.I. 113 of 2022) et tradeportal.sc (S.I. 55 de 2024)",
+    "resultat": "Le S.I. 113 of 2022 est bien l'instrument de base ; il est modifié par S.I. 7 of 2024, S.I. 55 of 2024 (No.2), S.I. 14 of 2025 — les modifications portent des lignes de nomenclature (ex. 8706.0010 châssis VE) en conservant la même structure de colonnes. Cohérent avec la fiche SYC_treize_colonnes du 19/09/2026, qui porte déjà S.I. 7 of 2024 en partie."
+   }
+  ],
+  "resultat": "Tout a été trouvé : instrument (S.I. 113 of 2022, en vigueur 01/11/2022), liste officielle des origines (Schedule VI, intitulée « List of African Continental Free Trade Area (AfCFTA)  Member State s » dans le texte — 38 entrées numérotées, dont le Togo et le Tchad — sans les Comores, encore non ratifiante à la date du texte), barème ligne à ligne (sous-colonne AfCFTA à cinq millésimes sur les 6 019 lignes à huit chiffres). Vérification du jour cohérente avec la fiche SYC_treize_colonnes_calendrier_zlecaf_et_valeur_2026-09-19.json (déjà établie sur la copie SRC)."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "ÉTABLI — S.I. 113 of 2022, pris sous s.270 du Customs Management Act 2011, en vigueur le 01/11/2022, modifié ensuite (S.I. 7/2024, 55/2024, 14/2025) sans changer la structure ZLECAf",
+  "2_liste_officielle_origines_reciproques": "ÉTABLI — Schedule VI, intitulée « List of African Continental Free Trade Area (AfCFTA)  Member State s » : liste fermée de 38 entrées nominativement énumérées dans l'instrument lui-même ; le règlement 2(6), qui la désigne, les nomme « State Parties » (« The list of African Continental Free Trade Area (AfCFTA) State Parties are specified in Schedule VI. »). RÉSERVE DE SÉMANTIQUE : c'est une liste d'États parties de la ZLECAf (admission par règle), pas une liste de partenaires dont l'application réciproque serait vérifiée bilatéralement — elle est néanmoins la liste officielle des origines admises par l'instrument seychellois",
+  "3_bareme_au_niveau_de_la_ligne": "ÉTABLI — sous-colonne AfCFTA 2022-2026 sur chaque ligne à huit chiffres du Schedule I Part III (barème intégralement porté dans le dépôt depuis la fiche du 19/09/2026 ; aucune année au-delà de 2026 : rien n'est reconduit)",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le numéro du Supplement to Official Gazette du 28/10/2022 (le texte ne l'imprime pas ; gazette.sc n'a pas rendu la liste S.I. 2022).",
+  "Le traitement ZLECAf au-delà du 31/12/2026 : le règlement ne reconduit rien — une modification ultérieure pourrait prolonger le calendrier ; à re-vérifier en 2027.",
+  "La vérification de chaque État du Schedule VI comme APPLIQUANT effectivement ses taux : la liste établit l'admission par l'instrument seychellois, pas la réciprocité effective État par État."
+ ],
+ "remaining_work": [
+  "Retrouver le numéro du Supplement to Official Gazette du 28/10/2022 (gazette.sc en rendu JS, ou l'Office of the Attorney General).",
+  "Traiter les S.I. modificatifs 2025-2026 (S.I. 14 of 2025 et suivants) sur le barème si de nouvelles lignes ZLECAf sont ajoutées.",
+  "RÉSERVE DE SÉMANTIQUE — la Schedule VI est une liste d'États parties (admission par règle) : si le moteur exige la sémantique « liste de partenaires d'application effective » (modèle General Note O sud-africain), dégrader la porte origines de ce pays en conséquence."
+ ],
+ "justification_niveau": "Un seul texte réglementaire national, en vigueur depuis le 01/11/2022, porte ET la liste des origines ET le barème ligne à ligne : c'est la définition même de l'application. Le PDF intégral est archivé (sha 605bc651…) et les pages clés extraites avec empreinte (sha 1a81cc0e…)."
+}

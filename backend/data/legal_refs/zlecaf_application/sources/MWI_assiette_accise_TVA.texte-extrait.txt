@@ -1,0 +1,11 @@
+Malawi — assiettes de l'accise et de la TVA à l'importation : extraits verbatim (relevés le 2026-10-05)
+
+1. Value Added Tax Act (Cap. 42:02), consolidation Laws.Africa au 31/12/2014
+   (https://media.malawilii.org/files/legislation/akn-mw-act-2005-7-eng-2014-12-31.pdf, sha256 643514d4ab8f00af00c75384886bddf1e6d0b2e7728cf88012b6fb1e66587bef) :
+   9. Rate of Value Added Tax Except as otherwise provided in this Act, the rate of Value Added Tax shall be 16. 5 per cent, calculated on the value of the taxable supply of the goods, services or import. [10 of 2008] 
+   28. Taxable value for determining Value Added Tax on imported goods The value for determining the tax chargeable on taxable imports shall be the import value calculated in accordance with the Customs and Excise Act with the addition of all import duties and taxes, but excluding Value Added Tax. [Cap. 42:01] 
+
+2. Malawi Revenue Authority, « Guide for Cross-Border Traders » (2022)
+   (https://www.mra.mw/admin/storage/downloads/TAX_GUIDE_FOR_CROSS_BORDER_TRADERS_2022_.pdf, sha256 2ccf6a21c7fc6f78a7802a670f242c7203ef3e843ab44a3f5dbaaf132c24d4cc) :
+   p. 10 : How duty is calculated: An example on how duty is calculated is as follows: Assuming the total value for 2, 000 small bottled glycerine for sale is MK500, 000: import duty @25%, excise duty @ 10% and import VAT @16.5% MRA uses the Customs & Excise Tariff Order book to determine duty payable. In order to arrive at the duty payable, a Customs officer will refer to how the goods have been classified in the Customs & Excise Tariff Order book.
+   p. 11 : Calculation of duty: Duty = K500, 000 x 25% =K125, 000.00 Excise = (K500, 000 + K125, 000) x 10 % = K62, 500.00 16.5% VAT = (K500, 000 + K125, 000 + K62, 500.00) x 16.5% = K113, 437.50 Total duty payable =K125, 000 + K62, 500.00 + K113, 437.50 = K300, 937.50 

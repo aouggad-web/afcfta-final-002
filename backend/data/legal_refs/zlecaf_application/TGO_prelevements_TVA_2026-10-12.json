@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "objet": "Togo : tarif officiel de l'OTR (TEC CEDEAO actualisé au 10/11/2025, D.D. et R.S.), prélèvements (PCS, PC, PUA, PNS), droits d'accises et assiette de la TVA à l'importation",
+  "destination_iso3": "TGO",
+  "verified_at": "2026-10-12",
+  "etabli": true,
+  "evidence_level": "primaire — tarif et tableau officiel des taux de l'OTR ; loi de finances 2025 (JORT) et CGI mis à jour 2025, publiés par l'OTR",
+  "source": {
+    "url": "https://www.otr.tg/",
+    "institution": "Office togolais des recettes (OTR)"
+  },
+  "regle": {
+    "valeur": "Source du socle TGO : tarif de l'OTR (6 379 positions SH 2022), à la place de la collecte du 19/02/2026 (6 129 positions SH 2017, PCS à 1 %, sans PNS). D.D. et R.S. (1 %) par position ; PCS 0,8 %, PC 0,5 %, PUA 0,2 % et prélèvement national de solidarité (PNS) 0,5 % sur la valeur en douane ; droits d'accises du CGI art. 243 sur la valeur en douane + droits et taxes d'entrée hors TVA (art. 245) ; TVA 18 % (art. 195) sur la valeur en douane + droits et taxes de toutes natures perçus par la douane hors TVA (art. 186, 7-).",
+    "verbatim": "7- pour les importations de biens neufs ou d'occasion, par la valeur en douane augmentée des droits et taxes de toutes natures perçus par l'Administration des Douanes à l'exclusion de la taxe sur la valeur ajoutée ;",
+    "reference": "TEC CEDEAO actualisé au 10/11/2025 de l'OTR ; tableau des taux des droits, taxes et redevances de l'OTR ; loi n° 2024-007 du 30/12/2024 (LF 2025), art. 6-3 ; CGI mis à jour 2025, art. 186, 195, 243 et 245",
+    "portee": "backend/data/crawled/TGO_tariffs.json régénéré (scripts/extraire_tec_tgo.py, scripts/convertir_tec_tgo.py ; scellé, empreinte au registre des sources) ; accises : backend/data/zlecaf_tgo/droit_accises_cgi2025.json (ACCISES_PAYS de scripts/build_socle.py) ; le PNS est retiré pour une origine CEDEAO déclarée.",
+    "texte_archive": "sources/TGO_prelevements_TVA.extrait.txt",
+    "sha256": "6a2acfac456a6b64520fa73dbce37aba8677820dd41d1fdf27373ea554473b8e"
+  },
+  "decisions": [
+    "Écarts relevés entre la collecte de février 2026 et le tarif de l'OTR : 429 positions SH 2022 absentes de la collecte, 179 disparues, 71 droits de douane différents (viandes bovines fraîches 35 % → 20 %, jus et préparations 20 % → 35 %, entre autres), PCS 1 % → 0,8 %, PNS ajouté.",
+    "PCS à 0,8 % : taux du tableau officiel de l'OTR, conforme à la décision des chefs d'État de l'UEMOA (1 % → 0,8 % au 1er juillet 2017, maintenu en 2019) ; le guide InterCom signale que d'autres sources citent encore 1 %.",
+    "PNS : assiette limitée par la LF 2025, art. 6-3, aux marchandises « originaires de pays tiers » à la CEDEAO ; marqué exoneration_origine CEDEAO. Reconduit pour 2026 par le projet de loi de finances (art. 7-3, d'après la presse) ; texte promulgué de la LF 2026 non lu (le cahier fiscal 2026 de l'OTR est un scan).",
+    "Accises (art. 243) : 271 positions, dont 85 sans taux quand la position ne dit pas la donnée qui fixe le taux (boissons non alcoolisées gazeuses ou sucrées ou non, véhicules de 13 CV et plus, alcool éthylique selon l'usage, 2101.20 thé ou maté, 2104.10.90 soupes ou bouillons).",
+    "0304.82.00.00 : aucune valeur imprimée au tarif de l'OTR ; D.D. et R.S. non renseignés.",
+    "Coquilles du tarif tolérées à la lecture : unité imprimée « 1 » à 2202.91 (bière sans alcool), R.S. imprimée « l » à 9405.91, 9405.92 et 9405.99."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Montants fixes ou au poids du tableau de l'OTR (redevance informatique 5 000 F par déclaration, taxe de protection des infrastructures 2 000 F/t, taxe de péage 200 F/t, droit de passage au scanner) : indépendants de la valeur, hors des droits et taxes ; affichés à part dans le bloc réglementaire (data/regulatory-compliance/verified_provider_fees.json, TGO-RI, TGO-TPI, TGO-TP, TGO-DPS), la redevance informatique chiffrée, les autres avec leur tarif.",
+    "Redevance inspection et vérification (0,75 %), timbre douanier (4 %) et taxe spéciale de réexportation (1 %) : base et champ non trouvés dans un texte, non liquidés.",
+    "Acompte BIC (1 % avec carte d'immatriculation, CGI art. 103) et retenue de 15 % pour défaut d'attestation de régularité fiscale : dépendent de l'importateur, non liquidés.",
+    "Exonérations de TVA par produit (CGI art. 180 et annexe) et accises spécifiques sur les produits pétroliers (art. 240 à 242) : non appliquées par position.",
+    "Exemption des marchandises originaires de l'UEMOA, de la CEDEAO et de l'UA : appliquée selon l'origine déclarée (fiche ORIGINE_prelevements_communautaires_2026-10-10.json)."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/TGO_prelevements_TVA.extrait.txt",
+      "sha256": "6a2acfac456a6b64520fa73dbce37aba8677820dd41d1fdf27373ea554473b8e"
+    },
+    {
+      "document_non_archive": "OTR, TEC CEDEAO actualisé au 10/11/2025, versé sur la PR #620 (data/togo/docs_officiels/TEC-CEDEAO-ACTUALISE-NOV2025.pdf)",
+      "pdf_sha256": "56b0e1f4fb3dbc0a806deaa2abb1b9bcd46d888bde42f2dfbdf5c080ac4a108b"
+    },
+    {
+      "document_non_archive": "OTR, taux des droits, taxes et redevances à l'importation ou à l'exportation, versé sur la PR #620 (data/togo/docs_officiels/TAUX-DROITS-TAXES-REDEVANCES-IMPORT-EXPORT.pdf)",
+      "pdf_sha256": "78cd2e56e3e5d62212b6e09f17c88f533a7a6cb91fcfe85d1f8be13ea0ceaa05"
+    },
+    {
+      "document_non_archive": "Loi n° 2024-007 du 30/12/2024 (LF 2025), https://otr.tg/index.php/fr/impots/reglementations-fiscales/dernieres-publications/lois-2/570-loi-de-finances-rectificative-exercice-2024-et-loi-de-finances-exercice-2025/file.html",
+      "pdf_sha256": "679747519993acd77a0b93d141a016dc90da4b8c75d479881c40e49f6310274d"
+    },
+    {
+      "document_non_archive": "CGI du Togo mis à jour 2025, https://otr.tg/index.php/fr/impots/reglementations-fiscales/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html",
+      "pdf_sha256": "7d0df3af53833e47266f4b77cf134ac3acb14bb3e8049d1bf92ac2438be4f4c3"
+    }
+  ]
+}

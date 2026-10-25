@@ -14,7 +14,7 @@ import pandas as pd
 # ".../backend/tests/../data_loader.py", et Path(...).parent.parent se replie
 # alors sur ".../backend/tests" (pathlib traite ".." comme un composant),
 # repointant TOUTES les données du dépôt vers backend/tests pour le reste de la
-# session de tests (500 sur /calculate-tariff, FileNotFoundError ailleurs).
+# session de tests.
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
 
@@ -40,13 +40,6 @@ def get_enhanced_statistics() -> Dict:
     """Get enhanced statistics including projections and trade evolution"""
     corrections = load_corrections_data()
     return corrections.get("enhanced_statistics", {})
-
-
-# Get tariff corrections
-def get_tariff_corrections() -> Dict:
-    """Get updated tariff rates for normal and zlecaf"""
-    corrections = load_corrections_data()
-    return corrections.get("tariff_corrections", {})
 
 
 # Load customs data

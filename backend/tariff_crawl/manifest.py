@@ -87,8 +87,8 @@ REGIONAL_CET_SOURCES: Dict[str, Dict[str, str]] = {
 # Source de vérité = fichiers data/crawled/*.json validés.
 NATIONAL_CRAWL_READY: Dict[str, Dict[str, str]] = {
     "DZA": {
-        "source": "conformepro.dz (données douane.gov.dz)",
-        "source_url": "https://www.douane.gov.dz",
+        "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+        "source_url": "https://www.douane.gov.dz/spip.php?page=tarif_douanier",
     },
     "EGY": {
         "source": "Egyptian Customs Authority (customs.gov.eg)",

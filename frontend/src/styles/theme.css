@@ -205,6 +205,16 @@ body::before {
   box-shadow: 0 4px 14px rgba(200,83,26,0.35);
 }
 
+/* Logo « éclipse » (public/brand/logo.svg), barre latérale et bandeau
+   mobile : il porte son propre fond nuit et ses coins arrondis, le dégradé
+   et le cercle de la pastille ne s'y appliquent pas. */
+img.afcfta-sidebar-brandmark {
+  background: none;
+  border-radius: 8px;
+  padding: 0;
+  object-fit: contain;
+}
+
 .afcfta-sidebar-title {
   overflow: hidden;
   white-space: nowrap;
@@ -839,7 +849,7 @@ body::before {
 
 [role="listbox"],
 [data-radix-popper-content-wrapper] > div {
-  background: #182030 !important;
+  background: var(--afcfta-card) !important;
   border: 1px solid rgba(200,83,26,0.2) !important;
   border-radius: 10px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.55);
@@ -1756,6 +1766,21 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
   }
 }
 
+/* Sur téléphone, même sans le libellé Tarifs, la rangée et les marges
+   intérieures de l'en-tête dépassent encore l'écran (410 px pour 360 à 390 px) :
+   Connexion, ou le nom du compte, se réduit à son tour à son icône. */
+@media (max-width: 480px) {
+  .afcfta-topHeader__lang [data-testid="topbar-login-btn"],
+  .afcfta-topHeader__lang [data-testid="topbar-account-btn"] {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .afcfta-topHeader__lang .afcfta-account-label {
+    display: none;
+  }
+}
+
 .afcfta-langBtn {
   padding: 6px 14px;
   border-radius: 8px;
@@ -1997,7 +2022,10 @@ html:not(.theme-light) .afcfta-shell .recharts-wrapper  { overflow: hidden; }
 }
 
 .afcfta-topHeader {
-  max-width: 1380px;
+  /* Centré par ses marges auto, l'en-tête prend la largeur de son contenu :
+     sans la borne à 100 %, il débordait de l'écran (410 px sur téléphone, la
+     rangée d'onglets entière de 901 à 1024 px, qui défile désormais dedans). */
+  max-width: min(1380px, 100%);
   margin: 18px auto 16px;
   padding: 18px 18px 14px;
   border-radius: 20px;

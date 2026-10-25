@@ -1,0 +1,16 @@
+ARCHIVE — Eswatini : valeur imposable d'une importation pour la TVA (relevé du 02/10/2026)
+
+Value Added Tax Act, 2011
+Fichier : sources/swz_vatact2011.pdf
+sha256 : a2afebb01dee31b2bcd8ed9b6564f596170bdc91d0859a2a2faac90447a58e5a
+
+VERBATIM (s.23 « value of an import of goods ») :
+« The taxable value of an import of goods is the sum of-
+(a) the value of the goods ascertained for the purposes of customs duty under the laws relating to
+customs;
+(b) the amount of customs duty, excise tax, and any other fiscal charge other than tax payable on
+those goods; and,
+(c) the value of any services to which section 12(3) applies which is not otherwise included in the
+customs value under paragraph (a). »
+
+LECTURE : assiette TVA = valeur en douane (FOB, SACU) + droits et taxes, la TVA exclue.

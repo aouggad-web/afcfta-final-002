@@ -374,7 +374,9 @@ async def get_african_forex_rates(
 )
 async def convert_to_local_currency(
     country_code: str = Query(..., description="Code ISO2 du pays (ex: MA, NG, KE)"),
-    amount: float = Query(..., gt=0, description="Montant à convertir (doit être > 0)"),
+    # 0 est un montant valide : le calculateur demande le taux d'une valeur en
+    # douane nulle (échantillon, don) pour liquider ses droits spécifiques.
+    amount: float = Query(..., ge=0, description="Montant à convertir (≥ 0)"),
     from_currency: str = Query(
         default="USD",
         description="Devise source (ISO 4217). Ex: USD, EUR, GBP",

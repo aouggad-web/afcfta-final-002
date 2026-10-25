@@ -79,7 +79,6 @@ from entitlement_guard import set_database as set_entitlement_guard_db
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
-from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
@@ -95,13 +94,7 @@ except ModuleNotFoundError as e:
         raise
     set_billing_db = None
 from services.crawled_data_service import crawled_service
-from services.tariff_data_service import tariff_service
 from services.user_auth_service import hash_password, verify_password
-
-try:
-    from notifications import NotificationManager
-except ImportError:
-    NotificationManager = None
 
 # =============================================================================
 # CONFIGURATION
@@ -131,17 +124,6 @@ if mongo_url:
         db = None
 else:
     logger.warning("MONGO_URL not set. Running without database.")
-
-# Notification Manager
-notification_manager = None
-if NotificationManager:
-    try:
-        notification_manager = NotificationManager()
-        logger.info(
-            f"Notification manager initialized with channels: {notification_manager.get_enabled_channels()}"
-        )
-    except Exception as e:
-        logger.warning(f"Notification manager initialization failed: {e}")
 
 # =============================================================================
 # FASTAPI APP SETUP
@@ -201,9 +183,6 @@ try:
             "/api/redoc",
             "/api/health",
             "/api/",
-            "/api/tariff-data/collect",
-            "/api/crawl",
-            "/api/crawl/start",
             # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
             # ni jeton CSRF — authentifiés par leur propre signature.
             "/api/billing/webhook",
@@ -248,19 +227,6 @@ try:
     init_export_db(db)
 except ImportError:
     pass
-
-# Initialize crawl orchestrator
-try:
-    from services.crawl_orchestrator import init_orchestrator
-
-    init_orchestrator(
-        db_client=client,
-        notification_manager=notification_manager,
-        max_concurrency=5,
-    )
-    logger.info("Crawl orchestrator initialized")
-except Exception as e:
-    logger.warning(f"Crawl orchestrator initialization failed: {e}")
 
 # =============================================================================
 # STARTUP EVENTS
@@ -353,7 +319,7 @@ async def startup_load_tariff_data():
     # Set up database indexes for performance
     await _setup_database_indexes()
 
-    # Wire database into auth and calculator
+    # Wire database into auth
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
@@ -361,7 +327,6 @@ async def startup_load_tariff_data():
     if set_billing_db is not None:
         set_billing_db(db)
     await _seed_admin_account()
-    set_calculator_db(db)
 
     # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
     # qu'une fois (Stripe garantit une livraison at-least-once).
@@ -432,32 +397,6 @@ async def startup_load_tariff_data():
             logger.info("No crawled data found yet.")
     except Exception as e:
         logger.warning(f"Crawled data service startup: {e}")
-
-    # Load tariff data
-    try:
-        tariff_service.load()
-        stats = tariff_service.get_stats()
-        if stats["countries"] > 0:
-            logger.info(
-                f"Tariff data service ready: {stats['countries']} countries, "
-                f"{stats['total_positions']:,} positions loaded"
-            )
-        else:
-            logger.info("No pre-collected tariff data found. Running initial collection...")
-            from services.tariff_data_collector import TariffDataCollector
-
-            collector = TariffDataCollector()
-            result = collector.collect_all_countries()
-            logger.info(
-                f"Initial collection complete: {result['total_tariff_lines']} lines for {result['countries_processed']} countries"
-            )
-            tariff_service.load(force=True)
-            stats = tariff_service.get_stats()
-            logger.info(
-                f"Tariff data service ready after collection: {stats['countries']} countries"
-            )
-    except Exception as e:
-        logger.warning(f"Tariff data service startup: {e}. Calculator will use ETL fallback.")
 
     # Start the exchange rate scheduler (updates every 4 hours, first run immediate)
     try:

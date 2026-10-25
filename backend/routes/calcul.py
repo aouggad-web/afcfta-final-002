@@ -29,28 +29,85 @@ seul contenu de `npf`/`preference` — et son indisponibilité ne fait jamais
 from __future__ import annotations
 
 import logging
-from typing import Optional
+import re
+from datetime import date
+from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from services import socle
+from engine.schemas.legal_override import RemissionEligibility
+from services import exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
-from services.preference import simulations_regionales, taux_preferentiels
-from services.regulatory_fee_service import build_regulatory_blocks
+from services.preference import marchandise_dedouanee_sacu, simulations_regionales, taux_preferentiels
+from services.regional_blocs import SACU, same_customs_union
+from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+#: La couverture du socle ne liquide rien : elle reste hors du quota de calculs,
+#: que `routes/__init__.py` pose sur `router` seul.
+router_couverture = APIRouter()
 
 #: Les trois champs du bloc réglementaire, nommés une fois pour que la réponse
 #: les porte tous les trois ou aucun — un bloc à moitié servi laisserait croire
 #: qu'un volet est vide alors qu'il n'a pas été consulté.
 REGLEMENTAIRE = ("regulatory_compliance", "regulatory_cost", "regulatory_reported")
 
+#: La conversion des monnaies pour déterminer la valeur en douane : au taux
+#: publié par les autorités du pays d'importation. Texte vérifié sur wto.org et
+#: archivé avec sa fiche, OMC_evaluation_en_douane_art9_2026-10-08.json.
+FONDEMENT_TAUX_DOUANIER = (
+    "Accord sur la mise en œuvre de l'article VII du GATT de 1994 "
+    "(évaluation en douane), article 9"
+)
+#: Pays du socle qui ne sont pas Membres de l'OMC, et que l'accord ne lie donc
+#: pas : huit observateurs en accession et l'Érythrée (liste et source dans la
+#: même fiche). L'article 9 n'est pas cité pour eux.
+NON_MEMBRES_OMC = frozenset({"DZA", "ERI", "ETH", "GNQ", "LBY", "SDN", "SOM", "SSD", "STP"})
+#: Écart relatif appliqué au taux pour savoir quels montants en dépendent.
+ECART_DE_TAUX = 0.01
+
+
+class AutorisationRemise(BaseModel):
+    """Ce que l'importateur déclare d'une remise de droits de la gazette EAC.
+
+    La remise ne s'applique que si l'autorisation est datée, en vigueur le jour
+    du calcul et nomme la ligne tarifaire exacte (voir ``services.mesures_eac``)."""
+
+    eligibilite: RemissionEligibility = RemissionEligibility.ELIGIBILITY_UNKNOWN
+    reference: Optional[str] = Field(None, description="Référence de l'autorisation officielle")
+    debut: Optional[date] = Field(None, description="Début de validité de l'autorisation")
+    fin: Optional[date] = Field(None, description="Fin de validité de l'autorisation")
+    lignes: List[str] = Field(
+        default_factory=list, description="Lignes tarifaires exactes que l'autorisation nomme"
+    )
+
 
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
     origine: Optional[str] = Field(None, description="Pays d'origine (ISO-3)")
+    pays_expedition: Optional[str] = Field(
+        None,
+        description=(
+            "Pays d'expédition (ISO-3), quand la loi le distingue de l'origine. "
+            "Afrique du Sud, VAT Act s.13(2)(b) : la TVA n'est pas majorée de "
+            "10 % pour une origine BWA, LSO, SWZ ou NAM importée de l'un de ces "
+            "pays. Omis pour une telle origine, la TVA reste indisponible "
+            "plutôt que supposée. « AUTRE » : expédiée d'un autre pays (l'interface "
+            "pose la question oui/non et transmet l'origine ou « AUTRE »)."
+        ),
+    )
+    deja_dedouane_sacu: bool = Field(
+        False,
+        description=(
+            "Destination SACU (ZAF, BWA, LSO, NAM, SWZ) seulement : la "
+            "marchandise, d'origine tierce, a déjà été dédouanée dans un autre "
+            "État de la SACU (port d'entrée sud-africain, par exemple). Accord "
+            "SACU 2002, art. 19 : ni droit de douane ni accise ne sont perçus à "
+            "nouveau ; la TVA de destination reste due."
+        ),
+    )
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
     valeur_cif: float = Field(..., ge=0, description="Valeur en douane")
     quantite: Optional[float] = Field(
@@ -91,6 +148,47 @@ class DemandeCalcul(BaseModel):
             "peut excéder `valeur_cif`."
         ),
     )
+    poids_brut_kg: Optional[float] = Field(
+        None,
+        gt=0,
+        description=(
+            "Poids brut (kg). Facultatif : chiffre, dans le bloc réglementaire, "
+            "les frais par tonne (taxe de protection des infrastructures, péage). "
+            "N'entre jamais dans les droits et taxes."
+        ),
+    )
+    moyen_transport: Optional[str] = Field(
+        None,
+        description=(
+            "CONTENEUR, VOITURE ou CAMION. Facultatif : chiffre, dans le bloc "
+            "réglementaire, les frais par unité de transport (scanner)."
+        ),
+    )
+    nombre_unites_transport: Optional[int] = Field(
+        None, ge=1, description="Nombre de conteneurs ou de véhicules (1 par défaut)."
+    )
+    mode_acheminement: Optional[str] = Field(
+        None,
+        description=(
+            "MER, ROUTE ou AIR. Facultatif : écarte du bloc réglementaire les frais "
+            "liés à un autre mode (frais portuaires pour une importation par route)."
+        ),
+    )
+    remise: Optional[AutorisationRemise] = Field(
+        None,
+        description=(
+            "Autorisation de remise de droits (gazette EAC). Omise, une remise "
+            "subordonnée à une autorisation n'est pas appliquée et la réponse le dit."
+        ),
+    )
+    usage: Optional[str] = Field(
+        None,
+        description=(
+            "Usage déclaré de la marchandise, parmi ceux que la réponse nomme dans "
+            "`usages.possibles` (Égypte : PESTICIDE_AGRICOLE, ENGRAIS, USAGE_DOMESTIQUE, "
+            "HUILE_NON_SUBVENTIONNEE). Omis, le régime courant est liquidé."
+        ),
+    )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
@@ -105,19 +203,65 @@ def calcul(demande: DemandeCalcul):
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except KeyError as exc:
+        # Un SH6 qui n'est pas une position du tarif, mais sous lequel le pays
+        # publie plusieurs positions nationales : le calcul ne choisit pas
+        # l'une d'elles à la place de l'opérateur, il les nomme.
+        code = socle.normaliser_code(demande.code_sh)
+        sous = socle.positions_nationales(demande.destination, code) if len(code) == 6 else []
+        if sous:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "POSITION_NATIONALE_REQUISE",
+                    "message": (
+                        f"{demande.destination.upper()}/{code} : {len(sous)} positions nationales "
+                        "sous ce SH6 — choisir la position."
+                    ),
+                    "positions": sous,
+                },
+            ) from exc
         raise HTTPException(status_code=404, detail=str(exc).strip('"')) from exc
     except socle.SocleIndisponible as exc:
         # Un socle absent ou périmé ne se contourne pas par une autre source :
         # il rend le service indisponible, et le dit.
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
+    # Les mesures de la gazette EAC fixent le taux du TEC, c'est-à-dire le NPF :
+    # la préférence et les simulations régionales se comparent au taux modifié.
+    remise = demande.remise or AutorisationRemise()
+    position, mesures = mesures_eac.appliquer(
+        position,
+        demande.destination,
+        socle.normaliser_code(demande.code_sh),
+        eligibilite=remise.eligibilite,
+        reference=remise.reference,
+        debut=remise.debut,
+        fin=remise.fin,
+        lignes=remise.lignes,
+    )
+
+    position, bloc_usages = usages.appliquer(position, demande.usage)
+
     preference = {"applique": False, "statut": "ORIGINE_NON_FOURNIE", "taux": {}}
     if demande.origine:
         preference = taux_preferentiels(
             position, demande.destination, demande.origine, demande.code_sh
         )
+    if demande.deja_dedouane_sacu:
+        if demande.destination.upper() not in SACU:
+            raise HTTPException(
+                status_code=422,
+                detail="deja_dedouane_sacu : réservé à une destination de la SACU (ZAF, BWA, LSO, NAM, SWZ).",
+            )
+        # Une origine SACU relève déjà de la libre circulation (art. 18).
+        if not same_customs_union(demande.origine, demande.destination):
+            preference = marchandise_dedouanee_sacu(demande.destination)
 
-    position, complements = _completer_famille_absente(position, demande.destination, provenance)
+    position, exonerations = exoneration_origine.appliquer(position, demande.origine)
+
+    position, complements = _completer_famille_absente(
+        position, demande.destination, provenance, demande.origine, demande.pays_expedition
+    )
 
     try:
         resultat = calculer(
@@ -137,6 +281,15 @@ def calcul(demande: DemandeCalcul):
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     resultat["provenance"] = provenance
     resultat["complements_nationaux"] = complements
+    if exonerations:
+        resultat["exonerations_origine"] = exonerations
+    if mesures:
+        resultat["mesures_eac"] = mesures
+    if bloc_usages:
+        resultat["usages"] = bloc_usages
+    conversion = _conversion_monetaire(position, demande, provenance, preference, resultat)
+    if conversion:
+        resultat["conversion_monetaire"] = conversion
     # Une interdiction d'importation est une RÉPONSE, et elle doit sortir comme
     # telle. Sans ce champ, une position prohibée se présente exactement comme
     # une position dont le calcul a échoué : l'opérateur lit « indisponible »
@@ -162,8 +315,75 @@ def calcul(demande: DemandeCalcul):
         resultat,
     )
     resultat.update(_regimes(preference))
-    resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
+    resultat.update(
+        _bloc_reglementaire(
+            demande.destination,
+            demande.origine,
+            demande.valeur_cif,
+            demande.valeur_fob,
+            poids_brut_kg=demande.poids_brut_kg,
+            transport=transport_declare(
+                demande.moyen_transport, demande.nombre_unites_transport, demande.mode_acheminement
+            ),
+        )
+    )
     return resultat
+
+
+def _conversion_monetaire(position, demande, provenance, preference, resultat):
+    """Les lignes dont le montant dépend du taux de change fourni.
+
+    Le moteur se sert de ce taux pour les droits spécifiques, plafonds et
+    minimums publiés dans une autre devise que la valeur déclarée, sans savoir
+    d'où il vient. Le calculateur envoie celui du module Banque, un taux de
+    marché, alors que la douane convertit au taux publié par les autorités du
+    pays d'importation : un montant qui en dépend doit le dire.
+
+    Un montant dépend du taux s'il bouge quand le taux bouge. On relance donc
+    le moteur à 1 % au-dessus et à 1 % au-dessous, et l'on retient les lignes
+    qui changent dans les deux cas. Sont ainsi nommés un droit converti, un
+    minimum ou un plafond qui joue, et les taxes calculées sur eux ; ne l'est
+    pas un minimum comparé sans jouer, qui ne change rien au montant.
+    Rendu : None quand aucun taux n'est fourni ou qu'aucune ligne n'en dépend.
+    """
+    if demande.taux_de_change is None:
+        return None
+
+    def montants(calcul):
+        return {
+            (bloc, ligne["code"]): ligne.get("montant")
+            for bloc in ("npf", "preference")
+            for ligne in (calcul.get(bloc) or {}).get("lignes", [])
+        }
+
+    def au_taux(facteur):
+        return montants(
+            calculer(
+                position,
+                demande.valeur_cif,
+                quantite=demande.quantite,
+                taux_de_change=demande.taux_de_change * facteur,
+                taux_preferentiels=preference.get("taux") or None,
+                devise_position=provenance.get("devise_nationale"),
+                devise_cif=demande.devise_cif,
+                couverture=provenance.get("couverture"),
+                valeur_fob=demande.valeur_fob,
+            )
+        )
+
+    servis = montants(resultat)
+    dessus, dessous = au_taux(1 + ECART_DE_TAUX), au_taux(1 - ECART_DE_TAUX)
+    lignes = sorted({
+        code
+        for (bloc, code), montant in servis.items()
+        if montant not in (None, dessus.get((bloc, code)), dessous.get((bloc, code)))
+    })
+    if not lignes:
+        return None
+    conversion = {"taux_de_change": demande.taux_de_change, "lignes": lignes}
+    if demande.destination not in NON_MEMBRES_OMC:
+        conversion["fondement_taux_douanier"] = FONDEMENT_TAUX_DOUANIER
+    return conversion
 
 
 def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
@@ -239,7 +459,13 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
     return chiffrees
 
 
-def _completer_famille_absente(position: dict, destination: str, provenance: dict):
+def _completer_famille_absente(
+    position: dict,
+    destination: str,
+    provenance: dict,
+    origine: Optional[str] = None,
+    pays_expedition: Optional[str] = None,
+):
     """Ajouter la TVA nationale documentée quand la source n'en porte aucune.
 
     Deux conditions, cumulatives et strictes : la couverture du pays doit
@@ -265,26 +491,63 @@ def _completer_famille_absente(position: dict, destination: str, provenance: dic
     if any((droit.get("famille") == "tva") for droit in position.get("droits") or []):
         return position, []
 
+    assiette = entree["assiette"]
+    motif_assiette = None
+    # Assiette qui dépend de l'origine ET du pays d'expédition (Afrique du Sud,
+    # VAT Act s.13(2)(b) : pas de majoration de 10 % pour une origine BWA, LSO,
+    # SWZ ou NAM importée de l'un de ces pays). Expédition inconnue : la TVA
+    # reste indisponible plutôt que de choisir une assiette au hasard.
+    par_origine = entree.get("assiette_par_origine")
+    if par_origine and (origine or "").upper() in par_origine.get("origines", []):
+        if not pays_expedition:
+            assiette = None
+            motif_assiette = "PAYS_EXPEDITION_REQUIS"
+        elif pays_expedition.upper() in par_origine["origines"]:
+            assiette = par_origine["assiette"]
+
     ligne = {
         "code": entree["code"],
         "libelle": entree["libelle"],
         "famille": entree["famille"],
         "taux": entree["taux"],
-        "assiette": entree["assiette"],
+        "assiette": assiette,
         "source": entree["source"],
         "note": entree["note"],
         "classification_source": "table_nationale_documentee",
     }
-    position = dict(position, droits=list(position.get("droits") or []) + [ligne])
+    ajouts = [ligne]
+    # Seychelles : la TVA s'assoit aussi sur l'accise, que le crawl ne porte
+    # pas. Sur les positions du barème d'accise, une ligne sans taux la rend
+    # visible : la TVA se déclare alors incomplète au lieu d'être sous-estimée.
+    accise = entree.get("accise_non_collectee")
+    demande = re.sub(r"\D", "", str(provenance.get("code_demande") or ""))
+    if accise and demande and any(c.startswith(demande) for c in accise["positions"]):
+        ajouts.insert(
+            0,
+            {
+                "code": "EXC",
+                "libelle": "Excise tax",
+                "famille": "accise",
+                "assiette": None,
+                "source": accise["source"],
+                "note": accise["note"],
+                "classification_source": "table_nationale_documentee",
+            },
+        )
+    position = dict(position, droits=list(position.get("droits") or []) + ajouts)
     complement = {
         "code": entree["code"],
         "taux_pct": entree["taux"],
-        "assiette": entree["assiette"],
+        "assiette": assiette,
         "source": entree["source"],
         "fiche": entree["fiche"],
         "note": entree["note"],
         "motif": "FAMILLE_ABSENTE_DE_LA_SOURCE",
     }
+    if entree.get("fiche_assiette"):
+        complement["fiche_assiette"] = entree["fiche_assiette"]
+    if motif_assiette:
+        complement["motif_assiette"] = motif_assiette
     if entree.get("reserve_assiette"):
         complement["reserve_assiette"] = entree["reserve_assiette"]
     return position, [complement]
@@ -322,20 +585,31 @@ def _regimes(preference: dict) -> dict:
     return resultat
 
 
-def _bloc_reglementaire(destination: str, origine: Optional[str], valeur_cif: float) -> dict:
+def _bloc_reglementaire(
+    destination: str,
+    origine: Optional[str],
+    valeur_cif: float,
+    valeur_fob: Optional[float] = None,
+    poids_brut_kg: Optional[float] = None,
+    transport: Optional[dict] = None,
+) -> dict:
     """Formalités, prestataires mandatés et frais vérifiés — informatif, jamais
     additionné aux droits.
 
-    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique. Ce
-    n'est pas exact au sens douanier — le FOB exclut fret et assurance — mais
-    les deux routes doivent répondre la même chose sur la même importation :
-    corriger ici seulement ferait diverger les deux chemins juste avant de les
-    réunir. La correction, si elle vient, vaudra pour le point d'entrée commun.
+    Les frais assis sur la FOB utilisent la valeur FOB fournie ; sans elle,
+    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique avec
+    la même règle — les deux routes répondent la même chose sur la même
+    importation.
     """
     origine_iso3 = (origine or "").upper() or None
     try:
         blocs = build_regulatory_blocks(
-            destination.upper(), origine_iso3, fob_value=valeur_cif, cif_value=valeur_cif
+            destination.upper(),
+            origine_iso3,
+            fob_value=valeur_fob if valeur_fob is not None else valeur_cif,
+            cif_value=valeur_cif,
+            poids_brut_kg=poids_brut_kg,
+            transport=transport,
         )
     except Exception as exc:  # garde-fou : le calcul tarifaire n'en dépend pas
         logger.warning(
@@ -352,7 +626,7 @@ def _bloc_reglementaire(destination: str, origine: Optional[str], valeur_cif: fl
     return {cle: blocs[cle] for cle in REGLEMENTAIRE}
 
 
-@router.get("/calcul/pays", summary="Pays servis par le socle, et leur couverture")
+@router_couverture.get("/calcul/pays", summary="Pays servis par le socle, et leur couverture")
 def pays():
     try:
         servis = socle.pays_servis()

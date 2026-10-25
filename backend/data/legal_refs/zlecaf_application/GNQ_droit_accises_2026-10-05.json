@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "objet": "Guinée équatoriale : produits soumis aux impuestos especiales à l'importation (droits spécifiques, portés sans taux) et assiettes (Derecho Especial sur valeur + DD ; TVA sur valeur + DD + Derecho Especial)",
+  "destination_iso3": "GNQ",
+  "verified_at": "2026-10-05",
+  "etabli": true,
+  "evidence_level": "secondaire — guide fiscal du ministère des Finances (2020) reproduisant la loi de budget 2020 ; loi 4/2004 reguladora del sistema tributario (copie non officielle, annexe III absente)",
+  "source": {"url": "https://www.guineainfomarket.com/wp-content/uploads/2020/10/GUIA-DETALLADA-DE-IMPUESTOS-Final.pdf", "institution": "Ministerio de Hacienda, Economía y Planificación de Guinea Ecuatorial"},
+  "regle": {
+    "valeur": "Produits soumis : boissons non alcoolisées (100 ou 50 FCFA par litre), boissons alcoolisées (50 FCFA par degré et par litre, bière + 100 FCFA par litre), tabacs (par unité), sacs en plastique non dégradables (25 FCFA par unité). Droits spécifiques : portés sans taux. Assiette du Derecho Especial : valeur + DD ; TVA : valeur + DD + Derecho Especial (loi 4/2004, art. 288).",
+    "verbatim": "ARTÍCULO 288.- Con relación a las importaciones, la base imponible del IVA está constituida por el valor imponible definida en los artículos 23 al 26 del Código de Aduanas de la CEMAC más las cuotas de los derechos de aduanas y el derecho especial. 2) En cuanto al Derecho Especial se refiere, la base imponible está compuesta por el valor imponible aduanero más los derechos de aduanas.",
+    "reference": "Loi 4/2004, art. 288 et 296 ; loi de budget 2020, art. 14 (guide fiscal 2020, § 5.3 et 5.5)",
+    "portee": "backend/data/zlecaf_gnq/droit_accises_lp2020.json, appliqué par scripts/build_socle._accises_du_cgi au seul socle GNQ : remplace les 292 droits « variable » du crawl par 42 droits, tous sans taux.",
+    "texte_archive": "sources/GNQ_droit_accises.texte-extrait.txt",
+    "sha256": "667012a5abc39ed913d05f664ed91a13e9343558aa9fef6d27461ef8e29cff11"
+  },
+  "decisions": [
+    "Parfums et cosmétiques (33.03, 33.04) : Derecho Especial de 30 % de la loi 4/2004 (annexe III non lue, produits de beauté selon une source secondaire de 2016) ; droit porté sans taux.",
+    "Véhicules : l'impôt de la loi de budget 2020 (12,5 % à 25 % selon la puissance en CV) remplace l'impôt sur la détention et l'usage ; il n'est pas retenu comme droit à l'importation."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le texte officiel de la loi de budget 2020 et des lois suivantes n'a pas été lu ; la loi de budget 2023 (minfuncionpublica.gob.gq) a échoué à la vérification TLS.",
+    "L'annexe III de la loi 4/2004 (liste du Derecho Especial à 30 %) n'a pas été trouvée, ni son maintien après 2020.",
+    "Le socle GNQ du crawl reprend le tarif du Cameroun (« réf. État membre CMR »)."
+  ],
+  "documents_archives": [{"texte_archive": "sources/GNQ_droit_accises.texte-extrait.txt", "sha256": "667012a5abc39ed913d05f664ed91a13e9343558aa9fef6d27461ef8e29cff11"}]
+}

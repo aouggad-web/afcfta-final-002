@@ -99,16 +99,6 @@ def test_cog_vat_measures_schema():
     assert "vat_zero_rated" in data
 
 
-def test_cog_not_registered_as_supported_jurisdiction():
-    """Garde-fou : COG n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "COG" not in SUPPORTED_JURISDICTIONS
-
-
 def test_cog_has_no_fabricated_afcfta_offer():
     """Garde-fou : COG n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

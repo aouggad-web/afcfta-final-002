@@ -8,8 +8,12 @@ ne publie pas. Complète ``worldbank_data_latest.json`` (réalisé) par la visio
 prospective du FMI, pour une fiche pays plus complète.
 
 Indicateurs :
-  * ``NGDP_RPCH``  — croissance du PIB réel (variation annuelle, %)
-  * ``PCPIPCH``    — inflation, prix moyens à la consommation (variation, %)
+  * ``NGDP_RPCH``    — croissance du PIB réel (variation annuelle, %)
+  * ``PCPIPCH``      — inflation, prix moyens à la consommation (variation, %)
+  * ``GGXWDG_NGDP``  — dette brute des administrations publiques (% du PIB)
+
+Le millésime du WEO (ex. « World Economic Outlook (October 2026) ») est lu
+dans le catalogue ``/indicators`` de l'API et reporté dans ``metadata.source``.
 
 Sortie : ``data/json/imf_weo_projections.json`` ::
 
@@ -23,7 +27,7 @@ Sortie : ``data/json/imf_weo_projections.json`` ::
       }
     }
 
-Deux appels réseau seulement (un par indicateur, tous pays). Dégradation
+Un appel réseau par indicateur (tous pays), plus un pour le millésime. Dégradation
 silencieuse : en cas d'échec, le fichier existant est conservé (jamais écrasé
 par du vide).
 """
@@ -47,7 +51,14 @@ _API = "https://www.imf.org/external/datamapper/api/v1/{indicator}"
 _INDICATORS = {
     "gdp_growth": "NGDP_RPCH",  # croissance PIB réel (%)
     "inflation": "PCPIPCH",  # inflation prix conso (%)
+    "gov_debt": "GGXWDG_NGDP",  # dette brute des APU (% PIB)
 }
+_INDICATOR_LABELS = {
+    "gdp_growth": "NGDP_RPCH — croissance PIB réel (%)",
+    "inflation": "PCPIPCH — inflation prix à la consommation (%)",
+    "gov_debt": "GGXWDG_NGDP — dette brute des administrations publiques (% PIB)",
+}
+_DEFAULT_SOURCE = "IMF World Economic Outlook (DataMapper API)"
 
 # 54 pays membres de la ZLECAf (ISO3).
 _AFRICAN_ISO3 = [
@@ -132,6 +143,18 @@ def _fetch_indicator(imf_code: str) -> Dict[str, Dict[str, float]]:
     return out
 
 
+def _weo_vintage() -> str:
+    """Millésime WEO (ex. « World Economic Outlook (October 2026) »), ou le
+    libellé générique si le catalogue est indisponible."""
+    try:
+        resp = requests.get(_API.format(indicator="indicators"), timeout=30)
+        resp.raise_for_status()
+        source = resp.json().get("indicators", {}).get("NGDP_RPCH", {}).get("source")
+    except Exception:
+        return _DEFAULT_SOURCE
+    return f"IMF {source} — DataMapper API" if source else _DEFAULT_SOURCE
+
+
 def build() -> Dict:
     """Construit le fichier de projections FMI ; conserve l'existant si échec."""
     if requests is None:  # pragma: no cover
@@ -143,22 +166,18 @@ def build() -> Dict:
 
     data: Dict[str, Dict] = {}
     for iso3 in _AFRICAN_ISO3:
-        growth = fetched["gdp_growth"].get(iso3)
-        inflation = fetched["inflation"].get(iso3)
-        if growth or inflation:
-            data[iso3] = {"gdp_growth": growth or {}, "inflation": inflation or {}}
+        series = {field: fetched[field].get(iso3) or {} for field in _INDICATORS}
+        if series["gdp_growth"] or series["inflation"]:
+            data[iso3] = series
 
     if not data:  # collecte totalement vide -> on NE remplace PAS l'existant
         raise RuntimeError("collecte FMI vide — fichier existant conservé")
 
     payload = {
         "metadata": {
-            "source": "IMF World Economic Outlook (DataMapper API)",
+            "source": _weo_vintage(),
             "updated_at": datetime.now(timezone.utc).isoformat(),
-            "indicators": {
-                "gdp_growth": "NGDP_RPCH — croissance PIB réel (%)",
-                "inflation": "PCPIPCH — inflation prix à la consommation (%)",
-            },
+            "indicators": _INDICATOR_LABELS,
             "country_count": len(data),
         },
         "data": data,

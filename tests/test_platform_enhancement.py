@@ -1036,11 +1036,6 @@ class TestGraphQLSchema:
 
         assert "getInvestmentScore" in GRAPHQL_SCHEMA_SDL
 
-    def test_schema_bulk_tariff_query(self):
-        from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
-
-        assert "bulkTariffCalculation" in GRAPHQL_SCHEMA_SDL
-
     def test_schema_trade_flow_prediction(self):
         from api.graphql.schema_definition import GRAPHQL_SCHEMA_SDL
 

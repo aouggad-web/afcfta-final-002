@@ -7,7 +7,6 @@ versée dans la cascade NPF. Un socle qui viole l'un de ces trois points rend un
 montant faux qui a l'air juste — le défaut le plus coûteux du calculateur.
 """
 
-import builtins
 import importlib.util
 import json
 import os
@@ -92,7 +91,7 @@ def test_d2r_n_est_pas_une_colonne_zlecaf():
         ("CIF + DD + RS + PCS", "CIF+DD+RS+PCS"),
         ("CIF+Duty+Fees", "CIF+TOUS_SAUF_TVA"),
         ("VALEUR DOUANE DINARS", "CIF"),
-        ("VAL.DOU(D)+R(DT) GR.0", "CIF+DD"),
+        ("VAL.DOU(D)+R(DT) GR.0", "CIF+TOUS_SAUF_TVA"),
         ("SOMME D.T (G=0.1.2.3.4.", "SOMME(TOUS_SAUF_SOI)"),
         ("QCS", "xQTE"),
     ],
@@ -303,7 +302,6 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
     with open(assiettes, encoding="utf-8") as f:
         (socle_temp / "assiettes_pays.json").write_text(f.read(), encoding="utf-8")
     monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
-    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
     bs.main(["build_socle.py", "CIV"])
     with open(socle_temp / "MANIFESTE.json", encoding="utf-8") as f:
         apres = json.load(f)
@@ -335,7 +333,6 @@ def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch
     (socle_temp / "MANIFESTE.json").write_text(contenu, encoding="utf-8")
 
     monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
-    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
     assert bs.main(["build_socle.py", "CIV"]) == 0
 
     with open(socle_temp / "MANIFESTE.json", encoding="utf-8") as f:
@@ -343,98 +340,21 @@ def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch
     assert "CIV" in reconstruit["pays"]
 
 
-def test_charger_assiettes_reconstruit_la_table_absente(tmp_path, monkeypatch):
-    socle_temp = tmp_path / "socle"
-    assiettes = socle_temp / "assiettes_pays.json"
-    socle_temp.mkdir()
-    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
-    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
-
-    pays = bs.charger_assiettes_pays()
-
-    assert assiettes.exists()
-    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
-    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
-    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
-    # article — et faisait liquider la TVA malawienne sur une assiette que
-    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
-    # promet pas un pays en particulier.
-    assert len(pays) >= 36
-    assert pays["BEN"]["taxes"]["TVA"]["origine_assiette"] == "texte_primaire"
-    with open(assiettes, encoding="utf-8") as f:
-        reconstruit = json.load(f)
-    assert "BEN" in reconstruit["pays"]
-
-
 @pytest.mark.parametrize(
-    "contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})]
+    "contenu", [None, "{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})]
 )
-def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
+def test_charger_assiettes_s_arrete_sur_une_table_absente_ou_non_conforme(
     tmp_path, monkeypatch, contenu
 ):
-    socle_temp = tmp_path / "socle"
-    socle_temp.mkdir()
-    assiettes = socle_temp / "assiettes_pays.json"
-    assiettes.write_text(contenu, encoding="utf-8")
-    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    # La table est versionnée : plus de reconstruction depuis un profil codé.
+    assiettes = tmp_path / "assiettes_pays.json"
+    if contenu is not None:
+        assiettes.write_text(contenu, encoding="utf-8")
     monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
 
-    pays = bs.charger_assiettes_pays()
-
-    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
-    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
-    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
-    # article — et faisait liquider la TVA malawienne sur une assiette que
-    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
-    # promet pas un pays en particulier.
-    assert len(pays) >= 36
-    with open(assiettes, encoding="utf-8") as f:
-        reconstruit = json.load(f)
-    assert isinstance(reconstruit["pays"], dict)
-
-
-def test_charger_assiettes_reconstruit_apres_oserror_de_lecture(tmp_path, monkeypatch):
-    socle_temp = tmp_path / "socle"
-    assiettes = socle_temp / "assiettes_pays.json"
-    socle_temp.mkdir()
-    assiettes.write_text('{"pays": {"ZZZ": {}}}', encoding="utf-8")
-    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
-    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
-
-    appels = {"n": 0}
-    open_reel = builtins.open
-
-    def open_instable(*args, **kwargs):
-        if args and args[0] == str(assiettes) and appels["n"] == 0:
-            appels["n"] += 1
-            raise OSError("lecture interrompue")
-        return open_reel(*args, **kwargs)
-
-    monkeypatch.setattr(builtins, "open", open_instable)
-    pays = bs.charger_assiettes_pays()
-
-    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
-    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
-    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
-    # article — et faisait liquider la TVA malawienne sur une assiette que
-    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
-    # promet pas un pays en particulier.
-    assert len(pays) >= 36
-    assert appels["n"] == 1
-
-
-def test_charger_assiettes_signale_un_import_indisponible(tmp_path, monkeypatch):
-    socle_temp = tmp_path / "socle"
-    assiettes = socle_temp / "assiettes_pays.json"
-    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
-    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
-
-    def import_indisponible(_):
-        raise ModuleNotFoundError("tax_profile_data")
-
-    monkeypatch.setattr(bs.importlib, "import_module", import_indisponible)
-    with pytest.raises(RuntimeError, match="backend\\.services\\.tax_profile_data"):
+    with pytest.raises(SystemExit, match="assiettes_pays.json absent ou illisible"):
         bs.charger_assiettes_pays()
+    assert assiettes.exists() == (contenu is not None)
 
 
 def test_la_table_d_assiettes_conserve_ses_references_legales():
@@ -456,6 +376,15 @@ def test_la_table_d_assiettes_conserve_ses_references_legales():
         assert t.get("texte"), f"{iso} : une assiette établie doit citer son texte"
     # Somalie : l'assiette du droit de douane est établie sur le tarif national
     # (valeur en douane), distincte des assiettes de TVA ci-dessus.
+    # Une assiette établie sans sa détermination archivée serait une règle sans source.
+    refs = os.path.join(REPO, "backend", "data", "legal_refs", "zlecaf_application")
+    for iso, code, t in etablies:
+        if t.get("fiche"):
+            assert os.path.exists(os.path.join(refs, t["fiche"])), f"{iso}/{code} : {t['fiche']}"
+    # Tunisie : l'article 6 du Code de la TVA est lu (fiche TUN_assiette_TVA),
+    # mais il majore l'assiette de 25 % pour le non-assujetti, statut que le
+    # calculateur ne recueille pas ; il ne peut donc pas être cité comme établi.
+    assert pays["TUN"]["taxes"]["TVA"]["origine_assiette"] != "texte_primaire"
     som = {code: t for iso, code, t in etablies if iso == "SOM"}
     assert som["DD"]["assiette"] == "CIF"
     assert som["DD"].get("texte"), "SOM : une assiette établie doit citer son texte"
@@ -527,3 +456,50 @@ def test_un_droit_national_ne_recoit_aucune_reserve_wits():
         "SARS Schedule No. 1 Part 1",
     )
     assert droit["note"] is None
+
+
+# ── Compteur des droits liquidables : c'est le moteur qui juge ──────────────
+def _liquidables(*droits):
+    return bs._lignes_liquidables({"droits": [dict(d, famille=d.get("famille", "droit")) for d in droits]})
+
+
+def test_une_tva_assise_sur_une_accise_sans_taux_n_est_pas_liquidable():
+    """Le moteur refuse la TVA quand l'accise de son assiette n'a pas de taux
+    (ASSIETTE_INCOMPLETE) : le compteur du manifeste ne la compte pas non plus."""
+    assert _liquidables(
+        {"code": "DD", "taux": 30.0, "assiette": "CIF"},
+        {"code": "DA", "famille": "accise", "taux": None, "assiette": "CIF+DD"},
+        {"code": "TVA", "famille": "tva", "taux": 19.25, "assiette": "CIF+DD+DA"},
+    ) == [True, False, False]
+
+
+@pytest.mark.parametrize(
+    "droit,attendu",
+    [
+        ({"code": "DD", "taux": 25.0, "specifique": {"montant": 1.0}, "compose": True, "assiette": "CIF"}, False),
+        (
+            {"code": "DD", "taux": 25.0, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "compose": True,
+             "regle_composee": "LE_PLUS_ELEVE", "assiette": "CIF"},
+            True,
+        ),
+        ({"code": "DD", "taux": None, "specifique": {"montant": None}, "assiette": "xQTE"}, False),
+        # Cas relevés en revue : cumul illisible, deux composantes sans règle,
+        # spécifique dont l'assiette n'est pas traduite.
+        ({"code": "DD", "taux": 40.0, "specifique": {"montant": None}, "cumulatif": True, "assiette": "CIF"}, False),
+        ({"code": "DD", "taux": 40.0, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "CIF"}, False),
+        (
+            {"code": "DD", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "CIF",
+             "assiette_non_traduite": True},
+            False,
+        ),
+    ],
+)
+def test_le_compteur_reprend_les_refus_du_moteur(droit, attendu):
+    assert _liquidables(droit) == [attendu]
+
+
+def test_des_unites_de_quantite_melees_ne_sont_pas_liquidables():
+    assert _liquidables(
+        {"code": "A", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "xQTE"},
+        {"code": "B", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "l"}, "assiette": "xQTE"},
+    ) == [False, False]

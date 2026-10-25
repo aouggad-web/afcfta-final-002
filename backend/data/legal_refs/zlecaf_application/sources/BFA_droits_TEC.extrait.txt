@@ -1,0 +1,12 @@
+Burkina Faso — droits de douane du TEC UEMOA 2022 — extraits verbatim
+=====================================================================
+
+Tarif extérieur commun de l'UEMOA, édition 2022 (= TEC CEDEAO SH 2022), colonnes
+   DD RS PCS PC
+   Chapitre 7 : https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-7-Legumes-plantes-racines.pdf
+   PDF : sha256 ae81fc4880e2fbb55ec85b0e235070fe3de469d0a4db4c25714d9f9663a3f9e7
+   « 0701.90.00.00   Autres                                               kg    35      1    0,8    0,5 »
+   « 0703.10.00.00   Oignons et échalotes                                 kg    35      1    0,8    0,5 »
+   Chapitre 15 : https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-15-Graisses-huiles-animales.pdf
+   PDF : sha256 e867b93ff2e6332c32e8218d235fbab1f2bdec6969fd5130437c79a5c04582bc
+   « 1511.10.00.00   Huile brute                                        kg   10    1     0,8   0,5 »

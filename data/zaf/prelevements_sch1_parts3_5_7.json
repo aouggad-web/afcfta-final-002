@@ -1,0 +1,2656 @@
+{
+ "source": "SARS, Customs and Excise Act 1964, Schedule No. 1 Parts 3, 5 et 7",
+ "documents": [
+  {
+   "partie": "3A",
+   "fichier": "ZAF_Sch1_Part3A_2024-04-01.pdf",
+   "date": "2024-04-01",
+   "sha256": "0a1539b75dcdc8d37ca07a131dece316a46c634a5c9883b691922e1f0bc69c30"
+  },
+  {
+   "partie": "3C",
+   "fichier": "ZAF_Sch1_Part3C_2024-04-01.pdf",
+   "date": "2024-04-01",
+   "sha256": "ee17f976b98a3bc7fe82ddd56152e10f83bf1f45f722702c6d007a8bf5f78795"
+  },
+  {
+   "partie": "3D",
+   "fichier": "ZAF_Sch1_Part3D_2024-04-01.pdf",
+   "date": "2024-04-01",
+   "sha256": "01691d5634af2a5c92523766c23435c62709f069243b682d3006a3952e588a74"
+  },
+  {
+   "partie": "3E",
+   "fichier": "ZAF_Sch1_Part3E_2022-06-17.pdf",
+   "date": "2022-06-17",
+   "sha256": "95435f1ad4feb6ea90bfd2f063df1cc87d031b715c9cb07f7d98d9500326abae"
+  },
+  {
+   "partie": "5A",
+   "fichier": "ZAF_Sch1_Part5A_2026-07-01.pdf",
+   "date": "2026-07-01",
+   "sha256": "48f5acabafddfba3a3342d702874609d1944857414d9f925c26b7a1397365634"
+  },
+  {
+   "partie": "5B",
+   "fichier": "ZAF_Sch1_Part5B_2026-04-01.pdf",
+   "date": "2026-04-01",
+   "sha256": "55c0f1898f409bec06a7d63073861073e14fe7ecfde83aefce97f5ad93137713"
+  },
+  {
+   "partie": "7A",
+   "fichier": "ZAF_Sch1_Part7A_2022-10-01.pdf",
+   "date": "2022-10-01",
+   "sha256": "d23842afd6d9ee8c553acdc9a59a8104d23571a6e5b55a293e53ef6632e5861e"
+  }
+ ],
+ "articles": [
+  {
+   "partie": "3A",
+   "article": "147.01.01",
+   "sous_position": "3923.21.07",
+   "libelle": "Carrier bags, with a thickness of 24 microns or more",
+   "montant": 0.32,
+   "unite": "bag",
+   "brut": "32c/bag"
+  },
+  {
+   "partie": "3A",
+   "article": "147.01.03",
+   "sous_position": "3923.21.17",
+   "libelle": "Flat bags, with a thickness of 24 microns or more (excluding immediate packings, zip-lock bags and household bags including refuse bags and refuse bin liners)",
+   "montant": 0.32,
+   "unite": "bag",
+   "brut": "32c/bag"
+  },
+  {
+   "partie": "3A",
+   "article": "147.01.05",
+   "sous_position": "3923.29.40",
+   "libelle": "Carrier bags, of other thermoplastic materials, with a thickness of 24 microns or more",
+   "montant": 0.32,
+   "unite": "bag",
+   "brut": "32c/bag"
+  },
+  {
+   "partie": "3A",
+   "article": "147.01.07",
+   "sous_position": "3923.29.50",
+   "libelle": "Flat bags, of other thermoplastic materials, with a thickness of 24 microns or more (excluding immediate packings, zip-lock bags and household bags including refuse bags and refuse bin liners)",
+   "montant": 0.32,
+   "unite": "bag",
+   "brut": "32c/bag"
+  },
+  {
+   "partie": "3C",
+   "article": "149.01.05",
+   "sous_position": "8539.21.45",
+   "libelle": "Other, of a power of 15 W or more but not exceeding 1 000 W and for a voltage exceeding 100 V but not exceeding 260 V",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3C",
+   "article": "149.01.10",
+   "sous_position": "8539.21.90",
+   "libelle": "Other",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3C",
+   "article": "149.02.05",
+   "sous_position": "8539.22.45",
+   "libelle": "Other, of a power of 15 W or more and for a voltage not exceeding 260 V",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3C",
+   "article": "149.02.10",
+   "sous_position": "8539.22.90",
+   "libelle": "Other",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3C",
+   "article": "149.03.05",
+   "sous_position": "8539.29.50",
+   "libelle": "Other, vacuum type, of less than 15 W",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3C",
+   "article": "149.03.10",
+   "sous_position": "8539.29.57",
+   "libelle": "Other, of a power exceeding 200 W but not exceeding 1 000 W and for a voltage exceeding 100 V but not exceeding 260 V",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3C",
+   "article": "149.03.15",
+   "sous_position": "8539.29.90",
+   "libelle": "Other",
+   "montant": 20.0,
+   "unite": "lamp",
+   "brut": "R20.00/lamp"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.09",
+   "sous_position": "8703.21.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.11",
+   "sous_position": "8703.22.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.13",
+   "sous_position": "8703.23.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.15",
+   "sous_position": "8703.24.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.21",
+   "sous_position": "8703.31.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.23",
+   "sous_position": "8703.32.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.25",
+   "sous_position": "8703.33.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.29",
+   "sous_position": "8703.40.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.31",
+   "sous_position": "8703.50.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.33",
+   "sous_position": "8703.60.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.35",
+   "sous_position": "8703.70.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.01.39",
+   "sous_position": "8703.90.90",
+   "libelle": "Other",
+   "par_g_km_co2": 146.0,
+   "seuil_g_km": 95,
+   "brut": "R146.00 per g/km CO2 emissions exceeding 95g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.02.01",
+   "sous_position": "8704.21.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "par_g_km_co2": 195.0,
+   "seuil_g_km": 175,
+   "brut": "R195.00 per g/km CO2 emissions exceeding 175g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.02.03",
+   "sous_position": "8704.31.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "par_g_km_co2": 195.0,
+   "seuil_g_km": 175,
+   "brut": "R195.00 per g/km CO2 emissions exceeding 175g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.02.07",
+   "sous_position": "8704.41.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "par_g_km_co2": 195.0,
+   "seuil_g_km": 175,
+   "brut": "R195.00 per g/km CO2 emissions exceeding 175g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.02.09",
+   "sous_position": "8704.51.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "par_g_km_co2": 195.0,
+   "seuil_g_km": 175,
+   "brut": "R195.00 per g/km CO2 emissions exceeding 175g/km"
+  },
+  {
+   "partie": "3D",
+   "article": "151.02.11",
+   "sous_position": "8704.90.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "par_g_km_co2": 195.0,
+   "seuil_g_km": 175,
+   "brut": "R195.00 per g/km CO2 emissions exceeding 175g/km"
+  },
+  {
+   "partie": "3E",
+   "article": "152.01.01",
+   "sous_position": "4011.10.01",
+   "libelle": "Having a rim size not exceeding 33 cm (13 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.01.03",
+   "sous_position": "4011.10.03",
+   "libelle": "Having a rim size of 35 cm (14 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.01.05",
+   "sous_position": "4011.10.05",
+   "libelle": "Having a rim size of 38 cm (15 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.01.07",
+   "sous_position": "4011.10.07",
+   "libelle": "Having a rim size of 41 cm (16 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.01.09",
+   "sous_position": "4011.10.09",
+   "libelle": "Having a rim size of 43 cm (17 inches) or more",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.03",
+   "sous_position": "4011.20.16",
+   "libelle": "Having a rim size not exceeding 35 cm (14 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.05",
+   "sous_position": "4011.20.18",
+   "libelle": "Having a rim size of 38 cm (15 inches) or more",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.07",
+   "sous_position": "4011.20.22",
+   "libelle": "Having a rim size not exceeding 44 cm (17.5 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.09",
+   "sous_position": "4011.20.24",
+   "libelle": "Having a rim size exceeding 44 cm (17.5 inches) but not exceeding 51 cm (20 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.11",
+   "sous_position": "4011.20.26",
+   "libelle": "Having a rim size exceeding 51 cm (20 inches)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.15",
+   "sous_position": "4011.30",
+   "libelle": "Of a kind used on aircraft",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.17",
+   "sous_position": "4011.40",
+   "libelle": "Of a kind used on motorcycles",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.19",
+   "sous_position": "4011.50",
+   "libelle": "Of a kind used on bicycles",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.25",
+   "sous_position": "4011.70.10",
+   "libelle": "Having a rim size of less than 91 cm",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.27",
+   "sous_position": "4011.70.20",
+   "libelle": "Having a rim size of 91 cm or more",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.29",
+   "sous_position": "4011.80.10",
+   "libelle": "Having a rim size of less than 91 cm",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.31",
+   "sous_position": "4011.80.20",
+   "libelle": "Having a rim size of 91 cm or more",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.33",
+   "sous_position": "4011.90.10",
+   "libelle": "Having a rim size of less than 91 cm (excluding those for use on wheelchairs)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.02.35",
+   "sous_position": "4011.90.20",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.03.13",
+   "sous_position": "4012.13",
+   "libelle": "Of a kind used on aircraft",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.03.19",
+   "sous_position": "4012.19",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.04.11",
+   "sous_position": "4012.20.10",
+   "libelle": "Of a kind used on motor cars (including station wagons and racing cars)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.04.13",
+   "sous_position": "4012.20.20",
+   "libelle": "Of a kind used on busses or lorries",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "152.04.15",
+   "sous_position": "4012.20.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.00.01",
+   "sous_position": "8701.10",
+   "libelle": "Single axle tractors",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.03",
+   "sous_position": "8701.21.10",
+   "libelle": "Of a vehicle mass not exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.06",
+   "sous_position": "8701.21.20",
+   "libelle": "Of a vehicle mass exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.08",
+   "sous_position": "8701.22.10",
+   "libelle": "Of a vehicle mass not exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.10",
+   "sous_position": "8701.22.20",
+   "libelle": "Of a vehicle mass exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.11",
+   "sous_position": "8701.23.10",
+   "libelle": "Of a vehicle mass not exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.12",
+   "sous_position": "8701.23.20",
+   "libelle": "Of a vehicle mass exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.13",
+   "sous_position": "8701.24.10",
+   "libelle": "Of a vehicle mass not exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.14",
+   "sous_position": "8701.24.20",
+   "libelle": "Of a vehicle mass exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.15",
+   "sous_position": "8701.29.10",
+   "libelle": "Of a vehicle mass not exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.16",
+   "sous_position": "8701.29.20",
+   "libelle": "Of a vehicle mass exceeding 1 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.09",
+   "sous_position": "8701.30",
+   "libelle": "Track-laying tractors",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.17",
+   "sous_position": "8701.91",
+   "libelle": "Not exceeding 18 kW",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.19",
+   "sous_position": "8701.92",
+   "libelle": "Exceeding 18 kW but not exceeding 37 kW",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.21",
+   "sous_position": "8701.93",
+   "libelle": "Exceeding 37 kW but not exceeding 75 kW",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.23",
+   "sous_position": "8701.94",
+   "libelle": "Exceeding 75 kW but not exceeding 130 kW",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.01.25",
+   "sous_position": "8701.95",
+   "libelle": "Exceeding 130 kW",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.10",
+   "sous_position": "8702.10.10",
+   "libelle": "New, right hand drive, fitted with interior parcel racks, foot-rests, magazine nets, coat hooks, reclining seats, arm rests, microphone and radio or cassette equipment, air conditioning with individual controls, pneumatic plug doors, individual reading lights, chemical toilet, wash basin and refrigerator",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.15",
+   "sous_position": "8702.10.81",
+   "libelle": "Other, of a vehicle mass not exceeding 2000 kg: with a value for ad valorem customs duty purposes not exceeding R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.20",
+   "sous_position": "8702.10.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.25",
+   "sous_position": "8702.10.87",
+   "libelle": "Other, of a vehicle mass exceeding 2 000 kg: with a value for ad valorem customs duty purposes or ad valorem excise duty purposes of less than R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.30",
+   "sous_position": "8702.10.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.33",
+   "sous_position": "8702.20.10",
+   "libelle": "New, right hand drive, fitted with interior parcel racks, foot-rests, magazine nets, coat hooks, reclining seats, arm rests, microphone and radio or cassette equipment, air conditioning with individual controls, pneumatic plug doors, individual reading lights, chemical toilet, wash basin and refrigerator",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.41",
+   "sous_position": "8702.20.81",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg: with a value for ad valorem customs duty purposes not exceeding R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.45",
+   "sous_position": "8702.20.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.47",
+   "sous_position": "8702.20.87",
+   "libelle": "Other, of a vehicle mass exceeding 2 000 kg: with a value for ad valorem customs duty purposes or ad valorem excise duty purposes of less than R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.50",
+   "sous_position": "8702.20.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.53",
+   "sous_position": "8702.30.81",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg: with a value for ad valorem customs duty purposes not exceeding R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.55",
+   "sous_position": "8702.30.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.57",
+   "sous_position": "8702.30.87",
+   "libelle": "Other, of a vehicle mass exceeding 2 000 kg: with a value for ad valorem customs duty purposes or ad valorem excise duty purposes of less than R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.60",
+   "sous_position": "8702.30.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.63",
+   "sous_position": "8702.40.81",
+   "libelle": "Other, of a vehicle mass not exceeding 2000 kg: with a value for ad valorem customs duty purposes not exceeding R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.65",
+   "sous_position": "8702.40.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.67",
+   "sous_position": "8702.40.87",
+   "libelle": "Other, of a vehicle mass exceeding 2 000 kg: with a value for ad valorem customs duty purposes or ad valorem excise duty purposes of less than R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.70",
+   "sous_position": "8702.40.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.91",
+   "sous_position": "8702.90.81",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg: with a value for ad valorem customs duty purposes or ad valorem excise duty purposes not exceeding R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.95",
+   "sous_position": "8702.90.85",
+   "libelle": "Other, of a vehicle mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.97",
+   "sous_position": "8702.90.87",
+   "libelle": "Other, of a vehicle mass exceeding 2 000 kg: with a value for ad valorem customs duty purposes or ad valorem excise duty purposes of less than R130 000; or vehicles for the transport of 14 persons or more, including the driver",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.02.99",
+   "sous_position": "8702.90.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.01",
+   "sous_position": "8703.10",
+   "libelle": "Vehicles specially designed for travelling on snow; golf cars and similar vehicles",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.02",
+   "sous_position": "8703.21.23",
+   "libelle": "Vehicles of the open body tubular frame type, with an engine capacity not exceeding 250 cm³ and a vehicle mass not exceeding 250 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.03",
+   "sous_position": "8703.21.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.04",
+   "sous_position": "8703.21.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.05",
+   "sous_position": "8703.21.60",
+   "libelle": "Vehicles with motorcycle-type handlebars and hand-operated controls",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.06",
+   "sous_position": "8703.21.70",
+   "libelle": "Six or eight-wheeled vehicles, chain-driven and operated through an integral gearbox and differential unit",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.07",
+   "sous_position": "8703.21.75",
+   "libelle": "Other, with a vehicle mass exceeding 250 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.11",
+   "sous_position": "8703.21.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.13",
+   "sous_position": "8703.22.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.14",
+   "sous_position": "8703.22.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.17",
+   "sous_position": "8703.22.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.19",
+   "sous_position": "8703.23.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.20",
+   "sous_position": "8703.23.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.22",
+   "sous_position": "8703.23.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.24",
+   "sous_position": "8703.24.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.25",
+   "sous_position": "8703.24.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.27",
+   "sous_position": "8703.24.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.29",
+   "sous_position": "8703.31.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.30",
+   "sous_position": "8703.31.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.31",
+   "sous_position": "8703.31.70",
+   "libelle": "Of a vehicle mass not exceeding 600 kg (excluding hearses)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.32",
+   "sous_position": "8703.31.80",
+   "libelle": "Six or eight-wheeled vehicles with skid steering systems, chain-driven and operated through an integral gearbox and differential unit, of a vehicle mass exceeding 600 kg and of a cylinder capacity not exceeding 1 000 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.33",
+   "sous_position": "8703.31.85",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.37",
+   "sous_position": "8703.31.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.39",
+   "sous_position": "8703.32.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.40",
+   "sous_position": "8703.32.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.43",
+   "sous_position": "8703.32.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.45",
+   "sous_position": "8703.33.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.46",
+   "sous_position": "8703.33.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.49",
+   "sous_position": "8703.33.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.50",
+   "sous_position": "8703.40.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.51",
+   "sous_position": "8703.40.27",
+   "libelle": "Ambulances with a cylinder capacity not exceeding 1 000 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.52",
+   "sous_position": "8703.40.29",
+   "libelle": "Other ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.53",
+   "sous_position": "8703.40.31",
+   "libelle": "Other with a cylinder capacity not exceeding 1 000 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.54",
+   "sous_position": "8703.40.75",
+   "libelle": "Other, with a vehicle mass exceeding 250 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.57",
+   "sous_position": "8703.40.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.59",
+   "sous_position": "8703.50.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.60",
+   "sous_position": "8703.50.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.61",
+   "sous_position": "8703.50.85",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.63",
+   "sous_position": "8703.50.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.65",
+   "sous_position": "8703.60.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.66",
+   "sous_position": "8703.60.27",
+   "libelle": "Ambulances of a cylinder capacity not exceeding 1 000 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.67",
+   "sous_position": "8703.60.29",
+   "libelle": "Other ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.68",
+   "sous_position": "8703.60.31",
+   "libelle": "Other with a cylinder capacity not exceeding 1 000 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.69",
+   "sous_position": "8703.60.75",
+   "libelle": "Other, with a vehicle mass exceeding 250 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.71",
+   "sous_position": "8703.60.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.73",
+   "sous_position": "8703.70.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.74",
+   "sous_position": "8703.70.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.75",
+   "sous_position": "8703.70.85",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.77",
+   "sous_position": "8703.70.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.79",
+   "sous_position": "8703.80.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.80",
+   "sous_position": "8703.80.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.81",
+   "sous_position": "8703.80.31",
+   "libelle": "With a vehicle mass not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.83",
+   "sous_position": "8703.80.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.85",
+   "sous_position": "8703.90.25",
+   "libelle": "Hearses",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.86",
+   "sous_position": "8703.90.27",
+   "libelle": "Ambulances",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.03.90",
+   "sous_position": "8703.90.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.05",
+   "sous_position": "8704.10.25",
+   "libelle": "G.V.M. not exceeding 50 t",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.07",
+   "sous_position": "8704.10.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.09",
+   "sous_position": "8704.21.10",
+   "libelle": "Shuttle cars for use in underground mines; low construction flame-proof vehicles, equipped with control mechanisms both in the front and at the rear, for use in underground mines",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.11",
+   "sous_position": "8704.21.40",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.13",
+   "sous_position": "8704.21.70",
+   "libelle": "Other, of a vehicle mass not exceeding 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.15",
+   "sous_position": "8704.21.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm³ (excluding the vehicles of subheading 8704.21.77)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.17",
+   "sous_position": "8704.21.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding  1 100 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.19",
+   "sous_position": "8704.21.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.21",
+   "sous_position": "8704.21.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.23",
+   "sous_position": "8704.21.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.25",
+   "sous_position": "8704.22.10",
+   "libelle": "Shuttle cars for use in underground mines; low construction flame-proof vehicles, equipped with control mechanisms both in the front and at the rear, for use in underground mines",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.27",
+   "sous_position": "8704.22.20",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.29",
+   "sous_position": "8704.22.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.31",
+   "sous_position": "8704.23.10",
+   "libelle": "Shuttle cars for use in underground mines; low construction flame-proof vehicles, equipped with control mechanisms both in the front and at the rear, for use in underground mines",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.33",
+   "sous_position": "8704.23.20",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.35",
+   "sous_position": "8704.23.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.37",
+   "sous_position": "8704.31.30",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.39",
+   "sous_position": "8704.31.50",
+   "libelle": "Three-wheeled vehicles with motorcycle type steering systems and engines of a cylinder capacity not exceeding 550 cm³, and equipped with motor vehicle type differentials and reverse gears",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.41",
+   "sous_position": "8704.31.70",
+   "libelle": "Other (excluding off-the-road logging trucks and three-wheeled vehicles) of a vehicle mass not exceeding 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.43",
+   "sous_position": "8704.31.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm³ (excluding the vehicles of subheading 8704.31.77)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.45",
+   "sous_position": "8704.31.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.47",
+   "sous_position": "8704.31.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.49",
+   "sous_position": "8704.31.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.51",
+   "sous_position": "8704.31.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.53",
+   "sous_position": "8704.32.10",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.55",
+   "sous_position": "8704.32.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.57",
+   "sous_position": "8704.41.10",
+   "libelle": "Shuttle cars for use in underground mines; low construction flame-proof vehicles, equipped with control mechanisms both in the front and at the rear, for use in underground mines",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.58",
+   "sous_position": "8704.41.40",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.62",
+   "sous_position": "8704.41.70",
+   "libelle": "Other, of a vehicle mass not exceeding 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.64",
+   "sous_position": "8704.41.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm³ (excluding the vehicles of subheading 8704.41.77)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.66",
+   "sous_position": "8704.41.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 1 100 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.68",
+   "sous_position": "8704.41.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.70",
+   "sous_position": "8704.41.83",
+   "libelle": "Other (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.72",
+   "sous_position": "8704.41.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.73",
+   "sous_position": "8704.42.10",
+   "libelle": "Shuttle cars for use in underground mines; low construction flame-proof vehicles, equipped with control mechanisms both in the front and at the rear, for use in underground mines",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.74",
+   "sous_position": "8704.42.20",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.75",
+   "sous_position": "8704.42.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.76",
+   "sous_position": "8704.43.10",
+   "libelle": "Shuttle cars for use in underground mines; low construction flame-proof vehicles, equipped with control mechanisms both in the front and at the rear, for use in underground mines",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.77",
+   "sous_position": "8704.43.20",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.78",
+   "sous_position": "8704.43.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.79",
+   "sous_position": "8704.51.30",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.80",
+   "sous_position": "8704.51.50",
+   "libelle": "Three-wheeled vehicles with motorcycles type steering systems and engines of a cylinder capacity not exceeding 550 cm3, and equipped with motor vehicles type differentials and reverse gears",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.81",
+   "sous_position": "8704.51.70",
+   "libelle": "Other (excluding off-the-road logging trucks and three-wheeled vehicles) of a vehicle mass not exceeding 600 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.82",
+   "sous_position": "8704.51.75",
+   "libelle": "Other, with an engine capacity not exceeding 1 000 cm3 (excluding the vehicles of subheading 8704.51.77)",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.83",
+   "sous_position": "8704.51.77",
+   "libelle": "Other, with a vehicle mass exceeding 600 kg but not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.84",
+   "sous_position": "8704.51.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.85",
+   "sous_position": "8704.51.83",
+   "libelle": "Other ( excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.86",
+   "sous_position": "8704.51.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.87",
+   "sous_position": "8704.52.10",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.88",
+   "sous_position": "8704.52.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.89",
+   "sous_position": "8704.60.05",
+   "libelle": "Golf carts, pedestrian type",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.91",
+   "sous_position": "8704.60.07",
+   "libelle": "Off-the-road logging trucks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.93",
+   "sous_position": "8704.60.10",
+   "libelle": "With a vehicle mass not exceeding 800 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.94",
+   "sous_position": "8704.60.30",
+   "libelle": "Other, double-cab, of a mass not exceeding 2 000 kg or a G.V.M not exceeding 3 500 kg or of a mass not exceeding 1 600 kg or a G.V.M not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.95",
+   "sous_position": "8704.60.40",
+   "libelle": "Other, (excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a GVM not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a GVM not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.96",
+   "sous_position": "8704.60.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.97",
+   "sous_position": "8704.90.81",
+   "libelle": "Other, double-cab, of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.98",
+   "sous_position": "8704.90.83",
+   "libelle": "Other ( excluding double-cab), of a vehicle mass not exceeding 2 000 kg or a G.V.M. not exceeding 3 500 kg, or of a mass not exceeding 1 600 kg or a G.V.M. not exceeding 3 500 kg per chassis fitted with a cab",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.04.99",
+   "sous_position": "8704.90.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.05.01",
+   "sous_position": "8705.10",
+   "libelle": "Crane lorries",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.05.03",
+   "sous_position": "8705.20",
+   "libelle": "Mobile drilling derricks",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.05.05",
+   "sous_position": "8705.30",
+   "libelle": "Fire fighting vehicles",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.05.07",
+   "sous_position": "8705.40",
+   "libelle": "Concrete-mixer lorries",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.05.09",
+   "sous_position": "8705.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.06.05",
+   "sous_position": "8706.00.05",
+   "libelle": "Of a vehicle mass not exceeding 1 600 kg or of a G.V.M. not exceeding 3 500 kg, for the vehicles of heading 8704.10",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.06.15",
+   "sous_position": "8706.00.15",
+   "libelle": "Other, of a vehicle mass not exceeding 1 600 kg or of a G.V.M. not exceeding 3 500 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.06.20",
+   "sous_position": "8706.00.20",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.08.21",
+   "sous_position": "8708.70.11",
+   "libelle": "Road wheels fitted with tyres",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.08.23",
+   "sous_position": "8708.70.21",
+   "libelle": "Of a kind used on motor cars",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.08.25",
+   "sous_position": "8708.70.23",
+   "libelle": "Of a kind used on busses or lorries",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.08.27",
+   "sous_position": "8708.70.29",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.09.11",
+   "sous_position": "8709.11",
+   "libelle": "Electrical",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.09.19",
+   "sous_position": "8709.19",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.09.29",
+   "sous_position": "8709.90",
+   "libelle": "Parts",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.01",
+   "sous_position": "8711.10",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity not exceeding 50 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.05",
+   "sous_position": "8711.20.10",
+   "libelle": "With an engine of a cylinder capacity of less than 200 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.07",
+   "sous_position": "8711.20.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.09",
+   "sous_position": "8711.30",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity exceeding 250 cm³ but not exceeding 500 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.11",
+   "sous_position": "8711.40",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity exceeding 500 cm³ but not exceeding 800 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.13",
+   "sous_position": "8711.50",
+   "libelle": "With reciprocating internal combustion piston engine of a cylinder capacity exceeding 800 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.14",
+   "sous_position": "8711.60",
+   "libelle": "With electric motor for propulsion",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.15",
+   "sous_position": "8711.90.10",
+   "libelle": "Side-cars",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.17",
+   "sous_position": "8711.90.20",
+   "libelle": "Other, of a cylinder capacity of 200 cm³ or more but not exceeding 800 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.19",
+   "sous_position": "8711.90.30",
+   "libelle": "Other, of a cylinder capacity exceeding 800 cm³",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.11.21",
+   "sous_position": "8711.90.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.12.10",
+   "sous_position": "8712.00.10",
+   "libelle": "Bicycles",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.12.90",
+   "sous_position": "8712.00.90",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.13.10",
+   "sous_position": "8714.10.10",
+   "libelle": "Rims fitted with tyres",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.13.15",
+   "sous_position": "8714.92.10",
+   "libelle": "Rims fitted with tyres",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.16.10",
+   "sous_position": "8716.10",
+   "libelle": "Trailers and semi-trailers of the caravan type, for housing or camping",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.16.20",
+   "sous_position": "8716.20",
+   "libelle": "Self-loading or self-unloading trailers and semi-trailers for agricultural purposes",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.16.31",
+   "sous_position": "8716.31",
+   "libelle": "Tanker trailers and tanker semi-trailers",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.16.39",
+   "sous_position": "8716.39",
+   "libelle": "Other",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.16.40",
+   "sous_position": "8716.40",
+   "libelle": "Other trailers and semi-trailers",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "153.16.50",
+   "sous_position": "8716.90.20",
+   "libelle": "Road wheels fitted with tyres; wheel rims fitted with tyres",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.02.11",
+   "sous_position": "8802.11",
+   "libelle": "Of an unladen mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.02.13",
+   "sous_position": "8802.12",
+   "libelle": "Of an unladen mass exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.02.15",
+   "sous_position": "8802.20",
+   "libelle": "Aeroplanes and other aircraft, of an unladen mass not exceeding 2 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.02.17",
+   "sous_position": "8802.30",
+   "libelle": "Aeroplanes and other aircraft, of an unladen mass exceeding 2 000 kg but not exceeding 15 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.02.19",
+   "sous_position": "8802.40",
+   "libelle": "Aeroplanes and other aircraft, of an unladen mass exceeding 15 000 kg",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.02.21",
+   "sous_position": "8802.60",
+   "libelle": "Spacecraft (including satellites) and suborbital and spacecraft launch vehicles",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "154.04.11",
+   "sous_position": "8807.20",
+   "libelle": "Under-carriages and parts thereof",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "3E",
+   "article": "155.00.05",
+   "sous_position": "9801.00.05",
+   "libelle": "Tyres for the goods described in tariff subheadings 9801.00.10 to 9801.00.55",
+   "montant": 2.3,
+   "unite": "kg",
+   "brut": "R2.30/kg net"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.03",
+   "sous_position": "2710.12.02",
+   "libelle": "Petrol, as defined in Additional Note 1(b) to Chapter 27",
+   "montant": 4.29,
+   "unite": "li",
+   "brut": "429c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.09",
+   "sous_position": "2710.12.07",
+   "libelle": "Aviation kerosene, as defined in Additional Note 1(d) to Chapter 27",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.13",
+   "sous_position": "2710.12.15",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.15",
+   "sous_position": "2710.12.26",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, unmarked",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.17",
+   "sous_position": "2710.12.30",
+   "libelle": "Distillate fuel, as defined in Additional Note 1(g) to Chapter 27",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.19",
+   "sous_position": "2710.12.37",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5A",
+   "article": "195.10.21",
+   "sous_position": "2710.12.39",
+   "libelle": "Specified aliphatic hydrocarbons solvents, as defined in Additional Note 1(ij) to Chapter 27, unmarked",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.13.09",
+   "sous_position": "2710.19.07",
+   "libelle": "Aviation kerosene, as defined in Additional Note 1(d) to Chapter 27",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5A",
+   "article": "195.13.13",
+   "sous_position": "2710.19.15",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5A",
+   "article": "195.13.15",
+   "sous_position": "2710.19.26",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, unmarked",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.13.17",
+   "sous_position": "2710.19.30",
+   "libelle": "Distillate fuel, as defined in Additional Note 1(g) to Chapter 27",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.13.19",
+   "sous_position": "2710.19.37",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5A",
+   "article": "195.13.21",
+   "sous_position": "2710.19.39",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note (ij) to Chapter 27, unmarked",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.20.01",
+   "sous_position": "3826.00.10",
+   "libelle": "Biodiesel as specified in Additional Note 1(a) to Chapter 38",
+   "montant": 1.965,
+   "unite": "li",
+   "brut": "196,5c/li"
+  },
+  {
+   "partie": "5A",
+   "article": "195.20.03",
+   "sous_position": "3826.00.90",
+   "libelle": "Other biodiesel",
+   "montant": 4.16,
+   "unite": "li",
+   "brut": "416c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.03",
+   "sous_position": "2710.12.02",
+   "libelle": "Petrol, as defined in Additional Note 1(b) to Chapter 27",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.09",
+   "sous_position": "2710.12.07",
+   "libelle": "Aviation kerosene, as defined in Additional Note 1(d) to Chapter 27",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.13",
+   "sous_position": "2710.12.15",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.15",
+   "sous_position": "2710.12.26",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, unmarked",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.17",
+   "sous_position": "2710.12.30",
+   "libelle": "Distillate fuel, as defined in Additional Note 1(g) to Chapter 27",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.19",
+   "sous_position": "2710.12.37",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5B",
+   "article": "197.10.21",
+   "sous_position": "2710.12.39",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, unmarked",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.13.09",
+   "sous_position": "2710.19.07",
+   "libelle": "Aviation kerosene, as defined in Additional Note 1(d) to Chapter 27",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5B",
+   "article": "197.13.13",
+   "sous_position": "2710.19.15",
+   "libelle": "Illuminated kerosene, as defined in Additional Note 1(f) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5B",
+   "article": "197.13.15",
+   "sous_position": "2710.19.26",
+   "libelle": "Illuminating kerosene, as defined in Additional Note 1(f) to Chapter 27, unmarked",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.13.17",
+   "sous_position": "2710.19.30",
+   "libelle": "Distillate fuel, as defined in Additional Note 1(g) to Chapter 27",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.13.19",
+   "sous_position": "2710.19.37",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, marked",
+   "taux": 0.0,
+   "brut": "free"
+  },
+  {
+   "partie": "5B",
+   "article": "197.13.21",
+   "sous_position": "2710.19.39",
+   "libelle": "Specified aliphatic hydrocarbon solvents, as defined in Additional Note 1(ij) to Chapter 27, unmarked",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.20.01",
+   "sous_position": "3826.00.10",
+   "libelle": "Biodiesel, as defined in Additional Note 1(a) to Chapter 38",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "5B",
+   "article": "197.20.03",
+   "sous_position": "3826.00.90",
+   "libelle": "Other biodiesel",
+   "montant": 2.25,
+   "unite": "li",
+   "brut": "225c/li"
+  },
+  {
+   "partie": "7A",
+   "article": "191.01.05",
+   "sous_position": "1806.10.05",
+   "libelle": "Preparations for making beverages",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.02.05",
+   "sous_position": "1901.90.15",
+   "libelle": "Other, preparations for making beverages (excluding those of tariff subheading 1901.90.20)",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.05.05",
+   "sous_position": "2106.90.20",
+   "libelle": "Syrups and other concentrates or preparations for making beverages, not having a basis of fruit juice (excluding those of tariff subheading 2106.90.69)",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.05.10",
+   "sous_position": "2106.90.22",
+   "libelle": "Syrups and other concentrates or preparations for making beverages, with a basis of fruit juice (excluding those of tariff subheading 2106.90.69)",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.05.15",
+   "sous_position": "2106.90.69",
+   "libelle": "Drinking straws, containing flavouring preparations",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.07.05",
+   "sous_position": "2202.10.10",
+   "libelle": "In sealed containers holding 2,5 li or less (excluding those in collapsible plastic tubes)",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.07.10",
+   "sous_position": "2202.10.90",
+   "libelle": "Other",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.07.15",
+   "sous_position": "2202.91.20",
+   "libelle": "In sealed containers holding 2.5 li or less (excluding those in collapsible plastic tubes and those with a basis of milk)",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.07.20",
+   "sous_position": "2202.91.90",
+   "libelle": "Other",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.07.25",
+   "sous_position": "2202.99.20",
+   "libelle": "In sealed containers holding 2.5 li or less (excluding those in collapsible plastic tubes and those with a basis of milk)",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  },
+  {
+   "partie": "7A",
+   "article": "191.07.90",
+   "sous_position": "2202.99.90",
+   "libelle": "Other",
+   "par_gramme_de_sucre": 0.0221,
+   "seuil_g_100ml": 4,
+   "brut": "2,21c/gram of the sugar content that exceeds 4g/100ml"
+  }
+ ]
+}

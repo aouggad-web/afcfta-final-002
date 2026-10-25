@@ -113,7 +113,7 @@
    "correction_2026-09-15": "Cette fiche portait « SI 92/2024 portant gazettage de la Provisional Schedule of Tariff Concessions », formule reprise de sources secondaires. Le journal officiel obtenu ne la soutient pas : il intitule le SI 92 « Customs and Excise (General) (Amendment) Regulations, 2024 » et ne mentionne la ZLECAf nulle part. L'affirmation est retirée jusqu'à lecture du texte."
   },
   "GHA": {
-   "statut": "OFFRE_SEULE",
+   "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
    "etabli": [
     "Le Ghana figure parmi les 19 pays ayant gazetté leur barème au 20 octobre 2024, selon la publication gouvernementale sud-africaine.",
     "Membre fondateur du Guided Trade Initiative, lancé à Accra le 7 octobre 2022.",
@@ -141,6 +141,11 @@
     "source": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
     "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
     "ambiguite": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
+   },
+   "progres_2026-09-28": {
+    "recherche_menee": "Premiers ENVOIS GTI vers le Ghana (certificats d'origine émis au départ) : café Igire (Rwanda, export 30/09/2022) et batteries Exide (Kenya) — Secrétariat 19/10/2022 et 09/10/2023 ; traitement à l'arrivée non documenté. Gazettement attesté par la General Note O (R.4287, GG 50045, 26/01/2024 : « Ghana — 31 August 2023 ») ; numéro de la Ghana Gazette introuvable.",
+    "bareme": "Offre ECOWAS ARCHIVÉE dans le dépôt (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz, destination GH) — bareme_collecte = true.",
+    "manque_inchange": "L'acte national ghanéen (numéro de gazette), toute liste nominative, et un dédouanement préférentiel GRA documenté."
    }
   },
   "CMR": {

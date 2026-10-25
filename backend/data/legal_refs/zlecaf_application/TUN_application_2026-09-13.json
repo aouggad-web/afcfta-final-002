@@ -139,11 +139,11 @@
  "gates_status": {
   "1_instrument_national_en_vigueur": "SATISFAIT — texte TA n°016/2023 du 06/04/2023, publié à la النشرية الرسمية للديوانة n° 973, lu intégralement ; octets du PDF non archivés, empreinte sur la transcription",
   "2_liste_officielle_origines_reciproques": "PARTIEL — le texte de 2023 nomme 7 pays, le tarif de 2026 en publie 8, et les deux listes divergent (EGY d'un côté, ZAF et NGA de l'autre)",
-  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — calendrier établi, droits de base 2019 et classement A/B/C à collecter",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — calendrier établi ; classement A/B/C fourni par l'e-Tariff et concordant avec le Tarif Web 2026 (TUN_rapprochement_baremes_2026-09-29.json) ; droits de base 2019 ligne à ligne à collecter",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
  },
  "remaining_work": [
-  "Collecter les droits de base 2019 ligne à ligne (référence du TA) et la classification A/B/C de l'offre tunisienne.",
+  "Collecter les droits de base 2019 ligne à ligne (référence du TA). Le classement A/B/C est établi par le rapprochement du 29/09/2026 (TUN_rapprochement_baremes_2026-09-29.json), sauf pour 2 656 lignes A/B sans préférence publiée au Tarif Web.",
   "Identifier l'acte qui ajoute l'Afrique du Sud et le Nigeria à la liste appliquée entre 2023 et 2026, et vérifier la position de l'Égypte (texte de 2023 vs tarif de 2026).",
   "Dresser la liste nominative des prélèvements tunisiens d'effet équivalent visés par la section V du TA 016/2023, chacun avec son texte de rattachement — préalable à tout branchement.",
   "Décider du branchement — hors périmètre de cette PR de recherche : le sens du pourcentage est tranché, le taux se calculerait depuis le droit de base 2019."

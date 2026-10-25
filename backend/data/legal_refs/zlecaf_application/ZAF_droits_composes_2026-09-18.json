@@ -3,6 +3,7 @@
   "objet": "Règle de liquidation des droits composés du tarif sud-africain (SACU) — deux formes, une seule établie.",
   "verified_at": "2026-09-18",
   "etabli": false,
+  "superseded_by": "SACU_regle_or_B3_2026-10-09.json — la forme « or » est tranchée depuis le 2026-10-09 par les General Notes SARS (Schedule No. 1, B.3) : la plus élevée des deux composantes s'applique. Cette fiche reste l'instantané de la recherche du 2026-09-18.",
   "regle": null,
   "evidence_level": "primaire pour les expressions elles-mêmes (Schedule 1 Part 1, PDF officiel daté du 2026-08-28) ; AUCUNE source atteinte pour la règle qui départage la forme « or ».",
   "source": {

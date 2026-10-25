@@ -19,14 +19,14 @@ Deux familles, aux rôles distincts.
    le xfail strict imposera alors de retirer le marqueur. Rien n'est désactivé,
    rien n'est masqué.
 
-Seul le chemin prioritaire est exercé ici : il lit `backend/data/` et
-`backend/data/crawled/`, tous deux versionnés. Le chemin POST dépend de
-`backend/data/crawled_normalized/` (~2 Go, non versionné) ; sa comparaison
-relève du harnais `scripts/diff_engines.py`, qui sait signaler l'absence de
-cette couche au lieu de la confondre avec un défaut.
+Le droit servi est lu sur le socle (`backend/socle/`), seul chemin de calcul
+depuis le 20/10/2026 ; les citations, dans `backend/data/` et
+`backend/data/crawled/`, tous deux versionnés.
 """
 
+import functools
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -55,10 +55,28 @@ def _neutralise_devise(monkeypatch):
 # --------------------------------------------------------------------------- #
 
 
-def _crawled_entry(country: str, code: str):
-    from services.authentic_tariff_service import load_crawled_position_index
+@functools.lru_cache(maxsize=None)
+def _index_crawl(country: str) -> dict:
+    """Positions du fichier collecté, par code national (chiffres seuls)."""
+    chemin = REPO_ROOT / "backend" / "data" / "crawled" / f"{country}_tariffs.json"
+    if not chemin.exists():
+        return {}
+    donnees = json.loads(chemin.read_text(encoding="utf-8"))
+    lignes = list(donnees.get("positions") or []) + list(donnees.get("sub_positions") or [])
+    for ligne in donnees.get("tariff_lines") or []:
+        lignes += ligne.get("sub_positions") or []
+    index = {}
+    for entree in lignes:
+        for cle in ("hs_code", "code_clean", "code", "national_code", "raw_code", "code_raw", "hs6"):
+            code = re.sub(r"\D", "", str(entree.get(cle) or ""))
+            if len(code) >= 6:
+                index[code] = entree
+                break
+    return index
 
-    return (load_crawled_position_index(country) or {}).get(code)
+
+def _crawled_entry(country: str, code: str):
+    return _index_crawl(country).get(code)
 
 
 def _tax_entry(entry: dict, taxes_key: str, tax_code: str):
@@ -190,24 +208,21 @@ class TestCitationsDuCorpus:
 
 
 def _priority_dd(country: str, code: str):
-    """Droit rendu par le chemin prioritaire, ou l'échec rencontré."""
-    from services import authentic_tariff_service as svc
+    """Droit rendu par le calcul (le socle, comme `POST /calcul`), ou l'échec
+    rencontré."""
+    from services import socle
+    from services.calcul import calculer
 
     try:
-        result = svc.calculate_import_taxes(
-            country, code, CIF, language="fr", origin_country=ORIGIN
-        )
+        position, _ = socle.position(country, code)
+        npf = calculer(position, CIF)["npf"]
     except Exception as exc:
         return {"outcome": "exception", "detail": f"{type(exc).__name__}: {exc}"}
 
-    if result.get("error"):
-        return {"outcome": "absent", "detail": str(result["error"])}
-
-    return {
-        "outcome": "ok",
-        "dd_rate_pct": (result.get("rates") or {}).get("dd_rate_pct"),
-        "droit_douane": ((result.get("taxes_summary") or {}).get("npf") or {}).get("droit_douane"),
-    }
+    dd = next((ligne for ligne in npf["lignes"] if ligne["code"] == "DD"), None)
+    if dd is None:
+        return {"outcome": "absent", "detail": "aucune ligne DD au socle"}
+    return {"outcome": "ok", "dd_rate_pct": dd.get("taux_pct"), "droit_douane": dd.get("montant")}
 
 
 def _expected_marker(case):
@@ -247,73 +262,3 @@ class TestDroitServiParLeCheminPrioritaire:
         else:
             assert observed["dd_rate_pct"] == pytest.approx(expected)
             assert observed["droit_douane"] == pytest.approx(CIF * expected / 100.0)
-
-
-# --------------------------------------------------------------------------- #
-# 3. Le harnais classe correctement
-# --------------------------------------------------------------------------- #
-
-
-class TestClassementDuHarnais:
-    """Le verdict du harnais différentiel ne doit pas confondre absence et zéro."""
-
-    @staticmethod
-    def _harness():
-        import importlib.util
-
-        spec = importlib.util.spec_from_file_location(
-            "diff_engines", REPO_ROOT / "scripts" / "diff_engines.py"
-        )
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module
-
-    def test_zero_et_absence_ne_sont_pas_confondus(self):
-        harness = self._harness()
-        assert harness._close(0.0, 0.0, 0.01) is True
-        assert harness._close(None, None, 0.01) is True
-        assert harness._close(None, 0.0, 0.01) is False
-        assert harness._close(0.0, None, 0.01) is False
-
-    def test_couche_normalisee_absente_nest_pas_une_divergence(self):
-        harness = self._harness()
-        priority = {
-            "status": "ok",
-            "dd_rate_pct": 10.0,
-            "summary": {},
-            "qualification": "authentique",
-        }
-        post = {"status": "absent", "error": "aucune ventilation NPF dans la réponse"}
-
-        verdict, _ = harness.classify(priority, post, normalized_present=False)
-        assert verdict == harness.V_NORMALISE_ABSENT
-        assert verdict not in harness.DIVERGENCE_VERDICTS
-
-        verdict, _ = harness.classify(priority, post, normalized_present=True)
-        assert verdict == harness.V_ABSENT_POST
-        assert verdict in harness.DIVERGENCE_VERDICTS
-
-    def test_qualification_divergente_est_relevee_a_montants_egaux(self):
-        harness = self._harness()
-        summary = {
-            "droit_douane": 0.0,
-            "autres_taxes": 0.0,
-            "tva": 150.0,
-            "total_taxes_et_droits": 150.0,
-        }
-        priority = {
-            "status": "ok",
-            "dd_rate_pct": 0.0,
-            "summary": summary,
-            "qualification": "authentique",
-        }
-        post = {
-            "status": "ok",
-            "dd_rate_pct": 0.0,
-            "summary": summary,
-            "qualification": "indicatif",
-        }
-
-        verdict, fields = harness.classify(priority, post, normalized_present=True)
-        assert verdict == harness.V_ECART_QUALIFICATION
-        assert fields == ["qualification"]

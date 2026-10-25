@@ -1,0 +1,89 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "CMR",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "OFFRE_SEULE",
+ "verified_at": "2026-09-29",
+ "evidence_level": "offre tarifaire archivée (instantané e-Tariff Book CEMAC) et faits d'application documentés par l'administration douanière elle-même — mais à l'EXPORTATION seulement ; à l'IMPORTATION : aucun acte national retrouvé, contrôles négatifs datés sur les textes budgétaires et douaniers 2025-2026 ; aucune liste nominative d'origines",
+ "offre_tarifaire": {
+  "instrument": "Instantané e-Tariff Book du Secrétariat de la ZLECAf, offre CEMAC (le Cameroun est membre CEMAC)",
+  "artifact": "backend/data/official_preferential/CEMAC_afcfta_etariff_2026-08-17.json.gz",
+  "document_non_archive": "Jeu de données du dépôt, hors du dossier sources/ : empreinte consignée pour la relecture, chemin du dépôt en clair.",
+  "sha256": "ba6f1043cb5016332dff65de15a22b6011f990ca0b88c064c10b2720dbccd261",
+  "collecte_le": "2026-08-17",
+  "portee": "Barème ligne à ligne au format de l'offre continentale ; OFFRE SEULE : elle n'est pas un acte national camerounais et ne nomme pas de partenaires."
+ },
+ "application_documentee_a_lexportation": {
+  "fait": "La douane camerounaise a délivré le premier certificat d'origine ZLECAf le 06/10/2022 (GIC AFATEX — 155 kg de thé de gingembre, safous et ananas séchés, à destination du Ghana), puis Cameroon Tea Estate et Ndawara Tea Estate (19/10/2022, page « ZLECAf en continu »).",
+  "texte_archive": "sources/CMR_douanes_premier_certificat_2022-10-06.html",
+  "sha256": "295762a4b57e287b75d8dfb9f524d774444aee33f5a4d37229e789a05c97cc9e",
+  "source_url": "http://www.douanes.cm/douanes-cameroun/6582/delivrance-du-tout-premier-certificat-dorigine-zlecaf/",
+  "verbatim": "« en date du 06 octobre 2022, le Chef du Bureau Principal des Douanes Hors Classe de Douala Aéroport, Achille OLEME, a procédé à la signature et à la délivrance du tout premier certificat d'origine ZLECAF à l'exportation des marchandises produites localement par le GIC AFATEX. Lesdites marchandises, d'un poids total de 155 kilogrammes à destination du Ghana, étaient constituées de thé de gingembre, de safous et d'ananas séchés. »",
+  "page_seconde": {
+    "texte_archive": "sources/CMR_douanes_zlecaf_en_continu_2022-10-21.html",
+    "sha256": "07f382475238f093481941467fbc88ac82028029c015f564dfc2d4e86e993826",
+    "source_url": "http://www.douanes.cm/douanes-cameroun/6927/zlecaf-en-continu/",
+    "verbatim": "« Après le GIC AFATEX, deux autres entreprises camerounaises, CAMEROON TEA ESTATE et NDAWARA TEA ESTATE ont expédié leurs produits sous le régime du Commerce Guidé de la ZLECAf en date du 19 octobre 2022. Lesdits produits sont couverts par un certificat d'origine ZLECAf délivré par Monsieur Achille OLEME, Chef du Bureau Principal des Douanes Hors Classe de l'Aéroport International de Douala. »"
+  },
+  "transport": "douanes.cm présente un certificat TLS jugé trop faible par curl (les requêtes https échouent) ; ces deux pages ont été téléchargées en HTTP non chiffré, SANS désactivation de la vérification TLS — les empreintes sha256 couvrent les octets reçus.",
+  "portee": "L'administration douanière documente elle-même son entrée dans la ZLECAf par des actes d'EXPORTATION. Rien dans ses publications ne concerne l'admission d'origines à l'importation."
+ },
+ "importation_sous_gti_reperee": {
+  "fait": "Première importation sous régime ZLECAf : cargaison de résine en provenance de Tunisie attendue au port de Kribi à partir du 02/07/2023 (société Inoda Industries Sarl), dans le cadre de la phase test (GTI, Cameroun pays pilote) — communiqué officiel du Port autonome de Kribi relayé par le Conseil national des chargeurs (CNSC).",
+  "mode_de_consultation": "REPÉRAGE NON ARCHIVABLE — accès direct au site cncc.cm refusé (HTTP 000, essais des 29/09/2026), lu via lecteur tiers (r.jina.ai) ; les octets ne sont pas scellés : jamais preuve, aucune empreinte.",
+  "source_url": "https://www.cncc.cm/fr/article/port-de-kribi-le-cameroun-accueille-la-premiere-importation-de-marchandise-sous-le-regime-de-la-zlecaf-552",
+  "repartition_rapportee": "catégorie A : 90,01 % des lignes (5 255 produits, linéaire sur 10 ans) ; catégorie B : 6,99 % (408 produits, 13 ans, moratoire de 5 ans) ; catégorie C : 2,99 % (175 produits exclus) — répartition de l'OFFRE rapportée par la presse et le CNSC, non retrouvée dans un acte national."
+ },
+ "verification_2026-09-29": {
+  "consulte_le": "2026-09-29",
+  "cible": "Acte national camerounais d'application ZLECAf à l'IMPORTATION (décret, arrêté, note de service, circulaire douanière) et liste nominative d'origines admises.",
+  "regle_d_archivage": "PDF entier seulement quand il prouve un fait : pour les contrôles négatifs, extraits scellés (URL officielle + sha256 du PDF original + page de titre + résultat), PDF intégraux conservés hors dépôt (~/Downloads/Cameroun/).",
+  "ou": [
+   {
+    "endroit": "Loi N° 2025/012 du 17/12/2025 portant loi de finances pour l'exercice 2026 (Presidence de la République, prc.cm) — extrait : sources/CMR_lf_2026_n2025-012_2026-09-29.extrait.txt",
+    "pdf_original_url": "https://www.prc.cm/files/c0/a1/8a/f2384c46567a032046599c65f95c5aa6.pdf",
+    "sha256_pdf_original": "4196d9683db72f0cd1fa07f7a6ad39f306e727823695edf60ab0f3d74e055da8",
+    "resultat": "PDF NON VERSÉ AU DÉPÔT — scan intégral de 151 pages sans couche texte (112 Mo) ; extraction pypdf impossible et lecture OCR de l'intégralité non menée. Le contrôle négatif sur les dispositions douanières de la LF 2026 est porté par la circulaire d'application de la DGD (n° 410, OCR intégral de 37 pages) : les dix-huit mesures douanières de la loi (articles 5 à 20) n'en contiennent aucune portant un dispositif tarifaire ZLECAf ni une liste d'origines."
+   },
+   {
+    "endroit": "Loi N° 2024/013 du 23/12/2024 portant loi de finances pour l'exercice 2025 (impots.cm, scan + copie prc.cm à couche texte) — extrait : sources/CMR_lf_2025_n2024-013_2026-09-29.extrait.txt",
+    "pdf_original_url_scan": "https://impots.cm/sites/default/files/documents/loi_n_2024_013_du_23_12_2024-web.pdf",
+    "sha256_pdf_original_scan": "e3d1c4ce54bbd8ee1536b1b7ec3d95eb840a4c25931297c3871782f2e614c546",
+    "pdf_original_url_couche_texte": "https://www.prc.cm/files/cf/48/1f/2fe1a9841fec83a1f97992a679fc9468.pdf",
+    "sha256_copie_couche_texte": "386dd1c8c5bd6f480554d88195f270da703fe5d261f94689cbeb7b8409f50348",
+    "resultat": "PDF NON VERSÉS AU DÉPÔT — sur la copie à couche texte (109 pages lisibles sur 110 ; 56 occurrences d'« Article »), extraction pypdf intégrale : ZLECA 0, Zlecaf 0, AfCFTA 0, continental 0. Aucune disposition tarifaire ZLECAf dans la LF 2025."
+   },
+   {
+    "endroit": "Circulaire N° 410/MINFI/DGD du 18/05/2026 précisant les modalités d'application des dispositions douanières de la LF 2026 (douanes.cm) — extrait : sources/CMR_circulaire_410_MINFI_DGD_2026-05-18.extrait.txt",
+    "pdf_original_url": "https://www.douanes.cm/douanes-cameroun/wp-content/uploads/2026/05/CIRCULAIRE-N°-410-DGD-DU-18-MAI-2026-Precisant-les-modalites-dapplication-des-dispositions-douanieres-de-la-LF-2026.pdf",
+    "sha256_pdf_original": "13b0ea5a7a7a78b726986ace366c3060afebfa79a1d049ee0d0f80ef0df0f255",
+    "resultat": "PDF NON VERSÉ AU DÉPÔT — scan de 37 pages, OCR intégral hors dépôt (lecteur macOS Vision). Une seule occurrence de « ZLECAf », CONTEXTUELLE (p. 1 : « l'accroissement de la charge liée aux dépenses fiscales résultant de la mise en œuvre des différents accords commerciaux et douaniers signés par le Cameroun, notamment l'APE […], la Zone de Libre-Echange Continentale Africaine (ZLECAf) » — OCR : « Zone de Liban Eohanesse », défaillance consignée). Aucune des dix-huit mesures douanières de la loi ne porte un dispositif tarifaire ZLECAf ni une liste d'origines ; « AfCFTA », « préférent », « exonér » : 0 chacune. TRANSPORT : douanes.cm présente un certificat TLS jugé trop faible par curl (requêtes https en échec) ; le PDF a été téléchargé en HTTP non chiffré, SANS désactivation de la vérification TLS — l'empreinte sha256 consignée couvre les octets reçus sur ce canal."
+   },
+   {
+    "endroit": "douanes.cm — textes juridiques nationaux (http://www.douanes.cm/douanes-cameroun/nationale/) et tarif des douanes (/tarif-des-douanes/)",
+    "resultat": "NÉGATIF (2026-09-29) — zéro mention ZLECAf/AfCFTA dans la rubrique des textes nationaux et dans la page du tarif en ligne ; aucune note de service ou circulaire ZLECAf publiée. La recherche interne du site ne rend qu'un article (n° 8365, circulaire LF 2026)."
+   },
+   {
+    "endroit": "tralac, « Commerce dans le cadre de la ZLECAF — Guide pour le Cameroun » (juillet 2026) et CAMEPI, « Seven Years Later: A Review of Cameroon's Implementation of the AfCFTA » (décembre 2025)",
+    "resultat": "SOURCES SECONDAIRES (repérage) — ratification 31/10/2019, instrument déposé 01/12/2020 ; GTI conclue en avril 2025 ; « not all businesses in Cameroon have been able to import under preferential tariffs as some countries have not taken the necessary measures to implement the AfCFTA » ; recommandation que les États gazettent leurs textes — sans citer d'acte camerounais d'application à l'importation. Jamais preuve."
+   }
+  ],
+  "resultat": "AUCUN acte national d'application ZLECAf à l'importation retrouvé : les deux lois de finances récentes (extraits scellés — URL officielle, sha256 du PDF original, page de titre ; PDFs non versés au dépôt) et la circulaire douanière d'application (OCR intégral, extrait scellé) ne portent aucun dispositif tarifaire ZLECAf ; la rubrique des textes nationaux du site douanier est muette ; aucune liste nominative d'origines. Les faits d'application documentés par l'administration concernent l'EXPORTATION ; l'importation documentée (résine tunisienne, 02/07/2023) est un fait de la phase test GTI, repéré sur un site inaccessible en direct. Niveau inchangé."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON SATISFAIT — aucun acte national d'application à l'importation retrouvé ; contrôles négatifs datés sur LF 2025, LF 2026 et circulaire 410 (OCR)",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — aucune liste nominative retrouvée ; l'admission rapportée procède du GTI et de la réciprocité",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — instantané e-Tariff Book CEMAC archivé ; répartition A/B/C rapportée par le CNSC/presse (5 255/408/175), sans acte national",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "ne_tranche_pas": [
+  "Le Cameroun a-t-il adopté un acte (décret, arrêté, note de service) donnant force nationale à l'offre CEMAC ? Rien n'en est retrouvé ; les contrôles négatifs du 29/09/2026 ne portent que LF 2025, LF 2026 et la circulaire 410 — un acte antérieur ou non budgétaire reste possible.",
+  "Le traitement préférentiel appliqué à la résine tunisienne à Kribi (02/07/2023) repose sur quel instrument exact ? Le communiqué du portail (repérage non archivable) ne le dit pas.",
+  "L'articulation avec le TEC CEMAC et la décision communautaire éventuelle d'application du barème ZLECAf n'est pas instruite (le niveau CEMAC de l'e-Tariff n'est pas un acte camerounais)."
+ ],
+ "remaining_work": [
+  "Chercher l'acte national auprès du MINFI (direction des affaires juridiques), du Secrétariat général du Gouvernement (sgg.gov.cm) et de la Commission de la CEMAC.",
+  "Obtenir, si elle existe, la note de service ou circulaire douanière portant l'application du tarif ZLECAf à l'importation et sa liste d'origines.",
+  "Retrouver en octets le communiqué du Port autonome de Kribi et l'article CNSC (site cncc.cm inaccessible en direct) ou un canal primaire équivalent."
+ ]
+}

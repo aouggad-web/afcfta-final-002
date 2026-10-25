@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "objet": "SACU (Afrique du Sud, Botswana, Lesotho, Namibie, Eswatini) : un droit « X% or Yc/kg » se liquide à la plus élevée des deux composantes (SARS, Schedule No. 1, General Notes, B.3)",
+  "verified_at": "2026-10-09",
+  "etabli": true,
+  "evidence_level": "primaire — General Notes du Schedule No. 1 au Customs and Excise Act 1964, édition SARS datée du 2026-03-27 (pied de page), partie B « Duty assessment », note 3",
+  "source": {
+    "institution": "South African Revenue Service (SARS), autorité douanière qui publie le tarif commun de la SACU",
+    "url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1Gen-General-Notes-to-Schedules-to-Customs-and-Excise-Act.pdf",
+    "pdf_sha256": "475f2c01545f3a01f6d3942c0e4584f46e24ded9253c1f3727377c36b4c566b8",
+    "pdf_non_archive": "PDF de 515 pages déposé par le propriétaire du projet (PR #613, data/sacu/reference/ZAF_SARS_schedule1_general_notes_2023.pdf ; le nom dit 2023, le pied de page dit 2026-03-27) ; seule la partie B est archivée (voir regle.texte_archive)"
+  },
+  "regle": {
+    "valeur": "Droit composé « X% or Yc/kg » : la part ad valorem et la part spécifique sont chacune un taux complet ; le droit dû est la plus élevée des deux (LE_PLUS_ELEVE). Appliquée au NPF et aux colonnes préférentielles (dont la ZLECAf), qui suivent la même expression.",
+    "verbatim": "3. When a rate of duty in respect of any goods consists of two or more parts separated by the word \"or\", each such part shall be deemed to be a separate and complete rate of duty and such rate of duty yielding the higher or highest amount of duty shall be applicable in respect of such goods.",
+    "reference": "SARS, Schedule No. 1, General Notes, B. Duty assessment, note 3",
+    "portee": "scripts/build_socle.MOTIF_COMPOSE_SARS (socles ZAF, BWA, LSO, NAM, SWZ) : regle_composee LE_PLUS_ELEVE sur les 64 positions « X% or Yc/kg » de chaque pays. Positions liquidables : 8 494 → 8 558 par pays (le droit reste sur base FOB, fiche SACU_assiette_DD_2026-09-17.json).",
+    "texte_archive": "sources/SACU_regle_or_B3.texte-extrait.txt",
+    "sha256": "f9af8a3f67a02228b70782747204de7d94b889422b4b2c71fb38596cc480100f"
+  },
+  "decisions": [
+    "La note B.3 tranche la forme que la fiche ZAF_droits_composes_2026-09-18.json laissait non établie faute d'avoir lu les General Notes.",
+    "« 2 500c/kg » (6309.00.13 et 6309.00.17) : la collecte avait gardé « 500c/kg », perdant le chiffre avant l'espace des milliers ; la part spécifique se relit désormais sur le verbatim (25,00 R/kg).",
+    "« 4,5c/kg » et « 7,25c/kg » (2007.10, 2007.91, 2007.99, 2006.00.40) : virgule décimale, lue comme telle."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "« 30% or 500c/2u » (27 positions de chaussures, chapitre 64) : la B.3 s'applique, mais la part spécifique est due par paire (« 2u ») et la note B.4 exclut la proportionnalité pour l'unité « u » ; le moteur ne sait pas encore demander une quantité en paires. Ces positions restent non liquidées.",
+    "« 10% or 55c/kg less 90% » (3 positions : 1901.90.10, 2006.00.30, 2401.20) : la portée de « less N% » n'est pas lue. Ces positions restent non liquidées."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SACU_regle_or_B3.texte-extrait.txt",
+      "sha256": "f9af8a3f67a02228b70782747204de7d94b889422b4b2c71fb38596cc480100f"
+    }
+  ]
+}

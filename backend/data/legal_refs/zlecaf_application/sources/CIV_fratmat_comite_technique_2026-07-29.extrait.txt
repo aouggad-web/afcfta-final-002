@@ -1,0 +1,27 @@
+FratMat — « Zlecaf/Mise en œuvre : Le Comité national fait le point des avancées et fixe
+les priorités du second semestre » (article n° 2643583, publié le 29/07/2026)
+SOURCE SECONDAIRE (presse) — REPÉRAGE UNIQUEMENT, JAMAIS PREUVE.
+URL : https://www.fratmat.info/article/2643583/economie/zlecafmise-en-uvre-le-comite-national-fait-le-point-des-avancees-et-fixe-les-priorites-du-second-semestre
+Consulté le : 2026-09-29 (page entière capturée : sources/CIV_fratmat_comite_technique_2026-07-29.html)
+Page : corps de l'article (le HTML archivé porte la page entière ; verbatim ci-dessous relevé dans le corps).
+
+VERBATIM (français, tel qu'imprimé) :
+
+1) « Parmi les principales avancées enregistrées figure l'adoption, par le Parlement, du
+projet de loi ratifiant l'ordonnance relative au démantèlement tarifaire des produits de la
+catégorie A dans le cadre de la Zlecaf. Ce texte a été adopté les 26 mars et 8 juin 2026,
+marquant une étape importante dans l'application progressive des engagements pris par la
+Côte d'Ivoire au titre de l'Accord continental. Dans le prolongement de cette évolution, le
+ministre du Commerce, de l'Industrie et de l'Artisanat a transmis au ministre chargé du
+Budget les projets de décrets ainsi que l'ensemble de la documentation y afférente. »
+
+TRADUCTION / PORTÉE :
+- article de presse rendant compte de la 4e réunion statutaire du Comité technique du
+  CN-ZLECAf tenue le mercredi 29 juillet 2026 ;
+- au 29/07/2026, les DÉCRETS D'APPLICATION n'étaient PAS pris : seuls des « projets de
+  décrets » avaient été transmis au ministre chargé du Budget ;
+- la presse date l'adoption du texte ratifiant de « 26 mars et 8 juin 2026 » — dates
+  secondaires, à confirmer sur source primaire (JO, Assemblée nationale, Sénat).
+
+MÉTHODE : page HTML capturée en direct (curl), empreinte sha256 consignée dans la fiche.
+La source est un média privé : elle sert à REPÉRER l'état du dossier, jamais à l'établir.

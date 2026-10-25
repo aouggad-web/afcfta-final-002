@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA namibienne à l'importation : FOB plus 10 % du FOB, sans les droits de douane",
+ "verified_at": "2026-10-02",
+ "evidence_level": "primaire — Value-Added Tax Act 10 of 2000, s.12(2)(a), version annotée NamRA archivée (sources/nam_vatact2000.pdf)",
+ "regle": {
+  "valeur": "Assiette TVA = FOB × 1,10 (sans les droits de douane) ; la valeur de marché si elle est plus élevée",
+  "verbatim": "the value of an import of goods shall be - (a) in the case of goods required to be cleared in terms of the Customs and Excise Act, the greater of - (i) an amount equal to the sum of - (aa) the free-on-board value of the goods; and (bb) an amount equal to 10 per cent of the amount under item (aa); or (ii) the open market value of that import",
+  "portee": "Assiette FOBx1.10 de la table nationale de TVA pour la Namibie ; le taux de 15 % est établi par NAM_taux_TVA_2026-09-18.json.",
+  "texte_extrait": "sources/NAM_vat_act_s12_valeur_importation.texte-extrait.txt",
+  "sha256": "d1dbb98156ad29a6d22a86805bcb2639d581ce289fc5ab52adc345686ec88ea1"
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "La valeur de marché (« open market value »), retenue si plus élevée : le calculateur ne la connaît pas.",
+  "Un amendement postérieur à 2011 (version annotée consolidée jusqu'à l'Amendment Act 11 of 2011)."
+ ]
+}

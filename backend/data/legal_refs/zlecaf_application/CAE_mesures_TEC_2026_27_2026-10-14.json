@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "objet": "CAE : exceptions au TEC pour l'exercice 2026/27 (Legal Notice EAC/160/2026), appliquées pays par pays au socle du Kenya, du Rwanda, de la Tanzanie, de l'Ouganda, du Burundi et du Soudan du Sud",
+  "destination_iso3": [
+    "KEN",
+    "RWA",
+    "TZA",
+    "UGA",
+    "BDI",
+    "SSD"
+  ],
+  "verified_at": "2026-10-14",
+  "etabli": true,
+  "evidence_level": "primaire — Gazette de la Communauté d'Afrique de l'Est, Vol. AT 1 No. 16 du 30/06/2026, Legal Notice No. EAC/160/2026",
+  "source": {
+    "url": "https://www.eac.int/",
+    "institution": "Conseil des ministres de la Communauté d'Afrique de l'Est"
+  },
+  "regle": {
+    "valeur": "Pour l'exercice 2026/27, les droits de l'EAC/160/2026 remplacent le TEC sur les positions et pour les pays qu'il désigne : Table I (325 lignes de décisions rédigées), Table II (Ouganda, 47 lignes), Tables III (Kenya, 25 % ou 0,75 US$/kg, le plus élevé), IV et VI (Ouganda, 35 %), V et VII (Ouganda, 35 % ou 2 et 2,5 US$/kg, le plus élevé), Table X (amendements du TEC, tous les États). 1 223 décisions sans condition sont appliquées ; les décisions qui visent un importateur, un usage, un sous-produit ou une période, et les Tables VIII et IX (équipements importés par les fabricants), ne changent pas le droit et sont rappelées en note.",
+    "verbatim": "IN EXERCISE of the powers conferred upon the Council of Ministers by Articles 12 (3) and 39 (1) (c) of the Protocol on the Establishment of the East African Community Customs Union, the Council of Ministers has approved the following measures on customs duty rates on the items provided under The Harmonized Community Description and Coding System in Annex 1 to the Protocol:",
+    "reference": "Legal Notice No. EAC/160/2026, EAC Gazette Vol. AT 1 No. 16 du 30/06/2026, Tables I à X",
+    "portee": "scripts/extraire_mesures_tec_cae_2026.py (lecture de la grille du PDF) produit data/eac/mesures_tec_cae_2026_27.json ; scripts/build_socle.py, _mesures_tec_cae, l'applique au droit de douane du socle, la Table X d'abord.",
+    "texte_archive": "sources/CAE_mesures_TEC_2026_27.extrait.txt",
+    "sha256": "e97b7b12847f2a74fe48ae387a9b1f33b563bfce6f5883757149cdd21fc91fe8"
+  },
+  "decisions": [
+    "Lecture sur la grille du PDF (traits horizontaux propres à chaque colonne) : une décision fusionnée sur plusieurs lignes vaut pour chacune (sucre, Table I n° 63 à 66 ; 36 et 37). Le texte extrait de la Gazette enchaîne les cellules et ne permet pas de le dire.",
+    "Une décision est appliquée quand rien ne la restreint : le rappel du taux remplacé (« rate of 25% », « instead of 100% or US$ 460 / MT whichever is higher ») n'est pas une restriction ; « except HS Code 5205.23.00 » est lu comme une exclusion.",
+    "Positions à quatre chiffres (« 20.07 », « 02.01 ») : la mesure vaut pour toutes leurs sous-positions.",
+    "« Partner States » : les six États membres servis par le socle (KEN, RWA, TZA, UGA, BDI, SSD).",
+    "Droits composés « X % or US$ Y / unité whichever is higher » : liquidés au plus élevé, la quantité et le taux de change étant requis, comme pour les produits sensibles du TEC.",
+    "Table I n° 304 (Kenya, bananes à 0 % « for the period January and February, 2027 ») : non appliquée, période à venir ; n° 299 (Ouganda, taux répartis sans correspondance lisible avec les positions) : non appliquée.",
+    "Position lue dans la première cellule qui en porte une après le numéro : aux pages 39, 42 et 65, des colonnes vides la décalent (Table I n° 321 à 325, Table II n° 38 à 47, Tables VII à IX) ; l'extraction échoue si une décision appliquée reste sans position.",
+    "Cellule des positions : « Chapter 61 and 62 », « Chapter 50 to 60 » et « Heading 8544 » sont lus comme préfixes ; ce qui suit « excluding » ou « except » est exclu (Table I n° 100, 121, 134, 192, 209, 254).",
+    "Une description qui restreint l'usage au-delà du libellé des positions (« for use in Hydro Electric Power Projects », « sugar for industrial use », « for medical purposes only » : Table I n° 67, 68, 77, 226) rend la mesure conditionnelle : rappelée en note.",
+    "« 35% except industrial or bulk energy meters imported by the Government » (Table I n° 253) : le taux vaut par défaut, l'exception, qui vise un importateur, est rappelée en note.",
+    "Une décision qui redit seulement le produit de la ligne (« on Electric and Hybrid vehicles » sur la ligne « Electric and Hybrid vehicles » : Table I n° 9, 10, 124, 275, 289, 290) n'est pas restreinte."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Remises de droits sous conditions (Legal Notice EAC/161/2026, Table A) : relevées dans data/eac/legal_overrides.json pour le Kenya, l'Ouganda, le Rwanda, la Tanzanie et le Burundi, appliquées par services.mesures_eac sur autorisation déclarée qui nomme la ligne ; listes d'intrants des Legal Notices EAC/162 à EAC/173/2026 relevées de même (scripts/extraire_remises_eac_162_173_2026.py) ; lignes « Various » sans liste publiée, ligne 8 (sans code) et ligne 130 (sans État) non intégrées.",
+    "Table I n° 245 (Kenya, « 35% or US$ 1000 / MT » sans règle de départage) : non lue.",
+    "Tables VIII et IX : taux réservés aux fabricants de vêtements et de chaussures, non appliqués par position.",
+    "Les mesures prennent fin avec l'exercice 2026/27 (30 juin 2027) : à remplacer par l'avis de l'exercice suivant.",
+    "RDC : hors du TEC (tarif national), non concernée.",
+    "Six codes de la Gazette sans position correspondante au socle, par différence de nomenclature : 4821.10.00 (Ouganda, Table II n° 38 ; le socle a 4821.10.10 et 4821.10.90), 7311.00.10 (Kenya et Ouganda, Table I n° 78), 3808.91.29 (Kenya, n° 277), 8523.29.20 et 8523.49.10 (Kenya, n° 323) : non appliqués.",
+    "Les sursis et remises relevés dans data/eac/legal_overrides.json (#645) sont aussi appliqués au calcul par services.mesures_eac ; sur les lignes communes, les deux sources donnent le même taux, la seconde pouvant en outre laisser le TEC quand une condition n'est pas établie."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CAE_mesures_TEC_2026_27.extrait.txt",
+      "sha256": "e97b7b12847f2a74fe48ae387a9b1f33b563bfce6f5883757149cdd21fc91fe8"
+    },
+    {
+      "document_non_archive": "EAC Gazette Vol. AT 1 No. 16 du 30/06/2026 (eac/official/EAC_Vol_AT_1_No_16_2026-06-30.pdf, sous data/sources)",
+      "pdf_sha256": "555b8fdd7cc817ae5f729762913c5f8205e503a28170bad86a8a0f66e4c93907"
+    }
+  ]
+}

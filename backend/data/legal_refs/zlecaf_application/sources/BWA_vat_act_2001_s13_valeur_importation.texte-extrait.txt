@@ -1,0 +1,40 @@
+ARCHIVE — Botswana : valeur d'une importation pour la TVA (relevé du 02/10/2026)
+
+Value Added Tax Act, 2001 (Act No. 1 of 2001), amendé jusqu'à l'Act No. 15 of 2006 — copie WIPO Lex
+URL : https://www.wipo.int/edocs/lexdocs/laws/en/bw/bw021en.pdf
+Fichier : sources/bwa_vatact2001_wipo.pdf
+sha256 : 851d68b2e2be8c9f1bb32df05875d67e5aa6c4e3b91731a94a18f85812166712
+
+VERBATIM (s.13 « Value of import ») :
+« (1) The value of an import of goods is (a) in the case of goods required to be cleared under the
+Customs and Excise Duty Act, an amount equal to the sum of (i) the transaction value of the goods
+for customs duty purposes in terms of section 75 of the Customs and Excise Duty Act; (ii) the cost
+of insurance and freight; and (iii) the amount of any duty levied under the said Act in respect of
+the importation of such goods »
+
+LECTURE : assiette TVA = valeur transactionnelle + assurance et fret + droits perçus en vertu du
+Customs and Excise Duty Act, droits de douane et d'accise = CIF + DD + EXS + EXA (accises servies
+depuis le 20/10/2026, fiche SACU_accises_BLNE_2026-10-20.json).
+
+Value Added Tax Act, 2026 (Act No. 15 of 2026), qui abroge le VAT Act 2001 (s.87) — Supplement A,
+Botswana Government Extraordinary Gazette du 1er juillet 2026, déposé sur la PR #654
+URL : https://www.burs.org.bw/index.php/tax/tax-laws-2026?download=958:value-added-tax-act-2026
+Fichier : data/sources/BWA/legislation/BWA_VATAct2026_2026-07-01.pdf
+sha256 : 50f058cb502ffc02937ef13d14c723715b19e78c487c3627e8b66c6597cf81b1
+
+VERBATIM (s.30(1), p. 23) :
+« Subject to this section, the value of an import of goods shall be the total of the following
+amounts — (a) the value of the goods for duty purposes under the customs legislation, whether or not
+any duty is payable on the import; (b) to the extent not included under paragraph (a) — (i) the cost
+of insurance and freight incurred in bringing the goods to Botswana, and (ii) the cost of services
+treated as part of the import of the goods under section 22 (3); and (c) the amount of any duty and
+other fiscal charge, other than VAT, and any fee or other charge payable in respect of the import. »
+
+VERBATIM (Statutory Instrument No. 95 of 2026, Value Added Tax Act (Part Commencement Date) Order,
+2026, publié le 30 juin 2026, même fichier, p. 82) :
+« 2. The Value Added Tax Act shall come into operation on 1st July, 2026. »
+(Le par. 3 excepte le tourisme réceptif et les plateformes de l'économie collaborative, sans effet sur
+la valeur d'une importation.)
+
+LECTURE (texte en vigueur depuis le 01/07/2026) : valeur en douane + assurance et fret + droits et
+autres charges fiscales hors TVA = CIF + DD + EXS + EXA, comme sous le texte de 2001.

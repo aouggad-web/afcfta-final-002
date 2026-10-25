@@ -4,7 +4,7 @@
  "agreement": "ZLECAf / AfCFTA",
  "verification_status": "INSTRUMENT_ET_ORIGINES_VERIFIES",
  "verified_at": "2026-09-13",
- "mis_a_jour_le": "2026-09-25",
+ "mis_a_jour_le": "2026-10-03",
  "verified_from": "sources primaires téléchargées et lues intégralement, pas une synthèse secondaire",
  "instrument": {
   "id": "6530/223",
@@ -163,5 +163,9 @@
  "remaining_work": [
   "Maintenir la veille sur une notification ministérielle postérieure modifiant P1/P2 (la circulaire les annonce évolutives).",
   "Vérifier si les listes B et C sont mises en œuvre par un acte ultérieur (elles ne le sont pas à ce jour)."
+ ],
+ "travaux_faits_le_2026-10-03": [
+  "Instantané e-Tariff recollecté (MAR_afcfta_etariff_2026-10-03.json.gz) : celui du 13/09/2026 n'avait aucune ligne des chapitres 29, 39, 84 et 85 (l'API rend une liste vide à la recherche par chapitre). 3 645 lignes ajoutées par barème, aucune ligne de septembre modifiée.",
+  "Contrôle de la liste A de l'avenant n° 6627/223 avant de servir une ligne (services/zlecaf_schedule_mar.dans_la_liste_a, données data/zlecaf_mar/liste_a_6627-223.json) : 84 chapitres entiers, 266 exceptions, 263 positions incluses une à une (distinguées par la graisse de la police, vérifié sur la page 2 rendue). 85 lignes que l'e-Tariff sert mais que la circulaire ne couvre pas (ex. 0210999031 à 39, 0402291010, 3917400010) restent désormais au NPF. 63 lignes de la liste A n'ont aucun taux dans l'e-Tariff et restent au NPF."
  ]
 }

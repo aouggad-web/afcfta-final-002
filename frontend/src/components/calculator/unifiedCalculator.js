@@ -1,13 +1,7 @@
 /**
- * Adaptateur du moteur unique (`POST /calcul`, chantier L3) vers la forme
- * historique déjà consommée par `CalculatorTab` et ses composants d'affichage.
- *
- * Ce module remplace le second chemin de calcul du frontend — l'appel de
- * repli `/calculate-tariff` (`routes/calculator.py`, l'une des « trois
- * cascades » recensées par `docs/PLAN_CALCULATEUR_UNIQUE.md` §1.1) — sans
- * toucher au chemin `/authentic-tariffs/calculate`, qui reste pour l'instant
- * seul à fournir les avantages fiscaux, les formalités administratives et
- * les frais réglementaires : le moteur unifié ne les calcule pas encore.
+ * Adaptateur du moteur unique (`POST /calcul`) — seul calcul des droits et
+ * taxes du frontend — vers la forme déjà consommée par `CalculatorTab` et
+ * ses composants d'affichage.
  *
  * Règle tenue ici comme dans le moteur : un montant INDISPONIBLE ne devient
  * jamais un zéro affiché. Une ligne que le moteur n'a pas pu liquider est
@@ -82,9 +76,77 @@ function zlecafStatusLegacy(preferenceZlecaf) {
     : 'NOT_AVAILABLE';
 }
 
-export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, cifValue, quantite }) {
-  const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue };
+/** Origines dont la TVA sud-africaine dépend du pays d'expédition (VAT Act s.13(2)(b)). */
+export const ORIGINES_SACU_HORS_ZAF = new Set(['BWA', 'LSO', 'NAM', 'SWZ']);
+
+/** Faut-il demander le pays d'expédition ? Destination ZAF, origine BWA/LSO/NAM/SWZ. */
+export function expeditionSacuRequise(destinationISO3, originISO3) {
+  return destinationISO3 === 'ZAF' && ORIGINES_SACU_HORS_ZAF.has(originISO3);
+}
+
+/**
+ * Pays d'expédition à transmettre au moteur : l'origine elle-même si la
+ * marchandise en est expédiée (« oui »), « AUTRE » sinon (« non »), rien si la
+ * réponse est inconnue — le moteur laisse alors la TVA à compléter.
+ */
+export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
+  if (!expeditionSacuRequise(destinationISO3, originISO3)) return undefined;
+  if (reponse === 'yes') return originISO3;
+  if (reponse === 'no') return 'AUTRE';
+  return undefined;
+}
+
+/** États membres de la SACU (accord SACU 2002). */
+export const PAYS_SACU = new Set(['ZAF', 'BWA', 'LSO', 'NAM', 'SWZ']);
+
+/**
+ * Faut-il demander si la marchandise est déjà dédouanée dans un autre État de
+ * la SACU (art. 19 de l'accord) ? Pour une destination SACU seulement.
+ */
+export function dedouanementSacuPropose(destinationISO3) {
+  return PAYS_SACU.has(destinationISO3);
+}
+
+/**
+ * États partenaires de la CAE auxquels la gazette accorde des remises de droits
+ * (Legal Notice EAC/161/2026, Table A) : le formulaire d'autorisation leur est
+ * proposé.
+ */
+export const PAYS_REMISES_EAC = new Set(['KEN', 'UGA', 'RWA', 'TZA', 'BDI']);
+
+export function remiseEacProposee(destinationISO3) {
+  return PAYS_REMISES_EAC.has(destinationISO3);
+}
+
+export function buildCalculRequestBody({
+  destinationISO3,
+  originISO3,
+  hsCode,
+  cifValue,
+  quantite,
+  valeurFob,
+  paysExpedition,
+  dejaDedouaneSacu,
+  tauxDeChange,
+  poidsBrutKg,
+  moyenTransport,
+  nombreUnitesTransport,
+  modeAcheminement,
+  remise,
+  usage,
+}) {
+  // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
+  // devise serait supposée nationale, et un droit spécifique publié en dinars
+  // s'ajouterait tel quel à des dollars. Déclarée, le moteur réclame le taux
+  // de change (TAUX_DE_CHANGE_REQUIS) au lieu de mélanger deux monnaies.
+  const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue, devise_cif: 'USD' };
   if (originISO3) body.origine = originISO3;
+  if (paysExpedition) body.pays_expedition = paysExpedition;
+  // Le moteur refuse ce champ hors SACU (422) : il n'est envoyé que coché,
+  // et pour une destination SACU.
+  if (dejaDedouaneSacu === true && dedouanementSacuPropose(destinationISO3)) {
+    body.deja_dedouane_sacu = true;
+  }
   // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la
   // valeur. Le champ n'est envoyé que s'il porte un nombre utilisable : une
   // saisie vide ou illisible doit laisser le moteur répondre QUANTITE_REQUISE,
@@ -92,39 +154,70 @@ export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, ci
   if (typeof quantite === 'number' && Number.isFinite(quantite) && quantite > 0) {
     body.quantite = quantite;
   }
+  // Même règle pour la valeur FOB (assiette SACU) : envoyée seulement si elle
+  // a été saisie, jamais déduite du CIF — le moteur la réclame sinon
+  // (VALEUR_FOB_REQUISE) au lieu de liquider le droit sur une base fausse.
+  if (typeof valeurFob === 'number' && Number.isFinite(valeurFob) && valeurFob > 0) {
+    body.valeur_fob = valeurFob;
+  }
+  // Le taux du module Banque, en USD pour une unité de monnaie nationale : le
+  // moteur en a besoin pour les plafonds publiés en monnaie nationale (15 000
+  // XAF de redevance informatique) et les droits spécifiques (« 8c/kg »).
+  // Absent, il les rend indisponibles au lieu de mélanger deux monnaies.
+  if (typeof tauxDeChange === 'number' && Number.isFinite(tauxDeChange) && tauxDeChange > 0) {
+    body.taux_de_change = tauxDeChange;
+  }
+  // Poids brut et moyen de transport : facultatifs. Ils ne chiffrent que les
+  // frais du bloc réglementaire (par tonne, par conteneur ou véhicule), jamais
+  // les droits et taxes ; absents, ces frais restent « montant à confirmer ».
+  Object.assign(body, transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }));
+  const autorisation = remiseRequete(remise);
+  if (autorisation) body.remise = autorisation;
+  // L'usage déclaré (Égypte : pesticide agricole, engrais…), parmi ceux que
+  // le moteur a nommés pour la position. Non déclaré, rien n'est envoyé : le
+  // régime courant est liquidé.
+  if (typeof usage === 'string' && usage) body.usage = usage;
   return body;
 }
 
 /**
- * Le moteur rend-il vraiment compte de chaque mesure que l'autre chemin a
- * déclarée manquante ?
- *
- * Cette question n'est pas rhétorique. Le chemin historique refuse une
- * position quand une mesure lui manque (`CALCULATION_UNAVAILABLE`). Le moteur,
- * lui, ne liquide que les lignes que le socle porte : si le socle ne porte
- * AUCUNE ligne de droit pour cette position, il n'a rien à réclamer et rend un
- * total COMPLET — sans droit de douane, sans le dire.
- *
- * Mesuré sur le socle du 2026-09-18 : 2 936 positions (0,82 %) réparties sur
- * 12 pays sont dans ce cas. Exemple : DZA/2710122400, où `/calcul` sert
- * 12 444,00 « COMPLET » avec TCS, TVA et PRCT, et pas un centime de droit de
- * douane, alors que le pays est déclaré comme le couvrant.
- *
- * Basculer sur le moteur sans cette vérification remplacerait donc un refus
- * honnête par un total amputé — exactement ce qu'un calculateur douanier ne
- * doit jamais faire. Une mesure est « prise en compte » si le moteur la
- * liquide OU s'il dit explicitement pourquoi il ne la liquide pas. Le silence
- * ne compte pas.
+ * Réponse au formulaire de remise de droits (gazette EAC, Kenya) dans la forme
+ * que `POST /calcul` attend. « Je ne sais pas » et un formulaire absent ne
+ * transmettent rien : le serveur tient alors l'éligibilité pour inconnue et
+ * n'applique pas la remise. Les champs vides sont omis plutôt qu'envoyés vides.
  */
-export function moteurRendCompteDesMesures(calcul, codesManquants) {
-  const codes = (codesManquants || []).filter(Boolean);
-  if (codes.length === 0) return true;
-  const npf = calcul?.npf || {};
-  const connus = new Set([
-    ...(npf.lignes || []).map((l) => l.code),
-    ...(npf.manques || []).map((m) => m.code),
-  ]);
-  return codes.every((code) => connus.has(code));
+export function remiseRequete(remise) {
+  if (!remise || !['yes', 'no'].includes(remise.answer)) return null;
+  if (remise.answer === 'no') return { eligibilite: 'NOT_ELIGIBLE' };
+  const autorisation = { eligibilite: 'ELIGIBLE_VERIFIED' };
+  if (remise.reference?.trim()) autorisation.reference = remise.reference.trim();
+  if (remise.validFrom) autorisation.debut = remise.validFrom;
+  if (remise.validTo) autorisation.fin = remise.validTo;
+  const lignes = (remise.authorizedTariffLines || '').split(',').map((l) => l.trim()).filter(Boolean);
+  if (lignes.length) autorisation.lignes = lignes;
+  return autorisation;
+}
+
+/**
+ * Champs facultatifs du bloc réglementaire de `POST /calcul` : seuls les
+ * nombres utilisables et un moyen de transport connu sont transmis.
+ */
+export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTransport, modeAcheminement }) {
+  const champs = {};
+  if (typeof poidsBrutKg === 'number' && Number.isFinite(poidsBrutKg) && poidsBrutKg > 0) {
+    champs.poids_brut_kg = poidsBrutKg;
+  }
+  if (['CONTENEUR', 'VOITURE', 'CAMION'].includes(moyenTransport)) {
+    champs.moyen_transport = moyenTransport;
+    if (Number.isInteger(nombreUnitesTransport) && nombreUnitesTransport >= 1) {
+      champs.nombre_unites_transport = nombreUnitesTransport;
+    }
+  }
+  // Mer, route ou air : écarte les frais d'un autre mode (port pour une importation par route).
+  if (['MER', 'ROUTE', 'AIR'].includes(modeAcheminement)) {
+    champs.mode_acheminement = modeAcheminement;
+  }
+  return champs;
 }
 
 /**
@@ -162,6 +255,22 @@ export function quantiteRequise(npf) {
   };
 }
 
+/**
+ * Les droits que le moteur ne peut liquider faute de valeur FOB (assiette de
+ * la SACU). Le champ FOB n'est ouvert que dans ce cas : partout ailleurs, la
+ * valeur CIF suffit et une seconde valeur ne servirait qu'à se tromper.
+ */
+export function valeurFobRequise(npf) {
+  const codes = (npf?.manques || [])
+    .filter((m) => m.motif === 'VALEUR_FOB_REQUISE')
+    .map((m) => m.code);
+  if (codes.length === 0) return { requise: false, lignes: [] };
+  const lignes = (npf.lignes || [])
+    .filter((l) => codes.includes(l.code))
+    .map((l) => ({ code: l.code, libelle: l.libelle }));
+  return { requise: true, lignes };
+}
+
 function buildJournal(cifValue, lignes) {
   const journal = [
     { step: 1, component: 'Valeur CIF', base: cifValue, rate: '-', amount: cifValue,
@@ -187,6 +296,112 @@ function buildJournal(cifValue, lignes) {
     });
   });
   return journal;
+}
+
+/**
+ * Montants en monnaie locale, au taux du moteur de change du module Banque.
+ *
+ * `conversion` est la réponse de `GET /banking/forex/convert` (USD → monnaie
+ * du pays de destination) : le même service de change que l'ancien chemin
+ * de calcul. Même règle que `localize_breakdown` côté serveur : les montants
+ * deviennent bi-devises, les taux (%) ne changent pas, et un montant absent
+ * reste absent. Sans taux, le résultat est rendu tel quel, en USD seul.
+ */
+export function localiserResultat(result, conversion) {
+  const taux = conversion?.rate;
+  if (!result || !taux) return result;
+  const loc = (v) => (typeof v === 'number' ? Math.round(v * taux * 100) / 100 : null);
+  const locBloc = (bloc) => (bloc
+    ? Object.fromEntries(Object.entries(bloc).map(([k, v]) => [k, loc(v)]))
+    : null);
+  const summary = result.taxes_summary || {};
+  return {
+    ...result,
+    taxes_breakdown: (result.taxes_breakdown || []).map((b) => ({
+      ...b,
+      amount_npf_local: loc(b.amount_npf),
+      amount_zlecaf_local: loc(b.amount_zlecaf),
+    })),
+    currency: {
+      local_code: conversion.to_currency,
+      local_name: conversion.currency_name,
+      usd_to_local_rate: taux,
+      rate_source: conversion.source,
+      rate_as_of: conversion.timestamp,
+      available: true,
+      value_usd: conversion.amount,
+      value_local: conversion.converted_amount,
+      summary_local: {
+        npf: locBloc(summary.npf),
+        zlecaf: locBloc(summary.zlecaf),
+        economie_totale: loc(summary.economie_totale),
+      },
+    },
+  };
+}
+
+/**
+ * Pays dont le moteur ne reçoit pas le taux du module Banque : le Botswana.
+ * Ses droits spécifiques viennent du tarif de la SARS, en cents de rand
+ * (« 240c/kg »). Le taux du pula les convertirait faussement
+ * (backend/socle/devises_pays.json le déclare en ZAR ; un test du backend
+ * tient cet écart avec le module Banque). Sans taux, ces lignes restent à
+ * compléter, comme avant.
+ */
+const SANS_TAUX_DE_CHANGE = new Set(['BWA']);
+
+/**
+ * Le taux envoyé au moteur (`taux_de_change`) : des USD pour une unité de
+ * monnaie nationale, l'inverse du taux USD → monnaie locale du module Banque.
+ * `undefined` quand il n'y a rien à convertir ou que le taux ne vaut pas pour
+ * ce pays.
+ */
+export function tauxDeChangePour(destinationISO3, conversion) {
+  if (!conversion?.rate || conversion.to_currency === 'USD' || SANS_TAUX_DE_CHANGE.has(destinationISO3)) {
+    return undefined;
+  }
+  return 1 / conversion.rate;
+}
+
+/**
+ * La réserve à afficher quand des montants dépendent du taux envoyé au
+ * moteur : celui du module Banque, un taux de marché. Pour déterminer la
+ * valeur en douane, un Membre de l'OMC convertit au taux publié par les
+ * autorités du pays d'importation (Accord sur l'évaluation en douane, art. 9 ;
+ * fiche OMC_evaluation_en_douane_art9_2026-10-08.json). La route ne sert ce
+ * fondement que pour un Membre ; ailleurs, la réserve s'en passe.
+ * `null` quand aucun montant ne dépend du taux.
+ */
+export function reserveConversion(result, language = 'fr') {
+  const conversion = result?.conversion_monetaire;
+  if (!conversion?.lignes?.length || !(conversion.taux_de_change > 0)) return null;
+  const fr = language === 'fr';
+  const taux = (1 / conversion.taux_de_change)
+    .toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 4 });
+  const devise = conversion.devise ? ` ${conversion.devise}` : '';
+  const date = result.currency?.rate_as_of ? String(result.currency.rate_as_of).slice(0, 10) : null;
+  const lignes = conversion.lignes.join(', ');
+  const article9 = Boolean(conversion.fondement_taux_douanier);
+  if (fr) {
+    return {
+      titre: 'Montant indicatif : taux de change à vérifier',
+      texte: `${lignes} : ${conversion.lignes.length > 1 ? 'montants calculés' : 'montant calculé'} au taux de marché `
+        + `du module Banque (1 USD = ${taux}${devise}${date ? `, relevé le ${date}` : ''}). `
+        + (article9
+          ? "Pour déterminer la valeur en douane, la douane convertit au taux publié par les autorités compétentes "
+            + "du pays d'importation (Accord de l'OMC sur l'évaluation en douane, art. 9) : à vérifier avant tout usage officiel."
+          : "Le taux retenu par la douane du pays d'importation peut différer : à vérifier avant tout usage officiel."),
+    };
+  }
+  return {
+    titre: 'Indicative amount: exchange rate to be checked',
+    texte: `${lignes}: ${conversion.lignes.length > 1 ? 'amounts' : 'amount'} calculated at the Banking module's market rate `
+      + `(1 USD = ${taux}${devise}${date ? `, retrieved ${date}` : ''}). `
+      + (article9
+        ? 'To determine the customs value, customs converts at the rate published by the competent authorities of '
+          + 'the importing country (WTO Customs Valuation Agreement, Art. 9): check it before any official use.'
+        : "The rate used by the importing country's customs may differ: check it before any official use."),
+  };
 }
 
 /**
@@ -274,8 +489,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     economie_totale: economie,
   };
 
+  // La note de la ligne porte ce que le taux seul ne dit pas : la mesure
+  // qui l'a modifié (Legal Notice EAC), la remise écartée et pourquoi, ce
+  // qui reste à compléter.
   const taxesDetailSource = npfLignes.map((l) => ({
     code: l.code, tax: l.code, rate: l.taux_pct ?? null, observation: l.libelle,
+    ...(l.note ? { note: l.note } : {}),
   }));
 
   const provenance = calcul.provenance || {};
@@ -327,7 +546,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // Normalisé par `normalizeTaxesDetail` à l'appel, comme le chemin
     // authentique : même fonction, même garantie (jamais de taux fabriqué).
     taxes_detail: taxesDetailSource,
-    currency: null, // conversion de devise hors périmètre du moteur de calcul
+    currency: null, // posée ensuite par `localiserResultat`, hors du moteur de calcul
 
     data_source: 'socle_unifie',
     tariff_precision: provenance.niveau === 'national' ? 'sub_position' : 'hs6_country',
@@ -377,10 +596,9 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_offer_rate_pct: null,
     zlecaf_offer_rate_expression: null,
 
-    // Le moteur unifié ne calcule pas encore ces trois blocs (chantier
-    // distinct de L1-L3) : listes vides et objets nuls, jamais une valeur
-    // inventée à leur place.
-    fiscal_advantages: [],
+    // Les formalités et les sous-positions sont demandées à part par
+    // `CalculatorTab` : listes vides et objets nuls d'ici là, jamais une
+    // valeur inventée à leur place.
     administrative_formalities: [],
     has_sub_positions: false,
     sub_position_count: 0,
@@ -393,9 +611,8 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     regulatory_compliance: calcul.regulatory_compliance ?? null,
     regulatory_cost: calcul.regulatory_cost ?? null,
     regulatory_reported: calcul.regulatory_reported ?? null,
-    national_legal_calculation: null,
-    generic_legal_calculation: null,
-    kenya_legal_calculation: null,
+    mesures_eac: calcul.mesures_eac ?? null,
+    usages: calcul.usages ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',
@@ -406,13 +623,20 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     normal_calculation_journal: buildJournal(cifValue, npfLignes),
     zlecaf_calculation_journal: hasPreference ? buildJournal(cifValue, prefLignes) : [],
     computation_order_ref: `Socle unifié — ${provenance.source?.nom || destinationCountry}`,
-    last_verified: provenance.source?.collecte ? String(provenance.source.collecte).slice(0, 10) : null,
+    // La date des TAUX : celle des codes peut être plus récente (provenance.dates).
+    last_verified: provenance.dates ? provenance.dates.taux : (provenance.source?.collecte ? String(provenance.source.collecte).slice(0, 10) : null),
     // Un complément national est un taux standard de pays, pas une donnée de
     // ligne : il rend le calcul complet sans le rendre certain — un bien
     // détaxé y recevrait le taux plein. La confiance reste donc « partielle »
     // même quand rien ne manque.
     confidence_level: npfComplet && !complements.length ? 'very_high' : 'partial',
     complements_nationaux: complements,
+    // Lignes dont le montant dépend du taux de change envoyé — celui du
+    // module Banque, un taux de marché, pas celui de la douane — avec la
+    // monnaie du tarif. `reserveConversion` en tire la réserve affichée.
+    conversion_monetaire: calcul.conversion_monetaire
+      ? { ...calcul.conversion_monetaire, devise: provenance.devise_nationale || null }
+      : null,
 
     // État honnête propre au moteur unique, jamais réductible à un booléen :
     // `_npf_etat`/`_manques_npf` permettent d'afficher un motif, pas un 0.
@@ -425,6 +649,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // unité le demander. L'écran s'en sert pour n'ouvrir un champ que là où il
     // sert, et pour le libeller avec l'unité que la source publie.
     quantite_requise: quantiteRequise(npf),
+    valeur_fob_requise: valeurFobRequise(npf),
     _npf_etat: npf.etat,
     _zlecaf_etat: hasPreference ? pref.etat : null,
     _manques_npf: npf.manques || [],

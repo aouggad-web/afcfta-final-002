@@ -10,7 +10,6 @@ that the application boots without extra dependencies.
 from __future__ import annotations
 
 import logging
-import time
 import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -107,43 +106,6 @@ def _resolve_compare_regions(
 
     analytics = get_regional_analytics()
     return analytics.compare_regions(blocs=regions, metrics=metrics)
-
-
-def _resolve_bulk_tariff(_, __, calculations: List[Dict[str, Any]]) -> Dict[str, Any]:
-    op_id = str(uuid.uuid4())
-    start = time.perf_counter()
-    results = []
-    errors = 0
-    for calc in calculations:
-        try:
-            rate = 5.0  # Simplified; real impl queries tariff service
-            goods_value = float(calc.get("goodsValueUsd", 0))
-            duty = goods_value * rate / 100
-            results.append(
-                {
-                    "originCountry": calc.get("originCountry"),
-                    "destinationCountry": calc.get("destinationCountry"),
-                    "hsCode": calc.get("hsCode"),
-                    "goodsValueUsd": goods_value,
-                    "tariffRatePct": rate,
-                    "dutyAmountUsd": duty,
-                    "totalLandedCostUsd": goods_value + duty,
-                    "appliedScheme": "AfCFTA preferential",
-                    "notes": [],
-                }
-            )
-        except Exception as exc:
-            errors += 1
-            logger.warning(f"Bulk tariff calc error: {exc}")
-
-    return {
-        "operationId": op_id,
-        "totalRequests": len(calculations),
-        "successCount": len(results),
-        "errorCount": errors,
-        "results": results,
-        "processingTimeMs": round((time.perf_counter() - start) * 1000, 2),
-    }
 
 
 def _resolve_recommendations(_, __, userProfile: Dict[str, Any], limit: int = 10) -> Dict[str, Any]:
@@ -299,7 +261,6 @@ def _build_ariadne_schema():
     query.set_field("getInvestmentScore", _resolve_investment_score)
     query.set_field("compareCountries", _resolve_compare_countries)
     query.set_field("compareRegions", _resolve_compare_regions)
-    query.set_field("bulkTariffCalculation", _resolve_bulk_tariff)
     query.set_field("getPersonalizedRecommendations", _resolve_recommendations)
     query.set_field("predictTradeFlows", _resolve_predict_trade)
     query.set_field("getRiskAssessment", _resolve_risk_assessment)
@@ -345,7 +306,6 @@ _RESOLVER_MAP = {
     "compareRegions": lambda p: _resolve_compare_regions(
         None, None, p.get("regions", []), p.get("metrics")
     ),
-    "bulkTariffCalculation": lambda p: _resolve_bulk_tariff(None, None, p.get("calculations", [])),
     "getPersonalizedRecommendations": lambda p: _resolve_recommendations(
         None, None, p.get("userProfile", {}), p.get("limit", 10)
     ),

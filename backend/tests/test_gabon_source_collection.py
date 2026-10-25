@@ -109,16 +109,6 @@ def test_gab_vat_measures_schema():
     assert "vat_exemptions" in data
 
 
-def test_gab_not_registered_as_supported_jurisdiction():
-    """Garde-fou : GAB n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
-    assert "GAB" not in SUPPORTED_JURISDICTIONS
-
-
 def test_gab_has_no_fabricated_afcfta_offer():
     """Garde-fou : GAB n'a pas d'offre nationale ZLECAf fictive."""
     pytest = __import__("pytest")

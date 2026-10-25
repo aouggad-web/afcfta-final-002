@@ -1,0 +1,11 @@
+ARCHIVE DE RECHERCHE — portail NCS « Tariff & CET Lookup », page AFCFTA CET (lecture via Jina Reader, 28/09/2026)
+URL : https://demo-cet.customs.gov.ng/afcfta-cet (portail : https://cet.customs.gov.ng/ — derrière Cloudflare)
+
+VERBATIM : « Search and review AFCFTA CET codes, descriptions, supplementary units
+and applicable duty or tax values by version. … Showing 1-30 of 6,571 »
+Colonnes : HS Code | Description | SU | ID (droit d'importation) | VAT | LVY | EXC.
+Exemples : 0101.21.00.00 (5 %), 0101.29.00.00 (10 %).
+
+NOTE HONNÊTE : les valeurs visibles correspondent aux taux du CET (MFN ECOWAS),
+pas à des concessions — le caractère préférentiel du livre n'est PAS établi à ce
+stade (le portail est une application JS ; 30 lignes visibles seulement).

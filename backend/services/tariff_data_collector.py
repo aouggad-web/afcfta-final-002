@@ -1,4 +1,3 @@
-import asyncio
 import json
 import logging
 import os
@@ -431,54 +430,6 @@ class TariffDataCollector:
         if not DATA_DIR.exists():
             return []
         return [f.stem.replace("_tariffs", "") for f in DATA_DIR.glob("*_tariffs.json")]
-
-    async def collect_and_save_country(self, country_code: str) -> Dict[str, Any]:
-        data = self.collect_country_tariffs(country_code)
-        filepath = self.save_country_tariffs(country_code, data)
-        return {
-            "country_code": country_code,
-            "success": True,
-            "tariff_lines": data["summary"]["total_tariff_lines"],
-            "total_sub_positions": data["summary"]["total_sub_positions"],
-            "total_positions": data["summary"]["total_positions"],
-            "lines_with_sub_positions": data["summary"]["lines_with_sub_positions"],
-            "filepath": filepath,
-        }
-
-    async def collect_all_countries(
-        self, country_codes: Optional[List[str]] = None, max_concurrency: int = 5
-    ) -> Dict[str, Any]:
-        self._load_modules()
-
-        if not country_codes:
-            country_codes = list(self._country_tariffs_map.keys())
-
-        results = []
-        errors = []
-        sem = asyncio.Semaphore(max_concurrency)
-
-        async def process_country(code):
-            async with sem:
-                try:
-                    result = await self.collect_and_save_country(code)
-                    results.append(result)
-                except Exception as e:
-                    logger.error(f"Error collecting tariffs for {code}: {e}")
-                    errors.append({"country_code": code, "error": str(e)})
-
-        tasks = [process_country(code) for code in country_codes]
-        await asyncio.gather(*tasks)
-
-        return {
-            "total_countries": len(country_codes),
-            "succeeded": len(results),
-            "failed": len(errors),
-            "results": results,
-            "errors": errors,
-            "total_tariff_lines": sum(r["tariff_lines"] for r in results),
-            "total_sub_positions": sum(r.get("total_sub_positions", 0) for r in results),
-            "total_positions": sum(r.get("total_positions", 0) for r in results),
-        }
 
 
 _collector = None

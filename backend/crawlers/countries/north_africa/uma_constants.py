@@ -195,17 +195,6 @@ COUNTRY_METADATA: Dict[str, Dict[str, Any]] = {
     },
 }
 
-# ── VAT rates by country ────────────────────────────────────────────────────
-UMA_VAT_RATES: Dict[str, float] = {
-    "MAR": 20.0,
-    "EGY": 14.0,
-    "TUN": 19.0,
-    "DZA": 19.0,
-    "LBY": 0.0,  # no VAT; sales tax ~4%
-    "SDN": 17.0,
-    "MRT": 16.0,
-}
-
 # ── Corporate income tax rates ──────────────────────────────────────────────
 UMA_CORPORATE_TAX_RATES: Dict[str, float] = {
     "MAR": 26.0,

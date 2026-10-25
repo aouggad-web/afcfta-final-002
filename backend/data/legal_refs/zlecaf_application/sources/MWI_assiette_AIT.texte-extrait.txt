@@ -1,0 +1,29 @@
+Malawi — Advance Income Tax à l'importation : extraits (relevés le 2026-10-08)
+
+1. Taxation Act (Cap. 41:01), consolidation Laws.Africa au 31 décembre 2014 (https://media.malawilii.org/media/legislation/11787/source_file/08779e099e31b464/1963-46.pdf, sha256 447a2644acf79f084d8ea85d1dd09b7503d2736d6ab6a9f9447ce0aa8fc7df47) :
+
+102B. Payment of withholding tax (1) Any person who imports goods shall be required to pay withholding tax at three per centum of the value of goods at the port of entry into Malawi. (2) Withholding tax shall be charged and payable on the importation of goods and for that purpose any written law applicable to collection of customs duties and other taxes on importation of goods shall apply with modifications as are necessary. (3) A person who imports goods under subsection (1) shall be exempted where— (a) the person has produced a withholding tax exemption certificate issued by the Commissioner General; (b) the person is a Government Ministry; (c) the person is a tax exempt under this Act; and (d) the importation is done under section XXII of PART III of the Customs and Excise (Tariff) Order. [19 of 2013]
+
+2. Taxation (Amendment) Act, 2023 — Act No. 17 of 2023, assent 4th April 2023, published 5th April 2023 (Malawi Gazette Supplement ; PDF scanné, https://media.malawilii.org/media/legislation/14680/source_file/f3dbfa2957bb56dd/mw-act-2023-17-publication-document.pdf, sha256 5ef254dfd6b4c96c3ad8fbc2482237798a58d6e416eecab09d569185f0f20726), page 4, transcrit sur l'image :
+
+8. The principal Act is amended, in section 102B— (a) subsection (1), by deleting the words "three per centum" appearing immediately after the words "tax at" and substituting therefor the words "ten per centum"; and (b) subsection (3), by deleting the words "or the importation of goods" immediately after the words "who imports goods".
+
+3. Customs and Excise (Tariffs) (Amendment) (No. 3) Order, 2023 — Malawi Gazette Supplement du 19 mai 2023 (PDF scanné, https://media.malawilii.org/media/legislation/14671/source_file/cfce9a788331209f/mw-act-gn-2023-19-publication-document.pdf, sha256 4bf275464c66069d8ae13bd8082c24147c32be3c32e6e8715662dfc71eff6955), paragraphe 2(a), transcrit :
+
+(a) deleting the entry "3%" in Column 12 under Section XXII and substituting therefor, the entry "10%";
+
+4. Taxation Act (Cap. 41:01), même consolidation au 31 décembre 2014 :
+
+104A. Credit for tax deducted at source Where withholding tax has been deducted or paid under sections 102, 102A and 102B, the tax so deducted or paid shall be allowed as a credit against tax charged on assessments issued under sections 90 and 91 of this Act. [1 of 1985; 19 of 2013]
+
+5. Statute Law (Miscellaneous Amendments) Act, 2021 — Act No. 15 of 2021, published 10th September 2021 (PDF scanné, https://media.malawilii.org/media/legislation/14870/source_file/3802adaffaff9cb3/mw-act-2021-15-publication-document.pdf, sha256 dda3ca5262a8259f48d9d8f4e9e191ce03ec5ce143453d26197bec729b138325), Schedule, Taxation Act, Section 104A, transcrit :
+
+Delete the words "under sections 90 and 91 of this Act" immediately after the word "issued" and substitute therefor the words "in accordance with the Tax Administration Act",
+
+6. Value Added Tax Act (Cap. 42:02), consolidation Laws.Africa au 31 décembre 2014 (https://media.malawilii.org/files/legislation/akn-mw-act-2005-7-eng-2014-12-31.pdf, sha256 643514d4ab8f00af00c75384886bddf1e6d0b2e7728cf88012b6fb1e66587bef ; même extrait que sources/MWI_assiette_accise_TVA.texte-extrait.txt) :
+
+28. Taxable value for determining Value Added Tax on imported goods The value for determining the tax chargeable on taxable imports shall be the import value calculated in accordance with the Customs and Excise Act with the addition of all import duties and taxes, but excluding Value Added Tax. [Cap. 42:01]
+
+7. Malawi Revenue Authority, avis « Implementation of Advance Income Tax on Imports », 22 avril 2022 (page https://www.mra.mw/press-releases/implementation-of-advance-income-tax-on-imports ; copie PDF rendue de la page par le déposant, PR #606, sha256 5dbfe4bdfc9a88f19ab73bf17fe39a0216ae1639945360ae9214d0d1054f19bf) :
+
+The Malawi Revenue Authority (MRA) is advising the business community and the public that from 1st May, 2022 the Customs and Excise Division will start implementing Advance Income Tax (AIT). [...] Advance income tax will be computed at entry point at the rate of 3% of the Value for Duty Purpose (VDP).

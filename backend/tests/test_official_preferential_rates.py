@@ -2,8 +2,10 @@ import gzip
 import json
 from importlib import import_module
 
-from services import authentic_tariff_service
-from services.authentic_tariff_service import resolve_zlecaf_context
+import pytest
+
+from services import socle
+from services.preference import taux_preferentiels
 from services.official_preferential_rates import (
     DATASETS,
     _carte_origines_nationale,
@@ -29,6 +31,15 @@ from scripts.extract_sars_afcfta_schedule import (
 )
 
 collector = import_module("scripts.collect_afcfta_etariff_book")
+
+
+def _preference(destination, origine, code):
+    """La préférence que sert POST /calcul pour la position nationale du socle."""
+    try:
+        position = socle.charger(destination)["positions"][code]
+    except socle.SocleIndisponible:
+        pytest.skip(f"socle {destination} absent : python3 scripts/build_socle.py")
+    return taux_preferentiels(position, destination, origine, code)
 
 
 def test_dataset_records_the_reviewed_sars_revision():
@@ -71,21 +82,17 @@ def test_resolution_fails_closed_for_ambiguous_or_unknown_codes():
 
 
 def test_zaf_context_uses_the_official_rate_after_legal_gates():
-    context = resolve_zlecaf_context("ZAF", "DZA", "07108090", 10.0, None)
-    assert context["trade_regime"] == "ZLECAF"
-    assert context["dd_rate_pct"] == 4.0
-    assert context["preference_applied"] is True
-    assert context["zlecaf_rate_expression"] == "4%"
-    assert context["zlecaf_rate_source"]["page"] == 47
+    preference = _preference("ZAF", "DZA", "07108090")
+    assert preference["applique"] is True
+    assert preference["taux"]["DD"] == {"taux": 4.0}
 
 
-def test_zaf_context_neutralizes_compound_duty_without_quantity():
-    context = resolve_zlecaf_context("ZAF", "DZA", "020110", 40.0, None)
-    assert context["trade_regime"] == "ZLECAF"
-    assert context["dd_rate_pct"] is None
-    assert context["preference_applied"] is False
-    assert context["zlecaf_rate_expression"] == "40% or 240c/kg"
-    assert context["zlecaf_rate_calculation_status"] == "REQUIRES_QUANTITY"
+def test_zaf_context_keeps_the_compound_duty_whole():
+    """« 40% or 240c/kg » : servi entier, jamais aplati en un ad valorem."""
+    dd = _preference("ZAF", "DZA", "020110")["taux"]["DD"]
+    assert dd["compose"] is True
+    assert dd["expression_brute"] == "40% or 240c/kg"
+    assert dd["specifique"]["unite_quantite"] == "kg"
 
 
 def test_kenya_applies_only_to_the_21_origins_named_by_kra():
@@ -122,10 +129,9 @@ def test_kenya_serves_the_gazetted_base_not_the_etariff_book():
     # Ligne à taux composite, écartée du barème : jamais aplatie à 0 %.
     assert resolve_official_preferential_rate("KEN", "72139110", "GHA", as_of_year=2026) is None
 
-    context = resolve_zlecaf_context("KEN", "GHA", "01012900", 25.0, None)
-    assert context["trade_regime"] == "ZLECAF"
-    assert context["dd_rate_pct"] == 10.0
-    assert context["zlecaf_rate_source"]["implementation_instrument"] == "EAC/321/2022"
+    preference = _preference("KEN", "GHA", "01012900")
+    assert preference["applique"] is True
+    assert preference["taux"]["DD"] == {"taux": 10.0}
 
 
 def test_offer_lookup_keeps_exact_nine_digit_lines_and_clamps_final_tier():
@@ -178,37 +184,6 @@ def test_sars_writer_emits_deterministic_gzip(tmp_path):
     assert json.loads(gzip.decompress(first)) == payload
 
 
-def test_effective_rate_reports_the_mfn_rate_when_schedule_is_higher(monkeypatch):
-    line = {
-        "dd_rate": 0.0,
-        "vat_rate": 15.0,
-        "zlecaf_rate": None,
-        "other_taxes_rate": 0.0,
-        "taxes_detail": {},
-        "description_fr": "Produit test",
-        "description_en": "Test product",
-        "fiscal_advantages": [],
-        "administrative_formalities": [],
-    }
-    monkeypatch.setattr(authentic_tariff_service, "_get_postgres_provider", lambda: None)
-    monkeypatch.setattr(
-        authentic_tariff_service,
-        "load_country_tariffs",
-        lambda _iso3: {"generated_at": "2026-08-17"},
-    )
-    monkeypatch.setattr(authentic_tariff_service, "get_tariff_line", lambda *_args: dict(line))
-    monkeypatch.setattr(authentic_tariff_service, "load_crawled_position_index", lambda _iso3: None)
-    monkeypatch.setattr(authentic_tariff_service, "get_sub_positions", lambda *_args: [])
-
-    result = authentic_tariff_service.calculate_import_taxes(
-        "ZAF", "340700", 1000.0, origin_country="DZA"
-    )
-
-    assert result["zlecaf_rate_expression"] == "4%"
-    assert result["zlecaf_preference_applied"] is False
-    assert result["rates"]["effective_zlecaf_rate_pct"] == 0.0
-
-
 def test_offer_and_domestication_without_partner_notice_never_calculate():
     assert implementation_decision("GHA", "KEN")["status"] == OFFER_ONLY
     assert implementation_decision("ETH", "KEN")["status"] == PARTNER_NOTICE_REQUIRED
@@ -217,23 +192,13 @@ def test_offer_and_domestication_without_partner_notice_never_calculate():
 
     # Statut distinct de NOT_AVAILABLE : une offre archivée ou une
     # domestication sans liste de partenaires publiée ne sont jamais
-    # calculées, mais ne sont pas non plus une absence pure de source — le
-    # frontend les affiche comme « à vérifier avec les douanes locales ».
-    offer_only = resolve_zlecaf_context("GHA", "KEN", "0101210000", 5.0, 0.0)
-    assert offer_only["trade_regime"] != "ZLECAF"
-    assert offer_only["zlecaf_rate_calculation_status"] == OFFER_ONLY
-    # Le taux publié est remonté à titre informatif (jamais dans dd_rate_pct,
-    # qui reste le taux NPF) pour permettre l'affichage « à vérifier ».
-    assert offer_only["dd_rate_pct"] == 5.0
-    assert offer_only["zlecaf_offer_rate_pct"] == 2.0
-    assert offer_only["zlecaf_offer_rate_expression"] == "2.0%"
-
-    missing_notice = resolve_zlecaf_context("ETH", "KEN", "01012100", 5.0, 0.0)
-    assert missing_notice["trade_regime"] != "ZLECAF"
-    assert missing_notice["zlecaf_rate_calculation_status"] == PARTNER_NOTICE_REQUIRED
-    assert missing_notice["dd_rate_pct"] == 5.0
-    assert missing_notice["zlecaf_offer_rate_pct"] == 0.0
-    assert missing_notice["zlecaf_offer_rate_expression"] == "0%"
+    # calculées, mais ne sont pas non plus une absence pure de source.
+    offer_only = _preference("GHA", "KEN", "0101210000")
+    assert offer_only["applique"] is False
+    assert offer_only["statut"] == OFFER_ONLY
+    missing_notice = _preference("ETH", "KEN", "01012100000")
+    assert missing_notice["applique"] is False
+    assert missing_notice["statut"] == PARTNER_NOTICE_REQUIRED
 
 
 def test_offer_rate_resolves_at_the_source_granularity_not_the_requested_code():
@@ -241,24 +206,19 @@ def test_offer_rate_resolves_at_the_source_granularity_not_the_requested_code():
     # longues que le code demandé (ex. ligne éthiopienne 01012100 pour une
     # sous-position nationale 01012100000) : lire l'offre à son niveau publié
     # n'invente rien, la sous-position demandée y est incluse.
-    finer = resolve_zlecaf_context("ETH", "KEN", "01012100000", 5.0, 0.0)
-    assert finer["zlecaf_offer_rate_pct"] == 0.0
+    assert resolve_published_offer_rate("ETH", "01012100000", "KEN") is not None
 
     # L'inverse est interdit : un SH6 ne doit jamais être résolu en piochant
     # arbitrairement l'une de ses sous-positions d'offre, qui portent des
     # concessions différentes.
-    coarser = resolve_zlecaf_context("ETH", "KEN", "010121", 5.0, 0.0)
-    assert coarser["zlecaf_offer_rate_pct"] is None
+    assert resolve_published_offer_rate("ETH", "010121", "KEN") is None
 
 
 def test_accepted_corridor_ignores_unverified_etl_rate_when_exact_line_is_missing():
-    context = resolve_zlecaf_context("KEN", "GHA", "99999999", 25.0, 0.0)
-
-    assert context["trade_regime"] == "ZLECAF"
-    assert context["zlecaf_eligible"] is True
-    assert context["dd_rate_pct"] is None
-    assert context["preference_applied"] is False
-    assert context["zlecaf_rate_calculation_status"] == "NOT_AVAILABLE"
+    position = {"droits": [{"code": "DD", "taux": 25.0, "assiette": "CIF", "famille": "droit"}], "preferentiels": {}}
+    preference = taux_preferentiels(position, "KEN", "GHA", "99999999")
+    assert preference["applique"] is False
+    assert preference["statut"] == "PREFERENCE_NON_TRACEE"
 
 
 def test_zwe_livre_une_offre_archivee_sans_appliquer_la_preference():
@@ -302,19 +262,15 @@ def test_le_maroc_repartit_les_origines_selon_sa_circulaire_pas_selon_l_ua():
     douane applique. Servir la carte de l'UA afficherait au Kenya un taux de
     0 % là où le Maroc en est à sa sixième tranche sur dix.
     """
-    kenya = resolve_zlecaf_context("MAR", "KEN", "0101210000", 2.5, 0.0)
-    burkina = resolve_zlecaf_context("MAR", "BFA", "0101210000", 2.5, 0.0)
+    kenya = _preference("MAR", "KEN", "0101210000")
+    burkina = _preference("MAR", "BFA", "0101210000")
 
-    assert kenya["trade_regime"] == "ZLECAF"
-    assert kenya["zlecaf_rate_source"]["schedule"] == "2"
-    assert burkina["zlecaf_rate_source"]["schedule"] == "1"
-    assert kenya["dd_rate_pct"] != burkina["dd_rate_pct"]
-
-    # Le tarif est désormais appliqué : chaque taux réduit le NPF, sans plancher.
-    for contexte in (kenya, burkina):
-        assert contexte["preference_applied"] is True
-        assert contexte["plancher_npf"] is None
-        assert contexte["dd_rate_pct"] < 2.5
+    # Le tarif est appliqué : chaque taux réduit le NPF (2,5 %), et les deux
+    # origines ne sont pas sur la même annexe.
+    for preference in (kenya, burkina):
+        assert preference["applique"] is True
+        assert preference["taux"]["DD"]["taux"] < 2.5
+    assert kenya["taux"]["DD"] != burkina["taux"]["DD"]
 
 
 def test_le_maroc_ne_sert_rien_aux_origines_absentes_de_sa_circulaire():
@@ -327,9 +283,7 @@ def test_le_maroc_ne_sert_rien_aux_origines_absentes_de_sa_circulaire():
     for origine in ("AGO", "MDG", "MOZ", "ZWE"):
         assert implementation_decision("MAR", origine)["applied"] is False, origine
         assert resolve_official_preferential_rate("MAR", "0101210000", origine) is None, origine
-        contexte = resolve_zlecaf_context("MAR", origine, "0101210000", 2.5, None)
-        assert contexte["trade_regime"] != "ZLECAF", origine
-        assert contexte["dd_rate_pct"] == 2.5, origine
+        assert _preference("MAR", origine, "0101210000")["applique"] is False, origine
 
     # Contrôle en miroir : une destination sans acte national archivé continue
     # de s'appuyer sur la carte de l'UA, sans quoi cette garde effacerait des

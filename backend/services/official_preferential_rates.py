@@ -14,14 +14,14 @@ DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "official_preferential
 DATASETS = {
     "ZAF": DATA_DIR / "ZAF_afcfta_2026-08-06.json.gz",
     "EAC": DATA_DIR / "EAC_afcfta_etariff_2026-08-17.json.gz",
-    "ECOWAS": DATA_DIR / "ECOWAS_afcfta_etariff_2026-08-17.json.gz",
-    "CEMAC": DATA_DIR / "CEMAC_afcfta_etariff_2026-08-17.json.gz",
-    "EGY": DATA_DIR / "EGY_afcfta_etariff_2026-08-17.json.gz",
-    "TUN": DATA_DIR / "TUN_afcfta_etariff_2026-08-17.json.gz",
-    "ETH": DATA_DIR / "ETH_afcfta_etariff_2026-08-17.json.gz",
-    "ZMB": DATA_DIR / "ZMB_afcfta_etariff_2026-08-17.json.gz",
-    "MAR": DATA_DIR / "MAR_afcfta_etariff_2026-09-13.json.gz",
-    "ZWE": DATA_DIR / "ZWE_afcfta_etariff_2026-09-13.json.gz",
+    "ECOWAS": DATA_DIR / "ECOWAS_afcfta_etariff_2026-10-03.json.gz",
+    "CEMAC": DATA_DIR / "CEMAC_afcfta_etariff_2026-10-03.json.gz",
+    "EGY": DATA_DIR / "EGY_afcfta_etariff_2026-10-03.json.gz",
+    "TUN": DATA_DIR / "TUN_afcfta_etariff_2026-10-03.json.gz",
+    "ETH": DATA_DIR / "ETH_afcfta_etariff_2026-10-03.json.gz",
+    "ZMB": DATA_DIR / "ZMB_afcfta_etariff_2026-10-03.json.gz",
+    "MAR": DATA_DIR / "MAR_afcfta_etariff_2026-10-03.json.gz",
+    "ZWE": DATA_DIR / "ZWE_afcfta_etariff_2026-10-03.json.gz",
 }
 
 ISO3_TO_ISO2 = {
@@ -382,7 +382,26 @@ def resolve_published_offer_rate(
             parent = _resolve_offer_line(dataset, country, origin, clean_code[:length], year)
             if parent is not None:
                 return {**parent, "requested_hs_code": clean_code}
+
+    if dataset_code == "ECOWAS":
+        # Position TEC 2022 sans ligne dans l'offre (TEC 2017) : concordance
+        # du Mali puis de l'OMD, retenue seulement si toutes les lignes sources
+        # portent la même offre (scripts/extraire_concordance_cedeao.py).
+        concordance = _concordance_cedeao()
+        entree = concordance["par_position_mali"].get(clean_code[:10]) or concordance["par_sh6_omd"].get(
+            clean_code[:6]
+        )
+        if entree is not None:
+            ligne = _resolve_offer_line(dataset, country, origin, entree["ligne_e_tariff"], year)
+            if ligne is not None:
+                return {**ligne, "requested_hs_code": clean_code, "concordance_tec2022_tec2017": entree}
     return None
+
+
+@lru_cache(maxsize=1)
+def _concordance_cedeao() -> dict:
+    chemin = Path(__file__).resolve().parents[1] / "data" / "zlecaf_cedeao" / "concordance_tec2022_tec2017.json"
+    return json.loads(chemin.read_text(encoding="utf-8"))
 
 
 def resolve_official_preferential_rate(
@@ -407,15 +426,16 @@ def resolve_official_preferential_rate(
         dataset_code = decision["tariff_dataset"]
 
     from services.zlecaf_implementation_registry import DESTINATIONS_REGLE_B_EAC
-    from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
     if country in DESTINATIONS_REGLE_B_EAC:
         # Règle B (27/09/2026) : l'État a un barème gazetté (Legal Notice
         # EAC/321/2022) : c'est lui qui fait foi, pas l'e-Tariff Book, qui en
-        # diverge sur 275 lignes.
+        # diverge sur 275 lignes. Le barème n'est chargé que pour ces
+        # destinations.
+        from services.zlecaf_schedule_ken import ligne_du_journal_officiel
 
-        jour = date(as_of_year, 12, 31) if as_of_year else None
-        return ligne_du_journal_officiel(clean_code, origin, jour, destination_iso3=country)
+        jour_bar = date(as_of_year, 12, 31) if as_of_year else None
+        return ligne_du_journal_officiel(clean_code, origin, jour_bar, destination_iso3=country)
 
     dataset = _load_dataset(dataset_code)
     if dataset is None:
@@ -429,6 +449,15 @@ def resolve_official_preferential_rate(
         # égyptienne servirait un taux que l'acte national ne commande pas.
         # Voir EGY_rapprochement_baremes_2026-09-24.json.
         return None
+
+    if dataset_code == "MAR":
+        # Seule la liste A de la circulaire est démantelée : une ligne que
+        # l'e-Tariff sert mais que l'avenant n° 6627/223 ne couvre pas reste
+        # au NPF (85 lignes au 03/10/2026, ex. 0210999031).
+        from services.zlecaf_schedule_mar import dans_la_liste_a
+
+        if not dans_la_liste_a(clean_code):
+            return None
 
     if dataset_code != "ZAF":
         return _resolve_offer_line(

@@ -7,6 +7,7 @@ mocked so the tests are hermetic (no network).
 """
 
 import asyncio
+import os
 
 import pytest
 from services import real_comparison_service as mod
@@ -126,3 +127,41 @@ def test_compare_unknown_country_errors(monkeypatch):
     _patch(monkeypatch, bilateral={}, exports={}, imports={})
     result = run(mod.compare_countries("Atlantis", "DZA", lang="fr"))
     assert result.get("error")
+
+
+# ── Économies ZLECAf, lues au socle ─────────────────────────────────────────
+def test_les_economies_ne_comptent_que_les_filieres_determinees(monkeypatch):
+    ecarts = {"640319": 60.0, "610910": 0.0, "870323": None}
+    monkeypatch.setattr(mod, "_ecart_dd_zlecaf", lambda dest, orig, hs6: ecarts[hs6])
+    flows = [
+        {"hs6Code": "640319", "potential_usd": 1_000_000},
+        {"hs6Code": "610910", "potential_usd": 2_000_000},
+        {"hs6Code": "870323", "potential_usd": 3_000_000},
+        {"hs6Code": "18", "potential_usd": 4_000_000},  # chapitre : pas de position
+    ]
+    total, couvertes, filieres = mod._tariff_savings_for_flows(flows, "MAR", "EGY")
+    assert total == pytest.approx(600_000.0)
+    assert (couvertes, filieres) == (2, 4)
+
+
+besoin_socle = pytest.mark.skipif(
+    not os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), "socle", "EGY.json")),
+    reason="socle absent : python3 scripts/build_socle.py",
+)
+
+
+@besoin_socle
+def test_ecart_zlecaf_lu_au_socle():
+    """Chaussures, Égypte depuis le Maroc : NPF 60 %, calendrier national 0 %."""
+    assert mod._ecart_dd_zlecaf("EGY", "MAR", "640319") == 60.0
+
+
+@besoin_socle
+def test_union_douaniere_sans_economie_zlecaf():
+    """Ghana → Nigeria : libre circulation CEDEAO, la ZLECAf n'y ajoute rien."""
+    assert mod._ecart_dd_zlecaf("NGA", "GHA", "180690") == 0.0
+
+
+@besoin_socle
+def test_sh6_absent_du_socle_n_est_pas_une_economie_nulle():
+    assert mod._ecart_dd_zlecaf("EGY", "MAR", "999999") is None

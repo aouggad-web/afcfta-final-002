@@ -1,0 +1,19 @@
+Tunisie — redevance de prestations douanières (RPD) et assiette de la TVA à l'importation : extraits (relevés le 2026-10-07)
+
+1. Journal officiel de la République tunisienne n° 1 du 1er janvier 2013, loi n° 2012-27 du 29 décembre 2012 portant loi de finances pour l'année 2013
+(copie : http://chaexpert.com/documents/2013%20-%20Loi%20de%20finances%20ann%C3%A9e%202013.pdf, 133 pages,
+sha256 9c5b0d8a11b3da887d658886b8546239359db9963e6cf5ab92a00ffbcf1445f3), page 17 :
+
+Mise à jour du montant de la redevance de prestations douanières à l’importation Art. 57 - Est abrogé le terme « cinq » mentionné au deuxième tiret de l’article 51 de la loi n° 87-83 du 31 décembre 1987 relative à la loi de finances pour l’année 1988, telle que modifiée et complétée par les textes subséquents et notamment l’article 32 de la loi n° 98-111 du 28 décembre 1998, portant loi de finances pour l’année 1999 et remplacé par le terme « dix ».
+
+2. Tarif Web 2026 de la Douane tunisienne, fiche de la position 8703.40.10.116 (page archivée dans le dépôt :
+data/sources/TUN/tarifweb2026/detail_87034010116.html), droits et taxes à l'importation :
+
+RPD/IMPOR | REDEV.PREST.DOUA/IM | 3 % | SOMME D.T (G=0.1.2.3.4. | DD/VEH.AU | DD/VEHICULES AUT. | 0 % | VALEUR DOUANE DINARS | DC/VOIT | DRT CONS.VOIT.AUTOS | 10 % | VALEUR DOUANE DINARS | TVA/AUTO | TVA VOIT.AUTOS | 19 % | VAL.DOU(D)+R(DT) GR.0 | DROITS ET TAXES À L'EXPORTATION | DROITS / TAXES | Valeur | Assiette | RPD/EXPOR |
+
+3. Digest de la fiscalité tunisienne, profiscal.com (source secondaire ; http://www.profiscal.com/Impot_en_Tunisie/Digest1.htm,
+sha256 6978abda813439e433dbdb424639fe2f33f2ccf6a4a3c82f1d253db3680bfd6e) :
+
+§ 5. La redevance de prestation douanière Une redevance de prestation douanière est perçue sur les déclarations en détail des marchandises par les services de la douane sur la base de 3% du montant des droits et taxes liquidés sur toutes les déclarations en douane à limportation avec un minimum de perception de cinq dinars par article de déclaration.
+
+Ainsi, lorsquun produit est soumis à la TVA au taux de 18%, au Fodec au taux de 1% et au droit de consommation au taux de 10% et un droit de douane de 20%, le décompte seffectue différemment que celui du régime intérieur : Base hors taxes (valeur en douane) 1000D Droit de douane 20% 200D Droit de consommation 10% 100D Fodec 1% 10D Base soumise à la TVA 1310D TVA au taux de 18% 235,800D Montant TVA comprise 1545,800D Redevance de prestations douanières (545.800 x 3%) 16,374D

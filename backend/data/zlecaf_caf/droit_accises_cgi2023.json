@@ -1,0 +1,25 @@
+{
+  "_objet": "Droit d'accises à l'importation en Centrafrique : positions et taux, d'après le Code général des impôts, édition officielle mise à jour 2023 (DGID), art. 289 bis à 293 et annexe. Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle qui s'applique l'emporte. « taux » null : le droit est porté, non liquidé.",
+  "_fiche": "backend/data/legal_refs/zlecaf_application/CAF_droit_accises_2026-10-05.json",
+  "source": "Code général des impôts de la République centrafricaine, édition officielle mise à jour 2023 (DGID)",
+  "assiette": "CIF+DD",
+  "assiette_reference": "Art. 291 (1) a : « A l'importation : en ajoutant à la valeur en douane telle qu'elle est définie par le Code des Douanes de la CEMAC, le montant du droit de douane ».",
+  "tva_assiette": "CIF+DD+DA",
+  "tva_assiette_reference": "CGI, TVA : « La base imposable à la taxe sur la valeur ajoutée, en ce qui concerne les importations, est établie en ajoutant à la valeur imposable telle qu'elle est définie par les articles 23 à 26 du Code des douanes de la CEMAC, le montant du droit de douanes et du droit d'accises ».",
+  "regles": [
+    {"prefixes": ["2203", "2204", "2208", "2402"], "taux": null, "motif": "Taux ad valorem (25 % boissons, 30 % tabacs) majoré d'un droit spécifique par litre, par cigare ou par paquet (art. 293) : le volume ou le nombre n'est pas saisi.", "reference": "art. 292 et 293 ; annexe"},
+    {"prefixes": ["2205", "2206"], "taux": 25.0, "reference": "art. 289 bis (1) a ; annexe, chapitre 22, boissons alcoolisées 25 %"},
+    {"prefixes": ["2202"], "taux": 10.0, "reference": "art. 289 bis (2) a ; annexe, chapitre 22, boissons non alcoolisées à l'exception de l'eau minérale 10 %"},
+    {"prefixes": ["2201"], "taux": null, "motif": "Eaux : l'eau minérale est exclue, les eaux gazéifiées et autres eaux sont soumises à 10 % ; la position ne les sépare pas.", "reference": "art. 289 bis (2) a ; annexe, chapitre 22"},
+    {"prefixes": ["24"], "taux": 30.0, "reference": "art. 289 bis (1) b ; art. 292 a ; annexe, chapitre 24, 30 %"},
+    {"prefixes": ["3303", "3304", "33052000", "33053000", "33059000", "3306", "3307"], "taux": 25.0, "reference": "art. 289 bis (2) b ; annexe, chapitre 33, parfums et cosmétiques 25 % (positions énumérées)"},
+    {"prefixes": ["71"], "taux": 25.0, "reference": "art. 289 bis (2) d ; annexe, chapitre 71, bijoux et pierres précieuses 25 %"},
+    {"prefixes": ["93", "36010000"], "taux": 25.0, "reference": "art. 289 bis (2) c ; annexe, chapitre 93 et position 3601.00.00, armes et munitions 25 %"},
+    {"prefixes": ["03031100", "03031900", "03032200"], "taux": 25.0, "reference": "art. 289 bis (2) e ; annexe, 0303.10.00 saumons 25 % (SH 2002 : 0303.11, 0303.19, 0303.22)"},
+    {"prefixes": ["03027000", "03038000", "03052000"], "taux": 25.0, "reference": "art. 289 bis (2) f ; annexe, 0302.70, 0303.80, 0305.20 foies, œufs et laitances de poissons 25 %"},
+    {"prefixes": ["16022010", "16043000"], "taux": null, "motif": "Caviar et foie gras 25 % (art. 292 g) ; la position comprend aussi les succédanés du caviar et les autres préparations de foie.", "reference": "art. 289 bis (2) g ; art. 292 g"},
+    {"prefixes": ["8703"], "taux": null, "motif": "Véhicules de tourisme : neufs n'excédant pas 2 500 cm3 exclus ; plus de 2 500 cm3 12,5 % de 0 à 15 ans, 25 % au-delà — l'âge n'est pas dans la position.", "reference": "art. 289 bis (1) c et (2) i ; annexe"},
+    {"prefixes": ["8702", "8704"], "taux": null, "motif": "Soumis seulement au-delà de 15 ans (25 %) — l'âge n'est pas dans la position.", "reference": "art. 289 bis (2) i ; annexe"},
+    {"prefixes": ["87113000", "87114000", "87115000"], "taux": 12.5, "reference": "art. 289 bis (1) d ; art. 292 c ; annexe, motocycles de plus de 250 cm3 12,5 %"}
+  ]
+}

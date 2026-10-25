@@ -5,14 +5,13 @@ Router FastAPI pour le Moteur Réglementaire AfCFTA v3
 Endpoints:
 - GET /api/regulatory-engine/countries - Liste des pays disponibles
 - GET /api/regulatory-engine/details - Détails par code national ou HS6
-- GET /api/regulatory-engine/summary/{country} - Résumé d'un pays
 """
 
 import importlib.util
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Query
 from pydantic import BaseModel
 
 # Load engine_service using importlib to avoid sys.path pollution that would
@@ -176,26 +175,3 @@ async def get_all_sub_positions(
             )
 
     return responses
-
-
-@router.get("/summary/{country}")
-async def get_country_summary(country: str):
-    """
-    Récupère le résumé des données pour un pays.
-
-    Inclut:
-    - Nombre de lignes tarifaires
-    - Nombre de sous-positions
-    - Chapitres couverts
-    - Taux de TVA
-    - Plage des droits de douane
-    """
-    service = get_service()
-    country = country.upper()
-
-    summary = service.get_country_summary(country)
-
-    if summary is None:
-        raise HTTPException(status_code=404, detail=f"Résumé non disponible pour {country}")
-
-    return {"success": True, "country_iso3": country, "summary": summary}

@@ -87,11 +87,12 @@ a la virgule la ou le reste du bareme met un point. Aucun des deux n'est devine 
 la cellule reste non lue et la position le declare. Deduire « Free » d'un prefixe
 serait servir une franchise que le collecteur n'a pas vue.
 
-TROIS PRELEVEMENTS SONT PORTES SANS ASSIETTE, donc non liquidables : l'accise
-(col. 10), la TVA (col. 11) et l'Advance Income Tax (col. 12). Le decret donne
-leurs TAUX, pas leur assiette, et aucun texte malawien lu ici ne l'etablit. Les
-poser sur CIF de memoire — parce que c'est l'usage ailleurs — fabriquerait un
-montant credible et faux. Le moteur les declarera indisponibles, avec leur motif.
+L'ACCISE ET LA TVA ONT LEUR ASSIETTE, L'AIT NON. Le decret donne les taux des
+colonnes 10 a 12, pas leurs assiettes. Celles de l'accise (CIF + droit) et de la
+TVA (CIF + droit + accise) viennent du VAT Act s.28 et du guide de la MRA, qui
+en donne le calcul chiffre (fiche MWI_assiette_accise_TVA_2026-10-05.json).
+L'Advance Income Tax (col. 12) reste SANS assiette : aucun texte lu ne l'etablit,
+et la poser sur CIF fabriquerait un montant credible et faux.
 """
 
 import collections
@@ -143,6 +144,10 @@ RX_POSITION = re.compile(r"^\d{2}\.\d{2}$")
 #: Une valeur de droit : pourcentage, ou « Free » qui vaut zero.
 RX_PCT = re.compile(r"^(\d+(?:\.\d+)?)\s*%$")
 RX_ZERO = re.compile(r"^(free)$", re.I)
+#: Un droit SPECIFIQUE en dollars : « USD 15 » (per 1,000 sticks, 2402.20). Son
+#: unite de quantite s'ecrit sur les lignes suivantes : il est porte sans taux.
+RX_SPECIFIQUE = re.compile(r"^USD \d+(?:\.\d+)?$")
+RX_NOMBRE = re.compile(r"^\d+(?:\.\d+)?$")
 #: La colonne TVA ne porte pas toujours un taux : le bareme y ecrit aussi « Zero »
 #: (detaxe, VAT Act Second Schedule) et « Exempt » (exoneration, First Schedule).
 #: Les deux sont des mentions PUBLIEES, et elles ne disent pas la meme chose :
@@ -229,11 +234,15 @@ def lire_valeur(cellule: str) -> Tuple[Optional[float], Optional[str]]:
     m = RX_PCT.match(brut)
     if m:
         return float(m.group(1)), None
+    if RX_SPECIFIQUE.match(brut):
+        return None, "DROIT_SPECIFIQUE"
     return None, "EXPRESSION_NON_LUE"
 
 
 def _est_valeur(mot: str) -> bool:
-    return bool(RX_PCT.match(mot) or RX_ZERO.match(mot) or RX_MENTION_TVA.match(mot))
+    return bool(
+        RX_PCT.match(mot) or RX_ZERO.match(mot) or RX_MENTION_TVA.match(mot) or RX_SPECIFIQUE.match(mot)
+    )
 
 
 def _bandes(mots, tolerance: float = TOLERANCE_Y):
@@ -266,6 +275,11 @@ def _recoller(toks) -> List[Tuple[float, str]]:
     index = 0
     while index < len(toks):
         x0, x1, mot = toks[index]
+        # « USD » puis « 15 » : un montant, pas la moitie d'un pourcentage. Le
+        # recoudre au « 16.5% » voisin (TVA) donnait « 1516.5% » sur 2402.20.
+        if mot == "USD" and index + 1 < len(toks) and RX_NOMBRE.match(toks[index + 1][2]):
+            index += 1
+            mot, x1 = f"USD {toks[index][2]}", toks[index][1]
         while index + 1 < len(toks):
             suivant_x0, suivant_x1, suivant = toks[index + 1]
             if suivant_x0 - x1 > 4.0 or not RX_PCT.match(mot + suivant):
@@ -405,7 +419,10 @@ def _taxe(
         return dict(
             commun, base=None, base_source=None, note=libelle + ". " + CONDITION_ORIGINE + exclusion
         )
-    # Accise, TVA, Advance Income Tax : le decret donne le TAUX, pas l'assiette.
+    if code in ASSIETTES_ETABLIES:
+        base, source_base = ASSIETTES_ETABLIES[code]
+        return dict(commun, base=base, base_source=source_base, note=f"{libelle}. Assiette : {source_base}")
+    # Advance Income Tax : le decret donne le TAUX, pas l'assiette.
     return dict(
         commun,
         base=None,
@@ -417,6 +434,23 @@ def _taxe(
             "montant credible et faux."
         ),
     )
+
+
+#: Assiettes etablies hors du decret (fiche MWI_assiette_accise_TVA_2026-10-05.json).
+ASSIETTES_ETABLIES = {
+    "EXC": (
+        "CIF + DD",
+        "guide MRA « Guide for Cross-Border Traders » (2022), p. 11 : « Excise = "
+        "(K500, 000 + K125, 000) x 10 % » — valeur plus droit de douane",
+    ),
+    "TVA": (
+        "CIF + DD + EXC",
+        "Value Added Tax Act (Cap. 42:02) s.28 : « the import value calculated in "
+        "accordance with the Customs and Excise Act with the addition of all import "
+        "duties and taxes, but excluding Value Added Tax » ; guide MRA (2022), p. 11 : "
+        "« VAT = (K500, 000 + K125, 000 + K62, 500.00) x 16.5% »",
+    ),
+}
 
 
 def bornes_de_part_iii(doc) -> Tuple[int, int]:
@@ -525,6 +559,12 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                 if brut is None:
                     continue
                 taux, motif_v = lire_valeur(brut)
+                if motif_v == "DROIT_SPECIFIQUE":
+                    # Publie et dû, mais sans unite de quantite lue : porte sans
+                    # taux plutot que perdu ou colle a la colonne voisine.
+                    gaps.append(f"{nom}_{motif_v}")
+                    taxes.append(_taxe(nom, None, brut, libelle, preferentiel=False))
+                    continue
                 if motif_v == "HORS_CHAMP_DE_LA_TVA":
                     # L'exoneration est une information PUBLIEE : on la porte,
                     # sans taux, plutot que de la laisser passer pour un oubli.
@@ -623,16 +663,23 @@ def construire(chemin: Path) -> Dict:
         "extracted_at": date.today().isoformat(),
         "calculation_rules": {
             "order": ["DD", "EXC", "TVA", "AIT"],
-            "bases": {"DD": {"basis": "CIF", "type": "ad_valorem", "source": ACTE_DD}},
+            "bases": {
+                "DD": {"basis": "CIF", "type": "ad_valorem", "source": ACTE_DD},
+                **{
+                    code: {"basis": base, "type": "ad_valorem", "source": source_base}
+                    for code, (base, source_base) in ASSIETTES_ETABLIES.items()
+                },
+            },
             "source": (
                 "Droit de douane de la COLONNE 6, celle dont beneficie toute partie "
                 "contractante du GATT (Order, par. 5(a)(iii)) : c'est le taux NPF. La "
                 "colonne 5 est le PLEIN DROIT, conservee a part sous le code DD_PLEIN. "
                 "Assiette : prix normal de la Schedule A, marchandises livrees au port "
                 "d'introduction au Malawi, tous frais du vendeur inclus — le CIF par "
-                "son contenu, la Definition de Bruxelles par sa forme. Accise, TVA et "
-                "Advance Income Tax sont portees SANS assiette : le decret en donne le "
-                "taux, aucun texte lu n'en donne l'assiette."
+                "son contenu, la Definition de Bruxelles par sa forme. Accise : CIF + DD ; "
+                "TVA : CIF + DD + accise (VAT Act s.28, guide MRA 2022). L'Advance Income "
+                "Tax est portee SANS assiette : le decret en donne le taux, aucun texte "
+                "lu n'en donne l'assiette."
             ),
         },
         "stats": dict(

@@ -79,7 +79,7 @@ AFRICAN_CURRENCY_CODES = {
     "XOF",
     "ZAR",
     "ZMW",
-    "ZWL",
+    "ZWG",
 }
 
 # Rate change alert threshold (percent)

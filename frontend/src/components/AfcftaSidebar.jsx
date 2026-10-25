@@ -42,7 +42,13 @@ export default function AfcftaSidebar({
     <aside className={`afcfta-sidebar${collapsed ? " collapsed" : ""}`}>
       {/* Logo */}
       <div className="afcfta-sidebar-logo">
-        <div className="afcfta-sidebar-icon">🌍</div>
+        <img
+          className="afcfta-sidebar-icon afcfta-sidebar-brandmark"
+          src="/brand/logo.svg"
+          alt=""
+          width={38}
+          height={38}
+        />
         <div className="afcfta-sidebar-title">
           <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
           <p>{isFrench ? "Intelligence commerciale" : "Trade Intelligence"}</p>

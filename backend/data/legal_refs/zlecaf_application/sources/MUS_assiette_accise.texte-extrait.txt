@@ -1,0 +1,17 @@
+Maurice — base du droit d'accise à l'importation : extraits verbatim (relevés le 2026-10-06)
+
+Excise Act 1994, version consolidée publiée par la Mauritius Revenue Authority, en-tête « 01.10.2026 THE EXCISE ACT »
+(https://www.mra.mu/download/ExciseAct.pdf, 403 pages, sha256 250d99ea77bc7d019f0daf223ba17484a9a42b6bdb7df348fdb4061edc8306c7).
+Les appels de note numérotés (« 143 », « 144 »…) de la version consolidée sont conservés tels quels.
+
+Page 15 — section 2, définition :
+
+“143value at importation” means- (a) in the case of second hand motor vehicles, the value determined in such manner as may be prescribed; 144 (b) in any other case, the value under the Customs Act; 145146147
+
+Page 51 — First Schedule, en-tête des colonnes et premières lignes :
+
+Column 1 Column 2 Column 3 Column 4 Column 5 Heading H.S. Code Excisable Goods Statistical Unit Taxable Base Rate of Excise Duty 04.02 Milk and cream, concentrated or containing added sugar or other sweetening matter. - Other: -- Other: 378 379 0402.99.10 --- In liquid form containing sugar Kg Specific duty per gram 15 cents per gram of sugar 0402.99.90 --- Other Kg Specific duty per gram 0 380
+
+Page 109 — First Schedule, véhicules 87.03 (neufs, puis d'occasion) :
+
+--- New: 8703.21.11 ---- Ambulances and hearses U Ad valorem or value at importation 0% 8703.21.14 ---- Of a cylinder capacity not exceeding 550 cc U Ad valorem or value at importation 0% 429 430 379 8703.21.15 ---- Of a cylinder capacity exceeding 550 cc and equipped with an electric boost system to supplement the power produced by the combustion engine, other than those capable of being charged by plugging to external source of electric power U Ad valorem or value at importation 25% 431 379 8703.21.19 ---- Other U Ad valorem or value at importation 45% --- Second-hand: 8703.21.91 ---- Ambulances and hearses U Ad valorem or value at importation 0% 8703.21.94 ---- Of a cylinder capacity not exceeding 550 cc U Ad valorem or value at importation 0% 432 433 379 8703.21.95 ---- Of a cylinder capacity exceeding 550 cc and equipped with an electric boost system to U Ad valorem or value at impo

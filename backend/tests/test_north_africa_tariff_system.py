@@ -4,7 +4,6 @@ Tests for the North African Tariff Intelligence System.
 Covers:
 - Config loading (DZA, MAR, EGY, TUN)
 - Regional config
-- EnhancedCalculatorV3
 - RegionalIntelligenceService
 - NorthAfricaCrossValidator
 - Service layer imports
@@ -24,16 +23,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 class TestCountryConfigs:
     """Tests for country-specific crawler configurations."""
-
-    def test_dza_config_structure(self):
-        from config.crawler_configs.dza_config import DZA_CONFIG
-
-        assert DZA_CONFIG["country_iso3"] == "DZA"
-        assert "tax_structure" in DZA_CONFIG
-        assert "DD" in DZA_CONFIG["tax_structure"]
-        assert "TVA" in DZA_CONFIG["tax_structure"]
-        assert "crawl_settings" in DZA_CONFIG
-        assert DZA_CONFIG["crawl_settings"]["async_enabled"] is True
 
     def test_mar_config_structure(self):
         from config.crawler_configs.mar_config import MAR_CONFIG
@@ -66,12 +55,11 @@ class TestCountryConfigs:
         assert "EU Association Agreement" in " ".join(TUN_CONFIG.get("preferential_agreements", []))
 
     def test_all_configs_have_data_paths(self):
-        from config.crawler_configs.dza_config import DZA_CONFIG
         from config.crawler_configs.egy_config import EGY_CONFIG
         from config.crawler_configs.mar_config import MAR_CONFIG
         from config.crawler_configs.tun_config import TUN_CONFIG
 
-        for cfg in [DZA_CONFIG, MAR_CONFIG, EGY_CONFIG, TUN_CONFIG]:
+        for cfg in [MAR_CONFIG, EGY_CONFIG, TUN_CONFIG]:
             assert "data_paths" in cfg
             assert "raw" in cfg["data_paths"]
             assert "parsed" in cfg["data_paths"]
@@ -104,129 +92,6 @@ class TestRegionalConfig:
         assert NORTH_AFRICA_VAT_RATES["TUN"] == 19.0
 
 
-# ==================== Enhanced Calculator Tests ====================
-
-
-class TestEnhancedCalculatorV3:
-    """Tests for the regional tariff calculator."""
-
-    def setup_method(self):
-        from services.enhanced_calculator_v3 import EnhancedCalculatorV3
-
-        self.calculator = EnhancedCalculatorV3()
-
-    def test_calculate_country_taxes_mar(self):
-        result = self.calculator.calculate_country_taxes(
-            country_code="MAR",
-            hs_code="870321",
-            cif_value=10000.0,
-        )
-        assert result["country_code"] == "MAR"
-        assert result["cif_value"] == 10000.0
-        assert result["vat_rate_pct"] == 20.0
-        assert result["total_landed_cost"] > result["cif_value"]
-        assert result["dd_amount"] >= 0
-        assert result["vat_amount"] >= 0
-
-    def test_calculate_country_taxes_egy(self):
-        result = self.calculator.calculate_country_taxes(
-            country_code="EGY",
-            hs_code="870321",
-            cif_value=5000.0,
-            dd_rate=20.0,
-        )
-        assert result["country_code"] == "EGY"
-        assert result["dd_rate_pct"] == 20.0
-        assert result["vat_rate_pct"] == 14.0
-        assert result["dd_amount"] == 1000.0
-        assert result["total_taxes"] > 0
-
-    def test_calculate_country_taxes_no_vat(self):
-        result = self.calculator.calculate_country_taxes(
-            country_code="TUN",
-            hs_code="270900",
-            cif_value=1000.0,
-            dd_rate=0.0,
-            apply_vat=False,
-        )
-        assert result["vat_amount"] == 0
-        assert result["total_taxes"] == 0.0
-        assert result["total_landed_cost"] == result["cif_value"]
-
-    def test_find_best_route_returns_ranking(self):
-        result = self.calculator.find_best_route(
-            hs_code="870321",
-            cif_value=10000.0,
-        )
-        assert "rankings" in result
-        assert "best_route" in result
-        assert len(result["rankings"]) == 4
-        # Rankings should be sorted by total landed cost
-        costs = [r["total_landed_cost"] for r in result["rankings"]]
-        assert costs == sorted(costs)
-
-    def test_find_best_route_with_known_rates(self):
-        known_rates = {"DZA": 0.0, "MAR": 2.5, "EGY": 5.0, "TUN": 0.0}
-        result = self.calculator.find_best_route(
-            hs_code="270900",  # mineral fuels
-            cif_value=100000.0,
-            dd_rates=known_rates,
-        )
-        assert result["best_route"] is not None
-        # DZA and TUN have 0% DD, so they should be cheapest
-        best_dd = result["best_route"]["dd_rate_pct"]
-        assert best_dd == 0.0
-
-    def test_analyze_free_zone_arbitrage(self):
-        opportunities = self.calculator.analyze_free_zone_arbitrage(
-            hs_code="870321",
-            cif_value=10000.0,
-        )
-        assert isinstance(opportunities, list)
-        # Morocco and Egypt have free zones
-        countries = {o["country"] for o in opportunities}
-        assert "MAR" in countries
-        assert "EGY" in countries
-
-    def test_get_preferential_rates_eu(self):
-        rates = self.calculator.get_preferential_rates(
-            hs_code="870321",
-            origin_country="MAR",
-            destination="EU",
-        )
-        assert len(rates) > 0
-        agreements = [r["agreement"] for r in rates]
-        assert any("EU" in a for a in agreements)
-
-    def test_get_preferential_rates_qiz(self):
-        rates = self.calculator.get_preferential_rates(
-            hs_code="610910",
-            origin_country="EGY",
-            destination="US",
-        )
-        assert len(rates) > 0
-        agreements = [r["agreement"] for r in rates]
-        assert any("QIZ" in a for a in agreements)
-
-    def test_compare_regional_supply_chain(self):
-        result = self.calculator.compare_regional_supply_chain(
-            hs_codes=["870321", "840810"],
-            production_country="MAR",
-            unit_value=5000.0,
-        )
-        assert "total_tax_burden_by_country" in result
-        assert "optimal_country" in result
-        assert len(result["total_tax_burden_by_country"]) == 4
-        assert result["optimal_country"] in ["DZA", "MAR", "EGY", "TUN"]
-
-    def test_singleton_calculator(self):
-        from services.enhanced_calculator_v3 import get_enhanced_calculator
-
-        c1 = get_enhanced_calculator()
-        c2 = get_enhanced_calculator()
-        assert c1 is c2
-
-
 # ==================== Regional Intelligence Service Tests ====================
 
 
@@ -254,28 +119,6 @@ class TestRegionalIntelligenceService:
             assert "country_code" in country_data
             assert "is_fresh" in country_data
             assert "record_count" in country_data
-
-    def test_build_investment_map_structure(self):
-        result = self.intel.build_investment_map()
-        assert "countries" in result
-        assert "top_ranked" in result
-        # North Africa countries must all be present
-        for code in ["DZA", "MAR", "EGY", "TUN"]:
-            assert code in result["countries"]
-        # CEMAC countries must also be present
-        for code in ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]:
-            assert code in result["countries"]
-        assert len(result["countries"]) >= 4
-
-    def test_investment_map_country_fields(self):
-        result = self.intel.build_investment_map()
-        total = len(result["countries"])
-        for code, profile in result["countries"].items():
-            assert "country_name" in profile
-            assert "vat_rate" in profile
-            assert "investment_score" in profile
-            assert "rank" in profile
-            assert 1 <= profile["rank"] <= total
 
     def test_recommend_market_entry_automotive(self):
         result = self.intel.recommend_market_entry(
@@ -594,78 +437,6 @@ class TestRegionalIntelligenceAdvanced:
 
         self.intel = RegionalIntelligenceService()
 
-    # ---------- optimal_trade_route ----------
-
-    def test_optimal_route_returns_all_countries(self):
-        result = self.intel.optimal_trade_route(
-            hs_code="870321",
-            origin_region="sub_saharan_africa",
-            target_market="europe",
-        )
-        assert "routes" in result
-        assert len(result["routes"]) == 4
-        codes = {r["country_code"] for r in result["routes"]}
-        assert codes == {"DZA", "MAR", "EGY", "TUN"}
-
-    def test_optimal_route_has_required_fields(self):
-        result = self.intel.optimal_trade_route(
-            hs_code="870321",
-            origin_region="sub_saharan_africa",
-            target_market="europe",
-        )
-        assert "optimal_route" in result
-        assert result["optimal_route"] is not None
-        route = result["optimal_route"]
-        assert "combined_score" in route
-        assert "clearance_days_avg" in route
-        assert "dd_rate_typical_pct" in route
-        assert "annual_duty_estimate_usd" in route
-
-    def test_optimal_route_for_eu_favors_eu_countries(self):
-        result = self.intel.optimal_trade_route(
-            hs_code="610910",
-            origin_region="sub_saharan_africa",
-            target_market="europe",
-            preferences=["lowest_cost", "most_reliable"],
-        )
-        # Countries with EU agreements should rank better for EU target
-        top = result["optimal_route"]["country_code"]
-        eu_countries = {"MAR", "EGY", "TUN"}
-        assert top in eu_countries
-
-    def test_optimal_route_annual_duty_positive(self):
-        result = self.intel.optimal_trade_route(
-            hs_code="870321",
-            origin_region="asia",
-            target_market="mena",
-            annual_volume=5_000_000,
-        )
-        for route in result["routes"]:
-            assert route["annual_duty_estimate_usd"] >= 0
-
-    def test_optimal_route_sorted_by_score(self):
-        result = self.intel.optimal_trade_route(
-            hs_code="840710",
-            origin_region="americas",
-            target_market="africa",
-        )
-        scores = [r["combined_score"] for r in result["routes"]]
-        assert scores == sorted(scores, reverse=True)
-
-    def test_optimal_route_metadata(self):
-        result = self.intel.optimal_trade_route(
-            hs_code="270900",
-            origin_region="sub_saharan_africa",
-            target_market="europe",
-            annual_volume=10_000_000,
-            preferences=["fastest_clearance"],
-        )
-        assert result["hs_code"] == "270900"
-        assert result["origin_region"] == "sub_saharan_africa"
-        assert result["target_market"] == "europe"
-        assert result["annual_volume_usd"] == 10_000_000
-        assert "generated_at" in result
-
     # ---------- investment_analysis ----------
 
     def test_investment_analysis_returns_all_countries(self):
@@ -724,77 +495,6 @@ class TestRegionalIntelligenceAdvanced:
             investment_size=500_000,
         )
         assert "Smaller" in result["size_note"]
-
-    # ---------- get_preferential_matrix_by_hs ----------
-
-    def test_preferential_matrix_structure(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
-        assert "hs_code" in result
-        assert "matrix" in result
-        # North Africa countries must all be in the matrix
-        for code in ["DZA", "MAR", "EGY", "TUN"]:
-            assert code in result["matrix"]
-        # CEMAC countries must also be in the matrix
-        for code in ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"]:
-            assert code in result["matrix"]
-
-    def test_preferential_matrix_hs_chapter_detection(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
-        assert result["hs_chapter"] == "87"
-        assert result["product_category"] == "vehicles_transport"
-
-    def test_preferential_matrix_agricultural_chapter(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="100190")
-        assert result["product_category"] == "agricultural"
-
-    def test_preferential_matrix_machinery_chapter(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="841431")
-        assert result["product_category"] == "machinery_electronics"
-
-    def test_preferential_matrix_invalid_hs_too_short(self):
-        with pytest.raises(ValueError, match="Invalid HS code"):
-            self.intel.get_preferential_matrix_by_hs(hs_code="8")
-
-    def test_preferential_matrix_invalid_hs_non_numeric(self):
-        with pytest.raises(ValueError, match="Invalid HS code"):
-            self.intel.get_preferential_matrix_by_hs(hs_code="XY1234")
-
-    def test_preferential_matrix_eu_access_countries(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="610910")
-        eu_countries = result["best_for_eu_access"]
-        assert "MAR" in eu_countries
-        assert "EGY" in eu_countries
-        assert "TUN" in eu_countries
-        # Algeria does NOT have EU agreement
-        assert "DZA" not in eu_countries
-
-    def test_preferential_matrix_us_access_countries(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="870321")
-        us_countries = result["best_for_us_access"]
-        # MAR has US FTA, EGY has QIZ
-        assert "MAR" in us_countries
-        assert "EGY" in us_countries
-
-    def test_preferential_matrix_afcfta_universal(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="270900")
-        for country_data in result["matrix"].values():
-            agreements = [a["agreement"] for a in country_data["applicable_agreements"]]
-            assert any("AfCFTA" in ag for ag in agreements)
-
-    def test_preferential_matrix_qiz_egypt_only(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="610910")
-        egy_agreements = [a["agreement"] for a in result["matrix"]["EGY"]["applicable_agreements"]]
-        assert any("QIZ" in ag for ag in egy_agreements)
-        # Other countries should NOT have QIZ
-        for country_code in ["DZA", "MAR", "TUN"]:
-            agreements = [
-                a["agreement"] for a in result["matrix"][country_code]["applicable_agreements"]
-            ]
-            assert not any("QIZ" in ag for ag in agreements)
-
-    def test_preferential_matrix_generated_at(self):
-        result = self.intel.get_preferential_matrix_by_hs(hs_code="840710")
-        assert "generated_at" in result
 
     # ---------- get_trade_flows ----------
 
@@ -1170,54 +870,6 @@ class TestAdministrativeFormalities:
             lines = self._load(cc)
             empty = [l["hs6"] for l in lines if not l.get("administrative_formalities")]
             assert not empty, f"{cc}: {len(empty)} tariff lines have empty formalities: {empty[:5]}"
-
-    @pytest.mark.skip(
-        reason=(
-            "backend/data/{tariffs/}MAR_tariffs.json est désormais publié depuis "
-            "engine/output/MAR_canonical.jsonl (données réelles converties). Ce HS6 "
-            "n'a pas de code officiel 'C01' vérifié dans la source — le code était "
-            "fabriqué dans l'ancien jeu de données. Décision utilisateur explicite : "
-            "laisser sans code plutôt que d'en inventer un ; les libellés en texte "
-            "libre des formalités restent présents."
-        )
-    )
-    def test_authentic_tariff_service_returns_formalities_for_mar(self):
-        """get_administrative_formalities() must return enriched docs for MAR."""
-        # Reload cache by resetting _tariff_cache
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("MAR", None)
-
-        # hs6 010110 = livestock → should have C01 (veterinary)
-        forms = get_administrative_formalities("MAR", "010110")
-        assert forms, "MAR/010110: no formalities returned"
-        codes = {f["code"] for f in forms}
-        assert "C01" in codes, f"MAR/010110: expected C01, got {sorted(codes)}"
-
-    @pytest.mark.skip(
-        reason=(
-            "backend/data/{tariffs/}TUN_tariffs.json est désormais publié depuis "
-            "engine/output/TUN_canonical.jsonl (données réelles converties). Ce HS6 "
-            "n'a pas de code officiel '103' vérifié dans la source — le code était "
-            "fabriqué dans l'ancien jeu de données. Décision utilisateur explicite : "
-            "laisser sans code plutôt que d'en inventer un ; les libellés en texte "
-            "libre des formalités restent présents."
-        )
-    )
-    def test_authentic_tariff_service_returns_formalities_for_tun(self):
-        """get_administrative_formalities() must return enriched docs for TUN."""
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("TUN", None)
-
-        # hs6 300490 = pharmaceuticals → should have 103 (DPHM)
-        forms = get_administrative_formalities("TUN", "300490")
-        assert forms, "TUN/300490: no formalities returned"
-        codes = {f["code"] for f in forms}
-        assert "103" in codes, f"TUN/300490: expected 103, got {sorted(codes)}"
-
 
 # ==================== Africa-wide Administrative Formalities Tests ====================
 
@@ -1673,29 +1325,6 @@ class TestAllAfricaFormalities:
         assert "920" in distinct, "DZA: missing 920 (health ministry)"
         # DZA should NOT have been overwritten with IMPDEC scheme
         assert "IMPDEC" not in distinct, "DZA: should keep original code scheme"
-
-    def test_authentic_tariff_service_nga_returns_nafdac(self):
-        """Authentic tariff service must return NAFDAC for NGA pharmaceutical lines."""
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("NGA", None)
-        # hs6 300490 = pharma → ch30
-        forms = get_administrative_formalities("NGA", "300490")
-        if forms:  # NGA has chapter-based mapping → should work
-            codes = {f["code"] for f in forms}
-            assert "PHARMAUTH" in codes, f"NGA/300490: expected PHARMAUTH, got {sorted(codes)}"
-
-    def test_authentic_tariff_service_ken_returns_kephis(self):
-        """Authentic tariff service must return PHYTOCERT for KEN food lines."""
-        import services.authentic_tariff_service as svc
-        from services.authentic_tariff_service import get_administrative_formalities
-
-        svc._tariff_cache.pop("KEN", None)
-        forms = get_administrative_formalities("KEN", "070190")  # potatoes ch07
-        if forms:
-            codes = {f["code"] for f in forms}
-            assert "PHYTOCERT" in codes, f"KEN/070190: expected PHYTOCERT, got {sorted(codes)}"
 
     # ---- DRC / COD — OCC-specific tests ----
 

@@ -20,7 +20,7 @@
   "notes": [
     "« Source de vérité » désigne la valeur portée par le fichier versionné le plus récent pour cette position, pas une revalidation juridique auprès de l'administration. L'audit est explicite sur ce point et ce corpus ne prétend pas davantage.",
     "Un montant attendu à `null` signifie « non calculable sans paramètre supplémentaire » (quantité, devise), pas zéro.",
-    "`priority_dd_matches_source` dit si le chemin prioritaire rend, pour le droit de douane, la valeur de la source citée. À faux, le test correspondant est marqué xfail strict : il passera au vert dès la correction, et le xfail devra alors être retiré. Quatre cas sont à vrai — leur défaut porte sur le POST, la qualification ou l'assiette, pas sur le droit lui-même."
+    "`priority_dd_matches_source` dit si le calcul (le socle, `POST /calcul`, seul chemin depuis le 20/10/2026) rend, pour le droit de douane, la valeur de la source citée. À faux, le test correspondant est marqué xfail strict : il passera au vert dès la correction, et le xfail devra alors être retiré. Quatre cas sont à vrai — leur défaut porte sur le POST, la qualification ou l'assiette, pas sur le droit lui-même."
   ],
   "cases": [
     {
@@ -165,8 +165,8 @@
         "droit_douane": 300.0,
         "both_paths_agree": true
       },
-      "status": "defect_open",
-      "priority_dd_matches_source": false
+      "status": "resolved_by_socle_2026-10-20",
+      "priority_dd_matches_source": true
     },
     {
       "id": "dza-dd-absent",
@@ -201,8 +201,8 @@
         "both_paths_agree": true,
         "note": "Droit déclaré indisponible sur les deux chemins, sans exception et sans zéro fabriqué."
       },
-      "status": "defect_open",
-      "priority_dd_matches_source": false,
+      "status": "resolved_by_socle_2026-10-20",
+      "priority_dd_matches_source": true,
       "historique": "Ce cas portait auparavant DZA/1001110000, blé dur de semence. L'exemple était mal choisi, et c'est le portail officiel qui l'a montré : le droit N'ÉTAIT PAS absent du tarif, il était absent du MIROIR conformepro.dz, dont la collecte algérienne provient et qui ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro. L'e-service DGD le donne à 0,00 %. Les 299 positions touchées ont été relues à la source primaire : 296 portent un droit publié à 0 %, et les trois autres relèvent du chapitre « Effets personnels ». Le cas est reporté sur l'une d'elles : elle exerce toujours le chemin d'un droit absent — un `null` ne doit devenir ni 0 ni exception — sans faire croire à une lacune de collecte."
     },
     {
@@ -248,6 +248,7 @@
         "both_paths_agree": true
       },
       "status": "defect_open",
+      "note_socle": "Le socle sert 0 % : « Free » au livre tarifaire du ministère des Finances, édition révisée 2021, sous 0101.3000 ; la collecte du portail omettait les taux à 0 %. La source de vérité de ce cas (le crawl) est à départager avec le livre tarifaire.",
       "priority_dd_matches_source": false
     },
     {
@@ -401,8 +402,8 @@
         "both_paths_agree": true,
         "note": "Montant du droit non calculable sans la quantité ; la TVA ne peut pas être liquidée sur une assiette incluant un droit inconnu."
       },
-      "status": "defect_open",
-      "priority_dd_matches_source": false
+      "status": "resolved_by_socle_2026-10-20",
+      "priority_dd_matches_source": true
     },
     {
       "id": "som-repli-chapitre",

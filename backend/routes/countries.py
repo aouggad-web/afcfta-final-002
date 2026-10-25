@@ -6,6 +6,7 @@ Countries routes - Country profiles, lists and economic data
 import json
 import logging
 import unicodedata
+from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional
@@ -210,6 +211,20 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         "unemployment_rate_2024"
     )
 
+    def _year(wb_key):
+        # Année réelle de la valeur affichée : celle de la BM si elle a servi,
+        # sinon celle du dataset curé (2024).
+        entry = wb.get(wb_key)
+        return entry["year"] if entry and entry.get("value") else 2024
+
+    indicator_years = {
+        "gdp": _year("gdp_usd"),
+        "gdp_per_capita": _year("gdp_per_capita_usd"),
+        "population": _year("population"),
+        "inflation": _year("inflation_percent"),
+        "unemployment": _year("unemployment_percent"),
+    }
+
     # Croissance 2024 : la tuile est labellisée « 2024 ». On préfère la
     # croissance RÉALISÉE BM UNIQUEMENT si son année est bien 2024 ; depuis que
     # l'ETL récupère 2025, ``_wb`` renvoie la dernière année (2025) — l'afficher
@@ -235,7 +250,19 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         # Rang PIB recalculé sur le PIB BM le plus récent (cohérent avec le PIB
         # affiché) ; repli sur le rang curé si le calcul est indisponible.
         "africa_rank": _gdp_africa_ranks().get(iso3_code) or real_data.get("africa_rank", 25),
+        "indicator_years": indicator_years,
+        # IDH du dataset curé : PNUD, Rapport sur le développement humain 2025
+        # (année de référence 2023) — dernière édition publiée.
+        "hdi_year": 2023,
+        "hdi_source": "PNUD RDH 2025",
     }
+
+    # Croissance RÉALISÉE la plus récente (BM, avec sa vraie année) — remplace
+    # la tuile figée « Croissance 2024 » côté écran.
+    if growth_entry and growth_entry.get("value") is not None:
+        profile.projections["gdp_growth_latest"] = round(growth_entry["value"], 1)
+        profile.projections["gdp_growth_latest_year"] = growth_entry["year"]
+        profile.projections["gdp_growth_latest_source"] = "Banque mondiale (WDI)"
 
     # Projections FMI (WEO) : croissance + inflation PLURIANNUELLES (que la BM ne
     # publie pas). Les projections de croissance 2025/2026 du FMI priment sur les
@@ -253,7 +280,54 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
             profile.projections["gdp_growth_projection_2026"] = f"{imf_growth['2026']:.1f}%"
         profile.projections["imf_gdp_growth"] = imf_growth
         profile.projections["imf_inflation"] = imf_inflation
+        profile.projections["imf_gov_debt"] = imf_proj.get("gov_debt") or {}
         profile.projections["imf_source"] = imf_svc.source_label()
+
+        # Projection de l'ANNÉE EN COURS (WEO), au lieu d'une « Projection
+        # 2025 » figée devenue du réalisé.
+        current_year = datetime.now().year
+        if imf_growth.get(str(current_year)) is not None:
+            profile.projections["gdp_growth_projection_current"] = imf_growth[str(current_year)]
+            profile.projections["gdp_growth_projection_current_year"] = current_year
+
+        # Pas de croissance BM : repli sur la dernière année écoulée du WEO.
+        last_year = str(current_year - 1)
+        if "gdp_growth_latest" not in profile.projections and imf_growth.get(last_year) is not None:
+            profile.projections["gdp_growth_latest"] = imf_growth[last_year]
+            profile.projections["gdp_growth_latest_year"] = int(last_year)
+            profile.projections["gdp_growth_latest_source"] = "FMI (WEO)"
+
+        # Dette brute des administrations publiques (WEO) de la dernière année
+        # écoulée — alimente la section Dette publique, restée vide jusqu'ici.
+        gov_debt = imf_proj.get("gov_debt") or {}
+        if gov_debt.get(last_year) is not None:
+            profile.total_debt_pct_gdp = gov_debt[last_year]
+            profile.projections["debt_year"] = int(last_year)
+
+    # Position extérieure (Banque mondiale), chaque valeur avec sa vraie année ;
+    # rien pour les pays que la BM ne couvre pas — jamais inventé.
+    # Dette extérieure (International Debt Statistics) : ratio au RNB et encours
+    # en US$ de la même année.
+    ext_ratio = wb.get("external_debt_pct_gni")
+    ext_stock = wb.get("external_debt_usd")
+    if ext_ratio or ext_stock:
+        ext_year = (ext_ratio or ext_stock)["year"]
+        profile.projections["external_debt"] = {
+            "year": ext_year,
+            "pct_gni": ext_ratio["value"] if ext_ratio else None,
+            "usd": wb_macro_service.get_series(iso3_code, "external_debt_usd").get(ext_year),
+        }
+    # Réserves de change (or compris) et couverture en mois d'importations,
+    # celle-ci avec sa propre année (souvent publiée un an plus tard).
+    reserves = wb.get("reserves_usd")
+    if reserves:
+        months = wb.get("reserves_import_months")
+        profile.projections["reserves"] = {
+            "year": reserves["year"],
+            "usd": reserves["value"],
+            "import_months": months["value"] if months else None,
+            "import_months_year": months["year"] if months else None,
+        }
 
     # Indicateurs sociaux. Pour chacun, on prend la DERNIÈRE année réellement
     # disponible à la Banque Mondiale (API auto-actualisée) et on affiche CETTE
@@ -349,6 +423,9 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
                     "africa_rank": entry["rang_afrique"],
                     "lpi_infrastructure_score": entry["score_infrastructure_ipl"],
                     "lpi_world_rank": entry["rang_mondial_ipl"],
+                    # Édition LPI de la valeur (2023, ou 2018/2016 pour les
+                    # pays absents de l'édition 2023) ; None si jamais couvert.
+                    "lpi_edition": entry.get("edition_ipl"),
                     "aidi_transport_score": entry.get(
                         "score_aidi_2024", entry.get("score_transport_aidi", 0)
                     ),
@@ -357,5 +434,9 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     except Exception as e:
         logging.error(f"Erreur chargement infrastructure: {e}")
     profile.infrastructure_ranking = infra_ranking if infra_ranking else {}
+
+    from services import african_rankings_service
+
+    profile.african_rankings = african_rankings_service.get_rankings(iso3_code)
 
     return profile

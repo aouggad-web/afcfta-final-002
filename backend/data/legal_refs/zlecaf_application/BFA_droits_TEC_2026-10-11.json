@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "objet": "Burkina Faso : trois droits de douane du TEC UEMOA 2022 sous-évalués par la collecte de février 2026",
+  "destination_iso3": "BFA",
+  "verified_at": "2026-10-11",
+  "etabli": true,
+  "evidence_level": "primaire — Tarif extérieur commun de l'UEMOA, édition 2022 (= TEC CEDEAO SH 2022), Commission de l'UEMOA (e-docucenter.uemoa.int) ; concordant avec le tarif de la DGD du Mali (2023)",
+  "source": {
+    "url": "https://e-docucenter.uemoa.int/sites/default/files/2024-09/Chapitre-7-Legumes-plantes-racines.pdf",
+    "institution": "Commission de l'UEMOA"
+  },
+  "regle": {
+    "valeur": "DD : 0701.90.00.00 (pommes de terre autres que de semence) et 0703.10.00.00 (oignons et échalotes) à 35 % au lieu de 20 % ; 1511.10.00.00 (huile de palme brute) à 10 % au lieu de 5 %.",
+    "verbatim": "0703.10.00.00   Oignons et échalotes                                 kg    35      1    0,8    0,5",
+    "verbatim_pommes_de_terre": "0701.90.00.00   Autres                                               kg    35      1    0,8    0,5",
+    "verbatim_huile_de_palme": "1511.10.00.00   Huile brute                                        kg   10    1     0,8   0,5",
+    "reference": "TEC UEMOA 2022, chapitre 7 (n° 07.01, 07.03) et chapitre 15 (n° 15.11), colonnes DD RS PCS PC",
+    "portee": "scripts/build_socle._droits_tec_burkina (DD_TEC_BFA).",
+    "texte_archive": "sources/BFA_droits_TEC.extrait.txt",
+    "sha256": "8802d9667f9515b866ca97d0877484e0b06a2eba39884054e9ecaab52ca9df09"
+  },
+  "decisions": [
+    "Les taux sont ceux de droit commun (pays tiers) ; le traitement préférentiel UEMOA ou ZLECAf relève du moteur, non de ces lignes."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Les autres positions du socle burkinabè n'ont été confrontées au TEC 2022 que par échantillon (60 positions, audit de la PR #620) ; la migration du socle vers la nomenclature SH 2022 reste à faire.",
+    "Révision du TEC postérieure à 2022 ou mesure de l'AES : non trouvée."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/BFA_droits_TEC.extrait.txt",
+      "sha256": "8802d9667f9515b866ca97d0877484e0b06a2eba39884054e9ecaab52ca9df09"
+    },
+    {
+      "document_non_archive": "TEC UEMOA 2022, chapitre 7",
+      "pdf_sha256": "ae81fc4880e2fbb55ec85b0e235070fe3de469d0a4db4c25714d9f9663a3f9e7"
+    },
+    {
+      "document_non_archive": "TEC UEMOA 2022, chapitre 15",
+      "pdf_sha256": "e867b93ff2e6332c32e8218d235fbab1f2bdec6969fd5130437c79a5c04582bc"
+    }
+  ]
+}

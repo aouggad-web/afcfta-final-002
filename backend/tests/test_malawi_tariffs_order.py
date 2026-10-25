@@ -20,9 +20,11 @@ CE QUE CES TESTS TIENNENT.
    transactionnelle de l'OMC. Son contenu économique est le CIF, et c'est ce que
    le socle sert ; sa forme juridique ne l'est pas, et c'est dit.
 
-4. TROIS PRÉLÈVEMENTS SONT PORTÉS SANS ASSIETTE — accise, TVA, Advance Income
-   Tax. Le décret donne leur TAUX, aucun texte malawien lu ici ne donne leur
-   assiette. Les poser sur le CIF fabriquerait un montant crédible et faux.
+4. LE DÉCRET DONNE LES TAUX DE L'ACCISE, DE LA TVA ET DE L'ADVANCE INCOME TAX,
+   PAS LEUR ASSIETTE. Elle vient d'autres textes : VAT Act s.28 et guide MRA
+   pour l'accise et la TVA, Taxation Act s.102B pour l'AIT, qui entre dans
+   l'assiette de la TVA (fiches MWI_assiette_accise_TVA_2026-10-05.json et
+   MWI_assiette_AIT_2026-10-08.json).
 
 5. LE TAUX ZLECAf PORTE DEUX CONDITIONS QUE LE TEXTE ÉNONCE : l'Afrique du Sud
    en est exclue, et il exige un contenu d'origine de 35 %.
@@ -106,26 +108,28 @@ def test_le_droit_servi_est_la_colonne_6_et_le_plein_droit_reste_nomme(socle):
     « a Contracting Party of the GATT » — donc a tout membre de l'OMC. C'est elle
     qui est le droit de douane courant ; la colonne 5 est conservee a cote."""
     positions = socle["positions"]
+    # Le plein droit est une colonne ALTERNATIVE, rangee a part : parmi les
+    # droits, le moteur l'additionnait au NPF.
+    assert not any(_droits(p, "DDPLEIN") for p in positions.values())
     avec_les_deux = [
         p for p in positions.values()
-        if _droits(p, "DD") and _droits(p, "DDPLEIN")
+        if _droits(p, "DD") and "PLEIN_DROIT" in (p.get("preferentiels") or {})
     ]
     assert len(avec_les_deux) > 6000
     differentes = [
         p for p in avec_les_deux
-        if _droits(p, "DD")[0]["taux"] != _droits(p, "DDPLEIN")[0]["taux"]
+        if _droits(p, "DD")[0]["taux"] != p["preferentiels"]["PLEIN_DROIT"]["taux"]
     ]
     # Les deux colonnes divergent sur plus de la moitie du tarif : les confondre
     # donnerait un droit faux sur la majorite des positions.
     assert len(differentes) > 4000
-    plein = _droits(positions["02021000"], "DDPLEIN")[0]
+    plein = positions["02021000"]["preferentiels"]["PLEIN_DROIT"]
     npf = _droits(positions["02021000"], "DD")[0]
     assert (plein["taux"], npf["taux"]) == (15.0, 10.0)
-    assert "PLEIN DROIT" in plein["note"]
     assert "GATT" in npf["note"]
 
 
-@pytest.mark.parametrize("code_taxe", ["DD", "DDPLEIN"])
+@pytest.mark.parametrize("code_taxe", ["DD"])
 def test_le_droit_de_douane_se_liquide_sur_le_prix_normal_de_la_schedule_a(socle, code_taxe):
     trouves = [
         d for p in socle["positions"].values() for d in _droits(p, code_taxe)
@@ -139,35 +143,52 @@ def test_le_droit_de_douane_se_liquide_sur_le_prix_normal_de_la_schedule_a(socle
     assert "port or place of introduction" in origine
 
 
-@pytest.mark.parametrize("code_taxe", ["EXC", "TVA", "AIT"])
-def test_les_trois_prelevements_sans_assiette_ne_se_liquident_pas(socle, crawl, code_taxe):
-    """Le decret donne leurs TAUX, pas leur assiette, et aucun texte malawien lu
-    ici ne l'etablit. Les poser sur le CIF parce que c'est l'usage ailleurs
-    fabriquerait un montant credible et faux. Le profil generique « TVA sur
-    CIF+DD » que portait backend/services/tax_profile_data.py sous la seule
-    mention « Malawi Revenue Authority » a ete RETIRE pour cette raison."""
-    porte = _taxes(crawl, code_taxe)
-    assert porte, f"{code_taxe} absent du tarif collecte"
+def test_l_ait_a_l_assiette_de_la_s102b(socle, crawl):
+    """Le decret donne son TAUX, pas son assiette : le collecteur la porte donc
+    sans assiette. C'est le socle qui la pose, sur texte primaire : Taxation Act
+    s.102B(1), « ten per centum of the value of goods at the port of entry into
+    Malawi » depuis le Taxation (Amendment) Act 2023 (fiche
+    MWI_assiette_AIT_2026-10-08.json)."""
+    porte = _taxes(crawl, "AIT")
+    assert porte, "AIT absente du tarif collecte"
     assert {t["base"] for t in porte} == {None}
-    assert all("ASSIETTE" in t["note"] for t in porte)
 
+    trouves = [d for p in socle["positions"].values() for d in _droits(p, "AIT")]
+    assert trouves, "AIT absente du socle"
+    assert {d.get("assiette") for d in trouves} == {"CIF"}
+    assert {d.get("taux") for d in trouves} == {10.0, None}
+
+
+@pytest.mark.parametrize(("code_taxe", "assiette"), [("EXC", "CIF+DD"), ("TVA", "CIF+DD+EXC+AIT")])
+def test_l_accise_et_la_tva_ont_l_assiette_du_vat_act_et_du_guide_mra(socle, code_taxe, assiette):
+    """VAT Act s.28 et guide MRA (2022) : accise sur CIF + droit, TVA sur CIF +
+    droit + accise (fiche MWI_assiette_accise_TVA_2026-10-05.json), plus l'AIT,
+    « charged and payable on the importation of goods » (Taxation Act s.102B(2))."""
     trouves = [d for p in socle["positions"].values() for d in _droits(p, code_taxe)]
-    assert trouves, f"{code_taxe} absent du socle"
-    assert {d.get("assiette") for d in trouves} == {None}, (
-        f"{code_taxe} a recu une assiette qu'aucun texte malawien n'etablit"
-    )
+    assert trouves and {d.get("assiette") for d in trouves} == {assiette}
 
 
-def test_une_taxe_sans_assiette_est_declaree_et_non_liquidee(socle):
+def test_viande_ait_sur_cif_et_dans_l_assiette_de_la_tva(socle):
+    """Viande 0202.10 : DD 10 %, AIT 10 % sur CIF, TVA 0 % sur CIF + DD + AIT
+    (VAT Act s.28 : « all import duties and taxes »)."""
     from services.calcul import calculer
 
     resultat = calculer(socle["positions"]["02021000"], 10000.0)["npf"]
     lignes = {x["code"]: x for x in resultat["lignes"]}
     assert lignes["DD"]["montant"] == pytest.approx(1000.0)
-    for code in ("TVA", "AIT"):
-        if code in lignes:
-            assert lignes[code]["montant"] is None
-            assert lignes[code]["statut"] == "ASSIETTE_INDISPONIBLE"
+    assert lignes["AIT"]["montant"] == pytest.approx(1000.0)
+    assert lignes["TVA"]["base"] == pytest.approx(12000.0)
+    assert resultat["etat"] == "COMPLET"
+
+
+def test_ait_a_3_pourcent_contraire_a_la_loi_non_servie(socle):
+    """2301.10 porte 3 % en colonne 12 de l'Order 2022 ; la s.102B fixe 10 %
+    depuis 2023 : taux declare indisponible plutot que devine."""
+    from services.calcul import calculer
+
+    resultat = calculer(socle["positions"]["23011000"], 10000.0)["npf"]
+    lignes = {x["code"]: x for x in resultat["lignes"]}
+    assert lignes["AIT"]["statut"] == "TAUX_INDISPONIBLE"
     assert resultat["etat"] != "COMPLET"
 
 
@@ -301,11 +322,11 @@ def test_la_reserve_sur_la_date_de_la_consolidation_est_portee_sur_chaque_droit(
     liquident pas, il n'y a pas d'assiette a reserver."""
     droits = [
         d for p in socle["positions"].values()
-        for code in ("DD", "DDPLEIN") for d in _droits(p, code)
+        for code in ("DD",) for d in _droits(p, code)
     ]
     assert droits
     avec_taux = [d for d in droits if d.get("taux") is not None]
-    assert len(avec_taux) > 13000
+    assert len(avec_taux) > 6500
     assert all("30 juin 2018" in d["note"] for d in avec_taux)
     sans_taux = [d for d in droits if d.get("taux") is None]
     assert all("indisponible" in d["note"] or "supposé" in d["note"] for d in sans_taux)

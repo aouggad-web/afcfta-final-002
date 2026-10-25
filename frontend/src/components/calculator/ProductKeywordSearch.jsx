@@ -32,6 +32,7 @@ function TaxBadge({ label, value, color }) {
 export default function ProductKeywordSearch({ destinationCountry, language = 'fr', onSelect }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
@@ -44,14 +45,17 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
 
   const search = useCallback(async (q) => {
     if (!q || q.length < 2) { setResults([]); return; }
+    // Sans pays de destination, il n'y a pas de tarif où chercher.
+    if (!iso3) { setResults([]); setTotal(0); return; }
     setLoading(true);
     setError('');
     try {
-      const country = iso3 || 'DZA';
-      const res = await axios.get(`${API}/authentic-tariffs/search/${country}`, {
-        params: { q, language, limit: 25 }
+      // Les positions du socle : celles que POST /calcul sait liquider.
+      const res = await axios.get(`${API}/consultation/${iso3}/recherche`, {
+        params: { q, limit: 25, langue: language === 'en' ? 'en' : 'fr' }
       });
       setResults(res.data.results || []);
+      setTotal(res.data.total || 0);
       setOpen(true);
     } catch (e) {
       setError(language === 'fr' ? 'Erreur de recherche' : 'Search error');
@@ -83,8 +87,8 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
   }, []);
 
   const handleSelect = (item) => {
-    const code = item.national_code || item.hs6 || '';
-    const desc = item.description_fr || item.designation || '';
+    const code = item.code;
+    const desc = language === 'fr' ? item.description_fr : (item.description_en || item.description_fr);
     setSelected({ code, desc, item });
     setQuery(desc.length > 60 ? desc.slice(0, 60) + '…' : desc);
     setOpen(false);
@@ -105,9 +109,9 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
     : 'Ex: aluminium, shoes, telephone, wheat...';
 
   const labelText = language === 'fr' ? 'Recherche par mot-clé produit' : 'Product keyword search';
-  const hintText = language === 'fr'
-    ? `Recherche dans ${iso3 ? iso3 + ' — ' : ''}17 000+ positions douanières authentiques`
-    : `Search across ${iso3 ? iso3 + ' — ' : ''}17 000+ authentic tariff positions`;
+  const hintText = iso3
+    ? (language === 'fr' ? `Recherche dans le tarif national ${iso3}` : `Search in the ${iso3} national tariff`)
+    : (language === 'fr' ? 'Choisissez d’abord le pays de destination' : 'Choose the destination country first');
 
   return (
     <div ref={containerRef} className="relative w-full">
@@ -170,28 +174,15 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
             <>
               <div className="px-4 py-2 border-b border-[var(--afcfta-border)] flex items-center justify-between">
                 <span className="text-xs text-[var(--afcfta-muted)]">
-                  {results.length} {language === 'fr' ? 'résultats' : 'results'}
+                  {total > results.length ? `${results.length} / ${total}` : results.length} {language === 'fr' ? 'résultats' : 'results'}
                   {iso3 && <span className="ml-1 text-[var(--violet)]">· {iso3}</span>}
                 </span>
-                {results[0]?.source_quality === 'crawled_authentic' && (
-                  <span className="text-[11px] bg-[var(--greenSoft)] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] px-2 py-0.5 rounded-full">
-                    douane.gov.dz
-                  </span>
-                )}
               </div>
 
               <ul className="max-h-80 overflow-y-auto divide-y divide-[var(--afcfta-border)]">
                 {results.map((item, i) => {
-                  const code = item.national_code || item.hs6 || '';
-                  const desc = item.description_fr || item.designation || '';
-                  const isAuthentic = item.source_quality === 'crawled_authentic';
-                  const dd = item.dd_rate ?? item.dd_rate;
-                  const tva = item.tva_rate ?? item.vat_rate;
-                  const daps = item.daps_rate;
-                  const tcs = item.tcs_rate;
-                  const prct = item.prct_rate;
-                  const total = item.total_rate ?? item.total_taxes_pct;
-                  const hasAdvantages = item.advantages?.length > 0 || item.fiscal_advantages?.length > 0;
+                  const code = item.code;
+                  const desc = language === 'fr' ? item.description_fr : (item.description_en || item.description_fr);
 
                   return (
                     <li key={i}>
@@ -212,26 +203,17 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                             <p className="text-[var(--text)] text-sm leading-snug line-clamp-2">
                               {desc}
                             </p>
-                            {/* Tax badges */}
+                            {item.intitule_sh4 && (
+                              <p className="text-[11px] text-[var(--afcfta-muted)] mt-0.5 line-clamp-1">
+                                {code.slice(0, 4)} — {item.intitule_sh4}
+                              </p>
+                            )}
+                            {/* Droit de douane du socle ; le total est celui du calcul. */}
                             <div className="flex flex-wrap gap-1 mt-1.5">
-                              {dd != null && <TaxBadge label="DD" value={dd} color="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)]" />}
-                              {daps > 0 && <TaxBadge label="DAPS" value={daps} color="bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] text-[var(--terra)]" />}
-                              {prct > 0 && <TaxBadge label="PRCT" value={prct} color="bg-[var(--goldSoft)] text-[var(--gold)]" />}
-                              {tcs > 0 && <TaxBadge label="TCS" value={tcs} color="bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] text-[var(--atlantic)]" />}
-                              {tva != null && <TaxBadge label="TVA" value={tva} color="bg-[var(--overlay)] text-[var(--text)]" />}
-                              {total != null && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] tabular-nums font-semibold bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)]">
-                                  Total {total}%
-                                </span>
-                              )}
-                              {hasAdvantages && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] bg-[var(--greenSoft)] text-[var(--success)]">
-                                  ZLECAf ✓
-                                </span>
-                              )}
-                              {isAuthentic && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[11px] bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)]">
-                                  authentique
+                              {item.dd_rate != null && <TaxBadge label="DD" value={item.dd_rate} color="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)]" />}
+                              {item.dd_rate == null && item.dd_expression && (
+                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-mono bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)]">
+                                  DD {item.dd_expression}
                                 </span>
                               )}
                             </div>

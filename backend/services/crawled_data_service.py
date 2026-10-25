@@ -23,9 +23,6 @@ class CrawledDataService:
             cls._instance._country_loaded = set()
         return cls._instance
 
-    def is_loaded(self) -> bool:
-        return self._loaded
-
     def get_available_countries(self) -> List[str]:
         return list(self._country_files.keys())
 
@@ -525,7 +522,7 @@ class CrawledDataService:
                 "name": FULL_NAMES.get(tax_code, tax_info.get("name", tax_code)),
                 "rate_pct": rate,
                 "raw_value": tax_info.get("raw", f"{rate:.0f}%"),
-                "source": tax_info.get("source", "conformepro.dz"),
+                "source": tax_info.get("source"),
             }
             taxes.append(entry)
             total_taxes += rate
@@ -557,7 +554,7 @@ class CrawledDataService:
             "zlecaf_total_taxes": total_taxes,
             "fiscal_advantages": pos.get("advantages", []),
             "administrative_formalities": pos.get("formalities", []),
-            "source": pos.get("source", "conformepro.dz"),
+            "source": pos.get("source"),
             "source_quality": pos.get("source_quality", ""),
             "source_url": pos.get("source_url", ""),
             "country": "DZA",

@@ -9,5 +9,4 @@ Contains:
 - investment_zones: Special economic zones and investment data
 - mining_intelligence: Mining sector analysis
 - transport_corridors: Logistics and corridor intelligence
-- trade_protocols: SADC trade agreements and protocols
 """

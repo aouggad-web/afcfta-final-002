@@ -22,16 +22,18 @@ def _resolver(coverage_complete: bool = False) -> LegalOverrideResolver:
     return LegalOverrideResolver(measures, coverage_complete=coverage_complete)
 
 
-def test_all_29_measures_load_and_are_distributed_across_jurisdictions():
+def test_all_measures_load_and_are_distributed_across_jurisdictions():
     measures = load_legal_measures(_EAC_OVERRIDES)
     by_jur = {}
     for m in measures:
         by_jur[m.jurisdiction] = by_jur.get(m.jurisdiction, 0) + 1
-    assert by_jur["KEN"] == 17
-    assert by_jur["TZA"] == 6
-    assert by_jur["RWA"] == 3
-    assert by_jur["UGA"] == 2
-    assert by_jur["BDI"] == 1
+    # Remises de l'EAC/161/2026, Table A : KEN 3, TZA 79, RWA 57, UGA 149, BDI 14 ;
+    # listes des EAC/162 à EAC/173/2026 : KEN 18, TZA 121, RWA 449, UGA 117, BDI 386.
+    assert by_jur["KEN"] == 38
+    assert by_jur["TZA"] == 206
+    assert by_jur["RWA"] == 509
+    assert by_jur["UGA"] == 268
+    assert by_jur["BDI"] == 401
 
 
 def test_tanzania_vitenge_stay_applies():

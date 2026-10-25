@@ -1,0 +1,33 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "GHA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "NOTIFICATION_PARTENAIRES_REQUISE",
+ "verified_at": "2026-09-28",
+ "note_cadre": "Le Ghana est membre de la CEDEAO ; son offre ZLECAf est L'OFFRE ECOWAS (déposée et adoptée le 26/10/2021), gazettée au niveau national (preuve indirecte seulement).",
+ "constats": {
+  "ratification": "RATIFIED (ratification_status('GHA')).",
+  "gazettement_national": "NUMÉRO INTROUVABLE. Aucun avis de la Ghana Gazette gazettant la PSTC ECOWAS n'a été localisé (gazettes.africa/gh sans annexe tarifaire). Preuve INDIRECTE datée : SARS General Note O (GG 50045, 26/01/2024) liste « Ghana — 31 août 2023 » parmi les États « implemented the PSTC ».",
+  "bareme": "La GRA ne publie pas de colonne AfCFTA ; le barème est l'OFFRE ECOWAS, ARCHIVÉE dans le dépôt (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz, destination GH, 5 578 lignes dont 4 979 cat. A) ; ciment 2523.10, 2523.21, 2523.29, 2523.90 sans catégorie (NPF 20 %, clinker 2523.10 à 10 %) ; 2523.30 (ciment alumineux) en catégorie A.",
+  "application_import": "Envois GTI vers le Ghana (certificats d'origine émis AU DÉPART) — traitement à l'arrivée non documenté : café Igire (Rwanda, export le 30/09/2022) et batteries Exide (Kenya) vers le Ghana ; le lancement du GTI est daté du 07/10/2022 (Accra). Aucun dédouanement préférentiel par la GRA n'est établi.",
+  "origines": "Admission par RÈGLE (State Parties + règles d'origine), pas de liste nominative."
+ },
+ "sources_archivees": {
+  "recherche_import": {
+   "texte_extrait": "sources/GHA_recherche_import_2026-09-28.extrait.txt",
+   "sha256": "0131b7b9b51f736fe3ee12dce16a51cd5cd37806ad5bf069123ec0615688f7d2"
+  }
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "PARTIEL — gazettement attesté indirectement (R.4287 SARS, 26/01/2024) ; numéro de la Ghana Gazette non retrouvé",
+  "2_liste_officielle_origines_reciproques": "NON — admission par règle (State Parties/RoO), pas de liste nominative",
+  "3_bareme_au_niveau_de_la_ligne": "OFFRE COLLECTÉE — instantané ECOWAS archivé (official_preferential/ECOWAS_afcfta_etariff_2026-08-17.json.gz)",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "conclusion": "Le Ghana a reçu les premiers ENVOIS GTI (certificats d'origine émis au départ Rwanda/Kenya), son gazettement est attesté (R.4287), son barème est l'offre ECOWAS archivée ; le dédouanement préférentiel à l'arrivée et la liste nominative restent non documentés. Niveau NOTIFICATION_PARTENAIRES_REQUISE. Aucun branchement.",
+ "remaining_work": [
+  "Retrouver le numéro de la Ghana Gazette du gazettement PSTC.",
+  "Documenter un dédouanement préférentiel GRA à l'arrivée (plutôt que les seuls envois GTI)."
+ ],
+ "justification_niveau": "General Note O du Schedule No. 1 (Notice R.4287, GG 50045, 26/01/2024, archivée, sha 83efeaf9…) et GTI (Secrétariat, 19/10/2022 : le Ghana parmi les huit participants)."
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "objet": "Niger : exonérations de TVA à l'importation de la loi de finances 2026 et de sa première rectification (CGI art. 322 nouveau, 2°)",
+  "destination_iso3": "NER",
+  "verified_at": "2026-10-12",
+  "etabli": true,
+  "evidence_level": "primaire — ordonnance n° 2025-44 du 31/12/2025 portant loi de finances pour l'année budgétaire 2026 (finances.gouv.ne), texte extractible ; ordonnance n° 2026-45 du 21/08/2026 (première rectification), scan lu par OCR et relu sur l'image du tableau",
+  "source": {
+    "url": "https://finances.gouv.ne/index.php/component/phocadownload/file/1303-ordonnance-n-2025-44",
+    "institution": "Ministère de l'Économie et des Finances du Niger"
+  },
+  "regle": {
+    "valeur": "TVA à 0 % sur les positions du tableau de l'art. 322, 2° (lait, pommes de terre, céréales, farines de manioc, sel, gaz butane, pétrole lampant, vitamines, antibiotiques, produits pharmaceutiques du chapitre 30, livres scolaires, tracteurs à essieu simple, fauteuils roulants, appareils médicaux des n° 90.18 à 90.21…), au lieu de 19 %. « Ex. positions » 90.22 et 94.02 : exonérées seulement où le libellé dit l'usage médical, chirurgical, dentaire ou vétérinaire ; sans taux sur 9022.12, 9022.30 et 9022.90. Depuis la rectification : gants de chirurgie 4015.11 (au lieu de 4015.12, absent de la nomenclature du socle) et ouvrages en boyaux 42.06 ajoutés. Riz (10.06) : sans taux, l'exception « riz de luxe » ne se lisant pas dans la nomenclature.",
+    "verbatim": "Art.322 (nouveau) : sont exonérés de la taxe sur la valeur ajoutée : [...] 2° les importations et les ventes des produits énumérés au tableau ci-après :",
+    "reference": "Ordonnance n° 2025-44 du 31/12/2025, art. 13 ; ordonnance n° 2026-45 du 21/08/2026, art. 7 (CGI art. 322 nouveau, 2°)",
+    "portee": "scripts/build_socle._tva_exoneree_niger (TVA_EXONEREE_NER, TVA_EXONEREE_NER_A_TRANCHER).",
+    "texte_archive": "sources/NER_TVA_exonerations_LF2026.extrait.txt",
+    "sha256": "b4c9cf11af2a4dc5cdd166cccbb6f8a9ad147c75996da583b0b41685f14a4b61",
+    "verbatim_rectification": "Article sept : À compter de la signature de la présente ordonnance, l'article 322 de la Section 3 du Chapitre 1 du Titre 1 du Livre 2 du Code Général des Impôts est modifié comme suit : Art. 322 (nouveau) : Sont exonérés de la taxe sur la valeur ajoutée : [...] 2. les importations et les ventes des produits énumérés au tableau ci-après :"
+  },
+  "decisions": [
+    "Les positions et sous-positions du tableau sont appliquées par préfixe NTS : une position à 4 chiffres couvre toutes ses sous-positions nationales.",
+    "La première rectification (ordonnance n° 2026-45, art. 7, en vigueur à sa signature le 21/08/2026) réécrit le tableau : seuls changent les gants de chirurgie (4015.11) et l'ajout du 42.06 ; le reste est identique."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Assiette de la TVA à l'importation au Niger (le socle sert CIF+DD+RS+PCS) et droits d'accises (art. 368-369) : non examinés.",
+    "Précompte ISB perçu en douane (art. 92 nouveau) : acompte d'impôt, non liquidé.",
+    "Points 19 (matériels militaires des forces de défense et de sécurité) et 30 (or brut destiné à la réexportation) : exonérations par destination, sans code NTS, non appliquées par position."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/NER_TVA_exonerations_LF2026.extrait.txt",
+      "sha256": "b4c9cf11af2a4dc5cdd166cccbb6f8a9ad147c75996da583b0b41685f14a4b61"
+    },
+    {
+      "document_non_archive": "Ordonnance n° 2025-44 du 31/12/2025 (47 p.)",
+      "pdf_sha256": "a841c4fa47e4db2b174ea2085050b92ffd84f183039c5cfd5d4bec9a2281f42e"
+    },
+    {
+      "texte_archive": "sources/NER_TVA_exonerations_LFR2026.extrait.txt",
+      "sha256": "21660c1cb61688e87ac0bcecab62f8fb826f423c26e4a51c81c0c7386a20b4bf"
+    },
+    {
+      "document_non_archive": "Ordonnance n° 2026-45 du 21/08/2026 (48 p., scan)",
+      "pdf_sha256": "5e8a3a25d729f90cbc4a66035e9866d2a957f9451bf1179f086f66b368f28fae"
+    }
+  ]
+}

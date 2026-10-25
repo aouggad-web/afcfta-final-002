@@ -161,13 +161,6 @@ def test_uga_readme_documents_delegated_rate_gap():
     assert "arrêté ministériel" in readme.lower() or "statutory order" in readme.lower()
 
 
-def test_uga_not_registered_as_supported_jurisdiction():
-    """Garde-fou : UGA n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
-    assert "UGA" not in SUPPORTED_JURISDICTIONS
-
-
 def test_uga_has_no_fabricated_afcfta_offer():
     """Garde-fou : UGA n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity

@@ -9,8 +9,8 @@ Doctrine tarifaire du projet (README §« Doctrine tarifaire : re-collecte offic
 - priorité aux sources gouvernementales (douanes nationales) puis aux sources
   officielles intergouvernementales (TEC régionaux, Banque mondiale/WITS-TRAINS).
 
-Ce module est le point de contrôle unique (« gate ») partagé par tous les chemins
-de service tarifaire (authentic_tariff_service, tariff_provider_service, routes).
+Ce module est le point de contrôle unique (« gate ») des fichiers collectés
+servis par services/crawled_data_service.py.
 Un fichier pays n'est servable que s'il satisfait :
 
 1. `data_format` ∈ SERVABLE_DATA_FORMATS ;
@@ -177,6 +177,22 @@ def evaluate_country_file(data: dict) -> Tuple[bool, str, str]:
     if not str(summary.get("source_url") or "").strip():
         return False, "MISSING_SOURCE", "summary.source_url absent"
     return True, "OK", status
+
+
+def crawl_enregistre(country_iso3: str) -> bool:
+    """Le pays a-t-il un crawl inscrit au registre des sources ?
+
+    Le registre (`source_registry_v2.json`) scelle chaque crawl : organisme,
+    URL de la source, chemin et empreinte du fichier. C'est la seule source
+    des données de consultation (sous-positions, formalités, recherche) ; le
+    fichier ETL du pays, lui, n'en est pas une condition.
+    """
+    iso3 = _validate_iso3(country_iso3)
+    with open(os.path.join(DATA_DIR, "source_registry_v2.json"), encoding="utf-8") as f:
+        entree = json.load(f).get("countries", {}).get(iso3) or {}
+    chemin = entree.get("artifact_path") or ""
+    racine = os.path.dirname(os.path.dirname(DATA_DIR))
+    return chemin.startswith("backend/data/crawled/") and os.path.exists(os.path.join(racine, chemin))
 
 
 def get_country_file_path(country_iso3: str) -> str:

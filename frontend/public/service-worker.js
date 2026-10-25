@@ -19,7 +19,7 @@
 // Bumper cette version à chaque release notable : l'activation purge les
 // caches des versions précédentes (JS/CSS sont en cache-first — sans bump,
 // d'anciens bundles restent servables indéfiniment sous l'ancien nom de cache).
-const APP_VERSION = 'v3.2.0';
+const APP_VERSION = 'v3.2.1';
 const STATIC_CACHE  = `afcfta-static-${APP_VERSION}`;
 const API_CACHE     = `afcfta-api-${APP_VERSION}`;
 const IMAGE_CACHE   = `afcfta-images-${APP_VERSION}`;
@@ -40,6 +40,9 @@ const PRECACHE_ASSETS = [
   '/',
   '/offline.html',
   '/manifest.json',
+  // Logo et favicon : la page hors ligne les affiche sans réseau.
+  '/brand/logo.svg',
+  '/favicon.svg',
   // NB : pas de bundles JS/CSS ici — Vite émet des noms hachés
   // (build/assets/index-<hash>.js) inconnus à l'écriture de ce fichier, et
   // les anciens chemins CRA (/static/js/main.js) n'existent plus : un 404

@@ -76,13 +76,20 @@ def test_sans_quantite_le_moteur_la_reclame_et_nomme_son_unite(client):
 def test_avec_la_quantite_le_droit_se_liquide_et_entre_dans_l_assiette_TVA(client):
     """Second temps : le total devient COMPLET, TVA comprise.
 
-    8c/kg × 200 kg = 16,00. La TVA sud-africaine est assise sur CIF + DD :
-    15 % de 10 016,00 = 1 502,40. Le droit spécifique n'est donc pas seulement
-    ajouté au total, il déplace l'assiette de la taxe suivante.
+    8c/kg × 200 kg = 16,00. La TVA sud-africaine est assise sur FOB × 1,10 + DD
+    (VAT Act s.13(2)(a)) : 15 % de 11 016,00 = 1 652,40. Le droit spécifique
+    n'est donc pas seulement ajouté au total, il déplace l'assiette de la taxe
+    suivante.
     """
     r = client.post(
         "/calcul",
-        json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 10000, "quantite": 200},
+        json={
+            "destination": "ZAF",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "valeur_fob": 10000,
+            "quantite": 200,
+        },
     )
     assert r.status_code == 200
     npf = r.json()["npf"]
@@ -92,12 +99,12 @@ def test_avec_la_quantite_le_droit_se_liquide_et_entre_dans_l_assiette_TVA(clien
     assert dd["montant"] == pytest.approx(16.0)
 
     tva = _ligne(r.json(), "TVA")
-    assert tva["base"] == pytest.approx(10016.0)
-    assert tva["montant"] == pytest.approx(1502.4)
+    assert tva["base"] == pytest.approx(11016.0)
+    assert tva["montant"] == pytest.approx(1652.4)
 
     assert npf["etat"] == "COMPLET"
     assert npf["manques"] == []
-    assert npf["total_a_payer"] == pytest.approx(11518.4)
+    assert npf["total_a_payer"] == pytest.approx(11668.4)
 
 
 @besoin_socle
@@ -117,12 +124,12 @@ def test_une_quantite_nulle_est_refusee_et_non_liquidee_a_zero(client):
 
 
 @besoin_socle
-def test_une_source_sans_unite_ne_se_voit_pas_attribuer_un_kilo(client):
-    """Tunisie, droit sanitaire vétérinaire : « 0.1 dinars », sans unité.
+def test_l_unite_vient_de_la_source_et_jamais_d_un_kilo_suppose(client):
+    """Tunisie, droit sanitaire vétérinaire : « 0.1 dinars », assiette QCS.
 
-    Le moteur réclame la quantité mais N'AFFIRME PAS d'unité. C'est ce silence
-    qui doit remonter à l'écran : y demander un poids produirait un montant
-    faux, puisque rien n'établit que le droit se liquide au kilo.
+    L'unité n'est pas dans le montant : elle est l'unité statistique que le
+    Tarif Web publie avec la position (« NOMBRE » pour les chevaux). Le moteur
+    la nomme — jamais un kilo supposé.
     """
     r = client.post(
         "/calcul",
@@ -133,7 +140,7 @@ def test_une_source_sans_unite_ne_se_voit_pas_attribuer_un_kilo(client):
 
     assert dsv["statut"] == "QUANTITE_REQUISE"
     assert dsv["specifique"] == "0.1 dinars"
-    assert "unite_quantite" not in dsv
+    assert dsv["unite_quantite"] == "nombre"
 
 
 @besoin_socle
@@ -159,4 +166,12 @@ def test_aucune_position_ne_mele_deux_unites_de_quantite():
             if len(unites) > 1:
                 divergentes.append((iso3, code, sorted(unites)))
 
-    assert divergentes == [], f"positions à unités divergentes : {divergentes[:5]}"
+    # Tunisie 0102.29 (6 positions) : D.S.V. par tête, prélèvement viande au
+    # kilo — publié ainsi par le Tarif Web. Une seule quantité ne peut servir
+    # les deux : le moteur refuse alors de liquider l'un comme l'autre.
+    from services.calcul import MANQUE_UNITES, calculer
+
+    for iso3, code, _unites in divergentes:
+        r = calculer(socle.charger(iso3)["positions"][code], 1000, quantite=5)
+        quantites = [l for l in r["npf"]["lignes"] if l.get("assiette") == "xQTE"]
+        assert quantites and all(l["statut"] == MANQUE_UNITES for l in quantites), (iso3, code)
