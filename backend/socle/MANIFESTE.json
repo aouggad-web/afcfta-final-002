@@ -7,7 +7,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
       "source_sha256": "c4334b5d93b46e0173688b1753577cc8ae40571d4289fdbbf0930a2020b67500",
-      "socle_sha256": "a4b5b409913398a514db3fffecd4f1acff74c99f9e3fa3c48daa3a4ef6cd6b4e",
+      "socle_sha256": "4d5788f8cb89bb3ed3bd0fac93aeef57d6d669fd549f86d478b3934f431ba10b",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [
@@ -18,13 +18,13 @@
       "compteurs": {
         "positions": 5959,
         "droits": 12010,
-        "droits_liquidables": 11985,
-        "positions_liquidables": 5934,
+        "droits_liquidables": 11988,
+        "positions_liquidables": 5937,
         "preferentiels": 11918,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 25,
+        "taux_indisponibles": 22,
         "assiettes_source": 11893,
         "assiettes_fichier": 0,
         "assiettes_table": 92,
@@ -2065,6 +2065,6 @@
     ],
     "positions": 370215,
     "droits": 1244394,
-    "droits_liquidables": 1209990
+    "droits_liquidables": 1209993
   }
 }
