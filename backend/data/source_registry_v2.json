@@ -320,9 +320,9 @@
       "application_period": "2026-01-01 to 2026-12-31",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 6544,
-      "sha256": "fad20f649681ae5a7be2abaac4a9fac73d2cf3264a96e6e7c86837d86650eec7",
-      "reuse_conditions": "Source primaire (PDF officiel douanes.gov.mg, texte extractible). Empreinte du PDF : 9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f. Parseur scripts/parse_tarif_mdg_2026.py (lecture par en-têtes de colonnes, accumulation des lignes repliées). 343 positions écartées et énumérées dans `non_collected` avec motif et page (sous-tables à schéma non univoque TPP/TVP/DS, lignes illisibles).",
+      "positions_count": 6852,
+      "sha256": "2b76f63b9cd682add00d4e736959fdde769b62213385234607b9b8f84299ebb2",
+      "reuse_conditions": "Source primaire (PDF officiel douanes.gov.mg, texte extractible). Empreinte du PDF : 9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f. Parseur scripts/parse_tarif_mdg_2026.py (lecture par en-têtes de colonnes, accumulation des lignes repliées). 35 positions écartées et énumérées dans `non_collected` avec motif et page (sous-tables à schéma non univoque TPP/TVP, lignes illisibles). Les sous-tables à droit de sortie (colonne DS) sont lues : DD/TVA à l'import, DS servi à part (`taxes_export`).",
       "legal_authority": "Code des Douanes 2006-023 + Loi de Finances 2026 + LFR 2026",
       "validation_status": "verified",
       "taxes": [

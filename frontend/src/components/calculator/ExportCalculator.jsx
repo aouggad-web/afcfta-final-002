@@ -17,7 +17,7 @@ import { chiffres } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
-const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF' };
+const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA' };
 
 const STATUTS = {
   CALCULE: { fr: 'Calculé', en: 'Calculated' },
@@ -53,6 +53,11 @@ function detailErreur(e, fr) {
 export default function ExportCalculator({ language = 'fr' }) {
   const fr = language !== 'en';
   const [pays, setPays] = useState({});
+  // Perceptions de sortie hors tarif (Madagascar : DTSPM du Code minier) :
+  // la question que le texte impose, servie par l'API, par pays.
+  const [questions, setQuestions] = useState({});
+  const [produitMinier, setProduitMinier] = useState(null);
+  const [transforme, setTransforme] = useState(false);
   const [iso3, setIso3] = useState('');
   const [code, setCode] = useState('');
   const [valeur, setValeur] = useState('');
@@ -65,7 +70,10 @@ export default function ExportCalculator({ language = 'fr' }) {
 
   useEffect(() => {
     axios.get(`${API}/calcul/export/pays`)
-      .then((res) => setPays(res.data.pays || {}))
+      .then((res) => {
+        setPays(res.data.pays || {});
+        setQuestions(res.data.questions || {});
+      })
       .catch(() => setErreur(fr ? 'Pays couverts indisponibles' : 'Covered countries unavailable'));
   }, [fr]);
 
@@ -73,12 +81,15 @@ export default function ExportCalculator({ language = 'fr' }) {
     setIso3(valeurPays);
     setDevise(DEVISE_NATIONALE[valeurPays] || '');
     setCode('');
+    setProduitMinier(null);
+    setTransforme(false);
     setResultat(null);
   };
 
   const nationale = DEVISE_NATIONALE[iso3] || '';
   const changeRequis = Boolean(devise && nationale && devise !== nationale);
   const changeInvalide = changeRequis && tauxDeChange !== '' && !(parseFloat(tauxDeChange) > 0);
+  const question = questions[iso3];
 
   const calculer = async () => {
     setChargement(true);
@@ -90,6 +101,10 @@ export default function ExportCalculator({ language = 'fr' }) {
     // Saisi comme on le lit (1 USD = 3,1 TND) ; le moteur attend l'inverse :
     // la devise de la valeur pour une unité de la monnaie du tarif.
     if (changeRequis && tauxDeChange !== '') corps.taux_de_change = 1 / parseFloat(tauxDeChange);
+    if (question && produitMinier !== null) {
+      corps.produit_minier = produitMinier;
+      if (produitMinier) corps.produit_minier_transforme = transforme;
+    }
     try {
       const res = await axios.post(`${API}/calcul/export`, corps);
       // Les montants sont dans la devise envoyée, pas dans celle du champ
@@ -168,9 +183,27 @@ export default function ExportCalculator({ language = 'fr' }) {
           )}
         </div>
 
+        {question && (
+          <fieldset className="space-y-2" data-testid="export-question-hors-tarif">
+            <legend className="text-sm">
+              {fr ? question.question : 'Mining product within the meaning of the Mining Code (mineral substance, not quarry or fossil)?'}
+            </legend>
+            <div className="flex gap-4 text-sm">
+              <label><input type="radio" name="produit-minier" checked={produitMinier === true} onChange={() => setProduitMinier(true)} /> {fr ? 'Oui' : 'Yes'}</label>
+              <label><input type="radio" name="produit-minier" checked={produitMinier === false} onChange={() => setProduitMinier(false)} /> {fr ? 'Non' : 'No'}</label>
+            </div>
+            {produitMinier && (
+              <label className="flex gap-2 text-sm">
+                <input type="checkbox" checked={transforme} onChange={(e) => setTransforme(e.target.checked)} />
+                {fr ? question.question_transformation : 'Processed substance within the meaning of the Code (30% abatement, art. 288)?'}
+              </label>
+            )}
+          </fieldset>
+        )}
+
         <Button
           onClick={calculer}
-          disabled={!iso3 || !code || valeur === '' || changeInvalide || chargement}
+          disabled={!iso3 || !code || valeur === '' || changeInvalide || (question && produitMinier === null) || chargement}
           data-testid="export-calculer"
         >
           {fr ? 'Calculer les droits de sortie' : 'Calculate export duties'}
