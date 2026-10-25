@@ -1,0 +1,37 @@
+{
+ "schema_version": 1,
+ "objet": "Maurice : droits d'accise spécifiques à l'importation (First Schedule, Part I, de l'Excise Act 1994) — montants par litre, par millier ou par kilo servis ; montants qui dépendent d'une caractéristique du produit motivés",
+ "destination_iso3": "MUS",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire — Excise Act 1994, version consolidée publiée par la MRA (en-tête 01.10.2026, intégrant les Finance Acts 2025 et 2026 et les Excise (Amendment of Schedule) Regulations 2026), First Schedule, Part I, colonne 5 « Rate of Excise Duty »",
+ "source": {
+  "url": "https://www.mra.mu/download/ExciseAct.pdf",
+  "institution": "Mauritius Revenue Authority"
+ },
+ "regle": {
+  "valeur": "Ligne EXC à droit spécifique (assiette xQTE) pour 59 positions : bières, vins, cidres et boissons fermentées hors canette (Rs 34.10 à Rs 1,352.80 le litre selon la position), spirit coolers 2208.90.22 et 2208.90.29 (Rs 75.75 le litre), essence Mogas 2710.19.19 (Rs 9.87 le litre), gasoil 2710.19.50 (Rs 4.22 le litre), cigarettes et cigarillos (Rs 8,237 et Rs 16,611 le millier), cigares 2402.10.90 (Rs 28,447 le kilo). La TVA (CIF+TOUS_SAUF_TVA) comprend l'accise. Restent non liquidables, avec le montant de l'annexe en note : 54 positions à 15 cents le gramme de sucre, 33 au litre plus Rs 2 par canette, 33 au litre d'alcool pur, 2 « at the rate applicable to the spirits » au prorata, 7 bateaux à 50 % de la valeur des moteurs hors-bord.",
+  "reference": "Excise Act 1994, First Schedule, Part I, colonne 5 ; notes 379 (Finance Act 2025, s.16(i)), 406 et 408 (GN 257 de 2024 et GN 30 de 2024)",
+  "verbatim": "2203.00.19 ---- Other L Specific duty per litre Rs 58.10 per litre ; 2710.19.50 --- Gas oils L Specific duty per litre Rs 4.22 per litre ; 2402.20.00 - Cigarettes containing tobacco Kg Specific duty per thousand Rs 8,237 per thousand units ; 2203.00.11 ---- In can L Specific duty per litre/per unit Rs 58.10 per litre plus Rs 2 per can",
+  "portee": "backend/data/zlecaf_mus/assiette_accise_excise_act.json (montants_specifiques, specifiques_non_liquidables), appliqué par scripts/build_socle._assiette_accise au socle MUS.",
+  "texte_archive": "sources/MUS_accises_specifiques.texte-extrait.txt",
+  "sha256": "f1688c910a1a3d1782522e8ead1d49702654833bb1e9a0baa3fdd3d460a8d63d"
+ },
+ "decisions": [
+  "Le montant est pris dans la première occurrence du code, celle de la Part I de la First Schedule ; la Part II (MID levy) porte d'autres montants sur les produits pétroliers et n'est pas reprise ici.",
+  "Cigarettes et cigarillos : l'unité statistique est le kilo mais le droit est fixé « per thousand units » ; l'unité de quantité servie est le millier d'unités.",
+  "Lignes « in can » : le droit au litre s'ajoute de Rs 2 par canette, et le calcul ne reçoit qu'une quantité ; plutôt que de servir un montant minoré, la ligne reste non liquidable avec les deux montants en note.",
+  "2208.60.30 et 2208.60.90 (vodka) : montant au litre d'alcool pur, lu sur la ligne de suite que la mise en page sépare du code."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les 4 positions du tarif collecté absentes de l'annexe en vigueur (2201.10.11, 2201.10.21, 2201.90.91, 2202.10.11, bouteilles en plastique remplacées par les codes « plant-based bottles ») gardent leur note d'origine.",
+  "La MID levy (Part II), la CO2 levy et la levy on energy consumption, qui entrent dans l'assiette de la TVA (VAT Act s.13), ne sont toujours pas servies.",
+  "Les exonérations et concessions de la Part IA de la First Schedule."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/MUS_accises_specifiques.texte-extrait.txt",
+   "sha256": "f1688c910a1a3d1782522e8ead1d49702654833bb1e9a0baa3fdd3d460a8d63d"
+  }
+ ]
+}
