@@ -31,7 +31,7 @@ const ETATS = {
   COMPLET: { fr: 'Complet', en: 'Complete' },
   PARTIEL: { fr: 'Partiel : des droits ne sont pas chiffrés', en: 'Partial: some duties are not quantified' },
   INDISPONIBLE: { fr: 'Non chiffrable', en: 'Not quantifiable' },
-  AUCUN_DROIT_PUBLIE: { fr: 'Aucun droit de sortie publié pour cette position', en: 'No export duty published for this position' },
+  AUCUN_DROIT_PUBLIE: { fr: 'Aucun droit de sortie au tarif collecté pour cette position', en: 'No export duty in the collected tariff for this position' },
 };
 
 function detailErreur(e, fr) {
@@ -69,6 +69,10 @@ export default function ExportCalculator({ language = 'fr' }) {
     setResultat(null);
   };
 
+  const nationale = DEVISE_NATIONALE[iso3] || '';
+  const changeRequis = Boolean(devise && nationale && devise !== nationale);
+  const changeInvalide = changeRequis && tauxDeChange !== '' && !(parseFloat(tauxDeChange) > 0);
+
   const calculer = async () => {
     setChargement(true);
     setErreur('');
@@ -76,10 +80,14 @@ export default function ExportCalculator({ language = 'fr' }) {
     const corps = { pays: iso3, code_sh: code, valeur: parseFloat(valeur) };
     if (devise) corps.devise = devise;
     if (quantite !== '') corps.quantite = parseFloat(quantite);
-    if (tauxDeChange !== '') corps.taux_de_change = parseFloat(tauxDeChange);
+    // Saisi comme on le lit (1 USD = 3,1 TND) ; le moteur attend l'inverse :
+    // la devise de la valeur pour une unité de la monnaie du tarif.
+    if (changeRequis && tauxDeChange !== '') corps.taux_de_change = 1 / parseFloat(tauxDeChange);
     try {
       const res = await axios.post(`${API}/calcul/export`, corps);
-      setResultat(res.data);
+      // Les montants sont dans la devise envoyée, pas dans celle du champ
+      // si on la modifie ensuite ; sans devise, dans la monnaie du tarif.
+      setResultat({ ...res.data, devise: devise || res.data.provenance?.devise_nationale || '' });
     } catch (e) {
       setErreur(detailErreur(e, fr));
     } finally {
@@ -127,6 +135,7 @@ export default function ExportCalculator({ language = 'fr' }) {
           <ProductKeywordSearch
             destinationCountry={iso3}
             language={language}
+            sansDroitImport
             onSelect={(choisi) => setCode(choisi)}
           />
         )}
@@ -144,13 +153,19 @@ export default function ExportCalculator({ language = 'fr' }) {
             <Label htmlFor="export-quantite">{fr ? 'Quantité' : 'Quantity'}</Label>
             <Input id="export-quantite" type="number" min="0" value={quantite} onChange={(e) => setQuantite(e.target.value)} />
           </div>
-          <div>
-            <Label htmlFor="export-change">{fr ? 'Taux de change' : 'Exchange rate'}</Label>
-            <Input id="export-change" type="number" min="0" value={tauxDeChange} onChange={(e) => setTauxDeChange(e.target.value)} />
-          </div>
+          {changeRequis && (
+            <div>
+              <Label htmlFor="export-change">{`1 ${devise} = ? ${nationale}`}</Label>
+              <Input id="export-change" type="number" min="0" value={tauxDeChange} onChange={(e) => setTauxDeChange(e.target.value)} />
+            </div>
+          )}
         </div>
 
-        <Button onClick={calculer} disabled={!iso3 || !code || valeur === '' || chargement} data-testid="export-calculer">
+        <Button
+          onClick={calculer}
+          disabled={!iso3 || !code || valeur === '' || changeInvalide || chargement}
+          data-testid="export-calculer"
+        >
           {fr ? 'Calculer les droits de sortie' : 'Calculate export duties'}
         </Button>
 
@@ -180,7 +195,7 @@ export default function ExportCalculator({ language = 'fr' }) {
                         {ligne.note && <div className="text-xs text-[var(--afcfta-muted)]">{ligne.note}</div>}
                       </td>
                       <td className="tabular-nums">
-                        {ligne.montant == null ? '—' : `${chiffres(ligne.montant, language, 2)} ${devise}`}
+                        {ligne.montant == null ? '—' : `${chiffres(ligne.montant, language, 2)} ${resultat.devise}`}
                       </td>
                       <td>{STATUTS[ligne.statut]?.[fr ? 'fr' : 'en'] || ligne.statut}</td>
                     </tr>
@@ -190,7 +205,7 @@ export default function ExportCalculator({ language = 'fr' }) {
             )}
             {export_.lignes.length > 0 && (
               <p className="font-semibold">
-                {fr ? 'Droits de sortie chiffrés' : 'Quantified export duties'} : {chiffres(export_.total_droits, language, 2)} {devise}
+                {fr ? 'Droits de sortie chiffrés' : 'Quantified export duties'} : {chiffres(export_.total_droits, language, 2)} {resultat.devise}
               </p>
             )}
           </div>

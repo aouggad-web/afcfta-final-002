@@ -38,7 +38,14 @@ class DemandeExport(BaseModel):
     quantite: Optional[float] = Field(
         default=None, ge=0, description="Quantité, dans l'unité que nomme le droit spécifique"
     )
-    taux_de_change: Optional[float] = Field(default=None, gt=0)
+    taux_de_change: Optional[float] = Field(
+        default=None,
+        gt=0,
+        description=(
+            "Unités de `devise` pour UNE unité de la monnaie du tarif (comme pour `POST /calcul`) : "
+            "valeur en USD, droit en dinars → environ 0,32, pas 3,1."
+        ),
+    )
 
 
 def _pays_export():
@@ -95,8 +102,8 @@ def calcul_export(demande: DemandeExport):
     # Valeur et droits de sortie ne s'additionnent pas en un « total à payer ».
     export.pop("total_a_payer", None)
     if not droits:
-        # Une position sans droit de sortie publié, dans un tarif qui en
-        # publie, n'en doit pas : la source en est exhaustive par position.
+        # Le tarif collecté ne porte aucun droit de sortie pour la position.
+        # Ce que le tarif ne publie pas (redevances hors tarif) n'y est pas.
         export["etat"] = AUCUN_DROIT
     return {
         "pays": pays,

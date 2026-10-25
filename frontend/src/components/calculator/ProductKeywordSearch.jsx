@@ -29,7 +29,7 @@ function TaxBadge({ label, value, color }) {
   );
 }
 
-export default function ProductKeywordSearch({ destinationCountry, language = 'fr', onSelect }) {
+export default function ProductKeywordSearch({ destinationCountry, language = 'fr', onSelect, sansDroitImport = false }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [total, setTotal] = useState(0);
@@ -208,15 +208,16 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                                 {code.slice(0, 4)} — {item.intitule_sh4}
                               </p>
                             )}
-                            {/* Droit de douane du socle ; le total est celui du calcul. */}
-                            <div className="flex flex-wrap gap-1 mt-1.5">
+                            {/* Droit de douane du socle ; le total est celui du calcul.
+                                Un droit d'IMPORT, hors sujet à l'écran export. */}
+                            {!sansDroitImport && <div className="flex flex-wrap gap-1 mt-1.5">
                               {item.dd_rate != null && <TaxBadge label="DD" value={item.dd_rate} color="bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)]" />}
                               {item.dd_rate == null && item.dd_expression && (
                                 <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-mono bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)]">
                                   DD {item.dd_expression}
                                 </span>
                               )}
-                            </div>
+                            </div>}
                           </div>
 
                           <ChevronRight className="w-4 h-4 text-[var(--afcfta-muted)] group-hover:text-[var(--afcfta-muted)] shrink-0 mt-1 transition-colors" />

@@ -979,7 +979,9 @@ def _unites_des_quantites_tun(rows, droits, qcs):
 #: assiettes n'est donc liquidable, sauf le karité, droit spécifique.
 #: (préfixes, taux retenu ou None, spécifique, note)
 DUS_CIV = [
-    (("0901", "2101"), "taux", None,
+    # Café et ses extraits (2101.11/12) ; pas la chicorée (2101.30), que la
+    # liste DGD ne nomme pas.
+    (("0901", "210111", "210112"), "taux", None,
      "Procédure DGD : « CAFE (TAUX = 5% DU PRIX CAF DE REFERENCE) ». Le prix CAF de référence est fixé en "
      "Conseil des ministres à chaque campagne : non collecté."),
     (("1801", "1802", "1803", "1804", "1805", "1806"), "taux", None,

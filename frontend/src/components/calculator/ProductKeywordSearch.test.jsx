@@ -60,6 +60,16 @@ describe('ProductKeywordSearch', () => {
     ));
   });
 
+  it("à l'écran export, ne montre pas le droit d'import", async () => {
+    axios.get.mockResolvedValue({ data: { results: [LIGNE], total: 1 } });
+    render(<ProductKeywordSearch destinationCountry="TUN" sansDroitImport onSelect={vi.fn()} />);
+
+    await userEvent.type(screen.getByRole('textbox'), 'cigarettes');
+
+    expect(await screen.findByText('24021090')).toBeInTheDocument();
+    expect(screen.queryByText(/^DD /)).not.toBeInTheDocument();
+  });
+
   it("sans pays de destination, ne cherche pas et le dit", async () => {
     render(<ProductKeywordSearch destinationCountry="" onSelect={vi.fn()} />);
 

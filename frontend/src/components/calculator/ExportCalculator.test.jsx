@@ -96,4 +96,39 @@ describe('ExportCalculator', () => {
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Position nationale requise');
   });
+
+  it('demande le taux comme on le lit et envoie au moteur son inverse', async () => {
+    const ferrailles = {
+      pays: 'TUN',
+      position: { designation: 'Ferrailles' },
+      provenance: { devise_nationale: 'TND' },
+      export: {
+        etat: 'COMPLET',
+        total_droits: 483.87,
+        manques: [],
+        lignes: [{ code: 'TAXE/FERRAILLES.EXP', libelle: 'TAXE/FERRAILLES.EXP', montant: 483.87, statut: 'CALCULE' }],
+      },
+    };
+    axios.post.mockResolvedValue({ data: ferrailles });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
+    expect(screen.queryByLabelText(/= \? TND/)).not.toBeInTheDocument();
+    const devise = screen.getByLabelText('Devise');
+    await userEvent.clear(devise);
+    await userEvent.type(devise, 'usd');
+    await userEvent.type(screen.getByLabelText('1 USD = ? TND'), '3.1');
+    await userEvent.type(screen.getByLabelText('Position nationale'), '2620110000');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
+    await userEvent.type(screen.getByLabelText('Quantité'), '5000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    const corps = axios.post.mock.calls[0][1];
+    expect(corps.devise).toBe('USD');
+    expect(corps.taux_de_change).toBeCloseTo(1 / 3.1, 10);
+    // La devise affichée est celle envoyée, même si le champ change ensuite.
+    await userEvent.clear(devise);
+    await userEvent.type(devise, 'EUR');
+    expect(await screen.findAllByText(/483,87\s*USD/)).not.toHaveLength(0);
+  });
 });

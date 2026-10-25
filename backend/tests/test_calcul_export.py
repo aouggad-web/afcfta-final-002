@@ -103,3 +103,20 @@ def test_sh6_exige_la_position_nationale(client):
     reponse = client.post("/calcul/export", json={"pays": "TUN", "code_sh": "080410", "valeur": 1000})
     assert reponse.status_code == 422
     assert reponse.json()["detail"]["code"] == "POSITION_NATIONALE_REQUISE"
+
+
+def test_taux_de_change_en_devise_pour_un_dinar(client):
+    """Comme pour POST /calcul : unités de `devise` pour UN dinar. 0,3 TND/kg
+    × 5 000 kg = 1 500 TND, soit 483,87 USD à 3,1 TND pour 1 USD."""
+    export = _export(
+        client, pays="TUN", code_sh="2620110000", valeur=10000, devise="USD", quantite=5000, taux_de_change=1 / 3.1
+    )
+    assert _ligne(export, "TAXE/FERRAILLES.EXP")["montant"] == pytest.approx(1500 / 3.1, rel=1e-6)
+
+
+def test_civ_chicoree_hors_regle_du_cafe(client):
+    """La liste DGD nomme le café, pas la chicorée (2101.30) : la note du
+    café ne s'y attache pas."""
+    export = _export(client, pays="CIV", code_sh="2101300000", valeur=1000, devise="XOF")
+    assert "CAFE" not in _ligne(export, "DUS")["note"]
+    assert "CAFE" in _ligne(_export(client, pays="CIV", code_sh="2101110000", valeur=1000), "DUS")["note"]
