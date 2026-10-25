@@ -208,6 +208,8 @@ def test_recherche_dans_la_langue_de_l_interface(client):
         "routes.authentic_tariffs",
         "routes.postgres_tariffs",
         "routes.hs6_database",
+        "routes.search",
+        "search.hs_code_search",
     ],
 )
 def test_l_ancien_service_est_retire(module):

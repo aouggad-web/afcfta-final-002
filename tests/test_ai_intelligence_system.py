@@ -10,7 +10,6 @@ platform enhancement:
   - backend/ai/nlp_processing.py        (NLPSearchProcessor)
   - backend/analytics/regional_intelligence.py (RegionalAnalyticsEngine)
   - backend/analytics/dashboard_generator.py   (DashboardGenerator)
-  - backend/search/hs_code_search.py           (AdvancedHSCodeSearch)
   - backend/search/investment_search.py        (InvestmentOpportunitySearch)
   - backend/cache/redis_manager.py             (RedisManager)
 """
@@ -140,16 +139,6 @@ class TestNLPSearchProcessor:
         assert isinstance(result, dict)
         assert "intent" in result
 
-    def test_fuzzy_hs_search_returns_results(self):
-        # Use the AdvancedHSCodeSearch for fuzzy matching (NLPSearchProcessor
-        # provides an additional fuzzy_hs_search helper over arbitrary data)
-        from search.hs_code_search import AdvancedHSCodeSearch
-
-        hs = AdvancedHSCodeSearch()
-        results = hs.fuzzy_search("car vehicle", limit=5)
-        assert isinstance(results, list)
-        assert len(results) > 0
-
     def test_get_search_suggestions(self):
         suggestions = self.nlp.get_search_suggestions("auto", {})
         assert isinstance(suggestions, list)
@@ -221,34 +210,6 @@ class TestDashboardGenerator:
 # ===========================================================================
 # HS Code Search
 # ===========================================================================
-
-
-class TestAdvancedHSCodeSearch:
-    """Tests for the advanced HS code search."""
-
-    def setup_method(self):
-        from search.hs_code_search import AdvancedHSCodeSearch
-
-        self.search = AdvancedHSCodeSearch()
-
-    def test_fuzzy_search_returns_results(self):
-        results = self.search.fuzzy_search("cotton fabric")
-        assert isinstance(results, list)
-        assert len(results) > 0
-
-    def test_each_result_has_code(self):
-        results = self.search.fuzzy_search("petroleum oil")
-        for r in results:
-            assert "code" in r
-            assert "description" in r
-
-    def test_natural_language_search(self):
-        results = self.search.natural_language_search("motor cars gasoline engine")
-        assert isinstance(results, list)
-
-    def test_limit_respected(self):
-        results = self.search.fuzzy_search("coffee", limit=3)
-        assert len(results) <= 3
 
 
 # ===========================================================================
