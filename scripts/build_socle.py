@@ -1577,6 +1577,94 @@ def _redevance_informatique_cmr(positions):
             )
 
 
+#: Mauritanie : droits d'accises à l'importation (CGI, art. 263, rédaction de la loi
+#: de finances rectificative 2025 ; produits pétroliers de l'art. 3.2.1 de la loi de
+#: finances rectificative 2026). Fiche MRT_accises_2026-10-25.json.
+#: Ad valorem : (positions, taux %, cumul spécifique en MRU par paquet de 20 ou None).
+ACCISES_MRT = (
+    (("2402100000", "2402200000"), 47.0, 1.6),
+    (("2401", "2403"), 80.0, None),
+    (("2203001000", "2203009000", "2206001000"), 225.0, None),
+    (("2204210000", "2204220000", "2204291000", "2204299000", "2205100000", "2205900000", "2206009100",
+      "2206009900"), 239.0, None),
+    (("2204100000",), 259.0, None),
+    (("2208201000", "2208209000", "2208300000", "2208400000", "2208500000", "2208600000"), 324.0, None),
+    (("3923210000", "3923290000", "3923900000"), 35.0, None),
+    (("2202991000", "2202999000", "2009"), 30.0, None),
+    (("1704", "1806310000", "1806321000", "1806329000", "1806901000", "1905310000", "1905320000",
+      "1905900000"), 20.0, None),
+)
+#: Spécifiques : (positions, MRU, unité de quantité).
+ACCISES_MRT_SPECIFIQUES = (
+    (("2710123000",), 1.33, "l"),
+    (("2710124000", "2710125000"), 9.98, "l"),
+    (("2710192100",), 6.52, "l"),
+    (("2710191100",), 2.16, "l"),
+    (("2710192400",), 0.71, "l"),
+    (("2710192200", "2710192300"), 0.45, "l"),
+    (("2710191200",), 1.86, "l"),
+    (("2710193200", "2710193910", "2710193990"), 3.42, "l"),
+    (("7108131000", "7108139000"), 100.0, "g"),
+)
+#: LFR 2026, art. 3.2.1 b) : produits exemptés de la RS ; DD de 10 % sur trois d'entre eux.
+PETROLE_SANS_RS_MRT = ("2710124000", "2710125000", "2710192100", "2710191100", "2710192400")
+PETROLE_DD_10_MRT = ("2710124000", "2710125000", "2710192100")
+
+
+def _accises_mauritanie(positions, compteurs):
+    """Mauritanie : droits d'accises (CGI, art. 263) et taxe de lutte contre le cancer
+    (art. 266 bis), avant la TVA. Assiette des accises ad valorem (art. 262) : valeur en
+    douane majorée des droits et taxes dus à l'entrée, TVA et accises exclues."""
+    source = "CGI de Mauritanie, art. 263 (loi de finances rectificative 2025)"
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        if code in PETROLE_SANS_RS_MRT:
+            for d in droits:
+                if d.get("code") == "RS":
+                    d["taux"] = 0.0
+                    d["note"] = "Loi de finances rectificative 2026, art. 3.2.1 b) : exempté de la redevance statistique."
+                if d.get("code") == "DD" and code in PETROLE_DD_10_MRT:
+                    d["taux"] = 10.0
+                    d["note"] = "Loi de finances rectificative 2026, art. 3.2.1 b) : droit de douane de 10 %."
+        lignes = []
+        if code.startswith("24"):
+            lignes.append({"code": "TLC", "code_source": "TLC", "famille": famille("TLC"),
+                           "libelle": "Taxe de recherche et de lutte contre le cancer", "taux": 10.0,
+                           "specifique": None, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                           "source": "CGI de Mauritanie, art. 266 bis (loi de finances rectificative 2025)",
+                           "note": "10 % de la valeur en douane des produits du chapitre 24 importés."})
+        base = {"code": "EXC", "code_source": "DA", "famille": famille("EXC"), "libelle": "Droits d'accises"}
+        regle = next((r for r in ACCISES_MRT if code.startswith(r[0])), None)
+        if regle:
+            _, taux, paquet = regle
+            assiette = "CIF+DD+RS+PC+TLC" if lignes else "CIF+DD+RS+PC"
+            ligne = {**base, "taux": taux, "specifique": None, "assiette": assiette,
+                     "assiette_origine": "regle_de_pays", "source": source,
+                     "note": "Art. 262 : valeur en douane majorée des droits et taxes dus à l'entrée, hors TVA "
+                             "et accises."}
+            if paquet:
+                brut = f"{taux:g} % + {paquet:g} Ouguiya le paquet de 20 cigarettes".replace(".", ",")
+                ligne.update(cumulatif=True, expression_brute=brut, specifique={
+                    "montant": paquet, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                    "unite_quantite": "paquet de 20 cigarettes", "brut": brut})
+            lignes.append(ligne)
+        regle = next((r for r in ACCISES_MRT_SPECIFIQUES if code.startswith(r[0])), None)
+        if regle:
+            _, montant, unite = regle
+            brut = f"{montant:g} MRU/{unite}".replace(".", ",")
+            lignes.append({**base, "taux": None, "specifique": {
+                "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                "unite_quantite": unite, "brut": brut}, "assiette": "xQTE", "assiette_origine": "droit_specifique",
+                "source": "Loi de finances rectificative 2026, art. 3.2.1 a)" if code in PETROLE_SANS_RS_MRT
+                else source,
+                "note": f"{brut} à l'importation."})
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        for ligne in lignes:
+            droits.insert(rang, ligne)
+            rang += 1
+            _compter_ligne(ligne, compteurs, 1)
+
+
 def _regles_cedeao_hors_uemoa():
     """TVA_CEDEAO_HORS_UEMOA et PRELEVEMENTS_CEDEAO_HORS_UEMOA de
     backend/services/tax_profile_data.py, partagées avec l'ancien chemin."""
@@ -3713,6 +3801,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ait_malawi(positions, compteurs)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
+    if iso == "MRT":
+        _accises_mauritanie(positions, compteurs)
     if iso == "GNQ":
         _sans_redevance_informatique_gnq(positions, compteurs)
     if iso in _regles_cedeao_hors_uemoa()[0]:
