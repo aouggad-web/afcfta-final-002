@@ -37,8 +37,12 @@ def _droit_de_douane(position: dict) -> dict:
     d'un droit spécifique, ou rien (« à compléter »)."""
     dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None) or {}
     specifique = dd.get("specifique") or {}
+    # « 40% or 240c/kg », « 40% + US$0.50/L » : le pourcentage n'est qu'une
+    # composante. Le servir comme LE taux afficherait 40 % là où la part
+    # spécifique peut l'emporter ; c'est l'expression entière qui se lit.
+    deux_composantes = dd.get("taux") is not None and bool(dd.get("specifique"))
     return {
-        "dd_rate": dd.get("taux"),
+        "dd_rate": None if deux_composantes else dd.get("taux"),
         "dd_expression": dd.get("expression_brute") or specifique.get("brut"),
     }
 

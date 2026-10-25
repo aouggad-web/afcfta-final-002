@@ -273,3 +273,50 @@ def test_la_forme_or_du_socle_se_liquide(client):
     ligne = next(l for l in reponse.json()["npf"]["lignes"] if l["code"] == "DD")
     assert ligne["statut"] != MANQUE_REGLE_COMPOSEE
     assert ligne["montant"] == 280.0
+
+
+@besoin_socle
+def test_la_colonne_afcfta_or_less_de_1901_90_10_suit_la_b3():
+    """« 4% or 22c/kg less 36% » (Égypte, 1 000 kg, FOB 300) :
+    max(4 % × 300 = 12 ; 220 − 108 = 112) = 112."""
+    position, _ = socle.position("ZAF", "19019010")
+    table = taux_preferentiels(position, "ZAF", "EGY", "19019010")
+    assert table["taux"]["DD"]["regle_composee"] == "LE_PLUS_ELEVE"
+    resultat = calculer(position, 350.0, quantite=1000.0, valeur_fob=300.0,
+                        taux_preferentiels=table["taux"])
+    ligne = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    assert (ligne["statut"], ligne["montant"]) == ("CALCULE", 112.0)
+
+
+@pytest.mark.parametrize(
+    "brut", ["2 500c/kg less 80% with a maximum of 37%", "2 500c/kg with a maximum of 96%"]
+)
+def test_le_separateur_de_milliers_se_relit_sur_le_verbatim(brut):
+    """La collecte garde « 500c/kg » de « 2 500c/kg » : 25,00 R/kg, pas 5,00."""
+    droit = _rangee(brut, 80.0, "500c/kg")
+    assert droit["specifique"] == "2500c/kg"
+
+
+# ── SARS, General Notes, B.2 : arrondi au cent ───────────────────────────────
+AD_VALOREM_SARS = {
+    "designation": "x",
+    "unite": "kg",
+    "droits": [{"code": "DD", "famille": "droit", "taux": 10.0, "assiette": "FOB",
+                "source": "sars.gov.za"}],
+}
+
+
+def test_le_droit_sars_en_rands_s_arrondit_au_cent_superieur_a_la_moitie():
+    """10 % de 0,05 R = 0,005 R : « one half cent shall be regarded as a whole cent »."""
+    r = calculer(AD_VALOREM_SARS, 0.05, valeur_fob=0.05, devise_position="ZAR")
+    ligne = r["npf"]["lignes"][0]
+    assert ligne["montant"] == 0.01
+    assert "B.2" in ligne["arrondi"]
+
+
+def test_l_arrondi_au_cent_de_rand_ne_vaut_pas_pour_une_autre_devise():
+    r = calculer(AD_VALOREM_SARS, 0.05, valeur_fob=0.05, devise_position="ZAR",
+                 devise_cif="USD", taux_de_change=18.0)
+    ligne = r["npf"]["lignes"][0]
+    assert ligne["montant"] == 0.005
+    assert "arrondi" not in ligne

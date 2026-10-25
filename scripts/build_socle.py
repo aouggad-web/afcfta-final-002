@@ -887,6 +887,11 @@ def droits_depuis_liste(taxes, source_defaut):
             # « 2 500c/kg » : la collecte a perdu le chiffre avant l'espace des
             # milliers (« 500c/kg ») ; la part spécifique se relit sur le verbatim.
             specifique = compose_sars.group(1).replace(" ", "") + "c/kg"
+        milliers = re.match(r"^\s*(\d{1,3}(?: \d{3})+)c/kg\b", brut) if specifique else None
+        if milliers and "sars.gov.za" in str(source_ligne):
+            # Même perte quand la part spécifique ouvre l'expression
+            # (« 2 500c/kg with a maximum of 96% », « … less 80% »).
+            specifique = milliers.group(1).replace(" ", "") + "c/kg"
         # « 40% + US$0.50/L » (Zimbabwe, 356 droits) ou « 15%+SCR5.13/kg »
         # (Seychelles, 5) : le « + » de la source rend les DEUX composantes
         # dues. Sans ce marqueur, le moteur liquidait la seule part ad valorem
@@ -3574,11 +3579,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     "montant": None,
                     "motif": "expression non lisible",
                 }
-            if d.get("deduction_ad_valorem_pct") is not None:
-                # « less 80% » se déduit de la valeur en douane : celle que
-                # l'assiette du pays donne au droit (FOB en SACU), retenue
-                # avant que la part spécifique ne fasse passer le droit à la
-                # quantité. Les colonnes préférentielles s'y rapportent aussi.
+            if (
+                d.get("deduction_ad_valorem_pct") is not None
+                or d.get("plafond_ad_valorem_pct") is not None
+            ):
+                # « less 80% » et « with a maximum of 96% » se prennent sur la
+                # valeur en douane : celle que l'assiette du pays donne au droit
+                # (FOB en SACU), retenue avant que la part spécifique ne fasse
+                # passer le droit à la quantité. Les colonnes préférentielles
+                # s'y rapportent aussi.
                 d["assiette_valeur"] = d["assiette"]
             if d["specifique"] and d["taux"] is None and not d.get("assiette_non_traduite"):
                 # Une assiette que la source décrit sans qu'on sache la traduire

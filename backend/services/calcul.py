@@ -62,6 +62,7 @@ Trois règles gouvernent tout le reste :
 
 from __future__ import annotations
 
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Any, Dict, List, Optional
 
 from services.designation import texte_designation
@@ -634,13 +635,21 @@ def _liquider(
             devise_valeur,
         )
         ligne.update(detail)
-        # « 110c/kg less 80% » : la déduction porte sur la valeur en douane, que
-        # le socle nomme (`assiette_valeur`, FOB en SACU). Introuvable, la ligne
-        # reste indisponible — jamais servie à sa seule part spécifique.
+        if droit.get("assiette") == "xQTE" and len(unites_de_quantite) > 1 and manque is None:
+            manque = MANQUE_UNITES
+            ligne["unites_de_la_position"] = sorted(unites_de_quantite)
+        # « 110c/kg less 80% » et « 450c/kg with a maximum of 96% » : la
+        # déduction et le plafond portent sur la valeur en douane, que le socle
+        # nomme (`assiette_valeur`, FOB en SACU). Introuvable, la ligne reste
+        # indisponible — jamais servie à sa seule part spécifique, ni bornée
+        # sur une valeur CIF qui n'est pas la valeur en douane.
         deduction_pct = droit.get("deduction_ad_valorem_pct")
-        valeur_deduction = None
-        if deduction_pct is not None and manque is None:
-            valeur_deduction, manque, _ = _assiette_de(
+        valeur_douane = None
+        if manque is None and (
+            deduction_pct is not None
+            or (droit.get("plafond_ad_valorem_pct") is not None and droit.get("assiette_valeur"))
+        ):
+            valeur_douane, manque, _ = _assiette_de(
                 dict(droit, assiette=droit.get("assiette_valeur"), plafond=None),
                 cif,
                 calcules,
@@ -651,9 +660,6 @@ def _liquider(
                 valeur_fob,
                 devise_valeur,
             )
-        if droit.get("assiette") == "xQTE" and len(unites_de_quantite) > 1 and manque is None:
-            manque = MANQUE_UNITES
-            ligne["unites_de_la_position"] = sorted(unites_de_quantite)
         if regle_composee_absente:
             manque = MANQUE_REGLE_COMPOSEE
         elif manque_devise:
@@ -678,7 +684,7 @@ def _liquider(
         if droit.get("assiette") == "xQTE":
             montant = assiette * taux
             if deduction_pct is not None:
-                montant = _net_de_deduction(montant, deduction_pct, valeur_deduction, ligne)
+                montant = _net_de_deduction(montant, deduction_pct, valeur_douane, ligne)
         else:
             montant = assiette * taux / 100.0
 
@@ -765,7 +771,7 @@ def _liquider(
                 # « 10% or 55c/kg less 90% » : la B.3 compare deux taux
                 # complets, donc la part spécifique nette de sa déduction.
                 montant_specifique = _net_de_deduction(
-                    montant_specifique, deduction_pct, valeur_deduction, ligne
+                    montant_specifique, deduction_pct, valeur_douane, ligne
                 )
             retenu = (
                 max(montant, montant_specifique)
@@ -793,9 +799,10 @@ def _liquider(
         # son droit s'arrête là.
         plafond_pct = droit.get("plafond_ad_valorem_pct")
         if plafond_pct is not None:
-            # Une formule « less N% with a maximum of M% » prend ses deux
-            # pourcentages sur la même valeur en douane.
-            base_plafond = valeur_deduction if valeur_deduction is not None else cif
+            # La borne se prend sur la valeur en douane que le socle nomme (FOB
+            # en SACU), la même que la déduction « less N% ». Un droit qui ne
+            # la nomme pas garde la valeur déclarée.
+            base_plafond = valeur_douane if valeur_douane is not None else cif
             borne = base_plafond * plafond_pct / 100.0
             ligne["plafond_ad_valorem_pct"] = plafond_pct
             ligne["plafond_ad_valorem_montant"] = round(borne, 4)
@@ -826,6 +833,17 @@ def _liquider(
                 ligne["minimum_applique"] = True
                 montant = borne
 
+        if (
+            ligne["famille"] == "droit"
+            and "sars.gov.za" in str(droit.get("source") or "")
+            and (devise_valeur or "").upper() == "ZAR"
+        ):
+            # SARS, General Notes, B.2 : « Any amount of duty payable shall be
+            # calculated to the nearest cent. […] one half cent shall be
+            # regarded as a whole cent. » Seulement pour un montant en rands :
+            # un cent de rand ne se pose pas sur une autre devise.
+            montant = float(Decimal(str(montant)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+            ligne["arrondi"] = "au cent le plus proche (SARS, General Notes, B.2)"
         ligne.update({"base": round(assiette, 4), "montant": round(montant, 4), "statut": CALCULE})
         # Le montant est servi, mais il est né d'une moyenne : la ligne le dit,
         # et l'état global cessera de se déclarer complet.

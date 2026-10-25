@@ -180,11 +180,12 @@ def test_j_le_cafe_kenyan_sert_son_droit_specifique_afcfta():
 
 
 @besoin_socle
-def test_m_le_compose_afcfta_020110_n_est_pas_liquide():
+def test_m_le_compose_afcfta_020110_suit_la_note_b3():
     """020110 (Égypte, valeur FOB fournie) : la colonne AfCFTA porte
-    « 40% or 240c/kg » — composé sans règle de départage, comme le NPF : la
-    ligne reste REGLE_COMPOSEE_NON_ETABLIE, jamais un montant ad valorem de
-    40 %."""
+    « 40% or 240c/kg ». La règle B.3 des General Notes vaut pour chaque colonne
+    (fiche SACU_regle_or_B3_2026-10-09.json) : la plus élevée des deux parts.
+    Elle voyage avec la colonne ; sans quantité, la part spécifique n'est pas
+    calculable et la ligne le dit — jamais 40 % seuls."""
     from services.calcul import calculer
 
     position, _ = socle.position("ZAF", "02011000")
@@ -192,14 +193,20 @@ def test_m_le_compose_afcfta_020110_n_est_pas_liquide():
     dd = table["taux"]["DD"]
     assert dd["compose"] is True
     assert dd["expression_brute"] == "40% or 240c/kg"
+    assert dd["regle_composee"] == "LE_PLUS_ELEVE"
 
-    resultat = calculer(position, 10000.0, valeur_fob=10000.0, taux_preferentiels=table["taux"])
-    ligne_dd = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
-    assert ligne_dd["statut"] == "REGLE_COMPOSEE_NON_ETABLIE"
+    sans_quantite = calculer(position, 10000.0, valeur_fob=10000.0, taux_preferentiels=table["taux"])
+    ligne_dd = next(l for l in sans_quantite["preference"]["lignes"] if l["code"] == "DD")
+    assert ligne_dd["statut"] == "QUANTITE_REQUISE"
     assert ligne_dd["montant"] is None
-    assert any(
-        m["motif"] == "REGLE_COMPOSEE_NON_ETABLIE" for m in resultat["preference"]["manques"]
+
+    # 5 000 kg : 2,40 R × 5 000 = 12 000 R > 40 % × 10 000 = 4 000 R.
+    resultat = calculer(
+        position, 10000.0, valeur_fob=10000.0, quantite=5000.0, taux_preferentiels=table["taux"]
     )
+    ligne_dd = next(l for l in resultat["preference"]["lignes"] if l["code"] == "DD")
+    assert (ligne_dd["statut"], ligne_dd["montant"]) == ("CALCULE", 12000.0)
+    assert ligne_dd["composante_retenue"] == "specifique"
 
 
 @besoin_socle

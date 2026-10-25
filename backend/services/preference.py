@@ -65,14 +65,17 @@ def _colonne_de_la_position(
             and valeur.get("specifique") is not None
         ):
             # Droit composé (« 40% or 240c/kg ») : les deux composantes
-            # sortent ; le moteur refuse de liquider sans règle de départage
-            # au lieu de servir le seul ad valorem.
+            # sortent, avec la règle de départage que le socle porte (SARS,
+            # General Notes B.3, qui vaut pour chaque colonne). Sans règle, le
+            # moteur refuse de liquider au lieu de servir le seul ad valorem.
             col = {
                 "taux": float(valeur["taux"]),
                 "specifique": valeur["specifique"],
                 "compose": True,
                 "expression_brute": valeur.get("expression_brute") or "",
             }
+            if valeur.get("regle_composee"):
+                col["regle_composee"] = valeur["regle_composee"]
             if valeur.get("deduction_ad_valorem_pct") is not None:
                 col["deduction_ad_valorem_pct"] = float(valeur["deduction_ad_valorem_pct"])
             return col

@@ -36,7 +36,7 @@
     "verbatim_omc_2015": "3.19. […] They are based on a relationship between the f.o.b. import prices and reference prices. In other words: they are inversely proportional to import prices.",
     "verbatim_omc_2023": "Formula duties aim at ensuring that import prices be at least equal (i.e. higher or equal) to the reference price set by the authorities for each category of product. […] As their name indicates, formula duties are based on a formula that makes them inversely proportional to import prices.",
     "reference": "SARS, Schedule No. 1, General Notes, G (Abbreviations and symbols) note 53, C (Value for duty purposes) et B (Duty assessment) note 3 ; Schedule No. 1, Part 1, positions 1901.90.10, 2002.10.90, 2006.00.30, 2401.10 et 2401.20",
-    "portee": "scripts/build_socle.MOTIF_DEDUCTION_SARS et MOTIF_COMPOSE_SARS (socles ZAF, BWA, LSO, NAM, SWZ) : `deduction_ad_valorem_pct` et `assiette_valeur` (FOB) sur 5 positions par pays, au NPF et dans les colonnes EFTA, MERCOSUR et AfCFTA (20 expressions par pays) ; backend/services/calcul._net_de_deduction. Positions liquidables par pays : +3 (les trois formes « or », désormais tranchées par la B.3).",
+    "portee": "scripts/build_socle.MOTIF_DEDUCTION_SARS et MOTIF_COMPOSE_SARS (socles ZAF, BWA, LSO, NAM, SWZ) : `deduction_ad_valorem_pct` et `assiette_valeur` (FOB) sur 5 positions par pays, au NPF et dans les colonnes EFTA, MERCOSUR et AfCFTA (20 expressions par pays) ; backend/services/calcul._net_de_deduction. Positions liquidables par pays : +3 (les trois formes « or », désormais tranchées par la B.3). Le plafond de tout droit SARS « with a maximum of M% » (46 positions par pays) se prend sur la même valeur ; la colonne AfCFTA garde sa règle B.3 (backend/services/preference) ; le droit en rands s'arrondit au cent (B.2).",
     "texte_archive": "sources/SACU_formule_less.texte-extrait.txt",
     "sha256": "3185a4ebc79115e76be592ffbd850819f97953bad8b074e9c80621077f96faac"
   },
@@ -48,15 +48,16 @@
     "Conséquence pratique, à connaître : les prix de référence datent d'une époque où ils mordaient. Aux prix d'importation actuels (plusieurs R/kg pour les tomates préparées, plusieurs dizaines pour le tabac), le droit NPF de 2002.10.90 et de 2401.10 est nul, et celui des trois formes « or » est leur part ad valorem.",
     "Le plafond « with a maximum of M% » de ces lignes porte sur la même valeur en douane (FOB) que la déduction, non sur la valeur CIF. Il porte sur le droit net : appliqué au spécifique avant déduction, min(110c × q ; 37 % × V) − 80 % × V serait négatif dans tous les cas (au plus 37 % × V − 80 % × V), et le droit toujours nul.",
     "Sans valeur FOB, la ligne reste VALEUR_FOB_REQUISE : jamais la seule part spécifique.",
-    "Toute autre expression en « less » n'est pas liquidée (taux et part spécifique absents, motif en note) : hors tarif SARS, la lecture de G.53 ne vaut pas ; dans le tarif SARS, une unité autre que le kilo, un pourcentage écrit autrement (« 12.5% », « 80 % ») ou une part spécifique perdue à la collecte ne sont pas lus avec certitude. Sans ce garde-fou, le 80 de `rate_pct` serait servi à 80 % ad valorem."
+    "Toute autre expression en « less » n'est pas liquidée (taux et part spécifique absents, motif en note) : hors tarif SARS, la lecture de G.53 ne vaut pas ; dans le tarif SARS, une unité autre que le kilo, un pourcentage écrit autrement (« 12.5% », « 80 % ») ou une part spécifique perdue à la collecte ne sont pas lus avec certitude. Sans ce garde-fou, le 80 de `rate_pct` serait servi à 80 % ad valorem.",
+    "Séparateur de milliers : « 2 500c/kg » se relit sur le verbatim quand la part spécifique ouvre l'expression (formes « with a maximum » et « less »), comme pour la forme « or ».",
+    "Colonnes AfCFTA « X% or Yc/kg less N% » (1901.90.10, 2006.00.30, 2401.20) : backend/services/preference transmet désormais la règle B.3 que porte la colonne ; elles se liquident comme le NPF.",
+    "Le plafond des 46 positions « Yc/kg with a maximum of M% » sans déduction se prend lui aussi sur la valeur en douane (FOB) : `assiette_valeur` est posé sur tout droit plafonné. Sans valeur FOB, la ligne rend VALEUR_FOB_REQUISE.",
+    "B.2 : le droit de douane SARS liquidé en rands s'arrondit au cent le plus proche, la moitié comptant pour un cent entier."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Les General Notes ne définissent pas le mot « less » lui-même. Aucun texte de droit primaire ne l'énonce en toutes lettres : la lecture repose sur G.53, sur la cohérence des colonnes et sur les examens de l'OMC, qui sont des rapports du Secrétariat et non le tarif.",
     "Le plancher à zéro est une lecture (voir decisions), non une règle citée.",
-    "Le séparateur de milliers (« 2 500c/kg ») n'est relu sur le verbatim que pour la forme « or » ; aucune des cinq positions n'en porte aujourd'hui.",
-    "B.2 (arrondi au cent le plus proche) n'est pas appliquée ici : le moteur arrondit à quatre décimales, comme pour tous les droits.",
-    "Colonnes AfCFTA « X% or Yc/kg less N% » (1901.90.10, 2006.00.30, 2401.20) : le socle porte la règle B.3 et la déduction, mais backend/services/preference._colonne_de_la_position ne transmet pas `regle_composee` pour un composé. Ces colonnes restent donc REGLE_COMPOSEE_NON_ETABLIE sur la route ZLECAf, comme les autres composés « or » de la colonne AfCFTA (test_zlecaf_zaf_application.test_m). C'est un refus, pas une surestimation.",
-    "Le plafond des 46 positions « Yc/kg with a maximum of M% » sans déduction reste calculé sur la valeur CIF. Cela relève d'une autre correction."
+    "B.2 (arrondi au cent, la moitié comptant pour un cent entier) n'est appliquée qu'au droit de douane SARS liquidé en rands. Un montant dans une autre devise, les accises et les prélèvements nationaux gardent l'arrondi du moteur (quatre décimales)."
   ],
   "documents_archives": [
     {
