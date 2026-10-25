@@ -140,6 +140,7 @@ FAMILLES = {
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
+    "MID": "accise",  # MID levy, Excise Act s.3A (MU)
     "TVA": "tva",
     "PRCT": "post_tva",
     "WHR": "post_tva",
@@ -686,9 +687,23 @@ REGLES_COMPOSEES = {"higher": "LE_PLUS_ELEVE", "lower": "LE_MOINS_ELEVE"}
 #: Tarif SARS (SACU) : « 40% or 240c/kg ». La règle n'est pas dans la colonne mais
 #: dans les General Notes du Schedule No. 1, partie B, note 3 : chaque partie
 #: séparée par « or » est un taux complet, et s'applique « such rate of duty
-#: yielding the higher or highest amount of duty ». Seule la forme simple au kilo
-#: est retenue : « 500c/2u » (la paire) et « 55c/kg less 90% » restent non tranchés.
-MOTIF_COMPOSE_SARS = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*%\s*or\s*(\d{1,3}(?: \d{3})+|\d+(?:,\d+)?)c/kg\s*$")
+#: yielding the higher or highest amount of duty ». Seule la forme au kilo est
+#: retenue : « 500c/2u » (la paire) reste non tranché. « 55c/kg less 90% » est un
+#: taux complet lui aussi — voir MOTIF_DEDUCTION_SARS.
+MOTIF_COMPOSE_SARS = re.compile(
+    r"^\s*\d+(?:[.,]\d+)?\s*%\s*or\s*(\d{1,3}(?: \d{3})+|\d+(?:,\d+)?)c/kg"
+    r"(?:\s+less\s+\d+(?:,\d+)?%)?\s*$"
+)
+
+#: « 110c/kg less 80% with a maximum of 37% », « 10% or 55c/kg less 90% » : dans
+#: la colonne des taux, « % » signifie « per cent AD VALOREM » (General Notes,
+#: G.53), sur la « value for duty purposes » (C.). La part spécifique est donc
+#: diminuée de 80 % de la valeur en douane — et non de 80 % d'elle-même. La
+#: colonne AfCFTA le confirme : « 344c/kg less 34% with a maximum of 17,6% » est
+#: le NPF « 860c/kg less 85% with a maximum of 44% » multiplié par 0,4, terme à
+#: terme, ce qui n'est vrai que de cette lecture. Fiche
+#: SACU_formule_less_2026-10-25.json.
+MOTIF_DEDUCTION_SARS = re.compile(r"c/kg\s+less\s+(\d+(?:,\d+)?)%", re.I)
 
 
 def droit_compose_depuis_designation(designation, source):
@@ -856,6 +871,19 @@ def droits_depuis_liste(taxes, source_defaut):
         if specifique and row.get("rate_pct") is None:
             taux = None
         source_ligne = row.get("source") or source_defaut
+        # « 110c/kg less 80% » : sans sa déduction, la part spécifique surestime
+        # le droit de 80 % de la valeur. La déduction se conserve. Toute autre
+        # expression en « less » — hors tarif SARS, autre unité, autre écriture
+        # du pourcentage, part spécifique perdue à la collecte (le 80 de
+        # `rate_pct` serait alors servi à 80 %) — n'est pas liquidable.
+        deduction = MOTIF_DEDUCTION_SARS.search(brut) if specifique else None
+        deduction_ad_valorem = None
+        note = row.get("note")
+        if deduction and "sars.gov.za" in str(source_ligne):
+            deduction_ad_valorem = float(deduction.group(1).replace(",", "."))
+        elif re.search(r"\bless\b", brut, re.I):
+            taux, specifique, compose, plafond_ad_valorem = None, None, False, None
+            note = f"« {brut} » : la portée de « less » n'est pas établie pour cette forme ou cette source."
         compose_sars = (
             MOTIF_COMPOSE_SARS.match(brut) if compose and "sars.gov.za" in str(source_ligne) else None
         )
@@ -863,6 +891,11 @@ def droits_depuis_liste(taxes, source_defaut):
             # « 2 500c/kg » : la collecte a perdu le chiffre avant l'espace des
             # milliers (« 500c/kg ») ; la part spécifique se relit sur le verbatim.
             specifique = compose_sars.group(1).replace(" ", "") + "c/kg"
+        milliers = re.match(r"^\s*(\d{1,3}(?: \d{3})+)c/kg\b", brut) if specifique else None
+        if milliers and "sars.gov.za" in str(source_ligne):
+            # Même perte quand la part spécifique ouvre l'expression
+            # (« 2 500c/kg with a maximum of 96% », « … less 80% »).
+            specifique = milliers.group(1).replace(" ", "") + "c/kg"
         # « 40% + US$0.50/L » (Zimbabwe, 356 droits) ou « 15%+SCR5.13/kg »
         # (Seychelles, 5) : le « + » de la source rend les DEUX composantes
         # dues. Sans ce marqueur, le moteur liquidait la seule part ad valorem
@@ -880,7 +913,7 @@ def droits_depuis_liste(taxes, source_defaut):
                 taux,
                 row.get("base") or row.get("assiette"),
                 row.get("source") or source_defaut,
-                note=row.get("note"),
+                note=note,
                 specifique=specifique,
                 qualite=row.get("source_quality"),
                 classification=row.get("classification_source"),
@@ -889,6 +922,8 @@ def droits_depuis_liste(taxes, source_defaut):
         if plafond_ad_valorem is not None:
             out[-1]["plafond_ad_valorem_pct"] = plafond_ad_valorem
             out[-1]["expression_brute"] = brut
+        if deduction_ad_valorem is not None:
+            out[-1]["deduction_ad_valorem_pct"] = deduction_ad_valorem
         if cumulatif:
             out[-1]["cumulatif"] = True
             out[-1]["expression_brute"] = brut
@@ -1725,6 +1760,46 @@ def _redevance_informatique_cmr(positions):
                 "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
                 "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
             )
+
+
+#: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
+#: MRA du 01.10.2026), en roupies par unité ; fiche MUS_mid_levy_2026-10-25.json.
+MID_MUS = {
+    "27011100": (0.30, "kg"), "27011200": (0.30, "kg"), "27011900": (0.30, "kg"),
+    "27101931": (0.30, "litre"), "27101939": (0.30, "litre"), "27101969": (0.30, "litre"),
+    "27111310": (0.30, "kg"), "27111320": (0.30, "kg"), "27111390": (0.30, "kg"),
+}
+
+
+def _mid_levy_maurice(positions, compteurs):
+    """La MID levy entre dans l'assiette de la TVA (VAT Act 1998, s.13 (c))."""
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        mid = next((d for d in droits if d.get("code") == "MID"), None)
+        if not mid:
+            continue
+        _compter_ligne(mid, compteurs, -1)
+        if code in MID_MUS:
+            montant, unite = MID_MUS[code]
+            brut = f"{montant * 100:g} cents per {unite}"
+            mid.update(taux=None, assiette="xQTE", assiette_origine="droit_specifique", specifique={
+                "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                "unite_quantite": unite, "brut": brut})
+            mid["note"] = f"Excise Act s.3A et First Schedule, Part II : « {brut} »."
+        elif mid.get("taux") == 0:
+            # Montant nul quelle que soit l'assiette : CIF ne bloque pas la TVA.
+            mid.update(assiette="CIF", assiette_origine="regle_de_pays")
+            mid["note"] = "Excise Act s.3A et First Schedule, Part II : MID levy à 0."
+        _compter_ligne(mid, compteurs, 1)
+        for d in droits:
+            if d.get("famille") == "tva" and d.get("assiette") == "CIF+DD+EXC":
+                _compter_ligne(d, compteurs, -1)
+                d.update(assiette="CIF+DD+EXC+MID", assiette_origine="regle_de_pays")
+                d["note"] = (
+                    "VAT Act 1998 s.13 : valeur en douane + droit de douane + accise + MID levy ; "
+                    "les CO2 et energy levies ne sont pas collectés."
+                )
+                _compter_ligne(d, compteurs, 1)
 
 
 #: Mauritanie : droits d'accises à l'importation (CGI, art. 263, rédaction de la loi
@@ -3767,6 +3842,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         prefs[regime]["cumulatif"] = True
                     if d.get("plafond_ad_valorem_pct") is not None:
                         prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
+                    if d.get("deduction_ad_valorem_pct") is not None:
+                        prefs[regime]["deduction_ad_valorem_pct"] = d["deduction_ad_valorem_pct"]
                     compteurs["preferentiels_specifiques"] += 1
                 elif d["taux"] is None and d.get("specifique"):
                     prefs[regime] = {
@@ -3784,6 +3861,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     if d.get("plafond_ad_valorem_pct") is not None:
                         prefs[regime]["plafond_ad_valorem_pct"] = d["plafond_ad_valorem_pct"]
                         prefs[regime]["expression_brute"] = d.get("expression_brute") or ""
+                    if d.get("deduction_ad_valorem_pct") is not None:
+                        prefs[regime]["deduction_ad_valorem_pct"] = d["deduction_ad_valorem_pct"]
                     compteurs["preferentiels_specifiques"] += 1
                 elif d["taux"] is None and d.get("note"):
                     # UN TAUX ABSENT DOIT DIRE POURQUOI. La source mauricienne
@@ -3824,6 +3903,16 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                     "montant": None,
                     "motif": "expression non lisible",
                 }
+            if (
+                d.get("deduction_ad_valorem_pct") is not None
+                or d.get("plafond_ad_valorem_pct") is not None
+            ):
+                # « less 80% » et « with a maximum of 96% » se prennent sur la
+                # valeur en douane : celle que l'assiette du pays donne au droit
+                # (FOB en SACU), retenue avant que la part spécifique ne fasse
+                # passer le droit à la quantité. Les colonnes préférentielles
+                # s'y rapportent aussi.
+                d["assiette_valeur"] = d["assiette"]
             if d["specifique"] and d["taux"] is None and not d.get("assiette_non_traduite"):
                 # Une assiette que la source décrit sans qu'on sache la traduire
                 # (« PN(KG)/100 EXCES », « QCI ») reste non traduite : la forcer
@@ -4004,6 +4093,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _sans_redevance_informatique_gnq(positions, compteurs)
     if iso in _regles_cedeao_hors_uemoa()[0]:
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
+    if iso == "MUS":
+        _mid_levy_maurice(positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
     if iso == "LBR":

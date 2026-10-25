@@ -2,7 +2,7 @@
 
 Le socle servait 5 619 positions SH6 issues d'une moyenne WITS/UNCTAD-TRAINS,
 SANS AUCUNE désignation. Le tarif national (Customs Tariff Schedules, HS 2022,
-807 pages, mra.mu) en porte 6 941 à huit chiffres, avec leur libellé, leur unité
+810 pages, mra.mu) en porte 6 955 à huit chiffres, avec leur libellé, leur unité
 statistique, quinze colonnes de taux et l'organisme délivrant le document exigé.
 
 Ces tests tiennent les pièges qui ont été relevés en lisant le document, et les
@@ -83,18 +83,19 @@ def test_l_accise_entre_dans_l_assiette_de_la_tva(socle):
     """VAT Act 1998, s.13 : valeur en douane + droit de douane ET ACCISE.
 
     Le profil générique posait « CIF+DD », qui omet l'accise : la TVA aurait été
-    sous-facturée sur chaque position qui en porte une.
+    sous-facturée sur chaque position qui en porte une. Là où la MID levy
+    s'applique (chapitre 27), elle y entre aussi (s.13 (c)).
     """
     tva = [
-        d
+        (d, any(x.get("code") == "MID" for x in p["droits"]))
         for p in socle["positions"].values()
         for d in p.get("droits") or []
         if d.get("code") == "TVA"
     ]
     assert tva
-    assiettes = {d.get("assiette") for d in tva}
-    assert assiettes == {"CIF+DD+EXC"}, assiettes
-    assert {d.get("assiette_origine") for d in tva} == {"source"}
+    assert {d.get("assiette") for d, mid in tva if not mid} == {"CIF+DD+EXC"}
+    assert {d.get("assiette_origine") for d, mid in tva if not mid} == {"source"}
+    assert {d.get("assiette") for d, mid in tva if mid} == {"CIF+DD+EXC+MID"}
 
 
 def test_l_assiette_de_l_accise_vient_de_l_excise_act_et_jamais_de_memoire(socle):
@@ -171,15 +172,22 @@ def test_le_marqueur_d_exoneration_de_tva_est_lu_comme_tel(crawl):
 
 def test_une_ligne_aux_colonnes_decalees_est_refusee_et_non_devinee(crawl):
     """La TVA mauricienne est ad valorem ou « EXM », jamais un taux spécifique :
-    une cellule de TVA portant « 30 cents per kg » dénonce un décalage."""
+    une cellule de TVA portant « 30 cents per kg » dénonce un décalage. La
+    colonne « Levy » du chapitre 27 étant lue, le tarif n'en contient plus ;
+    une ligne décalée garderait son libellé, sans taux."""
     decalees = [
         p
         for p in crawl["sub_positions"]
         if "COLONNES_DECALEES_TAUX_NON_LUS" in p["source_gaps"]
     ]
-    assert decalees, "le document en contient"
     assert all(not p["taxes"] and not p["preferential_rates"] for p in decalees)
     assert all(p["designation"]["en"] for p in decalees), "le libellé, lui, est gardé"
+    assert all(
+        t.get("rate_pct") is not None or t.get("raw_value", "").upper().replace(" ", "") == "EXM"
+        for p in crawl["sub_positions"]
+        for t in p["taxes"]
+        if t["code"] == "TVA"
+    ), "aucune TVA spécifique : pas de colonne décalée"
 
 
 def test_les_douze_regimes_preferentiels_sont_portes_zlecaf_comprise(crawl):

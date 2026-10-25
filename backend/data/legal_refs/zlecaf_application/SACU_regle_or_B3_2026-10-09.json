@@ -25,7 +25,7 @@
   ],
   "ce_que_cela_ne_tranche_pas": [
     "« 30% or 500c/2u » (27 positions de chaussures, chapitre 64) : la B.3 s'applique, mais la part spécifique est due par paire (« 2u ») et la note B.4 exclut la proportionnalité pour l'unité « u » ; le moteur ne sait pas encore demander une quantité en paires. Ces positions restent non liquidées.",
-    "« 10% or 55c/kg less 90% » (3 positions : 1901.90.10, 2006.00.30, 2401.20) : la portée de « less N% » n'est pas lue. Ces positions restent non liquidées."
+    "« 10% or 55c/kg less 90% » (3 positions : 1901.90.10, 2006.00.30, 2401.20) : la portée de « less N% » n'est pas lue. Ces positions restent non liquidées. (Tranché depuis : fiche SACU_formule_less_2026-10-25.json.)"
   ],
   "documents_archives": [
     {
