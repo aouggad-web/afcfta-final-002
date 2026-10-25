@@ -1,0 +1,44 @@
+{
+ "schema_version": 1,
+ "objet": "Mauritanie : droits d'accises à l'importation (CGI, art. 258 à 266 bis, rédaction de la loi de finances rectificative 2025) et produits pétroliers de la loi de finances rectificative 2026",
+ "destination_iso3": "MRT",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : loi n° 2025-040 du 21 août 2025 portant loi de finances rectificative pour 2025 et loi de finances rectificative pour 2026, publiées par le Ministère des Finances (finances.gov.mr), couche texte",
+ "source": {
+  "url": "https://finances.gov.mr/sites/default/files/2025-08/LOI%20DE%20FINANCES%20RECTIFICATIVE%20POUR%20L%E2%80%99ANN%C3%89E%202025.pdf",
+  "institution": "Ministère des Finances de Mauritanie"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/MRT_LFR_2025.pdf",
+   "sha256": "cc0455418dce5c0ffea59f3f5644976ff4393a92c8dd52c2f8b8c42e44eb74d7"
+  },
+  {
+   "fichier_archive": "sources/MRT_LFR_2026.pdf",
+   "sha256": "7f41cb8f67b8fc6af16551aac7d8861220089272267796a2cab516109bfbce17"
+  }
+ ],
+ "regle": {
+  "valeur": "Ligne EXC (droits d'accises) avant la TVA. Ad valorem sur la valeur en douane majorée des droits et taxes d'entrée (CIF+DD+RS+PC, et TLC pour le tabac) : cigares et cigarillos (2402100000), cigarettes (2402200000) 47 % + 1,6 MRU le paquet de 20 ; tabacs (24.01, 24.03) 80 % ; bières (2203001000, 2203009000, 2206001000) 225 % ; vins ordinaires (2204210000, 2204220000, 2204291000, 2204299000, 2205100000, 2205900000, 2206009100, 2206009900) 239 % ; vins mousseux (2204100000) 259 % ; whisky, vodka, rhum, gin, eaux-de-vie (2208201000 à 2208600000) 324 % ; emballages plastiques (3923210000, 3923290000, 3923900000) 35 % ; boissons énergisantes ou sucrées (2202991000, 2202999000) et jus de fruit (20.09) 30 % ; confiseries (17.04, 1806310000, 1806321000, 1806329000, 1806901000) et pâtisseries sucrées (1905310000, 1905320000, 1905900000) 20 %. Spécifiques en MRU : super carburant et essence d'auto ordinaire 9,98/l, gasoil 6,52/l, carburéacteur 2,16/l, fuel-oil lourd I 0,71/l (LFR 2026) ; essence d'aviation 1,33/l, fuel-oil léger et fuel domestique 0,45/l, pétrole lampant 1,86/l, huiles pour freins, huiles de moteur à 2 temps et autres huiles lubrifiantes 3,42/l ; or (7108131000, 7108139000) 100 MRU le gramme. Ligne TLC : taxe de recherche et de lutte contre le cancer, 10 % de la valeur en douane des produits du chapitre 24. Produits pétroliers de la LFR 2026 : redevance statistique à 0 ; droit de douane de 10 % pour le super, l'essence et le gasoil.",
+  "reference": "CGI, art. 258, 260, 261, 262, 263, 266 et 266 bis (loi de finances rectificative 2025) ; loi de finances rectificative 2026, art. 3.2.1",
+  "verbatim_art262": "1) La base d'imposition de la taxe est constituée : à l'importation, par la valeur en douane majorée des droits et taxes dus à l'entrée ; [...] 2) La taxe sur la valeur ajoutée et les droits d'accises sont exclus de la base d'imposition.",
+  "verbatim_art263": "Les tarifs des droits d'accises sont les suivants : Produits pétroliers : Essence d'aviation 1,33 UM/L ; Essence d'auto ordinaire 7,07 UM/L ; Super carburant 7,08 UM/L ; Fuel-oil léger 0,45 UM/L ; Fuel-oil lourd I 0,45 UM/L ; Huiles Pour freins hydrauliques 3,42 UM/L ; Huiles de moteur à 2 temps 3,42 UM/L ; Autres huiles 3,42 UM/L ; GASOIL 3,38 UM/L ; Pétrole Lampant 1,86 UM/L ; Fuel domestique 0,45 UM/L. Tabacs : 1° Cigare et Cigarillos, de la position tarifaire 2402100000 : 47% + 1,6 Ouguiyas le Paquet de 20 cigarettes ; 2° Cigarettes, de la position tarifaire 2402200000 : 47% + 1,6 Ouguiyas le Paquet de 20 cigarettes ; 3° Tabacs non écôtés, de la position tarifaire 2401100000 : 80% ; 4° Tabacs totalement ou partiellement écôtés, de la position tarifaire 2401200000 : 80% ; 5° Déchets de tabac, de la position tarifaire 2401300000 : 80% ; 6° Autres tabacs, des positions 2403 et 2404 : 80%. Alcools : 1° Bières, des positions tarifaires 2203001000, 2203009000 et 2206001000 : 225% ; 2° Vins ordinaires, des positions tarifaires 2204210000, 2204220000, 2204291000, 2204299000, 2205100000, 2205900000, 2206009900 et 2206009100 : 239% ; 3° Vins mousseux et champagne, de la position tarifaire 2204100000 : 259% ; 4) Whisky, Vodka, Rhum, Gin, Eaux de vie : 324%. Emballages en plastiques rigides, des positions tarifaires 3923210000, 3923290000 et 3923900000 : 35% ; Boissons énergisantes ou sucrées, Boissons des positions du 2202991000 et 2202999000 : 30% ; Confiseries 1704 et 1806310000, 1806321000, 1806329000, 1806901000 : 20% ; Pâtisseries additionnées du sucre de la position, 1905310000, 1905320000, 1905900000 : 20% ; Jus de fruit de la position 2009 : 30% ; Or, des positions tarifaires 7108121000, 7108131000, 7108131000, 7108139000 : 100 Ouguiyas par gramme",
+  "verbatim_art266": "Les droits d'accises sur les marchandises importées sont liquidées, au moment de l'importation par le service des douanes, dans les mêmes conditions que les droits et taxes de douane.",
+  "verbatim_art266_bis": "L'importation des produits du chapitre 24 du Code Général de la Douane (tabacs et succédanés de tabac fabriqués), est soumise à la taxe de recherche et de lutte contre le cancer, instituée par la loi n° 2015-003 portant loi de finances pour l'année 2015, au taux de 10% de la valeur en douane.",
+  "verbatim_lfr2026_art3_2_1": "a- L'article 263 de la Loi de Finances 2026.001 du 12 janvier 2026 portant Loi de Finances pour l'année 2026 fixant les droits d'accises sur les produits pétroliers est modifié pour les positions tarifaires ci-dessous ainsi qu'il suit : 2710124000 Super Carburant 9,98 ; 2710125000 Essence d'auto ordinaire 9,98 ; 2710192100 Gasoil 6,52 ; 2710191100 Carburéacteur (Kérosène) 2,16 ; 2710192400 Fuel 0,71. b - Les produits repris au tableau ci-dessus sont exemptés de la Redevance Statistique (RS). Le Super Carburant, l'Essence d'auto ordinaire et le Gasoil sont soumis à un droit de douanes (DD) d'un taux de 10%. Pour le Carburéacteur (Kérosène) et le fuel les taux de droit de douanes restent inchangés.",
+  "portee": "scripts/build_socle.py, ACCISES_MRT, ACCISES_MRT_SPECIFIQUES, PETROLE_SANS_RS_MRT, PETROLE_DD_10_MRT et _accises_mauritanie ; la TVA (assiette CIF+TOUS_SAUF_TVA) comprend les lignes EXC et TLC."
+ },
+ "decisions": [
+  "Le document de la LFR 2025 met en regard « Dispositions en vigueur » et « Nouvelles Modifications » : seule la seconde colonne est retenue (chapitre « Droits d'accises », qui remplace la « taxe de consommation » ; eaux minérales, produits laitiers, fer à béton, ciment, cartes de recharge et téléphones n'y figurent plus).",
+  "Produits pétroliers : les cinq positions de la LFR 2026 (art. 3.2.1, août 2026) portent les montants de cette loi, qui remplacent ceux de la LFI 2026 (9,45, 9,45, 5,89, 2,16, 0,71) et de l'art. 263 de 2025 ; les autres gardent ceux de l'art. 263. « Autres huiles » est lu comme 2710193990 (autres huiles lubrifiantes) ; 2710193100 (huiles destinées à être mélangées) et 2710193300 (graisses) ne sont pas repris.",
+  "Spiritueux : « Whisky, Vodka, Rhum, Gin, Eaux de vie » sans code ; repris 2208201000 (cognac), 2208209000, 2208300000, 2208400000, 2208500000 et 2208600000 ; liqueurs (2208700000) et « autres » (2208900000) non repris.",
+  "Assiette ad valorem : la valeur en douane et les droits et taxes d'entrée servis par le socle (DD, RS, PC, et TLC pour le tabac).",
+  "Non repris : 2404 et 7108121000, codes absents du tarif 2021 servi (le socle porte 7108120000)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les exonérations de l'art. 261 (carburant destiné à l'aviation, produits livrés aux navires de haute mer, aux bateaux de pêche et aux avions commerciaux, alcools médicamenteux ou de laboratoire) : le montant est servi sans les distinguer.",
+  "L'acompte d'impôt perçu en douane (« ex IMF douanes », 2 % de la valeur en douane, déductible de l'IBAP ou de l'IS) et le prélèvement « PSC » de 1 % cité par la LFI 2026 pour les smartphones, dont aucun texte consulté ne donne le fondement : non servis.",
+  "La fiscalité saisonnière des légumes (LFI 2026, art. 3.2.4), les téléphones 85.17.13 et 85.17.14 (art. 3.2.5) et le fil machine (LFI 2025, art. 3.2.2) : modifications du tarif, hors de ce sujet."
+ ]
+}

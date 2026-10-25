@@ -131,6 +131,8 @@ except ImportError:
     FAOSTAT_AVAILABLE = False
 from .calcul import router as calcul_router
 from .calcul import router_couverture as calcul_couverture_router
+from .calcul_export import router as calcul_export_router
+from .calcul_export import router_couverture as calcul_export_couverture_router
 from .consultation import router as consultation_router
 
 try:
@@ -466,6 +468,15 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _calculator_entitlement,
     )
     api_router.include_router(calcul_couverture_router, tags=["Calculateur"], dependencies=_auth)
+    # Droits de sortie : même socle, même moteur, et le même quota de calculs.
+    api_router.include_router(
+        calcul_export_router,
+        tags=["Calculateur export"],
+        dependencies=_auth + _calculator_entitlement,
+    )
+    api_router.include_router(
+        calcul_export_couverture_router, tags=["Calculateur export"], dependencies=_auth
+    )
     # Consultation du tarif, servie par le même socle que le calcul.
     api_router.include_router(consultation_router, tags=["Consultation"], dependencies=_auth)
     if TRADE_DATA_AVAILABLE:

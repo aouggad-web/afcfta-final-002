@@ -1007,6 +1007,83 @@ def _unites_des_quantites_tun(rows, droits, qcs):
                 d["specifique"] = lu
 
 
+#: Droit unique de sortie ivoirien (DUS), par début de code : ce que la
+#: procédure de dédouanement de la DGD (docs_officiels/PROCEDURE-DEDOUANEMENT-
+#: IMPORT-EXPORT-MARITIME.pdf, « Liste des marchandises soumises au DUS »)
+#: établit au-delà du chiffre que le tarif publie sans unité. « Les prix CAF et
+#: les taux sont fixés par le Conseil des ministres avant le début de chaque
+#: campagne » : le prix CAF de référence n'est pas collecté, aucune de ces
+#: assiettes n'est donc liquidable, sauf le karité, droit spécifique.
+#: (préfixes, taux retenu ou None, spécifique, note)
+DUS_CIV = [
+    # Café et ses extraits (2101.11/12) ; pas la chicorée (2101.30), que la
+    # liste DGD ne nomme pas.
+    (("0901", "210111", "210112"), "taux", None,
+     "Procédure DGD : « CAFE (TAUX = 5% DU PRIX CAF DE REFERENCE) ». Le prix CAF de référence est fixé en "
+     "Conseil des ministres à chaque campagne : non collecté."),
+    (("1801", "1802", "1803", "1804", "1805", "1806"), "taux", None,
+     "Procédure DGD : « CACAO (TAUX = 14.6 % DU PRIX CAF DE REFERENCE POUR LA FEVE) ». Le prix CAF de "
+     "référence est fixé en Conseil des ministres à chaque campagne : non collecté."),
+    (("1207991",), None, "10 FCFA/kg",
+     "Procédure DGD : « GRAINE DE KARITE 10 F / KG » — droit spécifique ; le tarif du 27/03/2026 publie « 10 » "
+     "sans unité."),
+    (("0801",), None, None,
+     "Procédure DGD : « NOIX DE CAJOU (PAR CAMPAGNE) » — taux et prix fixés à chaque campagne ; le tarif du "
+     "27/03/2026 publie « 10 » sans unité."),
+    (("080270",), None, None,
+     "La procédure DGD publie « NOIX DE COLAS 10,2 F / KG », le tarif du 27/03/2026 « 14 » sans unité : les "
+     "deux ne s'accordent pas."),
+    (("44",), "taux", None,
+     "Procédure DGD : « BOIS PAR CUBAGE ET ESPECE » — l'assiette (cubage et espèce) n'est pas collectée."),
+]
+
+
+def droits_export_du_fichier(iso, donnees):
+    """Droits et taxes à l'EXPORTATION, par code national : ``{code: [droits]}``.
+
+    Deux collectes en portent ligne par ligne : la Tunisie (``taxes_export``,
+    Tarif Web) et la Côte d'Ivoire (colonne DUS du tarif SYDAM). Le code de la
+    source est gardé tel quel : « DD/PET.BR » est un droit de sortie, pas le
+    droit de douane de l'import."""
+    source = donnees.get("source") or donnees.get("source_name") or ""
+    sortie = {}
+    if iso == "TUN":
+        for ligne in donnees.get("sub_positions") or []:
+            rows = [r for r in ligne.get("taxes_export") or [] if isinstance(r, dict)]
+            code = nettoyer_code(ligne.get("hs_code"))
+            if not rows or not code:
+                continue
+            droits = droits_depuis_liste(rows, source)
+            _unites_des_quantites_tun(rows, droits, ligne.get("qcs"))
+            for row, d in zip(rows, droits):
+                d.update(code=str(row.get("code")), famille="export")
+            # Le moteur liquide dans l'ordre servi : la RPD, assise sur la somme
+            # des autres droits (« SOMME D.T »), vient en dernier — comme à
+            # l'import (`_ordre_tunisie`) ; sinon sa base serait nulle.
+            droits.sort(key=lambda d: str(d.get("assiette") or "").startswith("SOMME"))
+            sortie[code] = [{k: v for k, v in d.items() if v is not None} for d in droits]
+    elif iso == "CIV":
+        for ligne in donnees.get("positions") or []:
+            code = nettoyer_code(ligne.get("code_clean"), ligne.get("hs_code"), ligne.get("code"))
+            for row in ligne.get("taxes_detail") or []:
+                if not isinstance(row, dict) or row.get("tax_code") != "DUS" or not code:
+                    continue
+                regle = next((r for r in DUS_CIV if code.startswith(r[0])), None)
+                taux = lire_taux(row.get("rate"))
+                note = "Assiette « variable » au tarif : non établie."
+                specifique = None
+                if regle:
+                    _, garde, brut, note = regle
+                    taux = taux if garde == "taux" else None
+                    specifique = lire_specifique(brut) if brut else None
+                d = _droit("DUS", row.get("tax_name") or "Droit Unique de Sortie", taux, None, source, note=note)
+                d.update(code="DUS", famille="export")
+                if specifique:
+                    d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
+                sortie.setdefault(code, []).append({k: v for k, v in d.items() if v is not None})
+    return sortie
+
+
 def lignes_du_fichier(donnees, regimes=None, compteurs=None):
     """Rendre (code, designation, unite, droits_bruts) pour les six schémas."""
     source_defaut = donnees.get("source") or donnees.get("source_name") or ""
@@ -1646,6 +1723,94 @@ def _redevance_informatique_cmr(positions):
                 "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
                 "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
             )
+
+
+#: Mauritanie : droits d'accises à l'importation (CGI, art. 263, rédaction de la loi
+#: de finances rectificative 2025 ; produits pétroliers de l'art. 3.2.1 de la loi de
+#: finances rectificative 2026). Fiche MRT_accises_2026-10-25.json.
+#: Ad valorem : (positions, taux %, cumul spécifique en MRU par paquet de 20 ou None).
+ACCISES_MRT = (
+    (("2402100000", "2402200000"), 47.0, 1.6),
+    (("2401", "2403"), 80.0, None),
+    (("2203001000", "2203009000", "2206001000"), 225.0, None),
+    (("2204210000", "2204220000", "2204291000", "2204299000", "2205100000", "2205900000", "2206009100",
+      "2206009900"), 239.0, None),
+    (("2204100000",), 259.0, None),
+    (("2208201000", "2208209000", "2208300000", "2208400000", "2208500000", "2208600000"), 324.0, None),
+    (("3923210000", "3923290000", "3923900000"), 35.0, None),
+    (("2202991000", "2202999000", "2009"), 30.0, None),
+    (("1704", "1806310000", "1806321000", "1806329000", "1806901000", "1905310000", "1905320000",
+      "1905900000"), 20.0, None),
+)
+#: Spécifiques : (positions, MRU, unité de quantité).
+ACCISES_MRT_SPECIFIQUES = (
+    (("2710123000",), 1.33, "l"),
+    (("2710124000", "2710125000"), 9.98, "l"),
+    (("2710192100",), 6.52, "l"),
+    (("2710191100",), 2.16, "l"),
+    (("2710192400",), 0.71, "l"),
+    (("2710192200", "2710192300"), 0.45, "l"),
+    (("2710191200",), 1.86, "l"),
+    (("2710193200", "2710193910", "2710193990"), 3.42, "l"),
+    (("7108131000", "7108139000"), 100.0, "g"),
+)
+#: LFR 2026, art. 3.2.1 b) : produits exemptés de la RS ; DD de 10 % sur trois d'entre eux.
+PETROLE_SANS_RS_MRT = ("2710124000", "2710125000", "2710192100", "2710191100", "2710192400")
+PETROLE_DD_10_MRT = ("2710124000", "2710125000", "2710192100")
+
+
+def _accises_mauritanie(positions, compteurs):
+    """Mauritanie : droits d'accises (CGI, art. 263) et taxe de lutte contre le cancer
+    (art. 266 bis), avant la TVA. Assiette des accises ad valorem (art. 262) : valeur en
+    douane majorée des droits et taxes dus à l'entrée, TVA et accises exclues."""
+    source = "CGI de Mauritanie, art. 263 (loi de finances rectificative 2025)"
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        if code in PETROLE_SANS_RS_MRT:
+            for d in droits:
+                if d.get("code") == "RS":
+                    d["taux"] = 0.0
+                    d["note"] = "Loi de finances rectificative 2026, art. 3.2.1 b) : exempté de la redevance statistique."
+                if d.get("code") == "DD" and code in PETROLE_DD_10_MRT:
+                    d["taux"] = 10.0
+                    d["note"] = "Loi de finances rectificative 2026, art. 3.2.1 b) : droit de douane de 10 %."
+        lignes = []
+        if code.startswith("24"):
+            lignes.append({"code": "TLC", "code_source": "TLC", "famille": famille("TLC"),
+                           "libelle": "Taxe de recherche et de lutte contre le cancer", "taux": 10.0,
+                           "specifique": None, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                           "source": "CGI de Mauritanie, art. 266 bis (loi de finances rectificative 2025)",
+                           "note": "10 % de la valeur en douane des produits du chapitre 24 importés."})
+        base = {"code": "EXC", "code_source": "DA", "famille": famille("EXC"), "libelle": "Droits d'accises"}
+        regle = next((r for r in ACCISES_MRT if code.startswith(r[0])), None)
+        if regle:
+            _, taux, paquet = regle
+            assiette = "CIF+DD+RS+PC+TLC" if lignes else "CIF+DD+RS+PC"
+            ligne = {**base, "taux": taux, "specifique": None, "assiette": assiette,
+                     "assiette_origine": "regle_de_pays", "source": source,
+                     "note": "Art. 262 : valeur en douane majorée des droits et taxes dus à l'entrée, hors TVA "
+                             "et accises."}
+            if paquet:
+                brut = f"{taux:g} % + {paquet:g} Ouguiya le paquet de 20 cigarettes".replace(".", ",")
+                ligne.update(cumulatif=True, expression_brute=brut, specifique={
+                    "montant": paquet, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                    "unite_quantite": "paquet de 20 cigarettes", "brut": brut})
+            lignes.append(ligne)
+        regle = next((r for r in ACCISES_MRT_SPECIFIQUES if code.startswith(r[0])), None)
+        if regle:
+            _, montant, unite = regle
+            brut = f"{montant:g} MRU/{unite}".replace(".", ",")
+            lignes.append({**base, "taux": None, "specifique": {
+                "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                "unite_quantite": unite, "brut": brut}, "assiette": "xQTE", "assiette_origine": "droit_specifique",
+                "source": "Loi de finances rectificative 2026, art. 3.2.1 a)" if code in PETROLE_SANS_RS_MRT
+                else source,
+                "note": f"{brut} à l'importation."})
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        for ligne in lignes:
+            droits.insert(rang, ligne)
+            rang += 1
+            _compter_ligne(ligne, compteurs, 1)
 
 
 def _regles_cedeao_hors_uemoa():
@@ -3845,6 +4010,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ait_malawi(positions, compteurs)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
+    if iso == "MRT":
+        _accises_mauritanie(positions, compteurs)
     if iso == "GNQ":
         _sans_redevance_informatique_gnq(positions, compteurs)
     if iso in _regles_cedeao_hors_uemoa()[0]:
@@ -3943,6 +4110,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
     # Les passes par pays (prélèvements, accises) ajoutent des familles après la
     # lecture : la couverture se lit sur ce qui est servi.
+    # Droits de sortie : servis à part (`droits_export`), jamais mêlés aux droits
+    # de l'importation qu'ils ne concernent pas.
+    longueur_position = CLE_DE_CONTROLE_SUFFIXE.get(iso)
+    for code, droits in droits_export_du_fichier(iso, donnees).items():
+        if longueur_position and len(code) in (longueur_position, longueur_position + 1):
+            code = code.zfill(longueur_position + 1)[:longueur_position]
+        if code in positions:
+            positions[code]["droits_export"] = droits
+            compteurs["positions_export"] = compteurs.get("positions_export", 0) + 1
     familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())

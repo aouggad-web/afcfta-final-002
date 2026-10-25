@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-25T15:30:15.292335+00:00",
+  "construit_le": "2026-10-25T20:11:07.113478+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -230,7 +230,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CIV_tariffs.json",
       "source_sha256": "5126005ea179b89edb079dbf21461b67bec70234205447f26df61da17eacef2a",
-      "socle_sha256": "12ecb55eb0710c990aaefb217f6eab21b2d183d6269891e1297c47e22079a6e2",
+      "socle_sha256": "e9fbcf5d95d4d3be4d80abca1509c2f705ea35b003276bea2fe59550fbe2b223",
       "collecte": "2026-10-10T15:57:51.291346+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -262,7 +262,8 @@
         "interdictions": 0,
         "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 0
+        "classification_estimee": 0,
+        "positions_export": 97
       }
     },
     "CMR": {
@@ -1167,10 +1168,11 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MRT_tariffs.json",
       "source_sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
-      "socle_sha256": "54567896de136961387af40610f02b4e07873bfc6ff0118b7308c8e839787ba3",
+      "socle_sha256": "66498a3f8fcedf561ff003a48dfc37e9d8b0fb74e0157209bdd731be05ae7bc1",
       "collecte": "2026-09-18T00:00:00+00:00",
       "etat": "COMPLET",
       "familles": [
+        "accise",
         "autre",
         "communautaire",
         "droit",
@@ -1178,8 +1180,8 @@
       ],
       "compteurs": {
         "positions": 6129,
-        "droits": 24516,
-        "droits_liquidables": 24516,
+        "droits": 24623,
+        "droits_liquidables": 24623,
         "positions_liquidables": 6129,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
@@ -1188,10 +1190,10 @@
         "taux_indisponibles": 0,
         "assiettes_source": 0,
         "assiettes_fichier": 24516,
-        "assiettes_table": 0,
+        "assiettes_table": 107,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
-        "droits_specifiques": 0,
+        "droits_specifiques": 14,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
@@ -1795,7 +1797,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TUN_tariffs.json",
       "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
-      "socle_sha256": "0b7f9a8ce43fa6b8156dd6cd5f46d9adc1999dec46c5ca4453b69c5cd7982026",
+      "socle_sha256": "faa1652a8df4ca31959309fdf51e8803bdb4dad5bd95997b4b85acdc04d268f8",
       "collecte": "2026-08-30",
       "etat": "PARTIEL",
       "familles": [
@@ -1826,7 +1828,8 @@
         "interdictions": 0,
         "droits_absents_completes": 1,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 0
+        "classification_estimee": 0,
+        "positions_export": 17530
       }
     },
     "TZA": {
@@ -2064,7 +2067,7 @@
       "ZWE"
     ],
     "positions": 370215,
-    "droits": 1244394,
-    "droits_liquidables": 1210009
+    "droits": 1244501,
+    "droits_liquidables": 1210116
   }
 }
