@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Tarif douanier national de Maurice — Customs Tariff Schedules (Integrated Tariff).
 
-Source : https://www.mra.mu/download/TariffInf130826.pdf
-        807 pages, HS 2022, « As at 13 August 2026 », publié par la MRA Customs.
+Source : https://www.mra.mu/download/TariffInf011026.pdf
+        810 pages, HS 2022, « As at 01 October 2026 », publié par la MRA Customs.
 
 Remplace la moyenne SH6 WITS/UNCTAD-TRAINS qui servait 5 619 positions SANS
 AUCUNE désignation. Le tarif national porte les codes à huit chiffres, leur
@@ -66,16 +66,16 @@ QUATRE PIÈGES DU DOCUMENT, tous relevés en le lisant.
    sont donc repérées par rapport à LA POSITION RÉELLE DU CODE, et l'organisme
    est pris comme la dernière cellule non vide au-delà des taux.
 
-4. UN TAUX SPÉCIFIQUE REPLIÉ SUR DEUX LIGNES FAIT SCINDER SA COLONNE, et tout
-   ce qui suit se décale d'un cran : sur 2701.11.00 (anthracite) on lit
-   « 0 | 0 | 30 cents per kg | 15 » là où l'on attend
-   « General | Excise | VAT | COMESA I ». Appliquer le plan facturerait
-   « 30 cents per kg » de TVA et 15 % de préférence COMESA.
-   Ces lignes sont reconnues par une règle tirée de la source elle-même : la
-   TVA mauricienne est ad valorem (page 12 : « % | percent ad valorem ») ou
-   porte « EXM » — jamais un taux spécifique. Une cellule de TVA qui porte
-   « 30 cents per kg » dénonce donc le décalage. Ces positions sont émises SANS
-   TAUX et signalées, jamais devinées.
+4. LES PAGES DU CHAPITRE 27 ONT UNE COLONNE DE PLUS. Leur en-tête porte
+   « General | Excise Duty | Levy | VAT | COMESA I… » : la MID levy (Excise Act
+   s.3A, First Schedule Part II) s'intercale avant la TVA. Lue avec le plan des
+   autres pages, la ligne 2701.11.00 « 0 | 0 | 30 cents per kg | 15 » facturait
+   « 30 cents per kg » de TVA et 15 % de préférence COMESA, et les lignes sans
+   levy perdaient leur TVA, lue dans la cellule vide de la levy. La colonne est
+   repérée dans l'en-tête de la table, et la levy émise sous le code MID. Reste
+   la garde : la TVA mauricienne est ad valorem (page 12 : « % | percent ad
+   valorem ») ou porte « EXM » — une cellule de TVA qui porte un taux
+   spécifique dénonce un décalage, et la position est émise SANS TAUX.
 
 4. CERTAINS « TAUX » SONT DES CONTINGENTS. Les colonnes INDIA et UAE portent
    « 300 tons @ 0% duty », « 1,000 Kg at 5% duty » : un taux sous quota, que ce
@@ -107,7 +107,7 @@ import pymupdf
 
 logger = logging.getLogger(__name__)
 
-PDF_URL = "https://www.mra.mu/download/TariffInf130826.pdf"
+PDF_URL = "https://www.mra.mu/download/TariffInf011026.pdf"
 ACTE_URL = "https://www.mra.mu/download/CustomsAct1988.pdf"
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "crawled"
 
@@ -251,6 +251,11 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                 lignes = table.extract()
             except Exception:
                 continue
+            # Les pages du chapitre 27 insèrent une colonne « Levy » (MID levy,
+            # Excise Act s.3A) entre l'accise et la TVA : tout ce qui suit se
+            # décale d'un cran.
+            levy = 1 if any("Levy" in str(n or "") for n in table.header.names) else 0
+            d_vat, d_pref = D_VAT + levy, D_PREF_DEBUT + levy
 
             for ligne in lignes:
                 ancre = None
@@ -271,9 +276,9 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                 designation = re.sub(r"\s+", " ", str(cel(D_DESC) or "")).strip()
                 unite = re.sub(r"\s+", " ", str(cel(D_UNIT) or "")).strip()
 
-                _, tva_brut_test, tva_motif_test = lire_taux(cel(D_VAT))
+                _, tva_brut_test, tva_motif_test = lire_taux(cel(d_vat))
                 decalee = (
-                    len(ligne) < ancre + D_PREF_DEBUT + NB_PREFERENTIELS
+                    len(ligne) < ancre + d_pref + NB_PREFERENTIELS
                     or tva_motif_test in (
                         "TAUX_SPECIFIQUE_NON_AD_VALOREM", "TAUX_SOUS_CONTINGENT"
                     )
@@ -326,7 +331,21 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                         "source": "mra.mu — Customs Tariff Schedules (HS 2022)",
                     })
 
-                tva, tva_brut, tva_motif = lire_taux(cel(D_VAT))
+                if levy:
+                    mid, mid_brut, mid_motif = lire_taux(cel(D_EXCISE + 1))
+                    if mid_motif != "CELLULE_VIDE":
+                        taxes.append({
+                            "code": "MID",
+                            "name": "MID levy",
+                            "name_fr": "Prélèvement Maurice Ile Durable",
+                            "rate_pct": mid,
+                            "raw_value": mid_brut,
+                            "base": None,
+                            "base_source": None,
+                            "source": "mra.mu — Customs Tariff Schedules (HS 2022)",
+                        })
+
+                tva, tva_brut, tva_motif = lire_taux(cel(d_vat))
                 exoneree = bool(RX_EXONERE.match(tva_brut))
                 if exoneree:
                     stats["tva_exoneree"] += 1
@@ -350,7 +369,7 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
 
                 preferences: List[Dict] = []
                 for rang, (regime, libelle) in enumerate(PREFERENTIELS):
-                    taux, brut, motif = lire_taux(cel(D_PREF_DEBUT + rang))
+                    taux, brut, motif = lire_taux(cel(d_pref + rang))
                     if motif == "CELLULE_VIDE":
                         continue
                     if motif == "TAUX_SOUS_CONTINGENT":
@@ -368,7 +387,7 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                 # L'organisme est la dernière cellule non vide après les taux.
                 reste = [
                     str(c or "").strip()
-                    for c in ligne[ancre + D_PREF_DEBUT + NB_PREFERENTIELS:]
+                    for c in ligne[ancre + d_pref + NB_PREFERENTIELS:]
                 ]
                 brut_agence = next((c for c in reversed(reste) if c), "")
                 agences = lire_agences(brut_agence, legende)
@@ -435,7 +454,7 @@ def construire(chemin: Path) -> Dict:
                 "non liquidable, plutôt que supposée."
             ),
         },
-        "source": "mra.mu (Customs Tariff Schedules, HS 2022, as at 13 August 2026)",
+        "source": "mra.mu (Customs Tariff Schedules, HS 2022, as at 01 October 2026)",
         "source_url": PDF_URL,
         "source_legal": ACTE_URL,
         "source_quality": "crawled_authentic",
