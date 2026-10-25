@@ -1,0 +1,32 @@
+Mali — TVA des positions à case vide : extraits verbatim (relevés le 2026-10-25)
+
+1. Code général des impôts du Mali, édition de la DGI mise à jour au 02/08/2017
+(https://www.dgi.gouv.ml/CGI/, page HTML, sha256 32cbd24e5cbd327d8a6c1e6b327cd62de5ffda541aa1f33c80bdb52012b737f5).
+
+Art. 229 :
+
+
+Art. 195, début du point IV (produits exonérés, par position tarifaire ; aucune des positions 87.08, 95.08 ou 97.01 n'y figure) :
+IV. Produits Nomenclature tarifaire Désignations 07.01.10.00.00. Pomme de terre de semence 07.13.31.00.10 Haricots de semence 07.13.32.00.10 Haricots « petits rouges » de semence 07.13.33.00.10 Haricots communs de semence 10.05.10.00.00 Maïs de semence 10.06.10.10.00 Riz non décortiqué de semence 12.02.20.10.00 Arachides décortiquées de semence 12.07.20.10.00 Graines de coton de semence 12.12.92.0
+
+Point D (produits au taux réduit, par position tarifaire ; aucune des positions 87.08, 95.08 ou 97.01 n'y figure) :
+D. Produits soumis au taux réduit Sont soumis au taux réduit de la TVA les produits visés au tableau ci-après : Nomenclature tarifaire Désignations 84.71.10.00.00 Machines automatiques de traitement de l’information, analogiques,… 84.71.30.00.00 Machines automatiques de traitement de l’information n
+
+2. « Le Tarif extérieur commun de la CEDEAO », édition du Mali (SH 2022), 28/12/2023, sha256 69c0bbe5c34027af8d4712355e5d75a0d1057fcdb0ff2d9df0a2a008b5865cf3
+(data/mali/docs_officiels/TEC-CEDEAO-SH2023-MALI.pdf), couche texte ; colonnes US DD RS PC PCS ISCP TVA. Les lignes sans dernier nombre ont la case TVA vide :
+
+           8708.21.00.00   -- Ceintures de sécurité                       kg        10    1 0,5    0,8           18
+           8708.22.00.00   -- Pare-brises, vitres arrières et autres      kg        10    1 0,5    0,8
+           9508.10.00.00   - Cirques ambulants et ménageries ambu-       kg        20    1 0,5    0,8           18
+           9508.21.00.00   --    Montagnes russes                        kg        20    1 0,5    0,8
+           9508.22.00.00   --    Carrousels, balançoires et manèges      kg        20    1 0,5    0,8
+           9508.23.00.00   --    Autos tamponneuses                      kg        20    1 0,5    0,8
+           9508.24.00.00   --    Simulateurs de mouvements et ci-        kg        20    1 0,5    0,8
+           9508.25.00.00   --     Manèges aquatiques                     kg        20    1 0,5    0,8
+           9508.26.00.00   --     Attractions de parcs aquatiques        kg        20    1 0,5    0,8
+           9508.29.00.00   --    Autres                                  kg        20    1 0,5    0,8
+           9508.30.00.00   -     Attractions foraines                    kg        20    1 0,5    0,8
+           9508.40.00.00   -     Théâtres ambulants                      kg        20    1 0,5    0,8
+            9701.21.00.00   -- Tableaux, peintures et dessins           u         20    1 0,5    0,8          18
+            9701.22.00.00   -- Mosaïques                                u         20    1 0,5    0,8          18
+            9701.29.00.00   -- Autres                                   u         20    1 0,5    0,8

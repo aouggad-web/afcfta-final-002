@@ -1092,7 +1092,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MLI_tariffs.json",
       "source_sha256": "268464af5f0940f9b268237a5da988d1d79cce2b6dbf07ca2f8108be574a1403",
-      "socle_sha256": "f6d7a9e3b19691d233e3bb60d3cf4b16c40561e22d3ab551798a45b78b38c6b9",
+      "socle_sha256": "d6ec1c2f587a7d05f4437cdf4291a6050e6d03029c9f38e256682e3e4f09c147",
       "collecte": "2026-10-10T22:57:09.639310+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -1104,13 +1104,13 @@
       "compteurs": {
         "positions": 6382,
         "droits": 32267,
-        "droits_liquidables": 32228,
-        "positions_liquidables": 6357,
+        "droits_liquidables": 32239,
+        "positions_liquidables": 6368,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 11,
+        "taux_indisponibles": 0,
         "assiettes_source": 25528,
         "assiettes_fichier": 0,
         "assiettes_table": 6735,
@@ -2068,6 +2068,6 @@
     ],
     "positions": 370215,
     "droits": 1244501,
-    "droits_liquidables": 1210218
+    "droits_liquidables": 1210229
   }
 }
