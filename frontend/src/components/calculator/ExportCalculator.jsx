@@ -24,8 +24,15 @@ const STATUTS = {
   QUANTITE_REQUISE: { fr: 'Quantité requise', en: 'Quantity required' },
   TAUX_DE_CHANGE_REQUIS: { fr: 'Taux de change requis', en: 'Exchange rate required' },
   ASSIETTE_INDISPONIBLE: { fr: 'Assiette non établie', en: 'Basis not established' },
-  TAUX_INDISPONIBLE: { fr: 'Taux non publié', en: 'Rate not published' },
+  ASSIETTE_INCOMPLETE: { fr: 'Assiette incomplète', en: 'Incomplete basis' },
+  TAUX_INDISPONIBLE: { fr: 'Taux non établi', en: 'Rate not established' },
 };
+
+/** Statut d'une ligne ; une quantité réclamée dit dans quelle unité. */
+function statut(ligne, fr) {
+  const libelle = STATUTS[ligne.statut]?.[fr ? 'fr' : 'en'] || ligne.statut;
+  return ligne.statut === 'QUANTITE_REQUISE' && ligne.unite_quantite ? `${libelle} (${ligne.unite_quantite})` : libelle;
+}
 
 const ETATS = {
   COMPLET: { fr: 'Complet', en: 'Complete' },
@@ -150,7 +157,7 @@ export default function ExportCalculator({ language = 'fr' }) {
             <Input id="export-devise" value={devise} onChange={(e) => setDevise(e.target.value.toUpperCase())} />
           </div>
           <div>
-            <Label htmlFor="export-quantite">{fr ? 'Quantité' : 'Quantity'}</Label>
+            <Label htmlFor="export-quantite">{fr ? 'Quantité (unité du droit)' : 'Quantity (unit of the duty)'}</Label>
             <Input id="export-quantite" type="number" min="0" value={quantite} onChange={(e) => setQuantite(e.target.value)} />
           </div>
           {changeRequis && (
@@ -192,18 +199,25 @@ export default function ExportCalculator({ language = 'fr' }) {
                     <tr key={ligne.code} className="align-top border-t">
                       <td>
                         <div>{ligne.libelle || ligne.code}</div>
+                        {/* Un droit spécifique se lit avec son unité : kg net, centaine, nombre… */}
+                        {ligne.specifique && (
+                          <div className="text-xs">
+                            {ligne.specifique}{ligne.unite_quantite ? ` / ${ligne.unite_quantite}` : ''}
+                          </div>
+                        )}
                         {ligne.note && <div className="text-xs text-[var(--afcfta-muted)]">{ligne.note}</div>}
                       </td>
                       <td className="tabular-nums">
                         {ligne.montant == null ? '—' : `${chiffres(ligne.montant, language, 2)} ${resultat.devise}`}
                       </td>
-                      <td>{STATUTS[ligne.statut]?.[fr ? 'fr' : 'en'] || ligne.statut}</td>
+                      <td>{statut(ligne, fr)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             )}
-            {export_.lignes.length > 0 && (
+            {/* Aucun total quand rien n'est chiffré : « 0 » se lirait « rien à payer ». */}
+            {export_.lignes.some((ligne) => ligne.statut === 'CALCULE') && (
               <p className="font-semibold">
                 {fr ? 'Droits de sortie chiffrés' : 'Quantified export duties'} : {chiffres(export_.total_droits, language, 2)} {resultat.devise}
               </p>

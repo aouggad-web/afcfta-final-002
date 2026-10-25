@@ -58,13 +58,22 @@ def test_tun_dattes_un_pour_cent_de_la_valeur(client):
 
 def test_tun_ferrailles_droit_specifique_exige_la_quantite(client):
     sans = _export(client, pays="TUN", code_sh="2620110000", valeur=10000, devise="TND")
-    assert sans["etat"] == "PARTIEL"
-    assert [m["code"] for m in sans["manques"]] == ["TAXE/FERRAILLES.EXP"]
+    # La RPD s'assoit sur la taxe manquante : elle est incomplète, pas nulle.
+    assert sans["etat"] == "INDISPONIBLE"
     assert _ligne(sans, "TAXE/FERRAILLES.EXP")["statut"] == "QUANTITE_REQUISE"
+    assert _ligne(sans, "RPD/EXPOR")["statut"] == "ASSIETTE_INCOMPLETE"
 
     avec = _export(client, pays="TUN", code_sh="2620110000", valeur=10000, devise="TND", quantite=5000)
     assert avec["etat"] == "COMPLET"
     assert avec["total_droits"] == pytest.approx(1500.0)
+
+
+def test_tun_rpd_liquidee_apres_les_droits_quelle_somme(client):
+    """La RPD s'assoit sur la somme des autres droits : servie avant eux, sa
+    base serait nulle (le moteur liquide dans l'ordre servi)."""
+    export = _export(client, pays="TUN", code_sh="8549122000", valeur=1000, devise="TND", quantite=500)
+    assert [ligne["code"] for ligne in export["lignes"]][-1] == "RPD/EXPOR"
+    assert _ligne(export, "RPD/EXPOR")["base"] == pytest.approx(_ligne(export, "TAXE/FERRAILLES.EXP")["montant"])
 
 
 def test_tun_droit_en_dinars_et_valeur_en_dollars_exige_le_change(client):

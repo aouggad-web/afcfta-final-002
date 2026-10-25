@@ -1020,6 +1020,10 @@ def droits_export_du_fichier(iso, donnees):
             _unites_des_quantites_tun(rows, droits, ligne.get("qcs"))
             for row, d in zip(rows, droits):
                 d.update(code=str(row.get("code")), famille="export")
+            # Le moteur liquide dans l'ordre servi : la RPD, assise sur la somme
+            # des autres droits (« SOMME D.T »), vient en dernier — comme à
+            # l'import (`_ordre_tunisie`) ; sinon sa base serait nulle.
+            droits.sort(key=lambda d: str(d.get("assiette") or "").startswith("SOMME"))
             sortie[code] = [{k: v for k, v in d.items() if v is not None} for d in droits]
     elif iso == "CIV":
         for ligne in donnees.get("positions") or []:

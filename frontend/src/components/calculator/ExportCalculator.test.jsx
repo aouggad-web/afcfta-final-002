@@ -83,6 +83,34 @@ describe('ExportCalculator', () => {
     expect(screen.getByText(/PRIX CAF DE REFERENCE/)).toBeInTheDocument();
     expect(screen.getByText('—')).toBeInTheDocument();
     expect(screen.getByText('Non chiffrable')).toBeInTheDocument();
+    // Rien de chiffré : pas de total, qui se lirait « rien à payer ».
+    expect(screen.queryByText(/Droits de sortie chiffrés/)).not.toBeInTheDocument();
+  });
+
+  it("dit dans quelle unité la quantité est réclamée", async () => {
+    axios.post.mockResolvedValue({ data: {
+      pays: 'TUN',
+      position: { designation: 'Piles hors d’usage' },
+      provenance: { devise_nationale: 'TND' },
+      export: {
+        etat: 'PARTIEL',
+        total_droits: 0,
+        manques: [{ code: 'TAXE/FERRAILLES.EXP', motif: 'QUANTITE_REQUISE' }],
+        lignes: [
+          { code: 'TAXE/FERRAILLES.EXP', libelle: 'TAXE/FERRAILLES.EXP', specifique: '0.7 dinars', unite_quantite: 'centaine', montant: null, statut: 'QUANTITE_REQUISE' },
+          { code: 'RPD/EXPOR', libelle: 'REDEV.PREST.DOUA/EXP', montant: null, statut: 'ASSIETTE_INCOMPLETE' },
+        ],
+      },
+    } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
+    await userEvent.type(screen.getByLabelText('Position nationale'), '8549141000');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '1000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(await screen.findByText('Quantité requise (centaine)')).toBeInTheDocument();
+    expect(screen.getByText('0.7 dinars / centaine')).toBeInTheDocument();
   });
 
   it("dit qu'une position nationale est requise", async () => {
@@ -120,7 +148,7 @@ describe('ExportCalculator', () => {
     await userEvent.type(screen.getByLabelText('1 USD = ? TND'), '3.1');
     await userEvent.type(screen.getByLabelText('Position nationale'), '2620110000');
     await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
-    await userEvent.type(screen.getByLabelText('Quantité'), '5000');
+    await userEvent.type(screen.getByLabelText('Quantité (unité du droit)'), '5000');
     await userEvent.click(screen.getByTestId('export-calculer'));
 
     const corps = axios.post.mock.calls[0][1];
