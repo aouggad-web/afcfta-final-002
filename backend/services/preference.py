@@ -233,13 +233,32 @@ def taux_preferentiels(
                 "perimetre": {},
             }
 
+    if destination_iso3.upper() == "NAM":
+        # Règle SACU (25/10/2026) : origines de la General Note O namibienne
+        # (GN 390/2024, GN 229/2025) ; taux de la colonne AfCFTA du tarif
+        # commun SACU le plus à jour, celui du socle (décision du 25/10/2026).
+        from services.zlecaf_schedule_nam import nam_partner_active
+
+        if not nam_partner_active(origine_iso3):
+            return {
+                "applique": False,
+                "regime": "ZLECAF",
+                "statut": "PENDING_PARTNER",
+                "note": (
+                    "Origine absente de la General Note O du Schedule No. 1 "
+                    "namibien (GN 390/2024, GN 229/2025) — taux NPF appliqué."
+                ),
+                "taux": {},
+                "perimetre": {},
+            }
+
     from services.zlecaf_implementation_registry import implementation_decision
 
-    if destination_iso3.upper() == "ZAF":
-        # L'Afrique du Sud échappe au registre, comme dans le chemin
-        # historique : son application est établie par les Notices R. du
-        # Schedule No. 1 (General Note O), pas par la règle B EAC. La branche
-        # ZAF ci-dessous sert le même taux que l'historique.
+    if destination_iso3.upper() in ("ZAF", "NAM"):
+        # L'Afrique du Sud et la Namibie échappent au registre : leur
+        # application est établie par la General Note O de leur Schedule
+        # No. 1, pas par la règle B EAC. La branche ZAF ci-dessous sert le
+        # même taux que l'historique.
         decision = None
     else:
         decision = implementation_decision(destination_iso3, origine_iso3)
@@ -410,6 +429,16 @@ def taux_preferentiels(
             f"{origine_zaf} depuis le {DATES_ENTREE_ZAF[origine_zaf]} "
             "(General Note O du Schedule No. 1, Customs and Excise Act) — "
             "colonne AfCFTA du socle."
+        )
+    if destination_iso3.upper() == "NAM":
+        from services.zlecaf_schedule_nam import DATES_ENTREE_NAM
+
+        resultat["statut"] = "APPLIED"
+        resultat["note"] = (
+            "Préférence ZLECAf accordée par la Namibie à "
+            f"{origine_iso3.upper()} depuis le {DATES_ENTREE_NAM[origine_iso3.upper()]} "
+            "(General Note O du Schedule No. 1, Customs and Excise Act, 1998) — "
+            "colonne AfCFTA du tarif commun SACU le plus à jour (socle)."
         )
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat

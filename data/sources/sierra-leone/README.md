@@ -12,7 +12,7 @@ Collecte délibérément incomplète : GST (Goods and Services Tax, équivalent 
 
 ## Ce qui n'a PAS été collecté
 
-- **Droits d'accises** : les recherches indiquent que le régime d'accises sierra-léonais est fragmenté entre le Customs Act No. 9 of 2011 et des Finance Acts successifs (mise à jour des taux alcool/tabac/véhicules de luxe par exercice budgétaire), sans texte consolidé unique aisément accessible. Non archivé dans ce cycle — nécessite une recherche dédiée sur le Customs Act 2011 et les Finance Acts récents.
+- **Droits d'accises** : collectés le 2026-10-25 sur les Finance Acts 2021, 2024, 2025 et 2026 (`official/sle-finance-act-*.pdf`) ; voir la fiche `backend/data/legal_refs/zlecaf_application/SLE_accises_2026-10-25.json`. La First Schedule de 1982 et les Finance Acts 2017 à 2020 n'ont pas été obtenus.
 - **Tarif Extérieur Commun (TEC) CEDEAO** : non archivé.
 - **Modifications post-2009** : le taux GST standard pourrait avoir été révisé par des Finance Acts ultérieurs ; seul le texte de 2009 a été vérifié dans ce cycle.
 

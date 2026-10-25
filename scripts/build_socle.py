@@ -1532,6 +1532,35 @@ def _iat_nigeria_2026(positions, compteurs):
                     compteurs["taux_indisponibles"] += 1
 
 
+#: Sierra Leone : Part II du Schedule du Customs Tariff Act 1978, abrogée et
+#: remplacée par le Finance Act 2026, s.2 (fiche SLE_droits_nationaux_2026-10-25.json).
+#: Seules les lignes que le tarif servi (TEC CEDEAO, SH 2017) isole sans les
+#: déborder. (positions, taux %, item de la Part II)
+DROITS_NATIONAUX_SLE = (
+    (("040711", "040719", "040721", "040729", "040790"), 35.0, "i, imported eggs"),
+    (("2103200000",), 35.0, "ii, imported tomato ketchup and other tomato sauces"),
+    (("2104109000",), 35.0, "iv, imported maggi cube"),
+    (("220110", "220190", "2202100000"), 35.0, "v, imported bottled water"),
+    (("271112", "271113", "271119"), 0.0, "vi, LPG (butane/propane)"),
+    (("4404200000",), 35.0, "vii, wooden poles"),
+    (("4412100000", "4412310000", "4412330000"), 35.0, "viii, imported plywood"),
+    (("7317009000",), 30.0, "x, imported nails"),
+    (("732111", "7321900000"), 0.0, "xi, LPG stoves and others (including accessories)"),
+)
+
+
+def _droits_nationaux_sle(positions):
+    for code, position in positions.items():
+        regle = next((r for r in DROITS_NATIONAUX_SLE if code.startswith(r[0])), None)
+        if regle is None:
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") == "DD":
+                d["taux"] = regle[1]
+                d["source"] = "Customs Tariff Act 1978, Schedule, Part II (Finance Act 2026, s.2)"
+                d["note"] = f"Taux national de la Part II, item {regle[2]}, en vigueur au 1er janvier 2026."
+
+
 def _taux_tva_legaux():
     """La table TAUX_TVA_LEGAUX de backend/services/tax_profile_data.py."""
     if REPO not in sys.path:
@@ -2007,13 +2036,14 @@ def _prelevements_zaf(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
-#: Prélèvements nationaux dus à l'importation au Botswana, en Namibie et en
+#: Prélèvements nationaux dus à l'importation au Botswana et en
 #: Eswatini, dont le taux en vigueur n'est pas collecté (fiche
 #: SACU_accises_BLNE_2026-10-20.json) : la ligne est servie sans taux, le total
 #: est incomplet plutôt que présenté comme complet. Fuel levy et prélèvement
 #: environnemental : Parts 5 et 3 de la Schedule 1 nationale, même structure
 #: que le tarif sud-africain (accord SACU art. 22), dont les positions sont
-#: reprises. Lesotho : prélèvement sur le tabac et l'alcool, voir TAPL_LESOTHO.
+#: reprises. Namibie : voir PRELEVEMENTS_NAM. Lesotho : prélèvement sur le tabac
+#: et l'alcool, voir TAPL_LESOTHO.
 #: Botswana, alcool : fiche BWA_prelevement_alcool_2026-10-23.json.
 #: (code, libellé, parties sud-africaines ou sous-positions, assiette, source, note)
 PRELEVEMENTS_SACU_NON_COLLECTES = {
@@ -2025,12 +2055,6 @@ PRELEVEMENTS_SACU_NON_COLLECTES = {
          "CIF+DD",
          "Control of Goods (Intoxicating Liquor (Levy)) Regulations 2008 (Botswana), règl. 2(b), 3(b) et annexe",
          "30 % au texte de 2008 (S.I. 91 et 111 de 2008), modifié depuis ; "),
-    ],
-    "NAM": [
-        ("FLV", "Fuel levy", {"5A"}, None,
-         "Customs and Excise Act 20/1998 (Namibie), s.2 : « fuel levy » (Schedule 1 Part 5)", ""),
-        ("EVN", "Environmental levy", {"3A", "3C", "3D", "3E"}, None,
-         "Customs and Excise Act 20/1998 (Namibie), s.58A(1) (Schedule 1 Part 3)", ""),
     ],
     "SWZ": [
         ("ATL", "Alcohol and Tobacco Levy",
@@ -2079,6 +2103,77 @@ def _prelevements_sacu_non_collectes(iso, positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Namibie : fuel levy (Part 5A) et prélèvements environnementaux (Part 3) de la
+#: Schedule No. 1 nationale, lus par scripts/extraire_prelevements_nam.py dans
+#: les Gazettes (GN 100/2016, GN 225/2019, GN 226/2019, GN 131/2020). Fiche
+#: NAM_prelevements_2026-10-25.json.
+PRELEVEMENTS_NAM = os.path.join(REPO, "data", "nam", "prelevements_sch1_parts3_5.json")
+LIBELLES_PRELEVEMENTS_NAM = {
+    "5A": ("FLV", "Fuel levy"),
+    "3A": ("EVN", "Environmental levy (electric filament lamps, tyres)"),
+    "3B": ("EVN", "Environmental levy (CO2 emissions of motor vehicles)"),
+    "3C": ("EVN", "Environmental levy (road wheels fitted with tyres)"),
+    "3D": ("EVN", "Environmental levy (lubricant oils, plastic bags, batteries)"),
+}
+UNITES_PRELEVEMENT_NAM = {"li": "li", "bag": "sac", "lamp": "lampe", "tyre": "pneu"}
+#: Les textes de 2019 nomment la série 2710.12.xx ; le tarif servi la dédouble
+#: en 2710.19.xx, sous les mêmes définitions (« as defined in Additional Note 1 »),
+#: et le tarif sud-africain y porte sa propre fuel levy : le prélèvement suit.
+#: « 2710.19 Other » de la Section D, résiduel en 2019, couvrirait aujourd'hui
+#: les carburants de cette série dédoublée : il n'est pas repris. Les pneus
+#: rechapés ou usagés excluent les chapes et flaps de 4012.90 (Section B, note 6).
+SERIE_DEDOUBLEE_NAM = ("2710.12.", "2710.19.")
+EXCLUSIONS_PRELEVEMENTS_NAM = {("3D", "2710.19"): (), ("3A", "4012"): ("401290",)}
+
+
+def _prelevements_nam(positions, compteurs):
+    """Namibie : fuel levy et prélèvements environnementaux dus à l'importation."""
+    with open(PRELEVEMENTS_NAM, encoding="utf-8") as f:
+        articles = json.load(f)["articles"]
+    for article in articles:
+        cle = (article["partie"], article["sous_position"])
+        if cle in EXCLUSIONS_PRELEVEMENTS_NAM and not EXCLUSIONS_PRELEVEMENTS_NAM[cle]:
+            continue
+        exclues = EXCLUSIONS_PRELEVEMENTS_NAM.get(cle, ())
+        code_ligne, libelle = LIBELLES_PRELEVEMENTS_NAM[article["partie"]]
+        prefixes = [article["sous_position"]]
+        if article["sous_position"].startswith(SERIE_DEDOUBLEE_NAM[0]):
+            prefixes.append(article["sous_position"].replace(*SERIE_DEDOUBLEE_NAM))
+        prefixes = tuple(p.replace(".", "") for p in prefixes)
+        source = (f"Customs and Excise Act 20/1998 (Namibie), Schedule No. 1 Part "
+                  f"{article['partie'][0]}{'' if article['partie'] == '5A' else ' Section ' + article['partie'][1]}, "
+                  f"{article['sous_position']} ({article['source']}, p. {article['page']})")
+        for code, position in positions.items():
+            if not code.startswith(prefixes) or code.startswith(exclues):
+                continue
+            droits = position.setdefault("droits", [])
+            if any(d.get("code") == code_ligne for d in droits):
+                continue
+            ligne = {"code": code_ligne, "code_source": code_ligne, "famille": famille(code_ligne),
+                     "libelle": libelle, "taux": None, "specifique": None, "assiette": None,
+                     "assiette_origine": None, "source": source, "note": article["brut"]}
+            if article.get("par_g_km_co2"):
+                ligne["note"] = (f"{article['brut']} : émissions de CO2 du certificat du constructeur ou, à "
+                                 "défaut, de la cylindrée (Section B, note 5) ; non connues du calcul, "
+                                 "prélèvement non liquidé. Prélèvement unique (note 9).")
+            elif article.get("taux") is not None:
+                ligne["taux"] = article["taux"]
+                ligne["note"] = (f"{article['brut']} : la valeur sur laquelle porte ce taux n'est pas définie par "
+                                 "la Section D ; assiette non établie, prélèvement non liquidé.")
+            elif article.get("montant") == 0:
+                ligne["taux"], ligne["assiette"], ligne["assiette_origine"] = 0.0, "FOB", "regle_de_pays"
+            else:
+                ligne["specifique"] = {
+                    "montant": article["montant"], "unite_monetaire": "unite_principale",
+                    "sous_unite_source": None, "unite_quantite": UNITES_PRELEVEMENT_NAM[article["unite"]],
+                    "brut": article["brut"],
+                }
+                ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 #: Lesotho : Tobacco and Alcoholic Products Levy Act 2023 (Act 1/2023, en vigueur
 #: le 01/03/2023 par la LN 22/2023), barème de la LN 58/2025 au 01/04/2025
 #: (fiche LSO_prelevement_tabac_alcool_2026-10-25.json). « Alcoholic products »
@@ -2110,6 +2205,85 @@ def _prelevement_tapl_lesotho(positions, compteurs):
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(rang, ligne)
             _compter_ligne(ligne, compteurs, 1)
+
+
+#: Sierra Leone : accise à l'importation (Excise Act 1982, s.5(b) dans la
+#: rédaction du Finance Act 2025), First Schedule telle que la modifient les
+#: Finance Acts 2021, 2024 et 2026 (fiche SLE_accises_2026-10-25.json). Montants
+#: en leones. Liquidées : (positions, montant, unité de quantité, barème, source).
+ACCISES_SLE = (
+    (("2203001000", "2203009000"), 15.0, "li", "Le15 per litre (import, alcoholic content <10%)",
+     "Finance Act 2024, s.4(a) (heading 2203)"),
+    (("2401",), 98.0, "kg", "NLe98 per kg", "Finance Act 2026, s.3(a) (item 24.01)"),
+    (("2402100000",), 38.0, "paquet", "NLe38 per packet", "Finance Act 2026, s.3(a) (item 24.02)"),
+    (("2402200000",), 3.0, "paquet de 20 cigarettes", "NLe3 per packet of 20 sticks",
+     "Finance Act 2026, s.3(a) (item 24.02)"),
+    (("2403190000", "2403910000", "2403991000", "2403999000"), 98.0, "kg", "NLe98 per kg",
+     "Finance Act 2026, s.3(a) (item 24.03)"),
+    (("2523",), 0.2, "kg", "NLe 10.0 per 50kg", "Finance Act 2026, s.3(b) (item 25.23)"),
+    (("2710191200",), 2.0, "li", "Kerosene NLe2.0 per litre", "Finance Act 2026, s.3(c) (item 27.10 A)"),
+    (("2710124000", "2710125000"), 5.0, "li", "Petrol NLe5.0 per litre", "Finance Act 2026, s.3(c) (item 27.10 B)"),
+    (("2710192100",), 5.0, "li", "Diesel NLe5.0 per litre", "Finance Act 2026, s.3(c) (item 27.10 C)"),
+    (("2710192200", "2710192300", "2710192400", "2710192500"), 7.4, "li", "Fuel oil NLe7.40 per litre",
+     "Finance Act 2026, s.3(c) (item 27.10 D)"),
+    (("2710193100", "2710193200", "2710193910", "2710193990"), 4.0, "li", "Lubricating oils NLe4.00 per litre",
+     "Finance Act 2026, s.3(c) (item 27.10 E)"),
+    (("3923210000", "3923290000"), 16.0, "kg", "Polyethene (plastic) bags Le16.0 per kg",
+     "Finance Act 2024, s.4(l) (item 39.23 A)"),
+)
+#: Déclarées sans liquidation : (positions, taux ad valorem ou None, source, motif).
+ALCOOL_SLE = ("taux à l'importation selon le titre alcoométrique : Le10 (<10 %), Le12 (>10 à 20 %), Le14 (20 à "
+              "30 %), Le16 (30 à 40 %), Le22 (>40 %) par litre ; titre non connu du calcul, accise non liquidée.")
+VALEUR_SLE = ("valeur imposable de l'accise ad valorem à l'importation non établie (texte de l'Excise Act 1982 "
+              "non obtenu) ; accise non liquidée.")
+ACCISES_SLE_NON_LIQUIDEES = (
+    (("2204", "2205", "2208", "2206001000", "2206009900"), None,
+     "Finance Act 2024, s.4(b) à (e) (headings 2204, 2205, 2206, 2208)", ALCOOL_SLE),
+    (("2207",), None, "Finance Act 2024, s.4(f) (heading 2207)",
+     "Extra neutral alcohol (>= 95 %) : Le22 par litre à l'importation ; importé comme matière première, "
+     "l'accise est payée sur la vente du produit fini. Titre et usage non connus du calcul, accise non liquidée."),
+    (("2202100000", "2202991000", "2202999000", "2009"), None, "Finance Act 2024, s.4(h) (heading 20.09)",
+     "Boissons non alcoolisées et jus additionnés de sucre : Le0.03 par gramme de sucre à partir de 10 g par "
+     "litre, 0 en dessous ; teneur en sucre ajouté non connue du calcul, accise non liquidée."),
+    (("2402900000",), None, "Finance Act 2026, s.3(a) (item 24.02)",
+     "Cigares (NLe38 par paquet) ou cigarettes (NLe3 par paquet de 20) en succédanés de tabac : la position "
+     "ne dit pas lequel, accise non liquidée."),
+    (("2403110000",), None, "Finance Act 2026, s.3(a) (item 24.03)",
+     "Shisha : NLe98 par kg et NLe225 par litre ; deux quantités, le calcul n'en reçoit qu'une, accise non "
+     "liquidée."),
+    (("151190", "151710"), 10.0, "Finance Act 2021, s.4(a) (items 15.11, 15.17)", VALEUR_SLE),
+    (("340111", "340119", "340120", "291560", "291570", "382311"), 20.0,
+     "Finance Act 2021, s.4(b) (items 34.01, 29.15, 38.23)", VALEUR_SLE),
+    (("7317001000",), 5.0, "Finance Act 2021, s.4(d) (item 73.17)", VALEUR_SLE),
+)
+
+
+def _accises_sierra_leone(positions, compteurs):
+    """Sierra Leone : accise due à l'importation, avant la GST qui l'inclut
+    (GST Act 2009, s.26(1)(c))."""
+    def inserer(droits, ligne):
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+
+    base = {"code": "EXC", "code_source": "EXC", "famille": famille("EXC"), "libelle": "Excise duty"}
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        for prefixes, montant, unite, brut, source in ACCISES_SLE:
+            if code.startswith(prefixes):
+                inserer(droits, {**base, "taux": None, "specifique": {
+                    "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                    "unite_quantite": unite, "brut": brut}, "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique", "source": f"Excise Act 1982, First Schedule ; {source}",
+                    "note": brut})
+                break
+        else:
+            for prefixes, taux, source, note in ACCISES_SLE_NON_LIQUIDEES:
+                if code.startswith(prefixes):
+                    inserer(droits, {**base, "taux": taux, "specifique": None, "assiette": None,
+                                     "assiette_origine": None, "source": f"Excise Act 1982, First Schedule ; {source}",
+                                     "note": note})
+                    break
 
 
 def _compter_ligne(d, compteurs, signe):
@@ -3157,6 +3331,58 @@ def _lignes_liquidables(position):
     return [(statuts[d.get("code")] or [None]).pop(0) == "CALCULE" for d in droits]
 
 
+#: Libéria : accise à l'importation (Liberia Revenue Code, ch. 11, Schedule 1 de
+#: la consolidation 2020 ; lignes remplacées par le Tax Amendment Act de
+#: décembre 2025, publié le 01/04/2026). Fiche LBR_accises_2026-10-25.json.
+#: Spécifiques, en dollars US : (positions, montant, unité de quantité, barème).
+ACCISES_LBR = (
+    (("2009",), 0.45, "li", "US$0.45/L"),
+    (("2201",), 0.15, "li", "US$0.15/L"),
+    (("2202",), 0.45, "li", "US$0.45/L"),
+    (("2203", "2204", "2205", "2206"), 1.0, "li", "US$1.00/L"),
+    (("2208",), 3.0, "li", "US$3.00/L"),
+    (("2401", "2403"), 25.0, "kg", "US$25.00/Kg"),
+    (("2402100000",), 0.5, "paquet de 20", "US$0.50 / pack of 20 sticks"),
+    (("2402200000",), 0.5, "paquet de 20 cigarettes", "US$0.50 / pack of 20 sticks"),
+    (("2402900000",), 0.25, "unité", "US$0.25 / stick"),
+)
+#: Ad valorem, s.1110(c) : (positions, taux %, ligne du Schedule 1 de 2020).
+ACCISES_LBR_AD_VALOREM = (
+    (("9614",), 50.0, "9614, smoking pipes and cigar or cigarette holders"),
+    (("3303", "3304", "3305", "3307"), 20.0, "33, cosmetics and cosmetic aids"),
+    (("1701991000", "1701999000"), 5.0, "1701.99.10.00 et 1701.99.90.00, sugar"),
+    (("7113", "7114", "7115", "7116", "7117", "7118"), 10.0, "7113-7118, jewelry"),
+    (("9504",), 30.0, "9504, gambling equipment"),
+)
+
+
+def _accises_liberia(positions, compteurs):
+    """Libéria : accise due à l'importation (s.1105(b)), avant la GST."""
+    base = {"code": "EXC", "code_source": "EXC", "famille": famille("EXC"), "libelle": "Excise tax"}
+    for code, position in positions.items():
+        ligne = None
+        for prefixes, montant, unite, brut in ACCISES_LBR:
+            if code.startswith(prefixes):
+                ligne = {**base, "taux": None, "specifique": {
+                    "montant": montant, "unite_monetaire": "USD", "sous_unite_source": None,
+                    "unite_quantite": unite, "brut": brut}, "assiette": "xQTE", "assiette_origine": "droit_specifique",
+                    "source": "Liberia Revenue Code, ch. 11, Schedule 1 (Tax Amendment Act of December 2025)",
+                    "note": f"{brut} à l'importation, en dollars US (s.1110(a) : volume importé)."}
+                break
+        for prefixes, taux, article in ACCISES_LBR_AD_VALOREM:
+            if ligne is None and code.startswith(prefixes):
+                ligne = {**base, "taux": taux, "specifique": None, "assiette": "CIF+DD+PCC+CUF",
+                         "assiette_origine": "regle_de_pays",
+                         "source": f"Liberia Revenue Code, ch. 11, Schedule 1 ({article})",
+                         "note": "s.1110(c) : valeur CIF, droit de douane, redevances douanières, prélèvement "
+                                 "CEDEAO et autres droits, hors GST."}
+        if ligne:
+            droits = position.setdefault("droits", [])
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -3516,6 +3742,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ordre_tunisie(positions)
     if iso == "NGA":
         _iat_nigeria_2026(positions, compteurs)
+    if iso == "SLE":
+        _droits_nationaux_sle(positions)
     if iso in _taux_tva_legaux():
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
@@ -3528,12 +3756,18 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "LBY":
         _tsp_tp_libye(positions, compteurs)
+    if iso == "LBR":
+        _accises_liberia(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
         _prelevements_sacu_non_collectes(iso, positions, compteurs)
+    if iso == "NAM":
+        _prelevements_nam(positions, compteurs)
     if iso == "LSO":
         _prelevement_tapl_lesotho(positions, compteurs)
+    if iso == "SLE":
+        _accises_sierra_leone(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
