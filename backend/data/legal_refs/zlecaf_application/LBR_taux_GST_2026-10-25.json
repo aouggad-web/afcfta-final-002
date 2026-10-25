@@ -1,0 +1,37 @@
+{
+ "schema_version": 1,
+ "objet": "Libéria : taux de la goods tax (GST) à l'importation porté à 13 % au 1er mai 2026",
+ "destination_iso3": "LBR",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : Liberia Tax Amendment Act de décembre 2025 (s.1000(b)(3)) et avis de la Liberia Revenue Authority PSA/LRA-01/FY 2026",
+ "source": {
+  "url": "https://revenue.lra.gov.lr/wp-content/uploads/2026/04/Adjustment-to-Goods-and-Services-Tax-GST-Rates-scaled.jpeg",
+  "institution": "Liberia Revenue Authority"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/LBR_TaxAmendmentAct_Dec2025.pdf",
+   "sha256": "6d498c8d05fa33a8386bc4d2439efeaced5aa283c0c0ab984c3dd1fbc8a98d88"
+  },
+  {
+   "fichier_archive": "sources/LBR_RevenueNotice_GST_2026-04.jpeg",
+   "sha256": "2309529129f399f1addb66ec691e4b1006f1b6aaecedb6c3cb75e0bc85c35205"
+  }
+ ],
+ "regle": {
+  "valeur": "GST à 13 % de la valeur imposable de l'importation (s.1004(d) : CIF, droit de douane, customs service fee, ECOWAS Trade Levy et accise), à compter du 1er mai 2026 ; 12 % auparavant.",
+  "reference": "Liberia Revenue Code, s.1000(b)(3), dans la rédaction du Liberia Tax Amendment Act de décembre 2025 (approuvé le 24/03/2026, imprimé le 01/04/2026)",
+  "verbatim_s1000": "Section 1000: Goods Tax Imposed (b) Rate of Tax. [...] (2) The rate of goods tax payable on a taxable supply of goods imported or exported is the percentage specified in paragraph (3) of the taxable amount of the import or export. (3) The rate of goods tax is 13 percent of the Section 1004 taxable amount, except that if the supply is an export of goods, the rate of tax is zero (0) percent.",
+  "verbatim_avis_lra": "Adjustment to Goods and Services Tax (GST) Rates — Effective Date of Implementation: May 1, 2026. [...] Goods Tax (Section 1000) Current Rate 12% New Rate 13% Effective Date of Implementation May 1, 2026 ; Service Tax (Section 1021) 12% 13% May 1, 2026.",
+  "portee": "backend/services/tax_profile_data.py, TVA_CEDEAO_HORS_UEMOA[\"LBR\"] : taux servi sur la ligne TVA du socle libérien."
+ },
+ "decisions": [
+  "La loi entre en vigueur à sa publication (Part 3) ; l'avis de la LRA fixe la mise en œuvre de la goods tax à 13 % au 1er mai 2026 : 13 % est servi.",
+  "Le PDF de la loi est scanné, sans couche texte : la page 9 (s.1000 et 1021) a été lue à l'écran. L'avis de la LRA est une image."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Le texte qui a porté le taux de 10 % à 12 % (appliqué depuis avril 2025) n'a pas été identifié ; il est sans effet sur le taux en vigueur.",
+  "Le passage annoncé à une TVA en 2027 n'est pas traité."
+ ]
+}
