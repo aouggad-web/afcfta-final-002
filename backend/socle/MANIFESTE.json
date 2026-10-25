@@ -1500,30 +1500,31 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SLE_tariffs.json",
       "source_sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
-      "socle_sha256": "cd32220da89388094c8f4e8512f07f38401c93c9ad04c9543bcdd0b10eb83a45",
+      "socle_sha256": "483dd0b2a01c504ffc5f6bcde74c972aac45cb0f7e494a19a5776977e83f0b05",
       "collecte": null,
-      "etat": "COMPLET",
+      "etat": "PARTIEL",
       "familles": [
+        "accise",
         "communautaire",
         "droit",
         "tva"
       ],
       "compteurs": {
         "positions": 6129,
-        "droits": 24516,
-        "droits_liquidables": 24516,
-        "positions_liquidables": 6129,
+        "droits": 24626,
+        "droits_liquidables": 24466,
+        "positions_liquidables": 6049,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 66,
         "assiettes_source": 12258,
         "assiettes_fichier": 0,
-        "assiettes_table": 12258,
-        "assiettes_indisponibles": 0,
+        "assiettes_table": 12288,
+        "assiettes_indisponibles": 80,
         "sans_designation": 0,
-        "droits_specifiques": 0,
+        "droits_specifiques": 30,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
@@ -2048,6 +2049,7 @@
       "RWA",
       "SDN",
       "SEN",
+      "SLE",
       "SOM",
       "SWZ",
       "SYC",
@@ -2060,7 +2062,7 @@
       "ZWE"
     ],
     "positions": 370215,
-    "droits": 1244072,
-    "droits_liquidables": 1209828
+    "droits": 1244182,
+    "droits_liquidables": 1209778
   }
 }

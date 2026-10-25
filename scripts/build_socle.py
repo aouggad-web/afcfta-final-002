@@ -2180,6 +2180,85 @@ def _prelevement_tapl_lesotho(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Sierra Leone : accise à l'importation (Excise Act 1982, s.5(b) dans la
+#: rédaction du Finance Act 2025), First Schedule telle que la modifient les
+#: Finance Acts 2021, 2024 et 2026 (fiche SLE_accises_2026-10-25.json). Montants
+#: en leones. Liquidées : (positions, montant, unité de quantité, barème, source).
+ACCISES_SLE = (
+    (("2203001000", "2203009000"), 15.0, "li", "Le15 per litre (import, alcoholic content <10%)",
+     "Finance Act 2024, s.4(a) (heading 2203)"),
+    (("2401",), 98.0, "kg", "NLe98 per kg", "Finance Act 2026, s.3(a) (item 24.01)"),
+    (("2402100000",), 38.0, "paquet", "NLe38 per packet", "Finance Act 2026, s.3(a) (item 24.02)"),
+    (("2402200000",), 3.0, "paquet de 20 cigarettes", "NLe3 per packet of 20 sticks",
+     "Finance Act 2026, s.3(a) (item 24.02)"),
+    (("2403190000", "2403910000", "2403991000", "2403999000"), 98.0, "kg", "NLe98 per kg",
+     "Finance Act 2026, s.3(a) (item 24.03)"),
+    (("2523",), 0.2, "kg", "NLe 10.0 per 50kg", "Finance Act 2026, s.3(b) (item 25.23)"),
+    (("2710191200",), 2.0, "li", "Kerosene NLe2.0 per litre", "Finance Act 2026, s.3(c) (item 27.10 A)"),
+    (("2710124000", "2710125000"), 5.0, "li", "Petrol NLe5.0 per litre", "Finance Act 2026, s.3(c) (item 27.10 B)"),
+    (("2710192100",), 5.0, "li", "Diesel NLe5.0 per litre", "Finance Act 2026, s.3(c) (item 27.10 C)"),
+    (("2710192200", "2710192300", "2710192400", "2710192500"), 7.4, "li", "Fuel oil NLe7.40 per litre",
+     "Finance Act 2026, s.3(c) (item 27.10 D)"),
+    (("2710193100", "2710193200", "2710193910", "2710193990"), 4.0, "li", "Lubricating oils NLe4.00 per litre",
+     "Finance Act 2026, s.3(c) (item 27.10 E)"),
+    (("3923210000", "3923290000"), 16.0, "kg", "Polyethene (plastic) bags Le16.0 per kg",
+     "Finance Act 2024, s.4(l) (item 39.23 A)"),
+)
+#: Déclarées sans liquidation : (positions, taux ad valorem ou None, source, motif).
+ALCOOL_SLE = ("taux à l'importation selon le titre alcoométrique : Le10 (<10 %), Le12 (>10 à 20 %), Le14 (20 à "
+              "30 %), Le16 (30 à 40 %), Le22 (>40 %) par litre ; titre non connu du calcul, accise non liquidée.")
+VALEUR_SLE = ("valeur imposable de l'accise ad valorem à l'importation non établie (texte de l'Excise Act 1982 "
+              "non obtenu) ; accise non liquidée.")
+ACCISES_SLE_NON_LIQUIDEES = (
+    (("2204", "2205", "2208", "2206001000", "2206009900"), None,
+     "Finance Act 2024, s.4(b) à (e) (headings 2204, 2205, 2206, 2208)", ALCOOL_SLE),
+    (("2207",), None, "Finance Act 2024, s.4(f) (heading 2207)",
+     "Extra neutral alcohol (>= 95 %) : Le22 par litre à l'importation ; importé comme matière première, "
+     "l'accise est payée sur la vente du produit fini. Titre et usage non connus du calcul, accise non liquidée."),
+    (("2202100000", "2202991000", "2202999000", "2009"), None, "Finance Act 2024, s.4(h) (heading 20.09)",
+     "Boissons non alcoolisées et jus additionnés de sucre : Le0.03 par gramme de sucre à partir de 10 g par "
+     "litre, 0 en dessous ; teneur en sucre ajouté non connue du calcul, accise non liquidée."),
+    (("2402900000",), None, "Finance Act 2026, s.3(a) (item 24.02)",
+     "Cigares (NLe38 par paquet) ou cigarettes (NLe3 par paquet de 20) en succédanés de tabac : la position "
+     "ne dit pas lequel, accise non liquidée."),
+    (("2403110000",), None, "Finance Act 2026, s.3(a) (item 24.03)",
+     "Shisha : NLe98 par kg et NLe225 par litre ; deux quantités, le calcul n'en reçoit qu'une, accise non "
+     "liquidée."),
+    (("151190", "151710"), 10.0, "Finance Act 2021, s.4(a) (items 15.11, 15.17)", VALEUR_SLE),
+    (("340111", "340119", "340120", "291560", "291570", "382311"), 20.0,
+     "Finance Act 2021, s.4(b) (items 34.01, 29.15, 38.23)", VALEUR_SLE),
+    (("7317001000",), 5.0, "Finance Act 2021, s.4(d) (item 73.17)", VALEUR_SLE),
+)
+
+
+def _accises_sierra_leone(positions, compteurs):
+    """Sierra Leone : accise due à l'importation, avant la GST qui l'inclut
+    (GST Act 2009, s.26(1)(c))."""
+    def inserer(droits, ligne):
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+
+    base = {"code": "EXC", "code_source": "EXC", "famille": famille("EXC"), "libelle": "Excise duty"}
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        for prefixes, montant, unite, brut, source in ACCISES_SLE:
+            if code.startswith(prefixes):
+                inserer(droits, {**base, "taux": None, "specifique": {
+                    "montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                    "unite_quantite": unite, "brut": brut}, "assiette": "xQTE",
+                    "assiette_origine": "droit_specifique", "source": f"Excise Act 1982, First Schedule ; {source}",
+                    "note": brut})
+                break
+        else:
+            for prefixes, taux, source, note in ACCISES_SLE_NON_LIQUIDEES:
+                if code.startswith(prefixes):
+                    inserer(droits, {**base, "taux": taux, "specifique": None, "assiette": None,
+                                     "assiette_origine": None, "source": f"Excise Act 1982, First Schedule ; {source}",
+                                     "note": note})
+                    break
+
+
 def _compter_ligne(d, compteurs, signe):
     if d.get("taux") is None and not d.get("specifique"):
         compteurs["taux_indisponibles"] += signe
@@ -3596,6 +3675,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevements_nam(positions, compteurs)
     if iso == "LSO":
         _prelevement_tapl_lesotho(positions, compteurs)
+    if iso == "SLE":
+        _accises_sierra_leone(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
     if iso in PAYS_TEC_CAE:
