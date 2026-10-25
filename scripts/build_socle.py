@@ -1277,9 +1277,31 @@ def _assiette_accise(iso, positions):
         table = json.load(f)
     ad_valorem, occasion = set(table["ad_valorem"]), set(table["occasion"])
     annexe = ad_valorem | occasion | set(table["specifique"])
+    montants = table.get("montants_specifiques", {})
+    non_liquidables = {
+        code: (brut, groupe["raison"])
+        for groupe in table.get("specifiques_non_liquidables", {}).values()
+        for code, brut in groupe["codes"].items()
+    }
     for code, position in positions.items():
         for d in position.get("droits") or []:
-            if d.get("famille") != "accise" or d.get("assiette") or d.get("taux") is None:
+            if d.get("famille") != "accise" or d.get("assiette"):
+                continue
+            if d.get("taux") is None and not d.get("specifique"):
+                if code in montants:
+                    m = montants[code]
+                    d["specifique"] = {
+                        "montant": m["montant"], "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                        "unite_quantite": m["unite_quantite"], "brut": m["brut"]}
+                    d["assiette"] = "xQTE"
+                    d["assiette_origine"] = "droit_specifique"
+                    d["source"] = table["source"]
+                    d["note"] = f"First Schedule, Part I : « {m['brut']} »."
+                elif code in non_liquidables:
+                    brut, raison = non_liquidables[code]
+                    d["note"] = f"First Schedule, Part I : « {brut} » ; {raison} — non liquidable en l'état."
+                continue
+            if d.get("taux") is None:
                 continue
             if code in ad_valorem or (d["taux"] == 0 and code in annexe):
                 d["assiette"] = table["assiette"]
@@ -4034,8 +4056,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         apres = _da()
         for lignes, signe in ((avant, -1), (apres, 1)):
             for d in lignes:
-                if d.get("taux") is None:
+                if d.get("taux") is None and not d.get("specifique"):
                     compteurs["taux_indisponibles"] += signe
+                if d.get("taux") is None and d.get("specifique"):
+                    compteurs["droits_specifiques"] += signe
                 if not d.get("assiette"):
                     cle = "assiettes_indisponibles"
                 elif d.get("assiette_origine") == "source":
