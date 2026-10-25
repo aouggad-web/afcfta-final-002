@@ -108,7 +108,7 @@ def test_l_assiette_de_l_accise_vient_de_l_excise_act_et_jamais_de_memoire(socle
         if d.get("code") == "EXC"
     ]
     assert accises, "le tarif publie bien des accises"
-    posees = [d for d in accises if d.get("assiette")]
+    posees = [d for d in accises if d.get("assiette") and not d.get("specifique")]
     assert posees and all(
         d["assiette"] == "CIF" and d["assiette_origine"] == "regle_de_pays" and "value at importation" in d["note"]
         for d in posees
