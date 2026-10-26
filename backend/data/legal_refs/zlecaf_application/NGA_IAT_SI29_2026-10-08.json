@@ -33,7 +33,7 @@
   "ce_que_cela_ne_tranche_pas": [
     "Droit de douane : la colonne « duty » de la liste concorde avec le portail sur 180 des 181 lignes comparables ; le droit reste celui du portail.",
     "Dès janvier 2027, les IAT (hors liste des 3 % ZLECAf) baissent chaque année jusqu'à 0 % en 2036 (order 2(i)(a)) : barème non publié.",
-    "Les accises du Fifth Schedule (en vigueur au 1er juillet 2026) et la Green Tax ne sont pas intégrées : l'accise servie reste celle du portail.",
+    "Les accises du Fifth Schedule (en vigueur au 1er juillet 2026) sont intégrées par la fiche NGA_accises_fifth_schedule_2026-10-26.json ; la Green Tax ne l'est pas.",
     "La National List à droits réduits et la liste d'interdiction (Third Schedule) ne sont pas intégrées."
   ],
   "documents_archives": [

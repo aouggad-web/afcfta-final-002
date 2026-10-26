@@ -36,11 +36,12 @@ def test_groupe_electrogene_a_deux_taux_reste_indisponible(positions):
 
 
 def test_ciment_l_accise_egale_a_l_iat_n_est_pas_servie_deux_fois(positions):
-    """2523.10 : droit 10 % + IAT 40 % = 50 % selon la liste ; l'« accise » de 40 % est écartée."""
+    """2523.10 : droit 10 % + IAT 40 % = 50 % selon la liste ; l'« accise » de 40 %
+    du portail est écartée, le ciment n'étant pas dans la Fifth Schedule."""
     p = positions["2523100000"]
-    assert _taux(p, "IAT") == 40.0 and _taux(p, "EXC") is None
+    assert _taux(p, "IAT") == 40.0 and _taux(p, "EXC") == 0.0
     p = positions["2523290000"]
-    assert _taux(p, "IAT") == 30.0 and _taux(p, "EXC") is None
+    assert _taux(p, "IAT") == 30.0 and _taux(p, "EXC") == 0.0
 
 
 def test_vehicules_d_occasion_selon_la_gazette(positions):

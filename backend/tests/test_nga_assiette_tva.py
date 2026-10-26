@@ -19,10 +19,12 @@ def positions():
 
 
 def test_vin_tva_sur_cif_droit_et_accise(positions):
-    """2204.21 : DD 20 %, accise 20 % sur 1 000, sans IAT en 2026 ; TVA sur 1 400."""
-    r = calculer(positions["2204210000"], 1000, devise_position="NGN")
+    """2204.21, 10 litres : DD 20 % ; accise 25 % + ₦70/l (Fifth Schedule 2026),
+    250 + 700 ; sans IAT en 2026 ; TVA sur 1 000 + 200 + 950."""
+    r = calculer(positions["2204210000"], 1000, quantite=10, devise_position="NGN")
     lignes = {l["code"]: l for l in r["npf"]["lignes"]}
-    assert (lignes["TVA"]["base"], lignes["TVA"]["montant"]) == (1400.0, 105.0)
+    assert lignes["EXC"]["montant"] == 950.0
+    assert (lignes["TVA"]["base"], lignes["TVA"]["montant"]) == (2150.0, 161.25)
     assert r["npf"]["etat"] == COMPLET
 
 
