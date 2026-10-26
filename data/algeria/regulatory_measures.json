@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "country": "DZA",
+  "as_of": "2026-10-26",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire Algérie : examen des demandes d'importation par le comité permanent créé par le décret exécutif n° 26-327 (JO n° 72 du 13 octobre 2026). Mesure générale, attachée à chaque opération d'importation et non à une position tarifaire : elle n'est pas portée par les formalités particulières de la fiche « sous-position » (services/formalites.py). Ce n'est ni un droit ou une taxe, ni une licence d'importation, ni une condition propre à la ZLECAf.",
+  "regulatory_measures": [
+    {
+      "record_id": "DZA_IMPORT_REQUEST_REVIEW",
+      "measure_name": "Examen des demandes d'importation par le comité permanent de suivi et de traitement des demandes d'importation",
+      "measure_category": "other",
+      "scope": "Le comité « examine et émet son avis sur les demandes d'importation, pour chaque opération d'importation, y compris les opérations d'importation réalisées pour propre compte par tout opérateur dans le cadre de ses activités de production et de service dans la limite de ses propres besoins » (art. 4). Il réserve un traitement d'urgence aux produits « revêtant un caractère sensible et/ou prioritaire pour l'approvisionnement du marché national ou pour le fonctionnement des unités de production ». Le décret prévoit un avis ; il ne dit pas qui décide, ni l'effet d'un avis défavorable.",
+      "scope_type": "GENERAL",
+      "products": "Toute opération d'importation, quel que soit le produit (art. 4) ; aucune liste de positions tarifaires.",
+      "hs_codes_explicit": [],
+      "hs_codes_status": "NOT_AVAILABLE",
+      "transport": "Non précisé par le décret.",
+      "conditions": "Demande d'importation enregistrée sur « la plate-forme numérique dédiée à l'enregistrement des demandes d'importation » (art. 4), dont le décret ne donne ni le nom ni l'adresse. Le décret entre en vigueur à sa publication au Journal officiel n° 72 du 13 octobre 2026.",
+      "exemptions": "NOT_AVAILABLE",
+      "thresholds_and_exclusions": {
+        "text": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "documents": [
+        "Demande d'importation enregistrée sur la plate-forme numérique (pièces à joindre non fixées par le décret)."
+      ],
+      "authority": "Comité permanent de suivi et de traitement des demandes d'importation, placé auprès du ministre du commerce extérieur et de la promotion des exportations, qui le préside ; secrétariat assuré par les services de ce ministère (art. 1er à 3).",
+      "platform": "Plate-forme numérique dédiée à l'enregistrement des demandes d'importation (art. 4) — non nommée par le décret.",
+      "procedure": {
+        "steps": [
+          "Enregistrement de la demande d'importation sur la plate-forme numérique dédiée.",
+          "Examen et avis du comité, pour chaque opération ; traitement d'urgence pour les produits sensibles ou prioritaires."
+        ],
+        "official_delay": null,
+        "status": "PARTIAL"
+      },
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "DZA-JORADP-DE-26-327",
+      "legal_reference": "Décret exécutif n° 26-327 du 13 octobre 2026, art. 1er à 4 (JO n° 72, p. 16-17), pris en application de l'ordonnance n° 03-04 du 19 juillet 2003, art. 6 octies.",
+      "verification_status": "DOCUMENTED",
+      "pending_primary_archive": false,
+      "mandated_actor_status": "NOT_APPLICABLE",
+      "mandated_actors": []
+    }
+  ]
+}

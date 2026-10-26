@@ -30,7 +30,7 @@ l'en empêchait.
 import pytest
 from services.regulatory_compliance_service import get_country_regulatory_compliance
 
-_ALL_COUNTRIES = ("CIV", "COD", "CMR", "GHA", "KEN", "NGA")
+_ALL_COUNTRIES = ("CIV", "COD", "CMR", "DZA", "GHA", "KEN", "NGA")
 _STATUSES = {"DOCUMENTED", "NOT_APPLICABLE", "NOT_AVAILABLE"}
 _ACTIVE_MANDATE_STATUSES = {"CONFIRMED_TIME_LIMITED", "CONFIRMED_UNDATED_END"}
 
@@ -65,9 +65,10 @@ def test_documented_status_matches_a_confirmed_active_mandated_actor():
 
 
 def test_not_applicable_measures_have_no_confirmed_active_actor():
-    """KEN-KRA-ACD (jamais de prestataire) et GHA-GSA-EASYPASS (reprise en
-    direct par la GSA depuis juillet 2026) sont les deux seules mesures
-    NOT_APPLICABLE sur les 17 : dans les deux cas, aucun acteur documenté
+    """KEN-KRA-ACD (jamais de prestataire), GHA-GSA-EASYPASS (reprise en
+    direct par la GSA depuis juillet 2026) et DZA_IMPORT_REQUEST_REVIEW
+    (comité ministériel, décret exécutif n° 26-327) sont les trois seules
+    mesures NOT_APPLICABLE sur les 18 : dans aucun cas un acteur documenté
     n'a un mandat confirmé actif."""
     not_applicable = []
     for country in _ALL_COUNTRIES:
@@ -75,7 +76,7 @@ def test_not_applicable_measures_have_no_confirmed_active_actor():
             if measure["mandated_actor_status"] == "NOT_APPLICABLE":
                 not_applicable.append(measure["record_id"])
                 assert not _has_confirmed_active_actor(measure), measure["record_id"]
-    assert sorted(not_applicable) == ["GHA-GSA-EASYPASS", "KEN-KRA-ACD"]
+    assert sorted(not_applicable) == ["DZA_IMPORT_REQUEST_REVIEW", "GHA-GSA-EASYPASS", "KEN-KRA-ACD"]
 
 
 def test_gha_easypass_keeps_historical_actors_despite_not_applicable_status():

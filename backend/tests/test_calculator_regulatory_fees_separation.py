@@ -23,8 +23,8 @@ def test_provider_fees_stay_informative_never_a_numeric_zero():
 
 def test_uncovered_destination_country_is_fail_closed_none():
     # Un pays sans registre conforme publié ne fabrique aucune donnée.
-    assert "DZA" not in get_supported_regulatory_countries()
-    assert get_country_regulatory_compliance("DZA") is None
+    assert "AGO" not in get_supported_regulatory_countries()
+    assert get_country_regulatory_compliance("AGO") is None
 
 
 # Miroir du backend/frontend : seuls ces statuts constituent un mandat confirmé,
