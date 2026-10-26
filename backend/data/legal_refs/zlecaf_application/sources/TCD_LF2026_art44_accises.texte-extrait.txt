@@ -1,0 +1,45 @@
+République du Tchad — Loi n° 008/AN/SENAT/2025 portant loi de finances pour l'exercice 2026
+(adoptée par l'Assemblée nationale et le Sénat en leurs séances des 17 et 26 décembre 2025).
+Source : https://ecofinances.gouv.td/wp-content/uploads/2026/06/Loi-n008-AN-SENAT-2025-Portant-loi-de-Finances-2026-LF-2026.pdf
+(PDF scanné, 87 pages, sha256 7bc46241a7c7586d9eece4fb5c95a6587ba637732480b7b4c8cfbf31112d7fd2).
+Pages 1 et 62 à 66 archivées dans TCD_LF2026_art44_accises.extrait.pdf ; transcription du tableau
+faite sur l'image des pages 64 et 65 (l'OCR en perdait des lignes).
+
+=== p. 62 ===
+Article 44 : Pour compter du 1er janvier 2026, l'article 36 de la loi de finances pour 2021, tel que
+modifié par l'article 27 de la loi de finances pour 2024, est modifié et complété comme suit :
+
+=== p. 64-65 — Lire : Article 36 (nouveau) ===
+Position tarifaire | Produits soumis au droit d'accises | Taux droit d'accise | Taux taxe spécifique
+2202 | Eaux gazeuses et minérales, boissons sucrées | 10% | 50 FCFA/Bouteille ou cannette importée
+2203 | Bières | 25% | 10%
+2204 et 2205 | Vins | 25% | 15%
+2208 | Liqueurs | 25% | 20%
+2402 | Cigares (y compris ceux à bouts coupés, cigarillos et cigarettes, en tabac ou succédanés de tabac | 30% | 50FCFA/Paquet
+2403 à l'exclusion de la position 24 03 99 20 | Autres tabacs et succédanés de tabacs, fabriqués ; tabacs "homogénéisés" ou "reconstitués" »; extraits et sauces de tabac. | 30% | 50FCFA/Paquet
+3303.00.00 | Parfums et eaux de toilettes | 20% |
+3304 et 3305 | Produits cosmétiques | 20% |
+3304 et 3305 | Produits cosmétiques contenant de l'hydroquinone | 20% | 30%
+Chapitre 717117 | Jeux de hasard/appareils servant aux jeux de hasard et de divertissement (position tarifaire : chapitre 717117) | 15% |
+Chapitre 717117 | Bijoux, métaux précieux et pierres précieuses | 20% |
+8711.30.00 8711.40.00 8711.50.00 8711.90.00 | Motocycles d'une cylindrée supérieure à 250cm3 | 12,5% |
+ | Emballages non récupérables | | 25FCFA avec plafond du produit vendu
+ | Polypropylène | | 15% Valeur sortie d'usine
+8703.24 | Véhicule de tourisme d'une cylindrée excédant 3000 cm3 | 25% | 20%
+87 03.33 | Autres véhicules de tourisme à moteur à piston à allumage par compression (diesel ou semi diesel) d'une cylindrée excédante 2500 cm3 | 25% | 20%
+3917 | Tubes et tuyaux et leurs accessoires en matière plastique | | 10%
+3923 | Articles de transports ou d'emballage en matière plastique | | 10%
+3924 | Vaisselles et autres articles de ménages ou d'économie domestiques en matière plastique | | 10%
+3926 | Autres ouvrages en matière plastique | | 10%
+29 07 22 00 | Hydroquinone et ses sels | | 30%
+08041000 | Dattes | | 30%
+
+=== p. 65 ===
+La base d'imposition au droit d'accises est établie comme ci-après :
+- A l'importation : en ajoutant à la valeur en douane telle qu'elle est définie par le Code des douanes de la CEMAC, le montant du droit de douanes ;
+- Pour l'introduction sur le territoire en provenance d'un État membre de la CEMAC par la valeur sortie usine à l'exclusion des frais d'approche ;
+
+=== CGI (édition 2016, archivé data/sources/chad/official/tcd-cgi-2016.pdf), art. 235 ===
+Art. 235 - I. La base d'imposition est constituée :
+1° Pour les importations, par la valeur des marchandises telle que définie par le Code des douanes de la CEMAC majorée des droits de douane, des droits d'accises éventuels à l'exception de la TVA elle-même et du précompte de 4 % prévu à l'article 120.
+V. Les bases définies ci-dessus s'entendent tous frais et taxes compris, à l'exception de la TVA elle-même et du précompte liquidé par les personnes physiques et morales.

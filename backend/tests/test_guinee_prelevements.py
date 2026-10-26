@@ -46,6 +46,17 @@ def test_accise_sur_la_valeur_et_les_droits_d_entree(positions):
     assert lignes["TVA"]["base"] == pytest.approx(1_227_500.0 + 576_925.0)
 
 
+@pytest.mark.parametrize("code,dd,tva", [
+    ("0304510000", 20.0, 18.0),  # libellé de six lignes, taux sur la dernière
+    ("1509201000", 20.0, 0.0),  # code centré sous la ligne de ses taux
+    ("1510100000", 10.0, 18.0),  # ne prend plus les taux de 1510.90.10.00
+])
+def test_les_taux_se_lisent_dans_toute_la_cellule(positions, code, dd, tva):
+    etat, lignes = _calcul(positions[code])
+    assert etat == "COMPLET"
+    assert lignes["DD"]["taux_pct"] == dd and lignes["TVA"]["taux_pct"] == tva
+
+
 def test_accise_specifique_des_produits_petroliers_sans_taux(positions):
     etat, lignes = _calcul(positions["2710124000"])
     assert lignes["DA"]["taux_pct"] is None and etat != "COMPLET"

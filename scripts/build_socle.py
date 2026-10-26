@@ -1490,6 +1490,7 @@ ACCISES_PAYS = {
     "GHA": os.path.join(REPO, "backend", "data", "zlecaf_gha", "droit_accises_act878.json"),
     "BFA": os.path.join(REPO, "backend", "data", "zlecaf_bfa", "droit_accises_cgi2026.json"),
     "TGO": os.path.join(REPO, "backend", "data", "zlecaf_tgo", "droit_accises_cgi2025.json"),
+    "TCD": os.path.join(REPO, "backend", "data", "zlecaf_tcd", "droit_accises_lf2026.json"),
 }
 
 
@@ -4151,6 +4152,53 @@ def _ice_mocambique(positions, compteurs):
         _compter_ligne(ice, compteurs, 1)
 
 
+#: Tchad : colonne « Taux taxe spécifique » de l'art. 36 de la LF 2021, rédaction
+#: de la LF 2026 (art. 44). Fiche TCD_droit_accises_2026-10-26.json.
+#: (positions, exclusions, taux %, (montant FCFA, unité) ou None, tableau).
+TAXE_SPECIFIQUE_TCD = (
+    (("2202",), (), None, (50, "bouteille ou canette"), "50 FCFA/Bouteille ou cannette importée"),
+    (("2203",), (), 10.0, None, "10%"),
+    (("2204", "2205"), (), 15.0, None, "15%"),
+    (("2208",), (), 20.0, None, "20%"),
+    (("2402",), (), None, (50, "paquet"), "50FCFA/Paquet"),
+    (("2403",), ("24039920",), None, (50, "paquet"), "50FCFA/Paquet"),
+    (("870324", "870333"), (), 20.0, None, "20%"),
+    (("3917", "3923", "3924", "3926"), (), 10.0, None, "10%"),
+    (("29072200",), (), 30.0, None, "30%"),
+    (("08041000",), (), 30.0, None, "30%"),
+)
+SOURCE_TAXE_SPECIFIQUE_TCD = (
+    "Loi de finances pour 2021, art. 36 (nouveau), rédaction de la loi de finances pour 2026 "
+    "(loi n° 008/AN/SENAT/2025), art. 44"
+)
+
+
+def _taxe_specifique_tchad(positions, compteurs):
+    """Tchad : la taxe spécifique au montant par unité se liquide sur la
+    quantité ; au pourcentage, sa base n'est pas énoncée — l'art. 36 n'énonce
+    que celle du droit d'accises —, elle est portée sans assiette."""
+    for code, position in positions.items():
+        regle = next((r for r in TAXE_SPECIFIQUE_TCD if code.startswith(r[0]) and code not in r[1]), None)
+        if regle is None:
+            continue
+        _, _, taux, montant, brut = regle
+        ligne = {"code": "SPEC", "code_source": "SPEC", "famille": famille("SPEC"), "libelle": "Taxe spécifique",
+                 "taux": taux, "specifique": None, "assiette": None, "assiette_origine": None,
+                 "source": SOURCE_TAXE_SPECIFIQUE_TCD}
+        if montant:
+            ligne.update(specifique={"montant": montant[0], "unite_monetaire": "unite_principale",
+                                     "sous_unite_source": None, "unite_quantite": montant[1], "brut": brut},
+                         assiette="xQTE", assiette_origine="droit_specifique")
+            ligne["note"] = f"Art. 36, colonne « Taux taxe spécifique » : « {brut} »."
+        else:
+            ligne["note"] = (f"Art. 36, colonne « Taux taxe spécifique » : {brut} ; l'article n'en énonce pas la "
+                             "base (seule celle du droit d'accises l'est) — non liquidable en l'état.")
+        droits = position.setdefault("droits", [])
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -4540,6 +4588,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _iec_angola(positions, compteurs)
     if iso == "MOZ":
         _ice_mocambique(positions, compteurs)
+    if iso == "TCD":
+        _taxe_specifique_tchad(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:

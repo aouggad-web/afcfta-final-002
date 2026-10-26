@@ -66,16 +66,9 @@ def test_un_montant_specifique_n_est_pas_un_pourcentage():
 @pytest.mark.skipif(not os.path.exists(os.path.join(SOCLE, "CMR.json")), reason="socle absent (gitignoré)")
 @pytest.mark.parametrize("iso3", ["CMR", "GNQ", "CAF", "COG", "GAB", "TCD"])
 def test_aucune_accise_negative_dans_la_cemac(iso3):
-    from services.calcul import COMPLET, calculer
-
     with open(os.path.join(SOCLE, f"{iso3}.json"), encoding="utf-8") as f:
         positions = json.load(f)["positions"]
     negatifs = [d for p in positions.values() for d in p["droits"] if (d.get("taux") or 0) < 0]
     assert negatifs == []
-    if iso3 in ("CMR", "GAB", "COG", "CAF", "GNQ"):
-        # Liste du code des impôts ou de la loi d'accises du pays : le poisson 0302.69 n'y est pas.
-        assert not any(d["code"] == "DA" for d in positions["03026990"]["droits"])
-        return
-    r = calculer(positions["03026990"], 1000, devise_cif="XAF")
-    accise = [ligne for ligne in r["npf"]["lignes"] if ligne["code"] == "DA"][0]
-    assert accise["montant"] is None and r["npf"]["etat"] != COMPLET
+    # Liste du code des impôts ou de la loi d'accises du pays : le poisson 0302.69 n'y est pas.
+    assert not any(d["code"] == "DA" for d in positions["03026990"]["droits"])

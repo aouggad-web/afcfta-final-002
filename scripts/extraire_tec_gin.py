@@ -56,13 +56,25 @@ for page in doc:
                 vues.append(round(w[1]))
             garde.append(w)
         vals = {"_libelle": " ".join(w[4] for w in garde)}
-        for w in bande:
+        # Les taux sont centrés dans la cellule de la position, qui court
+        # jusqu'au code suivant ; au plus 40 points sous le code, au-delà
+        # desquels commencent, en fin de chapitre, les notes du suivant. Un code
+        # centré dans une cellule de deux lignes a ses taux sur la première,
+        # 4 points au-dessus de lui (1509.20.10.00) : la cellule commence 6
+        # points avant le code. Un libellé de plus de quatre lignes porte ses
+        # taux plus bas (0304.51.00.00) : faute de taux dans les 40 points, la
+        # première ligne d'au moins cinq valeurs avant le code suivant.
+        fin = y2 - 6 if i + 1 < len(lignes) else y + 37
+        cand = [w for w in mots if w[0] >= gauche and VAL.match(w[4]) and y - 6 <= w[1] < fin]
+        retenus = [w for w in cand if w[1] < y + 37]
+        if not retenus:
+            for y_ligne in sorted({round(w[1]) for w in cand}):
+                ligne = [w for w in cand if abs(w[1] - y_ligne) <= 2]
+                if len(ligne) >= 5:
+                    retenus = ligne
+                    break
+        for w in retenus:
             m = VAL.match(w[4])
-            # Les taux sont centrés dans la cellule de la position, qui court
-            # jusqu'au code suivant ; après le dernier code d'une page, au plus
-            # 40 points, au-delà desquels commencent les notes de chapitre.
-            if w[0] < gauche or not m or w[1] >= min(y2, y + 40) - 3:
-                continue
             xc = (w[0] + w[2]) / 2
             col = min(COLS, key=lambda c: abs(hdr[c][0] - xc))
             if abs(hdr[col][0] - xc) > (16 if col == "DFE" else 12):
