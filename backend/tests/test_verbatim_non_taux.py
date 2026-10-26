@@ -43,7 +43,8 @@ def test_le_socle_ne_porte_plus_ces_faux_taux():
     with open(os.path.join(SOCLE, "MOZ.json"), encoding="utf-8") as f:
         positions = json.load(f)["positions"]
     planchers = [d for p in positions.values() for d in p["droits"] if d["code_source"] == "ICE_VAL_MIN"]
-    assert len(planchers) == 80 and all(d.get("taux") is None for d in planchers)
+    # Taux spécifiques de l'ICE (test_moz_ice_especifico) : jamais un pourcentage.
+    assert planchers and all(d.get("taux") is None for d in planchers)
 
 
 def test_un_taux_negatif_n_existe_pas():
