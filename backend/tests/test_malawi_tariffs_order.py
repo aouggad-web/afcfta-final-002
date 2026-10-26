@@ -40,6 +40,7 @@ CE QUE CES TESTS TIENNENT.
 
 import json
 import pathlib
+import re
 import sys
 
 import pytest
@@ -273,6 +274,29 @@ def test_une_ligne_dont_les_colonnes_ne_se_lisent_pas_est_declaree(crawl):
     }
     structurelles = [p for p in sans_droit if motifs & set(p["source_gaps"])]
     assert len(structurelles) >= len(sans_droit) - 5
+
+
+def test_un_libelle_qui_deborde_sur_la_page_suivante_garde_ses_taux(crawl):
+    """0204.10.00 commence en bas de la page 27 ; ses taux sont sur la derniere
+    ligne de son libelle, en tete de la page 28 (« fresh or chilled .. kg 15%
+    10% 1% 15% Free Free Exempt 10% »). La ligne n'est plus perdue."""
+    positions = {p["national_code"]: p for p in crawl["sub_positions"]}
+    for code, droit in (("02041000", 10.0), ("03021100", 25.0)):
+        taxes = {t["code"]: t["rate_pct"] for t in positions[code]["taxes"]}
+        assert taxes["DD"] == droit
+        assert "DROIT_NPF_NON_LU" not in positions[code]["source_gaps"]
+    assert positions["02041000"]["page_source"] == 27
+
+
+def test_l_en_tete_de_page_ne_se_lit_pas_dans_le_libelle(crawl):
+    """Filets, numeros de colonnes « 1 2 3 … 12 » et renvoi « VI:28 » se
+    lisaient dans le libelle de la ligne qu'ils suivent (2308.00.00 : « …
+    animal feeding 1 2 3 ____ »), et masquaient son unite."""
+    positions = {p["national_code"]: p for p in crawl["sub_positions"]}
+    mobilier = re.compile(r"_{5,}|\b1 2 3\b|[IVXL]+:\d+")
+    assert not [c for c, p in positions.items() if mobilier.search(p["designation"]["verbatim"])]
+    assert positions["29339100"]["designation"]["verbatim"].endswith("and triazolam (INN); salts thereof")
+    assert positions["01013010"]["statistical_unit"] == "U"
 
 
 def test_une_preference_superieure_au_plein_droit_est_signalee(crawl):
