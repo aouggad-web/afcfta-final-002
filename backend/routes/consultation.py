@@ -260,6 +260,9 @@ def formalites(iso3: str, code: str):
         "country_iso3": iso3,
         "hs_code": provenance.get("code_demande", code),
         "formalities": liste,
+        # Contrôles à l'exportation publiés pour la position (Afrique du Sud) ;
+        # liste vide quand aucun n'est collecté, sans statut propre.
+        "formalities_export": (position or {}).get("formalites_export") or [],
         "statut": statut,
         "reserve": RESERVES_FORMALITES.get(statut),
         "source": "socle",
