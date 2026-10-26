@@ -1056,14 +1056,16 @@ _EXPORT_GHA_CACAO = (
     "— taux non publié au tarif.",
 )
 _EXPORT_SEN_ARACHIDE = (
-    None, None,
-    "Le projet de loi de finances 2026 annonce la « réactivation des droits de sortie sur les exportations "
-    "d'arachide » (exposé, 9 milliards FCFA attendus) ; le texte qui en fixe le taux n'a pas été consulté.",
+    0.0, None,
+    "Suspendu en 2026 : « la suspension de la taxe sur les exportations de produits arachidiers, initialement "
+    "prévue pour 9 milliards de FCFA » (annexe Voies et moyens au projet de loi de finances rectificative 2026, "
+    "DGB/MEFP ; R_7181 ramené à 0).",
 )
 _EXPORT_SEN_OR = (
     None, None,
-    "Le projet de loi de finances 2026 projette une « taxe sur l'exportation d'or » (exposé, 26,3 milliards "
-    "FCFA) ; le texte qui en fixe le taux et l'assiette n'a pas été consulté.",
+    "La « taxe sur l'exportation d'or » de la loi de finances 2026 figure parmi les mesures « sur lesquels "
+    "aucun recouvrement n'est attendu » (projet de loi de finances rectificative 2026) ; son texte et son taux "
+    "n'ont pas été trouvés.",
 )
 EXPORT_PAR_TEXTE = {
     "GHA": (
@@ -1087,18 +1089,26 @@ EXPORT_PAR_TEXTE = {
         },
     ),
     "SEN": (
-        "Loi de finances pour 2026, art. 19 (texte du projet : data/senegal/docs_officiels/PLF-2026-SENEGAL.pdf)",
+        "Loi n° 2025-19 du 22 décembre 2025 (loi de finances pour 2026), art. 19 ; projet de loi de finances "
+        "rectificative 2026 et son annexe Voies et moyens (data/senegal/docs_officiels/)",
         None,
         {
-            **{
-                code: (
-                    None, "32 FCFA/kg",
-                    "Art. 19 : « Le taux du droit de sortie est fixé à 32 F CFA par kilogramme net de noix de "
-                    "cajou » ; liquidé « comme en matière de douane ». Texte du projet de loi de finances : la "
-                    "loi n° 2025-19 promulguée n'a pas été consultée.",
-                )
-                for code in ("0801310000", "0801320000")
-            },
+            # La noix brute (en coques) : l'exposé vise « la taxation des
+            # exportations de noix brutes de cajou ».
+            "0801310000": (
+                None, "32 FCFA/kg",
+                "Loi n° 2025-19 du 22 décembre 2025, art. 19 (non modifié par la loi rectificative 2026) : « Le "
+                "taux du droit de sortie est fixé à 32 F CFA par kilogramme net de noix de cajou », liquidé « comme "
+                "en matière de douane ». Texte lu dans le projet de loi ; le Journal officiel n'a pas été consulté.",
+            ),
+            # Les amandes (sans coques) : le dispositif dit « noix de cajou »,
+            # l'exposé vise la noix brute ; non tranché.
+            "0801320000": (
+                None, None,
+                "Art. 19 : « noix de cajou » ; son exposé des motifs vise « la taxation des exportations de noix "
+                "brutes de cajou » pour inciter à la transformation locale. Application aux amandes (sans coques) "
+                "non établie.",
+            ),
             **{code: _EXPORT_SEN_ARACHIDE for code in (
                 "1202300000", "1202411000", "1202419000", "1202421000", "1202429000")},
             **{code: _EXPORT_SEN_OR for code in (

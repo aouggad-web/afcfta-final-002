@@ -210,18 +210,29 @@ def test_gha_sh6_qui_regroupe_des_droits_differents(client):
     assert ligne["montant"] is None and "position nationale" in ligne["note"]
 
 
-def test_sen_noix_de_cajou_32_francs_le_kilo(client):
-    """Loi de finances 2026, art. 19 (texte du projet) : 32 F CFA/kg net."""
+def test_sen_noix_de_cajou_brute_32_francs_le_kilo(client):
+    """Loi n° 2025-19, art. 19 : 32 F CFA/kg net sur la noix brute (en coques)."""
     export = _export(client, pays="SEN", code_sh="0801310000", valeur=1_000_000, devise="XOF", quantite=1_000)
     ligne = _ligne(export, "EXPORT")
     assert ligne["montant"] == pytest.approx(32_000)
-    assert "loi n° 2025-19 promulguée n'a pas été consultée" in ligne["note"]
+    assert "2025-19" in ligne["note"]
 
 
-def test_sen_arachide_et_or_annonces_non_chiffres(client):
-    for code in ("1202300000", "7108120000"):
-        ligne = _ligne(_export(client, pays="SEN", code_sh=code, valeur=1_000_000, devise="XOF"), "EXPORT")
-        assert ligne["montant"] is None and "n'a pas été consulté" in ligne["note"]
+def test_sen_amandes_de_cajou_non_etablies(client):
+    """L'exposé vise la noix brute : les amandes (sans coques) ne sont pas tranchées."""
+    ligne = _ligne(_export(client, pays="SEN", code_sh="0801320000", valeur=1_000_000, devise="XOF"), "EXPORT")
+    assert ligne["montant"] is None and "noix brutes" in ligne["note"]
+
+
+def test_sen_arachide_suspendue_en_2026(client):
+    """Annexe Voies et moyens de la LFR 2026 : taxe sur les exportations arachidières suspendue."""
+    ligne = _ligne(_export(client, pays="SEN", code_sh="1202300000", valeur=1_000_000, devise="XOF"), "EXPORT")
+    assert ligne["montant"] == 0 and "suspension" in ligne["note"]
+
+
+def test_sen_or_sans_recouvrement_ni_taux(client):
+    ligne = _ligne(_export(client, pays="SEN", code_sh="7108120000", valeur=1_000_000, devise="XOF"), "EXPORT")
+    assert ligne["montant"] is None and "aucun recouvrement" in ligne["note"]
 
 
 def test_position_sans_droit_de_sortie(client):

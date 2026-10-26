@@ -1,0 +1,62 @@
+Sénégal — droits et taxes à l'exportation en 2026 : extraits verbatim de la loi de finances rectificative (relevés le 2026-10-26)
+
+1. Projet de loi de finances rectificative 2026, exposé général (data/senegal/docs_officiels/PLFR-2026-SENEGAL.pdf, sha256 82988e6f7c3c14cfef5aa46f9310649ea455c01e05a53506956e68d53345a673).
+Texte extrait par pdftotext -layout, sans retouche.
+
+   -   en dépenses, à 7 583,9 milliards FCFA contre 7 433,9 milliards FCFA
+       dans la LFI 2026, soit une augmentation de 150 milliards FCFA en valeur
+       absolue et 2,0% en valeur relative.
+
+Pour les recettes du budget général, elles s’élèvent à 5 516,7 milliards FCFA et
+comprennent :
+
+   -   les recettes fiscales arrêtées à 4 931,5 milliards FCFA, en repli de 453,3 milliards
+       en valeur absolue et 8,4% en valeur relative, du fait principalement de la baisse
+       significative de celles attendues du PRES. Les moins-values projetées sur le
+       PRES concernent notamment, la taxation des jeux de hasard avec une prévision
+       révisée à 120 milliards FCFA contre 300 milliards FCFA dans la LFI 2026 ainsi
+       que la suppression des valeurs de correction au profit des valeurs
+       transactionnelles sur certains produits générateurs de recettes, la réactivation
+       des droits de sortie sur les exportations d’arachide, la régularisation foncière
+       massive, la taxe sur l’exportation d’or et le renouvellement de conventions de
+       concessions des opérateurs téléphoniques sur lesquels aucun recouvrement
+       n’est attendu ;
+
+                    Page 9 sur 122
+   PREMIERE PARTIE : DONNEES GENERALES DU BUDGET DE L’ETAT
+
+ARTICLE PREMIER : Les dispositions des articles premier, 2, 4, 5, 6, 11 et 12 de la
+loi n° 2025-19 du 22 décembre 2025 portant loi de finances pour l’année 2026 sont
+abrogées et remplacées par celles des articles cités ci-dessous.
+
+
+2. Annexe « Voies et moyens » au projet de loi de finances rectificative 2026 (DGB/MEFP), https://www.archives.sn/api/fichiers/1e9e4429-aa0a-4996-89ad-866bfc9ba573 (sha256 865ff22bac40b6e4b2ed2298595f544b2dd82840f0e120eb046ef59c8279c734), « 718 – Droits et taxes à l'exportation ».
+
+
+
+
+
+          718 – Droits et taxes à l’exportation
+
+
+Les droits et taxes à l’exportation sont projetés à 4,32 milliards de FCFA
+dans le PLFR 2026, contre 40,25 milliards de FCFA dans la LFI 2026, soit
+une baisse de 35,93 milliards de FCFA en valeur absolue et de 89,27 %
+en valeur relative. Cette diminution s’explique notamment par la révision
+des ressources du PRES, la suspension de la taxe sur les exportations de
+produits arachidiers, initialement prévue pour 9 milliards de FCFA, ainsi
+que par la révision des recettes attendues des exportations d’or, évaluées
+à 26,3 milliards de FCFA dans la LFI 2026.
+Tableau 9: Récapitulatif des droits et taxes à l’exportation
+
+Nature de recettes (en milliards FCFA)                          LFI 2026        LFR 2026       Variation              %
+
+R_7181 - Droit de sortie sur les exportations d’arachide         9,00             0,00          -9,00              -100,00%
+
+R_7182 - Droit de sortie sur les exportations d’hydrocarbures
+                                                                                                 0,00               0,00%
+tirées des activités extractives
+R_7189 -Autres droits et taxes à l'exportation                   31,25            4,32          -26,93             -86,18%
+718 - Droits et taxes à l'exportation                            40,25            4,32          -35,93             -0,8927
+Source : DGB/MEFP
+
