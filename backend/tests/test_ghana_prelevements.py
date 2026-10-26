@@ -48,12 +48,14 @@ def test_engrais_hors_sil(positions):
     assert "SIL" not in codes and "EXIM" in codes
 
 
-def test_machines_sans_taux_de_sil(positions):
-    """Machines et équipements exclus du SIL sans liste : taux non établi, TVA indisponible."""
-    code = next(k for k in positions if k.startswith("847130"))
-    etat, lignes = _calcul(positions[code])
-    assert lignes["SIL"]["taux_pct"] is None
-    assert lignes["TVA"]["montant"] is None and etat != "COMPLET"
+def test_machines_hors_du_sil(positions):
+    """Act 861, Second Schedule substituée par l'Act 944 : « Machinery and Equipment
+    listed under Chapters 84 and 85 » hors du SIL ; la TVA se calcule."""
+    for prefixe in ("847130", "8501"):
+        code = next(k for k in positions if k.startswith(prefixe))
+        etat, lignes = _calcul(positions[code])
+        assert "SIL" not in lignes
+        assert lignes["TVA"]["montant"] is not None and etat == "COMPLET"
 
 
 def test_biere_accise_sur_valeur_et_droits_d_entree(positions):
