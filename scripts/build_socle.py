@@ -1824,16 +1824,67 @@ def _iat_nigeria_2026(positions, compteurs):
                 d["taux"] = 0.0
                 d["note"] = "Position absente de la liste IAT de l'Order 2026, qui révoque celui de 2023."
             compteurs["taux_indisponibles"] += (d["taux"] is None) - (avant is None)
-            # Ciments 2523 : IAT vide au portail et « accise » égale à l'IAT de la liste,
-            # dont le total (droit + IAT) exclut une accise de même taux.
-            for e in droits:
-                if avant is None and d["taux"] and e.get("code") == "EXC" and e.get("taux") == d["taux"]:
-                    e["taux"] = None
-                    e["note"] = (
-                        "Accise du portail égale à l'IAT de la liste de l'Order 2026, IAT absente "
-                        "au portail : vraisemblablement l'IAT mal rangée, non servie deux fois."
-                    )
-                    compteurs["taux_indisponibles"] += 1
+
+
+#: Nigéria : liste des marchandises passibles d'accise, Fifth Schedule (Annexe IV)
+#: de la même Order 2026 (Order 4), taux 2026 en vigueur au 1er juillet 2026
+#: (Order 7(ii)). Elle SUBSTITUE la liste existante : hors d'elle, pas d'accise.
+#: Fiche NGA_accises_fifth_schedule_2026-10-26.json. (du code, au code, taux %,
+#: (montant en naira, unité) ou None, verbatim de l'annexe) ; bornes incluses.
+ACCISE_NGA_2026 = (
+    ("2201102000", "2201900000", None, (10.0, "litre"), "Aerated Water others : ₦10 per Litre"),
+    ("2203001000", "2203009000", None, (72.0, "litre"), "Beer and Stout : NILL, ₦72 per Litre"),
+    ("2206001000", "2206009900", None, (72.0, "litre"), "Beer and Stout : NILL, ₦72 per Litre"),
+    ("2204100000", "2205900000", 25.0, (70.0, "litre"), "Wines (alcoholic) : 25%, ₦70 per Litre"),
+    ("2208200000", "2208900000", 30.0, (75.0, "litre"), "Whisky, Brandy, Vodka & Rums : 30%, ₦75 per Litre"),
+    ("2402100000", "2402900000", 30.0, (6.0, "cigarette"), "Smoking Tobacco including Cigarettes : 30%, ₦6.00k per Stick"),
+)
+#: Lignes de l'annexe qu'une position ne permet pas de liquider : (du, au, motif).
+ACCISE_NGA_2026_NON_LIQUIDABLE = (
+    ("2009119000", "2202999000",
+     "« Non alcoholic beverages, fruit juice, energy drink, etc. (All non-alcoholic beverages) Sugar Sweetened » : "
+     "₦10 par litre si la boisson est sucrée, ce que la position ne dit pas"),
+    ("2403110000", "2404990000",
+     "tabacs autres que les cigarettes, produits du tabac chauffé et sachets de nicotine : « ₦4,500/kg ₦6,000 per "
+     "litre », deux unités dont la position ne dit pas laquelle vaut"),
+)
+SOURCE_ACCISE_NGA = (
+    "Customs, Excise Tariff, Etc. (Variation) Order 2026 (S.I. 29, Gazette n° 79 du 1er mai 2026), Fifth Schedule, "
+    "Annex IV"
+)
+
+
+def _accise_nigeria_2026(positions, compteurs):
+    """Nigéria : accise de la Fifth Schedule de l'Order 2026, au lieu de celle du
+    portail (celle de l'Order 2023, révoqué). Les positions 21.01 à 21.06, que la
+    plage « Sugar Sweetened » enjambe sans qu'elles soient des boissons, n'en
+    sont pas."""
+    for code, position in positions.items():
+        for d in position.get("droits") or []:
+            if d.get("code") != "EXC":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            d["source"] = SOURCE_ACCISE_NGA
+            regle = next((r for r in ACCISE_NGA_2026 if r[0] <= code <= r[1]), None)
+            exclue = next((r for r in ACCISE_NGA_2026_NON_LIQUIDABLE
+                           if r[0] <= code <= r[1] and code[:4] in ("2009", "2201", "2202", "2403", "2404")), None)
+            if regle:
+                _, _, taux, (montant, unite), brut = regle
+                d["specifique"] = {"montant": montant, "unite_monetaire": "unite_principale",
+                                   "sous_unite_source": None, "unite_quantite": unite, "brut": brut}
+                if taux is None:
+                    d.update(taux=None, assiette="xQTE", assiette_origine="droit_specifique")
+                else:
+                    d.update(taux=taux, cumulatif=True, expression_brute=brut)
+                d["note"] = f"Fifth Schedule, Annex IV, taux 2026 : « {brut} »."
+            elif exclue:
+                d["taux"] = None
+                d["note"] = f"Fifth Schedule, Annex IV : {exclue[2]} — non liquidable en l'état."
+            else:
+                d["taux"] = 0.0
+                d["note"] = ("Position absente de la liste des marchandises passibles d'accise (Fifth Schedule de "
+                             "l'Order 2026), qui substitue la liste existante.")
+            _compter_ligne(d, compteurs, 1)
 
 
 #: Sierra Leone : Part II du Schedule du Customs Tariff Act 1978, abrogée et
@@ -4562,6 +4613,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ordre_tunisie(positions)
     if iso == "NGA":
         _iat_nigeria_2026(positions, compteurs)
+        _accise_nigeria_2026(positions, compteurs)
     if iso == "SLE":
         _droits_nationaux_sle(positions)
     if iso == "AGO":

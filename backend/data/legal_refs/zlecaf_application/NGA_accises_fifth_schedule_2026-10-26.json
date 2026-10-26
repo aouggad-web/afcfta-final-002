@@ -1,0 +1,45 @@
+{
+ "schema_version": 1,
+ "objet": "Nigéria : accise à l'importation de la Fifth Schedule (Annex IV) de la Customs, Excise Tariff, Etc. (Variation) Order 2026 — liste substituée des marchandises passibles d'accise, taux 2026",
+ "destination_iso3": "NGA",
+ "verified_at": "2026-10-26",
+ "etabli": true,
+ "evidence_level": "primaire — Federal Republic of Nigeria Official Gazette No. 79, Vol. 113, 1st May 2026, S.I. No. 29 of 2026, Orders 4, 6 et 7 (p. B 250) et Fifth Schedule, Annex IV (p. B 279-281), PDF scanné déjà archivé ; tableau transcrit sur l'image des pages",
+ "source": {
+  "institution": "Federal Government Printer, Lagos — Official Gazette No. 79 du 1er mai 2026 (S.I. 29)",
+  "pdf_archive": "sources/NGA_SI29_2026_Gazette79.pdf",
+  "pdf_sha256": "d5e76bb7c464222f6354e38375cc19ae130fa49f01c9ab6268342bc1ded0e891"
+ },
+ "regle": {
+  "valeur": "Taux 2026, en vigueur au 1er juillet 2026, sur la valeur CIF : eaux gazéifiées et autres 2201.10.20 à 2201.90, ₦10 par litre ; bière et stout 2203.00.10 à 2203.00.90 et 2206.00.10 à 2206.00.99, ad valorem nul, ₦72 par litre ; vins 2204.10 à 2205.90, 25 % et ₦70 par litre ; spiritueux 2208.20 à 2208.90, 30 % et ₦75 par litre ; cigarettes 2402.10 à 2402.90, 30 % et ₦6,00 par cigarette. La liste substitue la précédente : toute autre position ne porte pas d'accise (0).",
+  "reference": "Customs, Excise Tariff, Etc. (Variation) Order 2026 (S.I. 29), Orders 4, 6 et 7(ii) ; Fifth Schedule, Annex IV",
+  "verbatim_order4": "The Fifth Schedule to the Principal Act is varied by substituting the existing list of Goods liable to Excise Duty, as set out in the Schedule to this Order including Green Tax Surcharge, applicable to vehicles of 2,000 cubic centimeters (cc) and above",
+  "verbatim_order7": "(ii) The Fifth Schedule of the Principal Act varied by this Order shall come into force on the 1st July, 2026; while the rates for 2027 and 2028 shall take effect on 1st January of each year.",
+  "verbatim_annexe": "2026 | Wines (alcoholic) | 2204.10.00.00 – 2205.90.00.00 | 25% | ₦70 per Litre ; 2026 | Whisky, Brandy, Vodka & Rums | 2208.20.00.00 - 2208.90.00.00 | 30% | ₦75 per Litre ; 2026 | Smoking Tobacco including Cigarettes | 2402.10.00.00 – 2402.90.00.00 | 30% | ₦6.00k per Stick",
+  "portee": "scripts/build_socle.py : ACCISE_NGA_2026, ACCISE_NGA_2026_NON_LIQUIDABLE et _accise_nigeria_2026.",
+  "texte_archive": "sources/NGA_SI29_2026_fifth_schedule.texte-extrait.txt",
+  "sha256": "5d8751b1022c69fe429d39bc5b4084beb6188cdbcb3e6c11328197085992e184"
+ },
+ "decisions": [
+  "L'accise servie était celle du portail de la douane : 20 % sur l'alcool et le tabac (Order 2023, révoqué par l'Order 6), une cellule vide sur 357 positions (chimie, minerais, légumes, épices), et sur les ciments 2523 une « accise » égale à l'IAT. La Fifth Schedule la remplace partout.",
+  "Ad valorem et spécifique de la même ligne s'additionnent (deux colonnes du barème, sans règle de départage) : droit cumulatif.",
+  "« ₦6.00k per Stick » est lu ₦6,00 par cigarette (naira et kobo).",
+  "Boissons non alcoolisées « Sugar Sweetened » (plage 2009.11.90 à 2202.99.90) : ₦10 par litre si la boisson est sucrée, ce que la position ne dit pas — non liquidables (2009, 2201.10.10, 2202). Les positions 21.01 à 21.06, que la plage enjambe sans être des boissons, ne portent pas d'accise.",
+  "Tabacs 2403.11 à 2403.99.90 et produits 2404 : « ₦4,500/kg ₦6,000 per litre », deux unités dont la position ne dit pas laquelle vaut — non liquidables.",
+  "Assiette : CIF, comme l'accise du portail (fiche NGA_assiette_IAT_EXC_2026-09-17.json) ; la TVA s'assoit sur la valeur et tous les droits hors TVA, accise comprise."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Green Tax Surcharge (accise sur les véhicules de 2 000 cm3 et plus : 2 % jusqu'à 3 999 cm3, 4 % au-delà) : les positions 8703 du tarif ne séparent pas ces seuils de cylindrée. Non servie.",
+  "Taux 2027 et 2028 (bière ₦76 et ₦80, spiritueux ₦80 et ₦85, cigarettes ₦7 et ₦8) : non servis avant leur date."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/NGA_SI29_2026_fifth_schedule.texte-extrait.txt",
+   "sha256": "5d8751b1022c69fe429d39bc5b4084beb6188cdbcb3e6c11328197085992e184"
+  },
+  {
+   "fichier_archive": "sources/NGA_SI29_2026_Gazette79.pdf",
+   "sha256": "d5e76bb7c464222f6354e38375cc19ae130fa49f01c9ab6268342bc1ded0e891"
+  }
+ ]
+}

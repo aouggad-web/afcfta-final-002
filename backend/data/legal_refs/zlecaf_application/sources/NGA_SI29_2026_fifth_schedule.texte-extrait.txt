@@ -1,0 +1,44 @@
+Federal Republic of Nigeria Official Gazette No. 79, Vol. 113, Lagos, 1st May 2026 — Government Notice No. 34
+S.I. No. 29 of 2026 — Customs, Excise Tariff, Etc. (Variation) Order, 2026 (pages B 247-282).
+PDF archivé : sources/NGA_SI29_2026_Gazette79.pdf (sha256 d5e76bb7c464222f6354e38375cc19ae130fa49f01c9ab6268342bc1ded0e891).
+Transcription faite sur l'image des pages B 250, B 279 et B 280.
+
+=== B 250 ===
+4. The Fifth Schedule to the Principal Act is varied by substituting the existing list of Goods liable to Excise Duty, as set out in the Schedule to this Order including Green Tax Surcharge, applicable to vehicles of 2,000 cubic centimeters (cc) and above
+5. The Sixth Schedule to the Principal Act is substituted by a new Schedule as Export Prohibition List.
+6. The Customs, Excise Tariff, Etc. (Variation) Order 2023 is hereby revoked.
+7.—(i) The First, Third and Sixth Schedules of the Principal Act varied by this Order shall come into force on the 1st of May, 2026.
+(ii) The Fifth Schedule of the Principal Act varied by this Order shall come into force on the 1st July, 2026; while the rates for 2027 and 2028 shall take effect on 1st January of each year.
+
+=== B 279 — FIFTH SCHEDULE, ANNEX IV, APPROVED EXCISE DUTY (IMPLEMENTATION IN 2026-2028) ===
+YEAR | ITEM | H.S. CODE | AD-VALOREM RATE | SPECIFIC
+2026 - 2028 | Non alcoholic beverages, fruit juice, energy drink, etc. (All non-alcoholic beverages) Sugar Sweetened. | 2009.11.90.00 - 2202.99.90.00 | | ₦10 per Litre
+2026- 2028 | Aerated Water others | 2201.10.20.00 - 2201.90.00.00 | | ₦10 per Litre
+BEER AND STOUT
+2026 | Beer and Stout, including other alcoholic beverages and beer not made from malt-whether fermented or not fermented. | 2203.00.10.00 - 2203.00.90.00, 2206.00.10.00 - 2206.00.99.00 | NILL | ₦72 per Litre
+2027 | Beer and Stout, [...] | 2203.00.10.00 - 2203.00.90.00, 2206.00.10.00 - 2206.00.99.00 | NILL | ₦76 per Litre
+2028 | Beer and Stout, [...] | 2203.00.10.00 - 2203.00.90.00, 2206.00.10.00 - 2206.00.99.00 | NILL | ₦80 per Litre
+WINES (ALCOHOLIC)
+2026 | Wines (alcoholic) | 2204.10.00.00 – 2205.90.00.00 | 25% | ₦70 per Litre
+2027 | Wines (alcoholic) | 2204.10.00.00 – 2205.90.00.00 | 25% | ₦70 per Litre
+2028 | Wines (alcoholic) | 2204.10.00.00 – 2205.90.00.00 | 25% | ₦70 per Litre
+WHISKY
+2026 | Whisky, Brandy, Vodka & Rums | 2208.20.00.00 - 2208.90.00.00 | 30% | ₦75 per Litre
+2027 | Whisky, Brandy, Vodka & Rums | 2208.20.00.00 - 2208.90.00.00 | 30% | ₦80 per Litre
+2028 | Whisky, Brandy, Vodka & Rums | 2208.20.00.00 - 2208.90.00.00 | 30% | ₦85 per Litre
+
+=== B 280 ===
+TOBACCO
+2026 | Smoking Tobacco including Cigarettes | 2402.10.00.00 – 2402.90.00.00 | 30% | ₦6.00k per Stick
+2027 | Smoking Tobacco including Cigarettes | 2402.10.00.00 – 2402.90.00.00 | 30% | ₦7.00k per Stick
+2028 | Smoking Tobacco including Cigarettes | 2402.10.00.00 – 2402.90.00.00 | 30% | ₦8.00k per Stick
+Other smoking tobacco, containing tobacco substitutes in any proportion, homogenized or reconstituted tobacco, expanded tobacco, chewing, snuffing tobacco and manufactured tobacco substitutes
+2026 | SNUS (smokeless Tobacco), Smoking Tobacco whether or not containing tobacco substitutes in any proportion | 2403.11.00.00 - 2403.99.90.00 | | "₦4,500/kg ₦6,000 per litre"
+(2027 et 2028 : idem)
+2026 | Tobacco Heating Products (THP), Vapour/E-Cigarettes (with or without Nicotine), Nicotine Pouches | 2404.11.00.00 - 2404.99.00.00 | | "₦4,500/kg ₦6,000 per litre"
+(2027 et 2028 : idem)
+
+=== B 281 — FIFTH SCHEDULE, GREEN TAX SURCHARGE (EXCISE DUTY) ON MOTOR VEHICLES ===
+2026 | Engine Size 2000 cc – 3999 cc (inclusive) | Chapter 87 | 2%
+     | 4000 cc – Above (inclusive) | Chapter 87 | 4%
+Exclusions | Chapter 87 | 0% : i. Vehicles Below 2000cc ; ii. Vehicles of Heading 87.02 (Mass Transit buses) ; iii. Electric Vehicles ; iv. Locally Manufactured Vehicles ; v. Heading 87.06, 87.07, 87.08, 87.10, 87.11, 87.12, 87.13, 87.14, 87.15 and 87.16.
