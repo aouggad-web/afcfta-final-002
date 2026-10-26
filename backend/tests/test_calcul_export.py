@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,9 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI"}
+    # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
+    assert pays["MLI"] == 0
 
 
 def test_tun_dattes_un_pour_cent_de_la_valeur(client):
@@ -164,7 +166,9 @@ def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
 
 def test_les_questions_hors_tarif_sont_servies(client):
     questions = client.get("/calcul/export/pays").json()["questions"]
-    assert set(questions) == {"MDG"} and questions["MDG"]["champ"] == "produit_minier"
+    assert set(questions) == {"MDG", "MLI"} and questions["MDG"]["champ"] == "produit_minier"
+    # Le CGI malien ne prévoit pas d'abattement : pas de seconde question.
+    assert questions["MLI"]["question_transformation"] is None and questions["MLI"]["question_en"]
 
 
 def test_gha_quatrieme_annexe_zero_pour_cent_par_defaut(client):
@@ -282,7 +286,29 @@ def test_zmb_position_hors_annexe(client):
         "pays": "ZMB", "code_sh": "09011100", "valeur": 1_000, "devise": "ZMW"}).json()
     assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
 
-def test_position_sans_droit_de_sortie(client):
+
+def test_mli_teoapm_deux_pour_cent_de_la_valeur(client):
+    """CGI, art. 253-AJ : 2 % de « la valeur du produit à l'exportation »."""
+    export = _export(client, pays="MLI", code_sh="7108120000", valeur=1_000_000, devise="XOF", produit_minier=True)
+    ligne = _ligne(export, "TEOAPM")
+    assert (export["etat"], ligne["montant"]) == ("COMPLET", pytest.approx(20_000))
+    assert "253-AG" in ligne["source"] and "2025-006" in ligne["note"]
+
+
+def test_mli_teoapm_sans_reponse_a_etablir_et_sans_abattement(client):
+    sans = _ligne(_export(client, pays="MLI", code_sh="7108120000", valeur=1_000_000, devise="XOF"), "TEOAPM")
+    assert sans["montant"] is None and "Code minier" in sans["note"]
+    # Le CGI ne prévoit aucun abattement : la case de Madagascar n'a pas d'effet.
+    transforme = _export(client, pays="MLI", code_sh="7108120000", valeur=1_000_000, devise="XOF",
+                         produit_minier=True, produit_minier_transforme=True)
+    assert _ligne(transforme, "TEOAPM")["montant"] == pytest.approx(20_000)
+
+
+def test_mli_exportateur_regi_par_le_code_minier(client):
+    corps = client.post("/calcul/export", json={
+        "pays": "MLI", "code_sh": "7108120000", "valeur": 1_000_000, "devise": "XOF",
+        "produit_minier": False}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
     reponse = client.post("/calcul/export", json={"pays": "CIV", "code_sh": "0101210000", "valeur": 1000})
     corps = reponse.json()
     assert corps["droits_export_publies"] is False

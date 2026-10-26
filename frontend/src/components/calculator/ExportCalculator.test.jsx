@@ -63,12 +63,19 @@ describe('ExportCalculator', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     axios.get.mockResolvedValue({ data: {
-      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516 },
-      questions: { MDG: {
-        champ: 'produit_minier',
-        question: 'Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?',
-        question_transformation: 'Substance transformée au sens du Code (abattement de 30 %, art. 288) ?',
-      } },
+      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516, MLI: 0 },
+      questions: {
+        MDG: {
+          champ: 'produit_minier',
+          question: 'Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?',
+          question_transformation: 'Substance transformée au sens du Code (abattement de 30 %, art. 288) ?',
+        },
+        MLI: {
+          champ: 'produit_minier',
+          question: 'Or ou autre produit minier, exporté par un exportateur non régi par le Code minier ?',
+          question_transformation: null,
+        },
+      },
     } });
   });
 
@@ -200,6 +207,25 @@ describe('ExportCalculator', () => {
     expect(axios.post.mock.calls[0][1]).toMatchObject({
       pays: 'MDG', devise: 'MGA', produit_minier: true, produit_minier_transforme: true,
     });
+  });
+
+  it('au Mali, taxe hors tarif : la question sans abattement', async () => {
+    axios.post.mockResolvedValue({ data: {
+      pays: 'MLI', position: { designation: 'Or' }, provenance: { devise_nationale: 'XOF' },
+      export: { etat: 'COMPLET', total_droits: 20000, manques: [], lignes: [] },
+    } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('MLI — taxe de sortie hors tarif'));
+    expect(screen.getByLabelText('Devise')).toHaveValue('XOF');
+    expect(screen.getByText(/non régi par le Code minier/)).toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText('Position nationale'), '7108120000');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '1000000');
+    await userEvent.click(screen.getByLabelText('Oui'));
+    expect(screen.queryByText(/abattement/)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(axios.post.mock.calls[0][1]).toMatchObject({ pays: 'MLI', devise: 'XOF', produit_minier: true });
   });
 
   it("ailleurs, ne pose pas la question", async () => {
