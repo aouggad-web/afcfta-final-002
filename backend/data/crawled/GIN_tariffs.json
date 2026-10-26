@@ -8,7 +8,7 @@
   "nomenclature": "TEC CEDEAO (SH 2022), tarif de la DGD de Guinée",
   "data_type": "national",
   "currency": "GNF (Franc Guinéen)",
-  "extracted_at": "2026-10-11T23:08:54.008615+00:00",
+  "extracted_at": "2026-10-26T15:10:19.480191+00:00",
   "total_positions": 6379,
   "source_document": {
     "titre": "Tarif extérieur commun de la CEDEAO, SH 2022, DGD de Guinée (colonnes DD, RTL, AC, TVA, PC, CA, DFE), 18/01/2022",
@@ -12574,53 +12574,45 @@
       "hs6": "030451",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -14235,53 +14227,45 @@
       "hs6": "030493",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -14642,53 +14626,45 @@
       "hs6": "030531",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -14992,53 +14968,45 @@
       "hs6": "030544",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -15285,53 +15253,45 @@
       "hs6": "030554",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -15578,53 +15538,45 @@
       "hs6": "030564",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -45739,53 +45691,45 @@
       "hs6": "150920",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 0.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 0.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -45861,53 +45805,45 @@
       "hs6": "150930",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 0.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 0.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -45983,53 +45919,45 @@
       "hs6": "150940",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 0.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 0.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -46219,6 +46147,63 @@
       "hs6": "151010",
       "unit": "QA",
       "taxes": {
+        "DD": 10.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
+      },
+      "taxes_detail": [
+        {
+          "tax_code": "DD",
+          "tax_name": "Droit de Douane (TEC CEDEAO)",
+          "rate": 10.0,
+          "rate_type": "ad_valorem",
+          "base": "CIF"
+        },
+        {
+          "tax_code": "RTL",
+          "tax_name": "Redevance de Traitement et de Liquidation",
+          "rate": 2.0,
+          "rate_type": "ad_valorem",
+          "base": "CIF"
+        },
+        {
+          "tax_code": "PCC",
+          "tax_name": "Prélèvement Communautaire CEDEAO",
+          "rate": 0.5,
+          "rate_type": "ad_valorem",
+          "base": "CIF"
+        },
+        {
+          "tax_code": "CA",
+          "tax_name": "Centime Additionnel",
+          "rate": 0.25,
+          "rate_type": "ad_valorem",
+          "base": "CIF"
+        },
+        {
+          "tax_code": "TVA",
+          "tax_name": "Taxe sur la Valeur Ajoutée",
+          "rate": 18.0,
+          "rate_type": "ad_valorem",
+          "base": null
+        }
+      ],
+      "source": "dgd.gov.gn",
+      "data_type": "national"
+    },
+    {
+      "code": "1510.90.10.00",
+      "code_clean": "1510901000",
+      "code_length": 10,
+      "designation": "inférieur ou égal à 5 litres",
+      "chapter": "15",
+      "hs2": "15",
+      "hs4": "1510",
+      "hs6": "151090",
+      "unit": "QA",
+      "taxes": {
         "DD": 20.0,
         "RTL": 2.0,
         "PCC": 0.5,
@@ -46258,71 +46243,6 @@
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
           "rate": 0.0,
-          "rate_type": "ad_valorem",
-          "base": null
-        }
-      ],
-      "source": "dgd.gov.gn",
-      "data_type": "national"
-    },
-    {
-      "code": "1510.90.10.00",
-      "code_clean": "1510901000",
-      "code_length": 10,
-      "designation": "inférieur ou égal à 5 litres",
-      "chapter": "15",
-      "hs2": "15",
-      "hs4": "1510",
-      "hs6": "151090",
-      "unit": "QA",
-      "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
-      },
-      "taxes_detail": [
-        {
-          "tax_code": "DD",
-          "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "CIF"
-        },
-        {
-          "tax_code": "RTL",
-          "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "CIF"
-        },
-        {
-          "tax_code": "PCC",
-          "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "CIF"
-        },
-        {
-          "tax_code": "CA",
-          "tax_name": "Centime Additionnel",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "CIF"
-        },
-        {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
-          "tax_code": "TVA",
-          "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -104638,53 +104558,45 @@
       "hs6": "293333",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 5.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 5.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -111429,53 +111341,45 @@
       "hs6": "300610",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 0.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 0.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 0.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 0.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -154103,53 +154007,45 @@
       "hs6": "441233",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 20.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 20.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -160438,53 +160334,45 @@
       "hs6": "480300",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 10.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 10.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -196755,53 +196643,45 @@
       "hs6": "591110",
       "unit": "QA",
       "taxes": {
-        "DD": null,
-        "RTL": null,
-        "PCC": null,
-        "CA": null,
-        "DA": null,
-        "TVA": null
+        "DD": 10.0,
+        "RTL": 2.0,
+        "PCC": 0.5,
+        "CA": 0.25,
+        "TVA": 18.0
       },
       "taxes_detail": [
         {
           "tax_code": "DD",
           "tax_name": "Droit de Douane (TEC CEDEAO)",
-          "rate": null,
+          "rate": 10.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "RTL",
           "tax_name": "Redevance de Traitement et de Liquidation",
-          "rate": null,
+          "rate": 2.0,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "PCC",
           "tax_name": "Prélèvement Communautaire CEDEAO",
-          "rate": null,
+          "rate": 0.5,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
           "tax_code": "CA",
           "tax_name": "Centime Additionnel",
-          "rate": null,
+          "rate": 0.25,
           "rate_type": "ad_valorem",
           "base": "CIF"
         },
         {
-          "tax_code": "DA",
-          "tax_name": "Droit d'accises (colonne AC du tarif)",
-          "rate": null,
-          "rate_type": "ad_valorem",
-          "base": "variable"
-        },
-        {
           "tax_code": "TVA",
           "tax_name": "Taxe sur la Valeur Ajoutée",
-          "rate": null,
+          "rate": 18.0,
           "rate_type": "ad_valorem",
           "base": null
         }
@@ -364428,10 +364308,10 @@
     }
   ],
   "_integrity_seal": {
-    "content_hash": "e0e57e2b5d107a0b67094e25e4542142f63cf17aec540c5e3b3b33de875be58b",
+    "content_hash": "899aeab086c4f6d1e360c1875c284399d54199198df11942ae9c01adb3da1f0a",
     "source_url": "https://dgd.gov.gn/",
     "source_hash": null,
-    "crawled_at": "2026-10-11T23:08:54.761713+00:00",
+    "crawled_at": "2026-10-26T15:10:20.007431+00:00",
     "verified": true,
     "algorithm": "SHA-256"
   }
