@@ -511,16 +511,23 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
         "preference_superieure_au_plein_droit": 0,
     }
 
+    # Un libelle qui deborde sur la page suivante y porte ses taux, sur sa
+    # derniere ligne (0204.10.00, page 27 : « fresh or chilled .. kg 15% … »
+    # en tete de la page 28). La ligne restee sans aucune valeur en bas de page
+    # est donc reportee, et les bandes qui precedent le premier code de la page
+    # suivante la completent.
+    report: Optional[Dict] = None
     for index in range(debut, fin):
         mots = doc[index].get_text("words")
         if not mots:
             continue
-        lignes: List[Dict] = []
+        lignes: List[Dict] = [report] if report else []
+        report = None
         for _y, toks in _bandes(mots):
             code = next((m for x, m in toks if x < X_COLONNE_DES_CODES and RX_CODE.match(m)), None)
             mots = [m for x, m in toks if x < X_UNITE and not RX_CODE.match(m)]
             if code:
-                lignes.append({"code": code, "toks": list(toks), "desc": mots, "desc_close": False})
+                lignes.append({"code": code, "toks": list(toks), "desc": mots, "desc_close": False, "page": index})
             elif lignes:
                 # Les taux d'une ligne tombent parfois sous la bande du code : la
                 # bande suivante les y apporte, et il faut donc la joindre.
@@ -532,6 +539,12 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                     lignes[-1]["desc_close"] = True
                 elif not lignes[-1]["desc_close"]:
                     lignes[-1]["desc"] += mots
+        if (
+            lignes
+            and index + 1 < fin
+            and _valeurs_de_la_ligne(lignes[-1]["toks"])[1] == "AUCUNE_VALEUR_SUR_LA_LIGNE"
+        ):
+            report = lignes.pop()
         if not lignes:
             continue
 
@@ -639,7 +652,7 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                     "preferential_rates": [],
                     "restrictions": [],
                     "source_gaps": gaps,
-                    "page_source": index + 1,
+                    "page_source": ligne["page"] + 1,
                     "source": SOURCE,
                 }
             )

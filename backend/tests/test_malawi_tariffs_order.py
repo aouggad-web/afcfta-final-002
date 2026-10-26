@@ -275,6 +275,18 @@ def test_une_ligne_dont_les_colonnes_ne_se_lisent_pas_est_declaree(crawl):
     assert len(structurelles) >= len(sans_droit) - 5
 
 
+def test_un_libelle_qui_deborde_sur_la_page_suivante_garde_ses_taux(crawl):
+    """0204.10.00 commence en bas de la page 27 ; ses taux sont sur la derniere
+    ligne de son libelle, en tete de la page 28 (« fresh or chilled .. kg 15%
+    10% 1% 15% Free Free Exempt 10% »). La ligne n'est plus perdue."""
+    positions = {p["national_code"]: p for p in crawl["sub_positions"]}
+    for code, droit in (("02041000", 10.0), ("03021100", 25.0)):
+        taxes = {t["code"]: t["rate_pct"] for t in positions[code]["taxes"]}
+        assert taxes["DD"] == droit
+        assert "DROIT_NPF_NON_LU" not in positions[code]["source_gaps"]
+    assert positions["02041000"]["page_source"] == 27
+
+
 def test_une_preference_superieure_au_plein_droit_est_signalee(crawl):
     """Le paragraphe 5 fait des colonnes 6 a 9 des remises du plein droit :
     aucune ne devrait le depasser. Sur 3004.90.90 le barème porte pourtant
