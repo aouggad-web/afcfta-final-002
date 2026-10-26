@@ -1042,10 +1042,11 @@ DUS_CIV = [
 def droits_export_du_fichier(iso, donnees):
     """Droits et taxes à l'EXPORTATION, par code national : ``{code: [droits]}``.
 
-    Deux collectes en portent ligne par ligne : la Tunisie (``taxes_export``,
-    Tarif Web) et la Côte d'Ivoire (colonne DUS du tarif SYDAM). Le code de la
-    source est gardé tel quel : « DD/PET.BR » est un droit de sortie, pas le
-    droit de douane de l'import."""
+    Trois collectes en portent ligne par ligne : la Tunisie (``taxes_export``,
+    Tarif Web), la Côte d'Ivoire (colonne DUS du tarif SYDAM) et Madagascar
+    (colonne DS du tarif national 2026, ``taxes_export``). Le code de la source
+    est gardé tel quel : « DD/PET.BR » est un droit de sortie, pas le droit de
+    douane de l'import."""
     source = donnees.get("source") or donnees.get("source_name") or ""
     sortie = {}
     if iso == "TUN":
@@ -1081,6 +1082,19 @@ def droits_export_du_fichier(iso, donnees):
                 d.update(code="DUS", famille="export")
                 if specifique:
                     d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
+                sortie.setdefault(code, []).append({k: v for k, v in d.items() if v is not None})
+    elif iso == "MDG":
+        for ligne in donnees.get("sub_positions") or []:
+            code = nettoyer_code(ligne.get("hs_code"))
+            for row in ligne.get("taxes_export") or []:
+                if not isinstance(row, dict) or not code:
+                    continue
+                # « Valeur » : la colonne d'unité du DS nomme la valeur en douane
+                # pour assiette ; toute autre unité n'est pas traduite.
+                assiette = "VALEUR DOUANE" if row.get("assiette_publiee") == "Valeur" else row.get("assiette_publiee")
+                d = _droit("DS", row.get("name") or "Droit de sortie", row.get("rate"), assiette,
+                           row.get("source") or source, note=row.get("note"))
+                d.update(code="DS", famille="export")
                 sortie.setdefault(code, []).append({k: v for k, v in d.items() if v is not None})
     return sortie
 

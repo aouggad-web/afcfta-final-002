@@ -26,8 +26,16 @@ DEUX RÈGLES QUE LA PREMIÈRE VERSION AVAIT RATÉES, ET QUI ONT COÛTÉ DES POSI
    que leur en-tête variait (`UQN DD TVA`, `UQN DD TVA DD`, ou six colonnes avec
    un second `UQN`/`DS`). On collecte les schémas compatibles (`UQN DD TVA`,
    `APEi` optionnel) ; on ÉCARTE et DÉCLARE les schémas non univoques
-   (colonnes `TPP`/`TVP` à droits spécifiques en Ariary/litre ou Ariary/kg-net,
-   colonnes `DS`), qui ne sont jamais devinées.
+   (colonnes `TPP`/`TVP` à droits spécifiques en Ariary/litre ou Ariary/kg-net),
+   qui ne sont jamais devinées.
+
+3. **Les sous-tables à droit de sortie sont univoques.** `UQN DD TVA [APEi]
+   UQN DS` : le second `UQN` est l'assiette du droit de sortie (« Valeur »), le
+   `DS` son taux. Elles étaient écartées avec les `TPP`/`TVP` — 309 positions
+   (sel, minerais, pierres et métaux précieux, métaux des chapitres 75 et 81)
+   perdaient alors aussi leurs DD et TVA. Leur en-tête tient parfois sur deux
+   lignes (`UQN TVA` au-dessus de `DD APEi UQN DS`) : deux lignes d'en-tête
+   rapprochées se lisent ensemble. Un `DS` laissé en blanc n'est pas servi.
 
 Usage : python3 scripts/parse_tarif_mdg_2026.py <tarif.pdf> <sortie.json>
 """
@@ -43,7 +51,7 @@ SRC_NAME = "Tarif des douanes de Madagascar, édition 2026 (douanes.gov.mg)"
 #: rendent la sous-table NON univoque et sont écartées en bloc.
 COLONNES_TAXE = {"DD", "TVA", "TVP", "TPP", "DS", "TVAPP", "TPPAPEI", "DDAPEi"}
 COLONNES_APEi = {"APEi", "APEI", "DDAPEi", "TPPAPEI"}
-COLONNES_SPECIALES = {"TPP", "TVP", "DS", "TVAPP", "TPPAPEI"}
+COLONNES_SPECIALES = {"TPP", "TVP", "TVAPP", "TPPAPEI"}
 LABELS = {"UQN", "DD", "TVA", "APEi", "APEI", "DS", "Valeur"} | COLONNES_TAXE
 RATE = re.compile(r"^(?:ex|EX|\d{1,3}(?:[.,]\d+)?%?)$")
 CODE4 = re.compile(r"^\d{4}\.\d{2}$")
@@ -69,8 +77,10 @@ def clean_designation(tokens):
 
 
 def _colonnes(lw):
-    """Colonnes d'un en-tête : UQN(1er), DD(1er), TVA, APEi. Rend (cols, active, signature)."""
-    labels = [(w[4], w[0]) for w in lw if w[4] in LABELS]
+    """Colonnes d'un en-tête, lues de gauche à droite : UQN(1er), DD(1er), TVA,
+    APEi, puis, s'il y a un droit de sortie, son assiette (second UQN) et DS.
+    Rend (cols, active, signature)."""
+    labels = sorted(((w[4], w[0]) for w in lw if w[4] in LABELS), key=lambda t: t[1])
     if not any(l == "UQN" for l, _ in labels):
         return None, None, None
     signature = tuple(l for l, _ in labels)
@@ -78,12 +88,16 @@ def _colonnes(lw):
     for nom, x in labels:
         if nom == "UQN" and "UQN" not in cols:
             cols["UQN"] = x
+        elif nom == "UQN" and "DS" in signature:
+            cols["UQN_DS"] = x
         elif nom == "DD" and "DD" not in cols:
             cols["DD"] = x
         elif nom == "TVA" and "TVA" not in cols:
             cols["TVA"] = x
         elif nom in COLONNES_APEi and "APEi" not in cols:
             cols["APEi"] = x
+        elif nom == "DS" and "DS" not in cols:
+            cols["DS"] = x
     special = any(l in COLONNES_SPECIALES for l in signature)
     actif = ("UQN" in cols and "DD" in cols and "TVA" in cols and not special)
     return (cols if actif else None), actif, signature
@@ -93,7 +107,7 @@ def _valeurs(lw, cols):
     out = {}
     for nom, cx in cols.items():
         for w in lw:
-            if abs(w[0] - cx) <= 7 and (RATE.match(w[4]) or nom == "UQN"):
+            if abs(w[0] - cx) <= 7 and (RATE.match(w[4]) or nom in ("UQN", "UQN_DS")):
                 out[nom] = w[4]
                 break
     return out
@@ -122,12 +136,20 @@ def parse(pdf_path):
         cur = None
 
     for pno in range(17, doc.page_count):
+        entete = None          # (y, mots) de la dernière ligne d'en-tête
         for y, lw in cluster(doc[pno].get_text("words")):
+            # En-tête sur deux lignes (« UQN TVA » / « DD APEi UQN DS ») :
+            # la seconde se lit avec la première.
+            if entete and y - entete[0] <= 15 and any(w[4] in LABELS for w in lw) \
+                    and not any(CODE4.match(w[4]) for w in lw):
+                lw = entete[1] + lw
             nouvelles, est_actif, sig = _colonnes(lw)
             if sig is not None and "UQN" in sig:
                 finaliser()
                 actif, cols, signature = est_actif, nouvelles, sig
+                entete = (y, lw)
                 continue
+            entete = None
 
             c1 = [w for w in lw if CODE4.match(w[4]) and w[0] < 140]
             c2 = [w for w in lw if SUF2.match(w[4]) and w[0] < 140]
@@ -206,6 +228,12 @@ def build(pdf_path, source_sha):
                 "regime": "APEI", "rate_pct": rate, "raw_value": raw_out,
                 "source": SRC_NAME, "source_url": PDF_URL, "source_sha256": source_sha,
             }]
+        ds = vals.get("DS")
+        if ds is not None:
+            # Droit de sortie : servi à part, jamais mêlé aux droits d'import.
+            sortie = tax("Droit de sortie (tarif national 2026)", ds)
+            sortie.update(code="DS", assiette_publiee=vals.get("UQN_DS") or "")
+            pos["taxes_export"] = [sortie]
         sub.append(pos)
 
     par_motif = Counter(r for _, r, _ in ecartees)
@@ -232,9 +260,10 @@ def build(pdf_path, source_sha):
                 "WITS/UNCTAD-TRAINS (moyenne SH6). Assiettes sur texte primaire : DD = CIF "
                 "(Code des douanes, Loi n° 2006-023 après LFI 2026, art. 23 §1 et §4 c)) ; TVA = "
                 "CIF+TOUS_SAUF_TVA (CGI éd. 2025, art. 06.01.11). Colonne DD APEi = droit "
-                "préférentiel APE intérimaire (UE), servie à part. Les sous-tables à schéma non "
-                "univoque (colonnes TPP/TVP à droits spécifiques Ariary/litre ou Ariary/kg-net, "
-                "colonnes DS) sont écartées et énumérées dans `non_collected` — "
+                "préférentiel APE intérimaire (UE), servie à part. Colonne DS = droit de sortie, "
+                "servi à part (`taxes_export`). Les sous-tables à schéma non univoque (colonnes "
+                "TPP/TVP à droits spécifiques Ariary/litre ou Ariary/kg-net) sont écartées et "
+                "énumérées dans `non_collected` — "
                 + str(len(ecartees)) + " position(s)."
             ),
         },
