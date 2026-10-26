@@ -1,0 +1,403 @@
+Zambie — Export Tariff (Ninth Schedule, section 72A du Customs and Excise Act) : extrait verbatim (relevé le 2026-10-26)
+
+Customs and Excise Tariff, Zambia Revenue Authority, édition 2026 :
+https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf (sha256 4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101,
+même fichier que la collecte du tarif d'importation, backend/data/crawled/ZMB_tariffs.json), pages imprimées 542 à 550.
+Texte extrait par pdftotext -layout, sans retouche.
+
+                                       NINTH SCHEDULE
+                                         (Section 72A)
+                                       EXPORT TARIFF
+
+                                                                      Stat.    Export
+HS Code                      Description of Goods                    Unit of    Duty    Remarks
+                                                                      Qty.      Rate
+             Iron ores and concentrates, Including roasted
+  26.01
+             iron pyrites.
+             - Iron ores and concentrates, other than roasted iron
+             pyrites:
+2601.11.00   - - Non- Agglomerated                                   tonne      10%
+2601.12.00   - - Agglomerated                                        tonne      10%
+2601.20.00   - -Raosted Iron Pyrites                                 tonne      10%
+  26.02
+             Manganese ores and concentrates, including
+             ferruginous manganese ores and concentrates
+2602.00.00                                                           tonne      15%
+             with a manganese content of 20% or more,
+             calculated on the dry Weight.
+  26.03      Copper ores and concentrates.
+             ---Copper ore
+2603.00.11   ----Copper ore sulphide                                   kg       10%
+2603.00.12   ----copper ore mixed sulphide and oxide                   kg       10%
+2603.00.13   ----copper ore oxide                                      kg       10%
+2603.00.19   ----Other                                                 kg       10%
+             ---Copper concentrates
+2603.00.21   ----copper concentrate sulphide                           kg       10%
+
+2603.00.22   ----copper concentrate mixed (sulphide/oxide)             kg       10%
+2603.00.23   ----copper concentrate oxide                              kg       10%
+2603.00.29   ----other                                                 kg       10%
+
+  26.04
+2604.00.00   Nickel ores and concentrates                            tonne      10%
+  26.05      Cobalt ores and concentrates.
+
+2605.00.10   ---cobalt ore                                             kg       10%
+2605.00.20   ---cobalt concentrates                                    kg       10%
+  26.06
+
+
+                                                  543
+2606.00.00   Aluminium ores and concentrates.            tonne   10%
+
+  26.07
+2607.00.00   Lead ores and concentrates.                 tonne   10%
+                                                                        Act No. 25 of
+  26.08      Zinc ores and concentrates.
+                                                                           2022
+             - - - Zinc ores
+2608.00.11   - - - - Zincite, zinc oxide                 tonne   10%
+
+2608.00.19   - - - - Other Zinc ores                     tonne   10%
+             - - - Zinc Concetrates
+2608.00.21   - - - - Zincites, zinc oxide                tonne   free
+
+2608.00.29   - - - - Other Zinc concentrates             tonne   free
+  26.09
+2609.00.00   Tin ores and concentrates.                  tonne   10%
+
+  26.10
+2610.00.00   Chromium ores and concentrates              tonne   10%
+  26.11
+2611.00.00   Tungsten ores and concentrates.             tonne   10%
+  26.12      Uranium or thorium ores and concentrates.
+2612.10.00   - Uranium ores and concentrates             tonne   10%
+2612.20.00   - Thorium ores and concentrates             tonne   10%
+  26.13      Molybdenum ores and Concentrates.
+2613.10.00   -Roasted                                    tonne   10%
+2613.90.00   -Other                                      tonne   10%
+  26.14
+2614.00.00   Titanium ores and concentrates              tonne   10%
+             Niobium, tantalum. Vanadium or Zirconium
+  26.15
+             ores and concentrates.
+2615.10.00   - Zirconium ores and concentrates           tonne   10%
+2615.90.00   - Other                                     tonne   10%
+
+  26.16      Precious metal ores and Concentrates.
+2616.10.00   - Silver ores and concentrates              tonne   10%
+2616.90.00   - Other                                     tonne   10%
+
+  26.17      Other ores and concentrates.
+
+
+                                                 544
+2617.10.00   - Antimony ores and concentrates                    tonne   10%
+
+2617.90.00   - Other                                             tonne   10%
+  26.18
+             Granulated slag (slag sand) from the
+2618.00.00                                                       tonne   10%
+             manufacture of iron or steel
+  26.19
+             Slag, dross (other than granulated slag),
+2619.00.00   scalings and other waste from the manufacture       tonne   10%
+             of iron or steel.
+             Slag, ash and residues (other than from the
+  26.20      manufacture of iron or steel), containing
+             metals, arsenic or their compounds.
+             - Containing mainly zinc:
+
+2620.11.00   - - Hard zinc spelter                               tonne   10%
+2620.19.00   - - Other                                           tonne   10%
+             - Containing mainly lead
+             - - Leaded gasoline sludges and leaded anti-knock
+2620.21.00                                                       tonne   10%
+             compound sludges
+2620.29.00   - - Other                                           tonne   10%
+             - Containing mainly copper
+2620.30.10   --slag containing mainly copper                     tonne   10%
+2620.30.20   --tailings containing mainly copper                 tonne   10%
+2620.30.90   --other containing mainly copper                    tonne   10%
+2620.40.00   - Containing mainly aluminium                       tonne   10%
+             - Containing arsenic, mercury, thallium or their
+             mixtures, of a kind used for the extraction of
+2620.60.00                                                       tonne   10%
+             arsenic or those metals or for the manufacture of
+             their chemical compounds
+             - Other:
+             - - Containing antimony, beryllium, cadmium,
+2620.91.00                                                       tonne   10%
+             chromium or their mixtures
+2620.99.00   - - Other                                           tonne   10%
+             Other slag and ash, including seaweed ash
+  26.21      (kelp); ash and residues from the incineration of
+             municipal waste
+             - Ash and residues from the incineration of
+2621.10.00                                                       tonne   10%
+             municipal waste
+2621.90.00   - Other                                             tonne   10%
+
+
+
+                                                   545
+             Raw hides and skins of bovine (including
+             buffalo) or wuine animals (fresh, or salted,
+  41.01      dried, limed, pickled or otherwise preserved,           kg     10%
+             but not tanned, parchment-dressed or further
+             prepared, whether or not dehaired or split
+
+             Raw skins of sheep or lambs (fresh, or salted,
+             dried, limed, pickled or otherwise preserved,
+             but not tanned, parchment-dressed or further
+  41.02                                                              kg     10%
+             prepared), whether or not with wool on or split,
+             other than those excluded by Note 1(c) to this
+             Chapter
+
+             Other raw hides and skins (fresh, or salted,
+             dried, limed, pickled or otherwise preserved,
+             but not tanned, parchment-dressed or further
+  41.03
+             prepared),whether or not dehaired or split,
+             other than those excluded by note 1(b) or note 1
+             (c) to this Chapter
+
+4103.30.00   - Of swine                                             No.     10%
+4103.90.00   - Other                                                No.     10%
+             Fuel wood, in logs, in bullets, in twigs, in faggots
+  44.01                                                             tonne   40%
+             or in similar forms:
+
+
+             Wood charcoal (including shell or nut
+  44.02                                                              kg     40%
+             charcoal), whether or not agglomerated.
+
+
+             Wood in rough, whether or not stripped of bark
+  44.03                                                             m3      40%
+             or sapwood, or roughly squared.
+
+             Hoopwood; split poles; piles, pickets and stakes
+             of wood, pointed but not sawn lengthwise;
+             wooden sticks, roughly trimmed but not turned,
+  44.04                                                              kg     40%
+             bent or otherwise worked , suitable for the
+             manufacture of walking-sticks, umbrellas, tool
+             handles or the like; chipwood and the like.
+
+  44.05      Wood wool; wood flour                                   kg     40%
+             Wood sawn or chipped lengthwise, sliced or
+  44.07      peeled, whether or not planted, sanded or end-          m3     40%
+             jointed, of thickness exceeding 6mm
+
+             Sheets for veneering (including those obtained
+             by slicing laminated wood), for plywood or for
+             similar laminated wood and other wood, sawn
+  44.08                                                              m3     20%
+             lengthwise, sliced or peeled, whether or not
+             planed, sanded, spliced or end-jointed, of
+             thickness not exceeding 6mm
+
+
+                                                 546
+        Wood (including strips and friezes for parquet
+        floorings, not assembled) continuously shaped
+        (tongued, grooved, rebated, chamfered. V-
+44.09                                                       kg   20%
+        jointed, beaded, moulded, rounded or the like)
+        along any of its edges, ends or faces, whether or
+        not planed, sanded or end-jointed.
+
+        Fibreboard of wood or other ligneous materials,
+44.11   whether or not bonded with resins or other          kg   20%
+        organic substances
+        Plywood, veneered panels and similar
+44.12                                                       kg   20%
+        laminated wood.
+        Densified wood, in blocks, plates, strips or
+44.13                                                       kg   20%
+        profile shapes.
+
+        Pearls, natural or cultured, whether or not
+        worked or graded but not strung, mounted or
+71.01                                                       -    15%
+        set; pearls, natural or cultured, temporarily
+        strung for convenience of transport
+
+
+
+        Diamonds, whether or not worked,but not
+71.02                                                       -    15%
+        mounted or set
+        Precious stones (other than diamonds) and
+        semi-precious stones, whether or not worked or
+        graded but not strung, mounted or set;
+71.03   ungraded precious stones (other than                -    15%
+        diamonds) and semi-precious stones,
+        temporarily strung , for convenience of
+        transport
+
+        Synthentic or reconstructed precious or semi-
+        precious stones, whether or not worked or
+        graded but not strung, mounted or set;
+71.04                                                       -    15%
+        ungraded synthentic or reconstructed precious
+        or semi-precious stones temporarily strung for
+        convenience of transport
+
+        Dust and powder of natural or synthentic
+71.05                                                       -    15%
+        precious or semi-precious stones
+        Silver (including silver plated with gold or
+7106    platinum),unwrought or semi-manufactured            -    15%
+        forms, or in powder for
+        Base metals clad with Silver, not further
+7107                                                        -    15%
+        worked than semi manufactured
+        Gold (including gold plated with platinum)
+7108    unwrought or in semi-manufactured forms, or         -    15%
+        in powder form
+        Base Metals ,Silver ,clad with gold, not further
+7109                                                        -    15%
+        worked than semi manufactured
+                                           547
+             Platinum, unwrought or semi-manufactured
+  71.10                                                            -     15%
+             forms, or in powder form
+
+             -Base metals,Silver or gold ,clad with platinum
+  71.11                                                            -     15%
+             ,not further worked than semi manufactured
+
+             Waste and scrap of precious metal or of metal
+             clad with precious metal; other waste and scrap
+             containing precious metal or precious metal
+  7112                                                             -     15%
+             compounds, of a kind used principally for the
+             recovery of precious metals other than goods of
+             heading 85.49.
+             Pig Iron and Spiegeleisen in pigs, blocks or
+  7201
+             other primary forms
+             - Non-alloy pig iron containing by weight 0.5% or
+7201.10.00                                                        kg     10%
+             less of phosphorous
+             - Non-alloy pig iron containing by weight more
+7201.20.00                                                        kg     10%
+             than 0.5% of phosphorous
+             Ferrous waste and scrap. Remelting scrape
+  72.04
+             ingots of iron or steel.
+7204.10.00   - Waste of cast iron                                 kg     **
+             - Waste and scrap alloy steel:
+7204.21.00   - - Of stainless steel                               kg     **
+7204.29.00   - - Other                                            kg     **
+7204.30.00   - Waste and scrap of tinned iron or steel            kg     **
+             - Other waste and scrap
+             - - Turnings, shavings, chips, milling waste,
+7204.41.00   sawdust, fillings, trimmings and stampings,          kg      *
+             whether or not in bundles
+7204.49.00   - - Other                                            kg      *
+7204.50.00   - - Remelting scrap ingots                           kg      *
+             Granules and powders, of pig iron,
+  7205
+             spiegeleisen, iron or steel
+7205.10.00   -Granules                                            kg     10%
+             -Powders
+7205.21.00   --Of alloy steel                                     kg     10%
+7205.29.00   --Other                                              kg     10%
+             Copper mattes; cemet copper (precipitated
+  74.01
+             copper)
+7401.00.10   ---copper matte                                     tonne   10%
+7401.00.20   ---cement copper                                    tonne   10%
+
+
+                                                 548
+   74.04
+
+ 7404.00.00    Copper waste and scrap.                              tonne   **
+
+               Nickel mattes, nickel oxide sinters and other
+   75.01
+               intermediate products of nickel metallurgy
+
+ 7501.10.00    -Nickel mattes                                        kg     10%
+
+               -Nickel oxide sinters and other intermediate
+ 7501.20.00                                                          kg     10%
+               products of nickel metallurgy
+
+   75.03
+ 7503.00.00    Nickel waste and scrap                                kg     **
+
+   78.02
+ 7802.00.00    Lead waste and scrap                                  kg     **
+   79.02
+
+ 7902.00.00    Zinc waste and scrap                                  kg     **
+   80.02
+ 8002.00.00    Tin waste and scrap                                   kg     **
+               Tungsten (wolfram) and articles thereof,
+   81.01
+               including waste and scrap.
+ 8101.97.00    --waste and scrap of tungsten                         kg     **
+               Tantalum and articles thereof, including waste
+   8103
+               and scrap.
+Ex8103.30.00   -Waste and scrap of tantalum                          kg     **
+               Magnesium and articles thereof, including
+   8104
+               waste and scrap
+ 8104.20.00    -Waste and scrap of magnesium                         kg     **
+               Cobalt mattes and other intermediate products
+   8105        of cobalt metallurgy; cobalt and articles thereof,
+               including waste and scrap.
+ 8105.30.00    -Waste and scrap of cobalt                            kg     **
+   8106
+               Waste and scrap of Bismuth
+ 8106.10.00    ---Waste and scrap of Bismuth                        tonne   **
+ 8106.90.00    ---Other waste and scrap of Bismuth                  tonne   **
+               Titanium and articles therof including waste
+   81.08
+               and scrap
+ 8108.30.00    -waste and scrap                                      kg     **
+               Zirconium and articles therof, including waste
+   81.09
+               and scrap
+
+                                                   549
+ 8109.30.00     -Waste and scrap                                   kg        **
+                Antimony and articles therof, including waste
+    81.10
+                and scrap
+ 8110.20.00     -Waste and scrap                                   kg        **
+                Manganese and articles and articles therof,
+    81.11
+                including waste and scrap
+Ex8111.00.00    -Waste and scrap                                   kg        **
+                Beryllium, chromium, hafnium, rhenium,
+                thallium, cadmium, germanium, vanadium,
+    81.12       gallium, indium and niobium (columbium), and
+                articles of these metals, including waste and
+                scrap.
+ 8112.13.00     --waste and scrap                                  kg        **
+
+ 8112.22.00     --Waste and scrap                                  kg        **
+Ex8112.31.00    -- Unwrought; waste and scrap;                     kg        **
+Ex8112.39.00    -- Other                                           kg        **
+
+Ex8112.41.00    -- Unwrought; waste and scrap;                     kg        **
+Ex8112.49.00    -- Other                                           kg        **
+ 8112.52.00     --Waste and scrap                                  kg        **
+ 8112.61.00     --Waste and scrap                                  kg        **
+ 8112.92.00     --Unwrought; waste and scrap; powders.             kg        **
+    81.13
+ 8113.00.00     Cermets waste and scrap                            kg        **
+
+
+*25% or KR 80 (eighty kwacha) per tonne whichever is greater
+   **25% or KR 1,000 (one thousaand kwacha) per tonne whichever is greater

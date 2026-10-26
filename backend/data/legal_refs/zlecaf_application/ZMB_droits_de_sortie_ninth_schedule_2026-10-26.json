@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "objet": "Zambie : droits de sortie de l'Export Tariff (Ninth Schedule, section 72A du Customs and Excise Act)",
+  "destination_iso3": "ZMB",
+  "verified_at": "2026-10-26",
+  "etabli": true,
+  "evidence_level": "primaire : Customs and Excise Tariff publié par la Zambia Revenue Authority (édition 2026), même fichier que la collecte du tarif d'importation",
+  "source": {
+    "url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
+    "institution": "Zambia Revenue Authority",
+    "sha256_pdf": "4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101"
+  },
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ZMB_ninth_schedule_export_tariff.texte-extrait.txt",
+      "sha256": "deb674f9b29116a18ca70164978f934f4dafa99958e225783298b75691a27572"
+    },
+    {
+      "texte_archive": "sources/ZMB_gazette_7696_2024-12-30.texte-extrait.txt",
+      "sha256": "19c6d2283c4428ced17319d6069575e7753c665a56f1eb48786a574bfb7b7959"
+    }
+  ],
+  "regle": {
+    "valeur": "Minerais et concentrats (26.01 à 26.21) : 10 %, sauf manganèse (26.02) 15 % et concentrés de zinc (2608.00.21/29) « free » ; cuirs et peaux bruts (41.01, 41.02, 4103.30, 4103.90) : 10 % ; bois (44.01 à 44.07) : 40 %, (44.08 à 44.13) : 20 % ; pierres et métaux précieux (71.01 à 71.12) : 15 % ; fonte et poudres (7201.10/20, 7205) : 10 % ; mattes de cuivre et de nickel (7401, 7501) : 10 % ; déchets et débris de métaux : « 25% or KR 1,000 per tonne whichever is greater » (**) ou, pour 7204.41 à 7204.50, « 25% or KR 80 per tonne » (*).",
+    "reference": "Customs and Excise Act (Cap. 322), Ninth Schedule (section 72A) — Export Tariff, pages imprimées 542 à 550 du tarif ZRA",
+    "verbatim_note_simple": "*25% or KR 80 (eighty kwacha) per tonne whichever is greater",
+    "verbatim_note_double": "**25% or KR 1,000 (one thousaand kwacha) per tonne whichever is greater",
+    "verbatim_revocation_metaux_precieux": "The Customs and Excise (Precious Metals) (Export Duty) (Suspension) Order, 2020, is revoked.",
+    "verbatim_revocation_pierres_precieuses": "Statutory Instrument No. 88 of 2024: Customs and Excise (Precious Stones) (Export Duty) (Suspension) (Revocation) Order, 2024."
+  },
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "Positions nationales de l'annexe ; un en-tête de l'annexe (« 41.01 », « 71.08 »…) vaut pour toutes ses lignes nationales ; les positions absentes de l'annexe ne portent pas de droit de sortie. Lignes « Ex » (8103.30, 8111.00, 8112.31/39/41/49) : à établir, le droit ne visant qu'une partie de la position. 8106.10.00, 8106.90.00 et leurs lignes « Other » (l'annexe ne vise que les déchets et débris de bismuth), 8113.00.00 (l'annexe vise « Cermets waste and scrap », la position couvre aussi les ouvrages) et 8109.31/8109.39 (l'annexe vise 8109.30.00 de l'ancienne nomenclature) : à établir.",
+    "devise": "Les montants spécifiques (80 et 1 000 kwacha la tonne) sont en ZMW ; quantité en tonnes.",
+    "reserves": "Concentrés de cuivre (2603.00.21 à 29) : une suspension par quotas nominatifs (SI n° 43 de 2026, du 1er juin au 30 septembre 2026) est rapportée par la presse (Mining Weekly, 3 juin 2026) ; ni son texte ni une prolongation au-delà du 30 septembre n'ont été trouvés, et le taux de 10 % est servi. Les autres suspensions ou remises par statutory instrument ne sont pas recensées de façon exhaustive."
+  }
+}

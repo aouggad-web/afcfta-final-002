@@ -1057,13 +1057,40 @@ _EXPORT_GHA_CACAO = (
 )
 _EXPORT_SEN_ARACHIDE = (
     None, None,
-    "Le projet de loi de finances 2026 annonce la « réactivation des droits de sortie sur les exportations "
-    "d'arachide » (exposé, 9 milliards FCFA attendus) ; le texte qui en fixe le taux n'a pas été consulté.",
+    "Suspension annoncée, non établie : l'annexe Voies et moyens au projet de loi de finances rectificative "
+    "2026 (DGB/MEFP) inscrit « la suspension de la taxe sur les exportations de produits arachidiers » (R_7181 "
+    "ramené à 0) ; ni le texte qui la décide, ni sa date d'effet, ni le taux de la taxe n'ont été trouvés.",
 )
 _EXPORT_SEN_OR = (
     None, None,
-    "Le projet de loi de finances 2026 projette une « taxe sur l'exportation d'or » (exposé, 26,3 milliards "
-    "FCFA) ; le texte qui en fixe le taux et l'assiette n'a pas été consulté.",
+    "La « taxe sur l'exportation d'or » de la loi de finances 2026 figure parmi les mesures « sur lesquels "
+    "aucun recouvrement n'est attendu » (projet de loi de finances rectificative 2026) ; son texte et son taux "
+    "n'ont pas été trouvés.",
+)
+# Zambie, Ninth Schedule : « * » et « ** » renvoient à deux droits composés
+# dont la note énonce la règle (« whichever is greater »).
+_EXPORT_ZMB_DECHETS = (
+    25.0, "1000 ZMW/tonne",
+    "Ninth Schedule, ** : « 25% or KR 1,000 (one thousaand kwacha) per tonne whichever is greater ».",
+)
+_EXPORT_ZMB_DECHETS_FER = (
+    25.0, "80 ZMW/tonne",
+    "Ninth Schedule, * : « 25% or KR 80 (eighty kwacha) per tonne whichever is greater ».",
+)
+_EXPORT_ZMB_EX = (
+    None, None,
+    "Ligne « Ex » de la Ninth Schedule : le droit (** : 25 % ou 1 000 kwacha la tonne, le plus élevé) ne vise "
+    "que les déchets et débris compris dans la position ; à établir.",
+)
+_EXPORT_ZMB_CONCENTRE_CUIVRE = (
+    10.0, None,
+    "Ninth Schedule : 10 %. Une suspension par quotas nominatifs (SI n° 43 de 2026, du 1er juin au 30 "
+    "septembre 2026, rapportée par la presse) n'a pas été prolongée selon ce qui a été trouvé au 26 octobre 2026.",
+)
+_EXPORT_ZMB_PRECIEUX = (
+    15.0, None,
+    "Ninth Schedule : 15 %. Les suspensions de 2020 (métaux et pierres précieux) sont révoquées depuis le "
+    "1er janvier 2025 (SI n° 85 et 88 de 2024, Gazette n° 7696).",
 )
 EXPORT_PAR_TEXTE = {
     "GHA": (
@@ -1087,22 +1114,73 @@ EXPORT_PAR_TEXTE = {
         },
     ),
     "SEN": (
-        "Loi de finances pour 2026, art. 19 (texte du projet : data/senegal/docs_officiels/PLF-2026-SENEGAL.pdf)",
+        "Loi n° 2025-19 du 22 décembre 2025 (loi de finances pour 2026), art. 19 ; projet de loi de finances "
+        "rectificative 2026 et son annexe Voies et moyens (data/senegal/docs_officiels/)",
         None,
         {
-            **{
-                code: (
-                    None, "32 FCFA/kg",
-                    "Art. 19 : « Le taux du droit de sortie est fixé à 32 F CFA par kilogramme net de noix de "
-                    "cajou » ; liquidé « comme en matière de douane ». Texte du projet de loi de finances : la "
-                    "loi n° 2025-19 promulguée n'a pas été consultée.",
-                )
-                for code in ("0801310000", "0801320000")
-            },
+            # La noix brute (en coques) : l'exposé vise « la taxation des
+            # exportations de noix brutes de cajou ».
+            "0801310000": (
+                None, "32 FCFA/kg",
+                "Loi n° 2025-19 du 22 décembre 2025, art. 19 (non modifié par la loi rectificative 2026) : « Le "
+                "taux du droit de sortie est fixé à 32 F CFA par kilogramme net de noix de cajou », liquidé « comme "
+                "en matière de douane ». Texte lu dans le projet de loi ; le Journal officiel n'a pas été consulté.",
+            ),
+            # Les amandes (sans coques) : le dispositif dit « noix de cajou »,
+            # l'exposé vise la noix brute ; non tranché.
+            "0801320000": (
+                None, None,
+                "Art. 19 : « noix de cajou » ; son exposé des motifs vise « la taxation des exportations de noix "
+                "brutes de cajou » pour inciter à la transformation locale. Application aux amandes (sans coques) "
+                "non établie.",
+            ),
             **{code: _EXPORT_SEN_ARACHIDE for code in (
                 "1202300000", "1202411000", "1202419000", "1202421000", "1202429000")},
             **{code: _EXPORT_SEN_OR for code in (
                 "7108110000", "7108120000", "7108131000", "7108139000", "7108200000")},
+        },
+    ),
+    # Clés : préfixes du code national (un en-tête « 41.01 » vaut pour toutes
+    # ses lignes). Les positions absentes de l'annexe ne portent pas de droit.
+    "ZMB": (
+        "Customs and Excise Act, Ninth Schedule (section 72A) — Export Tariff, tarif ZRA 2026 "
+        "(sources/ZMB_ninth_schedule_export_tariff.texte-extrait.txt)",
+        None,
+        {
+            **{p: (10.0, None, None) for p in (
+                "260111", "260112", "260120", "2604", "260500", "2606", "2607", "26080011", "26080019",
+                "2609", "2610", "2611", "261210", "261220", "261310", "261390", "2614", "261510", "261590",
+                "261610", "261690", "261710", "261790", "2618", "2619", "262011", "262019", "262021", "262029", "262030", "262040",
+                "262060", "262091", "262099", "262110", "262190", "26030011", "26030012", "26030013",
+                "26030019", "4101", "4102", "410330", "410390", "720110", "720120", "720510", "720521",
+                "720529", "74010010", "74010020", "750110", "750120")},
+            "2602": (15.0, None, None),
+            **{p: _EXPORT_ZMB_CONCENTRE_CUIVRE for p in ("26030021", "26030022", "26030023", "26030029")},
+            **{p: (0.0, None, "Ninth Schedule : « free » (Act No. 25 of 2022).") for p in ("26080021", "26080029")},
+            **{p: (40.0, None, None) for p in ("4401", "4402", "4403", "4404", "4405", "4407")},
+            **{p: (20.0, None, None) for p in ("4408", "4409", "4411", "4412", "4413")},
+            **{p: _EXPORT_ZMB_PRECIEUX for p in (
+                "7101", "7102", "7103", "7104", "7105", "7106", "7107", "7108", "7109", "7110", "7111", "7112")},
+            **{p: _EXPORT_ZMB_DECHETS_FER for p in ("720441", "720449", "720450")},
+            **{p: _EXPORT_ZMB_DECHETS for p in (
+                "720410", "720421", "720429", "720430", "7404", "7503", "7802", "7902", "8002", "810197",
+                "810420", "810530", "810830", "81093000", "811020", "811213", "811222", "811252", "811261",
+                "811292", "81061010", "81069010")},
+            **{p: _EXPORT_ZMB_EX for p in ("810330", "8111", "811231", "811239", "811241", "811249")},
+            # 8106.10.00 et 8106.90.00 : « Waste and scrap of Bismuth » ; le
+            # tarif national y distingue « Other », que l'annexe ne nomme pas,
+            # et la ligne mère couvre les deux.
+            **{p: (None, None, "La Ninth Schedule ne vise sous 8106.10.00 et 8106.90.00 que les déchets et débris "
+                               "de bismuth ; cette position comprend aussi d'autres produits : à établir.")
+               for p in ("81061000", "81061090", "81069000", "81069090")},
+            # « Cermets waste and scrap » : la position nationale couvre aussi
+            # les cermets et leurs ouvrages.
+            "8113": (None, None, "La Ninth Schedule vise « Cermets waste and scrap » (**) ; la position couvre aussi "
+                                 "les cermets et leurs ouvrages : à établir."),
+            # 8109.30.00 (déchets et débris) vient de l'ancienne nomenclature ;
+            # le tarif national a aussi 8109.31 et 8109.39.
+            **{p: (None, None, "La Ninth Schedule vise 8109.30.00 (déchets et débris, **) ; sa correspondance avec "
+                               "cette position n'est pas établie.") for p in ("810931", "810939")},
         },
     ),
 }
@@ -1115,8 +1193,10 @@ def droits_export_par_texte(iso, positions):
         return {}
     source, defaut, par_code = regle
     sortie = {}
+    # La clé la plus longue d'abord : une ligne nationale citée l'emporte sur son en-tête.
+    cles = sorted(par_code, key=len, reverse=True)
     for code in positions:
-        droit = par_code.get(code)
+        droit = next((par_code[c] for c in cles if code.startswith(c)), None)
         if droit is None and len(code) == 6 and any(c.startswith(code) for c in par_code):
             droit = (None, None, "Position SH6 qui regroupe des lignes nationales de droits de sortie différents : "
                                  "préciser la position nationale.")
@@ -1127,7 +1207,12 @@ def droits_export_par_texte(iso, positions):
         specifique = lire_specifique(brut) if brut else None
         d = _droit("EXPORT", "Droit de sortie", taux, "CIF" if taux is not None else None, source, note=note)
         d.update(code="EXPORT", famille="export")
-        if specifique:
+        if specifique and taux is not None:
+            # Taux et spécifique ensemble : le composé « whichever is greater »
+            # de la Zambie, la seule règle de ce tableau qui en porte.
+            d.update(specifique=specifique, compose=True, regle_composee="LE_PLUS_ELEVE",
+                     expression_brute=f"{taux:g}% or {brut}")
+        elif specifique:
             d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
         sortie[code] = [{k: v for k, v in d.items() if v is not None}]
     return sortie
