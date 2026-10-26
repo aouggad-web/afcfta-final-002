@@ -245,6 +245,17 @@ def _est_valeur(mot: str) -> bool:
     )
 
 
+#: En-tete repete de page : filets, numeros de colonnes « 1 2 3 … 7A … 12 »,
+#: renvoi « CHAPTER 28–(continued) VI:28 ».
+RX_MOBILIER = re.compile(r"^(_+|\d{1,2}A?)$")
+RX_RENVOI_CHAPITRE = re.compile(r"^_*[IVXL]+:\d+$")
+
+
+def _mobilier_de_page(toks) -> bool:
+    mots = [m for _x, m in toks]
+    return all(RX_MOBILIER.match(m) for m in mots) or any(RX_RENVOI_CHAPITRE.match(m) for m in mots)
+
+
 def _bandes(mots, tolerance: float = TOLERANCE_Y):
     """Regrouper les tokens par ligne VISUELLE.
 
@@ -511,16 +522,27 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
         "preference_superieure_au_plein_droit": 0,
     }
 
+    # Un libelle qui deborde sur la page suivante y porte ses taux, sur sa
+    # derniere ligne (0204.10.00, page 27 : « fresh or chilled .. kg 15% … »
+    # en tete de la page 28). La ligne restee sans aucune valeur en bas de page
+    # est donc reportee, et les bandes qui precedent le premier code de la page
+    # suivante la completent.
+    report: Optional[Dict] = None
     for index in range(debut, fin):
         mots = doc[index].get_text("words")
         if not mots:
             continue
-        lignes: List[Dict] = []
+        lignes: List[Dict] = [report] if report else []
+        report = None
         for _y, toks in _bandes(mots):
+            if _mobilier_de_page(toks):
+                # Joint a la ligne precedente, l'en-tete se lisait dans son
+                # libelle (« … animal feeding 1 2 3 ____ », 2308.00.00).
+                continue
             code = next((m for x, m in toks if x < X_COLONNE_DES_CODES and RX_CODE.match(m)), None)
             mots = [m for x, m in toks if x < X_UNITE and not RX_CODE.match(m)]
             if code:
-                lignes.append({"code": code, "toks": list(toks), "desc": mots, "desc_close": False})
+                lignes.append({"code": code, "toks": list(toks), "desc": mots, "desc_close": False, "page": index})
             elif lignes:
                 # Les taux d'une ligne tombent parfois sous la bande du code : la
                 # bande suivante les y apporte, et il faut donc la joindre.
@@ -532,6 +554,12 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                     lignes[-1]["desc_close"] = True
                 elif not lignes[-1]["desc_close"]:
                     lignes[-1]["desc"] += mots
+        if (
+            lignes
+            and index + 1 < fin
+            and _valeurs_de_la_ligne(lignes[-1]["toks"])[1] == "AUCUNE_VALEUR_SUR_LA_LIGNE"
+        ):
+            report = lignes.pop()
         if not lignes:
             continue
 
@@ -639,7 +667,7 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                     "preferential_rates": [],
                     "restrictions": [],
                     "source_gaps": gaps,
-                    "page_source": index + 1,
+                    "page_source": ligne["page"] + 1,
                     "source": SOURCE,
                 }
             )
