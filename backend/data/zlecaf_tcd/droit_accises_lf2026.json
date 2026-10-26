@@ -1,0 +1,22 @@
+{
+ "_objet": "Droit d'accises à l'importation au Tchad : positions et taux de l'article 36 de la loi de finances pour 2021, dans sa rédaction issue de l'article 44 de la loi de finances pour 2026 (loi n° 008/AN/SENAT/2025, p. 62 à 66). Chaque règle porte un préfixe de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle dont un préfixe correspond s'applique. La colonne « Taux taxe spécifique » du même tableau est servie à part (scripts/build_socle.py, TAXE_SPECIFIQUE_TCD).",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/TCD_droit_accises_2026-10-26.json",
+ "source": "Loi de finances pour 2021, art. 36 (nouveau), rédaction de la loi de finances pour 2026 (loi n° 008/AN/SENAT/2025), art. 44",
+ "assiette": "CIF+DD",
+ "assiette_reference": "LF 2021, art. 36 (nouveau) : « A l'importation : en ajoutant à la valeur en douane telle qu'elle est définie par le Code des douanes de la CEMAC, le montant du droit de douanes ».",
+ "tva_assiette": "CIF+DD+TCI+DA",
+ "tva_assiette_reference": "CGI art. 235 I 1° : « Pour les importations, par la valeur des marchandises telle que définie par le Code des douanes de la CEMAC majorée des droits de douane, des droits d'accises éventuels à l'exception de la TVA elle-même et du précompte de 4 % prévu à l'article 120 » ; la TCI portée par la collecte est conservée (art. 235 V : bases « tous frais et taxes compris, à l'exception de la TVA elle-même »).",
+ "regles": [
+  {"prefixes": ["2202"], "taux": 10.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2202, eaux gazeuses et minérales, boissons sucrées, 10 %"},
+  {"prefixes": ["2203"], "taux": 25.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2203, bières, 25 %"},
+  {"prefixes": ["2204", "2205"], "taux": 25.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2204 et 2205, vins, 25 %"},
+  {"prefixes": ["2208"], "taux": 25.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2208, liqueurs, 25 %"},
+  {"prefixes": ["2402"], "taux": 30.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2402, cigares, cigarillos et cigarettes, 30 %"},
+  {"prefixes": ["2403"], "exclusions": ["24039920"], "taux": 30.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2403 à l'exclusion de la position 24 03 99 20, autres tabacs fabriqués, 30 %"},
+  {"prefixes": ["33030000"], "taux": 20.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3303.00.00, parfums et eaux de toilette, 20 %"},
+  {"prefixes": ["3304", "3305"], "taux": 20.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3304 et 3305, produits cosmétiques, 20 %", "reserve": "Contenant de l'hydroquinone, ils doivent en outre une taxe spécifique de 30 %, que la position ne permet pas de distinguer : non servie."},
+  {"prefixes": ["87113000", "87114000", "87115000", "87119000"], "taux": 12.5, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8711.30.00, 8711.40.00, 8711.50.00 et 8711.90.00, motocycles d'une cylindrée supérieure à 250 cm3, 12,5 %"},
+  {"prefixes": ["870324"], "taux": 25.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8703.24, véhicules de tourisme d'une cylindrée excédant 3 000 cm3, 25 %"},
+  {"prefixes": ["870333"], "taux": 25.0, "reference": "LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 87 03.33, véhicules de tourisme diesel d'une cylindrée excédant 2 500 cm3, 25 %"}
+ ]
+}

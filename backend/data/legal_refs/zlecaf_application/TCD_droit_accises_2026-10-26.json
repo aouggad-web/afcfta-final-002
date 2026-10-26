@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "objet": "Tchad : droit d'accises et taxe spécifique à l'importation (loi de finances pour 2021, art. 36, rédaction de la loi de finances pour 2026, art. 44) et place du droit d'accises dans l'assiette de la TVA (CGI art. 235)",
+ "destination_iso3": "TCD",
+ "verified_at": "2026-10-26",
+ "etabli": true,
+ "evidence_level": "primaire — loi n° 008/AN/SENAT/2025 portant loi de finances pour 2026, publiée par le ministère des Finances (ecofinances.gouv.td), PDF scanné, art. 44 (p. 62 à 66) ; Code général des impôts, édition 2016, art. 235 (déjà archivé au dépôt)",
+ "source": {
+  "url": "https://ecofinances.gouv.td/wp-content/uploads/2026/06/Loi-n008-AN-SENAT-2025-Portant-loi-de-Finances-2026-LF-2026.pdf",
+  "institution": "Ministère des Finances, du Budget et de l'Économie (Tchad)",
+  "sha256_document_complet": "7bc46241a7c7586d9eece4fb5c95a6587ba637732480b7b4c8cfbf31112d7fd2"
+ },
+ "regle": {
+  "valeur": "Droit d'accises sur la valeur en douane augmentée du droit de douane : 2202 à 10 % ; 2203, 2204, 2205 et 2208 à 25 % ; 2402 et 2403 (hors 2403.99.20) à 30 % ; 3303.00.00, 3304 et 3305 à 20 % ; 8711.30, 8711.40, 8711.50 et 8711.90 à 12,5 % ; 8703.24 et 8703.33 à 25 %. Taxe spécifique : 50 FCFA par bouteille ou canette (2202) et par paquet (2402, 2403 hors 2403.99.20), liquidée sur la quantité ; 10 % (2203 ; 3917, 3923, 3924, 3926), 15 % (2204, 2205), 20 % (2208 ; 8703.24, 8703.33), 30 % (2907.22.00, 0804.10.00), portées sans assiette. Le droit d'accises entre dans l'assiette de la TVA.",
+  "reference": "Loi de finances pour 2026 (loi n° 008/AN/SENAT/2025), art. 44 : loi de finances pour 2021, art. 36 (nouveau) ; CGI art. 235 I 1°",
+  "verbatim_art44": "Article 44 : Pour compter du 1er janvier 2026, l'article 36 de la loi de finances pour 2021, tel que modifié par l'article 27 de la loi de finances pour 2024, est modifié et complété comme suit",
+  "verbatim_tableau": "2203 | Bières | 25% | 10% ; 2402 | Cigares (y compris ceux à bouts coupés, cigarillos et cigarettes, en tabac ou succédanés de tabac | 30% | 50FCFA/Paquet ; 8703.24 | Véhicule de tourisme d'une cylindrée excédant 3000 cm3 | 25% | 20%",
+  "verbatim_assiette": "La base d'imposition au droit d'accises est établie comme ci-après : - A l'importation : en ajoutant à la valeur en douane telle qu'elle est définie par le Code des douanes de la CEMAC, le montant du droit de douanes",
+  "verbatim_tva_art235": "1° Pour les importations, par la valeur des marchandises telle que définie par le Code des douanes de la CEMAC majorée des droits de douane, des droits d'accises éventuels à l'exception de la TVA elle-même et du précompte de 4 % prévu à l'article 120.",
+  "portee": "backend/data/zlecaf_tcd/droit_accises_lf2026.json (ACCISES_PAYS) ; scripts/build_socle.py, TAXE_SPECIFIQUE_TCD et _taxe_specifique_tchad.",
+  "texte_archive": "sources/TCD_LF2026_art44_accises.texte-extrait.txt",
+  "sha256": "102c6157f988c6207486b245a8d578274bdb426977b2befc9d7fe3e6b526123b"
+ },
+ "decisions": [
+  "La collecte portait un droit d'accises sans taux (« Taux variable selon produit ») sur 292 positions reprises d'un gabarit CEMAC — poissons, laines, cotons, médicaments, armes — que l'art. 36 ne vise pas. Ces lignes sont retirées ; le droit d'accises n'est servi que sur les positions du tableau.",
+  "La position tarifaire du tableau fait foi : 2202 entière, 2208 entière (« Liqueurs »), 2403 hors 2403.99.20.",
+  "Taxe spécifique en pourcentage : l'article n'énonce que la base du droit d'accises ; la sienne n'est pas devinée, le taux est porté sans assiette.",
+  "Assiette de la TVA : CIF + DD + TCI + DA. Le droit d'accises y entre (art. 235 I 1°) ; la TCI, déjà portée par la collecte, est conservée, l'art. 235 V comprenant dans les bases « tous frais et taxes » hors TVA. Sur les positions sans droit d'accises, la TVA ne change pas.",
+  "Le tableau a été lu sur l'image des pages 64 et 65 : la reconnaissance de caractères perdait des lignes (bières, vins, liqueurs, parfums)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Jeux de hasard (15 %) et bijoux, métaux précieux et pierres précieuses (20 %) : le tableau les place sous « Chapitre 717117 », référence qui n'est pas une position du SH. Non servis.",
+  "Produits cosmétiques contenant de l'hydroquinone (30 % de taxe spécifique en sus) : la position ne les distingue pas. Signalé en note sur 3304 et 3305.",
+  "Emballages non récupérables (25 FCFA, plafond du produit vendu) et polypropylène (15 % de la valeur sortie d'usine) : sans position tarifaire. Non servis.",
+  "L'inclusion de la taxe statistique et du prélèvement de l'Union africaine dans l'assiette de la TVA (art. 235 V) : non modifiée."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/TCD_LF2026_art44_accises.texte-extrait.txt",
+   "sha256": "102c6157f988c6207486b245a8d578274bdb426977b2befc9d7fe3e6b526123b"
+  },
+  {
+   "fichier_archive": "sources/TCD_LF2026_art44_accises.extrait.pdf",
+   "sha256": "d1c39e4425d7d7eb5c17f0771f1d38926dad906142317380490bc42465f0a011"
+  }
+ ]
+}
