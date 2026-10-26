@@ -270,6 +270,13 @@ def test_zmb_ligne_ex_a_etablir(client):
     assert ligne["montant"] is None and "Ex" in ligne["note"]
 
 
+def test_zmb_position_mixte_a_etablir(client):
+    """Codex : « Cermets waste and scrap » ne vaut pas pour les ouvrages de 8113.00.00."""
+    for code in ("81130000", "81061000"):
+        ligne = _ligne(_export(client, pays="ZMB", code_sh=code, valeur=1_000, devise="ZMW", quantite=1), "EXPORT")
+        assert ligne["montant"] is None and "à établir" in ligne["note"], code
+
+
 def test_zmb_position_hors_annexe(client):
     corps = client.post("/calcul/export", json={
         "pays": "ZMB", "code_sh": "09011100", "valeur": 1_000, "devise": "ZMW"}).json()

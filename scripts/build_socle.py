@@ -1165,13 +1165,18 @@ EXPORT_PAR_TEXTE = {
             **{p: _EXPORT_ZMB_DECHETS for p in (
                 "720410", "720421", "720429", "720430", "7404", "7503", "7802", "7902", "8002", "810197",
                 "810420", "810530", "810830", "81093000", "811020", "811213", "811222", "811252", "811261",
-                "811292", "8113", "81061000", "81061010", "81069000", "81069010")},
+                "811292", "81061010", "81069010")},
             **{p: _EXPORT_ZMB_EX for p in ("810330", "8111", "811231", "811239", "811241", "811249")},
             # 8106.10.00 et 8106.90.00 : « Waste and scrap of Bismuth » ; le
-            # tarif national y distingue « Other », que l'annexe ne nomme pas.
+            # tarif national y distingue « Other », que l'annexe ne nomme pas,
+            # et la ligne mère couvre les deux.
             **{p: (None, None, "La Ninth Schedule ne vise sous 8106.10.00 et 8106.90.00 que les déchets et débris "
-                               "de bismuth ; cette ligne « Other » n'y est pas nommée : à établir.")
-               for p in ("81061090", "81069090")},
+                               "de bismuth ; cette position comprend aussi d'autres produits : à établir.")
+               for p in ("81061000", "81061090", "81069000", "81069090")},
+            # « Cermets waste and scrap » : la position nationale couvre aussi
+            # les cermets et leurs ouvrages.
+            "8113": (None, None, "La Ninth Schedule vise « Cermets waste and scrap » (**) ; la position couvre aussi "
+                                 "les cermets et leurs ouvrages : à établir."),
             # 8109.30.00 (déchets et débris) vient de l'ancienne nomenclature ;
             # le tarif national a aussi 8109.31 et 8109.39.
             **{p: (None, None, "La Ninth Schedule vise 8109.30.00 (déchets et débris, **) ; sa correspondance avec "
