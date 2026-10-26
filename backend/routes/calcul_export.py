@@ -9,8 +9,8 @@ collectée, un taux sans unité ou une quantité manquante rendent la ligne
 indisponible et la nomment, jamais un zéro.
 
 S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
-(`HORS_TARIF` : à Madagascar, les DTSPM du Code minier), quand l'exportateur
-déclare la catégorie de marchandise que le texte vise.
+(`HORS_TARIF` : à Madagascar, les DTSPM du Code minier ; au Mali, la TEOAPM du
+CGI), quand l'exportateur déclare la catégorie que le texte vise.
 """
 from __future__ import annotations
 
@@ -25,22 +25,47 @@ from services.calcul import DEVISES_PUBLIEES, calculer
 AUCUN_DROIT = "AUCUN_DROIT_PUBLIE"
 
 #: Perceptions à la sortie publiées HORS du tarif douanier. Elles ne visent pas
-#: des positions mais une catégorie de marchandises que le texte définit : aucune
-#: position n'y est rattachée par déduction, l'exportateur la déclare.
-#: Madagascar : fiche MDG_DTSPM_code_minier_2026-10-25.json.
-_FICHE_DTSPM = "Code minier (loi n° 2023-007), art. 283, 284 et 288"
-_ASSIETTE_DTSPM = (
-    "Assiette légale : valeur FOB au cours international au moment de l'exportation, établie par le "
-    "ministère des Mines avec la douane (art. 284) — c'est elle qu'il faut saisir."
-)
+#: des positions mais une catégorie de marchandises ou d'exportateurs que le
+#: texte définit : aucune position n'y est rattachée par déduction, l'exportateur
+#: la déclare. Madagascar : fiche MDG_DTSPM_code_minier_2026-10-25.json ; Mali :
+#: fiche MLI_TEOAPM_CGI_2026-10-26.json.
 HORS_TARIF = {
     "MDG": {
         "champ": "produit_minier",
         "question": "Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?",
+        "question_en": "Mining product within the meaning of the Mining Code (mineral substance, not quarry or fossil)?",
         "question_transformation": "Substance transformée au sens du Code (abattement de 30 %, art. 288) ?",
+        "question_transformation_en": "Processed substance within the meaning of the Code (30% abatement, art. 288)?",
+        "abattement_transformation": 0.3,
+        "source": "Code minier (loi n° 2023-007), art. 283, 284 et 288",
+        "assiette": (
+            "Assiette légale : valeur FOB au cours international au moment de l'exportation, établie par le "
+            "ministère des Mines avec la douane (art. 284) — c'est elle qu'il faut saisir."
+        ),
+        # Art. 285 : aucune autre perception sur les produits des mines, sortie
+        # comprise. Un DS non nul au tarif le contredit : montré, pas tranché.
+        "conflit_tarif": (
+            "Le Code minier (art. 285) exclut toute autre perception sur les produits des mines, sortie comprise ; "
+            "le tarif 2026 publie pourtant ce droit : à vérifier auprès de la douane."
+        ),
         "lignes": [
             ("DTSPM.RISTOURNE", "Ristourne minière (DTSPM, collectivités territoriales)", 2.0),
             ("DTSPM.REDEVANCE", "Redevance minière (DTSPM, État)", 3.0),
+        ],
+    },
+    "MLI": {
+        "champ": "produit_minier",
+        "question": "Or ou autre produit minier, exporté par un exportateur non régi par le Code minier ?",
+        "question_en": "Gold or other mining product, exported by an exporter not governed by the Mining Code?",
+        "source": "Code général des impôts, art. 253-AG à 253-AK (L.F.2017, L.F.R.2017)",
+        "assiette": (
+            "Assiette légale : « la valeur du produit à l'exportation » (art. 253-AI). CGI publié par la DGI, à jour "
+            "de la loi de finances 2018 ; ses modifications postérieures (dont l'ordonnance n° 2025-006) n'ont pas "
+            "été consultées."
+        ),
+        "lignes": [
+            ("TEOAPM", "Taxe due par les exportateurs d'or et autres produits miniers non régis par le Code minier",
+             2.0),
         ],
     },
 }
@@ -73,7 +98,10 @@ class DemandeExport(BaseModel):
     )
     produit_minier: Optional[bool] = Field(
         default=None,
-        description="Madagascar : produit des mines au sens du Code minier (DTSPM). Omis : non établi.",
+        description=(
+            "Perception hors tarif : à Madagascar, produit des mines au sens du Code minier (DTSPM) ; au Mali, or "
+            "ou produit minier d'un exportateur non régi par le Code minier (TEOAPM). Omis : non établi."
+        ),
     )
     produit_minier_transforme: bool = Field(
         default=False, description="Madagascar : substance transformée au sens du Code (abattement de 30 %)."
@@ -86,31 +114,38 @@ def _hors_tarif(pays: str, demande: DemandeExport) -> list:
     if not regle or demande.produit_minier is False:
         return []
     lignes = []
+    abattement = regle.get("abattement_transformation")
     for code, libelle, taux in regle["lignes"]:
-        ligne = {"code": code, "libelle": libelle, "famille": "export", "source": _FICHE_DTSPM}
+        ligne = {"code": code, "libelle": libelle, "famille": "export", "source": regle["source"]}
         if demande.produit_minier is None:
             # Sans réponse, la ligne reste à établir : la taire ferait lire
             # « exonéré » au DS du tarif pour de l'or qui doit 5 %.
             ligne.update(taux=None, assiette=None, note="À établir : " + regle["question"])
-        elif demande.produit_minier_transforme:
+        elif abattement and demande.produit_minier_transforme:
             ligne.update(
-                taux=round(taux * 0.7, 4),
+                taux=round(taux * (1 - abattement), 4),
                 assiette="CIF",
-                note=f"{taux:g} % réduit de 30 % (substance transformée, art. 288). {_ASSIETTE_DTSPM}",
+                note=f"{taux:g} % réduit de {abattement:.0%} (substance transformée, art. 288). {regle['assiette']}",
             )
         else:
-            ligne.update(taux=taux, assiette="CIF", note=_ASSIETTE_DTSPM)
+            ligne.update(taux=taux, assiette="CIF", note=regle["assiette"])
         lignes.append(ligne)
     return lignes
 
 
 def _pays_export():
-    """Pays dont le socle porte des droits de sortie, et combien de positions."""
-    return {
+    """Pays dont le socle porte des droits de sortie, et combien de positions ;
+    s'y ajoutent, à 0 position, ceux dont la seule perception est hors tarif."""
+    manifeste = socle.manifeste().get("pays", {})
+    pays = {
         iso: entree["compteurs"]["positions_export"]
-        for iso, entree in socle.manifeste().get("pays", {}).items()
+        for iso, entree in manifeste.items()
         if entree.get("compteurs", {}).get("positions_export")
     }
+    for iso in HORS_TARIF:
+        if iso in manifeste:
+            pays.setdefault(iso, 0)
+    return pays
 
 
 @router.post("/calcul/export", summary="Liquider les droits et taxes d'une exportation")
@@ -147,15 +182,9 @@ def calcul_export(demande: DemandeExport):
 
     droits = position.get("droits_export") or []
     hors_tarif = _hors_tarif(pays, demande)
-    if hors_tarif and demande.produit_minier:
-        # Art. 285 : aucune autre perception sur les produits des mines, sortie
-        # comprise. Un DS non nul au tarif le contredit : montré, pas tranché.
-        droits = [
-            {**d, "note": "Le Code minier (art. 285) exclut toute autre perception sur les produits des mines, "
-                          "sortie comprise ; le tarif 2026 publie pourtant ce droit : à vérifier auprès de la douane."}
-            if d.get("taux") else d
-            for d in droits
-        ]
+    conflit = HORS_TARIF.get(pays, {}).get("conflit_tarif")
+    if hors_tarif and demande.produit_minier and conflit:
+        droits = [{**d, "note": conflit} if d.get("taux") else d for d in droits]
     resultat = calculer(
         {**position, "droits": droits + hors_tarif},
         demande.valeur,
@@ -211,7 +240,11 @@ def pays_export():
             "pays": _pays_export(),
             # Ce que l'écran doit demander pour les perceptions hors tarif.
             "questions": {
-                iso: {k: regle[k] for k in ("champ", "question", "question_transformation")}
+                iso: {
+                    k: regle.get(k)
+                    for k in ("champ", "question", "question_en", "question_transformation",
+                              "question_transformation_en")
+                }
                 for iso, regle in HORS_TARIF.items()
             },
         }

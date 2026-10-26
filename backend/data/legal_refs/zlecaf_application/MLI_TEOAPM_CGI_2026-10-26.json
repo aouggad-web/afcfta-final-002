@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "objet": "Mali : taxe due par les exportateurs d'or et autres produits miniers non régis par le Code minier (TEOAPM)",
+  "destination_iso3": "MLI",
+  "verified_at": "2026-10-26",
+  "etabli": true,
+  "evidence_level": "primaire : Code général des impôts publié par la Direction générale des impôts (version à jour de la loi de finances 2018) ; modifications postérieures non consultées",
+  "source": {
+    "url": "https://www.dgi.gouv.ml/CGI/",
+    "institution": "Direction générale des impôts du Mali",
+    "sha256_page": "32cbd24e5cbd327d8a6c1e6b327cd62de5ffda541aa1f33c80bdb52012b737f5"
+  },
+  "documents_archives": [
+    {
+      "texte_archive": "sources/MLI_CGI_art253AG_253AK_TEOAPM.texte-extrait.txt",
+      "sha256": "517c20c47096a2dc7919115ab38a25254dc3d1b280b309b81be789eae17d6f60"
+    }
+  ],
+  "regle": {
+    "valeur": "2 % de la valeur du produit à l'exportation, dus par les exportateurs d'or et autres produits miniers non régis par le Code minier ; produit affecté au budget national.",
+    "reference": "Code général des impôts (loi n° 06-067 du 29 décembre 2006, modifiée), Livre 1, Titre 2, chapitre 7, art. 253-AG à 253-AK (L.F.2017, L.F.R.2017)",
+    "verbatim_taux": "Le taux de la taxe due par les exportateurs d’or et autres produits miniers non régis par le Code Minier est fixé à 2 %.",
+    "verbatim_assiette": "La base de calcul de la taxe due par les exportateurs d’or et autres produits miniers non régis par le Code Minier est constituée par la valeur du produit à l’exportation.",
+    "verbatim_redevables": "La taxe est due par les exportateurs d’or et autres produits miniers non régis par le Code Minier."
+  },
+  "ne_tranche_pas": "Si l'ordonnance n° 2025-006 ou une loi de finances postérieure à 2018 a modifié le taux ou le champ de la taxe ; quels exportateurs et quels « autres produits miniers » sont hors du Code minier (or artisanal, comptoirs d'achat) ; l'articulation avec les perceptions du Code minier de 2023.",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "Perception hors tarif (HORS_TARIF[\"MLI\"]) : elle ne vise pas des positions mais un exportateur et une marchandise que le texte définit ; l'exportateur déclare s'il exporte de l'or ou un autre produit minier hors du régime du Code minier. Sans réponse, la ligne est à établir ; si non, aucune perception ; si oui, 2 % de la valeur saisie.",
+    "devise": "Ad valorem : aucun taux de change.",
+    "reserves": "Le CGI publié par la DGI est à jour de la loi de finances 2018 (page modifiée le 21 février 2020) ; les modifications postérieures, dont l'ordonnance n° 2025-006/PT-RM du 7 février 2025 portant modification du CGI, n'ont pas été consultées. Le contour de « produits miniers non régis par le Code minier » (or artisanal, comptoirs) n'est pas précisé par le texte : il est laissé à la déclaration de l'exportateur."
+  }
+}

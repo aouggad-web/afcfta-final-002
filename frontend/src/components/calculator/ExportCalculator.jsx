@@ -17,7 +17,7 @@ import { chiffres } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
-const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW' };
+const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW', MLI: 'XOF' };
 
 const STATUTS = {
   CALCULE: { fr: 'Calculé', en: 'Calculated' },
@@ -166,7 +166,9 @@ export default function ExportCalculator({ language = 'fr' }) {
               <SelectContent>
                 {Object.entries(pays).map(([iso, n]) => (
                   <SelectItem key={iso} value={iso}>
-                    {iso} — {n} {fr ? 'positions avec droit de sortie' : 'positions with export duty'}
+                    {iso} — {n
+                      ? `${n} ${fr ? 'positions avec droit de sortie' : 'positions with export duty'}`
+                      : (fr ? 'taxe de sortie hors tarif' : 'export levy outside the tariff')}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -213,16 +215,16 @@ export default function ExportCalculator({ language = 'fr' }) {
         {question && (
           <fieldset className="space-y-2" data-testid="export-question-hors-tarif">
             <legend className="text-sm">
-              {fr ? question.question : 'Mining product within the meaning of the Mining Code (mineral substance, not quarry or fossil)?'}
+              {fr ? question.question : question.question_en}
             </legend>
             <div className="flex gap-4 text-sm">
               <label><input type="radio" name="produit-minier" checked={produitMinier === true} onChange={() => setProduitMinier(true)} /> {fr ? 'Oui' : 'Yes'}</label>
               <label><input type="radio" name="produit-minier" checked={produitMinier === false} onChange={() => setProduitMinier(false)} /> {fr ? 'Non' : 'No'}</label>
             </div>
-            {produitMinier && (
+            {produitMinier && question.question_transformation && (
               <label className="flex gap-2 text-sm">
                 <input type="checkbox" checked={transforme} onChange={(e) => setTransforme(e.target.checked)} />
-                {fr ? question.question_transformation : 'Processed substance within the meaning of the Code (30% abatement, art. 288)?'}
+                {fr ? question.question_transformation : question.question_transformation_en}
               </label>
             )}
           </fieldset>
