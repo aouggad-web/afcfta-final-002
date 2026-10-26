@@ -1,0 +1,37 @@
+{
+ "schema_version": 1,
+ "objet": "Afrique du Sud : contrôles de la liste SARS des marchandises prohibées ou réglementées d'octobre 2026 — retenue Port Health (plomb dans les peintures, substances dangereuses) à l'importation, contrôle ITAC à l'exportation de 2530.90 sauf pyrophyllite",
+ "destination_iso3": "ZAF",
+ "verified_at": "2026-10-26",
+ "etabli": true,
+ "evidence_level": "primaire — liste SARS « Prohibited and Restricted Imports and Exports list » du 23/10/2026 (feuilles Imports et Exports) et avis SARS des 19 et 22/10/2026",
+ "source": {
+  "url": "https://www.sars.gov.za/customs-and-excise/prohibited-restricted-and-counterfeit-goods/",
+  "institution": "South African Revenue Service"
+ },
+ "regle": {
+  "valeur": "Formalités à l'importation, sans effet sur les droits : retenue pour inspection physique par Port Health (BMA), code PHYSICAL_INSPECTION_PORT_HEALTH, sur 9505.90 et 9503.00.10/9503.00.90 (règlement sur le plomb dans les peintures et revêtements ; plus une lettre d'autorisation du NRCS sur 9503.00), sur 2901.24 et 2902.20 (inspection et prélèvement, Hazardous Substances Act) et sur 2902.30 (avec un permis d'importation de l'ITAC). La mainlevée dépend du contrôle. À l'exportation (formalites_export) : permis de l'ITAC sur 2530.90, dont la pyrophyllite est exclue (exclusion_produit : le code SH seul ne suffit pas), et sur 2902.30 après recommandation du South African Police Service.",
+  "reference": "SARS, Prohibited and Restricted Imports and Exports list, 23 October 2026 ; avis « Updated Prohibited and Restricted Imports and Exports list » des 19 et 22 October 2026",
+  "verbatim": "22 October 2026 – Tariff heading 9505.10 is not required to be detained for Port Health purposes. 22 October 2026 – Tariff subheading 2530.90 is subject to ITAC export control measures. However, the product Pyrophyllite is excluded from these measures and should therefore be exempted from tariff subheading 2530.90. 19 October 2026 – These products must be detained for physical inspection and monitoring by Port Health (BMA) to ensure compliance with the Regulations Relating to Lead in Paint or Coating Materials: 9505.10 9505.90 9503.00.90 9503.00.10 2902.30 2902.20 2901.24",
+  "portee": "scripts/build_socle.py, CONTROLES_IMPORT_ZAF, CONTROLES_EXPORT_ZAF, EXCLUSIONS_EXPORT_ZAF et _controles_sars_zaf ; servi par GET /{iso3}/formalites/{code} (formalities, formalities_export).",
+  "texte_archive": "sources/ZAF_controles_sars.texte-extrait.txt",
+  "sha256": "d3fc5b5860c7214e103ac593afb8e4ed519dcde0bae688c6a07bd0bc9f210e00"
+ },
+ "decisions": [
+  "9505.10 (articles pour fêtes de Noël) n'est pas retenue : l'avis du 22/10/2026 la sort du contrôle de Port Health, et la liste du 23/10/2026 ne porte plus de contrôle sur cette ligne.",
+  "Le texte de chaque formalité est celui de la liste du 23/10/2026, plus récente que l'avis du 19/10/2026 : pour 2901.24, 2902.20 et 2902.30, la liste vise l'inspection et le prélèvement au titre du Hazardous Substances Act, sans citer le règlement sur le plomb que l'avis mentionne.",
+  "L'exclusion de la pyrophyllite vient de l'avis du 22/10/2026 ; la ligne 2530.90 de la liste du 23/10/2026 ne la mentionne pas. Elle est portée comme une exclusion de produit, que la désignation de la marchandise doit trancher.",
+  "Les contrôles à l'exportation sont portés au socle (formalites_export) et servis par la consultation des formalités : le calcul des droits de sortie (POST /calcul/export) ne couvre pas l'Afrique du Sud."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les autres lignes de la liste SARS (plus de 12 000 par feuille) : non intégrées ; seules les positions des avis d'octobre 2026 sont servies. Une position sans formalité reste « non établie ».",
+  "Les délais et frais de l'inspection Port Health et la procédure de l'ITAC : non publiés dans la liste.",
+  "Aucun effet sur les droits, ni sur l'admission au taux ZLECAf."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/ZAF_controles_sars.texte-extrait.txt",
+   "sha256": "d3fc5b5860c7214e103ac593afb8e4ed519dcde0bae688c6a07bd0bc9f210e00"
+  }
+ ]
+}

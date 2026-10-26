@@ -2264,6 +2264,93 @@ CODES_PRELEVEMENTS_ZAF = {
 SUCRE_REPUTE_ZAF = 20
 UNITES_PRELEVEMENT_ZAF = {"li": "li", "bag": "sac", "kg": "kg", "lamp": "lampe"}
 
+#: Afrique du Sud : liste SARS des marchandises prohibées ou réglementées du
+#: 23/10/2026 (feuilles « Imports » et « Exports ») et avis des 19 et 22/10/2026 ;
+#: fiche ZAF_controles_sars_2026-10-26.json. Formalités et contrôles, sans effet
+#: sur les droits. 9505.10 est sortie du contrôle de Port Health le 22/10/2026.
+SOURCE_SARS_ZAF = "SARS — Prohibited and Restricted Imports and Exports list, 23 October 2026"
+PHO_PEINTURE_ZAF = (
+    "PHYSICAL_INSPECTION_PORT_HEALTH",
+    "The product must be detained for physical inspection and monitoring by Port Health (BMA) to ensure "
+    "compliance with the Regulations Relating to Lead in Paint or Coating Materials",
+    "Hazardous Substances Act No. 15 of 1973",
+    "Retenue pour inspection physique et suivi par Port Health (BMA) : conformité au règlement sur le plomb "
+    "dans les peintures et revêtements. La mainlevée dépend de ce contrôle.",
+)
+PHO_SUBSTANCES_ZAF = (
+    "PHYSICAL_INSPECTION_PORT_HEALTH",
+    "The product must be detained for physical inspection and sampling by Port Health (BMA) to ensure "
+    "compliance with the regulations.",
+    "Hazardous Substances Act No. 15 of 1973",
+    "Retenue pour inspection physique et prélèvement par Port Health (BMA) : conformité au Hazardous "
+    "Substances Act. La mainlevée dépend de ce contrôle.",
+)
+NRCS_ZAF = (
+    "NRCS_LETTER_OF_AUTHORITY",
+    "LOA required from NRCS",
+    "NRCS Act No 5 of 2008",
+    "Lettre d'autorisation (LOA) du NRCS.",
+)
+CONTROLES_IMPORT_ZAF = {
+    "950590": (PHO_PEINTURE_ZAF,),
+    "95030010": (NRCS_ZAF, PHO_PEINTURE_ZAF),
+    "95030090": (NRCS_ZAF, PHO_PEINTURE_ZAF),
+    "290124": (PHO_SUBSTANCES_ZAF,),
+    "290220": (PHO_SUBSTANCES_ZAF,),
+    "290230": (
+        ("ITAC_IMPORT_PERMIT", "Import permit required from ITAC",
+         "International Trade Administration Act, 2002 (Act 71 of 2002)", "Permis d'importation de l'ITAC."),
+        PHO_SUBSTANCES_ZAF,
+    ),
+}
+ITAC_EXPORT_ZAF = (
+    "ITAC_EXPORT_PERMIT",
+    "Export permit required from ITAC",
+    "International Trade Administration Act (Act 71 of 2002)",
+    "Permis d'exportation de l'ITAC (marchandise retenue pour l'ITAC).",
+)
+CONTROLES_EXPORT_ZAF = {
+    "253090": (ITAC_EXPORT_ZAF,),
+    "290230": (
+        ("SAPS_RECOMMENDATION",
+         "Lodge application to Controlling Authority for recommendation before submitting application to ITAC: "
+         "Controlling Authority : South African Police Service",
+         "International Trade Administration Act (Act 71 of 2002)",
+         "Recommandation du South African Police Service avant la demande de permis à l'ITAC."),
+        ITAC_EXPORT_ZAF,
+    ),
+}
+#: Avis SARS du 22/10/2026 : exclusion d'un produit que le code SH seul ne distingue pas.
+EXCLUSIONS_EXPORT_ZAF = {
+    "253090": {
+        "produit": "Pyrophyllite",
+        "verbatim": "Tariff subheading 2530.90 is subject to ITAC export control measures. However, the product "
+                    "Pyrophyllite is excluded from these measures and should therefore be exempted from tariff "
+                    "subheading 2530.90.",
+        "source": "SARS — Updated Prohibited and Restricted Imports and Exports list, 22 October 2026",
+        "note": "Le code 2530.90 ne suffit pas : la pyrophyllite en est exclue, à vérifier sur la désignation de la "
+                "marchandise.",
+    },
+}
+
+
+def _controles_sars_zaf(positions):
+    def formalite(regle):
+        code, verbatim, base, fr = regle
+        return {"code": code, "texte": verbatim, "document_fr": fr, "document_en": verbatim,
+                "base_legale": base, "source": SOURCE_SARS_ZAF}
+
+    for code, regles in CONTROLES_IMPORT_ZAF.items():
+        if code in positions:
+            positions[code].setdefault("formalites", []).extend(formalite(r) for r in regles)
+    for code, regles in CONTROLES_EXPORT_ZAF.items():
+        if code in positions:
+            controles = [formalite(r) for r in regles]
+            if code in EXCLUSIONS_EXPORT_ZAF:
+                for c in controles:
+                    c["exclusion_produit"] = EXCLUSIONS_EXPORT_ZAF[code]
+            positions[code]["formalites_export"] = controles
+
 
 def _prelevements_zaf(positions, compteurs):
     """Afrique du Sud : prélèvements environnementaux, taxe sur les carburants,
@@ -4123,6 +4210,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_sierra_leone(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
+        _controles_sars_zaf(positions)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)

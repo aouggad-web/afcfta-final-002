@@ -1913,7 +1913,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "11dbb572b89c33e1034f89e11b47efbb861d7c0c1237ffc05c21a503b3d8e5e2",
+      "socle_sha256": "940f4fb0f12601d13c09998624d1b6eb097a477de0e9cc8bf7d61106c5170d88",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
