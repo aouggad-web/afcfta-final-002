@@ -70,10 +70,13 @@ def test_les_positions_sont_nationales_et_portent_leur_libelle_portugais(socle):
 def test_chaque_assiette_est_celle_que_la_loi_enonce(socle, code_taxe, assiette, article):
     """Lei n.º 11/2016, Instruções Preliminares, artigo 15 — quatre assiettes
     énoncées l'une après l'autre."""
+    # Les taux ad valorem ; les taux spécifiques de l'ICE se liquident sur la
+    # quantité (test_moz_ice_especifico).
     trouves = [
         d
         for p in socle["positions"].values()
         for d in _droits(p, code_taxe)
+        if d.get("taux") is not None
     ]
     assert trouves, f"{code_taxe} absent du socle"
     assiettes = {d.get("assiette") for d in trouves}
@@ -89,7 +92,9 @@ def test_la_cascade_se_liquide_dans_l_ordre_de_la_loi(socle):
     cible = next(
         (code, p)
         for code, p in socle["positions"].items()
-        if _droits(p, "ICE") and _droits(p, "DD") and _droits(p, "TVA")
+        if any(d.get("taux") is not None and not d.get("compose") for d in _droits(p, "ICE"))
+        and _droits(p, "DD")
+        and _droits(p, "TVA")
     )
     npf = calculer(cible[1], 10000.0)["npf"]
     lignes = {x["code"]: x for x in npf["lignes"]}
@@ -145,7 +150,8 @@ def test_la_virgule_decimale_est_lue_comme_une_decimale(crawl):
 
 
 def test_une_valeur_minimale_n_est_pas_servie_comme_un_taux(socle, crawl):
-    """« 475 MZN Per 1 L » est un plancher d'assiette, pas un pourcentage."""
+    """« 475 MZN Per 1 L » n'est pas un pourcentage : c'est le taux spécifique de
+    l'ICE (Lei n.º 19/2022, tabela anexa ; test_moz_ice_especifico)."""
     from crawlers.countries.mozambique_pauta_scraper import lire_taux
 
     taux, brut, motif = lire_taux("475 MZN Per 1 L")
@@ -155,10 +161,11 @@ def test_une_valeur_minimale_n_est_pas_servie_comme_un_taux(socle, crawl):
         d
         for p in socle["positions"].values()
         for d in p.get("droits") or []
-        if d.get("code") == "ICEVALMIN"
+        if d.get("code_source") == "ICE_VAL_MIN"
     ]
     assert minima, "le tarif en porte"
-    assert all(not d.get("assiette") for d in minima)
+    assert all(d.get("taux") is None for d in minima)
+    assert all(d.get("assiette") in (None, "xQTE") for d in minima)
 
 
 def test_la_colonne_non_identifiee_reste_sans_assiette(socle):

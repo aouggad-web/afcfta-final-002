@@ -3855,6 +3855,123 @@ def _iec_angola(positions, compteurs):
         _compter_ligne(ligne, compteurs, 1)
 
 
+#: Mozambique : taux spécifiques de l'ICE (Código do ICE, Lei n.º 19/2022, tabela
+#: anexa, colonne 2025, prorogée pour 2026-2027 par la Lei n.º 7/2025). La Pauta
+#: les publie en « ICE_VAL_MIN » ; la tabela en donne l'unité, que la Pauta
+#: altère parfois (« 7.71 MZN Per 1 KG » pour « 7,71/Litro »). Fiche
+#: MOZ_ice_especifico_2026-10-26.json. Code → (montant en MT, unité, tabela).
+ICE_ESPECIFICO_MOZ = {
+    "22029990": (1.99, "litre", "1,99/Litro"),
+    "22030060": (5.5, "litre", "5,50/Litro"),
+    "24021000": (550, "kg", "550/kg"),
+    "24022000": (540, "millier de cigarettes", "540/mil Unid"),
+    "24029000": (590, "kg", "590/kg"),
+    "24031100": (640, "kg", "640/kg"),
+    "24031900": (640, "kg", "640/kg"),
+    "24039100": (640, "kg", "640/kg"),
+    "24039900": (640, "kg", "640/kg"),
+    "27101229": (0.51, "litre", "0,51/Litro"),
+    "27101231": (4.67, "litre", "4,67/Litro"),
+    "27101239": (7.71, "litre", "7,71/Litro"),
+    "27101240": (1.02, "litre", "1,02/Litro"),
+    "27101290": (1.02, "litre", "1,02/Litro"),
+    "27101921": (1.02, "litre", "1,02/Litro"),
+    "27101929": (1.02, "litre", "1,02/Litro"),
+    "27101939": (4.27, "litre", "4,27/Litro"),
+    "27101945": (0.75, "litre", "0,75/Litro"),
+    "27111100": (0.35, "kg", "0,35/Kg"),
+    "27111200": (0.66, "kg", "0,66/Kg"),
+    "27111300": (0.66, "kg", "0,66/Kg"),
+    "27111910": (0.66, "kg", "0,66/Kg"),
+    "39232920": (105, "kg", "105/kg"),
+    "39233030": (30, "kg", "30/kg"),
+    "39239090": (30, "kg", "30/kg"),
+    "87021020": (455000, "unité", "455.000/unid"),
+    "87031020": (65000, "unité", "65.000/unid"),
+    "87032120": (12000, "unité", "12.000/unid"),
+    "87032220": (15000, "unité", "15.000/unid"),
+    "87032390": (75000, "unité", "75.000/unid"),
+    "87032490": (145000, "unité", "145.000/unid"),
+    "87033120": (32000, "unité", "32.000/unid"),
+    "87033290": (109000, "unité", "109.000/unid"),
+    "87033390": (109000, "unité", "109.000/unid"),
+    "87039020": (155000, "unité", "155.000/unid"),
+    "87042120": (175000, "unité", "175.000/unid"),
+    "87042140": (125000, "unité", "125.000/unid"),
+    "87043120": (90000, "unité", "90.000/unid"),
+}
+#: Taux au gramme de sucre contenu dans 100 ml (méthode 1 de la tabela) ou au
+#: litre d'alcool pur (méthodes 2 à 4) : le calcul ne reçoit ni la teneur en
+#: sucre ni le titre alcoométrique. Préfixe → tabela ; le premier qui couvre le
+#: code l'emporte.
+ICE_NON_LIQUIDABLE_MOZ = (
+    ("2009", "0,0099/g de Aç.Cont.100 ml", "sucre"),
+    ("210690", "0,0140/g de Aç. Cont.100ml", "sucre"),
+    ("22029910", "0,0147/g de Aç.Cont.100 ml", "sucre"),
+    ("22042910", "470/Litro Alc.", "alcool"),
+    ("2203", "475/Litro Alc.", "alcool"),
+    ("2204", "619/Litro Alc.", "alcool"),
+    ("2205", "619/Litro Alc.", "alcool"),
+    ("2206", "475/Litro Alc.", "alcool"),
+    ("22071090", "600/Litro Alc.", "alcool"),
+    ("22072000", "460/Litro Alc.", "alcool"),
+    ("22089010", "435/Litro Alc.", "alcool"),
+    ("22089020", "280/Litro Alc.", "alcool"),
+    ("2208", "460/Litro Alc.", "alcool"),
+)
+SOURCE_ICE_MOZ = (
+    "Código do ICE (Lei n.º 19/2022, BR I série n.º 251 du 29/12/2022), tabela anexa ; "
+    "taux prorogés pour 2026-2027 par la Lei n.º 7/2025"
+)
+
+
+def _ice_mocambique(positions, compteurs):
+    """Mozambique : la ligne « ICE_VAL_MIN » de la Pauta est le taux spécifique
+    de l'ICE, fondu dans la ligne ICE de la position. Ad valorem et spécifique
+    prévus ensemble : « aplica-se a que resultar maior valor do imposto »
+    (Código do ICE, art. 9 n.º 3)."""
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        minimum = next((d for d in droits if d.get("code_source") == "ICE_VAL_MIN"), None)
+        if minimum is None:
+            continue
+        ice = next((d for d in droits if d.get("code") == "ICE"), None)
+        for d in (minimum, ice):
+            if d is not None:
+                _compter_ligne(d, compteurs, -1)
+        if ice is None:
+            ice = minimum
+            ice.update(code="ICE", libelle="Imposto sobre Consumos Específicos", famille=famille("ICE"))
+        else:
+            droits.remove(minimum)
+        ice["source"] = SOURCE_ICE_MOZ
+        if code in ICE_ESPECIFICO_MOZ:
+            montant, unite, brut = ICE_ESPECIFICO_MOZ[code]
+            ice["specifique"] = {"montant": montant, "unite_monetaire": "unite_principale",
+                                 "sous_unite_source": None, "unite_quantite": unite, "brut": brut}
+            if ice.get("taux") is None:
+                ice.update(assiette="xQTE", assiette_origine="droit_specifique")
+                ice["note"] = f"Tabela anexa : « {brut} »."
+            else:
+                ice.update(compose=True, regle_composee="LE_PLUS_ELEVE",
+                           expression_brute=f"{ice['taux']:g} % ou {brut}")
+                ice["note"] = (f"Tabela anexa : {ice['taux']:g} % ou « {brut} » ; art. 9 n.º 3 : « aplica-se a "
+                               "que resultar maior valor do imposto ».")
+        else:
+            _, brut, teneur = next(r for r in ICE_NON_LIQUIDABLE_MOZ if code.startswith(r[0]))
+            motif = (
+                f"« {brut} » porte sur les grammes de sucre contenus dans 100 ml, teneur que le calcul ne reçoit pas"
+                if teneur == "sucre"
+                else f"« {brut} » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas"
+            )
+            if ice.get("taux") is not None:
+                motif += (f" ; l'ad valorem de {ice['taux']:g} % n'est qu'une borne basse, l'art. 9 n.º 3 "
+                          "retenant le plus élevé des deux")
+                ice["taux"] = None
+            ice["note"] = f"Tabela anexa : {motif} — non liquidable en l'état."
+        _compter_ligne(ice, compteurs, 1)
+
+
 def construire_pays(iso, chemin, origine, assiettes_pays):
     langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
     libelles_sh6 = charger_libelles_sh6() if langue_origine else None
@@ -4242,6 +4359,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_liberia(positions, compteurs)
     if iso == "AGO":
         _iec_angola(positions, compteurs)
+    if iso == "MOZ":
+        _ice_mocambique(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
