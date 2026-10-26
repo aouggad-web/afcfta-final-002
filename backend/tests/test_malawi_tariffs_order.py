@@ -40,6 +40,7 @@ CE QUE CES TESTS TIENNENT.
 
 import json
 import pathlib
+import re
 import sys
 
 import pytest
@@ -285,6 +286,17 @@ def test_un_libelle_qui_deborde_sur_la_page_suivante_garde_ses_taux(crawl):
         assert taxes["DD"] == droit
         assert "DROIT_NPF_NON_LU" not in positions[code]["source_gaps"]
     assert positions["02041000"]["page_source"] == 27
+
+
+def test_l_en_tete_de_page_ne_se_lit_pas_dans_le_libelle(crawl):
+    """Filets, numeros de colonnes « 1 2 3 … 12 » et renvoi « VI:28 » se
+    lisaient dans le libelle de la ligne qu'ils suivent (2308.00.00 : « …
+    animal feeding 1 2 3 ____ »), et masquaient son unite."""
+    positions = {p["national_code"]: p for p in crawl["sub_positions"]}
+    mobilier = re.compile(r"_{5,}|\b1 2 3\b|[IVXL]+:\d+")
+    assert not [c for c, p in positions.items() if mobilier.search(p["designation"]["verbatim"])]
+    assert positions["29339100"]["designation"]["verbatim"].endswith("and triazolam (INN); salts thereof")
+    assert positions["01013010"]["statistical_unit"] == "U"
 
 
 def test_une_preference_superieure_au_plein_droit_est_signalee(crawl):

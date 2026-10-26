@@ -245,6 +245,17 @@ def _est_valeur(mot: str) -> bool:
     )
 
 
+#: En-tete repete de page : filets, numeros de colonnes « 1 2 3 … 7A … 12 »,
+#: renvoi « CHAPTER 28–(continued) VI:28 ».
+RX_MOBILIER = re.compile(r"^(_+|\d{1,2}A?)$")
+RX_RENVOI_CHAPITRE = re.compile(r"^_*[IVXL]+:\d+$")
+
+
+def _mobilier_de_page(toks) -> bool:
+    mots = [m for _x, m in toks]
+    return all(RX_MOBILIER.match(m) for m in mots) or any(RX_RENVOI_CHAPITRE.match(m) for m in mots)
+
+
 def _bandes(mots, tolerance: float = TOLERANCE_Y):
     """Regrouper les tokens par ligne VISUELLE.
 
@@ -524,6 +535,10 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
         lignes: List[Dict] = [report] if report else []
         report = None
         for _y, toks in _bandes(mots):
+            if _mobilier_de_page(toks):
+                # Joint a la ligne precedente, l'en-tete se lisait dans son
+                # libelle (« … animal feeding 1 2 3 ____ », 2308.00.00).
+                continue
             code = next((m for x, m in toks if x < X_COLONNE_DES_CODES and RX_CODE.match(m)), None)
             mots = [m for x, m in toks if x < X_UNITE and not RX_CODE.match(m)]
             if code:

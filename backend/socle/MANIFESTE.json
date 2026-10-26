@@ -1244,8 +1244,8 @@
       "fichier": "MWI.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
-      "source_sha256": "e83b7e78996c2dead0fe9bf665019ae0053b1b67442d4b6a7d279188f352c742",
-      "socle_sha256": "6026ae415955a148c73dab01b46c0e9a5b2549f07d8d7e8f4ce78b9eae4cfbf0",
+      "source_sha256": "5175961351996a6344dccc68576cbe2d90e94f1685db6d44d29c86b0d2f38cc4",
+      "socle_sha256": "42a4e3ed42dae82ac0264a3cf6d2f674abe739ca6034d8eff42f69ec8e7122db",
       "collecte": "2026-10-26",
       "etat": "PARTIEL",
       "familles": [
