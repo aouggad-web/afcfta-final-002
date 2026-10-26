@@ -25,7 +25,7 @@
  },
  "application_au_calcul": {
   "route": "POST /calcul/export",
-  "positions": "0 % sur toutes les positions du socle ; 2710.19.21.00 (gazole) 0,02 USD/litre ; 2710.19.11.00 (carburéacteur) 0,09 USD/litre ; 1801.00.11/12/19 (fèves de cacao) taux à établir ; les positions SH6 271019 et 180100, qui regroupent des lignes de droits différents, renvoient à la position nationale.",
+  "positions": "0 % sur toutes les positions du socle (4A.13) ; 2710.19.21.00 (gazole) 0,02 USD/litre ; 2710.19.11.00 (carburéacteur) à établir : 0,09 USD/litre pour les seuls vols internationaux (4A.6), 0 % sinon, et l'usage n'est pas connu du calcul ; 1801.00.11 à 1801.00.30 (« Cocoa Beans » : fèves brutes, torréfiées, brisures) taux à établir ; les positions SH6 271019 et 180100, qui regroupent des lignes de droits différents, renvoient à la position nationale.",
   "devise": "Les droits spécifiques sont publiés en USD : sur une valeur en GHS, le calcul demande le taux « 1 USD = ? GHS ».",
   "reserves": "Édition du tarif de 2015 (Act 905) ; les exemptions de la Part B (État, missions diplomatiques…) ne sont pas appliquées ; la Part A ne vise que les biens nationaux."
  }

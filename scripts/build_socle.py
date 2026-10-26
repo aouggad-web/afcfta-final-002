@@ -1072,14 +1072,18 @@ EXPORT_PAR_TEXTE = {
         _EXPORT_GHA_DEFAUT,
         {
             "2710192100": (None, "0.02 USD/litre", "4A.7 Gas oil : $0.02/litre."),
+            # Le droit ne vaut que pour l'usage qu'il nomme : sans lui, la
+            # ligne reste à établir, ni 0,09 $ ni le 0 % de 4A.13.
             "2710191100": (
-                None, "0.09 USD/litre",
-                "4A.6 « Aviation Turbine Kerosene for international flights only » : $0.09/litre — "
-                "carburéacteur destiné aux vols internationaux.",
+                None, None,
+                "4A.6 « Aviation Turbine Kerosene for international flights only » : $0.09/litre, pour "
+                "le seul carburéacteur destiné aux vols internationaux ; à défaut, 4A.13 (0 %). L'usage "
+                "n'est pas établi : à préciser.",
             ),
-            "1801001100": _EXPORT_GHA_CACAO,
-            "1801001200": _EXPORT_GHA_CACAO,
-            "1801001900": _EXPORT_GHA_CACAO,
+            # « Cocoa Beans » sans autre précision : fèves brutes, torréfiées
+            # et brisures (1801.00.11 à 1801.00.30).
+            **{code: _EXPORT_GHA_CACAO for code in (
+                "1801001100", "1801001200", "1801001900", "1801002000", "1801003000")},
         },
     ),
     "SEN": (

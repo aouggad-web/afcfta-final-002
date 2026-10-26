@@ -191,9 +191,17 @@ def test_gha_gazole_publie_en_dollars(client):
 
 
 def test_gha_cacao_taux_fixe_par_le_ministre(client):
-    export = _export(client, pays="GHA", code_sh="1801001100", valeur=10_000, devise="USD")
+    """« Cocoa Beans » sans autre précision : fèves brutes, torréfiées et brisures."""
+    for code in ("1801001100", "1801002000", "1801003000"):
+        ligne = _ligne(_export(client, pays="GHA", code_sh=code, valeur=10_000, devise="USD"), "EXPORT")
+        assert ligne["montant"] is None and "Minister" in ligne["note"], code
+
+
+def test_gha_carbureacteur_usage_a_etablir(client):
+    """4A.6 ne vaut que pour les vols internationaux : sans l'usage, ni 0,09 $ ni 0 %."""
+    export = _export(client, pays="GHA", code_sh="2710191100", valeur=10_000, devise="USD", quantite=1_000)
     ligne = _ligne(export, "EXPORT")
-    assert ligne["montant"] is None and "Minister" in ligne["note"]
+    assert ligne["montant"] is None and "international flights" in ligne["note"]
 
 
 def test_gha_sh6_qui_regroupe_des_droits_differents(client):

@@ -4,7 +4,7 @@
  * sa raison — jamais comme un zéro.
  */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
@@ -236,5 +236,28 @@ describe('ExportCalculator', () => {
     await userEvent.click(screen.getByTestId('export-calculer'));
 
     expect(axios.post.mock.calls[1][1].taux_de_change).toBe(15);
+  });
+
+  it("ignore la réponse d'un calcul lancé avant un changement de devise", async () => {
+    let repondre;
+    axios.post.mockReturnValueOnce(new Promise((resolve) => { repondre = resolve; }));
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('GHA — 11516 positions avec droit de sortie'));
+    await userEvent.type(screen.getByLabelText('Position nationale'), '2710192100');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    const devise = screen.getByLabelText('Devise');
+    await userEvent.clear(devise);
+    await userEvent.type(devise, 'EUR');
+    repondre({ data: {
+      pays: 'GHA', position: { designation: 'Gas-oil' }, provenance: { devise_nationale: 'GHS' },
+      export: { etat: 'INDISPONIBLE', total_droits: 0, manques: [], lignes: [] },
+      change_requis: [{ devise_droit: 'USD', devise_valeur: 'GHS' }],
+    } });
+
+    await waitFor(() => expect(screen.getByTestId('export-calculer')).not.toBeDisabled());
+    expect(screen.queryByLabelText('1 USD = ? GHS')).not.toBeInTheDocument();
   });
 });

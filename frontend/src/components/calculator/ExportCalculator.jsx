@@ -4,7 +4,7 @@
  * par POST /calcul/export ; une ligne que la source ne permet pas de chiffrer
  * est montrée avec sa raison, jamais comme un zéro.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -81,8 +81,11 @@ export default function ExportCalculator({ language = 'fr' }) {
       .catch(() => setErreur(fr ? 'Pays couverts indisponibles' : 'Covered countries unavailable'));
   }, [fr]);
 
-  // Une autre position ou une autre devise appelle une autre paire.
+  // Une autre position ou une autre devise appelle une autre paire ; la réponse
+  // d'un calcul lancé avant le changement ne vaut plus pour elles.
+  const version = useRef(0);
   useEffect(() => {
+    version.current += 1;
     setPaire(null);
     setTauxDeChange('');
   }, [iso3, code, devise]);
@@ -123,15 +126,17 @@ export default function ExportCalculator({ language = 'fr' }) {
       corps.produit_minier = produitMinier;
       if (produitMinier) corps.produit_minier_transforme = transforme;
     }
+    const demandee = version.current;
     try {
       const res = await axios.post(`${API}/calcul/export`, corps);
+      if (demandee !== version.current) return;
       // Les montants sont dans la devise envoyée, pas dans celle du champ
       // si on la modifie ensuite ; sans devise, dans la monnaie du tarif.
       setResultat({ ...res.data, devise: devise || res.data.provenance?.devise_nationale || '' });
       const requise = (res.data.change_requis || [])[0];
       if (requise) setPaire(requise);
     } catch (e) {
-      setErreur(detailErreur(e, fr));
+      if (demandee === version.current) setErreur(detailErreur(e, fr));
     } finally {
       setChargement(false);
     }
