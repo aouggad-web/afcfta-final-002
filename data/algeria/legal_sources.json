@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "country": "DZA",
+  "as_of": "2026-10-26",
+  "sources": [
+    {
+      "source_id": "DZA-JORADP-DE-26-327",
+      "title": "Décret exécutif n° 26-327 du 13 octobre 2026 portant création d'un comité permanent de suivi et de traitement des demandes d'importation",
+      "institution": "Secrétariat général du Gouvernement — Journal officiel de la République algérienne (JORADP)",
+      "legal_date": "2026-10-13",
+      "accessed_at": "2026-10-26",
+      "url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2026/F2026072.pdf",
+      "local_file": "official/dza-jo-2026-072.pdf",
+      "sha256": "a0707a63b7ef5459870c497fda96fa29fec714b7a8adeea5cff31a65ff7f3b89",
+      "text_extract": "official/dza-decret-26-327-extrait.txt",
+      "text_extract_sha256": "ff9f19487ee4cea61bf362d1753bd88216a878a80c529ba65aa3cf94427c1da2",
+      "coverage": "Journal officiel n° 72 du 13 octobre 2026, p. 16-17 : création, auprès du ministre du commerce extérieur et de la promotion des exportations, d'un comité permanent chargé d'examiner et d'émettre son avis sur les demandes d'importation, pour chaque opération (art. 1er à 4).",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Numéro complet archivé (20 pages, 244 Ko), avec l'extrait du décret remis dans l'ordre de lecture."
+    }
+  ]
+}

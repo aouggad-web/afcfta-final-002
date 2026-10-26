@@ -10,6 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 RESOLVED_REPO_ROOT = REPO_ROOT.resolve()
 
 COUNTRY_REGULATORY_PATHS = {
+    "DZA": "data/algeria/regulatory_measures.json",
     "CIV": "data/cote-d-ivoire/regulatory_measures.json",
     "COD": "data/drc/regulatory_measures.json",
     "CMR": "data/cameroon/regulatory_measures.json",
