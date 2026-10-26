@@ -6,7 +6,7 @@
  "source_legal": "Customs and Excise Act : s.72 (First Schedule, customs tariff), s.88 (valeur d'assiette de l'accise a l'importation), Cinquieme annexe (valeur en douane) ; Value Added Tax Act Cap. 331, s.9 et s.10(3)",
  "source_quality": "crawled_authentic",
  "source_sha256": "4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101",
- "extracted_at": "2026-09-18",
+ "extracted_at": "2026-10-26",
  "calculation_rules": {
   "order": [
    "DD",
@@ -36,13 +36,13 @@
   "pages": 682,
   "pages_calibrees_sur_donnees": 443,
   "pages_calibrage_dominant": 0,
-  "droits_composes": 121,
+  "droits_composes": 135,
   "accises_specifiques": 40,
-  "taux_non_lus": 100,
+  "taux_non_lus": 86,
   "sans_lettre_tva": 53,
   "pages_non_calibrees": 239,
   "lignes_non_calibrees": 58,
-  "notes_appariees": 121,
+  "notes_appariees": 135,
   "tva_standard": 6032,
   "tva_exoneree": 598,
   "tva_taux_zero": 12,
@@ -46464,14 +46464,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46502,9 +46504,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -46582,14 +46582,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46620,9 +46622,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -46700,14 +46700,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46738,9 +46740,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -46760,14 +46760,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46798,9 +46800,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -46820,14 +46820,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46858,9 +46860,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -46880,14 +46880,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46918,9 +46920,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -46940,14 +46940,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "*",
+     "rate_pct": 25.0,
+     "specific_value": "4.00 ZMW/kg",
+     "specific_currency": "ZMW",
+     "raw_value": "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« * ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -46978,9 +46980,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 85,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -130588,7 +130588,7 @@
      "specific_currency": null,
      "rate_pct": 16.0,
      "raw_value": "S",
-     "note": "Lettre « S » au tarif : standard rated. ZRA, VAT Guide : « Currently the Standard rate is 16% ». L'ordre statutaire que la s.9(3) du Value Added Tax Act prevoit n'a PAS ete identifie ; le taux de 17,5 % que porte le texte consolide de l'Acte n'est plus en vigueur et n'est donc pas servi."
+     "note": "Lettre « S » au tarif : standard rated. ZRA, VAT Guide : « Currently the Standard rate is 16% ». L'ordre statutaire que la s.9(3) du Value Added Tax Act prevoit n'a PAS ete identifie ; le taux de 17,5 % que porte le texte consolide de l'Acte n'est plus en vigueur et n'est donc pas servi. Note du tarif : *S eligible for VAT Zero-rating"
     }
    ],
    "preferential_rates": [],
@@ -352397,14 +352397,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -352435,9 +352437,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 530,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -352631,14 +352631,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -352669,9 +352671,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 530,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -352865,14 +352865,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -352903,9 +352905,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 530,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -353099,14 +353099,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -353137,9 +353139,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 530,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -353275,14 +353275,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "TVA",
@@ -353301,7 +353303,6 @@
    "preferential_rates": [],
    "restrictions": [],
    "source_gaps": [
-    "DD_RENVOI_EN_NOTE",
     "EXC_CELLULE_VIDE"
    ],
    "page_source": 530,
@@ -353323,14 +353324,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -353361,9 +353364,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 530,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },
@@ -353524,14 +353525,16 @@
      "code": "DD",
      "name": "Customs duty",
      "name_fr": "Droit de douane",
-     "rate_pct": null,
-     "specific_value": null,
-     "specific_currency": null,
-     "raw_value": "***",
+     "rate_pct": 30.0,
+     "specific_value": "6000 ZMW/vehicle",
+     "specific_currency": "ZMW",
+     "raw_value": "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016.",
+     "compound": true,
+     "compound_rule": "higher",
      "base": "CIF",
      "base_source": "Customs and Excise Act, Cinquieme annexe (s.85, s.88), cl. 2(1) et 3(1)(a)(vii)-(viii)",
      "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026",
-     "note": "Le tarif renvoie a une note de bas de page (« *** ») que la collecte n'a pas retrouvee sur les pages voisines. Le droit existe mais n'est pas lu : declare indisponible."
+     "note": "Droit compose dont la REGLE EST ENONCEE : la note de bas de page porte « whichever is the greater », et la regle 2(b) des Additional Zambian Rules la pose pour tout le tarif — « the rate which yields the greater amount of duty shall apply »."
     },
     {
      "code": "EXC",
@@ -353562,9 +353565,7 @@
    ],
    "preferential_rates": [],
    "restrictions": [],
-   "source_gaps": [
-    "DD_RENVOI_EN_NOTE"
-   ],
+   "source_gaps": [],
    "page_source": 530,
    "source": "Customs and Excise Tariff (Customs and Excise Act, First Schedule) — edition janvier 2026"
   },

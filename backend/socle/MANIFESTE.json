@@ -1950,9 +1950,9 @@
       "fichier": "ZMB.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZMB_tariffs.json",
-      "source_sha256": "f2756c61a728b73ed948ccf936f752a0990403f3b132f4655f08c2dcdd455cd3",
-      "socle_sha256": "760e3f6bd0afe6ca4330082fb9f550f35daf159201e0a21065c527cdeddab9c0",
-      "collecte": "2026-09-18",
+      "source_sha256": "eb3a463a3d4c82ed54bf875ba6795e25ecfa66bd7c5c963dfae3897b22130cdc",
+      "socle_sha256": "2b8d27e62eb9d2d5f09e2341f72213b5b00a8a0d21e7d8bc633ac743aa3e532c",
+      "collecte": "2026-10-26",
       "etat": "PARTIEL",
       "familles": [
         "accise",
@@ -1962,20 +1962,20 @@
       "compteurs": {
         "positions": 6753,
         "droits": 20006,
-        "droits_liquidables": 19695,
-        "positions_liquidables": 6585,
+        "droits_liquidables": 19736,
+        "positions_liquidables": 6599,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 168,
+        "taux_indisponibles": 154,
         "assiettes_source": 20006,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 40,
-        "droits_composes": 121,
+        "droits_composes": 135,
         "restrictions": 0,
         "interdictions": 0,
         "droits_absents_completes": 0,
@@ -2071,6 +2071,6 @@
     ],
     "positions": 370537,
     "droits": 1245114,
-    "droits_liquidables": 1211265
+    "droits_liquidables": 1211306
   }
 }
