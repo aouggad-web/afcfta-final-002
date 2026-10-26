@@ -17,7 +17,7 @@ import { chiffres } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
-const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF' };
+const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW' };
 
 const STATUTS = {
   CALCULE: { fr: 'Calculé', en: 'Calculated' },

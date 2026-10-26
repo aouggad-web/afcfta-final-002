@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB"}
 
 
 def test_tun_dattes_un_pour_cent_de_la_valeur(client):
@@ -234,6 +234,46 @@ def test_sen_or_sans_recouvrement_ni_taux(client):
     ligne = _ligne(_export(client, pays="SEN", code_sh="7108120000", valeur=1_000_000, devise="XOF"), "EXPORT")
     assert ligne["montant"] is None and "aucun recouvrement" in ligne["note"]
 
+
+
+def test_zmb_concentre_de_cuivre_dix_pour_cent(client):
+    """Ninth Schedule : 10 % ; la suspension par quotas de 2026 a pris fin le 30 septembre."""
+    export = _export(client, pays="ZMB", code_sh="26030021", valeur=1_000_000, devise="ZMW")
+    ligne = _ligne(export, "EXPORT")
+    assert (export["etat"], ligne["montant"]) == ("COMPLET", pytest.approx(100_000))
+    assert "SI n° 43" in ligne["note"]
+
+
+def test_zmb_en_tete_vaut_pour_ses_lignes(client):
+    """« 71.08 … 15% », « 44.01 … 40% » : l'en-tête couvre les positions nationales."""
+    assert _ligne(_export(client, pays="ZMB", code_sh="71081200", valeur=1_000, devise="ZMW"),
+                  "EXPORT")["montant"] == pytest.approx(150)
+    assert _ligne(_export(client, pays="ZMB", code_sh="44011100", valeur=1_000, devise="ZMW"),
+                  "EXPORT")["montant"] == pytest.approx(400)
+
+
+def test_zmb_ferrailles_le_plus_eleve_des_deux(client):
+    """** : « 25% or KR 1,000 per tonne whichever is greater »."""
+    sans = _export(client, pays="ZMB", code_sh="72041000", valeur=100_000, devise="ZMW")
+    assert _ligne(sans, "EXPORT")["montant"] is None
+    ligne = _ligne(_export(client, pays="ZMB", code_sh="72041000", valeur=100_000, devise="ZMW", quantite=200),
+                   "EXPORT")
+    assert (ligne["montant"], ligne["composante_retenue"]) == (pytest.approx(200_000), "specifique")
+    ligne = _ligne(_export(client, pays="ZMB", code_sh="72041000", valeur=100_000, devise="ZMW", quantite=10),
+                   "EXPORT")
+    assert (ligne["montant"], ligne["composante_retenue"]) == (pytest.approx(25_000), "ad_valorem")
+
+
+def test_zmb_ligne_ex_a_etablir(client):
+    """« Ex8111.00.00 » : le droit ne vise qu'une partie de la position."""
+    ligne = _ligne(_export(client, pays="ZMB", code_sh="81110000", valeur=1_000, devise="ZMW"), "EXPORT")
+    assert ligne["montant"] is None and "Ex" in ligne["note"]
+
+
+def test_zmb_position_hors_annexe(client):
+    corps = client.post("/calcul/export", json={
+        "pays": "ZMB", "code_sh": "09011100", "valeur": 1_000, "devise": "ZMW"}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
 
 def test_position_sans_droit_de_sortie(client):
     reponse = client.post("/calcul/export", json={"pays": "CIV", "code_sh": "0101210000", "valeur": 1000})

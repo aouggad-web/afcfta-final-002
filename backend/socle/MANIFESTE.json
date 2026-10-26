@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-26T14:55:59.313597+00:00",
+  "construit_le": "2026-10-26T15:25:34.605041+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1951,7 +1951,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZMB_tariffs.json",
       "source_sha256": "f2756c61a728b73ed948ccf936f752a0990403f3b132f4655f08c2dcdd455cd3",
-      "socle_sha256": "760e3f6bd0afe6ca4330082fb9f550f35daf159201e0a21065c527cdeddab9c0",
+      "socle_sha256": "59fffc250dca77c521ad684b8e6ffe43bf93b2a1e97ec77190cfa85ed5b6d67b",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
@@ -1980,7 +1980,8 @@
         "interdictions": 0,
         "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 0
+        "classification_estimee": 0,
+        "positions_export": 236
       }
     },
     "ZWE": {
