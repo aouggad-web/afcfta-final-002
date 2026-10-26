@@ -238,6 +238,16 @@ def notes_de_la_page(page) -> Dict[str, str]:
     return notes
 
 
+#: Une ligne de note de bas de page, qu'on sache la lire ou non. Un renvoi seul
+#: dans sa bande (« * - S ») n'en est pas une.
+RX_LIGNE_DE_NOTE = re.compile(r"^\*+\s*\S.*\b(per|or|Eligible|Act)\b", re.I)
+
+
+def _chapitres(mots) -> set:
+    """Les chapitres des positions tarifaires d'une page."""
+    return {m[4][:2] for m in mots if RX_CODE.match(m[4])}
+
+
 def _bandes(mots, tolerance: float = TOLERANCE_Y):
     """Regrouper les tokens par ligne VISUELLE, et non par y arrondi.
 
@@ -457,6 +467,22 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
                 continue
             for marque, texte in notes_de_la_page(doc[voisine]).items():
                 notes.setdefault(marque, texte)
+        # Elle peut aussi fermer le chapitre, plus loin : les huiles 1506 a 1514,
+        # pages 85 et 86, renvoient a la note de la page 88. On poursuit donc,
+        # page a page, jusqu'a la premiere qui porte une note — lisible ou non
+        # (« *K1.82 per Kg », page 328) —, sans franchir le chapitre.
+        chapitres = _chapitres(mots)
+        voisine = index + 3
+        while chapitres and voisine < doc.page_count:
+            autres_mots = doc[voisine].get_text("words")
+            autres = _chapitres(autres_mots)
+            if autres and not autres <= chapitres:
+                break
+            for marque, texte in notes_de_la_page(doc[voisine]).items():
+                notes.setdefault(marque, texte)
+            if any(RX_LIGNE_DE_NOTE.match(" ".join(m for _x, m in toks)) for _y, toks in _bandes(autres_mots)):
+                break
+            voisine += 1
         bandes = _bandes(mots)
 
         # Une ligne du bareme commence a la bande de son code et se prolonge par

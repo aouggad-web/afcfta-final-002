@@ -179,6 +179,18 @@ def test_l_asterisque_est_un_renvoi_et_la_note_porte_le_droit(crawl):
     assert all(t["specific_currency"] == "ZMW" for t in composes)
 
 
+@pytest.mark.parametrize("code,brut", [
+    ("15060000", "*25% or KR4.00 per Kg whichever is the greater. Act No.18 of 2015"),
+    ("87033190", "***30% or KR6,000 per vehicle, whichever is the greater. Act No. 18 of 2016."),
+])
+def test_la_note_qui_ferme_le_chapitre_est_retrouvee(crawl, code, brut):
+    """Les huiles de la page 85 renvoient a la note de la page 88, trois pages
+    plus loin ; les vehicules de la page 530, a celle qui ferme le chapitre 87."""
+    position = next(p for p in crawl["sub_positions"] if p["national_code"] == code)
+    dd = next(t for t in position["taxes"] if t["code"] == "DD")
+    assert dd["raw_value"] == brut and dd["compound_rule"] == "higher"
+
+
 def test_le_taux_de_tva_n_est_pas_celui_du_texte_consolide(socle):
     """La s.9(3) du Value Added Tax Act porte 17,5 %, soumis a un ordre du
     ministre. Le servir surfacturerait chaque importation zambienne d'un
