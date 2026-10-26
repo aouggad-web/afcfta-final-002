@@ -1039,6 +1039,100 @@ DUS_CIV = [
 ]
 
 
+#: Droits de sortie fixés par un TEXTE, position par position, quand la collecte
+#: du tarif n'en porte pas : {iso: (source, droit par défaut ou None, {code: droit})}.
+#: Un droit : (taux, spécifique, note). Un taux à None reste non liquidable et
+#: dit pourquoi ; une position SH6 qui regroupe une ligne nationale taxée renvoie
+#: à la position nationale plutôt que d'hériter du défaut.
+_EXPORT_GHA_DEFAUT = (
+    0.0, None,
+    "Customs Act, Fourth Schedule, Part A, 4A.13 : « All other goods grown, produced or manufactured in "
+    "Ghana » 0 %. L'annexe ne vise que les biens nationaux (Part A) ; les exemptions de la Part B "
+    "(État, missions diplomatiques…) ne sont pas appliquées.",
+)
+_EXPORT_GHA_CACAO = (
+    None, None,
+    "4A.4 Cocoa Beans : « The rate to be determined by the Minister for Finance and Economic Planning » "
+    "— taux non publié au tarif.",
+)
+_EXPORT_SEN_ARACHIDE = (
+    None, None,
+    "Le projet de loi de finances 2026 annonce la « réactivation des droits de sortie sur les exportations "
+    "d'arachide » (exposé, 9 milliards FCFA attendus) ; le texte qui en fixe le taux n'a pas été consulté.",
+)
+_EXPORT_SEN_OR = (
+    None, None,
+    "Le projet de loi de finances 2026 projette une « taxe sur l'exportation d'or » (exposé, 26,3 milliards "
+    "FCFA) ; le texte qui en fixe le taux et l'assiette n'a pas été consulté.",
+)
+EXPORT_PAR_TEXTE = {
+    "GHA": (
+        "Customs (Amendment) Act, 2015 (Act 905), Fourth Schedule — Export Duty "
+        "(data/ghana/docs_officiels/CUSTOMS-ACT-TARIFF-CET-HS-CODES.pdf)",
+        _EXPORT_GHA_DEFAUT,
+        {
+            "2710192100": (None, "0.02 USD/litre", "4A.7 Gas oil : $0.02/litre."),
+            # Le droit ne vaut que pour l'usage qu'il nomme : sans lui, la
+            # ligne reste à établir, ni 0,09 $ ni le 0 % de 4A.13.
+            "2710191100": (
+                None, None,
+                "4A.6 « Aviation Turbine Kerosene for international flights only » : $0.09/litre, pour "
+                "le seul carburéacteur destiné aux vols internationaux ; à défaut, 4A.13 (0 %). L'usage "
+                "n'est pas établi : à préciser.",
+            ),
+            # « Cocoa Beans » sans autre précision : fèves brutes, torréfiées
+            # et brisures (1801.00.11 à 1801.00.30).
+            **{code: _EXPORT_GHA_CACAO for code in (
+                "1801001100", "1801001200", "1801001900", "1801002000", "1801003000")},
+        },
+    ),
+    "SEN": (
+        "Loi de finances pour 2026, art. 19 (texte du projet : data/senegal/docs_officiels/PLF-2026-SENEGAL.pdf)",
+        None,
+        {
+            **{
+                code: (
+                    None, "32 FCFA/kg",
+                    "Art. 19 : « Le taux du droit de sortie est fixé à 32 F CFA par kilogramme net de noix de "
+                    "cajou » ; liquidé « comme en matière de douane ». Texte du projet de loi de finances : la "
+                    "loi n° 2025-19 promulguée n'a pas été consultée.",
+                )
+                for code in ("0801310000", "0801320000")
+            },
+            **{code: _EXPORT_SEN_ARACHIDE for code in (
+                "1202300000", "1202411000", "1202419000", "1202421000", "1202429000")},
+            **{code: _EXPORT_SEN_OR for code in (
+                "7108110000", "7108120000", "7108131000", "7108139000", "7108200000")},
+        },
+    ),
+}
+
+
+def droits_export_par_texte(iso, positions):
+    """Droits de sortie de `EXPORT_PAR_TEXTE` pour les positions du socle."""
+    regle = EXPORT_PAR_TEXTE.get(iso)
+    if not regle:
+        return {}
+    source, defaut, par_code = regle
+    sortie = {}
+    for code in positions:
+        droit = par_code.get(code)
+        if droit is None and len(code) == 6 and any(c.startswith(code) for c in par_code):
+            droit = (None, None, "Position SH6 qui regroupe des lignes nationales de droits de sortie différents : "
+                                 "préciser la position nationale.")
+        droit = droit or defaut
+        if droit is None:
+            continue
+        taux, brut, note = droit
+        specifique = lire_specifique(brut) if brut else None
+        d = _droit("EXPORT", "Droit de sortie", taux, "CIF" if taux is not None else None, source, note=note)
+        d.update(code="EXPORT", famille="export")
+        if specifique:
+            d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
+        sortie[code] = [{k: v for k, v in d.items() if v is not None}]
+    return sortie
+
+
 def droits_export_du_fichier(iso, donnees):
     """Droits et taxes à l'EXPORTATION, par code national : ``{code: [droits]}``.
 
@@ -4462,6 +4556,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         if code in positions:
             positions[code]["droits_export"] = droits
             compteurs["positions_export"] = compteurs.get("positions_export", 0) + 1
+    for code, droits in droits_export_par_texte(iso, positions).items():
+        positions[code]["droits_export"] = droits
+        compteurs["positions_export"] = compteurs.get("positions_export", 0) + 1
     familles_vues = {d["famille"] for p in positions.values() for d in p.get("droits") or [] if d.get("famille")}
     compteurs["positions"] = len(positions)
     compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())

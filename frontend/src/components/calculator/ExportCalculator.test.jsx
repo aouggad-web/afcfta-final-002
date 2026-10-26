@@ -4,7 +4,7 @@
  * sa raison — jamais comme un zéro.
  */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
@@ -63,7 +63,7 @@ describe('ExportCalculator', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     axios.get.mockResolvedValue({ data: {
-      pays: { CIV: 97, TUN: 17530, MDG: 266 },
+      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516 },
       questions: { MDG: {
         champ: 'produit_minier',
         question: 'Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?',
@@ -144,21 +144,34 @@ describe('ExportCalculator', () => {
         lignes: [{ code: 'TAXE/FERRAILLES.EXP', libelle: 'TAXE/FERRAILLES.EXP', montant: 483.87, statut: 'CALCULE' }],
       },
     };
-    axios.post.mockResolvedValue({ data: ferrailles });
+    // Contrat réel de l'API : la paire attendue est dite par `change_requis`.
+    axios.post
+      .mockResolvedValueOnce({ data: {
+        ...ferrailles,
+        export: { etat: 'INDISPONIBLE', total_droits: 0, manques: [], lignes: [
+          { code: 'TAXE/FERRAILLES.EXP', libelle: 'TAXE/FERRAILLES.EXP', montant: null, statut: 'TAUX_DE_CHANGE_REQUIS' },
+        ] },
+        change_requis: [{ devise_droit: 'TND', devise_valeur: 'USD' }],
+      } })
+      .mockResolvedValueOnce({ data: ferrailles });
     render(<ExportCalculator />);
 
     await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
-    expect(screen.queryByLabelText(/= \? TND/)).not.toBeInTheDocument();
     const devise = screen.getByLabelText('Devise');
     await userEvent.clear(devise);
     await userEvent.type(devise, 'usd');
-    await userEvent.type(screen.getByLabelText('1 USD = ? TND'), '3.1');
     await userEvent.type(screen.getByLabelText('Position nationale'), '2620110000');
     await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
     await userEvent.type(screen.getByLabelText('Quantité (unité du droit)'), '5000');
+    // Aucun taux n'est demandé avant que l'API dise la paire.
+    expect(screen.queryByLabelText(/= \?/)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByTestId('export-calculer'));
+    expect(axios.post.mock.calls[0][1].taux_de_change).toBeUndefined();
+
+    await userEvent.type(await screen.findByLabelText('1 USD = ? TND'), '3.1');
     await userEvent.click(screen.getByTestId('export-calculer'));
 
-    const corps = axios.post.mock.calls[0][1];
+    const corps = axios.post.mock.calls[1][1];
     expect(corps.devise).toBe('USD');
     expect(corps.taux_de_change).toBeCloseTo(1 / 3.1, 10);
     // La devise affichée est celle envoyée, même si le champ change ensuite.
@@ -193,5 +206,58 @@ describe('ExportCalculator', () => {
     render(<ExportCalculator />);
     await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
     expect(screen.queryByTestId('export-question-hors-tarif')).not.toBeInTheDocument();
+  });
+
+  it('droit publié en dollars : demande « 1 USD = ? GHS » et l\'envoie tel quel', async () => {
+    // La ligne réelle ne dit pas la devise du droit ; `change_requis` la dit.
+    const ligne = (statut, montant) => ({
+      code: 'EXPORT', libelle: 'Droit de sortie', specifique: '0.02 USD/litre', unite_quantite: 'litre', statut, montant,
+    });
+    axios.post
+      .mockResolvedValueOnce({ data: {
+        pays: 'GHA', position: { designation: 'Gas-oil' }, provenance: { devise_nationale: 'GHS' },
+        export: { etat: 'INDISPONIBLE', total_droits: 0, manques: [], lignes: [ligne('TAUX_DE_CHANGE_REQUIS', null)] },
+        change_requis: [{ devise_droit: 'USD', devise_valeur: 'GHS' }],
+      } })
+      .mockResolvedValueOnce({ data: {
+        pays: 'GHA', position: { designation: 'Gas-oil' }, provenance: { devise_nationale: 'GHS' },
+        export: { etat: 'COMPLET', total_droits: 300, manques: [], lignes: [ligne('CALCULE', 300)] },
+      } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('GHA — 11516 positions avec droit de sortie'));
+    expect(screen.getByLabelText('Devise')).toHaveValue('GHS');
+    await userEvent.type(screen.getByLabelText('Position nationale'), '2710192100');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
+    await userEvent.type(screen.getByLabelText('Quantité (unité du droit)'), '1000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    await userEvent.type(await screen.findByLabelText('1 USD = ? GHS'), '15');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(axios.post.mock.calls[1][1].taux_de_change).toBe(15);
+  });
+
+  it("ignore la réponse d'un calcul lancé avant un changement de devise", async () => {
+    let repondre;
+    axios.post.mockReturnValueOnce(new Promise((resolve) => { repondre = resolve; }));
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('GHA — 11516 positions avec droit de sortie'));
+    await userEvent.type(screen.getByLabelText('Position nationale'), '2710192100');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    const devise = screen.getByLabelText('Devise');
+    await userEvent.clear(devise);
+    await userEvent.type(devise, 'EUR');
+    repondre({ data: {
+      pays: 'GHA', position: { designation: 'Gas-oil' }, provenance: { devise_nationale: 'GHS' },
+      export: { etat: 'INDISPONIBLE', total_droits: 0, manques: [], lignes: [] },
+      change_requis: [{ devise_droit: 'USD', devise_valeur: 'GHS' }],
+    } });
+
+    await waitFor(() => expect(screen.getByTestId('export-calculer')).not.toBeDisabled());
+    expect(screen.queryByLabelText('1 USD = ? GHS')).not.toBeInTheDocument();
   });
 });

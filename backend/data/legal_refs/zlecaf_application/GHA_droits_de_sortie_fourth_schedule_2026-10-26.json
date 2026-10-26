@@ -1,0 +1,32 @@
+{
+ "schema_version": 1,
+ "objet": "Ghana : droits de sortie (Export Duty) de la Fourth Schedule du Customs Act",
+ "destination_iso3": "GHA",
+ "verified_at": "2026-10-26",
+ "etabli": true,
+ "evidence_level": "primaire : Customs (Amendment) Act, 2015 (Act 905), schedules du Customs Act 2015 (Act 891), édition GRA versée au dépôt",
+ "source": {
+  "url": "https://gra.gov.gh",
+  "institution": "Ghana Revenue Authority (Customs Division)"
+ },
+ "documents_archives": [
+  {
+   "texte_archive": "sources/GHA_fourth_schedule_export_duty.texte-extrait.txt",
+   "sha256": "34420a9a4ecf0da4cf6d4365325fe9e88acfc1dac7574703039d56ae950d773a"
+  }
+ ],
+ "regle": {
+  "valeur": "Fourth Schedule, Part A (biens nationaux) : 0 % sur tous les biens produits au Ghana (4A.13), à l'exception de 4A.6 Aviation Turbine Kerosene pour vols internationaux ($0.09/litre), 4A.7 Gas oil ($0.02/litre) et 4A.4 Cocoa Beans (taux fixé par le ministre des Finances, non publié). Les lignes 4A.1 à 4A.3, 4A.5 et 4A.8 à 4A.12 (poisson frais, ignames, noix de cola, sel, électricité, bois, diamants, manganèse, bauxite) sont à 0 %.",
+  "reference": "Customs (Amendment) Act, 2015 (Act 905), Fourth Schedule — Export Duty, Part A, p. 740",
+  "verbatim_4A4": "Cocoa Beans …. The rate to be determined by the Minister for Finance and Economic Planning",
+  "verbatim_4A6": "Aviation Turbine Kerosene for international flights only $0.09/litre",
+  "verbatim_4A7": "Gas oil $0.02/litre",
+  "verbatim_4A13": "All other goods grown, produced or manufactured in Ghana. 0%"
+ },
+ "application_au_calcul": {
+  "route": "POST /calcul/export",
+  "positions": "0 % sur toutes les positions du socle (4A.13) ; 2710.19.21.00 (gazole) 0,02 USD/litre ; 2710.19.11.00 (carburéacteur) à établir : 0,09 USD/litre pour les seuls vols internationaux (4A.6), 0 % sinon, et l'usage n'est pas connu du calcul ; 1801.00.11 à 1801.00.30 (« Cocoa Beans » : fèves brutes, torréfiées, brisures) taux à établir ; les positions SH6 271019 et 180100, qui regroupent des lignes de droits différents, renvoient à la position nationale.",
+  "devise": "Les droits spécifiques sont publiés en USD : sur une valeur en GHS, le calcul demande le taux « 1 USD = ? GHS ».",
+  "reserves": "Édition du tarif de 2015 (Act 905) ; les exemptions de la Part B (État, missions diplomatiques…) ne sont pas appliquées ; la Part A ne vise que les biens nationaux."
+ }
+}

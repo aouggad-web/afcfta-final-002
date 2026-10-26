@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN"}
 
 
 def test_tun_dattes_un_pour_cent_de_la_valeur(client):
@@ -74,6 +74,19 @@ def test_tun_rpd_liquidee_apres_les_droits_quelle_somme(client):
     export = _export(client, pays="TUN", code_sh="8549122000", valeur=1000, devise="TND", quantite=500)
     assert [ligne["code"] for ligne in export["lignes"]][-1] == "RPD/EXPOR"
     assert _ligne(export, "RPD/EXPOR")["base"] == pytest.approx(_ligne(export, "TAXE/FERRAILLES.EXP")["montant"])
+
+
+def test_change_requis_dit_la_paire_monnaie_du_tarif(client):
+    reponse = client.post("/calcul/export", json={
+        "pays": "TUN", "code_sh": "2620110000", "valeur": 10_000, "devise": "USD", "quantite": 5_000})
+    assert reponse.json()["change_requis"] == [{"devise_droit": "TND", "devise_valeur": "USD"}]
+
+
+def test_gha_valeur_en_euros_le_droit_reste_en_dollars(client):
+    """Codex : une valeur en EUR ne doit pas faire supposer un droit en GHS."""
+    reponse = client.post("/calcul/export", json={
+        "pays": "GHA", "code_sh": "2710192100", "valeur": 10_000, "devise": "EUR", "quantite": 1_000})
+    assert reponse.json()["change_requis"] == [{"devise_droit": "USD", "devise_valeur": "EUR"}]
 
 
 def test_tun_droit_en_dinars_et_valeur_en_dollars_exige_le_change(client):
@@ -152,6 +165,63 @@ def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
 def test_les_questions_hors_tarif_sont_servies(client):
     questions = client.get("/calcul/export/pays").json()["questions"]
     assert set(questions) == {"MDG"} and questions["MDG"]["champ"] == "produit_minier"
+
+
+def test_gha_quatrieme_annexe_zero_pour_cent_par_defaut(client):
+    """Customs Act, Fourth Schedule, 4A.13 : tout autre bien national à 0 %."""
+    export = _export(client, pays="GHA", code_sh="0901110000", valeur=10_000, devise="GHS")
+    ligne = _ligne(export, "EXPORT")
+    assert (export["etat"], ligne["montant"]) == ("COMPLET", 0)
+    assert "4A.13" in ligne["note"]
+
+
+def test_gha_gazole_publie_en_dollars(client):
+    """4A.7 : $0.02/litre. En USD, aucun taux ; en GHS, le taux du dollar."""
+    usd = _export(client, pays="GHA", code_sh="2710192100", valeur=10_000, devise="USD", quantite=1_000)
+    assert _ligne(usd, "EXPORT")["montant"] == pytest.approx(20)
+    reponse = client.post("/calcul/export", json={
+        "pays": "GHA", "code_sh": "2710192100", "valeur": 10_000, "devise": "GHS", "quantite": 1_000})
+    assert _ligne(reponse.json()["export"], "EXPORT")["statut"] == "TAUX_DE_CHANGE_REQUIS"
+    # La paire est dite : le droit est publié en USD, pas dans la monnaie du tarif.
+    assert reponse.json()["change_requis"] == [{"devise_droit": "USD", "devise_valeur": "GHS"}]
+    ghs = _export(
+        client, pays="GHA", code_sh="2710192100", valeur=10_000, devise="GHS", quantite=1_000, taux_de_change=15
+    )
+    assert _ligne(ghs, "EXPORT")["montant"] == pytest.approx(300)
+
+
+def test_gha_cacao_taux_fixe_par_le_ministre(client):
+    """« Cocoa Beans » sans autre précision : fèves brutes, torréfiées et brisures."""
+    for code in ("1801001100", "1801002000", "1801003000"):
+        ligne = _ligne(_export(client, pays="GHA", code_sh=code, valeur=10_000, devise="USD"), "EXPORT")
+        assert ligne["montant"] is None and "Minister" in ligne["note"], code
+
+
+def test_gha_carbureacteur_usage_a_etablir(client):
+    """4A.6 ne vaut que pour les vols internationaux : sans l'usage, ni 0,09 $ ni 0 %."""
+    export = _export(client, pays="GHA", code_sh="2710191100", valeur=10_000, devise="USD", quantite=1_000)
+    ligne = _ligne(export, "EXPORT")
+    assert ligne["montant"] is None and "international flights" in ligne["note"]
+
+
+def test_gha_sh6_qui_regroupe_des_droits_differents(client):
+    """271019 couvre carburéacteur et gazole, taxés, et d'autres huiles à 0 %."""
+    ligne = _ligne(_export(client, pays="GHA", code_sh="271019", valeur=10_000, devise="USD"), "EXPORT")
+    assert ligne["montant"] is None and "position nationale" in ligne["note"]
+
+
+def test_sen_noix_de_cajou_32_francs_le_kilo(client):
+    """Loi de finances 2026, art. 19 (texte du projet) : 32 F CFA/kg net."""
+    export = _export(client, pays="SEN", code_sh="0801310000", valeur=1_000_000, devise="XOF", quantite=1_000)
+    ligne = _ligne(export, "EXPORT")
+    assert ligne["montant"] == pytest.approx(32_000)
+    assert "loi n° 2025-19 promulguée n'a pas été consultée" in ligne["note"]
+
+
+def test_sen_arachide_et_or_annonces_non_chiffres(client):
+    for code in ("1202300000", "7108120000"):
+        ligne = _ligne(_export(client, pays="SEN", code_sh=code, valeur=1_000_000, devise="XOF"), "EXPORT")
+        assert ligne["montant"] is None and "n'a pas été consulté" in ligne["note"]
 
 
 def test_position_sans_droit_de_sortie(client):

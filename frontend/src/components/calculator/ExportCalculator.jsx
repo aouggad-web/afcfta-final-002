@@ -4,7 +4,7 @@
  * par POST /calcul/export ; une ligne que la source ne permet pas de chiffrer
  * est montrée avec sa raison, jamais comme un zéro.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -17,7 +17,7 @@ import { chiffres } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
-const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA' };
+const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF' };
 
 const STATUTS = {
   CALCULE: { fr: 'Calculé', en: 'Calculated' },
@@ -64,6 +64,10 @@ export default function ExportCalculator({ language = 'fr' }) {
   const [devise, setDevise] = useState('');
   const [quantite, setQuantite] = useState('');
   const [tauxDeChange, setTauxDeChange] = useState('');
+  // La paire de devises qu'un droit attend, dite par l'API (`change_requis`) :
+  // jamais devinée, un droit pouvant être publié en USD (Ghana) et non dans la
+  // monnaie du tarif.
+  const [paire, setPaire] = useState(null);
   const [resultat, setResultat] = useState(null);
   const [erreur, setErreur] = useState('');
   const [chargement, setChargement] = useState(false);
@@ -77,6 +81,15 @@ export default function ExportCalculator({ language = 'fr' }) {
       .catch(() => setErreur(fr ? 'Pays couverts indisponibles' : 'Covered countries unavailable'));
   }, [fr]);
 
+  // Une autre position ou une autre devise appelle une autre paire ; la réponse
+  // d'un calcul lancé avant le changement ne vaut plus pour elles.
+  const version = useRef(0);
+  useEffect(() => {
+    version.current += 1;
+    setPaire(null);
+    setTauxDeChange('');
+  }, [iso3, code, devise]);
+
   const choisirPays = (valeurPays) => {
     setIso3(valeurPays);
     setDevise(DEVISE_NATIONALE[valeurPays] || '');
@@ -87,7 +100,15 @@ export default function ExportCalculator({ language = 'fr' }) {
   };
 
   const nationale = DEVISE_NATIONALE[iso3] || '';
-  const changeRequis = Boolean(devise && nationale && devise !== nationale);
+  // Le moteur attend des unités de la devise de la valeur pour UNE unité de la
+  // devise du droit. Droit dans la monnaie du tarif : demandé comme on le lit
+  // (« 1 USD = ? TND ») et inversé ; droit publié en USD/EUR : « 1 USD = ? GHS »,
+  // envoyé tel quel.
+  const changeRequis = Boolean(paire);
+  const inverse = Boolean(paire && paire.devise_droit === nationale && paire.devise_valeur !== nationale);
+  const libelleChange = !paire ? '' : inverse
+    ? `1 ${paire.devise_valeur} = ? ${paire.devise_droit}`
+    : `1 ${paire.devise_droit} = ? ${paire.devise_valeur}`;
   const changeInvalide = changeRequis && tauxDeChange !== '' && !(parseFloat(tauxDeChange) > 0);
   const question = questions[iso3];
 
@@ -98,20 +119,24 @@ export default function ExportCalculator({ language = 'fr' }) {
     const corps = { pays: iso3, code_sh: code, valeur: parseFloat(valeur) };
     if (devise) corps.devise = devise;
     if (quantite !== '') corps.quantite = parseFloat(quantite);
-    // Saisi comme on le lit (1 USD = 3,1 TND) ; le moteur attend l'inverse :
-    // la devise de la valeur pour une unité de la monnaie du tarif.
-    if (changeRequis && tauxDeChange !== '') corps.taux_de_change = 1 / parseFloat(tauxDeChange);
+    if (changeRequis && tauxDeChange !== '') {
+      corps.taux_de_change = inverse ? 1 / parseFloat(tauxDeChange) : parseFloat(tauxDeChange);
+    }
     if (question && produitMinier !== null) {
       corps.produit_minier = produitMinier;
       if (produitMinier) corps.produit_minier_transforme = transforme;
     }
+    const demandee = version.current;
     try {
       const res = await axios.post(`${API}/calcul/export`, corps);
+      if (demandee !== version.current) return;
       // Les montants sont dans la devise envoyée, pas dans celle du champ
       // si on la modifie ensuite ; sans devise, dans la monnaie du tarif.
       setResultat({ ...res.data, devise: devise || res.data.provenance?.devise_nationale || '' });
+      const requise = (res.data.change_requis || [])[0];
+      if (requise) setPaire(requise);
     } catch (e) {
-      setErreur(detailErreur(e, fr));
+      if (demandee === version.current) setErreur(detailErreur(e, fr));
     } finally {
       setChargement(false);
     }
@@ -177,7 +202,9 @@ export default function ExportCalculator({ language = 'fr' }) {
           </div>
           {changeRequis && (
             <div>
-              <Label htmlFor="export-change">{`1 ${devise} = ? ${nationale}`}</Label>
+              <Label htmlFor="export-change">
+                {libelleChange}
+              </Label>
               <Input id="export-change" type="number" min="0" value={tauxDeChange} onChange={(e) => setTauxDeChange(e.target.value)} />
             </div>
           )}
