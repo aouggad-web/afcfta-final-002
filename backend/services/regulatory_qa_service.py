@@ -24,7 +24,7 @@ from services.regulatory_master_registry_service import (
 # verification_status — comparing across the two schemas would produce a
 # false "contradiction" that isn't real, so Kenya is intentionally excluded
 # from this specific check rather than silently misapplied.
-_VERIFICATION_STATUS_SCHEMA_COUNTRIES = {"CIV", "COD", "CMR", "GHA", "NGA"}
+_VERIFICATION_STATUS_SCHEMA_COUNTRIES = {"CIV", "COD", "CMR", "DZA", "GHA", "NGA"}
 
 _VERIFICATION_STRENGTH = {
     "VERIFIED_PRIMARY_TEXT": 4,

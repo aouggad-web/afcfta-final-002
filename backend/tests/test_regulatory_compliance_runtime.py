@@ -25,7 +25,7 @@ def _actor(country: str, name_fragment: str):
 
 
 def test_regulatory_runtime_supports_exact_pilot_countries():
-    assert get_supported_regulatory_countries() == ["CIV", "CMR", "COD", "GHA", "KEN", "NGA"]
+    assert get_supported_regulatory_countries() == ["CIV", "CMR", "COD", "DZA", "GHA", "KEN", "NGA"]
 
 
 def test_cod_bivac_is_exposed_as_a_mandated_actor_not_an_authority():
@@ -88,7 +88,7 @@ def test_runtime_returns_a_deep_copy_of_cached_source_data():
 
 
 def test_unknown_country_remains_unavailable():
-    assert get_country_regulatory_compliance("DZA") is None
+    assert get_country_regulatory_compliance("AGO") is None
 
 
 def test_regulatory_router_declares_country_list_and_detail_paths():

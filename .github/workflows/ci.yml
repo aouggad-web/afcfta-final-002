@@ -97,6 +97,15 @@ jobs:
       # Sans cette étape, le manifeste versionné décrit 54 pays dont aucun
       # fichier n'existe sur le disque : le chargeur les déclare indisponibles
       # au lieu de servir un vrai calcul.
+      # L'étape suivante réécrit MANIFESTE.json : un fichier versionné cassé
+      # (conflit de fusion résolu à la main, deux blocs de totaux gardés) passait
+      # donc la CI. On le lit tel qu'il est versionné, avant de le régénérer. En
+      # cas de conflit, relancer `python3 scripts/build_socle.py`, ne pas fusionner
+      # le fichier à la main.
+      - name: Check versioned socle manifests are valid JSON
+        run: |
+          python -c "import json; [json.load(open(f, encoding='utf-8')) for f in ('backend/socle/MANIFESTE.json', 'backend/socle/assiettes_pays.json')]"
+
       - name: Build calculation base (socle)
         run: python scripts/build_socle.py
 

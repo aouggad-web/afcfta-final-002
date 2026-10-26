@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV"}
+    assert set(pays) == {"TUN", "CIV", "MDG"}
 
 
 def test_tun_dattes_un_pour_cent_de_la_valeur(client):
@@ -93,6 +93,65 @@ def test_civ_cacao_prix_de_reference_non_collecte(client):
     assert ligne["statut"] == "ASSIETTE_INDISPONIBLE"
     assert ligne["montant"] is None
     assert "PRIX CAF DE REFERENCE" in ligne["note"]
+
+
+def test_mdg_nickel_droit_de_sortie_dix_pour_cent(client):
+    """Tarif national 2026, colonne DS : « Valeur 10 » pour le nickel non allié."""
+    export = _export(client, pays="MDG", code_sh="75021000", valeur=1_000_000, devise="MGA", produit_minier=False)
+    assert export["etat"] == "COMPLET"
+    assert _ligne(export, "DS")["montant"] == pytest.approx(100_000)
+
+
+def test_mdg_ds_non_nul_et_produit_des_mines_le_conflit_est_dit(client):
+    """Art. 285 du Code minier contre DS 10 % du tarif : montré, pas tranché."""
+    export = _export(client, pays="MDG", code_sh="75021000", valeur=1_000_000, devise="MGA", produit_minier=True)
+    assert "art. 285" in _ligne(export, "DS")["note"]
+    assert _ligne(export, "DS")["montant"] == pytest.approx(100_000)
+
+
+def test_mdg_or_droit_de_sortie_exonere(client):
+    """« ex » au tarif : exonéré, liquidé à zéro — publié, pas absent."""
+    export = _export(client, pays="MDG", code_sh="71081200", valeur=1_000_000, devise="MGA")
+    ligne = _ligne(export, "DS")
+    assert ligne["statut"] == "CALCULE" and ligne["montant"] == 0
+    assert "exonéré" in ligne["note"]
+
+
+def test_mdg_or_produit_des_mines_doit_les_dtspm(client):
+    """Code minier, art. 283 : 2 % de ristourne + 3 % de redevance sur la
+    valeur à l'exportation ; le DS du tarif reste exonéré (art. 285)."""
+    export = _export(client, pays="MDG", code_sh="71081200", valeur=1_000_000, devise="MGA", produit_minier=True)
+    assert export["etat"] == "COMPLET"
+    assert _ligne(export, "DS")["montant"] == 0
+    assert _ligne(export, "DTSPM.RISTOURNE")["montant"] == pytest.approx(20_000)
+    assert _ligne(export, "DTSPM.REDEVANCE")["montant"] == pytest.approx(30_000)
+    assert "art. 284" in _ligne(export, "DTSPM.REDEVANCE")["note"]
+
+
+def test_mdg_substance_transformee_abattement_de_30_pour_cent(client):
+    export = _export(
+        client, pays="MDG", code_sh="71081200", valeur=1_000_000, devise="MGA",
+        produit_minier=True, produit_minier_transforme=True,
+    )
+    assert export["total_droits"] == pytest.approx(35_000)
+
+
+def test_mdg_sans_reponse_les_dtspm_restent_a_etablir(client):
+    """Sans réponse, le DS exonéré seul ferait lire « rien à payer »."""
+    export = _export(client, pays="MDG", code_sh="71081200", valeur=1_000_000, devise="MGA")
+    assert export["etat"] == "PARTIEL"
+    ligne = _ligne(export, "DTSPM.REDEVANCE")
+    assert ligne["montant"] is None and ligne["note"].startswith("À établir")
+
+
+def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
+    export = _export(client, pays="MDG", code_sh="71081200", valeur=1_000_000, devise="MGA", produit_minier=False)
+    assert [ligne["code"] for ligne in export["lignes"]] == ["DS"]
+
+
+def test_les_questions_hors_tarif_sont_servies(client):
+    questions = client.get("/calcul/export/pays").json()["questions"]
+    assert set(questions) == {"MDG"} and questions["MDG"]["champ"] == "produit_minier"
 
 
 def test_position_sans_droit_de_sortie(client):

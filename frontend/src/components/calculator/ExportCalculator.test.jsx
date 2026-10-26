@@ -62,7 +62,14 @@ const CACAO = {
 describe('ExportCalculator', () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    axios.get.mockResolvedValue({ data: { pays: { CIV: 97, TUN: 17530 } } });
+    axios.get.mockResolvedValue({ data: {
+      pays: { CIV: 97, TUN: 17530, MDG: 266 },
+      questions: { MDG: {
+        champ: 'produit_minier',
+        question: 'Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?',
+        question_transformation: 'Substance transformée au sens du Code (abattement de 30 %, art. 288) ?',
+      } },
+    } });
   });
 
   it("propose les pays couverts et montre la raison d'un droit non chiffré", async () => {
@@ -158,5 +165,33 @@ describe('ExportCalculator', () => {
     await userEvent.clear(devise);
     await userEvent.type(devise, 'EUR');
     expect(await screen.findAllByText(/483,87\s*USD/)).not.toHaveLength(0);
+  });
+
+  it('à Madagascar, exige la réponse sur le produit des mines et la transmet', async () => {
+    axios.post.mockResolvedValue({ data: {
+      pays: 'MDG', position: { designation: 'Or' }, provenance: { devise_nationale: 'MGA' },
+      export: { etat: 'COMPLET', total_droits: 35000, manques: [], lignes: [] },
+    } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('MDG — 266 positions avec droit de sortie'));
+    await userEvent.type(screen.getByLabelText('Position nationale'), '71081200');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '1000000');
+    // Sans réponse, pas de calcul : le DS exonéré seul se lirait « rien à payer ».
+    expect(screen.getByTestId('export-calculer')).toBeDisabled();
+
+    await userEvent.click(screen.getByLabelText('Oui'));
+    await userEvent.click(screen.getByLabelText(/abattement de 30 %/));
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(axios.post.mock.calls[0][1]).toMatchObject({
+      pays: 'MDG', devise: 'MGA', produit_minier: true, produit_minier_transforme: true,
+    });
+  });
+
+  it("ailleurs, ne pose pas la question", async () => {
+    render(<ExportCalculator />);
+    await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
+    expect(screen.queryByTestId('export-question-hors-tarif')).not.toBeInTheDocument();
   });
 });

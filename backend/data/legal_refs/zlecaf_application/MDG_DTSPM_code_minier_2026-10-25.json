@@ -1,0 +1,39 @@
+{
+ "schema_version": 1,
+ "objet": "Madagascar : Droits et Taxes Spéciaux sur les Produits Miniers (DTSPM) perçus à l'exportation — redevance minière et ristourne minière (Code minier, loi n° 2023-007)",
+ "destination_iso3": "MDG",
+ "verified_at": "2026-10-25",
+ "etabli": true,
+ "evidence_level": "primaire : texte de la loi promulguée publié par le Conseil national de législation (cnlegis.gov.mg)",
+ "source": {
+  "url": "https://cnlegis.gov.mg/uploads/L2023-007-VF.pdf",
+  "institution": "Conseil national de législation de Madagascar (CNLEGIS)"
+ },
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/MDG_LoiCodeMinier_2023-007_2023-07-27.pdf",
+   "sha256": "2ae034eb072fac7c0694b523aebf50c97624a5361918ccf5575237f66fe17c94"
+  }
+ ],
+ "regle": {
+  "valeur": "DTSPM de 5 % de la valeur des produits des mines à l'exportation : ristourne minière 2 % (collectivités territoriales décentralisées) et redevance minière 3 % (État). Assiette : valeur FOB au cours international au moment de l'exportation, établie par le service spécialisé du ministère des Mines avec la douane. Abattement de 30 % sur le taux pour les substances transformées au sens du Code. Aucune autre perception sur les produits des mines, sortie du territoire comprise.",
+  "reference": "Loi n° 2023-007 portant refonte du Code minier, promulguée le 27 juillet 2023 : art. 283, 284, 285, 288 ; définitions « Mine » et « Transformation de substances minérales »",
+  "verbatim_art283": "Il est perçu, au profit de l'Etat, de ses démembrements sectoriels et des CTD, une taxe unique, dénommée Droits et Taxes Spéciaux sur les Produits Miniers (DTSPM), d'un taux de 5% de la valeur des produits des Mines à l'exportation. Lesdits Droits et taxes spéciaux sont composés d'une ristourne minière d'un taux de 2% au profit des CTD et d'une redevance minière d'un taux de 3% au profit de l'Etat et de ses démembrements sectoriels.",
+  "verbatim_art284": "L'assiette des Droits et taxes spéciaux sur les produits miniers destinés à l'exportation est établie suivant la valeur FOB du produit se basant sur le cours international au moment de l'exportation. Cette valeur sera établie par un service spécialisé au niveau du Ministère en charge des Mines, en étroite collaboration avec le Service en charge des Douanes.",
+  "verbatim_art285": "Aucune autre perception assise sur les produits des mines, en dehors de celle prévue par le présent Code, ne peut être exigible sur toute la chaîne de valeur desdits produits, incluant leur sortie du territoire.",
+  "verbatim_art288": "Dans le cas où les substances extraites sont transformées selon le sens du présent Code, le titulaire de Permis minier bénéficie d'un abattement de 30% sur le taux des Droits et taxes spéciaux sur les produits miniers.",
+  "verbatim_definition_mine": "« Mine » : Tout gîte de substances minérales qui ne sont classées ni en carrière ni en fossiles ;",
+  "verbatim_definition_transformation": "« Transformation de substances minérales » : l'ensemble des opérations qui consistent à donner aux substances minérales un autre aspect que celui d'origine, ou en modifier la composition chimique ou minéralogique, en vue de les valoriser ;"
+ },
+ "application_au_calcul": {
+  "route": "POST /calcul/export",
+  "condition": "Le Code ne vise pas des positions tarifaires mais les « produits des mines » : aucune position n'y est rattachée par déduction. L'exportateur le déclare (`produit_minier`) ; sans réponse, la ligne reste non liquidable et le dit.",
+  "lignes": "DTSPM.RISTOURNE 2 % et DTSPM.REDEVANCE 3 % de la valeur saisie ; 1,4 % et 2,1 % pour une substance transformée (abattement de 30 %, art. 288).",
+  "reserve_assiette": "L'assiette légale est la valeur FOB au cours international établie par le ministère des Mines (art. 284), qui peut différer de la valeur facturée : c'est elle qu'il faut saisir.",
+  "conflit_signale": "Le tarif 2026 publie un DS non nul sur quelques positions (nickel, 7502.10 et 7502.20 : 10 %) alors que l'art. 285 exclut toute autre perception sur les produits des mines, sortie comprise. Le calcul sert les deux et le dit sur la ligne DS quand l'exportateur déclare un produit des mines ; il ne tranche pas."
+ },
+ "non_retenu": [
+  "Côte d'Ivoire — taxe ad valorem sur l'or (ordonnance n° 2014-148, art. 5, barème selon le cours de l'once ; relevé de 2 points par la loi de finances 2025 selon la presse spécialisée) : assise sur les ventes et déclarée mensuellement ou trimestriellement auprès de l'administration fiscale, ce n'est pas une perception à la sortie ; le texte de la loi de finances 2025 n'a pas été consulté.",
+  "Madagascar — taxes sur la vanille ou autres produits agricoles à l'export : aucune trouvée dans la loi de finances 2026 ni dans le tarif 2026 (colonne DS)."
+ ]
+}

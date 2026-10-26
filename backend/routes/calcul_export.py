@@ -7,6 +7,10 @@ positions nationales, voir `build_socle.droits_export_du_fichier`) et liquidés
 par le même moteur que `POST /calcul`, avec les mêmes refus : une assiette non
 collectée, un taux sans unité ou une quantité manquante rendent la ligne
 indisponible et la nomment, jamais un zéro.
+
+S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
+(`HORS_TARIF` : à Madagascar, les DTSPM du Code minier), quand l'exportateur
+déclare la catégorie de marchandise que le texte vise.
 """
 from __future__ import annotations
 
@@ -19,6 +23,27 @@ from services import socle
 from services.calcul import calculer
 
 AUCUN_DROIT = "AUCUN_DROIT_PUBLIE"
+
+#: Perceptions à la sortie publiées HORS du tarif douanier. Elles ne visent pas
+#: des positions mais une catégorie de marchandises que le texte définit : aucune
+#: position n'y est rattachée par déduction, l'exportateur la déclare.
+#: Madagascar : fiche MDG_DTSPM_code_minier_2026-10-25.json.
+_FICHE_DTSPM = "Code minier (loi n° 2023-007), art. 283, 284 et 288"
+_ASSIETTE_DTSPM = (
+    "Assiette légale : valeur FOB au cours international au moment de l'exportation, établie par le "
+    "ministère des Mines avec la douane (art. 284) — c'est elle qu'il faut saisir."
+)
+HORS_TARIF = {
+    "MDG": {
+        "champ": "produit_minier",
+        "question": "Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?",
+        "question_transformation": "Substance transformée au sens du Code (abattement de 30 %, art. 288) ?",
+        "lignes": [
+            ("DTSPM.RISTOURNE", "Ristourne minière (DTSPM, collectivités territoriales)", 2.0),
+            ("DTSPM.REDEVANCE", "Redevance minière (DTSPM, État)", 3.0),
+        ],
+    },
+}
 
 router = APIRouter()
 router_couverture = APIRouter()
@@ -46,6 +71,37 @@ class DemandeExport(BaseModel):
             "valeur en USD, droit en dinars → environ 0,32, pas 3,1."
         ),
     )
+    produit_minier: Optional[bool] = Field(
+        default=None,
+        description="Madagascar : produit des mines au sens du Code minier (DTSPM). Omis : non établi.",
+    )
+    produit_minier_transforme: bool = Field(
+        default=False, description="Madagascar : substance transformée au sens du Code (abattement de 30 %)."
+    )
+
+
+def _hors_tarif(pays: str, demande: DemandeExport) -> list:
+    """Lignes des perceptions de sortie publiées hors du tarif, pour ce pays."""
+    regle = HORS_TARIF.get(pays)
+    if not regle or demande.produit_minier is False:
+        return []
+    lignes = []
+    for code, libelle, taux in regle["lignes"]:
+        ligne = {"code": code, "libelle": libelle, "famille": "export", "source": _FICHE_DTSPM}
+        if demande.produit_minier is None:
+            # Sans réponse, la ligne reste à établir : la taire ferait lire
+            # « exonéré » au DS du tarif pour de l'or qui doit 5 %.
+            ligne.update(taux=None, assiette=None, note="À établir : " + regle["question"])
+        elif demande.produit_minier_transforme:
+            ligne.update(
+                taux=round(taux * 0.7, 4),
+                assiette="CIF",
+                note=f"{taux:g} % réduit de 30 % (substance transformée, art. 288). {_ASSIETTE_DTSPM}",
+            )
+        else:
+            ligne.update(taux=taux, assiette="CIF", note=_ASSIETTE_DTSPM)
+        lignes.append(ligne)
+    return lignes
 
 
 def _pays_export():
@@ -90,8 +146,18 @@ def calcul_export(demande: DemandeExport):
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     droits = position.get("droits_export") or []
+    hors_tarif = _hors_tarif(pays, demande)
+    if hors_tarif and demande.produit_minier:
+        # Art. 285 : aucune autre perception sur les produits des mines, sortie
+        # comprise. Un DS non nul au tarif le contredit : montré, pas tranché.
+        droits = [
+            {**d, "note": "Le Code minier (art. 285) exclut toute autre perception sur les produits des mines, "
+                          "sortie comprise ; le tarif 2026 publie pourtant ce droit : à vérifier auprès de la douane."}
+            if d.get("taux") else d
+            for d in droits
+        ]
     resultat = calculer(
-        {**position, "droits": droits},
+        {**position, "droits": droits + hors_tarif},
         demande.valeur,
         quantite=demande.quantite,
         taux_de_change=demande.taux_de_change,
@@ -101,7 +167,7 @@ def calcul_export(demande: DemandeExport):
     export = resultat["npf"]
     # Valeur et droits de sortie ne s'additionnent pas en un « total à payer ».
     export.pop("total_a_payer", None)
-    if not droits:
+    if not droits and not hors_tarif:
         # Le tarif collecté ne porte aucun droit de sortie pour la position.
         # Ce que le tarif ne publie pas (redevances hors tarif) n'y est pas.
         export["etat"] = AUCUN_DROIT
@@ -118,6 +184,13 @@ def calcul_export(demande: DemandeExport):
 @router_couverture.get("/calcul/export/pays", summary="Pays dont le socle porte des droits de sortie")
 def pays_export():
     try:
-        return {"pays": _pays_export()}
+        return {
+            "pays": _pays_export(),
+            # Ce que l'écran doit demander pour les perceptions hors tarif.
+            "questions": {
+                iso: {k: regle[k] for k in ("champ", "question", "question_transformation")}
+                for iso, regle in HORS_TARIF.items()
+            },
+        }
     except socle.SocleIndisponible as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc

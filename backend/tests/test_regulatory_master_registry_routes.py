@@ -22,7 +22,7 @@ def test_countries_endpoint_lists_all_54_and_the_published_subset():
     assert len(payload["countries"]) == 54
     assert payload["published_total"] == len(payload["published_countries"])
     assert set(payload["published_countries"]) <= set(payload["countries"])
-    for iso3 in ("CIV", "COD", "CMR", "GHA", "KEN", "NGA"):
+    for iso3 in ("CIV", "COD", "CMR", "DZA", "GHA", "KEN", "NGA"):
         assert iso3 in payload["published_countries"]
 
 
@@ -66,7 +66,7 @@ def test_country_endpoint_returns_a_single_entry():
 
 
 def test_country_endpoint_reports_not_available_for_unpublished_country():
-    response = _client().get("/regulatory-master-registry/country/dza")
+    response = _client().get("/regulatory-master-registry/country/ago")
     assert response.status_code == 200
     payload = response.json()
     assert payload["entry"]["regulatory_coverage_status"] == "NOT_AVAILABLE"

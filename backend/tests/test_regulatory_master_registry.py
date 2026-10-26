@@ -27,7 +27,7 @@ def test_master_registry_contains_exactly_54_african_countries():
     assert get_all_regulatory_countries() == list(AFRICAN_COUNTRY_ISO3)
 
 
-PUBLISHED_PILOTS = ("CIV", "COD", "CMR", "GHA", "KEN", "NGA")
+PUBLISHED_PILOTS = ("CIV", "COD", "CMR", "DZA", "GHA", "KEN", "NGA")
 
 
 def test_initial_published_coverage_is_exactly_the_source_bound_pilots():
@@ -38,10 +38,10 @@ def test_initial_published_coverage_is_exactly_the_source_bound_pilots():
         assert entry["dataset_path"] and entry["source_paths"]
 
 
-def test_other_48_countries_fail_closed_without_paths_or_claimed_coverage():
+def test_other_47_countries_fail_closed_without_paths_or_claimed_coverage():
     registry = get_regulatory_registry()
     unavailable = set(AFRICAN_COUNTRY_ISO3) - set(PUBLISHED_PILOTS)
-    assert len(unavailable) == 48
+    assert len(unavailable) == 47
     for country in unavailable:
         entry = registry["countries"][country]
         assert entry["dataset_path"] is None
