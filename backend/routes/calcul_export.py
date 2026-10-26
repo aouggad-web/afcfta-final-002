@@ -20,7 +20,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from services import socle
-from services.calcul import calculer
+from services.calcul import DEVISES_PUBLIEES, calculer
 
 AUCUN_DROIT = "AUCUN_DROIT_PUBLIE"
 
@@ -177,8 +177,31 @@ def calcul_export(demande: DemandeExport):
         "valeur": demande.valeur,
         "droits_export_publies": bool(droits),
         "export": export,
+        "change_requis": _change_requis(export, droits + hors_tarif, provenance, demande),
         "provenance": provenance,
     }
+
+
+def _change_requis(export: dict, droits: list, provenance: dict, demande: DemandeExport) -> list:
+    """Les paires de devises qu'un droit attend pour être converti, dites, pas
+    devinées : `taux_de_change` vaut des unités de `devise_valeur` pour UNE unité
+    de `devise_droit` — la monnaie du tarif, ou l'USD/EUR que le tarif publie
+    lui-même (« $0.02/litre » au Ghana)."""
+    nationale = provenance.get("devise_nationale")
+    par_code = {d.get("code"): d for d in droits}
+    paires = []
+    for ligne in export.get("lignes") or []:
+        if ligne.get("statut") != "TAUX_DE_CHANGE_REQUIS":
+            continue
+        specifique = (par_code.get(ligne.get("code")) or {}).get("specifique")
+        unite = str((specifique or {}).get("unite_monetaire") or "").upper() if isinstance(specifique, dict) else ""
+        paire = {
+            "devise_droit": unite if unite in DEVISES_PUBLIEES else nationale,
+            "devise_valeur": (demande.devise or nationale or "").upper(),
+        }
+        if paire not in paires:
+            paires.append(paire)
+    return paires
 
 
 @router_couverture.get("/calcul/export/pays", summary="Pays dont le socle porte des droits de sortie")

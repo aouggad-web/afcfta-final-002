@@ -76,6 +76,19 @@ def test_tun_rpd_liquidee_apres_les_droits_quelle_somme(client):
     assert _ligne(export, "RPD/EXPOR")["base"] == pytest.approx(_ligne(export, "TAXE/FERRAILLES.EXP")["montant"])
 
 
+def test_change_requis_dit_la_paire_monnaie_du_tarif(client):
+    reponse = client.post("/calcul/export", json={
+        "pays": "TUN", "code_sh": "2620110000", "valeur": 10_000, "devise": "USD", "quantite": 5_000})
+    assert reponse.json()["change_requis"] == [{"devise_droit": "TND", "devise_valeur": "USD"}]
+
+
+def test_gha_valeur_en_euros_le_droit_reste_en_dollars(client):
+    """Codex : une valeur en EUR ne doit pas faire supposer un droit en GHS."""
+    reponse = client.post("/calcul/export", json={
+        "pays": "GHA", "code_sh": "2710192100", "valeur": 10_000, "devise": "EUR", "quantite": 1_000})
+    assert reponse.json()["change_requis"] == [{"devise_droit": "USD", "devise_valeur": "EUR"}]
+
+
 def test_tun_droit_en_dinars_et_valeur_en_dollars_exige_le_change(client):
     export = _export(client, pays="TUN", code_sh="2620110000", valeur=10000, devise="USD", quantite=5000)
     assert _ligne(export, "TAXE/FERRAILLES.EXP")["statut"] == "TAUX_DE_CHANGE_REQUIS"
@@ -166,8 +179,11 @@ def test_gha_gazole_publie_en_dollars(client):
     """4A.7 : $0.02/litre. En USD, aucun taux ; en GHS, le taux du dollar."""
     usd = _export(client, pays="GHA", code_sh="2710192100", valeur=10_000, devise="USD", quantite=1_000)
     assert _ligne(usd, "EXPORT")["montant"] == pytest.approx(20)
-    sans = _export(client, pays="GHA", code_sh="2710192100", valeur=10_000, devise="GHS", quantite=1_000)
-    assert _ligne(sans, "EXPORT")["statut"] == "TAUX_DE_CHANGE_REQUIS"
+    reponse = client.post("/calcul/export", json={
+        "pays": "GHA", "code_sh": "2710192100", "valeur": 10_000, "devise": "GHS", "quantite": 1_000})
+    assert _ligne(reponse.json()["export"], "EXPORT")["statut"] == "TAUX_DE_CHANGE_REQUIS"
+    # La paire est dite : le droit est publié en USD, pas dans la monnaie du tarif.
+    assert reponse.json()["change_requis"] == [{"devise_droit": "USD", "devise_valeur": "GHS"}]
     ghs = _export(
         client, pays="GHA", code_sh="2710192100", valeur=10_000, devise="GHS", quantite=1_000, taux_de_change=15
     )
