@@ -1,0 +1,76 @@
+Sénégal — droit de sortie sur les exportations de noix de cajou : extrait verbatim (relevé le 2026-10-26)
+
+Projet de loi de finances pour 2026 (vie-publique.sn), versé au dépôt :
+data/senegal/docs_officiels/PLF-2026-SENEGAL.pdf (sha256 7eca08769607ceea9efd92fcdb2bd36fe790044a5da3cca9cbfdfbfe78c50cc9).
+Texte du PROJET ; la loi n° 2025-19 du 22 décembre 2025 promulguée n'a pas été consultée. Texte extrait par pdftotext -layout, sans retouche.
+
+--- Exposé des motifs (extrait)
+
+    -   la suppression des valeurs de correction au profit des valeurs transactionnelles
+        sur certains produits générateurs de recettes comme le riz et l’huile, ce qui
+        devrait rapporter 29 milliards de FCFA ;
+
+    -   la réactivation des droits de sortie sur les exportations d’arachide qui devrait
+        générer 9 milliards de FCFA ;
+
+    -   le relèvement de la taxation sur le tabac de 70% à 100% qui devrait
+        rapporter 8,2 milliards de FCFA ;
+
+    -   les gains attendus de la rationalisation des dépenses fiscales pour 100 milliards
+        de FCFA ;
+
+
+
+                                            7
+    -   la réactivation des droits à l’importation des téléphones portables ferait gagner
+        18,8 milliards de FCFA ;
+
+    -   la taxe à l’importation des noix de cajou est attendue à 5 milliards de FCFA ;
+
+
+--- Article 19
+  ARTICLE 19 : Institution d’un droit de sortie sur les exportations de noix
+  de cajou
+                 Exposé des motifs
+
+ La filière anacarde est un secteur à fort dynamisme économique recelant un important
+ potentiel en termes de valeur ajoutée. Cependant, en raison notamment de la faible
+ transformation des noix de cajou au niveau local, ce potentiel est fortement sous-
+ exploité.
+
+ Par ailleurs, cette filière se singularise par son faible rendement fiscal dans la mesure
+ où le caractère informel des importations de noix de cajou, souvent opérées à partir
+ des frontières terrestres, complexifie la perception de la fiscalité due à l’importation.
+
+ Cette faiblesse du rendement fiscal de la filière anacarde est davantage accentuée par
+ le fait que les exportations de noix de cajou ne sont soumises à aucune fiscalité de
+ sortie.
+
+ Cette situation est source de distorsion entre les exportations de noix produites au
+ Sénégal et celles opérées sur les noix importées en vue d’une exportation future.
+
+                                            35
+Aussi, dans le cadre du Plan de Redressement économique et social, le Gouvernement
+du Sénégal a pris l’option d’instituer un droit de sortie sur les exportations de noix de
+cajou.
+
+Au-delà de la génération de recettes fiscales, la taxation des exportations de noix
+brutes de cajou permettra une incitation à la transformation locale et peut constituer
+un catalyseur des investissements privés dans le secteur.
+
+De même, les recettes budgétaires supplémentaires collectées peuvent servir à
+dynamiser le secteur par des investissements publics dans le développement de la
+recherche agricole, l’amélioration de la production et la transformation industrielle,
+avec pour finalité, la dynamisation de la chaine de valeur dans la filière anacarde.
+
+Texte de l’article :
+
+« I. Il est institué au profit du budget de l’État, un droit de sortie applicable aux
+exportations de noix de cajou.
+
+ II.   Le taux du droit de sortie est fixé à 32 F CFA par kilogramme net de noix de
+       cajou.
+ III.  La liquidation, le recouvrement et le contentieux du droit de sortie se font
+       comme en matière de douane.
+ IV. En cas de nécessité, l’application du droit de sortie peut faire l’objet de
+      mécanismes de régulation prises par voie règlementaire. »

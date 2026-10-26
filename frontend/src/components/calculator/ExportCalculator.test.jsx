@@ -63,7 +63,7 @@ describe('ExportCalculator', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     axios.get.mockResolvedValue({ data: {
-      pays: { CIV: 97, TUN: 17530, MDG: 266 },
+      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516 },
       questions: { MDG: {
         champ: 'produit_minier',
         question: 'Produit des mines au sens du Code minier (substance minérale ni de carrière ni fossile) ?',
@@ -193,5 +193,34 @@ describe('ExportCalculator', () => {
     render(<ExportCalculator />);
     await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
     expect(screen.queryByTestId('export-question-hors-tarif')).not.toBeInTheDocument();
+  });
+
+  it('droit publié en dollars : demande « 1 USD = ? GHS » et l\'envoie tel quel', async () => {
+    const ligne = (statut, montant) => ({
+      code: 'EXPORT', libelle: 'Droit de sortie', specifique: '0.02 USD/litre', unite_quantite: 'litre',
+      devise_specifique: 'usd', statut, montant,
+    });
+    axios.post
+      .mockResolvedValueOnce({ data: {
+        pays: 'GHA', position: { designation: 'Gas-oil' }, provenance: { devise_nationale: 'GHS' },
+        export: { etat: 'INDISPONIBLE', total_droits: 0, manques: [], lignes: [ligne('TAUX_DE_CHANGE_REQUIS', null)] },
+      } })
+      .mockResolvedValueOnce({ data: {
+        pays: 'GHA', position: { designation: 'Gas-oil' }, provenance: { devise_nationale: 'GHS' },
+        export: { etat: 'COMPLET', total_droits: 300, manques: [], lignes: [ligne('CALCULE', 300)] },
+      } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('GHA — 11516 positions avec droit de sortie'));
+    expect(screen.getByLabelText('Devise')).toHaveValue('GHS');
+    await userEvent.type(screen.getByLabelText('Position nationale'), '2710192100');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '10000');
+    await userEvent.type(screen.getByLabelText('Quantité (unité du droit)'), '1000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    await userEvent.type(await screen.findByLabelText('1 USD = ? GHS'), '15');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(axios.post.mock.calls[1][1].taux_de_change).toBe(15);
   });
 });

@@ -1,0 +1,55 @@
+Ghana — Export Duty (Fourth Schedule) : extrait verbatim (relevé le 2026-10-26)
+
+Customs (Amendment) Act, 2015 (Act 905), schedules du Customs Act 2015 (Act 891), édition versée au dépôt :
+data/ghana/docs_officiels/CUSTOMS-ACT-TARIFF-CET-HS-CODES.pdf (sha256 fc74d594082d6f23d6b431c7fde66cb2c89d9638de64e9f71c753da78f73fab8), page imprimée 740.
+Texte extrait par pdftotext -layout, sans retouche.
+
+                                                                    EXPORT DUTY
+
+                               PART A – Domestic goods (goods grown, produced or manufactured in Ghana)
+    Tariff No.                                  Commodity Description                                               Rate of Duty
+
+       4A.1           Fresh fish             ….                    ….                   ….                                0%
+        (*1)
+
+       4A.2           Fresh yams             ….                    ….                   ….                                0%
+
+       4A.3           Kola nuts                                                                                           0%
+       4A.4           Cocoa Beans                                                             …. .      The rate to be determined by the
+                                                                                                            Minister for Finance and
+                                                                                                              Economic Planning
+       4A.5           Salt :
+        (*2)
+                      (a)           For animal or human consumption                                                       0%
+                      (b)           For industrial purposes                                                               0%
+
+       4A.6           Aviation Turbine Kerosene for international flights only                                        $0.09/litre
+
+       4A.7           Gas oil                          ….                    ….                                       $0.02/litre
+                                    ….                 ….
+
+       4A.8           Electricity                      ….                    ….                                           0%
+                                    ….                 ….
+
+       4A.9           Timber :
+                      (a) Sliced and Curls Veneer                            ….                                           0%
+                               ….
+                      (b) Rotary Veneer                       ….          ….           ….                                 0%
+                      (c) Plywood                      ….                    .…                                           0%
+                              ….                       ….
+                      (d) Lumber                       ….                    ….                                           0%
+                              ….                       ….
+      4A.10              Diamonds (rough and uncut diamonds which have been won                                        0%
+       (*3)                              from the earth in Ghana)                                      Minerals Export Duty (Abolition) Act,
+                                                                                                       1987 (PNDCL 182)
+      4A.11           Manganese ore and concentrates                         ….                                        0%
+                             ….
+
+      4A.12           Bauxite (aluminium ore) and aluminium concentrates                                                  0%
+
+      4A.13           All other goods grown, produced or manufactured in Ghana.                                           0%
+
+ (*1) Fisheries Act, 2002 (Act 625). A GSB quality assurance certificate is required.
+(*2) Bank of Ghana Form A2 is required (Act 503) as amended.
+(*3) A Kimberley Process Certificate is required from the Minister of Mines for the export of rough diamonds under the Kimberley Process Certificate Act,
+      2003 (Act 652).
