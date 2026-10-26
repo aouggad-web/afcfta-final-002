@@ -224,10 +224,10 @@ def test_sen_amandes_de_cajou_non_etablies(client):
     assert ligne["montant"] is None and "noix brutes" in ligne["note"]
 
 
-def test_sen_arachide_suspendue_en_2026(client):
-    """Annexe Voies et moyens de la LFR 2026 : taxe sur les exportations arachidières suspendue."""
+def test_sen_arachide_suspension_annoncee_non_etablie(client):
+    """Une suspension inscrite à l'annexe d'un projet de LFR ne vaut pas un droit nul établi."""
     ligne = _ligne(_export(client, pays="SEN", code_sh="1202300000", valeur=1_000_000, devise="XOF"), "EXPORT")
-    assert ligne["montant"] == 0 and "suspension" in ligne["note"]
+    assert ligne["montant"] is None and "suspension" in ligne["note"]
 
 
 def test_sen_or_sans_recouvrement_ni_taux(client):

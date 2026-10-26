@@ -1,10 +1,10 @@
 {
  "schema_version": 1,
- "objet": "Sénégal : droits de sortie en 2026 — noix de cajou (loi n° 2025-19, art. 19), arachide (suspendu), or (aucun recouvrement attendu)",
+ "objet": "Sénégal : droits de sortie en 2026 — noix de cajou (loi n° 2025-19, art. 19), arachide (suspension annoncée, non établie), or (aucun recouvrement attendu)",
  "destination_iso3": "SEN",
  "verified_at": "2026-10-26",
  "etabli": true,
- "evidence_level": "loi n° 2025-19 du 22 décembre 2025 portant loi de finances pour 2026 : existence et numéro attestés par le projet de loi de finances rectificative 2026, qui n'en modifie que les articles 1, 2, 4, 5, 6, 11 et 12 ; texte de l'article 19 lu dans le projet de loi (le Journal officiel n'a pas été consulté) ; suspension de l'arachide et absence de recouvrement sur l'or lues dans le projet de LFR 2026 et son annexe Voies et moyens (DGB/MEFP)",
+ "evidence_level": "loi n° 2025-19 du 22 décembre 2025 portant loi de finances pour 2026 : existence et numéro attestés par le projet de loi de finances rectificative 2026, qui n'en modifie que les articles 1, 2, 4, 5, 6, 11 et 12 ; texte de l'article 19 lu dans le projet de loi (le Journal officiel n'a pas été consulté) ; suspension annoncée de l'arachide et absence de recouvrement sur l'or lues dans le projet de LFR 2026 et son annexe Voies et moyens (DGB/MEFP)",
  "source": {
   "url": "https://www.vie-publique.sn/docs/5e4b7489-58aa-42a0-8941-708a2e7d5c2a/projet-loi-de-finance-2026.pdf",
   "institution": "Gouvernement du Sénégal (vie-publique.sn)"
@@ -29,7 +29,7 @@
  },
  "application_au_calcul": {
   "route": "POST /calcul/export",
-  "positions": "0801.31.00.00 (noix de cajou en coques, noix brute) : 32 FCFA/kg ; 0801.32.00.00 (amandes, sans coques) : non établi, le dispositif dit « noix de cajou » mais l'exposé vise la noix brute ; arachide (1202.30, 1202.41, 1202.42) : 0, droit suspendu en 2026 ; or (7108) : non chiffré, aucun recouvrement attendu et texte non trouvé."
+  "positions": "0801.31.00.00 (noix de cajou en coques, noix brute) : 32 FCFA/kg ; 0801.32.00.00 (amandes, sans coques) : non établi, le dispositif dit « noix de cajou » mais l'exposé vise la noix brute ; arachide (1202.30, 1202.41, 1202.42) : non établi, suspension annoncée par l'annexe d'un projet de LFR sans texte ni date d'effet trouvés ; or (7108) : non chiffré, aucun recouvrement attendu et texte non trouvé."
  },
  "non_retenu": [
   "Prélèvement de 20 F CFA/kg sur la noix de cajou brute exportée annoncé en juin 2026 par le ministère du Commerce, au profit d'un fonds de filière : non encore arrêté à la date de l'annonce (allAfrica, 19/06/2026)."

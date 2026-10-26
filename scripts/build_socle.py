@@ -1056,10 +1056,10 @@ _EXPORT_GHA_CACAO = (
     "— taux non publié au tarif.",
 )
 _EXPORT_SEN_ARACHIDE = (
-    0.0, None,
-    "Suspendu en 2026 : « la suspension de la taxe sur les exportations de produits arachidiers, initialement "
-    "prévue pour 9 milliards de FCFA » (annexe Voies et moyens au projet de loi de finances rectificative 2026, "
-    "DGB/MEFP ; R_7181 ramené à 0).",
+    None, None,
+    "Suspension annoncée, non établie : l'annexe Voies et moyens au projet de loi de finances rectificative "
+    "2026 (DGB/MEFP) inscrit « la suspension de la taxe sur les exportations de produits arachidiers » (R_7181 "
+    "ramené à 0) ; ni le texte qui la décide, ni sa date d'effet, ni le taux de la taxe n'ont été trouvés.",
 )
 _EXPORT_SEN_OR = (
     None, None,
