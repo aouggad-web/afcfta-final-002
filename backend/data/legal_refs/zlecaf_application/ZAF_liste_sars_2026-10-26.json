@@ -1,0 +1,39 @@
+{
+ "schema_version": 1,
+ "objet": "Afrique du Sud : liste SARS des marchandises prohibées ou réglementées (23/10/2026) intégrée par ligne tarifaire — formalités à l'importation et contrôles à l'exportation",
+ "destination_iso3": "ZAF",
+ "verified_at": "2026-10-26",
+ "etabli": true,
+ "evidence_level": "primaire — classeur officiel de la SARS « Prohibited and Restricted Imports and Exports list », version du 23 octobre 2026, feuilles Imports et Exports",
+ "source": {
+  "url": "https://www.sars.gov.za/wp-content/uploads/Docs/ProhibitedGoods/23-October-2026-Prohibited-and-Restricted-Imports-and-Exports-list.xlsx",
+  "institution": "South African Revenue Service"
+ },
+ "regle": {
+  "valeur": "Chaque ligne codée de la liste qui porte une mesure (colonnes « Prohibited or Restricted », « Authority », « Action Required (detain for) », « Documentary Requirements ») devient une formalité « SARS_PR <code> », verbatim : 3978 lignes à l'importation (formalites), 1826 à l'exportation (formalites_export). Une ligne vaut pour les positions dont son code est le préfixe (position, groupe, sous-position ou ligne nationale). Sans effet sur les droits ni sur le taux ZLECAf.",
+  "reference": "SARS, Prohibited and Restricted Imports and Exports list, 23 October 2026 (Imports, Exports)",
+  "verbatim": "0101.21 | Pure-bred breeding animals | Requires Post-Import quarantine with testing except for Imports from neighbouring countries | Animal Diseases Act, 1984 (Act No. 35 of 1984) | 1. Detain for State Vet 2. Certificate (State Vet) affirms animals are free from diseases & in case of mares & stallions; they have been tested for Dourine and Glanders. 3. Veterinary Import Permit and Health Certificate from DAH required 4. Post-Import quarantine - not for neighbouring countries | Veterinary Import Permit Veterinary Health Certificate Permit Registrar of Livestock Improvement",
+  "portee": "scripts/extraire_liste_sars_zaf.py → data/zaf/liste_sars_pr_2026-10-23.json ; scripts/build_socle.py, LISTE_SARS_ZAF et _liste_sars_zaf ; servi par GET /{iso3}/formalites/{code}.",
+  "fichier_archive": "sources/ZAF_SARS_liste_PR_2026-10-23.xlsx",
+  "sha256": "418309937f942bc068720e65dbe559d1a7fa3468b0a308c20d158135fd1c4195"
+ },
+ "decisions": [
+  "Les lignes déjà rédigées pour les avis d'octobre 2026 (fiche ZAF_controles_sars_2026-10-26.json : 9505.90, 9503.00.10, 9503.00.90, 2901.24, 2902.20, 2902.30 à l'importation ; 2530.90, 2902.30 à l'exportation) gardent leur rédaction et ne sont pas reprises.",
+  "Excel a saisi quelques positions comme des nombres (« 2942 », « 208.3 » pour 0208.3) : le code est rendu avant le rattachement.",
+  "« Not CITES Listed » seul dit l'absence de contrôle : la ligne n'est pas une mesure.",
+  "Les notes de chapitre sans code (77 à l'importation, 74 à l'exportation : ports d'entrée, rappels de réglementations) ne sont rattachées à aucune position.",
+  "Le texte est servi en anglais, tel que publié, sans traduction.",
+  "Une position sans ligne de la liste reste « formalités non établies » : la liste n'est pas déclarée exhaustive (services/formalites.py, SOURCES_EXHAUSTIVES_FORMALITES)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "20 lignes de la liste visent des lignes nationales absentes du tarif servi (0307.39.20/30/40, 1521.21.10, 2008.89.45, 2933.39.20, 3808.xx) : non rattachées.",
+  "Les conditions qui dépendent d'une caractéristique de la marchandise (espèce CITES, substance listée, usage) sont servies en texte, sans tri : l'opérateur juge si sa marchandise est visée.",
+  "Les délais et frais des contrôles, non publiés dans la liste."
+ ],
+ "documents_archives": [
+  {
+   "fichier_archive": "sources/ZAF_SARS_liste_PR_2026-10-23.xlsx",
+   "sha256": "418309937f942bc068720e65dbe559d1a7fa3468b0a308c20d158135fd1c4195"
+  }
+ ]
+}

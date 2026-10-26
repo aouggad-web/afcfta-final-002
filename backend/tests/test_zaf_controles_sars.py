@@ -67,3 +67,24 @@ def test_controle_export_2530_90_sauf_pyrophyllite(client):
 def test_aucun_effet_sur_les_droits():
     position = socle.position("ZAF", "950590")[0]
     assert not [d for d in position["droits"] if "SARS" in (d.get("source") or "")]
+
+
+def test_liste_sars_entiere_a_l_importation(client):
+    """0101.21 : quarantaine et permis vétérinaire (liste SARS du 23/10/2026)."""
+    reponse = _formalites(client, "010121")
+    assert reponse["statut"] == "DOCUMENTEES"
+    (sars,) = [f for f in reponse["formalities"] if f["code"] == "SARS_PR 0101.21"]
+    assert "Post-Import quarantine" in sars["texte"]
+    assert "Animal Diseases Act" in sars["issuing_authority"]
+
+
+def test_une_position_couvre_ses_sous_positions(client):
+    """La ligne « 04.02 » (permis MMA) vaut pour toutes les positions 0402."""
+    codes = [f["code"] for f in _formalites(client, "04021010")["formalities"]]
+    assert "SARS_PR 04.02" in codes
+
+
+def test_les_controles_rediges_ne_sont_pas_doubles(client):
+    codes = [f["code"] for f in _formalites(client, "950590")["formalities"]]
+    assert codes == ["PHYSICAL_INSPECTION_PORT_HEALTH"]
+    assert [f["code"] for f in _formalites(client, "253090")["formalities_export"]] == ["ITAC_EXPORT_PERMIT"]
