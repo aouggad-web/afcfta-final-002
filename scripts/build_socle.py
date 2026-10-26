@@ -2338,6 +2338,50 @@ def _controles_sars_zaf(positions):
             positions[code]["formalites_export"] = controles
 
 
+#: La liste SARS entière, mesures par ligne tarifaire, lue par
+#: scripts/extraire_liste_sars_zaf.py ; fiche ZAF_liste_sars_2026-10-26.json.
+LISTE_SARS_ZAF = os.path.join(REPO, "data", "zaf", "liste_sars_pr_2026-10-23.json")
+
+
+def _liste_sars_zaf(positions):
+    """Une ligne de la liste vaut pour les positions qu'elle couvre (son code en
+    est le préfixe) ; plus fine que la position du socle, elle n'en couvre qu'une
+    partie, dite par `portee_partielle` et le code SARS. Les lignes des contrôles
+    déjà rédigés (CONTROLES_IMPORT_ZAF, CONTROLES_EXPORT_ZAF) ne sont pas reprises."""
+    with open(LISTE_SARS_ZAF, encoding="utf-8") as f:
+        liste = json.load(f)
+    par_sh4 = {}
+    for code in positions:
+        par_sh4.setdefault(code[:4], []).append(code)
+    deja = {"import": set(CONTROLES_IMPORT_ZAF), "export": set(CONTROLES_EXPORT_ZAF)}
+    for ligne in liste["lignes"]:
+        sens, chiffres = ligne["sens"], ligne["chiffres"]
+        if chiffres in deja[sens]:
+            continue
+        mesure = " ".join(
+            texte for texte in (
+                ligne["restriction"],
+                f"Action: {ligne['action']}." if ligne["action"] else None,
+                f"Documents: {ligne['documents']}." if ligne["documents"] else None,
+            ) if texte
+        )
+        champ = "formalites" if sens == "import" else "formalites_export"
+        for code in par_sh4.get(chiffres[:4], ()):
+            if not (code.startswith(chiffres) or chiffres.startswith(code)):
+                continue
+            positions[code].setdefault(champ, []).append({
+                "code": f"SARS_PR {ligne['code_sars']}",
+                "texte": mesure,
+                "document_fr": mesure,
+                "document_en": mesure,
+                "issuing_authority": ligne["autorite"],
+                "base_legale": ligne["autorite"],
+                "code_sars": ligne["code_sars"],
+                "portee_partielle": len(chiffres) > len(code),
+                "source": liste["source"],
+            })
+
+
 def _prelevements_zaf(positions, compteurs):
     """Afrique du Sud : prélèvements environnementaux, taxe sur les carburants,
     Road Accident Fund levy et Health Promotion Levy, dus à l'importation en
@@ -4197,6 +4241,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
         _controles_sars_zaf(positions)
+        _liste_sars_zaf(positions)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
