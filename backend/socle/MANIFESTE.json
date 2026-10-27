@@ -1800,7 +1800,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TUN_tariffs.json",
       "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
-      "socle_sha256": "faa1652a8df4ca31959309fdf51e8803bdb4dad5bd95997b4b85acdc04d268f8",
+      "socle_sha256": "770422e1fab306000231015d8ff9ac6344dbf94aed8cc8bd56899acbe981d60a",
       "collecte": "2026-08-30",
       "etat": "PARTIEL",
       "familles": [
@@ -1813,17 +1813,17 @@
       "compteurs": {
         "positions": 17542,
         "droits": 61287,
-        "droits_liquidables": 58421,
-        "positions_liquidables": 16757,
+        "droits_liquidables": 58745,
+        "positions_liquidables": 16780,
         "preferentiels": 13362,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 206483,
         "taux_indisponibles": 1,
-        "assiettes_source": 60128,
+        "assiettes_source": 60403,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
-        "assiettes_indisponibles": 1158,
+        "assiettes_indisponibles": 883,
         "sans_designation": 0,
         "droits_specifiques": 1277,
         "droits_composes": 0,
@@ -2072,6 +2072,6 @@
     ],
     "positions": 370537,
     "droits": 1243490,
-    "droits_liquidables": 1216733
+    "droits_liquidables": 1217057
   }
 }

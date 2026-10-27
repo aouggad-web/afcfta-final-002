@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "objet": "Tunisie : droit de consommation DC/ALC publié par le Tarif Web sur « QCI » — 5,7 et 0,16 dinars par litre d'alcool contenu, soit les 570 D/hl et 16 D/hl du tableau annexé à la loi n° 88-62 ; liquidé sur une quantité complémentaire distincte de la quantité tarifaire",
+  "destination_iso3": "TUN",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : JORT (fac-similés lus sur jort.tn) pour les taux et leur unité ; Tarif Web 2026 de la Douane pour leur application (570 et 16 dinars sur « QCS » HECTOLITRE au 22.07, 5,7 et 0,16 dinars sur « QCI » ailleurs). Le passage de l'hectolitre au litre d'alcool contenu est une lecture du tarif publié : aucun texte ne le dit en ces termes.",
+  "source": {"url": "https://jort.tn/view/journal-officiel/fr/2017/101/loi-2017-66/", "institution": "Journal officiel de la République tunisienne (fac-similé, jort.tn)"},
+  "regle": {
+    "valeur": "DC/ALC sur « QCI » : 5,7 D par litre d'alcool contenu (570 D/hl, alcools éthyliques non dénaturés bon goût destinés à la fabrication des boissons alcoolisées) et 0,16 D par litre d'alcool contenu (16 D/hl, autres alcools éthyliques du 22.07). Assiette xQTC : la quantité complémentaire saisie à part (champ quantite_complementaire), jamais la quantité tarifaire.",
+    "verbatim": "Art. 45 : 1) Est abrogé le tableau annexé à la loi n° 88-62 du 2 juin 1988, portant refonte de la réglementation relative aux droits de consommation telle que modifiée et complétée par les textes subséquents et remplacé par ce qui suit : […] 22.07 […] - Alcools éthyliques non dénaturés, bon goût, de tous titres, destinés essentiellement à la fabrication des boissons alcoolisées à l'exclusion des alcools utilisés dans la fabrication des vinaigres. […] 16,000D/ hectolitre […] 570,000D/hectolitre",
+    "reference": "Loi n° 88-62 du 2 juin 1988, tableau annexé, remplacé par la loi n° 2015-53 (LF 2016), art. 44, puis par la loi n° 2017-66 (LF 2018), art. 45 ; position 22.07 inchangée par les lois de finances 2019 à 2026 et les lois de finances complémentaires ou rectificatives 2018 à 2023 (lues)",
+    "portee": "scripts/build_socle._unites_des_quantites_tun (DC_ALC_QCI_TUN) : 275 droits DC/ALC passent de « QCI » non traduite à l'assiette xQTC, unité « litre d'alcool contenu ». services/calcul : primitive xQTC et motif QUANTITE_COMPLEMENTAIRE_REQUISE ; routes/calcul : champ quantite_complementaire.",
+    "texte_archive": "sources/TUN_droit_consommation_alcool.texte-extrait.txt",
+    "sha256": "6da1ad88cd726e41f24142886205b5f6a9814459b46dfdfa75537ae9b32294f3"
+  },
+  "decisions": [
+    "La QCI d'un DC/ALC est le volume d'alcool contenu : le même droit se sert à 570 dinars sur « QCS » HECTOLITRE au 22.07 et à 5,7 dinars sur « QCI » pour les produits qui contiennent de l'alcool (chocolats, fruits à l'alcool, vins mutés) ; 16 et 0,16 de même.",
+    "Ce volume n'est pas la quantité tarifaire (kg de chocolat, bouteilles de vin) : il est saisi à part. Sans lui, le droit reste indisponible (QUANTITE_COMPLEMENTAIRE_REQUISE), jamais liquidé sur la quantité tarifaire.",
+    "Le litre d'alcool contenu est celui que déclare l'importateur ; la loi taxe l'alcool « de tous titres » à l'hectolitre, sans ramener à l'alcool pur."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "DC/ALC 0,06 D sur « QCI » (158 droits) : aucun taux de 6 D/hl dans le tableau en vigueur ; reste non traduit.",
+    "DCS/ALC « surtaxe compensatoire » 0,8 D (547 droits) : texte instituant non trouvé — la loi n° 2003-80 (LF 2004), parfois citée, n'en contient aucune ; reste non traduite.",
+    "DCVBBA 48 D sur « QCI » (8 vins mousseux AOP) : le tableau porte 24 D par unité ; reste non traduit.",
+    "DC/APP 0,113373 D sur « QCI » (gaz naturel, 2 droits) : le tableau de la LF 2016 portait 0,113 D/m³ ; non traité ici.",
+    "Les droits DCVBBA sur la bière et le vin servis par le Tarif Web valent le double des taux légaux (bière 4,8 D/l contre 0,024 D/cl ; vins en bouteille 4,8 D/l contre 2,4 D/l) : écart signalé à part, montants du Tarif Web conservés."
+  ],
+  "documents_archives": [{"texte_archive": "sources/TUN_droit_consommation_alcool.texte-extrait.txt", "sha256": "6da1ad88cd726e41f24142886205b5f6a9814459b46dfdfa75537ae9b32294f3"}]
+}

@@ -449,7 +449,8 @@ ASSIETTES_NON_TRADUITES = {
     # Tunisie : la « quantité complémentaire d'importation » n'a pas d'unité
     # publiée — le champ QCI est vide sur les 17 542 positions du Tarif Web.
     # Liquider à la quantité saisie servait 990 droits dans une unité devinée.
-    "QCI": "quantité complémentaire d'importation : unité non publiée par la source (QCI vide)",
+    # Seul le DC/ALC établi par la loi en sort (`DC_ALC_QCI_TUN`).
+    "QCI": "quantité complémentaire d'importation : unité non publiée par la source (QCI vide) ni fixée par un texte établi pour ce droit",
 }
 
 
@@ -993,14 +994,46 @@ def preferences_depuis_liste(regimes, entrees, source_defaut, compteurs=None):
     return out
 
 
+#: Tunisie : droit de consommation DC/ALC publié sur « QCI ». Le tableau annexé
+#: à la loi n° 88-62, tel que remplacé par la loi n° 2017-66 (LF 2018), art. 45,
+#: taxe les alcools éthyliques du 22.07 à 570 D/hl (bon goût, boissons) et à
+#: 16 D/hl (autres). Le Tarif Web les sert à 570 et 16 dinars sur « QCS »
+#: HECTOLITRE au 22.07, et à 5,7 et 0,16 dinars sur « QCI » pour les produits
+#: qui contiennent de l'alcool : la même charge, au litre d'alcool contenu.
+#: Les autres montants sur « QCI » (DC/ALC 0,06, DCS/ALC 0,8, DCVBBA 48) n'ont
+#: pas de texte établi et restent non traduits.
+DC_ALC_QCI_TUN = {5.7: "570 D/hl", 0.16: "16 D/hl"}
+UNITE_QCI_ALCOOL = "litre d'alcool contenu"
+
+
 def _unites_des_quantites_tun(rows, droits, qcs):
     """Tunisie : l'assiette d'un droit spécifique NOMME sa quantité — « PN (KG) »,
     le poids net en kilos ; « QCS », l'unité statistique de la position (« KG
     NET », « NOMBRE », « LITRE »…). Sans elle, « 0.1 dinars » se multipliait par
-    une quantité saisie dans n'importe quelle unité."""
+    une quantité saisie dans n'importe quelle unité. « QCI » ne se traduit que
+    pour le DC/ALC établi (``DC_ALC_QCI_TUN``), en quantité complémentaire."""
     unites = {"PN (KG)": "kg", "QCS": (qcs or "").strip().lower() or None}
     for row, d in zip([r for r in rows if isinstance(r, dict)], droits):
-        unite = unites.get(" ".join(str(row.get("assiette") or "").split()).upper())
+        assiette = " ".join(str(row.get("assiette") or "").split()).upper()
+        if assiette == "QCI" and str(row.get("code")).strip() == "DC/ALC" and d.get("specifique"):
+            lu = lire_specifique(d["specifique"])
+            if lu is not None and lu["montant"] in DC_ALC_QCI_TUN:
+                lu["unite_quantite"] = UNITE_QCI_ALCOOL
+                montant = f"{lu['montant']:g}".replace(".", ",")
+                d.update(
+                    specifique=lu,
+                    assiette="xQTC",
+                    assiette_origine="source",
+                    assiette_non_traduite=None,
+                    note=(
+                        f"{montant} D par litre d'alcool contenu : "
+                        f"{DC_ALC_QCI_TUN[lu['montant']]} du tableau annexé à la loi n° 88-62 "
+                        "(loi n° 2017-66, art. 45). Quantité complémentaire, distincte de "
+                        "la quantité tarifaire."
+                    ),
+                )
+            continue
+        unite = unites.get(assiette)
         if unite and d.get("specifique") and not isinstance(d["specifique"], dict):
             lu = lire_specifique(d["specifique"])
             if lu is not None:
@@ -3967,7 +4000,7 @@ def _accises_du_cgi(iso, positions, compteurs):
 
 def _lignes_liquidables(position):
     """Pour chaque ligne de la position : le moteur la liquide-t-il ? C'est le
-    moteur lui-même qui en juge (services/calcul.calculer), quantité, valeur
+    moteur lui-même qui en juge (services/calcul.calculer), quantités, valeur
     FOB et taux de change fournis : le compteur ne peut pas diverger de lui.
     Une TVA assise sur un DA sans taux, un droit spécifique illisible, un
     composé sans règle de départage ne comptent donc pas."""
@@ -3979,7 +4012,9 @@ def _lignes_liquidables(position):
         sys.path.insert(0, backend)
     from services.calcul import calculer
 
-    lignes = calculer(position, 1000.0, quantite=1.0, taux_de_change=1.0, valeur_fob=1000.0)["npf"]["lignes"]
+    lignes = calculer(
+        position, 1000.0, quantite=1.0, quantite_complementaire=1.0, taux_de_change=1.0, valeur_fob=1000.0
+    )["npf"]["lignes"]
     statuts = collections.defaultdict(list)
     for ligne in lignes:
         statuts[ligne.get("code")].append(ligne.get("statut"))
@@ -4446,10 +4481,16 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 # passer le droit à la quantité. Les colonnes préférentielles
                 # s'y rapportent aussi.
                 d["assiette_valeur"] = d["assiette"]
-            if d["specifique"] and d["taux"] is None and not d.get("assiette_non_traduite"):
+            if (
+                d["specifique"]
+                and d["taux"] is None
+                and not d.get("assiette_non_traduite")
+                and d.get("assiette") != "xQTC"
+            ):
                 # Une assiette que la source décrit sans qu'on sache la traduire
                 # (« PN(KG)/100 EXCES », « QCI ») reste non traduite : la forcer
                 # à la quantité liquidait 1 156 droits tunisiens malgré leur réserve.
+                # « xQTC » est déjà une quantité, la complémentaire.
                 # Un droit spécifique se liquide à la quantité, jamais sur la
                 # valeur. Si l'assiette héritée dit « CIF », elle décrit le
                 # droit ad valorem de la ligne, pas celui-ci : la laisser
