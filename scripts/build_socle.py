@@ -1698,7 +1698,7 @@ CIRCULAIRE_0138_COG = (
      lambda c: "0201" <= c[:4] <= "0207"),
     ("Poissons de mer congelés (03.03), hors poissons de luxe soumis aux droits d'accises", 0.0,
      lambda c: c.startswith("0303")),
-    ("Poisson salé (0305.51.00 à 0305.59.00)", 0.0, lambda c: "03055100" <= c <= "03055900"),
+    ("Poisson salé (0305.51.00 à 0305.59.00)", 0.0, lambda c: "030551" <= c[:6] <= "030559"),
     ("Blé (1001.19.00, soit 1001.10.90 « froment dur, autres » du tarif CEMAC)", 0.0,
      lambda c: c == "10011090"),
     ("Maïs (1005.90.00)", 0.0, lambda c: c == "10059000"),
@@ -4887,8 +4887,6 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ait_malawi(positions, compteurs)
     if iso in ETATS_CEMAC:
         _coquilles_tec_cemac(positions)
-    if iso == "COG":
-        _mesures_nationales_congo(positions)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
     if iso == "MRT":
@@ -4984,6 +4982,11 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 else:
                     cle = "assiettes_table"
                 compteurs[cle] += signe
+
+    # Congo : après les accises, dont dépend l'exclusion des poissons de luxe
+    # de la circulaire n° 0138 (le crawl ne porte pas toutes les accises).
+    if iso == "COG":
+        _mesures_nationales_congo(positions)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon

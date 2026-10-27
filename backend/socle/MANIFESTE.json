@@ -345,7 +345,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COG_tariffs.json",
       "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
-      "socle_sha256": "f309936b97fd13422a05731ec30855ecdbc68db75afa06a8485cb119201ec7c7",
+      "socle_sha256": "36db1d3a6a99298c47680e96e248dab2dd2882396bef08da7d0f328fdd795818",
       "collecte": "2026-02-19T22:39:52.620876",
       "etat": "PARTIEL",
       "familles": [

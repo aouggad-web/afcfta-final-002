@@ -48,7 +48,9 @@ def test_toute_position_avec_tva_porte_les_centimes(positions):
     )
 
 
-@pytest.mark.parametrize("code", ["02011000", "03034100", "03055110", "10011090", "10059000", "15119000"])
+@pytest.mark.parametrize(
+    "code", ["02011000", "03034100", "03055110", "03055999", "10011090", "10059000", "15119000"]
+)
 def test_premiere_variante_droit_5_et_tva_exoneree(positions, code):
     _, l = _lignes(positions, code)
     assert l["DD"]["taux_pct"] == 5.0 and "0138" in l["DD"]["note"]
@@ -62,7 +64,11 @@ def test_seconde_variante_droit_5_et_tva_5(positions, code):
     assert l["TVA"]["taux_pct"] == 5.0 and l["TVA"]["montant"] == pytest.approx(5.25)
 
 
-def test_les_poissons_de_luxe_soumis_aux_accises_sont_exclus(positions):
-    """Saumons 0303.11.00 : droit d'accises, donc hors circulaire."""
-    dd = next(d for d in positions["03031100"]["droits"] if d["code"] == "DD")
-    assert dd["taux"] == 20.0 and "0138" not in (dd.get("note") or "")
+@pytest.mark.parametrize("code", ["03031100", "03032200"])
+def test_les_poissons_de_luxe_soumis_aux_accises_sont_exclus(positions, code):
+    """Saumons : droit d'accises, donc hors circulaire. Celui du 0303.22.00
+    vient de la loi de finances, pas du crawl : l'exclusion se lit après."""
+    droits = {d["code"]: d for d in positions[code]["droits"]}
+    assert "DA" in droits
+    assert droits["DD"]["taux"] == 20.0 and "0138" not in (droits["DD"].get("note") or "")
+    assert droits["TVA"]["taux"] == 18.0
