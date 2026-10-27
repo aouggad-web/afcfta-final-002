@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "objet": "Tunisie : droit de consommation DCVBBA sur la bière (22.03) et le vin (22.04) — le Tarif Web 2026 sert le double des taux du tableau annexé à la loi n° 88-62 ; montants du Tarif Web conservés, écart signalé par une note",
+  "destination_iso3": "TUN",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : JORT (fac-similés lus sur jort.tn) pour les taux légaux ; Tarif Web 2026 de la Douane pour les montants servis. Aucun texte expliquant le doublement n'a été trouvé dans les lois de finances 2019 à 2026 ni dans les lois de finances complémentaires ou rectificatives 2018 à 2023.",
+  "source": {"url": "https://jort.tn/view/journal-officiel/fr/2020/128/loi-2020-46/", "institution": "Journal officiel de la République tunisienne (fac-similé, jort.tn)"},
+  "regle": {
+    "valeur": "Taux légaux : bière classée 0,024 D/cl (2,4 D/l) ; autres vins classés en bouteilles 2,4 D/l ; vins en vrac livrés aux embouteilleurs 7,5 D/hl ; vins mousseux 24 D/unité ; vins de liqueurs, mistelles, moûts à l'alcool 3,75 D/unité. Tarif Web : 4,8 D/l (ou 0,48 D/dl), 15 D/hl, 48 D, 7,5 D par bouteille — le double ; et 4,8 D par décilitre sur 11 lignes (3 de bière, 8 de vin), soit vingt fois.",
+    "verbatim": "Art. 20 - Est modifié le droit de consommation dû sur les produits relevant des numéros 22.03 et ex 22.04 du tarif des droits de douane repris au tableau figurant en annexe de la loi n° 88-62 du 2 juin 1988 […] 22.03 Bière classée 0,024D/centilitre Ex 22.04 Autres vins classés, provenant exclusivement de la fermentation des raisins frais ou du jus de raisins frais en bouteilles 2,4D/litre",
+    "reference": "Loi n° 88-62 du 2 juin 1988, tableau annexé, remplacé par la loi n° 2017-66 (LF 2018), art. 45, et modifié pour les 22.03 et ex 22.04 par la loi n° 2020-46 (LF 2021), art. 20",
+    "portee": "scripts/build_socle._note_dcvbba_tunisie (ECARTS_DCVBBA_TUN) : note sur 364 droits DCVBBA spécifiques des positions 22.03 et 22.04 ; aucun montant modifié.",
+    "texte_archive": "sources/TUN_ecart_dcvbba.texte-extrait.txt",
+    "sha256": "b6680a2c8d1869dad9981bdacd1e5d6ad131652a6c63de57fa4d6ea81bae92a5"
+  },
+  "decisions": [
+    "Les montants du Tarif Web sont conservés : c'est le tarif que l'administration applique, et l'écart, constant (×2) sur toutes les catégories, évoque une règle que nous n'avons pas trouvée plutôt qu'une erreur de saisie.",
+    "Les 11 lignes (3 de bière, 8 de vin) à 4,8 D par décilitre (48 D/l) ne suivent pas ce rapport : la note les dit à part, comme une unité publiée apparemment incohérente."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Le texte qui fonderait le doublement n'a pas été trouvé ; s'il existe (décret, arrêté, note de la Douane), la note devra le citer.",
+    "Les 8 vins mousseux AOP à 48 D portent leur droit sur « QCI », non traduite : le droit n'est pas liquidé et ne reçoit pas la note."
+  ],
+  "documents_archives": [{"texte_archive": "sources/TUN_ecart_dcvbba.texte-extrait.txt", "sha256": "b6680a2c8d1869dad9981bdacd1e5d6ad131652a6c63de57fa4d6ea81bae92a5"}]
+}
