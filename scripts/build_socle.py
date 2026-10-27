@@ -1687,6 +1687,70 @@ def _coquilles_tec_cemac(positions):
                     "n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : "
                     f"coquille, {retenu:g} % retenu."
                 )
+#: Congo : circulaire n° 0138/MFBPP-CAB du 5 février 2026 (loi de finances 2026),
+#: applicable jusqu'au 31 décembre 2026 : biens « décatégorisés » en biens de
+#: première nécessité, droit de douane réduit à 5 % et TVA exonérée (variante 1)
+#: ou réduite à 5 % (variante 2). Redevance informatique et taxes communautaires
+#: inchangées. Fiche COG_mesures_nationales_2026-10-27.
+#: (produits, TVA retenue, filtre sur le code à 8 chiffres)
+CIRCULAIRE_0138_COG = (
+    ("Viandes et abats comestibles (02.01 à 02.07)", 0.0,
+     lambda c: "0201" <= c[:4] <= "0207"),
+    ("Poissons de mer congelés (03.03), hors poissons de luxe soumis aux droits d'accises", 0.0,
+     lambda c: c.startswith("0303")),
+    ("Poisson salé (0305.51.00 à 0305.59.00)", 0.0, lambda c: "030551" <= c[:6] <= "030559"),
+    ("Blé (1001.19.00, soit 1001.10.90 « froment dur, autres » du tarif CEMAC)", 0.0,
+     lambda c: c == "10011090"),
+    ("Maïs (1005.90.00)", 0.0, lambda c: c == "10059000"),
+    ("Huile de palme raffinée (1511.90.00)", 0.0, lambda c: c == "15119000"),
+    ("Lait (04.01 et 04.02)", 5.0, lambda c: c[:4] in ("0401", "0402")),
+    ("Riz (1006.20.00 à 1006.40.00)", 5.0, lambda c: "10062000" <= c <= "10064000"),
+    ("Sel (2501.00.11)", 5.0, lambda c: c == "25010011"),
+)
+
+
+def _mesures_nationales_congo(positions):
+    """Congo : centimes additionnels à la TVA (5 % du montant de la TVA, loi TVA
+    art. 36 B, loi n° 17-2000) sur toute position qui porte la TVA, et taux de
+    la circulaire n° 0138/MFBPP-CAB du 5 février 2026."""
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        if any(d.get("code") == "DA" for d in droits) and code.startswith("0303"):
+            mesure = None  # poissons de luxe soumis aux droits d'accises : exclus
+        else:
+            mesure = next(((p, tva) for p, tva, f in CIRCULAIRE_0138_COG if f(code)), None)
+        if mesure:
+            produits, tva = mesure
+            source = (
+                f"Circulaire n° 0138/MFBPP-CAB du 5 février 2026 (jusqu'au 31 décembre 2026) : "
+                f"{produits}"
+            )
+            for d in droits:
+                if d.get("code") == "DD":
+                    d["taux"] = 5.0
+                    d["note"] = source + ", taux réduit de 5 % du droit de douane."
+                elif d.get("code") == "TVA":
+                    d["taux"] = tva
+                    d["note"] = source + (
+                        ", exonération de TVA." if tva == 0 else ", TVA au taux réduit de 5 %."
+                    )
+        if any(d.get("code") == "TVA" for d in droits):
+            droits.append(
+                {
+                    "code": "CATVA",
+                    "code_source": "CATVA",
+                    "libelle": "Centimes additionnels à la TVA",
+                    "famille": "autre",
+                    "taux": 5.0,
+                    "assiette": "%TVA",
+                    "assiette_origine": "source",
+                    "source": "Code général des impôts, tome I — loi TVA, art. 36 B (loi n° 17-2000)",
+                    "note": (
+                        "5 % du montant de la TVA, au profit des collectivités locales ; "
+                        "ne donnent pas droit à déduction."
+                    ),
+                }
+            )
 
 
 def _ordre_tunisie(positions):
@@ -4918,6 +4982,11 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 else:
                     cle = "assiettes_table"
                 compteurs[cle] += signe
+
+    # Congo : après les accises, dont dépend l'exclusion des poissons de luxe
+    # de la circulaire n° 0138 (le crawl ne porte pas toutes les accises).
+    if iso == "COG":
+        _mesures_nationales_congo(positions)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon

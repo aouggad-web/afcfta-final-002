@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "objet": "Congo : centimes additionnels à la TVA (5 % du montant de la TVA) et taux réduits de la circulaire n° 0138/MFBPP-CAB du 5 février 2026 (droit de douane 5 %, TVA exonérée ou à 5 %) pour les biens « décatégorisés » en biens de première nécessité",
+  "destination_iso3": "COG",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : circulaire n° 0138/MFBPP-CAB (PDF scanné publié sur finances.gouv.cg, archivé) ; Code général des impôts, tome I (édition de 2016 publiée sur finances.gouv.cg, archivée), loi TVA art. 36 B. Aucun texte postérieur modifiant l'art. 36 B n'a été trouvé ; des sources secondaires (guides bancaires et fiscaux) donnent le même taux effectif de 18,9 %.",
+  "source": {"url": "https://www.finances.gouv.cg/sites/default/files/documents/Circulaire%20lutte%20contre%20la%20vie%20ch%C3%A8re%202026.pdf", "institution": "Ministère des Finances, du Budget et du Portefeuille public (Congo)"},
+  "regle": {
+    "valeur": "Centimes additionnels à la TVA : 5 % du montant de la TVA, sur toute position qui porte la TVA. Circulaire 0138, jusqu'au 31/12/2026 : droit de douane 5 % et TVA exonérée pour 02.01 à 02.07, 03.03 (hors poissons de luxe soumis aux droits d'accises), 0305.51.00 à 0305.59.00, 1001.19.00 (1001.10.90 du tarif CEMAC), 1005.90.00, 1511.90.00 ; droit de douane 5 % et TVA 5 % pour 04.01, 04.02, 1006.20.00 à 1006.40.00, 2501.00.11.",
+    "verbatim": "Art. 36 B : […] 3- La base d’imposition aux centimes additionnels est le montant de la TVA collectée. 4- Le taux applicable aux centimes additionnels est de 5%. […] — Circulaire n° 0138-MFBPP/CAB : les biens intermédiaires et de consommation courante dont les nomenclatures tarifaires sont reprises ci-dessous, sont décatégorisés en biens de première nécessité et bénéficient à l'importation, du taux réduit à 5% du droit de douane et, selon les produits, de l'exonération ou du taux réduit à 5% de la taxe sur la valeur ajoutée (TVA), à l'exception de la redevance informatique et des taxes communautaires.",
+    "reference": "Loi TVA, art. 36 B (loi n° 17-2000 du 30 décembre 2000), CGI tome I ; circulaire n° 0138/MFBPP-CAB du 5 février 2026, en application de la loi n° 42-2025 du 31 décembre 2025 (LF 2026)",
+    "portee": "scripts/build_socle._mesures_nationales_congo (CIRCULAIRE_0138_COG) : DD et TVA des positions listées, avec une note ; droit CATVA (%TVA, 5 %) ajouté à toutes les positions du socle COG qui portent la TVA.",
+    "texte_archive": "sources/COG_mesures_nationales.texte-extrait.txt",
+    "sha256": "1eff82e57814c8e23dc038b5b8367c52368256eb4d42fa054433ca2dd07dbb67"
+  },
+  "decisions": [
+    "La circulaire cite 1001.19.00 (blé dur autre que de semence, SH 2012) ; le tarif CEMAC, encore en SH 2007, porte ce produit en 1001.10.90 (« froment dur — autres ») : la mesure y est appliquée.",
+    "Les poissons du 03.03 qui portent un droit d'accises dans le socle (03.03.11.00, 03.03.19.00, 03.03.22.00) en sont exclus, comme « poissons de luxe soumis aux droits d'accise ».",
+    "Les centimes additionnels s'appliquent « aux opérations soumises à la TVA », donc à l'importation : 5 % du montant de la TVA liquidée, nuls quand la TVA est exonérée.",
+    "La note circulaire n° 0065/MFBPP-CAB du 6 février 2025 (poisson salé, lait, riz) était valable jusqu'au 31 mars 2025 : expirée, non appliquée."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "« Il s'agit notamment de » : la liste de la circulaire n'est peut-être pas exhaustive ; seules les positions nommées sont servies.",
+    "La redevance informatique, que la circulaire mentionne, n'est pas servie par le socle COG : taux et assiette non établis.",
+    "Le droit de douane et les taxes communautaires restent ceux du gabarit TEC CEMAC, non rapprochés ligne par ligne du tarif national congolais."
+  ],
+  "documents_archives": [{"texte_archive": "sources/COG_mesures_nationales.texte-extrait.txt", "sha256": "1eff82e57814c8e23dc038b5b8367c52368256eb4d42fa054433ca2dd07dbb67"}]
+}

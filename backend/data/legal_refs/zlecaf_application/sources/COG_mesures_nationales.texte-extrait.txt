@@ -1,0 +1,46 @@
+Congo — mesures nationales à l'importation : extraits relevés le 2026-10-27.
+
+=== Circulaire n° 0138/MFBPP-CAB du 5 février 2026 — data/sources/congo-brazzaville/official/cog-circulaire-0138-mfbpp-cab-2026.pdf, sha256 c8e193a49dc8103309953b6299d7162e80d94b61ebfadc330f82d7ba713bb149 (PDF scanné d'une page, transcrit sur l'image) ===
+
+MINISTERE DES FINANCES, DU BUDGET ET DU PORTEFEUILLE PUBLIC — CABINET
+CIRCULAIRE N° 0138-MFBPP/CAB
+Portant décatégorisation de certains biens à la catégorie de biens de première nécessité
+
+Dans le cadre de la lutte contre la vie chère et en application des dispositions de la loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026, les biens intermédiaires et de consommation courante dont les nomenclatures tarifaires sont reprises ci-dessous, sont décatégorisés en biens de première nécessité et bénéficient à l'importation, du taux réduit à 5% du droit de douane et, selon les produits, de l'exonération ou du taux réduit à 5% de la taxe sur la valeur ajoutée (TVA), à l'exception de la redevance informatique et des taxes communautaires.
+
+Il s'agit notamment de :
+
+1ère Variante : taux réduit 5% droit de douane et exonération TVA
+1 | Viandes et abats comestibles | 02.01 à 02.07
+2 | Poissons de mer congelés | 03.03, à l'exception des poissons de luxe soumis aux droits d'accise
+3 | Poisson salé | 0305.51.00 à 0305.59.00
+4 | Blé | 1001.19.00
+5 | Maïs | 1005.90.00
+6 | Huile de palme raffinée | 1511.90.00
+
+2e Variante : taux réduit 5% droit de douane et 5% TVA
+1 | Lait | 04.01 et 04.02
+2 | Riz | 1006.20.00 à 1006.40.00
+3 | Sel | 2501.00.11
+
+Les produits énumérés ci-dessus sont interdits d'exportation ou de réexportation.
+
+La présente circulaire est d'application jusqu'au 31 décembre 2026.
+
+Fait à Brazzaville, le 05 FEV 2026
+Le Ministre, Christian YOKA
+
+=== Code général des impôts, tome I (finances.gouv.cg) — data/sources/congo-brazzaville/official/cog-cgi-tome1.pdf, sha256 4e4cb79135782817fc26c18e0c8418c789888564b9576e92493676ecb7ff1f52, p. 324 ===
+
+                                 CENTIMES ADDITIONNELS
+Art. 36 B :
+1- Les centimes additionnels sont applicables aux opérations soumises à la taxe sur la
+valeur ajoutée.
+2- Le fait générateur et l’exigibilité des centimes additionnels sont définis comme en
+matière de taxe sur la valeur ajoutée.
+3- La base d’imposition aux centimes additionnels est le montant de la TVA collectée.
+4- Le taux applicable aux centimes additionnels est de 5%.
+5- Les centimes additionnels ci-dessus définis sont perçus et contrôlés par
+l’administration fiscale au profit des collectivités locales.
+6- Les centimes additionnels à la TVA ne donnent pas droit à déduction.
+(Loi n° 17-2000 du 30 décembre 2000)
