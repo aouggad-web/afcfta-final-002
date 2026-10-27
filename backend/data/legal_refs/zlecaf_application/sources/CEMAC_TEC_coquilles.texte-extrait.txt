@@ -1,0 +1,64 @@
+Extraits du Tarif des douanes de la CEMAC (Commission de la CEMAC), data/cemac/reference/CEMAC_tarif_des_douanes_officiel.pdf,
+sha256 eb8bf1347f35a4b2fe524eb76e5f6616c237acee0e04c361ce615db250d9cade, texte extrait par pdftotext -layout le 2026-10-27.
+
+=== Dispositions préliminaires (p. 39) ===
+        Le Tarif Extérieur Commun a été adopté par Acte n° 16/96-UDEAC-556-CD-57 du 1er juillet 1996 portant
+adoption du Tarif Extérieur de la CEMAC.
+
+         Il comprend un droit de douane à l’importation et la Taxe Communautaire d’intégration.
+
+Section 1- LE DROIT DE DOUANE D’IMPORTATION
+
+         Les droits de douane inscrits dans la colonne ad hoc constituent le tarif minimum des droits de douane
+d’importation.
+
+         Le tarif général des droits de douane d’importation est égal au triple du tarif minimum. Il peut être appliqué à
+certains pays ou à certains produits déterminés.
+
+          Dans le cas où un Etat est amené à consentir le bénéfice de la clause de la nation la plus favorisée à un autre
+Etat, celle-ci sous entend en toute éventualité l’application du tarif minimum.
+
+         Les Etats membres de la CEMAC ne reconnaissent comme droits de douane et taxes d’effet équivalent que les
+seuls droits de douanes inscrits dans la colonne ad hoc sur Tarif Extérieur Commun de la CEMAC.
+
+         Les taux du droit de douane applicables aux produits des pays tiers importés dans la CEMAC sont fixés comme
+suit :
+
+Catégorie I                        Biens de première nécessité                                    5%
+Catégorie II                       Matières premières et bien d’équipement                        10%
+Catégorie III                      Biens intermédiaires et divers                                 10%
+Catégorie IV                       Biens e consommation courante                                  30%
+
+=== Chapitre 44 (p. 261) ===
+4407.29.11   --- Budinga, scié (*).................................................       30 %                TN
+4407.29.12   --- Dabéma, scié (*)................................................         30 %                TN
+4407.29.13   --- Douka, scié (*)....................................................      30 %                TN
+4407.29.14   --- Doussié, scié (*).................................................       30 %                TN
+4407.29.15   --- Ebène, scié (*)....................................................      30 %                TN
+4407.29.16   --- Eyong, scié (*)....................................................      30 %                TN
+4407.29.17   --- Framiré, scié (*).................................................       30 %                TN
+4407.29.18   --- Fromager, scié (*)..............................................         30 %                TN
+4407.29.19   --- Igaganga, scié (*)...............................................        30 %                TN
+4407.29.20   --- Izombé, scié (*).................................................        30 %                TN
+4407.29.21   --- Kosipo, scié (*)..................................................       30 %                TN
+4407.29.22   --- Kitibé, scié (*)...................................................      30 %                TN
+4407.29.23   --- Kodrodua, scié (*).............................................          30 %                TN
+4407.29.24   --- Limba, scié (*)...................................................       30 %                TN
+4407.29.25   --- Moabi, scié (*)...................................................        3%                 TN
+4407.29.26   --- Movingui, scié (*)..............................................         30 %                TN
+4407.29.27   --- Mutényé, scié (*)...............................................         30 %                TN
+4407.29.28   --- Niangon, scié (*)...............................................         30 %                TN
+
+=== Chapitre 69 (p. 370) ===
+                     II.- AUTRES PRODUITS CERAMIQUES
+  69.04      Briques de construction, hourdis, cache-
+             poutrelles et articles similaires, en céramique.
+6904.10.00   -Briques de construction....................................                30 %                TN
+6904.90.00   - Autres..............................................................      30 %                TN
+  69.05      Tuiles, éléments de cheminée, conduits de fumée
+             ornements architectoniques, en céramique, et
+             autres poteries de bâtiment.
+6905.10.00   - Tuiles...............................................................     30 %                TN
+6905.90.00   - Autres..............................................................      30 %                TN
+6906.00.00   Tuyaux, gouttières et accessoires de tuyauterie en
+             céramique......................................................             .30 %               TN

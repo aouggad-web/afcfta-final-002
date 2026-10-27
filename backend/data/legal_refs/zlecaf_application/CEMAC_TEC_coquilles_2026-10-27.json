@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "objet": "TEC CEMAC : deux taux du droit de douane imprimés hors catégorie par le tarif des douanes de la CEMAC (4407.29.25 « 3% », 6906.00.00 « .30 % ») et recopiés par le gabarit commun aux six États (CMR, COG, GAB, TCD, CAF, GNQ) ; 30 % retenu",
+  "destination_iso3": "CEMAC",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : Tarif des douanes de la CEMAC (Commission de la CEMAC), dispositions préliminaires et chapitres 44 et 69. La correction est une lecture du document : il ne publie pas d'erratum.",
+  "source": {"url": "https://www.cemac.int", "institution": "Commission de la CEMAC — Tarif des douanes"},
+  "regle": {
+    "valeur": "4407.29.25 (moabi, scié) et 6906.00.00 (tuyaux, gouttières et accessoires de tuyauterie en céramique) : droit de douane 30 %, et non 3 % et 0,3 %.",
+    "verbatim": "Les taux du droit de douane applicables aux produits des pays tiers importés dans la CEMAC sont fixés comme suit : Catégorie I Biens de première nécessité 5% ; Catégorie II Matières premières et bien d’équipement 10% ; Catégorie III Biens intermédiaires et divers 10% ; Catégorie IV Biens e consommation courante 30% […] 4407.29.25 --- Moabi, scié (*) 3% […] 6906.00.00 Tuyaux, gouttières et accessoires de tuyauterie en céramique .30 %",
+    "reference": "Acte n° 16/96-UDEAC-556-CD-57 du 1er juillet 1996 portant adoption du Tarif extérieur commun ; Tarif des douanes de la CEMAC, p. 39, 261 et 370",
+    "portee": "scripts/build_socle._coquilles_tec_cemac (COQUILLES_TEC_CEMAC) pour les six États (ETATS_CEMAC) : seul un droit de douane encore égal à la coquille est corrigé, avec une note.",
+    "texte_archive": "sources/CEMAC_TEC_coquilles.texte-extrait.txt",
+    "sha256": "b3fb83809ed6bc829096192ca49870f45a06137b19233b9ccb330abf6a41da03"
+  },
+  "decisions": [
+    "Ni 3 % ni 0,3 % ne sont une catégorie du TEC ; les positions qui entourent chacune sont toutes à 30 % (sciages du 4407.29 ; céramiques de bâtiment des 69.04, 69.05 et 69.07). « .30 % » porte un point parasite ; « 3% » a perdu un zéro.",
+    "Le tableau des catégories imprime lui-même 10 % pour la catégorie III, quand 618 positions du tarif sont à 20 % : l'ensemble des taux du TEC est donc 5, 10, 20 et 30 %, et 3 % ou 0,3 % n'en font pas partie dans aucune lecture."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "La désignation servie pour 6906.00.00 agrège celle du 69.07 (défaut d'extraction du gabarit), non corrigée ici.",
+    "Le gabarit TEC n'est pas rapproché ligne par ligne des tarifs nationaux publiés par chaque État."
+  ],
+  "documents_archives": [{"texte_archive": "sources/CEMAC_TEC_coquilles.texte-extrait.txt", "sha256": "b3fb83809ed6bc829096192ca49870f45a06137b19233b9ccb330abf6a41da03"}]
+}
