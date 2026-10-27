@@ -1614,6 +1614,55 @@ def _assiette_accise(iso, positions):
                 )
 
 
+def _taxes_algerie(positions):
+    """Algérie : ce que l'assiette par code (assiettes_pays.json) ne peut pas
+    dire seule. Fiche DZA_assiettes_taxes_interieures_2026-10-27.
+
+    - TIC des allumettes et briquets : la valeur en douane (CTCA art. 25 :
+      « A l'importation, elle est applicable sur la valeur en douane »).
+    - TEE : le Tarif Web la publie à 0 %, alors que la loi la fixe à
+      l'importation selon la classe énergétique (5, 20, 30 ou 40 %). Servie à
+      0 %, elle se liquidait à zéro et la TVA, qui l'inclut, aussi.
+    - TICPV : le taux proportionnel de la TIC des tabacs est assis sur la
+      valeur du produit (prix de vente hors taxes), pas sur la valeur en
+      douane : non traduit.
+    - DFP (piles) : 40 % de la valeur toutes taxes comprises, donc liquidé
+      après la TVA (CII art. 485 bis, 3)."""
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        for d in droits:
+            if d.get("code") == "TIC" and code.startswith(("3605", "9613")):
+                d["assiette"] = "CIF"
+                d["note"] = (
+                    "Allumettes et briquets : à l'importation, la TIC est applicable sur la "
+                    "valeur en douane (CTCA art. 25)."
+                )
+            elif d.get("code") == "TEE":
+                d["taux"] = None
+                d["note"] = (
+                    "Taux selon la classe énergétique du produit importé : 5 % (A++, A+, A), "
+                    "20 % (B), 30 % (C), 40 % (D à G) ; 40 % sans document attestant la classe "
+                    "(LF 2017 art. 70, rédaction LF 2020 art. 64). Le Tarif Web publie 0 %."
+                )
+            elif d.get("code") == "TICPV":
+                d["assiette"] = None
+                d["assiette_non_traduite"] = (
+                    "taux proportionnel de la TIC des tabacs assis sur la valeur du produit "
+                    "(prix de vente hors taxes, CTCA art. 25), non sur la valeur en douane"
+                )
+            elif d.get("code") == "DFP":
+                d["note"] = (
+                    "40 % de la valeur toutes taxes comprises (CII art. 485 bis, 3, LF 2025) ; "
+                    "n'entre pas dans la base de la TVA."
+                )
+        dfp = [d for d in droits if d.get("code") == "DFP"]
+        if dfp:
+            autres = [d for d in droits if d.get("code") != "DFP"]
+            prct = [i for i, d in enumerate(autres) if d.get("code") == "PRCT"]
+            rang = prct[0] if prct else len(autres)
+            position["droits"] = autres[:rang] + dfp + autres[rang:]
+
+
 def _ordre_tunisie(positions):
     """Tunisie : la TVA s'assoit sur tous les droits et taxes sauf elle-même
     (Code de la TVA art. 6) et la RPD sur la somme des droits et taxes des
@@ -4730,6 +4779,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     nomenclature_publiee = None
     if iso == "MAR":
         nomenclature_publiee = _nomenclature_maroc(positions, compteurs, donnees.get("extracted_at") or "")
+    if iso == "DZA":
+        _taxes_algerie(positions)
     if iso == "TUN":
         _ordre_tunisie(positions)
         _note_dcvbba_tunisie(positions)

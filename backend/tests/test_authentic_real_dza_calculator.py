@@ -38,7 +38,9 @@ def test_real_dza_tariff_line_cascade_breakdown():
     assert npf["TCS"]["montant"] == pref["TCS"]["montant"] == 30_000.0
 
     assert npf["TVA"]["taux_pct"] == 9.0
-    assert npf["TVA"]["assiette"] == "CIF+DAPS+DD"
+    # TIC, TCE, TEE et TICPV entrent dans la base (CTCA art. 27, LF 2017
+    # art. 72) ; absentes de cette position, elles sont sans objet.
+    assert npf["TVA"]["assiette"] == "CIF+DAPS+DD+TIC+TCE+TEE+TICPV"
     assert npf["TVA"]["base"] == 1_050_000.0
     assert pref["TVA"]["base"] == 1_000_000.0
     assert npf["TVA"]["montant"] == 94_500.0

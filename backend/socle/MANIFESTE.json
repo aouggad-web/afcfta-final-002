@@ -490,7 +490,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DZA_tariffs.json",
       "source_sha256": "e189e6149f335a11d0f640d1302041948767f68e6f4f621dd789a93e90469132",
-      "socle_sha256": "e7784e394fd04d9c86ca776616dd4a4acebd8e7b12628065657e9ccc4e0b90fc",
+      "socle_sha256": "3f8e221c9f825d29a28160b0cc7c4b1bb0fa10c18a48db8345473d24c8254de0",
       "collecte": "2026-10-04T06:51:48+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -503,8 +503,8 @@
       "compteurs": {
         "positions": 17345,
         "droits": 70871,
-        "droits_liquidables": 70464,
-        "positions_liquidables": 16941,
+        "droits_liquidables": 70676,
+        "positions_liquidables": 17279,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
@@ -512,8 +512,8 @@
         "taux_indisponibles": 3,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
-        "assiettes_table": 70467,
-        "assiettes_indisponibles": 401,
+        "assiettes_table": 70849,
+        "assiettes_indisponibles": 19,
         "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
@@ -2073,6 +2073,6 @@
     ],
     "positions": 370537,
     "droits": 1243490,
-    "droits_liquidables": 1217085
+    "droits_liquidables": 1217297
   }
 }
