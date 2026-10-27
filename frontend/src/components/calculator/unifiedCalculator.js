@@ -124,6 +124,7 @@ export function buildCalculRequestBody({
   hsCode,
   cifValue,
   quantite,
+  quantites,
   valeurFob,
   paysExpedition,
   dejaDedouaneSacu,
@@ -153,6 +154,13 @@ export function buildCalculRequestBody({
   // pas être traduite en 0 — un 0 liquiderait le droit à zéro.
   if (typeof quantite === 'number' && Number.isFinite(quantite) && quantite > 0) {
     body.quantite = quantite;
+  }
+  // Une quantité par unité de droit spécifique (`{ kg: 120, litre: 40 }`),
+  // même règle : seules les saisies strictement positives partent.
+  const parUnite = Object.fromEntries(Object.entries(quantites || {})
+    .filter(([, v]) => typeof v === 'number' && Number.isFinite(v) && v > 0));
+  if (Object.keys(parUnite).length > 0) {
+    body.quantites = parUnite;
   }
   // Même règle pour la valeur FOB (assiette SACU) : envoyée seulement si elle
   // a été saisie, jamais déduite du CIF — le moteur la réclame sinon
@@ -220,38 +228,51 @@ export function transportRequete({ poidsBrutKg, moyenTransport, nombreUnitesTran
   return champs;
 }
 
+/** Motifs d'un droit spécifique qui attend une quantité. */
+const MOTIFS_QUANTITE = new Set([
+  'QUANTITE_REQUISE',
+  'QUANTITE_COMPLEMENTAIRE_REQUISE',
+  'UNITES_DE_QUANTITE_MULTIPLES',
+]);
+
 /**
- * Ce que le moteur demande encore pour pouvoir liquider un droit spécifique.
+ * Les quantités des droits spécifiques de la position, UNE PAR UNITÉ.
  *
- * Trois états, et c'est la distinction qui compte :
- *   - rien n'est requis ;
- *   - une quantité est requise ET la source publie son unité (« kg ») : on
- *     peut la demander à l'opérateur, libellée dans cette unité ;
- *   - une quantité est requise mais la source NE publie PAS l'unité (cas du
- *     droit sanitaire vétérinaire tunisien, « 0.1 dinars » sans unité) :
- *     demander « un poids » y produirait un montant faux. On dit alors que
- *     l'unité n'est pas publiée, et on ne demande rien.
+ * Chaque droit spécifique nomme l'unité que publie la source (« kg »,
+ * « litre », « litre d'alcool contenu »…) : l'écran demande une quantité dans
+ * chacune, et le moteur sert à chaque droit celle de son unité (`quantites`).
+ * Une position à deux unités (Tunisie 0102.29 : par tête et au kilo) se
+ * liquide donc entière, au lieu qu'une quantité unique en serve une pour
+ * l'autre.
  *
- * Aucune position du socle ne mêle deux unités sur un même code (vérifié sur
- * les 54 pays) ; si cela arrivait, `uniteAmbigue` le signale plutôt que de
- * laisser une quantité unique servir deux unités différentes.
+ * Un droit dont la source ne publie PAS l'unité (droit sanitaire vétérinaire
+ * tunisien, « 0.1 dinars ») est rangé à part, dans `sansUnite` : demander un
+ * poids y produirait un montant faux, on dit seulement qu'elle manque.
  */
-export function quantiteRequise(npf) {
-  const manques = npf?.manques || [];
-  const codes = manques.filter((m) => m.motif === 'QUANTITE_REQUISE').map((m) => m.code);
-  if (codes.length === 0) return { requise: false, unite: null, uniteAmbigue: false, lignes: [] };
-
-  const lignes = (npf.lignes || [])
-    .filter((l) => codes.includes(l.code))
-    .map((l) => ({ code: l.code, libelle: l.libelle, specifique: l.specifique || null,
-      unite: l.unite_quantite || null }));
-
-  const unites = [...new Set(lignes.map((l) => l.unite).filter(Boolean))];
+export function quantiteRequise(npf, preference = null) {
+  const parUnite = new Map();
+  const sansUnite = [];
+  [npf, preference].forEach((bloc) => {
+    const enAttente = new Set((bloc?.manques || [])
+      .filter((m) => MOTIFS_QUANTITE.has(m.motif))
+      .map((m) => m.code));
+    (bloc?.lignes || []).forEach((l) => {
+      const droit = { code: l.code, libelle: l.libelle, specifique: l.specifique || null };
+      if (!l.unite_quantite) {
+        if (enAttente.has(l.code) && !sansUnite.some((d) => d.code === l.code)) sansUnite.push(droit);
+        return;
+      }
+      const entree = parUnite.get(l.unite_quantite) || { unite: l.unite_quantite, lignes: [], manquante: false };
+      if (!entree.lignes.some((d) => d.code === l.code)) entree.lignes.push(droit);
+      entree.manquante = entree.manquante || enAttente.has(l.code);
+      parUnite.set(l.unite_quantite, entree);
+    });
+  });
+  const unites = [...parUnite.values()];
   return {
-    requise: true,
-    unite: unites.length === 1 ? unites[0] : null,
-    uniteAmbigue: unites.length > 1,
-    lignes,
+    requise: unites.some((u) => u.manquante) || sansUnite.length > 0,
+    unites,
+    sansUnite,
   };
 }
 
@@ -648,7 +669,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // Ce qui manque encore pour liquider un droit spécifique — et dans quelle
     // unité le demander. L'écran s'en sert pour n'ouvrir un champ que là où il
     // sert, et pour le libeller avec l'unité que la source publie.
-    quantite_requise: quantiteRequise(npf),
+    quantite_requise: quantiteRequise(npf, hasPreference ? pref : null),
     valeur_fob_requise: valeurFobRequise(npf),
     _npf_etat: npf.etat,
     _zlecaf_etat: hasPreference ? pref.etat : null,

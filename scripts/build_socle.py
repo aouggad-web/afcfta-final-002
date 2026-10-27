@@ -4072,8 +4072,8 @@ def _accises_du_cgi(iso, positions, compteurs):
 
 def _lignes_liquidables(position):
     """Pour chaque ligne de la position : le moteur la liquide-t-il ? C'est le
-    moteur lui-même qui en juge (services/calcul.calculer), quantités, valeur
-    FOB et taux de change fournis : le compteur ne peut pas diverger de lui.
+    moteur lui-même qui en juge (services/calcul.calculer), quantités (une par
+    unité), valeur FOB et taux de change fournis : le compteur ne peut pas diverger de lui.
     Une TVA assise sur un DA sans taux, un droit spécifique illisible, un
     composé sans règle de départage ne comptent donc pas."""
     droits = position.get("droits") or []
@@ -4084,8 +4084,19 @@ def _lignes_liquidables(position):
         sys.path.insert(0, backend)
     from services.calcul import calculer
 
+    unites = {
+        d["specifique"]["unite_quantite"]
+        for d in droits
+        if isinstance(d.get("specifique"), dict) and d["specifique"].get("unite_quantite")
+    }
     lignes = calculer(
-        position, 1000.0, quantite=1.0, quantite_complementaire=1.0, taux_de_change=1.0, valeur_fob=1000.0
+        position,
+        1000.0,
+        quantite=1.0,
+        quantite_complementaire=1.0,
+        quantites={u: 1.0 for u in unites} or None,
+        taux_de_change=1.0,
+        valeur_fob=1000.0,
     )["npf"]["lignes"]
     statuts = collections.defaultdict(list)
     for ligne in lignes:

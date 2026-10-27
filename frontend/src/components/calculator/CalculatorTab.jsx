@@ -120,16 +120,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     authorizedTariffLines: '',
     authorizedGoods: '',
   });
-  // Quantité saisie pour les droits spécifiques (« 8c/kg »). Vide tant que
-  // le moteur ne l'a pas réclamée : le champ n'apparaît que sur les positions
-  // qui en portent un, et l'unité affichée est celle que la source publie.
-  const [quantity, setQuantity] = useState('');
+  // Quantités saisies pour les droits spécifiques (« 8c/kg », « 0,024 D/cl »),
+  // UNE PAR UNITÉ : `{ kg: '120', litre: '40' }`. Les champs n'apparaissent
+  // que sur les positions qui portent un droit spécifique, libellés dans
+  // l'unité que la source publie.
+  const [quantites, setQuantites] = useState({});
   // La quantité appartient à UNE position et à UNE destination. Sans ce
   // repère, un poids saisi pour une position serait renvoyé tel quel sur la
   // suivante — et liquiderait son droit spécifique sur une quantité qui n'est
   // pas la sienne. Le rapprochement est explicite plutôt que remis à un effet
   // de bord, qui s'exécuterait après l'appel qu'il doit protéger.
-  const [quantityFor, setQuantityFor] = useState(null);
+  const [quantitesFor, setQuantitesFor] = useState(null);
   // Afrique du Sud, VAT Act s.13(2)(b) : pour une origine BWA/LSO/NAM/SWZ,
   // la majoration de 10 % de la TVA dépend du pays d'expédition.
   const [expeditionSacu, setExpeditionSacu] = useState('unknown');
@@ -154,12 +155,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [modeAcheminement, setModeAcheminement] = useState('');
 
   // Vider le champ quand la position ou la destination change. La justesse ne
-  // dépend pas de cet effet — c'est `quantityFor` qui empêche une quantité de
+  // dépend pas de cet effet — c'est `quantitesFor` qui empêche une quantité de
   // servir sur une autre position, et il est évalué au moment de l'appel. Cet
   // effet évite seulement d'AFFICHER un poids qui n'est plus celui du calcul.
   useEffect(() => {
-    setQuantity('');
-    setQuantityFor(null);
+    setQuantites({});
+    setQuantitesFor(null);
     setFobValue('');
     setFobFor(null);
     setUsage('');
@@ -515,11 +516,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         cifValue: parseFloat(value),
         // `parseFloat('')` rend NaN : `buildCalculRequestBody` l'écarte, et
         // le moteur continue de réclamer la quantité au lieu de liquider
-        // le droit spécifique à zéro. Une quantité saisie pour une AUTRE
-        // position est écartée de la même façon.
-        quantite: quantityFor === `${destISO3}|${cleanHsCode}`
-          ? parseFloat(quantity)
-          : NaN,
+        // le droit spécifique à zéro. Des quantités saisies pour une AUTRE
+        // position sont écartées de la même façon.
+        quantites: quantitesFor === `${destISO3}|${cleanHsCode}`
+          ? Object.fromEntries(Object.entries(quantites).map(([u, v]) => [u, parseFloat(v)]))
+          : null,
         paysExpedition,
         dejaDedouaneSacu,
         valeurFob,
@@ -1260,23 +1261,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   classé par avantage. Trier par montant mettrait en tête le
                   régime dont les règles d'origine sont précisément ce que le
                   moteur ne vérifie pas. */}
-              {/* Droit spécifique : la quantité, demandée seulement là où elle sert.
+              {/* Droits spécifiques : UNE QUANTITÉ PAR UNITÉ, rattachée à la
+                  position nationale.
 
-                  Un droit publié « 8c/kg » ne se liquide pas sur la valeur. Le
-                  moteur rend alors QUANTITE_REQUISE et nomme l'unité que la
-                  source publie ; ce champ la reprend telle quelle. Trois cas,
-                  et ils ne se confondent pas :
+                  Un droit publié « 8c/kg » ou « 0,024 D/cl » ne se liquide pas
+                  sur la valeur. Chaque droit spécifique nomme l'unité que la
+                  source publie ; l'écran ouvre un champ par unité, et le
+                  moteur sert à chaque droit la quantité de la sienne. Une
+                  position à deux unités (par tête et au kilo ; kg et litres
+                  d'alcool contenu) se liquide donc entière.
 
-                  - unité publiée → on demande la quantité dans CETTE unité ;
-                  - unité non publiée (droit sanitaire vétérinaire tunisien,
-                    « 0.1 dinars » sans unité) → on ne demande RIEN et on dit
-                    pourquoi : demander « un poids » produirait un montant faux ;
-                  - deux unités divergentes sur la même position → une quantité
-                    unique en servirait une pour l'autre ; on refuse de même.
-
-                  0,9 % des positions sont concernées (3 260 sur 358 752) : le
-                  champ reste absent partout ailleurs. */}
-              {result.quantite_requise?.requise && (
+                  Un droit dont l'unité n'est pas publiée (droit sanitaire
+                  vétérinaire tunisien, « 0.1 dinars ») n'ouvre AUCUN champ :
+                  demander un poids y produirait un montant faux. On le dit. */}
+              {(result.quantite_requise?.unites?.length > 0
+                || result.quantite_requise?.sansUnite?.length > 0) && (
                 <div
                   className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl"
                   data-testid="quantite-requise"
@@ -1286,65 +1285,75 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <div className="w-full">
                       <p className="text-[var(--gold)] font-semibold text-sm">
                         {language === 'fr'
-                          ? 'Droit spécifique : quantité nécessaire'
-                          : 'Specific duty: quantity required'}
+                          ? 'Droits spécifiques : quantités par unité'
+                          : 'Specific duties: quantities per unit'}
                       </p>
 
-                      <div className="mt-2 space-y-1">
-                        {result.quantite_requise.lignes.map((l) => (
-                          <p key={l.code} className="text-[var(--gold)] text-xs">
-                            <span className="font-mono">{l.code}</span> — {l.libelle}
-                            {l.specifique ? ` : ${l.specifique}` : ''}
-                          </p>
-                        ))}
-                      </div>
-
-                      {result.quantite_requise.unite ? (
-                        <div className="mt-3 flex flex-wrap items-end gap-2">
-                          <div>
-                            <label
-                              className="block text-[var(--gold)] text-xs mb-1"
-                              htmlFor="quantite-droit-specifique"
-                            >
-                              {language === 'fr'
-                                ? `Quantité importée (${result.quantite_requise.unite})`
-                                : `Imported quantity (${result.quantite_requise.unite})`}
-                            </label>
-                            <input
-                              id="quantite-droit-specifique"
-                              data-testid="quantite-saisie"
-                              type="number"
-                              min="0"
-                              step="any"
-                              value={quantity}
-                              onChange={(e) => {
-                                setQuantity(e.target.value);
-                                setQuantityFor(result._quantite_cle);
-                              }}
-                              className="w-40 px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
-                              placeholder={result.quantite_requise.unite}
-                            />
-                          </div>
+                      {result.quantite_requise.unites.length > 0 && (
+                        <div className="mt-3 flex flex-wrap items-end gap-3">
+                          {result.quantite_requise.unites.map((u) => (
+                            <div key={u.unite} data-testid="quantite-unite">
+                              <label
+                                className="block text-[var(--gold)] text-xs mb-1"
+                                htmlFor={`quantite-${u.unite}`}
+                              >
+                                {language === 'fr' ? `Quantité (${u.unite})` : `Quantity (${u.unite})`}
+                                {u.manquante && (language === 'fr' ? ' — requise' : ' — required')}
+                              </label>
+                              <input
+                                id={`quantite-${u.unite}`}
+                                data-testid="quantite-saisie"
+                                type="number"
+                                min="0"
+                                step="any"
+                                value={quantitesFor === result._quantite_cle ? (quantites[u.unite] ?? '') : ''}
+                                onChange={(e) => {
+                                  const valeur = e.target.value;
+                                  setQuantites((avant) => ({
+                                    ...(quantitesFor === result._quantite_cle ? avant : {}),
+                                    [u.unite]: valeur,
+                                  }));
+                                  setQuantitesFor(result._quantite_cle);
+                                }}
+                                className="w-40 px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
+                                placeholder={u.unite}
+                              />
+                              <p className="text-[var(--gold)] text-xs mt-1">
+                                {u.lignes.map((l) => (
+                                  <span key={l.code} className="block">
+                                    <span className="font-mono">{l.code}</span>
+                                    {l.specifique ? ` : ${l.specifique}` : ''}
+                                  </span>
+                                ))}
+                              </p>
+                            </div>
+                          ))}
                           <Button
                             type="button"
                             data-testid="quantite-recalculer"
                             onClick={() => calculateTariff()}
-                            disabled={loading || !(parseFloat(quantity) > 0)}
+                            disabled={loading || !Object.values(quantites).some((v) => parseFloat(v) > 0)}
                             className="bg-amber-600 hover:bg-amber-700"
                           >
                             {language === 'fr' ? 'Recalculer' : 'Recalculate'}
                           </Button>
                         </div>
-                      ) : (
-                        <p className="text-[var(--gold)] text-xs mt-3">
-                          {result.quantite_requise.uniteAmbigue
-                            ? (language === 'fr'
-                              ? "Cette position porte deux droits spécifiques exprimés dans des unités différentes : une quantité unique en liquiderait un dans la mauvaise unité. Le total reste incomplet."
-                              : 'This line carries two specific duties expressed in different units: a single quantity would settle one of them in the wrong unit. The total remains incomplete.')
-                            : (language === 'fr'
+                      )}
+
+                      {result.quantite_requise.sansUnite.length > 0 && (
+                        <div className="mt-3 space-y-1">
+                          {result.quantite_requise.sansUnite.map((l) => (
+                            <p key={l.code} className="text-[var(--gold)] text-xs">
+                              <span className="font-mono">{l.code}</span> — {l.libelle}
+                              {l.specifique ? ` : ${l.specifique}` : ''}
+                            </p>
+                          ))}
+                          <p className="text-[var(--gold)] text-xs">
+                            {language === 'fr'
                               ? "La source ne publie pas l'unité de quantité de ce droit. Demander un poids ici produirait un montant faux : le total reste incomplet tant que l'unité n'est pas établie."
-                              : 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.')}
-                        </p>
+                              : 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.'}
+                          </p>
+                        </div>
                       )}
                     </div>
                   </div>

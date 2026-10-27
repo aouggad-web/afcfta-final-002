@@ -498,8 +498,10 @@ def test_le_compteur_reprend_les_refus_du_moteur(droit, attendu):
     assert _liquidables(droit) == [attendu]
 
 
-def test_des_unites_de_quantite_melees_ne_sont_pas_liquidables():
+def test_des_unites_de_quantite_melees_se_liquident_une_quantite_par_unite():
+    """Le moteur reçoit une quantité par unité (`quantites`) : deux droits au
+    kilo et au litre se liquident chacun sur la sienne."""
     assert _liquidables(
         {"code": "A", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "kg"}, "assiette": "xQTE"},
         {"code": "B", "taux": None, "specifique": {"montant": 1.0, "unite_quantite": "l"}, "assiette": "xQTE"},
-    ) == [False, False]
+    ) == [True, True]

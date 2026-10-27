@@ -3,6 +3,7 @@ import {
   buildCalculRequestBody,
   localiserResultat,
   mapCalculToLegacyResult,
+  quantiteRequise,
   remiseRequete,
   reserveConversion,
   tauxDeChangePour,
@@ -589,8 +590,10 @@ describe('quantité requise par un droit spécifique', () => {
     };
     const res = mapCalculToLegacyResult(calcul, contexte);
     expect(res.quantite_requise).toEqual({
-      requise: true, unite: 'kg', uniteAmbigue: false,
-      lignes: [{ code: 'DD', libelle: 'General Customs Duty', specifique: '8c/kg', unite: 'kg' }],
+      requise: true,
+      unites: [{ unite: 'kg', manquante: true,
+        lignes: [{ code: 'DD', libelle: 'General Customs Duty', specifique: '8c/kg' }] }],
+      sansUnite: [],
     });
   });
 
@@ -607,11 +610,11 @@ describe('quantité requise par un droit spécifique', () => {
     };
     const res = mapCalculToLegacyResult(calcul, contexte);
     expect(res.quantite_requise.requise).toBe(true);
-    expect(res.quantite_requise.unite).toBeNull();
-    expect(res.quantite_requise.uniteAmbigue).toBe(false);
+    expect(res.quantite_requise.unites).toEqual([]);
+    expect(res.quantite_requise.sansUnite.map((l) => l.code)).toEqual(['DSV']);
   });
 
-  it('signale deux unités divergentes au lieu de servir une quantité unique', () => {
+  it('ouvre un champ par unité quand la position en porte deux', () => {
     const calcul = {
       npf: {
         lignes: [
@@ -626,14 +629,14 @@ describe('quantité requise par un droit spécifique', () => {
       },
     };
     const res = mapCalculToLegacyResult(calcul, contexte);
-    expect(res.quantite_requise.uniteAmbigue).toBe(true);
-    expect(res.quantite_requise.unite).toBeNull();
+    expect(res.quantite_requise.unites.map((u) => [u.unite, u.lignes.map((l) => l.code)]))
+      .toEqual([['kg', ['DD']], ['li', ['ACC']]]);
   });
 
   it("ne réclame rien quand aucun droit spécifique n'est en cause", () => {
     const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1200 } };
     const res = mapCalculToLegacyResult(calcul, contexte);
-    expect(res.quantite_requise).toEqual({ requise: false, unite: null, uniteAmbigue: false, lignes: [] });
+    expect(res.quantite_requise).toEqual({ requise: false, unites: [], sansUnite: [] });
   });
 
   it("ne confond pas un autre manque avec une quantité manquante", () => {
@@ -782,5 +785,35 @@ describe("usage déclaré de la marchandise (Égypte, Taxe de Table)", () => {
     const usages = { possibles: [{ code: 'PESTICIDE_AGRICOLE', libelle: 'Pesticide agricole' }], applique: null };
     const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1100 }, usages };
     expect(mapCalculToLegacyResult(calcul, contexte).usages).toEqual(usages);
+  });
+});
+
+describe('quantités par unité', () => {
+  const specifiqueLigne = (over) => ligne({ assiette: 'xQTE', taux_pct: null, specifique: '0.1 dinars',
+    unite_quantite: 'nombre', statut: 'CALCULE', montant: 0.3, ...over });
+
+  it('garde les champs ouverts une fois les quantités saisies, sans les dire requises', () => {
+    const npf = { etat: 'COMPLET', manques: [],
+      lignes: [ligne(), specifiqueLigne(), specifiqueLigne({ code: 'PV', unite_quantite: 'kg' })] };
+    const res = quantiteRequise(npf);
+    expect(res.requise).toBe(false);
+    expect(res.unites.map((u) => [u.unite, u.manquante])).toEqual([['nombre', false], ['kg', false]]);
+  });
+
+  it('réclame la quantité complémentaire dans son unité (litres d\'alcool contenu)', () => {
+    const npf = { etat: 'PARTIEL',
+      lignes: [specifiqueLigne({ code: 'DCALC', assiette: 'xQTC', unite_quantite: "litre d'alcool contenu",
+        statut: 'QUANTITE_COMPLEMENTAIRE_REQUISE', montant: null })],
+      manques: [{ code: 'DCALC', motif: 'QUANTITE_COMPLEMENTAIRE_REQUISE' }] };
+    expect(quantiteRequise(npf).unites).toEqual([{ unite: "litre d'alcool contenu", manquante: true,
+      lignes: [{ code: 'DCALC', libelle: 'Droit de douane', specifique: '0.1 dinars' }] }]);
+  });
+
+  it("n'envoie que les quantités strictement positives, une par unité", () => {
+    const base = { destinationISO3: 'TUN', hsCode: '0102290001', cifValue: 1000 };
+    expect(buildCalculRequestBody({ ...base, quantites: { nombre: 3, kg: 1500, litre: NaN, li: 0 } }))
+      .toHaveProperty('quantites', { nombre: 3, kg: 1500 });
+    expect(buildCalculRequestBody({ ...base, quantites: { kg: NaN } })).not.toHaveProperty('quantites');
+    expect(buildCalculRequestBody({ ...base, quantites: null })).not.toHaveProperty('quantites');
   });
 });
