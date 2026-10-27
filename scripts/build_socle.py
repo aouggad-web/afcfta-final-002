@@ -1133,6 +1133,17 @@ _EXPORT_KEN_PEAUX = (
     "unité (kg, pièce ?) : la redevance est d'au moins 50 % de la valeur en douane, son montant n'est pas établi.",
 )
 _EXPORT_KEN_DECHETS = (20.0, None, None)
+# Afrique du Sud, Schedule 1 Part 6 : le taux dépend de la destination
+# (note 2) ; la colonne servie est celle de la ZLECAf, les autres sont dites.
+def _export_zaf(taux_afcfta, eu_uk):
+    return (
+        taux_afcfta, None,
+        f"Schedule 1 Part 6 A, colonne AfCFTA (= General) : {taux_afcfta:g} %. Selon la destination : SADC et AELE "
+        f"en franchise, UE / Royaume-Uni {eu_uk}, Mercosur {taux_afcfta:g} %. Une expédition de ferrailles mélangées "
+        "paie le taux le plus élevé (note 3).",
+    )
+
+
 EXPORT_PAR_TEXTE = {
     "GHA": (
         "Customs (Amendment) Act, 2015 (Act 905), Fourth Schedule — Export Duty "
@@ -1204,6 +1215,18 @@ EXPORT_PAR_TEXTE = {
                 "72044900", "72045000", "72051000", "79020000", "80020000", "81029400", "81029700", "81033000",
                 "81042000", "8105", "81061000", "81069000", "81093100", "81126100", "81083000", "81102000",
                 "81121300", "81122200", "81125200", "81129200")},
+        },
+    ),
+    "ZAF": (
+        "Customs and Excise Act, Schedule 1 Part 6 Section A — export duty on scrap metal, SARS (date : 2021-08-01) "
+        "(sources/ZAF_SARS_schedule1_part6_export_duty_2021-08-01.pdf)",
+        None,
+        {
+            **{p: _export_zaf(20.0, "10 %") for p in ("720410", "720429", "720430", "720441", "720449")},
+            "720421": _export_zaf(15.0, "10 %"),
+            "720450": _export_zaf(20.0, "en franchise"),
+            "7404": _export_zaf(10.0, "10 %"),
+            "7602": _export_zaf(15.0, "10 %"),
         },
     ),
     # Export Tax Act (Cap. 196), Schedule : taux sur la valeur FOB ; un taux

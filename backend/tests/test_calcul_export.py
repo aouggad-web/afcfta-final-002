@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -372,6 +372,16 @@ def test_tza_hors_annexe_aucun_droit(client):
     corps = client.post("/calcul/export", json={
         "pays": "TZA", "code_sh": "09011100", "valeur": 1_000, "devise": "TZS"}).json()
     assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
+
+
+def test_zaf_ferrailles_colonne_zlecaf(client):
+    """Schedule 1 Part 6 A : colonne AfCFTA ; la note dit les autres destinations."""
+    export = _export(client, pays="ZAF", code_sh="720421", valeur=100_000, devise="ZAR")
+    ligne = _ligne(export, "EXPORT")
+    assert (export["etat"], ligne["montant"]) == ("COMPLET", pytest.approx(15_000))
+    assert "SADC" in ligne["note"]
+    assert _ligne(_export(client, pays="ZAF", code_sh="74040010", valeur=100_000, devise="ZAR"),
+                  "EXPORT")["montant"] == pytest.approx(10_000)
 
 def test_pays_sans_droit_export_au_socle(client):
     reponse = client.post("/calcul/export", json={"pays": "UGA", "code_sh": "09011100", "valeur": 1000})

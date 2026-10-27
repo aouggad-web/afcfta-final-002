@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "objet": "Afrique du Sud : droits de sortie sur les ferrailles (Schedule 1 Part 6 Section A du Customs and Excise Act)",
+  "destination_iso3": "ZAF",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : Schedule 1 Part 6 publiée par la SARS (document daté du 2021-08-01)",
+  "source": {
+    "url": "https://www.sars.gov.za/legal-lprim-ce-sch1p6-schedule-no-1-part-6",
+    "institution": "South African Revenue Service"
+  },
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ZAF_SARS_schedule1_part6_export_duty_2021-08-01.pdf",
+      "sha256": "dca833f5b4cfaedf0e08dee70eae04fea822675cbc3740001280ea5cbf8df306"
+    }
+  ],
+  "regle": {
+    "valeur": "Export duty on scrap metal, colonnes General / EU-UK / EFTA / SADC / MERCOSUR / AfCFTA : 7204.10, 7204.29, 7204.30, 7204.41, 7204.49 20 % / 10 % / free / free / 20 % / 20 % ; 7204.21 15 % / 10 % / free / free / 15 % / 15 % ; 7204.50 20 % / free / free / free / 20 % / 20 % ; 7404.00 10 % / 10 % / free / free / 10 % / 10 % ; 7602.00 15 % / 10 % / free / free / 15 % / 15 %.",
+    "reference": "Customs and Excise Act, 1964, Schedule 1 Part 6 Section A, items 193.01 à 193.05",
+    "verbatim_note_2": "The rate of export duty specified in each column under “Rate of export duty” shall apply when goods are exported to the territory specified in the header of the column",
+    "verbatim_note_3": "When the metals specified in this Section are exported in a consignment containing a mixture of different scrap metals the highest rate of export duty shall be used"
+  },
+  "ne_tranche_pas": "La destination de l'exportation, que le calcul ne connaît pas : la colonne AfCFTA est servie, les autres colonnes sont dites dans la note ; l'éventuelle modification de la Part 6 après le 1er août 2021 (date du document publié) ; le permis ITAC requis à l'export de ferrailles ; les autres perceptions sud-africaines à l'exportation hors Schedule 1 Part 6 (Diamond Export Levy notamment).",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "18 positions nationales du socle : 7204.10, 7204.21, 7204.29, 7204.30, 7204.41, 7204.49, 7204.50, 7404.00.x, 7602.00.x ; positions absentes de la Section A : aucun droit de sortie.",
+    "devise": "Ad valorem : aucun taux de change.",
+    "reserves": "Pour une destination de la SADC ou de l'AELE (franchise) ou de l'UE / du Royaume-Uni (10 % ou franchise), le montant servi ne vaut pas : la note de la ligne le dit."
+  }
+}
