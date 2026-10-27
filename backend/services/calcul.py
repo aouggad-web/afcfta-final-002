@@ -42,6 +42,12 @@ Les huit primitives, et rien d'autre :
                              liquidé à la quantité tarifaire.
 ===========================  ================================================
 
+Les deux primitives de quantité se liquident aussi par UNITÉ : ``quantites``
+(``{"kg": 120, "litre": 40}``) sert à chaque droit spécifique la quantité
+saisie dans l'unité que nomme son ``unite_quantite``. Une position qui porte
+deux droits dans deux unités (Tunisie 0102.29 : par tête et au kilo) se
+liquide alors entière, au lieu de rester ``UNITES_DE_QUANTITE_MULTIPLES``.
+
 Plus un modificateur, ``plafond``, qui borne l'assiette.
 
 Trois règles gouvernent tout le reste :
@@ -402,6 +408,7 @@ def _liquider(
     valeur_fob: Optional[float] = None,
     devise_position: Optional[str] = None,
     quantite_complementaire: Optional[float] = None,
+    quantites: Optional[Dict[str, float]] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     # Omise, la devise de la valeur déclarée est celle du tarif national
@@ -522,6 +529,15 @@ def _liquider(
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")
+        # La quantité de CETTE ligne : celle saisie dans l'unité que le droit
+        # nomme, quand la demande en porte une par unité ; sinon la quantité
+        # unique (ou complémentaire, pour « xQTC »).
+        unite_ligne = specifique.get("unite_quantite") if isinstance(specifique, dict) else None
+        par_unite = bool(quantites) and unite_ligne in quantites
+        quantite_ligne = quantites[unite_ligne] if par_unite else quantite
+        quantite_complementaire_ligne = (
+            quantites[unite_ligne] if par_unite else quantite_complementaire
+        )
         if (
             taux == 0
             and specifique is None
@@ -648,15 +664,20 @@ def _liquider(
             cif,
             calcules,
             echecs,
-            quantite,
+            quantite_ligne,
             taux_de_change,
             codes_de_la_position,
             valeur_fob,
             devise_valeur,
-            quantite_complementaire,
+            quantite_complementaire_ligne,
         )
         ligne.update(detail)
-        if droit.get("assiette") == "xQTE" and len(unites_de_quantite) > 1 and manque is None:
+        if (
+            droit.get("assiette") == "xQTE"
+            and len(unites_de_quantite) > 1
+            and manque is None
+            and not par_unite
+        ):
             manque = MANQUE_UNITES
             ligne["unites_de_la_position"] = sorted(unites_de_quantite)
         # « 110c/kg less 80% » et « 450c/kg with a maximum of 96% » : la
@@ -675,7 +696,7 @@ def _liquider(
                 cif,
                 calcules,
                 echecs,
-                quantite,
+                quantite_ligne,
                 taux_de_change,
                 codes_de_la_position,
                 valeur_fob,
@@ -716,7 +737,7 @@ def _liquider(
             motif = None
             if unitaire is None:
                 motif = MANQUE_TAUX
-            elif quantite is None:
+            elif quantite_ligne is None:
                 motif = MANQUE_QUANTITE
             elif devise_specifique in (None, "unite_principale"):
                 # Publié dans la devise nationale du tarif (« 8c/kg »).
@@ -742,7 +763,7 @@ def _liquider(
                 echecs.append({"code": code, "famille": ligne["famille"]})
                 lignes.append(ligne)
                 continue
-            montant_specifique = quantite * unitaire * facteur
+            montant_specifique = quantite_ligne * unitaire * facteur
             ligne["composantes"]["ad_valorem_montant"] = round(montant, 4)
             ligne["composantes"]["specifique_montant"] = round(montant_specifique, 4)
             montant += montant_specifique
@@ -752,12 +773,12 @@ def _liquider(
         # l'opérateur doit pouvoir constater POURQUOI il paie ce montant-là.
         if compose_departage:
             unitaire = _montant_unitaire(specifique)
-            if quantite is None or unitaire is None:
+            if isinstance(specifique, dict) and specifique.get("unite_quantite"):
+                ligne["unite_quantite"] = specifique["unite_quantite"]
+            if quantite_ligne is None or unitaire is None:
                 ligne["statut"] = MANQUE_QUANTITE
                 ligne["montant"] = None
                 ligne["expression_brute"] = droit.get("expression_brute")
-                if isinstance(specifique, dict) and specifique.get("unite_quantite"):
-                    ligne["unite_quantite"] = specifique["unite_quantite"]
                 manques.append({"code": code, "motif": MANQUE_QUANTITE})
                 echecs.append({"code": code, "famille": ligne["famille"]})
                 lignes.append(ligne)
@@ -787,7 +808,7 @@ def _liquider(
                 echecs.append({"code": code, "famille": ligne["famille"]})
                 lignes.append(ligne)
                 continue
-            montant_specifique = quantite * unitaire * facteur
+            montant_specifique = quantite_ligne * unitaire * facteur
             if deduction_pct is not None:
                 # « 10% or 55c/kg less 90% » : la B.3 compare deux taux
                 # complets, donc la part spécifique nette de sa déduction.
@@ -918,6 +939,7 @@ def calculer(
     couverture: Optional[Dict[str, Any]] = None,
     valeur_fob: Optional[float] = None,
     quantite_complementaire: Optional[float] = None,
+    quantites: Optional[Dict[str, float]] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -935,6 +957,10 @@ def calculer(
 
     ``quantite_complementaire`` : la quantité qu'une assiette ``xQTC`` nomme
     à part de la quantité tarifaire (litres d'alcool contenu, en Tunisie).
+
+    ``quantites`` : une quantité par unité de droit spécifique
+    (``{"kg": 120, "litre d'alcool contenu": 2}``). Elle prime, pour son unité,
+    sur ``quantite`` et ``quantite_complementaire``.
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
@@ -965,6 +991,7 @@ def calculer(
             valeur_fob,
             devise_position,
             quantite_complementaire,
+            quantites,
         ),
     }
     if valeur_fob is not None:
@@ -982,6 +1009,7 @@ def calculer(
             valeur_fob,
             devise_position,
             quantite_complementaire,
+            quantites,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont
