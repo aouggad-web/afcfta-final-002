@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "objet": "Kenya : export levy du Miscellaneous Fees and Levies Act (Cap. 469C), s. 5 et First Schedule",
+  "destination_iso3": "KEN",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : version consolidée Kenya Law (Legislation as at 1 January 2026) versée au dépôt",
+  "source": {
+    "url": "https://new.kenyalaw.org/akn/ke/act/2016/29/eng@2026-01-01",
+    "institution": "National Council for Law Reporting (Kenya Law)"
+  },
+  "documents_archives": [
+    {
+      "texte_archive": "sources/KEN_MFLA_export_levy_first_schedule.texte-extrait.txt",
+      "sha256": "6ca94fdc113fe76aed92f5fbb18c294042b3d5e96fdfebb2346e6e13a0fbdc38"
+    }
+  ],
+  "regle": {
+    "valeur": "Export levy payée par l'exportateur sur les biens de la First Schedule, Part I : mélasse (1703) 20 % de la valeur en douane ; minerais de fer (2601) USD 175 la tonne ; cuirs, peaux et pelleteries brutes (41.01 à 41.04.19, 43.01, 43.02) « 50% or USD 0.32 whichever is higher » ; déchets et débris de métaux précieux, de fer, de zinc, d'étain et de métaux du chapitre 81 (dont toute la position 81.05) 20 %. Part II : la Part I ne s'applique pas aux exportations vers les EPZ et SEZ.",
+    "reference": "Miscellaneous Fees and Levies Act (Cap. 469C), s. 2 (« customs value » : pour l'export levy, la valeur à l'exportation), s. 5 et First Schedule",
+    "verbatim_s5_2": "The levy shall, where more than one rate is speciﬁed, be the higher of the ad valorem or the speciﬁc rate speciﬁed in the First Schedule and shall be paid by the exporter at the time of entering the goods for export.",
+    "verbatim_s5_3": "The ad valorem rate shall be based on the custom value of the goods.",
+    "verbatim_minerai": "USD 175 per tonne",
+    "verbatim_peaux": "50% or USD 0.32 whichever is higher",
+    "verbatim_part_ii": "Part I shall not apply to exports to Export Processing Zones or Special Economic Zones."
+  },
+  "ne_tranche_pas": "L'unité de la part spécifique « USD 0.32 » (kg ou pièce) ; l'effet de l'indexation annuelle de la Part III, dont l'article d'ancrage (s. 5(4)) a été supprimé en 2023 ; le contenu exact des amendements non intégrés à la version consolidée (Act No. 6 of 2026 sur la redevance ferroviaire, Act No. 12 of 2026, loi de finances 2026, que la synthèse EY ne décrit pas comme touchant la First Schedule).",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "54 positions nationales du socle (tarif EAC) : 1703 et chapitres 72, 79, 80, 81 et 7112 à 20 % ; 2601 à USD 175 la tonne ; cuirs, peaux et pelleteries à établir (unité du spécifique non publiée) ; positions absentes de l'annexe (ex. 7204.21, déchets d'aciers inoxydables) : aucune export levy.",
+    "devise": "Le spécifique du minerai de fer est publié en USD : sur une valeur en KES, le calcul demande « 1 USD = ? KES ».",
+    "reserves": "Exportations vers les EPZ et SEZ non distinguées (Part II) : le calcul vaut pour une exportation hors du Kenya."
+  }
+}

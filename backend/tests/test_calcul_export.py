@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -316,8 +316,35 @@ def test_mli_exportateur_regi_par_le_code_minier(client):
     assert corps["export"]["lignes"] == []
 
 
+
+def test_ken_melasse_vingt_pour_cent(client):
+    """First Schedule : molasses, « 20% of the customs value »."""
+    export = _export(client, pays="KEN", code_sh="17031000", valeur=1_000_000, devise="KES")
+    assert (export["etat"], _ligne(export, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(200_000))
+
+
+def test_ken_minerai_de_fer_en_dollars_la_tonne(client):
+    """« USD 175 per tonne » : en USD, aucun change ; en KES, la paire est dite."""
+    usd = _export(client, pays="KEN", code_sh="26011100", valeur=100_000, devise="USD", quantite=10)
+    assert _ligne(usd, "EXPORT")["montant"] == pytest.approx(1_750)
+    corps = client.post("/calcul/export", json={
+        "pays": "KEN", "code_sh": "26011100", "valeur": 10_000_000, "devise": "KES", "quantite": 10}).json()
+    assert corps["change_requis"] == [{"devise_droit": "USD", "devise_valeur": "KES"}]
+
+
+def test_ken_peaux_unite_du_specifique_non_publiee(client):
+    """« 50% or USD 0.32 whichever is higher » : sans unité, le plus élevé ne se calcule pas."""
+    ligne = _ligne(_export(client, pays="KEN", code_sh="41012000", valeur=1_000_000, devise="KES"), "EXPORT")
+    assert ligne["montant"] is None and "unité" in ligne["note"]
+
+
+def test_ken_hors_annexe_aucun_droit(client):
+    corps = client.post("/calcul/export", json={
+        "pays": "KEN", "code_sh": "72042100", "valeur": 1_000, "devise": "KES"}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
+
 def test_pays_sans_droit_export_au_socle(client):
-    reponse = client.post("/calcul/export", json={"pays": "KEN", "code_sh": "0901110000", "valeur": 1000})
+    reponse = client.post("/calcul/export", json={"pays": "UGA", "code_sh": "09011100", "valeur": 1000})
     assert reponse.status_code == 404
 
 

@@ -1,0 +1,326 @@
+Kenya — Export levy (Miscellaneous Fees and Levies Act, Cap. 469C, s. 2, s. 5 et First Schedule) : extrait verbatim (relevé le 2026-10-27)
+
+Version consolidée Kenya Law « Legislation as at 1 January 2026 », versée au dépôt :
+data/sources/kenya/official/miscellaneous-fees-levies-act-cap-469c-2026-01-01.pdf (sha256 1b62badc5375a5d8ffd18a6513750ba37a4dbde2b6c40c7c01dd0bf2896a4789).
+La page de garde signale deux amendements non intégrés : Act No. 6 of 2026 et Act No. 12 of 2026.
+Texte extrait par pdftotext -layout, sans retouche.
+
+--- s. 2 (définition) ---
+             "customs value" for the purposes of ascertaining the value for charging, means—
+
+              (a) the import declaration fee or railway development levy, the import value of goods as
+                  appraised by Customs for use as the basis for assessing the amount of import duty; or
+
+
+
+                                                                                                             1
+Miscellaneous Fees and Levies Act (Cap. 469C)                                                                Kenya
+
+
+
+
+              (b)   the export levy, the export value of the goods;
+
+--- s. 5 ---
+ 5. Imposition of export levy
+       (1)   There shall be paid a levy to be known as the export levy, on all goods speciﬁed in the First
+             Schedule.
+
+       (2)   The levy shall, where more than one rate is speciﬁed, be the higher of the ad valorem or the speciﬁc
+             rate speciﬁed in the First Schedule and shall be paid by the exporter at the time of entering the
+             goods for export.
+
+       (3)   The ad valorem rate shall be based on the custom value of the goods.
+
+       (4)   Deleted by Act No. 4 of 2023, s. 69.
+
+                                                    [Act No. 4 of 2023, s. 69.]
+
+
+--- First Schedule ---
+                                         FIRST SCHEDULE [s. 5(1)]
+
+                                    GOODS SUBJECT TO EXPORT LEVY
+  [Act No. 15 of 2017, s. 58, Act No. 22 of 2022, s. 50, LN 177 of 2022, LN 203 of 2022, Act No. 4 of 2023, s. 72.]
+
+
+
+                                                      PART I
+
+
+
+
+ Tariff No.    Tariff Description                                                         Export Levy Rate
+
+
+ 1703          Molasses resulting from the extraction or reﬁning of sugar                 20% of the customs
+                                                                                          value
+
+
+ 2601          Iron ores and concentrates, including roasted iron pyrites                 USD 175 per tonne
+
+
+ 4101.20.00 Whole unsplit hides and skins, of a weight per skin not exceeding 8           50% or USD 0.32
+            kg when simply dried, 10kg when dry salted, or 16kg when fresh, wet           whichever is higher
+            salted or otherwise preserved
+
+
+ 4102.21.00 Raw skins of sheep or lambs (pickled, but not tanned, parchment-              50% or USD 0.32
+            dressed or further prepared), without wool on whether or not split,           whichever is higher
+            other than those excluded by Note 1(c) to Chapter 41.
+
+
+ 4102.29.00 Other raw skins of sheep or lamb (fresh, or salted, dried, limed,             50% or USD 0.32
+            pickled or otherwise preserved, but not tanned, parchment-dressed or          whichever is higher
+            further prepared), without wool on, whether or not split, other than
+            those excluded by Note (c) to Chapter 41
+
+
+ 4103.20.00 Other raw hides and skins (fresh, or salted, dried, limed, pickled or         50% or USD 0.32
+            otherwise preserved, but not tanned, parchment-dressed or further             whichever is higher.
+            prepared), whether or not debarred or split, other than those excluded
+            by Note 1 (b) or (c) to this Chapter, of reptiles.
+
+
+ 4103.30.00 Other raw hides and skins (fresh, or salted, dried, limed, pickled or         50% or USD 0.32
+            otherwise preserved, but not tanned, parchment-dressed or further             whichever is higher
+            prepared), but not debarred or split, other than those excluded by
+            Note 1 (b) or 1 (c) to this Chapter, of swine.
+
+
+
+
+                                                                                                                      6
+Miscellaneous Fees and Levies Act (Cap. 469C)                                                               Kenya
+
+
+
+
+ 4103.90.00 Other raw hides and skins other than of reptiles, swine, goats or kids.   50% or USD 0.32
+                                                                                      whichever is higher.
+
+
+ 4104.19.00 Other tanned or crust hides and skins of bovine (including buffalo) or    50% or USD 0.32
+            equine animals, without hair on, whether or not split, but not further    whichever is higher
+            prepared, in the wet state (including wet - blue).
+
+
+ 4301.60.00 Raw furskins of fox, whole, with or without head, tail or paws.           50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4101.50.00 Whole hides and skins, of weight exceeding 16 kg.                         50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4101.90.00 Other, including butts, bends and bellies.                                50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4102.10.00 Raw skins of sheep or lamb (fresh, or salted, dried, limed, pickled or    50% or USD 0.32
+            otherwise preserved, but not tanned, parchment-dressed or further         whichever is higher
+            prepared), with wool on, whether or not split, other than those
+            excluded by Note 1(c) to Chapter 41.
+
+
+ 4301.10.00 Raw furskins of mink, whole, with or without head, tail or paws.          50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4301.30.00 Raw furskins of lamb, the following: Astrkhan, broadtail, Caracul,        50% or USD 0.32
+            Persian and similar lamb, Indian, Chinese, Mongolian or Tibetan           whichever is higher
+            lamb, whole, with or without head, tail or paws.
+
+
+ 4301.80.00 Other raw furskins, whole, with or without head, tail or paws.            50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4301.90.00 Heads, tail, paws,and other pieces or cuttings, suitable for furriers’    50% or USD 0.32
+            use.                                                                      whichever is higher
+
+
+ 4302.11.00 Whole skins, with or without head, tail or paws, not assembled, of        50% or USD 0.32
+            mink.                                                                     whichever is higher
+
+
+ 4302.19.00 Other whole skins, with or without head, tail or paws, not assembled.     50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4302.20.00 Heads, tails, paws and other pieces or cuttings, not assembled.           50% or USD 0.32
+                                                                                      whichever is higher
+
+
+ 4302.30.00 Whole skins and pieces or cuttings thereof, assembled.                    50% or USD 0.32
+                                                                                      whichever is higher
+
+
+
+
+                                                                                                               7
+Miscellaneous Fees and Levies Act (Cap. 469C)                                             Kenya
+
+
+
+
+ 7112.30.00 Waste and scrap of precious metal or of metal clad with precious        20%
+            metal; other waste and scrap containing precious metal or precious
+            metal compounds of a kind used principally for the recovery of
+            precious metal of ash containing precious metal or precious metal
+            compounds.
+
+
+ 7112.91.00 Other waste and scrap of precious metal or precious metal compounds     20%
+            of a kind used principally for the recovery of precious metal of gold
+            including metal clad with gold.
+
+
+ 7112.92.00 Other waste and scraps of precious metal or precious metal              20%
+            compounds of a kind used principally for the recovery of precious
+            metal of platinum, including metal clad with platinum.
+
+
+ 7112.99.00 Other waste and scrap of precious metal or metal clad with precious     20%
+            metal, other waste and scrap containing precious metal compounds,
+            of a kind used principally for the recovery of precious metal.
+
+
+ 7204.10.00 Waste and scrap of cast of iron.                                        20%
+
+
+ 7204.29.00 Waste and scrap of other alloy or steel.                                20%
+
+
+ 7204.30.00 Waste and scrap of tinned iron steel.                                   20%
+
+
+ 7204.41.00 Turnings, shavings, chips, milling waste, sawdust, ﬁllings, trimmings   20%
+            and stampings, whether or not in bundles, or iron or steel.
+
+
+ 7204.49.00 Other waste and scrap or iron or steel                                  20%
+
+
+ 7204.50.00 Remelting scrap ingots                                                  20%
+
+
+ 7205.10.00 Granules of pig iron, spiegeleisen, iron or steel.                      20%
+
+
+ 7902.00.00 Zinc waste and scrap.                                                   20%
+
+
+ 8002.00.00 Tin waste and scrap.                                                    20%
+
+
+ 8102.94.00 Unwrought molybdenum including bars and rods obtained simply by         20%
+            sintering; waste and scrap.
+
+
+ 8102.97.00 Waste and scrap of molybdenum                                           20%
+
+
+ 8103.30.00 Waste and scrap of tantalum                                             20%
+
+
+
+
+                                                                                             8
+Miscellaneous Fees and Levies Act (Cap. 469C)                                                                 Kenya
+
+
+
+
+ 8104.20.00 Waste of scrap of magnesium                                                   20%
+
+
+ 8105          Cobalt mattes and other intermediate products of cobalt metallurgy;        20%
+               cobalt and articles thereof, including waste and scrap
+
+
+ 8105.30.00 Waste and scrap of cobalt matters.                                            20%
+
+
+ 8106.10.00 Bismuth and articles thereof including waste and scrap containing             20%
+            more than 99.99% of bismuth, by weight
+
+
+ 8106.90.00 Other bismuth and articles thereof including waste and scrap                  20%
+
+
+ 8109.31.00 Waste and scrap of zirconium containing less than 1 part hafnium to           20%
+            500 parts zirconium by weight
+
+
+ 8112.61.00 Waste and scrap of cadmium.                                                   20%
+
+
+ 8108.30.00 Waste and scrap of titanium.                                                  20%
+
+
+ 8110.20.00 Waste and scrap of antimony.                                                  20%
+
+
+ 8112.13.00 Waste and scrap of beryllium.                                                 20%
+
+
+ 8112.22.00 Waste and scrap of chromium.                                                  20%
+
+
+ 8112.52.00 Waste and scrap of thallium.                                                  20%
+
+
+ 8112.92.00 Unwrought waste and scrap; powders.                                           20%
+
+
+
+
+                                                       PART II
+
+
+Part I shall not apply to exports to Export Processing Zones or Special Economic Zones.
+
+                                             [Act No. 15 of 2017, s. 58.]
+
+
+
+                                                      PART III
+
+
+                                                       [s. 5(4)]
+
+ (1)    The speciﬁc rates of export levy on goods speciﬁed in Part I of this schedule shall be adjusted for inﬂation
+        at a date not later than the 1st October of every ﬁnancial year in accordance with the formula speciﬁed in
+        paragraph (2).
+
+
+
+
+                                                                                                                     9
+Miscellaneous Fees and Levies Act (Cap. 469C)                                                                        Kenya
+
+
+
+
+  (2)    Each rate of export levy speciﬁed in column 3 of the table in Part I of this schedule shall be replaced by the
+         rate of export levy computed by reference to the following formula—
+
+         AxB
+
+         Where—
+
+         A is the rate of export levy on the day immediately before the adjustment day; and
+
+         B is the adjustment factor for the adjustment day calculated as one plus annual average rate of inﬂation of
+         the preceding ﬁnancial year.
+
+  (3)    For the purpose of this Part—
+
+         “adjustment day” means 1st July of every year;
+
+         "inﬂation" means the average annual inﬂation rate in a ﬁnancial year;
+
+         "ﬁnancial year" means the period of 12 months ending on 30th June of every year.
+
+
