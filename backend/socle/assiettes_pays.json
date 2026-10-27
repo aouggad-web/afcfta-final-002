@@ -269,7 +269,13 @@
     "DAPS",
     "DD",
     "TCS",
+    "TIC",
+    "TCE",
+    "TEE",
+    "DPPP",
+    "TICPV",
     "TVA",
+    "DFP",
     "PRCT"
    ],
    "taxes": {
@@ -286,15 +292,47 @@
      "origine_assiette": "profil_code"
     },
     "TVA": {
-     "assiette": "CIF+DAPS+DD",
-     "origine_assiette": "profil_code"
+     "assiette": "CIF+DAPS+DD+TIC+TCE+TEE+TICPV",
+     "origine_assiette": "profil_code",
+     "texte": "base du profil (valeur en douane + DAPS + DD, art. 21 CTCA, non relu), augmentée de la TIC (art. 27 CTCA, y compris la TICPV) et des taxes d'efficacité et de consommation énergétiques (LF 2017 art. 72), textes primaires",
+     "fiche": "DZA_assiettes_taxes_interieures_2026-10-27.json"
     },
     "PRCT": {
      "assiette": "CIF+DD+TCS+TVA",
      "origine_assiette": "profil_code"
+    },
+    "TIC": {
+     "assiette": "CIF+DAPS+DD",
+     "origine_assiette": "texte_primaire",
+     "texte": "CTCA art. 26 : les règles d'assiette de la TVA sont étendues à la TIC (valeur en douane + DAPS + DD, base TVA à l'importation) ; allumettes et briquets : valeur en douane (art. 25)",
+     "fiche": "DZA_assiettes_taxes_interieures_2026-10-27.json"
+    },
+    "TCE": {
+     "assiette": "CIF+DAPS+DD",
+     "origine_assiette": "texte_primaire",
+     "texte": "LF 2017 art. 72 (rédaction LF 2020 art. 64) : les règles d'assiette de la TVA sont étendues à la taxe de consommation énergétique",
+     "fiche": "DZA_assiettes_taxes_interieures_2026-10-27.json"
+    },
+    "TEE": {
+     "assiette": "CIF+DAPS+DD",
+     "origine_assiette": "texte_primaire",
+     "texte": "LF 2017 art. 72 (rédaction LF 2020 art. 64) : les règles d'assiette de la TVA sont étendues à la taxe d'efficacité énergétique",
+     "fiche": "DZA_assiettes_taxes_interieures_2026-10-27.json"
+    },
+    "DPPP": {
+     "assiette": "CIF",
+     "origine_assiette": "texte_primaire",
+     "texte": "CII art. 403 quater (LF 2026 art. 65) : 30 % sur la valeur en douane à l'importation",
+     "fiche": "DZA_assiettes_taxes_interieures_2026-10-27.json"
+    },
+    "DFP": {
+     "assiette": "CIF+DAPS+DD+TCS+TVA",
+     "origine_assiette": "texte_primaire",
+     "texte": "CII art. 485 bis, 3 (LF 2025) : 40 % de la valeur toutes taxes comprises ; hors base TVA (Tarif d'usage DGD, annexe XV)",
+     "fiche": "DZA_assiettes_taxes_interieures_2026-10-27.json"
     }
    },
-   "reference_legale": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS"
+   "reference_legale": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS ; TIC, TCE, TEE dans la base TVA (art. 27 CTCA, LF 2017 art. 72) — fiche DZA_assiettes_taxes_interieures_2026-10-27.json"
   },
   "EGY": {
    "ordre": [

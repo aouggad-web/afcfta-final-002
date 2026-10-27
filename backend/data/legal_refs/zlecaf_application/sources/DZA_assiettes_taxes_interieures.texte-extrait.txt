@@ -1,0 +1,121 @@
+Extraits de documents officiels algériens archivés dans data/sources/DZA/legislation/ (collectés sur douane.gov.dz, voir _manifest.json), relevés le 2026-10-27.
+
+=== Annexes du Tarif douanier d'usage (dispositions LF 2020), DGD — annexes_tarif_d_usage_2020.pdf, sha256 d2321cc3c598dc1ed8f60b0e693dc80d147e9f405833cb362a90fd8626f67423 ===
+
+   III-           ASSIETTE DE LA T.I.C :
+          Article 26 du Code des TCA :
+          " Art. 26 - Les règles d'assiette, de liquidation, de recouvrement et de contentieux applicables à la taxe sur la valeur ajoutée
+          sont étendues à la taxe intérieure de consommation."
+          Article 27 du Code des TCA :
+          " Art. 27 - La taxe intérieure de consommation est intégrée dans la base imposable à la taxe sur la valeur ajoutée."
+          Article 25 du Code des TCA :
+               -     La part fixe, est assise sur le poids net de tabac contenu dans le produit fini.
+               -     Le taux proportionnel est assis sur le prix de vente hors taxe.
+               -     Pour les produits constitués partiellement de tabac, la TIC est applicable sur la totalité du produit.
+               -     Pour les cigarettes et produits à fumer ne contenant pas de tabac, seul le taux proportionnel est applicable sur le prix des
+                     produits hors taxes.
+               -     Pour les allumettes et briquets, la TIC due est assise sur le prix sortie usine. A l’importation, elle est applicable sur la valeur en douane.
+[…]
+           Taxe d’Efficacité Energétique(T.E.E)
+
+     BASE LÉGALE :
+
+     - La taxe d’Efficacité Energétique (TEE) a été instituée par les articles 70, 71, 72 et 73 de la Loi de Finances 2017.
+
+     - Article 64 de loi de finances pour 2020 : Les dispositions des articles 70, 71 et 72 de la loi n° 16-14 du 28 décembre 2016
+ portant loi definances pour 2017, sont modifiées et complétées et l’article 73 de la même loi est abrogé, comme suit :
+
+      Art. 70 : Il est institué, une taxe d’efficacité énergétique, applicable aux produits importés ou fabriqués localement fonctionnant à
+ l’électricité, aux gaz et aux produits pétroliers, dont la consommation dépasse les normes d’efficacité énergétique prévues par la
+ réglementation en vigueur.
+
+     Cette taxe est exigible au dédouanement pour les produits importés et à la sortie usine pour les produits fabriqués localement.
+
+      En ce qui concerne les produits fonctionnant à l’électricité et soumis aux règles spécifiques d’efficacité, de classification et
+ d’étiquetage énergétiques, la taxe d’efficacité énergétique est applicable, par classe énergétique selon les barèmes progressifs ci-
+ après :
+
+        -     Produits fabriqués localement :
+
+                                         Taux de la taxe d’efficacité énergétique par classe énergétique
+
+               A++, A+ et A                            B                                   C                                DàG
+
+                   5%                               10%                                   15%                                30%
+
+        -     Produits importés :
+
+                                         Taux de la taxe d’efficacité énergétique par classe énergétique
+
+                        A++, A+ et A                                   B                              C                         DàG
+
+                            5%                                        20%                            30%                        40%
+
+
+     La taxe d’efficacité énergétique sur les produits importés ou fabriqués localement fonctionnant à l’électricité est fixée aux barèmes
+[…]
+     Art. 71. ̶ Les produits fonctionnant à l’électricité soumis aux règles spécifiques d’efficacité énergétique et ne disposant pas de
+ réglementation relative à la classification et à l’étiquetage énergétiques sont soumis à une taxe de consommation énergétique fixée au
+ taux de 15% pour les produits fabriqués localement, et au taux de 30% pour les produits importés.
+
+     Cette taxe est exigible au dédouanement pour les produits importés et à la sortie usine pour les produits fabriqués localement.
+[…]
+       « Art 72. ̶ La taxe d’efficacité énergétique et la taxe de consommation énergétique, prévues respectivement aux articles 70 et 71
+de la présente loi, sont intégrées dans la base imposable à la TVA.
+
+       Les règles d’assiette, de liquidation, de recouvrement et de contentieux applicables à la taxe sur la valeur ajoutée, sont étendues à
+la taxe d’efficacité énergétique et à la taxe de consommation énergétique.
+[…]
+           b.   Droits sur les Piles Electriques :
+                -    Conformément aux dispositions de l’article 485 bis, alinéa 3, du Code des Impôts Indirects, un droit sur les piles
+                     électriques (D.P.E) est perçu au taux fixe ad valorem 20% (valeur toutes taxes comprises). Le montant de ce droit
+                     n’intégre pas l’assiette de la TVA.
+
+=== Loi de finances pour 2025 (loi n° 24-08), JO n° 84 du 26/12/2024 — JO_2025_loi_finances_2025.pdf, sha256 ad7e4915a05e0a53bb85bf74b4f48f02c2e48643a7aff1b08a35434fd7967126 ===
+
+      Art. 78. — Les dispositions des articles 485 bis et 485 septies du code des impôts indirects, sont modifiées,
+  complétées et rédigées comme suit :
+
+       « Art. 485 bis. — Il est perçu suivant ............... (sans changement jusqu’à) leurs accessoires comportant :
+[…]
+          3- Un droit de 40% perçu sur les piles électriques (valeur toutes taxes comprises). ».
+
+=== Loi de finances pour 2026, JO n° 88 du 31/12/2025 — JO_2026-88_loi_finances_2026.pdf, sha256 e95ac0ca486683d940a56a679b5b7c3875f1bb08f98a78be94a60c93e4b37a7c ===
+
+          Art. 54. — Les dispositions de l’article 25 du code des taxes sur le chiffre d’affaires, sont modifiées et
+     rédigées comme suit :
+
+         « Art. 25. — Il est institué une taxe intérieure de consommation composée d’une part fixe et d’un taux
+     proportionnel applicable aux produits suivants et selon les tarifs ci-après :
+
+                              Produit                                                                Tarif
+       I- Bières
+                                                                            .................. (sans changement) .....................
+       — .................. (sans changement) .....................
+                                                                            .................. (sans changement) .....................
+       — .................. (sans changement) .....................
+                                                                                                       Taux proportionnel
+       II- Produits tabagiques et allumettes                           Part fixe (DA/KG)
+                                                                                                       (sur la valeur du produit)
+       1- Cigarettes et tabac à narguilé                                       2.250                                   15%
+
+       2- Cigares                                                     ... (sans changement) ...            ... (sans changement)...
+
+       3- Tabacs à fumer, tabacs à priser et à mâcher                           781                                    15%
+       4- Cigarette électronique
+[…]
+         Art. 65. — Il est créé au sein du code des impôts indirects, un titre VI bis intitulé « Pierres précieuses »,
+     composé des chapitres et sections ainsi que des articles énoncés ci-après :
+
+                                                       « Titre VI BIS
+[…]
+           Art. 403 ter — Il est institué un droit proportionnel sur les pierres précieuses applicable aux perles fines
+     ou de culture, au diamant, au rubis, au saphir, à l’émeraude ainsi qu’aux autres pierres gemmes utilisées en
+     joaillerie, y compris lorsque lesdites pierres précieuses ornent ou sertissent les ouvrages en métaux précieux
+     d’or, d’argent et de platine, mi-ouvrés ou ouvrés.
+
+           Art. 403 quater — Le droit visé à l’article 403 ter ci-dessus, s’applique sur la valeur de la pierre précieuse
+     et, est calculé au taux de 30% sur le prix de vente hors taxes ou sur la valeur en douane.
+
+          Ce droit est payable au stade de la première vente ou à l’importation.
+

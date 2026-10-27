@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "objet": "Algérie : assiettes à l'importation de la taxe intérieure de consommation (TIC), de la taxe de consommation énergétique (TCE), de la taxe d'efficacité énergétique (TEE), du droit proportionnel sur les pierres précieuses (DPPP) et du droit sur les piles électriques (DFP) ; base de la TVA qui inclut TIC, TCE et TEE",
+  "destination_iso3": "DZA",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "primaire : annexes du Tarif douanier d'usage de la DGD (dispositions LF 2020), qui reproduisent les art. 25 à 27 du CTCA, les art. 70 à 72 de la LF 2017 (rédaction LF 2020 art. 64) et l'art. 485 bis du CII ; JO n° 84 du 26/12/2024 (LF 2025, art. 78) et JO n° 88 du 31/12/2025 (LF 2026, art. 54 et 65). Documents collectés sur douane.gov.dz (data/sources/DZA/legislation/_manifest.json). L'art. 21 du CTCA (base de la TVA à l'importation) n'a pas été relu : la base CIF + DAPS + DD est celle que le socle servait déjà.",
+  "source": {"url": "https://www.douane.gov.dz/IMG/pdf/annexes_tarif_d_usague_2020.pdf", "institution": "Direction générale des douanes, Direction de la fiscalité et des bases de taxation"},
+  "regle": {
+    "valeur": "TIC, TCE, TEE : valeur en douane + DAPS + DD (règles d'assiette de la TVA étendues), et toutes trois dans la base de la TVA ; TIC des allumettes et briquets : valeur en douane. DPPP : 30 % de la valeur en douane. DFP : 40 % de la valeur toutes taxes comprises (CIF + DAPS + DD + TCS + TVA), hors base TVA. TEE : taux selon la classe énergétique, 5 % (A++, A+, A), 20 % (B), 30 % (C), 40 % (D à G). TICPV (taux proportionnel de la TIC des tabacs) : assis sur la valeur du produit, non traduit.",
+    "verbatim": "Art. 26 - Les règles d'assiette, de liquidation, de recouvrement et de contentieux applicables à la taxe sur la valeur ajoutée sont étendues à la taxe intérieure de consommation. […] Art. 27 - La taxe intérieure de consommation est intégrée dans la base imposable à la taxe sur la valeur ajoutée. […] Pour les allumettes et briquets, la TIC due est assise sur le prix sortie usine. A l’importation, elle est applicable sur la valeur en douane. […] Art 72. ̶ La taxe d’efficacité énergétique et la taxe de consommation énergétique […] sont intégrées dans la base imposable à la TVA. Les règles d’assiette, de liquidation, de recouvrement et de contentieux applicables à la taxe sur la valeur ajoutée, sont étendues à la taxe d’efficacité énergétique et à la taxe de consommation énergétique. […] 3- Un droit de 40% perçu sur les piles électriques (valeur toutes taxes comprises). […] Art. 403 quater — Le droit visé à l’article 403 ter ci-dessus, s’applique sur la valeur de la pierre précieuse et, est calculé au taux de 30% sur le prix de vente hors taxes ou sur la valeur en douane.",
+    "reference": "CTCA art. 25 (rédaction LF 2026 art. 54), 26 et 27 ; LF 2017 art. 70 à 72 (rédaction LF 2020 art. 64) ; CII art. 485 bis, 3 (rédaction LF 2025 art. 78) ; CII art. 403 ter et quater (LF 2026 art. 65) ; Tarif douanier d'usage DGD, annexes II, XII et XV",
+    "portee": "backend/socle/assiettes_pays.json (DZA : TIC, TCE, TEE, DPPP, DFP, base TVA) ; scripts/build_socle._taxes_algerie (allumettes et briquets, taux de la TEE, TICPV, ordre du DFP après la TVA). Socle DZA : assiettes indisponibles 401 → 19 ; 338 positions de plus entièrement liquidables.",
+    "texte_archive": "sources/DZA_assiettes_taxes_interieures.texte-extrait.txt",
+    "sha256": "ff66feb487994db2e2cec9a48b9c22c85df6f0106b16b9df56d9189306e2a067"
+  },
+  "decisions": [
+    "La TIC, la TCE et la TEE prennent la base de la TVA à l'importation que le socle servait déjà (valeur en douane + DAPS + DD), sans la TVA ni elles-mêmes : c'est ce que dit l'extension des « règles d'assiette » de la TVA.",
+    "La TVA inclut désormais la TIC, la TCE, la TEE et la TICPV quand la position les porte. Sur les 19 positions de tabac (TICPV non traduite) et les 44 positions soumises à la TEE (taux non publié), la TVA devient indisponible au lieu d'être servie trop basse.",
+    "La TEE, publiée à 0 % par le Tarif Web, n'est plus liquidée : aucune classe énergétique n'y donne 0 % à l'importation.",
+    "Le DFP porte sur la valeur toutes taxes comprises : il se liquide après la TVA, sur CIF + DAPS + DD + TCS + TVA. Le précompte (PRCT), acompte d'impôt et non taxe sur le produit, n'y entre pas."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "La part fixe de la TIC des tabacs (DA/kg) n'est pas servie par le Tarif Web et n'est pas ajoutée ici.",
+    "Le DPPP et la TCS ne sont pas ajoutés à la base de la TVA : aucun texte lu ne les y inclut.",
+    "La base du précompte (PRCT : CIF + DD + TCS + TVA) n'est pas revue.",
+    "La note de l'annexe XV (DPE au taux de 20 %) date de 2020 ; le taux de 40 % et la base « toutes taxes comprises » viennent de la LF 2025, qui ne dit rien de la base TVA : l'exclusion de 2020 est maintenue."
+  ],
+  "documents_archives": [{"texte_archive": "sources/DZA_assiettes_taxes_interieures.texte-extrait.txt", "sha256": "ff66feb487994db2e2cec9a48b9c22c85df6f0106b16b9df56d9189306e2a067"}]
+}
