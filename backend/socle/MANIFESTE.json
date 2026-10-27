@@ -192,7 +192,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CAF_tariffs.json",
       "source_sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
-      "socle_sha256": "dee60a83f9b5a0546e227cf282f08f662e19f5d4b5ba5281b77a332af83e5cbb",
+      "socle_sha256": "23d90c62cb1c062e97d9dd55ab4c5d9e50eb738453e8ed956952a5cfec7a890e",
       "collecte": "2026-02-19T22:39:54.085446",
       "etat": "PARTIEL",
       "familles": [
@@ -271,7 +271,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CMR_tariffs.json",
       "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
-      "socle_sha256": "689dc3d382e0726d839f3cc38bb7105abf959b4302f6f4d1ac4d0ea37257379e",
+      "socle_sha256": "84962206eca6feb7d1ab71aa0a565e8e8384e480c4a26c75ecce4303cfabeaae",
       "collecte": "2026-02-19T22:21:31.397885",
       "etat": "PARTIEL",
       "familles": [
@@ -345,7 +345,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COG_tariffs.json",
       "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
-      "socle_sha256": "b9ec41f6b193a23f8307bfdfd528591401704754e0561efa6fdcac6b42614897",
+      "socle_sha256": "ab1edb273ece7b5b5daec8426a18787ed2931d1b24c7f0e12a35c2cd8dfbd06d",
       "collecte": "2026-02-19T22:39:52.620876",
       "etat": "PARTIEL",
       "familles": [
@@ -638,7 +638,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GAB_tariffs.json",
       "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
-      "socle_sha256": "868358e56c10bc44fa91beefeb89eea5359a48dcd0cfd43b1c8c0ad6f7a80bfb",
+      "socle_sha256": "31834a3ff84ecc5c1b15bf3730a79030364cf85f5e7bf83234d9fbc4d3fb0b5e",
       "collecte": "2026-02-19T22:39:52.018966",
       "etat": "PARTIEL",
       "familles": [
@@ -831,7 +831,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
       "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
-      "socle_sha256": "e4fd35b6c9e4858caf31f4d7c644c146cc157eb866bc985b077d43fc083b5a5a",
+      "socle_sha256": "18620b61eac225c4629916ad957e9969dce2eb81f0c2879731272a2386a44ac4",
       "collecte": null,
       "etat": "PARTIEL",
       "familles": [
@@ -1724,7 +1724,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TCD_tariffs.json",
       "source_sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
-      "socle_sha256": "a8863acb020c6ec29d7a2401e77836d2c3fa3431f0f2a30d797f20a726e37e21",
+      "socle_sha256": "f5819649739cf681f722c131f3b62d8ea73ff8de600ae2c587acdb8f35b08023",
       "collecte": "2026-02-19T22:39:53.393846",
       "etat": "PARTIEL",
       "familles": [

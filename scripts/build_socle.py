@@ -1663,6 +1663,32 @@ def _taxes_algerie(positions):
             position["droits"] = autres[:rang] + dfp + autres[rang:]
 
 
+#: TEC CEMAC : deux taux que le tarif des douanes de la CEMAC imprime hors de
+#: ses catégories (5, 10, 20, 30 %, Acte n° 16/96-UDEAC-556-CD-57) et que le
+#: gabarit commun aux six États a recopiés. Les positions voisines sont toutes à
+#: 30 %. Fiche CEMAC_TEC_coquilles_2026-10-27. {position : (imprimé, retenu, page)}
+COQUILLES_TEC_CEMAC = {
+    "44072925": (3.0, 30.0, "« 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %"),
+    "69060000": (0.3, 30.0, "« .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %"),
+}
+ETATS_CEMAC = ("CMR", "COG", "GAB", "TCD", "CAF", "GNQ")
+
+
+def _coquilles_tec_cemac(positions):
+    """Rendre au droit de douane les deux taux que le tarif CEMAC imprime hors
+    catégorie. Seul un taux encore égal à la coquille est corrigé."""
+    for code, (imprime, retenu, detail) in COQUILLES_TEC_CEMAC.items():
+        for d in (positions.get(code) or {}).get("droits") or []:
+            if d.get("code") == "DD" and d.get("taux") == imprime:
+                imprime_fr = f"{imprime:g}".replace(".", ",")
+                d["taux"] = retenu
+                d["note"] = (
+                    f"Le tarif des douanes de la CEMAC imprime {detail}. {imprime_fr} % "
+                    "n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : "
+                    f"coquille, {retenu:g} % retenu."
+                )
+
+
 def _ordre_tunisie(positions):
     """Tunisie : la TVA s'assoit sur tous les droits et taxes sauf elle-même
     (Code de la TVA art. 6) et la RPD sur la somme des droits et taxes des
@@ -4795,6 +4821,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _taux_tva_hors_la_loi(_taux_tva_legaux()[iso], positions, compteurs)
     if iso == "MWI":
         _ait_malawi(positions, compteurs)
+    if iso in ETATS_CEMAC:
+        _coquilles_tec_cemac(positions)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
     if iso == "MRT":
