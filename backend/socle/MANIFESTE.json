@@ -345,19 +345,20 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COG_tariffs.json",
       "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
-      "socle_sha256": "b9ec41f6b193a23f8307bfdfd528591401704754e0561efa6fdcac6b42614897",
+      "socle_sha256": "d9a71a410e4b64b4241110d0063991f9b2c4502587111c6d07b957d0c6067105",
       "collecte": "2026-02-19T22:39:52.620876",
       "etat": "PARTIEL",
       "familles": [
         "accise",
+        "autre",
         "communautaire",
         "droit",
         "tva"
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 26360,
-        "droits_liquidables": 26226,
+        "droits": 31599,
+        "droits_liquidables": 31398,
         "positions_liquidables": 5172,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
@@ -2072,7 +2073,7 @@
       "ZWE"
     ],
     "positions": 370537,
-    "droits": 1243490,
-    "droits_liquidables": 1217297
+    "droits": 1248729,
+    "droits_liquidables": 1222469
   }
 }
