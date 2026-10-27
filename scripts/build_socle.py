@@ -1245,7 +1245,7 @@ EXPORT_PAR_TEXTE = {
             # (including wet-blue) ».
             **{p: (10.0, None, "« Wet blue leather » : 10 % de la valeur FOB ; position du SH « à l'état humide "
                                "(y compris wet-blue) ».")
-               for p in ("41041100", "41041900", "41062100", "41063100", "41069100")},
+               for p in ("41041100", "41041900", "41051000", "41062100", "41063100", "41069100")},
             **{p: (30.0, "150 USD/tonne", "« Copper waste and scrap metals HS Code 7204 and 7404 » : 30 % ou USD 150 "
                                           "la tonne métrique, le plus élevé.") for p in ("7204", "7404")},
             "15121100": (10.0, None, "« Crude sunflower oil of HS Code 1512.11.00 » : 10 % de la valeur FOB."),

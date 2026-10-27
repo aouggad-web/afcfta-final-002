@@ -354,6 +354,16 @@ def test_tza_peaux_brutes_le_plus_eleve_des_deux(client):
     assert (petit["montant"], petit["composante_retenue"]) == (pytest.approx(520), "specifique")
 
 
+
+def test_tza_wet_blue_d_ovins_couvert_par_la_regle():
+    """Codex : 4105.10 (peaux d'ovins « in the wet state (including wet-blue) ») porte les 10 % ; la
+    position manque à la collecte tarifaire TZA, d'où un test sur la règle elle-même."""
+    sys.path.insert(0, os.path.join(os.path.dirname(BACKEND), "scripts"))
+    from build_socle import droits_export_par_texte
+
+    droit = droits_export_par_texte("TZA", {"41051000": {}})["41051000"][0]
+    assert droit["taux"] == 10.0 and "wet-blue" in droit["note"]
+
 def test_tza_placages_en_shillings(client):
     """Finance Act 2025, item 6 : 30 % ou TZS 150/kg, sans taux de change sur une valeur en TZS."""
     ligne = _ligne(_export(client, pays="TZA", code_sh="44081000", valeur=1_000_000, devise="TZS", quantite=1_000),
