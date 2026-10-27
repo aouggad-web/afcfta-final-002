@@ -16,7 +16,7 @@ from services import socle
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 pytestmark = pytest.mark.skipif(
-    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN")),
+    not all(os.path.exists(os.path.join(socle.SOCLE_DIR, f"{iso}.json")) for iso in ("TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF")),
     reason="socle absent : python3 scripts/build_socle.py",
 )
 
@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -342,6 +342,67 @@ def test_ken_hors_annexe_aucun_droit(client):
     corps = client.post("/calcul/export", json={
         "pays": "KEN", "code_sh": "72042100", "valeur": 1_000, "devise": "KES"}).json()
     assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
+
+
+def test_tza_peaux_brutes_le_plus_eleve_des_deux(client):
+    """« 80% FOB Value or USD 0.52 / Kg whichever is greater »."""
+    gros = _ligne(_export(client, pays="TZA", code_sh="41012000", valeur=10_000, devise="USD", quantite=1_000),
+                  "EXPORT")
+    assert (gros["montant"], gros["composante_retenue"]) == (pytest.approx(8_000), "ad_valorem")
+    petit = _ligne(_export(client, pays="TZA", code_sh="41012000", valeur=100, devise="USD", quantite=1_000),
+                   "EXPORT")
+    assert (petit["montant"], petit["composante_retenue"]) == (pytest.approx(520), "specifique")
+
+
+
+def test_tza_wet_blue_d_ovins_couvert_par_la_regle():
+    """Codex : 4105.10 (peaux d'ovins « in the wet state (including wet-blue) ») porte les 10 % ; la
+    position manque à la collecte tarifaire TZA, d'où un test sur la règle elle-même."""
+    sys.path.insert(0, os.path.join(os.path.dirname(BACKEND), "scripts"))
+    from build_socle import droits_export_par_texte
+
+    droit = droits_export_par_texte("TZA", {"41051000": {}})["41051000"][0]
+    assert droit["taux"] == 10.0 and "wet-blue" in droit["note"]
+
+def test_tza_placages_en_shillings(client):
+    """Finance Act 2025, item 6 : 30 % ou TZS 150/kg, sans taux de change sur une valeur en TZS."""
+    ligne = _ligne(_export(client, pays="TZA", code_sh="44081000", valeur=1_000_000, devise="TZS", quantite=1_000),
+                   "EXPORT")
+    assert ligne["montant"] == pytest.approx(300_000)
+
+
+def test_tza_tourteaux_loi_de_finances_2026(client):
+    """Finance Act 2026, item 8 : TZS 50/kg."""
+    ligne = _ligne(_export(client, pays="TZA", code_sh="23061000", valeur=1_000_000, devise="TZS", quantite=1_000),
+                   "EXPORT")
+    assert ligne["montant"] == pytest.approx(50_000) and "2026" in ligne["note"]
+
+
+
+def test_tza_sables_de_quartz_position_non_etablie(client):
+    """« Quartz sands of Heading 25.06 » : ni le 25.05.10 (sables) ni la 25.06 (quartz, quartzite) ne
+    répondent exactement au texte ; le feldspath, désigné par son code, est taxé."""
+    for code in ("25051000", "25061000", "25062000"):
+        ligne = _ligne(_export(client, pays="TZA", code_sh=code, valeur=1_000, devise="TZS", quantite=1), "EXPORT")
+        assert ligne["montant"] is None and "25.05.10" in ligne["note"], code
+    feldspath = _ligne(_export(client, pays="TZA", code_sh="25291000", valeur=1_000_000, devise="TZS",
+                               quantite=1_000), "EXPORT")
+    assert feldspath["montant"] == pytest.approx(200_000)
+
+def test_tza_hors_annexe_aucun_droit(client):
+    corps = client.post("/calcul/export", json={
+        "pays": "TZA", "code_sh": "09011100", "valeur": 1_000, "devise": "TZS"}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
+
+
+def test_zaf_ferrailles_colonne_zlecaf(client):
+    """Schedule 1 Part 6 A : colonne AfCFTA ; la note dit les autres destinations."""
+    export = _export(client, pays="ZAF", code_sh="720421", valeur=100_000, devise="ZAR")
+    ligne = _ligne(export, "EXPORT")
+    assert (export["etat"], ligne["montant"]) == ("COMPLET", pytest.approx(15_000))
+    assert "SADC" in ligne["note"]
+    assert _ligne(_export(client, pays="ZAF", code_sh="74040010", valeur=100_000, devise="ZAR"),
+                  "EXPORT")["montant"] == pytest.approx(10_000)
 
 def test_pays_sans_droit_export_au_socle(client):
     reponse = client.post("/calcul/export", json={"pays": "UGA", "code_sh": "09011100", "valeur": 1000})

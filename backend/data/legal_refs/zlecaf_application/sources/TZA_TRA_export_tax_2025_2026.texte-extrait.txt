@@ -1,0 +1,26 @@
+Tanzanie — Export Tax (Export Tax Act, Cap. 196) : extrait verbatim du guide de la Tanzania Revenue Authority (relevé le 2026-10-27)
+
+« Taxes and Duties at a Glance 2025/2026 » (TRA, juillet 2025) :
+https://www.tra.go.tz/images/uploads/pages/TAXES_AND_DUTIES_AT_A_GLANCE_2025_2026.pdf (sha256 3f2b62caa11a8c32ddf89292e9d8ee6f87aee9306eaee30b11e615da6f7481db), page 26.
+Texte extrait par pdftotext -layout, sans retouche.
+Les articles 6 (Finance Act 2025, s. 37) et 7 à 9 (Finance Act 2026, s. 12) de la Schedule sont lus dans les lois archivées :
+sources/TZ_finance_act_2025_mof.pdf et sources/TZ_finance_act_2026_act2_oag.pdf.
+
+13. Export Tax
+   Raw hides and skins are charged based on 80% FOB Value or
+    USD 0.52 / Kg whichever is greater. However, exporters under
+    Export Processing Zone have been exempted.
+   Raw cashew nuts is levied based on 15% FOBValue or USD 160
+    per metric tons whichever is greater
+   Wet blue leather charged on 10% of FOB Value
+   Copper waste and scrap metals HS Code 7204 and 7404 are
+    charged at 30% or USD 150 per metric tons (whichever is higher).
+   Crude sunflower oil of HS Code 1512.11.00, charged at 10% on
+    FOB value of the commodity
+   Sunflower seeds of HS Code 1206.00.00 charged at 10% on FOB
+    value of the commodity.
+   Exports of veneered sheets of heading 44.08. Charged at 30
+    percent or TZS 150 per kg whichever is greater
+
+
+                                   26

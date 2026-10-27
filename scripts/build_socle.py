@@ -1133,6 +1133,17 @@ _EXPORT_KEN_PEAUX = (
     "unité (kg, pièce ?) : la redevance est d'au moins 50 % de la valeur en douane, son montant n'est pas établi.",
 )
 _EXPORT_KEN_DECHETS = (20.0, None, None)
+# Afrique du Sud, Schedule 1 Part 6 : le taux dépend de la destination
+# (note 2) ; la colonne servie est celle de la ZLECAf, les autres sont dites.
+def _export_zaf(taux_afcfta, eu_uk):
+    return (
+        taux_afcfta, None,
+        f"Schedule 1 Part 6 A, colonne AfCFTA (= General) : {taux_afcfta:g} %. Selon la destination : SADC et AELE "
+        f"en franchise, UE / Royaume-Uni {eu_uk}, Mercosur {taux_afcfta:g} %. Une expédition de ferrailles mélangées "
+        "paie le taux le plus élevé (note 3).",
+    )
+
+
 EXPORT_PAR_TEXTE = {
     "GHA": (
         "Customs (Amendment) Act, 2015 (Act 905), Fourth Schedule — Export Duty "
@@ -1204,6 +1215,58 @@ EXPORT_PAR_TEXTE = {
                 "72044900", "72045000", "72051000", "79020000", "80020000", "81029400", "81029700", "81033000",
                 "81042000", "8105", "81061000", "81069000", "81093100", "81126100", "81083000", "81102000",
                 "81121300", "81122200", "81125200", "81129200")},
+        },
+    ),
+    "ZAF": (
+        "Customs and Excise Act, Schedule 1 Part 6 Section A — export duty on scrap metal, SARS (date : 2021-08-01) "
+        "(sources/ZAF_SARS_schedule1_part6_export_duty_2021-08-01.pdf)",
+        None,
+        {
+            **{p: _export_zaf(20.0, "10 %") for p in ("720410", "720429", "720430", "720441", "720449")},
+            "720421": _export_zaf(15.0, "10 %"),
+            "720450": _export_zaf(20.0, "en franchise"),
+            "7404": _export_zaf(10.0, "10 %"),
+            "7602": _export_zaf(15.0, "10 %"),
+        },
+    ),
+    # Export Tax Act (Cap. 196), Schedule : taux sur la valeur FOB ; un taux
+    # et un spécifique ensemble valent « whichever is greater ».
+    "TZA": (
+        "Export Tax Act (Cap. 196), Schedule — guide TRA « Taxes and Duties at a Glance 2025/2026 », Finance Act "
+        "2025 (s. 37) et Finance Act 2026 (s. 12) (sources/TZA_TRA_export_tax_2025_2026.texte-extrait.txt)",
+        None,
+        {
+            **{p: (80.0, "0.52 USD/kg", "« Raw hides and skins » : 80 % de la valeur FOB ou USD 0,52/kg, le plus "
+                                         "élevé ; les exportateurs sous régime de zone franche (EPZ) en sont exemptés.")
+               for p in ("4101", "4102", "4103")},
+            "08013100": (15.0, "160 USD/tonne", "« Raw cashew nuts » : 15 % de la valeur FOB ou USD 160 la tonne "
+                                                "métrique, le plus élevé."),
+            # « Wet blue leather » : les positions du SH « in the wet state
+            # (including wet-blue) ».
+            **{p: (10.0, None, "« Wet blue leather » : 10 % de la valeur FOB ; position du SH « à l'état humide "
+                               "(y compris wet-blue) ».")
+               for p in ("41041100", "41041900", "41051000", "41062100", "41063100", "41069100")},
+            **{p: (30.0, "150 USD/tonne", "« Copper waste and scrap metals HS Code 7204 and 7404 » : 30 % ou USD 150 "
+                                          "la tonne métrique, le plus élevé.") for p in ("7204", "7404")},
+            "15121100": (10.0, None, "« Crude sunflower oil of HS Code 1512.11.00 » : 10 % de la valeur FOB."),
+            "12060000": (10.0, None, "« Sunflower seeds of HS Code 1206.00.00 » : 10 % de la valeur FOB."),
+            "4408": (30.0, "150 TZS/kg", "Finance Act 2025, s. 37 (item 6) : « Veneered sheets of heading 44.08 », "
+                                         "30 % de la valeur FOB ou TZS 150/kg, le plus élevé."),
+            "4707": (30.0, "200 TZS/kg", "Finance Act 2026, s. 12 (item 7, en vigueur le 1er juillet 2026) : "
+                                         "« Waste and scrap of paper or paperboard of Heading 47.07 »."),
+            **{p: (None, "50 TZS/kg", "Finance Act 2026, s. 12 (item 8, en vigueur le 1er juillet 2026) : tourteaux "
+                                      "de coton et de tournesol, sons de blé, de riz et de maïs, TZS 50/kg.")
+               for p in ("23061000", "23063000", "23023000", "23024000", "23021000")},
+            "25291000": (10.0, "200 TZS/kg", "Finance Act 2026, s. 12 (item 9, en vigueur le 1er juillet 2026) : "
+                                             "« Feldspar of HS Code 2529.10.00 », 10 % de la valeur FOB ou TZS 200/kg, "
+                                             "le plus élevé."),
+            # « Quartz sands of Heading 25.06 » : les sables de quartz sont au
+            # 25.05.10, la 25.06 couvre le quartz et la quartzite ; aucune
+            # position ne répond exactement au texte.
+            **{p: (None, None, "Finance Act 2026, s. 12 (item 9) : « Quartz sands of Heading 25.06 », 10 % de la "
+                               "valeur FOB ou TZS 200/kg. Les sables de quartz relèvent de la position 25.05.10 et la "
+                               "25.06 couvre le quartz et la quartzite : la position visée n'est pas établie.")
+               for p in ("25051000", "25061000", "25062000")},
         },
     ),
     # Clés : préfixes du code national (un en-tête « 41.01 » vaut pour toutes
