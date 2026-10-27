@@ -378,6 +378,17 @@ def test_tza_tourteaux_loi_de_finances_2026(client):
     assert ligne["montant"] == pytest.approx(50_000) and "2026" in ligne["note"]
 
 
+
+def test_tza_sables_de_quartz_position_non_etablie(client):
+    """« Quartz sands of Heading 25.06 » : ni le 25.05.10 (sables) ni la 25.06 (quartz, quartzite) ne
+    répondent exactement au texte ; le feldspath, désigné par son code, est taxé."""
+    for code in ("25051000", "25061000", "25062000"):
+        ligne = _ligne(_export(client, pays="TZA", code_sh=code, valeur=1_000, devise="TZS", quantite=1), "EXPORT")
+        assert ligne["montant"] is None and "25.05.10" in ligne["note"], code
+    feldspath = _ligne(_export(client, pays="TZA", code_sh="25291000", valeur=1_000_000, devise="TZS",
+                               quantite=1_000), "EXPORT")
+    assert feldspath["montant"] == pytest.approx(200_000)
+
 def test_tza_hors_annexe_aucun_droit(client):
     corps = client.post("/calcul/export", json={
         "pays": "TZA", "code_sh": "09011100", "valeur": 1_000, "devise": "TZS"}).json()

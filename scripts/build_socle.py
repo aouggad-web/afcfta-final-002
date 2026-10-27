@@ -1257,9 +1257,16 @@ EXPORT_PAR_TEXTE = {
             **{p: (None, "50 TZS/kg", "Finance Act 2026, s. 12 (item 8, en vigueur le 1er juillet 2026) : tourteaux "
                                       "de coton et de tournesol, sons de blé, de riz et de maïs, TZS 50/kg.")
                for p in ("23061000", "23063000", "23023000", "23024000", "23021000")},
-            **{p: (10.0, "200 TZS/kg", "Finance Act 2026, s. 12 (item 9, en vigueur le 1er juillet 2026) : « Quartz "
-                                       "sands of Heading 25.06 » et « Feldspar of HS Code 2529.10.00 ».")
-               for p in ("2506", "25291000")},
+            "25291000": (10.0, "200 TZS/kg", "Finance Act 2026, s. 12 (item 9, en vigueur le 1er juillet 2026) : "
+                                             "« Feldspar of HS Code 2529.10.00 », 10 % de la valeur FOB ou TZS 200/kg, "
+                                             "le plus élevé."),
+            # « Quartz sands of Heading 25.06 » : les sables de quartz sont au
+            # 25.05.10, la 25.06 couvre le quartz et la quartzite ; aucune
+            # position ne répond exactement au texte.
+            **{p: (None, None, "Finance Act 2026, s. 12 (item 9) : « Quartz sands of Heading 25.06 », 10 % de la "
+                               "valeur FOB ou TZS 200/kg. Les sables de quartz relèvent de la position 25.05.10 et la "
+                               "25.06 couvre le quartz et la quartzite : la position visée n'est pas établie.")
+               for p in ("25051000", "25061000", "25062000")},
         },
     ),
     # Clés : préfixes du code national (un en-tête « 41.01 » vaut pour toutes

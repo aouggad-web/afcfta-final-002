@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-27T15:09:29.827448+00:00",
+  "construit_le": "2026-10-27T20:26:24.859964+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1841,7 +1841,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TZA_tariffs.json",
       "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
-      "socle_sha256": "9ce27809b0cf445e2b8efce8b5b5f8b9263c1a139d20888fe7a4975321e9529f",
+      "socle_sha256": "00aa8d899d032bcb8af71e76d4457a1124bb2e20fa4c7dee81ed350c1c007a50",
       "collecte": "2026-02-18T10:54:34.697265",
       "etat": "COMPLET",
       "familles": [
@@ -1871,7 +1871,7 @@
         "droits_absents_completes": 4,
         "droits_lus_en_designation": 39,
         "classification_estimee": 0,
-        "positions_export": 41
+        "positions_export": 42
       }
     },
     "UGA": {
