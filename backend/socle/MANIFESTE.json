@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-26T20:42:57.023661+00:00",
+  "construit_le": "2026-10-27T10:14:44.802242+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -869,7 +869,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/KEN_tariffs.json",
       "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
-      "socle_sha256": "610d62603aa4511aae934348ca6fd36b0ba3abcb62f207ac47df7c9038448587",
+      "socle_sha256": "4cce38352a44aefd86d64a5007b9a9ee0a222fa33b96085583716b7904719a61",
       "collecte": "2026-02-18T10:54:33.961294",
       "etat": "COMPLET",
       "familles": [
@@ -899,7 +899,8 @@
         "interdictions": 0,
         "droits_absents_completes": 4,
         "droits_lus_en_designation": 39,
-        "classification_estimee": 0
+        "classification_estimee": 0,
+        "positions_export": 54
       }
     },
     "LBR": {

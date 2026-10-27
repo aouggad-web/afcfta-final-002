@@ -1092,6 +1092,14 @@ _EXPORT_ZMB_PRECIEUX = (
     "Ninth Schedule : 15 %. Les suspensions de 2020 (métaux et pierres précieux) sont révoquées depuis le "
     "1er janvier 2025 (SI n° 85 et 88 de 2024, Gazette n° 7696).",
 )
+# Kenya, First Schedule : « 50% or USD 0.32 whichever is higher » ne dit pas
+# l'unité de sa part spécifique ; le plus élevé des deux ne se calcule pas.
+_EXPORT_KEN_PEAUX = (
+    None, None,
+    "First Schedule : « 50% or USD 0.32 whichever is higher » ; la part spécifique « USD 0.32 » ne dit pas son "
+    "unité (kg, pièce ?) : la redevance est d'au moins 50 % de la valeur en douane, son montant n'est pas établi.",
+)
+_EXPORT_KEN_DECHETS = (20.0, None, None)
 EXPORT_PAR_TEXTE = {
     "GHA": (
         "Customs (Amendment) Act, 2015 (Act 905), Fourth Schedule — Export Duty "
@@ -1138,6 +1146,31 @@ EXPORT_PAR_TEXTE = {
                 "1202300000", "1202411000", "1202419000", "1202421000", "1202429000")},
             **{code: _EXPORT_SEN_OR for code in (
                 "7108110000", "7108120000", "7108131000", "7108139000", "7108200000")},
+        },
+    ),
+    # Export levy : « the ad valorem rate shall be based on the custom value »
+    # (s. 5(3)). Clés : préfixes du code national ; hors annexe, pas de droit.
+    "KEN": (
+        "Miscellaneous Fees and Levies Act (Cap. 469C), s. 5 et First Schedule — export levy, version Kenya Law "
+        "au 1er janvier 2026 (sources/KEN_MFLA_export_levy_first_schedule.texte-extrait.txt)",
+        None,
+        {
+            "1703": (20.0, None, "First Schedule : « 20% of the customs value »."),
+            "2601": (
+                None, "175 USD/tonne",
+                "First Schedule : « USD 175 per tonne ». La Part III prévoit une indexation annuelle des taux "
+                "spécifiques, mais l'article qui y renvoyait (s. 5(4)) a été supprimé en 2023 : taux servi tel que "
+                "publié.",
+            ),
+            **{p: _EXPORT_KEN_PEAUX for p in (
+                "41012000", "41015000", "41019000", "41021000", "41022100", "41022900", "41032000", "41033000",
+                "41039000", "41041900", "43011000", "43013000", "43016000", "43018000", "43019000", "43021100",
+                "43021900", "43022000", "43023000")},
+            **{p: _EXPORT_KEN_DECHETS for p in (
+                "71123000", "71129100", "71129200", "71129900", "72041000", "72042900", "72043000", "72044100",
+                "72044900", "72045000", "72051000", "79020000", "80020000", "81029400", "81029700", "81033000",
+                "81042000", "8105", "81061000", "81069000", "81093100", "81126100", "81083000", "81102000",
+                "81121300", "81122200", "81125200", "81129200")},
         },
     ),
     # Clés : préfixes du code national (un en-tête « 41.01 » vaut pour toutes
