@@ -1603,6 +1603,45 @@ def _ordre_tunisie(positions):
         position["droits"] = autres + tva + rpd
 
 
+#: Tunisie : droit de consommation DCVBBA sur la bière et le vin. Le Tarif Web
+#: sert le double des taux du tableau annexé à la loi n° 88-62 (loi n° 2017-66,
+#: art. 45 ; bière et vins en bouteille modifiés par la loi n° 2020-46, art. 20),
+#: sans qu'aucun texte trouvé n'explique cet écart. Les montants du Tarif Web
+#: sont conservés ; la note le dit. Clé : (montant servi, unité de quantité).
+ECARTS_DCVBBA_TUN = {
+    (4.8, "litre"): "2,4 D/litre (bière classée 0,024 D/cl ; autres vins classés en bouteilles 2,4 D/l, loi n° 2020-46, art. 20)",
+    (0.48, "deciltre"): "2,4 D/litre, soit 0,24 D/dl (autres vins classés en bouteilles, loi n° 2020-46, art. 20)",
+    (15.0, "hectolitre"): "7,5 D/hectolitre (vins en vrac classés, livrés aux embouteilleurs, loi n° 2017-66, art. 45)",
+    (7.5, "bouteille"): "3,75 D/unité (vins de liqueurs, mistelles, moûts à l'alcool en bouteilles d'un litre au plus, loi n° 2017-66, art. 45)",
+}
+
+
+def _note_dcvbba_tunisie(positions):
+    """Signaler, sur chaque DCVBBA spécifique de la bière (22.03) et du vin
+    (22.04), l'écart entre le montant du Tarif Web et le taux légal."""
+    for code, position in positions.items():
+        if not code.startswith(("2203", "2204")):
+            continue
+        for d in position.get("droits") or []:
+            specifique = d.get("specifique")
+            if d.get("code_source") != "DCVBBA" or not isinstance(specifique, dict):
+                continue
+            cle = (specifique.get("montant"), specifique.get("unite_quantite"))
+            if cle in ECARTS_DCVBBA_TUN:
+                d["note"] = (
+                    f"Montant du Tarif Web conservé. Le tableau annexé à la loi n° 88-62 porte "
+                    f"{ECARTS_DCVBBA_TUN[cle]} : le Tarif Web en sert le double, sans texte trouvé "
+                    "qui l'explique."
+                )
+            elif cle == (4.8, "deciltre"):
+                d["note"] = (
+                    "Montant du Tarif Web conservé. 4,8 D par décilitre font 48 D/litre, vingt fois "
+                    "les 2,4 D/litre du tableau annexé à la loi n° 88-62 (loi n° 2020-46, art. 20), "
+                    "quand les autres lignes servent 4,8 D/litre ou 0,48 D/dl : l'unité publiée "
+                    "paraît incohérente."
+                )
+
+
 def _ordre_ethiopie(positions):
     """Éthiopie : assiettes et ordre de liquidation fixés par les textes.
     Accise : valeur en douane + droit de douane (Excise Tax Proclamation
@@ -4649,6 +4688,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         nomenclature_publiee = _nomenclature_maroc(positions, compteurs, donnees.get("extracted_at") or "")
     if iso == "TUN":
         _ordre_tunisie(positions)
+        _note_dcvbba_tunisie(positions)
     if iso == "NGA":
         _iat_nigeria_2026(positions, compteurs)
         _accise_nigeria_2026(positions, compteurs)
