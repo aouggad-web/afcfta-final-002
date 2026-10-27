@@ -1,10 +1,10 @@
 """
 Moteur de liquidation — chantier L2.
 
-Une fonction, sept primitives d'assiette, un modificateur. Aucune connaissance
+Une fonction, huit primitives d'assiette, un modificateur. Aucune connaissance
 par pays : tout ce que le moteur sait d'un pays lui vient du socle.
 
-Les sept primitives, et rien d'autre :
+Les huit primitives, et rien d'autre :
 
 ===========================  ================================================
 ``CIF``                      la valeur en douane
@@ -33,6 +33,13 @@ Les sept primitives, et rien d'autre :
 ``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
                              désigné par son code (``%DD``)
 ``xQTE``                     droit spécifique : montant unitaire × quantité
+``xQTC``                     droit spécifique assis sur une quantité
+                             complémentaire, distincte de la quantité
+                             tarifaire (Tunisie, DC/ALC : litres d'alcool
+                             contenu dans un chocolat déclaré en kg). Absente,
+                             le droit reste indisponible
+                             (``QUANTITE_COMPLEMENTAIRE_REQUISE``) — jamais
+                             liquidé à la quantité tarifaire.
 ===========================  ================================================
 
 Plus un modificateur, ``plafond``, qui borne l'assiette.
@@ -104,6 +111,7 @@ CALCULE = "CALCULE"
 MANQUE_TAUX = "TAUX_INDISPONIBLE"
 MANQUE_ASSIETTE = "ASSIETTE_INDISPONIBLE"
 MANQUE_QUANTITE = "QUANTITE_REQUISE"
+MANQUE_QUANTITE_COMPLEMENTAIRE = "QUANTITE_COMPLEMENTAIRE_REQUISE"
 MANQUE_CHANGE = "TAUX_DE_CHANGE_REQUIS"
 MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
 #: Valeur FOB exigée par une assiette « FOB » (SACU) et non fournie : la base
@@ -221,6 +229,7 @@ def _assiette_de(
     codes_de_la_position: set,
     valeur_fob: Optional[float] = None,
     devise_valeur: Optional[str] = None,
+    quantite_complementaire: Optional[float] = None,
 ):
     """Rendre (assiette, manque, détail). Une assiette introuvable ne vaut
     jamais CIF, et une assiette amputée ne se complète jamais par un zéro."""
@@ -235,6 +244,11 @@ def _assiette_de(
         if quantite is None:
             return None, MANQUE_QUANTITE, detail
         return quantite, None, detail
+
+    if assiette == "xQTC":
+        if quantite_complementaire is None:
+            return None, MANQUE_QUANTITE_COMPLEMENTAIRE, detail
+        return quantite_complementaire, None, detail
 
     if assiette.startswith("%"):
         # Pourcentage du montant d'un autre droit, quel qu'il soit : le code est
@@ -387,6 +401,7 @@ def _liquider(
     devise_cif: Optional[str] = None,
     valeur_fob: Optional[float] = None,
     devise_position: Optional[str] = None,
+    quantite_complementaire: Optional[float] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     # Omise, la devise de la valeur déclarée est celle du tarif national
@@ -403,6 +418,9 @@ def _liquider(
         and d.get("taux") is None
         and d["specifique"].get("unite_quantite")
         and not d.get("assiette_non_traduite")
+        # La quantité complémentaire est saisie à part : son unité ne
+        # dispute pas la quantité tarifaire.
+        and d.get("assiette") != "xQTC"
     }
 
     for droit in droits:
@@ -584,9 +602,11 @@ def _liquider(
             # Quelle que soit l'assiette déclarée, la lire comme ad valorem
             # transformerait « 8c/kg » en « 8 % » — un montant faux, et
             # crédible. Le socle pose déjà « xQTE » ; le moteur ne s'en remet
-            # pas à lui sur ce point.
-            droit = dict(droit, assiette="xQTE", plafond=None)
-            ligne["assiette"] = "xQTE"
+            # pas à lui sur ce point. Seule exception : « xQTC », quantité
+            # aussi, mais complémentaire.
+            assiette_quantite = "xQTC" if droit.get("assiette") == "xQTC" else "xQTE"
+            droit = dict(droit, assiette=assiette_quantite, plafond=None)
+            ligne["assiette"] = assiette_quantite
             montant_unitaire = _montant_unitaire(specifique)
             # Un droit qui publie sa devise se compare à elle, pas à la devise
             # nationale : 0.50 USD/L sur une valeur en USD ne demande aucun taux.
@@ -633,6 +653,7 @@ def _liquider(
             codes_de_la_position,
             valeur_fob,
             devise_valeur,
+            quantite_complementaire,
         )
         ligne.update(detail)
         if droit.get("assiette") == "xQTE" and len(unites_de_quantite) > 1 and manque is None:
@@ -681,7 +702,7 @@ def _liquider(
         # « xQTE » multiplie une quantité par un montant unitaire ; partout
         # ailleurs — « %DD » compris, où l'assiette est le montant du droit de
         # douane — le taux est un pourcentage.
-        if droit.get("assiette") == "xQTE":
+        if droit.get("assiette") in ("xQTE", "xQTC"):
             montant = assiette * taux
             if deduction_pct is not None:
                 montant = _net_de_deduction(montant, deduction_pct, valeur_douane, ligne)
@@ -896,6 +917,7 @@ def calculer(
     devise_cif: Optional[str] = None,
     couverture: Optional[Dict[str, Any]] = None,
     valeur_fob: Optional[float] = None,
+    quantite_complementaire: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -910,6 +932,9 @@ def calculer(
     la devise nationale du tarif (« 8c/kg », en rands). Si la valeur CIF est
     déclarée dans une autre devise, l'additionner telle quelle mélangerait
     deux monnaies — voir ``_facteur_devise_specifique``.
+
+    ``quantite_complementaire`` : la quantité qu'une assiette ``xQTC`` nomme
+    à part de la quantité tarifaire (litres d'alcool contenu, en Tunisie).
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
@@ -939,6 +964,7 @@ def calculer(
             devise_cif,
             valeur_fob,
             devise_position,
+            quantite_complementaire,
         ),
     }
     if valeur_fob is not None:
@@ -955,6 +981,7 @@ def calculer(
             devise_cif,
             valeur_fob,
             devise_position,
+            quantite_complementaire,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont

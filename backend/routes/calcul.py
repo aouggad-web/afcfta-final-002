@@ -122,6 +122,19 @@ class DemandeCalcul(BaseModel):
             "inconnue s'omet, et le moteur la réclame (`QUANTITE_REQUISE`)."
         ),
     )
+    quantite_complementaire: Optional[float] = Field(
+        None,
+        gt=0,
+        description=(
+            "Quantité qu'un droit assied à part de la quantité tarifaire "
+            "(assiette `xQTC`). Tunisie, droit de consommation DC/ALC : les "
+            "litres d'alcool contenus dans la marchandise (570 D/hl et "
+            "16 D/hl, loi n° 2017-66, art. 45), quand celle-ci se déclare en "
+            "kg, en bouteilles ou en litres de produit. Omise, le moteur la "
+            "réclame (`QUANTITE_COMPLEMENTAIRE_REQUISE`) au lieu de liquider "
+            "le droit sur la quantité tarifaire."
+        ),
+    )
     taux_de_change: Optional[float] = Field(
         None,
         gt=0,
@@ -268,6 +281,7 @@ def calcul(demande: DemandeCalcul):
             position,
             demande.valeur_cif,
             quantite=demande.quantite,
+            quantite_complementaire=demande.quantite_complementaire,
             taux_de_change=demande.taux_de_change,
             taux_preferentiels=preference.get("taux") or None,
             devise_position=provenance.get("devise_nationale"),
@@ -362,6 +376,7 @@ def _conversion_monetaire(position, demande, provenance, preference, resultat):
                 position,
                 demande.valeur_cif,
                 quantite=demande.quantite,
+                quantite_complementaire=demande.quantite_complementaire,
                 taux_de_change=demande.taux_de_change * facteur,
                 taux_preferentiels=preference.get("taux") or None,
                 devise_position=provenance.get("devise_nationale"),
@@ -430,6 +445,7 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
                 position,
                 demande.valeur_cif,
                 quantite=demande.quantite,
+                quantite_complementaire=demande.quantite_complementaire,
                 taux_de_change=demande.taux_de_change,
                 taux_preferentiels={
                     simulation["prelevement"]: {"taux": simulation["taux_publie_pct"]}

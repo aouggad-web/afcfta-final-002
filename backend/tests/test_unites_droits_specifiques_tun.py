@@ -3,8 +3,10 @@
 « PN (KG) » : le poids net en kilos (718 droits). « QCS » : l'unité statistique
 de la position, publiée avec elle (« NOMBRE », « LITRE »…). « QCI » n'a pas
 d'unité publiée (champ vide sur les 17 542 positions) et « PN(KG)/100 EXCES »
-renvoie à un seuil non publié : ces 1 158 droits restent non liquidables au
-lieu d'être multipliés par une quantité d'unité inconnue.
+renvoie à un seuil non publié : ces 883 droits restent non liquidables au
+lieu d'être multipliés par une quantité d'unité inconnue. Seul le DC/ALC que
+la loi établit (275 droits) se liquide sur « QCI », en litres d'alcool
+contenu (test_quantite_complementaire).
 """
 
 import json
