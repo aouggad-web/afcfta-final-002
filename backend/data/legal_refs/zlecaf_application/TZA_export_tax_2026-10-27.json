@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "objet": "Tanzanie : taxe à l'exportation (Export Tax Act, Cap. 196, Schedule)",
+  "destination_iso3": "TZA",
+  "verified_at": "2026-10-27",
+  "etabli": true,
+  "evidence_level": "officiel : guide de la Tanzania Revenue Authority « Taxes and Duties at a Glance 2025/2026 » pour les articles antérieurs à 2025 ; primaire : Finance Act 2025 (s. 37, item 6) et Finance Act 2026 (s. 12, items 7 à 9)",
+  "source": {
+    "url": "https://www.tra.go.tz/images/uploads/pages/TAXES_AND_DUTIES_AT_A_GLANCE_2025_2026.pdf",
+    "institution": "Tanzania Revenue Authority",
+    "sha256_pdf": "3f2b62caa11a8c32ddf89292e9d8ee6f87aee9306eaee30b11e615da6f7481db"
+  },
+  "documents_archives": [
+    {
+      "texte_archive": "sources/TZA_TRA_export_tax_2025_2026.texte-extrait.txt",
+      "sha256": "ecb549a84993e1f9e66b6dca628c138e5a6ded49877c25bf93a1bb901b5806a0"
+    },
+    {
+      "texte_archive": "sources/TZ_finance_act_2025_mof.pdf",
+      "sha256": "394e1f80909f5cf4546b48faa498e7413589ba0368c4b28636ddd3182c181695"
+    },
+    {
+      "texte_archive": "sources/TZ_finance_act_2026_act2_oag.pdf",
+      "sha256": "ea7ad0181a36a7d23b78670e430868903a6a55e2a9d05ed2c8e77c8bd619e9f7"
+    }
+  ],
+  "regle": {
+    "valeur": "Taxe à l'exportation sur la valeur FOB : cuirs et peaux bruts 80 % ou USD 0,52/kg ; noix de cajou brutes 15 % ou USD 160/t ; cuir wet blue 10 % ; déchets et débris 7204 et 7404 30 % ou USD 150/t ; huile de tournesol brute (1512.11.00) et graines de tournesol (1206.00.00) 10 % ; feuilles de placage (44.08) 30 % ou TZS 150/kg (Finance Act 2025) ; déchets de papier (47.07) 30 % ou TZS 200/kg, tourteaux et sons TZS 50/kg, sables de quartz (25.06) et feldspath (2529.10.00) 10 % ou TZS 200/kg (Finance Act 2026, en vigueur le 1er juillet 2026) ; le plus élevé des deux quand deux taux sont publiés.",
+    "reference": "Export Tax Act (Cap. 196), Schedule ; Finance Act 2025, s. 37 ; Finance Act 2026 (No. 2), s. 12",
+    "verbatim_peaux": "Raw hides and skins are charged based on 80% FOB Value or",
+    "verbatim_cajou": "Raw cashew nuts is levied based on 15% FOBValue or USD 160",
+    "verbatim_ferrailles": "Copper waste and scrap metals HS Code 7204 and 7404 are",
+    "verbatim_fa2026": "Waste and scrap of paper or            Thirty percentum of FOB or TZS"
+  },
+  "ne_tranche_pas": "Le texte même de la Schedule de l'Export Tax Act pour ses articles 1 à 5 (lus dans le guide de la TRA, non dans la loi consolidée) ; l'exemption des exportateurs sous régime EPZ (cuirs et peaux), non distinguée par le calcul ; la correspondance de « wet blue leather » avec les positions du SH « à l'état humide (y compris wet-blue) » ; l'application des items 7 à 9 avant le 1er juillet 2026.",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "41 positions nationales du socle : 41.01 à 41.03 ; 0801.31.00 ; 4104.11, 4104.19, 4106.21, 4106.31, 4106.91 ; 72.04 et 74.04 ; 1512.11.00 ; 1206.00.00 ; 44.08 ; 47.07 ; 2302.10, 2302.30, 2302.40, 2306.10, 2306.30 ; 25.06 et 2529.10.00. Positions absentes de la Schedule : aucune taxe à l'exportation.",
+    "devise": "Spécifiques publiés en USD (cuirs, cajou, ferrailles) : sur une valeur en TZS, le calcul demande « 1 USD = ? TZS » ; spécifiques en TZS sans change sur une valeur en TZS.",
+    "reserves": "Les montants valent pour une exportation hors EPZ."
+  }
+}

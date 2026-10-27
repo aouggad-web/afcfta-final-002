@@ -1206,6 +1206,39 @@ EXPORT_PAR_TEXTE = {
                 "81121300", "81122200", "81125200", "81129200")},
         },
     ),
+    # Export Tax Act (Cap. 196), Schedule : taux sur la valeur FOB ; un taux
+    # et un spécifique ensemble valent « whichever is greater ».
+    "TZA": (
+        "Export Tax Act (Cap. 196), Schedule — guide TRA « Taxes and Duties at a Glance 2025/2026 », Finance Act "
+        "2025 (s. 37) et Finance Act 2026 (s. 12) (sources/TZA_TRA_export_tax_2025_2026.texte-extrait.txt)",
+        None,
+        {
+            **{p: (80.0, "0.52 USD/kg", "« Raw hides and skins » : 80 % de la valeur FOB ou USD 0,52/kg, le plus "
+                                         "élevé ; les exportateurs sous régime de zone franche (EPZ) en sont exemptés.")
+               for p in ("4101", "4102", "4103")},
+            "08013100": (15.0, "160 USD/tonne", "« Raw cashew nuts » : 15 % de la valeur FOB ou USD 160 la tonne "
+                                                "métrique, le plus élevé."),
+            # « Wet blue leather » : les positions du SH « in the wet state
+            # (including wet-blue) ».
+            **{p: (10.0, None, "« Wet blue leather » : 10 % de la valeur FOB ; position du SH « à l'état humide "
+                               "(y compris wet-blue) ».")
+               for p in ("41041100", "41041900", "41062100", "41063100", "41069100")},
+            **{p: (30.0, "150 USD/tonne", "« Copper waste and scrap metals HS Code 7204 and 7404 » : 30 % ou USD 150 "
+                                          "la tonne métrique, le plus élevé.") for p in ("7204", "7404")},
+            "15121100": (10.0, None, "« Crude sunflower oil of HS Code 1512.11.00 » : 10 % de la valeur FOB."),
+            "12060000": (10.0, None, "« Sunflower seeds of HS Code 1206.00.00 » : 10 % de la valeur FOB."),
+            "4408": (30.0, "150 TZS/kg", "Finance Act 2025, s. 37 (item 6) : « Veneered sheets of heading 44.08 », "
+                                         "30 % de la valeur FOB ou TZS 150/kg, le plus élevé."),
+            "4707": (30.0, "200 TZS/kg", "Finance Act 2026, s. 12 (item 7, en vigueur le 1er juillet 2026) : "
+                                         "« Waste and scrap of paper or paperboard of Heading 47.07 »."),
+            **{p: (None, "50 TZS/kg", "Finance Act 2026, s. 12 (item 8, en vigueur le 1er juillet 2026) : tourteaux "
+                                      "de coton et de tournesol, sons de blé, de riz et de maïs, TZS 50/kg.")
+               for p in ("23061000", "23063000", "23023000", "23024000", "23021000")},
+            **{p: (10.0, "200 TZS/kg", "Finance Act 2026, s. 12 (item 9, en vigueur le 1er juillet 2026) : « Quartz "
+                                       "sands of Heading 25.06 » et « Feldspar of HS Code 2529.10.00 ».")
+               for p in ("2506", "25291000")},
+        },
+    ),
     # Clés : préfixes du code national (un en-tête « 41.01 » vaut pour toutes
     # ses lignes). Les positions absentes de l'annexe ne portent pas de droit.
     "ZMB": (
