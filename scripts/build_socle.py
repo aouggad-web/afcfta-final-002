@@ -1346,9 +1346,10 @@ EXPORT_PAR_TEXTE = {
                                                    "du 15 juillet 2026 au 14 juillet 2027."),
             "2620110000": _export_egy("10000 EGP/tonne", "Mattes de galvanisation : décret n° 586/2025 (JO n° 4 du "
                                                          "5 janvier 2026), un an à compter du lendemain."),
-            "3915": _export_egy("5000 EGP/tonne", "Tous déchets, rognures et débris de matières plastiques : décret "
-                                                  "n° 683/2018, sans terme. Plastique broyé (granulé ou en "
-                                                  "paillettes) non soumis (décret n° 915/2012)."),
+            # Le broyé est exonéré ; la ligne ne le distingue pas.
+            "3915": (None, None, "Déchets, rognures et débris de matières plastiques : 5 000 livres la tonne (décret "
+                                 "n° 683/2018, sans terme), mais le plastique broyé (granulé ou en paillettes) n'est "
+                                 "pas soumis (décret n° 915/2012) ; la ligne ne dit pas s'il est broyé : à établir."),
             # 12.13 hors paille de riz (…0010).
             "1213000090": _export_egy("1200 EGP/tonne", "Pailles et balles de céréales, hors paille de riz."
                                       + _EXPORT_EGY_FOURRAGES),
