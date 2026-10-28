@@ -1,0 +1,205 @@
+﻿Note;Prélèvement;Texte
+N1;DD;ART. 139 LF 2026
+N2;DAPS;* D.A.P.S =50% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N3;DAPS;* D.A.P.S =70% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N4;DD;* D.D= 5%, T.V.A= 0% jusqu'au 31/12/2026(ART. 140 LF 2026)
+N5;TVA;* D.D= 5%, T.V.A= 0% jusqu'au 31/12/2026(ART. 140 LF 2026)
+N6;DD;*TVA=9%,DD=5% SI oeufs et laitances de poissons, frais ou refrigeres, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche
+N7;TVA;*TVA=9%,DD=5% SI oeufs et laitances de poissons, frais ou refrigeres, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche
+N8;DD;*TVA=9%,DD=5% SI oeufs et laitances de thon, congeles, destines a la reproduction et l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche(Art90LF2024)
+N9;TVA;*TVA=9%,DD=5% SI oeufs et laitances de thon, congeles, destines a la reproduction et l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche(Art90LF2024)
+N10;DD;*TVA=9%,DD=5% SI oeufs et laitances de hareng, congeles, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche(Art90LF2024)
+N11;TVA;*TVA=9%,DD=5% SI oeufs et laitances de hareng, congeles, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche(Art90LF2024)
+N12;DD;* T.V.A = 9% et D.D = 5% SI oeufs et laitances d'autres poissons, congeles, destines a la reproduction et a l'elevage aquacole (Art. 90 LF 2024)
+N13;TVA;* T.V.A = 9% et D.D = 5% SI oeufs et laitances d'autres poissons, congeles, destines a la reproduction et a l'elevage aquacole (Art.90 LF 2024)
+N14;DD;* D.D=15% SI filets de thon blanc destines a la transformation Art.57 LF2012
+N15;DD;*TVA=9%, DD=5% SI post-larves de langoustes(palinurus spp. , panulirus spp., jasus spp.) vivantes, destinees a la reproduction et l'elevage aquacole sur presentation d'une attes. delivree par M.P
+N16;TVA;*TVA=9%, DD=5% SI post-larves de langoustes(palinurus spp. , panulirus spp., jasus spp.) vivantes, destinees a la reproduction et l'elevage aquacole sur presentation d'une attes. delivree par M.P
+N17;DD;*TVA=9%, DD=5% SI post-larves de homards(homarus spp.) vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche
+N18;TVA;*TVA=9%, DD=5% SI post-larves de homards(homarus spp.) vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche
+N19;DD;*TVA=9%,DD=5% SI post-larves de crabes vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche (Art.90 LF 2024)
+N20;TVA;*TVA=9%,DD=5% SI post-larves de crabes vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche (Art.90 LF 2024)
+N21;DD;*TVA=9%, DD=5% SI post-larves de langoustines(nephrops norvegicus) vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attest. delivree par les service du M.P
+N22;TVA;*TVA=9%, DD=5% SI post-larves de langoustines(nephrops norvegicus) vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attest. delivree par les service du M.P
+N23;DD;*TVA=9%, DD=5% SI post-larves de crevettes d'eau froide (pandalus spp., crangon crangon) vivantes, destinees a la reproduction et l'elevage aquacole sur presentation d'une attest.delivree par MP
+N24;TVA;*TVA=9%, DD=5% SI post-larves de crevettes d'eau froide (pandalus spp., crangon crangon) vivantes, destinees a la reproduction et l'elevage aquacole sur presentation d'une attest.delivree par MP
+N25;DD;*TVA=9%,DD=5% SI post-larves de panaeus japonicus vivantes , destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche(Art90LF2024)
+N26;TVA;*TVA=9%,DD=5% SI post-larves de panaeus japonicus vivantes , destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche(Art90LF2024)
+N27;DD;*TVA=9%, DD=5% SI post-larves de litopenaeus vannamei vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche
+N28;TVA;*TVA=9%, DD=5% SI post-larves de litopenaeus vannamei vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.peche
+N29;DD;*TVA=9%, DD=5% SI post-larves d'autres crevettes vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par services du M.peche(Art.90 LF2024)
+N30;TVA;*TVA=9%, DD=5% SI post-larves d'autres crevettes vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par services du M.peche(Art.90 LF2024)
+N31;DD;*D.D=0% Si destines a l'elevage des produits aquacoles sur presentation d'une attestation delivree par le ministere charge de la peche et des ressources halieutiques Art.63 LF 2011 + Art.133-2026
+N32;TVA;*T.V.A=9% Si destines a l'elevage des produits aquacoles sur presentation d'1 attestation delivree par le ministere charge de la peche et des ressources halieutiques Art.63 LF 2011 + Art.133-2026
+N33;DD;*TVA=9%,DD=5% SI post-larves d'ecrevisses vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche(Art90LF2024)
+N34;TVA;*TVA=9%,DD=5% SI post-larves d'ecrevisses vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche(Art90LF2024)
+N35;DD;*TVA=9%, DD=5% SI post-larves d'autres crustaces vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par services du M.Peche(Art.90 LF 2024)
+N36;TVA;*TVA=9%, DD=5% SI post-larves d'autres crustaces vivantes, destinees a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par services du M.Peche(Art.90 LF 2024)
+N37;DD;*TVA=9%, DD=5% SI naissains d'huitres plates(ostrea edulis ), vivants, destines a la reproduction et l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche
+N38;TVA;*TVA=9%, DD=5% SI naissains d'huitres plates(ostrea edulis ), vivants, destines a la reproduction et l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche
+N39;DD;*TVA=9%,DD=5% SI naissains d'huitres creuse(crassostrea- gigas ou crassostrea angulata), vivants, destines a la reproduction et l'elevage aquacole sur presentation d'une attest. delivree par MP
+N40;TVA;*TVA=9%,DD=5% SI naissains d'huitres creuse(crassostrea- gigas ou crassostrea angulata), vivants, destines a la reproduction et l'elevage aquacole sur presentation d'une attest. delivree par MP
+N41;DD;*TVA=9%, DD=5% SI naissains d'autres huitres, vivants, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche(Art90LF2024)
+N42;TVA;*TVA=9%, DD=5% SI naissains d'autres huitres, vivants, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche(Art90LF2024)
+N43;DD;*TVA=9%,DD=5% SI naissains de coquilles st jacques et autr es mollusques de la famille pectinidae,vivants, destines a la reproduction et a l'elevage aquacole sur presentation d 'une attestation du M.P
+N44;TVA;*TVA=9%,DD=5% SI naissains de coquilles st jacques et autr es mollusques de la famille pectinidae,vivants, destines a la reproduction et a l'elevage aquacole sur presentation d 'une attestation du M.P
+N45;DD;*TVA=9%, DD=5% SI naissains de moules(mytilus galloprovinc ialis ou mytilus edulis), vivants, destines a la reproduction et l'elevage aquacole sur presentation d'une attestation du M.Peche
+N46;TVA;*TVA=9%, DD=5% SI naissains de moules(mytilus galloprovinc ialis ou mytilus edulis), vivants, destines a la reproduction et l'elevage aquacole sur presentation d'une attestation du M.Peche
+N47;DD;*TVA=9%, DD=5% SI naissains d'autres moules, vivants, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche(Art90LF2024)
+N48;TVA;*TVA=9%, DD=5% SI naissains d'autres moules, vivants, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les services du M.Peche(Art90LF2024)
+N49;TVA;* (ART 43 LF 92) (ART 21 DU CODE DES T.C.A)
+N50;DD;*TVA=9%, DD=5% SI naissains de palourde, vivants, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les service du Ministere de la peche (Art.90LF2024)
+N51;TVA;*TVA=9%, DD=5% SI naissains de palourde, vivants, destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les service du Ministere de la peche (Art.90LF2024)
+N52;DD;*TVA=9%, DD=5% SI naissains de coques et d'arches, vivants , destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les service du Ministere de la peche
+N53;TVA;*TVA=9%, DD=5% SI naissains de coques et d'arches, vivants , destines a la reproduction et a l'elevage aquacole sur presentation d'une attestation delivree par les service du Ministere de la peche
+N54;DD;*TVA=9%, DD=5% SI naissains d'autres mollusques bivalves, vivants, destines a la reproduction et a l'elevage aquacol e sur presentation d'une attestation delivree par services du M.P (Art.90 LF 2024)
+N55;TVA;*TVA=9%, DD=5% SI naissains d'autres mollusques bivalves, vivants, destines a la reproduction et a l'elevage aquacol e sur presentation d'une attestation delivree par services du M.P (Art.90 LF 2024)
+N56;TVA;* T.V.A = 0% jusqu'au 31 Decembre 2026 (Art. 112 LF 2026)
+N57;DAPS;* D.A.P.S =30% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N58;TVA;* (ART 73 LF 92) (ART 21 DU CODE DES T.C.A)
+N59;DD;* D.D = 5 % jusqu'au 31/12/2026 (ART. 142 LF 2026)
+N60;TIC;* T.I.C = 0 % jusqu'au 31/12/2026 (ART. 142 LF 2026)
+N61;TVA;* T.V.A = 0 % jusqu'au 31/12/2026 (ART. 142 LF 2026)
+N62;TVA;* TVA = 0 si destinés a l'alimentation de betails et de volailles (Art.38 LF 2021) a condition de presenter: programme d'imp. prévisionnel annuel et l'attestation d'exoneration de la TVA
+N63;TCS;* T.C.S = 3% Si autre que: Graines de tabac
+N64;DD;* D.D=0% , T.V.A=9% Si Huile de foie de morue, destinee a la fab. D'aliments pour elevage aquacole, en presentation attestation delivree par services habilites du M. peche (Art. 133 LF 2026)
+N65;TVA;* D.D=0% , T.V.A=9% Si Huile de foie de morue, destinee a la fab. D'aliments pour elevage aquacole, en presentation attestation delivree par services habilites du M. peche (Art. 133 LF 2026)
+N66;DD;* D.D=0% ,T.V.A=9% Si Huile de foie des autres poissons et leurs fractions, destinees a la fab. aliments pour elevage aquacole, en presentation attestation delivree par M. de la peche (Art.133LF2026
+N67;TVA;* D.D=0% ,T.V.A=9% Si Huile de foie des autres poissons et leurs fractions, destinees a la fab. aliments pour elevage aquacole, en presentation attestation delivree par M. de la peche (Art.133LF2026
+N68;DD;* D.D=0%,T.V.A=9% Si Fractions solides des graisses, huiles de poissons et leurs fractions, destinees a fab. d'aliments elevage aquacole, avec attestation delivree M. peche (Art.133LF2026)
+N69;TVA;* D.D=0%,T.V.A=9% Si Fractions solides des graisses, huiles de poissons et leurs fractions, destinees a fab. d'aliments elevage aquacole, avec attestation delivree M. peche (Art.133LF2026)
+N70;DD;* DD=0%,TVA=9% Si Acides gras polyinsatures, destines a la fab. aliments pour elevage aquacole, en presentation attestation delivree par services habilites M. de la peche (Art.133LF2026)
+N71;TVA;* DD=0%,TVA=9% Si Acides gras polyinsatures, destines a la fab. aliments pour elevage aquacole, en presentation attestation delivree par services habilites M. de la peche (Art.133LF2026)
+N72;DD;* DD=0%,TVA=9% Si Autres graisses,huiles poissons et leurs fractions, autres que huiles de foies,destinees a fab. aliments elevage aquacole, avec attestation de M. peche (Art.133 LF 2026)
+N73;TVA;* DD=0%,TVA=9% Si Autres graisses,huiles poissons et leurs fractions, autres que huiles de foies,destinees a fab. aliments elevage aquacole, avec attestation de M. peche (Art. 133 LF 2026)
+N74;TVA;* T.V.A = 9% Si DECHETS VALORISABLES (Art. 35 LF 2024)
+N75;TVA;* T.V.A = 0% SI LAIT INFANTILE NON CONDITIONNE POUR LA VENTE AU DETAIL (EN VRAC)
+N76;DD;*D.D=0% Si destines a l'elevage des produits aquacoles sur presentation d'une attestation delivree par le ministere charge de la peche et des ressources halieutiques Art.63 LF 2011 + Art.133lf2026
+N77;TVA;*T.V.A=9% Si destines a l'elevage des produits aquacoles sur presentation d'1 attestation delivree par le ministere charge de la peche et des ressources halieutiques Art.63 LF 2011+Art. 133lf2026
+N78;TVA;*TVA=9% après presentation d'une attestation délivrée par le M.de la pêche.
+N79;TVA;*T.V.A=9% Si destines a l'elevage des produits aquacoles sur presentation d'1 attestation delivree par le ministere charge de la peche et des ressources halieutiques Art.63 LF 2011 + Art.133lf2026
+N80;DD;*D.D=0% Si farine d'origine vegetale autres que celles du chapitre 11 destines a l'elevage des produits aquacoles sur presentation attestdelivree par le M.peche Art.63-2011 et Art. 133 LF 2026
+N81;TVA;*TVA=0 si destinés alim.betails et volailles(art38 LF2021) -T.V.A=9% Si farine d'origine vegetale autres que celles du chapitre 11 destines a l'elevage des produits aquacoles avec Attes. du M.Peche
+N82;DD;*D.D=0% Si farine d'origine vegetale autres que celles du chapitre 11 destines a l'elevage des produits aquacoles sur presentation attest delivree par M.peche Art.63LF2011 et Art. 133 LF 2026
+N83;DD;*D.D=0% Si farine d'origine vegetale autres que celles du chapitre 11 destines a l'elevage des produits aquacoles sur presentation attest delivree par M.peche Art.63LF2011 et Art. 133 lf 2026
+N84;DD;*D.D=0% Si farine d'origine vegetale autres que celles du chapitre 11 destines a l'elevage des produits aquacoles sur presentation attest delivree par M.peche Art.63LF 2011 et Art. 133 LF 2026
+N85;DD;*D.D=0% Si Aliment des types utilises dans alimentation des animaux aquatiques d'elevage des produits aquacoles sur presentation d'1 attestation delivree par le ministere de la peche Art63LF2011
+N86;TVA;*T.V.A=9% Si Aliment des types utilises dans alimentation des animaux aquatiques d'elevage des produits aquacoles sur presentation d'1 attestation delivree par le ministere de la peche Art63LF2011
+N87;TVA;*TVA=0 si destinés alim.betails et volailles(art38 LF2021) -T.V.A=9% Si Aliment des types utilises dans alimentation des animaux aquatiques d'elevage des produits aquacoles avec Attes. du M.peche
+N88;DAPS;* D.A.P.S =200 % Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N89;DD;*EX D.D=0 intrants et matieres premieres utilises dans la fabrication des produits siderugiques ART63 LFC2015
+N90;DD;*exonération D.D si destinés à la production nationale (article 63 LF 2014)
+N91;TVA;*taux réduit=9% si destinés à la production nationale (article 63 LF 2014)
+N92;TVA;"*ART.80 LF 96; ART.51 LF 97"
+N93;DD;* DD=0% Si essence et gasoil reimporte suite à l'exportation temporaire pour perfectionnement passif
+N94;TVA;* Art 14 lf2016
+N95;DD;*EX D.D=0 si -Autres (silicate de soude) ART66 LFC2015
+N96;TCS;* T.C.S = 3% Si autre que: Acetates du glycerol (MONO-, DI-, TRI-ACETINE), servant a la fabrication des produits tabagiques
+N97;TVA;* Art. 23/1 Du TCA modifié par Art. 27 LF 2017
+N98;TVA;* le taux reduit de TVA=9% est accorde a tous les produits du chapitre 30 destines a un usage veterinaire(LF 2003)
+N99;TCS;* T.C.S = 3% Si autre que: Encres d'imprimerie noires, servant a la fabrication des produits tabagiques
+N100;TCS;* T.C.S = 3% Si autre que: Autres encres d'imprimerie, servant a la fabrication des produits tabagiques
+N101;TCS;* T.C.S = 3% Si autre que: Aromes, servant a la fabrication des produits tabagiques
+N102;TCS;* T.C.S = 3% Si autre que: Colles de dextrine, servant a la fabrication des produits tabagiques
+N103;DD;* D.D=5% Si adhesifs a base de silicone, destines a la fabrication des panneaux solaires, en presentation d'une attestation delivree par services habilites du M.ENERGIE ART.133LF2026
+N104;TCS;* T.C.S = 3% Si autre que: Adhesifs a base de polymeres des N° 39.01 a 39.13, servant a la fabrication des produits tabagiques
+N105;TIC;Allumettes et briquets : à l'importation, la TIC est applicable sur la valeur en douane (CTCA art. 25).
+N106;TVA;*Exoneration de la TVA lorsqu'ils sont importes par la cinematheque ou pour son compte
+N107;DD;*EX D.D=0 bruts de fonderie importes par les industries de fabrication des vehicules, equipements de carrosseries...ART66 LFC2015
+N108;TVA;* TVA=9% a usage agricole Art.27 LF2017
+N109;DD;* D.D=5% Si flux a arc emerge pour soudure a l'arc destines a la fabrication des panneaux solaires en presentation d'une attestation delivree par services habilites du M.ENERGIE
+N110;DD;*EX D.D=0 si -Liants prepares pour moules ou noyaux de fonderie (noir mineral) ART66 LFC2015
+N111;TCS;* T.C.S = 3% Si autre que: Sorbitol en solution aqueuse, servant a la fabrication des produits tabagiques
+N112;DD;* D.D=5% Si Bande adhesive en matiere plasique, destinee a la fabrication des panneaux solaires, en presentation d'une attestation delivree par services habilites du M.ENERGIE ART.133-2026
+N113;TCS;* T.C.S = 3% Si autre que: Bandes adhesives en rouleaux d'une largeur n'excedant pas 5 cm, servant a la fabrication des produits tabagiques
+N114;DAPS;* D.A.P.S =60% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N115;DD;* D.D=5% Si (plaques,feuilles,pellicules,bandes,lames): en EVA, destinees a la fabrication des panneaux solaires, en presentation d'une attestation delivree par services habilites du M.ENERGIE
+N116;TCS;*T.C.S=3% Si autre que: Plaques, feuilles, pellicules, bandes et lames,en polymeres du propylene, d'une epaisseur n'excedant pas 0,2 mm, non-imprimes, servant a la fabrication des produits tabagique
+N117;TCS;*T.C.S=3% Si autre que:Plaques,feuilles,pellicules,bandes et lames, en polymeres du propylene, d'une epaisseur excedant 0,2mm mais n'excedant pas 1 mm, servant a la fabrication des produits tabagiques
+N118;TCS;* T.C.S = 3% Si autre que: Papiers Kraft pour sacs de grande contenance, en rouleaux d'une largeur excedant 36 cm, servant a la fabrication des produits tabagiques
+N119;TCS;* T.C.S = 3% Si autre que: Papiers et cartons couches en rouleaux d'une largeur excedant 36 cm, servant a la fabrication des produits tabagiques
+N120;TCS;* T.C.S = 3% Si autre que: Papiers et cartons kraft en feuilles de forme carree ou rectangulaire, de tout format, servant a la fabrication des produits tabagiques
+N121;TCS;* T.C.S = 3% Si autre que: Autres papiers et cartons en rouleaux, servant a la fabrication des produits tabagiques
+N122;TCS;* T.C.S = 3% Si autre que: Papiers et cartons en rouleaux, servant a la fabrication des produits tabagiques
+N123;TCS;* T.C.S = 3% Si autre que: Boites et caisses en papier ou carton ondule, imprimees, servant a la fabrication des produits tabagiques
+N124;TCS;* T.C.S = 3% Si autre que: Boites et caisses en papier ou carton ondule, non imprimees, servant a la fabrication des produits tabagiques
+N125;TCS;* T.C.S = 3% Si autre que: Autres boites et cartonnages, pliants, en papier ou carton non ondule, imprimes, servant a la fabrication des produits tabagiques
+N126;TCS;* T.C.S = 3% Si autre que: Autres boites et cartonnages, pliants, en papier ou carton non ondule, non imprimes, servant a la fabrication des produits tabagiques
+N127;TVA;*ART.50 LF 97
+N128;TVA;*Exoneration de la TVA lorsqu'ils somt importes par la cinematheque ou pour son compte
+N129;DD;"* DD=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis a savoir ""FIL COTON"""
+N130;DD;"*DD=5%(Lf2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis a savoir ""FIL COTON"""
+N131;DD;"*DD=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis a savoir ""FIL COTON"""
+N132;DD;"* DD=5%(LF2017 Art86)pour les produits(intrants) destinés a la production nationale du tapis a savoir ""FIL DE JUTE"""
+N133;DD;"*DD=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis a savoir ""FIL DE JUTE"""
+N134;DD;"* DD=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis ""fil polypropylene BCE"""
+N135;DD;"* DD=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis ""FIL POLYPROPYLENE HEAT..."""
+N136;DD;"* D.D=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis ""FIL DE VISCOSE"""
+N137;TCS;* T.C.S = 3% Si autre que: Cables de filaments d'acetate de cellulose, servant a la fabrication des produits tabagiques
+N138;TCS;* T.C.S = 3% Si autre que: Meche d'acetates, contenant au moins 85% en poids de fibres, servant a la fabrication des produits tabagiques
+N139;TCS;* T.C.S = 3% Si autre que: Meche d'acetates, contenant moins de 85% en poids de fibres, servant a la fabrication des produits tabagiques
+N140;DD;"* DD=5%(LF2017 Art86) produits destinés a la production nationale du tapis ""FIL POLYESTER/COTON:80% polyester 20%."""
+N141;TCS;* T.C.S = 3% Si autre que: Ouates et articles en ouates, en rouleaux, d'un diametre inferieur ou egal a 8 mm, servant a la fabrication des produits tabagiques
+N142;DD;"* DD=5%(LF2017 Art86) pour les produits(intrants) destinés a la production nationale du tapis ""FIL CHENILLE"""
+N143;TVA;"* ART.11-3 CODE T.C.A; ART.39 LF 95"
+N144;TVA;"*ART.11-3 CODE T.C.A; ART.39 LF 95"
+N145;DD;* D.D=5% Si verres de securite, trempes, destines a la fabrication des panneaux solaires, en presentation d'une attestation delivree par services habilites du M.ENERGIE ART. 133 LF 2026
+N146;DPPP;ART.65 LF 2026
+N147;TVA;** DROIT DE GARANTIE SUR (PLATINE) 1000 DA/HG. Percue par service de la garantie.
+N148;TVA;** DROIT DE GARANTIE 1000 DA/HG (POUR PLATINE) ou 500 DA/HG (POUR L'OR). Percu par le service de la garantie.
+N149;TVA;** DROIT DE GARANTIE POUR (PLATINE) 1000 DA/HG ou 500 DA/HG POUR (L'OR). Percu par le service de la garantie.
+N150;DD;*EX D.D=0 intrants et matiere premiere pour la fabrication des prod siderurgiques ART63 LFC2015 ou brut de fonderie ART66 LFC2015
+N151;DD;*EX D.D=0 si ---Autres (Brame) ART63 LFC2015
+N152;DD;*exonnération D.D si destinés à la production nationale (article 64 LF 2014)
+N153;TVA;*taux réduit = 9 % si destinés à la production nationale (article 64 LF 2014)
+N154;TVA;*taux réduit = 9 % si destinés à la production nationale article 64 LF 2014)
+N155;DD;* D.D=5% Si Ruban de soudure en cuivre affine, destine a la fabrication des panneaux solaires en presentation d'une attestation delivree par services habilites du M.ENERGIE ART. 133 LF 2026
+N156;DD;*EX D.D=0 si -Aluminium nom allie (lingots) ART66 LFC2015 ou intrant des produits siderugiques ART63 LFC2015
+N157;DD;*EX D.D=0 si -Alliages aluminium (lingots) ART66 LFC2015
+N158;TCS;* T.C.S = 3% Si autre que: Feuilles et bandes minces en aluminium, en rouleaux d'un poids n'excedant pas 10 kg d'une epaisseur inferieure a 0,021 mm, servant a la fabrication des produits tabagiques
+N159;TCS;* T.C.S = 3% Si autre que: Feuilles et bandes minces en aluminium autrement presentes, d'une epaisseur inferieure a 0,021 mm, servant a la fabrication des produits tabagiques
+N160;DD;* D.D=5% Si Cadre en aluminium anodise, destine a la fabrication des panneaux solaires en presentation d'une attestaion delivree par services habilites du M.ENERGIE ART. 133 LF 2026
+N161;DD;*EX D.D=0 si -Autres (couvercles de boites a ouverture facile) ART.63 LFC2015
+N162;TEE;"Taux selon la classe énergétique du produit importé : 5 % (A++, A+, A), 20 % (B), 30 % (C), 40 % (D à G) ; 40 % sans document attestant la classe (LF 2017 art. 70, rédaction LF 2020 art. 64). Le Tarif Web publie 0 %."
+N163;DD;*ART. 131 LF 2026
+N164;TVA;* voir annexe tva .
+N165;TVA;* voir annexe tva.
+N166;TVA;* sous souleuses,draineuses et corps draineur, fossoyeuse et rigoleuse tva a 9%.
+N167;DAPS;* D.A.P.S =120% Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N168;TVA;*voir annexe tva Materiels a usage agricole TVA = 9% .
+N169;DFP;"40 % de la valeur toutes taxes comprises (CII art. 485 bis, 3, LF 2025) ; n'entre pas dans la base de la TVA."
+N170;TVA;*TVA=0% Piles utilises pour des appareils d'implants (sourds)//Kits et modules destines a l'assemblage Micro-Ordinateurs Art.64 LF 2011
+N171;TCE;* Sont concernes par la T.C.E les fers a repasser electriques pour usage domestique Article 64 LF 2020
+N172;DD;* D.D=5% Si Boites de jonction, destinees a la fabrication des panneaux solaires, en presentation d'une attestation delivree par les services habilites du M.ENERGIE. ART. 133 LF 2026.
+N173;DD;* D.D=5% En presentation d'une attestation delivree par les services habilites du M.ENERGIE ART. 128 LF 2026.
+N174;DD;* D.D = 0% Si Electrolyseurs destines a la production de l'hydrogene Art. 132 LF 2026
+N175;DD;*EX D.D=0 si --Des types utilises pour fours (electrode en graffite)ART66 LFC2015
+N176;TVA;"*-MINITRACTEURS ET MOTOCULTEURS ; -TRACTEURS ENJAMBEURS ==> TVA = 9%. (ART 22-I CODE TCA) ."
+N177;TVA;* TVA=9% si connaissement ou domiciliation(credit documentaire irrevocable) avant le 04/06/2020
+N178;TVA;*-TRACTEURS A CHENILLES A USAGE AGRICOLE DE 35 CV A 250 CV.==> TVA 9% (ART 22-I CODE TCA).
+N179;TVA;*TVA=9% si connaissement ou domiciliation(credit documentaire irrevocable) avant le 04/06/2020
+N180;DD;*Lf2010 telex 01/DGD/D042/010 du 05/01/2010
+N181;DD;*lf2010 telex 01/DGD/D042/010 du 05/01/2010
+N182;TIC;* T.I.C=60% Si blindes, d'une cylindree excedant 2000 cm3 mais n'excedant pas 2500 cm3 ARTICLE 43 LF 2020
+N183;TIC;* T.I.C =60% Si d'une cylindree excedant 2000 cm3 mais n'excedant pas 2500 cm3 ARTICLE 43 LF 2020
+N184;TIC;* T.I.C=60% Si d'une cylindree excedant 2000 cm3 mais n'excedant pas 2100 cm3 ARTICLE 43 LF 2020
+N185;TIC;* T.I.C=60% Si blindes d'une cylindree excedant 2000 cm3 mais n'excedant pas 2100 cm3 ARTICLE 43 LF 2020
+N186;TIC;* T.I.C = 60% Si d'une cylindree excedant 2000 cm3 mais n'excedant pas 2100 cm3 ARTICLE 43 LF 2020
+N187;TIC;* T.I.C = 60% Si blindes, d'une cylindree excedant 2000 cm3 mais n'excedant pas 2500 cm3 ARTICLE 43 LF 2020
+N188;TIC;* T.I.C=60% Si d'une cylindree excedant 2000 cm3 mais n'excedant pas 2500 cm3 ARTICLE 43 LF 2020
+N189;TIC;* T.I.C = 60% Si blindes, d'une cylindree excedant 2000 cm3 mais n'excedant pas 2100 cm3 ARTICLE 43 LF 2020
+N190;TIC;* T.I.C = 60% Si blindes d'une cylindree excedant 2000 cm3 mais n'excedant pas 2500 cm3 ARTICLE 43 LF 2020
+N191;TIC;* T.I.C= 60% Si d'une cylindree excedant 2000 cm3 mais n'excedant pas 2100 cm3 ARTICLE 43 LF 2020
+N192;DD;*LFC2010 telex 316/DGD/D0421/10 du 13/09/2010
+N193;TVA;*TVA = 0% pour les motocycles et vélocipèdes avec moteurs auxiliaires specialement amenages pour invalides.
+N194;TIC;* T.I.C = 30% SI Bateaux gonflables de plaisance
+N195;TIC;* T.I.C = 30% SI Bateaux à voile, de plaisance, autres que gonflables et autres que de sport, même avec moteur auxiliaire, d'une longueur n'excedant pas 7,5 m
+N196;TIC;* T.I.C = 30% SI Bateaux à voile, de plaisance, autres que gonflables et autres que de sport, même avec moteur auxiliaire, d'une longueur excédant 7,5 m mais n'excédant pas 24 m
+N197;TIC;* T.I.C = 30% SI Bateaux à voile, de plaisance, autres que gonflables et autres que de sport, même avec moteur auxiliaire, d'une longueur excédant 24 m
+N198;TIC;* T.I.C = 30% SI Bateaux à moteur, autres que gonflables, ne comportant pas de moteur hors-bord, de plaisance
+N199;TIC;* T.I.C = 30% SI Yachts et autres bateaux de plaisance, d'une longueur n'excédant pas 7,5 m
+N200;TIC;* T.I.C = 30% SI Autres yachts et bateaux de plaisance
+N201;TVA;*article 16 LF 2014
+N202;DD;*EX D.D=0 si -Parties et accessoires (embout de protection pour canne pyrometrique ART66 LFC2015
+N203;DAPS;*D.A.P.S = 50% Si Autres que(couches et couches-culottes, pour adultes et Si date validation de la declaration avant le 21-04-2019 JORADP N° 26 du 21-04-2019
+N204;DD;Aucun droit de douane n'est publié pour cette position, alors que la source en publie pour d'autres. Le total ne peut pas être servi comme complet : le droit est déclaré indisponible plutôt que supposé nul.

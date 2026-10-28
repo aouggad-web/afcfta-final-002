@@ -1,0 +1,17 @@
+﻿Note;Prélèvement;Texte
+N1;IAT;Position absente de la liste IAT de l'Order 2026, qui révoque celui de 2023.
+N2;EXC;Position absente de la liste des marchandises passibles d'accise (Fifth Schedule de l'Order 2026), qui substitue la liste existante.
+N3;IAT;Liste IAT de l'Order 2026, en vigueur au 1er mai 2026.
+N4;TVA;Taux de TVA collecté au portail : 17,5 %. Le Nigeria Tax Act 2025 ne connaît que 7,5 % (s.148) et 0 % (s.187) : à vérifier au portail.
+N5;EXC;Fifth Schedule, Annex IV : « Non alcoholic beverages, fruit juice, energy drink, etc. (All non-alcoholic beverages) Sugar Sweetened » : ₦10 par litre si la boisson est sucrée, ce que la position ne dit pas — non liquidable en l'état.
+N6;EXC;Fifth Schedule, Annex IV, taux 2026 : « Aerated Water others : ₦10 per Litre ».
+N7;EXC;Fifth Schedule, Annex IV, taux 2026 : « Beer and Stout : NILL, ₦72 per Litre ».
+N8;EXC;Fifth Schedule, Annex IV, taux 2026 : « Wines (alcoholic) : 25%, ₦70 per Litre ».
+N9;EXC;Fifth Schedule, Annex IV, taux 2026 : « Whisky, Brandy, Vodka & Rums : 30%, ₦75 per Litre ».
+N10;EXC;Fifth Schedule, Annex IV, taux 2026 : « Smoking Tobacco including Cigarettes : 30%, ₦6.00k per Stick ».
+N11;EXC;Fifth Schedule, Annex IV : tabacs autres que les cigarettes, produits du tabac chauffé et sachets de nicotine : « ₦4,500/kg ₦6,000 per litre », deux unités dont la position ne dit pas laquelle vaut — non liquidable en l'état.
+N12;TVA;Taux de TVA collecté au portail : 1 %. Le Nigeria Tax Act 2025 ne connaît que 7,5 % (s.148) et 0 % (s.187) : à vérifier au portail.
+N13;IAT;IAT 2026 non attribuable : la liste vise cette position sous un code ancien ou à deux taux (3004.40.00.00 : 20 %).
+N14;IAT;IAT 2026 non attribuable : la liste vise cette position sous un code ancien ou à deux taux (6907.90.00.00 : 15 %).
+N15;IAT;IAT 2026 non attribuable : la liste vise cette position sous un code ancien ou à deux taux (15 % (basic) ou 35 % (soundproof)).
+N16;IAT;IAT 2026 non attribuable : la liste vise cette position sous un code ancien ou à deux taux (8903.92.00.00 : 50 %).

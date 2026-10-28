@@ -1,0 +1,20 @@
+﻿Note;Prélèvement;Texte
+N1;DD;Taux absent de la colonne du tarif — la source note « Rate determined by national schedule » — et porté par la désignation de la position. Les deux composantes et la règle de liquidation sont citées telles qu'écrites.
+N2;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.66 / KG whichever is higher”
+N3;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.46 / liter whichever is higher”
+N4;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.2 per KG whichever is higher”
+N5;DD;Amend EAC CET duty rate from 10% to “10% or US$ 0.08 per KG whichever is higher”
+N6;DD;Amend EAC CET duty rate from 35% to “35% or US$ 3 / m2 whichever is higher”
+N7;DD;Amend EAC CET duty rate from 35% to “35% or US$ 0.35 / KG whichever is higher”
+N8;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 1 (p. 65)) : Tanzania 10% and Rwanda 0%
+N9;DD;"Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 2 (p. 65)) : Rwanda: 0% Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 1 (p. 65)) : (a) Tanzania and Burundi: 0%; and (b) Rwanda: 10%"
+N10;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 2 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N11;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 3 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N12;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 5 (p. 65)) : Tanzania and Burundi: 0%
+N13;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 4 (p. 65)) : Tanzania 0%
+N14;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 6 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N15;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 7 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N16;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 8 (p. 65)) : Tanzania and Burundi: 0%
+N17;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 9 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N18;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 10 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N19;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 3 (p. 65)) : Tanzania 0%

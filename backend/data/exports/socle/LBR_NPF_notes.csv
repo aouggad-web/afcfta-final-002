@@ -1,0 +1,11 @@
+﻿Note;Prélèvement;Texte
+N1;CUF;Revenue Code, s.1822(a) : « 1.5% of the CIF for all imports whether duty paid or not ». Réserve : l'OMC (WT/TPR/S/441, 2023, §3.32) décrit en pratique des frais forfaitaires au Freeport de Monrovia et 1,2 % du CIF aux autres points d'entrée, sans texte trouvé.
+N2;TVA;"Revenue Code, s.1004(d) : CIF augmenté du droit de douane, du customs service fee, de l'ECOWAS Trade Levy et de l'accise ; taux 13 % (s.1000(b)(3), Tax Amendment Act de décembre 2025), appliqué depuis le 1er mai 2026 (avis LRA PSA/LRA-01/FY 2026 ; fiche LBR_taux_GST_2026-10-25.json)."
+N3;EXC;s.1110(c) : valeur CIF, droit de douane, redevances douanières, prélèvement CEDEAO et autres droits, hors GST.
+N4;EXC;US$0.45/L à l'importation, en dollars US (s.1110(a) : volume importé).
+N5;EXC;US$0.15/L à l'importation, en dollars US (s.1110(a) : volume importé).
+N6;EXC;US$1.00/L à l'importation, en dollars US (s.1110(a) : volume importé).
+N7;EXC;US$3.00/L à l'importation, en dollars US (s.1110(a) : volume importé).
+N8;EXC;US$25.00/Kg à l'importation, en dollars US (s.1110(a) : volume importé).
+N9;EXC;US$0.50 / pack of 20 sticks à l'importation, en dollars US (s.1110(a) : volume importé).
+N10;EXC;US$0.25 / stick à l'importation, en dollars US (s.1110(a) : volume importé).

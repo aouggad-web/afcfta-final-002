@@ -1,0 +1,15 @@
+﻿Note;Prélèvement;Texte
+N1;TVA;Taux national standard, base CIF+TOUS_SAUF_TVA établie sur texte primaire (fiche MRT_assiette_TVA_2026-09-17.json) — biens exonérés non distingués position par position.
+N2;EXC;Art. 262 : valeur en douane majorée des droits et taxes dus à l'entrée, hors TVA et accises.
+N3;TLC;10 % de la valeur en douane des produits du chapitre 24 importés.
+N4;EXC;1,33 MRU/l à l'importation.
+N5;DD;Loi de finances rectificative 2026, art. 3.2.1 b) : droit de douane de 10 %.
+N6;RS;Loi de finances rectificative 2026, art. 3.2.1 b) : exempté de la redevance statistique.
+N7;EXC;9,98 MRU/l à l'importation.
+N8;EXC;2,16 MRU/l à l'importation.
+N9;EXC;1,86 MRU/l à l'importation.
+N10;EXC;6,52 MRU/l à l'importation.
+N11;EXC;0,45 MRU/l à l'importation.
+N12;EXC;0,71 MRU/l à l'importation.
+N13;EXC;3,42 MRU/l à l'importation.
+N14;EXC;100 MRU/g à l'importation.

@@ -1,0 +1,77 @@
+﻿Note;Prélèvement;Texte
+N1;DD;Droit de douane du REGIME GERAL, colonne 4 du bareme. Le document ecrit « Livre », et l'article 43.º n.º 1 des Instrucoes Preliminares en donne la valeur entre parentheses : « taxa Livre (0%) ». C'est un BENEFICE FISCAL automatique et reel que le texte nomme, pas une case oubliee. Assiette : le valor aduaneiro (IPP art. 58.º n.º 5), que le Codigo Aduaneiro art. 117.º n.º 2 definit comme le prix paye augmente du transport, de la manutention et de l'assurance jusqu'au port — le CIF.
+N2;EGA;Emolumentos gerais aduaneiros. TAUX GENERAL de 2 % pose par l'article 58.º n.º 3 des Instrucoes Preliminares, sur la meme assiette que le droit — le valor aduaneiro (n.º 5). Il n'est pas dans les colonnes du bareme : c'est une regle generale, et elle survit aux exonerations, l'article 43.º n.º 4 exemptant « os direitos aduaneiros, com excepcao da taxa devida pela prestacao de servicos ». DEUX TAUX SECTORIELS EXISTENT ET NE SONT PAS APPLIQUES : 0,1 % pour le secteur petrolier et 2 % pour le secteur minier (art. 58.º n.º 4), qui dependent d'un regime douanier que le calculateur ne connait pas.
+N3;TVA;Taux standard national, non vérifié position par position : les opérations détaxées et exonérées du Código do IVA ne sont pas distinguées. Le tarif douanier angolais ne porte aucune TVA — c'est pourquoi cette table la complète.
+N4;DD;Droit de douane du REGIME GERAL, colonne 4 du bareme. Assiette : le valor aduaneiro (IPP art. 58.º n.º 5), que le Codigo Aduaneiro art. 117.º n.º 2 definit comme le prix paye augmente du transport, de la manutention et de l'assurance jusqu'au port — le CIF.
+N5;DD;"Taux de l'Anexo III (Diário, p. 23182) ; Pauta 2024 : 50 %."
+N6;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 0206.49.10 : 10 %, 0206.49.20 : 10 %, 0206.49.30 : 50 %, 0206.49.90 : 50 %. Taux à lire sur la sous-position.
+N7;DD;"Taux de l'Anexo III (Diário, p. 23183) ; Pauta 2024 : 10 %."
+N8;DD;"Taux de l'Anexo III (Diário, p. 23183) ; Pauta 2024 : 50 %."
+N9;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 0207.27.49 : 50 %, 0207.27.81 : 30 %, 0207.27.82 : 50 %, 0207.27.83 : 50 %. Taux à lire sur la sous-position.
+N10;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 0207.44.49 : 50 %, 0207.44.81 : 30 %, 0207.44.82 : 50 %, 0207.44.83 : 50 %. Taux à lire sur la sous-position.
+N11;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 0207.45.49 : 50 %, 0207.45.81 : 30 %, 0207.45.82 : 50 %, 0207.45.83 : 50 %. Taux à lire sur la sous-position.
+N12;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 0207.54.49 : 50 %, 0207.54.81 : 30 %, 0207.54.82 : 50 %, 0207.54.83 : 50 %. Taux à lire sur la sous-position.
+N13;DD;"Taux de l'Anexo III (Diário, p. 23184) ; Pauta 2024 : 50 %."
+N14;DD;"Taux de l'Anexo III (Diário, p. 23184) ; Pauta 2024 : 10 %."
+N15;DD;Aucun droit de douane n'est publié pour cette position, alors que la source en publie pour d'autres. Le total ne peut pas être servi comme complet : le droit est déclaré indisponible plutôt que supposé nul.
+N16;DD;"Taux de l'Anexo III (Diário, p. 23184) ; Pauta 2024 : 2 %."
+N17;DD;"Taux de l'Anexo III (Diário, p. 23185) ; Pauta 2024 : 2 %."
+N18;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 0504.00.10 : 10 %, 0504.00.90 : 50 %. Taux à lire sur la sous-position.
+N19;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 1006.30.10 : 30 %, 1006.30.20 : 20 %, 1006.30.90 : 30 %. Taux à lire sur la sous-position.
+N20;DD;"Taux minimum de 5 % pour 2026 ; Pauta 2024 : 1 %."
+N21;DD;"Taux de l'Anexo III (Diário, p. 23186) ; Pauta 2024 : 2 %."
+N22;DD;"Taux de l'Anexo III (Diário, p. 23186) ; Pauta 2024 : 30 %."
+N23;EXC;Lei n.º 16/21, art. 7.º n.º 1 b) : valor aduaneiro des biens importés. Exonérations de l'art. 6.º (matières premières et usage médical sous déclaration d'exclusivité, véhicules électriques, etc.) non distinguées.
+N24;DD;"Taux de l'Anexo III (Diário, p. 23187) ; Pauta 2024 : 2 %."
+N25;DD;"Taux de l'Anexo III (Diário, p. 23188) ; Pauta 2024 : 2 %."
+N26;DD;"Taux de l'Anexo III (Diário, p. 23189) ; Pauta 2024 : 2 %."
+N27;DD;"Taux de l'Anexo III (Diário, p. 23190) ; Pauta 2024 : 2 %."
+N28;DD;"Taux de l'Anexo III (Diário, p. 23190) ; Pauta 2024 : illisible."
+N29;DD;"Taux de l'Anexo III (Diário, p. 23191) ; Pauta 2024 : 2 %."
+N30;DD;"Taux de l'Anexo III (Diário, p. 23192) ; Pauta 2024 : 2 %."
+N31;DD;"Taux de l'Anexo III (Diário, p. 23193) ; Pauta 2024 : 2 %."
+N32;DD;"Taux de l'Anexo III (Diário, p. 23194) ; Pauta 2024 : 2 %."
+N33;DD;"Taux de l'Anexo III (Diário, p. 23194) ; Pauta 2024 : illisible."
+N34;DD;"Taux de l'Anexo III (Diário, p. 23195) ; Pauta 2024 : 2 %."
+N35;DD;"Taux de l'Anexo III (Diário, p. 23196) ; Pauta 2024 : 2 %."
+N36;DD;"Taux de l'Anexo III (Diário, p. 23197) ; Pauta 2024 : 2 %."
+N37;DD;"Taux de l'Anexo III (Diário, p. 23198) ; Pauta 2024 : 2 %."
+N38;DD;"Taux de l'Anexo III (Diário, p. 23198) ; Pauta 2024 : 50 %."
+N39;DD;"Taux de l'Anexo III (Diário, p. 23199) ; Pauta 2024 : 50 %."
+N40;DD;"Taux de l'Anexo III (Diário, p. 23200) ; Pauta 2024 : 50 %."
+N41;DD;"Taux de l'Anexo III (Diário, p. 23200) ; Pauta 2024 : 2 %."
+N42;DD;"Taux de l'Anexo III (Diário, p. 23201) ; Pauta 2024 : 2 %."
+N43;DD;"Taux de l'Anexo III (Diário, p. 23201) ; Pauta 2024 : 50 %."
+N44;DD;"Taux de l'Anexo III (Diário, p. 23202) ; Pauta 2024 : 50 %."
+N45;DD;"Taux de l'Anexo III (Diário, p. 23202) ; Pauta 2024 : 2 %."
+N46;DD;"Taux de l'Anexo III (Diário, p. 23203) ; Pauta 2024 : 2 %."
+N47;DD;"Taux de l'Anexo III (Diário, p. 23203) ; Pauta 2024 : 50 %."
+N48;DD;"Taux de l'Anexo III (Diário, p. 23204) ; Pauta 2024 : 50 %."
+N49;DD;"Taux de l'Anexo III (Diário, p. 23204) ; Pauta 2024 : 2 %."
+N50;DD;"Taux de l'Anexo III (Diário, p. 23205) ; Pauta 2024 : 2 %."
+N51;DD;"Taux de l'Anexo III (Diário, p. 23205) ; Pauta 2024 : 30 %."
+N52;DD;"Taux de l'Anexo III (Diário, p. 23206) ; Pauta 2024 : 30 %."
+N53;DD;"Taux de l'Anexo III (Diário, p. 23206) ; Pauta 2024 : 10 %."
+N54;DD;"Taux de l'Anexo III (Diário, p. 23206) ; Pauta 2024 : 2 %."
+N55;DD;"Taux de l'Anexo III (Diário, p. 23207) ; Pauta 2024 : 2 %."
+N56;DD;"Taux de l'Anexo III (Diário, p. 23208) ; Pauta 2024 : 2 %."
+N57;DD;"Taux minimum de 5 % pour 2026 ; Pauta 2024 : 2 %."
+N58;DD;"Taux de l'Anexo III (Diário, p. 23209) ; Pauta 2024 : 2 %."
+N59;DD;"Taux de l'Anexo III (Diário, p. 23210) ; Pauta 2024 : 2 %."
+N60;DD;"Taux de l'Anexo III (Diário, p. 23211) ; Pauta 2024 : 2 %."
+N61;DD;"Taux de l'Anexo III (Diário, p. 23212) ; Pauta 2024 : 2 %."
+N62;DD;"Taux de l'Anexo III (Diário, p. 23213) ; Pauta 2024 : 2 %."
+N63;DD;"Taux de l'Anexo III (Diário, p. 23214) ; Pauta 2024 : 2 %."
+N64;DD;"Taux de l'Anexo III (Diário, p. 23215) ; Pauta 2024 : 2 %."
+N65;DD;"Taux de l'Anexo III (Diário, p. 23216) ; Pauta 2024 : 2 %."
+N66;DD;"Taux de l'Anexo III (Diário, p. 23216) ; Pauta 2024 : 50 %."
+N67;DD;"Taux de l'Anexo III (Diário, p. 23217) ; Pauta 2024 : 2 %."
+N68;DD;"Taux de l'Anexo III (Diário, p. 23218) ; Pauta 2024 : 2 %."
+N69;DD;"Taux de l'Anexo III (Diário, p. 23219) ; Pauta 2024 : 2 %."
+N70;DD;"Taux de l'Anexo III (Diário, p. 23220) ; Pauta 2024 : 2 %."
+N71;DD;L'Anexo III de la Lei n.º 14/25 subdivise cette position : 8903.99.10 : 5 %, 8903.99.90 : 10 %. Taux à lire sur la sous-position.
+N72;DD;"Taux de l'Anexo III (Diário, p. 23221) ; Pauta 2024 : 2 %."
+N73;DD;"Taux de l'Anexo III (Diário, p. 23222) ; Pauta 2024 : 2 %."
+N74;DD;"Taux de l'Anexo III (Diário, p. 23223) ; Pauta 2024 : 2 %."
+N75;DD;"Taux de l'Anexo III (Diário, p. 23224) ; Pauta 2024 : 2 %."
+N76;DD;"Taux de l'Anexo III (Diário, p. 23224) ; Pauta 2024 : illisible."

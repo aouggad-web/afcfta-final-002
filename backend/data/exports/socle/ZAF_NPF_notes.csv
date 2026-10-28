@@ -1,0 +1,40 @@
+﻿Note;Prélèvement;Texte
+N1;TVA;Taux standard national, non vérifié position par position : les biens détaxés (zero-rated) et exonérés ne sont pas distingués.
+N2;DD;SARS, Schedule No. 1, General Notes, B.3 : « each such part shall be deemed to be a separate and complete rate of duty and such rate of duty yielding the higher or highest amount of duty shall be applicable ».
+N3;HPL;"2,21c/gram of the sugar content that exceeds 4g/100ml : préparation à diluer, teneur calculée sur la boisson reconstituée (Part 7A, note 6) ; volume non connu du calcul, prélèvement non liquidé."
+N4;EXS;34,7c/kg
+N5;HPL;"2,21c/gram of the sugar content that exceeds 4g/100ml ; teneur réputée de 20 g/100 ml faute de rapport d'essai (Part 7A, note 5 (b)) : 16 g × 2,21 c par 100 ml, soit 3.536 R par litre. Un rapport d'essai accrédité peut la réduire."
+N6;EXS;7,82c/li
+N7;EXS;"R149.98/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N8;EXS;R19.68/li
+N9;EXS;R6.15/li
+N10;EXS;"R302.84/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N11;EXS;R10.38/li
+N12;EXS;"R121.13/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N13;EXS;"R272.55/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N14;EXS;R6 041.72/kg net
+N15;EXS;R11.79/10cigarettes
+N16;EXS;R332.26/kg net
+N17;EXS;R529.99/kg
+N18;EXS;R1 105.40/kg
+N19;EXS;R8.84/10sticks
+N20;EXS;R3.29/ml
+N21;EXS;3,909c/li
+N22;FLV;429c/li
+N23;RAF;225c/li
+N24;EXS;free
+N25;FLV;free
+N26;RAF;free
+N27;EXS;3,817c/li
+N28;FLV;416c/li
+N29;EXS;500c/kg
+N30;EXA;9%
+N31;EXA;7%
+N32;FLV;196,5c/li
+N33;EVB;32c/bag
+N34;EVT;R2.30/kg net
+N35;EVL;R20.00/lamp
+N36;EVT;"R2.30/kg net sur la masse nette des pneus montés (Part 3E, note 3) ; masse des pneus non connue du calcul, prélèvement non liquidé."
+N37;EXA;"Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, B étant la valeur de la s.65(8)(a) ; taux fonction de la valeur, non servi."
+N38;EVC;"R146.00 per g/km CO2 emissions exceeding 95g/km : émissions de CO2 du rapport d'essai ou, à défaut, de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement non liquidé."
+N39;EVC;"R195.00 per g/km CO2 emissions exceeding 175g/km : émissions de CO2 du rapport d'essai ou, à défaut, de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement non liquidé."
