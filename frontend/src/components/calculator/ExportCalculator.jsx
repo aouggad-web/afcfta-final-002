@@ -17,7 +17,7 @@ import { chiffres } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
-const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW', MLI: 'XOF', KEN: 'KES', TZA: 'TZS', ZAF: 'ZAR' };
+const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW', MLI: 'XOF', KEN: 'KES', TZA: 'TZS', ZAF: 'ZAR', CMR: 'XAF' };
 
 const STATUTS = {
   CALCULE: { fr: 'Calculé', en: 'Calculated' },
@@ -53,10 +53,11 @@ function detailErreur(e, fr) {
 export default function ExportCalculator({ language = 'fr' }) {
   const fr = language !== 'en';
   const [pays, setPays] = useState({});
-  // Perceptions de sortie hors tarif (Madagascar : DTSPM du Code minier) :
-  // la question que le texte impose, servie par l'API, par pays.
+  // Ce que le texte fait déclarer à l'exportateur (Madagascar : DTSPM du Code
+  // minier ; Cameroun : produit fini ou non), servi par l'API, par pays, avec
+  // le champ de la demande qui porte la réponse.
   const [questions, setQuestions] = useState({});
-  const [produitMinier, setProduitMinier] = useState(null);
+  const [reponse, setReponse] = useState(null);
   const [transforme, setTransforme] = useState(false);
   const [iso3, setIso3] = useState('');
   const [code, setCode] = useState('');
@@ -94,7 +95,7 @@ export default function ExportCalculator({ language = 'fr' }) {
     setIso3(valeurPays);
     setDevise(DEVISE_NATIONALE[valeurPays] || '');
     setCode('');
-    setProduitMinier(null);
+    setReponse(null);
     setTransforme(false);
     setResultat(null);
   };
@@ -122,9 +123,9 @@ export default function ExportCalculator({ language = 'fr' }) {
     if (changeRequis && tauxDeChange !== '') {
       corps.taux_de_change = inverse ? 1 / parseFloat(tauxDeChange) : parseFloat(tauxDeChange);
     }
-    if (question && produitMinier !== null) {
-      corps.produit_minier = produitMinier;
-      if (produitMinier) corps.produit_minier_transforme = transforme;
+    if (question && reponse !== null) {
+      corps[question.champ] = reponse;
+      if (reponse && question.question_transformation) corps.produit_minier_transforme = transforme;
     }
     const demandee = version.current;
     try {
@@ -218,10 +219,10 @@ export default function ExportCalculator({ language = 'fr' }) {
               {fr ? question.question : question.question_en}
             </legend>
             <div className="flex gap-4 text-sm">
-              <label><input type="radio" name="produit-minier" checked={produitMinier === true} onChange={() => setProduitMinier(true)} /> {fr ? 'Oui' : 'Yes'}</label>
-              <label><input type="radio" name="produit-minier" checked={produitMinier === false} onChange={() => setProduitMinier(false)} /> {fr ? 'Non' : 'No'}</label>
+              <label><input type="radio" name="reponse-exportateur" checked={reponse === true} onChange={() => setReponse(true)} /> {fr ? 'Oui' : 'Yes'}</label>
+              <label><input type="radio" name="reponse-exportateur" checked={reponse === false} onChange={() => setReponse(false)} /> {fr ? 'Non' : 'No'}</label>
             </div>
-            {produitMinier && question.question_transformation && (
+            {reponse && question.question_transformation && (
               <label className="flex gap-2 text-sm">
                 <input type="checkbox" checked={transforme} onChange={(e) => setTransforme(e.target.checked)} />
                 {fr ? question.question_transformation : question.question_transformation_en}
@@ -232,7 +233,7 @@ export default function ExportCalculator({ language = 'fr' }) {
 
         <Button
           onClick={calculer}
-          disabled={!iso3 || !code || valeur === '' || changeInvalide || (question && produitMinier === null) || chargement}
+          disabled={!iso3 || !code || valeur === '' || changeInvalide || (question && reponse === null) || chargement}
           data-testid="export-calculer"
         >
           {fr ? 'Calculer les droits de sortie' : 'Calculate export duties'}

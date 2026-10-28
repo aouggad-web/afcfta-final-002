@@ -1144,6 +1144,54 @@ def _export_zaf(taux_afcfta, eu_uk):
     )
 
 
+# Cameroun : le taux commun (2 %) et l'exonération des produits finis tiennent
+# au degré de transformation, que la position ne dit pas ; l'exportateur le
+# déclare (`calcul_export.SELON_TRANSFORMATION`). Les lois de finances 2020 à
+# 2026 modifient le régime point par point : les points que la LF 2023 ne
+# reprend pas restent en vigueur (lecture retenue, voir la fiche).
+_EXPORT_CMR_DEFAUT = (
+    None, None,
+    "Taux commun : 2 % de la valeur imposable (LF 2018, art. 2, circulaire n° 001/C/MINFI du 2 janvier 2018) ; "
+    "produits semi-finis : 2 % de la valeur FOB (LF 2023, art. 10) ; produits manufacturés ou transformés au "
+    "Cameroun au sens de produit fini : exonérés (LF 2020, art. 5). Les exportations des sociétés pétrolières, "
+    "gazières et minières et des entreprises agréées aux incitations à l'investissement privé relèvent de leurs "
+    "codes. Cacao, hévéa et grumes certifiés « zéro déforestation » : abattement de 20 % sur la valeur FOB "
+    "(LF 2025, art. 10).",
+    {"selon_transformation": True},
+)
+_EXPORT_CMR_DIX = (
+    10.0, None,
+    "LF 2020, art. 5 (b, iii) : produits d'origine camerounaise soumis à 10 % de la valeur imposable ; l'or et le "
+    "diamant en sont sortis (5 %, LF 2023), les autres produits de la liste ne sont modifiés par aucune loi "
+    "postérieure. Ce taux vaut aussi vers les zones franches industrielles (b, v).",
+)
+_EXPORT_CMR_EXONERE = (
+    0.0, None,
+    "LF 2022, art. 9 (b, i) : « le poivre et le miel sont exonérés du droit de sortie à l'exportation, qu'ils "
+    "soient manufacturés ou non ».",
+)
+_EXPORT_CMR_OR_DIAMANT = (
+    5.0, None,
+    "LF 2023, art. 10 (1, b) : 5 % de la valeur FOB, prélevé en nature sur la quote-part de 75 % de la production "
+    "brute de l'exploitant (art. 28 du Code minier).",
+)
+_EXPORT_CMR_BOIS = (
+    15.0, None,
+    "LF 2023, art. 10 (1, d) : bois ouvrés et semi-ouvrés des positions 4406, 4407 et 4409, 15 % de la valeur FOB "
+    "de l'essence ; non soumis au départ des points francs industriels. Bois de la 4409 issus de la troisième "
+    "transformation, avec certificat du ministère technique : 5 % (LF 2025, art. 10).",
+)
+_EXPORT_CMR_LF2026_5 = (
+    5.0, None,
+    "LF 2026, art. 11 (1, a) : minerai de fer, alumine et étain, 5 % de la valeur FOB.",
+)
+_EXPORT_CMR_LF2026_2 = (
+    2.0, None,
+    "LF 2026, art. 11 (1, b) : aluminium, argent, cuivre, saphir et fers et aciers non alliés en lingots des "
+    "positions 7206 à 7207, 2 % de la valeur FOB.",
+)
+
+
 EXPORT_PAR_TEXTE = {
     "GHA": (
         "Customs (Amendment) Act, 2015 (Act 905), Fourth Schedule — Export Duty "
@@ -1190,6 +1238,57 @@ EXPORT_PAR_TEXTE = {
                 "1202300000", "1202411000", "1202419000", "1202421000", "1202429000")},
             **{code: _EXPORT_SEN_OR for code in (
                 "7108110000", "7108120000", "7108131000", "7108139000", "7108200000")},
+        },
+    ),
+    # Clés : préfixes du code national ; hors des produits nommés, le défaut
+    # attend la réponse de l'exportateur.
+    "CMR": (
+        "Lois de finances 2018 (art. 2, circulaire n° 001/C/MINFI), 2020 (art. 5), 2022 (art. 9), 2023 (art. 10), "
+        "2024 (art. 9), 2025 (art. 10) et 2026 (art. 11) "
+        "(sources/CMR_droit_de_sortie_LF2018_LF2026.texte-extrait.txt)",
+        _EXPORT_CMR_DEFAUT,
+        {
+            # Riz, mil (1008.20), sorgho, huile de palme brute, gomme arabique,
+            # noix de cola ; le gnetum « Eru/Okok » n'a pas de position établie.
+            **{p: _EXPORT_CMR_DIX for p in (
+                "1006", "100820", "1007", "15111000", "13012000", "08029011", "08029019")},
+            **{p: _EXPORT_CMR_EXONERE for p in ("090411", "090412", "0409")},
+            # « fèves de cacao exportées sans transformation » : les fèves
+            # brutes ; la torréfaction est une transformation.
+            "1801001": (
+                10.0, None,
+                "LF 2023, art. 10 (2) : « les fèves de cacao exportées sans transformation sont soumises à un droit "
+                "de sortie autonome au taux de 10 % de la valeur FOB » ; 2 % vers les points francs industriels ou "
+                "régimes assimilés. Abattement de 20 % avec certificat « zéro déforestation » (LF 2025, art. 10).",
+            ),
+            "18010020": (
+                None, None,
+                "Fèves de cacao torréfiées : la LF 2023 (art. 10, 2) ne vise que les fèves « exportées sans "
+                "transformation » ; le taux de ces fèves (10 %, ou celui des semi-finis) n'est pas établi.",
+            ),
+            "4403": (
+                75.0, None,
+                "LF 2024, art. 9 : « bois en grumes et assimilés », 75 % de la valeur FOB du volume de l'essence ; "
+                "60 % à l'entrée des points francs industriels. Abattement de 20 % avec certificat « zéro "
+                "déforestation » (LF 2025, art. 10).",
+            ),
+            **{p: _EXPORT_CMR_BOIS for p in ("4406", "4407", "4409")},
+            **{p: _EXPORT_CMR_OR_DIAMANT for p in ("7102", "7108")},
+            # LF 2026 : les positions que le texte nomme sans ambiguïté.
+            **{p: _EXPORT_CMR_LF2026_5 for p in ("260111", "260112", "28182000")},
+            **{p: _EXPORT_CMR_LF2026_2 for p in ("7601", "7106", "7402", "74031", "7206", "7207")},
+            **{p: (None, None, "LF 2026, art. 11 (1, a) : « l'étain », 5 % de la valeur FOB, nommé avec le minerai "
+                               "de fer et l'alumine ; le texte ne dit pas s'il vise le minerai (2609) ou le métal "
+                               "(8001).") for p in ("2609", "8001")},
+            "74032": (None, None, "LF 2026, art. 11 (1, b) : « cuivre », 2 % de la valeur FOB ; son application aux "
+                                  "alliages de cuivre n'est pas établie."),
+            "7103": (None, None, "LF 2026, art. 11 (1, b) : « saphir », 2 % de la valeur FOB ; la position couvre "
+                                 "aussi d'autres pierres gemmes (rubis, émeraude…) : à établir."),
+            # Prélèvement spécial assis sur la valeur sortie usine, et non sur
+            # la valeur à l'exportation saisie.
+            **{p: (None, None, "LF 2026, art. 11 (2) : prélèvement spécial de 10 % de la valeur sortie usine à la "
+                               "sortie du territoire ; ni cette valeur ni son cumul avec le droit de sortie ne sont "
+                               "établis.") for p in ("251511", "251512", "25231000")},
         },
     ),
     # Export levy : « the ad valorem rate shall be based on the custom value »
@@ -1332,10 +1431,10 @@ def droits_export_par_texte(iso, positions):
         droit = droit or defaut
         if droit is None:
             continue
-        taux, brut, note = droit
+        taux, brut, note, *marques = droit
         specifique = lire_specifique(brut) if brut else None
         d = _droit("EXPORT", "Droit de sortie", taux, "CIF" if taux is not None else None, source, note=note)
-        d.update(code="EXPORT", famille="export")
+        d.update(code="EXPORT", famille="export", **(marques[0] if marques else {}))
         if specifique and taux is not None:
             # Taux et spécifique ensemble : le composé « whichever is greater »
             # de la Zambie, la seule règle de ce tableau qui en porte.

@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -166,7 +166,8 @@ def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
 
 def test_les_questions_hors_tarif_sont_servies(client):
     questions = client.get("/calcul/export/pays").json()["questions"]
-    assert set(questions) == {"MDG", "MLI"} and questions["MDG"]["champ"] == "produit_minier"
+    assert set(questions) == {"MDG", "MLI", "CMR"} and questions["MDG"]["champ"] == "produit_minier"
+    assert questions["CMR"]["champ"] == "produit_fini"
     # Le CGI malien ne prévoit pas d'abattement : pas de seconde question.
     assert questions["MLI"]["question_transformation"] is None and questions["MLI"]["question_en"]
 
@@ -403,6 +404,32 @@ def test_zaf_ferrailles_colonne_zlecaf(client):
     assert "SADC" in ligne["note"]
     assert _ligne(_export(client, pays="ZAF", code_sh="74040010", valeur=100_000, devise="ZAR"),
                   "EXPORT")["montant"] == pytest.approx(10_000)
+
+def test_cmr_taux_commun_selon_la_transformation(client):
+    """LF 2018 (art. 2) : 2 % ; LF 2020 (art. 5) : produit fini exonéré ; sans réponse, à établir."""
+    brut = _export(client, pays="CMR", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False)
+    assert (brut["etat"], _ligne(brut, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(20_000))
+    fini = _export(client, pays="CMR", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=True)
+    assert _ligne(fini, "EXPORT")["montant"] == pytest.approx(0)
+    sans = _ligne(_export(client, pays="CMR", code_sh="85171200", valeur=1_000_000, devise="XAF"), "EXPORT")
+    assert sans["montant"] is None and sans["note"].startswith("À établir : Produit fini")
+
+
+def test_cmr_produits_nommes_independants_de_la_reponse(client):
+    """Riz 10 % (LF 2020), grumes 75 % (LF 2024), or 5 % (LF 2023), poivre exonéré (LF 2022)."""
+    for code, montant in (("10063090", 100_000), ("44034939", 750_000), ("71081200", 50_000),
+                          ("09041100", 0), ("18010011", 100_000), ("76011000", 20_000)):
+        for fini in (True, False):
+            export = _export(client, pays="CMR", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=fini)
+            assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
+
+
+def test_cmr_lf2026_positions_ambigues_a_etablir(client):
+    for code in ("80011000", "74032100", "71039100", "25231000", "18010020"):
+        ligne = _ligne(_export(client, pays="CMR", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
+                       "EXPORT")
+        assert ligne["montant"] is None, code
+
 
 def test_pays_sans_droit_export_au_socle(client):
     reponse = client.post("/calcul/export", json={"pays": "UGA", "code_sh": "09011100", "valeur": 1000})

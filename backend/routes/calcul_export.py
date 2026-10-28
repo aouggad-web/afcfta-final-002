@@ -10,7 +10,9 @@ indisponible et la nomment, jamais un zéro.
 
 S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
 (`HORS_TARIF` : à Madagascar, les DTSPM du Code minier ; au Mali, la TEOAPM du
-CGI), quand l'exportateur déclare la catégorie que le texte vise.
+CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun,
+le droit de sortie commun dépend du degré de transformation du produit
+(`SELON_TRANSFORMATION`), que l'exportateur déclare aussi.
 """
 from __future__ import annotations
 
@@ -70,6 +72,22 @@ HORS_TARIF = {
     },
 }
 
+#: Droit de sortie dont le taux tient au degré de transformation du produit,
+#: que la position ne dit pas. Le socle porte ce droit à taux non établi et
+#: marqué `selon_transformation` (`build_socle.EXPORT_PAR_TEXTE`) ; la réponse
+#: de l'exportateur le fixe. Cameroun : fiche
+#: CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json.
+SELON_TRANSFORMATION = {
+    "CMR": {
+        "champ": "produit_fini",
+        "question": "Produit fini, manufacturé ou transformé au Cameroun (sinon : brut ou semi-fini) ?",
+        "question_en": "Finished product, manufactured or processed in Cameroon (otherwise: raw or semi-finished)?",
+        "oui": (0.0, "Produit manufacturé ou transformé au Cameroun au sens de produit fini : exonéré (LF 2020, art. 5)."),
+        "non": (2.0, "Produit brut : taux commun de 2 % de la valeur imposable (LF 2018, art. 2) ; produit semi-fini : "
+                     "2 % de la valeur FOB (LF 2023, art. 10)."),
+    },
+}
+
 router = APIRouter()
 router_couverture = APIRouter()
 
@@ -106,6 +124,32 @@ class DemandeExport(BaseModel):
     produit_minier_transforme: bool = Field(
         default=False, description="Madagascar : substance transformée au sens du Code (abattement de 30 %)."
     )
+    produit_fini: Optional[bool] = Field(
+        default=None,
+        description=(
+            "Cameroun : produit fini, manufacturé ou transformé au Cameroun (exonéré) ; sinon brut ou semi-fini "
+            "(2 %). Omis : le droit de sortie commun reste à établir."
+        ),
+    )
+
+
+def _selon_transformation(pays: str, droits: list, demande: DemandeExport) -> list:
+    """Fixer, d'après la réponse de l'exportateur, les droits que le socle
+    marque `selon_transformation` ; sans réponse, ils restent à établir."""
+    regle = SELON_TRANSFORMATION.get(pays)
+    if not regle:
+        return droits
+    reponse = getattr(demande, regle["champ"])
+    sortie = []
+    for d in droits:
+        if d.get("selon_transformation"):
+            if reponse is None:
+                d = {**d, "note": "À établir : " + regle["question"] + " " + d.get("note", "")}
+            else:
+                taux, motif = regle["oui" if reponse else "non"]
+                d = {**d, "taux": taux, "assiette": "CIF", "note": motif + " " + d.get("note", "")}
+        sortie.append(d)
+    return sortie
 
 
 def _hors_tarif(pays: str, demande: DemandeExport) -> list:
@@ -180,7 +224,7 @@ def calcul_export(demande: DemandeExport):
     except socle.SocleIndisponible as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
-    droits = position.get("droits_export") or []
+    droits = _selon_transformation(pays, position.get("droits_export") or [], demande)
     hors_tarif = _hors_tarif(pays, demande)
     conflit = HORS_TARIF.get(pays, {}).get("conflit_tarif")
     if hors_tarif and demande.produit_minier and conflit:
@@ -245,7 +289,7 @@ def pays_export():
                     for k in ("champ", "question", "question_en", "question_transformation",
                               "question_transformation_en")
                 }
-                for iso, regle in HORS_TARIF.items()
+                for iso, regle in {**HORS_TARIF, **SELON_TRANSFORMATION}.items()
             },
         }
     except socle.SocleIndisponible as exc:
