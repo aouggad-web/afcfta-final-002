@@ -26,6 +26,9 @@ Règles :
 - un droit spécifique ou composé s'écrit dans sa forme publiée ;
 - une restriction ou une interdiction d'importation a sa colonne
   (« Importation interdite ») : elle ne se confond pas avec un taux manquant ;
+- le manifeste porte les colonnes de prélèvements (code, libellé) : la
+  version JSON (``/download-json/<ISO>``) se lit sur le CSV archivé et suit
+  donc chacun de ses réexports ;
 - les notes du socle vont dans ``<ISO>_NPF_notes.csv`` : la ligne porte leurs
   renvois (``N1 N3``) plutôt que de répéter le même texte sur des milliers de
   positions.
@@ -185,6 +188,7 @@ def exporter(iso3, socle_manifeste, le=None):
         "fichier": fichier,
         "fichier_notes": fichier_notes,
         "positions": len(codes),
+        "colonnes": [{"code": code, "libelle": libelle} for code, libelle in colonnes.items()],
         "devise": devise,
         "date_reference": le.isoformat(),
         "sha256": _empreinte(chemin),

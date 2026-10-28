@@ -14,7 +14,16 @@ Ce guide indique **où trouver les données réelles** et **comment lire l’arb
 - Format: un CSV par pays (`XXX_NPF.csv`, séparateur « ; ») et son fichier de notes (`XXX_NPF_notes.csv`), décrits par `MANIFESTE.json`
 - Exemple: `DZA_NPF.csv`, `NGA_NPF.csv`
 
-Ces fichiers sont le tarif NPF tel que le calculateur l’applique (taux par prélèvement, total pour 100 CAF, restrictions). Ils sont régénérés par `scripts/exporter_tarifs_socle.py` après `scripts/build_socle.py`, et servis par `GET /api/tariff-data/download-zip/<ISO>`. Ils ont remplacé les anciens CSV par tranches de chapitres (`XXX_NPF_ch01-10.csv`…).
+Ces fichiers sont le tarif NPF tel que le calculateur l’applique (taux par prélèvement, total pour 100 CAF, restrictions). Ils sont servis par `GET /api/tariff-data/download-zip/<ISO>` (CSV + notes) et `GET /api/tariff-data/download-json/<ISO>` (JSON). Ils ont remplacé les anciens CSV par tranches de chapitres (`XXX_NPF_ch01-10.csv`…) et l’ancien JSON du collecteur.
+
+**À chaque changement du tarif** (correction d’un pays, nouveau crawl, modification du moteur) :
+
+```bash
+python3 scripts/build_socle.py ISO        # reconstruit le socle du pays
+python3 scripts/exporter_tarifs_socle.py ISO   # réécrit son CSV, ses notes et le manifeste
+```
+
+et versionner `backend/data/exports/socle/` dans la même PR. Le JSON n’a pas de fichier propre : il se lit sur le CSV archivé, il suit donc chaque réexport. `backend/tests/test_exports_socle.py` fait échouer la CI si un socle ou le moteur a changé sans réexport.
 
 ## 2) Source canonique (structure hiérarchique)
 

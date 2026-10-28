@@ -120,3 +120,35 @@ def test_les_anciens_csv_par_chapitres_ne_sont_plus_servis():
 def test_un_pays_sans_export_est_refuse():
     assert _client().get("/tariff-data/download-zip/DJI").status_code == 404
     assert _client().get("/tariff-data/download-zip/..%2F..%2Fetc").status_code == 404
+
+
+def test_le_json_reprend_le_csv_archive():
+    """Le JSON se lit sur le CSV archivé : un réexport du tarif le met à jour
+    sans autre étape."""
+    corps = _client().get("/tariff-data/download-json/cog").json()
+    assert corps["pays"] == "COG"
+    assert corps["socle_sha256"] == EXPORTS_PAYS["COG"]["socle_sha256"]
+    assert len(corps["positions"]) == EXPORTS_PAYS["COG"]["positions"]
+    assert [p["code"] for p in corps["prelevements"]][:2] == ["DD", "TCI"]
+    cheval = next(p for p in corps["positions"] if p["position"] == "01011010")
+    assert cheval["droits"]["DD"] == 5.0
+    assert cheval["total_pour_100_caf"] == 26.09
+    assert cheval["etat"] == "COMPLET"
+    assert all(n in corps["notes"] for n in cheval["notes"])
+
+
+def test_le_json_garde_les_formes_publiees_et_les_restrictions():
+    zaf = _client().get("/tariff-data/download-json/ZAF").json()
+    primates = next(p for p in zaf["positions"] if p["position"] == "020830")
+    assert primates["droits"]["DD"] == "8c/kg"
+    assert primates["total_pour_100_caf"] is None
+    lby = _client().get("/tariff-data/download-json/LBY").json()
+    biere = next(p for p in lby["positions"] if p["position"] == "220300")
+    assert biere["restrictions"] == ["Importation interdite (NPF et Ligue arabe)"]
+
+
+def test_chaque_export_annonce_ses_colonnes():
+    for cc, entree in EXPORTS_PAYS.items():
+        with open(os.path.join(EXPORTS, entree["fichier"]), encoding="utf-8-sig") as f:
+            entete = f.readline().rstrip("\n").split(";")
+        assert len(entete) == 4 + len(entree["colonnes"]) + 5, cc
