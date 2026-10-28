@@ -1,0 +1,42 @@
+﻿Note;Prélèvement;Texte
+N1;TVA;Colonne vide au tarif : exonération. Le Código do IVA (Lei n.º 32/2007) art. 9 exonère notamment les médicaments et produits pharmaceutiques, les moustiquaires, et renvoie pour les listes aux biens « constantes da Pauta Aduaneira ».
+N2;TXSOBVAL;La loi nomme et assoit la « sobretaxa » (SOBRETX) mais aucun texte consulté n'explique cette colonne. Portée sans assiette plutôt que rattachée par ressemblance de nom.
+N3;ICE;Tabela anexa : « 0,0099/g de Aç.Cont.100 ml » porte sur les grammes de sucre contenus dans 100 ml, teneur que le calcul ne reçoit pas — non liquidable en l'état.
+N4;ICE;Tabela anexa : « 0,0140/g de Aç. Cont.100ml » porte sur les grammes de sucre contenus dans 100 ml, teneur que le calcul ne reçoit pas — non liquidable en l'état.
+N5;ICE;Tabela anexa : « 0,0147/g de Aç.Cont.100 ml » porte sur les grammes de sucre contenus dans 100 ml, teneur que le calcul ne reçoit pas — non liquidable en l'état.
+N6;ICE;Tabela anexa : « 1,99/Litro ».
+N7;ICE;Tabela anexa : « 475/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas — non liquidable en l'état.
+N8;ICE;Tabela anexa : « 5,50/Litro ».
+N9;ICE;Tabela anexa : « 619/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas — non liquidable en l'état.
+N10;ICE;Tabela anexa : « 470/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas — non liquidable en l'état.
+N11;ICE;"Tabela anexa : « 600/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas ; l'ad valorem de 75 % n'est qu'une borne basse, l'art. 9 n.º 3 retenant le plus élevé des deux — non liquidable en l'état."
+N12;ICE;"Tabela anexa : « 460/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas ; l'ad valorem de 75 % n'est qu'une borne basse, l'art. 9 n.º 3 retenant le plus élevé des deux — non liquidable en l'état."
+N13;ICE;Tabela anexa : « 460/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas — non liquidable en l'état.
+N14;ICE;Tabela anexa : « 435/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas — non liquidable en l'état.
+N15;ICE;Tabela anexa : « 280/Litro Alc. » porte sur le litre d'alcool pur, titre alcoométrique que le calcul ne reçoit pas — non liquidable en l'état.
+N16;ICE;"Tabela anexa : 75 % ou « 550/kg » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N17;ICE;Tabela anexa : « 540/mil Unid ».
+N18;ICE;"Tabela anexa : 75 % ou « 590/kg » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N19;ICE;"Tabela anexa : 75 % ou « 640/kg » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N20;ICE;Tabela anexa : « 0,51/Litro ».
+N21;ICE;Tabela anexa : « 4,67/Litro ».
+N22;ICE;Tabela anexa : « 7,71/Litro ».
+N23;ICE;Tabela anexa : « 1,02/Litro ».
+N24;ICE;Tabela anexa : « 4,27/Litro ».
+N25;ICE;Tabela anexa : « 0,75/Litro ».
+N26;ICE;Tabela anexa : « 0,35/Kg ».
+N27;ICE;Tabela anexa : « 0,66/Kg ».
+N28;ICE;Tabela anexa : « 105/kg ».
+N29;ICE;Tabela anexa : « 30/kg ».
+N30;ICE;"Tabela anexa : 30 % ou « 455.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N31;ICE;"Tabela anexa : 15 % ou « 65.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N32;ICE;"Tabela anexa : 5 % ou « 12.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N33;ICE;"Tabela anexa : 10 % ou « 15.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N34;ICE;"Tabela anexa : 30 % ou « 75.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N35;ICE;"Tabela anexa : 30 % ou « 145.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N36;ICE;"Tabela anexa : 10 % ou « 32.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N37;ICE;"Tabela anexa : 30 % ou « 109.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N38;ICE;"Tabela anexa : 30 % ou « 155.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N39;ICE;"Tabela anexa : 30 % ou « 175.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N40;ICE;"Tabela anexa : 30 % ou « 125.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."
+N41;ICE;"Tabela anexa : 30 % ou « 90.000/unid » ; art. 9 n.º 3 : « aplica-se a que resultar maior valor do imposto »."

@@ -1,0 +1,6 @@
+﻿Note;Prélèvement;Texte
+N1;DD;Droit de douane NPF, colonne « MFN » du bareme. col. 1 — MFN, droit de douane de droit commun.
+N2;TVA;Taux standard national, non vérifié position par position : les importations exonérées (VAT Act 2010, Schedule 1) ne sont pas distinguées.
+N3;DD;Aucun droit de douane n'est publié pour cette position, alors que la source en publie pour d'autres. Le total ne peut pas être servi comme complet : le droit est déclaré indisponible plutôt que supposé nul.
+N4;EXC;"Position soumise à l'accise (S.I. 110/2023) ; montant non collecté : la TVA, qui s'assoit aussi sur l'accise, reste incomplète."
+N5;DD;Droit de douane NPF, colonne « MFN » du bareme. col. 1 — MFN, droit de douane de droit commun. Position INSEREE par S.I. 7 of 2024, qui n'est pas dans le corps de S.I. 113 of 2022 : ses taux sont lus dans l'instrument modificatif lui-meme.

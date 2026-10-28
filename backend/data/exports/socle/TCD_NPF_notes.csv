@@ -1,0 +1,21 @@
+﻿Note;Prélèvement;Texte
+N1;TVA;"CGI art. 235 I 1° : « Pour les importations, par la valeur des marchandises telle que définie par le Code des douanes de la CEMAC majorée des droits de douane, des droits d'accises éventuels à l'exception de la TVA elle-même et du précompte de 4 % prévu à l'article 120 » ; la TCI portée par la collecte est conservée (art. 235 V : bases « tous frais et taxes compris, à l'exception de la TVA elle-même »)."
+N2;SPEC;"Art. 36, colonne « Taux taxe spécifique » : 30% ; l'article n'en énonce pas la base (seule celle du droit d'accises l'est) — non liquidable en l'état."
+N3;SPEC;Art. 36, colonne « Taux taxe spécifique » : « 50 FCFA/Bouteille ou cannette importée ».
+N4;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2202, eaux gazeuses et minérales, boissons sucrées, 10 %
+N5;SPEC;"Art. 36, colonne « Taux taxe spécifique » : 10% ; l'article n'en énonce pas la base (seule celle du droit d'accises l'est) — non liquidable en l'état."
+N6;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2203, bières, 25 %
+N7;SPEC;"Art. 36, colonne « Taux taxe spécifique » : 15% ; l'article n'en énonce pas la base (seule celle du droit d'accises l'est) — non liquidable en l'état."
+N8;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2204 et 2205, vins, 25 %
+N9;SPEC;"Art. 36, colonne « Taux taxe spécifique » : 20% ; l'article n'en énonce pas la base (seule celle du droit d'accises l'est) — non liquidable en l'état."
+N10;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2208, liqueurs, 25 %
+N11;SPEC;Art. 36, colonne « Taux taxe spécifique » : « 50FCFA/Paquet ».
+N12;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2402, cigares, cigarillos et cigarettes, 30 %
+N13;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2403 à l'exclusion de la position 24 03 99 20, autres tabacs fabriqués, 30 %
+N14;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3303.00.00, parfums et eaux de toilette, 20 %
+N15;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3304 et 3305, produits cosmétiques, 20 % Contenant de l'hydroquinone, ils doivent en outre une taxe spécifique de 30 %, que la position ne permet pas de distinguer : non servie.
+N16;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N17;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N18;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8703.24, véhicules de tourisme d'une cylindrée excédant 3 000 cm3, 25 %
+N19;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 87 03.33, véhicules de tourisme diesel d'une cylindrée excédant 2 500 cm3, 25 %
+N20;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8711.30.00, 8711.40.00, 8711.50.00 et 8711.90.00, motocycles d'une cylindrée supérieure à 250 cm3, 12,5 %

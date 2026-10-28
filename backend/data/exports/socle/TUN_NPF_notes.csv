@@ -1,0 +1,10 @@
+﻿Note;Prélèvement;Texte
+N1;RPD;"3 % de la somme des droits et taxes liquidés, TVA comprise ; minimum de perception 10 dinars par article de déclaration (loi n° 2012-27, art. 57)."
+N2;DCALC;5,7 D par litre d'alcool contenu : 570 D/hl du tableau annexé à la loi n° 88-62 (loi n° 2017-66, art. 45). Quantité complémentaire, distincte de la quantité tarifaire.
+N3;DCVBBA;"Montant du Tarif Web conservé. Le tableau annexé à la loi n° 88-62 porte 2,4 D/litre (bière classée 0,024 D/cl ; autres vins classés en bouteilles 2,4 D/l, loi n° 2020-46, art. 20) : le Tarif Web en sert le double, sans texte trouvé qui l'explique."
+N4;DCVBBA;Montant du Tarif Web conservé. 4,8 D par décilitre font 48 D/litre, vingt fois les 2,4 D/litre du tableau annexé à la loi n° 88-62 (loi n° 2020-46, art. 20), quand les autres lignes servent 4,8 D/litre ou 0,48 D/dl : l'unité publiée paraît incohérente.
+N5;DCVBBA;Montant du Tarif Web conservé. Le tableau annexé à la loi n° 88-62 porte 2,4 D/litre, soit 0,24 D/dl (autres vins classés en bouteilles, loi n° 2020-46, art. 20) : le Tarif Web en sert le double, sans texte trouvé qui l'explique.
+N6;DCVBBA;Montant du Tarif Web conservé. Le tableau annexé à la loi n° 88-62 porte 3,75 D/unité (vins de liqueurs, mistelles, moûts à l'alcool en bouteilles d'un litre au plus, loi n° 2017-66, art. 45) : le Tarif Web en sert le double, sans texte trouvé qui l'explique.
+N7;DCVBBA;Montant du Tarif Web conservé. Le tableau annexé à la loi n° 88-62 porte 7,5 D/hectolitre (vins en vrac classés, livrés aux embouteilleurs, loi n° 2017-66, art. 45) : le Tarif Web en sert le double, sans texte trouvé qui l'explique.
+N8;DCALC;0,16 D par litre d'alcool contenu : 16 D/hl du tableau annexé à la loi n° 88-62 (loi n° 2017-66, art. 45). Quantité complémentaire, distincte de la quantité tarifaire.
+N9;DD;Aucun droit de douane n'est publié pour cette position, alors que la source en publie pour d'autres. Le total ne peut pas être servi comme complet : le droit est déclaré indisponible plutôt que supposé nul.

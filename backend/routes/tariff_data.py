@@ -760,3 +760,61 @@ async def download_region_zip(region_key: str):
         media_type="application/zip",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+# Export du socle de calcul (scripts/exporter_tarifs_socle.py) : le tarif tel
+# que le calculateur l'applique, archivé dans le dépôt avec son manifeste.
+SOCLE_EXPORTS_DIR = os.path.join(EXPORTS_DIR, "socle")
+
+
+def _exports_socle():
+    path = os.path.join(SOCLE_EXPORTS_DIR, "MANIFESTE.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f).get("pays", {})
+
+
+@router.get("/download-socle/list")
+async def list_socle_downloads():
+    countries = []
+    for cc, entree in _exports_socle().items():
+        size = sum(
+            os.path.getsize(os.path.join(SOCLE_EXPORTS_DIR, entree[k]))
+            for k in ("fichier", "fichier_notes")
+        )
+        countries.append(
+            {
+                "code": cc,
+                "name": COUNTRY_NAMES.get(cc, cc),
+                "positions": entree["positions"],
+                "collecte": entree.get("collecte"),
+                "size_kb": round(size / 1024),
+                "download_url": f"/tariff-data/download-socle/{cc}",
+            }
+        )
+    return {"countries": countries, "count": len(countries)}
+
+
+@router.get("/download-socle/{country_code}")
+async def download_socle_zip(country_code: str):
+    # Le code pays est lu sur le manifeste : le chemin ne reprend jamais
+    # l'entrée brute de l'utilisateur.
+    exports = _exports_socle()
+    cc = next((k for k in exports if k == country_code.upper()), None)
+    if cc is None:
+        raise HTTPException(status_code=404, detail=f"No calculator tariff export for {country_code}")
+
+    entree = exports[cc]
+    name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for k in ("fichier", "fichier_notes"):
+            zf.write(os.path.join(SOCLE_EXPORTS_DIR, entree[k]), entree[k])
+    buf.seek(0)
+    filename = f"Tarif_calculateur_NPF_{name}_{cc}.zip"
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

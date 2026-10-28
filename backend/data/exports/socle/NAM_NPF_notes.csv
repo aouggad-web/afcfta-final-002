@@ -1,0 +1,38 @@
+﻿Note;Prélèvement;Texte
+N1;TVA;Taux standard national, non vérifié position par position : les importations exonérées (Schedule V) ne sont pas distinguées.
+N2;DD;SARS, Schedule No. 1, General Notes, B.3 : « each such part shall be deemed to be a separate and complete rate of duty and such rate of duty yielding the higher or highest amount of duty shall be applicable ».
+N3;EXS;34,7c/kg
+N4;EXS;7,82c/li
+N5;EXS;"R149.98/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N6;EXS;R19.68/li
+N7;EXS;R6.15/li
+N8;EXS;"R302.84/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N9;EXS;R10.38/li
+N10;EXS;"R121.13/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N11;EXS;"R272.55/li aa : par litre d'alcool absolu ; le titre alcoométrique n'est pas une donnée du calcul, accise non liquidée."
+N12;EXS;R6 041.72/kg net
+N13;EXS;R11.79/10cigarettes
+N14;EXS;R332.26/kg net
+N15;EXS;R529.99/kg
+N16;EXS;R1 105.40/kg
+N17;EXS;R8.84/10sticks
+N18;EXS;R3.29/ml
+N19;EXS;3,909c/li
+N20;FLV;90c/li
+N21;EXS;free
+N22;EXS;3,817c/li
+N23;FLV;0c/li (GN 131/2020, depuis le 27/04/2020)
+N24;FLV;120c/li
+N25;EVN;N$1.80/Li
+N26;EXS;500c/kg
+N27;EXA;9%
+N28;EXA;7%
+N29;EVN;N$ 0.50/bag
+N30;EVN;N$10.00 per tyre
+N31;EVN;"5% : la valeur sur laquelle porte ce taux n'est pas définie par la Section D ; assiette non établie, prélèvement non liquidé."
+N32;EVN;N$ 3.00/lamp
+N33;EVN;"N$45 per g/km CO² emissions exceeding 120g/ km : émissions de CO2 du certificat du constructeur ou, à défaut, de la cylindrée (Section B, note 5) ; non connues du calcul, prélèvement non liquidé. Prélèvement unique (note 9)."
+N34;EVN;"N$45 per g/km CO² emissions exceeding 140g/ km : émissions de CO2 du certificat du constructeur ou, à défaut, de la cylindrée (Section B, note 5) ; non connues du calcul, prélèvement non liquidé. Prélèvement unique (note 9)."
+N35;EVN;"N$40 per g/km CO² emissions exceeding 120g/ km ou N$45 per g/km CO² emissions exceeding 120g/ km : émissions de CO2 du certificat du constructeur ou, à défaut, de la cylindrée (Section B, note 5) ; non connues du calcul, prélèvement non liquidé. Prélèvement unique (note 9)."
+N36;EXA;"Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, B étant la valeur de la Customs and Excise Act 20/1998 (Namibie), s.75(9)(a) ; taux fonction de la valeur, non servi."
+N37;EVN;"N$40 per g/km CO² emissions exceeding 140g/ km ou N$45 per g/km CO² emissions exceeding 140g/ km : émissions de CO2 du certificat du constructeur ou, à défaut, de la cylindrée (Section B, note 5) ; non connues du calcul, prélèvement non liquidé. Prélèvement unique (note 9)."

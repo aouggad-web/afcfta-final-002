@@ -1,0 +1,24 @@
+﻿Note;Prélèvement;Texte
+N1;TVA;Taux standard national, non vérifié position par position : les importations détaxées ou exonérées (VAT Act s.10, s.11, règlements de la s.78) ne sont pas distinguées.
+N2;DD;Droit composé dont la RÈGLE EST ÉNONCÉE par le texte : SI 203/2022, p. 13 — « the rate of duty yielding the higher amount of duty shall be applicable ».
+N3;DD;Droit cumulatif : les DEUX composantes sont dues (« + » et non « or »).
+N4;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 5% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N5;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 60% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N6;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « US$0.50/L + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N7;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 25% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N8;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N9;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 100% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N10;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 95% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N11;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 75% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N12;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 80% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N13;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « US$1.00/LAA + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N14;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « US$0.05/L + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N15;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « US$1.00/L + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N16;DD;Le droit oppose DEUX montants spécifiques dans des unités différentes (« US$5.00/L or US$10.00/LAA + Excise ») : par litre de produit, ou par litre d'alcool pur. La règle du plus élevé (SI 203/2022, p. 13) suppose de les comparer, ce qui exige le titre alcoométrique — que le tarif ne porte pas. Porté sans valeur liquidable : n'en retenir qu'une servirait un montant crédible et faux.
+N17;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « US$5.00/L or US$10.00/LAA + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N18;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 40% + US$5.00/1000 cigarettes + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N19;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « US$0.15/m + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N20;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 0% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N21;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 45% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N22;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 20% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
+N23;EXC;Le tarif mentionne « Excise » sans en porter le taux (colonne M.F.N. : « 10% + Excise ») : il relève du tarif d'accise. Émise sans taux — la traiter comme un zéro exonérerait alcools et tabacs.
