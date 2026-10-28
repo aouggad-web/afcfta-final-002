@@ -24,6 +24,8 @@ Règles :
   indisponible…) et la colonne « Manques » dit pourquoi ;
 - un taux absent du socle s'écrit ``n.d.``, jamais ``0`` ;
 - un droit spécifique ou composé s'écrit dans sa forme publiée ;
+- une restriction ou une interdiction d'importation a sa colonne
+  (« Importation interdite ») : elle ne se confond pas avec un taux manquant ;
 - les notes du socle vont dans ``<ISO>_NPF_notes.csv`` : la ligne porte leurs
   renvois (``N1 N3``) plutôt que de répéter le même texte sur des milliers de
   positions.
@@ -128,7 +130,7 @@ def exporter(iso3, socle_manifeste, le=None):
         w.writerow(
             ["Position", "Désignation", "Chapitre", "Unité"]
             + [f"{code} ({libelle})" if libelle else code for code, libelle in colonnes.items()]
-            + [f"Total droits et taxes pour 100 CAF ({devise})" if devise else "Total droits et taxes pour 100 CAF", "État", "Manques", f"Notes (voir {iso3}_NPF_notes.csv)"]
+            + [f"Total droits et taxes pour 100 CAF ({devise})" if devise else "Total droits et taxes pour 100 CAF", "État", "Manques", "Restrictions", f"Notes (voir {iso3}_NPF_notes.csv)"]
         )
         for code, (position, provenance) in prepares.items():
             droits = {d["code"]: d for d in position["droits"]}
@@ -144,6 +146,21 @@ def exporter(iso3, socle_manifeste, le=None):
                     renvoi = notes.setdefault((d["code"], d["note"]), f"N{len(notes) + 1}")
                     if renvoi not in renvois:
                         renvois.append(renvoi)
+            # Une interdiction ou une restriction d'importation n'est pas un
+            # taux manquant : elle a sa colonne, et son texte publié sa note.
+            restrictions = []
+            for r in position.get("restrictions") or []:
+                libelle = r.get("libelle_fr") or r.get("type") or r.get("kind") or "Restriction"
+                if r.get("portee"):
+                    libelle = f"{libelle} ({r['portee']})"
+                if r.get("code_verbatim"):
+                    libelle = f"{libelle} {r['code_verbatim']}"
+                restrictions.append(libelle)
+                texte = r.get("verbatim") or r.get("text_verbatim")
+                if texte:
+                    renvoi = notes.setdefault(("RESTRICTION", f"{texte} — {r.get('source') or ''}".rstrip(" —")), f"N{len(notes) + 1}")
+                    if renvoi not in renvois:
+                        renvois.append(renvoi)
             w.writerow(
                 [code, " ".join((texte_designation(position.get("designation")) or "").split()), position.get("chapitre"), position.get("unite") or ""]
                 + [_cellule(droits[c]) if c in droits else "" for c in colonnes]
@@ -151,6 +168,7 @@ def exporter(iso3, socle_manifeste, le=None):
                     _nombre(npf["total_droits"]) if npf["etat"] in ETATS_TOTAL else "",
                     npf["etat"],
                     " | ".join(f"{m['code']} ({m['motif']})" for m in npf.get("manques") or []),
+                    " | ".join(restrictions),
                     " ".join(renvois),
                 ]
             )
