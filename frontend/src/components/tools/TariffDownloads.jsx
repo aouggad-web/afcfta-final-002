@@ -44,33 +44,6 @@ const REGION_ICONS = {
   igad: "🌅",
 };
 
-const CHAPTER_LABELS = {
-  fr: {
-    "01-10": "Animaux, Produits animaux",
-    "11-20": "Produits végétaux, Graisses",
-    "21-30": "Industries alimentaires, Boissons, Tabacs",
-    "31-40": "Produits chimiques, Plastiques",
-    "41-50": "Peaux, Cuirs, Bois, Textiles",
-    "51-60": "Matières textiles",
-    "61-70": "Vêtements, Chaussures, Verre",
-    "71-80": "Métaux précieux, Métaux communs",
-    "81-90": "Métaux, Machines, Véhicules",
-    "91-99": "Instruments, Armes, Divers",
-  },
-  en: {
-    "01-10": "Animals, Animal products",
-    "11-20": "Vegetable products, Fats",
-    "21-30": "Food industries, Beverages, Tobacco",
-    "31-40": "Chemical products, Plastics",
-    "41-50": "Hides, Leather, Wood, Textiles",
-    "51-60": "Textile materials",
-    "61-70": "Clothing, Footwear, Glass",
-    "71-80": "Precious metals, Base metals",
-    "81-90": "Metals, Machinery, Vehicles",
-    "91-99": "Instruments, Arms, Miscellaneous",
-  },
-};
-
 function DownloadButton({ url, label, icon, className, size = "normal" }) {
   const [status, setStatus] = useState('idle');
 
@@ -134,43 +107,34 @@ export default function TariffDownloads({ language = 'fr' }) {
   const [downloadData, setDownloadData] = useState(null);
   const [subscriptionNotice, setSubscriptionNotice] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [expandedCountry, setExpandedCountry] = useState(null);
-  const [socleExports, setSocleExports] = useState({});
 
   const isFr = language === 'fr';
   const t = isFr ? {
     title: "Téléchargement des Tarifs NPF (Droit Commun)",
-    subtitle: "55 pays - Droits et taxes NPF avec sous-positions nationales",
+    subtitle: (n) => `${n} pays — tarif NPF tel que le calculateur l'applique`,
     loading: "Chargement des données...",
-    downloadCountry: "ZIP",
+    downloadCountry: "CSV",
     downloadJson: "JSON",
-    downloadSocle: "CSV",
-    socleDetail: "🧮 CSV : tarif NPF appliqué par le calculateur (CSV + notes), taux par prélèvement et total pour 100 CAF",
     downloadRegion: "Télécharger tout le groupe",
-    chapters: "Ch.",
-    format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
-    columnsDetail: "Code, Niveau, Description FR/EN, Taxes spécifiques au pays, Formalités, Total%",
+    format: "Une ligne par position nationale (CSV « ; ») + fichier de notes",
+    columnsDetail: "Taux par prélèvement, total pour 100 CAF, état du calcul, manques, restrictions",
     error: "Erreur de chargement",
     subscriptionTitle: "Module réservé aux abonnés",
     countries: "pays",
   } : {
     title: "MFN Tariff Data Download (Common Law)",
-    subtitle: "54 countries - MFN duties and taxes with national sub-positions",
+    subtitle: (n) => `${n} countries — MFN tariff as applied by the calculator`,
     loading: "Loading data...",
-    downloadCountry: "ZIP",
+    downloadCountry: "CSV",
     downloadJson: "JSON",
-    downloadSocle: "CSV",
-    socleDetail: "🧮 CSV: MFN tariff applied by the calculator (CSV + notes), rate per levy and total per 100 CIF",
     downloadRegion: "Download entire group",
-    chapters: "Ch.",
-    format: "HS6 + national sub-positions (HS8/HS10/HS12)",
-    columnsDetail: "Code, Level, Description FR/EN, Country-specific taxes, Formalities, Total%",
+    format: "One row per national tariff line (CSV « ; ») + notes file",
+    columnsDetail: "Rate per levy, total per 100 CIF, calculation status, missing inputs, restrictions",
     error: "Loading error",
     subscriptionTitle: "Subscribers-only module",
     countries: "countries",
   };
 
-  const chapterLabels = CHAPTER_LABELS[language] || CHAPTER_LABELS.fr;
   const regionLabels = REGION_LABELS[language] || REGION_LABELS.fr;
 
   useEffect(() => {
@@ -191,12 +155,6 @@ export default function TariffDownloads({ language = 'fr' }) {
       if (!refusal) console.error('Error fetching download list:', err);
     } finally {
       setLoading(false);
-    }
-    try {
-      const res = await axios.get(`${API}/tariff-data/download-socle/list`);
-      setSocleExports(Object.fromEntries((res.data.countries || []).map(c => [c.code, c])));
-    } catch (err) {
-      console.error('Error fetching calculator tariff exports:', err);
     }
   };
 
@@ -234,15 +192,7 @@ export default function TariffDownloads({ language = 'fr' }) {
   }
 
   const regions = downloadData.regions || {};
-  // Un pays peut n'avoir que l'export du calculateur (aucun fichier de
-  // l'ancien collecteur) : il reçoit sa carte, avec ce seul bouton.
-  const legacyCountries = downloadData.countries || [];
-  const legacyCodes = new Set(legacyCountries.map(c => c.code));
-  const countries = legacyCountries.concat(
-    Object.values(socleExports)
-      .filter(c => !legacyCodes.has(c.code))
-      .map(c => ({ code: c.code, name: c.name, total_size_kb: c.size_kb, files: [], socleOnly: true }))
-  );
+  const countries = downloadData.countries || [];
 
   const getCountriesForRegion = (regionKey) => {
     const regionCountryCodes = regions[regionKey]?.countries || [];
@@ -256,11 +206,10 @@ export default function TariffDownloads({ language = 'fr' }) {
           <CardTitle className="text-2xl flex items-center gap-3">
             📥 {t.title}
           </CardTitle>
-          <div className="text-gray-600 mt-1">{t.subtitle}</div>
+          <div className="text-gray-600 mt-1">{t.subtitle(countries.length)}</div>
           <div className="flex flex-wrap gap-2 mt-3">
             <Badge variant="outline" className="text-sm">{t.format}</Badge>
             <Badge variant="outline" className="text-sm">{t.columnsDetail}</Badge>
-            <Badge variant="outline" className="text-sm">{t.socleDetail}</Badge>
           </div>
         </CardHeader>
       </Card>
@@ -299,24 +248,13 @@ export default function TariffDownloads({ language = 'fr' }) {
                         <div className="text-xs text-gray-500">{country.code} — {country.total_size_kb} KB</div>
                       </div>
                       <div className="flex items-center gap-1 ml-2">
-                        {!country.socleOnly && (
-                          <DownloadButton
-                            url={`/tariff-data/download-zip/${country.code}`}
-                            label={t.downloadCountry}
-                            icon="📥"
-                            className="bg-green-600 text-white"
-                            size="small"
-                          />
-                        )}
-                        {socleExports[country.code] && (
-                          <DownloadButton
-                            url={socleExports[country.code].download_url}
-                            label={t.downloadSocle}
-                            icon="🧮"
-                            className="bg-amber-600 text-white"
-                            size="small"
-                          />
-                        )}
+                        <DownloadButton
+                          url={country.download_url}
+                          label={t.downloadCountry}
+                          icon="📥"
+                          className="bg-green-600 text-white"
+                          size="small"
+                        />
                         {country.json_ready && (
                           <DownloadButton
                             url={`/tariff-data/download-json/${country.code}`}
@@ -326,37 +264,8 @@ export default function TariffDownloads({ language = 'fr' }) {
                             size="small"
                           />
                         )}
-                        {!country.socleOnly && (
-                          <button
-                            className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5"
-                            onClick={() => setExpandedCountry(expandedCountry === country.code ? null : country.code)}
-                          >
-                            {expandedCountry === country.code ? "▲" : "▼"}
-                          </button>
-                        )}
                       </div>
                     </div>
-
-                    {expandedCountry === country.code && country.files && (
-                      <div className="p-2 border-t border-gray-100 space-y-1">
-                        {country.files.map((file) => (
-                          <div key={file.group} className="flex items-center justify-between p-1.5 text-xs">
-                            <div className="flex-1 min-w-0">
-                              <span className="font-medium">{t.chapters} {file.group}</span>
-                              <span className="text-gray-400 ml-1 hidden sm:inline">{chapterLabels[file.group]}</span>
-                              <span className="text-gray-400 ml-1"> — {file.size_kb} KB</span>
-                            </div>
-                            <DownloadButton
-                              url={file.download_url}
-                              label="CSV"
-                              icon="📄"
-                              className="bg-gray-100 text-green-700 hover:bg-green-50"
-                              size="small"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>

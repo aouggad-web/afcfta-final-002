@@ -1,4 +1,3 @@
-import csv
 import io
 import json
 import logging
@@ -8,12 +7,6 @@ import zipfile
 from typing import Optional
 
 from entitlement_guard import require_module
-from etl.hs_sections_headings import (
-    get_hs4_heading,
-    get_rangee_number,
-    get_section_for_chapter,
-    get_utilization_group,
-)
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, StreamingResponse
 from services.tariff_data_collector import get_collector
@@ -280,361 +273,46 @@ REGIONS = {
 }
 
 
-CHAPTER_GROUPS = [
-    ("01", "10"),
-    ("11", "20"),
-    ("21", "30"),
-    ("31", "40"),
-    ("41", "50"),
-    ("51", "60"),
-    ("61", "70"),
-    ("71", "80"),
-    ("81", "90"),
-    ("91", "99"),
-]
-
-# Pre-built set of valid chapter group strings for O(1) lookup in download endpoints.
-_VALID_CHAPTER_GROUPS = {f"{s}-{e}" for s, e in CHAPTER_GROUPS}
-
-CHAPTER_DESCRIPTIONS_FR = {
-    "01": "Animaux vivants",
-    "02": "Viandes et abats comestibles",
-    "03": "Poissons et crustacés",
-    "04": "Lait, oeufs, miel",
-    "05": "Autres produits d'origine animale",
-    "06": "Plantes vivantes et fleurs",
-    "07": "Légumes, plantes, racines",
-    "08": "Fruits comestibles, agrumes",
-    "09": "Café, thé, épices",
-    "10": "Céréales",
-    "11": "Produits de la minoterie",
-    "12": "Graines et fruits oléagineux",
-    "13": "Gommes, résines",
-    "14": "Matières à tresser",
-    "15": "Graisses et huiles",
-    "16": "Préparations de viandes/poissons",
-    "17": "Sucres et sucreries",
-    "18": "Cacao et préparations",
-    "19": "Préparations de céréales",
-    "20": "Préparations de légumes/fruits",
-    "21": "Préparations alimentaires diverses",
-    "22": "Boissons, liquides alcooliques",
-    "23": "Résidus des industries alimentaires",
-    "24": "Tabacs",
-    "25": "Sel, soufre, terres, pierres",
-    "26": "Minerais, scories, cendres",
-    "27": "Combustibles minéraux, huiles",
-    "28": "Produits chimiques inorganiques",
-    "29": "Produits chimiques organiques",
-    "30": "Produits pharmaceutiques",
-    "31": "Engrais",
-    "32": "Extraits tannants, peintures",
-    "33": "Huiles essentielles, parfumerie",
-    "34": "Savons, cires, bougies",
-    "35": "Matières albuminoïdes, colles",
-    "36": "Poudres, explosifs, allumettes",
-    "37": "Produits photographiques",
-    "38": "Produits chimiques divers",
-    "39": "Matières plastiques",
-    "40": "Caoutchouc",
-    "41": "Peaux et cuirs",
-    "42": "Ouvrages en cuir",
-    "43": "Pelleteries et fourrures",
-    "44": "Bois et ouvrages en bois",
-    "45": "Liège",
-    "46": "Ouvrages de sparterie/vannerie",
-    "47": "Pâtes de bois, papier recyclé",
-    "48": "Papiers et cartons",
-    "49": "Produits de l'édition, presse",
-    "50": "Soie",
-    "51": "Laine, poils fins",
-    "52": "Coton",
-    "53": "Autres fibres textiles végétales",
-    "54": "Filaments synthétiques",
-    "55": "Fibres synthétiques discontinues",
-    "56": "Ouates, feutres, cordages",
-    "57": "Tapis et revêtements de sol",
-    "58": "Tissus spéciaux, broderies",
-    "59": "Tissus imprégnés, enduits",
-    "60": "Étoffes de bonneterie",
-    "61": "Vêtements en bonneterie",
-    "62": "Vêtements (hors bonneterie)",
-    "63": "Autres articles textiles confectionnés",
-    "64": "Chaussures, guêtres",
-    "65": "Coiffures",
-    "66": "Parapluies, cannes",
-    "67": "Plumes, fleurs artificielles",
-    "68": "Ouvrages en pierres, ciment",
-    "69": "Produits céramiques",
-    "70": "Verre et ouvrages en verre",
-    "71": "Perles, pierres précieuses, métaux précieux",
-    "72": "Fonte, fer et acier",
-    "73": "Ouvrages en fonte, fer, acier",
-    "74": "Cuivre",
-    "75": "Nickel",
-    "76": "Aluminium",
-    "78": "Plomb",
-    "79": "Zinc",
-    "80": "Étain",
-    "81": "Autres métaux communs",
-    "82": "Outils, coutellerie",
-    "83": "Ouvrages divers en métaux communs",
-    "84": "Machines, appareils mécaniques",
-    "85": "Machines, appareils électriques",
-    "86": "Véhicules ferroviaires",
-    "87": "Voitures automobiles, tracteurs",
-    "88": "Navigation aérienne",
-    "89": "Navigation maritime",
-    "90": "Instruments d'optique, médecine",
-    "91": "Horlogerie",
-    "92": "Instruments de musique",
-    "93": "Armes et munitions",
-    "94": "Meubles, literie, éclairage",
-    "95": "Jouets, jeux, articles de sport",
-    "96": "Ouvrages divers",
-    "97": "Objets d'art, antiquités",
-    "99": "Codes spéciaux",
-}
+# Le tarif téléchargeable est l'export du socle de calcul
+# (scripts/exporter_tarifs_socle.py) : le tarif tel que le calculateur
+# l'applique, archivé avec son manifeste. Il a remplacé les CSV par tranches
+# de chapitres de l'ancien collecteur, qui ne portaient pas les corrections
+# du socle.
+SOCLE_EXPORTS_DIR = os.path.join(EXPORTS_DIR, "socle")
 
 
-def _discover_country_taxes(lines):
-    tax_names = []
-    seen = set()
-    for l in lines:
-        for td in l.get("taxes_detail", []):
-            t = td.get("tax", "")
-            if t and t not in seen:
-                seen.add(t)
-                tax_names.append(t)
-    return tax_names
+def _exports_socle():
+    path = os.path.join(SOCLE_EXPORTS_DIR, "MANIFESTE.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f).get("pays", {})
 
 
-def _generate_country_csvs(country_code: str):
-    json_path = os.path.join(TARIFFS_DIR, f"{country_code}_tariffs.json")
-    if not os.path.exists(json_path):
-        return []
-
-    with open(json_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    lines = data.get("tariff_lines", [])
-    os.makedirs(EXPORTS_DIR, exist_ok=True)
-
-    tax_columns = _discover_country_taxes(lines)
-    if not tax_columns:
-        tax_columns = ["D.D", "T.V.A"]
-
-    num_tax_cols = len(tax_columns)
-    empty_taxes = [""] * num_tax_cols
-    header_base = ["Code", "Niveau", "Description_FR", "Description_EN", "Groupe_Utilisation"]
-    header_taxes = [f"{t}_%" for t in tax_columns]
-    header_end = ["Formalites", "Total_%"]
-    header = header_base + header_taxes + header_end
-    num_empty_end = len(header_end)
-    empty_row_suffix = [""] * (num_tax_cols + num_empty_end)
-
-    generated = []
-    for ch_start, ch_end in CHAPTER_GROUPS:
-        group_lines = [l for l in lines if ch_start <= l.get("chapter", "00") <= ch_end]
-        if not group_lines:
-            continue
-
-        csv_name = f"{country_code}_NPF_ch{ch_start}-{ch_end}.csv"
-        csv_path = os.path.join(EXPORTS_DIR, csv_name)
-
-        by_chapter = {}
-        for l in group_lines:
-            ch = l.get("chapter", "00")
-            if ch not in by_chapter:
-                by_chapter[ch] = []
-            by_chapter[ch].append(l)
-
-        with open(csv_path, "w", newline="", encoding="utf-8-sig") as csvfile:
-            writer = csv.writer(csvfile, delimiter=";")
-            writer.writerow(header)
-
-            emitted_sections = set()
-            for ch in sorted(by_chapter.keys()):
-                sec = get_section_for_chapter(ch)
-                sec_num = sec.get("number", "")
-                if sec_num and sec_num not in emitted_sections:
-                    emitted_sections.add(sec_num)
-                    writer.writerow(
-                        [f"SECTION {sec_num}", "SECTION", sec["fr"], sec["en"], ""]
-                        + empty_row_suffix
-                    )
-
-                ch_desc = CHAPTER_DESCRIPTIONS_FR.get(ch, "")
-                writer.writerow([f"CHAPITRE {ch}", "CHAPITRE", ch_desc, "", ""] + empty_row_suffix)
-
-                emitted_hs4 = set()
-                prev_formalites = ""
-
-                for line in by_chapter[ch]:
-                    hs6 = line.get("hs6", "")
-                    hs4 = hs6[:4] if len(hs6) >= 4 else ""
-
-                    if hs4 and hs4 not in emitted_hs4:
-                        emitted_hs4.add(hs4)
-                        h4 = get_hs4_heading(hs6)
-                        rangee_num = get_rangee_number(hs4)
-                        writer.writerow(
-                            [hs4, f"RANGEE {rangee_num}", h4.get("en", ""), "", ""]
-                            + empty_row_suffix
-                        )
-
-                    writer.writerow(
-                        [
-                            hs6,
-                            "HS6",
-                            line.get("description_fr", ""),
-                            line.get("description_en", ""),
-                            "",
-                        ]
-                        + empty_row_suffix
-                    )
-
-                    parent_td = line.get("taxes_detail", [])
-                    td_map = {}
-                    for t in parent_td:
-                        td_map[t.get("tax", "")] = t.get("rate", 0)
-
-                    parent_af = line.get("administrative_formalities", [])
-                    parent_af_str = (
-                        " | ".join([f"{fi['code']} {fi['document_fr']}" for fi in parent_af])
-                        if parent_af
-                        else ""
-                    )
-
-                    util_group = get_utilization_group(ch)
-
-                    subs = line.get("sub_positions", [])
-                    if subs:
-                        for sp in subs:
-                            digits = sp.get("digits", len(sp.get("code", "")))
-                            sp_dd = sp.get("dd", 0)
-
-                            sp_td_map = dict(td_map)
-                            sp_td_map["D.D"] = sp_dd
-
-                            tax_values = []
-                            sp_total = 0
-                            for tc in tax_columns:
-                                val = sp_td_map.get(tc, "")
-                                tax_values.append(val)
-                                if isinstance(val, (int, float)):
-                                    sp_total += val
-
-                            show_form = parent_af_str if parent_af_str != prev_formalites else "="
-                            prev_formalites = parent_af_str
-
-                            writer.writerow(
-                                [
-                                    sp.get("code", ""),
-                                    f"HS{digits}",
-                                    sp.get("description_fr", ""),
-                                    sp.get("description_en", ""),
-                                    util_group,
-                                ]
-                                + tax_values
-                                + [show_form, round(sp_total, 2)]
-                            )
-                    else:
-                        dd_r = line.get("dd_rate", 0)
-                        direct_td_map = dict(td_map)
-                        direct_td_map["D.D"] = dd_r
-
-                        tax_values = []
-                        total_r = 0
-                        for tc in tax_columns:
-                            val = direct_td_map.get(tc, "")
-                            tax_values.append(val)
-                            if isinstance(val, (int, float)):
-                                total_r += val
-
-                        show_form = parent_af_str if parent_af_str != prev_formalites else "="
-                        prev_formalites = parent_af_str
-
-                        writer.writerow(
-                            [
-                                hs6,
-                                "HS6-DIRECT",
-                                line.get("description_fr", ""),
-                                line.get("description_en", ""),
-                                util_group,
-                            ]
-                            + tax_values
-                            + [show_form, round(total_r, 2)]
-                        )
-
-        generated.append(
-            {
-                "group": f"{ch_start}-{ch_end}",
-                "file": csv_name,
-                "path": csv_path,
-                "hs6_count": len(group_lines),
-                "total_lines": len(group_lines)
-                + sum(len(l.get("sub_positions", [])) for l in group_lines),
-            }
-        )
-
-    return generated
+def _fichiers(entree):
+    return [entree["fichier"], entree["fichier_notes"]]
 
 
 @router.get("/download/list")
 async def list_downloads():
-    collector = get_collector()
-    available = sorted(collector.get_available_countries())
     countries = []
-    for cc in available:
-        json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
-        has_data = os.path.exists(json_path)
-        if not has_data:
-            countries.append(
-                {
-                    "code": cc,
-                    "name": COUNTRY_NAMES.get(cc, cc),
-                    "csv_ready": False,
-                    "json_ready": False,
-                    "files": [],
-                    "file_count": 0,
-                    "total_size_kb": 0,
-                }
-            )
-            continue
-        first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
-        if not os.path.exists(first_csv):
-            _generate_country_csvs(cc)
-        files = []
-        total_size = 0
-        for ch_start, ch_end in CHAPTER_GROUPS:
-            csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{ch_start}-{ch_end}.csv")
-            if os.path.exists(csv_path):
-                size_kb = round(os.path.getsize(csv_path) / 1024)
-            else:
-                size_kb = 0
-            files.append(
-                {
-                    "group": f"{ch_start}-{ch_end}",
-                    "size_kb": size_kb,
-                    "download_url": f"/tariff-data/download/{cc}/{ch_start}-{ch_end}",
-                }
-            )
-            total_size += size_kb
-        json_size_kb = round(os.path.getsize(json_path) / 1024)
-        countries.append(
-            {
-                "code": cc,
-                "name": COUNTRY_NAMES.get(cc, cc),
-                "csv_ready": True,
-                "json_ready": True,
-                "json_size_kb": json_size_kb,
-                "json_download_url": f"/tariff-data/download-json/{cc}",
-                "files": files,
-                "file_count": len(files),
-                "total_size_kb": total_size,
-            }
-        )
+    for cc, entree in _exports_socle().items():
+        size = sum(os.path.getsize(os.path.join(SOCLE_EXPORTS_DIR, f)) for f in _fichiers(entree))
+        json_ready = os.path.exists(os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json"))
+        country = {
+            "code": cc,
+            "name": COUNTRY_NAMES.get(cc, cc),
+            "positions": entree["positions"],
+            "collecte": entree.get("collecte"),
+            "devise": entree.get("devise"),
+            "csv_ready": True,
+            "total_size_kb": round(size / 1024),
+            "download_url": f"/tariff-data/download-zip/{cc}",
+            "json_ready": json_ready,
+        }
+        if json_ready:
+            country["json_download_url"] = f"/tariff-data/download-json/{cc}"
+        countries.append(country)
     return {
         "countries": countries,
         "count": len(countries),
@@ -642,59 +320,20 @@ async def list_downloads():
     }
 
 
-@router.get("/download/{country_code}/{chapter_group}")
-async def download_country_csv(country_code: str, chapter_group: str):
-    # Validate country code against the known allowlist and extract from it
-    # so the path is built from our own data, not from the raw user input.
-    cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)
-    if cc is None:
-        raise HTTPException(status_code=400, detail="Invalid country code")
-
-    # Validate chapter_group against the known allowlist
-    if chapter_group not in _VALID_CHAPTER_GROUPS:
-        raise HTTPException(status_code=400, detail="Invalid chapter group")
-    cg = chapter_group
-
-    csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{cg}.csv")
-
-    if not os.path.exists(csv_path):
-        results = _generate_country_csvs(cc)
-        if not results:
-            raise HTTPException(status_code=404, detail=f"No tariff data for {cc}")
-        csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{cg}.csv")
-        if not os.path.exists(csv_path):
-            raise HTTPException(status_code=404, detail=f"No data for chapters {cg}")
-
-    name = COUNTRY_NAMES.get(cc, cc)
-    filename = f"Tarifs_NPF_{name}_{cc}_ch{cg}.csv"
-    return FileResponse(
-        csv_path,
-        media_type="text/csv",
-        filename=filename,
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
-    )
-
-
 @router.get("/download-zip/{country_code}")
 async def download_country_zip(country_code: str):
-    # Validate country code against the known allowlist
-    cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)
+    # Le code pays est lu sur le manifeste : le chemin ne reprend jamais
+    # l'entrée brute de l'utilisateur.
+    exports = _exports_socle()
+    cc = next((k for k in exports if k == country_code.upper()), None)
     if cc is None:
-        raise HTTPException(status_code=400, detail="Invalid country code")
-    first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
-    if not os.path.exists(first_csv):
-        results = _generate_country_csvs(cc)
-        if not results:
-            raise HTTPException(status_code=404, detail=f"No tariff data for {cc}")
+        raise HTTPException(status_code=404, detail=f"No tariff export for {country_code}")
 
-    name = COUNTRY_NAMES.get(cc, cc)
+    name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for ch_start, ch_end in CHAPTER_GROUPS:
-            csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{ch_start}-{ch_end}.csv")
-            if os.path.exists(csv_path):
-                arcname = f"Tarifs_NPF_{name}_{cc}/ch{ch_start}-{ch_end}.csv"
-                zf.write(csv_path, arcname)
+        for fichier in _fichiers(exports[cc]):
+            zf.write(os.path.join(SOCLE_EXPORTS_DIR, fichier), fichier)
     buf.seek(0)
     filename = f"Tarifs_NPF_{name}_{cc}.zip"
     return StreamingResponse(
@@ -740,79 +379,18 @@ async def download_region_zip(region_key: str):
     if not region:
         raise HTTPException(status_code=404, detail=f"Unknown region: {region_key}")
 
+    exports = _exports_socle()
     region_name = region["name"].replace(" / ", "_").replace(" ", "_")
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
         for cc in region["countries"]:
-            first_csv = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch01-10.csv")
-            if not os.path.exists(first_csv):
-                _generate_country_csvs(cc)
-            name = COUNTRY_NAMES.get(cc, cc)
-            for ch_start, ch_end in CHAPTER_GROUPS:
-                csv_path = os.path.join(EXPORTS_DIR, f"{cc}_NPF_ch{ch_start}-{ch_end}.csv")
-                if os.path.exists(csv_path):
-                    arcname = f"{region_name}/{name}_{cc}/ch{ch_start}-{ch_end}.csv"
-                    zf.write(csv_path, arcname)
+            if cc not in exports:
+                continue
+            name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
+            for fichier in _fichiers(exports[cc]):
+                zf.write(os.path.join(SOCLE_EXPORTS_DIR, fichier), f"{region_name}/{name}_{cc}/{fichier}")
     buf.seek(0)
     filename = f"Tarifs_NPF_{region_name}.zip"
-    return StreamingResponse(
-        buf,
-        media_type="application/zip",
-        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
-    )
-
-
-# Export du socle de calcul (scripts/exporter_tarifs_socle.py) : le tarif tel
-# que le calculateur l'applique, archivé dans le dépôt avec son manifeste.
-SOCLE_EXPORTS_DIR = os.path.join(EXPORTS_DIR, "socle")
-
-
-def _exports_socle():
-    path = os.path.join(SOCLE_EXPORTS_DIR, "MANIFESTE.json")
-    if not os.path.exists(path):
-        return {}
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f).get("pays", {})
-
-
-@router.get("/download-socle/list")
-async def list_socle_downloads():
-    countries = []
-    for cc, entree in _exports_socle().items():
-        size = sum(
-            os.path.getsize(os.path.join(SOCLE_EXPORTS_DIR, entree[k]))
-            for k in ("fichier", "fichier_notes")
-        )
-        countries.append(
-            {
-                "code": cc,
-                "name": COUNTRY_NAMES.get(cc, cc),
-                "positions": entree["positions"],
-                "collecte": entree.get("collecte"),
-                "size_kb": round(size / 1024),
-                "download_url": f"/tariff-data/download-socle/{cc}",
-            }
-        )
-    return {"countries": countries, "count": len(countries)}
-
-
-@router.get("/download-socle/{country_code}")
-async def download_socle_zip(country_code: str):
-    # Le code pays est lu sur le manifeste : le chemin ne reprend jamais
-    # l'entrée brute de l'utilisateur.
-    exports = _exports_socle()
-    cc = next((k for k in exports if k == country_code.upper()), None)
-    if cc is None:
-        raise HTTPException(status_code=404, detail=f"No calculator tariff export for {country_code}")
-
-    entree = exports[cc]
-    name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for k in ("fichier", "fichier_notes"):
-            zf.write(os.path.join(SOCLE_EXPORTS_DIR, entree[k]), entree[k])
-    buf.seek(0)
-    filename = f"Tarif_calculateur_NPF_{name}_{cc}.zip"
     return StreamingResponse(
         buf,
         media_type="application/zip",

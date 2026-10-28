@@ -10,7 +10,7 @@ est préparée comme ``POST /api/calcul`` la prépare sans origine déclarée
 (mesures de la gazette EAC en vigueur à la date de référence, TVA nationale
 documentée quand la source n'en porte aucune) : l'export est le tarif que le
 calculateur applique. Le SaaS le sert tel quel
-(``GET /api/tariff-data/download-socle/<ISO>``).
+(``GET /api/tariff-data/download-zip/<ISO>`` et ``/download-region-zip/<groupe>``).
 
 ``backend/data/exports/socle/MANIFESTE.json`` relie chaque fichier à
 l'empreinte du socle dont il est tiré (``socle_sha256`` de

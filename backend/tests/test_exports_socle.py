@@ -83,15 +83,15 @@ def _client():
 
 
 def test_la_liste_annonce_chaque_export():
-    corps = _client().get("/tariff-data/download-socle/list").json()
+    corps = _client().get("/tariff-data/download/list").json()
     assert corps["count"] == len(EXPORTS_PAYS)
     cog = next(c for c in corps["countries"] if c["code"] == "COG")
     assert cog["positions"] == EXPORTS_PAYS["COG"]["positions"]
-    assert cog["download_url"] == "/tariff-data/download-socle/COG"
+    assert cog["download_url"] == "/tariff-data/download-zip/COG"
 
 
 def test_le_zip_porte_le_tarif_et_ses_notes():
-    reponse = _client().get("/tariff-data/download-socle/cog")
+    reponse = _client().get("/tariff-data/download-zip/cog")
     assert reponse.status_code == 200
     with zipfile.ZipFile(io.BytesIO(reponse.content)) as zf:
         assert sorted(zf.namelist()) == ["COG_NPF.csv", "COG_NPF_notes.csv"]
@@ -99,6 +99,24 @@ def test_le_zip_porte_le_tarif_et_ses_notes():
     assert entete.startswith("Position;Désignation;Chapitre;Unité;DD ")
 
 
+def test_le_zip_d_un_groupe_porte_les_exports_de_ses_pays():
+    reponse = _client().get("/tariff-data/download-region-zip/cemac")
+    assert reponse.status_code == 200
+    with zipfile.ZipFile(io.BytesIO(reponse.content)) as zf:
+        noms = zf.namelist()
+    assert "CEMAC_+_RDC_+_STP/Congo_COG/COG_NPF.csv" in noms
+    assert all(n.endswith(("_NPF.csv", "_NPF_notes.csv")) for n in noms)
+
+
+def test_les_anciens_csv_par_chapitres_ne_sont_plus_servis():
+    """Les CSV de l'ancien collecteur (``<ISO>_NPF_chXX-YY.csv``) ne portaient
+    pas les corrections du socle : ils ont été retirés, et rien ne les
+    régénère."""
+    exports = os.path.dirname(EXPORTS)
+    assert [f for f in os.listdir(exports) if f.endswith(".csv")] == []
+    assert _client().get("/tariff-data/download/COG/01-10").status_code == 404
+
+
 def test_un_pays_sans_export_est_refuse():
-    assert _client().get("/tariff-data/download-socle/DJI").status_code == 404
-    assert _client().get("/tariff-data/download-socle/..%2F..%2Fetc").status_code == 404
+    assert _client().get("/tariff-data/download-zip/DJI").status_code == 404
+    assert _client().get("/tariff-data/download-zip/..%2F..%2Fetc").status_code == 404
