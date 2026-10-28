@@ -1,0 +1,7 @@
+﻿Note;Prélèvement;Texte
+N1;PC-AES;"Colonne PC (0,5 %) du tarif de 2023, prélèvement de la CEDEAO quittée le 29/01/2025 ; servie comme prélèvement confédéral de l'AES au même taux (décision du 28/03/2025), dont sont exclues les marchandises originaires de l'AES et de l'UEMOA (art. 1er et 4)."
+N2;TVA;"Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017), art. 198 : « pour les produits importés par la valeur CAF Franco frontière » ; art. 199 : « Sont à inclure dans la base d'imposition : les impôts, taxes, droits et prélèvements de toute nature à l'exception de la TVA »."
+N3;TAI;Taxe d'ajustement à l'importation, perçue sur la valeur CAF comme le droit de douane.
+N4;ISCP;Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017), art. 243 : « à l'importation, par la valeur en douane majorée des droits et taxes dus à l'entrée, à l'exception de la TVA ».
+N5;TCI;"Taxe conjoncturelle à l'importation : assise sur un prix de déclenchement non publié ; l'ISCP et la TVA de la position restent indisponibles."
+N6;TVA;"Code général des impôts du Mali (DGI, édition mise à jour au 02/08/2017), art. 198 : « pour les produits importés par la valeur CAF Franco frontière » ; art. 199 : « Sont à inclure dans la base d'imposition : les impôts, taxes, droits et prélèvements de toute nature à l'exception de la TVA ». Art. 229 : « 18 % pour les autres produits et les services non exonérés » ; la case TVA du tarif de la DGD est vide sur cette position."

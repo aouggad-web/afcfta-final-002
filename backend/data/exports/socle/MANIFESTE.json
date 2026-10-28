@@ -1,0 +1,473 @@
+{
+  "source": "backend/socle (scripts/build_socle.py)",
+  "pays": {
+    "AGO": {
+      "fichier": "AGO_NPF.csv",
+      "fichier_notes": "AGO_NPF_notes.csv",
+      "positions": 5959,
+      "sha256": "1286bdfda74769c5b5df5d9a055a9933463946dd0081a07535ead6c3a4ef04d2",
+      "notes_sha256": "0dec420666c6ab37040c97cee9a31b6f903f0c0adb2a2347c9c93eca54a54741",
+      "socle_sha256": "4d5788f8cb89bb3ed3bd0fac93aeef57d6d669fd549f86d478b3934f431ba10b",
+      "collecte": "2026-09-19"
+    },
+    "BDI": {
+      "fichier": "BDI_NPF.csv",
+      "fichier_notes": "BDI_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "1c0602ed186709cea9651f330bcf1c24bea24be767c6c6f944ff6b427d3bee80",
+      "notes_sha256": "6cfd2b0f68dadae5b13f02fa91d79471636f51e8e4836b280a8380f21543068a",
+      "socle_sha256": "672a201a1948f90595ff80adcc093fb6cf7a7feacee06606501d0cfdb8c83e68",
+      "collecte": "2026-02-18T10:54:36.463488"
+    },
+    "BEN": {
+      "fichier": "BEN_NPF.csv",
+      "fichier_notes": "BEN_NPF_notes.csv",
+      "positions": 6381,
+      "sha256": "52a08b52bcd4341aa67eb2f7150e5f11406bcffb0288b91ad679271c291c7682",
+      "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
+      "socle_sha256": "71edc58736650c3cb1de78442c5eb9959628abf65ef521a3199c7b7aa8940a9d",
+      "collecte": "2026-10-12T13:17:29.931408+00:00"
+    },
+    "BFA": {
+      "fichier": "BFA_NPF.csv",
+      "fichier_notes": "BFA_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "4203caf69f902d80200203ba4f61b5f393273f2478b3f9b2a3cf08069877460c",
+      "notes_sha256": "62baf2ee115957a34820c43d22d899c78bec55fcbd5e6cefc999deaca83fff3f",
+      "socle_sha256": "048e46b24fbcd1fb9d0e311c8408301d8952d53a3f060a2d243cdbe8e8842caf",
+      "collecte": "2026-02-19T22:39:46.076060"
+    },
+    "BWA": {
+      "fichier": "BWA_NPF.csv",
+      "fichier_notes": "BWA_NPF_notes.csv",
+      "positions": 8589,
+      "sha256": "e8aba14358f19ed768212575f9dfbee11a73004fee68339e8f3dd1f7c5123319",
+      "notes_sha256": "78f1ecf670212f9e3c9ef3bf4fb180b87d38f2e10e4b9750291c6a4db159ffde",
+      "socle_sha256": "bd2bf5c73de8a49dc6c881f652a9bc6a23e86788c45cd5f6461acab3926f4386",
+      "collecte": "2026-08-29T13:26:22.991310"
+    },
+    "CAF": {
+      "fichier": "CAF_NPF.csv",
+      "fichier_notes": "CAF_NPF_notes.csv",
+      "positions": 5239,
+      "sha256": "c1f5e337c6aaa29fc519feb8fa5eae2ba9c82c4cbec43ae4469735630138ab96",
+      "notes_sha256": "b26d91e7a8cb7ca759d6f064b7761dcee0ba1e3fad893e9c43b8955020bac8bf",
+      "socle_sha256": "23d90c62cb1c062e97d9dd55ab4c5d9e50eb738453e8ed956952a5cfec7a890e",
+      "collecte": "2026-02-19T22:39:54.085446"
+    },
+    "CIV": {
+      "fichier": "CIV_NPF.csv",
+      "fichier_notes": "CIV_NPF_notes.csv",
+      "positions": 6381,
+      "sha256": "b61f621b8d8fae0dbc125531026259f578cd9fc1985dc32b04aa49ac34429d87",
+      "notes_sha256": "375455cbde46e913af23dc50e5df8cdc04cfb2df117ba68823f3a1b8a246b6d6",
+      "socle_sha256": "e9fbcf5d95d4d3be4d80abca1509c2f705ea35b003276bea2fe59550fbe2b223",
+      "collecte": "2026-10-10T15:57:51.291346+00:00"
+    },
+    "CMR": {
+      "fichier": "CMR_NPF.csv",
+      "fichier_notes": "CMR_NPF_notes.csv",
+      "positions": 5239,
+      "sha256": "5026879c5a068d7c7f88dae2e513ba0a5c270399567bb9d8234f16919158d79e",
+      "notes_sha256": "1b2dd15868b5a9a801bcd8b066c618320ad8f7e59d671e61ab8d13eea3f55b86",
+      "socle_sha256": "84962206eca6feb7d1ab71aa0a565e8e8384e480c4a26c75ecce4303cfabeaae",
+      "collecte": "2026-02-19T22:21:31.397885"
+    },
+    "COD": {
+      "fichier": "COD_NPF.csv",
+      "fichier_notes": "COD_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "5fb08de4e5219391899a607a6e3b91cc0ffa03d1475a059755b0d4964331d455",
+      "notes_sha256": "c33400280c7466a8b4d5dd9ce4cae089436556559faa1037ccd48c8e5626ee0d",
+      "socle_sha256": "5f8b5b59e0737a146acfbed25d78f93929b16cd780e45621bcdfed354fb3d46d",
+      "collecte": "2026-02-18T10:54:37.532224"
+    },
+    "COG": {
+      "fichier": "COG_NPF.csv",
+      "fichier_notes": "COG_NPF_notes.csv",
+      "positions": 5239,
+      "sha256": "543ef0580e5f38ba445e235bd9d42be9c4400e7a91bb13fc6552cfb585b7c40a",
+      "notes_sha256": "8cce851acd79a452f7345cdd3c897d681131f2df952018010bb8ef270b726ab3",
+      "socle_sha256": "36db1d3a6a99298c47680e96e248dab2dd2882396bef08da7d0f328fdd795818",
+      "collecte": "2026-02-19T22:39:52.620876"
+    },
+    "COM": {
+      "fichier": "COM_NPF.csv",
+      "fichier_notes": "COM_NPF_notes.csv",
+      "positions": 5388,
+      "sha256": "14f14515ad8cb24dc729f1b2010bb93ce05f3061f061d2b78522a636e9997f2d",
+      "notes_sha256": "ce41362e6cc509f10e663d4a70706e95c5e3556cd7b162c36023b0ef90ef843c",
+      "socle_sha256": "ae14b83fa7d59b2b03fa4a9a051c64da8d9bbcd8325f7d6210ce54251742ae6d",
+      "collecte": "2026-07-05T11:02:35.673779+00:00"
+    },
+    "CPV": {
+      "fichier": "CPV_NPF.csv",
+      "fichier_notes": "CPV_NPF_notes.csv",
+      "positions": 6579,
+      "sha256": "3ecdaf695fc3f578cb6fe4109c510906c4fa018e9d7602bfbf64b41d7c6320e0",
+      "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
+      "socle_sha256": "4982de7f40832cb209a687dbf4af0ca9dece1a7b641606a90d4c11090cb0d6a8",
+      "collecte": "2026-10-12T21:25:12.776398+00:00"
+    },
+    "DZA": {
+      "fichier": "DZA_NPF.csv",
+      "fichier_notes": "DZA_NPF_notes.csv",
+      "positions": 17345,
+      "sha256": "554e72d4b1213c27b5b9006ea3e7340e730b7e228509db4889fe139ba1e01ac5",
+      "notes_sha256": "6150dae957ebaa9b675524bb988e4fe164776966e305570705b852d7851d5300",
+      "socle_sha256": "3f8e221c9f825d29a28160b0cc7c4b1bb0fa10c18a48db8345473d24c8254de0",
+      "collecte": "2026-10-04T06:51:48+00:00"
+    },
+    "EGY": {
+      "fichier": "EGY_NPF.csv",
+      "fichier_notes": "EGY_NPF_notes.csv",
+      "positions": 8818,
+      "sha256": "f3f8a6f0e99dc0471dba86d05c9a80b5d48468e031da5111b5fc652221d15f5e",
+      "notes_sha256": "1816cadd39910298653d6bbae982bed9c0d5a1bb273ec65715d2cbc37ced4e4f",
+      "socle_sha256": "87121858f26fa0cc4886432454ada56842febddd3c064362524dc2c41bf9425c",
+      "collecte": "2026-08-29T21:57:37.493425+00:00"
+    },
+    "ETH": {
+      "fichier": "ETH_NPF.csv",
+      "fichier_notes": "ETH_NPF_notes.csv",
+      "positions": 6296,
+      "sha256": "951b4f6b04eb72388d67ee8fd3b55a7a2834b786720f531939e4c2200ed5d008",
+      "notes_sha256": "d87e39186823ff79c23a4ed5042581d31137c801e743b9ae13b8e55396836ebc",
+      "socle_sha256": "07497ab13f0e98ace9b095e60e85a327525cab970247c3b5c622d789753e09b4",
+      "collecte": "2026-07-05T11:56:27.716023+00:00"
+    },
+    "GAB": {
+      "fichier": "GAB_NPF.csv",
+      "fichier_notes": "GAB_NPF_notes.csv",
+      "positions": 5239,
+      "sha256": "30b9e8010bed6f0dec99e68f403ee7c2f73af0ff7312cc872de5c1ee9c0224e4",
+      "notes_sha256": "a1e55e611042830fd9909a26b24985f17c72760403da5b9282caceee8f42805e",
+      "socle_sha256": "31834a3ff84ecc5c1b15bf3730a79030364cf85f5e7bf83234d9fbc4d3fb0b5e",
+      "collecte": "2026-02-19T22:39:52.018966"
+    },
+    "GHA": {
+      "fichier": "GHA_NPF.csv",
+      "fichier_notes": "GHA_NPF_notes.csv",
+      "positions": 11516,
+      "sha256": "0c783d971f225a4ed6023370abc95e9f24355263c14d78dde7bde56c4418288b",
+      "notes_sha256": "426ffd47a340231a2934213729254e26b8fa7d94056d46a1257f8274a1b583f7",
+      "socle_sha256": "5de8b86dcd054ba36bf300cc00781e4c9b46b36f52ec025ade0fdcac4f90ee29",
+      "collecte": "2026-06-16T22:25:05.362356"
+    },
+    "GIN": {
+      "fichier": "GIN_NPF.csv",
+      "fichier_notes": "GIN_NPF_notes.csv",
+      "positions": 6379,
+      "sha256": "f0b4154e12466ad9a1d8e6ca682e309758b8d7a85336b3a86402be35f21fdf5d",
+      "notes_sha256": "fef236aa08e831afdea856c1cd52978564d8e3cdd87ac35490c769cf62348bf6",
+      "socle_sha256": "575d69b2f368ddb0fcaa5125e8a61c2480d5a796a4bdea0cde35a44c72d1cffa",
+      "collecte": "2026-10-26T15:10:19.480191+00:00"
+    },
+    "GMB": {
+      "fichier": "GMB_NPF.csv",
+      "fichier_notes": "GMB_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "f364e4d63cd8ab3b4f2576a2f5b582bf71d56b62879f7c03e8f6c271b9aa6745",
+      "notes_sha256": "ee62c4706c1b7730c95385ef338fcca706faed422f712e8723c1e27489281f3b",
+      "socle_sha256": "41a0cdb27aa445daf9d790efb7f811cc3b244edc3954fcf41b786e10c18ff038",
+      "collecte": null
+    },
+    "GNB": {
+      "fichier": "GNB_NPF.csv",
+      "fichier_notes": "GNB_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "4cb6fc97a8459fdb5e3ab5535208f79869224ba299f5917c9751c2089011df8a",
+      "notes_sha256": "b9e36c073a2d66b8d202031fd290b50d8d953ea4b71662338059f99231653ced",
+      "socle_sha256": "6d404ceef13511c7933e3e9df84dca4c26698f06ecfbc70c043e678e4f3809f6",
+      "collecte": null
+    },
+    "GNQ": {
+      "fichier": "GNQ_NPF.csv",
+      "fichier_notes": "GNQ_NPF_notes.csv",
+      "positions": 5239,
+      "sha256": "427293871a8cf005f0c3466597c6729d766a1b78aeb04a952439cde2eff1cff1",
+      "notes_sha256": "c28b13741cfd613806c5fb218666e0405bfae9de0fef2aa2b4b4f6b063f6ba3f",
+      "socle_sha256": "18620b61eac225c4629916ad957e9969dce2eb81f0c2879731272a2386a44ac4",
+      "collecte": null
+    },
+    "KEN": {
+      "fichier": "KEN_NPF.csv",
+      "fichier_notes": "KEN_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "947ebccb8d32f36e24c8fb802715c596e414ead5d5711df56066337f045350e7",
+      "notes_sha256": "616e5d4e834eb5fc60e2cada6eab99d46517731a01e114fff6c4c86a2fd78b9a",
+      "socle_sha256": "4cce38352a44aefd86d64a5007b9a9ee0a222fa33b96085583716b7904719a61",
+      "collecte": "2026-02-18T10:54:33.961294"
+    },
+    "LBR": {
+      "fichier": "LBR_NPF.csv",
+      "fichier_notes": "LBR_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "e201d64a91de129c3dcbd0a80a0f8317b1e1c8f256bdd1549297b2f83df62a84",
+      "notes_sha256": "2097d318455852fa598711a37ab247a33ebbe91774ce79d460561e6534d12de9",
+      "socle_sha256": "ba4cbbc587ae2c02234cc5698b70c40b15e5d2f6c1dffaedfe8a89fd96b6e08a",
+      "collecte": null
+    },
+    "LBY": {
+      "fichier": "LBY_NPF.csv",
+      "fichier_notes": "LBY_NPF_notes.csv",
+      "positions": 5920,
+      "sha256": "7c7db36563186cba8150f70596e24c42e513ae353c3f8a61725606af2ea0a2d0",
+      "notes_sha256": "7c4a86e662d9bddf1b28f3eae74e37b3fc97494261c228a767b32ca2b436d185",
+      "socle_sha256": "0497c4ad67ee5defed17e7649e23557e1dd90223118f53ade9b57ba08caf96d2",
+      "collecte": "2026-09-18"
+    },
+    "LSO": {
+      "fichier": "LSO_NPF.csv",
+      "fichier_notes": "LSO_NPF_notes.csv",
+      "positions": 8589,
+      "sha256": "472c025ab189e000d63ff874d1b16e8c7ec42f23a2d1477cf6f9f22451f67ab8",
+      "notes_sha256": "f70a035981b34171dd4807918186f704c742b56d0f6ba49abf3fbb5e156eeb89",
+      "socle_sha256": "468743ffe0c2cec186775666c60c8aa48230dfc7910c1b7312fe55189db64d4d",
+      "collecte": "2026-08-29T13:26:24.395497"
+    },
+    "MAR": {
+      "fichier": "MAR_NPF.csv",
+      "fichier_notes": "MAR_NPF_notes.csv",
+      "positions": 13243,
+      "sha256": "d075e7c83433e046ebf82e0759921a830b11a72ec744809dfc0220caed53a38f",
+      "notes_sha256": "82125f9ce6a3fdccd7112d3837a462b2315cb6848b59eb19a848ee819aea55b4",
+      "socle_sha256": "d601eeb274f4fc0f0ae4a05f6472e19b9614917ea16869a1ce8fe019f5111145",
+      "collecte": "2026-02-11T22:41:08.772056"
+    },
+    "MDG": {
+      "fichier": "MDG_NPF.csv",
+      "fichier_notes": "MDG_NPF_notes.csv",
+      "positions": 6852,
+      "sha256": "3660a01c9b90f121406d3e0b49586d044885041464625b20a7a55708b72784bc",
+      "notes_sha256": "f705094a75ee52accf9b754ece82751f7dd833eb0fdbb114effb49e3b9655ea4",
+      "socle_sha256": "d3de3bcb9cdd51711d83546e37e2a99986b60cdb5ec916154e8bb197ff55915b",
+      "collecte": "2026-09-21T00:00:00+00:00"
+    },
+    "MLI": {
+      "fichier": "MLI_NPF.csv",
+      "fichier_notes": "MLI_NPF_notes.csv",
+      "positions": 6382,
+      "sha256": "8b7abb11e30b3937ada8e6ca759add0b9a25dc35e8cb26997c863baf8b7924c5",
+      "notes_sha256": "faf72115a07fe412b5027e787f9c375691a34e869f600653a1ec01e3ba40ddcc",
+      "socle_sha256": "d6ec1c2f587a7d05f4437cdf4291a6050e6d03029c9f38e256682e3e4f09c147",
+      "collecte": "2026-10-10T22:57:09.639310+00:00"
+    },
+    "MOZ": {
+      "fichier": "MOZ_NPF.csv",
+      "fichier_notes": "MOZ_NPF_notes.csv",
+      "positions": 5822,
+      "sha256": "85d61f2bdf15106c96d6313951462614a6d76e47aab6626bbe201ab32ea3e9ac",
+      "notes_sha256": "575db4d533968d88a85260fc1b69ed892f023120fcb7613e9b71112c9734edd5",
+      "socle_sha256": "506a912311e9978e74d211da8dc41b65ace93999c377f251942f7f993bddd1bd",
+      "collecte": "2026-09-18"
+    },
+    "MRT": {
+      "fichier": "MRT_NPF.csv",
+      "fichier_notes": "MRT_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "5d6e3f46511ef9e68a9cbeef6faa7077ffd865f767e36e3c04d6dcc7babf7699",
+      "notes_sha256": "9d5e3c5fee856656bb4c91ecc59b3243fa75a3e76ad4624fbb43585a2f4f8274",
+      "socle_sha256": "66498a3f8fcedf561ff003a48dfc37e9d8b0fb74e0157209bdd731be05ae7bc1",
+      "collecte": "2026-09-18T00:00:00+00:00"
+    },
+    "MUS": {
+      "fichier": "MUS_NPF.csv",
+      "fichier_notes": "MUS_NPF_notes.csv",
+      "positions": 6955,
+      "sha256": "488fc69af52331c0bab840f13002ccd746d65d9e0e2c1472b4015e924d728424",
+      "notes_sha256": "cb328897c18b8efb923165fc2e8ba37a3f05ddddbd466ecbcb8022dce024e81b",
+      "socle_sha256": "f87e24fd859c3b828991926d9f03393776d507a94daf7791f94e8255c1784947",
+      "collecte": "2026-10-25"
+    },
+    "MWI": {
+      "fichier": "MWI_NPF.csv",
+      "fichier_notes": "MWI_NPF_notes.csv",
+      "positions": 7364,
+      "sha256": "1a34f41e963be1e6250091821dd03c621ddd343af0b766b4d94e95c83beebda4",
+      "notes_sha256": "f8c9a7c059cbeb66b24e5d370a16947cd92028329b69351405478c4d52886a2f",
+      "socle_sha256": "42a4e3ed42dae82ac0264a3cf6d2f674abe739ca6034d8eff42f69ec8e7122db",
+      "collecte": "2026-10-26"
+    },
+    "NAM": {
+      "fichier": "NAM_NPF.csv",
+      "fichier_notes": "NAM_NPF_notes.csv",
+      "positions": 8589,
+      "sha256": "2f540f7b26fc601dcc975e1002cdf81ebd958ff3098dc1f3d5e0fe567cc96218",
+      "notes_sha256": "5f579e2a546c89103db9a906177617b5b14d769cc57e5c7d279341d041665900",
+      "socle_sha256": "f2a350fe7a3bff3bde5234d0bec6e4eb42536eb29430a89c41178b873fbf1896",
+      "collecte": "2026-08-29T13:26:27.028702"
+    },
+    "NER": {
+      "fichier": "NER_NPF.csv",
+      "fichier_notes": "NER_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "64a10be640c604086f1b3a775ba1f8654ee9d1c5dd28956b0933f0e89e54cc9c",
+      "notes_sha256": "a8eae02d3613917f3144ae14f662f70ef09d6dca04971c591f792994a34f297f",
+      "socle_sha256": "a81aab93f49599c1dc3ad3fb54ef14c7b496c34c0517107488bf3d00e9a796e2",
+      "collecte": "2026-02-19T22:39:48.421467"
+    },
+    "NGA": {
+      "fichier": "NGA_NPF.csv",
+      "fichier_notes": "NGA_NPF_notes.csv",
+      "positions": 6350,
+      "sha256": "d39450f07dc36c498bf96fad20e1e681d81494b70fe62a826cbf30a8c79003cd",
+      "notes_sha256": "25ebe6b93cad2076dfc8f58593421c0f12e9a192316e2ed9515eb266413aec59",
+      "socle_sha256": "1ebf44d4ad6e0ddcabf2a17fbd96e9fd8ece057a4a9b15c586a3690382fec56a",
+      "collecte": "2026-02-17T22:07:58.761128"
+    },
+    "RWA": {
+      "fichier": "RWA_NPF.csv",
+      "fichier_notes": "RWA_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "d810fc373bba8178b786004ae5b91aa3933731f7249080e824794d2e5eca24e1",
+      "notes_sha256": "888292d6e92a1759d07ee194e606c5747335a342f61772b598860152c0ab6913",
+      "socle_sha256": "1737e149f64418686adcf445acbd91f8406b9dd9dd60266ded9a78d5497a17a1",
+      "collecte": "2026-02-18T10:54:35.914199"
+    },
+    "SDN": {
+      "fichier": "SDN_NPF.csv",
+      "fichier_notes": "SDN_NPF_notes.csv",
+      "positions": 5388,
+      "sha256": "23d22dad569a4a592b2b91e71467eb702619fc7ba5c615394c2a5ac8d9f29785",
+      "notes_sha256": "3caa37ff3f62fd7d934a9730e73c4e44ce049563e20dc583c0d86e3133a4d4f6",
+      "socle_sha256": "de8369bbc9fe99c6520bc0bb7e22384f361ec4678be73ba819c170f3f62c938e",
+      "collecte": "2026-07-05T10:11:09.736333+00:00"
+    },
+    "SEN": {
+      "fichier": "SEN_NPF.csv",
+      "fichier_notes": "SEN_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "10487aaa321fd31b235bca5b36b1f9f1dc5c840a57f37d5e0bb9b18e0750a1db",
+      "notes_sha256": "3790e7147069f152bd6e1e5a84353d9b57d06e717ccee0625d949d9e69d0efae",
+      "socle_sha256": "98f14dbc74a77eaa5c2a9340929469ed4aac23f50d7f7da3e1e75fc483e85afc",
+      "collecte": "2026-02-19T22:21:26.945091"
+    },
+    "SLE": {
+      "fichier": "SLE_NPF.csv",
+      "fichier_notes": "SLE_NPF_notes.csv",
+      "positions": 6129,
+      "sha256": "766792dc0e1a5395871bc374ee7ef00a18b7671e982d2f33dcb318ff789c5c52",
+      "notes_sha256": "6fdeb993f7ee616dc4d98eeea3c9826d99bd64907ca564702d427b18ee233a20",
+      "socle_sha256": "483dd0b2a01c504ffc5f6bcde74c972aac45cb0f7e494a19a5776977e83f0b05",
+      "collecte": null
+    },
+    "SOM": {
+      "fichier": "SOM_NPF.csv",
+      "fichier_notes": "SOM_NPF_notes.csv",
+      "positions": 11545,
+      "sha256": "37408c5e773e85b433ce01694afbe91b45b048c51f3e8e281ea2c484f53d4c97",
+      "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
+      "socle_sha256": "e32c291ef5fc0d7c1db47777b6958bc35ea057ebc8d538b897e6a59ee9bfb415",
+      "collecte": "2026-06-16T22:25:20.343212"
+    },
+    "SSD": {
+      "fichier": "SSD_NPF.csv",
+      "fichier_notes": "SSD_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "f6ac8ca02f6de0aa6e95875d56bed8b1720c6bbc9673b90bd39c29c603158e13",
+      "notes_sha256": "cc60d4a8a8730a90eaa46c8424a5f66f1c1ba8d2dff1ec1ece7c4827b6587680",
+      "socle_sha256": "f55dd540a4fb15ea52179fa2175e0c9ef800c415382954e7335844a6bf18a3fa",
+      "collecte": "2026-02-18T10:54:36.997956"
+    },
+    "STP": {
+      "fichier": "STP_NPF.csv",
+      "fichier_notes": "STP_NPF_notes.csv",
+      "positions": 5388,
+      "sha256": "d378f79d1e3c212bdf419dcf32c2f13326c5772ad785b89c0a637ee17e135885",
+      "notes_sha256": "6ae2444fe504756a4542ced19a0d1ee4862c67ab46b5b5bcf53c02b44e5b30c8",
+      "socle_sha256": "414240accf61df5ca01292825aabba763442c1524a620fff1e8f1e480517f8fa",
+      "collecte": "2026-07-05T11:02:55.441773+00:00"
+    },
+    "SWZ": {
+      "fichier": "SWZ_NPF.csv",
+      "fichier_notes": "SWZ_NPF_notes.csv",
+      "positions": 8589,
+      "sha256": "7af1d7f6a106a998ad85b2b1913740f2483dba589b886e824e6a2d104a514939",
+      "notes_sha256": "a7d18c9b45a23d4ebc834eec3e63e3db34c6c1654f6f52260aeffef595a3a3f4",
+      "socle_sha256": "467b7cd1b9d9dea171ef395986c61cc00e588213d5cc44234b47a33f27055feb",
+      "collecte": "2026-08-29T13:26:25.757181"
+    },
+    "SYC": {
+      "fichier": "SYC_NPF.csv",
+      "fichier_notes": "SYC_NPF_notes.csv",
+      "positions": 6019,
+      "sha256": "d2e667d57534ab79ee67d507ef5b727e971d7570b39a69daefc9c2a53f6d6ea0",
+      "notes_sha256": "4412db46739cb0414e86b86da434db561a15c050b0f33d69d0f1e6ca0b296a9b",
+      "socle_sha256": "2fd8c7077350f93d4183af29f2f12b01357117c16a310f8fe69647451698d351",
+      "collecte": "2026-09-19"
+    },
+    "TCD": {
+      "fichier": "TCD_NPF.csv",
+      "fichier_notes": "TCD_NPF_notes.csv",
+      "positions": 5239,
+      "sha256": "07a0af6271d0dd693eb5e47f7916be4861e40a37e49e0737a41ab0864bc7263b",
+      "notes_sha256": "d8bdfb21ca8164231af0b38966a32076541ce4831ac89c6f71f5c63040e9b922",
+      "socle_sha256": "f5819649739cf681f722c131f3b62d8ea73ff8de600ae2c587acdb8f35b08023",
+      "collecte": "2026-02-19T22:39:53.393846"
+    },
+    "TGO": {
+      "fichier": "TGO_NPF.csv",
+      "fichier_notes": "TGO_NPF_notes.csv",
+      "positions": 6379,
+      "sha256": "3e064082786298709e6882e3eac05ce0094ddf99da5ab81d9253372c2a915f43",
+      "notes_sha256": "ef7dad1ee68a7ded664b552d494a788e19f1e7913e904016d2fe283dc5850690",
+      "socle_sha256": "8f5550691071b18eacb86b9ed82304257954963d0a06e788ea0292d649c2995f",
+      "collecte": "2026-10-12T09:07:50.497277+00:00"
+    },
+    "TUN": {
+      "fichier": "TUN_NPF.csv",
+      "fichier_notes": "TUN_NPF_notes.csv",
+      "positions": 17542,
+      "sha256": "ae28baae703af0dbf234ef41848e9a662d0945dec41840285feef250f0961659",
+      "notes_sha256": "775aa744e7202f0d873a5b9798d41228b11c66054a7c31548b75f970f086951e",
+      "socle_sha256": "d48e2a82612f131b52d356439c0474a974e13df65ac08a9dae39a937f33b45e3",
+      "collecte": "2026-08-30"
+    },
+    "TZA": {
+      "fichier": "TZA_NPF.csv",
+      "fichier_notes": "TZA_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "0c6b752985f01ccf4991a9f0be02c6f065211c90e4efffd3f8e390dd1b50a681",
+      "notes_sha256": "b2276fcfba014e7691fdfd984c2333e157adfcc19e7b1b667852b900b1b18cd9",
+      "socle_sha256": "00aa8d899d032bcb8af71e76d4457a1124bb2e20fa4c7dee81ed350c1c007a50",
+      "collecte": "2026-02-18T10:54:34.697265"
+    },
+    "UGA": {
+      "fichier": "UGA_NPF.csv",
+      "fichier_notes": "UGA_NPF_notes.csv",
+      "positions": 5935,
+      "sha256": "f6690f6929b2e31d6b91b1c40d928aebde59ec44fd1baa39814025b585685699",
+      "notes_sha256": "510d14393bc0101199ba926f86206d1009d411fd43eaa28f4f59a3a0a03dee05",
+      "socle_sha256": "c68c12b0332baf4022e033e1d6ed72ffa080f8a9cccd9204bdb2bb84b14950c4",
+      "collecte": "2026-02-18T10:54:35.212682"
+    },
+    "ZAF": {
+      "fichier": "ZAF_NPF.csv",
+      "fichier_notes": "ZAF_NPF_notes.csv",
+      "positions": 8589,
+      "sha256": "7051e7d5bc4d1456d0bd66cb252b949042f0db23c7e62804f00084e29f85c782",
+      "notes_sha256": "388e0005e1695424e3b715f056c57444fba9fde31dfb50f8c79dab83eeecdcc2",
+      "socle_sha256": "267b0d0aaaac2c223c8b109c50640b29b35dd11e22f9a9dd218d81da584d23dc",
+      "collecte": "2026-08-29T13:26:21.816037"
+    },
+    "ZMB": {
+      "fichier": "ZMB_NPF.csv",
+      "fichier_notes": "ZMB_NPF_notes.csv",
+      "positions": 6753,
+      "sha256": "75d5c835c02ca9616d40951c6b449ac39190d057b0f11f1e2a67d018a7cf8bea",
+      "notes_sha256": "979c7bc7d5216bdbf3149ae7275437283ebdaf2598419afb5fad2a50c72f556d",
+      "socle_sha256": "0db0ad38d619a9d3ace4fc95cf86c8174f0c211a154c9663c5ade363dd4de2ba",
+      "collecte": "2026-10-26"
+    },
+    "ZWE": {
+      "fichier": "ZWE_NPF.csv",
+      "fichier_notes": "ZWE_NPF_notes.csv",
+      "positions": 6637,
+      "sha256": "e9896b9b2cbef0c733a94fa4d3b98e9b7b67bf7bb5a57b3b10b0edb20fbb52f6",
+      "notes_sha256": "e832b6a47c4c696081e1bfe4ee4caab8467e8e967a0f739a0ac69ecff93b3b54",
+      "socle_sha256": "2d4b254368ffcfcd4708188a5229daf8bb6e37e50b54024d95f5e584e49c59c8",
+      "collecte": "2026-09-18"
+    }
+  }
+}

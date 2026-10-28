@@ -1,0 +1,3 @@
+﻿Note;Prélèvement;Texte
+N1;DD;Taux absent de la colonne du tarif — la source note « Rate determined by national schedule » — et porté par la désignation de la position. Les deux composantes et la règle de liquidation sont citées telles qu'écrites.
+N2;DD;Aucun droit de douane n'est publié pour cette position, alors que la source en publie pour d'autres. Le total ne peut pas être servi comme complet : le droit est déclaré indisponible plutôt que supposé nul.

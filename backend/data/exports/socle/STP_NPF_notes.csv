@@ -1,0 +1,9 @@
+﻿Note;Prélèvement;Texte
+N1;DD;Taux MFN appliqué agrégé au niveau SH6 par WITS/UNCTAD-TRAINS (Banque mondiale), non vérifié position par position : la nomenclature nationale peut porter un taux différent au niveau de la sous-position.
+N2;TVA;"Taux national standard (non vérifié position par position — WITS/TRAINS ne couvre que le droit de douane MFN SH6). Taux dérogatoires connus (non appliqués ici, à vérifier par produit) : 7,5 % (panier de base — riz, farine, pâtes, pain, lait, haricots ; Annexe I du Code de la TVA), 0 % (exportations)."
+N3;TVA;"Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : ""leite""."
+N4;TVA;"Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : ""feijão""."
+N5;TVA;"Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : ""arroz""."
+N6;TVA;"Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : ""farinha de milho"" (farine de MAÏS, pas de blé)."
+N7;TVA;"Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : ""massas alimentícias"" (pâtes)."
+N8;TVA;"Correspondance SH établie par classification technique (nom du produit cité par la loi, code SH non cité par la loi elle-même). Nom légal : ""pão""."

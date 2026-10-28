@@ -135,6 +135,7 @@ export default function TariffDownloads({ language = 'fr' }) {
   const [subscriptionNotice, setSubscriptionNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedCountry, setExpandedCountry] = useState(null);
+  const [socleExports, setSocleExports] = useState({});
 
   const isFr = language === 'fr';
   const t = isFr ? {
@@ -143,6 +144,8 @@ export default function TariffDownloads({ language = 'fr' }) {
     loading: "Chargement des données...",
     downloadCountry: "ZIP",
     downloadJson: "JSON",
+    downloadSocle: "CSV",
+    socleDetail: "🧮 CSV : tarif NPF appliqué par le calculateur (CSV + notes), taux par prélèvement et total pour 100 CAF",
     downloadRegion: "Télécharger tout le groupe",
     chapters: "Ch.",
     format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
@@ -156,6 +159,8 @@ export default function TariffDownloads({ language = 'fr' }) {
     loading: "Loading data...",
     downloadCountry: "ZIP",
     downloadJson: "JSON",
+    downloadSocle: "CSV",
+    socleDetail: "🧮 CSV: MFN tariff applied by the calculator (CSV + notes), rate per levy and total per 100 CIF",
     downloadRegion: "Download entire group",
     chapters: "Ch.",
     format: "HS6 + national sub-positions (HS8/HS10/HS12)",
@@ -186,6 +191,12 @@ export default function TariffDownloads({ language = 'fr' }) {
       if (!refusal) console.error('Error fetching download list:', err);
     } finally {
       setLoading(false);
+    }
+    try {
+      const res = await axios.get(`${API}/tariff-data/download-socle/list`);
+      setSocleExports(Object.fromEntries((res.data.countries || []).map(c => [c.code, c])));
+    } catch (err) {
+      console.error('Error fetching calculator tariff exports:', err);
     }
   };
 
@@ -241,6 +252,7 @@ export default function TariffDownloads({ language = 'fr' }) {
           <div className="flex flex-wrap gap-2 mt-3">
             <Badge variant="outline" className="text-sm">{t.format}</Badge>
             <Badge variant="outline" className="text-sm">{t.columnsDetail}</Badge>
+            <Badge variant="outline" className="text-sm">{t.socleDetail}</Badge>
           </div>
         </CardHeader>
       </Card>
@@ -286,6 +298,15 @@ export default function TariffDownloads({ language = 'fr' }) {
                           className="bg-green-600 text-white"
                           size="small"
                         />
+                        {socleExports[country.code] && (
+                          <DownloadButton
+                            url={socleExports[country.code].download_url}
+                            label={t.downloadSocle}
+                            icon="🧮"
+                            className="bg-amber-600 text-white"
+                            size="small"
+                          />
+                        )}
                         {country.json_ready && (
                           <DownloadButton
                             url={`/tariff-data/download-json/${country.code}`}
