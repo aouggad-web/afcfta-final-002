@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "objet": "Cameroun : droit de sortie à l'exportation, régime des lois de finances 2018 à 2026",
+  "destination_iso3": "CMR",
+  "verified_at": "2026-10-28",
+  "etabli": true,
+  "evidence_level": "primaire : copies certifiées conformes des lois de finances 2020, 2022, 2023, 2024, 2025 et 2026 ; pour la loi de finances 2018, dont le texte promulgué n'a pas été trouvé, la circulaire d'exécution n° 001/C/MINFI du 2 janvier 2018",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/CMR_droit_de_sortie_LF2018_LF2026.texte-extrait.txt",
+      "sha256": "9fe5b9f638448aadce8c358d6a6a2afa5cd431b95d7f26537be8fcd2d38a7e8a"
+    }
+  ],
+  "regle": {
+    "taux_commun": {
+      "valeur": "2 % de la valeur imposable pour les marchandises exportées que ne vise aucune disposition particulière.",
+      "reference": "Loi n° 2017/021 (LF 2018), art. 2, al. 1 a), reconduit « sans changement » par la LF 2020 (art. 5) et la LF 2022 (art. 9) ; lu dans la circulaire n° 001/C/MINFI du 2 janvier 2018, n° 323",
+      "verbatim": "La soumission des marchandises exportées au droit de sortie au taux général de 2 % de la valeur imposable"
+    },
+    "produits_finis": {
+      "valeur": "Exonération des produits manufacturés ou transformés au Cameroun au sens de produit fini, et de la banane.",
+      "reference": "Loi n° 2019/023 (LF 2020), art. 5, 1 b) i)",
+      "verbatim": "La banane, les produits industriels manufacturés au Cameroun, les produits du cru d'origine animale, végétale et minière ayant subi une ouvraison substantielle ou transformés au Cameroun, au sens de produit fini, demeurent exonérés du droit de sortie à l'exportation"
+    },
+    "semi_finis": {
+      "valeur": "2 % de la valeur FOB, hors bois ouvrés et semi-ouvrés.",
+      "reference": "Loi n° 2022/020 (LF 2023), art. 10, 1 a)",
+      "verbatim": "Les produits manufacturés semi-finis sont soumis à un droit de sortie au taux de 2 % de la valeur FOB (free on board), à l'exclusion des bois ouvrés et semi-"
+    },
+    "liste_dix_pour_cent": {
+      "valeur": "10 % de la valeur imposable : riz, huile de palme brute, mil, sorgho, gomme arabique, noix de cola, gnetum africanum « Eru/Okok » (l'or et le diamant en sont sortis par la LF 2023).",
+      "reference": "Loi n° 2019/023 (LF 2020), art. 5, 1 b) iii)",
+      "verbatim": "Les produits d'origine camerounaise suivants sont soumis à un droit de sortie au taux de 10 % de la valeur imposable : le diamant, l'or, le riz, l'huile de palme brute, le mil, le sorgho, la gomme arabique, la noix de cola, le gnetum africanum encore appelé « Eru/Okok »"
+    },
+    "poivre_miel": {
+      "valeur": "Exonérés.",
+      "reference": "Loi n° 2021/026 (LF 2022), art. 9, b) i)",
+      "verbatim": "le poivre et le miel sont exonérés du droit de sortie à l'exportation, qu'ils soient manufacturés ou non"
+    },
+    "or_diamant": {
+      "valeur": "5 % de la valeur FOB.",
+      "reference": "Loi n° 2022/020 (LF 2023), art. 10, 1 b)",
+      "verbatim": "L'or et le diamant sont soumis à un droit de sortie au taux de 5 % de la valeur FOB."
+    },
+    "bois_ouvres": {
+      "valeur": "15 % de la valeur FOB pour les positions 4406, 4407 et 4409 ; 5 % pour les bois de la 4409 issus de la troisième transformation, sur certificat.",
+      "reference": "LF 2023, art. 10, 1 d) ; loi n° 2024/013 (LF 2025), art. 10 (1)",
+      "verbatim": "Le taux du droit de sortie applicable aux bois ouvrés et semi-ouvrés des positions tarifaires 4406. 4407. et 4409. est de 15 % de la valeur FOB de l'essence."
+    },
+    "grumes": {
+      "valeur": "75 % de la valeur FOB du volume de l'essence (60 % à l'entrée des points francs industriels).",
+      "reference": "Loi n° 2023/019 (LF 2024), art. 9",
+      "verbatim": "le taux du droit de sortie applicable aux bois en grumes et assimilés est fixé à 75 % de la valeur FOB du volume de l'essence."
+    },
+    "cacao": {
+      "valeur": "Fèves exportées sans transformation : 10 % de la valeur FOB (2 % vers les points francs industriels).",
+      "reference": "LF 2023, art. 10, 2",
+      "verbatim": "les fèves de cacao exportées sans transformation sont soumises à un droit de sortie autonome au taux de 10 % de la valeur FOB."
+    },
+    "abattement_deforestation": {
+      "valeur": "Abattement de 20 % sur la valeur FOB du cacao, de l'hévéa et des grumes certifiés.",
+      "reference": "LF 2025, art. 10 (2)",
+      "verbatim": "Le cacao, l'hévéa et le bois en grumes bénéficient à l'exportation d'un abattement de 20% sur la valeur FOB (Free On Board)"
+    },
+    "minerais_metaux_2026": {
+      "valeur": "Minerai de fer, alumine, étain : 5 % de la valeur FOB ; aluminium, argent, cuivre, saphir, fers et aciers non alliés en lingots (7206-7207) : 2 % de la valeur FOB ; marbre, clinker et matières minérales sous incitations : prélèvement spécial de 10 % de la valeur sortie usine.",
+      "reference": "Loi n° 2025/012 (LF 2026), art. 11",
+      "verbatim": "le taux du droit de sortie applicable à l'exportation du minerai de fer, de l'alumine et de l'étain est de 5% de la valeur FOB (free on board)"
+    }
+  },
+  "lecture_retenue": "Chaque loi de finances modifie le régime point par point. La LF 2023 (art. 10) « modifie ainsi qu'il suit » l'art. 5 de la LF 2020 sans reprendre l'exonération des produits finis ni la liste à 10 % et sans dire « le reste sans changement » ; la LF 2026 (art. 11) modifie et complète encore la LF 2020 et la LF 2023 ensemble, et la LF 2022 exonère le poivre et le miel « qu'ils soient manufacturés ou non », ce qui suppose l'exonération des produits manufacturés. Lecture retenue (décision du propriétaire du 2026-10-28) : les points que la LF 2023 ne réécrit pas restent en vigueur.",
+  "ne_tranche_pas": "La lecture retenue ci-dessus (la LF 2023 pourrait avoir remplacé tout l'alinéa) ; le texte promulgué de la LF 2018 (seule sa circulaire d'exécution a été lue) ; la position tarifaire du gnetum « Eru/Okok » ; celle de la banane, absente du tarif CMR du socle ; si « l'étain » de la LF 2026 est le minerai ou le métal, si « cuivre » couvre ses alliages et quelles positions vise « saphir » ; le taux des fèves de cacao torréfiées ; l'assiette du prélèvement spécial (valeur sortie usine) et son cumul avec le droit de sortie ; le renvoi de la LF 2026 à « l'article neuvième (a) » de la LF 2020, qui porte le droit de sortie à l'article cinquième ; les valeurs administratives FOB des bois ; les régimes des codes sectoriels (pétrole, gaz, mines, incitations à l'investissement).",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "EXPORT_PAR_TEXTE[\"CMR\"] (scripts/build_socle.py) : les produits nommés par une loi portent leur taux ; toute autre position porte le droit commun marqué « selon_transformation », que fixe la réponse de l'exportateur (SELON_TRANSFORMATION[\"CMR\"], champ produit_fini) : produit fini, exonéré ; sinon (brut ou semi-fini), 2 %. Sans réponse, le droit reste à établir.",
+    "devise": "Ad valorem : aucun taux de change.",
+    "reserves": "Le taux de 2 % s'applique à la valeur imposable pour un produit brut et à la valeur FOB pour un produit semi-fini : la valeur saisie sert d'assiette dans les deux cas. Les abattements et taux réduits sur certificat (zéro déforestation, 4409 de troisième transformation) et les taux des points francs ne sont pas appliqués : ils sont dits en note."
+  }
+}

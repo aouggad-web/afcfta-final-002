@@ -63,7 +63,7 @@ describe('ExportCalculator', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     axios.get.mockResolvedValue({ data: {
-      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516, MLI: 0 },
+      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516, MLI: 0, CMR: 5239 },
       questions: {
         MDG: {
           champ: 'produit_minier',
@@ -73,6 +73,11 @@ describe('ExportCalculator', () => {
         MLI: {
           champ: 'produit_minier',
           question: 'Or ou autre produit minier, exporté par un exportateur non régi par le Code minier ?',
+          question_transformation: null,
+        },
+        CMR: {
+          champ: 'produit_fini',
+          question: 'Produit fini, manufacturé ou transformé au Cameroun (sinon : brut ou semi-fini) ?',
           question_transformation: null,
         },
       },
@@ -226,6 +231,26 @@ describe('ExportCalculator', () => {
     await userEvent.click(screen.getByTestId('export-calculer'));
 
     expect(axios.post.mock.calls[0][1]).toMatchObject({ pays: 'MLI', devise: 'XOF', produit_minier: true });
+  });
+
+  it('au Cameroun, transmet la réponse sous le champ servi par l’API', async () => {
+    axios.post.mockResolvedValue({ data: {
+      pays: 'CMR', position: { designation: 'Téléphones' }, provenance: { devise_nationale: 'XAF' },
+      export: { etat: 'COMPLET', total_droits: 20000, manques: [], lignes: [] },
+    } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('CMR — 5239 positions avec droit de sortie'));
+    expect(screen.getByLabelText('Devise')).toHaveValue('XAF');
+    await userEvent.type(screen.getByLabelText('Position nationale'), '85171200');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '1000000');
+    expect(screen.getByTestId('export-calculer')).toBeDisabled();
+    await userEvent.click(screen.getByLabelText('Non'));
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    const corps = axios.post.mock.calls[0][1];
+    expect(corps).toMatchObject({ pays: 'CMR', devise: 'XAF', produit_fini: false });
+    expect(corps).not.toHaveProperty('produit_minier');
   });
 
   it("ailleurs, ne pose pas la question", async () => {
