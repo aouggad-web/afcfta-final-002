@@ -1155,8 +1155,21 @@ _EXPORT_CMR_DEFAUT = (
     "produits semi-finis : 2 % de la valeur FOB (LF 2023, art. 10) ; produits manufacturés ou transformés au "
     "Cameroun au sens de produit fini : exonérés (LF 2020, art. 5). Les exportations des sociétés pétrolières, "
     "gazières et minières et des entreprises agréées aux incitations à l'investissement privé relèvent de leurs "
-    "codes. Cacao, hévéa et grumes certifiés « zéro déforestation » : abattement de 20 % sur la valeur FOB "
-    "(LF 2025, art. 10).",
+    "codes.",
+    {"selon_transformation": True},
+)
+# Positions sans taux propre dont la note doit dire ce que le texte y ajoute :
+# le droit commun reste fixé par la réponse de l'exportateur.
+_EXPORT_CMR_HEVEA = (
+    None, None,
+    _EXPORT_CMR_DEFAUT[2] + " Hévéa certifié « zéro déforestation » par le ministère technique : abattement de "
+    "20 % sur la valeur FOB (LF 2025, art. 10), non appliqué.",
+    {"selon_transformation": True},
+)
+_EXPORT_CMR_ERU = (
+    None, None,
+    _EXPORT_CMR_DEFAUT[2] + " Le gnetum africanum « Eru/Okok » est soumis à 10 % de la valeur imposable (LF 2020, "
+    "art. 5, b, iii) ; son classement dans cette position, qui regroupe d'autres légumes, n'est pas établi.",
     {"selon_transformation": True},
 )
 _EXPORT_CMR_DIX = (
@@ -1179,7 +1192,9 @@ _EXPORT_CMR_BOIS = (
     15.0, None,
     "LF 2023, art. 10 (1, d) : bois ouvrés et semi-ouvrés des positions 4406, 4407 et 4409, 15 % de la valeur FOB "
     "de l'essence ; non soumis au départ des points francs industriels. Bois de la 4409 issus de la troisième "
-    "transformation, avec certificat du ministère technique : 5 % (LF 2025, art. 10).",
+    "transformation, avec certificat du ministère technique : 5 % (LF 2025, art. 10), non appliqué. Assiette : la "
+    "valeur FOB de l'essence, que des textes conjoints des ministres des finances et des forêts peuvent fixer "
+    "administrativement (LF 2023, art. 10, 1, e) — c'est elle qu'il faut saisir.",
 )
 _EXPORT_CMR_LF2026_5 = (
     5.0, None,
@@ -1249,17 +1264,22 @@ EXPORT_PAR_TEXTE = {
         _EXPORT_CMR_DEFAUT,
         {
             # Riz, mil (1008.20), sorgho, huile de palme brute, gomme arabique,
-            # noix de cola ; le gnetum « Eru/Okok » n'a pas de position établie.
+            # noix de cola ; le gnetum « Eru/Okok » n'a pas de position établie
+            # (note sur les « autres légumes » ci-dessous).
             **{p: _EXPORT_CMR_DIX for p in (
                 "1006", "100820", "1007", "15111000", "13012000", "08029011", "08029019")},
             **{p: _EXPORT_CMR_EXONERE for p in ("090411", "090412", "0409")},
+            **{p: _EXPORT_CMR_HEVEA for p in ("40011", "40012")},
+            # Feuilles de gnetum, fraîches ou séchées : « autres légumes ».
+            **{p: _EXPORT_CMR_ERU for p in ("07099090", "07129090")},
             # « fèves de cacao exportées sans transformation » : les fèves
             # brutes ; la torréfaction est une transformation.
             "1801001": (
                 10.0, None,
                 "LF 2023, art. 10 (2) : « les fèves de cacao exportées sans transformation sont soumises à un droit "
-                "de sortie autonome au taux de 10 % de la valeur FOB » ; 2 % vers les points francs industriels ou "
-                "régimes assimilés. Abattement de 20 % avec certificat « zéro déforestation » (LF 2025, art. 10).",
+                "de sortie autonome au taux de 10 % de la valeur FOB », « sans préjudice des redevances applicables », "
+                "qui ne sont pas comprises ici ; 2 % vers les points francs industriels ou régimes assimilés. "
+                "Abattement de 20 % avec certificat « zéro déforestation » (LF 2025, art. 10), non appliqué.",
             ),
             "18010020": (
                 None, None,
@@ -1269,8 +1289,10 @@ EXPORT_PAR_TEXTE = {
             "4403": (
                 75.0, None,
                 "LF 2024, art. 9 : « bois en grumes et assimilés », 75 % de la valeur FOB du volume de l'essence ; "
-                "60 % à l'entrée des points francs industriels. Abattement de 20 % avec certificat « zéro "
-                "déforestation » (LF 2025, art. 10).",
+                "60 % à l'entrée des points francs industriels. Assiette : la valeur FOB de l'essence, que des textes "
+                "conjoints des ministres des finances et des forêts peuvent fixer administrativement (LF 2023, "
+                "art. 10, 1, e) — c'est elle qu'il faut saisir. Abattement de 20 % avec certificat « zéro "
+                "déforestation » (LF 2025, art. 10), non appliqué.",
             ),
             **{p: _EXPORT_CMR_BOIS for p in ("4406", "4407", "4409")},
             **{p: _EXPORT_CMR_OR_DIAMANT for p in ("7102", "7108")},

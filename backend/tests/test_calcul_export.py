@@ -424,6 +424,17 @@ def test_cmr_produits_nommes_independants_de_la_reponse(client):
             assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
 
 
+def test_cmr_notes_propres_sans_taux_propre(client):
+    """Hévéa (abattement LF 2025) et « autres légumes » (Eru/Okok) : la note le dit, la réponse fixe le taux."""
+    for code, mot in (("40012200", "Hévéa"), ("07099090", "Eru/Okok")):
+        export = _export(client, pays="CMR", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False)
+        ligne = _ligne(export, "EXPORT")
+        assert ligne["montant"] == pytest.approx(20_000) and mot in ligne["note"], code
+    ordinaire = _ligne(_export(client, pays="CMR", code_sh="85171200", valeur=1_000_000, devise="XAF",
+                               produit_fini=False), "EXPORT")
+    assert "déforestation" not in ordinaire["note"]
+
+
 def test_cmr_lf2026_positions_ambigues_a_etablir(client):
     for code in ("80011000", "74032100", "71039100", "25231000", "18010020"):
         ligne = _ligne(_export(client, pays="CMR", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
