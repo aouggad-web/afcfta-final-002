@@ -1,65 +1,209 @@
 ﻿Note;Prélèvement;Texte
 N1;TVA;"Value Added Tax Act 2014 (Tanzanie), s. 9 : valeur en douane, « (b) the amount of any customs duty payable on the import; and (c) the amount of any tax, levy, fee, or fiscal charge other than customs duty and value added tax payable on the import of the goods ». Réserve : l'assiette servie comprend la valeur en douane et les droits liquidés ici ; la Railway Development Levy, l'Industrial Development Levy et la Customs Processing Fee, non encore liquidées, n'y sont pas."
 N2;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% for one year
-N3;DD;Taux absent de la colonne du tarif — la source note « Rate determined by national schedule » — et porté par la désignation de la position. Les deux composantes et la règle de liquidation sont citées telles qu'écrites.
-N4;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 10% for one year
-N5;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 300 / MT whichever is higher on refined edible oils for one year
-N6;DD;Uganda, Kenya and Tanzania to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year
-N7;DD;Taux absent de la colonne du tarif — la source note « Rate determined by national schedule » — et porté par la désignation de la position. Les deux composantes et la règle de liquidation sont citées telles qu'écrites. Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 69 (p. 12)) : Tanzania to stay the application of the EAC CET on Cane Sugar (Gap Sugar) imported under a permit issued by the Tanzania Sugar Board and apply import duty rate of 35% instead of 100% or 460 US$ / MT whichever is higher for one year
-N8;DD;Tanzania to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year
-N9;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.66 / KG whichever is higher”
-N10;DD;Uganda and Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 60% for one year
-N11;EXC;"Finance Act 2026 (Tanzanie, Act No. 2/2026), art. 10 (a), Fourth Schedule du Cap. 147, en vigueur au 1er juillet 2026 : cigarettes « Other » 72 462,19 TZS par millier ; les taux de 16 151,31 et 38 154,80 TZS visent les cigarettes produites localement à plus de 75 % de tabac tanzanien. Quantité en milliers."
-N12;EXC;Finance Act 2026 (Tanzanie), art. 10 (a), Fourth Schedule : « Other/Imported » 36 609,19 TZS par kg.
-N13;DD;Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 50% for one year
-N14;DD;Tanzania and Uganda to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year
-N15;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.46 / liter whichever is higher”
-N16;DD;Tanzania to stay the application of the EAC CET rate of 0% and to apply a duty rate of 10% for one year
-N17;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year
-N18;DD;Tanzania to stay the application of the EAC CET rate of 25% and to apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year
-N19;DD;Uganda, Kenya and Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 1.35 / KG whichever is higher for one year
-N20;DD;Uganda and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% for one year
-N21;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year
-N22;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply duty rate of 35% for one year
-N23;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.2 per KG whichever is higher”
-N24;DD;Amend EAC CET duty rate from 10% to “10% or US$ 0.08 per KG whichever is higher”
-N25;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year.
-N26;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year except HS Code 5205.23.00
-N27;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US$ 0.30 / metre whichever is higher for one year
-N28;DD;Tanzania to stay the application of the EAC CET rate of 50% and apply a duty rate of 35% for one year
-N29;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 4 (p. 4)) : Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% on polyester / nylon twine for one year
-N30;DD;Uganda, Burundi and Tanzania to stay the application of the EAC CET duty rate of 35% or US$ 0.40 / KG whichever is higher and apply a duty rate of 35% for one year
-N31;DD;Kenya and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US $ 2 / SQM whichever is higher for one year
-N32;DD;Amend EAC CET duty rate from 35% to “35% or US$ 3 / m2 whichever is higher”
-N33;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 35% for one year
-N34;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 10% or US$ 125 / MT whichever is higher for one year
-N35;DD;Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 35% or US$ 500 / MT whichever is higher for one year
-N36;DD;Tanzania to stay the application of the EAC CET rate of 25% or US$ 200 / MT whichever is higher and apply a duty rate of 35% or US $ 350 / MT whichever is higher for one year
-N37;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 10% or US$ 125 / MT whichever is higher for one year
-N38;DD;Tanzania to stay the application of the EAC CET rate of 25% or US$ 200 / MT whichever is higher and apply a duty rate of 25% or US$ 300 / MT whichever is higher for one year
-N39;DD;Kenya and Tanzania to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year
-N40;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 10% or US$ 300 / MT whichever is higher for one year
-N41;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 250 / MT whichever is higher for one year
-N42;DD;Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 35% or USD 250 / MT whichever is higher for one year
-N43;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 300 / MT whichever is higher for one year
-N44;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 25% or US$ 250 / MT whichever is higher for one year
-N45;DD;Amend EAC CET duty rate from 35% to “35% or US$ 0.35 / KG whichever is higher”
-N46;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 1 (p. 65)) : Tanzania 10% and Rwanda 0%
-N47;DD;"Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 2 (p. 65)) : Rwanda: 0% Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 1 (p. 65)) : (a) Tanzania and Burundi: 0%; and (b) Rwanda: 10%"
-N48;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 550 / MT whichever is higher for one year
-N49;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 2 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
-N50;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 3 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
-N51;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 5 (p. 65)) : Tanzania and Burundi: 0%
-N52;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 4 (p. 65)) : Tanzania 0%
-N53;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 6 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
-N54;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 7 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
-N55;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 8 (p. 65)) : Tanzania and Burundi: 0%
-N56;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 9 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
-N57;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 10 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
-N58;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 3 (p. 65)) : Tanzania 0%
-N59;DD;Uganda and Tanzania to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 250 / MT whichever is higher for one year
-N60;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 109 (p. 18)) : Tanzania to stay the application of the EAC CET rate of 10% on cash registers and other electronic fiscal devices (EFD) machines and point of sale (POS) imported by the government or authorized persons and apply a duty rate of 0% for one year
-N61;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 3 (p. 3)) : Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% on imports by the National Identification Authority for one year
-N62;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 24 (p. 7)) : Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% for buses for transportation of more than 25 persons imported for the rapid transport project for one year
-N63;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 25 (p. 7)) : Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% for buses for transportation of more than 25 persons imported for the rapid transport project for one year
-N64;DD;Kenya, Uganda and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% for one year
+N3;DD;Legal Notice EAC/161/2026, Table A, row 37(a) : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N4;DD;Taux absent de la colonne du tarif — la source note « Rate determined by national schedule » — et porté par la désignation de la position. Les deux composantes et la règle de liquidation sont citées telles qu'écrites.
+N5;DD;Legal Notice EAC/164/2026, S/N 1 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N6;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 10% for one year
+N7;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 300 / MT whichever is higher on refined edible oils for one year
+N8;DD;Uganda, Kenya and Tanzania to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year
+N9;DD;Legal Notice EAC/161/2026, Table A, row 38 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N10;DD;Taux absent de la colonne du tarif — la source note « Rate determined by national schedule » — et porté par la désignation de la position. Les deux composantes et la règle de liquidation sont citées telles qu'écrites. Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 69 (p. 12)) : Tanzania to stay the application of the EAC CET on Cane Sugar (Gap Sugar) imported under a permit issued by the Tanzania Sugar Board and apply import duty rate of 35% instead of 100% or 460 US$ / MT whichever is higher for one year
+N11;DD;Tanzania to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year
+N12;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.66 / KG whichever is higher”
+N13;DD;Uganda and Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 60% for one year
+N14;EXC;"Finance Act 2026 (Tanzanie, Act No. 2/2026), art. 10 (a), Fourth Schedule du Cap. 147, en vigueur au 1er juillet 2026 : cigarettes « Other » 72 462,19 TZS par millier ; les taux de 16 151,31 et 38 154,80 TZS visent les cigarettes produites localement à plus de 75 % de tabac tanzanien. Quantité en milliers."
+N15;EXC;Finance Act 2026 (Tanzanie), art. 10 (a), Fourth Schedule : « Other/Imported » 36 609,19 TZS par kg.
+N16;DD;Legal Notice EAC/167/2026, S/N 37 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N17;DD;Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 50% for one year
+N18;DD;Tanzania and Uganda to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year
+N19;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.46 / liter whichever is higher”
+N20;DD;Legal Notice EAC/167/2026, S/N 40 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N21;DD;Legal Notice EAC/161/2026, Table A, row 49 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N22;DD;Legal Notice EAC/161/2026, Table A, row 90 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N23;DD;Legal Notice EAC/164/2026, S/N 2 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N24;DD;Tanzania to stay the application of the EAC CET rate of 0% and to apply a duty rate of 10% for one year
+N25;DD;Legal Notice EAC/161/2026, Table A, row 55 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 1 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N26;DD;Legal Notice EAC/161/2026, Table A, row 55 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 2 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N27;DD;Legal Notice EAC/167/2026, S/N 3 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N28;DD;Legal Notice EAC/167/2026, S/N 4 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N29;DD;Legal Notice EAC/161/2026, Table A, row 55 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 5 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N30;DD;Legal Notice EAC/167/2026, S/N 6 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N31;DD;Legal Notice EAC/161/2026, Table A, row 55 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N32;DD;Legal Notice EAC/161/2026, Table A, row 120 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N33;DD;Legal Notice EAC/164/2026, S/N 3 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N34;DD;Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 7 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N35;DD;Legal Notice EAC/167/2026, S/N 8 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N36;DD;Legal Notice EAC/161/2026, Table A, row 51 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N37;DD;Legal Notice EAC/161/2026, Table A, row 47 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 9 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N38;DD;Legal Notice EAC/161/2026, Table A, row 47 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 10 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N39;DD;Legal Notice EAC/167/2026, S/N 11 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N40;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year Legal Notice EAC/161/2026, Table A, row 48 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/164/2026, S/N 54 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N41;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year
+N42;DD;Tanzania to stay the application of the EAC CET rate of 25% and to apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year Legal Notice EAC/164/2026, S/N 55 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N43;DD;Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N44;DD;Legal Notice EAC/164/2026, S/N 56 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N45;DD;Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/161/2026, Table A, row 119 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 12 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N46;DD;Uganda, Kenya and Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 1.35 / KG whichever is higher for one year
+N47;DD;Legal Notice EAC/164/2026, S/N 4 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N48;DD;Legal Notice EAC/161/2026, Table A, row 46 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N49;DD;Legal Notice EAC/171/2026, S/N 1 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N50;DD;Legal Notice EAC/164/2026, S/N 5 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N51;DD;Legal Notice EAC/164/2026, S/N 6 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N52;DD;Tanzania to stay the application of the EAC CET rate of 0% and apply a duty rate of 10% for one year Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N53;DD;Legal Notice EAC/167/2026, S/N 39 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N54;DD;Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 13 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N55;DD;Legal Notice EAC/161/2026, Table A, row 90 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/161/2026, Table A, row 119 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N56;DD;Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/167/2026, S/N 14 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N57;DD;Legal Notice EAC/167/2026, S/N 38 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N58;DD;Legal Notice EAC/161/2026, Table A, row 39 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N59;DD;Uganda and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% for one year
+N60;DD;Legal Notice EAC/171/2026, S/N 2 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N61;DD;Legal Notice EAC/167/2026, S/N 15 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N62;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year
+N63;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply duty rate of 35% for one year
+N64;DD;Amend EAC CET duty rate from 25% to “25% or US$ 0.2 per KG whichever is higher”
+N65;DD;Amend EAC CET duty rate from 10% to “10% or US$ 0.08 per KG whichever is higher”
+N66;DD;Legal Notice EAC/161/2026, Table A, row 35 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N67;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year.
+N68;DD;Legal Notice EAC/161/2026, Table A, row 36 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N69;DD;Legal Notice EAC/164/2026, S/N 7 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N70;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year Legal Notice EAC/160/2026, Table I, row 5 : 25 % au lieu de 25 % (TEC), du 01/07/2026 au 30/06/2027. Legal Notice EAC/161/2026, Table A, row 62 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N71;DD;Legal Notice EAC/161/2026, Table A, row 39 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/161/2026, Table A, row 54 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N72;DD;Legal Notice EAC/161/2026, Table A, row 41 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N73;DD;Legal Notice EAC/167/2026, S/N 33 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N74;DD;Legal Notice EAC/167/2026, S/N 16 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N75;DD;Legal Notice EAC/167/2026, S/N 17 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N76;DD;Legal Notice EAC/167/2026, S/N 18 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N77;DD;Legal Notice EAC/167/2026, S/N 19 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N78;DD;Legal Notice EAC/167/2026, S/N 20 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N79;DD;Legal Notice EAC/167/2026, S/N 21 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N80;DD;Legal Notice EAC/167/2026, S/N 22 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N81;DD;Legal Notice EAC/167/2026, S/N 23 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N82;DD;Legal Notice EAC/167/2026, S/N 34 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N83;DD;Legal Notice EAC/167/2026, S/N 24 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N84;DD;Legal Notice EAC/167/2026, S/N 25 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N85;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% for one year except HS Code 5205.23.00
+N86;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US$ 0.30 / metre whichever is higher for one year Legal Notice EAC/160/2026, Table I, row 7 : 35 % or USD 0.30/metre, whichever is higher au lieu de 35 % (TEC), du 01/07/2026 au 30/06/2027.
+N87;DD;Tanzania to stay the application of the EAC CET rate of 50% and apply a duty rate of 35% for one year Legal Notice EAC/160/2026, Table I, row 6 : 35 % au lieu de 35 % (TEC), du 01/07/2026 au 30/06/2027.
+N88;DD;Legal Notice EAC/164/2026, S/N 8 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N89;DD;Legal Notice EAC/164/2026, S/N 9 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N90;DD;Legal Notice EAC/164/2026, S/N 10 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N91;DD;Legal Notice EAC/164/2026, S/N 11 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N92;DD;Legal Notice EAC/164/2026, S/N 12 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N93;DD;Legal Notice EAC/164/2026, S/N 13 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N94;DD;Legal Notice EAC/164/2026, S/N 14 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N95;DD;Legal Notice EAC/164/2026, S/N 15 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N96;DD;Legal Notice EAC/164/2026, S/N 16 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N97;DD;Legal Notice EAC/164/2026, S/N 17 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N98;DD;Legal Notice EAC/164/2026, S/N 18 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N99;DD;Legal Notice EAC/161/2026, Table A, row 83 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/164/2026, S/N 19 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N100;DD;Legal Notice EAC/164/2026, S/N 20 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N101;DD;Legal Notice EAC/164/2026, S/N 21 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N102;DD;Legal Notice EAC/161/2026, Table A, row 54 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N103;DD;Legal Notice EAC/167/2026, S/N 26 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N104;DD;Legal Notice EAC/164/2026, S/N 57 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N105;DD;Legal Notice EAC/167/2026, S/N 27 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N106;DD;Legal Notice EAC/164/2026, S/N 22 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N107;DD;Legal Notice EAC/164/2026, S/N 23 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N108;DD;Legal Notice EAC/164/2026, S/N 24 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N109;DD;Legal Notice EAC/164/2026, S/N 25 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N110;DD;Legal Notice EAC/164/2026, S/N 26 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N111;DD;Legal Notice EAC/164/2026, S/N 27 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N112;DD;Legal Notice EAC/164/2026, S/N 28 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N113;DD;Legal Notice EAC/164/2026, S/N 29 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N114;DD;Legal Notice EAC/164/2026, S/N 30 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N115;DD;Legal Notice EAC/164/2026, S/N 31 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N116;DD;Legal Notice EAC/164/2026, S/N 32 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N117;DD;Legal Notice EAC/164/2026, S/N 33 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N118;DD;Legal Notice EAC/164/2026, S/N 34 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N119;DD;Legal Notice EAC/164/2026, S/N 35 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N120;DD;Legal Notice EAC/164/2026, S/N 36 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N121;DD;Legal Notice EAC/164/2026, S/N 37 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N122;DD;Legal Notice EAC/164/2026, S/N 38 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N123;DD;Legal Notice EAC/164/2026, S/N 39 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N124;DD;Legal Notice EAC/164/2026, S/N 40 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N125;DD;Legal Notice EAC/164/2026, S/N 41 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N126;DD;Legal Notice EAC/164/2026, S/N 42 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N127;DD;Legal Notice EAC/164/2026, S/N 43 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N128;DD;Legal Notice EAC/164/2026, S/N 44 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N129;DD;Legal Notice EAC/164/2026, S/N 45 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N130;DD;Legal Notice EAC/164/2026, S/N 46 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N131;DD;Legal Notice EAC/164/2026, S/N 47 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N132;DD;Legal Notice EAC/164/2026, S/N 58 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N133;DD;Legal Notice EAC/164/2026, S/N 59 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N134;DD;Legal Notice EAC/171/2026, S/N 3 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N135;DD;Legal Notice EAC/164/2026, S/N 48 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N136;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 4 (p. 4)) : Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 25% on polyester / nylon twine for one year Legal Notice EAC/160/2026, Table I, row 4 : 25 % au lieu de 10 % (TEC), du 01/07/2026 au 30/06/2027.
+N137;DD;Legal Notice EAC/164/2026, S/N 60 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N138;DD;Legal Notice EAC/164/2026, S/N 61 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N139;DD;Legal Notice EAC/164/2026, S/N 62 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N140;DD;Legal Notice EAC/164/2026, S/N 63 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N141;DD;Legal Notice EAC/164/2026, S/N 64 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N142;DD;Legal Notice EAC/164/2026, S/N 65 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N143;DD;Legal Notice EAC/164/2026, S/N 66 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N144;DD;Legal Notice EAC/164/2026, S/N 67 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N145;DD;Legal Notice EAC/164/2026, S/N 68 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N146;DD;Legal Notice EAC/164/2026, S/N 69 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N147;DD;Legal Notice EAC/164/2026, S/N 70 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N148;DD;Legal Notice EAC/164/2026, S/N 49 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N149;DD;Legal Notice EAC/164/2026, S/N 50 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N150;DD;Legal Notice EAC/167/2026, S/N 28 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N151;DD;Legal Notice EAC/164/2026, S/N 51 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N152;DD;Legal Notice EAC/164/2026, S/N 71 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N153;DD;Legal Notice EAC/164/2026, S/N 72 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N154;DD;Legal Notice EAC/164/2026, S/N 73 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N155;DD;Legal Notice EAC/161/2026, Table A, row 41 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/161/2026, Table A, row 42 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N156;DD;Uganda, Burundi and Tanzania to stay the application of the EAC CET duty rate of 35% or US$ 0.40 / KG whichever is higher and apply a duty rate of 35% for one year
+N157;DD;Legal Notice EAC/171/2026, S/N 4 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N158;DD;Legal Notice EAC/171/2026, S/N 5 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N159;DD;Kenya and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US $ 2 / SQM whichever is higher for one year Legal Notice EAC/160/2026, Table I, row 8 : 35 % or USD 2/SQM, whichever is higher au lieu de 35 % (TEC), du 01/07/2026 au 30/06/2027.
+N160;DD;Kenya and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% or US $ 2 / SQM whichever is higher for one year Legal Notice EAC/160/2026, Table I, row 8 : 35 % or USD 2/SQM, whichever is higher au lieu de 35 % (TEC), du 01/07/2026 au 30/06/2027. Legal Notice EAC/161/2026, Table A, row 91 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N161;DD;Amend EAC CET duty rate from 35% to “35% or US$ 3 / m2 whichever is higher”
+N162;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 35% for one year
+N163;DD;Legal Notice EAC/167/2026, S/N 29 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N164;DD;Legal Notice EAC/167/2026, S/N 30 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N165;DD;Legal Notice EAC/167/2026, S/N 31 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N166;DD;Legal Notice EAC/167/2026, S/N 32 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N167;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 10% or US$ 125 / MT whichever is higher for one year
+N168;DD;Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 35% or US$ 500 / MT whichever is higher for one year
+N169;DD;Tanzania to stay the application of the EAC CET rate of 25% or US$ 200 / MT whichever is higher and apply a duty rate of 35% or US $ 350 / MT whichever is higher for one year
+N170;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 10% or US$ 125 / MT whichever is higher for one year
+N171;DD;Tanzania to stay the application of the EAC CET rate of 25% or US$ 200 / MT whichever is higher and apply a duty rate of 25% or US$ 300 / MT whichever is higher for one year
+N172;DD;Kenya and Tanzania to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 350 / MT whichever is higher for one year
+N173;DD;Tanzania to stay the application of the EAC CET rate of 10% and apply a duty rate of 10% or US$ 300 / MT whichever is higher for one year
+N174;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 250 / MT whichever is higher for one year
+N175;DD;Tanzania to stay the application of the EAC CET rate of 35% and apply a duty rate of 35% or USD 250 / MT whichever is higher for one year
+N176;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 300 / MT whichever is higher for one year
+N177;DD;Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 25% or US$ 250 / MT whichever is higher for one year
+N178;DD;Legal Notice EAC/161/2026, Table A, row 42 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N179;DD;Amend EAC CET duty rate from 35% to “35% or US$ 0.35 / KG whichever is higher”
+N180;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 1 (p. 65)) : Tanzania 10% and Rwanda 0%
+N181;DD;"Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 2 (p. 65)) : Rwanda: 0% Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 1 (p. 65)) : (a) Tanzania and Burundi: 0%; and (b) Rwanda: 10%"
+N182;DD;Legal Notice EAC/171/2026, S/N 6 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N183;DD;Legal Notice EAC/161/2026, Table A, row 46 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/161/2026, Table A, row 49 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N184;DD;Tanzania to stay the application of the EAC CET rate and apply a duty rate of 25% or US$ 550 / MT whichever is higher for one year
+N185;DD;Legal Notice EAC/161/2026, Table A, row 39 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué. Legal Notice EAC/161/2026, Table A, row 41 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N186;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 2 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N187;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 3 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N188;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 5 (p. 65)) : Tanzania and Burundi: 0%
+N189;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 4 (p. 65)) : Tanzania 0%
+N190;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 6 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N191;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 7 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N192;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 8 (p. 65)) : Tanzania and Burundi: 0%
+N193;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 9 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N194;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table IX, n° 10 (p. 65)) : Tanzania, Burundi and Rwanda: 0%
+N195;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table VIII, n° 3 (p. 65)) : Tanzania 0%
+N196;DD;Legal Notice EAC/171/2026, S/N 7 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N197;DD;Legal Notice EAC/164/2026, S/N 52 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N198;DD;Uganda and Tanzania to stay the application of the EAC CET rate and apply a duty rate of 35% or US$ 250 / MT whichever is higher for one year
+N199;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 109 (p. 18)) : Tanzania to stay the application of the EAC CET rate of 10% on cash registers and other electronic fiscal devices (EFD) machines and point of sale (POS) imported by the government or authorized persons and apply a duty rate of 0% for one year
+N200;DD;Legal Notice EAC/161/2026, Table A, row 82 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N201;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 3 (p. 3)) : Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% on imports by the National Identification Authority for one year Legal Notice EAC/160/2026, Table I, row 3 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (condition de la mesure (bénéficiaire, usage) non établie). Taux du TEC appliqué.
+N202;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 24 (p. 7)) : Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% for buses for transportation of more than 25 persons imported for the rapid transport project for one year
+N203;DD;Mesure conditionnelle, non appliquée (Legal Notice EAC/160/2026, Table I, n° 25 (p. 7)) : Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 0% for buses for transportation of more than 25 persons imported for the rapid transport project for one year
+N204;DD;Legal Notice EAC/161/2026, Table A, row 52 : 10 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N205;DD;Legal Notice EAC/167/2026, S/N 35 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N206;DD;Legal Notice EAC/167/2026, S/N 36 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N207;DD;Legal Notice EAC/164/2026, S/N 53 : 0 % du 01/07/2026 au 30/06/2027 pour les importations qui remplissent ses conditions (éligibilité de l'importateur non déclarée). Taux du TEC appliqué.
+N208;DD;Kenya, Uganda and Tanzania to stay the application of the EAC CET rate of 25% and apply a duty rate of 35% for one year

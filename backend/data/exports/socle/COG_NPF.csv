@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEMAC));TCI (Taxe Communautaire d'Intégration (CEMAC));TS (Taxe Statistique);OHADA (Cotisation OHADA);TVA (Taxe sur la Valeur Ajoutée);CATVA (Centimes additionnels à la TVA);DA (Droit d'accises);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir COG_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEMAC));TCI (Taxe Communautaire d'Intégration (CEMAC));TS (Taxe Statistique);OHADA (Cotisation OHADA);TVA (Taxe sur la Valeur Ajoutée);CATVA (Centimes additionnels à la TVA);DA (Droit d'accises);Total droits et taxes pour 100 CAF (XAF);État;Manques;Notes (voir COG_NPF_notes.csv)
 01011010;-- Chevaux(*);01;;5;1;0.2;0.05;18;5;;26.09;COMPLET;;N1 N2
 01011090;-- Autres(*);01;;5;1;0.2;0.05;18;5;;26.09;COMPLET;;N1 N2
 01019000;-- Autres(*) Animaux vivants de l’espèce bovine. -Reproducteurs de race pure :;01;;30;1;0.2;0.05;18;5;;55.82;COMPLET;;N1 N2

@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Direitos Aduaneiros (Taxa Geral));TVA (Imposto sobre o Valor Acrescentado);TXSOBVAL (TXSOBVAL (colonne non identifiée));SOBRETX (Sobretaxa);ICE (Imposto sobre Consumos Específicos);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir MOZ_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Direitos Aduaneiros (Taxa Geral));TVA (Imposto sobre o Valor Acrescentado);TXSOBVAL (TXSOBVAL (colonne non identifiée));SOBRETX (Sobretaxa);ICE (Imposto sobre Consumos Específicos);Total droits et taxes pour 100 CAF (MZN);État;Manques;Notes (voir MOZ_NPF_notes.csv)
 01012100;Chevaux vivants, reproducteurs de race pure;01;PST;0;0;;;;0;COMPLET;;N1
 01012900;Chevaux vivants, autres que reproducteurs de race pure;01;PST;20;16;;;;39.2;COMPLET;;
 01013000;Anes vivants reproducteurs de race pure;01;PST;20;16;;;;39.2;COMPLET;;
@@ -972,10 +972,10 @@
 22029010;REFRIGERANTES;22;L;20;16;;;;39.2;COMPLET;;
 22029100;Bière sans alcool;22;L;20;16;;;;39.2;COMPLET;;
 22029910;"Boissons non alcooliques à forte dose de caféine de type ""boissons énergisantes"", à l'exclusion des jus de fruits ou légumes du N°20.09";22;L;20;16;;;n.d.;;PARTIEL;ICE (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N5
-22029990;"Boissons non alcooliques à forte dose de caféine de type ""boissons énergisantes"", à l'exclusion des jus de fruits ou légumes du N°20.09";22;L;20;16;;;1.99 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6
+22029990;"Boissons non alcooliques à forte dose de caféine de type ""boissons énergisantes"", à l'exclusion des jus de fruits ou légumes du N°20.09";22;L;20;16;;;1,99/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6
 22030010;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;LI;20;16;;;n.d.;;PARTIEL;ICE (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N7
 22030050;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;L;20;0;;;n.d.;;PARTIEL;ICE (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
-22030060;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;L;20;16;;;5.5 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N8
+22030060;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;L;20;16;;;5,50/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N8
 22030090;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;L;20;16;;;n.d.;;PARTIEL;ICE (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N7
 22041000;Vins mousseux;22;L;20;16;;;n.d.;;PARTIEL;ICE (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N9
 22042100;Vins (sauf mousseux), moûts de raisin dont la fermentation a été empêchée ou arrêtée par add. d'alcool, en recipient n'excédant pas 2 l;22;L;20;16;;;n.d.;;PARTIEL;ICE (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N9
@@ -1030,7 +1030,7 @@
 24012000;Tabacs partiellement ou totalement écôtés;24;KG;2.5;16;;;;18.9;COMPLET;;
 24013000;Déchets de tabac;24;KG;2.5;16;;;;18.9;COMPLET;;
 24021000;Cigares (y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;KG;20;16;;;75 % ou 550/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N16
-24022000;Cigarettes contenant du tabac;24;MPST;20;16;;;540 unite_principale/millier de cigarettes;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17
+24022000;Cigarettes contenant du tabac;24;MPST;20;16;;;540/mil Unid;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17
 24029000;Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en succédanés de tabac;24;KG;20;16;;;75 % ou 590/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18
 24031100;Tabac pour pipe à eau visé à la Note 1 de sous-positions du Chapitre 24;24;KG;20;16;;;75 % ou 640/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N19
 24031900;Tabac à fumer, autre que du n° 2403.11, même contenant des succédanés de tabac en toute proportion;24;KG;20;16;;;75 % ou 640/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N19
@@ -1170,19 +1170,19 @@
 27090000;Huiles brutes de pétrole ou de minéraux bitumineux.;27;KG;2.5;0;;;;2.5;COMPLET;;N1
 27101211;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;;21.8;COMPLET;;
 27101221;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;;21.8;COMPLET;;
-27101229;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;7.5;16;;;0.51 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N20
-27101231;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;4.67 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N21
-27101239;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;7.71 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22
-27101240;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;1.02 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23
-27101290;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;7.5;16;;;1.02 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23
+27101229;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;7.5;16;;;0,51/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N20
+27101231;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;4,67/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N21
+27101239;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;7,71/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22
+27101240;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;5;16;;;1,02/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23
+27101290;Pétroles partiellement raffinés y compris les huiles brutes ayant subi une distillation primaire (Topping);27;KG;7.5;16;;;1,02/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23
 27101911;Carburéacteur;27;KG;5;16;;;;21.8;COMPLET;;
-27101921;Carburéacteur;27;KG;5;0;;;1.02 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
+27101921;Carburéacteur;27;KG;5;0;;;1,02/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
 27101925;Carburéacteur;27;KG;5;0;;;;5;COMPLET;;N1
-27101929;Carburéacteur;27;KG;7.5;16;;;1.02 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23
+27101929;Carburéacteur;27;KG;7.5;16;;;1,02/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23
 27101931;Carburéacteur;27;KG;5;16;;;;21.8;COMPLET;;
-27101939;Carburéacteur;27;KG;5;16;;;4.27 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N24
+27101939;Carburéacteur;27;KG;5;16;;;4,27/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N24
 27101941;Carburéacteur;27;KG;5;16;;;;21.8;COMPLET;;
-27101945;Carburéacteur;27;KG;7.5;16;;;0.75 unite_principale/litre;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N25
+27101945;Carburéacteur;27;KG;7.5;16;;;0,75/Litro;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N25
 27101951;Carburéacteur;27;ML;5;16;;;;21.8;COMPLET;;
 27101961;Carburéacteur;27;KG;7.5;16;;;;24.7;COMPLET;;
 27101969;Carburéacteur;27;KG;7.5;16;;;;24.7;COMPLET;;
@@ -1191,11 +1191,11 @@
 27102000;Huiles de pétrole ou de minéraux bitumineux(sauf huiles brutes) et préparations NDCA, contenant 70 % ou plus d?'huiles de pétrole...huiles;27;KG;7.5;16;;;;24.7;COMPLET;;
 27109100;Déchets d'huiles contenant des diphényles poly chlorés (PCB), des terphényles polychlorés (PCT) ou des diphényles polybromés (PBB);27;KG;7.5;16;;;;24.7;COMPLET;;
 27109900;Autres déchets d'huiles, du n° 27.10;27;KG;7.5;16;;;;24.7;COMPLET;;
-27111100;Gaz naturel liquéfiés;27;KG;5;16;;;0.35 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N26
-27111200;Propane liquéfié;27;KG;5;16;;;0.66 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27
-27111300;Butanes liquéfiés;27;KG;5;16;;;0.66 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27
+27111100;Gaz naturel liquéfiés;27;KG;5;16;;;0,35/Kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N26
+27111200;Propane liquéfié;27;KG;5;16;;;0,66/Kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27
+27111300;Butanes liquéfiés;27;KG;5;16;;;0,66/Kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27
 27111400;Ethylène, propylène, butylène et butadiène, liquéfiés;27;KG;5;16;;;;21.8;COMPLET;;
-27111910;Autres gaz de pétrole et autres hydrocarbures gazeux, liquéfiés, du n° 27.11;27;KG;5;0;;;0.66 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+27111910;Autres gaz de pétrole et autres hydrocarbures gazeux, liquéfiés, du n° 27.11;27;KG;5;0;;;0,66/Kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
 27111990;Autres gaz de pétrole et autres hydrocarbures gazeux, liquéfiés, du n° 27.11;27;KG;5;16;;;;21.8;COMPLET;;
 27112100;Gaz naturel à l'état gazeux;27;KG;7.5;16;;;;24.7;COMPLET;;
 27112910;Autres gaz de pétrole et autres hydrocarbures gazeux, à l'état gazeux, du n° 27.11;27;KG;7.5;16;;;;24.7;COMPLET;;
@@ -2262,15 +2262,15 @@
 39231000;Boîtes, caisses, casiers et articles similaires, en matières plastiques;39;KG;20;16;;;;39.2;COMPLET;;
 39232100;Sacs, sachets, pochettes et cornets, en polymères de l'éthylène;39;KG;20;16;;;;39.2;COMPLET;;
 39232910;Sacs, sachets, pochettes et cornets en matières plastiques, autres que polymères de l'éthylène;39;KG;20;16;;;;39.2;COMPLET;;
-39232920;Sacs, sachets, pochettes et cornets en matières plastiques, autres que polymères de l'éthylène;39;KG;20;16;;;105 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N28
+39232920;Sacs, sachets, pochettes et cornets en matières plastiques, autres que polymères de l'éthylène;39;KG;20;16;;;105/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N28
 39233010;Ebauches ou préformes de bonbonnes, bouteilles, flacons et articles similaires, en matières plastiques;39;KG;7.5;16;;;;24.7;COMPLET;;
 39233020;Ebauches ou préformes de bonbonnes, bouteilles, flacons et articles similaires, en matières plastiques;39;KG;7.5;0;;;;7.5;COMPLET;;N1
-39233030;Ebauches ou préformes de bonbonnes, bouteilles, flacons et articles similaires, en matières plastiques;39;KG;20;16;;;30 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29
+39233030;Ebauches ou préformes de bonbonnes, bouteilles, flacons et articles similaires, en matières plastiques;39;KG;20;16;;;30/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29
 39233090;Ebauches ou préformes de bonbonnes, bouteilles, flacons et articles similaires, en matières plastiques;39;KG;20;16;;;;39.2;COMPLET;;
 39234000;Cassettes sans bandes magnétiques, en matières plastiques;39;KG;20;16;;;;39.2;COMPLET;;
 39235000;Bouchons, couvercles, capsules et autres dispositifs de fermeture, en matières plastiques;39;KG;7.5;16;;;;24.7;COMPLET;;
 39239010;Autres articles de transport ou d'emballages, en matières plastiques, du n° 39.23;39;KG;7.5;16;;;;24.7;COMPLET;;
-39239090;Autres articles de transport ou d'emballages, en matières plastiques, du n° 39.23;39;KG;20;16;;;30 unite_principale/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29
+39239090;Autres articles de transport ou d'emballages, en matières plastiques, du n° 39.23;39;KG;20;16;;;30/kg;;PARTIEL;ICE (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29
 39241000;Vaisselle et autres articles pour le service de la table ou de la cuisine, en matières plastiques;39;KG;20;16;;;;39.2;COMPLET;;
 39249000;Cuvettes et seaux, en matières plastiques;39;KG;20;16;;;;39.2;COMPLET;;
 39251000;Réservoirs, foudres, cuves et récipients analogues, d'une contenance excédant 300 l, en matières plastiques;39;KG;20;16;;;;39.2;COMPLET;;

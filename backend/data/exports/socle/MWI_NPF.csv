@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (col. 6 — droit de douane NPF (parties contractantes du GATT));AIT (col. 12 — Advance Income Tax a l'importation);TVA (col. 11 — TVA);EXC (col. 10 — accise);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir MWI_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (col. 6 — droit de douane NPF (parties contractantes du GATT));AIT (col. 12 — Advance Income Tax a l'importation);TVA (col. 11 — TVA);EXC (col. 10 — accise);Total droits et taxes pour 100 CAF (MWK);État;Manques;Notes (voir MWI_NPF_notes.csv)
 01012100;-- Pure-bred breeding animals;01;U;10;10;16.5;;39.8;COMPLET;;N1 N2 N3
 01012900;-- Other -Asses;01;U;10;10;16.5;;39.8;COMPLET;;N1 N2 N3
 01013010;---Pure – bred breeding animals;01;U;10;10;16.5;;39.8;COMPLET;;N1 N2 N3

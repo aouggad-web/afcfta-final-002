@@ -4,9 +4,13 @@ Export CSV du tarif NPF de chaque pays, lu sur le socle de calcul.
 
 Le socle (``backend/socle/<ISO>.json``) est un artefact de construction, exclu
 du dépôt. Cet export en est l'archive versionnée : un fichier par pays, une
-ligne par position nationale, le taux de chaque prélèvement tel que le socle
-le porte et le total que le moteur liquide pour 100 de valeur CAF. Le SaaS le
-sert tel quel (``GET /api/tariff-data/download-socle/<ISO>``).
+ligne par position nationale, le taux de chaque prélèvement et le total que
+le moteur liquide pour 100 de valeur CAF, en devise nationale. La position
+est préparée comme ``POST /api/calcul`` la prépare sans origine déclarée
+(mesures de la gazette EAC en vigueur à la date de référence, TVA nationale
+documentée quand la source n'en porte aucune) : l'export est le tarif que le
+calculateur applique. Le SaaS le sert tel quel
+(``GET /api/tariff-data/download-socle/<ISO>``).
 
 ``backend/data/exports/socle/MANIFESTE.json`` relie chaque fichier à
 l'empreinte du socle dont il est tiré (``socle_sha256`` de
@@ -36,6 +40,7 @@ import hashlib
 import json
 import os
 import sys
+from datetime import date
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SOCLE_DIR = os.path.join(REPO, "backend", "socle")
@@ -44,6 +49,8 @@ MANIFESTE_EXPORT = os.path.join(EXPORT_DIR, "MANIFESTE.json")
 
 sys.path.insert(0, os.path.join(REPO, "backend"))
 sys.path.insert(0, REPO)
+from routes.calcul import _completer_famille_absente  # noqa: E402
+from services import mesures_eac, socle  # noqa: E402
 from services.calcul import calculer  # noqa: E402
 from services.designation import texte_designation  # noqa: E402
 
@@ -60,11 +67,18 @@ def _cellule(droit):
         return droit["expression_brute"]
     specifique = droit.get("specifique")
     if specifique:
-        if specifique.get("montant") is None:
-            return specifique.get("brut") or "n.d."
-        forme = f"{_nombre(specifique['montant'])} {specifique.get('unite_monetaire') or ''}"
-        if specifique.get("unite_quantite"):
-            forme = f"{forme.rstrip()}/{specifique['unite_quantite']}"
+        # La notation publiée (« 8c/kg ») plutôt que les champs normalisés,
+        # dont l'unité monétaire peut être un marqueur interne
+        # (« unite_principale »). La Tunisie publie le montant sans l'unité
+        # de quantité (« 0.1 dinars ») : elle lui est ajoutée.
+        forme = specifique.get("brut") or ""
+        if not forme:
+            if specifique.get("montant") is None:
+                return "n.d."
+            forme = f"{_nombre(specifique['montant'])} {specifique.get('unite_monetaire') or ''}".strip()
+        unite = specifique.get("unite_quantite")
+        if unite and "/" not in forme and " per " not in forme:
+            forme = f"{forme}/{unite}"
         if droit.get("taux") is not None:
             forme = f"{_nombre(droit['taux'])} % + {forme}"
         return forme.strip()
@@ -78,15 +92,31 @@ def _empreinte(chemin):
         return hashlib.sha256(f.read()).hexdigest()
 
 
-def exporter(iso3, socle_manifeste):
+def _preparer(iso3, code, le, mesures):
+    """La position telle que POST /api/calcul la liquide, sans origine ni
+    usage déclarés : mesures de la gazette EAC en vigueur le ``le`` et TVA
+    nationale documentée quand la source n'en porte aucune."""
+    position, provenance = socle.position(iso3, code)
+    if mesures:
+        position, _ = mesures_eac.appliquer(position, iso3, code, le=le)
+    position, _ = _completer_famille_absente(position, iso3, provenance)
+    return position, provenance
+
+
+def exporter(iso3, socle_manifeste, le=None):
+    le = le or date.today()
     with open(os.path.join(SOCLE_DIR, f"{iso3}.json"), encoding="utf-8") as f:
-        donnees = json.load(f)
-    positions = donnees.get("positions") or {}
-    if not positions:
+        codes = sorted((json.load(f).get("positions") or {}))
+    if not codes:
         return None
+    # Le filtrage des mesures de la gazette par juridiction coûte ~1 ms par
+    # appel : il n'est fait que pour les États qui en reçoivent.
+    mesures = any(m.jurisdiction.strip().upper() == iso3 for m in mesures_eac._mesures())
+    prepares = {code: _preparer(iso3, code, le, mesures) for code in codes}
+    devise = socle.devise_nationale(iso3)
 
     colonnes = {}
-    for position in positions.values():
+    for position, _ in prepares.values():
         for droit in position["droits"]:
             colonnes.setdefault(droit["code"], droit.get("libelle") or "")
 
@@ -98,11 +128,16 @@ def exporter(iso3, socle_manifeste):
         w.writerow(
             ["Position", "Désignation", "Chapitre", "Unité"]
             + [f"{code} ({libelle})" if libelle else code for code, libelle in colonnes.items()]
-            + ["Total droits et taxes pour 100 CAF", "État", "Manques", f"Notes (voir {iso3}_NPF_notes.csv)"]
+            + [f"Total droits et taxes pour 100 CAF ({devise})" if devise else "Total droits et taxes pour 100 CAF", "État", "Manques", f"Notes (voir {iso3}_NPF_notes.csv)"]
         )
-        for code, position in sorted(positions.items()):
+        for code, (position, provenance) in prepares.items():
             droits = {d["code"]: d for d in position["droits"]}
-            npf = calculer(position, 100.0, couverture=donnees.get("couverture"))["npf"]
+            npf = calculer(
+                position,
+                100.0,
+                devise_position=provenance.get("devise_nationale"),
+                couverture=provenance.get("couverture"),
+            )["npf"]
             renvois = []
             for d in position["droits"]:
                 if d.get("note"):
@@ -131,7 +166,9 @@ def exporter(iso3, socle_manifeste):
     return {
         "fichier": fichier,
         "fichier_notes": fichier_notes,
-        "positions": len(positions),
+        "positions": len(codes),
+        "devise": devise,
+        "date_reference": le.isoformat(),
         "sha256": _empreinte(chemin),
         "notes_sha256": _empreinte(os.path.join(EXPORT_DIR, fichier_notes)),
         "socle_sha256": entree["socle_sha256"],

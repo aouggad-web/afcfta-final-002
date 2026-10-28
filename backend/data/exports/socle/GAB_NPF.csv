@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEMAC));TCI (Taxe Communautaire d'Intégration (CEMAC));CIA (Contribution à l'Intégration Africaine);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir GAB_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEMAC));TCI (Taxe Communautaire d'Intégration (CEMAC));CIA (Contribution à l'Intégration Africaine);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises);Total droits et taxes pour 100 CAF (XAF);État;Manques;Notes (voir GAB_NPF_notes.csv)
 01011010;-- Chevaux(*);01;;5;1;0.2;18;;25.1;COMPLET;;N1
 01011090;-- Autres(*);01;;5;1;0.2;18;;25.1;COMPLET;;N1
 01019000;-- Autres(*) Animaux vivants de l’espèce bovine. -Reproducteurs de race pure :;01;;30;1;0.2;18;;54.6;COMPLET;;N1

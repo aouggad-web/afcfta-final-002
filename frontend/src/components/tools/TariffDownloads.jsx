@@ -234,7 +234,15 @@ export default function TariffDownloads({ language = 'fr' }) {
   }
 
   const regions = downloadData.regions || {};
-  const countries = downloadData.countries || [];
+  // Un pays peut n'avoir que l'export du calculateur (aucun fichier de
+  // l'ancien collecteur) : il reçoit sa carte, avec ce seul bouton.
+  const legacyCountries = downloadData.countries || [];
+  const legacyCodes = new Set(legacyCountries.map(c => c.code));
+  const countries = legacyCountries.concat(
+    Object.values(socleExports)
+      .filter(c => !legacyCodes.has(c.code))
+      .map(c => ({ code: c.code, name: c.name, total_size_kb: c.size_kb, files: [], socleOnly: true }))
+  );
 
   const getCountriesForRegion = (regionKey) => {
     const regionCountryCodes = regions[regionKey]?.countries || [];
@@ -291,13 +299,15 @@ export default function TariffDownloads({ language = 'fr' }) {
                         <div className="text-xs text-gray-500">{country.code} — {country.total_size_kb} KB</div>
                       </div>
                       <div className="flex items-center gap-1 ml-2">
-                        <DownloadButton
-                          url={`/tariff-data/download-zip/${country.code}`}
-                          label={t.downloadCountry}
-                          icon="📥"
-                          className="bg-green-600 text-white"
-                          size="small"
-                        />
+                        {!country.socleOnly && (
+                          <DownloadButton
+                            url={`/tariff-data/download-zip/${country.code}`}
+                            label={t.downloadCountry}
+                            icon="📥"
+                            className="bg-green-600 text-white"
+                            size="small"
+                          />
+                        )}
                         {socleExports[country.code] && (
                           <DownloadButton
                             url={socleExports[country.code].download_url}
@@ -316,12 +326,14 @@ export default function TariffDownloads({ language = 'fr' }) {
                             size="small"
                           />
                         )}
-                        <button
-                          className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5"
-                          onClick={() => setExpandedCountry(expandedCountry === country.code ? null : country.code)}
-                        >
-                          {expandedCountry === country.code ? "▲" : "▼"}
-                        </button>
+                        {!country.socleOnly && (
+                          <button
+                            className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5"
+                            onClick={() => setExpandedCountry(expandedCountry === country.code ? null : country.code)}
+                          >
+                            {expandedCountry === country.code ? "▲" : "▼"}
+                          </button>
+                        )}
                       </div>
                     </div>
 

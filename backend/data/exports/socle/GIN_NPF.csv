@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));PCC (Prélèvement Communautaire CEDEAO);RTL (Redevance de Traitement et de Liquidation);CA (Centime Additionnel);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises (colonne AC du tarif));Total droits et taxes pour 100 CAF;État;Manques;Notes (voir GIN_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));PCC (Prélèvement Communautaire CEDEAO);RTL (Redevance de Traitement et de Liquidation);CA (Centime Additionnel);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises (colonne AC du tarif));Total droits et taxes pour 100 CAF (GNF);État;Manques;Notes (voir GIN_NPF_notes.csv)
 0101210000;Chevaux vivants, reproducteurs de race pure;01;QA;5;0.5;2;0.25;0;;7.75;COMPLET;;N1
 0101290000;Chevaux vivants, autres que reproducteurs de race pure;01;QA;10;0.5;2;0.25;18;;33.05;COMPLET;;N1
 0101301000;Anes vivants reproducteurs de race pure;01;QA;5;0.5;2;0.25;0;;7.75;COMPLET;;N1

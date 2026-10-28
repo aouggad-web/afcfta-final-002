@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));CEDEAO (ECOWAS Levy);PUA (AU Import Levy);EXIM (Export-Import Levy);SIL (Special Import Levy);NHIL (National Health Insurance Levy);GETFUND (Ghana Education Trust Fund Levy);TVA (Value Added Tax);DA (Droit d'accises);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir GHA_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));CEDEAO (ECOWAS Levy);PUA (AU Import Levy);EXIM (Export-Import Levy);SIL (Special Import Levy);NHIL (National Health Insurance Levy);GETFUND (Ghana Education Trust Fund Levy);TVA (Value Added Tax);DA (Droit d'accises);Total droits et taxes pour 100 CAF (GHS);État;Manques;Notes (voir GHA_NPF_notes.csv)
 010121;Chevaux vivants, reproducteurs de race pure;01;QA;5;0.5;0.2;0.75;2;2.5;2.5;15;;30.14;COMPLET;;N1 N2 N3 N4 N5 N6 N7
 0101210000;Chevaux vivants, reproducteurs de race pure;01;QA;5;0.5;0.2;0.75;2;2.5;2.5;15;;30.14;COMPLET;;N1 N2 N3 N4 N5 N6 N7
 010129;Chevaux vivants, autres que reproducteurs de race pure;01;QA;10;0.5;0.2;0.75;2;2.5;2.5;15;;36.14;COMPLET;;N1 N2 N3 N4 N5 N6 N7

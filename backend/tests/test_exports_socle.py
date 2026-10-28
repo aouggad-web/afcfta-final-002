@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import zipfile
+from datetime import date
 
 import pytest
 from fastapi import FastAPI
@@ -69,7 +70,7 @@ def test_le_reexport_redonne_les_fichiers_archives(tmp_path):
 
     ecarts = []
     for cc in construits:
-        entree = module.exporter(cc, {"pays": SOCLE_PAYS})
+        entree = module.exporter(cc, {"pays": SOCLE_PAYS}, le=date.fromisoformat(EXPORTS_PAYS[cc]["date_reference"]))
         if (entree["sha256"], entree["notes_sha256"]) != (EXPORTS_PAYS[cc]["sha256"], EXPORTS_PAYS[cc]["notes_sha256"]):
             ecarts.append(cc)
     assert not ecarts, f"{REMEDE} {' '.join(ecarts)}"

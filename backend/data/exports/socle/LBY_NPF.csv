@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Prélèvement du tarif douanier (colonne « فئة الضريبة »));TSP (Port Services Tax (taxe des services portuaires));TP (Production Tax (taxe de production));Total droits et taxes pour 100 CAF;État;Manques;Notes (voir LBY_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Prélèvement du tarif douanier (colonne « فئة الضريبة »));TSP (Port Services Tax (taxe des services portuaires));TP (Production Tax (taxe de production));Total droits et taxes pour 100 CAF (LYD);État;Manques;Notes (voir LBY_NPF_notes.csv)
 01012100;010121.00;01;;5;n.d.;n.d.;;PARTIEL;TSP (ASSIETTE_INDISPONIBLE) | TP (ASSIETTE_INDISPONIBLE) | TVA (NON_TRACEE_A_LA_SOURCE);N1 N2
 01012900;010129.00;01;;5;n.d.;n.d.;;PARTIEL;TSP (ASSIETTE_INDISPONIBLE) | TP (ASSIETTE_INDISPONIBLE) | TVA (NON_TRACEE_A_LA_SOURCE);N1 N2
 01013000;010130.00;01;;5;n.d.;n.d.;;PARTIEL;TSP (ASSIETTE_INDISPONIBLE) | TP (ASSIETTE_INDISPONIBLE) | TVA (NON_TRACEE_A_LA_SOURCE);N1 N2

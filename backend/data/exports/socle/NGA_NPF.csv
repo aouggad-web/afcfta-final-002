@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Import Duty (Customs Duty));IAT (Import Adjustment Tax);EXC (Excise Duty);TVA (Value Added Tax);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir NGA_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Import Duty (Customs Duty));IAT (Import Adjustment Tax);EXC (Excise Duty);TVA (Value Added Tax);Total droits et taxes pour 100 CAF (NGN);État;Manques;Notes (voir NGA_NPF_notes.csv)
 0101210000;Pure-bred breeding animals;01;u;5;0;0;7.5;12.88;COMPLET;;N1 N2
 0101290000;Other;01;u;10;0;0;0;10;COMPLET;;N1 N2
 0101301000;Pure-bred breeding animals;01;u;5;0;0;7.5;12.88;COMPLET;;N1 N2
@@ -1067,14 +1067,14 @@
 2106909600;Food supplements;21;kg;20;0;0;0;20;COMPLET;;N1 N2
 2106909900;Other;21;kg;20;0;0;7.5;29;COMPLET;;N1 N2
 2201101000;Mineral waters;22;l;35;0;n.d.;7.5;;PARTIEL;EXC (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5
-2201102000;Aerated waters;22;l;35;0;10 unite_principale/litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N6
-2201900000;Other;22;l;35;0;10 unite_principale/litre;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N6
+2201102000;Aerated waters;22;l;35;0;Aerated Water others : ₦10 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N6
+2201900000;Other;22;l;35;0;Aerated Water others : ₦10 per Litre;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N6
 2202100000;Waters, including mineral waters and aerated waters, containing added sugar or other sweetening matter or flavoured;22;l;20;0;n.d.;7.5;;PARTIEL;EXC (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5
 2202910000;Non-alcoholic beer;22;l;20;0;n.d.;7.5;;PARTIEL;EXC (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5
 2202991000;Beverages containing high doses of caffeine of the kind “Energy drinks”;22;l;20;0;n.d.;7.5;;PARTIEL;EXC (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5
 2202999000;Other;22;l;20;0;n.d.;7.5;;PARTIEL;EXC (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5
-2203001000;In containers holding 50 centilitres or less;22;l;20;0;72 unite_principale/litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
-2203009000;Other;22;l;20;0;72 unite_principale/litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
+2203001000;In containers holding 50 centilitres or less;22;l;20;0;Beer and Stout : NILL, ₦72 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
+2203009000;Other;22;l;20;0;Beer and Stout : NILL, ₦72 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
 2204100000;Sparkling wine;22;l;20;0;Wines (alcoholic) : 25%, ₦70 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N8
 2204210000;In containers holding 2 l or less;22;l;20;0;Wines (alcoholic) : 25%, ₦70 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N8
 2204220000;In containers holding more than 2 l but not more than 10 l;22;l;20;0;Wines (alcoholic) : 25%, ₦70 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N8
@@ -1083,9 +1083,9 @@
 2204300000;Other grape must;22;l;20;0;Wines (alcoholic) : 25%, ₦70 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N8
 2205100000;In containers holding 2 l or less;22;l;20;0;Wines (alcoholic) : 25%, ₦70 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N8
 2205900000;Other;22;l;20;0;Wines (alcoholic) : 25%, ₦70 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N8
-2206001000;Other beer not made from malt;22;l;20;0;72 unite_principale/litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
-2206009100;Palm wine;22;l;20;0;72 unite_principale/litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
-2206009900;Other;22;l;20;0;72 unite_principale/litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
+2206001000;Other beer not made from malt;22;l;20;0;Beer and Stout : NILL, ₦72 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
+2206009100;Palm wine;22;l;20;0;Beer and Stout : NILL, ₦72 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
+2206009900;Other;22;l;20;0;Beer and Stout : NILL, ₦72 per Litre;7.5;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N7
 2207101000;For medical, pharmaceutical or scientific purposes;22;l;10;10;0;7.5;29;COMPLET;;N3 N2
 2207109000;Other;22;l;20;0;0;7.5;29;COMPLET;;N1 N2
 2207200000;Ethyl alcohol and other spirits, denatured, of any strength;22;l;10;15;0;7.5;34.38;COMPLET;;N3 N2

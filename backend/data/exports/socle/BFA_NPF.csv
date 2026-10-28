@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (ex-TEC CEDEAO, nomenclature maintenue par AES));RS (Redevance Statistique);PCS (Prélèvement Communautaire de Solidarité (UEMOA));PC-AES (Prélèvement Confédéral AES);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir BFA_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (ex-TEC CEDEAO, nomenclature maintenue par AES));RS (Redevance Statistique);PCS (Prélèvement Communautaire de Solidarité (UEMOA));PC-AES (Prélèvement Confédéral AES);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises);Total droits et taxes pour 100 CAF (XOF);État;Manques;Notes (voir BFA_NPF_notes.csv)
 0101210000;Chevaux vivants, reproducteurs de race pure;01;QA;5;1;0.8;0.5;18;;26.61;COMPLET;;N1 N2
 0101290000;Chevaux vivants, autres que reproducteurs de race pure;01;QA;10;1;0.8;0.5;18;;32.51;COMPLET;;N1 N2
 0101301000;Anes vivants reproducteurs de race pure;01;QA;5;1;0.8;0.5;18;;26.61;COMPLET;;N1 N2

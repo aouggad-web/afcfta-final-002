@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));PCC (Prélèvement Communautaire CEDEAO);PUA (Prélèvement de l'Union africaine);TVA (Taxe sur la Valeur Ajoutée);EXC (Excise duty);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir SLE_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));PCC (Prélèvement Communautaire CEDEAO);PUA (Prélèvement de l'Union africaine);TVA (Taxe sur la Valeur Ajoutée);EXC (Excise duty);Total droits et taxes pour 100 CAF (SLE);État;Manques;Notes (voir SLE_NPF_notes.csv)
 0101210000;Chevaux vivants, reproducteurs de race pure;01;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
 0101290000;Chevaux vivants, autres que reproducteurs de race pure;01;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 0101301000;Anes vivants reproducteurs de race pure;01;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
@@ -1057,8 +1057,8 @@
 2202910000;Bière sans alcool;22;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 2202991000;"Boissons non alcooliques à forte dose de caféine de type ""boissons énergisantes"", à l'exclusion des jus de fruits ou légumes du N°20.09";22;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5 N2
 2202999000;Autres boissons non alcooliques du N°22.02;22;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N5 N2
-2203001000;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;QA;20;0.5;0.2;15;15 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N9 N2
-2203009000;Bières de malt (autres que celles présentées en récipients d'une contenance égale ou inférieure à 50 cl);22;QA;20;0.5;0.2;15;15 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N9 N2
+2203001000;Bières de malt présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;QA;20;0.5;0.2;15;Le15 per litre (import, alcoholic content <10%);;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N9 N2
+2203009000;Bières de malt (autres que celles présentées en récipients d'une contenance égale ou inférieure à 50 cl);22;QA;20;0.5;0.2;15;Le15 per litre (import, alcoholic content <10%);;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N9 N2
 2204100000;Vins mousseux;22;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N10 N2
 2204210000;Vins (sauf mousseux), moûts de raisin dont la fermentation a été empêchée ou arrêtée par add. d'alcool, en recipient n'excédant pas 2 l;22;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N10 N2
 2204220000;Vins (sauf mousseux) et moûts de raisin frais dont... d'alcool, en récipients d'une contenance excédant 2 l mais n'excédant pas 10 l;22;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N10 N2
@@ -1107,17 +1107,17 @@
 2309100000;Aliments pour chiens ou chats, conditionnés pour la vente au détail;23;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 2309901000;Préparations contenant des vitamines des types utilisés pour l'alimentation des animaux (autres qu'aliments pour chiens ou chats, CVD);23;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
 2309909000;Autres préparations des types utilisés pour l'alimentation des animaux, du n° 23.09;23;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
-2401100000;Tabacs non écôtés;24;QA;5;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
-2401200000;Tabacs partiellement ou totalement écôtés;24;QA;5;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
-2401300000;Déchets de tabac;24;QA;5;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
-2402100000;Cigares (y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;QA;20;0.5;0.2;15;38 unite_principale/paquet;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N13 N2
-2402200000;Cigarettes contenant du tabac;24;QA;20;0.5;0.2;15;3 unite_principale/paquet de 20 cigarettes;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N14 N2
+2401100000;Tabacs non écôtés;24;QA;5;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2401200000;Tabacs partiellement ou totalement écôtés;24;QA;5;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2401300000;Déchets de tabac;24;QA;5;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2402100000;Cigares (y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;QA;20;0.5;0.2;15;NLe38 per packet;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N13 N2
+2402200000;Cigarettes contenant du tabac;24;QA;20;0.5;0.2;15;NLe3 per packet of 20 sticks;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N14 N2
 2402900000;Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en succédanés de tabac;24;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N15 N2
 2403110000;Tabac pour pipe à eau visé à la Note 1 de sous-positions du Chapitre 24;24;QA;20;0.5;0.2;15;n.d.;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N1 N16 N2
-2403190000;Tabac à fumer, autre que du n° 2403.11, même contenant des succédanés de tabac en toute proportion;24;QA;20;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
-2403910000;Tabacs «homogénéisés» ou «reconstitués»;24;QA;10;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
-2403991000;Tabacs écôtés expansés;24;QA;10;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
-2403999000;"Autres tabacs et succédanés de tabac, fabriqués, du n° 24.03; extraits et sauces de tabac";24;QA;20;0.5;0.2;15;98 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2403190000;Tabac à fumer, autre que du n° 2403.11, même contenant des succédanés de tabac en toute proportion;24;QA;20;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2403910000;Tabacs «homogénéisés» ou «reconstitués»;24;QA;10;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2403991000;Tabacs écôtés expansés;24;QA;10;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
+2403999000;"Autres tabacs et succédanés de tabac, fabriqués, du n° 24.03; extraits et sauces de tabac";24;QA;20;0.5;0.2;15;NLe98 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N12 N2
 2501001000;Sel dénaturé;25;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
 2501002000;Sel destiné à l'alimentation humaine;25;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2501003000;Sel en blocs comprimé pour l'alimentation du bétail;25;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
@@ -1169,11 +1169,11 @@
 2522100000;Chaux vive, à l'exclusion de l'oxyde et de l'hydroxyde de calcium du n° 28.25;25;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2522200000;Chaux éteinte, à l'exclusion de l'oxyde et de l'hydroxyde de calcium du n° 28.25;25;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 2522300000;Chaux hydraulique, à l'exclusion de l'oxyde et de l'hydroxyde de calcium du n° 28.25;25;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
-2523100000;Ciments non pulvérisés dits «clinkers»;25;QA;10;0.5;0.2;15;0.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
-2523210000;Ciments blancs, même colorés artificiellement;25;QA;20;0.5;0.2;15;0.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
-2523290000;Ciments Portland autres que ciments blancs;25;QA;20;0.5;0.2;15;0.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
-2523300000;Ciments alumineux;25;QA;20;0.5;0.2;15;0.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
-2523900000;Autres ciments hydrauliques même colorés, du n° 25.23;25;QA;20;0.5;0.2;15;0.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
+2523100000;Ciments non pulvérisés dits «clinkers»;25;QA;10;0.5;0.2;15;NLe 10.0 per 50kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
+2523210000;Ciments blancs, même colorés artificiellement;25;QA;20;0.5;0.2;15;NLe 10.0 per 50kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
+2523290000;Ciments Portland autres que ciments blancs;25;QA;20;0.5;0.2;15;NLe 10.0 per 50kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
+2523300000;Ciments alumineux;25;QA;20;0.5;0.2;15;NLe 10.0 per 50kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
+2523900000;Autres ciments hydrauliques même colorés, du n° 25.23;25;QA;20;0.5;0.2;15;NLe 10.0 per 50kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N17 N2
 2524100000;Crocidolite;25;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2524900000;Amiante (asbeste), à l'exclusion de la crocidolite;25;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
 2525100000;Mica brut ou clivé en feuilles ou lamelles irrégulières («splittings»);25;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
@@ -1254,22 +1254,22 @@
 2710122100;White spirit;27;QA;5;0.5;0.2;15;;21.55;COMPLET;;N1 N2
 2710122900;Autres essences spéciales;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2710123000;Essence d'aviation;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
-2710124000;Super carburant;27;QA;10;0.5;0.2;15;5 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N18 N2
-2710125000;Essence d'auto ordinaire;27;QA;10;0.5;0.2;15;5 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N18 N2
+2710124000;Super carburant;27;QA;10;0.5;0.2;15;Petrol NLe5.0 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N18 N2
+2710125000;Essence d'auto ordinaire;27;QA;10;0.5;0.2;15;Petrol NLe5.0 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N18 N2
 2710129000;Autres huiles légères et préparations du n° 2710.12;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2710191100;Carburéacteur;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
-2710191200;Pétrole lampant;27;QA;5;0.5;0.2;15;2 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N19 N2
+2710191200;Pétrole lampant;27;QA;5;0.5;0.2;15;Kerosene NLe2.0 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N19 N2
 2710191900;Autres huiles moyennes, du n° 2710.19;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
-2710192100;Gas-oil;27;QA;10;0.5;0.2;15;5 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N20 N2
-2710192200;Fuel-oil domestique;27;QA;5;0.5;0.2;15;7.4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
-2710192300;Fuel-oil léger;27;QA;5;0.5;0.2;15;7.4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
-2710192400;Fuel-oil lourd I;27;QA;5;0.5;0.2;15;7.4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
-2710192500;Fuel-oil lourd II;27;QA;5;0.5;0.2;15;7.4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
-2710193100;Huiles lubrifiantes destinées à être mélangées;27;QA;10;0.5;0.2;15;4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
-2710193200;Huiles lubrifiantes pour freins hydrauliques;27;QA;10;0.5;0.2;15;4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
+2710192100;Gas-oil;27;QA;10;0.5;0.2;15;Diesel NLe5.0 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N20 N2
+2710192200;Fuel-oil domestique;27;QA;5;0.5;0.2;15;Fuel oil NLe7.40 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
+2710192300;Fuel-oil léger;27;QA;5;0.5;0.2;15;Fuel oil NLe7.40 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
+2710192400;Fuel-oil lourd I;27;QA;5;0.5;0.2;15;Fuel oil NLe7.40 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
+2710192500;Fuel-oil lourd II;27;QA;5;0.5;0.2;15;Fuel oil NLe7.40 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N21 N2
+2710193100;Huiles lubrifiantes destinées à être mélangées;27;QA;10;0.5;0.2;15;Lubricating oils NLe4.00 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
+2710193200;Huiles lubrifiantes pour freins hydrauliques;27;QA;10;0.5;0.2;15;Lubricating oils NLe4.00 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
 2710193300;Graisse d'huiles lubrifiantes;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
-2710193910;Huiles de moteur à 2 temps;27;QA;10;0.5;0.2;15;4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
-2710193990;Autres huiles lubrifiantes, du n° 2710.19;27;QA;10;0.5;0.2;15;4 unite_principale/li;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
+2710193910;Huiles de moteur à 2 temps;27;QA;10;0.5;0.2;15;Lubricating oils NLe4.00 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
+2710193990;Autres huiles lubrifiantes, du n° 2710.19;27;QA;10;0.5;0.2;15;Lubricating oils NLe4.00 per litre;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N22 N2
 2710200000;Huiles de pétrole ou de minéraux bitumineux(sauf huiles brutes) et préparations NDCA, contenant 70 % ou plus d?'huiles de pétrole...huiles;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2710910000;Déchets d'huiles contenant des diphényles poly chlorés (PCB), des terphényles polychlorés (PCT) ou des diphényles polybromés (PBB);27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
 2710990000;Autres déchets d'huiles, du n° 27.10;27;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2
@@ -2345,8 +2345,8 @@
 3922200000;Sièges et couvercles de cuvettes d'aisance, en matières plastiques;39;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 3922900000;Bidets, cuvettes d'aisance, réservoirs de chasse et articles similaires pour usages sanitaires ou hygiéniques, en matières plastiques;39;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 3923100000;Boîtes, caisses, casiers et articles similaires, en matières plastiques;39;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
-3923210000;Sacs, sachets, pochettes et cornets, en polymères de l'éthylène;39;QA;20;0.5;0.2;15;16 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N24 N2
-3923290000;Sacs, sachets, pochettes et cornets en matières plastiques, autres que polymères de l'éthylène;39;QA;20;0.5;0.2;15;16 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N24 N2
+3923210000;Sacs, sachets, pochettes et cornets, en polymères de l'éthylène;39;QA;20;0.5;0.2;15;Polyethene (plastic) bags Le16.0 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N24 N2
+3923290000;Sacs, sachets, pochettes et cornets en matières plastiques, autres que polymères de l'éthylène;39;QA;20;0.5;0.2;15;Polyethene (plastic) bags Le16.0 per kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N1 N24 N2
 3923301000;Ebauches ou préformes de bonbonnes, bouteilles, flacons et articles similaires, en matières plastiques;39;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 3923309000;Bonbonnes, bouteilles, flacons et articles similaires, à l'exclusion de leurs ébauches et préformes, en matières plastiques;39;QA;20;0.5;0.2;15;;38.8;COMPLET;;N1 N2
 3923401000;Cassettes sans bandes magnétiques, en matières plastiques;39;QA;10;0.5;0.2;15;;27.3;COMPLET;;N1 N2

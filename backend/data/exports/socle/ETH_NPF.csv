@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane);TVA (Value Added Tax);SUR (Surtax);WHR (Withholding Tax);EXC (Excise Tax);SWL (Social Welfare Levy (taxe sociale));DSR (Development Surcharge);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir ETH_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane);TVA (Value Added Tax);SUR (Surtax);WHR (Withholding Tax);EXC (Excise Tax);SWL (Social Welfare Levy (taxe sociale));DSR (Development Surcharge);Total droits et taxes pour 100 CAF (ETB);État;Manques;Notes (voir ETH_NPF_notes.csv)
 01012100000;-- Pure-bred breeding animals;01;;0;15;10;3;;;;29.5;COMPLET;;N1 N2 N3 N4
 01012900000;-- Other;01;;0;15;10;3;;;;29.5;COMPLET;;N5 N2 N3 N4
 01013000000;- Asses;01;;0;15;10;3;;;;29.5;COMPLET;;N6 N2 N3 N4

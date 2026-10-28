@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane (MFN appliqué, WITS/TRAINS));TVA (Value Added Tax (VAT));Total droits et taxes pour 100 CAF;État;Manques;Notes (voir SDN_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane (MFN appliqué, WITS/TRAINS));TVA (Value Added Tax (VAT));Total droits et taxes pour 100 CAF (SDG);État;Manques;Notes (voir SDN_NPF_notes.csv)
 010121;;01;;25;17;;PARTIEL;TVA (ASSIETTE_INDISPONIBLE);N1 N2
 010129;;01;;25;17;;PARTIEL;TVA (ASSIETTE_INDISPONIBLE);N1 N2
 010130;;01;;25;17;;PARTIEL;TVA (ASSIETTE_INDISPONIBLE);N1 N2

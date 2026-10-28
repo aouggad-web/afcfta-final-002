@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEMAC));TCI (Taxe Communautaire d'Intégration (CEMAC));TS (Taxe Statistique);PUA (Prélèvement Union Africaine);TVA (Taxe sur la Valeur Ajoutée);SPEC (Taxe spécifique);DA (Droit d'accises);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir TCD_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEMAC));TCI (Taxe Communautaire d'Intégration (CEMAC));TS (Taxe Statistique);PUA (Prélèvement Union Africaine);TVA (Taxe sur la Valeur Ajoutée);SPEC (Taxe spécifique);DA (Droit d'accises);Total droits et taxes pour 100 CAF (XAF);État;Manques;Notes (voir TCD_NPF_notes.csv)
 01011010;-- Chevaux(*);01;;5;1;2;0.2;18;;;27.28;COMPLET;;N1
 01011090;-- Autres(*);01;;5;1;2;0.2;18;;;27.28;COMPLET;;N1
 01019000;-- Autres(*) Animaux vivants de l’espèce bovine. -Reproducteurs de race pure :;01;;30;1;2;0.2;18;;;56.78;COMPLET;;N1
@@ -766,8 +766,8 @@
 21069090;comprises ailleurs;21;;30;1;2;0.2;18;;;56.78;COMPLET;;N1
 22011000;- Eaux minérales et eaux gazéifiées;22;;30;1;2;0.2;18;;;56.78;COMPLET;;N1
 22019000;- Autres Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées, et autres boissons non alcooliques, à l’exclusion des jus de fruits ou de légumes du n° 20.09.;22;;30;1;2;0.2;18;;;56.78;COMPLET;;N1
-22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;2;0.2;18;50 unite_principale/bouteille ou canette;10;;PARTIEL;SPEC (QUANTITE_REQUISE);N3 N4 N1
-22029000;- Autres (*) Bières de malt;22;;30;1;2;0.2;18;50 unite_principale/bouteille ou canette;10;;PARTIEL;SPEC (QUANTITE_REQUISE);N3 N4 N1
+22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;2;0.2;18;50 FCFA/Bouteille ou cannette importée;10;;PARTIEL;SPEC (QUANTITE_REQUISE);N3 N4 N1
+22029000;- Autres (*) Bières de malt;22;;30;1;2;0.2;18;50 FCFA/Bouteille ou cannette importée;10;;PARTIEL;SPEC (QUANTITE_REQUISE);N3 N4 N1
 22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;2;0.2;18;10;25;;PARTIEL;SPEC (ASSIETTE_INDISPONIBLE);N5 N6 N1
 22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;2;0.2;18;10;25;;PARTIEL;SPEC (ASSIETTE_INDISPONIBLE);N5 N6 N1
 22041010;-- De champagne (*);22;;30;1;2;0.2;18;15;25;;PARTIEL;SPEC (ASSIETTE_INDISPONIBLE);N7 N8 N1
@@ -817,15 +817,15 @@
 24011000;-Tabacs non écôtés;24;;10;1;2;0.2;18;;;33.18;COMPLET;;N1
 24012000;- Tabacs partiellement ou totalement écôtés;24;;10;1;2;0.2;18;;;33.18;COMPLET;;N1
 24013000;- Déchets de tabac Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en tabac ou en succédanés de tabac.;24;;10;1;2;0.2;18;;;33.18;COMPLET;;N1
-24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N12 N1
-24022000;- Cigarettes contenant du tabac;24;;30;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N12 N1
-24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N12 N1
-24031010;-- Tabac à fumer (scaferlati);24;;10;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
-24031090;-- Autres - Autres :;24;;30;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
-24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
-24039910;-- Tabacs à mâcher et à priser;24;;30;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
+24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N12 N1
+24022000;- Cigarettes contenant du tabac;24;;30;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N12 N1
+24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N12 N1
+24031010;-- Tabac à fumer (scaferlati);24;;10;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
+24031090;-- Autres - Autres :;24;;30;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
+24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
+24039910;-- Tabacs à mâcher et à priser;24;;30;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
 24039920;--- Extraits et sauces de tabacs;24;;10;1;2;0.2;18;;;33.18;COMPLET;;N1
-24039990;--- Autres tabacs et fabriqués;24;;30;1;2;0.2;18;50 unite_principale/paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
+24039990;--- Autres tabacs et fabriqués;24;;30;1;2;0.2;18;50FCFA/Paquet;30;;PARTIEL;SPEC (QUANTITE_REQUISE);N11 N13 N1
 25010000;Soufres de toute espèce, à l’exclusion du soufre sublimé, du soufre précipité et du soufre colloïdal. -Soufres bruts et soufres non raffinés;25;;10;1;2;0.2;18;;;33.18;COMPLET;;N1
 25010011;-- Autre;25;;20;1;2;0.2;18;;;44.98;COMPLET;;N1
 25010019;- Autres;25;;10;1;2;0.2;18;;;33.18;COMPLET;;N1

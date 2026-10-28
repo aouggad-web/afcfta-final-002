@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));RS (Redevance Statistique);PCS (Prélèvement Communautaire de Solidarité (UEMOA));PCC (Prélèvement Communautaire CEDEAO);PUA (Prélèvement Union Africaine);PNS (Prélèvement National de Solidarité);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir TGO_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));RS (Redevance Statistique);PCS (Prélèvement Communautaire de Solidarité (UEMOA));PCC (Prélèvement Communautaire CEDEAO);PUA (Prélèvement Union Africaine);PNS (Prélèvement National de Solidarité);TVA (Taxe sur la Valeur Ajoutée);DA (Droit d'accises);Total droits et taxes pour 100 CAF (XOF);État;Manques;Notes (voir TGO_NPF_notes.csv)
 0101210000;Chevaux vivants, reproducteurs de race pure;01;QA;5;1;0.8;0.5;0.2;0.5;18;;27.44;COMPLET;;N1
 0101290000;Chevaux vivants, autres que reproducteurs de race pure;01;QA;10;1;0.8;0.5;0.2;0.5;18;;33.34;COMPLET;;N1
 0101301000;Anes vivants reproducteurs de race pure;01;QA;5;1;0.8;0.5;0.2;0.5;18;;27.44;COMPLET;;N1

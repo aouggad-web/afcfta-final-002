@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (CET Import Duty (Droit de Douane));TVA (Value Added Tax (VAT));Total droits et taxes pour 100 CAF;État;Manques;Notes (voir SSD_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (CET Import Duty (Droit de Douane));TVA (Value Added Tax (VAT));Total droits et taxes pour 100 CAF (SSP);État;Manques;Notes (voir SSD_NPF_notes.csv)
 01012100;-- Pure-bred breeding animals;01;u;0;18;18;COMPLET;;
 01012900;-- Other;01;u;25;18;47.5;COMPLET;;
 01013010;--- Pure-bred breeding animals;01;u;0;18;18;COMPLET;;

@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (CET Import Duty (Droit de Douane));TVA (Value Added Tax (VAT));EXC (Excise Duty);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir TZA_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (CET Import Duty (Droit de Douane));TVA (Value Added Tax (VAT));EXC (Excise Duty);Total droits et taxes pour 100 CAF (TZS);État;Manques;Notes (voir TZA_NPF_notes.csv)
 01012100;-- Pure-bred breeding animals;01;u;0;18;;18;COMPLET;;N1
 01012900;-- Other;01;u;25;18;;47.5;COMPLET;;N1
 01013010;--- Pure-bred breeding animals;01;u;0;18;;18;COMPLET;;N1
@@ -586,8 +586,8 @@
 10011100;-- Seed;10;kg;0;18;;18;COMPLET;;N1
 10011900;-- Other;10;kg;0;18;;18;COMPLET;;N1
 10019100;-- Seed;10;kg;0;18;;18;COMPLET;;N1
-10019910;--- Hard Wheat;10;kg;35;18;;59.3;COMPLET;;N1
-10019990;--- Other;10;kg;35;18;;59.3;COMPLET;;N1
+10019910;--- Hard Wheat;10;kg;35;18;;59.3;COMPLET;;N3 N1
+10019990;--- Other;10;kg;35;18;;59.3;COMPLET;;N3 N1
 10021000;- Seed;10;kg;0;18;;18;COMPLET;;N1
 10029000;- Other;10;kg;0;18;;18;COMPLET;;N1
 10031000;- Seed;10;kg;0;18;;18;COMPLET;;N1
@@ -596,10 +596,10 @@
 10049000;- Other;10;kg;0;18;;18;COMPLET;;N1
 10051000;- Seed;10;kg;25;18;;47.5;COMPLET;;N1
 10059000;- Other;10;;50;18;;77;COMPLET;;N1
-10061000;- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher;10;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-10062000;- Husked (Brown) rice 75% or $345/MT whichever is higher;10;No.;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-10063000;- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher;10;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-10064000;- Broken Rice 75% or $345/MT whichever is higher;10;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
+10061000;- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher;10;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+10062000;- Husked (Brown) rice 75% or $345/MT whichever is higher;10;No.;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+10063000;- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher;10;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+10064000;- Broken Rice 75% or $345/MT whichever is higher;10;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
 10071000;- Seed;10;kg;25;18;;47.5;COMPLET;;N1
 10079000;- Other;10;kg;25;18;;47.5;COMPLET;;N1
 10081000;- Buckwheat;10;kg;25;18;;47.5;COMPLET;;N1
@@ -612,7 +612,7 @@
 10089000;- Other cereals;10;kg;25;18;;47.5;COMPLET;;N1
 11010000;Wheat or meslin flour.;11;;50;18;;77;COMPLET;;N1
 11022000;- Maize (corn) flour;11;;50;18;;77;COMPLET;;N1
-11029010;--- Rice flour 75% or $345/MT whichever is higher;11;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
+11029010;--- Rice flour 75% or $345/MT whichever is higher;11;;75% or $345/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
 11029090;--- Other;11;kg;25;18;;47.5;COMPLET;;N1
 11031100;-- Of wheat;11;kg;25;18;;47.5;COMPLET;;N1
 11031300;-- Of maize (corn);11;kg;25;18;;47.5;COMPLET;;N1
@@ -632,7 +632,7 @@
 11071000;- Not roasted;11;kg;10;18;;29.8;COMPLET;;N1
 11072000;- Roasted;11;kg;10;18;;29.8;COMPLET;;N1
 11081100;-- Wheat starch;11;kg;10;18;;29.8;COMPLET;;N1
-11081200;-- Maize (corn) starch;11;kg;10;18;;29.8;COMPLET;;N1
+11081200;-- Maize (corn) starch;11;kg;10;18;;29.8;COMPLET;;N5 N1
 11081300;-- Potato starch;11;kg;10;18;;29.8;COMPLET;;N1
 11081400;-- Manioc (cassava) starch;11;kg;10;18;;29.8;COMPLET;;N1
 11081900;-- Other starches;11;kg;10;18;;29.8;COMPLET;;N1
@@ -717,42 +717,42 @@
 15043000;- Fats and oils and their fractions, of marine mammals;15;kg;10;18;;29.8;COMPLET;;N1
 15050000;Wool grease and fatty substances derived therefrom (including lanolin).;15;Kg;0;18;;18;COMPLET;;N1
 15060000;Other animal fats and oils and their fractions, whether or not refined, but not chemically modified.;15;Kg;10;18;;29.8;COMPLET;;N1
-15071000;- Crude oil, whether or not degummed;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15079000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15081000;- Crude oil;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15089000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15092000;- Extra virgin olive oil;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15093000;- Virgin olive oil;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15094000;- Other virgin olive oils;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15099000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15101000;- Crude olive pomace oil;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15109000;- Other;15;Kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15111000;- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15071000;- Crude oil, whether or not degummed;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15079000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15081000;- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15089000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15092000;- Extra virgin olive oil;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15093000;- Virgin olive oil;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15094000;- Other virgin olive oils;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15099000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15101000;- Crude olive pomace oil;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15109000;- Other;15;Kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15111000;- Crude oil;15;kg;10;18;;29.8;COMPLET;;N8 N1
 15119010;--- Palm olein, fractions;15;kg;10;18;;29.8;COMPLET;;N1
 15119020;--- Palm stearin, fractions;15;kg;10;18;;29.8;COMPLET;;N1
-15119030;--- Palm olein, RBD;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15119040;--- Palm stearin, RBD;15;kg;10;18;;29.8;COMPLET;;N1
-15119090;--- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
+15119030;--- Palm olein, RBD;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15119040;--- Palm stearin, RBD;15;kg;10;18;;29.8;COMPLET;;N9 N1
+15119090;--- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
 15121100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N1
-15121900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
+15121900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
 15122100;-- Crude oil, whether or not gossypol has been removed;15;kg;10;18;;29.8;COMPLET;;N1
-15122900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15131100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15131900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15132100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15132900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15141100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15141900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15149100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15149900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15151100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N4 N1
-15151900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
+15122900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15131100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15131900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15132100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15132900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15141100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15141900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15149100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15149900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15151100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N6 N1
+15151900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
 15152100;-- Crude oil;15;kg;10;18;;29.8;COMPLET;;N1
-15152900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
+15152900;-- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
 15153000;- Castor oil and its fractions;15;kg;10;18;;29.8;COMPLET;;N1
-15155000;- Sesame oil and its fractions;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15156000;- Microbial fats and oils and their fractions;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-15159000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
+15155000;- Sesame oil and its fractions;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15156000;- Microbial fats and oils and their fractions;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
+15159000;- Other;15;kg;35% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
 15161000;- Animal fats and oils and their fractions;15;kg;35;18;;59.3;COMPLET;;N1
 15162000;- Vegetable fats and oils and their fractions;15;kg;35;18;;59.3;COMPLET;;N1
 15163000;- Microbial fats and oils and their fractions;15;kg;25;18;;47.5;COMPLET;;N1
@@ -805,15 +805,15 @@
 16056200;-- Sea urchins;16;kg;25;18;;47.5;COMPLET;;N1
 16056300;-- Jellyfish;16;kg;25;18;;47.5;COMPLET;;N1
 16056900;-- Other;16;kg;25;18;;47.5;COMPLET;;N1
-17011210;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17011290;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17011310;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17011390;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17011410;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17011490;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
-17019100;-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17019910;---Sugar for industrial use 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-17019990;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
+17011210;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17011290;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17011310;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17011390;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17011410;--- Jaggery 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17011490;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
+17019100;-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17019910;---Sugar for industrial use 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+17019990;--- Other 100 % or $ 460/MT whichever is higher;17;;100 % or $ 460/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
 17021100;-- Containing by weight 99% or more lactose, expressed as anhydrous lactose, calculated on the dry matter;17;kg;10;18;;29.8;COMPLET;;N1
 17021900;-- Other;17;kg;10;18;;29.8;COMPLET;;N1
 17022000;- Maple sugar and maple syrup;17;kg;10;18;;29.8;COMPLET;;N1
@@ -831,7 +831,7 @@
 18031000;- Not defatted;18;kg;0;18;;18;COMPLET;;N1
 18032000;- Wholly or partly defatted;18;kg;0;18;;18;COMPLET;;N1
 18040000;Cocoa butter, fat and oil.;18;kg;0;18;;18;COMPLET;;N1
-18050000;Cocoa powder, not containing added sugar or other sweetening matter.;18;kg;10;18;;29.8;COMPLET;;N8 N1
+18050000;Cocoa powder, not containing added sugar or other sweetening matter.;18;kg;10;18;;29.8;COMPLET;;N11 N1
 18061000;- Cocoa powder, containing added sugar or other sweetening matter;18;kg;35;18;;59.3;COMPLET;;N1
 18062000;- Other preparations in blocks, slabs or bars weighing more than 2 kg or in liquid, paste, powder, granular or other bulk form in containers or immediate packings, of a content exceeding 2 kg;18;kg;35;18;;59.3;COMPLET;;N1
 18063100;-- Filled;18;kg;35;18;;59.3;COMPLET;;N1
@@ -916,7 +916,7 @@
 21011200;-- Preparations with a basis of extracts, essences or concentrates or with a basis of coffee;21;kg;35;18;;59.3;COMPLET;;N1
 21012000;- Extracts, essences and concentrates, of tea or maté, and preparations with a basis of these extracts, essences or concentrates or with a basis of tea or maté;21;kg;35;18;;59.3;COMPLET;;N1
 21013000;- Roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof;21;kg;35;18;;59.3;COMPLET;;N1
-21021000;- Active yeasts;21;kg;25% or US$ 0.66 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N9 N1
+21021000;- Active yeasts;21;kg;25% or US$ 0.66 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
 21022000;"- Inactive yeasts; other single-cell micro-organisms, dead";21;kg;25;18;;47.5;COMPLET;;N1
 21023000;- Prepared baking powders;21;kg;25;18;;47.5;COMPLET;;N1
 21031000;- Soya sauce;21;kg;25;18;;47.5;COMPLET;;N1
@@ -932,7 +932,7 @@
 21069091;---- Food supplements;21;kg;0;18;;18;COMPLET;;N1
 21069092;---- Mineral premix used in fortification;21;kg;0;18;;18;COMPLET;;N1
 21069099;---- Other;21;kg;25;18;;47.5;COMPLET;;N1
-22011000;- Mineral waters and aerated waters;22;l;60;18;;88.8;COMPLET;;N10 N1
+22011000;- Mineral waters and aerated waters;22;l;60;18;;88.8;COMPLET;;N13 N1
 22019000;- Other;22;l;35;18;;59.3;COMPLET;;N1
 22021000;- Waters, including mineral waters and aerated waters, containing added sugar or other sweetening matter or flavoured;22;l;35;18;;59.3;COMPLET;;N1
 22029100;-- Non-alcoholic beer;22;l;35;18;;59.3;COMPLET;;N1
@@ -988,18 +988,18 @@
 24012000;- Tobacco, partly or wholly stemmed/stripped;24;kg;35;18;;59.3;COMPLET;;N1
 24013000;- Tobacco refuse;24;kg;35;18;;59.3;COMPLET;;N1
 24021000;- Cigars, cheroots and cigarillos, containing tobacco;24;kg;35;18;;59.3;COMPLET;;N1
-24022010;---Of length not exceeding 72 mm in length including the filter tip;24;kg;35;18;72462.2 unite_principale/mil;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
-24022090;--- Other;24;kg;35;18;72462.2 unite_principale/mil;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+24022010;---Of length not exceeding 72 mm in length including the filter tip;24;kg;35;18;72462.19 TZS/mil;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
+24022090;--- Other;24;kg;35;18;72462.19 TZS/mil;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
 24029000;- Other;24;kg;35;18;;59.3;COMPLET;;N1
 24031100;-- Water pipe tobacco specified in Subheading Note 1 to this Chapter;24;kg;35;18;;59.3;COMPLET;;N1
-24031900;-- Other;24;kg;35;18;36609.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-24039100;-- “Homogenised” or “reconstituted” tobacco;24;kg;35;18;36609.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-24039900;--Other;24;kg;35;18;36609.2 unite_principale/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
+24031900;-- Other;24;kg;35;18;36609.19 TZS/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
+24039100;-- “Homogenised” or “reconstituted” tobacco;24;kg;35;18;36609.19 TZS/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
+24039900;--Other;24;kg;35;18;36609.19 TZS/kg;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
 24041100;--Containing tobacco or reconstituted tobacco;24;kg;35;18;;59.3;COMPLET;;N1
 24041200;-- Other, containing nicotine;24;kg;35;18;;59.3;COMPLET;;N1
 24041900;-- Other;24;kg;35;18;;59.3;COMPLET;;N1
-25010010;--- Raw salt;25;kg;25;18;;47.5;COMPLET;;N1
-25010090;--- Other;25;kg;50;18;;77;COMPLET;;N13 N1
+25010010;--- Raw salt;25;kg;25;18;;47.5;COMPLET;;N16 N1
+25010090;--- Other;25;kg;50;18;;77;COMPLET;;N17 N1
 25020000;Unroasted iron pyrites;25;kg;0;18;;18;COMPLET;;N1
 25030000;Sulphur of all kinds, other than sublimed sulphur, precipitated sulphur and colloidal sulphur.;25;kg;0;18;;18;COMPLET;;N1
 25041000;- In powder or in flakes;25;kg;0;18;;18;COMPLET;;N1
@@ -1041,7 +1041,7 @@
 25191000;- Natural magnesium carbonate (magnesite);25;kg;10;18;;29.8;COMPLET;;N1
 25199000;- Other;25;kg;10;18;;29.8;COMPLET;;N1
 25201000;"-Gypsum; anhydrite";25;kg;0;18;;18;COMPLET;;N1
-25202000;- Plasters;25;kg;10;18;;29.8;COMPLET;;N14 N1
+25202000;- Plasters;25;kg;10;18;;29.8;COMPLET;;N18 N1
 25210000;"Limestone flux; limestone and other calcareous stone, of a kind used for the manufacture of lime or cement.";25;kg;10;18;;29.8;COMPLET;;N1
 25221000;- Quicklime;25;kg;10;18;;29.8;COMPLET;;N1
 25222000;- Slaked lime;25;kg;10;18;;29.8;COMPLET;;N1
@@ -1140,14 +1140,14 @@
 27101942;---- Residual fuel oils (marine, furnace and similar fuel oils) of a Kinematic viscosity of 180 centistrokes;27;l;0;18;;18;COMPLET;;N1
 27101943;---- Residual fuel oils (marine, furnace and similar fuel oils) of a Kinematic viscosity of 280 centistrokes;27;l;0;18;;18;COMPLET;;N1
 27101949;---- Other residual fuels;27;l;0;18;;18;COMPLET;;N1
-27101951;---- Lubricants in liquid form;27;l;25% or US$ 0.46 / l whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
-27101952;---- Lubricating greases;27;kg;25;18;;47.5;COMPLET;;N1
+27101951;---- Lubricants in liquid form;27;l;25% or US$ 0.46 / l whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N19 N1
+27101952;---- Lubricating greases;27;kg;25;18;;47.5;COMPLET;;N20 N1
 27101953;---- Mould release oils;27;l;10;18;;29.8;COMPLET;;N1
 27101954;---- Batching oils;27;l;25;18;;47.5;COMPLET;;N1
 27101955;---- Transformer oils;27;l;0;18;;18;COMPLET;;N1
-27101956;---- Non-lubrcating oils (cutting oils, coolants, anti-rust, brake fluids and similar oils nes.);27;l;25;18;;47.5;COMPLET;;N1
+27101956;---- Non-lubrcating oils (cutting oils, coolants, anti-rust, brake fluids and similar oils nes.);27;l;25;18;;47.5;COMPLET;;N21 N1
 27101957;---- White oil – Technical grade;27;l;0;18;;18;COMPLET;;N1
-27101959;---- Other;27;l;10;18;;29.8;COMPLET;;N1
+27101959;---- Other;27;l;10;18;;29.8;COMPLET;;N22 N1
 27102000;- Petroleum oils and oils obtained from bituminous minerals (other than crude) and preparations not elsewhere specified or included, containing by weight 70 % or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations, containing biodiesel, other than waste oils;27;kg;0;18;;18;COMPLET;;N1
 27109100;-- Containing polychlorinated biphenyls (PCBs), polychlorinated terphenyls (PCTs) or polybrominated biphenyls (PBBs);27;l;10;18;;29.8;COMPLET;;N1
 27109900;-- Other;27;l;10;18;;29.8;COMPLET;;N1
@@ -1158,12 +1158,12 @@
 27111900;-- Other;27;kg;0;18;;18;COMPLET;;N1
 27112100;-- Natural gas;27;kg;25;18;;47.5;COMPLET;;N1
 27112900;-- Other;27;kg;25;18;;47.5;COMPLET;;N1
-27121000;- Petroleum jelly;27;kg;25;18;;47.5;COMPLET;;N1
+27121000;- Petroleum jelly;27;kg;25;18;;47.5;COMPLET;;N21 N1
 27122000;- Paraffin wax containing by weight less than 0.75% of oil:;27;kg;0;18;;18;COMPLET;;N1
 27129000;- Other;27;kg;0;18;;18;COMPLET;;N1
 27131100;-- Not calcined;27;kg;0;18;;18;COMPLET;;N1
 27131200;-- Calcined;27;kg;0;18;;18;COMPLET;;N1
-27132000;- Petroleum bitumen;27;kg;10;18;;29.8;COMPLET;;N1
+27132000;- Petroleum bitumen;27;kg;10;18;;29.8;COMPLET;;N22 N1
 27139000;- Other residues of petroleum oils or of oils obtained from bituminous minerals;27;kg;10;18;;29.8;COMPLET;;N1
 27141000;- Bituminous or oil shale and tar sands;27;kg;10;18;;29.8;COMPLET;;N1
 27149000;- Other;27;kg;10;18;;29.8;COMPLET;;N1
@@ -1192,7 +1192,7 @@
 28054000;- Mercury;28;kg;0;18;;18;COMPLET;;N1
 28061000;- Hydrogen chloride (hydrochloric acid);28;kg;0;18;;18;COMPLET;;N1
 28062000;- Chlorosulphuric acid;28;kg;0;18;;18;COMPLET;;N1
-28070000;"Sulphuric acid; oleum.";28;kg;10;18;;29.8;COMPLET;;N1
+28070000;"Sulphuric acid; oleum.";28;kg;10;18;;29.8;COMPLET;;N23 N1
 28080000;"Nitric acid; sulphonitric acids.";28;kg;0;18;;18;COMPLET;;N1
 28091000;- Diphosphorus pentaoxide;28;kg;0;18;;18;COMPLET;;N1
 28092000;- Phosphoric acid and polyphosphoric acids;28;kg;0;18;;18;COMPLET;;N1
@@ -1297,7 +1297,7 @@
 28362000;- Disodium carbonate;28;kg;0;18;;18;COMPLET;;N1
 28363000;- Sodium hydrogencarbonate (sodium bicarbonate);28;kg;0;18;;18;COMPLET;;N1
 28364000;- Potassium carbonates;28;kg;0;18;;18;COMPLET;;N1
-28365000;- Calcium carbonate;28;kg;10;18;;29.8;COMPLET;;N16 N1
+28365000;- Calcium carbonate;28;kg;10;18;;29.8;COMPLET;;N24 N1
 28366000;- Barium carbonate;28;kg;0;18;;18;COMPLET;;N1
 28369100;-- Lithium carbonates;28;kg;0;18;;18;COMPLET;;N1
 28369200;-- Strontium carbonate;28;kg;0;18;;18;COMPLET;;N1
@@ -1864,36 +1864,36 @@
 32081010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N1
 32081020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N1
 32081090;--- Other;32;kg;35;18;;59.3;COMPLET;;N1
-32082010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N1
-32082020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N1
-32082090;--- Other;32;kg;35;18;;59.3;COMPLET;;N1
-32089010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N1
-32089020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N1
-32089090;--- Other;32;kg;35;18;;59.3;COMPLET;;N1
+32082010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N25 N1
+32082020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N26 N1
+32082090;--- Other;32;kg;35;18;;59.3;COMPLET;;N27 N1
+32089010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N28 N1
+32089020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N29 N1
+32089090;--- Other;32;kg;35;18;;59.3;COMPLET;;N30 N1
 32091010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N1
 32091020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N1
 32091090;--- Other;32;kg;35;18;;59.3;COMPLET;;N1
 32099010;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N1
 32099020;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N1
 32099090;--- Other;32;kg;35;18;;59.3;COMPLET;;N1
-32100010;- Water pigments of kind used for finishing leather;32;kg;10;18;;29.8;COMPLET;;N1
+32100010;- Water pigments of kind used for finishing leather;32;kg;10;18;;29.8;COMPLET;;N31 N1
 32100091;--- Lacquers;32;kg;35;18;;59.3;COMPLET;;N1
 32100092;--- Enamels;32;kg;35;18;;59.3;COMPLET;;N1
 32100093;--- Distempers;32;kg;35;18;;59.3;COMPLET;;N1
-32100099;--- Other;32;kg;35;18;;59.3;COMPLET;;N1
+32100099;--- Other;32;kg;35;18;;59.3;COMPLET;;N32 N1
 32110000;Prepared driers.;32;kg;0;18;;18;COMPLET;;N1
 32121000;- Stamping foils;32;kg;0;18;;18;COMPLET;;N1
 32129010;--- Pigments (including metallic powders and flakes) dispersed in non-aqueous media, in liquid or paste form, of a kind used in the manufacture of paints (including enamels);32;kg;0;18;;18;COMPLET;;N1
-32129090;--- Other;32;kg;10;18;;29.8;COMPLET;;N1
+32129090;--- Other;32;kg;10;18;;29.8;COMPLET;;N33 N1
 32131000;- Colours in sets;32;kg;25;18;;47.5;COMPLET;;N1
 32139000;- Other;32;kg;25;18;;47.5;COMPLET;;N1
 32141010;--- Glaziers’putty, grafting putty;32;kg;25;18;;47.5;COMPLET;;N1
 32141090;"--- Resin cements, caulking compounds and other mastics; painters’ fillings";32;kg;25;18;;47.5;COMPLET;;N1
 32149000;- Other;32;kg;25;18;;47.5;COMPLET;;N1
 32151100;-- Black;32;kg;10;18;;29.8;COMPLET;;N1
-32151900;-- Other;32;kg;10;18;;29.8;COMPLET;;N1
+32151900;-- Other;32;kg;10;18;;29.8;COMPLET;;N34 N1
 32159010;--- Ink for ball point pens;32;kg;0;18;;18;COMPLET;;N1
-32159090;---Other;32;kg;25;18;;47.5;COMPLET;;N1
+32159090;---Other;32;kg;25;18;;47.5;COMPLET;;N35 N1
 33011200;-- Of orange;33;kg;0;18;;18;COMPLET;;N1
 33011300;-- Of lemon;33;kg;0;18;;18;COMPLET;;N1
 33011900;-- Other;33;kg;0;18;;18;COMPLET;;N1
@@ -1925,27 +1925,27 @@
 33079000;-Other;33;kg;25;18;;47.5;COMPLET;;N1
 34011100;-- For toilet use (including medicated products);34;kg;35;18;;59.3;COMPLET;;N1
 34011900;-- Other;34;kg;35;18;;59.3;COMPLET;;N1
-34012010;--- Noodles for manufacture of toilet soap;34;kg;35;18;;59.3;COMPLET;;N1
+34012010;--- Noodles for manufacture of toilet soap;34;kg;35;18;;59.3;COMPLET;;N36 N1
 34012090;--- Other;34;kg;35;18;;59.3;COMPLET;;N1
 34013000;- Organic surface-active products and preparations for washing the skin, in the form of liquid or cream and put up for retail sale, whether or not containing soap;34;kg;35;18;;59.3;COMPLET;;N1
-34023100;-- Linear alkylbenzene sulphonic acids and their salts;34;kg;10;18;;29.8;COMPLET;;N1
-34023900;-- Other;34;kg;10;18;;29.8;COMPLET;;N1
-34024100;-- Cationic;34;kg;10;18;;29.8;COMPLET;;N1
+34023100;-- Linear alkylbenzene sulphonic acids and their salts;34;kg;10;18;;29.8;COMPLET;;N37 N1
+34023900;-- Other;34;kg;10;18;;29.8;COMPLET;;N38 N1
+34024100;-- Cationic;34;kg;10;18;;29.8;COMPLET;;N39 N1
 34024200;-- Non-ionic;34;kg;10;18;;29.8;COMPLET;;N1
-34024900;-- Other;34;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17 N1
-34025000;- Preparations put up for retail sale;34;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17 N1
-34029000;- Other;34;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
+34024900;-- Other;34;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N40 N1
+34025000;- Preparations put up for retail sale;34;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N41 N1
+34029000;- Other;34;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
 34031100;-- Preparations for the treatment of textile materials, leather, furskins or other materials;34;kg;25;18;;47.5;COMPLET;;N1
 34031900;-- Other;34;kg;25;18;;47.5;COMPLET;;N1
 34039100;-- Preparations for the treatment of textile materials, leather, furskins or other materials;34;kg;25;18;;47.5;COMPLET;;N1
-34039900;-- Other;34;kg;25;18;;47.5;COMPLET;;N1
+34039900;-- Other;34;kg;25;18;;47.5;COMPLET;;N43 N1
 34042000;- Of poly( oxyethylene) (polyethylene glycol);34;kg;0;18;;18;COMPLET;;N1
 34049000;- Other;34;kg;0;18;;18;COMPLET;;N1
 34051000;- Polishes, creams and similar preparations for footwear or leather;34;kg;35;18;;59.3;COMPLET;;N1
 34052000;- Polishes, creams and similar preparations for the maintenance of wooden furniture, floors or other woodwork;34;kg;35;18;;59.3;COMPLET;;N1
 34053000;- Polishes and similar preparations for coachwork, other than metal polishes;34;kg;35;18;;59.3;COMPLET;;N1
 34054000;- Scouring pastes and powders and other scouring preparations;34;kg;35;18;;59.3;COMPLET;;N1
-34059000;- Other;34;kg;35;18;;59.3;COMPLET;;N1
+34059000;- Other;34;kg;35;18;;59.3;COMPLET;;N44 N1
 34060000;Candles, tapers and the like.;34;kg;35;18;;59.3;COMPLET;;N1
 34070000;"Modelling pastes, including those put up for children’s amusement; preparations known as “dental wax” or as “dental impression compounds”, put up in sets, in packings for retail sale or in plates, horseshoe shapes, sticks or similar forms; other preparations for use in dentistry, with a basis of plaster (of calcined gypsum or calcium sulphate).";34;kg;10;18;;29.8;COMPLET;;N1
 35011000;- Casein;35;kg;10;18;;29.8;COMPLET;;N1
@@ -1959,7 +1959,7 @@
 35051000;- Dextrins and other modified starches;35;kg;10;18;;29.8;COMPLET;;N1
 35052000;- Glues;35;kg;35;18;;59.3;COMPLET;;N1
 35061000;- Products suitable for use as glues or adhesives, put up for retail sale as glues or adhesives, not exceeding a net weight of 1 kg;35;kg;25;18;;47.5;COMPLET;;N1
-35069100;-- Adhesives based on polymers of heading 39.01 to 39.13 or on rubber;35;kg;25;18;;47.5;COMPLET;;N1
+35069100;-- Adhesives based on polymers of heading 39.01 to 39.13 or on rubber;35;kg;25;18;;47.5;COMPLET;;N45 N1
 35069900;-- Other;35;kg;25;18;;47.5;COMPLET;;N1
 35071000;- Rennet and concentrates thereof;35;kg;0;18;;18;COMPLET;;N1
 35079000;- Other;35;kg;0;18;;18;COMPLET;;N1
@@ -1973,7 +1973,7 @@
 36036000;- Electric detonators;36;kg;10;18;;29.8;COMPLET;;N1
 36041000;- Fireworks;36;kg;25;18;;47.5;COMPLET;;N1
 36049000;- Other;36;kg;25;18;;47.5;COMPLET;;N1
-36050000;Matches, other than pyrotechnic articles of heading 36.04.;36;kg;25% or US$ 1.35 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N19 N1
+36050000;Matches, other than pyrotechnic articles of heading 36.04.;36;kg;25% or US$ 1.35 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N46 N1
 36061000;- Liquid or liquefied-gas fuels in containers of a kind used for filling or refilling cigarette or similar lighters and of a capacity not exceeding 300 cm3;36;kg;25;18;;47.5;COMPLET;;N1
 36069000;- Other;36;kg;25;18;;47.5;COMPLET;;N1
 37011000;- For X-ray m²;37;;0;18;;18;COMPLET;;N1
@@ -2004,7 +2004,7 @@
 37050000;Photographic plates and film, exposed and developed, other than cinematographic film.;37;kg;10;18;;29.8;COMPLET;;N1
 37061000;- Of a width of 35 mm or more;37;m;10;18;;29.8;COMPLET;;N1
 37069000;- Other;37;m;10;18;;29.8;COMPLET;;N1
-37071000;- Sensitising emulsions;37;kg;10;18;;29.8;COMPLET;;N1
+37071000;- Sensitising emulsions;37;kg;10;18;;29.8;COMPLET;;N47 N1
 37079000;- Other;37;kg;10;18;;29.8;COMPLET;;N1
 38011000;- Artificial graphite;38;kg;0;18;;18;COMPLET;;N1
 38012000;- Colloidal or semi-colloidal graphite;38;kg;0;18;;18;COMPLET;;N1
@@ -2036,7 +2036,7 @@
 38099200;-- Of a kind used in the paper or like industries;38;kg;0;18;;18;COMPLET;;N1
 38099300;-- Of a kind used in the leather or like industries;38;kg;0;18;;18;COMPLET;;N1
 38101000;"- Pickling preparations for metal surfaces; soldering, brazing or welding powders and pastes consisting of metal and other materials";38;kg;10;18;;29.8;COMPLET;;N1
-38109000;- Other;38;kg;10;18;;29.8;COMPLET;;N1
+38109000;- Other;38;kg;10;18;;29.8;COMPLET;;N48 N1
 38111100;-- Based on lead compounds;38;kg;10;18;;29.8;COMPLET;;N1
 38111900;-- Other;38;kg;10;18;;29.8;COMPLET;;N1
 38112100;-- Containing petroleum oils or oils obtained from bituminous minerals;38;kg;10;18;;29.8;COMPLET;;N1
@@ -2055,11 +2055,11 @@
 38140090;--- Other;38;kg;0;18;;18;COMPLET;;N1
 38151100;-- With nickel or nickel compounds as the active substance;38;kg;10;18;;29.8;COMPLET;;N1
 38151200;-- With precious metal or precious metal compounds as the active substance;38;kg;10;18;;29.8;COMPLET;;N1
-38151900;-- Other;38;kg;10;18;;29.8;COMPLET;;N1
-38159000;- Other;38;kg;10;18;;29.8;COMPLET;;N1
+38151900;-- Other;38;kg;10;18;;29.8;COMPLET;;N49 N1
+38159000;- Other;38;kg;10;18;;29.8;COMPLET;;N21 N1
 38160000;Refractory cements, mortars, concretes and similar compositions, including dolomite ramming mix, other than products of heading 38.01.;38;kg;0;18;;18;COMPLET;;N1
 38170000;Mixed alkylbenzenes and mixed alkylnaphthalenes, other than those of heading 27.07 or 29.02.;38;kg;0;18;;18;COMPLET;;N1
-38180000;"Chemical elements doped for use in electronics, in the form of discs, wafers or similar forms; chemical compounds doped for use in electronics.";38;kg;10;18;;29.8;COMPLET;;N1
+38180000;"Chemical elements doped for use in electronics, in the form of discs, wafers or similar forms; chemical compounds doped for use in electronics.";38;kg;10;18;;29.8;COMPLET;;N43 N1
 38190000;Hydraulic brake fluids and other prepared liquids for hydraulic transmission, not containing or containing less than 70 % by weight of petroleum oils or oils obtained from bituminous minerals.;38;kg;25;18;;47.5;COMPLET;;N1
 38200000;Anti-freezing preparations and prepared de-icing fluids.;38;kg;10;18;;29.8;COMPLET;;N1
 38210000;Prepared culture media for the development or maintenance of microcro-organisms (including viruses and the like) or of plant, human or animal cells.;38;kg;0;18;;18;COMPLET;;N1
@@ -2143,14 +2143,14 @@
 39046100;-- Polytetrafluoroethylene;39;kg;0;18;;18;COMPLET;;N1
 39046900;-- Other;39;kg;0;18;;18;COMPLET;;N1
 39049000;- Other;39;kg;0;18;;18;COMPLET;;N1
-39051200;-- In aqueous dispersion;39;kg;10;18;;29.8;COMPLET;;N1
+39051200;-- In aqueous dispersion;39;kg;10;18;;29.8;COMPLET;;N50 N1
 39051900;-- Other;39;kg;10;18;;29.8;COMPLET;;N1
 39052100;-- In aqueous dispersion;39;kg;10;18;;29.8;COMPLET;;N1
 39052900;-- Other;39;kg;10;18;;29.8;COMPLET;;N1
 39053000;- Poly(vinyl alcohol), whether or not containing unhydrolysed acetate groups;39;kg;0;18;;18;COMPLET;;N1
 39059100;-- Copolymers;39;kg;10;18;;29.8;COMPLET;;N1
 39059900;-- Other;39;kg;10;18;;29.8;COMPLET;;N1
-39061000;- Poly(methyl methacrylate);39;kg;10;18;;29.8;COMPLET;;N1
+39061000;- Poly(methyl methacrylate);39;kg;10;18;;29.8;COMPLET;;N51 N1
 39069000;- Other;39;kg;10;18;;29.8;COMPLET;;N1
 39071000;- Polyacetals;39;kg;0;18;;18;COMPLET;;N1
 39072100;-- Bis(polyoxyethylene) methylphosphonate;39;kg;0;18;;18;COMPLET;;N1
@@ -2162,7 +2162,7 @@
 39076900;-- Other;39;kg;0;18;;18;COMPLET;;N1
 39077000;-Poly (lactic acid);39;kg;0;18;;18;COMPLET;;N1
 39079100;-- Unsaturated;39;kg;10;18;;29.8;COMPLET;;N1
-39079900;-- Other;39;kg;10;18;;29.8;COMPLET;;N1
+39079900;-- Other;39;kg;10;18;;29.8;COMPLET;;N43 N1
 39081000;- Polyamide‑6, ‑11, ‑12, ‑6, 6, ‑6, 9, -6, 10 or ‑6, 12;39;kg;0;18;;18;COMPLET;;N1
 39089000;- Other;39;kg;0;18;;18;COMPLET;;N1
 39091000;"- Urea resins; thiourea resins";39;kg;10;18;;29.8;COMPLET;;N1
@@ -2188,9 +2188,9 @@
 39152000;- Of polymers of styrene;39;kg;0;18;;18;COMPLET;;N1
 39153000;- Of polymers of vinyl chloride;39;kg;0;18;;18;COMPLET;;N1
 39159000;- Of other plastics;39;kg;0;18;;18;COMPLET;;N1
-39161000;- Of polymers of ethylene;39;kg;10;18;;29.8;COMPLET;;N8 N1
-39162000;- Of polymers of vinyl chloride;39;kg;10;18;;29.8;COMPLET;;N8 N1
-39169000;- Of other plastics;39;kg;10;18;;29.8;COMPLET;;N8 N1
+39161000;- Of polymers of ethylene;39;kg;10;18;;29.8;COMPLET;;N11 N1
+39162000;- Of polymers of vinyl chloride;39;kg;10;18;;29.8;COMPLET;;N11 N1
+39169000;- Of other plastics;39;kg;10;18;;29.8;COMPLET;;N52 N1
 39171000;- Artificial guts (sausage casings) of hardened protein or of cellulosic materials;39;kg;0;18;;18;COMPLET;;N1
 39172100;-- Of polymers of ethylene;39;kg;25;18;;47.5;COMPLET;;N1
 39172200;-- Of polymers of propylene;39;kg;25;18;;47.5;COMPLET;;N1
@@ -2199,14 +2199,14 @@
 39173100;-- Flexible tubes, pipes and hoses, having a minimum burst pressure of 27.6 MPa;39;kg;25;18;;47.5;COMPLET;;N1
 39173200;-- Other, not reinforced or otherwise combined with other materials, without fittings;39;kg;25;18;;47.5;COMPLET;;N1
 39173300;-- Other, not reinforced or otherwise combined with other materials, with fittings;39;kg;25;18;;47.5;COMPLET;;N1
-39173900;-- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39173900;-- Other;39;kg;25;18;;47.5;COMPLET;;N43 N1
 39174000;- Fittings;39;kg;25;18;;47.5;COMPLET;;N1
 39181000;- Of polymers of vinyl chloride;39;kg;25;18;;47.5;COMPLET;;N1
 39189000;- Of other plastics;39;kg;25;18;;47.5;COMPLET;;N1
-39191000;- In rolls of a width not exceeding 20 cm;39;kg;25;18;;47.5;COMPLET;;N1
+39191000;- In rolls of a width not exceeding 20 cm;39;kg;25;18;;47.5;COMPLET;;N53 N1
 39199010;--- In rolls of a width exceeding 20 cm, unprinted;39;kg;10;18;;29.8;COMPLET;;N1
-39199090;---Other;39;kg;25;18;;47.5;COMPLET;;N1
-39201010;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
+39199090;---Other;39;kg;25;18;;47.5;COMPLET;;N54 N1
+39201010;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N55 N1
 39201090;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39202010;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39202090;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
@@ -2226,7 +2226,7 @@
 39206310;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39206390;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39206910;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
-39206990;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39206990;--- Other;39;kg;25;18;;47.5;COMPLET;;N43 N1
 39207110;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39207190;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39207310;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
@@ -2242,7 +2242,7 @@
 39209410;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39209490;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39209910;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
-39209990;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39209990;--- Other;39;kg;25;18;;47.5;COMPLET;;N43 N1
 39211110;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39211190;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39211210;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
@@ -2250,34 +2250,34 @@
 39211310;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39211390;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39211410;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
-39211490;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39211490;--- Other;39;kg;25;18;;47.5;COMPLET;;N43 N1
 39211910;--- Unprinted;39;kg;10;18;;29.8;COMPLET;;N1
 39211990;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39219010;--- Unprinted;39;kg;25;18;;47.5;COMPLET;;N1
-39219090;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39219090;--- Other;39;kg;25;18;;47.5;COMPLET;;N56 N1
 39221000;- Baths, shower-baths, sinks and wash-basins;39;kg;25;18;;47.5;COMPLET;;N1
 39222000;- Lavatory seats and covers;39;kg;25;18;;47.5;COMPLET;;N1
 39229000;- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39231000;- Boxes, cases, crates and similar articles;39;kg;25;18;;47.5;COMPLET;;N1
 39232100;-- Of polymers of ethylene;39;kg;25;18;;47.5;COMPLET;;N1
-39232900;-- Of other plastics;39;kg;25;18;;47.5;COMPLET;;N1
+39232900;-- Of other plastics;39;kg;25;18;;47.5;COMPLET;;N57 N1
 39233000;- Carboys, bottles, flasks and similar articles;39;kg;25;18;;47.5;COMPLET;;N1
 39234000;- Spools, cops, bobbins and similar supports;39;kg;10;18;;29.8;COMPLET;;N1
 39235010;--- Inserts;39;kg;10;18;;29.8;COMPLET;;N1
-39235090;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39235090;--- Other;39;kg;25;18;;47.5;COMPLET;;N58 N1
 39239090;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39241000;- Tableware and kitchenware;39;kg;25;18;;47.5;COMPLET;;N1
 39249000;- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39251000;- Reservoirs, tanks, vats and similar containers, of a capacity exceeding 300 l;39;kg;35;18;;59.3;COMPLET;;N1
-39252000;- Doors, windows and their frames and thresholds for doors;39;kg;35;18;;59.3;COMPLET;;N20 N1
+39252000;- Doors, windows and their frames and thresholds for doors;39;kg;35;18;;59.3;COMPLET;;N59 N1
 39253000;- Shutters, blinds (including Venetian blinds) and similar articles and parts thereof;39;kg;25;18;;47.5;COMPLET;;N1
 39259000;- Other;39;kg;25;18;;47.5;COMPLET;;N1
 39261000;- Office or school supplies;39;kg;25;18;;47.5;COMPLET;;N1
 39262000;- Articles of apparel and clothing accessories (including gloves, mittens, and mitts);39;kg;25;18;;47.5;COMPLET;;N1
 39263000;- Fittings for furniture, coachwork of the like;39;kg;25;18;;47.5;COMPLET;;N1
-39264000;- Statuettes and other ornamental articles;39;kg;25;18;;47.5;COMPLET;;N1
+39264000;- Statuettes and other ornamental articles;39;kg;25;18;;47.5;COMPLET;;N60 N1
 39269010;--- Floats for fishing nets;39;kg;10;18;;29.8;COMPLET;;N1
-39269090;--- Other;39;kg;25;18;;47.5;COMPLET;;N1
+39269090;--- Other;39;kg;25;18;;47.5;COMPLET;;N61 N1
 40011000;- Natural rubber latex, whether or not pre-vulcanised;40;kg;0;18;;18;COMPLET;;N1
 40012100;-- Smoked sheets;40;kg;0;18;;18;COMPLET;;N1
 40012200;-- Technically specified natural rubber (TSNR);40;kg;0;18;;18;COMPLET;;N1
@@ -2332,7 +2332,7 @@
 40112010;--- With a rim size below 17 inches;40;u;25;18;;47.5;COMPLET;;N1
 40112020;--- With a rim size of 17 inches and above;40;u;10;18;;29.8;COMPLET;;N1
 40113000;- Of a kind used on aircraft;40;u;0;18;;18;COMPLET;;N1
-40114000;- Of a kind used on motorcycles;40;u;25;18;;47.5;COMPLET;;N21 N1
+40114000;- Of a kind used on motorcycles;40;u;25;18;;47.5;COMPLET;;N62 N1
 40115000;- Of a kind used on bicycles;40;u;10;18;;29.8;COMPLET;;N1
 40117000;- Of a kind used on agricultural or forestry vehicles and machines;40;u;10;18;;29.8;COMPLET;;N1
 40118000;- Of a kind used on construction, mining or industrial handling vehicles and machines;40;u;10;18;;29.8;COMPLET;;N1
@@ -2500,26 +2500,26 @@
 44101200;-- Oriented strand board (OSB);44;kg;25;18;;47.5;COMPLET;;N1
 44101900;-- Other;44;kg;25;18;;47.5;COMPLET;;N1
 44109000;- Other;44;kg;25;18;;47.5;COMPLET;;N1
-44111200;-- Of a thickness not exceeding 5 mm;44;kg;35;18;;59.3;COMPLET;;N22 N1
-44111300;-- Of a thickness exceeding 5 mm but not exceeding 9 mm;44;kg;35;18;;59.3;COMPLET;;N22 N1
-44111400;-- Of a thickness exceeding 9 mm;44;kg;35;18;;59.3;COMPLET;;N22 N1
-44119200;-- Of a density exceeding 0.8 g/cm³;44;kg;35;18;;59.3;COMPLET;;N22 N1
-44119300;-- Of a density exceeding 0.5 g/cm³ but not exceeding 0.8 g/cm³;44;kg;35;18;;59.3;COMPLET;;N22 N1
-44119400;-- Of a density not exceeding 0.5 g/cm³;44;kg;35;18;;59.3;COMPLET;;N22 N1
-44121000;- Of bamboo m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44123100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44123300;-- Other, with at least one outer ply of non-coniferous wood of the species alder (Alnus spp.), ash (Fraxinus spp), beech (Fagus spp.), birch (Betula spp.), cherry (Prunus spp.), chestnus(Castanea spp.), elm (Ulmus spp), eucalyptus(Eucalyptus spp.), hickory (Carya spp.) horse chestnut (Aesculus spp.), lime (Tilia spp.),maple (Acer spp.) oak (Quercus spp.) plane tree (Planatus spp.), poplar and aspen(Populus spp.),robinia(Robinia spp.), tulipwood (Liriodendron spp.) or walnut (Juglans spp.) m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44123400;-- Other, with at least one outer ply of non-coniferous wood not specified under subheading 4412.33 m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44123900;--Other, with both outer plies of coniferous wood. m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44124100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44124200;-- Other, with at least one outer ply of non-coniferous wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44124900;-- Other, with both outer plies of coniferous wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44125100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44125200;-- Other, with at least one outer ply of non-coniferous wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44125900;-- Other, with both outer plies of coniferous wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44129100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44129200;-- Other, with at least one outer ply of non-coniferous wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
-44129900;-- Other, with both outer plies of coniferous wood m³;44;;35;18;;59.3;COMPLET;;N22 N1
+44111200;-- Of a thickness not exceeding 5 mm;44;kg;35;18;;59.3;COMPLET;;N63 N1
+44111300;-- Of a thickness exceeding 5 mm but not exceeding 9 mm;44;kg;35;18;;59.3;COMPLET;;N63 N1
+44111400;-- Of a thickness exceeding 9 mm;44;kg;35;18;;59.3;COMPLET;;N63 N1
+44119200;-- Of a density exceeding 0.8 g/cm³;44;kg;35;18;;59.3;COMPLET;;N63 N1
+44119300;-- Of a density exceeding 0.5 g/cm³ but not exceeding 0.8 g/cm³;44;kg;35;18;;59.3;COMPLET;;N63 N1
+44119400;-- Of a density not exceeding 0.5 g/cm³;44;kg;35;18;;59.3;COMPLET;;N63 N1
+44121000;- Of bamboo m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44123100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44123300;-- Other, with at least one outer ply of non-coniferous wood of the species alder (Alnus spp.), ash (Fraxinus spp), beech (Fagus spp.), birch (Betula spp.), cherry (Prunus spp.), chestnus(Castanea spp.), elm (Ulmus spp), eucalyptus(Eucalyptus spp.), hickory (Carya spp.) horse chestnut (Aesculus spp.), lime (Tilia spp.),maple (Acer spp.) oak (Quercus spp.) plane tree (Planatus spp.), poplar and aspen(Populus spp.),robinia(Robinia spp.), tulipwood (Liriodendron spp.) or walnut (Juglans spp.) m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44123400;-- Other, with at least one outer ply of non-coniferous wood not specified under subheading 4412.33 m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44123900;--Other, with both outer plies of coniferous wood. m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44124100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44124200;-- Other, with at least one outer ply of non-coniferous wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44124900;-- Other, with both outer plies of coniferous wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44125100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44125200;-- Other, with at least one outer ply of non-coniferous wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44125900;-- Other, with both outer plies of coniferous wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44129100;-- With at least one outer ply of tropical wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44129200;-- Other, with at least one outer ply of non-coniferous wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
+44129900;-- Other, with both outer plies of coniferous wood m³;44;;35;18;;59.3;COMPLET;;N63 N1
 44130000;Densified wood, in blocks, plates, strips or profile shapes.;44;kg;25;18;;47.5;COMPLET;;N1
 44141000;- Of tropical wood;44;kg;35;18;;59.3;COMPLET;;N1
 44149000;- Other;44;kg;35;18;;59.3;COMPLET;;N1
@@ -2605,31 +2605,31 @@
 48024000;- Wallpaper base;48;kg;10;18;;29.8;COMPLET;;N1
 48025400;-- Weighing less than 40 g/m²;48;kg;10;18;;29.8;COMPLET;;N1
 48025500;-- Weighing 40 g/m² or more but not more than 150 g/m², in rolls;48;kg;10;18;;29.8;COMPLET;;N1
-48025600;-- Weighing 40 g/m² or more but not more than 150 g/m², in sheets wiith one side not exceeding 435 mm and the other side not exceeding 297 mm in the unfolded state;48;kg;25% or US$ 0.2 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
-48025700;-- Other, weighing 40 g/m² or more but not more than 150 g/m²;48;kg;10% or US$ 0.08 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N24 N1
+48025600;-- Weighing 40 g/m² or more but not more than 150 g/m², in sheets wiith one side not exceeding 435 mm and the other side not exceeding 297 mm in the unfolded state;48;kg;25% or US$ 0.2 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N64 N1
+48025700;-- Other, weighing 40 g/m² or more but not more than 150 g/m²;48;kg;10% or US$ 0.08 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N65 N1
 48025800;-- Weighing more than 150 g/m²;48;kg;10;18;;29.8;COMPLET;;N1
 48026100;-- In rolls;48;kg;10;18;;29.8;COMPLET;;N1
 48026200;-- In sheets with one side not exceeding 435 mm and the other side not exceeding 297 mm in the unfolded state;48;kg;10;18;;29.8;COMPLET;;N1
 48026900;-- Other;48;kg;10;18;;29.8;COMPLET;;N1
 48030000;Toilet or facial tissue stock, towel or napkin stock and similar paper of a kind used for household or sanitary purposes, cellulose wadding and webs of cellulose fibres, whether or not creped, crinkled, embossed, perforated, surface-coloured, surface-decorated or printed, in rolls or sheets.;48;kg;10;18;;29.8;COMPLET;;N1
 48041100;-- Unbleached;48;kg;25;18;;47.5;COMPLET;;N1
-48041910;--- Dry battery Kraftliner;48;kg;0;18;;18;COMPLET;;N1
-48041990;--- Other;48;kg;10;18;;29.8;COMPLET;;N1
+48041910;--- Dry battery Kraftliner;48;kg;0;18;;18;COMPLET;;N66 N1
+48041990;--- Other;48;kg;10;18;;29.8;COMPLET;;N66 N1
 48042100;-- Unbleached;48;kg;25;18;;47.5;COMPLET;;N1
 48042900;-- Other;48;kg;10;18;;29.8;COMPLET;;N1
 48043100;-- Unbleached;48;kg;25;18;;47.5;COMPLET;;N1
-48043900;-- Other;48;kg;10;18;;29.8;COMPLET;;N1
+48043900;-- Other;48;kg;10;18;;29.8;COMPLET;;N66 N1
 48044100;-- Unbleached;48;kg;25;18;;47.5;COMPLET;;N1
 48044200;-- Bleached uniformly throughout the mass and of which more than 95% by weight of the total fibre content consists of wood fibres obtained by a chemical process;48;kg;10;18;;29.8;COMPLET;;N1
 48044900;-- Other;48;kg;10;18;;29.8;COMPLET;;N1
-48045100;-- Unbleached;48;kg;25;18;;47.5;COMPLET;;N25 N1
-48045200;-- Bleached uniformly throughout the mass and of which more than 95% by weight of the total fibre content consists of wood obtained by a chemical process;48;kg;10;18;;29.8;COMPLET;;N1
+48045100;-- Unbleached;48;kg;25;18;;47.5;COMPLET;;N67 N1
+48045200;-- Bleached uniformly throughout the mass and of which more than 95% by weight of the total fibre content consists of wood obtained by a chemical process;48;kg;10;18;;29.8;COMPLET;;N66 N1
 48045900;-- Other;48;kg;10;18;;29.8;COMPLET;;N1
 48051100;-- Semi-chemical fluting paper;48;kg;10;18;;29.8;COMPLET;;N1
 48051200;-- Straw fluting paper;48;kg;10;18;;29.8;COMPLET;;N1
 48051900;-- Other;48;kg;10;18;;29.8;COMPLET;;N1
-48052400;-- Weighing 150 g/m² or less;48;kg;25;18;;47.5;COMPLET;;N1
-48052500;-- Weighing more than 150 g/m²;48;kg;25;18;;47.5;COMPLET;;N1
+48052400;-- Weighing 150 g/m² or less;48;kg;25;18;;47.5;COMPLET;;N68 N1
+48052500;-- Weighing more than 150 g/m²;48;kg;25;18;;47.5;COMPLET;;N68 N1
 48053000;- Sulphite wrapping paper;48;kg;10;18;;29.8;COMPLET;;N1
 48054000;- Filter paper and paperboard;48;kg;0;18;;18;COMPLET;;N1
 48055000;- Felt paper and paperboard;48;kg;0;18;;18;COMPLET;;N1
@@ -2639,7 +2639,7 @@
 48061000;- Vegetable parchment;48;kg;10;18;;29.8;COMPLET;;N1
 48062000;- Greaseproof papers;48;kg;10;18;;29.8;COMPLET;;N1
 48063000;- Tracing papers;48;kg;10;18;;29.8;COMPLET;;N1
-48064000;- Glassine and other glazed transparent or translucent papers;48;kg;10;18;;29.8;COMPLET;;N1
+48064000;- Glassine and other glazed transparent or translucent papers;48;kg;10;18;;29.8;COMPLET;;N69 N1
 48070000;Composite paper and paperboard (made by sticking flat layers of paper or paperboard together with an adhesive), not surface-coated or impregnated, whether or not internally reinforced, in rolls or sheets.;48;kg;10;18;;29.8;COMPLET;;N1
 48081000;- Corrugated paper and paperboard, whether or not perforated;48;kg;10;18;;29.8;COMPLET;;N1
 48084000;- Kraft paper, creped or crinkled, whether or not embossed or perforated;48;kg;10;18;;29.8;COMPLET;;N1
@@ -2665,7 +2665,7 @@
 48115990;--- Other;48;kg;10;18;;29.8;COMPLET;;N1
 48116010;--- Unprinted;48;kg;0;18;;18;COMPLET;;N1
 48116090;--- Other;48;kg;10;18;;29.8;COMPLET;;N1
-48119000;- Other paper, paperboard, cellulose wadding and webs of cellulose fibres;48;kg;25;18;;47.5;COMPLET;;N21 N1
+48119000;- Other paper, paperboard, cellulose wadding and webs of cellulose fibres;48;kg;25;18;;47.5;COMPLET;;N70 N1
 48120000;Filter blocks, slabs and plates, of paper pulp.;48;kg;0;18;;18;COMPLET;;N1
 48131000;- In the form of booklets or tubes;48;kg;0;18;;18;COMPLET;;N1
 48132000;- In rolls of a width not exceeding 5 cm;48;kg;0;18;;18;COMPLET;;N1
@@ -2684,10 +2684,10 @@
 48189000;- Other;48;kg;35;18;;59.3;COMPLET;;N1
 48191000;- Cartons, boxes and cases, of corrugated paper or paperboard;48;kg;35;18;;59.3;COMPLET;;N1
 48192010;--- Skillets, free hinge lid packets;48;kg;35;18;;59.3;COMPLET;;N1
-48192090;--- Other;48;kg;35;18;;59.3;COMPLET;;N1
-48193000;- Sacks and bags, having a base of a width of 40 cm or more;48;kg;35;18;;59.3;COMPLET;;N1
-48194000;- Other sacks and bags, including cones;48;kg;35;18;;59.3;COMPLET;;N1
-48195000;- Other packing containers, including record sleeves;48;kg;35;18;;59.3;COMPLET;;N1
+48192090;--- Other;48;kg;35;18;;59.3;COMPLET;;N71 N1
+48193000;- Sacks and bags, having a base of a width of 40 cm or more;48;kg;35;18;;59.3;COMPLET;;N58 N1
+48194000;- Other sacks and bags, including cones;48;kg;35;18;;59.3;COMPLET;;N72 N1
+48195000;- Other packing containers, including record sleeves;48;kg;35;18;;59.3;COMPLET;;N58 N1
 48196000;- Box files, letter trays, storage boxes and similar articles, of a kind used in offices, shops or the like;48;kg;35;18;;59.3;COMPLET;;N1
 48201000;- Registers, account books, note books, order books, receipt books, letter pads, memorandum pads, diaries and similar articles;48;kg;35;18;;59.3;COMPLET;;N1
 48202000;- Exercise books;48;kg;35;18;;59.3;COMPLET;;N1
@@ -2695,9 +2695,9 @@
 48204000;- Manifold business forms and interleaved carbon sets;48;kg;35;18;;59.3;COMPLET;;N1
 48205000;- Albums for samples or for collections;48;kg;35;18;;59.3;COMPLET;;N1
 48209000;- Other;48;kg;35;18;;59.3;COMPLET;;N1
-48211010;--- For labelling dry cell batteries;48;kg;10;18;;29.8;COMPLET;;N1
-48211090;--- Other;48;kg;35;18;;59.3;COMPLET;;N1
-48219000;- Other;48;kg;10;18;;29.8;COMPLET;;N1
+48211010;--- For labelling dry cell batteries;48;kg;10;18;;29.8;COMPLET;;N73 N1
+48211090;--- Other;48;kg;35;18;;59.3;COMPLET;;N73 N1
+48219000;- Other;48;kg;10;18;;29.8;COMPLET;;N58 N1
 48221000;- Of a kind used for winding textile yarn;48;kg;10;18;;29.8;COMPLET;;N1
 48229000;- Other;48;kg;10;18;;29.8;COMPLET;;N1
 48232000;- Filter paper and paperboard;48;kg;25;18;;47.5;COMPLET;;N1
@@ -2734,9 +2734,9 @@
 50040000;Silk yarn (other than yarn spun from silk waste) not put up for retail sale.;50;kg;10;18;;29.8;COMPLET;;N1
 50050000;Yarn spun from silk waste, not put up for retail sale.;50;kg;10;18;;29.8;COMPLET;;N1
 50060000;"Silk yarn and yarn spun from silk waste, put up for retail sale; silk-worm gut.";50;kg;10;18;;29.8;COMPLET;;N1
-50071000;- Fabrics of noil silk;50;kg;25;18;;47.5;COMPLET;;N1
-50072000;- Other fabrics, containing 85% or more by weight of silk or of silk waste other than noil silk;50;kg;25;18;;47.5;COMPLET;;N1
-50079000;- Other fabrics;50;kg;25;18;;47.5;COMPLET;;N1
+50071000;- Fabrics of noil silk;50;kg;25;18;;47.5;COMPLET;;N74 N1
+50072000;- Other fabrics, containing 85% or more by weight of silk or of silk waste other than noil silk;50;kg;25;18;;47.5;COMPLET;;N75 N1
+50079000;- Other fabrics;50;kg;25;18;;47.5;COMPLET;;N76 N1
 51011100;-- Shorn wool;51;kg;0;18;;18;COMPLET;;N1
 51011900;-- Other;51;kg;0;18;;18;COMPLET;;N1
 51012100;-- Shorn wool;51;kg;0;18;;18;COMPLET;;N1
@@ -2764,11 +2764,11 @@
 51091000;- Containing 85% or more by weight of wool or of fine animal hair;51;kg;10;18;;29.8;COMPLET;;N1
 51099000;- Other;51;kg;10;18;;29.8;COMPLET;;N1
 51100000;Yarn of coarse animal hair or of horsehair (including gimped horsehair yarn), whether or not put up for retail sale.;51;kg;10;18;;29.8;COMPLET;;N1
-51111100;-- Of a weight not exceeding 300 g/m²;51;kg;25;18;;47.5;COMPLET;;N1
-51111900;-- Other;51;kg;25;18;;47.5;COMPLET;;N1
-51112000;- Other, mixed mainly or solely with man-made filaments;51;kg;25;18;;47.5;COMPLET;;N1
-51113000;- Other, mixed mainly or solely with man-made staple fibres;51;kg;25;18;;47.5;COMPLET;;N1
-51119000;- Other;51;kg;25;18;;47.5;COMPLET;;N1
+51111100;-- Of a weight not exceeding 300 g/m²;51;kg;25;18;;47.5;COMPLET;;N77 N1
+51111900;-- Other;51;kg;25;18;;47.5;COMPLET;;N78 N1
+51112000;- Other, mixed mainly or solely with man-made filaments;51;kg;25;18;;47.5;COMPLET;;N79 N1
+51113000;- Other, mixed mainly or solely with man-made staple fibres;51;kg;25;18;;47.5;COMPLET;;N80 N1
+51119000;- Other;51;kg;25;18;;47.5;COMPLET;;N81 N1
 51121100;-- Of a weight not exceeding 200 g/m²;51;kg;25;18;;47.5;COMPLET;;N1
 51121900;-- Other;51;kg;25;18;;47.5;COMPLET;;N1
 51122000;- Other, mixed mainly or solely with man-made filaments;51;kg;25;18;;47.5;COMPLET;;N1
@@ -2780,59 +2780,59 @@
 52029100;-- Garnetted stock;52;kg;0;18;;18;COMPLET;;N1
 52029900;-- Other;52;kg;0;18;;18;COMPLET;;N1
 52030000;Cotton, carded or combed.;52;kg;0;18;;18;COMPLET;;N1
-52041100;-- Containing 85% or more by weight of cotton;52;kg;25;18;;47.5;COMPLET;;N1
-52041900;-- Other;52;kg;25;18;;47.5;COMPLET;;N1
-52042000;- Put up for retail sale;52;kg;25;18;;47.5;COMPLET;;N1
-52051100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52051200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52051300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52051400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52051500;-- Measuring less than 125 decitex (exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52052100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52052200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
+52041100;-- Containing 85% or more by weight of cotton;52;kg;25;18;;47.5;COMPLET;;N82 N1
+52041900;-- Other;52;kg;25;18;;47.5;COMPLET;;N83 N1
+52042000;- Put up for retail sale;52;kg;25;18;;47.5;COMPLET;;N84 N1
+52051100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52051200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52051300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52051400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52051500;-- Measuring less than 125 decitex (exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52052100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52052200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
 52052300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;10;18;;29.8;COMPLET;;N1
-52052400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52052600;-- Measuring less than 125 decitex but not less than 106.38 decitex (exceeding 80 metric number but not exceeding 94 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52052700;-- Measuring less than 106.38 decitex but not less than 83.33 decitex (exceeding 94 metric number but not exceeding 120 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52052800;-- Measuring less than 83.33 decitex (exceeding 120 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52053100;-- Measuring per single yarn 714.29 decitex or more (not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52053200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52053300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52053400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52053500;-- Measuring per single yarn less than 125 decitex (exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054100;-- Measuring per single yarn 714.29 decitex or more (not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054600;-- Measuring per single yarn less than 125 decitex but not less than 106.38 decitex (exceeding 80 metric number but not exceeding 94 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054700;-- Measuring per single yarn less than 106.38 decitex but not less than 83.33 decitex (exceeding 94 metric number but not exceeding 120 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52054800;-- Measuring per single yarn less than 83.33 decitex (exceeding 120 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52061100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52061200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52061300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52061400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52061500;-- Measuring less than 125 decitex (exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52062100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52062200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52062300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52062400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52062500;-- Measuring less than 125 decitex (exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52063100;-- Measuring per single yarn 714.29 decitex or more (not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52063200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52063300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52063400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52063500;-- Measuring per single yarn less than 125 decitex (exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52064100;-- Measuring per single yarn 714.29 decitex or more(not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52064200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52064300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52064400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52064500;-- Measuring per single yarn less than 125 decitex (exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N26 N1
-52071000;- Containing 85% or more by weight of cotton;52;kg;25;18;;47.5;COMPLET;;N26 N1
-52079000;- Other;52;kg;25;18;;47.5;COMPLET;;N26 N1
-52081100;-- Plain weave, weighing not more than 100 g/m2;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52081200;-- Plain weave, weighing more than 100 g/m2;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52081300;-- 3-thread or 4-thread twill, including cross twill;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52081900;-- Other fabrics;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+52052400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52052600;-- Measuring less than 125 decitex but not less than 106.38 decitex (exceeding 80 metric number but not exceeding 94 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52052700;-- Measuring less than 106.38 decitex but not less than 83.33 decitex (exceeding 94 metric number but not exceeding 120 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52052800;-- Measuring less than 83.33 decitex (exceeding 120 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52053100;-- Measuring per single yarn 714.29 decitex or more (not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52053200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52053300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52053400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52053500;-- Measuring per single yarn less than 125 decitex (exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054100;-- Measuring per single yarn 714.29 decitex or more (not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054600;-- Measuring per single yarn less than 125 decitex but not less than 106.38 decitex (exceeding 80 metric number but not exceeding 94 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054700;-- Measuring per single yarn less than 106.38 decitex but not less than 83.33 decitex (exceeding 94 metric number but not exceeding 120 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52054800;-- Measuring per single yarn less than 83.33 decitex (exceeding 120 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52061100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52061200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52061300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52061400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52061500;-- Measuring less than 125 decitex (exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52062100;-- Measuring 714.29 decitex or more (not exceeding 14 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52062200;-- Measuring less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52062300;-- Measuring less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52062400;-- Measuring less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52062500;-- Measuring less than 125 decitex (exceeding 80 metric number);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52063100;-- Measuring per single yarn 714.29 decitex or more (not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52063200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52063300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52063400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52063500;-- Measuring per single yarn less than 125 decitex (exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52064100;-- Measuring per single yarn 714.29 decitex or more(not exceeding 14 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52064200;-- Measuring per single yarn less than 714.29 decitex but not less than 232.56 decitex (exceeding 14 metric number but not exceeding 43 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52064300;-- Measuring per single yarn less than 232.56 decitex but not less than 192.31 decitex (exceeding 43 metric number but not exceeding 52 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52064400;-- Measuring per single yarn less than 192.31 decitex but not less than 125 decitex (exceeding 52 metric number but not exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52064500;-- Measuring per single yarn less than 125 decitex (exceeding 80 metric number per single yarn);52;kg;25;18;;47.5;COMPLET;;N85 N1
+52071000;- Containing 85% or more by weight of cotton;52;kg;25;18;;47.5;COMPLET;;N85 N1
+52079000;- Other;52;kg;25;18;;47.5;COMPLET;;N85 N1
+52081100;-- Plain weave, weighing not more than 100 g/m2;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52081200;-- Plain weave, weighing more than 100 g/m2;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52081300;-- 3-thread or 4-thread twill, including cross twill;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52081900;-- Other fabrics;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
 52082100;-- Plain weave, weighing not more than 100 g/m2;52;kg;25;18;;47.5;COMPLET;;N1
 52082200;-- Plain weave, weighing more than 100 g/m2;52;kg;25;18;;47.5;COMPLET;;N1
 52082300;-- 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
@@ -2845,14 +2845,14 @@
 52084200;-- Plain weave, weighing more than 100 g/m2;52;kg;25;18;;47.5;COMPLET;;N1
 52084300;-- 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
 52084900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52085110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52085110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52085190;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
-52085210;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52085210;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52085290;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
 52085900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52091100;-- Plain weave;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52091200;-- 3-thread or 4-thread twill, including cross twill;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52091900;-- Other fabrics;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+52091100;-- Plain weave;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52091200;-- 3-thread or 4-thread twill, including cross twill;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52091900;-- Other fabrics;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
 52092100;-- Plain weave;52;kg;25;18;;47.5;COMPLET;;N1
 52092200;-- 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
 52092900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
@@ -2863,12 +2863,12 @@
 52094200;-- Denim;52;kg;25;18;;47.5;COMPLET;;N1
 52094300;-- Other fabrics of 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
 52094900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52095110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52095110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52095190;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
 52095200;-- 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
 52095900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52101100;-- Plain weave;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52101900;-- Other fabrics;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+52101100;-- Plain weave;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52101900;-- Other fabrics;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
 52102100;-- Plain weave;52;kg;25;18;;47.5;COMPLET;;N1
 52102900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
 52103100;-- Plain weave;52;kg;25;18;;47.5;COMPLET;;N1
@@ -2876,12 +2876,12 @@
 52103900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
 52104100;-- Plain weave;52;kg;25;18;;47.5;COMPLET;;N1
 52104900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52105110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52105110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52105190;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
 52105900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52111100;-- Plain weave;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52111200;-- 3-thread or 4-thread twill, including cross twill;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
-52111900;-- Other fabrics;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+52111100;-- Plain weave;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52111200;-- 3-thread or 4-thread twill, including cross twill;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
+52111900;-- Other fabrics;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
 52112000;- Bleached;52;kg;25;18;;47.5;COMPLET;;N1
 52113100;-- Plain weave;52;kg;25;18;;47.5;COMPLET;;N1
 52113200;-- 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
@@ -2890,21 +2890,21 @@
 52114200;-- Denim;52;kg;25;18;;47.5;COMPLET;;N1
 52114300;-- Other fabrics of 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
 52114900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52115110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52115110;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52115190;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
 52115200;-- 3-thread or 4-thread twill, including cross twill;52;kg;25;18;;47.5;COMPLET;;N1
 52115900;-- Other fabrics;52;kg;25;18;;47.5;COMPLET;;N1
-52121100;-- Unbleached;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+52121100;-- Unbleached;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
 52121200;-- Bleached;52;kg;25;18;;47.5;COMPLET;;N1
 52121300;-- Dyed;52;kg;25;18;;47.5;COMPLET;;N1
 52121400;-- Of yarns of different colours;52;kg;25;18;;47.5;COMPLET;;N1
-52121510;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52121510;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52121590;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
-52122100;-- Unbleached;52;kg;35% or US$ 0.3 / m whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+52122100;-- Unbleached;52;kg;35% or USD 0.30/metre, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N86 N1
 52122200;-- Bleached;52;kg;25;18;;47.5;COMPLET;;N1
 52122300;-- Dyed;52;kg;25;18;;47.5;COMPLET;;N1
 52122400;-- Of yarns of different colours;52;kg;25;18;;47.5;COMPLET;;N1
-52122510;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N28 N1
+52122510;--- Khanga, Kikoi and Kitenge;52;;35;18;;59.3;COMPLET;;N87 N1
 52122590;--- Other;52;kg;25;18;;47.5;COMPLET;;N1
 53011000;- Flax, raw or retted;53;kg;0;18;;18;COMPLET;;N1
 53012100;-- Broken or scutched;53;kg;0;18;;18;COMPLET;;N1
@@ -2931,8 +2931,8 @@
 53110000;"Woven fabrics of other vegetable textile fibres; woven fabrics of paper yarn.";53;kg;25;18;;47.5;COMPLET;;N1
 54011000;- Of synthetic filaments;54;kg;25;18;;47.5;COMPLET;;N1
 54012000;- Of artificial filaments;54;kg;25;18;;47.5;COMPLET;;N1
-54021100;-- Of aramids;54;kg;10;18;;29.8;COMPLET;;N1
-54021900;-- Other;54;kg;10;18;;29.8;COMPLET;;N1
+54021100;-- Of aramids;54;kg;10;18;;29.8;COMPLET;;N43 N1
+54021900;-- Other;54;kg;10;18;;29.8;COMPLET;;N21 N1
 54022000;- High tenacity yarn of polyesters, whether or not textured;54;kg;10;18;;29.8;COMPLET;;N1
 54023100;-- Of nylon or other polyamides, measuring per single yarn not more than 50 tex;54;kg;10;18;;29.8;COMPLET;;N1
 54023200;-- Of nylon or other polyamides, measuring per single yarn more than 50 tex;54;kg;10;18;;29.8;COMPLET;;N1
@@ -2953,34 +2953,34 @@
 54026200;-- Of polyesters;54;kg;10;18;;29.8;COMPLET;;N1
 54026300;-- Of polypropylene;54;kg;10;18;;29.8;COMPLET;;N1
 54026900;-- Other;54;kg;10;18;;29.8;COMPLET;;N1
-54031000;- High tenacity yarn of viscose rayon;54;kg;10;18;;29.8;COMPLET;;N1
-54033100;-- Of viscose rayon, untwisted or with a twist not exceeding 120 turns per metre;54;kg;10;18;;29.8;COMPLET;;N1
-54033200;-- Of viscose rayon, with a twist exceeding 120 turns per metre;54;kg;10;18;;29.8;COMPLET;;N1
-54033300;-- Of cellulose acetate;54;kg;10;18;;29.8;COMPLET;;N1
-54033900;-- Other;54;kg;10;18;;29.8;COMPLET;;N1
-54034100;-- Of viscose rayon;54;kg;10;18;;29.8;COMPLET;;N1
-54034200;-- Of cellulose acetate;54;kg;10;18;;29.8;COMPLET;;N1
-54034900;-- Other;54;kg;10;18;;29.8;COMPLET;;N1
-54041100;-- Elastomeric;54;kg;10;18;;29.8;COMPLET;;N1
-54041200;-- Other, of polypropylene;54;kg;10;18;;29.8;COMPLET;;N1
-54041900;-- Other;54;kg;10;18;;29.8;COMPLET;;N1
-54049000;- Other;54;kg;10;18;;29.8;COMPLET;;N1
-54050000;"Artificial monofilament of 67 decitex or more and of which no cross-sectional dimension exceeds 1 mm; strip and the like (for example, artificial straw) of artificial textile materials of an apparent width not exceeding 5 mm.";54;kg;10;18;;29.8;COMPLET;;N1
-54060000;Man-made filament yarn (other than sewing thread), put up for retail sale.;54;kg;10;18;;29.8;COMPLET;;N1
+54031000;- High tenacity yarn of viscose rayon;54;kg;10;18;;29.8;COMPLET;;N88 N1
+54033100;-- Of viscose rayon, untwisted or with a twist not exceeding 120 turns per metre;54;kg;10;18;;29.8;COMPLET;;N89 N1
+54033200;-- Of viscose rayon, with a twist exceeding 120 turns per metre;54;kg;10;18;;29.8;COMPLET;;N90 N1
+54033300;-- Of cellulose acetate;54;kg;10;18;;29.8;COMPLET;;N91 N1
+54033900;-- Other;54;kg;10;18;;29.8;COMPLET;;N92 N1
+54034100;-- Of viscose rayon;54;kg;10;18;;29.8;COMPLET;;N93 N1
+54034200;-- Of cellulose acetate;54;kg;10;18;;29.8;COMPLET;;N94 N1
+54034900;-- Other;54;kg;10;18;;29.8;COMPLET;;N95 N1
+54041100;-- Elastomeric;54;kg;10;18;;29.8;COMPLET;;N96 N1
+54041200;-- Other, of polypropylene;54;kg;10;18;;29.8;COMPLET;;N97 N1
+54041900;-- Other;54;kg;10;18;;29.8;COMPLET;;N98 N1
+54049000;- Other;54;kg;10;18;;29.8;COMPLET;;N99 N1
+54050000;"Artificial monofilament of 67 decitex or more and of which no cross-sectional dimension exceeds 1 mm; strip and the like (for example, artificial straw) of artificial textile materials of an apparent width not exceeding 5 mm.";54;kg;10;18;;29.8;COMPLET;;N100 N1
+54060000;Man-made filament yarn (other than sewing thread), put up for retail sale.;54;kg;10;18;;29.8;COMPLET;;N101 N1
 54071000;- Woven fabrics obtained from high tenacity yarn of nylon or other polyamides or of polyesters;54;kg;25;18;;47.5;COMPLET;;N1
 54072000;- Woven fabrics obtained from strip or the like;54;kg;25;18;;47.5;COMPLET;;N1
 54073000;- Fabrics specified in Note 9 to Section XI;54;kg;25;18;;47.5;COMPLET;;N1
 54074100;-- Unbleached or bleached;54;kg;25;18;;47.5;COMPLET;;N1
 54074200;-- Dyed;54;kg;25;18;;47.5;COMPLET;;N1
 54074300;-- Of yarns of different colours;54;kg;25;18;;47.5;COMPLET;;N1
-54074400;-- Printed;54;kg;25;18;;47.5;COMPLET;;N1
+54074400;-- Printed;54;kg;25;18;;47.5;COMPLET;;N102 N1
 54075100;-- Unbleached or bleached;54;kg;25;18;;47.5;COMPLET;;N1
 54075200;-- Dyed;54;kg;25;18;;47.5;COMPLET;;N1
 54075300;-- Of yarns of different colours;54;kg;25;18;;47.5;COMPLET;;N1
 54075400;-- Printed;54;kg;25;18;;47.5;COMPLET;;N1
 54076100;-- Containing 85% or more by weight of non-textured polyester filaments;54;kg;25;18;;47.5;COMPLET;;N1
 54076900;-- Other;54;kg;25;18;;47.5;COMPLET;;N1
-54077100;-- Unbleached or bleached;54;kg;25;18;;47.5;COMPLET;;N1
+54077100;-- Unbleached or bleached;54;kg;25;18;;47.5;COMPLET;;N103 N1
 54077200;-- Dyed;54;kg;25;18;;47.5;COMPLET;;N1
 54077300;-- Of yarns of different colours;54;kg;25;18;;47.5;COMPLET;;N1
 54077400;-- Printed;54;kg;25;18;;47.5;COMPLET;;N1
@@ -3025,42 +3025,42 @@
 55064000;- Of polypropylene;55;kg;0;18;;18;COMPLET;;N1
 55069000;- Other;55;kg;0;18;;18;COMPLET;;N1
 55070000;Artificial staple fibres, carded, combed or otherwise processed for spinning.;55;kg;0;18;;18;COMPLET;;N1
-55081000;- Of synthetic staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
-55082000;- Of artificial staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
-55091100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55091200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55092100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55092200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55093100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55093200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55094100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55094200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55095100;-- Mixed mainly or solely with artificial staple fibres;55;kg;10;18;;29.8;COMPLET;;N1
-55095200;-- Mixed mainly or solely with wool or fine animal hair;55;kg;10;18;;29.8;COMPLET;;N1
-55095300;-- Mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N1
-55095900;-- Other;55;kg;10;18;;29.8;COMPLET;;N1
-55096100;-- Mixed mainly or solely with wool or fine animal hair manufactured;55;kg;10;18;;29.8;COMPLET;;N1
-55096200;-- Mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N1
-55096900;-- Other;55;kg;10;18;;29.8;COMPLET;;N1
-55099100;-- Mixed mainly or solely with wool or fine animal hair;55;kg;10;18;;29.8;COMPLET;;N1
-55099200;-- Mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N1
-55099900;-- Other;55;kg;10;18;;29.8;COMPLET;;N1
-55101100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55101200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55102000;- Other yarn, mixed mainly or solely with wool or fine animal hair;55;kg;10;18;;29.8;COMPLET;;N1
-55103000;- Other yarn, mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N1
-55109000;- Other yarn;55;kg;10;18;;29.8;COMPLET;;N1
-55111000;- Of synthetic staple fibres, containing 85% or more by weight of such fibres;55;kg;10;18;;29.8;COMPLET;;N1
-55112000;- Of synthetic staple fibres, containing less than 85% by weight of such fibres;55;kg;10;18;;29.8;COMPLET;;N1
-55113000;- Of artificial staple fibres of;55;kg;10;18;;29.8;COMPLET;;N1
+55081000;- Of synthetic staple fibres;55;kg;25;18;;47.5;COMPLET;;N104 N1
+55082000;- Of artificial staple fibres;55;kg;25;18;;47.5;COMPLET;;N105 N1
+55091100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N106 N1
+55091200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N107 N1
+55092100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N108 N1
+55092200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N109 N1
+55093100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N110 N1
+55093200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N111 N1
+55094100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N112 N1
+55094200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N113 N1
+55095100;-- Mixed mainly or solely with artificial staple fibres;55;kg;10;18;;29.8;COMPLET;;N114 N1
+55095200;-- Mixed mainly or solely with wool or fine animal hair;55;kg;10;18;;29.8;COMPLET;;N115 N1
+55095300;-- Mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N116 N1
+55095900;-- Other;55;kg;10;18;;29.8;COMPLET;;N117 N1
+55096100;-- Mixed mainly or solely with wool or fine animal hair manufactured;55;kg;10;18;;29.8;COMPLET;;N118 N1
+55096200;-- Mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N119 N1
+55096900;-- Other;55;kg;10;18;;29.8;COMPLET;;N120 N1
+55099100;-- Mixed mainly or solely with wool or fine animal hair;55;kg;10;18;;29.8;COMPLET;;N121 N1
+55099200;-- Mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N122 N1
+55099900;-- Other;55;kg;10;18;;29.8;COMPLET;;N123 N1
+55101100;-- Single yarn;55;kg;10;18;;29.8;COMPLET;;N124 N1
+55101200;-- Multiple (folded) or cabled yarn;55;kg;10;18;;29.8;COMPLET;;N125 N1
+55102000;- Other yarn, mixed mainly or solely with wool or fine animal hair;55;kg;10;18;;29.8;COMPLET;;N126 N1
+55103000;- Other yarn, mixed mainly or solely with cotton;55;kg;10;18;;29.8;COMPLET;;N127 N1
+55109000;- Other yarn;55;kg;10;18;;29.8;COMPLET;;N128 N1
+55111000;- Of synthetic staple fibres, containing 85% or more by weight of such fibres;55;kg;10;18;;29.8;COMPLET;;N129 N1
+55112000;- Of synthetic staple fibres, containing less than 85% by weight of such fibres;55;kg;10;18;;29.8;COMPLET;;N130 N1
+55113000;- Of artificial staple fibres of;55;kg;10;18;;29.8;COMPLET;;N131 N1
 55121100;-- Unbleached or bleached;55;kg;25;18;;47.5;COMPLET;;N1
 55121900;-- Other;55;Kg;25;18;;47.5;COMPLET;;N1
 55122100;-- Unbleached or bleached;55;kg;25;18;;47.5;COMPLET;;N1
 55122900;-- Other;55;kg;25;18;;47.5;COMPLET;;N1
 55129100;-- Unbleached or bleached;55;kg;25;18;;47.5;COMPLET;;N1
 55129900;-- Other;55;kg;25;18;;47.5;COMPLET;;N1
-55131100;-- Of polyester staple fibres, plain weave;55;kg;25;18;;47.5;COMPLET;;N1
-55131200;-- 3-thread or 4-thread twill, including cross twill, of polyester staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
+55131100;-- Of polyester staple fibres, plain weave;55;kg;25;18;;47.5;COMPLET;;N132 N1
+55131200;-- 3-thread or 4-thread twill, including cross twill, of polyester staple fibres;55;kg;25;18;;47.5;COMPLET;;N133 N1
 55131300;-- Other woven fabrics of polyester staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
 55131900;-- Other woven fabrics;55;kg;25;18;;47.5;COMPLET;;N1
 55132100;-- Of polyester staple fibres, plain weave;55;kg;25;18;;47.5;COMPLET;;N1
@@ -3068,7 +3068,7 @@
 55132900;-- Other woven fabrics;55;kg;25;18;;47.5;COMPLET;;N1
 55133100;-- Of polyester staple fibres, plain weave;55;kg;25;18;;47.5;COMPLET;;N1
 55133900;-- Other woven fabrics;55;kg;25;18;;47.5;COMPLET;;N1
-55134110;--- Khanga, Kikoi and Kitenge;55;;35;18;;59.3;COMPLET;;N28 N1
+55134110;--- Khanga, Kikoi and Kitenge;55;;35;18;;59.3;COMPLET;;N87 N1
 55134190;--- Other;55;kg;25;18;;47.5;COMPLET;;N1
 55134900;-- Other woven fabrics;55;kg;25;18;;47.5;COMPLET;;N1
 55141100;-- Of polyester staple fibres, plain weave;55;kg;25;18;;47.5;COMPLET;;N1
@@ -3079,7 +3079,7 @@
 55142300;-- Other woven fabrics of polyester staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
 55142900;-- Other woven fabrics;55;kg;25;18;;47.5;COMPLET;;N1
 55143000;- Of yarns of different colours;55;kg;25;18;;47.5;COMPLET;;N1
-55144110;--- Khanga, Kikoi and Kitenge;55;;35;18;;59.3;COMPLET;;N28 N1
+55144110;--- Khanga, Kikoi and Kitenge;55;;35;18;;59.3;COMPLET;;N87 N1
 55144190;--- Other;55;kg;25;18;;47.5;COMPLET;;N1
 55144200;-- 3-thread or 4-thread twill, including cross twill, of polyester staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
 55144300;-- Other woven fabrics of polyester staple fibres;55;kg;25;18;;47.5;COMPLET;;N1
@@ -3121,15 +3121,15 @@
 56022100;-- Of wool or fine animal hair;56;kg;25;18;;47.5;COMPLET;;N1
 56022900;-- Of other textile materials;56;kg;25;18;;47.5;COMPLET;;N1
 56029000;- Other;56;kg;25;18;;47.5;COMPLET;;N1
-56031100;-- Weighing not more than 25 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
+56031100;-- Weighing not more than 25 g/m²;56;kg;10;18;;29.8;COMPLET;;N134 N1
 56031200;-- Weighing more than 25 g/m² but not more than 70 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
 56031300;-- Weighing more than 70 g/m² but not more than 150 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
-56031400;-- Weighing more than 150 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
+56031400;-- Weighing more than 150 g/m²;56;kg;10;18;;29.8;COMPLET;;N22 N1
 56039100;-- Weighing not more than 25 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
 56039200;-- Weighing more than 25 g/m² but not more than 70 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
 56039300;-- Weighing more than 70 g/m² but not more than 150 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
 56039400;-- Weighing more than 150 g/m²;56;kg;10;18;;29.8;COMPLET;;N1
-56041000;- Rubber thread and cord, textile covered;56;kg;10;18;;29.8;COMPLET;;N1
+56041000;- Rubber thread and cord, textile covered;56;kg;10;18;;29.8;COMPLET;;N135 N1
 56049000;- Other;56;kg;10;18;;29.8;COMPLET;;N1
 56050000;Metallised yarn, whether or not gimped, being textile yarn, or strip or the like of heading 54.04 or 54.05, combined with metal in the form of thread, strip or powder or covered with metal.;56;kg;10;18;;29.8;COMPLET;;N1
 56060000;"Gimped yarn, and strip and the like of heading 54.04 or 54.05, gimped (other than those of heading 56.05 and gimped horsehair yarn); chenille yarn (including flock chenille yarn); loop wale-yarn.";56;kg;10;18;;29.8;COMPLET;;N1
@@ -3137,7 +3137,7 @@
 56072900;-- Other;56;kg;25;18;;47.5;COMPLET;;N1
 56074100;-- Binder or baler twine;56;kg;25;18;;47.5;COMPLET;;N1
 56074900;-- Other;56;kg;25;18;;47.5;COMPLET;;N1
-56075000;- Of other synthetic fibres;56;kg;10;18;;29.8;COMPLET;;N29 N1
+56075000;- Of other synthetic fibres;56;kg;25;18;;47.5;COMPLET;;N136 N1
 56079000;- Other;56;kg;25;18;;47.5;COMPLET;;N1
 56081100;-- Made up fishing nets;56;kg;25;18;;47.5;COMPLET;;N1
 56081910;--- Fruit tree and seedbed netting;56;kg;10;18;;29.8;COMPLET;;N1
@@ -3190,29 +3190,29 @@
 58043000;- Hand-made lace;58;kg;25;18;;47.5;COMPLET;;N1
 58050000;Hand-woven tapestries of the type Gobelins, Flanders, Aubusson, Beauvais and the like, and needle-worked tapestries (for example, petit point, cross stitch), whether or not made up.;58;kg;25;18;;47.5;COMPLET;;N1
 58061000;- Woven pile fabrics (including terry towelling and similar terry fabrics) and chenille fabrics;58;kg;25;18;;47.5;COMPLET;;N1
-58062000;- Other woven fabrics, containing by weight 5% or more of elastomeric yarn or rubber thread;58;kg;25;18;;47.5;COMPLET;;N1
+58062000;- Other woven fabrics, containing by weight 5% or more of elastomeric yarn or rubber thread;58;kg;25;18;;47.5;COMPLET;;N137 N1
 58063100;-- Of cotton;58;kg;25;18;;47.5;COMPLET;;N1
 58063200;-- Of man-made fibres;58;kg;25;18;;47.5;COMPLET;;N1
 58063900;-- Of other textile materials;58;kg;25;18;;47.5;COMPLET;;N1
 58064000;- Fabrics consisting of warp without weft assembled by means of an adhesive (bolducs);58;kg;25;18;;47.5;COMPLET;;N1
-58071000;- Woven;58;kg;25;18;;47.5;COMPLET;;N1
-58079000;- Other;58;kg;25;18;;47.5;COMPLET;;N1
-58081000;- Braids in the piece;58;kg;25;18;;47.5;COMPLET;;N1
-58089000;- Other;58;kg;25;18;;47.5;COMPLET;;N1
-58090000;Woven fabrics of metal thread and woven fabrics of metallised yarn of heading No. 56.05, of a kind used in apparel, as furnishing fabrics or for similar purposes, not elsewhere specified or included.;58;kg;25;18;;47.5;COMPLET;;N1
-58101000;- Embroidery without visible ground;58;kg;25;18;;47.5;COMPLET;;N1
-58109100;-- Of cotton;58;kg;25;18;;47.5;COMPLET;;N1
-58109200;-- Of man-made fibres;58;kg;25;18;;47.5;COMPLET;;N1
-58109900;-- Of other textile materials;58;kg;25;18;;47.5;COMPLET;;N1
-58110000;Quilted textile products in the piece, composed of one or more layers of textile materials assembled with padding by stitching or otherwise, other than embroidery of heading;58;;25;18;;47.5;COMPLET;;N1
-59011000;- Textile fabrics coated with gum or amylaceous substances, of a kind used for the outer covers of books or the like;59;kg;10;18;;29.8;COMPLET;;N1
-59019000;- Other;59;kg;10;18;;29.8;COMPLET;;N1
+58071000;- Woven;58;kg;25;18;;47.5;COMPLET;;N138 N1
+58079000;- Other;58;kg;25;18;;47.5;COMPLET;;N139 N1
+58081000;- Braids in the piece;58;kg;25;18;;47.5;COMPLET;;N140 N1
+58089000;- Other;58;kg;25;18;;47.5;COMPLET;;N141 N1
+58090000;Woven fabrics of metal thread and woven fabrics of metallised yarn of heading No. 56.05, of a kind used in apparel, as furnishing fabrics or for similar purposes, not elsewhere specified or included.;58;kg;25;18;;47.5;COMPLET;;N142 N1
+58101000;- Embroidery without visible ground;58;kg;25;18;;47.5;COMPLET;;N143 N1
+58109100;-- Of cotton;58;kg;25;18;;47.5;COMPLET;;N144 N1
+58109200;-- Of man-made fibres;58;kg;25;18;;47.5;COMPLET;;N145 N1
+58109900;-- Of other textile materials;58;kg;25;18;;47.5;COMPLET;;N146 N1
+58110000;Quilted textile products in the piece, composed of one or more layers of textile materials assembled with padding by stitching or otherwise, other than embroidery of heading;58;;25;18;;47.5;COMPLET;;N147 N1
+59011000;- Textile fabrics coated with gum or amylaceous substances, of a kind used for the outer covers of books or the like;59;kg;10;18;;29.8;COMPLET;;N148 N1
+59019000;- Other;59;kg;10;18;;29.8;COMPLET;;N149 N1
 59021000;- Of nylon or other polyamides;59;kg;0;18;;18;COMPLET;;N1
-59022000;- Of polyesters;59;kg;0;18;;18;COMPLET;;N1
+59022000;- Of polyesters;59;kg;0;18;;18;COMPLET;;N150 N1
 59029000;- Other;59;kg;0;18;;18;COMPLET;;N1
 59031000;- With poly(vinyl chloride);59;kg;10;18;;29.8;COMPLET;;N1
 59032000;- With polyurethane;59;kg;10;18;;29.8;COMPLET;;N1
-59039000;- Other;59;kg;10;18;;29.8;COMPLET;;N1
+59039000;- Other;59;kg;10;18;;29.8;COMPLET;;N21 N1
 59041000;- Linoleum m²;59;;25;18;;47.5;COMPLET;;N1
 59049000;- Other m²;59;;25;18;;47.5;COMPLET;;N1
 59050000;Textile wall coverings m²;59;;25;18;;47.5;COMPLET;;N1
@@ -3223,7 +3223,7 @@
 59080000;"Textile wicks, woven, plaited or knitted, for lamps, stoves, lighters, candles or the like; incandescent gas mantles and tubular knitted gas mantle fabric therefor, whether or not impregnated.";59;kg;10;18;;29.8;COMPLET;;N1
 59090000;Textile hosepiping and similar textile tubing, with or without lining, armour or accessories of other materials.;59;kg;25;18;;47.5;COMPLET;;N1
 59100000;Transmission or conveyor belts or belting, of textile material, whether or not impregnated, coated, covered or laminated with plastics, or reinforced with metal or other material.;59;kg;25;18;;47.5;COMPLET;;N1
-59111000;- Textile fabrics, felt and felt-lined woven fabrics, coated, covered or laminated with rubber, leather or other material, of a kind used for card clothing, and similar fabrics of a kind used for other technical purposes, including narrow fabrics made of velvet impregnated with rubber, for covering weaving spindles (weaving beams);59;kg;10;18;;29.8;COMPLET;;N1
+59111000;- Textile fabrics, felt and felt-lined woven fabrics, coated, covered or laminated with rubber, leather or other material, of a kind used for card clothing, and similar fabrics of a kind used for other technical purposes, including narrow fabrics made of velvet impregnated with rubber, for covering weaving spindles (weaving beams);59;kg;10;18;;29.8;COMPLET;;N151 N1
 59112000;- Bolting cloth, whether or not made up;59;kg;10;18;;29.8;COMPLET;;N1
 59113100;-- Weighing less than 650 g/m2;59;kg;10;18;;29.8;COMPLET;;N1
 59113200;-- Weighing 650 g/m2 or more;59;kg;0;18;;18;COMPLET;;N1
@@ -3240,7 +3240,7 @@
 60029000;- Other;60;kg;25;18;;47.5;COMPLET;;N1
 60031000;- Of wool or fine animal hair;60;kg;25;18;;47.5;COMPLET;;N1
 60032000;- Of cotton;60;kg;25;18;;47.5;COMPLET;;N1
-60033000;- Of synthetic fibres;60;kg;25;18;;47.5;COMPLET;;N1
+60033000;- Of synthetic fibres;60;kg;25;18;;47.5;COMPLET;;N152 N1
 60034000;- Of artificial fibres;60;kg;25;18;;47.5;COMPLET;;N1
 60039000;- Other;60;kg;25;18;;47.5;COMPLET;;N1
 60041000;- Containing by weight 5% or more of elastomeric yarn but not containing rubber thread;60;kg;25;18;;47.5;COMPLET;;N1
@@ -3484,8 +3484,8 @@
 62152000;- Of man-made fibres;62;kg;25;18;;47.5;COMPLET;;N1
 62159000;- Of other textile materials;62;kg;25;18;;47.5;COMPLET;;N1
 62160000;Gloves, mittens and mitts.;62;kg;25;18;;47.5;COMPLET;;N1
-62171000;- Accessories;62;kg;25;18;;47.5;COMPLET;;N1
-62179000;- Parts;62;kg;25;18;;47.5;COMPLET;;N1
+62171000;- Accessories;62;kg;25;18;;47.5;COMPLET;;N153 N1
+62179000;- Parts;62;kg;25;18;;47.5;COMPLET;;N154 N1
 63011000;- Electric blankets;63;u;25;18;;47.5;COMPLET;;N1
 63012000;- Blankets (other than electric blankets) and travelling rugs, of wool or of fine animal hair;63;kg;25;18;;47.5;COMPLET;;N1
 63013000;- Blankets (other than electric blankets) and travelling rugs, of cotton;63;kg;25;18;;47.5;COMPLET;;N1
@@ -3515,14 +3515,14 @@
 63041900;-- Other;63;kg;25;18;;47.5;COMPLET;;N1
 63042000;- Bed nets specified in Subheading Note 1 to this Chapter;63;kg;25;18;;47.5;COMPLET;;N1
 63049110;--- Mosquito net;63;kg;0;18;;18;COMPLET;;N1
-63049190;--- Other;63;kg;25;18;;47.5;COMPLET;;N1
+63049190;--- Other;63;kg;25;18;;47.5;COMPLET;;N72 N1
 63049200;-- Not knitted or crocheted, of cotton;63;kg;25;18;;47.5;COMPLET;;N1
 63049300;-- Not knitted or crocheted, of synthetic fibres;63;kg;25;18;;47.5;COMPLET;;N1
 63049900;-- Not knitted or crocheted, of other textile materials;63;kg;25;18;;47.5;COMPLET;;N1
-63051000;- Of jute or of other textile bast fibres of heading 53.03;63;kg;35;18;;59.3;COMPLET;;N1
-63052000;- Of cotton;63;kg;35;18;;59.3;COMPLET;;N1
+63051000;- Of jute or of other textile bast fibres of heading 53.03;63;kg;35;18;;59.3;COMPLET;;N155 N1
+63052000;- Of cotton;63;kg;35;18;;59.3;COMPLET;;N72 N1
 63053200;-- Flexible intermediate bulk containers;63;kg;35;18;;59.3;COMPLET;;N1
-63053300;-- Other, of polyethylene or polypropylene strip or the like;63;kg;35;18;;59.3;COMPLET;;N1
+63053300;-- Other, of polyethylene or polypropylene strip or the like;63;kg;35;18;;59.3;COMPLET;;N72 N1
 63053900;-- Other;63;kg;35;18;;59.3;COMPLET;;N1
 63059000;- Of other textile materials;63;kg;35;18;;59.3;COMPLET;;N1
 63061200;-- Of synthetic fibres;63;kg;25;18;;47.5;COMPLET;;N1
@@ -3536,9 +3536,9 @@
 63072000;- Life-jackets and life-belts;63;kg;0;18;;18;COMPLET;;N1
 63079000;- Other;63;kg;25;18;;47.5;COMPLET;;N1
 63080000;Sets consisting of woven fabric and yarn, whether or not with accessories, for making up into rugs, tapestries, embroidered table cloths or serviettes, or similar textile articles, put up in packings for retail sale.;63;kg;25;18;;47.5;COMPLET;;N1
-63090010;--- Worn items of clothing 35% or USD 0.40/kg whichever is higher;63;kg;35;18;;59.3;COMPLET;;N30 N1
-63090020;--- Worn items of footwear 35% or USD 0.40/kg whichever is higher;63;kg;35;18;;59.3;COMPLET;;N30 N1
-63090090;--- Other worn items 35% or USD 0.40/kg whichever is higher;63;kg;35;18;;59.3;COMPLET;;N30 N1
+63090010;--- Worn items of clothing 35% or USD 0.40/kg whichever is higher;63;kg;35;18;;59.3;COMPLET;;N156 N1
+63090020;--- Worn items of footwear 35% or USD 0.40/kg whichever is higher;63;kg;35;18;;59.3;COMPLET;;N156 N1
+63090090;--- Other worn items 35% or USD 0.40/kg whichever is higher;63;kg;35;18;;59.3;COMPLET;;N156 N1
 63101000;- Sorted;63;kg;10;18;;29.8;COMPLET;;N1
 63109000;- Other;63;kg;10;18;;29.8;COMPLET;;N1
 64011000;- Footwear incorporating a protective metal toecap;64;2u;35;18;;59.3;COMPLET;;N1
@@ -3563,8 +3563,8 @@
 64051000;‑ With uppers of leather or composition leather;64;2u;35;18;;59.3;COMPLET;;N1
 64052000;‑ With uppers of textile materials;64;2u;25;18;;47.5;COMPLET;;N1
 64059000;- Other;64;2u;25;18;;47.5;COMPLET;;N1
-64061010;--- Of leather;64;kg;10;18;;29.8;COMPLET;;N1
-64061090;--- Other;64;kg;10;18;;29.8;COMPLET;;N1
+64061010;--- Of leather;64;kg;10;18;;29.8;COMPLET;;N157 N1
+64061090;--- Other;64;kg;10;18;;29.8;COMPLET;;N158 N1
 64062000;- Outer soles and heels, of rubber or plastics;64;kg;10;18;;29.8;COMPLET;;N1
 64069000;- Other;64;kg;10;18;;29.8;COMPLET;;N1
 65010000;"Hat-forms, hat bodies and hoods of felt, neither blocked to shape nor with made brims; plateaux and manchons (includ­ ing slit manchons), of felt.";65;kg;10;18;;29.8;COMPLET;;N1
@@ -3590,14 +3590,14 @@
 67042000;- Of human hair;67;kg;35;18;;59.3;COMPLET;;N1
 67049000;- Of other materials;67;kg;35;18;;59.3;COMPLET;;N1
 68010000;Setts, curbstones and flagstones, of natural stone (except slate).;68;kg;25;18;;47.5;COMPLET;;N1
-68021000;"- Tiles, cubes and similar articles, whether or not rectangular (including square), the largest face of which is capable of being enclosed in a square the side of which is less than 7 cm; artificially coloured granules, chippings and powder.";68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68022100;-- Marble, travertine and alabaster;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68022300;-- Granite;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68022900;-- Other stone;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68029100;-- Marble, travertine and alabaster;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68029200;-- Other calcareous stone;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68029300;-- Granite;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
-68029900;-- Other stone;68;kg;35% or US$ 2 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
+68021000;"- Tiles, cubes and similar articles, whether or not rectangular (including square), the largest face of which is capable of being enclosed in a square the side of which is less than 7 cm; artificially coloured granules, chippings and powder.";68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68022100;-- Marble, travertine and alabaster;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68022300;-- Granite;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68022900;-- Other stone;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68029100;-- Marble, travertine and alabaster;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68029200;-- Other calcareous stone;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68029300;-- Granite;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N159 N1
+68029900;-- Other stone;68;kg;35% or USD 2/SQM, whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N160 N1
 68030000;Worked slate and articles of slate or of agglomerated slate.;68;kg;25;18;;47.5;COMPLET;;N1
 68041000;- Millstones and grindstones for milling, grinding or pulping;68;kg;25;18;;47.5;COMPLET;;N1
 68042100;-- Of agglomerated synthetic or natural diamond;68;kg;25;18;;47.5;COMPLET;;N1
@@ -3653,11 +3653,11 @@
 69051000;- Roofing tiles;69;kg;35;18;;59.3;COMPLET;;N1
 69059000;- Other;69;kg;35;18;;59.3;COMPLET;;N1
 69060000;Ceramic pipes, conduits, guttering and pipe fittings.;69;kg;25;18;;47.5;COMPLET;;N1
-69072100;-- Of a water absorption coefficient by weight not exceeding 0.5 % m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N32 N1
-69072200;-- Of a water absorption coefficient by weight exceeding 0.5 % but not exceeding 10 % m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N32 N1
-69072300;-- Of a water absorption coefficient by weight exceeding 10 % m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N32 N1
-69073000;- Mosaic cubes and the like, other than those of subheading 6907.40 m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N32 N1
-69074000;- Finishing ceramics m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N32 N1
+69072100;-- Of a water absorption coefficient by weight not exceeding 0.5 % m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N161 N1
+69072200;-- Of a water absorption coefficient by weight exceeding 0.5 % but not exceeding 10 % m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N161 N1
+69072300;-- Of a water absorption coefficient by weight exceeding 10 % m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N161 N1
+69073000;- Mosaic cubes and the like, other than those of subheading 6907.40 m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N161 N1
+69074000;- Finishing ceramics m²;69;;35% or US$ 3 / m2 whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N161 N1
 69091100;-- Of porcelain or china;69;kg;0;18;;18;COMPLET;;N1
 69091200;-- Articles having a hardness equivalent to 9 or more on the Mohs scale;69;kg;0;18;;18;COMPLET;;N1
 69091900;-- Other;69;kg;0;18;;18;COMPLET;;N1
@@ -3683,16 +3683,16 @@
 70033000;- Profiles m²;70;;10;18;;29.8;COMPLET;;N1
 70042000;- Glass, coloured throughout the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer m²;70;;10;18;;29.8;COMPLET;;N1
 70049000;- Other glass m²;70;;10;18;;29.8;COMPLET;;N1
-70051000;- Non-wired glass, having an absorbent, reflecting or non-reflecting layer m²;70;;35;18;;59.3;COMPLET;;N33 N1
-70052100;-- Coloured throughout the mass (body tinted), opacified, flashed or merely surface ground m²;70;;35;18;;59.3;COMPLET;;N33 N1
-70052900;-- Other m²;70;;35;18;;59.3;COMPLET;;N33 N1
-70053000;- Wired glass m²;70;;35;18;;59.3;COMPLET;;N33 N1
+70051000;- Non-wired glass, having an absorbent, reflecting or non-reflecting layer m²;70;;35;18;;59.3;COMPLET;;N162 N1
+70052100;-- Coloured throughout the mass (body tinted), opacified, flashed or merely surface ground m²;70;;35;18;;59.3;COMPLET;;N162 N1
+70052900;-- Other m²;70;;35;18;;59.3;COMPLET;;N162 N1
+70053000;- Wired glass m²;70;;35;18;;59.3;COMPLET;;N162 N1
 70060000;Glass of heading 70.03, 70.04 or 70.05, bent, edge-worked, engraved, drilled, enamelled or otherwise worked, but not framed or fitted with other materials.;70;kg;25;18;;47.5;COMPLET;;N1
 70071100;-- Of size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels;70;kg;10;18;;29.8;COMPLET;;N1
-70071900;-- Other m²;70;;35;18;;59.3;COMPLET;;N33 N1
+70071900;-- Other m²;70;;35;18;;59.3;COMPLET;;N162 N1
 70072100;-- Of size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels m²;70;;10;18;;29.8;COMPLET;;N1
-70072900;-- Other m²;70;;35;18;;59.3;COMPLET;;N33 N1
-70080000;Multiple-walled insulating units of glass.;70;kg;35;18;;59.3;COMPLET;;N33 N1
+70072900;-- Other m²;70;;35;18;;59.3;COMPLET;;N162 N1
+70080000;Multiple-walled insulating units of glass.;70;kg;35;18;;59.3;COMPLET;;N162 N1
 70091000;- Rear-view mirrors for vehicles;70;kg;10;18;;29.8;COMPLET;;N1
 70099100;-- Unframed;70;kg;25;18;;47.5;COMPLET;;N1
 70099200;-- Framed;70;kg;25;18;;47.5;COMPLET;;N1
@@ -3742,13 +3742,13 @@
 70197300;-- Other open fabrics;70;kg;10;18;;29.8;COMPLET;;N1
 70198000;- Glass wool and articles of glass wool;70;kg;10;18;;29.8;COMPLET;;N1
 70199010;--- Interwoven netting glass fibre for manufacture of grinding and cutting wheels;70;kg;0;18;;18;COMPLET;;N1
-70199090;--- Other;70;kg;10;18;;29.8;COMPLET;;N1
+70199090;--- Other;70;kg;10;18;;29.8;COMPLET;;N43 N1
 70200010;--- Floats for fishing nets;70;kg;10;18;;29.8;COMPLET;;N1
 70200091;---- Inner glass in-fills for vacuum flasks;70;kg;10;18;;29.8;COMPLET;;N1
 70200099;---- Other;70;kg;25;18;;47.5;COMPLET;;N1
-71011000;- Natural pearls gm;71;;25;18;;47.5;COMPLET;;N1
+71011000;- Natural pearls gm;71;;25;18;;47.5;COMPLET;;N163 N1
 71012100;-- Unworked gm;71;;25;18;;47.5;COMPLET;;N1
-71012200;-- Worked gm;71;;25;18;;47.5;COMPLET;;N1
+71012200;-- Worked gm;71;;25;18;;47.5;COMPLET;;N164 N1
 71021000;- Unsorted carat;71;;25;18;;47.5;COMPLET;;N1
 71022100;-- Unworked or simply sawn,cleaved or bruted carat;71;;25;18;;47.5;COMPLET;;N1
 71022900;-- Other carat;71;;25;18;;47.5;COMPLET;;N1
@@ -3800,9 +3800,9 @@
 71159000;- Other;71;kg;25;18;;47.5;COMPLET;;N1
 71161000;- Of natural or cultured pearls;71;kg;25;18;;47.5;COMPLET;;N1
 71162000;- Of precious or semi-precious stones (natural, synthetic or reconstructed);71;kg;25;18;;47.5;COMPLET;;N1
-71171100;-- Cuff-links and studs;71;kg;25;18;;47.5;COMPLET;;N1
+71171100;-- Cuff-links and studs;71;kg;25;18;;47.5;COMPLET;;N165 N1
 71171900;-- Other;71;kg;25;18;;47.5;COMPLET;;N1
-71179000;- Other;71;kg;25;18;;47.5;COMPLET;;N1
+71179000;- Other;71;kg;25;18;;47.5;COMPLET;;N166 N1
 71181000;- Coin (other than gold coin), not being legal tender;71;kg;25;18;;47.5;COMPLET;;N1
 71189000;- Other;71;kg;0;18;;18;COMPLET;;N1
 72011000;- Non-alloy pig iron containing by weight 0.5% or less of phosphorus;72;kg;0;18;;18;COMPLET;;N1
@@ -3856,47 +3856,47 @@
 72085400;-- Of a thickness of less than 3 mm;72;kg;10;18;;29.8;COMPLET;;N1
 72089000;- Other;72;kg;10;18;;29.8;COMPLET;;N1
 72091500;-- Of a thickness of 3 mm or more;72;kg;10;18;;29.8;COMPLET;;N1
-72091600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72091700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72091800;-- Of a thickness of less than 0.5 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72092500;-- Of a thickness of 3 mm or more;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72092600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72092700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72092800;-- Of a thickness of less than 0.5 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72099000;- Other;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
+72091600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72091700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72091800;-- Of a thickness of less than 0.5 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72092500;-- Of a thickness of 3 mm or more;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72092600;-- Of a thickness exceeding 1 mm but less than 3 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72092700;-- Of a thickness of 0.5 mm or more but not exceeding 1 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72092800;-- Of a thickness of less than 0.5 mm;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72099000;- Other;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
 72101100;-- Of a thickness of 0.5 mm or more;72;kg;0;18;;18;COMPLET;;N1
 72101200;-- Of a thickness of less than 0.5 mm;72;kg;0;18;;18;COMPLET;;N1
 72102000;- Plated or coated with lead, including terne-plate;72;kg;25;18;;47.5;COMPLET;;N1
 72103000;- Electrolytically plated or coated with zinc;72;kg;25;18;;47.5;COMPLET;;N1
-72104100;-- Corrugated;72;kg;35% or US$ 500 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N35 N1
-72104900;-- Other 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
+72104100;-- Corrugated;72;kg;35% or US$ 500 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N168 N1
+72104900;-- Other 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N169 N1
 72105000;- Plated or coated with chromium oxides or with chromium and chromium oxides;72;kg;0;18;;18;COMPLET;;N1
-72106100;-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
-72106900;-- Other 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
-72107000;- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
-72109000;- Other 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
+72106100;-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N169 N1
+72106900;-- Other 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N169 N1
+72107000;- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N169 N1
+72109000;- Other 25% or $200/MT whichever is higher;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N169 N1
 72111300;-- Rolled on four faces or in a closed box pass, of a width exceeding 150 mm and a thickness of not less than 4 mm,not in coils and without patterns in relief;72;kg;10;18;;29.8;COMPLET;;N1
 72111400;-- Other, of a thickness of 4.75 mm or more;72;kg;10;18;;29.8;COMPLET;;N1
 72111900;-- Other;72;kg;10;18;;29.8;COMPLET;;N1
-72112300;-- Containing by weight less than 0.25% of carbon;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
+72112300;-- Containing by weight less than 0.25% of carbon;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
 72112900;-- Other;72;kg;25;18;;47.5;COMPLET;;N1
-72119000;- Other;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
+72119000;- Other;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
 72121000;- Plated or coated with tin;72;kg;0;18;;18;COMPLET;;N1
-72122000;- Electrolytically plated or coated with zinc;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N37 N1
-72123000;- Otherwise plated or coated with zinc 25% or $200/MT whichever is higher;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N38 N1
-72124000;- Painted,varnished or coated with plastics;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N39 N1
-72125000;- Otherwise plated or coated;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N39 N1
-72126000;- Clad;72;kg;10% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N40 N1
-72131000;- Containing indentations,ribs,grooves or other deformations produced during the rolling process 25% or $200/MT whichever is higher;72;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N41 N1
-72132000;- Other, of free-cutting steel 25% or $200/MT whichever is higher - Other : -- Of circular cross-section measuring less than 14 mm in diameter:;72;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N41 N1
-72139110;--- Of cross section measuring less than 8 mm 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72139190;--- Other 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72139900;-- Other 25% or $200/MT whichever is higher;72;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N41 N1
-72141000;- Forged;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
-72142000;- Containing indentations, ribs, grooves or other deformations produced during the rolling process or twisted after rolling;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
-72143000;- Other, of free-cutting steel;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
-72149100;-- Of rectangular (other than square) cross-section;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
-72149900;-- Other;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
+72122000;- Electrolytically plated or coated with zinc;72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N170 N1
+72123000;- Otherwise plated or coated with zinc 25% or $200/MT whichever is higher;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N171 N1
+72124000;- Painted,varnished or coated with plastics;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N172 N1
+72125000;- Otherwise plated or coated;72;kg;35% or US$ 350 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N172 N1
+72126000;- Clad;72;kg;10% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N173 N1
+72131000;- Containing indentations,ribs,grooves or other deformations produced during the rolling process 25% or $200/MT whichever is higher;72;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N174 N1
+72132000;- Other, of free-cutting steel 25% or $200/MT whichever is higher - Other : -- Of circular cross-section measuring less than 14 mm in diameter:;72;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N174 N1
+72139110;--- Of cross section measuring less than 8 mm 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72139190;--- Other 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72139900;-- Other 25% or $200/MT whichever is higher;72;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N174 N1
+72141000;- Forged;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N175 N1
+72142000;- Containing indentations, ribs, grooves or other deformations produced during the rolling process or twisted after rolling;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N175 N1
+72143000;- Other, of free-cutting steel;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N175 N1
+72149100;-- Of rectangular (other than square) cross-section;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N175 N1
+72149900;-- Other;72;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N175 N1
 72151000;- Of free-cutting steel, not further worked than cold-formed or cold-finished;72;kg;35;18;;59.3;COMPLET;;N1
 72155000;- Other, not further worked than cold-formed or cold-finished;72;kg;35;18;;59.3;COMPLET;;N1
 72159000;- Other;72;kg;35;18;;59.3;COMPLET;;N1
@@ -3917,7 +3917,7 @@
 72169100;-- Cold-formed or cold-finished from flat-rolled products;72;kg;35;18;;59.3;COMPLET;;N1
 72169900;-- Other;72;kg;35;18;;59.3;COMPLET;;N1
 72171000;- Not plated or coated, whether or not polished;72;kg;10;18;;29.8;COMPLET;;N1
-72172000;- Plated or coated with zinc;72;kg;10;18;;29.8;COMPLET;;N1
+72172000;- Plated or coated with zinc;72;kg;10;18;;29.8;COMPLET;;N21 N1
 72173010;--- Of a kind used in the manufacture of tyres;72;kg;0;18;;18;COMPLET;;N1
 72173090;--- Other;72;kg;10;18;;29.8;COMPLET;;N1
 72179000;- Other;72;kg;10;18;;29.8;COMPLET;;N1
@@ -3955,27 +3955,27 @@
 72251900;-- Other;72;kg;10;18;;29.8;COMPLET;;N1
 72253000;- Other, not further worked than hot-rolled, in coils;72;kg;0;18;;18;COMPLET;;N1
 72254000;- Other, not further worked than hot-rolled, not in coils;72;kg;10;18;;29.8;COMPLET;;N1
-72255000;- Other, not further worked than cold-rolled (cold-reduced);72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72259100;-- Electrolytically plated or coated with zinc;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
-72259200;-- Otherwise plated or coated with zinc;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
-72259900;-- Other;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
+72255000;- Other, not further worked than cold-rolled (cold-reduced);72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72259100;-- Electrolytically plated or coated with zinc;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N176 N1
+72259200;-- Otherwise plated or coated with zinc;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N176 N1
+72259900;-- Other;72;kg;25% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N176 N1
 72261100;-- Grain-oriented;72;kg;10;18;;29.8;COMPLET;;N1
 72261900;-- Other;72;kg;10;18;;29.8;COMPLET;;N1
 72262000;- Of high speed steel;72;kg;10;18;;29.8;COMPLET;;N1
 72269100;-- Not further worked than hot-rolled;72;kg;10;18;;29.8;COMPLET;;N1
-72269200;-- Not further worked than cold-rolled (cold-reduced);72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-72269900;-- Other;72;kg;10% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N40 N1
-72271000;- Of high speed steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72272000;- Of silico-manganese steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72279000;- Other 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72281000;- Bars and rods, of high speed steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72282000;- Bars and rods, of silico-manganese steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72283000;- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72284000;- Other bars and rods, not further worked than forged 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72285000;- Other bars and rods, not further worked than cold-formed or cold-finished 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72286000;- Other bars and rods 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72287000;- Angles, shapes and sections 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
-72288000;- Hollow drill bars and rods 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N1
+72269200;-- Not further worked than cold-rolled (cold-reduced);72;kg;10% or US$ 125 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N167 N1
+72269900;-- Other;72;kg;10% or US$ 300 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N173 N1
+72271000;- Of high speed steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72272000;- Of silico-manganese steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72279000;- Other 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72281000;- Bars and rods, of high speed steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72282000;- Bars and rods, of silico-manganese steel 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72283000;- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72284000;- Other bars and rods, not further worked than forged 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72285000;- Other bars and rods, not further worked than cold-formed or cold-finished 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72286000;- Other bars and rods 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72287000;- Angles, shapes and sections 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+72288000;- Hollow drill bars and rods 25% or $200/MT whichever is higher;72;kg;25% or $200/MT whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
 72292000;- Of silico-manganese steel;72;kg;10;18;;29.8;COMPLET;;N1
 72299000;- Other;72;kg;10;18;;29.8;COMPLET;;N1
 73011000;- Sheet piling;73;kg;10;18;;29.8;COMPLET;;N1
@@ -4009,12 +4009,12 @@
 73061900;-- Other;73;kg;0;18;;18;COMPLET;;N1
 73062100;-- Welded, of stainless steel;73;kg;0;18;;18;COMPLET;;N1
 73062900;-- Other;73;kg;0;18;;18;COMPLET;;N1
-73063000;- Other, welded, of circular cross-section, of iron or non-alloy steel;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N44 N1
+73063000;- Other, welded, of circular cross-section, of iron or non-alloy steel;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N177 N1
 73064000;- Other, welded, of circular cross-section, of stainless steel;73;kg;25;18;;47.5;COMPLET;;N1
-73065000;- Other, welded, of circular cross-section, of other alloy steel;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N44 N1
-73066100;-- Of square or rectangular cross-section;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N44 N1
-73066900;-- Of other non-circular cross-section;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N41 N1
-73069000;- Other;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N41 N1
+73065000;- Other, welded, of circular cross-section, of other alloy steel;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N177 N1
+73066100;-- Of square or rectangular cross-section;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N177 N1
+73066900;-- Of other non-circular cross-section;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N174 N1
+73069000;- Other;73;kg;25% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N174 N1
 73071100;-- Of non-malleable cast iron;73;kg;25;18;;47.5;COMPLET;;N1
 73071900;-- Other;73;kg;25;18;;47.5;COMPLET;;N1
 73072100;-- Flanges;73;kg;25;18;;47.5;COMPLET;;N1
@@ -4034,12 +4034,12 @@
 73089099;---- Other;73;kg;25;18;;47.5;COMPLET;;N1
 73090000;Reservoirs, tanks, vats and similar containers for any material (other than compressed or liquefied gas), of iron or steel, of a capacity exceeding300 l, whether ornot lined or heat‑insulated, but not fitted with mechanical or thermal equipment.;73;kg;25;18;;47.5;COMPLET;;N1
 73101000;- Of a capacity of 50 l or more;73;kg;25;18;;47.5;COMPLET;;N1
-73102100;-- Cans which are to be closed by soldering or crimping;73;kg;25;18;;47.5;COMPLET;;N1
+73102100;-- Cans which are to be closed by soldering or crimping;73;kg;25;18;;47.5;COMPLET;;N178 N1
 73102910;--- Aerosol cans;73;kg;10;18;;29.8;COMPLET;;N1
 73102920;--- Cans and ends for beverages and food;73;kg;0;18;;18;COMPLET;;N1
-73102990;--- Other;73;kg;25;18;;47.5;COMPLET;;N1
+73102990;--- Other;73;kg;25;18;;47.5;COMPLET;;N72 N1
 73110000;Containers for compressed or liquefied gas, of iron or steel.;73;kg;0;18;;18;COMPLET;;N1
-73121000;- Stranded wire, ropes and cables;73;kg;10;18;;29.8;COMPLET;;N1
+73121000;- Stranded wire, ropes and cables;73;kg;10;18;;29.8;COMPLET;;N21 N1
 73129000;- Other;73;kg;10;18;;29.8;COMPLET;;N1
 73130000;"Barbed wire of iron or steel; twisted hoop or single flat wire, barbed or not, and loosely twisted double wire, of a kind used for fencing, of iron or steel.";73;kg;35;18;;59.3;COMPLET;;N1
 73141200;-- Endless bands for machinery, of stainless steel;73;kg;0;18;;18;COMPLET;;N1
@@ -4061,7 +4061,7 @@
 73158900;-- Other;73;kg;10;18;;29.8;COMPLET;;N1
 73159000;- Other parts;73;kg;10;18;;29.8;COMPLET;;N1
 73160000;Anchors, grapnels and parts thereof, of iron or steel.;73;kg;10;18;;29.8;COMPLET;;N1
-73170000;Nails, tacks, drawing pins, corrugated nails, staples (other than those of heading 83.05) and similar articles, of iron or steel, whether or not with heads of other material, but excluding such articles with heads of copper.;73;kg;35% or US$ 0.35 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N45 N1
+73170000;Nails, tacks, drawing pins, corrugated nails, staples (other than those of heading 83.05) and similar articles, of iron or steel, whether or not with heads of other material, but excluding such articles with heads of copper.;73;kg;35% or US$ 0.35 / kg whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N179 N1
 73181100;-- Coach screws;73;kg;10;18;;29.8;COMPLET;;N1
 73181200;-- Other wood screws;73;kg;10;18;;29.8;COMPLET;;N1
 73181300;-- Screw hooks and screw rings;73;kg;10;18;;29.8;COMPLET;;N1
@@ -4074,8 +4074,8 @@
 73182300;-- Rivets;73;kg;10;18;;29.8;COMPLET;;N1
 73182400;-- Cotters and cotter-pins;73;kg;10;18;;29.8;COMPLET;;N1
 73182900;-- Other;73;kg;10;18;;29.8;COMPLET;;N1
-73194000;- Safety pins and other pins;73;kg;25;18;;47.5;COMPLET;;N46 N1
-73199000;- Other;73;kg;25;18;;47.5;COMPLET;;N47 N1
+73194000;- Safety pins and other pins;73;kg;25;18;;47.5;COMPLET;;N180 N1
+73199000;- Other;73;kg;25;18;;47.5;COMPLET;;N181 N1
 73201000;- Leaf-springs and leaves therefor;73;kg;35;18;;59.3;COMPLET;;N1
 73202000;- Helical springs;73;kg;25;18;;47.5;COMPLET;;N1
 73209000;- Other;73;kg;35;18;;59.3;COMPLET;;N1
@@ -4104,7 +4104,7 @@
 73259100;-- Grinding balls and similar articles for mills;73;kg;0;18;;18;COMPLET;;N1
 73259900;-- Other;73;kg;10;18;;29.8;COMPLET;;N1
 73261100;-- Grinding balls and similar articles for mills;73;kg;0;18;;18;COMPLET;;N1
-73261900;-- Other;73;kg;10;18;;29.8;COMPLET;;N1
+73261900;-- Other;73;kg;10;18;;29.8;COMPLET;;N182 N1
 73262000;- Articles of iron or steel wire;73;kg;25;18;;47.5;COMPLET;;N1
 73269010;--- Traps and sneers for the destruction of pests;73;kg;0;18;;18;COMPLET;;N1
 73269020;--- Reels for fire hose;73;kg;0;18;;18;COMPLET;;N1
@@ -4126,20 +4126,20 @@
 74072100;-- Of copper-zinc base alloys (brass);74;kg;10;18;;29.8;COMPLET;;N1
 74072900;-- Other;74;kg;10;18;;29.8;COMPLET;;N1
 74081100;-- Of which the maximum cross-sectional dimension exceeds 6 mm;74;kg;0;18;;18;COMPLET;;N1
-74081900;-- Other;74;kg;10;18;;29.8;COMPLET;;N1
+74081900;-- Other;74;kg;10;18;;29.8;COMPLET;;N21 N1
 74082100;-- Of copper-zinc base alloys (brass);74;kg;10;18;;29.8;COMPLET;;N1
 74082200;-- Of copper-nickel base alloys(cupro-nickel) or copper-nickel-zinc base alloys (nickel silver);74;kg;0;18;;18;COMPLET;;N1
 74082900;-- Other;74;kg;10;18;;29.8;COMPLET;;N1
-74091100;-- In coils;74;kg;10;18;;29.8;COMPLET;;N1
-74091900;-- Other;74;kg;10;18;;29.8;COMPLET;;N1
-74092100;-- In coils;74;kg;10;18;;29.8;COMPLET;;N1
+74091100;-- In coils;74;kg;10;18;;29.8;COMPLET;;N183 N1
+74091900;-- Other;74;kg;10;18;;29.8;COMPLET;;N48 N1
+74092100;-- In coils;74;kg;10;18;;29.8;COMPLET;;N48 N1
 74092900;-- Other;74;kg;10;18;;29.8;COMPLET;;N1
 74093100;--In coils;74;kg;10;18;;29.8;COMPLET;;N1
 74093900;--Other;74;kg;10;18;;29.8;COMPLET;;N1
 74094000;- Of copper-nickel base alloys (cupro-nickel) or copper- nickel-zinc base alloys (nickel silver);74;kg;10;18;;29.8;COMPLET;;N1
 74099000;- Of other copper alloys;74;kg;10;18;;29.8;COMPLET;;N1
-74101100;--Of refined copper;74;kg;10;18;;29.8;COMPLET;;N1
-74101200;-- Of copper alloys;74;kg;10;18;;29.8;COMPLET;;N1
+74101100;--Of refined copper;74;kg;10;18;;29.8;COMPLET;;N48 N1
+74101200;-- Of copper alloys;74;kg;10;18;;29.8;COMPLET;;N48 N1
 74102100;-- Of refined copper;74;kg;10;18;;29.8;COMPLET;;N1
 74102200;-- Of copper alloys;74;kg;10;18;;29.8;COMPLET;;N1
 74111000;- Of refined copper;74;kg;25;18;;47.5;COMPLET;;N1
@@ -4181,12 +4181,12 @@
 76020000;Aluminium waste and scrap.;76;kg;0;18;;18;COMPLET;;N1
 76031000;- Powders of non-lamellar structure;76;kg;0;18;;18;COMPLET;;N1
 76032000;"- Powders of lamellar structure; flakes";76;kg;0;18;;18;COMPLET;;N1
-76041000;- Of aluminium, not alloyed;76;kg;25% or US$ 550 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
-76042100;-- Hollow profiles;76;kg;25% or US$ 550 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
-76042900;-- Other;76;kg;25% or US$ 550 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
+76041000;- Of aluminium, not alloyed;76;kg;25% or US$ 550 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N184 N1
+76042100;-- Hollow profiles;76;kg;25% or US$ 550 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N184 N1
+76042900;-- Other;76;kg;25% or US$ 550 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N184 N1
 76051100;-- Of which the maximum cross-sectional dimension exceeds 7 mm;76;kg;0;18;;18;COMPLET;;N1
 76051900;-- Other;76;kg;10;18;;29.8;COMPLET;;N1
-76052100;-- Of which the maximum cross-sectional dimension exceeds 7 mm;76;kg;10;18;;29.8;COMPLET;;N1
+76052100;-- Of which the maximum cross-sectional dimension exceeds 7 mm;76;kg;10;18;;29.8;COMPLET;;N21 N1
 76052900;-- Other;76;kg;10;18;;29.8;COMPLET;;N1
 76061100;-- Of aluminium, not alloyed;76;kg;10;18;;29.8;COMPLET;;N1
 76061200;-- Of aluminium alloys;76;kg;25;18;;47.5;COMPLET;;N1
@@ -4194,7 +4194,7 @@
 76069200;-- Of aluminium alloys;76;kg;25;18;;47.5;COMPLET;;N1
 76071100;-- Rolled but not further worked;76;kg;10;18;;29.8;COMPLET;;N1
 76071910;--- Unprinted aluminium foil;76;kg;10;18;;29.8;COMPLET;;N1
-76071990;--- Other;76;kg;25;18;;47.5;COMPLET;;N1
+76071990;--- Other;76;kg;25;18;;47.5;COMPLET;;N185 N1
 76072010;--- Unprinted aluminium foil;76;kg;10;18;;29.8;COMPLET;;N1
 76072090;--- Other;76;kg;25;18;;47.5;COMPLET;;N1
 76081000;- Of aluminium, not alloyed;76;kg;25;18;;47.5;COMPLET;;N1
@@ -4237,8 +4237,8 @@
 79039000;- Other;79;kg;0;18;;18;COMPLET;;N1
 79040000;Zinc bars, rods, profiles and wire.;79;kg;10;18;;29.8;COMPLET;;N1
 79050000;Zinc plates, sheets, strip and foil.;79;kg;10;18;;29.8;COMPLET;;N1
-79070000;Other articles of zinc.;79;kg;10;18;;29.8;COMPLET;;N1
-80011000;- Tin, not alloyed;80;kg;0;18;;18;COMPLET;;N1
+79070000;Other articles of zinc.;79;kg;10;18;;29.8;COMPLET;;N21 N1
+80011000;- Tin, not alloyed;80;kg;0;18;;18;COMPLET;;N48 N1
 80012000;- Tin alloys;80;kg;0;18;;18;COMPLET;;N1
 80020000;Tin waste and scrap.;80;kg;0;18;;18;COMPLET;;N1
 80030000;Tin bars, rods, profiles and wire.;80;kg;10;18;;29.8;COMPLET;;N1
@@ -4305,23 +4305,23 @@
 82015000;- Secateurs and similar one-handed pruners and shears (including poultry shears);82;kg;10;18;;29.8;COMPLET;;N1
 82016000;- Hedge shears, two-handed pruning shears and similar two- handed shears;82;kg;10;18;;29.8;COMPLET;;N1
 82019000;- Other hand tools of a kind used in agriculture, horticulture or forestry;82;kg;10;18;;29.8;COMPLET;;N1
-82021000;- Hand saws;82;kg;10;18;;29.8;COMPLET;;N49 N1
+82021000;- Hand saws;82;kg;10;18;;29.8;COMPLET;;N186 N1
 82022000;- Band saw blades;82;kg;10;18;;29.8;COMPLET;;N1
 82023100;-- With working part of steel;82;kg;10;18;;29.8;COMPLET;;N1
 82023900;-- Other, including parts;82;kg;10;18;;29.8;COMPLET;;N1
-82024000;- Chain saw blades;82;kg;10;18;;29.8;COMPLET;;N50 N1
-82029100;-- Straight saw blades, for working metal;82;kg;10;18;;29.8;COMPLET;;N51 N1
-82029900;-- Other;82;kg;10;18;;29.8;COMPLET;;N52 N1
-82031000;- Files, rasps and similar tools;82;kg;10;18;;29.8;COMPLET;;N53 N1
+82024000;- Chain saw blades;82;kg;10;18;;29.8;COMPLET;;N187 N1
+82029100;-- Straight saw blades, for working metal;82;kg;10;18;;29.8;COMPLET;;N188 N1
+82029900;-- Other;82;kg;10;18;;29.8;COMPLET;;N189 N1
+82031000;- Files, rasps and similar tools;82;kg;10;18;;29.8;COMPLET;;N190 N1
 82032000;- Pliers (including cutting pliers), pincers, tweezers and similar tools;82;kg;10;18;;29.8;COMPLET;;N1
 82033000;- Metal cutting shears and similar tools;82;kg;10;18;;29.8;COMPLET;;N1
-82034000;- Pipe-cutters, bolt croppers, perforating punches and similar tools;82;kg;10;18;;29.8;COMPLET;;N54 N1
+82034000;- Pipe-cutters, bolt croppers, perforating punches and similar tools;82;kg;10;18;;29.8;COMPLET;;N191 N1
 82041100;-- Non-adjustable;82;kg;10;18;;29.8;COMPLET;;N1
 82041200;-- Adjustable;82;kg;10;18;;29.8;COMPLET;;N1
 82042000;- Interchangeable spanner sockets, with or without handles;82;kg;10;18;;29.8;COMPLET;;N1
 82051000;- Drilling, threading or tapping tools;82;kg;10;18;;29.8;COMPLET;;N1
-82052000;- Hammers and sledge hammers;82;Kg;10;18;;29.8;COMPLET;;N55 N1
-82053000;- Planes, chisels, gouges and similar cutting tools for working wood;82;kg;10;18;;29.8;COMPLET;;N56 N1
+82052000;- Hammers and sledge hammers;82;Kg;10;18;;29.8;COMPLET;;N192 N1
+82053000;- Planes, chisels, gouges and similar cutting tools for working wood;82;kg;10;18;;29.8;COMPLET;;N193 N1
 82054000;- Screwdrivers;82;kg;10;18;;29.8;COMPLET;;N1
 82055100;-- Household tools;82;kg;10;18;;29.8;COMPLET;;N1
 82055900;-- Other;82;kg;10;18;;29.8;COMPLET;;N1
@@ -4344,7 +4344,7 @@
 82083000;- For kitchen appliances or for machines used by the food industry;82;kg;10;18;;29.8;COMPLET;;N1
 82084000;- For agricultural, horticultural or forestry machines;82;kg;0;18;;18;COMPLET;;N1
 82089000;- Other;82;kg;10;18;;29.8;COMPLET;;N1
-82090000;Plates, sticks, tips and the like for tools, unmounted, of cermets.;82;kg;10;18;;29.8;COMPLET;;N57 N1
+82090000;Plates, sticks, tips and the like for tools, unmounted, of cermets.;82;kg;10;18;;29.8;COMPLET;;N194 N1
 82100000;Hand-operated mechanical appliances, weighing 10 kg or less, used in the preparation, conditioning or serving of food or drink.;82;kg;10;18;;29.8;COMPLET;;N1
 82111000;- Sets of assorted articles;82;u;10;18;;29.8;COMPLET;;N1
 82119100;-- Table knives having fixed blades;82;u;10;18;;29.8;COMPLET;;N1
@@ -4355,7 +4355,7 @@
 82121000;- Razors;82;u;25;18;;47.5;COMPLET;;N1
 82122000;- Safety razor blades, including razor blade blanks in strips;82;u;10;18;;29.8;COMPLET;;N1
 82129000;- Other parts;82;kg;10;18;;29.8;COMPLET;;N1
-82130000;Scissors, tailors’ shears and similar shears, and blades therefor.;82;kg;10;18;;29.8;COMPLET;;N58 N1
+82130000;Scissors, tailors’ shears and similar shears, and blades therefor.;82;kg;10;18;;29.8;COMPLET;;N195 N1
 82141000;- Paper knives, letter openers, erasing knives, pencil sharpeners and blades therefor;82;kg;10;18;;29.8;COMPLET;;N1
 82142000;- Manicure or pedicure sets and instruments (including nail files);82;kg;25;18;;47.5;COMPLET;;N1
 82149000;- Other;82;kg;25;18;;47.5;COMPLET;;N1
@@ -4382,7 +4382,7 @@
 83040000;Filing cabinets, card-index cabinets, paper trays, paper rests, pen trays, office-stamp stands and similar office or desk equipment, of base metal, other than office furniture of heading 94.03.;83;kg;25;18;;47.5;COMPLET;;N1
 83051000;- Fittings for loose-leaf binders or files;83;kg;10;18;;29.8;COMPLET;;N1
 83052000;- Staples in strips;83;kg;10;18;;29.8;COMPLET;;N1
-83059000;- Other, including parts;83;kg;10;18;;29.8;COMPLET;;N1
+83059000;- Other, including parts;83;kg;10;18;;29.8;COMPLET;;N196 N1
 83061000;- Bells, gongs and the like;83;kg;25;18;;47.5;COMPLET;;N1
 83062100;-- Plated with precious metal;83;kg;25;18;;47.5;COMPLET;;N1
 83062900;-- Other;83;kg;25;18;;47.5;COMPLET;;N1
@@ -4391,12 +4391,12 @@
 83079000;- Of other base metal;83;kg;10;18;;29.8;COMPLET;;N1
 83081000;- Hooks, eyes and eyelets;83;kg;10;18;;29.8;COMPLET;;N1
 83082000;- Tubular or bifurcated rivets;83;Kg;10;18;;29.8;COMPLET;;N1
-83089000;- Other, including parts;83;kg;10;18;;29.8;COMPLET;;N1
+83089000;- Other, including parts;83;kg;10;18;;29.8;COMPLET;;N197 N1
 83091000;- Crown corks;83;kg;25;18;;47.5;COMPLET;;N1
 83099010;--- Easy opening ends in the form of incised flap and a ring pull or other easy opening mechanism made of base metal used for drink or food cans;83;kg;10;18;;29.8;COMPLET;;N1
 83099090;--- Other;83;kg;25;18;;47.5;COMPLET;;N1
 83100000;Sign-plates, name-plates, address-plates and similar plates, numbers, letters and other symbols, of base metal, excluding those of heading 94.05.;83;kg;25;18;;47.5;COMPLET;;N1
-83111000;- Coated electrodes of base metal, for electric arc-welding;83;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N59 N1
+83111000;- Coated electrodes of base metal, for electric arc-welding;83;kg;35% or US$ 250 / mt whichever is higher;18;;;INDISPONIBLE;DD (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N198 N1
 83112000;- Cored wire of base metal, for electric arc-welding;83;kg;10;18;;29.8;COMPLET;;N1
 83113000;- Coated rods and cored wire, of base metal, for soldering, brazing or welding by flame;83;kg;10;18;;29.8;COMPLET;;N1
 83119000;- Other;83;kg;10;18;;29.8;COMPLET;;N1
@@ -4850,8 +4850,8 @@
 84702100;-- Incorporating a printing device;84;u;10;18;;29.8;COMPLET;;N1
 84702900;-- Other;84;u;10;18;;29.8;COMPLET;;N1
 84703000;- Other calculating machines;84;u;10;18;;29.8;COMPLET;;N1
-84705000;- Cash registers;84;u;10;18;;29.8;COMPLET;;N60 N1
-84709000;- Other;84;u;10;18;;29.8;COMPLET;;N60 N1
+84705000;- Cash registers;84;u;10;18;;29.8;COMPLET;;N199 N1
+84709000;- Other;84;u;10;18;;29.8;COMPLET;;N199 N1
 84713000;- Portable automatic data proce-ssing machines, weighing not more than 10 kg, consisting of at least a central processing unit, a keyboard and a display;84;u;0;18;;18;COMPLET;;N1
 84714100;-- Comprising in the same housing at least a central processing unit and an input and output unit, whether or not combined;84;u;0;18;;18;COMPLET;;N1
 84714900;-- Other, presented in the form of systems;84;u;0;18;;18;COMPLET;;N1
@@ -5003,7 +5003,7 @@
 85072000;- Other lead-acid accumulators;85;u;25;18;;47.5;COMPLET;;N1
 85073000;- Nickel-cadmium;85;u;25;18;;47.5;COMPLET;;N1
 85075000;- Nickel-metal hydride;85;u;25;18;;47.5;COMPLET;;N1
-85076000;- Lithium-ion;85;u;25;18;;47.5;COMPLET;;N1
+85076000;- Lithium-ion;85;u;25;18;;47.5;COMPLET;;N200 N1
 85078000;- Other accumulators;85;u;25;18;;47.5;COMPLET;;N1
 85079000;- Parts;85;kg;0;18;;18;COMPLET;;N1
 85081100;-- Of a power not exceeding 1,500 W and having a dust bag or other receptacle capacity not exceeding 20 l;85;u;25;18;;47.5;COMPLET;;N1
@@ -5094,7 +5094,7 @@
 85234100;-- Unrecorded;85;u;10;18;;29.8;COMPLET;;N1
 85234900;-- Other;85;u;25;18;;47.5;COMPLET;;N1
 85235100;-- Solid-state non-volatile storage devices;85;u;10;18;;29.8;COMPLET;;N1
-85235200;-- “Smart cards”;85;u;25;18;;47.5;COMPLET;;N61 N1
+85235200;-- “Smart cards”;85;u;25;18;;47.5;COMPLET;;N201 N1
 85235900;-- Other;85;u;10;18;;29.8;COMPLET;;N1
 85238010;--- Software;85;u;0;18;;18;COMPLET;;N1
 85238090;--- Other;85;u;25;18;;47.5;COMPLET;;N1
@@ -5173,7 +5173,7 @@
 85366100;-- Lamp-holders;85;kg;10;18;;29.8;COMPLET;;N1
 85366900;-- Other;85;kg;10;18;;29.8;COMPLET;;N1
 85367000;- Connectors for optical fibres, optical fibre bundles or cables;85;kg;0;18;;18;COMPLET;;N1
-85369000;- Other apparatus;85;kg;10;18;;29.8;COMPLET;;N1
+85369000;- Other apparatus;85;kg;10;18;;29.8;COMPLET;;N43 N1
 85371000;- For a voltage not exceeding 1,000 V;85;kg;10;18;;29.8;COMPLET;;N1
 85372000;- For a voltage exceeding 1,000 V;85;kg;0;18;;18;COMPLET;;N1
 85381000;- Boards, panels, consoles, desks, cabinets and other bases for the goods of heading 85.37, not equipped with their apparatus;85;kg;10;18;;29.8;COMPLET;;N1
@@ -5230,7 +5230,7 @@
 85442000;- Co-axial cable and other co-axial electric conductors;85;kg;25;18;;47.5;COMPLET;;N1
 85443000;- Ignition wiring sets and other wiring sets of a kind used in vehicles, aircraft or ships;85;kg;25;18;;47.5;COMPLET;;N1
 85444200;-- Fitted with connectors;85;kg;25;18;;47.5;COMPLET;;N1
-85444900;-- Other;85;kg;25;18;;47.5;COMPLET;;N1
+85444900;-- Other;85;kg;25;18;;47.5;COMPLET;;N43 N1
 85446000;- Other electric conductors, for a voltage exceeding 1,000 V;85;kg;25;18;;47.5;COMPLET;;N1
 85447000;- Optical fibre cables;85;kg;0;18;;18;COMPLET;;N1
 85451100;-- Of a kind used for furnaces;85;kg;0;18;;18;COMPLET;;N1
@@ -5301,14 +5301,14 @@
 87021022;---- For the transport of not more than 15 persons;87;u;25;18;;47.5;COMPLET;;N1
 87021029;---- Other;87;u;25;18;;47.5;COMPLET;;N1
 87021091;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
-87021099;---- Other;87;u;25;18;;47.5;COMPLET;;N62 N1
+87021099;---- Other;87;u;25;18;;47.5;COMPLET;;N202 N1
 87022011;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87022019;---- Other;87;u;25;18;;47.5;COMPLET;;N1
 87022021;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87022022;---- For the transport of not more than 15 persons;87;u;25;18;;47.5;COMPLET;;N1
 87022029;---- Other;87;u;25;18;;47.5;COMPLET;;N1
 87022091;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
-87022099;---- Other;87;u;25;18;;47.5;COMPLET;;N63 N1
+87022099;---- Other;87;u;25;18;;47.5;COMPLET;;N203 N1
 87023011;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87023019;---- Other;87;u;25;18;;47.5;COMPLET;;N1
 87023021;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
@@ -5328,7 +5328,7 @@
 87029021;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87029029;---- Other;87;u;25;18;;47.5;COMPLET;;N1
 87029091;---- Unassembled;87;u;0;18;;18;COMPLET;;N1
-87029099;---- Other;87;u;25;18;;47.5;COMPLET;;N63 N1
+87029099;---- Other;87;u;25;18;;47.5;COMPLET;;N203 N1
 87031010;--- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87031090;--- Other;87;u;25;18;;47.5;COMPLET;;N1
 87032110;--- Unassembled;87;u;0;18;;18;COMPLET;;N1
@@ -5357,7 +5357,7 @@
 87041010;--- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87041090;--- Other;87;u;10;18;;29.8;COMPLET;;N1
 87042110;--- Unassembled;87;u;0;18;;18;COMPLET;;N1
-87042190;--- Other;87;u;25;18;;47.5;COMPLET;;N1
+87042190;--- Other;87;u;25;18;;47.5;COMPLET;;N204 N1
 87042210;--- Unassembled;87;u;0;18;;18;COMPLET;;N1
 87042290;--- Other;87;u;25;18;;47.5;COMPLET;;N1
 87042310;--- Unassembled;87;u;0;18;;18;COMPLET;;N1
@@ -5875,10 +5875,10 @@
 96040000;Hand sieves and hand riddles.;96;u;25;18;;47.5;COMPLET;;N1
 96050000;Travel sets for personal toilet, sewing or shoe or clothes cleaning.;96;u;25;18;;47.5;COMPLET;;N1
 96061000;- Press-fasteners, snap-fasteners and press-studs and parts therefor;96;kg;10;18;;29.8;COMPLET;;N1
-96062100;-- Of plastics, not covered with textile material;96;kg;10;18;;29.8;COMPLET;;N1
+96062100;-- Of plastics, not covered with textile material;96;kg;10;18;;29.8;COMPLET;;N205 N1
 96062200;-- Of base metal, not covered with textile material;96;kg;10;18;;29.8;COMPLET;;N1
-96062900;-- Other;96;kg;10;18;;29.8;COMPLET;;N1
-96063000;"- Button moulds and other parts of buttons; button blanks";96;kg;10;18;;29.8;COMPLET;;N1
+96062900;-- Other;96;kg;10;18;;29.8;COMPLET;;N206 N1
+96063000;"- Button moulds and other parts of buttons; button blanks";96;kg;10;18;;29.8;COMPLET;;N207 N1
 96071100;-- Fitted with chain scoops of base metal;96;kg;10;18;;29.8;COMPLET;;N1
 96071900;-- Other;96;kg;10;18;;29.8;COMPLET;;N1
 96072000;- Parts;96;kg;10;18;;29.8;COMPLET;;N1
@@ -5913,7 +5913,7 @@
 96170000;"Vacuum flasks and other vacuum vessels, complete; parts thereof other than glass inners.";96;kg;25;18;;47.5;COMPLET;;N1
 96180000;"Tailors’ dummies and other lay figures; automata and other animated displays used for shop window dressing.";96;kg;25;18;;47.5;COMPLET;;N1
 96190010;--- Sanitary towels (pads) and tampons;96;kg;0;18;;18;COMPLET;;N1
-96190090;--- Other;96;kg;35;18;;59.3;COMPLET;;N64 N1
+96190090;--- Other;96;kg;35;18;;59.3;COMPLET;;N208 N1
 96200000;Monopods, bipods, tripods and similar articles.;96;kg;25;18;;47.5;COMPLET;;N1
 97012100;-- Paintings, drawings and pastels;97;u;25;18;;47.5;COMPLET;;N1
 97012200;-- Mosaics;97;u;25;18;;47.5;COMPLET;;N1

@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane (tarif national 2021));RS (Redevance statistique (tarif national 2021));PC (Prélèvement communautaire (tarif national 2021));TVA (Taxe sur la Valeur Ajoutée (TVA));EXC (Droits d'accises);TLC (Taxe de recherche et de lutte contre le cancer);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir MRT_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane (tarif national 2021));RS (Redevance statistique (tarif national 2021));PC (Prélèvement communautaire (tarif national 2021));TVA (Taxe sur la Valeur Ajoutée (TVA));EXC (Droits d'accises);TLC (Taxe de recherche et de lutte contre le cancer);Total droits et taxes pour 100 CAF (MRU);État;Manques;Notes (voir MRT_NPF_notes.csv)
 0101210000;Reproducteurs de race pure;01;u;5;1;0.5;16;;;23.54;COMPLET;;N1
 0101290000;Autres;01;u;10;1;0.5;16;;;29.34;COMPLET;;N1
 0101301000;Reproducteurs de race pure;01;u;5;1;0.5;16;;;23.54;COMPLET;;N1
@@ -1253,23 +1253,23 @@
 2710121000;Pétroles partiellement raffinés y compris les huiles;27;kg;0;1;0.5;16;;;17.74;COMPLET;;N1
 2710122100;White spirit;27;kg;5;1;0.5;16;;;23.54;COMPLET;;N1
 2710122900;Autres;27;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
-2710123000;Essence d'aviation;27;kg;10;1;0.5;16;1.33 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
-2710124000;Super carburant;27;kg;10;0;0.5;16;9.98 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N6 N7 N1
-2710125000;Essence d'auto ordinaire;27;kg;10;0;0.5;16;9.98 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N6 N7 N1
+2710123000;Essence d'aviation;27;kg;10;1;0.5;16;1,33 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4 N1
+2710124000;Super carburant;27;kg;10;0;0.5;16;9,98 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N6 N7 N1
+2710125000;Essence d'auto ordinaire;27;kg;10;0;0.5;16;9,98 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N6 N7 N1
 2710129000;Autres;27;kg;20;1;0.5;16;;;40.94;COMPLET;;N1
-2710191100;Carburéacteur;27;kg;10;0;0.5;16;2.16 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N8 N1
-2710191200;Pétrole lampant;27;kg;5;1;0.5;16;1.86 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N9 N1
+2710191100;Carburéacteur;27;kg;10;0;0.5;16;2,16 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N8 N1
+2710191200;Pétrole lampant;27;kg;5;1;0.5;16;1,86 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N9 N1
 2710191900;Autres;27;kg;20;1;0.5;16;;;40.94;COMPLET;;N1
-2710192100;Gas-oil;27;kg;10;0;0.5;16;6.52 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N6 N10 N1
-2710192200;Fuel-oil domestique;27;kg;20;1;0.5;16;0.45 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
-2710192300;Fuel-oil léger;27;kg;5;1;0.5;16;0.45 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
-2710192400;Fuel-oil lourd I;27;kg;5;0;0.5;16;0.71 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N12 N1
+2710192100;Gas-oil;27;kg;10;0;0.5;16;6,52 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N5 N6 N10 N1
+2710192200;Fuel-oil domestique;27;kg;20;1;0.5;16;0,45 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+2710192300;Fuel-oil léger;27;kg;5;1;0.5;16;0,45 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+2710192400;Fuel-oil lourd I;27;kg;5;0;0.5;16;0,71 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N12 N1
 2710192500;Fuel-oil lourd II;27;kg;5;1;0.5;16;;;23.54;COMPLET;;N1
 2710193100;Destinées à être mélangées;27;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
-2710193200;Pour freins hydrauliques;27;kg;10;1;0.5;16;3.42 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+2710193200;Pour freins hydrauliques;27;kg;10;1;0.5;16;3,42 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 2710193300;Graisse;27;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
-2710193910;Huiles de moteur à 2 temps;27;kg;10;1;0.5;16;3.42 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
-2710193990;Autres;27;kg;10;1;0.5;16;3.42 unite_principale/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+2710193910;Huiles de moteur à 2 temps;27;kg;10;1;0.5;16;3,42 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+2710193990;Autres;27;kg;10;1;0.5;16;3,42 MRU/l;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 2710200000;Huiles de pétrole ou de minéraux bitumineux (autres que les huiles brutes) et préparations non dénommées ni comprises ailleurs, contenant en poids 70 % ou plus d’huiles de pétrole ou de minéraux bitumineux et dont ces huiles constituent l’élément de base, contenant du biodiesel, autres que les déchets d’huiles;27;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
 2710910000;Contenant des diphényles poly chlorés (PCB), des terphényles polychlorés (PCT) ou des diphényles polybromés (PBB);27;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
 2710990000;Autres;27;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
@@ -3915,8 +3915,8 @@
 7107000000;Plaqué ou doublé d'argent sur métaux communs, sous formes brutes ou mi-ouvrées.;71;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
 7108110000;Poudres;71;kg;5;1;0.5;16;;;23.54;COMPLET;;N1
 7108120000;Sous autres formes brutes;71;kg;5;1;0.5;16;;;23.54;COMPLET;;N1
-7108131000;Lingots d’or;71;kg;10;1;0.5;16;100 unite_principale/g;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
-7108139000;Autres;71;kg;10;1;0.5;16;100 unite_principale/g;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
+7108131000;Lingots d’or;71;kg;10;1;0.5;16;100 MRU/g;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
+7108139000;Autres;71;kg;10;1;0.5;16;100 MRU/g;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
 7108200000;A usage monétaire;71;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
 7109000000;Plaqué ou doublé d'or sur métaux communs ou sur argent, sous formes brutes ou mi-ouvrées.;71;kg;10;1;0.5;16;;;29.34;COMPLET;;N1
 7110110000;Sous formes brutes ou en poudre;71;kg;5;1;0.5;16;;;23.54;COMPLET;;N1

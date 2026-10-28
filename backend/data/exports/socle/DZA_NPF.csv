@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (DD);TCS (TCS);TVA (TVA);PRCT (PRCT);DAPS (DAPS);TIC (TIC);TICPV (TICPV);DPPP (DPPP);TCE (TCE);TEE (TEE);DFP (DFP);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir DZA_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (DD);TCS (TCS);TVA (TVA);PRCT (PRCT);DAPS (DAPS);TIC (TIC);TICPV (TICPV);DPPP (DPPP);TCE (TCE);TEE (TEE);DFP (DFP);Total droits et taxes pour 100 CAF (DZD);État;Manques;Notes (voir DZA_NPF_notes.csv)
 0101211100;- Chevaux : - - Reproducteurs de race pure : - - - De course : - - - - De pur sang arabe;01;;5;3;9;2;;;;;;;;19.8;COMPLET;;
 0101211900;- Chevaux : - - Reproducteurs de race pure : - - - De course : - - - - Autres que de pur sang arabe;01;;5;3;9;2;;;;;;;;19.8;COMPLET;;
 0101219100;- Chevaux : - - Reproducteurs de race pure : - - - Autres que de course : - - - - De pur sang arabe;01;;5;3;9;2;;;;;;;;19.8;COMPLET;;

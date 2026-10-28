@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));PCC (Prélèvement Communautaire CEDEAO);FT (Processing Fee);PUA (Prélèvement de l'Union africaine);TVA (Taxe sur la Valeur Ajoutée);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir GMB_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));PCC (Prélèvement Communautaire CEDEAO);FT (Processing Fee);PUA (Prélèvement de l'Union africaine);TVA (Taxe sur la Valeur Ajoutée);Total droits et taxes pour 100 CAF (GMD);État;Manques;Notes (voir GMB_NPF_notes.csv)
 0101210000;Chevaux vivants, reproducteurs de race pure;01;QA;5;0.5;1.55;0.2;15;23.34;COMPLET;;N1 N2 N3 N4
 0101290000;Chevaux vivants, autres que reproducteurs de race pure;01;QA;10;0.5;1.55;0.2;15;29.09;COMPLET;;N1 N2 N3 N4
 0101301000;Anes vivants reproducteurs de race pure;01;QA;5;0.5;1.55;0.2;15;23.34;COMPLET;;N1 N2 N3 N4

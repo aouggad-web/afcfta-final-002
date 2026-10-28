@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));RS (Redevance Statistique);PC-AES (Prélèvement Confédéral AES (colonne PC du tarif));PCS (Prélèvement Communautaire de Solidarité (UEMOA));TVA (Taxe sur la Valeur Ajoutée);TAI (Taxe d'Ajustement à l'Importation);ISCP (Impôt Spécial sur Certains Produits);TCI (Taxe Conjoncturelle à l'Importation);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir MLI_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (TEC CEDEAO));RS (Redevance Statistique);PC-AES (Prélèvement Confédéral AES (colonne PC du tarif));PCS (Prélèvement Communautaire de Solidarité (UEMOA));TVA (Taxe sur la Valeur Ajoutée);TAI (Taxe d'Ajustement à l'Importation);ISCP (Impôt Spécial sur Certains Produits);TCI (Taxe Conjoncturelle à l'Importation);Total droits et taxes pour 100 CAF (XOF);État;Manques;Notes (voir MLI_NPF_notes.csv)
 0101210000;-- Reproducteurs de race pure;01;QA;5;1;0.5;0.8;18;;;;26.61;COMPLET;;N1 N2
 0101290000;-- Autres;01;QA;10;1;0.5;0.8;18;5;;;38.41;COMPLET;;N1 N3 N2
 0101301000;-- Reproducteurs de race pure;01;QA;5;1;0.5;0.8;18;;;;26.61;COMPLET;;N1 N2

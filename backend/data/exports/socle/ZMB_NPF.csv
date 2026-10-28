@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Customs duty);EXC (Excise duty);TVA (Value added tax);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir ZMB_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Customs duty);EXC (Excise duty);TVA (Value added tax);Total droits et taxes pour 100 CAF (ZMW);État;Manques;Notes (voir ZMB_NPF_notes.csv)
 00001100;(1) Vioce Call Seconds 17.5% 2016;00;;n.d.;;;;INDISPONIBLE;DD (TAUX_INDISPONIBLE);N1
 00001200;(2) SMS and Count MMS 17.5%;00;;n.d.;;;;INDISPONIBLE;DD (TAUX_INDISPONIBLE);N1
 00001300;(3) Data Megabytes 17.5%;00;;n.d.;;;;INDISPONIBLE;DD (TAUX_INDISPONIBLE);N1
@@ -997,23 +997,23 @@
 20089300;"Vaccinium oxycoccos); lingonberries (Vaccinium vitis-idaea)";20;Kg;25;0;16;45;COMPLET;;N2 N4
 20089700;-- Mixtures;20;Kg;25;0;16;45;COMPLET;;N2 N4
 20089900;-- Other Fruit or nut juices (including grape must and coconut water) and vegetable juices, unfermented and not 20.09 containing added spirit, whether or not containing added sugar or other sweetening matter. - Orange juice:;20;Kg;25;0;16;45;COMPLET;;N2 N4
-20091100;-- Frozen;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20091200;exceeding 20;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20091900;"-- Other - Grapefruit juice; pomelo juice :";20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20092100;-- Of a Brix value not exceeding 20;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20092900;-- Other - Juice of any other single citrus fruit:;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20093100;-- Of a Brix value not exceeding 20;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20093900;-- Other - Pineapple Juice:;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20094100;- Of a Brix value not exceeding 20;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20094900;-- Other;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20095000;- Tomato juice - Grape juice (including grape must):;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20096100;-- Of a Brix value not exceeding 20;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20096900;-- Other - Apple juice:;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20097100;-- Of a Brix value not exceeding 20;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20097900;-- Other - Juice of any other single fruit, nut or vegetable --Cranberry (Vaccinium macrocarpon,;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20098100;"Vaccinium oxycoccos) juice; lingonberry (Vaccinium vitis-idaea) juice";20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20098900;--Other;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-20099000;- Mixtures of juices;20;litre;25;2 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20091100;-- Frozen;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20091200;exceeding 20;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20091900;"-- Other - Grapefruit juice; pomelo juice :";20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20092100;-- Of a Brix value not exceeding 20;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20092900;-- Other - Juice of any other single citrus fruit:;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20093100;-- Of a Brix value not exceeding 20;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20093900;-- Other - Pineapple Juice:;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20094100;- Of a Brix value not exceeding 20;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20094900;-- Other;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20095000;- Tomato juice - Grape juice (including grape must):;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20096100;-- Of a Brix value not exceeding 20;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20096900;-- Other - Apple juice:;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20097100;-- Of a Brix value not exceeding 20;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20097900;-- Other - Juice of any other single fruit, nut or vegetable --Cranberry (Vaccinium macrocarpon,;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20098100;"Vaccinium oxycoccos) juice; lingonberry (Vaccinium vitis-idaea) juice";20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20098900;--Other;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+20099000;- Mixtures of juices;20;litre;25;2.00 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
 21011100;-- Extracts, essences and concentrates -- Preparations with a basis of extracts, essences;21;kg;25;0;16;45;COMPLET;;N2 N4
 21011200;or concentrates or with a basis of coffee - Extracts, essences and concentrates, of tea or maté, and preparations with a basis of these;21;kg;25;0;16;45;COMPLET;;N2 N4
 21012000;extracts, essences or concentrates or with a basis of tea or maté - Roasted chicory and other roasted coffee;21;kg;25;0;16;45;COMPLET;;N2 N4
@@ -1035,15 +1035,15 @@
 21069020;sweetening preparations --- Compound preparations, non- alcoholic;21;kg;5;0;16;21.8;COMPLET;;N2 N4
 21069030;(known as “concentrated extracts”) for the manufacture of beverages;21;kg;5;0;16;21.8;COMPLET;;N2 N4
 21069090;--- Other 87;21;kg;25;0;16;45;COMPLET;;N2 N4
-22011011;--- Packed mineral waters, not aerated;22;Litre;*25% or KR0.65 per litre whichever is the greater.;1 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22011019;--- Other;22;Litre;*25% or KR0.65 per litre whichever is the greater.;0.3 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22011020;--- Aerated waters;22;Litre;*25% or KR0.65 per litre whichever is the greater.;1 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22019000;- Other Waters, including mineral waters and aerated waters, containing added sugar or other 22.02 sweetening matter or flavoured, and other non- Alcoholic beverages, not including fruit, nut or vegetable juices of heading 20.09. - Waters, including mineral waters and aerated waters, containing and aerated waters, containing added sugar or other sweetening matter or flavoured;22;Litre;*25% or KR0.65 per litre whichever is the greater.;0.3 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22021010;--- Waters, including mineral waters, not aerated;22;litre;*25% or KR0.65 per litre whichever is the greater.;0.3 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22021020;--- Aerated waters - Other;22;litre;*25% or KR0.65 per litre whichever is the greater.;2 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22029100;-- Non-alcoholic beer;22;litre;*25% or KR0.65 per litre whichever is the greater.;2 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22029900;-- Other 22.03 Beer made from malt.;22;litre;*25% or KR0.65 per litre whichever is the greater.;2 zmw/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-22030010;--- Opaque beer;22;litre;25;0.25 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+22011011;--- Packed mineral waters, not aerated;22;Litre;*25% or KR0.65 per litre whichever is the greater.;1.000 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22011019;--- Other;22;Litre;*25% or KR0.65 per litre whichever is the greater.;0.30 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22011020;--- Aerated waters;22;Litre;*25% or KR0.65 per litre whichever is the greater.;1.00 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22019000;- Other Waters, including mineral waters and aerated waters, containing added sugar or other 22.02 sweetening matter or flavoured, and other non- Alcoholic beverages, not including fruit, nut or vegetable juices of heading 20.09. - Waters, including mineral waters and aerated waters, containing and aerated waters, containing added sugar or other sweetening matter or flavoured;22;Litre;*25% or KR0.65 per litre whichever is the greater.;0.30 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22021010;--- Waters, including mineral waters, not aerated;22;litre;*25% or KR0.65 per litre whichever is the greater.;0.30 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22021020;--- Aerated waters - Other;22;litre;*25% or KR0.65 per litre whichever is the greater.;2.00 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22029100;-- Non-alcoholic beer;22;litre;*25% or KR0.65 per litre whichever is the greater.;2.00 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22029900;-- Other 22.03 Beer made from malt.;22;litre;*25% or KR0.65 per litre whichever is the greater.;2.00 ZMW/l;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+22030010;--- Opaque beer;22;litre;25;0.25 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
 22030090;"--- Other, including ale, lager and stout Wine of fresh grapes, including fortified wines; 22.04 grape must other than that of heading 20.09.";22;litre;**25% or KR0.8 per litre whichever is the greater.;40;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
 22041000;"- Sparkling wine - Other wine; grape must with fermentation prevented or arrested by the addition of alcohol:";22;litre;25;80;16;161;COMPLET;;N4
 22042100;-- In containers holding 2 litres or less -- In containers holding more than 2 litres but not;22;litre;25;80;16;161;COMPLET;;N4
@@ -1098,7 +1098,7 @@
 24012000;stemmed/stripped;24;kg;*25% or KR15 per mille/Kg whichever is greater;n.d.;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
 24013000;- Tobacco refuse Cigars, cheroots, cigarillos and 24.02 cigarettes, of tobacco or tobacco substitutes. - Cigars, cheroots and cigarillos,;24;kg;*25% or KR15 per mille/Kg whichever is greater;n.d.;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
 24021000;containing tobacco;24;kg;*25% or KR15 per mille/Kg whichever is greater;n.d.;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
-24022000;- Cigarettes containing tobacco;24;kg;*25% or KR15 per mille/Kg whichever is greater;750 zmw/mille;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
+24022000;- Cigarettes containing tobacco;24;kg;*25% or KR15 per mille/Kg whichever is greater;750 ZMW/mille;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
 24029000;"- Other Other manufactured tobacco and manufactured tobacco substitutes; 24.03 “homogenised” or “reconstituted” tobacco; tobacco extracts and essences. - Smoking tobacco, whether or not containing tobacco substitutes in any proportion -- Water pipe tobacco specified in";24;kg;*25% or KR15 per mille/Kg whichever is greater;n.d.;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
 24031100;subheading Note 1 to this Chapter --Other;24;kg;*25% or KR15 per mille/Kg whichever is greater;n.d.;16;;INDISPONIBLE;DD (QUANTITE_REQUISE) | EXC (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);N6 N4
 24031910;---Cutrage;24;kg;25;n.d.;16;;PARTIEL;EXC (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N4
@@ -1164,8 +1164,8 @@
 25222000;- Slaked lime;25;tonne;25;0;16;45;COMPLET;;N2 N4
 25223000;- Hydraulic 25.23 Portland cement, aluminous cement (“ciment fondu”). slag cement, supersulphate cement and similar hydraulic cements, whether or not coloured or in the form of clinkers.;25;tonne;5;0;16;21.8;COMPLET;;N2 N4
 25231000;- Cement clinkers -Portland cement: --White cement, whether or not artificially;25;tonne;5;0;16;21.8;COMPLET;;N2 N4
-25232100;coloured;25;tonne;5;40 zmw/ton;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-25232900;-- Other;25;tonne;5;40 zmw/ton;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+25232100;coloured;25;tonne;5;40 ZMW/ton;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+25232900;-- Other;25;tonne;5;40 ZMW/ton;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
 25233000;- Aluminous Cement (“ciment fondu);25;tonne;5;0;16;21.8;COMPLET;;N2 N4
 25239000;- Other hydraulic cements 25.24 Asbestos.;25;tonne;5;0;16;21.8;COMPLET;;N2 N4
 25241000;- Crocidolite;25;quintal;5;0;16;21.8;COMPLET;;N2 N4
@@ -1255,17 +1255,17 @@
 27081000;- Pitch;27;kg;5;0;16;21.8;COMPLET;;N2 N4
 27082000;- Pitch coke 27.09 Petroleum oils and oils obtained from;27;kg;0;0;16;16;COMPLET;;N2 N4
 27090000;"bituminous minerals, crude. Petroleum oils and oils obtained from bituminous minerals, otherthan crude; preparations not elsewhere specified or included, containing by weight 70% or 27.10 more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations; waste oils. - Petroleum oils and oils obtained from bituminous minerals, otherthan crude; preparations not elsewhere specified or included, containing by weight 70% or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations, containing biodiesel other than waste oils: -- Light oils and preparations:";27;;0;0;16;16;COMPLET;;N2 N4
-27101210;--- Motor spirit;27;;0;2.34 zmw/ltr;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+27101210;--- Motor spirit;27;;0;2.34 ZMW/ltr;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
 27101220;--- Aviation spirit for piston engines;27;;0;0;16;16;COMPLET;;N2 N4
 27101230;--- Jet (aviation turbine) fuel;27;;0;0;16;16;COMPLET;;N2 N4
 27101240;--- White spirit --- Kerosene including kerosene type jet fuel;27;;5;15;16;40.07;COMPLET;;N4
-27101251;---- Kerosene type;27;;0;0.54 zmw/l;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3
+27101251;---- Kerosene type;27;;0;0.54 ZMW/l;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3
 27101252;---- Industrial Kerosene;27;;5;0;0;5;COMPLET;;N2 N3
 27101253;---- Domestic Kerosene;27;;5;0;0;5;COMPLET;;N2 N3
 27101259;---- Other;27;;5;0;0;5;COMPLET;;N2 N3
 27101290;--- Other;27;;25;15;16;66.75;COMPLET;;N4
-27101910;--- Gas oils;27;;0;0.75 zmw/ltr;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-27101920;--- Other Fuel oils;27;;25;1.05 zmw/ltr;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+27101910;--- Gas oils;27;;0;0.75 ZMW/ltr;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+27101920;--- Other Fuel oils;27;;25;1.05 ZMW/ltr;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
 27101930;--- Other medium oils and preparations;27;;25;0;16;45;COMPLET;;N2 N4
 27101940;--- Lubricating grease;27;;25;0;16;45;COMPLET;;N2 N4
 27101950;--- Cutting oil, grease cutting oils, cleaning oil, etc.;27;;25;0;16;45;COMPLET;;N2 N4
@@ -1275,13 +1275,13 @@
 27102000;-Petroleum oils and oils obtained from bituminous minerals (other than crude) and preparations not elsewhere specified or included, containing by weight 70% or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constitutes of the preparations, containing biodiesel, other than waste oils. - Waste oils:;27;;25;0;16;45;COMPLET;;N2 N4
 27109100;--Containing polychlorinated biphenyls (PCBs), polychlorinated terphenyls (PCTs) or polybrominated biphenyls (PBBs);27;;25;0;16;45;COMPLET;;N2 N4
 27109900;-- Other Petroleum gases and other gaseous 27.11 hydrocarbons. - Liquefied:;27;;25;0;16;45;COMPLET;;N2 N4
-27111100;- Natural gas;27;kg;0;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
-27111200;-- Propane;27;kg;0;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
-27111300;- Butanes -- Ethylene, propylene, butylene and;27;kg;0;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
-27111400;butadiene;27;kg;0;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
-27111900;-- Other - In gaseous state:;27;kg;0;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
-27112100;-- Natural gas;27;kg;15;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
-27112900;-- Other *Eligible for Vat Zero rating;27;kg;15;0.54 zmw/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+27111100;- Natural gas;27;kg;0;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
+27111200;-- Propane;27;kg;0;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
+27111300;- Butanes -- Ethylene, propylene, butylene and;27;kg;0;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
+27111400;butadiene;27;kg;0;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
+27111900;-- Other - In gaseous state:;27;kg;0;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N7
+27112100;-- Natural gas;27;kg;15;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
+27112900;-- Other *Eligible for Vat Zero rating;27;kg;15;0.54 ZMW/l;16;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N4
 27121010;--- In bulk;27;kg;15;0;16;33.4;COMPLET;;N2 N4
 27121020;--- Not in bulk;27;kg;25;0;16;45;COMPLET;;N2 N4
 27122000;- Paraffin wax containing by weight less than 0.75% of oil - Other:;27;kg;5;0;16;21.8;COMPLET;;N2 N4

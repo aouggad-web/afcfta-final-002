@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (CET EAC));Total droits et taxes pour 100 CAF;État;Manques;Notes (voir SOM_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Droit de Douane (CET EAC));Total droits et taxes pour 100 CAF (SOS);État;Manques;Notes (voir SOM_NPF_notes.csv)
 010121;-- Pure-bred breeding animals;01;u;0;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);
 01012100;-- Pure-bred breeding animals;01;u;0;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);
 010129;-- Other;01;u;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);

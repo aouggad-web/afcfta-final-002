@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Customs duty (General rate));TVA (Value Added Tax);EXC (Excise duty);MID (MID levy);Total droits et taxes pour 100 CAF;État;Manques;Notes (voir MUS_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Customs duty (General rate));TVA (Value Added Tax);EXC (Excise duty);MID (MID levy);Total droits et taxes pour 100 CAF (MUR);État;Manques;Notes (voir MUS_NPF_notes.csv)
 01012100;-- Pure-bred breeding animals;01;U;0;15;;;15;COMPLET;;N1
 01012900;-- Other;01;U;0;15;;;15;COMPLET;;N1
 01013000;- Asses;01;U;0;15;;;15;COMPLET;;N1
@@ -1050,88 +1050,88 @@
 22029980;--- Food supplements for use to maintain general health or well being;22;kg;0;15;;;15;COMPLET;;N1
 22029990;--- Other;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N2 N1
 22030011;---- In can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-22030019;---- Other;22;L;15;15;58.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N1
+22030019;---- Other;22;L;15;15;Rs 58.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N1
 22030091;---- In can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
-22030099;---- Other;22;L;15;15;80.65 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N8 N1
-22041010;--- Champagne;22;L;15;15;1352.8 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N9 N1
+22030099;---- Other;22;L;15;15;Rs 80.65 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N8 N1
+22041010;--- Champagne;22;L;15;15;Rs 1,352.80 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N9 N1
 22041091;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
-22041092;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;204.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+22041092;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 204.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
 22041093;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-22041099;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22041099;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 22042111;---- Obtained by mixing spirits of cane or cane products, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
-22042112;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;337.45 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
+22042112;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 337.45 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
 22042113;---- Other, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N14 N1
-22042119;---- Other;22;L;15;15;337.45 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
-22042191;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22042119;---- Other;22;L;15;15;Rs 337.45 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
+22042191;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 22042192;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
-22042193;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;204.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+22042193;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 204.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
 22042194;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-22042199;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
-22042210;--- Obtained by mixing spirits of cane or cane products;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22042199;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22042210;--- Obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 22042291;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
-22042292;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;204.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+22042292;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 204.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
 22042293;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-22042299;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
-22042911;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;116.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N16 N1
-22042919;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;162.15 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17 N1
-22042921;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;337.45 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
-22042929;---- Other;22;L;15;15;337.45 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
-22042930;--- Grape must with fermentation prevented or arrested by the addition of alcohol;22;L;0;15;202.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
-22042991;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22042299;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22042911;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 116.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N16 N1
+22042919;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 162.15 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17 N1
+22042921;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 337.45 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
+22042929;---- Other;22;L;15;15;Rs 337.45 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N15 N1
+22042930;--- Grape must with fermentation prevented or arrested by the addition of alcohol;22;L;0;15;Rs 202.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
+22042991;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 22042992;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
-22042993;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;204.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+22042993;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 204.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
 22042994;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-22042999;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22042999;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 22043000;- Other grape must;22;L;0;15;;;15;COMPLET;;N1
 22051010;--- Food supplements designed to maintain general health or well being;22;L;15;15;;;32.25;COMPLET;;N1
 22051091;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
-22051092;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;204.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+22051092;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 204.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
 22051093;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-22051099;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
-22059011;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;116.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N16 N1
-22059019;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;162.15 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17 N1
+22051099;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22059011;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 116.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N16 N1
+22059019;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 162.15 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N17 N1
 22059091;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N10 N1
-22059092;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;204.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
+22059092;---- Other, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 204.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N11 N1
 22059093;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N12 N1
-22059099;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;284.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
+22059099;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 284.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N13 N1
 22060011;---- Of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N19 N1
-22060012;---- Other, of an alcoholic strength of not less than 1.2 per cent of;22;L;15;15;34.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N20 N1
+22060012;---- Other, of an alcoholic strength of not less than 1.2 per cent of;22;L;15;15;Rs 34.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N20 N1
 22060013;---- Of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N21 N1
-22060019;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;47.05 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22 N1
-22060021;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;100.8 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
-22060029;---- Other;22;L;15;15;100.8 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
+22060019;---- Other, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 47.05 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22 N1
+22060021;---- Obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 100.80 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
+22060029;---- Other;22;L;15;15;Rs 100.80 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
 22060031;---- In can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N21 N1
-22060039;---- Other;22;L;15;15;47.05 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22 N1
+22060039;---- Other;22;L;15;15;Rs 47.05 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22 N1
 22060041;---- Of an alcoholic strength not exceeding 9 degrees, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N5 N1
-22060042;---- Other, of an alcoholic strength not exceeding 9 degrees;22;L;15;15;58.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N1
+22060042;---- Other, of an alcoholic strength not exceeding 9 degrees;22;L;15;15;Rs 58.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N6 N1
 22060043;---- Of an alcoholic strength exceeding 9 degrees, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N7 N1
-22060049;---- Other;22;L;15;15;80.65 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N8 N1
+22060049;---- Other;22;L;15;15;Rs 80.65 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N8 N1
 22060051;---- In can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N24 N1
-22060059;---- Other;22;L;15;15;64 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N25 N1
+22060059;---- Other;22;L;15;15;Rs 64 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N25 N1
 22060061;---- Made wine, of an alcoholic;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N26 N1
-22060062;---- Other made wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;72.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
+22060062;---- Other made wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 72.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N27 N1
 22060063;---- Made wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N28 N1
-22060064;---- Other made wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;100.8 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
-22060065;---- Fortified made wine;22;L;15;15;156.7 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29 N1
-22060066;---- Fortified made wine obtained by mixing spirits of cane or cane products;22;L;15;15;156.7 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29 N1
+22060064;---- Other made wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 100.80 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
+22060065;---- Fortified made wine;22;L;15;15;Rs 156.70 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29 N1
+22060066;---- Fortified made wine obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 156.70 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N29 N1
 22060071;---- Island wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N19 N1
-22060072;---- Other Island wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;34.1 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N20 N1
+22060072;---- Other Island wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 34.10 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N20 N1
 22060073;---- Island wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N21 N1
-22060074;---- Other Island wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;47.05 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22 N1
-22060075;---- Fortified Island wine;22;L;15;15;100.8 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
-22060076;---- Fortified island wine obtained by mixing spirits of cane or cane products;22;L;15;15;100.8 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
+22060074;---- Other Island wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 47.05 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N22 N1
+22060075;---- Fortified Island wine;22;L;15;15;Rs 100.80 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
+22060076;---- Fortified island wine obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 100.80 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N23 N1
 22060081;---- Admixed wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N30 N1
-22060082;---- Other admixed wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;88 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
+22060082;---- Other admixed wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 88 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N31 N1
 22060083;---- Admixed wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N32 N1
-22060084;---- Other admixed wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;122.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N33 N1
-22060085;---- Fortified admixed wine;22;L;15;15;183.9 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
-22060086;---- Fortified admixed wine obtained by mixing spirits of cane or cane products;22;L;15;15;183.9 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
+22060084;---- Other admixed wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 122.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N33 N1
+22060085;---- Fortified admixed wine;22;L;15;15;Rs 183.90 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
+22060086;---- Fortified admixed wine obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 183.90 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N34 N1
 22060091;---- Wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N35 N1
-22060092;---- Other wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;146.3 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
+22060092;---- Other wine, of an alcoholic strength of not less than 1.2 per cent of alcohol by volume and not more than 8.5 per cent of alcohol by volume;22;L;15;15;Rs 146.30 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N36 N1
 22060093;---- Wine, of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N37 N1
-22060094;---- Other wine,of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;202.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
+22060094;---- Other wine,of an alcoholic strength exceeding 8.5 per cent of alcohol by volume and not more than 18 per cent of alcohol by volume;22;L;15;15;Rs 202.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
 22060095;---- Other, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N37 N1
-22060099;---- Other;22;L;15;15;202.6 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
+22060099;---- Other;22;L;15;15;Rs 202.60 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N18 N1
 22071010;--- Alcohol for use as input in the manufacture of medicinal tintures and drugs;22;L;0;15;0;;15;COMPLET;;N3 N1
 22071020;--- Alcohol for use as input in the manufacture of perfumed spirits or cosmetics;22;L;0;15;0;;15;COMPLET;;N3 N1
 22071030;--- Alcohol for use as input in the manufacture of spirit vinegar;22;L;0;15;0;;15;COMPLET;;N3 N1
@@ -1173,9 +1173,9 @@
 22089012;---- Eau de vie obtained from spirits of cane or cane products;22;L;30;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N39 N1
 22089019;---- Other;22;L;30;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N39 N1
 22089021;---- In can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
-22089022;---- Spirit cooler obtained by mixing spirits of cane or cane products;22;L;15;15;75.75 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
+22089022;---- Spirit cooler obtained by mixing spirits of cane or cane products;22;L;15;15;Rs 75.75 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
 22089023;---- Spirit cooler obtained by mixing spirits of cane or cane products, in can;22;L;15;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N42 N1
-22089029;---- Other;22;L;15;15;75.75 unite_principale/litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
+22089029;---- Other;22;L;15;15;Rs 75.75 per litre;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N43 N1
 22089031;---- In bulk for bottling purposes;22;L;30;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N38 N1
 22089039;---- Other;22;L;30;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N39 N1
 22089061;---- Obtained by mixing spirits of cane or cane products;22;L;30;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);N44 N1
@@ -1218,11 +1218,11 @@
 24011000;- Tobacco, not stemmed/stripped;24;kg;15;15;0;;32.25;COMPLET;;N3 N1
 24012000;- Tobacco, partly or wholly stemmed/stripped;24;kg;15;15;0;;32.25;COMPLET;;N3 N1
 24013000;- Tobacco refuse;24;kg;15;15;0;;32.25;COMPLET;;N3 N1
-24021010;--- Cigarillos;24;Kg;0;15;16611 unite_principale/millier d'unités;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N46 N1
-24021090;--- Other;24;Kg;0;15;28447 unite_principale/kg;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N47 N1
-24022000;- Cigarettes containing tobacco;24;Kg;0;15;8237 unite_principale/millier d'unités;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
-24029010;--- Cigarillos;24;Kg;0;15;16611 unite_principale/millier d'unités;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N46 N1
-24029090;--- Other;24;Kg;0;15;8237 unite_principale/millier d'unités;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
+24021010;--- Cigarillos;24;Kg;0;15;Rs 16,611 per thousand units;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N46 N1
+24021090;--- Other;24;Kg;0;15;Rs 28,447 per kg;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N47 N1
+24022000;- Cigarettes containing tobacco;24;Kg;0;15;Rs 8,237 per thousand units;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
+24029010;--- Cigarillos;24;Kg;0;15;Rs 16,611 per thousand units;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N46 N1
+24029090;--- Other;24;Kg;0;15;Rs 8,237 per thousand units;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N48 N1
 24031100;-- Water pipe tobacco specified in Subheading Note 1 to this Chapter;24;kg;0;15;230;;279.5;COMPLET;;N3 N1
 24031910;--- Cut cigarette rag;24;kg;0;15;230;;279.5;COMPLET;;N3 N1
 24031990;--- Other;24;kg;0;15;230;;279.5;COMPLET;;N3 N1
@@ -1342,9 +1342,9 @@
 26209900;-- Other;26;kg;0;15;;;15;COMPLET;;N1
 26211000;- Ash and residues from the incineration of municipal waste;26;kg;0;15;;;15;COMPLET;;N1
 26219000;- Other;26;kg;0;15;;;15;COMPLET;;N1
-27011100;-- Anthracite;27;kg;0;15;0;0.3 unite_principale/kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
-27011200;-- Bituminous coal;27;kg;0;15;0;0.3 unite_principale/kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
-27011900;-- Other coal;27;kg;0;15;0;0.3 unite_principale/kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
+27011100;-- Anthracite;27;kg;0;15;0;30 cents per kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
+27011200;-- Bituminous coal;27;kg;0;15;0;30 cents per kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
+27011900;-- Other coal;27;kg;0;15;0;30 cents per kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
 27012000;- Briquettes, ovoids and similar solid fuels manufactured from coal;27;kg;0;15;;;15;COMPLET;;N1
 27021000;- Lignite, whether or not pulverised, but not agglomerated;27;kg;0;15;;;15;COMPLET;;N1
 27022000;- Agglomerated lignite;27;kg;0;15;;;15;COMPLET;;N1
@@ -1366,15 +1366,15 @@
 27101210;--- White spirit;27;kg;0;15;;;15;COMPLET;;N1
 27101290;--- Other;27;L;0;15;;;15;COMPLET;;N1
 27101911;---- Aviation spirit;27;L;0;15;0;;15;COMPLET;;N3 N1
-27101919;---- Other (Mogas);27;L;0;15;9.87 unite_principale/litre;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N51 N52 N50
+27101919;---- Other (Mogas);27;L;0;15;Rs 9.87 per litre;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N51 N52 N50
 27101920;--- Spirit type jet fuel;27;L;0;15;0;;15;COMPLET;;N3 N1
-27101931;---- Jet fuel;27;L;0;0;0;0.3 unite_principale/litre;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N53 N50
-27101939;---- Other;27;L;0;0;0;0.3 unite_principale/litre;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N53 N50
+27101931;---- Jet fuel;27;L;0;0;0;30 cents per litre;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N53 N50
+27101939;---- Other;27;L;0;0;0;30 cents per litre;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N53 N50
 27101941;---- Oils;27;kg;0;15;;;15;COMPLET;;N1
 27101942;---- Greases;27;kg;0;15;;;15;COMPLET;;N1
-27101950;--- Gas oils;27;L;0;15;4.22 unite_principale/litre;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N54 N52 N50
+27101950;--- Gas oils;27;L;0;15;Rs 4.22 per litre;0;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N54 N52 N50
 27101961;---- Marine Residual Fuel Oil for bunkering (RMG 380 – 700 or RMK 380 – 700) as per ISO 8217 Fuel Standard, Fifth Edition 2012;27;L;0;15;0;0;15;COMPLET;;N3 N52 N50
-27101969;---- Other;27;L;0;15;0;0.3 unite_principale/litre;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N53 N50
+27101969;---- Other;27;L;0;15;0;30 cents per litre;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N53 N50
 27101971;---- Oils;27;kg;0;15;;;15;COMPLET;;N1
 27101972;---- Greases;27;kg;0;15;;;15;COMPLET;;N1
 27102000;- Petroleum oils and oils obtained from bituminous minerals (other than crude) and preparations not elsewhere specified or included, containing by weight 70% or more of petroleum oils or more of petroleum oils or of oils obtained from bituminous minerals, these oils being the basic constituents of the preparations, containing biodiesel, other than waste oils;27;kg;0;15;;;15;COMPLET;;N1
@@ -1382,9 +1382,9 @@
 27109900;-- Other;27;kg;0;15;;;15;COMPLET;;N1
 27111100;-- Natural gas;27;kg;0;15;;;15;COMPLET;;N1
 27111200;-- Propane;27;kg;0;15;;;15;COMPLET;;N1
-27111310;--- In bulk for filling of cylinders not exceeding 12 kg for domestic use;27;kg;0;0;0;0.3 unite_principale/kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
-27111320;--- In cylinders not exceeding 12 kg for domestic use;27;kg;0;0;0;0.3 unite_principale/kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
-27111390;--- Other;27;kg;0;15;0;0.3 unite_principale/kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
+27111310;--- In bulk for filling of cylinders not exceeding 12 kg for domestic use;27;kg;0;0;0;30 cents per kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
+27111320;--- In cylinders not exceeding 12 kg for domestic use;27;kg;0;0;0;30 cents per kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
+27111390;--- Other;27;kg;0;15;0;30 cents per kg;;PARTIEL;MID (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);N3 N49 N50
 27111400;-- Ethylene, propylene, butylene and butadiene;27;kg;0;15;;;15;COMPLET;;N1
 27111900;-- Other;27;kg;0;15;;;15;COMPLET;;N1
 27112100;-- Natural gas;27;kg;0;15;;;15;COMPLET;;N1
