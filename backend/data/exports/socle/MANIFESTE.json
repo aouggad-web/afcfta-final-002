@@ -5,6 +5,24 @@
       "fichier": "AGO_NPF.csv",
       "fichier_notes": "AGO_NPF_notes.csv",
       "positions": 5959,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Direitos de importacao — coluna 4, Regime Geral"
+        },
+        {
+          "code": "EGA",
+          "libelle": "Emolumentos gerais aduaneiros"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Imposto sobre o Valor Acrescentado (IVA)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Imposto Especial de Consumo"
+        }
+      ],
       "devise": "AOA",
       "date_reference": "2026-10-28",
       "sha256": "ce828ea0357e869dbd949c2cb39c1376490a9932d16ddd72f832f36393127309",
@@ -16,6 +34,16 @@
       "fichier": "BDI_NPF.csv",
       "fichier_notes": "BDI_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        }
+      ],
       "devise": "BIF",
       "date_reference": "2026-10-28",
       "sha256": "784614193943ee40a997e108b2f6f7fab9a1d989826ce90d248dbdb3d76938e4",
@@ -27,6 +55,36 @@
       "fichier": "BEN_NPF.csv",
       "fichier_notes": "BEN_NPF_notes.csv",
       "positions": 6381,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement de solidarité (Union africaine)"
+        },
+        {
+          "code": "RAU",
+          "libelle": "Redevance d'Aménagement Urbain"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "130fdadc46330e9c664bee1a6a5e94e3c639d8a15254f9f2955c91fa53ac2338",
@@ -38,6 +96,32 @@
       "fichier": "BFA_NPF.csv",
       "fichier_notes": "BFA_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (ex-TEC CEDEAO, nomenclature maintenue par AES)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PC-AES",
+          "libelle": "Prélèvement Confédéral AES"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "e329300eb2d73a9aef93677cced34cd9237f97ecd772c045a365f8647b0569bc",
@@ -49,6 +133,32 @@
       "fichier": "BWA_NPF.csv",
       "fichier_notes": "BWA_NPF_notes.csv",
       "positions": 8589,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "General Customs Duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXS",
+          "libelle": "Specific excise duty"
+        },
+        {
+          "code": "ALV",
+          "libelle": "Levy on intoxicating liquor"
+        },
+        {
+          "code": "FLV",
+          "libelle": "Fuel levy"
+        },
+        {
+          "code": "EXA",
+          "libelle": "Ad valorem excise duty"
+        }
+      ],
       "devise": "ZAR",
       "date_reference": "2026-10-28",
       "sha256": "16b3736ed1efdc89d1edf8d208d2a52bcbec96e5437d3c52e5965c1ce99f2157",
@@ -60,6 +170,28 @@
       "fichier": "CAF_NPF.csv",
       "fichier_notes": "CAF_NPF_notes.csv",
       "positions": 5239,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEMAC)"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XAF",
       "date_reference": "2026-10-28",
       "sha256": "3659bfbea1acd9b4a1241a04165c72272384c93d292c96696ad24de6df30d5fb",
@@ -71,6 +203,100 @@
       "fichier": "CIV_NPF.csv",
       "fichier_notes": "CIV_NPF_notes.csv",
       "positions": 6381,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement de l'Union Africaine"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "PSV",
+          "libelle": "Prélèvement Spécial de Viabilité"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Conjoncturelle à l'Importation"
+        },
+        {
+          "code": "TPQ",
+          "libelle": "Taxe de péréquation sur le sucre"
+        },
+        {
+          "code": "TSBPT",
+          "libelle": "Taxe Spéciale sur les Boissons (CGI art. 418)"
+        },
+        {
+          "code": "TAB",
+          "libelle": "Taxe Spéciale sur les Tabacs (CGI art. 418)"
+        },
+        {
+          "code": "TFS",
+          "libelle": "Taxe nationale de code SYDAM « TFS » (nature et assiette non établies)"
+        },
+        {
+          "code": "TSS",
+          "libelle": "Taxe nationale de code SYDAM « TSS » (nature et assiette non établies)"
+        },
+        {
+          "code": "TUB",
+          "libelle": "Taxe nationale de code SYDAM « TUB » (nature et assiette non établies)"
+        },
+        {
+          "code": "TUE",
+          "libelle": "Taxe nationale de code SYDAM « TUE » (nature et assiette non établies)"
+        },
+        {
+          "code": "TUF",
+          "libelle": "Taxe nationale de code SYDAM « TUF » (nature et assiette non établies)"
+        },
+        {
+          "code": "TCB",
+          "libelle": "Taxe Spéciale sur les Parfums et Cosmétiques (CGI art. 418)"
+        },
+        {
+          "code": "TMP",
+          "libelle": "Taxe Spéciale sur certains produits en plastique, métal, verre et carton (FCFA/kg)"
+        },
+        {
+          "code": "TCT",
+          "libelle": "Taxe nationale de code SYDAM « TCT » (nature et assiette non établies)"
+        },
+        {
+          "code": "TBG",
+          "libelle": "Taxe nationale de code SYDAM « TBG » (nature et assiette non établies)"
+        },
+        {
+          "code": "PSS",
+          "libelle": "Taxe nationale de code SYDAM « PSS » (nature et assiette non établies)"
+        },
+        {
+          "code": "TAI",
+          "libelle": "Taxe d'ajustement à l'importation"
+        },
+        {
+          "code": "TSM",
+          "libelle": "Taxe Spéciale sur les Marbres (CGI art. 418)"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "9bd8da3022a10e234d20c907ebf2302be65206e2251426e740e35dc412353a17",
@@ -82,6 +308,28 @@
       "fichier": "CMR_NPF.csv",
       "fichier_notes": "CMR_NPF_notes.csv",
       "positions": 5239,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEMAC)"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
+        },
+        {
+          "code": "RI",
+          "libelle": "Redevance Informatique"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée (incl. 10% CAC)"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XAF",
       "date_reference": "2026-10-28",
       "sha256": "8c4130e2f27414ff0499211256d14311303b5032dc3cfac1da88158cb850c4ae",
@@ -93,6 +341,16 @@
       "fichier": "COD_NPF.csv",
       "fichier_notes": "COD_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        }
+      ],
       "devise": "CDF",
       "date_reference": "2026-10-28",
       "sha256": "09b16a1e969ba67e8e665888fa673eb3ab635d051ac07d501d08857e679738b0",
@@ -104,6 +362,36 @@
       "fichier": "COG_NPF.csv",
       "fichier_notes": "COG_NPF_notes.csv",
       "positions": 5239,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEMAC)"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
+        },
+        {
+          "code": "TS",
+          "libelle": "Taxe Statistique"
+        },
+        {
+          "code": "OHADA",
+          "libelle": "Cotisation OHADA"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "CATVA",
+          "libelle": "Centimes additionnels à la TVA"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XAF",
       "date_reference": "2026-10-28",
       "sha256": "eb4bd987285cb20fb259d09a60b49399be6f9a76a08697fc509ca23f37535bc2",
@@ -115,6 +403,16 @@
       "fichier": "COM_NPF.csv",
       "fichier_notes": "COM_NPF_notes.csv",
       "positions": 5388,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de douane (MFN appliqué, WITS/TRAINS)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée (TVA)"
+        }
+      ],
       "devise": "KMF",
       "date_reference": "2026-10-28",
       "sha256": "2f85a73d44e10ecf54f88abab7fd2f6c138c8ae1abaa7634e7c04806b3eca0e5",
@@ -126,6 +424,36 @@
       "fichier": "CPV_NPF.csv",
       "fichier_notes": "CPV_NPF_notes.csv",
       "positions": 6579,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Direitos de Importação (DI)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Taxa Comunitária CEDEAO (TC)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Imposto sobre o Valor Acrescentado (IVA)"
+        },
+        {
+          "code": "ICE",
+          "libelle": "Imposto sobre Consumos Especiais (ad valorem)"
+        },
+        {
+          "code": "TEA",
+          "libelle": "Taxa específica sobre o álcool (Lei 69/X/2025, art. 91.º) — montant par litre non publié"
+        },
+        {
+          "code": "TET",
+          "libelle": "Taxa específica sobre o tabaco (Lei 69/X/2025, art. 90.º)"
+        },
+        {
+          "code": "ICES",
+          "libelle": "ICE específico (Lei 69/X/2025, anexo II)"
+        }
+      ],
       "devise": "CVE",
       "date_reference": "2026-10-28",
       "sha256": "a8a74a08447af2d2fa8069517696c894b44b8838b92a465c516094b9cf321f63",
@@ -137,6 +465,52 @@
       "fichier": "DZA_NPF.csv",
       "fichier_notes": "DZA_NPF_notes.csv",
       "positions": 17345,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "DD"
+        },
+        {
+          "code": "TCS",
+          "libelle": "TCS"
+        },
+        {
+          "code": "TVA",
+          "libelle": "TVA"
+        },
+        {
+          "code": "PRCT",
+          "libelle": "PRCT"
+        },
+        {
+          "code": "DAPS",
+          "libelle": "DAPS"
+        },
+        {
+          "code": "TIC",
+          "libelle": "TIC"
+        },
+        {
+          "code": "TICPV",
+          "libelle": "TICPV"
+        },
+        {
+          "code": "DPPP",
+          "libelle": "DPPP"
+        },
+        {
+          "code": "TCE",
+          "libelle": "TCE"
+        },
+        {
+          "code": "TEE",
+          "libelle": "TEE"
+        },
+        {
+          "code": "DFP",
+          "libelle": "DFP"
+        }
+      ],
       "devise": "DZD",
       "date_reference": "2026-10-28",
       "sha256": "254d3e21bcc061ced64e11060942b4f4138d52e7660e01c8f15a7d662fc9298e",
@@ -148,6 +522,36 @@
       "fichier": "EGY_NPF.csv",
       "fichier_notes": "EGY_NPF_notes.csv",
       "positions": 8818,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "DD"
+        },
+        {
+          "code": "TVA",
+          "libelle": "TVA"
+        },
+        {
+          "code": "رسممحصلةلحسابغرفةجلود",
+          "libelle": "رسممحصلةلحسابغرفةجلود"
+        },
+        {
+          "code": "ضريبةالجدول",
+          "libelle": "ضريبةالجدول"
+        },
+        {
+          "code": "رسممحصلةلحسابغرفةدخان",
+          "libelle": "رسممحصلةلحسابغرفةدخان"
+        },
+        {
+          "code": "تامينصحىوزارةالصحة",
+          "libelle": "تامينصحىوزارةالصحة"
+        },
+        {
+          "code": "رسممحصلةلحسابغرفةنسيج",
+          "libelle": "رسممحصلةلحسابغرفةنسيج"
+        }
+      ],
       "devise": "EGP",
       "date_reference": "2026-10-28",
       "sha256": "ecd985a149f9ff511f455f4dd71a06d87c46e1f4806b0e53458c8a1f0fde727c",
@@ -159,6 +563,36 @@
       "fichier": "ETH_NPF.csv",
       "fichier_notes": "ETH_NPF_notes.csv",
       "positions": 6296,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de douane"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax"
+        },
+        {
+          "code": "SUR",
+          "libelle": "Surtax"
+        },
+        {
+          "code": "WHR",
+          "libelle": "Withholding Tax"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise Tax"
+        },
+        {
+          "code": "SWL",
+          "libelle": "Social Welfare Levy (taxe sociale)"
+        },
+        {
+          "code": "DSR",
+          "libelle": "Development Surcharge"
+        }
+      ],
       "devise": "ETB",
       "date_reference": "2026-10-28",
       "sha256": "24f52b021ea497354619b2c0528bdeecfe9a9abb17235812df0a4924ffb0886d",
@@ -170,6 +604,28 @@
       "fichier": "GAB_NPF.csv",
       "fichier_notes": "GAB_NPF_notes.csv",
       "positions": 5239,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEMAC)"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
+        },
+        {
+          "code": "CIA",
+          "libelle": "Contribution à l'Intégration Africaine"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XAF",
       "date_reference": "2026-10-28",
       "sha256": "5279927a955b66a67f39320b0a81abde280d3bdc8029f3bdee6fd744a3a04d58",
@@ -181,6 +637,44 @@
       "fichier": "GHA_NPF.csv",
       "fichier_notes": "GHA_NPF_notes.csv",
       "positions": 11516,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "CEDEAO",
+          "libelle": "ECOWAS Levy"
+        },
+        {
+          "code": "PUA",
+          "libelle": "AU Import Levy"
+        },
+        {
+          "code": "EXIM",
+          "libelle": "Export-Import Levy"
+        },
+        {
+          "code": "SIL",
+          "libelle": "Special Import Levy"
+        },
+        {
+          "code": "NHIL",
+          "libelle": "National Health Insurance Levy"
+        },
+        {
+          "code": "GETFUND",
+          "libelle": "Ghana Education Trust Fund Levy"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "GHS",
       "date_reference": "2026-10-28",
       "sha256": "62db0bff683d54cb1e840bb2c467e3065c65cd5596dec5bb44fea89761dcda07",
@@ -192,6 +686,32 @@
       "fichier": "GIN_NPF.csv",
       "fichier_notes": "GIN_NPF_notes.csv",
       "positions": 6379,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "RTL",
+          "libelle": "Redevance de Traitement et de Liquidation"
+        },
+        {
+          "code": "CA",
+          "libelle": "Centime Additionnel"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises (colonne AC du tarif)"
+        }
+      ],
       "devise": "GNF",
       "date_reference": "2026-10-28",
       "sha256": "58d1d3dd50e9ddb208f043b4d6f25cae849857a14f3945e45682fe1d7a3dc22c",
@@ -203,6 +723,28 @@
       "fichier": "GMB_NPF.csv",
       "fichier_notes": "GMB_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "FT",
+          "libelle": "Processing Fee"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement de l'Union africaine"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        }
+      ],
       "devise": "GMD",
       "date_reference": "2026-10-28",
       "sha256": "18701caf82bd014c8daaf63dea6f5862d9d644c821ad895e98273e2e5f4e8fcd",
@@ -214,6 +756,32 @@
       "fichier": "GNB_NPF.csv",
       "fichier_notes": "GNB_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement Union Africaine"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Imposto sobre o Valor Acrescentado (IVA)"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "82ad44c861f4035c795b32c34f62f4edd36827efc0665a516708e23534b089ba",
@@ -225,6 +793,24 @@
       "fichier": "GNQ_NPF.csv",
       "fichier_notes": "GNQ_NPF_notes.csv",
       "positions": 5239,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEMAC)"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée (incl. 10% CAC)"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XAF",
       "date_reference": "2026-10-28",
       "sha256": "9190170758e8d25993586c4e0bd587ef72db7fd80386cf9364142b9c9898058a",
@@ -236,6 +822,28 @@
       "fichier": "KEN_NPF.csv",
       "fichier_notes": "KEN_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "IDF",
+          "libelle": "Import Declaration Fee (IDF)"
+        },
+        {
+          "code": "RDL",
+          "libelle": "Railway Development Levy (RDL)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise Duty"
+        }
+      ],
       "devise": "KES",
       "date_reference": "2026-10-28",
       "sha256": "8182369ed71590cd97f769b4aa89c980581cada10ee46e53a890da817ab4c68e",
@@ -247,6 +855,28 @@
       "fichier": "LBR_NPF.csv",
       "fichier_notes": "LBR_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "CUF",
+          "libelle": "Customs User Fee"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise tax"
+        }
+      ],
       "devise": "LRD",
       "date_reference": "2026-10-28",
       "sha256": "ddbc81ed5481669ccbfe253a7fae3943eff4064ccacaa378f2d3d2fb8c36b78a",
@@ -258,6 +888,20 @@
       "fichier": "LBY_NPF.csv",
       "fichier_notes": "LBY_NPF_notes.csv",
       "positions": 5920,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)"
+        },
+        {
+          "code": "TSP",
+          "libelle": "Port Services Tax (taxe des services portuaires)"
+        },
+        {
+          "code": "TP",
+          "libelle": "Production Tax (taxe de production)"
+        }
+      ],
       "devise": "LYD",
       "date_reference": "2026-10-28",
       "sha256": "4b2b01f9bb27caf0990bf12d5eea7a278f03303a049afd32cc3568c15e69d81a",
@@ -269,6 +913,28 @@
       "fichier": "LSO_NPF.csv",
       "fichier_notes": "LSO_NPF_notes.csv",
       "positions": 8589,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "General Customs Duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXS",
+          "libelle": "Specific excise duty"
+        },
+        {
+          "code": "TAPL",
+          "libelle": "Tobacco and Alcoholic Products Levy"
+        },
+        {
+          "code": "EXA",
+          "libelle": "Ad valorem excise duty"
+        }
+      ],
       "devise": "LSL",
       "date_reference": "2026-10-28",
       "sha256": "f5a3ff627cfbdf8ffa8f09b7e0e4d2aaea11f028875433405bf6f41dde6cebaf",
@@ -280,6 +946,20 @@
       "fichier": "MAR_NPF.csv",
       "fichier_notes": "MAR_NPF_notes.csv",
       "positions": 13243,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "DD"
+        },
+        {
+          "code": "TPI",
+          "libelle": "TPI"
+        },
+        {
+          "code": "TVA",
+          "libelle": "TVA"
+        }
+      ],
       "devise": "MAD",
       "date_reference": "2026-10-28",
       "sha256": "0a1c473b95762a38a1eb2f59c125d5fd28f3a846a935c553f4a025d05b78225c",
@@ -291,6 +971,16 @@
       "fichier": "MDG_NPF.csv",
       "fichier_notes": "MDG_NPF_notes.csv",
       "positions": 6852,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de douane (tarif national 2026)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la valeur ajoutée (tarif national 2026)"
+        }
+      ],
       "devise": "MGA",
       "date_reference": "2026-10-28",
       "sha256": "276736f64651445429456b6c8745034a058282b2b023880ae04e9b205c0a12b6",
@@ -302,6 +992,40 @@
       "fichier": "MLI_NPF.csv",
       "fichier_notes": "MLI_NPF_notes.csv",
       "positions": 6382,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PC-AES",
+          "libelle": "Prélèvement Confédéral AES (colonne PC du tarif)"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "TAI",
+          "libelle": "Taxe d'Ajustement à l'Importation"
+        },
+        {
+          "code": "ISCP",
+          "libelle": "Impôt Spécial sur Certains Produits"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Conjoncturelle à l'Importation"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "e51613483b5ad94b8210d0d1263905f139d749b37328d6280c06f0077354ec85",
@@ -313,6 +1037,28 @@
       "fichier": "MOZ_NPF.csv",
       "fichier_notes": "MOZ_NPF_notes.csv",
       "positions": 5822,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Direitos Aduaneiros (Taxa Geral)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Imposto sobre o Valor Acrescentado"
+        },
+        {
+          "code": "TXSOBVAL",
+          "libelle": "TXSOBVAL (colonne non identifiée)"
+        },
+        {
+          "code": "SOBRETX",
+          "libelle": "Sobretaxa"
+        },
+        {
+          "code": "ICE",
+          "libelle": "Imposto sobre Consumos Específicos"
+        }
+      ],
       "devise": "MZN",
       "date_reference": "2026-10-28",
       "sha256": "8fa4323b2bce61d3572ee8dad8bf5c1fcb0ae96eb0fdc57fb9c32c8809842f5a",
@@ -324,6 +1070,32 @@
       "fichier": "MRT_NPF.csv",
       "fichier_notes": "MRT_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de douane (tarif national 2021)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance statistique (tarif national 2021)"
+        },
+        {
+          "code": "PC",
+          "libelle": "Prélèvement communautaire (tarif national 2021)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée (TVA)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Droits d'accises"
+        },
+        {
+          "code": "TLC",
+          "libelle": "Taxe de recherche et de lutte contre le cancer"
+        }
+      ],
       "devise": "MRU",
       "date_reference": "2026-10-28",
       "sha256": "e13b17c8eee45b1e6902e3def4d700093ba6bbf106c45ea52878cdc89b0ee6c9",
@@ -335,6 +1107,24 @@
       "fichier": "MUS_NPF.csv",
       "fichier_notes": "MUS_NPF_notes.csv",
       "positions": 6955,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Customs duty (General rate)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise duty"
+        },
+        {
+          "code": "MID",
+          "libelle": "MID levy"
+        }
+      ],
       "devise": "MUR",
       "date_reference": "2026-10-28",
       "sha256": "fdfccd817db59cebf65801c505096cbee18de194201a7723db52c83eebf57145",
@@ -346,6 +1136,24 @@
       "fichier": "MWI_NPF.csv",
       "fichier_notes": "MWI_NPF_notes.csv",
       "positions": 7364,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "col. 6 — droit de douane NPF (parties contractantes du GATT)"
+        },
+        {
+          "code": "AIT",
+          "libelle": "col. 12 — Advance Income Tax a l'importation"
+        },
+        {
+          "code": "TVA",
+          "libelle": "col. 11 — TVA"
+        },
+        {
+          "code": "EXC",
+          "libelle": "col. 10 — accise"
+        }
+      ],
       "devise": "MWK",
       "date_reference": "2026-10-28",
       "sha256": "2b9d15397458715ccc1d3bfe61eecb3acc2fa60571e35874e6d2871144128ea1",
@@ -357,6 +1165,32 @@
       "fichier": "NAM_NPF.csv",
       "fichier_notes": "NAM_NPF_notes.csv",
       "positions": 8589,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "General Customs Duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value-Added Tax (VAT)"
+        },
+        {
+          "code": "EXS",
+          "libelle": "Specific excise duty"
+        },
+        {
+          "code": "FLV",
+          "libelle": "Fuel levy"
+        },
+        {
+          "code": "EVN",
+          "libelle": "Environmental levy (lubricant oils, plastic bags, batteries)"
+        },
+        {
+          "code": "EXA",
+          "libelle": "Ad valorem excise duty"
+        }
+      ],
       "devise": "NAD",
       "date_reference": "2026-10-28",
       "sha256": "a063cda43c05f7c112068eb03368b194c5b21694551071195947c43b410f8174",
@@ -368,6 +1202,28 @@
       "fichier": "NER_NPF.csv",
       "fichier_notes": "NER_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (ex-TEC CEDEAO, nomenclature maintenue par AES)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PC-AES",
+          "libelle": "Prélèvement Confédéral AES"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "15e8fe66e1e2c543ea1294966b66c9ac2ff5d942dc59e7aa55f3dcf1fea02919",
@@ -379,6 +1235,24 @@
       "fichier": "NGA_NPF.csv",
       "fichier_notes": "NGA_NPF_notes.csv",
       "positions": 6350,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Import Duty (Customs Duty)"
+        },
+        {
+          "code": "IAT",
+          "libelle": "Import Adjustment Tax"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise Duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax"
+        }
+      ],
       "devise": "NGN",
       "date_reference": "2026-10-28",
       "sha256": "ced632e2e3db9484beffe5618871b88eacfd91bc8a1f5aee4a94244473e4bd39",
@@ -390,6 +1264,20 @@
       "fichier": "RWA_NPF.csv",
       "fichier_notes": "RWA_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise Duty"
+        }
+      ],
       "devise": "RWF",
       "date_reference": "2026-10-28",
       "sha256": "b183a245316aa12b8c3609637fe7edeb346d25d2f4062da4ac5d7f73c1f4a572",
@@ -401,6 +1289,16 @@
       "fichier": "SDN_NPF.csv",
       "fichier_notes": "SDN_NPF_notes.csv",
       "positions": 5388,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de douane (MFN appliqué, WITS/TRAINS)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        }
+      ],
       "devise": "SDG",
       "date_reference": "2026-10-28",
       "sha256": "8af12d4b3b6db4aa55271e7afbe843435e441c7a17fd5554af46ef8d8bc4df28",
@@ -412,6 +1310,60 @@
       "fichier": "SEN_NPF.csv",
       "fichier_notes": "SEN_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement Union Africaine"
+        },
+        {
+          "code": "COSEC",
+          "libelle": "Prélèvement au profit du Conseil sénégalais des chargeurs"
+        },
+        {
+          "code": "PROMAD",
+          "libelle": "Prélèvement pour la modernisation de l'administration des douanes"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe conjoncturelle à l'importation"
+        },
+        {
+          "code": "TAA",
+          "libelle": "Taxe additionnelle sur les alcools"
+        },
+        {
+          "code": "STC",
+          "libelle": "Surtaxe sur les cigarettes"
+        },
+        {
+          "code": "DENR",
+          "libelle": "Droit d'enregistrement des véhicules"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "04ce9524761d1a79ba5b9d5495683ddaaf8bd735b499f57e7cb7e2c24fbe6cba",
@@ -423,6 +1375,28 @@
       "fichier": "SLE_NPF.csv",
       "fichier_notes": "SLE_NPF_notes.csv",
       "positions": 6129,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement de l'Union africaine"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise duty"
+        }
+      ],
       "devise": "SLE",
       "date_reference": "2026-10-28",
       "sha256": "cbc177fc097156af19613f7dd31d786d2a0a15afd065a3da6929040a5c7de8d1",
@@ -434,6 +1408,12 @@
       "fichier": "SOM_NPF.csv",
       "fichier_notes": "SOM_NPF_notes.csv",
       "positions": 11545,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (CET EAC)"
+        }
+      ],
       "devise": "SOS",
       "date_reference": "2026-10-28",
       "sha256": "a1375819c49eb17e6f6c9e0b8bb4751ab06101574688265e2b55af8aa8123b08",
@@ -445,6 +1425,16 @@
       "fichier": "SSD_NPF.csv",
       "fichier_notes": "SSD_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        }
+      ],
       "devise": "SSP",
       "date_reference": "2026-10-28",
       "sha256": "d59fd2bdcc85ccaa7b35c01d50758839faf394f199d4bb539d4c60fcdac7c20b",
@@ -456,6 +1446,16 @@
       "fichier": "STP_NPF.csv",
       "fichier_notes": "STP_NPF_notes.csv",
       "positions": 5388,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de douane (MFN appliqué, WITS/TRAINS)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Imposto sobre o Valor Acrescentado (IVA)"
+        }
+      ],
       "devise": "STN",
       "date_reference": "2026-10-28",
       "sha256": "64835523fe0b3c90674565840165e4f028e540b0264d740667f9fabe0ed33ac8",
@@ -467,6 +1467,28 @@
       "fichier": "SWZ_NPF.csv",
       "fichier_notes": "SWZ_NPF_notes.csv",
       "positions": 8589,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "General Customs Duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXS",
+          "libelle": "Specific excise duty"
+        },
+        {
+          "code": "ATL",
+          "libelle": "Alcohol and Tobacco Levy"
+        },
+        {
+          "code": "EXA",
+          "libelle": "Ad valorem excise duty"
+        }
+      ],
       "devise": "SZL",
       "date_reference": "2026-10-28",
       "sha256": "6fa40472b6d6397efe5fa7f6b6b87099cf3a8cd95bc83ec7b83ac95ae89c99df",
@@ -478,6 +1500,20 @@
       "fichier": "SYC_NPF.csv",
       "fichier_notes": "SYC_NPF_notes.csv",
       "positions": 6019,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "col. 1 — MFN, droit de douane de droit commun"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise tax"
+        }
+      ],
       "devise": "SCR",
       "date_reference": "2026-10-28",
       "sha256": "15dd1e280ac2a054572eb1a4557ebb580ac60ab3b801e4c87669b72f12bc8865",
@@ -489,6 +1525,36 @@
       "fichier": "TCD_NPF.csv",
       "fichier_notes": "TCD_NPF_notes.csv",
       "positions": 5239,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEMAC)"
+        },
+        {
+          "code": "TCI",
+          "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
+        },
+        {
+          "code": "TS",
+          "libelle": "Taxe Statistique"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement Union Africaine"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "SPEC",
+          "libelle": "Taxe spécifique"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XAF",
       "date_reference": "2026-10-28",
       "sha256": "55f4cffe1f725ae5c2a64148883e2b35781c21e17a6a3a500212e46241899c98",
@@ -500,6 +1566,40 @@
       "fichier": "TGO_NPF.csv",
       "fichier_notes": "TGO_NPF_notes.csv",
       "positions": 6379,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Droit de Douane (TEC CEDEAO)"
+        },
+        {
+          "code": "RS",
+          "libelle": "Redevance Statistique"
+        },
+        {
+          "code": "PCS",
+          "libelle": "Prélèvement Communautaire de Solidarité (UEMOA)"
+        },
+        {
+          "code": "PCC",
+          "libelle": "Prélèvement Communautaire CEDEAO"
+        },
+        {
+          "code": "PUA",
+          "libelle": "Prélèvement Union Africaine"
+        },
+        {
+          "code": "PNS",
+          "libelle": "Prélèvement National de Solidarité"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Taxe sur la Valeur Ajoutée"
+        },
+        {
+          "code": "DA",
+          "libelle": "Droit d'accises"
+        }
+      ],
       "devise": "XOF",
       "date_reference": "2026-10-28",
       "sha256": "6adf95b16fc6c478417aa3e7a37c060412d70b94b8097a1e91961cca3a0e3a80",
@@ -511,6 +1611,124 @@
       "fichier": "TUN_NPF.csv",
       "fichier_notes": "TUN_NPF_notes.csv",
       "positions": 17542,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "DROIT DOUANE ADV.IMP"
+        },
+        {
+          "code": "DSV",
+          "libelle": "DROIT SANIT.VETERINA"
+        },
+        {
+          "code": "TVA",
+          "libelle": "TAXE VALEUR AJOUTEE"
+        },
+        {
+          "code": "RPD",
+          "libelle": "REDEV.PREST.DOUA/IM"
+        },
+        {
+          "code": "PVIANDE",
+          "libelle": "PRELV CGC BOV/VIAND"
+        },
+        {
+          "code": "TMABATT",
+          "libelle": "TAXE MUNICIPALE ABAT"
+        },
+        {
+          "code": "FDCSAV",
+          "libelle": "TAXE FDCSA/VIANDE"
+        },
+        {
+          "code": "AIRIMPOR",
+          "libelle": "AV.IMPOT RPPETSTE"
+        },
+        {
+          "code": "TCA",
+          "libelle": "TAXE CONSERVES ALIM"
+        },
+        {
+          "code": "PBEURFR",
+          "libelle": "PREL.CGC.BEURRE/FROM"
+        },
+        {
+          "code": "DCAP",
+          "libelle": "DRT CONS.AUT.PRODUIT"
+        },
+        {
+          "code": "TLF",
+          "libelle": "TAXE SUR LEG.FRUITS"
+        },
+        {
+          "code": "PFRUITS",
+          "libelle": "PRELEV.FRUITS FRAIS/SEC"
+        },
+        {
+          "code": "TMTS",
+          "libelle": "TAXE MAIS.T-SOJA"
+        },
+        {
+          "code": "DCALC",
+          "libelle": "DRT CONSOM.ALCOOL"
+        },
+        {
+          "code": "SUR",
+          "libelle": "SURTAX COMPENS.ALCOO"
+        },
+        {
+          "code": "DCVBBA",
+          "libelle": "DRT.CONS.V.N/B/BALC."
+        },
+        {
+          "code": "DCRNTA",
+          "libelle": "DRT.CONS.R.N.T.A"
+        },
+        {
+          "code": "TVARNTA",
+          "libelle": "TVA RNTA"
+        },
+        {
+          "code": "DCMTK",
+          "libelle": "DRT.CONSOMMATION MTK"
+        },
+        {
+          "code": "TVAMTK",
+          "libelle": "TVA MTK"
+        },
+        {
+          "code": "TPE",
+          "libelle": "TAXE POUR LA PROTEC ENV"
+        },
+        {
+          "code": "DCAPP",
+          "libelle": "AUT.DRT.CONS.P.P.G"
+        },
+        {
+          "code": "DCESS",
+          "libelle": "DROIT CONS.ESSENCES"
+        },
+        {
+          "code": "TVAPP",
+          "libelle": "TVA PRODUITS PETR."
+        },
+        {
+          "code": "DCGPL",
+          "libelle": "DRT.CONS.GAZ OIL"
+        },
+        {
+          "code": "PHACIDE",
+          "libelle": "PREL.CGC.HUIL.ACIDE"
+        },
+        {
+          "code": "TVAAUTO",
+          "libelle": "TVA VOIT.AUTOS"
+        },
+        {
+          "code": "DCVOIT",
+          "libelle": "DRT CONS.VOIT.AUTOS"
+        }
+      ],
       "devise": "TND",
       "date_reference": "2026-10-28",
       "sha256": "d597196c1c119135677d11d7f0d25a0bf1e3f538d6883de14e59878316bbcecf",
@@ -522,6 +1740,20 @@
       "fichier": "TZA_NPF.csv",
       "fichier_notes": "TZA_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise Duty"
+        }
+      ],
       "devise": "TZS",
       "date_reference": "2026-10-28",
       "sha256": "49d2e7895ae51dd6fa38e10d75eb801c950b13b450583e79c6333711270d6065",
@@ -533,6 +1765,24 @@
       "fichier": "UGA_NPF.csv",
       "fichier_notes": "UGA_NPF_notes.csv",
       "positions": 5935,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "code": "INFRA",
+          "libelle": "Infrastructure Levy"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise Duty"
+        }
+      ],
       "devise": "UGX",
       "date_reference": "2026-10-28",
       "sha256": "2aa266610292559a5726947a2dad4aa5e464aceb4749a98ef26e1a1534056f25",
@@ -544,6 +1794,52 @@
       "fichier": "ZAF_NPF.csv",
       "fichier_notes": "ZAF_NPF_notes.csv",
       "positions": 8589,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "General Customs Duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value-Added Tax (VAT)"
+        },
+        {
+          "code": "HPL",
+          "libelle": "Health promotion levy (sugary beverages)"
+        },
+        {
+          "code": "EXS",
+          "libelle": "Specific excise duty"
+        },
+        {
+          "code": "FLV",
+          "libelle": "Fuel levy"
+        },
+        {
+          "code": "RAF",
+          "libelle": "Road Accident Fund levy"
+        },
+        {
+          "code": "EXA",
+          "libelle": "Ad valorem excise duty"
+        },
+        {
+          "code": "EVB",
+          "libelle": "Environmental levy (plastic bags)"
+        },
+        {
+          "code": "EVT",
+          "libelle": "Environmental levy (tyres)"
+        },
+        {
+          "code": "EVL",
+          "libelle": "Environmental levy (electric filament lamps)"
+        },
+        {
+          "code": "EVC",
+          "libelle": "Environmental levy (CO2 emissions of motor vehicles)"
+        }
+      ],
       "devise": "ZAR",
       "date_reference": "2026-10-28",
       "sha256": "2a0859f1ef8bc55a5662ef1b7a2f3e01e8d1a6ac08562bc0aafb94d45680dd77",
@@ -555,6 +1851,20 @@
       "fichier": "ZMB_NPF.csv",
       "fichier_notes": "ZMB_NPF_notes.csv",
       "positions": 6753,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Customs duty"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise duty"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value added tax"
+        }
+      ],
       "devise": "ZMW",
       "date_reference": "2026-10-28",
       "sha256": "317153fb126eea019cb609899d5cc522a0345b970ff4ff68cdd9ff84303df25d",
@@ -566,6 +1876,20 @@
       "fichier": "ZWE_NPF.csv",
       "fichier_notes": "ZWE_NPF_notes.csv",
       "positions": 6637,
+      "colonnes": [
+        {
+          "code": "DD",
+          "libelle": "Customs duty (M.F.N. rate)"
+        },
+        {
+          "code": "TVA",
+          "libelle": "Value Added Tax (VAT)"
+        },
+        {
+          "code": "EXC",
+          "libelle": "Excise duty"
+        }
+      ],
       "devise": "ZWG",
       "date_reference": "2026-10-28",
       "sha256": "be2e532aee8b4018061bcaa9ed6d63b0d4698362adee13d64831bc3cabfc4fff",

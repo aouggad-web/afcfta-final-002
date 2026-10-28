@@ -1,3 +1,4 @@
+import csv
 import io
 import json
 import logging
@@ -8,7 +9,7 @@ from typing import Optional
 
 from entitlement_guard import require_module
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from services.tariff_data_collector import get_collector
 
 logger = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 # The router as a whole is gated on the tier on/off switch only (see
 # routes/__init__.py, require_module_enabled("tools")) — most endpoints here
 # just read an already-generated CSV/JSON export or the in-memory collector
-# cache. The three endpoints below are the exception: on a cache miss they
+# cache. The two endpoints below are the exception: on a cache miss they
 # call collector.collect_country_tariffs() (recomputes every HS6 line for the
 # country from the loaded tariff modules) and persist it via
 # save_country_tariffs() — expensive and a disk write, unlike the rest of
@@ -28,7 +29,6 @@ router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 _tools_metered = [Depends(require_module("tools"))]
 
 EXPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "exports")
-TARIFFS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tariffs")
 
 
 @router.get("/countries")
@@ -298,7 +298,6 @@ async def list_downloads():
     countries = []
     for cc, entree in _exports_socle().items():
         size = sum(os.path.getsize(os.path.join(SOCLE_EXPORTS_DIR, f)) for f in _fichiers(entree))
-        json_ready = os.path.exists(os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json"))
         country = {
             "code": cc,
             "name": COUNTRY_NAMES.get(cc, cc),
@@ -308,10 +307,9 @@ async def list_downloads():
             "csv_ready": True,
             "total_size_kb": round(size / 1024),
             "download_url": f"/tariff-data/download-zip/{cc}",
-            "json_ready": json_ready,
+            "json_ready": True,
+            "json_download_url": f"/tariff-data/download-json/{cc}",
         }
-        if json_ready:
-            country["json_download_url"] = f"/tariff-data/download-json/{cc}"
         countries.append(country)
     return {
         "countries": countries,
@@ -347,28 +345,70 @@ def _safe_filename_part(name: str) -> str:
     return re.sub(r"[^\w\-]", "_", name)
 
 
-@router.get("/download-json/{country_code}", dependencies=_tools_metered)
+def _valeur(cellule):
+    """Un taux s'écrit en nombre ; une forme publiée (« 8c/kg ») ou « n.d. »
+    reste du texte."""
+    try:
+        return float(cellule)
+    except ValueError:
+        return cellule
+
+
+def _liste(cellule, separateur=" | "):
+    return cellule.split(separateur) if cellule else []
+
+
+def _tarif_json(cc, entree):
+    """Le tarif du pays en JSON, lu sur le CSV archivé et ses notes : il suit
+    donc chaque réexport du socle, sans copie qui pourrait diverger."""
+    codes = [c["code"] for c in entree["colonnes"]]
+    with open(os.path.join(SOCLE_EXPORTS_DIR, entree["fichier"]), encoding="utf-8-sig", newline="") as f:
+        lignes = list(csv.reader(f, delimiter=";"))[1:]
+    with open(os.path.join(SOCLE_EXPORTS_DIR, entree["fichier_notes"]), encoding="utf-8-sig", newline="") as f:
+        notes = {n[0]: {"prelevement": n[1], "texte": n[2]} for n in list(csv.reader(f, delimiter=";"))[1:]}
+
+    positions = []
+    for ligne in lignes:
+        valeurs = ligne[4 : 4 + len(codes)]
+        total, etat, manques, restrictions, renvois = ligne[4 + len(codes) :]
+        positions.append(
+            {
+                "position": ligne[0],
+                "designation": ligne[1],
+                "chapitre": ligne[2],
+                "unite": ligne[3] or None,
+                "droits": {code: _valeur(v) for code, v in zip(codes, valeurs) if v != ""},
+                "total_pour_100_caf": float(total) if total else None,
+                "etat": etat,
+                "manques": _liste(manques),
+                "restrictions": _liste(restrictions),
+                "notes": _liste(renvois, " "),
+            }
+        )
+    return {
+        "pays": cc,
+        "nom": COUNTRY_NAMES.get(cc, cc),
+        "devise": entree.get("devise"),
+        "date_reference": entree.get("date_reference"),
+        "collecte": entree.get("collecte"),
+        "socle_sha256": entree["socle_sha256"],
+        "prelevements": entree["colonnes"],
+        "positions": positions,
+        "notes": notes,
+    }
+
+
+@router.get("/download-json/{country_code}")
 async def download_country_json(country_code: str):
-    # Validate country code against the known allowlist
-    cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)
+    exports = _exports_socle()
+    cc = next((k for k in exports if k == country_code.upper()), None)
     if cc is None:
-        raise HTTPException(status_code=400, detail="Invalid country code")
-    json_path = os.path.join(TARIFFS_DIR, f"{cc}_tariffs.json")
-
-    if not os.path.exists(json_path):
-        collector = get_collector()
-        data = collector.collect_country_tariffs(cc)
-        collector.save_country_tariffs(cc, data)
-
-    if not os.path.exists(json_path):
-        raise HTTPException(status_code=404, detail=f"No tariff data for {cc}")
+        raise HTTPException(status_code=404, detail=f"No tariff export for {country_code}")
 
     name = _safe_filename_part(COUNTRY_NAMES.get(cc, cc))
     filename = f"Tarifs_NPF_{name}_{cc}.json"
-    return FileResponse(
-        json_path,
-        media_type="application/json",
-        filename=filename,
+    return JSONResponse(
+        _tarif_json(cc, exports[cc]),
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
