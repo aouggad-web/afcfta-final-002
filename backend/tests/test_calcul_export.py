@@ -469,7 +469,7 @@ def test_egy_luzerne_en_dollars_et_batteries_sans_exemption(client):
 
 
 def test_egy_lignes_mixtes_et_sable_blanc_a_etablir(client):
-    for code in ("6310100010", "2515110090", "2505100010", "4004000000"):
+    for code in ("6310100010", "2515110090", "2505100010", "4004000000", "2526200050"):
         ligne = _ligne(_export(client, pays="EGY", code_sh=code, valeur=1000, devise="EGP", quantite=1), "EXPORT")
         assert ligne["montant"] is None, code
 

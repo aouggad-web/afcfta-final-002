@@ -1366,8 +1366,10 @@ EXPORT_PAR_TEXTE = {
             # poudre ultrafine (50 microns ou moins) 300.
             **{p: _export_egy("1800 EGP/tonne", "Talc en blocs ou concassé." + _EXPORT_EGY_MINERAIS)
                for p in ("2526100000", "2526200030", "2526200090")},
-            **{p: _export_egy("500 EGP/tonne", "Talc en poudre." + _EXPORT_EGY_MINERAIS)
-               for p in ("2526200010", "2526200050")},
+            "2526200010": _export_egy("500 EGP/tonne", "Talc en poudre (plus de 50 microns)." + _EXPORT_EGY_MINERAIS),
+            # « Autre » talc en poudre : la finesse n'est pas dite.
+            "2526200050": (None, None, "Talc en poudre : 500 livres la tonne, ou 300 pour la poudre ultrafine (50 "
+                                       "microns ou moins) ; la ligne ne dit pas la finesse : à établir."),
             "2526200020": _export_egy("300 EGP/tonne", "Poudre de talc ultrafine (50 microns ou moins)."
                                       + _EXPORT_EGY_MINERAIS),
             "2506100000": _export_egy("150 EGP/tonne", "Minerai de quartz." + _EXPORT_EGY_MINERAIS),
