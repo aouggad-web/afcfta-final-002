@@ -25,7 +25,8 @@ router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
 # save_country_tariffs() — expensive and a disk write, unlike the rest of
 # this router. They keep the metered require_module("tools") in addition to
 # the router-level gate, so a Starter caller can't bypass its 10/day tools
-# cap by hitting these.
+# cap by hitting these. The JSON tariff download (/download-json) is metered
+# too, by product choice: each JSON download counts against the tools quota.
 _tools_metered = [Depends(require_module("tools"))]
 
 EXPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "exports")
@@ -398,7 +399,7 @@ def _tarif_json(cc, entree):
     }
 
 
-@router.get("/download-json/{country_code}")
+@router.get("/download-json/{country_code}", dependencies=_tools_metered)
 async def download_country_json(country_code: str):
     exports = _exports_socle()
     cc = next((k for k in exports if k == country_code.upper()), None)

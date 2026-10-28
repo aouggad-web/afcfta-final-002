@@ -76,9 +76,15 @@ def test_le_reexport_redonne_les_fichiers_archives(tmp_path):
     assert not ecarts, f"{REMEDE} {' '.join(ecarts)}"
 
 
-def _client():
+def _client(quota=False):
+    """Client du routeur seul. Le quota « tools » (abonnement, base de
+    données) est neutralisé, sauf ``quota=True`` qui le laisse s'appliquer."""
+    from routes.tariff_data import _tools_metered
+
     app = FastAPI()
     app.include_router(router)
+    if not quota:
+        app.dependency_overrides[_tools_metered[0].dependency] = lambda: None
     return TestClient(app)
 
 
@@ -152,3 +158,14 @@ def test_chaque_export_annonce_ses_colonnes():
         with open(os.path.join(EXPORTS, entree["fichier"]), encoding="utf-8-sig") as f:
             entete = f.readline().rstrip("\n").split(";")
         assert len(entete) == 4 + len(entree["colonnes"]) + 5, cc
+
+
+def test_le_json_compte_dans_le_quota_tools():
+    """Choix produit : chaque téléchargement JSON est décompté du quota
+    « tools », comme les routes qui recalculent le tarif."""
+    from routes.tariff_data import _tools_metered
+
+    route = next(r for r in router.routes if r.path == "/tariff-data/download-json/{country_code}")
+    assert route.dependencies == _tools_metered
+    # Sans abonnement (formule gratuite), le module « tools » est fermé.
+    assert _client(quota=True).get("/tariff-data/download-json/COG").status_code == 403
