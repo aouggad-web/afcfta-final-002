@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "objet": "Égypte : droits de sortie (رسم صادر) en vigueur au 28 octobre 2026",
+  "destination_iso3": "EGY",
+  "verified_at": "2026-10-28",
+  "etabli": true,
+  "evidence_level": "primaire : circulaires tarifaires de l'Autorité égyptienne des douanes, qui reproduisent les décrets ministériels et leur publication au Journal officiel (الوقائع المصرية), et tarif à l'exportation de la douane ; le Journal officiel lui-même n'a pas été consulté",
+  "source": {
+    "url": "https://www.customs.gov.eg/Legislations/Manshorat?categoryId=4",
+    "institution": "Autorité égyptienne des douanes (مصلحة الجمارك المصرية)"
+  },
+  "documents_archives": [
+    {
+      "texte_archive": "sources/EGY_ECA_rasm_sader_2026.texte-extrait.txt",
+      "sha256": "b4a51d04a2a64a549d21d126e7bc79a7f01c7f8cc75c404a6bd1d392e4d213ec"
+    }
+  ],
+  "regle": {
+    "releve_consolide": {
+      "valeur": "Relevé des produits encore soumis au droit de sortie et de son montant (livres égyptiennes la tonne) au 14 janvier 2026 : ferrailles inox 9 000, zinc 7 000, plastiques 5 000, composants d'aliments pour bétail (1 200 / 60 dollars / 1 800 / 1 800 / 600), talc, quartz, feldspath (1 200 à 150), sables 300, chiffons de coton 6 000, batteries au plomb 3 000, mattes de galvanisation 10 000.",
+      "reference": "منشور تعريفات رقم (5) لسنة 2026 du 14 janvier 2026",
+      "verbatim": "نتشرف أن نرفق طيه عدد (17) كشفاً تفصيلياً بالأصناف التي ما زالت خاضعة لرسم الصادر وقيمة الرسم المقرر"
+    },
+    "talc_2026": {
+      "valeur": "Talc en blocs ou concassé : 1 800 livres la tonne ; le reste du décret n° 122/2025 reconduit.",
+      "reference": "Décret n° 71/2026 (circulaire n° 14 de 2026)",
+      "verbatim": "تعدل قيمة الرسم المفروض على صادرات صنف (كتل ومجروش التالك) من البند الجمركي (25.26) ليكون بواقع 1800 جنيه للطن."
+    },
+    "chiffons_2026": {
+      "valeur": "Chiffons et déchets de tissus de coton, coton mélangé et jean (63.10) : 9 000 livres la tonne.",
+      "reference": "Décret n° 72/2026 (circulaire n° 15 de 2026)",
+      "verbatim": "من البند الجمركي رقم (63.10) لتكون بواقع 9000 جنيه للطن"
+    },
+    "zinc_2026": {
+      "valeur": "Poussières, poudres et paillettes de zinc (79.03) : 10 000 livres la tonne à compter du 15 juillet 2026.",
+      "reference": "Décret n° 273/2026 (circulaire n° 41 de 2026)",
+      "verbatim": "أتربة ومساحيق ورقائق من زنك بند جمركي رقم (79.03) بواقع (10000) جنيه للطن"
+    },
+    "engrais_abroges": {
+      "valeur": "Plus de droit de sortie sur les engrais azotés à compter du 1er août 2026.",
+      "reference": "Décret n° 340/2026 (circulaire n° 44 de 2026)",
+      "verbatim": "في شان إلغاء قرارات وزير الاستثمار والتجارة الخارجية ارقام 190 . 203 . 258 لسنة 2026"
+    },
+    "caoutchouc_2026": {
+      "valeur": "Déchets et rognures de caoutchouc (4004.00, hors poudres et granulés) : 5 000 livres la tonne, un an.",
+      "reference": "Décret n° 346/2026 (JO n° 181 du 19 août 2026, circulaire n° 49 de 2026)",
+      "verbatim": "(من البند الجمركي 4004.00 فيما عدا المساحيق والحبيبات) بواقع 5000 جنيه للطن"
+    },
+    "batteries_2026": {
+      "valeur": "Parties et séparateurs d'accumulateurs au plomb (8507.90.10) : 3 000 livres la tonne ; exportation réservée aux fabricants.",
+      "reference": "Décret n° 2/2026 (circulaire n° 6 de 2026)",
+      "verbatim": "يستمر فرض رسم على صادرات صنف أجزاء وفواصل بطاريات من الرصاص بند جمركي (85079010) مقداره ثلاثة آلاف جنيه للطن."
+    },
+    "marbre_granit": {
+      "valeur": "Blocs de marbre (2515.11) et de granit (2516.11) bruts ou dégrossis : 400 livres la tonne.",
+      "reference": "Circulaire n° 10 de 2025 (relevé), décret n° 102/2024 reconduit par les décrets n° 122/2025 et 71/2026",
+      "verbatim": "بلوكات الرخام الخام أو المشذب تشذيباً أولياً  400"
+    }
+  },
+  "ne_tranche_pas": "Le texte des décrets au Journal officiel (seules les circulaires de la douane ont été lues) ; la date exacte d'expiration des droits reconduits d'année en année ; la fiche du relevé de 2026 sur le marbre et le granit, absente de la numérisation (taux de 2025 retenu) ; l'absence d'instruction de droit sur les pailles, sons et résidus végétaux et sur les batteries dans le tarif à l'exportation en ligne ; le travertin et la pierre seulement débitée, que le tarif signale mais que le décret ne nomme pas ; la matière des chiffons (le droit ne vise que le coton, le coton mélangé et le jean) ; le second fichier publié sous la circulaire n° 10 de 2025 ; les interdictions d'exportation (sable blanc, ferrailles), qui ne sont pas des droits.",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "EXPORT_PAR_TEXTE[\"EGY\"] (scripts/build_socle.py), par ligne nationale d'après les libellés arabes du tarif de la douane ; hors relevé, aucun droit de sortie.",
+    "devise": "Droits spécifiques en livres égyptiennes la tonne ; luzerne et fourrages (12.14) en dollars la tonne ou l'équivalent en livres au cours de la Banque centrale.",
+    "reserves": "Les envois aux projets productifs des zones franches sont exonérés pour la plupart des produits (dit en note, non appliqué), sauf les batteries au plomb. Les droits sont temporaires : à revoir à chaque circulaire de la douane."
+  }
+}

@@ -1205,6 +1205,25 @@ _EXPORT_CMR_LF2026_2 = (
     "LF 2026, art. 11 (1, b) : aluminium, argent, cuivre, saphir et fers et aciers non alliés en lingots des "
     "positions 7206 à 7207, 2 % de la valeur FOB.",
 )
+# Égypte : droits de sortie par la tonne, fixés par décret ministériel pour
+# un an et reconduits ; état au 28 octobre 2026 d'après les circulaires de la
+# douane (relevé consolidé n° 5 du 14 janvier 2026 et circulaires suivantes).
+_EXPORT_EGY_ZONES_FRANCHES = (
+    " Envois aux projets productifs des zones franches, dans les quantités agréées : non soumis."
+)
+
+
+def _export_egy(brut, note):
+    return (None, brut, note + _EXPORT_EGY_ZONES_FRANCHES)
+
+
+_EXPORT_EGY_FOURRAGES = (
+    " Décret n° 504/2025 (JO n° 274 du 6 décembre 2025), un an à compter du lendemain. Le tarif à l'exportation "
+    "de la douane ne signale ce droit que sur la 12.14 : le décret et le relevé de la douane prévalent."
+)
+_EXPORT_EGY_MINERAIS = (
+    " Décret n° 71/2026 : un an à compter de l'expiration du décret n° 122/2025 qu'il reconduit."
+)
 
 
 EXPORT_PAR_TEXTE = {
@@ -1311,6 +1330,80 @@ EXPORT_PAR_TEXTE = {
             **{p: (None, None, "LF 2026, art. 11 (2) : prélèvement spécial de 10 % de la valeur sortie usine à la "
                                "sortie du territoire ; ni cette valeur ni son cumul avec le droit de sortie ne sont "
                                "établis.") for p in ("251511", "251512", "25231000")},
+        },
+    ),
+    # Clés : lignes nationales du tarif égyptien (libellés arabes de la douane) ;
+    # hors relevé, pas de droit.
+    "EGY": (
+        "Circulaires tarifaires de l'Autorité égyptienne des douanes, relevé n° 5 du 14 janvier 2026 et "
+        "circulaires n° 14, 15, 41, 44 et 49 de 2026 ; tarif à l'exportation de la douane "
+        "(sources/EGY_ECA_rasm_sader_2026.texte-extrait.txt)",
+        None,
+        {
+            "7204210000": _export_egy("9000 EGP/tonne", "Déchets et débris d'aciers inoxydables : décret n° 530/2025, "
+                                                        "un an à compter de l'expiration du décret n° 301/2024."),
+            "7903": _export_egy("10000 EGP/tonne", "Poussières, poudres et paillettes de zinc : décret n° 273/2026, "
+                                                   "du 15 juillet 2026 au 14 juillet 2027."),
+            "2620110000": _export_egy("10000 EGP/tonne", "Mattes de galvanisation : décret n° 586/2025 (JO n° 4 du "
+                                                         "5 janvier 2026), un an à compter du lendemain."),
+            "3915": _export_egy("5000 EGP/tonne", "Tous déchets, rognures et débris de matières plastiques : décret "
+                                                  "n° 683/2018, sans terme. Plastique broyé (granulé ou en "
+                                                  "paillettes) non soumis (décret n° 915/2012)."),
+            # 12.13 hors paille de riz (…0010).
+            "1213000090": _export_egy("1200 EGP/tonne", "Pailles et balles de céréales, hors paille de riz."
+                                      + _EXPORT_EGY_FOURRAGES),
+            "1214": _export_egy("60 USD/tonne", "Luzerne et fourrages similaires : « 60 dollars la tonne ou "
+                                                "l'équivalent en livres égyptiennes » au cours de la Banque "
+                                                "centrale au paiement." + _EXPORT_EGY_FOURRAGES),
+            # 23.02 hors son de riz (2302.40.00.10).
+            **{p: _export_egy("1800 EGP/tonne", "Sons et remoulages, hors son de riz." + _EXPORT_EGY_FOURRAGES)
+               for p in ("2302100000", "2302300000", "2302400090", "2302500000")},
+            # 23.08 : rafles et tiges de maïs (…0010) exclues ; ensilage (…0050).
+            "2308000050": _export_egy("600 EGP/tonne", "Ensilage de maïs." + _EXPORT_EGY_FOURRAGES),
+            "2308000090": _export_egy("1800 EGP/tonne", "Matières et déchets végétaux pour l'alimentation des "
+                                                        "animaux, hors rafles et tiges de maïs." + _EXPORT_EGY_FOURRAGES),
+            # Talc : blocs et concassé 1 800 (décret n° 71/2026), poudre 500,
+            # poudre ultrafine (50 microns ou moins) 300.
+            **{p: _export_egy("1800 EGP/tonne", "Talc en blocs ou concassé." + _EXPORT_EGY_MINERAIS)
+               for p in ("2526100000", "2526200030", "2526200090")},
+            **{p: _export_egy("500 EGP/tonne", "Talc en poudre." + _EXPORT_EGY_MINERAIS)
+               for p in ("2526200010", "2526200050")},
+            "2526200020": _export_egy("300 EGP/tonne", "Poudre de talc ultrafine (50 microns ou moins)."
+                                      + _EXPORT_EGY_MINERAIS),
+            "2506100000": _export_egy("150 EGP/tonne", "Minerai de quartz." + _EXPORT_EGY_MINERAIS),
+            "2529100010": _export_egy("300 EGP/tonne", "Feldspath brut en blocs." + _EXPORT_EGY_MINERAIS),
+            "2529100090": _export_egy("150 EGP/tonne", "Feldspath concassé ou en poudre." + _EXPORT_EGY_MINERAIS),
+            # Marbre et granit : la fiche du relevé de 2026 manque à la
+            # numérisation ; taux du relevé de 2025, reconduit sans changement.
+            **{p: _export_egy("400 EGP/tonne", "Blocs de marbre ou de granit bruts ou dégrossis : 400 livres la tonne "
+                                               "(relevé n° 10 de 2025), reconduit par les décrets n° 122/2025 et "
+                                               "71/2026, qui ne modifient que le talc." + _EXPORT_EGY_MINERAIS)
+               for p in ("2515110010", "2516110000")},
+            **{p: (None, None, "Le décret vise les blocs de marbre (2515.11) et de granit (2516.11) bruts ou "
+                               "dégrossis, 400 livres la tonne ; le tarif à l'exportation signale aussi le droit "
+                               "sur cette ligne (travertin, ou pierre seulement débitée) : à établir.")
+               for p in ("2515110090", "2515120010", "2516121000")},
+            "2505": _export_egy("300 EGP/tonne", "Sables naturels de toute espèce, hors sables métallifères du "
+                                                 "chapitre 26." + _EXPORT_EGY_MINERAIS),
+            **{p: (None, None, "Sable blanc : exportation interdite (décret n° 269/2025) ; vers les projets "
+                               "productifs des zones franches seulement, 15 dollars la tonne (décret n° 582/2025).")
+               for p in ("2505100010", "2505900010")},
+            # Le droit ne vise que les chiffons de coton, de coton mélangé et
+            # de jean ; ces lignes couvrent toutes les matières textiles.
+            **{p: (None, None, "Chiffons et déchets de tissus de coton, de coton mélangé ou de jean : 9 000 livres "
+                               "la tonne (décret n° 72/2026) ; la ligne couvre aussi les autres matières textiles : "
+                               "à établir.") for p in ("6310100010", "6310100070", "6310900010")},
+            # Le droit vaut aussi vers les zones franches (lettre du
+            # ministère jointe à la circulaire n° 6 de 2026).
+            "8507901000": (None, "3000 EGP/tonne", "Parties et séparateurs d'accumulateurs au plomb : décret n° 2/2026 "
+                                                   "(JO n° 14 du 18 janvier 2026), un an ; exportation réservée aux "
+                                                   "fabricants ; dû aussi vers les zones franches. Le tarif à "
+                                                   "l'exportation n'en porte que la restriction."),
+            "4004000010": _export_egy("5000 EGP/tonne", "Déchets et rognures de caoutchouc, hors poudres et "
+                                                        "granulés : décret n° 346/2026 (JO n° 181 du 19 août 2026), "
+                                                        "un an."),
+            "4004000000": (None, None, "Position mère : les déchets (4004.00.00.10) doivent 5 000 livres la tonne, "
+                                       "les poudres et granulés (…90) rien ; préciser la ligne."),
         },
     ),
     # Export levy : « the ad valorem rate shall be based on the custom value »
