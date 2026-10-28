@@ -10,11 +10,11 @@ Ce guide indique **où trouver les données réelles** et **comment lire l’arb
 
 ## 1) Source principale (par pays)
 
-- Dossier: `backend/data/exports/`
-- Format: CSV par pays et par tranche de chapitres HS (`ch01-10`, `ch11-20`, … `ch91-99`)
-- Exemple: `DZA_NPF_ch01-10.csv`, `NGA_NPF_ch21-30.csv`
+- Dossier: `backend/data/exports/socle/`
+- Format: un CSV par pays (`XXX_NPF.csv`, séparateur « ; ») et son fichier de notes (`XXX_NPF_notes.csv`), décrits par `MANIFESTE.json`
+- Exemple: `DZA_NPF.csv`, `NGA_NPF.csv`
 
-Ces fichiers sont les exports opérationnels à utiliser en priorité pour l’exploitation.
+Ces fichiers sont le tarif NPF tel que le calculateur l’applique (taux par prélèvement, total pour 100 CAF, restrictions). Ils sont régénérés par `scripts/exporter_tarifs_socle.py` après `scripts/build_socle.py`, et servis par `GET /api/tariff-data/download-zip/<ISO>`. Ils ont remplacé les anciens CSV par tranches de chapitres (`XXX_NPF_ch01-10.csv`…).
 
 ## 2) Source canonique (structure hiérarchique)
 
@@ -59,10 +59,7 @@ Selon le pays et la source, les champs peuvent varier légèrement. Les champs c
 ## 5) Important — qualité et fiabilité
 
 - Les fichiers `frontend/public/*_tarif_douanier_echantillon.csv` sont des **échantillons** de démonstration.
-- Pour une extraction complète « réelle », utiliser `backend/data/exports/` + `engine/output/*_canonical.jsonl`.
-- En cas de divergence entre deux sources, privilégier la version la plus récente du couple:
-  - `engine/output/*_canonical.jsonl`
-  - puis l’export `backend/data/exports/*` régénéré depuis ce canonique.
+- Pour une extraction complète « réelle », utiliser `backend/data/exports/socle/` : c’est le tarif que le calculateur liquide.
 
 ## 6) Script utile pour les formalités au niveau sous-position
 
@@ -83,7 +80,7 @@ Le référentiel couvre les 54 pays ciblés ZLECAf via:
 
 - les fichiers `engine/output/*_canonical.jsonl`,
 - les index `engine/output/indexes/countries_index.json`,
-- les exports `backend/data/exports/*`.
+- les exports `backend/data/exports/socle/*`.
 
 ---
 
