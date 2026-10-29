@@ -1146,7 +1146,7 @@ def _export_zaf(taux_afcfta, eu_uk):
 
 # Cameroun : le taux commun (2 %) et l'exonération des produits finis tiennent
 # au degré de transformation, que la position ne dit pas ; l'exportateur le
-# déclare (`calcul_export.SELON_TRANSFORMATION`). Les lois de finances 2020 à
+# déclare (`calcul_export.SELON_DECLARATION`). Les lois de finances 2020 à
 # 2026 modifient le régime point par point : les points que la LF 2023 ne
 # reprend pas restent en vigueur (lecture retenue, voir la fiche).
 _EXPORT_CMR_DEFAUT = (
@@ -1205,6 +1205,27 @@ _EXPORT_CMR_LF2026_2 = (
     "LF 2026, art. 11 (1, b) : aluminium, argent, cuivre, saphir et fers et aciers non alliés en lingots des "
     "positions 7206 à 7207, 2 % de la valeur FOB.",
 )
+# RDC : tarif de l'ordonnance-loi n° 012/2012, sans modification recensée. Le
+# titulaire d'un droit minier est exonéré pour les exportations de son projet
+# (Code minier, art. 234) : ces droits sont marqués, l'exportateur le déclare
+# (`calcul_export.SELON_DECLARATION`).
+_COD_MINIER = {"titulaire_minier_exonere": True}
+_COD_ASSIETTE = (
+    " Assiette : valeur au point de sortie, qui ne peut être inférieure aux valeurs de base fixées par arrêté du "
+    "ministre des Finances (annexe, § 2)."
+)
+
+
+def _export_cod(taux, note, minier=True):
+    return (taux, None, note + _COD_ASSIETTE, *([_COD_MINIER] if minier else []))
+
+
+_COD_MINERAI = _export_cod(10.0, "Ordonnance-loi n° 012/2012, annexe : minerais et concentrés, 10 %.")
+_COD_CONCENTRE = _export_cod(
+    10.0, "Ordonnance-loi n° 012/2012, annexe : 10 %. L'exportation des concentrés de cuivre et de cobalt est "
+          "interdite depuis 2026, sauf dérogation (texte du 29 juin 2026, rapporté par la presse, non consulté).")
+
+
 # Égypte : droits de sortie par la tonne, fixés par décret ministériel pour
 # un an et reconduits ; état au 28 octobre 2026 d'après les circulaires de la
 # douane (relevé consolidé n° 5 du 14 janvier 2026 et circulaires suivantes).
@@ -1407,6 +1428,74 @@ EXPORT_PAR_TEXTE = {
                                                         "un an."),
             "4004000000": (None, None, "Position mère : les déchets (4004.00.00.10) doivent 5 000 livres la tonne, "
                                        "les poudres et granulés (…90) rien ; préciser la ligne."),
+        },
+    ),
+    # Clés : préfixes du code national (SH 2022) ; le tarif de 2012 suit une
+    # nomenclature plus ancienne. Hors tarif, pas de droit.
+    "COD": (
+        "Ordonnance-loi n° 012/2012 du 21 septembre 2012 instituant un nouveau tarif des droits et taxes à "
+        "l'exportation (JO RDC, 18 octobre 2012, n° spécial) ; Code minier (loi n° 007/2002 modifiée par la loi n° "
+        "18/001), art. 234 (sources/COD_tarif_exportation_OL_012-2012.texte-extrait.txt)",
+        None,
+        {
+            "09011100": _export_cod(1.0, "Café vert non torréfié et non décaféiné (Robusta, Arabica), 1 %.",
+                                    minier=False),
+            "22019000": (None, None, "Eau douce : 5 % ; autres eaux de cette ligne : exemptes. La ligne couvre les "
+                                     "deux : à établir."),
+            **{p: _COD_MINERAI for p in (
+                "2602", "2604", "2607", "2608", "2611", "2612", "2615", "2616", "2617", "2619", "2620", "2621")},
+            **{p: _COD_CONCENTRE for p in ("2603", "2605")},
+            # La cassitérite (minerai d'étain) figure au tarif en 26.17.
+            "2609": _export_cod(10.0, "Cassitérite : 10 %, inscrite au tarif sous la position 26.17."),
+            "2614": (None, None, "Minerais de titane : inscrits au tarif (2614.00.00) sans taux : à établir."),
+            "2709": _export_cod(5.0, "Huiles brutes de pétrole, 5 %. Le régime propre aux hydrocarbures n'a pas été "
+                                     "vérifié.", minier=False),
+            "2716": (None, None, "Énergie électrique : 5 % au tarif ; le décret n° 18/054 du 27 décembre 2018 "
+                                 "(art. 2) l'a ramené à 1 % pour cinq ans, durée échue fin 2023 ; sa prorogation n'a "
+                                 "pas été trouvée : à établir."),
+            # Bois bruts : 4403.49 et 4403.99 du tarif, toutes essences, 10 %.
+            # Bouleau, peuplier et eucalyptus, détachés de la 4403.99 en 2017,
+            # y restent ; le hêtre avait sa propre position, non taxée.
+            **{p: _export_cod(10.0, "Bois bruts (positions 4403.49 et 4403.99 du tarif), toutes essences, 10 % (mètre "
+                                    "cube).", minier=False)
+               for p in ("44034900", "44039500", "44039600", "44039700", "44039800", "44039900")},
+            **{p: (None, None, "Bois tropicaux sciés : 5 %, mais les sciages avivés d'une épaisseur inférieure à "
+                               "50 mm sont exempts ; la ligne couvre les deux : à établir.")
+               for p in ("440721", "440722", "440723", "440725", "440726", "440727", "440728", "440729")},
+            **{p: (None, None, "Diamants bruts : 1,5 % d'exploitation artisanale, 3 % de production industrielle ; "
+                               "titulaire minier exonéré (Code minier, art. 234) : à établir.")
+               for p in ("710221", "710231")},
+            "71081200": (None, None, "Or sous forme brute : 1,5 % d'exploitation artisanale, 3 % de production "
+                                     "industrielle ; titulaire minier exonéré (Code minier, art. 234) : à établir."),
+            "71069100": _export_cod(10.0, "Argent sous forme brute, 10 %."),
+            **{p: _export_cod(10.0, "Platine, palladium, rhodium, iridium, osmium, ruthénium sous forme brute ou en "
+                                    "poudre, 10 %.") for p in ("71101100", "71102100", "71103100", "71104100")},
+            **{p: _export_cod(5.0, "Déchets et débris d'aciers alliés, 5 %.", minier=False)
+               for p in ("72042100", "72042900")},
+            # Cuivre affiné : le tarif range cathodes et barres sous 7403.19 ;
+            # blister et cuivre noir, qui relèvent de la 74.02, y figurent aussi.
+            "74031": _export_cod(10.0, "Cuivre affiné (cathodes, barres, lingots), 10 %."),
+            "74020000": _export_cod(10.0, "Cuivre blister et cuivre noir, 10 %, inscrits au tarif sous la position "
+                                          "74.03."),
+            "74040000": (None, None, "Déchets et débris de cuivre : inscrits au tarif (7404.00.00) sans taux : à "
+                                     "établir."),
+            **{p: _export_cod(5.0, "Nickel, plomb affiné ou étain sous forme brute, 5 %.")
+               for p in ("7502", "78011000", "8001")},
+            **{p: _export_cod(10.0, "Zinc sous forme brute, poussières et poudres de zinc, 10 %.") for p in ("7901", "7903")},
+            **{p: _export_cod(10.0, "Mattes de cobalt et cobalt (cathodes, granulés, alliages blancs), 10 %.")
+               for p in ("810520", "810530", "810590")},
+            "8106": _export_cod(5.0, "Bismuth, 5 %, inscrit au tarif sous le numéro 8105.00.00."),
+            # Le cadmium (81.07 au tarif) relève en SH 2022 des 8112.61 et 69.
+            **{p: _export_cod(10.0, "Cadmium, 10 % (position 81.07 de la nomenclature du tarif).")
+               for p in ("81126100", "81126900")},
+            "8108": (None, None, "Titane : inscrit au tarif (81.08) sans taux : à établir."),
+            "8109": _export_cod(5.0, "Zirconium, 5 %."),
+            **{p: _export_cod(5.0, "Béryllium, chrome, thallium et autres métaux de la 81.12, 5 % ; hafnium et "
+                                   "rhénium relevaient des « autres » de la nomenclature du tarif.")
+               for p in ("811212", "811213", "811219", "811229", "811231", "811239", "811241", "811249",
+                         "811251", "811252", "811259", "811292", "811299")},
+            **{p: (None, None, "Chrome sous forme brute ou déchets : inscrits au tarif sans taux : à établir.")
+               for p in ("811221", "811222")},
         },
     ),
     # Export levy : « the ad valorem rate shall be based on the custom value »

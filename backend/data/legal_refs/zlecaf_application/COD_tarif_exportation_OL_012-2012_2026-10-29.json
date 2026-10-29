@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "objet": "République démocratique du Congo : tarif des droits et taxes à l'exportation et exonération du titulaire minier",
+  "destination_iso3": "COD",
+  "verified_at": "2026-10-29",
+  "etabli": true,
+  "evidence_level": "primaire : ordonnance-loi n° 012/2012 publiée au Journal officiel (reproduction droitcongolais.info), Code minier en textes coordonnés publiés au Journal officiel du 3 mai 2018, décret n° 18/054 ; aucun texte modificatif du tarif recensé",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/COD_tarif_exportation_OL_012-2012.texte-extrait.txt",
+      "sha256": "97bce312f43b03dbf02569f240422b5cc92011b819b20dde017072c8a9220f6a"
+    }
+  ],
+  "regle": {
+    "tarif": {
+      "valeur": "Tarif annexé à l'ordonnance-loi : café vert 1 %, minerais et concentrés 10 %, huiles brutes de pétrole 5 %, énergie électrique 5 %, bois tropicaux en grumes 10 %, bois sciés 5 % (sciages avivés de moins de 50 mm exempts), diamants et or bruts 1,5 % (artisanal) ou 3 % (industriel), argent et platinoïdes 10 %, ferrailles d'aciers alliés 5 %, cuivre affiné 10 %, nickel, plomb, étain 5 %, zinc et cobalt 10 %, bismuth, zirconium, béryllium et autres métaux de la 81.12 5 %, cadmium 10 %.",
+      "reference": "Ordonnance-loi n° 012/2012 du 21 septembre 2012, art. 1er et annexe (JO RDC, 18 octobre 2012, n° spécial)",
+      "verbatim": "Il est institué un nouveau tarif des droits et taxes à l’exportation, annexé à la présente loi."
+    },
+    "minerais": {
+      "valeur": "Minerais de cuivre et leurs concentrés : 10 %.",
+      "reference": "Ordonnance-loi n° 012/2012, annexe, position 2603.00.00",
+      "verbatim": "Minerais de cuivre et leurs concentrés"
+    },
+    "assiette": {
+      "valeur": "Valeur au point de sortie, non inférieure aux valeurs de base fixées par arrêté du ministre des Finances.",
+      "reference": "Ordonnance-loi n° 012/2012, annexe, dispositions préliminaires, § 2",
+      "verbatim": "Toutefois, ces valeurs ne doivent pas être inférieures aux valeurs de base fixées par arrêté par le ministre ayant les finances dans ses"
+    },
+    "titulaire_minier": {
+      "valeur": "Le titulaire d'un droit minier est exonéré de tous droits de sortie pour les exportations de son projet minier.",
+      "reference": "Loi n° 007/2002 portant Code minier, modifiée par la loi n° 18/001, art. 234",
+      "verbatim": "titulaire est totalement exonéré à la sortie, pour ses exportations en rapport avec le"
+    }
+  },
+  "ne_tranche_pas": "Les éventuelles modifications du tarif postérieures à 2012 (aucune n'est recensée, mais des textes le citent « tel que modifié et complété à ce jour ») ; les valeurs de base fixées par arrêté ; le régime des hydrocarbures pour le pétrole brut ; le droit sur l'électricité après l'échéance du décret n° 18/054 (1 % pendant cinq ans à compter de décembre 2018) ; l'interdiction d'exportation des concentrés de cuivre et de cobalt et le régime des sous-produits de 2026, connus par la presse ; la correspondance entre la nomenclature du tarif (antérieure au SH 2022) et le socle, notamment pour la cassitérite (26.17 au tarif), le cuivre blister (74.03 au tarif), le bismuth (8105.00.00 au tarif), le cadmium (81.07 au tarif) et le hafnium et le rhénium ; le taux des diamants et de l'or selon le mode d'exploitation ; les positions inscrites sans taux (minerais de titane, déchets de cuivre, titane, chrome).",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "EXPORT_PAR_TEXTE[\"COD\"] (scripts/build_socle.py). Les produits miniers portent la marque titulaire_minier_exonere : l'exportateur déclare s'il est titulaire d'un droit minier exportant pour son projet (SELON_DECLARATION[\"COD\"], champ titulaire_minier) ; oui : exonéré ; non : taux du tarif ; sans réponse : à établir.",
+    "devise": "Ad valorem : aucun taux de change.",
+    "reserves": "Les valeurs de base administratives ne sont pas appliquées : la valeur saisie sert d'assiette."
+  }
+}
