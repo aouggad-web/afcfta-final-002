@@ -1828,7 +1828,7 @@ BLOCS_DESTINATION = {
 
 ACCISES_PAYS = {
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
-    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_lf2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
@@ -4461,22 +4461,31 @@ def _accises_du_cgi(iso, positions, compteurs):
                 rang = next(
                     (i for i, d in enumerate(droits) if d.get("famille") in avant), len(droits)
                 )
-                droits.insert(
-                    rang,
-                    {
-                        "code": "DA",
-                        "code_source": "DA",
-                        "libelle": "Droit d'accises",
-                        "famille": famille("DA"),
-                        "taux": regle["taux"],
-                        "assiette": table["assiette"],
-                        "assiette_origine": "regle_de_pays",
-                        "source": table["source"],
-                        "note": " ".join(
-                            x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
-                        ),
-                    }
-                )
+                accise = {
+                    "code": "DA",
+                    "code_source": "DA",
+                    "libelle": "Droit d'accises",
+                    "famille": famille("DA"),
+                    "taux": regle["taux"],
+                    "assiette": table["assiette"],
+                    "assiette_origine": "regle_de_pays",
+                    "source": table["source"],
+                    "note": " ".join(
+                        x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
+                    ),
+                }
+                # Gabon : « 25 % » ET « 200 FCFA par litre » — les deux parts
+                # sont dues (droit cumulatif), en monnaie nationale.
+                if regle.get("specifique"):
+                    spec = regle["specifique"]
+                    accise.update(
+                        specifique={"montant": spec["montant"], "unite_monetaire": "unite_principale",
+                                    "sous_unite_source": None, "unite_quantite": spec["unite"],
+                                    "brut": spec["brut"]},
+                        cumulatif=True,
+                        expression_brute=f"{regle['taux']:g} % + {spec['brut']}",
+                    )
+                droits.insert(rang, accise)
                 break
         for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
