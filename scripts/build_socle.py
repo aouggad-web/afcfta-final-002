@@ -2591,6 +2591,33 @@ def _prelevements_gabon(positions, compteurs):
         _compter_ligne(css, compteurs, 1)
 
 
+#: Gabon : taux de la TVA par position (fiche GAB_tva_2026-10-29.json).
+TVA_GAB = os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json")
+
+
+def _tva_gabon(positions, compteurs):
+    """Gabon : exonérations (CGI art. 210) et taux réduits de 10 et 5 % (art. 221)
+    de la loi de finances 2026 et de la LFR 2026 ; ailleurs, le taux normal de 18 %."""
+    with open(TVA_GAB, encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        regle = next(
+            (r for r in table["regles"]
+             if code.startswith(tuple(r["prefixes"])) and not code.startswith(tuple(r.get("exclusions", ())))),
+            None,
+        )
+        if not regle:
+            continue
+        for d in position.get("droits") or []:
+            if d.get("famille") != "tva":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            d["taux"] = regle["taux"]
+            d["source"] = table["source"]
+            d["note"] = f"{regle.get('motif') or regle['reference']} {d.get('note') or ''}".strip()
+            _compter_ligne(d, compteurs, 1)
+
+
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
 #: MRA du 01.10.2026), en roupies par unité ; fiche MUS_mid_levy_2026-10-25.json.
 MID_MUS = {
@@ -5353,6 +5380,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
+        _tva_gabon(positions, compteurs)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon
