@@ -1455,18 +1455,20 @@ EXPORT_PAR_TEXTE = {
                                  "pas été trouvée : à établir."),
             # Bois bruts : 4403.49 et 4403.99 du tarif, toutes essences, 10 %.
             # Bouleau, peuplier et eucalyptus, détachés de la 4403.99 en 2017,
-            # y restent ; le hêtre avait sa propre position, non taxée.
+            # y restent ; le hêtre avait sa propre position, non taxée. Le teck,
+            # détaché de la 4403.49 en 2022 (4403.42), y reste aussi.
             **{p: _export_cod(10.0, "Bois bruts (positions 4403.49 et 4403.99 du tarif), toutes essences, 10 % (mètre "
                                     "cube).", minier=False)
-               for p in ("44034900", "44039500", "44039600", "44039700", "44039800", "44039900")},
+               for p in ("44034200", "44034900", "44039500", "44039600", "44039700", "44039800", "44039900")},
             **{p: (None, None, "Bois tropicaux sciés : 5 %, mais les sciages avivés d'une épaisseur inférieure à "
                                "50 mm sont exempts ; la ligne couvre les deux : à établir.")
                for p in ("440721", "440722", "440723", "440725", "440726", "440727", "440728", "440729")},
             **{p: (None, None, "Diamants bruts : 1,5 % d'exploitation artisanale, 3 % de production industrielle ; "
-                               "titulaire minier exonéré (Code minier, art. 234) : à établir.")
+                               "titulaire minier exonéré (Code minier, art. 234) : à établir.", _COD_MINIER)
                for p in ("710221", "710231")},
             "71081200": (None, None, "Or sous forme brute : 1,5 % d'exploitation artisanale, 3 % de production "
-                                     "industrielle ; titulaire minier exonéré (Code minier, art. 234) : à établir."),
+                                     "industrielle ; titulaire minier exonéré (Code minier, art. 234) : à établir.",
+                         _COD_MINIER),
             "71069100": _export_cod(10.0, "Argent sous forme brute, 10 %."),
             **{p: _export_cod(10.0, "Platine, palladium, rhodium, iridium, osmium, ruthénium sous forme brute ou en "
                                     "poudre, 10 %.") for p in ("71101100", "71102100", "71103100", "71104100")},

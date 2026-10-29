@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-29T12:53:29.125641+00:00",
+  "construit_le": "2026-10-29T13:18:57.252779+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -310,7 +310,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COD_tariffs.json",
       "source_sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
-      "socle_sha256": "972ae7fa6fb3fd99c8825d436dca1b266d5606a55f7c390d59b5cbdff9b3d095",
+      "socle_sha256": "7a838a92eccb2b67a26ff68569c8fd36730cf7b9a0f8d1b37712439e92227faa",
       "collecte": "2026-02-18T10:54:37.532224",
       "etat": "PARTIEL",
       "familles": [
@@ -339,7 +339,7 @@
         "droits_absents_completes": 4,
         "droits_lus_en_designation": 39,
         "classification_estimee": 0,
-        "positions_export": 104
+        "positions_export": 105
       }
     },
     "COG": {

@@ -486,7 +486,7 @@ def test_cod_minerai_selon_le_titulaire_minier(client):
 
 def test_cod_produits_non_miniers_sans_question(client):
     """Café vert 1 %, grumes tropicales 10 % : la réponse sur le titulaire minier n'y change rien."""
-    for code, montant in (("09011100", 10_000), ("44034900", 100_000)):
+    for code, montant in (("09011100", 10_000), ("44034900", 100_000), ("44034200", 100_000)):
         for titulaire in (None, True):
             corps = {"pays": "COD", "code_sh": code, "valeur": 1_000_000, "devise": "CDF"}
             if titulaire is not None:
@@ -500,6 +500,13 @@ def test_cod_positions_a_etablir(client):
         ligne = _ligne(_export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF",
                                titulaire_minier=False), "EXPORT")
         assert ligne["montant"] is None, code
+
+
+def test_cod_or_et_diamants_exoneres_pour_le_titulaire_minier(client):
+    """Taux inconnu (artisanal ou industriel), mais le titulaire minier est exonéré."""
+    for code in ("71081200", "71022100", "71023100"):
+        export = _export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF", titulaire_minier=True)
+        assert _ligne(export, "EXPORT")["montant"] == 0, code
 
 
 def test_pays_sans_droit_export_au_socle(client):
