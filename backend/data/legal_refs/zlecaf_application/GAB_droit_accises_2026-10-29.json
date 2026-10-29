@@ -13,7 +13,7 @@
   "valeur": "Bières d'importation 25 % + 200 FCFA/l ; vins d'importation 32 % + 1750 FCFA/l et champagnes 32 % + 2250 FCFA/l (LFR 2026) ; autres boissons de plus de 12 % vol. 30 % + 500 FCFA/l ; cigarettes, cigares, tabacs 32 % + 250 FCFA/paquet ; boissons sucrées et boissons non alcoolisées hors eau 5 % ; parfumerie et cosmétiques 25 % ; caviar et foie gras 40 % ; saumon 30 % ; armes et munitions 10 % ; véhicules de tourisme 5 % (hors véhicules neufs de 1 500 cm3 ou moins) ; motocycles et autres véhicules automobiles 1 %. La taxe spécifique est due en plus du taux ad valorem.",
   "verbatim": "Bières d’importation et boissons maltées d’importation                                             25%                  200 FCFA par litre […] Vins d’importation                                                              32 %              1750 FCFA par litre […] Champagnes                                                                      32 %              2250 FCFA par litre",
   "reference": "CGI du Gabon, art. 250 nouveau (loi n° 041/2025 ; loi n° 002/2026)",
-  "portee": "backend/data/zlecaf_gab/droit_accises_lf2026.json, appliqué par scripts/build_socle._accises_du_cgi au socle GAB : 126 droits d'accises dont 118 liquidables (15 auparavant, sur 121) ; 8 restent sans taux, motivés en note.",
+  "portee": "backend/data/zlecaf_gab/droit_accises_lf2026.json, appliqué par scripts/build_socle._accises_du_cgi au socle GAB : 126 droits d'accises dont 117 liquidables (15 auparavant, sur 121) ; 9 restent sans taux, motivés en note.",
   "texte_archive": "sources/GAB_droit_accises_lf2026.texte-extrait.txt",
   "sha256": "a35a82c0440fab7be501b52f22277aadac172ae47e4cd530fe0c6ae426099f68"
  },
@@ -22,13 +22,14 @@
   "Le tableau de la LFR 2026 ne compte que quatre lignes, sans « le reste sans changement » : il est lu comme modifiant ces seules lignes (bières locales, vins d'importation, champagnes, tabacs) ; les autres lignes de la LF 2026 restent en vigueur — les lire comme abrogées supprimerait toute accise sur les bières importées, les spiritueux ou les cosmétiques.",
   "Champagnes : position 2204.10.10 (« De champagne ») ; les autres vins mousseux suivent la ligne « Vins d'importation ».",
   "Vermouths et vins aromatisés (22.05) et vins de liqueur (2204.21.20) : ligne « Vins d'importation ».",
-  "Toutes les positions 22.08 : « autres boissons importées titrant plus de 12 % vol. ».",
+  "Positions 22.08 : « autres boissons importées titrant plus de 12 % vol. » (spiritueux nommés, alcool éthylique, 15 % vol. ou plus), sauf 2208.90.91 (moins de 15 % vol.), sans taux faute du degré.",
   "Jus de fruits (20.09) : « Boissons non alcoolisées hors eau », 5 % (nouvelle ligne de la LF 2026).",
   "Véhicules automobiles non expressément mentionnés : 87.01 (sauf tracteurs agricoles 8701.90.11, exclusion reprise de la table précédente), 87.02, 87.04 et 87.05.",
   "Parfumerie et cosmétiques : toutes les positions 33.03 et 33.04 (décision du propriétaire, comme au Cameroun)."
  ],
  "ce_que_cela_ne_tranche_pas": [
   "Véhicules de tourisme de 1 500 cm3 ou moins (8703.21, 8703.22, 8703.31) et 8703.39 : le taux dépend de l'état neuf ou d'occasion, absent de la position — sans taux.",
+  "Autres boissons spiritueuses de moins de 15 % vol. (2208.90.91) : 5 % ou 30 % + 500 FCFA/l selon que le degré est inférieur ou supérieur à 12 % — sans taux.",
   "Moûts de raisin (2204.30) : ni vin ni boisson nommée au tableau — sans taux.",
   "« Emballages non récupérables ou perdus » (1 %) : frappe l'emballage, non une position — non servi.",
   "Produits du vapotage (sachets de nicotine, cigarettes électroniques, ustensiles) étendus par la LFR 2026 : positions SH 2022 (24.04, 8543.40) absentes de la nomenclature du socle GAB.",

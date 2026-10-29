@@ -74,9 +74,16 @@ def test_une_petite_cylindree_reste_sans_taux_faute_de_savoir_si_elle_est_neuve(
     assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat == PARTIEL
 
 
-def test_huit_accises_seulement_restent_sans_taux(positions):
+def test_neuf_accises_seulement_restent_sans_taux(positions):
     accises = [d for p in positions.values() for d in p["droits"] if d["code"] == "DA"]
     sans_taux = [d for d in accises if d["taux"] is None]
-    assert len(accises) == 126 and len(sans_taux) == 8
+    assert len(accises) == 126 and len(sans_taux) == 9
     assert all(d["note"] for d in sans_taux)
     assert all(d["source"].startswith("Code général des impôts du Gabon, art. 250") for d in accises)
+
+
+def test_les_spiritueux_de_moins_de_15_pour_cent_restent_sans_taux(positions):
+    """2208.90.91 : sous 12 % vol., 5 % ; au-delà, 30 % + 500 FCFA/l — le degré
+    n'est pas dans la position, le volume seul ne suffit pas."""
+    etat, lignes = _lignes(positions["22089091"], {"litre": 1})
+    assert lignes["DA"]["statut"] == "TAUX_INDISPONIBLE" and etat == PARTIEL

@@ -9,13 +9,14 @@ N7;DA;loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 25
 N8;DA;"loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 250 nouveau du CGI (« Vins d'importation », 32 % et 1750 FCFA par litre, sans distinction de prix ; vermouths et vins aromatisés du 22.05 compris)"
 N9;DA;"Moûts de raisin : ni « vin » ni boisson nommée au tableau ; 5 % s'ils sont traités en boisson (non alcoolisée, ou de moins de 12 % vol.) — usage non déterminable depuis la position. loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI"
 N10;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Autres boissons importées titrant un degré d'alcool volumétrique supérieur à 12 % », 30 % et 500 FCFA par litre)
-N11;DA;loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 250 nouveau du CGI (« Cigarettes, cigares, cigarillos, tabacs […] », 32 % et 250 FCFA par paquet)
-N12;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Produit de parfumerie et cosmétiques », 25 %) — décision du propriétaire : toutes les positions 33.03 et 33.04
-N13;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N14;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N15;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Véhicules automobiles non expressément mentionnés au présent tableau », 1 %)
-N16;DA;Véhicules de tourisme de 1 500 cm3 ou moins : 5 % s'ils sont d'occasion, exclus de cette ligne s'ils sont neufs — l'état neuf ou d'occasion n'est pas dans la position. loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI
-N17;DA;"loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Véhicules automobiles de tourisme », 5 % ; cylindrée supérieure à 1 500 cm3, hors de l'exclusion des véhicules neufs)"
-N18;DA;Autres véhicules de tourisme : la cylindrée, qui commande l'exclusion des véhicules neufs de 1 500 cm3 ou moins, n'est pas dans la position. loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI
-N19;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Motocycles », 1 %)
-N20;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Armes et munitions », 10 %)
+N11;DA;Autres boissons spiritueuses de moins de 15 % vol. (2208.90.91) : 5 % sous 12 % vol., 30 % plus 500 F CFA par litre au-delà — le degré n'est pas dans la position. loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI
+N12;DA;loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 250 nouveau du CGI (« Cigarettes, cigares, cigarillos, tabacs […] », 32 % et 250 FCFA par paquet)
+N13;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Produit de parfumerie et cosmétiques », 25 %) — décision du propriétaire : toutes les positions 33.03 et 33.04
+N14;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N15;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N16;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Véhicules automobiles non expressément mentionnés au présent tableau », 1 %)
+N17;DA;Véhicules de tourisme de 1 500 cm3 ou moins : 5 % s'ils sont d'occasion, exclus de cette ligne s'ils sont neufs — l'état neuf ou d'occasion n'est pas dans la position. loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI
+N18;DA;"loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Véhicules automobiles de tourisme », 5 % ; cylindrée supérieure à 1 500 cm3, hors de l'exclusion des véhicules neufs)"
+N19;DA;Autres véhicules de tourisme : la cylindrée, qui commande l'exclusion des véhicules neufs de 1 500 cm3 ou moins, n'est pas dans la position. loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI
+N20;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Motocycles », 1 %)
+N21;DA;loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 250 nouveau du CGI (« Armes et munitions », 10 %)
