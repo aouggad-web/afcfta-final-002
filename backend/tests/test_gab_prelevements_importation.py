@@ -44,7 +44,7 @@ def test_la_css_s_assied_sur_l_accise_comme_la_tva(positions):
 
 @pytest.mark.parametrize(
     "origine, retires",
-    [("CMR", {"CIA", "CCI", "OHADA"}), ("RWA", {"CIA", "CCI"}), ("SEN", {"CIA", "OHADA"}),
+    [("CMR", {"CIA", "CCI", "OHADA"}), ("AGO", {"CIA", "CCI"}), ("RWA", {"CIA"}), ("SEN", {"CIA", "OHADA"}),
      ("NGA", {"CIA"}), ("FRA", set())],
 )
 def test_les_prelevements_communautaires_suivent_l_origine(positions, origine, retires):

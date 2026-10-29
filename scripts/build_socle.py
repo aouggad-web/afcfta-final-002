@@ -1827,7 +1827,8 @@ BLOCS_DESTINATION = {
     # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
     # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
     "AES_UEMOA": {"BFA", "MLI", "NER"},
-    "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "RWA", "STP", "TCD"},
+    # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
+    "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
     # Prélèvement OHADA : marqué au seul Gabon. L'arrêté congolais n° 5808 (2005)
     # en exonère aussi les originaires de la CEMAC et de la CEEAC et les produits
     # pharmaceutiques : la ligne du Congo attend sa propre règle.

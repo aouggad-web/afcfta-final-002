@@ -31,7 +31,8 @@ BLOCS = {
     "CEDEAO": ECOWAS,
     "UA": frozenset(c["iso3"] for c in AFRICAN_COUNTRIES),
     "AES_UEMOA": frozenset({"BFA", "MLI", "NER"}) | UEMOA,
-    "CEEAC": frozenset({"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "RWA", "STP", "TCD"}),
+    # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
+    "CEEAC": frozenset({"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"}),
     "OHADA": frozenset({
         "BEN", "BFA", "CMR", "CAF", "COM", "COG", "CIV", "GAB", "GIN", "GNB", "GNQ", "MLI", "NER", "COD", "SEN",
         "TCD", "TGO",
