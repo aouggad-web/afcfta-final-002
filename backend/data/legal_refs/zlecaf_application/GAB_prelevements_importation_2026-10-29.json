@@ -1,0 +1,39 @@
+{
+ "schema_version": 1,
+ "objet": "Gabon : prélèvements perçus au cordon douanier hors droit de douane, TVA et accises — contribution communautaire d'intégration de la CEEAC (0,4 %), prélèvement OHADA (0,05 %), contribution à l'Union africaine (0,2 %, exonération des originaires de l'UA) et contribution spéciale de solidarité (1 %)",
+ "destination_iso3": "GAB",
+ "verified_at": "2026-10-29",
+ "etabli": true,
+ "evidence_level": "primaire — DGDDI du Gabon (douanes.ga, 2021) pour la CCI, le prélèvement OHADA et la contribution UA ; loi n° 026/2016 (loi de finances 2017, JO n° 331 Bis Spécial) pour la CSS ; loi n° 025/2022 (journal-officiel.ga) et loi n° 041/2025 (JO n° 96 Quater) pour leur perception au cordon douanier ; arrêté congolais n° 5808 (JO du Congo n° 35 de 2005) pour l'assiette et le champ du règlement OHADA n° 002/2003",
+ "source": {
+  "url": "https://douanes.ga/med/pdf/dgddi-la-fiscalite-douaniere-210426100824.pdf",
+  "institution": "Direction générale des douanes et droits indirects du Gabon"
+ },
+ "regle": {
+  "valeur": "CCI 0,4 % de la valeur (CIF), sauf originaires de la CEEAC ; OHADA 0,05 % de la valeur CAF, sauf originaires des États de l'OHADA ; contribution UA 0,2 %, sauf originaires de l'UA ; CSS 1 % de l'assiette de la TVA (valeur + droit de douane + droit d'accises), exonérée sur les produits pharmaceutiques (ch. 30), les journaux et périodiques (49.02) et le matériel solaire et éolien (8541.40, 8502.31), sans taux sur les engrais et pesticides (exonérés selon l'usage).",
+  "verbatim": "au taux de 0.4% de la valeur des marchandises importées des pays tiers ; du prélèvement OHADA au taux de 0.05% et de la Contribution pour l’Union Africaine (CAF) au taux de 0.2% de la valeur des marchandises originaires des pays non membres de l’Union Africaine. […] Article 25 : Le taux de la CSS est de 1% de la base imposable définie à l’article 24 ci-dessus.",
+  "reference": "DGDDI, « Présentation de la fiscalité douanière » (2021), I-A ; loi n° 026/2016, art. 13 à 25 ; loi n° 025/2022, art. 34 ; règlement OHADA n° 002/2003/CM",
+  "portee": "scripts/build_socle._prelevements_gabon (CCI, OHADA, CSS) et EXONERATION_ORIGINE (CIA → UA, CCI → CEEAC, OHADA → OHADA) ; backend/services/exoneration_origine.py (blocs CEEAC et OHADA).",
+  "texte_archive": "sources/GAB_prelevements_importation.texte-extrait.txt",
+  "sha256": "0c2a6073c823a7e90d1d891156dfa3ffd85c9f398009bf05f10d9da813ca9182"
+ },
+ "decisions": [
+  "Assiette de la CCI et du prélèvement OHADA : la valeur CIF (« valeur des marchandises », « valeur CAF en douane »). Ils sont placés avec la TCI et la contribution UA, avant le droit d'accises, dont l'assiette comprend les « droits et taxes perçus à l'entrée ».",
+  "CSS : placée après le droit d'accises et avant la TVA ; son assiette est celle de la TVA (art. 24), qui ne la comprend pas (CGI art. 216).",
+  "Exonération selon l'origine : CCI pour les originaires des 11 États de la CEEAC, prélèvement OHADA pour ceux des 17 États de l'OHADA, contribution UA pour ceux de l'UA. Sans origine déclarée, les trois restent dus.",
+  "Le prélèvement OHADA du Congo n'est pas marqué : l'arrêté n° 5808 exonère aussi les originaires de la CEMAC et de la CEEAC et les produits pharmaceutiques — règle propre au Congo, à traiter à part."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Redevance informatique : perçue (28,9 milliards FCFA prévus en 2026) mais son taux n'a été trouvé sur aucun texte primaire ; une page du Conseil gabonais des chargeurs cite 1,5 % de la valeur en douane (« RUSID »), injoignable au 29/10/2026 — non servie.",
+  "Surtaxe temporaire et précompte IRPP (lignes de recettes douanières de la LF 2026) : produits visés et taux non trouvés ; le précompte est un acompte d'impôt sur le revenu — non servis.",
+  "CSS : seuil de 30 000 000 FCFA de chiffre d'affaires annuel (art. 14) — un importateur sous le seuil n'est pas redevable ; le calcul la sert toujours. Exonérations subordonnées au statut de l'importateur (art. 17 : franchises, missions diplomatiques, secteurs minier et pétrolier) non traitées.",
+  "Exonérations du prélèvement OHADA de l'art. 6 du règlement n° 002/2003 : texte du règlement non trouvé.",
+  "Positions absentes du socle GAB : journaux et périodiques (49.02), cellules photovoltaïques (8541.40)."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/GAB_prelevements_importation.texte-extrait.txt",
+   "sha256": "0c2a6073c823a7e90d1d891156dfa3ffd85c9f398009bf05f10d9da813ca9182"
+  }
+ ]
+}
