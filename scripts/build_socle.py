@@ -4767,6 +4767,28 @@ SOURCE_TAXE_SPECIFIQUE_TCD = (
 )
 
 
+#: RDC : la collecte sert le TEC EAC 2022 (PDF KRA), que la RDC n'applique pas
+#: (fiche COD_application_2026-09-27.json). Son tarif national (ordonnance-loi
+#: 011/2012) a quatre taux, 0, 5, 10 et 20 % ; les 12 lignes relevées de la loi
+#: de finances 17-005 contredisent toutes le socle (comparaison du 2026-10-29).
+NOTE_DD_COD = "Taux du TEC EAC, que la RDC n'applique pas ; barème DGDA à obtenir."
+
+
+def _droit_douane_rdc(positions, compteurs):
+    """RDC : aucun droit de douane n'est servi tant que le barème DGDA n'est pas
+    obtenu — le taux et la part spécifique du TEC EAC sont retirés."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "DD":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            for cle in ("specifique", "compose", "regle_composee", "expression_brute"):
+                d.pop(cle, None)
+            d["taux"] = None
+            d["note"] = NOTE_DD_COD
+            _compter_ligne(d, compteurs, 1)
+
+
 def _taxe_specifique_tchad(positions, compteurs):
     """Tchad : la taxe spécifique au montant par unité se liquide sur la
     quantité ; au pourcentage, sa base n'est pas énoncée — l'art. 36 n'énonce
@@ -5196,6 +5218,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ice_mocambique(positions, compteurs)
     if iso == "TCD":
         _taxe_specifique_tchad(positions, compteurs)
+    if iso == "COD":
+        _droit_douane_rdc(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:

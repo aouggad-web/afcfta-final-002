@@ -352,10 +352,10 @@
         }
       ],
       "devise": "CDF",
-      "date_reference": "2026-10-28",
-      "sha256": "09b16a1e969ba67e8e665888fa673eb3ab635d051ac07d501d08857e679738b0",
-      "notes_sha256": "c33400280c7466a8b4d5dd9ce4cae089436556559faa1037ccd48c8e5626ee0d",
-      "socle_sha256": "5f8b5b59e0737a146acfbed25d78f93929b16cd780e45621bcdfed354fb3d46d",
+      "date_reference": "2026-10-29",
+      "sha256": "8de313d9f371883ae3964dd48b938508dd181a27b04d451a353f78054fa80f21",
+      "notes_sha256": "11f7211310538c4dc2be7218a9cf8921482ee4305a7325d4e8cffb096ba7972b",
+      "socle_sha256": "8709dccb2f523d62564f76823de1434eb98ccdfe9e7ad402fa1bfe3090d782e3",
       "collecte": "2026-02-18T10:54:37.532224"
     },
     "COG": {
