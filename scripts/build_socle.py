@@ -1208,6 +1208,38 @@ _EXPORT_CMR_LF2026_2 = (
 # Égypte : droits de sortie par la tonne, fixés par décret ministériel pour
 # un an et reconduits ; état au 28 octobre 2026 d'après les circulaires de la
 # douane (relevé consolidé n° 5 du 14 janvier 2026 et circulaires suivantes).
+_EXPORT_COG_DEFAUT = (
+    None, None,
+    "Taux général : 2 % de la valeur en douane (LFR 2021, point 42, 1) ; le ciment produit au Congo et les autres "
+    "produits transformés d'origine congolaise sont exonérés (point 42, 2). La redevance informatique (2 % à "
+    "l'exportation, LF 2026, point 25) n'est pas comprise.",
+    {"selon_transformation": True},
+)
+_EXPORT_COG_QUATRE = (
+    4.0, None,
+    "LFR 2021, point 42, 2 : 4 % de la valeur en douane (diamant brut et autres métaux précieux bruts, résine et "
+    "autres exsudats des arbres, huile de palme brute, farine de poissons, maïs), transformé ou non. La redevance "
+    "informatique (2 %, LF 2026, point 25) n'est pas comprise.",
+)
+_EXPORT_COG_HYDROCARBURES = (
+    0.0, None,
+    "Hydrocarbures bruts : franchise des droits de sortie (LFR 2021, points 42, 2 et 45, 2 et 3).",
+)
+_COG_FOT = (" Assiette : la valeur Free On Truck (FOT) de l'essence, fixée par arrêté, qu'il faut saisir. Grumes : "
+            "exportation réservée aux bois lourds et durs (Code forestier, art. 97) ; surtaxe de 30 % au-delà du "
+            "quota 85/15 et fonds routier non compris.")
+_EXPORT_COG_GRUMES_DIX = (
+    10.0, None,
+    "Bois en grumes des forêts naturelles, Okoumé, Afrormosia et Ébène : taxe à l'exportation de 10 % de la "
+    "valeur FOT, au titre du droit de sortie (LFR 2021, point 42, 3)." + _COG_FOT,
+)
+_EXPORT_COG_GRUMES_NEUF = (
+    9.0, None,
+    "Bois en grumes des forêts naturelles, essences autres que l'Okoumé, l'Afrormosia et l'Ébène : taxe à "
+    "l'exportation de 9 % de la valeur FOT, au titre du droit de sortie (LFR 2021, point 42, 3)." + _COG_FOT,
+)
+_COG_ESSENCES_NEUF = tuple(f"440349{n:02d}" for n in range(1, 39) if n not in (3, 15))
+
 _EXPORT_EGY_ZONES_FRANCHES = (
     " Envois aux projets productifs des zones franches, dans les quantités agréées : non soumis."
 )
@@ -1330,6 +1362,58 @@ EXPORT_PAR_TEXTE = {
             **{p: (None, None, "LF 2026, art. 11 (2) : prélèvement spécial de 10 % de la valeur sortie usine à la "
                                "sortie du territoire ; ni cette valeur ni son cumul avec le droit de sortie ne sont "
                                "établis.") for p in ("251511", "251512", "25231000")},
+        },
+    ),
+    # Clés : lignes nationales du tarif (TEC CEMAC, essences de la 4403.49) ;
+    # hors des produits nommés, le défaut attend la réponse de l'exportateur.
+    "COG": (
+        "Loi n° 37-2021 du 13 août 2021 portant loi de finances rectificative pour 2021, point 42, reconduit "
+        "jusqu'à la loi n° 42-2025 (loi de finances pour 2026) "
+        "(sources/COG_droit_de_sortie_LFR2021_LF2026.texte-extrait.txt)",
+        _EXPORT_COG_DEFAUT,
+        {
+            # Diamant brut (non trié, industriel ou non, brut ou simplement
+            # scié, clivé ou débruté), argent et or sous formes brutes, gomme
+            # arabique (exsudat d'acacia), huile de palme brute, maïs.
+            **{p: _EXPORT_COG_QUATRE for p in (
+                "71021000", "71022100", "71023100", "71069100", "71081200", "13012000", "15111000", "1005")},
+            **{p: (None, None, "Platine et platinoïdes « sous formes brutes ou en poudre » : 4 % pour les métaux "
+                               "précieux bruts (LFR 2021, point 42, 2) ; la poudre n'est pas un métal brut et la "
+                               "ligne réunit les deux : à établir.")
+               for p in ("71101100", "71102100", "71103100", "71104100")},
+            "13019000": (None, None, "Autres gommes, résines, gommes-résines et oléorésines : 4 % pour la « résine et "
+                                     "autres exsudats extraits des arbres » (LFR 2021, point 42, 2) ; la ligne couvre "
+                                     "aussi des produits qui n'en sont pas : à établir."),
+            "23012000": (None, None, "Farines de poissons ou de crustacés, mollusques et autres invertébrés "
+                                     "aquatiques : 4 % pour la « farine de poissons » (LFR 2021, point 42, 2) ; les "
+                                     "autres farines de la ligne relèvent du droit commun : à établir."),
+            **{p: _EXPORT_COG_HYDROCARBURES for p in ("2709", "27111100", "27112100")},
+            # Grumes : 10 % pour l'Afrormosia et l'Ébène, 9 % pour les autres
+            # essences nommées ; l'Okoumé n'a pas de ligne à lui.
+            **{p: _EXPORT_COG_GRUMES_DIX for p in ("44034903", "44034915")},
+            **{p: _EXPORT_COG_GRUMES_NEUF for p in ("44034100", *_COG_ESSENCES_NEUF)},
+            "44034939": (None, None, "Autres bois tropicaux en grumes : 10 % de la valeur FOT pour l'Okoumé, 9 % "
+                                     "pour les autres essences (LFR 2021, point 42, 3) ; la ligne ne les distingue "
+                                     "pas : à établir." + _COG_FOT),
+            **{p: (None, None, "Bois en grumes autres que tropicaux (traités, de conifères, d'autres feuillus, de "
+                               "trituration) : 9 % de la valeur FOT s'ils sont issus des forêts naturelles ; les "
+                               "produits des forêts de plantation suivent un autre barème (LFR 2021, point 42, 3) : "
+                               "à établir.") for p in ("44031", "44032", "44039")},
+            "4407": (None, None, "Bois sciés : 4 % s'ils sont humides, 1,5 % s'ils sont séchés ; bois de plantation "
+                                 "1 % ou 0,5 % (LFR 2021, point 42, 3) ; la position ne le dit pas : à établir."),
+            "4408": (None, None, "Feuilles de placage : 0,5 % tranchées, 1 % déroulées (LFR 2021, point 42, 3) ; la "
+                                 "position ne le dit pas : à établir."),
+            "4412": (0.5, None, "Contreplaqués, panneaux, lamellés collés et autres : 0,5 % de la valeur FOT (LFR "
+                                "2021, point 42, 3)."),
+            **{p: (0.0, None, "Parquets, moulures, portes et fenêtres, éléments de meubles et autres produits finis "
+                              "du bois : 0 % (LFR 2021, point 42, 3).")
+               for p in ("4409", "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421")},
+            # Le reste du bois relève du barème de la taxe à l'exportation
+            # (« ceux passibles de la taxe à l'exportation » échappent au
+            # droit commun) sans y être nommé.
+            "44": (None, None, "Bois et ouvrages en bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient "
+                               "lieu de droit de sortie, mais son barème ne nomme pas ce produit (bois de chauffage, "
+                               "plaquettes, panneaux de particules ou de fibres, traverses…) : à établir."),
         },
     ),
     # Clés : lignes nationales du tarif égyptien (libellés arabes de la douane) ;

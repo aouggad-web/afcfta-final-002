@@ -10,9 +10,9 @@ indisponible et la nomment, jamais un zéro.
 
 S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
 (`HORS_TARIF` : à Madagascar, les DTSPM du Code minier ; au Mali, la TEOAPM du
-CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun,
-le droit de sortie commun dépend du degré de transformation du produit
-(`SELON_TRANSFORMATION`), que l'exportateur déclare aussi.
+CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun
+et au Congo, le droit de sortie commun dépend du degré de transformation du
+produit (`SELON_TRANSFORMATION`), que l'exportateur déclare aussi.
 """
 from __future__ import annotations
 
@@ -75,8 +75,8 @@ HORS_TARIF = {
 #: Droit de sortie dont le taux tient au degré de transformation du produit,
 #: que la position ne dit pas. Le socle porte ce droit à taux non établi et
 #: marqué `selon_transformation` (`build_socle.EXPORT_PAR_TEXTE`) ; la réponse
-#: de l'exportateur le fixe. Cameroun : fiche
-#: CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json.
+#: de l'exportateur le fixe. Fiches CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json
+#: et COG_droit_de_sortie_LFR2021_LF2026_2026-10-29.json.
 SELON_TRANSFORMATION = {
     "CMR": {
         "champ": "produit_fini",
@@ -85,6 +85,13 @@ SELON_TRANSFORMATION = {
         "oui": (0.0, "Produit manufacturé ou transformé au Cameroun au sens de produit fini : exonéré (LF 2020, art. 5)."),
         "non": (2.0, "Produit brut : taux commun de 2 % de la valeur imposable (LF 2018, art. 2) ; produit semi-fini : "
                      "2 % de la valeur FOB (LF 2023, art. 10)."),
+    },
+    "COG": {
+        "champ": "produit_fini",
+        "question": "Produit transformé d'origine congolaise (issu d'une ouvraison ou d'une transformation au Congo) ?",
+        "question_en": "Processed product of Congolese origin (worked or processed in Congo)?",
+        "oui": (0.0, "Produit transformé d'origine congolaise : exonéré du droit de sortie (LFR 2021, point 42, 2)."),
+        "non": (2.0, "Taux général du droit de sortie : 2 % de la valeur en douane (LFR 2021, point 42, 1)."),
     },
 }
 
@@ -128,7 +135,8 @@ class DemandeExport(BaseModel):
         default=None,
         description=(
             "Cameroun : produit fini, manufacturé ou transformé au Cameroun (exonéré) ; sinon brut ou semi-fini "
-            "(2 %). Omis : le droit de sortie commun reste à établir."
+            "(2 %). Congo : produit transformé d'origine congolaise (exonéré) ; sinon 2 %. Omis : le droit de "
+            "sortie commun reste à établir."
         ),
     )
 
