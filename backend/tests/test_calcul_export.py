@@ -503,8 +503,8 @@ def test_cod_positions_a_etablir(client):
 
 
 def test_cod_or_et_diamants_exoneres_pour_le_titulaire_minier(client):
-    """Taux inconnu (artisanal ou industriel), mais le titulaire minier est exonéré."""
-    for code in ("71081200", "71022100", "71023100"):
+    """Taux inconnu (or et diamants selon l'exploitation, positions sans taux), mais le titulaire minier est exonéré."""
+    for code in ("71081200", "71022100", "71023100", "26140000", "74040000", "81082000", "81122100"):
         export = _export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF", titulaire_minier=True)
         assert _ligne(export, "EXPORT")["montant"] == 0, code
 

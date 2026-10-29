@@ -1447,7 +1447,7 @@ EXPORT_PAR_TEXTE = {
             **{p: _COD_CONCENTRE for p in ("2603", "2605")},
             # La cassitérite (minerai d'étain) figure au tarif en 26.17.
             "2609": _export_cod(10.0, "Cassitérite : 10 %, inscrite au tarif sous la position 26.17."),
-            "2614": (None, None, "Minerais de titane : inscrits au tarif (2614.00.00) sans taux : à établir."),
+            "2614": (None, None, "Minerais de titane : inscrits au tarif (2614.00.00) sans taux : à établir.", _COD_MINIER),
             "2709": _export_cod(5.0, "Huiles brutes de pétrole, 5 %. Le régime propre aux hydrocarbures n'a pas été "
                                      "vérifié.", minier=False),
             "2716": (None, None, "Énergie électrique : 5 % au tarif ; le décret n° 18/054 du 27 décembre 2018 "
@@ -1480,7 +1480,7 @@ EXPORT_PAR_TEXTE = {
             "74020000": _export_cod(10.0, "Cuivre blister et cuivre noir, 10 %, inscrits au tarif sous la position "
                                           "74.03."),
             "74040000": (None, None, "Déchets et débris de cuivre : inscrits au tarif (7404.00.00) sans taux : à "
-                                     "établir."),
+                                     "établir.", _COD_MINIER),
             **{p: _export_cod(5.0, "Nickel, plomb affiné ou étain sous forme brute, 5 %.")
                for p in ("7502", "78011000", "8001")},
             **{p: _export_cod(10.0, "Zinc sous forme brute, poussières et poudres de zinc, 10 %.") for p in ("7901", "7903")},
@@ -1490,13 +1490,14 @@ EXPORT_PAR_TEXTE = {
             # Le cadmium (81.07 au tarif) relève en SH 2022 des 8112.61 et 69.
             **{p: _export_cod(10.0, "Cadmium, 10 % (position 81.07 de la nomenclature du tarif).")
                for p in ("81126100", "81126900")},
-            "8108": (None, None, "Titane : inscrit au tarif (81.08) sans taux : à établir."),
+            "8108": (None, None, "Titane : inscrit au tarif (81.08) sans taux : à établir.", _COD_MINIER),
             "8109": _export_cod(5.0, "Zirconium, 5 %."),
             **{p: _export_cod(5.0, "Béryllium, chrome, thallium et autres métaux de la 81.12, 5 % ; hafnium et "
                                    "rhénium relevaient des « autres » de la nomenclature du tarif.")
                for p in ("811212", "811213", "811219", "811229", "811231", "811239", "811241", "811249",
                          "811251", "811252", "811259", "811292", "811299")},
-            **{p: (None, None, "Chrome sous forme brute ou déchets : inscrits au tarif sans taux : à établir.")
+            **{p: (None, None, "Chrome sous forme brute ou déchets : inscrits au tarif sans taux : à établir.",
+                           _COD_MINIER)
                for p in ("811221", "811222")},
         },
     ),

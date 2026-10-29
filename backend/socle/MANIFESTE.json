@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-29T13:18:57.252779+00:00",
+  "construit_le": "2026-10-29T13:24:34.010777+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -310,7 +310,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COD_tariffs.json",
       "source_sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
-      "socle_sha256": "7a838a92eccb2b67a26ff68569c8fd36730cf7b9a0f8d1b37712439e92227faa",
+      "socle_sha256": "692c8005dbd4984499c5de98bfa3f203c7ab7bc44534539fd680da1926656b26",
       "collecte": "2026-02-18T10:54:37.532224",
       "etat": "PARTIEL",
       "familles": [
