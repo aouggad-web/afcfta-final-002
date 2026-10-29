@@ -729,23 +729,23 @@
 20089290;--- Autres --Autres :;20;;30;1;0.2;18;;54.6;COMPLET;;;N1
 20089910;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre --- Autres :;20;;30;1;0.2;18;;54.6;COMPLET;;;N1
 20089991;--- Autres fruits et parties comestibles de plantes autrement préparés ou conservés dans un conditionnement égal ou supérieur à 20 kg ---- Autres Jus de fruits (y compris les moûts de raisin) ou de légumes, non fermentés, sans addition d’alcool, avec ou sans addition de sucre ou d’autres édulcorants. -Jus d’orange : -- Congelés;20;;10;1;0.2;18;;31;COMPLET;;;N1
-20091100;-- non congelés, d’une valeur Brix n’excédant pas;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20091200;20 -- Autres;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20091900;- Jus de pamplemousse ou de pomelo : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20092100;-- Autres;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20092900;- Jus de tout autre agrume : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20093100;-- Autres;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20093900;- Jus d’ananas :;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20094100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20095000;- Jus de tomate - Jus de raisin (y compris les moûts de raisin);20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20096100;-- D’une valeur Brix n’excédant pas 30;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20096900;-- Autres - Jus de pomme :;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20097100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20097900;-- Autres - Jus de tout autre fruit ou légume :;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20098010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20098090;-- Autres - Mélanges de jus :;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20099010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
-20099090;-- Autres;20;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N4 N1
+20091100;-- non congelés, d’une valeur Brix n’excédant pas;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20091200;20 -- Autres;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20091900;- Jus de pamplemousse ou de pomelo : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20092100;-- Autres;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20092900;- Jus de tout autre agrume : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20093100;-- Autres;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20093900;- Jus d’ananas :;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20094100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20095000;- Jus de tomate - Jus de raisin (y compris les moûts de raisin);20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20096100;-- D’une valeur Brix n’excédant pas 30;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20096900;-- Autres - Jus de pomme :;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20097100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20097900;-- Autres - Jus de tout autre fruit ou légume :;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20098010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20098090;-- Autres - Mélanges de jus :;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20099010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
+20099090;-- Autres;20;;30;1;0.2;18;5;62.34;COMPLET;;;N4 N1
 21011100;-- Extraits, essences et concentrés;21;;30;1;0.2;18;;54.6;COMPLET;;;N1
 21011200;-- Préparations à base d’extraits, essences ou concentrés ou à base de café - Extraits, essence et concentrés de thé ou de maté et préparations à base de ces extraits, essences ou concentrés ou à base de thé ou de maté;21;;30;1;0.2;18;;54.6;COMPLET;;;N1
 21013000;"- Chicorée torréfiée et autres succédanés torréfiés du café et leurs extraits, essences et concentrés Levures (vivantes ou mortes) ; autres micro- organismes monocellulaires mors (à l’exclusion des vaccins du n° 30.02) ; poudres à lever préparées.";21;;30;1;0.2;18;;54.6;COMPLET;;;N1
@@ -768,28 +768,28 @@
 22019000;- Autres Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées, et autres boissons non alcooliques, à l’exclusion des jus de fruits ou de légumes du n° 20.09.;22;;30;1;0.2;18;;54.6;COMPLET;;;N1
 22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;0.2;18;5;62.34;COMPLET;;;N5 N1
 22029000;- Autres (*) Bières de malt;22;;30;1;0.2;18;5;62.34;COMPLET;;;N5 N1
-22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N6 N1
-22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N6 N1
-22041010;-- De champagne (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22041090;"-- Autres (*) - Autres vins ; moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool : -- En récipients d’une contenance n’excédant pas 21 :";22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22042110;--- Vins autres que ceux du n° 2204.21.20 (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22042120;--- Vins de liqueur, mistelles ou moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool --Autres :;22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22042919;--- Vins autres que ceux du n° 22.04.29.20 :;22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22042920;---- Présentés en récipient d’une contenance de plus de 2 litres mais n’excédant pas 20 L (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22043000;-Autres moûts de raisins (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22051000;-En récipients d’une contenance n’excédant pas 2 l (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
-22059000;- Autres (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
+22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;0.2;18;25 % + 200 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N6 N1
+22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;0.2;18;25 % + 200 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N6 N1
+22041010;-- De champagne (*);22;;30;1;0.2;18;32 % + 2250 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N7 N1
+22041090;"-- Autres (*) - Autres vins ; moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool : -- En récipients d’une contenance n’excédant pas 21 :";22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22042110;--- Vins autres que ceux du n° 2204.21.20 (*);22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22042120;--- Vins de liqueur, mistelles ou moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool --Autres :;22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22042919;--- Vins autres que ceux du n° 22.04.29.20 :;22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22042920;---- Présentés en récipient d’une contenance de plus de 2 litres mais n’excédant pas 20 L (*);22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22043000;-Autres moûts de raisins (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
+22051000;-En récipients d’une contenance n’excédant pas 2 l (*);22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22059000;- Autres (*);22;;30;1;0.2;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
 22071010;-- Autres (*);22;;20;1;0.2;18;;42.8;COMPLET;;;N1
 22071090;- Alcool éthylique et eau-de-vie dénaturés de tous titres;22;;20;1;0.2;18;;42.8;COMPLET;;;N1
-22082000;- Whiskies (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22083000;- Rhum et autres eau-de-vie provenant de la distillation,;22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22084000;après fermentation, de produits de cannes à sucre (*) - Gin et genièvre (=);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22085000;- Vodka (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22086000;- Liqueurs (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22087000;- Autres : -- Alcool éthylique non dénaturé de moins de 80 % vol;22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22089010;(*) -- Autres boissons spiritueuses d’un titre alcoométrique volumique de : --- Moins de 15 % vol (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22089091;--- 15 % vol ou plus (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
-22089092;Vinaigres comestibles et succédanés de vinaigre;22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N8 N1
+22082000;- Whiskies (*);22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22083000;- Rhum et autres eau-de-vie provenant de la distillation,;22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22084000;après fermentation, de produits de cannes à sucre (*) - Gin et genièvre (=);22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22085000;- Vodka (*);22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22086000;- Liqueurs (*);22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22087000;- Autres : -- Alcool éthylique non dénaturé de moins de 80 % vol;22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22089010;(*) -- Autres boissons spiritueuses d’un titre alcoométrique volumique de : --- Moins de 15 % vol (*);22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
+22089091;--- 15 % vol ou plus (*);22;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N11 N1
+22089092;Vinaigres comestibles et succédanés de vinaigre;22;;30;1;0.2;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N10 N1
 23011000;"-Farines, poudres et agglomérés sous forme de pellets, de viandes ou d’abats ; cretons";23;;5;1;0.2;18;;25.1;COMPLET;;;N1
 23012000;- Farines, poudres et agglomérés sous forme de pellets, de poissons ou de crustacés, de mollusques ou d’autres invertébrés aquatiques Sons, remoulages et autres résidus, même agglomérés sous forme de pellets, du criblage, de la mouture ou d’autres traitements des céréales ou des légumineuses.;23;;10;1;0.2;18;;31;COMPLET;;;N1
 23021000;-De maïs;23;;10;1;0.2;18;;31;COMPLET;;;N1
@@ -817,15 +817,15 @@
 24011000;-Tabacs non écôtés;24;;10;1;0.2;18;;31;COMPLET;;;N1
 24012000;- Tabacs partiellement ou totalement écôtés;24;;10;1;0.2;18;;31;COMPLET;;;N1
 24013000;- Déchets de tabac Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en tabac ou en succédanés de tabac.;24;;10;1;0.2;18;;31;COMPLET;;;N1
-24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24022000;- Cigarettes contenant du tabac;24;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24031010;-- Tabac à fumer (scaferlati);24;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24031090;-- Autres - Autres :;24;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24039910;-- Tabacs à mâcher et à priser;24;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24039920;--- Extraits et sauces de tabacs;24;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
-24039990;--- Autres tabacs et fabriqués;24;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9 N1
+24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24022000;- Cigarettes contenant du tabac;24;;30;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24031010;-- Tabac à fumer (scaferlati);24;;10;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24031090;-- Autres - Autres :;24;;30;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24039910;-- Tabacs à mâcher et à priser;24;;30;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24039920;--- Extraits et sauces de tabacs;24;;10;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
+24039990;--- Autres tabacs et fabriqués;24;;30;1;0.2;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N12 N1
 25010000;Soufres de toute espèce, à l’exclusion du soufre sublimé, du soufre précipité et du soufre colloïdal. -Soufres bruts et soufres non raffinés;25;;10;1;0.2;18;;31;COMPLET;;;N1
 25010011;-- Autre;25;;20;1;0.2;18;;42.8;COMPLET;;;N1
 25010019;- Autres;25;;10;1;0.2;18;;31;COMPLET;;;N1
@@ -1581,12 +1581,12 @@
 33019000;- autres Mélanges de substances odoriférantes et mélanges (y compris les solutions alcooliques) à base d’une ou de plusieurs de ces substances, des types utilisés comme matières de base de substances odoriférantes, des types utilisés pour la fabrication de boissons.;33;;10;1;0.2;18;;31;COMPLET;;;N1
 33021000;-Des types utilisés pour les industries alimentaires ou des boissons;33;;10;1;0.2;18;;31;COMPLET;;;N1
 33029000;- Autres;33;;10;1;0.2;18;;31;COMPLET;;;N1
-33030000;"Parfums et eaux de toilette Produits de beauté ou de maquillage préparés et préparations pour l’entretien ou les soins de la peau, autres que les médicaments, y compris les préparations antisolaires et les préparations pour bronzer ; préparations pour manucures ou pédicures.";33;;30;1;0.2;18;25;93.3;COMPLET;;;N10 N1
-33041000;-Produits de maquillage pour les lèvres;33;;30;1;0.2;18;25;93.3;COMPLET;;;N10 N1
-33042000;- Produits de maquillage pour les yeux;33;;30;1;0.2;18;25;93.3;COMPLET;;;N10 N1
-33043000;- Préparations pour manucures ou pédicures - Autres :;33;;30;1;0.2;18;25;93.3;COMPLET;;;N10 N1
-33049100;- - Poudres, y compris les poudres compactes;33;;30;1;0.2;18;25;93.3;COMPLET;;;N10 N1
-33049900;-- Autres…………………………… Préparations capillaries.;33;;30;1;0.2;18;25;93.3;COMPLET;;;N10 N1
+33030000;"Parfums et eaux de toilette Produits de beauté ou de maquillage préparés et préparations pour l’entretien ou les soins de la peau, autres que les médicaments, y compris les préparations antisolaires et les préparations pour bronzer ; préparations pour manucures ou pédicures.";33;;30;1;0.2;18;25;93.3;COMPLET;;;N13 N1
+33041000;-Produits de maquillage pour les lèvres;33;;30;1;0.2;18;25;93.3;COMPLET;;;N13 N1
+33042000;- Produits de maquillage pour les yeux;33;;30;1;0.2;18;25;93.3;COMPLET;;;N13 N1
+33043000;- Préparations pour manucures ou pédicures - Autres :;33;;30;1;0.2;18;25;93.3;COMPLET;;;N13 N1
+33049100;- - Poudres, y compris les poudres compactes;33;;30;1;0.2;18;25;93.3;COMPLET;;;N13 N1
+33049900;-- Autres…………………………… Préparations capillaries.;33;;30;1;0.2;18;25;93.3;COMPLET;;;N13 N1
 33051000;-Shampooings………………………;33;;30;1;0.2;18;;54.6;COMPLET;;;N1
 33052000;- Préparations pour l’ondulation ou le défrisage permanent…………………;33;;30;1;0.2;18;;54.6;COMPLET;;;N1
 33053000;- Laques pour cheveux;33;;30;1;0.2;18;;54.6;COMPLET;;;N1
@@ -2135,7 +2135,7 @@
 44072922;--- Kitibé, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N1
 44072923;--- Kodrodua, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N1
 44072924;--- Limba, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N1
-44072925;--- Moabi, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N11 N1
+44072925;--- Moabi, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N14 N1
 44072926;--- Movingui, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N1
 44072927;--- Mutényé, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N1
 44072928;--- Niangon, scié (*);44;;30;1;0.2;18;;54.6;COMPLET;;;N1
@@ -3247,7 +3247,7 @@
 69049000;- Autres Tuiles, éléments de cheminée, conduits de fumée ornements architectoniques, en céramique, et autres poteries de bâtiment.;69;;30;1;0.2;18;;54.6;COMPLET;;;N1
 69051000;- Tuiles;69;;30;1;0.2;18;;54.6;COMPLET;;;N1
 69059000;- Autres;69;;30;1;0.2;18;;54.6;COMPLET;;;N1
-69060000;"Tuyaux, gouttières et accessoires de tuyauterie en céramique Carreaux et dalles de pavement ou de revêtement, non vernissés ni émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, non vernissés ni émaillés, en céramique, même sur support.";69;;30;1;0.2;18;;54.6;COMPLET;;;N12 N1
+69060000;"Tuyaux, gouttières et accessoires de tuyauterie en céramique Carreaux et dalles de pavement ou de revêtement, non vernissés ni émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, non vernissés ni émaillés, en céramique, même sur support.";69;;30;1;0.2;18;;54.6;COMPLET;;;N15 N1
 69079000;"- Autres Carreaux et dalles de pavement ou de revêtement, vernissés ou émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, vernissés";69;;30;1;0.2;18;;54.6;COMPLET;;;N1
 69089000;"- Autres Appareils et articles pour usages chimiques ou autres usages techniques, en céramique ; auges, bacs et récipients similaires pour l’économie rurale, en céramique ; cruchons et récipients similaires de transport ou d’emballage, en céramique. -Appareils et articles pour usages chimiques ou autres usages techniques :";69;;30;1;0.2;18;;54.6;COMPLET;;;N1
 69091100;- - En porcelaine;69;;30;1;0.2;18;;54.6;COMPLET;;;N1
@@ -4770,46 +4770,46 @@
 86079100;- - De locomotives ou de locotracteurs;86;;10;1;0.2;18;;31;COMPLET;;;N1
 86079900;- - Autres;86;;10;1;0.2;18;;31;COMPLET;;;N1
 86090000;Cadres et conteneurs (y compris les conteneurs- citernes et les conteneurs-réservoirs) spécialement conçus et équipés pour un ou plusieurs modes de transport;86;;10;1;0.2;18;;31;COMPLET;;;N1
-87011000;-Motoculteurs(*) - Tracteurs routiers pour semi-remorques :;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87012010;- - D’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87012020;- - D’une cylindrée de 4.500 cm ou plus(*) - Tracteurs à chenilles :;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87013010;- - De 4.000 kg ou moins(*);87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87013020;- - De plus de 4.000 kg(*) - Autres : - - A moteur à explosion ou à combustion interne :;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
+87011000;-Motoculteurs(*) - Tracteurs routiers pour semi-remorques :;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87012010;- - D’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87012020;- - D’une cylindrée de 4.500 cm ou plus(*) - Tracteurs à chenilles :;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87013010;- - De 4.000 kg ou moins(*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87013020;- - De plus de 4.000 kg(*) - Autres : - - A moteur à explosion ou à combustion interne :;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
 87019011;--- Tracteurs agricoles, à roues(*);87;;10;1;0.2;18;;31;COMPLET;;;N1
-87019012;--- Autres tracteurs à roues, d’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87019013;--- Autres tracteurs à roues, d’une cylindrée de 4.500 cm ou plus(*);87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87019020;--A moteur électrique(*) Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus. -A moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87021010;- - A moteur diesel à un essieu moteur (*);87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87021020;- - A moteur diesel à plus d’un essieu moteur (*). - Autres :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87029010;- - Autres, à un essieu moteur (*);87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87029020;- - Autres, à plus d’un essieu moteur (*) Voitures de tourisme et autres véhicules automobiles principalement conçus pour le transport de personnes (autres que ceux du n° 87.02), y compris les voitures du type “break” et les voitures de course.;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87032110;- - - A un essieu moteur (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032190;- - - Autres(*) - - D’une cylindrée excédant 1.000 cm mais n’excédant pas 1.500 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032210;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032290;- - - Autres (*) - - D’une cylindrée excédant 1.500 cm mais n’excédant pas 3.000 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032310;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032390;- - - Autres(*) - - D’une cylindrée excédant 3.000 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032410;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87032490;- - - Autres(*) - Autres véhicules, à moteur à piston à allumage par compression (diesel ou semi-diesel) : - - D’une cylindrée n’excédant pas 1.500 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033110;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033190;- - - Autres(*) --D’une cylindrée excédant 1.500 cm mais n’excédant pas 2.500 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033210;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033290;- - - Autres(*) - - D’une cylindrée excédant 2.500 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033310;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033390;- - - Autres(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87033900;- Autres(*) Véhicules automobiles pour le transport de marchandises.;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14 N1
-87041000;-Tombereaux automoteurs conçus pour être utilisés en dehors du réseau routier(*) - Autres, à moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87042100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87042200;- - D’un poids en charge maximal excédant 5 tonnes mais n’excédant pas 20 tonnes(*);87;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87042300;- - D’un poids en charge maximal excédant 20 tonnes(*) - Autres, à moteur à piston à allumage par étincelles :;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87043100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87043200;- - D’un poids en charge maximal excédant 5 tonnes(*);87;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87049000;- Autres(*) Véhicules automobiles à usages spéciaux, autres que ceux principalement conçus pour le transport de personnes ou de marchandises (dépanneuses, camions-grues, voitures de lutte contre l’incedie, camions-bétonnières, voitures balayeuses, voitures épandeuses, voitures-ateliers, voitures radiologiques, par exemple).;87;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87051000;-Camions-grues(*);87;;10;1;0.2;18;;31;COMPLET;;;N1
-87052000;- Derricks automobiles pour le sondage ou le forage(*);87;;10;1;0.2;18;;31;COMPLET;;;N1
-87053000;- Voitures de lutte contre l’incendie(*);87;;10;1;0.2;18;;31;COMPLET;;;N1
-87054000;- Camions-bétonnières(*);87;;10;1;0.2;18;;31;COMPLET;;;N1
-87059000;- Autres (*) Châssis des véhicules automobiles des n°s 87.01 à 87.05, équipés de leur moteur.;87;;10;1;0.2;18;;31;COMPLET;;;N1
+87019012;--- Autres tracteurs à roues, d’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87019013;--- Autres tracteurs à roues, d’une cylindrée de 4.500 cm ou plus(*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87019020;--A moteur électrique(*) Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus. -A moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87021010;- - A moteur diesel à un essieu moteur (*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87021020;- - A moteur diesel à plus d’un essieu moteur (*). - Autres :;87;;30;1;0.2;18;1;56.15;COMPLET;;;N16 N1
+87029010;- - Autres, à un essieu moteur (*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87029020;- - Autres, à plus d’un essieu moteur (*) Voitures de tourisme et autres véhicules automobiles principalement conçus pour le transport de personnes (autres que ceux du n° 87.02), y compris les voitures du type “break” et les voitures de course.;87;;30;1;0.2;18;1;56.15;COMPLET;;;N16 N1
+87032110;- - - A un essieu moteur (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17 N1
+87032190;- - - Autres(*) - - D’une cylindrée excédant 1.000 cm mais n’excédant pas 1.500 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17 N1
+87032210;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17 N1
+87032290;- - - Autres (*) - - D’une cylindrée excédant 1.500 cm mais n’excédant pas 3.000 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17 N1
+87032310;- - - A un essieu moteur(*);87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87032390;- - - Autres(*) - - D’une cylindrée excédant 3.000 cm :;87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87032410;- - - A un essieu moteur(*);87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87032490;- - - Autres(*) - Autres véhicules, à moteur à piston à allumage par compression (diesel ou semi-diesel) : - - D’une cylindrée n’excédant pas 1.500 cm :;87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87033110;- - - A un essieu moteur(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17 N1
+87033190;- - - Autres(*) --D’une cylindrée excédant 1.500 cm mais n’excédant pas 2.500 cm :;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17 N1
+87033210;- - - A un essieu moteur(*);87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87033290;- - - Autres(*) - - D’une cylindrée excédant 2.500 cm :;87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87033310;- - - A un essieu moteur(*);87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87033390;- - - Autres(*);87;;30;1;0.2;18;5;62.34;COMPLET;;;N18 N1
+87033900;- Autres(*) Véhicules automobiles pour le transport de marchandises.;87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N19 N1
+87041000;-Tombereaux automoteurs conçus pour être utilisés en dehors du réseau routier(*) - Autres, à moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87042100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;18;1;44.23;COMPLET;;;N16 N1
+87042200;- - D’un poids en charge maximal excédant 5 tonnes mais n’excédant pas 20 tonnes(*);87;;20;1;0.2;18;1;44.23;COMPLET;;;N16 N1
+87042300;- - D’un poids en charge maximal excédant 20 tonnes(*) - Autres, à moteur à piston à allumage par étincelles :;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87043100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;18;1;44.23;COMPLET;;;N16 N1
+87043200;- - D’un poids en charge maximal excédant 5 tonnes(*);87;;20;1;0.2;18;1;44.23;COMPLET;;;N16 N1
+87049000;- Autres(*) Véhicules automobiles à usages spéciaux, autres que ceux principalement conçus pour le transport de personnes ou de marchandises (dépanneuses, camions-grues, voitures de lutte contre l’incedie, camions-bétonnières, voitures balayeuses, voitures épandeuses, voitures-ateliers, voitures radiologiques, par exemple).;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87051000;-Camions-grues(*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87052000;- Derricks automobiles pour le sondage ou le forage(*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87053000;- Voitures de lutte contre l’incendie(*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87054000;- Camions-bétonnières(*);87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
+87059000;- Autres (*) Châssis des véhicules automobiles des n°s 87.01 à 87.05, équipés de leur moteur.;87;;10;1;0.2;18;1;32.31;COMPLET;;;N16 N1
 87060010;-A un essieu moteur;87;;20;1;0.2;18;;42.8;COMPLET;;;N1
 87060090;- Autres Carrosseries des véhicules automobiles des n°s 87.01 à 87.05, y compris les cabines.;87;;20;1;0.2;18;;42.8;COMPLET;;;N1
 87071000;-Des véhicules du n° 87.03;87;;20;1;0.2;18;;42.8;COMPLET;;;N1
@@ -4832,12 +4832,12 @@
 87091900;- - Autres;87;;10;1;0.2;18;;31;COMPLET;;;N1
 87099000;- Parties;87;;10;1;0.2;18;;31;COMPLET;;;N1
 87100000;"Chars et automobiles blindées de combat, armés ou non ; leurs parties Motocycles (y compris les cyclomoteurs) et cycles équipés d’un moteur auxiliaire, avec ou sans side- cars ; side-cars.";87;;10;1;0.2;18;;31;COMPLET;;;N1
-87111000;-A moteur à piston alternatif, d’une cylindrée n’excédant pas 50 cm (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87112000;- A moteur à piston alternatif, d’une cylindrée excédant 50 cm mais n’excédant pas 250 cm (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87113000;- A moteur à piston alternatif, d’une cylindrée excédant cm mais n’excédant pas cm (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87114000;- A moteur à piston alternatif, d’une cylindrée excédant 500 cm mais n’excédant pas 800 cm (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87115000;- A moteur à piston alternatif, d’une cylindrée excédant 800 cm (*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
-87119000;- Autres(*);87;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13 N1
+87111000;-A moteur à piston alternatif, d’une cylindrée n’excédant pas 50 cm (*);87;;30;1;0.2;18;1;56.15;COMPLET;;;N20 N1
+87112000;- A moteur à piston alternatif, d’une cylindrée excédant 50 cm mais n’excédant pas 250 cm (*);87;;30;1;0.2;18;1;56.15;COMPLET;;;N20 N1
+87113000;- A moteur à piston alternatif, d’une cylindrée excédant cm mais n’excédant pas cm (*);87;;30;1;0.2;18;1;56.15;COMPLET;;;N20 N1
+87114000;- A moteur à piston alternatif, d’une cylindrée excédant 500 cm mais n’excédant pas 800 cm (*);87;;30;1;0.2;18;1;56.15;COMPLET;;;N20 N1
+87115000;- A moteur à piston alternatif, d’une cylindrée excédant 800 cm (*);87;;30;1;0.2;18;1;56.15;COMPLET;;;N20 N1
+87119000;- Autres(*);87;;30;1;0.2;18;1;56.15;COMPLET;;;N20 N1
 87120000;Bicyclettes et autres cycles (y compris les triporteurs), sans moteur(*) Fauteuils roulants et autres véhicules pour invalides, même avec moteur ou autre mécanisme de propulsion.;87;;30;1;0.2;18;;54.6;COMPLET;;;N1
 87131000;-Sans mécanisme de propulsion;87;;5;1;0.2;18;;25.1;COMPLET;;;N1
 87139000;- Autres Parties et accessoires des véhicules des n°s 87.11 à -De motocycles (y compris les cyclomoteurs) :;87;;5;1;0.2;18;;25.1;COMPLET;;;N1
@@ -5102,26 +5102,26 @@
 92099200;- - Parties et accessoires des instruments et musique du n° 92.02;92;;30;1;0.2;18;;54.6;COMPLET;;;N1
 92099400;- - Parties et accessoires des instruments de musique du n° 92.07;92;;30;1;0.2;18;;54.6;COMPLET;;;N1
 92099900;- - Autres;92;;30;1;0.2;18;;54.6;COMPLET;;;N1
-93011100;- - Auto-propulsées;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93011900;- - Autres;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93012000;"- Tubes lance-missiles ; lance-flammes ; lance- grenades ; lance-torpilles et lanceurs similaires.";93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93019000;- Autres;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93020000;Revolvers et pistolets, autres que ceux des n° 93.03 ou 93.04 Autres armes à feu et engins similaires utilisant la déflagration de la poudre (fusils et carabines de chasse, armes à feu ne pouvant être chargées que par le canon, pistolets lance-fusées et autres engins conçus uniquement pour lancer des fusées de signalisation, pistolets et revolvers pour le tir à blanc, pistolets d’abattage à cheville, canons llance-amarres, par exemple).;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93031000;-Armes à feu ne pouvant être chargées que par le canon(*);93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93032000;- Autres fusils et carabines de chasse ou de tir sportif comportant au moins un canon lisse(*).;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93033000;- Autres fusils et carabines de chasse ou de tir sportif(*);93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93039000;- Autres(*);93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93040000;Autres armes (fusils, carabines et pistolets à ressort, à air comprimé ou à gaz, matraques, par exemple), à l’exclusion de celles du n° 93.07 Parties et accessoires des articles des n°s 93.01 à;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93051000;-De revolvers ou pistolets - De fusils ou carabines du n° 93.03 :;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93052100;- - Canons lisses;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93052900;- - Autres - Autres :;93;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93059100;- - Des armes de guerre du n° 93.01;93;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93059900;- - Autres;93;;20;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93062100;- - Autres : - - - Douilles;93;;10;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93062910;- - - Autres;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93062990;- Autres cartouches et leurs parties;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93063000;- Autres;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
-93069000;Sabres, épées, baïonnettes, lances et autres armes;93;;30;1;0.2;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15 N1
+93011100;- - Auto-propulsées;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93011900;- - Autres;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93012000;"- Tubes lance-missiles ; lance-flammes ; lance- grenades ; lance-torpilles et lanceurs similaires.";93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93019000;- Autres;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93020000;Revolvers et pistolets, autres que ceux des n° 93.03 ou 93.04 Autres armes à feu et engins similaires utilisant la déflagration de la poudre (fusils et carabines de chasse, armes à feu ne pouvant être chargées que par le canon, pistolets lance-fusées et autres engins conçus uniquement pour lancer des fusées de signalisation, pistolets et revolvers pour le tir à blanc, pistolets d’abattage à cheville, canons llance-amarres, par exemple).;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93031000;-Armes à feu ne pouvant être chargées que par le canon(*);93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93032000;- Autres fusils et carabines de chasse ou de tir sportif comportant au moins un canon lisse(*).;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93033000;- Autres fusils et carabines de chasse ou de tir sportif(*);93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93039000;- Autres(*);93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93040000;Autres armes (fusils, carabines et pistolets à ressort, à air comprimé ou à gaz, matraques, par exemple), à l’exclusion de celles du n° 93.07 Parties et accessoires des articles des n°s 93.01 à;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93051000;-De revolvers ou pistolets - De fusils ou carabines du n° 93.03 :;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93052100;- - Canons lisses;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93052900;- - Autres - Autres :;93;;20;1;0.2;18;10;57.1;COMPLET;;;N21 N1
+93059100;- - Des armes de guerre du n° 93.01;93;;20;1;0.2;18;10;57.1;COMPLET;;;N21 N1
+93059900;- - Autres;93;;20;1;0.2;18;10;57.1;COMPLET;;;N21 N1
+93062100;- - Autres : - - - Douilles;93;;10;1;0.2;18;10;44.12;COMPLET;;;N21 N1
+93062910;- - - Autres;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93062990;- Autres cartouches et leurs parties;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93063000;- Autres;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
+93069000;Sabres, épées, baïonnettes, lances et autres armes;93;;30;1;0.2;18;10;70.08;COMPLET;;;N21 N1
 94011000;-Sièges des types utilisés pour véhicules aériens;94;;30;1;0.2;18;;54.6;COMPLET;;;N1
 94012000;- Sièges des types utilisés pour véhicules automobiles;94;;30;1;0.2;18;;54.6;COMPLET;;;N1
 94013000;- Sièges pivotants, ajustables en hauteur;94;;30;1;0.2;18;;54.6;COMPLET;;;N1
