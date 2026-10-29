@@ -271,11 +271,17 @@
   },
   {
    "prefixes": [
-    "210210",
-    "210220"
+    "210210"
    ],
    "taux": 5.0,
    "reference": "Taux réduit de 5 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « levure »."
+  },
+  {
+   "prefixes": [
+    "210220"
+   ],
+   "taux": null,
+   "motif": "Levures mortes au taux réduit de 5 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « levure »), autres micro-organismes monocellulaires morts au taux normal de 18 % : la position réunit les deux."
   },
   {
    "prefixes": [

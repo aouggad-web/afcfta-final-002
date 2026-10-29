@@ -35,6 +35,7 @@ def _tva(position):
         ("87089900", 10.0),  # pièces détachées automobiles (LFR 2026)
         ("20089910", 10.0),  # conserves de fruits
         ("11010010", 5.0),  # farine
+        ("21021000", 5.0),  # levures vivantes
         ("04070090", 5.0),  # œufs
         ("19024000", 18.0),  # couscous, hors des pâtes alimentaires
         ("25231000", 18.0),  # clinkers, hors du ciment
@@ -47,7 +48,7 @@ def test_taux_de_tva_par_position(positions, code, taux):
     assert _tva(positions[code])["taux"] == taux
 
 
-@pytest.mark.parametrize("code", ["72104100", "87119000", "27111300", "22011000"])
+@pytest.mark.parametrize("code", ["72104100", "87119000", "27111300", "22011000", "21022000"])
 def test_taux_indetermine_depuis_la_position(positions, code):
     tva = _tva(positions[code])
     assert tva["taux"] is None and tva["note"]
