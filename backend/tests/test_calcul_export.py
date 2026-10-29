@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -439,6 +439,38 @@ def test_cmr_lf2026_positions_ambigues_a_etablir(client):
     for code in ("80011000", "74032100", "71039100", "25231000", "18010020"):
         ligne = _ligne(_export(client, pays="CMR", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
                        "EXPORT")
+        assert ligne["montant"] is None, code
+
+
+def test_egy_droit_par_tonne_en_livres(client):
+    """Circulaires de la douane : ferrailles inox 9 000, zinc 10 000 (décret 273/2026), talc concassé 1 800."""
+    for code, montant in (("7204210000", 90_000), ("7903900000", 100_000), ("2526200030", 18_000)):
+        export = _export(client, pays="EGY", code_sh=code, valeur=1_000_000, devise="EGP", quantite=10)
+        ligne = _ligne(export, "EXPORT")
+        assert (export["etat"], ligne["montant"]) == ("COMPLET", pytest.approx(montant)), code
+    assert "zones franches" in ligne["note"]
+
+
+def test_egy_lignes_exclues_par_le_decret(client):
+    """Paille de riz, son de riz, rafles de maïs, poudres de caoutchouc : hors du droit."""
+    for code in ("1213000010", "2302400010", "2308000010", "4004000090"):
+        corps = client.post("/calcul/export", json={
+            "pays": "EGY", "code_sh": code, "valeur": 1000, "devise": "EGP"}).json()
+        assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE", code
+
+
+def test_egy_luzerne_en_dollars_et_batteries_sans_exemption(client):
+    corps = client.post("/calcul/export", json={
+        "pays": "EGY", "code_sh": "1214100000", "valeur": 100_000, "devise": "EGP", "quantite": 2}).json()
+    assert corps["change_requis"] == [{"devise_droit": "USD", "devise_valeur": "EGP"}]
+    batteries = _ligne(_export(client, pays="EGY", code_sh="8507901000", valeur=1, devise="EGP", quantite=1),
+                       "EXPORT")
+    assert batteries["montant"] == pytest.approx(3000) and "aussi vers les zones franches" in batteries["note"]
+
+
+def test_egy_lignes_mixtes_et_sable_blanc_a_etablir(client):
+    for code in ("6310100010", "2515110090", "2505100010", "4004000000", "2526200050", "3915900000"):
+        ligne = _ligne(_export(client, pays="EGY", code_sh=code, valeur=1000, devise="EGP", quantite=1), "EXPORT")
         assert ligne["montant"] is None, code
 
 

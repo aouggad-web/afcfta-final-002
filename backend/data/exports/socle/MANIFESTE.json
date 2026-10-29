@@ -556,7 +556,7 @@
       "date_reference": "2026-10-28",
       "sha256": "ecd985a149f9ff511f455f4dd71a06d87c46e1f4806b0e53458c8a1f0fde727c",
       "notes_sha256": "3634b36b3acf8f3f1714c7a9ae832810096cd297490776b4770757f0e7f3d449",
-      "socle_sha256": "87121858f26fa0cc4886432454ada56842febddd3c064362524dc2c41bf9425c",
+      "socle_sha256": "ff0ebf3c76b9e8872e8bad7da7e3706de49b6b137ab1f07915a28d32a9c35462",
       "collecte": "2026-08-29T21:57:37.493425+00:00"
     },
     "ETH": {
