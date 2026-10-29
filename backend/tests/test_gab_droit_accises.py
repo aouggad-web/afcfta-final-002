@@ -25,11 +25,11 @@ def _lignes(position, quantites=None):
 
 
 def test_une_biere_importee_paie_25_pour_cent_et_200_fcfa_par_litre(positions):
-    """CIF 1 000, 100 litres : DA = 25 % de 1 312 (CIF + DD 300 + TCI 10 + CIA 2)
-    + 200 × 100 = 20 328 ; TVA 18 % sur CIF + DD + DA = 21 628."""
+    """CIF 1 000, 100 litres : DA = 25 % de 1 316,5 (CIF + DD 300 + TCI 10 + CIA 2
+    + CCI 4 + OHADA 0,5) + 200 × 100 = 20 329,125 ; TVA 18 % sur CIF + DD + DA."""
     etat, lignes = _lignes(positions["22030010"], {"litre": 100})
-    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1312.0, 20328.0)
-    assert lignes["TVA"]["base"] == 21628.0 and etat == COMPLET
+    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1316.5, 20329.125)
+    assert lignes["TVA"]["base"] == 21629.125 and etat == COMPLET
 
 
 def test_sans_le_volume_l_accise_n_est_pas_reduite_a_sa_part_ad_valorem(positions):
@@ -46,13 +46,13 @@ def test_vins_champagnes_et_spiritueux(positions, code, specifique):
     LF 2026 : boissons de plus de 12 % vol. 30 % + 500 FCFA/l."""
     taux = 30.0 if code.startswith("2208") else 32.0
     etat, lignes = _lignes(positions[code], {"litre": 1})
-    assert lignes["DA"]["montant"] == round(1312.0 * taux / 100 + specifique, 4)
+    assert lignes["DA"]["montant"] == round(1316.5 * taux / 100 + specifique, 4)
     assert etat == COMPLET
 
 
 def test_les_cigarettes_paient_32_pour_cent_et_250_fcfa_par_paquet(positions):
     etat, lignes = _lignes(positions["24022000"], {"paquet": 10})
-    assert lignes["DA"]["montant"] == 1312.0 * 0.32 + 2500 and etat == COMPLET
+    assert lignes["DA"]["montant"] == 1316.5 * 0.32 + 2500 and etat == COMPLET
 
 
 @pytest.mark.parametrize(
