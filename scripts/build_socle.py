@@ -2608,10 +2608,12 @@ def _prelevements_gabon(positions, compteurs):
 
 #: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
 #: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
-#: COG_tva_2026-10-30.json). Ailleurs, le taux normal de 18 %.
+#: COG_tva_2026-10-30.json) ; Centrafrique (CGI art. 249 et 257, fiche
+#: CAF_tva_2026-10-30.json). Ailleurs, le taux normal du pays.
 TVA_PAR_POSITION = {
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
+    "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "tva_lf2024_lf2025.json"),
 }
 
 
@@ -5596,6 +5598,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _terminaux_sim_congo(positions, compteurs)
     if iso == "CAF":
         _prelevements_centrafrique(positions, compteurs)
+        _tva_par_position("CAF", positions, compteurs)
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
