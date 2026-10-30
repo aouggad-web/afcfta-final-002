@@ -98,3 +98,12 @@ Article 4 : La base de détermination du prélèvement OHADA est la
 valeur CAF en douane des marchandises importées.
 Article 5 : Le taux du prélèvement OHADA est de 0,05% de la valeur
 définie à l’article 4 du présent arrêté.
+
+6) Organisation mondiale du commerce — Examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 16 août 2023), annexe 3 Gabon
+   https://www.wto.org/french/tratop_f/tpr_f/s445-04_f.pdf — sha256 597ad0c10bb55cc4933947b3f266b2783cf9d947cb538a3d8cc0d52c17a0c2e0
+   archivé : data/sources/gabon/official/omc-wt-tpr-s-445-annexe-gabon.pdf
+
+3.29. Une redevance informatique (RUSID) proportionnelle au temps d'utilisation effective du système est prélevée par déclaration, quel que soit le régime douanier.23 La surtaxe temporaire de 20% sur les importations de farine de blé n'est plus appliquée depuis janvier 2023. En outre, les autorités ont indiqué qu'en 2022 la Redevance de scanning (RDS) s'élève à 81 500 FCFA HT par unité EVP pour les conteneurs scannés.
+[...]
+       23
+           La RUSID est prévue par l'article 6-3 du Code des douanes de la CEMAC.
