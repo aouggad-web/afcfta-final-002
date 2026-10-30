@@ -101,7 +101,7 @@ def _preparer(iso3, code, le, mesures):
     """La position telle que POST /api/calcul la liquide, sans origine ni
     usage déclarés : mesures de la gazette EAC en vigueur le ``le`` et TVA
     nationale documentée quand la source n'en porte aucune."""
-    position, provenance = socle.position(iso3, code)
+    position, provenance = socle.position(iso3, code, le.isoformat())
     if mesures:
         position, _ = mesures_eac.appliquer(position, iso3, code, le=le)
     position, _ = _completer_famille_absente(position, iso3, provenance)

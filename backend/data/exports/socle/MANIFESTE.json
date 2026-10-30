@@ -398,13 +398,17 @@
         {
           "code": "DA",
           "libelle": "Droit d'accises"
+        },
+        {
+          "code": "RTN",
+          "libelle": "Taxe sur les nouveaux terminaux numériques à carte SIM"
         }
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "19d2c5c523797c144cd267ed7d917199b6a7a03aac0d907d50aa8ff1c4e8e333",
-      "notes_sha256": "e15ae310a799c5aab4471f4db5f9789a05f7fcf61a86900802a5b832b38e17a6",
-      "socle_sha256": "13b36bcfd8f39ab1c5125ab3431c4f0bb3f116991c77264ee91081044ffd47d8",
+      "sha256": "b2a169c65fe7e2d3d9aea3e15ce2184734ee46bb7f6c92f335dead87c04f0966",
+      "notes_sha256": "bc2eec198ea07f825743360d9fa4166e9ef6a01c4d9ed42a36403d9bb3e6f3ed",
+      "socle_sha256": "86e2db964d762fb2c93f778051f4d49d3517565829be15caaccceeb453bae2cb",
       "collecte": "2026-02-19T22:39:52.620876"
     },
     "COM": {
