@@ -91,6 +91,8 @@ FAMILLES = {
     "CIA": "communautaire",
     "RI": "communautaire",
     "OHADA": "communautaire",
+    "CCI": "communautaire",  # contribution communautaire d'intégration de la CEEAC (GA)
+    "CSS": "autre",  # contribution spéciale de solidarité (GA)
     "TS": "communautaire",
     "CEDEAO": "communautaire",
     "EXIM": "redevance",
@@ -1816,6 +1818,7 @@ def sources_disponibles():
 #: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
+    "CIA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
 }
 #: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
 BLOCS_DESTINATION = {
@@ -1824,6 +1827,12 @@ BLOCS_DESTINATION = {
     # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
     # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
     "AES_UEMOA": {"BFA", "MLI", "NER"},
+    # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
+    "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
+    # Prélèvement OHADA : marqué au seul Gabon. L'arrêté congolais n° 5808 (2005)
+    # en exonère aussi les originaires de la CEMAC et de la CEEAC et les produits
+    # pharmaceutiques : la ligne du Congo attend sa propre règle.
+    "OHADA": {"GAB"},
 }
 
 ACCISES_PAYS = {
@@ -2515,6 +2524,71 @@ def _redevance_informatique_cmr(positions):
                 "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
                 "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
             )
+
+
+#: Gabon : prélèvements perçus au cordon douanier que le crawl ne porte pas
+#: (fiche GAB_prelevements_importation_2026-10-29.json).
+SOURCE_PRELEVEMENTS_GAB = "DGDDI du Gabon, « Présentation de la fiscalité douanière » (2021)"
+SOURCE_CSS_GAB = "Loi n° 026/2016 du 6 janvier 2017 (loi de finances 2017), art. 13 à 25"
+#: CSS : opérations exonérées (art. 17) que la position suffit à désigner.
+CSS_EXONEREE_GAB = (
+    (("30",), "art. 17, 6) : « les produits pharmaceutiques »"),
+    (("4902",), "art. 17, 9) : « l'importation et la vente des journaux et périodiques »"),
+    (("854140", "850231"), "art. 17, 16) : « les matériels et équipements d'exploitation des énergies solaire et éolienne »"),
+)
+#: CSS : exonérations subordonnées à l'usage, que la position ne dit pas.
+CSS_SELON_USAGE_GAB = (
+    ("3101", "3102", "3103", "3104", "3105", "3808"),
+    "Exonérés de la CSS s'ils sont utilisés par les producteurs agricoles, de l'élevage et de la pêche (art. 17, 6) : "
+    "« les pesticides, les engrais et leurs intrants […] utilisés par les producteurs ») — usage non déterminable "
+    "depuis la position.",
+)
+
+
+def _prelevements_gabon(positions, compteurs):
+    """Gabon : contribution communautaire d'intégration de la CEEAC (0,4 %) et
+    prélèvement OHADA (0,05 %) sur la valeur des marchandises, avec la TCI et la
+    contribution à l'Union africaine ; contribution spéciale de solidarité (1 %)
+    sur l'assiette de la TVA (loi de finances 2017, art. 24 et 25)."""
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        apres = next((i for i, d in enumerate(droits) if d.get("code") == "CIA"), None)
+        rang = apres + 1 if apres is not None else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        communautaires = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GAB,
+             "note": "« contribution communautaire d'intégration de la CEEAC au taux de 0.4% de la valeur des "
+                     "marchandises importées des pays tiers » ; retenue au cordon douanier pour le compte de la "
+                     "CEEAC (loi n° 025/2022, art. 34)."},
+            {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+             "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GAB,
+             "note": "« prélèvement OHADA au taux de 0.05% » ; règlement n° 002/2003/CM du 18/10/2003, sur la valeur "
+                     "en douane des produits originaires des pays tiers à l'OHADA ; retenu au cordon douanier "
+                     "(loi n° 025/2022, art. 34)."},
+        ]
+        droits[rang:rang] = communautaires
+        for ligne in communautaires:
+            _compter_ligne(ligne, compteurs, 1)
+
+        css = {"code": "CSS", "code_source": "CSS", "libelle": "Contribution Spéciale de Solidarité",
+               "famille": famille("CSS"), "taux": 1.0, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+               "source": SOURCE_CSS_GAB,
+               "note": "Art. 16, 3) : « les opérations d'importation de marchandises » ; art. 24 : base « déterminée "
+                       "comme en matière de TVA » (CGI art. 216 : valeur + droit de douane + droit d'accises) ; "
+                       "art. 25 : 1 %. Due par les redevables dont le chiffre d'affaires annuel atteint 30 000 000 "
+                       "FCFA (art. 14)."}
+        exoneree = next((ref for prefixes, ref in CSS_EXONEREE_GAB if code.startswith(prefixes)), None)
+        if exoneree:
+            css.update(taux=0.0, note=f"Exonérée de la CSS, loi de finances 2017, {exoneree}.")
+        elif code.startswith(CSS_SELON_USAGE_GAB[0]):
+            css.update(taux=None, note=CSS_SELON_USAGE_GAB[1])
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, css)
+        _compter_ligne(css, compteurs, 1)
 
 
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
@@ -5300,6 +5374,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # de la circulaire n° 0138 (le crawl ne porte pas toutes les accises).
     if iso == "COG":
         _mesures_nationales_congo(positions)
+    # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
+    if iso == "GAB":
+        _prelevements_gabon(positions, compteurs)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon

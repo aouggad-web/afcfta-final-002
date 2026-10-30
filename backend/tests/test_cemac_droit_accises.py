@@ -73,8 +73,8 @@ def test_gabon_cosmetique_au_taux_du_cgi_et_tissu_sans_accise():
     with open(GAB, encoding="utf-8") as f:
         positions = json.load(f)["positions"]
     etat, lignes = _lignes(positions["33049900"])
-    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1312.0, 328.0)
-    assert lignes["TVA"]["base"] == 1628.0 and etat == COMPLET
+    assert (lignes["DA"]["base"], lignes["DA"]["montant"]) == (1316.5, 329.125)
+    assert lignes["TVA"]["base"] == 1629.125 and etat == COMPLET
     etat, lignes = _lignes(positions["52081100"])
     assert "DA" not in lignes and etat == COMPLET
 

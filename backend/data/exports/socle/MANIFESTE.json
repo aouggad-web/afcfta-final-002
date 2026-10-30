@@ -352,7 +352,7 @@
         }
       ],
       "devise": "CDF",
-      "date_reference": "2026-10-29",
+      "date_reference": "2026-10-30",
       "sha256": "8de313d9f371883ae3964dd48b938508dd181a27b04d451a353f78054fa80f21",
       "notes_sha256": "11f7211310538c4dc2be7218a9cf8921482ee4305a7325d4e8cffb096ba7972b",
       "socle_sha256": "8709dccb2f523d62564f76823de1434eb98ccdfe9e7ad402fa1bfe3090d782e3",
@@ -618,6 +618,18 @@
           "libelle": "Contribution à l'Intégration Africaine"
         },
         {
+          "code": "CCI",
+          "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
+        },
+        {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
+          "code": "CSS",
+          "libelle": "Contribution Spéciale de Solidarité"
+        },
+        {
           "code": "TVA",
           "libelle": "Taxe sur la Valeur Ajoutée"
         },
@@ -628,9 +640,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-29",
-      "sha256": "0e4a8cd498876c8b14590143ee32dfab7f8e0a3703be4007f9424090abc44953",
-      "notes_sha256": "5db542af8bafafd6d64cd1ba8f1ba21e4c490f9004c4b0f3cbe3eee2530000cb",
-      "socle_sha256": "d39a5fc5e72a4e13c115dc3d5771d78a5356c613586312e3f30874e51485a91d",
+      "sha256": "7633fff9b2d4b63a61109976bee279b15e2499957e61edb4252a28ef99a0ef2d",
+      "notes_sha256": "6161d5445acc29f216bc11f7480dd7a61c5557428acb6255a51363bfd908ca26",
+      "socle_sha256": "2fa7c9af559ff23cea9953d6ad13220aef2c53293fca46a8dfdc7be444893f3b",
       "collecte": "2026-02-19T22:39:52.018966"
     },
     "GHA": {
