@@ -1,0 +1,50 @@
+Tchad — prélèvements communautaires perçus à l'importation (CCI de la CEEAC, prélèvement OHADA).
+
+1) Organisation mondiale du commerce — WT/TPR/S/445 (2023), annexe Tchad :
+   https://www.wto.org/french/tratop_f/tpr_f/s445-06_f.pdf ; archivé : data/sources/chad/official/omc-wt-tpr-s-445-annexe-tchad.pdf
+
+3.1.3.2 Autres droits et charges
+3.20. Comme dans les autres pays de la CEMAC, le Tchad collecte la taxe communautaire
+d'intégration (TCI), le prélèvement OHADA, et la contribution communautaire d'intégration (CCI)
+(Rapport commun, section 3). Cumulées, ces différentes taxes s'élèvent à 1,45% de la valeur c.a.f.
+des importations.
+3.21. Les autres prélèvements perçus sont:
+       a. La taxe de préférence communautaire (TPC): initialement destinée au financement de la
+          CEBEVIRHA, cette taxe a été supprimée dans les autres pays, avec le prélèvement de la
+          TCI. Au Tchad, elle est toujours prélevée sur les lignes tarifaires relatives aux poissons,
+          viandes, produits laitiers et autres produits animaux;
+       b. l'acompte, de 4% de la valeur c.a.f. des importations, perçu au titre de l'impôt sur les
+          revenus de personnes physiques (15% pour les entreprises non-registrées);
+       c.    la redevance statistique, de 2% de la valeur c.a.f. des importations, perçue sur toutes les
+             importations, quelle qu'en soit l'origine;
+       d. le prélèvement pour le financement de l'Union africaine, de 0.2% de la valeur c.a.f. des
+          importations en provenance hors du continent africain, introduit en 2017;
+       e. le prélèvement pour le financement de l'ONASA23 (Office national de sécurité alimentaire)
+          prélevé à des taux variant entre 0,3% et 0,5% sur environ 9% des lignes tarifaires
+          (produits du règne végétal, viandes et poissons).24 Il est destiné au Ministère chargé de
+          l'agriculture; et,
+       f.    pour les marchandises en transit par le Cameroun, une commission d'information de
+             500 FCFA par voyage, et une commission du réseau de communication et d'assistance en
+             cours de route de 2 000 FCFA par voyage, payables au Bureau de gestion du fret terrestre
+             (BGFT) camerounais.
+
+Notes de bas de page :
+Ce prélèvement a remplacé le droit FIR (Fonds d'intervention rurale).
+Les taux ont été substantiellement revus à la baisse depuis le dernier EPC (ils étaient compris entre 1%
+et 4%).
+
+2) Organisation mondiale du commerce — WT/TPR/S/445 (2023), rapport commun, § 3.40 :
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-cemac-rapport-commun.pdf
+
+3.40. Au paiement du TEC s'ajoutent des prélèvements destinés à financer certaines initiatives communautaires, et des prélèvements nationaux. Au niveau communautaire, on distingue:
+
+      •   la taxe communautaire d'intégration (TCI), prélevée au taux de 1% sur les importations en provenance des pays hors de la zone CEMAC, et destinée au financement du processus d'intégration dans la zone;
+
+      •   la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les importations hors-CEEAC, et destinée à financer la CEEAC ainsi que ses institutions (actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad); et
+
+      •   le prélèvement OHADA, effectué au taux de 0,05% sur les importations des pays non membres, et destiné au financement de l'Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA).
+
+3) Loi n° 008/AN-SENAT/2025 portant loi de finances 2026 (ecofinances.gouv.td, scan de 87 pages,
+   sha256 7bc46241a7c7586d9eece4fb5c95a6587ba637732480b7b4c8cfbf31112d7fd2), lue par OCR le 2026-10-30 :
+   aucune disposition sur la CCI, le prélèvement OHADA, la TPC ou le prélèvement ONASA ; seule la redevance
+   statistique y est citée (« paiement de la Redevance Statistique au taux de 2% au cordon douanier »).

@@ -27,3 +27,9 @@ PDF de 2,4 Mo, sous le seuil de poids déjà toléré (CET EAC Kenya : 4,6 Mo) :
 ## État de l'enregistrement
 
 Juridiction TCD : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — seule la TVA est vérifiée ; il manque `excise_measures.json`, `import_levies.json` et le TEC CEMAC. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
+
+## Prélèvements communautaires à l'importation (relevé du 2026-10-30)
+
+- `official/omc-wt-tpr-s-445-annexe-tchad.pdf` : OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), annexe Tchad (https://www.wto.org/french/tratop_f/tpr_f/s445-06_f.pdf). § 3.20 : le Tchad collecte la TCI, le prélèvement OHADA et la CCI (1,45 % cumulés) ; § 3.21 : TPC, acompte IR, redevance statistique (2 %), prélèvement UA (0,2 %), ONASA.
+- Loi de finances 2026 (ecofinances.gouv.td) relue par OCR : elle ne cite ni la CCI ni le prélèvement OHADA.
+- Fiche : `backend/data/legal_refs/zlecaf_application/TCD_prelevements_importation_2026-10-30.json`.
