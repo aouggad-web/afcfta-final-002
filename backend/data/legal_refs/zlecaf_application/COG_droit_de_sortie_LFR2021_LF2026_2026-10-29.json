@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "objet": "Congo : droit de sortie à l'exportation (loi de finances rectificative 2021, point 42, reconduit jusqu'à la loi de finances 2026)",
+  "destination_iso3": "COG",
+  "verified_at": "2026-10-29",
+  "etabli": true,
+  "evidence_level": "primaire : lois de finances publiées au Journal officiel (sgg.cg), à couche texte ; lois de finances 2022, 2024, 2025, rectificatives 2023 et 2025 et loi de finances 2026 examinées sans modification du point 42 ; pour 2023, seule la version Parlement du projet a été lue",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/COG_droit_de_sortie_LFR2021_LF2026.texte-extrait.txt",
+      "sha256": "de43dc9a9f405a3303e71bd6bb38e9992bdebfa6325a3cfaf3bc057e4383f3ef"
+    }
+  ],
+  "regle": {
+    "taux_general": {
+      "valeur": "2 % de la valeur en douane.",
+      "reference": "Loi n° 37-2021 du 13 août 2021 (LFR 2021), point 42, 1",
+      "verbatim": "Le taux général du droit de douane, prélevé à la sortie des marchandises du territoire national demeure fixé"
+    },
+    "liste_quatre_pour_cent": {
+      "valeur": "4 % de la valeur en douane : diamant brut et autres métaux précieux bruts ; résine et autres exsudats extraits des arbres ; huile de palme brute ; farine de poissons ; maïs.",
+      "reference": "LFR 2021, point 42, 2",
+      "verbatim": "Ce taux est désormais de 4% de la valeur en douane pour l’exportation des produits ci-dessous :"
+    },
+    "produits_transformes": {
+      "valeur": "Exonérés : le ciment produit au Congo et les autres produits transformés d'origine congolaise, sauf ceux de la liste à 4 % et ceux passibles de la taxe à l'exportation (bois).",
+      "reference": "LFR 2021, point 42, 2",
+      "verbatim": "Toutefois, sont exonérés du droit de sortie, le ciment produit au Congo et les autres produits transformés"
+    },
+    "hydrocarbures": {
+      "valeur": "Franchise des hydrocarbures bruts liquides et gazeux.",
+      "reference": "LFR 2021, points 42, 2 et 45, 2 et 3",
+      "verbatim": "Franchise totale à l’exportation des hydrocarbures liquides, carottes, échantillons géologiques, des échantillons"
+    },
+    "bois": {
+      "valeur": "Taxe à l'exportation au titre du droit de sortie : grumes 10 % (Okoumé, Afrormosia, Ébène) ou 9 % (autres essences) de la valeur FOT ; sciages humides et grumes reconstituées 4 %, sciages séchés 1,5 %, placages tranchés 0,5 %, déroulés 1 %, contreplaqués, panneaux et lamellés collés 0,5 %, parquets, moulures, portes, fenêtres et autres produits finis 0 % ; bois de plantation 0,5 à 1,5 %.",
+      "reference": "LFR 2021, point 42, 3 ; Code forestier (loi n° 33-2020), art. 110 et 111",
+      "verbatim": "pour l’Okoumé, l’Afrormosia et l’Ebène, 10% de la valeur Free on Truck (FOT) pour chaque zone de"
+    },
+    "redevance_informatique": {
+      "valeur": "2 % à l'exportation des marchandises (non calculée ici).",
+      "reference": "Loi n° 42-2025 (LF 2026), point 25, article 44 (nouveau)",
+      "verbatim": "- 2% à l’exportation des marchandises ;"
+    }
+  },
+  "ne_tranche_pas": "Le texte promulgué de la loi de finances 2023 (loi n° 77-2022, non publiée en ligne : seule la version Parlement du projet a été lue) et les lois de finances rectificatives 2022, 2024 et 2026, non trouvées ; d'éventuels arrêtés mettant à jour la liste à 4 % ; la redevance informatique (2 % à l'exportation depuis la LF 2026 ; le sort du taux de 0,5 % des produits transformés et de l'exonération du pétrole brut sous « le reste sans changement »), non calculée ; la taxe additionnelle de 30 % au-delà du quota 85/15 et le fonds routier sur les grumes ; l'interdiction d'exporter les grumes autres que des bois lourds et durs (Code forestier, art. 97) ; les valeurs FOT des bois, fixées par arrêté ; la ligne des « autres bois tropicaux » (l'Okoumé, à 10 %, n'y est pas distingué des autres essences, à 9 %) ; la distinction sciage humide ou séché, placage tranché ou déroulé, forêt naturelle ou plantation, que la position ne dit pas ; les farines de poisson et de crustacés réunies sous une même ligne ; les métaux précieux « sous formes brutes ou en poudre » ; les gommes et résines autres que la gomme arabique ; la ligne 4418.90 (lamellés collés à 0,5 % mêlés aux produits finis à 0 %) ; l'origine des ouvrages en bois (le barème vise les produits des forêts congolaises : un ouvrage importé puis réexporté relèverait du droit commun) ; les exonérations du Code minier (loi n° 4-2005) et des conventions d'établissement, non examinées (le texte ne renvoie qu'aux codes des douanes et des hydrocarbures) ; les valeurs mercuriales FOB de la douane (bois, ferrailles).",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "EXPORT_PAR_TEXTE[\"COG\"] (scripts/build_socle.py) : les produits nommés portent leur taux ; toute autre position porte le droit commun marqué « selon_transformation », que fixe la réponse de l'exportateur (SELON_TRANSFORMATION[\"COG\"], champ produit_fini) : produit transformé au Congo, exonéré ; sinon, 2 %. Sans réponse, le droit reste à établir.",
+    "devise": "Ad valorem : aucun taux de change.",
+    "reserves": "Assiette : la valeur en douane, ou pour le bois la valeur FOT fixée par arrêté, qu'il faut saisir. La redevance informatique et les prélèvements propres au bois (surtaxe de quota, fonds routier) ne sont pas calculés : ils sont dits en note."
+  }
+}
