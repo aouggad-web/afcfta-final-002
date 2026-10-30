@@ -25,28 +25,28 @@
 01069020;--Chamelles;01;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 01069030;--Chamelons;01;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 01069090;--Autres;01;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-02011000;-En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02012000;-Autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02013000;-Désossées Viandes des animaux de l’espèce bovine, congelées.;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02021000;-En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02022000;-Autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02023000;-Désossées Viandes des animaux de l’espèce porcine, fraîches, réfrigérées ou congelées . -Fraîches ou réfrigérées :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02031100;--En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02031200;-- Jambons, épaules et leurs morceaux, non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02031900;--Autres -Congelées :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02032100;-- En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02032200;-- Jambon, épaules et leurs morceaux, non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02032900;--Autres Viandes des animaux des espèces ovine ou caprine, fraîches, réfrigérées ou congelées.;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02041000;-Carcasses et demi-carcasses d’agneau, fraîches ou réfrigérées -Autres viandes des animaux de l’espèce ovine, fraîche ou réfrigérées :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02042100;-- En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02042200;-- En autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02042300;-Carcasses et demi-carcasses d’agneau, congelées;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02043000;-- Désossées -Autres viandes des animaux de l’espèce ovine, congelées :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02044100;--En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02044200;-- En autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02044300;-- Désossées;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02045000;- Viandes des animaux de l’espèce caprine;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02050000;Viandes des animaux des espèces chevaline, asine ou mulassière, fraîches, réfrigérées ou congelées Abats comestibles des animaux des espèces bovine, porcine, ovine, caprine, chevaline, asine ou mulassière, frais, réfrigérés ou congelés .;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+02011000;-En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02012000;-Autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02013000;-Désossées Viandes des animaux de l’espèce bovine, congelées.;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02021000;-En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02022000;-Autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02023000;-Désossées Viandes des animaux de l’espèce porcine, fraîches, réfrigérées ou congelées . -Fraîches ou réfrigérées :;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02031100;--En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02031200;-- Jambons, épaules et leurs morceaux, non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02031900;--Autres -Congelées :;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02032100;-- En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02032200;-- Jambon, épaules et leurs morceaux, non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02032900;--Autres Viandes des animaux des espèces ovine ou caprine, fraîches, réfrigérées ou congelées.;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02041000;-Carcasses et demi-carcasses d’agneau, fraîches ou réfrigérées -Autres viandes des animaux de l’espèce ovine, fraîche ou réfrigérées :;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02042100;-- En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02042200;-- En autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02042300;-Carcasses et demi-carcasses d’agneau, congelées;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02043000;-- Désossées -Autres viandes des animaux de l’espèce ovine, congelées :;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02044100;--En carcasses ou demi-carcasses;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02044200;-- En autres morceaux non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02044300;-- Désossées;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02045000;- Viandes des animaux de l’espèce caprine;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02050000;Viandes des animaux des espèces chevaline, asine ou mulassière, fraîches, réfrigérées ou congelées Abats comestibles des animaux des espèces bovine, porcine, ovine, caprine, chevaline, asine ou mulassière, frais, réfrigérés ou congelés .;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
 02061000;-De l’espèce bovine, frais ou réfrigérés -De l’espèce bovine, congelés :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 02062100;-- Langues;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 02062200;-- Foies -- Autres :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
@@ -58,93 +58,93 @@
 02064990;--- Autres;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 02068000;-Autres, frais ou réfrigérés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 02069000;- Autres, congelés Viandes et abats comestibles, frais, réfrigérés ou congelés, des volailles du n° 01.05. -De coqs et de poules :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02071100;-- Non découpés en morceaux, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02071200;-- Non découpés en morceaux, congelés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02071300;-- Morceaux et abats, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02071400;-- Morceaux et abats, congelés -De dindes et dindons :;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02072400;-- Non découpés en morceaux, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02072500;-- Non découpés en morceaux, congelés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02072600;-- Morceaux et abats, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02072700;-- Morceaux et abats, congelés - De canards, d’oies ou de pintades :;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02073200;-- Non découpés en morceaux, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02073300;-- Non découpés en morceaux, congelés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02073400;-- Foies gras, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;40;77.37;COMPLET;;;N1 N2 N5 N3 N4
-02073500;-- Autres, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02073600;-- Autres, congelés Autres viandes et abats comestibles, fais, réfrigérés ou congelés.;02;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-02081000;-De lapins ou de lièvres;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02083000;-de primates;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02084000;"- de baleines, dauphins et marsouins (mammifères de l’ordre des cétacés) ; de lamantins et dugongs (mammifères de l’ordre des siréniens)";02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02085000;- De reptiles (y compris les serpents et les tortues de mer);02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02089000;- Autres;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02101100;-- Jambons, épaules et leurs morceaux, non désossés;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02101200;-- Poitrines (entrelardées) et leurs morceaux;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02101900;-- Autres;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02102000;- Viandes de l’espèce bovine - Autres, y compris les farines et poudres, comestibles, de viandes ou d’abats :;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02109100;-- De primates;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02109300;-- De reptiles (y compris les serpents et les tortues de mer);02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-02109900;-- Autres;02;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03022100;-- Flétans (Reinhardtius hippoglossoides, Hippoglossus hippoglossus, Hippoglossus stenolepis;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03022200;-- Plies ou carrelets (Pleuronectes platessa);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03022300;-- Soles (Solea spp.);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03022900;-- Autres - Thons (du genre Thunnus), listaos ou bonites à ventre rayé (Euthynnus (Katsuwonus) pelamis), à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023100;-- Thons blanc ou germons (Thunnus alalunga);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023200;-- Thons à nageoires jaunes (Thunnus albacares);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023300;-- Listaos ou bonites à ventre rayé;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023400;-- Thons obèses (Thunnus obésus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023500;-- Thons rouges (Thunnus thynnus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023600;-- Thons rouges du sud (Thunnus maccoyii);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03023900;-- Autres;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03024000;-Harengs (Clupea harengus, Clupea pallasii), à l’exclusion des foies, oeufs et laitances……………;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03025000;-Morues (gadus morhua, Gadus macrocephalus), à l’exclusion des foies, œufs et laitances - Autres poissons, à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026100;-- Sardines (Sardina pilchardus, Sardinops spp.), sardielles (Sardinelle spp.), sprats ou esprots (Sprattus sprattus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026200;-- Eglefins ( Melanogrammus aeglefinus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026300;Lieu noirs (Pollachius vivens );03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026400;--Maquereaux ( Scomber scombrus, Scomber australasicus, Scomber japonicus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026500;-- Squales;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026600;-- Anguilles ( Anguilla spp .);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026700;-- Espadons (Xiphias gladius);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026800;-- Légines (Dissostichus spp.) -- Autres :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026910;--- Bars (loups) (Dicentrarchus labrax, Dicentrachus punctatus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03026990;--- Autres;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+02071100;-- Non découpés en morceaux, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02071200;-- Non découpés en morceaux, congelés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02071300;-- Morceaux et abats, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02071400;-- Morceaux et abats, congelés -De dindes et dindons :;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02072400;-- Non découpés en morceaux, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02072500;-- Non découpés en morceaux, congelés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02072600;-- Morceaux et abats, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02072700;-- Morceaux et abats, congelés - De canards, d’oies ou de pintades :;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02073200;-- Non découpés en morceaux, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02073300;-- Non découpés en morceaux, congelés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02073400;-- Foies gras, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;40;50.79;COMPLET;;;N1 N2 N6 N3 N5
+02073500;-- Autres, frais ou réfrigérés;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02073600;-- Autres, congelés Autres viandes et abats comestibles, fais, réfrigérés ou congelés.;02;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N5
+02081000;-De lapins ou de lièvres;02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02083000;-de primates;02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02084000;"- de baleines, dauphins et marsouins (mammifères de l’ordre des cétacés) ; de lamantins et dugongs (mammifères de l’ordre des siréniens)";02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02085000;- De reptiles (y compris les serpents et les tortues de mer);02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02089000;- Autres;02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02101100;-- Jambons, épaules et leurs morceaux, non désossés;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02101200;-- Poitrines (entrelardées) et leurs morceaux;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02101900;-- Autres;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02102000;- Viandes de l’espèce bovine - Autres, y compris les farines et poudres, comestibles, de viandes ou d’abats :;02;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N5
+02109100;-- De primates;02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02109300;-- De reptiles (y compris les serpents et les tortues de mer);02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+02109900;-- Autres;02;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N7
+03022100;-- Flétans (Reinhardtius hippoglossoides, Hippoglossus hippoglossus, Hippoglossus stenolepis;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03022200;-- Plies ou carrelets (Pleuronectes platessa);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03022300;-- Soles (Solea spp.);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03022900;-- Autres - Thons (du genre Thunnus), listaos ou bonites à ventre rayé (Euthynnus (Katsuwonus) pelamis), à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023100;-- Thons blanc ou germons (Thunnus alalunga);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023200;-- Thons à nageoires jaunes (Thunnus albacares);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023300;-- Listaos ou bonites à ventre rayé;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023400;-- Thons obèses (Thunnus obésus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023500;-- Thons rouges (Thunnus thynnus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023600;-- Thons rouges du sud (Thunnus maccoyii);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03023900;-- Autres;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03024000;-Harengs (Clupea harengus, Clupea pallasii), à l’exclusion des foies, oeufs et laitances……………;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03025000;-Morues (gadus morhua, Gadus macrocephalus), à l’exclusion des foies, œufs et laitances - Autres poissons, à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026100;-- Sardines (Sardina pilchardus, Sardinops spp.), sardielles (Sardinelle spp.), sprats ou esprots (Sprattus sprattus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026200;-- Eglefins ( Melanogrammus aeglefinus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026300;Lieu noirs (Pollachius vivens );03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026400;--Maquereaux ( Scomber scombrus, Scomber australasicus, Scomber japonicus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026500;-- Squales;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026600;-- Anguilles ( Anguilla spp .);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026700;-- Espadons (Xiphias gladius);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026800;-- Légines (Dissostichus spp.) -- Autres :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026910;--- Bars (loups) (Dicentrarchus labrax, Dicentrachus punctatus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03026990;--- Autres;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
 03027000;-Foies, œufs et laitances Poissons congelés, à l’exception des filets de poissons et autres chair de poissons du n°03.04 . -Saumons du Pacifique (oncorhynchus nerka, oncorhynchus gorbusha, oncorhynchus keta, oncorhyncus tschawytscha, oncorhynchus kisutch, oncorhynchus masou et oncorhynchus rhodurus), à l’excmusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03031100;-- Saumons rouges (oncorhynchus nerka);03;;20;1;0.2;0.4;0.05;1;18;30;87.88;COMPLET;;;N1 N2 N6 N3 N4
-03031900;-- Autres -Autres salmonidés, à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;30;87.88;COMPLET;;;N1 N2 N6 N3 N4
-03032200;-- Saumons de l’Atlantique (Salmo salar) et saumons du Danube (Hucho hucho);03;;20;1;0.2;0.4;0.05;1;18;30;87.88;COMPLET;;;N1 N2 N6 N3 N4
-03032900;-- Autres - Poissons plats (Pleuronectidés, Bothidés, Cynoglossidés, Soléides, Scophthalmidés et Citharidés) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03033100;-- Flétans (Reinhardtius hippoglossoides, Hippoglossus hippoglossus, Hippoglossus stenolepis);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03033200;-- Plies ou carrelets (Pleuronectes platessa);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03033300;-- Soles (Solea spp.);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03033900;-- Autres - Thons (du genre Thunnus) , listaos ou bonites à ventre rayé (Euthynnus ( katsuwonus ) pelamis) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034100;-- Thons blancs ou germons (thunnus alalunga);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034200;-- Thons à nageoires jaunes (thunnus albacares);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034300;-- Listaos ou bonites à ventre rayé;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034400;-- Thons obèses ( Thunnus obesus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034500;-- Thons rouges (Thunnus thynnus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034600;-- Thons rouges du sud (Thunnus maccoyii);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03034900;-- Autres -Harengs (Clupea harengs, Clupea pollasi) et morues (Gadus morhua, Gadus ogac, Gadus macrocephalus) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03035100;- Harengs (Clupea harengus, Clupea pollasii);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03035200;-Morues ( Gadus morhua, Gadus ogac, Gadus macrocephalus ) -Espadons ( Xiphias gladius ) et légines (Dissostichus spp.) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03036100;-- Espadon ( Xiphias gladius);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03036200;-- Légines (Dissostichus spp.) - Autres poissons, à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037100;-- Sardines (Sardina pilchardus, Sardinops spp.) , sardinelles (Sardinella spp.) , sprats ou esprots (Sprattus;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037200;sprattus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037300;-- Eglefins (Melanogrammus aeglefinus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037400;-- Lieus noirs (Pollachius virents) -- Maquereaux (Scomber scombrus, Scomber;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037500;australasicus, Scomber japonicus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037600;-- Squales;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037700;-- Anguilles (Anguilla spp.) -- Bars (loups) (Dicentrarchus labrax, Dicentrarchus;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037800;punctatus);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03037900;-- Merlus (Merluccius spp, Urophycis spp);03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+03031100;-- Saumons rouges (oncorhynchus nerka);03;;20;1;0.2;0.4;0.05;1;0;30;59.71;COMPLET;;;N1 N2 N9 N3 N8
+03031900;-- Autres -Autres salmonidés, à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;30;59.71;COMPLET;;;N1 N2 N9 N3 N8
+03032200;-- Saumons de l’Atlantique (Salmo salar) et saumons du Danube (Hucho hucho);03;;20;1;0.2;0.4;0.05;1;0;30;59.71;COMPLET;;;N1 N2 N9 N3 N8
+03032900;-- Autres - Poissons plats (Pleuronectidés, Bothidés, Cynoglossidés, Soléides, Scophthalmidés et Citharidés) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03033100;-- Flétans (Reinhardtius hippoglossoides, Hippoglossus hippoglossus, Hippoglossus stenolepis);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03033200;-- Plies ou carrelets (Pleuronectes platessa);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03033300;-- Soles (Solea spp.);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03033900;-- Autres - Thons (du genre Thunnus) , listaos ou bonites à ventre rayé (Euthynnus ( katsuwonus ) pelamis) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034100;-- Thons blancs ou germons (thunnus alalunga);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034200;-- Thons à nageoires jaunes (thunnus albacares);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034300;-- Listaos ou bonites à ventre rayé;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034400;-- Thons obèses ( Thunnus obesus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034500;-- Thons rouges (Thunnus thynnus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034600;-- Thons rouges du sud (Thunnus maccoyii);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03034900;-- Autres -Harengs (Clupea harengs, Clupea pollasi) et morues (Gadus morhua, Gadus ogac, Gadus macrocephalus) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03035100;- Harengs (Clupea harengus, Clupea pollasii);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03035200;-Morues ( Gadus morhua, Gadus ogac, Gadus macrocephalus ) -Espadons ( Xiphias gladius ) et légines (Dissostichus spp.) , à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03036100;-- Espadon ( Xiphias gladius);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03036200;-- Légines (Dissostichus spp.) - Autres poissons, à l’exclusion des foies, œufs et laitances :;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037100;-- Sardines (Sardina pilchardus, Sardinops spp.) , sardinelles (Sardinella spp.) , sprats ou esprots (Sprattus;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037200;sprattus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037300;-- Eglefins (Melanogrammus aeglefinus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037400;-- Lieus noirs (Pollachius virents) -- Maquereaux (Scomber scombrus, Scomber;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037500;australasicus, Scomber japonicus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037600;-- Squales;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037700;-- Anguilles (Anguilla spp.) -- Bars (loups) (Dicentrarchus labrax, Dicentrarchus;03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037800;punctatus);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
+03037900;-- Merlus (Merluccius spp, Urophycis spp);03;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N8
 03038000;-- Autres - Foies, œufs et laitances Fillets de poissons et autre chair de poissons (même hâchée), frais, réfrigérés ou congelés. -Frais ou réfrigérés :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-03041100;-- Espadons ( Xiphias gladius );03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03041200;-- Légines ( Dissostichus spp);03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03041900;-- Autres - Filets congelés :;03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03042100;-- Espadons ( Xiphias gladius );03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03042200;-- Légines ( Dissostchus spp. );03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03042900;-- Autres - Autres :;03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03049100;-- Espadons (Xiphias gladius);03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03049200;-- Légines (Dissostichus spp);03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-03049900;"-- Autres : Poissons séchés, salés ou en saumure ; poissons fumés, même cuits avant ou pendant le fumage ; farines, poudres et agglomérés sous forme de pellets de poissons, propres à l’alimentation humaine.";03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+03041100;-- Espadons ( Xiphias gladius );03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03041200;-- Légines ( Dissostichus spp);03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03041900;-- Autres - Filets congelés :;03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03042100;-- Espadons ( Xiphias gladius );03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03042200;-- Légines ( Dissostchus spp. );03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03042900;-- Autres - Autres :;03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03049100;-- Espadons (Xiphias gladius);03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03049200;-- Légines (Dissostichus spp);03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
+03049900;"-- Autres : Poissons séchés, salés ou en saumure ; poissons fumés, même cuits avant ou pendant le fumage ; farines, poudres et agglomérés sous forme de pellets de poissons, propres à l’alimentation humaine.";03;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N8
 03051000;- Farines, poudres et agglomérés sous forme de pellets de poisson, propres à l’alimentation humaine;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 03052000;-Foies, œufs et laitances de poissons, séchés, fumés salés ou en saumure - Filets de poisons, séchés, salés ou en saumure, mais non fumés :;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 03053010;- - De harengs - - De morues et de flétans;03;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
@@ -191,19 +191,19 @@
 03076000;- Escargots autres que de mer - Autres, y compris les farines, poudres et agglomérés de sous forme de pellets d’invertébrés aquatiques autres que les crustacés, propres à l’alimentation humaine : -- Vivants , frais ou réfrigérés;03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 03079100;-- Autres;03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 03079900;;03;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04011000;-D’une teneur en poids de matières grasses n’excédant pas 1 %;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04012000;- D’une teneur en poids de matières grasses excédant 1% mais n’excédant pas 6%;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04013000;- D’une teneur en poids de matières grasses excédant 6% Lait et crème de lait, concentrés ou additionnés de sucre ou d’autres édulcorants.;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04021000;-En poudre, en granulés ou sous d’autres formes solides, d’une teneur en poids de matières grasses n’excédant pas 1,5% - En poudre, en granulés ou sous d’autres formes solides, d’une teneur en poids de matières grasses excédant 1,5% :;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04022100;-- Sans addition de sucre ou d’autres édulcorants;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04022900;-- Autres - Autres :;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04029100;-- Sans addition de sucre ou d’autres édulcorants;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04029900;-- Autres Babeure, lait et crème caillés, yoghourt, képhir et autres laits et crèmes fermentés ou acidifiés, même concentrés ou additionnés de sucre ou d’autres édulcorants ou aromatisés ou additionnés de fruits ou de cacao. -Yoghourt : - - A l’état pâteux ou solide :;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04031011;--- Nature;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04031012;--- Additionné ou aromatisé de fruits;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04031013;--- Additionné ou aromatisé de cacao;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04031019;--- Autres;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04031020;--- A l’état liquide -Autres : -- A l’état pâteux ou solide :;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+04011000;-D’une teneur en poids de matières grasses n’excédant pas 1 %;04;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N10
+04012000;- D’une teneur en poids de matières grasses excédant 1% mais n’excédant pas 6%;04;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N10
+04013000;- D’une teneur en poids de matières grasses excédant 6% Lait et crème de lait, concentrés ou additionnés de sucre ou d’autres édulcorants.;04;;5;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N11
+04021000;-En poudre, en granulés ou sous d’autres formes solides, d’une teneur en poids de matières grasses n’excédant pas 1,5% - En poudre, en granulés ou sous d’autres formes solides, d’une teneur en poids de matières grasses excédant 1,5% :;04;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N10
+04022100;-- Sans addition de sucre ou d’autres édulcorants;04;;5;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N11
+04022900;-- Autres - Autres :;04;;5;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N11
+04029100;-- Sans addition de sucre ou d’autres édulcorants;04;;5;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N11
+04029900;-- Autres Babeure, lait et crème caillés, yoghourt, képhir et autres laits et crèmes fermentés ou acidifiés, même concentrés ou additionnés de sucre ou d’autres édulcorants ou aromatisés ou additionnés de fruits ou de cacao. -Yoghourt : - - A l’état pâteux ou solide :;04;;5;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N11
+04031011;--- Nature;04;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N12
+04031012;--- Additionné ou aromatisé de fruits;04;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N12
+04031013;--- Additionné ou aromatisé de cacao;04;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N12
+04031019;--- Autres;04;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N12
+04031020;--- A l’état liquide -Autres : -- A l’état pâteux ou solide :;04;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N12
 04039011;--- Nature;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04039012;--- Additionnés ou aromatisés de fruits;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04039013;--- Additionnés ou aromatisés de cacao;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -211,7 +211,7 @@
 04039020;"--A l’état liquide Lactosérum, même concentré ou additionné de sucre ou d’autres édulcorants ; produits consistant en composants naturels du lait, même additionnés de sucre ou d’autres édulcorants, non dénommés ni compris ailleurs.";04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04041000;-Lactosérum, modifié ou non, même concentré ou additionné de sucre ou d’autres édulcorants;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04049000;"- Autres Beurre et autres matières grasses provenant du lait ; pâtes à tartiner laitières.";04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04051000;-Beurre;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+04051000;-Beurre;04;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N13
 04052000;- Pâtes à tartiner laitières;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04059000;- Autres Fromages et caillebotte.;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04061000;-Fromages frais (non afinés), y compris le fromage de lactosérum, et caillebotte;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -219,8 +219,8 @@
 04063000;- Fromages fondus, autres que râpés ou en poudre;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04064000;- Fromages à pâte persillée et autres fromages présentant des marbrures obtenues en utilisant du Penicillium roqueforti;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04069000;- Autres fromages Œufs d’oiseaux, en coquilles, frais, conservés ou cuits.;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-04070010;-Œufs destinés à la reproduction;04;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-04070090;- Autres Œufs d’oiseaux, dépourvus de leurs coquilles, et jaunes d’œufs, frais, séchés, cuits à l’eau ou à la vapeur, moulés, congelés ou autrement conservés, même additionnés de sucre ou d’autres édulcorants -Jaunes d’œufs : -- Séchés;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+04070010;-Œufs destinés à la reproduction;04;;5;1;0.2;0.4;0.05;1;5;;12.95;COMPLET;;;N1 N2 N3 N14
+04070090;- Autres Œufs d’oiseaux, dépourvus de leurs coquilles, et jaunes d’œufs, frais, séchés, cuits à l’eau ou à la vapeur, moulés, congelés ou autrement conservés, même additionnés de sucre ou d’autres édulcorants -Jaunes d’œufs : -- Séchés;04;;30;1;0.2;0.4;0.05;1;5;;39.45;COMPLET;;;N1 N2 N3 N14
 04081100;-- Autres;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04081900;- Autres : -- Séchés;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 04089100;-- Autres;04;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -471,12 +471,12 @@
 10040090;- Autres Maïs.;10;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 10051000;-De semence;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 10059000;- Autres;10;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-10061010;-- De semence;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-10061090;-- Autres;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-10062000;- Riz décortiqué (riz cargo ou riz brun) - Riz semi-blanchi ou blanchi, même poli ou glacé :;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-10063010;-- Conditionné pour la vente au détail;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-10063090;-- Autres;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-10064000;- Riz en brisures Sorgho à grains.;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
+10061010;-- De semence;10;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N15
+10061090;-- Autres;10;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N15
+10062000;- Riz décortiqué (riz cargo ou riz brun) - Riz semi-blanchi ou blanchi, même poli ou glacé :;10;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N15
+10063010;-- Conditionné pour la vente au détail;10;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N15
+10063090;-- Autres;10;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N15
+10064000;- Riz en brisures Sorgho à grains.;10;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N15
 10070010;-De semence;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 10070090;"- Autres Sarrasin, millet et alpiste ; autres céréales. -Sarrasin :";10;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 10081010;-- De semence;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
@@ -484,11 +484,11 @@
 10082010;-- De semence;10;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 10082090;-- Autres - Alpiste :;10;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 10083010;-- De semence;10;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-11010010;-De froment;11;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-11010020;- de méteil Farines de céréales autres que de froment (blé) ou de méteil.;11;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-11021000;-Farine de seigle;11;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-11022000;- Farine de maïs;11;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-11029000;- Autres Gruaux, semoules et agglomérés sous forme de pellets, de céréales. -Gruaux et semoules :;11;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+11010010;-De froment;11;;5;1;0.2;0.4;0.05;1;5;;12.95;COMPLET;;;N1 N2 N3 N16
+11010020;- de méteil Farines de céréales autres que de froment (blé) ou de méteil.;11;;30;1;0.2;0.4;0.05;1;5;;39.45;COMPLET;;;N1 N2 N3 N16
+11021000;-Farine de seigle;11;;30;1;0.2;0.4;0.05;1;5;;39.45;COMPLET;;;N1 N2 N3 N16
+11022000;- Farine de maïs;11;;30;1;0.2;0.4;0.05;1;5;;39.45;COMPLET;;;N1 N2 N3 N16
+11029000;- Autres Gruaux, semoules et agglomérés sous forme de pellets, de céréales. -Gruaux et semoules :;11;;30;1;0.2;0.4;0.05;1;5;;39.45;COMPLET;;;N1 N2 N3 N16
 11031100;- De froment (blé);11;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 11031300;-- De maïs;11;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 11031900;-- D’autres céréales;11;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
@@ -608,7 +608,7 @@
 15159000;- Autres Graisses et huiles animales ou végétales et leurs fractions, partiellement ou totalement hydrogénées, interestérifiées, réestérifiées ou élaïdinisées, même raffinées, mais non autrement préparées.;15;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 15161000;-Graisses et huiles animales et leurs fractions;15;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 15162000;"- Graisses et huiles végétales et leurs fractions Margarine ; mélanges ou préparations alimentaires de graisses ou d’huiles animales ou végétales ou de fractions de différentes graisses ou huiles du présent Chapitres, autres que les graisses et huiles alimentaires et leurs fractions n° 15.16";15;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-15171000;-Margarine, à l’exclusion de la margarine liquide;15;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+15171000;-Margarine, à l’exclusion de la margarine liquide;15;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N17
 15179000;- Autres;15;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 15200000;"Glycérol brut ; eaux et lessives glycérineuses Cires végétales (autres que les triglycérides), cires d’abeilles ou d’autres insectes et spermaceti, même raffinés ou colorés.";15;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 15211000;-Cires végétales;15;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -616,7 +616,7 @@
 15220000;"Dégras ; résidus provenant du traitement des corps gras ou des cires animales ou végétales";15;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 16010000;"Saucisses, saucissons et produits similaires, de viande, d’abats ou de sang ; préparations alimentaires à base de ces produits Autres préparations et conserves de viande, d’abats ou de sang.";16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16021000;-Préparations homogénéisées - De foies de tous animaux :;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-16022010;-- D’oie ou de canard (foie gras);16;;30;1;0.2;0.4;0.05;1;18;40;119.02;COMPLET;;;N1 N2 N5 N3 N4
+16022010;-- D’oie ou de canard (foie gras);16;;30;1;0.2;0.4;0.05;1;18;40;119.02;COMPLET;;;N1 N2 N6 N3 N4
 16022090;-- Autres, truffés ou non - De volailles du n° 01.05 :;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16023100;-- De dinde;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16023200;-- De coqs et poules;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -627,25 +627,25 @@
 16025000;- De l’espèce bovine;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16029000;- Autres, y compris les préparations de sang de tous animaux;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16030000;"Extraits et jus de viande, de poissons ou de crustacés, de mollusques ou d’autres invertébrés aquatiques Préparations et conserves de poissons ; caviar et ses succédanés préparés à partir d’œufs de poisson. -Poissons entiers ou en morceaux, à l’exclusion des poissons hachés :";16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-16041100;-- Saumons;16;;30;1;0.2;0.4;0.05;1;18;30;103.35;COMPLET;;;N1 N2 N6 N3 N4
+16041100;-- Saumons;16;;30;1;0.2;0.4;0.05;1;18;30;103.35;COMPLET;;;N1 N2 N9 N3 N4
 16041200;-- Harengs;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-16041300;-- Sardines, sardinelles et sprats ou esprots;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+16041300;-- Sardines, sardinelles et sprats ou esprots;16;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N18
 16041400;-- Thons, listaos et bonites (Sarda spp);16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-16041500;-- Maquereaux;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+16041500;-- Maquereaux;16;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N19
 16041600;-- Anchois;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16041900;-- Autres;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16042000;- Autres préparations et conserves de poissons;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-16043000;- Caviar et ses succédanés;16;;30;1;0.2;0.4;0.05;1;18;40;119.02;COMPLET;;;N1 N2 N5 N3 N4
+16043000;- Caviar et ses succédanés;16;;30;1;0.2;0.4;0.05;1;18;40;119.02;COMPLET;;;N1 N2 N6 N3 N4
 16051000;-Crabes;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16052000;- Crevettes;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16053000;- Homards;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16054000;- Autres crustacés;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 16059000;- Autres;16;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-17011100;-- De canne;17;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-17011200;-- De betterave - Autres :;17;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-17019100;-- Additionnés d’aromatisants ou de colorants -- Autres :;17;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-17019910;--- Sucres raffinés de canne ou de betterave;17;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-17019990;"--- Autres Autres sucres, y compris le lactose, le maltose, le glucose et le fructose (lévulose) chimiquement purs, à l’état solide ; sirops de sucres sans addition d’aromatisants ou de colorants ; succédanés du miel, même mélangés de miel naturel ; sucres et mélasses caramélisés. -Lactose et sirop de lactose :";17;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+17011100;-- De canne;17;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N20
+17011200;-- De betterave - Autres :;17;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N20
+17019100;-- Additionnés d’aromatisants ou de colorants -- Autres :;17;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N20
+17019910;--- Sucres raffinés de canne ou de betterave;17;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N20
+17019990;"--- Autres Autres sucres, y compris le lactose, le maltose, le glucose et le fructose (lévulose) chimiquement purs, à l’état solide ; sirops de sucres sans addition d’aromatisants ou de colorants ; succédanés du miel, même mélangés de miel naturel ; sucres et mélasses caramélisés. -Lactose et sirop de lactose :";17;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N20
 17021100;-- Contenant en poids 99 % ou plus de lactose, exprimé en lactose anhydre calculé sur matière sèche;17;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 17021900;-- Autres;17;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 17022000;- Sucre et sirop d’érable;17;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -680,77 +680,77 @@
 19019010;-- Contenant du cacao;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 19019020;-- Extraits de malt;19;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 19019090;"-- Autres préparations alimentaires du n° 19.01. Pâtes alimentaires, même cuites ou farcies (de viande ou d’autres substances) ou bien autrement préparées, telles que spaghetti, macaroni, nouilles, lasagnes, gnocchi, ravioli, cannelloni ; couscous, même préparé. -Pâtes alimentaires non cuites ni farcies ni autrement préparées :";19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-19021100;-- Contenant des œufs;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-19021900;-- Autres;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-19022000;- Pâtes alimentaires farcies (même cuites ou autrement préparées);19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-19023000;- Autres pâtes alimentaires;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+19021100;-- Contenant des œufs;19;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N21
+19021900;-- Autres;19;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N21
+19022000;- Pâtes alimentaires farcies (même cuites ou autrement préparées);19;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N21
+19023000;- Autres pâtes alimentaires;19;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N21
 19024000;- Couscous;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 19041000;-Produits à base de céréales obtenus par soufflage ou grillage;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 19042000;- Préparations alimentaires obtenues à partir flocons de céréales non grillés et de flocons de céréales grillés ou de céréales soufflées;19;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20011000;-Concombres et cornichons;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20019000;- Autres Tomates préparées ou conservées autrement qu’au vinaigre ou à l’acide acétique.;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20021000;-Tomates, entières ou en morceaux;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20029000;- Autres Champignons et truffes, préparés ou conservés autrement qu’au vinaigre ou à l’acide acétique.;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+20021000;-Tomates, entières ou en morceaux;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20029000;- Autres Champignons et truffes, préparés ou conservés autrement qu’au vinaigre ou à l’acide acétique.;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
 20031000;-Champignons du genre Agaricus;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20032000;- Truffes;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20039000;- Autres Autres légumes préparés ou conservés autrement qu’au vinaigre ou à l’acide acétique, congelés, autres que les produits du n° 20.06.;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20041000;-Pommes de terre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20051000;-Légumes homogénéisés;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20052000;- Pommes de terre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20054000;- Pois ( Pisum sativum) -Haricots ( Vigna spp. Phaseolus spp ) :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20055100;-- Haricots en grains;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20055900;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20056000;- Asperges;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20057000;- Olives;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20058000;- Maïs doux ( Zea mays var. saccharata ) - Autres légumes et mélanges de légumes :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20059100;-- Jets de bambou;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20059900;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+20051000;-Légumes homogénéisés;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20052000;- Pommes de terre;20;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N23
+20054000;- Pois ( Pisum sativum) -Haricots ( Vigna spp. Phaseolus spp ) :;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20055100;-- Haricots en grains;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20055900;-- Autres;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20056000;- Asperges;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20057000;- Olives;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20058000;- Maïs doux ( Zea mays var. saccharata ) - Autres légumes et mélanges de légumes :;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20059100;-- Jets de bambou;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20059900;-- Autres;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
 20060000;Légumes, fruits, écorces de fruits et autres parties de plantes, confits au centre (égouttés, glacés ou cristallisés);20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20071000;-Préparations homogénéisées - Autres :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20079100;-- Agrumes;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20079900;-- Autres Fruits et autres parties comestibles de plantes, autrement préparés ou conservés, avec ou sans addition de sucre ou d’autres édulcorants ou d’alcool, non dénommés ni compris ailleurs. -Fruits à coques, arachides et autres graines, même mélangés entre eux :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20081100;-- Arachides;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 20081900;"-- Autres, y compris les mélanges - Ananas ;";20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20082010;-- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20083010;-- Préparés ou conservés à l’eau-de vie ou à l’alcool avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20083090;-- Autres - Poires :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20084010;-- Préparées ou conservées à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20084090;--Autres - Abricots :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20085010;-- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20085090;-- Autres - Cerises :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20086010;-- Préparées ou conservées à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20086090;-- Autres - Pêches, y compris les brugnons et nectarines :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20087010;-- Préparées ou conservées à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20087090;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20088090;-- Autres -- Autres, y compris les mélanges à l’exception de ceux du n° 2008.19 : -- Cœurs de palmiers :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20089110;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20089190;--- Autres -- Mélanges :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20089210;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20089290;--- Autres --Autres :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20089910;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre --- Autres :;20;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-20089991;--- Autres fruits et parties comestibles de plantes autrement préparés ou conservés dans un conditionnement égal ou supérieur à 20 kg ---- Autres Jus de fruits (y compris les moûts de raisin) ou de légumes, non fermentés, sans addition d’alcool, avec ou sans addition de sucre ou d’autres édulcorants. -Jus d’orange : -- Congelés;20;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-20091100;-- non congelés, d’une valeur Brix n’excédant pas;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20091200;20 -- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20091900;- Jus de pamplemousse ou de pomelo : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20092100;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20092900;- Jus de tout autre agrume : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20093100;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20093900;- Jus d’ananas :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20094100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20095000;- Jus de tomate - Jus de raisin (y compris les moûts de raisin);20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20096100;-- D’une valeur Brix n’excédant pas 30;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20096900;-- Autres - Jus de pomme :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20097100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20097900;-- Autres - Jus de tout autre fruit ou légume :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20098010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20098090;-- Autres - Mélanges de jus :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20099010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
-20099090;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N7 N3 N4
+20082010;-- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20083010;-- Préparés ou conservés à l’eau-de vie ou à l’alcool avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20083090;-- Autres - Poires :;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20084010;-- Préparées ou conservées à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20084090;--Autres - Abricots :;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20085010;-- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20085090;-- Autres - Cerises :;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20086010;-- Préparées ou conservées à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20086090;-- Autres - Pêches, y compris les brugnons et nectarines :;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20087010;-- Préparées ou conservées à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20087090;-- Autres;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20088090;-- Autres -- Autres, y compris les mélanges à l’exception de ceux du n° 2008.19 : -- Cœurs de palmiers :;20;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N24
+20089110;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20089190;--- Autres -- Mélanges :;20;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N22
+20089210;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre;20;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N25
+20089290;--- Autres --Autres :;20;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N25
+20089910;--- Préparés ou conservés à l’eau-de-vie ou à l’alcool, avec ou sans sucre --- Autres :;20;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N26
+20089991;--- Autres fruits et parties comestibles de plantes autrement préparés ou conservés dans un conditionnement égal ou supérieur à 20 kg ---- Autres Jus de fruits (y compris les moûts de raisin) ou de légumes, non fermentés, sans addition d’alcool, avec ou sans addition de sucre ou d’autres édulcorants. -Jus d’orange : -- Congelés;20;;10;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N26
+20091100;-- non congelés, d’une valeur Brix n’excédant pas;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20091200;20 -- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20091900;- Jus de pamplemousse ou de pomelo : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20092100;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20092900;- Jus de tout autre agrume : -- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20093100;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20093900;- Jus d’ananas :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20094100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20095000;- Jus de tomate - Jus de raisin (y compris les moûts de raisin);20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20096100;-- D’une valeur Brix n’excédant pas 30;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20096900;-- Autres - Jus de pomme :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20097100;-- D’une valeur Brix n’excédant pas 20;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20097900;-- Autres - Jus de tout autre fruit ou légume :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20098010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20098090;-- Autres - Mélanges de jus :;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20099010;-- Sans addition de sucre ou d’autres édulcorants;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
+20099090;-- Autres;20;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N27 N3 N4
 21011100;-- Extraits, essences et concentrés;21;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 21011200;-- Préparations à base d’extraits, essences ou concentrés ou à base de café - Extraits, essence et concentrés de thé ou de maté et préparations à base de ces extraits, essences ou concentrés ou à base de thé ou de maté;21;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 21013000;"- Chicorée torréfiée et autres succédanés torréfiés du café et leurs extraits, essences et concentrés Levures (vivantes ou mortes) ; autres micro- organismes monocellulaires mors (à l’exclusion des vaccins du n° 30.02) ; poudres à lever préparées.";21;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-21021000;-Levures vivantes;21;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-21022000;"- Levures mortes ; autres micro-organismes monocellulaires morts";21;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
+21021000;-Levures vivantes;21;;10;1;0.2;0.4;0.05;1;5;;18.25;COMPLET;;;N1 N2 N3 N28
+21022000;"- Levures mortes ; autres micro-organismes monocellulaires morts";21;;10;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N29
 21023000;"- Poudres à lever préparées Préparations pour sauces et sauces préparées ; condiments et assaisonnements, composés ; farine de moutarde et moutarde préparée.";21;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 21031000;-Sauce de soja;21;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 21032000;-«Tomato-ketchup» et autres sauces tomates;21;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -764,32 +764,32 @@
 21069010;alcooliques pour la fabrication des boissons -- Composées pour préparations industrielles;21;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 21069020;alimentaires -- Autres préparations alimentaires non dénommées ni;21;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 21069090;comprises ailleurs;21;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-22011000;- Eaux minérales et eaux gazéifiées;22;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+22011000;- Eaux minérales et eaux gazéifiées;22;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N30
 22019000;- Autres Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées, et autres boissons non alcooliques, à l’exclusion des jus de fruits ou de légumes du n° 20.09.;22;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N8 N3 N4
-22029000;- Autres (*) Bières de malt;22;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N8 N3 N4
-22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;0.2;0.4;0.05;1;18;25 % + 200 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N9 N3 N4
-22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;0.2;0.4;0.05;1;18;25 % + 200 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N9 N3 N4
-22041010;-- De champagne (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 2250 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N10 N3 N4
-22041090;"-- Autres (*) - Autres vins ; moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool : -- En récipients d’une contenance n’excédant pas 21 :";22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
-22042110;--- Vins autres que ceux du n° 2204.21.20 (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
-22042120;--- Vins de liqueur, mistelles ou moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool --Autres :;22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
-22042919;--- Vins autres que ceux du n° 22.04.29.20 :;22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
-22042920;---- Présentés en récipient d’une contenance de plus de 2 litres mais n’excédant pas 20 L (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
-22043000;-Autres moûts de raisins (*);22;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N12 N3 N4
-22051000;-En récipients d’une contenance n’excédant pas 2 l (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
-22059000;- Autres (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N11 N3 N4
+22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N31 N3 N4
+22029000;- Autres (*) Bières de malt;22;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N31 N3 N4
+22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;0.2;0.4;0.05;1;18;25 % + 200 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N32 N3 N4
+22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;0.2;0.4;0.05;1;18;25 % + 200 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N32 N3 N4
+22041010;-- De champagne (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 2250 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N33 N3 N4
+22041090;"-- Autres (*) - Autres vins ; moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool : -- En récipients d’une contenance n’excédant pas 21 :";22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
+22042110;--- Vins autres que ceux du n° 2204.21.20 (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
+22042120;--- Vins de liqueur, mistelles ou moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool --Autres :;22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
+22042919;--- Vins autres que ceux du n° 22.04.29.20 :;22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
+22042920;---- Présentés en récipient d’une contenance de plus de 2 litres mais n’excédant pas 20 L (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
+22043000;-Autres moûts de raisins (*);22;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N35 N3 N4
+22051000;-En récipients d’une contenance n’excédant pas 2 l (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
+22059000;- Autres (*);22;;30;1;0.2;0.4;0.05;1;18;32 % + 1750 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N34 N3 N4
 22071010;-- Autres (*);22;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 22071090;- Alcool éthylique et eau-de-vie dénaturés de tous titres;22;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-22082000;- Whiskies (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22083000;- Rhum et autres eau-de-vie provenant de la distillation,;22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22084000;après fermentation, de produits de cannes à sucre (*) - Gin et genièvre (=);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22085000;- Vodka (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22086000;- Liqueurs (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22087000;- Autres : -- Alcool éthylique non dénaturé de moins de 80 % vol;22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22089010;(*) -- Autres boissons spiritueuses d’un titre alcoométrique volumique de : --- Moins de 15 % vol (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
-22089091;--- 15 % vol ou plus (*);22;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N14 N3 N4
-22089092;Vinaigres comestibles et succédanés de vinaigre;22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N13 N3 N4
+22082000;- Whiskies (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22083000;- Rhum et autres eau-de-vie provenant de la distillation,;22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22084000;après fermentation, de produits de cannes à sucre (*) - Gin et genièvre (=);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22085000;- Vodka (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22086000;- Liqueurs (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22087000;- Autres : -- Alcool éthylique non dénaturé de moins de 80 % vol;22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22089010;(*) -- Autres boissons spiritueuses d’un titre alcoométrique volumique de : --- Moins de 15 % vol (*);22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
+22089091;--- 15 % vol ou plus (*);22;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N37 N3 N4
+22089092;Vinaigres comestibles et succédanés de vinaigre;22;;30;1;0.2;0.4;0.05;1;18;30 % + 500 FCFA par litre;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N36 N3 N4
 23011000;"-Farines, poudres et agglomérés sous forme de pellets, de viandes ou d’abats ; cretons";23;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 23012000;- Farines, poudres et agglomérés sous forme de pellets, de poissons ou de crustacés, de mollusques ou d’autres invertébrés aquatiques Sons, remoulages et autres résidus, même agglomérés sous forme de pellets, du criblage, de la mouture ou d’autres traitements des céréales ou des légumineuses.;23;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 23021000;-De maïs;23;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -817,25 +817,25 @@
 24011000;-Tabacs non écôtés;24;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 24012000;- Tabacs partiellement ou totalement écôtés;24;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 24013000;- Déchets de tabac Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en tabac ou en succédanés de tabac.;24;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24022000;- Cigarettes contenant du tabac;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24031010;-- Tabac à fumer (scaferlati);24;;10;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24031090;-- Autres - Autres :;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24039910;-- Tabacs à mâcher et à priser;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24039920;--- Extraits et sauces de tabacs;24;;10;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-24039990;--- Autres tabacs et fabriqués;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N15 N3 N4
-25010000;Soufres de toute espèce, à l’exclusion du soufre sublimé, du soufre précipité et du soufre colloïdal. -Soufres bruts et soufres non raffinés;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-25010011;-- Autre;25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-25010019;- Autres;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-25010090;Pyrites de fer non grillées;25;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
+24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24022000;- Cigarettes contenant du tabac;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24031010;-- Tabac à fumer (scaferlati);24;;10;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24031090;-- Autres - Autres :;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24039910;-- Tabacs à mâcher et à priser;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24039920;--- Extraits et sauces de tabacs;24;;10;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+24039990;--- Autres tabacs et fabriqués;24;;30;1;0.2;0.4;0.05;1;18;32 % + 250 FCFA par paquet;;PARTIEL;DA (QUANTITE_REQUISE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N38 N3 N4
+25010000;Soufres de toute espèce, à l’exclusion du soufre sublimé, du soufre précipité et du soufre colloïdal. -Soufres bruts et soufres non raffinés;25;;10;1;0.2;0.4;0.05;1;0;;12.75;COMPLET;;;N1 N2 N3 N39
+25010011;-- Autre;25;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N39
+25010019;- Autres;25;;10;1;0.2;0.4;0.05;1;0;;12.75;COMPLET;;;N1 N2 N3 N39
+25010090;Pyrites de fer non grillées;25;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N39
 25030010;- Autres;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 25030090;Graphite naturel. -En poudre ou en paillettes;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 25041000;- Autre;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 25049000;Sables naturels de toute espèce, même colorés, à l’exclusion des sables métallifères du Chapitre 26. -Sables silencieux et sable quartzeux;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-25051000;- Autres sables;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-25059000;"Quartz (autres que les sables naturels) ; quartzites, même dégrossies ou simplement débitées, par sciage ou autrement, en blocs ou en plaques de forme carrée ou rectangulaire. -Quartz";25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
+25051000;- Autres sables;25;;10;1;0.2;0.4;0.05;1;0;;12.75;COMPLET;;;N1 N2 N3 N40
+25059000;"Quartz (autres que les sables naturels) ; quartzites, même dégrossies ou simplement débitées, par sciage ou autrement, en blocs ou en plaques de forme carrée ou rectangulaire. -Quartz";25;;10;1;0.2;0.4;0.05;1;0;;12.75;COMPLET;;;N1 N2 N3 N40
 25061000;- Quartzites;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 25062000;Kaolin et autres argiles kaoliniques, même;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 25070000;"calcinés Autres argiles (à l’exclusion des argiles expansées du n° 68.06), andalousite, cyanite, sillimanite, même calcinées ; mullite, terres de chamotte ou de dinas.";25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -876,10 +876,10 @@
 25222000;- Chaux éteinte;25;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 25223000;- Chaux hydrauliques Ciments hydrauliques (y compris les ciments non pulvérisés dits << clinckers >>), même colorés.;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 25231000;-Ciments non pulvérisés dits << clinckers >> - Ciments Portland :;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-25232100;-- Ciments blancs, même colorés artificiellement;25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-25232900;-- Autres;25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-25233000;- Ciments alumineux;25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-25239000;- Autres ciments hydrauliques Amiante (absbeste).;25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+25232100;-- Ciments blancs, même colorés artificiellement;25;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N41
+25232900;-- Autres;25;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N41
+25233000;- Ciments alumineux;25;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N41
+25239000;- Autres ciments hydrauliques Amiante (absbeste).;25;;20;1;0.2;0.4;0.05;1;0;;22.85;COMPLET;;;N1 N2 N3 N41
 25241000;-Crocidolite;25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 25249000;"- Autres Mica, y compris le mica clivé en lamelles irrégulières (<< splitings >>) ; déchets de mica.";25;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 25251000;-Mica brut ou clivé en feuilles ou lamelles irrégulières;25;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -969,7 +969,7 @@
 27109900;-- Autres Gaz de pétrole et autres hydrocarbures gazeux. -Liquéfiés :;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 27111100;-- Gaz naturel;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 27111200;-- Propane;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-27111300;-- Butanes;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
+27111300;-- Butanes;27;;10;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N42
 27111400;-- Ethylène, propylène et butadiène;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 27111900;-- Autres -A l’état gazeux:;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 27112100;-- Gaz naturel……………………;27;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -1475,63 +1475,63 @@
 29415000;"- Erythromycine et ses dérivés ; sels de ces produits";29;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 29419000;- Autres;29;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 29420000;Autres composés organiques;29;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
-30010010;-Fumiers et composts;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30010090;- Autres engrais Engrais minéraux ou chimiques azotes.;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30012000;-Extraits de glandes ou d’autres organes de leurs sécrétions - Autres :;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30019010;-- Héparine et ses sels;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30019090;"-- Autres Sang humain ; sang animal préparé en vue d’usages thérapeutiques, prophylactiques ou de diagnostic ; antisérums, autres fractions du sang, obtenus par voie biotechnologique ; vaccins, toxines, cultures de micro- organismes (à l’exclusion des levures) et produits similaires.";30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30021000;-Antisérums, autres fractions du sang, produits immunologiques modifiés, même obtenus par voie biotechnologique;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30022000;- Vaccins pour la médecine humaine;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30023000;- Vaccins pour la médecine vétérinaire;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30029000;- Autres Médicaments (à l’exclusion des produits des n°s 30.02, 30.05 ou 30.06) constitués par des produits mélangés entre eux, préparés à des fins thérapeutiques ou prophylactiques, mais ni présentés sous forme de doses, ni conditionnés pour la vente au détail.;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30031000;-Contenant des pénicillines ou des dérivés de ces produits, à structure d’acide pénicillanique, ou des streptomycines ou des dérivés de ces produits;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30032000;- Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37, mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30033139;- - Contenant de l’insuline;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30033900;- - Autres;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30034000;- Contenant des alcaloïdes ou leurs dérivés, mais ne;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30039000;contenant ni hormones, ni autres produits du n° 29.37, ni antibiotiques -Autres Médicaments (à l’exclusion des produits des n° 30.02, 30.05 ou 30.06) conctitués par des produits mélangés ou non mélangés, préparés à des fins thérapeutiques ou prophylactiques, présentés sous forme de doses (y compris ceux destinés à être administrés par voie;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30042000;ou des dérivés de ces produits - Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30043100;mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30043200;- - Contenant de l’insuline - - Contenant des hormones corticostéroïdes, leurs dérivés;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30043900;ou analogues structurels;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30044000;- - Autres - Contenant des alcaloïdes ou leurs dérivés, mais ne contenant ni hormones, ni autres produits du n° 29.37, ni;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30045000;antibiotiques - Autres médicaments contenant des vitamines ou d’autres;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30049000;produits du n° 29.36 - Autres Ouates, gazes, bandes et articles analogues (pansements, sparadraps, sinapismes, par exemple), imprégnés ou recouverts de substances pharmaceutiques ou conditionnés pour la vente au détail à des fins médicales, chirurgicales, dentaires ou;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30051000;vétérinaires. -Pansements adhésifs et autres articles ayant une couche;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30059000;adhésive - Autres;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30062000;- - Réactifs destinés à la détermination des groupes ou des facteurs sanguins;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30063000;"- Préparations opacifiantes pour examens radiographiques ; réactifs de diagnostic conçus pour être employés sur le patient - Ciments et autres produits d’obturation dentaire ; ciments pour la réfection osseuse :";30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30064010;-- Ciments pour la réfection osseuse;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30064090;-- Autres;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30065000;- Trousses et boîtes de pharmacie garnies, pour soins de premières urgences;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30066000;- Préparations chimiques contraceptives à base d’hormones, d’autres produits du n° 29.37 ou de spermicides;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30067000;- Préparations présentées sous forme de gel conçues pour être utilisées en médecine humaine ou vétérinaire comme lubrifiant pour certaines parties du corps lors des opérations chirurgicales ou des examens médicaux ou comme agent de couplage entre le corps et les instruments médicaux - Autres :;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30069100;-- Appareillages identifiables de stomie;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-30069200;-- Déchets pharmaceutiques;30;;5;1;0.2;0.4;0.05;0;18;;25.55;COMPLET;;;N1 N2 N16 N4
-31021000;"-Urée, d’ammonium ; sels doubles et mélanges de sulfate d’ammonium et de nitrate d’ammonium :";31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31022100;- - Sulfate d’ammonium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31022900;- - Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31023000;- Nitrate d’ammonium, même en solution aqueuse;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31024000;- Mélanges de nitrate d’ammonium et de carbonate de calcium ou d’autres matières inorganiques dépourvues de pouvoir fertilisant - Nitrate de sodium :;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31025010;-- Nitrate de sodium d’une teneur en azote supérieure à 16,3 %;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31025090;-- Autre;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31026000;- Sels doubles et mélanges de nitrate de calcium et de nitrate d’ammonium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31028000;- Mélanges d’urée et de nitrate d’amonium en solutions aqueuses ou ammoniacales;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31029000;- Autres, y compris les mélanges non visés dans les sous- positions précédentes Engrais minéraux ou chimiques phosphatés.;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31031000;-Superphosphates;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31039000;- Autres Engrais minéraux ou chimiques potassiques.;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31042000;-Chlorure de potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31043000;- Sulfate de potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31049000;- Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31051010;-- Urée à usage d’engrais;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31051090;-- Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31052000;- Engrais minéraux ou chimiques contenant les trois éléments fertilisants : azote, phosphore et potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31053000;- Hydrogénoorthophosphate de diammonium (phosphate diammonique);31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31054000;- Dihydrogénoorthphosphate d’ammonium (phosphate monoammonique), même en mélange avec l’hydrogénoorthophosphate de diammonium (phosphate diammonique) - Autres engrais minéraux ou chimiques contenant les deux éléments fertilisants : azote et phosphore :;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31055100;- - Contenant des nitrates et des phosphates;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31055900;- - Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31056000;- Engrais minéraux ou chimiques contenant les deux éléments fertilisants : phosphore et potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-31059000;- Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
+30010010;-Fumiers et composts;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30010090;- Autres engrais Engrais minéraux ou chimiques azotes.;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30012000;-Extraits de glandes ou d’autres organes de leurs sécrétions - Autres :;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30019010;-- Héparine et ses sels;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30019090;"-- Autres Sang humain ; sang animal préparé en vue d’usages thérapeutiques, prophylactiques ou de diagnostic ; antisérums, autres fractions du sang, obtenus par voie biotechnologique ; vaccins, toxines, cultures de micro- organismes (à l’exclusion des levures) et produits similaires.";30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30021000;-Antisérums, autres fractions du sang, produits immunologiques modifiés, même obtenus par voie biotechnologique;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30022000;- Vaccins pour la médecine humaine;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30023000;- Vaccins pour la médecine vétérinaire;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30029000;- Autres Médicaments (à l’exclusion des produits des n°s 30.02, 30.05 ou 30.06) constitués par des produits mélangés entre eux, préparés à des fins thérapeutiques ou prophylactiques, mais ni présentés sous forme de doses, ni conditionnés pour la vente au détail.;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30031000;-Contenant des pénicillines ou des dérivés de ces produits, à structure d’acide pénicillanique, ou des streptomycines ou des dérivés de ces produits;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30032000;- Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37, mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30033139;- - Contenant de l’insuline;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30033900;- - Autres;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30034000;- Contenant des alcaloïdes ou leurs dérivés, mais ne;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30039000;contenant ni hormones, ni autres produits du n° 29.37, ni antibiotiques -Autres Médicaments (à l’exclusion des produits des n° 30.02, 30.05 ou 30.06) conctitués par des produits mélangés ou non mélangés, préparés à des fins thérapeutiques ou prophylactiques, présentés sous forme de doses (y compris ceux destinés à être administrés par voie;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30042000;ou des dérivés de ces produits - Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30043100;mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30043200;- - Contenant de l’insuline - - Contenant des hormones corticostéroïdes, leurs dérivés;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30043900;ou analogues structurels;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30044000;- - Autres - Contenant des alcaloïdes ou leurs dérivés, mais ne contenant ni hormones, ni autres produits du n° 29.37, ni;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30045000;antibiotiques - Autres médicaments contenant des vitamines ou d’autres;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30049000;produits du n° 29.36 - Autres Ouates, gazes, bandes et articles analogues (pansements, sparadraps, sinapismes, par exemple), imprégnés ou recouverts de substances pharmaceutiques ou conditionnés pour la vente au détail à des fins médicales, chirurgicales, dentaires ou;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30051000;vétérinaires. -Pansements adhésifs et autres articles ayant une couche;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30059000;adhésive - Autres;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30062000;- - Réactifs destinés à la détermination des groupes ou des facteurs sanguins;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30063000;"- Préparations opacifiantes pour examens radiographiques ; réactifs de diagnostic conçus pour être employés sur le patient - Ciments et autres produits d’obturation dentaire ; ciments pour la réfection osseuse :";30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30064010;-- Ciments pour la réfection osseuse;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30064090;-- Autres;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30065000;- Trousses et boîtes de pharmacie garnies, pour soins de premières urgences;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30066000;- Préparations chimiques contraceptives à base d’hormones, d’autres produits du n° 29.37 ou de spermicides;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30067000;- Préparations présentées sous forme de gel conçues pour être utilisées en médecine humaine ou vétérinaire comme lubrifiant pour certaines parties du corps lors des opérations chirurgicales ou des examens médicaux ou comme agent de couplage entre le corps et les instruments médicaux - Autres :;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30069100;-- Appareillages identifiables de stomie;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+30069200;-- Déchets pharmaceutiques;30;;5;1;0.2;0.4;0.05;0;0;;6.65;COMPLET;;;N1 N2 N43 N44
+31021000;"-Urée, d’ammonium ; sels doubles et mélanges de sulfate d’ammonium et de nitrate d’ammonium :";31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31022100;- - Sulfate d’ammonium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31022900;- - Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31023000;- Nitrate d’ammonium, même en solution aqueuse;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31024000;- Mélanges de nitrate d’ammonium et de carbonate de calcium ou d’autres matières inorganiques dépourvues de pouvoir fertilisant - Nitrate de sodium :;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31025010;-- Nitrate de sodium d’une teneur en azote supérieure à 16,3 %;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31025090;-- Autre;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31026000;- Sels doubles et mélanges de nitrate de calcium et de nitrate d’ammonium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31028000;- Mélanges d’urée et de nitrate d’amonium en solutions aqueuses ou ammoniacales;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31029000;- Autres, y compris les mélanges non visés dans les sous- positions précédentes Engrais minéraux ou chimiques phosphatés.;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31031000;-Superphosphates;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31039000;- Autres Engrais minéraux ou chimiques potassiques.;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31042000;-Chlorure de potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31043000;- Sulfate de potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31049000;- Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31051010;-- Urée à usage d’engrais;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31051090;-- Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31052000;- Engrais minéraux ou chimiques contenant les trois éléments fertilisants : azote, phosphore et potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31053000;- Hydrogénoorthophosphate de diammonium (phosphate diammonique);31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31054000;- Dihydrogénoorthphosphate d’ammonium (phosphate monoammonique), même en mélange avec l’hydrogénoorthophosphate de diammonium (phosphate diammonique) - Autres engrais minéraux ou chimiques contenant les deux éléments fertilisants : azote et phosphore :;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31055100;- - Contenant des nitrates et des phosphates;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31055900;- - Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31056000;- Engrais minéraux ou chimiques contenant les deux éléments fertilisants : phosphore et potassium;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+31059000;- Autres;31;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
 32011000;-Extraits de quebracho;32;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 32012000;- Extraits de mimosa;32;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 32019000;"- Autres Produits tannants organiques synthétiques ; produits tannantes, même contenant des produits tannants naturels ; préparations enzymatiques pour le prétannage.";32;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -1581,12 +1581,12 @@
 33019000;- autres Mélanges de substances odoriférantes et mélanges (y compris les solutions alcooliques) à base d’une ou de plusieurs de ces substances, des types utilisés comme matières de base de substances odoriférantes, des types utilisés pour la fabrication de boissons.;33;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 33021000;-Des types utilisés pour les industries alimentaires ou des boissons;33;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 33029000;- Autres;33;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-33030000;"Parfums et eaux de toilette Produits de beauté ou de maquillage préparés et préparations pour l’entretien ou les soins de la peau, autres que les médicaments, y compris les préparations antisolaires et les préparations pour bronzer ; préparations pour manucures ou pédicures.";33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N18 N3 N4
-33041000;-Produits de maquillage pour les lèvres;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N18 N3 N4
-33042000;- Produits de maquillage pour les yeux;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N18 N3 N4
-33043000;- Préparations pour manucures ou pédicures - Autres :;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N18 N3 N4
-33049100;- - Poudres, y compris les poudres compactes;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N18 N3 N4
-33049900;-- Autres…………………………… Préparations capillaries.;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N18 N3 N4
+33030000;"Parfums et eaux de toilette Produits de beauté ou de maquillage préparés et préparations pour l’entretien ou les soins de la peau, autres que les médicaments, y compris les préparations antisolaires et les préparations pour bronzer ; préparations pour manucures ou pédicures.";33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N46 N3 N4
+33041000;-Produits de maquillage pour les lèvres;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N46 N3 N4
+33042000;- Produits de maquillage pour les yeux;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N46 N3 N4
+33043000;- Préparations pour manucures ou pédicures - Autres :;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N46 N3 N4
+33049100;- - Poudres, y compris les poudres compactes;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N46 N3 N4
+33049900;-- Autres…………………………… Préparations capillaries.;33;;30;1;0.2;0.4;0.05;1;18;25;95.52;COMPLET;;;N1 N2 N46 N3 N4
 33051000;-Shampooings………………………;33;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 33052000;- Préparations pour l’ondulation ou le défrisage permanent…………………;33;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 33053000;- Laques pour cheveux;33;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -1607,7 +1607,7 @@
 34021200;- - Cationiques;34;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 34021300;- - Non-ioniques;34;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 34021900;- - Autres;34;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-34022000;- Préparations conditionnés pour la vente au détai;34;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+34022000;- Préparations conditionnés pour la vente au détai;34;;20;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N47
 34029000;- Autres;34;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 34031100;- - Préparations pour le traitement des matières textiles, du cuir, des pelleteries ou d’autres matières;34;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 34031900;- - Autres - Autres :;34;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -1701,16 +1701,16 @@
 38069000;- Autres;38;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 38070010;-Méthylène;38;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 38070090;- Autres Insecticides, antirongeurs, fongicides, herbicides, inhibiteurs de germination et régulateurs de croissance pour plantes, désinfectants et produits similaires, présentés dans des formes ou emballages de vente au détail ou à l’état de préparations ou sous forme d’articles tels que rubans, mèches et bougies soufrés et papier tue-mouches.;38;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-38085000;-Marchandises mentionnées dans la Note 1 de la sous- position du présent Chapitre - Autres : - -Insecticides;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089110;-- - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089190;"- - - Autres - - Fongicides ;";38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089210;- - - Présentés dans des formes propres à la vente au détai ou emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089290;- - - Autres - - Herbicides, inhibiteurs de germination et régulateurs de croissance pour plantes :;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089310;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089390;- - - Autres - - Désinfectants :;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089410;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous formes d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089490;"- - - Autres - - Autres ;";38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
-38089990;- - - Autres;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N17 N4
+38085000;-Marchandises mentionnées dans la Note 1 de la sous- position du présent Chapitre - Autres : - -Insecticides;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089110;-- - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089190;"- - - Autres - - Fongicides ;";38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089210;- - - Présentés dans des formes propres à la vente au détai ou emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089290;- - - Autres - - Herbicides, inhibiteurs de germination et régulateurs de croissance pour plantes :;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089310;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089390;- - - Autres - - Désinfectants :;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089410;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous formes d’articles;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089490;"- - - Autres - - Autres ;";38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
+38089990;- - - Autres;38;;5;1;0.2;0.4;0.05;n.d.;18;;;PARTIEL;CSS (TAUX_INDISPONIBLE);;N1 N2 N45 N4
 38091000;-A base de matières amylacées - Autres :;38;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 38099100;- - Des types utilisés dans l’industrie textile ou dans les industries similaires;38;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 38099200;- - Des types utilisés dans l’industrie du papier ou dans les industries similaires;38;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -2135,7 +2135,7 @@
 44072922;--- Kitibé, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 44072923;--- Kodrodua, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 44072924;--- Limba, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-44072925;--- Moabi, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N19 N1 N2 N3 N4
+44072925;--- Moabi, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N48 N1 N2 N3 N4
 44072926;--- Movingui, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 44072927;--- Mutényé, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 44072928;--- Niangon, scié (*);44;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -2244,7 +2244,7 @@
 47072000;- Autres papiers ou cartons obtenus principalement à partir de pâte chimique blanchie, non colorés dans la masse;47;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 47073000;- papiers ou cartons obtenus principalement à partir de pâte mécanique (journaux, périodiques et imprimés similaires, par exemple);47;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 47079000;- Autres, y compris les déchets et rebuts non triés;47;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-48010000;"Papier journal, en rouleaux ou en feuilles Papiers et cartons, non couchés ni enduits, des types utilisés pour l’écriture, l’impression ou d’autres fins graphiques et papiers et cartons pour cartes ou bandes à perforer, non perforés, en rouleaux ou en feuilles de forme carrée ou rectangulaire, de tout format, autres que les papiers des n°s 48.01 ou 48.03 ; papiers et cartons formés feuille à feuille (papiers et cartons à la main). -Papiers et cartons formés feuille à feuille (papier à la";48;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
+48010000;"Papier journal, en rouleaux ou en feuilles Papiers et cartons, non couchés ni enduits, des types utilisés pour l’écriture, l’impression ou d’autres fins graphiques et papiers et cartons pour cartes ou bandes à perforer, non perforés, en rouleaux ou en feuilles de forme carrée ou rectangulaire, de tout format, autres que les papiers des n°s 48.01 ou 48.03 ; papiers et cartons formés feuille à feuille (papiers et cartons à la main). -Papiers et cartons formés feuille à feuille (papier à la";48;;5;1;0.2;0.4;0.05;1;0;;7.7;COMPLET;;;N1 N2 N3 N49
 48021000;main) - Papiers et cartons supports pour papiers ou cartons;48;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 48022000;photosensibles, sensibles à la chaleur ou électrosensibles - Papiers supports pour papiers peints;48;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 48024000;- Autres papiers et cartons, sans fibres obtenues par un procédé mécanique ou chimico-mécanique ou dont 10 % au plus en poids de la composition fibreuse totale sont constitués par de telles fibres : - - D’un poids au m inférieur à 40 g;48;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -2328,7 +2328,7 @@
 48194000;"- Autres sacs ; sachets, pochettes (autres que celles pour disques) et cornets";48;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 48195000;- Autres emballages, y compris les pochettes pour disques;48;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 48196000;"- Cartonnages de bureau, de magasin ou similaires Registres, livres comptables, carnets (de notes, de commandes, de quittances), agendas, blocs- mémorandums, blocs de papier à lettres et ouvrages similaires, cahiers, sous-main, classeurs, reliures (à feuillets mobiles ou autres), chemises et couvertures à dossiers et autres articles scolaires, de bureau ou de papeterie, y compris les liasses et carnets manifold, même comportant des feuilles de papier carbone, en papier ou en carton ; albums pour échantillonnages ou pour collections et couvertures pour livres, en papier ou en carton.";48;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-48202000;- Cahiers;48;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+48202000;- Cahiers;48;;30;1;0.2;0.4;0.05;1;0;;32.95;COMPLET;;;N1 N2 N3 N50
 48203000;- Classeurs, reliures (autres que les couvertures pour livres), chemises et couvertures à dossiers;48;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 48204000;- Liasses et carnets manifold, même comportant des feuilles de papier carbone;48;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 48205000;- Albums pour échantillonnages ou pour collections.;48;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -2754,7 +2754,7 @@
 56079010;- - Pour la pêche…………………….……………;56;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 56079020;- - De jute ou d’autres fibres textiles libériennes;56;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 56079090;- - Autres;56;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-56081100;- - Filets confectionnés pour la pêche;56;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
+56081100;- - Filets confectionnés pour la pêche;56;;10;1;0.2;0.4;0.05;1;10;;23.75;COMPLET;;;N1 N2 N3 N51
 56081900;- - Autres;56;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 56089000;- Autres;56;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 57011000;-De laine ou de poils fins;57;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -3247,9 +3247,9 @@
 69049000;- Autres Tuiles, éléments de cheminée, conduits de fumée ornements architectoniques, en céramique, et autres poteries de bâtiment.;69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 69051000;- Tuiles;69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 69059000;- Autres;69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-69060000;"Tuyaux, gouttières et accessoires de tuyauterie en céramique Carreaux et dalles de pavement ou de revêtement, non vernissés ni émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, non vernissés ni émaillés, en céramique, même sur support.";69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N20 N1 N2 N3 N4
-69079000;"- Autres Carreaux et dalles de pavement ou de revêtement, vernissés ou émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, vernissés";69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-69089000;"- Autres Appareils et articles pour usages chimiques ou autres usages techniques, en céramique ; auges, bacs et récipients similaires pour l’économie rurale, en céramique ; cruchons et récipients similaires de transport ou d’emballage, en céramique. -Appareils et articles pour usages chimiques ou autres usages techniques :";69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+69060000;"Tuyaux, gouttières et accessoires de tuyauterie en céramique Carreaux et dalles de pavement ou de revêtement, non vernissés ni émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, non vernissés ni émaillés, en céramique, même sur support.";69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N52 N1 N2 N3 N4
+69079000;"- Autres Carreaux et dalles de pavement ou de revêtement, vernissés ou émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, vernissés";69;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N53
+69089000;"- Autres Appareils et articles pour usages chimiques ou autres usages techniques, en céramique ; auges, bacs et récipients similaires pour l’économie rurale, en céramique ; cruchons et récipients similaires de transport ou d’emballage, en céramique. -Appareils et articles pour usages chimiques ou autres usages techniques :";69;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N53
 69091100;- - En porcelaine;69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 69091200;- - Articles ayant une dureté équivalente à 9 ou davantage sur l’échelle de Mohs;69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 69091900;- - Autres;69;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
@@ -3446,12 +3446,12 @@
 72101200;- - D’une épaisseur inférieure à 0,5 mm;72;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 72102000;- Plombés, y compris le fer terne;72;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 72103000;- Zingués électrolytiquement - Autrement zingués :;72;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-72104100;- - Ondulés;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+72104100;- - Ondulés;72;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N54
 72104900;- - Autres;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 72105000;- Revêtus d’oxydes de chrome ou de chrome et oxydes de chrome - Revêtus d’aluminium :;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-72106100;- - Revêtus d’alliages d’aluminium et de zinc;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+72106100;- - Revêtus d’alliages d’aluminium et de zinc;72;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N54
 72106900;- - Autres;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-72107000;- Peints, vernis ou revêtus de matières plastiques.;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+72107000;- Peints, vernis ou revêtus de matières plastiques.;72;;30;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N54
 72109000;- Autres Produits laminés plats, en fer ou en aciers non alliés, d’une largeur inférieure à 600 mm, non plaqués ni revêtus. -Simplement laminés à chaud :;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 72111400;- - Autres, d’une épaisseur de 4,75 mm ou plus;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 72111900;- Autres - Simplement laminés à froid :;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
@@ -3464,12 +3464,12 @@
 72124000;- Peints, vernis ou revêtus de matières plastiques.;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 72125000;- Autrement revêtus;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 72126000;- Plaqués Fil machine en fer ou en aciers non alliés.;72;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-72131000;-Comportant des indentations, bourrelets, creux ou reliefs obtenus au cours du laminage;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+72131000;-Comportant des indentations, bourrelets, creux ou reliefs obtenus au cours du laminage;72;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N55
 72132000;- Autres, en aciers de décolletage - Autres :;72;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 72139100;- - De section circulaire d’un diamètre inférieur à 14 mm;72;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 72139900;- - Autres Barres en fer ou en aciers non alliés, simplement forgées, laminées ou filées à chaud ainsi que celles ayant subi une torsion après laminage.;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 72141000;-Forgées;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-72142000;- Comportant des indentations, bourrelets, creux ou reliefs obtenus au cours du laminage ou ayant subi une torsion après laminage;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+72142000;- Comportant des indentations, bourrelets, creux ou reliefs obtenus au cours du laminage ou ayant subi une torsion après laminage;72;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N55
 72143000;-Autres, en aciers de décolletage…………….……… - Autres :;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 72149100;- - De section transversale rectangulaire;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 72149900;- - Autres Autres barres en fer ou en aciers non alliés.;72;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
@@ -3631,7 +3631,7 @@
 73158900;- - Autres;73;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 73159000;- Autres parties;73;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 73160000;Ancres, grappins et leurs parties, en fonte, fer ou acier Pointes, clous, punaises, crampons appointés, agrafes ondulées ou biseautées et articles similaires, en fonte, fer ou acier, même avec tête en autre matière, à l’exclusion de ceux avec tête en cuivre.;73;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-73170010;-Pointes et clous;73;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
+73170010;-Pointes et clous;73;;30;1;0.2;0.4;0.05;1;10;;45.95;COMPLET;;;N1 N2 N3 N56
 73170020;- Crampons et autres articles pour voies ferrées.;73;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 73170090;- Autres Vis, boulons, écrous, tire-fond, crochets à pas de vis, rivets, goupilles, chevilles, clavettes, rondelles (y compris les rondelles destinées à faire ressort) et articles similaires, en fonte, fer ou acier. -Articles filetés :;73;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 73181100;- - Tire-fond;73;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -3988,7 +3988,7 @@
 84068200;- - D’une puissance n’excédant pas 40 MW;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 84069000;- Parties Moteurs à piston alternatif ou rotatif, à allumage par étincelles (moteurs à explosion).;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 84071000;-Moteurs pour l’aviation - Moteurs pour la propulsion de bateaux :;84;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-84072100;- - Du type hors-bord (*) - - Autres :;84;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+84072100;- - Du type hors-bord (*) - - Autres :;84;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N57
 84072910;--- Moteurs d’embarcation de 10.000 kg ou moins (*);84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 84072920;--- Moteurs d’embarcation de plus de 10.000 kg (*) -Moteurs à piston alternatif des types utilisés pour la propulsion des véhicules du Chapitre 87 :;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 84073100;- - D’une cylindrée n’excédant pas 50 cm (*);84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -4390,8 +4390,8 @@
 84703000;- Autres machines à calculer;84;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 84705000;- Caisses enregistreuses;84;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 84709000;- Autres;84;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-84714900;- - Autres, se présentant sous forme de systèmes;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-84715000;- Unités de traitement autres que celles des n°s 8471.41 ou 8471.49, pouvant comporter, sous une même enveloppe, un ou deux des types d’unités suivants : unité de mémoire, unité d’entrée et unité de sortie;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
+84714900;- - Autres, se présentant sous forme de systèmes;84;;10;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N58
+84715000;- Unités de traitement autres que celles des n°s 8471.41 ou 8471.49, pouvant comporter, sous une même enveloppe, un ou deux des types d’unités suivants : unité de mémoire, unité d’entrée et unité de sortie;84;;10;1;0.2;0.4;0.05;1;n.d.;;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N3 N58
 84716000;- Unités d’entrée ou de sortie, pouvant comporter, sous la même enveloppe, des unités de mémoire;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 84717000;- Unités de mémoire;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 84718000;- Autres unités de machines automatiques de traitement de l’information;84;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -4497,7 +4497,7 @@
 85021200;- - D’une puissance excédant 75 kVA mais n’excédant pas 375 kVA;85;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 85021300;- - D’une puissance excédant 375 kVA;85;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 85022000;-Groupes électrogènes à moteurs à piston à allumage par étincelles (moteurs à explosion) -Autres groupes électrogènes :;85;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-85023100;- - A énergie éolienne;85;;10;1;0.2;0.4;0.05;0;18;;31.45;COMPLET;;;N1 N2 N21 N4
+85023100;- - A énergie éolienne;85;;10;1;0.2;0.4;0.05;0;0;;11.65;COMPLET;;;N1 N2 N59 N60
 85023900;- - Autres;85;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 85024000;- Convertisseurs rotatifs électriques Parties reconnaissables comme étant exclusivement ou principalement destinées aaux machines des n°s 85.01 ou 85.02 Transformateurs électriques, convertisseurs électriques statiques (redresseurs, par exemple), bobines de réactance et selfs.;85;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 85041000;-Ballasts pour lampes ou tubes à décharge - Transformateurs à diélectrique liquide :;85;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
@@ -4770,74 +4770,74 @@
 86079100;- - De locomotives ou de locotracteurs;86;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 86079900;- - Autres;86;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 86090000;Cadres et conteneurs (y compris les conteneurs- citernes et les conteneurs-réservoirs) spécialement conçus et équipés pour un ou plusieurs modes de transport;86;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-87011000;-Motoculteurs(*) - Tracteurs routiers pour semi-remorques :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87012010;- - D’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87012020;- - D’une cylindrée de 4.500 cm ou plus(*) - Tracteurs à chenilles :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87013010;- - De 4.000 kg ou moins(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87013020;- - De plus de 4.000 kg(*) - Autres : - - A moteur à explosion ou à combustion interne :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
+87011000;-Motoculteurs(*) - Tracteurs routiers pour semi-remorques :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87012010;- - D’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87012020;- - D’une cylindrée de 4.500 cm ou plus(*) - Tracteurs à chenilles :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87013010;- - De 4.000 kg ou moins(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87013020;- - De plus de 4.000 kg(*) - Autres : - - A moteur à explosion ou à combustion interne :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
 87019011;--- Tracteurs agricoles, à roues(*);87;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-87019012;--- Autres tracteurs à roues, d’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87019013;--- Autres tracteurs à roues, d’une cylindrée de 4.500 cm ou plus(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87019020;--A moteur électrique(*) Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus. -A moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87021010;- - A moteur diesel à un essieu moteur (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87021020;- - A moteur diesel à plus d’un essieu moteur (*). - Autres :;87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N22 N3 N4
-87029010;- - Autres, à un essieu moteur (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87029020;- - Autres, à plus d’un essieu moteur (*) Voitures de tourisme et autres véhicules automobiles principalement conçus pour le transport de personnes (autres que ceux du n° 87.02), y compris les voitures du type “break” et les voitures de course.;87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N22 N3 N4
-87032110;- - - A un essieu moteur (*);87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N23 N3 N4
-87032190;- - - Autres(*) - - D’une cylindrée excédant 1.000 cm mais n’excédant pas 1.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N23 N3 N4
-87032210;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N23 N3 N4
-87032290;- - - Autres (*) - - D’une cylindrée excédant 1.500 cm mais n’excédant pas 3.000 cm :;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N23 N3 N4
-87032310;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87032390;- - - Autres(*) - - D’une cylindrée excédant 3.000 cm :;87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87032410;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87032490;- - - Autres(*) - Autres véhicules, à moteur à piston à allumage par compression (diesel ou semi-diesel) : - - D’une cylindrée n’excédant pas 1.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87033110;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N23 N3 N4
-87033190;- - - Autres(*) --D’une cylindrée excédant 1.500 cm mais n’excédant pas 2.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N23 N3 N4
-87033210;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87033290;- - - Autres(*) - - D’une cylindrée excédant 2.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87033310;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87033390;- - - Autres(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N24 N3 N4
-87033900;- Autres(*) Véhicules automobiles pour le transport de marchandises.;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N25 N3 N4
-87041000;-Tombereaux automoteurs conçus pour être utilisés en dehors du réseau routier(*) - Autres, à moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87042100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N22 N3 N4
-87042200;- - D’un poids en charge maximal excédant 5 tonnes mais n’excédant pas 20 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N22 N3 N4
-87042300;- - D’un poids en charge maximal excédant 20 tonnes(*) - Autres, à moteur à piston à allumage par étincelles :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87043100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N22 N3 N4
-87043200;- - D’un poids en charge maximal excédant 5 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N22 N3 N4
-87049000;- Autres(*) Véhicules automobiles à usages spéciaux, autres que ceux principalement conçus pour le transport de personnes ou de marchandises (dépanneuses, camions-grues, voitures de lutte contre l’incedie, camions-bétonnières, voitures balayeuses, voitures épandeuses, voitures-ateliers, voitures radiologiques, par exemple).;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87051000;-Camions-grues(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87052000;- Derricks automobiles pour le sondage ou le forage(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87053000;- Voitures de lutte contre l’incendie(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87054000;- Camions-bétonnières(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
-87059000;- Autres (*) Châssis des véhicules automobiles des n°s 87.01 à 87.05, équipés de leur moteur.;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N22 N3 N4
+87019012;--- Autres tracteurs à roues, d’une cylindrée de moins de 4.500 cm (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87019013;--- Autres tracteurs à roues, d’une cylindrée de 4.500 cm ou plus(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87019020;--A moteur électrique(*) Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus. -A moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87021010;- - A moteur diesel à un essieu moteur (*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87021020;- - A moteur diesel à plus d’un essieu moteur (*). - Autres :;87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N61 N3 N4
+87029010;- - Autres, à un essieu moteur (*);87;;10;1;0.2;0.4;0.05;1;n.d.;1;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N61 N3 N62
+87029020;- - Autres, à plus d’un essieu moteur (*) Voitures de tourisme et autres véhicules automobiles principalement conçus pour le transport de personnes (autres que ceux du n° 87.02), y compris les voitures du type “break” et les voitures de course.;87;;30;1;0.2;0.4;0.05;1;n.d.;1;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N61 N3 N62
+87032110;- - - A un essieu moteur (*);87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N63 N3 N4
+87032190;- - - Autres(*) - - D’une cylindrée excédant 1.000 cm mais n’excédant pas 1.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N63 N3 N4
+87032210;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N63 N3 N4
+87032290;- - - Autres (*) - - D’une cylindrée excédant 1.500 cm mais n’excédant pas 3.000 cm :;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N63 N3 N4
+87032310;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87032390;- - - Autres(*) - - D’une cylindrée excédant 3.000 cm :;87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87032410;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87032490;- - - Autres(*) - Autres véhicules, à moteur à piston à allumage par compression (diesel ou semi-diesel) : - - D’une cylindrée n’excédant pas 1.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87033110;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N63 N3 N4
+87033190;- - - Autres(*) --D’une cylindrée excédant 1.500 cm mais n’excédant pas 2.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N63 N3 N4
+87033210;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87033290;- - - Autres(*) - - D’une cylindrée excédant 2.500 cm :;87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87033310;- - - A un essieu moteur(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87033390;- - - Autres(*);87;;30;1;0.2;0.4;0.05;1;18;5;64.18;COMPLET;;;N1 N2 N64 N3 N4
+87033900;- Autres(*) Véhicules automobiles pour le transport de marchandises.;87;;30;1;0.2;0.4;0.05;1;18;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | CSS (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1 N2 N65 N3 N4
+87041000;-Tombereaux automoteurs conçus pour être utilisés en dehors du réseau routier(*) - Autres, à moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87042100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N61 N3 N4
+87042200;- - D’un poids en charge maximal excédant 5 tonnes mais n’excédant pas 20 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N61 N3 N4
+87042300;- - D’un poids en charge maximal excédant 20 tonnes(*) - Autres, à moteur à piston à allumage par étincelles :;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87043100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N61 N3 N4
+87043200;- - D’un poids en charge maximal excédant 5 tonnes(*);87;;20;1;0.2;0.4;0.05;1;18;1;45.9;COMPLET;;;N1 N2 N61 N3 N4
+87049000;- Autres(*) Véhicules automobiles à usages spéciaux, autres que ceux principalement conçus pour le transport de personnes ou de marchandises (dépanneuses, camions-grues, voitures de lutte contre l’incedie, camions-bétonnières, voitures balayeuses, voitures épandeuses, voitures-ateliers, voitures radiologiques, par exemple).;87;;10;1;0.2;0.4;0.05;1;n.d.;1;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N61 N3 N62
+87051000;-Camions-grues(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87052000;- Derricks automobiles pour le sondage ou le forage(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87053000;- Voitures de lutte contre l’incendie(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87054000;- Camions-bétonnières(*);87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
+87059000;- Autres (*) Châssis des véhicules automobiles des n°s 87.01 à 87.05, équipés de leur moteur.;87;;10;1;0.2;0.4;0.05;1;18;1;33.88;COMPLET;;;N1 N2 N61 N3 N4
 87060010;-A un essieu moteur;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 87060090;- Autres Carrosseries des véhicules automobiles des n°s 87.01 à 87.05, y compris les cabines.;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 87071000;-Des véhicules du n° 87.03;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
 87079000;- Autres Parties et accessoires des véhicules automobiles des n°s 87.01 à 87.05.;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87081000;-Pare-chocs et leurs parties - Autres parties et accessoires de carrosseries (y compris les cabines) :;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87082100;- - Ceintures de sécurité;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87082900;- - Autres;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87083000;"- Freins et servo-freins ; leurs parties";87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87084000;- Boîtes de vitesses et leurs parties;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87085000;"- Ponts avec différentiel, même pourvus d’autres organes de transmission, et essieux porteurs ; leurs parties";87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87087000;- Roues, leurs parties et accessoires;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87088000;- Systèmes de suspension et leurs parties (y compris les amortisseurs de suspension) - Autres parties et accessoires :;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87089100;- - Radiateurs et leurs parties;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87089200;"- - Silencieux et tuyaux d’échappement ; leurs parties";87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87089300;- - Embrayages et leurs parties;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87089400;"- - Volants, colonnes et boîtiers de direction ; leurs parties";87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87089500;"- - Coussins gonflables de sécurité avec système de gonflage (airbags) ; leurs parties";87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
-87089900;- - Autres;87;;20;1;0.2;0.4;0.05;1;18;;44.45;COMPLET;;;N1 N2 N3 N4
+87081000;-Pare-chocs et leurs parties - Autres parties et accessoires de carrosseries (y compris les cabines) :;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87082100;- - Ceintures de sécurité;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87082900;- - Autres;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87083000;"- Freins et servo-freins ; leurs parties";87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87084000;- Boîtes de vitesses et leurs parties;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87085000;"- Ponts avec différentiel, même pourvus d’autres organes de transmission, et essieux porteurs ; leurs parties";87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87087000;- Roues, leurs parties et accessoires;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87088000;- Systèmes de suspension et leurs parties (y compris les amortisseurs de suspension) - Autres parties et accessoires :;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87089100;- - Radiateurs et leurs parties;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87089200;"- - Silencieux et tuyaux d’échappement ; leurs parties";87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87089300;- - Embrayages et leurs parties;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87089400;"- - Volants, colonnes et boîtiers de direction ; leurs parties";87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87089500;"- - Coussins gonflables de sécurité avec système de gonflage (airbags) ; leurs parties";87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
+87089900;- - Autres;87;;20;1;0.2;0.4;0.05;1;10;;34.85;COMPLET;;;N1 N2 N3 N66
 87091100;- - Electriques;87;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 87091900;- - Autres;87;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 87099000;- Parties;87;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
 87100000;"Chars et automobiles blindées de combat, armés ou non ; leurs parties Motocycles (y compris les cyclomoteurs) et cycles équipés d’un moteur auxiliaire, avec ou sans side- cars ; side-cars.";87;;10;1;0.2;0.4;0.05;1;18;;32.55;COMPLET;;;N1 N2 N3 N4
-87111000;-A moteur à piston alternatif, d’une cylindrée n’excédant pas 50 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N26 N3 N4
-87112000;- A moteur à piston alternatif, d’une cylindrée excédant 50 cm mais n’excédant pas 250 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N26 N3 N4
-87113000;- A moteur à piston alternatif, d’une cylindrée excédant cm mais n’excédant pas cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N26 N3 N4
-87114000;- A moteur à piston alternatif, d’une cylindrée excédant 500 cm mais n’excédant pas 800 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N26 N3 N4
-87115000;- A moteur à piston alternatif, d’une cylindrée excédant 800 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N26 N3 N4
-87119000;- Autres(*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N26 N3 N4
+87111000;-A moteur à piston alternatif, d’une cylindrée n’excédant pas 50 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N67 N3 N4
+87112000;- A moteur à piston alternatif, d’une cylindrée excédant 50 cm mais n’excédant pas 250 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N67 N3 N4
+87113000;- A moteur à piston alternatif, d’une cylindrée excédant cm mais n’excédant pas cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N67 N3 N4
+87114000;- A moteur à piston alternatif, d’une cylindrée excédant 500 cm mais n’excédant pas 800 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N67 N3 N4
+87115000;- A moteur à piston alternatif, d’une cylindrée excédant 800 cm (*);87;;30;1;0.2;0.4;0.05;1;18;1;57.92;COMPLET;;;N1 N2 N67 N3 N4
+87119000;- Autres(*);87;;30;1;0.2;0.4;0.05;1;n.d.;1;;PARTIEL;TVA (TAUX_INDISPONIBLE);;N1 N2 N67 N3 N62
 87120000;Bicyclettes et autres cycles (y compris les triporteurs), sans moteur(*) Fauteuils roulants et autres véhicules pour invalides, même avec moteur ou autre mécanisme de propulsion.;87;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 87131000;-Sans mécanisme de propulsion;87;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
 87139000;- Autres Parties et accessoires des véhicules des n°s 87.11 à -De motocycles (y compris les cyclomoteurs) :;87;;5;1;0.2;0.4;0.05;1;18;;26.6;COMPLET;;;N1 N2 N3 N4
@@ -5102,26 +5102,26 @@
 92099200;- - Parties et accessoires des instruments et musique du n° 92.02;92;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 92099400;- - Parties et accessoires des instruments de musique du n° 92.07;92;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 92099900;- - Autres;92;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
-93011100;- - Auto-propulsées;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93011900;- - Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93012000;"- Tubes lance-missiles ; lance-flammes ; lance- grenades ; lance-torpilles et lanceurs similaires.";93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93019000;- Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93020000;Revolvers et pistolets, autres que ceux des n° 93.03 ou 93.04 Autres armes à feu et engins similaires utilisant la déflagration de la poudre (fusils et carabines de chasse, armes à feu ne pouvant être chargées que par le canon, pistolets lance-fusées et autres engins conçus uniquement pour lancer des fusées de signalisation, pistolets et revolvers pour le tir à blanc, pistolets d’abattage à cheville, canons llance-amarres, par exemple).;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93031000;-Armes à feu ne pouvant être chargées que par le canon(*);93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93032000;- Autres fusils et carabines de chasse ou de tir sportif comportant au moins un canon lisse(*).;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93033000;- Autres fusils et carabines de chasse ou de tir sportif(*);93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93039000;- Autres(*);93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93040000;Autres armes (fusils, carabines et pistolets à ressort, à air comprimé ou à gaz, matraques, par exemple), à l’exclusion de celles du n° 93.07 Parties et accessoires des articles des n°s 93.01 à;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93051000;-De revolvers ou pistolets - De fusils ou carabines du n° 93.03 :;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93052100;- - Canons lisses;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93052900;- - Autres - Autres :;93;;20;1;0.2;0.4;0.05;1;18;10;58.93;COMPLET;;;N1 N2 N27 N3 N4
-93059100;- - Des armes de guerre du n° 93.01;93;;20;1;0.2;0.4;0.05;1;18;10;58.93;COMPLET;;;N1 N2 N27 N3 N4
-93059900;- - Autres;93;;20;1;0.2;0.4;0.05;1;18;10;58.93;COMPLET;;;N1 N2 N27 N3 N4
-93062100;- - Autres : - - - Douilles;93;;10;1;0.2;0.4;0.05;1;18;10;45.84;COMPLET;;;N1 N2 N27 N3 N4
-93062910;- - - Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93062990;- Autres cartouches et leurs parties;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93063000;- Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
-93069000;Sabres, épées, baïonnettes, lances et autres armes;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N27 N3 N4
+93011100;- - Auto-propulsées;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93011900;- - Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93012000;"- Tubes lance-missiles ; lance-flammes ; lance- grenades ; lance-torpilles et lanceurs similaires.";93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93019000;- Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93020000;Revolvers et pistolets, autres que ceux des n° 93.03 ou 93.04 Autres armes à feu et engins similaires utilisant la déflagration de la poudre (fusils et carabines de chasse, armes à feu ne pouvant être chargées que par le canon, pistolets lance-fusées et autres engins conçus uniquement pour lancer des fusées de signalisation, pistolets et revolvers pour le tir à blanc, pistolets d’abattage à cheville, canons llance-amarres, par exemple).;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93031000;-Armes à feu ne pouvant être chargées que par le canon(*);93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93032000;- Autres fusils et carabines de chasse ou de tir sportif comportant au moins un canon lisse(*).;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93033000;- Autres fusils et carabines de chasse ou de tir sportif(*);93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93039000;- Autres(*);93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93040000;Autres armes (fusils, carabines et pistolets à ressort, à air comprimé ou à gaz, matraques, par exemple), à l’exclusion de celles du n° 93.07 Parties et accessoires des articles des n°s 93.01 à;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93051000;-De revolvers ou pistolets - De fusils ou carabines du n° 93.03 :;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93052100;- - Canons lisses;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93052900;- - Autres - Autres :;93;;20;1;0.2;0.4;0.05;1;18;10;58.93;COMPLET;;;N1 N2 N68 N3 N4
+93059100;- - Des armes de guerre du n° 93.01;93;;20;1;0.2;0.4;0.05;1;18;10;58.93;COMPLET;;;N1 N2 N68 N3 N4
+93059900;- - Autres;93;;20;1;0.2;0.4;0.05;1;18;10;58.93;COMPLET;;;N1 N2 N68 N3 N4
+93062100;- - Autres : - - - Douilles;93;;10;1;0.2;0.4;0.05;1;18;10;45.84;COMPLET;;;N1 N2 N68 N3 N4
+93062910;- - - Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93062990;- Autres cartouches et leurs parties;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93063000;- Autres;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
+93069000;Sabres, épées, baïonnettes, lances et autres armes;93;;30;1;0.2;0.4;0.05;1;18;10;72.02;COMPLET;;;N1 N2 N68 N3 N4
 94011000;-Sièges des types utilisés pour véhicules aériens;94;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 94012000;- Sièges des types utilisés pour véhicules automobiles;94;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4
 94013000;- Sièges pivotants, ajustables en hauteur;94;;30;1;0.2;0.4;0.05;1;18;;56.35;COMPLET;;;N1 N2 N3 N4

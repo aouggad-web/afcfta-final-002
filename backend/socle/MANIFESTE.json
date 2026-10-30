@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-30T00:21:40.557672+00:00",
+  "construit_le": "2026-10-30T00:47:15.337381+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -641,7 +641,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GAB_tariffs.json",
       "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
-      "socle_sha256": "2fa7c9af559ff23cea9953d6ad13220aef2c53293fca46a8dfdc7be444893f3b",
+      "socle_sha256": "b63c918ad5441deed7bcd5702a242b802cf6fd5d2fede88a75de3df046c95b4e",
       "collecte": "2026-02-19T22:39:52.018966",
       "etat": "PARTIEL",
       "familles": [
@@ -654,13 +654,13 @@
       "compteurs": {
         "positions": 5239,
         "droits": 36799,
-        "droits_liquidables": 36738,
-        "positions_liquidables": 5196,
+        "droits_liquidables": 36706,
+        "positions_liquidables": 5164,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 43,
+        "taux_indisponibles": 75,
         "assiettes_source": 15717,
         "assiettes_fichier": 0,
         "assiettes_table": 21082,
@@ -2079,6 +2079,6 @@
     ],
     "positions": 370537,
     "droits": 1264451,
-    "droits_liquidables": 1226480
+    "droits_liquidables": 1226448
   }
 }
