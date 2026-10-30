@@ -1839,10 +1839,10 @@ BLOCS_DESTINATION = {
     "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
-    # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique et au Tchad. Le
-    # Congo exonère aussi les originaires de la CEEAC (arrêté n° 5808) :
-    # _prelevements_congo marque sa ligne.
-    "OHADA": {"GAB", "CAF", "TCD"},
+    # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique, au Tchad et au
+    # Cameroun. Le Congo exonère aussi les originaires de la CEEAC (arrêté
+    # n° 5808) : _prelevements_congo marque sa ligne.
+    "OHADA": {"GAB", "CAF", "TCD", "CMR"},
 }
 
 ACCISES_PAYS = {
@@ -2695,6 +2695,32 @@ def _prelevements_congo(positions, compteurs):
         droits[rang:rang] = nouvelles
         for ligne in nouvelles:
             _compter_ligne(ligne, compteurs, 1)
+
+
+#: Cameroun : prélèvement OHADA (fiche CMR_prelevement_ohada_2026-10-30.json).
+SOURCE_OHADA_CMR = (
+    "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), annexe Cameroun, § 3.26, "
+    "et rapport commun, § 3.40"
+)
+
+
+def _prelevement_ohada_cameroun(positions, compteurs):
+    """Cameroun : prélèvement OHADA (0,05 %) sur la valeur c.a.f., après la TCI."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        ligne = {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+                 "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                 "source": SOURCE_OHADA_CMR,
+                 "note": "« D'autres droits et taxes de porte, harmonisés au niveau de la CEMAC, sont appliqués à la "
+                         "valeur c.a.f. en douane des marchandises importées. Il s'agit de […] prélèvement au bénéfice "
+                         "de l'OHADA de 0,05% » (annexe Cameroun, § 3.26) ; « sur les importations des pays non "
+                         "membres » (rapport commun, § 3.40)."}
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
 
 
 #: Tchad : prélèvements communautaires à l'importation (fiche TCD_prelevements_importation_2026-10-30.json).
@@ -5491,6 +5517,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _coquilles_tec_cemac(positions)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
+        _prelevement_ohada_cameroun(positions, compteurs)
     if iso == "MRT":
         _accises_mauritanie(positions, compteurs)
     if iso == "GNQ":

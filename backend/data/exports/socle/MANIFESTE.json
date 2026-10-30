@@ -346,6 +346,10 @@
           "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
         },
         {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
           "code": "RI",
           "libelle": "Redevance Informatique"
         },
@@ -360,9 +364,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "8c4130e2f27414ff0499211256d14311303b5032dc3cfac1da88158cb850c4ae",
-      "notes_sha256": "1b2dd15868b5a9a801bcd8b066c618320ad8f7e59d671e61ab8d13eea3f55b86",
-      "socle_sha256": "380efcd968b96eb3ecd69051731e3773a1bfadd67a9bd1e9efd0f2be9c95520f",
+      "sha256": "e0c33b573c6c5a12d6747ca360fb84651ef1756b87c3b8df339467846b874bb6",
+      "notes_sha256": "824efaa7752c8860ac6ce5a1d91debbdc481b17e124f0e80cea71d6934b6eaa8",
+      "socle_sha256": "7b0d8d986a8f665be498aef536d1ac4b70938aaa8310e46ea80ee34cb3e2945c",
       "collecte": "2026-02-19T22:21:31.397885"
     },
     "COD": {
