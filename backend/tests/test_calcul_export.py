@@ -466,8 +466,8 @@ def test_cog_produits_nommes_independants_de_la_reponse(client):
 
 def test_cog_positions_ambigues_a_etablir(client):
     """Okoumé mêlé aux autres essences, sciages humides ou séchés, farines de poisson ou de crustacés, platine
-    brut ou en poudre, plaquettes que le barème du bois ne nomme pas."""
-    for code in ("44034939", "44072901", "23012000", "71101100", "44012200"):
+    brut ou en poudre, plaquettes que le barème du bois ne nomme pas, menuiseries « autres » qui comprennent les lamellés collés."""
+    for code in ("44034939", "44072901", "23012000", "71101100", "44012200", "44189000"):
         ligne = _ligne(_export(client, pays="COG", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
                        "EXPORT")
         assert ligne["montant"] is None, code

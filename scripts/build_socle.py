@@ -1411,6 +1411,9 @@ EXPORT_PAR_TEXTE = {
             **{p: (0.0, None, "Parquets, moulures, portes et fenêtres, éléments de meubles et autres produits finis "
                               "du bois : 0 % (LFR 2021, point 42, 3).")
                for p in ("4409", "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421")},
+            "44189000": (None, None, "Autres ouvrages de menuiserie et pièces de charpente : 0 % pour les produits "
+                                     "finis, mais 0,5 % pour les lamellés collés que la ligne comprend (LFR 2021, "
+                                     "point 42, 3) : à établir."),
             # Le reste du bois relève du barème de la taxe à l'exportation
             # (« ceux passibles de la taxe à l'exportation » échappent au
             # droit commun) sans y être nommé.
