@@ -1,0 +1,84 @@
+Congo — prélèvements perçus à l'importation hors droit de douane, TVA et accises : extraits verbatim (relevés le 2026-10-30)
+
+1) Journal officiel de la République du Congo, édition spéciale n° 3-2026 du lundi 5 janvier 2026 — Loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026
+   https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf — sha256 61477eabb5014dd438451d5326dab14a077c5c8096bbe3fef136e5edfbf7f74e
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2026-03-loi-finances-2026.pdf
+
+SECTION 2 : MODIFICATION DES DISPOSITIONS DOUANIERES
+
+Article quarante-huitième : Les dispositions douanières en vigueur, notamment celles prévues par l'article quarante-quatrième de la loi n° 37-2021 du 13 août 2021 portant loi de finances rectificative pour l'année 2021, sont modifiées telles que ci-dessous.
+[...]
+25. Du taux de la redevance informatique
+
+Article 44 (nouveau) : Le taux de la redevance informatique est modifié ainsi qu'il suit :
+
+- 2% à l'importation des marchandises déclarées au régime de la mise à la consommation ;
+- 2% à l'exportation des marchandises ;
+- 1% à la souscription et à la régularisation des régimes suspensifs.
+
+Le reste sans changement.
+
+2) Journal officiel de la République du Congo, édition spéciale n° 5 du 19 août 2021 — Loi n° 37-2021 du 13 août 2021 portant loi de finances rectificative pour l'année 2021
+   https://www.sgg.cg/JO/2021/congo-jo-2021-05-sp.pdf — sha256 f71bb7e561e02a712d698c3b0f42e5c05c7c45b40a0be90e245f8979bd36f32c
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2021-05-lfr-2021.pdf
+
+41- Du taux de la redevance informatique
+
+Le taux de la redevance informatique, fixé au paragraphe 16 de la loi de finances pour l'année 2004 est modifié ainsi qu'il suit :
+
+      2% à l'importation et à l'exportation des marchandises au régime de droit commun ;
+      1% à la souscription et à la régularisation des régimes suspensifs, autres que le transit communautaire et international ;
+      0,5% pour les apurements successifs des régimes précédents, sans sortie des marchandises du territoire national ;
+      0,5% pour les marchandises en transit international ou communautaire ;
+      0,5 à l'exportation des produits transformés.
+
+Toutefois, sont exonérées de la redevance informatique :
+
+      les opérations relatives aux dons, aux projets et autres importations réalisées par les ambassades, les organisations internationales et les organisations non gouvernementales couvertes par un accord de siège ;
+      l'exportation du pétrole brut.
+
+3) Organisation mondiale du commerce — Examen des politiques commerciales, rapport du Secrétariat, pays de la CEMAC (WT/TPR/S/445, 16 août 2023), rapport commun
+   https://www.wto.org/french/tratop_f/tpr_f/s445-01_f.pdf — sha256 20407b099da6b892e55f4c60c515d49dec5c726efeef68a158bf541aa711ad56
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-cemac-rapport-commun.pdf
+
+3.1.3.5 Autres droits et taxes sur les importations
+
+3.40. Au paiement du TEC s'ajoutent des prélèvements destinés à financer certaines initiatives communautaires, et des prélèvements nationaux. Au niveau communautaire, on distingue:
+
+      •   la taxe communautaire d'intégration (TCI), prélevée au taux de 1% sur les importations en provenance des pays hors de la zone CEMAC, et destinée au financement du processus d'intégration dans la zone;
+
+      •   la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les importations hors-CEEAC, et destinée à financer la CEEAC ainsi que ses institutions (actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad); et
+
+      •   le prélèvement OHADA, effectué au taux de 0,05% sur les importations des pays non membres, et destiné au financement de l'Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA).
+
+3.41. D'autres prélèvements nationaux, comme la redevance statistique et la redevance informatique, sont opérés à des taux variables selon le pays (Annexes-pays).
+
+4) Organisation mondiale du commerce — WT/TPR/S/445, annexe 2 Congo
+   https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf — sha256 79ea6adc4c3a59fce74d42a5ec6390bdcf36e1b45d16bb9fdab41237eb14583c
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-annexe-congo.pdf
+
+3.17. Au Congo, près de 98% de traitement des déclarations en douane est informatisé sur la base du Système douanier automatisé (SYDONIA World) depuis 2014. Une redevance informatique de la valeur c.a.f. est applicable aux importations au taux: 2% pour les importations ayant une valeur c.a.f inférieure ou égale à 100 millions de FCFA; 1% pour les importations d'une valeur supérieure à 100 millions de FCFA, 0% pour les importations de corps diplomatiques, et organismes assimilés.
+[...]
+3.48. Le Congo a démantelé toute restriction, y compris tarifaire, sur les importations en provenance des autres pays membres de la CEMAC. Par ailleurs, la Contribution communautaire d'intégration (CCI) ne s'applique pas aux échanges intra-CEEAC et la taxe OHADA ne s'applique pas aux échanges intra-OHADA.
+
+5) Journal officiel de la République du Congo n° 35 de 2005 — Arrêté n° 5808 du 20 septembre 2005 portant application du prélèvement OHADA
+   https://www.sgg.cg/JO/2005/congo-jo-2005-35.pdf — sha256 515c67ddb6b976064526930e3aaa052e247603282ee40ce17411bdaa86ecf95c
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2005-35-prelevement-ohada.pdf
+
+Article premier : En application des dispositions de la loi n°33-2003 du 30 décembre 2003, la collecte du prélèvement OHADA est rendue obligatoire, en vue d'assurer le paiement des cotisations de la République du Congo aux budgets et aux dotations de l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires.
+
+Article 2 : Sont exonérés du prélèvement OHADA :
+    - les aides et dons à caractère alimentaire, médical ou paramédical ;
+    - les produits pharmaceutiques et les matériels et équipements à usage médical destinés à la médecine humaine ou vétérinaire ;
+    - les matériels et fournitures à usage scolaire et universitaire ;
+    - les matériels, équipements et fournitures importés par les centres et institutions de recherche scientifique agréés ou reconnus comme tels ;
+    - les matériels et matériaux acquis sur un financement extérieur dont la convention comprend une clause exonération ;
+    - les bien importés par les entreprises bénéficiaires d'un régime fiscal stabilisé en vigueur à la date de publication du présent arrêté ;
+    - les produits reconnus originaires des communautés économiques régionales et sousrégionales dont la République du Congo est membre ;
+    - les biens et matériels importés sous le régime des franchises diplomatiques ;
+    - les effets personnels des voyageurs admis en franchise des droits et taxes d'entrée dans le territoire douanier national ;
+    - les biens détruits accidentellement dans le cadre des enquêtes douanières.
+
+Article 3 : Le prélèvement OHADA est assis sur la valeur en douane des importations de produits originaires des pays tiers à l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires, mis à la consommation.
+Article 4 : La base de détermination du prélèvement OHADA est la valeur CAF en douane des marchandises importées.
+Article 5 : Le taux du prélèvement OHADA est de 0,05% de la valeur définie à l'article 4 du présent arrêté.

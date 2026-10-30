@@ -380,6 +380,14 @@
           "libelle": "Cotisation OHADA"
         },
         {
+          "code": "CCI",
+          "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
+        },
+        {
+          "code": "RI",
+          "libelle": "Redevance informatique"
+        },
+        {
           "code": "TVA",
           "libelle": "Taxe sur la Valeur Ajoutée"
         },
@@ -394,9 +402,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "eb4bd987285cb20fb259d09a60b49399be6f9a76a08697fc509ca23f37535bc2",
-      "notes_sha256": "8cce851acd79a452f7345cdd3c897d681131f2df952018010bb8ef270b726ab3",
-      "socle_sha256": "ed9fc9c8f754c8ce3179630b529d7ee9735d9690f3725eb2ef7b4aa7e0f7e6df",
+      "sha256": "38a8341e3102109b9bb6d888b8143621010bbd5a3cc54643b9d60539503540ad",
+      "notes_sha256": "66a0b3aa303cdd47b6c8e89252ed2c11951ae3b44959f23ed962f3ba77ada769",
+      "socle_sha256": "2ca8acca261667825a4d7c39afc73e06867a8b00ec6fbf7ee5de6d4102b6428b",
       "collecte": "2026-02-19T22:39:52.620876"
     },
     "COM": {
