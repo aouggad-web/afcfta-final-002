@@ -1,18 +1,26 @@
 ﻿Note;Prélèvement;Texte
-N1;TVA;CGI, TVA : « La base imposable à la taxe sur la valeur ajoutée, en ce qui concerne les importations, est établie en ajoutant à la valeur imposable telle qu'elle est définie par les articles 23 à 26 du Code des douanes de la CEMAC, le montant du droit de douanes et du droit d'accises ».
-N2;DA;"art. 289 bis (2) f ; annexe, 0302.70, 0303.80, 0305.20 foies, œufs et laitances de poissons 25 %"
-N3;DA;"art. 289 bis (2) e ; annexe, 0303.10.00 saumons 25 % (SH 2002 : 0303.11, 0303.19, 0303.22)"
-N4;DA;"Caviar et foie gras 25 % (art. 292 g) ; la position comprend aussi les succédanés du caviar et les autres préparations de foie. art. 289 bis (2) g ; art. 292 g"
-N5;DA;"Eaux : l'eau minérale est exclue, les eaux gazéifiées et autres eaux sont soumises à 10 % ; la position ne les sépare pas. art. 289 bis (2) a ; annexe, chapitre 22"
-N6;DA;"art. 289 bis (2) a ; annexe, chapitre 22, boissons non alcoolisées à l'exception de l'eau minérale 10 %"
-N7;DA;"Taux ad valorem (25 % boissons, 30 % tabacs) majoré d'un droit spécifique par litre, par cigare ou par paquet (art. 293) : le volume ou le nombre n'est pas saisi. art. 292 et 293 ; annexe"
-N8;DA;"art. 289 bis (1) a ; annexe, chapitre 22, boissons alcoolisées 25 %"
-N9;DA;"art. 289 bis (1) b ; art. 292 a ; annexe, chapitre 24, 30 %"
-N10;DA;"art. 289 bis (2) b ; annexe, chapitre 33, parfums et cosmétiques 25 % (positions énumérées)"
-N11;DA;"art. 289 bis (2) c ; annexe, chapitre 93 et position 3601.00.00, armes et munitions 25 %"
-N12;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N13;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N14;DA;"art. 289 bis (2) d ; annexe, chapitre 71, bijoux et pierres précieuses 25 %"
-N15;DA;"Soumis seulement au-delà de 15 ans (25 %) — l'âge n'est pas dans la position. art. 289 bis (2) i ; annexe"
-N16;DA;"Véhicules de tourisme : neufs n'excédant pas 2 500 cm3 exclus ; plus de 2 500 cm3 12,5 % de 0 à 15 ans, 25 % au-delà — l'âge n'est pas dans la position. art. 289 bis (1) c et (2) i ; annexe"
-N17;DA;"art. 289 bis (1) d ; art. 292 c ; annexe, motocycles de plus de 250 cm3 12,5 %"
+N1;TUA;« Prélèvement de l'Union africaine (0,2%) », loi de finances 2019, art. 19.
+N2;CCI;"« Taxe CEEAC (0,4%) » ; « prélevée au taux de 0,4% sur les importations hors-CEEAC […] (actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad) » (rapport commun, § 3.40)."
+N3;OHADA;"« Redevances OHADA 0,05% » ; « effectué au taux de 0,05% sur les importations des pays non membres » (rapport commun, § 3.40)."
+N4;COMIFAC;« Redevance COMIFAC forêts tropicales (0,1%) », loi de finances 2008, art. 31 et 32.
+N5;REIF;"« Redevance équipement informatique finances (REIF) de 0,50% » ; la « redevance informatique 0,5% » du même tableau est la même recette (une seule ligne au budget 2026, « Redevance informatique »)."
+N6;RDS;« Redevance statistique 0,25% », loi de finances 2016, art. 30.
+N7;RGS;"« Redevance gestion scanner 0,25 », loi de finances 2012, art. 18, modifié par la loi de finances 2016, art. 23 ; « perçue sur toutes les importations, qu'elles soient scannées ou non » (§ 3.22)."
+N8;RCCAC;"« Redevance conseil des chargeurs (0,25%) », loi de finances 2014, art. 26 ; « 0,25% de la valeur des importations »."
+N9;TVA;CGI, TVA : « La base imposable à la taxe sur la valeur ajoutée, en ce qui concerne les importations, est établie en ajoutant à la valeur imposable telle qu'elle est définie par les articles 23 à 26 du Code des douanes de la CEMAC, le montant du droit de douanes et du droit d'accises ».
+N10;DA;"art. 289 bis (2) f ; annexe, 0302.70, 0303.80, 0305.20 foies, œufs et laitances de poissons 25 %"
+N11;DA;"art. 289 bis (2) e ; annexe, 0303.10.00 saumons 25 % (SH 2002 : 0303.11, 0303.19, 0303.22)"
+N12;DA;"Caviar et foie gras 25 % (art. 292 g) ; la position comprend aussi les succédanés du caviar et les autres préparations de foie. art. 289 bis (2) g ; art. 292 g"
+N13;DA;"Eaux : l'eau minérale est exclue, les eaux gazéifiées et autres eaux sont soumises à 10 % ; la position ne les sépare pas. art. 289 bis (2) a ; annexe, chapitre 22"
+N14;DA;"art. 289 bis (2) a ; annexe, chapitre 22, boissons non alcoolisées à l'exception de l'eau minérale 10 %"
+N15;DA;"Taux ad valorem (25 % boissons, 30 % tabacs) majoré d'un droit spécifique par litre, par cigare ou par paquet (art. 293) : le volume ou le nombre n'est pas saisi. art. 292 et 293 ; annexe"
+N16;DA;"art. 289 bis (1) a ; annexe, chapitre 22, boissons alcoolisées 25 %"
+N17;DA;"art. 289 bis (1) b ; art. 292 a ; annexe, chapitre 24, 30 %"
+N18;DA;"art. 289 bis (2) b ; annexe, chapitre 33, parfums et cosmétiques 25 % (positions énumérées)"
+N19;DA;"art. 289 bis (2) c ; annexe, chapitre 93 et position 3601.00.00, armes et munitions 25 %"
+N20;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N21;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N22;DA;"art. 289 bis (2) d ; annexe, chapitre 71, bijoux et pierres précieuses 25 %"
+N23;DA;"Soumis seulement au-delà de 15 ans (25 %) — l'âge n'est pas dans la position. art. 289 bis (2) i ; annexe"
+N24;DA;"Véhicules de tourisme : neufs n'excédant pas 2 500 cm3 exclus ; plus de 2 500 cm3 12,5 % de 0 à 15 ans, 25 % au-delà — l'âge n'est pas dans la position. art. 289 bis (1) c et (2) i ; annexe"
+N25;DA;"art. 289 bis (1) d ; art. 292 c ; annexe, motocycles de plus de 250 cm3 12,5 %"

@@ -192,28 +192,29 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CAF_tariffs.json",
       "source_sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
-      "socle_sha256": "1e6a20907e2a9835c660b831941b497eb23724daa696aab1abc948cb0d9dbfd1",
+      "socle_sha256": "e8b74c0e19d574c369114bfafc8951cc9cdd609980e67787308125f6ab37eb8a",
       "collecte": "2026-02-19T22:39:54.085446",
       "etat": "PARTIEL",
       "familles": [
         "accise",
         "communautaire",
         "droit",
+        "redevance",
         "tva"
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 21125,
-        "droits_liquidables": 21023,
+        "droits": 57798,
+        "droits_liquidables": 57696,
         "positions_liquidables": 5188,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 51,
-        "assiettes_source": 15717,
+        "assiettes_source": 10478,
         "assiettes_fichier": 0,
-        "assiettes_table": 5408,
+        "assiettes_table": 47320,
         "assiettes_indisponibles": 0,
         "sans_designation": 5,
         "droits_specifiques": 0,
@@ -2078,7 +2079,7 @@
       "ZWE"
     ],
     "positions": 370537,
-    "droits": 1274930,
-    "droits_liquidables": 1248775
+    "droits": 1311603,
+    "droits_liquidables": 1285448
   }
 }
