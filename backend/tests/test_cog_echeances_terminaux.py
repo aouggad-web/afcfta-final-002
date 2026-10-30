@@ -49,7 +49,7 @@ def test_la_viande_reste_exoneree_par_l_annexe_3_apres_la_circulaire(positions):
     assert _taux(apres, "TVA") == 0.0
 
 
-def test_l_export_lit_la_mesure_a_sa_date_de_reference(tmp_path, monkeypatch):
+def test_l_export_lit_la_mesure_a_sa_date_de_reference(positions, tmp_path, monkeypatch):
     """Cellule et total de l'export suivent le même taux, avant comme après le terme."""
     import exporter_tarifs_socle as exp
 
