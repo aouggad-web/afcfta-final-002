@@ -1,0 +1,39 @@
+{
+ "schema_version": 1,
+ "objet": "Congo : prélèvements perçus au cordon douanier hors droit de douane, TVA et accises — redevance informatique (2 %), contribution communautaire d'intégration de la CEEAC (0,4 %, exonération des originaires de la CEEAC) et prélèvement OHADA (0,05 %, exonération des originaires de l'OHADA et de la CEEAC, des produits pharmaceutiques et du matériel médical)",
+ "destination_iso3": "COG",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "primaire pour la redevance informatique (loi n° 42-2025, JO édition spéciale n° 3-2026) et le prélèvement OHADA (arrêté n° 5808, JO n° 35 de 2005) ; officielle secondaire pour la CCI et l'assiette de la redevance informatique (rapport du Secrétariat de l'OMC, WT/TPR/S/445, 2023, établi avec les informations des autorités) — l'acte de la CEEAC instituant la CCI et le paragraphe 16 de la loi de finances 2004 n'ont pas été trouvés",
+ "source": {
+  "url": "https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf",
+  "institution": "Secrétariat général du Gouvernement (Congo), Journal officiel"
+ },
+ "regle": {
+  "valeur": "Redevance informatique 2 % de la valeur c.a.f. à l'importation ; CCI 0,4 % de la valeur c.a.f., sauf originaires de la CEEAC ; OHADA 0,05 % de la valeur CAF, sauf originaires de l'OHADA ou de la CEEAC, nul sur les produits pharmaceutiques (ch. 30) et le matériel médical (90.18, 90.21, 9022.12 à 9022.14, 9022.21).",
+  "verbatim": "Article 44 (nouveau) : Le taux de la redevance informatique est modifié ainsi qu'il suit :\n\n- 2% à l'importation des marchandises déclarées au régime de la mise à la consommation ;",
+  "reference": "Loi n° 42-2025 (LF 2026), art. 48, point 25 ; loi n° 37-2021 (LFR 2021), art. 44, point 41 ; arrêté n° 5808 du 20/09/2005, art. 2 à 5 ; OMC, WT/TPR/S/445, rapport commun § 3.40, annexe Congo § 3.17 et 3.48",
+  "portee": "scripts/build_socle._prelevements_congo : lignes CCI et RI ajoutées après le prélèvement OHADA, avant le droit d'accises ; ligne OHADA marquée « OHADA_CEEAC » et nulle sur les produits pharmaceutiques et le matériel médical ; backend/services/exoneration_origine.py (bloc OHADA_CEEAC).",
+  "texte_archive": "sources/COG_prelevements_importation.texte-extrait.txt",
+  "sha256": "5372b24e5f7a5125af05f8fdbd2898e0f3689f5880ba2211b5db416d3c9869b0"
+ },
+ "decisions": [
+  "Assiette de la redevance informatique et de la CCI : la valeur c.a.f., qui est la valeur en douane du Code des douanes de la CEMAC. Ni le droit d'accises (CIF + DD, art. 7 (1) a) ni la TVA (CIF + DD + DA) ne les comprennent : les insérer avant l'accise ne change pas ces assiettes.",
+  "Redevance informatique : 2 % sans seuil. La LF 2026 réécrit les taux (« 2% à l'importation des marchandises déclarées au régime de la mise à la consommation ») ; le taux de 1 % au-delà de 100 millions FCFA que cite l'OMC (2023) n'y figure plus.",
+  "Prélèvement OHADA : l'art. 2 de l'arrêté n° 5808 exonère « les produits reconnus originaires des communautés économiques régionales et sous-régionales dont la République du Congo est membre » ; la CEMAC est comprise dans la CEEAC. Les originaires de l'OHADA (art. 3) et de la CEEAC en sont donc exonérés (bloc OHADA_CEEAC).",
+  "Matériel médical exonéré du prélèvement OHADA : les seules positions dont l'usage médical est dans le libellé (90.18 instruments de médecine et de chirurgie, 90.21 articles d'orthopédie et prothèses, 9022.12 à 9022.14 et 9022.21 appareils à usage médical).",
+  "Sans origine déclarée, la CCI et le prélèvement OHADA restent dus, comme pour un pays tiers."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Contribution à l'Union africaine (0,2 %) : citée par des guides privés (« contribution à l'intégration africaine »), absente du rapport de l'OMC et de tout texte congolais trouvé — non servie.",
+  "Taxe statistique (0,2 %) : portée par le tarif collecté (douanes.gouv.cg), non vérifiée sur un texte — laissée telle quelle.",
+  "Exonérations subordonnées à l'importateur ou à l'opération (dons, projets, ambassades et organisations internationales pour la redevance informatique ; aides et dons, fournitures scolaires, centres de recherche, financements extérieurs, régimes stabilisés, franchises pour le prélèvement OHADA) — non servies.",
+  "Acte de la CEEAC instituant la CCI et paragraphe 16 de la loi de finances 2004 (assiette d'origine de la redevance informatique) : non trouvés."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/COG_prelevements_importation.texte-extrait.txt",
+   "sha256": "5372b24e5f7a5125af05f8fdbd2898e0f3689f5880ba2211b5db416d3c9869b0"
+  }
+ ]
+}
