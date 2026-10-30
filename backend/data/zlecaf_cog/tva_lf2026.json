@@ -1,0 +1,310 @@
+{
+ "_objet": "TVA à l'importation au Congo : biens exonérés (annexe 3) et soumis au taux réduit de 5 % (annexe 5) de la loi TVA, listes de la loi de finances 2026 (loi n° 42-2025, point 18.3). Préfixes de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle qui s'applique l'emporte ; les autres positions gardent le taux normal de 18 %. « taux » null : la position ne permet pas de dire si le bien listé est visé. La circulaire n° 0138 (jusqu'au 31/12/2026) s'applique ensuite.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/COG_tva_2026-10-30.json",
+ "source": "Loi TVA du Congo, annexes 3 et 5 (loi n° 42-2025 du 31 décembre 2025, loi de finances 2026, point 18.3)",
+ "regles": [
+  {
+   "prefixes": [
+    "0201",
+    "0202",
+    "0203",
+    "0204",
+    "0205",
+    "0206",
+    "0207"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 02.01 à 02.07 — Viandes et volailles »."
+  },
+  {
+   "prefixes": [
+    "03035000",
+    "03036000",
+    "03037100",
+    "03037400"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 03.03.50.00, 03.03.60.00, 03.03.71.00, 03.03.74.00 — Poisson de mer à l'exception des poissons de luxe comme le saumon congelé, le thon et autres »."
+  },
+  {
+   "prefixes": [
+    "03055"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 03.05.51.00 à 03.05.59.00 ; 03.05.59.91 — Poisson salé »."
+  },
+  {
+   "prefixes": [
+    "10011090"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 10.01.10.90 — Blé autre que de semence »."
+  },
+  {
+   "prefixes": [
+    "10059000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 10.05.90.00 — Maïs autre que de semence »."
+  },
+  {
+   "prefixes": [
+    "15119000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 15.11.90.00 — Huile végétale »."
+  },
+  {
+   "prefixes": [
+    "19011011"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 19.01.10.11 — Préparations pour l'alimentation des enfants »."
+  },
+  {
+   "prefixes": [
+    "21021000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 21.02.10.00 — Levure »."
+  },
+  {
+   "prefixes": [
+    "230990"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 23.09.90.10 à 23.09.90.90 — Aliments de bétail à l'exception des aliments pour chiens et chats »."
+  },
+  {
+   "prefixes": [
+    "25010019"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 25.01.00.19 — Sel »."
+  },
+  {
+   "prefixes": [
+    "29392000"
+   ],
+   "taux": null,
+   "motif": "loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 : « 29.30.21.00 — Quinine et ses sels », exonérée ; ce numéro n'existe pas au tarif (la quinine relève de la 29.39) et la position 2939.20 réunit la quinine et les autres alcaloïdes du quinquina."
+  },
+  {
+   "prefixes": [
+    "29371200"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 29.37.12.00 — Insuline et ses sels »."
+  },
+  {
+   "prefixes": [
+    "2941"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 29.41 — Antibiotiques »."
+  },
+  {
+   "prefixes": [
+    "30"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 30 — Produits pharmaceutiques »."
+  },
+  {
+   "prefixes": [
+    "3102"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 31.02 — Engrais »."
+  },
+  {
+   "prefixes": [
+    "3404"
+   ],
+   "taux": null,
+   "motif": "loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 : « 34.04 — Cire pour art dentaire », exonérée ; la position 34.04 (cires artificielles et cires préparées) comprend surtout d'autres cires, au taux normal de 18 %."
+  },
+  {
+   "prefixes": [
+    "37011000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 37.01.10.00 — Plaques et films pour rayons X »."
+  },
+  {
+   "prefixes": [
+    "37021000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 37.02.10.00 — Pellicules pour rayons X »."
+  },
+  {
+   "prefixes": [
+    "3808"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 38.08 — Insecticides et pesticides »."
+  },
+  {
+   "prefixes": [
+    "4014"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 40.14.00.00 — Articles d'hygiène et de pharmacie en caoutchouc »."
+  },
+  {
+   "prefixes": [
+    "40151100",
+    "40151900"
+   ],
+   "taux": null,
+   "motif": "loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 : « 40.15.19.00 — Gants pour la chirurgie », exonérés ; le numéro est celui des autres gants, le libellé celui de la 4015.11 : la loi ne dit pas laquelle des deux positions est exonérée."
+  },
+  {
+   "prefixes": [
+    "48202000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 48.20.20.00 — Cahiers »."
+  },
+  {
+   "prefixes": [
+    "49011000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 49.01.10.00 — Livres scolaires »."
+  },
+  {
+   "prefixes": [
+    "49019100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 49.01.91.00 — Livres autres que les livres scolaires »."
+  },
+  {
+   "prefixes": [
+    "70151000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 70.15.10.00 — Verrerie des lunettes et montures »."
+  },
+  {
+   "prefixes": [
+    "84192000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 84.19.20.00 — Stérilisateurs médico-chirurgicaux de laboratoires »."
+  },
+  {
+   "prefixes": [
+    "8713"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 87.13 — Fauteuils roulants et autres véhicules pour invalides »."
+  },
+  {
+   "prefixes": [
+    "87142000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 87.14.20.00 — Parties de fauteuils roulants et autres véhicules pour invalides »."
+  },
+  {
+   "prefixes": [
+    "90049010"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 90.04.90.10 — Lunettes correctrices »."
+  },
+  {
+   "prefixes": [
+    "9018",
+    "9019",
+    "9020",
+    "9021",
+    "9022"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 90.18.11.00 à 90.22.90 — Appareils médicaux »."
+  },
+  {
+   "prefixes": [
+    "94021010"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 94.02.10.10 — Fauteuils de dentistes »."
+  },
+  {
+   "prefixes": [
+    "94029000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 3 de la loi TVA (biens de première nécessité) : « 94.02.90.00 — Autres mobiliers pour la médecine et la chirurgie »."
+  },
+  {
+   "prefixes": [
+    "0401"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 04.01 — Lait et crème de lait, non concentrés additionnés de sucre ou d'autres édulcorants »."
+  },
+  {
+   "prefixes": [
+    "0402"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 04.02 — Lait et crème de lait, concentrés ou additionnés de sucre »."
+  },
+  {
+   "prefixes": [
+    "07020000"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 07.02.00.00 — Tomate »."
+  },
+  {
+   "prefixes": [
+    "10062000",
+    "10063090",
+    "10064000"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 10.06.20.00, 10.06.30.90, 10.06.40.00 — Riz »."
+  },
+  {
+   "prefixes": [
+    "11010010"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 11.01.00.10 — Farine de froment »."
+  },
+  {
+   "prefixes": [
+    "17019910"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 17.01.99.10 — Sucre »."
+  },
+  {
+   "prefixes": [
+    "19059010"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 19.05.90.10 — Produits de la boulangerie fine, de la pâtisserie ou de la biscuiterie, même additionnés de cacao en toutes proportions »."
+  },
+  {
+   "prefixes": [
+    "19059090"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 19.05.90.90 — Autres produits de la boulangerie »."
+  },
+  {
+   "prefixes": [
+    "25010011"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi n° 42-2025 (loi de finances 2026), point 18.3, annexe 5 de la loi TVA (biens de consommation courante) : « 25.01.00.11 — Sel »."
+  }
+ ]
+}
