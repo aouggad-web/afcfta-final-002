@@ -13,7 +13,7 @@
   "valeur": "TVA 0 % sur les biens de l'art. 210, 10) réécrit par la LFR 2026 (lait d'au plus 6 % de matières grasses, 1,5 % en poudre, yaourts, beurre, margarine, sel, viandes et volailles, poissons, sucre, riz, conserves de légumes et de maquereaux, pâtes, papier journal, cahiers, produits pharmaceutiques, ciment, gravier, sable) et sur les aérogénérateurs (art. 210, 19)) ; 10 % sur le matériel de pêche, les moteurs hors-bord, le fer à béton, les conserves de fruits (LF 2026), les pièces détachées et essieux automobiles, les carreaux et les pointes (LFR 2026) ; 5 % sur la farine, la levure, le gluten et les œufs (LF 2026) ; 18 % ailleurs.",
   "verbatim": "2) Taux réduit : 10% applicable aux opérations de production, d’importation et de vente portant sur les produits\nsuivants :\n\n-pièces détachées automobiles ;",
   "reference": "CGI du Gabon, art. 210 et 221 : loi n° 041/2025 (loi de finances 2026) ; loi n° 002/2026 (loi de finances rectificative 2026)",
-  "portee": "backend/data/zlecaf_gab/tva_lf2026_lfr2026.json, appliqué par scripts/build_socle._tva_gabon au socle GAB : 184 lignes de TVA à 0 %, 33 à 10 %, 8 à 5 %, 4 982 à 18 % et 32 sans taux, motivées en note.",
+  "portee": "backend/data/zlecaf_gab/tva_lf2026_lfr2026.json, appliqué par scripts/build_socle._tva_par_position au socle GAB : 184 lignes de TVA à 0 %, 33 à 10 %, 8 à 5 %, 4 982 à 18 % et 32 sans taux, motivées en note.",
   "texte_archive": "sources/GAB_tva_lf2026.texte-extrait.txt",
   "sha256": "0700f0b71fe92d912b23bba0222b618dffa00c14a782e64a0a22229020f1a321"
  },

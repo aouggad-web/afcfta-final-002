@@ -28,3 +28,10 @@ PDF de 2,7 Mo, sous le seuil de poids toléré : archivé intégralement.
 ## État de l'enregistrement
 
 Juridiction COG : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — seule la TVA (taux normal et zéro) est vérifiée ; il manque `excise_measures.json`, `import_levies.json` et le TEC CEMAC. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
+
+## Prélèvements à l'importation (relevé du 2026-10-30)
+
+- **Redevance informatique : 2 %** à l'importation des marchandises mises à la consommation — loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25 (art. 44 nouveau) ; rédaction antérieure : loi n° 37-2021 (LFR 2021), art. 44, point 41. Assiette : valeur c.a.f. (OMC, WT/TPR/S/445, annexe Congo, § 3.17).
+- **Contribution communautaire d'intégration de la CEEAC : 0,4 %** des importations hors CEEAC, « actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad » (OMC, WT/TPR/S/445, rapport commun, § 3.40 ; annexe Congo, § 3.48).
+- **Prélèvement OHADA : 0,05 %** de la valeur CAF des produits originaires des pays tiers à l'OHADA ; exonérés notamment les produits originaires des communautés dont le Congo est membre et les produits pharmaceutiques et matériels médicaux (arrêté n° 5808 du 20 septembre 2005, art. 2 à 5).
+- Fiche : `backend/data/legal_refs/zlecaf_application/COG_prelevements_importation_2026-10-30.json`.

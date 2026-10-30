@@ -1819,6 +1819,9 @@ def sources_disponibles():
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
     "CIA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
+    # TCI : « s'applique aux importations des Etats membres de produits originaires
+    # des pays tiers » (acte additionnel n° 03/00-CEMAC-046-CM-05, art. 2).
+    "TCI": "CEMAC",
 }
 #: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
 BLOCS_DESTINATION = {
@@ -1827,11 +1830,11 @@ BLOCS_DESTINATION = {
     # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
     # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
     "AES_UEMOA": {"BFA", "MLI", "NER"},
+    "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
-    # Prélèvement OHADA : marqué au seul Gabon. L'arrêté congolais n° 5808 (2005)
-    # en exonère aussi les originaires de la CEMAC et de la CEEAC et les produits
-    # pharmaceutiques : la ligne du Congo attend sa propre règle.
+    # Prélèvement OHADA : marqué ici au seul Gabon. Le Congo exonère aussi les
+    # originaires de la CEEAC (arrêté n° 5808) : _prelevements_congo marque sa ligne.
     "OHADA": {"GAB"},
 }
 
@@ -2591,14 +2594,19 @@ def _prelevements_gabon(positions, compteurs):
         _compter_ligne(css, compteurs, 1)
 
 
-#: Gabon : taux de la TVA par position (fiche GAB_tva_2026-10-29.json).
-TVA_GAB = os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json")
+#: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
+#: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
+#: COG_tva_2026-10-30.json). Ailleurs, le taux normal de 18 %.
+TVA_PAR_POSITION = {
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
+    "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
+}
 
 
-def _tva_gabon(positions, compteurs):
-    """Gabon : exonérations (CGI art. 210) et taux réduits de 10 et 5 % (art. 221)
-    de la loi de finances 2026 et de la LFR 2026 ; ailleurs, le taux normal de 18 %."""
-    with open(TVA_GAB, encoding="utf-8") as f:
+def _tva_par_position(iso, positions, compteurs):
+    """Exonérations et taux réduits de la TVA, position par position, d'après la
+    table du pays (TVA_PAR_POSITION)."""
+    with open(TVA_PAR_POSITION[iso], encoding="utf-8") as f:
         table = json.load(f)
     for code, position in positions.items():
         regle = next(
@@ -2616,6 +2624,86 @@ def _tva_gabon(positions, compteurs):
             d["source"] = table["source"]
             d["note"] = f"{regle.get('motif') or regle['reference']} {d.get('note') or ''}".strip()
             _compter_ligne(d, compteurs, 1)
+
+
+#: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
+SOURCE_RI_COG = "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25"
+SOURCE_CCI_COG = "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40"
+SOURCE_OHADA_COG = "Arrêté n° 5808 du 20 septembre 2005 portant application du prélèvement OHADA, art. 2 à 5"
+#: Prélèvement OHADA : produits exonérés (arrêté n° 5808, art. 2) que la position suffit à désigner.
+OHADA_EXONERE_COG = ("30", "9018", "9021", "902212", "902213", "902214", "902221")
+
+
+def _prelevements_congo(positions, compteurs):
+    """Congo : contribution communautaire d'intégration de la CEEAC (0,4 %) et
+    redevance informatique (2 %) sur la valeur en douane ; prélèvement OHADA
+    exonéré pour les originaires de la CEEAC et pour les produits pharmaceutiques
+    et le matériel médical (arrêté n° 5808)."""
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        ohada = next((d for d in droits if d.get("code") == "OHADA"), None)
+        if ohada:
+            _compter_ligne(ohada, compteurs, -1)
+            ohada.update(source=SOURCE_OHADA_COG, assiette="CIF", assiette_origine="regle_de_pays",
+                         exoneration_origine="OHADA_CEEAC")
+            ohada["note"] = (
+                "Art. 3 à 5 : 0,05 % de la « valeur CAF en douane » des « produits originaires des pays tiers à "
+                "l'OHADA » ; art. 2 : exonérés « les produits reconnus originaires des communautés économiques "
+                "régionales et sous-régionales dont la République du Congo est membre »."
+            )
+            if code.startswith(OHADA_EXONERE_COG):
+                ohada["taux"] = 0.0
+                ohada["note"] = (
+                    "Exonéré, arrêté n° 5808, art. 2 : « les produits pharmaceutiques et les matériels et "
+                    "équipements à usage médical destinés à la médecine humaine ou vétérinaire »."
+                )
+            _compter_ligne(ohada, compteurs, 1)
+        apres = [i for i, d in enumerate(droits) if d.get("code") in ("TCI", "TS", "OHADA")]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_CCI_COG,
+             "note": "« la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les "
+                     "importations hors-CEEAC […] (actuellement collectée par le Congo, le Gabon, la République "
+                     "centrafricaine et le Tchad) » ; elle « ne s'applique pas aux échanges intra-CEEAC » (annexe "
+                     "Congo, § 3.48)."},
+            {"code": "RI", "code_source": "RI", "libelle": "Redevance informatique",
+             "famille": famille("RI"), "taux": 2.0, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_RI_COG,
+             "note": "Art. 44 nouveau : « 2% à l'importation des marchandises déclarées au régime de la mise à la "
+                     "consommation » ; assise sur la valeur c.a.f. (OMC, WT/TPR/S/445, annexe Congo, § 3.17). "
+                     "Due aussi sur les biens de la circulaire n° 0138 (« à l'exception de la redevance "
+                     "informatique et des taxes communautaires »)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Congo : véhicules neufs de tourisme au taux réduit de 5 % du droit de douane et
+#: de la TVA (loi de finances 2024, art. 1er, al. 2, réécrit par la LF 2026, point 44).
+VEHICULES_NEUFS_COG = ("87033110", "87033210", "87033290")
+
+
+def _vehicules_neufs_congo(positions, compteurs):
+    """Le taux réduit ne vaut que pour les véhicules neufs, que la position ne
+    distingue pas des véhicules d'occasion : droit de douane et TVA sans taux."""
+    motif = (
+        "Loi n° 42-2025 (LF 2026), point 44 : « Les droits et taxes exigibles à l'importation des véhicules "
+        "automobiles neufs de tourisme, relevant des positions tarifaires 87033110, 87033210 et 87033290, sont fixés "
+        "au taux réduit de 5% des droits de douanes et de 5% de la taxe sur la valeur ajoutée » ; véhicule d'occasion "
+        "au taux de droit commun — l'état neuf n'est pas dans la position."
+    )
+    for code in VEHICULES_NEUFS_COG:
+        for d in positions.get(code, {}).get("droits") or []:
+            if d.get("code") in ("DD", "TVA"):
+                _compter_ligne(d, compteurs, -1)
+                d["taux"] = None
+                d["note"] = motif
+                _compter_ligne(d, compteurs, 1)
 
 
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
@@ -5400,11 +5488,16 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # Congo : après les accises, dont dépend l'exclusion des poissons de luxe
     # de la circulaire n° 0138 (le crawl ne porte pas toutes les accises).
     if iso == "COG":
+        # Annexes de la loi TVA, puis la circulaire n° 0138, temporaire, qui les
+        # précise jusqu'au 31/12/2026, puis les véhicules neufs de la LF 2026.
+        _tva_par_position("COG", positions, compteurs)
         _mesures_nationales_congo(positions)
+        _vehicules_neufs_congo(positions, compteurs)
+        _prelevements_congo(positions, compteurs)
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
-        _tva_gabon(positions, compteurs)
+        _tva_par_position("GAB", positions, compteurs)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon

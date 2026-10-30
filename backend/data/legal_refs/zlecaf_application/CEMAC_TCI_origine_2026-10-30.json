@@ -1,0 +1,35 @@
+{
+ "schema_version": 1,
+ "objet": "CEMAC : la taxe communautaire d'intégration (TCI, 1 %) ne frappe que les produits originaires des pays tiers — les originaires de la CEMAC en sont exclus, comme du droit de douane",
+ "destination_iso3": "CEMAC",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "primaire — acte additionnel n° 03/00-CEMAC-046-CM-05 du 14 décembre 2000, reproduit dans le Tarif des douanes de la CEMAC publié par la DGDDI du Gabon ; l'acte additionnel n° 01/CEMAC-046-CCE du 25 février 2016 portant réaménagement du mécanisme (cité par l'arrêté congolais n° 8498 de 2016) n'a pas pu être lu",
+ "source": {
+  "url": "https://douanes.ga/med/pdf/tarif-des-douanes-de-la-cemac-version-originale-pdf-210608020644.pdf",
+  "institution": "Commission de la CEMAC (Tarif des douanes), publié par la DGDDI du Gabon"
+ },
+ "regle": {
+  "valeur": "TCI de 1 % de la valeur en douane (CAF), due sur les seuls produits originaires des pays tiers à la CEMAC ; les originaires du Cameroun, de la Centrafrique, du Congo, du Gabon, de la Guinée équatoriale et du Tchad en sont exclus.",
+  "verbatim": "La TCI s'applique aux importations des Etats membres de produits originaires des pays tiers, mis à la consommation.",
+  "reference": "Acte additionnel n° 03/00-CEMAC-046-CM-05 du 14 décembre 2000, art. 1er, 2, 4 et 5",
+  "portee": "scripts/build_socle.EXONERATION_ORIGINE (TCI → CEMAC) et BLOCS_DESTINATION (CEMAC, les six États) ; backend/services/exoneration_origine.py (bloc CEMAC) : la route retire la TCI quand l'origine déclarée est un État de la CEMAC. Le code TCI des États de l'UEMOA (taxe conjoncturelle à l'importation) n'est pas concerné.",
+  "texte_archive": "sources/CEMAC_TCI_origine.texte-extrait.txt",
+  "sha256": "73cd0405e060f14e820a060bfddc8cd08f261d98ec25abb27e1e6189dcc1b195"
+ },
+ "decisions": [
+  "« Originaires des pays tiers » : l'exclusion suit l'origine déclarée, comme pour la CCI de la CEEAC et le prélèvement OHADA. Sans origine déclarée, la TCI reste due.",
+  "Une assiette qui nomme la TCI (TVA du Tchad : CIF + DD + TCI + DA) la compte pour rien quand elle est retirée : elle n'est pas due, elle ne grossit pas la base.",
+  "Seul le droit de douane était jusqu'ici ramené à zéro pour les échanges intra-CEMAC (franchise d'union douanière) ; les autres prélèvements nationaux et communautaires restent dus, sauf ceux dont le texte exclut les originaires (TCI, CCI, OHADA, contribution UA)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Le réaménagement de 2016 (acte additionnel n° 01/CEMAC-046-CCE) : texte non lu ; rien n'indique qu'il ait changé le champ d'application ou le taux.",
+  "La preuve de l'origine communautaire (certificat d'origine CEMAC, agrément au régime préférentiel) : le calcul suit l'origine déclarée."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/CEMAC_TCI_origine.texte-extrait.txt",
+   "sha256": "73cd0405e060f14e820a060bfddc8cd08f261d98ec25abb27e1e6189dcc1b195"
+  }
+ ]
+}
