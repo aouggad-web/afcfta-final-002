@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY", "COG"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -166,8 +166,8 @@ def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
 
 def test_les_questions_hors_tarif_sont_servies(client):
     questions = client.get("/calcul/export/pays").json()["questions"]
-    assert set(questions) == {"MDG", "MLI", "CMR"} and questions["MDG"]["champ"] == "produit_minier"
-    assert questions["CMR"]["champ"] == "produit_fini"
+    assert set(questions) == {"MDG", "MLI", "CMR", "COG"} and questions["MDG"]["champ"] == "produit_minier"
+    assert questions["CMR"]["champ"] == questions["COG"]["champ"] == "produit_fini"
     # Le CGI malien ne prévoit pas d'abattement : pas de seconde question.
     assert questions["MLI"]["question_transformation"] is None and questions["MLI"]["question_en"]
 
@@ -438,6 +438,37 @@ def test_cmr_notes_propres_sans_taux_propre(client):
 def test_cmr_lf2026_positions_ambigues_a_etablir(client):
     for code in ("80011000", "74032100", "71039100", "25231000", "18010020"):
         ligne = _ligne(_export(client, pays="CMR", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
+                       "EXPORT")
+        assert ligne["montant"] is None, code
+
+
+def test_cog_taux_general_selon_la_transformation(client):
+    """LFR 2021, point 42 : 2 % ; produit transformé d'origine congolaise exonéré ; sans réponse, à établir."""
+    brut = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False)
+    assert (brut["etat"], _ligne(brut, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(20_000))
+    transforme = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=True)
+    assert _ligne(transforme, "EXPORT")["montant"] == pytest.approx(0)
+    sans = _ligne(_export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF"), "EXPORT")
+    assert sans["montant"] is None and sans["note"].startswith("À établir : Produit transformé")
+
+
+def test_cog_produits_nommes_independants_de_la_reponse(client):
+    """Maïs et diamant brut 4 %, grumes d'Afrormosia 10 % et de Doussié 9 %, contreplaqués et panneaux 0,5 %, parquets et
+    pétrole brut 0 %."""
+    for code, montant in (("10059000", 40_000), ("71021000", 40_000), ("44034903", 100_000),
+                          ("44034914", 90_000), ("44129400", 5_000), ("44101100", 5_000), ("44091000", 0), ("44151000", 0),
+                          ("27090010", 0)):
+        for transforme in (True, False):
+            export = _export(client, pays="COG", code_sh=code, valeur=1_000_000, devise="XAF",
+                             produit_fini=transforme)
+            assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
+
+
+def test_cog_positions_ambigues_a_etablir(client):
+    """Okoumé mêlé aux autres essences, sciages humides ou séchés, farines de poisson ou de crustacés, platine
+    brut ou en poudre, plaquettes que le barème du bois ne nomme pas, menuiseries « autres » qui comprennent les lamellés collés."""
+    for code in ("44034939", "44072901", "23012000", "71101100", "44012200", "44189000"):
+        ligne = _ligne(_export(client, pays="COG", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
                        "EXPORT")
         assert ligne["montant"] is None, code
 
