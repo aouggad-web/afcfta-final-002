@@ -158,6 +158,7 @@ def _ecart_dd_zlecaf(destination_iso3: str, origine_iso3: str, hs6: str) -> Opti
     partenaire attendue, union douanière déjà en libre circulation, taux ZLECAf
     égal au NPF)."""
     from services import mesures_eac, socle
+    from services.calcul import droits_a_la_date
     from services.preference import taux_preferentiels
 
     try:
@@ -169,7 +170,7 @@ def _ecart_dd_zlecaf(destination_iso3: str, origine_iso3: str, hs6: str) -> Opti
         for code in codes:
             position, _ = socle.position(destination_iso3, code)
             position, _ = mesures_eac.appliquer(position, destination_iso3, code)
-            dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None)
+            dd = next((d for d in droits_a_la_date(position.get("droits") or []) if d.get("code") == "DD"), None)
             if dd is None or dd.get("taux") is None or dd.get("specifique"):
                 return None
             preference = taux_preferentiels(position, destination_iso3, origine_iso3, code)

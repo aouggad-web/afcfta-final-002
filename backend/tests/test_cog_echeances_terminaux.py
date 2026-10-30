@@ -1,14 +1,18 @@
 """Congo : fin de la circulaire n° 0138 au 31/12/2026 et taxe sur les nouveaux
 terminaux à carte SIM. Fiche : COG_echeances_terminaux_2026-10-30.json."""
 
+import csv
 import json
 import os
+import sys
+from datetime import date
 
 import pytest
 
 from services.calcul import PARTIEL, calculer, droits_a_la_date
 
 SOCLE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle", "COG.json")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "scripts"))
 
 
 def test_une_mesure_datee_reprend_son_taux_passe_son_terme():
@@ -18,6 +22,7 @@ def test_une_mesure_datee_reprend_son_taux_passe_son_terme():
     apres = droits_a_la_date(droits, "2027-01-01")
     assert (apres[0]["taux"], apres[0]["note"], apres[1]["taux"]) == (18.0, "taux normal", 10.0)
     assert droits[0]["taux"] == 5.0  # la position n'est pas modifiée
+    assert "jusqu_au" not in apres[0] and droits_a_la_date(apres, "2026-06-01")[0]["taux"] == 18.0
 
 
 @pytest.fixture(scope="module")
@@ -44,9 +49,33 @@ def test_la_viande_reste_exoneree_par_l_annexe_3_apres_la_circulaire(positions):
     assert _taux(apres, "TVA") == 0.0
 
 
+def test_l_export_lit_la_mesure_a_sa_date_de_reference(tmp_path, monkeypatch):
+    """Cellule et total de l'export suivent le même taux, avant comme après le terme."""
+    import exporter_tarifs_socle as exp
+
+    monkeypatch.setattr(exp, "EXPORT_DIR", str(tmp_path))
+    with open(os.path.join(exp.SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
+        manifeste = json.load(f)
+    for jour, tva in ((date(2026, 12, 31), "5"), (date(2027, 1, 1), "18")):
+        exp.exporter("COG", manifeste, le=jour)
+        with open(tmp_path / "COG_NPF.csv", encoding="utf-8-sig") as f:
+            lignes = list(csv.reader(f, delimiter=";"))
+        entete = lignes[0]
+        riz = next(l for l in lignes if l[0] == "10063010")
+        cellule = riz[next(i for i, c in enumerate(entete) if c.startswith("TVA "))]
+        assert cellule.replace(",", ".").rstrip("0").rstrip(".") == tva, (jour, cellule)
+
+
 def test_les_telephones_portent_la_taxe_rtn_sans_montant(positions):
     droits = positions["85171200"]["droits"]
     rtn = next(d for d in droits if d["code"] == "RTN")
     assert rtn["taux"] is None and "1 300 FCFA (2G)" in rtn["note"]
     r = calculer(positions["85171200"], 1000, devise_position="XAF", devise_cif="XAF")
     assert r["npf"]["etat"] == PARTIEL
+
+
+def test_la_consultation_affiche_le_droit_a_la_date_du_jour():
+    from routes.consultation import _droit_de_douane
+
+    echu = {"droits": [{"code": "DD", "taux": 0.0, "jusqu_au": "2000-01-01", "taux_apres": 10.0}]}
+    assert _droit_de_douane(echu)["dd_rate"] == 10.0
