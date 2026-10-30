@@ -453,10 +453,10 @@ def test_cog_taux_general_selon_la_transformation(client):
 
 
 def test_cog_produits_nommes_independants_de_la_reponse(client):
-    """Maïs et diamant brut 4 %, grumes d'Afrormosia 10 % et de Doussié 9 %, contreplaqués 0,5 %, parquets et
+    """Maïs et diamant brut 4 %, grumes d'Afrormosia 10 % et de Doussié 9 %, contreplaqués et panneaux 0,5 %, parquets et
     pétrole brut 0 %."""
     for code, montant in (("10059000", 40_000), ("71021000", 40_000), ("44034903", 100_000),
-                          ("44034914", 90_000), ("44129400", 5_000), ("44091000", 0), ("44151000", 0),
+                          ("44034914", 90_000), ("44129400", 5_000), ("44101100", 5_000), ("44091000", 0), ("44151000", 0),
                           ("27090010", 0)):
         for transforme in (True, False):
             export = _export(client, pays="COG", code_sh=code, valeur=1_000_000, devise="XAF",

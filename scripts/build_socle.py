@@ -1403,8 +1403,11 @@ EXPORT_PAR_TEXTE = {
                                  "1 % ou 0,5 % (LFR 2021, point 42, 3) ; la position ne le dit pas : à établir."),
             "4408": (None, None, "Feuilles de placage : 0,5 % tranchées, 1 % déroulées (LFR 2021, point 42, 3) ; la "
                                  "position ne le dit pas : à établir."),
-            "4412": (0.5, None, "Contreplaqués, panneaux, lamellés collés et autres : 0,5 % de la valeur FOT (LFR "
-                                "2021, point 42, 3)."),
+            # Panneaux de particules (4410), de fibres (4411) et contreplaqués :
+            # « contreplaqués, panneaux, lamellés collés et autres ».
+            **{p: (0.5, None, "Contreplaqués, panneaux, lamellés collés et autres : 0,5 % de la valeur FOT (LFR 2021, "
+                              "point 42, 3), pour les produits des forêts naturelles ; le barème des bois de "
+                              "plantation ne nomme pas les panneaux.") for p in ("4410", "4411", "4412")},
             **{p: (0.0, None, "Parquets, moulures, portes et fenêtres, éléments de meubles et autres produits finis "
                               "du bois : 0 % (LFR 2021, point 42, 3).")
                for p in ("4409", "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421")},
@@ -1413,7 +1416,7 @@ EXPORT_PAR_TEXTE = {
             # droit commun) sans y être nommé.
             "44": (None, None, "Bois et ouvrages en bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient "
                                "lieu de droit de sortie, mais son barème ne nomme pas ce produit (bois de chauffage, "
-                               "plaquettes, panneaux de particules ou de fibres, traverses…) : à établir."),
+                               "plaquettes, traverses…) : à établir."),
         },
     ),
     # Clés : lignes nationales du tarif égyptien (libellés arabes de la douane) ;
