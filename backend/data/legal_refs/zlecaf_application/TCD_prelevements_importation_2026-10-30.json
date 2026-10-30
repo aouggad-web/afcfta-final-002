@@ -1,0 +1,38 @@
+{
+ "schema_version": 1,
+ "objet": "Tchad : prélèvements communautaires perçus à l'importation qui manquaient au socle — contribution communautaire d'intégration de la CEEAC (0,4 %, hors originaires de la CEEAC) et prélèvement OHADA (0,05 %, hors originaires de l'OHADA), sur la valeur c.a.f.",
+ "destination_iso3": "TCD",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "officielle secondaire — rapport du Secrétariat de l'OMC (WT/TPR/S/445, 2023, établi avec les informations des autorités), rapport commun § 3.40 et annexe Tchad § 3.20 ; ni la loi de finances 2026 ni un acte tchadien trouvé ne les fixe, comme pour la CCI du Congo et de la Centrafrique",
+ "source": {
+  "url": "https://www.wto.org/french/tratop_f/tpr_f/s445-06_f.pdf",
+  "institution": "Organisation mondiale du commerce, Secrétariat (examen des politiques commerciales des pays de la CEMAC)"
+ },
+ "regle": {
+  "valeur": "CCI 0,4 % et prélèvement OHADA 0,05 % de la valeur c.a.f., dus sauf sur les produits originaires de la CEEAC (CCI) ou de l'OHADA (OHADA). Avec la TCI (1 %), « ces différentes taxes s'élèvent à 1,45% de la valeur c.a.f. des importations ».",
+  "verbatim": "3.20. Comme dans les autres pays de la CEMAC, le Tchad collecte la taxe communautaire\nd'intégration (TCI), le prélèvement OHADA, et la contribution communautaire d'intégration (CCI)\n(Rapport commun, section 3). Cumulées, ces différentes taxes s'élèvent à 1,45% de la valeur c.a.f.\ndes importations.",
+  "reference": "OMC, WT/TPR/S/445, annexe Tchad, § 3.20 ; rapport commun, § 3.40",
+  "portee": "scripts/build_socle._prelevements_tchad : lignes CCI et OHADA ajoutées après la TCI ; BLOCS_DESTINATION (OHADA : TCD), EXONERATION_ORIGINE (CCI → CEEAC, OHADA → OHADA).",
+  "texte_archive": "sources/TCD_prelevements_importation.texte-extrait.txt",
+  "sha256": "4fa01eae54bf55f493ab946ba9051df823aa7dae005bbcee95b42dc34d083bd6"
+ },
+ "decisions": [
+  "Taux et champ : rapport commun § 3.40 (CCI « 0,4% sur les importations hors-CEEAC », « actuellement collectée par […] le Tchad » ; OHADA « 0,05% sur les importations des pays non membres »), confirmés pour le Tchad par l'annexe § 3.20 (TCI + OHADA + CCI = 1,45 %).",
+  "Redevance statistique (2 %, « perçue sur toutes les importations, quelle qu'en soit l'origine ») et prélèvement de l'Union africaine (0,2 %, importations « en provenance hors du continent africain ») : déjà servis par le tarif collecté, aux taux de l'annexe § 3.21 ; inchangés.",
+  "Base de la TVA inchangée (valeur + droit de douane + TCI + droit d'accises) : la CCI et le prélèvement OHADA n'y sont pas ajoutés."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "CGI art. 235 V (bases « tous frais et taxes compris, à l'exception de la TVA elle-même ») : s'il s'applique aux importations, la CCI, le prélèvement OHADA, la redevance statistique et le prélèvement de l'Union africaine entreraient dans la base de la TVA, comme la TCI que le socle y garde ; l'art. 235 I 1° ne retient que les droits de douane et d'accises.",
+  "Taxe de préférence communautaire (TPC), « toujours prélevée sur les lignes tarifaires relatives aux poissons, viandes, produits laitiers et autres produits animaux », et prélèvement ONASA, « à des taux variant entre 0,3% et 0,5% sur environ 9% des lignes tarifaires » : ni taux ni liste de positions publiés — non servis.",
+  "Acompte de 4 % au titre de l'impôt sur le revenu (15 % pour les entreprises non enregistrées) : impôt sur le revenu imputable, non servi.",
+  "Commissions du BGFT camerounais pour les marchandises en transit par le Cameroun : frais par voyage, non servis.",
+  "La loi de finances 2026 (lue le 2026-10-30) ne cite aucun de ces prélèvements hormis la redevance statistique."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/TCD_prelevements_importation.texte-extrait.txt",
+   "sha256": "4fa01eae54bf55f493ab946ba9051df823aa7dae005bbcee95b42dc34d083bd6"
+  }
+ ]
+}
