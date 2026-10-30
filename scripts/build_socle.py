@@ -1819,6 +1819,9 @@ def sources_disponibles():
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
     "CIA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
+    # TCI : « s'applique aux importations des Etats membres de produits originaires
+    # des pays tiers » (acte additionnel n° 03/00-CEMAC-046-CM-05, art. 2).
+    "TCI": "CEMAC",
 }
 #: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
 BLOCS_DESTINATION = {
@@ -1827,6 +1830,7 @@ BLOCS_DESTINATION = {
     # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
     # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
     "AES_UEMOA": {"BFA", "MLI", "NER"},
+    "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
     # Prélèvement OHADA : marqué au seul Gabon. L'arrêté congolais n° 5808 (2005)
