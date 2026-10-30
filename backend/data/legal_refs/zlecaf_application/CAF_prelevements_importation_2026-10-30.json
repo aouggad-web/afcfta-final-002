@@ -1,0 +1,45 @@
+{
+ "schema_version": 1,
+ "objet": "Centrafrique : prélèvements perçus au cordon douanier hors droit de douane, TVA et accises — les neuf recettes que nomme la loi de finances 2026 (TCI, REIF, OHADA, COMIFAC, CCI, RCCAC, TUA, RDS, RGS), à leurs taux, sur la valeur en douane ; la « redevance statistique » de 1 % du tarif collecté est remplacée par la RDS de 0,25 %",
+ "destination_iso3": "CAF",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "primaire pour la liste des prélèvements en vigueur (loi n° 25.015, loi de finances 2026, art. 16, publiée par le ministère des Finances et du Budget) ; officielle secondaire pour leurs taux (rapport du Secrétariat de l'OMC, WT/TPR/S/445, 2023, annexe République centrafricaine, tableau 3.2, « sur la base d'informations fournies par les autorités », et rapport commun § 3.40) — les lois de finances 2008, 2012, 2014, 2016 et 2019 qui fixent ces taux ne sont pas publiées en ligne",
+ "source": {
+  "url": "http://finances.gouv.cf/sites/default/files/2025-12/LOI%202026%20OK_0.pdf",
+  "institution": "Ministère des Finances et du Budget de la République centrafricaine"
+ },
+ "regle": {
+  "valeur": "Sur la valeur en douane (CIF) : TCI 1 % (déjà servie, hors originaires de la CEMAC) ; TUA 0,2 % (hors originaires de l'Union africaine) ; CCI 0,4 % (hors originaires de la CEEAC) ; OHADA 0,05 % (hors originaires de l'OHADA) ; COMIFAC 0,1 % ; REIF 0,5 % ; RDS 0,25 % ; RGS 0,25 % ; RCCAC 0,25 %.",
+  "verbatim": "Art 16 : Les recettes affectées ci-après citées ne sont pas remboursables en raison de leur reversement\naux organisations régionales ou internationales pour leur fonctionnement. Il s'agit de :\n1. La Taxe Communautaire d'Intégration (TCI) ;\n2. La Redevance pour l'Equipement Informatique des Finances (REIF) ;\n3. Le Prélèvement pour l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires\n(OHADA) ;\n4. Le Prélèvement pour la Commission des Forêts d'Afrique Centrale (COMIFAC) ;\n5. La Contribution Communautaire d'Intégration (CCI) ;\n6. La Redevance du Conseil Centrafricain des Chargeurs (RCCAC) ;\n7. La Taxe de l'Union Africaine (TUA) ;\n8. La Redevance de Développement des Statistiques (RDS) ;\n9. La Redevance de Gestion des Scanners (RGS).",
+  "verbatim_taux": " 1. Prélèvement de          Union africaine                         Article 19 de la loi de finances 2019\n l'Union africaine (0,2%)",
+  "reference": "Loi n° 25.015 (LF 2026), art. 16 et état des recettes (p. 13) ; OMC, WT/TPR/S/445, annexe République centrafricaine, § 3.22, tableau 3.2, et rapport commun, § 3.40",
+  "portee": "scripts/build_socle._prelevements_centrafrique (PRELEVEMENTS_CAF) : lignes TUA, CCI, OHADA, COMIFAC, REIF, RDS, RGS et RCCAC ajoutées après la TCI, avant l'accise et la TVA, la ligne RS du tarif collecté retirée ; EXONERATION_ORIGINE (TUA → UA) et BLOCS_DESTINATION (OHADA : CAF).",
+  "texte_archive": "sources/CAF_prelevements_importation.texte-extrait.txt",
+  "sha256": "62ade25016bc58723dfe9c92ba30c3c82c5cf230bf3f88d9275998c2f1459dd7"
+ },
+ "decisions": [
+  "Taux : ceux du tableau 3.2 du rapport de l'OMC (2020), seuls publiés ; la loi de finances 2026 les maintient en nommant les neuf recettes (art. 16) sans les modifier, et son art. 3 continue la perception des taxes et redevances « conformément aux lois et règlements en vigueur ».",
+  "« Redevance informatique 0,5% » (ligne 4 du tableau 3.2) et « REIF de 0,50% » (ligne 9) : une seule recette. La loi de finances 2026 ne nomme que la REIF (art. 16) et l'état des recettes ne porte qu'une ligne « Redevance informatique » (7115 183). Une seule ligne de 0,5 % est servie.",
+  "Redevance statistique : la loi de finances 2026 nomme la « Redevance de Développement des Statistiques (RDS) », que le tableau 3.2 porte à 0,25 % (loi de finances 2016, art. 30). Le taux de 1 % du tarif collecté (finances.gouv.cf + TEC CEMAC) n'est porté par aucun texte : la ligne RS est retirée.",
+  "Assiette : la valeur en douane (« de la valeur des importations », § 3.22 et tableau 3.2). Ni le droit d'accises (CIF + DD, CGI art. 291) ni la TVA (CIF + DD + DA, CGI art. 253) ne les comprennent.",
+  "Exonération selon l'origine : la CCI ne frappe que les importations « hors-CEEAC », le prélèvement OHADA celles « des pays non membres » (rapport commun, § 3.40), la TUA, prélèvement de 0,2 % de l'Union africaine, que les importations de pays tiers à l'Union (blocs CEEAC, OHADA et UA de backend/services/exoneration_origine.py, comme au Gabon). COMIFAC, REIF, RDS, RGS et RCCAC sont dus quelle que soit l'origine.",
+  "Sans origine déclarée, tous restent dus, comme pour un pays tiers."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les lois de finances qui fixent les taux (2008 art. 31 et 32, 2012 art. 18, 2014 art. 26, 2016 art. 23 et 30, 2019 art. 19) n'ont pas été trouvées en ligne ; les taux reposent sur le rapport de l'OMC (2023).",
+  "Redevance de transit (15 000 FCFA), redevances de la gestion des exonérations, pénalité BESC (80 000 FCFA), ajustement de la valeur en l'absence de preuve d'assurance, précompte de l'impôt sur le revenu (3 %) et « prélèvement pour inspection (1%) » du tableau 3.2 : liés au régime, à l'opérateur ou à la procédure, ou sans texte nommé — non servis.",
+  "Droit spécifique de 7 FCFA par kilogramme net de café importé « en période autorisée » (arrêté interministériel n° 029/MFB/MAE/MICA du 11 janvier 1996) et droits et taxes spécifiques des véhicules d'occasion : non servis.",
+  "Exonérations subordonnées à l'importateur (mécanisme de paiement préalable des exonérations, LF 2026 art. 10 à 17) : non servies."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/CAF_prelevements_importation.texte-extrait.txt",
+   "sha256": "62ade25016bc58723dfe9c92ba30c3c82c5cf230bf3f88d9275998c2f1459dd7"
+  },
+  {
+   "document_non_archive": "Loi de finances 2026, loi n° 25.015 (scan, 624 p.) : http://finances.gouv.cf/sites/default/files/2025-12/LOI%202026%20OK_0.pdf — pages 1 à 8 et 13 archivées à part (dossier central-african-republic/official, caf-loi-finances-2026-extrait-p1-8-13.pdf)",
+   "pdf_sha256": "35708d46b1dcb30ef40880fa02de9fe94760585e464e5a21ec9d9ad4de41341f"
+  }
+ ]
+}

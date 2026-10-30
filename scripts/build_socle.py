@@ -93,6 +93,12 @@ FAMILLES = {
     "OHADA": "communautaire",
     "CCI": "communautaire",  # contribution communautaire d'intégration de la CEEAC (GA)
     "CSS": "autre",  # contribution spéciale de solidarité (GA)
+    "TUA": "communautaire",  # taxe de l'Union africaine (CF)
+    "COMIFAC": "communautaire",  # prélèvement COMIFAC (CF)
+    "REIF": "redevance",  # redevance pour l'équipement informatique des finances (CF)
+    "RDS": "redevance",  # redevance de développement des statistiques (CF)
+    "RGS": "redevance",  # redevance de gestion des scanners (CF)
+    "RCCAC": "redevance",  # redevance du Conseil centrafricain des chargeurs (CF)
     "TS": "communautaire",
     "CEDEAO": "communautaire",
     "EXIM": "redevance",
@@ -1818,7 +1824,7 @@ def sources_disponibles():
 #: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
-    "CIA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
+    "CIA": "UA", "TUA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
     # TCI : « s'applique aux importations des Etats membres de produits originaires
     # des pays tiers » (acte additionnel n° 03/00-CEMAC-046-CM-05, art. 2).
     "TCI": "CEMAC",
@@ -1833,9 +1839,10 @@ BLOCS_DESTINATION = {
     "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
-    # Prélèvement OHADA : marqué ici au seul Gabon. Le Congo exonère aussi les
-    # originaires de la CEEAC (arrêté n° 5808) : _prelevements_congo marque sa ligne.
-    "OHADA": {"GAB"},
+    # Prélèvement OHADA : marqué ici au Gabon et en Centrafrique. Le Congo exonère
+    # aussi les originaires de la CEEAC (arrêté n° 5808) : _prelevements_congo
+    # marque sa ligne.
+    "OHADA": {"GAB", "CAF"},
 }
 
 ACCISES_PAYS = {
@@ -2677,6 +2684,59 @@ def _prelevements_congo(positions, compteurs):
                      "consommation » ; assise sur la valeur c.a.f. (OMC, WT/TPR/S/445, annexe Congo, § 3.17). "
                      "Due aussi sur les biens de la circulaire n° 0138 (« à l'exception de la redevance "
                      "informatique et des taxes communautaires »)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Centrafrique : prélèvements à l'importation (fiche CAF_prelevements_importation_2026-10-30.json).
+#: La loi de finances 2026 (art. 16) les nomme ; les taux sont ceux du rapport de l'OMC.
+SOURCE_PRELEVEMENTS_CAF = (
+    "Loi n° 25.015 (loi de finances 2026), art. 16 ; OMC, examen des politiques commerciales des pays de la "
+    "CEMAC (WT/TPR/S/445, 2023), annexe République centrafricaine, tableau 3.2, et rapport commun, § 3.40"
+)
+PRELEVEMENTS_CAF = (
+    ("TUA", "Taxe de l'Union Africaine", 0.2, "« Prélèvement de l'Union africaine (0,2%) », loi de finances 2019, art. 19."),
+    ("CCI", "Contribution Communautaire d'Intégration (CEEAC)", 0.4,
+     "« Taxe CEEAC (0,4%) » ; « prélevée au taux de 0,4% sur les importations hors-CEEAC […] (actuellement "
+     "collectée par le Congo, le Gabon, la République centrafricaine et le Tchad) » (rapport commun, § 3.40)."),
+    ("OHADA", "Prélèvement OHADA", 0.05,
+     "« Redevances OHADA 0,05% » ; « effectué au taux de 0,05% sur les importations des pays non membres » "
+     "(rapport commun, § 3.40)."),
+    ("COMIFAC", "Prélèvement COMIFAC", 0.1,
+     "« Redevance COMIFAC forêts tropicales (0,1%) », loi de finances 2008, art. 31 et 32."),
+    ("REIF", "Redevance pour l'Equipement Informatique des Finances", 0.5,
+     "« Redevance équipement informatique finances (REIF) de 0,50% » ; la « redevance informatique 0,5% » du même "
+     "tableau est la même recette (une seule ligne au budget 2026, « Redevance informatique »)."),
+    ("RDS", "Redevance de Développement des Statistiques", 0.25,
+     "« Redevance statistique 0,25% », loi de finances 2016, art. 30."),
+    ("RGS", "Redevance de Gestion des Scanners", 0.25,
+     "« Redevance gestion scanner 0,25 », loi de finances 2012, art. 18, modifié par la loi de finances 2016, art. 23 ; "
+     "« perçue sur toutes les importations, qu'elles soient scannées ou non » (§ 3.22)."),
+    ("RCCAC", "Redevance du Conseil Centrafricain des Chargeurs", 0.25,
+     "« Redevance conseil des chargeurs (0,25%) », loi de finances 2014, art. 26 ; « 0,25% de la valeur des "
+     "importations »."),
+)
+
+
+def _prelevements_centrafrique(positions, compteurs):
+    """Centrafrique : les neuf prélèvements que la loi de finances 2026 nomme
+    (art. 16), sur la valeur en douane. La redevance statistique de 1 % du
+    tarif collecté, qu'aucun texte ne porte, cède la place à la RDS (0,25 %)."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        for d in [d for d in droits if d.get("code") == "RS"]:
+            _compter_ligne(d, compteurs, -1)
+            droits.remove(d)
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": code, "code_source": code, "libelle": libelle, "famille": famille(code), "taux": taux,
+             "assiette": "CIF", "assiette_origine": "regle_de_pays", "source": SOURCE_PRELEVEMENTS_CAF, "note": note}
+            for code, libelle, taux, note in PRELEVEMENTS_CAF
         ]
         droits[rang:rang] = nouvelles
         for ligne in nouvelles:
@@ -5470,6 +5530,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _mesures_nationales_congo(positions)
         _vehicules_neufs_congo(positions, compteurs)
         _prelevements_congo(positions, compteurs)
+    if iso == "CAF":
+        _prelevements_centrafrique(positions, compteurs)
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)

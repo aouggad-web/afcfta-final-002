@@ -180,8 +180,36 @@
           "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
         },
         {
-          "code": "RS",
-          "libelle": "Redevance Statistique"
+          "code": "TUA",
+          "libelle": "Taxe de l'Union Africaine"
+        },
+        {
+          "code": "CCI",
+          "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
+        },
+        {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
+          "code": "COMIFAC",
+          "libelle": "Prélèvement COMIFAC"
+        },
+        {
+          "code": "REIF",
+          "libelle": "Redevance pour l'Equipement Informatique des Finances"
+        },
+        {
+          "code": "RDS",
+          "libelle": "Redevance de Développement des Statistiques"
+        },
+        {
+          "code": "RGS",
+          "libelle": "Redevance de Gestion des Scanners"
+        },
+        {
+          "code": "RCCAC",
+          "libelle": "Redevance du Conseil Centrafricain des Chargeurs"
         },
         {
           "code": "TVA",
@@ -194,9 +222,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "3659bfbea1acd9b4a1241a04165c72272384c93d292c96696ad24de6df30d5fb",
-      "notes_sha256": "b26d91e7a8cb7ca759d6f064b7761dcee0ba1e3fad893e9c43b8955020bac8bf",
-      "socle_sha256": "1e6a20907e2a9835c660b831941b497eb23724daa696aab1abc948cb0d9dbfd1",
+      "sha256": "cffec1a01ecb2f73787b74f5ddc21c138dff72e261731bc80684b1fc85e91ddf",
+      "notes_sha256": "c2efb013067d85962cbfc449dabfffcfc3ac77e16efea65b92f5fe05b48bc54a",
+      "socle_sha256": "e8b74c0e19d574c369114bfafc8951cc9cdd609980e67787308125f6ab37eb8a",
       "collecte": "2026-02-19T22:39:54.085446"
     },
     "CIV": {
