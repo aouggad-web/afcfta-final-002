@@ -180,8 +180,36 @@
           "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
         },
         {
-          "code": "RS",
-          "libelle": "Redevance Statistique"
+          "code": "TUA",
+          "libelle": "Taxe de l'Union Africaine"
+        },
+        {
+          "code": "CCI",
+          "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
+        },
+        {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
+          "code": "COMIFAC",
+          "libelle": "Prélèvement COMIFAC"
+        },
+        {
+          "code": "REIF",
+          "libelle": "Redevance pour l'Equipement Informatique des Finances"
+        },
+        {
+          "code": "RDS",
+          "libelle": "Redevance de Développement des Statistiques"
+        },
+        {
+          "code": "RGS",
+          "libelle": "Redevance de Gestion des Scanners"
+        },
+        {
+          "code": "RCCAC",
+          "libelle": "Redevance du Conseil Centrafricain des Chargeurs"
         },
         {
           "code": "TVA",
@@ -194,9 +222,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "3659bfbea1acd9b4a1241a04165c72272384c93d292c96696ad24de6df30d5fb",
-      "notes_sha256": "b26d91e7a8cb7ca759d6f064b7761dcee0ba1e3fad893e9c43b8955020bac8bf",
-      "socle_sha256": "1e6a20907e2a9835c660b831941b497eb23724daa696aab1abc948cb0d9dbfd1",
+      "sha256": "e300bb28eeec08a437883ce44a65d4e478083dbb0402dda1fc22ed500aa0a761",
+      "notes_sha256": "c2c527d4990234d3f53a279c798cdacf4e25b28bbb749475bbf6a95f21cd8763",
+      "socle_sha256": "3199a060ada291a66e450992a66469287bfa2887c8155f9b0741ecd5a8fcc594",
       "collecte": "2026-02-19T22:39:54.085446"
     },
     "CIV": {
@@ -398,13 +426,17 @@
         {
           "code": "DA",
           "libelle": "Droit d'accises"
+        },
+        {
+          "code": "RTN",
+          "libelle": "Taxe sur les nouveaux terminaux numériques à carte SIM"
         }
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "19d2c5c523797c144cd267ed7d917199b6a7a03aac0d907d50aa8ff1c4e8e333",
-      "notes_sha256": "e15ae310a799c5aab4471f4db5f9789a05f7fcf61a86900802a5b832b38e17a6",
-      "socle_sha256": "13b36bcfd8f39ab1c5125ab3431c4f0bb3f116991c77264ee91081044ffd47d8",
+      "sha256": "b2a169c65fe7e2d3d9aea3e15ce2184734ee46bb7f6c92f335dead87c04f0966",
+      "notes_sha256": "bc2eec198ea07f825743360d9fa4166e9ef6a01c4d9ed42a36403d9bb3e6f3ed",
+      "socle_sha256": "86e2db964d762fb2c93f778051f4d49d3517565829be15caaccceeb453bae2cb",
       "collecte": "2026-02-19T22:39:52.620876"
     },
     "COM": {
@@ -1555,6 +1587,14 @@
           "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
         },
         {
+          "code": "CCI",
+          "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
+        },
+        {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
           "code": "TS",
           "libelle": "Taxe Statistique"
         },
@@ -1577,9 +1617,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "55f4cffe1f725ae5c2a64148883e2b35781c21e17a6a3a500212e46241899c98",
-      "notes_sha256": "d8bdfb21ca8164231af0b38966a32076541ce4831ac89c6f71f5c63040e9b922",
-      "socle_sha256": "e8fcfde405f9a494d8d1cea8f0fea49aa622394e36a0e6b68b4e275d8eaa8e33",
+      "sha256": "6a55716ec394933dadc8fb8241f0d25a4ea3e5b715af8051576e9d4c8a4be0fa",
+      "notes_sha256": "4eef4cc0755d788a83783e084c0cc25b839eed3931003dad6ae5236110cbe179",
+      "socle_sha256": "33c1c134e8d09bf4fbe9db1153fad5f9621d4c6d60eac4f6a1fbd4c3fd0f3176",
       "collecte": "2026-02-19T22:39:53.393846"
     },
     "TGO": {
