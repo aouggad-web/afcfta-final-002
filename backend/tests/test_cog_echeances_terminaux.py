@@ -79,3 +79,13 @@ def test_la_consultation_affiche_le_droit_a_la_date_du_jour():
 
     echu = {"droits": [{"code": "DD", "taux": 0.0, "jusqu_au": "2000-01-01", "taux_apres": 10.0}]}
     assert _droit_de_douane(echu)["dd_rate"] == 10.0
+
+
+def test_les_lectures_du_socle_rendent_la_mesure_a_la_date_du_jour(monkeypatch):
+    from services import benchmarking_service, socle
+
+    echu = {"droits": [{"code": "DD", "taux": 0.0, "jusqu_au": "2000-01-01", "taux_apres": 20.0}]}
+    monkeypatch.setattr(socle, "charger", lambda iso3: {"positions": {"02011000": echu}})
+    assert socle.position("COG", "02011000")[0]["droits"][0]["taux"] == 20.0
+    assert benchmarking_service._positions_socle("COG", "0201")["02011000"]["droits"][0]["taux"] == 20.0
+    assert echu["droits"][0]["taux"] == 0.0  # le socle chargé n'est pas modifié

@@ -56,7 +56,7 @@ sys.path.insert(0, os.path.join(REPO, "backend"))
 sys.path.insert(0, REPO)
 from routes.calcul import _completer_famille_absente  # noqa: E402
 from services import mesures_eac, socle  # noqa: E402
-from services.calcul import calculer, droits_a_la_date  # noqa: E402
+from services.calcul import calculer  # noqa: E402
 from services.designation import texte_designation  # noqa: E402
 
 ETATS_TOTAL = ("COMPLET", "INDICATIF")
@@ -101,7 +101,7 @@ def _preparer(iso3, code, le, mesures):
     """La position telle que POST /api/calcul la liquide, sans origine ni
     usage déclarés : mesures de la gazette EAC en vigueur le ``le`` et TVA
     nationale documentée quand la source n'en porte aucune."""
-    position, provenance = socle.position(iso3, code)
+    position, provenance = socle.position(iso3, code, le.isoformat())
     if mesures:
         position, _ = mesures_eac.appliquer(position, iso3, code, le=le)
     position, _ = _completer_famille_absente(position, iso3, provenance)
@@ -118,10 +118,6 @@ def exporter(iso3, socle_manifeste, le=None):
     # appel : il n'est fait que pour les États qui en reçoivent.
     mesures = any(m.jurisdiction.strip().upper() == iso3 for m in mesures_eac._mesures())
     prepares = {code: _preparer(iso3, code, le, mesures) for code in codes}
-    # Une mesure datée se lit à la date de référence de l'export : cellules,
-    # notes et total donnent le même taux.
-    for code, (position, provenance) in prepares.items():
-        prepares[code] = ({**position, "droits": droits_a_la_date(position["droits"], le.isoformat())}, provenance)
     devise = socle.devise_nationale(iso3)
 
     colonnes = {}

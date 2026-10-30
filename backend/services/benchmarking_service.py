@@ -241,11 +241,16 @@ def _positions_socle(destination_iso3: str, prefixe: str) -> Dict[str, dict]:
     """Positions nationales du socle (le crawl de la source) sous un préfixe."""
     try:
         from services import socle
+        from services.calcul import droits_a_la_date
 
         positions = socle.charger(destination_iso3).get("positions", {})
     except Exception:  # pays absent du socle : aucune position
         return {}
-    return {code: p for code, p in positions.items() if code.startswith(prefixe)}
+    return {
+        code: {**p, "droits": droits_a_la_date(p.get("droits") or [])}
+        for code, p in positions.items()
+        if code.startswith(prefixe)
+    }
 
 
 def _resolve_hs6(destination_iso3: str, code: str):
