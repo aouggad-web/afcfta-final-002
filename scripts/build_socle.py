@@ -1992,6 +1992,7 @@ def _coquilles_tec_cemac(positions):
 #: ou réduite à 5 % (variante 2). Redevance informatique et taxes communautaires
 #: inchangées. Fiche COG_mesures_nationales_2026-10-27.
 #: (produits, TVA retenue, filtre sur le code à 8 chiffres)
+FIN_CIRCULAIRE_0138_COG = "2026-12-31"
 CIRCULAIRE_0138_COG = (
     ("Viandes et abats comestibles (02.01 à 02.07)", 0.0,
      lambda c: "0201" <= c[:4] <= "0207"),
@@ -2025,10 +2026,14 @@ def _mesures_nationales_congo(positions):
                 f"{produits}"
             )
             for d in droits:
+                if d.get("code") not in ("DD", "TVA"):
+                    continue
+                # Au 1er janvier 2027, la ligne reprend le taux que la circulaire suspend.
+                d.update(jusqu_au=FIN_CIRCULAIRE_0138_COG, taux_apres=d.get("taux"), note_apres=d.get("note"))
                 if d.get("code") == "DD":
                     d["taux"] = 5.0
                     d["note"] = source + ", taux réduit de 5 % du droit de douane."
-                elif d.get("code") == "TVA":
+                else:
                     d["taux"] = tva
                     d["note"] = source + (
                         ", exonération de TVA." if tva == 0 else ", TVA au taux réduit de 5 %."
@@ -2764,6 +2769,29 @@ def _vehicules_neufs_congo(positions, compteurs):
                 d["taux"] = None
                 d["note"] = motif
                 _compter_ligne(d, compteurs, 1)
+
+
+#: Congo : taxe sur les nouveaux terminaux numériques à carte SIM (RTN), loi de
+#: finances 2026, point 46 : montant par terminal selon la norme, que la position
+#: ne dit pas (fiche COG_echeances_terminaux_2026-10-30.json).
+TERMINAUX_SIM_COG = ("85171200",)
+
+
+def _terminaux_sim_congo(positions, compteurs):
+    for code in TERMINAUX_SIM_COG:
+        droits = positions.get(code, {}).get("droits")
+        if droits is None:
+            continue
+        rtn = {
+            "code": "RTN", "code_source": "RTN", "libelle": "Taxe sur les nouveaux terminaux numériques à carte SIM",
+            "famille": famille("RTN"), "taux": None, "assiette": "xQTE", "assiette_origine": "regle_de_pays",
+            "source": "Loi n° 42-2025 (loi de finances 2026), point 46",
+            "note": "Art. 1er et 4 : due sur les terminaux neufs importés depuis le 1er juin 2026 — 1 300 FCFA (2G), "
+                    "6 500 FCFA (3G) ou 10 000 FCFA (4G et 5G) par terminal ; la norme n'est pas dans la position.",
+        }
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, rtn)
+        _compter_ligne(rtn, compteurs, 1)
 
 
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
@@ -5530,6 +5558,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _mesures_nationales_congo(positions)
         _vehicules_neufs_congo(positions, compteurs)
         _prelevements_congo(positions, compteurs)
+        _terminaux_sim_congo(positions, compteurs)
     if iso == "CAF":
         _prelevements_centrafrique(positions, compteurs)
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).

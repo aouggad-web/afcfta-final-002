@@ -1,0 +1,35 @@
+{
+ "schema_version": 1,
+ "objet": "Congo : fin des taux de la circulaire n° 0138 au 31 décembre 2026, taxe sur les nouveaux terminaux numériques à carte SIM (loi de finances 2026, point 46) ; taxe sur les activités polluantes, non servie",
+ "destination_iso3": "COG",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "primaire — circulaire n° 0138/MFBPP-CAB du 5 février 2026 (finances.gouv.cg) ; loi n° 42-2025 (loi de finances 2026), JO édition spéciale n° 3-2026 (sgg.cg)",
+ "source": {
+  "url": "https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf",
+  "institution": "Secrétariat général du Gouvernement (Congo), Journal officiel"
+ },
+ "regle": {
+  "valeur": "Circulaire n° 0138 : droit de douane 5 % et TVA exonérée ou à 5 % jusqu'au 31/12/2026 inclus, puis retour aux taux qu'elle suspend (tarif commun et annexes de la loi TVA). Taxe RTN : 1 300, 6 500 ou 10 000 FCFA par terminal neuf importé depuis le 1er juin 2026 selon la norme 2G, 3G ou 4G/5G — sans montant sur 8517.12, la norme n'étant pas dans la position.",
+  "verbatim": "La présente circulaire est d'application jusqu'au 31 décembre 2026.",
+  "reference": "Circulaire n° 0138/MFBPP-CAB du 5 février 2026 ; loi n° 42-2025 (LF 2026), point 46, art. 1er à 4 et 7, et section 4, paragraphe 2 (taxe sur les activités polluantes)",
+  "portee": "backend/services/calcul.droits_a_la_date : une ligne qui porte « jusqu_au » reprend, passé ce terme, « taux_apres » et « note_apres » ; scripts/build_socle._mesures_nationales_congo date les lignes DD et TVA de la circulaire (FIN_CIRCULAIRE_0138_COG) ; scripts/build_socle._terminaux_sim_congo ajoute la ligne RTN sans taux sur 85171200.",
+  "texte_archive": "sources/COG_echeances_terminaux.texte-extrait.txt",
+  "sha256": "c7bbd53a415aaff24119c59ce5bdd01d238f862036cc1978d14ddd9e5405cca3"
+ },
+ "decisions": [
+  "Le terme est compris : « jusqu'au 31 décembre 2026 » — le taux de la circulaire vaut encore ce jour-là ; le 1er janvier 2027, la ligne reprend le taux qu'elle avait avant (droit de douane du tarif commun, TVA des annexes de la loi TVA ou taux normal).",
+  "Taxe RTN : servie sur la seule position 8517.12 (téléphones pour réseaux cellulaires). Les modems et tablettes à carte SIM sont rangés avec d'autres appareils qui n'en ont pas (8517.62, 84.71) : non marqués. Le justificatif de paiement est exigé au dédouanement (art. 7), d'où sa place parmi les droits à l'importation.",
+  "Taxe sur les activités polluantes : non servie. Les assujettis sont ceux qui exercent une « activité polluante », dont « l'importation […] de déchets polluants » ; la taxe est liquidée et recouvrée « comme en matière des impôts » (administration fiscale, non douane). Son application à l'importation de produits finis (lubrifiants, peintures, emballages) n'est pas établie."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les exports CSV et la consultation du socle montrent le taux à la date de leur génération : ils sont à régénérer après le 31/12/2026 ; le calcul, lui, applique la date du jour.",
+  "Terminaux d'occasion (la taxe vise les « nouveaux » terminaux) et terminaux importés avant le 1er juin 2026 : non distingués."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/COG_echeances_terminaux.texte-extrait.txt",
+   "sha256": "c7bbd53a415aaff24119c59ce5bdd01d238f862036cc1978d14ddd9e5405cca3"
+  }
+ ]
+}
