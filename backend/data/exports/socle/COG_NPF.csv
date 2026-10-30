@@ -259,7 +259,7 @@
 06049900;-- Autres;06;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 07011000;-De semence;07;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 07019000;- Autres;07;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-07020000;Tomates, à l’état frais ou réfrigéré Oignons, échalotes, aulx, poireaux et autres légumes alliacés, à l’état frais ou réfrigéré.;07;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
+07020000;Tomates, à l’état frais ou réfrigéré Oignons, échalotes, aulx, poireaux et autres légumes alliacés, à l’état frais ou réfrigéré.;07;;30;1;0.2;0.05;0.4;2;5;5;;40.48;COMPLET;;;N1 N2 N3 N15 N5
 07031000;-Oignons et échalotes;07;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 07032000;- Aulx;07;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 07039000;- Poireaux et autres légumes alliacés Choux, choux-fleurs, choux frisés, choux-raves et produits comestibles similaires du genre Brassica , l’état frais ou réfrigéré.;07;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -461,7 +461,7 @@
 09109100;-- Mélanges visés à la Note 1 b) du présent Chapitre;09;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 09109900;-- Autres;09;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 10011010;-- De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-10011090;-- Autres;10;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N15 N1 N2 N3 N16 N5
+10011090;-- Autres;10;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N16 N1 N2 N3 N17 N5
 10019000;- Autres Seigle.;10;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 10020010;-De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 10020090;- Autres Orge.;10;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -470,13 +470,13 @@
 10040010;-De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 10040090;- Autres Maïs.;10;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 10051000;-De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-10059000;- Autres;10;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N17 N1 N2 N3 N18 N5
+10059000;- Autres;10;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N18 N1 N2 N3 N19 N5
 10061010;-- De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 10061090;-- Autres;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-10062000;- Riz décortiqué (riz cargo ou riz brun) - Riz semi-blanchi ou blanchi, même poli ou glacé :;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N19 N1 N2 N3 N20 N5
-10063010;-- Conditionné pour la vente au détail;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N19 N1 N2 N3 N20 N5
-10063090;-- Autres;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N19 N1 N2 N3 N20 N5
-10064000;- Riz en brisures Sorgho à grains.;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N19 N1 N2 N3 N20 N5
+10062000;- Riz décortiqué (riz cargo ou riz brun) - Riz semi-blanchi ou blanchi, même poli ou glacé :;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N20 N1 N2 N3 N21 N5
+10063010;-- Conditionné pour la vente au détail;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N20 N1 N2 N3 N21 N5
+10063090;-- Autres;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N20 N1 N2 N3 N21 N5
+10064000;- Riz en brisures Sorgho à grains.;10;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N20 N1 N2 N3 N21 N5
 10070010;-De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 10070090;"- Autres Sarrasin, millet et alpiste ; autres céréales. -Sarrasin :";10;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 10081010;-- De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
@@ -484,7 +484,7 @@
 10082010;-- De semence;10;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 10082090;-- Autres - Alpiste :;10;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 10083010;-- De semence;10;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-11010010;-De froment;11;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+11010010;-De froment;11;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N1 N2 N3 N22 N5
 11010020;- de méteil Farines de céréales autres que de froment (blé) ou de méteil.;11;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 11021000;-Farine de seigle;11;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 11022000;- Farine de maïs;11;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -586,7 +586,7 @@
 15091000;-Vierges;15;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 15099000;- Autres Autres huiles et leurs fractions, obtenues exclusivement à partir d’olives, même raffinées, mais non chimiquement modifiées et mélanges de ces huiles ou fractions avec des huiles ou fractions du n° Huile de palme et ses fractions, même raffinées, mais non chimiquement modifiées.;15;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 15111000;-Huiles brute;15;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-15119000;- Autres;15;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N21 N1 N2 N3 N22 N5
+15119000;- Autres;15;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N23 N1 N2 N3 N24 N5
 15121100;-- Huiles brutes;15;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 15121900;-- Autres - Huile de coton et ses fractions :;15;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 15122100;-- Huile brute, même dépourvue de gossypol;15;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -644,7 +644,7 @@
 17011100;-- De canne;17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 17011200;-- De betterave - Autres :;17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 17019100;-- Additionnés d’aromatisants ou de colorants -- Autres :;17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-17019910;--- Sucres raffinés de canne ou de betterave;17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
+17019910;--- Sucres raffinés de canne ou de betterave;17;;30;1;0.2;0.05;0.4;2;5;5;;40.48;COMPLET;;;N1 N2 N3 N25 N5
 17019990;"--- Autres Autres sucres, y compris le lactose, le maltose, le glucose et le fructose (lévulose) chimiquement purs, à l’état solide ; sirops de sucres sans addition d’aromatisants ou de colorants ; succédanés du miel, même mélangés de miel naturel ; sucres et mélasses caramélisés. -Lactose et sirop de lactose :";17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 17021100;-- Contenant en poids 99 % ou plus de lactose, exprimé en lactose anhydre calculé sur matière sèche;17;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 17021900;-- Autres;17;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -654,9 +654,9 @@
 17029000;- Autres, y compris le sucre inverti (ou interverti) et les autres sucres et sirops de sucres contenant en poids à l’état sec 50 % de fructose Mélasses résultant de l’extraction ou du raffinage du sucre.;17;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 17031000;-Mélasses de canne;17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 17039000;- Autres Sucreries sans cacao (y compris le chocolat blanc).;17;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-17041000;-Gommes à mâcher (chewing-gum), même enrobées de sucre -Autre :;17;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-17049010;-- Pastilles et bonbons contre la toux pour la gorge;17;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-17049090;-- Autres;17;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+17041000;-Gommes à mâcher (chewing-gum), même enrobées de sucre -Autre :;17;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+17049010;-- Pastilles et bonbons contre la toux pour la gorge;17;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+17049090;-- Autres;17;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 18010011;-- De type supérieur;18;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 18010012;-- De type courant;18;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 18010013;-- De type limite;18;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -671,7 +671,7 @@
 18063100;-- Fourrés;18;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 18063200;-- Non fourrés;18;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 18069000;- Autres;18;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-19011011;--- Contenant du cacao dans une proportion inférieure à 40;19;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+19011011;--- Contenant du cacao dans une proportion inférieure à 40;19;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N27 N5
 19011012;% en poids;19;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 19011021;--- Ne contenant pas de cacao;19;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 19011022;--- Contenant du cacao dans une proportion inférieure à 5 % en poids -Mélanges et pâtes pour la préparation des produits de la boulangerie, de la pâtisserie ou de la biscuiterie du n° 19.05 :;19;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
@@ -749,7 +749,7 @@
 21011100;-- Extraits, essences et concentrés;21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 21011200;-- Préparations à base d’extraits, essences ou concentrés ou à base de café - Extraits, essence et concentrés de thé ou de maté et préparations à base de ces extraits, essences ou concentrés ou à base de thé ou de maté;21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 21013000;"- Chicorée torréfiée et autres succédanés torréfiés du café et leurs extraits, essences et concentrés Levures (vivantes ou mortes) ; autres micro- organismes monocellulaires mors (à l’exclusion des vaccins du n° 30.02) ; poudres à lever préparées.";21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-21021000;-Levures vivantes;21;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
+21021000;-Levures vivantes;21;;10;1;0.2;0.05;0.4;2;0;5;;13.65;COMPLET;;;N1 N2 N3 N28 N5
 21022000;"- Levures mortes ; autres micro-organismes monocellulaires morts";21;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 21023000;"- Poudres à lever préparées Préparations pour sauces et sauces préparées ; condiments et assaisonnements, composés ; farine de moutarde et moutarde préparée.";21;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 21031000;-Sauce de soja;21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -758,38 +758,38 @@
 21039000;"- Autres Préparations pour soupes, potages ou bouillons ; soupes, potages ou bouillons préparés ; préparations alimentaires composites homogénéisées.";21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 21041000;"-Préparations pour soupes, potages ou bouillons ; soupes, potages ou bouillons préparés";21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 21042000;- Préparations alimentaires composites homogénéisées Glaces de consommation, même contenant du cacao.;21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-21050010;- Autres;21;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-21050090;Préparations alimentaires non dénommées ni comprises ailleurs. -Concentras de protéines et substances protéiques;21;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+21050010;- Autres;21;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+21050090;Préparations alimentaires non dénommées ni comprises ailleurs. -Concentras de protéines et substances protéiques;21;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 21061000;texturées - Autres : -- Préparations, composées alcooliques ou non;21;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 21069010;alcooliques pour la fabrication des boissons -- Composées pour préparations industrielles;21;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 21069020;alimentaires -- Autres préparations alimentaires non dénommées ni;21;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 21069090;comprises ailleurs;21;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 22011000;- Eaux minérales et eaux gazéifiées;22;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 22019000;- Autres Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées, et autres boissons non alcooliques, à l’exclusion des jus de fruits ou de légumes du n° 20.09.;22;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N24 N4 N5
-22029000;- Autres (*) Bières de malt;22;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N25 N4 N5
-22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22041010;-- De champagne (*);22;;30;1;0.2;0.05;0.4;2;18;5;50;135.5;COMPLET;;;N1 N2 N3 N27 N4 N5
-22041090;"-- Autres (*) - Autres vins ; moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool : -- En récipients d’une contenance n’excédant pas 21 :";22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22042110;--- Vins autres que ceux du n° 2204.21.20 (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22042120;--- Vins de liqueur, mistelles ou moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool --Autres :;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22042919;--- Vins autres que ceux du n° 22.04.29.20 :;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22042920;---- Présentés en récipient d’une contenance de plus de 2 litres mais n’excédant pas 20 L (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22043000;-Autres moûts de raisins (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22051000;-En récipients d’une contenance n’excédant pas 2 l (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22059000;- Autres (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22071010;-- Autres (*);22;;20;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N28 N4 N5
-22071090;- Alcool éthylique et eau-de-vie dénaturés de tous titres;22;;20;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N28 N4 N5
-22082000;- Whiskies (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22083000;- Rhum et autres eau-de-vie provenant de la distillation,;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22084000;après fermentation, de produits de cannes à sucre (*) - Gin et genièvre (=);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22085000;- Vodka (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22086000;- Liqueurs (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22087000;- Autres : -- Alcool éthylique non dénaturé de moins de 80 % vol;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22089010;(*) -- Autres boissons spiritueuses d’un titre alcoométrique volumique de : --- Moins de 15 % vol (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22089091;--- 15 % vol ou plus (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
-22089092;Vinaigres comestibles et succédanés de vinaigre;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N26 N4 N5
+22021000;-Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d’autres édulcorants ou aromatisées (*);22;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N29 N4 N5
+22029000;- Autres (*) Bières de malt;22;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N30 N4 N5
+22030010;-Titrant 6,5 % d’alcool en volume ou moins(*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22030090;"- Autres (*) Vins de raisins frais, y compris les vins enrichis en alcool ; moûts de raisin autres que ceux du n° 20.09. -Vins mousseux :";22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22041010;-- De champagne (*);22;;30;1;0.2;0.05;0.4;2;18;5;50;135.5;COMPLET;;;N1 N2 N3 N32 N4 N5
+22041090;"-- Autres (*) - Autres vins ; moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool : -- En récipients d’une contenance n’excédant pas 21 :";22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22042110;--- Vins autres que ceux du n° 2204.21.20 (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22042120;--- Vins de liqueur, mistelles ou moûts de raisin dont la fermentation a été empêchée ou arrêtée par addition d’alcool --Autres :;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22042919;--- Vins autres que ceux du n° 22.04.29.20 :;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22042920;---- Présentés en récipient d’une contenance de plus de 2 litres mais n’excédant pas 20 L (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22043000;-Autres moûts de raisins (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22051000;-En récipients d’une contenance n’excédant pas 2 l (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22059000;- Autres (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22071010;-- Autres (*);22;;20;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N33 N4 N5
+22071090;- Alcool éthylique et eau-de-vie dénaturés de tous titres;22;;20;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N33 N4 N5
+22082000;- Whiskies (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22083000;- Rhum et autres eau-de-vie provenant de la distillation,;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22084000;après fermentation, de produits de cannes à sucre (*) - Gin et genièvre (=);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22085000;- Vodka (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22086000;- Liqueurs (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22087000;- Autres : -- Alcool éthylique non dénaturé de moins de 80 % vol;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22089010;(*) -- Autres boissons spiritueuses d’un titre alcoométrique volumique de : --- Moins de 15 % vol (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22089091;--- 15 % vol ou plus (*);22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
+22089092;Vinaigres comestibles et succédanés de vinaigre;22;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N31 N4 N5
 23011000;"-Farines, poudres et agglomérés sous forme de pellets, de viandes ou d’abats ; cretons";23;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 23012000;- Farines, poudres et agglomérés sous forme de pellets, de poissons ou de crustacés, de mollusques ou d’autres invertébrés aquatiques Sons, remoulages et autres résidus, même agglomérés sous forme de pellets, du criblage, de la mouture ou d’autres traitements des céréales ou des légumineuses.;23;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 23021000;-De maïs;23;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -813,22 +813,22 @@
 23070000;"Lies de vin ; tartre brut";23;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 23091000;- Aliments pour chiens ou chats, conditionnés pour la vente au détail -Autres :;23;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 23092000;-- Préparations alimentaires de provenderie d’une concentration égale ou supérieure à 2 % -- Autres préparations alimentaires de provenderie;23;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-23099090;;23;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-24011000;-Tabacs non écôtés;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N29 N4 N5
-24012000;- Tabacs partiellement ou totalement écôtés;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N29 N4 N5
-24013000;- Déchets de tabac Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en tabac ou en succédanés de tabac.;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N29 N4 N5
-24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N29 N4 N5
-24022000;- Cigarettes contenant du tabac;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N29 N4 N5
-24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N29 N4 N5
-24031010;-- Tabac à fumer (scaferlati);24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N29 N4 N5
-24031090;-- Autres - Autres :;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N29 N4 N5
-24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N29 N4 N5
-24039910;-- Tabacs à mâcher et à priser;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N29 N4 N5
-24039920;--- Extraits et sauces de tabacs;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N29 N4 N5
-24039990;--- Autres tabacs et fabriqués;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N29 N4 N5
+23099090;;23;;30;1;0.2;0.05;0.4;2;0;5;;33.65;COMPLET;;;N1 N2 N3 N34 N5
+24011000;-Tabacs non écôtés;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N35 N4 N5
+24012000;- Tabacs partiellement ou totalement écôtés;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N35 N4 N5
+24013000;- Déchets de tabac Cigares (y compris ceux à bouts coupés), cigarillos et cigarettes, en tabac ou en succédanés de tabac.;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N35 N4 N5
+24021000;-Cigares ( y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N35 N4 N5
+24022000;- Cigarettes contenant du tabac;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N35 N4 N5
+24029000;"- Autres Autres tabacs et succédanés de tabac, fabriqués ; tabacs << homogénéisés >> ou << reconstitués >> ; extraits et sauces de tabac. -Tabacs à fumer, même contenant des succédanés de tabac en toute proportion :";24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N35 N4 N5
+24031010;-- Tabac à fumer (scaferlati);24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N35 N4 N5
+24031090;-- Autres - Autres :;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N35 N4 N5
+24039100;-- Tabacs « homogénéisés » ou « reconstitués » -- Autres :;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N35 N4 N5
+24039910;-- Tabacs à mâcher et à priser;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N35 N4 N5
+24039920;--- Extraits et sauces de tabacs;24;;10;1;0.2;0.05;0.4;2;18;5;30;73.68;COMPLET;;;N1 N2 N3 N35 N4 N5
+24039990;--- Autres tabacs et fabriqués;24;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N35 N4 N5
 25010000;Soufres de toute espèce, à l’exclusion du soufre sublimé, du soufre précipité et du soufre colloïdal. -Soufres bruts et soufres non raffinés;25;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-25010011;-- Autre;25;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N30 N1 N2 N3 N31 N5
-25010019;- Autres;25;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
+25010011;-- Autre;25;;5;1;0.2;0.05;0.4;2;5;5;;14.16;COMPLET;;;N36 N1 N2 N3 N37 N5
+25010019;- Autres;25;;10;1;0.2;0.05;0.4;2;0;5;;13.65;COMPLET;;;N1 N2 N3 N38 N5
 25010090;Pyrites de fer non grillées;25;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 25030010;- Autres;25;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 25030090;Graphite naturel. -En poudre ou en paillettes;25;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -1229,7 +1229,7 @@
 29071500;-- Naphtols et leurs sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29071900;-- Autres - Polyphénols : phénols-alcools :;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29072100;-- Résorcinol et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-29072200;-- Hydroquinone et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;50;99.84;COMPLET;;;N1 N2 N3 N32 N4 N5
+29072200;-- Hydroquinone et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;50;99.84;COMPLET;;;N1 N2 N3 N39 N4 N5
 29072300;-- 4,4-Isopropylidènediphénol (bisphénol A, diphénylolpropane) et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29072900;-- Autres Dérivés halogénés, sulfonés, nitrés ou nitrosés des phénols ou des phénols-alcools. -Dérivés seulement halogénés et leurs sels :;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29081100;-- Pentachlorophénol (ISO);29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -1441,7 +1441,7 @@
 29362900;-- Autres vitamines et leurs dérivés;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29369000;"- Autres, y compris les concentrats naturels Hormones, prostaglandines, thromboxanes et leucotriènes, naturels ou reproduits par synthèse ; leurs dérivés et analogues structurels, y compris les polypeptides à chaîne modifiée, utilisés principalement comme hormones ; -Hormones polypeptidiques, hormones protéiques et hormones glycoprotéiques, leurs dérivés et analogues structurels :";29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29371100;-- Somatotropine, ses dérivés et analogues structurels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-29371200;-- Insuline et ses sels;29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+29371200;-- Insuline et ses sels;29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N40 N5
 29371900;-- Autres - Hormones stéroïdes, leurs dérivés et analogues structurels :;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29372100;--Cortisone, hydrocortisone, prednisone (déhydrocortisone) et prednisolone (déhydrohydrocortisone)……………;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29372200;-- Dérivés halogénés des hormones corticostéroïdes.;29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
@@ -1455,7 +1455,7 @@
 29381000;-Rutoside (rutine) et ses dérivés;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29389000;"- Autres Alcaloïdes végétaux, naturels ou reproduits par synthèse, leurs sels, leurs éthers, leurs esters et autres dérivés. -Alcaloïdes de l’opium et leurs dérivés ; sels de ces produits :";29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29391900;-- Autres;29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-29392000;"- Alcaloïdes du quinquina et leurs dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+29392000;"- Alcaloïdes du quinquina et leurs dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;n.d.;5;;;PARTIEL;TVA (TAUX_INDISPONIBLE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N41 N5
 29393000;- Caféine et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29394100;- Ephédrines et leurs sels : -- Ephédrine (DCI) et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29394200;-- Pseudophédrine (DCI) et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -1468,56 +1468,56 @@
 29396300;-- Acide lysergique et ses sels;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29396900;-- Autres;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 29399900;-- Autres XIII.- AUTRES COMPOSES ORGANIQUES;29;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-29411000;"-Pénicillines et leurs dérivés, à structure d’acide pénicillanique ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-29412000;"- Streptomycines et leurs dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-29413000;"- Tétracyclines et leurs dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-29414000;"- Chloramphénicol et ses dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-29415000;"- Erythromycine et ses dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-29419000;- Autres;29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+29411000;"-Pénicillines et leurs dérivés, à structure d’acide pénicillanique ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N42 N5
+29412000;"- Streptomycines et leurs dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N42 N5
+29413000;"- Tétracyclines et leurs dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N42 N5
+29414000;"- Chloramphénicol et ses dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N42 N5
+29415000;"- Erythromycine et ses dérivés ; sels de ces produits";29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N42 N5
+29419000;- Autres;29;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N42 N5
 29420000;Autres composés organiques;29;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-30010010;-Fumiers et composts;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30010090;- Autres engrais Engrais minéraux ou chimiques azotes.;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30012000;-Extraits de glandes ou d’autres organes de leurs sécrétions - Autres :;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30019010;-- Héparine et ses sels;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30019090;"-- Autres Sang humain ; sang animal préparé en vue d’usages thérapeutiques, prophylactiques ou de diagnostic ; antisérums, autres fractions du sang, obtenus par voie biotechnologique ; vaccins, toxines, cultures de micro- organismes (à l’exclusion des levures) et produits similaires.";30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30021000;-Antisérums, autres fractions du sang, produits immunologiques modifiés, même obtenus par voie biotechnologique;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30022000;- Vaccins pour la médecine humaine;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30023000;- Vaccins pour la médecine vétérinaire;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30029000;- Autres Médicaments (à l’exclusion des produits des n°s 30.02, 30.05 ou 30.06) constitués par des produits mélangés entre eux, préparés à des fins thérapeutiques ou prophylactiques, mais ni présentés sous forme de doses, ni conditionnés pour la vente au détail.;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30031000;-Contenant des pénicillines ou des dérivés de ces produits, à structure d’acide pénicillanique, ou des streptomycines ou des dérivés de ces produits;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30032000;- Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37, mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30033139;- - Contenant de l’insuline;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30033900;- - Autres;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30034000;- Contenant des alcaloïdes ou leurs dérivés, mais ne;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30039000;contenant ni hormones, ni autres produits du n° 29.37, ni antibiotiques -Autres Médicaments (à l’exclusion des produits des n° 30.02, 30.05 ou 30.06) conctitués par des produits mélangés ou non mélangés, préparés à des fins thérapeutiques ou prophylactiques, présentés sous forme de doses (y compris ceux destinés à être administrés par voie;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30042000;ou des dérivés de ces produits - Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30043100;mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30043200;- - Contenant de l’insuline - - Contenant des hormones corticostéroïdes, leurs dérivés;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30043900;ou analogues structurels;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30044000;- - Autres - Contenant des alcaloïdes ou leurs dérivés, mais ne contenant ni hormones, ni autres produits du n° 29.37, ni;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30045000;antibiotiques - Autres médicaments contenant des vitamines ou d’autres;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30049000;produits du n° 29.36 - Autres Ouates, gazes, bandes et articles analogues (pansements, sparadraps, sinapismes, par exemple), imprégnés ou recouverts de substances pharmaceutiques ou conditionnés pour la vente au détail à des fins médicales, chirurgicales, dentaires ou;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30051000;vétérinaires. -Pansements adhésifs et autres articles ayant une couche;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30059000;adhésive - Autres;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30062000;- - Réactifs destinés à la détermination des groupes ou des facteurs sanguins;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30063000;"- Préparations opacifiantes pour examens radiographiques ; réactifs de diagnostic conçus pour être employés sur le patient - Ciments et autres produits d’obturation dentaire ; ciments pour la réfection osseuse :";30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30064010;-- Ciments pour la réfection osseuse;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30064090;-- Autres;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30065000;- Trousses et boîtes de pharmacie garnies, pour soins de premières urgences;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30066000;- Préparations chimiques contraceptives à base d’hormones, d’autres produits du n° 29.37 ou de spermicides;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30067000;- Préparations présentées sous forme de gel conçues pour être utilisées en médecine humaine ou vétérinaire comme lubrifiant pour certaines parties du corps lors des opérations chirurgicales ou des examens médicaux ou comme agent de couplage entre le corps et les instruments médicaux - Autres :;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30069100;-- Appareillages identifiables de stomie;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-30069200;-- Déchets pharmaceutiques;30;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-31021000;"-Urée, d’ammonium ; sels doubles et mélanges de sulfate d’ammonium et de nitrate d’ammonium :";31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31022100;- - Sulfate d’ammonium;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31022900;- - Autres;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31023000;- Nitrate d’ammonium, même en solution aqueuse;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31024000;- Mélanges de nitrate d’ammonium et de carbonate de calcium ou d’autres matières inorganiques dépourvues de pouvoir fertilisant - Nitrate de sodium :;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31025010;-- Nitrate de sodium d’une teneur en azote supérieure à 16,3 %;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31025090;-- Autre;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31026000;- Sels doubles et mélanges de nitrate de calcium et de nitrate d’ammonium;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31028000;- Mélanges d’urée et de nitrate d’amonium en solutions aqueuses ou ammoniacales;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-31029000;- Autres, y compris les mélanges non visés dans les sous- positions précédentes Engrais minéraux ou chimiques phosphatés.;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+30010010;-Fumiers et composts;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30010090;- Autres engrais Engrais minéraux ou chimiques azotes.;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30012000;-Extraits de glandes ou d’autres organes de leurs sécrétions - Autres :;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30019010;-- Héparine et ses sels;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30019090;"-- Autres Sang humain ; sang animal préparé en vue d’usages thérapeutiques, prophylactiques ou de diagnostic ; antisérums, autres fractions du sang, obtenus par voie biotechnologique ; vaccins, toxines, cultures de micro- organismes (à l’exclusion des levures) et produits similaires.";30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30021000;-Antisérums, autres fractions du sang, produits immunologiques modifiés, même obtenus par voie biotechnologique;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30022000;- Vaccins pour la médecine humaine;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30023000;- Vaccins pour la médecine vétérinaire;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30029000;- Autres Médicaments (à l’exclusion des produits des n°s 30.02, 30.05 ou 30.06) constitués par des produits mélangés entre eux, préparés à des fins thérapeutiques ou prophylactiques, mais ni présentés sous forme de doses, ni conditionnés pour la vente au détail.;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30031000;-Contenant des pénicillines ou des dérivés de ces produits, à structure d’acide pénicillanique, ou des streptomycines ou des dérivés de ces produits;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30032000;- Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37, mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30033139;- - Contenant de l’insuline;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30033900;- - Autres;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30034000;- Contenant des alcaloïdes ou leurs dérivés, mais ne;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30039000;contenant ni hormones, ni autres produits du n° 29.37, ni antibiotiques -Autres Médicaments (à l’exclusion des produits des n° 30.02, 30.05 ou 30.06) conctitués par des produits mélangés ou non mélangés, préparés à des fins thérapeutiques ou prophylactiques, présentés sous forme de doses (y compris ceux destinés à être administrés par voie;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30042000;ou des dérivés de ces produits - Contenant d’autres antibiotiques - Contenant des hormones ou d’autres produits du n° 29.37;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30043100;mais ne contenant pas d’antibiotiques :;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30043200;- - Contenant de l’insuline - - Contenant des hormones corticostéroïdes, leurs dérivés;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30043900;ou analogues structurels;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30044000;- - Autres - Contenant des alcaloïdes ou leurs dérivés, mais ne contenant ni hormones, ni autres produits du n° 29.37, ni;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30045000;antibiotiques - Autres médicaments contenant des vitamines ou d’autres;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30049000;produits du n° 29.36 - Autres Ouates, gazes, bandes et articles analogues (pansements, sparadraps, sinapismes, par exemple), imprégnés ou recouverts de substances pharmaceutiques ou conditionnés pour la vente au détail à des fins médicales, chirurgicales, dentaires ou;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30051000;vétérinaires. -Pansements adhésifs et autres articles ayant une couche;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30059000;adhésive - Autres;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30062000;- - Réactifs destinés à la détermination des groupes ou des facteurs sanguins;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30063000;"- Préparations opacifiantes pour examens radiographiques ; réactifs de diagnostic conçus pour être employés sur le patient - Ciments et autres produits d’obturation dentaire ; ciments pour la réfection osseuse :";30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30064010;-- Ciments pour la réfection osseuse;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30064090;-- Autres;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30065000;- Trousses et boîtes de pharmacie garnies, pour soins de premières urgences;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30066000;- Préparations chimiques contraceptives à base d’hormones, d’autres produits du n° 29.37 ou de spermicides;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30067000;- Préparations présentées sous forme de gel conçues pour être utilisées en médecine humaine ou vétérinaire comme lubrifiant pour certaines parties du corps lors des opérations chirurgicales ou des examens médicaux ou comme agent de couplage entre le corps et les instruments médicaux - Autres :;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30069100;-- Appareillages identifiables de stomie;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+30069200;-- Déchets pharmaceutiques;30;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N44 N5
+31021000;"-Urée, d’ammonium ; sels doubles et mélanges de sulfate d’ammonium et de nitrate d’ammonium :";31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31022100;- - Sulfate d’ammonium;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31022900;- - Autres;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31023000;- Nitrate d’ammonium, même en solution aqueuse;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31024000;- Mélanges de nitrate d’ammonium et de carbonate de calcium ou d’autres matières inorganiques dépourvues de pouvoir fertilisant - Nitrate de sodium :;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31025010;-- Nitrate de sodium d’une teneur en azote supérieure à 16,3 %;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31025090;-- Autre;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31026000;- Sels doubles et mélanges de nitrate de calcium et de nitrate d’ammonium;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31028000;- Mélanges d’urée et de nitrate d’amonium en solutions aqueuses ou ammoniacales;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
+31029000;- Autres, y compris les mélanges non visés dans les sous- positions précédentes Engrais minéraux ou chimiques phosphatés.;31;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N45 N5
 31031000;-Superphosphates;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 31039000;- Autres Engrais minéraux ou chimiques potassiques.;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 31042000;-Chlorure de potassium;31;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
@@ -1581,12 +1581,12 @@
 33019000;- autres Mélanges de substances odoriférantes et mélanges (y compris les solutions alcooliques) à base d’une ou de plusieurs de ces substances, des types utilisés comme matières de base de substances odoriférantes, des types utilisés pour la fabrication de boissons.;33;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 33021000;-Des types utilisés pour les industries alimentaires ou des boissons;33;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 33029000;- Autres;33;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-33030000;"Parfums et eaux de toilette Produits de beauté ou de maquillage préparés et préparations pour l’entretien ou les soins de la peau, autres que les médicaments, y compris les préparations antisolaires et les préparations pour bronzer ; préparations pour manucures ou pédicures.";33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N34 N4 N5
-33041000;-Produits de maquillage pour les lèvres;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N34 N4 N5
-33042000;- Produits de maquillage pour les yeux;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N34 N4 N5
-33043000;- Préparations pour manucures ou pédicures - Autres :;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N34 N4 N5
-33049100;- - Poudres, y compris les poudres compactes;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N34 N4 N5
-33049900;-- Autres…………………………… Préparations capillaries.;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N34 N4 N5
+33030000;"Parfums et eaux de toilette Produits de beauté ou de maquillage préparés et préparations pour l’entretien ou les soins de la peau, autres que les médicaments, y compris les préparations antisolaires et les préparations pour bronzer ; préparations pour manucures ou pédicures.";33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N46 N4 N5
+33041000;-Produits de maquillage pour les lèvres;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N46 N4 N5
+33042000;- Produits de maquillage pour les yeux;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N46 N4 N5
+33043000;- Préparations pour manucures ou pédicures - Autres :;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N46 N4 N5
+33049100;- - Poudres, y compris les poudres compactes;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N46 N4 N5
+33049900;-- Autres…………………………… Préparations capillaries.;33;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N46 N4 N5
 33051000;-Shampooings………………………;33;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 33052000;- Préparations pour l’ondulation ou le défrisage permanent…………………;33;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 33053000;- Laques pour cheveux;33;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -1613,8 +1613,8 @@
 34031900;- - Autres - Autres :;34;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 34039100;- - Préparations pour le traitement des matières textilles, du cuir, des pelleteries ou d’autres matières;34;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 34039900;- - Autres Cires artificielles et cires préparées.;34;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-34042000;-De poly (oxyéthylène) (polyéthylène glycol);34;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-34049000;- Autres Cirages et crèmes pour chaussures, en caustiques, brillants pour carrosseries, verre ou métaux, pâtes et poudres à récurer et préparations similaires, (même sous forme de papier, ouates, feutres, nontissés, matière plastique ou caoutchouc alvéolaires, imprégnés, enduits ou recouverts de ces préparations), à l’exclusion des cires du n° 34.04.;34;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
+34042000;-De poly (oxyéthylène) (polyéthylène glycol);34;;30;1;0.2;0.05;0.4;2;n.d.;5;;;PARTIEL;TVA (TAUX_INDISPONIBLE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N47 N5
+34049000;- Autres Cirages et crèmes pour chaussures, en caustiques, brillants pour carrosseries, verre ou métaux, pâtes et poudres à récurer et préparations similaires, (même sous forme de papier, ouates, feutres, nontissés, matière plastique ou caoutchouc alvéolaires, imprégnés, enduits ou recouverts de ces préparations), à l’exclusion des cires du n° 34.04.;34;;30;1;0.2;0.05;0.4;2;n.d.;5;;;PARTIEL;TVA (TAUX_INDISPONIBLE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N47 N5
 34051000;-Cirages, crèmes et préparations similaires pour chaussures ou pour cuir;34;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 34052000;- Encaustiques et préparations similaires pour l’entretien des meubles en bois, des parquets ou d’autres boiseries;34;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 34053000;- Brillants et préparations similaires pour carrosseries, autres que les brillants pour métaux;34;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -1650,12 +1650,12 @@
 36050000;"Allumettes, autres que les articles de pyrotechnie du n° Ferrocérium et autres alliages pyrophoriques sous toutes formes ; articles en matières inflammables cités à la Note 2 du présent Chapitre.";36;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 36069010;-- Ferrocérium et autres alliages pyrophoriques;36;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 36069090;-- Autres articles en matières inflammables;36;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-37011000;-Pour rayons X;37;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+37011000;-Pour rayons X;37;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N48 N5
 37012000;- Films à développement et tirage instantanés;37;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 37013000;- Autres plaques et films dont la dimension d’au moins un côté excède 255 mm - Autres :;37;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
 37019100;- - Pour la photographie en couleur (polychrome);37;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 37019900;"- - Autres Pellicules photographiques sensibilisées, non impressionnées, en rouleaux, en autres matières que le papier, le carton ou les textiles ; pellicules photographiques à développement et tirage instantanés, en rouleaux, sensibilisées, non impressionnées. -Pour rayons X";37;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-37021000;- Autres pellicules, non perforées, d’une largeur n’excédant pas 105 mm : - - Pour la photographie en couleurs (polychrome);37;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+37021000;- Autres pellicules, non perforées, d’une largeur n’excédant pas 105 mm : - - Pour la photographie en couleurs (polychrome);37;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N49 N5
 37023100;- - Autres, comportant une émulsion aux halogénures;37;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 37023200;d’argent - - Autres;37;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 37023900;- Autres pellicules, non perforées, d’une largeur excédant 105 mm :;37;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -1701,16 +1701,16 @@
 38069000;- Autres;38;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 38070010;-Méthylène;38;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 38070090;- Autres Insecticides, antirongeurs, fongicides, herbicides, inhibiteurs de germination et régulateurs de croissance pour plantes, désinfectants et produits similaires, présentés dans des formes ou emballages de vente au détail ou à l’état de préparations ou sous forme d’articles tels que rubans, mèches et bougies soufrés et papier tue-mouches.;38;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-38085000;-Marchandises mentionnées dans la Note 1 de la sous- position du présent Chapitre - Autres : - -Insecticides;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089110;-- - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089190;"- - - Autres - - Fongicides ;";38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089210;- - - Présentés dans des formes propres à la vente au détai ou emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089290;- - - Autres - - Herbicides, inhibiteurs de germination et régulateurs de croissance pour plantes :;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089310;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089390;- - - Autres - - Désinfectants :;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089410;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous formes d’articles;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089490;"- - - Autres - - Autres ;";38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-38089990;- - - Autres;38;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+38085000;-Marchandises mentionnées dans la Note 1 de la sous- position du présent Chapitre - Autres : - -Insecticides;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089110;-- - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089190;"- - - Autres - - Fongicides ;";38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089210;- - - Présentés dans des formes propres à la vente au détai ou emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089290;- - - Autres - - Herbicides, inhibiteurs de germination et régulateurs de croissance pour plantes :;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089310;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous forme d’articles;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089390;- - - Autres - - Désinfectants :;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089410;- - - Présentés dans des formes propres à la vente au détai ou en emballages d’une contenance nette de 1 kg ou moins, ou bien sous formes d’articles;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089490;"- - - Autres - - Autres ;";38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
+38089990;- - - Autres;38;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N50 N5
 38091000;-A base de matières amylacées - Autres :;38;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 38099100;- - Des types utilisés dans l’industrie textile ou dans les industries similaires;38;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 38099200;- - Des types utilisés dans l’industrie du papier ou dans les industries similaires;38;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -1963,10 +1963,10 @@
 40131000;-Des types utilisés pour les voitures de tourisme (y compris les voitures du type << break >> et les voitures de course), les autobus ou les camions (*).;40;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 40132000;- Des types utilisés pour bicyclettes (*);40;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 40139000;- Autres (*) Articles d’hygiène ou de pharmacie (y compris les tétines), en caoutchouc vulcanisé non durci, même avec parties en caoutchouc durci.;40;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-40141000;-Préservatifs;40;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-40149000;-Autres Vêtements et accessoires du vêtement (y compris les gants, mitaines et moufles) en caoutchouc vulcanisé non durci, pour tous usages. -Gants, mitaines et moufles :;40;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-40151100;- - Pour chirurgie;40;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-40151900;- - Autres;40;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
+40141000;-Préservatifs;40;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N51 N5
+40149000;-Autres Vêtements et accessoires du vêtement (y compris les gants, mitaines et moufles) en caoutchouc vulcanisé non durci, pour tous usages. -Gants, mitaines et moufles :;40;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N51 N5
+40151100;- - Pour chirurgie;40;;5;1;0.2;0.05;0.4;2;n.d.;5;;;PARTIEL;TVA (TAUX_INDISPONIBLE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N52 N5
+40151900;- - Autres;40;;30;1;0.2;0.05;0.4;2;n.d.;5;;;PARTIEL;TVA (TAUX_INDISPONIBLE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N52 N5
 40159000;- Autres Autres ouvrages en caoutchouc vulcanisé non durci.;40;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 40161000;-En caoutchouc alvéolaire - Autres :;40;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 40169100;- - Revêtements de sol et tapis de pied;40;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -2135,7 +2135,7 @@
 44072922;--- Kitibé, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 44072923;--- Kodrodua, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 44072924;--- Limba, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-44072925;--- Moabi, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N35 N1 N2 N3 N4 N5
+44072925;--- Moabi, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N53 N1 N2 N3 N4 N5
 44072926;--- Movingui, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 44072927;--- Mutényé, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 44072928;--- Niangon, scié (*);44;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -2328,7 +2328,7 @@
 48194000;"- Autres sacs ; sachets, pochettes (autres que celles pour disques) et cornets";48;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 48195000;- Autres emballages, y compris les pochettes pour disques;48;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 48196000;"- Cartonnages de bureau, de magasin ou similaires Registres, livres comptables, carnets (de notes, de commandes, de quittances), agendas, blocs- mémorandums, blocs de papier à lettres et ouvrages similaires, cahiers, sous-main, classeurs, reliures (à feuillets mobiles ou autres), chemises et couvertures à dossiers et autres articles scolaires, de bureau ou de papeterie, y compris les liasses et carnets manifold, même comportant des feuilles de papier carbone, en papier ou en carton ; albums pour échantillonnages ou pour collections et couvertures pour livres, en papier ou en carton.";48;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-48202000;- Cahiers;48;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
+48202000;- Cahiers;48;;30;1;0.2;0.05;0.4;2;0;5;;33.65;COMPLET;;;N1 N2 N3 N54 N5
 48203000;- Classeurs, reliures (autres que les couvertures pour livres), chemises et couvertures à dossiers;48;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 48204000;- Liasses et carnets manifold, même comportant des feuilles de papier carbone;48;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 48205000;- Albums pour échantillonnages ou pour collections.;48;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -3185,10 +3185,10 @@
 66032000;-Montures assemblées, même avec mâts ou manches, pour parapluies, ombrelles ou parasols - Autres;66;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 67021000;-En matières plastiques;67;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 67029000;- En autres matières;67;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-67041100;- - Perruques complètes;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N36 N4 N5
-67041900;- - Autres;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N36 N4 N5
-67042000;- En cheveux;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N36 N4 N5
-67049000;- En autres matières;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N36 N4 N5
+67041100;- - Perruques complètes;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N55 N4 N5
+67041900;- - Autres;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N55 N4 N5
+67042000;- En cheveux;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N55 N4 N5
+67049000;- En autres matières;67;;30;1;0.2;0.05;0.4;2;18;5;10;73.68;COMPLET;;;N1 N2 N3 N55 N4 N5
 68010000;"Pavés, bordures de trottoirs et dalles de pavage, en pierres naturelles (autres que l’ardoise) Pierres de taille ou de construction (autres que l’ardoise) travaillées et ceux du n° 68.01 ; cubes, dés et articles similaires pour mosaïques, en pierres naturelles (y compris l’ardoise), même sur support ; granulés, éclats et poudres de pierres naturelles (y compris l’ardoise), colorés artificiellement.";68;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 68022100;- - Marbre, travertin et albâtre;68;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 68022300;- - Granit;68;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -3247,7 +3247,7 @@
 69049000;- Autres Tuiles, éléments de cheminée, conduits de fumée ornements architectoniques, en céramique, et autres poteries de bâtiment.;69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 69051000;- Tuiles;69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 69059000;- Autres;69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-69060000;"Tuyaux, gouttières et accessoires de tuyauterie en céramique Carreaux et dalles de pavement ou de revêtement, non vernissés ni émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, non vernissés ni émaillés, en céramique, même sur support.";69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N37 N1 N2 N3 N4 N5
+69060000;"Tuyaux, gouttières et accessoires de tuyauterie en céramique Carreaux et dalles de pavement ou de revêtement, non vernissés ni émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, non vernissés ni émaillés, en céramique, même sur support.";69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N56 N1 N2 N3 N4 N5
 69079000;"- Autres Carreaux et dalles de pavement ou de revêtement, vernissés ou émaillés, en céramique ; cubes, dés et articles similaires pour mosaïques, vernissés";69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 69089000;"- Autres Appareils et articles pour usages chimiques ou autres usages techniques, en céramique ; auges, bacs et récipients similaires pour l’économie rurale, en céramique ; cruchons et récipients similaires de transport ou d’emballage, en céramique. -Appareils et articles pour usages chimiques ou autres usages techniques :";69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 69091100;- - En porcelaine;69;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -3305,7 +3305,7 @@
 70139100;- - En cristal au plomb;70;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 70139900;- - Autres;70;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 70140000;"Verrerie de signalisation et éléments d’optique en verre (autres que ceux du n° 70.15), non travaillés optiquement Verres d’horlogerie et verres analogues, verres de lunetterie commune ou médicale, bombés, cintrés, creusés ou similaires, non travaillés optiquement ; sphères (boules) creuses et leurs segments, en verre, pour la fabrication de ces verres.";70;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-70151000;-Verres de lunetterie médicale;70;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+70151000;-Verres de lunetterie médicale;70;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N57 N5
 70159000;- Autres;70;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 70161000;-Cubes, dés et autre verrerie, même sur support, pour mosaïques ou décorations similaires;70;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 70169000;- Autres Verrerie de laboratoire, d’hygiène ou de pharmacie, même graduée ou jaugée.;70;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -3346,12 +3346,12 @@
 71061000;-Poudres(*) - Autres :;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71069100;- - Sous formes brutes (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71069200;- - Sous formes mi-ouvrées(*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
-71070000;Plaqué ou doublé d’argent sur métaux communs, sous formes brutes ou mi-ouvrées Or (y compris l’or platiné), sous formes brutes ou mi-ouvrées, ou en poudre. -A usages non monétaires :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+71070000;Plaqué ou doublé d’argent sur métaux communs, sous formes brutes ou mi-ouvrées Or (y compris l’or platiné), sous formes brutes ou mi-ouvrées, ou en poudre. -A usages non monétaires :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 71081100;- - Poudres (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71081200;- - Sous formes brutes (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71081300;- - Sous autres formes mi-ouvrées (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71082000;- A usage monétaire (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
-71090000;Plaqué ou doublé d’or sur métaux communs ou sur argent, sous formes brutes ou mi-ouvrées Platine, sous formes brutes ou mi-ouvrées, ou en poudre. -Platine :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+71090000;Plaqué ou doublé d’or sur métaux communs ou sur argent, sous formes brutes ou mi-ouvrées Platine, sous formes brutes ou mi-ouvrées, ou en poudre. -Platine :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 71101100;- - Sous formes brutes ou en poudre (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71101900;- - Autres (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71102100;--Sous formes brutes ou en poudres (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
@@ -3360,14 +3360,14 @@
 71103900;- - Autres (*) - Iridium, osmium et ruthénium :;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71104100;- - Sous formes brutes ou en poudres (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71104900;- - Autres (*);71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
-71110000;"Plaqué ou doublé de platine sur métaux communs, sur argent ou sur or, sous formes brutes ou mi- ouvrées Déchets et débris de métaux précieux ou de plaqué ou doublé de métaux précieux ; autres déchets et débris contenant des métaux précieux ou des composés de métaux précieux du type de ceux utilisés principalement pour la récupération des métaux précieux.";71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+71110000;"Plaqué ou doublé de platine sur métaux communs, sur argent ou sur or, sous formes brutes ou mi- ouvrées Déchets et débris de métaux précieux ou de plaqué ou doublé de métaux précieux ; autres déchets et débris contenant des métaux précieux ou des composés de métaux précieux du type de ceux utilisés principalement pour la récupération des métaux précieux.";71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 71123000;-Cendres contenant des métaux précieux ou des composés de métaux précieux, à l’exclusion des cendres d’orfèvre - Autres :;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71129100;- - D’or, même de plaqué ou doublé d’or, à l’exclusion des cendres d’orfèvre contenant d’autres métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71129200;- - De platine, même de plaqué ou doublé de platine, à l’exclusion des cendres d’orfèvre contenant d’autres métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71129900;- - Autres III- BIJOUTERIE, JOAILLERIE ET AUTRES OUVRAGES Articles de bijouterie ou de joaillerie et leurs parties, en métaux précieux ou en plaqués ou doublés de métaux précieux. -En métaux précieux, même revêtus, plaqués ou doublés de métaux précieux :;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
-71131100;- - En argent, même revêtu, plaqué ou doublé d’autres métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-71131900;- - En autres métaux précieux, même revêtus, plaqués ou doublés de métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-71132000;-En plaqués ou doublés de métaux précieux sur métaux communs Articles d’orfèvrerie et leurs parties, en métaux précieux ou en plaqués ou doublés de métaux précieux. -En métaux précieux, même revêtus, plaqués ou doublés de métaux précieux :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N39 N4 N5
+71131100;- - En argent, même revêtu, plaqué ou doublé d’autres métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+71131900;- - En autres métaux précieux, même revêtus, plaqués ou doublés de métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+71132000;-En plaqués ou doublés de métaux précieux sur métaux communs Articles d’orfèvrerie et leurs parties, en métaux précieux ou en plaqués ou doublés de métaux précieux. -En métaux précieux, même revêtus, plaqués ou doublés de métaux précieux :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N59 N4 N5
 71141100;- - En argent, même revêtu, plaqué ou doublé d’autres métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71141900;- - En autres métaux précieux, même revêtus, plaqués ou doublés de métaux précieux;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71142000;- En plaqués ou doublés de métaux précieux sur métaux communs Autres ouvrages en métaux précieux ou en plaqués ou doublés de métaux précieux.;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
@@ -3375,8 +3375,8 @@
 71159000;- Autres Ouvrages en perles fines ou de culture, en pierres gemmes ou en pierres synthétiques ou reconstituées.;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71161000;- En perles fines ou de culture;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
 71162000;- En pierres gemmes ou en pierres synthétiques ou reconstituées Bijouterie de fantaisie. -En métaux communs, même argentés, dorés ou platinés :;71;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N8 N4 N5
-71171900;- - Autres;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-71179000;- Autres Monnaies. -Monnaies n’ayant pas cours légal, autres que les pièces d’or :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+71171900;- - Autres;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+71179000;- Autres Monnaies. -Monnaies n’ayant pas cours légal, autres que les pièces d’or :;71;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 71181010;- - D’argent;71;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 71181090;- - Autres - Autres :;71;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 71181100;- - Boutons de manchettes et boutons similaires;71;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -4069,7 +4069,7 @@
 84189990;"--- Autres Appareils et dispositifs, même chauffés électriquement (à l’exclusion des fours et autres appareils du n° 85.14), pour le traitement de matières par des opérations impliquant un changement de température telles que le chauffage, la cuisson, la torréfaction, la distillation, la rectification, la stérilisation, la pasteurisation, l’étuvage, le séchage, l’évaporation, la vaporisation, la condensation ou le refroidissement, autres que les appareils domestiques ; chauffe-eau non électriques, à chauffage instantané ou à accumulation. -Chauffe-eau non électriques, à chauffage instantané ou à accumulation :";84;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 84191100;--A chauffage instantané, à gaz;84;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 84191900;- - Autres;84;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
-84192000;- Stérilisateurs médico-chirurgicaux ou de laboratoires - Séchoirs :;84;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+84192000;- Stérilisateurs médico-chirurgicaux ou de laboratoires - Séchoirs :;84;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N60 N5
 84193100;- - Pour produits agricoles - - Pour le bois, les pâtes à papiers ou cartons :;84;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 84193210;- - - A chauffage électrique;84;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 84193290;- - - Autres - - Autres :;84;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -4592,14 +4592,14 @@
 85184000;-Amplificateurs électriques d’audiofréquence;85;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 85185000;- Appareils électriques d’amplification du son;85;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 85189000;"- Parties Appareils d’enregistrement du son ; appareils de reproduction du son, appareils d’enregistrement et de reproduction du son.";85;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-85193000;- Platines tourne-disques (*);85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85195000;- Répondeurs téléphoniques (*) - Autres appareils :;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85198100;- - Utilisant un support magnétique, optique ou à semi- conducteur;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85198900;- - Autres Appareils d’enregistrement ou de reproduction vidéophoniques, même incorporant un récepteur de signaux vidéophoniques.;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85211000;-A bandes magnétiques (*);85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85219000;- Autres(*) Parties et accessoires reconnaissables comme étant exclusivement ou principalement destinés aux appareils des n°s 85.19 à 85.21.;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85221000;-Lecteurs phonographiques;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-85229000;- Autres Disques, bandes, dispositifs de stockage rémanent des données à base de semi-conducteurs, « cartes intelligentes » et autres supports pour l’enregistrement du son ou pour l’enregistrements analogues, même enregistrés, y compris les matrices et moules galvaniques pour la fabrication des disques, à l’exclusion des produits du Chapitre 37. -Supports magnétiques :;85;;20;1;0.2;0.05;0.4;2;18;5;5;53.46;COMPLET;;;N1 N2 N3 N23 N4 N5
+85193000;- Platines tourne-disques (*);85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85195000;- Répondeurs téléphoniques (*) - Autres appareils :;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85198100;- - Utilisant un support magnétique, optique ou à semi- conducteur;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85198900;- - Autres Appareils d’enregistrement ou de reproduction vidéophoniques, même incorporant un récepteur de signaux vidéophoniques.;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85211000;-A bandes magnétiques (*);85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85219000;- Autres(*) Parties et accessoires reconnaissables comme étant exclusivement ou principalement destinés aux appareils des n°s 85.19 à 85.21.;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85221000;-Lecteurs phonographiques;85;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+85229000;- Autres Disques, bandes, dispositifs de stockage rémanent des données à base de semi-conducteurs, « cartes intelligentes » et autres supports pour l’enregistrement du son ou pour l’enregistrements analogues, même enregistrés, y compris les matrices et moules galvaniques pour la fabrication des disques, à l’exclusion des produits du Chapitre 37. -Supports magnétiques :;85;;20;1;0.2;0.05;0.4;2;18;5;5;53.46;COMPLET;;;N1 N2 N3 N26 N4 N5
 85232100;- - Cartes munies d’une piste magnétique;85;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 85232900;- - Autres;85;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 85234000;- Supports optiques -Supports à semi-conducteur :;85;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -4783,21 +4783,21 @@
 87021020;- - A moteur diesel à plus d’un essieu moteur (*). - Autres :;87;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 87029010;- - Autres, à un essieu moteur (*);87;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 87029020;- - Autres, à plus d’un essieu moteur (*) Voitures de tourisme et autres véhicules automobiles principalement conçus pour le transport de personnes (autres que ceux du n° 87.02), y compris les voitures du type “break” et les voitures de course.;87;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-87032110;- - - A un essieu moteur (*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87032190;- - - Autres(*) - - D’une cylindrée excédant 1.000 cm mais n’excédant pas 1.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87032210;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87032290;- - - Autres (*) - - D’une cylindrée excédant 1.500 cm mais n’excédant pas 3.000 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87032310;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87032390;- - - Autres(*) - - D’une cylindrée excédant 3.000 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87032410;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N41 N4 N5
-87032490;- - - Autres(*) - Autres véhicules, à moteur à piston à allumage par compression (diesel ou semi-diesel) : - - D’une cylindrée n’excédant pas 1.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N41 N4 N5
-87033110;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87033190;- - - Autres(*) --D’une cylindrée excédant 1.500 cm mais n’excédant pas 2.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87033210;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87033290;- - - Autres(*) - - D’une cylindrée excédant 2.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87033310;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87033390;- - - Autres(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
-87033900;- Autres(*) Véhicules automobiles pour le transport de marchandises.;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N40 N4 N5
+87032110;- - - A un essieu moteur (*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87032190;- - - Autres(*) - - D’une cylindrée excédant 1.000 cm mais n’excédant pas 1.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87032210;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87032290;- - - Autres (*) - - D’une cylindrée excédant 1.500 cm mais n’excédant pas 3.000 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87032310;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87032390;- - - Autres(*) - - D’une cylindrée excédant 3.000 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87032410;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N62 N4 N5
+87032490;- - - Autres(*) - Autres véhicules, à moteur à piston à allumage par compression (diesel ou semi-diesel) : - - D’une cylindrée n’excédant pas 1.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N62 N4 N5
+87033110;- - - A un essieu moteur(*);87;;n.d.;1;0.2;0.05;0.4;2;n.d.;5;n.d.;;PARTIEL;DD (TAUX_INDISPONIBLE) | DA (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N63 N1 N2 N3 N61 N64 N5
+87033190;- - - Autres(*) --D’une cylindrée excédant 1.500 cm mais n’excédant pas 2.500 cm :;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87033210;- - - A un essieu moteur(*);87;;n.d.;1;0.2;0.05;0.4;2;n.d.;5;n.d.;;PARTIEL;DD (TAUX_INDISPONIBLE) | DA (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N63 N1 N2 N3 N61 N64 N5
+87033290;- - - Autres(*) - - D’une cylindrée excédant 2.500 cm :;87;;n.d.;1;0.2;0.05;0.4;2;n.d.;5;n.d.;;PARTIEL;DD (TAUX_INDISPONIBLE) | DA (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N63 N1 N2 N3 N61 N64 N5
+87033310;- - - A un essieu moteur(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87033390;- - - Autres(*);87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
+87033900;- Autres(*) Véhicules automobiles pour le transport de marchandises.;87;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N61 N4 N5
 87041000;-Tombereaux automoteurs conçus pour être utilisés en dehors du réseau routier(*) - Autres, à moteur à piston à allumage par compression (diesel ou semi-diesel) :;87;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 87042100;- - D’un poids en charge maximal n’excédant pas 5 tonnes(*);87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 87042200;- - D’un poids en charge maximal excédant 5 tonnes mais n’excédant pas 20 tonnes(*);87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
@@ -4832,18 +4832,18 @@
 87091900;- - Autres;87;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 87099000;- Parties;87;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 87100000;"Chars et automobiles blindées de combat, armés ou non ; leurs parties Motocycles (y compris les cyclomoteurs) et cycles équipés d’un moteur auxiliaire, avec ou sans side- cars ; side-cars.";87;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-87111000;-A moteur à piston alternatif, d’une cylindrée n’excédant pas 50 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N42 N4 N5
-87112000;- A moteur à piston alternatif, d’une cylindrée excédant 50 cm mais n’excédant pas 250 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N42 N4 N5
-87113000;- A moteur à piston alternatif, d’une cylindrée excédant cm mais n’excédant pas cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N42 N4 N5
-87114000;- A moteur à piston alternatif, d’une cylindrée excédant 500 cm mais n’excédant pas 800 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N42 N4 N5
-87115000;- A moteur à piston alternatif, d’une cylindrée excédant 800 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N42 N4 N5
-87119000;- Autres(*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N42 N4 N5
+87111000;-A moteur à piston alternatif, d’une cylindrée n’excédant pas 50 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N65 N4 N5
+87112000;- A moteur à piston alternatif, d’une cylindrée excédant 50 cm mais n’excédant pas 250 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N65 N4 N5
+87113000;- A moteur à piston alternatif, d’une cylindrée excédant cm mais n’excédant pas cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N65 N4 N5
+87114000;- A moteur à piston alternatif, d’une cylindrée excédant 500 cm mais n’excédant pas 800 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N65 N4 N5
+87115000;- A moteur à piston alternatif, d’une cylindrée excédant 800 cm (*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N65 N4 N5
+87119000;- Autres(*);87;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N65 N4 N5
 87120000;Bicyclettes et autres cycles (y compris les triporteurs), sans moteur(*) Fauteuils roulants et autres véhicules pour invalides, même avec moteur ou autre mécanisme de propulsion.;87;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-87131000;-Sans mécanisme de propulsion;87;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-87139000;- Autres Parties et accessoires des véhicules des n°s 87.11 à -De motocycles (y compris les cyclomoteurs) :;87;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+87131000;-Sans mécanisme de propulsion;87;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N66 N5
+87139000;- Autres Parties et accessoires des véhicules des n°s 87.11 à -De motocycles (y compris les cyclomoteurs) :;87;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N66 N5
 87141100;- - Selles;87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 87141900;- - Autres;87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
-87142000;-De fauteils roulants ou d’autres véhicules pour invalides - Autres :;87;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+87142000;-De fauteils roulants ou d’autres véhicules pour invalides - Autres :;87;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N67 N5
 87149100;- - Cadres et fourches, et leurs parties;87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 87149200;- - Jantes et rayons;87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 87149300;- - Moyeux (autres que les moyeux à freins) et pignons de roues libres;87;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
@@ -4877,10 +4877,10 @@
 89019020;--- Pour la navigation maritime, d’une jauge brute de 250 tonneaux et moins(*);89;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 89019030;--- Pour la navigation intérieure(*);89;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 89020000;"Bateaux de pêche ; navires-usines et autres bateaux pour le traitement ou la mise en conserve des produits de la pêche(*) Yachts et autres bateaux et embarcations de plaisance ou de sport ; bateaux à rames et canoës.";89;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-89031000;-Bateaux gonflables(*) - Autres :;89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-89039100;- - Bateaux à voile, même avec moteur auxiliaire(*);89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-89039200;- - Bateaux à moteur, autres qu’à moteur hors- bord(*);89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
-89039900;- - Autres(*);89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N23 N4 N5
+89031000;-Bateaux gonflables(*) - Autres :;89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+89039100;- - Bateaux à voile, même avec moteur auxiliaire(*);89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+89039200;- - Bateaux à moteur, autres qu’à moteur hors- bord(*);89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
+89039900;- - Autres(*);89;;30;1;0.2;0.05;0.4;2;18;5;5;65.95;COMPLET;;;N1 N2 N3 N26 N4 N5
 89040000;"Remorqueurs et bateaux-pousseurs(*) Bateaux-phares, bateaux-pompes, bateaux- dragueurs, pontons-grues et autres bateaux pour lesquels la navigation n’est qu’accessoire par rapport à la fonction principale ; docks flottants ; plates-formes de forage ou d’exploitation, flottantes ou submersibles.";89;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 89051000;-Bateaux-dragueurs(*);89;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 89052000;- Plates-formes de forage ou d’exploitation, flottantes ou submersibles(*);89;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -4903,7 +4903,7 @@
 90031900;- - En autres matières;90;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 90039000;- Parties;90;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 90041000;-Lunettes solaires - Autres :;90;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-90049010;- - Lunettes correctrices;90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+90049010;- - Lunettes correctrices;90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N68 N5
 90049020;- - Lunettes protectrices;90;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 90049090;"--Autres…………………………………………… Jumelles, longues-vues, lunettes astronomiques, télescopes optiques, et leurs bâtis ; autres instruments d’astronomie et leurs bâtis, à l’exclusion des appareils de radio-astronomie.";90;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 90051000;- Jumelles;90;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
@@ -4962,37 +4962,37 @@
 90173000;- Micromètres, pieds à coulisse, calibres et jauges;90;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 90178000;- Autres instruments;90;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 90179000;- Parties et accessoires Instruments et appareils pour la médecine, la chirurgie, l’art dentaire ou l’art vétérinaire, y compris les appareils de scintigraphie et autres;90;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-90181100;--Electrocardiographes………………………….;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90181200;- - Appareils de diagnostic par balayage ultrasonique (scanners)…………………………………;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90181300;- - Appareils de diagnostic par visualisation à résonance magnétique;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90181400;- - Appareils de scintigraphie;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90181900;- - Autres;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90182000;- Appareils à rayons ultraviolets ou infrarouges - Seringues, aiguilles, cathéters, canules et instruments similaires :;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90183100;- - Seringues, avec ou sans aiguilles;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90183200;- - Aiguilles tubulaires en métal et aiguilles à sutures;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90183900;- - Autres - Autres instruments et appareils, pour l’art dentaire :;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90184100;- - Tours dentaires, même combinés sur une base commune avec d’autres équipements dentaires;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90184900;- - Autres;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90185000;- Autres instruments et appareils d’ophtamologie;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90189000;"- Autres instrumnts et appareils Appareils de mécanothérapie ; appareils de massage ; appareils de psychotechnie ; appareils d’ozonothérapie, d’oxygénothérapie, d’aérosol- thérapie, appareils respiratoires de réanimation et autres appareils de thérapie respiratoire.";90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90191000;"-Appareils de mécanothérapie ; appareils de massage, appareils de psychotechnie";90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-90200000;Autres appareils respiratoies et masques à gaz, à l’exclusion des masques de protection dépourvus de mécanisme et d’élément filtrant amovible .;90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-90211000;-Articles et appareils d’orthopédie ou pour fractures - Articles et appareils de prothèse dentaire :;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90212100;- - Dents artificielles;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90212900;- - Autres - Autres articles et appareils de prothèse :;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90213100;- - Prothèses articulaires;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90213900;- - Autres;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90214000;- Appareils pour faciliter l’audition aux sourds, à l’exclusion des parties et accessoires;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90215000;- Stimulateurs cardiaques, à l’exclusion des parties et accessoires;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90219000;- Autres Appareils à rayons X et appareils utilisant les radiations alpha, bêta ou gamma, même à usage médical, chirurgical, dentaire ou vétérinaire, y compris les appareils de radiophotographie ou de radiothérapie, les tubes à rayons X et autres dispositifs générateurs de rayons X, les générateurs de tension, les pupitres de commande, les écrans, les tables, fauteuils et supports similaires d’examen ou de traitement. -Appareils à rayons X, même à usage médical, chirurgical, dentaire ou vétérinaire, y compris les appareils de radiophotographie ou de radiothérapie :;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90221200;- - Appareils de tomographie pilotés par une machine automatique de traitement de l’information;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90221300;- - Autres, pour l’art dentaire;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90221400;- - Autres, pour usages médicaux, chirurgicaux ou vétérinaires;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90221900;- - Pour autres usages;90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-90222100;- - A usage médical, chirurgical, dentaire ou vétérinaire;90;;5;1;0.2;0;0.4;2;18;5;;28.45;COMPLET;;;N33 N2 N3 N4 N5
-90222900;- - Pour autres usages;90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-90223000;- Tubes à rayons X;90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
-90229000;- Autres, y compris les parties et accessoires.;90;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+90181100;--Electrocardiographes………………………….;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90181200;- - Appareils de diagnostic par balayage ultrasonique (scanners)…………………………………;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90181300;- - Appareils de diagnostic par visualisation à résonance magnétique;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90181400;- - Appareils de scintigraphie;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90181900;- - Autres;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90182000;- Appareils à rayons ultraviolets ou infrarouges - Seringues, aiguilles, cathéters, canules et instruments similaires :;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90183100;- - Seringues, avec ou sans aiguilles;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90183200;- - Aiguilles tubulaires en métal et aiguilles à sutures;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90183900;- - Autres - Autres instruments et appareils, pour l’art dentaire :;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90184100;- - Tours dentaires, même combinés sur une base commune avec d’autres équipements dentaires;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90184900;- - Autres;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90185000;- Autres instruments et appareils d’ophtamologie;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90189000;"- Autres instrumnts et appareils Appareils de mécanothérapie ; appareils de massage ; appareils de psychotechnie ; appareils d’ozonothérapie, d’oxygénothérapie, d’aérosol- thérapie, appareils respiratoires de réanimation et autres appareils de thérapie respiratoire.";90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90191000;"-Appareils de mécanothérapie ; appareils de massage, appareils de psychotechnie";90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N69 N5
+90200000;Autres appareils respiratoies et masques à gaz, à l’exclusion des masques de protection dépourvus de mécanisme et d’élément filtrant amovible .;90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N69 N5
+90211000;-Articles et appareils d’orthopédie ou pour fractures - Articles et appareils de prothèse dentaire :;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90212100;- - Dents artificielles;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90212900;- - Autres - Autres articles et appareils de prothèse :;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90213100;- - Prothèses articulaires;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90213900;- - Autres;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90214000;- Appareils pour faciliter l’audition aux sourds, à l’exclusion des parties et accessoires;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90215000;- Stimulateurs cardiaques, à l’exclusion des parties et accessoires;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90219000;- Autres Appareils à rayons X et appareils utilisant les radiations alpha, bêta ou gamma, même à usage médical, chirurgical, dentaire ou vétérinaire, y compris les appareils de radiophotographie ou de radiothérapie, les tubes à rayons X et autres dispositifs générateurs de rayons X, les générateurs de tension, les pupitres de commande, les écrans, les tables, fauteuils et supports similaires d’examen ou de traitement. -Appareils à rayons X, même à usage médical, chirurgical, dentaire ou vétérinaire, y compris les appareils de radiophotographie ou de radiothérapie :;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90221200;- - Appareils de tomographie pilotés par une machine automatique de traitement de l’information;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90221300;- - Autres, pour l’art dentaire;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90221400;- - Autres, pour usages médicaux, chirurgicaux ou vétérinaires;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90221900;- - Pour autres usages;90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N69 N5
+90222100;- - A usage médical, chirurgical, dentaire ou vétérinaire;90;;5;1;0.2;0;0.4;2;0;5;;8.6;COMPLET;;;N43 N2 N3 N69 N5
+90222900;- - Pour autres usages;90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N69 N5
+90223000;- Tubes à rayons X;90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N69 N5
+90229000;- Autres, y compris les parties et accessoires.;90;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N69 N5
 90241000;-Machines et appareils d’esseis des métaux;90;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 90248000;- Autres machines et appareils;90;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
 90249000;- Parties et accessoires Densimètres, aéromètres, pèse-liquides et instruments flottants similaires, thermomètres, pyromètres, baromètres, hygromètres et psychromètres, enregistreurs ou non, même combinés entre eux. -Thermomètres et pyromètres, non combinés à d’autres instruments :;90;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
@@ -5102,26 +5102,26 @@
 92099200;- - Parties et accessoires des instruments et musique du n° 92.02;92;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 92099400;- - Parties et accessoires des instruments de musique du n° 92.07;92;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 92099900;- - Autres;92;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-93011100;- - Auto-propulsées;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93011900;- - Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93012000;"- Tubes lance-missiles ; lance-flammes ; lance- grenades ; lance-torpilles et lanceurs similaires.";93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93019000;- Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93020000;Revolvers et pistolets, autres que ceux des n° 93.03 ou 93.04 Autres armes à feu et engins similaires utilisant la déflagration de la poudre (fusils et carabines de chasse, armes à feu ne pouvant être chargées que par le canon, pistolets lance-fusées et autres engins conçus uniquement pour lancer des fusées de signalisation, pistolets et revolvers pour le tir à blanc, pistolets d’abattage à cheville, canons llance-amarres, par exemple).;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93031000;-Armes à feu ne pouvant être chargées que par le canon(*);93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93032000;- Autres fusils et carabines de chasse ou de tir sportif comportant au moins un canon lisse(*).;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93033000;- Autres fusils et carabines de chasse ou de tir sportif(*);93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93039000;- Autres(*);93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93040000;Autres armes (fusils, carabines et pistolets à ressort, à air comprimé ou à gaz, matraques, par exemple), à l’exclusion de celles du n° 93.07 Parties et accessoires des articles des n°s 93.01 à;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93051000;-De revolvers ou pistolets - De fusils ou carabines du n° 93.03 :;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93052100;- - Canons lisses;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93052900;- - Autres - Autres :;93;;20;1;0.2;0.05;0.4;2;18;5;25;82;COMPLET;;;N1 N2 N3 N38 N4 N5
-93059100;- - Des armes de guerre du n° 93.01;93;;20;1;0.2;0.05;0.4;2;18;5;25;82;COMPLET;;;N1 N2 N3 N38 N4 N5
-93059900;- - Autres;93;;20;1;0.2;0.05;0.4;2;18;5;25;82;COMPLET;;;N1 N2 N3 N38 N4 N5
-93062100;- - Autres : - - - Douilles;93;;10;1;0.2;0.05;0.4;2;18;5;25;67.14;COMPLET;;;N1 N2 N3 N38 N4 N5
-93062910;- - - Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93062990;- Autres cartouches et leurs parties;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93063000;- Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-93069000;Sabres, épées, baïonnettes, lances et autres armes;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
+93011100;- - Auto-propulsées;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93011900;- - Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93012000;"- Tubes lance-missiles ; lance-flammes ; lance- grenades ; lance-torpilles et lanceurs similaires.";93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93019000;- Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93020000;Revolvers et pistolets, autres que ceux des n° 93.03 ou 93.04 Autres armes à feu et engins similaires utilisant la déflagration de la poudre (fusils et carabines de chasse, armes à feu ne pouvant être chargées que par le canon, pistolets lance-fusées et autres engins conçus uniquement pour lancer des fusées de signalisation, pistolets et revolvers pour le tir à blanc, pistolets d’abattage à cheville, canons llance-amarres, par exemple).;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93031000;-Armes à feu ne pouvant être chargées que par le canon(*);93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93032000;- Autres fusils et carabines de chasse ou de tir sportif comportant au moins un canon lisse(*).;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93033000;- Autres fusils et carabines de chasse ou de tir sportif(*);93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93039000;- Autres(*);93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93040000;Autres armes (fusils, carabines et pistolets à ressort, à air comprimé ou à gaz, matraques, par exemple), à l’exclusion de celles du n° 93.07 Parties et accessoires des articles des n°s 93.01 à;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93051000;-De revolvers ou pistolets - De fusils ou carabines du n° 93.03 :;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93052100;- - Canons lisses;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93052900;- - Autres - Autres :;93;;20;1;0.2;0.05;0.4;2;18;5;25;82;COMPLET;;;N1 N2 N3 N58 N4 N5
+93059100;- - Des armes de guerre du n° 93.01;93;;20;1;0.2;0.05;0.4;2;18;5;25;82;COMPLET;;;N1 N2 N3 N58 N4 N5
+93059900;- - Autres;93;;20;1;0.2;0.05;0.4;2;18;5;25;82;COMPLET;;;N1 N2 N3 N58 N4 N5
+93062100;- - Autres : - - - Douilles;93;;10;1;0.2;0.05;0.4;2;18;5;25;67.14;COMPLET;;;N1 N2 N3 N58 N4 N5
+93062910;- - - Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93062990;- Autres cartouches et leurs parties;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93063000;- Autres;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+93069000;Sabres, épées, baïonnettes, lances et autres armes;93;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
 94011000;-Sièges des types utilisés pour véhicules aériens;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 94012000;- Sièges des types utilisés pour véhicules automobiles;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 94013000;- Sièges pivotants, ajustables en hauteur;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -5134,9 +5134,9 @@
 94017900;- - Autres;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 94018000;- Autres sièges;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 94019000;"- Parties Mobilier pour la médecine, la chirurgie, l’art dentaire ou l’art vétérinaire (tables d’opération, tables d’examen, lits à mécanisme pour usages cliniques, fauteuils dentistes, par exemple) ; fauteuils pour salons de coiffure et fauteuils similaires, avec dispositif à la fois d’orientation et d’élévation ; parties de ces articles. -Fauteuils de dentistes, fauteuils pour salons de coiffure et fauteuils similaires, et leurs parties :";94;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
-94021010;- - Fauteuils de dentistes et leurs parties;94;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+94021010;- - Fauteuils de dentistes et leurs parties;94;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N70 N5
 94021020;- - Fauteuils pour salons de coiffures et fauteuils similaires, et leurs parties;94;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-94029000;- Autres Autres meubles et leurs parties.;94;;5;1;0.2;0.05;0.4;2;18;5;;28.49;COMPLET;;;N1 N2 N3 N4 N5
+94029000;- Autres Autres meubles et leurs parties.;94;;5;1;0.2;0.05;0.4;2;0;5;;8.65;COMPLET;;;N1 N2 N3 N71 N5
 94031000;- Meubles en métal des types utilisés dans les bureaux;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 94032000;- Autres meubles en métal;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 94033000;- Meubles en bois des types utilisés dans les bureaux;94;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -5162,10 +5162,10 @@
 94059200;- - En matières plastiques;94;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 94059900;- - Autres;94;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
 94060000;Constructions préfabriquées;94;;10;1;0.2;0.05;0.4;2;18;5;;34.44;COMPLET;;;N1 N2 N3 N4 N5
-95041000;-Jeux vidéo des types utilisables avec un récepteur de télévision;95;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N38 N4 N5
-95042000;- Billards de tout genre et leurs accessoires;95;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N43 N4 N5
+95041000;-Jeux vidéo des types utilisables avec un récepteur de télévision;95;;30;1;0.2;0.05;0.4;2;18;5;25;96.86;COMPLET;;;N1 N2 N3 N58 N4 N5
+95042000;- Billards de tout genre et leurs accessoires;95;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N72 N4 N5
 95044000;- Cartes à jouer;95;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
-95049000;- Autres;95;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N43 N4 N5
+95049000;- Autres;95;;30;1;0.2;0.05;0.4;2;18;5;n.d.;;PARTIEL;DA (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE) | CATVA (ASSIETTE_INCOMPLETE);;N1 N2 N3 N72 N4 N5
 95051000;-Articles pour fêtes de noël;95;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 95059000;"- Autres Articles et matériel pour la culture physique, la gymnastique, l’athlétisme, les autres sports (y compris le tennis de table) ou les jeux de plein air, non dénommés ni compris ailleurs dans le présent Chapitre ; piscines et pataugeoires. -Skis de neige et autre matériel pour la pratique du ski de neige :";95;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 95061100;- - Skis;95;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
@@ -5224,7 +5224,7 @@
 96132000;- Briquets de poche, à gaz, rechargeables;96;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 96138000;- Autres briquets et allumeurs;96;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 96139000;- Parties;96;;20;1;0.2;0.05;0.4;2;18;5;;46.33;COMPLET;;;N1 N2 N3 N4 N5
-96140000;Pipes (y compris les têtes de pipes), fume-cigare et fume-cigarette, et leurs parties;96;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N44 N4 N5
+96140000;Pipes (y compris les têtes de pipes), fume-cigare et fume-cigarette, et leurs parties;96;;30;1;0.2;0.05;0.4;2;18;5;30;104.59;COMPLET;;;N1 N2 N3 N73 N4 N5
 96151100;- - En caoutchouc durci ou en matières plastiques;96;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 96151900;- - Autres;96;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5
 96159000;"- Autres Vaporisateurs de toilette, leurs montures et têtes de montures ; houppes et houppettes à poudre ou pour l’application d’autres cosmétiques ou produits de toilette.";96;;30;1;0.2;0.05;0.4;2;18;5;;58.22;COMPLET;;;N1 N2 N3 N4 N5

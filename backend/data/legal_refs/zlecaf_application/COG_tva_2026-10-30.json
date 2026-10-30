@@ -1,0 +1,38 @@
+{
+ "schema_version": 1,
+ "objet": "Congo : TVA à l'importation par position — biens de première nécessité exonérés (annexe 3) et biens de consommation courante au taux réduit de 5 % (annexe 5) de la loi TVA, listes de la loi de finances 2026 ; véhicules neufs de tourisme (droit de douane et TVA à 5 %)",
+ "destination_iso3": "COG",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "primaire — loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), Journal officiel édition spéciale n° 3-2026 (sgg.cg) ; le taux réduit de 5 % est celui qu'énoncent la même loi (point 44) et la circulaire n° 0138 ; le texte qui l'a inscrit à l'art. 17 de la loi TVA n'a pas été trouvé (l'édition archivée du CGI, tome I, n'en porte que le taux normal et le taux zéro)",
+ "source": {
+  "url": "https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf",
+  "institution": "Secrétariat général du Gouvernement (Congo), Journal officiel"
+ },
+ "regle": {
+  "valeur": "TVA 0 % sur les positions de l'annexe 3 (viandes et volailles 02.01 à 02.07, poissons de mer nommés, poisson salé, blé, maïs, huile, aliments infantiles, levure, aliments du bétail, sel 2501.00.19, insuline, antibiotiques, produits pharmaceutiques, engrais 31.02, films de radiographie, insecticides, articles d'hygiène en caoutchouc, cahiers, verres de lunettes, stérilisateurs, fauteuils roulants, appareils médicaux 90.18 à 90.22, mobilier médical) ; 5 % sur celles de l'annexe 5 (lait 04.01 et 04.02, tomate, riz, farine de froment, sucre 1701.99.10, boulangerie, sel 2501.00.11) ; 18 % ailleurs. La circulaire n° 0138 s'applique ensuite jusqu'au 31/12/2026.",
+  "verbatim": "Annexe 5 : Liste des biens de consommation courante soumis au taux réduit de TVA",
+  "reference": "Loi n° 42-2025 (LF 2026), point 18.3 (annexes 3 et 5 de la loi TVA) et point 44 (loi n° 39-2023, art. 1er, al. 2 nouveau)",
+  "portee": "backend/data/zlecaf_cog/tva_lf2026.json, appliqué par scripts/build_socle._tva_par_position au socle COG, avant la circulaire n° 0138 ; scripts/build_socle._vehicules_neufs_congo : droit de douane et TVA sans taux sur 87033110, 87033210 et 87033290. Socle COG : 190 lignes de TVA à 0 %, 16 à 5 %, 5 025 à 18 % et 8 sans taux, motivées en note.",
+  "texte_archive": "sources/COG_tva_lf2026.texte-extrait.txt",
+  "sha256": "1d715746509ee1413da8dc4d4e291c6d0527bb8e888ebecb0543849e4dc7eaa1"
+ },
+ "decisions": [
+  "Les annexes de la loi désignent des numéros du tarif : ils sont appliqués tels quels, plage comprise (« 90.18.11.00 à 90.22.90 », « 23.09.90.10 à 23.09.90.90 », « 02.01 à 02.07 », abats compris).",
+  "Numéro et libellé discordants, sans taux : « 29.30.21.00 — Quinine et ses sels » (numéro absent du tarif ; la 2939.20 réunit la quinine et les autres alcaloïdes du quinquina) ; « 34.04 — Cire pour art dentaire » (la position couvre toutes les cires artificielles et préparées) ; « 40.15.19.00 — Gants pour la chirurgie » (numéro des autres gants, libellé de la 4015.11).",
+  "La circulaire n° 0138 (jusqu'au 31/12/2026) s'applique après les annexes : elle exonère ou réduit, sur certaines positions, plus largement qu'elles (riz conditionné 1006.30.10, poissons du 03.03 autres que de luxe) ; sa note remplace alors celle de l'annexe.",
+  "Véhicules neufs de tourisme (87033110, 87033210, 87033290) : 5 % de droit de douane et 5 % de TVA pour les seuls véhicules neufs ; la position ne les distingue pas des véhicules d'occasion — droit de douane et TVA sans taux, motif en note.",
+  "Taux réduit : 5 %, comme l'énoncent la circulaire n° 0138 (« taux réduit à 5% de la taxe sur la valeur ajoutée ») et le point 44 de la LF 2026."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Autres taux réduits cités par des commentaires de la loi de finances 2025 (biens industriels importés des pays voisins, gasoil et lubrifiants des sociétés forestières, zones économiques spéciales) : liés à l'importateur ou à l'origine, non servis.",
+  "Positions absentes du socle COG : livres (49.01), produits de la boulangerie (1905.90), poissons 0303.50 et 0303.60.",
+  "Alinéa 1 de l'art. 1er de la loi n° 39-2023 (« sans changement ») : non lu."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/COG_tva_lf2026.texte-extrait.txt",
+   "sha256": "1d715746509ee1413da8dc4d4e291c6d0527bb8e888ebecb0543849e4dc7eaa1"
+  }
+ ]
+}
