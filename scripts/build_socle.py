@@ -93,6 +93,12 @@ FAMILLES = {
     "OHADA": "communautaire",
     "CCI": "communautaire",  # contribution communautaire d'intégration de la CEEAC (GA)
     "CSS": "autre",  # contribution spéciale de solidarité (GA)
+    "TUA": "communautaire",  # taxe de l'Union africaine (CF)
+    "COMIFAC": "communautaire",  # prélèvement COMIFAC (CF)
+    "REIF": "redevance",  # redevance pour l'équipement informatique des finances (CF)
+    "RDS": "redevance",  # redevance de développement des statistiques (CF)
+    "RGS": "redevance",  # redevance de gestion des scanners (CF)
+    "RCCAC": "redevance",  # redevance du Conseil centrafricain des chargeurs (CF)
     "TS": "communautaire",
     "CEDEAO": "communautaire",
     "EXIM": "redevance",
@@ -1908,7 +1914,7 @@ def sources_disponibles():
 #: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
-    "CIA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
+    "CIA": "UA", "TUA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
     # TCI : « s'applique aux importations des Etats membres de produits originaires
     # des pays tiers » (acte additionnel n° 03/00-CEMAC-046-CM-05, art. 2).
     "TCI": "CEMAC",
@@ -1923,9 +1929,10 @@ BLOCS_DESTINATION = {
     "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
-    # Prélèvement OHADA : marqué ici au seul Gabon. Le Congo exonère aussi les
-    # originaires de la CEEAC (arrêté n° 5808) : _prelevements_congo marque sa ligne.
-    "OHADA": {"GAB"},
+    # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique et au Tchad. Le
+    # Congo exonère aussi les originaires de la CEEAC (arrêté n° 5808) :
+    # _prelevements_congo marque sa ligne.
+    "OHADA": {"GAB", "CAF", "TCD"},
 }
 
 ACCISES_PAYS = {
@@ -2075,6 +2082,7 @@ def _coquilles_tec_cemac(positions):
 #: ou réduite à 5 % (variante 2). Redevance informatique et taxes communautaires
 #: inchangées. Fiche COG_mesures_nationales_2026-10-27.
 #: (produits, TVA retenue, filtre sur le code à 8 chiffres)
+FIN_CIRCULAIRE_0138_COG = "2026-12-31"
 CIRCULAIRE_0138_COG = (
     ("Viandes et abats comestibles (02.01 à 02.07)", 0.0,
      lambda c: "0201" <= c[:4] <= "0207"),
@@ -2108,10 +2116,14 @@ def _mesures_nationales_congo(positions):
                 f"{produits}"
             )
             for d in droits:
+                if d.get("code") not in ("DD", "TVA"):
+                    continue
+                # Au 1er janvier 2027, la ligne reprend le taux que la circulaire suspend.
+                d.update(jusqu_au=FIN_CIRCULAIRE_0138_COG, taux_apres=d.get("taux"), note_apres=d.get("note"))
                 if d.get("code") == "DD":
                     d["taux"] = 5.0
                     d["note"] = source + ", taux réduit de 5 % du droit de douane."
-                elif d.get("code") == "TVA":
+                else:
                     d["taux"] = tva
                     d["note"] = source + (
                         ", exonération de TVA." if tva == 0 else ", TVA au taux réduit de 5 %."
@@ -2686,10 +2698,12 @@ def _prelevements_gabon(positions, compteurs):
 
 #: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
 #: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
-#: COG_tva_2026-10-30.json). Ailleurs, le taux normal de 18 %.
+#: COG_tva_2026-10-30.json) ; Centrafrique (CGI art. 249 et 257, fiche
+#: CAF_tva_2026-10-30.json). Ailleurs, le taux normal du pays.
 TVA_PAR_POSITION = {
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
+    "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "tva_lf2024_lf2025.json"),
 }
 
 
@@ -2773,6 +2787,93 @@ def _prelevements_congo(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Tchad : prélèvements communautaires à l'importation (fiche TCD_prelevements_importation_2026-10-30.json).
+SOURCE_PRELEVEMENTS_TCD = (
+    "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40, "
+    "et annexe Tchad, § 3.20"
+)
+
+
+def _prelevements_tchad(positions, compteurs):
+    """Tchad : contribution communautaire d'intégration de la CEEAC (0,4 %) et
+    prélèvement OHADA (0,05 %) sur la valeur c.a.f., après la TCI."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_TCD,
+             "note": "« prélevée au taux de 0,4% sur les importations hors-CEEAC […] (actuellement collectée par le "
+                     "Congo, le Gabon, la République centrafricaine et le Tchad) » (rapport commun, § 3.40)."},
+            {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+             "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_TCD,
+             "note": "« effectué au taux de 0,05% sur les importations des pays non membres » (rapport commun, "
+                     "§ 3.40) ; « le Tchad collecte la taxe communautaire d'intégration (TCI), le prélèvement OHADA, "
+                     "et la contribution communautaire d'intégration (CCI) » (annexe Tchad, § 3.20)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Centrafrique : prélèvements à l'importation (fiche CAF_prelevements_importation_2026-10-30.json).
+#: La loi de finances 2026 (art. 16) les nomme ; les taux sont ceux du rapport de l'OMC.
+SOURCE_PRELEVEMENTS_CAF = (
+    "Loi n° 25.015 (loi de finances 2026), art. 16 ; OMC, examen des politiques commerciales des pays de la "
+    "CEMAC (WT/TPR/S/445, 2023), annexe République centrafricaine, tableau 3.2, et rapport commun, § 3.40"
+)
+PRELEVEMENTS_CAF = (
+    ("TUA", "Taxe de l'Union Africaine", 0.2, "« Prélèvement de l'Union africaine (0,2%) », loi de finances 2019, art. 19."),
+    ("CCI", "Contribution Communautaire d'Intégration (CEEAC)", 0.4,
+     "« Taxe CEEAC (0,4%) » ; « prélevée au taux de 0,4% sur les importations hors-CEEAC […] (actuellement "
+     "collectée par le Congo, le Gabon, la République centrafricaine et le Tchad) » (rapport commun, § 3.40)."),
+    ("OHADA", "Prélèvement OHADA", 0.05,
+     "« Redevances OHADA 0,05% » ; « effectué au taux de 0,05% sur les importations des pays non membres » "
+     "(rapport commun, § 3.40)."),
+    ("COMIFAC", "Prélèvement COMIFAC", 0.1,
+     "« Redevance COMIFAC forêts tropicales (0,1%) », loi de finances 2008, art. 31 et 32."),
+    ("REIF", "Redevance pour l'Equipement Informatique des Finances", 0.5,
+     "« Redevance équipement informatique finances (REIF) de 0,50% » ; la « redevance informatique 0,5% » du même "
+     "tableau est la même recette (une seule ligne au budget 2026, « Redevance informatique »)."),
+    ("RDS", "Redevance de Développement des Statistiques", 0.25,
+     "« Redevance statistique 0,25% », loi de finances 2016, art. 30."),
+    ("RGS", "Redevance de Gestion des Scanners", 0.25,
+     "« Redevance gestion scanner 0,25 », loi de finances 2012, art. 18, modifié par la loi de finances 2016, art. 23 ; "
+     "« perçue sur toutes les importations, qu'elles soient scannées ou non » (§ 3.22)."),
+    ("RCCAC", "Redevance du Conseil Centrafricain des Chargeurs", 0.25,
+     "« Redevance conseil des chargeurs (0,25%) », loi de finances 2014, art. 26 ; « 0,25% de la valeur des "
+     "importations »."),
+)
+
+
+def _prelevements_centrafrique(positions, compteurs):
+    """Centrafrique : les neuf prélèvements que la loi de finances 2026 nomme
+    (art. 16), sur la valeur en douane. La redevance statistique de 1 % du
+    tarif collecté, qu'aucun texte ne porte, cède la place à la RDS (0,25 %)."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        for d in [d for d in droits if d.get("code") == "RS"]:
+            _compter_ligne(d, compteurs, -1)
+            droits.remove(d)
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": code, "code_source": code, "libelle": libelle, "famille": famille(code), "taux": taux,
+             "assiette": "CIF", "assiette_origine": "regle_de_pays", "source": SOURCE_PRELEVEMENTS_CAF, "note": note}
+            for code, libelle, taux, note in PRELEVEMENTS_CAF
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
 #: Congo : véhicules neufs de tourisme au taux réduit de 5 % du droit de douane et
 #: de la TVA (loi de finances 2024, art. 1er, al. 2, réécrit par la LF 2026, point 44).
 VEHICULES_NEUFS_COG = ("87033110", "87033210", "87033290")
@@ -2794,6 +2895,29 @@ def _vehicules_neufs_congo(positions, compteurs):
                 d["taux"] = None
                 d["note"] = motif
                 _compter_ligne(d, compteurs, 1)
+
+
+#: Congo : taxe sur les nouveaux terminaux numériques à carte SIM (RTN), loi de
+#: finances 2026, point 46 : montant par terminal selon la norme, que la position
+#: ne dit pas (fiche COG_echeances_terminaux_2026-10-30.json).
+TERMINAUX_SIM_COG = ("85171200",)
+
+
+def _terminaux_sim_congo(positions, compteurs):
+    for code in TERMINAUX_SIM_COG:
+        droits = positions.get(code, {}).get("droits")
+        if droits is None:
+            continue
+        rtn = {
+            "code": "RTN", "code_source": "RTN", "libelle": "Taxe sur les nouveaux terminaux numériques à carte SIM",
+            "famille": famille("RTN"), "taux": None, "assiette": "xQTE", "assiette_origine": "regle_de_pays",
+            "source": "Loi n° 42-2025 (loi de finances 2026), point 46",
+            "note": "Art. 1er et 4 : due sur les terminaux neufs importés depuis le 1er juin 2026 — 1 300 FCFA (2G), "
+                    "6 500 FCFA (3G) ou 10 000 FCFA (4G et 5G) par terminal ; la norme n'est pas dans la position.",
+        }
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, rtn)
+        _compter_ligne(rtn, compteurs, 1)
 
 
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
@@ -5475,6 +5599,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ice_mocambique(positions, compteurs)
     if iso == "TCD":
         _taxe_specifique_tchad(positions, compteurs)
+        _prelevements_tchad(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
@@ -5560,6 +5685,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _mesures_nationales_congo(positions)
         _vehicules_neufs_congo(positions, compteurs)
         _prelevements_congo(positions, compteurs)
+        _terminaux_sim_congo(positions, compteurs)
+    if iso == "CAF":
+        _prelevements_centrafrique(positions, compteurs)
+        _tva_par_position("CAF", positions, compteurs)
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)

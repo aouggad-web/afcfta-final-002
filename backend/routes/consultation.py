@@ -17,6 +17,7 @@ from collections import OrderedDict
 from fastapi import APIRouter, HTTPException, Query
 
 from services import socle
+from services.calcul import droits_a_la_date
 from services.designation import texte_designation
 from services.formalites import (
     FORMALITES_AUCUNE_PARTICULIERE,
@@ -35,7 +36,7 @@ DONNEES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 def _droit_de_douane(position: dict) -> dict:
     """Le droit de douane tel que le socle le porte : un taux, ou l'expression
     d'un droit spécifique, ou rien (« à compléter »)."""
-    dd = next((d for d in position.get("droits") or [] if d.get("code") == "DD"), None) or {}
+    dd = next((d for d in droits_a_la_date(position.get("droits") or []) if d.get("code") == "DD"), None) or {}
     specifique = dd.get("specifique") or {}
     # « 40% or 240c/kg », « 40% + US$0.50/L » : le pourcentage n'est qu'une
     # composante. Le servir comme LE taux afficherait 40 % là où la part

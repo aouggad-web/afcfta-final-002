@@ -1,0 +1,112 @@
+Centrafrique — prélèvements perçus à l'importation hors droit de douane, TVA et accises.
+Extraits des textes archivés sous data/sources/central-african-republic/official/ et
+data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-cemac-rapport-commun.pdf.
+
+1) Loi n° 25.015 arrêtant le budget de l'Etat pour l'année 2026 (loi de finances 2026), publiée par le
+   ministère des Finances et du Budget : http://finances.gouv.cf/sites/default/files/2025-12/LOI%202026%20OK_0.pdf
+   (scan de 624 pages, sha256 35708d46b1dcb30ef40880fa02de9fe94760585e464e5a21ec9d9ad4de41341f) ; pages 1 à 8 et 13
+   archivées : caf-loi-finances-2026-extrait-p1-8-13.pdf. Texte lu par OCR.
+
+DISPOSITIONS GENERALES RELATIVES AUX RESSOURCES ET AUX CHARGES
+Art. 3 : Sous réserve des dispositions de la présente Loi, continueront d'être opérées, pendant l'année
+2026, conformément aux lois et règlements en vigueur :
+- la perception des impôts, taxes, redevances, produits et revenus divers de l'Etat ;
+- la perception des impôts, taxes, redevances, produits et revenus affectés aux collectivités
+territoriales, établissements publics et organismes divers dûment habilités.
+[…]
+1-2 DES DISPOSITIONS DOUANIERES
+DES EXONERATIONS
+Art.10 : Il est institué un mécanisme d'exécution budgétaire et comptable de gestion des exonérations
+fiscales et douanières.
+[…]
+Art 16 : Les recettes affectées ci-après citées ne sont pas remboursables en raison de leur reversement
+aux organisations régionales ou internationales pour leur fonctionnement. Il s'agit de :
+1. La Taxe Communautaire d'Intégration (TCI) ;
+2. La Redevance pour l'Equipement Informatique des Finances (REIF) ;
+3. Le Prélèvement pour l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires
+(OHADA) ;
+4. Le Prélèvement pour la Commission des Forêts d'Afrique Centrale (COMIFAC) ;
+5. La Contribution Communautaire d'Intégration (CCI) ;
+6. La Redevance du Conseil Centrafricain des Chargeurs (RCCAC) ;
+7. La Taxe de l'Union Africaine (TUA) ;
+8. La Redevance de Développement des Statistiques (RDS) ;
+9. La Redevance de Gestion des Scanners (RGS).
+
+Page 13, état des recettes (en milliers de FCFA, collectif 2025 / prévisions 2026) :
+7115 181 Redevance de développement de la statistique 521 308 / 721 308
+7115 182 Redevance de la gestion des scanners 499 438 / 499 438
+7115 183 Redevance informatique 1 325 431 / 1 425 431
+7115 184 Redevances de transit 1 291 691 / 1 391 691
+7115 185 Redevances de la gestion des exonérations 1 157 818 / 1 357 818
+
+2) Organisation mondiale du commerce — WT/TPR/S/445, annexe 5 République centrafricaine (2023) :
+   https://www.wto.org/french/tratop_f/tpr_f/s445-05_f.pdf ; archivé : omc-wt-tpr-s-445-annexe-rca.pdf
+
+    •        Le Conseil des chargeurs prélève une redevance de 0,25% de la valeur des importations
+             pour son travail en faveur de la défense des intérêts des importateurs et des exportateurs;
+             mais selon le Conseil le produit de la redevance ne lui était pas rétrocédé par la Douane en
+             décembre 2019.
+
+3.22. Deux scanners furent acquis par la Douane sur financement chinois, mais furent détruits au
+cours des conflits armés et ne sont pas fonctionnels. Toutefois, une redevance de gestion de scanners
+de (0,25%) est toujours perçue sur toutes les importations, qu'elles soient scannées ou non, afin de
+rembourser l'emprunt y afférent.
+
+3.1.4.2 Autres droits et impositions
+3.32. La RCA applique en plus du TEC de nombreux autres droits et impositions qui renchérissent le
+coût de ses importations. Certains sont communautaires, d'autres destinés à financer certains
+bénéficiaires (tableau 3.2). Par ailleurs, un droit spécifique de 7 FCFA est aussi collecté par
+kilogramme net de café importé en période autorisée43, et des droits et taxes spécifiques sont
+applicables aux véhicules d'occasion.
+Tableau 3.2 Autres droits et impositions sur les importations, 2020
+(% sauf si autrement spécifié)
+ Définition                 Bénéficiaire                            Texte législatif centrafricain
+ 1. Prélèvement de          Union africaine                         Article 19 de la loi de finances 2019
+ l'Union africaine (0,2%)
+ 2. Taxe communautaire      Commission CEMAC                        ..
+ d'intégration 1%
+ 3. Taxe CEEAC (0,4%)       Commission CEEAC                        ..
+ 4. Redevance               Ministère des finances                  ..
+ informatique 0,5%
+ 5. Redevances OHADA        Secrétariat de l'OHADA                  ..
+ 0,05%
+ 6. Redevance COMIFAC       Commission des Forêts                   Articles 31 et 32 de la loi de finance 2008
+ forêts tropicales (0,1%)   d'Afrique Centrale
+                            (COMIFAC)
+ 7. Redevance gestion       Remboursement dette contractée pour     Article 18 de la loi de finance 2012 modifiée par
+ scanner 0,25               achat scanner                           Article 23 de la loi de finance 2016
+ 8. Redevance conseil       Douane                                  Article 26 de la loi de Finance 2014
+ des chargeurs (0,25%)
+ 9. Redevance               Ministère des finances SYDONIA          ..
+ équipement
+ informatique finances
+ (REIF) de 0,50%
+ 10. Redevance              ..                                      Article 30 de la Loi de Finance 2016
+ statistique 0,25%
+ 11. Redevance transit      ..                                      ..
+ (15 000 FCFA)
+ 12. Pénalité BESC          Douane                                  ..
+ (80 000 FCFA)
+ 13. Ajustement de la       ..                                      ..
+ valeur en douane en cas
+ d'absence de preuve
+ d'assurance
+ Définition                   Bénéficiaire                              Texte législatif centrafricain
+ 14. Précompte de             ..                                        ..
+ l'impôt sur le revenu
+ (3%)
+ 15. Prélèvement pour         Douane                                    ..
+ inspection (1%)
+..        Non disponible.
+Source:   Secrétariat de l'OMC sur la base d'informations fournies par les autorités.
+
+3) Organisation mondiale du commerce — WT/TPR/S/445, rapport commun (2023), § 3.40 :
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-cemac-rapport-commun.pdf
+
+3.40. Au paiement du TEC s'ajoutent des prélèvements destinés à financer certaines initiatives communautaires, et des prélèvements nationaux. Au niveau communautaire, on distingue:
+
+      •   la taxe communautaire d'intégration (TCI), prélevée au taux de 1% sur les importations en provenance des pays hors de la zone CEMAC, et destinée au financement du processus d'intégration dans la zone;
+
+      •   la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les importations hors-CEEAC, et destinée à financer la CEEAC ainsi que ses institutions (actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad); et
+
+      •   le prélèvement OHADA, effectué au taux de 0,05% sur les importations des pays non membres, et destiné au financement de l'Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA).

@@ -1,0 +1,202 @@
+{
+ "_objet": "TVA à l'importation en Centrafrique : biens exonérés (CGI art. 249, 11), réécrit par la loi de finances 2025, art. 10) et soumis au taux réduit de 5 % (CGI art. 257, 2) c), réécrit par la loi de finances 2024). Préfixes de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle qui s'applique l'emporte ; les autres positions gardent le taux général de 19 %.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/CAF_tva_2026-10-30.json",
+ "source": "Code général des impôts de la République centrafricaine, art. 249 (loi de finances 2025, art. 10) et art. 257 (loi de finances 2024)",
+ "regles": [
+  {
+   "prefixes": [
+    "29371200"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 29.37.12.00 Insuline et ses sels »."
+  },
+  {
+   "prefixes": [
+    "29391900"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 29.39.19.00 Autres alcaloïdes »."
+  },
+  {
+   "prefixes": [
+    "29392000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 29.39.20.00 Alcaloïdes du quinquina et leurs dérivés, sels et ses produits »."
+  },
+  {
+   "prefixes": [
+    "2941"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 29.41 Antibiotiques »."
+  },
+  {
+   "prefixes": [
+    "30"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 30 Produits pharmaceutiques »."
+  },
+  {
+   "prefixes": [
+    "37011000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 37.01.10.00 Plaques et films pour rayons X »."
+  },
+  {
+   "prefixes": [
+    "37021000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 37.02.20.00 Pellicules pour rayons X » ; la sous-position 3702.20 n'existe pas, les pellicules pour rayons X sont la sous-position 3702.10."
+  },
+  {
+   "prefixes": [
+    "4014"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 40.14 Articles d'hygiène et de pharmacie en caoutchouc […] ; 40.14.10.00 Préservatifs »."
+  },
+  {
+   "prefixes": [
+    "40151100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 40.15.11.00 Gants pour la chirurgie »."
+  },
+  {
+   "prefixes": [
+    "70151000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 70.15.10.00 Verres de lunetteries médicales »."
+  },
+  {
+   "prefixes": [
+    "84192000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 84.19.20.00 Stérilisateurs médico-chirurgicaux de laboratoires »."
+  },
+  {
+   "prefixes": [
+    "8713"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 87.13 Fauteuils roulants et autres véhicules pour invalides »."
+  },
+  {
+   "prefixes": [
+    "87142000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 87.14.20.00 Partie de fauteuils roulants et autres véhicules pour invalides »."
+  },
+  {
+   "prefixes": [
+    "90049010"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 90.04.90.10 Lunettes correctrices »."
+  },
+  {
+   "prefixes": [
+    "9018",
+    "9019",
+    "9020",
+    "9021",
+    "9022"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 90.18 à 90.22 Appareils médicaux »."
+  },
+  {
+   "prefixes": [
+    "94029000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2025, art. 10, art. 249, 11) du CGI : « Les produits pharmaceutiques et les produits médicaux suivants » — « 94.02.10.19 Autres mobiliers pour la médecine et la chirurgie » ; dans la nomenclature du socle, les meubles pour la médecine autres que les fauteuils sont la sous-position 9402.90. L'art. 257 les cite aussi au taux réduit : l'exonération l'emporte."
+  },
+  {
+   "prefixes": [
+    "94021010"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit : loi de finances 2024, art. 257, 2) c) du CGI : « 94.02.10.11 Fauteuils de dentistes »."
+  },
+  {
+   "prefixes": [
+    "0401"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit : loi de finances 2024, art. 257, 2) c) du CGI : « 04.01 Laits et crèmes de laits, non concentrés additionnés de sucre ou d'autres édulcorants »."
+  },
+  {
+   "prefixes": [
+    "07"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit : loi de finances 2024, art. 257, 2) c) du CGI : « 07.01 à 07.14 Légumes, plantes, racines et tubercules alimentaires importés »."
+  },
+  {
+   "prefixes": [
+    "3808"
+   ],
+   "exclusions": [
+    "380894"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit : loi de finances 2024, art. 257, 2) c) du CGI : « 38.08 Insecticides et pesticides importés »."
+  },
+  {
+   "prefixes": [
+    "380894"
+   ],
+   "taux": 19.0,
+   "reference": "Taux général : les désinfectants (3808.94) ne sont pas des insecticides ni des pesticides, que vise seuls le taux réduit de l'art. 257, 2) c) du CGI (loi de finances 2024) : « 38.08 Insecticides et pesticides importés »."
+  },
+  {
+   "prefixes": [
+    "0201",
+    "0202",
+    "0203",
+    "0204",
+    "0205",
+    "0206",
+    "0207",
+    "0208"
+   ],
+   "taux": 19.0,
+   "reference": "Taux général : loi de finances 2024, art. 257, 2) c) du CGI, le taux réduit ne vise que les produits « produits localement » : « 02.01 à 02.08 Viande et volailles (produites localement) »."
+  },
+  {
+   "prefixes": [
+    "0305"
+   ],
+   "taux": 19.0,
+   "reference": "Taux général : loi de finances 2024, art. 257, 2) c) du CGI, le taux réduit ne vise que les produits « produits localement » : « 03.05 Poisson produit localement »."
+  },
+  {
+   "prefixes": [
+    "0801",
+    "0802",
+    "0803",
+    "0804",
+    "0805",
+    "0806",
+    "0807",
+    "0808",
+    "0809",
+    "0810",
+    "0811",
+    "0812",
+    "0813",
+    "0814"
+   ],
+   "taux": 19.0,
+   "reference": "Taux général : loi de finances 2024, art. 257, 2) c) du CGI, le taux réduit ne vise que les produits « produits localement » : « 08.01 à 08.14 Fruits et légumes (produits localement) »."
+  }
+ ]
+}

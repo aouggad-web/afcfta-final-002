@@ -1,0 +1,117 @@
+Centrafrique — TVA à l'importation : base, taux et exonérations.
+Textes publiés par le ministère des Finances et du Budget (finances.gouv.cf), scans lus par OCR.
+Extraits archivés sous data/sources/central-african-republic/official/.
+
+1) Loi de finances 2024 : http://finances.gouv.cf/sites/default/files/2024-03/Loi%20de%20Finances%202024.pdf
+   (scan de 675 pages, sha256 738aafbbc084ace0a25989f0b02fb7a7751bc08128090873026bcf0a2f16f223) ;
+   pages 1, 4, 19, 26 et 27 archivées : caf-loi-finances-2024-extrait-p1-4-19-26-27.pdf.
+
+B- DE LA TAXE SUR LA VALEUR AJOUTEE
+Art 10 : Les dispositions des articles 246 à 288 du Code Général des Impôts sont
+modifiées ainsi qu'il suit :
+[…]
+Lire
+CHAPITRE I : DE LA TAXE SUR LA VALEUR AJOUTEE (TVA)
+[…]
+Art 253 bis 1 (Nouveau) :
+1) Sont inclus dans la base imposable :
+a- les frais accessoires aux livraisons de biens et services facturés aux clients ;
+b- les impôts, droits et taxes, y compris le droit d'accises, à l'exclusion de la
+TVA ;
+c- les compléments de prix acquittés à des titres divers par l'acquéreur des
+biens ou le client ;
+d- les sommes perçues par l'assujetti à titre de consignation lors de la livraison
+d'emballages récupérables et réutilisables non identifiables.
+2) En ce qui concerne les importations, la base imposable est obtenue en ajoutant
+à la valeur imposable telle qu'elle est définie par la réglementation douanière
+de la CEMAC, le montant du droit de douane et du droit d'accises.
+3) Pour l'introduction sur le territoire national, elle est constituée par la valeur
+sortie usine, à l'exclusion des frais d'approche.
+[…]
+Art 257 : ( LF 2024)
+1) Les taux de la taxe sur la valeur ajoutée sont applicables aussi bien aux
+marchandises et services produits localement qu'aux biens importés.
+Aucune surtaxe additionnelle à la TVA qui ne respecte pas le principe de
+déductibilité de la taxe d’amont ne peut être créée.
+2) les taux de la TVA sont fixés de la manière suivante :
+a) Taux général : 19% applicable à toutes les opérations taxables à l'exclusion des
+opérations soumises aux taux réduit et zéro.
+b) Taux zéro (0%) applicable aux exportations des produits taxables ayant fait l'objet de
+déclaration visée par les services des douanes et aux transports internationaux.
+c) Taux reduit de 5% applicable aux produits ci-dessous énumerés :
+Numéro du tarif Désignation tarifaire
+02.01 à 02.08 Viande et volailles (produites localement)
+03.05 Poisson produit localement
+04.01 Laits et crèmes de laits, non concentrés additionnés de sucre ou
+d’autres édulcorants
+05 Pain
+07.01 à 07.14 Légumes, plantes, racines et tubercules alimentaires importés
+08.01 à 08.14 Fruits et légumes (produits localement)
+38.08 Insecticides et pesticides importés
+49.01.91.00 Livres autres que les livres scolaires
+49.01.91.00 Première tranche de consommation d’eau et d'électricité pour
+les ménages
+94.02.10.19 Autres mobiliers pour la médecine et la chirurgie
+94.02.10.11 Fauteuils de dentistes
+
+2) Loi de finances 2025 promulguée : http://finances.gouv.cf/sites/default/files/2025-01/Loi%20de%20Finances%202025.pdf
+   (scan de 608 pages, sha256 0ca701b9387528cd7695a3e6fa622034e1b4c8151cdd91d241070d1aac594bee) ;
+   pages 1, 2, 5, 6 et 7 archivées : caf-loi-finances-2025-extrait-p1-2-5-7.pdf.
+
+Art. 10 : Les dispositions de l’article 249 du Code Général des Impôts sont
+modifiées et complétées ainsi qu'il suit :
+[…]
+Lire
+Art. 249 : Sont exonérés de la taxe sur la valeur ajoutée :
+1) Les opérations bancaires et financières ainsi que les prestations d'assurance dès lors qu'elles
+sont soumises à des taxations spécifiques exclusives de toute taxation sur le chiffre d'affaires ;
+2) Les ventes d'immeubles par des non assujettis ;
+3) Les locations immobilières par des non assujettis si le montant annuel des loyers perçus est
+inférieur au seuil d'imposition ;
+4) Les biens importés ou admis en franchise dans le cadre de l'acte n°2/92-UDEAC-556-SE1 du
+30 avril 1992 et ses modificatifs subséquents ;
+5) Les examens, consultations, soins, hospitalisations, travaux d'analyse et de biologies
+médicales et les fournitures de prothèses effectuées par les formations sanitaires publiques ;
+6) Les opérations de composition, d'impression, d'importation, de ventes de journaux et
+périodiques y compris les recettes de publicité ;
+7) Les frais de scolarité et d'écolage perçus dans le cadre normal de l'activité des établissements
+d'enseignement général ou de formation professionnelle, de niveau primaire, secondaire et
+universitaire, régulièrement autorisés et pratiquant un prix homologué par l'autorité de tutelle
+compétente, y compris les frais perçus par les formations supérieures privées ;
+8) Les livraisons à leur valeur faciale des timbres-poste pour affranchissement, des timbres
+fiscaux et d'autres valeurs similaires ;
+9) Les livraisons de biens destinés à l'avitaillement :
+- des navires utilisés pour une activité industrielle ou commerciale exercée en haute mer ou
+pour le trafic international ;
+- des aéronefs utilisés pour la navigation aérienne internationale.
+10) Les services ou opérations à caractère éducatif, social, culturel, sportif, philanthropique ou
+religieux rendus à leurs membres par les organismes sans but lucratif dont la gestion est bénévole
+et désintéressée, lorsque ces opérations se rattachent directement à la défense collective des
+intérêts moraux ou matériels de leurs membres.
+Toutefois, les opérations réalisées par ces organismes sont soumises à la TVA lorsqu'elles se
+situent dans un secteur concurrentiel ;
+11) Les produits pharmaceutiques et les produits médicaux suivants :
+Numéro du tarif Désignation tarifaire
+29.37.12.00 Insuline et ses sels
+29.39.19.00 Autres alcaloïdes
+29.39.20.00 Alcaloïdes du quinquina et leurs dérivés, sels et ses produits
+29.41 Antibiotiques
+30 Produits pharmaceutiques
+37.01.10.00 Plaques et films pour rayons X
+37.02.20.00 Pellicules pour rayons X
+Articles d'hygiène et de pharmacie en caoutchouc y compris les
+40.14 tétines en caoutchouc vulcanisées non durcies, même avec parties en
+caoutchouc durci
+40.14.10.00 Préservatifs
+40.15.11.00 Gants pour la chirurgie
+70.15.10.00 Verres de lunetteries médicales
+84.19.20.00 Stérilisateurs médico-chirurgicaux de laboratoires
+87.13 Fauteuils roulants et autres véhicules pour invalides
+87.14.20.00 Partie de fauteuils roulants et autres véhicules pour invalides
+90.04.90.10 Lunettes correctrices
+90.18 à 90.22 Appareils médicaux
+94.02.10.19 Autres mobiliers pour la médecine et la chirurgie
+En dehors des biens ou services visés ci-dessus, aucune exonération ou exemption à la TVA n'est
+accordée notamment dans le cadre de mesures d'incitation à la création d'entreprise et à
+l'investissement, de mesures ou dispositions relatives à des secteurs particuliers, ou de
+conventions particulières ;
