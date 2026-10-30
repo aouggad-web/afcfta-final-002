@@ -75,6 +75,7 @@ Trois règles gouvernent tout le reste :
 
 from __future__ import annotations
 
+from datetime import date
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Any, Dict, List, Optional
 
@@ -927,6 +928,20 @@ def _liquider(
     }
 
 
+def droits_a_la_date(droits: List[Dict[str, Any]], aujourd_hui: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Une mesure temporaire porte son terme (``jusqu_au``, date ISO incluse) et
+    le taux qu'elle suspend (``taux_apres``, note ``note_apres``) : passé ce
+    terme, la ligne reprend ce taux. Sans cela, une baisse limitée dans le temps
+    resterait servie après son échéance."""
+    jour = aujourd_hui or date.today().isoformat()
+    return [
+        {**d, "taux": d.get("taux_apres"), "note": d.get("note_apres", d.get("note"))}
+        if d.get("jusqu_au") and jour > d["jusqu_au"]
+        else d
+        for d in droits
+    ]
+
+
 def calculer(
     position: Dict[str, Any],
     valeur_cif: float,
@@ -970,7 +985,7 @@ def calculer(
         # L'inverse signalerait une déclaration incohérente, pas une base.
         raise ValueError("valeur_fob doit être positive et ne pas excéder valeur_cif")
 
-    droits = position.get("droits") or []
+    droits = droits_a_la_date(position.get("droits") or [])
     facteur_devise = _facteur_devise_specifique(devise_position, devise_cif, taux_de_change)
     resultat = {
         "position": {
