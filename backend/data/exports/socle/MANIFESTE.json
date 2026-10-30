@@ -640,9 +640,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-30",
-      "sha256": "37e73b674b5f51aeb8be9de75635f9a1016803a9db2f7cc4b71c77578bb37962",
-      "notes_sha256": "fa7737fb6ef8d6970ba9e84b33e449b8a223f4212e8fe98dc09345c1be3d9119",
-      "socle_sha256": "4f0d41c8a52c43fa5494ab1b2e33b073e5d48a5f69e49296a63133b5d39b37a6",
+      "sha256": "c6292fd0f148ba5c9639d69266f0b84081ef6e1683e4f79bc4616fc3f146d6d4",
+      "notes_sha256": "7f68e3f35c03e9a25289c15500a50ad423c658206d52f6b10c196bd0bdc2eb8e",
+      "socle_sha256": "b63c918ad5441deed7bcd5702a242b802cf6fd5d2fede88a75de3df046c95b4e",
       "collecte": "2026-02-19T22:39:52.018966"
     },
     "GHA": {

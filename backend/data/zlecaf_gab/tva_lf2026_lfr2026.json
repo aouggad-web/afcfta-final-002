@@ -117,11 +117,17 @@
   },
   {
    "prefixes": [
-    "160413",
+    "160413"
+   ],
+   "taux": null,
+   "motif": "Conserves de sardines et de pilchards exonérées (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10)), sardinelles et sprats au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
     "160415"
    ],
    "taux": 0.0,
-   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « conserves de sardine ; conserves de maquereaux ; conserves de pilchards »."
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « conserves de maquereaux »."
   },
   {
    "prefixes": [
@@ -257,6 +263,13 @@
    ],
    "taux": null,
    "motif": "« ordinateurs fixes et portables bureautiques » au taux réduit de 10 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau), serveurs et autres machines au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "200892"
+   ],
+   "taux": null,
+   "motif": "Mélanges : conserves de fruits au taux réduit de 10 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau), fruits à coque et autres parties de plantes au taux normal de 18 % — la composition n'est pas dans la position."
   },
   {
    "prefixes": [

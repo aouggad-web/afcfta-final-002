@@ -31,6 +31,7 @@ def _tva(position):
         ("25232900", 0.0),  # ciment, exonéré bien qu'à 10 % dans la LF 2026
         ("20089110", 0.0),  # cœurs de palmier : conserves de légumes
         ("85023100", 0.0),  # aérogénérateurs : énergies renouvelables
+        ("16041500", 0.0),  # conserves de maquereaux
         ("04011000", 0.0),  # lait, au plus 1 % de matières grasses
         ("02071400", 0.0),  # volailles
         ("87089900", 10.0),  # pièces détachées automobiles (LFR 2026)
@@ -53,7 +54,7 @@ def test_taux_de_tva_par_position(positions, code, taux):
 @pytest.mark.parametrize(
     "code",
     ["72104100", "87119000", "27111300", "22011000", "21022000", "04013000", "02109900", "20052000", "34022000",
-     "84715000", "20089991"],
+     "84715000", "20089991", "16041300", "20089290"],
 )
 def test_taux_indetermine_depuis_la_position(positions, code):
     tva = _tva(positions[code])
