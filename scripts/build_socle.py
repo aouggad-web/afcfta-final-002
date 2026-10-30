@@ -2594,14 +2594,19 @@ def _prelevements_gabon(positions, compteurs):
         _compter_ligne(css, compteurs, 1)
 
 
-#: Gabon : taux de la TVA par position (fiche GAB_tva_2026-10-29.json).
-TVA_GAB = os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json")
+#: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
+#: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
+#: COG_tva_2026-10-30.json). Ailleurs, le taux normal de 18 %.
+TVA_PAR_POSITION = {
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
+    "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
+}
 
 
-def _tva_gabon(positions, compteurs):
-    """Gabon : exonérations (CGI art. 210) et taux réduits de 10 et 5 % (art. 221)
-    de la loi de finances 2026 et de la LFR 2026 ; ailleurs, le taux normal de 18 %."""
-    with open(TVA_GAB, encoding="utf-8") as f:
+def _tva_par_position(iso, positions, compteurs):
+    """Exonérations et taux réduits de la TVA, position par position, d'après la
+    table du pays (TVA_PAR_POSITION)."""
+    with open(TVA_PAR_POSITION[iso], encoding="utf-8") as f:
         table = json.load(f)
     for code, position in positions.items():
         regle = next(
@@ -2676,6 +2681,29 @@ def _prelevements_congo(positions, compteurs):
         droits[rang:rang] = nouvelles
         for ligne in nouvelles:
             _compter_ligne(ligne, compteurs, 1)
+
+
+#: Congo : véhicules neufs de tourisme au taux réduit de 5 % du droit de douane et
+#: de la TVA (loi de finances 2024, art. 1er, al. 2, réécrit par la LF 2026, point 44).
+VEHICULES_NEUFS_COG = ("87033110", "87033210", "87033290")
+
+
+def _vehicules_neufs_congo(positions, compteurs):
+    """Le taux réduit ne vaut que pour les véhicules neufs, que la position ne
+    distingue pas des véhicules d'occasion : droit de douane et TVA sans taux."""
+    motif = (
+        "Loi n° 42-2025 (LF 2026), point 44 : « Les droits et taxes exigibles à l'importation des véhicules "
+        "automobiles neufs de tourisme, relevant des positions tarifaires 87033110, 87033210 et 87033290, sont fixés "
+        "au taux réduit de 5% des droits de douanes et de 5% de la taxe sur la valeur ajoutée » ; véhicule d'occasion "
+        "au taux de droit commun — l'état neuf n'est pas dans la position."
+    )
+    for code in VEHICULES_NEUFS_COG:
+        for d in positions.get(code, {}).get("droits") or []:
+            if d.get("code") in ("DD", "TVA"):
+                _compter_ligne(d, compteurs, -1)
+                d["taux"] = None
+                d["note"] = motif
+                _compter_ligne(d, compteurs, 1)
 
 
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
@@ -5436,12 +5464,16 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # Congo : après les accises, dont dépend l'exclusion des poissons de luxe
     # de la circulaire n° 0138 (le crawl ne porte pas toutes les accises).
     if iso == "COG":
+        # Annexes de la loi TVA, puis la circulaire n° 0138, temporaire, qui les
+        # précise jusqu'au 31/12/2026, puis les véhicules neufs de la LF 2026.
+        _tva_par_position("COG", positions, compteurs)
         _mesures_nationales_congo(positions)
+        _vehicules_neufs_congo(positions, compteurs)
         _prelevements_congo(positions, compteurs)
     # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
-        _tva_gabon(positions, compteurs)
+        _tva_par_position("GAB", positions, compteurs)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon
