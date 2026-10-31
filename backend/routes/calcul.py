@@ -37,7 +37,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, PositiveFloat
 
 from engine.schemas.legal_override import RemissionEligibility
-from services import exoneration_origine, mesures_eac, socle, usages
+from services import defense_commerciale, exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import marchandise_dedouanee_sacu, simulations_regionales, taux_preferentiels
 from services.regional_blocs import SACU, same_customs_union
@@ -87,6 +87,13 @@ class AutorisationRemise(BaseModel):
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
     origine: Optional[str] = Field(None, description="Pays d'origine (ISO-3)")
+    producteur: Optional[str] = Field(
+        None,
+        description=(
+            "Producteur ou exportateur, pour un droit antidumping dont le taux en dépend "
+            "(services/defense_commerciale.py). Omis : le droit reste à établir."
+        ),
+    )
     pays_expedition: Optional[str] = Field(
         None,
         description=(
@@ -283,6 +290,7 @@ def calcul(demande: DemandeCalcul):
             preference = marchandise_dedouanee_sacu(demande.destination)
 
     position, exonerations = exoneration_origine.appliquer(position, demande.origine)
+    position, defense = defense_commerciale.appliquer(position, demande.origine, demande.producteur)
 
     position, complements = _completer_famille_absente(
         position, demande.destination, provenance, demande.origine, demande.pays_expedition
@@ -310,6 +318,8 @@ def calcul(demande: DemandeCalcul):
     resultat["complements_nationaux"] = complements
     if exonerations:
         resultat["exonerations_origine"] = exonerations
+    if defense:
+        resultat["defense_commerciale"] = defense
     if mesures:
         resultat["mesures_eac"] = mesures
     if bloc_usages:

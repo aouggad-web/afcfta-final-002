@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "objet": "Maurice : droit d'accise de Rs 2 par bouteille plastique contenant des marchandises (H.S. 3923.30.10), en vigueur le 1er octobre 2026",
+  "destination_iso3": "MUS",
+  "verified_at": "2026-10-31",
+  "etabli": true,
+  "evidence_level": "primaire : Finance Act 2026 (Act No. 14 of 2026) publié par la MRA ; tarif intégré de la MRA au 1er octobre 2026 ; Government Gazette non consultée directement",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/MUS_accise_bouteilles_plastiques_FA2026.texte-extrait.txt",
+      "sha256": "dfd2bb1589d59c76a5cdb89a42fcda843456f614a3f5f062c2309001bc747109"
+    }
+  ],
+  "regle": {
+    "accise": {
+      "valeur": "Rs 2 par unité, H.S. 3923.30.10 « Plastic bottles containing goods », First Schedule, Part I, de l'Excise Act.",
+      "reference": "Finance Act 2026, art. 4 (b) (Excise Act, s. 3AA) et Fourth Schedule ; art. 28 (2) : 1er octobre 2026",
+      "verbatim": "(1) An excise duty shall be chargeable on plastic"
+    },
+    "exemptions": {
+      "valeur": "Item 103 de la Part IA : 0 % pour les bouteilles contenant notamment riz, farine, produits laitiers, huiles, sucre, thé, café, jus (20.09), produits pharmaceutiques (ch. 30)… (liste de l'article 4 (e)(ii)(H)) ; items 100 et 102 (voyageurs, envois postaux, échantillons).",
+      "reference": "Finance Act 2026, art. 4 (e)(ii)(H)",
+      "verbatim": "103.   Any person   Plastic bottles containing       the 0 per cent"
+    }
+  },
+  "ne_tranche_pas": "Le mécanisme déclaratif (ligne 3923.30.10 ajoutée à la déclaration de la marchandise contenue, codes CPC 47PPB et E4PPB) ; l'exemption de l'item 103, qui dépend du contenu et n'est pas appliquée par la position 3923.30.10 ; le texte du G.N. 153/2026 (frais de décision anticipée, 1 000 Rs), sans effet sur le calcul ; la version du tarif du 20 juin 2026 citée par la veille, non trouvée.",
+  "application_au_calcul": {
+    "route": "POST /calcul",
+    "positions": "backend/data/zlecaf_mus/assiette_accise_excise_act.json, montants_specifiques[\"39233010\"] : Rs 2 par bouteille (ligne EXC, assiette xQTE).",
+    "devise": "Montant spécifique en roupies mauriciennes par bouteille.",
+    "reserves": "L'accise est servie sur la position 3923.30.10, qui ne dit pas le contenu : l'exemption de l'item 103 n'est pas appliquée."
+  }
+}

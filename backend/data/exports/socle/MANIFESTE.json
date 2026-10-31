@@ -1190,10 +1190,10 @@
         }
       ],
       "devise": "MUR",
-      "date_reference": "2026-10-28",
-      "sha256": "fdfccd817db59cebf65801c505096cbee18de194201a7723db52c83eebf57145",
-      "notes_sha256": "cb328897c18b8efb923165fc2e8ba37a3f05ddddbd466ecbcb8022dce024e81b",
-      "socle_sha256": "f87e24fd859c3b828991926d9f03393776d507a94daf7791f94e8255c1784947",
+      "date_reference": "2026-10-31",
+      "sha256": "0ad57f5e7db06eb6a4489ec3d090135ce7ad282bfd630433a3fa02988e212b2b",
+      "notes_sha256": "9a5a095fbe26659df63f56faa8c9a67b4a4dfd86a3426c1863960b5501b25060",
+      "socle_sha256": "045aed10bf369c599faf73fa4800e68b79f14292482a371269a9b4219597e7e5",
       "collecte": "2026-10-25"
     },
     "MWI": {
@@ -1904,6 +1904,14 @@
           "libelle": "Environmental levy (tyres)"
         },
         {
+          "code": "SAUV",
+          "libelle": "Paiement provisoire de sauvegarde (PP/185)"
+        },
+        {
+          "code": "AD",
+          "libelle": "Droit antidumping (Schedule No. 2, item 215.02)"
+        },
+        {
           "code": "EVL",
           "libelle": "Environmental levy (electric filament lamps)"
         },
@@ -1913,10 +1921,10 @@
         }
       ],
       "devise": "ZAR",
-      "date_reference": "2026-10-28",
-      "sha256": "2a0859f1ef8bc55a5662ef1b7a2f3e01e8d1a6ac08562bc0aafb94d45680dd77",
-      "notes_sha256": "23aba3e38f59578a543b3400c85daf48cf5cf89ca3bca4bae21160724795d2fe",
-      "socle_sha256": "267b0d0aaaac2c223c8b109c50640b29b35dd11e22f9a9dd218d81da584d23dc",
+      "date_reference": "2026-10-31",
+      "sha256": "d1264e6646594f140b1005f91a9e050977a45e26071862016bb8a96c623c0fc2",
+      "notes_sha256": "f2812fb702ebf055fce553fc7e099492f8fdab956b6be72d08be3317fa16f782",
+      "socle_sha256": "35e2420eedf162df42b38a2b6342e193cb8882f41bbcf85dbe0809a07ba3528e",
       "collecte": "2026-08-29T13:26:21.816037"
     },
     "ZMB": {

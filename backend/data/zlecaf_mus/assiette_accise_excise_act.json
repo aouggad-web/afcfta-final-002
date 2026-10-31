@@ -1021,6 +1021,11 @@
    "montant": 4.22,
    "unite_quantite": "litre",
    "brut": "Rs 4.22 per litre"
+  },
+  "39233010": {
+   "montant": 2.0,
+   "unite_quantite": "bouteille",
+   "brut": "Rs 2 per unit"
   }
  },
  "specifiques_non_liquidables": {

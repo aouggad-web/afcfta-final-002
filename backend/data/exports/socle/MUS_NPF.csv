@@ -2584,7 +2584,7 @@
 39232929;---- Other;39;kg;0;15;;;15;COMPLET;;;N1
 39232992;---- Carrier bags without handles, and with or without gussets;39;kg;0;15;;;15;COMPLET;;;N1
 39232999;---- Other;39;kg;0;15;;;15;COMPLET;;;N1
-39233010;--- Plastic bottles containing goods;39;U;0;15;n.d.;;;PARTIEL;EXC (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N55 N1
+39233010;--- Plastic bottles containing goods;39;U;0;15;Rs 2 per unit;;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N55 N1
 39233090;--- Other;39;kg;0;15;;;15;COMPLET;;;N1
 39234000;- Spools, cops, bobbins and similar supports;39;kg;0;15;;;15;COMPLET;;;N1
 39235011;---- For single use;39;kg;0;15;;;15;COMPLET;;;N1
