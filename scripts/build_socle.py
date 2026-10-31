@@ -1233,7 +1233,8 @@ _EXPORT_COG_HYDROCARBURES = (
 )
 _COG_FOT = (" Assiette : la valeur Free On Truck (FOT) de l'essence, fixée par arrêté, qu'il faut saisir. Grumes : "
             "exportation réservée aux bois lourds et durs (Code forestier, art. 97) ; surtaxe de 30 % au-delà du "
-            "quota 85/15 et fonds routier non compris.")
+            "quota 85/15 et fonds routier non compris. La redevance informatique est assise sur la valeur en douane, "
+            "non sur la valeur FOT : avec une valeur FOT saisie, elle est sous-estimée.")
 _EXPORT_COG_GRUMES_DIX = (
     10.0, None,
     "Bois en grumes des forêts naturelles, Okoumé, Afrormosia et Ébène : taxe à l'exportation de 10 % de la "
@@ -1467,7 +1468,8 @@ EXPORT_PAR_TEXTE = {
             # (« ceux passibles de la taxe à l'exportation » échappent au
             # droit commun) sans y être nommé.
             "4402": (None, None, "Charbon de bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient lieu de "
-                                 "droit de sortie, mais son barème ne le nomme pas : à établir." + _COG_PLAN_RESILIENCE),
+                                 "droit de sortie, mais son barème ne le nomme pas : à établir." + _COG_PLAN_RESILIENCE
+                     + " L'arrêté n° 26621 dit « Charbon » sans préciser s'il s'agit du charbon de bois."),
             "44": (None, None, "Bois et ouvrages en bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient "
                                "lieu de droit de sortie, mais son barème ne nomme pas ce produit (bois de chauffage, "
                                "plaquettes, traverses…) : à établir."),
