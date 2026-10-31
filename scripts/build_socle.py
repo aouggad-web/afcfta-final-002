@@ -1456,8 +1456,14 @@ EXPORT_PAR_TEXTE = {
         "art. 222 à 225 (sources/GAB_droit_de_sortie_LF2026.texte-extrait.txt)",
         None,
         {
-            # Sciages, feuilles de placage (déroulées ou tranchées).
-            **{p: _EXPORT_GAB_PREMIERE for p in ("4407", "4408")},
+            # Feuilles de placage (déroulées ou tranchées).
+            "4408": _EXPORT_GAB_PREMIERE,
+            # Bois sciés « même rabotés » : le rabotage mène aux « profilés
+            # rabotés » de la deuxième transformation.
+            "4407": (None, None, "Bois sciés : 15 % de la valeur mercuriale s'ils sont seulement sciés ou séchés "
+                                 "(première transformation, Code forestier, art. 223), mais la position comprend les "
+                                 "bois rabotés, et les « profilés rabotés » relèvent de la deuxième transformation "
+                                 "(10 %, art. 224) : à établir" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE),
             # Moulures et profilés, panneaux de particules, de fibres,
             # contreplaqués, panneaux assemblés pour parquets.
             **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "4410", "4411", "4412", "44187")},
