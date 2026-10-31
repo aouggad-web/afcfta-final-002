@@ -221,10 +221,10 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-10-30",
-      "sha256": "e300bb28eeec08a437883ce44a65d4e478083dbb0402dda1fc22ed500aa0a761",
-      "notes_sha256": "c2c527d4990234d3f53a279c798cdacf4e25b28bbb749475bbf6a95f21cd8763",
-      "socle_sha256": "3199a060ada291a66e450992a66469287bfa2887c8155f9b0741ecd5a8fcc594",
+      "date_reference": "2026-10-31",
+      "sha256": "c2a140ff428d015bcc55262202405b01829d13fae6f27fa35db2603519cd2a3a",
+      "notes_sha256": "05f57b17aaa8d0dd37d98db2dd4b0f635ef84163243a8942ebf1eb90c2d93cf6",
+      "socle_sha256": "f20b208f6e968884e9013cb28de8a019cc622850df8e360153391938b7c8ccd1",
       "collecte": "2026-02-19T22:39:54.085446"
     },
     "CIV": {
@@ -346,6 +346,10 @@
           "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
         },
         {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
           "code": "RI",
           "libelle": "Redevance Informatique"
         },
@@ -359,10 +363,10 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-10-30",
-      "sha256": "8c4130e2f27414ff0499211256d14311303b5032dc3cfac1da88158cb850c4ae",
-      "notes_sha256": "1b2dd15868b5a9a801bcd8b066c618320ad8f7e59d671e61ab8d13eea3f55b86",
-      "socle_sha256": "380efcd968b96eb3ecd69051731e3773a1bfadd67a9bd1e9efd0f2be9c95520f",
+      "date_reference": "2026-10-31",
+      "sha256": "5c645cf1da95a5a38fa73cff974331a510b4947dcad395a422f6364e62e7b384",
+      "notes_sha256": "fbfc9c2193c5ddc19bc0a3e6a00c2b18b5a91d76df6e1f2c945b7a79a3c54f47",
+      "socle_sha256": "07b147ac5f38f4a447776f3c54164c04d9b24d482dbac37ca8c8f8517318985d",
       "collecte": "2026-02-19T22:21:31.397885"
     },
     "COD": {
@@ -679,10 +683,10 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-10-30",
-      "sha256": "c6292fd0f148ba5c9639d69266f0b84081ef6e1683e4f79bc4616fc3f146d6d4",
-      "notes_sha256": "7f68e3f35c03e9a25289c15500a50ad423c658206d52f6b10c196bd0bdc2eb8e",
-      "socle_sha256": "9a7f1a13799b86bc813ed914968bce26367164a5eba4829c9adae034bb05f5f5",
+      "date_reference": "2026-10-31",
+      "sha256": "e320f4c1d621bac7ddf81fe024b0a60a0e02f8870e326109faa40486c5fe4c62",
+      "notes_sha256": "93736a7e8d50ea1cd214b1fbab7775f300248c5db59134f9a6673651b5cf416f",
+      "socle_sha256": "636940e95c4df4d5afe11f2199ff68c022c01a0df045c4703dfc8588f41397ff",
       "collecte": "2026-02-19T22:39:52.018966"
     },
     "GHA": {
@@ -1616,10 +1620,10 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-10-30",
-      "sha256": "6a55716ec394933dadc8fb8241f0d25a4ea3e5b715af8051576e9d4c8a4be0fa",
-      "notes_sha256": "4eef4cc0755d788a83783e084c0cc25b839eed3931003dad6ae5236110cbe179",
-      "socle_sha256": "33c1c134e8d09bf4fbe9db1153fad5f9621d4c6d60eac4f6a1fbd4c3fd0f3176",
+      "date_reference": "2026-10-31",
+      "sha256": "18e79f73a7baf752d796e65572e9b014df2e699d70450df49c40109d08584fa0",
+      "notes_sha256": "c60a03048dc93626c010428c9b2ab987da2a0b792a61d3f693589b15a568301f",
+      "socle_sha256": "666eaa3967d83362d2f533653768c2938030f1c173f0f6238dfda6b678ebbd57",
       "collecte": "2026-02-19T22:39:53.393846"
     },
     "TGO": {

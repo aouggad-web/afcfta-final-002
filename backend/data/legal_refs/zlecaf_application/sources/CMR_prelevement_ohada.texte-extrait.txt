@@ -1,0 +1,32 @@
+Cameroun — prélèvement OHADA à l'importation ; contribution communautaire d'intégration de la CEEAC (non servie).
+
+1) Organisation mondiale du commerce — WT/TPR/S/445 (2023), annexe Cameroun :
+   https://www.wto.org/french/tratop_f/tpr_f/s445-02_f.pdf ; archivé : data/sources/cameroon/official/omc-wt-tpr-s-445-annexe-cameroun.pdf
+
+3.1.3.2 Autres droits et taxes de porte
+3.26. D'autres droits et taxes de porte, harmonisés au niveau de la CEMAC, sont appliqués à la
+valeur c.a.f. en douane des marchandises importées. Il s'agit de la Taxe communautaire
+d'intégration (TCI), perçue pour le compte du Secrétariat de la CEMAC au taux de 1%, applicable
+aux importations originaires des pays tiers à la CEMAC; la Contribution communautaire d'intégration
+(CCI) de la CEEAC de 0,4%, applicable aux importations originaires des pays tiers à la CEEAC; et du
+prélèvement au bénéfice de l'OHADA de 0,05% (Rapport commun, section 3).
+3.27. En outre, sur le plan national, la Redevance d'utilisation du système informatique douanier
+(RUSID), est perçue sur les déclarations traitées de manière électronique, au taux de 0,45% de la
+valeur f.a.b.
+
+2) Organisation mondiale du commerce — WT/TPR/S/445 (2023), rapport commun, § 3.40 :
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-cemac-rapport-commun.pdf
+
+3.40. Au paiement du TEC s'ajoutent des prélèvements destinés à financer certaines initiatives communautaires, et des prélèvements nationaux. Au niveau communautaire, on distingue:
+
+      •   la taxe communautaire d'intégration (TCI), prélevée au taux de 1% sur les importations en provenance des pays hors de la zone CEMAC, et destinée au financement du processus d'intégration dans la zone;
+
+      •   la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les importations hors-CEEAC, et destinée à financer la CEEAC ainsi que ses institutions (actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad); et
+
+      •   le prélèvement OHADA, effectué au taux de 0,05% sur les importations des pays non membres, et destiné au financement de l'Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA).
+
+3) Loi n° 2025/012 du 17 décembre 2025 portant loi de finances pour l'exercice 2026 (prc.cm, scan de 151 pages,
+   sha256 4196d9683db72f0cd1fa07f7a6ad39f306e727823695edf60ab0f3d74e055da8) et circulaire n° 410/MINFI/DGD du
+   18 mai 2026 (douanes.cm, scan de 37 pages, sha256 13b0ea5a7a7a78b726986ace366c3060afebfa79a1d049ee0d0f80ef0df0f255),
+   lues par OCR le 2026-10-30 : ni l'une ni l'autre ne cite la CCI ou le prélèvement OHADA. La loi met en œuvre le Code
+   des douanes et le Tarif extérieur commun harmonisés CEEAC-CEMAC (art. 21 et 22), applicables au 1er janvier 2026.
