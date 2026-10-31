@@ -18,10 +18,11 @@ exclues (fiche ORIGINE_prelevements_communautaires_2026-10-10.json) :
   Etat membre d'une union douanière avec les pays de l'AES », donc de l'UEMOA ;
 - contribution communautaire d'intégration de la CEEAC (CCI, 0,4 %), perçue sur
   les « marchandises importées des pays tiers » (DGDDI du Gabon) ;
-- prélèvement OHADA (0,05 %), règlement n° 002/2003/CM : assis sur les
-  « produits originaires des pays tiers à l'OHADA » (arrêté congolais n° 5808
-  du 20/09/2005, art. 3) ; au Congo, les originaires des communautés dont il
-  est membre (CEMAC, CEEAC) en sont aussi exonérés (même arrêté, art. 2).
+- prélèvement OHADA (0,05 %), règlement n° 002/2003/CM : dû sur les « produits
+  originaires des pays tiers » (art. 3) ; exonérés aussi « les produits reconnus
+  originaires des communautés économiques régionales et sous régionales dont
+  chaque Etat Partie est membre » (art. 6), soit, en Afrique centrale, la CEEAC
+  qui englobe la CEMAC (au Congo, arrêté n° 5808 du 20/09/2005, art. 2).
 
 Le socle marque ces lignes (« exoneration_origine ») ; la route les retire
 quand l'origine déclarée appartient au bloc. Sans origine, elles restent dues,

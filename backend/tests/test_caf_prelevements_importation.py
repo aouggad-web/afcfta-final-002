@@ -42,7 +42,7 @@ def test_ni_l_accise_ni_la_tva_ne_s_assoient_sur_ces_prelevements(positions):
 
 @pytest.mark.parametrize(
     "origine, retires",
-    [("CMR", {"TCI", "CCI", "OHADA", "TUA"}), ("AGO", {"CCI", "TUA"}), ("SEN", {"OHADA", "TUA"}),
+    [("CMR", {"TCI", "CCI", "OHADA", "TUA"}), ("AGO", {"CCI", "OHADA", "TUA"}), ("SEN", {"OHADA", "TUA"}),
      ("NGA", {"TUA"}), ("FRA", set())],
 )
 def test_les_prelevements_communautaires_suivent_l_origine(positions, origine, retires):

@@ -14,10 +14,11 @@ N12;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2208, liqueurs, 25 %
 N13;SPEC;Art. 36, colonne « Taux taxe spécifique » : « 50FCFA/Paquet ».
 N14;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2402, cigares, cigarillos et cigarettes, 30 %
 N15;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 2403 à l'exclusion de la position 24 03 99 20, autres tabacs fabriqués, 30 %
-N16;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3303.00.00, parfums et eaux de toilette, 20 %
-N17;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3304 et 3305, produits cosmétiques, 20 % Contenant de l'hydroquinone, ils doivent en outre une taxe spécifique de 30 %, que la position ne permet pas de distinguer : non servie.
-N18;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N19;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N20;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8703.24, véhicules de tourisme d'une cylindrée excédant 3 000 cm3, 25 %
-N21;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 87 03.33, véhicules de tourisme diesel d'une cylindrée excédant 2 500 cm3, 25 %
-N22;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8711.30.00, 8711.40.00, 8711.50.00 et 8711.90.00, motocycles d'une cylindrée supérieure à 250 cm3, 12,5 %
+N16;OHADA;Exonéré, règlement n° 002/2003/CM, art. 6 : « les produits pharmaceutiques ainsi que les matériels et équipements à usage médical, destinés à la médecine humaine ou vétérinaire ».
+N17;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3303.00.00, parfums et eaux de toilette, 20 %
+N18;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 3304 et 3305, produits cosmétiques, 20 % Contenant de l'hydroquinone, ils doivent en outre une taxe spécifique de 30 %, que la position ne permet pas de distinguer : non servie.
+N19;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N20;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N21;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8703.24, véhicules de tourisme d'une cylindrée excédant 3 000 cm3, 25 %
+N22;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 87 03.33, véhicules de tourisme diesel d'une cylindrée excédant 2 500 cm3, 25 %
+N23;DA;LF 2026, art. 44 : LF 2021, art. 36 (nouveau), 8711.30.00, 8711.40.00, 8711.50.00 et 8711.90.00, motocycles d'une cylindrée supérieure à 250 cm3, 12,5 %

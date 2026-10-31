@@ -1,0 +1,36 @@
+{
+ "schema_version": 1,
+ "objet": "Cameroun : prélèvement OHADA à l'importation (0,05 % de la valeur c.a.f., hors originaires de l'OHADA) ; contribution communautaire d'intégration de la CEEAC non servie, les deux parties du rapport de l'OMC divergeant pour le Cameroun",
+ "destination_iso3": "CMR",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "officielle secondaire — rapport du Secrétariat de l'OMC (WT/TPR/S/445, 2023, établi avec les informations des autorités), annexe Cameroun § 3.26 et rapport commun § 3.40 ; la loi de finances 2026 et la circulaire n° 410/MINFI/DGD ne citent pas ce prélèvement",
+ "source": {
+  "url": "https://www.wto.org/french/tratop_f/tpr_f/s445-02_f.pdf",
+  "institution": "Organisation mondiale du commerce, Secrétariat (examen des politiques commerciales des pays de la CEMAC)"
+ },
+ "regle": {
+  "valeur": "Prélèvement OHADA : 0,05 % de la valeur c.a.f., dû sauf sur les produits originaires de l'OHADA.",
+  "verbatim": "prélèvement au bénéfice de l'OHADA de 0,05% (Rapport commun, section 3).",
+  "reference": "OMC, WT/TPR/S/445, annexe Cameroun, § 3.26 ; rapport commun, § 3.40",
+  "portee": "scripts/build_socle._prelevement_ohada_cameroun : ligne OHADA ajoutée après la TCI ; BLOCS_DESTINATION (OHADA : CMR).",
+  "texte_archive": "sources/CMR_prelevement_ohada.texte-extrait.txt",
+  "sha256": "822fb0e443470addfc33f4af7c1aa50fbca594664eed9366a37320cc6a785b98"
+ },
+ "decisions": [
+  "Prélèvement OHADA : l'annexe Cameroun (§ 3.26) le dit « appliqué » au Cameroun ; le rapport commun (§ 3.40) le décrit pour les pays de la CEMAC, « sur les importations des pays non membres ». Les deux concordent : servi.",
+  "Base de la TVA inchangée (CGI art. 138 (1) : valeur + droit de douane + droit d'accises) : le prélèvement OHADA n'y entre pas.",
+  "Contribution communautaire d'intégration (CCI, 0,4 %) : l'annexe Cameroun (§ 3.26) la cite parmi les taxes de porte appliquées, mais le rapport commun (§ 3.40) précise qu'elle est « actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad », sans le Cameroun. Aucun texte camerounais lu ne la mentionne : non servie."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "CCI : si le Cameroun la perçoit, chaque importation hors CEEAC paie 0,4 % de plus.",
+  "Redevance sur œuvre de l'esprit (5 % de la valeur f.a.b. des supports électroniques, § 3.28) et Bordereau électronique de suivi des cargaisons (frais par connaissement, § 3.29) : non servis.",
+  "Tarif extérieur commun harmonisé CEEAC-CEMAC (décision n° 14/CEEAC/CCEG/XXV/24 du 18 octobre 2024), applicable au Cameroun au 1er janvier 2026 (loi de finances 2026, art. 22) : le socle sert encore le droit de douane du tarif CEMAC ; le barème harmonisé (0 à 40 %) n'a pas été trouvé en ligne."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/CMR_prelevement_ohada.texte-extrait.txt",
+   "sha256": "822fb0e443470addfc33f4af7c1aa50fbca594664eed9366a37320cc6a785b98"
+  }
+ ]
+}
