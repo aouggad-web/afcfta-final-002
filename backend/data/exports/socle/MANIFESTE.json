@@ -1191,9 +1191,9 @@
       ],
       "devise": "MUR",
       "date_reference": "2026-10-31",
-      "sha256": "0ad57f5e7db06eb6a4489ec3d090135ce7ad282bfd630433a3fa02988e212b2b",
-      "notes_sha256": "9a5a095fbe26659df63f56faa8c9a67b4a4dfd86a3426c1863960b5501b25060",
-      "socle_sha256": "045aed10bf369c599faf73fa4800e68b79f14292482a371269a9b4219597e7e5",
+      "sha256": "fdfccd817db59cebf65801c505096cbee18de194201a7723db52c83eebf57145",
+      "notes_sha256": "687c4b34690babafc5fff49bea8bcfb3ca0aa301d0c52abdbfdd314b430846fc",
+      "socle_sha256": "5ad354b65d773fd9ce1a2ca187c91c9f0913d79f926b224b9ba736720001c143",
       "collecte": "2026-10-25"
     },
     "MWI": {

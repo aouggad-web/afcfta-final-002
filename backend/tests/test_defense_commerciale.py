@@ -63,12 +63,40 @@ def test_antidumping_selon_l_origine_et_le_producteur():
     assert _ligne(japon, "AD")["taux"] is None
 
 
-def test_antidumping_retire_pour_une_origine_non_visee_et_a_etablir_sans_origine():
+def test_antidumping_retire_seulement_si_ni_l_origine_ni_l_expedition_ne_sont_visees():
+    """R.7991 : « Imported from or Originating in » : l'expédition compte autant que l'origine."""
     position = {"droits": [DD, ANTIDUMPING]}
-    kenya, rendu = defense_commerciale.appliquer(position, "KEN", le=date(2026, 10, 31))
+    le = date(2026, 10, 31)
+    kenya, rendu = defense_commerciale.appliquer(position, "KEN", le=le, expedition="KEN")
     assert _ligne(kenya, "AD") is None and rendu[0]["statut"] == "ORIGINE_NON_VISEE"
-    sans_origine, rendu = defense_commerciale.appliquer(position, None, le=date(2026, 10, 31))
+    # Expédition inconnue, ou « AUTRE » pays non précisé : à établir, pas retiré.
+    for expedition in (None, "AUTRE"):
+        inconnue, rendu = defense_commerciale.appliquer(position, "KEN", le=le, expedition=expedition)
+        assert _ligne(inconnue, "AD")["taux"] is None and rendu[0]["statut"] == "EXPEDITION_NON_FOURNIE"
+        assert "pays d'expédition" in _ligne(inconnue, "AD")["note"]
+    sans_origine, rendu = defense_commerciale.appliquer(position, None, le=le, expedition="KEN")
     assert _ligne(sans_origine, "AD")["taux"] is None and rendu[0]["statut"] == "ORIGINE_NON_FOURNIE"
+
+
+def test_antidumping_selon_le_pays_d_expedition():
+    position = {"droits": [DD, ANTIDUMPING]}
+    le = date(2026, 10, 31)
+    # Origine non visée, expédiée d'un pays visé : le barème de ce pays.
+    via_taipei, rendu = defense_commerciale.appliquer(position, "KEN", le=le, expedition="TWN")
+    assert _ligne(via_taipei, "AD")["taux"] == 24.2
+    assert rendu[0]["pays_vise"] == "TWN" and "expédiée de TWN" in rendu[0]["motif"]
+    via_chine, rendu = defense_commerciale.appliquer(position, "KEN", le=le, expedition="CHN")
+    assert _ligne(via_chine, "AD")["taux"] is None and rendu[0]["statut"] == "PRODUCTEUR_NON_FOURNI"
+    # Origine visée : le droit est dû quelle que soit l'expédition.
+    for expedition in (None, "AUTRE", "KEN", "TWN"):
+        taipei, _ = defense_commerciale.appliquer(position, "TWN", le=le, expedition=expedition)
+        assert _ligne(taipei, "AD")["taux"] == 24.2
+    # Origine et expédition visées, différentes : quel barème ? À établir.
+    divergent, rendu = defense_commerciale.appliquer(position, "TWN", "Baoshan Iron and Steel", le=le,
+                                                     expedition="CHN")
+    ligne = _ligne(divergent, "AD")
+    assert ligne["taux"] is None and rendu[0]["statut"] == "ORIGINE_PROVENANCE_DIVERGENTES"
+    assert "24.2 %" in ligne["note"] and "47.92 %" in ligne["note"]
 
 
 def test_sauvegarde_selon_l_exemption_et_la_periode():
@@ -120,7 +148,7 @@ def _npf(client, **corps):
 
 @besoin_socle
 def test_route_antidumping_acier_sud_africain(client):
-    """R.7991 : Taipei chinois 24,2 % ; Japon, Nippon Steel 44,95 % ; Kenya non visé."""
+    """R.7991 : Taipei chinois 24,2 % ; Japon, Nippon Steel 44,95 % ; Kenya, expédié du Kenya, non visé."""
     lignes, corps = _npf(client, code_sh="72081000", origine="TWN")
     assert lignes["AD"]["montant"] == pytest.approx(24_200)
     lignes, _ = _npf(client, code_sh="72081000", origine="JPN", producteur="NIPPON STEEL CORP.")
@@ -132,8 +160,13 @@ def test_route_antidumping_acier_sud_africain(client):
     lignes, corps = _npf(client, code_sh="72081000", origine="CHN")
     assert lignes["AD"]["montant"] is None and lignes["TVA"]["montant"] is None
     assert corps["npf"]["etat"] != "COMPLET"
-    lignes, corps = _npf(client, code_sh="72081000", origine="KEN")
+    lignes, corps = _npf(client, code_sh="72081000", origine="KEN", pays_expedition="KEN")
     assert "AD" not in lignes and corps["defense_commerciale"][0]["statut"] == "ORIGINE_NON_VISEE"
+    # Kenya, expédition inconnue : le droit reste à établir plutôt que retiré.
+    lignes, corps = _npf(client, code_sh="72081000", origine="KEN")
+    assert lignes["AD"]["montant"] is None and corps["defense_commerciale"][0]["statut"] == "EXPEDITION_NON_FOURNIE"
+    lignes, _ = _npf(client, code_sh="72081000", origine="KEN", pays_expedition="TWN")
+    assert lignes["AD"]["montant"] == pytest.approx(24_200)
 
 
 @besoin_socle
@@ -144,3 +177,14 @@ def test_route_sauvegarde_papier_de_bureau_et_papier_journal(client):
     assert lignes["SAUV"]["montant"] is None
     lignes, _ = _npf(client, code_sh="48010000")
     assert lignes["DD"]["montant"] == pytest.approx(5_000)
+
+
+@besoin_socle
+def test_route_antidumping_non_repercu_apres_dedouanement_sacu(client):
+    """Accord SACU 2002, art. 19 : acier de Taipei déjà dédouané dans un autre État membre, sans second droit
+    antidumping ; la TVA n'inclut plus que la valeur majorée de 10 %."""
+    _, corps = _npf(client, code_sh="72081000", origine="TWN", deja_dedouane_sacu=True)
+    assert corps["regime_commercial"]["statut"] == "DEJA_DEDOUANEE_SACU"
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["AD"]["montant"] == 0.0 and lignes["DD"]["montant"] == 0.0
+    assert lignes["TVA"]["base"] == pytest.approx(100_000 * 1.10)

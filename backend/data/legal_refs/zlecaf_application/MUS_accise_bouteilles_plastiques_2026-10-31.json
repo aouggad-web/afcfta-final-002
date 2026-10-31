@@ -26,8 +26,8 @@
   "ne_tranche_pas": "Le mécanisme déclaratif (ligne 3923.30.10 ajoutée à la déclaration de la marchandise contenue, codes CPC 47PPB et E4PPB) ; l'exemption de l'item 103, qui dépend du contenu et n'est pas appliquée par la position 3923.30.10 ; le texte du G.N. 153/2026 (frais de décision anticipée, 1 000 Rs), sans effet sur le calcul ; la version du tarif du 20 juin 2026 citée par la veille, non trouvée.",
   "application_au_calcul": {
     "route": "POST /calcul",
-    "positions": "backend/data/zlecaf_mus/assiette_accise_excise_act.json, montants_specifiques[\"39233010\"] : Rs 2 par bouteille (ligne EXC, assiette xQTE).",
+    "positions": "backend/data/zlecaf_mus/assiette_accise_excise_act.json, specifiques_non_liquidables[\"contenu_de_la_bouteille\"] : ligne EXC « Rs 2 per unit » à confirmer (taux non liquidé), avec la raison en note.",
     "devise": "Montant spécifique en roupies mauriciennes par bouteille.",
-    "reserves": "L'accise est servie sur la position 3923.30.10, qui ne dit pas le contenu : l'exemption de l'item 103 n'est pas appliquée."
+    "reserves": "La position 3923.30.10 ne dit pas le contenu de la bouteille : l'accise est de Rs 2 par bouteille, ou nulle pour un contenu de l'item 103. Le calcul ne la liquide pas et la laisse à confirmer plutôt que de supposer un contenu non exonéré."
   }
 }

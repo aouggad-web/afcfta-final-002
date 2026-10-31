@@ -508,8 +508,9 @@ def marchandise_dedouanee_sacu(destination_iso3: str) -> Dict[str, Any]:
 
     Accord SACU 2002, art. 19 : un État membre n'impose aucun droit sur une
     marchandise importée de l'extérieur de la zone douanière commune quand
-    elle lui arrive d'un autre État membre. Droit de douane et accises (pot
-    commun, art. 32) ont été perçus au premier dédouanement ; restent dus la
+    elle lui arrive d'un autre État membre. Droit de douane, droits antidumping
+    et de sauvegarde, et accises (pot commun, art. 32) ont été perçus au
+    premier dédouanement ; restent dus la
     TVA du pays de destination et ses prélèvements nationaux, faute de texte
     les rattachant au pot commun. Fiche : SACU_art19_2026-10-14.json.
     """
@@ -531,8 +532,10 @@ def marchandise_dedouanee_sacu(destination_iso3: str) -> Dict[str, Any]:
             "marchandise est entrée dans la SACU à un taux préférentiel, la "
             "différence avec le droit normal est due — elle n'est pas calculée ici."
         ),
-        "taux": {"DD": {"taux": 0.0}, "EXS": {"taux": 0.0}, "EXA": {"taux": 0.0}},
-        "perimetre": {"DD": reference, "EXS": reference, "EXA": reference},
+        # Droits antidumping et de sauvegarde (AD, SAUV) : droits de douane de
+        # la zone douanière commune (Schedule 2), des « duties » de l'art. 19.
+        "taux": {code: {"taux": 0.0} for code in ("DD", "EXS", "EXA", "AD", "SAUV")},
+        "perimetre": {code: reference for code in ("DD", "EXS", "EXA", "AD", "SAUV")},
     }
 
 

@@ -290,7 +290,9 @@ def calcul(demande: DemandeCalcul):
             preference = marchandise_dedouanee_sacu(demande.destination)
 
     position, exonerations = exoneration_origine.appliquer(position, demande.origine)
-    position, defense = defense_commerciale.appliquer(position, demande.origine, demande.producteur)
+    position, defense = defense_commerciale.appliquer(
+        position, demande.origine, demande.producteur, expedition=demande.pays_expedition
+    )
 
     position, complements = _completer_famille_absente(
         position, demande.destination, provenance, demande.origine, demande.pays_expedition

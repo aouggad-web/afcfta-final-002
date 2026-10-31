@@ -53,7 +53,6 @@ def _calcul(client, code, quantite=None):
     ("27101950", 1000, 4_220.0),   # gasoil : Rs 4.22 le litre
     ("24022000", 10, 82_370.0),    # cigarettes : Rs 8,237 le millier
     ("24021090", 2, 56_894.0),     # cigares : Rs 28,447 le kg
-    ("39233010", 500, 1_000.0),    # bouteilles plastiques contenant des marchandises : Rs 2 l'unité (FA 2026)
 ])
 def test_accise_specifique_et_tva(client, code, quantite, montant):
     etat, lignes = _calcul(client, code, quantite)
@@ -67,6 +66,7 @@ def test_accise_specifique_et_tva(client, code, quantite, montant):
     ("22030011", "canette"),          # bière en canette : + Rs 2 par canette
     ("22083010", "alcool pur"),       # whisky : par litre d'alcool pur
     ("22029910", "teneur en sucre"),  # boissons sucrées : 15 cents le gramme de sucre
+    ("39233010", "item 103"),         # bouteilles plastiques : Rs 2 l'unité, nulle selon le contenu (FA 2026)
 ])
 def test_accise_non_liquidable_motivee(code, motif):
     with open(os.path.join(RACINE, "backend", "socle", "MUS.json"), encoding="utf-8") as f:

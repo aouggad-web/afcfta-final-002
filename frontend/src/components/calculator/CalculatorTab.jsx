@@ -36,6 +36,7 @@ import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
 import {
+  antidumpingSaisieProposee,
   buildCalculRequestBody,
   dedouanementSacuPropose,
   remiseEacProposee,
@@ -47,6 +48,7 @@ import {
   tauxDeChangePour,
 } from './unifiedCalculator';
 import ExpeditionSacuQuestion from './ExpeditionSacuQuestion';
+import AntidumpingSaisie from './AntidumpingSaisie';
 import DedouanementSacuQuestion from './DedouanementSacuQuestion';
 import {
   isCustomsDutyTax,
@@ -147,6 +149,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   // règle que la quantité : rattaché à la position pour laquelle il est déclaré.
   const [usage, setUsage] = useState('');
   const [usageFor, setUsageFor] = useState(null);
+  // Droit antidumping : producteur et pays d'expédition, demandés quand la
+  // réponse en porte un. Même règle que l'usage : rattachés à leur position.
+  const [producteur, setProducteur] = useState('');
+  const [expeditionAd, setExpeditionAd] = useState('');
+  const [antidumpingFor, setAntidumpingFor] = useState(null);
   // Facultatifs : chiffrent les frais par tonne et par conteneur ou véhicule
   // du bloc réglementaire (péage, scanner…), jamais les droits et taxes.
   const [poidsBrut, setPoidsBrut] = useState('');
@@ -165,6 +172,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setFobFor(null);
     setUsage('');
     setUsageFor(null);
+    setProducteur('');
+    setExpeditionAd('');
+    setAntidumpingFor(null);
   }, [hsCode, destinationCountry, originCountry]);
 
   useEffect(() => {
@@ -476,7 +486,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // Convertir les codes pays en ISO3
     const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
-    const paysExpedition = paysExpeditionPour(destISO3, originISO3, expeditionSacu);
+    // Saisies antidumping faites pour CETTE position seulement. Le pays
+    // d'expédition de la question SACU, quand elle est posée, prime.
+    const saisieAntidumping = antidumpingFor === `${destISO3}|${cleanHsCode}`;
+    const paysExpedition = paysExpeditionPour(destISO3, originISO3, expeditionSacu)
+      ?? (saisieAntidumping && /^[A-Z]{3}$/.test(expeditionAd) ? expeditionAd : undefined);
     
     // Une valeur FOB saisie pour une AUTRE position est écartée, comme la
     // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
@@ -528,6 +542,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         ...transport,
         remise: remiseEacProposee(destISO3) ? kenyaRemission : null,
         usage: usageFor === `${destISO3}|${cleanHsCode}` ? usage : null,
+        producteur: saisieAntidumping ? producteur : null,
       }))).data;
       const legacyResult = mapCalculToLegacyResult(calcul, {
         originCountry,
@@ -1420,6 +1435,28 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                   </div>
                 </div>
+              )}
+
+              {/* DROIT ANTIDUMPING — ouvert quand la réponse en porte un en
+                  vigueur : son taux dépend du producteur, et la mesure vise
+                  l'origine ou le pays d'expédition. */}
+              {antidumpingSaisieProposee(result.defense_commerciale) && (
+                <AntidumpingSaisie
+                  producteur={antidumpingFor === result._quantite_cle ? producteur : ''}
+                  onProducteurChange={(v) => {
+                    setProducteur(v);
+                    setAntidumpingFor(result._quantite_cle);
+                  }}
+                  expedition={antidumpingFor === result._quantite_cle ? expeditionAd : ''}
+                  onExpeditionChange={(v) => {
+                    setExpeditionAd(v);
+                    setAntidumpingFor(result._quantite_cle);
+                  }}
+                  avecExpedition={!expeditionSacuRequise(result._quantite_cle.split('|')[0], originCountry)}
+                  onRecalculer={() => calculateTariff()}
+                  disabled={loading}
+                  language={language}
+                />
               )}
 
               {/* VALEUR FOB — ouverte seulement quand un moteur la réclame

@@ -10,9 +10,14 @@ data/defense_commerciale/<ISO3>.json). La route la résout ici :
 - une sauvegarde qui vise l'origine porte son taux, sauf si la position couvre
   aussi des produits que la mesure ne vise pas (« condition_produit ») : la
   ligne reste alors à établir, avec la condition en note ;
-- un antidumping qui vise l'origine porte le taux du producteur déclaré, celui
-  des « autres producteurs » pour un producteur non nommé, et reste à établir
-  si le producteur n'est pas déclaré alors que le taux en dépend ;
+- un antidumping vise les marchandises « imported from or originating in » les
+  pays qu'il nomme (R.7991) : l'origine ET le pays d'expédition comptent. Il
+  porte le taux du producteur déclaré, celui des « autres producteurs » pour un
+  producteur non nommé, et reste à établir si le producteur n'est pas déclaré
+  alors que le taux en dépend. Il n'est retiré que si ni l'origine ni le pays
+  d'expédition, tous deux connus, ne sont visés ; une origine non visée dont
+  l'expédition est inconnue (ou « AUTRE ») le laisse à établir, comme une
+  origine et une expédition visées toutes deux mais différentes ;
 - sans origine, une mesure qui ne vise pas toutes les origines reste à établir.
 
 Une origine africaine ou une préférence ZLECAf n'écarte pas, à elle seule, une
@@ -54,6 +59,8 @@ def _taux_producteur(regle_origine: dict, producteur: Optional[str]):
 
 
 def _bareme(regle_origine: dict) -> str:
+    if "taux" in regle_origine:
+        return f"{regle_origine['taux']:g} %"
     morceaux = [
         f"{' ; '.join(g['noms'])} : {g['taux']:g} %" for g in regle_origine.get("producteurs", [])
     ]
@@ -63,11 +70,14 @@ def _bareme(regle_origine: dict) -> str:
 
 
 def appliquer(position: dict, origine: Optional[str], producteur: Optional[str] = None,
-              le: Optional[date] = None):
+              le: Optional[date] = None, expedition: Optional[str] = None):
     """Rendre (position, mesures) : la position aux lignes de défense
     commerciale résolues, et ce qui a été appliqué ou retiré."""
     le = le or date.today()
     origine = (origine or "").strip().upper() or None
+    # « AUTRE » : expédiée d'un pays non précisé, autre que l'origine.
+    expedition = (expedition or "").strip().upper() or None
+    expedition_connue = expedition if expedition != "AUTRE" else None
     droits, compte_rendu = [], []
     modifie = False
     for droit in position.get("droits") or []:
@@ -111,19 +121,43 @@ def appliquer(position: dict, origine: Optional[str], producteur: Optional[str] 
             droits.append({**droit, "note": note.strip()})
             compte_rendu.append({**trace, "statut": "ORIGINE_NON_FOURNIE"})
             continue
-        if origine not in par_origine:
-            compte_rendu.append({**trace, "statut": "ORIGINE_NON_VISEE", "origine": origine})
+        if origine in par_origine and expedition_connue in par_origine and expedition_connue != origine:
+            note = (f"À établir : origine {origine} et expédition {expedition_connue} toutes deux visées "
+                    f"({origine} : {_bareme(par_origine[origine])} ; {expedition_connue} : "
+                    f"{_bareme(par_origine[expedition_connue])}). {droit.get('note', '')}")
+            droits.append({**droit, "note": note.strip()})
+            compte_rendu.append({**trace, "statut": "ORIGINE_PROVENANCE_DIVERGENTES", "origine": origine,
+                                 "expedition": expedition_connue})
             continue
-        taux, motif = _taux_producteur(par_origine[origine], producteur)
+        if origine in par_origine:
+            cle, motif_pays = origine, None
+        elif expedition_connue in par_origine:
+            cle, motif_pays = expedition_connue, f"expédiée de {expedition_connue}"
+        elif expedition_connue:
+            compte_rendu.append({**trace, "statut": "ORIGINE_NON_VISEE", "origine": origine,
+                                 "expedition": expedition_connue})
+            continue
+        else:
+            note = (f"À établir : dû aussi sur les marchandises expédiées de {', '.join(sorted(par_origine))} "
+                    f"(« imported from or originating in ») ; préciser le pays d'expédition. "
+                    f"{droit.get('note', '')}")
+            droits.append({**droit, "note": note.strip()})
+            compte_rendu.append({**trace, "statut": "EXPEDITION_NON_FOURNIE", "origine": origine})
+            continue
+        taux, motif = _taux_producteur(par_origine[cle], producteur)
+        if taux is not None and motif_pays:
+            motif = f"{motif_pays} ; {motif}"
         if taux is None:
-            note = (f"À établir : le taux dépend du producteur ({_bareme(par_origine[origine])}) ; préciser "
+            note = (f"À établir : le taux dépend du producteur ({_bareme(par_origine[cle])}) ; préciser "
                     f"le producteur. {droit.get('note', '')}")
             droits.append({**droit, "note": note.strip()})
-            compte_rendu.append({**trace, "statut": "PRODUCTEUR_NON_FOURNI", "origine": origine})
+            compte_rendu.append({**trace, "statut": "PRODUCTEUR_NON_FOURNI", "origine": origine,
+                                 "pays_vise": cle})
             continue
         droits.append({**droit, "taux": taux, "assiette": regle["assiette"], "assiette_origine": "regle_de_pays",
                        "note": f"{motif}. {droit.get('note', '')}".strip()})
-        compte_rendu.append({**trace, "statut": "APPLIQUEE", "origine": origine, "taux": taux, "motif": motif})
+        compte_rendu.append({**trace, "statut": "APPLIQUEE", "origine": origine, "pays_vise": cle,
+                                 "taux": taux, "motif": motif})
     if not modifie:
         return position, []
     return {**position, "droits": droits}, compte_rendu
