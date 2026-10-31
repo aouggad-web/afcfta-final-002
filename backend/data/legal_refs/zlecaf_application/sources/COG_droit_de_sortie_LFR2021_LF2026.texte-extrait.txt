@@ -172,3 +172,29 @@ déterminés par la loi de finances.
      informatique est modifiée.
    Non examinés : les lois de finances rectificatives 2022 et 2024, et la loi de finances rectificative 2026
    (projet approuvé en Conseil des ministres en juin 2026), non trouvées en ligne.
+
+======================================================================================================
+5. Arrêtés n° 26621 et 26622 du 30 décembre 2022 (Journal officiel de la République du Congo n° 2-2023)
+   URL : https://www.sgg.cg/JO/2023/congo-jo-2023-02.pdf
+   sha256 : 5148799060be383a5b529d2affc3ff01d8f9b9db15b23e743f4579d1f33e3ac8
+   (texte en deux colonnes : les articles sont recomposés colonne par colonne ; extrait ajouté le
+   2026-10-31)
+------------------------------------------------------------------------------------------------------
+Arrêté n° 26621 du 30 décembre 2022 fixant la liste des produits alimentaires de base et intrants
+agro-pastoraux et halieutiques ainsi que le matériel agricole bénéficiant du soutien de l’Etat
+Article premier : Bénéficient du soutien de l’Etat durant la période de mise en œuvre du plan de résilience
+sur la crise alimentaire 2022-2023, les produits alimentaires de base et intrants agro-pastoraux et
+halieutiques ainsi que le matériel agricole ci-après :
+1- PRODUITS ALIMENTAIRES
+[...]
+Maïs en semence et autres
+[...]
+3 - AUTRE INTRANT
+-
+Charbon.
+
+Arrêté n° 26622 du 30 décembre 2022 portant interdiction d’exportation et de réexportation des produits
+bénéficiant des avantages fiscalo-douaniers
+Article premier : Sont prohibées, l’exportation et la réexportation des produits alimentaires de base, des
+intrants agro-pastoraux et halieutiques et du matériel agricole bénéficiant des avantages fiscalo-douaniers,
+dans le cadre de la mise en œuvre des mesures du plan de résilience sur la crise alimentaire 2022-2023.
