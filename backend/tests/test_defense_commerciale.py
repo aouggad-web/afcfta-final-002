@@ -188,3 +188,14 @@ def test_route_antidumping_non_repercu_apres_dedouanement_sacu(client):
     lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
     assert lignes["AD"]["montant"] == 0.0 and lignes["DD"]["montant"] == 0.0
     assert lignes["TVA"]["base"] == pytest.approx(100_000 * 1.10)
+
+
+@besoin_socle
+def test_route_sauvegarde_non_due_en_libre_circulation_sacu(client):
+    """Accord SACU 2002, art. 18.1 : papier produit au Botswana, en franchise de droits de douane, sauvegarde
+    comprise ; la TVA reste due."""
+    _, corps = _npf(client, code_sh="48025690", origine="BWA", pays_expedition="BWA")
+    assert corps["regime_commercial"]["statut"] == "LIBRE_CIRCULATION"
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["SAUV"]["montant"] == 0.0 and lignes["DD"]["montant"] == 0.0
+    assert lignes["TVA"]["montant"] > 0

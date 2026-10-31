@@ -7,8 +7,8 @@ import React from 'react';
  * ces réponses, le moteur laisse le droit à établir plutôt que de le supposer
  * ou de le retirer.
  *
- * Le pays d'expédition n'est demandé ici que si la question SACU ne le pose
- * pas déjà (`avecExpedition`).
+ * Le pays d'expédition n'est pas demandé ici quand la question SACU l'a déjà
+ * fixé (réponse « oui » : l'origine même) — `avecExpedition`.
  */
 export default function AntidumpingSaisie({
   producteur = '',

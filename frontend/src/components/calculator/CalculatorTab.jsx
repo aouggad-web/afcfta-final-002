@@ -43,7 +43,7 @@ import {
   expeditionSacuRequise,
   mapCalculToLegacyResult,
   localiserResultat,
-  paysExpeditionPour,
+  paysExpeditionRequete,
   reserveConversion,
   tauxDeChangePour,
 } from './unifiedCalculator';
@@ -486,11 +486,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // Convertir les codes pays en ISO3
     const destISO3 = destinationCountry.length === 2 ? ISO2_TO_ISO3[destinationCountry] || destinationCountry : destinationCountry;
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
-    // Saisies antidumping faites pour CETTE position seulement. Le pays
-    // d'expédition de la question SACU, quand elle est posée, prime.
+    // Saisies antidumping faites pour CETTE position seulement. Un pays
+    // précis remplace « AUTRE » ou une réponse SACU inconnue.
     const saisieAntidumping = antidumpingFor === `${destISO3}|${cleanHsCode}`;
-    const paysExpedition = paysExpeditionPour(destISO3, originISO3, expeditionSacu)
-      ?? (saisieAntidumping && /^[A-Z]{3}$/.test(expeditionAd) ? expeditionAd : undefined);
+    const paysExpedition = paysExpeditionRequete(
+      destISO3, originISO3, expeditionSacu, saisieAntidumping ? expeditionAd : undefined,
+    );
     
     // Une valeur FOB saisie pour une AUTRE position est écartée, comme la
     // quantité : elle serait l'assiette d'une marchandise qui n'est pas celle-ci.
@@ -1452,7 +1453,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     setExpeditionAd(v);
                     setAntidumpingFor(result._quantite_cle);
                   }}
-                  avecExpedition={!expeditionSacuRequise(result._quantite_cle.split('|')[0], originCountry)}
+                  avecExpedition={!(expeditionSacuRequise(result._quantite_cle.split('|')[0], originCountry)
+                    && expeditionSacu === 'yes')}
                   onRecalculer={() => calculateTariff()}
                   disabled={loading}
                   language={language}

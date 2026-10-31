@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import AntidumpingSaisie from './AntidumpingSaisie';
-import { antidumpingSaisieProposee, buildCalculRequestBody } from './unifiedCalculator';
+import { antidumpingSaisieProposee, buildCalculRequestBody, paysExpeditionRequete } from './unifiedCalculator';
 
 describe('AntidumpingSaisie', () => {
   it('remonte le producteur et le pays d’expédition en majuscules', async () => {
@@ -40,4 +40,23 @@ describe('producteur transmis à POST /calcul', () => {
     expect(buildCalculRequestBody({ ...base, producteur: ' Nippon Steel ' }).producteur).toBe('Nippon Steel');
   });
 
+});
+
+describe('paysExpeditionRequete', () => {
+  it('un pays précis remplace « AUTRE » ou une réponse SACU inconnue', () => {
+    expect(paysExpeditionRequete('ZAF', 'BWA', 'no', 'TWN')).toBe('TWN');
+    expect(paysExpeditionRequete('ZAF', 'BWA', 'unknown', 'TWN')).toBe('TWN');
+    expect(paysExpeditionRequete('ZAF', 'KEN', 'unknown', 'TWN')).toBe('TWN');
+  });
+
+  it('la réponse SACU reste seule sans pays précis, et prime quand elle est positive', () => {
+    expect(paysExpeditionRequete('ZAF', 'BWA', 'no', '')).toBe('AUTRE');
+    expect(paysExpeditionRequete('ZAF', 'BWA', 'no', 'TW')).toBe('AUTRE');
+    expect(paysExpeditionRequete('ZAF', 'BWA', 'yes', 'TWN')).toBe('BWA');
+    expect(paysExpeditionRequete('ZAF', 'KEN', 'unknown', undefined)).toBeUndefined();
+  });
+
+  it("écarte l'origine même après une réponse négative", () => {
+    expect(paysExpeditionRequete('ZAF', 'BWA', 'no', 'BWA')).toBe('AUTRE');
+  });
 });

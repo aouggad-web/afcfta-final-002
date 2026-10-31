@@ -96,6 +96,21 @@ export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
   return undefined;
 }
 
+/**
+ * Pays d'expédition transmis au moteur, quand un pays précis (ISO-3) est aussi
+ * saisi pour un droit antidumping (« imported from or originating in ») : il
+ * remplace le marqueur « AUTRE » d'une réponse SACU négative, ou une réponse
+ * inconnue. Une réponse SACU positive (expédiée de l'origine même) prime, et
+ * un pays égal à l'origine après une réponse négative est écarté.
+ */
+export function paysExpeditionRequete(destinationISO3, originISO3, reponseSacu, saisie) {
+  const sacu = paysExpeditionPour(destinationISO3, originISO3, reponseSacu);
+  const precis = /^[A-Z]{3}$/.test(saisie || '') ? saisie : undefined;
+  if (!precis || (reponseSacu === 'yes' && sacu)) return sacu;
+  if (sacu === 'AUTRE' && precis === originISO3) return sacu;
+  return precis;
+}
+
 /** États membres de la SACU (accord SACU 2002). */
 export const PAYS_SACU = new Set(['ZAF', 'BWA', 'LSO', 'NAM', 'SWZ']);
 
