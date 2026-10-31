@@ -1,0 +1,75 @@
+Guinée équatoriale — prélèvements communautaires perçus à l'importation (TCI, CCI de la CEEAC, prélèvement OHADA).
+
+1) Loi n° 9/2025 du 9 décembre 2025, budget général de l'État pour 2026, éditée par la Direction générale du budget
+   (Ministère des Finances), PDF de 276 pages : https://minhacienda-gob.com/uploads/2026/05/libro-lpge-2026-bcb5ebfc7795.pdf
+   (sha256 263abefbf55ff140a6b4128a6a3a715294d8d08848a3545d4070cfa2282b0a50 ; le domaine n'a pas été vérifié comme
+   celui du ministère) ; pages 3, 11 et 60 archivées :
+   data/sources/equatorial-guinea/official/gnq-ley-9-2025-presupuestos-2026-extracto-p3-11-60.pdf
+
+Page 3 :
+República de Guinea Ecuatorial
+Ley Número 9/2025, de fecha 9 de
+diciembre, de los Presupuestos Generales
+del Estado
+EJERCICIO 2026
+Editado por:
+Dirección General de Presupuestos y Clases Pasivas
+Ministerio de Hacienda, Planificación y Desarrollo Económico
+
+Page 11 :
+Artículo 5º.- Afectación de Ingresos
+
+   Se asignan ingresos a los distintos programas para la financiación de determinados gastos, como
+   sigue, en millones de Francos CFA:
+
+                                      INGRESO                        NATURALEZA DEL GASTO
+            Cotizaciones sociales                13.620 Cotización INSESO                          13.620
+            Impuestos                              500 Pensiones No Contributivas                    500
+            Tasas de Peajes                       3.000 Mantenimiento de Carreteras                 4.800
+            Impuestos                             1.800
+            TCI y Otras tasas comunitarias        3.000 Contribuciones (CEMAC, CEEAC, OHADA,...)   10.000
+            Impuestos                             7.000
+            Impuestos sobre Alcohol y Tabaco      2.500 Programas de Salud Pública                  3.000
+            Impuestos                              500
+            Derechos del Aeropuerto                600 Subvención de Equilibrio ASECNA              1.200
+            Impuestos                              600
+                              RECURSOS           33.120             AFECTACIONES                   33.120
+
+Page 60, état des recettes (millions de FCFA) :
+          715   Impuestos sobre el Comercio Exterior                                      25.606      24.419      26.844          26.073           28.073         8%        5%
+         7151 Derechos y tasas de Importación                                             22.447      22.229      23.779          23.898           24.898         4%        5%
+         71511 Derecho de Importación de productos petrolíferos (DA)                      12.580      11.977      11.719          11.900           11.900         0%        2%
+         71512 Derecho de Importación de Otros productos (DA)                              7.714       8.090      10.018           9.515           10.515       11%         5%
+         71513 Tasa Selectiva                                                                  0           0               0         206              206         0% #######
+         71514 Tasa de Comercio                                                                0           0               0          65                65        0% #######
+         71515 Multas y Sanciones aduaneras                                                    0           0               0          50                50        0% #######
+         71516 TCI y Otras tasas comunitarias                                              2.153       2.162        2.040          2.162            2.162         0%        6%
+
+2) Banque mondiale, « Guinea Ecuatorial : Estudio de diagnóstico de la integración comercial » (EDIC, 2019), rapport final :
+   https://enhancedif.org/sites/default/files/edic_guinea_ecuatorial_informe_final.pdf
+   (sha256 7f9db334ebf5f89522b4ab90247652a49a360880f27fa476edefd8dec21cac46, non archivé) :
+
+Las licencias y para-tarifas se han reportado como los principales tipos de MNA en Guinea
+Ecuatorial. El requisito de autorización previa o licencias emitidas por el Ministerio de Comercio
+para todas las exportaciones e importaciones constituye una medida principal que afecta el flujo de
+comercio. La autorización de otros ministerios también puede ser necesaria, dependiendo del bien
+particular. Por ejemplo, la importación o exportación de medicamentos necesita autorización del
+Ministerio de Salud. Además, los aranceles incrementan los costos de importación ya de por sí ele-
+vados, y las licencias tienen un costo ad valorem de hasta el 10 por ciento del valor comercial.71 Otros
+cargos de importación incluyen aranceles para apoyar a las organizaciones regionales (por ejemplo,
+cargos de TCI y CCI en la CEMAC y la CEEAC) de cerca del 1,5 por ciento. Además, las mercancías
+importadas están sujetas al IVA, generalmente de 15 por ciento.
+
+3) Organisation mondiale du commerce — WT/TPR/S/445 (2023), rapport commun, § 3.40 (taux communautaire de la CCI) :
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-cemac-rapport-commun.pdf
+
+3.40. Au paiement du TEC s'ajoutent des prélèvements destinés à financer certaines initiatives communautaires, et des prélèvements nationaux. Au niveau communautaire, on distingue:
+
+      •   la taxe communautaire d'intégration (TCI), prélevée au taux de 1% sur les importations en provenance des pays hors de la zone CEMAC, et destinée au financement du processus d'intégration dans la zone;
+
+      •   la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les importations hors-CEEAC, et destinée à financer la CEEAC ainsi que ses institutions (actuellement collectée par le Congo, le Gabon, la République centrafricaine et le Tchad); et
+
+      •   le prélèvement OHADA, effectué au taux de 0,05% sur les importations des pays non membres, et destiné au financement de l'Organisation pour l'harmonisation en Afrique du droit des affaires (OHADA).
+
+4) Règlement OHADA n° 002/2003/CM, art. 3 à 6 : extrait sources/OHADA_reglement_002_2003.texte-extrait.txt (la Guinée
+   équatoriale en est signataire).
