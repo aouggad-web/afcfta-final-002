@@ -156,6 +156,12 @@ def _selon_transformation(pays: str, droits: list, demande: DemandeExport) -> li
             else:
                 taux, motif = regle["oui" if reponse else "non"]
                 d = {**d, "taux": taux, "assiette": "CIF", "note": motif + " " + d.get("note", "")}
+        elif d.get("note_si_transforme") and reponse is not False:
+            # Perception dont seul le taux du produit brut est établi
+            # (redevance informatique du Congo) : transformé ou sans réponse,
+            # elle reste à établir.
+            prefixe = "À établir : " + regle["question"] + " " if reponse is None else ""
+            d = {**d, "taux": None, "assiette": None, "note": prefixe + d["note_si_transforme"]}
         sortie.append(d)
     return sortie
 

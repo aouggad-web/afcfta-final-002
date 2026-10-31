@@ -1,0 +1,177 @@
+Cameroun — TVA à l'importation, position par position : extraits verbatim du Code général des impôts, édition officielle de la Direction générale des impôts mise à jour au 1er janvier 2026 (relevés le 2026-10-31)
+
+Source : PDF de 1 034 pages « Code Général des Impôts – Edition 2026 » (www.impots.cm), sha256 245aa9dd0aa7a19100a90d905c025c2d52ed59e744606597a7ca7a057d2dd11d, versé par le propriétaire sur la PR #606 (data/cameroon/docs_officiels/CGI-2026-VERSION-FR.pdf). Le texte est en deux colonnes : chaque article est recomposé dans l'ordre de lecture ; les pages sont celles de l'édition.
+
+Article 128 (p. 87 à 89, extraits) :
+Article 128.- Sont exonérés de la Taxe sur la Valeur Ajoutée :
+[…]
+6) a- les biens de première nécessité figurant à l’annexe 1, notamment:
+• les pesticides, les engrais et leurs intrants, ainsi que les autres intrants agricoles, de l’élevage et de la pêche utilisés par les producteurs ;
+• la viande bovine, à l’exception de la viande importée ;
+• les produits pharmaceutiques, leurs intrants ainsi que les matériels et équipements des industries pharmaceutiques ;
+• les produits du cru vendus directement par les agriculteurs, les éleveurs, et les pêcheurs.
+b- L’exonération prévue à l’alinéa 6 (a) ci-dessus ne s’applique pas aux produits ci-après :
+ le riz dit « précuit » (parboiled rice) de la sous-position tarifaire 1006.30.90.200 ;
+ le riz parfumé de la sous-position tarifaire 1006.30.90.300 ;
+ les poissons d’ornement des sous-positions tarifaires 0301.11.00.000, 0301.19.00.000 ;
+ les truites réfrigérées des sous-positions tarifaires 0302.11.00.000 ;
+ les saumons frais ou réfrigérés des sous-positions tarifaires 0302.13.00.000, 0302 .14.00.000, 0302.19.00.000 ;
+ les foies, œufs et laitances, de poisson de la sous-position tarifaire 0302.91.00.000 ;
+ les saumons congelés des sous-positions tarifaires 0303.11.00.000, 0303.12.00.000 et 0303.13.00.000 ;
+ les truites congelées des sous-positions tarifaires 0303.14.00.000 et 0303.19.00.000 ;
+ les foies, œufs, laitances, nageoires, têtes, queues, vessies natatoires et autres abats de poissons comestibles des sous-positions tarifaires 0303.91.00.000, 0303.92.00.000 et 0303.99.00.000 ;
+ les foies, œufs et laitances de poissons, séchés, fumés, salés ou en saumure des sous-positions tarifaires 0305.20.00.000 ;
+ les saumons séchés, salés ou en saumure de la sous-position tarifaire 0305.41.00.000 ;
+ les truites séchés, fumés, salés ou en saumure de la sous-position tarifaire 0305.43 .00.000 ;
+ les morues de la sous-position tarifaire 0305.62.00.000.
+[…]
+2) les opérations liées au trafic international concernant :
+a. les livraisons des biens destinés à l’avitaillement :
+- des navires utilisés pour une activité industrielle ou commerciale ou pour le trafic international ;
+- des aéronefs utilisés pour la navigation aérienne internationale ;
+[…]
+10) les opérations de composition, d’impression, d’importation et de vente des journaux et périodiques à l’exclusion des recettes de publicité, les intrants et les biens d’équipement destinés à ces opérations, acquis par les sociétés de presse ou d’édition de journaux et périodiques.
+11) les importations de biens exonérés dans le cadre de l’article 241 du Code des Douanes de la CEMAC ;
+[…]
+15) les matériels servant à la lutte contre le VIH/SIDA, dans les conditions fixées par voie réglementaire ;
+[…]
+17) les matériels et équipements d’exploitation des énergies solaire et éolienne ;
+
+Article 128 ter (p. 89) :
+Article 128 ter.- Les exonérations prévues aux articles 122 et 128 du présent Code sont appliquées d’office, sans donner lieu à délivrance préalable d’une attestation d’exonération.
+
+Article 129, alinéa (1) (p. 89) :
+Article 129.- (1) Sont soumises à la Taxe sur la Valeur Ajoutée, les opérations réalisées au Cameroun, non comprises dans la liste des exonérations prévues à l’article 128 ci-dessus, même lorsque le domicile ou le siège social du redevable réel est situé en dehors des limites territoriales du Cameroun.
+
+Article 142, alinéas (1) a) à (4) (p. 94 et 95) :
+Article 142.- (1) Les taux de la Taxe sur la Valeur Ajoutée et du Droit d’accises sont fixés de la manière suivante :
+a) Taxe sur la Valeur Ajoutée :
+Taux général …………...... 17,5 %
+Taux réduit…………………. 10%
+Taux zéro ………………….... 0 %
+[…]
+(2) Les taux sont applicables aussi bien pour les biens et/ou services produits localement que pour les biens importés. Les centimes additionnels communaux inclus au taux général s’appliquent aux biens et/ou services locaux et aux biens importés.
+(3) Le taux général de la TVA s’applique à toutes les opérations non soumises au taux zéro.
+Le taux réduit s’applique aux biens et services ci-après :
+- les intérêts rémunérant les prêts immobiliers contractés par les personnes physiques à l’occasion de l’acquisition de logements sociaux, sous réserve qu’il s’agisse de la première maison d’habitation et sur présentation d’un quitus délivré par l’administration fiscale ;
+- la vente de logements sociaux aux personnes physiques à l’occasion de l’acquisition de leur première maison d’habitation, sous réserve de la production du quitus de l’administration fiscale ;
+- les locations de logements sociaux consenties par les promoteurs immobiliers publics ou parapublics.
+(4) Le taux zéro s’applique aux exportations de produits taxables.
+
+Article C 83, alinéa (1) (p. 469) :
+Article C 83.- (1) Le taux des centimes additionnels est fixé à dix pour cent (10 %) du principal de l’impôt sur le revenu des personnes physiques, de l’impôt sur les sociétés et de la taxe sur la valeur ajoutée.
+
+Article 122 (p. 71, extrait) :
+Article 122. – Les entreprises des secteurs de la production agricole, de l’élevage et de la pêche, bénéficient des avantages fiscaux ci-après :
+a. En phase d’investissement :
+[…]
+- exonération de la TVA sur l’achat des pesticides, des engrais et des intrants, ainsi que des équipements et matériels de l’agriculture, de l’élevage et de la pêche figurant à l’annexe du présent titre ;
+
+Annexe I du titre II (p. 107 à 111), « ANNEXE I : Liste des biens de première nécessité exonérés de TVA » — TARIF, Libellé :
+010511 00 000 Coqs et poules vivants, des espèces domestiques, d'un poids n'excédant pas 185 g
+010594 00 000 Coqs et poules vivants, des espèces domestiques, d'un poids excédant 185 g
+030211 à 030569 00 000 Poissons
+040110 00 000 Lait et crème de lait, non concentrés, ni sucrés ni édulcorés, d'1 teneur en poids de matières grasses < =1%
+040120 00 000 Lait et crème de lait, non concentrés, ni sucrés ou édulcorés, teneur en poids de matières grasses >1% et <=6%
+040140 00 000 Lait et crème de lait, non concentrés, ni sucrés, ni édulcorés, teneur en poids de matières grasses >6% et <=10%
+040150 00 000 Lait et crème de lait, non concentrés, ni sucrés, ou édulcorés, teneur en poids de matières grasses >10%
+040210 00 000 Lait et crème de lait, concentrés ou additionnés de sucres ou d’autres édulcorants, en poudre, en granulé, ou sous d’autres formes solides, teneur en poids de matières grasses <=1,5%
+040221 00 000 Lait/crème lait, concentrés, non sucrés ni édulcorés, en poudre, en granulés ou sous d’autres formes solides, teneur en poids de matières grasses >1,5%
+040229 00 000 Autres lait/crème de lait, concentrés, sucrés ou édulcorés, en poudre, en granulés ou sous d’autres formes solides, teneur en poids de matières grasses >1,5%
+040291 00 000 Autres lait et crème de lait, concentrés, sans addition de sucre ou d'autres édulcorants
+040299 00 100 Autres lait et crème de lait, concentrés, contenant moins de 40% de sucre ou d'autres édulcorants
+040711 00 000 Œufs de volailles de l’espèce Gallus domesticus fertilisés destinés à l’incubation
+040719 00 000 Œufs d’autres oiseaux, fertilisés destinés à l’incubation
+100110 00 000 Froment (blé) dur
+100119 00 000 Autres froments (blé) dur
+100590 00 000 Autres maïs
+100610 10 000 Riz en paille (riz paddy), de semence
+100610 90 000 Autres riz en paille (riz paddy)
+100620 00 000 Riz décortiqué (riz cargo ou riz brun)
+100630 10 000 Riz semi-blanchi ou blanchi, même poli ou glacé, conditionné pour la vente au détail
+100630 90 100 Riz semi-blanchi ou blanchi, même poli ou glacé, en emb. exc. 1kg mais n'exc. pas 5kg
+100630 90 900 Riz semi-blanchi ou blanchi, même poli ou glacé, autrement présenté
+100640 00 000 Riz en brisures
+110100 10 000 Farine de froment (blé)
+110100 20 000 Farine de méteil
+1102.20 00 000 Farine de maïs produit localement
+1106 20 Farines de patate et de manioc produits localement
+190110 11 000 Préparations pour alim. enfants, cvd, base farine, semoule, amidon,..., sans cacao, ndca
+190510 00 000 Pain croustillant dit "knäckebrot", même additionné de cacao
+190590 90 000 Autres produits du N°1905 (pain ordinaire, pain complet)
+230110 00 000 Farines, poudres, agglomérés sous forme de pellets, de viandes/abats, impropres à l'alimentation humaine ; cretons
+230120 00 000 Farines, poudres, agglomérés sous forme de pellets de poissons/crustacés, impropres à l'alimentation humaine
+2302 10 000 Son de maïs produit localement
+230220 00 000 Sons, remoulages et autres résidus de riz
+230230 00 000 Sons, remoulages et autres résidus, même agglomérés… des traitements du froment
+230240 00 000 Sons, remoulages et autres résidus, même agglomérés…traitements d'autres céréales
+230250 00 000 Sons, remoulages et autres résidus,… des traitements de légumineuses
+230400 00 000 Tourteaux et autres résidus solides, même broyés..., de l'extraction de l'huile de soja
+230620 00 000 Tourteaux & autres résidus solides, de l'extraction graisse/huile de graines de lin
+230630 00 000 Tourteaux & autres résidus solides, de l'extraction de graisse/huile graines de tournesol
+230641 00 000 Tourteaux & autres résidus..., graines de navette/colza, à faible teneur en acide érucique
+230649 00 000 Autres tourteaux et autres résidus solides, ... de graines de navette ou de colza
+230650 00 000 Tourteaux et autres résidus solides,...de graisse ou huile de noix de coco ou de coprah
+230690 10 000 Tourteaux et autres résidus solides, ... de graisse ou huile de germes de maïs
+230690 90 000 Autres tourteaux et autres résidus solides, ... de graisses ou huiles végétales
+230990 10 000 Préparations alimentaires de provenderie, d'une concentration égale ou supérieure à 2%
+230990 90 000 Autres préparations alimentaires de provenderie
+250100 90 100 Sels bruts en vrac
+270900 10 000 Huiles brutes de pétrole
+271012 23 000 Pétrole lampant
+271113 00 000 Butanes liquéfiés
+293712 00 000 Insuline naturelle ou reproduite par synthèse et ses sels
+293920 00 900 Quinine et ses sels
+294110 00 000 Pénicillines et leurs dérivés, à structure d'acide pénicillinique; sels de ces produits
+294120 00 000 Streptomycines et leurs dérivés; sels de ces produits
+294130 00 000 Tétracyclines et leurs dérivés; sels de ces produits
+294140 00 000 Chloramphénicol et ses dérivés; sels de ces produits
+294150 00 000 Erythromycine et ses dérivés; sels de ces produits
+294190 00 000 Autres antibiotiques
+3001 à 3006 Produits pharmaceutiques
+3101 à 3105 Divers engrais
+340700 10 000 Cires pour art dentaire sous toutes formes; autres compositions pour art dentaire, à base de plâtre
+370110 00 000 Plaques & films plans, photographiques, sensibilisés, non impressionnés, pour rayon X
+370210 00 000 Pellicules photographiques sensibilisées en rouleaux; pellicules photographiques à développement pour rayons X
+380850 00 000 Marchandises constituées chimiquement définies comme mentionnées dans Note 1 de sous-position Chap 38
+380891 10 100 Insecticides et similaires cvd ou en emballages <= 1 kg, ou bien sous forme d'articles agricoles
+380891 90 100 Autres insecticides et produits similaires à l'état de préparation, à usage agricole
+380892 10 100 Fongicides et similaires cvd ou en emballages <= 1 kg, ou bien sous forme d'articles agricoles
+380892 90 100 Autres fongicides et produits similaires à l'état de préparations, à usage agricole
+380893 10 000 Herbicides, inhibiteurs de germination, cvd ou en emballage <= 1kg, ou sous forme d'art.
+380893 90 000 Autres herbicides, inhibiteur germination, régulateur de croissance pour plantes &similaires à l'état de préparations
+380894 10 000 Désinfectants et similaires cvd ou en emballages<= 1 kg, ou bien sous forme d'articles
+380894 90 000 Autres désinfectants et produits similaires à l'état de préparations
+3822 00 000 Réactifs de diagnostics ou de laboratoire
+401410 00 000 Préservatifs
+401490 00 000 Autres articles d'hygiène ou de pharmacie (+tétines), en caoutchouc vulcanisé non durci…
+401511 00 000 Gants, mitaines et moufles en caoutchouc vulcanisé non durci, pour chirurgie
+480100 00 000 Papier journal, en rouleaux ou en feuilles
+480269 10 000 Papiers, cartons, dont +10% en pds fibres obtenus mécaniquement ou chimico-mécanique, pour journaux …
+490110 10 000 Livres et brochures scolaires, en feuillets isolés, même pliés
+490110 90 000 Autres livres, brochures et imprimés similaires, en feuillets isolés, même pliés
+490191 00 000 Dictionnaires et encyclopédies, même en fascicules
+490199 10 000 Livres et brochures scolaires présentés autrement qu'en feuillets isolés, même pliés
+490199 90 000 Autres livres, brochures et imprimés similaires
+630493 00 100 Moustiquaires, en fibres synthétiques
+630499 00 100 Moustiquaires, en d'autres matières textiles
+701510 00 000 Verres de lunetterie médicale, bombés, cintrés, creusés..., non travaillés optiquement
+701710 00 000 Verrerie de labo, d'hygiène/pharmacie, même graduée/jaugée, en quartz/autres silices fondus
+701720 00 000 Verrerie de lab. d'hygiène ou pharmacie en autre verre d'un conditionnement <5x10-6 K entre 0°C et 300°C
+701790 00 000 Autre verrerie de laboratoire, d'hygiène ou de pharmacie, même graduée ou jaugée
+841920 00 000 Stérilisateurs médico-chirurgicaux ou de laboratoires, ..., sauf fours et ...n°8514
+871310 00 000 Fauteuils roulants et autres véhicules pour invalides, sans mécanisme de propulsion
+871390 00 000 Fauteuils roulants & autres véhicules pour invalides, avec moteur/autres mécanismes de propulsion
+871420 00 000 Parties et accessoires de fauteuils roulants ou d'autres véhicules pour invalides
+901180 00 000 Microscope
+901811 00 000 Electrocardiographes
+902212 00 000 Appareils de tomographie pilotés par une machine automatique de TI
+902213 00 000 Appareils à rayons X, pour l'art dentaire, + app radiophoto/radiothérapie
+902214 00 000 Appareils à rayon X, pour usages médico/chirurgico/vétérin, + app radiophoto/radiothérapie
+902219 00 000 Appareils à rayons X, pour d'autres usages, + appareils de radiophotographie/radiothérapie
+902221 00 000 Appareils à radiation alpha/bêta/gamma, à usage médical/chirurgical/dentaire/vétérinaire,…
+902229 00 000 Appareils à radiation alpha/bêta/gamma, pour d'autres usages, + app de radiophoto/radiothérapie
+902230 00 000 Tubes à rayons X, d'examen ou de traitement
+902290 00 000 Autres dispo générateurs rayons X/tension, pupitre de cde...; parties & acc app&dispo du 90.22
+940210 10 000 Fauteuils de dentistes, et leurs parties
+940290 00 000 Mobilier pour la médecine/chirurgie/art dentaire/vétérinaire ; parties de ces articles
