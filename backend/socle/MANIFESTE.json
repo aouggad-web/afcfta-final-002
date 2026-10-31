@@ -837,7 +837,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
       "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
-      "socle_sha256": "1a9b81a233d07c3c1074271444ae7e3f7153164240e83a9ae6d099af92699ae1",
+      "socle_sha256": "64bede96598b0e19b8e8e219f118e6524d3659160af3b9cc25d27bca6fe0e1fa",
       "collecte": null,
       "etat": "PARTIEL",
       "familles": [
@@ -848,8 +848,8 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 15618,
-        "droits_liquidables": 15534,
+        "droits": 26096,
+        "droits_liquidables": 26012,
         "positions_liquidables": 5197,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
@@ -858,7 +858,7 @@
         "taux_indisponibles": 42,
         "assiettes_source": 10478,
         "assiettes_fichier": 0,
-        "assiettes_table": 5140,
+        "assiettes_table": 15618,
         "assiettes_indisponibles": 0,
         "sans_designation": 5,
         "droits_specifiques": 0,
@@ -2080,7 +2080,7 @@
       "ZWE"
     ],
     "positions": 370537,
-    "droits": 1327320,
-    "droits_liquidables": 1301165
+    "droits": 1337798,
+    "droits_liquidables": 1311643
   }
 }

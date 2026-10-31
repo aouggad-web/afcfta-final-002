@@ -29,4 +29,4 @@ def test_aucune_redevance_informatique(positions):
 def test_une_position_ordinaire_se_calcule_sans_taux_de_change(positions):
     r = calculer(positions["01011010"], 10000, devise_position="XAF")
     assert r["npf"]["etat"] == COMPLET
-    assert [l["code"] for l in r["npf"]["lignes"]] == ["DD", "TCI", "TVA"]
+    assert [l["code"] for l in r["npf"]["lignes"]] == ["DD", "TCI", "CCI", "OHADA", "TVA"]

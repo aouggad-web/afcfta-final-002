@@ -859,6 +859,14 @@
           "libelle": "Taxe Communautaire d'Intégration (CEMAC)"
         },
         {
+          "code": "CCI",
+          "libelle": "Contribution Communautaire d'Intégration (CEEAC)"
+        },
+        {
+          "code": "OHADA",
+          "libelle": "Prélèvement OHADA"
+        },
+        {
           "code": "TVA",
           "libelle": "Taxe sur la Valeur Ajoutée (incl. 10% CAC)"
         },
@@ -868,10 +876,10 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-10-30",
-      "sha256": "9190170758e8d25993586c4e0bd587ef72db7fd80386cf9364142b9c9898058a",
-      "notes_sha256": "c28b13741cfd613806c5fb218666e0405bfae9de0fef2aa2b4b4f6b063f6ba3f",
-      "socle_sha256": "1a9b81a233d07c3c1074271444ae7e3f7153164240e83a9ae6d099af92699ae1",
+      "date_reference": "2026-10-31",
+      "sha256": "774297a13947fa06e00ab77a50d3a57e3d0e1245bcea53283067a5e748be94d9",
+      "notes_sha256": "d39bb3b190cd72d29bd6b15895214548ad2e087b135dab5cc129b02cd5a8f706",
+      "socle_sha256": "64bede96598b0e19b8e8e219f118e6524d3659160af3b9cc25d27bca6fe0e1fa",
       "collecte": null
     },
     "KEN": {

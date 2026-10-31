@@ -1934,9 +1934,10 @@ BLOCS_DESTINATION = {
     "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
-    # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique, au Tchad et au
-    # Cameroun ; _prelevements_congo marque la ligne du Congo (arrêté n° 5808).
-    "OHADA_CEEAC": {"GAB", "CAF", "TCD", "CMR"},
+    # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique, au Tchad, au
+    # Cameroun et en Guinée équatoriale ; _prelevements_congo marque la ligne du
+    # Congo (arrêté n° 5808).
+    "OHADA_CEEAC": {"GAB", "CAF", "TCD", "CMR", "GNQ"},
 }
 
 ACCISES_PAYS = {
@@ -2818,6 +2819,43 @@ def _prelevement_ohada_cameroun(positions, compteurs):
                          "membres » (rapport commun, § 3.40)."}
         droits.insert(rang, ligne)
         _compter_ligne(ligne, compteurs, 1)
+
+
+#: Guinée équatoriale : prélèvements communautaires à l'importation (fiche
+#: GNQ_prelevements_importation_2026-10-31.json).
+SOURCE_PRELEVEMENTS_GNQ = (
+    "Loi n° 9/2025 du 9 décembre 2025 (budget général de l'État 2026), art. 5 et ligne 71516 ; Banque mondiale, "
+    "étude diagnostique de l'intégration commerciale (EDIC, 2019) ; règlement OHADA n° 002/2003/CM, art. 3 à 6"
+)
+
+
+def _prelevements_guinee_equatoriale(positions, compteurs):
+    """Guinée équatoriale : contribution communautaire d'intégration de la CEEAC
+    (0,4 %) et prélèvement OHADA (0,05 %) sur la valeur en douane, après la TCI."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GNQ,
+             "note": "« TCI y Otras tasas comunitarias », recette des droits à l'importation affectée aux "
+                     "« Contribuciones (CEMAC, CEEAC, OHADA,...) » (loi n° 9/2025, art. 5) ; « cargos de TCI y CCI en "
+                     "la CEMAC y la CEEAC) de cerca del 1,5 por ciento » (Banque mondiale, EDIC 2019). Taux de 0,4 % "
+                     "de la CEEAC, hors originaires de la CEEAC."},
+            {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+             "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GNQ,
+             "note": "Règlement n° 002/2003/CM (signé par la Guinée équatoriale), art. 3 à 5 : 0,05 % de la valeur en "
+                     "douane des produits originaires des pays tiers ; recette comprise dans les « TCI y Otras tasas "
+                     "comunitarias » (loi n° 9/2025, art. 5)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
 
 
 #: Tchad : prélèvements communautaires à l'importation (fiche TCD_prelevements_importation_2026-10-30.json).
@@ -5636,6 +5674,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_mauritanie(positions, compteurs)
     if iso == "GNQ":
         _sans_redevance_informatique_gnq(positions, compteurs)
+        _prelevements_guinee_equatoriale(positions, compteurs)
     if iso in _regles_cedeao_hors_uemoa()[0]:
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "MUS":
