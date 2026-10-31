@@ -53,6 +53,11 @@ def test_antidumping_selon_l_origine_et_le_producteur():
     assert _ligne(autre, "AD")["taux"] == 47.92
     sans_producteur, rendu = defense_commerciale.appliquer(position, "CHN", le=le)
     assert _ligne(sans_producteur, "AD")["taux"] is None and rendu[0]["statut"] == "PRODUCTEUR_NON_FOURNI"
+    # Un fragment ou une ponctuation n'obtient pas le taux d'un producteur nommé.
+    fragment, _ = defense_commerciale.appliquer(position, "CHN", "Steel", le=le)
+    assert _ligne(fragment, "AD")["taux"] == 47.92
+    vide, _ = defense_commerciale.appliquer(position, "CHN", "!!! Co. Ltd", le=le)
+    assert _ligne(vide, "AD")["taux"] is None
     # Producteur japonais non nommé, sans taux « autres » dans la donnée : à établir.
     japon, _ = defense_commerciale.appliquer(position, "JPN", "Autre", le=le)
     assert _ligne(japon, "AD")["taux"] is None
@@ -118,8 +123,15 @@ def test_route_antidumping_acier_sud_africain(client):
     """R.7991 : Taipei chinois 24,2 % ; Japon, Nippon Steel 44,95 % ; Kenya non visé."""
     lignes, corps = _npf(client, code_sh="72081000", origine="TWN")
     assert lignes["AD"]["montant"] == pytest.approx(24_200)
-    lignes, _ = _npf(client, code_sh="72081000", origine="JPN", producteur="Nippon Steel Corporation")
+    lignes, _ = _npf(client, code_sh="72081000", origine="JPN", producteur="NIPPON STEEL CORP.")
     assert lignes["AD"]["montant"] == pytest.approx(44_950)
+    # Le droit antidumping entre dans la base de la TVA (VAT Act s.13(2)(a)).
+    tva_sans = 100_000 * 1.10 + 10_000
+    assert lignes["TVA"]["base"] == pytest.approx(tva_sans + 44_950)
+    # Producteur chinois non déclaré : droit à établir, et la TVA qui l'inclut aussi.
+    lignes, corps = _npf(client, code_sh="72081000", origine="CHN")
+    assert lignes["AD"]["montant"] is None and lignes["TVA"]["montant"] is None
+    assert corps["npf"]["etat"] != "COMPLET"
     lignes, corps = _npf(client, code_sh="72081000", origine="KEN")
     assert "AD" not in lignes and corps["defense_commerciale"][0]["statut"] == "ORIGINE_NON_VISEE"
 

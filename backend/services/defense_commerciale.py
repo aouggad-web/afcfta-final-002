@@ -24,21 +24,29 @@ from datetime import date
 from typing import Optional
 
 
+#: Formes sociales ignorées pour comparer les noms (« Co. Ltd », « Corporation »).
+FORMES_SOCIALES = frozenset({"co", "ltd", "limited", "corp", "corporation", "company", "inc", "sa", "plc", "the"})
+
+
 def _normaliser(nom: str) -> str:
-    return " ".join("".join(c.lower() if c.isalnum() else " " for c in nom).split())
+    """Nom sans casse, ponctuation ni forme sociale : « Nippon Steel Corporation »
+    et « NIPPON STEEL CORP. » donnent tous deux « nippon steel »."""
+    mots = "".join(c.lower() if c.isalnum() else " " for c in nom).split()
+    return " ".join(m for m in mots if m not in FORMES_SOCIALES)
 
 
 def _taux_producteur(regle_origine: dict, producteur: Optional[str]):
     """(taux, motif) pour l'origine visée ; taux None si le producteur manque."""
     if "taux" in regle_origine:
         return regle_origine["taux"], "taux unique pour l'origine"
-    if not producteur:
+    cherche = _normaliser(producteur or "")
+    if not cherche:
         return None, None
-    cherche = _normaliser(producteur)
+    # Identité exacte (hors casse, ponctuation et forme sociale) : un fragment
+    # (« Steel ») n'obtient jamais le taux réduit d'un producteur nommé.
     for groupe in regle_origine.get("producteurs", []):
         for nom in groupe["noms"]:
-            n = _normaliser(nom)
-            if n and (n in cherche or cherche in n):
+            if _normaliser(nom) == cherche:
                 return groupe["taux"], f"producteur nommé : {nom}"
     if regle_origine.get("autres") is not None:
         return regle_origine["autres"], "producteur non nommé : taux des autres producteurs"
