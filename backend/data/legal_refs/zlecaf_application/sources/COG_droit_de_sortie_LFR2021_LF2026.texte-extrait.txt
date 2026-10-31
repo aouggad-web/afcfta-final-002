@@ -1,0 +1,174 @@
+Congo — droit de sortie à l'exportation : loi de finances rectificative 2021 (point 42), reconduite
+par les lois de finances 2022 à 2026 ; redevance informatique ; Code forestier
+Extrait établi le 2026-10-29. Les PDF du Journal officiel ont une couche texte (pdftotext -layout) ; seuls
+les passages relatifs aux droits perçus à l'exportation sont reproduits, l'orthographe est celle du texte.
+
+======================================================================================================
+1. Loi n° 37-2021 du 13 août 2021 portant loi de finances rectificative pour l'année 2021,
+   Journal officiel de la République du Congo, édition spéciale n° 5-2021 (19 août 2021)
+   URL : https://www.sgg.cg/textes-officiels/lois/2021/congo-loi-2021-37.pdf
+   sha256 : 8209b343c70de12ac9b7ae42f23754ef396ddabadb29a2b1b8aae45d2b2de521
+------------------------------------------------------------------------------------------------------
+
+41- Du taux de la redevance informatique
+
+Le taux de la redevance informatique, fixé au paragraphe 16 de la loi de finances pour l’année 2004 est
+modifié ainsi qu’il suit :
+
+      2% à l’importation et à l’exportation des marchandises au régime de droit commun ;
+      1% à la souscription et à la régularisation des régimes suspensifs, autres que le transit
+        communautaire et international ;
+      0,5% pour les apurements successifs des régimes précédents, sans sortie des marchandises du
+        territoire national ;
+      0,5% pour les marchandises en transit international ou communautaire ;
+      0,5 à l’exportation des produits transformés.
+
+Toutefois, sont exonérées de la redevance informatique :
+
+      les opérations relatives aux dons, aux projets et autres importations réalisées par les ambas-
+        sades, les organisations internationales et les organisations non gouvernementales couvertes par
+        un accord de siège ;
+      l’exportation du pétrole brut.
+
+42- Du taux du droit de douane et d’autres prélèvements à l’exportation
+
+1.  Le taux général du droit de douane, prélevé à la sortie des marchandises du territoire national demeure fixé
+    à 2% de leur valeur en douane.
+2. Ce taux est désormais de 4% de la valeur en douane pour l’exportation des produits ci-dessous :
+
+     -   diamant brut et autres métaux précieux bruts ;
+     -   résine et autres exsudats extraits des arbres des forêts naturelles et de plantation ;
+     -   huile de palme brut ;
+     -   farine de poissons ;
+     -   maïs.
+
+Cette liste peut faire l’objet d’une mise à jour par arrêté conjoint du ministre en charge de la ressource et le
+ministre en charge des finances.
+
+Toutefois, sont exonérés du droit de sortie, le ciment produit au Congo et les autres produits transformés
+d’origine congolaise issus de l’ouvraison ou de la transformation des produits d’origine et/ou des produits
+d’origine tierce, à l’exception des produits transformés soumis au taux de 4% et ceux passibles de la taxe à
+l’exportation.
+
+Bénéficient aussi de l’exonération du droit de sortie en application du code des douanes et du code des
+hydrocarbures :
+
+     -   les carottes et les échantillons géologiques ;
+     -   les échantillons d’hydrocarbures bruts ;
+     -   les échantillons d’huile et de produits chimiques ;
+     -   les hydrocarbures bruts de pétrole brut.
+
+3.Demeurent assujettis à la taxe à l’exportation aux taux ci-dessous, au titre du droit de sortie, les bois en
+grume et les produits du bois transformés issus des forêts naturelles ou de plantation, ainsi qu’il suit :
+
+Bois en grumes issus des forêts naturelles
+    - pour l’Okoumé, l’Afrormosia et l’Ebène, 10% de la valeur Free on Truck (FOT) pour chaque zone de
+       production ;
+    - pour les autres essences autres que l’Okoumé, l’Afrormosia et l’Ebène, 9% de la valeur Free on
+       Truck(FOT) pour chaque zone de production.
+
+Produits de forêts naturelles pour toutes les zones
+   - sciages humides, grumes reconstituées 4%
+   - sciages séchés 1,5%
+   - placages tranchés 0,5%
+   - placages déroulés 1%
+   - contreplaqués, panneaux, lamellés collés et autres 0,5%
+   - parquets, moulures, portes et fenêtres, éléments de meubles et autres produits finis0%.
+
+Produits de forêts de plantation pour toutes les zones
+   - Poteaux en ligne en eucalyptus 0,5%
+   - Chips en copeaux en eucalyptus 0,5%
+   - Sciages humides 1%
+   - Sciages séchés 0,5%
+   - Fardeaux d’eucalyptus 1,5%.
+
+4. De même, toute exportation de bois en grumes au-dessus du quota 85/15 demeure assujettie au paiement
+d’une taxe additionnelle de 30% de la valeur Free On Truck (FOT) pour chaque zone de production.
+
+5. Le fonds routier est perçu à l’exportation des bois en grumes, conformément au barème spécifique prévu par
+les textes en vigueur.
+
+6. Sont supprimées, au profit du droit de sortie de 4%, le droit accessoire à la sortie prévu au paragraphe 16
+du point IV de la loi de finances pour l’exercice 2004, et la redevance perçue au cordon douanier à l’exportation
+des diamants bruts.
+
+[...]
+
+45- Opérations de sous-traitance et exportations des hydrocarbures liquides et gazeux
+[...]
+2. Exportation des hydrocarbures liquides et matériels spécifiques
+
+Franchise totale à l’exportation des hydrocarbures liquides, carottes, échantillons géologiques, des échantillons
+d’hydrocarbures bruts, des échantillons d’huile et de produits chimiques.
+
+3. Exportation des hydrocarbures bruts gazeux
+
+Les exportations des hydrocarbures bruts gazeux bénéficient de la franchise des droits de sortie et sont soumis
+à la redevance informatique.
+
+======================================================================================================
+2. Loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026, point 25
+   Journal officiel de la République du Congo, édition spéciale n° 3-2026 (5 janvier 2026)
+   URL : https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf
+   sha256 : 61477eabb5014dd438451d5326dab14a077c5c8096bbe3fef136e5edfbf7f74e
+------------------------------------------------------------------------------------------------------
+25. Du taux de la redevance informatique
+Article 44 (nouveau) : Le taux de la redevance
+informatique est modifié ainsi qu’il suit :
+- 2% à l’importation des marchandises déclarées
+au régime de la mise à la consommation ;
+- 2% à l’exportation des marchandises ;
+- 1% à la souscription et à la régularisation des
+régimes suspensifs.
+Le reste sans changement.
+
+======================================================================================================
+3. Loi n° 33-2020 du 8 juillet 2020 portant Code forestier (JO, édition spéciale n° 4-2020)
+   URL : https://www.sgg.cg/codes/congo-code-2020-forestier.pdf
+   sha256 : cdef409b73bc053143da00f3a7a1f6cbc04d51622d0c09ac250ede0a8dc97c41
+   (texte en deux colonnes : les articles sont recomposés colonne par colonne)
+------------------------------------------------------------------------------------------------------
+Article 97 : Les produits des forêts naturelles et des forêts plantées sont essentiellement transformés sur
+le territoire national.
+Les exportations portent sur les produits semi-finis ou finis et sur les grumes des espèces de bois lourd
+et dur dont !’usinage fait appel à une technologie spécifique.
+Ces produits, ainsi que les essences des bois lourds et durs sont déterminés par voie règlementaire.
+[...]
+Article 110 : [...] sont assujettis au paiement des taxes ci-après :
+     -    la taxe de superficie ;
+     -    la taxe d’abattage ;
+     -    la taxe sur les produits forestiers non ligneux
+          la taxe de déboisement ;
+     -    la taxe d’occupation ;
+     -    la taxe de résidus ;
+     -    la taxe à l’importation ;
+     -    la taxe à l’exportation.
+Article 111 : L’assiette, le taux ou le montant et les modalités de recouvrement de ces taxes sont
+déterminés par la loi de finances.
+
+======================================================================================================
+4. Textes postérieurs examinés (recherche des mots « sortie », « droit de sortie », « taxe à l'exportation »,
+   « grume », « redevance informatique ») — aucune modification du point 42 de la loi n° 37-2021 trouvée :
+   - Loi n° 51-2021 du 31 décembre 2021, loi de finances pour 2022
+     https://www.sipri.org/sites/default/files/2023-05/20220000_mof-con_loi_des_finances_2022.pdf
+     sha256 : 95fafde793c37e6bb76ee86955901f0e6bacad4cfa04f66fcdb41dd31deae967
+   - Projet de loi de finances pour 2023, version Parlement (le texte promulgué, loi n° 77-2022 du
+     27 décembre 2022, n'est pas publié en ligne)
+     https://www.sipri.org/sites/default/files/2024-04/20230000_mof-con_loi_des_finances_2023.pdf
+     sha256 : 14a0412eeec77ee1206c21d734a165ada35480d225eec33d22871990c6420974
+   - Loi n° 38-2023 du 21 décembre 2023, loi de finances rectificative pour 2023 (JO éd. spéc. n° 5-2023)
+     https://sgg.cg/JO/2023/congo-jo-2023-05-sp.pdf
+     sha256 : 0c422f306a6fb8d18b08418b20c1c8f617b1af8923447b9b392ec73518d9e17e
+   - Loi n° 39-2023 du 29 décembre 2023, loi de finances pour 2024 (JO éd. spéc. n° 6-2023)
+     https://www.sgg.cg/JO/2023/congo-jo-2023-06-sp.pdf
+     sha256 : 7fb393582473bf0f7a99a21e6e0e772a31d4d67b6c262baff8d6a359c20c8be9
+   - Loi n° 47-2024 du 30 décembre 2024, loi de finances pour 2025 (JO éd. spéc. n° 15-2024)
+     https://sgg.cg/JO/2024/congo-jo-2024-15-sp.pdf
+     sha256 : 63dacfc2e3f0f1517156829b4acfd06eee44231eeaa36603c9a822e90f10e8ef
+   - Loi n° 41-2025 du 31 décembre 2025, loi de finances rectificative pour 2025
+     https://sgg.cg/JO/2026/congo-jo-2026-2-4.pdf
+     sha256 : 8299349a39cc8a01f5dc36eff23fc6c1ead4698c2f240aec41d27642277ab575
+   - Loi n° 42-2025 du 31 décembre 2025, loi de finances pour 2026 (ci-dessus) : seule la redevance
+     informatique est modifiée.
+   Non examinés : les lois de finances rectificatives 2022 et 2024, et la loi de finances rectificative 2026
+   (projet approuvé en Conseil des ministres en juin 2026), non trouvées en ligne.
