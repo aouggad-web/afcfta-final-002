@@ -5134,9 +5134,9 @@
 94017900;- - Autres;94;;30;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;57.7;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
 94018000;- Autres sièges;94;;30;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;57.7;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
 94019000;"- Parties Mobilier pour la médecine, la chirurgie, l’art dentaire ou l’art vétérinaire (tables d’opération, tables d’examen, lits à mécanisme pour usages cliniques, fauteuils dentistes, par exemple) ; fauteuils pour salons de coiffure et fauteuils similaires, avec dispositif à la fois d’orientation et d’élévation ; parties de ces articles. -Fauteuils de dentistes, fauteuils pour salons de coiffure et fauteuils similaires, et leurs parties :";94;;20;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;45.8;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
-94021010;- - Fauteuils de dentistes et leurs parties;94;;5;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;5;;13.25;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N49
+94021010;- - Fauteuils de dentistes et leurs parties;94;;5;1;0.2;0.4;0;0.1;0.5;0.25;0.25;0.25;5;;13.2;COMPLET;;;N1 N2 N27 N4 N5 N6 N7 N8 N49
 94021020;- - Fauteuils pour salons de coiffures et fauteuils similaires, et leurs parties;94;;10;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;33.9;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
-94029000;- Autres Autres meubles et leurs parties.;94;;5;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;0;;8;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N50
+94029000;- Autres Autres meubles et leurs parties.;94;;5;1;0.2;0.4;0;0.1;0.5;0.25;0.25;0.25;0;;7.95;COMPLET;;;N1 N2 N27 N4 N5 N6 N7 N8 N50
 94031000;- Meubles en métal des types utilisés dans les bureaux;94;;30;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;57.7;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
 94032000;- Autres meubles en métal;94;;30;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;57.7;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
 94033000;- Meubles en bois des types utilisés dans les bureaux;94;;30;1;0.2;0.4;0.05;0.1;0.5;0.25;0.25;0.25;19;;57.7;COMPLET;;;N1 N2 N3 N4 N5 N6 N7 N8 N9
