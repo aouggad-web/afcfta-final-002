@@ -13,26 +13,27 @@
   "valeur": "CCI 0,4 % et prélèvement OHADA 0,05 % de la valeur en douane, après la TCI (1 %) ; ensemble 1,45 %, « cerca del 1,5 por ciento ».",
   "verbatim": "            TCI y Otras tasas comunitarias        3.000 Contribuciones (CEMAC, CEEAC, OHADA,...)   10.000",
   "verbatim_banque_mondiale": "cargos de TCI y CCI en la CEMAC y la CEEAC) de cerca del 1,5 por ciento.",
-  "reference": "Loi n° 9/2025 (budget 2026), art. 5 et ligne de recettes 71516 ; Banque mondiale, EDIC Guinée équatoriale (2019) ; règlement OHADA n° 002/2003/CM, art. 3 à 6",
+  "reference": "Loi n° 9/2025 (budget 2026), art. 5 et ligne de recettes 71516 ; Banque mondiale, EDIC Guinée équatoriale (2019) ; règlement OHADA n° 002/2003/CM, art. 3 à 6 ; OMC, WT/TPR/S/445, rapport commun, § 3.40 (taux communautaire de la CCI)",
   "portee": "scripts/build_socle._prelevements_guinee_equatoriale : lignes CCI et OHADA ajoutées après la TCI ; BLOCS_DESTINATION (OHADA_CEEAC : GNQ) et _ohada_produits_medicaux.",
   "texte_archive": "sources/GNQ_prelevements_importation.texte-extrait.txt",
-  "sha256": "8ba2801d0b2c7db4f4c01e1b795767b52f906a7de048243167acd287d2fb059b"
+  "sha256": "2e8105409c268f127cdab8bdb4ec6ca53b39cd9731ccd2a7290e0a9a20bf1651",
+  "verbatim_taux_cci": "la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les importations hors-CEEAC"
  },
  "decisions": [
   "La loi de budget range « TCI y Otras tasas comunitarias » parmi les droits et taxes à l'importation (7151) et en affecte le produit aux « Contribuciones (CEMAC, CEEAC, OHADA,...) » : la Guinée équatoriale perçoit à l'importation, outre la TCI, la contribution de la CEEAC et le prélèvement OHADA.",
-  "Taux : ceux des textes communautaires, 0,4 % pour la CCI (taux appliqué au Congo, au Gabon, en Centrafrique et au Tchad) et 0,05 % pour l'OHADA (règlement, art. 4) ; TCI + CCI + OHADA = 1,45 %, accord avec « cerca del 1,5 por ciento » de la Banque mondiale.",
+  "Taux : ceux des textes communautaires, non une déduction propre à la Guinée équatoriale. La CCI est « prélevée au taux de 0,4% sur les importations hors-CEEAC » (OMC, rapport commun, § 3.40) ; le traité révisé de la CEEAC (art. 96) en remet le niveau au Conseil des ministres, pour toute la Communauté. Le prélèvement OHADA est de 0,05 % (règlement, art. 4). La loi de budget établit que la Guinée équatoriale les perçoit ; TCI + CCI + OHADA = 1,45 %, accord avec « cerca del 1,5 por ciento » de la Banque mondiale.",
   "Exonérations : CCI non due par les originaires de la CEEAC ; prélèvement OHADA non dû par les originaires de la CEEAC et de l'OHADA, et nul sur les produits pharmaceutiques et le matériel médical (règlement, art. 6), comme dans les autres États de la CEMAC.",
   "Base de la TVA inchangée (loi 4/2004, art. 288 : valeur en douane + droits de douane + droit d'accises)."
  ],
  "ce_que_cela_ne_tranche_pas": [
-  "Aucun texte équato-guinéen fixant le taux de la CCI n'a été trouvé ; la Guinée équatoriale n'est pas membre de l'OMC et n'a pas d'annexe dans l'examen WT/TPR/S/445.",
+  "Aucun texte équato-guinéen ne fixe le taux de la CCI ni la date de sa mise en œuvre ; le taux servi est le taux communautaire. La Guinée équatoriale n'a pas d'annexe dans l'examen WT/TPR/S/445, et le rapport commun ne la compte pas parmi les États qui collectaient la CCI en 2023 (il ne couvre que les cinq membres de l'OMC).",
   "Licence d'importation du ministère du Commerce, « de hasta el 10 por ciento del valor comercial » (Banque mondiale, EDIC 2019) : taux variable et non publié par position — non servie.",
   "Prélèvement de l'Union africaine : aucune source pour la Guinée équatoriale — non servi."
  ],
  "documents_archives": [
   {
    "texte_archive": "sources/GNQ_prelevements_importation.texte-extrait.txt",
-   "sha256": "8ba2801d0b2c7db4f4c01e1b795767b52f906a7de048243167acd287d2fb059b"
+   "sha256": "2e8105409c268f127cdab8bdb4ec6ca53b39cd9731ccd2a7290e0a9a20bf1651"
   },
   {
    "document_non_archive": "Loi n° 9/2025, budget général de l'État 2026 (PDF, 276 p.) : https://minhacienda-gob.com/uploads/2026/05/libro-lpge-2026-bcb5ebfc7795.pdf — pages 3, 11 et 60 archivées à part (dossier equatorial-guinea/official)",

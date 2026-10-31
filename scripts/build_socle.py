@@ -2742,7 +2742,9 @@ SOURCE_OHADA_COG = "Arrêté n° 5808 du 20 septembre 2005 portant application d
 #: Prélèvement OHADA : produits exonérés que la position suffit à désigner, « les produits
 #: pharmaceutiques ainsi que les matériels et équipements à usage médical » (règlement
 #: n° 002/2003/CM, art. 6 ; au Congo, arrêté n° 5808, art. 2).
-OHADA_EXONERE = ("30", "9018", "9021", "902212", "902213", "902214", "902221")
+#: Le mobilier médical (fauteuils de dentistes, 9402.90) en est aussi : seuls les fauteuils de
+#: coiffeur (9402.10.20) restent dans la position 94.02 hors de l'usage médical.
+OHADA_EXONERE = ("30", "9018", "9021", "902212", "902213", "902214", "902221", "94021010", "940290")
 SOURCE_OHADA = "Règlement n° 002/2003/CM du 18 octobre 2003 relatif au mécanisme de financement autonome de l'OHADA"
 
 

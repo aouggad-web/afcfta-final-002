@@ -14,13 +14,13 @@
   "verbatim": "- les produits reconnus originaires des\ncommunautés économiques régionales et\nsous régionales dont chaque Etat Partie\nest membre ;",
   "verbatim_medical": "- les produits pharmaceutiques ainsi que\nles matériels et équipements à usage\nmédical, destinés à la médecine humaine\nou vétérinaire ;",
   "reference": "Règlement n° 002/2003/CM, art. 3 à 6 et 20 (entrée en vigueur le 1er janvier 2004)",
-  "portee": "scripts/build_socle : EXONERATION_ORIGINE (OHADA → OHADA_CEEAC), BLOCS_DESTINATION (OHADA_CEEAC : GAB, CAF, TCD, CMR) et _ohada_produits_medicaux (OHADA_EXONERE : chapitre 30, 90.18, 90.21, 9022.12 à 9022.14, 9022.21), comme _prelevements_congo pour le Congo.",
+  "portee": "scripts/build_socle : EXONERATION_ORIGINE (OHADA → OHADA_CEEAC), BLOCS_DESTINATION (OHADA_CEEAC : GAB, CAF, TCD, CMR) et _ohada_produits_medicaux (OHADA_EXONERE : chapitre 30, 90.18, 90.21, 9022.12 à 9022.14, 9022.21, fauteuils de dentistes 9402.10.10 et mobilier médical 9402.90), comme _prelevements_congo pour le Congo.",
   "texte_archive": "sources/OHADA_reglement_002_2003.texte-extrait.txt",
   "sha256": "a65df17cd9d584a14a8faefd23fb9652d7ac46464a908e6ebe21645533498b56"
  },
  "decisions": [
   "Communautés dont les États de la CEMAC sont membres : la CEEAC, qui englobe la CEMAC (bloc OHADA_CEEAC de backend/services/exoneration_origine.py). Un produit angolais, burundais ou santoméen, originaire de la CEEAC sans l'être de l'OHADA, n'est plus soumis au prélèvement ; un produit nigérian ou français le reste.",
-  "Produits pharmaceutiques et matériel médical : les positions dont l'usage médical est dans le libellé, la même liste qu'au Congo (chapitre 30, 90.18, 90.21, 9022.12 à 9022.14, 9022.21).",
+  "Produits pharmaceutiques et matériel médical : les positions dont l'usage médical est dans le libellé ou la position (chapitre 30, 90.18, 90.21, 9022.12 à 9022.14, 9022.21, fauteuils de dentistes 9402.10.10 et mobilier médical 9402.90 ; les fauteuils de coiffeur 9402.10.20 restent dus), la même liste qu'au Congo.",
   "Le Congo applique déjà ces deux exonérations par l'arrêté n° 5808 (fiche COG_prelevements_importation_2026-10-30.json) : inchangé."
  ],
  "ce_que_cela_ne_tranche_pas": [
