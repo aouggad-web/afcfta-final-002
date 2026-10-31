@@ -877,9 +877,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-31",
-      "sha256": "49611da1394c1911db8b7a3a0e1facbac2df888378056ba6054a051519a375c9",
-      "notes_sha256": "d39bb3b190cd72d29bd6b15895214548ad2e087b135dab5cc129b02cd5a8f706",
-      "socle_sha256": "e6843b815f14d95136c5da60c9396d2cb13f18b849a2b9c6506139de070ca2fa",
+      "sha256": "ccede56cde411f23225b607dd7530dcd0631678ef4d22f8445892bf2f9901182",
+      "notes_sha256": "de02988dfebb0087f933e51a14c119f0a2e2587c9bf4405b57d436ab1a95cb85",
+      "socle_sha256": "eef0c0ad51bea2f1e0e25baf7dce9e991226b7872a445b7cdb5bc535524f74f5",
       "collecte": null
     },
     "KEN": {

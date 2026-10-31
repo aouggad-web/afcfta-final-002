@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "objet": "Guinée équatoriale : droit de douane de 5 % et TVA à l'importation de 0 % ou 5 % sur les biens de première nécessité (loi n° 9/2025, budget de l'État 2026, art. 13), position par position ; positions sans ligne de TVA au crawl",
+ "destination_iso3": "GNQ",
+ "verified_at": "2026-10-31",
+ "etabli": true,
+ "evidence_level": "officielle pour la liste et les taux (loi n° 9/2025 publiée avec la bibliothèque juridique du ministère des Finances, domaine non vérifié comme celui du ministère) ; secondaire pour le taux général de 15 % et le taux réduit de 5 % de la loi générale fiscale n° 1/2024 (Banque mondiale, 2025), dont le texte n'a pas été trouvé",
+ "source": {
+  "url": "https://minhacienda-gob.com/uploads/2026/05/libro-lpge-2026-bcb5ebfc7795.pdf",
+  "institution": "Ministerio de Hacienda, Planificación y Desarrollo Económico (Guinée équatoriale), Dirección General de Presupuestos y Clases Pasivas"
+ },
+ "regle": {
+  "valeur": "Droit de douane abaissé à 5 % et TVA à l'importation à 0 % : poissons (03.02 à 03.05), riz, farines de froment et de maïs, levures vivantes, aliments pour animaux (23.09), sardines en conserve, sucres (17.01, 17.02), laits concentrés ou sucrés (04.02), viandes (02.01 à 02.05, 02.07, 02.08, 02.10), pommes de terre congelées, tomates fraîches et en conserve, œufs, pâtes alimentaires hors couscous, légumes secs, huiles végétales (15.07 à 15.15), détergents, savons de ménage, aliments pour nourrissons, couches et serviettes hygiéniques (4818.40), eau de javel, allumettes, lampes-tempêtes et à pression, limes, tôles zinguées ondulées, pointes et clous. Droit de douane à 5 % et TVA à 5 % : céréales préparées et biscuits, chapitres 07 et 08, charcuterie, laits, beurres, fromages, cacao en poudre, ciment Portland ordinaire, tronçonneuses, pesticides non conditionnés pour la vente au détail, engrais (chapitre 31), matelas, fers à béton, articles et filets de pêche.",
+  "verbatim": "se reduce a un tipo del 5% el gravamen en concepto de derechos aduaneros de los bienes y productos de primera necesidad, así como la exención o reducción en concepto del Impuesto sobre el Valor Añadido (IVA) a la importación conforme al siguiente cuadro:",
+  "verbatim_taux_reduit": "Si bien la tasa general del IVA se mantuvo en 15 por ciento, la tasa reducida para bienes de primera necesidad y otros productos definidos por la ley tributaria se ajustó al 5 por ciento (por debajo del 6 por ciento estipulado en la ley de 2004).",
+  "reference": "Loi n° 9/2025 du 9 décembre 2025 (budget général de l'État 2026), art. 13 ; Banque mondiale, Guinea Ecuatorial — Actualización Económica 2025, recuadro 1",
+  "portee": "backend/data/zlecaf_gnq/premiere_necessite_lpge2026.json, appliqué par scripts/build_socle._premiere_necessite_gnq au socle GNQ : TVA à 0 % sur 225 positions, à 5 % sur 167 ; droit de douane ramené à 5 % sur 330 lignes ; 13 positions qui réunissent le bien nommé et d'autres biens, sans taux de TVA ni de droit de douane ; 86 positions que le tarif du crawl (celui du Cameroun) marque « EXO », hors de l'art. 13, reçoivent une ligne de TVA sans taux ; les 4 748 autres gardent 15 %.",
+  "texte_archive": "sources/GNQ_premiere_necessite.texte-extrait.txt",
+  "sha256": "4261c66cd9ee21c0144632bec20a49bb441d9e48ce4fca82dbfc6a2b4bb4e9c1"
+ },
+ "decisions": [
+  "Les produits sont nommés sans numéro : une position est retenue quand elle ne contient que le bien nommé (« Arroz » : 10.06 ; « Clavos » : 7317.00.10, pointes et clous ; « Lejía » : 2828.90.10, eau de javel) ; elle est sans taux quand elle réunit le bien nommé et d'autres biens (« Machetes » : 8201.40 avec les haches ; « Azadas » : 8201.30 avec les pioches et râteaux ; « Agua mineral » : 2201.10 avec les eaux gazéifiées ; « Sal fina alimenticia » : sous-positions du sel qui ne distinguent pas le sel fin ; pesticides conditionnés pour la vente au détail, qui ne sont pas tous « de uso agrícola ») ; elle n'est pas touchée quand le bien nommé n'est pas identifié (« Cola » du « Cemento ordinario y Cola »).",
+  "Lectures retenues : « Carne » : viandes des 02.01 à 02.05, 02.07 (volailles), 02.08 et 02.10, sans les abats (02.06) ni les graisses (02.09) ; « Pescado » : poissons des 03.02 à 03.05, sans les poissons vivants ni les crustacés ; « Aceite vegetal » : huiles végétales des 15.07 à 15.15 (« Aceite de palma refinado » y est) ; « Pasta alimenticia » : 19.02 sans le couscous ; « Alimento infantil » : 1901.10 et 2104.20 ; « Pañales », « Productos de higiene intima femenina » : 4818.40 (nomenclature de 2007) ; « Galletas y Cereales » : 19.04 et biscuits de la 19.05 (les grains du chapitre 10 ne sont pas lus comme « cereales » à côté des biscuits) ; « Hortalizas y Frutas » : chapitres 07 et 08, après les tomates, pommes de terre congelées et légumes secs du premier tableau ; « Lácteos » : 04.01, 04.03 à 04.06 (les laits concentrés ou sucrés de la 04.02 étant au premier tableau).",
+  "Droit de douane : abaissé à 5 % quand il était plus haut, jamais relevé. La loi de budget 2024 (art. 11) appliquait déjà ce taux à une liste voisine (loi n° 13/1995, modifiée par la loi n° 2/2001) ; la loi de 2026 est lue seule.",
+  "Positions sans ligne de TVA : le crawl reprend le tarif du Cameroun, qui marque « EXO » 141 positions ; les exonérations équato-guinéennes sont celles de la loi générale fiscale n° 1/2024, non lue. Hors des biens de l'art. 13, ces positions (produits pharmaceutiques, matériel médical, films pour rayons X, etc.) reçoivent une ligne de TVA sans taux plutôt qu'aucune TVA."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Loi générale fiscale n° 1/2024 (en vigueur depuis décembre 2024) : texte introuvable ; ses exonérations (médicaments et matériel médical sous la loi de 2004, annexe I) et sa liste au taux réduit de 5 % ne sont pas servies ; le taux général de 15 % est celui de la loi de 2004, maintenu selon la Banque mondiale.",
+  "Durée : la mesure figure dans une loi de budget annuelle ; si elle ne vaut que pour l'exercice 2026, les taux reviennent au droit commun au 1er janvier 2027.",
+  "« Cola » (« Cemento ordinario y Cola ») : la loi de budget 2024 taxait au contraire le « Cemento Blanco Cola » à 30 % comme produit local sensible ; non servi.",
+  "Exonérations par destination (usage agricole, pêche artisanale) : appliquées aux positions qui ne contiennent que ces biens ; ailleurs non servies."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/GNQ_premiere_necessite.texte-extrait.txt",
+   "sha256": "4261c66cd9ee21c0144632bec20a49bb441d9e48ce4fca82dbfc6a2b4bb4e9c1"
+  },
+  {
+   "document_non_archive": "Loi n° 9/2025, budget général de l'État 2026 (PDF, 276 p.) : https://minhacienda-gob.com/uploads/2026/05/libro-lpge-2026-bcb5ebfc7795.pdf — pages 1, 3, 14 et 15 archivées à part (dossier equatorial-guinea/official, extrait art. 13)",
+   "pdf_sha256": "263abefbf55ff140a6b4128a6a3a715294d8d08848a3545d4070cfa2282b0a50"
+  },
+  {
+   "document_non_archive": "Banque mondiale, Guinea Ecuatorial — Actualización Económica 2025 : https://documents1.worldbank.org/curated/en/099072425175525033/pdf/P181230-e6d9cdff-ebab-4c72-a977-85d9b5c025bd.pdf",
+   "pdf_sha256": "4d48c78be14dfefe8ffc7ac318a859f77cec0b3a529062c2cdc35e54c0ac17bd"
+  }
+ ]
+}
