@@ -30,7 +30,7 @@ def test_tci_cci_et_ohada_font_un_virgule_quarante_cinq_pour_cent(positions):
 
 @pytest.mark.parametrize(
     "origine, retires",
-    [("CMR", {"TCI", "CCI", "OHADA", "PUA"}), ("AGO", {"CCI", "PUA"}), ("SEN", {"OHADA", "PUA"}),
+    [("CMR", {"TCI", "CCI", "OHADA", "PUA"}), ("AGO", {"CCI", "OHADA", "PUA"}), ("SEN", {"OHADA", "PUA"}),
      ("NGA", {"PUA"}), ("FRA", set())],
 )
 def test_cci_et_ohada_suivent_l_origine(positions, origine, retires):

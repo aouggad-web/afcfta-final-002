@@ -1914,7 +1914,12 @@ def sources_disponibles():
 #: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
-    "CIA": "UA", "TUA": "UA", "CCI": "CEEAC", "OHADA": "OHADA",
+    "CIA": "UA", "TUA": "UA", "CCI": "CEEAC",
+    # OHADA : dû sur les « produits originaires des pays tiers » ; exonérés aussi
+    # les « produits reconnus originaires des communautés économiques régionales
+    # et sous régionales dont chaque Etat Partie est membre » (règlement
+    # n° 002/2003/CM, art. 3 et 6) : la CEEAC, qui englobe la CEMAC.
+    "OHADA": "OHADA_CEEAC",
     # TCI : « s'applique aux importations des Etats membres de produits originaires
     # des pays tiers » (acte additionnel n° 03/00-CEMAC-046-CM-05, art. 2).
     "TCI": "CEMAC",
@@ -1930,9 +1935,8 @@ BLOCS_DESTINATION = {
     # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
     "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
     # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique, au Tchad et au
-    # Cameroun. Le Congo exonère aussi les originaires de la CEEAC (arrêté
-    # n° 5808) : _prelevements_congo marque sa ligne.
-    "OHADA": {"GAB", "CAF", "TCD", "CMR"},
+    # Cameroun ; _prelevements_congo marque la ligne du Congo (arrêté n° 5808).
+    "OHADA_CEEAC": {"GAB", "CAF", "TCD", "CMR"},
 }
 
 ACCISES_PAYS = {
@@ -2734,8 +2738,11 @@ def _tva_par_position(iso, positions, compteurs):
 SOURCE_RI_COG = "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25"
 SOURCE_CCI_COG = "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40"
 SOURCE_OHADA_COG = "Arrêté n° 5808 du 20 septembre 2005 portant application du prélèvement OHADA, art. 2 à 5"
-#: Prélèvement OHADA : produits exonérés (arrêté n° 5808, art. 2) que la position suffit à désigner.
-OHADA_EXONERE_COG = ("30", "9018", "9021", "902212", "902213", "902214", "902221")
+#: Prélèvement OHADA : produits exonérés que la position suffit à désigner, « les produits
+#: pharmaceutiques ainsi que les matériels et équipements à usage médical » (règlement
+#: n° 002/2003/CM, art. 6 ; au Congo, arrêté n° 5808, art. 2).
+OHADA_EXONERE = ("30", "9018", "9021", "902212", "902213", "902214", "902221")
+SOURCE_OHADA = "Règlement n° 002/2003/CM du 18 octobre 2003 relatif au mécanisme de financement autonome de l'OHADA"
 
 
 def _prelevements_congo(positions, compteurs):
@@ -2755,7 +2762,7 @@ def _prelevements_congo(positions, compteurs):
                 "l'OHADA » ; art. 2 : exonérés « les produits reconnus originaires des communautés économiques "
                 "régionales et sous-régionales dont la République du Congo est membre »."
             )
-            if code.startswith(OHADA_EXONERE_COG):
+            if code.startswith(OHADA_EXONERE):
                 ohada["taux"] = 0.0
                 ohada["note"] = (
                     "Exonéré, arrêté n° 5808, art. 2 : « les produits pharmaceutiques et les matériels et "
@@ -2898,6 +2905,23 @@ def _prelevements_centrafrique(positions, compteurs):
         droits[rang:rang] = nouvelles
         for ligne in nouvelles:
             _compter_ligne(ligne, compteurs, 1)
+
+
+def _ohada_produits_medicaux(positions, compteurs):
+    """Gabon, Centrafrique, Tchad, Cameroun : prélèvement OHADA nul sur les
+    produits pharmaceutiques et le matériel médical (règlement n° 002/2003/CM,
+    art. 6), comme au Congo."""
+    for code, position in positions.items():
+        if not code.startswith(OHADA_EXONERE):
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") != "OHADA":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            d.update(taux=0.0, source=SOURCE_OHADA,
+                     note="Exonéré, règlement n° 002/2003/CM, art. 6 : « les produits pharmaceutiques ainsi que les "
+                          "matériels et équipements à usage médical, destinés à la médecine humaine ou vétérinaire ».")
+            _compter_ligne(d, compteurs, 1)
 
 
 #: Congo : véhicules neufs de tourisme au taux réduit de 5 % du droit de douane et
@@ -5720,6 +5744,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
         _tva_par_position("GAB", positions, compteurs)
+
+    if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
+        _ohada_produits_medicaux(positions, compteurs)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon

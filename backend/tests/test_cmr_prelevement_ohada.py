@@ -26,7 +26,7 @@ def test_le_prelevement_ohada_est_hors_de_la_base_de_la_tva(positions):
     assert lignes["TVA"]["base"] == 1000.0 + lignes["DD"]["montant"]
 
 
-@pytest.mark.parametrize("origine, retires", [("GAB", {"TCI", "OHADA"}), ("SEN", {"OHADA"}), ("AGO", set()),
+@pytest.mark.parametrize("origine, retires", [("GAB", {"TCI", "OHADA"}), ("SEN", {"OHADA"}), ("AGO", {"OHADA"}),
                                               ("FRA", set())])
 def test_le_prelevement_ohada_suit_l_origine(positions, origine, retires):
     _, exonerations = exoneration_origine.appliquer(positions["01011010"], origine)
