@@ -1,0 +1,456 @@
+{
+ "_objet": "TVA à l'importation au Cameroun : biens exonérés par l'art. 128 du Code général des impôts (édition officielle 2026), son point 6) a) renvoyant à l'annexe I du titre II, liste des biens de première nécessité ; son point 6) b) en exclut des positions. Préfixes de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle qui s'applique l'emporte ; les autres positions gardent le taux général de 19,25 % (17,5 % et centimes additionnels communaux de 10 % du principal). « taux » null : la position réunit des biens exonérés et des biens taxables.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/CMR_tva_2026-10-31.json",
+ "source": "Code général des impôts du Cameroun, édition 2026 (DGI), art. 128, 129, 142 et C 83, annexe I du titre II",
+ "regles": [
+  {
+   "prefixes": [
+    "030211",
+    "030212",
+    "030213",
+    "030214",
+    "030219",
+    "030270",
+    "030291",
+    "030311",
+    "030312",
+    "030313",
+    "030314",
+    "030319",
+    "030321",
+    "030322",
+    "030329",
+    "030380",
+    "030391",
+    "030392",
+    "030399",
+    "030520",
+    "030541",
+    "030543",
+    "030562"
+   ],
+   "taux": 19.25,
+   "reference": "Taux général : CGI 2026, art. 128, 6) b) : l'exonération « ne s'applique pas » aux truites, aux saumons, aux foies, œufs et laitances et autres abats de poissons et aux morues de la sous-position 0305.62 (au socle, nomenclature de 2007 : 0302.12 et 0303.21 à 0303.29 pour les salmonidés, 0302.70 et 0303.80 pour les foies, œufs et laitances)."
+  },
+  {
+   "prefixes": [
+    "03054991"
+   ],
+   "taux": null,
+   "motif": "Poissons fumés exonérés (CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 030211 à 030569 Poissons »), sauf les truites fumées, exclues (CGI 2026, art. 128, 6) b) : « les truites séchés, fumés, salés ou en saumure de la sous-position tarifaire 0305.43 ») : au socle (nomenclature de 2007), les truites fumées sont parmi les « autres » poissons fumés de la 0305.49."
+  },
+  {
+   "prefixes": [
+    "0302",
+    "0303",
+    "0304",
+    "03051",
+    "03052",
+    "03053",
+    "03054",
+    "03055",
+    "03056"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 030211 à 030569 Poissons »."
+  },
+  {
+   "prefixes": [
+    "01051100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 010511 00 000 Coqs et poules vivants, des espèces domestiques, d'un poids n'excédant pas 185 g »."
+  },
+  {
+   "prefixes": [
+    "01059400"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 010594 00 000 Coqs et poules vivants, des espèces domestiques, d'un poids excédant 185 g »."
+  },
+  {
+   "prefixes": [
+    "0201",
+    "0202"
+   ],
+   "taux": 19.25,
+   "reference": "Taux général : art. 128, 6) a) du CGI 2026 : « la viande bovine, à l’exception de la viande importée »."
+  },
+  {
+   "prefixes": [
+    "0401"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « Lait et crème de lait, non concentrés, ni sucrés ni édulcorés » (040110, 040120, 040140 et 040150, toutes les teneurs en matières grasses)."
+  },
+  {
+   "prefixes": [
+    "04021000",
+    "04022100",
+    "04022900",
+    "04029100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « Lait et crème de lait, concentrés ou additionnés de sucres ou d’autres édulcorants » (040210, 040221, 040229 et 040291)."
+  },
+  {
+   "prefixes": [
+    "04029900"
+   ],
+   "taux": null,
+   "motif": "Exonérés : « 040299 00 100 Autres lait et crème de lait, concentrés, contenant moins de 40% de sucre ou d'autres édulcorants » (CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA »)) ; les autres laits sucrés de la position, au taux général."
+  },
+  {
+   "prefixes": [
+    "04070010"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « Œufs de volailles de l’espèce Gallus domesticus fertilisés destinés à l’incubation » et « Œufs d’autres oiseaux, fertilisés destinés à l'incubation » (040711 et 040719 ; au socle, 0407.00.10 Œufs destinés à la reproduction)."
+  },
+  {
+   "prefixes": [
+    "10011010",
+    "10011090"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 100110 00 000 Froment (blé) dur » et « 100119 00 000 Autres froments (blé) dur »."
+  },
+  {
+   "prefixes": [
+    "10059000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 100590 00 000 Autres maïs »."
+  },
+  {
+   "prefixes": [
+    "10063090"
+   ],
+   "taux": null,
+   "motif": "Riz semi-blanchi ou blanchi « en emb. exc. 1kg mais n'exc. pas 5kg » (1006.30.90.100) et « autrement présenté » (1006.30.90.900) exonérés (CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA »)) ; le riz « précuit » (1006.30.90.200) et le riz parfumé (1006.30.90.300), exclus (CGI 2026, art. 128, 6) b)), au taux général."
+  },
+  {
+   "prefixes": [
+    "10061010",
+    "10061090",
+    "10062000",
+    "10063010",
+    "10064000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : riz en paille, décortiqué, conditionné pour la vente au détail et en brisures (100610, 100620, 100630 10 et 100640)."
+  },
+  {
+   "prefixes": [
+    "11010010",
+    "11010020"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 110100 10 000 Farine de froment (blé) » et « 110100 20 000 Farine de méteil »."
+  },
+  {
+   "prefixes": [
+    "110220",
+    "110620",
+    "230210"
+   ],
+   "taux": 19.25,
+   "reference": "Taux général : l'annexe I du titre II du CGI 2026 n'exonère que la « Farine de maïs produit localement » (1102.20), les « Farines de patate et de manioc produits localement » (1106.20) et le « Son de maïs produit localement » (2302.10)."
+  },
+  {
+   "prefixes": [
+    "19011011"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 190110 11 000 Préparations pour alim. enfants, cvd, base farine, semoule, amidon,..., sans cacao, ndca »."
+  },
+  {
+   "prefixes": [
+    "190510",
+    "19059090"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 190510 00 000 Pain croustillant dit \"knäckebrot\" » et « 190590 90 000 Autres produits du N°1905 (pain ordinaire, pain complet) »."
+  },
+  {
+   "prefixes": [
+    "230110",
+    "230120"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : farines, poudres et pellets de viandes ou de poissons impropres à l'alimentation humaine (230110 et 230120)."
+  },
+  {
+   "prefixes": [
+    "230220",
+    "230230",
+    "230240",
+    "230250"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : sons, remoulages et autres résidus du riz, du froment, d'autres céréales et des légumineuses (230220 à 230250)."
+  },
+  {
+   "prefixes": [
+    "230400",
+    "230620",
+    "230630",
+    "230641",
+    "230649",
+    "230650",
+    "230690"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : tourteaux de soja, de lin, de tournesol, de navette ou de colza, de coprah, de germes de maïs et « Autres tourteaux et autres résidus solides, ... de graisses ou huiles végétales » (230400, 230620 à 230650, 230690)."
+  },
+  {
+   "prefixes": [
+    "230990",
+    "23092000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 230990 10 000 Préparations alimentaires de provenderie, d'une concentration égale ou supérieure à 2% » et « 230990 90 000 Autres préparations alimentaires de provenderie » (au socle, 2309.20.00 porte le libellé de la 2309.90.10)."
+  },
+  {
+   "prefixes": [
+    "25010090"
+   ],
+   "taux": null,
+   "motif": "Exonérés : « 250100 90 100 Sels bruts en vrac » (CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA »)) ; le reste de la sous-position 2501.00.90, au taux général."
+  },
+  {
+   "prefixes": [
+    "27090010"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 270900 10 000 Huiles brutes de pétrole »."
+  },
+  {
+   "prefixes": [
+    "27101123"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 271012 23 000 Pétrole lampant » (2710.11.23 au socle, nomenclature de 2007)."
+  },
+  {
+   "prefixes": [
+    "27111300"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 271113 00 000 Butanes liquéfiés »."
+  },
+  {
+   "prefixes": [
+    "29371200"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 293712 00 000 Insuline naturelle ou reproduite par synthèse et ses sels »."
+  },
+  {
+   "prefixes": [
+    "29392000"
+   ],
+   "taux": null,
+   "motif": "Exonérés : « 293920 00 900 Quinine et ses sels » (CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA »)) ; les autres alcaloïdes du quinquina de la position, au taux général."
+  },
+  {
+   "prefixes": [
+    "2941"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : antibiotiques (294110 à 294190)."
+  },
+  {
+   "prefixes": [
+    "3001",
+    "3002",
+    "3003",
+    "3004",
+    "3005",
+    "3006"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 3001 à 3006 Produits pharmaceutiques »."
+  },
+  {
+   "prefixes": [
+    "3101",
+    "3102",
+    "3103",
+    "3104",
+    "3105"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 3101 à 3105 Divers engrais »."
+  },
+  {
+   "prefixes": [
+    "34070020"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 340700 10 000 Cires pour art dentaire sous toutes formes; autres compositions pour art dentaire, à base de plâtre » (au socle, 3407.00.20, au libellé « dentaires, à base de plâtre »)."
+  },
+  {
+   "prefixes": [
+    "37011000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 370110 00 000 Plaques & films plans, photographiques, sensibilisés, non impressionnés, pour rayon X »."
+  },
+  {
+   "prefixes": [
+    "37021000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 370210 00 000 Pellicules photographiques sensibilisées en rouleaux; pellicules photographiques à développement pour rayons X »."
+  },
+  {
+   "prefixes": [
+    "38085000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 380850 00 000 Marchandises constituées chimiquement définies comme mentionnées dans Note 1 de sous-position Chap 38 »."
+  },
+  {
+   "prefixes": [
+    "38089110",
+    "38089190",
+    "38089210",
+    "38089290"
+   ],
+   "taux": null,
+   "motif": "Exonérés : les seuls insecticides et fongicides à usage agricole (« 380891 10 100 », « 380891 90 100 », « 380892 10 100 », « 380892 90 100 », CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA »)) ; les autres, au taux général."
+  },
+  {
+   "prefixes": [
+    "380893",
+    "380894"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : herbicides, inhibiteurs de germination, régulateurs de croissance et désinfectants (380893 10 et 90, 380894 10 et 90)."
+  },
+  {
+   "prefixes": [
+    "3822"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 3822 00 000 Réactifs de diagnostics ou de laboratoire »."
+  },
+  {
+   "prefixes": [
+    "40141000",
+    "40149000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 401410 00 000 Préservatifs » et « 401490 00 000 Autres articles d'hygiène ou de pharmacie (+tétines), en caoutchouc vulcanisé non durci »."
+  },
+  {
+   "prefixes": [
+    "40151100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 401511 00 000 Gants, mitaines et moufles en caoutchouc vulcanisé non durci, pour chirurgie »."
+  },
+  {
+   "prefixes": [
+    "48010000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 480100 00 000 Papier journal, en rouleaux ou en feuilles »."
+  },
+  {
+   "prefixes": [
+    "48026910"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 480269 10 000 Papiers, cartons, dont +10% en pds fibres obtenus mécaniquement ou chimico-mécanique, pour journaux »."
+  },
+  {
+   "prefixes": [
+    "4901"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : livres, brochures, dictionnaires et encyclopédies (490110 10 et 90, 490191, 490199 10 et 90)."
+  },
+  {
+   "prefixes": [
+    "4902"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 10) : « les opérations de composition, d’impression, d’importation et de vente des journaux et périodiques »."
+  },
+  {
+   "prefixes": [
+    "63049300",
+    "63049900"
+   ],
+   "taux": null,
+   "motif": "Exonérées : les moustiquaires (« 630493 00 100 », « 630499 00 100 », CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA »)) ; les autres articles d'ameublement de la position, au taux général."
+  },
+  {
+   "prefixes": [
+    "70151000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 701510 00 000 Verres de lunetterie médicale »."
+  },
+  {
+   "prefixes": [
+    "7017"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : verrerie de laboratoire, d'hygiène ou de pharmacie (701710, 701720 et 701790)."
+  },
+  {
+   "prefixes": [
+    "84192000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 841920 00 000 Stérilisateurs médico-chirurgicaux ou de laboratoires »."
+  },
+  {
+   "prefixes": [
+    "85023100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 17) : « les matériels et équipements d’exploitation des énergies solaire et éolienne » (groupes électrogènes à énergie éolienne)."
+  },
+  {
+   "prefixes": [
+    "8713",
+    "87142000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : fauteuils roulants et autres véhicules pour invalides, leurs parties et accessoires (871310, 871390 et 871420)."
+  },
+  {
+   "prefixes": [
+    "90118000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 901180 00 000 Microscope »."
+  },
+  {
+   "prefixes": [
+    "90181100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 901811 00 000 Electrocardiographes »."
+  },
+  {
+   "prefixes": [
+    "9022"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : appareils à rayons X et à radiations alpha, bêta ou gamma, tubes et parties (902212 à 902290)."
+  },
+  {
+   "prefixes": [
+    "94021010",
+    "94029000"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : CGI 2026, art. 128, 6) a) et annexe I du titre II (« Liste des biens de première nécessité exonérés de TVA ») : « 940210 10 000 Fauteuils de dentistes, et leurs parties » et « 940290 00 000 Mobilier pour la médecine/chirurgie/art dentaire/vétérinaire »."
+  }
+ ]
+}
