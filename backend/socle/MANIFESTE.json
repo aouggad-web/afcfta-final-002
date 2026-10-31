@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-30T21:23:22.587194+00:00",
+  "construit_le": "2026-10-31T21:45:42.886801+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -643,7 +643,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GAB_tariffs.json",
       "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
-      "socle_sha256": "f52d97ff1aeb2a08b23739aab0c7ff412845b7857122bef8db1e09879a1ebf37",
+      "socle_sha256": "efd0c3f5c6ce4de171a46a04a1bd25f98e92402498b62ecc36df3062589ac47e",
       "collecte": "2026-02-19T22:39:52.018966",
       "etat": "PARTIEL",
       "familles": [
@@ -674,7 +674,8 @@
         "interdictions": 0,
         "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 0
+        "classification_estimee": 0,
+        "positions_export": 174
       }
     },
     "GHA": {

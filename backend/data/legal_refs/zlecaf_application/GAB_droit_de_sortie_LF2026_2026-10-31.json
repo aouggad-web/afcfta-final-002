@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "objet": "Gabon : droits de sortie à l'exportation (loi de finances 2026, art. 5 à 7)",
+  "destination_iso3": "GAB",
+  "verified_at": "2026-10-31",
+  "etabli": true,
+  "evidence_level": "primaire : loi de finances 2026 publiée au Journal officiel (n° 96 Quater spécial), non modifiée sur ce point par la loi de finances rectificative 2026 (JO n° 123 bis) ; Code forestier (loi n° 016/01) pour les degrés de transformation ; secondaire : OMC, WT/TPR/S/445 (2023), pour l'absence de droit général de sortie, le manganèse et l'interdiction des grumes",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/GAB_droit_de_sortie_LF2026.texte-extrait.txt",
+      "sha256": "980e4536934e39330b2ae590ab0017cc1e3eb569bc1690309f7b91ec0a882ed2"
+    }
+  ],
+  "regle": {
+    "bois": {
+      "valeur": "Produits transformés du bois : première transformation 15 % de la valeur mercuriale ; deuxième transformation 10 % de la valeur mercuriale ; troisième transformation 3,5 % de la valeur FOB.",
+      "reference": "Loi n° 041/2025 (LF 2026), art. 5 et 6",
+      "verbatim": "Article 5 : Les produits transformés du bois sont soumis à un droit de sortie conformément au barème suivant :"
+    },
+    "degres_de_transformation": {
+      "valeur": "Première : sciage, déroulage, tranchage, séchage ; deuxième : panneaux, moulures, profilés rabotés, parquets ; troisième : produits finis et composites de la menuiserie et de l'ébénisterie.",
+      "reference": "Loi n° 016/01 portant code forestier, art. 223 à 225",
+      "verbatim": "Article 223.- L'industrie de première transformation regroupe les activités de sciage, de déroulage, de tranchage"
+    },
+    "or": {
+      "valeur": "Lingots d'or : 1 % de la valeur en douane.",
+      "reference": "LF 2026, art. 7",
+      "verbatim": "Article 7 : Les lingots d’or sont soumis à un droit de sortie de 1% de leur valeur en douane à l’exportation."
+    },
+    "pas_de_droit_general": {
+      "valeur": "Hors des produits nommés, aucun droit de sortie.",
+      "reference": "OMC, WT/TPR/S/445 (2023), annexe Gabon, § 3.53",
+      "verbatim": "3.53. Le Gabon a éliminé la plupart de ses droits et taxes à l'exportation. Toutefois, le manganèse"
+    },
+    "grumes": {
+      "valeur": "Exportation des grumes interdite depuis 2010.",
+      "reference": "OMC, WT/TPR/S/445 (2023), annexe Gabon, § 3.55",
+      "verbatim": "3.55. Le Gabon a interdit en 2010 toute exportation de grumes afin de favoriser leur transformation"
+    }
+  },
+  "ne_tranche_pas": "Le droit de sortie du manganèse (3,5 % de la valeur mercuriale selon l'OMC en 2023 ; aucun texte en vigueur lu, les conventions minières en régissent les modalités) — sans objet tant que la position 2602 manque au tarif collecté ; le droit sur l'or autre qu'en lingots (3 % selon l'OMC, de 0 à 3 % selon les conventions du Code minier de 2019), la position 7108.12 ne distinguant pas les lingots ; les valeurs mercuriales des produits du bois (arrêté conjoint non lu) ; le rattachement aux degrés de transformation des produits que le Code forestier ne nomme pas (bois de chauffage, plaquettes, charbon de bois, traverses, bois densifié) ; les sciages rabotés de la 4407 (« profilés rabotés » relevant de la deuxième transformation) ; l'origine du bois des meubles et ouvrages réexportés ; un code forestier postérieur à la loi n° 016/01, non trouvé ; la loi de finances rectificative 2020 (taux antérieurs), non lue (accès refusé) ; les taxes forestières (abattage) et la redevance informatique (RUSID, par déclaration), hors droit de sortie.",
+  "application_au_calcul": {
+    "route": "POST /calcul/export",
+    "positions": "EXPORT_PAR_TEXTE[\"GAB\"] (scripts/build_socle.py) : 4407 et 4408, première transformation ; 4409 à 4412 et 4418.7, deuxième ; 4414 à 4421 (hors 4418.7) et meubles et sièges en bois (9401.6, 9403.30 à 9403.60), troisième ; grumes, or et autres bois : à établir ; ailleurs, aucun droit.",
+    "devise": "Ad valorem : aucun taux de change.",
+    "reserves": "Assiette : la valeur mercuriale (première et deuxième transformations) ou la valeur FOB (troisième), qu'il faut saisir."
+  }
+}

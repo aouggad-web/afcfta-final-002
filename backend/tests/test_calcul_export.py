@@ -46,7 +46,7 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY", "COG"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY", "COG", "GAB"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -471,6 +471,26 @@ def test_cog_positions_ambigues_a_etablir(client):
         ligne = _ligne(_export(client, pays="COG", code_sh=code, valeur=1_000_000, devise="XAF", produit_fini=False),
                        "EXPORT")
         assert ligne["montant"] is None, code
+
+
+def test_gab_bois_selon_le_degre_de_transformation(client):
+    """LF 2026, art. 5 : sciages et placages 15 %, panneaux, profilés et parquets 10 % (valeur mercuriale) ;
+    menuiserie, ébénisterie, meubles en bois 3,5 % (valeur FOB)."""
+    for code, montant in (("44072914", 150_000), ("44083900", 150_000), ("44091000", 100_000),
+                          ("44123100", 100_000), ("44187200", 100_000), ("44182000", 35_000), ("94036000", 35_000)):
+        export = _export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF")
+        assert (export["etat"], _ligne(export, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(montant)), code
+
+
+def test_gab_grumes_or_et_produits_non_nommes(client):
+    """Grumes (exportation interdite), or (seuls les lingots sont nommés) et bois non classé : à établir ; hors des
+    produits nommés, aucun droit de sortie."""
+    for code in ("44034914", "71081200", "44021000"):
+        ligne = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF"), "EXPORT")
+        assert ligne["montant"] is None, code
+    corps = client.post("/calcul/export", json={
+        "pays": "GAB", "code_sh": "85171200", "valeur": 1000, "devise": "XAF"}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
 
 
 def test_egy_droit_par_tonne_en_livres(client):
