@@ -2704,11 +2704,13 @@ def _prelevements_gabon(positions, compteurs):
 #: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
 #: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
 #: COG_tva_2026-10-30.json) ; Centrafrique (CGI art. 249 et 257, fiche
-#: CAF_tva_2026-10-30.json). Ailleurs, le taux normal du pays.
+#: CAF_tva_2026-10-30.json) ; Tchad (CGI art. 230, 15°, réécrit par la loi de
+#: finances 2026, fiche TCD_tva_2026-10-31.json). Ailleurs, le taux normal du pays.
 TVA_PAR_POSITION = {
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "tva_lf2024_lf2025.json"),
+    "TCD": os.path.join(REPO, "backend", "data", "zlecaf_tcd", "tva_lf2026.json"),
 }
 
 
@@ -2733,6 +2735,33 @@ def _tva_par_position(iso, positions, compteurs):
             d["source"] = table["source"]
             d["note"] = f"{regle.get('motif') or regle['reference']} {d.get('note') or ''}".strip()
             _compter_ligne(d, compteurs, 1)
+
+
+SOURCE_TVA_GENERALE_TCD = (
+    "CGI art. 238 (loi de finances 2026, art. 32) ; loi de finances 2024, art. 14, réécrit par la loi de finances "
+    "2026, art. 73"
+)
+
+
+def _tva_tchad(positions, compteurs):
+    """Tchad : taux général de 17,5 % (CGI art. 238, I, 1°) et centimes additionnels
+    de 10 % du principal (loi de finances 2024, art. 14), soit 19,25 %, là où le
+    crawl porte les 18 % du CGI 2016 ; puis les exonérations de l'art. 230, 15°
+    (TVA_PAR_POSITION)."""
+    lignes = [d for p in positions.values() for d in p.get("droits") or [] if d.get("famille") == "tva"]
+    for d in lignes:
+        _compter_ligne(d, compteurs, -1)
+        d["taux"] = 19.25
+        d["source"] = SOURCE_TVA_GENERALE_TCD
+        _compter_ligne(d, compteurs, 1)
+    _tva_par_position("TCD", positions, compteurs)
+    for d in lignes:
+        if d["source"] == SOURCE_TVA_GENERALE_TCD:
+            d["note"] = (
+                "Taux général : 17,5 % (art. 238, I, 1° : « applicable à toutes les opérations taxables à "
+                "l’exclusion des taux réduits ») et centimes additionnels de « 10 % du principal » de la TVA. "
+                + (d.get("note") or "")
+            ).strip()
 
 
 #: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
@@ -5785,6 +5814,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
         _tva_par_position("GAB", positions, compteurs)
+    if iso == "TCD":
+        _tva_tchad(positions, compteurs)
 
     if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
         _ohada_produits_medicaux(positions, compteurs)
