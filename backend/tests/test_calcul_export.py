@@ -483,9 +483,9 @@ def test_gab_bois_selon_le_degre_de_transformation(client):
 
 
 def test_gab_grumes_or_et_produits_non_nommes(client):
-    """Grumes (exportation interdite), or (seuls les lingots sont nommés), sciages (bruts ou rabotés) et bois non
-    classé : à établir ; hors des produits nommés, aucun droit de sortie."""
-    for code in ("44034914", "71081200", "44021000", "44072914"):
+    """Grumes (exportation interdite), or (seuls les lingots sont nommés), sciages (bruts ou rabotés), bois non classé,
+    sièges et parties de meubles sans matière précisée : à établir ; hors des produits nommés, aucun droit de sortie."""
+    for code in ("44034914", "71081200", "44021000", "44072914", "94013000", "94039000"):
         ligne = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF"), "EXPORT")
         assert ligne["montant"] is None, code
     corps = client.post("/calcul/export", json={

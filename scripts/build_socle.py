@@ -1472,6 +1472,12 @@ EXPORT_PAR_TEXTE = {
             **{p: _EXPORT_GAB_TROISIEME for p in (
                 "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421",
                 "94016", "94033", "94034", "94035", "94036")},
+            # Sièges et parties de meubles dont la position ne dit pas la
+            # matière.
+            **{p: (None, None, "Siège ou partie de meuble dont la position ne dit pas la matière : 3,5 % de la "
+                               "valeur FOB s'il est en bois (troisième transformation, LF 2026, art. 5 ; Code "
+                               "forestier, art. 225), aucun droit sinon : à établir.")
+               for p in ("94013", "94014", "94018", "94019", "94039")},
             "4403": (None, None, "Bois bruts (grumes) : exportation interdite depuis 2010 (OMC, WT/TPR/S/445, annexe "
                                  "Gabon, § 3.55) ; la LF 2026 (art. 5) ne taxe que les produits transformés."),
             "44": (None, None, "Bois et ouvrages en bois : la LF 2026 (art. 5) taxe les produits transformés selon "
