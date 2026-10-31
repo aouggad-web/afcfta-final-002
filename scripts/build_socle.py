@@ -2704,11 +2704,13 @@ def _prelevements_gabon(positions, compteurs):
 #: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
 #: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
 #: COG_tva_2026-10-30.json) ; Centrafrique (CGI art. 249 et 257, fiche
-#: CAF_tva_2026-10-30.json). Ailleurs, le taux normal du pays.
+#: CAF_tva_2026-10-30.json) ; Cameroun (CGI art. 128 et annexe I du titre II,
+#: fiche CMR_tva_2026-10-31.json). Ailleurs, le taux normal du pays.
 TVA_PAR_POSITION = {
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "tva_lf2024_lf2025.json"),
+    "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "tva_cgi2026.json"),
 }
 
 
@@ -2733,6 +2735,37 @@ def _tva_par_position(iso, positions, compteurs):
             d["source"] = table["source"]
             d["note"] = f"{regle.get('motif') or regle['reference']} {d.get('note') or ''}".strip()
             _compter_ligne(d, compteurs, 1)
+
+
+SOURCE_TVA_GENERALE_CMR = "Code général des impôts du Cameroun, édition 2026 (DGI), art. 129 (1), 142 (1) a) et C 83 (1)"
+
+
+def _tva_cameroun(positions, compteurs):
+    """Cameroun : le tarif d'où vient le crawl marque la TVA « EXO » sur 141
+    positions, sans ligne de TVA au socle ; le CGI n'exonère que ce que son
+    art. 128 désigne. Chaque position reçoit sa ligne au taux général
+    (19,25 %), puis la table du CGI (TVA_PAR_POSITION) fixe les exonérées."""
+    ajoutees = []
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        if any(d.get("famille") == "tva" for d in droits):
+            continue
+        ligne = {"code": "TVA", "code_source": "TVA", "libelle": "Taxe sur la Valeur Ajoutée (incl. 10% CAC)",
+                 "famille": "tva", "taux": 19.25, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+                 "source": SOURCE_TVA_GENERALE_CMR,
+                 "note": "CGI art. 138 (1) : « La base imposable, en ce qui concerne les importations, est obtenue en "
+                         "ajoutant à la valeur imposable […] le montant du droit de douane et du Droit d'accises. »"}
+        droits.append(ligne)
+        _compter_ligne(ligne, compteurs, 1)
+        ajoutees.append(ligne)
+    _tva_par_position("CMR", positions, compteurs)
+    for ligne in ajoutees:
+        if ligne["source"] == SOURCE_TVA_GENERALE_CMR:
+            ligne["note"] = (
+                "Taux général : 17,5 % et centimes additionnels communaux de 10 % du principal (art. 142 (1) a) et "
+                "C 83 (1)). Le tarif d'où vient la position marque la TVA « EXO », mais ni l'art. 128 du CGI 2026 ni "
+                "son annexe I ne l'exonèrent (art. 129 (1)). " + ligne["note"]
+            )
 
 
 #: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
@@ -5785,6 +5818,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     if iso == "GAB":
         _prelevements_gabon(positions, compteurs)
         _tva_par_position("GAB", positions, compteurs)
+    if iso == "CMR":
+        _tva_cameroun(positions, compteurs)
 
     if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
         _ohada_produits_medicaux(positions, compteurs)
