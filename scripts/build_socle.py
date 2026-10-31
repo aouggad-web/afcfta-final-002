@@ -1219,15 +1219,13 @@ _EXPORT_CMR_LF2026_2 = (
 _EXPORT_COG_DEFAUT = (
     None, None,
     "Taux général : 2 % de la valeur en douane (LFR 2021, point 42, 1) ; le ciment produit au Congo et les autres "
-    "produits transformés d'origine congolaise sont exonérés (point 42, 2). La redevance informatique (2 % à "
-    "l'exportation, LF 2026, point 25) n'est pas comprise.",
+    "produits transformés d'origine congolaise sont exonérés (point 42, 2).",
     {"selon_transformation": True},
 )
 _EXPORT_COG_QUATRE = (
     4.0, None,
     "LFR 2021, point 42, 2 : 4 % de la valeur en douane (diamant brut et autres métaux précieux bruts, résine et "
-    "autres exsudats des arbres, huile de palme brute, farine de poissons, maïs), transformé ou non. La redevance "
-    "informatique (2 %, LF 2026, point 25) n'est pas comprise.",
+    "autres exsudats des arbres, huile de palme brute, farine de poissons, maïs), transformé ou non.",
 )
 _EXPORT_COG_HYDROCARBURES = (
     0.0, None,
@@ -1235,7 +1233,8 @@ _EXPORT_COG_HYDROCARBURES = (
 )
 _COG_FOT = (" Assiette : la valeur Free On Truck (FOT) de l'essence, fixée par arrêté, qu'il faut saisir. Grumes : "
             "exportation réservée aux bois lourds et durs (Code forestier, art. 97) ; surtaxe de 30 % au-delà du "
-            "quota 85/15 et fonds routier non compris.")
+            "quota 85/15 et fonds routier non compris. La redevance informatique est assise sur la valeur en douane, "
+            "non sur la valeur FOT : avec une valeur FOT saisie, elle est sous-estimée.")
 _EXPORT_COG_GRUMES_DIX = (
     10.0, None,
     "Bois en grumes des forêts naturelles, Okoumé, Afrormosia et Ébène : taxe à l'exportation de 10 % de la "
@@ -1247,6 +1246,41 @@ _EXPORT_COG_GRUMES_NEUF = (
     "l'exportation de 9 % de la valeur FOT, au titre du droit de sortie (LFR 2021, point 42, 3)." + _COG_FOT,
 )
 _COG_ESSENCES_NEUF = tuple(f"440349{n:02d}" for n in range(1, 39) if n not in (3, 15))
+_COG_PLAN_RESILIENCE = (" Arrêtés n° 26621 et 26622 du 30 décembre 2022 : exportation et réexportation prohibées "
+                        "pour ceux de ces produits qui ont bénéficié des avantages fiscalo-douaniers du plan de "
+                        "résilience sur la crise alimentaire 2022-2023 ; maintien après 2023 non établi.")
+_SOURCE_RI_EXPORT_COG = (
+    "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), point 25 ; loi n° 37-2021 (LFR 2021), point 41 "
+    "(sources/COG_droit_de_sortie_LFR2021_LF2026.texte-extrait.txt)"
+)
+
+
+def _redevance_informatique_export_cog(code):
+    """Redevance informatique à l'exportation : 2 % (LF 2026, point 25) ;
+    pétrole brut exonéré (LFR 2021, point 41, que la LF 2026 laisse « sans
+    changement »). Pour un produit transformé, le taux de 0,5 % de 2021, que
+    la LF 2026 ne reprend pas, laisse la ligne à établir (route)."""
+    if code.startswith("27090010"):
+        d = _droit("RI.EXP", "Redevance informatique", 0.0, "CIF", _SOURCE_RI_EXPORT_COG,
+                   note="Exonérée : « l'exportation du pétrole brut » (LFR 2021, point 41 ; LF 2026, point 25 : « Le "
+                        "reste sans changement »).")
+        d.update(code="RI.EXP", famille="export")
+        return {k: v for k, v in d.items() if v is not None}
+    d = _droit("RI.EXP", "Redevance informatique", 2.0, "CIF", _SOURCE_RI_EXPORT_COG,
+               note="LF 2026, point 25 (article 44 nouveau) : « 2% à l'exportation des marchandises ».")
+    d = {k: v for k, v in d.items() if v is not None}
+    d.update(code="RI.EXP", famille="export")
+    d["note_si_transforme"] = (
+        "Produit transformé : la LFR 2021 (point 41) fixait la redevance informatique à 0,5 % « à l'exportation des "
+        "produits transformés » ; la LF 2026 (point 25) récrit les taux (« 2% à l'exportation des marchandises ») sans "
+        "reprendre ce taux, mais laisse « le reste sans changement » : 0,5 % ou 2 %, à établir."
+    )
+    return d
+
+
+#: Perceptions de sortie dues en plus du droit de sortie, position par position.
+REDEVANCE_EXPORT = {"COG": _redevance_informatique_export_cog}
+
 
 _EXPORT_EGY_ZONES_FRANCHES = (
     " Envois aux projets productifs des zones franches, dans les quantités agréées : non soumis."
@@ -1384,7 +1418,15 @@ EXPORT_PAR_TEXTE = {
             # scié, clivé ou débruté), argent et or sous formes brutes, gomme
             # arabique (exsudat d'acacia), huile de palme brute, maïs.
             **{p: _EXPORT_COG_QUATRE for p in (
-                "71021000", "71022100", "71023100", "71069100", "71081200", "13012000", "15111000", "1005")},
+                "71021000", "71022100", "71023100", "71069100", "71081200", "13012000", "15111000")},
+            "1005": (4.0, None, _EXPORT_COG_QUATRE[2] + _COG_PLAN_RESILIENCE),
+            # Latex, balata, gutta-percha, chicle : des exsudats d'arbres, mais
+            # le texte ne nomme pas le caoutchouc.
+            "4001": (None, None, "Caoutchouc naturel, balata, gutta-percha, guayule, chicle : 4 % pour la « résine et "
+                                 "autres exsudats extraits des arbres des forêts naturelles et de plantation » (LFR "
+                                 "2021, point 42, 2), que le latex et les gommes naturelles sont, mais le texte ne "
+                                 "nomme pas le caoutchouc ; sinon droit commun (2 %, ou exonéré si transformé au "
+                                 "Congo) : à établir."),
             **{p: (None, None, "Platine et platinoïdes « sous formes brutes ou en poudre » : 4 % pour les métaux "
                                "précieux bruts (LFR 2021, point 42, 2) ; la poudre n'est pas un métal brut et la "
                                "ligne réunit les deux : à établir.")
@@ -1425,6 +1467,9 @@ EXPORT_PAR_TEXTE = {
             # Le reste du bois relève du barème de la taxe à l'exportation
             # (« ceux passibles de la taxe à l'exportation » échappent au
             # droit commun) sans y être nommé.
+            "4402": (None, None, "Charbon de bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient lieu de "
+                                 "droit de sortie, mais son barème ne le nomme pas : à établir." + _COG_PLAN_RESILIENCE
+                     + " L'arrêté n° 26621 dit « Charbon » sans préciser s'il s'agit du charbon de bois."),
             "44": (None, None, "Bois et ouvrages en bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient "
                                "lieu de droit de sortie, mais son barème ne nomme pas ce produit (bois de chauffage, "
                                "plaquettes, traverses…) : à établir."),
@@ -1659,6 +1704,8 @@ def droits_export_par_texte(iso, positions):
         elif specifique:
             d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
         sortie[code] = [{k: v for k, v in d.items() if v is not None}]
+        if iso in REDEVANCE_EXPORT:
+            sortie[code].append(REDEVANCE_EXPORT[iso](code))
     return sortie
 
 
