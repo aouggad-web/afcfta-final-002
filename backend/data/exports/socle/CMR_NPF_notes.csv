@@ -1,21 +1,22 @@
 ﻿Note;Prélèvement;Texte
-N1;RI;"Loi de finances 2023, art. 9 a), maintenu par la loi de finances 2026, art. 12 a) : « 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à 15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
-N2;TVA;CGI art. 138 (1) : « La base imposable, en ce qui concerne les importations, est obtenue en ajoutant à la valeur imposable […] le montant du droit de douane et du Droit d'accises. »
-N3;DA;art. 142 (6) a), taux moyen (motocycles de plus de 250 cm3 et parties, cheveux et perruques, friperie, pneus d'occasion, viandes et abats bovins, ovins, caprins et de volailles, cacao, huiles végétales raffinées, aliments pour chiens et chats, charbon de bois)
-N4;DA;"L'annexe II ne vise qu'une partie de la position du socle : café non torréfié hors certaines sous-positions nationales (0901.11), cure-dents (3926.90.90), ouvrages en bois 4421.99 sans ceux en bambou (4421.90 du socle, SH 2007), viandes salées ou fumées des seules espèces bovine, caprine, ovine et des volailles (0210). annexe II ; art. 142 (5) et (6) a)"
-N5;DA;"annexe II (foie gras, caviar, saumons, foies œufs et laitances) ; art. 142 (5), taux général"
-N6;DA;"annexe II, produits importés (meubles et ouvrages en bois, savons et préparations de nettoyage 3401.19.10 à 3402.90, papier hygiénique, produits alimentaires, emballages plastiques, tissus 5514 à 5516, fleurs, miel, pommes de terre, fruits 0801 à 0814, thé, café, poivres, gingembre, consoles et jeux 9504) ; art. 142 (5), taux général"
-N7;DA;art. 142 (6) b), taux réduit (motocycles de 250 cm3 ou moins, sucreries, chocolats, préparations 21.03-21.04, glaces, gruaux de maïs, céréales, stylos à bille)
-N8;DA;"Jus, eaux et boissons gazeuses ou sucrées : 25 % plus un droit spécifique de 2,5 F CFA par centilitre pour les boissons gazeuses et sucrées, et un abattement de 10 % pour les boissons gazeuses (art. 141 bis, 142 (11)) — la nature de la boisson et le volume ne sont pas connus. annexe II ; art. 141 bis et 142 (11)"
-N9;DA;"Boissons alcoolisées : 25 % majoré d'un droit spécifique par centilitre selon la boisson, sa gamme et sa contenance (art. 142 (8)) — non connus. annexe II ; art. 142 (8)"
-N10;DA;"annexe II ; art. 142 (6) e) (cigares et autres tabacs du chapitre 24, pipes), taux élevé"
-N11;DA;Cigarettes : 30 % avec un minimum de 5 000 F CFA pour 1 000 tiges (art. 142 (6) e) et (7)) — le nombre de tiges n'est pas connu. art. 142 (6) e) et (7)
-N12;DA;"annexe II (cyanure, substances explosives, détonateurs) ; art. 142 (5)"
-N13;DA;art. 142 (6) d) (hydroquinone), taux super élevé
-N14;DA;"annexe II (« Parfums et cosmétiques ») ; art. 142 (5), taux général — décision du propriétaire : toutes les positions des parfums (33.03) et des produits de beauté (33.04) Taux super élevé de 50 % si le produit contient de l'hydroquinone (art. 142 (6) d) : la composition n'est pas dans la position."
-N15;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N16;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
-N17;DA;"annexe II (perles, pierres et métaux précieux, bijouterie, 7101 à 7117) ; art. 142 (5)"
-N18;DA;"Bouteilles à gaz domestique vides (taux moyen, 12,5 %, ajoutées par la loi de finances 2026) : 7311.00.90 couvre aussi d'autres récipients pour gaz comprimés non industriels, non visés ; la position ne dit pas lesquels. art. 142 (6) a) et annexe II (CGI édition 2026)"
-N19;DA;"Véhicules utilitaires, de transport en commun, tracteurs routiers et remorques : soumis selon l'âge (plus de 15 ans) (annexe II ; art. 142 (6) a)) — l'âge n'est pas dans la position. annexe II ; art. 142 (6) a)"
-N20;DA;"Véhicules de tourisme : taux selon l'âge et la cylindrée (annexe II ; art. 142 (6) a)) — l'âge n'est pas dans la position. annexe II ; art. 142 (6) a)"
+N1;OHADA;"« D'autres droits et taxes de porte, harmonisés au niveau de la CEMAC, sont appliqués à la valeur c.a.f. en douane des marchandises importées. Il s'agit de […] prélèvement au bénéfice de l'OHADA de 0,05% » (annexe Cameroun, § 3.26) ; « sur les importations des pays non membres » (rapport commun, § 3.40)."
+N2;RI;"Loi de finances 2023, art. 9 a), maintenu par la loi de finances 2026, art. 12 a) : « 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à 15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
+N3;TVA;CGI art. 138 (1) : « La base imposable, en ce qui concerne les importations, est obtenue en ajoutant à la valeur imposable […] le montant du droit de douane et du Droit d'accises. »
+N4;DA;art. 142 (6) a), taux moyen (motocycles de plus de 250 cm3 et parties, cheveux et perruques, friperie, pneus d'occasion, viandes et abats bovins, ovins, caprins et de volailles, cacao, huiles végétales raffinées, aliments pour chiens et chats, charbon de bois)
+N5;DA;"L'annexe II ne vise qu'une partie de la position du socle : café non torréfié hors certaines sous-positions nationales (0901.11), cure-dents (3926.90.90), ouvrages en bois 4421.99 sans ceux en bambou (4421.90 du socle, SH 2007), viandes salées ou fumées des seules espèces bovine, caprine, ovine et des volailles (0210). annexe II ; art. 142 (5) et (6) a)"
+N6;DA;"annexe II (foie gras, caviar, saumons, foies œufs et laitances) ; art. 142 (5), taux général"
+N7;DA;"annexe II, produits importés (meubles et ouvrages en bois, savons et préparations de nettoyage 3401.19.10 à 3402.90, papier hygiénique, produits alimentaires, emballages plastiques, tissus 5514 à 5516, fleurs, miel, pommes de terre, fruits 0801 à 0814, thé, café, poivres, gingembre, consoles et jeux 9504) ; art. 142 (5), taux général"
+N8;DA;art. 142 (6) b), taux réduit (motocycles de 250 cm3 ou moins, sucreries, chocolats, préparations 21.03-21.04, glaces, gruaux de maïs, céréales, stylos à bille)
+N9;DA;"Jus, eaux et boissons gazeuses ou sucrées : 25 % plus un droit spécifique de 2,5 F CFA par centilitre pour les boissons gazeuses et sucrées, et un abattement de 10 % pour les boissons gazeuses (art. 141 bis, 142 (11)) — la nature de la boisson et le volume ne sont pas connus. annexe II ; art. 141 bis et 142 (11)"
+N10;DA;"Boissons alcoolisées : 25 % majoré d'un droit spécifique par centilitre selon la boisson, sa gamme et sa contenance (art. 142 (8)) — non connus. annexe II ; art. 142 (8)"
+N11;DA;"annexe II ; art. 142 (6) e) (cigares et autres tabacs du chapitre 24, pipes), taux élevé"
+N12;DA;Cigarettes : 30 % avec un minimum de 5 000 F CFA pour 1 000 tiges (art. 142 (6) e) et (7)) — le nombre de tiges n'est pas connu. art. 142 (6) e) et (7)
+N13;DA;"annexe II (cyanure, substances explosives, détonateurs) ; art. 142 (5)"
+N14;DA;art. 142 (6) d) (hydroquinone), taux super élevé
+N15;DA;"annexe II (« Parfums et cosmétiques ») ; art. 142 (5), taux général — décision du propriétaire : toutes les positions des parfums (33.03) et des produits de beauté (33.04) Taux super élevé de 50 % si le produit contient de l'hydroquinone (art. 142 (6) d) : la composition n'est pas dans la position."
+N16;DD;Le tarif des douanes de la CEMAC imprime « 3% » (p. 261), quand les autres sciages 4407.29.11 à 4407.29.28 sont à 30 %. 3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N17;DD;Le tarif des douanes de la CEMAC imprime « .30 % » (p. 370), quand les céramiques de bâtiment voisines (69.04, 69.05, 69.07) sont à 30 %. 0,3 % n'est dans aucune des catégories du TEC (5, 10, 20, 30 %) : coquille, 30 % retenu.
+N18;DA;"annexe II (perles, pierres et métaux précieux, bijouterie, 7101 à 7117) ; art. 142 (5)"
+N19;DA;"Bouteilles à gaz domestique vides (taux moyen, 12,5 %, ajoutées par la loi de finances 2026) : 7311.00.90 couvre aussi d'autres récipients pour gaz comprimés non industriels, non visés ; la position ne dit pas lesquels. art. 142 (6) a) et annexe II (CGI édition 2026)"
+N20;DA;"Véhicules utilitaires, de transport en commun, tracteurs routiers et remorques : soumis selon l'âge (plus de 15 ans) (annexe II ; art. 142 (6) a)) — l'âge n'est pas dans la position. annexe II ; art. 142 (6) a)"
+N21;DA;"Véhicules de tourisme : taux selon l'âge et la cylindrée (annexe II ; art. 142 (6) a)) — l'âge n'est pas dans la position. annexe II ; art. 142 (6) a)"
