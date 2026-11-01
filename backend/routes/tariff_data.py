@@ -147,12 +147,13 @@ async def get_country_tariff_summary(country_code: str):
 
     chapter_summary = {}
     for ch, info in sorted(chapters.items()):
-        rates = info["dd_rates"]
+        # Un taux sans source est à None (RDC) : il n'entre pas dans les statistiques.
+        rates = [r for r in info["dd_rates"] if r is not None]
         chapter_summary[ch] = {
             "tariff_lines": info["count"],
-            "dd_min": min(rates),
-            "dd_max": max(rates),
-            "dd_avg": round(sum(rates) / len(rates), 2),
+            "dd_min": min(rates) if rates else None,
+            "dd_max": max(rates) if rates else None,
+            "dd_avg": round(sum(rates) / len(rates), 2) if rates else None,
             "sample_products": info["descriptions"],
         }
 

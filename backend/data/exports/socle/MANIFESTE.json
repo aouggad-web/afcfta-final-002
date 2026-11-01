@@ -376,7 +376,7 @@
       "colonnes": [
         {
           "code": "DD",
-          "libelle": "CET Import Duty (Droit de Douane)"
+          "libelle": "Droit de douane"
         },
         {
           "code": "TVA",
@@ -385,9 +385,9 @@
       ],
       "devise": "CDF",
       "date_reference": "2026-11-01",
-      "sha256": "8de313d9f371883ae3964dd48b938508dd181a27b04d451a353f78054fa80f21",
+      "sha256": "92e528bfdf73cff45a9d3e53567b2c2c51e6e4ea013db9075d824df80cefb4d3",
       "notes_sha256": "3bee40f82296a479cdaa3b337c6c5dbe5610cc68a60873660e40097619debe2d",
-      "socle_sha256": "47a4ff1998d749fbdbe22428e52000ee0f32abdb127220b84bbf5f282f5c0d43",
+      "socle_sha256": "5b07d5b6759ca266fc8f5107fb58895662ded269c5c8f760c92941be2dab0717",
       "collecte": "2026-02-18T10:54:37.532224"
     },
     "COG": {

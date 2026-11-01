@@ -5574,6 +5574,7 @@ def _droit_douane_rdc(positions, compteurs):
             for cle in ("specifique", "compose", "regle_composee", "expression_brute"):
                 d.pop(cle, None)
             d["taux"] = None
+            d["libelle"] = "Droit de douane"
             d["note"] = NOTE_DD_COD
             _compter_ligne(d, compteurs, 1)
 

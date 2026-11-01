@@ -47,6 +47,7 @@ def test_le_droit_lu_au_tec_eac_est_retire():
         dd = position["droits"][0]
         assert dd["taux"] is None
         assert dd["note"] == bs.NOTE_DD_COD
+        assert dd["libelle"] == "Droit de douane"
         assert not {"specifique", "compose", "regle_composee", "expression_brute"} & set(dd)
     assert positions["15111000"]["droits"][1]["taux"] == 16.0
     assert compteurs["taux_indisponibles"] == 2
@@ -92,3 +93,26 @@ def test_route_annonce_que_la_rdc_n_applique_pas_le_tec():
     corps = client.post("/calcul", json={"destination": "KEN", "code_sh": "15111000", "valeur_cif": 1000,
                                          "origine": "UGA"}).json()
     assert "union_non_effective" not in corps
+
+
+def test_le_tarif_collecte_ne_sert_pas_le_tec_eac_comme_droit_rdc():
+    """backend/data/tariffs/COD_tariffs.json (servi par /api/tariff-data/COD) :
+    aucun droit de douane, ni à la ligne ni à la sous-position."""
+    with open(os.path.join(BACKEND, "data", "tariffs", "COD_tariffs.json"), encoding="utf-8") as f:
+        donnees = json.load(f)
+    lignes = donnees["tariff_lines"]
+    assert all(ligne["dd_rate"] is None and ligne["total_taxes_pct"] is None for ligne in lignes)
+    assert all(sp["dd"] is None for ligne in lignes for sp in ligne["sub_positions"])
+    assert all(t["rate"] is None for ligne in lignes for t in ligne["taxes_detail"] if t["tax"] == "CET")
+    assert donnees["summary"]["dd_rate_range"] == {"min": None, "max": None, "avg": None}
+
+
+def test_le_resume_par_chapitre_tolere_un_droit_indisponible():
+    import asyncio
+
+    spec = importlib.util.spec_from_file_location("routes_tariff_data_cod", os.path.join(BACKEND, "routes", "tariff_data.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    resume = asyncio.run(module.get_country_tariff_summary("COD"))
+    chapitre = resume["by_chapter"]["25"]
+    assert chapitre["dd_min"] is None and chapitre["dd_avg"] is None and chapitre["tariff_lines"] > 0
