@@ -664,6 +664,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     mesures_eac: calcul.mesures_eac ?? null,
     usages: calcul.usages ?? null,
     defense_commerciale: calcul.defense_commerciale ?? null,
+    union_non_effective: calcul.union_non_effective ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',
