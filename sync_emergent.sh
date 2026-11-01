@@ -78,6 +78,61 @@ git clean -fd \
   -e data/geoip -e backend/data/geoip
 echo "  ✓ Arbre aligné sur origin/$BRANCH ($(git rev-parse --short HEAD))"
 
+echo "── 1bis/6 · Contrôle des crons Emergent (avertissement, non bloquant) ──"
+# Persistance (audit de sécurité, C3) : webhook_crond.sh — script de la
+# plateforme, non modifié ici — recopie à chaque démarrage du pod
+# .emergent/cron/webhook-crons (épargné par le `git clean -e .emergent`) dans
+# /etc/cron.d et lance cron en root : une ligne plantée une fois survit aux
+# synchronisations. On SIGNALE toute ligne hors de la grammaire rendue par
+# Emergent (forme relevée dans l'historique git, commits 92d07699, f5a14932).
+# L'expression étant stricte, tout chaînage (; | & $ ` % ( ) …) est hors
+# grammaire. Les valeurs VAR=… ne sont jamais affichées.
+_check_emergent_crons() (
+  set +eu
+  export LC_ALL=C  # plages [A-Za-z] au sens octet, quelle que soit la locale du pod
+  local env_ok='^(SHELL=/bin/sh|PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin|JOB_ID=[0-9a-f-]{36}|WEBHOOK_ENV_FILE=/app/backend/\.env|CRON_API_URL=https://[a-z0-9.-]+\.emergentagent\.com)$'
+  # Séparateurs : espaces et tabulations seulement (un CR n'est pas un rendu Emergent).
+  local b=$'[ \t]' f n line host suspects=0
+  local s="$b+"
+  local job_ok="^(@(hourly|daily|weekly|monthly|yearly|annually|midnight)|[0-9A-Za-z*/,-]+($s[0-9A-Za-z*/,-]+){4})${s}root"
+  job_ok+="($s(CRON_NAME|METHOD|ENDPOINT_URL_B64|JOB_ID|AT_DATE|END_DATE|WEBHOOK_ENV_FILE|CRON_API_URL)=[A-Za-z0-9_.,:/+=@-]*)*"
+  job_ok+="($s/bin/sh)?$s/app/\\.emergent/cron/(dispatch_webhook|watch_crons)\\.sh"
+  job_ok+="($s>>?$b*(/var/log/webhook-cron\\.log|/dev/null)(${s}2>&1)?)?$b*\$"
+  for f in /app/.emergent/cron/webhook-crons /etc/cron.d/webhook-crons; do
+    [ -f "$f" ] || { echo "  · $f : absent"; continue; }
+    n=0
+    while IFS= read -r line || [ -n "$line" ]; do
+      n=$((n + 1))
+      [[ $line =~ ^[[:space:]]*(#.*)?$ || $line =~ $env_ok ]] && continue
+      if [[ $line =~ $job_ok ]]; then
+        # Une ligne bien formée peut viser un hôte tiers (le dispatch y envoie
+        # WEBHOOK_CRON_SECRET) : on vérifie l'hôte, jamais l'URL complète.
+        [[ $line =~ ENDPOINT_URL_B64=([^[:space:]]+) ]] || continue
+        host="$(printf '%s' "${BASH_REMATCH[1]}" | base64 -d 2>/dev/null | head -c 300 \
+          | sed -nE 's#^https?://([A-Za-z0-9.-]+).*#\1#p')"
+        [[ $host =~ (^|\.)emergentagent\.com$ ]] && continue
+        line="dispatch vers un hôte hors emergentagent.com : ${host:-illisible}"
+      fi
+      suspects=$((suspects + 1))
+      printf '  ⚠ %s:%d : %s\n' "$f" "$n" "$(printf '%s' "$line" \
+        | sed -E 's/([A-Za-z_][A-Za-z0-9_]*)=[^[:space:]]*/\1=***/g; s/[A-Za-z0-9+_-]{20,}=*/***/g' \
+        | tr -d '\000-\037\177' | cut -c1-200)"
+    done < "$f"
+  done
+  if [ -f /app/.emergent/cron/webhook-crons ] && [ -f /etc/cron.d/webhook-crons ] \
+    && ! cmp -s /app/.emergent/cron/webhook-crons /etc/cron.d/webhook-crons; then
+    suspects=$((suspects + 1))
+    echo "  ⚠ /etc/cron.d/webhook-crons diffère de la copie persistante d'Emergent."
+  fi
+  if [ "$suspects" -gt 0 ]; then
+    echo "  ⚠ $suspects anomalie(s) : compromission possible du pod. Ne pas se contenter"
+    echo "     de re-synchroniser : faire reconstruire le pod ET son volume par Emergent."
+  else
+    echo "  ✓ Aucune entrée cron hors forme Emergent."
+  fi
+)
+_check_emergent_crons || true
+
 echo "── 2/6 · Vérification des modules critiques (anti copie-partielle) ──"
 MISSING=0
 CRITICAL=(
@@ -270,7 +325,7 @@ fi
 
 if [ "${SKIP_BUILD:-0}" = "1" ] && [ "$HAS_SUPERVISOR" = "0" ]; then
   echo "── 5/6 · Build du frontend SAUTÉ (SKIP_BUILD=1, pas de supervisor) ──"
-  ( cd frontend; if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile || yarn install; else npm install --legacy-peer-deps; fi )
+  ( cd frontend; if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile --ignore-scripts; else npm install --legacy-peer-deps; fi )
 else
   if [ "${SKIP_BUILD:-0}" = "1" ]; then
     echo "── 5/6 · Build du frontend (SKIP_BUILD ignoré : supervisor sert frontend/build) ──"
@@ -280,7 +335,11 @@ else
   (
     cd frontend
     if command -v yarn >/dev/null 2>&1; then
-      yarn install --frozen-lockfile || yarn install
+      # Lockfile strict, sans repli ni scripts d'installation des paquets
+      # (audit, C3) : un yarn.lock périmé arrête le déploiement au lieu de
+      # re-résoudre les versions en silence. Build vérifié identique à l'octet
+      # (seuls core-js et esbuild ont des scripts, sans effet sur le build).
+      yarn install --frozen-lockfile --ignore-scripts
       yarn build
     else
       npm install --legacy-peer-deps
