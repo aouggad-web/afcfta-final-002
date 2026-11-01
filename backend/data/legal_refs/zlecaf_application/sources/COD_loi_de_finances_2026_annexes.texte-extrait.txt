@@ -1,0 +1,87 @@
+RDC — loi de finances n° 25/060 du 29 décembre 2025 pour l'exercice 2026 (texte adopté) : article 10, annexe XV
+(droits de douane à l'importation) et annexe XVI (droits de douane à l'exportation), extraits.
+Extrait établi le 2026-11-01. Le volume « Recettes » publié par le ministère du Budget est une copie scannée
+(« Pour copie certifiée conforme à l'original, le 29 décembre 2025, le Cabinet du Président de la République ») :
+les passages ci-dessous sont transcrits à la lecture des pages, sans reconnaissance automatique de caractères.
+URL : https://www.budget.gouv.cd/wp-content/uploads/budget2026/lf_2026_recettes.pdf
+sha256 : 6b1f0c92f07d6fda86a1e5178da3b3924e5a838e4b56e0dec1e3f953de63bd24 (250 pages)
+
+====================================================================================================
+Page 13 (p. 4 de la loi) — TITRE II, CHAPITRE I : DES MESURES RELATIVES AUX RECETTES DES DOUANES ET ACCISES
+----------------------------------------------------------------------------------------------------
+Article 10 :
+Les mesures relatives aux recettes des douanes et accises reprises aux articles 11, 12, 14, 15, 16, 17, 18, 19, 20
+et 21 de la Loi de Finances n° 24/011 du 20 décembre 2024 pour l'exercice 2025, ainsi qu'aux articles 6 et 7 de la
+Loi de Finances rectificative n°25/044 du 28 juin 2025, sont d'application dans le cadre de la présente Loi.
+Les mesures relatives aux droits et taxes à l'importation et à l'exportation reprises dans la présente Loi modifient
+et complètent l'Ordonnance-Loi n° 011/2012 du 21 septembre 2012 instituant le tarif des droits et taxes à
+l'importation et l'Ordonnance-Loi n° 012/2012 du 21 septembre 2012 instituant le nouveau tarif des droits et taxes à
+l'exportation, telles que modifiées et complétées à ce jour.
+
+====================================================================================================
+Pages 69 à 71 — ANNEXE XV : PRODUITS SOUMIS AUX DROITS DE DOUANE A L'IMPORTATION
+----------------------------------------------------------------------------------------------------
+A) Taux de 5% — Position tarifaire
+Vanille en poudre 0905.20.00 ; Farine de fèves de soja 1208.10.00 ; Glucose et sirop utilisés dans l'industrie
+Pharmaceutique 1702.30.10 ; Poudre de cacao, sans addition de sucre ou d'autres édulcorants 1805.00.00 ; Dolomie non
+calcinée ni frittée, dite « crue » 2518.20.00 ; Chaux vive 2522.10.00 ; Nitrate d'ammonium, même en solution aqueuse
+destiné à être utilisé comme engrais pour l'agriculture 3102.30.10 ; Autres préparations tensio-actives des types
+utilisées comme intrants par l'industrie locale 3402.90.11 ; Plaques, feuilles, bandes [...] auto-adhésifs, en
+matières plastiques [...] pour la fabrication des collants (scotches) 3919.10.00 ; Papiers des types utilisés pour
+papiers de toilette [...] des types utilisé pour la fabrication des papiers hygiéniques 4803.10.00 ; Boîtes et
+caisses en papier ou carton ondulé 4819.10.00 ; Produits laminés plats [...] 7208.26.00, 7208.27.00, 7208.38.00,
+7208.39.00, 7209.15.00, 7209.16.00, 7209.17.00 ; Produits laminés plats [...] plaqués ou revêtus, enroulés, destinés
+à la fabrication des tôles de toiture 7210.90.10 ; Nickel non allié 7502.10.00 ; Plomb affiné 7801.10.00 ; Autre
+plomb non affiné, sous forme brute 7801.99.00 ; Débris de plomb 7802.00.10 ; Déchets de plomb 7802.00.20 ; Poussière
+de zinc 7903.10.00 ; Autres accessoires de tuyauterie [...] en fonte, fer ou acier 7307.99.00 ; Autres feuilles et
+bandes minces en aluminium [...] d'une épaisseur n'excédant pas 0,2 mm 7607.19.00.
+B) Taux de 10% — Position tarifaire
+Huile de palme brute 1511.10.00 ; Pâtes alimentaires non cuites ni farcies ni autrement préparées, contenant des œufs
+1902.11.00 ; Autres pâtes alimentaires, non cuites ni farcies 1902.19.00 ; Dentifrices 3306.10.00 ; Préparations de
+dégraissage ou de nettoyage pour l'industrie [...] 3402.90.20 ; Ebauches de bouteilles 3923.30.10 ; Autres
+pneumatiques des types utilisés pour les voitures de tourisme [...] 4011.10.99 ; Autres pneumatiques des types
+utilisés pour motocycles base de caoutchouc synthétique 4011.40.11 ; Autres pneumatiques des types utilisés pour les
+chariots tracteurs du n°87.09 [...] 4011.99.91, 4011.99.99 ; Pneumatiques rechapés ou usagés [...] 4012.11.00,
+4012.12.00, 4012.13.00, 4012.19.00 ; Autres pneumatiques usagés 4012.20.00 ; Autres (bandages, bandes de roulement
+pour pneumatiques et "flaps"), en caoutchouc 4012.90.00 ; Planches, plaques, panneaux, carreaux et articles
+similaires, non ornementés, revêtus ou renforcés de papier ou de carton 6809.11.00 ; Autres planches, plaques,
+panneaux et articles similaires 6809.19.00 ; Pointes et clous 7317.00.10 ; Serviettes hygiéniques 9619.00.10.
+C) Taux de 20% — Position tarifaire
+Viandes des animaux de l'espèce bovine, fraiches, réfrigérées ou congelées 02.01 ; [...] congelées 02.02 ; [...]
+porcine 02.03 ; [...] ovine ou caprine 02.04 ; Œufs de volailles de l'espèce 0407.21.00 ; Nitrate d'ammonium, même
+en solution aqueuse, destiné à la fabrication des explosifs utilisés dans les carrières minières 3102.30.90 ; Nitrate
+d'ammonium en gel ou en granulés creux, destiné à l'industrie minière 3602.10.00 ; Explosifs préparés 3602.20.00 ;
+Liants préparés pour moules ou noyaux de fonderie; produits chimiques et préparations des industries connexes [...]
+38.24 ; Autres papiers des types utilisés pour papiers de toilette [...] en rouleaux ou en feuilles 4803.00.90 ;
+Produits laminés plats [...] laminés à froid [...] 7209.26.00, 7209.27.00 ; Produits laminés plats, en fer ou en
+aciers non alliés, plaqués ou revêtus (à l'exception des produits du n° 7210.90.10) 72.10 ; Autres produits laminés
+plats [...] d'une largeur inférieure à 600 mm [...] d'une épaisseur de 4,75 mm ou plus 7211.14.00 ; [...] d'une
+épaisseur inférieure à 4,75mm 7211.19.10 ; Barres en fer ou en aciers non alliés [...] 7214.20.00 ; Profilés en L
+7216.21.00 ; Autres tubes, tuyaux et profilés creux [...] en fer ou en acier (toute la position, à l'exception des
+produits des n°s 7306.11.00 à 730629.00) 73.06 ; Boulets et articles similaires pour broyeurs 7326.11.00 ; Autres
+7326.19.00.
+« Vu pour être annexé à la Loi de finances n° 25/060 du 29 décembre 2025 pour l'exercice 2026. »
+
+====================================================================================================
+Pages 72 à 80 — ANNEXE XVI : PRODUITS SOUMIS AUX DROITS DE DOUANE A L'EXPORTATION (lignes retenues)
+Deux colonnes de taux après l'unité ; la seconde (0 ou 0 %) n'est pas intitulée.
+----------------------------------------------------------------------------------------------------
+p. 72  55) 09.01  Café [...] café vert Robusta, en fèves 11.11 à 11.18, déchets et brisures 11.20 ; café vert
+       Arabica, en fèves 11.31 à 11.37, déchets et brisures 11.40 : kg — exempt — 0
+       56) 22.01  [...] 90.91 eau douce : l — 5% — 0% ; 10.00, 90.10, 90.20, 90.99 : exempt — 0%
+       57) 26.02, 58) 26.03 [...] minerais et concentrés : kg — 10% — 0%
+p. 74  73) 2709.00.00 Huiles brutes de pétrole ou de minéraux bitumineux : kg — 5% — 0%
+       74) 2716.00.00 Énergie électrique : 1000 kwh — 5% — 0%
+       75) 2817.00.00 Oxyde de zinc et peroxyde de zinc : 5% — 0%
+       75) 28.22 Oxydes et hydroxydes de cobalt [...] 00.11 à 00.90 : kg — 10% — 0%
+p. 75  79) 44.07 Bois sciés [...] : 29.11 sciages avivés d'une épaisseur inférieure à 50 mm, 29.12 [...] supérieure
+       à 50 et inférieure ou égale à 100 mm, 29.13 [...] supérieure à 100 et inférieure ou égale à 150 mm : m3 —
+       exempt — 0% ; 29.19 autres : m3 — 5% — 0%
+p. 76  80) 71.02 Diamants [...] 21.10 / 31.10 d'exploitation artisanale : carat — 0,5% — 0% ; 21.20 / 31.20 de
+       production industrielle : carat — 3% — 0%
+       82) 71.08 Or [...] poudres et autres formes brutes, d'exploitation artisanale (11.11, 11.12, 11.19, 12.11,
+       12.12, 12.19) : kg — 0,5% — 0% ; de production industrielle (11.21, 11.22, 11.29, 12.21, 12.22, 12.29) : kg —
+       3% — 0%
+p. 77  87) 74.02 Cuivre non affiné et alliages de cuivre sous forme brute : 00.10 Cuivre non affiné, 00.90 Cuivre
+       blister, Cuivre noir, Autres : kg — 5% — 0%
+       88) 74.04 Déchets et débris de cuivre 00.10 à 00.90 : kg — 5% — 0%
