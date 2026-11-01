@@ -1284,6 +1284,26 @@ def _redevance_informatique_export_cog(code):
 REDEVANCE_EXPORT = {"COG": _redevance_informatique_export_cog}
 
 
+_GAB_SOURCE_BOIS = " (LF 2026, art. 5 ; degrés de transformation : Code forestier, loi n° 016/01, art. 223 à 225)."
+_GAB_MERCURIALE = (" Assiette : la valeur mercuriale fixée par arrêté conjoint des ministres de l'Économie et des "
+                   "Forêts (LF 2026, art. 6), qu'il faut saisir.")
+_NOTE_GAB_PREMIERE = ("Produit de première transformation du bois (sciage, déroulage, tranchage, séchage) : 15 % de "
+                      "la valeur mercuriale" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE)
+_NOTE_GAB_DEUXIEME = ("Produit de deuxième transformation du bois (panneaux, moulures, profilés rabotés, parquets) : "
+                      "10 % de la valeur mercuriale" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE)
+_NOTE_GAB_TROISIEME = ("Produit de troisième transformation du bois (produits finis et composites de la menuiserie "
+                       "et de l'ébénisterie) : 3,5 % de la valeur FOB" + _GAB_SOURCE_BOIS)
+# Chapitre 44, note 6 du tarif CEMAC : « bois » y comprend le bambou et les
+# autres matières ligneuses, que la LF ne taxe pas ; l'exportateur déclare la
+# matière (`calcul_export.SELON_MATIERE`), le taux tient à sa réponse.
+_EXPORT_GAB_PREMIERE = (None, None, _NOTE_GAB_PREMIERE, {"selon_matiere": True, "taux_si_oui": 15.0})
+_EXPORT_GAB_DEUXIEME = (None, None, _NOTE_GAB_DEUXIEME, {"selon_matiere": True, "taux_si_oui": 10.0})
+_EXPORT_GAB_TROISIEME = (None, None, _NOTE_GAB_TROISIEME, {"selon_matiere": True, "taux_si_oui": 3.5})
+# Sous-positions « De bois » (4410.1) et meubles « en bois » du chapitre 94,
+# qui range à part le bambou (9401.5, 9403.8) : matière établie.
+_EXPORT_GAB_DEUXIEME_BOIS = (10.0, None, _NOTE_GAB_DEUXIEME)
+_EXPORT_GAB_TROISIEME_BOIS = (3.5, None, _NOTE_GAB_TROISIEME)
+
 _EXPORT_EGY_ZONES_FRANCHES = (
     " Envois aux projets productifs des zones franches, dans les quantités agréées : non soumis."
 )
@@ -1475,6 +1495,48 @@ EXPORT_PAR_TEXTE = {
             "44": (None, None, "Bois et ouvrages en bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient "
                                "lieu de droit de sortie, mais son barème ne nomme pas ce produit (bois de chauffage, "
                                "plaquettes, traverses…) : à établir."),
+        },
+    ),
+    # Clés : lignes nationales du tarif (TEC CEMAC) ; hors des produits
+    # nommés, aucun droit de sortie (OMC, WT/TPR/S/445, annexe Gabon, § 3.53).
+    "GAB": (
+        "Loi n° 041/2025 du 29 décembre 2025 (loi de finances 2026), art. 5 à 7 ; Code forestier (loi n° 016/01), "
+        "art. 222 à 225 (sources/GAB_droit_de_sortie_LF2026.texte-extrait.txt)",
+        None,
+        {
+            # Feuilles de placage (déroulées ou tranchées).
+            "4408": _EXPORT_GAB_PREMIERE,
+            # Bois sciés « même rabotés » : le rabotage mène aux « profilés
+            # rabotés » de la deuxième transformation.
+            "4407": (None, None, "Bois sciés : 15 % de la valeur mercuriale s'ils sont seulement sciés ou séchés "
+                                 "(première transformation, Code forestier, art. 223), mais la position comprend les "
+                                 "bois rabotés, et les « profilés rabotés » relèvent de la deuxième transformation "
+                                 "(10 %, art. 224) : à établir" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE),
+            # Moulures et profilés, panneaux de particules, de fibres,
+            # contreplaqués, panneaux assemblés pour parquets.
+            # Panneaux (y compris ceux « d'autres matières ligneuses » des 44.10
+            # et 44.11), moulures (4409.21 : en bambou), contreplaqués,
+            # parquets : selon la matière déclarée ; 4410.1 : « De bois ».
+            **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "4410", "4411", "4412", "44187")},
+            "44101": _EXPORT_GAB_DEUXIEME_BOIS,
+            # Menuiserie et ébénisterie : ouvrages finis, meubles et sièges en
+            # bois.
+            **{p: _EXPORT_GAB_TROISIEME for p in (
+                "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421")},
+            **{p: _EXPORT_GAB_TROISIEME_BOIS for p in ("94016", "94033", "94034", "94035", "94036")},
+            # Sièges et parties de meubles dont la position ne dit pas la
+            # matière : selon la matière déclarée.
+            **{p: _EXPORT_GAB_TROISIEME for p in ("94013", "94014", "94018", "94019", "94039")},
+            "4403": (None, None, "Bois bruts (grumes) : exportation interdite depuis 2010 (OMC, WT/TPR/S/445, annexe "
+                                 "Gabon, § 3.55) ; la LF 2026 (art. 5) ne taxe que les produits transformés."),
+            "44": (None, None, "Bois et ouvrages en bois : la LF 2026 (art. 5) taxe les produits transformés selon "
+                               "leur degré de transformation (Code forestier, art. 223 à 225), qui ne classent pas ce "
+                               "produit (bois de chauffage, plaquettes, charbon de bois, traverses, bois densifié…) : "
+                               "à établir."),
+            "7108": (None, None, "Or : la LF 2026 (art. 7) soumet « les lingots d'or » à un droit de sortie de 1 % de "
+                                 "leur valeur en douane ; la position ne distingue pas les lingots des autres formes, "
+                                 "et le droit des autres formes (3 % selon l'OMC en 2023, de 0 à 3 % selon les "
+                                 "conventions minières) n'est pas établi : à établir."),
         },
     ),
     # Clés : lignes nationales du tarif égyptien (libellés arabes de la douane) ;

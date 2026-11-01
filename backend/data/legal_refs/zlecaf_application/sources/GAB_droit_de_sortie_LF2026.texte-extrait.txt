@@ -1,0 +1,62 @@
+Gabon — droits de sortie à l'exportation : loi de finances 2026 (articles 5 à 7), Code forestier (articles 222
+à 225), OMC (manganèse, interdiction des grumes)
+Extrait établi le 2026-10-31. Textes à couche texte (pdftotext -layout) ; seuls les passages relatifs aux droits
+de sortie sont reproduits.
+
+======================================================================================================
+1. Loi n° 041/2025 du 29 décembre 2025 déterminant les ressources et les charges de l'Etat pour l'année 2026
+   Journal officiel de la République gabonaise n° 96 Quater spécial du 30 décembre 2025
+   archivé : data/sources/gabon/official/gab-jo-96quater-loi-finances-2026.pdf
+   sha256 : 6e649f3716bb847cd9f3c23bd95afb426710230f1eaa0b6854e8bf5e4aaf380e
+   La loi de finances rectificative 2026 (JO n° 123 bis, archivée : gab-jo-123bis-lfr-2026.pdf) ne modifie pas
+   ces articles (aucune mention de droit de sortie, de valeur mercuriale ni de lingots hors des tableaux de
+   recettes).
+------------------------------------------------------------------------------------------------------
+B- Des dispositions douanières
+Chapitre 1 : A l’exportation
+Section 1 : Filière bois
+Article 5 : Les produits transformés du bois sont soumis à un droit de sortie conformément au barème suivant :
+-première transformation : 15% de la valeur mercuriale ;
+-deuxième transformation : 10% de la valeur mercuriale ;
+-troisième transformation : 3,5% de la valeur FOB.
+Article 6 : Les valeurs mercuriales des produits du bois sont fixées par arrêté conjoint des Ministres chargés de
+l’Economie et des Forêts.
+Section 2 : Secteur minier aurifère
+Article 7 : Les lingots d’or sont soumis à un droit de sortie de 1% de leur valeur en douane à l’exportation.
+
+======================================================================================================
+2. Loi n° 016/01 du 31 décembre 2001 portant code forestier en République gabonaise, articles 222 à 225
+   URL : https://faolex.fao.org/docs/pdf/gab29255.pdf
+   sha256 : daaa2da477eb9712f277e108b71526d51971c18e2b29dca45f0d002648185b2c
+   (aucun code forestier postérieur promulgué n'a été trouvé ; un avant-projet de code des eaux et forêts date
+   de 2017)
+------------------------------------------------------------------------------------------------------
+Article 222.- L'industrialisation de la filière bois comporte essentiellement :
+-l'industrie de la première transformation ;
+-l'industrie de la deuxième transformation ;
+-l'industrie de la troisième transformation.
+Article 223.- L'industrie de première transformation regroupe les activités de sciage, de déroulage, de tranchage
+et le séchage.
+Article 224.- L'industrie de deuxième transformation regroupe les activités de production de panneaux et la
+fabrication de produits standards simples tels que les moulures, les profilés rabotés et les parquets.
+Article 225.- L'industrie de troisième transformation regroupe d'autres activités donnant lieu notamment à des
+produits finis et composites de la menuiserie et d'ébénisterie.
+
+======================================================================================================
+3. OMC, Examen des politiques commerciales des pays de la CEMAC, WT/TPR/S/445 (2023), annexe Gabon, § 3.53 et 3.55
+   archivé : data/sources/gabon/official/omc-wt-tpr-s-445-annexe-gabon.pdf
+   sha256 : 597ad0c10bb55cc4933947b3f266b2783cf9d947cb538a3d8cc0d52c17a0c2e0
+   (source secondaire : les taux du bois cités, 7,5 % et 3 %, sont ceux de la loi de finances rectificative
+   2020, que la loi de finances 2026 remplace)
+------------------------------------------------------------------------------------------------------
+3.53. Le Gabon a éliminé la plupart de ses droits et taxes à l'exportation. Toutefois, le manganèse
+est soumis à une taxe à l'exportation de 3,5% de la valeur mercuriale. L'or est soumis à une taxe à
+l'exportation de 3%. Les produits du bois ayant subi une première transformation sont assujettis à
+un droit de sortie au taux de 7.5%; les produits ayant subi une deuxième transformation sont
+assujettis au droit de sortie au taux de 3% et les produits ayant subi une troisième transformation
+ne sont pas assujettis au droit de sortie.39 De manière générale, les droits et taxes de sortie au
+Gabon sont compris entre zéro et 7.5%. Il existe d'autres droits et taxes prélevés par les
+administrations techniques concernées (Mines40, Eaux et Forêts).
+[...]
+3.55. Le Gabon a interdit en 2010 toute exportation de grumes afin de favoriser leur transformation
+locale préalable.
