@@ -1625,7 +1625,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/STP_tariffs.json",
       "source_sha256": "af850c20316b436601bb55edd5d09f99de36e1aa28c2388e2239ee6c0202dd8d",
-      "socle_sha256": "414240accf61df5ca01292825aabba763442c1524a620fff1e8f1e480517f8fa",
+      "socle_sha256": "12bda8b8f5177bf5be4cf04acc82bd50369ad006426c85e8beab30f640cbe3ec",
       "collecte": "2026-07-05T11:02:55.441773+00:00",
       "etat": "COMPLET",
       "familles": [

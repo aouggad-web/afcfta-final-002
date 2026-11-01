@@ -1,0 +1,11 @@
+{
+  "source": "Lei n.º 04/2023, Alteração dos Direitos Aduaneiros sobre Lâmpadas, Plásticos, Água Mineral, Equipamentos e Matérias-primas para a Produção de Energias Renováveis e Sabão (Diário da República, I Série, n.º 31, 15/06/2023)",
+  "fiche": "STP_direitos_lei4_2023_2026-11-01.json",
+  "regles": [
+    {"prefixes": ["220110"], "dd": 10.0, "reference": "Art. 1.º, a) : « Água mineral 2201 - Taxa 10% »"},
+    {"prefixes": ["392321", "392329"], "dd": 25.0, "reference": "Art. 1.º, b) : « Plásticos e suas obras (sacos de plástico) Capítulo 39 - Taxa 25% »"},
+    {"prefixes": ["39"], "dd": 15.0, "reference": "Art. 1.º, c) : « Plásticos e suas obras (outros) Capítulo 39 - Taxa 15% »"},
+    {"prefixes": ["853950"], "dd": 0.0, "reference": "Art. 2.º, 3 : « As lâmpadas LED, sob a classificação pautal 8539,50 ficam isentas de pagamento dos direitos aduaneiros na importação »"},
+    {"prefixes": ["8539"], "exclusions": ["853990"], "dd": 55.0, "reference": "Art. 1.º, d) : « Lâmpadas 8539 - Taxa 55 % »"}
+  ]
+}
