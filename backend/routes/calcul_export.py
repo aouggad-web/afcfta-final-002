@@ -100,7 +100,8 @@ SELON_DECLARATION = {
         "oui": (0.0, "Code minier, art. 234 : le titulaire « est totalement exonéré à la sortie, pour ses exportations "
                      "en rapport avec le projet minier, de tous droits de douane ». Réserve : le projet de loi de "
                      "finances 2025 (art. 17) proposait de supprimer cette exonération et de taxer à 2 % les produits "
-                     "miniers ; le texte adopté (loi n° 24/011) n'a pas été lu."),
+                     "miniers ; le texte adopté (loi n° 24/011), dont la loi de finances 2026 (art. 10) maintient les "
+                     "mesures douanières, n'a pas été lu ; l'annexe XVI de 2026 garde les minerais à 10 %."),
         "non": (None, "Exportateur autre qu'un titulaire minier pour son projet : taux du tarif."),
     },
     "COG": {

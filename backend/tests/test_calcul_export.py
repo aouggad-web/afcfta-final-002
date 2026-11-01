@@ -610,8 +610,10 @@ def test_cod_minerai_selon_le_titulaire_minier(client):
 
 
 def test_cod_produits_non_miniers_sans_question(client):
-    """Grumes tropicales 10 %, électricité et pétrole brut 5 % : la réponse sur le titulaire minier n'y change rien."""
-    for code, montant in (("44034900", 100_000), ("44034200", 100_000), ("27160000", 50_000), ("27090000", 50_000)):
+    """Grumes tropicales 10 %, électricité et pétrole brut 5 %, café vert exempt (LF 2026, annexe XVI) : la réponse sur le
+    titulaire minier n'y change rien."""
+    for code, montant in (("44034900", 100_000), ("44034200", 100_000), ("27160000", 50_000), ("27090000", 50_000),
+                          ("09011100", 0)):
         for titulaire in (None, True):
             corps = {"pays": "COD", "code_sh": code, "valeur": 1_000_000, "devise": "CDF"}
             if titulaire is not None:
@@ -623,23 +625,29 @@ def test_cod_produits_non_miniers_sans_question(client):
 def test_cod_liste_consolidee(client):
     """Tarif tel que modifié (liste consolidée, annexe XVI des projets de LF 2025 et 2026) : titane 10 %, hydroxyde de
     cobalt 10 %, déchets de cuivre 5 %, mattes de cuivre 5 %, zinc brut 5 %, étain brut 10 %, chrome brut 5 %,
-    ouvrages en chrome 10 %."""
+    ouvrages en chrome 10 % ; LF 2026, annexe XVI : cuivre blister et oxyde de zinc 5 %."""
     for code, montant in (("26140000", 100_000), ("28220000", 100_000), ("74040000", 50_000), ("74010000", 50_000),
                           ("79011100", 50_000), ("80011000", 100_000), ("81122100", 50_000), ("81122900", 100_000),
-                          ("72241000", 100_000), ("74032100", 100_000)):
+                          ("72241000", 100_000), ("74032100", 100_000), ("74020000", 50_000), ("28170010", 50_000)):
         export = _export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF", titulaire_minier=False)
         assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
 
 
+def test_cod_cafe_decafeine_hors_annexe(client):
+    """L'annexe XVI ne vise que le café vert non décaféiné : le décaféiné n'a pas de droit de sortie publié."""
+    corps = client.post("/calcul/export", json={"pays": "COD", "code_sh": "09011200", "valeur": 1000,
+                                                "devise": "CDF"}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
+
+
 def test_cod_positions_a_etablir(client):
-    """Or et diamants (artisanal 0,5 %, industriel 3 %), sciages selon l'épaisseur, eau, et les écarts que seule
-    l'annexe des projets de LF porte (café, blister, oxyde de zinc)."""
-    for code in ("71081200", "71081100", "44072900", "22019000", "09011100", "74020000", "28170010"):
+    """Or et diamants (artisanal 0,5 %, industriel 3 %), sciages selon l'épaisseur (exempts jusqu'à 150 mm), eau."""
+    for code in ("71081200", "71081100", "44072900", "22019000"):
         ligne = _ligne(_export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF",
                                titulaire_minier=False), "EXPORT")
         assert ligne["montant"] is None, code
     or_brut = _ligne(_export(client, pays="COD", code_sh="71081200", valeur=1_000_000, devise="CDF"), "EXPORT")
-    assert "0,5 %" in or_brut["note"] and "24/011" in or_brut["note"]
+    assert "0,5 %" in or_brut["note"] and "24/011" in or_brut["note"] and "25/060" in or_brut["note"]
 
 
 def test_cod_or_et_diamants_exoneres_pour_le_titulaire_minier(client):
