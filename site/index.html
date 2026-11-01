@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZLECAf · Calculateur tarifaire AfCFTA</title>
+    <meta
+      name="description"
+      content="Calculateur de droits de douane et d'opportunités commerciales pour la Zone de libre-échange continentale africaine (ZLECAf / AfCFTA) — 54 pays."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0f4c5c" />
+    <style>
+      :root {
+        --bg: #f7f5f0;
+        --card: #ffffff;
+        --ink: #14213d;
+        --muted: #5b6472;
+        --brand: #0f4c5c;
+        --brand-2: #c9a227;
+        --border: #e4e0d8;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1726;
+          --card: #121d30;
+          --ink: #eef2f7;
+          --muted: #9aa6b6;
+          --brand: #4bb6c9;
+          --brand-2: #e2bd4a;
+          --border: #22304a;
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        padding: 20px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .wrap { width: 100%; max-width: 760px; margin: 0 auto; }
+      .brand { font-weight: 700; letter-spacing: .5px; color: var(--brand); font-size: 18px; }
+      .brand span { color: var(--brand-2); }
+      main { flex: 1; display: flex; align-items: center; padding: 48px 16px; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 40px 32px;
+        width: 100%;
+      }
+      h1 { font-size: clamp(26px, 5vw, 40px); margin: 0 0 8px; color: var(--brand); }
+      .tagline { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); margin: 0 0 28px; }
+      .lang { margin: 20px 0; }
+      .lang h2 {
+        font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+        color: var(--brand-2); margin: 0 0 6px;
+      }
+      .lang p { margin: 0; color: var(--ink); }
+      .cta {
+        display: inline-block; margin-top: 28px; padding: 13px 26px;
+        background: var(--brand); color: #fff; text-decoration: none;
+        border-radius: 10px; font-weight: 600;
+      }
+      .cta:hover { opacity: .92; }
+      footer {
+        padding: 20px 16px; border-top: 1px solid var(--border);
+        color: var(--muted); font-size: 13px;
+      }
+      .footer-row { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+      a { color: var(--brand); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap"><div class="brand">ZLECAf<span> · </span>AfCFTA</div></div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="card">
+          <h1>Calculateur tarifaire ZLECAf</h1>
+          <p class="tagline">
+            Droits de douane, règles d'origine et opportunités commerciales entre les 54 pays
+            de la Zone de libre-échange continentale africaine.
+          </p>
+
+          <div class="lang" lang="fr">
+            <h2>Français</h2>
+            <p>
+              La plateforme calcule, source à l'appui, les droits et taxes à l'importation et à
+              l'exportation entre pays africains, la préférence ZLECAf applicable et le coût rendu
+              d'une opération. Accès et démonstration sur demande.
+            </p>
+          </div>
+
+          <div class="lang" lang="en">
+            <h2>English</h2>
+            <p>
+              A sourced calculator of import/export duties and taxes between African countries,
+              the applicable AfCFTA preference and the landed cost of a trade. Access and demo on
+              request.
+            </p>
+          </div>
+
+          <a class="cta" href="mailto:contact@afcfta-zlecaf.com">Nous contacter · Contact us</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap footer-row">
+        <span>© <span id="y">2026</span> ZLECAf / AfCFTA</span>
+        <span><a href="mailto:contact@afcfta-zlecaf.com">contact@afcfta-zlecaf.com</a></span>
+      </div>
+    </footer>
+
+    <script>
+      // Seul script de la page : l'année courante. Aucune dépendance externe.
+      document.getElementById("y").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

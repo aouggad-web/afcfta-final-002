@@ -1,0 +1,46 @@
+# Déploie UNIQUEMENT la page vitrine statique de `site/` sur GitHub Pages.
+#
+# Remplace l'ancien workflow jekyll-gh-pages.yml qui publiait la RACINE du dépôt
+# (`source: ./`), ce qui aurait exposé les docs internes (audits, instructions)
+# sur le domaine public. Ici, seul le contenu de `site/` est publié.
+#
+# Prérequis côté dépôt (une fois) : Settings → Pages → « Build and deployment »
+# → Source = « GitHub Actions ». Le domaine est porté par `site/CNAME`.
+name: Deploy landing page to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement Pages à la fois.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload landing page only (site/)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
