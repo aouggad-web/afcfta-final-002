@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Synchronisation Emergent — applique la branche GitHub TELLE QUELLE.
+# Synchronisation Emergent — applique la branche main de GitHub TELLE QUELLE.
 #
 # PRINCIPE : GitHub est la source de vérité. Ce script n'analyse PAS et
 # n'audite PAS le code local d'Emergent avant d'appliquer : il aligne
-# l'arbre de travail exactement sur origin/<branche> (reset --hard + clean),
+# l'arbre de travail exactement sur origin/main (reset --hard + clean),
 # écrasant toute divergence locale. Toute modification faite directement
 # dans le shell Emergent et non poussée sur GitHub est PERDUE — c'est voulu.
 #
 # À lancer DANS le shell Emergent (ou tout déploiement mono-repo) :
-#     bash sync_emergent.sh                                    # branche courante
-#     BRANCH=claude/setup-github-cli-EngUf bash sync_emergent.sh
-#     BRANCH=main bash sync_emergent.sh                        # après merge
+#     bash sync_emergent.sh
+#
+# SEULE main SE DÉPLOIE (audit de sécurité, constat C3). Ce pod est la
+# production : le déploiement installe les dépendances, construit et importe
+# le code de la branche avec les secrets de backend/.env. Une branche non
+# fusionnée — notamment celles des agents IA, construites à partir de contenus
+# web non fiables — y exécuterait son code sans revue. main est protégée sur
+# GitHub (PR, CI) : fusionnez d'abord, puis synchronisez. BRANCH=<autre> est
+# refusé ; pour essayer une branche, utilisez un environnement sans secrets
+# de production.
 #
 # Les contrôles des étapes 2 et 4 ne comparent JAMAIS avec l'état local
 # antérieur : ils vérifient uniquement que la copie fraîchement appliquée
@@ -42,7 +49,13 @@ cd "$(dirname "$0")"
 
 BACKEND_PORT="${BACKEND_PORT:-8000}"
 FRONTEND_PORT="${FRONTEND_PORT:-${VITE_PORT:-5000}}"
-BRANCH="${BRANCH:-$(git rev-parse --abbrev-ref HEAD)}"
+DEPLOY_BRANCH="main"
+BRANCH="${BRANCH:-$DEPLOY_BRANCH}"
+if [ "$BRANCH" != "$DEPLOY_BRANCH" ]; then
+  echo "❌ Déploiement refusé : seule la branche '$DEPLOY_BRANCH' se déploie (demandé : '$BRANCH')."
+  echo "   Fusionnez d'abord la PR dans '$DEPLOY_BRANCH' (revue + CI), puis relancez : bash sync_emergent.sh"
+  exit 1
+fi
 echo "── 1/6 · Application de origin/'$BRANCH' (écrase l'état local) ──"
 git fetch origin "$BRANCH"
 git checkout "$BRANCH"
