@@ -99,8 +99,9 @@ _check_emergent_crons() (
   export LC_ALL=C  # plages [A-Za-z] au sens octet, quelle que soit la locale du pod
   local env_ok='^(SHELL=/bin/sh|PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin|JOB_ID=[0-9a-f-]{36}|WEBHOOK_ENV_FILE=/app/backend/\.env|CRON_API_URL=https://[a-z0-9.-]+\.emergentagent\.com)$'
   # Séparateurs : espaces et tabulations seulement (un CR n'est pas un rendu Emergent).
-  local b=$'[ \t]' f n line why url host dup suspects=0
+  local b=$'[ \t]' f n line why b64 url host dup suspects=0
   local s="$b+" val='[A-Za-z0-9_.,:/+=@-]*'
+  local url_re='^https?://([A-Za-z0-9.-]+)(:[0-9]+)?([/?#].*)?$'
   local job_ok="^(@(hourly|daily|weekly|monthly|yearly|annually|midnight)|[0-9A-Za-z*/,-]+(${s}[0-9A-Za-z*/,-]+){4})${s}root"
   job_ok+="(${s}(CRON_API_URL=https://[a-z0-9.-]+\\.emergentagent\\.com|WEBHOOK_ENV_FILE=/app/backend/\\.env|(CRON_NAME|METHOD|ENDPOINT_URL_B64|JOB_ID|AT_DATE|END_DATE)=${val}))*"
   job_ok+="(${s}/bin/sh)?${s}/app/\\.emergent/cron/(dispatch_webhook|watch_crons)\\.sh"
@@ -122,12 +123,18 @@ _check_emergent_crons() (
         if [ -n "$dup" ]; then
           why="variable répétée sur la ligne : $dup"
         elif [[ $line =~ ENDPOINT_URL_B64=([^[:space:]]+) ]]; then
-          # Hôte réellement contacté par curl : l'autorité doit être un nom
-          # d'hôte nu (port facultatif) — « https://x.emergentagent.com@tiers/ »
-          # viserait le tiers et part donc en « illisible ».
-          url="$(printf '%s' "${BASH_REMATCH[1]}" | base64 -d 2>/dev/null | head -c 300)"
-          host="$(printf '%s' "$url" | head -n1 \
-            | sed -nE 's#^https?://([A-Za-z0-9.-]+)(:[0-9]+)?([/?\#].*)?$#\1#p' | tr '[:upper:]' '[:lower:]')"
+          # Hôte réellement contacté par curl, lu sur la valeur décodée ENTIÈRE
+          # (jamais un préfixe) : l'autorité doit être un nom d'hôte nu (port
+          # facultatif) — « https://x.emergentagent.com@tiers/ » ou un « \ »
+          # viseraient le tiers et partent donc en « illisible ». Base64
+          # invalide, octet hors ASCII imprimable (NUL, saut de ligne…) ou
+          # valeur démesurée : « illisible » aussi.
+          b64="${BASH_REMATCH[1]}" host=""
+          if url="$(printf '%s' "$b64" | base64 -d 2>/dev/null)" \
+            && [ "$(printf '%s' "$b64" | base64 -d 2>/dev/null | tr -d '\041-\176' | wc -c)" -eq 0 ] \
+            && [ "${#url}" -le 2048 ] && [[ $url =~ $url_re ]]; then
+            host="$(printf '%s' "${BASH_REMATCH[1]}" | tr '[:upper:]' '[:lower:]')"
+          fi
           [[ $host =~ (^|\.)emergentagent\.com$ ]] \
             || why="dispatch vers un hôte hors emergentagent.com : ${host:-illisible}"
         fi
