@@ -85,3 +85,32 @@ p. 76  80) 71.02 Diamants [...] 21.10 / 31.10 d'exploitation artisanale : carat 
 p. 77  87) 74.02 Cuivre non affiné et alliages de cuivre sous forme brute : 00.10 Cuivre non affiné, 00.90 Cuivre
        blister, Cuivre noir, Autres : kg — 5% — 0%
        88) 74.04 Déchets et débris de cuivre 00.10 à 00.90 : kg — 5% — 0%
+
+====================================================================================================
+LOI DE FINANCES RECTIFICATIVE n° 26/032 du 7 août 2026 pour l'exercice 2026 (Journal officiel de la RDC,
+17 août 2026, numéro spécial), volume « Recettes » publié par le ministère du Budget (copie scannée, transcrite à
+la lecture des pages) :
+URL : https://www.budget.gouv.cd/wp-content/uploads/budget2026/lfr_2026/lfr_2026_recettes.pdf
+sha256 : 8eea6caea4642c8fc2dd9e0e87acd460a6e91698071d89cb1c4642f9b8884127 (158 pages)
+----------------------------------------------------------------------------------------------------
+Page 6 (p. 8 du JO) — Article 6 :
+Les mesures relatives aux recettes des douanes et accises reprises aux articles 11, 12, 14, 15, 16, 17, 18, 19, 20
+et 21 de la Loi de finances n° 24/011 du 20 décembre 2024 pour l'exercice 2025, ainsi qu'aux articles 6 et 7 de la
+Loi de finances rectificative n° 25/044 du 28 juin 2025 pour l'exercice 2025, et le cas échéant, leurs annexes
+respectives, sont d'application dans le cadre de la présente Loi.
+Page 7 (p. 9 et 10 du JO) — Article 7 : Les dispositions des articles 11, 12, 13, 14 et 15 de la Loi de finances
+n° 25/060 du 29 décembre 2025 pour l'exercice 2026 restent d'application.
+Article 10 : Les annexes XV à XVII de la Loi de finances n° 25/060 du 29 décembre 2025 pour l'exercice 2026 sont
+supprimées conformément à l'article 6, alinéa 1er de la présente Loi.
+Pages 8 et 9 (p. 11 à 14 du JO) — Article 13 : L'article 46 de la Loi de finances n° 25/060 [...] est modifié comme
+suit : « Article 35 : Les taux de la taxe sur la valeur ajoutée sont les suivants :
+- taux normal : 16% applicable à toutes les opérations imposables à l'exclusion des opérations soumises taux réduits
+  ou au taux zéro ;
+- taux réduit : de 1%, 5% et 8% applicables :
+  • aux acquisitions et ventes des produits ci-après : [taux 8 %] 02.01, 02.02, 02.03, 02.06, 02.07 (toute la
+    position) ; 0303.23.00 ; 0303.55.00 ; 0305.51.00 ; 0305.52.00 ; 0305.53.00 ; 0305.54.00 ; 0305.59.00 ;
+    1006.20.00 ; 1006.30.00 ; 1006.40.00 ; 1701.99.00 ; 19.01.90.91 ; 19.01.90.99 ; 04.02 (toute la position) ;
+    25.01.00.10 (« Autres eaux conditionnées pour la table ») ; 2501.00.10 (sel iodé) ; 3401.19.10 ; 3605.00.00 ;
+  • aux acquisitions locales des matières premières pour la valorisation de l'industrie locale (cuivre, étain,
+    plomb, aluminium, zinc et tantale), soit 1 % ; [...]
+- taux 0%, applicable aux exportations et opérations assimilées. »
