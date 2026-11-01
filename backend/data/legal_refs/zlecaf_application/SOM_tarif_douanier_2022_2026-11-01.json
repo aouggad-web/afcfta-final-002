@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "objet": "Somalie : droit de douane à l'importation, position par position, selon le tarif douanier national publié par le ministère des Finances (Somali Customs Tariff 2022), à la place du TEC de l'EAC 2022",
+  "destination_iso3": "SOM",
+  "verified_at": "2026-11-01",
+  "etabli": true,
+  "evidence_level": "primaire — tarif publié par le ministère des Finances de la République fédérale de Somalie (mof.gov.so), lu en entier ; rapproché de l'édition 2020 du même tarif",
+  "source": {
+    "url": "https://mof.gov.so/publications/somali-customs-tariff-2022",
+    "institution": "Ministère des Finances — République fédérale de Somalie"
+  },
+  "regle": {
+    "valeur": "Source du socle SOM : Somali Customs Tariff 2022 (5 472 positions à huit chiffres, SH 2017), colonne 4 « Import duty rates ». Droits : 5 % (1 996 positions), 10 % (62), 15 % (1 046), 25 % (2 279), 35 % (43) ; aucun taux publié sur 46 positions (« – » sur 41 : porc, soies de porc, boissons alcoolisées ; « TBD % » sur 4 positions du 12.09 ; « (y) » sur 03.02.39). Droit ad valorem sur la valeur en douane (fiche SOM_assiette_DD_2026-09-17.json).",
+    "verbatim": "0101 21 00    – – Pure-bred breeding animals                                                            pce        5%",
+    "reference": "Federal Government of Somalia, Ministry of Finance, Somali Customs Tariff 2022, Mogadishu May 2022, colonne (4) Import duty rates",
+    "portee": "backend/data/crawled/SOM_tariffs.json créé par scripts/convertir_tarif_som.py (scellé, empreinte au registre des sources) ; il prime sur backend/data/SOM_tariffs.json (TEC de l'EAC 2022), qui n'alimente plus le socle.",
+    "texte_archive": "sources/SOM_tarif_douanier_2022.texte-extrait.txt",
+    "sha256": "57b845cf1760f2b42cb33773f612302cc7b2731989967ffc219ad7f92ee22ff6"
+  },
+  "decisions": [
+    "Le socle reprenait le TEC de l'EAC 2022 (bandes 0/10/25/35 %, plus 45 lignes à 50-100 % d'origine inconnue). La Somalie, membre de l'EAC depuis 2024, n'applique pas ce tarif : aucune publication ne l'établit, et le ministère des Finances publie son propre tarif. Sur les 5 234 sous-positions SH6 communes, 3 552 changent de droit (0 % → 5 % sur 1 892, 10 % → 15 % sur 990, 35 % → 25 % sur 401…).",
+    "Édition retenue : 2022 (« Final », mai 2022, publiée le 31/08/2022), la plus récente du ministère. L'édition 2020 (rates applicable from 1 January 2022) ne s'en écarte que sur les carburants des 27.10.12 et 27.10.19 (5 % → 10 % en 2022), sur 03.02.39 (25 % en 2020, « (y) » en 2022) et par l'absence des 53 positions du chapitre 12 (page manquante) ; elle porte en outre la colonne 5 des mesures (STR, PRO, TSC…), que l'édition 2022 n'a plus.",
+    "« – » sans le symbole FREE (porc, soies de porc, boissons alcoolisées), « TBD % » et « (y) » : le tarif ne publie pas de taux. Le droit est porté sans taux, et non à 0 % : selon la règle B.7 (d) de l'édition 2020, seul « FREE » signifie l'exemption.",
+    "Libellés : celui de la ligne, précédé de l'intitulé de la position à quatre chiffres et des intitulés de groupe dont elle dépend, en anglais comme dans le tarif."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Barème « en vigueur » (Jadwalka Dhaqan-galka ah) du tarif et de la taxe sur les ventes : le règlement MOF/OM/036/2023 du 27 avril 2023 (en vigueur le 28 avril 2023) le modifie pour dix catégories (boissons et denrées, pièces détachées, cosmétiques, voitures de luxe, électroménager, mobilier, ciment, vêtements et chaussures, matériaux de construction, tabac). Ses tableaux fixent des montants en dollars par article ou par carton (par exemple Toyota Land Cruiser : 1 200 $ de droit et 120 $ de taxe sur les ventes, portés à 2 400 $ et 240 $), sans position tarifaire. Ces montants, lisibles seulement en partie (PDF numérisé), ne sont pas rattachables aux positions du tarif : pour ces marchandises, le droit réellement perçu peut s'écarter du taux ad valorem servi.",
+    "Taxe sur les ventes à l'importation (loi n° 2 de 1984) : aucun texte publiant son taux n'est accessible (fiche SOM_taux_TVA_2026-09-18.json) ; non portée.",
+    "Droit à l'exportation de 2 % (édition 2020, règle B.2) : non porté au calcul export.",
+    "Mesures de la colonne 5 de l'édition 2020 : « TSC » (481 positions) n'est défini nulle part dans le tarif ; « PRO » (20 positions, porc et huiles usagées) non plus ; les annexes 2 à 4 (interdictions, licences, liste STR) ne sont pas publiées avec le tarif. Non portées."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SOM_tarif_douanier_2022.texte-extrait.txt",
+      "sha256": "57b845cf1760f2b42cb33773f612302cc7b2731989967ffc219ad7f92ee22ff6"
+    },
+    {
+      "texte_archive": "sources/SOM_reglement_tarif_effectif_2023.ocr-extrait.txt",
+      "sha256": "4e8dc0734eb71943e21df201ba083581b975508bf1e97840b4ab1efa087bbf43"
+    },
+    {
+      "document_non_archive": "Somali Customs Tariff 2022 (Mogadishu May 2022), 323 pages, 7,1 Mo, https://mof.gov.so/sites/default/files/Publications/Somali_Customs_Tariff_Final.pdf",
+      "pdf_sha256": "aa9657fae9104e83e35455f19bee6c7ab3ae5073081da7735e8853e20233fbfd"
+    },
+    {
+      "document_non_archive": "Somali Customs Tariff 2020, Tariff Schedule, 341 pages, https://mof.gov.so/sites/default/files/2020-12/_Somali_Customs_Tariff_2020_Tariff_Schedule.pdf",
+      "pdf_sha256": "a2665d6da7952b3126a120340a2f8d27a3dc3facb4d43e42068c1bf9ceb0e397"
+    },
+    {
+      "document_non_archive": "Règlement MOF/OM/036/2023 du 27 avril 2023 modifiant le barème en vigueur du tarif et de la taxe sur les ventes, PDF numérisé de 10 pages, https://mof.gov.so/publications/xeer-nidaamiyaha-wax-ka-beddelka-jadwalka-dhaqan-galka-ah-ee-tariifada-ivo-canshuurta",
+      "pdf_sha256": "467b92c1c6425a1863d882cf9c844ad39761213efee2df8d279163994fc166be"
+    }
+  ]
+}

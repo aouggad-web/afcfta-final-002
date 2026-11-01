@@ -12,8 +12,9 @@ S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
 (`HORS_TARIF` : à Madagascar, les DTSPM du Code minier ; au Mali, la TEOAPM du
 CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun
 et au Congo, le droit de sortie commun dépend du degré de transformation du
-produit (`SELON_TRANSFORMATION`), que l'exportateur déclare aussi ; au
-Gabon, le droit sur les produits transformés du bois, de la matière du produit
+produit ; en RDC, le titulaire d'un droit minier en est exonéré
+(`SELON_DECLARATION`) : l'exportateur le déclare aussi. Au Gabon, le droit sur
+les produits transformés du bois dépend de la matière du produit
 (`SELON_MATIERE`).
 """
 from __future__ import annotations
@@ -74,22 +75,37 @@ HORS_TARIF = {
     },
 }
 
-#: Droit de sortie dont le taux tient au degré de transformation du produit,
-#: que la position ne dit pas. Le socle porte ce droit à taux non établi et
-#: marqué `selon_transformation` (`build_socle.EXPORT_PAR_TEXTE`) ; la réponse
-#: de l'exportateur le fixe. Fiches CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json
-#: et COG_droit_de_sortie_LFR2021_LF2026_2026-10-29.json.
-SELON_TRANSFORMATION = {
+#: Droit de sortie dont le taux tient à ce que la position ne dit pas et que
+#: l'exportateur déclare. Le socle marque ces droits (`marque`,
+#: `build_socle.EXPORT_PAR_TEXTE`) ; la réponse fixe leur taux — un taux None
+#: garde celui du tarif. Sans réponse, ils restent à établir. Fiches
+#: CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json,
+#: COG_droit_de_sortie_LFR2021_LF2026_2026-10-29.json et
+#: COD_tarif_exportation_OL_012-2012_2026-10-29.json.
+SELON_DECLARATION = {
     "CMR": {
         "champ": "produit_fini",
+        "marque": "selon_transformation",
         "question": "Produit fini, manufacturé ou transformé au Cameroun (sinon : brut ou semi-fini) ?",
         "question_en": "Finished product, manufactured or processed in Cameroon (otherwise: raw or semi-finished)?",
         "oui": (0.0, "Produit manufacturé ou transformé au Cameroun au sens de produit fini : exonéré (LF 2020, art. 5)."),
         "non": (2.0, "Produit brut : taux commun de 2 % de la valeur imposable (LF 2018, art. 2) ; produit semi-fini : "
                      "2 % de la valeur FOB (LF 2023, art. 10)."),
     },
+    "COD": {
+        "champ": "titulaire_minier",
+        "marque": "titulaire_minier_exonere",
+        "question": "Exportation par le titulaire d'un droit minier, en rapport avec son projet minier ?",
+        "question_en": "Export by the holder of a mining right, in connection with its mining project?",
+        "oui": (0.0, "Code minier, art. 234 : le titulaire « est totalement exonéré à la sortie, pour ses exportations "
+                     "en rapport avec le projet minier, de tous droits de douane ». Réserve : le projet de loi de "
+                     "finances 2025 (art. 17) proposait de supprimer cette exonération et de taxer à 2 % les produits "
+                     "miniers ; le texte adopté (loi n° 24/011) n'a pas été lu."),
+        "non": (None, "Exportateur autre qu'un titulaire minier pour son projet : taux du tarif."),
+    },
     "COG": {
         "champ": "produit_fini",
+        "marque": "selon_transformation",
         "question": "Produit transformé d'origine congolaise (issu d'une ouvraison ou d'une transformation au Congo) ?",
         "question_en": "Processed product of Congolese origin (worked or processed in Congo)?",
         "oui": (0.0, "Produit transformé d'origine congolaise : exonéré du droit de sortie (LFR 2021, point 42, 2)."),
@@ -178,22 +194,30 @@ class DemandeExport(BaseModel):
             "produits transformés du bois, LF 2026, art. 5). Omis : le droit reste à établir."
         ),
     )
+    titulaire_minier: Optional[bool] = Field(
+        default=None,
+        description=(
+            "RDC : exportation par le titulaire d'un droit minier, en rapport avec son projet (exonéré, Code minier, "
+            "art. 234) ; sinon, taux du tarif. Omis : les droits de sortie des produits miniers restent à établir."
+        ),
+    )
 
 
-def _selon_transformation(pays: str, droits: list, demande: DemandeExport) -> list:
+def _selon_declaration(pays: str, droits: list, demande: DemandeExport) -> list:
     """Fixer, d'après la réponse de l'exportateur, les droits que le socle
-    marque `selon_transformation` ; sans réponse, ils restent à établir."""
-    regle = SELON_TRANSFORMATION.get(pays)
+    marque pour ce pays ; sans réponse, ils restent à établir."""
+    regle = SELON_DECLARATION.get(pays)
     if not regle:
         return droits
     reponse = getattr(demande, regle["champ"])
     sortie = []
     for d in droits:
-        if d.get("selon_transformation"):
+        if d.get(regle["marque"]):
             if reponse is None:
-                d = {**d, "note": "À établir : " + regle["question"] + " " + d.get("note", "")}
+                d = {**d, "taux": None, "note": "À établir : " + regle["question"] + " " + d.get("note", "")}
             else:
                 taux, motif = regle["oui" if reponse else "non"]
+                taux = d.get("taux") if taux is None else taux
                 d = {**d, "taux": taux, "assiette": "CIF", "note": motif + " " + d.get("note", "")}
         elif d.get("note_si_transforme"):
             # Perception dont seul le taux du produit brut est établi
@@ -311,7 +335,7 @@ def calcul_export(demande: DemandeExport):
     except socle.SocleIndisponible as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
-    droits = _selon_transformation(pays, position.get("droits_export") or [], demande)
+    droits = _selon_declaration(pays, position.get("droits_export") or [], demande)
     droits = _selon_matiere(pays, droits, demande)
     hors_tarif = _hors_tarif(pays, demande)
     conflit = HORS_TARIF.get(pays, {}).get("conflit_tarif")
@@ -377,7 +401,7 @@ def pays_export():
                     for k in ("champ", "question", "question_en", "question_transformation",
                               "question_transformation_en", "champ_si_non", "question_si_non", "question_si_non_en")
                 }
-                for iso, regle in {**HORS_TARIF, **SELON_TRANSFORMATION, **SELON_MATIERE}.items()
+                for iso, regle in {**HORS_TARIF, **SELON_DECLARATION, **SELON_MATIERE}.items()
             },
         }
     except socle.SocleIndisponible as exc:

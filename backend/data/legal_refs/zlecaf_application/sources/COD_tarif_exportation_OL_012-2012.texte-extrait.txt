@@ -1,0 +1,911 @@
+République démocratique du Congo — droits et taxes à l'exportation
+Extrait établi le 2026-10-29 (texte extrait des PDF par pdftotext, mise en page conservée).
+
+======================================================================================================
+1. Ordonnance-loi n° 012/2012 du 21 septembre 2012 instituant un nouveau tarif des droits et taxes à
+   l'exportation (JO RDC, 18 octobre 2012, n° spécial, p. 61), avec son annexe
+   https://www.droitcongolais.info/files/651.09.12.1.-Ordonnance-loi-du-21-decembre-2012_Tarif-a-l-exportation.pdf
+   sha256 : d7fa7cc0248818174ec6a33cd0ce07fc97e3e4ed9f1ce44f9e08748f685563fb
+   Aucun texte modificatif n'est recensé par le répertoire droitcongolais.info (rubrique 651) ni par
+   leganet.be (consultés le 2026-10-29).
+------------------------------------------------------------------------------------------------------
+               21 septembre 2012. – ORDONNANCE-LOI n° 012-2012 instituant un nouveau tarif des droits et taxes à
+               l’exportation (J.O.RDC., 18 octobre 2012, n° spécial, p. 61)
+
+               Le président de la République,
+               Vu la Constitution, telle que révisée par la loi 011-002 du 20 janvier 2011, spécialement en son article 129;
+               Revu, la loi 003-03 du 13 mars 2003 instituant un nouveau tarif des droits et taxes à l’exportation, telle que modifiée et
+               complétée parla loi 08-006 du 12 juin 2008;
+               Vu la loi 12-003 du 20 juillet 2012 portant habilitation du Gouvernement;
+               Sur proposition du Gouvernement délibérée en Conseil des ministres;
+               Ordonne:
+
+    Art. 1er. Il est institué un nouveau tarif des droits et taxes à l’exportation, annexé à la présente loi.
+
+     Art. 2. Il est intégré dans le tarif des droits et taxes à l’exportation de la République démocratique du Congo, les dispositions de
+             l’ordonnance-loi 001-2012 du 21 septembre 2012 modifiant et complétant l’ordonnance-loi 10-001 du 20 août 2010 portant
+             institution de la taxe sur la valeur ajoutée, TVA en sigle en remplacement de l’impôt sur le chiffre d’affaires institué par
+             l’ordonnance-loi 69-058 du 5 décembre 1969.
+
+     Art. 3. Le ministre ayant les finances dans ses attributions peut habiliter l’administration des douanes à procéder à des mises à jour
+             du tarif douanier par des amendements de la nomenclature du système harmonisé de désignation et de codification des
+             marchandises dans la mesure ou elles n’ont pas d’incidence sur les taux des droits et taxes à l’exportation.
+
+     Art. 4. Sont abrogées:
+              a) la loi 003-03 du 13 mars 2003 instituant un nouveau tarif des droits et taxes à l’exportation, telle que modifiée et
+              complétée par la loi 08-006 du 12 juin 2008;
+              b) toutes les autres dispositions antérieures contraires à la présente loi.
+
+     Art. 5. La présente ordonnance-loi entre en vigueur à la date de sa publication au Journal officiel.
+
+Fait à Kinshasa, le 21 septembre 2012.
+
+
+
+
+                                                             Joseph Kabila Kabange
+                                                        Augustin Matata Ponyo Mapon
+                                                                Premier ministre
+
+
+
+                                                                     Annexe
+                                                       DISPOSITIONS PRÉLIMINAIRES
+
+                                                                           er
+                                                                      §1
+Le tarif des droits et taxes l’exportation est applicable aux catégories des marchandises suivantes de production locale, exportées de la
+République démocratique du Congo selon les espèces déterminées par le tableau des droits de douane:
+1. le café vert;
+2. les produits minéraux et leurs concentrés;
+3. les huiles minérales;
+4. l’énergie électrique;
+5. le bois en grume et le bois scié avivé;
+6. l’eau douce;
+7. les mitrailles.
+
+
+                                                                       §2
+Les marchandises visées au paragraphe premier ci-dessus sont passibles des droits de douane à l’exportation aux taux inscrits au tarif en
+vigueur suivant leurs valeurs au point de sortie, majorée, le cas échéant, des frais de transport jusqu’à la frontière mais non compris le
+montant:
+a) des droits et taxes à l’exportation;
+b) des taxes intérieures et charges similaires dont il a été donné décharge à l’exportateur.
+Toutefois, ces valeurs ne doivent pas être inférieures aux valeurs de base fixées par arrêté par le ministre ayant les finances dans ses
+attributions.
+Par dérogation au paragraphe ci-dessus, le ministre ayant les finances dans ses attributions peut habiliter le directeur général des
+Douanes et Accises à publier les valeurs des marchandises à l’exportation. Les valeurs ainsi déterminées sont applicables pendant une
+durée n’excédant pas 90 jours.
+
+
+                                                                               §3
+Le ministre ayant les Finances dans ses attributions peut, sur proposition de la commission tarifaire, instituer par voie d’arrêté et
+pendant la durée nécessaire, des droits de sortie complémentaires en cas de remontée substantielle des cours mondiaux d’un produit
+exporté.
+
+
+                                                                               §4
+Les marchandises exportées de la République démocratique du Congo, en ce compris celles reprises au tarif des droits et taxes à
+l’exportation porté par la loi 08-003 du 12 juin 2008 modifiant et complétant la loi 003-03 du 13 mars 2003 instituant un nouveau tarif
+des droits et taxes à l’exportation sont, conformément aux dispositions de l’article 35 alinéa 2 de l’ordonnance-loi 10-001 du 20 août 2010
+portant institution de la taxe sur la valeur ajoutée, soumises â la taxe sur la valeur ajoutée à l’exportation au taux de 0 %.
+  N° de position                                             Désignation des produits                                           Unité de   Droit de   TVA
+  tarifaire                                                                                                                     quantité   douane
+
+  09.01            Café, même torréfié ou décaféiné: coque et pellicules de café; succédanés du café contenant du café,
+                   quelles que soient les proportions du mélange
+
+                   - Café non torréfié
+
+                   -- Non décaféiné
+
+                   --- café vert Robusta, en fèves:
+
+      11.11        ---W/S (Washed supérieur)                                                                                      Kg        1%        0
+                                                                                                                                                      %
+
+      11.12        ---N/S (Natural supérieur)                                                                                     Kg        1%        0
+                                                                                                                                                      %
+
+      11.13        ---W/M (Washed moyen)                                                                                          Kg        1%        0
+                                                                                                                                                      %
+
+      11.14        ---N/M (Natural moyen)                                                                                         Kg        1%        0
+                                                                                                                                                      %
+
+      11.15        ---W/I (Washed inférieur)                                                                                      Kg        1%        0
+                                                                                                                                                      %
+
+      11.16        ---N/I (Naturai inférieur)                                                                                     Kg        1%        0
+                                                                                                                                                      %
+
+      11.17        ---C/M (Courant moyen)                                                                                         Kg        1%        0
+                                                                                                                                                      %
+
+      11.18        ---C/I (Courant inférieur)                                                                                     Kg        1%        0
+                                                                                                                                                      %
+
+      11.20        ---déchets et brisures de café vert Robusta                                                                    Kg        1%        0
+                                                                                                                                                      %
+
+                   ---café vert Arabica, en fèves:
+
+      11.31        ---K9 (Kivu 9)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.32        ---K3 (Kivu 3)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.33        ---K4 (Kivu 4)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.34        ---K5 (Kivu 5)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.35        ---K6 (Kivu 6)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.36        ---K7 (Kivu 7)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.37        ---K8 (Kivu 8)                                                                                                 Kg        1%        0
+                                                                                                                                                      %
+
+      11.40        ---déchets et brisures de café vert Arabica                                                                    Kg        1%        0
+                                                                                                                                                      %
+
+  22.01            Eaux, y compris les eaux minérales naturelles ou artificielles et les eaux gazéifiées, non additionnées de
+                   sucre ou d’autres édulcorants ni aromatisées; glace et neige
+
+                   -Autres
+
+      90.10        ---eau douce                                                                                                    l        5%        0
+                                                                                                                                                      %
+
+      90.90        ---autres                                                                                                       l       exempt     0
+                                                                                                                                                      %
+
+  2602.00.00       Minerais de manganèse et leurs concentrés, y compris les minerais de manganèse ferrugineux et leurs            kg        10 %      0
+                   concentres d’une teneur en manganèse de 20 % ou plus en poids, sur produit sec                                                     %
+
+  2603.00.00       Minerais de cuivre et leurs concentrés                                                                         kg        10 %      0
+                                                                                                                                                      %
+
+  2604.00.00       Minerais de nickel et leurs concentrés                                                                         kg        10 %      0
+                                                                                                                                                      %
+
+  2605.00.00       Minerais de cobalt et leurs concentrés                                                                         kg        10 %      0
+                                                                                                                                                      %
+
+  2607.00.00       Minerais de plomb et leurs concentrés                                                                          kg        10 %      0
+                                                                                                                                                      %
+2608.00.00   Minerais de zinc et leurs concentrés                                                                             kg   10 %   0
+                                                                                                                                          %
+
+26.11        Minerais de tungstène et leurs concentrés
+
+   00.10     -provenant de gites primaires obtenus par broyage                                                                kg   10 %   0
+                                                                                                                                          %
+
+   00.90     -autres                                                                                                          kg   10 %   0
+                                                                                                                                          %
+
+26.12        Minerais d’uranium et de thorium et leurs concentrés
+
+   10.00     Minerais d’uranium et leurs concentrés                                                                           kg   10 %   0
+                                                                                                                                          %
+
+   20.00     Minerais de thorium et leurs concentrés                                                                          kg   10 %   0
+                                                                                                                                          %
+
+2614.00.00   Minerais de titane et leurs concentrés
+
+26.15        Minerais de niobium, de tantale, de vanadium ou de zirconium et leurs concerstrés
+
+   10.00     -Minerais de zirconium et leurs concerstrés                                                                      kg   10 %   0
+                                                                                                                                          %
+
+             -Autres                                                                                                          kg   10 %   0
+                                                                                                                                          %
+
+   90.10     -de niobium                                                                                                      kg   10 %   0
+                                                                                                                                          %
+
+   90.20     -de tantale                                                                                                      kg   10 %   0
+                                                                                                                                          %
+
+   90.30     -de vanadium                                                                                                     kg   10 %   0
+                                                                                                                                          %
+
+26.16        Minerais de métaux précieux et leurs concentrés
+
+   10.00     -Minerais d’argent et leurs concentrés                                                                           kg   10 %   0
+                                                                                                                                          %
+
+   90.00     -Autres                                                                                                          kg   10 %   0
+                                                                                                                                          %
+
+26.17        Autres minerais et leurs concentrés
+
+   10.00     -Minerais d’antimoine et leurs concentrés                                                                        kg   10 %   0
+                                                                                                                                          %
+
+             -Autres                                                                                                          kg   10 %   0
+                                                                                                                                          %
+
+             -Cassitérites:
+
+   90.11     ---provenant de gites primaires et obtenu par broyage                                                            kg   10 %   0
+                                                                                                                                          %
+
+   90.19     ---Autres                                                                                                        kg   10 %   0
+                                                                                                                                          %
+
+             ---Wolfram                                                                                                       kg   10 %   0
+                                                                                                                                          %
+
+   90.21     ---provenant de gites primaires et obtenu par broyage
+
+   90.29     ---autres                                                                                                        kg   10 %   0
+                                                                                                                                          %
+
+   90.30     ---de bismuth                                                                                                    kg   10 %   0
+                                                                                                                                          %
+
+   90.40     ---de germanium                                                                                                  kg   10 %   0
+                                                                                                                                          %
+
+   90.50     ---malachite                                                                                                     kg   10 %   0
+                                                                                                                                          %
+
+   90.60     ---de berylium ou de glucicium                                                                                   kg   10 %   0
+                                                                                                                                          %
+
+   90.70     ---monasite                                                                                                      kg   10 %   0
+                                                                                                                                          %
+
+   90.80     ---struverite                                                                                                    kg   10 %   0
+                                                                                                                                          %
+
+             ---autres
+
+   90.91     ---résines rhénifères                                                                                            kg   10 %   0
+                                                                                                                                          %
+
+   90.99     ---autres minerais                                                                                               kg   10 %   0
+                                                                                                                                          %
+
+2619.00.00   Scories, laitiers (autres que le laitier granulé), battitures et autres déchets de la fabrication de la fonte,   kg   10 %   0
+             du fer ou de l’acier                                                                                                         %
+
+26.20        Scories, cendres et résidus (autres que ceux provenant de la fabrication cie ia rte, du fer ou de racier)
+             contenant des métaux, de l’arsenic cru leurs composés
+
+             -Contenant principalement du zinc:
+
+   11.00     --Maltes de galvanisation                                                                                        kg   10 %   0
+                                                                                                                                          %
+
+   19.00     --Autres                                                                                                         kg   10 %   0
+                                                                                                                                          %
+
+             -Contenant principalement du plomb:
+
+   21.00     --Boues d’essence au plomb et boues de composés antidétonants contenant du plomb                                 kg   10 %   0
+                                                                                                                                          %
+
+   29.00     --Autres                                                                                                         kg   10 %   0
+                                                                                                                                          %
+
+   30.00     --Contenant principalement du cuivre                                                                             kg   10 %   0
+                                                                                                                                          %
+
+   40.00     -Contenant principalement de l’aluminium                                                                         kg   10 %   0
+                                                                                                                                          %
+
+   60.00     -Contenant de l’arsenic, du mercure, du thalium ou leurs mélanges, des types utilisés pour l’extraction de       kg   10 %   0
+             l’arsenic ou de ces métaux ou pour la fabrication de leurs composés chimiques                                                %
+
+             --Autres
+
+   91.00     --Contenant de l’antimoine, du beryllium, du cadmium, du chrome ou leurs mélanges                                kg   10 %
+                                                                                                                                          0
+                                                                                                                                          %
+
+   99.00     ---Autres                                                                                                  kg       10 %     0
+                                                                                                                                          %
+
+26.21        Autres scories et cendres, y compris les cendres et résidus provenant de l’incinération des déchets
+             municipaux
+
+   10.00     -Cendres et résidus provenant de l’incinération des déchets municipaux                                     kg       10 %     0
+                                                                                                                                          %
+
+   90.00     -Autres                                                                                                    kg       10 %     0
+                                                                                                                                          %
+
+2709.00.00   Huiles brutes de pétrole ou de minéraux bitumineux                                                         kg        5%      0
+                                                                                                                                          %
+
+2716.00.00   Énergie électrique                                                                                      1.000 kWh    5%      0
+                                                                                                                                          %
+
+44.03        Bois bruts, même écorcés, désaubiérés ou équarris
+
+             -Autres, de bois tropicaux visés à la note 1 de sous-position du présent chapitre:
+
+             --Autres
+                                                                                                                            3
+   49.10     ---acajou d’Afrique                                                                                        m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.20     ---afromosa (Periscopsis elata)                                                                            m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.30     ---azobé                                                                                                   m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.40     ---bossé (Guara cedrata)                                                                                   m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.50     ---dibétou (Lovoa trichiloides)                                                                            m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.60     ---doussié (Afzelia bipindesis)                                                                            m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.70     ---iroko (Chlorophora excelsa)                                                                             m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.80     ---kossipo (Entandrophragma candellei)                                                                     m        10 %     0
+                                                                                                                                          %
+
+             ---autres:
+                                                                                                                            3
+   49.91     ---limba (Terminalia superba)                                                                              m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.92     ---makoré                                                                                                  m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.93     ---mansonia                                                                                                m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.94     ---obeche (Triplochiton Scelcxylon)                                                                        m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.95     ---okoumé                                                                                                  m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.96     ---sapelli (Entrandrophragma cylindricum)                                                                  m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.97     ---sipo (Entrandrophragma utile)                                                                           m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.98     ---tiama                                                                                                   m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   49.99     ---tola (agba) (Gossweileroden dronbals)                                                                   m        10 %     0
+                                                                                                                                          %
+
+             ---Autres
+
+             ---Autres
+
+             ---d’essences spécialement dénommées:
+                                                                                                                            3
+   99.11     ----benge/Mutenye (Guibourtia amoldiama)                                                                   m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.12     ----bubinga (Guibourtia derneusel)                                                                         m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.13     ----khaya (Khaya anthotheca)                                                                               m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.14     ----kotibe (Nesogordonia dewevrei)                                                                         m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.15     ----lati (Amphirnas Pterocarpoides)                                                                        m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.16     ----fonghi (Gambeya africana)                                                                              m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.17     ----mukulungu (Autranella Congolensis)                                                                     m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.18     ----padouk (Pterocarpus soyauxii)                                                                          m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.19     ----wenge (Miletia Laurentii)                                                                              m        10 %     0
+                                                                                                                                          %
+                                                                                                                            3
+   99.20     ----d’essences non spécialement dénommées                                                                  m        10 %     0
+                                                                                                                                          %
+
+44.07        Bois sciés, ou déclassés longitudinalement, tranchés ou déroulés, même rabotés, poncés ou collées par
+             assemblage en bout, d’une épaisseur excédant 6 mm
+
+             -De bois tropicaux visés à la note 1 de sous-positions du présent chapitre
+
+             --Mahogany (Swietenia soop):
+
+             ---sciés longitudinalement
+                                                                                                                            3
+   21.11     ----sciages avivés d’une épaisseur inférieure à 50 mm                                                      m        exempt   0
+                                                                                                                                          %
+                                                                                                                            3
+   21.19     ----Autres                                                                                                 m         5%      0
+                                                                                                                                          %
+           ---Virola, Imbula. Balsa:
+
+           ---sciés longitudinalement
+                                                                                                                        3
+   22.11   ---sciages avivés d’une épaisseur inférieure à 50 mm                                                     m       exempt   0
+                                                                                                                                     %
+                                                                                                                        3
+   22.19   ---autres                                                                                                m        5%      0
+                                                                                                                                     %
+
+           --Dark Red Meranti, Ligt Red Merant et Meranti Bakau
+
+           ---sciés longitudinalement
+                                                                                                                        3
+   25.11   ---sciages avivés d’une épaisseur inférieure à 50 mm                                                     m       exempt   0
+                                                                                                                                     %
+                                                                                                                        3
+   25.19   ---autres                                                                                                m        5%      0
+                                                                                                                                     %
+
+           --White Lauan, White Meranti, White Seraya, Yellowi Meranti et Alan:
+
+           ---sciés longitudinalement
+                                                                                                                        3
+   26.11   ---sciages avivés d’une épaisseur inférieure à 50 mm                                                     m       exempt   0
+                                                                                                                                     %
+                                                                                                                        3
+   26.19   ---autres                                                                                                m        5%      0
+                                                                                                                                     %
+
+           --Sapelli
+
+           ---sciés longitudinalement
+                                                                                                                        3
+   27.11   ---sciages avivés d’une épaisseur inférieure à 50 mm                                                     m       exempt   0
+                                                                                                                                     %
+                                                                                                                        3
+   27.19   ----autres                                                                                               m        5%      0
+                                                                                                                                     %
+
+           ----Iroko
+
+           ---sciés longitudinalement
+                                                                                                                        3
+   28.11   ---sciages avivés d’une épaisseur inférieure à 50 mm                                                     m       exempt   0
+                                                                                                                                     %
+                                                                                                                        3
+   28.19   --autres                                                                                                 m        5%      0
+                                                                                                                                     %
+
+           ---Autres
+
+           ---sciés longitudinalement
+                                                                                                                        3
+   29.11   ---sciages avivés d’une épaisseur inférieure à 50 mm                                                     m       exempt   0
+                                                                                                                                     %
+                                                                                                                        3
+   29.19   ----autres                                                                                               m        5%      0
+                                                                                                                                     %
+
+71.02      Diamants, même travaillés, mais non montés ni sertis
+
+           -industriels
+
+           --Bruts ou simplemnt sciés, clivés ou débrutés
+
+   21.10   ---d’exploitation artisanale                                                                            carat    1,5 %    0
+                                                                                                                                     %
+
+   21.20   ---de production industrielle                                                                           carat     3%      0
+                                                                                                                                     %
+
+           -Non industriels
+
+           --Bruts ou simplemnt sciés, clivés ou débrutés
+
+   31.10   ---d’exploitation artisanale                                                                            carat    1,5 %    0
+                                                                                                                                     %
+
+   31.20   ---de production industrielle                                                                           carat     3%      0
+                                                                                                                                     %
+
+71.06      Argent (y compris l’argent doré ou vermeil et l’argent platiné), sous formes brutes ou mi-ouvrées, ou
+           en poudre
+
+   91.00   --sous formes brutes                                                                                     kg      10 %     0
+                                                                                                                                     %
+
+71.08      Or (y compris l’or platiné), sous formes brutes ou mi-ouvrées, ou en poudre
+
+           À usages non monétaires
+
+           --Sous autres formes brutes
+
+   12.10   ---d’exploitation artisanale                                                                             kg      1,5 %    0
+                                                                                                                                     %
+
+   12.20   ---de production industrielle                                                                            kg       3%      0
+                                                                                                                                     %
+
+71.10      Platine, sous formes brutes ou mi-ouvrées, ou en poudre
+
+           -Platine
+
+   11.00   --Sous autres formes brutes ou en poudre                                                                 kg      10 %     0
+                                                                                                                                     %
+
+           -Palladium
+
+   21.00   --Sous autres formes brutes ou en poudre                                                                 kg      10 %     0
+                                                                                                                                     %
+
+           -Rhodium
+
+   31.00   --Sous autres formes brutes ou en poudre                                                                 kg      10 %     0
+                                                                                                                                     %
+
+           -Iridium, osmium et ruthénium
+
+   41.00   --Sous autres formes brutes ou en poudre                                                                 kg      10 %     0
+                                                                                                                                     %
+
+72.04      Déchets et débris de fonte, de fer ou d’acier (ferrailles): déchets lingotes en fer ou en acier
+
+           -Déchets et débris d’aciers alliés
+
+   21.00   --D’aciers inoxydables                                                                                   kg       5%      0
+                                                                                                                                     %
+   29.00     --Autres                                                                                                kg   5%     0
+                                                                                                                                 %
+
+74.03        Cuivre affiné et alliages de cuivre sous forme brute
+
+             -Cuivre affiné
+
+             --Autres
+
+   19.10     ---Cuivre électrolytique en lingots (wirebars et lingots bars) à plus de 99,9 % de cuivre               kg   10 %   0
+                                                                                                                                 %
+
+   19.20     ---Cuivre électrolytique en cathodes à plus de 99,9 % de cuivre                                         kg   10 %   0
+                                                                                                                                 %
+
+   19.30     ---Cuivre en cathodes à raffiner, à plus de 99,9 % de cuivre                                            kg   10 %   0
+                                                                                                                                 %
+
+   19.40     ---Cuivre blister (soufflé) en lingots à plus de 90 % de cuivre                                         kg   10 %   0
+                                                                                                                                 %
+
+   19.50     ---Cuivre noir en lingots, à plus de 95 % de cuivre                                                     kg   10 %   0
+                                                                                                                                 %
+
+   19.90     ---Cuivre autrement présenté                                                                            kg   10 %   0
+                                                                                                                                 %
+
+7404.00.00   Déchets et débris de cuivre
+
+75.02        Nickel sous forme brute
+
+   10.00     -De nickel non allié                                                                                    kg   5%     0
+                                                                                                                                 %
+
+   20.00     -D’alliage de nickel                                                                                    kg   5%     0
+                                                                                                                                 %
+
+78.01        Plomb sous forme brute
+
+   10.00     -Plomb affiné                                                                                           kg   5%     0
+                                                                                                                                 %
+
+79.01        Zinc sous forme brute
+
+             -Zinc non allié
+
+   11.00     --Contenant en poids 99,99 % ou plus de zinc                                                            kg   10 %   0
+                                                                                                                                 %
+
+   12.00     ---Contenant en poids moins de 99,99 % ou plus de zinc                                                  kg   10 %   0
+                                                                                                                                 %
+
+   20.00     ---Alliages de zinc                                                                                     kg   10 %   0
+                                                                                                                                 %
+
+79.03        Poussières, poudres et paillettes de zinc
+
+   10.00     -Poussières de zinc                                                                                     kg   10 %   0
+                                                                                                                                 %
+
+   90.00     -Autres                                                                                                 kg   10 %   0
+                                                                                                                                 %
+
+80.01        Étain sous forme brute
+
+   10.00     -Étain non allié                                                                                        kg   5%     0
+                                                                                                                                 %
+
+   20.00     -Alliages d’étain                                                                                       kg   5%     0
+                                                                                                                                 %
+
+81.05        Mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt et ouvrages en
+             cobalt, y compris les déchets et débris
+
+   20.00     -Mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; sous forme brute,      kg   10 %   0
+             poudres                                                                                                             %
+
+   30.00     -Déchets et débris                                                                                      kg   10 %   0
+                                                                                                                                 %
+
+             -Autres
+
+   90.10     --Cobalt électrolytique en cathode brisées à plus de 99 % de cobalt                                     kg   10 %   0
+                                                                                                                                 %
+
+   90.20     --Cobalt en cathode granulés à plus de 99 % de cobalt                                                   kg   10 %   0
+                                                                                                                                 %
+
+   90.30     --Cobalt cathodique à retraites à plus de 97 % de cobalt                                                kg   10 %   0
+                                                                                                                                 %
+
+   90.40     --alliages blancs en lingots ou en granulés à plus de 40 % de cobalt et plus de 15 % de cuivre          kg   10 %   0
+                                                                                                                                 %
+
+   90.90     --Cobalt autrement présenté                                                                             kg   10 %   0
+                                                                                                                                 %
+
+8105.00.00   Bismuth et ouvrages en bismuth, y compris les déchets et debris                                         kg   5%     0
+                                                                                                                                 %
+
+81.07        Cadmium et ouvrages en cadmium, y compris les déchets et débris
+
+   20.00     -Cadmium sous forme brute; poudres                                                                      kg   10 %   0
+                                                                                                                                 %
+
+   30.00     -Déchets et débris                                                                                      kg   10 %   0
+                                                                                                                                 %
+
+   90.00     -Autres                                                                                                 kg   10 %   0
+                                                                                                                                 %
+
+81.08        Titane et ouvrages en titane, y compris les déchets et débris
+
+   20.00     -Titane sous forme brute; poudres                                                                       kg          0
+                                                                                                                                 %
+
+   30.00     -Dechets et débris                                                                                      kg          0
+                                                                                                                                 %
+
+   90.00     -Autres                                                                                                 kg          0
+                                                                                                                                 %
+
+81.09        Zirconium et ouvrages en Zirconium, y compris les déchets et débris
+
+   20.00     -Zirconium sous forme brute: poudres                                                                    kg   5%     0
+                                                                                                                                 %
+
+   30.00     -Déchets et débris                                                                                      kg   5%     0
+                                                                                                                                 %
+   90.00   -Autres                                                                                            kg   5%   0
+                                                                                                                        %
+
+81.12      Béryllium, chrome, germanium, vanadium, gallium, hafnium (celtium), indium, niobium
+           (columbium), rhénium et thallium, ainsi que les ouvrages en ces métaux, y compris les déchets et
+           débris
+
+           -Béryllium
+
+   12.00   --Sous forme brute: poudres                                                                        kg   5%   o
+                                                                                                                        %
+
+   13.00   --Déchets et débris                                                                                kg   5%   o
+                                                                                                                        %
+
+   19.00   --Autres                                                                                           kg   5%   o
+                                                                                                                        %
+
+   21.00   --Sous forme brute: poudres
+
+   22.00   --Déchets et débris
+
+   29.00   --Autres                                                                                           kg   5%   o
+                                                                                                                        %
+
+           --Thallium
+
+           --Autres
+
+   51.00   --Sous forme brute: poudres                                                                        kg   5%   o
+                                                                                                                        %
+
+   52.00   --Déchets et débris                                                                                kg   5%   o
+                                                                                                                        %
+
+   59.00   --Autres                                                                                           kg   5%   o
+                                                                                                                        %
+
+           --Autres
+
+   92.00   --Sous forme brute: déchets et débris; poudres                                                     kg   5%   o
+                                                                                                                        %
+
+   99.00   --Autres                                                                                           kg   5%   o
+                                                                                                                        %
+
+======================================================================================================
+2. Loi n° 007/2002 du 11 juillet 2002 portant Code minier, telle que modifiée par la loi n° 18/001 du
+   9 mars 2018 (textes coordonnés, JO RDC, n° spécial du 3 mai 2018), article 234
+   https://www.icnl.org/wp-content/uploads/miningcode.pdf
+   sha256 : e1c6da583170ef426762d051493df734d33d9dd3fddedaa9100edb5f7560a8b6
+------------------------------------------------------------------------------------------------------
+Article 234 : Du droit de sortie (modifié à son alinéa 3 par l’article 9 de la Loi n°
+              18/001 du 09 mars 2018 modifiant et complétant la Loi n° 007/2002 du
+              11 juillet 2002 portant Code minier)
+Sans préjudice des dispositions de l’article 226 alinéa 2 à 4 du présent Code, le
+titulaire est totalement exonéré à la sortie, pour ses exportations en rapport avec le
+projet minier, de tous droits de douane et autres contributions, de quelque nature que
+ce soit.
+Toutefois, outre l’application de l’imposition de droit commun, les exportations
+frauduleuses et irrégulières réalisées par le titulaire sont soumises aux amendes et
+pénalités prévues dans la législation douanière.
+Les redevances et frais en rémunération des services rendus à l’exportation des
+produits marchands ou des biens à l’exportation temporaire pour perfectionnement
+ne peuvent excéder 1% de leur valeur commerciale brute.
+
+
+======================================================================================================
+3. Décret n° 18/054 du 27 décembre 2018 portant mesures d'allègements fiscaux et douaniers applicables
+   à la production, à l'importation et à l'exportation de l'énergie électrique
+   https://www.droitcongolais.info/files/651.12.18-Decret-du-27-decembre-2018_Energie-electrique_allegements-fiscaux.pdf
+   sha256 : 4f9afbe0a57750653fd985dba8afda9754a9ec1db2bc9de7a09c71bbd7d911bc
+------------------------------------------------------------------------------------------------------
+15 février 2019                     Journal Officiel de la République Démocratique du Congo                Première partie – n° 4
+
+
+                    GOUVERNEMENT                                   règles de fonctionnement des mécanismes procéduraux
+                                                                   de la protection de l'environnement ;
+                  Cabinet du Premier ministre                           Revu le Décret n° 15/009 du 28 avril 2015 portant
+                                                                   mesures d'allégements fiscaux et douaniers applicables à
+    Décret n° 18/054 du 27 décembre 2018 portant                   la production, à l'importation et à l'exportation de
+mesures d'allègements fiscaux et douaniers                         l'énergie électrique ;
+applicables à la production, à l'importation et à
+l'exportation de l'énergie électrique                                  Vu le rapport de la Commission tarifaire en sa
+                                                                   session du 30 décembre 2014 au 05 janvier 2015;
+                     Le Premier ministre,                               Considérant le faible taux de desserte de la
+                                                                   population et le déficit en énergie électrique, en dépit de
+     Vu la Constitution, telle que modifiée par la Loi n°
+                                                                   l'abondance en ressources énergétiques renouvelables,
+11/002 du 20 janvier 2011 portant révision de certains
+                                                                   qui handicapent le développement de la République
+articles de la Constitution de la République
+                                                                   Démocratique du Congo ;
+Démocratique du Congo du 18 février 2006
+spécialement en son article 92 ;                                        Considérant les effets d'entrainement des projets
+                                                                   d'électricité sur l'industrialisation et l'essor économique
+    Vu la Loi n° 08/007 du 07 juillet 2008 portant
+                                                                   du pays ainsi que, de ce fait, l'accroissement de l'assiette
+dispositions générales relatives à la transformation des
+                                                                   fiscale de l'Etat ;
+Entreprises publiques ;
+                                                                       Considérant que l'efficacité énergétique constitue
+     Vu la Loi n° 11/009 du 09 juillet 2011 portant
+                                                                   une solution à moindre coût pour réaliser des économies
+principes fondamentaux relatifs à la protection de
+                                                                   d'énergie et donc réduire progressivement le déficit
+l'environnement ;
+                                                                   énergétique à court terme ;
+     Vu la Loi n° 11/011 du 13 juillet 2011 relative aux
+                                                                        Considérant que le recours aux énergies
+Finances publiques telle que modifiée à ce jour ;
+                                                                   renouvelables contribue à accroître l'offre énergétique et
+     Vu la Loi n° 14/011 du 17 juin 2014 relative au               l'accès à l'énergie durable dans les meilleures conditions
+secteur de l'électricité ;                                         de coût et de protection de l'environnement ;
+    Vu l'Ordonnance-loi n° 010/001 du 20 août 2010                     Considérant la volonté du Gouvernement de
+portant institution de la Taxe sur la valeur ajoutée, telle        promouvoir et faciliter les investissements privés dans le
+que modifiée et complétée à ce jour ;                              secteur de l'électricité ;
+    Vu l'Ordonnance-loi n° 011/2012 du 21 septembre                    Vu la nécessité et l'urgence ;
+2012 instituant un nouveau tarif des droits et taxes à
+                                                                       Sur proposition des Ministres des Finances et de
+l'importation ;
+                                                                   l'Energie et Ressources Hydrauliques ;
+     Vu l'Ordonnance-loi n° 012/2012 du 21 septembre
+                                                                        Le Conseil des Ministres entendu ;
+2012 instituant un nouveau tarif des droits et taxes à
+l'exportation ;                                                                               DECRETE
+    Vu l'Ordonnance-loi n° 18/002 du 20 août 2018                                             Article 1
+portant Code des accises ;
+                                                                        L'énergie électrique, les biens d'équipements, les
+    Vu l'Ordonnance-loi n° 18/003 du 13 mars 2018                  matériels, les outillages et les pièces détachées importés
+fixant la nomenclature des droits, taxes et redevances du          et destinés exclusivement à la production, au transport, à
+Pouvoir central ;                                                  la distribution et à la commercialisation de l'électricité
+     Vu l'Ordonnance n° 17/005 du 08 mai 2017 portant              ainsi qu'à l'exploitation de l'énergie solaire et de toute
+nomination des Vice-premiers Ministres, des Ministres              autre source d'énergie renouvelable sont soumis au tarif
+d'Etat, des Ministres, d'un Ministre délégué et des Vice-          des droits et taxes à l'importation et à l'exportation
+Ministres telle que modifiée et complétée à ce jour par            instituées par les Ordonnances-lois n° 011/2012 et
+l'ordonnance n° 18/014 du 15 février 2018 portant                  012/2012 du 21 septembre 2012.
+réaménagement technique du Gouvernement ;
+                                                                                              Article 2
+    Vu l'Ordonnance n° 17/024 du 10 juillet 2017
+portant     organisation  et    fonctionnement  du                     Par dérogation aux dispositions de l'article 1er ci-
+Gouvernement, modalités de collaboration entre le                  dessus, l'énergie électrique et les biens ci-après
+Président de la République et le Gouvernement ainsi                bénéficient de la suspension de la perception des droits
+qu'entre les membres du Gouvernement ;                             de douane et de la Taxe sur la Valeur Ajoutée (TVA) à
+                                                                   l'importation :
+    Vu l'Ordonnance n° 017/025 du 10 juillet 2017
+fixant les attributions des Ministères ;                           1. l'énergie électrique importée pour assurer le service
+                                                                        public de l'électricité et pour couvrir les besoins de
+    Vu le Décret n° 14/019 du 02 août 2014 fixant les                   l'industrie locale ;
+
+                              5                                                                   6
+15 février 2019                     Journal Officiel de la République Démocratique du Congo                         Première partie – n° 4
+
+2.   les matériels, équipements, outillages ainsi que les          sont soumis aux contrôles des aspects normatifs
+     pièces détachées et de rechange importés et destinés          applicables.
+     à l'aménagement et à la maintenance des
+                                                                                               Article 7
+     infrastructures des activités de production, de
+     transport et de distribution de l'énergie électrique             Sont éligibles aux avantages prévus dans le présent
+     définies par la Loi n° 14/011 du 17 juin 2014                 Décret :
+     relative au secteur de l'électricité ;                        -     les opérateurs du secteur d'électricité en règle avec
+3.   les matériels et les équipements d'économie de                      la réglementation en vigueur ;
+     l'énergie électrique notamment les équipements de             -     les titulaires des droits miniers en règle avec la
+     compensation de l'énergie réactive, les filtres                     réglementation ;
+     d'harmoniques et les compteurs d'énergie
+     électrique;                                                   -     les promoteurs         des       projets     d'investissement
+                                                                         industriels.
+4.   les matériels et les équipements d'exploitation de
+     l'énergie solaire et ceux adaptés aux autres énergies                                     Article 8
+     renouvelables ;                                                   Le bénéfice des avantages prévus ci-dessus est
+5.  les intrants destinés à la fabrication et au montage           subordonné à l'approbation par le Ministre ayant les
+    local des matériels et équipements ci-avant                    Finances dans ses attributions de la liste quantitative de
+    concernés par le présent décret.                               matériels et équipements à importer, après avis du
+    L'exportation de l'énergie électrique est soumise au           Ministre ayant l'Electricité dans ses attributions.
+paiement des droits de douane au taux d'1%.                                                    Article 9
+    En sus des avantages garantis par le Code des                       Le Ministre ayant les Finances dans ses attributions
+investissements, la suspension de la perception de la              est chargé de l’exécution du présent Décret.
+TVA est consentie à la vente des matériels et
+équipements ci-dessus produits localement.                                                     Article 10
+
+                        Article 3                                       Est abrogé le Décret n°15/009 du 28 avril 2015
+                                                                   portant mesures d'allégements fiscaux et douaniers
+     L'exportation et l'utilisation à d'autres fins de tout        applicables à la production, à l'importation et à
+produit bénéficiant des avantages ci-dessus sont                   l'exportation de l'énergie électrique.
+strictement prohibées.
+                                                                                               Article 11
+    La revente des biens bénéficiant des avantages du
+présent décret par les opérateurs et les industriels                   Le présent Décret entre en vigueur à la date de sa
+bénéficiaires est strictement interdite.                           signature.
+    Le contrevenant est passible de sanctions prévues                          Fait à Kinshasa, le 27 décembre 2018
+par les textes légaux et réglementaires en vigueur en la
+matière.                                                                              Bruno Tshibala Nzenzhe
+                        Article 4                                                        Henri Yav Mulang
+    Les Ministres ayant respectivement l'Electricité, les
+Finances et l'Economie dans leurs attributions prennent                                 Ministre des Finances
+des mesures visant à éliminer progressivement l'usage
+des lampes à forte consommation d'énergie électrique,                                  Jean-Marie Ingele Ifoto
+les appareils et les équipements non efficients aux
+réseaux électriques.                                                    Ministre de l'Energie et Ressources Hydrauliques
+                        Article 5                                                             ___________
+    La durée des avantages douaniers et fiscaux visés
+par le présent Décret est de quatre (4) ans renouvelable,
+le cas échéant, après évaluation, exception faite de
+l'importation et de l'exportation de l'énergie électrique
+dont la durée est de cinq (ans) ans.
+                        Article 6
+    L'énergie électrique produite, importée ou exportée
+ainsi que les biens, équipements, matériels, outillages et
+pièces de rechanges importés ou fabriqués localement
+
+
+                            7                                                                         8
+

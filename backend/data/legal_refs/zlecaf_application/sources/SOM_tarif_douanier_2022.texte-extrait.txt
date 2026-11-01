@@ -1,0 +1,65 @@
+Federal Government of Somalia, Ministry of Finance — SOMALI CUSTOMS TARIFF 2022, Mogadishu May 2022
+https://mof.gov.so/sites/default/files/Publications/Somali_Customs_Tariff_Final.pdf (page : https://mof.gov.so/publications/somali-customs-tariff-2022, publiée le 31/08/2022)
+PDF de 323 pages, sha256 aa9657fae9104e83e35455f19bee6c7ab3ae5073081da7735e8853e20233fbfd — texte lu par pdftotext -layout, extraits verbatim.
+
+== Page de titre ==
+  Federal Government of Somalia
+       Ministry of Finance
+SOMALI CUSTOMS TARIFF 2022
+         Mogadishu May 2022
+
+== En-tête du barème et chapitre 1 (lignes 312-326 du texte) ==
+     (c) animals of heading 9508.
+                                                                                                                   Import
+ Commodity                                                                                           Statistical
+                                                Description of goods                                                duty
+   Code                                                                                                 unit
+                                                                                                                    rates
+        (1)                                                 (2)                                         (3)          (4)
+I              SECTION I - LIVE ANIMALS; ANIMAL PRODUCTS
+01             CHAPTER 1 - LIVE ANIMALS
+0101           Live horses, asses, mules and hinnies
+              – Horses
+0101 21 00    – – Pure-bred breeding animals                                                            pce        5%
+0101 29 00    – – Other                                                                                 pce        25 %
+0101 30 00    – Asses                                                                                   pce        25 %
+0101 90 00    – Other                                                                                   pce        25 %
+
+== Positions sans taux : « – » (porc, soies, boissons alcoolisées), « (y) », « TBD % » ==
+0103 91 00    – – Weighing less than 50 kg                                                              pce          –
+0103 92 00    – – Weighing 50 kg or more                                                                pce          –
+0203 11 00    – – Carcases and half-carcases                                                               kg          –
+0203 12 00    – – Hams, shoulders and cuts thereof, with bone in                                           kg          –
+0203 19 00    – – Other                                                                                    kg          –
+0302 39 00   – – Other                                                                                         kg          (y)
+0502 10 00    – Pigs', hogs' or boars' bristles and hair and waste thereof                               kg         –
+1209 29 00       – – Other                                                                             kg        TBD %
+1209 91 00       – – Vegetable seeds                                                                   kg        TBD %
+1209 99 00       – – Other                                                                             kg        TBD %
+2203 00 00     Beer made from malt                                                                    l         –
+2204 21 00    – – In containers holding 2 litres or less                                              l          –
+2208 30 00   – Whiskies                                                                           l alc. 100%     –
+
+== Carburants à 10 % (5 % dans l'édition 2020) ==
+2710          Petroleum oils and oils obtained from bituminous minerals, other than crude;
+             preparations not elsewhere specified or included, containing by weight 70 % or
+             more of petroleum oils or of oils obtained from bituminous minerals, these oils
+             being the basic con
+             – – Light oils and preparations
+2710 12 10   – – – Motor Spirit (gasoline) regular                                                   1000 l    10 %
+2710 12 20   – – – Motor Spirit (gasoline) premium                                                   1000 l    10 %
+2710 12 30   – – – Aviation Spirit                                                                   1000 l    10 %
+2710 12 40   – – – Spirit type Jet Fuel                                                              1000 l    10 %
+2710 12 50   – – – Special boiling point spirit and white spirit                                     1000 l    10 %
+2710 12 90   – – – Other light oils and preparations                                                 1000 l    10 %
+2710 19 31   – – – – Gas oil (automotive, light, amber for high speed engines)                         kg      10 %
+2710 19 32   – – – – Diesel oil (industrial heavy, black, for low speed marine and stationery          kg      10 %
+             engines) stationery engines)
+2710 19 39   – – – – Other gas oils                                                                    kg      10 %
+
+== Autres positions ==
+2402 20 10    – – Of length not exceeding 72 mm in length including the filter tip               1000 pce    35 %
+2402 20 90    – – Other                                                                          1000 pce    35 %
+8471 30 00   – Portable automatic data-processing machines, weighing not more than 10 kg,               pce         5%
+8703 23 10   – – – New                                                                                  pce         25 %
+8703 23 90   – – – Used                                                                                 pce         25 %

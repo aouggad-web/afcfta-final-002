@@ -1,0 +1,933 @@
+RDC — tarif des droits et taxes à l'exportation tel que modifié : liste consolidée des produits soumis aux droits de sortie
+Extrait établi le 2026-11-01 (pdftotext -layout) ; seuls les passages relatifs aux droits de sortie sont reproduits.
+
+====================================================================================================
+1. Ordonnance-loi n° 011-2012 du 21 septembre 2012 (tarif à l'importation), version consolidée CLRDC/Larcier
+   (http://clrdc.larcier.com/homedir/site/index.php?doc=3276&rev=33, impression du 8 mars 2019),
+   reproduite par droitcongolais.info :
+   URL : https://www.droitcongolais.info/files/651.09.12-Ordonannce-loi-du-21-septembre-2012_Tarif_taxes-a-l-importation.pdf
+   sha256 : 332b2a03e188886de555e519562a1e7f9012d2e6c59b4cbb8ebee497f9d5cc55
+   La liste « Autres produits miniers marchands » suit, sans note propre, le bloc inséré par la loi de finances
+   17-005 du 23 juin 2017 ; ses taux sont des droits de sortie (minerais, concentrés, métaux bruts).
+----------------------------------------------------------------------------------------------------
+avoir été placées en entrepôt ou constituées en dépôt.
+Les justifications doivent résulter de derniers titres de transport crées avant la date d'entrée en vigueur à destination directe ou exclusive
+d'une localité du territoire douanier de la République démocratique du Congo.
+Les marchandises non déclarées dans les six mois qui suivent la date de publication ne pourront plus bénéficier de la clause transitoire.
+[...]
+Autres produits miniers marchands
+ 1)  26.02  Minerais de manganèse et leurs concentrés, y compris les minerais de manganèse ferrugineux et leurs concentrés
+  d'une teneur en manganèse de 20 % ou plus en poids, sur produit sec
+  00.10  - d' une teneur de 35 à 55 % en manganèse  Kg  10 %
+  00.20  - d' une teneur supérieure ou égale à 56 % en manganèse  Kg  10 %
+  00.90  - autres  Kg  10 %
+ 2)  2603  Minerais de cuivre et leurs concentrés
+  00.10  - d'une teneur de 20 à 25 % en cuivre  Kg  10 %
+  00.20  - d'une teneur de 26 à 36 % en cuivre  Kg  10 %
+  00.30  - d'une teneur de 10 à 22 % en cuivre et de 8 à 12 % en cobalt  Kg  10 %
+  00.40  - d'une teneur de 10 à 22 % en cuivre et de 13 à 15 % en cobalt  Kg  10 %
+  00.50  - d'une teneur de 23 à 35 % en cuivre et de 8 à 12 % en cobalt  Kg  10 %
+  00.60  - d'une teneur de 23 à 35 % en cuivre et de 13 à 15 % en cobalt  Kg  10 %
+  00.90  - autres  Kg  10 %
+ 3)  2604.00.0  Minérais de nickel et leurs concentrés  Kg  10 %
+ 4)  26.05  Minérais de cobalt et leurs concentrés  Kg  10 %
+ 5)  2607.00  Minerais de plomb et leurs concentrés  Kg  10 %
+ 6)  2608.00.00  Minerais de zinc et leurs concentrés  Kg  10 %
+ 7)  26.09  Minerais d'étain et leurs concentrés
+  00.10  - d'une teneur de 55 à 65 % en étain  Kg  10 %
+  00.20  - d'une teneur de 66 à 70 % en étain  Kg  10 %
+  00.90  - autres  Kg  10 %
+ 8)  26.11  Minerais de tungstène et leurs concentrés
+  00.10  - provenant de gîtes primaires obtenus par broyage  Kg  10 %
+  - autres:  Kg  10 %
+  00.91  -- d' une teneur de 55 à 65 % en oxyde de tungstène (oxyde de wolfram)  Kg  10 %
+  00.92  -- d'une teneur de 66 à 70 % en oxyde de tungstène (oxyde de wolfram)  Kg  10 %
+  00.99  -- autres  Kg  10 %
+ 9)  26.12  Minerais d'uranium ou de thorium et leurs concentrés
+  10.00  - Minerais d'uranium et leurs concentrés  Kg  10 %
+  - Minerais de thorium et leurs concentrés  Kg  10 %
+  20.10  -- monazite (terres rares)  Kg  10 %
+  20.90  -- autres  Kg  10 %
+ 10)  2614.00.00  Minerais de titane et leurs concentrés  Kg  10 %
+ 11)  26.15  Minerais de niobium, de tantale, de vanadium ou de zirconium et leurs concentrés
+  10.00  - Minerais de zirconium et leurs concentrés  Kg  10 %
+  - Autres:
+  -- de niobium:  Kg  10 %
+  90.11  --- d'une teneur de 55 à 60 % en oxyde de niobium ou colombite  Kg  10 %
+  90.12  --- d'une teneur de 61 à 65 % en oxyde de niobium ou colombite  Kg  10 %
+  90.19  --- autres
+  -- de tantale:  Kg  10 %
+  90.21  --- d'une teneur de 20 à 25 % en tantale et supérieure ou égale à 60 % en oxyde de niobium ou colombite  Kg  10 %
+  90.22  ---d'une teneur de 26 à 30 % en tantale et de 40 à 59 % en oxyde de niobium ou colombite  Kg  10 %
+  90.23  --- d'une teneur supérieure ou égale à 35 % en tantale et inférieure ou égale à 39 % en oxyde de niobium ou colombite  Kg  10 %
+  90.29  --- autres  Kg  10 %
+ 12)  26.16  Minerais de métaux précieux et leurs concentrés
+  10.00  - Minerais d'argent et leurs concentrés  Kg  10 %
+  90.00  - Autres  Kg  10 %
+13)  26.17  Autres minerais et leurs concentrés
+  10.00  - Minerais d'antimoine et leurs concentrés  Kg  10 %
+  - Autres:
+  -- Cassitérites:
+  90.11  --- provenant de gîtes primaires obtenues par broyage  Kg  10 %
+  90.19  --- autres  Kg  10 %
+  -- Wolfram:
+  90.21  --- provenant de gîtes primaires et obtenu par broyage  Kg  10 %
+  90.29  --- autres  Kg  10 %
+  90.30  -- de bismuth  Kg  10 %
+  90.40  -- de germanium  Kg  10 %
+  90.50  -- malachite  Kg  10 %
+  90.60  -- de beryllium ou de glucicium  Kg  10 %
+  90.70  -- monasite  Kg  10 %
+  90.80  -- struverite  Kg  10 %
+  -- autres:
+  90.91  --- résines rhénifères  Kg  10 %
+  90.99  --- autres minerais  Kg  10 %
+14)  2619.00.00  Scories, laitiers (autres que le laitier granulé), battitures et autres déchets de la fabrication du fer ou de l'acier  Kg  10 %
+15)  26.20  Scories, cendres et résidus (autres que ceux provenant de la fabrication de la fonte, du fer ou de l'acier)
+  contenant des métaux, de l'arsenic ou leurs composés
+  - Contenant principalement du Zinc:
+  11.00  -- Mattes de galvanisation  Kg  10 %
+  19.00  -- Autres  Kg  10 %
+  - Contenant principalement du plomb:  Kg  10 %
+  21.00  -- Boues d'essence au plomb et boues de composés antidétonants contenant du plomb  Kg  10 %
+  29.00  -- Autres  Kg  10 %
+  30.00  - Contenant principalement du cuivre  Kg  10 %
+  40.00  - Contenant principalement de l'aluminium  Kg  10 %
+  60.00  - Contenant de l'arsenic, du mercure, du thallium ou leurs mélanges, des types utilisés pour l'extraction de l'arsenic ou de ces  Kg  10 %
+  métaux ou pour la fabrication de leurs composés chimiques
+  - Autres:
+  91.00  -- Contenant de l'antimoine, du beryllium, du cadmium, du chrome ou leurs mélanges  Kg  10 %
+  -- Autres:
+  99.10  --- contenant principalement de l'oxyde de tantale (tantalite)  Kg  10 %
+  99.90  --- autres  Kg  10 %
+16)  26.21  Autres scories et cendres, y compris les cendres et résidus provenant de l'incinération des déchets municipaux
+  10.00  - Cendres et résidus provenant de l'incinération des déchets municipaux  Kg  10 %
+  90.00  - Autres  Kg  10 %
+17)  28.22  Oxydes et hydroxydes de cobalt; oxydes de cobalt du commerce
+  - hydroxydes de cobalt  Kg  10 %
+  00.11  -- d'une teneur inférieure ou égale à 25 % en cobalt  Kg  10 %
+  00.12  -- d'une teneur de 26 à 35 % en cobalt  Kg  10 %
+  00.13  -- d'une teneur de 36 à 40 % en cobalt  Kg  10 %
+  00.19  -- autres  Kg  10 %
+  00.90  - autres  Kg  10 %
+18)  28.30  Sulfures; polysulfures, de constitution chimique définie ou non
+  10.00  - Sulfures de sodium  Kg  10 %
+  - Autres:  Kg  10 %
+  -- sulfure de denickelage:
+  90.11  --- d'une teneur de 20 à 25 % en cobalt et supérieure ou égale à 5 % en nickel  Kg  10 %
+  90.12  --- d'une teneur de 26 à 35 % en cobalt et supérieure ou égale à 5 % en nickel  Kg  10 %
+  90.13  --- d'une teneur de 36 à 40 % en cobalt et supérieure ou égale à 5 % en nickel  Kg  10 %
+  90.19  --- autres  Kg  10 %
+  90.90  -- autres  Kg  10 %
+19)  28.36  Carbonates; peroxocarbonates (percarbonates); carbonate d'ammonium du commerce contenant du carbamate
+  d'ammonium
+  20.00  - Carbonate de disodium  Kg  10 %
+  30.00  - Hydrogénocarbonate (bicarbonate) de sodium  Kg  10 %
+  40.00  - Carbonate de potassium  Kg  10 %
+  50.00  - Carbonate de calcium  Kg  10 %
+  60.00  - Carbonate de baryum  Kg  10 %
+  - Autres:
+  91.00  -- Carbonates de lithium  Kg  10 %
+  92.00  -- Carbonate de strontium  Kg  10 %
+  -- Autres:
+  --- carbonate de cobalt:  Kg  10 %
+  99.11  ---- d'une teneur inférieure ou égale à 25 % en cobalt et de 5 à 10 % en cuivre  Kg  10 %
+  99.12  ---- d'une teneur inférieure ou égale à 25 % en cobalt et de 11 à 15 % en cuivre  Kg  10 %
+  99.13  ---- d'une teneur supérieure à 25 % en cobalt et de 11 à 15 % en cuivre  Kg  10 %
+  99.19  ---- autres  Kg  10 %
+  ----- de carbonate de cobalt et de carbonate de cuivre:
+  99.21  ---- d'une teneur inférieure ou égale à 25 % en cuivre et de 1 à 2,5 % en cobalt  Kg  10 %
+  99.22  ---- d'une teneur inférieure ou égale à 25 % en cuivre et de 2,6 à 4 % en cobalt  Kg  10 %
+  99.23  ---- d'une teneur supérieure à 25 % en cuivre et de 2,6 à 4 % en cobalt  Kg  10 %
+  99.29  ---- autres  Kg  10 %
+  99.90  ---- autres  Kg  10 %
+20)  71.06  Argent (y compris l'argent doré ou vermeil et l'argent platiné), sous formes brutes ou mi-ouvrées, ou en
+  poudre
+  - Poudres:
+  10.10  -- d'une teneur de 90 à 98 % en argent  Kg  10 %
+  10.20  -- d'une teneur de 99 à 99,9 % en argent  Kg  10 %
+  10.90  -- autres  Kg  10 %
+  - Autres:
+  -- Sous formes brutes:
+  91.10  --- d'une teneur de 90 à 98 % en argent  Kg  10 %
+  91.20  --- d'une teneur de 99 à 99,9 % en argent  Kg  10 %
+  91.90  --- autres  Kg  10 %
+21)  71.08  Or (y compris l'or platiné), sous formes brutes ou mi-ouvrées, ou en poudre
+  - À usages non monétaires:
+  -- Poudres:
+  --- d'expLoitation artisanale:
+  11.11  ---- d'une teneur de 90 à 98 % en or  Kg  1,50
+  %
+  11.12  ---- d'une teneur supérieure ou égale à 99,99 % en or  Kg  1,50
+  %
+  11.19  ---- autres  Kg  1,50
+  %
+  --- de production industrielle:
+  11.21  ---- d'une teneur de 90 à 98 % en or  Kg  3%
+  11.22  ---- d'une teneur supérieure ou égale à 99,99 % en or  Kg  3%
+  11.29  ---- autres  Kg  3%
+  -- Sous autres formes brutes:
+  --- d'expLoitation artisanale:
+  12.11  ---- d'une teneur de 90 à 98 % en or  Kg  1,50
+  %
+  12.12  ---- d'une teneur supérieure ou égale à 99,99 % en or  Kg  1,50
+  %
+  12.19  ---- autres  Kg  1,50
+  %
+  --- de production industrielle:
+  12.21  ---- d'une teneur de 90 à 98 % en or  Kg  3%
+  12.22  ---- d'une teneur supérieure ou égale à 99,99 % en or  Kg  3%
+  12.29  ---- autres  Kg  3%
+22)  71.10  Platine, sous formes brutes ou mi- ouvrées, ou en poudre
+  - Platine:
+  -- Sous formes brutes ou en poudre:
+  11.10  --- d'une teneur de 90 à 98% en platine  Kg  10 %
+  11.20  --- d'une teneur de 99 à 99,9% en platine  Kg  10 %
+  11.90  --- autres  Kg  10 %
+  - Palladium:
+  -- Sous formes brutes ou en poudre:
+  21.10  --- d'une teneur de 90 à 98 % en palladium  Kg  10 %
+  21.20  --- d'une teneur de 99 à 99,9 % en palladium  Kg  10 %
+  - Rhodium:
+  -- Sous formes brutes ou en poudre:
+  31.10  --- d'une teneur de 90 à 98 % en rhodium  Kg  10 %
+  31.20  --- d'une teneur de 99 à 99,9 % en rhodium  Kg  10 %
+  31.90  --- autres  Kg  10 %
+  - Iridium, osmium et ruthénium:
+  -- Sous formes brutes ou en poudre:
+  41.10  --- d'une teneur de 90 à 98 % en iridium, en osmium ou en ruthénium  Kg  10 %
+  41.20  --- d'une teneur de 99 à 99,9 % en iridium, en osmium ou en ruthénium  Kg  10 %
+  41.90  --- autres  Kg  10 %
+23)  72.04  Déchets et débris de fonte, de fer ou d'acier (ferrailles); déchets lingotés en fer ou en acier
+  - Déchets et débris d'aciers alliés:
+  21.00  -- D'aciers inoxydables  Kg  5%
+  29.00  -- Autres  Kg  5%
+24)  72.24  Autres aciers alliés en lingots ou autres formes primaires; demi-produits en autres aciers alliés
+  10.00  - Lingots et autres formes primaires  Kg  10 %
+  90.00  - Autres  Kg  10 %
+25)  74.01  Mattes de cuivre; cuivre de cément (précipité de cuivre)
+  - mattes de cuivre:
+  00.11  -- d'une teneur inférieure ou égale à 45 % en cuivre  Kg  5%
+  00.12  -- d'une teneur de 46 à 60 % en cuivre  Kg  5%
+  00.13  -- d'une teneur de 61 à 80 % en cuivre  Kg  5%
+  00.19  -- autres  Kg  5%
+26)  74.03  Cuivre affiné et alliages de cuivre sous forme brute
+  - Cuivre affiné:
+  -- Cathodes et sections de cathodes:
+  11.10  --- cuivre électrolytique en plaques ou feuilles à plus de 99,9 % de cuivre  Kg  10 %
+  11.20  --- cuivre électrolytique en cathodes (spot bleu) à plus de 99,9 % de cuivre  Kg  10 %
+  11.30  --- cuivre en cathodes à raffiner, à plus de 99,9 % de cuivre  Kg  10 %
+  11.40  --- nodules et scraps d'une teneur supérieure ou égale à 99,85 % en cuivre  Kg  10 %
+  11.90  --- autre cuivre électrolytique à plus de 99,9 % de cuivre  Kg  10 %
+  12.00  -- Barres à fil (wire-bars)  Kg  10 %
+  13.00  -- Billettes  Kg  10 %
+  -- Autres:
+  19.10  --- lingots ou lingots- bars à plus de 99,99 % de cuivre  Kg  10 %
+  19.90  --- autres  Kg  10 %
+  - Alliages de cuivre:
+  21.00  -- À base de cuivre-zinc (laiton)  Kg  10 %
+  22.00  -- À base de cuivre-étain (bronze)  Kg  10 %
+  29.00  -- Autres alliages de cuivre (à l'exception des alliages mères du n° 74.05)  Kg  10 %
+27)  74.04  Déchets et débris de cuivre
+  00.10  - nodules et scraps d'une teneur inférieure à 99,85 % en cuivre  Kg  5%
+  00.20  - déchets  Kg  5%
+  00.90  - autres  Kg  5%
+28)  74.05  Alliages mères de cuivre
+  00.10  - alliage rouge d'une teneur inférieure ou égale à 80 % en cuivre et inférieure ou égale à 7 % en cobalt  Kg  10 %
+  00.20  - alliage rouge d'une teneur de 81 à 90 % en cuivre et inférieure ou égale à 5 % en cobalt  Kg  10 %
+  00.90  -autres  Kg  10 %
+29)  74.06  Poudres et paillettes de cuivre
+  10.00  - Poudres à structure non lamellaire  Kg  10 %
+  20.00  - Poudres à structure lamellaire; paillettes  Kg  10 %
+30)  75.02  Nickel sous forme brute
+  - Nickel non allié :
+  10.10  -- d'une teneur de 90 à 98 % en nickel  Kg  5%
+  10.20  -- d'une teneur de 99 à 99,9 % en nickel  Kg  5%
+  10.90  -- autres  Kg  5%
+  20.00  - Alliages de nickel  Kg  5%
+31)  78.01  Plomb sous forme brute
+  - Plomb affiné:
+  10.10  -- d' une teneur de 90 à 98 % en plomb  Kg  5%
+  10.20  -- d'une teneur de 99 à 99,9 % en plomb  Kg  5%
+  10.90  -- autres  Kg  5%
+  - Autres:
+  91.00  -- contenant de l'antimoine comme autre élément prédominant en poids  Kg  5%
+  99.00  -- Autres  Kg  5%
+32)  78.02  Déchets et débris de plomb
+  - débris:
+  00.11  -- d'une teneur de 90 à 98 % en plomb  Kg  5%
+  00.12  -- d'une teneur de 99 à 99,9 % en plomb  Kg  5%
+  00.19  -- autres  Kg  5%
+  - déchets:
+  00.21  -- d'une teneur de 90 à 98 % en plomb  Kg  5%
+  00.22  -- d'une teneur de 99 à 99,9% en plomb  Kg  5%
+  00.29  -- autres  Kg  5%
+33)  78.04  Tables, feuilles et bandes, en plomb; poudres et paillettes de plomb
+  - Poudres et paillettes
+  20.10  -- d'une teneur inférieure ou égale à 30 % en plomb  Kg  10 %
+  20.90  -- autres  Kg  10 %
+34)  79.01  Zinc sous forme brute
+  - Zinc non allié:
+  11.00  -- Contenant en poids 99,99 % ou plus de zinc  Kg  5%
+  12.00  -- Contenant en poids moins de 99,99 % de zinc  Kg  5%
+  20.00  - Alliages de zinc  Kg  5%
+35)
+  79.03  Poussières, poudres et paillettes, de zinc
+  - poussières de zinc:
+  10.10  -- d'une teneur de 69 à 80 % en zinc  Kg  10 %
+  10.20  -- d'une teneur de 79 à 90 % en zinc  Kg  10 %
+  10.30  -- d'une teneur de 30 à 40 % en zinc et de 20 à 30 % en plomb  Kg  10 %
+  10.40  -- d'une teneur de 41 à 50 % en zinc et inférieure ou égale à 10 % en plomb  Kg  10 %
+  10.90  -- autres  Kg  10 %
+  90.00  - Autres  Kg  10 %
+36)  80.01  Étain sous forme brute
+  10.00  - Étain non allié  Kg  10 %
+  20.00  - Alliages d'étain  Kg  10 %
+37)  8002.00.00  Déchets et débris d'étain  Kg  10 %
+38)  81.05  Mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt et ouvrages en cobalt,
+  y compris les déchets et débris
+  - Mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt sous forme brute; poudres:
+  -- mattes de cobalt:
+  20.11  --- mattes de cobalt-fer d'une teneur inférieure ou égale à 30 % en cobalt  Kg  10 %
+  20.12  --- mattes de cobalt-nickel d'une teneur de 10 à 20 % en cobalt, de 20 à 40 % en cuivre et de 5 à 10 % en nickel  Kg  10 %
+  20.19  --- autres  Kg  10 %
+  -- cobalt séparateur magnétique:
+  20.21  --- d'une teneur de 55 à 60 % en cobalt  Kg  10 %
+  20.22  --- d'une teneur de 61 à 65 % en cobalt  Kg  10 %
+  20.29  --- autres  Kg  10 %
+  20.90  ---- mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt sous forme brute; poudres  Kg  10 %
+  30.00  - Déchets et débris  Kg  10 %
+  - Autres:
+  90.10  -- cobalt électrolytique en cathodes brisées d'une teneur supérieure ou égale à 99,3 % en cobalt  Kg  10 %
+  90.20  -- cobalt en granulés d' une teneur supérieure ou égale à 99,3 % en cobalt  Kg  10 %
+  90.30  -- cobalt cathodique d'une teneur inférieure à 99,3 % en cobalt  Kg  10 %
+  -- alliages blancs en lingots, en granulés ou en poudre:
+  90.41  --- d'une teneur de 20 à 30 % en cobalt et de 21 à 25 % en cuivre  Kg  10 %
+  90.42  --- d' une teneur de 21 à 30 % en cobalt et de 10 à 20 % en cuivre  Kg  10 %
+  90.43  --- d'une teneur de 31 à 40 % en cobalt et de 10 à 20 % en cuivre  Kg  10 %
+  90.49  --- autres  Kg  10 %
+  -- alliages cobalt-nickel en lingots, en granulés ou en poudre:
+  90.51  --- d'une teneur de 30 à 40 % en cobalt, de 7 à 15 % en cuivre et de 10 à 15% en nickel  Kg  10 %
+  90.52  --- d'une teneur de 30 à 40 % en cobalt, de 16 à 25 % en cuivre et de 10 à 15% en nickel  Kg  10 %
+  90.53  --- d'une teneur de 41 à 50 % en cobalt, de 7 à 15 % en cuivre et de 10 à 15% en nickel  Kg  10 %
+  90.59  --- autres  Kg  10 %
+  -- cobalt autrement présenté:
+  90.91  --- d'une teneur inférieure ou égale à 90 % en cobalt  Kg  10 %
+  90.92  --- d'une teneur de 91 à 95 % en cobalt  Kg  10 %
+  90.93  --- d'une teneur de 96 à 99 % en cobalt  Kg  10 %
+  90.99  --- autres  Kg  10 %
+39)  8106.00.00  Bismuth et ouvrages en bismuth, y compris les déchets et débris  Kg  5%
+40)  81.07  Cadmium et ouvrages en cadmium, y compris les déchets et débris
+  - Cadmium sous forme brute; poudres:
+  20.10  -- d' une teneur de 90 à 98 % en cadmium  Kg  10 %
+  20.20  -- d' une teneur de 99 à 99,9 % en cadmium  Kg  10 %
+  30.00  - Déchets et débris  Kg  10 %
+  90.00  - Autres  Kg  10 %
+41)  81.08  Titane et ouvrages en titane, y compris les déchets et débris
+  20.00  - Titane sous forme brute; poudres  Kg  5%
+  30.00  - Déchets et débris  Kg  5%
+  90.00  - Autres  Kg  5%
+42)  81.09  Zirconium et ouvrages en zirconium, y compris les déchets et débris
+  20.00  - Zirconium sous forme brute; poudres  Kg  5%
+  30.00  - Déchets et débris  Kg  5%
+  90.00  - Autres  Kg  5%
+43)  81.12  Béryllium, chrome, germanium, vanadium, gallium, hafnium (celtium), indium, niobium (columbium),
+  rhénium et thallium, ainsi que les ouvrages en ces métaux, y compris les déchets et débris
+  - Béryllium:
+  12.00  -- Sous forme brute; poudres  Kg  5%
+  13.00  -- Déchets et débris  Kg  5%
+  19.00  --Autres  Kg  10 %
+  - Chrome:
+  21.00  -- Sous forme brute; poudres  Kg  5%
+  22.00  -- Déchets et débris  Kg  5%
+  29.00  -- Autres  Kg  10 %
+  - Thallium:
+  -- Autres:
+  51.00  -- Sous forme brute; poudres  Kg  5%
+  52.00  -- Déchets et débris  Kg  5%
+  59.00  -- Autres  Kg  5%
+  - Autres:
+  --- sous forme brute; déchets et débris; poudres:  Kg  5%
+  92.10  --- d' une teneur de 90 à 98% en thallium  Kg  5%
+  92.20  --- d' une teneur de 99 à 99,99% en thallium  Kg  5%
+  92.90  --- autres  Kg  5%
+  -- Autres:
+  99.10  --- d' une teneur de 90 à 98% en thallium  Kg  5%
+  99.20  --- d' une teneur de 99 à 99,99% en thallium  Kg  5%
+  99.90  --- autres  Kg  5%
+
+====================================================================================================
+2. Projet de loi de finances pour l'exercice 2025 (Doc. n° 1, septembre 2024), ministère du Budget
+   URL : https://www.budget.gouv.cd/wp-content/uploads/budget2025/plf2025/document_num_1_projet_de_loi_de_finances_2025.pdf
+   sha256 : 03cb191eeae1cac589d3a54dee566ca988a99ba1709d8bf36dfaf7547ae2aed3
+   Projet : le texte adopté (loi de finances n° 24/011 du 20 décembre 2024) n'a pas été lu.
+----------------------------------------------------------------------------------------------------
+Article 15
+Sans préjudice des dispositions de l’Ordonnance-loi n°012/2012 du 21 septembre
+2012 instituant le tarif des droits et taxes à l’exportation, les taux des droits de
+douane à l’exportation sont rabattus ou relevés tels que spécifiés à l’annexe XXII.
+  14
+Article 16
+Les taux des droits de douane à l’importation des marchandises sont rabattus ou
+relevés, selon les cas à 5%, 10% ou 20%, tels que spécifiés à l’annexe XV.
+Article 17
+Les taux des droits de douane à l’exportation, tels que déterminés par les
+dispositions de l’Ordonnance-loi n° 12/2012 du 21 septembre 2012 sont modifiés et
+complétés comme suit :
+(1) Les produits agricoles exportés, visés par les dispositions de la Loi n° 11/022 du
+  24 décembre 2011 portant principes fondamentaux relatifs à l’agriculture, ne
+  couvrent pas les produits du bois du Chapitre 44 de la Nomenclature.
+(2) Les catégories de marchandises passibles des droits de douane à l’exportation,
+  sont taxées conformément à la liste, ci-après :
+  (a) au taux de 0,5%
+    les diamants industriels et non industriels d’exploitation artisanale. Les
+  marchandises visées relèvent des positions tarifaires 7102.21.10 et
+  7102.31.10
+    7108.11.11 - Or à usages non monétaires, présenté en poudre,
+  d’exploitation artisanale, d’une teneur de 90 % à 98 % en or ;
+    7108.11.12 - Or à usages non monétaires, présenté en poudre,
+  d’exploitation artisanale d’une teneur supérieure ou égale à 99,99 % en or ;
+    7108.11.19 – Autres Or non monétaires, présenté en poudre d’exploitation
+  artisanale.
+    7108.12.11- Or, à usages non monétaires, présenté sous autres formes
+  brutes, d’exploitation artisanale, d’une teneur de 90 % à 98 % en Or ;
+    7108.12.12 – Or à usages non monétaires d’une teneur supérieure ou
+  égale à 99,99 % en or ;
+    7108.12.19 – Autres Or non monétaires, présenté sous d’autres formes
+  brutes d’exploitation artisanale.
+  (b) au taux de 2 %
+  15
+  Tous les produits miniers marchands exportés relevant du Chapitre 26 et de la
+  Section XV de la Nomenclature, c’est-à-dire couvrant les Chapitres 72 à 81 sont
+  taxés à 2 %.
+  L’exemption à l’exportation prévue par les dispositions de l’article 234 du Code
+  minier est supprimée. Le taux de droit de douane de 2 % est de droit commun.
+  Par conséquent la taxation n’est plus limitée aux exportations frauduleuses et
+  irrégulières réalisées par le titulaire des titres miniers.
+  Les marchandises visées par cette nouvelle taxation sont reprises à l’annexe XX
+  de la présente Loi.
+  (c) au taux de 3%
+    Diamants industriels bruts, de production industrielle de la position
+  7102.21.20 ;
+
+====================================================================================================
+3. Projet de loi de finances pour l'exercice 2026 (Doc. n° 1, septembre 2025), ministère du Budget
+   URL : https://www.budget.gouv.cd/wp-content/uploads/budget2026/plf2026/document_num_1_projet_de_loi_de_finances_2026.pdf
+   sha256 : 02250658e4dd1d5fb2b4c60a385252c3b25e6fb0df9fc162829ece4da4df50b5
+   Article 10 (mesures de la loi n° 24/011 maintenues) et annexe XVI « Produits soumis aux droits de douane à
+   l'exportation » (deux colonnes de taux ; la seconde, à 0 %, n'est pas intitulée dans l'extrait).
+----------------------------------------------------------------------------------------------------
+Article 10
+Les mesures relatives aux recettes des douanes et accises reprises aux articles 11,
+12, 14, 15, 16, 17, 18, 19, 20 et 21 de la Loi de finances n° 24/011 du 20 décembre
+2024 pour l’exercice 2025, ainsi qu’aux articles 6 et 7 de la Loi de finances rectificative
+n°25/044 du 28 juin 2025, sont d’application dans le cadre de la présente Loi.
+Les mesures relatives aux droits et taxes à l’importation et à l’exportation reprises dans
+la présente Loi modifient et complètent l’Ordonnance-Loi n° 011/2012 du 21 septembre
+2012 instituant le tarif des droits et taxes à l’importation et l’Ordonnance-Loi n°
+012/2012 du 21 septembre 2012 instituant le nouveau tarif des droits et taxes à
+l’exportation, telles que modifiées et complétées à ce jour.
+Les mesures relatives aux droits et taxes à l’importation et à l’exportation reprises dans
+la présente Loi modifient et complètent l’Ordonnance-Loi n° 10/002 du 20 août 2010
+portant code des douanes. Les mesures relatives aux droits d’accises reprises dans la
+présente Loi modifient et complètent l’Ordonnance-Loi n° 18/002 du 13 mars 2018
+[...]
+ANNEXE XVI : PRODUITS SOUMIS AUX DROITS DE DOUANE A L’EXPORTATION
+  Café, même torréfié ou décaféiné; coques et pellicules de café; succédanés du café
+  55) 09.01
+  contenant du café, quelles que soient les proportions du mélange.
+  - Café non torréfié :
+  -Non décaféiné :
+  --- café vert Robusta, en fèves :
+  11.11  ---- W/S (Washed Supérieur)  kg  exempt  0
+  11.12  ---- N/S (Natural Supérieur)  kg  exempt  0
+  11.13  ---- W/M (Washed Moyen)  kg  exempt  0
+  11.14  ---- N/M (Natural Moyen)  kg  exempt  0
+  11.15  ---- W/I (Washed Inférieur)  kg  exempt  0
+  11.16  ---- N/I (Natural Inférieur)  kg  exempt  0
+  11.17  ---- C/M (Courant Moyen)  kg  exempt  0
+  11.18  ---- C/I (Courant Inférieur)  kg  exempt  0
+  11.20  --- déchets et brisures de café vert Robusta  kg  exempt  0
+  --- café vert Arabica, en fèves :
+  11.31  ---- K9 (Kivu 9)  kg  exempt  0
+  11.32  ---- K3 (Kivu 3)  kg  exempt  0
+  11.33  ---- K4 (Kivu 4)  kg  exempt  0
+  11.34  ---- K5 (Kivu 5)  kg  exempt  0
+  11.35  ---- K6 (Kivu 6)  kg  exempt  0
+  11.36  ---- K7 (Kivu 7)  kg  exempt  0
+  11.37  ---- K8 (Kivu 8)  kg  exempt  0
+  11.40  --- déchets et brisures de café vert Arabica  kg  exempt  0
+  Eaux, y compris les eaux minérales naturelles ou artificielles et les eaux gazéifiées,
+  56) 22.01
+  non additionnées de sucre ou d’autres édulcorants ni aromatisées ; glace et neige
+  10.00  - Eaux minérales et eaux gazéifiées  l  exempt  0%
+  - Autres :
+  90.10  -- autres eaux conditionnées pour la table  l  exempt  0%
+  90.20  -- glace et neige  l  exempt  0%
+  -- autres, y compris l’eau douce :
+  90.91  --- eau douce  l  5%  0%
+  90.99  --- autres  l  exempt  0%
+  Minerais de manganèse et leurs concentrés, y compris les minerais de manganèse
+  57) 26.02  ferrugineux et leurs concentrés d'une teneur en manganèse de 20 % ou plus en
+  poids, sur produit sec.
+  00.10  - d'une teneur de 35 à 55 % en manganèse  kg  10%  0%
+  00.20  - d'une teneur supérieure ou égale à 56 % en manganèse  kg  10%  0%
+  00.90  - autres  kg  10%  0%
+  58) 26.03  Minerais de cuivre et leurs concentrés.
+  - concentrés simples de cuivre :
+  00.11  -- d'une teneur de 16 à 20 % en cuivre  kg  10%  0%
+  00.12  -- d'une teneur de 21 à 25 % en cuivre  kg  10%  0%
+  00.13  -- d'une teneur de 26 à 35 % en cuivre  kg  10%  0%
+  00.14  -- d'une teneur de 36 à 40 % en cuivre  kg  10%  0%
+  00.15  - d'une teneur de 41 à 45 % en cuivre  kg  10%  0%
+  00.16  -- d'une teneur de 45 % en cuivre ou plus  kg  10%  0%
+  - concentrés mixtes cuivre-cobalt :
+  00.21  -- d'une teneur de 10 à 22 % en cuivre et de 0 à 12 % en cobalt  kg  10%  0%
+  00.22  -- d'une teneur de 10 à 22 % en cuivre et de 13  à 15 % en cobalt  kg  10%  0%
+  00.23  -- d'une teneur de 23 à 35 % en cuivre et de 0 à 12 % en cobalt  kg  10%  0%
+  00.24  -- d'une teneur de 23 à 35 % en cuivre et de 13 à  15 % en cobalt  kg  10%  0%
+  00.29  -- autres  kg  10%  0%
+  - concentrés mixtes cuivre-argent
+  00.31  -- d'une teneur de 10 à 22 % en cuivre et de 0 à 20 % en argent  kg  10%  0%
+  00.32  -- d'une teneur de 23 à 45 % en cuivre et de 0 à 20 % en cobalt  kg  10%  0%
+  58
+  00.39  -- autres  kg  10%  0%
+59) 2604.00.00  Minerais de nickel et leurs concentrés.  kg  10%  0%
+  60) 26.05  Minerais de cobalt et leurs concentrés.
+  - concentrés simples de cobalt :
+  00.10  -- d'une teneur de 0 à 7 % en cobalt  kg  10%  0%
+  00.20  -- d'une teneur de 8 à 10% en cobalt  kg  0,1  0%
+  00.30  -- d'une teneur de 11 à 13 % en cobalt  kg  10%  0%
+  00.40  -- d'une teneur de 14 à 16 % en cobalt  kg  0,1  0%
+61) 2607.00.00  Minerais de plomb et leurs concentrés.  kg  10%  0%
+62) 2608.00.00  Minerais de zinc et leurs concentrés.  kg  10%  0%
+  63) 26.09  Minerais d'étain et leurs concentrés.
+  00.10  - d’une teneur de 55 à 65 % en étain  kg  10%  0%
+  00.20  - d’une teneur de 66 à 70 % en étain  kg  10%  0%
+  00.90  - autres  kg  10%  0%
+  64) 26.11  Minerais de tungstène et leurs concentrés.
+  00.10  - provenant de gîtes primaires obtenus par broyage  kg  10%  0%
+  - autres :
+  00.91  -- d’une teneur de 55 à 65 % en oxyde de tungstène (oxyde de wolfram)  kg  10%  0%
+  00.92  -- d’une teneur de 66 à 70 % en oxyde de tungstène (oxyde de wolfram)  kg  10%  0%
+  00.99  -- autres  kg  10%  0%
+  65) 26.12  Minerais d'uranium ou de thorium et leurs concentrés.
+  10.00  - Minerais d'uranium et leurs concentrés  kg  10%  0%
+  - Minerais de thorium et leurs concentrés :
+  20.10  -- monazite (terres rares)  kg  10%  0%
+  20.90  -- autres  kg  10%  0%
+66) 2614.00.00  Minerais de titane et leurs concentrés.  kg  10%  0%
+  67) 26.15  Minerais de niobium, de tantale, de vanadium ou de zirconium et leurs concentrés.
+  10.00  - Minerais de zirconium et leurs concentrés  kg  10%  0%
+  - Autres :
+  -- de niobium :
+  90.11  --- d’une teneur de 55 à 60 % en oxyde de niobium ou colombite  kg  10%  0%
+  90.12  --- d’une teneur de 61 à 65 % en oxyde de niobium ou colombite  kg  10%  0%
+  90.19  --- autres  kg  10%  0%
+  -- de tantale :
+  --- d’une teneur de 20 à 25 % en tantale et supérieure ou égale à 60 % en oxyde de
+  90.21  kg  10%  0%
+  niobium ou colombite
+  90.22  --- d’une teneur de 26 à 30 % en tantale et de 40 à 59 % en oxyde de niobium ou colombite  Kg  10%  0%
+  --- d’une teneur supérieure ou égale à 35 % en tantale et inférieure ou égale à 39 % en
+  90.23  kg
+  oxyde de niobium ou colombite  10%  0%
+  90.90  --- autres  kg  10%  0%
+  68) 26.16  Minerais de métaux précieux et leurs concentrés.
+  10.00  - Minerais d'argent et leurs concentrés  kg  10%  0%
+  90.00  - Autres  kg  10%  0%
+  69) 26.17  Autres minerais et leurs concentrés.
+  10.00  - Minerais d'antimoine et leurs concentrés  kg  10%  0%
+  - Autres :
+  -- Cassitérites :
+  90.11  --- provenant de gîtes primaires obtenues par  kg
+  broyage  10%  0%
+  90.19  --- autres  kg  10%  0%
+  -- Wolfram :
+  90.21  --- provenant de gîtes primaires et obtenu par  kg
+  broyage  10%  0%
+  90.29  --- autres  kg  10%  0%
+  90.30  -- de bismuth  kg  10%  0%
+  59
+  90.40  kg  10%  0%
+  90.50  kg  10%  0%
+  90.60  kg  10%  0%
+90.70  10%  0%
+  90.80  -- struverite  kg  10%  0%
+  -- autres :
+  90.91  --- résines rhénifères  kg  10%  0%
+  90.99  --- autres minerais  kg  10%  0%
+ 70) 2619.00.00  Scories, laitiers (autres que le laitier granulé ),  kg
+  battitures et autres déchets de la fabrication du fer ou de l'acier.  10%
+  0%
+  Scories, cendres et résidus (autres que ceux provenant de la fabrication de la fonte, du
+  71) 26.20
+  fer ou de l'acier) contenant des métaux, de l’arsenic ou leurs composés.
+  - Contenant principalement du Zinc :
+  11.00  -- Mattes de galvanisation  kg  10%  0%
+  19.00  -- Autres  kg  10%  0%
+  - Contenant principalement du plomb :
+  -- Boues d’essence au plomb et boues de composés
+  21.00  kg
+  antidétonants contenant du plomb  10%  0%
+  29.00  -- Autres  kg  10%  0%
+  30.00  - Contenant principalement du cuivre  kg  10%  0%
+  40.00  - Contenant principalement de l'aluminium  kg  10%  0%
+  - Contenant de l’arsenic, du mercure, du thallium ou
+  60.00  leurs mélanges, des types utilisés pour l’extraction de l’arsenic ou de ces métaux ou pour  kg  10%
+  0%
+  la fabrication de leurs composés chimiques
+  - Autres :
+  91.00  -- Contenant de l’antimoine, du beryllium, du cadmium, du chrome ou leurs mélanges  kg
+  10%  0%
+  -- Autres :
+  99.10  --- contenant principalement de l'oxyde de tantale (tantalite)  kg  10%  0%
+  99.90  --- autres  kg  10%  0%
+  Autres scories et cendres, y compris les cendres et résidus provenant de
+  72) 26.21
+  l’incinération des déchets municipaux.
+  -Cendres et résidus provenant de l’incinération des
+  10.00  kg  10%  0%
+  déchets municipaux
+  90.00  - Autres  kg  10%  0%
+ 73) 2709.00.00  Huiles brutes de pétrole ou de minéraux bitumineux.  kg  5%  0%
+ 74) 2716.00.00  Énergie électrique.  1000 kwh  5%  0%
+ 75) 2817. 00.00 Oxyde de zinc et peroxyde de zinc  5%  0%
+  75) 28.22  Oxydes et hydroxydes de cobalt; oxydes de cobalt du commerce.
+  - hydroxydes de cobalt :
+  00.11  -- d’une teneur inférieure ou égale à 25% en cobalt  kg  10%  0%
+  00.12  -- d’une teneur de 26 à 35% en cobalt  kg  10%  0%
+  00.13  -- d’une teneur de 36 à 40% en cobalt  kg  10%  0%
+  00.14  -- d'une teneur supérieure ou égale à 41% en cobalt  kg  10%  0%
+  00.19  -- autres  kg  10%  0%
+  00.90  - autres  kg  10%  0%
+  76) 28.30  Sulfures; polysulfures, de constitution chimique définie ou non.
+  10.00  - Sulfures de sodium  kg  10%  0%
+  - Autres :
+  -- sulfure de denickelage :
+  90.11  --- d’une teneur de 20 à 25% en cobalt et supérieure ou égale à 5 % en nickel  kg  10%  0%
+  90.12  --- d’une teneur de 26 à 35% en cobalt et supérieure ou égale à 5 % en nickel  kg  10%  0%
+  90.13  --- d’une teneur de 36 à 40% en cobalt et supérieure ou égale à 5 % en nickel  kg  10%  0%
+  90.19  --- autres  kg  10%  0%
+  90.90  -- autres  kg  10%  0%
+  60
+  Carbonates; peroxocarbonates (percarbonates); carbonate d'ammonium du
+77) 28.36
+  commerce contenant du carbamate d'ammonium.
+ 20.00  - Carbonate de disodium  kg  10%  0%
+ 30.00  - Hydrogénocarbonate (bicarbonate) de Sodium  kg  10%  0%
+ 40.00  - Carbonate de potassium  kg  10%  0%
+ 50 ;00  - Carbonate de calcium  Kg  10%  0%
+ 60.00  - Carbonate de baryum  kg  10%  0%
+  - Autres :
+ 91.00  -- Carbonates de lithium  kg  10%  0%
+ 92.00  -- Carbonate de strontium  kg  10%  0%
+  -- Autres :
+  --- carbonate de cobalt :
+ 99.11  ---- d’une teneur inférieure ou égale à 25% en cobalt et de 5 à 10% en cuivre  kg  10%  0%
+ 99.12  ---- d’une teneur inférieure ou égale à 25% en cobalt et de 11 à 15% en cuivre  kg  10%  0%
+ 99.13  ---- d’une teneur supérieure à 25% en cobalt et de 11 à 15% en cuivre  kg  10%  0%
+ 99.19  ---- autres  kg  10%  0%
+  ---- Carbonate de cuivre
+ 99.21  ---- d’une teneur inférieure ou égale à 25% en cuivre et de 1 à 2,5% en cobalt  kg  10%  0%
+ 99.22  ---- d’une teneur inférieure ou égale à 25% en cuivre et de 2,6 à 4% en cobalt  kg  10%  0%
+ 99.23  ---- d’une teneur supérieure à 25% en cuivre et de 2,6 à 4% en cobalt  kg  10%  0%
+ 99.29  --- autres  kg  10%  0%
+ 99.90  --- autres  kg  10%  0%
+78) 44.03  Bois bruts, même écorcés, désaubiérés ou équarris.
+  -- Autres :
+  --- d'essences spécialement dénommées :
+ 99.11  ---- benge/Mutenye (Guibourtiaamoldiama)  m3  10%  0%
+ 99.12  ---- bubinga (Guibourtiademeusei)  m3  10%  0%
+ 99.13  ---- khaya (Khayaanthotheca)  m3  10%  0%
+ 99.14  ---- kotibe (Nesogordoniadewevrei)  m3  10%  0%
+ 99.15  ---- lati (AmphimasPterocarpoides)  m3  10%  0%
+  3
+ 99.16  ---- longhi (Gambeya africana)  m  10%  0%
+  3
+ 99.17  ---- mukulungu (AutranellaCongolensis)  m  10%  0%
+  3
+ 99.18  ---- padouk (Pterocarpussoyauxii)  m  10%  0%
+ 99.19  ---- wenge (MiletiaLaurentii)  m3  10%  0%
+ 99.20  --- d'essences non spécialement dénommées  m3  10%  0%
+  --- autres :
+ 99.91  ---- bois écorcés  m3  10%  0%
+  3
+ 99.92  ---- bois désaubiérés  m  10%  0%
+  3
+ 99.93  ---- bois équarris ou semi-équaris  m  10%  0%
+ 99.94  ---- rondins / grumes LM-B-BC  m3  10%  0%
+ 99.95  ---- bois rabotés ou poncés  m3  10%  0%
+ 99.99  ---- autres  m3  10%  0%
+  Bois sciés ou désossés longitudinalement, tranchés ou déroulés, même rabotés,
+79) 44.07
+  poncés ou collés par assemblage en bout, d’une épaisseur excédant 6 mm.
+  -- Autres :
+  --- sciés ou dédossés longitidinalement tranchés ou déroulés :
+ 29.11  ---- sciages avivés d’une épaisseur inférieure à 50 mm  m3  exempt  0%
+ 29.12  ---- sciages avivés d’une épaisseur supérieure à 50 et inférieure ou égale à 100 mm  m3  exempt  0%
+  3
+ 29.13  ---- sciages avivés d’une épaisseur supérieure à 100 et inférieure ou égale à 150 mm  m  exempt  0%
+  3
+ 29.19  ---- autres  m  5%  0%
+80) 71.02  Diamants, même travaillés, mais non montés ni sertis.
+  - Industriels :
+  -- Bruts ou simplement sciés, clivés ou débrutés :
+ 21.10  --- d'exploitation artisanale  carat  0,5%  0%
+ 21.20  --- de production industrielle  carat  3%  0%
+  - Non industriels :
+  -- Bruts ou simplement sciés, clivés ou débrutés:
+  61
+ 31.10  --- d'exploitation artisanale  carat  0,5%  0%
+ 31.20  --- de production industrielle  carat  3%  0%
+  Argent (y compris l'argent doré ou vermeil et l'argent platiné ), sous formes brutes ou mi-
+81) 71.06
+  ouvrées, ou en poudre.
+  - Poudres :
+ 10.10  -- d’une teneur de 90 à 98% en argent  kg  10%  0%
+ 10.20  -- d’une teneur de 99 à 99,9% en argent  kg  10%  0%
+ 10.90  -- autres  kg  10%  0%
+  - Autres :
+  -- Sous formes brutes :
+ 91.10  --- d’une teneur de 90 à 98% en argent  kg  10%  0%
+ 91.20  --- d’une teneur de 99 à 99,9% en argent  kg  10%  0%
+ 91.90  --- autres  kg  10%  0%
+82) 71.08  Or (y compris l'or platiné), sous formes brutes ou mi-ouvrées, ou en poudre.
+  - A usages non monétaires :
+  -- Poudres :
+  --- d'exploitation artisanale :
+ 11.11  ---- d’une teneur de 90 à 98% en or  kg  0,5%  0%
+ 11.12  ---- d’une teneur supérieure ou égale à 99,99% en or  kg  0,5%  0%
+ 11.19  ---- autres  kg  0,5%  0%
+  --- de production industrielle :
+ 11.21  ---- d’une teneur de 90 à 98% en or  kg  3%  0%
+ 11.22  ---- d’une teneur supérieure ou égale à 99,99% en or  kg  3%  0%
+ 11.29  ---- autres  kg  3%  0%
+  -- Sous autres formes brutes :
+  --- d'exploitation artisanale :
+ 12.11  ---- d’une teneur de 90 à 98% en or  kg  0,5%  0%
+ 12.12  ---- d’une teneur supérieure ou égale à 99,99% en or  kg  0,5%  0%
+ 12.19  ---- autres  kg  0,5%  0%
+  --- de production industrielle :
+ 12.21  ---- d’une teneur de 90 à 98% en or  kg  3%  0%
+ 12.22  ---- d’une teneur supérieure ou égale à 99,99% en or  kg  3%  0%
+ 12.29  ---- autres  kg  3%  0%
+83) 71.10  Platine, sous formes brutes ou mi- ouvrées, ou en poudre.
+  - Platine :
+  -- Sous formes brutes ou en poudre :
+ 11.10  --- d’une teneur de 90 à 98% en platine  kg  10%  0%
+ 11.20  --- d’une teneur de 99 à 99,9% en platine  kg  10%  0%
+ 11.90  --- autres  kg  10%  0%
+  - Palladium :
+  -- Sous formes brutes ou en poudre :
+ 21.10  --- d’une teneur de 90 à 98% en palladium  kg  10%  0%
+ 21.20  --- d’une teneur de 99 à 99,9% en palladium  kg  10%  0%
+ 21.90  --- autres  kg  10%  0%
+  - Rhodium :
+  -- Sous formes brutes ou en poudre :
+ 31.10  --- d’une teneur de 90 à 98% en rhodium  kg  10%  0%
+ 31.20  --- d’une teneur de 99 à 99,9% en rhodium  kg  10%  0%
+ 31.90  --- autres  kg  10%  0%
+  - Iridium, osmium et ruthénium :
+  -- Sous formes brutes ou en poudre :
+ 41.10  --- d’une teneur de 90 à 98% en iridium, en osmium ou en ruthénium  kg  10%  0%
+ 41.20  --- d’une teneur de 99 à 99,9% en iridium, en osmium ou en ruthénium  kg  10%  0%
+ 41.90  --- autres  kg  10%  0%
+  Déchets et débris de fonte, de fer ou d'acier (ferrailles); déchets lingotés en fer ou en
+84) 72.04
+  acier.
+  - Déchets et débris d'aciers alliés :
+ 21.00  -- D'aciers inoxydables  kg  5%  0%
+  62
+  29.00  -- Autres  kg  5%  0%
+  Autres aciers alliés en lingots ou autres
+85) 72.24  formes primaires; demi-produits
+  en autres aciers alliés.
+  10.00  - Lingots et autres formes primaires  kg  10%  0%
+  90.00  - Autres  kg  10%  0%
+86) 74.01  Mattes de cuivre; cuivre de cément (précipité de cuivre).
+  - mattes de cuivre :
+  00.11  -- d’une teneur inférieure ou égale à 45% en cuivre  kg  5%  0%
+  00.12  -- d’une teneur de 46 à 60% en cuivre  kg  5%  0%
+  00.13  -- d’une teneur de 61 à 80% en cuivre  kg  5%  0%
+  00.19  -- autres  kg  5%  0%
+87) 74.02  Cuivre non affiné et alliages de cuivre sous forme brute
+  5%  0%
+  00.10  - Cuivre non affiné
+  5%  0%
+  00.90  - Cuivre blister kg  kg  5%  0%
+  - Cuivre noir kg
+  -  Autres
+87) 74.03  Cuivre affiné et alliages de cuivre sous forme brute.
+  - Cuivre affiné :
+  -- Cathodes et sections de cathodes :
+  11.10  --- cuivre électrolytique en plaques ou feuilles à plus de 99,9 % de cuivre  kg  10%  0%
+  11.20  --- cuivre électrolytique en cathodes (spot bleu) à plus de 99,9 % de cuivre  kg  10%  0%
+  11.30  --- cuivre en cathodes à raffiner, à plus de 99,9 % de cuivre  kg  10%  0%
+  --- nodules et scraps :
+  11.41  ---- nodules d’une teneur de 90 à 99,9 % en cuivre  kg  10%  0%
+  11.42  ---- scraps d’une teneur inférieure ou égale à 30 % en cuivre
+  kg  10%  0%
+  11.90  --- autre cuivre électrolytique à plus de 99,9 % de cuivre  kg  10%  0%
+  12.00  -- Barres à fil (wire-bars)  kg  10%  0%
+  13.00  -- Billettes  kg  10%  0%
+  -- Autres :
+  19.10  --- lingots ou lingots- bars à plus de 99,99 %  de cuivre  kg  10%  0%
+  19.90  --- autres  kg  10%  0%
+  - Alliages de cuivre :
+  21.00  -- A base de cuivre-zinc (laiton)  kg  10%  0%
+  22.00  -- A base de cuivre-étain (bronze)  kg  10%  0%
+  29.00  -- Autres alliages de cuivre (à l'exception des alliages mères du n° 74.05)  kg  10%  0%
+88) 74.04  Déchets et débris de cuivre.
+  00.10  - nodules d'une teneur inférieure à 99,85% en cuivre  kg  5%  0%
+  00.20  - scraps  kg  5%  0%
+  00.30  - déchets  kg  5%  0%
+  00.90  - autres  kg  5%  0%
+89) 74.05  Alliages mères de cuivre.
+  - alliage rouge d’une teneur inférieure ou égale à 80% en cuivre et inférieure ou égale à
+  00.10  kg  10%  0%
+  7% en cobalt
+  00.20  - alliage rouge d’une teneur de 81 à 90% en cuivre et inférieure ou égale à 5% en cobalt  kg  10%  0%
+  00.90  -autres  kg  10%  0%
+90) 74.06  Poudres et paillettes de cuivre.
+  10.00  - Poudres à structure non lamellaire  kg  10%  0%
+  20.00  - Poudres à structure lamellaire; paillettes  kg  10%  0%
+91) 75.02  Nickel sous forme brute.
+  - Nickel non allié :
+  10.10  -- d’une teneur de 90 à 98% en nickel  kg  5%  0%
+  10.20  -- d’une teneur de 99 à 99,9% en nickel  kg  5%  0%
+  10.90  -- autres  kg  5%  0%
+  63
+  20.00  - Alliages de nickel  kg  5%  0%
+  92) 78.01  Plomb sous forme brute.
+  - Plomb affiné :
+  10.10  -- d’une teneur de 90 à 98% en plomb  kg  5%  0%
+  10.20  -- d’une teneur de 99 à 99,9% en plomb  kg  5%  0%
+  10.90  -- autres  kg  5%  0%
+  - Autres :
+  91.00  -- contenant de l'antimoine comme autre élément prédominant en poids  kg  5%  0%
+  99.00  -- Autres  kg  5%  0%
+  93) 78.02  Déchets et débris de plomb.
+  - débris :
+  00.11  -- d'une teneur de 90 à 98% en plomb  kg  5%  0%
+  00.12  -- d’une teneur de 99 à 99,9% en plomb  kg  5%  0%
+  00.19  -- autres  kg  5%  0%
+  - déchets :
+  00.21  -- d’une teneur de 90 à 98% en plomb  kg  5%  0%
+  00.22  -- d’une teneur de 99 à 99,9% en plomb  kg  5%  0%
+  00.29  -- autres  kg  5%  0%
+  94) 78.04  Tables, feuilles et bandes, en plomb; poudres et paillettes de plomb.
+  - Poudres et paillettes
+  20.10  -- d’une teneur inférieure ou égale à 30% en plomb  kg  10%  0%
+  20.90  -- autres  kg  10%  0%
+  95) 79.01  Zinc sous forme brute.
+  - Zinc non allié :
+  11.00  -- Contenant en poids 99,99 % ou plus de zinc  kg  5%  0%
+  12.00  -- Contenant en poids moins de 99,99 % de zinc  kg  5%  0%
+  20.00  - Alliages de zinc  kg  5%  0%
+  96) 79.03  Poussières, poudres et paillettes, de zinc.
+  - poussières de zinc :
+  10.10  -- d’une teneur de 69 à 80% en zinc  kg  10%  0%
+  10.20  -- d’une teneur de 79 à 90% en zinc  kg  10%  0%
+  10.30  -- d’une teneur de 30 à 40% en zinc et de 20 à 30% en plomb  kg  10%  0%
+  10.40  -- d’une teneur de 41 à 50% en zinc et inférieure ou égale à 10% en plomb  kg  10%  0%
+  10.90  -- autres  kg  10%  0%
+  90.00  - Autres  kg  10%  0%
+  97) 80.01  Etain sous forme brute.
+  10.00  - Etain non allié  kg  10%  0%
+  20.00  - Alliages d'étain  kg  10%  0%
+98) 8002.00.00  Déchets et débris d'étain.  kg  10%  0%
+  Mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt
+  99) 81.05
+  et ouvrages en cobalt, y compris les déchets et débris.
+  - Mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt sous
+  forme brute; poudres :
+  -- mattes de cobalt :
+  20.11  --- mattes de cobalt-fer d’une teneur inférieure ou égale à 30% en cobalt  kg  10%  0%
+  --- mattes de cobalt-nickel d’une teneur de 10 à 20% en cobalt, de 20 à 40 % en cuivre et
+  20.12  kg  10%  0%
+  de 5 à 10 % en nickel
+  20.19  --- autres  kg  10%  0%
+  -- cobalt séparateur magnétique :
+  20.21  --- d’une teneur de 55 à 60% en cobalt  kg  10%  0%
+  20.22  --- d’une teneur de 61 à 65% en cobalt  kg  10%  0%
+  20.29  --- autres  kg  10%  0%
+  ---- mattes de cobalt et autres produits intermédiaires de la métallurgie du cobalt; cobalt
+  20.90  kg  10%  0%
+  sous forme brute; poudres
+  30.00  - Déchets et débris  kg  10%  0%
+  - Autres : en cobalt
+  -- cobalt électrolytique en cathodes brisées d’une teneur supérieure ou égale à 99,3 % en
+  90.10  kg  10%  0%
+  cobalt
+  90.20  -- cobalt en granulés d’une teneur supérieure ou égale à 99,3 %  kg  10%  0%
+  64
+  90.30  -- cobalt cathodique d’une teneur inférieure à 99,3 % en cobalt  kg  10%  0%
+  -- alliages blancs en lingots, en granulés ou en poudre:
+  90.41  --- d’une teneur de 20 à 30 % en cobalt et de 21 à 25% en cuivre  kg  10%  0%
+  90.42  --- d’une teneur de 21 à 30 % en cobalt et de 10 à 20% en cuivre  kg  10%  0%
+  90.43  --- d’une teneur de 31 à 40 % en cobalt et de 10 à 20% en cuivre  kg  10%  0%
+  90.49  --- autres  kg  10%  0%
+  -- alliages cobalt-nickel en lingots, en granulés ou en poudre:
+  90.51  --- d’une teneur de 30 à 40 % en cobalt, de 7 à 15% en cuivre et de 10 à 15% en nickel  kg  10%  0%
+  90.52  --- d’une teneur de 30 à 40 % en cobalt, de 16 à 25% en cuivre et de 10 à 15% en nickel  kg  10%  0%
+  90.53  --- d’une teneur de 41 à 50 % en cobalt, de 7 à 15% en cuivre et de 10 à 15% en nickel  kg  10%  0%
+  90.59  --- autres  kg  10%  0%
+  -- cobalt autrement présenté :
+  90.91  --- d’une teneur inférieure ou égale à 90 % en cobalt  kg  10%  0%
+  90.92  --- d’une teneur de 91 à 95% en cobalt  kg  10%  0%
+  90.93  --- d’une teneur de 96 à 99% en cobalt  kg  10%  0%
+  90.99  --- autres  kg  10%  0%
+100) 8106.00.00 Bismuth et ouvrages en bismuth, y compris les déchets et débris.  kg  5%
+  0%
+  101)81.07  Cadmium et ouvrages en cadmium, y compris les déchets et débris.
+  - Cadmium sous forme brute; poudres :
+  20.10  -- d’une teneur de 90 à 98% en cadmium  kg  10%  0%
+  20.20  -- d’une teneur de 99 à 99,9% en cadmium  kg  10%  0%
+  20.90  -- autres  kg  10%  0%
+  30.00  - Déchets et débris  kg  10%  0%
+  90.00  - Autres  kg  10%  0%
+  102) 81.08  Titane et ouvrages en titane, y compris les déchets et débris.
+  20.00  - Titane sous forme brute; poudres  kg  5%  0%
+  30.00  - Déchets et débris  kg  5%  0%
+  90.00  - Autres  kg  5%  0%
+  103) 81.09  Zirconium et ouvrages en zirconium, y compris les déchets et débris.
+  20.00  - Zirconium sous forme brute; poudres  kg  5%  0%
+  30.00  - Déchets et débris  kg  5%  0%
+  90.00  - Autres  kg  5%  0%
+  Béryllium, chrome, germanium, vanadium, gallium, hafnium (celtium), indium,
+  104) 81.12  niobium (columbium), rhénium et thallium, ainsi que les ouvrages en ces métaux, y
+  compris les déchets et débris.
+  - Béryllium :
+  12.00  -- Sous forme brute; poudres  kg  5%  0%
+  13.00  -- Déchets et débris  kg  5%  0%
+  19.00  --Autres  kg  10%  0%
+  - Chrome :
+  21.00  -- Sous forme brute; poudres  kg  5%  0%
+  22.00  -- Déchets et débris  kg  5%  0%
+  29.00  -- Autres  kg  10%  0%
+  - Thallium :
+  -- Autres:
+  51.00  -- Sous forme brute; poudres  kg  5%  0%
+  52.00  -- Déchets et débris  kg  5%  0%
+  59.00  -- Autres  kg  5%  0%
+  - Autres :
+  --- sous forme brute; déchets et débris; poudres :
+  92.10  --- d’une teneur de 90 à 98% en thallium  kg  5%  0%
+  92.20  --- d’une teneur de 99 à 99,99% en thallium  kg  5%  0%
+  92.90  --- autres  kg  5%  0%
+  -- Autres :
+  65
+99.10  --- d’une teneur de 90 à 98% en thallium  kg  5%  0%
+99.20  --- d’une teneur de 99 à 99,99% en thallium  kg  5%  0%
+99.90  --- autres  kg  5%  0%
+  Vu pour être annexé à la Loi de finances n°  du  /  /2025 pour l'exercice 2026.
+  Fait à Kinshasa, le
+  Félix-Antoine TSHISEKEDI TSHILOMBO
+  66
+
+====================================================================================================
+4. Source secondaire : PwC, Worldwide Tax Summaries, « Democratic Republic of the Congo — Corporate — Other taxes »
+   (revue le 21 avril 2026), https://taxsummaries.pwc.com/democratic-republic-of-the-congo/corporate/other-taxes :
+   la loi de finances 2025 introduit des droits de sortie de 0,5 % (diamants et or d'exploitation artisanale) et de
+   3 % (diamants bruts et or de production industrielle). Aucune mention d'un taux de 2 % sur les produits miniers.

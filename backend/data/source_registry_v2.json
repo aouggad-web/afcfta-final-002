@@ -49,22 +49,23 @@
       "note": "Tarif extérieur commun CEDEAO, non une nomenclature nationale ghanéenne détaillée. Les 5387 lignes respectent exactement les cinq bandes officielles du TEC (0/5/10/20/35), sans aucune valeur hors barème. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
     },
     "SOM": {
-      "organism": "EAC — Common External Tariff 2022 (Somalie, membre depuis 2024)",
+      "organism": "Ministère des Finances — République fédérale de Somalie (mof.gov.so)",
       "version": "2022.1",
-      "artifact_path": "backend/data/SOM_tariffs.json",
+      "artifact_path": "backend/data/crawled/SOM_tariffs.json",
       "artifact_url": null,
-      "source_type": "regional_org",
-      "url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
-      "retrieved_at": "2026-06-16",
-      "edition": "EAC CET 2022 (Gazette, Annexe 1 au Protocole d'Union Douanière)",
-      "code_digits": 6,
-      "positions_count": 5602,
-      "sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
-      "validation_status": "to_verify",
+      "source_type": "official",
+      "url": "https://mof.gov.so/sites/default/files/Publications/Somali_Customs_Tariff_Final.pdf",
+      "retrieved_at": "2026-11-01",
+      "edition": "Somali Customs Tariff 2022 (Mogadiscio, mai 2022)",
+      "hs_version": "HS 2017",
+      "code_digits": 8,
+      "positions_count": 5472,
+      "sha256": "c7133beb9f8ea8c32dbad2cd7c0901ff45e649451e3d62bd35f46cbca5575308",
+      "validation_status": "verified",
       "taxes": [
         "DD"
       ],
-      "note": "Tarif dérivé du TEC de l'EAC, non une nomenclature nationale somalienne. ANOMALIE À INSTRUIRE : 45 lignes portent 50, 60, 75 ou 100 %, hors des quatre bandes officielles de l'EAC CET (0/10/25/35) — origine non établie. TVA à 0 % : la Somalie n'applique pas de TVA, ce n'est pas une donnée manquante. Pas de fichier crawled/ : l'artefact est le fichier de production. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
+      "note": "Tarif national publié par le ministère des Finances (scripts/convertir_tarif_som.py, fiche SOM_tarif_douanier_2022_2026-11-01.json), à la place du TEC de l'EAC 2022 que la Somalie n'applique pas. Droit ad valorem sur la valeur en douane ; 46 positions sans taux publié (« – », « TBD % », « (y) »). Taxe sur les ventes à l'importation non portée : aucun texte publiant son taux (fiche SOM_taux_TVA_2026-09-18.json). L'ancien fichier backend/data/SOM_tariffs.json (TEC de l'EAC) n'alimente plus le socle."
     },
     "ZWE": {
       "organism": "ZIMRA — Zimbabwe Revenue Authority (Ministry of Finance and Economic Development)",
