@@ -474,19 +474,19 @@ def test_cog_positions_ambigues_a_etablir(client):
 
 
 def test_gab_bois_selon_le_degre_de_transformation(client):
-    """LF 2026, art. 5 : placages 15 %, contreplaqués, profilés et parquets 10 % (valeur mercuriale) ; menuiserie,
-    ébénisterie, meubles en bois 3,5 % (valeur FOB)."""
-    for code, montant in (("44083900", 150_000), ("44091000", 100_000),
-                          ("44123100", 100_000), ("44187200", 100_000), ("44182000", 35_000), ("94036000", 35_000)):
+    """LF 2026, art. 5 : placages 15 %, contreplaqués, panneaux de particules « de bois », profilés et parquets 10 %
+    (valeur mercuriale) ; menuiserie, ébénisterie, meubles en bois 3,5 % (valeur FOB)."""
+    for code, montant in (("44083900", 150_000), ("44091000", 100_000), ("44123100", 100_000), ("44101100", 100_000),
+                          ("44187200", 100_000), ("44182000", 35_000), ("94036000", 35_000)):
         export = _export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF")
         assert (export["etat"], _ligne(export, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(montant)), code
 
 
 def test_gab_grumes_or_et_produits_non_nommes(client):
     """Grumes (exportation interdite), or (seuls les lingots sont nommés), sciages (bruts ou rabotés), bois non classé,
-    sièges et parties de meubles sans matière précisée, panneaux « de bois ou d'autres matières ligneuses », moulures en
-    bambou : à établir ; hors des produits nommés, aucun droit de sortie."""
-    for code in ("44034914", "71081200", "44021000", "44072914", "94013000", "94039000", "44101100", "44119200",
+    sièges et parties de meubles sans matière précisée, panneaux de fibres « de bois ou d'autres matières ligneuses »,
+    moulures en bambou : à établir ; hors des produits nommés, aucun droit de sortie."""
+    for code in ("44034914", "71081200", "44021000", "44072914", "94013000", "94039000", "44119200",
                  "44092100"):
         ligne = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF"), "EXPORT")
         assert ligne["montant"] is None, code

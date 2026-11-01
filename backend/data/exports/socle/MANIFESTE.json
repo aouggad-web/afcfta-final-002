@@ -686,7 +686,7 @@
       "date_reference": "2026-11-01",
       "sha256": "7694d95d8c94a6a4a5d19b3cc134b5fe0607603e18445ee743e3876e60f0ba4d",
       "notes_sha256": "93736a7e8d50ea1cd214b1fbab7775f300248c5db59134f9a6673651b5cf416f",
-      "socle_sha256": "350f21f09c50e83a18442838d28db792ed7a3c9b2e9859d4a6ce8a66fe7d3d96",
+      "socle_sha256": "45e47fa3de14d88d441a4eb3d3c173ce3af4105ee0e3cd41a829dff51b47732d",
       "collecte": "2026-02-19T22:39:52.018966"
     },
     "GHA": {

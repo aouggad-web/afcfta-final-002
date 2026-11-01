@@ -1513,7 +1513,8 @@ EXPORT_PAR_TEXTE = {
                                  "(10 %, art. 224) : à établir" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE),
             # Moulures et profilés, panneaux de particules, de fibres,
             # contreplaqués, panneaux assemblés pour parquets.
-            **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "4412", "44187")},
+            # 4410.1 : sous-positions « De bois » du tarif CEMAC.
+            **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "44101", "4412", "44187")},
             # Panneaux « de bois ou d'autres matières ligneuses » (libellés des
             # positions 44.10 et 44.11) ; moulures en bambou : la LF ne taxe
             # que les produits transformés du bois.
