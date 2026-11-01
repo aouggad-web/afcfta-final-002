@@ -170,6 +170,9 @@ def test_les_questions_hors_tarif_sont_servies(client):
     assert questions["CMR"]["champ"] == questions["COG"]["champ"] == "produit_fini"
     # Le CGI malien ne prévoit pas d'abattement : pas de seconde question.
     assert questions["MLI"]["question_transformation"] is None and questions["MLI"]["question_en"]
+    # Congo : après un « non », la redevance informatique demande si le produit est brut.
+    assert questions["COG"]["champ_si_non"] == "produit_transforme" and questions["COG"]["question_si_non_en"]
+    assert questions["CMR"]["champ_si_non"] is None
 
 
 def test_gha_quatrieme_annexe_zero_pour_cent_par_defaut(client):
@@ -475,11 +478,18 @@ def test_cog_positions_ambigues_a_etablir(client):
 
 def test_cog_redevance_informatique_a_l_exportation(client):
     """LF 2026, point 25 : 2 % à l'exportation ; pétrole brut exonéré (LFR 2021, point 41) ; produit transformé
-    (0,5 % en 2021, non repris en 2026) ou sans réponse : à établir."""
-    brut = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False)
+    (0,5 % en 2021, non repris en 2026) ou sans réponse : à établir. La première question ne porte que sur la
+    transformation au Congo : après un « non », `produit_transforme` dit si le produit est brut."""
+    brut = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False,
+                   produit_transforme=False)
     assert (brut["etat"], _ligne(brut, "RI.EXP")["montant"]) == ("COMPLET", pytest.approx(20_000))
-    grume = _export(client, pays="COG", code_sh="44034914", valeur=1_000_000, devise="XAF", produit_fini=False)
-    assert _ligne(grume, "RI.EXP")["montant"] == pytest.approx(20_000)
+    ailleurs = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False,
+                       produit_transforme=True)
+    assert _ligne(ailleurs, "RI.EXP")["montant"] is None and "0,5 %" in _ligne(ailleurs, "RI.EXP")["note"]
+    sans = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False)
+    ligne = _ligne(sans, "RI.EXP")
+    assert ligne["montant"] is None and "transformé hors du Congo" in ligne["note"]
+    assert sans["etat"] != "COMPLET"
     petrole = _export(client, pays="COG", code_sh="27090010", valeur=1_000_000, devise="XAF", produit_fini=False)
     assert _ligne(petrole, "RI.EXP")["montant"] == pytest.approx(0)
     for reponse in (True, None):
@@ -488,6 +498,16 @@ def test_cog_redevance_informatique_a_l_exportation(client):
             corps["produit_fini"] = reponse
         ligne = _ligne(client.post("/calcul/export", json=corps).json()["export"], "RI.EXP")
         assert ligne["montant"] is None and "0,5 %" in ligne["note"], reponse
+
+
+def test_cog_redevance_des_grumes_sur_la_valeur_en_douane(client):
+    """Grumes : la valeur saisie est la valeur FOT du droit de sortie, la redevance est assise sur la valeur en
+    douane : à établir, quelle que soit la réponse."""
+    for reponse in (True, False):
+        grume = _export(client, pays="COG", code_sh="44034914", valeur=1_000_000, devise="XAF", produit_fini=reponse,
+                        produit_transforme=False)
+        ligne = _ligne(grume, "RI.EXP")
+        assert ligne["montant"] is None and "valeur FOT" in ligne["note"], reponse
 
 
 def test_cog_caoutchouc_naturel_et_plan_de_resilience(client):
