@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "objet": "São Tomé-et-Príncipe : droits de douane de la Lei n.º 04/2023 (eau minérale, plastiques, lampes, lampes LED) à la place de la moyenne SH6 de WITS sur ces positions",
+  "destination_iso3": "STP",
+  "verified_at": "2026-11-01",
+  "etabli": true,
+  "evidence_level": "primaire — loi publiée au Diário da República (I Série, n.º 31, 15/06/2023), lue sur une copie du numéro entier ; le tarif national (pauta) n'est pas publié en ligne",
+  "source": {
+    "url": "https://www.lerenovaveis.org/contents/lerpublication/sao-tome-e-principe--lei-4_23.pdf",
+    "institution": "Assembleia Nacional de São Tomé e Príncipe — Diário da República"
+  },
+  "regle": {
+    "valeur": "Droit de douane : 10 % sur les eaux minérales (2201.10), 25 % sur les sacs en plastique (3923.21 et 3923.29), 15 % sur les autres positions du chapitre 39, 55 % sur les lampes de la position 85.39 et 0 % sur les lampes LED (8539.50). 140 positions SH6 en tout.",
+    "verbatim": "São agravados os direitos aduaneiros sobre a importação dos seguintes produtos, conforme o respectivo código pautal: a) Água mineral 2201 - Taxa 10%; b) Plásticos e suas obras (sacos de plástico) Capítulo 39 - Taxa 25%; c) Plásticos e suas obras (outros) Capitulo 39 - Taxa 15%; d) Lâmpadas 8539 - Taxa 55 %.",
+    "verbatim_led": "As lâmpadas LED, sob a classificação pautal 8539,50 ficam isentas de pagamento dos direitos aduaneiros na importação.",
+    "reference": "Lei n.º 04/2023, art. 1.º et art. 2.º, 3 (Diário da República, I Série, n.º 31, 15/06/2023)",
+    "portee": "scripts/build_socle.py, _direitos_lei4_stp, table backend/data/zlecaf_stp/direitos_lei4_2023.json : le droit de douane de ces positions remplace la moyenne SH6 de WITS (2019) ; la TVA (15 %), assise sur la valeur en douane et les droits, suit.",
+    "texte_archive": "sources/STP_direitos_lei4_2023.texte-extrait.txt",
+    "sha256": "d541da732c09cc0378e360dc38024342fb132f766f7404106bfc77c587ff62c3"
+  },
+  "decisions": [
+    "Eau minérale : la loi cite « 2201 » mais nomme l'eau minérale ; seule la sous-position 2201.10 (eaux minérales et eaux gazéifiées) la désigne. 2201.90 (eaux ordinaires, glace, neige) garde son droit.",
+    "Sacs en plastique : 3923.21 et 3923.29 (« sacs, sachets, pochettes et cornets »), au chapitre 39 que cite la loi ; le reste du chapitre, matières premières comprises (« Plásticos e suas obras »), à 15 %.",
+    "Lampes : 55 % sur la position 85.39, sauf ses parties (8539.90), qui ne sont pas des lampes, et sauf les LED (8539.50), exonérées par l'art. 2.º, 3."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Exonérations sous certificat : matériels et équipements de production d'énergies renouvelables (art. 2.º, 1-2, certificat de la Direcção dos Recursos Naturais) et matières premières du savon (art. 2.º, 4-5, certificat de la Direcção de Comércio e Indústria). Elles tiennent à la destination, pas à la position : non appliquées.",
+    "Le reste du tarif reste la moyenne SH6 de WITS (2019) : la pauta nationale, refondue fin 2023 selon la presse (Téla Nón), n'est pas publiée en ligne, et financas.gov.st ne répond pas. Si elle reprend d'autres taux pour ces positions, elle prime.",
+    "Loi transmise par une copie (lerenovaveis.org, plateforme ALER) du Diário da República entier : le site officiel du Diário n'a pas été joint."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/STP_direitos_lei4_2023.texte-extrait.txt",
+      "sha256": "d541da732c09cc0378e360dc38024342fb132f766f7404106bfc77c587ff62c3"
+    },
+    {
+      "document_non_archive": "Diário da República de São Tomé e Príncipe, I Série, n.º 31, 15/06/2023 (3 pages), https://www.lerenovaveis.org/contents/lerpublication/sao-tome-e-principe--lei-4_23.pdf",
+      "pdf_sha256": "95cfa321c4e50a055afd8ba1af8e99c9c4219ee423b61980df7b8c4897323748"
+    }
+  ]
+}

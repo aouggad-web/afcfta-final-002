@@ -1521,10 +1521,10 @@
         }
       ],
       "devise": "STN",
-      "date_reference": "2026-10-28",
-      "sha256": "64835523fe0b3c90674565840165e4f028e540b0264d740667f9fabe0ed33ac8",
-      "notes_sha256": "6ae2444fe504756a4542ced19a0d1ee4862c67ab46b5b5bcf53c02b44e5b30c8",
-      "socle_sha256": "414240accf61df5ca01292825aabba763442c1524a620fff1e8f1e480517f8fa",
+      "date_reference": "2026-11-01",
+      "sha256": "c5dfa9ac1f1d7b83a89845aa670f9c7f85ea15fc8f6229a826dee0c0a6ffc22b",
+      "notes_sha256": "d15355050510a7dcc6a97d4c1739c8f56632cd6476717051e2431d00e7dc915d",
+      "socle_sha256": "12bda8b8f5177bf5be4cf04acc82bd50369ad006426c85e8beab30f640cbe3ec",
       "collecte": "2026-07-05T11:02:55.441773+00:00"
     },
     "SWZ": {

@@ -3077,6 +3077,31 @@ def _premiere_necessite_gnq(positions, compteurs):
             _compter_ligne(dd, compteurs, 1)
 
 
+#: São Tomé-et-Príncipe : droits de douane de la Lei n.º 04/2023 (fiche STP_direitos_lei4_2023_2026-11-01.json).
+DIREITOS_LEI4_STP = os.path.join(REPO, "backend", "data", "zlecaf_stp", "direitos_lei4_2023.json")
+
+
+def _direitos_lei4_stp(positions, compteurs):
+    """São Tomé-et-Príncipe : eau minérale 10 %, plastiques 15 % (sacs 25 %),
+    lampes 55 % et lampes LED exonérées (Lei n.º 04/2023, art. 1.º et 2.º, 3).
+    Ils remplacent la moyenne SH6 de WITS sur ces positions ; la première règle
+    qui correspond s'applique."""
+    with open(DIREITOS_LEI4_STP, encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        regle = next(
+            (r for r in table["regles"]
+             if code.startswith(tuple(r["prefixes"])) and not code.startswith(tuple(r.get("exclusions", ())))),
+            None,
+        )
+        if not regle:
+            continue
+        for dd in (d for d in position.get("droits") or [] if d.get("code") == "DD"):
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=regle["dd"], source=table["source"], note=regle["reference"])
+            _compter_ligne(dd, compteurs, 1)
+
+
 #: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
 SOURCE_RI_COG = "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25"
 SOURCE_CCI_COG = "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40"
@@ -6221,6 +6246,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tva_tchad(positions, compteurs)
     if iso == "GNQ":
         _premiere_necessite_gnq(positions, compteurs)
+    if iso == "STP":
+        _direitos_lei4_stp(positions, compteurs)
 
     if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
         _ohada_produits_medicaux(positions, compteurs)
