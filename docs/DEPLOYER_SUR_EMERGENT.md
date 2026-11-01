@@ -244,7 +244,9 @@ curl -s http://localhost:${BACKEND_PORT:-8000}/api/reports/oec-health    # canal
 
 ## Quelle branche déployer ?
 
-- **`main`** : toutes les améliorations (PR #222 comprise) y sont mergées.
-  Déployer avec `BRANCH=main bash sync_emergent.sh`.
-- Une branche de travail en cours ne se déploie que pour tester une PR non
-  encore mergée : `BRANCH=<nom-de-branche> bash sync_emergent.sh`.
+- **`main` uniquement** : `bash sync_emergent.sh` (ou `BRANCH=main bash sync_emergent.sh`).
+- Toute autre branche est refusée par le script (audit de sécurité, constat C3) :
+  ce pod est la production, et le déploiement exécute le code de la branche
+  avec les secrets de `backend/.env`. Fusionnez d'abord la PR dans `main`
+  (revue + CI). Pour essayer une branche, utilisez un environnement sans
+  secrets de production.
