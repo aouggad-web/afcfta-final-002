@@ -1,0 +1,60 @@
+Guinée équatoriale — loi n° 9/2025, du 9 décembre 2025, de presupuestos generales del Estado para el ejercicio 2026, art. 13 (relevé le 2026-10-31).
+Source : https://minhacienda-gob.com/uploads/2026/05/libro-lpge-2026-bcb5ebfc7795.pdf (PDF de 276 pages, édité par la Dirección General de Presupuestos y Clases Pasivas, ministère des Finances ; sha256 263abefbf55ff140a6b4128a6a3a715294d8d08848a3545d4070cfa2282b0a50). Le même domaine publie la bibliothèque juridique et la loi fiscale de 2004 du ministère ; il n'a pas été vérifié comme le sien. Pages 1, 3, 14 et 15 archivées (dossier equatorial-guinea/official, gnq-ley-9-2025-presupuestos-2026-extracto-p1-3-14-15-art13.pdf). Texte lu par pdftotext.
+
+Page 3 : Ley Número 9/2025, de fecha 9 de diciembre, de los Presupuestos Generales del Estado — EJERCICIO 2026.
+
+TÍTULO II — DE LAS MEDIDAS TRIBUTARIAS ; CAPÍTULO I: DE LAS DISPOSICIONES RELATIVAS A LOS DERECHOS ADUANEROS (p. 14 et 15) :
+Artículo 13º.- Con el fin de luchar contra la carestía de vida y aliviar el impacto de la carga fiscal en la cesta de compra de los hogares en la República de Guinea Ecuatorial, se reduce a un tipo del 5% el gravamen en concepto de derechos aduaneros de los bienes y productos de primera necesidad, así como la exención o reducción en concepto del Impuesto sobre el Valor Añadido (IVA) a la importación conforme al siguiente cuadro:
+
+Premier tableau — Nº | Productos | Tarifa de Aduanas | IVA :
+1 | Pescado | 5% | 0%
+2 | Arroz | 5% | 0%
+3 | Harina de trigo y maíz | 5% | 0%
+4 | Levadura | 5% | 0%
+5 | Pienso | 5% | 0%
+6 | Sardina en conserva | 5% | 0%
+7 | Azúcar y otros edulcorantes | 5% | 0%
+8 | Leche y crema de leche concentradas, o con azúcares y otros edulcorantes | 5% | 0%
+9 | Carne | 5% | 0%
+10 | Patatas congeladas | 5% | 0%
+11 | Sal fina alimenticia | 5% | 0%
+12 | Tomate natural | 5% | 0%
+13 | Tomate lata | 5% | 0%
+14 | Huevos | 5% | 0%
+15 | Pasta alimenticia | 5% | 0%
+16 | Legumbres | 5% | 0%
+17 | Aceite vegetal | 5% | 0%
+18 | Aceite de palma refinado | 5% | 0%
+19 | Detergentes | 5% | 0%
+20 | Jabón de lavar | 5% | 0%
+21 | Alimento infantil | 5% | 0%
+22 | Pañales y toallitas infantiles | 5% | 0%
+23 | Pañales para adultos | 5% | 0%
+24 | Productos de higiene intima femenina | 5% | 0%
+25 | Lejía | 5% | 0%
+26 | Machetes | 5% | 0%
+27 | Cerrillas | 5% | 0%
+28 | Lámpara de petróleo | 5% | 0%
+29 | Limas | 5% | 0%
+30 | Chapas de Zinc | 5% | 0%
+31 | Azadas | 5% | 0%
+32 | Clavos | 5% | 0%
+
+Second tableau — Nº | Productos | Tarifa de Aduanas | IVA :
+1 | Galletas y Cereales | 5% | 5%
+2 | Hortalizas y Frutas | 5% | 5%
+3 | Embutidos, Lácteos y Quesos | 5% | 5%
+4 | Cacao en polvo | 5% | 5%
+5 | Cemento ordinario y Cola | 5% | 5%
+6 | Motosierra | 5% | 5%
+7 | Pecticidas de uso agrícola | 5% | 5%
+8 | Fertilizantes de uso agrícola | 5% | 5%
+9 | Agua mineral | 5% | 5%
+10 | Colchones | 5% | 5%
+11 | Hierro de hormigón | 5% | 5%
+12 | Material de pesca artesanal | 5% | 5%
+
+Loi générale fiscale (Ley Núm. 1/2024, de fecha 19 de noviembre, General Tributaria) : citée par la même loi, art. 14 (« los artículos 94 de la Ley Núm. 1/2024, de fecha 19 de noviembre, General Tributaria en la República de Guinea Ecuatorial ») ; son texte n'a pas été trouvé (ni sur le site du ministère, qui ne publie que la loi de 2004, ni ailleurs).
+
+Banque mondiale, Guinea Ecuatorial — Actualización Económica 2025, recuadro 1, p. 30 (https://documents1.worldbank.org/curated/en/099072425175525033/pdf/P181230-e6d9cdff-ebab-4c72-a977-85d9b5c025bd.pdf, sha256 4d48c78be14dfefe8ffc7ac318a859f77cec0b3a529062c2cdc35e54c0ac17bd) :
+« En diciembre de 2024, se aprobó una ley tributaria revisada (que actualiza la ley tributaria de 2004) […] Si bien la tasa general del IVA se mantuvo en 15 por ciento, la tasa reducida para bienes de primera necesidad y otros productos definidos por la ley tributaria se ajustó al 5 por ciento (por debajo del 6 por ciento estipulado en la ley de 2004). »

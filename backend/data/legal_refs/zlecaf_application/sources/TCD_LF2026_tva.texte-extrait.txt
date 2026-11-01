@@ -1,0 +1,192 @@
+République du Tchad — Loi n° 008/AN/SENAT/2025 portant loi de finances pour l'exercice 2026 (adoptée par l'Assemblée nationale et le Sénat en leurs séances des 17 et 26 décembre 2025) : TVA (relevé le 2026-10-31).
+Source : https://ecofinances.gouv.td/wp-content/uploads/2026/06/Loi-n008-AN-SENAT-2025-Portant-loi-de-Finances-2026-LF-2026.pdf
+(PDF scanné, 87 pages, sha256 7bc46241a7c7586d9eece4fb5c95a6587ba637732480b7b4c8cfbf31112d7fd2).
+Pages 1, 39, 43 à 49, 81 et 82 archivées dans TCD_LF2026_tva.extrait.pdf. Texte lu par OCR (300 dpi) et relu sur l'image ; les tableaux sont transcrits ligne par ligne, « N° du tarif | Désignation tarifaire », numéros et libellés tels qu'imprimés (fautes comprises).
+
+Article 31 (p. 39) : Pour compter du 1er janvier 2026, les dispositions de l’article 230 du Code Général des Impôts sont modifiées et complétées comme suit :
+Au lieu de :
+Article 230 (ancien) : Sont exonérés de la taxe sur la valeur ajoutée :
+[…]
+Points 22° à 37° de l'article 230 (ancien), p. 43 et 44, que la rédaction nouvelle laisse en l'état (« Le reste sans changement ») :
+22° les intrants agricoles les intrants des produits de l’élevage et de la pêche utilisés par les producteurs ;
+23° Les locations d’immeubles nus à usage d’habitation ;
+24° Les petits matériels de pêches, les engins et matériels agricoles ;
+25° Les matériels, équipements et services nécessaires à la production et à la transformation du coton fibre ;
+26° Les matériels, équipements et services nécessaires à la production et à la distribution de l’eau et de l'électricité ;
+[…]
+31° Les matériels et produits servant à la lutte contre le VIH/SIDA, le paludisme, la tuberculose, la fièvre jaune et les infections virales sévères liées aux maladies infantiles et des personnes du 3ème âge sans ressources, dans les conditions fixées par voie réglementaire.
+32° L’acquisition des matériels et équipements servant à la production et à la promotion des énergies renouvelables.
+[…]
+35° les machines et équipements destinés à la production et à la transformation agricoles
+36° les matériels et équipements destinés à l’usage des personnes handicapées.
+37° Les engrais, semences figurant dans la liste ci-dessus
+[…]
+Lire :
+Article 230 (nouveau) : Sont exonérés de la taxe sur la valeur ajoutée :
+6° Le super et le gasoil enlevés par les distributeurs agréés auprès de la société de raffinage de N’Djamena et vendus à la pompe ;
+Il en est de même, du jet A 1 destiné à l’avitaillement des aéronefs effectuant des vols intérieurs.
+15° Les produits figurant sur la liste ci-dessous (p. 45 à 48) :
+N° du tarif | Désignation tarifaire
+2937.91.00 | Insuline et ses sels
+2930.2100 | Quinine et ses sels
+2941 | Antibiotiques
+3007.0090 | Cire pour art dentaire
+3701.1000 | Plaques et films pour rayons X
+3702.1000 | Pellicules pour rayons X
+40.14/ 30 | Articles d’hygiène et de pharmacie en caoutchouc Produits pharmaceutiques
+4015.11.00 | Gants pour la chirurgie
+7015.10.00 | Verrerie des lunettes
+8419.20.00 | Stérilisateurs médicochirurgicaux de laboratoires
+8713 | Fauteuils roulants et autres véhicules pour invalides
+8714.20.00 | Parties de fauteuils roulant et autres véhicules pour invalides
+90.004.90.00 | Lunettes correctrices
+90.18.11à 9022.90 | Appareils médicaux
+9402.10.11 | Fauteuils de dentistes
+9402.1019 | Autres mobiliers pour la médecine et chirurgie
+02 | Viandes et Volailles
+0401 | Lait et crème de lait, non concentrés additionnés de sucre ou d’autres édulcorants
+0402 | Lait et crème de lait concentrés ou additionnés du sucre
+05 | Pain Farine et froment
+1901.10.11 | Préparation pour l’alimentation des enfants
+4901.91.00 | Livres scolaires brochures et imprimes similaires
+4902 | Journaux et publications périodiques, imprimés même illustres ou contenant de la publicité.
+1001.10.10 / 1002.00.10 / 1004.00.10 / 1005.10.00 | Semences végétales
+31 | Engrais
+05.11.10.00 | Semences animales
+04.07.11.00 | Œufs de volailles destinés à l’incubation
+84.14.60.00 | Aérateur
+84.19.31.00 | Séchoir à grain mobile
+87.16.80.10 | Charrettes d’attelage
+84.36.10.00 | Machine pour production d’aliment pour poisson
+84.45.19.10 | Égreneuse
+84.79.82.00 | Concasseuse à coquille
+84.79.82.00 | Broyeur Mélangeur
+84.76.89.00 | Appareils ou équipements de distribution automatique des aliments
+84.36.21.00 | Machine de vaccination au couvoir
+87.05.90.00 | Véhicule frigorifique pour transporter des œufs à couver
+84.36.21.00 | Incubateur
+84.36.10.00 | Abreuvoirs et mangeoires automatiques
+85.04.21 à 85.04.23 | Appareils de transformation
+8501.10.00 | Module photovoltaïque ou générateur
+8541.42.00 | Cellules photovoltaïques non assemblées en module ni constituées en panneaux
+8541. 43.00 | Cellules photovoltaïques non assemblées en module ou constituées en panneaux
+8541. 90.00 | Parties des cellules photovoltaïques
+7308. 90.00 | Autres constructions ou parties de construction en fer, fonte ou acier destinées aux cellules photovoltaïques
+8504.3100 | Transformateurs de systèmes photovoltaïques
+8504.40.00 | Onduleurs de systèmes photovoltaïques
+9030.39.00 | Contrôleurs de systèmes photovoltaïques
+8544.20.00 | Câbles de systèmes photovoltaïques
+8507.80.00 | Accumulateurs de systèmes photovoltaïques
+853630.00 | Interrupteurs de systèmes photovoltaïques
+8507.80.00 | Batteries solaires, batteries stationnaires
+8504.90.00 | Chargeurs de batteries solaires
+8513.10.00 | Lampes portables solaires
+8513.10.00 | Torches solaires
+8436.80.00 | Moulins à générateurs solaires
+8413.82.00 | Pompes à générateurs solaires
+8537.10.00 | Armoires de commande pour pompes photovoltaïques
+8419.40.00 | Équipements de distillateurs solaires
+8419.31.00 | Équipements de séchoir solaires
+84 21.21.00 | Appareil solaire pour linge de filtre d’eau
+8412.80.00 | Turbines de systèmes éoliens
+8410. | Pales d’éoliennes
+8504.33.00 | Générateurs de systèmes éoliens
+8413.81.00 | Pompes éoliennes
+8419.31.00 | Séchoirs à énergie éolienne
+8504.34.00 | Transformateurs de systèmes éoliens
+8504.40.00 | Onduleurs de systèmes éoliens
+9030.39.00 | Contrôleurs de systèmes éoliens
+2836.50.00 | Carbonate de calcium
+3204 | Colorants dispersés et préparations à base de ces colorants
+3901 et 3902 | Polyéthylène
+3907.30.00 / 3907.50.00 / 3909 / 3911 | Résines
+3905 à 3908 | Polymères
+3915 | Déchets, rognures et débris de matières plastiques
+8465.99.00 | Autres machines pour le travail des matières plastiques
+87.01.91.00 à 87.01.95.00 | Tracteurs agricoles (de toutes puissances)
+84.33.51.00 | Moissonneuses
+84.32.10.00 | Charrues
+84.24.41.00 et 84.24.49.00 | Pulvériseurs
+84.32.21.00 et 84.32.29.00 | Herses
+84.32.31.00 | Semoirs
+84.32.41.00 et 84.32.42.00 | Épandeurs
+84.79.82.00 | Giro broyeurs
+73.25.91.00 | Rouleaux broyeurs
+84.36.80.00 | Cultivateurs
+85.09.40.00 | Déchiqueteuses
+84.26.99.00 | Grues hydrauliques
+84.33.20.00 | Faucheuses
+84.36.80.00 | Andaineurs
+84.36.80.00 | Faneuses
+87.16.10.00 | Remorques pour tracteurs
+84.32.39.00 | Planteuses pour manioc
+84.33.40.00 | Presse à balle
+84.27.20.00 | Chariots télescopiques
+84.53.59.00 et 84.33.53.00 | Récolteuses
+87.16.90.10 | partie de charrettes et tombereaux à usage agricole
+87.16.90.90 | Autres parties
+84.32.41.00 et 84.32.42.00 | Distributeurs de fumier
+84.29.20.00 | Niveleur de terrain
+39.18.10.00 et 39.18.90.00 | Sous-soleuses
+84.24.82.10 et 84.24.82.90 | Toutes sortes de système d'irrigation
+84.67.21.00 | Perceuses pour la plantation d'arbre-semences
+38.08.91.90 et 38.08.93.90 | Produits phytosanitaires (pesticides, fongicides, herbicides)
+38.22.90.00 | Matériaux absorbant l'eau du sol
+33 02 10 00 et 33 02 90 00 | Concentré pour l'industrie alimentaire
+04 04 90 00 | Lactosérum (Wey Powder)
+12 08 10 00 | Farine de Soja
+76 07 19 10 | Bande mince en aluminium pour industrie alimentaire
+20 02 90 00 | Pate de tomate pour industrie alimentaire
+48 19 20 00 | Bande pliant pour industrie alimentaire
+20 09 61 00 | Concentre de raisin pour industrie alimentaire
+(sans numéro) | Equipements de recherche scientifique dans les laboratoires de santé animale et de production animales
+(sans numéro) | Automates de diagnostic en santé animale ; production animale, biochimie et biologie moléculaire
+(sans numéro) | Kit de diagnostic prêt à utilisés pour le diagnostic des maladies animales
+(sans numéro) | Réactifs de diagnostic in vivo des maladies animales
+(sans numéro) | Matériels de préanalystique (verrerie et autres récipients de laboratoire)
+(sans numéro) | Milieux de culture des microorganismes
+(sans numéro) | Réactifs de Diagnostic des zoonoses
+(sans numéro) | Equipements et automates de production des vaccins et médicaments vétérinaires
+(sans numéro) | Matériels de conditionnement des vaccins et médicaments vétérinaires
+(sans numéro) | Consommable de laboratoire pour la production des vaccins et médicaments vétérinaires
+(sans numéro) | Equipements, petits matériels, consommables et réactifs de laboratoire pour le contrôle de qualité des vaccins et médicaments vétérinaires
+(sans numéro) | Equipements agricoles pour la production des cultures fourragères
+(sans numéro) | Engrais pour fertilisation des sols destinés à la culture fourragère
+(sans numéro) | Semence d’expérimentation en génétique et production animale
+(sans numéro) | Azote liquide pour conservation des semences
+(sans numéro) | Equipement et consommables pour production laitière
+(sans numéro) | Equipement du système d’irrigation des cultures fourragères
+(sans numéro) | Matériel de chaine de froid de toute gammes
+(sans numéro) | Produits vétérinaires destinés aux études cliniques
+(Le reste sans changement)
+
+Article 32 (p. 48 et 49) : Pour compter du 1er janvier 2026, les dispositions de l’article 238 du Code Général des Impôts sont modifiées et complétées comme suit :
+Au lieu de :
+Article 238 (ancien) :
+I. Les taux de la taxe sur la valeur ajoutée sont les suivants :
+1° 17,5 % applicable à toutes les opérations taxables ;
+2° 9% applicable aux produits locaux ci-après :
+- Sucre, huile, savon, textile, fer à béton et les produits et sous-produits de l'industrie agroalimentaire locale hors alcool ainsi que les matériels destinés à l'artisanat et à la pêche ;
+- Prestations de restauration fournies par les structures hôtelières et Restaurants relevant du régime du réel ;
+- Prestations d’hébergement fournies par les établissements d’hébergement touristique agréés.
+3° 0% applicable aux exportations et transports internationaux et l'avitaillement des aéronefs en jet A 1 à destination de l'étranger.
+Lire :
+Article 238 (nouveau) :
+I. Les taux de la taxe sur la valeur ajoutée sont les suivants :
+1° 17,5 % applicable à toutes les opérations taxables à l’exclusion des taux réduits ;
+2° 9% applicable aux opérations de production et de vente portant sur les produits suivants :
+- Sucre, huile, lait, yaourt, beurre, fromage, viande, savon, textile, fer à béton et les produits et sous-produits de l'industrie agroalimentaire locale hors alcool ainsi que les matériels destinés à l'artisanat et à la pêche ;
+- Prestations d’hébergement et de restauration fournies par les structures hôtelières, Restaurants et établissements d’hébergement.
+Un taux réduit spécifique est applicable dans le secteur de l’industrie de ciment, dans la fourchette fixée par les textes communautaires.
+3° 0% applicable aux exportations et transports aériens, l'avitaillement des aéronefs en jet A 1 à destination de l'étranger et, aux opérations d’entretien et de réparation effectuée sur les aéronefs.
+
+Article 73 (p. 81 et 82) : Pour compter du 1er janvier 2026, l’article 14 de la loi de finances pour 2024, tel que modifié par l’article 34 de la loi de finances pour 2025, est modifié comme suit :
+[…]
+Lire :
+Article 14 (nouveau) :
+(1) Pour compter du 1er janvier 2024, il est institué au profit des Conseils Provinciaux et des Communes, des centimes additionnels sur les impôts et taxes ci-après :
+- La taxe sur la valeur ajoutée (TVA) ;
+- La Taxe spécifique sur les liqueurs ;
+(2) Le taux des centimes additionnels est fixé à 10 % du principal de l’impôt concerné.
+(3) Les centimes additionnels sont calculés tant sur le principal que sur les majorations des impôts auxquels ils s’appliquent et suivent le sort des éléments qui leur servent de base.
+[…]

@@ -1,0 +1,55 @@
+Congo — échéance de la circulaire n° 0138, taxe sur les nouveaux terminaux à carte SIM, taxe sur les activités polluantes : extraits verbatim (relevés le 2026-10-30)
+
+1) Circulaire n° 0138/MFBPP-CAB du 5 février 2026 (archivée : data/sources/congo-brazzaville/official/cog-circulaire-0138-mfbpp-cab-2026.pdf ; extrait complet dans sources/COG_mesures_nationales.texte-extrait.txt)
+
+La présente circulaire est d'application jusqu'au 31 décembre 2026.
+
+2) Journal officiel de la République du Congo, édition spéciale n° 3-2026 du lundi 5 janvier 2026 — Loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026
+   https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf — sha256 61477eabb5014dd438451d5326dab14a077c5c8096bbe3fef136e5edfbf7f74e
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2026-03-loi-finances-2026.pdf
+
+PARAGRAPHE 7 : INSTITUTION DE LA TAXE SUR LES NOUVEAUX TERMINAUX NUMERIQUES A CARTE SIM
+
+46. Institution de la taxe sur les nouveaux terminaux numériques à carte SIM
+
+Article 1er: Il est institué en République du Congo, une taxe sur les nouveaux terminaux numériques (RTN) importés à compter du 1er juin 2026 et nécessitant une carte SIM pour leur fonctionnement (téléphones portables, modems, tablettes, etc.).
+
+Article2:Sont assujettis au paiement de la taxe sur les nouveaux terminaux numériques à cartes SIM (RTN), les importateurs et les usagers qui ramènent un terminal numérique de l'étranger pour un usage personnel au Congo.
+
+Tous les détenteurs de nouveaux terminaux numériques à cartes SIM acquis sur le marché local ne sont pas assujettis au paiement de lataxesur les nouveaux terminaux numériques à cartes SIM (RTN).
+
+Article3 : Le montant à payer dépend de la catégorie 2G, 3G ,4G et 5G. A défaut du paiement de la taxe, le nouveau terminal numérique à carte SIM sera inutilisable sur les réseaux GSM.
+[...]
+Article 4 : Le montant de la taxe des nouveaux terminaux numériques à cartes SIM (RTN) est fixé comme suit :
+
+                                   Catégories des terminaux       2G              3G            4 et 5G
+                                   Taxe des nouveaux terminaux
+                                   numériques à cartes SIM (RTN)  1.300 FCFA      6.500F CFA    10.000FCFA
+[...]
+Article 7 : La taxe sur les nouveaux terminaux numériques à cartes SIM (RTN) est acquittée auprès du comptable public assigné à demeure à l'agence de développement de l'économie numérique.
+
+Le justificatif de paiement de cette taxe constitue une pièce exigée dans la liasse des documents à fournir dans le cadre des opérations de dédouanement.
+
+[...]
+
+PARAGRAPHE 2 : INSTITUTION DE LA TAXE SUR LES ACTIVITÉS POLLUANTES
+
+Article 1er : Il est institué au profit du budget de l'État une taxe sur les activités polluantes.
+
+Article 2 : Sont assujetties à la taxe sur les activités polluantes, les personnes physiques ou morales, publiques ou privées, qui exercent des activités polluantes, notamment :
+
+- le rejet de substances polluantes dans l'air, l'eau ou le sol ;
+- la production, l'importation, le stockage, le traitement ou l'élimination de déchets polluants ;
+- l'exploitation de ressources naturelles ou d'installation générant des nuisances ou des risques environnementaux.
+
+Article 3 : Le fait générateur de la taxe sur les activités polluantes est l'exercice effectif d'une activité polluante.
+
+Article 4 : La taxe sur les activités polluantes est assise sur les quantités produites, importées, extraites ou éliminées.
+
+Les taux sont fixés comme suit :
+- emballages plastiques : 500 FCFA/kg ;
+- extraction de minerais : 5 000 FCFA/m³ ;
+- déchets industriels dangereux : 2 500 FCFA/tonne ;
+- lubrifiants, peintures, solvants, pesticides : 500 FCFA/litre.
+
+Article 5 : Les taxes sont liquidées, déclarées, contrôlées et recouvrées comme en matière des impôts et taxes prévus par le code général des impôts.

@@ -1,0 +1,109 @@
+Gabon — prélèvements perçus à l'importation hors droit de douane, TVA et accises : extraits verbatim (relevés le 2026-10-29)
+
+1) Direction générale des douanes et droits indirects (DGDDI), « Présentation de la fiscalité douanière » (Microsoft Word, 26/04/2021)
+   https://douanes.ga/med/pdf/dgddi-la-fiscalite-douaniere-210426100824.pdf — sha256 c8fda1aa901a302f56810a20943de7a960f5737544df72230d4165b46907d0f9
+   archivé : data/sources/gabon/official/gab-dgddi-fiscalite-douaniere-2021.pdf
+
+Il en ressort que le TEC CEMAC comprend un droit de douane à l’importation et la taxe
+communautaire d’intégration (TCI) au taux unique de 1%.
+Il convient d’y adjoindre d’autres prélèvements rentrant dans le cadre du financement de certaines
+institutions internationales à l’instar de la contribution communautaire d’intégration de la CEEAC
+au taux de 0.4% de la valeur des marchandises importées des pays tiers ; du prélèvement OHADA
+au taux de 0.05% et de la Contribution pour l’Union Africaine (CAF) au taux de 0.2% de la valeur
+des marchandises originaires des pays non membres de l’Union Africaine.
+    - Ajouter la css
+
+2) Journal Officiel de la République Gabonaise n°331 Bis Spécial du 9 janvier 2017 — Loi n°026/2016 du 6 janvier 2017 (loi de finances 2017)
+   copie du JO : https://faolex.fao.org/docs/pdf/gab207546.pdf — sha256 8ca1e6bcf2e273ac4270a7eb8fc5cf9aa5a40981bbf7bd33afbf77df2722eba5
+   archivé : data/sources/gabon/official/gab-jo-331bis-loi-finances-2017.pdf
+
+9 JANVIER 2017 - N°331 Bis Spécial
+JOURNAL OFFICIEL DE LA REPUBLIQUE GABONAISE
+Loi n°026/2016 du 6 janvier 2017 déterminant les ressources et les charges de l’Etat pour l’année 2017
+[...]
+DISPOSITIONS RELATIVES A LA CONTRIBUTION SPECIALE DE SOLIDARITE
+
+Article 13 : Il est institué à compter du 1er janvier 2017 un prélèvement obligatoire dénommé contribution spéciale de
+solidarité en abrégé « CSS ».
+Article 14 : Sont assujetties à la CSS, les personnes physiques et morales y compris les collectivités locales et les
+établissements publics.
+Sont redevables de la CSS, les personnes physiques et morales réalisant à titre habituel ou occasionnel des
+opérations imposables dont le chiffre d’affaires annuel hors taxes s’établit au moins à 30.000.000 FCFA.
+Article 15 : Sont imposables à la CSS, les opérations accomplies dans le cadre d’une activité économique effectuée à titre
+onéreux, notamment les activités de production, d’importation, de prestation de services et de distribution, y compris les
+activités extractives, agricoles, agro-industrielles, forestières, artisanales, et celles des professions libérales ou assimilées.
+Article 16 : Sont notamment concernés par les activités visées à l’article 15 ci-dessus :
+1-les livraisons de biens aux tiers ou à soi-même ;
+2-les prestations de services aux tiers ou à soi-même ;
+3-les opérations d’importation de marchandises ;
+4-les travaux immobiliers ;
+5-les opérations immobilières de toute nature réalisées par les professionnels de l’immobilier comprenant :
+[...]
+Article 17 : Sont exonérés de la CSS :
+1) les opérations suivantes, dès lors qu’elles sont soumises à des taxations spécifiques exclusives de toute taxation sur le
+[...]
+6) les biens de première nécessité́ soumis aux régimes de blocage et de liberté contrôlée des prix, notamment :
+les pesticides, les engrais et leurs intrants, ainsi que les autres intrants agricoles, de l’élevage et de la pêche
+utilisés par les producteurs ;
+la viande bovine, à l’exception de la viande importée ;
+les produits pharmaceutiques, leurs intrants ainsi que les matériels et équipements des industries
+9) les opérations de composition, d’impression, d’importation et de vente des journaux et périodiques à l’exclusion des
+recettes de publicité́ , les intrants et les biens d’équipement destinés à ces opérations, acquis par les sociétés de presse ou
+d’édition de journaux et périodiques.
+La liste de ces intrants et biens d’équipement est déterminée par le Ministre chargé des Finances après
+[...]
+16) les matériels et équipements d’exploitation des énergies solaire et éolienne.
+[...]
+d) l’introduction des biens et marchandises sur le territoire, telle que définie dans le Code des Douanes de la CEMAC, en
+ce qui concerne les importations ;
+[...]
+Article 24 : La base d’imposition à la CSS est déterminée comme en matière de TVA, à l’exclusion toutefois des services
+directement liées aux activités minières et pétrolières dont la liste est établie par arrêté conjoint des Ministres chargés des
+Mines, des Finances et du Pétrole.
+Article 25 : Le taux de la CSS est de 1% de la base imposable définie à l’article 24 ci-dessus.
+
+3) Loi n°025/2022 du 30 janvier 2023 déterminant les ressources et les charges de l'État pour l'année 2023 — journal-officiel.ga
+   https://journal-officiel.ga/19624-025-2022/ — page archivée sha256 81123bb0cf08658fdb15b17b2e5728d85f89512113453efb935aa57ddafd1aa9
+   archivé : data/sources/gabon/official/gab-jo-loi-finances-2023-025-2022.html
+
+Article 34 : Les recettes ci-après, prélevées au cordon douanier, sont rétrocédées directement au profit des organismes communautaires auxquels le Gabon est affilié, en vue de couvrir leurs charges. Elles sont imputées aux comptes correspondants ouverts dans les livres du Trésor. Il s’agit :
+-de la contribution communautaire d’intégration, en abrégé CCI, pour le compte de la CEEAC ;
+-de la taxe communautaire d’intégration, en abrégé TCI, pour le compte de la CEMAC ;
+-du prélèvement au profit de l’OHADA ;
+-de la contribution à l’Union Africaine.
+
+4) Journal Officiel de la République Gabonaise n°96 Quater Spécial du 30 décembre 2025 — loi n°041/2025 (loi de finances 2026), recettes « Droits et taxes à l'importation »
+   archivé : data/sources/gabon/official/gab-jo-96quater-loi-finances-2026.pdf (sha256 6e649f3716bb847cd9f3c23bd95afb426710230f1eaa0b6854e8bf5e4aaf380e)
+
+            Droits et taxes à l'importation              434 498 821 395    625 433 827 544      190 935 006 149    44%
+ 715 301    Taxe communautaire d'Intégration               9 912 540 327     14 434 586 845        4 522 046 518    46%
+            Contribution Communautaire
+ 715 302                                                   2 456 917 556      3 577 749 867        1 120 832 311    46%
+           d'Intégration
+ 715 303    Prélèvement OHADA                              3 652 291 379      5 318 446 670        1 666 155 291    46%
+ 715 304    Contribution au financement de l'U.A.            894 732 272      1 302 904 225          408 171 954    46%
+ 715 103    Redevance informatique                        19 839 465 417     28 890 120 703        9 050 655 287    46%
+            Contribution Spéciale de Solidarité
+ 715 305                                                  14 253 861 863     20 756 395 450        6 502 533 587    46%
+
+5) Journal Officiel de la République du Congo n°35 de 2005 — Arrêté n°5808 du 20 septembre 2005 portant application du prélèvement OHADA (règlement n°002/2003/CM du 18 octobre 2003)
+   https://www.sgg.cg/JO/2005/congo-jo-2005-35.pdf — sha256 515c67ddb6b976064526930e3aaa052e247603282ee40ce17411bdaa86ecf95c
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2005-35-prelevement-ohada.pdf
+
+Article 3 : Le prélèvement OHADA est assis sur la valeur en douane
+des importations de produits originaires des pays tiers à l’Organisation
+pour l’Harmonisation en Afrique du Droit des Affaires, mis à la
+consommation.
+Article 4 : La base de détermination du prélèvement OHADA est la
+valeur CAF en douane des marchandises importées.
+Article 5 : Le taux du prélèvement OHADA est de 0,05% de la valeur
+définie à l’article 4 du présent arrêté.
+
+6) Organisation mondiale du commerce — Examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 16 août 2023), annexe 3 Gabon
+   https://www.wto.org/french/tratop_f/tpr_f/s445-04_f.pdf — sha256 597ad0c10bb55cc4933947b3f266b2783cf9d947cb538a3d8cc0d52c17a0c2e0
+   archivé : data/sources/gabon/official/omc-wt-tpr-s-445-annexe-gabon.pdf
+
+3.29. Une redevance informatique (RUSID) proportionnelle au temps d'utilisation effective du système est prélevée par déclaration, quel que soit le régime douanier.23 La surtaxe temporaire de 20% sur les importations de farine de blé n'est plus appliquée depuis janvier 2023. En outre, les autorités ont indiqué qu'en 2022 la Redevance de scanning (RDS) s'élève à 81 500 FCFA HT par unité EVP pour les conteneurs scannés.
+[...]
+       23
+           La RUSID est prévue par l'article 6-3 du Code des douanes de la CEMAC.

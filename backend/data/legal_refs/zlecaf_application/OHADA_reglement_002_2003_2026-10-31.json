@@ -1,0 +1,41 @@
+{
+ "schema_version": 1,
+ "objet": "Prélèvement OHADA (0,05 % de la valeur en douane) selon son texte : règlement n° 002/2003/CM du 18 octobre 2003 — exonération des produits pharmaceutiques et du matériel médical, et des produits originaires des communautés économiques régionales dont l'État est membre (la CEEAC en Afrique centrale), appliquée au Gabon, en Centrafrique, au Tchad et au Cameroun comme au Congo",
+ "destination_iso3": "CEMAC",
+ "verified_at": "2026-10-31",
+ "etabli": true,
+ "evidence_level": "primaire — Journal officiel de l'OHADA n° 14 du 20 décembre 2003 (ohada.org), scan lu par OCR ; le Cameroun, le Gabon, la Guinée équatoriale et le Tchad en sont signataires",
+ "source": {
+  "url": "https://www.ohada.org/wp-content/uploads/2016/05/JO_OHADA_journal_officiel_n_14.pdf",
+  "institution": "Organisation pour l'Harmonisation en Afrique du Droit des Affaires, Conseil des ministres"
+ },
+ "regle": {
+  "valeur": "0,05 % de la valeur en douane des produits originaires des pays tiers mis à la consommation ; exonérés notamment les produits pharmaceutiques et le matériel médical, et les produits originaires des communautés économiques régionales et sous-régionales dont l'État importateur est membre.",
+  "verbatim": "- les produits reconnus originaires des\ncommunautés économiques régionales et\nsous régionales dont chaque Etat Partie\nest membre ;",
+  "verbatim_medical": "- les produits pharmaceutiques ainsi que\nles matériels et équipements à usage\nmédical, destinés à la médecine humaine\nou vétérinaire ;",
+  "reference": "Règlement n° 002/2003/CM, art. 3 à 6 et 20 (entrée en vigueur le 1er janvier 2004)",
+  "portee": "scripts/build_socle : EXONERATION_ORIGINE (OHADA → OHADA_CEEAC), BLOCS_DESTINATION (OHADA_CEEAC : GAB, CAF, TCD, CMR) et _ohada_produits_medicaux (OHADA_EXONERE : chapitre 30, 90.18, 90.21, 9022.12 à 9022.14, 9022.21, fauteuils de dentistes 9402.10.10 et mobilier médical 9402.90), comme _prelevements_congo pour le Congo.",
+  "texte_archive": "sources/OHADA_reglement_002_2003.texte-extrait.txt",
+  "sha256": "a65df17cd9d584a14a8faefd23fb9652d7ac46464a908e6ebe21645533498b56"
+ },
+ "decisions": [
+  "Communautés dont les États de la CEMAC sont membres : la CEEAC, qui englobe la CEMAC (bloc OHADA_CEEAC de backend/services/exoneration_origine.py). Un produit angolais, burundais ou santoméen, originaire de la CEEAC sans l'être de l'OHADA, n'est plus soumis au prélèvement ; un produit nigérian ou français le reste.",
+  "Produits pharmaceutiques et matériel médical : les positions dont l'usage médical est dans le libellé ou la position (chapitre 30, 90.18, 90.21, 9022.12 à 9022.14, 9022.21, fauteuils de dentistes 9402.10.10 et mobilier médical 9402.90 ; les fauteuils de coiffeur 9402.10.20 restent dus), la même liste qu'au Congo.",
+  "Le Congo applique déjà ces deux exonérations par l'arrêté n° 5808 (fiche COG_prelevements_importation_2026-10-30.json) : inchangé."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Le Tchad et la Centrafrique sont aussi membres de la CEN-SAD : leurs originaires devraient, à la lettre de l'art. 6, être exonérés au Tchad et en Centrafrique. Non servi : la composition de la CEN-SAD n'est pas tenue dans le dépôt.",
+  "Exonérations liées à l'importateur ou au régime (aides et dons, matériel scolaire et universitaire, recherche scientifique, financements extérieurs, régimes fiscaux stabilisés, effets personnels des voyageurs, biens détruits en entrepôt, franchises diplomatiques) : non servies, la position ne les dit pas.",
+  "Guinée équatoriale : signataire du règlement, mais le socle ne porte pas encore de ligne OHADA pour elle."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/OHADA_reglement_002_2003.texte-extrait.txt",
+   "sha256": "a65df17cd9d584a14a8faefd23fb9652d7ac46464a908e6ebe21645533498b56"
+  },
+  {
+   "document_non_archive": "Journal officiel de l'OHADA n° 14 du 20 décembre 2003 (scan, 17 p.) : https://www.ohada.org/wp-content/uploads/2016/05/JO_OHADA_journal_officiel_n_14.pdf — pages 1 et 12 à 15 archivées à part (dossier ohada/official, ohada-jo-14-2003-reglement-002-2003-cm-extrait.pdf)",
+   "pdf_sha256": "1920f1a90818ac43aa761f1ec92be79270bd02fa4a964ec8097b77140073f63f"
+  }
+ ]
+}

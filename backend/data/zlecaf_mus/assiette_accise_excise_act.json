@@ -1177,6 +1177,12 @@
     "89039319": "50% on the value of the outboard motors",
     "89039919": "50% on the value of the outboard motors"
    }
+  },
+  "contenu_de_la_bouteille": {
+   "raison": "l'accise est nulle pour une bouteille dont le contenu figure à l'item 103 de la Part IA (riz, farine, produits laitiers, huiles, sucre, thé, café, jus du 20.09, produits pharmaceutiques…, Finance Act 2026, art. 4 (e)(ii)(H)), et le calcul ne reçoit pas ce contenu",
+   "codes": {
+    "39233010": "Rs 2 per unit"
+   }
   }
  }
 }

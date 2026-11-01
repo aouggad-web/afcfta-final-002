@@ -91,6 +91,14 @@ FAMILLES = {
     "CIA": "communautaire",
     "RI": "communautaire",
     "OHADA": "communautaire",
+    "CCI": "communautaire",  # contribution communautaire d'intégration de la CEEAC (GA)
+    "CSS": "autre",  # contribution spéciale de solidarité (GA)
+    "TUA": "communautaire",  # taxe de l'Union africaine (CF)
+    "COMIFAC": "communautaire",  # prélèvement COMIFAC (CF)
+    "REIF": "redevance",  # redevance pour l'équipement informatique des finances (CF)
+    "RDS": "redevance",  # redevance de développement des statistiques (CF)
+    "RGS": "redevance",  # redevance de gestion des scanners (CF)
+    "RCCAC": "redevance",  # redevance du Conseil centrafricain des chargeurs (CF)
     "TS": "communautaire",
     "CEDEAO": "communautaire",
     "EXIM": "redevance",
@@ -138,6 +146,8 @@ FAMILLES = {
     "TET": "accise",  # taxe spécifique sur le tabac (CV)
     "TEA": "accise",  # taxe spécifique sur l'alcool (CV)
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
+    "SAUV": "droit",  # paiement provisoire de sauvegarde, s. 57A (ZA)
+    "AD": "droit",  # droit antidumping (ZA, Schedule No. 2)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
     "MID": "accise",  # MID levy, Excise Act s.3A (MU)
@@ -1205,8 +1215,9 @@ _EXPORT_CMR_LF2026_2 = (
     "LF 2026, art. 11 (1, b) : aluminium, argent, cuivre, saphir et fers et aciers non alliés en lingots des "
     "positions 7206 à 7207, 2 % de la valeur FOB.",
 )
-# RDC : tarif de l'ordonnance-loi n° 012/2012, sans modification recensée. Le
-# titulaire d'un droit minier est exonéré pour les exportations de son projet
+# RDC : tarif de l'ordonnance-loi n° 012/2012, tel que modifié (liste consolidée
+# des produits soumis aux droits de sortie). Le titulaire d'un droit minier est
+# exonéré pour les exportations de son projet
 # (Code minier, art. 234) : ces droits sont marqués, l'exportateur le déclare
 # (`calcul_export.SELON_DECLARATION`).
 _COD_MINIER = {"titulaire_minier_exonere": True}
@@ -1220,15 +1231,117 @@ def _export_cod(taux, note, minier=True):
     return (taux, None, note + _COD_ASSIETTE, *([_COD_MINIER] if minier else []))
 
 
-_COD_MINERAI = _export_cod(10.0, "Ordonnance-loi n° 012/2012, annexe : minerais et concentrés, 10 %.")
+_COD_MINERAI = _export_cod(10.0, "Tarif à l'exportation, liste consolidée : minerais et concentrés, scories, 10 %.")
 _COD_CONCENTRE = _export_cod(
-    10.0, "Ordonnance-loi n° 012/2012, annexe : 10 %. L'exportation des concentrés de cuivre et de cobalt est "
-          "interdite depuis 2026, sauf dérogation (texte du 29 juin 2026, rapporté par la presse, non consulté).")
+    10.0, "Tarif à l'exportation, liste consolidée : 10 %. L'exportation des concentrés de cuivre et de cobalt est "
+          "interdite, sauf dérogation ministérielle d'un an (arrêté interministériel du 29 juin 2026, connu par son "
+          "résumé, texte intégral non lu).")
 
 
 # Égypte : droits de sortie par la tonne, fixés par décret ministériel pour
 # un an et reconduits ; état au 28 octobre 2026 d'après les circulaires de la
 # douane (relevé consolidé n° 5 du 14 janvier 2026 et circulaires suivantes).
+_EXPORT_COG_DEFAUT = (
+    None, None,
+    "Taux général : 2 % de la valeur en douane (LFR 2021, point 42, 1) ; le ciment produit au Congo et les autres "
+    "produits transformés d'origine congolaise sont exonérés (point 42, 2).",
+    {"selon_transformation": True},
+)
+_EXPORT_COG_QUATRE = (
+    4.0, None,
+    "LFR 2021, point 42, 2 : 4 % de la valeur en douane (diamant brut et autres métaux précieux bruts, résine et "
+    "autres exsudats des arbres, huile de palme brute, farine de poissons, maïs), transformé ou non.",
+)
+_EXPORT_COG_HYDROCARBURES = (
+    0.0, None,
+    "Hydrocarbures bruts : franchise des droits de sortie (LFR 2021, points 42, 2 et 45, 2 et 3).",
+)
+_COG_FOT = (" Assiette : la valeur Free On Truck (FOT) de l'essence, fixée par arrêté, qu'il faut saisir. Grumes : "
+            "exportation réservée aux bois lourds et durs (Code forestier, art. 97) ; surtaxe de 30 % au-delà du "
+            "quota 85/15 et fonds routier non compris. La redevance informatique est assise sur la valeur en douane, "
+            "non sur la valeur FOT : avec une valeur FOT saisie, elle est sous-estimée.")
+_EXPORT_COG_GRUMES_DIX = (
+    10.0, None,
+    "Bois en grumes des forêts naturelles, Okoumé, Afrormosia et Ébène : taxe à l'exportation de 10 % de la "
+    "valeur FOT, au titre du droit de sortie (LFR 2021, point 42, 3)." + _COG_FOT,
+)
+_EXPORT_COG_GRUMES_NEUF = (
+    9.0, None,
+    "Bois en grumes des forêts naturelles, essences autres que l'Okoumé, l'Afrormosia et l'Ébène : taxe à "
+    "l'exportation de 9 % de la valeur FOT, au titre du droit de sortie (LFR 2021, point 42, 3)." + _COG_FOT,
+)
+_COG_ESSENCES_NEUF = tuple(f"440349{n:02d}" for n in range(1, 39) if n not in (3, 15))
+_COG_PLAN_RESILIENCE = (" Arrêtés n° 26621 et 26622 du 30 décembre 2022 : exportation et réexportation prohibées "
+                        "pour ceux de ces produits qui ont bénéficié des avantages fiscalo-douaniers du plan de "
+                        "résilience sur la crise alimentaire 2022-2023 ; maintien après 2023 non établi.")
+_SOURCE_RI_EXPORT_COG = (
+    "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), point 25 ; loi n° 37-2021 (LFR 2021), point 41 "
+    "(sources/COG_droit_de_sortie_LFR2021_LF2026.texte-extrait.txt)"
+)
+
+
+#: Grumes dont le droit de sortie est assis sur la valeur FOT, que l'exportateur
+#: saisit à la place de la valeur en douane.
+_COG_GRUMES_FOT = ("44034903", "44034915", "44034100", "44034939", *_COG_ESSENCES_NEUF)
+
+
+def _redevance_informatique_export_cog(code):
+    """Redevance informatique à l'exportation : 2 % (LF 2026, point 25) ;
+    pétrole brut exonéré (LFR 2021, point 41, que la LF 2026 laisse « sans
+    changement »). Pour un produit transformé, le taux de 0,5 % de 2021, que
+    la LF 2026 ne reprend pas, laisse la ligne à établir (route). Grumes : la
+    redevance est assise sur la valeur en douane, la valeur saisie est la
+    valeur FOT du droit de sortie : à établir."""
+    if code.startswith(_COG_GRUMES_FOT):
+        d = _droit("RI.EXP", "Redevance informatique", None, None, _SOURCE_RI_EXPORT_COG,
+                   note="LF 2026, point 25 (article 44 nouveau) : « 2% à l'exportation des marchandises », assise sur "
+                        "la valeur en douane ; la valeur saisie pour ces grumes est la valeur FOT du droit de sortie : "
+                        "à établir sur la valeur en douane.")
+        d = {k: v for k, v in d.items() if v is not None}
+        d.update(code="RI.EXP", famille="export", taux=None, assiette=None)
+        return d
+    if code.startswith("27090010"):
+        d = _droit("RI.EXP", "Redevance informatique", 0.0, "CIF", _SOURCE_RI_EXPORT_COG,
+                   note="Exonérée : « l'exportation du pétrole brut » (LFR 2021, point 41 ; LF 2026, point 25 : « Le "
+                        "reste sans changement »).")
+        d.update(code="RI.EXP", famille="export")
+        return {k: v for k, v in d.items() if v is not None}
+    d = _droit("RI.EXP", "Redevance informatique", 2.0, "CIF", _SOURCE_RI_EXPORT_COG,
+               note="LF 2026, point 25 (article 44 nouveau) : « 2% à l'exportation des marchandises ».")
+    d = {k: v for k, v in d.items() if v is not None}
+    d.update(code="RI.EXP", famille="export")
+    d["note_si_transforme"] = (
+        "Produit transformé : la LFR 2021 (point 41) fixait la redevance informatique à 0,5 % « à l'exportation des "
+        "produits transformés » ; la LF 2026 (point 25) récrit les taux (« 2% à l'exportation des marchandises ») sans "
+        "reprendre ce taux, mais laisse « le reste sans changement » : 0,5 % ou 2 %, à établir."
+    )
+    return d
+
+
+#: Perceptions de sortie dues en plus du droit de sortie, position par position.
+REDEVANCE_EXPORT = {"COG": _redevance_informatique_export_cog}
+
+
+_GAB_SOURCE_BOIS = " (LF 2026, art. 5 ; degrés de transformation : Code forestier, loi n° 016/01, art. 223 à 225)."
+_GAB_MERCURIALE = (" Assiette : la valeur mercuriale fixée par arrêté conjoint des ministres de l'Économie et des "
+                   "Forêts (LF 2026, art. 6), qu'il faut saisir.")
+_NOTE_GAB_PREMIERE = ("Produit de première transformation du bois (sciage, déroulage, tranchage, séchage) : 15 % de "
+                      "la valeur mercuriale" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE)
+_NOTE_GAB_DEUXIEME = ("Produit de deuxième transformation du bois (panneaux, moulures, profilés rabotés, parquets) : "
+                      "10 % de la valeur mercuriale" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE)
+_NOTE_GAB_TROISIEME = ("Produit de troisième transformation du bois (produits finis et composites de la menuiserie "
+                       "et de l'ébénisterie) : 3,5 % de la valeur FOB" + _GAB_SOURCE_BOIS)
+# Chapitre 44, note 6 du tarif CEMAC : « bois » y comprend le bambou et les
+# autres matières ligneuses, que la LF ne taxe pas ; l'exportateur déclare la
+# matière (`calcul_export.SELON_MATIERE`), le taux tient à sa réponse.
+_EXPORT_GAB_PREMIERE = (None, None, _NOTE_GAB_PREMIERE, {"selon_matiere": True, "taux_si_oui": 15.0})
+_EXPORT_GAB_DEUXIEME = (None, None, _NOTE_GAB_DEUXIEME, {"selon_matiere": True, "taux_si_oui": 10.0})
+_EXPORT_GAB_TROISIEME = (None, None, _NOTE_GAB_TROISIEME, {"selon_matiere": True, "taux_si_oui": 3.5})
+# Sous-positions « De bois » (4410.1) et meubles « en bois » du chapitre 94,
+# qui range à part le bambou (9401.5, 9403.8) : matière établie.
+_EXPORT_GAB_DEUXIEME_BOIS = (10.0, None, _NOTE_GAB_DEUXIEME)
+_EXPORT_GAB_TROISIEME_BOIS = (3.5, None, _NOTE_GAB_TROISIEME)
+
 _EXPORT_EGY_ZONES_FRANCHES = (
     " Envois aux projets productifs des zones franches, dans les quantités agréées : non soumis."
 )
@@ -1353,6 +1466,117 @@ EXPORT_PAR_TEXTE = {
                                "établis.") for p in ("251511", "251512", "25231000")},
         },
     ),
+    # Clés : lignes nationales du tarif (TEC CEMAC, essences de la 4403.49) ;
+    # hors des produits nommés, le défaut attend la réponse de l'exportateur.
+    "COG": (
+        "Loi n° 37-2021 du 13 août 2021 portant loi de finances rectificative pour 2021, point 42, reconduit "
+        "jusqu'à la loi n° 42-2025 (loi de finances pour 2026) "
+        "(sources/COG_droit_de_sortie_LFR2021_LF2026.texte-extrait.txt)",
+        _EXPORT_COG_DEFAUT,
+        {
+            # Diamant brut (non trié, industriel ou non, brut ou simplement
+            # scié, clivé ou débruté), argent et or sous formes brutes, gomme
+            # arabique (exsudat d'acacia), huile de palme brute, maïs.
+            **{p: _EXPORT_COG_QUATRE for p in (
+                "71021000", "71022100", "71023100", "71069100", "71081200", "13012000", "15111000")},
+            "1005": (4.0, None, _EXPORT_COG_QUATRE[2] + _COG_PLAN_RESILIENCE),
+            # Latex, balata, gutta-percha, chicle : des exsudats d'arbres, mais
+            # le texte ne nomme pas le caoutchouc.
+            "4001": (None, None, "Caoutchouc naturel, balata, gutta-percha, guayule, chicle : 4 % pour la « résine et "
+                                 "autres exsudats extraits des arbres des forêts naturelles et de plantation » (LFR "
+                                 "2021, point 42, 2), que le latex et les gommes naturelles sont, mais le texte ne "
+                                 "nomme pas le caoutchouc ; sinon droit commun (2 %, ou exonéré si transformé au "
+                                 "Congo) : à établir."),
+            **{p: (None, None, "Platine et platinoïdes « sous formes brutes ou en poudre » : 4 % pour les métaux "
+                               "précieux bruts (LFR 2021, point 42, 2) ; la poudre n'est pas un métal brut et la "
+                               "ligne réunit les deux : à établir.")
+               for p in ("71101100", "71102100", "71103100", "71104100")},
+            "13019000": (None, None, "Autres gommes, résines, gommes-résines et oléorésines : 4 % pour la « résine et "
+                                     "autres exsudats extraits des arbres » (LFR 2021, point 42, 2) ; la ligne couvre "
+                                     "aussi des produits qui n'en sont pas : à établir."),
+            "23012000": (None, None, "Farines de poissons ou de crustacés, mollusques et autres invertébrés "
+                                     "aquatiques : 4 % pour la « farine de poissons » (LFR 2021, point 42, 2) ; les "
+                                     "autres farines de la ligne relèvent du droit commun : à établir."),
+            **{p: _EXPORT_COG_HYDROCARBURES for p in ("2709", "27111100", "27112100")},
+            # Grumes : 10 % pour l'Afrormosia et l'Ébène, 9 % pour les autres
+            # essences nommées ; l'Okoumé n'a pas de ligne à lui.
+            **{p: _EXPORT_COG_GRUMES_DIX for p in ("44034903", "44034915")},
+            **{p: _EXPORT_COG_GRUMES_NEUF for p in ("44034100", *_COG_ESSENCES_NEUF)},
+            "44034939": (None, None, "Autres bois tropicaux en grumes : 10 % de la valeur FOT pour l'Okoumé, 9 % "
+                                     "pour les autres essences (LFR 2021, point 42, 3) ; la ligne ne les distingue "
+                                     "pas : à établir." + _COG_FOT),
+            **{p: (None, None, "Bois en grumes autres que tropicaux (traités, de conifères, d'autres feuillus, de "
+                               "trituration) : 9 % de la valeur FOT s'ils sont issus des forêts naturelles ; les "
+                               "produits des forêts de plantation suivent un autre barème (LFR 2021, point 42, 3) : "
+                               "à établir.") for p in ("44031", "44032", "44039")},
+            "4407": (None, None, "Bois sciés : 4 % s'ils sont humides, 1,5 % s'ils sont séchés ; bois de plantation "
+                                 "1 % ou 0,5 % (LFR 2021, point 42, 3) ; la position ne le dit pas : à établir."),
+            "4408": (None, None, "Feuilles de placage : 0,5 % tranchées, 1 % déroulées (LFR 2021, point 42, 3) ; la "
+                                 "position ne le dit pas : à établir."),
+            # Panneaux de particules (4410), de fibres (4411) et contreplaqués :
+            # « contreplaqués, panneaux, lamellés collés et autres ».
+            **{p: (0.5, None, "Contreplaqués, panneaux, lamellés collés et autres : 0,5 % de la valeur FOT (LFR 2021, "
+                              "point 42, 3), pour les produits des forêts naturelles ; le barème des bois de "
+                              "plantation ne nomme pas les panneaux.") for p in ("4410", "4411", "4412")},
+            **{p: (0.0, None, "Parquets, moulures, portes et fenêtres, éléments de meubles et autres produits finis "
+                              "du bois : 0 % (LFR 2021, point 42, 3).")
+               for p in ("4409", "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421")},
+            "44189000": (None, None, "Autres ouvrages de menuiserie et pièces de charpente : 0 % pour les produits "
+                                     "finis, mais 0,5 % pour les lamellés collés que la ligne comprend (LFR 2021, "
+                                     "point 42, 3) : à établir."),
+            # Le reste du bois relève du barème de la taxe à l'exportation
+            # (« ceux passibles de la taxe à l'exportation » échappent au
+            # droit commun) sans y être nommé.
+            "4402": (None, None, "Charbon de bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient lieu de "
+                                 "droit de sortie, mais son barème ne le nomme pas : à établir." + _COG_PLAN_RESILIENCE
+                     + " L'arrêté n° 26621 dit « Charbon » sans préciser s'il s'agit du charbon de bois."),
+            "44": (None, None, "Bois et ouvrages en bois : la taxe à l'exportation (LFR 2021, point 42, 3) tient "
+                               "lieu de droit de sortie, mais son barème ne nomme pas ce produit (bois de chauffage, "
+                               "plaquettes, traverses…) : à établir."),
+        },
+    ),
+    # Clés : lignes nationales du tarif (TEC CEMAC) ; hors des produits
+    # nommés, aucun droit de sortie (OMC, WT/TPR/S/445, annexe Gabon, § 3.53).
+    "GAB": (
+        "Loi n° 041/2025 du 29 décembre 2025 (loi de finances 2026), art. 5 à 7 ; Code forestier (loi n° 016/01), "
+        "art. 222 à 225 (sources/GAB_droit_de_sortie_LF2026.texte-extrait.txt)",
+        None,
+        {
+            # Feuilles de placage (déroulées ou tranchées).
+            "4408": _EXPORT_GAB_PREMIERE,
+            # Bois sciés « même rabotés » : le rabotage mène aux « profilés
+            # rabotés » de la deuxième transformation.
+            "4407": (None, None, "Bois sciés : 15 % de la valeur mercuriale s'ils sont seulement sciés ou séchés "
+                                 "(première transformation, Code forestier, art. 223), mais la position comprend les "
+                                 "bois rabotés, et les « profilés rabotés » relèvent de la deuxième transformation "
+                                 "(10 %, art. 224) : à établir" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE),
+            # Moulures et profilés, panneaux de particules, de fibres,
+            # contreplaqués, panneaux assemblés pour parquets.
+            # Panneaux (y compris ceux « d'autres matières ligneuses » des 44.10
+            # et 44.11), moulures (4409.21 : en bambou), contreplaqués,
+            # parquets : selon la matière déclarée ; 4410.1 : « De bois ».
+            **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "4410", "4411", "4412", "44187")},
+            "44101": _EXPORT_GAB_DEUXIEME_BOIS,
+            # Menuiserie et ébénisterie : ouvrages finis, meubles et sièges en
+            # bois.
+            **{p: _EXPORT_GAB_TROISIEME for p in (
+                "4414", "4415", "4416", "4417", "4418", "4419", "4420", "4421")},
+            **{p: _EXPORT_GAB_TROISIEME_BOIS for p in ("94016", "94033", "94034", "94035", "94036")},
+            # Sièges et parties de meubles dont la position ne dit pas la
+            # matière : selon la matière déclarée.
+            **{p: _EXPORT_GAB_TROISIEME for p in ("94013", "94014", "94018", "94019", "94039")},
+            "4403": (None, None, "Bois bruts (grumes) : exportation interdite depuis 2010 (OMC, WT/TPR/S/445, annexe "
+                                 "Gabon, § 3.55) ; la LF 2026 (art. 5) ne taxe que les produits transformés."),
+            "44": (None, None, "Bois et ouvrages en bois : la LF 2026 (art. 5) taxe les produits transformés selon "
+                               "leur degré de transformation (Code forestier, art. 223 à 225), qui ne classent pas ce "
+                               "produit (bois de chauffage, plaquettes, charbon de bois, traverses, bois densifié…) : "
+                               "à établir."),
+            "7108": (None, None, "Or : la LF 2026 (art. 7) soumet « les lingots d'or » à un droit de sortie de 1 % de "
+                                 "leur valeur en douane ; la position ne distingue pas les lingots des autres formes, "
+                                 "et le droit des autres formes (3 % selon l'OMC en 2023, de 0 à 3 % selon les "
+                                 "conventions minières) n'est pas établi : à établir."),
+        },
+    ),
     # Clés : lignes nationales du tarif égyptien (libellés arabes de la douane) ;
     # hors relevé, pas de droit.
     "EGY": (
@@ -1433,26 +1657,34 @@ EXPORT_PAR_TEXTE = {
     # Clés : préfixes du code national (SH 2022) ; le tarif de 2012 suit une
     # nomenclature plus ancienne. Hors tarif, pas de droit.
     "COD": (
-        "Ordonnance-loi n° 012/2012 du 21 septembre 2012 instituant un nouveau tarif des droits et taxes à "
-        "l'exportation (JO RDC, 18 octobre 2012, n° spécial) ; Code minier (loi n° 007/2002 modifiée par la loi n° "
-        "18/001), art. 234 (sources/COD_tarif_exportation_OL_012-2012.texte-extrait.txt)",
+        "Tarif des droits et taxes à l'exportation de l'ordonnance-loi n° 012/2012 du 21 septembre 2012, tel que "
+        "modifié : liste consolidée des produits soumis aux droits de sortie (CLRDC/Larcier, 2019, « Autres produits "
+        "miniers marchands »), recoupée avec l'annexe XVI des projets de lois de finances 2025 et 2026 ; loi de "
+        "finances n° 24/011 (or et diamants) ; Code minier (loi n° 007/2002 modifiée par la loi n° 18/001), art. 234 "
+        "(sources/COD_tarif_exportation_OL_012-2012.texte-extrait.txt, "
+        "sources/COD_tarif_exportation_consolide.texte-extrait.txt)",
         None,
         {
-            "09011100": _export_cod(1.0, "Café vert non torréfié et non décaféiné (Robusta, Arabica), 1 %.",
-                                    minier=False),
+            "09011": (None, None, "Café vert : 1 % à l'ordonnance-loi n° 012/2012, « exempt » à l'annexe XVI des projets "
+                                  "de lois de finances 2025 et 2026, dont le texte adopté n'a pas été lu : à établir."),
             "22019000": (None, None, "Eau douce : 5 % ; autres eaux de cette ligne : exemptes. La ligne couvre les "
                                      "deux : à établir."),
             **{p: _COD_MINERAI for p in (
-                "2602", "2604", "2607", "2608", "2611", "2612", "2615", "2616", "2617", "2619", "2620", "2621")},
+                "2602", "2604", "2607", "2608", "2609", "2611", "2612", "2614", "2615", "2616", "2617", "2619",
+                "2620", "2621")},
             **{p: _COD_CONCENTRE for p in ("2603", "2605")},
-            # La cassitérite (minerai d'étain) figure au tarif en 26.17.
-            "2609": _export_cod(10.0, "Cassitérite : 10 %, inscrite au tarif sous la position 26.17."),
-            "2614": (None, None, "Minerais de titane : inscrits au tarif (2614.00.00) sans taux : à établir.", _COD_MINIER),
             "2709": _export_cod(5.0, "Huiles brutes de pétrole, 5 %. Le régime propre aux hydrocarbures n'a pas été "
                                      "vérifié.", minier=False),
-            "2716": (None, None, "Énergie électrique : 5 % au tarif ; le décret n° 18/054 du 27 décembre 2018 "
-                                 "(art. 2) l'a ramené à 1 % pour cinq ans, durée échue fin 2023 ; sa prorogation n'a "
-                                 "pas été trouvée : à établir."),
+            "2716": _export_cod(5.0, "Énergie électrique, 5 % (les 1 000 kWh) ; le décret n° 18/054 du 27 décembre 2018 "
+                                     "l'avait ramené à 1 % pour cinq ans, durée échue fin 2023.", minier=False),
+            "2817": (None, None, "Oxyde et peroxyde de zinc : 5 % à l'annexe XVI des projets de lois de finances 2025 "
+                                 "et 2026, absents de la liste consolidée de 2019 et du tarif de 2012 ; texte adopté non "
+                                 "lu : à établir.", _COD_MINIER),
+            # Hydroxydes de cobalt, sulfures de dénickelage, carbonates de
+            # cobalt : produits de la métallurgie extractive, ajoutés au tarif
+            # après 2012. Toute la position est taxée, sodium compris.
+            **{p: _export_cod(10.0, "Liste consolidée (positions 28.22, 28.30 et 28.36, toutes sous-positions) : 10 %.")
+               for p in ("2822", "2830", "2836")},
             # Bois bruts : 4403.49 et 4403.99 du tarif, toutes essences, 10 %.
             # Bouleau, peuplier et eucalyptus, détachés de la 4403.99 en 2017,
             # y restent ; le hêtre avait sa propre position, non taxée. Le teck,
@@ -1460,45 +1692,51 @@ EXPORT_PAR_TEXTE = {
             **{p: _export_cod(10.0, "Bois bruts (positions 4403.49 et 4403.99 du tarif), toutes essences, 10 % (mètre "
                                     "cube).", minier=False)
                for p in ("44034200", "44034900", "44039500", "44039600", "44039700", "44039800", "44039900")},
-            **{p: (None, None, "Bois tropicaux sciés : 5 %, mais les sciages avivés d'une épaisseur inférieure à "
-                               "50 mm sont exempts ; la ligne couvre les deux : à établir.")
+            **{p: (None, None, "Bois tropicaux sciés : 5 % ; exempts jusqu'à 150 mm d'épaisseur selon l'annexe XVI "
+                               "des projets de lois de finances 2025 et 2026, jusqu'à 50 mm selon le tarif de 2012 ; la "
+                               "ligne ne dit pas l'épaisseur : à établir.")
                for p in ("440721", "440722", "440723", "440725", "440726", "440727", "440728", "440729")},
-            **{p: (None, None, "Diamants bruts : 1,5 % d'exploitation artisanale, 3 % de production industrielle ; "
-                               "titulaire minier exonéré (Code minier, art. 234) : à établir.", _COD_MINIER)
+            **{p: (None, None, "Diamants bruts : 0,5 % d'exploitation artisanale, 3 % de production industrielle (loi "
+                               "de finances n° 24/011 pour 2025) ; titulaire minier exonéré (Code minier, art. 234) : "
+                               "à établir.", _COD_MINIER)
                for p in ("710221", "710231")},
-            "71081200": (None, None, "Or sous forme brute : 1,5 % d'exploitation artisanale, 3 % de production "
-                                     "industrielle ; titulaire minier exonéré (Code minier, art. 234) : à établir.",
-                         _COD_MINIER),
-            "71069100": _export_cod(10.0, "Argent sous forme brute, 10 %."),
+            **{p: (None, None, "Or en poudre ou sous forme brute : 0,5 % d'exploitation artisanale, 3 % de production "
+                               "industrielle (loi de finances n° 24/011 pour 2025) ; titulaire minier exonéré (Code "
+                               "minier, art. 234) : à établir.", _COD_MINIER)
+               for p in ("71081100", "71081200")},
+            **{p: _export_cod(10.0, "Argent en poudre ou sous forme brute, 10 %.") for p in ("71061000", "71069100")},
             **{p: _export_cod(10.0, "Platine, palladium, rhodium, iridium, osmium, ruthénium sous forme brute ou en "
                                     "poudre, 10 %.") for p in ("71101100", "71102100", "71103100", "71104100")},
             **{p: _export_cod(5.0, "Déchets et débris d'aciers alliés, 5 %.", minier=False)
                for p in ("72042100", "72042900")},
-            # Cuivre affiné : le tarif range cathodes et barres sous 7403.19 ;
-            # blister et cuivre noir, qui relèvent de la 74.02, y figurent aussi.
-            "74031": _export_cod(10.0, "Cuivre affiné (cathodes, barres, lingots), 10 %."),
-            "74020000": _export_cod(10.0, "Cuivre blister et cuivre noir, 10 %, inscrits au tarif sous la position "
-                                          "74.03."),
-            "74040000": (None, None, "Déchets et débris de cuivre : inscrits au tarif (7404.00.00) sans taux : à "
-                                     "établir.", _COD_MINIER),
-            **{p: _export_cod(5.0, "Nickel, plomb affiné ou étain sous forme brute, 5 %.")
-               for p in ("7502", "78011000", "8001")},
-            **{p: _export_cod(10.0, "Zinc sous forme brute, poussières et poudres de zinc, 10 %.") for p in ("7901", "7903")},
-            **{p: _export_cod(10.0, "Mattes de cobalt et cobalt (cathodes, granulés, alliages blancs), 10 %.")
-               for p in ("810520", "810530", "810590")},
-            "8106": _export_cod(5.0, "Bismuth, 5 %, inscrit au tarif sous le numéro 8105.00.00."),
+            "7224": _export_cod(10.0, "Autres aciers alliés en lingots ou autres formes primaires ; demi-produits, 10 %."),
+            "7401": _export_cod(5.0, "Mattes de cuivre, cuivre de cément, 5 %."),
+            "74020000": (None, None, "Cuivre non affiné, blister et cuivre noir : 10 % au tarif de 2012 (sous la position "
+                                     "74.03) ; 5 % à l'annexe XVI des projets de lois de finances 2025 et 2026 ; absent "
+                                     "de la liste consolidée de 2019 : à établir.", _COD_MINIER),
+            "7403": _export_cod(10.0, "Cuivre affiné (cathodes, barres, billettes, lingots) et alliages de cuivre sous "
+                                      "forme brute, 10 %."),
+            "7404": _export_cod(5.0, "Déchets et débris de cuivre (nodules, scraps, déchets), 5 %."),
+            **{p: _export_cod(10.0, "Alliages mères, poudres et paillettes de cuivre, 10 %.") for p in ("7405", "7406")},
+            **{p: _export_cod(5.0, "Nickel, plomb, zinc sous forme brute ; déchets et débris de plomb, 5 %.")
+               for p in ("7502", "7801", "7802", "7901")},
+            "78042000": _export_cod(10.0, "Poudres et paillettes de plomb, 10 %."),
+            "7903": _export_cod(10.0, "Poussières, poudres et paillettes de zinc, 10 %."),
+            **{p: _export_cod(10.0, "Étain sous forme brute ; déchets et débris d'étain, 10 %.") for p in ("8001", "8002")},
+            "8105": _export_cod(10.0, "Mattes de cobalt et produits intermédiaires, cobalt et ouvrages en cobalt, déchets "
+                                      "et débris, 10 %."),
+            "8106": _export_cod(5.0, "Bismuth et ouvrages en bismuth, y compris les déchets et débris, 5 %."),
             # Le cadmium (81.07 au tarif) relève en SH 2022 des 8112.61 et 69.
             **{p: _export_cod(10.0, "Cadmium, 10 % (position 81.07 de la nomenclature du tarif).")
                for p in ("81126100", "81126900")},
-            "8108": (None, None, "Titane : inscrit au tarif (81.08) sans taux : à établir.", _COD_MINIER),
-            "8109": _export_cod(5.0, "Zirconium, 5 %."),
-            **{p: _export_cod(5.0, "Béryllium, chrome, thallium et autres métaux de la 81.12, 5 % ; hafnium et "
-                                   "rhénium relevaient des « autres » de la nomenclature du tarif.")
-               for p in ("811212", "811213", "811219", "811229", "811231", "811239", "811241", "811249",
+            **{p: _export_cod(5.0, "Titane et zirconium, y compris les déchets et débris, 5 %.") for p in ("8108", "8109")},
+            **{p: _export_cod(5.0, "Béryllium, chrome, thallium et autres métaux de la 81.12 sous forme brute, déchets "
+                                   "et débris, poudres, 5 % ; hafnium et rhénium relevaient des « autres » de la "
+                                   "nomenclature du tarif.")
+               for p in ("811212", "811213", "811221", "811222", "811231", "811239", "811241", "811249",
                          "811251", "811252", "811259", "811292", "811299")},
-            **{p: (None, None, "Chrome sous forme brute ou déchets : inscrits au tarif sans taux : à établir.",
-                           _COD_MINIER)
-               for p in ("811221", "811222")},
+            **{p: _export_cod(10.0, "Ouvrages en béryllium ou en chrome (« autres »), 10 %.")
+               for p in ("811219", "811229")},
         },
     ),
     # Export levy : « the ad valorem rate shall be based on the custom value »
@@ -1653,6 +1891,8 @@ def droits_export_par_texte(iso, positions):
         elif specifique:
             d.update(specifique=specifique, assiette="xQTE", assiette_origine="source")
         sortie[code] = [{k: v for k, v in d.items() if v is not None}]
+        if iso in REDEVANCE_EXPORT:
+            sortie[code].append(REDEVANCE_EXPORT[iso](code))
     return sortie
 
 
@@ -1908,6 +2148,15 @@ def sources_disponibles():
 #: Le PNS du Togo ne frappe que les marchandises importées hors CEDEAO.
 EXONERATION_ORIGINE = {
     "PCS": "UEMOA", "PCC": "CEDEAO", "CEDEAO": "CEDEAO", "PUA": "UA", "PC-AES": "AES_UEMOA", "PNS": "CEDEAO",
+    "CIA": "UA", "TUA": "UA", "CCI": "CEEAC",
+    # OHADA : dû sur les « produits originaires des pays tiers » ; exonérés aussi
+    # les « produits reconnus originaires des communautés économiques régionales
+    # et sous régionales dont chaque Etat Partie est membre » (règlement
+    # n° 002/2003/CM, art. 3 et 6) : la CEEAC, qui englobe la CEMAC.
+    "OHADA": "OHADA_CEEAC",
+    # TCI : « s'applique aux importations des Etats membres de produits originaires
+    # des pays tiers » (acte additionnel n° 03/00-CEMAC-046-CM-05, art. 2).
+    "TCI": "CEMAC",
 }
 #: Pays où ces prélèvements sont perçus (le PCS hors UEMOA serait un autre droit).
 BLOCS_DESTINATION = {
@@ -1916,11 +2165,18 @@ BLOCS_DESTINATION = {
     # PC-AES : perçu par les trois États de l'AES ; ni les originaires de l'AES
     # ni ceux de l'UEMOA, union douanière avec eux, n'y sont soumis.
     "AES_UEMOA": {"BFA", "MLI", "NER"},
+    "CEMAC": {"CMR", "CAF", "COG", "GAB", "GNQ", "TCD"},
+    # Le Rwanda s'est retiré de la CEEAC le 7 juin 2025.
+    "CEEAC": {"AGO", "BDI", "CMR", "CAF", "COG", "COD", "GAB", "GNQ", "STP", "TCD"},
+    # Prélèvement OHADA : marqué ici au Gabon, en Centrafrique, au Tchad, au
+    # Cameroun et en Guinée équatoriale ; _prelevements_congo marque la ligne du
+    # Congo (arrêté n° 5808).
+    "OHADA_CEEAC": {"GAB", "CAF", "TCD", "CMR", "GNQ"},
 }
 
 ACCISES_PAYS = {
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "droit_accises_cgi2025.json"),
-    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_cgi2025.json"),
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "droit_accises_lf2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "droit_accises_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "droit_accises_cgi2023.json"),
     "GNQ": os.path.join(REPO, "backend", "data", "zlecaf_gnq", "droit_accises_lp2020.json"),
@@ -2065,6 +2321,7 @@ def _coquilles_tec_cemac(positions):
 #: ou réduite à 5 % (variante 2). Redevance informatique et taxes communautaires
 #: inchangées. Fiche COG_mesures_nationales_2026-10-27.
 #: (produits, TVA retenue, filtre sur le code à 8 chiffres)
+FIN_CIRCULAIRE_0138_COG = "2026-12-31"
 CIRCULAIRE_0138_COG = (
     ("Viandes et abats comestibles (02.01 à 02.07)", 0.0,
      lambda c: "0201" <= c[:4] <= "0207"),
@@ -2098,10 +2355,14 @@ def _mesures_nationales_congo(positions):
                 f"{produits}"
             )
             for d in droits:
+                if d.get("code") not in ("DD", "TVA"):
+                    continue
+                # Au 1er janvier 2027, la ligne reprend le taux que la circulaire suspend.
+                d.update(jusqu_au=FIN_CIRCULAIRE_0138_COG, taux_apres=d.get("taux"), note_apres=d.get("note"))
                 if d.get("code") == "DD":
                     d["taux"] = 5.0
                     d["note"] = source + ", taux réduit de 5 % du droit de douane."
-                elif d.get("code") == "TVA":
+                else:
                     d["taux"] = tva
                     d["note"] = source + (
                         ", exonération de TVA." if tva == 0 else ", TVA au taux réduit de 5 %."
@@ -2607,6 +2868,488 @@ def _redevance_informatique_cmr(positions):
                 "« 1% de la valeur imposable des marchandises. Ce prélèvement est plafonné à "
                 "15 000 F CFA par déclaration à l'exportation » ; pas de plafond à l'importation."
             )
+
+
+#: Gabon : prélèvements perçus au cordon douanier que le crawl ne porte pas
+#: (fiche GAB_prelevements_importation_2026-10-29.json).
+SOURCE_PRELEVEMENTS_GAB = "DGDDI du Gabon, « Présentation de la fiscalité douanière » (2021)"
+SOURCE_CSS_GAB = "Loi n° 026/2016 du 6 janvier 2017 (loi de finances 2017), art. 13 à 25"
+#: CSS : opérations exonérées (art. 17) que la position suffit à désigner.
+CSS_EXONEREE_GAB = (
+    (("30",), "art. 17, 6) : « les produits pharmaceutiques »"),
+    (("4902",), "art. 17, 9) : « l'importation et la vente des journaux et périodiques »"),
+    (("854140", "850231"), "art. 17, 16) : « les matériels et équipements d'exploitation des énergies solaire et éolienne »"),
+)
+#: CSS : exonérations subordonnées à l'usage, que la position ne dit pas.
+CSS_SELON_USAGE_GAB = (
+    ("3101", "3102", "3103", "3104", "3105", "3808"),
+    "Exonérés de la CSS s'ils sont utilisés par les producteurs agricoles, de l'élevage et de la pêche (art. 17, 6) : "
+    "« les pesticides, les engrais et leurs intrants […] utilisés par les producteurs ») — usage non déterminable "
+    "depuis la position.",
+)
+
+
+def _prelevements_gabon(positions, compteurs):
+    """Gabon : contribution communautaire d'intégration de la CEEAC (0,4 %) et
+    prélèvement OHADA (0,05 %) sur la valeur des marchandises, avec la TCI et la
+    contribution à l'Union africaine ; contribution spéciale de solidarité (1 %)
+    sur l'assiette de la TVA (loi de finances 2017, art. 24 et 25)."""
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        apres = next((i for i, d in enumerate(droits) if d.get("code") == "CIA"), None)
+        rang = apres + 1 if apres is not None else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        communautaires = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GAB,
+             "note": "« contribution communautaire d'intégration de la CEEAC au taux de 0.4% de la valeur des "
+                     "marchandises importées des pays tiers » ; retenue au cordon douanier pour le compte de la "
+                     "CEEAC (loi n° 025/2022, art. 34)."},
+            {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+             "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GAB,
+             "note": "« prélèvement OHADA au taux de 0.05% » ; règlement n° 002/2003/CM du 18/10/2003, sur la valeur "
+                     "en douane des produits originaires des pays tiers à l'OHADA ; retenu au cordon douanier "
+                     "(loi n° 025/2022, art. 34)."},
+        ]
+        droits[rang:rang] = communautaires
+        for ligne in communautaires:
+            _compter_ligne(ligne, compteurs, 1)
+
+        css = {"code": "CSS", "code_source": "CSS", "libelle": "Contribution Spéciale de Solidarité",
+               "famille": famille("CSS"), "taux": 1.0, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+               "source": SOURCE_CSS_GAB,
+               "note": "Art. 16, 3) : « les opérations d'importation de marchandises » ; art. 24 : base « déterminée "
+                       "comme en matière de TVA » (CGI art. 216 : valeur + droit de douane + droit d'accises) ; "
+                       "art. 25 : 1 %. Due par les redevables dont le chiffre d'affaires annuel atteint 30 000 000 "
+                       "FCFA (art. 14)."}
+        exoneree = next((ref for prefixes, ref in CSS_EXONEREE_GAB if code.startswith(prefixes)), None)
+        if exoneree:
+            css.update(taux=0.0, note=f"Exonérée de la CSS, loi de finances 2017, {exoneree}.")
+        elif code.startswith(CSS_SELON_USAGE_GAB[0]):
+            css.update(taux=None, note=CSS_SELON_USAGE_GAB[1])
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, css)
+        _compter_ligne(css, compteurs, 1)
+
+
+#: Taux de la TVA par position : Gabon (CGI art. 210 et 221, fiche
+#: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
+#: COG_tva_2026-10-30.json) ; Centrafrique (CGI art. 249 et 257, fiche
+#: CAF_tva_2026-10-30.json) ; Cameroun (CGI art. 128 et annexe I du titre II,
+#: fiche CMR_tva_2026-10-31.json) ; Tchad (CGI art. 230, 15°, réécrit par la loi
+#: de finances 2026, fiche TCD_tva_2026-10-31.json). Ailleurs, le taux normal du pays.
+TVA_PAR_POSITION = {
+    "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
+    "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
+    "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "tva_lf2024_lf2025.json"),
+    "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "tva_cgi2026.json"),
+    "TCD": os.path.join(REPO, "backend", "data", "zlecaf_tcd", "tva_lf2026.json"),
+}
+
+
+def _tva_par_position(iso, positions, compteurs):
+    """Exonérations et taux réduits de la TVA, position par position, d'après la
+    table du pays (TVA_PAR_POSITION)."""
+    with open(TVA_PAR_POSITION[iso], encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        regle = next(
+            (r for r in table["regles"]
+             if code.startswith(tuple(r["prefixes"])) and not code.startswith(tuple(r.get("exclusions", ())))),
+            None,
+        )
+        if not regle:
+            continue
+        for d in position.get("droits") or []:
+            if d.get("famille") != "tva":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            d["taux"] = regle["taux"]
+            d["source"] = table["source"]
+            d["note"] = f"{regle.get('motif') or regle['reference']} {d.get('note') or ''}".strip()
+            _compter_ligne(d, compteurs, 1)
+
+
+SOURCE_TVA_GENERALE_CMR = "Code général des impôts du Cameroun, édition 2026 (DGI), art. 129 (1), 142 (1) a) et C 83 (1)"
+
+
+def _tva_cameroun(positions, compteurs):
+    """Cameroun : le tarif d'où vient le crawl marque la TVA « EXO » sur 141
+    positions, sans ligne de TVA au socle ; le CGI n'exonère que ce que son
+    art. 128 désigne. Chaque position reçoit sa ligne au taux général
+    (19,25 %), puis la table du CGI (TVA_PAR_POSITION) fixe les exonérées."""
+    ajoutees = []
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        if any(d.get("famille") == "tva" for d in droits):
+            continue
+        ligne = {"code": "TVA", "code_source": "TVA", "libelle": "Taxe sur la Valeur Ajoutée (incl. 10% CAC)",
+                 "famille": "tva", "taux": 19.25, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+                 "source": SOURCE_TVA_GENERALE_CMR,
+                 "note": "CGI art. 138 (1) : « La base imposable, en ce qui concerne les importations, est obtenue en "
+                         "ajoutant à la valeur imposable […] le montant du droit de douane et du Droit d'accises. »"}
+        droits.append(ligne)
+        _compter_ligne(ligne, compteurs, 1)
+        ajoutees.append(ligne)
+    _tva_par_position("CMR", positions, compteurs)
+    for ligne in ajoutees:
+        if ligne["source"] == SOURCE_TVA_GENERALE_CMR:
+            ligne["note"] = (
+                "Taux général : 17,5 % et centimes additionnels communaux de 10 % du principal (art. 142 (1) a) et "
+                "C 83 (1)). Le tarif d'où vient la position marque la TVA « EXO », mais ni l'art. 128 du CGI 2026 ni "
+                "son annexe I ne l'exonèrent (art. 129 (1)). " + ligne["note"]
+            )
+
+
+SOURCE_TVA_GENERALE_TCD = (
+    "CGI art. 238 (loi de finances 2026, art. 32) ; loi de finances 2024, art. 14, réécrit par la loi de finances "
+    "2026, art. 73"
+)
+
+
+def _tva_tchad(positions, compteurs):
+    """Tchad : taux général de 17,5 % (CGI art. 238, I, 1°) et centimes additionnels
+    de 10 % du principal (loi de finances 2024, art. 14), soit 19,25 %, là où le
+    crawl porte les 18 % du CGI 2016 ; puis les exonérations de l'art. 230, 15°
+    (TVA_PAR_POSITION)."""
+    lignes = [d for p in positions.values() for d in p.get("droits") or [] if d.get("famille") == "tva"]
+    for d in lignes:
+        _compter_ligne(d, compteurs, -1)
+        d["taux"] = 19.25
+        d["source"] = SOURCE_TVA_GENERALE_TCD
+        _compter_ligne(d, compteurs, 1)
+    _tva_par_position("TCD", positions, compteurs)
+    for d in lignes:
+        if d["source"] == SOURCE_TVA_GENERALE_TCD:
+            d["note"] = (
+                "Taux général : 17,5 % (art. 238, I, 1° : « applicable à toutes les opérations taxables à "
+                "l’exclusion des taux réduits ») et centimes additionnels de « 10 % du principal » de la TVA. "
+                + (d.get("note") or "")
+            ).strip()
+
+
+#: Guinée équatoriale : biens de première nécessité de la loi de budget 2026, art. 13
+#: (fiche GNQ_premiere_necessite_2026-10-31.json).
+PREMIERE_NECESSITE_GNQ = os.path.join(REPO, "backend", "data", "zlecaf_gnq", "premiere_necessite_lpge2026.json")
+
+
+def _premiere_necessite_gnq(positions, compteurs):
+    """Guinée équatoriale : droit de douane de 5 % et TVA de 0 % ou 5 % sur les biens
+    de première nécessité (loi n° 9/2025, art. 13). Le crawl, repris du tarif
+    camerounais, laisse sans ligne de TVA les 141 positions que ce tarif marque
+    « EXO » : elles en reçoivent une, sans taux hors de l'art. 13, la loi générale
+    fiscale n° 1/2024 qui fixe les exonérations n'ayant pas été lue."""
+    with open(PREMIERE_NECESSITE_GNQ, encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        tva = next((d for d in droits if d.get("famille") == "tva"), None)
+        ajoutee = tva is None
+        if ajoutee:
+            tva = {"code": "TVA", "code_source": "TVA", "libelle": "Impuesto sobre el Valor Añadido (IVA)",
+                   "famille": "tva", "taux": None, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+                   "source": "Ley n° 4/2004, art. 288 (assiette) ; loi générale fiscale n° 1/2024 non lue",
+                   "note": "Le tarif d'où vient le crawl, celui du Cameroun, marque cette position « EXO » ; en "
+                           "Guinée équatoriale, les exonérations sont celles de la loi générale fiscale n° 1/2024, "
+                           "dont le texte n'a pas été trouvé : taux non servi."}
+            droits.append(tva)
+            _compter_ligne(tva, compteurs, 1)
+        regle = next(
+            (r for r in table["regles"]
+             if code.startswith(tuple(r["prefixes"])) and not code.startswith(tuple(r.get("exclusions", ())))),
+            None,
+        )
+        if not regle:
+            continue
+        texte = regle.get("motif") or regle["reference"]
+        _compter_ligne(tva, compteurs, -1)
+        tva.update(taux=regle["tva"], source=table["source"])
+        tva["note"] = texte if ajoutee else f"{texte} {tva.get('note') or ''}".strip()
+        _compter_ligne(tva, compteurs, 1)
+        for dd in (d for d in droits if d.get("code") == "DD"):
+            if regle["dd"] is not None and dd.get("taux") is not None and dd["taux"] <= regle["dd"]:
+                continue
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=regle["dd"], source=table["source"], note=texte)
+            _compter_ligne(dd, compteurs, 1)
+
+
+#: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
+SOURCE_RI_COG = "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25"
+SOURCE_CCI_COG = "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40"
+SOURCE_OHADA_COG = "Arrêté n° 5808 du 20 septembre 2005 portant application du prélèvement OHADA, art. 2 à 5"
+#: Prélèvement OHADA : produits exonérés que la position suffit à désigner, « les produits
+#: pharmaceutiques ainsi que les matériels et équipements à usage médical » (règlement
+#: n° 002/2003/CM, art. 6 ; au Congo, arrêté n° 5808, art. 2).
+#: Le mobilier médical (fauteuils de dentistes, 9402.90) en est aussi : seuls les fauteuils de
+#: coiffeur (9402.10.20) restent dans la position 94.02 hors de l'usage médical.
+OHADA_EXONERE = ("30", "9018", "9021", "902212", "902213", "902214", "902221", "94021010", "940290")
+SOURCE_OHADA = "Règlement n° 002/2003/CM du 18 octobre 2003 relatif au mécanisme de financement autonome de l'OHADA"
+
+
+def _prelevements_congo(positions, compteurs):
+    """Congo : contribution communautaire d'intégration de la CEEAC (0,4 %) et
+    redevance informatique (2 %) sur la valeur en douane ; prélèvement OHADA
+    exonéré pour les originaires de la CEEAC et pour les produits pharmaceutiques
+    et le matériel médical (arrêté n° 5808)."""
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        ohada = next((d for d in droits if d.get("code") == "OHADA"), None)
+        if ohada:
+            _compter_ligne(ohada, compteurs, -1)
+            ohada.update(source=SOURCE_OHADA_COG, assiette="CIF", assiette_origine="regle_de_pays",
+                         exoneration_origine="OHADA_CEEAC")
+            ohada["note"] = (
+                "Art. 3 à 5 : 0,05 % de la « valeur CAF en douane » des « produits originaires des pays tiers à "
+                "l'OHADA » ; art. 2 : exonérés « les produits reconnus originaires des communautés économiques "
+                "régionales et sous-régionales dont la République du Congo est membre »."
+            )
+            if code.startswith(OHADA_EXONERE):
+                ohada["taux"] = 0.0
+                ohada["note"] = (
+                    "Exonéré, arrêté n° 5808, art. 2 : « les produits pharmaceutiques et les matériels et "
+                    "équipements à usage médical destinés à la médecine humaine ou vétérinaire »."
+                )
+            _compter_ligne(ohada, compteurs, 1)
+        apres = [i for i, d in enumerate(droits) if d.get("code") in ("TCI", "TS", "OHADA")]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_CCI_COG,
+             "note": "« la contribution communautaire d'intégration (CCI), prélevée au taux de 0,4% sur les "
+                     "importations hors-CEEAC […] (actuellement collectée par le Congo, le Gabon, la République "
+                     "centrafricaine et le Tchad) » ; elle « ne s'applique pas aux échanges intra-CEEAC » (annexe "
+                     "Congo, § 3.48)."},
+            {"code": "RI", "code_source": "RI", "libelle": "Redevance informatique",
+             "famille": famille("RI"), "taux": 2.0, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_RI_COG,
+             "note": "Art. 44 nouveau : « 2% à l'importation des marchandises déclarées au régime de la mise à la "
+                     "consommation » ; assise sur la valeur c.a.f. (OMC, WT/TPR/S/445, annexe Congo, § 3.17). "
+                     "Due aussi sur les biens de la circulaire n° 0138 (« à l'exception de la redevance "
+                     "informatique et des taxes communautaires »)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Cameroun : prélèvement OHADA (fiche CMR_prelevement_ohada_2026-10-30.json).
+SOURCE_OHADA_CMR = (
+    "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), annexe Cameroun, § 3.26, "
+    "et rapport commun, § 3.40"
+)
+
+
+def _prelevement_ohada_cameroun(positions, compteurs):
+    """Cameroun : prélèvement OHADA (0,05 %) sur la valeur c.a.f., après la TCI."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        ligne = {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+                 "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                 "source": SOURCE_OHADA_CMR,
+                 "note": "« D'autres droits et taxes de porte, harmonisés au niveau de la CEMAC, sont appliqués à la "
+                         "valeur c.a.f. en douane des marchandises importées. Il s'agit de […] prélèvement au bénéfice "
+                         "de l'OHADA de 0,05% » (annexe Cameroun, § 3.26) ; « sur les importations des pays non "
+                         "membres » (rapport commun, § 3.40)."}
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+
+
+#: Guinée équatoriale : prélèvements communautaires à l'importation (fiche
+#: GNQ_prelevements_importation_2026-10-31.json).
+SOURCE_PRELEVEMENTS_GNQ = (
+    "Loi n° 9/2025 du 9 décembre 2025 (budget général de l'État 2026), art. 5 et ligne 71516 ; Banque mondiale, "
+    "étude diagnostique de l'intégration commerciale (EDIC, 2019) ; règlement OHADA n° 002/2003/CM, art. 3 à 6"
+)
+
+
+def _prelevements_guinee_equatoriale(positions, compteurs):
+    """Guinée équatoriale : contribution communautaire d'intégration de la CEEAC
+    (0,4 %) et prélèvement OHADA (0,05 %) sur la valeur en douane, après la TCI."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GNQ,
+             "note": "« TCI y Otras tasas comunitarias », recette des droits à l'importation affectée aux "
+                     "« Contribuciones (CEMAC, CEEAC, OHADA,...) » (loi n° 9/2025, art. 5) ; « cargos de TCI y CCI en "
+                     "la CEMAC y la CEEAC) de cerca del 1,5 por ciento » (Banque mondiale, EDIC 2019). Taux de 0,4 % "
+                     "de la CEEAC, hors originaires de la CEEAC."},
+            {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+             "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_GNQ,
+             "note": "Règlement n° 002/2003/CM (signé par la Guinée équatoriale), art. 3 à 5 : 0,05 % de la valeur en "
+                     "douane des produits originaires des pays tiers ; recette comprise dans les « TCI y Otras tasas "
+                     "comunitarias » (loi n° 9/2025, art. 5)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Tchad : prélèvements communautaires à l'importation (fiche TCD_prelevements_importation_2026-10-30.json).
+SOURCE_PRELEVEMENTS_TCD = (
+    "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40, "
+    "et annexe Tchad, § 3.20"
+)
+
+
+def _prelevements_tchad(positions, compteurs):
+    """Tchad : contribution communautaire d'intégration de la CEEAC (0,4 %) et
+    prélèvement OHADA (0,05 %) sur la valeur c.a.f., après la TCI."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": "CCI", "code_source": "CCI", "libelle": "Contribution Communautaire d'Intégration (CEEAC)",
+             "famille": famille("CCI"), "taux": 0.4, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_TCD,
+             "note": "« prélevée au taux de 0,4% sur les importations hors-CEEAC […] (actuellement collectée par le "
+                     "Congo, le Gabon, la République centrafricaine et le Tchad) » (rapport commun, § 3.40)."},
+            {"code": "OHADA", "code_source": "OHADA", "libelle": "Prélèvement OHADA",
+             "famille": famille("OHADA"), "taux": 0.05, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_PRELEVEMENTS_TCD,
+             "note": "« effectué au taux de 0,05% sur les importations des pays non membres » (rapport commun, "
+                     "§ 3.40) ; « le Tchad collecte la taxe communautaire d'intégration (TCI), le prélèvement OHADA, "
+                     "et la contribution communautaire d'intégration (CCI) » (annexe Tchad, § 3.20)."},
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Centrafrique : prélèvements à l'importation (fiche CAF_prelevements_importation_2026-10-30.json).
+#: La loi de finances 2026 (art. 16) les nomme ; les taux sont ceux du rapport de l'OMC.
+SOURCE_PRELEVEMENTS_CAF = (
+    "Loi n° 25.015 (loi de finances 2026), art. 16 ; OMC, examen des politiques commerciales des pays de la "
+    "CEMAC (WT/TPR/S/445, 2023), annexe République centrafricaine, tableau 3.2, et rapport commun, § 3.40"
+)
+PRELEVEMENTS_CAF = (
+    ("TUA", "Taxe de l'Union Africaine", 0.2, "« Prélèvement de l'Union africaine (0,2%) », loi de finances 2019, art. 19."),
+    ("CCI", "Contribution Communautaire d'Intégration (CEEAC)", 0.4,
+     "« Taxe CEEAC (0,4%) » ; « prélevée au taux de 0,4% sur les importations hors-CEEAC […] (actuellement "
+     "collectée par le Congo, le Gabon, la République centrafricaine et le Tchad) » (rapport commun, § 3.40)."),
+    ("OHADA", "Prélèvement OHADA", 0.05,
+     "« Redevances OHADA 0,05% » ; « effectué au taux de 0,05% sur les importations des pays non membres » "
+     "(rapport commun, § 3.40)."),
+    ("COMIFAC", "Prélèvement COMIFAC", 0.1,
+     "« Redevance COMIFAC forêts tropicales (0,1%) », loi de finances 2008, art. 31 et 32."),
+    ("REIF", "Redevance pour l'Equipement Informatique des Finances", 0.5,
+     "« Redevance équipement informatique finances (REIF) de 0,50% » ; la « redevance informatique 0,5% » du même "
+     "tableau est la même recette (une seule ligne au budget 2026, « Redevance informatique »)."),
+    ("RDS", "Redevance de Développement des Statistiques", 0.25,
+     "« Redevance statistique 0,25% », loi de finances 2016, art. 30."),
+    ("RGS", "Redevance de Gestion des Scanners", 0.25,
+     "« Redevance gestion scanner 0,25 », loi de finances 2012, art. 18, modifié par la loi de finances 2016, art. 23 ; "
+     "« perçue sur toutes les importations, qu'elles soient scannées ou non » (§ 3.22)."),
+    ("RCCAC", "Redevance du Conseil Centrafricain des Chargeurs", 0.25,
+     "« Redevance conseil des chargeurs (0,25%) », loi de finances 2014, art. 26 ; « 0,25% de la valeur des "
+     "importations »."),
+)
+
+
+def _prelevements_centrafrique(positions, compteurs):
+    """Centrafrique : les neuf prélèvements que la loi de finances 2026 nomme
+    (art. 16), sur la valeur en douane. La redevance statistique de 1 % du
+    tarif collecté, qu'aucun texte ne porte, cède la place à la RDS (0,25 %)."""
+    for position in positions.values():
+        droits = position.setdefault("droits", [])
+        for d in [d for d in droits if d.get("code") == "RS"]:
+            _compter_ligne(d, compteurs, -1)
+            droits.remove(d)
+        apres = [i for i, d in enumerate(droits) if d.get("code") == "TCI"]
+        rang = apres[-1] + 1 if apres else next(
+            (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
+        )
+        nouvelles = [
+            {"code": code, "code_source": code, "libelle": libelle, "famille": famille(code), "taux": taux,
+             "assiette": "CIF", "assiette_origine": "regle_de_pays", "source": SOURCE_PRELEVEMENTS_CAF, "note": note}
+            for code, libelle, taux, note in PRELEVEMENTS_CAF
+        ]
+        droits[rang:rang] = nouvelles
+        for ligne in nouvelles:
+            _compter_ligne(ligne, compteurs, 1)
+
+
+def _ohada_produits_medicaux(positions, compteurs):
+    """Gabon, Centrafrique, Tchad, Cameroun : prélèvement OHADA nul sur les
+    produits pharmaceutiques et le matériel médical (règlement n° 002/2003/CM,
+    art. 6), comme au Congo."""
+    for code, position in positions.items():
+        if not code.startswith(OHADA_EXONERE):
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") != "OHADA":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            d.update(taux=0.0, source=SOURCE_OHADA,
+                     note="Exonéré, règlement n° 002/2003/CM, art. 6 : « les produits pharmaceutiques ainsi que les "
+                          "matériels et équipements à usage médical, destinés à la médecine humaine ou vétérinaire ».")
+            _compter_ligne(d, compteurs, 1)
+
+
+#: Congo : véhicules neufs de tourisme au taux réduit de 5 % du droit de douane et
+#: de la TVA (loi de finances 2024, art. 1er, al. 2, réécrit par la LF 2026, point 44).
+VEHICULES_NEUFS_COG = ("87033110", "87033210", "87033290")
+
+
+def _vehicules_neufs_congo(positions, compteurs):
+    """Le taux réduit ne vaut que pour les véhicules neufs, que la position ne
+    distingue pas des véhicules d'occasion : droit de douane et TVA sans taux."""
+    motif = (
+        "Loi n° 42-2025 (LF 2026), point 44 : « Les droits et taxes exigibles à l'importation des véhicules "
+        "automobiles neufs de tourisme, relevant des positions tarifaires 87033110, 87033210 et 87033290, sont fixés "
+        "au taux réduit de 5% des droits de douanes et de 5% de la taxe sur la valeur ajoutée » ; véhicule d'occasion "
+        "au taux de droit commun — l'état neuf n'est pas dans la position."
+    )
+    for code in VEHICULES_NEUFS_COG:
+        for d in positions.get(code, {}).get("droits") or []:
+            if d.get("code") in ("DD", "TVA"):
+                _compter_ligne(d, compteurs, -1)
+                d["taux"] = None
+                d["note"] = motif
+                _compter_ligne(d, compteurs, 1)
+
+
+#: Congo : taxe sur les nouveaux terminaux numériques à carte SIM (RTN), loi de
+#: finances 2026, point 46 : montant par terminal selon la norme, que la position
+#: ne dit pas (fiche COG_echeances_terminaux_2026-10-30.json).
+TERMINAUX_SIM_COG = ("85171200",)
+
+
+def _terminaux_sim_congo(positions, compteurs):
+    for code in TERMINAUX_SIM_COG:
+        droits = positions.get(code, {}).get("droits")
+        if droits is None:
+            continue
+        rtn = {
+            "code": "RTN", "code_source": "RTN", "libelle": "Taxe sur les nouveaux terminaux numériques à carte SIM",
+            "famille": famille("RTN"), "taux": None, "assiette": "xQTE", "assiette_origine": "regle_de_pays",
+            "source": "Loi n° 42-2025 (loi de finances 2026), point 46",
+            "note": "Art. 1er et 4 : due sur les terminaux neufs importés depuis le 1er juin 2026 — 1 300 FCFA (2G), "
+                    "6 500 FCFA (3G) ou 10 000 FCFA (4G et 5G) par terminal ; la norme n'est pas dans la position.",
+        }
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+        droits.insert(rang, rtn)
+        _compter_ligne(rtn, compteurs, 1)
 
 
 #: Maurice : MID levy (Excise Act s.3A, First Schedule Part II, version consolidée
@@ -3295,6 +4038,66 @@ def _prelevements_zaf(positions, compteurs):
                     "unite_quantite": UNITES_PRELEVEMENT_ZAF[unite], "brut": article["brut"],
                 }
                 ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Afrique du Sud : avis de la SARS postérieurs à la collecte du tarif (fiche
+#: ZAF_amendements_octobre_2026_2026-10-31.json).
+SOURCE_R8025_ZAF = ("Government Gazette n° 55544, R.8025 du 16 octobre 2026 (amendement de la Schedule No. 1 "
+                    "Part 1, ITAC Report 784)")
+
+
+def _amendements_zaf(positions, compteurs):
+    """Afrique du Sud : papier journal (R.8025), paru après la collecte du
+    tarif. La sauvegarde et l'antidumping relèvent de la défense commerciale
+    (`_defense_commerciale`)."""
+    journal = positions.get("480100")
+    if journal:
+        dd = next((d for d in journal.get("droits") or [] if d.get("code") == "DD"), None)
+        if dd is not None:
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=5.0, source=SOURCE_R8025_ZAF,
+                      note="4801.00 « Newsprint, in rolls or sheets » : General 5 %, EU/UK, EFTA, SADC et AfCFTA "
+                           "free, MERCOSUR 5 % (en vigueur le 16 octobre 2026 ; auparavant free).")
+            _compter_ligne(dd, compteurs, 1)
+        pref = journal.get("preferentiels") or {}
+        if "MERCOSUR" in pref:
+            pref["MERCOSUR"] = {"taux": 5.0}
+
+
+#: Mesures de défense commerciale (sauvegarde, antidumping) dues selon l'origine
+#: et, pour l'antidumping, le producteur : une ligne par mesure, au taux non
+#: établi dans le socle ; la route (services/defense_commerciale.py) la résout
+#: d'après l'origine et le producteur déclarés et la date du calcul.
+DEFENSE_COMMERCIALE = os.path.join(REPO, "data", "defense_commerciale")
+
+
+def _defense_commerciale(iso, positions, compteurs):
+    chemin = os.path.join(DEFENSE_COMMERCIALE, f"{iso}.json")
+    if not os.path.exists(chemin):
+        return
+    with open(chemin, encoding="utf-8") as f:
+        mesures = json.load(f)["mesures"]
+    for mesure in mesures:
+        prefixes = tuple(mesure["positions"])
+        for code, position in positions.items():
+            if not code.startswith(prefixes):
+                continue
+            droits = position.setdefault("droits", [])
+            dd = next((d for d in droits if d.get("code") == "DD"), None)
+            condition = next((v for k, v in (mesure.get("condition_produit") or {}).items()
+                              if code.startswith(k)), None)
+            regle = {cle: mesure.get(cle) for cle in (
+                "id", "type", "debut", "fin", "origines", "exemptees", "taux", "par_origine")
+                if mesure.get(cle) is not None}
+            regle["assiette"] = (dd or {}).get("assiette") or "CIF"
+            if condition:
+                regle["condition_produit"] = condition
+            ligne = {"code": mesure["code"], "code_source": mesure["id"], "famille": famille(mesure["code"]),
+                     "libelle": mesure["libelle"], "taux": None, "assiette": None, "source": mesure["source"],
+                     "note": mesure.get("note", ""), "defense_commerciale": regle}
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(rang, ligne)
             _compter_ligne(ligne, compteurs, 1)
@@ -4553,22 +5356,31 @@ def _accises_du_cgi(iso, positions, compteurs):
                 rang = next(
                     (i for i, d in enumerate(droits) if d.get("famille") in avant), len(droits)
                 )
-                droits.insert(
-                    rang,
-                    {
-                        "code": "DA",
-                        "code_source": "DA",
-                        "libelle": "Droit d'accises",
-                        "famille": famille("DA"),
-                        "taux": regle["taux"],
-                        "assiette": table["assiette"],
-                        "assiette_origine": "regle_de_pays",
-                        "source": table["source"],
-                        "note": " ".join(
-                            x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
-                        ),
-                    }
-                )
+                accise = {
+                    "code": "DA",
+                    "code_source": "DA",
+                    "libelle": "Droit d'accises",
+                    "famille": famille("DA"),
+                    "taux": regle["taux"],
+                    "assiette": table["assiette"],
+                    "assiette_origine": "regle_de_pays",
+                    "source": table["source"],
+                    "note": " ".join(
+                        x for x in (regle.get("motif"), regle["reference"], regle.get("reserve")) if x
+                    ),
+                }
+                # Gabon : « 25 % » ET « 200 FCFA par litre » — les deux parts
+                # sont dues (droit cumulatif), en monnaie nationale.
+                if regle.get("specifique"):
+                    spec = regle["specifique"]
+                    accise.update(
+                        specifique={"montant": spec["montant"], "unite_monetaire": "unite_principale",
+                                    "sous_unite_source": None, "unite_quantite": spec["unite"],
+                                    "brut": spec["brut"]},
+                        cumulatif=True,
+                        expression_brute=f"{regle['taux']:g} % + {spec['brut']}",
+                    )
+                droits.insert(rang, accise)
                 break
         for d in droits:
             if d.get("famille") == "tva" and d.get("assiette"):
@@ -4848,6 +5660,30 @@ SOURCE_TAXE_SPECIFIQUE_TCD = (
     "Loi de finances pour 2021, art. 36 (nouveau), rédaction de la loi de finances pour 2026 "
     "(loi n° 008/AN/SENAT/2025), art. 44"
 )
+
+
+#: RDC : la collecte sert le TEC EAC 2022 (PDF KRA), que la RDC n'applique pas
+#: (fiche COD_application_2026-09-27.json). Son tarif national (ordonnance-loi
+#: 011/2012) a quatre taux, 0, 5, 10 et 20 % ; les 12 lignes relevées de la loi
+#: de finances 17-005 contredisent toutes le socle (comparaison du 2026-10-29).
+NOTE_DD_COD = ("La RDC n'applique pas le tarif extérieur commun de l'EAC : le taux collecté (TEC EAC 2022) n'est pas "
+               "son droit de douane. Son tarif national (ordonnance-loi 011/2012, taux de 0, 5, 10 et 20 %) n'est pas "
+               "obtenu ligne à ligne : droit à établir.")
+
+
+def _droit_douane_rdc(positions, compteurs):
+    """RDC : aucun droit de douane n'est servi tant que le barème DGDA n'est pas
+    obtenu — le taux et la part spécifique du TEC EAC sont retirés."""
+    for position in positions.values():
+        for d in position.get("droits") or []:
+            if d.get("code") != "DD":
+                continue
+            _compter_ligne(d, compteurs, -1)
+            for cle in ("specifique", "compose", "regle_composee", "expression_brute"):
+                d.pop(cle, None)
+            d["taux"] = None
+            d["note"] = NOTE_DD_COD
+            _compter_ligne(d, compteurs, 1)
 
 
 def _taxe_specifique_tchad(positions, compteurs):
@@ -5261,10 +6097,12 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _coquilles_tec_cemac(positions)
     if iso == "CMR":
         _redevance_informatique_cmr(positions)
+        _prelevement_ohada_cameroun(positions, compteurs)
     if iso == "MRT":
         _accises_mauritanie(positions, compteurs)
     if iso == "GNQ":
         _sans_redevance_informatique_gnq(positions, compteurs)
+        _prelevements_guinee_equatoriale(positions, compteurs)
     if iso in _regles_cedeao_hors_uemoa()[0]:
         _prelevements_cedeao_hors_uemoa(iso, positions, compteurs)
     if iso == "MUS":
@@ -5279,6 +6117,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _ice_mocambique(positions, compteurs)
     if iso == "TCD":
         _taxe_specifique_tchad(positions, compteurs)
+        _prelevements_tchad(positions, compteurs)
+    if iso == "COD":
+        _droit_douane_rdc(positions, compteurs)
     if iso in ASSIETTE_EXA_SACU:
         _accises_zaf(positions, compteurs, iso)
     if iso in PRELEVEMENTS_SACU_NON_COLLECTES:
@@ -5291,8 +6132,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_sierra_leone(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
+        _amendements_zaf(positions, compteurs)
         _controles_sars_zaf(positions)
         _liste_sars_zaf(positions)
+    _defense_commerciale(iso, positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
@@ -5358,7 +6201,29 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     # Congo : après les accises, dont dépend l'exclusion des poissons de luxe
     # de la circulaire n° 0138 (le crawl ne porte pas toutes les accises).
     if iso == "COG":
+        # Annexes de la loi TVA, puis la circulaire n° 0138, temporaire, qui les
+        # précise jusqu'au 31/12/2026, puis les véhicules neufs de la LF 2026.
+        _tva_par_position("COG", positions, compteurs)
         _mesures_nationales_congo(positions)
+        _vehicules_neufs_congo(positions, compteurs)
+        _prelevements_congo(positions, compteurs)
+        _terminaux_sim_congo(positions, compteurs)
+    if iso == "CAF":
+        _prelevements_centrafrique(positions, compteurs)
+        _tva_par_position("CAF", positions, compteurs)
+    # Gabon : après les accises, sur lesquelles la CSS s'assied (comme la TVA).
+    if iso == "GAB":
+        _prelevements_gabon(positions, compteurs)
+        _tva_par_position("GAB", positions, compteurs)
+    if iso == "CMR":
+        _tva_cameroun(positions, compteurs)
+    if iso == "TCD":
+        _tva_tchad(positions, compteurs)
+    if iso == "GNQ":
+        _premiere_necessite_gnq(positions, compteurs)
+
+    if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
+        _ohada_produits_medicaux(positions, compteurs)
 
     # Prélèvements communautaires dont les originaires du bloc sont exclus
     # (backend/services/exoneration_origine.py) : la route les retire selon

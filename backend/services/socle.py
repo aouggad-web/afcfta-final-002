@@ -33,6 +33,8 @@ import re
 from collections import OrderedDict
 from typing import Any, Dict, Optional, Tuple
 
+from services.calcul import droits_a_la_date
+
 RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SOCLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle")
 MANIFESTE = os.path.join(SOCLE_DIR, "MANIFESTE.json")
@@ -211,7 +213,7 @@ def positions_nationales(iso3: str, hs6: str) -> list:
     ]
 
 
-def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
+def position(iso3: str, code: str, le: Optional[str] = None) -> Tuple[Dict[str, Any], dict]:
     """Rendre (position, provenance) pour un code national ou SH6.
 
     La recherche est explicite et son résultat le dit : le code exact d'abord,
@@ -265,6 +267,11 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
             f"{iso3}/{code} : position absente du socle "
             f"({donnees.get('compteurs', {}).get('positions', 0)} positions servies)"
         )
+
+    # Une mesure datée se lit à la date ``le`` (AAAA-MM-JJ), par défaut celle
+    # du jour : tout ce qui passe par ici (calcul, consultation, comparaisons,
+    # export) voit le même taux.
+    trouve = {**trouve, "droits": droits_a_la_date(trouve.get("droits") or [], le)}
 
     provenance = {
         "iso3": iso3,

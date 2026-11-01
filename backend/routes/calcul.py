@@ -37,10 +37,10 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field, PositiveFloat
 
 from engine.schemas.legal_override import RemissionEligibility
-from services import exoneration_origine, mesures_eac, socle, usages
+from services import defense_commerciale, exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import marchandise_dedouanee_sacu, simulations_regionales, taux_preferentiels
-from services.regional_blocs import SACU, same_customs_union
+from services.regional_blocs import NOTE_UNION_NON_EFFECTIVE, SACU, same_customs_union, union_non_effective
 from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 
 logger = logging.getLogger(__name__)
@@ -87,6 +87,13 @@ class AutorisationRemise(BaseModel):
 class DemandeCalcul(BaseModel):
     destination: str = Field(..., description="Pays d'importation (ISO-3)")
     origine: Optional[str] = Field(None, description="Pays d'origine (ISO-3)")
+    producteur: Optional[str] = Field(
+        None,
+        description=(
+            "Producteur ou exportateur, pour un droit antidumping dont le taux en dépend "
+            "(services/defense_commerciale.py). Omis : le droit reste à établir."
+        ),
+    )
     pays_expedition: Optional[str] = Field(
         None,
         description=(
@@ -283,6 +290,9 @@ def calcul(demande: DemandeCalcul):
             preference = marchandise_dedouanee_sacu(demande.destination)
 
     position, exonerations = exoneration_origine.appliquer(position, demande.origine)
+    position, defense = defense_commerciale.appliquer(
+        position, demande.origine, demande.producteur, expedition=demande.pays_expedition
+    )
 
     position, complements = _completer_famille_absente(
         position, demande.destination, provenance, demande.origine, demande.pays_expedition
@@ -310,6 +320,15 @@ def calcul(demande: DemandeCalcul):
     resultat["complements_nationaux"] = complements
     if exonerations:
         resultat["exonerations_origine"] = exonerations
+    if defense:
+        resultat["defense_commerciale"] = defense
+    # Pays membre d'une union douanière dont il n'applique pas le régime (RDC,
+    # EAC) : à dire en tête, en destination comme face à un autre membre.
+    pays_hors_union = union_non_effective(demande.origine, demande.destination) or (
+        demande.destination.upper() if demande.destination.upper() in NOTE_UNION_NON_EFFECTIVE else None
+    )
+    if pays_hors_union:
+        resultat["union_non_effective"] = {"pays": pays_hors_union, "note": NOTE_UNION_NON_EFFECTIVE[pays_hors_union]}
     if mesures:
         resultat["mesures_eac"] = mesures
     if bloc_usages:

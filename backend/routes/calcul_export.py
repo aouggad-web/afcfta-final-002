@@ -10,10 +10,12 @@ indisponible et la nomment, jamais un zéro.
 
 S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
 (`HORS_TARIF` : à Madagascar, les DTSPM du Code minier ; au Mali, la TEOAPM du
-CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun,
-le droit de sortie commun dépend du degré de transformation du produit ; en
-RDC, le titulaire d'un droit minier en est exonéré (`SELON_DECLARATION`) :
-l'exportateur le déclare aussi.
+CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun
+et au Congo, le droit de sortie commun dépend du degré de transformation du
+produit ; en RDC, le titulaire d'un droit minier en est exonéré
+(`SELON_DECLARATION`) : l'exportateur le déclare aussi. Au Gabon, le droit sur
+les produits transformés du bois dépend de la matière du produit
+(`SELON_MATIERE`).
 """
 from __future__ import annotations
 
@@ -77,7 +79,8 @@ HORS_TARIF = {
 #: l'exportateur déclare. Le socle marque ces droits (`marque`,
 #: `build_socle.EXPORT_PAR_TEXTE`) ; la réponse fixe leur taux — un taux None
 #: garde celui du tarif. Sans réponse, ils restent à établir. Fiches
-#: CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json et
+#: CMR_droit_de_sortie_LF2018_LF2026_2026-10-28.json,
+#: COG_droit_de_sortie_LFR2021_LF2026_2026-10-29.json et
 #: COD_tarif_exportation_OL_012-2012_2026-10-29.json.
 SELON_DECLARATION = {
     "CMR": {
@@ -95,8 +98,40 @@ SELON_DECLARATION = {
         "question": "Exportation par le titulaire d'un droit minier, en rapport avec son projet minier ?",
         "question_en": "Export by the holder of a mining right, in connection with its mining project?",
         "oui": (0.0, "Code minier, art. 234 : le titulaire « est totalement exonéré à la sortie, pour ses exportations "
-                     "en rapport avec le projet minier, de tous droits de douane »."),
+                     "en rapport avec le projet minier, de tous droits de douane ». Réserve : le projet de loi de "
+                     "finances 2025 (art. 17) proposait de supprimer cette exonération et de taxer à 2 % les produits "
+                     "miniers ; le texte adopté (loi n° 24/011) n'a pas été lu."),
         "non": (None, "Exportateur autre qu'un titulaire minier pour son projet : taux du tarif."),
+    },
+    "COG": {
+        "champ": "produit_fini",
+        "marque": "selon_transformation",
+        "question": "Produit transformé d'origine congolaise (issu d'une ouvraison ou d'une transformation au Congo) ?",
+        "question_en": "Processed product of Congolese origin (worked or processed in Congo)?",
+        "oui": (0.0, "Produit transformé d'origine congolaise : exonéré du droit de sortie (LFR 2021, point 42, 2)."),
+        "non": (2.0, "Taux général du droit de sortie : 2 % de la valeur en douane (LFR 2021, point 42, 1)."),
+        # Redevance informatique : 2 % pour un produit brut ; pour un produit
+        # transformé, où qu'il l'ait été, le taux n'est pas tranché. Après un
+        # « non », il faut savoir si le produit a été transformé ailleurs.
+        "champ_si_non": "produit_transforme",
+        "question_si_non": "Produit transformé hors du Congo (sinon : produit brut) ?",
+        "question_si_non_en": "Product processed outside Congo (otherwise: raw product)?",
+    },
+}
+
+#: Droit de sortie dû selon la MATIÈRE du produit, que la position ne dit pas :
+#: le socle le porte à taux non établi, marqué `selon_matiere`, avec le taux
+#: du texte (`taux_si_oui`) ; la réponse de l'exportateur le fixe. Gabon : la
+#: LF 2026 (art. 5) taxe les produits transformés du bois, alors que le
+#: chapitre 44 du tarif (note 6) comprend le bambou et les autres matières
+#: ligneuses. Fiche GAB_droit_de_sortie_LF2026_2026-10-31.json.
+SELON_MATIERE = {
+    "GAB": {
+        "champ": "produit_en_bois",
+        "question": "Produit en bois (et non en bambou ou en une autre matière ligneuse) ?",
+        "question_en": "Is the product made of wood (not bamboo or another woody material)?",
+        "non": "Produit qui n'est pas en bois : hors du droit de sortie sur les produits transformés du bois "
+               "(LF 2026, art. 5).",
     },
 }
 
@@ -140,7 +175,23 @@ class DemandeExport(BaseModel):
         default=None,
         description=(
             "Cameroun : produit fini, manufacturé ou transformé au Cameroun (exonéré) ; sinon brut ou semi-fini "
-            "(2 %). Omis : le droit de sortie commun reste à établir."
+            "(2 %). Congo : produit transformé d'origine congolaise (exonéré) ; sinon 2 %. Omis : le droit de "
+            "sortie commun reste à établir."
+        ),
+    )
+    produit_transforme: Optional[bool] = Field(
+        default=None,
+        description=(
+            "Congo, quand `produit_fini` est faux : produit transformé hors du Congo (vrai) ou produit brut (faux). "
+            "La redevance informatique à l'exportation vaut 2 % pour un produit brut ; pour un produit transformé, "
+            "elle reste à établir. Omis : à établir."
+        ),
+    )
+    produit_en_bois: Optional[bool] = Field(
+        default=None,
+        description=(
+            "Gabon : produit en bois, et non en bambou ou en une autre matière ligneuse (droit de sortie sur les "
+            "produits transformés du bois, LF 2026, art. 5). Omis : le droit reste à établir."
         ),
     )
     titulaire_minier: Optional[bool] = Field(
@@ -168,6 +219,46 @@ def _selon_declaration(pays: str, droits: list, demande: DemandeExport) -> list:
                 taux, motif = regle["oui" if reponse else "non"]
                 taux = d.get("taux") if taux is None else taux
                 d = {**d, "taux": taux, "assiette": "CIF", "note": motif + " " + d.get("note", "")}
+        elif d.get("note_si_transforme"):
+            # Perception dont seul le taux du produit brut est établi
+            # (redevance informatique du Congo). La question ne porte que sur
+            # la transformation AU Congo : après un « non », la seconde
+            # (`champ_si_non`) dit si le produit est brut ou transformé ailleurs.
+            ailleurs = None
+            if reponse is False and regle.get("champ_si_non"):
+                ailleurs = getattr(demande, regle["champ_si_non"])
+            if reponse is False and ailleurs is False:
+                # Produit brut : le taux du socle (2 %) s'applique.
+                d = {k: v for k, v in d.items() if k != "note_si_transforme"}
+            else:
+                if reponse is None:
+                    prefixe = "À établir : " + regle["question"] + " "
+                elif reponse is False and ailleurs is None:
+                    prefixe = "À établir : " + regle.get("question_si_non", "") + " 2 % pour un produit brut. "
+                else:
+                    prefixe = ""
+                d = {**d, "taux": None, "assiette": None, "note": prefixe + d["note_si_transforme"]}
+        sortie.append(d)
+    return sortie
+
+
+def _selon_matiere(pays: str, droits: list, demande: DemandeExport) -> list:
+    """Fixer, d'après la matière déclarée, les droits que le socle marque
+    `selon_matiere` : le taux du texte si oui, aucun droit si non ; sans
+    réponse, ils restent à établir."""
+    regle = SELON_MATIERE.get(pays)
+    if not regle:
+        return droits
+    reponse = getattr(demande, regle["champ"])
+    sortie = []
+    for d in droits:
+        if d.get("selon_matiere"):
+            if reponse is None:
+                d = {**d, "note": "À établir : " + regle["question"] + " " + d.get("note", "")}
+            elif reponse:
+                d = {**d, "taux": d["taux_si_oui"], "assiette": "CIF"}
+            else:
+                d = {**d, "taux": 0.0, "assiette": "CIF", "note": regle["non"]}
         sortie.append(d)
     return sortie
 
@@ -245,6 +336,7 @@ def calcul_export(demande: DemandeExport):
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     droits = _selon_declaration(pays, position.get("droits_export") or [], demande)
+    droits = _selon_matiere(pays, droits, demande)
     hors_tarif = _hors_tarif(pays, demande)
     conflit = HORS_TARIF.get(pays, {}).get("conflit_tarif")
     if hors_tarif and demande.produit_minier and conflit:
@@ -307,9 +399,9 @@ def pays_export():
                 iso: {
                     k: regle.get(k)
                     for k in ("champ", "question", "question_en", "question_transformation",
-                              "question_transformation_en")
+                              "question_transformation_en", "champ_si_non", "question_si_non", "question_si_non_en")
                 }
-                for iso, regle in {**HORS_TARIF, **SELON_DECLARATION}.items()
+                for iso, regle in {**HORS_TARIF, **SELON_DECLARATION, **SELON_MATIERE}.items()
             },
         }
     except socle.SocleIndisponible as exc:

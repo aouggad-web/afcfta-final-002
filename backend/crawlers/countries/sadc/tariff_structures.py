@@ -346,7 +346,7 @@ COUNTRY_TARIFF_CONFIGS = {
             },
         },
         "notes": [
-            "Dual EAC + SADC membership – applies EAC CET as primary schedule",
+            "Dual EAC + SADC membership – does NOT apply the EAC CET: national tariff (ordonnance-loi 011/2012, 0/5/10/20 %)",
             "TVA: 16% standard rate",
             "Mining sector: separate royalty regime (Mining Code 2018)",
             "Source: DGRAD + DGDA (Direction Générale des Douanes)",

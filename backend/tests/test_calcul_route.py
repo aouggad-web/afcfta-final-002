@@ -804,7 +804,7 @@ def test_la_tva_sud_africaine_hors_sacu_porte_sur_le_fob_majore_et_les_droits(cl
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
     dd = lignes["DD"]["montant"]
-    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL"
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL+AD+SAUV"
     assert lignes["TVA"]["montant"] == pytest.approx(0.15 * (11000 + dd))
 
 
@@ -825,7 +825,7 @@ def test_une_origine_sacu_expediee_d_ailleurs_reste_majoree(client):
         },
     ).json()
     lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
-    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL"
+    assert lignes["TVA"]["assiette"] == "FOBx1.10+DD+EXS+EXA+EVB+EVL+EVC+EVT+FLV+RAF+HPL+AD+SAUV"
 
 
 @besoin_socle

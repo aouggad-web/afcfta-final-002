@@ -27,3 +27,21 @@ La source qui permettrait de lever ce doute est identifiée : `dgi.ga/787-proced
 ## État de l'enregistrement
 
 Juridiction GAB : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — aucun taux TVA standard vérifié, seules deux mesures ponctuelles (taux réduit 5% sans code SH, exonération conditionnelle) le sont. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
+
+## Collecte du 2026-10-29
+
+Deux Journaux Officiels archivés (`official/`, empreintes dans `inventory.csv`) :
+
+- **JO n°96 Quater Spécial du 30 décembre 2025** — loi n°041/2025, loi de finances 2026 (miroir `directinfosgabon.com`, entête et pagination du JO). Art. 250 nouveau du CGI : tableau complet des droits d'accises (taux ad valorem et taxes spécifiques).
+- **JO n°123 Bis du 17 juillet 2026** — loi n°002/2026, loi de finances rectificative 2026, publiée sur `budget.gouv.ga` (ministère de l'Économie et des Finances). Art. 250 nouveau : bières locales, vins d'importation, champagnes, tabacs et produits du vapotage. Art. 221 nouveau : **taux normal de TVA de 18 %**, lu sur texte primaire, et taux réduits de 10 %, 5 % et 3 %.
+
+Droit d'accises intégré au socle : fiche `backend/data/legal_refs/zlecaf_application/GAB_droit_accises_2026-10-29.json`.
+
+### Prélèvements à l'importation (2026-10-29)
+
+- **DGDDI, « Présentation de la fiscalité douanière » (2021)** : CCI de la CEEAC 0,4 % (pays tiers), prélèvement OHADA 0,05 %, contribution UA 0,2 % (non membres de l'UA), « ajouter la css ».
+- **JO n°331 Bis Spécial du 9 janvier 2017** (loi n°026/2016, copie FAOLEX) : contribution spéciale de solidarité, art. 13 à 25 — importations comprises, base comme en matière de TVA, 1 %.
+- **Loi n°025/2022 (loi de finances 2023)**, journal-officiel.ga : art. 34, CCI, TCI, OHADA et contribution UA prélevés au cordon douanier.
+- Redevance informatique : taux non trouvé sur texte primaire (1,5 % de la valeur en douane selon une page du Conseil gabonais des chargeurs, injoignable).
+
+Fiche : `backend/data/legal_refs/zlecaf_application/GAB_prelevements_importation_2026-10-29.json`.

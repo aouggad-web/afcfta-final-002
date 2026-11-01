@@ -195,6 +195,25 @@ def taux_preferentiels(
     union = _union_douaniere(destination_iso3, origine_iso3)
     if union:
         return union
+    from services.regional_blocs import NOTE_UNION_NON_EFFECTIVE, union_non_effective
+
+    non_effective = union_non_effective(origine_iso3, destination_iso3)
+    if non_effective:
+        # Union douanière dont l'un des deux pays n'applique pas le régime
+        # (RDC dans l'EAC) : pas de libre circulation, et la raison est dite.
+        resultat = _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
+        return {**resultat, "union_non_effective": non_effective,
+                "note": NOTE_UNION_NON_EFFECTIVE[non_effective] + " " + (resultat.get("note") or "")}
+    return _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
+
+
+def _taux_preferentiels_hors_union(
+    position: Dict[str, Any],
+    destination_iso3: str,
+    origine_iso3: str,
+    hs_code: str,
+) -> Dict[str, Any]:
+    """Préférence ZLECAf (ou refus motivé), hors union douanière."""
 
     if destination_iso3.upper() == "ZAF":
         # Défaut corrigé (règle ZAF) : le socle portait la colonne AfCFTA de
@@ -474,6 +493,10 @@ def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[
     if not bloc:
         return None
     libelle = CUSTOMS_UNION_NAMES.get(bloc, bloc)
+    # SACU, art. 18.1 : franchise des « customs duties » telles que la
+    # législation douanière nationale les définit (art. 1) ; les droits
+    # antidumping et de sauvegarde (AD, SAUV) en sont (Schedule 2).
+    codes = ("DD", "AD", "SAUV") if bloc == "SACU" else ("DD",)
     return {
         "applique": True,
         "regime": "UNION_DOUANIERE",
@@ -493,12 +516,13 @@ def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[
             "d'elle. La franchise porte sur le seul droit de douane : TVA, accises "
             "et autres taxes intérieures restent dues."
         ),
-        "taux": {"DD": {"taux": 0.0}},
+        "taux": {code: {"taux": 0.0} for code in codes},
         "perimetre": {
-            "DD": (
+            code: (
                 f"Libre circulation intra-{bloc} (tarif extérieur commun et "
                 "franchise intérieure de l'union douanière)"
             )
+            for code in codes
         },
     }
 
@@ -508,8 +532,9 @@ def marchandise_dedouanee_sacu(destination_iso3: str) -> Dict[str, Any]:
 
     Accord SACU 2002, art. 19 : un État membre n'impose aucun droit sur une
     marchandise importée de l'extérieur de la zone douanière commune quand
-    elle lui arrive d'un autre État membre. Droit de douane et accises (pot
-    commun, art. 32) ont été perçus au premier dédouanement ; restent dus la
+    elle lui arrive d'un autre État membre. Droit de douane, droits antidumping
+    et de sauvegarde, et accises (pot commun, art. 32) ont été perçus au
+    premier dédouanement ; restent dus la
     TVA du pays de destination et ses prélèvements nationaux, faute de texte
     les rattachant au pot commun. Fiche : SACU_art19_2026-10-14.json.
     """
@@ -531,8 +556,10 @@ def marchandise_dedouanee_sacu(destination_iso3: str) -> Dict[str, Any]:
             "marchandise est entrée dans la SACU à un taux préférentiel, la "
             "différence avec le droit normal est due — elle n'est pas calculée ici."
         ),
-        "taux": {"DD": {"taux": 0.0}, "EXS": {"taux": 0.0}, "EXA": {"taux": 0.0}},
-        "perimetre": {"DD": reference, "EXS": reference, "EXA": reference},
+        # Droits antidumping et de sauvegarde (AD, SAUV) : droits de douane de
+        # la zone douanière commune (Schedule 2), des « duties » de l'art. 19.
+        "taux": {code: {"taux": 0.0} for code in ("DD", "EXS", "EXA", "AD", "SAUV")},
+        "perimetre": {code: reference for code in ("DD", "EXS", "EXA", "AD", "SAUV")},
     }
 
 

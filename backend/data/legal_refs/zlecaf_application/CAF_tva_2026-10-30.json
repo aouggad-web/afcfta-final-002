@@ -1,0 +1,50 @@
+{
+ "schema_version": 1,
+ "objet": "Centrafrique : TVA à l'importation — exonérations des produits pharmaceutiques et médicaux (CGI art. 249, 11), réécrit par la loi de finances 2025) et taux réduit de 5 % (CGI art. 257, 2) c), réécrit par la loi de finances 2024), position par position ; base : valeur en douane + droit de douane + droit d'accises (art. 253 bis 1, 2))",
+ "destination_iso3": "CAF",
+ "verified_at": "2026-10-30",
+ "etabli": true,
+ "evidence_level": "primaire — lois de finances 2024 (art. 10, réécriture des art. 246 à 288 du CGI) et 2025 (art. 10, réécriture de l'art. 249) publiées par le ministère des Finances et du Budget (finances.gouv.cf), scans lus par OCR",
+ "source": {
+  "url": "http://finances.gouv.cf/sites/default/files/2025-01/Loi%20de%20Finances%202025.pdf",
+  "institution": "Ministère des Finances et du Budget de la République centrafricaine"
+ },
+ "regle": {
+  "valeur": "Taux général 19 %. Exonérés : 29.37.12, 29.39.19, 29.39.20, 29.41, chapitre 30, 37.01.10, pellicules pour rayons X (3702.10), 40.14, 40.15.11, 70.15.10, 84.19.20, 87.13, 87.14.20, 90.04.90.10, 90.18 à 90.22 et 9402.90. Taux réduit de 5 % : 04.01, chapitre 07, 38.08 hors désinfectants (3808.94) et fauteuils de dentistes (9402.10.10). Viandes (02.01 à 02.08), poissons de 03.05 et fruits (08.01 à 08.14) : taux réduit réservé aux produits « produits localement », taux général à l'importation.",
+  "verbatim": "11) Les produits pharmaceutiques et les produits médicaux suivants :",
+  "verbatim_taux": "c) Taux reduit de 5% applicable aux produits ci-dessous énumerés :",
+  "verbatim_base": "2) En ce qui concerne les importations, la base imposable est obtenue en ajoutant\nà la valeur imposable telle qu'elle est définie par la réglementation douanière\nde la CEMAC, le montant du droit de douane et du droit d'accises.",
+  "reference": "CGI art. 249, 11) et 6) (loi de finances 2025, art. 10) ; art. 253 bis 1 et 257 (loi de finances 2024, art. 10)",
+  "portee": "backend/data/zlecaf_caf/tva_lf2024_lf2025.json, appliqué par scripts/build_socle._tva_par_position au socle CAF : 85 positions exonérées, 73 au taux réduit de 5 %, les autres au taux général de 19 %.",
+  "texte_archive": "sources/CAF_tva.texte-extrait.txt",
+  "sha256": "ca0721eabd422efe71d68134af5569052793880767b7f528915c0c5f16154ced"
+ },
+ "decisions": [
+  "L'art. 249 réécrit par la loi de finances 2025 remplace l'annexe des biens de première nécessité (loi de finances 2008) que portait encore le CGI édition 2023 : seuls les produits pharmaceutiques et médicaux du point 11 restent exonérés à l'importation, et « aucune exonération ou exemption à la TVA n'est accordée » en dehors des biens visés.",
+  "Viandes et volailles (02.01 à 02.08), poisson de 03.05 et fruits (08.01 à 08.14) : l'art. 257 les cite au taux réduit avec la mention « produites localement » (« produit localement », « produits localement »), là où il précise « importés » pour les légumes (07.01 à 07.14) et les insecticides (38.08). Le taux réduit n'est donc pas appliqué à l'importation : taux général de 19 %. L'art. 257, 1) pose pourtant que les taux « sont applicables aussi bien aux marchandises et services produits localement qu'aux biens importés » : voir ce que cela ne tranche pas.",
+  "Désinfectants (3808.94) : ni insecticides ni pesticides, taux général. Les autres positions de 38.08 (insecticides, fongicides, herbicides, rodenticides, régulateurs de croissance) sont des pesticides : taux réduit.",
+  "Numéros du CGI absents de la nomenclature du socle : « 37.02.20.00 Pellicules pour rayons X » (la sous-position 3702.20 n'existe plus ; les pellicules pour rayons X sont la 3702.10) ; « 94.02.10.11 Fauteuils de dentistes » (9402.10.10 au socle) ; « 94.02.10.19 Autres mobiliers pour la médecine et la chirurgie » (9402.90 au socle, les fauteuils de coiffeur 9402.10.20 restant au taux général). Les autres mobiliers pour la médecine sont à la fois exonérés (art. 249) et cités au taux réduit (art. 257) : l'exonération l'emporte.",
+  "« 90.18 à 90.22 Appareils médicaux » et « 40.14 » : la loi désigne les positions par leur numéro ; toutes les sous-positions de ces positions sont exonérées, y compris celles dont l'usage n'est pas médical (9020 masques à gaz, 9022.19 et 9022.29 appareils à rayons X pour autres usages)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Art. 257, 1) et mention « produites localement » de l'art. 257, 2) c) : si l'administration applique le taux réduit aux viandes, poissons de 03.05 et fruits importés au nom du 1), ces positions passeraient de 19 % à 5 %.",
+  "« 05 Pain » : le chapitre 05 du tarif ne contient pas le pain (19.05) ; le numéro est erroné. Aucune position 19.05 au socle CAF : sans effet.",
+  "Livres (« 49.01.91.00 Livres autres que les livres scolaires ») et journaux et périodiques (art. 249, 6)) : aucune position du chapitre 49 au socle CAF.",
+  "Exonérations liées au régime ou à l'importateur (franchises de l'acte n° 2/92-UDEAC-556-SE1, missions diplomatiques, avitaillement) : non servies.",
+  "Lois de finances rectificatives 2024 et 2025 : la LFR 2025 ne modifie que l'art. 393 (lecture du 2026-10-09, fiche CAF_droit_accises) ; la loi de finances 2026 ne modifie pas la TVA."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/CAF_tva.texte-extrait.txt",
+   "sha256": "ca0721eabd422efe71d68134af5569052793880767b7f528915c0c5f16154ced"
+  },
+  {
+   "document_non_archive": "Loi de finances 2024 (scan, 675 p.) : http://finances.gouv.cf/sites/default/files/2024-03/Loi%20de%20Finances%202024.pdf — pages 1, 4, 19, 26 et 27 archivées à part (dossier central-african-republic/official, caf-loi-finances-2024-extrait-p1-4-19-26-27.pdf)",
+   "pdf_sha256": "738aafbbc084ace0a25989f0b02fb7a7751bc08128090873026bcf0a2f16f223"
+  },
+  {
+   "document_non_archive": "Loi de finances 2025 promulguée (scan, 608 p.) : http://finances.gouv.cf/sites/default/files/2025-01/Loi%20de%20Finances%202025.pdf — pages 1, 2, 5, 6 et 7 archivées à part (dossier central-african-republic/official, caf-loi-finances-2025-extrait-p1-2-5-7.pdf)",
+   "pdf_sha256": "0ca701b9387528cd7695a3e6fa622034e1b4c8151cdd91d241070d1aac594bee"
+  }
+ ]
+}

@@ -1,0 +1,136 @@
+Gabon — droit d'accises à l'importation : extraits verbatim (relevés le 2026-10-29)
+
+1) Journal Officiel de la République Gabonaise n°96 Quater Spécial du 30 décembre 2025 — Loi n°041/2025 du 29 décembre 2025 (loi de finances 2026)
+   https://directinfosgabon.com/wp-content/uploads/2026/03/Loi-de-Finances-2026.pdf (miroir ; entête et pagination du JO), 73 p., sha256 6e649f3716bb847cd9f3c23bd95afb426710230f1eaa0b6854e8bf5e4aaf380e
+   archivé : data/sources/gabon/official/gab-jo-96quater-loi-finances-2026.pdf
+
+Loi n°041/2025 du 29 décembre 2025 déterminant les ressources et les charges de l’Etat pour
+l’année 2026……………...............................................................................................................1
+Décret n°0536/PR du 29 décembre 2025 portant promulgation de la loi n°041/2025 déterminant
+les ressources et les charges de l’Etat pour l’année 2026……………………………………....70
+
+[...]
+
+                                                     TITRE 2 : DROITS D’ACCISES
+
+                                  Chapitre 1 : Champ d’application et taux des droits d’accises
+
+« Article 250 nouveau : les droits d’accises sont fixés comme suit :
+
+                                         Produits                                     Taux ad valorem            Taxe spécifique
+ Bières locales et boissons maltées locales                                                         22%                   40 FCFA par litre
+ Bières d’importation et boissons maltées d’importation                                             25%                  200 FCFA par litre
+ Vins locaux                                                                                        22%                  100 FCFA par litre
+ Vins d’importation dont le prix d’achat est inférieur ou égal à 50 000 fcfa                        25%                  500 FCFA par litre
+ Vins d’importation dont le prix d’achat est supérieur à 50 000 fcfa                                40%                 3000 FCFA par litre
+ Champagnes dont le prix d’achat est inférieur ou égal à 50 000 fcfa                                25%                  500 FCFA par litre
+ Champagnes dont le prix d’achat est supérieur à 50 000 fcfa                                        40%                 4000 FCFA par litre
+ Autres boissons locales titrant un degré d’alcool volumétrique supérieur à 12%                     25%                  500 FCFA par litre
+ Autres boissons importées titrant un degré d’alcool volumétrique supérieur à 12%                   30%                  500 FCFA par litre
+ Boissons sucrées                                                                                    5%
+ Boissons titrant un degré d’alcool volumétrique inférieur à 12%                                     5%
+ Cigarettes, cigares, cigarillos, tabacs                                                            32%               250 FCFA par paquet
+ Jeux de hasard                                                                                     15%   100.000 FCFA par appareil exploité
+ Produit de parfumerie et cosmétiques                                                               25%                               Néant
+ Caviar, foie gras                                                                                  40%                               Néant
+ Saumon                                                                                             30%                               Néant
+ Activités de téléphonie mobile (appels)                                                             5%                               Néant
+ Boissons non alcoolisées hors eau                                                                   5%                               Néant
+ Emballages non récupérables ou perdus                                                               1%                               Néant
+ Armes et munitions                                                                                 10%                               Néant
+ Véhicules automobiles de tourisme à l’exclusion des véhicules neufs n’excédant pas
+                                                                                                    5%                                Néant
+ 1500cm3 (art.3 directive)
+ Motocycles                                                                                         1%                                Néant
+ Véhicules automobiles non expressément mentionnés au présent tableau                               1%                                Néant
+.»
+
+
+[...]
+
+                                               Chapitre 2 : A l’importation
+
+               Section 1 : Mise à la consommation des produits issus des zones d’investissement spéciales
+
+Article 8 : Les produits fabriqués par les entreprises installées au sein des zones d’investissement spéciales mis à la
+consommation sur le marché national sont soumis à un droit d’importation au taux réduit de 10 % de leur valeur en
+douane.
+
+                                            Section 2 : Lutte contre la vie chère
+
+Article 9 : Les produits de première nécessité soumis au régime de liberté contrôlée ou de blocage des prix dans le cadre
+de la lutte contre la vie chère, sont soumis à un taux de droit réduit de 5% de leur valeur en douane, à l’importation.
+
+
+[...]
+
+Article 1er : Est promulguée la loi n°041/2025 déterminant les ressources et les charges de l’Etat pour l’année 2026.
+
+2) Journal Officiel de la République Gabonaise n°123 Bis du 17 juillet 2026 — Loi n°002/2026 du 17 juillet 2026 portant loi de finances rectificative 2026
+   https://budget.gouv.ga/wp-content/uploads/budget-source/85c30d2292bd57008059.pdf (ministère de l'Économie et des Finances), 87 p., sha256 85c30d2292bd57008059b83fa9bb0cfdec9ba1c24b061a44eed052f4379cc941
+   archivé : data/sources/gabon/official/gab-jo-123bis-lfr-2026.pdf
+
+17 JUILLET 2026| N°123 Bis                                                                                                   Prix : 5000 F CFA
+               LOI DE FINANCES
+              RECTIFICATIVE 2026
+     PARLEMENT
+ ________
+ Loi n°002/2026 du 17 juillet 2026 portant loi de finances rectificative de l’année
+ 2026…………................................................................................................................1
+   PRESIDENCE DE LA REPUBLIQUE
+ ________
+
+[...]
+
+« Article 221 nouveau : Les taux de TVA sont les suivants :
+1) Taux normal : 18% applicable à toutes opérations taxables à l’exclusion des opérations soumises au taux réduit de
+10%, de 5%, de 3% ou de 0%.
+2) Taux réduit : 10% applicable aux opérations de production, d’importation et de vente portant sur les produits
+suivants :
+-pièces détachées automobiles ;
+-essieux automobiles ;
+-carreaux de construction ;
+-pointes.
+                                               (Le reste sans changement)
+                                                           Page 5
+            17 JUILLET 2026                                                                          N° 123 Bis
+3) Taux réduit : 5% applicable aux opérations de production, d’importation et de vente portant sur les produits
+suivants :
+-journaux et magazines importés ;
+-eau minérale importée.
+                                               (Le reste sans changement)
+4) Taux réduit : 3% applicable aux opérations de production et de vente portant sur le fer à béton fabriqué au Gabon.
+5) Taux zéro : 0% applicable aux exportations, aux transports internationaux, aux opérations d’avitaillements en
+carburant et aux opérations d’entretien et réparation effectuées sur les aéronefs et navires affectés au trafic
+international.
+
+[...]
+
+                                                     TITRE 2 : DROITS D’ACCISES
+                                  Chapitre 1 : Champ d’application et taux des droits d’accises
+« Article 250 nouveau :
+                                Produits                                    Taux ad valorem         Taxe spécifique
+ Bières locales et boissons maltées locales                                      22%               120 FCFA par litre
+ Vins d’importation                                                              32 %              1750 FCFA par litre
+ Champagnes                                                                      32 %              2250 FCFA par litre
+ Cigarettes, cigares, cigarillos, tabacs, sachet ou cartouche de
+ nicotine, cigarette électronique, ustensiles appareils de                       32%              250 FCFA par paquet
+ vapotage (chicha ou autres composants)
+                                Chapitre 2 : Obligations déclaratives et modalités de perception
+« Article 251 nouveau : Les droits d’accises sont perçus selon les mêmes modalités qu’en matière de TVA, sur un
+imprimé fourni par l’Administration.
+        Les droits perçus sont destinés à alimenter le Fonds National pour le Développement du Sport ainsi qu’à
+financer des investissements spécifiques. »
+
+[...]
+
+textes règlementaires.
+                                                      Chapitre 2 : A l’importation
+                                                   Section 1 : Lutte contre la vie chère
+Article 59 : Les produits de premières nécessités importés dans le cadre de la lutte contre la vie chère sont exonérés de
+droits et taxes à l’importation. Pour bénéficier de ces avantages, les produits doivent être importés en l’état, tels qu’ils
+vont être mis à la consommation.
+Article 60 : Un Arrêté conjoint des Ministres des Finances et du Commerce détermine la liste des produits éligibles aux
+avantages consentis pour une période n’excédant pas six (6) mois.
+Article 61 : Les produits visés à l’article 59 ci-dessus sont exonérés des droits, taxes et prélèvements de toute nature.
+                         CHAPITRE 2 : DE L’EVALUATION DES RECETTES BUDGETAIRES

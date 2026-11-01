@@ -22,7 +22,8 @@
   "decisions": [
     "Le champ est déclaratif : le calculateur ne peut savoir si la marchandise a été dédouanée pour la consommation dans un autre État membre ou seulement acheminée en transit sous douane jusqu'à la frontière. Le pays d'expédition ne suffit pas à le déduire.",
     "« any duties » : l'art. 1 renvoie aux droits de douane et d'accise définis par chaque législation nationale ; les deux sont versés au pot commun (art. 32). DD, EXS et EXA sont donc servis à 0 %.",
-    "La TVA de destination reste calculée sur l'assiette nationale de la table tva_nationale.json."
+    "La TVA de destination reste calculée sur l'assiette nationale de la table tva_nationale.json.",
+    "Droits antidumping et de sauvegarde (codes AD et SAUV, backend/services/defense_commerciale.py) : droits de douane de la zone douanière commune, perçus au premier dédouanement comme le droit de douane ; servis à 0 % comme lui (ajout du 2026-10-31)."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Art. 31.4 : une marchandise entrée dans la SACU à un taux préférentiel doit, réexpédiée vers un autre État membre, la différence avec le droit normal. Le taux payé au premier dédouanement n'est pas connu du calculateur : la différence n'est pas calculée, la note de la réponse le signale.",

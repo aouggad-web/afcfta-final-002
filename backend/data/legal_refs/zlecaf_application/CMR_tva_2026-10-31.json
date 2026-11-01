@@ -1,0 +1,48 @@
+{
+ "schema_version": 1,
+ "objet": "Cameroun : TVA à l'importation position par position — biens exonérés par l'art. 128 du CGI (édition 2026), dont les biens de première nécessité de l'annexe I du titre II (art. 128, 6) a)) moins les exclusions de l'art. 128, 6) b), les journaux et périodiques (10)) et le matériel éolien (17)) ; ailleurs, taux général de 19,25 % (17,5 % et centimes additionnels communaux de 10 % du principal)",
+ "destination_iso3": "CMR",
+ "verified_at": "2026-10-31",
+ "etabli": true,
+ "evidence_level": "primaire — Code général des impôts du Cameroun, édition officielle de la Direction générale des impôts mise à jour au 1er janvier 2026, loi de finances 2026 incluse (art. 122, 128, 128 ter, 129, 142, C 83 et annexe I du titre II)",
+ "source": {
+  "url": "https://www.impots.cm",
+  "institution": "Direction générale des impôts du Cameroun"
+ },
+ "regle": {
+  "valeur": "Taux général 19,25 % (17,5 % et 10 % de centimes additionnels communaux). Exonérés : coqs et poules vivants (0105.11, 0105.94), poissons de 0302.11 à 0305.69 hors truites, saumons, foies, œufs et laitances, abats et morues de 0305.62, laits et crèmes de 04.01 et 04.02 (sauf 0402.99 sucré à 40 % ou plus), œufs à couver, blé dur, maïs autre que de semence, riz hors riz précuit et parfumé, farines de froment et de méteil, préparations pour enfants (1901.10.11), pain (1905.10, 1905.90.90), farines, sons et tourteaux pour l'alimentation animale (23.01 à 23.06), provende (2309.90), sel brut en vrac, pétrole brut, pétrole lampant, butane, insuline, quinine, antibiotiques, chapitre 30, engrais (31.01 à 31.05), cires dentaires, films pour rayons X, pesticides agricoles, herbicides, désinfectants, réactifs, préservatifs, gants de chirurgie, papier journal, livres, journaux et périodiques (49.02), moustiquaires, verrerie médicale et de laboratoire, stérilisateurs, fauteuils roulants, microscopes, électrocardiographes, 90.22, fauteuils de dentistes et mobilier médical, groupes électrogènes éoliens. Viande bovine importée, farine de maïs, farines de patate et de manioc et son de maïs : exonérés seulement « produits localement », taux général à l'importation.",
+  "verbatim": "Article 128.- Sont exonérés de la Taxe sur la Valeur Ajoutée : […] 6) a- les biens de première nécessité figurant à l’annexe 1, notamment:",
+  "verbatim_exclusions": "b- L’exonération prévue à l’alinéa 6 (a) ci-dessus ne s’applique pas aux produits ci-après :",
+  "verbatim_taxables": "Article 129.- (1) Sont soumises à la Taxe sur la Valeur Ajoutée, les opérations réalisées au Cameroun, non comprises dans la liste des exonérations prévues à l’article 128 ci-dessus, même lorsque le domicile ou le siège social du redevable réel est situé en dehors des limites territoriales du Cameroun.",
+  "verbatim_taux": "Article C 83.- (1) Le taux des centimes additionnels est fixé à dix pour cent (10 %) du principal de l’impôt sur le revenu des personnes physiques, de l’impôt sur les sociétés et de la taxe sur la valeur ajoutée.",
+  "reference": "CGI (édition 2026, DGI) art. 128, 6) a) et b), 10) et 17), art. 129 (1), 142 (1) a) et C 83 (1), annexe I du titre II",
+  "portee": "backend/data/zlecaf_cmr/tva_cgi2026.json, appliqué par scripts/build_socle._tva_cameroun au socle CMR : 212 positions exonérées, 11 positions qui réunissent biens exonérés et biens taxables (taux non servi), les 5 016 autres au taux général de 19,25 %. Les 141 positions que le tarif source marquait « EXO », sans ligne de TVA au socle, reçoivent la leur : 95 restent exonérées par le CGI, 5 deviennent mixtes, 41 passent au taux général.",
+  "texte_archive": "sources/CMR_tva.texte-extrait.txt",
+  "sha256": "db89c3044b7292365fcb70e1d39187bfddf18bdb94907bff400965a57e4fe764"
+ },
+ "decisions": [
+  "Le tarif d'où vient le crawl (« CEMAC Tarif des Douanes », PDF sans date) marque la TVA « EXO » sur 141 positions, qu'il laissait sans ligne de TVA. Le CGI 2026 est le texte en vigueur : l'art. 129 (1) soumet à la TVA tout ce que l'art. 128 n'exonère pas. Restent au taux général, faute d'être dans l'art. 128 ou son annexe I : volailles (02.07), préparations pour enfants de la 1901.10.12, alcaloïdes de la 2939.19, composés organiques de la 29.42, autres pesticides de la 3808.99, pneumatiques et moteurs d'aviation (4011.30, 8407.10), instruments et appareils médicaux des 90.18 (hors électrocardiographes), 90.19, 90.20 et 90.21, fauteuils de coiffeur (9402.10.20).",
+  "Nomenclature : l'annexe I cite des numéros nationaux à 10 chiffres sur le Système harmonisé récent ; le socle suit le tarif CEMAC à 8 chiffres de la nomenclature de 2007. Correspondances retenues : 0401.40 et 0401.50 → 0401.30 ; 0407.11 et 0407.19 (œufs fertilisés destinés à l'incubation) → 0407.00.10 « Œufs destinés à la reproduction » ; 1001.10 et 1001.19 (blé dur) → 1001.10.10 et 1001.10.90 ; 2710.12.23 (pétrole lampant) → 2710.11.23 ; 3407.00.10 (cires et compositions pour art dentaire) → 3407.00.20, seule ligne dentaire du socle ; 2309.90.10 (provende à 2 % ou plus) → la ligne 2309.20.00 du socle, qui en porte le libellé.",
+  "Poissons (« 030211 à 030569 ») moins l'art. 128, 6) b), lu dans la nomenclature du socle : salmonidés frais et congelés (0302.1x, 0303.1x et 0303.2x de 2007), foies, œufs et laitances (0302.70, 0303.80, 0305.20), saumons fumés (0305.41) et morues salées (0305.62) au taux général ; les autres poissons fumés (0305.49.9x) réunissent les truites fumées, exclues, et d'autres poissons, exonérés : taux non servi.",
+  "Positions mixtes (taux non servi) : l'annexe I n'exonère qu'une sous-position nationale à 10 chiffres que le socle ne distingue pas — 0402.99 (laits sucrés à moins de 40 %), 1006.30.90 (riz, hors riz précuit et parfumé), 2501.00.90 (sel brut en vrac), 2939.20 (quinine), 3808.91.10, 3808.91.90, 3808.92.10 et 3808.92.90 (insecticides et fongicides à usage agricole), 6304.93 et 6304.99 (moustiquaires).",
+  "« la viande bovine, à l’exception de la viande importée » et les farines et sons « produits localement » (1102.20, 1106.20, 2302.10) : exonérés seulement en production locale, taux général à l'importation.",
+  "Art. 128, 10) : « les opérations de composition, d’impression, d’importation et de vente des journaux et périodiques » — la 49.02 est exonérée (aucune position au socle CMR aujourd'hui). Art. 128, 17) : « les matériels et équipements d’exploitation des énergies solaire et éolienne » — groupes électrogènes à énergie éolienne (8502.31) ; le socle n'a pas de ligne pour les cellules photovoltaïques (8541.40), qui réunirait de toute façon diodes émettrices de lumière et cellules.",
+  "Annexe du titre I (équipements et matériels de l'agriculture, de l'élevage et de la pêche) : l'art. 122 la réserve aux « entreprises des secteurs de la production agricole, de l’élevage et de la pêche », en phase d'investissement. L'exonération dépend de l'importateur, pas de la position : elle n'est pas servie, comme les autres exonérations liées au régime ou à l'importateur."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Les 41 positions marquées « EXO » au tarif source et taxées ici (notamment les appareils médicaux des 90.18 à 90.21) : si la douane applique encore une exonération qui ne figure pas au CGI 2026, ces positions passeraient de 19,25 % à 0 %. Aucun texte en vigueur n'a été trouvé qui la fonde.",
+  "Art. 142 (2) : « Les taux sont applicables aussi bien pour les biens et/ou services produits localement que pour les biens importés. » Il ne concerne que les taux ; les exonérations « produits localement » de l'annexe I restent lues à la lettre.",
+  "Exonérations conditionnelles non servies : trafic international (art. 128, 2)), art. 241 du Code des douanes de la CEMAC (11)), matériels de lutte contre le VIH/SIDA « dans les conditions fixées par voie réglementaire » (15)), missions diplomatiques (16)), intrants et matériels des industries pharmaceutiques (6) a)), intrants de presse (10)), annexe du titre I (art. 122).",
+  "Positions de l'annexe I absentes du socle CMR : 1905.10 et 1905.90.90 (pain), 38.22 (réactifs), 49.01 (livres), 49.02 (journaux). Les règles existent : elles s'appliqueront si le socle les reçoit."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/CMR_tva.texte-extrait.txt",
+   "sha256": "db89c3044b7292365fcb70e1d39187bfddf18bdb94907bff400965a57e4fe764"
+  },
+  {
+   "document_non_archive": "Code général des impôts, édition officielle DGI mise à jour au 1er janvier 2026 (1 034 p.), www.impots.cm ; versé sur la PR #606 (data/cameroon/docs_officiels/CGI-2026-VERSION-FR.pdf)",
+   "pdf_sha256": "245aa9dd0aa7a19100a90d905c025c2d52ed59e744606597a7ca7a057d2dd11d"
+  }
+ ]
+}

@@ -17,7 +17,7 @@ import { chiffres } from '../../utils/nombres';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
-const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW', MLI: 'XOF', KEN: 'KES', TZA: 'TZS', ZAF: 'ZAR', CMR: 'XAF', EGY: 'EGP', COD: 'CDF' };
+const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW', MLI: 'XOF', KEN: 'KES', TZA: 'TZS', ZAF: 'ZAR', CMR: 'XAF', EGY: 'EGP', COG: 'XAF', GAB: 'XAF', COD: 'CDF' };
 
 const STATUTS = {
   CALCULE: { fr: 'Calculé', en: 'Calculated' },
@@ -59,6 +59,7 @@ export default function ExportCalculator({ language = 'fr' }) {
   const [questions, setQuestions] = useState({});
   const [reponse, setReponse] = useState(null);
   const [transforme, setTransforme] = useState(false);
+  const [transformeAilleurs, setTransformeAilleurs] = useState(null);
   const [iso3, setIso3] = useState('');
   const [code, setCode] = useState('');
   const [valeur, setValeur] = useState('');
@@ -97,6 +98,7 @@ export default function ExportCalculator({ language = 'fr' }) {
     setCode('');
     setReponse(null);
     setTransforme(false);
+    setTransformeAilleurs(null);
     setResultat(null);
   };
 
@@ -126,6 +128,9 @@ export default function ExportCalculator({ language = 'fr' }) {
     if (question && reponse !== null) {
       corps[question.champ] = reponse;
       if (reponse && question.question_transformation) corps.produit_minier_transforme = transforme;
+      if (reponse === false && question.champ_si_non && transformeAilleurs !== null) {
+        corps[question.champ_si_non] = transformeAilleurs;
+      }
     }
     const demandee = version.current;
     try {
@@ -222,6 +227,15 @@ export default function ExportCalculator({ language = 'fr' }) {
               <label><input type="radio" name="reponse-exportateur" checked={reponse === true} onChange={() => setReponse(true)} /> {fr ? 'Oui' : 'Yes'}</label>
               <label><input type="radio" name="reponse-exportateur" checked={reponse === false} onChange={() => setReponse(false)} /> {fr ? 'Non' : 'No'}</label>
             </div>
+            {reponse === false && question.question_si_non && (
+              <div className="space-y-1" data-testid="export-question-si-non">
+                <p className="text-sm">{fr ? question.question_si_non : question.question_si_non_en}</p>
+                <div className="flex gap-4 text-sm">
+                  <label><input type="radio" name="transforme-ailleurs" checked={transformeAilleurs === true} onChange={() => setTransformeAilleurs(true)} /> {fr ? 'Oui' : 'Yes'}</label>
+                  <label><input type="radio" name="transforme-ailleurs" checked={transformeAilleurs === false} onChange={() => setTransformeAilleurs(false)} /> {fr ? 'Non' : 'No'}</label>
+                </div>
+              </div>
+            )}
             {reponse && question.question_transformation && (
               <label className="flex gap-2 text-sm">
                 <input type="checkbox" checked={transforme} onChange={(e) => setTransforme(e.target.checked)} />
@@ -233,7 +247,8 @@ export default function ExportCalculator({ language = 'fr' }) {
 
         <Button
           onClick={calculer}
-          disabled={!iso3 || !code || valeur === '' || changeInvalide || (question && reponse === null) || chargement}
+          disabled={!iso3 || !code || valeur === '' || changeInvalide || (question && reponse === null)
+            || (question && question.question_si_non && reponse === false && transformeAilleurs === null) || chargement}
           data-testid="export-calculer"
         >
           {fr ? 'Calculer les droits de sortie' : 'Calculate export duties'}

@@ -1,0 +1,351 @@
+{
+ "_objet": "TVA à l'importation au Gabon : positions exonérées (art. 210) et à taux réduit (art. 221) du CGI, rédaction de la loi de finances 2026 (n° 041/2025) et de la loi de finances rectificative 2026 (n° 002/2026). Préfixes de la nomenclature du socle (CEMAC, 8 chiffres) ; « exclusions » : préfixes écartés de la règle. La première règle qui s'applique l'emporte (l'exonération avant le taux réduit) ; les autres positions gardent le taux normal de 18 %. « taux » null : le taux dépend d'une condition absente de la position.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/GAB_tva_2026-10-29.json",
+ "source": "Code général des impôts du Gabon, art. 210 et 221 (loi de finances 2026, n° 041/2025 ; loi de finances rectificative 2026, n° 002/2026)",
+ "regles": [
+  {
+   "prefixes": [
+    "040110",
+    "040120",
+    "040210"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « lait liquide ; lait en poudre ; lait concentré ; lait non concentré ; lait sucré ; lait non sucré »."
+  },
+  {
+   "prefixes": [
+    "0401",
+    "0402"
+   ],
+   "taux": null,
+   "motif": "Lait exonéré (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « lait liquide ; lait en poudre ; lait concentré ; […] lait sucré »), crème de lait au taux normal de 18 % : au-delà de 6 % de matières grasses (1,5 % en poudre), la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "040310"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « yaourts »."
+  },
+  {
+   "prefixes": [
+    "040510"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « beurre »."
+  },
+  {
+   "prefixes": [
+    "151710"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « margarine »."
+  },
+  {
+   "prefixes": [
+    "2501"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « sel »."
+  },
+  {
+   "prefixes": [
+    "0201",
+    "0202",
+    "0203",
+    "0204",
+    "0205",
+    "0207",
+    "021011",
+    "021012",
+    "021019",
+    "021020"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « viandes et volailles d'importation »."
+  },
+  {
+   "prefixes": [
+    "0208",
+    "02109"
+   ],
+   "taux": null,
+   "motif": "Viandes exonérées (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « viandes et volailles d'importation »), abats et farines d'abats au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "0302",
+    "0303",
+    "0304"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « poissons de pêche ».",
+   "exclusions": [
+    "030270",
+    "030380"
+   ]
+  },
+  {
+   "prefixes": [
+    "1701"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « sucre »."
+  },
+  {
+   "prefixes": [
+    "1006"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « riz »."
+  },
+  {
+   "prefixes": [
+    "200520"
+   ],
+   "taux": null,
+   "motif": "Conserves de légumes exonérées (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10)), mais la position comprend aussi les chips et flocons de pommes de terre, au taux normal de 18 %."
+  },
+  {
+   "prefixes": [
+    "2002",
+    "2005",
+    "200891"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « conserves de légumes, tomates double concentrée, tomates entières »."
+  },
+  {
+   "prefixes": [
+    "160413"
+   ],
+   "taux": null,
+   "motif": "Conserves de sardines et de pilchards exonérées (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10)), sardinelles et sprats au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "160415"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « conserves de maquereaux »."
+  },
+  {
+   "prefixes": [
+    "1902"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « pâtes alimentaires ».",
+   "exclusions": [
+    "19024000"
+   ]
+  },
+  {
+   "prefixes": [
+    "4801"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « papiers journal »."
+  },
+  {
+   "prefixes": [
+    "482020"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « cahiers et manuels scolaires »."
+  },
+  {
+   "prefixes": [
+    "30"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « médicaments ; produits pharmaceutiques »."
+  },
+  {
+   "prefixes": [
+    "2523"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « ciment ».",
+   "exclusions": [
+    "25231000"
+   ]
+  },
+  {
+   "prefixes": [
+    "251710"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « gravier »."
+  },
+  {
+   "prefixes": [
+    "2505"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10) : « sable »."
+  },
+  {
+   "prefixes": [
+    "72104100",
+    "72106100",
+    "72107000"
+   ],
+   "taux": null,
+   "motif": "Tôles : exonérées si elles sont « bac de dimension 5/10 et 6/10 » ou « de dimension inférieure ou égale à 3/10 » (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 10)), à 18 % sinon — l'épaisseur n'est pas dans la position."
+  },
+  {
+   "prefixes": [
+    "85023100"
+   ],
+   "taux": 0.0,
+   "reference": "Exonérée : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 210 nouveau, 19) : « L'importation ou l'acquisition par les entreprises et les personnes physiques de matériels et équipements servant à la production et à la promotion des énergies renouvelables »."
+  },
+  {
+   "prefixes": [
+    "87029010",
+    "87029020",
+    "87049000",
+    "87119000"
+   ],
+   "taux": null,
+   "motif": "« Autres » motorisations : les véhicules électriques sont exonérés (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 210 nouveau, 20) : « L'importation et la commercialisation des véhicules électriques »), les autres soumis à 18 % — la motorisation n'est pas dans la position."
+  },
+  {
+   "prefixes": [
+    "27111300"
+   ],
+   "taux": null,
+   "motif": "La loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 210 nouveau, 12), exonère « Les ventes de gaz butane », sans viser l'importation — TVA à l'importation à vérifier."
+  },
+  {
+   "prefixes": [
+    "22011000"
+   ],
+   "taux": null,
+   "motif": "Eau minérale importée au taux réduit de 5 % (loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 221 nouveau, 3)), eaux gazéifiées au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "9507",
+    "56081100"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « matériel de pêche »."
+  },
+  {
+   "prefixes": [
+    "84072100"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « moteurs hors-bord »."
+  },
+  {
+   "prefixes": [
+    "34022000"
+   ],
+   "taux": null,
+   "motif": "Lessive au taux réduit de 10 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau), autres préparations pour lessives et pour le nettoyage conditionnées pour la vente au détail au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "72131000",
+    "72142000"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « fer à béton »."
+  },
+  {
+   "prefixes": [
+    "847130",
+    "847141",
+    "84714900",
+    "84715000"
+   ],
+   "taux": null,
+   "motif": "« ordinateurs fixes et portables bureautiques » au taux réduit de 10 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau), serveurs et autres machines au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "200892"
+   ],
+   "taux": null,
+   "motif": "Mélanges : conserves de fruits au taux réduit de 10 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau), fruits à coque et autres parties de plantes au taux normal de 18 % — la composition n'est pas dans la position."
+  },
+  {
+   "prefixes": [
+    "200899"
+   ],
+   "taux": null,
+   "motif": "Conserves de fruits au taux réduit de 10 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau), autres parties comestibles de plantes au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "2008"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « conserves de fruits ».",
+   "exclusions": [
+    "200811",
+    "200819"
+   ]
+  },
+  {
+   "prefixes": [
+    "8708"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 221 nouveau : « pièces détachées automobiles ; essieux automobiles »."
+  },
+  {
+   "prefixes": [
+    "6907",
+    "6908"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 221 nouveau : « carreaux de construction »."
+  },
+  {
+   "prefixes": [
+    "73170010"
+   ],
+   "taux": 10.0,
+   "reference": "Taux réduit de 10 % : loi de finances rectificative 2026 (n° 002/2026, JO n° 123 Bis), art. 221 nouveau : « pointes »."
+  },
+  {
+   "prefixes": [
+    "1101",
+    "1102"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « farine »."
+  },
+  {
+   "prefixes": [
+    "210210"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « levure »."
+  },
+  {
+   "prefixes": [
+    "210220"
+   ],
+   "taux": null,
+   "motif": "Levures mortes au taux réduit de 5 % (loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « levure »), autres micro-organismes monocellulaires morts au taux normal de 18 % : la position réunit les deux."
+  },
+  {
+   "prefixes": [
+    "1109"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « gluten »."
+  },
+  {
+   "prefixes": [
+    "0407"
+   ],
+   "taux": 5.0,
+   "reference": "Taux réduit de 5 % : loi de finances 2026 (n° 041/2025, JO n° 96 Quater), art. 221 nouveau : « œufs »."
+  }
+ ]
+}

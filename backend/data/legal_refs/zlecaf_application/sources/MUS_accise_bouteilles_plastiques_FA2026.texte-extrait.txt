@@ -1,0 +1,54 @@
+Maurice — droit d'accise sur les bouteilles plastiques contenant des marchandises (Finance Act 2026)
+Extrait établi le 2026-10-31 (pdftotext -layout) ; seuls les passages relatifs à cette accise sont reproduits.
+
+======================================================================================================
+1. Finance Act 2026 (Act No. 14 of 2026), texte publié par la Mauritius Revenue Authority
+   URL : https://www.mra.mu/download/FinanceAct2026.pdf
+   sha256 : 9ff6333602d6a8e913875356ae2cfb9b04f896b4dfe59be127a84a7d492ab438
+------------------------------------------------------------------------------------------------------
+[art. 4 (a)(ii) : définitions insérées dans l'Excise Act, s. 2]
+                            Acts 2026                                455
+4.   Excise Act amended
+     The Excise Act is amended –
+     (a)   in section 2 –
+           (i)    in the definition “excise duty”, by repealing
+                  paragraph (b) and replacing it by the following
+[art. 4 (b)]
+                  paragraph –
+                  (b)   includes any penalty or interest;
+           (ii)   by inserting, in the appropriate alphabetical order,
+                  the following new definitions –
+                  “plastic” has the same meaning as in the
+                  Environment (Control of Single Use Plastic Products)
+                  Regulations 2020;
+                  “plastic bottle” means a container –
+                  (a)   manufactured from plastic;
+                  (b)   of any shape; and
+                  (c)   whose exterior height exceeds the exterior width
+                        of its base;
+[...]
+[Fourth Schedule : First Schedule, Part I, de l'Excise Act]
+                                                                     absolute
+                                                                     alcohol
+[...]
+[art. 4 (e)(ii)(H) : Part IA, Sub-Part A, de la First Schedule de l'Excise Act]
+          Scheme) Regulations 2023
+102. (1) Any passenger importing Plastic           bottles 0 per cent
+         goods under item E9 of containing goods of                 the
+         Part II of the First Schedule not meant for sale excise duty
+         to the Customs Tariff Act                         payable on
+[...]
+[art. 28 (2)]
+                            4905.91.10” and replacing them by the
+                            words “H.S. Code 4905.20.10”;
+             (C)   in paragraph (n), by deleting the words
+                   “produced in Mauritius”;
+      (ii)   in item 6, by repealing paragraph (2) and replacing it
+             by the following paragraph –
+
+======================================================================================================
+2. Integrated Customs Tariff « As at 01 October 2026 », Mauritius Revenue Authority
+   URL : https://www.mra.mu/download/TariffInf011026.pdf
+   sha256 : c631ca50bfe4d5e8117983c35822af2dca858aa19285f5ce7d25de23141b035a
+   (ligne 3923.30.10 « --- Plastic bottles containing goods » : unité U, droit général 0, accise Rs 2 per unit,
+   TVA 15, colonnes préférentielles dont AfCFTA à 0 ; relevée dans le PDF, p. 298 environ)

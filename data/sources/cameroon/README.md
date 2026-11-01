@@ -38,3 +38,9 @@ Politique de poids adaptée : le Kenya archive des PDF jusqu'à 4,6 Mo tels quel
 ## État de l'enregistrement
 
 Juridiction CMR : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` (`backend/services/national_legal_calculation_service.py`). Bien que TVA, accises et CAC soient vérifiés sur texte primaire, il manque : (1) le TEC CEMAC pour calculer un `base_cet_rate`, (2) le branchement du CAC comme prélèvement asis sur la TVA plutôt que sur la valeur en douane (le moteur générique ne le permet pas en l'état). ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+
+## Prélèvement OHADA (relevé du 2026-10-30)
+
+- `official/omc-wt-tpr-s-445-annexe-cameroun.pdf` : OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), annexe Cameroun (https://www.wto.org/french/tratop_f/tpr_f/s445-02_f.pdf). § 3.26 : TCI, CCI de la CEEAC et prélèvement OHADA (0,05 %) « appliqués à la valeur c.a.f. ».
+- Loi de finances 2026 et circulaire n° 410/MINFI/DGD relues par OCR : ni la CCI ni le prélèvement OHADA n'y figurent ; la loi met en œuvre le Tarif extérieur commun harmonisé CEEAC-CEMAC au 1er janvier 2026 (art. 22), dont le barème n'a pas été trouvé.
+- Fiche : `backend/data/legal_refs/zlecaf_application/CMR_prelevement_ohada_2026-10-30.json`.
