@@ -103,6 +103,10 @@ Pire, la CI publie ce log : `.github/workflows/opportunites_module.yml` démarre
 - Cesser de versionner les `.emergent/cron/*.sh` de la plateforme ; surveiller `/etc/cron.d` et `.emergent/cron/webhook-crons` ; après tout soupçon de compromission, **reconstruire le pod et son volume** plutôt que re-synchroniser.
 - Sortir `WEBHOOK_CRON_SECRET` de la ligne de commande (fichier/`--config`) et retirer `--location-trusted`.
 
+> **Corrigé dans la PR #750 (01/11/2026), côté script.** `sync_emergent.sh` ne déploie plus que `main` : toute autre valeur de `BRANCH` est refusée avant la moindre commande git. La bascule est forcée (`git fetch` avec refspec explicite, puis `git checkout -f -B main origin/main`), si bien qu'un pod resté sur une autre branche avec des modifications locales, un fichier non suivi en conflit ou un clone mono-branche n'interrompt plus le déploiement (l'ancienne commande échouait dans ces trois cas, testé). L'installation du frontend est passée à `yarn install --frozen-lockfile --ignore-scripts`, sans repli : le lockfile était à jour et le build est identique à l'octet. Une nouvelle étape 1bis, non bloquante, signale toute ligne de `webhook-crons` hors de la grammaire d'Emergent, une variable répétée, un dispatch vers un hôte hors `emergentagent.com` (y compris via `user@hôte` dans l'URL) et une divergence entre les deux fichiers ; l'alerte est rappelée en fin de déploiement. Les scripts de la plateforme (`.emergent/cron/*.sh`) n'ont pas été modifiés : Emergent les régénère. Une relecture adverse indépendante a trouvé quatre contournements dans la première version du contrôle ; tous sont corrigés et couverts par des tests (rendus réels d'Emergent : aucune fausse alerte).
+>
+> **Reste à faire (exploitant) :** activer une ruleset GitHub sur `main` (PR obligatoire, 4 checks de CI requis, force-push et suppression bloqués, **aucune exception**, car tous les agents agissent sous l'identité du propriétaire) ; régler « Save to GitHub » d'Emergent sur une branche dédiée ; ne plus lancer `production_etl.yml` depuis `main` (il y pousse directement). Non traité : `pip install --require-hashes` (Phase 2), et la branche npm du script, qui n'est durcie que lorsque yarn est présent, ce qui est le cas sur Emergent.
+
 ---
 
 ## 3. Constats ÉLEVÉS 🟠
@@ -218,7 +222,7 @@ Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 
 1. **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS*
 2. ✅ **Masquer les secrets dans les journaux** (formateur, httpx à WARNING, `uvicorn.log` filtré en CI) — fait dans la PR #750 ; rotation inutile, aucun jeton n'étant configuré (C2). — *XS*
 3. **Vérifier les secrets de prod** (E3) : `JWT_SECRET` n'est pas une valeur d'exemple (✅ vérifié) ; reste le contrôle de sa longueur et du mot de passe admin. Garde-fou de démarrage ajouté dans la PR #750. — *S*
-4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S*
+4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S* — script corrigé dans la PR #750 ; ruleset GitHub à activer par l'exploitant.
 5. ✅ **`HTTPS_ENABLED=true`** en production (M8), avec `APP_ENV=production` — fait et vérifié le 01/11/2026. — *XS*
 
 ### Phase 1 — Autorisation, DoS et durcissement (S/M)
