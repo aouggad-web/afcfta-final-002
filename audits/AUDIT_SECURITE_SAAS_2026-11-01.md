@@ -64,7 +64,9 @@ Un attaquant disposant du domaine peut monter de fausses pages de connexion/paie
 >
 > **Correctif appliqué.** `backend/log_redaction.py` : formateur qui masque les paramètres d'URL secrets (`token`, `subscription-key`, `api_key`, `key`…) dans toute ligne journalisée, traceback comprise ; httpx et httpcore relevés à WARNING. `backend/server.py` utilise cette configuration. Le workflow Opportunités filtre `uvicorn.log` avant de le publier. Tests : `backend/tests/test_log_redaction.py`. Second chemin de fuite trouvé et couvert : `real_trade_data_service.py` journalise `str(e)` des erreurs httpx, dont le texte contient l'URL complète.
 >
-> **Reste à faire, non bloquant :** les messages propres à uvicorn (exception non interceptée) ne passent pas par ce formateur ; le filtre CI les couvre pour l'artefact, mais pas les journaux du superviseur Emergent. Transmettre le jeton par en-tête si l'API amont l'accepte supprimerait ce dernier cas.
+> **Clé UN Comtrade (le projet en possède une).** Vérifié le 01/11/2026 : le repli Comtrade est désactivé en production (`/api/oec/trade-series/sources/NGA` : `enabled: false`) et aucun workflow CI n'utilise la clé, qui n'a donc pas été exposée ; rotation inutile. La clé passe désormais dans l'en-tête `Ocp-Apim-Subscription-Key` et non plus dans l'URL (`backend/services/comtrade_service.py`, `scripts/update_comtrade_data.py`, y compris l'appel WTO du script), comme le faisait déjà `wto_service.py` ; l'API reconnaît l'en-tête (testé avec une clé factice : « invalid » et non « missing subscription key »). Tests : `backend/tests/test_comtrade_key_header.py`. La clé Anthropic, transmise en en-tête par le SDK officiel, n'a jamais été concernée.
+>
+> **Reste à faire, non bloquant :** pour le jeton OEC (non configuré à ce jour), les messages propres à uvicorn (exception non interceptée) ne passent pas par le formateur ; le filtre CI les couvre pour l'artefact, mais pas les journaux du superviseur Emergent.
 
 Le jeton d'API OEC (plan payant) est passé **en paramètre d'URL** :
 - `backend/services/real_trade_data_service.py:41` : `enriched["token"] = OEC_API_TOKEN` ;

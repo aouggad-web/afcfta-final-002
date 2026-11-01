@@ -71,12 +71,14 @@ class ComtradeService:
             "reporterCode": reporter_code,
             "partnerCode": partner_code,
             "period": period,
-            "subscription-key": api_key,
         }
+        # Clé en en-tête, jamais dans l'URL : une URL finit dans les journaux,
+        # les proxys et les messages d'erreur (voir log_redaction.py).
+        headers = {"Ocp-Apim-Subscription-Key": api_key}
 
         for attempt in range(1, max_retries + 1):
             try:
-                response = requests.get(self.BASE_URL, params=params, timeout=30)
+                response = requests.get(self.BASE_URL, params=params, headers=headers, timeout=30)
                 self.calls_today += 1
 
                 if response.status_code == 200:
@@ -90,7 +92,7 @@ class ComtradeService:
                         self.rotate_to_secondary()
                         api_key = self._get_api_key()
                         if api_key:
-                            params["subscription-key"] = api_key
+                            headers["Ocp-Apim-Subscription-Key"] = api_key
                     continue
 
                 if response.status_code in (401, 403):
@@ -98,7 +100,7 @@ class ComtradeService:
                         return None
                     api_key = self._get_api_key()
                     if api_key:
-                        params["subscription-key"] = api_key
+                        headers["Ocp-Apim-Subscription-Key"] = api_key
                     continue
 
                 # Non-retryable error
