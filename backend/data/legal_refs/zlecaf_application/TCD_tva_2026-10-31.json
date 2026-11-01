@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "objet": "Tchad : TVA à l'importation — taux général de 19,25 % (17,5 %, CGI art. 238, et centimes additionnels de 10 % du principal, loi de finances 2024, art. 14) au lieu des 18 % du CGI 2016, et exonérations position par position de l'art. 230 du CGI (15°, liste réécrite par la loi de finances 2026 ; 24°, maintenu)",
+ "destination_iso3": "TCD",
+ "verified_at": "2026-10-31",
+ "etabli": true,
+ "evidence_level": "primaire — loi n° 008/AN/SENAT/2025 portant loi de finances pour 2026, publiée par le ministère des Finances (ecofinances.gouv.td), PDF scanné, art. 31 (art. 230 du CGI), 32 (art. 238) et 73 (art. 14 de la loi de finances 2024), lus par OCR et relus sur l'image",
+ "source": {
+  "url": "https://ecofinances.gouv.td/wp-content/uploads/2026/06/Loi-n008-AN-SENAT-2025-Portant-loi-de-Finances-2026-LF-2026.pdf",
+  "institution": "Ministère des Finances, du Budget et de l'Économie (Tchad)",
+  "sha256_document_complet": "7bc46241a7c7586d9eece4fb5c95a6587ba637732480b7b4c8cfbf31112d7fd2"
+ },
+ "regle": {
+  "valeur": "Taux général 19,25 % (17,5 % et 10 % de centimes additionnels). Exonérés (art. 230, 15°) : insuline, antibiotiques, chapitre 30, 40.14, gants de chirurgie, films pour rayons X, verrerie de lunetterie, stérilisateurs, fauteuils roulants, lunettes correctrices, 90.18 à 90.22, fauteuils de dentistes et mobilier médical, viandes et volailles (chapitre 02), laits (04.01, 04.02), préparations pour enfants, livres et journaux, semences végétales et animales, engrais (chapitre 31), œufs à couver, machines agricoles, d'aviculture et d'irrigation désignées, tracteurs agricoles, pesticides et herbicides désignés, transformateurs à diélectrique liquide, carbonate de calcium, colorants dispersés, matières plastiques des 39.01 à 39.11 et 39.15, farine de soja, concentrés de la 3302.10, bandes d'aluminium pour l'industrie alimentaire. Exonérés aussi (art. 230, 24°) : machines des 84.32, 84.33 (hors tondeuses à gazon), 84.34 et 84.36, filets de pêche et articles de pêche (95.07).",
+  "verbatim": "Article 230 (nouveau) : Sont exonérés de la taxe sur la valeur ajoutée : […] 15° Les produits figurant sur la liste ci-dessous :",
+  "verbatim_taux": "1° 17,5 % applicable à toutes les opérations taxables à l’exclusion des taux réduits ;",
+  "verbatim_centimes": "(2) Le taux des centimes additionnels est fixé à 10 % du principal de l’impôt concerné.",
+  "verbatim_materiel_agricole": "24° Les petits matériels de pêches, les engins et matériels agricoles ;",
+  "reference": "CGI art. 230, 15° (loi de finances 2026, art. 31) et 24° ; art. 238, I, 1° (loi de finances 2026, art. 32) ; loi de finances 2024, art. 14 (loi de finances 2026, art. 73)",
+  "portee": "backend/data/zlecaf_tcd/tva_lf2026.json, appliqué par scripts/build_socle._tva_tchad au socle TCD : 271 positions exonérées, 45 dont la position ne dit pas si le bien listé est visé (taux non servi), les 4 923 autres au taux général de 19,25 % (18 % auparavant).",
+  "texte_archive": "sources/TCD_LF2026_tva.texte-extrait.txt",
+  "sha256": "050778bdc5f61cfbbef2b0f2256e8e952f03ef667a34b8bb66626e222e38182d"
+ },
+ "decisions": [
+  "Taux : le CGI 2016 (art. 238) portait 18 % ; la loi de finances 2026 cite l'art. 238 « ancien » à 17,5 % et le maintient dans la rédaction nouvelle. La loi de finances 2024 (art. 14, réécrit par la loi de finances 2026, art. 73) institue « au profit des Conseils Provinciaux et des Communes » des centimes additionnels sur la TVA, « 10 % du principal », qui « suivent le sort des éléments qui leur servent de base » : 17,5 % × 1,1 = 19,25 %, à l'importation comme à l'intérieur.",
+  "Liste du 15° : la loi désigne des positions par leur numéro ; quand le numéro existe et que le libellé nomme les biens de la position, toute la position est exonérée (« 90.18.11à 9022.90 Appareils médicaux » : 90.18 à 90.22 entières ; « 3901 et 3902 Polyéthylène » : les deux positions). Numéros d'une autre nomenclature ramenés au socle (CEMAC 2007) : 2937.91 → 2937.12 (insuline) ; 0407.11 → 0407.00.10 ; 8424.41, 8424.49 et 8424.82 → 8424.81 ; 8432.31 et 8432.39 → 8432.30 ; 8432.41 et 8432.42 → 8432.40 ; 8701.91 à 8701.95 → 8701.90.11, seule ligne des tracteurs agricoles ; 9402.10.11 → 9402.10.10 ; « 9402.1019 Autres mobiliers pour la médecine » → 9402.90 ; « 3007.0090 Cire pour art dentaire » → 3407.00.20, ligne dentaire de la 34.07.",
+  "Taux non servi (45 positions) : la loi vise les seuls biens d'un usage (« de systèmes photovoltaïques », « de systèmes éoliens », « solaires », « pour industrie alimentaire », « pour la plantation d'arbre-semences ») dans une position qui en contient d'autres ; ou elle donne un numéro qui ne correspond pas au bien (« 84.14.60.00 Aérateur » : hottes ; « 8501.10.00 Module photovoltaïque » : petits moteurs ; « 8410. Pales d’éoliennes » : turbines hydrauliques ; « 39.18 Sous-soleuses » : revêtements de sols ; « 87.16.10.00 Remorques pour tracteurs » : caravanes ; « 85.09.40.00 Déchiqueteuses » : broyeurs ménagers ; « 87.05.90.00 Véhicule frigorifique » ; « 04 04 90 00 Lactosérum », qui relève de la 0404.10) ; ou la position ne distingue pas le bien (« 2930.2100 Quinine » : 2939.20 avec les autres alcaloïdes du quinquina ; « 3204 Colorants dispersés » : la 3204.11 est exonérée, les autres colorants sans taux).",
+  "Art. 230, 24° (« Les petits matériels de pêches, les engins et matériels agricoles »), maintenu : les positions qui ne contiennent que des machines agricoles (84.32, 84.33 hors tondeuses à gazon 8433.11 et 8433.19, 84.34, 84.36), les filets de pêche (5608.11) et les articles de pêche (95.07) sont exonérés. Les autres points d'usage (22° intrants utilisés par les producteurs, 25°, 26°, 31° « dans les conditions fixées par voie réglementaire », 32° énergies renouvelables, 35°, 36°) dépendent de la destination ou de l'acquéreur : non servis position par position.",
+  "Taux réduit de 9 % (art. 238, I, 2° nouveau) : il vise « les opérations de production et de vente » de sucre, huile, lait, viande, savon, textile, fer à béton et « les produits et sous-produits de l'industrie agroalimentaire locale ». L'importation n'est ni une production ni une vente sur le territoire : taux général à l'importation (les viandes et les laits sont de toute façon exonérés par le 15°)."
+ ],
+ "ce_que_cela_ne_tranche_pas": [
+  "Taux réduit de 9 % : la rédaction de 2026 a retiré le mot « locaux » (« produits locaux ci-après » en 2025). Si l'administration l'applique aux importations de sucre, huile, yaourt, beurre, fromage, savon, textile et fer à béton, ces positions passeraient de 19,25 % à 9,9 % (9 % et centimes).",
+  "« 05 Pain Farine et froment » : le chapitre 05 du tarif ne contient ni pain, ni farine, ni froment ; le numéro est erroné et la règle n'est pas appliquée (même lecture qu'en Centrafrique et au Congo). Si l'administration exonère le pain (19.05), la farine (11.01) et le froment (10.01), ces positions passeraient à 0 %.",
+  "Biens de la liste sans numéro (équipements de laboratoires vétérinaires, chaîne de froid, etc.) : non servis.",
+  "Positions de la liste absentes du socle TCD : 38.22, 49.01, 49.02, 85.41.42 et 85.41.43 (cellules photovoltaïques, nomenclature de 2022) ; les règles existent pour 49.01.91 et 49.02."
+ ],
+ "documents_archives": [
+  {
+   "texte_archive": "sources/TCD_LF2026_tva.texte-extrait.txt",
+   "sha256": "050778bdc5f61cfbbef2b0f2256e8e952f03ef667a34b8bb66626e222e38182d"
+  },
+  {
+   "fichier_archive": "sources/TCD_LF2026_tva.extrait.pdf",
+   "sha256": "a0b79b1f33a160fcee4b85e895b7e74113fcbd5ebec1d8eb45a9d2652c75e3af"
+  }
+ ]
+}

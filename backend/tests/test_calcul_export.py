@@ -473,6 +473,37 @@ def test_cog_positions_ambigues_a_etablir(client):
         assert ligne["montant"] is None, code
 
 
+def test_cog_redevance_informatique_a_l_exportation(client):
+    """LF 2026, point 25 : 2 % à l'exportation ; pétrole brut exonéré (LFR 2021, point 41) ; produit transformé
+    (0,5 % en 2021, non repris en 2026) ou sans réponse : à établir."""
+    brut = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False)
+    assert (brut["etat"], _ligne(brut, "RI.EXP")["montant"]) == ("COMPLET", pytest.approx(20_000))
+    grume = _export(client, pays="COG", code_sh="44034914", valeur=1_000_000, devise="XAF", produit_fini=False)
+    assert _ligne(grume, "RI.EXP")["montant"] == pytest.approx(20_000)
+    petrole = _export(client, pays="COG", code_sh="27090010", valeur=1_000_000, devise="XAF", produit_fini=False)
+    assert _ligne(petrole, "RI.EXP")["montant"] == pytest.approx(0)
+    for reponse in (True, None):
+        corps = {"pays": "COG", "code_sh": "85171200", "valeur": 1_000_000, "devise": "XAF"}
+        if reponse is not None:
+            corps["produit_fini"] = reponse
+        ligne = _ligne(client.post("/calcul/export", json=corps).json()["export"], "RI.EXP")
+        assert ligne["montant"] is None and "0,5 %" in ligne["note"], reponse
+
+
+def test_cog_caoutchouc_naturel_et_plan_de_resilience(client):
+    """Latex et gommes naturelles : exsudats d'arbres que le texte ne nomme pas, à établir ; maïs 4 % et charbon de
+    bois avec la note des arrêtés n° 26621 et 26622 (plan de résilience 2022-2023)."""
+    latex = _ligne(_export(client, pays="COG", code_sh="40011000", valeur=1_000_000, devise="XAF",
+                           produit_fini=False), "EXPORT")
+    assert latex["montant"] is None and "exsudats" in latex["note"]
+    mais = _ligne(_export(client, pays="COG", code_sh="10059000", valeur=1_000_000, devise="XAF", produit_fini=False),
+                  "EXPORT")
+    assert mais["montant"] == pytest.approx(40_000) and "26622" in mais["note"]
+    charbon = _ligne(_export(client, pays="COG", code_sh="44021000", valeur=1_000_000, devise="XAF",
+                             produit_fini=False), "EXPORT")
+    assert charbon["montant"] is None and "26622" in charbon["note"]
+
+
 def test_egy_droit_par_tonne_en_livres(client):
     """Circulaires de la douane : ferrailles inox 9 000, zinc 10 000 (décret 273/2026), talc concassé 1 800."""
     for code, montant in (("7204210000", 90_000), ("7903900000", 100_000), ("2526200030", 18_000)):

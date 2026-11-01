@@ -364,9 +364,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-31",
-      "sha256": "686495830aa1c382ad52c39b089d0cac9ba2e8451321136566d8794d6be5c9e7",
-      "notes_sha256": "fbfc9c2193c5ddc19bc0a3e6a00c2b18b5a91d76df6e1f2c945b7a79a3c54f47",
-      "socle_sha256": "7b6d0288e4152a3ef34590c99f8220271c9303ad42e0b61638e0a34ca9c49e17",
+      "sha256": "ffa60807c088c37bc8d681716bda89b53107791bb4af948d4bb6ea2611d8b388",
+      "notes_sha256": "cdee30fb6d1d76cbf48607876a8e8ca784a6860b44c4ff52e6d0cc4987db15a7",
+      "socle_sha256": "2b0325f0d103ec3532b26d40e9275c5f23877fbb2e83471bf87d5928ffdc1525",
       "collecte": "2026-02-19T22:21:31.397885"
     },
     "COD": {
@@ -440,7 +440,7 @@
       "date_reference": "2026-10-31",
       "sha256": "e4f0dbbf9781971bf6821c82e85811a3fd63e675894173110cecb2d5a844e283",
       "notes_sha256": "bc2eec198ea07f825743360d9fa4166e9ef6a01c4d9ed42a36403d9bb3e6f3ed",
-      "socle_sha256": "27f0fced4afc16279029b7cab8e9f625ce072b488d4cd2e22653b3bc0b53f5f1",
+      "socle_sha256": "b1f5a8860fbb48b6c8ec5e5a5179b69253463fe76999c195aba1fc97da10ed2d",
       "collecte": "2026-02-19T22:39:52.620876"
     },
     "COM": {
@@ -877,9 +877,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-31",
-      "sha256": "49611da1394c1911db8b7a3a0e1facbac2df888378056ba6054a051519a375c9",
-      "notes_sha256": "d39bb3b190cd72d29bd6b15895214548ad2e087b135dab5cc129b02cd5a8f706",
-      "socle_sha256": "e6843b815f14d95136c5da60c9396d2cb13f18b849a2b9c6506139de070ca2fa",
+      "sha256": "ccede56cde411f23225b607dd7530dcd0631678ef4d22f8445892bf2f9901182",
+      "notes_sha256": "de02988dfebb0087f933e51a14c119f0a2e2587c9bf4405b57d436ab1a95cb85",
+      "socle_sha256": "eef0c0ad51bea2f1e0e25baf7dce9e991226b7872a445b7cdb5bc535524f74f5",
       "collecte": null
     },
     "KEN": {
@@ -1629,9 +1629,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-31",
-      "sha256": "e63df4d2639b4fab5c7c6bbd1ef5f6d7b5ad0e079ffd35c8d27fb81d23688a61",
-      "notes_sha256": "c60a03048dc93626c010428c9b2ab987da2a0b792a61d3f693589b15a568301f",
-      "socle_sha256": "4060169b904213b17870f36dca94dbdd49763a3a73720ce2bc0c4102a97cedec",
+      "sha256": "768f2ed79cff143dccf76dc76046da557304270a5580ad46ea37225f6051688b",
+      "notes_sha256": "3fa4023ced9f85b744693e40126d81c0e4d7f0760a93ffda946b9afc1e3d7f9d",
+      "socle_sha256": "1e75f0c6ed758bc582df9c76740b7dec413eeb781da6950d8e435a08abf1a4a8",
       "collecte": "2026-02-19T22:39:53.393846"
     },
     "TGO": {
