@@ -3489,6 +3489,11 @@ def _psc_mauritanie(positions, compteurs):
         rang = next((i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits))
         droits.insert(rang, ligne)
         _compter_ligne(ligne, compteurs, 1)
+        # Assiette des accises ad valorem (CGI, art. 262) : valeur en douane et droits
+        # et taxes d'entrée, TVA et accises exclues — la PSC en est (revue Codex de #751).
+        for d in droits:
+            if d.get("famille") == "accise" and str(d.get("assiette") or "").startswith("CIF+DD+RS+PC"):
+                d["assiette"] = d["assiette"].replace("CIF+DD+RS+PC", "CIF+DD+RS+PC+PSC", 1)
 
 
 SOURCE_TELEPHONES_MRT = "Loi n° 2026-001 (loi de finances 2026), art. 3.2.5"

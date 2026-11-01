@@ -1055,30 +1055,30 @@
 2201900000;Autres;22;l;35;1;0.5;16;;1;;59.5;COMPLET;;;N3 N1
 2202100000;Eaux, y compris les eaux minérales et les eaux gazéifiées, additionnées de sucre ou d'autres édulcorants ou aromatisées;22;l;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 2202910000;Bière sans alcool;22;1;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
-2202991000;Boissons contenant une forte dose de caféine de type ‘‘boissons énergisantes’’;22;l;20;1;0.5;16;30;1;;84.38;COMPLET;;;N3 N2 N1
-2202999000;Autres;22;l;20;1;0.5;16;30;1;;84.38;COMPLET;;;N3 N2 N1
-2203001000;Présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;l;20;1;0.5;16;225;1;;359.22;COMPLET;;;N3 N2 N1
-2203009000;Autres;22;l;20;1;0.5;16;225;1;;359.22;COMPLET;;;N3 N2 N1
-2204100000;Vins mousseux;22;l;20;1;0.5;16;259;1;;407.13;COMPLET;;;N3 N2 N1
-2204210000;En récipients d'une contenance n'excédant pas 2 l;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
-2204220000;En récipients d'une contenance excédant 2 l mais n'excédant pas 10 l;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
-2204291000;Vins de raisins présentés en emballages de 200 litres ou plus, destinés à l'industrie;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
-2204299000;Autres;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
+2202991000;Boissons contenant une forte dose de caféine de type ‘‘boissons énergisantes’’;22;l;20;1;0.5;16;30;1;;84.73;COMPLET;;;N3 N2 N1
+2202999000;Autres;22;l;20;1;0.5;16;30;1;;84.73;COMPLET;;;N3 N2 N1
+2203001000;Présentées en récipients d'une contenance égale ou inférieure à 50 cl;22;l;20;1;0.5;16;225;1;;361.82;COMPLET;;;N3 N2 N1
+2203009000;Autres;22;l;20;1;0.5;16;225;1;;361.82;COMPLET;;;N3 N2 N1
+2204100000;Vins mousseux;22;l;20;1;0.5;16;259;1;;410.14;COMPLET;;;N3 N2 N1
+2204210000;En récipients d'une contenance n'excédant pas 2 l;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
+2204220000;En récipients d'une contenance excédant 2 l mais n'excédant pas 10 l;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
+2204291000;Vins de raisins présentés en emballages de 200 litres ou plus, destinés à l'industrie;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
+2204299000;Autres;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
 2204300000;Autres moûts de raisin;22;l;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
-2205100000;En récipients d'une contenance n'excédant pas 2 l;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
-2205900000;Autres;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
-2206001000;Bières autres que de malt;22;l;20;1;0.5;16;225;1;;359.22;COMPLET;;;N3 N2 N1
-2206009100;Vin de palme;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
-2206009900;Autres;22;l;20;1;0.5;16;239;1;;378.95;COMPLET;;;N3 N2 N1
+2205100000;En récipients d'une contenance n'excédant pas 2 l;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
+2205900000;Autres;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
+2206001000;Bières autres que de malt;22;l;20;1;0.5;16;225;1;;361.82;COMPLET;;;N3 N2 N1
+2206009100;Vin de palme;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
+2206009900;Autres;22;l;20;1;0.5;16;239;1;;381.72;COMPLET;;;N3 N2 N1
 2207101000;A usages médicamenteux ou pharmaceutiques;22;l;0;0;0;16;;1;;17.16;COMPLET;;;N3 N1
 2207109000;Autres;22;l;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 2207200000;Alcool éthylique et eaux-de-vie dénaturés de tous titres;22;l;10;1;0.5;16;;1;;30.5;COMPLET;;;N3 N1
-2208201000;Cognac;22;l;20;1;0.5;16;324;1;;498.75;COMPLET;;;N3 N2 N1
-2208209000;Autres;22;l;20;1;0.5;16;324;1;;498.75;COMPLET;;;N3 N2 N1
-2208300000;Whiskies;22;l;20;1;0.5;16;324;1;;498.75;COMPLET;;;N3 N2 N1
-2208400000;Rhum et autres eaux-de-vie provenant de la distillation, après fermentation, de produits de cannes à sucre;22;l;20;1;0.5;16;324;1;;498.75;COMPLET;;;N3 N2 N1
-2208500000;Gin et genièvre;22;l;20;1;0.5;16;324;1;;498.75;COMPLET;;;N3 N2 N1
-2208600000;Vodka;22;l;20;1;0.5;16;324;1;;498.75;COMPLET;;;N3 N2 N1
+2208201000;Cognac;22;l;20;1;0.5;16;324;1;;502.5;COMPLET;;;N3 N2 N1
+2208209000;Autres;22;l;20;1;0.5;16;324;1;;502.5;COMPLET;;;N3 N2 N1
+2208300000;Whiskies;22;l;20;1;0.5;16;324;1;;502.5;COMPLET;;;N3 N2 N1
+2208400000;Rhum et autres eaux-de-vie provenant de la distillation, après fermentation, de produits de cannes à sucre;22;l;20;1;0.5;16;324;1;;502.5;COMPLET;;;N3 N2 N1
+2208500000;Gin et genièvre;22;l;20;1;0.5;16;324;1;;502.5;COMPLET;;;N3 N2 N1
+2208600000;Vodka;22;l;20;1;0.5;16;324;1;;502.5;COMPLET;;;N3 N2 N1
 2208700000;Liqueurs;22;l;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 2208900000;Autres;22;l;0;0;0;16;;1;;17.16;COMPLET;;;N3 N1
 2209001000;Vinaigre d'alcool;22;l;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
@@ -1107,17 +1107,17 @@
 2309100000;Aliments pour chiens ou chats, conditionnés pour la vente au détail;23;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 2309901000;Préparations contenant des vitamines;23;kg;5;1;0.5;16;;1;;24.7;COMPLET;;;N3 N1
 2309909000;Autres;23;kg;10;1;0.5;16;;1;;30.5;COMPLET;;;N3 N1
-2401100000;Tabacs non écôtés;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
-2401200000;Tabacs partiellement ou totalement écôtés;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
-2401300000;Déchets de tabac;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
+2401100000;Tabacs non écôtés;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
+2401200000;Tabacs partiellement ou totalement écôtés;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
+2401300000;Déchets de tabac;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
 2402100000;Cigares (y compris ceux à bouts coupés) et cigarillos, contenant du tabac;24;kg;20;1;0.5;16;47 % + 1,6 Ouguiya le paquet de 20 cigarettes;1;10;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N4 N3 N2 N1
 2402200000;Cigarettes contenant du tabac;24;kg;20;1;0.5;16;47 % + 1,6 Ouguiya le paquet de 20 cigarettes;1;10;;PARTIEL;EXC (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N4 N3 N2 N1
 2402900000;Autres;24;kg;20;1;0.5;16;;1;10;53.7;COMPLET;;;N4 N3 N1
-2403110000;Tabac pour pipe à eau visé à la Note 1 de souspositions du présent Chapitre;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
-2403190000;Autres;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
-2403910000;Tabacs «homogénéisés» ou «reconstitués»;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
-2403991000;Tabacs écôtés expansés;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
-2403999000;Autres;24;kg;20;1;0.5;16;80;1;10;175.73;COMPLET;;;N4 N3 N2 N1
+2403110000;Tabac pour pipe à eau visé à la Note 1 de souspositions du présent Chapitre;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
+2403190000;Autres;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
+2403910000;Tabacs «homogénéisés» ou «reconstitués»;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
+2403991000;Tabacs écôtés expansés;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
+2403999000;Autres;24;kg;20;1;0.5;16;80;1;10;176.66;COMPLET;;;N4 N3 N2 N1
 2501001000;Sel dénaturé;25;kg;5;1;0.5;16;;1;;24.7;COMPLET;;;N3 N1
 2501002000;Sel destiné à l'alimentation humaine;25;kg;10;1;0.5;16;;1;;30.5;COMPLET;;;N3 N1
 2501003000;Sel en blocs comprimé pour l'alimentation du bétail;25;kg;5;1;0.5;16;;1;;24.7;COMPLET;;;N3 N1
@@ -2345,14 +2345,14 @@
 3922200000;Sièges et couvercles de cuvettes d'aisance;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3922900000;Autres;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3923100000;Boîtes, caisses, casiers et articles similaires;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
-3923210000;En polymères de l'éthylène;39;kg;20;1;0.5;16;35;1;;91.43;COMPLET;;;N3 N2 N1
-3923290000;En autres matières plastiques;39;kg;0;0;0;16;35;1;;57.76;COMPLET;;;N3 N2 N1
+3923210000;En polymères de l'éthylène;39;kg;20;1;0.5;16;35;1;;91.84;COMPLET;;;N3 N2 N1
+3923290000;En autres matières plastiques;39;kg;0;0;0;16;35;1;;58.17;COMPLET;;;N3 N2 N1
 3923301000;Ebauches ou préformes;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3923309000;Autres;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3923401000;Cassettes sans bandes magnétiques;39;kg;10;1;0.5;16;;1;;30.5;COMPLET;;;N3 N1
 3923409000;Autres;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3923500000;Bouchons, couvercles, capsules et autres dispositifs de fermeture;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
-3923900000;Autres;39;kg;20;1;0.5;16;35;1;;91.43;COMPLET;;;N3 N2 N1
+3923900000;Autres;39;kg;20;1;0.5;16;35;1;;91.84;COMPLET;;;N3 N2 N1
 3924100000;Vaisselle et autres articles pour le service de la table ou de la cuisine;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3924901000;Cuvettes et seaux;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1
 3924902000;Biberons;39;kg;20;1;0.5;16;;1;;42.1;COMPLET;;;N3 N1

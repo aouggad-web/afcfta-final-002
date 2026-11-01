@@ -1166,9 +1166,9 @@
       ],
       "devise": "MRU",
       "date_reference": "2026-11-01",
-      "sha256": "714b619a83275b9d32ee3a2d291714d1c7ccbb20625654af28515f6333c873aa",
+      "sha256": "b0706f3b2c80748aad8613997811d4ff7e1d5d6f7351ac7f3c19b01a8d501d86",
       "notes_sha256": "fed0dd861b3bc848c3be46caa032667a8164224952e03e56081a7726bf4cebb4",
-      "socle_sha256": "e6ddc93145056d53575c64d64033d5cc660281726c15ca1253110167606b585b",
+      "socle_sha256": "e61a3f8a558bd996077530c7454a03e12805b793a41d655bd32f7ddccc19774a",
       "collecte": "2026-09-18T00:00:00+00:00"
     },
     "MUS": {

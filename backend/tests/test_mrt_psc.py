@@ -60,3 +60,11 @@ def test_la_tva_comprend_la_psc(positions):
 def test_telephones_lf2026(positions):
     droits = {d["code"]: d.get("taux") for d in positions["8517120000"]["droits"]}
     assert droits["DD"] == 10.0 and droits["PSC"] == 1.0 and droits["TVA"] is None
+
+
+def test_l_accise_ad_valorem_comprend_la_psc(positions):
+    """CGI, art. 262 : assiette des accises = valeur en douane et droits d'entrée,
+    PSC comprise (revue Codex de #751). Bière 2203, 100 : 100 + 20 + 1 + 0,5 + 1."""
+    r = calculer(positions["2203001000"], 100, devise_cif="MRU")["npf"]
+    exc = next(l for l in r["lignes"] if l["code"] == "EXC")
+    assert exc["base"] == pytest.approx(122.5)
