@@ -1665,8 +1665,9 @@ EXPORT_PAR_TEXTE = {
         "sources/COD_tarif_exportation_consolide.texte-extrait.txt)",
         None,
         {
-            "09011": (0.0, None, "Café vert non torréfié (Robusta, Arabica, déchets et brisures) : exempt (loi de finances "
-                                 "n° 25/060 pour 2026, annexe XVI ; 1 % à l'ordonnance-loi n° 012/2012)."),
+            "09011100": (0.0, None, "Café vert non torréfié et non décaféiné (Robusta, Arabica, déchets et brisures) : "
+                                    "exempt (loi de finances n° 25/060 pour 2026, annexe XVI ; 1 % à l'ordonnance-loi "
+                                    "n° 012/2012)."),
             "22019000": (None, None, "Eau douce : 5 % ; autres eaux de cette ligne : exemptes. La ligne couvre les "
                                      "deux : à établir."),
             **{p: _COD_MINERAI for p in (
@@ -5712,7 +5713,7 @@ def _dd_cod_partiel(texte):
 #: que la position du socle reste à établir, avec ce que le texte en dit.
 DD_COD_LF2026 = {
     **{p: _dd_cod(5.0, "intrants industriels et produits de base nommés") for p in (
-        "09052000", "12081000", "18050000", "25182000", "25221000", "39191000", "48191000", "72082600",
+        "09052000", "12081000", "18050000", "25221000", "39191000", "48191000", "72082600",
         "72082700", "72083800", "72083900", "72091500", "72091600", "72091700", "75021000", "78011000",
         "78019900", "78020000", "79031000", "73079900", "760719")},
     **{p: _dd_cod(10.0, "produits nommés (huile de palme brute, pâtes alimentaires, dentifrices, pneumatiques "
@@ -5726,6 +5727,12 @@ DD_COD_LF2026 = {
         "73063", "73064", "73065", "73066", "73069", "73261100", "73261900")},
     "72109000": _dd_cod_partiel("produits plaqués ou revêtus destinés aux tôles de toiture (7210.90.10) 5 %, autres "
                                 "produits de la 72.10 20 %."),
+    # L'annexe nomme la dolomie « non calcinée ni frittée, dite crue » (2518.10)
+    # sous le code 2518.20.00 (dolomie calcinée ou frittée) : le texte se
+    # contredit, aucune des deux positions ne reçoit le taux.
+    **{p: (None, f"{_SOURCE_DD_COD_LF2026} : « Dolomie non calcinée ni frittée, dite « crue » », 5 %, sous le code "
+                 "2518.20.00, qui désigne la dolomie calcinée ou frittée (la dolomie crue relève du 2518.10) ; le texte "
+                 "se contredit : droit à établir.") for p in ("25181000", "25182000")},
     "17023000": _dd_cod_partiel("glucose et sirop utilisés dans l'industrie pharmaceutique (1702.30.10) 5 %."),
     "31023000": _dd_cod_partiel("nitrate d'ammonium destiné aux engrais (3102.30.10) 5 %, aux explosifs des "
                                 "carrières minières (3102.30.90) 20 %."),

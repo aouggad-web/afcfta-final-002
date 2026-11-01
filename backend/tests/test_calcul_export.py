@@ -633,6 +633,13 @@ def test_cod_liste_consolidee(client):
         assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
 
 
+def test_cod_cafe_decafeine_hors_annexe(client):
+    """L'annexe XVI ne vise que le café vert non décaféiné : le décaféiné n'a pas de droit de sortie publié."""
+    corps = client.post("/calcul/export", json={"pays": "COD", "code_sh": "09011200", "valeur": 1000,
+                                                "devise": "CDF"}).json()
+    assert corps["export"]["etat"] == "AUCUN_DROIT_PUBLIE"
+
+
 def test_cod_positions_a_etablir(client):
     """Or et diamants (artisanal 0,5 %, industriel 3 %), sciages selon l'épaisseur (exempts jusqu'à 150 mm), eau."""
     for code in ("71081200", "71081100", "44072900", "22019000"):

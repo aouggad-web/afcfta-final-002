@@ -68,7 +68,8 @@ def test_droit_de_douane_rdc_seulement_ou_la_loi_de_finances_le_fixe():
         assert lignes["DD"]["montant"] == pytest.approx(montant), code
         # La TVA (16 % de CIF + DD) redevient liquidable.
         assert lignes["TVA"]["montant"] == pytest.approx(0.16 * (1000.0 + montant)), code
-    for code in ("25232900", "10061000", "31023000", "73061100", "72109000"):
+    # Dolomie : l'annexe nomme la dolomie crue sous le code de la dolomie calcinée ; le texte se contredit.
+    for code in ("25232900", "10061000", "31023000", "73061100", "72109000", "25181000", "25182000"):
         lignes = {ligne["code"]: ligne for ligne in calculer(positions[code], 1000.0)["npf"]["lignes"]}
         assert lignes["DD"]["statut"] != "CALCULE", code
     avec_taux = [c for c, p in positions.items() for d in p["droits"] if d["code"] == "DD" and d["taux"] is not None]
