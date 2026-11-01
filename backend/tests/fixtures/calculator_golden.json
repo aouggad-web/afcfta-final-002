@@ -409,47 +409,40 @@
       "id": "som-repli-chapitre",
       "country": "SOM",
       "hs_code": "01012100",
-      "defect": "La Somalie n'a pas de crawl : sa donnée canonique existe mais le POST ne la lit pas et retombe sur un tarif de chapitre à 15 % (`etl_fallback`) là où le canonique porte 0 %.",
-      "plan_item": "1.5 — branchement Somalie ; 3.1 — repli ETL explicitement étiqueté",
+      "defect": "La Somalie n'avait pas de crawl : sa donnée canonique (TEC de l'EAC 2022, 0 %) n'était pas lue par le POST, qui retombait sur un tarif de chapitre à 15 % (`etl_fallback`). Le TEC de l'EAC n'est d'ailleurs pas appliqué par la Somalie.",
+      "plan_item": "1.5 — branchement Somalie ; 3.1 — repli ETL explicitement étiqueté ; vague 2 — tarif national somalien",
       "source_of_truth": {
-        "expected_dd_rate_pct": 0.0,
+        "expected_dd_rate_pct": 5.0,
+        "file": "backend/data/crawled/SOM_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax",
+          "code": "01012100",
+          "taxes_key": "taxes_detail",
+          "tax_code": "DD",
+          "field": "rate"
+        },
+        "note": "Somali Customs Tariff 2022 (ministère des Finances), 0101 21 00 : 5 % (fiche SOM_tarif_douanier_2022_2026-11-01.json)."
+      },
+      "conflicting_source": {
+        "value": 0.0,
         "file": "backend/data/SOM_tariffs.json",
         "locator": {
           "kind": "canonical_sub",
           "hs6": "010121",
           "code": "01012100",
           "field": "dd"
-        }
-      },
-      "conflicting_source": {
-        "value": null,
-        "file": "backend/data/crawled/SOM_tariffs.json",
-        "locator": {
-          "kind": "crawled_absent_code",
-          "code": "01012100"
         },
-        "note": "Aucun fichier de crawl pour la Somalie : rien à comparer, et rien qui justifie un tarif de chapitre."
+        "note": "TEC de l'EAC 2022, ancienne source du socle, que la Somalie n'applique pas."
       },
       "observed": {
         "priority": {
-          "dd_rate_pct": 0.0,
-          "droit_douane": 0.0,
+          "dd_rate_pct": 5.0,
+          "droit_douane": 50.0,
           "qualification": "authentique"
         },
-        "post": {
-          "dd_rate_pct": 15.0,
-          "droit_douane": 150.0,
-          "qualification": "repli"
-        },
-        "verdict": "ECART_TAUX"
+        "verdict": "CONFORME"
       },
-      "expected_after_fix": {
-        "dd_rate_pct": 0.0,
-        "droit_douane": 0.0,
-        "both_paths_agree": true,
-        "note": "Le zéro canonique n'est pas une exonération démontrée : il doit être servi tel quel, avec sa provenance régionale déclarée."
-      },
-      "status": "defect_open",
+      "status": "resolved_by_national_tariff_2026-11-01",
       "priority_dd_matches_source": true
     }
   ]

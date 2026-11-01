@@ -2351,10 +2351,13 @@ class TestNoMockedData:
         assert "IMPDEC" in codes, f"SDN missing real IMPDEC code"
 
     def test_som_crawled_no_mocked_910(self):
-        """SOM crawled data must not use code 910."""
+        """SOM crawled data must not use code 910.
+
+        crawled/SOM_tariffs.json est le tarif du ministère des Finances
+        (scripts/convertir_tarif_som.py) : il ne porte aucune formalité, donc
+        pas d'IMPDEC à exiger."""
         codes = self._crawled_codes("SOM")
         assert "910" not in codes, f"SOM has mocked code 910: {codes}"
-        assert "IMPDEC" in codes, f"SOM missing real IMPDEC code"
 
     def test_stp_crawled_no_mocked_910(self):
         """STP crawled data must not use code 910."""
