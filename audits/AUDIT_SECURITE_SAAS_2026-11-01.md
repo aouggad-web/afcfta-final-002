@@ -137,6 +137,10 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 
 **Correctif :** refuser le démarrage sur un placeholder ou un secret < 32 octets (étendre `backend/validate_env.py`) ; amorcer l'admin **une seule fois**, ne jamais re-synchroniser le mot de passe ; laisser les valeurs d'exemple vides.
 
+> **Vérification du 01/11/2026.** `JWT_SECRET` de production n'est **aucune** des deux valeurs d'exemple publiques du dépôt (`your-jwt-secret-min-32-chars`, `CHANGEZ-MOI-32-caracteres-minimum`). Test sans accès à aucun compte : un jeton signé avec chaque valeur, pour un identifiant d'utilisateur inexistant, est refusé comme « Session invalide » (comme le jeton témoin) au lieu d'« Utilisateur introuvable ». La fabrication de sessions à partir d'un secret connu est donc écartée. `SECRET_KEY` n'est plus utilisé par le backend (seul un commentaire obsolète le cite) : sa valeur est sans effet. Restent à confirmer par l'exploitant, sans les afficher : la longueur de `JWT_SECRET` et le mot de passe admin (§6).
+>
+> **Correctif appliqué (PR #750).** `backend/security_config.py` : en production, un `JWT_SECRET` d'exemple ou de moins de 32 caractères arrête le démarrage (hors production : alerte CRITICAL) ; un `ADMIN_PASSWORD` d'exemple ou de moins de 12 caractères n'est jamais appliqué, et si c'est déjà le mot de passe du compte, celui-ci est verrouillé jusqu'à ce qu'un mot de passe solide le resynchronise. Le ré-amorçage depuis `.env` est conservé : c'est aujourd'hui le seul moyen de changer le mot de passe admin, l'application n'ayant pas de changement de mot de passe. Tests : `backend/tests/test_security_config.py`.
+
 ### E4 — Opérations admin de cache exposées sans authentification via GraphQL
 **Confiance : Confirmé (runtime hors-ligne).** Le routeur GraphQL n'a que `_auth` (`routes/__init__.py:570`), donc anonyme. Ses mutations `invalidateCache`/`warmCache` et requêtes `getCacheStats`/`getPerformanceSummary` (`api/graphql/schema.py:224-243,183-202`) n'ont **aucune** vérification de rôle, alors que leurs équivalents REST exigent `require_admin` (`routes/performance.py`, `routes/cache.py`). Reproduit : `POST /api/graphql {invalidateCache(countryCode:"*")}` → `200` ; REST `DELETE /api/performance/cache/country/MAR` → `403 Admin tier required`. (Effet réel seulement avec Redis actif en prod.) De plus le repli renvoie `str(exc)` au client (:410-412) et le playground + le SDL complet sont servis. **Correctif :** mêmes contrôles admin qu'en REST sur les résolveurs cache/perf ; supprimer `str(exc)` ; désactiver le playground/SDL en production (`APP_ENV`).
 
@@ -183,7 +187,7 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 Ces points ne peuvent être tranchés que par vous, sur l'instance de production :
 
 1. **Jeton OEC (C2)** : ✅ vérifié le 01/11/2026 — aucun jeton configuré en production, artefacts expirés. Seul point à confirmer : si tu as un jeton OEC ou une clé Comtrade ailleurs (secret GitHub `OEC_API_TOKEN`, autre environnement), le régénérer par précaution.
-2. **Secrets d'exemple (E3)** : sur votre instance, tenter la connexion avec `admin@afcfta-zlecaf.com` / `change-me-strong-password` ; vérifier que `JWT_SECRET` et `SECRET_KEY` ne sont pas les valeurs d'exemple. Si c'est le cas → rotation immédiate de `JWT_SECRET` (invalide toutes les sessions) et du mot de passe admin.
+2. **Secrets d'exemple (E3)** : ✅ `JWT_SECRET` n'est pas une valeur d'exemple publique (vérifié à distance le 01/11/2026) ; `SECRET_KEY` est inutilisé. À confirmer dans le terminal Emergent, avec un contrôle qui n'affiche aucune valeur : longueur de `JWT_SECRET` (≥ 32) et mot de passe admin (ni exemple, ni moins de 12 caractères). À faire **avant** de fusionner la PR #750, dont le garde-fou bloquerait sinon le démarrage en production.
 3. **Domaine (C1)** : confirmer dans GitHub → Settings → Pages s'il existe un « verified domain » ; décider de l'application cible de `afcfta-zlecaf.com`.
 4. **IP client (E5)** : `GET /api/billing/geo-diagnostic` avec `X-Forwarded-For: 203.0.113.9, 198.51.100.7` ; le `client_ip` renvoyé ne doit être **aucune** de ces deux valeurs.
 5. **Supabase (M6)** : dans le tableau de bord, vérifier que les « Redirect URLs » ne contiennent **aucun** wildcard sur un domaine partagé (`*.emergentagent.com`).
@@ -212,7 +216,7 @@ Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 
 ### Phase 0 — Urgences, à faire maintenant (XS/S)
 1. **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS*
 2. ✅ **Masquer les secrets dans les journaux** (formateur, httpx à WARNING, `uvicorn.log` filtré en CI) — fait dans la PR #750 ; rotation inutile, aucun jeton n'étant configuré (C2). — *XS*
-3. **Vérifier et faire tourner les secrets de prod** : `JWT_SECRET`, `SECRET_KEY`, mot de passe admin ; supprimer le ré-amorçage du mot de passe (E3). — *S*
+3. **Vérifier les secrets de prod** (E3) : `JWT_SECRET` n'est pas une valeur d'exemple (✅ vérifié) ; reste le contrôle de sa longueur et du mot de passe admin. Garde-fou de démarrage ajouté dans la PR #750. — *S*
 4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S*
 5. **`HTTPS_ENABLED=true`** en production (M8). — *XS*
 

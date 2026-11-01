@@ -76,6 +76,7 @@ except ModuleNotFoundError as e:
         raise
     set_billing_db = None
 from services.crawled_data_service import crawled_service
+from security_config import imposer_jwt_secret, probleme_mot_de_passe_admin
 from services.user_auth_service import hash_password, verify_password
 
 # =============================================================================
@@ -84,6 +85,10 @@ from services.user_auth_service import hash_password, verify_password
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
+
+# En production, un JWT_SECRET d'exemple ou trop court arrête le démarrage :
+# il permettrait de fabriquer une session au nom de n'importe quel compte.
+imposer_jwt_secret(os.environ)
 
 # MongoDB Connection
 mongo_url = os.environ.get("MONGO_URL", "")
@@ -270,10 +275,34 @@ async def _seed_admin_account():
     # normalize the same way here so a stray uppercase letter or surrounding
     # whitespace in ADMIN_EMAIL doesn't seed an account login can never find.
     admin_email = admin_email.strip().lower()
+    probleme = probleme_mot_de_passe_admin(admin_password)
     try:
         from datetime import datetime, timezone
 
         existing = await db["users"].find_one({"email": admin_email})
+        if probleme:
+            # Mot de passe d'exemple ou trop court : jamais appliqué. S'il est
+            # déjà celui du compte (amorcé par une version antérieure), le compte
+            # est verrouillé — un hachage invalide ne valide aucun mot de passe —
+            # jusqu'à ce qu'un ADMIN_PASSWORD solide le resynchronise au démarrage.
+            if existing is not None and verify_password(
+                admin_password, existing.get("password_hash", "")
+            ):
+                await db["users"].update_one(
+                    {"email": admin_email}, {"$set": {"password_hash": "!verrouille"}}
+                )
+                logger.critical(
+                    "Compte admin %s VERROUILLÉ : ADMIN_PASSWORD %s. Définissez un mot de "
+                    "passe solide puis redémarrez.",
+                    admin_email,
+                    probleme,
+                )
+            else:
+                logger.critical(
+                    "ADMIN_PASSWORD refusé (%s) : compte admin ni créé ni resynchronisé.",
+                    probleme,
+                )
+            return
         if existing is None:
             await db["users"].insert_one(
                 {
