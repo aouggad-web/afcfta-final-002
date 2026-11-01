@@ -43,7 +43,11 @@
         "status": "NOT_AVAILABLE"
       },
       "fee_category": "REGULATORY_FEE",
-      "mandated_actor_status": "NOT_AVAILABLE"
+      "mandated_actor_status": "NOT_AVAILABLE",
+      "sides": [
+        "import",
+        "export"
+      ]
     },
     {
       "record_id": "COD-OCC-CBCA",
@@ -129,7 +133,10 @@
         "status": "NOT_AVAILABLE"
       },
       "fee_category": "REGULATORY_FEE",
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import"
+      ]
     },
     {
       "record_id": "COD-OGEFREM-FERI",
@@ -169,7 +176,11 @@
         "status": "NOT_AVAILABLE"
       },
       "fee_category": "REGULATORY_FEE",
-      "mandated_actor_status": "NOT_AVAILABLE"
+      "mandated_actor_status": "NOT_AVAILABLE",
+      "sides": [
+        "import",
+        "export"
+      ]
     }
   ]
 }

@@ -41,7 +41,10 @@
       "verification_status": "DOCUMENTED",
       "pending_primary_archive": false,
       "mandated_actor_status": "NOT_APPLICABLE",
-      "mandated_actors": []
+      "mandated_actors": [],
+      "sides": [
+        "import"
+      ]
     }
   ]
 }

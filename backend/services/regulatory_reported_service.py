@@ -60,6 +60,11 @@ def build_reported_layer(
     items: List[Dict[str, Any]] = []
     for side, iso in (("import", dest_iso3), ("export", origin_iso3)):
         for rec in get_reported_missions(iso):
+            # Une formalité d'importation du pays d'origine ne se présente pas
+            # comme une formalité d'exportation : seuls les dispositifs qui
+            # déclarent aussi l'exportation (``sides``, guichets uniques) y figurent.
+            if side not in (rec.get("sides") or ["import"]):
+                continue
             fee = rec.get("reported_fee_structure") or {}
             items.append(
                 {

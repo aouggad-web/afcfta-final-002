@@ -371,6 +371,7 @@ def calcul(demande: DemandeCalcul):
             transport=transport_declare(
                 demande.moyen_transport, demande.nombre_unites_transport, demande.mode_acheminement
             ),
+            code=socle.normaliser_code(demande.code_sh),
         )
     )
     return resultat
@@ -642,9 +643,10 @@ def _bloc_reglementaire(
     valeur_fob: Optional[float] = None,
     poids_brut_kg: Optional[float] = None,
     transport: Optional[dict] = None,
+    code: Optional[str] = None,
 ) -> dict:
     """Formalités, prestataires mandatés et frais vérifiés — informatif, jamais
-    additionné aux droits.
+    additionné aux droits. Seuls ceux qui visent la position ``code`` sont rendus.
 
     Les frais assis sur la FOB utilisent la valeur FOB fournie ; sans elle,
     `fob_value` reçoit la valeur CIF, comme le fait le chemin historique avec
@@ -660,6 +662,7 @@ def _bloc_reglementaire(
             cif_value=valeur_cif,
             poids_brut_kg=poids_brut_kg,
             transport=transport,
+            code=code,
         )
     except Exception as exc:  # garde-fou : le calcul tarifaire n'en dépend pas
         logger.warning(

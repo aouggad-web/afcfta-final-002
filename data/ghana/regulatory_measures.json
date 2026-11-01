@@ -53,7 +53,11 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import",
+        "export"
+      ]
     },
     {
       "record_id": "GHA-GSA-EASYPASS",
@@ -134,7 +138,39 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "NOT_APPLICABLE"
+      "mandated_actor_status": "NOT_APPLICABLE",
+      "sides": [
+        "import"
+      ],
+      "hs_scope": {
+        "exclude": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24"
+        ],
+        "basis": "Les 12 catégories publiées par la GSA (jouets, électronique, produits chimiques, appareils mécaniques et à gaz, papier, mobilier, matériaux de construction, carburants, textiles, verrerie, équipements miniers, certains produits d'occasion) ne comprennent ni animaux vivants, ni produits agricoles ou alimentaires (chapitres 01 à 24)."
+      }
     }
   ]
 }
