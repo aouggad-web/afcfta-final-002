@@ -60,20 +60,38 @@ def test_le_droit_lu_au_tec_eac_est_retire():
 
 @avec_socle
 def test_droit_de_douane_rdc_seulement_ou_la_loi_de_finances_le_fixe():
+    """Taux servi là où le projet de LF 2025 et l'annexe XV (supprimée) de la LF 2026 concordent ; la loi
+    rectificative 2026 remet en application les annexes de la LF 2025, dont le texte adopté n'est pas lu."""
     with open(SOCLE_COD, encoding="utf-8") as f:
         positions = json.load(f)["positions"]
-    for code, montant in (("15111000", 100.0), ("02011000", 200.0), ("72111400", 200.0), ("09052000", 50.0),
-                          ("73063000", 200.0), ("40122000", 100.0)):
+    for code, montant in (("15111000", 100.0), ("72111400", 200.0), ("09052000", 50.0), ("40122000", 100.0),
+                          ("04072100", 200.0)):
         lignes = {ligne["code"]: ligne for ligne in calculer(positions[code], 1000.0)["npf"]["lignes"]}
         assert lignes["DD"]["montant"] == pytest.approx(montant), code
         # La TVA (16 % de CIF + DD) redevient liquidable.
         assert lignes["TVA"]["montant"] == pytest.approx(0.16 * (1000.0 + montant)), code
-    # Dolomie : l'annexe nomme la dolomie crue sous le code de la dolomie calcinée ; le texte se contredit.
-    for code in ("25232900", "10061000", "31023000", "73061100", "72109000", "25181000", "25182000", "39191000"):
+    # Taux que seule l'annexe 2026, supprimée, portait ; texte contradictoire ; ligne nationale plus fine ; 72.10
+    # (10 % au projet 2025, 20 % en 2026).
+    for code in ("25232900", "10061000", "31023000", "73061100", "72109000", "25181000", "25182000", "39191000",
+                 "73063000", "72082600", "36020000", "72104900"):
         lignes = {ligne["code"]: ligne for ligne in calculer(positions[code], 1000.0)["npf"]["lignes"]}
         assert lignes["DD"]["statut"] != "CALCULE", code
+    assert "supprimée" in next(d for d in positions["73063000"]["droits"] if d["code"] == "DD")["note"]
     avec_taux = [c for c, p in positions.items() for d in p["droits"] if d["code"] == "DD" and d["taux"] is not None]
-    assert 50 < len(avec_taux) < 200
+    assert 40 < len(avec_taux) < 120
+
+
+@avec_socle
+def test_tva_reduite_des_produits_de_la_loi_rectificative_a_etablir():
+    """LFR 2026, art. 13 : 8 % « aux acquisitions et ventes » des viandes, du riz, du sucre… ; à l'importation, le
+    texte ne tranche pas : la TVA reste à établir, même quand le droit de douane est connu."""
+    with open(SOCLE_COD, encoding="utf-8") as f:
+        positions = json.load(f)["positions"]
+    viande = {ligne["code"]: ligne for ligne in calculer(positions["02011000"], 1000.0)["npf"]["lignes"]}
+    assert viande["DD"]["montant"] == pytest.approx(200.0) and viande["TVA"]["statut"] != "CALCULE"
+    for code in ("10063000", "04021000"):
+        tva = next(d for d in positions[code]["droits"] if d["code"] == "TVA")
+        assert tva["taux"] is None and "8 %" in tva["note"], code
 
 
 def test_preference_rdc_eac_sans_libre_circulation():
