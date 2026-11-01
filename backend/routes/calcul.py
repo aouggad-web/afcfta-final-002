@@ -40,7 +40,7 @@ from engine.schemas.legal_override import RemissionEligibility
 from services import defense_commerciale, exoneration_origine, mesures_eac, socle, usages
 from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import marchandise_dedouanee_sacu, simulations_regionales, taux_preferentiels
-from services.regional_blocs import SACU, same_customs_union
+from services.regional_blocs import NOTE_UNION_NON_EFFECTIVE, SACU, same_customs_union, union_non_effective
 from services.regulatory_fee_service import build_regulatory_blocks, transport_declare
 
 logger = logging.getLogger(__name__)
@@ -322,6 +322,13 @@ def calcul(demande: DemandeCalcul):
         resultat["exonerations_origine"] = exonerations
     if defense:
         resultat["defense_commerciale"] = defense
+    # Pays membre d'une union douanière dont il n'applique pas le régime (RDC,
+    # EAC) : à dire en tête, en destination comme face à un autre membre.
+    pays_hors_union = union_non_effective(demande.origine, demande.destination) or (
+        demande.destination.upper() if demande.destination.upper() in NOTE_UNION_NON_EFFECTIVE else None
+    )
+    if pays_hors_union:
+        resultat["union_non_effective"] = {"pays": pays_hors_union, "note": NOTE_UNION_NON_EFFECTIVE[pays_hors_union]}
     if mesures:
         resultat["mesures_eac"] = mesures
     if bloc_usages:
