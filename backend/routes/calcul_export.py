@@ -12,7 +12,9 @@ S'y ajoutent les perceptions de sortie publiées hors du tarif douanier
 (`HORS_TARIF` : à Madagascar, les DTSPM du Code minier ; au Mali, la TEOAPM du
 CGI), quand l'exportateur déclare la catégorie que le texte vise. Au Cameroun
 et au Congo, le droit de sortie commun dépend du degré de transformation du
-produit (`SELON_TRANSFORMATION`), que l'exportateur déclare aussi.
+produit (`SELON_TRANSFORMATION`), que l'exportateur déclare aussi ; au
+Gabon, le droit sur les produits transformés du bois, de la matière du produit
+(`SELON_MATIERE`).
 """
 from __future__ import annotations
 
@@ -101,6 +103,22 @@ SELON_TRANSFORMATION = {
     },
 }
 
+#: Droit de sortie dû selon la MATIÈRE du produit, que la position ne dit pas :
+#: le socle le porte à taux non établi, marqué `selon_matiere`, avec le taux
+#: du texte (`taux_si_oui`) ; la réponse de l'exportateur le fixe. Gabon : la
+#: LF 2026 (art. 5) taxe les produits transformés du bois, alors que le
+#: chapitre 44 du tarif (note 6) comprend le bambou et les autres matières
+#: ligneuses. Fiche GAB_droit_de_sortie_LF2026_2026-10-31.json.
+SELON_MATIERE = {
+    "GAB": {
+        "champ": "produit_en_bois",
+        "question": "Produit en bois (et non en bambou ou en une autre matière ligneuse) ?",
+        "question_en": "Is the product made of wood (not bamboo or another woody material)?",
+        "non": "Produit qui n'est pas en bois : hors du droit de sortie sur les produits transformés du bois "
+               "(LF 2026, art. 5).",
+    },
+}
+
 router = APIRouter()
 router_couverture = APIRouter()
 
@@ -153,6 +171,13 @@ class DemandeExport(BaseModel):
             "elle reste à établir. Omis : à établir."
         ),
     )
+    produit_en_bois: Optional[bool] = Field(
+        default=None,
+        description=(
+            "Gabon : produit en bois, et non en bambou ou en une autre matière ligneuse (droit de sortie sur les "
+            "produits transformés du bois, LF 2026, art. 5). Omis : le droit reste à établir."
+        ),
+    )
 
 
 def _selon_transformation(pays: str, droits: list, demande: DemandeExport) -> list:
@@ -189,6 +214,27 @@ def _selon_transformation(pays: str, droits: list, demande: DemandeExport) -> li
                 else:
                     prefixe = ""
                 d = {**d, "taux": None, "assiette": None, "note": prefixe + d["note_si_transforme"]}
+        sortie.append(d)
+    return sortie
+
+
+def _selon_matiere(pays: str, droits: list, demande: DemandeExport) -> list:
+    """Fixer, d'après la matière déclarée, les droits que le socle marque
+    `selon_matiere` : le taux du texte si oui, aucun droit si non ; sans
+    réponse, ils restent à établir."""
+    regle = SELON_MATIERE.get(pays)
+    if not regle:
+        return droits
+    reponse = getattr(demande, regle["champ"])
+    sortie = []
+    for d in droits:
+        if d.get("selon_matiere"):
+            if reponse is None:
+                d = {**d, "note": "À établir : " + regle["question"] + " " + d.get("note", "")}
+            elif reponse:
+                d = {**d, "taux": d["taux_si_oui"], "assiette": "CIF"}
+            else:
+                d = {**d, "taux": 0.0, "assiette": "CIF", "note": regle["non"]}
         sortie.append(d)
     return sortie
 
@@ -266,6 +312,7 @@ def calcul_export(demande: DemandeExport):
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     droits = _selon_transformation(pays, position.get("droits_export") or [], demande)
+    droits = _selon_matiere(pays, droits, demande)
     hors_tarif = _hors_tarif(pays, demande)
     conflit = HORS_TARIF.get(pays, {}).get("conflit_tarif")
     if hors_tarif and demande.produit_minier and conflit:
@@ -330,7 +377,7 @@ def pays_export():
                     for k in ("champ", "question", "question_en", "question_transformation",
                               "question_transformation_en", "champ_si_non", "question_si_non", "question_si_non_en")
                 }
-                for iso, regle in {**HORS_TARIF, **SELON_TRANSFORMATION}.items()
+                for iso, regle in {**HORS_TARIF, **SELON_TRANSFORMATION, **SELON_MATIERE}.items()
             },
         }
     except socle.SocleIndisponible as exc:
