@@ -22,13 +22,15 @@ Les risques majeurs ne sont pas dans le code métier mais **autour** : un domain
 | Autorisation / monétisation | 🟠 Faible | quotas et accès payants **non appliqués aux appels anonymes** |
 | Paiement (Stripe / Chargily) | 🟢 Bon | montants côté serveur, webhooks signés et idempotents, accès accordé par webhook uniquement |
 | Déni de service | 🟠 Faible | plusieurs points bloquants sur un worker unique, atteignables sans clé |
-| Secrets | 🟡 Moyen | aucun secret en clair dans le dépôt ni dans l'historique ; mais jeton OEC journalisé, placeholders à vérifier |
+| Secrets | 🟡 Moyen | aucun secret en clair dans le dépôt ni dans l'historique ; jeton OEC qui serait journalisé (latent, corrigé), placeholders à vérifier |
 | Chaîne de déploiement / CI | 🔴 Critique | déploiement de branche arbitraire avec secrets de prod ; actions non épinglées ; jetons d'écriture |
 | Infrastructure / domaine | 🔴 Critique | `afcfta-zlecaf.com` non revendiqué → détournement possible |
 | En-têtes / durcissement HTTP | 🟡 Moyen | HTML sans en-têtes de sécurité, `HTTPS_ENABLED=false` en préprod |
 | Dépendances | 🟡 Moyen | vulnérabilités connues sur starlette, pyjwt, cryptography, urllib3, axios, dompurify |
 
-**Décompte des constats :** 3 Critiques · 5 Élevés · 11 Moyens · 9 Faibles/Info.
+**Décompte des constats :** 2 Critiques · 5 Élevés · 12 Moyens · 9 Faibles/Info (C2 reclassé en Moyen après vérification, voir ci-dessous).
+
+**Suivi des corrections (PR #750) :** C1 traité (domaine vérifié côté GitHub, page vitrine publiée seule depuis `site/`) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux).
 
 ---
 
@@ -56,7 +58,13 @@ Un attaquant disposant du domaine peut monter de fausses pages de connexion/paie
 ---
 
 ### C2 — Jeton OEC payant écrit dans les journaux et publié dans un artefact CI
-**Confiance : chemin de code Confirmé ; exposition effective à vérifier (§6).**
+**Confiance : chemin de code Confirmé. Reclassé Moyen (latent) après vérification du 01/11/2026 — corrigé préventivement dans la PR #750.**
+
+> **Vérification.** En production, `/api/reports/oec-health` renvoie `token_configured: false` : aucun jeton OEC n'est configuré, donc aucun n'a pu être journalisé. Le workflow Opportunités n'a tourné que 3 fois (dernière exécution en juillet 2026) et ses artefacts, conservés 30 jours, ont expiré ; un commit de juillet indique que le projet ne possède pas de jeton OEC. Aucune rotation n'est donc nécessaire. Le défaut se serait déclenché à la première configuration d'un jeton payant (OEC) ou d'une clé UN Comtrade (`subscription-key`, même mécanisme).
+>
+> **Correctif appliqué.** `backend/log_redaction.py` : formateur qui masque les paramètres d'URL secrets (`token`, `subscription-key`, `api_key`, `key`…) dans toute ligne journalisée, traceback comprise ; httpx et httpcore relevés à WARNING. `backend/server.py` utilise cette configuration. Le workflow Opportunités filtre `uvicorn.log` avant de le publier. Tests : `backend/tests/test_log_redaction.py`. Second chemin de fuite trouvé et couvert : `real_trade_data_service.py` journalise `str(e)` des erreurs httpx, dont le texte contient l'URL complète.
+>
+> **Reste à faire, non bloquant :** les messages propres à uvicorn (exception non interceptée) ne passent pas par ce formateur ; le filtre CI les couvre pour l'artefact, mais pas les journaux du superviseur Emergent. Transmettre le jeton par en-tête si l'API amont l'accepte supprimerait ce dernier cas.
 
 Le jeton d'API OEC (plan payant) est passé **en paramètre d'URL** :
 - `backend/services/real_trade_data_service.py:41` : `enriched["token"] = OEC_API_TOKEN` ;
@@ -172,7 +180,7 @@ Reproduit en local (faux Mongo) : `/api/reports/health` ×4 en **free connecté*
 
 Ces points ne peuvent être tranchés que par vous, sur l'instance de production :
 
-1. **Jeton OEC (C2)** : télécharger le dernier artefact `opportunites-*` et `grep -o 'token=[^& "]*' uvicorn.log` ; vérifier aussi les logs du superviseur Emergent. Si présent → rotation immédiate.
+1. **Jeton OEC (C2)** : ✅ vérifié le 01/11/2026 — aucun jeton configuré en production, artefacts expirés. Seul point à confirmer : si tu as un jeton OEC ou une clé Comtrade ailleurs (secret GitHub `OEC_API_TOKEN`, autre environnement), le régénérer par précaution.
 2. **Secrets d'exemple (E3)** : sur votre instance, tenter la connexion avec `admin@afcfta-zlecaf.com` / `change-me-strong-password` ; vérifier que `JWT_SECRET` et `SECRET_KEY` ne sont pas les valeurs d'exemple. Si c'est le cas → rotation immédiate de `JWT_SECRET` (invalide toutes les sessions) et du mot de passe admin.
 3. **Domaine (C1)** : confirmer dans GitHub → Settings → Pages s'il existe un « verified domain » ; décider de l'application cible de `afcfta-zlecaf.com`.
 4. **IP client (E5)** : `GET /api/billing/geo-diagnostic` avec `X-Forwarded-For: 203.0.113.9, 198.51.100.7` ; le `client_ip` renvoyé ne doit être **aucune** de ces deux valeurs.
@@ -201,7 +209,7 @@ Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 
 
 ### Phase 0 — Urgences, à faire maintenant (XS/S)
 1. **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS*
-2. **Révoquer/régénérer le jeton OEC**, couper le log httpx, cesser d'uploader `uvicorn.log` (C2). — *XS*
+2. ✅ **Masquer les secrets dans les journaux** (formateur, httpx à WARNING, `uvicorn.log` filtré en CI) — fait dans la PR #750 ; rotation inutile, aucun jeton n'étant configuré (C2). — *XS*
 3. **Vérifier et faire tourner les secrets de prod** : `JWT_SECRET`, `SECRET_KEY`, mot de passe admin ; supprimer le ré-amorçage du mot de passe (E3). — *S*
 4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S*
 5. **`HTTPS_ENABLED=true`** en production (M8). — *XS*

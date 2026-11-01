@@ -46,29 +46,11 @@ from starlette.middleware.cors import CORSMiddleware
 _ROOT_DIR_FOR_DOTENV = Path(__file__).parent
 load_dotenv(_ROOT_DIR_FOR_DOTENV / ".env")
 
-# Configure structured logging
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "default": {
-                "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-                "datefmt": "%Y-%m-%dT%H:%M:%S",
-            },
-        },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "default",
-            },
-        },
-        "root": {
-            "level": os.environ.get("LOG_LEVEL", "INFO"),
-            "handlers": ["console"],
-        },
-    }
-)
+# Configure structured logging — secrets passés en URL (jeton OEC, clé
+# Comtrade...) masqués dans tous les journaux : voir log_redaction.py.
+from log_redaction import build_logging_config
+
+logging.config.dictConfig(build_logging_config(os.environ.get("LOG_LEVEL", "INFO")))
 
 logger = logging.getLogger(__name__)
 
