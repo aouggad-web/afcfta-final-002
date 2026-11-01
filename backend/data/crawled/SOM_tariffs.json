@@ -8,7 +8,7 @@
   "nomenclature": "Somali Customs Tariff 2022 (SH 2017), ministère des Finances",
   "data_type": "national",
   "currency": "USD",
-  "extracted_at": "2026-11-01T13:49:40.134195+00:00",
+  "extracted_at": "2026-11-01T15:52:49.995751+00:00",
   "total_positions": 5472,
   "source_document": {
     "titre": "Federal Government of Somalia, Ministry of Finance — Somali Customs Tariff 2022, Mogadishu May 2022",
@@ -27,7 +27,7 @@
       "code": "0101.21.00",
       "code_clean": "01012100",
       "code_length": 8,
-      "designation": "Pure-bred breeding animals",
+      "designation": "Live horses, asses, mules and hinnies — Horses — Pure-bred breeding animals",
       "chapter": "01",
       "hs2": "01",
       "hs4": "0101",
@@ -51,7 +51,7 @@
       "code": "0101.29.00",
       "code_clean": "01012900",
       "code_length": 8,
-      "designation": "Other",
+      "designation": "Live horses, asses, mules and hinnies — Horses — Other",
       "chapter": "01",
       "hs2": "01",
       "hs4": "0101",
@@ -75,7 +75,7 @@
       "code": "0101.30.00",
       "code_clean": "01013000",
       "code_length": 8,
-      "designation": "Asses",
+      "designation": "Live horses, asses, mules and hinnies — Asses",
       "chapter": "01",
       "hs2": "01",
       "hs4": "0101",
@@ -99,7 +99,7 @@
       "code": "0101.90.00",
       "code_clean": "01019000",
       "code_length": 8,
-      "designation": "Other",
+      "designation": "Live horses, asses, mules and hinnies — Other",
       "chapter": "01",
       "hs2": "01",
       "hs4": "0101",
@@ -131399,10 +131399,10 @@
     }
   ],
   "_integrity_seal": {
-    "content_hash": "dd79f630aae0af663c689c3f5d56c588452812a0ac1596a67fe85ccb3c455af2",
+    "content_hash": "ce4f290c0a95ee39874dd071d9f206ef2c46e95280db572050056ca5bd204fef",
     "source_url": "https://mof.gov.so/publications/somali-customs-tariff-2022",
     "source_hash": null,
-    "crawled_at": "2026-11-01T13:49:40.369064+00:00",
+    "crawled_at": "2026-11-01T15:52:50.389783+00:00",
     "verified": true,
     "algorithm": "SHA-256"
   }

@@ -1,8 +1,8 @@
 ﻿Position;Désignation;Chapitre;Unité;DD (Droit de douane (tarif douanier somalien 2022));Total droits et taxes pour 100 CAF (SOS);État;Manques;Restrictions;Notes (voir SOM_NPF_notes.csv)
-01012100;Pure-bred breeding animals;01;;5;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
-01012900;Other;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
-01013000;Asses;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
-01019000;Other;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
+01012100;Live horses, asses, mules and hinnies — Horses — Pure-bred breeding animals;01;;5;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
+01012900;Live horses, asses, mules and hinnies — Horses — Other;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
+01013000;Live horses, asses, mules and hinnies — Asses;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
+01019000;Live horses, asses, mules and hinnies — Other;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
 01022100;Live bovine animals — Pure-bred breeding animals;01;;5;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
 01022900;Live bovine animals — Other;01;;25;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;
 01023100;Live bovine animals — Buffalo — Pure-bred breeding animals;01;;5;;PARTIEL;TVA (NON_TRACEE_A_LA_SOURCE);;

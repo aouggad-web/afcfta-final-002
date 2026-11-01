@@ -62,7 +62,8 @@ def _niveau(libelle):
 
 
 def lire(lignes):
-    debut = next(i for i, ligne in enumerate(lignes) if ligne.startswith("0101 21 00"))
+    # Dès l'intitulé de la position 01.01 : ses lignes (« – Horses ») en dépendent.
+    debut = next(i for i, ligne in enumerate(lignes) if re.match(r"^0101\s{3,}\S", ligne))
     positions, intitule, groupes = {}, "", {}
     i = debut
     while i < len(lignes):

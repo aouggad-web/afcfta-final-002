@@ -37,6 +37,14 @@ def test_droits_du_tarif_2022(socle):
     assert taux == {"01012100": 5.0, "27101931": 10.0, "84713000": 5.0, "24022010": 35.0}
 
 
+def test_le_libelle_porte_l_intitule_de_la_position(socle):
+    """« – – Other » seul ne dit rien : la position 01.01, la première du
+    tarif, garde son intitulé et son groupe (revue Codex de #746)."""
+    p = socle["positions"]
+    assert p["01012900"]["designation"] == "Live horses, asses, mules and hinnies — Horses — Other"
+    assert p["01019000"]["designation"] == "Live horses, asses, mules and hinnies — Other"
+
+
 def test_droit_ad_valorem_sur_la_valeur_en_douane(socle):
     r = calculer(socle["positions"]["01012900"], 1000, devise_cif="USD")["npf"]
     lignes = {l["code"]: l for l in r["lignes"]}

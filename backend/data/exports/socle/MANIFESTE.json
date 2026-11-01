@@ -1480,10 +1480,10 @@
       ],
       "devise": "SOS",
       "date_reference": "2026-11-01",
-      "sha256": "2b3f332e7a878432a2a945bc1fd7a85e8cbb6b8de1968f9546ec7ea08230456f",
+      "sha256": "e3e6b6dca6afdde7f790f6bd7fd368e54f0e68cf11a5ee46d0fd0b29d994abfc",
       "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
-      "socle_sha256": "12ceee95364f7fc615df2cd96e0df4db11512422a67056c8894c454e4f80c54e",
-      "collecte": "2026-11-01T13:49:40.134195+00:00"
+      "socle_sha256": "9049bbe6ca6ce87848d6f0c4d0ec9cb2a8e27862dc7c11abba27845ba8725c0f",
+      "collecte": "2026-11-01T15:52:49.995751+00:00"
     },
     "SSD": {
       "fichier": "SSD_NPF.csv",
