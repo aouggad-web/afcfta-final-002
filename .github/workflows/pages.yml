@@ -5,7 +5,8 @@
 # sur le domaine public. Ici, seul le contenu de `site/` est publié.
 #
 # Prérequis côté dépôt (une fois) : Settings → Pages → « Build and deployment »
-# → Source = « GitHub Actions ». Le domaine est porté par `site/CNAME`.
+# → Source = « GitHub Actions ». Le domaine personnalisé (www.afcfta-zlecaf.com)
+# se règle dans ces mêmes paramètres ; site/CNAME le rappelle.
 name: Deploy landing page to GitHub Pages
 
 on:

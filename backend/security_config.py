@@ -3,9 +3,9 @@
 Deux valeurs pilotent la sécurité des comptes :
 
 - ``JWT_SECRET`` signe les sessions. S'il vaut une valeur d'exemple publiée
-  dans le dépôt, ou s'il est trop court, n'importe qui peut fabriquer une
-  session au nom de n'importe quel utilisateur. En production, le serveur
-  refuse alors de démarrer.
+  dans le dépôt, n'importe qui peut fabriquer une session au nom de n'importe
+  quel utilisateur : en production, le serveur refuse alors de démarrer. Un
+  secret trop court (mais non publié) est signalé sans couper le service.
 - ``ADMIN_PASSWORD`` amorce le compte admin. Une valeur d'exemple ou trop
   courte n'est jamais appliquée, et le compte est verrouillé si c'est déjà
   son mot de passe (voir ``server._seed_admin_account``).
@@ -56,11 +56,17 @@ def probleme_mot_de_passe_admin(mot_de_passe: str) -> Optional[str]:
 
 
 def imposer_jwt_secret(env: Mapping[str, str]) -> None:
-    """Refuse de démarrer en production avec un ``JWT_SECRET`` faible."""
-    probleme = probleme_jwt_secret(env.get("JWT_SECRET"))
+    """Refuse de démarrer en production avec un ``JWT_SECRET`` d'exemple public.
+
+    Seule une valeur publiée dans le dépôt, exploitable par n'importe qui,
+    arrête le démarrage. Un secret trop court mais non publié déclenche une
+    alerte CRITICAL : le renouveler, sans couper le service pour autant.
+    """
+    secret = env.get("JWT_SECRET")
+    probleme = probleme_jwt_secret(secret)
     if probleme is None:
         return
     message = f"JWT_SECRET refusé : {probleme}. Générez-en un avec : {GENERER}"
-    if env.get("APP_ENV", "development") == "production":
+    if env.get("APP_ENV", "development") == "production" and est_valeur_exemple(secret):
         raise RuntimeError(message)
     logger.critical(message)

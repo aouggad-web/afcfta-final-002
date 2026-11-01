@@ -49,6 +49,12 @@ def test_production_refuse_un_jwt_secret_faible():
     imposer_jwt_secret({"APP_ENV": "production", "JWT_SECRET": SOLIDE})  # accepté
 
 
+def test_production_signale_un_jwt_secret_court_sans_couper_le_service(caplog):
+    with caplog.at_level(logging.CRITICAL):
+        imposer_jwt_secret({"APP_ENV": "production", "JWT_SECRET": "a" * 20})
+    assert "trop court" in caplog.text
+
+
 def test_hors_production_un_jwt_secret_faible_est_signale_sans_bloquer(caplog):
     with caplog.at_level(logging.CRITICAL):
         imposer_jwt_secret({"JWT_SECRET": "court"})
