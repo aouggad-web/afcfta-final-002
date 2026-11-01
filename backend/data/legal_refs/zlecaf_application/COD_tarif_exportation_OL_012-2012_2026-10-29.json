@@ -4,7 +4,7 @@
   "destination_iso3": "COD",
   "verified_at": "2026-11-01",
   "etabli": true,
-  "evidence_level": "primaire : ordonnance-loi n° 012/2012 publiée au Journal officiel (reproduction droitcongolais.info), Code minier en textes coordonnés (JO du 3 mai 2018) ; tarif tel que modifié : liste consolidée CLRDC/Larcier (2019), recoupée avec l'annexe XVI des projets de lois de finances 2025 et 2026 (ministère du Budget) ; or et diamants : projet de LF 2025, art. 17, et synthèse PwC de la loi n° 24/011 (secondaire) ; textes adoptés des lois de finances 2025 et 2026 non lus",
+  "evidence_level": "primaire : ordonnance-loi n° 012/2012 publiée au Journal officiel (reproduction droitcongolais.info), Code minier en textes coordonnés (JO du 3 mai 2018) ; tarif tel que modifié : liste consolidée CLRDC/Larcier (2019), recoupée avec l'annexe XVI des projets de lois de finances 2025 et 2026 (ministère du Budget) ; or et diamants : projet de LF 2025, art. 17, et synthèse PwC de la loi n° 24/011 (secondaire) ; loi de finances n° 25/060 pour 2026 adoptée (copie certifiée conforme publiée par le ministère du Budget), annexe XVI, lue ; texte adopté de la loi n° 24/011 pour 2025 non lu",
   "documents_archives": [
     {
       "texte_archive": "sources/COD_tarif_exportation_OL_012-2012.texte-extrait.txt",
@@ -13,6 +13,10 @@
     {
       "texte_archive": "sources/COD_tarif_exportation_consolide.texte-extrait.txt",
       "sha256": "8c377bcc6b4c91de6fee7a4142ff9de0b468e644c3960d3d2dc708ffc8c67ad5"
+    },
+    {
+      "texte_archive": "sources/COD_loi_de_finances_2026_annexes.texte-extrait.txt",
+      "sha256": "37888cffb3b956fb1e428ffa3d43935f51c513e60bca91c9bb3a28c5e2ff745a"
     }
   ],
   "regle": {
@@ -43,11 +47,16 @@
     },
     "or_diamants_2025": {
       "valeur": "Or et diamants d'exploitation artisanale : 0,5 % ; de production industrielle : 3 %.",
-      "reference": "Loi de finances n° 24/011 du 20 décembre 2024 pour l'exercice 2025 (projet, art. 17, 2, a et c ; synthèse PwC du texte adopté)",
+      "reference": "Loi de finances n° 24/011 du 20 décembre 2024 pour l'exercice 2025 (projet, art. 17, 2, a et c ; synthèse PwC du texte adopté) ; confirmés par l'annexe XVI de la loi de finances n° 25/060 pour 2026",
       "verbatim": "au taux de 0,5%"
+    },
+    "annexe_xvi_lf2026": {
+      "valeur": "Annexe XVI de la loi de finances 2026 adoptée : café vert exempt ; eau douce 5 % ; minerais et concentrés 10 % ; pétrole brut et énergie électrique 5 % ; oxyde de zinc 5 % ; hydroxydes de cobalt 10 % ; sciages avivés exempts jusqu'à 150 mm, 5 % au-delà ; diamants et or 0,5 % (artisanal) ou 3 % (industriel) ; cuivre blister 5 % ; déchets de cuivre 5 %.",
+      "reference": "Loi de finances n° 25/060 du 29 décembre 2025 pour l'exercice 2026, art. 10 et annexe XVI (pages 72 à 80 du volume Recettes)",
+      "verbatim": "PRODUITS SOUMIS AUX DROITS DE DOUANE A L'EXPORTATION"
     }
   },
-  "ne_tranche_pas": "Le texte adopté des lois de finances 2025 (n° 24/011) et 2026 : le projet de LF 2025 (art. 17, 2, b) proposait de taxer à 2 % tous les produits miniers des chapitres 26 et 72 à 81 et de supprimer l'exonération de l'art. 234 du Code minier ; la synthèse PwC du texte adopté n'en dit rien et une tribune de février 2026 tient l'exonération pour en vigueur : l'exonération est maintenue, avec cette réserve dite à l'exportateur ; le texte qui a institué la liste consolidée (postérieur à 2012, antérieur à 2019) ; la seconde colonne de taux (0 %) de l'annexe XVI, non intitulée ; les écarts que seule l'annexe des projets porte (café vert exempt, cuivre blister 5 %, oxyde de zinc 5 %, sciages exempts jusqu'à 150 mm), laissés à établir ; les valeurs de base fixées par arrêté ; le régime des hydrocarbures ; l'interdiction d'exportation des concentrés de cuivre et de cobalt (arrêté interministériel du 29 juin 2026, connu par son résumé) ; le taux de l'or et des diamants selon le mode d'exploitation, que les positions du socle ne distinguent pas.",
+  "ne_tranche_pas": "Le texte adopté de la loi de finances 2025 (n° 24/011), dont la loi de finances 2026 (art. 10) maintient les mesures douanières : le projet de LF 2025 (art. 17, 2, b) proposait de taxer à 2 % tous les produits miniers des chapitres 26 et 72 à 81 et de supprimer l'exonération de l'art. 234 du Code minier ; la synthèse PwC du texte adopté n'en dit rien et une tribune de février 2026 tient l'exonération pour en vigueur : l'exonération est maintenue, avec cette réserve dite à l'exportateur ; le texte qui a institué la liste consolidée (postérieur à 2012, antérieur à 2019) ; la seconde colonne de taux (0 %) de l'annexe XVI, non intitulée, y compris dans la loi de finances 2026 adoptée ; l'annexe XVI de 2026 maintient les minerais à 10 %, sans trace du taux de 2 % du projet de LF 2025 ; les valeurs de base fixées par arrêté ; le régime des hydrocarbures ; l'interdiction d'exportation des concentrés de cuivre et de cobalt (arrêté interministériel du 29 juin 2026, connu par son résumé) ; le taux de l'or et des diamants selon le mode d'exploitation, que les positions du socle ne distinguent pas.",
   "application_au_calcul": {
     "route": "POST /calcul/export",
     "positions": "EXPORT_PAR_TEXTE[\"COD\"] (scripts/build_socle.py), d'après la liste consolidée. Les produits miniers portent la marque titulaire_minier_exonere : l'exportateur déclare s'il est titulaire d'un droit minier exportant pour son projet (SELON_DECLARATION[\"COD\"], champ titulaire_minier) ; oui : exonéré, avec la réserve du projet de LF 2025 ; non : taux du tarif ; sans réponse : à établir.",

@@ -28,6 +28,7 @@ def _constructeur():
 
 
 def test_le_droit_lu_au_tec_eac_est_retire():
+    """Le taux du TEC EAC est retiré partout ; la loi de finances 2026 (annexe XV) en fixe un pour certaines positions."""
     bs = _constructeur()
     positions = {
         "15111000": {"droits": [
@@ -39,27 +40,39 @@ def test_le_droit_lu_au_tec_eac_est_retire():
              "specifique": {"montant": 345.0}, "compose": True, "regle_composee": "LE_PLUS_ELEVE",
              "expression_brute": "75% or $345/MT whichever is higher"},
         ]},
+        "31023000": {"droits": [{"code": "DD", "famille": "droit", "taux": 0.0, "assiette": "CIF"}]},
     }
     compteurs = {k: 0 for k in ("taux_indisponibles", "droits_specifiques", "assiettes_indisponibles",
                                 "assiettes_source", "assiettes_table")}
     bs._droit_douane_rdc(positions, compteurs)
     for position in positions.values():
-        dd = position["droits"][0]
-        assert dd["taux"] is None
-        assert dd["note"] == bs.NOTE_DD_COD
-        assert not {"specifique", "compose", "regle_composee", "expression_brute"} & set(dd)
+        assert not {"specifique", "compose", "regle_composee", "expression_brute"} & set(position["droits"][0])
+    huile = positions["15111000"]["droits"][0]
+    assert huile["taux"] == 10.0 and "25/060" in huile["note"] and huile["source"] == bs._SOURCE_DD_COD_LF2026
+    assert positions["10061000"]["droits"][0]["taux"] is None
+    assert positions["10061000"]["droits"][0]["note"] == bs.NOTE_DD_COD
+    # Nitrate d'ammonium : 5 % pour les engrais, 20 % pour les explosifs ; la position ne les distingue pas.
+    nitrate = positions["31023000"]["droits"][0]
+    assert nitrate["taux"] is None and "5 %" in nitrate["note"] and "20 %" in nitrate["note"]
     assert positions["15111000"]["droits"][1]["taux"] == 16.0
     assert compteurs["taux_indisponibles"] == 2
 
 
 @avec_socle
-def test_aucun_droit_de_douane_rdc_n_est_liquide():
+def test_droit_de_douane_rdc_seulement_ou_la_loi_de_finances_le_fixe():
     with open(SOCLE_COD, encoding="utf-8") as f:
         positions = json.load(f)["positions"]
-    for code in ("15111000", "25232900", "02011000", "72111400"):
+    for code, montant in (("15111000", 100.0), ("02011000", 200.0), ("72111400", 200.0), ("09052000", 50.0),
+                          ("73063000", 200.0), ("40122000", 100.0)):
+        lignes = {ligne["code"]: ligne for ligne in calculer(positions[code], 1000.0)["npf"]["lignes"]}
+        assert lignes["DD"]["montant"] == pytest.approx(montant), code
+        # La TVA (16 % de CIF + DD) redevient liquidable.
+        assert lignes["TVA"]["montant"] == pytest.approx(0.16 * (1000.0 + montant)), code
+    for code in ("25232900", "10061000", "31023000", "73061100", "72109000"):
         lignes = {ligne["code"]: ligne for ligne in calculer(positions[code], 1000.0)["npf"]["lignes"]}
         assert lignes["DD"]["statut"] != "CALCULE", code
-    assert all(d["taux"] is None for p in positions.values() for d in p["droits"] if d["code"] == "DD")
+    avec_taux = [c for c, p in positions.items() for d in p["droits"] if d["code"] == "DD" and d["taux"] is not None]
+    assert 50 < len(avec_taux) < 200
 
 
 def test_preference_rdc_eac_sans_libre_circulation():
