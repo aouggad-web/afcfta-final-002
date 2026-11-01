@@ -15,6 +15,7 @@ from services.regional_blocs import (
     FTA_NAMES,
     same_customs_union,
     shared_free_trade_areas,
+    union_non_effective,
 )
 
 # ── Unions douanières ───────────────────────────────────────────────────────
@@ -30,6 +31,14 @@ def test_same_customs_union_uemoa():
 
 def test_same_customs_union_eac():
     assert same_customs_union("KEN", "UGA") == "EAC"
+
+
+def test_rdc_hors_de_l_union_douaniere_eac():
+    """La RDC, membre de l'EAC, n'en applique pas le TEC : pas de libre circulation, et la raison est nommée."""
+    assert "COD" in CUSTOMS_UNIONS["EAC"]
+    assert same_customs_union("KEN", "COD") is None and same_customs_union("COD", "UGA") is None
+    assert union_non_effective("KEN", "COD") == union_non_effective("COD", "RWA") == "COD"
+    assert union_non_effective("KEN", "UGA") is None and union_non_effective("CHN", "COD") is None
 
 
 def test_same_customs_union_cemac():

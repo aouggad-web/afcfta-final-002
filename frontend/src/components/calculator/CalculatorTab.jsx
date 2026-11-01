@@ -1197,6 +1197,25 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                       correspond à aucune source lisible ; ou
                                       si une réserve accompagne la préférence
                                       (règle d'origine non arrêtée). */}
+              {/* Membre d'une union douanière qui n'en applique pas le tarif
+                  (RDC, EAC) : dit en tête, avant tout montant. */}
+              {result.union_non_effective && (
+                <div
+                  className="mb-6 p-4 bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-xl flex items-start gap-3"
+                  data-testid="union-non-effective"
+                >
+                  <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-[var(--gold)] font-semibold text-sm">
+                      {language === 'fr'
+                        ? 'La RDC n\'applique pas le tarif extérieur commun de l\'EAC'
+                        : 'The DRC does not apply the EAC Common External Tariff'}
+                    </p>
+                    <p className="text-[var(--gold)] text-sm mt-1">{result.union_non_effective.note}</p>
+                  </div>
+                </div>
+              )}
+
               {result.trade_regime === 'CUSTOMS_UNION' && (
                 <div className="mb-6 p-4 bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] rounded-xl flex items-start gap-3">
                   <Shield className="w-5 h-5 text-[var(--success)] mt-0.5 flex-shrink-0" />

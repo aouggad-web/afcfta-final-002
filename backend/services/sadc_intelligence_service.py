@@ -377,13 +377,14 @@ class SADCIntelligenceService:
                     "key_strengths": ["agriculture", "services", "logistics"],
                     "largest_economy": "Tanzania (TZA)",
                     "trade_protocol": "EAC Common Market (2010)",
-                    "customs_union": "EAC CET (all 7 members)",
+                    "customs_union": "EAC CET (not applied by the DRC)",
                     "intra_bloc_trade_share_pct": 22,
                 },
             },
             "dual_members": {
                 "TZA": {"in_both": True, "primary_cet": "EAC", "note": "Tanzania applies EAC CET"},
-                "COD": {"in_both": True, "primary_cet": "EAC", "note": "DRC joined EAC in 2022"},
+                "COD": {"in_both": True, "primary_cet": None,
+                        "note": "DRC joined EAC in 2022 but does not apply the EAC CET (national tariff)"},
             },
             "complementarity": [
                 "SADC mining + EAC logistics = value-chain opportunity",

@@ -45,6 +45,22 @@ CUSTOMS_UNIONS = {
     "UEMOA": UEMOA,
 }
 
+#: Membres d'une union douanière qui n'en appliquent pas le régime : ni le tarif
+#: extérieur commun ni la libre circulation intra-bloc ne leur sont servis.
+#: RDC : membre de l'EAC depuis 2022, elle n'applique pas le TEC EAC (tarif
+#: national à 0, 5, 10 et 20 %) et a déposé une offre ZLECAf distincte de celle
+#: de l'EAC (fiche COD_application_2026-09-27.json).
+UNION_NON_EFFECTIVE = {"EAC": frozenset({"COD"})}
+
+NOTE_UNION_NON_EFFECTIVE = {
+    "COD": (
+        "La RDC est membre de l'EAC mais n'applique pas le tarif extérieur commun de l'EAC : son tarif national "
+        "(ordonnance-loi 011/2012) a ses propres taux, et l'union douanière ne lui est pas effective. La libre "
+        "circulation EAC n'est donc pas servie entre la RDC et les autres États de l'EAC "
+        "(fiche COD_application_2026-09-27.json)."
+    ),
+}
+
 CUSTOMS_UNION_NAMES = {
     "SACU": "Union douanière d'Afrique australe (SACU)",
     "EAC": "Communauté d'Afrique de l'Est (EAC)",
@@ -136,16 +152,31 @@ def _norm(iso3) -> str:
 def same_customs_union(origin_iso3, dest_iso3):
     """Code de l'union douanière commune aux deux pays, sinon ``None``.
 
-    Retourne ``None`` si origine == destination ou si les deux pays ne
-    partagent aucune union douanière. L'appartenance à une union douanière
+    Retourne ``None`` si origine == destination, si les deux pays ne
+    partagent aucune union douanière, ou si l'un d'eux n'en applique pas le
+    régime (``UNION_NON_EFFECTIVE``). L'appartenance à une union douanière
     implique la libre circulation des marchandises (droit de douane
     intra-bloc nul), indépendamment de la ZLECAf."""
     o, d = _norm(origin_iso3), _norm(dest_iso3)
     if not o or not d or o == d:
         return None
     for code, members in CUSTOMS_UNIONS.items():
-        if o in members and d in members:
+        if o in members and d in members and not ({o, d} & UNION_NON_EFFECTIVE.get(code, frozenset())):
             return code
+    return None
+
+
+def union_non_effective(origin_iso3, dest_iso3):
+    """Membre (ISO3) qui fait obstacle à la libre circulation entre deux pays
+    d'une même union douanière dont il n'applique pas le régime, sinon ``None``."""
+    o, d = _norm(origin_iso3), _norm(dest_iso3)
+    if not o or not d or o == d:
+        return None
+    for code, members in CUSTOMS_UNIONS.items():
+        if o in members and d in members:
+            for iso in (d, o):
+                if iso in UNION_NON_EFFECTIVE.get(code, frozenset()):
+                    return iso
     return None
 
 

@@ -195,6 +195,25 @@ def taux_preferentiels(
     union = _union_douaniere(destination_iso3, origine_iso3)
     if union:
         return union
+    from services.regional_blocs import NOTE_UNION_NON_EFFECTIVE, union_non_effective
+
+    non_effective = union_non_effective(origine_iso3, destination_iso3)
+    if non_effective:
+        # Union douanière dont l'un des deux pays n'applique pas le régime
+        # (RDC dans l'EAC) : pas de libre circulation, et la raison est dite.
+        resultat = _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
+        return {**resultat, "union_non_effective": non_effective,
+                "note": NOTE_UNION_NON_EFFECTIVE[non_effective] + " " + (resultat.get("note") or "")}
+    return _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
+
+
+def _taux_preferentiels_hors_union(
+    position: Dict[str, Any],
+    destination_iso3: str,
+    origine_iso3: str,
+    hs_code: str,
+) -> Dict[str, Any]:
+    """Préférence ZLECAf (ou refus motivé), hors union douanière."""
 
     if destination_iso3.upper() == "ZAF":
         # Défaut corrigé (règle ZAF) : le socle portait la colonne AfCFTA de

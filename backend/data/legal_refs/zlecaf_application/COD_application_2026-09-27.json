@@ -85,5 +85,11 @@
   "eac": "MEMBRE depuis 2022 ; TEC NON appliqué (bandes nationales 0/5/10/20 % ≠ CET) et offre ZLECAf distincte de celle de l'EAC — voir fiche.",
   "ceeac": "MEMBRE historique ; aucune zone de libre-échange opérationnelle dotée d'un barème.",
   "conclusion": "Aucun de ces groupements n'établit une application ZLECAf congolaise : le STR COMESA est sectoriel (petits commerçants), l'accession SADC est en cours, le TEC EAC n'est pas appliqué. Le niveau NON_APPLIQUE_PRESUME est maintenu."
+ },
+ "application_au_calcul_tec_eac": {
+  "mis_a_jour_le": "2026-11-01",
+  "droit_de_douane": "Le socle COD ne sert plus les taux du TEC EAC 2022 (collecte KRA) comme droit de douane : DD à taux non établi, note « La RDC n'applique pas le tarif extérieur commun de l'EAC » (scripts/build_socle.py, _droit_douane_rdc). La TVA assise sur CIF+DD reste donc à établir.",
+  "union_douaniere": "La RDC reste membre de l'EAC (regional_blocs.EAC) mais l'union douanière ne lui est pas effective (regional_blocs.UNION_NON_EFFECTIVE) : aucune libre circulation EAC entre la RDC et les autres États de l'EAC.",
+  "affichage": "POST /calcul porte un bloc union_non_effective (destination RDC, ou RDC face à un autre membre de l'EAC) ; le calculateur l'affiche en tête du résultat."
  }
 }
