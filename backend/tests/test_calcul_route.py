@@ -987,12 +987,13 @@ def test_les_frais_reglementaires_n_entrent_jamais_dans_le_cout_douanier(client)
     au total douanier ferait payer à l'importateur une somme que la douane ne
     perçoit pas — et la rendrait indiscernable d'un droit."""
     # Couloir Ghana → Nigeria : l'un des rares dont les frais réglementaires
-    # soient réellement chiffrés. Ailleurs le service rend `None` — « non
-    # chiffré » — et le test ne mordrait sur rien.
+    # soient réellement chiffrés (certificat SONCAP, qui ne vise ni les animaux
+    # vivants ni les aliments : d'où un ordinateur portable). Ailleurs le service
+    # rend `None` — « non chiffré » — et le test ne mordrait sur rien.
     charge = {
         "destination": "NGA",
         "origine": "GHA",
-        "code_sh": "0101210000",
+        "code_sh": "8471301000",
         "valeur_cif": 10000,
     }
     corps = client.post("/calcul", json=charge).json()

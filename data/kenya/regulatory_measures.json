@@ -38,7 +38,23 @@
           "delivered_document": "Certificate of Conformity (CoC) / Certificate of Roadworthiness (CoR) pour véhicules d'occasion, engins mobiles et pièces détachées.",
           "verification_status": "DOCUMENTED",
           "pending_primary_archive": true,
-          "notes": ""
+          "notes": "",
+          "hs_scope": {
+            "include": [
+              "8701",
+              "8702",
+              "8703",
+              "8704",
+              "8705",
+              "8708",
+              "8711",
+              "8714",
+              "8427",
+              "8429",
+              "8430"
+            ],
+            "basis": "Mission : « véhicules d'occasion, engins mobiles et pièces détachées » : véhicules (87.01 à 87.05, 87.11), leurs parties (87.08, 87.14) et engins mobiles (chariots 84.27, engins de terrassement 84.29 et 84.30)."
+          }
         }
       ],
       "documents": [
@@ -54,7 +70,10 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import"
+      ]
     },
     {
       "record_id": "KEN-KRA-ACD",
@@ -77,7 +96,10 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "NOT_APPLICABLE"
+      "mandated_actor_status": "NOT_APPLICABLE",
+      "sides": [
+        "import"
+      ]
     }
   ]
 }

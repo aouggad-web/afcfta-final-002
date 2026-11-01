@@ -57,6 +57,7 @@
     },
     {
       "record_id": "CIV-GUCE-2013",
+      "sides": ["import", "export"],
       "country_iso3": "CIV",
       "country_name": "Côte d'Ivoire",
       "program": "GUCE (Guichet Unique du Commerce Extérieur)",
@@ -76,6 +77,7 @@
     },
     {
       "record_id": "NGA-NICIS-2017",
+      "sides": ["import", "export"],
       "country_iso3": "NGA",
       "country_name": "Nigeria",
       "program": "Informatisation douanière (NICIS II, Trade Portal)",
@@ -217,6 +219,7 @@
     },
     {
       "record_id": "GHA-ICUMS-2020",
+      "sides": ["import", "export"],
       "country_iso3": "GHA",
       "country_name": "Ghana",
       "program": "ICUMS / UNIPASS (Système intégré de dédouanement)",
@@ -324,6 +327,7 @@
     },
     {
       "record_id": "GIN-GUCEG-2020",
+      "sides": ["import", "export"],
       "country_iso3": "GIN",
       "country_name": "Guinée",
       "program": "Guichet Unique (GUCEG) + Tracking & évaluation en douane",
@@ -362,6 +366,7 @@
     },
     {
       "record_id": "BEN-SEGUB",
+      "sides": ["import", "export"],
       "country_iso3": "BEN",
       "country_name": "Bénin",
       "program": "SEGUB (Société d'Exploitation du Guichet Unique du Bénin)",
@@ -381,6 +386,7 @@
     },
     {
       "record_id": "TGO-SEGUCE-2014",
+      "sides": ["import", "export"],
       "country_iso3": "TGO",
       "country_name": "Togo",
       "program": "SEGUCE Togo (Guichet Unique pour le Commerce Extérieur)",
@@ -428,6 +434,7 @@
     },
     {
       "record_id": "MAR-PORTNET",
+      "sides": ["import", "export"],
       "country_iso3": "MAR",
       "country_name": "Maroc",
       "program": "PortNet (Guichet Unique du Commerce Extérieur / logistique portuaire)",
@@ -521,6 +528,7 @@
     },
     {
       "record_id": "CAF-BESC-2023",
+      "sides": ["import", "export"],
       "country_iso3": "CAF",
       "country_name": "République Centrafricaine",
       "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (import/export/transit)",

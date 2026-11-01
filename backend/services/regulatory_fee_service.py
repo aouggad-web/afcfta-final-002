@@ -294,14 +294,43 @@ def _stage_for_measure(measure: Dict[str, Any], side: str) -> str:
     return side
 
 
+def dans_perimetre_sh(entry: Dict[str, Any], code: Optional[str]) -> bool:
+    """La mesure, le prestataire ou le frais vise-t-il la position calculée ?
+
+    ``hs_scope`` = {"include": [préfixes SH], "exclude": [préfixes SH]} : sans
+    ``include``, toutes les positions sauf les exclues. Pas de périmètre, ou pas
+    de position connue → portée générale, rien n'est masqué. Le certificat d'un
+    véhicule d'occasion ne s'affiche donc pas pour du blé.
+    """
+    perimetre = entry.get("hs_scope")
+    chiffres = "".join(c for c in str(code or "") if c.isdigit())
+    if not perimetre or not chiffres:
+        return True
+    inclure = tuple(perimetre.get("include") or ())
+    if inclure and not chiffres.startswith(inclure):
+        return False
+    return not chiffres.startswith(tuple(perimetre.get("exclude") or ()))
+
+
+def vise_le_sens(measure: Dict[str, Any], side: str) -> bool:
+    """Une mesure du registre est une mesure d'IMPORTATION, sauf si elle déclare
+    aussi l'exportation (``sides``) : le PVoC kenyan ne s'affiche pas sur une
+    exportation depuis le Kenya."""
+    return side in (measure.get("sides") or ["import"])
+
+
 def build_regulatory_cost(
     compliance: Optional[Dict[str, Any]],
     *,
     fob_value: Optional[float] = None,
     cif_value: Optional[float] = None,
     side: str = "import",
+    code: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
     """Compose la ventilation des frais réglementaires d'un pays.
+
+    ``code`` : position calculée ; seules les mesures et les prestataires dont
+    le périmètre SH la vise, et dont le sens est ``side``, sont retenus.
 
     Traite les mesures portant un prestataire mandaté ACTIF (règle 5), en
     rangeant séparément « frais de formalité obligatoire » et « frais du
@@ -319,13 +348,17 @@ def build_regulatory_cost(
 
     line_items: List[Dict[str, Any]] = []
     for measure in compliance.get("measures", []):
-        active_actors = [
-            a
-            for a in (measure.get("mandated_actors") or [])
-            if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES
+        if not vise_le_sens(measure, side) or not dans_perimetre_sh(measure, code):
+            continue
+        mandats_actifs = [
+            a for a in (measure.get("mandated_actors") or []) if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES
         ]
+        # Le prestataire est retenu s'il vise la position ; la formalité, elle,
+        # reste due même quand son seul prestataire actif ne la vise pas (PVoC
+        # kenyan pour du blé : QISJ n'inspecte que les véhicules).
+        active_actors = [a for a in mandats_actifs if dans_perimetre_sh(a, code)]
         actor_status = measure.get("mandated_actor_status")
-        if not active_actors and actor_status != "NOT_AVAILABLE":
+        if not mandats_actifs and actor_status != "NOT_AVAILABLE":
             continue
 
         measure_stage = _stage_for_measure(measure, side)
@@ -407,8 +440,12 @@ def build_verified_provider_costs(
     side: str = "import",
     poids_brut_kg: Optional[float] = None,
     transport: Optional[Dict[str, Any]] = None,
+    code: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     """Lignes de coût CALCULABLES issues de frais VÉRIFIÉS sur source primaire.
+
+    ``code`` : position calculée ; un frais dont le périmètre SH ne la vise pas
+    est écarté.
 
     Ces frais sont autoritaires par construction (chaque entrée cite ses sources) :
     ils apparaissent indépendamment du registre conforme. Un frais dont le seuil de
@@ -422,6 +459,8 @@ def build_verified_provider_costs(
         if entry.get("country_iso3", "").upper() != iso:
             continue
         if entry.get("side", "import") != side:
+            continue
+        if not dans_perimetre_sh(entry, code):
             continue
         # Mode d'acheminement déclaré hors des modes du frais : sans objet. Non
         # déclaré, le frais reste affiché (avec ses conditions).
@@ -583,6 +622,28 @@ def merge_regulatory_cost(
     return _summarise(merged_items)
 
 
+def _conformite_visant(compliance: Optional[Dict[str, Any]], code: Optional[str]) -> Optional[Dict[str, Any]]:
+    """Le détail des formalités du pays de destination, réduit aux mesures
+    d'importation et aux prestataires qui visent la position ``code``."""
+    if not compliance or not code:
+        return compliance
+    measures = []
+    for measure in compliance.get("measures") or []:
+        if not vise_le_sens(measure, "import") or not dans_perimetre_sh(measure, code):
+            continue
+        measures.append(
+            {**measure, "mandated_actors": [a for a in measure.get("mandated_actors") or [] if dans_perimetre_sh(a, code)]}
+        )
+    actors = [a for m in measures for a in m["mandated_actors"]]
+    return {
+        **compliance,
+        "measures": measures,
+        "measure_count": len(measures),
+        "mandated_actors": actors,
+        "mandated_actor_count": len(actors),
+    }
+
+
 def build_regulatory_blocks(
     dest_iso3: Optional[str],
     origin_iso3: Optional[str],
@@ -591,11 +652,16 @@ def build_regulatory_blocks(
     cif_value: Optional[float] = None,
     poids_brut_kg: Optional[float] = None,
     transport: Optional[Dict[str, Any]] = None,
+    code: Optional[str] = None,
 ) -> Dict[str, Optional[Dict[str, Any]]]:
     """Compose les trois blocs réglementaires (compliance/cost/reported) pour
     une paire origine/destination — fail-closed : toute erreur de données
     remonte à l'appelant (qui doit l'entourer d'un garde-fou try/except pour
     ne jamais interrompre le calcul tarifaire).
+
+    ``code`` : position calculée. Formalités, prestataires et frais dont le
+    périmètre SH ne la vise pas sont écartés de tous les blocs ; sans code,
+    rien n'est écarté.
 
     Point d'entrée UNIQUE partagé par toutes les routes de calcul, afin que la
     ventilation réglementaire (formalités, prestataires mandatés, frais
@@ -608,25 +674,25 @@ def build_regulatory_blocks(
 
     regulatory_compliance = get_country_regulatory_compliance(dest_iso3) if dest_iso3 else None
     cost_import = build_regulatory_cost(
-        regulatory_compliance, fob_value=fob_value, cif_value=cif_value, side="import"
+        regulatory_compliance, fob_value=fob_value, cif_value=cif_value, side="import", code=code
     )
     origin_compliance = get_country_regulatory_compliance(origin_iso3) if origin_iso3 else None
     cost_export = build_regulatory_cost(
-        origin_compliance, fob_value=fob_value, cif_value=cif_value, side="export"
+        origin_compliance, fob_value=fob_value, cif_value=cif_value, side="export", code=code
     )
     # Poids et transport : ceux de l'importation, donc du seul pays de destination.
     verified_items = build_verified_provider_costs(
         dest_iso3, fob_value=fob_value, cif_value=cif_value, side="import",
-        poids_brut_kg=poids_brut_kg, transport=transport,
+        poids_brut_kg=poids_brut_kg, transport=transport, code=code,
     )
     if origin_iso3:
         verified_items = verified_items + build_verified_provider_costs(
-            origin_iso3, fob_value=fob_value, cif_value=cif_value, side="export"
+            origin_iso3, fob_value=fob_value, cif_value=cif_value, side="export", code=code
         )
     regulatory_cost = merge_regulatory_cost(cost_import, cost_export, verified_items)
     regulatory_reported = build_reported_layer(dest_iso3, origin_iso3)
     return {
-        "regulatory_compliance": regulatory_compliance,
+        "regulatory_compliance": _conformite_visant(regulatory_compliance, code),
         "regulatory_cost": regulatory_cost,
         "regulatory_reported": regulatory_reported,
     }
