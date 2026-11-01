@@ -1551,28 +1551,28 @@
     },
     "SOM": {
       "fichier": "SOM.json",
-      "origine": "etl",
-      "source_fichier": "backend/data/SOM_tariffs.json",
-      "source_sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
-      "socle_sha256": "e32c291ef5fc0d7c1db47777b6958bc35ea057ebc8d538b897e6a59ee9bfb415",
-      "collecte": "2026-06-16T22:25:20.343212",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SOM_tariffs.json",
+      "source_sha256": "c7133beb9f8ea8c32dbad2cd7c0901ff45e649451e3d62bd35f46cbca5575308",
+      "socle_sha256": "9049bbe6ca6ce87848d6f0c4d0ec9cb2a8e27862dc7c11abba27845ba8725c0f",
+      "collecte": "2026-11-01T15:52:49.995751+00:00",
       "etat": "PARTIEL",
       "familles": [
         "droit"
       ],
       "compteurs": {
-        "positions": 11545,
-        "droits": 11545,
-        "droits_liquidables": 11545,
-        "positions_liquidables": 11545,
+        "positions": 5472,
+        "droits": 5472,
+        "droits_liquidables": 5426,
+        "positions_liquidables": 5426,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 5943,
+        "taux_indisponibles": 46,
+        "assiettes_source": 5472,
         "assiettes_fichier": 0,
-        "assiettes_table": 5602,
+        "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
@@ -2081,8 +2081,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 370537,
-    "droits": 1338094,
-    "droits_liquidables": 1299895
+    "positions": 364464,
+    "droits": 1332021,
+    "droits_liquidables": 1293776
   }
 }

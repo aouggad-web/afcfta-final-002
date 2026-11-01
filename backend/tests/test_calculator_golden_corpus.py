@@ -85,13 +85,13 @@ def _tax_entry(entry: dict, taxes_key: str, tax_code: str):
 
     Les schémas diffèrent d'un pays à l'autre : l'Égypte indexe ses taxes par
     code (`taxes.ID`), l'Afrique du Sud et la Tunisie les listent
-    (`taxes[].code`, `taxes_import[].code`).
+    (`taxes[].code`, `taxes_import[].code`), la Somalie en `taxes_detail[].tax_code`.
     """
     taxes = (entry or {}).get(taxes_key)
     if isinstance(taxes, dict):
         return taxes.get(tax_code)
     if isinstance(taxes, list):
-        return next((tax for tax in taxes if tax.get("code") == tax_code), None)
+        return next((tax for tax in taxes if tax.get("code", tax.get("tax_code")) == tax_code), None)
     return None
 
 

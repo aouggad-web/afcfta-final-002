@@ -1471,19 +1471,19 @@
     "SOM": {
       "fichier": "SOM_NPF.csv",
       "fichier_notes": "SOM_NPF_notes.csv",
-      "positions": 11545,
+      "positions": 5472,
       "colonnes": [
         {
           "code": "DD",
-          "libelle": "Droit de Douane (CET EAC)"
+          "libelle": "Droit de douane (tarif douanier somalien 2022)"
         }
       ],
       "devise": "SOS",
-      "date_reference": "2026-10-28",
-      "sha256": "a1375819c49eb17e6f6c9e0b8bb4751ab06101574688265e2b55af8aa8123b08",
+      "date_reference": "2026-11-01",
+      "sha256": "e3e6b6dca6afdde7f790f6bd7fd368e54f0e68cf11a5ee46d0fd0b29d994abfc",
       "notes_sha256": "aa3c4290b16abe93f47a8987785823936521b8d65bdd77cad09ab60bfd07581c",
-      "socle_sha256": "e32c291ef5fc0d7c1db47777b6958bc35ea057ebc8d538b897e6a59ee9bfb415",
-      "collecte": "2026-06-16T22:25:20.343212"
+      "socle_sha256": "9049bbe6ca6ce87848d6f0c4d0ec9cb2a8e27862dc7c11abba27845ba8725c0f",
+      "collecte": "2026-11-01T15:52:49.995751+00:00"
     },
     "SSD": {
       "fichier": "SSD_NPF.csv",
