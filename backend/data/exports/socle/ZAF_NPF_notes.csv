@@ -33,8 +33,11 @@ N31;EXA;7%
 N32;FLV;196,5c/li
 N33;EVB;32c/bag
 N34;EVT;R2.30/kg net
-N35;EVL;R20.00/lamp
-N36;EVT;"R2.30/kg net sur la masse nette des pneus montés (Part 3E, note 3) ; masse des pneus non connue du calcul, prélèvement non liquidé."
-N37;EXA;"Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, B étant la valeur de la s.65(8)(a) ; taux fonction de la valeur, non servi."
-N38;EVC;"R146.00 per g/km CO2 emissions exceeding 95g/km : émissions de CO2 du rapport d'essai ou, à défaut, de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement non liquidé."
-N39;EVC;"R195.00 per g/km CO2 emissions exceeding 175g/km : émissions de CO2 du rapport d'essai ou, à défaut, de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement non liquidé."
+N35;DD;"4801.00 « Newsprint, in rolls or sheets » : General 5 %, EU/UK, EFTA, SADC et AfCFTA free, MERCOSUR 5 % (en vigueur le 16 octobre 2026 ; auparavant free)."
+N36;SAUV;"R.8119 a supprimé la liste des 122 origines exemptées de R.8024 : toutes les origines, africaines comprises, sont visées ; la préférence ZLECAf ne l'écarte pas."
+N37;AD;Non dû sous les rebate items 301.00-399.00 et 401.00-499.00 (sauf exclusions de l'avis), que le calcul ne connaît pas : il suppose une mise à la consommation ordinaire.
+N38;EVL;R20.00/lamp
+N39;EVT;"R2.30/kg net sur la masse nette des pneus montés (Part 3E, note 3) ; masse des pneus non connue du calcul, prélèvement non liquidé."
+N40;EXA;"Part 2B, note 2 (b) : taux de ((0,00003 × B) − 0,75) %, plafonné à 30 %, B étant la valeur de la s.65(8)(a) ; taux fonction de la valeur, non servi."
+N41;EVC;"R146.00 per g/km CO2 emissions exceeding 95g/km : émissions de CO2 du rapport d'essai ou, à défaut, de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement non liquidé."
+N42;EVC;"R195.00 per g/km CO2 emissions exceeding 175g/km : émissions de CO2 du rapport d'essai ou, à défaut, de la cylindrée (Part 3D, note 5) ; non connues du calcul, prélèvement non liquidé."

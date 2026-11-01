@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "objet": "Afrique du Sud : papier journal (R.8025), sauvegarde provisoire sur le papier de bureau (R.8024 remplacé par R.8119) et droits antidumping sur certains produits plats en acier (R.7991), parus en octobre 2026 après la collecte du tarif",
+  "destination_iso3": "ZAF",
+  "verified_at": "2026-10-31",
+  "etabli": true,
+  "evidence_level": "primaire : avis publiés par la SARS (PDF portant numéro de Government Gazette, numéro R. et date) ; fac-similés paginés de la Government Gazette (gpwonline.co.za) non trouvés",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/ZAF_amendements_octobre_2026.texte-extrait.txt",
+      "sha256": "a89e3ca7b64ec426b4f442b77e23cca7b44df729b9561b6aef0408803b755f14"
+    }
+  ],
+  "regle": {
+    "papier_journal": {
+      "valeur": "4801.00 : droit général 5 % (auparavant free), MERCOSUR 5 %, EU/UK, EFTA, SADC et AfCFTA free, à compter du 16 octobre 2026.",
+      "reference": "Government Gazette n° 55544, R.8025 du 16 octobre 2026",
+      "verbatim": "In terms of section 48 of the Customs and Excise Act, 1964, Part 1 of Schedule No. 1 to the said Act is hereby amended to the extent set out in the Schedule hereto."
+    },
+    "sauvegarde_papier_de_bureau": {
+      "valeur": "Paiement provisoire de 21 % sur 4802.56.20 (feuilles A3) et 4802.56.90 (feuilles A4), toutes origines, jusqu'au 3 mai 2027 inclus ; R.8119 supprime la liste des origines exemptées de R.8024.",
+      "reference": "Government Gazette n° 55645, R.8119 du 30 octobre 2026 (PP/185)",
+      "verbatim": "In terms of section 57A of the Customs and Excise Act, 1964, a provisional payment in relation to safeguard duty is imposed, up to and including 3 May 2027, to the extent set out in the Schedule hereto."
+    },
+    "antidumping_acier": {
+      "valeur": "Item 215.02 de la Schedule No. 2 Part 1 : 7208.10, 7208.25 à 7208.27, 7208.36 à 7208.39, 7208.51, 7208.52, 7225.30, 7225.40 ; Chine 40,77, 19,18, 6,99 ou 25,8 % selon le producteur nommé, 47,92 % pour les autres ; Japon 44,95 % (Nippon Steel Corporation), 57,23 % pour les autres ; Taipei chinois 24,2 % ; effet rétroactif au 19 mars 2026.",
+      "reference": "Government Gazette n° 55506, R.7991 du 9 octobre 2026",
+      "verbatim": "In terms of section 56 of the Customs and Excise Act, 1964, Part 1 of Schedule No. 2 to the said Act is hereby amended, with retrospective effect from 19 March 2026, to the extent set out in the Schedule hereto."
+    }
+  },
+  "ne_tranche_pas": "Le format exact des feuilles importées sous 4802.56.20 et 4802.56.90, que la sauvegarde ne vise qu'en A3 et A4 (la position couvre d'autres formats) ; les rebate items (301.00-399.00, 401.00-499.00, sauf exclusions) sous lesquels l'antidumping n'est pas dû ; les exclusions nouvelles par rapport à l'avis d'origine R.7243 (GG 54351, 19/03/2026), non lu ; le fac-similé de la Government Gazette.",
+  "application_au_calcul": {
+    "route": "POST /calcul",
+    "positions": "Papier journal : scripts/build_socle.py, _amendements_zaf. Sauvegarde et antidumping : couche de défense commerciale (data/defense_commerciale/ZAF.json, scripts/build_socle.py _defense_commerciale, backend/services/defense_commerciale.py) : ligne par mesure, résolue selon l'origine déclarée, le producteur (champ producteur) et la date du calcul.",
+    "devise": "Ad valorem.",
+    "reserves": "La sauvegarde reste à établir (format des feuilles) ; l'antidumping reste à établir sans origine, ou sans producteur pour la Chine et le Japon."
+  }
+}

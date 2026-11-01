@@ -1,0 +1,105 @@
+{
+  "_objet": "Mesures de défense commerciale de l'Afrique du Sud dépendant de l'origine (et du producteur), parues après la collecte du tarif. Fiche : backend/data/legal_refs/zlecaf_application/ZAF_amendements_octobre_2026_2026-10-31.json",
+  "mesures": [
+    {
+      "id": "ZAF_PP185",
+      "type": "sauvegarde",
+      "code": "SAUV",
+      "libelle": "Paiement provisoire de sauvegarde (PP/185)",
+      "source": "Government Gazette n° 55645, R.8119 du 30 octobre 2026 (s. 57A, PP/185, ITAC Amended Report 791), qui remplace R.8024 du 16 octobre 2026",
+      "debut": "2026-10-16",
+      "fin": "2027-05-03",
+      "positions": [
+        "48025620",
+        "48025690"
+      ],
+      "origines": "TOUTES",
+      "exemptees": [],
+      "taux": 21.0,
+      "condition_produit": {
+        "48025620": "feuilles de 420 mm sur 297 mm (A3), de 40 à 150 g/m², sans fibres mécaniques ou chimico-mécaniques (ou au plus 10 %)",
+        "48025690": "feuilles de 297 mm sur 210 mm (A4), de 40 à 150 g/m², sans fibres mécaniques ou chimico-mécaniques (ou au plus 10 %)"
+      },
+      "note": "R.8119 a supprimé la liste des 122 origines exemptées de R.8024 : toutes les origines, africaines comprises, sont visées ; la préférence ZLECAf ne l'écarte pas."
+    },
+    {
+      "id": "ZAF_AD_215.02",
+      "type": "antidumping",
+      "code": "AD",
+      "libelle": "Droit antidumping (Schedule No. 2, item 215.02)",
+      "source": "Government Gazette n° 55506, R.7991 du 9 octobre 2026 (s. 56, Schedule No. 2 Part 1, item 215.02, ITAC Minute M02/2026), effet rétroactif au 19 mars 2026",
+      "debut": "2026-03-19",
+      "fin": null,
+      "positions": [
+        "720810",
+        "720825",
+        "720826",
+        "720827",
+        "720836",
+        "720837",
+        "720838",
+        "720839",
+        "720851",
+        "720852",
+        "722530",
+        "722540"
+      ],
+      "par_origine": {
+        "CHN": {
+          "producteurs": [
+            {
+              "noms": [
+                "Baoshan Iron and Steel",
+                "Shanghai Meishan Iron & Steel",
+                "Baosteel Zhanjiang Iron & Steel",
+                "Wuhan Iron and Steel"
+              ],
+              "taux": 40.77
+            },
+            {
+              "noms": [
+                "Shougang Jingtang United Iron & Steel",
+                "Shougang Qian'an Iron and Steel"
+              ],
+              "taux": 19.18
+            },
+            {
+              "noms": [
+                "Jingye Yingkou Medium Plate",
+                "Rizhao Steel Yingkou Medium Plate"
+              ],
+              "taux": 6.99
+            },
+            {
+              "noms": [
+                "Han Steel Group Hanbao Iron and Steel",
+                "HBIS Laoting Iron and Steel",
+                "Xinyu Iron and Steel",
+                "Bengang Steel Plates",
+                "Jiangyin Xingcheng Special Steel Works",
+                "Nanjing Iron and Steel"
+              ],
+              "taux": 25.8
+            }
+          ],
+          "autres": 47.92
+        },
+        "JPN": {
+          "producteurs": [
+            {
+              "noms": [
+                "Nippon Steel Corporation"
+              ],
+              "taux": 44.95
+            }
+          ],
+          "autres": 57.23
+        },
+        "TWN": {
+          "taux": 24.2
+        }
+      },
+      "note": "Non dû sous les rebate items 301.00-399.00 et 401.00-499.00 (sauf exclusions de l'avis), que le calcul ne connaît pas : il suppose une mise à la consommation ordinaire."
+    }
+  ]
+}

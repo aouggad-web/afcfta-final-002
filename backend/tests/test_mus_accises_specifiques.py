@@ -66,6 +66,7 @@ def test_accise_specifique_et_tva(client, code, quantite, montant):
     ("22030011", "canette"),          # bière en canette : + Rs 2 par canette
     ("22083010", "alcool pur"),       # whisky : par litre d'alcool pur
     ("22029910", "teneur en sucre"),  # boissons sucrées : 15 cents le gramme de sucre
+    ("39233010", "item 103"),         # bouteilles plastiques : Rs 2 l'unité, nulle selon le contenu (FA 2026)
 ])
 def test_accise_non_liquidable_motivee(code, motif):
     with open(os.path.join(RACINE, "backend", "socle", "MUS.json"), encoding="utf-8") as f:

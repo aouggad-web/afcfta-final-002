@@ -786,6 +786,13 @@ describe("usage déclaré de la marchandise (Égypte, Taxe de Table)", () => {
     const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1100 }, usages };
     expect(mapCalculToLegacyResult(calcul, contexte).usages).toEqual(usages);
   });
+
+  it('transmet le compte rendu de défense commerciale au résultat', () => {
+    const defense = [{ type: 'antidumping', statut: 'PRODUCTEUR_NON_FOURNI', code: 'AD' }];
+    const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1100 },
+      defense_commerciale: defense };
+    expect(mapCalculToLegacyResult(calcul, contexte).defense_commerciale).toEqual(defense);
+  });
 });
 
 describe('quantités par unité', () => {

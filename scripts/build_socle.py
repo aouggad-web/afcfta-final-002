@@ -146,6 +146,8 @@ FAMILLES = {
     "TET": "accise",  # taxe spécifique sur le tabac (CV)
     "TEA": "accise",  # taxe spécifique sur l'alcool (CV)
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
+    "SAUV": "droit",  # paiement provisoire de sauvegarde, s. 57A (ZA)
+    "AD": "droit",  # droit antidumping (ZA, Schedule No. 2)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
     "MID": "accise",  # MID levy, Excise Act s.3A (MU)
@@ -2812,12 +2814,14 @@ def _prelevements_gabon(positions, compteurs):
 #: GAB_tva_2026-10-29.json) ; Congo (annexes 3 et 5 de la loi TVA, fiche
 #: COG_tva_2026-10-30.json) ; Centrafrique (CGI art. 249 et 257, fiche
 #: CAF_tva_2026-10-30.json) ; Cameroun (CGI art. 128 et annexe I du titre II,
-#: fiche CMR_tva_2026-10-31.json). Ailleurs, le taux normal du pays.
+#: fiche CMR_tva_2026-10-31.json) ; Tchad (CGI art. 230, 15°, réécrit par la loi
+#: de finances 2026, fiche TCD_tva_2026-10-31.json). Ailleurs, le taux normal du pays.
 TVA_PAR_POSITION = {
     "GAB": os.path.join(REPO, "backend", "data", "zlecaf_gab", "tva_lf2026_lfr2026.json"),
     "COG": os.path.join(REPO, "backend", "data", "zlecaf_cog", "tva_lf2026.json"),
     "CAF": os.path.join(REPO, "backend", "data", "zlecaf_caf", "tva_lf2024_lf2025.json"),
     "CMR": os.path.join(REPO, "backend", "data", "zlecaf_cmr", "tva_cgi2026.json"),
+    "TCD": os.path.join(REPO, "backend", "data", "zlecaf_tcd", "tva_lf2026.json"),
 }
 
 
@@ -2873,6 +2877,79 @@ def _tva_cameroun(positions, compteurs):
                 "C 83 (1)). Le tarif d'où vient la position marque la TVA « EXO », mais ni l'art. 128 du CGI 2026 ni "
                 "son annexe I ne l'exonèrent (art. 129 (1)). " + ligne["note"]
             )
+
+
+SOURCE_TVA_GENERALE_TCD = (
+    "CGI art. 238 (loi de finances 2026, art. 32) ; loi de finances 2024, art. 14, réécrit par la loi de finances "
+    "2026, art. 73"
+)
+
+
+def _tva_tchad(positions, compteurs):
+    """Tchad : taux général de 17,5 % (CGI art. 238, I, 1°) et centimes additionnels
+    de 10 % du principal (loi de finances 2024, art. 14), soit 19,25 %, là où le
+    crawl porte les 18 % du CGI 2016 ; puis les exonérations de l'art. 230, 15°
+    (TVA_PAR_POSITION)."""
+    lignes = [d for p in positions.values() for d in p.get("droits") or [] if d.get("famille") == "tva"]
+    for d in lignes:
+        _compter_ligne(d, compteurs, -1)
+        d["taux"] = 19.25
+        d["source"] = SOURCE_TVA_GENERALE_TCD
+        _compter_ligne(d, compteurs, 1)
+    _tva_par_position("TCD", positions, compteurs)
+    for d in lignes:
+        if d["source"] == SOURCE_TVA_GENERALE_TCD:
+            d["note"] = (
+                "Taux général : 17,5 % (art. 238, I, 1° : « applicable à toutes les opérations taxables à "
+                "l’exclusion des taux réduits ») et centimes additionnels de « 10 % du principal » de la TVA. "
+                + (d.get("note") or "")
+            ).strip()
+
+
+#: Guinée équatoriale : biens de première nécessité de la loi de budget 2026, art. 13
+#: (fiche GNQ_premiere_necessite_2026-10-31.json).
+PREMIERE_NECESSITE_GNQ = os.path.join(REPO, "backend", "data", "zlecaf_gnq", "premiere_necessite_lpge2026.json")
+
+
+def _premiere_necessite_gnq(positions, compteurs):
+    """Guinée équatoriale : droit de douane de 5 % et TVA de 0 % ou 5 % sur les biens
+    de première nécessité (loi n° 9/2025, art. 13). Le crawl, repris du tarif
+    camerounais, laisse sans ligne de TVA les 141 positions que ce tarif marque
+    « EXO » : elles en reçoivent une, sans taux hors de l'art. 13, la loi générale
+    fiscale n° 1/2024 qui fixe les exonérations n'ayant pas été lue."""
+    with open(PREMIERE_NECESSITE_GNQ, encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        tva = next((d for d in droits if d.get("famille") == "tva"), None)
+        ajoutee = tva is None
+        if ajoutee:
+            tva = {"code": "TVA", "code_source": "TVA", "libelle": "Impuesto sobre el Valor Añadido (IVA)",
+                   "famille": "tva", "taux": None, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+                   "source": "Ley n° 4/2004, art. 288 (assiette) ; loi générale fiscale n° 1/2024 non lue",
+                   "note": "Le tarif d'où vient le crawl, celui du Cameroun, marque cette position « EXO » ; en "
+                           "Guinée équatoriale, les exonérations sont celles de la loi générale fiscale n° 1/2024, "
+                           "dont le texte n'a pas été trouvé : taux non servi."}
+            droits.append(tva)
+            _compter_ligne(tva, compteurs, 1)
+        regle = next(
+            (r for r in table["regles"]
+             if code.startswith(tuple(r["prefixes"])) and not code.startswith(tuple(r.get("exclusions", ())))),
+            None,
+        )
+        if not regle:
+            continue
+        texte = regle.get("motif") or regle["reference"]
+        _compter_ligne(tva, compteurs, -1)
+        tva.update(taux=regle["tva"], source=table["source"])
+        tva["note"] = texte if ajoutee else f"{texte} {tva.get('note') or ''}".strip()
+        _compter_ligne(tva, compteurs, 1)
+        for dd in (d for d in droits if d.get("code") == "DD"):
+            if regle["dd"] is not None and dd.get("taux") is not None and dd["taux"] <= regle["dd"]:
+                continue
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=regle["dd"], source=table["source"], note=texte)
+            _compter_ligne(dd, compteurs, 1)
 
 
 #: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
@@ -3836,6 +3913,66 @@ def _prelevements_zaf(positions, compteurs):
                     "unite_quantite": UNITES_PRELEVEMENT_ZAF[unite], "brut": article["brut"],
                 }
                 ligne["assiette"], ligne["assiette_origine"] = "xQTE", "droit_specifique"
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
+#: Afrique du Sud : avis de la SARS postérieurs à la collecte du tarif (fiche
+#: ZAF_amendements_octobre_2026_2026-10-31.json).
+SOURCE_R8025_ZAF = ("Government Gazette n° 55544, R.8025 du 16 octobre 2026 (amendement de la Schedule No. 1 "
+                    "Part 1, ITAC Report 784)")
+
+
+def _amendements_zaf(positions, compteurs):
+    """Afrique du Sud : papier journal (R.8025), paru après la collecte du
+    tarif. La sauvegarde et l'antidumping relèvent de la défense commerciale
+    (`_defense_commerciale`)."""
+    journal = positions.get("480100")
+    if journal:
+        dd = next((d for d in journal.get("droits") or [] if d.get("code") == "DD"), None)
+        if dd is not None:
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=5.0, source=SOURCE_R8025_ZAF,
+                      note="4801.00 « Newsprint, in rolls or sheets » : General 5 %, EU/UK, EFTA, SADC et AfCFTA "
+                           "free, MERCOSUR 5 % (en vigueur le 16 octobre 2026 ; auparavant free).")
+            _compter_ligne(dd, compteurs, 1)
+        pref = journal.get("preferentiels") or {}
+        if "MERCOSUR" in pref:
+            pref["MERCOSUR"] = {"taux": 5.0}
+
+
+#: Mesures de défense commerciale (sauvegarde, antidumping) dues selon l'origine
+#: et, pour l'antidumping, le producteur : une ligne par mesure, au taux non
+#: établi dans le socle ; la route (services/defense_commerciale.py) la résout
+#: d'après l'origine et le producteur déclarés et la date du calcul.
+DEFENSE_COMMERCIALE = os.path.join(REPO, "data", "defense_commerciale")
+
+
+def _defense_commerciale(iso, positions, compteurs):
+    chemin = os.path.join(DEFENSE_COMMERCIALE, f"{iso}.json")
+    if not os.path.exists(chemin):
+        return
+    with open(chemin, encoding="utf-8") as f:
+        mesures = json.load(f)["mesures"]
+    for mesure in mesures:
+        prefixes = tuple(mesure["positions"])
+        for code, position in positions.items():
+            if not code.startswith(prefixes):
+                continue
+            droits = position.setdefault("droits", [])
+            dd = next((d for d in droits if d.get("code") == "DD"), None)
+            condition = next((v for k, v in (mesure.get("condition_produit") or {}).items()
+                              if code.startswith(k)), None)
+            regle = {cle: mesure.get(cle) for cle in (
+                "id", "type", "debut", "fin", "origines", "exemptees", "taux", "par_origine")
+                if mesure.get(cle) is not None}
+            regle["assiette"] = (dd or {}).get("assiette") or "CIF"
+            if condition:
+                regle["condition_produit"] = condition
+            ligne = {"code": mesure["code"], "code_source": mesure["id"], "famille": famille(mesure["code"]),
+                     "libelle": mesure["libelle"], "taux": None, "assiette": None, "source": mesure["source"],
+                     "note": mesure.get("note", ""), "defense_commerciale": regle}
             rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
             droits.insert(rang, ligne)
             _compter_ligne(ligne, compteurs, 1)
@@ -5844,8 +5981,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_sierra_leone(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
+        _amendements_zaf(positions, compteurs)
         _controles_sars_zaf(positions)
         _liste_sars_zaf(positions)
+    _defense_commerciale(iso, positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
@@ -5927,6 +6066,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tva_par_position("GAB", positions, compteurs)
     if iso == "CMR":
         _tva_cameroun(positions, compteurs)
+    if iso == "TCD":
+        _tva_tchad(positions, compteurs)
+    if iso == "GNQ":
+        _premiere_necessite_gnq(positions, compteurs)
 
     if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
         _ohada_produits_medicaux(positions, compteurs)

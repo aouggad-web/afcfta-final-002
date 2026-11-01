@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "objet": "Somalie : dépôt de l'instrument de ratification de l'Accord portant création de la ZLECAf le 4 septembre 2026 (50e État partie) ; aucun acte national d'application",
+  "destination_iso3": "SOM",
+  "verified_at": "2026-10-31",
+  "etabli": true,
+  "evidence_level": "primaire : communiqué du Secrétariat de la ZLECAf (4 septembre 2026) et dépêche de l'agence officielle SONNA (5 septembre 2026) ; la liste du dépositaire de l'UA, datée du 22/05/2026, ne porte pas encore le dépôt",
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SOM_ratification_zlecaf_2026-09-04.texte-extrait.txt",
+      "sha256": "d5ec4d77110a29a7ef1d84f9300348a853ae1beccbccd070627d854d6ff453da"
+    }
+  ],
+  "regle": {
+    "ratification": {
+      "valeur": "Instrument de ratification déposé auprès de l'Union africaine le 4 septembre 2026 ; la Somalie est le 50e État partie.",
+      "reference": "Secrétariat de la ZLECAf, communiqué du 4 septembre 2026",
+      "verbatim": "the Federal Republic of Somalia deposited its Instrument of Ratification of the Agreement Establishing the African Continental Free Trade Area (AfCFTA) on 4 September 2026, becoming the 50th State Party to the AfCFTA Agreement."
+    }
+  },
+  "ne_tranche_pas": "La date d'entrée en vigueur pour la Somalie (l'art. 23 ne vise expressément que l'entrée en vigueur générale et l'adhésion) ; la mise à jour de la liste du dépositaire ; tout acte somalien d'application (domestication du e-Tariff Book, configuration douanière, concessions restantes au sein de la CAE), non trouvé ; le tarif douanier 2026 du ministère du Commerce (site inaccessible).",
+  "application_au_calcul": {
+    "route": "POST /calcul",
+    "positions": "Aucune préférence ZLECAf à destination de la Somalie : aucun acte d'application. Le statut d'origine ratifiante (services/zlecaf_membership_status.py) comptait déjà la Somalie parmi les 50 ; etat_application_54_pays passe de NON_PARTIE à NON_APPLIQUE_PRESUME.",
+    "devise": "Sans objet.",
+    "reserves": "Ne pas hériter du barème de la CAE sans acte somalien publié."
+  }
+}

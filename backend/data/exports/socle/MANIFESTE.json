@@ -683,7 +683,7 @@
         }
       ],
       "devise": "XAF",
-      "date_reference": "2026-10-31",
+      "date_reference": "2026-11-01",
       "sha256": "7694d95d8c94a6a4a5d19b3cc134b5fe0607603e18445ee743e3876e60f0ba4d",
       "notes_sha256": "93736a7e8d50ea1cd214b1fbab7775f300248c5db59134f9a6673651b5cf416f",
       "socle_sha256": "ad9238f5e9a93eb7644f52de2697ec215cd90d5d4caf946eb43c926b8d332921",
@@ -877,9 +877,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-31",
-      "sha256": "49611da1394c1911db8b7a3a0e1facbac2df888378056ba6054a051519a375c9",
-      "notes_sha256": "d39bb3b190cd72d29bd6b15895214548ad2e087b135dab5cc129b02cd5a8f706",
-      "socle_sha256": "e6843b815f14d95136c5da60c9396d2cb13f18b849a2b9c6506139de070ca2fa",
+      "sha256": "ccede56cde411f23225b607dd7530dcd0631678ef4d22f8445892bf2f9901182",
+      "notes_sha256": "de02988dfebb0087f933e51a14c119f0a2e2587c9bf4405b57d436ab1a95cb85",
+      "socle_sha256": "eef0c0ad51bea2f1e0e25baf7dce9e991226b7872a445b7cdb5bc535524f74f5",
       "collecte": null
     },
     "KEN": {
@@ -1190,10 +1190,10 @@
         }
       ],
       "devise": "MUR",
-      "date_reference": "2026-10-28",
+      "date_reference": "2026-10-31",
       "sha256": "fdfccd817db59cebf65801c505096cbee18de194201a7723db52c83eebf57145",
-      "notes_sha256": "cb328897c18b8efb923165fc2e8ba37a3f05ddddbd466ecbcb8022dce024e81b",
-      "socle_sha256": "f87e24fd859c3b828991926d9f03393776d507a94daf7791f94e8255c1784947",
+      "notes_sha256": "687c4b34690babafc5fff49bea8bcfb3ca0aa301d0c52abdbfdd314b430846fc",
+      "socle_sha256": "5ad354b65d773fd9ce1a2ca187c91c9f0913d79f926b224b9ba736720001c143",
       "collecte": "2026-10-25"
     },
     "MWI": {
@@ -1629,9 +1629,9 @@
       ],
       "devise": "XAF",
       "date_reference": "2026-10-31",
-      "sha256": "e63df4d2639b4fab5c7c6bbd1ef5f6d7b5ad0e079ffd35c8d27fb81d23688a61",
-      "notes_sha256": "c60a03048dc93626c010428c9b2ab987da2a0b792a61d3f693589b15a568301f",
-      "socle_sha256": "4060169b904213b17870f36dca94dbdd49763a3a73720ce2bc0c4102a97cedec",
+      "sha256": "768f2ed79cff143dccf76dc76046da557304270a5580ad46ea37225f6051688b",
+      "notes_sha256": "3fa4023ced9f85b744693e40126d81c0e4d7f0760a93ffda946b9afc1e3d7f9d",
+      "socle_sha256": "1e75f0c6ed758bc582df9c76740b7dec413eeb781da6950d8e435a08abf1a4a8",
       "collecte": "2026-02-19T22:39:53.393846"
     },
     "TGO": {
@@ -1904,6 +1904,14 @@
           "libelle": "Environmental levy (tyres)"
         },
         {
+          "code": "SAUV",
+          "libelle": "Paiement provisoire de sauvegarde (PP/185)"
+        },
+        {
+          "code": "AD",
+          "libelle": "Droit antidumping (Schedule No. 2, item 215.02)"
+        },
+        {
           "code": "EVL",
           "libelle": "Environmental levy (electric filament lamps)"
         },
@@ -1913,10 +1921,10 @@
         }
       ],
       "devise": "ZAR",
-      "date_reference": "2026-10-28",
-      "sha256": "2a0859f1ef8bc55a5662ef1b7a2f3e01e8d1a6ac08562bc0aafb94d45680dd77",
-      "notes_sha256": "23aba3e38f59578a543b3400c85daf48cf5cf89ca3bca4bae21160724795d2fe",
-      "socle_sha256": "267b0d0aaaac2c223c8b109c50640b29b35dd11e22f9a9dd218d81da584d23dc",
+      "date_reference": "2026-10-31",
+      "sha256": "d1264e6646594f140b1005f91a9e050977a45e26071862016bb8a96c623c0fc2",
+      "notes_sha256": "f2812fb702ebf055fce553fc7e099492f8fdab956b6be72d08be3317fa16f782",
+      "socle_sha256": "35e2420eedf162df42b38a2b6342e193cb8882f41bbcf85dbe0809a07ba3528e",
       "collecte": "2026-08-29T13:26:21.816037"
     },
     "ZMB": {

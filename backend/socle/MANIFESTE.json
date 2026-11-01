@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-31T22:12:40.893736+00:00",
+  "construit_le": "2026-11-01T11:37:06.787325+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -838,7 +838,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
       "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
-      "socle_sha256": "e6843b815f14d95136c5da60c9396d2cb13f18b849a2b9c6506139de070ca2fa",
+      "socle_sha256": "eef0c0ad51bea2f1e0e25baf7dce9e991226b7872a445b7cdb5bc535524f74f5",
       "collecte": null,
       "etat": "PARTIEL",
       "familles": [
@@ -849,17 +849,17 @@
       ],
       "compteurs": {
         "positions": 5239,
-        "droits": 26096,
-        "droits_liquidables": 26012,
-        "positions_liquidables": 5197,
+        "droits": 26237,
+        "droits_liquidables": 26041,
+        "positions_liquidables": 5098,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 42,
+        "taux_indisponibles": 154,
         "assiettes_source": 10478,
         "assiettes_fichier": 0,
-        "assiettes_table": 15618,
+        "assiettes_table": 15759,
         "assiettes_indisponibles": 0,
         "sans_designation": 5,
         "droits_specifiques": 0,
@@ -1217,7 +1217,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
       "source_sha256": "0bd42a7bf80dc80ea102173d67566efad0a9c6f659ab67bf15e1f0ccae3211ec",
-      "socle_sha256": "f87e24fd859c3b828991926d9f03393776d507a94daf7791f94e8255c1784947",
+      "socle_sha256": "5ad354b65d773fd9ce1a2ca187c91c9f0913d79f926b224b9ba736720001c143",
       "collecte": "2026-10-25",
       "etat": "PARTIEL",
       "familles": [
@@ -1731,7 +1731,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TCD_tariffs.json",
       "source_sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
-      "socle_sha256": "4060169b904213b17870f36dca94dbdd49763a3a73720ce2bc0c4102a97cedec",
+      "socle_sha256": "1e75f0c6ed758bc582df9c76740b7dec413eeb781da6950d8e435a08abf1a4a8",
       "collecte": "2026-02-19T22:39:53.393846",
       "etat": "PARTIEL",
       "familles": [
@@ -1743,13 +1743,13 @@
       "compteurs": {
         "positions": 5239,
         "droits": 36784,
-        "droits_liquidables": 36731,
-        "positions_liquidables": 5186,
+        "droits_liquidables": 36686,
+        "positions_liquidables": 5141,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 45,
         "assiettes_source": 20956,
         "assiettes_fichier": 0,
         "assiettes_table": 15775,
@@ -1924,7 +1924,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "267b0d0aaaac2c223c8b109c50640b29b35dd11e22f9a9dd218d81da584d23dc",
+      "socle_sha256": "35e2420eedf162df42b38a2b6342e193cb8882f41bbcf85dbe0809a07ba3528e",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1933,18 +1933,18 @@
       ],
       "compteurs": {
         "positions": 8589,
-        "droits": 9167,
+        "droits": 9181,
         "droits_liquidables": 8809,
-        "positions_liquidables": 8315,
+        "positions_liquidables": 8301,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 331,
+        "taux_indisponibles": 345,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
         "assiettes_table": 8904,
-        "assiettes_indisponibles": 263,
+        "assiettes_indisponibles": 277,
         "sans_designation": 0,
         "droits_specifiques": 377,
         "droits_composes": 94,
@@ -2081,7 +2081,7 @@
       "ZWE"
     ],
     "positions": 370537,
-    "droits": 1337939,
-    "droits_liquidables": 1311773
+    "droits": 1338094,
+    "droits_liquidables": 1311757
   }
 }

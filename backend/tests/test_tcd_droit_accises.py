@@ -41,9 +41,9 @@ def test_hors_du_tableau_pas_de_droit_d_accises(positions, code):
 
 def test_la_tva_s_assoit_sur_le_droit_d_accises(positions):
     lignes = {x["code"]: x for x in calculer(positions["22030010"], 100000.0)["npf"]["lignes"]}
-    # DA : 25 % de (100 000 + 30 000) ; TVA : 18 % de (100 000 + 30 000 + 1 000 + 32 500).
+    # DA : 25 % de (100 000 + 30 000) ; TVA : 19,25 % de (100 000 + 30 000 + 1 000 + 32 500).
     assert lignes["DA"]["montant"] == 32500.0
-    assert lignes["TVA"]["montant"] == 29430.0
+    assert lignes["TVA"]["montant"] == 31473.75
 
 
 def test_la_taxe_specifique_par_paquet_se_liquide_sur_la_quantite(positions):
