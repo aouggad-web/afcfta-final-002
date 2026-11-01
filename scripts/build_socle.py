@@ -1513,7 +1513,17 @@ EXPORT_PAR_TEXTE = {
                                  "(10 %, art. 224) : à établir" + _GAB_SOURCE_BOIS + _GAB_MERCURIALE),
             # Moulures et profilés, panneaux de particules, de fibres,
             # contreplaqués, panneaux assemblés pour parquets.
-            **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "4410", "4411", "4412", "44187")},
+            **{p: _EXPORT_GAB_DEUXIEME for p in ("4409", "4412", "44187")},
+            # Panneaux « de bois ou d'autres matières ligneuses » (libellés des
+            # positions 44.10 et 44.11) ; moulures en bambou : la LF ne taxe
+            # que les produits transformés du bois.
+            **{p: (None, None, "Panneau de particules ou de fibres « de bois ou d'autres matières ligneuses » : 10 % "
+                               "de la valeur mercuriale s'il est en bois (deuxième transformation, LF 2026, art. 5 ; "
+                               "Code forestier, art. 224) ; la position ne dit pas la matière, et la LF ne taxe que "
+                               "les produits transformés du bois : à établir." + _GAB_MERCURIALE)
+               for p in ("4410", "4411")},
+            "440921": (None, None, "Moulures et profilés en bambou : la LF 2026 (art. 5) taxe les produits transformés "
+                                   "du bois, et ne dit pas si le bambou en est : à établir."),
             # Menuiserie et ébénisterie : ouvrages finis, meubles et sièges en
             # bois.
             **{p: _EXPORT_GAB_TROISIEME for p in (
