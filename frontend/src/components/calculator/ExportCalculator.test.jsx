@@ -63,7 +63,7 @@ describe('ExportCalculator', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     axios.get.mockResolvedValue({ data: {
-      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516, MLI: 0, CMR: 5239 },
+      pays: { CIV: 97, TUN: 17530, MDG: 266, GHA: 11516, MLI: 0, CMR: 5239, COG: 5240 },
       questions: {
         MDG: {
           champ: 'produit_minier',
@@ -79,6 +79,13 @@ describe('ExportCalculator', () => {
           champ: 'produit_fini',
           question: 'Produit fini, manufacturé ou transformé au Cameroun (sinon : brut ou semi-fini) ?',
           question_transformation: null,
+        },
+        COG: {
+          champ: 'produit_fini',
+          question: "Produit transformé d'origine congolaise (issu d'une ouvraison ou d'une transformation au Congo) ?",
+          question_transformation: null,
+          champ_si_non: 'produit_transforme',
+          question_si_non: 'Produit transformé hors du Congo (sinon : produit brut) ?',
         },
       },
     } });
@@ -251,6 +258,26 @@ describe('ExportCalculator', () => {
     const corps = axios.post.mock.calls[0][1];
     expect(corps).toMatchObject({ pays: 'CMR', devise: 'XAF', produit_fini: false });
     expect(corps).not.toHaveProperty('produit_minier');
+  });
+
+  it('au Congo, après un « non », demande si le produit a été transformé ailleurs', async () => {
+    axios.post.mockResolvedValue({ data: {
+      pays: 'COG', position: { designation: 'Téléphones' }, provenance: { devise_nationale: 'XAF' },
+      export: { etat: 'COMPLET', total_droits: 40000, manques: [], lignes: [] },
+    } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('COG — 5240 positions avec droit de sortie'));
+    await userEvent.type(screen.getByLabelText('Position nationale'), '85171200');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '1000000');
+    expect(screen.queryByTestId('export-question-si-non')).not.toBeInTheDocument();
+    await userEvent.click(screen.getByLabelText('Non'));
+    expect(screen.getByText('Produit transformé hors du Congo (sinon : produit brut) ?')).toBeInTheDocument();
+    expect(screen.getByTestId('export-calculer')).toBeDisabled();
+    await userEvent.click(screen.getAllByLabelText('Non')[1]);
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(axios.post.mock.calls[0][1]).toMatchObject({ pays: 'COG', produit_fini: false, produit_transforme: false });
   });
 
   it("ailleurs, ne pose pas la question", async () => {

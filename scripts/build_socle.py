@@ -1257,11 +1257,26 @@ _SOURCE_RI_EXPORT_COG = (
 )
 
 
+#: Grumes dont le droit de sortie est assis sur la valeur FOT, que l'exportateur
+#: saisit à la place de la valeur en douane.
+_COG_GRUMES_FOT = ("44034903", "44034915", "44034100", "44034939", *_COG_ESSENCES_NEUF)
+
+
 def _redevance_informatique_export_cog(code):
     """Redevance informatique à l'exportation : 2 % (LF 2026, point 25) ;
     pétrole brut exonéré (LFR 2021, point 41, que la LF 2026 laisse « sans
     changement »). Pour un produit transformé, le taux de 0,5 % de 2021, que
-    la LF 2026 ne reprend pas, laisse la ligne à établir (route)."""
+    la LF 2026 ne reprend pas, laisse la ligne à établir (route). Grumes : la
+    redevance est assise sur la valeur en douane, la valeur saisie est la
+    valeur FOT du droit de sortie : à établir."""
+    if code.startswith(_COG_GRUMES_FOT):
+        d = _droit("RI.EXP", "Redevance informatique", None, None, _SOURCE_RI_EXPORT_COG,
+                   note="LF 2026, point 25 (article 44 nouveau) : « 2% à l'exportation des marchandises », assise sur "
+                        "la valeur en douane ; la valeur saisie pour ces grumes est la valeur FOT du droit de sortie : "
+                        "à établir sur la valeur en douane.")
+        d = {k: v for k, v in d.items() if v is not None}
+        d.update(code="RI.EXP", famille="export", taux=None, assiette=None)
+        return d
     if code.startswith("27090010"):
         d = _droit("RI.EXP", "Redevance informatique", 0.0, "CIF", _SOURCE_RI_EXPORT_COG,
                    note="Exonérée : « l'exportation du pétrole brut » (LFR 2021, point 41 ; LF 2026, point 25 : « Le "
