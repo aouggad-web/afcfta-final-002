@@ -46,7 +46,8 @@ def _ligne(export, code):
 
 def test_pays_couverts(client):
     pays = client.get("/calcul/export/pays").json()["pays"]
-    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY", "COG", "GAB"}
+    assert set(pays) == {"TUN", "CIV", "MDG", "GHA", "SEN", "ZMB", "MLI", "KEN", "TZA", "ZAF", "CMR", "EGY", "COG", "GAB",
+                         "COD"}
     # Le Mali n'a pas de droit au tarif : seule la TEOAPM, hors tarif.
     assert pays["MLI"] == 0
 
@@ -166,9 +167,10 @@ def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
 
 def test_les_questions_hors_tarif_sont_servies(client):
     questions = client.get("/calcul/export/pays").json()["questions"]
-    assert set(questions) == {"MDG", "MLI", "CMR", "COG", "GAB"} and questions["MDG"]["champ"] == "produit_minier"
+    assert set(questions) == {"MDG", "MLI", "CMR", "COG", "GAB", "COD"} and questions["MDG"]["champ"] == "produit_minier"
     assert questions["GAB"]["champ"] == "produit_en_bois" and questions["GAB"]["question_en"]
     assert questions["CMR"]["champ"] == questions["COG"]["champ"] == "produit_fini"
+    assert questions["COD"]["champ"] == "titulaire_minier"
     # Le CGI malien ne prévoit pas d'abattement : pas de seconde question.
     assert questions["MLI"]["question_transformation"] is None and questions["MLI"]["question_en"]
     # Congo : après un « non », la redevance informatique demande si le produit est brut.
@@ -595,6 +597,58 @@ def test_egy_lignes_mixtes_et_sable_blanc_a_etablir(client):
     for code in ("6310100010", "2515110090", "2505100010", "4004000000", "2526200050", "3915900000"):
         ligne = _ligne(_export(client, pays="EGY", code_sh=code, valeur=1000, devise="EGP", quantite=1), "EXPORT")
         assert ligne["montant"] is None, code
+
+
+def test_cod_minerai_selon_le_titulaire_minier(client):
+    """Tarif à l'exportation : concentré de cobalt 10 % ; Code minier, art. 234 : le titulaire en est exonéré."""
+    tiers = _export(client, pays="COD", code_sh="26050000", valeur=1_000_000, devise="CDF", titulaire_minier=False)
+    assert (tiers["etat"], _ligne(tiers, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(100_000))
+    titulaire = _export(client, pays="COD", code_sh="26050000", valeur=1_000_000, devise="CDF", titulaire_minier=True)
+    assert _ligne(titulaire, "EXPORT")["montant"] == pytest.approx(0)
+    sans = _ligne(_export(client, pays="COD", code_sh="26050000", valeur=1_000_000, devise="CDF"), "EXPORT")
+    assert sans["montant"] is None and sans["note"].startswith("À établir : Exportation par le titulaire")
+
+
+def test_cod_produits_non_miniers_sans_question(client):
+    """Grumes tropicales 10 %, électricité et pétrole brut 5 % : la réponse sur le titulaire minier n'y change rien."""
+    for code, montant in (("44034900", 100_000), ("44034200", 100_000), ("27160000", 50_000), ("27090000", 50_000)):
+        for titulaire in (None, True):
+            corps = {"pays": "COD", "code_sh": code, "valeur": 1_000_000, "devise": "CDF"}
+            if titulaire is not None:
+                corps["titulaire_minier"] = titulaire
+            export = client.post("/calcul/export", json=corps).json()["export"]
+            assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
+
+
+def test_cod_liste_consolidee(client):
+    """Tarif tel que modifié (liste consolidée, annexe XVI des projets de LF 2025 et 2026) : titane 10 %, hydroxyde de
+    cobalt 10 %, déchets de cuivre 5 %, mattes de cuivre 5 %, zinc brut 5 %, étain brut 10 %, chrome brut 5 %,
+    ouvrages en chrome 10 %."""
+    for code, montant in (("26140000", 100_000), ("28220000", 100_000), ("74040000", 50_000), ("74010000", 50_000),
+                          ("79011100", 50_000), ("80011000", 100_000), ("81122100", 50_000), ("81122900", 100_000),
+                          ("72241000", 100_000), ("74032100", 100_000)):
+        export = _export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF", titulaire_minier=False)
+        assert _ligne(export, "EXPORT")["montant"] == pytest.approx(montant), code
+
+
+def test_cod_positions_a_etablir(client):
+    """Or et diamants (artisanal 0,5 %, industriel 3 %), sciages selon l'épaisseur, eau, et les écarts que seule
+    l'annexe des projets de LF porte (café, blister, oxyde de zinc)."""
+    for code in ("71081200", "71081100", "44072900", "22019000", "09011100", "74020000", "28170010"):
+        ligne = _ligne(_export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF",
+                               titulaire_minier=False), "EXPORT")
+        assert ligne["montant"] is None, code
+    or_brut = _ligne(_export(client, pays="COD", code_sh="71081200", valeur=1_000_000, devise="CDF"), "EXPORT")
+    assert "0,5 %" in or_brut["note"] and "24/011" in or_brut["note"]
+
+
+def test_cod_or_et_diamants_exoneres_pour_le_titulaire_minier(client):
+    """Taux inconnu (or et diamants selon l'exploitation, positions ambiguës), mais le titulaire minier est exonéré ;
+    la réserve sur l'art. 234 (projet de LF 2025) est dite."""
+    for code in ("71081200", "71022100", "71023100", "74020000", "28170010", "26140000", "81082000"):
+        export = _export(client, pays="COD", code_sh=code, valeur=1_000_000, devise="CDF", titulaire_minier=True)
+        ligne = _ligne(export, "EXPORT")
+        assert ligne["montant"] == 0 and "24/011" in ligne["note"], code
 
 
 def test_pays_sans_droit_export_au_socle(client):
