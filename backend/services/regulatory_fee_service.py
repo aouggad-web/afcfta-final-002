@@ -350,13 +350,15 @@ def build_regulatory_cost(
     for measure in compliance.get("measures", []):
         if not vise_le_sens(measure, side) or not dans_perimetre_sh(measure, code):
             continue
-        active_actors = [
-            a
-            for a in (measure.get("mandated_actors") or [])
-            if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES and dans_perimetre_sh(a, code)
+        mandats_actifs = [
+            a for a in (measure.get("mandated_actors") or []) if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES
         ]
+        # Le prestataire est retenu s'il vise la position ; la formalité, elle,
+        # reste due même quand son seul prestataire actif ne la vise pas (PVoC
+        # kenyan pour du blé : QISJ n'inspecte que les véhicules).
+        active_actors = [a for a in mandats_actifs if dans_perimetre_sh(a, code)]
         actor_status = measure.get("mandated_actor_status")
-        if not active_actors and actor_status != "NOT_AVAILABLE":
+        if not mandats_actifs and actor_status != "NOT_AVAILABLE":
             continue
 
         measure_stage = _stage_for_measure(measure, side)

@@ -49,6 +49,12 @@ def test_kenya_le_prestataire_des_vehicules_ne_vise_pas_le_ble():
     )
     assert acteur not in _noms(build_regulatory_blocks("KEN", None, cif_value=1000, code=BLE))
     assert acteur in _noms(build_regulatory_blocks("KEN", None, cif_value=1000, code=VOITURE))
+    # La formalité, elle, reste due pour le blé, sans prestataire confirmé (revue Codex de #748).
+    items = build_regulatory_blocks("KEN", None, cif_value=1000, code=BLE)["regulatory_cost"]["line_items"]
+    formalite = next(
+        i for i in items if i["measure_name"] == "Pre-Export Verification of Conformity (PVoC)" and i["scope"] == "formality"
+    )
+    assert formalite["provider_status"] == "UNCONFIRMED"
     pvoc = next(
         m
         for m in build_regulatory_blocks("KEN", None, cif_value=1000, code=BLE)["regulatory_compliance"]["measures"]
