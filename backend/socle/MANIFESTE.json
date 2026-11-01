@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-10-31T20:53:12.288861+00:00",
+  "construit_le": "2026-10-31T22:57:27.948482+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1216,7 +1216,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
       "source_sha256": "0bd42a7bf80dc80ea102173d67566efad0a9c6f659ab67bf15e1f0ccae3211ec",
-      "socle_sha256": "f87e24fd859c3b828991926d9f03393776d507a94daf7791f94e8255c1784947",
+      "socle_sha256": "5ad354b65d773fd9ce1a2ca187c91c9f0913d79f926b224b9ba736720001c143",
       "collecte": "2026-10-25",
       "etat": "PARTIEL",
       "familles": [
@@ -1923,7 +1923,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "267b0d0aaaac2c223c8b109c50640b29b35dd11e22f9a9dd218d81da584d23dc",
+      "socle_sha256": "35e2420eedf162df42b38a2b6342e193cb8882f41bbcf85dbe0809a07ba3528e",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1932,18 +1932,18 @@
       ],
       "compteurs": {
         "positions": 8589,
-        "droits": 9167,
+        "droits": 9181,
         "droits_liquidables": 8809,
-        "positions_liquidables": 8315,
+        "positions_liquidables": 8301,
         "preferentiels": 42945,
         "preferentiels_specifiques": 918,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 331,
+        "taux_indisponibles": 345,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
         "assiettes_table": 8904,
-        "assiettes_indisponibles": 263,
+        "assiettes_indisponibles": 277,
         "sans_designation": 0,
         "droits_specifiques": 377,
         "droits_composes": 94,
@@ -2080,7 +2080,7 @@
       "ZWE"
     ],
     "positions": 370537,
-    "droits": 1337939,
+    "droits": 1337953,
     "droits_liquidables": 1311773
   }
 }

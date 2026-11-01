@@ -96,6 +96,21 @@ export function paysExpeditionPour(destinationISO3, originISO3, reponse) {
   return undefined;
 }
 
+/**
+ * Pays d'expédition transmis au moteur, quand un pays précis (ISO-3) est aussi
+ * saisi pour un droit antidumping (« imported from or originating in ») : il
+ * remplace le marqueur « AUTRE » d'une réponse SACU négative, ou une réponse
+ * inconnue. Une réponse SACU positive (expédiée de l'origine même) prime, et
+ * un pays égal à l'origine après une réponse négative est écarté.
+ */
+export function paysExpeditionRequete(destinationISO3, originISO3, reponseSacu, saisie) {
+  const sacu = paysExpeditionPour(destinationISO3, originISO3, reponseSacu);
+  const precis = /^[A-Z]{3}$/.test(saisie || '') ? saisie : undefined;
+  if (!precis || (reponseSacu === 'yes' && sacu)) return sacu;
+  if (sacu === 'AUTRE' && precis === originISO3) return sacu;
+  return precis;
+}
+
 /** États membres de la SACU (accord SACU 2002). */
 export const PAYS_SACU = new Set(['ZAF', 'BWA', 'LSO', 'NAM', 'SWZ']);
 
@@ -135,6 +150,7 @@ export function buildCalculRequestBody({
   modeAcheminement,
   remise,
   usage,
+  producteur,
 }) {
   // La valeur (et la FOB) se saisit en USD : le formulaire le dit. Omise, la
   // devise serait supposée nationale, et un droit spécifique publié en dinars
@@ -185,7 +201,20 @@ export function buildCalculRequestBody({
   // le moteur a nommés pour la position. Non déclaré, rien n'est envoyé : le
   // régime courant est liquidé.
   if (typeof usage === 'string' && usage) body.usage = usage;
+  // Producteur ou exportateur, pour un droit antidumping dont le taux en
+  // dépend. Non déclaré, rien n'est envoyé : le moteur laisse le droit à établir.
+  if (typeof producteur === 'string' && producteur.trim()) body.producteur = producteur.trim();
   return body;
+}
+
+/**
+ * Faut-il proposer la saisie du producteur et du pays d'expédition ? Quand la
+ * réponse porte un droit antidumping en vigueur : son taux dépend du
+ * producteur, et la mesure vise l'origine OU le pays d'expédition (Afrique du
+ * Sud, R.7991 : « imported from or originating in »).
+ */
+export function antidumpingSaisieProposee(defenseCommerciale) {
+  return (defenseCommerciale || []).some((m) => m.type === 'antidumping' && m.statut !== 'HORS_PERIODE');
 }
 
 /**
@@ -634,6 +663,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     regulatory_reported: calcul.regulatory_reported ?? null,
     mesures_eac: calcul.mesures_eac ?? null,
     usages: calcul.usages ?? null,
+    defense_commerciale: calcul.defense_commerciale ?? null,
 
     rules_of_origin: {
       rule: 'ZLECAf Rules of Origin',

@@ -146,6 +146,8 @@ FAMILLES = {
     "TET": "accise",  # taxe spécifique sur le tabac (CV)
     "TEA": "accise",  # taxe spécifique sur l'alcool (CV)
     "DAPS": "droit",  # droit additionnel provisoire de sauvegarde (DZ)
+    "SAUV": "droit",  # paiement provisoire de sauvegarde, s. 57A (ZA)
+    "AD": "droit",  # droit antidumping (ZA, Schedule No. 2)
     "TPI": "redevance",  # taxe parafiscale à l'importation (MA)
     "TCS": "accise",  # taxe de consommation spécifique (DZ)
     "MID": "accise",  # MID levy, Excise Act s.3A (MU)
@@ -3856,6 +3858,66 @@ def _prelevements_zaf(positions, compteurs):
             _compter_ligne(ligne, compteurs, 1)
 
 
+#: Afrique du Sud : avis de la SARS postérieurs à la collecte du tarif (fiche
+#: ZAF_amendements_octobre_2026_2026-10-31.json).
+SOURCE_R8025_ZAF = ("Government Gazette n° 55544, R.8025 du 16 octobre 2026 (amendement de la Schedule No. 1 "
+                    "Part 1, ITAC Report 784)")
+
+
+def _amendements_zaf(positions, compteurs):
+    """Afrique du Sud : papier journal (R.8025), paru après la collecte du
+    tarif. La sauvegarde et l'antidumping relèvent de la défense commerciale
+    (`_defense_commerciale`)."""
+    journal = positions.get("480100")
+    if journal:
+        dd = next((d for d in journal.get("droits") or [] if d.get("code") == "DD"), None)
+        if dd is not None:
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=5.0, source=SOURCE_R8025_ZAF,
+                      note="4801.00 « Newsprint, in rolls or sheets » : General 5 %, EU/UK, EFTA, SADC et AfCFTA "
+                           "free, MERCOSUR 5 % (en vigueur le 16 octobre 2026 ; auparavant free).")
+            _compter_ligne(dd, compteurs, 1)
+        pref = journal.get("preferentiels") or {}
+        if "MERCOSUR" in pref:
+            pref["MERCOSUR"] = {"taux": 5.0}
+
+
+#: Mesures de défense commerciale (sauvegarde, antidumping) dues selon l'origine
+#: et, pour l'antidumping, le producteur : une ligne par mesure, au taux non
+#: établi dans le socle ; la route (services/defense_commerciale.py) la résout
+#: d'après l'origine et le producteur déclarés et la date du calcul.
+DEFENSE_COMMERCIALE = os.path.join(REPO, "data", "defense_commerciale")
+
+
+def _defense_commerciale(iso, positions, compteurs):
+    chemin = os.path.join(DEFENSE_COMMERCIALE, f"{iso}.json")
+    if not os.path.exists(chemin):
+        return
+    with open(chemin, encoding="utf-8") as f:
+        mesures = json.load(f)["mesures"]
+    for mesure in mesures:
+        prefixes = tuple(mesure["positions"])
+        for code, position in positions.items():
+            if not code.startswith(prefixes):
+                continue
+            droits = position.setdefault("droits", [])
+            dd = next((d for d in droits if d.get("code") == "DD"), None)
+            condition = next((v for k, v in (mesure.get("condition_produit") or {}).items()
+                              if code.startswith(k)), None)
+            regle = {cle: mesure.get(cle) for cle in (
+                "id", "type", "debut", "fin", "origines", "exemptees", "taux", "par_origine")
+                if mesure.get(cle) is not None}
+            regle["assiette"] = (dd or {}).get("assiette") or "CIF"
+            if condition:
+                regle["condition_produit"] = condition
+            ligne = {"code": mesure["code"], "code_source": mesure["id"], "famille": famille(mesure["code"]),
+                     "libelle": mesure["libelle"], "taux": None, "assiette": None, "source": mesure["source"],
+                     "note": mesure.get("note", ""), "defense_commerciale": regle}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") == "tva"), len(droits))
+            droits.insert(rang, ligne)
+            _compter_ligne(ligne, compteurs, 1)
+
+
 #: Prélèvements nationaux dus à l'importation au Botswana et en
 #: Eswatini, dont le taux en vigueur n'est pas collecté (fiche
 #: SACU_accises_BLNE_2026-10-20.json) : la ligne est servie sans taux, le total
@@ -5859,8 +5921,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _accises_sierra_leone(positions, compteurs)
     if iso == "ZAF":
         _prelevements_zaf(positions, compteurs)
+        _amendements_zaf(positions, compteurs)
         _controles_sars_zaf(positions)
         _liste_sars_zaf(positions)
+    _defense_commerciale(iso, positions, compteurs)
     if iso in PAYS_TEC_CAE:
         _cae(iso, positions, compteurs)
         _mesures_tec_cae(iso, positions, compteurs)
