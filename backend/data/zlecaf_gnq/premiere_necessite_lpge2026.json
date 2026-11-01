@@ -1,0 +1,420 @@
+{
+ "_objet": "Guinée équatoriale : droit de douane de 5 % et TVA à l'importation de 0 % (premier tableau) ou 5 % (second tableau) sur les biens de première nécessité de la loi de budget 2026, art. 13. Les produits sont nommés sans numéro ; préfixes de la nomenclature du socle (CEMAC, 8 chiffres) ; la première règle qui s'applique l'emporte. « dd » : droit de douane, abaissé à 5 % s'il est plus haut. « tva » ou « dd » null : la position réunit le bien nommé et d'autres biens.",
+ "_fiche": "backend/data/legal_refs/zlecaf_application/GNQ_premiere_necessite_2026-10-31.json",
+ "source": "Ley n° 9/2025, de 9 de diciembre, de presupuestos generales del Estado para el ejercicio 2026, art. 13",
+ "regles": [
+  {
+   "prefixes": [
+    "0302",
+    "0303",
+    "0304",
+    "0305"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Pescado » ; poissons frais, réfrigérés, congelés, en filets, séchés, salés ou fumés (03.02 à 03.05)."
+  },
+  {
+   "prefixes": [
+    "1006"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Arroz »."
+  },
+  {
+   "prefixes": [
+    "11010010",
+    "11022000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Harina de trigo y maíz » ; farine de froment (1101.00.10) et farine de maïs (1102.20)."
+  },
+  {
+   "prefixes": [
+    "21021000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Levadura » ; levures vivantes."
+  },
+  {
+   "prefixes": [
+    "21022000"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Levadura » au droit de douane de 5 % et à la TVA réduite ; la 2102.20 réunit les levures mortes et d'autres micro-organismes monocellulaires morts : taux non servis."
+  },
+  {
+   "prefixes": [
+    "2309"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Pienso »."
+  },
+  {
+   "prefixes": [
+    "160413"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Sardina en conserva »."
+  },
+  {
+   "prefixes": [
+    "1701",
+    "1702"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Azúcar y otros edulcorantes »."
+  },
+  {
+   "prefixes": [
+    "0402"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Leche y crema de leche concentradas, o con azúcares y otros edulcorantes »."
+  },
+  {
+   "prefixes": [
+    "0201",
+    "0202",
+    "0203",
+    "0204",
+    "0205",
+    "0207",
+    "0208",
+    "0210"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Carne » ; viandes des 02.01 à 02.05, 02.07, 02.08 et 02.10 ; les abats (02.06) et graisses (02.09) n'en sont pas."
+  },
+  {
+   "prefixes": [
+    "07101000",
+    "20041000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Patatas congeladas »."
+  },
+  {
+   "prefixes": [
+    "25010011",
+    "25010019"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Sal fina alimenticia » au droit de douane de 5 % et à la TVA réduite ; les sous-positions du sel au socle ne distinguent pas le sel fin alimentaire des autres sels : taux non servis."
+  },
+  {
+   "prefixes": [
+    "0702"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Tomate natural »."
+  },
+  {
+   "prefixes": [
+    "2002"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Tomate lata »."
+  },
+  {
+   "prefixes": [
+    "0407"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Huevos »."
+  },
+  {
+   "prefixes": [
+    "1902"
+   ],
+   "exclusions": [
+    "190240"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Pasta alimenticia » ; hors couscous (1902.40)."
+  },
+  {
+   "prefixes": [
+    "0713"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Legumbres »."
+  },
+  {
+   "prefixes": [
+    "1507",
+    "1508",
+    "1509",
+    "1510",
+    "1511",
+    "1512",
+    "1513",
+    "1514",
+    "1515"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Aceite vegetal » et « Aceite de palma refinado »."
+  },
+  {
+   "prefixes": [
+    "34022000",
+    "34029000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Detergentes »."
+  },
+  {
+   "prefixes": [
+    "34011910"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Jabón de lavar » ; savons de ménage."
+  },
+  {
+   "prefixes": [
+    "34011990",
+    "34012000"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Jabón de lavar » au droit de douane de 5 % et à la TVA réduite ; la position réunit les savons à lessive et d'autres savons : taux non servis."
+  },
+  {
+   "prefixes": [
+    "190110",
+    "210420"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Alimento infantil »."
+  },
+  {
+   "prefixes": [
+    "48184000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Pañales y toallitas infantiles », « Pañales para adultos » et « Productos de higiene intima femenina »."
+  },
+  {
+   "prefixes": [
+    "28289010"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Lejía » ; hypochlorite de sodium (eau de javel)."
+  },
+  {
+   "prefixes": [
+    "82014000"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Machetes » au droit de douane de 5 % et à la TVA réduite ; la 8201.40 réunit aussi les haches et les serpes : taux non servis."
+  },
+  {
+   "prefixes": [
+    "36050000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Cerrillas »."
+  },
+  {
+   "prefixes": [
+    "94055010",
+    "94055020"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Lámpara de petróleo » ; lampes-tempêtes et lampes à pression."
+  },
+  {
+   "prefixes": [
+    "94055090"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Lámpara de petróleo » au droit de douane de 5 % et à la TVA réduite ; la sous-position réunit les autres lampes non électriques : taux non servis."
+  },
+  {
+   "prefixes": [
+    "82031000"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Limas »."
+  },
+  {
+   "prefixes": [
+    "72104100"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Chapas de Zinc » ; tôles zinguées ondulées."
+  },
+  {
+   "prefixes": [
+    "72104900"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Chapas de Zinc » au droit de douane de 5 % et à la TVA réduite ; la sous-position réunit les tôles zinguées planes de tous usages : taux non servis."
+  },
+  {
+   "prefixes": [
+    "82013000"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Azadas » au droit de douane de 5 % et à la TVA réduite ; la 8201.30 réunit aussi pioches, pics, râteaux et racloirs : taux non servis."
+  },
+  {
+   "prefixes": [
+    "73170010"
+   ],
+   "tva": 0.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 0 % à l'importation, « Clavos »."
+  },
+  {
+   "prefixes": [
+    "1904",
+    "190531",
+    "190532"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Galletas y Cereales » ; biscuits et céréales préparées (19.04) ; les grains de céréales du chapitre 10 n'y sont pas lus."
+  },
+  {
+   "prefixes": [
+    "07",
+    "08"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Hortalizas y Frutas »."
+  },
+  {
+   "prefixes": [
+    "1601",
+    "0401",
+    "0403",
+    "0404",
+    "0405",
+    "0406"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Embutidos, Lácteos y Quesos »."
+  },
+  {
+   "prefixes": [
+    "1805",
+    "180610"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Cacao en polvo »."
+  },
+  {
+   "prefixes": [
+    "252329"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Cemento ordinario y Cola » ; ciment Portland ordinaire (2523.29) ; la « cola » n'est pas identifiée."
+  },
+  {
+   "prefixes": [
+    "84678100"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Motosierra »."
+  },
+  {
+   "prefixes": [
+    "38089190",
+    "38089290",
+    "38089390"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Pecticidas de uso agrícola » ; insecticides, fongicides et herbicides autres que conditionnés pour la vente au détail."
+  },
+  {
+   "prefixes": [
+    "38089110",
+    "38089210",
+    "38089310"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Pecticidas de uso agrícola » au droit de douane de 5 % et à la TVA réduite ; les pesticides conditionnés pour la vente au détail ne sont pas tous à usage agricole : taux non servis."
+  },
+  {
+   "prefixes": [
+    "31"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Fertilizantes de uso agrícola »."
+  },
+  {
+   "prefixes": [
+    "22011000"
+   ],
+   "tva": null,
+   "dd": null,
+   "motif": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : « Agua mineral » au droit de douane de 5 % et à la TVA réduite ; la 2201.10 réunit les eaux minérales et les eaux gazéifiées : taux non servis."
+  },
+  {
+   "prefixes": [
+    "940421",
+    "940429"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Colchones »."
+  },
+  {
+   "prefixes": [
+    "72131000",
+    "72142000"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Hierro de hormigón »."
+  },
+  {
+   "prefixes": [
+    "56081100",
+    "9507"
+   ],
+   "tva": 5.0,
+   "dd": 5.0,
+   "reference": "Ley n° 9/2025 (presupuestos generales del Estado 2026), art. 13 : droit de douane à 5 % et TVA à 5 % à l'importation, « Material de pesca artesanal »."
+  }
+ ]
+}

@@ -2844,6 +2844,52 @@ def _tva_tchad(positions, compteurs):
             ).strip()
 
 
+#: Guinée équatoriale : biens de première nécessité de la loi de budget 2026, art. 13
+#: (fiche GNQ_premiere_necessite_2026-10-31.json).
+PREMIERE_NECESSITE_GNQ = os.path.join(REPO, "backend", "data", "zlecaf_gnq", "premiere_necessite_lpge2026.json")
+
+
+def _premiere_necessite_gnq(positions, compteurs):
+    """Guinée équatoriale : droit de douane de 5 % et TVA de 0 % ou 5 % sur les biens
+    de première nécessité (loi n° 9/2025, art. 13). Le crawl, repris du tarif
+    camerounais, laisse sans ligne de TVA les 141 positions que ce tarif marque
+    « EXO » : elles en reçoivent une, sans taux hors de l'art. 13, la loi générale
+    fiscale n° 1/2024 qui fixe les exonérations n'ayant pas été lue."""
+    with open(PREMIERE_NECESSITE_GNQ, encoding="utf-8") as f:
+        table = json.load(f)
+    for code, position in positions.items():
+        droits = position.setdefault("droits", [])
+        tva = next((d for d in droits if d.get("famille") == "tva"), None)
+        ajoutee = tva is None
+        if ajoutee:
+            tva = {"code": "TVA", "code_source": "TVA", "libelle": "Impuesto sobre el Valor Añadido (IVA)",
+                   "famille": "tva", "taux": None, "assiette": "CIF+DD+DA", "assiette_origine": "regle_de_pays",
+                   "source": "Ley n° 4/2004, art. 288 (assiette) ; loi générale fiscale n° 1/2024 non lue",
+                   "note": "Le tarif d'où vient le crawl, celui du Cameroun, marque cette position « EXO » ; en "
+                           "Guinée équatoriale, les exonérations sont celles de la loi générale fiscale n° 1/2024, "
+                           "dont le texte n'a pas été trouvé : taux non servi."}
+            droits.append(tva)
+            _compter_ligne(tva, compteurs, 1)
+        regle = next(
+            (r for r in table["regles"]
+             if code.startswith(tuple(r["prefixes"])) and not code.startswith(tuple(r.get("exclusions", ())))),
+            None,
+        )
+        if not regle:
+            continue
+        texte = regle.get("motif") or regle["reference"]
+        _compter_ligne(tva, compteurs, -1)
+        tva.update(taux=regle["tva"], source=table["source"])
+        tva["note"] = texte if ajoutee else f"{texte} {tva.get('note') or ''}".strip()
+        _compter_ligne(tva, compteurs, 1)
+        for dd in (d for d in droits if d.get("code") == "DD"):
+            if regle["dd"] is not None and dd.get("taux") is not None and dd["taux"] <= regle["dd"]:
+                continue
+            _compter_ligne(dd, compteurs, -1)
+            dd.update(taux=regle["dd"], source=table["source"], note=texte)
+            _compter_ligne(dd, compteurs, 1)
+
+
 #: Congo : prélèvements à l'importation (fiche COG_prelevements_importation_2026-10-30.json).
 SOURCE_RI_COG = "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25"
 SOURCE_CCI_COG = "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40"
@@ -5898,6 +5944,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tva_cameroun(positions, compteurs)
     if iso == "TCD":
         _tva_tchad(positions, compteurs)
+    if iso == "GNQ":
+        _premiere_necessite_gnq(positions, compteurs)
 
     if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
         _ohada_produits_medicaux(positions, compteurs)
