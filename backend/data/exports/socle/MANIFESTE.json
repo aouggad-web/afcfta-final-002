@@ -385,9 +385,9 @@
       ],
       "devise": "CDF",
       "date_reference": "2026-11-01",
-      "sha256": "5b372c00e63c6def5316cd74e5d5c1c35bca7668e75ca756b55dd8cabe62b895",
-      "notes_sha256": "8e3ff3e7dd2bb61fd375a78d9842bfcf1f3b5f2dda40ab506565f5fd46818f9c",
-      "socle_sha256": "62dd1f8b921461430720a7ca3d35caeca5a9e31e3b8b73d67bebfa0c7d693509",
+      "sha256": "0ab68469df36ec96f9d43f3fae957dd478d9770f33bc740f069b49696f28adb9",
+      "notes_sha256": "702d843655369c2d7abcc3262fb5124aad4776c2beafe91f1d52c61ca0e918ce",
+      "socle_sha256": "0c588a6c9d8c30fb36e07730b3f93f19d141cafc20dbeeea1f1f1c3fbe7819d5",
       "collecte": "2026-02-18T10:54:37.532224"
     },
     "COG": {

@@ -2203,7 +2203,7 @@
 39174000;- Fittings;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39181000;- Of polymers of vinyl chloride;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39189000;- Of other plastics;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-39191000;- In rolls of a width not exceeding 20 cm;39;kg;5;16;21.8;COMPLET;;;N3
+39191000;- In rolls of a width not exceeding 20 cm;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9
 39199010;--- In rolls of a width exceeding 20 cm, unprinted;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39199090;---Other;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39201010;--- Unprinted;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2261,7 +2261,7 @@
 39231000;- Boxes, cases, crates and similar articles;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39232100;-- Of polymers of ethylene;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39232900;-- Of other plastics;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-39233000;- Carboys, bottles, flasks and similar articles;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N9
+39233000;- Carboys, bottles, flasks and similar articles;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
 39234000;- Spools, cops, bobbins and similar supports;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39235010;--- Inserts;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 39235090;--- Other;39;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2328,11 +2328,11 @@
 40103500;-- Endless synchronous belts, of an outside circumference exceeding 60 cm but not exceeding 150cm;40;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40103600;-- Endless synchronous belts, of an outside circumference exceeding 150 cm but not exceeding 198 cm;40;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40103900;-- Other;40;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-40111000;- Of a kind used on motor cars (including station wagons and racing cars);40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N10
+40111000;- Of a kind used on motor cars (including station wagons and racing cars);40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N11
 40112010;--- With a rim size below 17 inches;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40112020;--- With a rim size of 17 inches and above;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40113000;- Of a kind used on aircraft;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-40114000;- Of a kind used on motorcycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N11
+40114000;- Of a kind used on motorcycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N12
 40115000;- Of a kind used on bicycles;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40117000;- Of a kind used on agricultural or forestry vehicles and machines;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 40118000;- Of a kind used on construction, mining or industrial handling vehicles and machines;40;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -2611,7 +2611,7 @@
 48026100;-- In rolls;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48026200;-- In sheets with one side not exceeding 435 mm and the other side not exceeding 297 mm in the unfolded state;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48026900;-- Other;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-48030000;Toilet or facial tissue stock, towel or napkin stock and similar paper of a kind used for household or sanitary purposes, cellulose wadding and webs of cellulose fibres, whether or not creped, crinkled, embossed, perforated, surface-coloured, surface-decorated or printed, in rolls or sheets.;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N12
+48030000;Toilet or facial tissue stock, towel or napkin stock and similar paper of a kind used for household or sanitary purposes, cellulose wadding and webs of cellulose fibres, whether or not creped, crinkled, embossed, perforated, surface-coloured, surface-decorated or printed, in rolls or sheets.;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13
 48041100;-- Unbleached;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48041910;--- Dry battery Kraftliner;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 48041990;--- Other;48;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -3874,10 +3874,10 @@
 72106100;-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
 72106900;-- Other 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
 72107000;- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher;72;kg;20;16;39.2;COMPLET;;;N2
-72109000;- Other 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N13
+72109000;- Other 25% or $200/MT whichever is higher;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14
 72111300;-- Rolled on four faces or in a closed box pass, of a width exceeding 150 mm and a thickness of not less than 4 mm,not in coils and without patterns in relief;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72111400;-- Other, of a thickness of 4.75 mm or more;72;kg;20;16;39.2;COMPLET;;;N2
-72111900;-- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N14
+72111900;-- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15
 72112300;-- Containing by weight less than 0.25% of carbon;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72112900;-- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 72119000;- Other;72;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -4061,7 +4061,7 @@
 73158900;-- Other;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73159000;- Other parts;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73160000;Anchors, grapnels and parts thereof, of iron or steel.;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-73170000;Nails, tacks, drawing pins, corrugated nails, staples (other than those of heading 83.05) and similar articles, of iron or steel, whether or not with heads of other material, but excluding such articles with heads of copper.;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N15
+73170000;Nails, tacks, drawing pins, corrugated nails, staples (other than those of heading 83.05) and similar articles, of iron or steel, whether or not with heads of other material, but excluding such articles with heads of copper.;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N16
 73181100;-- Coach screws;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73181200;-- Other wood screws;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 73181300;-- Screw hooks and screw rings;73;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
@@ -5912,7 +5912,7 @@
 96162000;- Powder-puffs and pads for the application of cosmetics or toilet preparations;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 96170000;"Vacuum flasks and other vacuum vessels, complete; parts thereof other than glass inners.";96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 96180000;"Tailors’ dummies and other lay figures; automata and other animated displays used for shop window dressing.";96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
-96190010;--- Sanitary towels (pads) and tampons;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N16
+96190010;--- Sanitary towels (pads) and tampons;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N17
 96190090;--- Other;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 96200000;Monopods, bipods, tripods and similar articles.;96;kg;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
 97012100;-- Paintings, drawings and pastels;97;u;n.d.;16;;INDISPONIBLE;DD (TAUX_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;N1
