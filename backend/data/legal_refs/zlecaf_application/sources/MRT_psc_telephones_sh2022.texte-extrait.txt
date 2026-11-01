@@ -1,0 +1,44 @@
+République islamique de Mauritanie — extraits verbatim (pdftotext -layout)
+
+== Loi de finances pour l'année 2025 (loi n° 2025-001 du 16 janvier 2025), exposé des motifs ==
+http://finances.gov.mr/sites/default/files/2025-01/LOI%20DE%20FINANCES%20POUR%20L%27ANNEE%202025.pdf — sha256 995f596f617f4b5301db360fb4d75a653c5d6277c014bbcbfe82a88f8444e053
+
+2. Application d'un droit de douane (D.D.) de 10 % au lieu de 20 % sur le fil
+machine en fer ou en aciers non alliés
+Notre pays adopte, conformément à la loi N°2018.045 en date du 28 décembre 
+2018 autorisant la ratification de l’Accord d’Association entre la République 
+Islamique de Mauritanie et la Communauté Economique des Etats de l'Afrique de 
+l'Ouest (CEDEAO), signé à Nouakchott le 5 mai 2017, le Tarif Extérieur Commun 
+basé sur la version 2017 du Système Harmonisé de désignation et de codification 
+des marchandises et en 2024 la version 2022 a été adoptée. 
+Cette proposition de modification s'inscrit dans le cadre de l’harmonisation avec la 
+structure du tarif extérieur commun qui applique une taxation non élevée (10 %) 
+sur les intrants et les produits intermédiaires. Elle vise également à soutenir le 
+secteur industriel national en allégeant le fardeau fiscal sur les intrants destinés 
+
+== Loi de finances pour l'année 2026 (janvier 2026), dispositions relatives aux ressources ==
+http://finances.gov.mr/sites/default/files/2026-01/Loi%20de%20Finances%20pour%20l%E2%80%99ann%C3%A9e%202026.pdf — sha256 81deb4bef7b582121c1d59b5d1b7e2b0bddf954995c7719bbdaba9b9a3692c79
+
+Article 3.2 : Par dérogation à la loi n° 2017.035 du 21 décembre 2017 
+instituant le Code des Douanes, le tarif applicable aux produits 
+importés et exportés est modifié ainsi qu’il suit : 
+[…]
+Art 3.2.5 : 
+Le tarif des douanes inscrit dans la loi n° 2025-001 du 16 janvier 2025 portant loi de 
+finances initiale de 2025 relatif à la taxation des produits relevant des sous positions 
+85.17.13 et 85.17.14 est modifié ainsi qu’il suit : 
+a) Pour la position 85.17.13.00.00 Téléphones Smartphones
+DD    10% 
+RS.     1% 
+PC.  0,5% 
+PSC 1% 
+TVA 16% 
+IMF. 0% 
+b) Pour la position 85.17.14.00.00 téléphones utilitaires
+DD    10% 
+RS.     1% 
+PC.  0,5% 
+PSC 1% 
+TVA  0% 
+IMF. 0% 
+7
