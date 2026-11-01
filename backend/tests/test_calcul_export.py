@@ -166,7 +166,8 @@ def test_mdg_hors_produit_des_mines_pas_de_dtspm(client):
 
 def test_les_questions_hors_tarif_sont_servies(client):
     questions = client.get("/calcul/export/pays").json()["questions"]
-    assert set(questions) == {"MDG", "MLI", "CMR", "COG"} and questions["MDG"]["champ"] == "produit_minier"
+    assert set(questions) == {"MDG", "MLI", "CMR", "COG", "GAB"} and questions["MDG"]["champ"] == "produit_minier"
+    assert questions["GAB"]["champ"] == "produit_en_bois" and questions["GAB"]["question_en"]
     assert questions["CMR"]["champ"] == questions["COG"]["champ"] == "produit_fini"
     # Le CGI malien ne prévoit pas d'abattement : pas de seconde question.
     assert questions["MLI"]["question_transformation"] is None and questions["MLI"]["question_en"]
@@ -474,21 +475,38 @@ def test_cog_positions_ambigues_a_etablir(client):
 
 
 def test_gab_bois_selon_le_degre_de_transformation(client):
-    """LF 2026, art. 5 : placages 15 %, contreplaqués, panneaux de particules « de bois », profilés et parquets 10 %
-    (valeur mercuriale) ; menuiserie, ébénisterie, meubles en bois 3,5 % (valeur FOB)."""
-    for code, montant in (("44083900", 150_000), ("44091000", 100_000), ("44123100", 100_000), ("44101100", 100_000),
-                          ("44187200", 100_000), ("44182000", 35_000), ("94036000", 35_000)):
-        export = _export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF")
+    """LF 2026, art. 5 : placages 15 %, panneaux, contreplaqués, profilés et parquets 10 % (valeur mercuriale) ;
+    menuiserie, ébénisterie, meubles en bois 3,5 % (valeur FOB) — pour un produit déclaré en bois."""
+    for code, montant in (("44083900", 150_000), ("44091000", 100_000), ("44123100", 100_000), ("44119200", 100_000),
+                          ("44187200", 100_000), ("44182000", 35_000), ("94013000", 35_000)):
+        export = _export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF", produit_en_bois=True)
         assert (export["etat"], _ligne(export, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(montant)), code
 
 
+def test_gab_bois_selon_la_matiere_declaree(client):
+    """Chapitre 44, note 6 : « bois » y comprend le bambou et les autres matières ligneuses, que la LF ne taxe pas.
+    Sans réponse, à établir ; produit qui n'est pas en bois, aucun droit. Les panneaux « De bois » (4410.1) et les
+    meubles en bois du chapitre 94 (qui range à part le bambou) ne dépendent pas de la réponse."""
+    for code in ("44083900", "44092100", "44119200", "44190000", "94013000"):
+        sans = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF"), "EXPORT")
+        assert sans["montant"] is None and "Produit en bois" in sans["note"], code
+        non = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF", produit_en_bois=False),
+                     "EXPORT")
+        assert non["montant"] == pytest.approx(0), code
+    for code, montant in (("44101100", 100_000), ("94036000", 35_000)):
+        for reponse in (None, False, True):
+            corps = {"pays": "GAB", "code_sh": code, "valeur": 1_000_000, "devise": "XAF"}
+            if reponse is not None:
+                corps["produit_en_bois"] = reponse
+            assert _ligne(_export(client, **corps), "EXPORT")["montant"] == pytest.approx(montant), (code, reponse)
+
+
 def test_gab_grumes_or_et_produits_non_nommes(client):
-    """Grumes (exportation interdite), or (seuls les lingots sont nommés), sciages (bruts ou rabotés), bois non classé,
-    sièges et parties de meubles sans matière précisée, panneaux de fibres « de bois ou d'autres matières ligneuses »,
-    moulures en bambou : à établir ; hors des produits nommés, aucun droit de sortie."""
-    for code in ("44034914", "71081200", "44021000", "44072914", "94013000", "94039000", "44119200",
-                 "44092100"):
-        ligne = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF"), "EXPORT")
+    """Grumes (exportation interdite), or (seuls les lingots sont nommés), sciages (bruts ou rabotés), bois non classé :
+    à établir, même pour un produit déclaré en bois ; hors des produits nommés, aucun droit de sortie."""
+    for code in ("44034914", "71081200", "44021000", "44072914"):
+        ligne = _ligne(_export(client, pays="GAB", code_sh=code, valeur=1_000_000, devise="XAF", produit_en_bois=True),
+                       "EXPORT")
         assert ligne["montant"] is None, code
     corps = client.post("/calcul/export", json={
         "pays": "GAB", "code_sh": "85171200", "valeur": 1000, "devise": "XAF"}).json()
