@@ -304,6 +304,7 @@
     },
     {
       "fee_id": "NGA-SONCAP-SC",
+      "hs_scope": {"exclude": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "30", "9018", "9019", "9020", "9021", "9022", "93"], "basis": "Exclus du SONCAP par la source : aliments, avec les animaux et produits du règne végétal qui relèvent de la NAFDAC et des contrôles sanitaires et phytosanitaires (chapitres 01 à 24), médicaments (30), dispositifs médicaux (90.18 à 90.22), équipements militaires (93). Les produits chimiques bruts destinés aux fabricants et les produits d'occasion tiennent à l'usage ou à l'état, pas à la position : non filtrés."},
       "country_iso3": "NGA",
       "side": "import",
       "scope_kind": "provider",
@@ -331,6 +332,7 @@
     },
     {
       "fee_id": "MAR-VOC-HONORAIRES",
+      "hs_scope": {"exclude": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"], "basis": "« Produits industriels réglementés » : les produits agricoles et alimentaires (chapitres 01 à 24) relèvent de l'ONSSA, pas de la VOC du ministère de l'Industrie."},
       "country_iso3": "MAR",
       "side": "import",
       "scope_kind": "provider",

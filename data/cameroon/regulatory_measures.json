@@ -110,7 +110,10 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import"
+      ]
     },
     {
       "record_id": "CMR-MINFI-PVI",
@@ -161,7 +164,10 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import"
+      ]
     },
     {
       "record_id": "CMR-CIVIC-VEHICLES",
@@ -212,7 +218,21 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import"
+      ],
+      "hs_scope": {
+        "include": [
+          "8701",
+          "8702",
+          "8703",
+          "8704",
+          "8705",
+          "8711"
+        ],
+        "basis": "« Véhicules importés (y compris d'occasion) » : véhicules automobiles des positions 87.01 à 87.05 et motocycles (87.11)."
+      }
     },
     {
       "record_id": "CMR-CNCC-BESC",
@@ -235,7 +255,10 @@
       "verification_status": "UNVERIFIED",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "NOT_AVAILABLE"
+      "mandated_actor_status": "NOT_AVAILABLE",
+      "sides": [
+        "import"
+      ]
     }
   ]
 }

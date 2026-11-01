@@ -61,7 +61,46 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "DOCUMENTED",
+      "sides": [
+        "import"
+      ],
+      "hs_scope": {
+        "exclude": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "30",
+          "9018",
+          "9019",
+          "9020",
+          "9021",
+          "9022",
+          "93"
+        ],
+        "basis": "Exclus du SONCAP par la source : aliments, avec les animaux et produits du règne végétal qui relèvent de la NAFDAC et des contrôles sanitaires et phytosanitaires (chapitres 01 à 24), médicaments (30), dispositifs médicaux (90.18 à 90.22), équipements militaires (93). Les produits chimiques bruts destinés aux fabricants et les produits d'occasion tiennent à l'usage ou à l'état, pas à la position : non filtrés."
+      }
     },
     {
       "record_id": "NGA-NAFDAC-CRIA",
@@ -84,7 +123,50 @@
       "verification_status": "UNVERIFIED",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "NOT_AVAILABLE"
+      "mandated_actor_status": "NOT_AVAILABLE",
+      "sides": [
+        "import"
+      ],
+      "hs_scope": {
+        "include": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "28",
+          "29",
+          "30",
+          "33",
+          "34",
+          "38",
+          "9018",
+          "9019",
+          "9020",
+          "9021",
+          "9022"
+        ],
+        "basis": "Produits réglementés par la NAFDAC (NAFDAC Act, Cap. N1) : aliments et boissons (01 à 24), médicaments (30), cosmétiques et détergents (33, 34), produits chimiques (28, 29, 38), dispositifs médicaux (90.18 à 90.22)."
+      }
     }
   ]
 }
