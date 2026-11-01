@@ -447,7 +447,8 @@ def test_cmr_lf2026_positions_ambigues_a_etablir(client):
 
 def test_cog_taux_general_selon_la_transformation(client):
     """LFR 2021, point 42 : 2 % ; produit transformé d'origine congolaise exonéré ; sans réponse, à établir."""
-    brut = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False)
+    brut = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=False,
+                   produit_transforme=False)
     assert (brut["etat"], _ligne(brut, "EXPORT")["montant"]) == ("COMPLET", pytest.approx(20_000))
     transforme = _export(client, pays="COG", code_sh="85171200", valeur=1_000_000, devise="XAF", produit_fini=True)
     assert _ligne(transforme, "EXPORT")["montant"] == pytest.approx(0)
