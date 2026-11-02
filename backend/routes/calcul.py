@@ -631,6 +631,21 @@ def _regimes(preference: dict) -> dict:
                 "le démantèlement progressif de la ZLECAf."
             ),
         }
+    elif infos.get("regime") == "GZALE":
+        # Zone arabe retenue à l'importation en Algérie : la ZLECAf n'a pas
+        # joué, et sa propre décision (refus motivé, ou moins favorable) est
+        # rendue telle que le moteur l'a prise.
+        zlecaf = infos.get("zlecaf") or {}
+        resultat["preference_zlecaf"] = {
+            "applique": False,
+            "regime": "GZALE",
+            "statut": "REGIME_GZALE",
+            "statut_zlecaf": zlecaf.get("statut"),
+            "note": (
+                "La ZLECAf n'est pas retenue ici : la franchise de la Grande zone "
+                "arabe de libre-échange est appliquée. " + (zlecaf.get("note") or "")
+            ).strip(),
+        }
     else:
         resultat["preference_zlecaf"] = infos
     return resultat

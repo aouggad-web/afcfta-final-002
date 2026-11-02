@@ -482,6 +482,10 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
   const regime = calcul.regime_commercial || {};
   const complements = calcul.complements_nationaux || [];
   const unionDouaniere = regime.regime === 'UNION_DOUANIERE' ? regime : null;
+  // Zone de libre-échange retenue à la place de la ZLECAf (GZALE à
+  // l'importation en Algérie) : franchise servie, mais sous conditions
+  // d'origine — le bandeau « régime sous conditions » la dit.
+  const zoneLibreEchange = regime.regime === 'GZALE' && regime.applique ? regime : null;
 
   // Deux drapeaux, parce que deux questions distinctes se posent.
   //
@@ -622,8 +626,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // Même vocabulaire que le chemin historique (`authentic_tariff_service`) :
     // `trade_regime` nomme le régime, `trade_regime_code` le bloc. Diverger
     // ici obligerait l'interface à comprendre deux dialectes pour un seul fait.
-    trade_regime: unionDouaniere ? 'CUSTOMS_UNION' : hasZlecaf ? 'ZLECAF' : 'NPF',
-    trade_regime_code: unionDouaniere ? unionDouaniere.code_bloc : hasZlecaf ? 'ZLECAF' : 'NPF',
+    trade_regime: unionDouaniere
+      ? 'CUSTOMS_UNION'
+      : zoneLibreEchange ? 'FTA_CONDITIONAL' : hasZlecaf ? 'ZLECAF' : 'NPF',
+    trade_regime_code: unionDouaniere
+      ? unionDouaniere.code_bloc
+      : zoneLibreEchange ? zoneLibreEchange.code_bloc : hasZlecaf ? 'ZLECAF' : 'NPF',
     trade_regime_note: regime.note || null,
     preferential_regime_applied: hasPreference,
 

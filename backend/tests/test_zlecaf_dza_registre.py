@@ -43,8 +43,9 @@ def test_le_socle_sert_la_liste_a_et_exonere_le_daps():
 
 
 def test_une_origine_non_admise_reste_au_npf():
-    # Le Maroc a ratifié mais n'est pas parmi les neuf origines admises.
-    resultat = taux_preferentiels(_position(), "DZA", "MAR", CODE)
+    # Le Sénégal a ratifié mais n'est pas parmi les neuf origines admises. (Le
+    # Maroc ne l'est pas non plus, mais il relève de la GZALE : test_dza_gzale.)
+    resultat = taux_preferentiels(_position(), "DZA", "SEN", CODE)
     assert resultat["applique"] is False
     assert resultat["taux"] == {}
 

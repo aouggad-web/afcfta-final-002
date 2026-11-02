@@ -6,11 +6,26 @@ export function isCustomsDutyTax(tax) {
 }
 
 export function isDisplayableZlecafResult(result) {
+  // Zone de libre-échange retenue à la place de la ZLECAf (GZALE à
+  // l'importation en Algérie) : la colonne préférentielle est chiffrée par le
+  // moteur ; seule son étiquette change (`preferentialRegimeLabel`).
+  if (result?.trade_regime === 'FTA_CONDITIONAL') {
+    return result?.preferential_regime_applied === true && isNumber(result?.zlecaf_tariff_rate);
+  }
   return (
     result?.zlecaf_status === 'DOCUMENTED'
     && result?.trade_regime === 'ZLECAF'
     && isNumber(result?.zlecaf_tariff_rate)
   );
+}
+
+/**
+ * Nom du régime préférentiel à afficher à la place de « ZLECAf », ou `null`
+ * quand c'est bien la ZLECAf : une franchise GZALE ne doit jamais être
+ * présentée comme une préférence ZLECAf.
+ */
+export function preferentialRegimeLabel(result) {
+  return result?.trade_regime === 'FTA_CONDITIONAL' ? (result?.trade_regime_code || null) : null;
 }
 
 /**

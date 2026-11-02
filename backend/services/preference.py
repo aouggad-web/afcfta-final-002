@@ -188,9 +188,10 @@ def taux_preferentiels(
     ``regime`` : une préférence refusée doit dire pourquoi, sinon elle est
     indiscernable d'une absence de source.
 
-    ``regime`` distingue les deux régimes possibles, parce que les confondre
+    ``regime`` distingue les régimes possibles, parce que les confondre
     serait faux : ``UNION_DOUANIERE`` pour la libre circulation intra-bloc,
-    ``ZLECAF`` pour la préférence continentale.
+    ``GZALE`` pour la zone arabe à l'importation en Algérie (quand elle est
+    plus favorable que la ZLECAf), ``ZLECAF`` pour la préférence continentale.
     """
     union = _union_douaniere(destination_iso3, origine_iso3)
     if union:
@@ -204,7 +205,113 @@ def taux_preferentiels(
         resultat = _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
         return {**resultat, "union_non_effective": non_effective,
                 "note": NOTE_UNION_NON_EFFECTIVE[non_effective] + " " + (resultat.get("note") or "")}
-    return _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
+    zlecaf = _taux_preferentiels_hors_union(position, destination_iso3, origine_iso3, hs_code)
+    return _choisir_gzale_ou_zlecaf(position, destination_iso3, origine_iso3, zlecaf)
+
+
+#: Grande zone arabe de libre-échange (GZALE) à l'importation en Algérie —
+#: origines AFRICAINES membres de la zone (le calculateur ne sert que
+#: l'Afrique). La Mauritanie, les Comores, Djibouti et la Somalie, membres de
+#: la Ligue arabe, n'appliquent pas la zone et en sont absents.
+GZALE_ORIGINES_DZA = frozenset({"EGY", "LBY", "MAR", "SDN", "TUN"})
+
+REFERENCE_GZALE_DZA = (
+    "GZALE (adhésion de l'Algérie au 01/01/2009) ; liste négative algérienne "
+    "supprimée au 01/01/2022, télex DGD n° 516/DGD/D042.21 du 24/12/2021 — "
+    "exonération du seul droit de douane"
+)
+
+
+def _charge_restante(position: Dict[str, Any], table: Dict[str, Any], codes) -> Optional[float]:
+    """Somme des taux restant dus sur ``codes`` sous la table ``table``.
+
+    Un code absent de la table reste au NPF ; un taux préférentiel est
+    plafonné au NPF, comme le moteur le fait (plancher NPF). ``None`` quand un
+    taux manque : la comparaison n'est alors pas faite.
+    """
+    total = 0.0
+    for code in codes:
+        npf = _taux_npf(position, code)
+        entree = table.get(code)
+        taux = entree.get("taux") if isinstance(entree, dict) else npf
+        if taux is None:
+            return None
+        if npf is not None:
+            taux = min(float(taux), npf)
+        total += float(taux)
+    return total
+
+
+def _choisir_gzale_ou_zlecaf(
+    position: Dict[str, Any],
+    destination_iso3: str,
+    origine_iso3: str,
+    zlecaf: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Retenir, à l'importation en Algérie, le plus favorable de la GZALE et
+    de la ZLECAf — un seul régime par importation, jamais un mélange.
+
+    La GZALE exonère le seul droit de douane ; le DAPS reste compté, faute du
+    texte qui en dispenserait les origines arabes : le ministre du Commerce a
+    annoncé en janvier 2022 que le DAPS ne viserait que 141 positions pour les
+    pays liés à l'Algérie par un accord préférentiel (UE, GZALE, ZLECAf), mais
+    cette liste n'est pas obtenue, et le tarif de la DGD n'affiche aucun
+    avantage sur le DAPS. La ZLECAf, elle, exonère le DAPS des listes (A) et
+    (B) par un texte (circulaire 482/2024). Ni l'un ni l'autre ne l'emporte
+    donc toujours : la comparaison porte sur le droit de douane et sur chaque
+    prélèvement que la ZLECAf réduit, position par position. À égalité, la
+    ZLECAf est conservée. Fiche DZA_GZALE_2026-11-02.json.
+    """
+    if (destination_iso3 or "").upper() != "DZA":
+        return zlecaf
+    if (origine_iso3 or "").upper() not in GZALE_ORIGINES_DZA:
+        return zlecaf
+
+    table_gzale = {"DD": {"taux": 0.0}}
+    if zlecaf.get("applique"):
+        codes = {"DD"} | set(zlecaf.get("taux") or {})
+        charge_zlecaf = _charge_restante(position, zlecaf["taux"], codes)
+        charge_gzale = _charge_restante(position, table_gzale, codes)
+        if charge_zlecaf is None or charge_gzale is None or charge_zlecaf <= charge_gzale:
+            note = (
+                f"{zlecaf.get('note') or ''} La GZALE est aussi ouverte à cette "
+                "origine (droit de douane 0 %, DAPS compté) ; la ZLECAf, au moins "
+                "aussi favorable pour cette position, est retenue."
+            ).strip()
+            return {**zlecaf, "note": note}
+        motif_zlecaf = (
+            "La ZLECAf s'applique aussi à cette origine, mais elle est moins "
+            "favorable pour cette position."
+        )
+    else:
+        motif_zlecaf = "La ZLECAf n'est pas appliquée à cette origine."
+    daps = ""
+    if (_taux_npf(position, "DAPS") or 0) > 0:
+        daps = (
+            "Le DAPS reste compté ; selon le ministère du Commerce (janvier "
+            "2022), il ne viserait que 141 positions pour les origines "
+            "préférentielles, liste non obtenue : il peut être surévalué ici. "
+        )
+    return {
+        "applique": True,
+        "regime": "GZALE",
+        "code_bloc": "GZALE",
+        "libelle_bloc": "Grande zone arabe de libre-échange",
+        "statut": "FRANCHISE_ZONE_LIBRE_ECHANGE",
+        # Affichée telle quelle dans le bandeau « régime sous conditions ».
+        "note": (
+            "Grande zone arabe de libre-échange (GZALE) : droit de douane 0 % "
+            "pour les produits d'origine arabe, la liste négative algérienne "
+            "étant supprimée depuis le 1er janvier 2022 (télex DGD "
+            "n° 516/DGD/D042.21). Conditions : certificat d'origine arabe "
+            "(valeur ajoutée locale d'au moins 40 %) et transport direct. Seul "
+            "le droit de douane est exonéré : TVA, TCS et autres taxes restent "
+            f"dues. {daps}{motif_zlecaf}"
+        ),
+        "zlecaf": {"statut": zlecaf.get("statut"), "note": zlecaf.get("note")},
+        "taux": table_gzale,
+        "perimetre": {"DD": REFERENCE_GZALE_DZA},
+    }
 
 
 def _taux_preferentiels_hors_union(
@@ -485,7 +592,10 @@ def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[
     Les zones de libre-échange (CEDEAO, SADC, COMESA) ne sont **pas** traitées
     ici : leur franchise dépend des règles d'origine et des listes sensibles
     du bloc, que ce moteur n'a pas. Les rendre à 0 % serait fabriquer une
-    exonération — elles restent au NPF.
+    exonération — elles restent au NPF. Seule exception, la GZALE à
+    l'importation en Algérie (:func:`_choisir_gzale_ou_zlecaf`) : la liste
+    négative algérienne y est supprimée depuis 2022, la franchise couvre tout
+    le tarif.
     """
     from services.regional_blocs import CUSTOMS_UNION_NAMES, same_customs_union
 
