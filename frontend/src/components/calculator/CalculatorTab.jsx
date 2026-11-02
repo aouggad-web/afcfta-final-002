@@ -421,7 +421,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       minRegionalContent: "الحد الأدنى للمحتوى الإقليمي",
       african: "أفريقي",
       sectorPrefix: "القطاع",
-      hsCodeSelectorTitle: "محدد رمز SH6",
+      hsCodeSelectorTitle: "أداة اختيار رمز SH6",
       hsCodeSelectorDesc: "ابحث في رموز النظام المنسق أو تصفحها",
       browseHS: "تصفح رموز SH",
       hideHSBrowser: "إخفاء المتصفح",
@@ -755,7 +755,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           description: pick(language,
             `${detail.positions?.length || 'Plusieurs'} positions nationales sous ce code SH6 : choisissez la vôtre dans la liste « Positions Tarifaires Nationales », puis relancez le calcul.`,
             `${detail.positions?.length || 'Several'} national positions under this HS6 code: choose yours in the "National Tariff Positions" list, then calculate again.`,
-            `${detail.positions?.length || 'عدة'} بنود وطنية تحت رمز SH6 هذا: اختر بندك من قائمة «البنود التعريفية الوطنية»، ثم أعد الحساب.`),
+            `${detail.positions?.length ? `بنود وطنية عددها ${detail.positions.length}` : 'عدة بنود وطنية'} تحت رمز SH6 هذا: اختر بندك من قائمة «البنود التعريفية الوطنية»، ثم أعد الحساب.`),
         });
         return;
       }

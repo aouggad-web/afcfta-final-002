@@ -82,7 +82,7 @@ const TEXTS = {
     loading: 'جارٍ حساب RCA…',
     error: 'تعذّر حساب RCA لهذا الاختيار.',
     noData: 'لا توجد بيانات متاحة.',
-    summary: (n, total) => `${n} منتج(ات) ذات ميزة ظاهرة (RCA ≥ 1) من أصل ${total} تم تحليلها`,
+    summary: (n, total) => `المنتجات ذات الميزة الظاهرة (RCA ≥ 1): ${n} من أصل ${total} تم تحليلها`,
     chartTitle: 'أبرز المنتجات حسب RCA',
     product: 'المنتج',
     code: 'الرمز',

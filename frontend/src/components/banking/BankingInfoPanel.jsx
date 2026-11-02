@@ -325,7 +325,7 @@ const texts = {
     politicalRisk: 'المخاطر السياسية',
     transferRisk: 'مخاطر التحويل',
     alertLevel: 'مستوى الإنذار',
-    riskScore: 'النتيجة',
+    riskScore: 'الدرجة',
     maxExposure: 'أقصى تعرض موصى به',
     exposureWarning: '⚠ المبلغ يتجاوز التعرض الموصى به',
     priorAuthRequired: '⚠ يلزم ترخيص مسبق',

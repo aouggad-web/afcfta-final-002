@@ -383,7 +383,7 @@ function App() {
             <SectionHeader
               title={pick(language, 'Opportunités', 'Opportunities', 'الفرص')}
               subtitle={
-                pick(language, 'Scénarios S1–S4, recherche de marchés, rapport bilatéral et substitution SH6 (S5)', 'S1–S4 scenarios, market finding, bilateral report and HS6 substitution (S5)', 'السيناريوهات S1–S4، البحث عن الأسواق، التقرير الثنائي واستبدال الواردات على مستوى SH6 (S5)')
+                pick(language, 'Scénarios S1–S4, recherche de marchés, rapport bilatéral et substitution SH6 (S5)', 'S1–S4 scenarios, market finding, bilateral report and HS6 substitution (S5)', 'السيناريوهات S1–S4، البحث عن الأسواق، التقرير الثنائي وإحلال الواردات على مستوى SH6 (S5)')
               }
               dotColor="copper"
             />

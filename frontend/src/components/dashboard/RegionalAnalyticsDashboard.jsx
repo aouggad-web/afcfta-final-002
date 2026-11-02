@@ -19,9 +19,9 @@ const API = import.meta.env.VITE_BACKEND_URL
 
 function BlocCard({ bloc, language }) {
   const tierColors = {
-    tier1: { bg: '#D1FAE5', border: '#10B981', text: '#065F46', label: pick(language, 'Tier 1 – Excellent', 'Tier 1 – Excellent', 'الفئة 1 – ممتاز') },
-    tier2: { bg: '#DBEAFE', border: '#3B82F6', text: '#1E40AF', label: pick(language, 'Tier 2 – Good', 'Tier 2 – Good', 'الفئة 2 – جيد') },
-    tier3: { bg: '#FEF3C7', border: '#F59E0B', text: '#92400E', label: pick(language, 'Tier 3 – Developing', 'Tier 3 – Developing', 'الفئة 3 – قيد التطور') },
+    tier1: { bg: '#D1FAE5', border: '#10B981', text: '#065F46', label: pick(language, 'Tier 1 – Excellent', 'Tier 1 – Excellent', 'الفئة الأولى – ممتاز') },
+    tier2: { bg: '#DBEAFE', border: '#3B82F6', text: '#1E40AF', label: pick(language, 'Tier 2 – Good', 'Tier 2 – Good', 'الفئة الثانية – جيد') },
+    tier3: { bg: '#FEF3C7', border: '#F59E0B', text: '#92400E', label: pick(language, 'Tier 3 – Developing', 'Tier 3 – Developing', 'الفئة الثالثة – قيد التطور') },
   };
   const tier = tierColors[bloc.opportunity_tier] || tierColors.tier3;
 

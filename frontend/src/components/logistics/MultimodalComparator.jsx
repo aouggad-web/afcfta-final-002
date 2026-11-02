@@ -57,7 +57,7 @@ const MODE_META = {
 const PHASE_META = {
   operational:         { label: 'Opérationnel', label_ar: 'قيد التشغيل',          cls: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' },
   under_construction:  { label: 'En construction', label_ar: 'قيد الإنشاء',       cls: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))]  text-[var(--gold)]  border-[color-mix(in_srgb,var(--gold)_30%,transparent)]'  },
-  planned:             { label: 'Planifié', label_ar: 'مخطط',              cls: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))]    text-[var(--info)]    border-[color-mix(in_srgb,var(--info)_30%,transparent)]'    },
+  planned:             { label: 'Planifié', label_ar: 'مخطَّط له',              cls: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))]    text-[var(--info)]    border-[color-mix(in_srgb,var(--info)_30%,transparent)]'    },
   study:               { label: "Étude de faisabilité", label_ar: 'دراسة جدوى', cls: 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]' },
 };
 
@@ -273,7 +273,7 @@ export default function MultimodalComparator({ language = 'fr' }) {
           <Layers className="w-5 h-5" />
         </div>
         <div>
-          <h2 className="text-lg font-bold">{pick(language, 'Comparateur Multimodal', 'Comparateur Multimodal', 'المقارن متعدد الوسائط')}</h2>
+          <h2 className="text-lg font-bold">{pick(language, 'Comparateur Multimodal', 'Comparateur Multimodal', 'المقارن المتعدد الوسائط')}</h2>
           <p className="text-[var(--info)] text-sm">
             {pick(
               language,

@@ -454,7 +454,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
         {/* Max countries hint */}
         <p style={{ fontSize: '0.7rem', color: 'var(--afcfta-muted)', marginTop: 10 }}>
-          {pick(language, `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`, `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`, `${selectedCountries.length} / ${MAX_COUNTRIES} بلدان مختارة`)}
+          {pick(language, `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`, `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`, `البلدان المختارة: ${selectedCountries.length} / ${MAX_COUNTRIES}`)}
         </p>
       </div>
 

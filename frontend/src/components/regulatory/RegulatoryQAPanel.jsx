@@ -50,7 +50,7 @@ const TEXTS = {
     title: 'جودة البيانات التنظيمية',
     subtitle:
       'تقرير التغطية والتناقضات وانتهاء الصلاحية (ضوابط LOT 6) — معلومات حوكمة حول مجموعة البيانات، وليست حسابًا أبدًا.',
-    publishedOf: (published, total) => `${published} / ${total} بلدًا منشورًا`,
+    publishedOf: (published, total) => `البلدان المنشورة: ${published} / ${total}`,
     noIssues: 'لم يُكتشف أي تناقض ولا أي مجموعة بيانات منتهية الصلاحية.',
     contradictionsTitle: (n) => `تناقضات مكتشفة: ${n}`,
     contradictionsDesc:
@@ -58,7 +58,7 @@ const TEXTS = {
     staleTitle: (n) => `بلدان ذات بيانات منتهية الصلاحية: ${n}`,
     staleDesc: 'تم تجاوز حدّ انتهاء الصلاحية — يجب إعادة التحقق، ولا يُجدَّد تلقائيًا أبدًا.',
     country: 'البلد',
-    asOf: 'الوضع في',
+    asOf: 'الوضع بتاريخ',
     measures: 'الإجراءات',
     actors: 'مقدّمو الخدمات',
     terminated: 'تفويضات منتهية',

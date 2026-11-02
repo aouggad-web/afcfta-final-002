@@ -40,7 +40,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
       containersTeu: "الحاويات (TEU)",
       totalTonnage: "الحمولة الإجمالية",
       tonsYear: "طن/سنة",
-      calls: "التوقفات",
+      calls: "مرات الرسو",
       shipsYear: "سفينة/سنة",
       maritimeAgents: "الوكلاء البحريون",
       regularLines: "الخطوط المنتظمة",
