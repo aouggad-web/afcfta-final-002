@@ -30,7 +30,7 @@ Les risques majeurs ne sont pas dans le code métier mais **autour** : un domain
 
 **Décompte des constats :** 2 Critiques · 5 Élevés · 12 Moyens · 9 Faibles/Info (C2 reclassé en Moyen après vérification, voir ci-dessous).
 
-**Suivi des corrections (PR #750) :** C1 traité (domaine vérifié côté GitHub, page vitrine publiée seule depuis `site/`) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux).
+**Suivi des corrections (PR #750, fusionnée le 01/11/2026 ; PR #753) :** C1 traité (domaine vérifié côté GitHub ; page vitrine en ligne sur `https://www.afcfta-zlecaf.com` depuis le 02/11/2026, documents internes en 404) ; INFO-1 corrigé (publication Pages limitée à `site/`) ; C2 corrigé préventivement (masquage des secrets dans les journaux, clé Comtrade en en-tête) ; E3 et M8 clos (secrets et HTTPS vérifiés sur le pod) ; C3 corrigé côté script (`sync_emergent.sh` ne déploie que `main`, contrôle des crons durci par la PR #753), ruleset GitHub restant à activer.
 
 ---
 
@@ -219,10 +219,10 @@ Ces points ne peuvent être tranchés que par vous, sur l'instance de production
 Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 1-2 sem · L ≥ 3 sem.
 
 ### Phase 0 — Urgences, à faire maintenant (XS/S)
-1. **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS*
+1. ✅ **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS* — domaine vérifié, `jekyll-gh-pages.yml` remplacé par `pages.yml` (seul `site/` est publié), page vitrine en ligne le 02/11/2026. Reste dans Cloudflare : mode SSL « Complet » et « Toujours utiliser HTTPS » (`http://` n'est pas encore redirigé).
 2. ✅ **Masquer les secrets dans les journaux** (formateur, httpx à WARNING, `uvicorn.log` filtré en CI) — fait dans la PR #750 ; rotation inutile, aucun jeton n'étant configuré (C2). — *XS*
-3. **Vérifier les secrets de prod** (E3) : `JWT_SECRET` n'est pas une valeur d'exemple (✅ vérifié) ; reste le contrôle de sa longueur et du mot de passe admin. Garde-fou de démarrage ajouté dans la PR #750. — *S*
-4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S* — script corrigé dans la PR #750 ; ruleset GitHub à activer par l'exploitant.
+3. ✅ **Vérifier les secrets de prod** (E3) : `JWT_SECRET` (64 caractères) et `ADMIN_PASSWORD` (24) vérifiés sur le pod, aucune valeur d'exemple ; garde-fou de démarrage ajouté dans la PR #750. — *S*
+4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S* — script corrigé dans la PR #750, contrôle des crons durci dans la PR #753 ; ruleset GitHub à activer par l'exploitant ; le pod Emergent doit être resynchronisé sur `main` pour en bénéficier.
 5. ✅ **`HTTPS_ENABLED=true`** en production (M8), avec `APP_ENV=production` — fait et vérifié le 01/11/2026. — *XS*
 
 ### Phase 1 — Autorisation, DoS et durcissement (S/M)
