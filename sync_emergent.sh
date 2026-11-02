@@ -181,8 +181,9 @@ CRITICAL=(
   data/json/wb_reserves.json
   # Session courante — réciprocité ZLECAf par application réelle
   backend/services/zlecaf_active_implementers.py
-  # Session courante — calculateur (fix IVA/VAT + normaliseur 13 pays WITS)
-  backend/services/authentic_tariff_service.py
+  # Session courante — calculateur (fix IVA/VAT + normaliseur 13 pays WITS).
+  # authentic_tariff_service.py a été supprimé le 25/10/2026 (PR #672, ancien
+  # service tarifaire) : le vérifier ici bloquerait tout déploiement.
   backend/services/crawled_data_service.py
   # Session courante — Opportunités branchées calculateur + logistique
   backend/services/real_comparison_service.py
@@ -288,7 +289,6 @@ for m in [
     'services.oec_trade_service',
     'services.zlecaf_active_implementers',
     'services.crawled_data_service',
-    'services.authentic_tariff_service',
     'services.real_comparison_service',
     'services.logistics_opportunity_adapter',
     'services.substitution_feasibility_service',
