@@ -1734,9 +1734,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               </div>
-              <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
-                Simulation informative — non opposable à l’administration douanière.
-              </p>
 
               {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
                   droits et taxes exigibles, mais un prestataire mandaté actif facture
