@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { pick } from './i18n/lang';
+import { DirectionProvider } from '@radix-ui/react-direction';
+import { pick, isRtl } from './i18n/lang';
 import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
@@ -413,8 +414,10 @@ function App() {
     }
   };
 
+  // Les primitives Radix (onglets, listes, menus) se posent en dir="ltr"
+  // par défaut : sans ce fournisseur, elles ignoreraient l'arabe.
   return (
-    <>
+    <DirectionProvider dir={isRtl(language) ? 'rtl' : 'ltr'}>
       <div className="kente-band" />
       <div className="afcfta-layout-v2">
         <Toaster />
@@ -496,7 +499,7 @@ function App() {
         </div>
       </main>
     </div>
-    </>
+    </DirectionProvider>
   );
 }
 

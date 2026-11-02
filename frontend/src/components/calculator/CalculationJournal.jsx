@@ -36,7 +36,10 @@ function JournalTable({ steps, language }) {
           {steps.map((s, idx) => (
             <tr key={idx} className="border-b border-[var(--afcfta-border)] last:border-0">
               <td className="py-2 pr-2">
-                <span className="text-[var(--text)]">{s.component}</span>
+                <span className="text-[var(--text)]">
+                  {/* Seule l'étape « Valeur CIF » est un libellé de l'appli ; les autres sont des codes de taxes. */}
+                  {s.component === 'Valeur CIF' ? pick(language, 'Valeur CIF', 'Valeur CIF', 'القيمة سيف (CIF)') : s.component}
+                </span>
                 {s.legal_ref && (
                   <span className="block text-[11px] text-[var(--afcfta-muted)]">
                     {s.legal_ref_url ? (
