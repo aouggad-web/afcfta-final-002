@@ -1209,7 +1209,7 @@ export function BilateralView({ countries, fr, prefill, language = fr ? "fr" : "
               {tariff.available ? (
                 <div style={{ fontSize: 14, lineHeight: 1.7 }}>
                   <div style={{ fontSize: 22, fontWeight: 800 }}>{dash(tariff.tariff_advantage_pct, " %")}</div>
-                  {tariff.trade_regime && !["ZLECAF", "CUSTOMS_UNION"].includes(tariff.trade_regime) ? (
+                  {tariff.trade_regime && !["ZLECAF", "CUSTOMS_UNION", "GZALE"].includes(tariff.trade_regime) ? (
                     <div>
                       {pick(language, "Droit national", "National duty", "الرسم الوطني")} {dash(tariff.national_rate_pct, " %")}{" "}
                       {pick(language, "appliqué (NPF)", "applied (MFN)", "المطبَّق (NPF)")}
@@ -1217,7 +1217,7 @@ export function BilateralView({ countries, fr, prefill, language = fr ? "fr" : "
                   ) : (
                     <div>
                       {pick(language, "Droit national", "National duty", "الرسم الوطني")} {dash(tariff.national_rate_pct, " %")} {pick(language, "→", "→", "←")}{" "}
-                      {tariff.trade_regime === "CUSTOMS_UNION" ? (pick(language, "union douanière", "customs union", "الاتحاد الجمركي")) : pick(language, "ZLECAf", "ZLECAf", "زليكاف")}{" "}
+                      {tariff.trade_regime === "CUSTOMS_UNION" ? (pick(language, "union douanière", "customs union", "الاتحاد الجمركي")) : tariff.trade_regime === "GZALE" ? "GZALE" : pick(language, "ZLECAf", "ZLECAf", "زليكاف")}{" "}
                       {dash(tariff.zlecaf_rate_pct, " %")}
                     </div>
                   )}

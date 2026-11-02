@@ -1,0 +1,54 @@
+Algérie — Grande zone arabe de libre-échange (GZALE) à l'importation : extraits verbatim (relevés le 2026-11-02)
+
+1) Loi n° 22-33 du 29 décembre 2022 portant loi de finances pour 2023 — JO n° 89 du 28/12/2022, art. 57
+   https://www.joradp.dz/FTP/JO-FRANCAIS/2022/F2022089.pdf — sha256 0ad2298a51f9a7129d469fdb97e15bbb4bf54fd19c03edef8d615f77cf88b8b8
+   archivé : data/sources/DZA/legislation/JO_2022-89_loi_finances_2023.pdf
+
+Art. 57. — Les dispositions de l’article 2 de la loi n° 18-13 du 27 Chaoual 1439 correspondant au 11
+juillet 2018 portant loi de finances complémentaire pour 2018, modifiées et complétées, sont modifiées,
+complétées et rédigées comme suit :
+
+« Art. 2. — Il est institué un droit additionnel provisoire de sauvegarde ............... (sans changement jusqu’à)
+sont étendues au droit additionnel provisoire de sauvegarde.
+
+Aucune exonération ne peut être accordée au titre du droit additionnel provisoire de sauvegarde à
+l’exception :
+— des importations régies par les dispositions particulières, prévues dans les accords ou accords
+commerciaux préférentiels conclus par l'Algérie ;
+— des importations destinées à être consenties à titre de dons, bénéficiant d’exemption des droits et taxes
+et les importations effectuées par les représentations diplomatiques ou consulaires étrangères et les
+représentations des organisations internationales accréditées en Algérie, ainsi que leurs agents, dans le respect
+du principe de réciprocité ;
+— des importations de marchandises effectuées par une entreprise établie en Algérie, destinées à la
+réalisation, en faveur d’un pays tiers, de projets entrant dans le cadre des actions de coopération, de solidarité
+et de développement internationales, exécutées par l’Agence algérienne de coopération internationale pour la
+solidarité et le développement ;
+— des importations de marchandises dans le cadre du troc frontalier.
+
+   Reconduit sans changement de ces tirets par l'art. 137 de la loi de finances pour 2026 (JO n° 88 du 31/12/2025).
+
+2) DGD — Télex n° 516/DGD/D042.21 du 24/12/2021 « Suppression de la liste négative dans le cadre de la GZALE »
+   En-tête seul, relevé sur legal-doctrine.com (texte intégral derrière authentification) :
+   https://legal-doctrine.com/en/repertoire/regulations/public/dgd-telex-n516dgdd04221-as-suppression-de-la-liste-negative-dans-le-cadre-de-la-gzale-dc4ce4f4e1ecb0d937a48628ae929e55
+   Objet : « Suppression de la liste négative dans le cadre de la GZALE » ; référence : « Envoi n°1652/SPM/MC/2021 ».
+
+3) CEPEX (Tunisie), repris par WMC le 26/01/2022 (source secondaire)
+   https://www.webmanagercenter.com/2022/01/26/479704/lalgerie-supprime-la-liste-negative-des-produits-originaires-arabes-dans-le-cadre-de-la-gzale-cepex/
+
+L’Algérie a supprimé, à partir du 1er janvier 2022, la liste négative relative aux produits originaires des pays arabes exclus du bénéfice des avantages fiscaux accordés dans le cadre de la Grande zone arabe de libre-échange (GZALE). C’est ce qu’a fait savoir, mardi 25 janvier, le Centre de promotion des exportations (CEPEX).
+Ainsi, à partir de cette date, tous les produits du tarif douanier sont exonérés du paiement de droits de douane dans le cadre de la GZALE à l’exception de ceux repris dans la liste négative commune à tous les pays arabes fixée par la convention pour des considérations d’ordre sanitaire, environnemental, religieux et sécuritaire, précise le CEPEX.
+
+4) Tribune de Nafaa Ennaifer, WMC le 29/01/2022 (source secondaire ; chiffres attribués au ministre algérien du Commerce)
+   https://www.webmanagercenter.com/2022/01/29/479858/tribunes-lapplication-du-daps-en-algerie-sera-fatale-pour-lexportation-des-produits-tunisiens-craint-nafaa-ennaifer/
+
+En réalité, les produits tunisiens étaient bel et bien, avant 2022, exonérés de droits de douane, mais certains de nos produits étaient soumis, depuis avril 2019, à une taxe : le Droit additionnel provisoire de sauvegarde « DAPS ». Une taxe généralement comprise entre 30 et 60%, et qui peut atteindre 200% de la valeur de la marchandise pour certaines positions tarifaires.
+En janvier 2022, et suite à l’examen des demandes de « protection du produit local » reçues par les ministères du Commerce, de l’Industrie et de l’Agriculture algériens, la liste des produits soumis au DAPS a été revue et comprend désormais 2 608 produits au lieu de 992 produits listés initialement.
+Cette nouvelle liste concerne les biens et marchandises importés de pays qui n’ont pas de convention commerciale préférentielle avec l’Algérie, en plus de 141 clauses tarifaires douanières concernant des biens ou marchandises importés de pays avec lesquels l’Algérie a des conventions commerciales préférentielles dont : l’Union européenne (UE), la Zone de libre-échange arabe (GZALE) et la Zone de libre-échange continentale africaine (ZLECAF).
+Ainsi, et dans les faits, des produits tunisiens qui étaient exonérés des droits de douane et du DAPS sont désormais exonérés toujours des DD mais soumis au DAPS à des taux de 30 à 60%.
+
+5) DGD — Tarif douanier (e-service), tableau « Avantages fiscaux », relevé le 02/11/2026 sur quinze sous-positions portant un DAPS
+   (0204501100, 0809309000, 3924104000, 3306109000, 0406909400, 1905202000, 9403899900, 3925202000, 2009312200,
+   4811591910, 3920109920, 0207442200, 3926201100, 0204421100, 9403609200) : le tableau ne porte que des lignes
+   « D.D 0.00 » et « T.V.A 0.00 », sans nom d'accord ; aucune ne vise le DAPS. Exemple, 0204501100 :
+   https://www.douane.gov.dz/spip.php?page=sous_position&section=01&chapitre=02&range=04&position=501100&sous_position=0204501100
+   « Avantages fiscaux | Taxe | Taux (%) | N° journal officiel | Document | D.D | 0.00 | D.D | 0.00 »
