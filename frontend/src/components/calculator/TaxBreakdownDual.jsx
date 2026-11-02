@@ -25,6 +25,7 @@ export default function TaxBreakdownDual({
   summary,
   currency,
   zlecafAvailable = true,
+  regimeLabel = null,
   language = 'fr',
 }) {
   const hasLocal = !!(currency && currency.available && currency.usd_to_local_rate);
@@ -61,7 +62,9 @@ export default function TaxBreakdownDual({
             </div>
             <div>
               <CardTitle className="text-lg text-[var(--text)]">
-                {pick(language, 'Détail des droits et taxes — NPF vs ZLECAf', 'Duties & taxes — MFN vs AfCFTA', 'تفصيل الرسوم والضرائب — NPF مقابل زليكاف')}
+                {regimeLabel
+                  ? pick(language, `Détail des droits et taxes — NPF vs ${regimeLabel}`, `Duties & taxes — MFN vs ${regimeLabel}`, `تفصيل الرسوم والضرائب — NPF مقابل ${regimeLabel}`)
+                  : pick(language, 'Détail des droits et taxes — NPF vs ZLECAf', 'Duties & taxes — MFN vs AfCFTA', 'تفصيل الرسوم والضرائب — NPF مقابل زليكاف')}
               </CardTitle>
               <CardDescription className="text-[var(--afcfta-muted)]">
                 {pick(language, 'Chaque taxe calculée sur sa base (assiette) déclarée', 'Each tax computed on its declared base', 'كل ضريبة محسوبة على وعائها المصرَّح به')}
@@ -99,7 +102,7 @@ export default function TaxBreakdownDual({
         <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs text-[var(--afcfta-muted)]">
           <div className="col-span-5">{pick(language, 'Taxe / base', 'Tax / base', 'الضريبة / الوعاء')}</div>
           <div className="col-span-3 text-right">{pick(language, 'NPF', 'MFN', 'NPF')}</div>
-          <div className="col-span-4 text-right">ZLECAf</div>
+          <div className="col-span-4 text-right">{regimeLabel || 'ZLECAf'}</div>
         </div>
 
         <div className="space-y-2">
@@ -139,7 +142,7 @@ export default function TaxBreakdownDual({
                 </div>
 
                 <div className="md:col-span-4 flex md:block items-center justify-between md:text-right">
-                  <span className="md:hidden text-xs text-[var(--afcfta-muted)]">ZLECAf</span>
+                  <span className="md:hidden text-xs text-[var(--afcfta-muted)]">{regimeLabel || 'ZLECAf'}</span>
                   <div>
                     <span className={`font-bold ${reduced ? 'text-[var(--success)]' : 'text-[var(--text)]'}`}>
                       {zlecafAvailable ? fmt(b.amount_zlecaf, b.amount_zlecaf_local) : '—'}
@@ -169,7 +172,7 @@ export default function TaxBreakdownDual({
               tone="red"
             />
             <SummaryCard
-              title={pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}
+              title={regimeLabel ? `Total ${regimeLabel}` : pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}
               s={zlc}
               sLocal={zlecafAvailable ? slZlc : {}}
               useLocal={useLocal}
@@ -184,7 +187,9 @@ export default function TaxBreakdownDual({
           <div className="mt-3 flex items-center justify-between p-3 rounded-lg bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <div className="flex items-center gap-2 text-[var(--success)]">
               <TrendingDown className="w-4 h-4" />
-              <span className="font-semibold">{pick(language, 'Économie totale ZLECAf', 'Total AfCFTA savings', 'إجمالي الوفورات بفضل زليكاف')}</span>
+              <span className="font-semibold">{regimeLabel
+                  ? pick(language, `Économie totale ${regimeLabel}`, `Total ${regimeLabel} savings`, `إجمالي الوفورات بفضل ${regimeLabel}`)
+                  : pick(language, 'Économie totale ZLECAf', 'Total AfCFTA savings', 'إجمالي الوفورات بفضل زليكاف')}</span>
             </div>
             <span className="text-[var(--success)] font-bold text-lg">
               {!zlecafAvailable || s.economie_totale === null || s.economie_totale === undefined
