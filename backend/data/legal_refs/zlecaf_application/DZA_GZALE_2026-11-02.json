@@ -21,18 +21,18 @@
   "decisions": [
     "Origines : les membres africains de la GZALE (Égypte, Libye, Maroc, Soudan, Tunisie). La Mauritanie, les Comores, Djibouti et la Somalie, membres de la Ligue arabe, ne participent pas à la zone ; les membres asiatiques sont hors du champ du calculateur.",
     "Périmètre : le seul droit de douane, comme pour une union douanière. La liste négative commune « pour des considérations d'ordre sanitaire, environnemental, religieux et sécuritaire » vise des marchandises dont l'importation est restreinte à ce titre ; elle n'est pas modélisée.",
-    "DAPS : compté. La loi de finances 2023 (art. 57, reconduit en 2026) n'en exonère que « les importations régies par les dispositions particulières, prévues dans les accords […] commerciaux préférentiels » : pour la ZLECAf, cette disposition existe (circulaire 482/2024, listes A et B) ; pour la GZALE, aucun texte n'a été trouvé, et le tableau « Avantages fiscaux » du tarif DGD, relevé sur quinze positions soumises au DAPS, ne porte que des avantages sur le droit de douane et la TVA.",
+    "DAPS : compté. La loi de finances 2023 (art. 57, reconduit en 2026) n'en exonère que « les importations régies par les dispositions particulières, prévues dans les accords […] commerciaux préférentiels » : pour la ZLECAf, cette disposition existe (circulaire 482/2024, listes A et B) ; pour la GZALE, aucun texte n'a été trouvé, et le tableau « Avantages fiscaux » du tarif DGD, relevé sur quinze positions soumises au DAPS, ne porte que des avantages sur le droit de douane et la TVA. Les arrêtés DAPS en vigueur (26 janvier et 8 avril 2019) ne distinguent pas l'origine (fiche DZA_GZALE_export_2026-11-02.json).",
     "Un seul régime par importation : la GZALE et la ZLECAf ne se cumulent pas. Elles sont comparées position par position, parce que la ZLECAf exonère le DAPS des listes A et B quand la GZALE ne l'exonère pas, et que la GZALE est à 0 % quand le démantèlement ZLECAf est inachevé (listes B et C).",
     "Règles d'origine (origine arabe, valeur ajoutée locale d'au moins 40 %, certificat d'origine, transport direct) : dites dans la note, non vérifiées par le moteur — comme pour la ZLECAf."
   ],
   "ce_que_cela_ne_tranche_pas": [
     "Texte intégral du télex n° 516/DGD/D042.21 : seul l'en-tête est lu ; la date d'effet du 01/01/2022 vient de l'annonce du CEPEX.",
-    "Liste des « 141 clauses tarifaires » soumises au DAPS pour les pays liés à l'Algérie par un accord préférentiel (UE, GZALE, ZLECAf), annoncée par le ministre du Commerce en janvier 2022 : si elle est la seule applicable aux origines arabes, le DAPS compté hors de ces 141 positions est surévalué.",
-    "Exportations algériennes vers les partenaires arabes (Égypte, Maroc, Tunisie, Libye, Soudan) : la franchise que chacun accorde à l'origine algérienne n'est pas traitée ici ; vers la Tunisie, la colonne « Algérie » du tarif reste montrée en simulation.",
+    "Liste des « 141 clauses tarifaires » soumises au DAPS pour les pays liés à l'Algérie par un accord préférentiel, annoncée en janvier 2022 : introuvable au JORADP (n° 85 à 101 de 2021, n° 1 à 90 de 2022) ; le tarif DGD ne renvoie qu'aux arrêtés de 2019, qui ne distinguent pas l'origine (fiche DZA_GZALE_export_2026-11-02.json).",
+    "Exportations algériennes : la Tunisie et la Libye sont servies (fiche DZA_GZALE_export_2026-11-02.json) ; l'Égypte, le Maroc et le Soudan non, faute de source nationale par ligne.",
     "Application effective de la GZALE par la Libye et le Soudan (certificats, contrôles) ; levée du DAPS sur certaines viandes (arrêté du 19/12/2023, JO n° 84) non vérifiée contre le tarif DGD."
   ],
   "doutes": [
-    "Le DAPS est compté sur toute position qui le porte au tarif DGD : il peut être surévalué pour les origines arabes (annonce des 141 positions, non sourcée en texte)."
+    "Le DAPS est compté sur toute position qui le porte au tarif DGD, conformément aux arrêtés de 2019 ; une liste distincte pour les origines préférentielles, annoncée en 2022 sans texte trouvé, le rendrait surévalué."
   ],
   "documents_archives": [
     {

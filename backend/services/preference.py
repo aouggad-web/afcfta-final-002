@@ -190,8 +190,9 @@ def taux_preferentiels(
 
     ``regime`` distingue les régimes possibles, parce que les confondre
     serait faux : ``UNION_DOUANIERE`` pour la libre circulation intra-bloc,
-    ``GZALE`` pour la zone arabe à l'importation en Algérie (quand elle est
-    plus favorable que la ZLECAf), ``ZLECAF`` pour la préférence continentale.
+    ``GZALE`` pour la zone arabe (importation en Algérie, ou en Tunisie et en
+    Libye depuis l'Algérie et ses partenaires arabes) quand elle est plus
+    favorable que la ZLECAf, ``ZLECAF`` pour la préférence continentale.
     """
     union = _union_douaniere(destination_iso3, origine_iso3)
     if union:
@@ -215,11 +216,115 @@ def taux_preferentiels(
 #: la Ligue arabe, n'appliquent pas la zone et en sont absents.
 GZALE_ORIGINES_DZA = frozenset({"EGY", "LBY", "MAR", "SDN", "TUN"})
 
+#: Membres africains de la GZALE. Pour la colonne libyenne « États de la Ligue
+#: des États arabes », seuls ceux-là sont servis : membres de la Ligue ET de la
+#: zone, ils relèvent de la colonne quelle que soit la composition que la
+#: douane libyenne retient — question que nulle source consultée ne tranche.
+GZALE_MEMBRES_AFRICAINS = GZALE_ORIGINES_DZA | {"DZA"}
+
 REFERENCE_GZALE_DZA = (
     "GZALE (adhésion de l'Algérie au 01/01/2009) ; liste négative algérienne "
     "supprimée au 01/01/2022, télex DGD n° 516/DGD/D042.21 du 24/12/2021 — "
     "exonération du seul droit de douane"
 )
+REFERENCE_ZALE_TUN = (
+    "Tarif Web 2026 de la douane tunisienne, taux préférentiel publié pour "
+    "« ALGERIE » (code pays 12), zone « ZALE » — droit de douane seulement"
+)
+REFERENCE_LIGUE_LBY = (
+    "Tarif douanier libyen (customs.gov.ly), colonne « التعريفة التفضيلية لدول "
+    "جامعة الدول العربية » — droit de douane seulement"
+)
+
+CONDITIONS_ORIGINE_ARABE = (
+    "Conditions : certificat d'origine arabe (valeur ajoutée locale d'au moins "
+    "40 %) et transport direct."
+)
+
+
+def _colonne_publiee(position: Dict[str, Any], colonne: str) -> Optional[float]:
+    """Taux ad valorem que la position publie dans ``colonne``, sinon None."""
+    valeur = (position.get("preferentiels") or {}).get(colonne)
+    if isinstance(valeur, (int, float)):
+        return float(valeur)
+    if isinstance(valeur, dict) and valeur.get("taux") is not None and not valeur.get("specifique"):
+        return float(valeur["taux"])
+    return None
+
+
+def _zone_arabe(position: Dict[str, Any], destination_iso3: str, origine_iso3: str) -> Optional[Dict[str, Any]]:
+    """Préférence de la zone arabe ouverte à ce couloir et à cette position.
+
+    Trois destinations, chacune sur sa propre preuve, et le seul droit de
+    douane chaque fois :
+
+    - **Algérie** : 0 % sur tout le tarif pour les origines de
+      ``GZALE_ORIGINES_DZA`` (fiche DZA_GZALE_2026-11-02.json) ;
+    - **Tunisie**, origine algérienne : le taux de la colonne « ALGERIE » que le
+      Tarif Web publie ligne par ligne ; une ligne sans colonne reste au NPF ;
+    - **Libye**, origine membre africain de la GZALE : la colonne « États de la
+      Ligue des États arabes » du tarif libyen ; même règle.
+
+    Fiche DZA_GZALE_export_2026-11-02.json pour les deux dernières.
+    """
+    destination = (destination_iso3 or "").upper()
+    origine = (origine_iso3 or "").upper()
+    if destination == "DZA" and origine in GZALE_ORIGINES_DZA:
+        daps = ""
+        if (_taux_npf(position, "DAPS") or 0) > 0:
+            daps = (
+                "Le DAPS reste dû : la liste en vigueur (arrêté du 8 avril 2019, "
+                "JO n° 26) ne distingue pas l'origine. "
+            )
+        return {
+            "taux": 0.0,
+            "code_bloc": "GZALE",
+            "libelle_bloc": "Grande zone arabe de libre-échange",
+            "reference": REFERENCE_GZALE_DZA,
+            "note": (
+                "Grande zone arabe de libre-échange (GZALE) : droit de douane 0 % "
+                "pour les produits d'origine arabe, la liste négative algérienne "
+                "étant supprimée depuis le 1er janvier 2022 (télex DGD "
+                f"n° 516/DGD/D042.21). {CONDITIONS_ORIGINE_ARABE} Seul le droit "
+                "de douane est exonéré : TVA, TCS et autres taxes restent dues. "
+                f"{daps}"
+            ),
+        }
+    if destination == "TUN" and origine == "DZA":
+        taux = _colonne_publiee(position, "DZA")
+        if taux is None:
+            return None
+        return {
+            "taux": taux,
+            "code_bloc": "ZALE",
+            "libelle_bloc": "Zone arabe de libre-échange (ZALE) et accord tuniso-algérien",
+            "reference": REFERENCE_ZALE_TUN,
+            "note": (
+                f"Droit de douane {taux:g} % : taux préférentiel que la douane "
+                "tunisienne publie pour l'Algérie, zone « ZALE » (Tarif Web 2026). "
+                f"{CONDITIONS_ORIGINE_ARABE} "
+                "Seul le droit de douane est réduit : les autres droits et taxes "
+                "restent dus. "
+            ),
+        }
+    if destination == "LBY" and origine in GZALE_MEMBRES_AFRICAINS:
+        taux = _colonne_publiee(position, "LIGUE_ARABE")
+        if taux is None:
+            return None
+        return {
+            "taux": taux,
+            "code_bloc": "GZALE",
+            "libelle_bloc": "Tarif préférentiel des États de la Ligue arabe (Libye)",
+            "reference": REFERENCE_LIGUE_LBY,
+            "note": (
+                f"Droit de douane {taux:g} % : colonne « tarif préférentiel pour les "
+                "États de la Ligue des États arabes » du tarif libyen, servie aux "
+                f"membres africains de la GZALE. {CONDITIONS_ORIGINE_ARABE} Seul "
+                "le droit de douane est réduit : les autres droits et taxes "
+                "restent dus. "
+            ),
+        }
+    return None
 
 
 def _charge_restante(position: Dict[str, Any], table: Dict[str, Any], codes) -> Optional[float]:
@@ -248,35 +353,33 @@ def _choisir_gzale_ou_zlecaf(
     origine_iso3: str,
     zlecaf: Dict[str, Any],
 ) -> Dict[str, Any]:
-    """Retenir, à l'importation en Algérie, le plus favorable de la GZALE et
-    de la ZLECAf — un seul régime par importation, jamais un mélange.
+    """Retenir le plus favorable de la zone arabe et de la ZLECAf — un seul
+    régime par importation, jamais un mélange.
 
-    La GZALE exonère le seul droit de douane ; le DAPS reste compté, faute du
-    texte qui en dispenserait les origines arabes : le ministre du Commerce a
-    annoncé en janvier 2022 que le DAPS ne viserait que 141 positions pour les
-    pays liés à l'Algérie par un accord préférentiel (UE, GZALE, ZLECAf), mais
-    cette liste n'est pas obtenue, et le tarif de la DGD n'affiche aucun
-    avantage sur le DAPS. La ZLECAf, elle, exonère le DAPS des listes (A) et
-    (B) par un texte (circulaire 482/2024). Ni l'un ni l'autre ne l'emporte
-    donc toujours : la comparaison porte sur le droit de douane et sur chaque
-    prélèvement que la ZLECAf réduit, position par position. À égalité, la
-    ZLECAf est conservée. Fiche DZA_GZALE_2026-11-02.json.
+    La zone arabe réduit le seul droit de douane. À l'importation en Algérie,
+    le DAPS reste dû : la liste en vigueur (arrêtés du 26 janvier et du 8 avril
+    2019) ne distingue pas l'origine, et la loi de finances 2023 (art. 57)
+    n'en exonère qu'en vertu d'une disposition particulière d'un accord. La
+    ZLECAf, elle, exonère le DAPS des listes (A) et (B) (circulaire
+    482/2024). Ni l'un ni l'autre ne l'emporte donc toujours : la comparaison
+    porte sur le droit de douane et sur chaque prélèvement que la ZLECAf
+    réduit, position par position. À égalité, la ZLECAf est conservée.
+    Fiches DZA_GZALE_2026-11-02.json et DZA_GZALE_export_2026-11-02.json.
     """
-    if (destination_iso3 or "").upper() != "DZA":
-        return zlecaf
-    if (origine_iso3 or "").upper() not in GZALE_ORIGINES_DZA:
+    zone = _zone_arabe(position, destination_iso3, origine_iso3)
+    if zone is None:
         return zlecaf
 
-    table_gzale = {"DD": {"taux": 0.0}}
+    table_zone = {"DD": {"taux": zone["taux"]}}
     if zlecaf.get("applique"):
         codes = {"DD"} | set(zlecaf.get("taux") or {})
         charge_zlecaf = _charge_restante(position, zlecaf["taux"], codes)
-        charge_gzale = _charge_restante(position, table_gzale, codes)
-        if charge_zlecaf is None or charge_gzale is None or charge_zlecaf <= charge_gzale:
+        charge_zone = _charge_restante(position, table_zone, codes)
+        if charge_zlecaf is None or charge_zone is None or charge_zlecaf <= charge_zone:
             note = (
-                f"{zlecaf.get('note') or ''} La GZALE est aussi ouverte à cette "
-                "origine (droit de douane 0 %, DAPS compté) ; la ZLECAf, au moins "
-                "aussi favorable pour cette position, est retenue."
+                f"{zlecaf.get('note') or ''} La zone arabe ({zone['code_bloc']}) est "
+                f"aussi ouverte à cette origine (droit de douane {zone['taux']:g} %) ; "
+                "la ZLECAf, au moins aussi favorable pour cette position, est retenue."
             ).strip()
             return {**zlecaf, "note": note}
         motif_zlecaf = (
@@ -285,32 +388,17 @@ def _choisir_gzale_ou_zlecaf(
         )
     else:
         motif_zlecaf = "La ZLECAf n'est pas appliquée à cette origine."
-    daps = ""
-    if (_taux_npf(position, "DAPS") or 0) > 0:
-        daps = (
-            "Le DAPS reste compté ; selon le ministère du Commerce (janvier "
-            "2022), il ne viserait que 141 positions pour les origines "
-            "préférentielles, liste non obtenue : il peut être surévalué ici. "
-        )
     return {
         "applique": True,
         "regime": "GZALE",
-        "code_bloc": "GZALE",
-        "libelle_bloc": "Grande zone arabe de libre-échange",
+        "code_bloc": zone["code_bloc"],
+        "libelle_bloc": zone["libelle_bloc"],
         "statut": "FRANCHISE_ZONE_LIBRE_ECHANGE",
         # Affichée telle quelle dans le bandeau « régime sous conditions ».
-        "note": (
-            "Grande zone arabe de libre-échange (GZALE) : droit de douane 0 % "
-            "pour les produits d'origine arabe, la liste négative algérienne "
-            "étant supprimée depuis le 1er janvier 2022 (télex DGD "
-            "n° 516/DGD/D042.21). Conditions : certificat d'origine arabe "
-            "(valeur ajoutée locale d'au moins 40 %) et transport direct. Seul "
-            "le droit de douane est exonéré : TVA, TCS et autres taxes restent "
-            f"dues. {daps}{motif_zlecaf}"
-        ),
+        "note": f"{zone['note']}{motif_zlecaf}",
         "zlecaf": {"statut": zlecaf.get("statut"), "note": zlecaf.get("note")},
-        "taux": table_gzale,
-        "perimetre": {"DD": REFERENCE_GZALE_DZA},
+        "taux": table_zone,
+        "perimetre": {"DD": zone["reference"]},
     }
 
 
@@ -406,7 +494,9 @@ def _taux_preferentiels_hors_union(
             from services.zlecaf_schedule_tun import note_zale
 
             note = note_zale(hs_code, origine_iso3)
-            if note:
+            # Un taux que la zone arabe sert pour cette ligne n'est plus une
+            # simple information (origine algérienne, colonne « ALGERIE »).
+            if note and _zone_arabe(position, "TUN", origine_iso3) is None:
                 resultat["note"] = f"{resultat['note']} {note}"
         return resultat
 
@@ -592,10 +682,10 @@ def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[
     Les zones de libre-échange (CEDEAO, SADC, COMESA) ne sont **pas** traitées
     ici : leur franchise dépend des règles d'origine et des listes sensibles
     du bloc, que ce moteur n'a pas. Les rendre à 0 % serait fabriquer une
-    exonération — elles restent au NPF. Seule exception, la GZALE à
-    l'importation en Algérie (:func:`_choisir_gzale_ou_zlecaf`) : la liste
-    négative algérienne y est supprimée depuis 2022, la franchise couvre tout
-    le tarif.
+    exonération — elles restent au NPF. Seule exception, la zone arabe
+    (:func:`_zone_arabe`) : en Algérie, la liste négative est supprimée depuis
+    2022 et la franchise couvre tout le tarif ; en Tunisie et en Libye, le
+    tarif publie lui-même le taux, ligne par ligne.
     """
     from services.regional_blocs import CUSTOMS_UNION_NAMES, same_customs_union
 
@@ -816,7 +906,10 @@ def simulations_regionales(
     # La même discipline s'applique qu'aux blocs : la colonne est MONTRÉE,
     # jamais appliquée, avec la réserve d'origine nommée.
     bilaterale = _taux_colonne(position, origine)
-    if bilaterale is not None and origine not in SIMULABLES:
+    # Une colonne que la zone arabe sert déjà (« ALGERIE » au tarif tunisien)
+    # n'est pas montrée une seconde fois en simulation.
+    servie = _zone_arabe(position, destination, origine) is not None
+    if bilaterale is not None and origine not in SIMULABLES and not servie:
         simulations.append(
             {
                 "regime": origine,
