@@ -1,4 +1,4 @@
-﻿Position;Désignation;Chapitre;Unité;DD (Direitos de Importação (DI));PCC (Taxa Comunitária CEDEAO (TC));TVA (Imposto sobre o Valor Acrescentado (IVA));ICE (Imposto sobre Consumos Especiais (ad valorem));TEA (Taxa específica sobre o álcool (Lei 69/X/2025, art. 91.º) — montant par litre non publié);TET (Taxa específica sobre o tabaco (Lei 69/X/2025, art. 90.º));ICES (ICE específico (Lei 69/X/2025, anexo II));Total droits et taxes pour 100 CAF (CVE);État;Manques;Restrictions;Notes (voir CPV_NPF_notes.csv)
+﻿Position;Désignation;Chapitre;Unité;DD (Direitos de Importação (DI));PCC (Taxa Comunitária CEDEAO (TC));TVA (Imposto sobre o Valor Acrescentado (IVA));ICE (Imposto sobre Consumos Especiais (ad valorem));TEA (Taxa específica sobre o álcool);TET (Taxa específica sobre o tabaco (Lei 69/X/2025, art. 90.º));ICES (ICE específico (Lei 69/X/2025, anexo II));Total droits et taxes pour 100 CAF (CVE);État;Manques;Restrictions;Notes (voir CPV_NPF_notes.csv)
 0101210000;Cavalos vivos, reprodutores de raca pura;01;QA;5;0.5;0;;;;;5.5;COMPLET;;;
 0101290000;Cavalos vivos (exc. reprodutores de raca pura);01;QA;5;0.5;0;;;;;5.5;COMPLET;;;
 0101301000;Asininos vivos, reprodutores de raca pura;01;QA;5;0.5;0;;;;;5.5;COMPLET;;;
@@ -1059,33 +1059,33 @@
 2202100000;Aguas,incl.as minerais e as gaseificadas,adicion.de açucar ou de o.edulc.ou aromatizadas;22;QA;55;0.5;15;10;;;;96.71;COMPLET;;;
 2202910000;Cerveja sem alcool;22;QA;55;0.5;15;;;;;78.83;COMPLET;;;
 2202990000;Bebidas n.e.,n/alcoolicas,exc. sumos de frutos ou de produt.horticolas,da posicao 2009;22;QA;55;0.5;15;;;;;78.83;COMPLET;;;
-2203001000;Cervejas de malte acondicionadas em recipientes de capacidade <= 50 cl;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2203009000;Outras cervejas de malte;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2204100000;Vinhos espumantes e vinhos espumosos;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2204210010;Vinhos n.e. em recepientes cap. <= 2 L;22;QA;35;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2204210090;Mostos de uvas em rec. cap. <= 2 L;22;QA;30;0.5;15;;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;
-2204220010;Vinhos n.e. em recepientes cap. > 2 L <= 10 L;22;QA;35;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2204220090;Mostos de uvas em rec. cap. > 2 L <= 10 L;22;QA;30;0.5;15;;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;
-2204290010;Vinhos n.e. em recepientes cap. > 10 L;22;QA;35;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2204290090;Mostos n.e., de uvas, em rec. cap. > 10 L;22;QA;30;0.5;15;;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;
-2204300000;Outros mostos de uvas, excluídos os da posiçäo 2009;22;QA;20;0.5;15;;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | TVA (ASSIETTE_INCOMPLETE);;
-2205100000;Vermutes e outros vinhos de uvas frescas prep.c/plantas ou subst.aromáticas,recip<=2L;22;QA;35;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2205900000;Outros vermutes e vinhos de uvas frescas preparadas c/plantas ou substâncias aromáticas;22;QA;35;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2206001000;Cerveja, excepto de malte;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2206009000;"Outras bebidas fermentadas(sidra,..);Mistura dessas bebidas,e daquelas c/as n/alcoólicas";22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
+2203001000;Cervejas de malte acondicionadas em recipientes de capacidade <= 50 cl;22;QA;50;0.5;15;50;60 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1
+2203009000;Outras cervejas de malte;22;QA;50;0.5;15;50;60 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N1
+2204100000;Vinhos espumantes e vinhos espumosos;22;QA;50;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204210010;Vinhos n.e. em recepientes cap. <= 2 L;22;QA;35;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204210090;Mostos de uvas em rec. cap. <= 2 L;22;QA;30;0.5;15;;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204220010;Vinhos n.e. em recepientes cap. > 2 L <= 10 L;22;QA;35;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204220090;Mostos de uvas em rec. cap. > 2 L <= 10 L;22;QA;30;0.5;15;;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204290010;Vinhos n.e. em recepientes cap. > 10 L;22;QA;35;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204290090;Mostos n.e., de uvas, em rec. cap. > 10 L;22;QA;30;0.5;15;;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2204300000;Outros mostos de uvas, excluídos os da posiçäo 2009;22;QA;20;0.5;15;;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2205100000;Vermutes e outros vinhos de uvas frescas prep.c/plantas ou subst.aromáticas,recip<=2L;22;QA;35;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2205900000;Outros vermutes e vinhos de uvas frescas preparadas c/plantas ou substâncias aromáticas;22;QA;35;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2206001000;Cerveja, excepto de malte;22;QA;50;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
+2206009000;"Outras bebidas fermentadas(sidra,..);Mistura dessas bebidas,e daquelas c/as n/alcoólicas";22;QA;50;0.5;15;50;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N2
 2207101000;Alc.etílico n/desnat,c/teor alcoól.em vol.=>80% vol,pª uso medicamentoso ou farmacêutico;22;QA;0;0.5;15;;;;;15.57;COMPLET;;;
-2207109000;Outro álcool etílico näo desnaturado, com um teor alcoólico em volume => 80% vol;22;QA;0;0.5;15;;;;;15.57;COMPLET;;;
-2207200000;Alcool etílico e aguardentes, desnaturados, com qualquer teor alcoólico;22;QA;0;0.5;15;;;;;15.57;COMPLET;;;
-2208200000;Aguardentes de vinho ou de bagaço de uvas;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208201000;Conhaque;22;QA;50;0.5;15;30;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208209000;Outras;22;QA;50;0.5;15;30;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208300000;Whisky;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208400010;Aguardente de cana-de-acucar;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208400090;Rum;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208500000;Gin e genebra;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208600000;Vodka;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208700000;Licores;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
-2208900000;Bebidas espirituosas,n.e.;22;QA;50;0.5;15;50;n.d.;;;;PARTIEL;TEA (ASSIETTE_INDISPONIBLE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;
+2207109000;Outro álcool etílico näo desnaturado, com um teor alcoólico em volume => 80% vol;22;QA;0;0.5;15;;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N3
+2207200000;Alcool etílico e aguardentes, desnaturados, com qualquer teor alcoólico;22;QA;0;0.5;15;;90 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | TVA (ASSIETTE_INCOMPLETE);;N3
+2208200000;Aguardentes de vinho ou de bagaço de uvas;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208201000;Conhaque;22;QA;50;0.5;15;30;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208209000;Outras;22;QA;50;0.5;15;30;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208300000;Whisky;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208400010;Aguardente de cana-de-acucar;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208400090;Rum;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208500000;Gin e genebra;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208600000;Vodka;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208700000;Licores;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
+2208900000;Bebidas espirituosas,n.e.;22;QA;50;0.5;15;50;300 CVE/litro;;;;PARTIEL;TEA (QUANTITE_REQUISE) | ICE (ASSIETTE_INCOMPLETE) | TVA (ASSIETTE_INCOMPLETE);;N4
 2209001000;Vinagre de álcool;22;QA;5;0.5;15;;;;;21.32;COMPLET;;;
 2209009000;"Outros vinagres; Sucedâneos de vinagre obtidos a partir do ácido acético";22;QA;5;0.5;15;;;;;21.32;COMPLET;;;
 2301100000;"Farinhas,pó e «pellets»,de carnes ou de miudezas,impróp.pªa alimentaçäo humana;Torresmos";23;QA;5;0.5;15;;;;;21.32;COMPLET;;;

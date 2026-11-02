@@ -3075,8 +3075,48 @@ def _premiere_necessite_gnq(positions, compteurs):
             _compter_ligne(dd, compteurs, 1)
 
 
+#: Cap-Vert : taxe spécifique sur l'alcool importé, en CVE par litre, de la Pauta
+#: aduaneira modifiée par la Lei n.º 45/X/2024 (OE 2025), art. 77 et annexe I
+#: (fiche CPV_taxe_alcool_2026-11-02.json). La Lei n.º 69/X/2025 (OE 2026), art. 91,
+#: n'en change que l'affectation.
+SOURCE_TEA_CPV = "Lei n.º 45/X/2024 (Orçamento do Estado 2025), art. 77.º e anexo I"
+TAXE_ALCOOL_CPV = (
+    ("2203", 60.0, "cervejas de malte"),
+    (("2204", "2205", "2206"), 90.0, "vinhos, mostos, vermutes e outras bebidas fermentadas"),
+    (("2207109", "22072"), 90.0, "álcool etílico (2207.10.90 e 2207.20)"),
+    ("2208", 300.0, "aguardentes, uísques, rum, gin, vodka, licores e outras bebidas espirituosas"),
+)
+
+
+def _taxe_alcool_cap_vert(positions, compteurs):
+    """Cap-Vert : montant par litre de la taxe spécifique sur l'alcool, ligne
+    ajoutée à l'alcool éthylique que le tarif collecté n'en dotait pas."""
+    for code, position in positions.items():
+        regle = next((r for r in TAXE_ALCOOL_CPV if code.startswith(r[0])), None)
+        if not regle:
+            continue
+        _, montant, produits = regle
+        droits = position.setdefault("droits", [])
+        tea = next((d for d in droits if d.get("code") == "TEA"), None)
+        if tea is None:
+            tea = {"code": "TEA", "code_source": "TEA", "famille": famille("TEA")}
+            rang = next((i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits))
+            droits.insert(rang, tea)
+        else:
+            _compter_ligne(tea, compteurs, -1)
+        tea.update(
+            libelle="Taxa específica sobre o álcool", taux=None, assiette="xQTE",
+            assiette_origine="droit_specifique", source=SOURCE_TEA_CPV,
+            specifique={"montant": montant, "unite_monetaire": "unite_principale", "sous_unite_source": None,
+                        "unite_quantite": "litre", "brut": f"{montant:g} CVE/litro"},
+            note=f"Art. 77.º : taxa específica « em CVE/litro, devida nas importações, relativamente às bebidas "
+                 f"alcoólicas » ; anexo I : {montant:g} CVE por litro ({produits}).",
+        )
+        _compter_ligne(tea, compteurs, 1)
+
+
 #: São Tomé-et-Príncipe : droits de douane de la Lei n.º 04/2023 (fiche STP_direitos_lei4_2023_2026-11-01.json).
-DIREITOS_LEI4_STP = os.path.join(REPO, "backend", "data", "zlecaf_stp", "direitos_lei4_2023.json")
+DIREITOS_LEI4_STP =os.path.join(REPO, "backend", "data", "zlecaf_stp", "direitos_lei4_2023.json")
 
 
 def _direitos_lei4_stp(positions, compteurs):
@@ -6514,6 +6554,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _premiere_necessite_gnq(positions, compteurs)
     if iso == "STP":
         _direitos_lei4_stp(positions, compteurs)
+    if iso == "CPV":
+        _taxe_alcool_cap_vert(positions, compteurs)
 
     if iso in BLOCS_DESTINATION["OHADA_CEEAC"]:
         _ohada_produits_medicaux(positions, compteurs)
