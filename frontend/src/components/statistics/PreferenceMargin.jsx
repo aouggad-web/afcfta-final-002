@@ -17,7 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from 'recharts';
 import { Percent, RefreshCw } from 'lucide-react';
-import { getCountryFlag } from '../../utils/countryCodes';
+import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick, intlLocale } from '../../i18n/lang';
 import { CSVExportButton } from '../common/ExportTools';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -69,6 +70,29 @@ const TEXTS = {
     margin: 'Avg margin (pts)',
     sensLabels: { normal: 'Normal', sensitive: 'Sensitive', excluded: 'Excluded', unknown: 'Unknown' },
     methodology: 'Preference margin = MFN − AfCFTA per HS6 line. Measures the preference potential offered (real tariffs), not the actual customs utilisation rate (which requires rules-of-origin claim data).',
+  },
+  ar: {
+    title: 'الهامش التفضيلي في زليكاف',
+    subtitle: 'الإمكانات التفضيلية حسب البلد (NPF − زليكاف) — التعريفات الوطنية',
+    country: 'البلد',
+    loading: 'جارٍ تحميل الملف التعريفي…',
+    error: 'لا توجد بيانات تعريفية لهذا البلد.',
+    avgNpf: 'متوسط NPF',
+    avgZlecaf: 'متوسط زليكاف',
+    avgMargin: 'متوسط الهامش',
+    benefiting: 'بنود تتمتع بتفضيل',
+    dutyFree: 'معفاة أصلًا من الرسوم',
+    lines: 'بندًا تم تحليله',
+    sensitivity: 'التوزيع حسب الحساسية',
+    sensCount: 'البنود',
+    sensShare: 'الحصة',
+    sensMargin: 'متوسط الهامش',
+    topSectors: 'القطاعات ذات أعلى هامش تفضيلي',
+    sector: 'القطاع',
+    count: 'البنود',
+    margin: 'متوسط الهامش (نقاط)',
+    sensLabels: { normal: 'عادي', sensitive: 'حساس', excluded: 'مستبعد', unknown: 'غير معروف' },
+    methodology: 'الهامش التفضيلي = NPF − زليكاف لكل بند SH6. يقيس الإمكانات التفضيلية المتاحة (تعريفات فعلية)، لا معدل الاستخدام الجمركي الفعلي (الذي يتطلب بيانات طلبات قواعد المنشأ).',
   },
 };
 
@@ -144,7 +168,7 @@ export default function PreferenceMargin({ language = 'fr' }) {
             </div>
           </div>
           <Badge className="bg-[var(--afcfta-card2)] text-[var(--gold)] border border-[var(--afcfta-border)] px-3 py-1">
-            ZLECAf · tarifs nationaux
+            {pick(language, 'ZLECAf · tarifs nationaux', 'ZLECAf · tarifs nationaux', 'زليكاف · التعريفات الوطنية')}
           </Badge>
         </div>
       </CardHeader>
@@ -158,7 +182,7 @@ export default function PreferenceMargin({ language = 'fr' }) {
             <SelectContent>
               {countries.map((c) => (
                 <SelectItem key={c.iso3} value={c.iso3}>
-                  <span className="flex items-center gap-2"><span>{getCountryFlag(c.iso3)}</span><span>{c.name}</span></span>
+                  <span className="flex items-center gap-2"><span>{getCountryFlag(c.iso3)}</span><span>{pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name)}</span></span>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -177,12 +201,12 @@ export default function PreferenceMargin({ language = 'fr' }) {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               <Kpi label={txt.avgNpf} value={data.avg_npf_rate} suffix="%" />
               <Kpi label={txt.avgZlecaf} value={data.avg_zlecaf_rate} suffix="%" />
-              <Kpi label={txt.avgMargin} value={data.avg_preference_margin} suffix=" pts" color="#C8531A" />
+              <Kpi label={txt.avgMargin} value={data.avg_preference_margin} suffix={pick(language, ' pts', ' pts', ' نقطة')} color="#C8531A" />
               <Kpi label={txt.benefiting} value={data.lines_with_preference_pct} suffix="%" color="#1A7A4A" />
               <Kpi label={txt.dutyFree} value={data.lines_already_duty_free_pct} suffix="%" color="#1A6B8A" />
             </div>
             <div className="text-xs text-[var(--afcfta-muted)]">
-              {data.total_lines_analyzed?.toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')} {txt.lines}
+              {data.total_lines_analyzed?.toLocaleString(intlLocale(language))} {txt.lines}
             </div>
 
             {/* ── Ventilation par sensibilité ─────────────────── */}
@@ -207,9 +231,9 @@ export default function PreferenceMargin({ language = 'fr' }) {
                             {txt.sensLabels[k] || k}
                           </span>
                         </TableCell>
-                        <TableCell className="text-right">{v.count?.toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')}</TableCell>
+                        <TableCell className="text-right">{v.count?.toLocaleString(intlLocale(language))}</TableCell>
                         <TableCell className="text-right">{v.share_pct}%</TableCell>
-                        <TableCell className="text-right">{v.avg_preference_margin} pts</TableCell>
+                        <TableCell className="text-right">{v.avg_preference_margin} {pick(language, 'pts', 'pts', 'نقطة')}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -240,7 +264,7 @@ export default function PreferenceMargin({ language = 'fr' }) {
                       <XAxis type="number" tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}`} />
                       <YAxis type="category" dataKey="name" width={140} tick={{ fontSize: 11 }} />
                       <Tooltip
-                        formatter={(v, n, p) => [`${v} pts`, txt.margin]}
+                        formatter={(v, n, p) => [`${v} ${pick(language, 'pts', 'pts', 'نقطة')}`, txt.margin]}
                         labelFormatter={(l, p) => p?.[0]?.payload?.fullName || l}
                       />
                       <Bar dataKey="margin" radius={[0, 5, 5, 0]} barSize={15}>

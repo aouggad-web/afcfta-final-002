@@ -13,7 +13,8 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { ResponsiveContainer, Treemap, Tooltip } from 'recharts';
 import { LayoutGrid, RefreshCw, ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import { getCountryFlag } from '../../utils/countryCodes';
+import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick } from '../../i18n/lang';
 import { montantCompact } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -101,6 +102,32 @@ const TEXTS = {
       mineraux: 'Minerals & energy',
       metaux: 'Metals & precious stones',
       industrie: 'Industrial products',
+    },
+  },
+  ar: {
+    title: 'خريطة المنتجات',
+    subtitle: 'هيكل التجارة حسب المنتج (SH) — بيانات OEC/BACI مباشرة',
+    country: 'البلد',
+    selectCountry: 'اختر بلدًا',
+    year: 'السنة',
+    flow: 'التدفق',
+    exports: 'الصادرات',
+    imports: 'الواردات',
+    level: 'مستوى SH',
+    loading: 'جارٍ تحميل البيانات…',
+    error: 'تعذّر تحميل البيانات لهذا الاختيار.',
+    noData: 'لا توجد بيانات متاحة لهذا الاختيار.',
+    others: 'منتجات أخرى',
+    share: 'الحصة',
+    total: 'المجموع',
+    products: 'منتجات',
+    hint: 'مساحة كل كتلة متناسبة مع القيمة المتبادلة؛ ويشير لونها إلى فئة المنتجات (أقسام النظام المنسق). مرّر المؤشر فوق كتلة لعرض التفاصيل.',
+    levelHint: { HS2: 'الفصول (رقمان)', HS4: 'البنود (4 أرقام)', HS6: 'البنود الفرعية (6 أرقام)' },
+    familles: {
+      agri: 'الزراعة والأغذية',
+      mineraux: 'المعادن الخام والطاقة',
+      metaux: 'الفلزات والأحجار الكريمة',
+      industrie: 'المنتجات الصناعية',
     },
   },
 };
@@ -309,7 +336,7 @@ export default function ProductTreemap({ language = 'fr' }) {
                   <SelectItem key={c.iso3} value={c.iso3}>
                     <span className="flex items-center gap-2">
                       <span>{getCountryFlag(c.iso3)}</span>
-                      <span>{c.name}</span>
+                      <span>{pick(language, c.name, c.name, AFRICAN_COUNTRIES[c.iso3]?.name_ar || c.name)}</span>
                     </span>
                   </SelectItem>
                 ))}

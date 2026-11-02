@@ -13,9 +13,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Map as MapIcon, RefreshCw } from 'lucide-react';
-import { getCountryFlag } from '../../utils/countryCodes';
+import { getCountryFlag, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { AFRICA_CENTROIDS } from '../../utils/africaCentroids';
 import { montant, montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -51,6 +52,22 @@ const TEXTS = {
       population: 'Population (millions)',
       hdi: 'Development index',
       growth: 'GDP growth 2024 (%)',
+    },
+  },
+  ar: {
+    title: 'الخريطة الاقتصادية لأفريقيا',
+    subtitle: 'مؤشرات 2024 للبلدان الـ54 في منطقة التجارة الحرة القارية الأفريقية — البنك الدولي',
+    metric: 'المؤشر',
+    loading: 'جارٍ تحميل الخريطة…',
+    error: 'تعذّر تحميل البيانات.',
+    rank: 'الترتيب في أفريقيا',
+    hint: 'يعكس حجم الدوائر ولونها قيمة المؤشر. مرّر المؤشر فوق بلد لعرض التفاصيل.',
+    metrics: {
+      gdp: 'الناتج المحلي الإجمالي (مليار USD)',
+      gdpPerCapita: 'نصيب الفرد من الناتج المحلي الإجمالي (USD)',
+      population: 'السكان (بالملايين)',
+      hdi: 'مؤشر التنمية',
+      growth: 'نمو الناتج المحلي الإجمالي 2024 (%)',
     },
   },
 };
@@ -192,7 +209,7 @@ export default function AfricaTradeMap({ language = 'fr' }) {
                 >
                   <Tooltip direction="top" offset={[0, -4]} opacity={0.95}>
                     <div className="text-center">
-                      <strong className="text-sm">{getCountryFlag(p.iso3)} {p.name}</strong>
+                      <strong className="text-sm">{getCountryFlag(p.iso3)} {pick(language, p.name, p.name, AFRICAN_COUNTRIES[p.iso3]?.name_ar || p.name)}</strong>
                       <br />
                       <span className="text-xs">{txt.metrics[metric]}: <strong>{cfg.fmt(p.value, language)}</strong></span>
                       {p.africa_rank != null && (

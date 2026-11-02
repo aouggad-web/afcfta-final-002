@@ -10,8 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, Globe2, TrendingUp, Search, RefreshCw, BarChart3, Filter } from 'lucide-react';
-import { getCountryFlag, getCountryInfo } from '../../utils/countryCodes';
+import { getCountryFlag, getCountryInfo, AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { montantCompact, nombreCompact } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -68,6 +69,13 @@ const POPULAR_HS_CODES = {
       { code: '71', label: 'Precious metals' },
       { code: '52', label: 'Cotton' },
     ],
+    ar: [
+      { code: '09', label: 'البن والشاي والتوابل' },
+      { code: '08', label: 'الفواكه والمكسرات' },
+      { code: '27', label: 'الوقود' },
+      { code: '71', label: 'المعادن الثمينة' },
+      { code: '52', label: 'القطن' },
+    ],
   },
   HS4: {
     fr: [
@@ -84,6 +92,13 @@ const POPULAR_HS_CODES = {
       { code: '7108', label: 'Gold' },
       { code: '5201', label: 'Uncarded cotton' },
     ],
+    ar: [
+      { code: '0901', label: 'البن' },
+      { code: '1801', label: 'الكاكاو' },
+      { code: '2709', label: 'النفط الخام' },
+      { code: '7108', label: 'الذهب' },
+      { code: '5201', label: 'قطن غير مندوف' },
+    ],
   },
   HS6: {
     fr: [
@@ -99,6 +114,13 @@ const POPULAR_HS_CODES = {
       { code: '270900', label: 'Crude oil' },
       { code: '710812', label: 'Gold in raw form' },
       { code: '520100', label: 'Uncarded cotton' },
+    ],
+    ar: [
+      { code: '090111', label: 'بن غير محمص' },
+      { code: '180100', label: 'حبوب الكاكاو' },
+      { code: '270900', label: 'النفط الخام' },
+      { code: '710812', label: 'ذهب بشكل خام' },
+      { code: '520100', label: 'قطن غير مندوف' },
     ],
   },
 };
@@ -237,19 +259,73 @@ export default function OECTradeStats({ language = 'fr' }) {
       hs2Description: "Chapters - Sector overview",
       hs4Description: "Headings - Detailed product groups",
       hs6Description: "Subheadings - Specific products"
+    },
+    ar: {
+      title: "إحصائيات OEC التجارية",
+      subtitle: "بيانات آنية من مرصد التعقيد الاقتصادي (OEC)",
+      countryView: "حسب البلد",
+      productView: "حسب المنتج",
+      bilateralView: "التجارة الثنائية",
+      selectCountry: "اختر بلدًا",
+      selectYear: "السنة",
+      tradeFlow: "التدفق التجاري",
+      exports: "الصادرات",
+      imports: "الواردات",
+      hsCodeLabel: "رمز SH6 (6 أرقام)",
+      hsCodePlaceholder: "مثال: 090111 (بن غير محمص)",
+      search: "بحث",
+      loading: "جارٍ التحميل…",
+      noData: "لا توجد بيانات",
+      totalValue: "القيمة الإجمالية",
+      totalVolume: "الحجم الإجمالي",
+      volumeUnit: "طن",
+      topPartners: "أبرز الشركاء",
+      topProducts: "أبرز المنتجات",
+      africanExporters: "المصدِّرون الأفارقة",
+      country: "البلد",
+      value: "القيمة",
+      volume: "الحجم",
+      share: "الحصة",
+      sourceLabel: "المصدر: قاعدة بيانات OEC / BACI",
+      exporter: "المصدِّر",
+      importer: "المستورد",
+      bilateralTitle: "التجارة الثنائية",
+      product: "المنتج",
+      rank: "الترتيب",
+      dataYear: "بيانات سنة",
+      refreshData: "تحديث",
+      popularProducts: "منتجات شائعة",
+      coffee: "البن",
+      cocoa: "الكاكاو",
+      cotton: "القطن",
+      gold: "الذهب",
+      oil: "النفط",
+      diamonds: "الماس",
+      hsLevel: "مستوى التصنيف",
+      hsRevision: "إصدار النظام المنسق",
+      hsLevelDesc: "اختر مستوى التفصيل المطلوب",
+      revisionDesc: "إصدار التسمية الجمركية",
+      hs2Description: "الفصول - نظرة عامة حسب القطاعات",
+      hs4Description: "البنود - مجموعات منتجات مفصلة",
+      hs6Description: "البنود الفرعية - منتجات محددة"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   // Utility: get popular HS codes for current level and language
   const getPopularHSCodes = (level, lang) => {
-    const langKey = lang === 'en' ? 'en' : 'fr';
+    const langKey = pick(lang, 'fr', 'en', 'ar');
     return (POPULAR_HS_CODES[level] || POPULAR_HS_CODES.HS6)[langKey] || [];
   };
 
   // Utility: get adaptive placeholder based on HS level
   const getPlaceholderForLevel = (level, lang) => {
+    if (pick(lang, 'fr', 'en', 'ar') === 'ar') {
+      if (level === 'HS2') return 'مثال: 09 (البن والشاي والتوابل)';
+      if (level === 'HS4') return 'مثال: 0901 (البن)';
+      return 'مثال: 090111 (بن غير محمص)';
+    }
     if (lang === 'en') {
       if (level === 'HS2') return 'Ex: 09 (Coffee, tea, spices)';
       if (level === 'HS4') return 'Ex: 0901 (Coffee)';
@@ -259,6 +335,12 @@ export default function OECTradeStats({ language = 'fr' }) {
     if (level === 'HS4') return 'Ex: 0901 (Café)';
     return 'Ex: 090111 (Café non torréfié)';
   };
+
+  // Noms des pays du commerce bilatéral (l'arabe vient du référentiel local).
+  const nomExportateur = pick(language, bilateralData?.exporter?.name_fr, bilateralData?.exporter?.name_en,
+    AFRICAN_COUNTRIES[bilateralData?.exporter?.iso3 || selectedCountry]?.name_ar || bilateralData?.exporter?.name_fr);
+  const nomImportateur = pick(language, bilateralData?.importer?.name_fr, bilateralData?.importer?.name_en,
+    AFRICAN_COUNTRIES[bilateralData?.importer?.iso3 || secondCountry]?.name_ar || bilateralData?.importer?.name_fr);
 
   // Get digits count for current HS level
   const hsLevelDigits = HS_LEVEL_DIGITS[hsLevel] || 6;
@@ -429,14 +511,14 @@ export default function OECTradeStats({ language = 'fr' }) {
       if (type === 'country') {
         // Pour la vue par pays : afficher les produits au niveau HS sélectionné
         const level = hsLevelParam || 'HS4';
-        name = item[level] || `Produit #${index + 1}`;
+        name = item[level] || `${pick(language, 'Produit', 'Produit', 'منتج')} #${index + 1}`;
       } else if (type === 'product') {
         // Pour la vue par produit : afficher les pays
-        name = item['Exporter Country'] || item['Importer Country'] || `Pays #${index + 1}`;
+        name = item['Exporter Country'] || item['Importer Country'] || `${pick(language, 'Pays', 'Pays', 'بلد')} #${index + 1}`;
       } else if (type === 'bilateral') {
         // Pour le commerce bilatéral : afficher les produits au niveau HS sélectionné
         const level = hsLevelParam || 'HS4';
-        name = item[level] || `Produit #${index + 1}`;
+        name = item[level] || `${pick(language, 'Produit', 'Produit', 'منتج')} #${index + 1}`;
       }
       
       return {
@@ -466,7 +548,7 @@ export default function OECTradeStats({ language = 'fr' }) {
             </div>
             <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
               <TrendingUp className="w-3 h-3 mr-1" />
-              Live Data
+              {pick(language, 'Live Data', 'Live Data', 'بيانات مباشرة')}
             </Badge>
           </div>
         </CardHeader>
@@ -518,7 +600,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         <SelectItem key={country.iso3} value={country.iso3}>
                           <span className="flex items-center gap-2">
                             <span>{getCountryFlag(country.iso3)}</span>
-                            <span>{country.name}</span>
+                            <span>{pick(language, country.name, country.name, AFRICAN_COUNTRIES[country.iso3]?.name_ar || country.name)}</span>
                           </span>
                         </SelectItem>
                       ))}
@@ -611,7 +693,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardHeader className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-b">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg font-semibold text-[var(--text)]">
-                      {selectedFlow === 'exports' ? t.exports : t.imports} - {tradeData.country?.name_fr || tradeData.country?.name_en || selectedCountry}
+                      {selectedFlow === 'exports' ? t.exports : t.imports} - {pick(language, null, null, AFRICAN_COUNTRIES[selectedCountry]?.name_ar) || tradeData.country?.name_fr || tradeData.country?.name_en || selectedCountry}
                     </CardTitle>
                     <Badge variant="outline" className="text-[var(--success)] border-[var(--afcfta-border)]">
                       {t.dataYear} {selectedYear}
@@ -962,7 +1044,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         <SelectItem key={country.iso3} value={country.iso3}>
                           <span className="flex items-center gap-2">
                             <span>{getCountryFlag(country.iso3)}</span>
-                            <span>{country.name}</span>
+                            <span>{pick(language, country.name, country.name, AFRICAN_COUNTRIES[country.iso3]?.name_ar || country.name)}</span>
                           </span>
                         </SelectItem>
                       ))}
@@ -981,7 +1063,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         <SelectItem key={country.iso3} value={country.iso3}>
                           <span className="flex items-center gap-2">
                             <span>{getCountryFlag(country.iso3)}</span>
-                            <span>{country.name}</span>
+                            <span>{pick(language, country.name, country.name, AFRICAN_COUNTRIES[country.iso3]?.name_ar || country.name)}</span>
                           </span>
                         </SelectItem>
                       ))}
@@ -1065,7 +1147,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         {t.bilateralTitle}
                       </CardTitle>
                       <CardDescription>
-                        {language === 'fr' ? bilateralData.exporter?.name_fr : bilateralData.exporter?.name_en} → {language === 'fr' ? bilateralData.importer?.name_fr : bilateralData.importer?.name_en}
+                        {nomExportateur} {pick(language, '→', '→', '←')} {nomImportateur}
                       </CardDescription>
                     </div>
                     <Badge variant="outline" className="text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]">
@@ -1086,9 +1168,9 @@ export default function OECTradeStats({ language = 'fr' }) {
                     </div>
                   </div>
                   <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="text-sm font-medium">{language === 'fr' ? bilateralData.exporter?.name_fr : bilateralData.exporter?.name_en}</span>
+                    <span className="text-sm font-medium">{nomExportateur}</span>
                     <ArrowUpRight className="w-4 h-4 text-[var(--terra)]" />
-                    <span className="text-sm font-medium">{language === 'fr' ? bilateralData.importer?.name_fr : bilateralData.importer?.name_en}</span>
+                    <span className="text-sm font-medium">{nomImportateur}</span>
                   </div>
                   
                   {/* Bar Chart - Produits échangés */}

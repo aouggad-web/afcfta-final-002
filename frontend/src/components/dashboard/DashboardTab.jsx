@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { pick } from '../../i18n/lang';
 import {
   DndContext,
   closestCenter,
@@ -281,10 +282,10 @@ export default function DashboardTab({ language = 'fr' }) {
             <div>
               <CardTitle className="text-2xl md:text-3xl font-bold flex items-center gap-3">
                 <LayoutDashboard className="w-7 h-7" />
-                {t('dashboard.title', { defaultValue: language === 'fr' ? 'Tableau de Bord Personnalisé' : 'Custom Dashboard' })}
+                {t('dashboard.title', { defaultValue: pick(language, 'Tableau de Bord Personnalisé', 'Custom Dashboard', 'لوحة القيادة المخصصة') })}
               </CardTitle>
               <CardDescription className="text-slate-300 text-base mt-1">
-                {t('dashboard.subtitle', { defaultValue: language === 'fr' ? 'Glissez-déposez pour réorganiser vos widgets' : 'Drag and drop to reorganize your widgets' })}
+                {t('dashboard.subtitle', { defaultValue: pick(language, 'Glissez-déposez pour réorganiser vos widgets', 'Drag and drop to reorganize your widgets', 'اسحب وأفلت لإعادة ترتيب الأدوات') })}
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -295,17 +296,17 @@ export default function DashboardTab({ language = 'fr' }) {
                     onClick={() => setIsEditing(false)} 
                     className="text-white border-white/30 hover:bg-white/10"
                   >
-                    {t('common.cancel', { defaultValue: language === 'fr' ? 'Annuler' : 'Cancel' })}
+                    {t('common.cancel', { defaultValue: pick(language, 'Annuler', 'Cancel', 'إلغاء') })}
                   </Button>
                   <Button onClick={saveLayout} className="bg-green-600 hover:bg-green-700 gap-2">
                     <Save className="w-4 h-4" />
-                    {t('common.save', { defaultValue: language === 'fr' ? 'Enregistrer' : 'Save' })}
+                    {t('common.save', { defaultValue: pick(language, 'Enregistrer', 'Save', 'حفظ') })}
                   </Button>
                 </>
               ) : (
                 <Button onClick={() => setIsEditing(true)} className="bg-white/20 hover:bg-white/30 gap-2">
                   <Settings className="w-4 h-4" />
-                  {t('dashboard.customize', { defaultValue: language === 'fr' ? 'Personnaliser' : 'Customize' })}
+                  {t('dashboard.customize', { defaultValue: pick(language, 'Personnaliser', 'Customize', 'تخصيص') })}
                 </Button>
               )}
             </div>
@@ -321,7 +322,7 @@ export default function DashboardTab({ language = 'fr' }) {
               <div className="flex-1">
                 <h3 className="font-bold text-blue-800 flex items-center gap-2 mb-3">
                   <Plus className="w-5 h-5" />
-                  {t('dashboard.availableWidgets', { defaultValue: language === 'fr' ? 'Widgets Disponibles' : 'Available Widgets' })}
+                  {t('dashboard.availableWidgets', { defaultValue: pick(language, 'Widgets Disponibles', 'Available Widgets', 'الأدوات المتاحة') })}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {availableWidgets.length > 0 ? (
@@ -343,7 +344,7 @@ export default function DashboardTab({ language = 'fr' }) {
                     })
                   ) : (
                     <span className="text-sm text-gray-500 italic">
-                      {t('dashboard.noWidgets', { defaultValue: language === 'fr' ? 'Tous les widgets sont affichés' : 'All widgets are displayed' })}
+                      {t('dashboard.noWidgets', { defaultValue: pick(language, 'Tous les widgets sont affichés', 'All widgets are displayed', 'جميع الأدوات معروضة') })}
                     </span>
                   )}
                 </div>
@@ -354,15 +355,16 @@ export default function DashboardTab({ language = 'fr' }) {
                 className="text-red-600 border-red-300 hover:bg-red-50 gap-2"
               >
                 <RotateCcw className="w-4 h-4" />
-                {t('dashboard.reset', { defaultValue: language === 'fr' ? 'Réinitialiser' : 'Reset' })}
+                {t('dashboard.reset', { defaultValue: pick(language, 'Réinitialiser', 'Reset', 'إعادة التعيين') })}
               </Button>
             </div>
             {isEditing && (
               <p className="text-sm text-blue-600 mt-3 flex items-center gap-2">
                 <GripVertical className="w-4 h-4" />
-                {language === 'fr' 
-                  ? 'Maintenez et glissez l\'icône ⋮⋮ pour réorganiser les widgets'
-                  : 'Hold and drag the ⋮⋮ icon to reorganize widgets'}
+                {pick(language,
+                  'Maintenez et glissez l\'icône ⋮⋮ pour réorganiser les widgets',
+                  'Hold and drag the ⋮⋮ icon to reorganize widgets',
+                  'اضغط مطولًا واسحب الأيقونة ⋮⋮ لإعادة ترتيب الأدوات')}
               </p>
             )}
           </CardContent>
@@ -404,7 +406,7 @@ export default function DashboardTab({ language = 'fr' }) {
               </div>
               <CardContent className="p-4 bg-white rounded-b-lg">
                 <div className="h-20 flex items-center justify-center text-gray-400">
-                  {language === 'fr' ? 'Déplacez ici...' : 'Moving...'}
+                  {pick(language, 'Déplacez ici...', 'Moving...', 'جارٍ النقل…')}
                 </div>
               </CardContent>
             </Card>
@@ -437,7 +439,7 @@ function WidgetContent({ widgetId, language, t }) {
     case 'calculator_quick':
       return <CalculatorQuickWidget language={language} t={t} />;
     default:
-      return <div className="text-gray-500">{language === 'fr' ? 'Widget non disponible' : 'Widget unavailable'}</div>;
+      return <div className="text-gray-500">{pick(language, 'Widget non disponible', 'Widget unavailable', 'الأداة غير متاحة')}</div>;
   }
 }
 
@@ -446,20 +448,20 @@ function CalculatorQuickWidget({ language }) {
   return (
     <div className="space-y-2">
       <p className="text-xs text-gray-500">
-        {language === 'en' ? 'Quick Estimate' : 'Estimation Rapide'}
+        {pick(language, 'Estimation Rapide', 'Quick Estimate', 'تقدير سريع')}
       </p>
       <div className="flex gap-2">
         <input 
           type="text" 
-          placeholder="HS Code" 
+          placeholder={pick(language, 'HS Code', 'HS Code', 'رمز SH')} 
           className="flex-1 text-xs px-2 py-1.5 border rounded focus:ring-2 focus:ring-amber-400 outline-none"
           data-testid="hs-code-input"
         />
         <Button size="sm" className="text-xs px-3 bg-amber-500 hover:bg-amber-600" data-testid="calculator-go-btn">
-          {language === 'en' ? 'Go' : 'OK'}
+          {pick(language, 'OK', 'Go', 'تنفيذ')}
         </Button>
       </div>
-      <p className="text-xs text-gray-400">Ex: 0901 ({language === 'en' ? 'Coffee' : 'Café'})</p>
+      <p className="text-xs text-gray-400">{pick(language, 'Ex', 'Ex', 'مثال')}: 0901 ({pick(language, 'Café', 'Coffee', 'البن')})</p>
     </div>
   );
 }

@@ -27,6 +27,7 @@ import TradeComplementarity from './TradeComplementarity';
 import PreferenceMargin from './PreferenceMargin';
 import { PDFExportButton } from '../common/ExportTools';
 import { montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -95,6 +96,27 @@ export default function StatisticsTab({ language = 'fr' }) {
       imports: "Imports 2024",
       exportsEvolution: "Export volume (Billion USD)",
       importsVolume: "Import volume (Billion USD)"
+    },
+    ar: {
+      title: "الإحصائيات التجارية",
+      subtitle: "بيانات وتحليلات التجارة الأفريقية — زليكاف 2024",
+      overview: "نظرة عامة",
+      products: "المنتجات",
+      treemap: "خريطة المنتجات",
+      map: "الخريطة",
+      reseau: "شبكة زليكاف",
+      rca: "RCA",
+      complementarity: "التكامل",
+      preference: "تفضيلات زليكاف",
+      trends: "الاتجاهات",
+      parPays: "حسب البلد وSH6",
+      comparison: "مقارنة البلدان",
+      topExporters: "أكبر 10 مصدِّرين",
+      topImporters: "أكبر 10 مستوردين",
+      exports: "الصادرات 2024",
+      imports: "الواردات 2024",
+      exportsEvolution: "حجم الصادرات (مليار USD)",
+      importsVolume: "حجم الواردات (مليار USD)"
     }
   };
 
@@ -334,9 +356,7 @@ export default function StatisticsTab({ language = 'fr' }) {
                 produit (index OMD) pour les utilisateurs sans bagage douanier. */}
             <div className="stats-chart-card" style={{ padding: 16 }}>
               <div className="stats-chart-title" style={{ marginBottom: 10 }}>
-                {language === 'en'
-                  ? 'Find an HS code from a product name'
-                  : 'Trouver un code SH à partir d’un nom de produit'}
+                {pick(language, 'Trouver un code SH à partir d’un nom de produit', 'Find an HS code from a product name', 'البحث عن رمز SH انطلاقًا من اسم المنتج')}
               </div>
               <ProductHSSearch language={language} lang={language} />
             </div>
