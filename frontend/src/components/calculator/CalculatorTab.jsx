@@ -1809,9 +1809,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               </div>
-              <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
-                {pick(language, 'Simulation informative — non opposable à l’administration douanière.', 'Informative simulation — not binding on the customs administration.', 'محاكاة إعلامية — غير ملزمة لإدارة الجمارك.')}
-              </p>
 
               {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
                   droits et taxes exigibles, mais un prestataire mandaté actif facture
