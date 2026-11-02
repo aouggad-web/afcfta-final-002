@@ -3449,6 +3449,77 @@ PETROLE_SANS_RS_MRT = ("2710124000", "2710125000", "2710192100", "2710191100", "
 PETROLE_DD_10_MRT = ("2710124000", "2710125000", "2710192100")
 
 
+#: Mauritanie : taxe de promotion de la culture et du sport (fiche MRT_psc_2026-11-01.json).
+SOURCE_PSC_MRT = (
+    "OMC, examen des politiques commerciales — Mauritanie (WT/TPR/S/371, 2018), § 3.48 ; en vigueur selon la "
+    "loi n° 2026-001 (loi de finances 2026), art. 3.2.5"
+)
+#: Hors champ : médicaments, outils et équipements agricoles, minibus (87.02, sous-groupes
+#: nationaux 11 et 21 : « Comportant 10 à 22 places assises »).
+PSC_EXONERES_MRT = ("3003", "3004", "8201", "8432", "8433", "8434", "8436", "842441", "842449", "842482", "871620")
+#: Tracteurs à un essieu et « autres tracteurs » : agricoles ou non, la position ne le dit pas.
+PSC_MIXTES_MRT = ("870110", "870191", "870192", "870193", "870194", "870195")
+
+
+def _psc_mauritanie(positions, compteurs):
+    """Mauritanie : taxe de promotion de la culture et du sport (PSC), 1 % de la
+    valeur c.a.f. des produits des chapitres 21 à 98, « à l'exclusion des minibus,
+    des médicaments et outils et équipements agricoles » (OMC, WT/TPR/S/371,
+    § 3.48 ; la loi de finances 2026, art. 3.2.5, la liste parmi les prélèvements
+    d'une position, « PSC 1% »)."""
+    for code, position in positions.items():
+        if not 21 <= int(code[:2]) <= 98:
+            continue
+        minibus = code.startswith("8702") and code[6:8] in ("11", "21")
+        if minibus or code.startswith(PSC_EXONERES_MRT):
+            continue
+        droits = position.setdefault("droits", [])
+        ligne = {"code": "PSC", "code_source": "PSC", "libelle": "Taxe de promotion de la culture et du sport (PSC)",
+                 "famille": famille("PSC"), "taux": 1.0, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+                 "source": SOURCE_PSC_MRT,
+                 "note": "« Une taxe de la promotion de la culture et du sport (PCS) de 1% est prélevée depuis 2011 "
+                         "sur la valeur c.a.f. des importations de produits du SH21 à SH98 à l'exclusion des "
+                         "minibus, des médicaments et outils et équipements agricoles » (OMC, § 3.48)."}
+        if code.startswith(PSC_MIXTES_MRT):
+            ligne["taux"] = None
+            ligne["note"] = ("Tracteurs : exclus de la PSC s'ils sont des équipements agricoles, dus sinon ; la "
+                             "position ne distingue pas l'usage. " + ligne["note"])
+        rang = next((i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits))
+        droits.insert(rang, ligne)
+        _compter_ligne(ligne, compteurs, 1)
+        # Assiette des accises ad valorem (CGI, art. 262) : valeur en douane et droits
+        # et taxes d'entrée, TVA et accises exclues — la PSC en est (revue Codex de #751).
+        for d in droits:
+            if d.get("famille") == "accise" and str(d.get("assiette") or "").startswith("CIF+DD+RS+PC"):
+                d["assiette"] = d["assiette"].replace("CIF+DD+RS+PC", "CIF+DD+RS+PC+PSC", 1)
+
+
+SOURCE_TELEPHONES_MRT = "Loi n° 2026-001 (loi de finances 2026), art. 3.2.5"
+
+
+def _telephones_mauritanie(positions, compteurs):
+    """Mauritanie : téléphones, loi de finances 2026, art. 3.2.5 — DD 10 % pour les
+    smartphones (85.17.13) comme pour les téléphones utilitaires (85.17.14) ; TVA
+    16 % pour les premiers, 0 % pour les seconds. Le tarif servi (SH 2017) les
+    réunit sous 85.17.12 : le droit s'y applique, la TVA y reste sans taux."""
+    for code, position in positions.items():
+        if not code.startswith("851712"):
+            continue
+        for d in position.get("droits") or []:
+            if d.get("code") not in ("DD", "TVA"):
+                continue
+            _compter_ligne(d, compteurs, -1)
+            if d["code"] == "DD":
+                d.update(taux=10.0, source=SOURCE_TELEPHONES_MRT,
+                         note="« a) Pour la position 85.17.13.00.00 Téléphones Smartphones DD 10% […] b) Pour la "
+                              "position 85.17.14.00.00 téléphones utilitaires DD 10% »")
+            else:
+                d.update(taux=None, source=SOURCE_TELEPHONES_MRT,
+                         note="TVA 16 % sur les smartphones (85.17.13), 0 % sur les téléphones utilitaires "
+                              "(85.17.14) ; le tarif servi, en SH 2017, les réunit sous 85.17.12.")
+            _compter_ligne(d, compteurs, 1)
+
+
 def _accises_mauritanie(positions, compteurs):
     """Mauritanie : droits d'accises (CGI, art. 263) et taxe de lutte contre le cancer
     (art. 266 bis), avant la TVA. Assiette des accises ad valorem (art. 262) : valeur en
@@ -6188,6 +6259,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _prelevement_ohada_cameroun(positions, compteurs)
     if iso == "MRT":
         _accises_mauritanie(positions, compteurs)
+        _psc_mauritanie(positions, compteurs)
+        _telephones_mauritanie(positions, compteurs)
     if iso == "GNQ":
         _sans_redevance_informatique_gnq(positions, compteurs)
         _prelevements_guinee_equatoriale(positions, compteurs)
