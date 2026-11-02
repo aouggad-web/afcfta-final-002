@@ -65,7 +65,7 @@ function ProductionTab({ language = 'fr' }) {
           <div className="hidden md:flex items-center gap-2">
             <Badge className="bg-[var(--overlay)] text-[var(--text)] text-xs">
               <Globe className="w-3 h-3 mr-1" />
-              55 pays
+              {pick(language, "55 pays", "55 pays", "55 بلدًا")}
             </Badge>
             <Badge className="bg-[var(--overlay)] text-[var(--text)] text-xs">
               <Database className="w-3 h-3 mr-1" />
