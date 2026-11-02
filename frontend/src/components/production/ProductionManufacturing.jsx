@@ -358,12 +358,13 @@ function ProductionManufacturing({ language = 'fr' }) {
           (unidoData?.country_iso3 || unidoData?.country_code) === selectedCountry
             ? unidoData?.country_name || selectedCountry
             : selectedCountry,
-        language,
+        // jsPDF n'a pas de police arabe : en arabe, le rapport sort en français.
+        language: language === 'ar' ? 'fr' : language,
         dataBasis: isic4Basis,
         divisions: groupIsic4ByDivision(),
         source: isic4Method?.source,
         formatIndicatorValue,
-        indicatorLabels: ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr,
+        indicatorLabels: ISIC4_INDICATOR_LABELS[language === 'ar' ? 'fr' : language] || ISIC4_INDICATOR_LABELS.fr,
         headlineOrder: HEADLINE_INDICATORS,
         indicatorOrder: ISIC4_INDICATOR_ORDER,
         timeseries,

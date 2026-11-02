@@ -12,7 +12,7 @@ import { Search, Loader2, TrendingUp, TrendingDown, Minus, FileDown, Moon } from
 import { buildTradeReportPdf, tradeReportFilename } from '../../utils/tradeReportPdf';
 import { montantCompact, nombreCompact, chiffres } from '../../utils/nombres';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
-import { pick } from '../../i18n/lang';
+import { pick, isRtl } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -251,14 +251,16 @@ export default function CountryHS6History({ language = 'fr' }) {
     if (!data || !data.chart_rows || data.chart_rows.length === 0) return;
     setExportingTheme(themeName);
     try {
+      // jsPDF n'a pas de police arabe : en arabe, le rapport sort en français.
+      const pdfLang = isRtl(language) ? 'fr' : language;
       const doc = buildTradeReportPdf({
         data,
         totals,
-        language,
+        language: pdfLang,
         levelLen: LEVEL_LEN[searchLevel],
-        matchLevelLabel: (MATCH_LEVEL_LABEL[language] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
-        fmtUSD: (v) => fmtUSD(v, language),
-        fmtTonnes: (v) => fmtTonnes(v, language),
+        matchLevelLabel: (MATCH_LEVEL_LABEL[pdfLang] || MATCH_LEVEL_LABEL.fr)[data.match_level] || '',
+        fmtUSD: (v) => fmtUSD(v, pdfLang),
+        fmtTonnes: (v) => fmtTonnes(v, pdfLang),
         theme: themeName,
       });
       doc.save(`${tradeReportFilename(data)}_${themeName}.pdf`);
