@@ -23,6 +23,8 @@ import TradeSankeyDiagram from './TradeSankeyDiagram';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { pick } from '../../i18n/lang';
+import { getCountryName } from '../../utils/translations';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -866,7 +868,7 @@ const ExpectedResults = ({ data, mode }) => {
 
 // ── Summary KPI Strip ─────────────────────────────────────────────────────────
 const SummaryStrip = ({ data, mode }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const opps = data?.opportunities || [];
   if (!opps.length) return null;
 
@@ -902,7 +904,7 @@ const SummaryStrip = ({ data, mode }) => {
         ? t('opportunities.aiAnalysis.verified')
         : quality === 'estimated'
         ? t('opportunities.aiAnalysis.estimated')
-        : 'Mixed',
+        : pick(i18n.language, 'Mixed', 'Mixed', 'مختلطة'),
       color: quality === 'verified' ? 'var(--green)' : 'var(--gold)',
     },
   ];
@@ -1100,7 +1102,7 @@ export default function AIAnalysis({ language = 'fr' }) {
                 </SelectTrigger>
                 <SelectContent>
                   {countries.map(c => (
-                    <SelectItem key={c.iso3} value={c.iso3}>{c.name}</SelectItem>
+                    <SelectItem key={c.iso3} value={c.iso3}>{pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar'))}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -1208,11 +1210,15 @@ export default function AIAnalysis({ language = 'fr' }) {
           </div>
           {data.grounding_stats && (
             <p style={{ fontSize: 12, color: 'var(--afcfta-muted)', margin: 0 }}>
-              {lang === 'fr'
-                ? `${data.grounding_stats.production_products || 0} produits de production réelle, `
-                  + `${data.grounding_stats.oec_flows || 0} flux commerciaux observés`
-                : `${data.grounding_stats.production_products || 0} real production products, `
-                  + `${data.grounding_stats.oec_flows || 0} observed trade flows`}
+              {pick(
+                lang,
+                `${data.grounding_stats.production_products || 0} produits de production réelle, `
+                  + `${data.grounding_stats.oec_flows || 0} flux commerciaux observés`,
+                `${data.grounding_stats.production_products || 0} real production products, `
+                  + `${data.grounding_stats.oec_flows || 0} observed trade flows`,
+                `${data.grounding_stats.production_products || 0} منتَجاً من الإنتاج الفعلي، `
+                  + `${data.grounding_stats.oec_flows || 0} تدفقاً تجارياً مرصوداً`,
+              )}
               {data.grounding_stats.oec_year ? ` (${data.grounding_stats.oec_year})` : ''}
             </p>
           )}
@@ -1241,7 +1247,7 @@ export default function AIAnalysis({ language = 'fr' }) {
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <OpportunityPdfExport
               language={lang}
-              getSpec={() => {
+              getSpec={(t, lang) => {
                 const fr = lang !== 'en';
                 const opps = data.opportunities || [];
                 const musd = (v) => (v ? `$${Number(v).toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 1 })}M` : '—');

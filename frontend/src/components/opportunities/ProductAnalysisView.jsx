@@ -27,6 +27,7 @@ import { getCountryFlag } from '../../utils/countryCodes';
 import { useHsLabel } from '../../hooks/useHsLabel';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -54,6 +55,8 @@ const formatValue = (value) => {
 
 // Production Capacity Card
 const ProductionCard = ({ item, index }) => {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   const sourceColor = SOURCE_COLORS[item.source] || SOURCE_COLORS.Other;
   
   return (
@@ -61,7 +64,7 @@ const ProductionCard = ({ item, index }) => {
       <div>
         <div className="flex justify-between items-start mb-2">
           <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">
-            #{index + 1} Producteur
+            #{index + 1} {pick(language, 'Producteur', 'Producteur', 'منتِج')}
           </span>
           <span 
             className="px-2 py-0.5 rounded text-[8px] font-black text-white uppercase"
@@ -88,7 +91,7 @@ const ProductionCard = ({ item, index }) => {
                 style={{ width: `${Math.min(item.share, 100)}%` }}
               />
             </div>
-            <p className="text-[10px] text-slate-500 mt-1">{item.share}% du marché africain</p>
+            <p className="text-[10px] text-slate-500 mt-1">{item.share}% {pick(language, 'du marché africain', 'du marché africain', 'من السوق الأفريقية')}</p>
           </div>
         )}
       </div>
@@ -99,11 +102,13 @@ const ProductionCard = ({ item, index }) => {
 // Data Bar Chart Component
 const DataBarChart = ({ data, barColor, title, valueKey = 'tradeValue' }) => {
   const xAxisTickFormatter = useCallback((value) => formatValue(value), []);
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   
   if (!data || data.length === 0) {
     return (
       <div className="h-[350px] flex items-center justify-center text-slate-400 italic">
-        Aucune donnée disponible
+        {pick(language, 'Aucune donnée disponible', 'Aucune donnée disponible', 'لا توجد بيانات')}
       </div>
     );
   }
@@ -130,7 +135,7 @@ const DataBarChart = ({ data, barColor, title, valueKey = 'tradeValue' }) => {
           interval={0} 
         />
         <Tooltip 
-          formatter={(value) => [formatValue(value), 'Volume']}
+          formatter={(value) => [formatValue(value), pick(language, 'Volume', 'Volume', 'الحجم')]}
           contentStyle={{ 
             borderRadius: '12px', 
             border: 'none', 
@@ -240,12 +245,12 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
   // Popular products for quick selection
   const popularProducts = [
-    { code: '090111', name: 'Café non torréfié' },
-    { code: '180100', name: 'Cacao en fèves' },
-    { code: '270900', name: 'Pétrole brut' },
-    { code: '710812', name: 'Or' },
-    { code: '520100', name: 'Coton' },
-    { code: '271111', name: 'Gaz naturel' }
+    { code: '090111', name: pick(language, 'Café non torréfié', 'Café non torréfié', 'بن غير محمص') },
+    { code: '180100', name: pick(language, 'Cacao en fèves', 'Cacao en fèves', 'الكاكاو حبوباً') },
+    { code: '270900', name: pick(language, 'Pétrole brut', 'Pétrole brut', 'النفط الخام') },
+    { code: '710812', name: pick(language, 'Or', 'Or', 'الذهب') },
+    { code: '520100', name: pick(language, 'Coton', 'Coton', 'القطن') },
+    { code: '271111', name: pick(language, 'Gaz naturel', 'Gaz naturel', 'الغاز الطبيعي') }
   ];
 
 
@@ -279,11 +284,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         setProductData({
           product: {
             hsCode: hsCode,
-            name: ai.product?.name || hsInfo.description_fr || `Produit HS ${hsCode}`,
+            name: ai.product?.name || hsInfo.description_fr || pick(language, `Produit HS ${hsCode}`, `Produit HS ${hsCode}`, `منتَج SH ${hsCode}`),
             hs2Code: ai.product?.hs2_code || chapter,
-            hs2Name: ai.product?.hs2_name || hsInfo.chapter_name_fr || `Chapitre ${chapter}`,
+            hs2Name: ai.product?.hs2_name || hsInfo.chapter_name_fr || pick(language, `Chapitre ${chapter}`, `Chapitre ${chapter}`, `الفصل ${chapter}`),
             hs4Code: ai.product?.hs4_code || hs4,
-            hs4Name: ai.product?.hs4_name || hsInfo.heading_name_fr || `Position ${hs4}`,
+            hs4Name: ai.product?.hs4_name || hsInfo.heading_name_fr || pick(language, `Position ${hs4}`, `Position ${hs4}`, `البند ${hs4}`),
             supplementaryUnitLabel: hsInfo.supplementary_unit_label || null
           },
           productionCapacities: (ai.production_capacities || []).map(p => ({
@@ -316,11 +321,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         setProductData({
           product: {
             hsCode: hsCode,
-            name: hsInfo.description_fr || hsInfo.description_en || `Produit HS ${hsCode}`,
+            name: hsInfo.description_fr || hsInfo.description_en || pick(language, `Produit HS ${hsCode}`, `Produit HS ${hsCode}`, `منتَج SH ${hsCode}`),
             hs2Code: chapter,
-            hs2Name: hsInfo.chapter_name_fr || `Chapitre ${chapter}`,
+            hs2Name: hsInfo.chapter_name_fr || pick(language, `Chapitre ${chapter}`, `Chapitre ${chapter}`, `الفصل ${chapter}`),
             hs4Code: hs4,
-            hs4Name: hsInfo.heading_name_fr || `Position ${hs4}`,
+            hs4Name: hsInfo.heading_name_fr || pick(language, `Position ${hs4}`, `Position ${hs4}`, `البند ${hs4}`),
             supplementaryUnitLabel: hsInfo.supplementary_unit_label || null
           },
           productionCapacities: [],
@@ -490,17 +495,17 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             <div className="text-center">
               <div className="flex justify-center items-center gap-2 mb-4 flex-wrap">
                 <Badge className="bg-white/20 text-white">
-                  Rapport d'Intelligence Marché
+                  {pick(language, "Rapport d'Intelligence Marché", "Rapport d'Intelligence Marché", 'تقرير استخبارات السوق')}
                 </Badge>
                 {productData.isAiGenerated && (
                   <Badge className="bg-emerald-500/30 text-white border-emerald-400">
                     <Sparkles className="h-3 w-3 mr-1" />
-                    Données réelles
+                    {pick(language, 'Données réelles', 'Données réelles', 'بيانات فعلية')}
                   </Badge>
                 )}
                 <OpportunityPdfExport
                   language={language}
-                  getSpec={() => {
+                  getSpec={(t, language) => {
                     const fr = language !== 'en';
                     const p = productData.product || {};
                     const usd = (v) => (v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : `$${Math.round(v || 0).toLocaleString()}`);
@@ -557,7 +562,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               </nav>
 
               <p className="text-sm text-white/80 mb-2">
-                Code HS6: {productData.product.hsCode}
+                {pick(language, 'Code HS6', 'Code HS6', 'رمز SH6')}: {productData.product.hsCode}
                 {productData.product.supplementaryUnitLabel && (
                   <span className="ml-2 inline-flex items-center rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold">
                     {t('opportunities.productAnalysisView.unit')} : {productData.product.supplementaryUnitLabel}

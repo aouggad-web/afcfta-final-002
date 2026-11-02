@@ -13,6 +13,8 @@ import {
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { pick } from '../../i18n/lang';
+import { getCountryName } from '../../utils/translations';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -141,9 +143,14 @@ export default function CountryComparison({ language = 'fr' }) {
 
   const nameA = AFCFTA_COUNTRIES.find(c => c.iso3 === countryA)?.name || countryA || 'A';
   const nameB = AFCFTA_COUNTRIES.find(c => c.iso3 === countryB)?.name || countryB || 'B';
+  // Noms affichés à l'écran (le PDF et l'API gardent les noms anglais).
+  const arName = (iso3) => (iso3 ? getCountryName(iso3, 'ar') : '');
+  const labelA = pick(lang, nameA, nameA, arName(countryA) || nameA);
+  const labelB = pick(lang, nameB, nameB, arName(countryB) || nameB);
+  const arrow = pick(lang, '→', '→', '←');
 
   // Rapport PDF de la comparaison : commerce bilatéral + indicateurs économiques.
-  const buildPdfSpec = () => {
+  const buildPdfSpec = (t, lang) => {
     if (!data) return null;
     const fr = lang !== 'en';
     const pair = (label, va, vb) => ({
@@ -206,7 +213,7 @@ export default function CountryComparison({ language = 'fr' }) {
               </SelectTrigger>
               <SelectContent>
                 {AFCFTA_COUNTRIES.filter(c => c.iso3 !== countryB).map(c => (
-                  <SelectItem key={c.iso3} value={c.iso3}>{c.name}</SelectItem>
+                  <SelectItem key={c.iso3} value={c.iso3}>{pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar'))}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -226,7 +233,7 @@ export default function CountryComparison({ language = 'fr' }) {
               </SelectTrigger>
               <SelectContent>
                 {AFCFTA_COUNTRIES.filter(c => c.iso3 !== countryA).map(c => (
-                  <SelectItem key={c.iso3} value={c.iso3}>{c.name}</SelectItem>
+                  <SelectItem key={c.iso3} value={c.iso3}>{pick(lang, c.name, c.name, getCountryName(c.iso3, 'ar'))}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -297,7 +304,7 @@ export default function CountryComparison({ language = 'fr' }) {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{nameA} → {nameB}</div>
+                  <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{labelA} {arrow} {labelB}</div>
                   <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--green)', fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)" }}>
                     {fmtMUSD(bilateral.exports_a_to_b_musd)}
                   </div>
@@ -313,7 +320,7 @@ export default function CountryComparison({ language = 'fr' }) {
                   </div>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{nameB} → {nameA}</div>
+                  <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{labelB} {arrow} {labelA}</div>
                   <div style={{ fontSize: 22, fontWeight: 800, color: '#4f8ef7', fontFamily: "var(--font-display, 'Cormorant Garamond', Georgia, serif)" }}>
                     {fmtMUSD(bilateral.exports_b_to_a_musd)}
                   </div>
@@ -325,16 +332,16 @@ export default function CountryComparison({ language = 'fr' }) {
           {/* Economic comparison */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
             <KpiChip label={t('opportunities.countryComparison.gdp')} valueA={econ.gdp_a_billion} valueB={econ.gdp_b_billion}
-              countryA={nameA} countryB={nameB}
+              countryA={labelA} countryB={labelB}
               format={v => v ? `$${Number(v).toFixed(1)}Bn` : '—'} color="var(--text)" />
             <KpiChip label={t('opportunities.countryComparison.growth')} valueA={econ.gdp_growth_a} valueB={econ.gdp_growth_b}
-              countryA={nameA} countryB={nameB}
+              countryA={labelA} countryB={labelB}
               format={v => v != null ? `${Number(v).toFixed(1)}%` : '—'} color="var(--green)" />
             <KpiChip label={t('opportunities.countryComparison.hdi')} valueA={econ.hdi_a} valueB={econ.hdi_b}
-              countryA={nameA} countryB={nameB}
+              countryA={labelA} countryB={labelB}
               format={v => v != null ? Number(v).toFixed(3) : '—'} color="var(--info)" />
             <KpiChip label={t('opportunities.countryComparison.inflation')} valueA={econ.inflation_a} valueB={econ.inflation_b}
-              countryA={nameA} countryB={nameB}
+              countryA={labelA} countryB={labelB}
               format={v => v != null ? `${Number(v).toFixed(1)}%` : '—'}
               color={Math.max(econ.inflation_a || 0, econ.inflation_b || 0) > 15 ? '#e05070' : 'var(--gold)'} />
           </div>
@@ -370,7 +377,7 @@ export default function CountryComparison({ language = 'fr' }) {
                 {comp.a_can_supply_to_b?.length > 0 && (
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--green)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      {nameA} → {nameB}
+                      {labelA} {arrow} {labelB}
                     </div>
                     {comp.a_can_supply_to_b.map((item, i) => (
                       <ProductFlowRow key={i} item={item} lang={lang} />
@@ -380,7 +387,7 @@ export default function CountryComparison({ language = 'fr' }) {
                 {comp.b_can_supply_to_a?.length > 0 && (
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--info)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      {nameB} → {nameA}
+                      {labelB} {arrow} {labelA}
                     </div>
                     {comp.b_can_supply_to_a.map((item, i) => (
                       <ProductFlowRow key={i} item={item} lang={lang} />
