@@ -138,7 +138,7 @@ def test_le_json_reprend_le_csv_archive():
     assert [p["code"] for p in corps["prelevements"]][:2] == ["DD", "TCI"]
     cheval = next(p for p in corps["positions"] if p["position"] == "01011010")
     assert cheval["droits"]["DD"] == 5.0
-    assert cheval["total_pour_100_caf"] == 28.49
+    assert cheval["total_pour_100_caf"] == 28.7  # CIA 0,2 % comprise
     assert cheval["etat"] == "COMPLET"
     assert all(n in corps["notes"] for n in cheval["notes"])
 
