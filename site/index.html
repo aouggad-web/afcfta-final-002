@@ -113,6 +113,16 @@
         margin-right: 8px;
       }
       .network-note { margin: 14px auto 0; max-width: 680px; color: #9AA6B6; font-size: 12px; text-align: center; }
+
+      /* Vidéo de présentation (1 min, muette, sous-titres FR/EN incrustés). */
+      .video { margin-top: 24px; }
+      .video h2 { margin: 0 0 12px; font-size: clamp(20px, 3.4vw, 28px); color: var(--brand); text-align: center; }
+      .video h2 .en { display: block; margin-top: 2px; color: var(--muted); font-size: 15px; font-weight: 500; }
+      .video video {
+        display: block; width: 100%; height: auto; aspect-ratio: 16 / 9;
+        border-radius: 16px; border: 1px solid rgba(212, 137, 26, 0.18); background: #0C1219;
+      }
+      .video-note { margin: 10px auto 0; max-width: 680px; color: var(--muted); font-size: 13px; text-align: center; }
       a { color: var(--brand); }
     </style>
   </head>
@@ -150,6 +160,20 @@
 
           <a class="cta" href="mailto:contact@afcfta-zlecaf.com">Nous contacter · Contact us</a>
         </div>
+
+        <section class="video" aria-labelledby="video-titre">
+          <h2 id="video-titre">La plateforme en 1 minute <span class="en" lang="en">The platform in 1 minute</span></h2>
+          <video controls muted playsinline preload="metadata" width="1280" height="720"
+                 poster="video/presentation-zlecaf.jpg" aria-describedby="video-desc">
+            <source src="video/presentation-zlecaf.mp4" type="video/mp4" />
+            <a href="video/presentation-zlecaf.mp4">Télécharger la vidéo (MP4) · Download the video (MP4)</a>
+          </video>
+          <p class="video-note" id="video-desc">
+            Vidéo sans son, sous-titrée en français et en anglais : calcul Égypte → Kenya (SH 1806.90),
+            droits NPF et préférence ZLECAf, journal de calcul, règles d’origine, réseau ZLECAf.
+            <span lang="en">Silent video with French and English captions.</span>
+          </p>
+        </section>
 
 <!-- RESEAU:START -->
 <section class="network" aria-labelledby="reseau-titre">
