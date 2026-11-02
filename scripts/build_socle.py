@@ -5966,6 +5966,7 @@ def _droit_douane_rdc(positions, compteurs):
             for cle in ("specifique", "compose", "regle_composee", "expression_brute"):
                 d.pop(cle, None)
             d["taux"] = regle[0] if regle else None
+            d["libelle"] = "Droit de douane"
             d["note"] = (regle[1] + " " + NOTE_DD_COD_TEC) if regle else NOTE_DD_COD
             if regle:
                 d["source"] = _SOURCE_DD_COD_LF2026
