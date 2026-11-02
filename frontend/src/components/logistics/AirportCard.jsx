@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
+import { pick, intlLocale } from '../../i18n/lang';
 
 export default function AirportCard({ airport, onOpenDetails, language = 'fr' }) {
   const texts = {
@@ -27,6 +28,18 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
       cargoAirlines: "Cargo Airlines",
       regularRoutes: "Regular Routes",
       viewDetails: "View full details"
+    },
+    ar: {
+      freightCargo: "الشحن (البضائع)",
+      mail: "البريد",
+      movements: "الحركات",
+      tonsYear: "طن/سنة",
+      aircraftYear: "طائرة/سنة",
+      annualCapacity: "الطاقة السنوية",
+      cargoTerminal: "محطة الشحن",
+      cargoAirlines: "شركات الشحن الجوي",
+      regularRoutes: "الخطوط المنتظمة",
+      viewDetails: "عرض التفاصيل الكاملة"
     }
   };
 
@@ -34,9 +47,7 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en'
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   const stats = airport?.historical_stats?.[0] || {};
@@ -94,7 +105,7 @@ export default function AirportCard({ airport, onOpenDetails, language = 'fr' })
           <div className="bg-[var(--afcfta-card2)] p-2 rounded">
             <p className="text-xs font-semibold text-[var(--text)]">📊 {t.annualCapacity}</p>
             <p className="text-sm font-bold text-[var(--text)]">
-              {formatNumber(airport.annual_capacity_tons)} t/{language === 'en' ? 'yr' : 'an'}
+              {formatNumber(airport.annual_capacity_tons)} {pick(language, 't/an', 't/yr', 'طن/سنة')}
             </p>
           </div>
           <div className="bg-[var(--afcfta-card2)] p-2 rounded">

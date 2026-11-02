@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import { intlLocale } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -48,6 +49,18 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
       cargoMovements: "Cargo Movements",
       viewDetails: "View full details",
       tons: "tons"
+    },
+    ar: {
+      legend: "دليل الرموز",
+      majorHub: "مركز رئيسي (>400 ألف طن)",
+      largeHub: "مركز كبير (200-400 ألف طن)",
+      mediumHub: "مركز متوسط (100-200 ألف طن)",
+      regional: "إقليمي (<100 ألف طن)",
+      freight: "الشحن",
+      mail: "البريد",
+      cargoMovements: "حركات الشحن",
+      viewDetails: "عرض التفاصيل الكاملة",
+      tons: "طن"
     }
   };
 
@@ -108,9 +121,7 @@ export default function AirLogisticsMap({ onAirportClick, selectedCountry, langu
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en' 
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   return (

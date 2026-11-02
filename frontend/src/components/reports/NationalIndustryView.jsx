@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { nomPays } from "../../utils/iso3166";
+import { pick, intlLocale } from "../../i18n/lang";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -41,17 +42,13 @@ const ligne = { borderTop: "1px solid var(--afcfta-border, rgba(0,0,0,0.06))" };
 
 /* Nature d'un chiffre : officiel, calculé à partir de l'officiel, estimation.
    Une estimation ne doit jamais se lire comme une mesure. */
-function NatureBadge({ nature, confiance, fr }) {
+function NatureBadge({ nature, confiance, language }) {
   const estime = nature === "estimation";
   const texte = estime
-    ? `${fr ? "Estimation" : "Estimate"}${confiance ? ` · ${fr ? "confiance" : "confidence"} ${confiance}` : ""}`
+    ? `${pick(language, "Estimation", "Estimate", "تقدير")}${confiance ? ` · ${pick(language, "confiance", "confidence", "الثقة")} ${confiance}` : ""}`
     : nature === "calcul_officiel"
-    ? fr
-      ? "Calculé (officiel)"
-      : "Derived (official)"
-    : fr
-    ? "Officiel"
-    : "Official";
+    ? pick(language, "Calculé (officiel)", "Derived (official)", "محسوب (رسمي)")
+    : pick(language, "Officiel", "Official", "رسمي");
   return (
     <span
       data-testid={`nature-${nature}`}
@@ -71,7 +68,7 @@ function NatureBadge({ nature, confiance, fr }) {
   );
 }
 
-function IndustrieBloc({ ind, fr }) {
+function IndustrieBloc({ ind, fr, language }) {
   const t24 = ind.total["2024"];
   const t25 = ind.total["2025"];
   const branches = [...ind.branches].sort((a, b) => b.annees["2024"].va_musd - a.annees["2024"].va_musd);
@@ -79,42 +76,42 @@ function IndustrieBloc({ ind, fr }) {
   const horsRaffinage = raff ? t24.va_musd - raff.annees["2024"].va_musd : null;
   return (
     <div style={card} data-testid="dza-industrie">
-      <div style={titre}>{fr ? "Industrie manufacturière par branche" : "Manufacturing by branch"}</div>
+      <div style={titre}>{pick(language, "Industrie manufacturière par branche", "Manufacturing by branch", "الصناعة التحويلية حسب الفرع")}</div>
       <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginBottom: 12 }}>
         <div>
-          <div style={muted}>{fr ? "Valeur ajoutée 2024" : "Value added 2024"}</div>
+          <div style={muted}>{pick(language, "Valeur ajoutée 2024", "Value added 2024", "القيمة المضافة 2024")}</div>
           <div style={{ fontSize: 20, fontWeight: 700 }}>{montant(t24.va_musd * 1e6, fr)}</div>
-          <NatureBadge nature="officiel" fr={fr} />
+          <NatureBadge nature="officiel" language={language} />
         </div>
         <div>
-          <div style={muted}>{fr ? "Hors raffinage" : "Excluding refining"}</div>
+          <div style={muted}>{pick(language, "Hors raffinage", "Excluding refining", "دون التكرير")}</div>
           <div style={{ fontSize: 20, fontWeight: 700 }}>{montant(horsRaffinage * 1e6, fr)}</div>
-          <NatureBadge nature="officiel" fr={fr} />
+          <NatureBadge nature="officiel" language={language} />
         </div>
         <div>
-          <div style={muted}>{fr ? "Production brute 2024" : "Gross output 2024"}</div>
+          <div style={muted}>{pick(language, "Production brute 2024", "Gross output 2024", "الإنتاج الإجمالي 2024")}</div>
           <div style={{ fontSize: 20, fontWeight: 700 }}>{montant(t24.production_brute_musd * 1e6, fr)}</div>
-          <NatureBadge nature="officiel" fr={fr} />
+          <NatureBadge nature="officiel" language={language} />
         </div>
         <div>
-          <div style={muted}>{fr ? "Croissance en volume 2025" : "Volume growth 2025"}</div>
+          <div style={muted}>{pick(language, "Croissance en volume 2025", "Volume growth 2025", "النمو الحجمي 2025")}</div>
           <div style={{ fontSize: 20, fontWeight: 700 }}>{signe(t25.croissance_volume_pct.central, fr)}</div>
           <div style={muted}>
-            {fr ? "fourchette" : "range"} {signe(t25.croissance_volume_pct.bas, fr)} {fr ? "à" : "to"}{" "}
+            {pick(language, "fourchette", "range", "النطاق")} {signe(t25.croissance_volume_pct.bas, fr)} {pick(language, "à", "to", "إلى")}{" "}
             {signe(t25.croissance_volume_pct.haut, fr)}
           </div>
-          <NatureBadge nature="estimation" fr={fr} />
+          <NatureBadge nature="estimation" language={language} />
         </div>
       </div>
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={{ ...th, width: "34%" }}>{fr ? "Branche" : "Branch"}</th>
-              <th style={thNum}>{fr ? "VA 2024" : "VA 2024"}</th>
-              <th style={thNum}>{fr ? "Part privée" : "Private share"}</th>
-              <th style={thNum}>{fr ? "Volume 2024" : "Volume 2024"}</th>
-              <th style={thNum}>{fr ? "Volume 2025 (estimation)" : "Volume 2025 (estimate)"}</th>
+              <th style={{ ...th, width: "34%" }}>{pick(language, "Branche", "Branch", "الفرع")}</th>
+              <th style={thNum}>{pick(language, "VA 2024", "VA 2024", "القيمة المضافة 2024")}</th>
+              <th style={thNum}>{pick(language, "Part privée", "Private share", "حصة القطاع الخاص")}</th>
+              <th style={thNum}>{pick(language, "Volume 2024", "Volume 2024", "الحجم 2024")}</th>
+              <th style={thNum}>{pick(language, "Volume 2025 (estimation)", "Volume 2025 (estimate)", "الحجم 2025 (تقدير)")}</th>
             </tr>
           </thead>
           <tbody>
@@ -135,7 +132,7 @@ function IndustrieBloc({ ind, fr }) {
                     <span style={muted}>
                       [{signe(e.croissance_volume_pct.bas, fr)} ; {signe(e.croissance_volume_pct.haut, fr)}]
                     </span>{" "}
-                    <NatureBadge nature="estimation" confiance={e.confiance} fr={fr} />
+                    <NatureBadge nature="estimation" confiance={e.confiance} language={language} />
                   </td>
                 </tr>
               );
@@ -145,7 +142,7 @@ function IndustrieBloc({ ind, fr }) {
       </div>
       <details style={{ marginTop: 10 }}>
         <summary style={{ ...muted, cursor: "pointer" }}>
-          {fr ? "Méthode de l'estimation 2025, limites et sources" : "2025 estimate method, limits and sources"}
+          {pick(language, "Méthode de l'estimation 2025, limites et sources", "2025 estimate method, limits and sources", "منهجية تقدير 2025، وحدوده ومصادره")}
         </summary>
         <p style={{ ...muted, lineHeight: 1.5 }}>{ind.methode_2025}</p>
         <ul style={{ ...muted, lineHeight: 1.5, paddingLeft: 18 }}>
@@ -164,10 +161,8 @@ function IndustrieBloc({ ind, fr }) {
         </ul>
       </details>
       <div style={{ ...muted, marginTop: 8 }}>
-        {fr ? "Source" : "Source"} : {ind.sources.ons_comptes.titre}.{" "}
-        {fr
-          ? "Valeurs 2025 aux prix et au taux de change de 2024."
-          : "2025 values at 2024 prices and exchange rate."}
+        {pick(language, "Source", "Source", "المصدر")} : {ind.sources.ons_comptes.titre}.{" "}
+        {pick(language, "Valeurs 2025 aux prix et au taux de change de 2024.", "2025 values at 2024 prices and exchange rate.", "قيم 2025 بأسعار وسعر صرف 2024.")}
       </div>
     </div>
   );
@@ -176,15 +171,15 @@ function IndustrieBloc({ ind, fr }) {
 /* Fiabilité des preuves (consignes de collecte) : A officiel ou base de référence,
    B presse citant une source officielle ou une entreprise, C ordre de grandeur. */
 const FIABILITE = {
-  A: { fr: "officiel ou base de référence", en: "official or reference database" },
-  B: { fr: "presse citant une source officielle ou une entreprise", en: "press citing an official or company source" },
-  C: { fr: "ordre de grandeur", en: "order of magnitude" },
+  A: { fr: "officiel ou base de référence", en: "official or reference database", ar: "رسمي أو قاعدة بيانات مرجعية" },
+  B: { fr: "presse citant une source officielle ou une entreprise", en: "press citing an official or company source", ar: "صحافة تستشهد بمصدر رسمي أو بشركة" },
+  C: { fr: "ordre de grandeur", en: "order of magnitude", ar: "رتبة المقدار" },
 };
 
-function Chiffre({ c, fr }) {
+function Chiffre({ c, language }) {
   const valeur =
     typeof c.valeur === "number"
-      ? c.valeur.toLocaleString(fr ? "fr-FR" : "en-US", { maximumFractionDigits: 2 }).replace(/\u202F/g, NBSP)
+      ? c.valeur.toLocaleString(intlLocale(language), { maximumFractionDigits: 2 }).replace(/\u202F/g, NBSP)
       : c.valeur;
   const f = FIABILITE[c.fiabilite];
   return (
@@ -193,24 +188,24 @@ function Chiffre({ c, fr }) {
         {c.annee} · {valeur} {c.unite}
       </strong>{" "}
       <span style={muted}>
-        — {c.perimetre} · {fr ? "fiabilité" : "reliability"} {c.fiabilite}
-        {f ? ` (${fr ? f.fr : f.en})` : ""} ·{" "}
+        — {c.perimetre} · {pick(language, "fiabilité", "reliability", "الموثوقية")} {c.fiabilite}
+        {f ? ` (${pick(language, f.fr, f.en, f.ar)})` : ""} ·{" "}
         <a href={c.source_url} target="_blank" rel="noreferrer" title={c.extrait}>
-          {c.source_titre || (fr ? "source" : "source")}
+          {c.source_titre || (pick(language, "source", "source", "المصدر"))}
         </a>
       </span>
     </li>
   );
 }
 
-function FicheFiliere({ f, fr }) {
+function FicheFiliere({ f, fr, language }) {
   const liste = (titreListe, chiffres, testid) =>
     chiffres.length ? (
       <div data-testid={testid}>
         <div style={{ ...muted, fontWeight: 600 }}>{titreListe}</div>
         <ul style={{ margin: "4px 0 0", paddingLeft: 18, fontSize: 13 }}>
           {chiffres.map((c, i) => (
-            <Chiffre key={i} c={c} fr={fr} />
+            <Chiffre key={i} c={c} language={language} />
           ))}
         </ul>
       </div>
@@ -227,25 +222,25 @@ function FicheFiliere({ f, fr }) {
       }}
     >
       <div style={titre}>
-        {fr ? "La filière en Algérie" : "The sector in Algeria"} · {f.libelle}
+        {pick(language, "La filière en Algérie", "The sector in Algeria", "الشعبة في الجزائر")} · {f.libelle}
       </div>
       {f.synthese && <p style={{ fontSize: 13, lineHeight: 1.5, margin: 0 }}>{f.synthese}</p>}
       {/* périmètres, entreprises et écarts ne sont collectés qu'en français */}
       {!fr && (
         <div data-testid="filiere-detail-fr" style={muted}>
-          Details below are available in French only.
+          {pick(language, "Details below are available in French only.", "Details below are available in French only.", "التفاصيل أدناه متوفرة بالفرنسية فقط.")}
         </div>
       )}
-      {liste(fr ? "Production" : "Production", f.production, "filiere-production")}
-      {liste(fr ? "Capacité installée" : "Installed capacity", f.capacite, "filiere-capacite")}
+      {liste(pick(language, "Production", "Production", "الإنتاج"), f.production, "filiere-production")}
+      {liste(pick(language, "Capacité installée", "Installed capacity", "القدرة المركَّبة"), f.capacite, "filiere-capacite")}
       {!f.production.length && !f.capacite.length && (
         <div style={muted}>
-          — {fr ? "Aucun chiffre de production ou de capacité sourcé pour 2021-2025." : "No sourced production or capacity figure for 2021-2025."}
+          — {pick(language, "Aucun chiffre de production ou de capacité sourcé pour 2021-2025.", "No sourced production or capacity figure for 2021-2025.", "لا يوجد رقم موثَّق المصدر للإنتاج أو القدرة للفترة 2021-2025.")}
         </div>
       )}
       {f.entreprises.length > 0 && (
         <div>
-          <div style={{ ...muted, fontWeight: 600 }}>{fr ? "Entreprises" : "Companies"}</div>
+          <div style={{ ...muted, fontWeight: 600 }}>{pick(language, "Entreprises", "Companies", "الشركات")}</div>
           <ul style={{ margin: "4px 0 0", paddingLeft: 18, fontSize: 13 }}>
             {f.entreprises.map((e, i) => (
               <li key={i} style={{ marginBottom: 4 }}>
@@ -253,7 +248,7 @@ function FicheFiliere({ f, fr }) {
                 {e.annee ? ` (${e.annee})` : ""}{" "}
                 {e.source_url && (
                   <a href={e.source_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>
-                    {fr ? "source" : "source"}
+                    {pick(language, "source", "source", "المصدر")}
                   </a>
                 )}
               </li>
@@ -264,7 +259,7 @@ function FicheFiliere({ f, fr }) {
       {f.contradictions.length > 0 && (
         <details data-testid="filiere-ecarts">
           <summary style={{ ...muted, cursor: "pointer" }}>
-            {fr ? "Écarts entre sources" : "Discrepancies between sources"} ({f.contradictions.length})
+            {pick(language, "Écarts entre sources", "Discrepancies between sources", "الفروق بين المصادر")} ({f.contradictions.length})
           </summary>
           <ul style={{ ...muted, lineHeight: 1.5, paddingLeft: 18 }}>
             {f.contradictions.map((c) => (
@@ -277,7 +272,7 @@ function FicheFiliere({ f, fr }) {
   );
 }
 
-function FicheProduit({ fiche, fr }) {
+function FicheProduit({ fiche, fr, language }) {
   if (!fiche.available) {
     return <div style={{ ...card, ...muted }}>— {fiche.message}</div>;
   }
@@ -288,17 +283,17 @@ function FicheProduit({ fiche, fr }) {
       <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }} data-testid={testid}>
         <thead>
           <tr>
-            <th style={th}>{fr ? "Pays" : "Country"}</th>
-            <th style={thNum}>{fr ? "Importations 2024" : "Imports 2024"}</th>
-            <th style={thNum}>{fr ? "Depuis 2019" : "Since 2019"}</th>
-            <th style={thNum}>{fr ? "Part de l'Algérie" : "Algeria's share"}</th>
+            <th style={th}>{pick(language, "Pays", "Country", "البلد")}</th>
+            <th style={thNum}>{pick(language, "Importations 2024", "Imports 2024", "الواردات 2024")}</th>
+            <th style={thNum}>{pick(language, "Depuis 2019", "Since 2019", "منذ 2019")}</th>
+            <th style={thNum}>{pick(language, "Part de l'Algérie", "Algeria's share", "حصة الجزائر")}</th>
           </tr>
         </thead>
         <tbody>
           {liste.map((m) => (
             <tr key={m.iso3} style={ligne}>
               <td style={td}>
-                {nomPays(m.iso3, m.pays, fr ? "fr" : "en")} <span style={muted}>({m.iso3})</span>
+                {nomPays(m.iso3, m.pays, pick(language, "fr", "en", "ar"))} <span style={muted}>({m.iso3})</span>
               </td>
               <td style={tdNum}>{montant(m.importations_2024_usd, fr)}</td>
               <td style={tdNum}>{signe(m.evolution_2019_2024_pct, fr)}</td>
@@ -308,7 +303,7 @@ function FicheProduit({ fiche, fr }) {
         </tbody>
       </table>
     ) : (
-      <div style={muted}>— {fr ? "Aucun marché ne passe le filtre." : "No market passes the filter."}</div>
+      <div style={muted}>— {pick(language, "Aucun marché ne passe le filtre.", "No market passes the filter.", "لا توجد سوق تستوفي معايير التصفية.")}</div>
     );
   return (
     <div style={{ ...card, display: "flex", flexDirection: "column", gap: 14 }} data-testid="fiche-produit">
@@ -317,12 +312,12 @@ function FicheProduit({ fiche, fr }) {
           {fiche.libelle} <span style={{ ...muted, fontWeight: 400 }}>(SH {fiche.hs6})</span>
         </div>
         <div style={muted}>
-          {fr ? "Libellé" : "Label"} : {fiche.libelle_source}
+          {pick(language, "Libellé", "Label", "التسمية")} : {fiche.libelle_source}
         </div>
       </div>
-      {fiche.filiere && <FicheFiliere f={fiche.filiere} fr={fr} />}
+      {fiche.filiere && <FicheFiliere f={fiche.filiere} fr={fr} language={language} />}
       <div>
-        <div style={titre}>{fr ? "Exportations de l'Algérie" : "Algeria's exports"}</div>
+        <div style={titre}>{pick(language, "Exportations de l'Algérie", "Algeria's exports", "صادرات الجزائر")}</div>
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "4px 10px", fontSize: 13 }}>
           {serie.map((e) => (
             <React.Fragment key={e.annee}>
@@ -339,45 +334,45 @@ function FicheProduit({ fiche, fr }) {
               </span>
               <span style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
                 {montant(e.valeur_usd, fr)}
-                {e.tonnes ? <span style={muted}> · {Math.round(e.tonnes).toLocaleString(fr ? "fr-FR" : "en-US")} t</span> : null}
+                {e.tonnes ? <span style={muted}> · {Math.round(e.tonnes).toLocaleString(intlLocale(language))} t</span> : null}
               </span>
             </React.Fragment>
           ))}
         </div>
       </div>
       <div>
-        <div style={titre}>{fr ? "Premières destinations en 2024" : "Top destinations in 2024"}</div>
+        <div style={titre}>{pick(language, "Premières destinations en 2024", "Top destinations in 2024", "أهم الوجهات في 2024")}</div>
         <div style={{ fontSize: 13 }}>
           {fiche.destinations_2024.slice(0, 10).map((d, i) => (
             <span key={d.iso3}>
               {i > 0 ? " · " : ""}
-              {nomPays(d.iso3, d.pays, fr ? "fr" : "en")} {montant(d.valeur_usd, fr)}
+              {nomPays(d.iso3, d.pays, pick(language, "fr", "en", "ar"))} {montant(d.valeur_usd, fr)}
             </span>
           ))}
         </div>
       </div>
       <div>
-        <div style={titre}>{fr ? "Marchés où l'Algérie est absente ou marginale — monde" : "Markets where Algeria is absent or marginal — world"}</div>
+        <div style={titre}>{pick(language, "Marchés où l'Algérie est absente ou marginale — monde", "Markets where Algeria is absent or marginal — world", "الأسواق التي تغيب عنها الجزائر أو يكون حضورها فيها هامشيًا — العالم")}</div>
         {tableMarches(fiche.marches_absents.monde, "absents-monde")}
       </div>
       <div>
-        <div style={titre}>{fr ? "Marchés africains (ZLECAf) où l'Algérie est absente ou marginale" : "African (AfCFTA) markets where Algeria is absent or marginal"}</div>
+        <div style={titre}>{pick(language, "Marchés africains (ZLECAf) où l'Algérie est absente ou marginale", "African (AfCFTA) markets where Algeria is absent or marginal", "الأسواق الأفريقية (زليكاف) التي تغيب عنها الجزائر أو يكون حضورها فيها هامشيًا")}</div>
         {tableMarches(fiche.marches_absents.afrique, "absents-afrique")}
       </div>
       <div style={{ ...muted, lineHeight: 1.5 }}>
         {fiche.marches_absents.critere.note}{" "}
-        {fr ? "Seuils" : "Thresholds"} : {montant(fiche.marches_absents.critere.importations_2024_min_usd, fr)},{" "}
+        {pick(language, "Seuils", "Thresholds", "العتبات")} : {montant(fiche.marches_absents.critere.importations_2024_min_usd, fr)},{" "}
         {pourcent(fiche.marches_absents.critere.part_pays_max_pct, fr)}.
       </div>
       <div style={{ ...muted, lineHeight: 1.5 }}>
-        {fr ? "Source" : "Source"} : {fiche.source}. {fiche.limites.join(" ")}
+        {pick(language, "Source", "Source", "المصدر")} : {fiche.source}. {fiche.limites.join(" ")}
       </div>
     </div>
   );
 }
 
-export default function NationalIndustryView({ fr }) {
-  const lang = fr ? "fr" : "en";
+export default function NationalIndustryView({ fr, language = fr ? "fr" : "en" }) {
+  const lang = language === "en" ? "en" : "fr";
   const [ind, setInd] = useState(null);
   const [exp, setExp] = useState(null);
   const [region, setRegion] = useState("monde");
@@ -390,8 +385,8 @@ export default function NationalIndustryView({ fr }) {
     axios
       .get(`${API}/industrie-nationale/DZA?lang=${lang}`)
       .then((r) => setInd(r.data))
-      .catch(() => setErreur(fr ? "Données indisponibles." : "Data unavailable."));
-  }, [lang, fr]);
+      .catch(() => setErreur(pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة.")));
+  }, [lang, fr, language]);
 
   useEffect(() => {
     axios
@@ -399,8 +394,8 @@ export default function NationalIndustryView({ fr }) {
         `${API}/industrie-nationale/DZA/exportations?lang=${lang}&region=${region}&limite=25&hors_hydrocarbures=${horsHydro}`
       )
       .then((r) => setExp(r.data))
-      .catch(() => setErreur(fr ? "Données indisponibles." : "Data unavailable."));
-  }, [lang, region, horsHydro, fr]);
+      .catch(() => setErreur(pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة.")));
+  }, [lang, region, horsHydro, fr, language]);
 
   const ouvrir = useCallback(
     (code) => {
@@ -410,24 +405,22 @@ export default function NationalIndustryView({ fr }) {
       axios
         .get(`${API}/industrie-nationale/DZA/exportations/${c}?lang=${lang}`)
         .then((r) => setFiche(r.data))
-        .catch(() => setErreur(fr ? "Données indisponibles." : "Data unavailable."));
+        .catch(() => setErreur(pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة.")));
     },
-    [lang, fr]
+    [lang, fr, language]
   );
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
       <div style={muted}>
-        {fr
-          ? "Ce que l'Algérie produit et exporte, et où la demande l'attend : pour les exportateurs algériens et les acheteurs africains."
-          : "What Algeria produces and exports, and where demand awaits: for Algerian exporters and African buyers."}
+        {pick(language, "Ce que l'Algérie produit et exporte, et où la demande l'attend : pour les exportateurs algériens et les acheteurs africains.", "What Algeria produces and exports, and where demand awaits: for Algerian exporters and African buyers.", "ما تنتجه الجزائر وتصدّره، وأين ينتظرها الطلب: للمصدِّرين الجزائريين والمشترين الأفارقة.")}
       </div>
       {erreur && <div style={{ ...card, color: "#c8102e" }}>{erreur}</div>}
-      {ind?.available && <IndustrieBloc ind={ind} fr={fr} />}
+      {ind?.available && <IndustrieBloc ind={ind} fr={fr} language={language} />}
 
       <div style={card} data-testid="dza-exportations">
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: 10 }}>
-          <div style={{ ...titre, marginBottom: 0 }}>{fr ? "Exportations par produit en 2024" : "Exports by product in 2024"}</div>
+          <div style={{ ...titre, marginBottom: 0 }}>{pick(language, "Exportations par produit en 2024", "Exports by product in 2024", "الصادرات حسب المنتج في 2024")}</div>
           {["monde", "afrique"].map((r) => (
             <button
               key={r}
@@ -436,7 +429,7 @@ export default function NationalIndustryView({ fr }) {
               className={`afcfta-btn ${region === r ? "afcfta-btn-primary" : "afcfta-btn-secondary"}`}
               style={{ padding: "4px 12px", borderRadius: 8, fontSize: 12 }}
             >
-              {r === "monde" ? (fr ? "Monde" : "World") : fr ? "Afrique" : "Africa"}
+              {r === "monde" ? (pick(language, "Monde", "World", "العالم")) : pick(language, "Afrique", "Africa", "أفريقيا")}
             </button>
           ))}
           <label
@@ -448,14 +441,14 @@ export default function NationalIndustryView({ fr }) {
               onChange={(e) => setHorsHydro(e.target.checked)}
               data-testid="hors-hydrocarbures"
             />
-            {fr ? "Hors hydrocarbures (chapitre 27)" : "Excluding hydrocarbons (chapter 27)"}
+            {pick(language, "Hors hydrocarbures (chapitre 27)", "Excluding hydrocarbons (chapter 27)", "دون المحروقات (الفصل 27)")}
           </label>
           <span style={{ flex: 1 }} />
           <input
             value={hs6}
             onChange={(e) => setHs6(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && ouvrir(hs6)}
-            placeholder={fr ? "Code SH6" : "HS6 code"}
+            placeholder={pick(language, "Code SH6", "HS6 code", "رمز SH6")}
             data-testid="dza-hs6"
             style={{ padding: "6px 10px", borderRadius: 8, width: 110 }}
           />
@@ -464,7 +457,7 @@ export default function NationalIndustryView({ fr }) {
             className="afcfta-btn afcfta-btn-secondary"
             style={{ padding: "4px 12px", borderRadius: 8, fontSize: 12 }}
           >
-            {fr ? "Ouvrir" : "Open"}
+            {pick(language, "Ouvrir", "Open", "فتح")}
           </button>
           <button
             onClick={() => ouvrir("121292")}
@@ -472,7 +465,7 @@ export default function NationalIndustryView({ fr }) {
             className="afcfta-btn afcfta-btn-secondary"
             style={{ padding: "4px 12px", borderRadius: 8, fontSize: 12 }}
           >
-            {fr ? "Exemple agricole : caroube" : "Farm example: carob"}
+            {pick(language, "Exemple agricole : caroube", "Farm example: carob", "مثال زراعي: الخرّوب")}
           </button>
         </div>
         {exp?.available && (
@@ -480,11 +473,11 @@ export default function NationalIndustryView({ fr }) {
             <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
               <thead>
                 <tr>
-                  <th style={{ ...th, width: "44%" }}>{fr ? "Produit" : "Product"}</th>
-                  <th style={thNum}>{fr ? "Exportations" : "Exports"}</th>
-                  <th style={thNum}>{fr ? "vers l'Afrique" : "to Africa"}</th>
-                  <th style={thNum}>{fr ? "Demande mondiale" : "World demand"}</th>
-                  <th style={thNum}>{fr ? "Part de l'Algérie" : "Algeria's share"}</th>
+                  <th style={{ ...th, width: "44%" }}>{pick(language, "Produit", "Product", "المنتج")}</th>
+                  <th style={thNum}>{pick(language, "Exportations", "Exports", "الصادرات")}</th>
+                  <th style={thNum}>{pick(language, "vers l'Afrique", "to Africa", "نحو أفريقيا")}</th>
+                  <th style={thNum}>{pick(language, "Demande mondiale", "World demand", "الطلب العالمي")}</th>
+                  <th style={thNum}>{pick(language, "Part de l'Algérie", "Algeria's share", "حصة الجزائر")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -500,9 +493,9 @@ export default function NationalIndustryView({ fr }) {
                       {p.fiche_filiere && (
                         <span
                           style={{ ...muted, marginLeft: 6, fontWeight: 600, color: "var(--info, #175C77)" }}
-                          title={fr ? "Fiche filière : production, capacités, entreprises" : "Sector sheet: production, capacity, companies"}
+                          title={pick(language, "Fiche filière : production, capacités, entreprises", "Sector sheet: production, capacity, companies", "بطاقة الشعبة: الإنتاج، والقدرات، والشركات")}
                         >
-                          {fr ? "· fiche filière" : "· sector sheet"}
+                          {pick(language, "· fiche filière", "· sector sheet", "· بطاقة الشعبة")}
                         </span>
                       )}
                     </td>
@@ -515,13 +508,13 @@ export default function NationalIndustryView({ fr }) {
               </tbody>
             </table>
             <div style={{ ...muted, marginTop: 8, lineHeight: 1.5 }}>
-              {fr ? "Source" : "Source"} : {exp.source}. {exp.limites.join(" ")}
+              {pick(language, "Source", "Source", "المصدر")} : {exp.source}. {exp.limites.join(" ")}
             </div>
           </div>
         )}
       </div>
 
-      {fiche && <FicheProduit fiche={fiche} fr={fr} />}
+      {fiche && <FicheProduit fiche={fiche} fr={fr} language={language} />}
     </div>
   );
 }

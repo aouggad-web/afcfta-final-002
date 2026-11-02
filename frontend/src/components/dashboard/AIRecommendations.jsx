@@ -4,9 +4,19 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { apiV2 } from '../../services/api-v2';
 import { aiHelpers } from '../../utils/ai-helpers';
+import { pick } from '../../i18n/lang';
 
 const SECTORS = ['Agriculture', 'Manufacturing', 'Technology', 'Energy', 'Infrastructure', 'Finance'];
 const RISK_LEVELS = ['low', 'medium', 'high'];
+const RISK_AR = { low: 'مخاطر منخفضة', medium: 'مخاطر متوسطة', high: 'مخاطر مرتفعة' };
+const SECTOR_AR = {
+  Agriculture: 'الزراعة',
+  Manufacturing: 'الصناعة التحويلية',
+  Technology: 'التكنولوجيا',
+  Energy: 'الطاقة',
+  Infrastructure: 'البنية التحتية',
+  Finance: 'المالية',
+};
 
 const DEFAULT_PROFILE = {
   riskTolerance: 'medium',
@@ -39,16 +49,16 @@ function RecommendationCard({ rec, language }) {
         <p className="text-sm text-gray-600 leading-relaxed">{rec.description}</p>
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-green-50 rounded-lg p-2 text-center">
-            <p className="text-xs text-gray-500 mb-0.5">{language === 'fr' ? 'ROI Estimé' : 'Est. ROI'}</p>
+            <p className="text-xs text-gray-500 mb-0.5">{pick(language, 'ROI Estimé', 'Est. ROI', 'العائد المتوقع على الاستثمار')}</p>
             <p className="font-bold text-green-700 text-sm">{aiHelpers.formatROI(rec.roi)}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-2 text-center">
-            <p className="text-xs text-gray-500 mb-0.5">{language === 'fr' ? 'Taille' : 'Size'}</p>
+            <p className="text-xs text-gray-500 mb-0.5">{pick(language, 'Taille', 'Size', 'الحجم')}</p>
             <p className="font-bold text-gray-700 text-sm">{aiHelpers.formatInvestmentSize(rec.investmentSize)}</p>
           </div>
         </div>
         <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${riskLabel.color}`}>
-          {language === 'fr' ? riskLabel.fr : riskLabel.en}
+          {pick(language, riskLabel.fr, riskLabel.en, RISK_AR[String(rec.riskLevel).toLowerCase()] || riskLabel.fr)}
         </div>
         {rec.advantages?.length > 0 && (
           <ul className="space-y-1">
@@ -81,7 +91,7 @@ export default function AIRecommendations({ language = 'fr' }) {
       setFetched(true);
     } catch (err) {
       console.error('[AIRecommendations]', err);
-      setError(language === 'fr' ? 'Impossible de charger les recommandations.' : 'Failed to load recommendations.');
+      setError(pick(language, 'Impossible de charger les recommandations.', 'Failed to load recommendations.', 'تعذّر تحميل التوصيات.'));
     } finally {
       setLoading(false);
     }
@@ -101,12 +111,13 @@ export default function AIRecommendations({ language = 'fr' }) {
       <Card className="bg-gradient-to-r from-indigo-700 via-blue-700 to-blue-800 text-white shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl font-bold flex items-center gap-3">
-            🤖 {language === 'fr' ? 'Recommandations IA' : 'AI Recommendations'}
+            🤖 {pick(language, 'Recommandations IA', 'AI Recommendations', 'توصيات الذكاء الاصطناعي')}
           </CardTitle>
           <CardDescription className="text-blue-200">
-            {language === 'fr'
-              ? 'Personnalisez votre profil pour obtenir des recommandations adaptées'
-              : 'Customize your profile to get tailored recommendations'}
+            {pick(language,
+              'Personnalisez votre profil pour obtenir des recommandations adaptées',
+              'Customize your profile to get tailored recommendations',
+              'خصّص ملفك الشخصي للحصول على توصيات ملائمة')}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -115,14 +126,14 @@ export default function AIRecommendations({ language = 'fr' }) {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">
-            {language === 'fr' ? 'Votre Profil Investisseur' : 'Your Investor Profile'}
+            {pick(language, 'Votre Profil Investisseur', 'Your Investor Profile', 'ملفك الاستثماري')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Risk Tolerance */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {language === 'fr' ? 'Tolérance au Risque' : 'Risk Tolerance'}
+              {pick(language, 'Tolérance au Risque', 'Risk Tolerance', 'تحمّل المخاطر')}
             </label>
             <div className="flex gap-2 flex-wrap">
               {RISK_LEVELS.map((level) => (
@@ -135,9 +146,10 @@ export default function AIRecommendations({ language = 'fr' }) {
                       : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
                   }`}
                 >
-                  {language === 'fr'
-                    ? { low: 'Faible', medium: 'Moyen', high: 'Élevé' }[level]
-                    : { low: 'Low', medium: 'Medium', high: 'High' }[level]}
+                  {pick(language,
+                    { low: 'Faible', medium: 'Moyen', high: 'Élevé' }[level],
+                    { low: 'Low', medium: 'Medium', high: 'High' }[level],
+                    { low: 'منخفض', medium: 'متوسط', high: 'مرتفع' }[level])}
                 </button>
               ))}
             </div>
@@ -146,7 +158,7 @@ export default function AIRecommendations({ language = 'fr' }) {
           {/* Sectors */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {language === 'fr' ? 'Secteurs Préférés' : 'Preferred Sectors'}
+              {pick(language, 'Secteurs Préférés', 'Preferred Sectors', 'القطاعات المفضلة')}
             </label>
             <div className="flex gap-2 flex-wrap">
               {SECTORS.map((sector) => (
@@ -159,7 +171,7 @@ export default function AIRecommendations({ language = 'fr' }) {
                       : 'bg-white text-gray-600 border-gray-300 hover:border-indigo-400'
                   }`}
                 >
-                  {sector}
+                  {pick(language, sector, sector, SECTOR_AR[sector])}
                 </button>
               ))}
             </div>
@@ -168,7 +180,7 @@ export default function AIRecommendations({ language = 'fr' }) {
           {/* Investment Size */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {language === 'fr' ? 'Taille d\'Investissement' : 'Investment Size'}:{' '}
+              {pick(language, 'Taille d\'Investissement', 'Investment Size', 'حجم الاستثمار')}:{' '}
               <span className="font-bold text-blue-700">{aiHelpers.formatInvestmentSize(profile.investmentSize)}</span>
             </label>
             <input
@@ -191,8 +203,8 @@ export default function AIRecommendations({ language = 'fr' }) {
             className="w-full bg-blue-700 hover:bg-blue-800 text-white"
           >
             {loading
-              ? (language === 'fr' ? 'Analyse en cours...' : 'Analyzing...')
-              : (language === 'fr' ? 'Obtenir mes Recommandations' : 'Get My Recommendations')}
+              ? pick(language, 'Analyse en cours...', 'Analyzing...', 'جارٍ التحليل…')
+              : pick(language, 'Obtenir mes Recommandations', 'Get My Recommendations', 'احصل على توصياتي')}
           </Button>
         </CardContent>
       </Card>
@@ -208,7 +220,7 @@ export default function AIRecommendations({ language = 'fr' }) {
 
       {!loading && fetched && recommendations.length === 0 && (
         <div className="text-center py-10 text-gray-400">
-          {language === 'fr' ? 'Aucune recommandation trouvée.' : 'No recommendations found.'}
+          {pick(language, 'Aucune recommandation trouvée.', 'No recommendations found.', 'لم يتم العثور على توصيات.')}
         </div>
       )}
 

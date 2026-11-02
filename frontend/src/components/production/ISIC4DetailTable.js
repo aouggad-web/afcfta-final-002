@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/isic4-table.css';
+import { pick } from '../../i18n/lang';
+
+// Ce tableau n'existe qu'en français ; l'arabe s'y ajoute, le français reste
+// servi aussi en anglais.
+const L = (language, fr, ar) => pick(language, fr, fr, ar);
 
 /**
  * Composant ISIC4DetailTable
@@ -32,8 +38,36 @@ const ISIC_DIVISION_LABELS = {
   '32': 'Autres industries manufacturières', '33': 'Réparation et installation',
 };
 
+// Libellés arabes des mêmes divisions.
+const ISIC_DIVISION_LABELS_AR = {
+  '10': 'المنتجات الغذائية',
+  '11': 'المشروبات',
+  '12': 'منتجات التبغ',
+  '13': 'المنسوجات',
+  '14': 'الملابس',
+  '15': 'الجلود ومنتجاتها',
+  '16': 'الخشب ومنتجاته',
+  '17': 'الورق ومنتجاته',
+  '18': 'الطباعة والاستنساخ',
+  '19': 'فحم الكوك وتكرير النفط',
+  '20': 'المنتجات الكيميائية',
+  '21': 'المنتجات الصيدلانية',
+  '22': 'المطاط واللدائن',
+  '23': 'المنتجات المعدنية اللافلزية',
+  '24': 'الفلزات القاعدية',
+  '25': 'المنتجات المعدنية المصنّعة',
+  '26': 'المنتجات الحاسوبية والإلكترونية',
+  '27': 'المعدات الكهربائية',
+  '28': 'الآلات والمعدات',
+  '29': 'المركبات ذات المحرك',
+  '30': 'معدات النقل الأخرى',
+  '31': 'الأثاث',
+  '32': 'الصناعات التحويلية الأخرى',
+  '33': 'الإصلاح والتركيب',
+};
+
 /** Groupe les secteurs ISIC4 par division 2 chiffres, conservant l'ordre des divisions. */
-function groupSectorsByDivision(sectors) {
+function groupSectorsByDivision(sectors, language) {
   const groups = new Map();
   for (const sector of sectors) {
     const division = sector.isic4?.slice(0, 2);
@@ -45,12 +79,14 @@ function groupSectorsByDivision(sectors) {
     .sort()
     .map((division) => ({
       division,
-      label: ISIC_DIVISION_LABELS[division] || division,
+      label: L(language, ISIC_DIVISION_LABELS[division], ISIC_DIVISION_LABELS_AR[division]) || division,
       sectors: groups.get(division),
     }));
 }
 
 export default function ISIC4DetailTable({ countryISO3 }) {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -152,7 +188,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
   };
 
   if (loading) {
-    return <div className="isic4-loading">⏳ Chargement données ISIC4...</div>;
+    return <div className="isic4-loading">⏳ {L(language, 'Chargement données ISIC4...', 'جارٍ تحميل بيانات ISIC4…')}</div>;
   }
 
   if (error) {
@@ -160,7 +196,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
   }
 
   if (!data || !data.sectors || data.sectors.length === 0) {
-    return <div className="isic4-empty">Aucune donnée ISIC4 pour ce pays</div>;
+    return <div className="isic4-empty">{L(language, 'Aucune donnée ISIC4 pour ce pays', 'لا توجد بيانات ISIC4 لهذا البلد')}</div>;
   }
 
   // Collecte tous les indicateurs uniques
@@ -186,10 +222,10 @@ export default function ISIC4DetailTable({ countryISO3 }) {
 
   const getDataNatureBadge = (dataNature) => {
     if (dataNature === 'OFFICIAL_STATISTICS') {
-      return <span className="badge badge-official">✓ Stats officielles</span>;
+      return <span className="badge badge-official">✓ {L(language, 'Stats officielles', 'إحصاءات رسمية')}</span>;
     }
     if (dataNature === 'UNIDO_DERIVED_ESTIMATE') {
-      return <span className="badge badge-estimate">≈ Estimation UNIDO</span>;
+      return <span className="badge badge-estimate">≈ {L(language, 'Estimation UNIDO', 'تقدير UNIDO')}</span>;
     }
     return <span className="badge badge-unknown">?</span>;
   };
@@ -201,23 +237,23 @@ export default function ISIC4DetailTable({ countryISO3 }) {
   return (
     <div className="isic4-container">
       <div className="isic4-header">
-        <h2>Secteurs manufacturiers — {data.country_name} ({data.country_iso3})</h2>
+        <h2>{L(language, 'Secteurs manufacturiers', 'القطاعات الصناعية التحويلية')} — {data.country_name} ({data.country_iso3})</h2>
         <div className="isic4-metadata">
           <span className="meta-item">
-            <strong>{data.total_sectors}</strong> secteurs
+            <strong>{data.total_sectors}</strong> {L(language, 'secteurs', 'قطاعاً')}
           </span>
           <span className="meta-item">
-            Période : {data.years_covered}
+            {L(language, 'Période', 'الفترة')} : {data.years_covered}
           </span>
           <span className="meta-item source">
-            Source : <em>{data.source}</em>
+            {L(language, 'Source', 'المصدر')} : <em>{data.source}</em>
           </span>
           <span className="meta-item data-types">
             {isFullyEstimated
-              ? '≈ Estimations UNIDO uniquement'
+              ? L(language, '≈ Estimations UNIDO uniquement', '≈ تقديرات UNIDO فقط')
               : hasOfficial
-              ? '📊 Données officielles + estimations UNIDO'
-              : '📊 Données UNIDO'}
+              ? L(language, '📊 Données officielles + estimations UNIDO', '📊 بيانات رسمية + تقديرات UNIDO')
+              : L(language, '📊 Données UNIDO', '📊 بيانات UNIDO')}
           </span>
         </div>
       </div>
@@ -225,22 +261,32 @@ export default function ISIC4DetailTable({ countryISO3 }) {
       {/* Bannière : pays sans statistiques officielles → estimations UNIDO */}
       {isFullyEstimated && (
         <div className="isic4-estimate-banner" role="status">
-          <strong>≈ Aucune statistique officielle disponible pour ce pays.</strong>{' '}
-          Les valeurs affichées sont des <em>estimations dérivées par UNIDO</em>
-          {' '}(UNIDO_DERIVED_ESTIMATE) et doivent être interprétées avec prudence.
+          {L(
+            language,
+            <>
+              <strong>≈ Aucune statistique officielle disponible pour ce pays.</strong>{' '}
+              Les valeurs affichées sont des <em>estimations dérivées par UNIDO</em>
+              {' '}(UNIDO_DERIVED_ESTIMATE) et doivent être interprétées avec prudence.
+            </>,
+            <>
+              <strong>≈ لا تتوفر أي إحصاءات رسمية لهذا البلد.</strong>{' '}
+              القيم المعروضة <em>تقديرات مشتقة من UNIDO</em>
+              {' '}(UNIDO_DERIVED_ESTIMATE) ويجب تفسيرها بحذر.
+            </>,
+          )}
         </div>
       )}
 
       {/* Légende des badges */}
       <div className="isic4-legend">
         <span className="legend-item">
-          <span className="badge badge-official">✓ Réel</span> = secteur 100% données réelles (OFFICIAL_STATISTICS)
+          <span className="badge badge-official">✓ {L(language, 'Réel', 'فعلي')}</span> = {L(language, 'secteur 100% données réelles', 'قطاع ببيانات فعلية 100%')} (OFFICIAL_STATISTICS)
         </span>
         <span className="legend-item">
-          <span className="badge badge-mixed">◐ Mixte</span> = réel + estimations selon l'indicateur
+          <span className="badge badge-mixed">◐ {L(language, 'Mixte', 'مختلط')}</span> = {L(language, "réel + estimations selon l'indicateur", 'فعلي + تقديرات حسب المؤشر')}
         </span>
         <span className="legend-item">
-          <span className="badge badge-estimate">≈ Estimé</span> = secteur 100% estimations UNIDO (UNIDO_DERIVED_ESTIMATE)
+          <span className="badge badge-estimate">≈ {L(language, 'Estimé', 'تقديري')}</span> = {L(language, 'secteur 100% estimations UNIDO', 'قطاع بتقديرات UNIDO بنسبة 100%')} (UNIDO_DERIVED_ESTIMATE)
         </span>
       </div>
 
@@ -250,14 +296,14 @@ export default function ISIC4DetailTable({ countryISO3 }) {
           <thead>
             <tr>
               {/* Colonnes figées */}
-              <th className="sticky-col col-isic4">Code ISIC</th>
-              <th className="sticky-col col-description">Description secteur</th>
+              <th className="sticky-col col-isic4">{L(language, 'Code ISIC', 'رمز ISIC')}</th>
+              <th className="sticky-col col-description">{L(language, 'Description secteur', 'وصف القطاع')}</th>
 
               {/* Colonnes indicateurs (scrollable) */}
               {indicatorsList.map((indicator) => (
                 <th key={indicator} className="col-indicator">
                   <div className="indicator-header">
-                    <span className="indicator-name">{formatIndicatorLabel(indicator)}</span>
+                    <span className="indicator-name">{formatIndicatorLabel(indicator, language)}</span>
                   </div>
                 </th>
               ))}
@@ -265,14 +311,14 @@ export default function ISIC4DetailTable({ countryISO3 }) {
             </tr>
           </thead>
           <tbody>
-            {groupSectorsByDivision(data.sectors).map(({ division, label, sectors }) => (
+            {groupSectorsByDivision(data.sectors, language).map(({ division, label, sectors }) => (
               <React.Fragment key={division}>
                 <tr className="division-header-row">
                   <td colSpan={2 + indicatorsList.length + 1} className="division-header-cell">
                     <span className="division-header-code">ISIC {division}</span>
                     {label}
                     <span className="division-header-count">
-                      ({sectors.length} {sectors.length > 1 ? 'lignes ISIC4' : 'ligne ISIC4'})
+                      ({sectors.length} {sectors.length > 1 ? L(language, 'lignes ISIC4', 'بنود ISIC4') : L(language, 'ligne ISIC4', 'بند ISIC4')})
                     </span>
                   </td>
                 </tr>
@@ -288,7 +334,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
                   <td className="sticky-col col-isic4">{sector.isic4}</td>
                   <td className="sticky-col col-description">
                     <span className="sector-description-text">{sector.description}</span>
-                    {getSectorNatureBadge(sector)}
+                    {getSectorNatureBadge(sector, language)}
                   </td>
 
                   {/* Indicateurs */}
@@ -321,8 +367,8 @@ export default function ISIC4DetailTable({ countryISO3 }) {
                       }}
                       title={
                         expandedRows.has(sector.isic4)
-                          ? 'Fermer série temporelle'
-                          : 'Ouvrir série temporelle 2018-2024'
+                          ? L(language, 'Fermer série temporelle', 'إغلاق السلسلة الزمنية')
+                          : L(language, 'Ouvrir série temporelle 2018-2024', 'فتح السلسلة الزمنية 2018-2024')
                       }
                     >
                       {expandedRows.has(sector.isic4) ? '▼' : '▶'}
@@ -348,12 +394,20 @@ export default function ISIC4DetailTable({ countryISO3 }) {
 
       {/* Pied de page */}
       <div className="isic4-footer">
-        <p>
-          💡 Cliquez sur une ligne pour déplier le <strong>tableau détaillé complet</strong> du
-          secteur : tous les indicateurs, toutes les années (2018-2024), avec pour chaque valeur
-          l'indication réel (✓) ou estimé (≈). Données issues du portail UNIDO (IDSB + INDSTAT,
-          ISIC Rev.4).
-        </p>
+        {L(
+          language,
+          <p>
+            💡 Cliquez sur une ligne pour déplier le <strong>tableau détaillé complet</strong> du
+            secteur : tous les indicateurs, toutes les années (2018-2024), avec pour chaque valeur
+            l'indication réel (✓) ou estimé (≈). Données issues du portail UNIDO (IDSB + INDSTAT,
+            ISIC Rev.4).
+          </p>,
+          <p>
+            💡 انقر على سطر لعرض <strong>الجدول المفصل الكامل</strong> للقطاع: جميع
+            المؤشرات وجميع السنوات (2018-2024)، مع بيان ما إذا كانت كل قيمة فعلية (✓) أو تقديرية (≈).
+            البيانات مصدرها بوابة UNIDO (IDSB + INDSTAT، ISIC Rev.4).
+          </p>,
+        )}
       </div>
     </div>
   );
@@ -364,6 +418,8 @@ export default function ISIC4DetailTable({ countryISO3 }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function TimeseriesChart({ timeseries }) {
+  const { i18n } = useTranslation();
+  const language = i18n.language;
   if (!timeseries || !timeseries.series) return null;
 
   const series = timeseries.series;
@@ -371,8 +427,8 @@ function TimeseriesChart({ timeseries }) {
   if (indicators.length === 0) {
     return (
       <div className="timeseries-chart">
-        <h4>Détail complet : {timeseries.isic_description}</h4>
-        <p className="detail-empty-note">Aucune donnée détaillée pour ce secteur.</p>
+        <h4>{L(language, 'Détail complet', 'التفاصيل الكاملة')} : {timeseries.isic_description}</h4>
+        <p className="detail-empty-note">{L(language, 'Aucune donnée détaillée pour ce secteur.', 'لا توجد بيانات مفصلة لهذا القطاع.')}</p>
       </div>
     );
   }
@@ -396,7 +452,7 @@ function TimeseriesChart({ timeseries }) {
   return (
     <div className="timeseries-chart">
       <h4>
-        Détail complet — {timeseries.isic_description}{' '}
+        {L(language, 'Détail complet', 'التفاصيل الكاملة')} — {timeseries.isic_description}{' '}
         <span className="detail-isic-code">({timeseries.isic4})</span>
       </h4>
 
@@ -404,11 +460,11 @@ function TimeseriesChart({ timeseries }) {
         <table className="detail-table">
           <thead>
             <tr>
-              <th className="detail-indicator-col">Indicateur</th>
+              <th className="detail-indicator-col">{L(language, 'Indicateur', 'المؤشر')}</th>
               {years.map((y) => (
                 <th key={y} className="detail-year-col">{y}</th>
               ))}
-              <th className="detail-nature-col">Nature</th>
+              <th className="detail-nature-col">{L(language, 'Nature', 'الطبيعة')}</th>
             </tr>
           </thead>
           <tbody>
@@ -421,7 +477,7 @@ function TimeseriesChart({ timeseries }) {
               const nature = indicatorNature(points);
               return (
                 <tr key={ind}>
-                  <td className="detail-indicator-col">{formatIndicatorLabel(ind)}</td>
+                  <td className="detail-indicator-col">{formatIndicatorLabel(ind, language)}</td>
                   {years.map((y) => {
                     const pt = byYear[y];
                     if (!pt || pt.value === undefined || pt.value === null) {
@@ -434,7 +490,7 @@ function TimeseriesChart({ timeseries }) {
                       <td
                         key={y}
                         className={`detail-cell ${isOfficial ? 'detail-official' : 'detail-estimate'}`}
-                        title={isOfficial ? 'Donnée réelle (statistique officielle)' : 'Estimation dérivée UNIDO'}
+                        title={isOfficial ? L(language, 'Donnée réelle (statistique officielle)', 'بيانات فعلية (إحصاء رسمي)') : L(language, 'Estimation dérivée UNIDO', 'تقدير مشتق من UNIDO')}
                       >
                         <span className="detail-value">{pt.value.toLocaleString('fr-FR')}</span>
                         <span className="detail-mark">{isOfficial ? '✓' : '≈'}</span>
@@ -443,13 +499,13 @@ function TimeseriesChart({ timeseries }) {
                   })}
                   <td className="detail-nature-col">
                     {nature === 'official' && (
-                      <span className="badge badge-official">✓ Réel</span>
+                      <span className="badge badge-official">✓ {L(language, 'Réel', 'فعلي')}</span>
                     )}
                     {nature === 'estimated' && (
-                      <span className="badge badge-estimate">≈ Estimé</span>
+                      <span className="badge badge-estimate">≈ {L(language, 'Estimé', 'تقديري')}</span>
                     )}
                     {nature === 'mixed' && (
-                      <span className="badge badge-mixed">◐ Mixte</span>
+                      <span className="badge badge-mixed">◐ {L(language, 'Mixte', 'مختلط')}</span>
                     )}
                   </td>
                 </tr>
@@ -460,7 +516,7 @@ function TimeseriesChart({ timeseries }) {
       </div>
 
       <p className="detail-legend">
-        ✓ = donnée réelle (officielle) · ≈ = estimation UNIDO · — = non disponible
+        {L(language, '✓ = donnée réelle (officielle) · ≈ = estimation UNIDO · — = non disponible', '✓ = بيانات فعلية (رسمية) · ≈ = تقدير UNIDO · — = غير متوفر')}
       </p>
     </div>
   );
@@ -488,33 +544,33 @@ function getSectorDataNature(sector) {
   return null;
 }
 
-function getSectorNatureBadge(sector) {
+function getSectorNatureBadge(sector, language) {
   const nature = getSectorDataNature(sector);
   if (nature === 'estimated') {
     return (
-      <span className="sector-nature badge badge-estimate" title="Toutes les valeurs de ce secteur sont des estimations UNIDO">
-        ≈ Estimé
+      <span className="sector-nature badge badge-estimate" title={L(language, 'Toutes les valeurs de ce secteur sont des estimations UNIDO', 'جميع قيم هذا القطاع تقديرات UNIDO')}>
+        ≈ {L(language, 'Estimé', 'تقديري')}
       </span>
     );
   }
   if (nature === 'mixed') {
     return (
-      <span className="sector-nature badge badge-mixed" title="Ce secteur mêle données réelles (officielles) et estimations UNIDO">
-        ◐ Mixte
+      <span className="sector-nature badge badge-mixed" title={L(language, 'Ce secteur mêle données réelles (officielles) et estimations UNIDO', 'يجمع هذا القطاع بين بيانات فعلية (رسمية) وتقديرات UNIDO')}>
+        ◐ {L(language, 'Mixte', 'مختلط')}
       </span>
     );
   }
   if (nature === 'official') {
     return (
-      <span className="sector-nature badge badge-official" title="Toutes les valeurs affichées de ce secteur sont des données réelles (statistiques officielles)">
-        ✓ Réel
+      <span className="sector-nature badge badge-official" title={L(language, 'Toutes les valeurs affichées de ce secteur sont des données réelles (statistiques officielles)', 'جميع القيم المعروضة لهذا القطاع بيانات فعلية (إحصاءات رسمية)')}>
+        ✓ {L(language, 'Réel', 'فعلي')}
       </span>
     );
   }
   return null;
 }
 
-function formatIndicatorLabel(indicator) {
+function formatIndicatorLabel(indicator, language) {
   const labels = {
     output_usd: 'Production (USD)',
     imports_world_usd: 'Imports (USD)',
@@ -528,5 +584,18 @@ function formatIndicatorLabel(indicator) {
     value_added_usd: 'Valeur ajoutée (USD)',
     gross_fixed_capital_formation_usd: 'FBCF (USD)',
   };
-  return labels[indicator] || indicator;
+  const labelsAr = {
+    output_usd: 'الإنتاج (USD)',
+    imports_world_usd: 'الواردات (USD)',
+    exports_world_usd: 'الصادرات (USD)',
+    apparent_consumption_usd: 'الاستهلاك الظاهري (USD)',
+    establishments: 'المنشآت',
+    employees: 'الأجراء',
+    female_employees: 'الأجيرات',
+    wages_salaries_usd: 'كتلة الأجور (USD)',
+    output_usd_official: 'الإنتاج (USD)',
+    value_added_usd: 'القيمة المضافة (USD)',
+    gross_fixed_capital_formation_usd: 'تكوين رأس المال الثابت الإجمالي (USD)',
+  };
+  return L(language, labels[indicator], labelsAr[indicator]) || indicator;
 }

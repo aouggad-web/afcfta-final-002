@@ -56,6 +56,7 @@ import {
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -362,10 +363,89 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       viewAllSubPositions: "View all sub-positions",
       precisionHigh: "High precision",
       precisionMedium: "Medium precision"
+    },
+    ar: {
+      originCountry: "بلد المنشأ",
+      partnerCountry: "البلد الشريك",
+      hsCodeLabel: "رمز SH (من 6 إلى 12 رقمًا)",
+      hsCodeHint: "6 أرقام = النظام المنسق الدولي | من 8 إلى 12 رقمًا = البند الفرعي الوطني",
+      valueLabel: "قيمة البضاعة (USD)",
+      logisticsLabel: "الوزن والنقل (اختياري)",
+      logisticsHint: "تُستخدم لاحتساب الرسوم عن كل طن وعن كل حاوية أو مركبة (رسوم الطريق، الفحص بالماسح…) واستبعاد رسوم وسيلة إيصال أخرى (رسوم الميناء لاستيراد برّي)، بمعزل عن الرسوم والضرائب.",
+      grossWeightPlaceholder: "الوزن الإجمالي (kg)",
+      transportPlaceholder: "وسيلة النقل",
+      transportContainer: "حاوية",
+      transportCar: "سيارة",
+      transportTruck: "شاحنة",
+      transportCountPlaceholder: "العدد",
+      routingPlaceholder: "طريقة الإيصال",
+      routingUnspecified: "غير محدد",
+      routingSea: "بحرًا",
+      routingRoad: "برًّا",
+      routingAir: "جوًّا",
+      calculateBtn: "احسب بالبيانات الرسمية",
+      calculatorTitle: "حاسبة زليكاف الشاملة",
+      calculatorDesc: "حسابات مبنية على البيانات الرسمية للهيئات الدولية",
+      rulesOrigin: "قواعد المنشأ في إطار زليكاف",
+      missingFields: "حقول ناقصة",
+      fillAllFields: "يُرجى ملء جميع الحقول",
+      invalidHsCode: "رمز SH غير صالح",
+      hsCodeMust6to12: "يجب أن يتكون رمز SH من 6 إلى 12 رقمًا",
+      calculationSuccess: "تم الحساب بنجاح",
+      potentialSavings: "الوفورات المحتملة",
+      calculationError: "خطأ في الحساب",
+      calculating: "جارٍ الحساب…",
+      choosePosition: "اختر بندًا وطنيًا",
+      detailedResults: "النتائج المفصلة",
+      completeComparison: "مقارنة شاملة: القيمة + الرسم الجمركي + ضريبة القيمة المضافة + الضرائب الأخرى",
+      merchandiseValue: "قيمة البضاعة",
+      customsDuties: "الرسوم الجمركية",
+      vat: "ضريبة القيمة المضافة",
+      otherTaxes: "ضرائب أخرى",
+      nfpTariff: "تعريفة NPF",
+      zlecafTariff: "تعريفة زليكاف",
+      totalSavings: "إجمالي الوفورات (مع جميع الضرائب)",
+      totalSavingsPercent: "من إجمالي الوفورات",
+      totalCostComparison: "من تكلفة إجمالية قدرها",
+      vs: "مقابل",
+      calculationJournal: "سجل الحساب المفصل (الترتيب الرسمي)",
+      step: "المرحلة",
+      component: "المكوّن",
+      base: "الوعاء",
+      rate: "المعدل",
+      amount: "المبلغ",
+      cumulative: "المجموع التراكمي",
+      legalRef: "المرجع القانوني",
+      ruleType: "النوع",
+      requirement: "الشرط",
+      minRegionalContent: "الحد الأدنى للمحتوى الإقليمي",
+      african: "أفريقي",
+      sectorPrefix: "القطاع",
+      hsCodeSelectorTitle: "محدد رمز SH6",
+      hsCodeSelectorDesc: "ابحث في رموز النظام المنسق أو تصفحها",
+      browseHS: "تصفح رموز SH",
+      hideHSBrowser: "إخفاء المتصفح",
+      hs6TariffInfo: "تعريفة SH6 الدقيقة",
+      hs6TariffApplied: "تم تطبيق تعريفة SH6 المحددة",
+      chapterTariffApplied: "تم تطبيق تعريفة الفصل",
+      tariffPrecision: "الدقة التعريفية",
+      productDescription: "وصف المنتج",
+      normalRate: "معدل NPF",
+      zlecafRate: "معدل زليكاف",
+      savingsRate: "الوفورات",
+      hs6DataSource: "المصدر: منظمة التجارة العالمية/ITC، الأونكتاد TRAINS، WITS",
+      subPositionApplied: "تم تطبيق البند الفرعي الوطني",
+      subPositionInfo: "تعريفة البند الفرعي الوطني",
+      subPositionCode: "الرمز الوطني",
+      subPositionsAvailable: "بنود فرعية متاحة",
+      varyingRates: "تختلف المعدلات حسب البند الفرعي",
+      viewAllSubPositions: "عرض جميع البنود الفرعية",
+      precisionHigh: "دقة عالية",
+      precisionMedium: "دقة متوسطة"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   // Code SH6 « pur » : on n'affiche les positions nationales avoisinantes que
   // lorsque l'utilisateur a saisi exactement un code à 6 chiffres (pas 8/10).
@@ -392,9 +472,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         '05': 'Other Animal Products', '06': 'Plants', '07': 'Vegetables', '08': 'Fruits',
         '09': 'Coffee/Tea', '10': 'Cereals', '27': 'Mineral Fuels', '84': 'Machinery',
         '85': 'Electrical', '87': 'Vehicles'
+      },
+      ar: {
+        '01': 'حيوانات حية', '02': 'لحوم', '03': 'أسماك', '04': 'ألبان وبيض',
+        '05': 'منتجات حيوانية أخرى', '06': 'نباتات', '07': 'خضروات', '08': 'فواكه',
+        '09': 'بن/شاي', '10': 'حبوب', '27': 'وقود معدني', '84': 'آلات',
+        '85': 'أجهزة كهربائية', '87': 'مركبات'
       }
     };
-    return sectorNames[language][sector] || `${t.sectorPrefix} ${sector}`;
+    return (sectorNames[language] || sectorNames.fr)[sector] || `${t.sectorPrefix} ${sector}`;
   };
 
   // « 12 345 $ » en français ; forme anglaise inchangée.
@@ -625,26 +711,29 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       let titreToast;
       let descriptionToast;
       if (npfEtat === 'COMPLET' && lignesConverties.length) {
-        titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
-        descriptionToast = (language === 'fr'
-          ? `${destISO3} : ${lignesConverties.join(', ')} au taux de marché du module Banque — taux douanier à vérifier`
-          : `${destISO3}: ${lignesConverties.join(', ')} at the Banking module's market rate — customs rate to be checked`)
+        titreToast = pick(language, 'Calcul indicatif', 'Indicative calculation', 'حساب إرشادي');
+        descriptionToast = (pick(language,
+          `${destISO3} : ${lignesConverties.join(', ')} au taux de marché du module Banque — taux douanier à vérifier`,
+          `${destISO3}: ${lignesConverties.join(', ')} at the Banking module's market rate — customs rate to be checked`,
+          `${destISO3}: ${lignesConverties.join('، ')} بسعر السوق لوحدة البنوك — السعر الجمركي يحتاج إلى تحقق`))
           + (legacyResult.savings != null ? ` · ${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}` : '');
       } else if (npfEtat === 'COMPLET') {
         titreToast = t.calculationSuccess;
         descriptionToast = legacyResult.savings != null
           ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
-          : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`;
+          : `${destISO3} — ${pick(language, 'régime NPF', 'MFN regime', 'نظام NPF')}`;
       } else if (npfEtat === 'INDICATIF') {
-        titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
-        descriptionToast = language === 'fr'
-          ? `${destISO3} : ${codesStatistiques.join(', ') || '—'} repose sur une moyenne statistique SH6 (WITS/TRAINS), pas sur un tarif national — montant indicatif`
-          : `${destISO3}: ${codesStatistiques.join(', ') || '—'} rests on an HS6 statistical average (WITS/TRAINS), not a national tariff — indicative amount`;
+        titreToast = pick(language, 'Calcul indicatif', 'Indicative calculation', 'حساب إرشادي');
+        descriptionToast = pick(language,
+          `${destISO3} : ${codesStatistiques.join(', ') || '—'} repose sur une moyenne statistique SH6 (WITS/TRAINS), pas sur un tarif national — montant indicatif`,
+          `${destISO3}: ${codesStatistiques.join(', ') || '—'} rests on an HS6 statistical average (WITS/TRAINS), not a national tariff — indicative amount`,
+          `${destISO3}: ${codesStatistiques.join('، ') || '—'} يستند إلى متوسط إحصائي على مستوى SH6 (WITS/TRAINS)، لا إلى تعريفة وطنية — مبلغ إرشادي`);
       } else {
-        titreToast = language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation';
-        descriptionToast = language === 'fr'
-          ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
-          : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`;
+        titreToast = pick(language, 'Calcul incomplet', 'Incomplete calculation', 'حساب غير مكتمل');
+        descriptionToast = pick(language,
+          `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`,
+          `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`,
+          `${destISO3}: تعذّرت تصفية رسم أو أكثر (${(calcul.npf?.manques || []).map((m) => m.code).join('، ') || '—'}) — مجموع جزئي، ولا يُختلق أي مبلغ أبدًا`);
       }
       toast({
         title: titreToast,
@@ -662,10 +751,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // Nationales », affiché sous le code SH6.
       if (detail?.code === 'POSITION_NATIONALE_REQUISE') {
         toast({
-          title: language === 'fr' ? 'Position nationale requise' : 'National position required',
-          description: language === 'fr'
-            ? `${detail.positions?.length || 'Plusieurs'} positions nationales sous ce code SH6 : choisissez la vôtre dans la liste « Positions Tarifaires Nationales », puis relancez le calcul.`
-            : `${detail.positions?.length || 'Several'} national positions under this HS6 code: choose yours in the "National Tariff Positions" list, then calculate again.`,
+          title: pick(language, 'Position nationale requise', 'National position required', 'البند الوطني مطلوب'),
+          description: pick(language,
+            `${detail.positions?.length || 'Plusieurs'} positions nationales sous ce code SH6 : choisissez la vôtre dans la liste « Positions Tarifaires Nationales », puis relancez le calcul.`,
+            `${detail.positions?.length || 'Several'} national positions under this HS6 code: choose yours in the "National Tariff Positions" list, then calculate again.`,
+            `${detail.positions?.length || 'عدة'} بنود وطنية تحت رمز SH6 هذا: اختر بندك من قائمة «البنود التعريفية الوطنية»، ثم أعد الحساب.`),
         });
         return;
       }
@@ -715,19 +805,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         <TabsList className="grid w-full grid-cols-4 mb-4">
           <TabsTrigger value="calculator" className="flex items-center gap-2" data-testid="calculator-single-tab">
             <Calculator className="w-4 h-4" />
-            {language === 'fr' ? 'Calculateur' : 'Calculator'}
+            {pick(language, 'Calculateur', 'Calculator', 'الحاسبة')}
           </TabsTrigger>
           <TabsTrigger value="regulatory" className="flex items-center gap-2" data-testid="calculator-regulatory-tab">
             <Scale className="w-4 h-4" />
-            {language === 'fr' ? 'Réglementation' : 'Regulations'}
+            {pick(language, 'Réglementation', 'Regulations', 'التنظيم')}
           </TabsTrigger>
           <TabsTrigger value="compare" className="flex items-center gap-2" data-testid="calculator-compare-tab">
             <Globe className="w-4 h-4" />
-            {language === 'fr' ? 'Comparaison Multi-Pays' : 'Multi-Country Comparison'}
+            {pick(language, 'Comparaison Multi-Pays', 'Multi-Country Comparison', 'مقارنة متعددة البلدان')}
           </TabsTrigger>
           <TabsTrigger value="export" className="flex items-center gap-2" data-testid="calculator-export-tab">
             <Package className="w-4 h-4" />
-            Export
+            {pick(language, 'Export', 'Export', 'التصدير')}
           </TabsTrigger>
         </TabsList>
         
@@ -823,10 +913,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           <div className="flex items-center gap-4 text-xs text-[var(--afcfta-muted)] bg-[var(--overlay)] rounded-lg px-4 py-2">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              {language === 'fr' ? 'Données authentiques' : 'Authentic data'}
+              {pick(language, 'Données authentiques', 'Authentic data', 'بيانات أصلية')}
             </span>
             <span className="text-[var(--afcfta-muted)]">|</span>
-            <span className="text-[var(--afcfta-muted)]">{language === 'fr' ? 'Blocs:' : 'Blocs:'} CEDEAO · CEMAC · EAC · SACU · AES</span>
+            <span className="text-[var(--afcfta-muted)]">{pick(language, 'Blocs:', 'Blocs:', 'التكتلات:')} CEDEAO · CEMAC · EAC · SACU · AES</span>
           </div>
 
           {/* Code HS */}
@@ -845,7 +935,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 className="text-xs text-[var(--violet)] hover:text-[var(--violet)] hover:bg-[color-mix(in_srgb,var(--violet)_10%,var(--afcfta-card))]"
               >
                 <Sparkles className="w-3 h-3 mr-1" />
-                {useSmartSearch ? 'Mode simple' : 'Recherche intelligente'}
+                {useSmartSearch ? pick(language, 'Mode simple', 'Simple mode', 'الوضع البسيط') : pick(language, 'Recherche intelligente', 'Smart search', 'البحث الذكي')}
               </Button>
             </div>
 
@@ -866,7 +956,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <div className="flex items-center gap-2">
               <div className="flex-1 h-px bg-[var(--overlay)]" />
               <span className="text-xs text-[var(--afcfta-muted)] shrink-0">
-                {language === 'fr' ? 'ou saisir directement' : 'or enter directly'}
+                {pick(language, 'ou saisir directement', 'or enter directly', 'أو أدخل مباشرة')}
               </span>
               <div className="flex-1 h-px bg-[var(--overlay)]" />
             </div>
@@ -889,7 +979,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <div className="space-y-2">
                 <Input
                   type="text"
-                  placeholder={language === 'fr' ? "Ex: 090111, 870323, 8517" : "Ex: 090111, 870323, 8517"}
+                  placeholder={pick(language, "Ex: 090111, 870323, 8517", "Ex: 090111, 870323, 8517", "مثال: 090111، 870323، 8517")}
                   value={hsCode}
                   onChange={(e) => setHsCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 12))}
                   className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] focus:border-[color-mix(in_srgb,var(--violet)_30%,transparent)] transition-colors tracking-wider"
@@ -921,19 +1011,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] rounded-lg p-3 space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                   <span className="text-[var(--gold)] text-xs font-semibold">
-                    {language === 'fr' ? "Règle d'origine ZLECAf" : 'AfCFTA Rule of Origin'}
+                    {pick(language, "Règle d'origine ZLECAf", 'AfCFTA Rule of Origin', "قاعدة المنشأ في إطار زليكاف")}
                   </span>
                   <Badge className="bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-xs">
                     {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
                   </Badge>
                   {ruleOfOrigin.rules.regional_content != null && (
                     <Badge className="bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-xs">
-                      {language === 'fr' ? 'Contenu régional' : 'Regional content'}: {ruleOfOrigin.rules.regional_content}%
+                      {pick(language, 'Contenu régional', 'Regional content', 'المحتوى الإقليمي')}: {ruleOfOrigin.rules.regional_content}%
                     </Badge>
                   )}
                   {ruleOfOrigin.status === 'YTB' && (
                     <Badge className="bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] text-[var(--terra)] border border-[color-mix(in_srgb,var(--terra)_30%,transparent)] text-xs">
-                      {language === 'fr' ? 'En négociation' : 'Under negotiation'}
+                      {pick(language, 'En négociation', 'Under negotiation', 'قيد التفاوض')}
                     </Badge>
                   )}
                 </div>
@@ -944,7 +1034,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 )}
                 {ruleOfOrigin.rules.alternative_rule && (
                   <p className="text-[var(--afcfta-muted)] text-xs">
-                    {language === 'fr' ? 'Règle alternative' : 'Alternative rule'}: {ruleOfOrigin.rules.alternative_rule.name}
+                    {pick(language, 'Règle alternative', 'Alternative rule', 'قاعدة بديلة')}: {ruleOfOrigin.rules.alternative_rule.name}
                   </p>
                 )}
               </div>
@@ -1086,6 +1176,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             <KenyaRemissionAuthorization
               value={kenyaRemission}
               onChange={setKenyaRemission}
+              language={language}
             />
           )}
 
@@ -1141,11 +1232,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               onClick={resetSearch}
               disabled={loading}
               data-testid="reset-search-button"
-              title={language === 'fr' ? 'Réinitialiser la recherche' : 'Reset search'}
+              title={pick(language, 'Réinitialiser la recherche', 'Reset search', 'إعادة تعيين البحث')}
               className="h-14 px-5 border-[var(--afcfta-border)] text-[var(--text)] hover:border-[color-mix(in_srgb,var(--danger)_30%,transparent)] hover:text-[var(--danger)] hover:bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] transition-all"
             >
               <RotateCcw className="w-5 h-5 mr-2" />
-              {language === 'fr' ? 'Réinitialiser' : 'Reset'}
+              {pick(language, 'Réinitialiser', 'Reset', 'إعادة تعيين')}
             </Button>
           </div>
         </CardContent>
@@ -1207,9 +1298,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--gold)] font-semibold text-sm">
-                      {language === 'fr'
-                        ? 'La RDC n\'applique pas le tarif extérieur commun de l\'EAC'
-                        : 'The DRC does not apply the EAC Common External Tariff'}
+                      {pick(language, 'La RDC n\'applique pas le tarif extérieur commun de l\'EAC', 'The DRC does not apply the EAC Common External Tariff', 'لا تطبق جمهورية الكونغو الديمقراطية التعريفة الخارجية المشتركة لمجموعة شرق أفريقيا (EAC)')}
                     </p>
                     <p className="text-[var(--gold)] text-sm mt-1">{result.union_non_effective.note}</p>
                   </div>
@@ -1221,9 +1310,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <Shield className="w-5 h-5 text-[var(--success)] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--success)] font-semibold text-sm">
-                      {language === 'fr'
-                        ? `Union douanière ${result.trade_regime_code || ''} — libre circulation`
-                        : `${result.trade_regime_code || ''} customs union — free circulation`}
+                      {pick(language,
+                        `Union douanière ${result.trade_regime_code || ''} — libre circulation`,
+                        `${result.trade_regime_code || ''} customs union — free circulation`,
+                        `الاتحاد الجمركي ${result.trade_regime_code || ''} — حرية التداول`)}
                     </p>
                     <p className="text-[var(--success)] text-sm mt-1">{result.trade_regime_note}</p>
                   </div>
@@ -1235,9 +1325,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--gold)] font-semibold text-sm">
-                      {language === 'fr'
-                        ? `Régime ${result.trade_regime_code || 'du bloc'} applicable sous conditions`
-                        : `${result.trade_regime_code || 'Bloc'} regime applies under conditions`}
+                      {pick(language,
+                        `Régime ${result.trade_regime_code || 'du bloc'} applicable sous conditions`,
+                        `${result.trade_regime_code || 'Bloc'} regime applies under conditions`,
+                        `نظام ${result.trade_regime_code || 'التكتل'} مطبَّق بشروط`)}
                     </p>
                     <p className="text-[var(--gold)] text-sm mt-1">{result.trade_regime_note}</p>
                   </div>
@@ -1249,9 +1340,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--gold)] font-semibold text-sm">
-                      {language === 'fr'
-                        ? 'Préférence ZLECAf servie sous réserve'
-                        : 'AfCFTA preference shown with a reservation'}
+                      {pick(language, 'Préférence ZLECAf servie sous réserve', 'AfCFTA preference shown with a reservation', 'التفضيل في إطار زليكاف معروض مع تحفظ')}
                     </p>
                     <p className="text-[var(--gold)] text-sm mt-1">{result.zlecaf_reserve}</p>
                   </div>
@@ -1276,7 +1365,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <AlertTriangle className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--gold)] font-semibold text-sm">
-                      {language === 'fr' ? 'Préférence ZLECAf non appliquée' : 'AfCFTA preference not applied'}
+                      {pick(language, 'Préférence ZLECAf non appliquée', 'AfCFTA preference not applied', 'التفضيل في إطار زليكاف غير مطبَّق')}
                     </p>
                     <p className="text-[var(--gold)] text-sm mt-1">{result.zlecaf_note}</p>
                   </div>
@@ -1319,9 +1408,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                     <div className="w-full">
                       <p className="text-[var(--gold)] font-semibold text-sm">
-                        {language === 'fr'
-                          ? 'Droits spécifiques : quantités par unité'
-                          : 'Specific duties: quantities per unit'}
+                        {pick(language, 'Droits spécifiques : quantités par unité', 'Specific duties: quantities per unit', 'الرسوم النوعية: الكميات حسب الوحدة')}
                       </p>
 
                       {result.quantite_requise.unites.length > 0 && (
@@ -1332,8 +1419,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                 className="block text-[var(--gold)] text-xs mb-1"
                                 htmlFor={`quantite-${u.unite}`}
                               >
-                                {language === 'fr' ? `Quantité (${u.unite})` : `Quantity (${u.unite})`}
-                                {u.manquante && (language === 'fr' ? ' — requise' : ' — required')}
+                                {pick(language, `Quantité (${u.unite})`, `Quantity (${u.unite})`, `الكمية (${u.unite})`)}
+                                {u.manquante && (pick(language, ' — requise', ' — required', ' — مطلوبة'))}
                               </label>
                               <input
                                 id={`quantite-${u.unite}`}
@@ -1370,7 +1457,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             disabled={loading || !Object.values(quantites).some((v) => parseFloat(v) > 0)}
                             className="bg-amber-600 hover:bg-amber-700"
                           >
-                            {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                            {pick(language, 'Recalculer', 'Recalculate', 'إعادة الحساب')}
                           </Button>
                         </div>
                       )}
@@ -1384,9 +1471,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             </p>
                           ))}
                           <p className="text-[var(--gold)] text-xs">
-                            {language === 'fr'
-                              ? "La source ne publie pas l'unité de quantité de ce droit. Demander un poids ici produirait un montant faux : le total reste incomplet tant que l'unité n'est pas établie."
-                              : 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.'}
+                            {pick(language, "La source ne publie pas l'unité de quantité de ce droit. Demander un poids ici produirait un montant faux : le total reste incomplet tant que l'unité n'est pas établie.", 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.', "لا ينشر المصدر وحدة الكمية لهذا الرسم. وطلب وزن هنا سيُنتج مبلغًا خاطئًا: يبقى المجموع غير مكتمل ما دامت الوحدة غير محددة.")}
                           </p>
                         </div>
                       )}
@@ -1408,17 +1493,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                     <div className="w-full">
                       <p className="text-[var(--gold)] font-semibold text-sm">
-                        {language === 'fr'
-                          ? 'Prélèvement selon l\'usage de la marchandise'
-                          : 'Levy depending on the use of the goods'}
+                        {pick(language, 'Prélèvement selon l\'usage de la marchandise', 'Levy depending on the use of the goods', 'رسم حسب استعمال البضاعة')}
                       </p>
                       <p className="text-[var(--gold)] text-xs mt-1">
                         {result.usages.applique
-                          ? (language === 'fr' ? 'Usage déclaré appliqué : ' : 'Declared use applied: ')
+                          ? (pick(language, 'Usage déclaré appliqué : ', 'Declared use applied: ', 'الاستعمال المصرَّح به المطبَّق: '))
                             + (result.usages.possibles.find((u) => u.code === result.usages.applique)?.libelle || result.usages.applique)
-                          : (language === 'fr'
-                            ? 'Aucun usage déclaré : le régime courant est calculé.'
-                            : 'No use declared: the standard regime is calculated.')}
+                          : (pick(language, 'Aucun usage déclaré : le régime courant est calculé.', 'No use declared: the standard regime is calculated.', 'لم يُصرَّح بأي استعمال: يُحتسب النظام العادي.'))}
                       </p>
                       <div className="mt-2 space-y-1">
                         {result.usages.possibles.map((u) => (
@@ -1437,7 +1518,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           }}
                           className="px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
                         >
-                          <option value="">{language === 'fr' ? 'Aucun de ces usages' : 'None of these uses'}</option>
+                          <option value="">{pick(language, 'Aucun de ces usages', 'None of these uses', 'لا شيء من هذه الاستعمالات')}</option>
                           {result.usages.possibles.map((u) => (
                             <option key={u.code} value={u.code}>{u.libelle}</option>
                           ))}
@@ -1449,7 +1530,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           disabled={loading}
                           className="bg-amber-600 hover:bg-amber-700"
                         >
-                          {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                          {pick(language, 'Recalculer', 'Recalculate', 'إعادة الحساب')}
                         </Button>
                       </div>
                     </div>
@@ -1493,14 +1574,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                     <div className="w-full">
                       <p className="text-[var(--gold)] font-semibold text-sm">
-                        {language === 'fr'
-                          ? 'Valeur en douane FOB nécessaire'
-                          : 'FOB customs value required'}
+                        {pick(language, 'Valeur en douane FOB nécessaire', 'FOB customs value required', 'القيمة الجمركية فوب (FOB) مطلوبة')}
                       </p>
                       <p className="text-[var(--gold)] text-xs mt-1">
-                        {language === 'fr'
-                          ? "Ce pays liquide le droit de douane sur la valeur FOB (fret et assurance internationaux exclus). Elle ne se déduit pas de la valeur CIF."
-                          : 'This country assesses customs duty on the FOB value (international freight and insurance excluded). It cannot be derived from the CIF value.'}
+                        {pick(language, "Ce pays liquide le droit de douane sur la valeur FOB (fret et assurance internationaux exclus). Elle ne se déduit pas de la valeur CIF.", 'This country assesses customs duty on the FOB value (international freight and insurance excluded). It cannot be derived from the CIF value.', "يصفّي هذا البلد الرسم الجمركي على أساس القيمة فوب (FOB) (باستثناء الشحن والتأمين الدوليين). ولا تُستنتج من القيمة سيف (CIF).")}
                       </p>
 
                       <div className="mt-2 space-y-1">
@@ -1517,9 +1594,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             className="block text-[var(--gold)] text-xs mb-1"
                             htmlFor="valeur-fob"
                           >
-                            {language === 'fr'
-                              ? 'Valeur FOB (USD, au plus la valeur CIF)'
-                              : 'FOB value (USD, at most the CIF value)'}
+                            {pick(language, 'Valeur FOB (USD, au plus la valeur CIF)', 'FOB value (USD, at most the CIF value)', 'القيمة فوب (USD، لا تتجاوز القيمة سيف)')}
                           </label>
                           <input
                             id="valeur-fob"
@@ -1547,7 +1622,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           }
                           className="bg-amber-600 hover:bg-amber-700"
                         >
-                          {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                          {pick(language, 'Recalculer', 'Recalculate', 'إعادة الحساب')}
                         </Button>
                       </div>
                     </div>
@@ -1561,14 +1636,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <Info className="w-5 h-5 text-[var(--info)] mt-0.5 flex-shrink-0" />
                     <div className="w-full">
                       <p className="text-[var(--info)] font-semibold text-sm">
-                        {language === 'fr'
-                          ? 'Autres régimes publiés par le tarif de destination'
-                          : 'Other regimes published by the destination tariff'}
+                        {pick(language, 'Autres régimes publiés par le tarif de destination', 'Other regimes published by the destination tariff', 'أنظمة أخرى تنشرها تعريفة بلد المقصد')}
                       </p>
                       <p className="text-[var(--info)] text-xs mt-1">
-                        {language === 'fr'
-                          ? "Simulations, non appliquées au total ci-dessus."
-                          : 'Simulations, not applied to the total above.'}
+                        {pick(language, "Simulations, non appliquées au total ci-dessus.", 'Simulations, not applied to the total above.', "محاكاة، غير مطبَّقة على المجموع أعلاه.")}
                       </p>
 
                       <div className="mt-3 space-y-2">
@@ -1587,14 +1658,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             {sim.total_simule !== null && sim.total_simule !== undefined && (
                               <div className="flex flex-wrap items-baseline justify-between gap-2 mt-1">
                                 <span className="text-[var(--afcfta-muted)] text-xs">
-                                  {language === 'fr' ? 'Total simulé' : 'Simulated total'}
+                                  {pick(language, 'Total simulé', 'Simulated total', 'المجموع المحاكى')}
                                 </span>
                                 <span className="font-mono text-base text-[var(--text)]">
                                   {sim.total_simule.toLocaleString('fr-FR')}
                                   {sim.ecart_vs_total_servi !== null &&
                                     sim.ecart_vs_total_servi !== undefined && (
                                       <span className="text-[var(--afcfta-muted)] text-xs ml-2">
-                                        {language === 'fr' ? 'écart ' : 'gap '}
+                                        {pick(language, 'écart ', 'gap ', 'الفرق ')}
                                         {sim.ecart_vs_total_servi.toLocaleString('fr-FR')}
                                       </span>
                                     )}
@@ -1615,14 +1686,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <Info className="w-5 h-5 text-[var(--gold)] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--gold)] font-semibold text-sm">
-                      {language === 'fr'
-                        ? `Taux NPF servi (${result.plancher_npf.taux_retenu_pct} %) : le barème préférentiel est plus cher`
-                        : `MFN rate applied (${result.plancher_npf.taux_retenu_pct}%): the preferential schedule costs more`}
+                      {pick(language,
+                        `Taux NPF servi (${result.plancher_npf.taux_retenu_pct} %) : le barème préférentiel est plus cher`,
+                        `MFN rate applied (${result.plancher_npf.taux_retenu_pct}%): the preferential schedule costs more`,
+                        `تم تطبيق معدل NPF (${result.plancher_npf.taux_retenu_pct}%): الجدول التفضيلي أعلى تكلفة`)}
                     </p>
                     <p className="text-[var(--gold)] text-sm mt-1">
-                      {language === 'fr'
-                        ? `Le barème préférentiel de cette position affiche ${result.plancher_npf.taux_preferentiel_ecarte_pct} %, soit davantage que le droit commun. Une préférence est une faculté, pas une obligation : c'est le NPF qui est servi.`
-                        : `The preferential schedule for this line shows ${result.plancher_npf.taux_preferentiel_ecarte_pct}%, more than the ordinary duty. A preference is an option, not an obligation: the MFN rate is applied.`}
+                      {pick(language,
+                        `Le barème préférentiel de cette position affiche ${result.plancher_npf.taux_preferentiel_ecarte_pct} %, soit davantage que le droit commun. Une préférence est une faculté, pas une obligation : c'est le NPF qui est servi.`,
+                        `The preferential schedule for this line shows ${result.plancher_npf.taux_preferentiel_ecarte_pct}%, more than the ordinary duty. A preference is an option, not an obligation: the MFN rate is applied.`,
+                        `يُظهر الجدول التفضيلي لهذا البند ${result.plancher_npf.taux_preferentiel_ecarte_pct}%، أي أكثر من الرسم العادي. والتفضيل خيار لا إلزام: يُطبَّق معدل NPF.`)}
                     </p>
                   </div>
                 </div>
@@ -1637,7 +1710,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <DollarSign className="w-5 h-5 text-[var(--success)]" />
                     </div>
                     <div>
-                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Valeur CIF' : 'CIF value'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{pick(language, 'Valeur CIF', 'CIF value', 'القيمة سيف (CIF)')}</p>
                       <p className="text-xl font-bold text-[var(--success)]">
                         {formatCurrency(parseFloat(value) || 0)}
                       </p>
@@ -1650,7 +1723,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <Package className="w-5 h-5 text-[var(--violet)]" />
                     </div>
                     <div>
-                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Code tarifaire' : 'Tariff code'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{pick(language, 'Code tarifaire', 'Tariff code', 'الرمز التعريفي')}</p>
                       <p className="font-mono text-lg font-bold text-[var(--violet)]">{result.hs_code || hsCode}</p>
                     </div>
                   </div>
@@ -1661,9 +1734,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <FileText className="w-5 h-5 text-[var(--gold)]" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'Produit' : 'Product'}</p>
+                      <p className="text-[var(--afcfta-muted)] text-xs">{pick(language, 'Produit', 'Product', 'المنتج')}</p>
                       <p className="text-sm text-[var(--text)] truncate">
-                        {selectedSubPositionDesc || result.description || (language === 'fr' ? 'Position sélectionnée' : 'Selected position')}
+                        {selectedSubPositionDesc || result.description || (pick(language, 'Position sélectionnée', 'Selected position', 'البند المختار'))}
                       </p>
                     </div>
                   </div>
@@ -1674,14 +1747,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                 {/* Total NPF */}
                 <div className="bg-[color-mix(in_srgb,var(--danger)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--danger)_30%,transparent)]">
-                  <p className="text-[var(--danger)] text-xs font-medium">{language === 'fr' ? 'Total NPF' : 'Total MFN'}</p>
+                  <p className="text-[var(--danger)] text-xs font-medium">{pick(language, 'Total NPF', 'Total MFN', 'مجموع NPF')}</p>
                   <p className="text-3xl font-bold text-[var(--danger)] mt-1">{(result.total_taxes_npf || 0).toFixed(1)}%</p>
-                  <p className="text-[var(--danger)] text-xs mt-1">{language === 'fr' ? 'Sans accord' : 'No agreement'}</p>
+                  <p className="text-[var(--danger)] text-xs mt-1">{pick(language, 'Sans accord', 'No agreement', 'دون اتفاقية')}</p>
                 </div>
                 
                 {/* Total ZLECAf */}
                 <div className="bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
-                  <p className="text-[var(--success)] text-xs font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
+                  <p className="text-[var(--success)] text-xs font-medium">{pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}</p>
                   <p className="text-3xl font-bold text-[var(--success)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `${zlecafTotalTaxRatePct(result).toFixed(1)}%`
@@ -1689,22 +1762,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                   <p className="text-[var(--success)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? (language === 'fr' ? 'Avec accord' : 'With agreement')
+                      ? (pick(language, 'Avec accord', 'With agreement', 'مع الاتفاقية'))
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
-                        ? (language === 'fr'
-                          ? `Offre publiée ZLECAf${result.zlecaf_offer_rate_expression ? ` : ${result.zlecaf_offer_rate_expression}` : ''} — à vérifier avec les douanes locales`
-                          : `Published AfCFTA offer${result.zlecaf_offer_rate_expression ? `: ${result.zlecaf_offer_rate_expression}` : ''} — verify with local customs`)
+                        ? (pick(language,
+                          `Offre publiée ZLECAf${result.zlecaf_offer_rate_expression ? ` : ${result.zlecaf_offer_rate_expression}` : ''} — à vérifier avec les douanes locales`,
+                          `Published AfCFTA offer${result.zlecaf_offer_rate_expression ? `: ${result.zlecaf_offer_rate_expression}` : ''} — verify with local customs`,
+                          `العرض المنشور في إطار زليكاف${result.zlecaf_offer_rate_expression ? `: ${result.zlecaf_offer_rate_expression}` : ''} — يجب التحقق لدى الجمارك المحلية`))
                         : result.zlecaf_rate_expression
-                          ? (language === 'fr'
-                            ? `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`
-                            : `Line rate ${result.zlecaf_rate_expression} — quantity required`)
-                          : (language === 'fr' ? 'Taux non disponible' : 'Rate unavailable')}
+                          ? (pick(language,
+                            `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`,
+                            `Line rate ${result.zlecaf_rate_expression} — quantity required`,
+                            `معدل البند ${result.zlecaf_rate_expression} — الكمية مطلوبة`))
+                          : (pick(language, 'Taux non disponible', 'Rate unavailable', 'المعدل غير متاح'))}
                   </p>
                 </div>
 
                 {/* Économie */}
                 <div className="bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
-                  <p className="text-[var(--gold)] text-xs font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
+                  <p className="text-[var(--gold)] text-xs font-medium">{pick(language, 'Économie', 'Savings', 'الوفورات')}</p>
                   <p className="text-3xl font-bold text-[var(--gold)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
@@ -1712,16 +1787,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                   <p className="text-[var(--gold)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
+                      ? (pick(language, 'Certificat Origine', 'Origin Certificate', 'شهادة المنشأ'))
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
-                        ? (language === 'fr' ? 'À vérifier' : 'To verify')
-                        : (language === 'fr' ? 'Non disponible' : 'Unavailable')}
+                        ? (pick(language, 'À vérifier', 'To verify', 'يحتاج إلى تحقق'))
+                        : (pick(language, 'Non disponible', 'Unavailable', 'غير متاح'))}
                   </p>
                 </div>
                 
                 {/* Montant économisé */}
                 <div className="bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] rounded-xl p-4 border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                  <p className="text-[var(--info)] text-xs font-medium">{language === 'fr' ? 'Montant économisé' : 'Amount saved'}</p>
+                  <p className="text-[var(--info)] text-xs font-medium">{pick(language, 'Montant économisé', 'Amount saved', 'المبلغ الموفَّر')}</p>
                   <p className="text-2xl font-bold text-[var(--info)] mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
                       ? montant((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100, language)
@@ -1729,13 +1804,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                   <p className="text-[var(--info)] text-xs mt-1">
                     {zlecafTotalTaxRatePct(result) !== null
-                      ? (language === 'fr' ? 'Sur votre valeur' : 'On your value')
-                      : (language === 'fr' ? 'Non calculé' : 'Not calculated')}
+                      ? (pick(language, 'Sur votre valeur', 'On your value', 'من قيمتكم'))
+                      : (pick(language, 'Non calculé', 'Not calculated', 'غير محسوب'))}
                   </p>
                 </div>
               </div>
               <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
-                Simulation informative — non opposable à l’administration douanière.
+                {pick(language, 'Simulation informative — non opposable à l’administration douanière.', 'Informative simulation — not binding on the customs administration.', 'محاكاة إعلامية — غير ملزمة لإدارة الجمارك.')}
               </p>
 
               {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
@@ -1746,14 +1821,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="mt-4 flex items-start gap-3 p-3 rounded-xl bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                   <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
                   <p className="text-sm text-[var(--gold)]">
-                    {language === 'fr'
-                      ? "Calcul incomplet : ces totaux couvrent les droits et taxes exigibles, mais un prestataire mandaté actif perçoit des frais dont le montant n'est pas publié dans les sources (NOT_AVAILABLE). Le coût total de dédouanement est donc supérieur — voir le bloc « Frais des prestataires mandatés » ci-dessous. Aucun montant n'est estimé."
-                      : 'Incomplete calculation: these totals cover payable duties and taxes, but an active mandated provider charges fees whose amount is not published in the sources (NOT_AVAILABLE). The total clearance cost is therefore higher — see the “Mandated-provider fees” block below. No amount is estimated.'}
+                    {pick(language, "Calcul incomplet : ces totaux couvrent les droits et taxes exigibles, mais un prestataire mandaté actif perçoit des frais dont le montant n'est pas publié dans les sources (NOT_AVAILABLE). Le coût total de dédouanement est donc supérieur — voir le bloc « Frais des prestataires mandatés » ci-dessous. Aucun montant n'est estimé.", 'Incomplete calculation: these totals cover payable duties and taxes, but an active mandated provider charges fees whose amount is not published in the sources (NOT_AVAILABLE). The total clearance cost is therefore higher — see the “Mandated-provider fees” block below. No amount is estimated.', "حساب غير مكتمل: تشمل هذه المجاميع الرسوم والضرائب المستحقة، لكن مقدم خدمة مفوَّضًا نشطًا يتقاضى رسومًا لا يُنشر مبلغها في المصادر (NOT_AVAILABLE). لذا فالتكلفة الإجمالية للتخليص الجمركي أعلى — انظر قسم «رسوم مقدمي الخدمات المفوَّضين» أدناه. لم يُقدَّر أي مبلغ.")}
                   </p>
                 </div>
               )}
               <p className="mt-4 text-center text-xs font-medium text-[var(--gold)]">
-                Simulation informative — non opposable à l’administration douanière.
+                {pick(language, 'Simulation informative — non opposable à l’administration douanière.', 'Informative simulation — not binding on the customs administration.', 'محاكاة إعلامية — غير ملزمة لإدارة الجمارك.')}
               </p>
             </CardContent>
           </Card>
@@ -1767,9 +1840,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <ClipboardList className="w-5 h-5 text-[var(--info)]" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-[var(--text)]">{language === 'fr' ? 'Détail des Taxes' : 'Tax Breakdown'}</CardTitle>
+                    <CardTitle className="text-lg text-[var(--text)]">{pick(language, 'Détail des Taxes', 'Tax Breakdown', 'تفصيل الضرائب')}</CardTitle>
                     <CardDescription className="text-[var(--afcfta-muted)]">
-                      {result.taxes_detail.length} {language === 'fr' ? 'taxes applicables' : 'applicable taxes'}
+                      {result.taxes_detail.length} {pick(language, 'taxes applicables', 'applicable taxes', 'ضرائب مطبَّقة')}
                     </CardDescription>
                   </div>
                 </div>
@@ -1797,11 +1870,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="text-right">
-                          <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'NPF' : 'MFN'}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs">{pick(language, 'NPF', 'MFN', 'NPF')}</p>
                           <p className="text-[var(--text)] font-bold">{tax.rate}%</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[var(--afcfta-muted)] text-xs">{language === 'fr' ? 'ZLECAf' : 'AfCFTA'}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs">{pick(language, 'ZLECAf', 'AfCFTA', 'زليكاف')}</p>
                           <p className="text-[var(--success)] font-bold">
                             {isDisplayableZlecafResult(result)
                               ? (typeof tax.rate_zlecaf_pct === 'number'
@@ -1861,17 +1934,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                     <div>
                       <CardTitle className="text-lg text-[var(--text)]">
-                        {language === 'fr' ? 'Positions Nationales' : 'National Positions'}
+                        {pick(language, 'Positions Nationales', 'National Positions', 'البنود الوطنية')}
                       </CardTitle>
                       <CardDescription className="text-[var(--afcfta-muted)]">
-                        {subPositions.sub_positions.length} {language === 'fr' ? 'positions (10 chiffres)' : 'positions (10 digits)'}
+                        {subPositions.sub_positions.length} {pick(language, 'positions (10 chiffres)', 'positions (10 digits)', 'بندًا (10 أرقام)')}
                         {subPositions.note && <span className="ml-2 text-[var(--violet)]/70 text-xs">— {subPositions.note}</span>}
                       </CardDescription>
                     </div>
                   </div>
                   {selectedSubPositionDesc && (
                     <Badge className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-xs">
-                      {hsCode.replace(/[.\s]/g, '').slice(0, 10)} {language === 'fr' ? 'sélectionnée' : 'selected'}
+                      {hsCode.replace(/[.\s]/g, '').slice(0, 10)} {pick(language, 'sélectionnée', 'selected', 'مختار')}
                     </Badge>
                   )}
                 </div>
@@ -1881,7 +1954,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   {subPositions.sub_positions.map((sp, idx) => {
                     const code = sp.code || sp.national_code || '';
                     const isSelected = hsCode.replace(/[.\s]/g, '').startsWith(code.slice(0, 10));
-                    const desc = language === 'fr' ? (sp.description_fr || sp.description_en) : (sp.description_en || sp.description_fr);
+                    const desc = pick(language, sp.description_fr || sp.description_en, sp.description_en || sp.description_fr, sp.description_fr || sp.description_en);
                     const spFormalities = sp.administrative_formalities || null;
                     return (
                       <div
@@ -1908,7 +1981,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         <div className="flex items-center gap-3 shrink-0 ml-3">
                           {spFormalities && spFormalities.length > 0 && (
                             <Badge className="bg-[var(--overlay)] text-[var(--text)] border border-[var(--afcfta-border)] text-xs">
-                              {spFormalities.length} {language === 'fr' ? 'docs' : 'docs'}
+                              {spFormalities.length} {pick(language, 'docs', 'docs', 'وثائق')}
                             </Badge>
                           )}
                           {isSelected && <CheckCircle className="w-4 h-4 text-[var(--violet)]" />}
@@ -1918,9 +1991,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   })}
                 </div>
                 <p className="text-xs text-[var(--afcfta-muted)] mt-3 border-t border-[var(--afcfta-border)] pt-2">
-                  {language === 'fr'
-                    ? 'Cliquez sur une position pour appliquer son taux et ses formalités spécifiques.'
-                    : 'Click a position to apply its specific rate and formalities.'}
+                  {pick(language, 'Cliquez sur une position pour appliquer son taux et ses formalités spécifiques.', 'Click a position to apply its specific rate and formalities.', 'انقر على بند لتطبيق معدله وإجراءاته الخاصة.')}
                 </p>
               </CardContent>
             </Card>
@@ -1962,12 +2033,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             const constatSource = result.formalites_statut === 'AUCUNE_FORMALITE_PARTICULIERE';
             const reserve = result.formalites_reserve
               || (constatSource
-                ? (language === 'fr'
-                  ? "Aucune formalité administrative particulière n'est publiée pour cette position. Les obligations générales à l'importation demeurent."
-                  : 'No specific administrative formality is published for this position. General import obligations still apply.')
-                : (language === 'fr'
-                  ? "Formalités non établies pour cette position. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination."
-                  : 'Formalities not established for this position. Missing information is not an absence of obligation: check with the destination customs administration.'));
+                ? (pick(language, "Aucune formalité administrative particulière n'est publiée pour cette position. Les obligations générales à l'importation demeurent.", 'No specific administrative formality is published for this position. General import obligations still apply.', "لا يُنشر أي إجراء إداري خاص لهذا البند. وتبقى الالتزامات العامة للاستيراد سارية."))
+                : (pick(language, "Formalités non établies pour cette position. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination.", 'Formalities not established for this position. Missing information is not an absence of obligation: check with the destination customs administration.', "الإجراءات غير محددة لهذا البند. وغياب المعلومة لا يعني غياب الالتزام: يُرجى التحقق لدى إدارة الجمارك في بلد المقصد.")));
             return (
               <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
                 <CardHeader className="pb-3">
@@ -1978,14 +2045,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       </div>
                       <div>
                         <CardTitle className="text-lg text-[var(--text)]">
-                          {language === 'fr' ? 'Documents Requis' : 'Required Documents'}
+                          {pick(language, 'Documents Requis', 'Required Documents', 'الوثائق المطلوبة')}
                         </CardTitle>
                         <CardDescription className="text-[var(--afcfta-muted)]">
                           {aucuneFormalite
                             ? (constatSource
-                              ? (language === 'fr' ? 'Aucune formalité particulière' : 'No specific formality')
-                              : (language === 'fr' ? 'Non établies' : 'Not established'))
-                            : `${formalities.length} ${language === 'fr' ? 'formalités' : 'formalities'}`}
+                              ? (pick(language, 'Aucune formalité particulière', 'No specific formality', 'لا يوجد إجراء خاص'))
+                              : (pick(language, 'Non établies', 'Not established', 'غير محددة')))
+                            : `${formalities.length} ${pick(language, 'formalités', 'formalities', 'إجراءات')}`}
                           {isPositionLevel && (
                             <span className="ml-2 text-[var(--violet)] text-xs font-mono">
                               — position {positionCode}
@@ -1996,7 +2063,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                     {isPositionLevel && (
                       <Badge className="bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-xs">
-                        {language === 'fr' ? 'Position nationale' : 'National position'}
+                        {pick(language, 'Position nationale', 'National position', 'البند الوطني')}
                       </Badge>
                     )}
                   </div>
@@ -2028,10 +2095,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               <p dir="auto" className="text-[var(--text)] text-sm">{form.texte}</p>
                             )}
                             <p className={form.traduction_non_officielle ? 'text-[var(--afcfta-muted)] text-xs mt-1' : 'text-[var(--text)] text-sm'}>
-                              {language === 'fr' ? (form.document_fr || form.document_en) : (form.document_en || form.document_fr)}
+                              {pick(language, form.document_fr || form.document_en, form.document_en || form.document_fr, form.document_fr || form.document_en)}
                               {form.traduction_non_officielle && (
                                 <span className="italic">
-                                  {language === 'fr' ? ' — traduction non officielle' : ' — unofficial translation'}
+                                  {pick(language, ' — traduction non officielle', ' — unofficial translation', ' — ترجمة غير رسمية')}
                                 </span>
                               )}
                             </p>
@@ -2040,12 +2107,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                             )}
                             {(form.authority_fr || form.authority_en) && (
                               <p className="text-[var(--afcfta-muted)] text-xs mt-1">
-                                {language === 'fr' ? form.authority_fr : form.authority_en}
+                                {pick(language, form.authority_fr, form.authority_en, form.authority_fr)}
                               </p>
                             )}
                             {form.is_mandatory === false && (
                               <span className="text-xs text-[var(--afcfta-muted)] italic">
-                                {language === 'fr' ? 'Optionnel' : 'Optional'}
+                                {pick(language, 'Optionnel', 'Optional', 'اختياري')}
                               </span>
                             )}
                           </div>
@@ -2055,9 +2122,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                   {!isPositionLevel && (
                     <p className="text-xs text-[var(--afcfta-muted)] mt-3 border-t border-[var(--afcfta-border)] pt-2">
-                      {language === 'fr'
-                        ? 'Formalités au niveau HS6. Sélectionnez une sous-position nationale pour les formalités spécifiques à la position (10 chiffres).'
-                        : 'Formalities at HS6 level. Select a national sub-position for position-specific formalities (10 digits).'}
+                      {pick(language, 'Formalités au niveau HS6. Sélectionnez une sous-position nationale pour les formalités spécifiques à la position (10 chiffres).', 'Formalities at HS6 level. Select a national sub-position for position-specific formalities (10 digits).', 'الإجراءات على مستوى SH6. اختر بندًا فرعيًا وطنيًا للاطلاع على الإجراءات الخاصة بالبند (10 أرقام).')}
                     </p>
                   )}
                 </CardContent>
@@ -2085,14 +2150,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                   <div>
                     <CardTitle className="text-lg text-[var(--text)]">
-                      {language === 'fr'
-                        ? 'Détail des formalités & prestataires mandatés'
-                        : 'Formalities & mandated providers — detail'}
+                      {pick(language, 'Détail des formalités & prestataires mandatés', 'Formalities & mandated providers — detail', 'تفصيل الإجراءات ومقدمي الخدمات المفوَّضين')}
                     </CardTitle>
                     <CardDescription className="text-[var(--afcfta-muted)]">
-                      {language === 'fr'
-                        ? `${getCountryName(result.destination_country)} — mission, mandat, preuves datées et sources officielles`
-                        : `${getCountryName(result.destination_country)} — mission, mandate, dated evidence and official sources`}
+                      {pick(language,
+                        `${getCountryName(result.destination_country)} — mission, mandat, preuves datées et sources officielles`,
+                        `${getCountryName(result.destination_country)} — mission, mandate, dated evidence and official sources`,
+                        `${getCountryName(result.destination_country)} — المهمة والتفويض والأدلة المؤرخة والمصادر الرسمية`)}
                     </CardDescription>
                   </div>
                 </div>
@@ -2101,9 +2165,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="flex items-start gap-3 p-3 rounded-lg bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
                   <AlertTriangle className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
                   <p className="text-sm text-[var(--gold)]">
-                    {language === 'fr'
-                      ? "Les frais du prestataire mandaté sont séparés des droits et taxes publics (voir « Composition du coût réglementaire » ci-dessus). Un montant n'est chiffré et intégré que lorsqu'il est prouvé et sourcé ; sinon il reste à confirmer (jamais fabriqué, jamais valué à zéro)."
-                      : 'Mandated-provider fees are separate from public duties and taxes (see “Regulatory cost composition” above). An amount is quantified and included only when proven and sourced; otherwise it stays to be confirmed (never fabricated, never valued at zero).'}
+                    {pick(language, "Les frais du prestataire mandaté sont séparés des droits et taxes publics (voir « Composition du coût réglementaire » ci-dessus). Un montant n'est chiffré et intégré que lorsqu'il est prouvé et sourcé ; sinon il reste à confirmer (jamais fabriqué, jamais valué à zéro).", 'Mandated-provider fees are separate from public duties and taxes (see “Regulatory cost composition” above). An amount is quantified and included only when proven and sourced; otherwise it stays to be confirmed (never fabricated, never valued at zero).', "رسوم مقدم الخدمة المفوَّض منفصلة عن الرسوم والضرائب العامة (انظر «مكونات التكلفة التنظيمية» أعلاه). ولا يُحتسب مبلغ ويُدمج إلا إذا كان مُثبتًا وموثَّق المصدر؛ وإلا يبقى قيد التأكيد (لا يُختلق أبدًا ولا يُقدَّر بصفر أبدًا).")}
                   </p>
                 </div>
                 <RegulatoryComplianceView
@@ -2139,14 +2201,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                     <div>
                       <CardTitle className="text-xl text-[var(--text)]">
-                        {language === 'fr'
-                          ? 'Formalités particulières & prestataires mandatés'
-                          : 'Special formalities & mandated providers'}
+                        {pick(language, 'Formalités particulières & prestataires mandatés', 'Special formalities & mandated providers', 'الإجراءات الخاصة ومقدمو الخدمات المفوَّضون')}
                       </CardTitle>
                       <CardDescription className="text-[var(--afcfta-muted)]">
-                        {language === 'fr'
-                          ? `${getCountryName(result.destination_country)} — registre sourcé et daté, distinct du calcul de droits et taxes`
-                          : `${getCountryName(result.destination_country)} — source-bound dated registry, distinct from the duties/taxes computation`}
+                        {pick(language,
+                          `${getCountryName(result.destination_country)} — registre sourcé et daté, distinct du calcul de droits et taxes`,
+                          `${getCountryName(result.destination_country)} — source-bound dated registry, distinct from the duties/taxes computation`,
+                          `${getCountryName(result.destination_country)} — سجل موثَّق المصادر ومؤرَّخ، مستقل عن حساب الرسوم والضرائب`)}
                       </CardDescription>
                     </div>
                   </div>
@@ -2172,12 +2233,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                   <div>
                     <CardTitle className="text-2xl text-[var(--text)]">
-                      {language === 'fr' ? 'Moteur Réglementaire AfCFTA' : 'AfCFTA Regulatory Engine'}
+                      {pick(language, 'Moteur Réglementaire AfCFTA', 'AfCFTA Regulatory Engine', 'المحرك التنظيمي لزليكاف')}
                     </CardTitle>
                     <CardDescription className="text-[var(--afcfta-muted)] text-base mt-1">
-                      {language === 'fr' 
-                        ? 'Consultez les droits, taxes et formalités pour chaque code tarifaire'
-                        : 'View duties, taxes and formalities for each tariff code'}
+                      {pick(language, 'Consultez les droits, taxes et formalités pour chaque code tarifaire', 'View duties, taxes and formalities for each tariff code', 'اطّلع على الرسوم والضرائب والإجراءات لكل رمز تعريفي')}
                     </CardDescription>
                   </div>
                 </div>
@@ -2188,14 +2247,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label className="text-[var(--text)] font-medium">
-                      {language === 'fr' ? 'Pays de destination' : 'Destination Country'}
+                      {pick(language, 'Pays de destination', 'Destination Country', 'بلد المقصد')}
                     </Label>
                     <Select value={destinationCountry} onValueChange={handleDestinationChange}>
                       <SelectTrigger 
                         data-testid="regulatory-country-select"
                         className="h-12 bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
                       >
-                        <SelectValue placeholder={language === 'fr' ? 'Sélectionner un pays...' : 'Select a country...'} />
+                        <SelectValue placeholder={pick(language, 'Sélectionner un pays...', 'Select a country...', 'اختر بلدًا…')} />
                       </SelectTrigger>
                       <SelectContent>
                         {countries.map((country) => {
@@ -2216,7 +2275,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                 <span>{country.name}</span>
                                 {hasRegulatoryData && (
                                   <span className="ml-2 text-xs bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] px-2 py-0.5 rounded">
-                                    {language === 'fr' ? 'Disponible' : 'Available'}
+                                    {pick(language, 'Disponible', 'Available', 'متاح')}
                                   </span>
                                 )}
                               </span>
@@ -2229,12 +2288,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
                   <div className="space-y-2">
                     <Label className="text-[var(--text)] font-medium">
-                      {language === 'fr' ? 'Code HS (6 à 12 chiffres)' : 'HS Code (6 to 12 digits)'}
+                      {pick(language, 'Code HS (6 à 12 chiffres)', 'HS Code (6 to 12 digits)', 'رمز SH (من 6 إلى 12 رقمًا)')}
                     </Label>
                     <Input
                       value={hsCode}
                       onChange={handleRegulatoryHsCodeChange}
-                      placeholder={language === 'fr' ? 'Ex: 010110, 0101101000...' : 'E.g: 010110, 0101101000...'}
+                      placeholder={pick(language, 'Ex: 010110, 0101101000...', 'E.g: 010110, 0101101000...', 'مثال: 010110، 0101101000…')}
                       className="h-12 font-mono text-lg bg-[var(--overlay)] border-[var(--afcfta-border)] hover:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] focus:border-[color-mix(in_srgb,var(--gold)_30%,transparent)] transition-colors"
                       data-testid="regulatory-hs-input"
                     />
@@ -2249,25 +2308,25 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </div>
                     <div>
                       <p className="font-semibold text-[var(--text)] mb-2">
-                        {language === 'fr' ? 'Guide d\'utilisation' : 'How to use'}
+                        {pick(language, 'Guide d\'utilisation', 'How to use', 'دليل الاستخدام')}
                       </p>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div className="flex items-start gap-2">
                           <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] text-xs font-bold shrink-0">1</span>
                           <span className="text-[var(--afcfta-muted)]">
-                            {language === 'fr' ? 'Sélectionnez le pays de destination' : 'Select the destination country'}
+                            {pick(language, 'Sélectionnez le pays de destination', 'Select the destination country', 'اختر بلد المقصد')}
                           </span>
                         </div>
                         <div className="flex items-start gap-2">
                           <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] text-xs font-bold shrink-0">2</span>
                           <span className="text-[var(--afcfta-muted)]">
-                            {language === 'fr' ? 'Entrez un code HS6 ou HS10' : 'Enter an HS6 or HS10 code'}
+                            {pick(language, 'Entrez un code HS6 ou HS10', 'Enter an HS6 or HS10 code', 'أدخل رمز SH6 أو SH10')}
                           </span>
                         </div>
                         <div className="flex items-start gap-2">
                           <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] text-xs font-bold shrink-0">3</span>
                           <span className="text-[var(--afcfta-muted)]">
-                            {language === 'fr' ? 'Consultez droits, taxes et documents' : 'View duties, taxes and documents'}
+                            {pick(language, 'Consultez droits, taxes et documents', 'View duties, taxes and documents', 'اطّلع على الرسوم والضرائب والوثائق')}
                           </span>
                         </div>
                       </div>
@@ -2298,7 +2357,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       <FileText className="w-5 h-5 text-[var(--violet)] mt-0.5 shrink-0" />
                       <div className="min-w-0">
                         <p className="text-xs text-[var(--violet)] font-medium mb-1">
-                          {language === 'fr' ? 'Intitulé exact de la position nationale' : 'Exact title of national position'}
+                          {pick(language, 'Intitulé exact de la position nationale', 'Exact title of national position', 'التسمية الدقيقة للبند الوطني')}
                         </p>
                         <p className="text-[var(--text)] font-medium">{regulatorySelectedPosDesc}</p>
                         <p className="text-[var(--violet)] font-mono text-sm mt-1">{regulatorySelectedPos}</p>
@@ -2313,7 +2372,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         setRegulatorySelectedPosDesc(null);
                       }}
                     >
-                      {language === 'fr' ? 'Changer' : 'Change'}
+                      {pick(language, 'Changer', 'Change', 'تغيير')}
                     </Button>
                   </div>
                 )}
@@ -2337,14 +2396,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     <Scale className="w-10 h-10 text-[var(--afcfta-muted)]" />
                   </div>
                   <p className="text-[var(--afcfta-muted)] text-lg mb-2">
-                    {language === 'fr' 
-                      ? 'Sélectionnez un pays et entrez un code HS'
-                      : 'Select a country and enter an HS code'}
+                    {pick(language, 'Sélectionnez un pays et entrez un code HS', 'Select a country and enter an HS code', 'اختر بلدًا وأدخل رمز SH')}
                   </p>
                   <p className="text-[var(--afcfta-muted)] text-sm">
-                    {language === 'fr' 
-                      ? 'Les détails réglementaires s\'afficheront automatiquement'
-                      : 'Regulatory details will appear automatically'}
+                    {pick(language, 'Les détails réglementaires s\'afficheront automatiquement', 'Regulatory details will appear automatically', 'ستظهر التفاصيل التنظيمية تلقائيًا')}
                   </p>
                 </CardContent>
               </Card>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { pick } from '../../i18n/lang';
 
 /**
  * Afrique du Sud — VAT Act 89/1991, s.13(2)(b).
@@ -10,21 +11,24 @@ import React from 'react';
  * pays d'expédition : il le demande ici, et seulement dans ce cas.
  */
 export default function ExpeditionSacuQuestion({ value = 'unknown', onChange, language = 'fr' }) {
-  const fr = language === 'fr';
-  const choix = fr
-    ? [['yes', 'Oui'], ['no', 'Non'], ['unknown', 'Je ne sais pas']]
-    : [['yes', 'Yes'], ['no', 'No'], ['unknown', "I don't know"]];
+  const choix = pick(
+    language,
+    [['yes', 'Oui'], ['no', 'Non'], ['unknown', 'Je ne sais pas']],
+    [['yes', 'Yes'], ['no', 'No'], ['unknown', "I don't know"]],
+    [['yes', 'نعم'], ['no', 'لا'], ['unknown', 'لا أعرف']],
+  );
   return (
     <fieldset
       data-testid="expedition-sacu-question"
       className="rounded-xl border border-[color-mix(in_srgb,var(--info)_30%,transparent)] bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] p-4 space-y-3"
     >
       <legend className="px-2 text-sm font-semibold text-[var(--info)]">
-        {fr
-          ? 'La marchandise est-elle expédiée vers l’Afrique du Sud depuis ce même pays (Botswana, Lesotho, Namibie ou Eswatini) ?'
-          : 'Is the shipment dispatched to South Africa from that same country (Botswana, Lesotho, Namibia or Eswatini)?'}
+        {pick(language,
+          'La marchandise est-elle expédiée vers l’Afrique du Sud depuis ce même pays (Botswana, Lesotho, Namibie ou Eswatini) ?',
+          'Is the shipment dispatched to South Africa from that same country (Botswana, Lesotho, Namibia or Eswatini)?',
+          'هل تُرسَل البضاعة إلى جنوب أفريقيا من البلد نفسه (بوتسوانا أو ليسوتو أو ناميبيا أو إسواتيني)؟')}
       </legend>
-      <div className="flex flex-wrap gap-4" role="radiogroup" aria-label={fr ? 'Pays d’expédition' : 'Dispatch country'}>
+      <div className="flex flex-wrap gap-4" role="radiogroup" aria-label={pick(language, 'Pays d’expédition', 'Dispatch country', 'بلد الإرسال')}>
         {choix.map(([answer, label]) => (
           <label key={answer} className="flex items-center gap-2 text-sm text-[var(--text)]">
             <input
@@ -40,19 +44,21 @@ export default function ExpeditionSacuQuestion({ value = 'unknown', onChange, la
       </div>
       <div className="text-xs text-[var(--afcfta-muted)] space-y-1" data-testid="expedition-sacu-cadre">
         <p>
-          {fr
-            ? 'Spécificité sud-africaine : la TVA à l’importation (15 %) est assise sur la valeur en douane majorée de 10 %, plus les droits. Cette majoration ne s’applique pas aux marchandises originaires du Botswana, du Lesotho, de la Namibie ou de l’Eswatini ET expédiées depuis l’un de ces pays. Une marchandise de ces pays expédiée d’ailleurs reste majorée.'
-            : 'South African specificity: import VAT (15%) is levied on the customs value plus 10%, plus duties. The 10% uplift does not apply to goods originating in Botswana, Lesotho, Namibia or Eswatini AND dispatched from one of those countries. Goods from those countries dispatched from elsewhere remain uplifted.'}
+          {pick(language,
+            'Spécificité sud-africaine : la TVA à l’importation (15 %) est assise sur la valeur en douane majorée de 10 %, plus les droits. Cette majoration ne s’applique pas aux marchandises originaires du Botswana, du Lesotho, de la Namibie ou de l’Eswatini ET expédiées depuis l’un de ces pays. Une marchandise de ces pays expédiée d’ailleurs reste majorée.',
+            'South African specificity: import VAT (15%) is levied on the customs value plus 10%, plus duties. The 10% uplift does not apply to goods originating in Botswana, Lesotho, Namibia or Eswatini AND dispatched from one of those countries. Goods from those countries dispatched from elsewhere remain uplifted.',
+            'خصوصية جنوب أفريقية: تُفرض ضريبة القيمة المضافة على الواردات (15%) على القيمة الجمركية مضافًا إليها 10%، زائد الرسوم. ولا تنطبق هذه الزيادة على البضائع الناشئة في بوتسوانا أو ليسوتو أو ناميبيا أو إسواتيني والمرسلة من أحد هذه البلدان. أما البضائع الناشئة في هذه البلدان والمرسلة من مكان آخر فتظل خاضعة للزيادة.')}
         </p>
         <p>
-          {fr ? 'Cadre réglementaire : ' : 'Legal framework: '}
+          {pick(language, 'Cadre réglementaire : ', 'Legal framework: ', 'الإطار التنظيمي: ')}
           Value-Added Tax Act 89 of 1991, s.13(2)(a) et (b) ; SARS, guide CE-G06
           « Value-Added Tax Levied on the Importation of Goods into South Africa », § 5.1.
         </p>
         <p>
-          {fr
-            ? 'Sans réponse, la TVA n’est pas calculée : elle reste indiquée « à compléter » plutôt que supposée.'
-            : 'Without an answer, VAT is not computed: it is shown as “to be completed” rather than assumed.'}
+          {pick(language,
+            'Sans réponse, la TVA n’est pas calculée : elle reste indiquée « à compléter » plutôt que supposée.',
+            'Without an answer, VAT is not computed: it is shown as “to be completed” rather than assumed.',
+            'في غياب الإجابة، لا تُحتسب ضريبة القيمة المضافة: تبقى مبيَّنة «قيد الاستكمال» بدلًا من افتراضها.')}
         </p>
       </div>
     </fieldset>

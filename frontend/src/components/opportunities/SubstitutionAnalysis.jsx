@@ -22,6 +22,8 @@ import {
 } from 'recharts';
 import TradeSankeyDiagram from './TradeSankeyDiagram';
 import OpportunityPdfExport from './OpportunityPdfExport';
+import { pick } from '../../i18n/lang';
+import { getCountryName } from '../../utils/translations';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { montant, montantCompact } from '../../utils/nombres';
 import {
@@ -258,8 +260,8 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             </Badge>
           ) : (
             <Badge className={competitivenessColors[opportunity.competitiveness] || competitivenessColors.competitive}>
-              {opportunity.competitiveness === 'highly_competitive' ? 'Très compétitif' :
-               opportunity.competitiveness === 'competitive' ? 'Compétitif' : 'En développement'}
+              {opportunity.competitiveness === 'highly_competitive' ? pick(language, 'Très compétitif', 'Très compétitif', 'تنافسي جداً') :
+               opportunity.competitiveness === 'competitive' ? pick(language, 'Compétitif', 'Compétitif', 'تنافسي') : pick(language, 'En développement', 'En développement', 'قيد التطوير')}
             </Badge>
           )}
         </div>
@@ -268,7 +270,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="bg-[var(--afcfta-card2)] rounded-lg p-3">
             <p className="text-xs text-[var(--afcfta-muted)] mb-1">
-              {isImport ? "Import actuel" : "Marché potentiel"}
+              {isImport ? pick(language, "Import actuel", "Import actuel", "الواردات الحالية") : pick(language, "Marché potentiel", "Marché potentiel", "السوق المحتملة")}
             </p>
             <p className="font-bold text-lg text-[var(--text)]">
               {formatValue(isImport ? product?.import_value : opportunity.total_market_potential, language)}
@@ -276,7 +278,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           </div>
           <div className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] rounded-lg p-3">
             <p className="text-xs text-[var(--success)] mb-1">
-              {isImport ? "Potentiel substitution" : "Avantage ZLECAf"}
+              {isImport ? pick(language, "Potentiel substitution", "Potentiel substitution", "إمكانات الإحلال") : pick(language, "Avantage ZLECAf", "Avantage ZLECAf", "ميزة زليكاف")}
             </p>
             <p className="font-bold text-lg text-[var(--success)]">
               {isImport ? formatValue(opportunity.substitution_potential, language) : (opportunity.afcfta_advantage || '-')}
@@ -297,7 +299,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
         {isImport && product?.current_source && (
           <div className="mb-4 flex items-center gap-2 text-sm text-[var(--afcfta-muted)]">
             <Globe className="h-4 w-4" />
-            <span>Source actuelle: <strong className="text-[var(--text)]">{product.current_source}</strong></span>
+            <span>{pick(language, 'Source actuelle', 'Source actuelle', 'المصدر الحالي')}: <strong className="text-[var(--text)]">{product.current_source}</strong></span>
           </div>
         )}
 
@@ -320,7 +322,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
         {/* Suppliers/Markets */}
         <div>
           <p className="text-xs font-medium text-[var(--afcfta-muted)] mb-2">
-            {isImport ? "Fournisseurs africains potentiels" : "Marchés cibles"}
+            {isImport ? pick(language, "Fournisseurs africains potentiels", "Fournisseurs africains potentiels", "الموردون الأفارقة المحتملون") : pick(language, "Marchés cibles", "Marchés cibles", "الأسواق المستهدفة")}
           </p>
           <div className="space-y-2">
             {targets?.slice(0, 3).map((target, idx) => (
@@ -554,7 +556,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       setExportData(exportRes.data);
     } catch (err) {
       console.error('Error analyzing country:', err);
-      setError('Erreur lors de l\'analyse. Veuillez réessayer.');
+      setError(pick(currentLang, 'Erreur lors de l\'analyse. Veuillez réessayer.', 'Erreur lors de l\'analyse. Veuillez réessayer.', 'خطأ أثناء التحليل. يُرجى إعادة المحاولة.'));
     } finally {
       setLoading(false);
     }
@@ -578,7 +580,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
 
   // Spécification du rapport PDF du sous-module (voir utils/opportunityPdf.js) :
   // décrit en données l'onglet actif — le bâtisseur commun gère la mise en page.
-  const buildPdfSpec = useCallback(() => {
+  const buildPdfSpec = useCallback((t, currentLang) => {
     if (!currentData) return null;
     const isImport = activeTab === 'import';
     const fr = currentLang !== 'en';
@@ -821,12 +823,12 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                   {countries.map((country) => (
                     <SelectItem key={country.iso3} value={country.iso3}>
                       <span className="flex items-center gap-2">
-                        {country.name}
+                        {pick(currentLang, country.name, country.name, getCountryName(country.iso3, 'ar'))}
                         {country.has_trade_data && (
                           <Sparkles className="h-3 w-3 text-[var(--gold)]" />
                         )}
                         {!country.has_trade_data && (
-                          <span className="text-xs text-[var(--afcfta-muted)]">(pas de données)</span>
+                          <span className="text-xs text-[var(--afcfta-muted)]">({pick(currentLang, 'pas de données', 'pas de données', 'لا توجد بيانات')})</span>
                         )}
                       </span>
                     </SelectItem>
@@ -905,7 +907,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                 color="blue"
               />
               <StatCard
-                title={activeTab === 'import' ? t('opportunities.substitutionAnalysis.potentialSavings') : "Marchés cibles"}
+                title={activeTab === 'import' ? t('opportunities.substitutionAnalysis.potentialSavings') : pick(currentLang, "Marchés cibles", "Marchés cibles", "الأسواق المستهدفة")}
                 value={activeTab === 'import' 
                   ? `${currentData.summary?.potential_savings_percent?.toFixed(1) || 0}%`
                   : currentData.summary?.top_markets?.length || 0

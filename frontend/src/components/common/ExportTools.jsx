@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { Download, Loader2, ZoomIn, ZoomOut, Image } from 'lucide-react';
 import { exportToPDF } from '../../utils/pdfExport';
 import html2canvas from 'html2canvas';
+import { pick } from '../../i18n/lang';
 
 /**
  * PDFExportButton - Bouton d'export PDF réutilisable
@@ -21,9 +22,10 @@ export function PDFExportButton({
 
   const texts = {
     fr: { export: 'Exporter PDF', exporting: 'Export...' },
-    en: { export: 'Export PDF', exporting: 'Exporting...' }
+    en: { export: 'Export PDF', exporting: 'Exporting...' },
+    ar: { export: 'تصدير PDF', exporting: 'جارٍ التصدير…' }
   };
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   const handleExport = async () => {
     if (!targetRef?.current) return;
@@ -32,7 +34,7 @@ export function PDFExportButton({
     try {
       const result = await exportToPDF(targetRef.current, `${filename}_${new Date().toISOString().split('T')[0]}.pdf`, {
         title,
-        subtitle: subtitle || (language === 'fr' ? 'Rapport ZLECAf Analytics' : 'AfCFTA Analytics Report'),
+        subtitle: subtitle || pick(language, 'Rapport ZLECAf Analytics', 'AfCFTA Analytics Report', 'تقرير تحليلات زليكاف'),
         language,
         showDate: true,
         informationalNotice
@@ -94,6 +96,7 @@ export function CSVExportButton({
   const texts = {
     fr: { export: 'Exporter CSV' },
     en: { export: 'Export CSV' },
+    ar: { export: 'تصدير CSV' },
   };
   const t = texts[language] || texts.fr;
 
@@ -172,6 +175,7 @@ export function JSONExportButton({
   const texts = {
     fr: { export: 'Exporter JSON' },
     en: { export: 'Export JSON' },
+    ar: { export: 'تصدير JSON' },
   };
   const t = texts[language] || texts.fr;
 
@@ -221,9 +225,10 @@ export function ChartExportButton({
 
   const texts = {
     fr: { export: 'Image' },
-    en: { export: 'Image' }
+    en: { export: 'Image' },
+    ar: { export: 'صورة' }
   };
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   const handleExport = async () => {
     if (!chartRef?.current) return;

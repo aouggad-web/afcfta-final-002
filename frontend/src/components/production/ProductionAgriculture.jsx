@@ -9,6 +9,7 @@ import {
   Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
+import { pick } from '../../i18n/lang';
 import {
   Wheat, Beef, Fish, TrendingUp, AlertTriangle, Loader2,
   Globe, BarChart3, Droplets, Award, Info
@@ -285,7 +286,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] border-b">
-                                <th className="text-left px-3 py-2 font-semibold">Produit</th>
+                                <th className="text-left px-3 py-2 font-semibold">{pick(language, 'Produit', 'Produit', 'المنتَج')}</th>
                                 <th className="text-right px-3 py-2 font-semibold">{t('production.agriculture.panel.production')}</th>
                                 <th className="text-right px-3 py-2 font-semibold hidden sm:table-cell">{t('production.agriculture.panel.surface')}</th>
                                 <th className="text-center px-3 py-2 font-semibold">{t('production.agriculture.panel.rankAfrique')}</th>
@@ -439,8 +440,8 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                         <table className="w-full text-sm">
                           <thead>
                             <tr className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] border-b">
-                              <th className="text-left px-3 py-2 font-semibold">Espèce</th>
-                              <th className="text-right px-3 py-2 font-semibold">Effectif</th>
+                              <th className="text-left px-3 py-2 font-semibold">{pick(language, 'Espèce', 'Espèce', 'النوع')}</th>
+                              <th className="text-right px-3 py-2 font-semibold">{pick(language, 'Effectif', 'Effectif', 'العدد')}</th>
                               <th className="text-center px-3 py-2 font-semibold">{t('production.agriculture.panel.rankAfrique')}</th>
                             </tr>
                           </thead>
@@ -547,7 +548,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     <Card className="shadow-md">
                       <CardHeader>
-                        <CardTitle className="text-base text-[var(--info)]">Répartition de la production halieutique</CardTitle>
+                        <CardTitle className="text-base text-[var(--info)]">{pick(language, 'Répartition de la production halieutique', 'Répartition de la production halieutique', 'توزيع الإنتاج السمكي')}</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <ResponsiveContainer width="100%" height={260}>
@@ -574,7 +575,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
                     <Card className="shadow-md">
                       <CardHeader>
-                        <CardTitle className="text-base text-[var(--info)]">Détails pêche & aquaculture</CardTitle>
+                        <CardTitle className="text-base text-[var(--info)]">{pick(language, 'Détails pêche & aquaculture', 'Détails pêche & aquaculture', 'تفاصيل الصيد البحري وتربية الأحياء المائية')}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         {detail.peche_aquaculture?.species?.length > 0 && (
@@ -602,7 +603,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                           </div>
                         )}
                         <div className="mt-4 p-3 bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] rounded-lg border border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                          <p className="text-xs text-[var(--afcfta-muted)]">Source : FAO FishStat 2023 / Direction des Pêches</p>
+                          <p className="text-xs text-[var(--afcfta-muted)]">{pick(language, 'Source : FAO FishStat 2023 / Direction des Pêches', 'Source : FAO FishStat 2023 / Direction des Pêches', 'المصدر: FAO FishStat 2023 / مديرية الصيد البحري')}</p>
                         </div>
                       </CardContent>
                     </Card>

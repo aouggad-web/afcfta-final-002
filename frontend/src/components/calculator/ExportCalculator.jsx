@@ -14,44 +14,44 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from '../ui/badge';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import { chiffres } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
 const DEVISE_NATIONALE = { TUN: 'TND', CIV: 'XOF', MDG: 'MGA', GHA: 'GHS', SEN: 'XOF', ZMB: 'ZMW', MLI: 'XOF', KEN: 'KES', TZA: 'TZS', ZAF: 'ZAR', CMR: 'XAF', EGY: 'EGP', COG: 'XAF', GAB: 'XAF', COD: 'CDF' };
 
 const STATUTS = {
-  CALCULE: { fr: 'Calculé', en: 'Calculated' },
-  QUANTITE_REQUISE: { fr: 'Quantité requise', en: 'Quantity required' },
-  TAUX_DE_CHANGE_REQUIS: { fr: 'Taux de change requis', en: 'Exchange rate required' },
-  ASSIETTE_INDISPONIBLE: { fr: 'Assiette non établie', en: 'Basis not established' },
-  ASSIETTE_INCOMPLETE: { fr: 'Assiette incomplète', en: 'Incomplete basis' },
-  TAUX_INDISPONIBLE: { fr: 'Taux non établi', en: 'Rate not established' },
+  CALCULE: { fr: 'Calculé', en: 'Calculated', ar: 'محسوب' },
+  QUANTITE_REQUISE: { fr: 'Quantité requise', en: 'Quantity required', ar: 'الكمية مطلوبة' },
+  TAUX_DE_CHANGE_REQUIS: { fr: 'Taux de change requis', en: 'Exchange rate required', ar: 'سعر الصرف مطلوب' },
+  ASSIETTE_INDISPONIBLE: { fr: 'Assiette non établie', en: 'Basis not established', ar: 'الوعاء غير محدد' },
+  ASSIETTE_INCOMPLETE: { fr: 'Assiette incomplète', en: 'Incomplete basis', ar: 'الوعاء غير مكتمل' },
+  TAUX_INDISPONIBLE: { fr: 'Taux non établi', en: 'Rate not established', ar: 'المعدل غير محدد' },
 };
 
 /** Statut d'une ligne ; une quantité réclamée dit dans quelle unité. */
-function statut(ligne, fr) {
-  const libelle = STATUTS[ligne.statut]?.[fr ? 'fr' : 'en'] || ligne.statut;
+function statut(ligne, language) {
+  const libelle = STATUTS[ligne.statut]?.[pick(language, 'fr', 'en', 'ar')] || ligne.statut;
   return ligne.statut === 'QUANTITE_REQUISE' && ligne.unite_quantite ? `${libelle} (${ligne.unite_quantite})` : libelle;
 }
 
 const ETATS = {
-  COMPLET: { fr: 'Complet', en: 'Complete' },
-  PARTIEL: { fr: 'Partiel : des droits ne sont pas chiffrés', en: 'Partial: some duties are not quantified' },
-  INDISPONIBLE: { fr: 'Non chiffrable', en: 'Not quantifiable' },
-  AUCUN_DROIT_PUBLIE: { fr: 'Aucun droit de sortie au tarif collecté pour cette position', en: 'No export duty in the collected tariff for this position' },
+  COMPLET: { fr: 'Complet', en: 'Complete', ar: 'كامل' },
+  PARTIEL: { fr: 'Partiel : des droits ne sont pas chiffrés', en: 'Partial: some duties are not quantified', ar: 'جزئي: بعض الرسوم غير محتسبة' },
+  INDISPONIBLE: { fr: 'Non chiffrable', en: 'Not quantifiable', ar: 'غير قابل للاحتساب' },
+  AUCUN_DROIT_PUBLIE: { fr: 'Aucun droit de sortie au tarif collecté pour cette position', en: 'No export duty in the collected tariff for this position', ar: 'لا يوجد رسم تصدير في التعريفة المجمَّعة لهذا البند' },
 };
 
-function detailErreur(e, fr) {
+function detailErreur(e, language) {
   const detail = e?.response?.data?.detail;
   if (detail?.code === 'POSITION_NATIONALE_REQUISE') {
-    return fr ? 'Position nationale requise : choisissez la position complète.' : 'National position required: choose the full position.';
+    return pick(language, 'Position nationale requise : choisissez la position complète.', 'National position required: choose the full position.', 'البند الوطني مطلوب: اختر البند كاملًا.');
   }
   if (typeof detail === 'string') return detail;
-  return fr ? 'Calcul impossible' : 'Calculation failed';
+  return pick(language, 'Calcul impossible', 'Calculation failed', 'تعذّر الحساب');
 }
 
 export default function ExportCalculator({ language = 'fr' }) {
-  const fr = language !== 'en';
   const [pays, setPays] = useState({});
   // Ce que le texte fait déclarer à l'exportateur (Madagascar : DTSPM du Code
   // minier ; Cameroun : produit fini ou non), servi par l'API, par pays, avec
@@ -80,8 +80,8 @@ export default function ExportCalculator({ language = 'fr' }) {
         setPays(res.data.pays || {});
         setQuestions(res.data.questions || {});
       })
-      .catch(() => setErreur(fr ? 'Pays couverts indisponibles' : 'Covered countries unavailable'));
-  }, [fr]);
+      .catch(() => setErreur(pick(language, 'Pays couverts indisponibles', 'Covered countries unavailable', 'البلدان المشمولة غير متاحة')));
+  }, [language]);
 
   // Une autre position ou une autre devise appelle une autre paire ; la réponse
   // d'un calcul lancé avant le changement ne vaut plus pour elles.
@@ -142,46 +142,44 @@ export default function ExportCalculator({ language = 'fr' }) {
       const requise = (res.data.change_requis || [])[0];
       if (requise) setPaire(requise);
     } catch (e) {
-      if (demandee === version.current) setErreur(detailErreur(e, fr));
+      if (demandee === version.current) setErreur(detailErreur(e, language));
     } finally {
       setChargement(false);
     }
   };
 
   const export_ = resultat?.export;
-  const etat = export_ && (ETATS[export_.etat]?.[fr ? 'fr' : 'en'] || export_.etat);
+  const etat = export_ && (ETATS[export_.etat]?.[pick(language, 'fr', 'en', 'ar')] || export_.etat);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{fr ? 'Droits et taxes à l’exportation' : 'Export duties and taxes'}</CardTitle>
+        <CardTitle>{pick(language, 'Droits et taxes à l’exportation', 'Export duties and taxes', 'رسوم وضرائب التصدير')}</CardTitle>
         <CardDescription>
-          {fr
-            ? 'Droits de sortie publiés au tarif du pays d’exportation. Seuls les pays dont le tarif publie ces droits sont proposés.'
-            : 'Export duties published in the exporting country’s tariff. Only countries whose tariff publishes them are offered.'}
+          {pick(language, 'Droits de sortie publiés au tarif du pays d’exportation. Seuls les pays dont le tarif publie ces droits sont proposés.', 'Export duties published in the exporting country’s tariff. Only countries whose tariff publishes them are offered.', 'رسوم التصدير المنشورة في تعريفة بلد التصدير. لا تُعرض إلا البلدان التي تنشر تعريفتُها هذه الرسوم.')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <Label htmlFor="export-pays">{fr ? 'Pays d’exportation' : 'Exporting country'}</Label>
+            <Label htmlFor="export-pays">{pick(language, 'Pays d’exportation', 'Exporting country', 'بلد التصدير')}</Label>
             <Select value={iso3} onValueChange={choisirPays}>
               <SelectTrigger id="export-pays" data-testid="export-pays">
-                <SelectValue placeholder={fr ? 'Choisir' : 'Choose'} />
+                <SelectValue placeholder={pick(language, 'Choisir', 'Choose', 'اختر')} />
               </SelectTrigger>
               <SelectContent>
                 {Object.entries(pays).map(([iso, n]) => (
                   <SelectItem key={iso} value={iso}>
                     {iso} — {n
-                      ? `${n} ${fr ? 'positions avec droit de sortie' : 'positions with export duty'}`
-                      : (fr ? 'taxe de sortie hors tarif' : 'export levy outside the tariff')}
+                      ? `${n} ${pick(language, 'positions avec droit de sortie', 'positions with export duty', 'بندًا خاضعًا لرسم التصدير')}`
+                      : (pick(language, 'taxe de sortie hors tarif', 'export levy outside the tariff', 'رسم تصدير خارج التعريفة'))}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="export-code">{fr ? 'Position nationale' : 'National position'}</Label>
+            <Label htmlFor="export-code">{pick(language, 'Position nationale', 'National position', 'البند الوطني')}</Label>
             <Input id="export-code" value={code} onChange={(e) => setCode(e.target.value)} />
           </div>
         </div>
@@ -197,15 +195,15 @@ export default function ExportCalculator({ language = 'fr' }) {
 
         <div className="grid gap-4 md:grid-cols-4">
           <div>
-            <Label htmlFor="export-valeur">{fr ? 'Valeur en douane' : 'Customs value'}</Label>
+            <Label htmlFor="export-valeur">{pick(language, 'Valeur en douane', 'Customs value', 'القيمة الجمركية')}</Label>
             <Input id="export-valeur" type="number" min="0" value={valeur} onChange={(e) => setValeur(e.target.value)} />
           </div>
           <div>
-            <Label htmlFor="export-devise">{fr ? 'Devise' : 'Currency'}</Label>
+            <Label htmlFor="export-devise">{pick(language, 'Devise', 'Currency', 'العملة')}</Label>
             <Input id="export-devise" value={devise} onChange={(e) => setDevise(e.target.value.toUpperCase())} />
           </div>
           <div>
-            <Label htmlFor="export-quantite">{fr ? 'Quantité (unité du droit)' : 'Quantity (unit of the duty)'}</Label>
+            <Label htmlFor="export-quantite">{pick(language, 'Quantité (unité du droit)', 'Quantity (unit of the duty)', 'الكمية (وحدة الرسم)')}</Label>
             <Input id="export-quantite" type="number" min="0" value={quantite} onChange={(e) => setQuantite(e.target.value)} />
           </div>
           {changeRequis && (
@@ -221,25 +219,25 @@ export default function ExportCalculator({ language = 'fr' }) {
         {question && (
           <fieldset className="space-y-2" data-testid="export-question-hors-tarif">
             <legend className="text-sm">
-              {fr ? question.question : question.question_en}
+              {pick(language, question.question, question.question_en, question.question)}
             </legend>
             <div className="flex gap-4 text-sm">
-              <label><input type="radio" name="reponse-exportateur" checked={reponse === true} onChange={() => setReponse(true)} /> {fr ? 'Oui' : 'Yes'}</label>
-              <label><input type="radio" name="reponse-exportateur" checked={reponse === false} onChange={() => setReponse(false)} /> {fr ? 'Non' : 'No'}</label>
+              <label><input type="radio" name="reponse-exportateur" checked={reponse === true} onChange={() => setReponse(true)} /> {pick(language, 'Oui', 'Yes', 'نعم')}</label>
+              <label><input type="radio" name="reponse-exportateur" checked={reponse === false} onChange={() => setReponse(false)} /> {pick(language, 'Non', 'No', 'لا')}</label>
             </div>
             {reponse === false && question.question_si_non && (
               <div className="space-y-1" data-testid="export-question-si-non">
-                <p className="text-sm">{fr ? question.question_si_non : question.question_si_non_en}</p>
+                <p className="text-sm">{pick(language, question.question_si_non, question.question_si_non_en, question.question_si_non)}</p>
                 <div className="flex gap-4 text-sm">
-                  <label><input type="radio" name="transforme-ailleurs" checked={transformeAilleurs === true} onChange={() => setTransformeAilleurs(true)} /> {fr ? 'Oui' : 'Yes'}</label>
-                  <label><input type="radio" name="transforme-ailleurs" checked={transformeAilleurs === false} onChange={() => setTransformeAilleurs(false)} /> {fr ? 'Non' : 'No'}</label>
+                  <label><input type="radio" name="transforme-ailleurs" checked={transformeAilleurs === true} onChange={() => setTransformeAilleurs(true)} /> {pick(language, 'Oui', 'Yes', 'نعم')}</label>
+                  <label><input type="radio" name="transforme-ailleurs" checked={transformeAilleurs === false} onChange={() => setTransformeAilleurs(false)} /> {pick(language, 'Non', 'No', 'لا')}</label>
                 </div>
               </div>
             )}
             {reponse && question.question_transformation && (
               <label className="flex gap-2 text-sm">
                 <input type="checkbox" checked={transforme} onChange={(e) => setTransforme(e.target.checked)} />
-                {fr ? question.question_transformation : question.question_transformation_en}
+                {pick(language, question.question_transformation, question.question_transformation_en, question.question_transformation)}
               </label>
             )}
           </fieldset>
@@ -251,7 +249,7 @@ export default function ExportCalculator({ language = 'fr' }) {
             || (question && question.question_si_non && reponse === false && transformeAilleurs === null) || chargement}
           data-testid="export-calculer"
         >
-          {fr ? 'Calculer les droits de sortie' : 'Calculate export duties'}
+          {pick(language, 'Calculer les droits de sortie', 'Calculate export duties', 'احتساب رسوم التصدير')}
         </Button>
 
         {erreur && <p className="text-sm text-red-600" role="alert">{erreur}</p>}
@@ -267,9 +265,9 @@ export default function ExportCalculator({ language = 'fr' }) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-left">
-                    <th>{fr ? 'Droit' : 'Duty'}</th>
-                    <th>{fr ? 'Montant' : 'Amount'}</th>
-                    <th>{fr ? 'Statut' : 'Status'}</th>
+                    <th>{pick(language, 'Droit', 'Duty', 'الرسم')}</th>
+                    <th>{pick(language, 'Montant', 'Amount', 'المبلغ')}</th>
+                    <th>{pick(language, 'Statut', 'Status', 'الحالة')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -288,7 +286,7 @@ export default function ExportCalculator({ language = 'fr' }) {
                       <td className="tabular-nums">
                         {ligne.montant == null ? '—' : `${chiffres(ligne.montant, language, 2)} ${resultat.devise}`}
                       </td>
-                      <td>{statut(ligne, fr)}</td>
+                      <td>{statut(ligne, language)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -297,7 +295,7 @@ export default function ExportCalculator({ language = 'fr' }) {
             {/* Aucun total quand rien n'est chiffré : « 0 » se lirait « rien à payer ». */}
             {export_.lignes.some((ligne) => ligne.statut === 'CALCULE') && (
               <p className="font-semibold">
-                {fr ? 'Droits de sortie chiffrés' : 'Quantified export duties'} : {chiffres(export_.total_droits, language, 2)} {resultat.devise}
+                {pick(language, 'Droits de sortie chiffrés', 'Quantified export duties', 'رسوم التصدير المحتسبة')} : {chiffres(export_.total_droits, language, 2)} {resultat.devise}
               </p>
             )}
           </div>

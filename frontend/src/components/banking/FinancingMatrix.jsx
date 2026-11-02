@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -57,6 +58,31 @@ const texts = {
       costBenefit: 'Cost-Benefit',
       riskMatrix: 'Risk',
       sizeMatrix: 'Size',
+    },
+  },
+  ar: {
+    title: '💰 مصفوفة التمويل',
+    subtitle: 'تحليل مقارن وتحسين (الخيار 4)',
+    countryLabel: 'البلد',
+    amountLabel: 'المبلغ (USD)',
+    submit: 'تحليل',
+    loading: 'جارٍ التحليل…',
+    error: 'خطأ',
+    costBenefit: 'تحليل التكاليف والفوائد',
+    instrument: 'الأداة',
+    cost: 'التكلفة',
+    protection: 'الحماية',
+    netBenefit: 'الفائدة الصافية',
+    roi: 'العائد على الاستثمار',
+    recommendation: 'التوصية',
+    instruments: 'جميع الأدوات',
+    riskMatrix: 'المصفوفة حسب المخاطر',
+    sizeMatrix: 'المصفوفة حسب الحجم',
+    tabs: {
+      comparison: 'مقارنة',
+      costBenefit: 'التكاليف والفوائد',
+      riskMatrix: 'المخاطر',
+      sizeMatrix: 'الحجم',
     },
   },
 };
@@ -179,12 +205,12 @@ export default function FinancingMatrix({ language = 'en' }) {
                           <div className="flex justify-between items-start mb-2">
                             <div className="font-semibold">{inst.instrument}</div>
                             <Badge variant={i === 0 ? 'default' : 'outline'}>
-                              ROI: {inst.roi_pct}%
+                              {pick(language, 'ROI', 'ROI', 'العائد')}: {inst.roi_pct}%
                             </Badge>
                           </div>
                           <div className="grid grid-cols-3 gap-2 text-xs text-[var(--afcfta-muted)]">
                             <div>{t.cost}: {montant(inst.total_cost_usd, language, 3)}</div>
-                            <div>Protection: {montant(inst.risk_protection_value_usd, language, 3)}</div>
+                            <div>{t.protection}: {montant(inst.risk_protection_value_usd, language, 3)}</div>
                             <div>{t.netBenefit}: {montant(inst.net_benefit_usd, language, 3)}</div>
                           </div>
                         </CardContent>
@@ -203,14 +229,14 @@ export default function FinancingMatrix({ language = 'en' }) {
                       <Card key={risk}>
                         <CardHeader>
                           <CardTitle className="text-sm">
-                            Rating {risk}: {riskData.description}
+                            {pick(language, 'Rating', 'Rating', 'التصنيف')} {risk}: {riskData.description}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
                           <div className="text-xs space-y-1">
                             {riskData.recommended_instruments?.map((inst) => (
                               <div key={inst.code}>
-                                • {inst.name}: {inst.cost_pct}% cost
+                                • {inst.name}: {pick(language, <>{inst.cost_pct}% cost</>, <>{inst.cost_pct}% cost</>, <>التكلفة {inst.cost_pct}%</>)}
                               </div>
                             ))}
                           </div>
@@ -233,11 +259,11 @@ export default function FinancingMatrix({ language = 'en' }) {
                       <CardContent>
                         <div className="text-xs space-y-1">
                           <div>
-                            <strong>Instruments:</strong>{' '}
+                            <strong>{pick(language, 'Instruments:', 'Instruments:', 'الأدوات:')}</strong>{' '}
                             {data.recommended_instruments?.slice(0, 3).join(', ')}
                           </div>
                           <div>
-                            <strong>Cost:</strong> {data.typical_cost_range_pct}
+                            <strong>{pick(language, 'Cost:', 'Cost:', 'التكلفة:')}</strong> {data.typical_cost_range_pct}
                           </div>
                         </div>
                       </CardContent>

@@ -22,6 +22,19 @@ export default function BusinessAtlasModule({ language = 'fr' }) {
       };
     }
 
+    if (language === 'ar') {
+      return {
+        title: 'أطلس الأعمال لزليكاف',
+        subtitle: 'وحدة تفاعلية للمتعاملين الاقتصاديين الأفارقة',
+        note: 'دمج لوحة قيادة الأطلس كوحدة فرعية ضمن الأدوات.',
+        open: 'فتح بملء الشاشة',
+        hide: 'إخفاء المعاينة',
+        show: 'عرض المعاينة',
+        iframeTitle: 'أطلس الأعمال لزليكاف',
+        status: 'جديد',
+      };
+    }
+
     return {
       title: 'AfCFTA Business Atlas',
       subtitle: 'Interactive module for African economic operators',

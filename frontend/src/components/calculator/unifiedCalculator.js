@@ -10,6 +10,8 @@
  * et se reflète dans `confidence_level` / `duty_status`.
  */
 
+import { intlLocale } from '../../i18n/lang';
+
 const FAMILLE_CATEGORIE = { droit: 'droit_douane', tva: 'tva' };
 const categorieDe = (famille) => FAMILLE_CATEGORIE[famille] || 'autre_taxe';
 
@@ -427,7 +429,7 @@ export function reserveConversion(result, language = 'fr') {
   if (!conversion?.lignes?.length || !(conversion.taux_de_change > 0)) return null;
   const fr = language === 'fr';
   const taux = (1 / conversion.taux_de_change)
-    .toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 4 });
+    .toLocaleString(intlLocale(language), { maximumFractionDigits: 4 });
   const devise = conversion.devise ? ` ${conversion.devise}` : '';
   const date = result.currency?.rate_as_of ? String(result.currency.rate_as_of).slice(0, 10) : null;
   const lignes = conversion.lignes.join(', ');
@@ -441,6 +443,17 @@ export function reserveConversion(result, language = 'fr') {
           ? "Pour déterminer la valeur en douane, la douane convertit au taux publié par les autorités compétentes "
             + "du pays d'importation (Accord de l'OMC sur l'évaluation en douane, art. 9) : à vérifier avant tout usage officiel."
           : "Le taux retenu par la douane du pays d'importation peut différer : à vérifier avant tout usage officiel."),
+    };
+  }
+  if (String(language || '').startsWith('ar')) {
+    return {
+      titre: 'مبلغ إرشادي: سعر الصرف يحتاج إلى تحقق',
+      texte: `${lignes}: ${conversion.lignes.length > 1 ? 'مبالغ محسوبة' : 'مبلغ محسوب'} بسعر السوق `
+        + `لوحدة البنوك (1 USD = ${taux}${devise}${date ? `، بتاريخ ${date}` : ''}). `
+        + (article9
+          ? 'لتحديد القيمة الجمركية، تُجري الجمارك التحويل بالسعر الذي تنشره السلطات المختصة '
+            + 'في بلد الاستيراد (اتفاق منظمة التجارة العالمية بشأن التقييم الجمركي، المادة 9): يجب التحقق منه قبل أي استخدام رسمي.'
+          : 'قد يختلف السعر الذي تعتمده جمارك بلد الاستيراد: يجب التحقق منه قبل أي استخدام رسمي.'),
     };
   }
   return {

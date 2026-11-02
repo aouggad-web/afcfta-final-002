@@ -96,3 +96,14 @@ describe('unités imposées', () => {
     expect(nombreUnite(47.4, 'M', 'en', 1)).toBe('47.4M');
   });
 });
+
+describe('arabe', () => {
+  it("garde la forme française, avec l'unité en toutes lettres", () => {
+    expect(s(montantCompact(235e9, 'ar', { B: 0 }))).toBe('235 مليار $');
+    expect(s(montantCompact(2.7e12, 'ar', { T: 1 }))).toBe('2 700 مليار $');
+    expect(s(montantUnite(213.8, 'B', 'ar'))).toBe('213,8 مليار $');
+    expect(s(nombreCompact(4.2e6, 'ar', { M: 1 }))).toBe('4,2 مليون');
+    expect(s(nombreUnite(850, 'K', 'ar'))).toBe('850 ألف');
+    expect(s(montant(12345, 'ar'))).toBe('12 345 $');
+  });
+});

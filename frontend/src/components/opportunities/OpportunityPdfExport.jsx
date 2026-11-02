@@ -11,16 +11,19 @@ import { FileDown, Moon, Loader2 } from 'lucide-react';
 import { buildOpportunityPdf, opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 export default function OpportunityPdfExport({ getSpec, disabled = false, language = 'fr' }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // jsPDF ne sait pas écrire l'arabe : en arabe, le PDF est produit en
+  // français. `getSpec(t, langue)` reçoit le `t` et la langue du PDF.
+  const pdfLang = String(language).startsWith('ar') ? 'fr' : language;
   const [exporting, setExporting] = useState(null); // null | 'light' | 'dark'
 
   const run = (theme) => {
     if (disabled || exporting) return;
     setExporting(theme);
     try {
-      const spec = getSpec();
+      const spec = getSpec(pdfLang === language ? t : i18n.getFixedT(pdfLang), pdfLang);
       if (!spec) return;
-      const doc = buildOpportunityPdf({ ...spec, theme, language });
+      const doc = buildOpportunityPdf({ ...spec, theme, language: pdfLang });
       doc.save(`${spec.filename || opportunityPdfFilename(spec.badge || 'rapport')}_${theme}.pdf`);
     } catch (err) {
       console.error('Opportunity PDF export failed:', err);

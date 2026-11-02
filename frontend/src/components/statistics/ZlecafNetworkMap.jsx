@@ -15,6 +15,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Network } from 'lucide-react';
 import geo from '../../data/zlecafNetworkGeo.json';
 import { montantCompact } from '../../utils/nombres';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick, intlLocale } from '../../i18n/lang';
 import '../../styles/zlecafNetwork.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -24,12 +26,12 @@ const API = `${BACKEND_URL}/api`;
 // autres portent les seules teintes qui restent distinctes deux à deux sur une
 // carte (voir zlecafNetwork.css).
 const NIVEAUX = {
-  non_signataire:    { fr: 'Non signataire',             en: 'Not signed' },
-  signe_non_ratifie: { fr: 'Signé, non ratifié',         en: 'Signed, not ratified' },
-  ratifie:           { fr: 'Ratifié',                    en: 'Ratified' },
-  offre_tarifaire:   { fr: 'Offre tarifaire',            en: 'Tariff offer' },
-  instrument_adopte: { fr: 'Instrument national adopté', en: 'National instrument adopted' },
-  deploiement:       { fr: 'Déploiement',                en: 'Implementation' },
+  non_signataire:    { fr: 'Non signataire',             en: 'Not signed', ar: 'غير موقِّع' },
+  signe_non_ratifie: { fr: 'Signé, non ratifié',         en: 'Signed, not ratified', ar: 'موقِّع، غير مصادِق' },
+  ratifie:           { fr: 'Ratifié',                    en: 'Ratified', ar: 'مصادِق' },
+  offre_tarifaire:   { fr: 'Offre tarifaire',            en: 'Tariff offer', ar: 'عرض تعريفي' },
+  instrument_adopte: { fr: 'Instrument national adopté', en: 'National instrument adopted', ar: 'صك وطني معتمد' },
+  deploiement:       { fr: 'Déploiement',                en: 'Implementation', ar: 'التطبيق' },
 };
 
 const TEXTS = {
@@ -103,6 +105,41 @@ const TEXTS = {
       'Western Sahara: Natural Earth only gives it a disputed “alt” capital; no point. Burundi: Natural Earth lists Bujumbura as the capital.',
     ],
   },
+  ar: {
+    title: 'شبكة زليكاف',
+    subtitle: 'تنفيذ الاتفاقية، بلدًا بلدًا',
+    loading: 'جارٍ تحميل الشبكة…',
+    error: 'تعذّر تحميل شبكة زليكاف.',
+    hint: 'مرّر المؤشر فوق عاصمة أو اخترها. انقر على تسمية في وسيلة الإيضاح لعزل حالة.',
+    link: 'الرابط: دولة تطبّق تفضيل زليكاف على سلع الدولة الأخرى',
+    size: 'الناتج المحلي الإجمالي {year} (مليار $)، مساحة الدائرة',
+    sizeFloor: 'حجم أدنى تحت {min} مليار $؛ حلقة منقطة حول الدائرة: الناتج المحلي الإجمالي غير متاح.',
+    gdp: 'الناتج المحلي الإجمالي {year}',
+    gdpNa: 'الناتج المحلي الإجمالي {year} غير متاح',
+    out: 'تطبّق التفضيل على {n} دولة (دول)',
+    in: 'تفضيل مُتلقّى من {n} دولة (دول)',
+    proofs: 'سبب هذه الحالة',
+    table: 'عرض البيانات ({n} دولة)',
+    country: 'الدولة',
+    capital: 'العاصمة',
+    status: 'الحالة',
+    links: 'الروابط (ممنوحة / مُتلقّاة)',
+    source: 'المصدر الرئيسي',
+    noPoint: 'لا توجد نقطة على الخريطة',
+    sources: 'المصادر',
+    limits: 'حدود البيانات',
+    asOf: 'الحالات بتاريخ {date}.',
+    close: 'إغلاق',
+    gdpSource: 'البنك الدولي (واجهة WDI)، الناتج المحلي الإجمالي بالدولار الأمريكي الجاري',
+    limitsList: [
+      'يُحصي المصدر القاري 48 عرضًا موثقًا و25 دولة في مرحلة التطبيق الفعلي دون تسميتها: لا تُصنَّف في هذه المستويات إلا الدول التي يسمّيها مصدر في المستودع.',
+      '«التطبيق»: تطبّق الدولة نفسها التفضيل بموجب صك نافذ. ورود اسمها في قائمة شركاء دولة أخرى يُنشئ رابطًا، لا تطبيقًا.',
+      '«عرض تعريفي»: جدول مؤقت مقدَّم (الملحق 1 من التوجيه 1/2021، أكتوبر 2021، لم يُعثر على المراجعة السنوية) أو جدول رسمي مؤرشف؛ ولا يثبت أيٌّ منهما التطبيق.',
+      'بالنسبة لمجموعة شرق أفريقيا، قائمة المناشئ المقبولة سقفٌ، لا قائمة الدول التي بدأت فعلًا.',
+      'لا يُرسم إلا محيط اليابسة: دون حدود داخلية. الأراضي الواقعة جنوب خط العرض 40° جنوبًا خارج الإطار.',
+      'الصحراء الغربية: لا تمنحها Natural Earth إلا عاصمة «بديلة» متنازعًا عليها؛ لا توجد نقطة. بوروندي: تعتبر Natural Earth بوجمبورا العاصمة.',
+    ],
+  },
 };
 
 const fill = (s, vars) => s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? ''));
@@ -127,7 +164,7 @@ const [VB_X, VB_Y, VB_W, VB_H] = (() => {
 const VIEWBOX = `${VB_X} ${VB_Y} ${VB_W} ${VB_H}`;
 
 const dateLongue = (iso, lang) =>
-  new Date(`${iso}T00:00:00Z`).toLocaleDateString(lang === 'en' ? 'en-GB' : 'fr-FR', {
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString(pick(lang, 'fr-FR', 'en-GB', intlLocale(lang)), {
     day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
   });
 
@@ -158,8 +195,10 @@ function useLargeur(ref, pret) {
 }
 
 export default function ZlecafNetworkMap({ language = 'fr' }) {
-  const lang = language === 'en' ? 'en' : 'fr';
+  const lang = pick(language, 'fr', 'en', 'ar');
   const txt = TEXTS[lang];
+  // Noms d'États : l'API les donne en français ou en anglais ; l'arabe vient du référentiel local.
+  const nomPays = (p) => pick(lang, p.nom, p.nom, AFRICAN_COUNTRIES[p.iso3]?.name_ar || p.nom);
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
   const [hover, setHover] = useState(null);
@@ -244,7 +283,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
     p.pib_usd == null ? fill(txt.gdpNa, { year }) : `${fill(txt.gdp, { year })} : ${pib(p.pib_usd)}`;
   const capitale = (iso3) => {
     const c = geo.capitals[iso3];
-    return c ? (lang === 'fr' ? c.name_fr : c.name) : null;
+    return c ? pick(lang, c.name_fr, c.name, c.name_fr) : null;
   };
   const lie = (iso3) =>
     iso3 === actif || model.sortantes[actif]?.has(iso3) || model.recues[actif]?.has(iso3);
@@ -276,7 +315,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
 
   const lignes = [...data.pays].sort(
     (a, b) => data.niveaux.indexOf(b.statut) - data.niveaux.indexOf(a.statut)
-      || a.nom.localeCompare(b.nom, lang),
+      || nomPays(a).localeCompare(nomPays(b), lang),
   );
 
   const swatch = (niveau) => (
@@ -351,7 +390,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
                 const { x, y } = p.cap;
                 const creux = creuxNiveau(p.statut);
                 const sansPib = p.pib_usd == null;
-                const label = `${p.nom} — ${NIVEAUX[p.statut][lang]} — ${pibTexte(p)}`;
+                const label = `${nomPays(p)} — ${NIVEAUX[p.statut][lang]} — ${pibTexte(p)}`;
                 return (
                   <g
                     key={p.iso3}
@@ -417,7 +456,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
                   })`,
                 }}
               >
-                <h4>{tip.nom}</h4>
+                <h4>{nomPays(tip)}</h4>
                 <div className="zn-muted">{capitale(tip.iso3)}</div>
                 <div style={{ marginTop: 6 }}>
                   {swatch(tip.statut)}
@@ -504,7 +543,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
                     const principale = p.preuves.find((q) => q.niveau === p.statut);
                     return (
                       <tr key={p.iso3} data-testid={`zn-row-${p.iso3}`}>
-                        <td>{p.nom}</td>
+                        <td>{nomPays(p)}</td>
                         <td>{capitale(p.iso3) || <span className="zn-muted">{txt.noPoint}</span>}</td>
                         <td>
                           {swatch(p.statut)}
@@ -532,7 +571,7 @@ export default function ZlecafNetworkMap({ language = 'fr' }) {
             <ul>
               <li>{txt.gdpSource}, {year}.</li>
               {geo.sources.map((s) => (
-                <li key={s.url}>{lang === 'en' ? s.label.replace('domaine public', 'public domain') : s.label}</li>
+                <li key={s.url}>{pick(lang, s.label, s.label.replace('domaine public', 'public domain'), s.label.replace('domaine public', 'ملك عام'))}</li>
               ))}
             </ul>
           </div>

@@ -6,6 +6,7 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { toast } from '../../hooks/use-toast';
 import { Building2 } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -73,6 +74,24 @@ export default function FreeZonesTab({ language = 'fr' }) {
       keyTenants: "Key Tenants",
       impact: "Impact",
       managingAuthority: "Managing Authority"
+    },
+    ar: {
+      title: "المناطق الحرة والصناعية",
+      description: "خريطة أقطاب التنافسية والمناطق الحرة للتصدير والمراكز الصناعية",
+      filterByCountry: "تصفية حسب البلد:",
+      allCountries: "جميع البلدان",
+      map: "الخريطة",
+      list: "القائمة",
+      error: "خطأ",
+      loadError: "تعذّر تحميل بيانات المناطق الحرة",
+      industries: "الصناعات",
+      surface: "المساحة",
+      connection: "الربط",
+      keyIndustries: "الصناعات الرئيسية",
+      incentives: "الحوافز",
+      keyTenants: "أبرز الشركات المستقرة",
+      impact: "الأثر",
+      managingAuthority: "الجهة المسيِّرة"
     }
   };
 
@@ -126,34 +145,34 @@ export default function FreeZonesTab({ language = 'fr' }) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="ALL">🌍 {t.allCountries}</SelectItem>
-                  <SelectItem value="MAR">🇲🇦 Maroc</SelectItem>
-                  <SelectItem value="DZA">🇩🇿 Algérie</SelectItem>
-                  <SelectItem value="EGY">🇪🇬 Égypte</SelectItem>
-                  <SelectItem value="TUN">🇹🇳 Tunisie</SelectItem>
-                  <SelectItem value="NGA">🇳🇬 Nigéria</SelectItem>
-                  <SelectItem value="GHA">🇬🇭 Ghana</SelectItem>
-                  <SelectItem value="CIV">🇨🇮 Côte d'Ivoire</SelectItem>
-                  <SelectItem value="SEN">🇸🇳 Sénégal</SelectItem>
-                  <SelectItem value="BEN">🇧🇯 Bénin</SelectItem>
-                  <SelectItem value="TGO">🇹🇬 Togo</SelectItem>
-                  <SelectItem value="CMR">🇨🇲 Cameroun</SelectItem>
-                  <SelectItem value="GAB">🇬🇦 Gabon</SelectItem>
-                  <SelectItem value="COD">🇨🇩 RD Congo</SelectItem>
-                  <SelectItem value="AGO">🇦🇴 Angola</SelectItem>
-                  <SelectItem value="ZAF">🇿🇦 Afrique du Sud</SelectItem>
-                  <SelectItem value="KEN">🇰🇪 Kenya</SelectItem>
-                  <SelectItem value="ETH">🇪🇹 Éthiopie</SelectItem>
-                  <SelectItem value="TZA">🇹🇿 Tanzanie</SelectItem>
-                  <SelectItem value="UGA">🇺🇬 Ouganda</SelectItem>
-                  <SelectItem value="RWA">🇷🇼 Rwanda</SelectItem>
-                  <SelectItem value="MOZ">🇲🇿 Mozambique</SelectItem>
-                  <SelectItem value="ZMB">🇿🇲 Zambie</SelectItem>
-                  <SelectItem value="MWI">🇲🇼 Malawi</SelectItem>
-                  <SelectItem value="NAM">🇳🇦 Namibie</SelectItem>
-                  <SelectItem value="BWA">🇧🇼 Botswana</SelectItem>
-                  <SelectItem value="DJI">🇩🇯 Djibouti</SelectItem>
-                  <SelectItem value="MUS">🇲🇺 Maurice</SelectItem>
-                  <SelectItem value="MDG">🇲🇬 Madagascar</SelectItem>
+                  <SelectItem value="MAR">🇲🇦 {pick(language, 'Maroc', 'Maroc', 'المغرب')}</SelectItem>
+                  <SelectItem value="DZA">🇩🇿 {pick(language, 'Algérie', 'Algérie', 'الجزائر')}</SelectItem>
+                  <SelectItem value="EGY">🇪🇬 {pick(language, 'Égypte', 'Égypte', 'مصر')}</SelectItem>
+                  <SelectItem value="TUN">🇹🇳 {pick(language, 'Tunisie', 'Tunisie', 'تونس')}</SelectItem>
+                  <SelectItem value="NGA">🇳🇬 {pick(language, 'Nigéria', 'Nigéria', 'نيجيريا')}</SelectItem>
+                  <SelectItem value="GHA">🇬🇭 {pick(language, 'Ghana', 'Ghana', 'غانا')}</SelectItem>
+                  <SelectItem value="CIV">🇨🇮 {pick(language, 'Côte d\'Ivoire', 'Côte d\'Ivoire', 'كوت ديفوار')}</SelectItem>
+                  <SelectItem value="SEN">🇸🇳 {pick(language, 'Sénégal', 'Sénégal', 'السنغال')}</SelectItem>
+                  <SelectItem value="BEN">🇧🇯 {pick(language, 'Bénin', 'Bénin', 'بنين')}</SelectItem>
+                  <SelectItem value="TGO">🇹🇬 {pick(language, 'Togo', 'Togo', 'توغو')}</SelectItem>
+                  <SelectItem value="CMR">🇨🇲 {pick(language, 'Cameroun', 'Cameroun', 'الكاميرون')}</SelectItem>
+                  <SelectItem value="GAB">🇬🇦 {pick(language, 'Gabon', 'Gabon', 'الغابون')}</SelectItem>
+                  <SelectItem value="COD">🇨🇩 {pick(language, 'RD Congo', 'RD Congo', 'جمهورية الكونغو الديمقراطية')}</SelectItem>
+                  <SelectItem value="AGO">🇦🇴 {pick(language, 'Angola', 'Angola', 'أنغولا')}</SelectItem>
+                  <SelectItem value="ZAF">🇿🇦 {pick(language, 'Afrique du Sud', 'Afrique du Sud', 'جنوب أفريقيا')}</SelectItem>
+                  <SelectItem value="KEN">🇰🇪 {pick(language, 'Kenya', 'Kenya', 'كينيا')}</SelectItem>
+                  <SelectItem value="ETH">🇪🇹 {pick(language, 'Éthiopie', 'Éthiopie', 'إثيوبيا')}</SelectItem>
+                  <SelectItem value="TZA">🇹🇿 {pick(language, 'Tanzanie', 'Tanzanie', 'تنزانيا')}</SelectItem>
+                  <SelectItem value="UGA">🇺🇬 {pick(language, 'Ouganda', 'Ouganda', 'أوغندا')}</SelectItem>
+                  <SelectItem value="RWA">🇷🇼 {pick(language, 'Rwanda', 'Rwanda', 'رواندا')}</SelectItem>
+                  <SelectItem value="MOZ">🇲🇿 {pick(language, 'Mozambique', 'Mozambique', 'موزمبيق')}</SelectItem>
+                  <SelectItem value="ZMB">🇿🇲 {pick(language, 'Zambie', 'Zambie', 'زامبيا')}</SelectItem>
+                  <SelectItem value="MWI">🇲🇼 {pick(language, 'Malawi', 'Malawi', 'ملاوي')}</SelectItem>
+                  <SelectItem value="NAM">🇳🇦 {pick(language, 'Namibie', 'Namibie', 'ناميبيا')}</SelectItem>
+                  <SelectItem value="BWA">🇧🇼 {pick(language, 'Botswana', 'Botswana', 'بوتسوانا')}</SelectItem>
+                  <SelectItem value="DJI">🇩🇯 {pick(language, 'Djibouti', 'Djibouti', 'جيبوتي')}</SelectItem>
+                  <SelectItem value="MUS">🇲🇺 {pick(language, 'Maurice', 'Maurice', 'موريشيوس')}</SelectItem>
+                  <SelectItem value="MDG">🇲🇬 {pick(language, 'Madagascar', 'Madagascar', 'مدغشقر')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -196,7 +215,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
                     <p className="text-sm text-[var(--afcfta-muted)] mb-2">{zone.country}</p>
                     <div className="text-xs space-y-1">
                       <p><strong>🏗️ {t.industries}:</strong> {zone.industries.join(', ')}</p>
-                      <p><strong>📏 {t.surface}:</strong> {zone.surface_ha} ha</p>
+                      <p><strong>📏 {t.surface}:</strong> {zone.surface_ha} {pick(language, 'ha', 'ha', 'هكتار')}</p>
                       <p><strong>🔗 {t.connection}:</strong> {zone.connection}</p>
                     </div>
                     {zone.authority && (

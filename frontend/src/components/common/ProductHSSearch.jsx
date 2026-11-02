@@ -47,13 +47,25 @@ const T = {
     source: 'Source: WCO — Harmonized System Alphabetical Index (7th ed. 2022)',
     copied: 'Copied',
   },
+  ar: {
+    placeholder: 'ابحث عن منتج (مثال: زيت النخيل، الإسمنت، الشاي الأخضر)…',
+    hint: 'اكتب الاسم الشائع للمنتج — لا حاجة إلى معرفة التصنيف الجمركي.',
+    searching: 'جارٍ البحث…',
+    noResults: 'لم يُعثر على أي منتج. جرّب مرادفًا أو مصطلحًا أعم.',
+    resultsCount: (n) => `${n} ${n === 1 ? 'منتج' : 'منتجات'}`,
+    seeAlso: 'انظر',
+    range: 'نطاق',
+    chapter: 'الفصل',
+    source: 'المصدر: منظمة الجمارك العالمية — الفهرس الأبجدي للنظام المنسق (الطبعة 7، 2022)',
+    copied: 'تم النسخ',
+  },
 };
 
 const LEVEL_BADGE = {
-  chapter: { fr: 'SH2', en: 'HS2' },
-  heading: { fr: 'SH4', en: 'HS4' },
-  subheading: { fr: 'SH6', en: 'HS6' },
-  other: { fr: 'SH', en: 'HS' },
+  chapter: { fr: 'SH2', en: 'HS2', ar: 'SH2' },
+  heading: { fr: 'SH4', en: 'HS4', ar: 'SH4' },
+  subheading: { fr: 'SH6', en: 'HS6', ar: 'SH6' },
+  other: { fr: 'SH', en: 'HS', ar: 'SH' },
 };
 
 export default function ProductHSSearch({

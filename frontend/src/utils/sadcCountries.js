@@ -22,6 +22,7 @@ export const SADC_COUNTRIES = {
     iso2: 'ZA',
     name: 'South Africa',
     name_fr: 'Afrique du Sud',
+    name_ar: 'جنوب أفريقيا',
     flag: '🇿🇦',
     capital: 'Pretoria / Cape Town / Bloemfontein',
     currency: 'ZAR',
@@ -40,6 +41,7 @@ export const SADC_COUNTRIES = {
     iso2: 'BW',
     name: 'Botswana',
     name_fr: 'Botswana',
+    name_ar: 'بوتسوانا',
     flag: '🇧🇼',
     capital: 'Gaborone',
     currency: 'BWP',
@@ -58,6 +60,7 @@ export const SADC_COUNTRIES = {
     iso2: 'NA',
     name: 'Namibia',
     name_fr: 'Namibie',
+    name_ar: 'ناميبيا',
     flag: '🇳🇦',
     capital: 'Windhoek',
     currency: 'NAD',
@@ -76,6 +79,7 @@ export const SADC_COUNTRIES = {
     iso2: 'LS',
     name: 'Lesotho',
     name_fr: 'Lesotho',
+    name_ar: 'ليسوتو',
     flag: '🇱🇸',
     capital: 'Maseru',
     currency: 'LSL',
@@ -94,6 +98,7 @@ export const SADC_COUNTRIES = {
     iso2: 'SZ',
     name: 'Eswatini',
     name_fr: 'Eswatini',
+    name_ar: 'إسواتيني',
     flag: '🇸🇿',
     capital: 'Mbabane',
     currency: 'SZL',
@@ -114,6 +119,7 @@ export const SADC_COUNTRIES = {
     iso2: 'AO',
     name: 'Angola',
     name_fr: 'Angola',
+    name_ar: 'أنغولا',
     flag: '🇦🇴',
     capital: 'Luanda',
     currency: 'AOA',
@@ -132,6 +138,7 @@ export const SADC_COUNTRIES = {
     iso2: 'ZM',
     name: 'Zambia',
     name_fr: 'Zambie',
+    name_ar: 'زامبيا',
     flag: '🇿🇲',
     capital: 'Lusaka',
     currency: 'ZMW',
@@ -150,6 +157,7 @@ export const SADC_COUNTRIES = {
     iso2: 'ZW',
     name: 'Zimbabwe',
     name_fr: 'Zimbabwe',
+    name_ar: 'زيمبابوي',
     flag: '🇿🇼',
     capital: 'Harare',
     currency: 'ZWG',
@@ -168,6 +176,7 @@ export const SADC_COUNTRIES = {
     iso2: 'CD',
     name: 'DR Congo',
     name_fr: 'République Démocratique du Congo',
+    name_ar: 'جمهورية الكونغو الديمقراطية',
     flag: '🇨🇩',
     capital: 'Kinshasa',
     currency: 'CDF',
@@ -188,6 +197,7 @@ export const SADC_COUNTRIES = {
     iso2: 'MU',
     name: 'Mauritius',
     name_fr: 'Maurice',
+    name_ar: 'موريشيوس',
     flag: '🇲🇺',
     capital: 'Port Louis',
     currency: 'MUR',
@@ -206,6 +216,7 @@ export const SADC_COUNTRIES = {
     iso2: 'SC',
     name: 'Seychelles',
     name_fr: 'Seychelles',
+    name_ar: 'سيشل',
     flag: '🇸🇨',
     capital: 'Victoria',
     currency: 'SCR',
@@ -224,6 +235,7 @@ export const SADC_COUNTRIES = {
     iso2: 'KM',
     name: 'Comoros',
     name_fr: 'Comores',
+    name_ar: 'جزر القمر',
     flag: '🇰🇲',
     capital: 'Moroni',
     currency: 'KMF',
@@ -244,6 +256,7 @@ export const SADC_COUNTRIES = {
     iso2: 'MZ',
     name: 'Mozambique',
     name_fr: 'Mozambique',
+    name_ar: 'موزمبيق',
     flag: '🇲🇿',
     capital: 'Maputo',
     currency: 'MZN',
@@ -262,6 +275,7 @@ export const SADC_COUNTRIES = {
     iso2: 'MG',
     name: 'Madagascar',
     name_fr: 'Madagascar',
+    name_ar: 'مدغشقر',
     flag: '🇲🇬',
     capital: 'Antananarivo',
     currency: 'MGA',
@@ -280,6 +294,7 @@ export const SADC_COUNTRIES = {
     iso2: 'MW',
     name: 'Malawi',
     name_fr: 'Malawi',
+    name_ar: 'ملاوي',
     flag: '🇲🇼',
     capital: 'Lilongwe',
     currency: 'MWK',
@@ -298,6 +313,7 @@ export const SADC_COUNTRIES = {
     iso2: 'TZ',
     name: 'Tanzania',
     name_fr: 'Tanzanie',
+    name_ar: 'تنزانيا',
     flag: '🇹🇿',
     capital: 'Dodoma',
     currency: 'TZS',
@@ -394,12 +410,13 @@ export const getSadcCodes = () => Object.keys(SADC_COUNTRIES);
 /**
  * Get display name for a SADC country.
  * @param {string} code - ISO3 code
- * @param {string} [lang='en'] - 'en' or 'fr'
+ * @param {string} [lang='en'] - 'en', 'fr' or 'ar'
  * @returns {string}
  */
 export const getSadcCountryName = (code, lang = 'en') => {
   const country = SADC_COUNTRIES[code?.toUpperCase()];
   if (!country) return code;
+  if (String(lang).startsWith('ar')) return country.name_ar;
   return lang === 'fr' ? country.name_fr : country.name;
 };
 

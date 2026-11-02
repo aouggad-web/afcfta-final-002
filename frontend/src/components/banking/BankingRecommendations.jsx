@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -45,6 +46,25 @@ const texts = {
     risk: 'Country risk',
     rating: 'Rating',
     recommendation: 'Recommendation',
+  },
+  ar: {
+    title: '🎯 توصيات ذكية',
+    subtitle: 'توصيات شاملة لمعاملاتك (الخيار 1)',
+    countryLabel: 'البلد الشريك',
+    amountLabel: 'المبلغ (USD)',
+    sectorLabel: 'القطاع (اختياري)',
+    typeLabel: 'النوع',
+    submit: 'تحليل',
+    loading: 'جارٍ التحليل…',
+    error: 'خطأ',
+    noData: 'لا توجد بيانات',
+    instruments: 'الأدوات الموصى بها',
+    insurance: 'التأمين',
+    banks: 'المصارف',
+    compliance: 'الامتثال',
+    risk: 'مخاطر البلد',
+    rating: 'التصنيف',
+    recommendation: 'التوصية',
   },
 };
 
@@ -152,8 +172,8 @@ export default function BankingRecommendations({ language = 'en' }) {
                     <Badge>{result.risk_profile?.rating}</Badge>
                   </div>
                   <div className="text-sm text-[var(--afcfta-muted)]">
-                    <div>Forex: {result.risk_profile?.forex_risk}</div>
-                    <div>Political: {result.risk_profile?.political_risk}</div>
+                    <div>{pick(language, 'Forex', 'Forex', 'مخاطر الصرف')}: {result.risk_profile?.forex_risk}</div>
+                    <div>{pick(language, 'Political', 'Political', 'المخاطر السياسية')}: {result.risk_profile?.political_risk}</div>
                   </div>
                 </CardContent>
               </Card>
@@ -169,7 +189,12 @@ export default function BankingRecommendations({ language = 'en' }) {
                       <div key={i} className="p-2 bg-[var(--afcfta-card2)] rounded">
                         <div className="font-medium">{inst.name}</div>
                         <div className="text-xs text-[var(--afcfta-muted)]">
-                          {inst.typical_cost_pct}% cost • {inst.risk_coverage} coverage
+                          {pick(
+                            language,
+                            <>{inst.typical_cost_pct}% cost • {inst.risk_coverage} coverage</>,
+                            <>{inst.typical_cost_pct}% cost • {inst.risk_coverage} coverage</>,
+                            <>التكلفة {inst.typical_cost_pct}% • التغطية {inst.risk_coverage}</>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -188,8 +213,8 @@ export default function BankingRecommendations({ language = 'en' }) {
                       <div>
                         <strong>{result.insurance.product_name_en}</strong>
                       </div>
-                      <div>Coverage: {result.insurance.coverage_percent}%</div>
-                      <div>Rate: {result.insurance.typical_premium_rate_pct}%</div>
+                      <div>{pick(language, 'Coverage', 'Coverage', 'التغطية')}: {result.insurance.coverage_percent}%</div>
+                      <div>{pick(language, 'Rate', 'Rate', 'المعدل')}: {result.insurance.typical_premium_rate_pct}%</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -206,7 +231,7 @@ export default function BankingRecommendations({ language = 'en' }) {
                       <div key={i} className="p-2 bg-[var(--afcfta-card2)] rounded">
                         <div className="font-medium">{bank.name}</div>
                         <div className="text-xs text-[var(--afcfta-muted)]">
-                          Score: {bank.recommendation_score}/10 • {bank.suitability}
+                          {pick(language, 'Score', 'Score', 'النتيجة')}: {bank.recommendation_score}/10 • {bank.suitability}
                         </div>
                       </div>
                     ))}

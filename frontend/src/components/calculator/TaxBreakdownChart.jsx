@@ -10,6 +10,7 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid,
   PolarAngleAxis, PolarRadiusAxis, Radar
 } from 'recharts';
+import { pick } from '../../i18n/lang';
 
 // African-inspired color palette
 const COLORS = {
@@ -96,8 +97,8 @@ export function TaxComparisonBarChart({ npfTaxes, zlecafTaxes, cifValue, languag
   npfTaxes.forEach(t => allTaxCodes.add(t.tax));
   zlecafTaxes.forEach(t => allTaxCodes.add(t.tax));
   
-  const npfData = { name: language === 'fr' ? 'Régime NPF' : 'MFN Regime' };
-  const zlecafData = { name: language === 'fr' ? 'Régime ZLECAf' : 'AfCFTA Regime' };
+  const npfData = { name: pick(language, 'Régime NPF', 'MFN Regime', 'نظام NPF') };
+  const zlecafData = { name: pick(language, 'Régime ZLECAf', 'AfCFTA Regime', 'نظام زليكاف') };
   
   // Add CIF as base
   npfData['Valeur CIF'] = cifValue;
@@ -129,7 +130,7 @@ export function TaxComparisonBarChart({ npfTaxes, zlecafTaxes, cifValue, languag
       <CardHeader className="pb-2">
         <CardTitle className="text-lg flex items-center gap-2">
           <span className="text-2xl">📊</span>
-          {language === 'fr' ? 'Comparaison des Coûts Totaux' : 'Total Cost Comparison'}
+          {pick(language, 'Comparaison des Coûts Totaux', 'Total Cost Comparison', 'مقارنة التكاليف الإجمالية')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -140,7 +141,7 @@ export function TaxComparisonBarChart({ npfTaxes, zlecafTaxes, cifValue, languag
             <YAxis type="category" dataKey="name" width={100} />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
-            <Bar dataKey="Valeur CIF" stackId="a" fill={COLORS.cif} name="Valeur CIF" />
+            <Bar dataKey="Valeur CIF" stackId="a" fill={COLORS.cif} name={pick(language, 'Valeur CIF', 'Valeur CIF', 'القيمة سيف (CIF)')} />
             {taxBars.map(({ key, color }) => (
               <Bar key={key} dataKey={key} stackId="a" fill={color} name={key} />
             ))}
@@ -170,8 +171,8 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
   }).filter(d => d.value > 0);
   
   const regimeLabel = regime === 'npf' 
-    ? (language === 'fr' ? 'Régime NPF' : 'MFN Regime')
-    : (language === 'fr' ? 'Régime ZLECAf' : 'AfCFTA Regime');
+    ? (pick(language, 'Régime NPF', 'MFN Regime', 'نظام NPF'))
+    : (pick(language, 'Régime ZLECAf', 'AfCFTA Regime', 'نظام زليكاف'));
   
   const regimeColor = regime === 'npf' ? '#EF4444' : '#10b981';
   
@@ -180,7 +181,7 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
       <CardHeader className="pb-2" style={{ background: `rgba(${regime === 'npf' ? '239,68,68' : '16,185,129'},0.1)` }}>
         <CardTitle className="text-lg flex items-center gap-2" style={{ color: `color-mix(in srgb, ${regimeColor} 40%, var(--text))`}}>
           <span className="text-2xl">🥧</span>
-          {language === 'fr' ? 'Répartition des Taxes' : 'Tax Distribution'} - {regimeLabel}
+          {pick(language, 'Répartition des Taxes', 'Tax Distribution', 'توزيع الضرائب')} - {regimeLabel}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -207,7 +208,7 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
           </div>
           <div className="w-full lg:w-1/2 space-y-2">
             <p className="font-semibold mb-3" style={{ color: 'var(--afcfta-muted)' }}>
-              {language === 'fr' ? 'Total des taxes:' : 'Total taxes:'} 
+              {pick(language, 'Total des taxes:', 'Total taxes:', 'مجموع الضرائب:')} 
               <span className="text-xl ml-2" style={{ color: `color-mix(in srgb, ${regimeColor} 40%, var(--text))`}}>{formatCurrency(totalTaxes)}</span>
             </p>
             {pieData.map((tax, idx) => (
@@ -240,8 +241,8 @@ export function TaxDistributionPieChart({ taxes, cifValue, regime, language = 'f
  */
 export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZlecaf = false }) {
   const regimeLabel = regime === 'npf' 
-    ? (language === 'fr' ? 'Régime NPF (Normale)' : 'MFN Regime (Normal)')
-    : (language === 'fr' ? 'Régime ZLECAf (Préférentiel)' : 'AfCFTA Regime (Preferential)');
+    ? (pick(language, 'Régime NPF (Normale)', 'MFN Regime (Normal)', 'نظام NPF (العادي)'))
+    : (pick(language, 'Régime ZLECAf (Préférentiel)', 'AfCFTA Regime (Preferential)', 'نظام زليكاف (التفضيلي)'));
   
   const regimeColor = isZlecaf ? '#10b981' : '#3B82F6';
   
@@ -280,19 +281,19 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
             <thead>
               <tr style={{ background: `rgba(${isZlecaf ? '16,185,129' : '59,130,246'},0.15)` }}>
                 <th className="text-left p-2 font-semibold" style={{ color: 'var(--text)' }}>
-                  {language === 'fr' ? 'Code Taxe' : 'Tax Code'}
+                  {pick(language, 'Code Taxe', 'Tax Code', 'رمز الضريبة')}
                 </th>
                 <th className="text-left p-2 font-semibold" style={{ color: 'var(--text)' }}>
-                  {language === 'fr' ? 'Intitulé' : 'Description'}
+                  {pick(language, 'Intitulé', 'Description', 'التسمية')}
                 </th>
                 <th className="text-center p-2 font-semibold" style={{ color: 'var(--text)' }}>
-                  {language === 'fr' ? 'Taux' : 'Rate'}
+                  {pick(language, 'Taux', 'Rate', 'المعدل')}
                 </th>
                 <th className="text-right p-2 font-semibold" style={{ color: 'var(--text)' }}>
-                  {language === 'fr' ? 'Montant' : 'Amount'}
+                  {pick(language, 'Montant', 'Amount', 'المبلغ')}
                 </th>
                 <th className="text-right p-2 font-semibold" style={{ color: 'var(--text)' }}>
-                  {language === 'fr' ? 'Cumulatif' : 'Cumulative'}
+                  {pick(language, 'Cumulatif', 'Cumulative', 'المجموع التراكمي')}
                 </th>
               </tr>
             </thead>
@@ -300,7 +301,7 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
               {/* CIF Row */}
               <tr style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <td className="p-2 font-semibold" style={{ color: 'var(--text)' }}>CIF</td>
-                <td className="p-2 font-semibold" style={{ color: 'var(--text)' }}>{language === 'fr' ? 'Valeur en douane' : 'Customs Value'}</td>
+                <td className="p-2 font-semibold" style={{ color: 'var(--text)' }}>{pick(language, 'Valeur en douane', 'Customs Value', 'القيمة الجمركية')}</td>
                 <td className="text-center p-2" style={{ color: 'var(--afcfta-muted)' }}>-</td>
                 <td className="text-right p-2" style={{ color: 'var(--text)' }}>{formatCurrency(cifValue)}</td>
                 <td className="text-right p-2" style={{ color: 'var(--text)' }}>{formatCurrency(cifValue)}</td>
@@ -330,7 +331,7 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
                     </span>
                     {tax.isExempt && (
                       <Badge className="ml-2 text-xs" style={{ background: 'rgba(16,185,129,0.2)', color: 'var(--success)' }}>
-                        {language === 'fr' ? 'Exonéré ZLECAf' : 'AfCFTA Exempt'}
+                        {pick(language, 'Exonéré ZLECAf', 'AfCFTA Exempt', 'معفى في إطار زليكاف')}
                       </Badge>
                     )}
                   </td>
@@ -354,7 +355,7 @@ export function DetailedTaxTable({ taxes, cifValue, regime, language = 'fr', isZ
               {/* Total Row */}
               <tr className="font-bold" style={{ background: `rgba(${isZlecaf ? '16,185,129' : '59,130,246'},0.15)` }}>
                 <td className="p-2" colSpan={2} style={{ color: 'var(--text)' }}>
-                  {language === 'fr' ? 'TOTAL À PAYER' : 'TOTAL TO PAY'}
+                  {pick(language, 'TOTAL À PAYER', 'TOTAL TO PAY', 'المبلغ الإجمالي المستحق')}
                 </td>
                 <td className="text-center p-2" style={{ color: 'var(--text)' }}>
                   {((totalTaxes / cifValue) * 100).toFixed(1)}%
@@ -386,21 +387,21 @@ export function SavingsHighlight({ npfTotal, zlecafTotal, language = 'fr' }) {
       <CardContent className="py-6">
         <div className="text-center">
           <p className="text-lg opacity-90 mb-2">
-            {language === 'fr' ? '💰 Économies avec ZLECAf' : '💰 Savings with AfCFTA'}
+            {pick(language, '💰 Économies avec ZLECAf', '💰 Savings with AfCFTA', '💰 الوفورات مع زليكاف')}
           </p>
           <p className="text-5xl font-bold mb-3">{formatCurrency(savings)}</p>
           <div className="flex justify-center gap-6 text-sm opacity-90">
             <div>
-              <span className="opacity-70">{language === 'fr' ? 'Coût NPF:' : 'MFN Cost:'}</span>
+              <span className="opacity-70">{pick(language, 'Coût NPF:', 'MFN Cost:', 'تكلفة NPF:')}</span>
               <span className="ml-2 font-semibold line-through">{formatCurrency(npfTotal)}</span>
             </div>
             <div>
-              <span className="opacity-70">{language === 'fr' ? 'Coût ZLECAf:' : 'AfCFTA Cost:'}</span>
+              <span className="opacity-70">{pick(language, 'Coût ZLECAf:', 'AfCFTA Cost:', 'تكلفة زليكاف:')}</span>
               <span className="ml-2 font-semibold">{formatCurrency(zlecafTotal)}</span>
             </div>
           </div>
           <Badge className="mt-4 bg-[var(--overlay)] text-[var(--text)] text-lg px-4 py-1">
-            -{savingsPercent}% {language === 'fr' ? 'd\'économie' : 'savings'}
+            -{savingsPercent}% {pick(language, 'd\'économie', 'savings', 'وفورات')}
           </Badge>
         </div>
       </CardContent>

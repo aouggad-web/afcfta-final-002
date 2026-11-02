@@ -7,6 +7,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '.
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { regulatoryApi } from '../../services/api-v2';
 import { toast } from '../../hooks/use-toast';
+import { pick } from '../../i18n/lang';
 
 const TEXTS = {
   fr: {
@@ -44,6 +45,24 @@ const TEXTS = {
     actors: 'Providers',
     terminated: 'Terminated mandates',
     loadError: 'Unable to load the quality report',
+  },
+  ar: {
+    title: 'جودة البيانات التنظيمية',
+    subtitle:
+      'تقرير التغطية والتناقضات وانتهاء الصلاحية (ضوابط LOT 6) — معلومات حوكمة حول مجموعة البيانات، وليست حسابًا أبدًا.',
+    publishedOf: (published, total) => `${published} / ${total} بلدًا منشورًا`,
+    noIssues: 'لم يُكتشف أي تناقض ولا أي مجموعة بيانات منتهية الصلاحية.',
+    contradictionsTitle: (n) => `تناقضات مكتشفة: ${n}`,
+    contradictionsDesc:
+      'إجراء يدّعي درجة ثقة أعلى من المصدر القانوني الذي يستشهد به — يجب تصحيحه.',
+    staleTitle: (n) => `بلدان ذات بيانات منتهية الصلاحية: ${n}`,
+    staleDesc: 'تم تجاوز حدّ انتهاء الصلاحية — يجب إعادة التحقق، ولا يُجدَّد تلقائيًا أبدًا.',
+    country: 'البلد',
+    asOf: 'الوضع في',
+    measures: 'الإجراءات',
+    actors: 'مقدّمو الخدمات',
+    terminated: 'تفويضات منتهية',
+    loadError: 'تعذّر تحميل تقرير الجودة',
   },
 };
 
@@ -120,7 +139,7 @@ export default function RegulatoryQAPanel({ language = 'fr' }) {
 
             {loaded && !hasIssues && (
               <Alert>
-                <AlertTitle>{language === 'fr' ? 'Statut' : 'Status'}</AlertTitle>
+                <AlertTitle>{pick(language, 'Statut', 'Status', 'الحالة')}</AlertTitle>
                 <AlertDescription>{t.noIssues}</AlertDescription>
               </Alert>
             )}

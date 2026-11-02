@@ -3,6 +3,7 @@
  * Displays charts and tables for trade data results
  */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { Badge } from '../../ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../ui/table';
@@ -10,6 +11,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell, PieCha
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { getCountryFlag } from '../../../utils/countryCodes';
 import { COLORS, formatValue, formatQuantity } from './utils';
+import { pick } from '../../../i18n/lang';
 
 /**
  * Prepare chart data from API response
@@ -53,6 +55,7 @@ export const prepareChartData = (data, type) => {
  * Country Trade Results Display
  */
 export function CountryResultsDisplay({ data, selectedFlow, selectedYear, t }) {
+  const { i18n } = useTranslation();
   if (!data) return null;
   
   const chartData = prepareChartData(data, 'country');
@@ -119,7 +122,7 @@ export function CountryResultsDisplay({ data, selectedFlow, selectedYear, t }) {
               <TableHeader className="sticky top-0 bg-[var(--afcfta-card2)]">
                 <TableRow>
                   <TableHead className="w-10">#</TableHead>
-                  <TableHead>{t.product} (Code HS)</TableHead>
+                  <TableHead>{t.product} ({pick(i18n.language, 'Code HS', 'Code HS', 'رمز SH')})</TableHead>
                   <TableHead className="text-right">{t.value}</TableHead>
                   <TableHead className="text-right">{t.volume}</TableHead>
                   <TableHead className="text-right">{t.share}</TableHead>
@@ -281,6 +284,7 @@ export function ProductResultsDisplay({ data, hsCode, hsCodeName, selectedYear, 
  * Bilateral Trade Results Display
  */
 export function BilateralResultsDisplay({ data, selectedYear, t }) {
+  const { i18n } = useTranslation();
   if (!data) return null;
   
   const chartData = prepareChartData(data, 'bilateral');
@@ -358,7 +362,7 @@ export function BilateralResultsDisplay({ data, selectedYear, t }) {
               <TableHeader className="sticky top-0 bg-[var(--afcfta-card2)]">
                 <TableRow>
                   <TableHead className="w-10">#</TableHead>
-                  <TableHead>{t.product} (Code HS)</TableHead>
+                  <TableHead>{t.product} ({pick(i18n.language, 'Code HS', 'Code HS', 'رمز SH')})</TableHead>
                   <TableHead className="text-right">{t.value}</TableHead>
                   <TableHead className="text-right">{t.share}</TableHead>
                 </TableRow>

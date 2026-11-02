@@ -62,6 +62,26 @@ export default function LandLogisticsTab({ language = 'fr' }) {
       error: "Error",
       loadError: "Unable to load corridor data",
       loading: "Loading land corridors..."
+    },
+    ar: {
+      title: "اللوجستيك البري الأفريقي",
+      description: "خريطة ممرات برنامج تطوير البنية التحتية في أفريقيا (PIDA) الرئيسية (طرق وسكك حديدية) التي تربط الموانئ بأحواض الإنتاج",
+      type: "النوع",
+      allTypes: "جميع الأنواع",
+      road: "طرق برية",
+      rail: "سكك حديدية",
+      multimodal: "متعددة الوسائط",
+      importance: "الأهمية",
+      all: "الكل",
+      highPriority: "أولوية عالية",
+      medium: "متوسطة",
+      map: "الخريطة",
+      list: "القائمة",
+      corridor: "ممر",
+      corridors: "ممرات",
+      error: "خطأ",
+      loadError: "تعذّر تحميل بيانات الممرات",
+      loading: "جارٍ تحميل الممرات البرية…"
     }
   };
 
