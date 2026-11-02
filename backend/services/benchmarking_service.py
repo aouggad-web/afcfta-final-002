@@ -366,7 +366,7 @@ def tariff_benefit_analysis(
             # Le régime qui a joué, jamais « ZLECAF » par défaut : une franchise
             # d'union douanière ou de la zone arabe (GZALE, importation en
             # Algérie) n'est pas une préférence ZLECAf.
-            regime = {"UNION_DOUANIERE": "CUSTOMS_UNION", "GZALE": "GZALE"}.get(
+            regime = {"UNION_DOUANIERE": "CUSTOMS_UNION", "GZALE": "FTA_CONDITIONAL"}.get(
                 preference.get("regime"), "ZLECAF"
             )
             applique = (preference.get("taux", {}).get("DD") or {}).get("taux")
@@ -422,8 +422,10 @@ def tariff_benefit_analysis(
     # Normalised contribution to composite reward (a 20% duty saving -> 1.0).
     advantage_index = round(min(advantage / 20.0, 1.0), 3)
 
-    if regime in ("ZLECAF", "CUSTOMS_UNION", "GZALE"):
-        regime_label = {"ZLECAF": "ZLECAf", "CUSTOMS_UNION": "union douanière"}.get(regime, regime)
+    if regime in ("ZLECAF", "CUSTOMS_UNION", "FTA_CONDITIONAL"):
+        regime_label = {"ZLECAF": "ZLECAf", "CUSTOMS_UNION": "union douanière"}.get(
+            regime, bloc or "zone de libre-échange"
+        )
         narrative = (
             f"Avantage tarifaire {regime_label} pour "
             f"{origin_iso3.upper()} → {destination_iso3.upper()} : "
