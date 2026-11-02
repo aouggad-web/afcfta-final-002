@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { intlLocale } from '../../i18n/lang';
 
 export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
   const texts = {
@@ -34,6 +35,21 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
       waitTime: "Vessel waiting",
       hours: "h",
       lpiScore: "LPI",
+    },
+    ar: {
+      containersTeu: "الحاويات (TEU)",
+      totalTonnage: "الحمولة الإجمالية",
+      tonsYear: "طن/سنة",
+      calls: "التوقفات",
+      shipsYear: "سفينة/سنة",
+      maritimeAgents: "الوكلاء البحريون",
+      regularLines: "الخطوط المنتظمة",
+      viewDetails: "عرض التفاصيل الكاملة",
+      dwellTime: "مدة بقاء الحاويات",
+      days: "يوم",
+      waitTime: "انتظار السفن",
+      hours: "ساعة",
+      lpiScore: "LPI",
     }
   };
 
@@ -41,9 +57,7 @@ export default function PortCard({ port, onOpenDetails, language = 'fr' }) {
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en'
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   const stats = port?.latest_stats;

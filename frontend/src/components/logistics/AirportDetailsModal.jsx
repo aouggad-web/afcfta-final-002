@@ -4,6 +4,7 @@ import { Badge } from '../ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { intlLocale } from '../../i18n/lang';
 
 export default function AirportDetailsModal({ airport, open, onClose, language = 'fr' }) {
   const texts = {
@@ -74,6 +75,40 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
       noHistorical: "No historical data available",
       dataSource: "Data source",
       sourceText: "IATA Cargo Database 2023 | ACI World Airport Traffic Report | National Civil Aviation Authorities"
+    },
+    ar: {
+      cargoFreight: "شحن البضائع",
+      mail: "البريد",
+      movements: "الحركات",
+      cargoAircraft: "طائرة شحن",
+      annualCapacity: "الطاقة السنوية",
+      tonsYear: "طن/سنة",
+      tons: "طن",
+      cargoInfrastructure: "البنية التحتية للشحن",
+      cargoTerminalArea: "مساحة محطة الشحن",
+      gpsCoordinates: "إحداثيات GPS",
+      notes: "ملاحظات",
+      cargoActors: "فاعلو الشحن",
+      routes: "الخطوط",
+      historicalStats: "الإحصائيات التاريخية",
+      airCargoActors: "فاعلو الشحن الجوي",
+      cargoAirlines: "شركات الشحن الجوي",
+      handlersGround: "المناولة والخدمات الأرضية",
+      forwarders: "وكلاء العبور والشحن",
+      noActors: "لا يوجد فاعلون مسجلون",
+      regularCargoRoutes: "خطوط الشحن المنتظمة",
+      destination: "الوجهة",
+      carrier: "المشغّل",
+      frequency: "التواتر",
+      aircraftType: "نوع الطائرة",
+      noRoutes: "لا توجد خطوط منتظمة مسجلة",
+      cargoEvolution: "تطور شحن البضائع",
+      tonsPerYear: "طن في السنة",
+      mailEvolution: "تطور البريد",
+      movementsEvolution: "حركات الشحن في السنة",
+      noHistorical: "لا توجد بيانات تاريخية",
+      dataSource: "مصدر البيانات",
+      sourceText: "قاعدة بيانات الشحن لـ IATA 2023 | تقرير حركة المطارات العالمية لـ ACI | الهيئات الوطنية للطيران المدني"
     }
   };
 
@@ -81,9 +116,7 @@ export default function AirportDetailsModal({ airport, open, onClose, language =
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en' 
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   if (!airport) return null;

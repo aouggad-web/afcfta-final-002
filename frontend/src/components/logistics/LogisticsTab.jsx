@@ -11,6 +11,7 @@ import IntervenantsTab from './IntervenantsTab';
 import MultimodalComparator from './MultimodalComparator';
 import VraquierLogisticsTab from './VraquierLogisticsTab';
 import { PDFExportButton } from '../common/ExportTools';
+import { pick } from '../../i18n/lang';
 import { Ship, Anchor, Plane, Truck, Building2, Globe, Database, Users, Layers } from 'lucide-react';
 
 export default function LogisticsTab({ language = 'fr' }) {
@@ -33,7 +34,12 @@ export default function LogisticsTab({ language = 'fr' }) {
         <div className="flex items-center gap-3">
           <Badge className="bg-[var(--overlay)] text-[var(--text)] hidden md:flex">
             <Database className="w-3 h-3 mr-1" />
-            68 ports • 64+ aéroports • 15 corridors • LPI 54 pays
+            {pick(
+              language,
+              '68 ports • 64+ aéroports • 15 corridors • LPI 54 pays',
+              '68 ports • 64+ aéroports • 15 corridors • LPI 54 pays',
+              '68 ميناءً • أكثر من 64 مطارًا • 15 ممرًا • LPI لـ 54 بلدًا'
+            )}
           </Badge>
           <PDFExportButton
             targetRef={contentRef}
@@ -62,7 +68,7 @@ export default function LogisticsTab({ language = 'fr' }) {
               data-testid="vraquier-tab-trigger"
             >
               <Anchor className="tab-icon" />
-              <span>Vraquier</span>
+              <span>{pick(language, 'Vraquier', 'Vraquier', 'سفن الصب')}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="air" 
@@ -86,7 +92,7 @@ export default function LogisticsTab({ language = 'fr' }) {
               data-testid="multimodal-tab-trigger"
             >
               <Layers className="tab-icon" />
-              <span>Multimodal</span>
+              <span>{pick(language, 'Multimodal', 'Multimodal', 'متعدد الوسائط')}</span>
             </TabsTrigger>
             <TabsTrigger
               value="zones"
@@ -102,7 +108,7 @@ export default function LogisticsTab({ language = 'fr' }) {
               data-testid="intervenants-tab-trigger"
             >
               <Users className="tab-icon" />
-              <span>Intervenants</span>
+              <span>{pick(language, 'Intervenants', 'Intervenants', 'الفاعلون')}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -151,12 +157,12 @@ export default function LogisticsTab({ language = 'fr' }) {
               <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
                 <Badge variant="outline" className="h-5 text-[11px]">LPI</Badge>
-                World Bank 2023
+                {pick(language, 'World Bank 2023', 'World Bank 2023', 'البنك الدولي 2023')}
               </span>
               <span className="text-[var(--text)]">|</span>
               <span className="flex items-center gap-1">
                 <Badge variant="outline" className="h-5 text-[11px]">AfCFTA</Badge>
-                Secretariat
+                {pick(language, 'Secretariat', 'Secretariat', 'الأمانة العامة')}
               </span>
             </div>
           </CardContent>
