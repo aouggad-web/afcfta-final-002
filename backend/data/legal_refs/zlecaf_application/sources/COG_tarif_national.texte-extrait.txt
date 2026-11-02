@@ -1,0 +1,187 @@
+Congo — droit de douane national hors du gabarit TEC CEMAC, contribution d'intégration africaine et taxe statistique : extraits verbatim (relevés le 2026-11-02)
+
+1) Journal officiel de la République du Congo, édition spéciale n° 2-2018 — Loi n° 1-2018 du 29 janvier 2018 portant loi de finances pour l'année 2018
+   https://sgg.cg/JO/2018/congo-jo-2018-02-sp.pdf — sha256 73a838c1570c0208b9e14fd39c117c9205daea418b87ee6d265de627df5bd6f2
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2018-02-loi-finances-2018.pdf
+
+CHAPITRE 2 : DES MODIFICATIONS DES DISPOSITIONS DOUANIERES
+
+Article trente-cinquième : Les dispositions douanières sont modifiées ainsi qu'il suit :
+
+Section 1. Modification du taux des droits de douane sur les importations des secteurs de l'agriculture, de l'élevage et de la pêche (Cf. Loi n° 41-2012 du 29 décembre 2012 portant loi de finances pour l'année 2013)
+
+Article vingt-deuxième nouveau : Les importations des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, ainsi que les engrais et autres intrants agricoles, sont exemptées de la TVA et du droit de douane et soumises à la redevance informatique et aux taxes communautaires.
+
+Section 2. Application du taux de TVA au cordon douanier (article 17 bis de la loi TVA)
+
+Article 17 bis nouveau : Au cordon douanier, sont soumises au taux réduit de TVA de 5% :
+
+     -   les importations bénéficiaires du taux dérogatoire de 5% ou taux global réduit des droits de douanes ;
+
+     -   les importations de gaz butane.
+
+Section 3. Rétablissement du taux de droit de douane à l'importation de la farine de froment
+
+Article 1 : Les importations de la farine de froment ou des produits de la même espèce tarifaire sont soumises au taux normal du droit de douane, ainsi qu'il suit :
+
+     -   position tarifaire : 1101.00.10.000
+     -   taux                : 30%
+
+[...]
+
+Section 3 : Institution de la contribution d'intégration africaine
+
+Article quarante et unième : Les droits et taxes de douane sont complétés par une nouvelle taxe communautaire dite « contribution d'intégration africaine » (CIA) applicable aux biens importés ainsi qu'il suit :
+
+Article 1er : Il est institué en République du Congo une taxe dénommée contribution d'intégration africaine (CIA) applicable aux biens éligibles importés au Congo à partir d'un Etat non membre de l'Union Africaine.
+
+Article 2 : Le taux de la contribution d'intégration africaine (CIA) est de 0,2% sur les marchandises importées éligibles.
+
+[...]
+
+Section 5. Application du taux réduit du droit de douane aux importations de gaz butane
+
+Article quarante-deuxième : Au cordon douanier, les importations de gaz butane sont soumises aux taux réduit à 5% du droit de douane et de 1% de la redevance informatique, en sus des taxes communautaires.
+
+
+2) Journal officiel de la République du Congo, édition spéciale n° 3-2020 du 14 mai 2020 — Loi n° 23-2020 du 13 mai 2020 portant loi de finances rectificative pour l'année 2020
+   https://sgg.cg/JO/2020/congo-jo-2020-03-sp.pdf — sha256 d696fc7bfce6496ab38dd5040b9302365d94010a93959ff4f78b9e3ecd4b47b5
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2020-03-lfr-2020.pdf
+
+CHAPITRE 3 : DES MODIFICATIONS DES DISPOSITIONS DOUANIERES
+
+Article trente-huitième : Les dispositions douanières en vigueur sont modifiées ainsi qu'il suit :
+
+24- Modifications des dispositions de l'article 38 relatives aux importations des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, les engrais et autres intrants agricoles.
+
+Alinéa 1
+
+Les dispositions de la loi n° 1-2018 du 29 janvier 2018, portant loi des finances pour l'année 2018, relatives aux importations des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, ainsi que les engrais et autres intrants agricoles, s'appliquent aux positions tarifaires ci-dessous citées :
+
+Position tarifaire                           Désignation du produit
+0407.11.00.000         Œufs de volaille fertilisés destinés à l'incubation
+3101.00.10.000         Fumiers et composts
+3101.00.90.000         Autres engrais
+3102.10.00.000         Urée ; même en solution aqueuse
+3102.21.00.000         Sulfate d'ammonium
+3102.29.00.000         Sels doubles et mélanges de sulfate et nitrate d'ammonium
+3102.40.00.000         Mélanges d'engrais dépourvus de pouvoirs fertilisant
+3102.50.10.000         Nitrate de sodium d'une teneur en azote supérieure à 16,3%
+310250.90.000          Nitrate de sodium d'une teneur en azote n'excédant pas 16,3%
+3102.60.00.000         Sels doubles et mélanges de nitrates de calcium et d'ammonium
+3102.80.00.000         Solutions aqueuses ou ammoniacales d'urée et nitrate d'ammonium en mélange
+3102.90.00.000         Engrais minéraux ou chimiques azotés autres que des n°310100 à 310280
+3103.10.00.000         Superphosphates
+3103.90.00.000         Engrais minéraux ou chimiques phosphatés autres que des n°310310 à 310320
+3104.20.00.000         Chlorure de potassium
+3104.30.10.000         Sulfate de potassium d'une teneur en k2o supérieur à 52%
+3104.30.90.000         Sulfate de potassium d'une teneur en k2o n'excédant pas 52%
+3104.90.10.000         Sulfate de magnésium et de potassium d'une teneur en k2o supérieure à 30%
+3104.90.90.000         Sulfate de magnésium et de potassium d'une teneur en k2o n'excédant pas 30%
+3105.10.10.000         Urée à usage d'engrais
+3105.10.90.000         Engrais minéraux ou chimique présenté en tablettes ou dans des emballages PB<=10kg
+3105.30.00.000         Hydrogenoorthophosphate de diammonium (phosphate diammonique)
+3105.40.00.000         Phosphate monoammonique, même en mélange avec du phosphate diammonique
+3105.51.00.000         Engrais minéraux ou chimiques contenant l'azote et le phosphore
+3105.59.00.000         Engrais minéraux ou chimiques contenant l'azote et le phosphore
+3105.60.00.000         Engrais minéraux ou chimiques contenant phosphore et potassium
+3105.90.00.000         Engrais minéraux ou chimiques ndnca
+8424.81.10.000         Appareil à moteur pour l'agriculture ou l'horticulture
+843210.00.000          charrues
+843221.00.000          Herses à disques (pulvériseurs)
+843229.00.000          Herses cultivateurs, scarificateurs, extirpateurs, houes….
+8432.31.00.000         Semoirs, plantoirs et repiqueurs, sans labour
+8432.39.00.000         Autres semoirs, plantoirs et repiqueurs
+8432.41.00.000         Epandeurs de fumiers
+8432.42.00.000         Distributeurs d'engrais
+8432.90.00.000         Parties des machines, appareils tensions agricoles, horticoles et sylvicoles
+8433.20.00.000         Faucheuse, y compris les barres de coupe à monter sur tracteur.
+8433.51.00.000         Moissonneuse
+8433.53.00.000         Machines pour récolter les tubercules
+8433.59.00.000         Autres machines et appareils pour la récolte
+8433.60.00.000         Machines pour le nettoyage ou le triage des œufs, fruits ou autres produits agricoles
+8433.90.00.000         Parties des machines, appareils, engins agricoles, horticoles, sylvicoles
+8436.21.00.000         Couveuses et éleveuses
+8436.29.00.000         Machines et appareils pour l'aviculture
+8436.80.00.000         Machines et appareils pour l'apiculture, l'agriculture, l'horticulture
+8436.91.00.000           Parties des machines ou d'appareils d'aviculture
+8436.99.00.000           Parties des machines ou d'appareils agricoles, horticoles, sylvicoles
+8701.91.00.100           Tracteurs agricoles à roues, d'1 puissance de moteur n'excédant pas 18kW, neuf
+8701.91.00.900           Tracteurs agricoles à roues, d'1 puissance de moteur n'excédant pas 18kW, d'occasion
+8716.20.00.100           Remorques et semi-remorques auto chargeuses ou auto déchargeuses agricoles, neuf
+8716.20.00.900           Remorques et semi-remorques auto chargeuses ou auto déchargeuses agricoles, d'occasion
+8716.80.10.100           Charrettes et tombereaux à usage agricole, neuf
+8716.80.10.900           Charrettes et tombereaux à usage agricole, d'occasion
+8902.00.00.000           Bateaux de pêche ; navires-usines et autres bateaux pour le traitement ou la mise en conserve des produits de la pêche
+
+Alinéa 2 (nouveau)
+
+La liste des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, ainsi que les engrais et autres intrants agricoles, bénéficiant de l'exonération du droit des douanes et de la taxe sur la valeur ajoutée (TVA), est actualisée en tant que de besoin par voie réglementaire.
+
+25- Suppression des exonérations, taux réduits et forfaits de la redevance informatique
+
+Les exonérations, taux réduits et forfaits de la redevance informatique accordés au secteur pétrolier et aux autres secteurs d'activité sont supprimés.
+
+[...]
+
+27- Champ d'application du prélèvement de la contribution d'intégration africaine (CIA)
+
+Le prélèvement de la contribution d'intégration africaine (CIA) est liquidé sur la valeur en douane des marchandises importées éligibles.
+
+Sont exemptés de ce prélèvement les biens suivants :
+
+     -   tous les biens provenant d'un autre Etat membre ;
+
+     -   les biens provenant du hors territoire d'un Etat membre en vue de la consommation interne et réexportés vers un autre Etat membre ;
+
+     -   les biens reçus sous forme d'aide, de dons et de subventions non remboursables par l'Etat et par d'autres administrations publiques et destinés à des œuvres de charité ;
+
+     -   les biens provenant des Etats non membres importés dans le cadre des accords de financement avec les partenaires étrangers, sous réserve d'une clause exonérant expressément lesdits biens de tout prélèvement fiscal ou para fiscal.
+
+
+3) Journal officiel de la République du Congo, édition spéciale n° 3-2026 du lundi 5 janvier 2026 — Loi n° 42-2025 du 31 décembre 2025 portant loi de finances pour l'année 2026
+   https://sgg.cg/JO/2026/congo-jo-2026-3-4.pdf — sha256 61477eabb5014dd438451d5326dab14a077c5c8096bbe3fef136e5edfbf7f74e
+   archivé : data/sources/congo-brazzaville/official/cog-jo-2026-03-loi-finances-2026.pdf
+
+7.1.4. Modalités relatives aux droits et taxes de douane.
+
+[...]
+
+7. Par contre, les logiciels importés à travers les machines automatiques de traitement de l'information et des unités de mémoire des positions tarifaires 8471.30 00.000 à 8471.90 00.000 font l'objet de classements distincts. Les machines et les unités sont classées à leur position tarifaire spécifique. Les logiciels, quant à eux, sont classés séparément à la position tarifaire 8523.80 00.200 (Autres logiciels) qui relève de la troisième catégorie du tarif extérieur commun ;
+
+8. Les logiciels acquis par téléchargement relèvent de la position tarifaire 8523. 80. 00.100 et sont classés à la 3ème catégorie du tarif extérieur commun. Ils sont également soumis au formalisme de la déclaration en détail suivant les modalités précisées par voie des actes réglementaires ;
+
+
+4) A. Ngakosso, directeur général des impôts et des domaines, « Analyse de la fiscalité indirecte : cas du Congo », conférence du FMI sur la mobilisation des recettes dans les pays en développement (2011)
+   https://www.imf.org/external/np/seminars/eng/2011/revenue/pdf/ngakosso.pdf — sha256 ca65fa1a4d3367986f409eb4fbd09cc85b5958a0c2f8c8c1e80db3c9242067f9
+   archivé : data/sources/congo-brazzaville/official/fmi-2011-ngakosso-fiscalite-indirecte-congo.pdf
+
+Tableau 1: Bases taxables des droits et taxes à l'Importation.
+
+ Désignation                                    Sigle   Base taxable                          Taux
+ Taxe sur la valeur ajoutée / Pays tiers        TVA     VD + TEC + DAC + TCI + TST + RDI + CCI 18%
+ Centime additionnel à la TVA                   CATVA   TVA ou TVC                             5%
+ Redevance informatique                         RDI     VD                                     2%
+ Taxe municipale                                TMP     VD + toutes autres taxes               20%
+ Taxe statistique                               TST     VD                                     0,2%
+ Tarif extérieur commun                         TEC     VD                                     5%, 10%, 20%, 30%
+ Droits d'accises                               DAC     VD + TEC                               24%
+ Taxe sur la valeur ajoutée / CEMAC             TVC     VD                                     18%
+ Taxe communautaire d'intégration               TCI     VD                                     1%
+ Contribution communautaire d'intégration       CCI     VD                                     0,4%
+ Contribution OHADA                             OHA     VD                                     0,05%
+
+  Sources : Guide d'utilisation du document administratif unique des douanes congolaises (2004), et aménagements de l'auteur.
+
+
+5) Organisation mondiale du commerce, Examen des politiques commerciales des pays de la CEMAC, WT/TPR/S/445 (2023), annexe Congo
+   https://www.wto.org/french/tratop_f/tpr_f/s445-03_f.pdf — sha256 79ea6adc4c3a59fce74d42a5ec6390bdcf36e1b45d16bb9fdab41237eb14583c
+   archivé : data/sources/congo-brazzaville/official/omc-wt-tpr-s-445-annexe-congo.pdf
+
+3.37. Tous les pays de la CEMAC, y compris le Congo, appliquent un tarif extérieur commun (TEC) aux importations des marchandises d'origine des pays tiers (Rapport commun, section 3.1.3.1). Cependant, chaque pays de la CEMAC s'accorde unilatéralement des dérogations au TEC, souvent sans concertation ni notification aux autres membres. Le Congo utilise ainsi le TEC CEMAC à 5 bandes: 0, 5, 10,20 et 30%. Il applique des dérogations au TEC sur 242 lignes tarifaires (SH 8), à la baisse, surtout sur les biens de première nécessité, les engins et matériels agricoles, de l'élevage et de la pêche ainsi que les autres intrants et engrais agricoles. La proportion des lignes tarifaires affectées par ces exceptions est de 9%.
+
+3.40. En plus du TEC, le Congo applique les autres droits et taxes communautaires (Rapport commun, section 3.1.3.5). Par ailleurs, il impose également la redevance informatique variant de 0 à 2% selon la valeur et la destination de la marchandise importée ou exportée; et les frais d'inspection pour les transactions qui en sont soumises.
+
+3.56. D'après les autorités, la pratique du quota sur la farine n'existe plus au Congo. La filière de minoterie dispose de 5 sociétés de production de la farine de blé tendre. Le secteur de la production de la farine est très concurrentiel. Depuis que le TEC est passé de 5% à 30%, on observe quasiment plus de demande d'importation de la farine; à l'exception des farines spécifiques non produites au Congo.
+
+Note 52 : La de-catégorisation des produits est intervenues à partir de l'année 2008 avec la lutte contre la vie chère (poissons de mer congelés, ciment, fer à béton, pate alimentaire, tôle ondulée, farine), puis la catégorisation de quelques produits depuis 2017 ( ciment, tôle ondulée, fer à béton, pate alimentaire, savon de ménage); de-catégorisation en 2018 (gaz butane liquéfié); re-catégorisation en 2018 (farine); et de catégorisation des matériels et équipements, engrais et autres intrants agricoles depuis 2018.

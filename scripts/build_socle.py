@@ -3104,6 +3104,14 @@ def _direitos_lei4_stp(positions, compteurs):
 SOURCE_RI_COG = "Loi n° 42-2025 du 31 décembre 2025 (loi de finances 2026), art. 48, point 25"
 SOURCE_CCI_COG = "OMC, examen des politiques commerciales des pays de la CEMAC (WT/TPR/S/445, 2023), rapport commun, § 3.40"
 SOURCE_OHADA_COG = "Arrêté n° 5808 du 20 septembre 2005 portant application du prélèvement OHADA, art. 2 à 5"
+SOURCE_CIA_COG = (
+    "Loi n° 1-2018 du 29 janvier 2018 (loi de finances 2018), art. 41 ; loi n° 23-2020 du 13 mai 2020 (loi de "
+    "finances rectificative 2020), art. 38, point 27"
+)
+SOURCE_TS_COG = (
+    "A. Ngakosso, directeur général des impôts et des domaines, « Analyse de la fiscalité indirecte : cas du "
+    "Congo », conférence du FMI sur la mobilisation des recettes (2011), tableau 1"
+)
 #: Prélèvement OHADA : produits exonérés que la position suffit à désigner, « les produits
 #: pharmaceutiques ainsi que les matériels et équipements à usage médical » (règlement
 #: n° 002/2003/CM, art. 6 ; au Congo, arrêté n° 5808, art. 2).
@@ -3137,6 +3145,13 @@ def _prelevements_congo(positions, compteurs):
                     "équipements à usage médical destinés à la médecine humaine ou vétérinaire »."
                 )
             _compter_ligne(ohada, compteurs, 1)
+        for ts in (d for d in droits if d.get("code") == "TS"):
+            ts.update(source=SOURCE_TS_COG, assiette="CIF", assiette_origine="regle_de_pays")
+            ts["note"] = (
+                "« Taxe statistique — TST — VD — 0,2% », d'après le guide d'utilisation du document administratif "
+                "unique des douanes congolaises (2004). Ni le rapport de l'OMC (WT/TPR/S/445, 2023) ni les lois de "
+                "finances lues ne la nomment ; texte qui l'institue non trouvé."
+            )
         apres = [i for i, d in enumerate(droits) if d.get("code") in ("TCI", "TS", "OHADA")]
         rang = apres[-1] + 1 if apres else next(
             (i for i, d in enumerate(droits) if d.get("famille") in ("accise", "tva")), len(droits)
@@ -3149,6 +3164,12 @@ def _prelevements_congo(positions, compteurs):
                      "importations hors-CEEAC […] (actuellement collectée par le Congo, le Gabon, la République "
                      "centrafricaine et le Tchad) » ; elle « ne s'applique pas aux échanges intra-CEEAC » (annexe "
                      "Congo, § 3.48)."},
+            {"code": "CIA", "code_source": "CIA", "libelle": "Contribution d'intégration africaine",
+             "famille": famille("CIA"), "taux": 0.2, "assiette": "CIF", "assiette_origine": "regle_de_pays",
+             "source": SOURCE_CIA_COG,
+             "note": "LF 2018, art. 41 : « applicable aux biens éligibles importés au Congo à partir d'un Etat non "
+                     "membre de l'Union Africaine » ; « Le taux […] est de 0,2% ». LFR 2020, point 27 : « liquidé "
+                     "sur la valeur en douane » ; exemptés « tous les biens provenant d'un autre Etat membre »."},
             {"code": "RI", "code_source": "RI", "libelle": "Redevance informatique",
              "famille": famille("RI"), "taux": 2.0, "assiette": "CIF", "assiette_origine": "regle_de_pays",
              "source": SOURCE_RI_COG,
@@ -3350,6 +3371,114 @@ def _vehicules_neufs_congo(positions, compteurs):
                 d["taux"] = None
                 d["note"] = motif
                 _compter_ligne(d, compteurs, 1)
+
+
+#: Congo : droit de douane et TVA fixés par les lois de finances hors du gabarit
+#: TEC CEMAC (fiche COG_tarif_national_2026-11-02.json).
+SOURCE_ART22_COG = (
+    "Loi n° 1-2018 du 29 janvier 2018 (loi de finances 2018), art. 35, section 1 : art. 22 nouveau de la loi "
+    "n° 41-2012 (loi de finances 2013)"
+)
+VERBATIM_ART22_COG = (
+    "« Les importations des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, ainsi "
+    "que les engrais et autres intrants agricoles, sont exemptées de la TVA et du droit de douane et soumises à la "
+    "redevance informatique et aux taxes communautaires »"
+)
+SOURCE_LISTE_ART22_COG = "Loi n° 23-2020 du 13 mai 2020 (loi de finances rectificative 2020), art. 38, point 24"
+#: Positions de la liste de la LFR 2020 (tarif national SH 2017 à 10 chiffres),
+#: rapportées au tarif CEMAC du socle : position du socle → numéros de la liste.
+ART22_COG = {
+    "04070010": "0407.11.00 (œufs de volaille fertilisés destinés à l'incubation)",
+    **{c: "3102 (engrais azotés, sauf nitrate d'ammonium 3102.30)" for c in (
+        "31021000", "31022100", "31022900", "31024000", "31025010", "31025090", "31026000", "31028000", "31029000")},
+    **{c: "3103 (engrais phosphatés)" for c in ("31031000", "31039000")},
+    **{c: "3104 (engrais potassiques)" for c in ("31042000", "31043000", "31049000")},
+    **{c: "3105 (autres engrais, sauf 3105.20)" for c in (
+        "31051010", "31051090", "31053000", "31054000", "31055100", "31055900", "31056000", "31059000")},
+    "84248110": "8424.81.10 (appareils à moteur pour l'agriculture ou l'horticulture)",
+    "84321000": "8432.10 (charrues)",
+    "84322100": "8432.21 (herses à disques)",
+    "84322900": "8432.29 (herses, scarificateurs, cultivateurs, extirpateurs, houes)",
+    "84323000": "8432.31 et 8432.39 (semoirs, plantoirs et repiqueurs)",
+    "84324000": "8432.41 et 8432.42 (épandeurs de fumier et distributeurs d'engrais)",
+    "84329000": "8432.90 (parties)",
+    "84332000": "8433.20 (faucheuses)",
+    "84335100": "8433.51 (moissonneuses)",
+    "84335300": "8433.53 (machines pour la récolte des tubercules)",
+    "84335900": "8433.59 (autres machines pour la récolte)",
+    "84336000": "8433.60 (machines pour le nettoyage ou le triage des produits agricoles)",
+    "84339000": "8433.90 (parties)",
+    "84362100": "8436.21 (couveuses et éleveuses)",
+    "84362900": "8436.29 (machines pour l'aviculture)",
+    "84368000": "8436.80 (machines pour l'apiculture, l'agriculture, l'horticulture)",
+    "84369100": "8436.91 (parties des machines d'aviculture)",
+    "84369900": "8436.99 (parties des machines agricoles)",
+    "87162000": "8716.20 (remorques autochargeuses ou autodéchargeuses agricoles)",
+    "87168010": "8716.80.10 (charrettes et tombereaux à usage agricole)",
+    "89020000": "8902.00 (bateaux de pêche)",
+}
+#: La liste ne vise que les tracteurs agricoles de 18 kW au plus (8701.91 du SH
+#: 2017) ; la position du socle les réunit tous.
+TRACTEURS_ART22_COG = "87019011"
+#: Position → (droit de douane, TVA ou None pour la laisser, motif).
+TAUX_NATIONAUX_COG = {
+    "11010010": (30.0, None,
+                 "Loi n° 1-2018 (LF 2018), art. 35, section 3 : « Les importations de la farine de froment ou des "
+                 "produits de la même espèce tarifaire sont soumises au taux normal du droit de douane » — « position "
+                 "tarifaire : 1101.00.10.000 ; taux : 30% » (le tarif CEMAC imprime 5 %). OMC, WT/TPR/S/445, annexe "
+                 "Congo, § 3.56 : « Depuis que le TEC est passé de 5% à 30% »."),
+    "27111300": (5.0, 5.0,
+                 "Loi n° 1-2018 (LF 2018), art. 42 : « les importations de gaz butane sont soumises aux taux réduit à "
+                 "5% du droit de douane » ; art. 35, section 2 (art. 17 bis nouveau de la loi TVA) : « Au cordon "
+                 "douanier, sont soumises au taux réduit de TVA de 5% : […] les importations de gaz butane »."),
+}
+LOGICIELS_COG = "85238000"
+
+
+def _tarif_national_congo(positions, compteurs):
+    """Congo : exonération du droit de douane et de la TVA des positions de la
+    liste de l'art. 22 (machines agricoles, engrais, bateaux de pêche) ;
+    farine de froment, gaz butane et logiciels selon les lois de finances 2018
+    et 2026."""
+    def poser(d, taux, note):
+        _compter_ligne(d, compteurs, -1)
+        d["taux"] = taux
+        d["note"] = note
+        _compter_ligne(d, compteurs, 1)
+
+    for code, position in positions.items():
+        droits = position.get("droits") or []
+        if code in ART22_COG:
+            note = (f"Exonéré{{e}} : {SOURCE_ART22_COG}, {VERBATIM_ART22_COG} ; liste de la {SOURCE_LISTE_ART22_COG} : "
+                    f"{ART22_COG[code]}.")
+            for d in droits:
+                if d.get("code") == "DD":
+                    poser(d, 0.0, note.format(e=""))
+                elif d.get("code") == "TVA" and d.get("taux") != 0.0:
+                    poser(d, 0.0, note.format(e="e"))
+        if code == TRACTEURS_ART22_COG:
+            for d in droits:
+                if d.get("code") in ("DD", "TVA"):
+                    poser(d, None,
+                          f"{SOURCE_LISTE_ART22_COG} : droit de douane et TVA exonérés pour les « Tracteurs agricoles "
+                          "à roues, d'1 puissance de moteur n'excédant pas 18kW » (8701.91.00.100 et .900) ; au-delà, "
+                          "taux de droit commun — la puissance n'est pas dans la position.")
+        if code in TAUX_NATIONAUX_COG:
+            dd, tva, motif = TAUX_NATIONAUX_COG[code]
+            for d in droits:
+                if d.get("code") == "DD":
+                    poser(d, dd, motif)
+                elif d.get("code") == "TVA" and tva is not None:
+                    poser(d, tva, motif)
+        if code == LOGICIELS_COG:
+            for d in droits:
+                if d.get("code") == "DD":
+                    poser(d, None,
+                          "Loi n° 42-2025 (LF 2026), modalités relatives aux droits et taxes de douane, point 7 : les "
+                          "logiciels « sont classés séparément à la position tarifaire 8523.80 00.200 (Autres "
+                          "logiciels) qui relève de la troisième catégorie du tarif extérieur commun » (20 %), comme "
+                          "les logiciels téléchargés (8523.80 00.100) ; les autres supports de la position restent à "
+                          "30 % — la position ne dit pas s'il s'agit d'un logiciel.")
 
 
 #: Congo : taxe sur les nouveaux terminaux numériques à carte SIM (RTN), loi de
@@ -6368,6 +6497,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         _tva_par_position("COG", positions, compteurs)
         _mesures_nationales_congo(positions)
         _vehicules_neufs_congo(positions, compteurs)
+        _tarif_national_congo(positions, compteurs)
         _prelevements_congo(positions, compteurs)
         _terminaux_sim_congo(positions, compteurs)
     if iso == "CAF":
