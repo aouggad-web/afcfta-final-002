@@ -23,7 +23,7 @@
   "ce_que_cela_ne_tranche_pas": [
     "« Il s'agit notamment de » : la liste de la circulaire n'est peut-être pas exhaustive ; seules les positions nommées sont servies.",
     "La redevance informatique, que la circulaire mentionne, n'est pas servie par le socle COG : taux et assiette non établis.",
-    "Le droit de douane et les taxes communautaires restent ceux du gabarit TEC CEMAC, non rapprochés ligne par ligne du tarif national congolais."
+    "Le droit de douane et les taxes communautaires restent ceux du gabarit TEC CEMAC, sauf les dérogations des lois de finances servies par la fiche COG_tarif_national_2026-11-02.json ; le tarif national congolais n'est pas publié."
   ],
   "documents_archives": [{"texte_archive": "sources/COG_mesures_nationales.texte-extrait.txt", "sha256": "1eff82e57814c8e23dc038b5b8367c52368256eb4d42fa054433ca2dd07dbb67"}]
 }
