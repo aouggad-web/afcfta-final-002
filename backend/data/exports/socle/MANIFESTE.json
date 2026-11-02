@@ -1156,15 +1156,19 @@
           "libelle": "Droits d'accises"
         },
         {
+          "code": "PSC",
+          "libelle": "Taxe de promotion de la culture et du sport (PSC)"
+        },
+        {
           "code": "TLC",
           "libelle": "Taxe de recherche et de lutte contre le cancer"
         }
       ],
       "devise": "MRU",
-      "date_reference": "2026-10-28",
-      "sha256": "e13b17c8eee45b1e6902e3def4d700093ba6bbf106c45ea52878cdc89b0ee6c9",
-      "notes_sha256": "9d5e3c5fee856656bb4c91ecc59b3243fa75a3e76ad4624fbb43585a2f4f8274",
-      "socle_sha256": "66498a3f8fcedf561ff003a48dfc37e9d8b0fb74e0157209bdd731be05ae7bc1",
+      "date_reference": "2026-11-01",
+      "sha256": "b0706f3b2c80748aad8613997811d4ff7e1d5d6f7351ac7f3c19b01a8d501d86",
+      "notes_sha256": "fed0dd861b3bc848c3be46caa032667a8164224952e03e56081a7726bf4cebb4",
+      "socle_sha256": "e61a3f8a558bd996077530c7454a03e12805b793a41d655bd32f7ddccc19774a",
       "collecte": "2026-09-18T00:00:00+00:00"
     },
     "MUS": {

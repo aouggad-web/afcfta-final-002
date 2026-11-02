@@ -109,6 +109,17 @@ jobs:
             "${DEST_FLAG[@]}" \
             --out-dir ../test_reports/smoke_opportunites
 
+      # GitHub masque les secrets dans les logs d'étape, pas dans les artefacts :
+      # on retire du journal toute clé passée en paramètre d'URL avant l'envoi
+      # (complète le masquage applicatif de backend/log_redaction.py, qui ne
+      # couvre pas les messages propres à uvicorn).
+      - name: Redact secrets from uvicorn.log
+        if: always()
+        run: |
+          if [ -f uvicorn.log ]; then
+            sed -i -E 's/([?&#](token|access_token|refresh_token|api_key|apikey|key|subscription-key)=)[^&[:space:]"#]+/\1***/Ig' uvicorn.log
+          fi
+
       - name: Upload reports and datasets as artifacts
         if: always()
         uses: actions/upload-artifact@v4

@@ -58,10 +58,11 @@ def _calcul(client, code, quantite=None):
     ("1704900000", 20.0),   # confiseries
 ])
 def test_accise_ad_valorem_sur_la_valeur_en_douane_et_les_droits(client, code, taux):
-    """Art. 262 : valeur en douane majorée des droits et taxes d'entrée ; la TVA comprend l'accise."""
+    """Art. 262 : valeur en douane majorée des droits et taxes d'entrée, PSC comprise
+    (chapitres 21 à 98) ; la TVA comprend l'accise."""
     etat, lignes = _calcul(client, code)
     assert etat == "COMPLET"
-    base = 10_000 + sum(lignes[c]["montant"] for c in ("DD", "RS", "PC"))
+    base = 10_000 + sum(lignes[c]["montant"] for c in ("DD", "RS", "PC", "PSC") if c in lignes)
     assert lignes["EXC"]["base"] == pytest.approx(base)
     assert lignes["EXC"]["montant"] == pytest.approx(base * taux / 100)
     autres = sum(lignes[c]["montant"] for c in lignes if c != "TVA")
@@ -73,7 +74,7 @@ def test_cigarettes_cumul_et_taxe_cancer(client):
     etat, lignes = _calcul(client, "2402200000", quantite=500)
     assert etat == "COMPLET"
     assert lignes["TLC"]["montant"] == pytest.approx(1_000.0)
-    base = 10_000 + sum(lignes[c]["montant"] for c in ("DD", "RS", "PC", "TLC"))
+    base = 10_000 + sum(lignes[c]["montant"] for c in ("DD", "RS", "PC", "PSC", "TLC"))
     assert lignes["EXC"]["montant"] == pytest.approx(base * 0.47 + 500 * 1.6)
 
 
