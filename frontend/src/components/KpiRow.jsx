@@ -38,7 +38,7 @@ export default function KpiRow({ language = "fr", stats }) {
       type: "progress",
       title: pick(language, "Progression ZLECAf", "AfCFTA Progress", "تقدّم زليكاف"),
       value: stats?.progress || "57 %",
-      subtext: pick(language, "Phase 2 en cours", "Phase 2 ongoing", "المرحلة 2 جارية"),
+      subtext: pick(language, "Phase 2 en cours", "Phase 2 ongoing", "المرحلة الثانية جارية"),
       meta: pick(language, "Mise en œuvre", "Implementation", "التنفيذ"),
     },
   ];

@@ -202,7 +202,7 @@ export function LSCIChartWidget({ language }) {
           <Tooltip 
             formatter={(val, name, props) => [
               `LSCI: ${val}`,
-              pick(language, `#${props.payload.rank} Africa`, `#${props.payload.rank} Africa`, `#${props.payload.rank} أفريقيا`)
+              pick(language, `#${props.payload.rank} Africa`, `#${props.payload.rank} Africa`, `المرتبة ${props.payload.rank} أفريقيًا`)
             ]}
             contentStyle={{ fontSize: 11 }}
           />

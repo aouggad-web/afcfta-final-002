@@ -204,7 +204,7 @@ export default function AIRecommendations({ language = 'fr' }) {
           >
             {loading
               ? pick(language, 'Analyse en cours...', 'Analyzing...', 'جارٍ التحليل…')
-              : pick(language, 'Obtenir mes Recommandations', 'Get My Recommendations', 'احصل على توصياتي')}
+              : pick(language, 'Obtenir mes Recommandations', 'Get My Recommendations', 'الحصول على توصياتي')}
           </Button>
         </CardContent>
       </Card>

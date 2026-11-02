@@ -56,7 +56,7 @@ const provMeta = (nature, t, lang) => {
     };
   if (nature === "derived_estimate")
     return {
-      t: pick(lang, "est.", "est.", "تقدير"),
+      t: pick(lang, "est.", "est.", "تقديري"),
       title: t("opportunities.sectoralAnalysis.idsbUnidoDerivedEstimate"),
       fg: "var(--gold)",
       bg: "rgba(154,103,0,0.12)",

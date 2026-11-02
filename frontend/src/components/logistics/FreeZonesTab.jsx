@@ -89,7 +89,7 @@ export default function FreeZonesTab({ language = 'fr' }) {
       connection: "الربط",
       keyIndustries: "الصناعات الرئيسية",
       incentives: "الحوافز",
-      keyTenants: "أبرز الشركات المستقرة",
+      keyTenants: "أبرز الشركات المتمركزة فيها",
       impact: "الأثر",
       managingAuthority: "الجهة المسيِّرة"
     }

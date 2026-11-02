@@ -82,14 +82,14 @@ const CATEGORY_META = {
   },
   customs_agents: {
     label: 'Douanes & Commissionnaires',
-    label_ar: 'الجمارك والمعتمدون الجمركيون',
+    label_ar: 'الجمارك والمخلّصون الجمركيون',
     icon: ShieldCheck,
     color: 'red',
     bg: 'rgba(239,68,68,0.1)',
     border: 'rgba(239,68,68,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]',
     desc: 'Autorités douanières et commissionnaires agréés',
-    desc_ar: 'السلطات الجمركية والمعتمدون الجمركيون المرخَّصون',
+    desc_ar: 'السلطات الجمركية والمخلّصون الجمركيون المعتمدون',
   },
   regulatory_bodies: {
     label: 'Organismes de régulation',

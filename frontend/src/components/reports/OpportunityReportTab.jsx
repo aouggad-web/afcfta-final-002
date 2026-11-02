@@ -241,7 +241,7 @@ function MarketSeekingView({ fr, prefill, language = fr ? "fr" : "en" }) {
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 18 }}>
         <div>
-          <div style={label}>{pick(language, "Produit — Code SH (HS6 ou HS4)", "Product — HS code (HS6 or HS4)", "المنتج — رمز SH (HS6 أو HS4)")}</div>
+          <div style={label}>{pick(language, "Produit — Code SH (HS6 ou HS4)", "Product — HS code (HS6 or HS4)", "المنتج — رمز SH (SH6 أو SH4)")}</div>
           <input
             value={hsCode}
             onChange={(e) => setHsCode(e.target.value)}
@@ -501,7 +501,7 @@ export function BilateralView({ countries, fr, prefill, language = fr ? "fr" : "
     }
     const tariffKv = [];
     if (tariff.available) {
-      if (tariff.national_rate_pct != null) tariffKv.push({ label: pick(language, 'Taux NPF national', 'National MFN rate', "معدل الدولة الأولى بالرعاية (NPF) الوطني"), value: `${tariff.national_rate_pct}%` });
+      if (tariff.national_rate_pct != null) tariffKv.push({ label: pick(language, 'Taux NPF national', 'National MFN rate', "المعدل الوطني للدولة الأولى بالرعاية (NPF)"), value: `${tariff.national_rate_pct}%` });
       if (tariff.zlecaf_rate_pct != null) tariffKv.push({ label: pick(language, 'Taux ZLECAf', 'AfCFTA rate', "معدل زليكاف"), value: `${tariff.zlecaf_rate_pct}%` });
       if (tariff.tariff_advantage_pct != null) tariffKv.push({ label: pick(language, 'Avantage tarifaire', 'Tariff advantage', "الميزة التعريفية"), value: `${tariff.tariff_advantage_pct}%` });
       if (tariff.savings_per_1000usd != null) tariffKv.push({ label: pick(language, 'Économie / 1000 USD', 'Savings / 1000 USD', "الوفر / 1000 USD"), value: money(tariff.savings_per_1000usd, language) });
@@ -702,7 +702,7 @@ export function BilateralView({ countries, fr, prefill, language = fr ? "fr" : "
                         ? pick(language, "Fret (hors frais portuaires)", "Freight (excl. port fees)", "الشحن (دون الرسوم المينائية)")
                         : pick(language, "Fret (option la moins chère)", "Freight (cheapest option)", "الشحن (الخيار الأرخص)");
                     const rows = [
-                      { l: pick(language, "Valeur marchandises (FOB)", "Goods value (FOB)", "قيمة البضائع (فوب FOB)"), v: bd.goods_value_fob_usd },
+                      { l: pick(language, "Valeur marchandises (FOB)", "Goods value (FOB)", "قيمة البضائع فوب (FOB)"), v: bd.goods_value_fob_usd },
                       {
                         l: freightLabel,
                         v: bd.freight_excl_port_fees_usd != null
@@ -1707,7 +1707,7 @@ function TransformationView({ countries, fr, onAnalyze, language = fr ? "fr" : "
     <div>
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 16 }}>
         <div>
-          <div style={label}>{pick(language, "Intrant SH", "Input HS", "المُدخل SH")}</div>
+          <div style={label}>{pick(language, "Intrant SH", "Input HS", "رمز SH للمُدخل")}</div>
           <input value={inputHs} onChange={(e) => setInputHs(e.target.value)} data-testid="s1-input-hs" style={{ padding: "8px 10px", borderRadius: 8, width: 90 }} />
         </div>
         <div>
@@ -1719,7 +1719,7 @@ function TransformationView({ countries, fr, onAnalyze, language = fr ? "fr" : "
           <Sel value={producer} onChange={setProducer} countries={countries} testid="s1-producer" />
         </div>
         <div>
-          <div style={label}>{pick(language, "Produit fini SH", "Finished HS", "المنتج النهائي SH")}</div>
+          <div style={label}>{pick(language, "Produit fini SH", "Finished HS", "رمز SH للمنتج النهائي")}</div>
           <input value={finishedHs} onChange={(e) => setFinishedHs(e.target.value)} data-testid="s1-finished-hs" style={{ padding: "8px 10px", borderRadius: 8, width: 90 }} />
         </div>
         <div>

@@ -63,7 +63,7 @@ const texts = {
     calculate: 'احسب الشحن', loading: 'جارٍ الحساب…', result: 'تفصيل التكاليف',
     totalCost: 'التكلفة الإجمالية التقديرية', airFreight: 'الشحن الجوي', fsc: 'رسم الوقود الإضافي (FSC)',
     ssc: 'رسم الأمن الإضافي (SSC)', handling: 'المناولة + بوليصة الشحن الجوي (AWB)', distance: 'المسافة',
-    transit: 'مدة العبور', carriers: 'شركات الشحن', days: 'يوم', km: 'km',
+    transit: 'مدة العبور', carriers: 'شركات الشحن', days: 'أيام', km: 'km',
     chargeable: 'الوزن الخاضع للرسوم', actualW: 'الوزن الفعلي', volW: 'الوزن الحجمي',
     ratePerKg: 'السعر', source: 'المصدر', disclaimer: 'تنبيه',
     selectAll: 'اختر المطارات والوزن.', samePorts: 'يجب أن يختلف المنشأ عن المقصد.',

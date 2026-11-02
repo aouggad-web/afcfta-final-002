@@ -72,7 +72,7 @@ const texts = {
     instrument: 'الأداة',
     cost: 'التكلفة',
     protection: 'الحماية',
-    netBenefit: 'الفائدة الصافية',
+    netBenefit: 'المنفعة الصافية',
     roi: 'العائد على الاستثمار',
     recommendation: 'التوصية',
     instruments: 'جميع الأدوات',

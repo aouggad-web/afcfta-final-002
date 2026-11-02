@@ -44,7 +44,7 @@ export default function DedouanementSacuQuestion({ checked = false, onChange, la
           {pick(language,
             'Marchandise entrée dans la SACU à un taux préférentiel : la différence avec le droit normal est due (art. 31.4) et n’est pas calculée.',
             'Goods that entered SACU at a preferential rate: the difference with the normal duty is payable (art. 31.4) and is not computed.',
-            'بضاعة دخلت الاتحاد الجمركي للجنوب الأفريقي بمعدل تفضيلي: الفرق مع الرسم العادي مستحق (المادة 31.4) ولا يُحتسب.')}
+            'بضاعة دخلت الاتحاد الجمركي للجنوب الأفريقي بمعدل تفضيلي: الفرق بين المعدل التفضيلي والرسم العادي مستحق (المادة 31.4) ولا يُحتسب.')}
         </p>
       </div>
     </fieldset>

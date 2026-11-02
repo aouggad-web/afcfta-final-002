@@ -143,7 +143,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     countries: "countries",
   }, {
     title: "تنزيل تعريفات الدولة الأولى بالرعاية (NPF) (النظام العام)",
-    subtitle: (n) => `${n} بلدًا — تعريفة الدولة الأولى بالرعاية كما تطبّقها الحاسبة`,
+    subtitle: (n) => `عدد البلدان: ${n} — تعريفة الدولة الأولى بالرعاية كما تطبّقها الحاسبة`,
     loading: "جارٍ تحميل البيانات…",
     downloadCountry: "CSV",
     downloadJson: "JSON",

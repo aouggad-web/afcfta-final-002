@@ -859,6 +859,9 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   <CardContent className="pt-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {countryProfile.ongoing_projects.map((project, index) => {
+                        // Textes du projet dans la langue de l'interface : champs « _ar »
+                        // en arabe, français sinon (pas de version anglaise des données).
+                        const champ = (cle) => (language === 'ar' && project[`${cle}_ar`]) || project[cle];
                         const isOperational = project.statut?.includes('OPÉRATIONNEL') || project.statut?.includes('✅');
                         const isConstruction = project.statut?.includes('construction') || project.statut?.includes('Construction');
                           
@@ -876,7 +879,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                             <h5 className="font-bold text-sm leading-tight flex items-center gap-2">
                               {isOperational && <span>✅</span>}
                               {isConstruction && <span>🏗️</span>}
-                              {project.titre}
+                              {champ('titre')}
                             </h5>
                           </div>
                           <div className="p-4 flex-grow flex flex-col gap-3">
@@ -885,13 +888,13 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                                 isOperational ? 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]' :
                                 'bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]'
                               }`}>
-                                {project.secteur}
+                                {champ('secteur')}
                               </Badge>
                               <span className={`text-xs font-bold px-2 py-1 rounded ${
                                 isOperational ? 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)]' :
                                 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)]'
                               }`}>
-                                🏁 {project.echeance}
+                                🏁 {champ('echeance')}
                               </span>
                             </div>
                               
@@ -901,20 +904,20 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                               isConstruction ? 'bg-[var(--gold)] text-[var(--bg)]' :
                               'bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)]'
                             }`}>
-                              {project.statut}
+                              {champ('statut')}
                             </div>
                               
                             <div className="space-y-2 text-sm text-[var(--afcfta-muted)] flex-grow">
-                              <p className="line-clamp-3">{project.description}</p>
+                              <p className="line-clamp-3">{champ('description')}</p>
                                 
                               <div className="bg-[var(--afcfta-card2)] p-2 rounded text-xs border border-[var(--afcfta-border)]">
-                                <p><strong>💰 {t.budget}:</strong> {project.budget}</p>
-                                <p><strong>🚀 {t.impact}:</strong> {project.impact}</p>
+                                <p><strong>💰 {t.budget}:</strong> {champ('budget')}</p>
+                                <p><strong>🚀 {t.impact}:</strong> {champ('impact')}</p>
                               </div>
                             </div>
                               
                             <div className="mt-auto pt-3 border-t border-[var(--afcfta-border)] text-xs text-[var(--afcfta-muted)] flex justify-between items-center">
-                              <span className="truncate max-w-[70%]">🤝 {project.partenaires}</span>
+                              <span className="truncate max-w-[70%]">🤝 {champ('partenaires')}</span>
                               <span className="italic text-[var(--afcfta-muted)]">{project.source?.split('/')[0]}</span>
                             </div>
                           </div>

@@ -50,7 +50,7 @@ const texts = {
     loading: 'جارٍ التقييم…',
     error: 'خطأ',
     banks: 'المصارف المصنفة',
-    score: 'النتيجة',
+    score: 'الدرجة',
     suitability: 'الملاءمة',
     strengths: 'نقاط القوة',
     services: 'الخدمات',

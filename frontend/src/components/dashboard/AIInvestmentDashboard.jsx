@@ -150,7 +150,7 @@ function SectorScoreWidget({ country, sector, language }) {
   const { score, loading, error } = useInvestmentScore(country, sector);
 
   if (loading) return <div style={{ color: '#94A3B8', fontSize: '0.85rem' }}>{pick(language, 'Calculating…', 'Calculating…', 'جارٍ الحساب…')}</div>;
-  if (error)   return <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>{pick(language, 'Score unavailable', 'Score unavailable', 'النتيجة غير متاحة')}</div>;
+  if (error)   return <div style={{ color: '#EF4444', fontSize: '0.85rem' }}>{pick(language, 'Score unavailable', 'Score unavailable', 'الدرجة غير متاحة')}</div>;
   if (!score)  return null;
 
   return (
@@ -227,7 +227,7 @@ export default function AIInvestmentDashboard({ language = 'fr' }) {
       lastUpdated: 'Last updated:',
     },
     ar: {
-      title: 'ذكاء الاستثمار بالذكاء الاصطناعي',
+      title: 'تحليلات الاستثمار بالذكاء الاصطناعي',
       sector: 'القطاع',
       risk: 'تحمّل المخاطر',
       apply: 'تطبيق',

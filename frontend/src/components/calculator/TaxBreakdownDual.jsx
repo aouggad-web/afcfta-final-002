@@ -70,7 +70,7 @@ export default function TaxBreakdownDual({
                     · {currency.local_code}
                     {hasLocal
                       ? ` @ ${Number(currency.usd_to_local_rate).toLocaleString('fr-FR', { maximumFractionDigits: 2 })}/USD`
-                      : ` (${pick(language, 'taux indisponible', 'rate unavailable', 'السعر غير متاح')})`}
+                      : ` (${pick(language, 'taux indisponible', 'rate unavailable', 'المعدل غير متاح')})`}
                   </span>
                 )}
               </CardDescription>
