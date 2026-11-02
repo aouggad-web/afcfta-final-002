@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import re
+import threading
 from datetime import datetime, timedelta
 from functools import lru_cache
 from pathlib import Path
@@ -1339,8 +1340,13 @@ def save_cache(articles: List[Dict]):
     NEWS_CACHE = {"last_update": datetime.now().isoformat(), "articles": articles}
     try:
         os.makedirs(os.path.dirname(NEWS_CACHE_FILE), exist_ok=True)
-        with open(NEWS_CACHE_FILE, "w", encoding="utf-8") as f:
+        # Écriture atomique : le rafraîchissement tourne dans un thread à part
+        # pendant que les requêtes lisent le fichier ; un remplacement en une
+        # fois évite qu'une lecture tombe sur un JSON à moitié écrit.
+        tmp = f"{NEWS_CACHE_FILE}.tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump(NEWS_CACHE, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, NEWS_CACHE_FILE)
     except Exception as e:
         print(f"Erreur sauvegarde cache: {e}")
 
@@ -1355,20 +1361,52 @@ def should_refresh_cache() -> bool:
     return datetime.now() - last_update > timedelta(hours=24)
 
 
+_background_refresh_thread: Optional["threading.Thread"] = None
+
+
+def _refresh_cache_in_background() -> None:
+    """Exécuté dans un thread dédié avec sa propre boucle asyncio, pour ne
+    jamais bloquer la boucle événementielle principale du serveur."""
+    try:
+        print("Rafraîchissement des actualités (arrière-plan)...")
+        articles = asyncio.run(fetch_all_news())
+        save_cache(articles)
+    except Exception as e:
+        print(f"Erreur rafraîchissement actualités en arrière-plan: {e}")
+
+
 async def get_news(force_refresh: bool = False) -> Dict:
-    """Obtenir les actualités (depuis cache ou fetch)"""
-    if force_refresh or should_refresh_cache():
+    """Obtenir les actualités (depuis cache ou fetch).
+
+    Si force_refresh est demandé explicitement (bouton « Actualiser »), on
+    attend la collecte en direct. Sinon, dès que le cache existe (même
+    périmé), on le sert immédiatement et on rafraîchit dans un thread à
+    part, sans jamais bloquer la boucle événementielle — les sources
+    externes peuvent être lentes ou injoignables.
+    """
+    global _background_refresh_thread
+
+    if force_refresh:
         print("Rafraîchissement des actualités...")
         articles = await fetch_all_news()
         save_cache(articles)
         return {"last_update": datetime.now().isoformat(), "articles": articles, "source": "fresh"}
-    else:
-        cache = load_cache()
-        return {
-            "last_update": cache.get("last_update"),
-            "articles": cache.get("articles", []),
-            "source": "cache",
-        }
+
+    cache = load_cache()
+    if should_refresh_cache():
+        if _background_refresh_thread is None or not _background_refresh_thread.is_alive():
+            _background_refresh_thread = threading.Thread(
+                target=_refresh_cache_in_background,
+                name="news-cache-refresh",
+                daemon=True,
+            )
+            _background_refresh_thread.start()
+
+    return {
+        "last_update": cache.get("last_update"),
+        "articles": cache.get("articles", []),
+        "source": "cache",
+    }
 
 
 def get_news_by_region(articles: List[Dict]) -> Dict[str, List[Dict]]:
