@@ -176,7 +176,7 @@ export default function VraquierLogisticsTab({ language = 'fr' }) {
             <div>
               <div className="font-semibold mb-1">
                 {result.reason === 'liquid_bulk'
-                  ? pick(language, 'Vrac liquide — marché tanker', 'Liquid bulk — tanker market', 'سائبة سائلة — سوق الناقلات')
+                  ? pick(language, 'Vrac liquide — marché tanker', 'Liquid bulk — tanker market', 'بضائع سائبة سائلة — سوق الناقلات')
                   : pick(language, 'Sous le seuil vraquier', 'Below bulk threshold', 'دون عتبة الشحن السائب')}
               </div>
               {result.note}

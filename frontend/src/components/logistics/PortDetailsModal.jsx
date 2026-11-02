@@ -403,7 +403,7 @@ export default function PortDetailsModal({ isOpen, onClose, port, language = 'fr
                   <BarChart data={[
                     { dim: pick(language, 'Global', 'Global', 'إجمالي'), val: lpi2023.overall_score },
                     { dim: t.lpiCustoms.slice(0, 8), val: lpi2023.customs_score },
-                    { dim: pick(language, 'Infra', 'Infra', 'البنية'), val: lpi2023.infrastructure_score },
+                    { dim: pick(language, 'Infra', 'Infra', 'البنية التحتية'), val: lpi2023.infrastructure_score },
                     { dim: t.lpiTimeliness.slice(0, 8), val: lpi2023.timeliness_score },
                   ].filter(d => d.val != null)}>
                     <CartesianGrid strokeDasharray="3 3" />

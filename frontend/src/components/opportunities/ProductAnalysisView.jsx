@@ -495,7 +495,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             <div className="text-center">
               <div className="flex justify-center items-center gap-2 mb-4 flex-wrap">
                 <Badge className="bg-white/20 text-white">
-                  {pick(language, "Rapport d'Intelligence Marché", "Rapport d'Intelligence Marché", 'تقرير استخبارات السوق')}
+                  {pick(language, "Rapport d'Intelligence Marché", "Rapport d'Intelligence Marché", 'تقرير معلومات السوق')}
                 </Badge>
                 {productData.isAiGenerated && (
                   <Badge className="bg-emerald-500/30 text-white border-emerald-400">

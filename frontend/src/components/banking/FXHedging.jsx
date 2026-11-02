@@ -56,7 +56,7 @@ const texts = {
     strategies: 'الاستراتيجيات المصنفة',
     cost: 'التكلفة',
     effectiveness: 'الفعالية',
-    netBenefit: 'الفائدة الصافية',
+    netBenefit: 'المنفعة الصافية',
     explanation: 'الشرح',
   },
 };

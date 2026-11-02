@@ -92,7 +92,7 @@ const StatisticsZaubaStyle = ({ language = 'fr' }) => {
       combinedGDP: "الناتج المحلي الإجمالي المجمَّع",
       totalExports: "إجمالي الصادرات",
       totalImports: "إجمالي الواردات",
-      estimated2024: "تقديري 2024",
+      estimated2024: "2024 (تقديري)",
       memberCountries: "البلدان الأعضاء",
       top10Exporters: "أكبر 10 مصدِّرين",
       top10Importers: "أكبر 10 مستوردين",

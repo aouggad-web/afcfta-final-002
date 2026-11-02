@@ -138,7 +138,7 @@ const translations = {
     today: 'اليوم',
     yesterday: 'أمس',
     daysAgo: 'منذ {days} أيام',
-    strategicHeadline: 'قراءة استراتيجية للتدفق الاقتصادي الأفريقي',
+    strategicHeadline: 'قراءة استراتيجية لموجز الأخبار الاقتصادية الأفريقية',
     strategicLead: 'رصد إشارات التجارة والمالية والطاقة والبنية التحتية وسلاسل الإمداد.',
     countryOfWeek: 'بلد الأسبوع',
     countryOfWeekLead: 'نقاط القوة والآفاق',
@@ -488,7 +488,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--gold)] mb-3">
                 <Sparkles className="w-4 h-4" />
-                {pick(language, 'intelligence feed', 'intelligence feed', 'موجز الذكاء')}
+                {pick(language, 'intelligence feed', 'intelligence feed', 'موجز الرصد')}
               </div>
 
               <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)]">

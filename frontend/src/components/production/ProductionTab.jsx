@@ -148,7 +148,7 @@ function ProductionTab({ language = 'fr' }) {
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-[var(--afcfta-muted)]">
               <span className="flex items-center gap-1">
-                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)]">{pick(language, 'Macro', 'Macro', 'كلي')}</Badge>
+                <Badge variant="outline" className="h-5 text-[11px] border-[color-mix(in_srgb,var(--violet)_30%,transparent)] text-[var(--violet)]">{pick(language, 'Macro', 'Macro', 'اقتصاد كلي')}</Badge>
                 World Bank • IMF WEO {macroYear}
               </span>
               <span className="text-[var(--text)]">|</span>

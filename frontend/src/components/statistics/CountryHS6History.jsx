@@ -652,7 +652,7 @@ export default function CountryHS6History({ language = 'fr' }) {
                 flexShrink: 0,
               }}
             >
-              {pick(language, 'Analyser dans Opportunités ▸', 'Analyze in Opportunities ▸', 'تحليل في الفرص ◂')}
+              {pick(language, 'Analyser dans Opportunités ▸', 'Analyze in Opportunities ▸', 'تحليل في قسم الفرص ◂')}
             </button>
           </div>
         </>
