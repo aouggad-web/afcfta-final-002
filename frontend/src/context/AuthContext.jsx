@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { supabase, TERMS_VERSION } from '../lib/supabase';
+import i18n from '../i18n';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -19,8 +20,21 @@ const SUPABASE_ERRORS = {
   same_password: 'Le nouveau mot de passe doit être différent de l\'ancien.',
 };
 
+// Mêmes messages pour l'interface en arabe ; le français reste servi en
+// français comme en anglais, comme avant.
+const SUPABASE_ERRORS_AR = {
+  invalid_credentials: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+  email_not_confirmed: 'أكّد عنوان بريدك الإلكتروني: انقر على الرابط الذي وصلك عبر البريد.',
+  user_already_exists: 'يوجد حساب مسجّل بهذا البريد الإلكتروني',
+  weak_password: 'كلمة المرور ضعيفة جدًا: 8 أحرف على الأقل، امزج بين الحروف والأرقام.',
+  over_email_send_rate_limit: 'طلبات كثيرة جدًا. أعد المحاولة بعد بضع دقائق.',
+  over_request_rate_limit: 'طلبات كثيرة جدًا. أعد المحاولة بعد بضع دقائق.',
+  same_password: 'يجب أن تختلف كلمة المرور الجديدة عن القديمة.',
+};
+
 function supabaseError(error) {
-  return { response: { data: { detail: SUPABASE_ERRORS[error.code] || error.message } } };
+  const arabe = i18n.language === 'ar' && SUPABASE_ERRORS_AR[error.code];
+  return { response: { data: { detail: arabe || SUPABASE_ERRORS[error.code] || error.message } } };
 }
 
 export function AuthProvider({ children }) {
