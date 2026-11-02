@@ -1,0 +1,46 @@
+Zone arabe — exportation algérienne (Tunisie, Libye) et DAPS algérien : extraits verbatim (relevés le 2026-11-02)
+
+1) Arrêté du 26 janvier 2019 fixant la liste des marchandises soumises au droit additionnel provisoire de sauvegarde et les taux correspondants — JO n° 06 du 27/01/2019, p. 10
+   https://www.joradp.dz/FTP/JO-FRANCAIS/2019/F2019006.pdf — sha256 5953ae05b15e6de17fcf7bd01f2cee08c452297ebfac42db93c5d3e0ce6f4ace
+   archivé : data/sources/DZA/legislation/JO_2019-06_arrete_daps_2019-01-26.pdf
+
+Arrête :
+
+Article 1er. — En application des dispositions de l'article 4 du décret exécutif n° 18-230 du 15 Moharram 1440 correspondant
+au 25 septembre 2018, susvisé, le présent arrêté a pour objet de fixer la liste des marchandises soumises au droit additionnel
+provisoire de sauvegarde et les taux correspondants.
+
+Art. 2. — La liste des marchandises soumises au droit additionnel provisoire de sauvegarde et les taux correspondants sont
+fixés, conformément à l'annexe jointe au présent arrêté.
+
+
+ANNEXE
+LISTE DES MARCHANDISES SOUMISES AU DROIT ADDITIONNEL
+PROVISOIRE DE SAUVEGARDE ET LES TAUX CORRESPONDANTS
+N°           POSITION
+D’ORDRE     ET SOUS-POSITION                         DESIGNATION DES PRODUITS                      TAUX
+TARIFAIRE                                                                            %
+
+2) Arrêté du 8 avril 2019 modifiant l'arrêté du 26 janvier 2019 — JO n° 26 du 21/04/2019, p. 9
+   https://www.joradp.dz/FTP/JO-FRANCAIS/2019/F2019026.pdf — sha256 7837a30741b9b35c7912a96752e1d45f81eec8a738320ddc50b97add267fe9df
+   archivé : data/sources/DZA/legislation/JO_2019-26_arrete_daps_2019-04-08.pdf
+
+Art. 2. — La liste des marchandises soumises au droit additionnel provisoire de sauvegarde et les taux correspondants, citée à l'annexe de l'arrêté du 19 Joumada El Oula 1440 correspondant au 26 janvier 2019, susvisé, est remplacée par la liste annexée au présent arrêté.
+
+   Ni l'un ni l'autre arrêté, ni leur annexe (colonnes : N° d'ordre, position et sous-position tarifaire, désignation, taux %), ne distingue l'origine des marchandises.
+
+3) Tarif DGD (e-service), colonne « Observation » des lignes DAPS, relevé data/dza/releve_dgd.json : les seules observations renvoient à ces arrêtés, par exemple
+   « * D.A.P.S =70% Si date validation de la declaration avant le 21-04-2019 JORADP N? 26 du 21-04-2019 »
+
+4) Révision annoncée en janvier 2022 (2 608 produits, dont 141 « clauses tarifaires » pour les pays liés à l'Algérie par un accord préférentiel) : contrôles négatifs du 02/11/2026
+   — JORADP, éditions françaises n° 85 à 101 de 2021 et n° 1 à 90 de 2022 : aucune occurrence de « droit additionnel provisoire » hors des lois de finances pour 2022 (n° 100/2021) et pour 2023 (n° 89/2022) ;
+   — CCI Mezghena (Alger) : seule la liste de 2019 (JO n° 26) est diffusée ;
+   — commerce.gov.dz : connexion refusée le 02/11/2026.
+
+5) Douane tunisienne, Tarif Web 2026 (https://www.douane.gov.tn/tarifweb2026/), préférences publiées par ligne, relevé backend/data/crawled/TUN_tariffs.json — exemple 25070020105 (Kaolin brut) :
+   « country_code: 12 | country_name: ALGERIE | rate: 0 % | zone: ZALE »
+   Sur 17 542 lignes du socle tunisien, 13 362 portent ce taux pour l'Algérie, toutes à 0 % ; 4 180 n'en portent aucun.
+
+6) Douane libyenne, tarif 2022 (https://customs.gov.ly/wp-content/uploads/2023/12/التعريفة-الجمركية-.2022-.xlsx), relevé backend/data/crawled/LBY_tariffs.json — exemple 01012100 :
+   colonne « التعريفة التفضيلية لدول جامعة الدول العربية » (tarif préférentiel des États de la Ligue des États arabes) : « معفاة » (exonéré) ; droit de la colonne « فئة الضريبة » : 0.05
+   Sur 5 920 lignes du socle libyen, 5 849 portent cette colonne, toutes à 0 % ; 71 n'en portent aucune.

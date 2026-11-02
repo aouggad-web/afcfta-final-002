@@ -19,11 +19,14 @@ CE QUE CES TESTS TIENNENT.
    source intitule la colonne « Taux Préférentiel ». La servir ferait payer
    40 % de la valeur CIF sur 20 149 lignes que le tarif laisse en franchise.
 
-3. LA COLONNE EST MONTRÉE, JAMAIS APPLIQUÉE. Comme pour les blocs : le tarif
-   de destination publie une colonne au nom du pays d'origine, la franchise
-   reste subordonnée aux règles d'origine que ce moteur ne vérifie pas.
+3. LA COLONNE EST APPLIQUÉE (02/11/2026), sous le régime de la zone arabe.
+   Elle était d'abord seulement montrée en simulation ; le volet export de la
+   GZALE la sert désormais à l'origine algérienne, comme la ZLECAf l'est : les
+   règles d'origine sont dites dans la note, non vérifiées par le moteur.
+   Servie, elle n'est plus montrée une seconde fois en simulation. Fiche
+   DZA_GZALE_export_2026-11-02.json.
 
-4. ELLE N'EST MONTRÉE QU'À L'ORIGINE QU'ELLE NOMME. Une importation marocaine
+4. ELLE N'EST SERVIE QU'À L'ORIGINE QU'ELLE NOMME. Une importation marocaine
    ne voit pas la colonne algérienne.
 """
 
@@ -166,23 +169,21 @@ def test_la_colonne_zlecaf_du_crawl_est_bien_celle_qui_est_refusee():
     assert au_dessus / total > 0.65
 
 
-def test_la_colonne_est_montree_a_l_origine_qu_elle_nomme(position_algerienne):
+def test_la_colonne_est_servie_a_l_origine_qu_elle_nomme(position_algerienne):
+    from services.preference import taux_preferentiels
+
+    code, p = position_algerienne
+    r = taux_preferentiels(p, "TUN", "DZA", code)
+    assert r["applique"] is True and r["regime"] == "GZALE"
+    assert r["taux"] == {"DD": {"taux": 0.0}}
+    assert "certificat d'origine" in r["note"]
+
+
+def test_servie_elle_n_est_plus_montree_en_simulation(position_algerienne):
     from services.preference import simulations_regionales
 
     _code, p = position_algerienne
-    sims = simulations_regionales(p, "TUN", "DZA")
-    assert [s["regime"] for s in sims] == ["DZA"]
-    assert sims[0]["taux_publie_pct"] == 0.0
-    assert sims[0]["eligibilite"] == "COLONNE_NOMMEE_POUR_CE_PAYS_PAR_LA_SOURCE"
-
-
-def test_elle_est_montree_jamais_appliquee(position_algerienne):
-    from services.preference import simulations_regionales
-
-    _code, p = position_algerienne
-    sims = simulations_regionales(p, "TUN", "DZA")
-    assert sims[0]["applique"] is False
-    assert "règles d'origine" in sims[0]["reserve"]
+    assert simulations_regionales(p, "TUN", "DZA") == []
 
 
 def test_une_autre_origine_ne_voit_pas_la_colonne_algerienne(position_algerienne):

@@ -41,7 +41,7 @@ def test_origine_arabe_sans_zlecaf_recoit_la_franchise_du_seul_droit_de_douane()
     assert "516/DGD/D042.21" in r["perimetre"]["DD"]
     assert "certificat d'origine" in r["note"]
     assert r["zlecaf"]["statut"] == "NOT_AVAILABLE"
-    assert "141 positions" in r["note"]  # DAPS porté par la position : réserve dite
+    assert "8 avril 2019" in r["note"]  # DAPS porté par la position : dû, et pourquoi
 
 
 def test_sans_daps_la_reserve_daps_n_est_pas_dite():
@@ -65,7 +65,7 @@ def test_la_zlecaf_exonerant_le_daps_l_emporte_sur_la_gzale():
     r = _choisir_gzale_ou_zlecaf(_position(30, 70), "DZA", "TUN", zlecaf)
     assert r["regime"] == "ZLECAF"
     assert r["taux"] == zlecaf["taux"]
-    assert "GZALE est aussi ouverte" in r["note"]
+    assert "zone arabe (GZALE) est aussi ouverte" in r["note"]
 
 
 def test_la_gzale_l_emporte_sur_un_demantelement_zlecaf_inacheve():
