@@ -219,7 +219,7 @@ Ces points ne peuvent être tranchés que par vous, sur l'instance de production
 Mapping vers les constats entre parenthèses. Effort : XS < 1 j · S 1-3 j · M 1-2 sem · L ≥ 3 sem.
 
 ### Phase 0 — Urgences, à faire maintenant (XS/S)
-1. ✅ **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS* — domaine vérifié, `jekyll-gh-pages.yml` remplacé par `pages.yml` (seul `site/` est publié), page vitrine en ligne le 02/11/2026. Reste dans Cloudflare : mode SSL « Complet » et « Toujours utiliser HTTPS » (`http://` n'est pas encore redirigé).
+1. ✅ **Revendiquer et sécuriser `afcfta-zlecaf.com`** (C1) ; désactiver `jekyll-gh-pages.yml` (INFO-1). — *XS* — domaine vérifié, `jekyll-gh-pages.yml` remplacé par `pages.yml` (seul `site/` est publié), page vitrine en ligne le 02/11/2026. Cloudflare : mode SSL « Complet » et règle de redirection `http://*` → `https://${1}` (301, requête conservée), vérifiés le 02/11/2026.
 2. ✅ **Masquer les secrets dans les journaux** (formateur, httpx à WARNING, `uvicorn.log` filtré en CI) — fait dans la PR #750 ; rotation inutile, aucun jeton n'étant configuré (C2). — *XS*
 3. ✅ **Vérifier les secrets de prod** (E3) : `JWT_SECRET` (64 caractères) et `ADMIN_PASSWORD` (24) vérifiés sur le pod, aucune valeur d'exemple ; garde-fou de démarrage ajouté dans la PR #750. — *S*
 4. **Verrouiller le déploiement sur `main`** + protéger `main` (revue + checks) (C3). — *S* — script corrigé dans la PR #750, contrôle des crons durci dans la PR #753 ; ruleset GitHub à activer par l'exploitant ; le pod Emergent doit être resynchronisé sur `main` pour en bénéficier.
