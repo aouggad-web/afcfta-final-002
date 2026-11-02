@@ -883,6 +883,140 @@
         ],
         "notes": "Barème SOGESY non publié ; la DPI elle-même est gratuite (OMC, 2025). Existence seule : aucun montant, jamais valué à zéro (FEE_EXISTS_AMOUNT_NOT_AVAILABLE)."
       }
+    },
+    {
+      "fee_id": "NAM-NAMPORT-CONTENEURS",
+      "country_iso3": "NAM",
+      "side": "import",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Manutention des conteneurs au terminal (Namport, Base Tariff compris)",
+      "scope": "Uniquement pour les marchandises débarquées (ou embarquées) à Walvis Bay ou Lüderitz ; par conteneur.",
+      "providers": [],
+      "mandating_authority": "Namibian Ports Authority (Namport)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TRANSPORT_UNIT",
+        "currency": "NAD",
+        "conditions": "Manutention au terminal à conteneurs, Base Tariff et sûreté portuaire compris (cl. 6.2.1), par conteneur débarqué ou embarqué, hors TVA de 15 % : 7 526 NAD (20 pieds), 10 031 NAD (40 pieds), 14 767 NAD (45 pieds) ; conteneurs IMDG ou hors gabarit 8 595 / 12 158 / 15 403 NAD ; en provenance ou à destination d'un port de la SACU 2 572 / 3 926 / 5 949 NAD ; marchandises de faible valeur (sel, ferraille, guano, charbon de bois, marbre, granit) 5 802 / 7 723 / 10 764 NAD. Non chiffré : la taille du conteneur n'est pas saisie dans le calculateur.",
+        "effective_date": "2026-04-01",
+        "amounts_by_transport": {}
+      },
+      "verification": {
+        "date": "2026-11-02",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Namibian Ports Authority (Namport) — Port and Syncrolift Tariffs 2026/2027 (PDF image, sha256 401264950cdc13fd3cf296630d6fefaaf191c272fbc4a4c859da855ed724e473 ; extrait OCR data/sources/NAM/ports/NAM_Namport_Tariffs_2026-27.extrait-ocr.txt)",
+            "url": "https://www.namport.com.na/files/documents/Namport_Port%20%26%20Syncrolift%20Tariffs%202026_27.pdf",
+            "confirms": "Cl. 6.2.1 « Containers landed/shipped » : 6m/20' 7,526.00 ; 12m/40' 10,031.00 ; 13.7m/45' 14,767.00 ; cl. 1.10 : tarifs en dollars namibiens ; cl. 1.9 : TVA de 15 % en sus."
+          }
+        ],
+        "notes": "Montants lus par OCR sur le barème 2026/2027 (PDF sans couche texte) et rapprochés du barème 2025/2026 : hausse uniforme de 4 %. En vigueur au 1er avril (cl. 1.2). Ports de Walvis Bay et de Lüderitz seulement."
+      }
+    },
+    {
+      "fee_id": "NAM-NAMPORT-BASE-TARIFF",
+      "country_iso3": "NAM",
+      "side": "import",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Base Tariff sur la marchandise conventionnelle (Namport)",
+      "scope": "Uniquement pour les marchandises débarquées (ou embarquées) à Walvis Bay ou Lüderitz ; marchandise hors conteneur, par tonne.",
+      "providers": [],
+      "mandating_authority": "Namibian Ports Authority (Namport)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TONNE",
+        "currency": "NAD",
+        "conditions": "Base Tariff sur la marchandise conventionnelle (hors conteneurs, cl. 4.3.1), par tonne de 1 000 kg ou fraction, selon la catégorie, hors TVA de 15 % : p. ex. denrées alimentaires, machines, véhicules, quincaillerie 564 NAD ; textiles 509 ; plastiques 458 ; viande 360 ; produits chimiques 249 ; équipements électriques et riz 274 ; engrais 108 ; céréales et maïs 52 ; matériaux de construction et papier 40 ; sel 33 ; produits pétroliers 48 NAD par kilolitre ; poisson importé 44 NAD (cl. 4.2.1). Autres marchandises : sur devis. Non chiffré : la catégorie de la marchandise et le conditionnement (vrac ou conteneur) ne sont pas saisis ; en conteneur, le Base Tariff est compris dans la manutention.",
+        "effective_date": "2026-04-01"
+      },
+      "verification": {
+        "date": "2026-11-02",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Namibian Ports Authority (Namport) — Port and Syncrolift Tariffs 2026/2027 (PDF image, sha256 401264950cdc13fd3cf296630d6fefaaf191c272fbc4a4c859da855ed724e473 ; extrait OCR data/sources/NAM/ports/NAM_Namport_Tariffs_2026-27.extrait-ocr.txt)",
+            "url": "https://www.namport.com.na/files/documents/Namport_Port%20%26%20Syncrolift%20Tariffs%202026_27.pdf",
+            "confirms": "Cl. 4.3.1 « General Cargo », taux par tonne ou fraction de 1 000 kg (Foodstuff 564.00, Machinery 564.00, Grain 52.00, Fertilizer 108.00…) ; cl. 4.1 : « levied where such cargo is handled within port jurisdiction »."
+          }
+        ],
+        "notes": "Montants lus par OCR sur le barème 2026/2027 (PDF sans couche texte) et rapprochés du barème 2025/2026 : hausse uniforme de 4 %. En vigueur au 1er avril (cl. 1.2). Ports de Walvis Bay et de Lüderitz seulement."
+      }
+    },
+    {
+      "fee_id": "NAM-NAMPORT-CONTENEURS-EXPORT",
+      "country_iso3": "NAM",
+      "side": "export",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Manutention des conteneurs au terminal (Namport, Base Tariff compris)",
+      "scope": "Uniquement pour les marchandises débarquées (ou embarquées) à Walvis Bay ou Lüderitz ; par conteneur.",
+      "providers": [],
+      "mandating_authority": "Namibian Ports Authority (Namport)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TRANSPORT_UNIT",
+        "currency": "NAD",
+        "conditions": "Manutention au terminal à conteneurs, Base Tariff et sûreté portuaire compris (cl. 6.2.1), par conteneur débarqué ou embarqué, hors TVA de 15 % : 7 526 NAD (20 pieds), 10 031 NAD (40 pieds), 14 767 NAD (45 pieds) ; conteneurs IMDG ou hors gabarit 8 595 / 12 158 / 15 403 NAD ; en provenance ou à destination d'un port de la SACU 2 572 / 3 926 / 5 949 NAD ; marchandises de faible valeur (sel, ferraille, guano, charbon de bois, marbre, granit) 5 802 / 7 723 / 10 764 NAD. Non chiffré : la taille du conteneur n'est pas saisie dans le calculateur.",
+        "effective_date": "2026-04-01",
+        "amounts_by_transport": {}
+      },
+      "verification": {
+        "date": "2026-11-02",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Namibian Ports Authority (Namport) — Port and Syncrolift Tariffs 2026/2027 (PDF image, sha256 401264950cdc13fd3cf296630d6fefaaf191c272fbc4a4c859da855ed724e473 ; extrait OCR data/sources/NAM/ports/NAM_Namport_Tariffs_2026-27.extrait-ocr.txt)",
+            "url": "https://www.namport.com.na/files/documents/Namport_Port%20%26%20Syncrolift%20Tariffs%202026_27.pdf",
+            "confirms": "Cl. 6.2.1 « Containers landed/shipped » : 6m/20' 7,526.00 ; 12m/40' 10,031.00 ; 13.7m/45' 14,767.00 ; cl. 1.10 : tarifs en dollars namibiens ; cl. 1.9 : TVA de 15 % en sus."
+          }
+        ],
+        "notes": "Montants lus par OCR sur le barème 2026/2027 (PDF sans couche texte) et rapprochés du barème 2025/2026 : hausse uniforme de 4 %. En vigueur au 1er avril (cl. 1.2). Ports de Walvis Bay et de Lüderitz seulement."
+      }
+    },
+    {
+      "fee_id": "NAM-NAMPORT-BASE-TARIFF-EXPORT",
+      "country_iso3": "NAM",
+      "side": "export",
+      "modes": [
+        "MER"
+      ],
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Base Tariff sur la marchandise conventionnelle (Namport)",
+      "scope": "Uniquement pour les marchandises débarquées (ou embarquées) à Walvis Bay ou Lüderitz ; marchandise hors conteneur, par tonne (poisson exporté : barème propre, cl. 4.2.2).",
+      "providers": [],
+      "mandating_authority": "Namibian Ports Authority (Namport)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PER_TONNE",
+        "currency": "NAD",
+        "conditions": "Base Tariff sur la marchandise conventionnelle (hors conteneurs, cl. 4.3.1), par tonne de 1 000 kg ou fraction, selon la catégorie, hors TVA de 15 % : p. ex. denrées alimentaires, machines, véhicules, quincaillerie 564 NAD ; textiles 509 ; plastiques 458 ; viande 360 ; produits chimiques 249 ; équipements électriques et riz 274 ; engrais 108 ; céréales et maïs 52 ; matériaux de construction et papier 40 ; sel 33 ; produits pétroliers 48 NAD par kilolitre. Autres marchandises : sur devis. Non chiffré : la catégorie de la marchandise et le conditionnement (vrac ou conteneur) ne sont pas saisis ; en conteneur, le Base Tariff est compris dans la manutention.",
+        "effective_date": "2026-04-01"
+      },
+      "verification": {
+        "date": "2026-11-02",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {
+            "publisher": "Namibian Ports Authority (Namport) — Port and Syncrolift Tariffs 2026/2027 (PDF image, sha256 401264950cdc13fd3cf296630d6fefaaf191c272fbc4a4c859da855ed724e473 ; extrait OCR data/sources/NAM/ports/NAM_Namport_Tariffs_2026-27.extrait-ocr.txt)",
+            "url": "https://www.namport.com.na/files/documents/Namport_Port%20%26%20Syncrolift%20Tariffs%202026_27.pdf",
+            "confirms": "Cl. 4.3.1 « General Cargo », taux par tonne ou fraction de 1 000 kg (Foodstuff 564.00, Machinery 564.00, Grain 52.00, Fertilizer 108.00…) ; cl. 4.1 : « levied where such cargo is handled within port jurisdiction »."
+          }
+        ],
+        "notes": "Montants lus par OCR sur le barème 2026/2027 (PDF sans couche texte) et rapprochés du barème 2025/2026 : hausse uniforme de 4 %. En vigueur au 1er avril (cl. 1.2). Ports de Walvis Bay et de Lüderitz seulement."
+      }
     }
   ]
 }

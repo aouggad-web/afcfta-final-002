@@ -11,6 +11,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { getCountryName } from '../../utils/translations';
+import { pick } from '../../i18n/lang';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
   CartesianGrid, Tooltip, PieChart, Pie, Cell 
@@ -179,7 +181,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
           const topPartners = countriesData
             .filter(c => c.trade_volume || c.exports || c.imports)
             .map(c => ({
-              name: c.name_fr || c.name || c.iso3,
+              name_fr: c.name_fr || c.name || c.iso3,
+              name: pick(language, c.name_fr || c.name || c.iso3, c.name_fr || c.name || c.iso3, (c.iso3 && getCountryName(c.iso3, 'ar')) || c.name_fr || c.name),
               value: c.trade_volume || (c.exports || 0) + (c.imports || 0),
               iso3: c.iso3
             }))
@@ -187,14 +190,14 @@ export default function OpportunitySummary({ language = 'fr' }) {
             .slice(0, 8);
 
           const topProducts = [
-            { name: 'Pétrole & Gaz', code: '27', count: 156, value: 450 },
-            { name: 'Véhicules', code: '87', count: 89, value: 180 },
-            { name: 'Machines', code: '84', count: 245, value: 320 },
-            { name: 'Électronique', code: '85', count: 167, value: 210 },
-            { name: 'Produits chimiques', code: '28-38', count: 198, value: 150 },
-            { name: 'Métaux', code: '72-83', count: 134, value: 190 },
-            { name: 'Textile', code: '50-63', count: 223, value: 95 },
-            { name: 'Agriculture', code: '01-24', count: 312, value: 280 }
+            { name_fr: 'Pétrole & Gaz', name: pick(language, 'Pétrole & Gaz', 'Pétrole & Gaz', 'النفط والغاز'), code: '27', count: 156, value: 450 },
+            { name_fr: 'Véhicules', name: pick(language, 'Véhicules', 'Véhicules', 'المركبات'), code: '87', count: 89, value: 180 },
+            { name_fr: 'Machines', name: pick(language, 'Machines', 'Machines', 'الآلات'), code: '84', count: 245, value: 320 },
+            { name_fr: 'Électronique', name: pick(language, 'Électronique', 'Électronique', 'الإلكترونيات'), code: '85', count: 167, value: 210 },
+            { name_fr: 'Produits chimiques', name: pick(language, 'Produits chimiques', 'Produits chimiques', 'المنتجات الكيميائية'), code: '28-38', count: 198, value: 150 },
+            { name_fr: 'Métaux', name: pick(language, 'Métaux', 'Métaux', 'المعادن'), code: '72-83', count: 134, value: 190 },
+            { name_fr: 'Textile', name: pick(language, 'Textile', 'Textile', 'النسيج'), code: '50-63', count: 223, value: 95 },
+            { name_fr: 'Agriculture', name: pick(language, 'Agriculture', 'Agriculture', 'الزراعة'), code: '01-24', count: 312, value: 280 }
           ].sort((a, b) => b.count - a.count);
 
           setData({
@@ -203,14 +206,14 @@ export default function OpportunitySummary({ language = 'fr' }) {
             intraAfricanTrade: tradeData.intra_african_trade || 186000000000,
             afcftaCountries: 54,
             topPartners: topPartners.length > 0 ? topPartners : [
-              { name: 'Afrique du Sud', value: 156 },
-              { name: 'Nigeria', value: 134 },
-              { name: 'Égypte', value: 98 },
-              { name: 'Maroc', value: 87 },
-              { name: 'Kenya', value: 76 },
-              { name: 'Algérie', value: 65 },
-              { name: 'Ghana', value: 54 },
-              { name: "Côte d'Ivoire", value: 48 }
+              { name_fr: 'Afrique du Sud', name: pick(language, 'Afrique du Sud', 'Afrique du Sud', getCountryName('ZAF', 'ar')), value: 156 },
+              { name_fr: 'Nigeria', name: pick(language, 'Nigeria', 'Nigeria', getCountryName('NGA', 'ar')), value: 134 },
+              { name_fr: 'Égypte', name: pick(language, 'Égypte', 'Égypte', getCountryName('EGY', 'ar')), value: 98 },
+              { name_fr: 'Maroc', name: pick(language, 'Maroc', 'Maroc', getCountryName('MAR', 'ar')), value: 87 },
+              { name_fr: 'Kenya', name: pick(language, 'Kenya', 'Kenya', getCountryName('KEN', 'ar')), value: 76 },
+              { name_fr: 'Algérie', name: pick(language, 'Algérie', 'Algérie', getCountryName('DZA', 'ar')), value: 65 },
+              { name_fr: 'Ghana', name: pick(language, 'Ghana', 'Ghana', getCountryName('GHA', 'ar')), value: 54 },
+              { name_fr: "Côte d'Ivoire", name: pick(language, "Côte d'Ivoire", "Côte d'Ivoire", getCountryName('CIV', 'ar')), value: 48 }
             ].reverse(),
             topProducts,
             yearlyGrowth: '+12.3%'
@@ -220,7 +223,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
         setError(null);
       } catch (err) {
         console.error('Error fetching opportunities:', err);
-        setError('Erreur lors du chargement des données');
+        setError(pick(language, 'Erreur lors du chargement des données', 'Erreur lors du chargement des données', 'خطأ أثناء تحميل البيانات'));
       } finally {
         setLoading(false);
       }
@@ -235,7 +238,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
-        <span className="ml-3 text-slate-600">Chargement des opportunités...</span>
+        <span className="ml-3 text-slate-600">{pick(language, 'Chargement des opportunités...', 'Chargement des opportunités...', 'جارٍ تحميل الفرص…')}</span>
       </div>
     );
   }
@@ -254,7 +257,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
   if (!data) return null;
 
   // Rapport PDF de la vue d'ensemble : KPIs + top partenaires + top secteurs.
-  const buildPdfSpec = () => {
+  const buildPdfSpec = (t, language) => {
     const fr = language !== 'en';
     return {
       badge: t('opportunities.opportunitySummary.overview'),
@@ -274,7 +277,8 @@ export default function OpportunitySummary({ language = 'fr' }) {
               { key: 'name', label: t('opportunities.opportunitySummary.country'), width: 2.5 },
               { key: 'value', label: t('opportunities.opportunitySummary.volumeB'), align: 'right', width: 1 },
             ],
-            rows: [...data.topPartners].reverse(),
+            // Noms en français : le PDF (jsPDF) ne sait pas écrire l'arabe.
+            rows: [...data.topPartners].reverse().map((p) => (language === 'en' ? p : { ...p, name: p.name_fr ?? p.name })),
           },
         },
         data.topProducts?.length && {

@@ -6,6 +6,7 @@ import {
 import { TrendingUp } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
 import { montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const API_URL = import.meta.env.VITE_BACKEND_URL || '';
 
@@ -36,13 +37,26 @@ const TEXTS = {
     billionUsd: 'Billion USD',
     sourceLabel: 'Source',
   },
+  ar: {
+    title: 'تطور التجارة (2018-2024)',
+    subtitle: 'بيانات سنوية حقيقية من OEC/BACI — الصادرات والواردات والميزان',
+    country: 'البلد',
+    loading: 'جارٍ تحميل السلسلة…',
+    error: 'البيانات غير متاحة لهذا البلد.',
+    noData: 'لا توجد بيانات تجارية من OEC لهذا البلد.',
+    exports: 'الصادرات',
+    imports: 'الواردات',
+    balance: 'الميزان التجاري',
+    billionUsd: 'مليار USD',
+    sourceLabel: 'المصدر',
+  },
 };
 
 const toBillion = (v) => (v == null ? 0 : Math.round((v / 1e9) * 100) / 100);
 
 const CountryTradeSeries = ({ language = 'fr', defaultCountry = 'NGA' }) => {
   const t = TEXTS[language] || TEXTS.fr;
-  const countries = getAllCountries(language === 'en' ? 'en' : 'fr');
+  const countries = getAllCountries(pick(language, 'fr', 'en', 'ar'));
 
   const [country, setCountry] = useState(defaultCountry);
   const [data, setData] = useState(null);

@@ -17,7 +17,8 @@ export default function TabWrapper({
 
   const texts = {
     fr: { exportHint: 'Exporter cette section en PDF' },
-    en: { exportHint: 'Export this section to PDF' }
+    en: { exportHint: 'Export this section to PDF' },
+    ar: { exportHint: 'تصدير هذا القسم بصيغة PDF' }
   };
   const t = texts[language];
 

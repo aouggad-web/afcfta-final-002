@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { pick } from '../../i18n/lang';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -65,13 +66,13 @@ export function LiveTradeWidget({ language }) {
 
       <div className="grid grid-cols-2 gap-2">
         <StatCard
-          label={language === 'en' ? 'Intra-African' : 'Intra-Africain'}
+          label={pick(language, 'Intra-Africain', 'Intra-African', 'البينية الأفريقية')}
           value={`$${evolution.intra_african_trade_2024 || 218.7}B`}
           change="+13.7%"
           positive
         />
         <StatCard
-          label={language === 'en' ? 'Total Exports' : 'Exports Totaux'}
+          label={pick(language, 'Exports Totaux', 'Total Exports', 'إجمالي الصادرات')}
           value={`$${evolution.total_exports_2024 || 553.7}B`}
           change="+8.2%"
           positive
@@ -80,7 +81,7 @@ export function LiveTradeWidget({ language }) {
 
       <div className="space-y-1">
         <p className="text-xs font-medium text-gray-600">
-          {language === 'en' ? 'Top Exporters' : 'Top Exportateurs'}
+          {pick(language, 'Top Exportateurs', 'Top Exporters', 'أكبر المصدِّرين')}
         </p>
         {exporters.map((exp, idx) => (
           <div key={exp.country} className="flex justify-between items-center text-xs">
@@ -135,10 +136,10 @@ export function LivePortsWidget({ language }) {
           <p className="text-2xl font-bold text-blue-700">
             {(data?.total_african_port_throughput_teu_2023 / 1000000).toFixed(1)}M
           </p>
-          <p className="text-xs text-gray-500">TEU Total 2023</p>
+          <p className="text-xs text-gray-500">{pick(language, 'TEU Total 2023', 'TEU Total 2023', 'إجمالي الحاويات (TEU) 2023')}</p>
         </div>
         <Badge className="bg-green-100 text-green-700">
-          +{data?.growth_rate_2022_2023}% YoY
+          +{data?.growth_rate_2022_2023}% {pick(language, 'YoY', 'YoY', 'على أساس سنوي')}
         </Badge>
       </div>
 
@@ -147,7 +148,7 @@ export function LivePortsWidget({ language }) {
           <XAxis type="number" hide />
           <YAxis type="category" dataKey="name" width={60} tick={{ fontSize: 10 }} />
           <Tooltip 
-            formatter={(val) => [`${val.toFixed(1)}M TEU`, 'Throughput']}
+            formatter={(val) => [`${val.toFixed(1)}M TEU`, pick(language, 'Throughput', 'Throughput', 'حجم المناولة')]}
             contentStyle={{ fontSize: 11 }}
           />
           <Bar dataKey="teu" fill="#3b82f6" radius={[0, 4, 4, 0]} />
@@ -181,7 +182,7 @@ export function LSCIChartWidget({ language }) {
   if (loading) return <WidgetLoader />;
 
   const chartData = data.slice(0, 8).map(d => ({
-    name: language === 'en' ? d.country : d.country_fr,
+    name: pick(language, d.country_fr, d.country, d.country_fr),
     lsci: d.lsci_2023,
     rank: d.rank_africa
   }));
@@ -191,7 +192,7 @@ export function LSCIChartWidget({ language }) {
   return (
     <div className="space-y-2">
       <p className="text-xs font-medium text-gray-600 text-center">
-        LSCI {language === 'en' ? 'Connectivity Index' : 'Indice de Connectivité'}
+        LSCI {pick(language, 'Indice de Connectivité', 'Connectivity Index', 'مؤشر الربط')}
       </p>
       <ResponsiveContainer width="100%" height={150}>
         <BarChart data={chartData}>
@@ -201,7 +202,7 @@ export function LSCIChartWidget({ language }) {
           <Tooltip 
             formatter={(val, name, props) => [
               `LSCI: ${val}`,
-              `#${props.payload.rank} Africa`
+              pick(language, `#${props.payload.rank} Africa`, `#${props.payload.rank} Africa`, `#${props.payload.rank} أفريقيا`)
             ]}
             contentStyle={{ fontSize: 11 }}
           />
@@ -238,7 +239,7 @@ export function CountryProfileWidget({ language, countryCode = 'DZ' }) {
   }, [countryCode]);
 
   if (loading) return <WidgetLoader />;
-  if (!data || data.detail) return <div className="text-xs text-gray-500">No data</div>;
+  if (!data || data.detail) return <div className="text-xs text-gray-500">{pick(language, 'No data', 'No data', 'لا توجد بيانات')}</div>;
 
   const flag = countryCode === 'DZ' ? '🇩🇿' : countryCode === 'MA' ? '🇲🇦' : 
                countryCode === 'EG' ? '🇪🇬' : countryCode === 'ZA' ? '🇿🇦' : '🌍';
@@ -254,22 +255,22 @@ export function CountryProfileWidget({ language, countryCode = 'DZ' }) {
         <div className="bg-blue-50 p-2 rounded">
           <DollarSign className="w-4 h-4 mx-auto text-blue-600" />
           <p className="font-bold text-blue-700">${(data.gdp_usd / 1e9).toFixed(0)}B</p>
-          <p className="text-gray-500">PIB</p>
+          <p className="text-gray-500">{pick(language, 'PIB', 'PIB', 'الناتج المحلي الإجمالي')}</p>
         </div>
         <div className="bg-green-50 p-2 rounded">
           <Users className="w-4 h-4 mx-auto text-green-600" />
           <p className="font-bold text-green-700">{data.population_millions}M</p>
-          <p className="text-gray-500">Pop.</p>
+          <p className="text-gray-500">{pick(language, 'Pop.', 'Pop.', 'السكان')}</p>
         </div>
         <div className="bg-purple-50 p-2 rounded">
           <TrendingUp className="w-4 h-4 mx-auto text-purple-600" />
           <p className="font-bold text-purple-700">${data.exports_2024_bln_usd}B</p>
-          <p className="text-gray-500">Exports</p>
+          <p className="text-gray-500">{pick(language, 'Exports', 'Exports', 'الصادرات')}</p>
         </div>
         <div className="bg-amber-50 p-2 rounded">
           <Globe className="w-4 h-4 mx-auto text-amber-600" />
           <p className="font-bold text-amber-700">{data.international_ports || 10}</p>
-          <p className="text-gray-500">Ports</p>
+          <p className="text-gray-500">{pick(language, 'Ports', 'Ports', 'الموانئ')}</p>
         </div>
       </div>
     </div>
@@ -314,7 +315,7 @@ export function TradeBalanceWidget({ language }) {
   return (
     <div className="space-y-2">
       <p className="text-xs font-medium text-gray-600 text-center">
-        {language === 'en' ? 'Exports vs Imports (Top 5)' : 'Exports vs Imports (Top 5)'}
+        {pick(language, 'Exports vs Imports (Top 5)', 'Exports vs Imports (Top 5)', 'الصادرات مقابل الواردات (أكبر 5)')}
       </p>
       <ResponsiveContainer width="100%" height={140}>
         <BarChart data={chartData}>
@@ -322,16 +323,16 @@ export function TradeBalanceWidget({ language }) {
           <XAxis dataKey="name" tick={{ fontSize: 9 }} />
           <YAxis tick={{ fontSize: 9 }} />
           <Tooltip contentStyle={{ fontSize: 10 }} />
-          <Bar dataKey="exports" fill="#10b981" name="Exports" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="imports" fill="#ef4444" name="Imports" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="exports" fill="#10b981" name={pick(language, 'Exports', 'Exports', 'الصادرات')} radius={[4, 4, 0, 0]} />
+          <Bar dataKey="imports" fill="#ef4444" name={pick(language, 'Imports', 'Imports', 'الواردات')} radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
       <div className="flex justify-center gap-4 text-xs">
         <span className="flex items-center gap-1">
-          <div className="w-2 h-2 bg-green-500 rounded" /> Exports
+          <div className="w-2 h-2 bg-green-500 rounded" /> {pick(language, 'Exports', 'Exports', 'الصادرات')}
         </span>
         <span className="flex items-center gap-1">
-          <div className="w-2 h-2 bg-red-500 rounded" /> Imports
+          <div className="w-2 h-2 bg-red-500 rounded" /> {pick(language, 'Imports', 'Imports', 'الواردات')}
         </span>
       </div>
     </div>
@@ -380,7 +381,7 @@ export function AfCFTAProgressWidget({ language }) {
       <div className="text-center">
         <p className="text-3xl font-bold text-green-700">{progress}%</p>
         <p className="text-xs text-gray-500">
-          {language === 'en' ? 'Progress to 2030 Target' : 'Progression vers Objectif 2030'}
+          {pick(language, 'Progression vers Objectif 2030', 'Progress to 2030 Target', 'التقدم نحو هدف 2030')}
         </p>
       </div>
 
@@ -419,17 +420,17 @@ export function AfCFTAProgressWidget({ language }) {
 // ============================================================
 export function RegionalTradeWidget({ language }) {
   const regions = [
-    { name: language === 'en' ? 'North Africa' : 'Afrique du Nord', value: 35, color: '#3b82f6' },
-    { name: language === 'en' ? 'West Africa' : 'Afrique de l\'Ouest', value: 28, color: '#10b981' },
-    { name: language === 'en' ? 'Southern Africa' : 'Afrique Australe', value: 20, color: '#f59e0b' },
-    { name: language === 'en' ? 'East Africa' : 'Afrique de l\'Est', value: 12, color: '#8b5cf6' },
-    { name: language === 'en' ? 'Central Africa' : 'Afrique Centrale', value: 5, color: '#ef4444' }
+    { name: pick(language, 'Afrique du Nord', 'North Africa', 'شمال أفريقيا'), value: 35, color: '#3b82f6' },
+    { name: pick(language, 'Afrique de l\'Ouest', 'West Africa', 'غرب أفريقيا'), value: 28, color: '#10b981' },
+    { name: pick(language, 'Afrique Australe', 'Southern Africa', 'الجنوب الأفريقي'), value: 20, color: '#f59e0b' },
+    { name: pick(language, 'Afrique de l\'Est', 'East Africa', 'شرق أفريقيا'), value: 12, color: '#8b5cf6' },
+    { name: pick(language, 'Afrique Centrale', 'Central Africa', 'وسط أفريقيا'), value: 5, color: '#ef4444' }
   ];
 
   return (
     <div className="space-y-2">
       <p className="text-xs font-medium text-gray-600 text-center">
-        {language === 'en' ? 'Trade by Region' : 'Commerce par Région'}
+        {pick(language, 'Commerce par Région', 'Trade by Region', 'التجارة حسب المنطقة')}
       </p>
       <ResponsiveContainer width="100%" height={130}>
         <PieChart>
@@ -472,20 +473,20 @@ export function AlertsWidget({ language }) {
     {
       type: 'success',
       icon: CheckCircle,
-      title: language === 'en' ? 'Trade Growth' : 'Croissance Commerce',
-      message: language === 'en' ? '+13.7% intra-African trade in 2024' : '+13.7% commerce intra-africain en 2024'
+      title: pick(language, 'Croissance Commerce', 'Trade Growth', 'نمو التجارة'),
+      message: pick(language, '+13.7% commerce intra-africain en 2024', '+13.7% intra-African trade in 2024', '+13.7% في التجارة البينية الأفريقية في 2024')
     },
     {
       type: 'warning',
       icon: AlertTriangle,
-      title: language === 'en' ? 'Port Congestion' : 'Congestion Portuaire',
-      message: language === 'en' ? 'Durban port delays reported' : 'Retards signalés au port de Durban'
+      title: pick(language, 'Congestion Portuaire', 'Port Congestion', 'ازدحام الموانئ'),
+      message: pick(language, 'Retards signalés au port de Durban', 'Durban port delays reported', 'تأخيرات مُبلَّغ عنها في ميناء ديربان')
     },
     {
       type: 'info',
       icon: TrendingUp,
-      title: language === 'en' ? 'New Corridor' : 'Nouveau Corridor',
-      message: language === 'en' ? 'Trans-Saharan corridor progress' : 'Avancement corridor Transsaharien'
+      title: pick(language, 'Nouveau Corridor', 'New Corridor', 'ممر جديد'),
+      message: pick(language, 'Avancement corridor Transsaharien', 'Trans-Saharan corridor progress', 'تقدّم الممر العابر للصحراء')
     }
   ];
 

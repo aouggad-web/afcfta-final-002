@@ -15,6 +15,8 @@
  * entièrement côté serveur.
  */
 
+import { pick } from '../../i18n/lang';
+
 /** Charge utile d'un refus d'entitlement, ou `null` pour toute autre erreur. */
 export function entitlementRefusal(error) {
   const response = error?.response;
@@ -40,13 +42,8 @@ export function entitlementNoticeText(refusal, language = 'fr') {
   if (!refusal) return null;
   if (refusal.message) return refusal.message;
 
-  const isFr = language === 'fr';
   if (refusal.kind === 'quota_exceeded') {
-    return isFr
-      ? "Quota de téléchargements atteint pour votre formule. Il se renouvelle à la prochaine période."
-      : 'Download quota reached for your plan. It renews at the next period.';
+    return pick(language, "Quota de téléchargements atteint pour votre formule. Il se renouvelle à la prochaine période.", 'Download quota reached for your plan. It renews at the next period.', 'تم بلوغ حصة التنزيلات المخصّصة لباقتك. تتجدّد في الفترة القادمة.');
   }
-  return isFr
-    ? "Les données tarifaires de ce module sont réservées aux formules payantes. Passez à une formule supérieure pour y accéder."
-    : 'This module’s tariff data is reserved for paid plans. Upgrade your plan to access it.';
+  return pick(language, "Les données tarifaires de ce module sont réservées aux formules payantes. Passez à une formule supérieure pour y accéder.", 'This module’s tariff data is reserved for paid plans. Upgrade your plan to access it.', 'البيانات التعريفية في هذه الوحدة مخصّصة للباقات المدفوعة. قم بالترقية إلى باقة أعلى للوصول إليها.');
 }

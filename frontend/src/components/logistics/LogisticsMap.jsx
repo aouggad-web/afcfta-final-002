@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
+import { pick } from '../../i18n/lang';
 
 // Fix for Leaflet default marker icons in React
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -98,6 +99,20 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
       portTime: "Port Time",
       hours: "h",
       viewDetails: "View details"
+    },
+    ar: {
+      loading: "جارٍ تحميل الخريطة…",
+      loadError: "تعذّر تحميل بيانات الموانئ",
+      portsDisplayed: "ميناء معروض",
+      hubTransshipment: "مركز إعادة الشحن",
+      hubRegional: "مركز إقليمي",
+      commercial: "تجاري",
+      sizeTraffic: "الحجم = حركة TEU",
+      teuYear: "TEU/سنة",
+      tonsYear: "طن/سنة",
+      portTime: "مدة البقاء في الميناء",
+      hours: "ساعة",
+      viewDetails: "عرض التفاصيل"
     }
   };
 
@@ -220,7 +235,7 @@ export default function LogisticsMap({ onPortClick, selectedCountry = 'ALL', lan
 
       {/* Légende */}
       <div className="absolute bottom-4 right-4 bg-[var(--afcfta-card)] p-3 rounded-lg shadow-lg z-10 border border-[var(--afcfta-border)]">
-        <p className="text-xs font-bold text-[var(--text)] mb-2">{language === 'en' ? 'Port Type' : 'Type de Port'}</p>
+        <p className="text-xs font-bold text-[var(--text)] mb-2">{pick(language, 'Type de Port', 'Port Type', 'نوع الميناء')}</p>
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded-full bg-red-500"></div>

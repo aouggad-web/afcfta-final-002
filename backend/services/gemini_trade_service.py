@@ -30,6 +30,14 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
+# Langue des réponses de l'IA, selon la langue de l'interface (fr, en, ar) ;
+# toute autre valeur garde l'anglais, comme avant.
+LANG_INSTRUCTIONS = {
+    "fr": "Réponds en français.",
+    "en": "Respond in English.",
+    "ar": "أجب باللغة العربية الفصحى، مع إبقاء رموز النظام المنسق والأرقام والاختصارات كما هي.",
+}
+
 # System instruction - IMPROVED from AI Studio app
 TRADE_SYSTEM_INSTRUCTION = """
 You are a senior AfCFTA trade economist and industrial data analyst.
@@ -120,7 +128,7 @@ class GeminiTradeService:
             return cached_result
 
         try:
-            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            lang_instruction = LANG_INSTRUCTIONS.get(lang, "Respond in English.")
 
             if mode == "export":
                 prompt = f"""
@@ -309,7 +317,7 @@ IMPORTANT - Ajoute aussi une section 'expected_results' avec les résultats atte
             return cached_result
 
         try:
-            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            lang_instruction = LANG_INSTRUCTIONS.get(lang, "Respond in English.")
 
             prompt = f"""
 {lang_instruction}
@@ -395,7 +403,7 @@ Réponds en JSON valide uniquement.
             return {"error": "API key not configured"}
 
         try:
-            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            lang_instruction = LANG_INSTRUCTIONS.get(lang, "Respond in English.")
 
             prompt = f"""
 {lang_instruction}
@@ -490,7 +498,7 @@ Réponds en JSON valide uniquement.
             return {"error": "API key not configured"}
 
         try:
-            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            lang_instruction = LANG_INSTRUCTIONS.get(lang, "Respond in English.")
 
             prompt = f"""
 {lang_instruction}
@@ -556,7 +564,7 @@ Réponds en JSON valide uniquement.
             return cached_result
 
         try:
-            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            lang_instruction = LANG_INSTRUCTIONS.get(lang, "Respond in English.")
 
             prompt = f"""
 {lang_instruction}
@@ -629,7 +637,7 @@ Réponds en JSON valide uniquement.
             return cached_result
 
         try:
-            lang_instruction = "Réponds en français." if lang == "fr" else "Respond in English."
+            lang_instruction = LANG_INSTRUCTIONS.get(lang, "Respond in English.")
             sector_filter = (
                 f"Concentre-toi sur le secteur {sector}."
                 if sector

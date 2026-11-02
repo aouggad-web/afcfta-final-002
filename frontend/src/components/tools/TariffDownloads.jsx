@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -23,6 +24,14 @@ const REGION_LABELS = {
     eac: "EAC (East African Community)",
     sadc: "SADC / SACU",
     igad: "IGAD / Horn of Africa",
+  },
+  ar: {
+    afrique_nord: "شمال أفريقيا / اتحاد المغرب العربي",
+    cedeao: "إيكواس / CEDEAO",
+    cemac: "سيماك + جمهورية الكونغو الديمقراطية + ساو تومي وبرينسيب",
+    eac: "EAC (مجموعة شرق أفريقيا)",
+    sadc: "سادك / SACU",
+    igad: "إيغاد / القرن الأفريقي",
   }
 };
 
@@ -108,8 +117,7 @@ export default function TariffDownloads({ language = 'fr' }) {
   const [subscriptionNotice, setSubscriptionNotice] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const isFr = language === 'fr';
-  const t = isFr ? {
+  const t = pick(language, {
     title: "Téléchargement des Tarifs NPF (Droit Commun)",
     subtitle: (n) => `${n} pays — tarif NPF tel que le calculateur l'applique`,
     loading: "Chargement des données...",
@@ -121,7 +129,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     error: "Erreur de chargement",
     subscriptionTitle: "Module réservé aux abonnés",
     countries: "pays",
-  } : {
+  }, {
     title: "MFN Tariff Data Download (Common Law)",
     subtitle: (n) => `${n} countries — MFN tariff as applied by the calculator`,
     loading: "Loading data...",
@@ -133,7 +141,19 @@ export default function TariffDownloads({ language = 'fr' }) {
     error: "Loading error",
     subscriptionTitle: "Subscribers-only module",
     countries: "countries",
-  };
+  }, {
+    title: "تنزيل تعريفات الدولة الأولى بالرعاية (NPF) (النظام العام)",
+    subtitle: (n) => `${n} بلدًا — تعريفة الدولة الأولى بالرعاية كما تطبّقها الحاسبة`,
+    loading: "جارٍ تحميل البيانات…",
+    downloadCountry: "CSV",
+    downloadJson: "JSON",
+    downloadRegion: "تنزيل المجموعة كاملة",
+    format: "سطر لكل بند وطني: CSV (« ; ») + ملف ملاحظات، أو JSON",
+    columnsDetail: "المعدل لكل رسم، المجموع لكل 100 من القيمة سيف (CIF)، حالة الحساب، النواقص، القيود",
+    error: "خطأ في التحميل",
+    subscriptionTitle: "وحدة مخصّصة للمشتركين",
+    countries: "بلدًا",
+  });
 
   const regionLabels = REGION_LABELS[language] || REGION_LABELS.fr;
 

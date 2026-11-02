@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "objet": "Congo : droit de douane et TVA fixés par les lois de finances hors du gabarit TEC CEMAC (exonération des machines agricoles, engrais et bateaux de pêche de la liste de l'art. 22 ; farine de froment 30 % ; gaz butane 5 % ; logiciels en 3e catégorie), contribution d'intégration africaine (0,2 %, hors biens provenant d'un État de l'Union africaine) et source de la taxe statistique (0,2 %)",
+  "destination_iso3": "COG",
+  "verified_at": "2026-11-02",
+  "etabli": true,
+  "evidence_level": "primaire pour l'art. 22 et sa liste, la farine de froment, le gaz butane, la contribution d'intégration africaine (lois n° 1-2018 et 23-2020, Journal officiel) et les logiciels (loi n° 42-2025) ; officielle secondaire et ancienne pour la taxe statistique (présentation du directeur général des impôts à une conférence du FMI, 2011, d'après le guide du DAU de 2004), dont le texte instituant n'a pas été trouvé",
+  "source": {
+    "url": "https://sgg.cg/JO/2020/congo-jo-2020-03-sp.pdf",
+    "institution": "Secrétariat général du Gouvernement (Congo), Journal officiel"
+  },
+  "regle": {
+    "valeur": "Droit de douane et TVA exonérés sur 44 positions du socle qui portent la liste de la LFR 2020 (œufs à couver, engrais des 31.02 à 31.05 sauf nitrate d'ammonium et engrais NPK, machines agricoles des 84.32, 84.33, 84.36 et 8424.81.10, remorques et charrettes agricoles, bateaux de pêche) ; tracteurs agricoles à roues (87019011) sans taux, la liste ne visant que ceux de 18 kW au plus. Farine de froment (1101.00.10) : 30 % au lieu de 5 %. Gaz butane (2711.13) : droit de douane 5 % et TVA 5 %. Logiciels (8523.80) : 20 % (3e catégorie) contre 30 % pour les autres supports, sans taux. Contribution d'intégration africaine : 0,2 % de la valeur en douane, sur toutes les positions, exonérée pour les biens provenant d'un État membre de l'Union africaine. Taxe statistique : 0,2 % de la valeur en douane, maintenue avec sa source.",
+  "verbatim": "Article vingt-deuxième nouveau : Les importations des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, ainsi que les engrais et autres intrants agricoles, sont exemptées de la TVA et du droit de douane et soumises à la redevance informatique et aux taxes communautaires.",
+  "verbatim_liste": "Les dispositions de la loi n° 1-2018 du 29 janvier 2018, portant loi des finances pour l'année 2018, relatives aux importations des machines, appareils et engins agricoles, horticoles, sylvicoles ou halieutiques, ainsi que les engrais et autres intrants agricoles, s'appliquent aux positions tarifaires ci-dessous citées",
+  "verbatim_cia": "Article 1er : Il est institué en République du Congo une taxe dénommée contribution d'intégration africaine (CIA) applicable aux biens éligibles importés au Congo à partir d'un Etat non membre de l'Union Africaine. Article 2 : Le taux de la contribution d'intégration africaine (CIA) est de 0,2% sur les marchandises importées éligibles.",
+  "reference": "Loi n° 1-2018 (LF 2018), art. 35 (sections 1 à 3), 41 et 42 ; loi n° 23-2020 (LFR 2020), art. 38, points 24, 25 et 27 ; loi n° 42-2025 (LF 2026), modalités relatives aux droits et taxes de douane, points 7 et 8 ; OMC, WT/TPR/S/445, annexe Congo, § 3.37, 3.56 et note 52 ; A. Ngakosso (FMI, 2011), tableau 1",
+  "portee": "scripts/build_socle.py, _tarif_national_congo (après les annexes de la loi TVA, la circulaire n° 0138 et les véhicules neufs) et _prelevements_congo (ligne CIA marquée « UA » par EXONERATION_ORIGINE ; source et note de la ligne TS).",
+  "texte_archive": "sources/COG_tarif_national.texte-extrait.txt",
+  "sha256": "7c11ae4af9407e5ecaf595a3e1320ac5f448ebcd1c7a90da3ca94392f6c7d941"
+  },
+  "decisions": [
+    "Art. 22 : la LFR 2020 (point 24, alinéa 1) restreint l'exonération aux positions de sa liste ; seules celles-là sont servies. Pas de semences, de filets de pêche, de machines à traire (84.34), de motoculteurs (8701.10), de tondeuses à gazon ni de couveuses du 8436.10, que la liste ne cite pas.",
+    "Correspondance de la liste (tarif national SH 2017 à 10 chiffres) avec le tarif CEMAC du socle (SH 2007 à 8 chiffres) : 0407.11 (œufs de volaille fertilisés) → 0407.00.10 (œufs destinés à la reproduction) ; 3103.10 → 3103.10.00 ; 3104.30.10 et .90 → 3104.30.00 ; 3104.90.10 et .90 → 3104.90.00 ; 8432.31 et 8432.39 → 8432.30.00 ; 8432.41 et 8432.42 → 8432.40.00 ; les autres numéros à l'identique. 3101.00 n'est pas une position du socle.",
+    "Tracteurs : la liste vise les « Tracteurs agricoles à roues, d'1 puissance de moteur n'excédant pas 18kW » (8701.91 du SH 2017) ; la position 8701.90.11 du socle réunit tous les tracteurs agricoles à roues, quelle que soit leur puissance. Droit de douane et TVA sans taux.",
+    "TVA des positions de la liste : 0 %. Les engrais du 31.02, déjà exonérés par l'annexe 3 de la loi TVA (LF 2026), gardent la note de l'annexe.",
+    "Farine de froment : la LF 2018 rétablit le « taux normal » de 30 % sur 1101.00.10 ; l'OMC (2023, § 3.56) le confirme (« Depuis que le TEC est passé de 5% à 30% »). Sa TVA (5 %, annexe 5 de la loi TVA) est inchangée.",
+    "Gaz butane (2711.13) : droit de douane 5 % (LF 2018, art. 42) et TVA 5 % (art. 17 bis nouveau de la loi TVA) ; la redevance informatique reste à 2 % : la LFR 2020 (point 25) a supprimé ses « taux réduits », et la LF 2026 fixe 2 % pour toute mise à la consommation.",
+    "Logiciels : la LF 2026 classe les logiciels en 8523.80 00.100 (téléchargés) et 00.200 (autres logiciels), en 3e catégorie du TEC, soit 20 % (catégorie III, dont le tarif CEMAC imprime 10 % par coquille : fiche CEMAC_TEC_coquilles_2026-10-27.json). La position 8523.80 du socle réunit logiciels et autres supports (30 %) : droit de douane sans taux.",
+    "Contribution d'intégration africaine : sur la valeur en douane (« liquidé sur la valeur en douane »), comme la CCI et le prélèvement OHADA ; ni le droit d'accises (CIF + DD) ni la TVA (CIF + DD + DA) ne la comprennent. Exonération servie par l'origine déclarée (bloc UA) : le texte vise la provenance (« biens provenant d'un autre Etat membre »), que le moteur confond avec l'origine.",
+    "Taxe statistique : maintenue à 0,2 % de la valeur en douane. La seule source officielle trouvée est le tableau du directeur général des impôts (2011), qui la tire du guide du DAU (2004). Ni le rapport de l'OMC de 2023 (qui cite pour le Congo la redevance informatique et les taxes communautaires) ni les lois de finances 2018 à 2026 lues ne la nomment."
+  ],
+  "ce_que_cela_ne_tranche_pas": [
+    "Taxe statistique : texte instituant non trouvé ; perception actuelle non confirmée par une source postérieure à 2011 (des guides privés la citent encore).",
+    "Liste de l'art. 22 : « actualisée en tant que de besoin par voie réglementaire » (alinéa 2) ; aucun texte d'actualisation trouvé.",
+    "Loi TVA, art. 7, 13) et 14) (« les petits matériels de pêche », « les engins et matériels agricoles ») : exonérations de TVA plus larges que la liste de la LFR 2020 (machines à traire, motoculteurs, filets de pêche) ; non servies, faute de liste.",
+    "Dérogations au TEC : l'OMC en compte 242 lignes (§ 3.37) ; le tarif national n'est pas publié (douane.gouv.cg ne sert qu'un accès à SYDONIA). Seules les dérogations dont la position est dans une loi de finances sont servies ici, avec celles de la circulaire n° 0138 et des véhicules neufs.",
+    "Taux réduits liés à l'importateur (sociétés pétrolières, ordonnances n° 021/89 et 023/89 ; art. 17 bis, « taux global réduit ») : non servis.",
+    "Exemptions de la contribution d'intégration africaine liées à l'opération (réexportation vers un État membre, dons, accords de financement) : non servies."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/COG_tarif_national.texte-extrait.txt",
+      "sha256": "7c11ae4af9407e5ecaf595a3e1320ac5f448ebcd1c7a90da3ca94392f6c7d941"
+    }
+  ]
+}

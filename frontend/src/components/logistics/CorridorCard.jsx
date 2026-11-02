@@ -2,6 +2,9 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { pick } from '../../i18n/lang';
+
+const CORRIDOR_TYPE_AR = { road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'متعدد الوسائط' };
 
 const formatNumber = (num) => {
   if (num === null || num === undefined) return 'N/A';
@@ -57,6 +60,19 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
       priority: "Priority",
       tonsYear: "tons/year",
       hours: "hours"
+    },
+    ar: {
+      length: "الطول",
+      status: "الحالة",
+      annualFreight: "الشحن السنوي",
+      transitTime: "مدة العبور",
+      nodes: "العُقد",
+      operators: "المشغلون",
+      infrastructure: "البنية التحتية",
+      viewDetails: "عرض التفاصيل الكاملة",
+      priority: "ذو أولوية",
+      tonsYear: "طن/سنة",
+      hours: "ساعة"
     }
   };
 
@@ -82,7 +98,7 @@ export default function CorridorCard({ corridor, onOpenDetails, language = 'fr' 
           </div>
           <div className="flex flex-col gap-1 items-end">
             <Badge className={getTypeColor(corridor.corridor_type)}>
-              {corridor.corridor_type}
+              {pick(language, corridor.corridor_type, corridor.corridor_type, CORRIDOR_TYPE_AR[corridor.corridor_type] || corridor.corridor_type)}
             </Badge>
             {corridor.importance === 'high' && (
               <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)]">⭐ {t.priority}</Badge>

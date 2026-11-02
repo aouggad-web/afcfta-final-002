@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 import { montant, montantCompact, montantUnite, nombreUnite } from '../../utils/nombres';
+import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -129,6 +131,36 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       sourceEconomic: "Source: World Bank (WB Open Data) + IMF WEO 2024",
       sourceTrade: "Source: OEC — Observatory of Economic Complexity (atlas.cid.harvard.edu)",
       sourceDevelopment: "Source: UNDP (HDI 2024) + Mo Ibrahim Foundation (GAI 2024)"
+    },
+    ar: {
+      title: "مقارنة متعددة البلدان",
+      subtitle: "قارن ما يصل إلى 4 بلدان أفريقية جنبًا إلى جنب",
+      selectCountry: "إضافة بلد",
+      compare: "مقارنة",
+      reset: "إعادة التعيين",
+      loading: "جارٍ تحميل البيانات…",
+      noSelection: "اختر بلدين على الأقل للمقارنة",
+      economicIndicators: "المؤشرات الاقتصادية",
+      tradeIndicators: "المؤشرات التجارية",
+      developmentIndices: "مؤشرات التنمية",
+      radarComparison: "مقارنة رادارية",
+      barComparison: "مقارنة بالأعمدة",
+      gdp: "الناتج المحلي الإجمالي",
+      gdpPerCapita: "نصيب الفرد من الناتج المحلي الإجمالي",
+      inflation: "التضخم",
+      unemployment: "البطالة",
+      exports: "الصادرات",
+      imports: "الواردات",
+      tradeBalance: "الميزان التجاري",
+      intraAfrican: "التجارة البينية الأفريقية",
+      hdi: "مؤشر التنمية البشرية",
+      gai: "مؤشر الحوكمة الأفريقية",
+      population: "السكان",
+      indicator: "المؤشر",
+      source: "المصادر: صندوق النقد الدولي WEO 2024، البنك الدولي، برنامج الأمم المتحدة الإنمائي، OEC",
+      sourceEconomic: "المصدر: البنك الدولي (WB Open Data) + صندوق النقد الدولي WEO 2024",
+      sourceTrade: "المصدر: OEC — مرصد التعقيد الاقتصادي (atlas.cid.harvard.edu)",
+      sourceDevelopment: "المصدر: برنامج الأمم المتحدة الإنمائي (HDI 2024) + مؤسسة مو إبراهيم (GAI 2024)"
     }
   };
 
@@ -207,7 +239,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       setCountryData(newData);
     } catch (err) {
       console.error('Error fetching comparison data:', err);
-      setError(language === 'fr' ? 'Erreur lors du chargement des données' : 'Error loading data');
+      setError(pick(language, 'Erreur lors du chargement des données', 'Error loading data', 'خطأ أثناء تحميل البيانات'));
     } finally {
       setLoading(false);
     }
@@ -216,7 +248,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
   // Get country name
   const getCountryName = (iso) => {
     const country = availableCountries.find(c => c.iso3 === iso || c.code === iso);
-    return country?.name_fr || country?.name || iso;
+    const nom = country?.name_fr || country?.name || iso;
+    return pick(language, nom, nom, AFRICAN_COUNTRIES[iso]?.name_ar || nom);
   };
 
   // Extract economic indicators for comparison
@@ -378,7 +411,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     .filter(c => !selectedCountries.includes(c.iso3 || c.code))
                     .map((country) => (
                       <SelectItem key={country.iso3 || country.code} value={country.iso3 || country.code}>
-                        {country.name_fr || country.name}
+                        {pick(language, country.name_fr || country.name, country.name_fr || country.name, AFRICAN_COUNTRIES[country.iso3 || country.code]?.name_ar || country.name_fr || country.name)}
                       </SelectItem>
                     ))}
                 </SelectContent>
@@ -421,9 +454,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
 
         {/* Max countries hint */}
         <p style={{ fontSize: '0.7rem', color: 'var(--afcfta-muted)', marginTop: 10 }}>
-          {language === 'fr'
-            ? `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`
-            : `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`}
+          {pick(language, `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`, `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`, `${selectedCountries.length} / ${MAX_COUNTRIES} بلدان مختارة`)}
         </p>
       </div>
 
@@ -452,9 +483,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             </div>
             <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
             <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.78rem', marginTop: 6 }}>
-              {language === 'fr'
-                ? 'Ajoutez au moins 2 pays africains pour commencer la comparaison'
-                : 'Add at least 2 African countries to start the comparison'}
+              {pick(language, 'Ajoutez au moins 2 pays africains pour commencer la comparaison', 'Add at least 2 African countries to start the comparison', 'أضف بلدين أفريقيين على الأقل لبدء المقارنة')}
             </p>
           </div>
         </div>
@@ -471,9 +500,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 {txt.radarComparison}
               </div>
               <div className="stats-chart-subtitle">
-                {language === 'fr'
-                  ? 'Comparaison normalisée des indicateurs clés (0-100)'
-                  : 'Normalized comparison of key indicators (0-100)'}
+                {pick(language, 'Comparaison normalisée des indicateurs clés (0-100)', 'Normalized comparison of key indicators (0-100)', 'مقارنة موحَّدة للمؤشرات الرئيسية (0-100)')}
               </div>
             </div>
             <div style={{ padding: '16px 8px' }}>
@@ -528,11 +555,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </thead>
                 <tbody>
                   {[
-                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: 'var(--gold)' }}>{montantUnite(d.gdp, 'B', language, 1)}</strong> : '-' },
+                    { label: `${txt.gdp} (${pick(language, 'Mrd $', 'Mrd $', 'مليار $')})`, render: (d) => d.gdp ? <strong style={{ color: 'var(--gold)' }}>{montantUnite(d.gdp, 'B', language, 1)}</strong> : '-' },
                     { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita, language) : '-' },
                     { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > HIGH_INFLATION_THRESHOLD ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
                     { label: txt.unemployment, render: (d) => d.unemployment ? formatPercent(d.unemployment) : '-' },
-                    { label: `${txt.population} (M)`, render: (d) => d.population ? nombreUnite(d.population, 'M', language, 1) : '-' },
+                    { label: `${txt.population} (${pick(language, 'M', 'M', 'مليون')})`, render: (d) => d.population ? nombreUnite(d.population, 'M', language, 1) : '-' },
                   ].map((row, ri) => (
                     <tr key={ri}>
                       <td style={{ fontWeight: 600, color: 'var(--text-soft)' }}>{row.label}</td>
@@ -601,7 +628,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td style={{ fontWeight: 600 }}>{txt.exports} (M$)</td>
+                    <td style={{ fontWeight: 600 }}>{txt.exports} ({pick(language, 'M$', 'M$', 'مليون $')})</td>
                     {getTradeData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>
                         {d.exports ? montantUnite(d.exports, 'M', language, 0) : '-'}
@@ -609,7 +636,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     ))}
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: 600 }}>{txt.imports} (M$)</td>
+                    <td style={{ fontWeight: 600 }}>{txt.imports} ({pick(language, 'M$', 'M$', 'مليون $')})</td>
                     {getTradeData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--info)' }}>
                         {d.imports ? montantUnite(d.imports, 'M', language, 0) : '-'}
@@ -662,7 +689,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td style={{ fontWeight: 600 }}>{txt.hdi} (Score)</td>
+                    <td style={{ fontWeight: 600 }}>{txt.hdi} ({pick(language, 'Score', 'Score', 'الدرجة')})</td>
                     {getDevelopmentData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700 }}>
                         {d.hdi ? d.hdi.toFixed(3) : '-'}
@@ -670,7 +697,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     ))}
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: 600 }}>{txt.hdi} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
+                    <td style={{ fontWeight: 600 }}>{txt.hdi} ({pick(language, 'Rang', 'Rank', 'الترتيب')})</td>
                     {getDevelopmentData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                         #{d.hdiRank}
@@ -678,7 +705,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     ))}
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: 600 }}>{txt.gai} (Score)</td>
+                    <td style={{ fontWeight: 600 }}>{txt.gai} ({pick(language, 'Score', 'Score', 'الدرجة')})</td>
                     {getDevelopmentData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', fontWeight: 700 }}>
                         {d.gai ? d.gai.toFixed(1) : '-'}
@@ -686,7 +713,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                     ))}
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: 600 }}>{txt.gai} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
+                    <td style={{ fontWeight: 600 }}>{txt.gai} ({pick(language, 'Rang', 'Rank', 'الترتيب')})</td>
                     {getDevelopmentData().map((d, idx) => (
                       <td key={idx} style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                         #{d.gaiRank}

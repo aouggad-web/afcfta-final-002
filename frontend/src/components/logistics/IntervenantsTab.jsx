@@ -8,6 +8,7 @@ import {
   MapPin, ExternalLink, Users, Search, Filter, ChevronDown,
   ChevronUp, Anchor, Package, ShieldCheck, Star
 } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -15,75 +16,91 @@ const API = `${BACKEND_URL}/api`;
 const CATEGORY_META = {
   armateurs: {
     label: 'Armateurs / Compagnies maritimes',
+    label_ar: 'شركات الملاحة / الشركات البحرية',
     icon: Ship,
     color: 'blue',
     bg: 'rgba(59,130,246,0.1)',
     border: 'rgba(59,130,246,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--info)_12%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]',
     desc: 'Grandes compagnies de transport maritime opérant sur les routes africaines',
+    desc_ar: 'كبرى شركات النقل البحري العاملة على الخطوط الأفريقية',
   },
   port_operators: {
     label: 'Opérateurs portuaires',
+    label_ar: 'مشغلو الموانئ',
     icon: Anchor,
     color: 'cyan',
     bg: 'rgba(6,182,212,0.1)',
     border: 'rgba(6,182,212,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--atlantic)_12%,var(--afcfta-card))] text-[var(--atlantic)] border-[color-mix(in_srgb,var(--atlantic)_30%,transparent)]',
     desc: 'Gestionnaires de terminaux à conteneurs et ports africains',
+    desc_ar: 'مسيّرو محطات الحاويات والموانئ الأفريقية',
   },
   transitaires: {
     label: 'Transitaires & Freight Forwarders',
+    label_ar: 'وكلاء العبور والشحن',
     icon: Package,
     color: 'amber',
     bg: 'rgba(245,158,11,0.1)',
     border: 'rgba(245,158,11,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--gold)_12%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]',
     desc: 'Commissionnaires de transport, organisateurs de fret, dédouanement',
+    desc_ar: 'وكلاء النقل ومنظمو الشحن والتخليص الجمركي',
   },
   rail_operators: {
     label: 'Opérateurs ferroviaires',
+    label_ar: 'مشغلو السكك الحديدية',
     icon: Train,
     color: 'green',
     bg: 'rgba(34,197,94,0.1)',
     border: 'rgba(34,197,94,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--success)_12%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]',
     desc: 'Compagnies ferroviaires nationales et régionales africaines',
+    desc_ar: 'شركات السكك الحديدية الوطنية والإقليمية الأفريقية',
   },
   trucking_companies: {
     label: 'Transporteurs routiers',
+    label_ar: 'شركات النقل البري',
     icon: Truck,
     color: 'orange',
     bg: 'rgba(249,115,22,0.1)',
     border: 'rgba(249,115,22,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--terra)_12%,var(--afcfta-card))] text-[var(--terra)] border-[color-mix(in_srgb,var(--terra)_30%,transparent)]',
     desc: 'Compagnies de transport routier et de distribution',
+    desc_ar: 'شركات النقل البري والتوزيع',
   },
   air_cargo: {
     label: 'Cargo aérien',
+    label_ar: 'الشحن الجوي',
     icon: Plane,
     color: 'purple',
     bg: 'rgba(168,85,247,0.1)',
     border: 'rgba(168,85,247,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--violet)_12%,var(--afcfta-card))] text-[var(--violet)] border-[color-mix(in_srgb,var(--violet)_30%,transparent)]',
     desc: 'Compagnies cargo aérien opérant sur le continent africain',
+    desc_ar: 'شركات الشحن الجوي العاملة في القارة الأفريقية',
   },
   customs_agents: {
     label: 'Douanes & Commissionnaires',
+    label_ar: 'الجمارك والمعتمدون الجمركيون',
     icon: ShieldCheck,
     color: 'red',
     bg: 'rgba(239,68,68,0.1)',
     border: 'rgba(239,68,68,0.3)',
     badge: 'bg-[color-mix(in_srgb,var(--danger)_12%,var(--afcfta-card))] text-[var(--danger)] border-[color-mix(in_srgb,var(--danger)_30%,transparent)]',
     desc: 'Autorités douanières et commissionnaires agréés',
+    desc_ar: 'السلطات الجمركية والمعتمدون الجمركيون المرخَّصون',
   },
   regulatory_bodies: {
     label: 'Organismes de régulation',
+    label_ar: 'هيئات التنظيم',
     icon: Globe,
     color: 'slate',
     bg: 'rgba(100,116,139,0.1)',
     border: 'rgba(100,116,139,0.3)',
     badge: 'bg-slate-500/20 text-[var(--text)] border-[var(--afcfta-border)]',
     desc: 'Organisations et associations internationales du secteur logistique',
+    desc_ar: 'المنظمات والجمعيات الدولية لقطاع اللوجستيك',
   },
 };
 
@@ -105,6 +122,24 @@ const COUNTRY_LABELS = {
   SWZ: '🇸🇿 Eswatini', MDG: '🇲🇬 Madagascar', MUS: '🇲🇺 Maurice',
 };
 
+const COUNTRY_LABELS_AR = {
+  ALL: 'جميع البلدان',
+  DZA: '🇩🇿 الجزائر', MAR: '🇲🇦 المغرب', EGY: '🇪🇬 مصر',
+  NGA: '🇳🇬 نيجيريا', ZAF: '🇿🇦 جنوب أفريقيا', KEN: '🇰🇪 كينيا',
+  TZA: '🇹🇿 تنزانيا', CIV: '🇨🇮 كوت ديفوار', GHA: '🇬🇭 غانا', SEN: '🇸🇳 السنغال',
+  CMR: '🇨🇲 الكاميرون', ETH: '🇪🇹 إثيوبيا', DJI: '🇩🇯 جيبوتي',
+  MOZ: '🇲🇿 موزمبيق', AGO: '🇦🇴 أنغولا', TUN: '🇹🇳 تونس',
+  LBY: '🇱🇾 ليبيا', SDN: '🇸🇩 السودان', SSD: '🇸🇸 جنوب السودان',
+  COD: '🇨🇩 جمهورية الكونغو الديمقراطية', COG: '🇨🇬 الكونغو', GAB: '🇬🇦 الغابون',
+  TCD: '🇹🇩 تشاد', CAF: '🇨🇫 جمهورية أفريقيا الوسطى', TGO: '🇹🇬 توغو',
+  BEN: '🇧🇯 بنين', BFA: '🇧🇫 بوركينا فاسو', MLI: '🇲🇱 مالي',
+  NER: '🇳🇪 النيجر', GIN: '🇬🇳 غينيا', MRT: '🇲🇷 موريتانيا',
+  UGA: '🇺🇬 أوغندا', RWA: '🇷🇼 رواندا', SOM: '🇸🇴 الصومال',
+  ZMB: '🇿🇲 زامبيا', ZWE: '🇿🇼 زيمبابوي', MWI: '🇲🇼 ملاوي',
+  NAM: '🇳🇦 ناميبيا', BWA: '🇧🇼 بوتسوانا', SWZ: '🇸🇿 إسواتيني',
+  MDG: '🇲🇬 مدغشقر', MUS: '🇲🇺 موريشيوس',
+};
+
 function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
   if (!value) return null;
   const content = (
@@ -121,8 +156,8 @@ function ContactChip({ icon: Icon, value, href, color = 'gray' }) {
   ) : content;
 }
 
-function CountryBadge({ iso }) {
-  const label = COUNTRY_LABELS[iso] || iso;
+function CountryBadge({ iso, language }) {
+  const label = pick(language, COUNTRY_LABELS[iso], COUNTRY_LABELS[iso], COUNTRY_LABELS_AR[iso]) || iso;
   return (
     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px]
       bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--afcfta-muted)]">
@@ -219,7 +254,7 @@ function ContactsBlock({ contacts }) {
   );
 }
 
-function OperatorCard({ operator, catMeta }) {
+function OperatorCard({ operator, catMeta, language }) {
   const [expanded, setExpanded] = useState(false);
   const Icon = catMeta.icon;
 
@@ -258,22 +293,22 @@ function OperatorCard({ operator, catMeta }) {
             <div className="flex flex-wrap gap-2 mt-2">
               {operator.fleet_size && (
                 <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
-                  <Truck className="w-3 h-3" /> {operator.fleet_size} véhicules
+                  <Truck className="w-3 h-3" /> {operator.fleet_size} {pick(language, 'véhicules', 'véhicules', 'مركبة')}
                 </span>
               )}
               {operator.fleet_vessels && (
                 <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
-                  <Ship className="w-3 h-3" /> {operator.fleet_vessels} navires
+                  <Ship className="w-3 h-3" /> {operator.fleet_vessels} {pick(language, 'navires', 'navires', 'سفينة')}
                 </span>
               )}
               {operator.fleet_teu && (
                 <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
-                  <Package className="w-3 h-3" /> {(operator.fleet_teu / 1000000).toFixed(1)}M TEU
+                  <Package className="w-3 h-3" /> {(operator.fleet_teu / 1000000).toFixed(1)}{pick(language, 'M TEU', 'M TEU', ' مليون TEU')}
                 </span>
               )}
               {operator.fleet_freighters && (
                 <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
-                  <Plane className="w-3 h-3" /> {operator.fleet_freighters} avions cargo
+                  <Plane className="w-3 h-3" /> {operator.fleet_freighters} {pick(language, 'avions cargo', 'avions cargo', 'طائرة شحن')}
                 </span>
               )}
               {operator.network_km && (
@@ -283,22 +318,22 @@ function OperatorCard({ operator, catMeta }) {
               )}
               {operator.market_share_africa_pct && (
                 <span className="text-[11px] text-[var(--gold)] flex items-center gap-1">
-                  <Star className="w-3 h-3" /> {operator.market_share_africa_pct}% part de marché Afrique
+                  <Star className="w-3 h-3" /> {operator.market_share_africa_pct}% {pick(language, 'part de marché Afrique', 'part de marché Afrique', 'حصة من السوق الأفريقية')}
                 </span>
               )}
               {operator.africa_offices_count && (
                 <span className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1">
-                  <Building2 className="w-3 h-3" /> {operator.africa_offices_count} bureaux Afrique
+                  <Building2 className="w-3 h-3" /> {operator.africa_offices_count} {pick(language, 'bureaux Afrique', 'bureaux Afrique', 'مكتبًا في أفريقيا')}
                 </span>
               )}
               {operator.iata_accredited && (
                 <span className="text-[11px] text-[var(--success)] flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" /> Agréé IATA
+                  <ShieldCheck className="w-3 h-3" /> {pick(language, 'Agréé IATA', 'Agréé IATA', 'معتمد من IATA')}
                 </span>
               )}
               {operator.fiata_member && (
                 <span className="text-[11px] text-[var(--info)] flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" /> Membre FIATA
+                  <ShieldCheck className="w-3 h-3" /> {pick(language, 'Membre FIATA', 'Membre FIATA', 'عضو في FIATA')}
                 </span>
               )}
             </div>
@@ -317,7 +352,7 @@ function OperatorCard({ operator, catMeta }) {
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs
                       bg-[color-mix(in_srgb,var(--info)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--info)_30%,transparent)] text-[var(--info)] hover:text-[var(--info)] transition-colors">
                       <ExternalLink className="w-3 h-3" />
-                      Site web
+                      {pick(language, 'Site web', 'Site web', 'الموقع الإلكتروني')}
                     </span>
                   </a>
                 )}
@@ -328,11 +363,11 @@ function OperatorCard({ operator, catMeta }) {
             {presenceList.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
                 {presenceList.slice(0, expanded ? 50 : 6).map(iso => (
-                  <CountryBadge key={iso} iso={iso} />
+                  <CountryBadge key={iso} iso={iso} language={language} />
                 ))}
                 {!expanded && presenceList.length > 6 && (
                   <span className="text-[11px] text-[var(--afcfta-muted)] px-2 py-0.5">
-                    +{presenceList.length - 6} pays
+                    +{presenceList.length - 6} {pick(language, 'pays', 'pays', 'بلدان')}
                   </span>
                 )}
               </div>
@@ -349,9 +384,9 @@ function OperatorCard({ operator, catMeta }) {
             className="w-full mt-3 h-7 text-xs text-[var(--afcfta-muted)] hover:text-[var(--text)] border border-[var(--overlay-border)] rounded-lg"
           >
             {expanded ? (
-              <><ChevronUp className="w-3 h-3 mr-1" />Masquer contacts</>
+              <><ChevronUp className="w-3 h-3 mr-1" />{pick(language, 'Masquer contacts', 'Masquer contacts', 'إخفاء جهات الاتصال')}</>
             ) : (
-              <><ChevronDown className="w-3 h-3 mr-1" />Voir tous les contacts</>
+              <><ChevronDown className="w-3 h-3 mr-1" />{pick(language, 'Voir tous les contacts', 'Voir tous les contacts', 'عرض جميع جهات الاتصال')}</>
             )}
           </Button>
         )}
@@ -364,7 +399,7 @@ function OperatorCard({ operator, catMeta }) {
         {/* Services list */}
         {expanded && operator.services && (
           <div className="mt-3">
-            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Services</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">{pick(language, 'Services', 'Services', 'الخدمات')}</div>
             <div className="flex flex-wrap gap-1">
               {operator.services.map(s => (
                 <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>
@@ -376,7 +411,7 @@ function OperatorCard({ operator, catMeta }) {
         {/* Africa terminals for port operators */}
         {expanded && operator.africa_terminals && (
           <div className="mt-3">
-            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Terminaux africains</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">{pick(language, 'Terminaux africains', 'Terminaux africains', 'المحطات الأفريقية')}</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
               {operator.africa_terminals.map((t, i) => (
                 <div key={i} className="text-[11px] text-[var(--afcfta-muted)] flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--overlay)]">
@@ -392,7 +427,7 @@ function OperatorCard({ operator, catMeta }) {
         {/* Africa services for shipping lines */}
         {expanded && operator.africa_services && (
           <div className="mt-3">
-            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">Services Afrique</div>
+            <div className="text-[11px] text-[var(--afcfta-muted)] mb-1">{pick(language, 'Services Afrique', 'Services Afrique', 'الخدمات في أفريقيا')}</div>
             <div className="flex flex-wrap gap-1">
               {operator.africa_services.map(s => (
                 <span key={s} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--overlay)] border border-[var(--overlay-border)] text-[var(--text)]">{s}</span>
@@ -437,7 +472,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
       setSummary(res.data.summary);
     } catch (err) {
       console.error('Erreur chargement intervenants:', err);
-      setError('Impossible de charger les intervenants logistiques.');
+      setError(pick(language, 'Impossible de charger les intervenants logistiques.', 'Impossible de charger les intervenants logistiques.', 'تعذّر تحميل الفاعلين اللوجستيين.'));
     } finally {
       setLoading(false);
     }
@@ -482,7 +517,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="animate-spin w-8 h-8 border-2 border-[var(--gold)] border-t-transparent rounded-full" />
-        <span className="ml-3 text-[var(--afcfta-muted)] text-sm">Chargement des intervenants logistiques...</span>
+        <span className="ml-3 text-[var(--afcfta-muted)] text-sm">{pick(language, 'Chargement des intervenants logistiques...', 'Chargement des intervenants logistiques...', 'جارٍ تحميل الفاعلين اللوجستيين…')}</span>
       </div>
     );
   }
@@ -491,7 +526,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
     return (
       <div className="text-center py-16 text-[var(--danger)]">
         <p>{error}</p>
-        <Button onClick={fetchOperators} className="mt-3">Réessayer</Button>
+        <Button onClick={fetchOperators} className="mt-3">{pick(language, 'Réessayer', 'Réessayer', 'إعادة المحاولة')}</Button>
       </div>
     );
   }
@@ -505,12 +540,15 @@ export default function IntervenantsTab({ language = 'fr' }) {
         </div>
         <div>
           <h2 className="text-lg font-bold">
-            {language === 'en' ? 'Logistics Operators' : 'Intervenants logistiques'}
+            {pick(language, 'Intervenants logistiques', 'Logistics Operators', 'الفاعلون اللوجستيون')}
           </h2>
           <p className="text-[var(--info)] text-sm">
-            {language === 'en'
-              ? 'Operators and stakeholders of the African logistics chain'
-              : 'Opérateurs et acteurs de la chaîne logistique africaine'}
+            {pick(
+              language,
+              'Opérateurs et acteurs de la chaîne logistique africaine',
+              'Operators and stakeholders of the African logistics chain',
+              'مشغلو سلسلة اللوجستيك الأفريقية والفاعلون فيها'
+            )}
           </p>
         </div>
       </div>
@@ -537,7 +575,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
                   <Icon className="w-4 h-4 text-[var(--text)]" />
                   <span className="text-xl font-bold text-[var(--text)]">{count}</span>
                 </div>
-                <div className="text-[11px] text-[var(--afcfta-muted)] leading-tight">{meta.label}</div>
+                <div className="text-[11px] text-[var(--afcfta-muted)] leading-tight">{pick(language, meta.label, meta.label, meta.label_ar)}</div>
               </button>
             );
           })}
@@ -550,7 +588,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--afcfta-muted)]" />
           <input
             type="text"
-            placeholder="Rechercher un opérateur, une ville, un contact..."
+            placeholder={pick(language, 'Rechercher un opérateur, une ville, un contact...', 'Rechercher un opérateur, une ville, un contact...', 'ابحث عن مشغّل أو مدينة أو جهة اتصال…')}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-[var(--overlay)] border border-[var(--overlay-border)]
@@ -564,7 +602,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
             focus:outline-none focus:border-[color-mix(in_srgb,var(--gold)_40%,transparent)] cursor-pointer"
         >
           {Object.entries(COUNTRY_LABELS).map(([iso, label]) => (
-            <option key={iso} value={iso} className="bg-[var(--afcfta-card)]">{label}</option>
+            <option key={iso} value={iso} className="bg-[var(--afcfta-card)]">{pick(language, label, label, COUNTRY_LABELS_AR[iso])}</option>
           ))}
         </select>
         {(activeCategory !== 'ALL' || selectedCountry !== 'ALL' || searchQuery) && (
@@ -574,11 +612,16 @@ export default function IntervenantsTab({ language = 'fr' }) {
             onClick={() => { setActiveCategory('ALL'); setSelectedCountry('ALL'); setSearchQuery(''); }}
             className="text-xs text-[var(--afcfta-muted)] hover:text-[var(--text)] border border-[var(--overlay-border)]"
           >
-            Réinitialiser
+            {pick(language, 'Réinitialiser', 'Réinitialiser', 'إعادة التعيين')}
           </Button>
         )}
         <span className="text-xs text-[var(--afcfta-muted)] ml-auto">
-          {filtered.length} intervenant{filtered.length > 1 ? 's' : ''} trouvé{filtered.length > 1 ? 's' : ''}
+          {pick(
+            language,
+            <>{filtered.length} intervenant{filtered.length > 1 ? 's' : ''} trouvé{filtered.length > 1 ? 's' : ''}</>,
+            <>{filtered.length} intervenant{filtered.length > 1 ? 's' : ''} trouvé{filtered.length > 1 ? 's' : ''}</>,
+            <>عدد الفاعلين: {filtered.length}</>
+          )}
         </span>
       </div>
 
@@ -592,7 +635,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
               : 'bg-[var(--overlay)] border-[var(--overlay-border)] text-[var(--afcfta-muted)] hover:text-[var(--text)]'}`}
         >
           <Globe className="w-3 h-3 inline mr-1" />
-          Tous
+          {pick(language, 'Tous', 'Tous', 'الكل')}
         </button>
         {Object.entries(CATEGORY_META).map(([key, meta]) => {
           const Icon = meta.icon;
@@ -607,7 +650,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
               style={activeCategory === key ? { background: meta.bg, borderColor: meta.border } : {}}
             >
               <Icon className="w-3 h-3 inline mr-1" />
-              {meta.label.split(' / ')[0].split(' &')[0]}
+              {pick(language, meta.label, meta.label, meta.label_ar).split(' / ')[0].split(' &')[0]}
             </button>
           );
         })}
@@ -617,7 +660,7 @@ export default function IntervenantsTab({ language = 'fr' }) {
       {Object.keys(groupedFiltered).length === 0 ? (
         <div className="text-center py-12 text-[var(--afcfta-muted)]">
           <Users className="w-10 h-10 mx-auto mb-3 opacity-30" />
-          <p>Aucun intervenant trouvé pour ces critères.</p>
+          <p>{pick(language, 'Aucun intervenant trouvé pour ces critères.', 'Aucun intervenant trouvé pour ces critères.', 'لم يُعثر على أي فاعل وفق هذه المعايير.')}</p>
         </div>
       ) : (
         Object.entries(groupedFiltered).map(([cat, ops]) => {
@@ -630,17 +673,22 @@ export default function IntervenantsTab({ language = 'fr' }) {
                   <Icon className="w-4 h-4 text-[var(--text)]" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-[var(--text)]">{meta.label}</h3>
-                  <p className="text-xs text-[var(--afcfta-muted)]">{meta.desc}</p>
+                  <h3 className="text-sm font-semibold text-[var(--text)]">{pick(language, meta.label, meta.label, meta.label_ar || meta.label)}</h3>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{pick(language, meta.desc, meta.desc, meta.desc_ar || meta.desc)}</p>
                 </div>
                 <Badge className={`ml-auto text-[11px] border ${meta.badge}`}>
-                  {ops.length} opérateur{ops.length > 1 ? 's' : ''}
+                  {pick(
+                    language,
+                    <>{ops.length} opérateur{ops.length > 1 ? 's' : ''}</>,
+                    <>{ops.length} opérateur{ops.length > 1 ? 's' : ''}</>,
+                    <>عدد المشغلين: {ops.length}</>
+                  )}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {ops.map(op => (
-                  <OperatorCard key={op.id || op.name} operator={op} catMeta={meta} />
+                  <OperatorCard key={op.id || op.name} operator={op} catMeta={meta} language={language} />
                 ))}
               </div>
             </div>
@@ -650,8 +698,21 @@ export default function IntervenantsTab({ language = 'fr' }) {
 
       {/* Data sources footer */}
       <div className="text-center text-xs text-[var(--afcfta-muted)] pt-4 border-t border-[var(--overlay-border)]">
+        {pick(
+          language,
+          <>
         Sources : Sites officiels des opérateurs · Lloyd's List · IATA · BIMCO · UNCTAD Maritime Transport Review 2024 · World Bank LPI 2023
         <br />Données mises à jour : Avril 2025 — Données réelles, aucune donnée générique
+          </>,
+          <>
+        Sources : Sites officiels des opérateurs · Lloyd's List · IATA · BIMCO · UNCTAD Maritime Transport Review 2024 · World Bank LPI 2023
+        <br />Données mises à jour : Avril 2025 — Données réelles, aucune donnée générique
+          </>,
+          <>
+        المصادر: المواقع الرسمية للمشغلين · Lloyd's List · IATA · BIMCO · استعراض النقل البحري للأونكتاد 2024 · مؤشر LPI للبنك الدولي 2023
+        <br />تاريخ تحديث البيانات: أبريل 2025 — بيانات فعلية، لا بيانات عامة
+          </>
+        )}
       </div>
     </div>
   );

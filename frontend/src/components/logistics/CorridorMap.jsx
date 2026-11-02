@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Polyline, CircleMarker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import { pick, intlLocale } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -54,6 +55,21 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
       freight: "Freight",
       tons: "tons",
       viewDetails: "View full details"
+    },
+    ar: {
+      legend: "دليل الرموز",
+      road: "طريق بري",
+      rail: "سكك حديدية",
+      multimodal: "متعدد الوسائط",
+      highImportance: "أهمية عالية",
+      osbp: "مركز حدودي موحد (OSBP)",
+      border: "الحدود",
+      type: "النوع",
+      length: "الطول",
+      status: "الحالة",
+      freight: "الشحن",
+      tons: "طن",
+      viewDetails: "عرض التفاصيل الكاملة"
     }
   };
 
@@ -94,9 +110,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en'
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   return (
@@ -171,7 +185,7 @@ export default function CorridorMap({ onCorridorClick, selectedType, selectedImp
                   <div className="space-y-1 text-xs">
                     <div className="flex justify-between">
                       <span className="text-[var(--afcfta-muted)]">{t.type}:</span>
-                      <span className="font-semibold capitalize">{corridor.corridor_type}</span>
+                      <span className="font-semibold capitalize">{pick(language, corridor.corridor_type, corridor.corridor_type, t[corridor.corridor_type] || corridor.corridor_type)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[var(--afcfta-muted)]">{t.length}:</span>

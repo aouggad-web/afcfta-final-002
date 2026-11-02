@@ -11,6 +11,8 @@ import { Badge } from '../ui/badge';
 import { useHsLabel } from '../../hooks/useHsLabel';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
+import { getCountryName } from '../../utils/translations';
+import { pick } from '../../i18n/lang';
 import { 
   ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip
 } from 'recharts';
@@ -28,15 +30,15 @@ const COLORS = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)', 'var(--
 const DEFAULT_VALUE_CHAINS = {
   coffee: {
     id: 'coffee',
-    name: { fr: 'Café', en: 'Coffee' },
+    name: { fr: 'Café', en: 'Coffee', ar: 'القهوة' },
     icon: '☕',
     hsCode: '0901',
     color: '#7c3aed',
     stages: [
-      { name: { fr: 'Production', en: 'Production' }, countries: ['ETH', 'UGA', 'KEN', 'TZA', 'RWA'], value: 2.8 },
-      { name: { fr: 'Transformation', en: 'Processing' }, countries: ['ETH', 'KEN', 'CIV'], value: 1.2 },
-      { name: { fr: 'Torréfaction', en: 'Roasting' }, countries: ['ZAF', 'EGY', 'MAR'], value: 0.8 },
-      { name: { fr: 'Exportation', en: 'Export' }, countries: ['ETH', 'UGA', 'KEN'], value: 3.5 }
+      { name: { fr: 'Production', en: 'Production', ar: 'الإنتاج' }, countries: ['ETH', 'UGA', 'KEN', 'TZA', 'RWA'], value: 2.8 },
+      { name: { fr: 'Transformation', en: 'Processing', ar: 'التحويل' }, countries: ['ETH', 'KEN', 'CIV'], value: 1.2 },
+      { name: { fr: 'Torréfaction', en: 'Roasting', ar: 'التحميص' }, countries: ['ZAF', 'EGY', 'MAR'], value: 0.8 },
+      { name: { fr: 'Exportation', en: 'Export', ar: 'التصدير' }, countries: ['ETH', 'UGA', 'KEN'], value: 3.5 }
     ],
     topProducers: [
       { country: 'Éthiopie', iso3: 'ETH', production: 496000, share: 42 },
@@ -50,15 +52,15 @@ const DEFAULT_VALUE_CHAINS = {
   },
   cocoa: {
     id: 'cocoa',
-    name: { fr: 'Cacao', en: 'Cocoa' },
+    name: { fr: 'Cacao', en: 'Cocoa', ar: 'الكاكاو' },
     icon: '🍫',
     hsCode: '1801',
     color: '#dc2626',
     stages: [
-      { name: { fr: 'Production', en: 'Production' }, countries: ['CIV', 'GHA', 'CMR', 'NGA'], value: 5.2 },
-      { name: { fr: 'Fermentation', en: 'Fermentation' }, countries: ['CIV', 'GHA'], value: 4.8 },
-      { name: { fr: 'Transformation', en: 'Processing' }, countries: ['CIV', 'GHA', 'NGA'], value: 2.1 },
-      { name: { fr: 'Exportation', en: 'Export' }, countries: ['CIV', 'GHA', 'CMR'], value: 8.5 }
+      { name: { fr: 'Production', en: 'Production', ar: 'الإنتاج' }, countries: ['CIV', 'GHA', 'CMR', 'NGA'], value: 5.2 },
+      { name: { fr: 'Fermentation', en: 'Fermentation', ar: 'التخمير' }, countries: ['CIV', 'GHA'], value: 4.8 },
+      { name: { fr: 'Transformation', en: 'Processing', ar: 'التحويل' }, countries: ['CIV', 'GHA', 'NGA'], value: 2.1 },
+      { name: { fr: 'Exportation', en: 'Export', ar: 'التصدير' }, countries: ['CIV', 'GHA', 'CMR'], value: 8.5 }
     ],
     topProducers: [
       { country: "Côte d'Ivoire", iso3: 'CIV', production: 2200000, share: 45 },
@@ -71,15 +73,15 @@ const DEFAULT_VALUE_CHAINS = {
   },
   cotton: {
     id: 'cotton',
-    name: { fr: 'Coton & Textile', en: 'Cotton & Textile' },
+    name: { fr: 'Coton & Textile', en: 'Cotton & Textile', ar: 'القطن والنسيج' },
     icon: '👕',
     hsCode: '5201',
     color: '#0891b2',
     stages: [
-      { name: { fr: 'Culture', en: 'Cultivation' }, countries: ['MLI', 'BFA', 'BEN', 'TCD'], value: 1.8 },
-      { name: { fr: 'Égrenage', en: 'Ginning' }, countries: ['MLI', 'BFA', 'CIV'], value: 1.5 },
-      { name: { fr: 'Filature', en: 'Spinning' }, countries: ['EGY', 'MAR', 'TUN', 'ETH'], value: 2.2 },
-      { name: { fr: 'Confection', en: 'Manufacturing' }, countries: ['ETH', 'KEN', 'MAR', 'MUS'], value: 3.8 }
+      { name: { fr: 'Culture', en: 'Cultivation', ar: 'الزراعة' }, countries: ['MLI', 'BFA', 'BEN', 'TCD'], value: 1.8 },
+      { name: { fr: 'Égrenage', en: 'Ginning', ar: 'الحلج' }, countries: ['MLI', 'BFA', 'CIV'], value: 1.5 },
+      { name: { fr: 'Filature', en: 'Spinning', ar: 'الغزل' }, countries: ['EGY', 'MAR', 'TUN', 'ETH'], value: 2.2 },
+      { name: { fr: 'Confection', en: 'Manufacturing', ar: 'صناعة الملابس' }, countries: ['ETH', 'KEN', 'MAR', 'MUS'], value: 3.8 }
     ],
     topProducers: [
       { country: 'Mali', iso3: 'MLI', production: 780000, share: 18 },
@@ -93,15 +95,15 @@ const DEFAULT_VALUE_CHAINS = {
   },
   petroleum: {
     id: 'petroleum',
-    name: { fr: 'Pétrole & Gaz', en: 'Oil & Gas' },
+    name: { fr: 'Pétrole & Gaz', en: 'Oil & Gas', ar: 'النفط والغاز' },
     icon: '⛽',
     hsCode: '2709',
     color: '#ea580c',
     stages: [
-      { name: { fr: 'Extraction', en: 'Extraction' }, countries: ['NGA', 'AGO', 'DZA', 'LBY', 'EGY'], value: 85 },
-      { name: { fr: 'Raffinage', en: 'Refining' }, countries: ['NGA', 'ZAF', 'EGY', 'DZA'], value: 32 },
-      { name: { fr: 'Pétrochimie', en: 'Petrochemicals' }, countries: ['ZAF', 'EGY', 'NGA'], value: 12 },
-      { name: { fr: 'Distribution', en: 'Distribution' }, countries: ['ZAF', 'NGA', 'KEN'], value: 45 }
+      { name: { fr: 'Extraction', en: 'Extraction', ar: 'الاستخراج' }, countries: ['NGA', 'AGO', 'DZA', 'LBY', 'EGY'], value: 85 },
+      { name: { fr: 'Raffinage', en: 'Refining', ar: 'التكرير' }, countries: ['NGA', 'ZAF', 'EGY', 'DZA'], value: 32 },
+      { name: { fr: 'Pétrochimie', en: 'Petrochemicals', ar: 'البتروكيماويات' }, countries: ['ZAF', 'EGY', 'NGA'], value: 12 },
+      { name: { fr: 'Distribution', en: 'Distribution', ar: 'التوزيع' }, countries: ['ZAF', 'NGA', 'KEN'], value: 45 }
     ],
     topProducers: [
       { country: 'Nigeria', iso3: 'NGA', production: 1800000, share: 28 },
@@ -115,15 +117,15 @@ const DEFAULT_VALUE_CHAINS = {
   },
   minerals: {
     id: 'minerals',
-    name: { fr: 'Minéraux & Métaux', en: 'Minerals & Metals' },
+    name: { fr: 'Minéraux & Métaux', en: 'Minerals & Metals', ar: 'المعادن والفلزات' },
     icon: '💎',
     hsCode: '71',
     color: '#059669',
     stages: [
-      { name: { fr: 'Extraction', en: 'Mining' }, countries: ['ZAF', 'COD', 'ZMB', 'GHA', 'BWA'], value: 42 },
-      { name: { fr: 'Concentration', en: 'Concentration' }, countries: ['ZAF', 'ZMB', 'COD'], value: 28 },
-      { name: { fr: 'Raffinage', en: 'Refining' }, countries: ['ZAF', 'ZMB'], value: 18 },
-      { name: { fr: 'Fabrication', en: 'Manufacturing' }, countries: ['ZAF', 'EGY', 'MAR'], value: 15 }
+      { name: { fr: 'Extraction', en: 'Mining', ar: 'التعدين' }, countries: ['ZAF', 'COD', 'ZMB', 'GHA', 'BWA'], value: 42 },
+      { name: { fr: 'Concentration', en: 'Concentration', ar: 'التركيز' }, countries: ['ZAF', 'ZMB', 'COD'], value: 28 },
+      { name: { fr: 'Raffinage', en: 'Refining', ar: 'التكرير' }, countries: ['ZAF', 'ZMB'], value: 18 },
+      { name: { fr: 'Fabrication', en: 'Manufacturing', ar: 'التصنيع' }, countries: ['ZAF', 'EGY', 'MAR'], value: 15 }
     ],
     topProducers: [
       { country: 'Afrique du Sud', iso3: 'ZAF', production: 25000, share: 35 },
@@ -137,15 +139,15 @@ const DEFAULT_VALUE_CHAINS = {
   },
   automotive: {
     id: 'automotive',
-    name: { fr: 'Automobile', en: 'Automotive' },
+    name: { fr: 'Automobile', en: 'Automotive', ar: 'السيارات' },
     icon: '🚗',
     hsCode: '87',
     color: '#16a34a',
     stages: [
-      { name: { fr: 'Composants', en: 'Components' }, countries: ['ZAF', 'MAR', 'EGY'], value: 8.5 },
-      { name: { fr: 'Assemblage', en: 'Assembly' }, countries: ['ZAF', 'MAR', 'EGY', 'KEN'], value: 12.2 },
-      { name: { fr: 'Distribution', en: 'Distribution' }, countries: ['ZAF', 'NGA', 'KEN', 'EGY'], value: 6.8 },
-      { name: { fr: 'Services', en: 'Services' }, countries: ['ZAF', 'NGA', 'KEN'], value: 3.2 }
+      { name: { fr: 'Composants', en: 'Components', ar: 'المكونات' }, countries: ['ZAF', 'MAR', 'EGY'], value: 8.5 },
+      { name: { fr: 'Assemblage', en: 'Assembly', ar: 'التجميع' }, countries: ['ZAF', 'MAR', 'EGY', 'KEN'], value: 12.2 },
+      { name: { fr: 'Distribution', en: 'Distribution', ar: 'التوزيع' }, countries: ['ZAF', 'NGA', 'KEN', 'EGY'], value: 6.8 },
+      { name: { fr: 'Services', en: 'Services', ar: 'الخدمات' }, countries: ['ZAF', 'NGA', 'KEN'], value: 3.2 }
     ],
     topProducers: [
       { country: 'Afrique du Sud', iso3: 'ZAF', production: 450000, share: 58 },
@@ -158,9 +160,18 @@ const DEFAULT_VALUE_CHAINS = {
   }
 };
 
+// Nom localisé d'une chaîne ou d'une étape. L'arabe n'est fourni que par le
+// jeu de référence ; pour les données du service, il retombe sur le français.
+const localName = (name, language) =>
+  name[language] || (String(language).startsWith('ar') && name.fr) || name.en;
+
+// Nom du pays : en arabe, depuis le code ISO3 quand il est connu.
+const countryLabel = (country, iso3, language) =>
+  (String(language).startsWith('ar') && iso3 ? getCountryName(iso3, 'ar') : country);
+
 // Value Chain Card Component
 const ValueChainCard = ({ chain, language, onClick, isSelected }) => {
-  const name = chain.name[language] || chain.name.en || chain.name;
+  const name = localName(chain.name, language) || chain.name;
   
   return (
     <Card 
@@ -182,10 +193,10 @@ const ValueChainCard = ({ chain, language, onClick, isSelected }) => {
         </div>
         <div className="mt-3 flex gap-2">
           <Badge variant="outline" className="text-xs">
-            {chain.topProducers?.length || chain.top_producers?.length || 0} pays producteurs
+            {chain.topProducers?.length || chain.top_producers?.length || 0} {pick(language, 'pays producteurs', 'pays producteurs', 'بلدان منتجة')}
           </Badge>
           <Badge className="text-xs bg-emerald-100 text-emerald-700">
-            ${chain.intraAfricanPotential || chain.intra_african_potential_musd || 0}M potentiel
+            ${chain.intraAfricanPotential || chain.intra_african_potential_musd || 0}M {pick(language, 'potentiel', 'potentiel', 'إمكانات')}
           </Badge>
         </div>
       </CardContent>
@@ -198,7 +209,7 @@ const StageFlow = ({ stages, language, color }) => {
   return (
     <div className="flex items-center justify-between overflow-x-auto pb-4">
       {stages.map((stage, index) => {
-        const stageName = stage.name[language] || stage.name.en || stage.name;
+        const stageName = localName(stage.name, language) || stage.name;
         const stageCountries = stage.countries || [];
         const stageValue = stage.value || stage.value_billion || 0;
         
@@ -235,7 +246,8 @@ const StageFlow = ({ stages, language, color }) => {
 
 // HS6 Search Result Panel
 const HS6SearchResult = ({ result, onClear }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const product = result.product || {};
   const summary = result.african_trade_summary || {};
   const exporters = result.top_african_exporters || [];
@@ -340,7 +352,7 @@ const HS6SearchResult = ({ result, onClear }) => {
                     <span className="text-xs font-black text-slate-300 w-4">{i + 1}</span>
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-0.5">
-                        <span className="text-sm font-medium text-slate-700">{exp.country}</span>
+                        <span className="text-sm font-medium text-slate-700">{countryLabel(exp.country, exp.iso3, language)}</span>
                         <span className={`text-xs font-semibold ${trendColor(exp.trend)}`}>
                           {trendIcon(exp.trend)} {exp.share_percent || 0}%
                         </span>
@@ -367,7 +379,7 @@ const HS6SearchResult = ({ result, onClear }) => {
                     <span className="text-xs font-black text-slate-300 w-4">{i + 1}</span>
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-0.5">
-                        <span className="text-sm font-medium text-slate-700">{imp.country}</span>
+                        <span className="text-sm font-medium text-slate-700">{countryLabel(imp.country, imp.iso3, language)}</span>
                         <span className="text-xs text-slate-500">{imp.share_percent || 0}%</span>
                       </div>
                       <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -377,7 +389,7 @@ const HS6SearchResult = ({ result, onClear }) => {
                         />
                       </div>
                       {imp.main_source && (
-                        <p className="text-[10px] text-slate-400">Source: {imp.main_source}</p>
+                        <p className="text-[10px] text-slate-400">{pick(language, 'Source', 'Source', 'المصدر')}: {imp.main_source}</p>
                       )}
                     </div>
                   </div>
@@ -403,7 +415,7 @@ const HS6SearchResult = ({ result, onClear }) => {
               {prod.top_producers.slice(0, 6).map((p, i) => (
                 <div key={p.country_iso3 || i} className="flex items-center gap-2">
                   <span className="text-xs font-black text-emerald-300 w-4">{i + 1}</span>
-                  <span className="flex-1 text-sm text-slate-700 font-medium">{p.country_name}</span>
+                  <span className="flex-1 text-sm text-slate-700 font-medium">{countryLabel(p.country_name, p.country_iso3, language)}</span>
                   <span className="text-xs text-slate-500">{fmtProd(p.value, prod.unit)}</span>
                   <span className="text-xs font-bold text-emerald-700 w-12 text-right">{p.share_pct != null ? `${p.share_pct}%` : '—'}</span>
                 </div>
@@ -435,7 +447,7 @@ const HS6SearchResult = ({ result, onClear }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {capacities.slice(0, 6).map((cap, i) => (
                 <div key={cap.iso3 || i} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
-                  <p className="font-semibold text-sm text-slate-800">{cap.country} <span className="text-slate-400 text-xs">({cap.iso3})</span></p>
+                  <p className="font-semibold text-sm text-slate-800">{countryLabel(cap.country, cap.iso3, language)} <span className="text-slate-400 text-xs">({cap.iso3})</span></p>
                   <p className="text-xs text-slate-600 mt-0.5">{cap.capacity}</p>
                   {cap.notes && <p className="text-[10px] text-slate-400 mt-0.5">{cap.notes}</p>}
                 </div>
@@ -481,7 +493,7 @@ const HS6SearchResult = ({ result, onClear }) => {
         {/* Sources */}
         {(result.sources || []).length > 0 && (
           <p className="text-xs text-slate-400 italic">
-            Sources: {result.sources.join(' · ')}
+            {pick(language, 'Sources', 'Sources', 'المصادر')}: {result.sources.join(' · ')}
           </p>
         )}
       </div>
@@ -544,7 +556,7 @@ export default function ValueChains({ language = 'fr' }) {
               hsCode: vc.hs_code || vc.hsCode || '',
               color: vc.color || '#059669',
               stages: (vc.stages || []).map(s => ({
-                name: s.name || { fr: 'Étape', en: 'Stage' },
+                name: s.name || { fr: 'Étape', en: 'Stage', ar: 'مرحلة' },
                 countries: s.countries || [],
                 value: s.value_billion || s.value || 0
               })),
@@ -631,7 +643,7 @@ export default function ValueChains({ language = 'fr' }) {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
-        <span className="ml-3 text-slate-600">Chargement des chaînes de valeur...</span>
+        <span className="ml-3 text-slate-600">{pick(language, 'Chargement des chaînes de valeur...', 'Chargement des chaînes de valeur...', 'جارٍ تحميل سلاسل القيمة…')}</span>
       </div>
     );
   }
@@ -729,12 +741,12 @@ export default function ValueChains({ language = 'fr' }) {
         {/* Preset shortcut chips */}
         <div className="flex flex-wrap gap-2 mt-3">
           {[
-            { code: '090111', label: '090111 · Café Arabica' },
-            { code: '180100', label: '180100 · Cacao' },
-            { code: '520100', label: '520100 · Coton' },
-            { code: '270900', label: '270900 · Pétrole brut' },
-            { code: '720100', label: '720100 · Fer & Acier' },
-            { code: '870322', label: '870322 · Véhicules' },
+            { code: '090111', label: `090111 · ${pick(language, 'Café Arabica', 'Café Arabica', 'بن أرابيكا')}` },
+            { code: '180100', label: `180100 · ${pick(language, 'Cacao', 'Cacao', 'الكاكاو')}` },
+            { code: '520100', label: `520100 · ${pick(language, 'Coton', 'Coton', 'القطن')}` },
+            { code: '270900', label: `270900 · ${pick(language, 'Pétrole brut', 'Pétrole brut', 'النفط الخام')}` },
+            { code: '720100', label: `720100 · ${pick(language, 'Fer & Acier', 'Fer & Acier', 'الحديد والصلب')}` },
+            { code: '870322', label: `870322 · ${pick(language, 'Véhicules', 'Véhicules', 'المركبات')}` },
           ].map(({ code, label }) => (
             <button
               key={code}
@@ -794,20 +806,20 @@ export default function ValueChains({ language = 'fr' }) {
               <span className="text-5xl">{chain.icon}</span>
               <div className="flex-1 min-w-[220px]">
                 <CardTitle className="text-2xl">
-                  {chain.name[language] || chain.name.en || chain.name}
+                  {localName(chain.name, language) || chain.name}
                 </CardTitle>
                 <CardDescription className="text-white/80">
-                  Code HS: {chain.hsCode || chain.hs_code} | Potentiel intra-africain: ${chain.intraAfricanPotential || chain.intra_african_potential_musd}M
+                  {pick(language, 'Code HS', 'Code HS', 'رمز SH')}: {chain.hsCode || chain.hs_code} | {pick(language, 'Potentiel intra-africain', 'Potentiel intra-africain', 'الإمكانات البينية الأفريقية')}: ${chain.intraAfricanPotential || chain.intra_african_potential_musd}M
                 </CardDescription>
               </div>
               <OpportunityPdfExport
                 language={language}
-                getSpec={() => {
+                getSpec={(t, language) => {
                   const fr = language !== 'en';
-                  const chainName = chain.name[language] || chain.name.en || String(chain.name);
+                  const chainName = localName(chain.name, language) || String(chain.name);
                   const producers = chain.topProducers || chain.top_producers || [];
                   const stages = (chain.stages || []).map((s) => {
-                    const stageName = typeof s.name === 'object' ? (s.name[language] || s.name.en) : s.name;
+                    const stageName = typeof s.name === 'object' ? localName(s.name, language) : s.name;
                     return `${stageName} : ${(s.countries || []).join(', ') || '—'}`;
                   });
                   return {
@@ -828,7 +840,7 @@ export default function ValueChains({ language = 'fr' }) {
                         },
                       },
                     ].filter(Boolean),
-                    source: isAiGenerated ? 'Claude AI + FAO/OEC' : 'Référentiel chaînes de valeur ZLECAf',
+                    source: isAiGenerated ? 'Claude AI + FAO/OEC' : pick(language, 'Référentiel chaînes de valeur ZLECAf', 'Référentiel chaînes de valeur ZLECAf', 'المرجع الخاص بسلاسل القيمة في زليكاف'),
                     filename: opportunityPdfFilename('ChaineValeur', chain.hsCode || chain.hs_code),
                   };
                 }}
@@ -862,7 +874,7 @@ export default function ValueChains({ language = 'fr' }) {
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-1">
                           <span className="flex items-center gap-2 font-medium text-slate-700">
-                            {producer.country}
+                            {countryLabel(producer.country, producer.iso3, language)}
                             {isNotPrimaryProducer && (
                               <span
                                 className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded bg-amber-100 text-amber-700"
@@ -918,7 +930,7 @@ export default function ValueChains({ language = 'fr' }) {
                 </ResponsiveContainer>
                 <div className="text-center mt-4">
                   <Badge className="text-sm" style={{ backgroundColor: chain.color }}>
-                    {(((chain.intraAfricanPotential || chain.intra_african_potential_musd || 0) / (chain.globalExports || chain.global_exports_musd || 1)) * 100).toFixed(1)}% du marché potentiel
+                    {(((chain.intraAfricanPotential || chain.intra_african_potential_musd || 0) / (chain.globalExports || chain.global_exports_musd || 1)) * 100).toFixed(1)}% {pick(language, 'du marché potentiel', 'du marché potentiel', 'من السوق المحتملة')}
                   </Badge>
                 </div>
               </div>
@@ -938,10 +950,10 @@ export default function ValueChains({ language = 'fr' }) {
                     ))
                   ) : (
                     <>
-                      <li>• Réduction des tarifs douaniers jusqu'à 90% d'ici 2034</li>
-                      <li>• Règles d'origine favorisant la transformation locale</li>
-                      <li>• Harmonisation des normes et standards</li>
-                      <li>• Facilitation du commerce et réduction des délais aux frontières</li>
+                      <li>• {pick(language, "Réduction des tarifs douaniers jusqu'à 90% d'ici 2034", "Réduction des tarifs douaniers jusqu'à 90% d'ici 2034", 'خفض الرسوم الجمركية بنسبة تصل إلى 90% بحلول عام 2034')}</li>
+                      <li>• {pick(language, "Règles d'origine favorisant la transformation locale", "Règles d'origine favorisant la transformation locale", 'قواعد منشأ تشجّع التحويل المحلي')}</li>
+                      <li>• {pick(language, 'Harmonisation des normes et standards', 'Harmonisation des normes et standards', 'مواءمة المعايير والمواصفات')}</li>
+                      <li>• {pick(language, 'Facilitation du commerce et réduction des délais aux frontières', 'Facilitation du commerce et réduction des délais aux frontières', 'تيسير التجارة وتقليص الآجال على الحدود')}</li>
                     </>
                   )}
                 </ul>

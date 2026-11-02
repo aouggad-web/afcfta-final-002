@@ -68,10 +68,35 @@ export default function RulesTab({ language = 'fr' }) {
       alternativeRule: "Alternative rule",
       ytbWarning: "This rule is still under negotiation (Yet To Be agreed) between member states",
       source: "Source"
+    },
+    ar: {
+      title: "قواعد المنشأ في منطقة التجارة الحرة القارية الأفريقية",
+      description: "أدخل رمز SH6 للاطلاع على قواعد المنشأ الخاصة به",
+      placeholder: "رمز SH6 (مثال: 010121)",
+      consult: "عرض",
+      rulesForCode: "القواعد الخاصة برمز SH",
+      sector: "القطاع",
+      ruleType: "نوع القاعدة",
+      requirement: "الشرط",
+      minRegionalContent: "الحد الأدنى للمحتوى الإقليمي",
+      regionalContentRequired: "من المحتوى الأفريقي مطلوب",
+      requiredDocumentation: "الوثائق المطلوبة",
+      adminInfo: "معلومات إدارية",
+      validityPeriod: "فترة الصلاحية",
+      issuingAuthority: "الجهة المُصدِرة",
+      errorLoading: "خطأ أثناء تحميل قواعد المنشأ",
+      browseHS: "تصفّح رموز SH",
+      hideHSBrowser: "إخفاء المتصفّح",
+      searchOrBrowse: "ابحث عن رموز SH6 أو تصفّحها للاطلاع على قواعد المنشأ المطبّقة",
+      loadingRules: "جارٍ تحميل القواعد…",
+      explanation: "ما يعنيه ذلك",
+      alternativeRule: "قاعدة بديلة",
+      ytbWarning: "لا تزال هذه القاعدة قيد التفاوض (لم يُتفق عليها بعد) بين الدول الأعضاء",
+      source: "المصدر"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
 
   const fetchRulesOfOrigin = async (code) => {
     if (!code || code.length < 2) return;

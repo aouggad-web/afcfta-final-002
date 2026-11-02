@@ -3,6 +3,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Badge } from '../ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { pick, intlLocale } from '../../i18n/lang';
+
+const CORRIDOR_TYPE_AR = { road: 'طريق بري', rail: 'سكك حديدية', multimodal: 'متعدد الوسائط' };
 
 const getTypeIcon = (type) => {
   if (type === 'road') return '🛣️';
@@ -94,6 +97,43 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
       phone: "Phone",
       certifications: "Certifications",
       openingHours: "Opening Hours",
+    },
+    ar: {
+      pidaPriority: "ذو أولوية في PIDA",
+      description: "الوصف",
+      annualFreight: "الشحن السنوي",
+      tons: "طن",
+      transitTime: "مدة العبور",
+      hours: "ساعة",
+      borderTime: "مدة العبور الحدودي",
+      dailyTraffic: "الحركة اليومية",
+      trucksDay: "شاحنة/يوم",
+      infrastructureRoute: "البنية التحتية والمسار",
+      countriesCrossed: "البلدان المعبورة",
+      startEndPoints: "نقطتا الانطلاق والوصول",
+      technicalDetails: "التفاصيل التقنية",
+      source: "المصدر",
+      logisticsNodes: "العُقد اللوجستية",
+      transportOperators: "المشغلون",
+      logisticsNodesBorder: "العُقد اللوجستية والمراكز الحدودية",
+      osbpOperational: "مركز حدودي موحد (OSBP) قيد التشغيل",
+      noNodes: "لا توجد عُقد مسجلة",
+      transportOperatorsTitle: "مشغلو النقل",
+      noOperators: "لا يوجد مشغلون مسجلون",
+      locomotives: "قاطرة",
+      trucks: "شاحنة",
+      network: "الشبكة اللوجستية",
+      global3pl: "مزودو الخدمات اللوجستية العالميون (3PL)",
+      regionalTrucking: "النقل البري الإقليمي",
+      railOperators: "مشغلو السكك الحديدية",
+      corridorBodies: "هيئات الإدارة",
+      localAgents: "الوكلاء المحليون",
+      serviceProviders: "مقدمو الخدمات",
+      noNetwork: "بيانات الشبكة اللوجستية غير متاحة",
+      city: "المدينة",
+      phone: "الهاتف",
+      certifications: "الشهادات",
+      openingHours: "ساعات العمل",
     }
   };
 
@@ -101,9 +141,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
 
   const formatNumber = (num) => {
     if (num === null || num === undefined) return 'N/A';
-    return language === 'en' 
-      ? new Intl.NumberFormat('en-US').format(num)
-      : new Intl.NumberFormat('fr-FR').format(num);
+    return new Intl.NumberFormat(intlLocale(language)).format(num);
   };
 
   if (!corridor) return null;
@@ -123,7 +161,7 @@ export default function CorridorDetailsModal({ corridor, open, onClose, language
             {corridor.corridor_name}
           </DialogTitle>
           <DialogDescription className="flex gap-2 mt-2 flex-wrap">
-            <Badge className="bg-[var(--afcfta-card2)]">{corridor.corridor_type}</Badge>
+            <Badge className="bg-[var(--afcfta-card2)]">{pick(language, corridor.corridor_type, corridor.corridor_type, CORRIDOR_TYPE_AR[corridor.corridor_type] || corridor.corridor_type)}</Badge>
             <Badge variant="outline">{corridor.status}</Badge>
             {corridor.importance === 'high' && <Badge className="bg-amber-500">⭐ {t.pidaPriority}</Badge>}
             <Badge variant="outline">{corridor.length_km} km</Badge>

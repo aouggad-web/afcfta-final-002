@@ -5,19 +5,27 @@ import {
   Moon, Sun, TrendingUp, Mail, User, LogOut, Tag,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { pick, isRtl } from "../i18n/lang";
 
-const NAV_ITEMS = (isFrench) => [
-  { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",       icon: LayoutDashboard },
-  { id: "calculator", label: isFrench ? "Calculateur"     : "Calculator",      icon: Calculator },
-  { id: "stats",      label: isFrench ? "Statistiques"    : "Statistics",      icon: BarChart3 },
-  { id: "production", label: isFrench ? "Production"      : "Production",      icon: Factory },
-  { id: "logistics",  label: isFrench ? "Logistique"      : "Logistics",       icon: Ship },
-  { id: "banking",    label: isFrench ? "Finance"         : "Finance",         icon: Landmark },
-  { id: "tools",      label: isFrench ? "Outils"          : "Tools",           icon: Wrench },
-  { id: "roo",        label: isFrench ? "R. d'Origine"   : "Rules of Origin", icon: FileCheck },
-  { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",        icon: Globe2 },
-  { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",   icon: TrendingUp },
-  { id: "contact",    label: isFrench ? "Contact"         : "Contact",         icon: Mail },
+const NAV_ITEMS = (lang) => [
+  { id: "dashboard",  label: pick(lang, "Tableau de bord", "Dashboard", "لوحة القيادة"),       icon: LayoutDashboard },
+  { id: "calculator", label: pick(lang, "Calculateur", "Calculator", "الحاسبة"),      icon: Calculator },
+  { id: "stats",      label: pick(lang, "Statistiques", "Statistics", "الإحصائيات"),      icon: BarChart3 },
+  { id: "production", label: pick(lang, "Production", "Production", "الإنتاج"),      icon: Factory },
+  { id: "logistics",  label: pick(lang, "Logistique", "Logistics", "اللوجستيك"),       icon: Ship },
+  { id: "banking",    label: pick(lang, "Finance", "Finance", "التمويل"),         icon: Landmark },
+  { id: "tools",      label: pick(lang, "Outils", "Tools", "الأدوات"),           icon: Wrench },
+  { id: "roo",        label: pick(lang, "R. d'Origine", "Rules of Origin", "قواعد المنشأ"), icon: FileCheck },
+  { id: "profiles",   label: pick(lang, "Profils", "Profiles", "ملفات البلدان"),        icon: Globe2 },
+  { id: "reports",    label: pick(lang, "Opportunités", "Opportunities", "الفرص"),   icon: TrendingUp },
+  { id: "contact",    label: pick(lang, "Contact", "Contact", "اتصل بنا"),         icon: Mail },
+];
+
+// Langues de l'interface.
+const LANG_BUTTONS = [
+  { code: "fr", label: "FR", name: "Français" },
+  { code: "en", label: "EN", name: "English" },
+  { code: "ar", label: "ع", name: "العربية" },
 ];
 
 export default function AfcftaSidebar({
@@ -29,9 +37,10 @@ export default function AfcftaSidebar({
   onOpenAuth,
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const isFrench = language === "fr";
+  // En arabe la barre est à droite : les chevrons de repli s'inversent.
+  const rtl = isRtl(language);
   const isLight = theme === "light";
-  const items = NAV_ITEMS(isFrench);
+  const items = NAV_ITEMS(language);
   const { user, logout } = useAuth() || {};
 
   const handleTab = (id) => {
@@ -50,13 +59,13 @@ export default function AfcftaSidebar({
           height={38}
         />
         <div className="afcfta-sidebar-title">
-          <h1>{isFrench ? "ZLECAf" : "AfCFTA"}</h1>
-          <p>{isFrench ? "Intelligence commerciale" : "Trade Intelligence"}</p>
+          <h1>{pick(language, "ZLECAf", "AfCFTA", "زليكاف")}</h1>
+          <p>{pick(language, "Intelligence commerciale", "Trade Intelligence", "المعلومات التجارية")}</p>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="afcfta-sidebar-nav" aria-label={isFrench ? "Navigation principale" : "Main navigation"}>
+      <nav className="afcfta-sidebar-nav" aria-label={pick(language, "Navigation principale", "Main navigation", "التنقل الرئيسي")}>
         {items.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -85,7 +94,7 @@ export default function AfcftaSidebar({
           data-testid="sidebar-pricing-link"
         >
           <span className="afcfta-nav-icon"><Tag size={16} strokeWidth={1.7} /></span>
-          <span className="afcfta-nav-label">{isFrench ? "Tarifs" : "Pricing"}</span>
+          <span className="afcfta-nav-label">{pick(language, "Tarifs", "Pricing", "الأسعار")}</span>
         </a>
 
         {/* Account */}
@@ -95,7 +104,7 @@ export default function AfcftaSidebar({
             <button
               className="afcfta-nav-label"
               onClick={onOpenAuth}
-              title={isFrench ? "Mon compte" : "My account"}
+              title={pick(language, "Mon compte", "My account", "حسابي")}
               data-testid="sidebar-account-btn"
               style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", background: "none", border: "none", color: "inherit", cursor: "pointer", textAlign: "left", padding: 0, font: "inherit" }}
             >
@@ -103,8 +112,8 @@ export default function AfcftaSidebar({
             </button>
             <button
               onClick={logout}
-              aria-label={isFrench ? "Se déconnecter" : "Log out"}
-              title={isFrench ? "Se déconnecter" : "Log out"}
+              aria-label={pick(language, "Se déconnecter", "Log out", "تسجيل الخروج")}
+              title={pick(language, "Se déconnecter", "Log out", "تسجيل الخروج")}
               data-testid="sidebar-logout-btn"
               style={{ background: "none", border: "none", cursor: "pointer", color: "inherit", padding: 4 }}
             >
@@ -119,28 +128,30 @@ export default function AfcftaSidebar({
             data-testid="sidebar-login-btn"
           >
             <span className="afcfta-nav-icon"><User size={16} strokeWidth={1.7} /></span>
-            <span className="afcfta-nav-label">{isFrench ? "Connexion" : "Login"}</span>
+            <span className="afcfta-nav-label">{pick(language, "Connexion", "Login", "تسجيل الدخول")}</span>
           </button>
         )}
 
         {/* Language + theme */}
         <div className="afcfta-lang-switch" style={{ marginBottom: 8 }}>
-          <button
-            className={`afcfta-langBtn${isFrench ? " active" : ""}`}
-            onClick={() => onTabChange && onTabChange("language", "fr")}
-            aria-pressed={isFrench}
-          >FR</button>
-          <button
-            className={`afcfta-langBtn${!isFrench ? " active" : ""}`}
-            onClick={() => onTabChange && onTabChange("language", "en")}
-            aria-pressed={!isFrench}
-          >EN</button>
+          {LANG_BUTTONS.map(({ code, label, name }) => (
+            <button
+              key={code}
+              className={`afcfta-langBtn${language === code ? " active" : ""}`}
+              onClick={() => onTabChange && onTabChange("language", code)}
+              aria-pressed={language === code}
+              title={name}
+              lang={code}
+            >{label}</button>
+          ))}
           {onThemeToggle && (
             <button
               className="afcfta-themeToggle"
               onClick={onThemeToggle}
-              aria-label={isFrench ? (isLight ? "Mode sombre" : "Mode clair") : (isLight ? "Dark mode" : "Light mode")}
-              style={{ marginLeft: "auto" }}
+              aria-label={isLight
+                ? pick(language, "Mode sombre", "Dark mode", "الوضع الداكن")
+                : pick(language, "Mode clair", "Light mode", "الوضع الفاتح")}
+              style={{ marginInlineStart: "auto" }}
             >
               {isLight ? <Moon size={14} /> : <Sun size={14} />}
             </button>
@@ -151,11 +162,13 @@ export default function AfcftaSidebar({
         <button
           className="afcfta-sidebar-toggle"
           onClick={() => setCollapsed((c) => !c)}
-          aria-label={collapsed ? (isFrench ? "Développer" : "Expand") : (isFrench ? "Réduire" : "Collapse")}
+          aria-label={collapsed
+            ? pick(language, "Développer", "Expand", "توسيع")
+            : pick(language, "Réduire", "Collapse", "طي")}
         >
-          {collapsed ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
+          {collapsed !== rtl ? <ChevronRight size={15} /> : <ChevronLeft size={15} />}
           <span className="afcfta-sidebar-toggle-label">
-            {isFrench ? "Réduire" : "Collapse"}
+            {pick(language, "Réduire", "Collapse", "طي")}
           </span>
         </button>
       </div>

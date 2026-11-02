@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
 import { chiffres, estAnglais, montant, montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -318,10 +319,110 @@ export default function CountryProfilesTab({ language = 'fr' }) {
       customsAirOffices: "Main Airport Offices",
       customsLandOffices: "Land Border Offices",
       customsVisitSite: "Visit website"
+    },
+    ar: {
+      title: "الملفات الاقتصادية للبلدان",
+      description: "اختر بلدًا للاطلاع على ملفه الاقتصادي الكامل وبنيته التحتية ومشاريعه الهيكلية (2025-2030)",
+      selectPlaceholder: "اختر بلدًا من القائمة",
+      searchLabel: "البحث عن بلد",
+      searchPlaceholder: "ابحث عن بلد (الاسم أو رمز ISO)…",
+      noCountryFound: "لم يُعثر على أي بلد",
+      error: "خطأ",
+      loadError: "تعذّر تحميل قائمة البلدان",
+      population: "السكان",
+      inhabitants: "نسمة",
+      totalGdp: "الناتج المحلي الإجمالي",
+      gdpPerCapita: "نصيب الفرد من الناتج المحلي الإجمالي",
+      hdiDesc: "مؤشر التنمية البشرية",
+      auMember: "عضو في الاتحاد الأفريقي",
+      macroIndicators: "مؤشرات الاقتصاد الكلي",
+      growth: "النمو",
+      projection: "توقعات",
+      inflation: "التضخم",
+      unemployment: "البطالة",
+      wbSource: "البنك الدولي",
+      iloWb: "منظمة العمل الدولية / البنك الدولي",
+      imfWeo: "صندوق النقد الدولي، WEO",
+      publicFinance: "الديون واحتياطيات النقد الأجنبي والتنمية البشرية",
+      publicDebt: "الدين العام",
+      ofGdp: "من الناتج المحلي الإجمالي",
+      externalDebt: "الدين الخارجي",
+      ofGni: "من الدخل القومي الإجمالي",
+      idsSource: "البنك الدولي (IDS)",
+      fxReserves: "احتياطيات النقد الأجنبي",
+      importMonths: "أشهر من الواردات",
+      reservesPooled: "مجمّعة لدى البنك المركزي لدول غرب أفريقيا (BCEAO) – الاتحاد الاقتصادي والنقدي لغرب أفريقيا",
+      hdi: "مؤشر التنمية البشرية",
+      debtLow: "مخاطر منخفضة",
+      debtModerate: "مخاطر معتدلة",
+      debtHigh: "مخاطر مرتفعة",
+      debtCritical: "مخاطر حرجة",
+      loading: "جارٍ تحميل الملف…",
+      profileError: "تعذّر تحميل ملف هذا البلد",
+      inAfrica: "في أفريقيا",
+      rankLegend: "#الترتيب/N: الترتيب بين البلدان الأفريقية التي تنشر المؤشر للسنة نفسها — 1 = أعلى قيمة؛ بالنسبة للتضخم والبطالة والدين، 1 = أدنى قيمة.",
+      millionsInhabitants: "مليون نسمة",
+      goldReserves: "احتياطيات الذهب",
+      tonnes: "طن",
+      africa: "أفريقيا",
+      global: "العالم",
+      gaiTitle: "Global Attractiveness Index 2025",
+      improving: "في تحسّن",
+      declining: "في تراجع",
+      stable: "مستقر",
+      structuringProjects: "المشاريع الهيكلية وآفاق 2030",
+      majorInvestments: "استثمارات كبرى قيد الإنجاز (السكك الحديدية، الموانئ، المناجم، الطاقة)",
+      budget: "الميزانية",
+      impact: "الأثر",
+      partners: "الشركاء",
+      worldBankIndicators: "مؤشرات البنك الدولي (آخر سنة متاحة)",
+      officialData: "بيانات رسمية من البنك الدولي — السنة مبيّنة على كل مؤشر",
+      socialIndicators: "المؤشرات الاجتماعية",
+      lifeExpectancy: "متوسط العمر المتوقع",
+      years: "سنة",
+      giniIndex: "مؤشر جيني",
+      outOf100: "من 100",
+      povertyRate: "الفقر (3$ في اليوم)",
+      populationPercent: "من السكان",
+      urbanPopulation: "سكان الحضر",
+      ofTotal: "من المجموع",
+      digitalConnectivity: "الرقمنة والاتصال",
+      internetAccess: "الوصول إلى الإنترنت",
+      cybersecurity: "الأمن السيبراني",
+      electricityAccess: "الوصول إلى الكهرباء",
+      coverage3g: "تغطية 3G",
+      environmentEquality: "البيئة والمساواة",
+      workingWomen: "النساء العاملات",
+      femalePopulation: "من الإناث",
+      waterStress: "الإجهاد المائي",
+      resources: "من الموارد",
+      ghgEmissions: "انبعاثات غازات الدفيئة",
+      learningPoverty: "فقر التعلّم",
+      children: "من الأطفال",
+      source: "المصدر",
+      infrastructurePerformance: "أداء البنية التحتية واللوجستيك",
+      continentalRanking: "الترتيب القاري (AIDI 2025) ومؤشر الأداء اللوجستي (البنك الدولي)",
+      lpiScore: "درجة مؤشر الأداء اللوجستي (LPI)",
+      infrastructure: "البنية التحتية",
+      worldRank: "الترتيب العالمي",
+      aidiScore: "درجة AIDI 2025",
+      globalIndex: "المؤشر العام",
+      africaRank: "الترتيب الأفريقي",
+      lpiDescription: "يقيّم جودة البنية التحتية المرتبطة بالتجارة والنقل (البنك الدولي).",
+      aidiDescription: "مقياس مركّب لتطور البنية التحتية (النقل، الكهرباء، تكنولوجيا المعلومات والاتصالات، المياه) صادر عن البنك الأفريقي للتنمية.",
+      customsTitle: "إدارة الجمارك",
+      customsSubtitle: "التسمية الرسمية وبيانات الاتصال والمكاتب الحدودية الرئيسية",
+      customsAdministration: "التسمية الرسمية",
+      customsAddress: "عنوان المقر",
+      customsWebsite: "الموقع الرسمي",
+      customsPortOffices: "المكاتب المينائية الرئيسية",
+      customsAirOffices: "مكاتب المطارات الرئيسية",
+      customsLandOffices: "المكاتب البرية / الحدودية",
+      customsVisitSite: "زيارة الموقع"
     }
   };
 
-  const t = texts[language];
+  const t = texts[language] || texts.fr;
   const proj = countryProfile?.projections || {};
   const years = proj.indicator_years || {};
   const rankings = countryProfile?.african_rankings || {};
@@ -674,9 +775,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   </div>
                   {(countryProfile.projections.gai_2025_category_fr || countryProfile.projections.gai_2025_category_en) && (
                     <p className="text-sm font-semibold text-[var(--violet)] mb-2">
-                      {language === 'fr'
-                        ? countryProfile.projections.gai_2025_category_fr
-                        : countryProfile.projections.gai_2025_category_en}
+                      {pick(language, countryProfile.projections.gai_2025_category_fr, countryProfile.projections.gai_2025_category_en, countryProfile.projections.gai_2025_category_fr)}
                     </p>
                   )}
                   <div className="flex gap-3 text-xs">
@@ -694,7 +793,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
             {/* SECTION: Perspectives FMI (WEO : croissance, inflation, dette publique) */}
             {proj.imf_gdp_growth && (() => {
               const rows = [
-                { key: 'imf_gdp_growth', label: language === 'fr' ? 'Croissance du PIB réel' : 'Real GDP growth' },
+                { key: 'imf_gdp_growth', label: pick(language, 'Croissance du PIB réel', 'Real GDP growth', 'نمو الناتج المحلي الإجمالي الحقيقي') },
                 { key: 'imf_inflation', label: t.inflation },
                 { key: 'imf_gov_debt', label: `${t.publicDebt} (${t.ofGdp})` },
               ].filter((r) => proj[r.key] && Object.keys(proj[r.key]).length);
@@ -709,12 +808,12 @@ export default function CountryProfilesTab({ language = 'fr' }) {
               if (!years.length) return null;
               return (
                 <section className={PANEL}>
-                  <SectionTitle>{language === 'fr' ? 'Perspectives FMI' : 'IMF Outlook'}</SectionTitle>
+                  <SectionTitle>{pick(language, 'Perspectives FMI', 'IMF Outlook', 'آفاق صندوق النقد الدولي')}</SectionTitle>
                   <div className="overflow-x-auto rounded-xl border border-[var(--afcfta-border)]">
                     <table className="w-full text-sm border-collapse">
                       <thead className="bg-[var(--afcfta-card)]">
                         <tr>
-                          <th className="text-left p-2 pr-4 min-w-[13rem] text-[var(--afcfta-muted)] font-semibold">{language === 'fr' ? 'Indicateur' : 'Indicator'}</th>
+                          <th className="text-left p-2 pr-4 min-w-[13rem] text-[var(--afcfta-muted)] font-semibold">{pick(language, 'Indicateur', 'Indicator', 'المؤشر')}</th>
                           {years.map((y) => (
                             <th key={y} className={`p-2 text-right font-semibold tabular-nums ${y < nowY ? 'text-[var(--text)]' : 'text-[var(--gold)]'}`}>
                               {y}{y >= nowY ? '*' : ''}
@@ -737,8 +836,8 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     </table>
                   </div>
                   <p className="text-xs text-[var(--afcfta-muted)] mt-2">
-                    {language === 'fr' ? '* projection · ' : '* projection · '}
-                    {proj.imf_source || 'FMI — WEO'}
+                    {pick(language, '* projection · ', '* projection · ', '* توقعات · ')}
+                    {proj.imf_source || pick(language, 'FMI — WEO', 'FMI — WEO', 'صندوق النقد الدولي — WEO')}
                   </p>
                 </section>
               );
@@ -956,7 +1055,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     
                   <div className="mt-6 bg-[var(--afcfta-card2)] p-4 rounded-xl border border-[var(--afcfta-border)]">
                     <p className="text-xs text-[var(--text)]">
-                      <strong className="text-[var(--info)]">IPL ({language === 'fr' ? 'Indice de Performance Logistique' : 'Logistics Performance Index'})</strong> : {t.lpiDescription}
+                      <strong className="text-[var(--info)]">IPL ({pick(language, 'Indice de Performance Logistique', 'Logistics Performance Index', 'مؤشر الأداء اللوجستي')})</strong> : {t.lpiDescription}
                       <br />
                       <strong className="text-[var(--terra)]">AIDI (Africa Infrastructure Development Index)</strong> : {t.aidiDescription}
                     </p>

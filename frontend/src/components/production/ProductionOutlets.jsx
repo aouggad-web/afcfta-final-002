@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { AlertTriangle, ArrowRight, Loader2, PackageSearch } from 'lucide-react';
 
 import EnhancedCountrySelector from './EnhancedCountrySelector';
+import { intlLocale } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -165,7 +166,7 @@ function ProductionOutlets({ language = 'fr' }) {
                       </td>
                       <td className="py-2 pr-3 font-mono text-xs text-[var(--afcfta-muted)]">{p.hs_code}</td>
                       <td className="py-2 pr-3 text-right tabular-nums text-[var(--text)]">
-                        {typeof p.value === 'number' ? p.value.toLocaleString(language) : '—'}
+                        {typeof p.value === 'number' ? p.value.toLocaleString(intlLocale(language)) : '—'}
                         <span className="text-[var(--afcfta-muted)] text-xs"> {p.unit}</span>
                       </td>
                       <td className="py-2 pr-3 text-xs text-[var(--afcfta-muted)]">

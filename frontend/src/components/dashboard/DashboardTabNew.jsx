@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import NewsDashboard from './NewsDashboard';
 import { montantCompact, montantUnite } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -67,6 +68,32 @@ const translations = {
     merchExports: 'Merchandise exports',
     intraAfricanTradeShort: 'Intra-African trade',
   },
+  ar: {
+    overview: 'نظرة عامة على زليكاف',
+    source: 'المصدر: صندوق النقد الدولي، آفاق الاقتصاد العالمي أكتوبر 2025، الأونكتاد',
+    lead: 'منصة للذكاء الاقتصادي والتعريفي والتجاري للفضاء الأفريقي.',
+    totalGdp: 'الناتج المحلي الإجمالي لأفريقيا مجتمعة',
+    intraAfricanTrade: 'التجارة البينية الأفريقية',
+    dataCoverage: 'تغطية البيانات',
+    tariffPositions: 'البنود التعريفية',
+    countries: 'بلدًا عضوًا',
+    authenticCountries: 'بلدًا ذا بيانات موثوقة',
+    authenticPositions: 'بندًا موثقًا',
+    growth: 'النمو 2024',
+    strategicCoverage: 'التغطية الاستراتيجية',
+    strategicCoverageSub: 'التكتلات التجارية وعمق البيانات',
+    members: 'الأعضاء',
+    coverage: 'التغطية',
+    authentic: 'موثوق',
+    lastLayer: 'أحدث طبقة',
+    blocCountries: 'بلدان مشمولة',
+    continentalTitle: 'المؤشرات القارية 2025',
+    afreximbankSource: 'المصدر: أفريكسيم بنك، تقرير التجارة الأفريقية 2026',
+    gdpGrowth: 'نمو الناتج المحلي الإجمالي',
+    inflation: 'التضخم',
+    merchExports: 'صادرات السلع',
+    intraAfricanTradeShort: 'التجارة البينية الأفريقية',
+  },
 };
 
 const BLOCS = [
@@ -77,7 +104,7 @@ const BLOCS = [
   { name: 'AES', count: 3, accent: '#e67e22' },
 ];
 
-function DashboardMetricCard({ item }) {
+function DashboardMetricCard({ item, language }) {
   const Icon = item.icon;
 
   return (
@@ -139,7 +166,7 @@ function DashboardMetricCard({ item }) {
 
         <span className="inline-flex items-center gap-1 text-xs text-[var(--afcfta-muted)]">
           <ArrowUpRight className="w-3.5 h-3.5" />
-          intelligence
+          {pick(language, 'intelligence', 'intelligence', 'ذكاء')}
         </span>
       </div>
     </div>
@@ -284,7 +311,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
 
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {kpis.map((item) => (
-          <DashboardMetricCard key={item.key} item={item} />
+          <DashboardMetricCard key={item.key} item={item} language={language} />
         ))}
       </section>
 
@@ -371,7 +398,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
 
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[var(--overlay)] text-xs text-[var(--afcfta-muted)]">
             <Globe className="w-3.5 h-3.5" />
-            AfCFTA data fabric
+            {pick(language, 'AfCFTA data fabric', 'AfCFTA data fabric', 'منظومة بيانات زليكاف')}
           </div>
         </div>
 

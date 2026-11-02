@@ -21,11 +21,11 @@ export const aiHelpers = {
 
   getRiskLabel: (riskLevel) => {
     const labels = {
-      low: { en: 'Low Risk', fr: 'Risque Faible', color: 'text-green-600 bg-green-50' },
-      medium: { en: 'Medium Risk', fr: 'Risque Moyen', color: 'text-yellow-600 bg-yellow-50' },
-      high: { en: 'High Risk', fr: 'Risque Élevé', color: 'text-red-600 bg-red-50' },
+      low: { en: 'Low Risk', fr: 'Risque Faible', ar: 'مخاطر منخفضة', color: 'text-green-600 bg-green-50' },
+      medium: { en: 'Medium Risk', fr: 'Risque Moyen', ar: 'مخاطر متوسطة', color: 'text-yellow-600 bg-yellow-50' },
+      high: { en: 'High Risk', fr: 'Risque Élevé', ar: 'مخاطر مرتفعة', color: 'text-red-600 bg-red-50' },
     };
-    return labels[String(riskLevel).toLowerCase()] || { en: riskLevel, fr: riskLevel, color: 'text-gray-600 bg-gray-50' };
+    return labels[String(riskLevel).toLowerCase()] || { en: riskLevel, fr: riskLevel, ar: riskLevel, color: 'text-gray-600 bg-gray-50' };
   },
 
   formatInvestmentSize: (amount) => {

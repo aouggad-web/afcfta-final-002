@@ -42,6 +42,23 @@ const texts = {
     netBenefit: 'Net benefit',
     explanation: 'Explanation',
   },
+  ar: {
+    title: '💱 استراتيجيات التحوط من مخاطر الصرف',
+    subtitle: 'توصيات التحوط لمعاملتك (الخيار 3)',
+    countryLabel: 'البلد',
+    amountLabel: 'المبلغ (USD)',
+    daysLabel: 'الأفق الزمني (بالأيام)',
+    submit: 'تحليل',
+    loading: 'جارٍ التحليل…',
+    error: 'خطأ',
+    necessity: 'مدى الضرورة',
+    recommended: 'الاستراتيجية الموصى بها',
+    strategies: 'الاستراتيجيات المصنفة',
+    cost: 'التكلفة',
+    effectiveness: 'الفعالية',
+    netBenefit: 'الفائدة الصافية',
+    explanation: 'الشرح',
+  },
 };
 
 export default function FXHedging({ language = 'en' }) {

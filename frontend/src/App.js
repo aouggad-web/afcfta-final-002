@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { DirectionProvider } from '@radix-ui/react-direction';
+import { pick, isRtl } from './i18n/lang';
 import { toast } from './hooks/use-toast';
 import { Toaster } from './components/ui/toaster';
 
 import './styles/theme.css';
 import './styles/theme-light.css';
 import './styles/ambiance.css';
+import './styles/rtl.css';
 
 import AfcftaTopbar from './components/AfcftaTopbar';
 import AfcftaSidebar from './components/AfcftaSidebar';
@@ -249,11 +252,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Calculateur de Tarifs Douaniers' : 'Customs Tariff Calculator'}
+              title={pick(language, 'Calculateur de Tarifs Douaniers', 'Customs Tariff Calculator', 'حاسبة التعريفات الجمركية')}
               subtitle={
-                language === 'fr'
-                  ? 'Calculs basés sur les données officielles des administrations douanières'
-                  : 'Calculations based on official customs data'
+                pick(language, 'Calculs basés sur les données officielles des administrations douanières', 'Calculations based on official customs data', 'حسابات مبنية على البيانات الرسمية لإدارات الجمارك')
               }
               dotColor="copper"
             />
@@ -268,8 +269,8 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Statistiques Commerciales' : 'Trade Statistics'}
-              subtitle={language === 'fr' ? 'Données OEC, COMTRADE, UNCTAD' : 'OEC, COMTRADE, UNCTAD Data'}
+              title={pick(language, 'Statistiques Commerciales', 'Trade Statistics', 'الإحصائيات التجارية')}
+              subtitle={pick(language, 'Données OEC, COMTRADE, UNCTAD', 'OEC, COMTRADE, UNCTAD Data', 'بيانات OEC وCOMTRADE والأونكتاد')}
               dotColor="info"
             />
             <div style={{ height: 20 }} />
@@ -283,11 +284,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Production Africaine' : 'African Production'}
+              title={pick(language, 'Production Africaine', 'African Production', 'الإنتاج الأفريقي')}
               subtitle={
-                language === 'fr'
-                  ? 'Données FAOSTAT et capacités industrielles'
-                  : 'FAOSTAT data and industrial capacity'
+                pick(language, 'Données FAOSTAT et capacités industrielles', 'FAOSTAT data and industrial capacity', 'بيانات FAOSTAT والقدرات الصناعية')
               }
               dotColor="warning"
             />
@@ -302,11 +301,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Logistique & Infrastructure' : 'Logistics & Infrastructure'}
+              title={pick(language, 'Logistique & Infrastructure', 'Logistics & Infrastructure', 'اللوجستيك والبنية التحتية')}
               subtitle={
-                language === 'fr'
-                  ? 'Ports, corridors, connectivité maritime'
-                  : 'Ports, corridors, maritime connectivity'
+                pick(language, 'Ports, corridors, connectivité maritime', 'Ports, corridors, maritime connectivity', 'الموانئ والممرات والربط البحري')
               }
               dotColor="info"
             />
@@ -321,11 +318,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Finance – Banque & Assurance' : 'Finance – Banking & Insurance'}
+              title={pick(language, 'Finance – Banque & Assurance', 'Finance – Banking & Insurance', 'التمويل – البنوك والتأمين')}
               subtitle={
-                language === 'fr'
-                  ? 'Change, domiciliation, financement du commerce, assurance-crédit export'
-                  : 'Forex, domiciliation, trade finance, export credit insurance'
+                pick(language, 'Change, domiciliation, financement du commerce, assurance-crédit export', 'Forex, domiciliation, trade finance, export credit insurance', 'الصرف، التوطين البنكي، تمويل التجارة، تأمين ائتمان الصادرات')
               }
               dotColor="info"
             />
@@ -338,8 +333,8 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? "Outils d'Analyse" : 'Analysis Tools'}
-              subtitle={language === 'fr' ? 'Convertisseurs, recherche HS, IA' : 'Converters, HS search, AI'}
+              title={pick(language, "Outils d'Analyse", 'Analysis Tools', 'أدوات التحليل')}
+              subtitle={pick(language, 'Convertisseurs, recherche HS, IA', 'Converters, HS search, AI', 'المحوّلات، البحث برمز SH، الذكاء الاصطناعي')}
             />
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
@@ -352,11 +347,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? "Règles d'Origine ZLECAf" : 'AfCFTA Rules of Origin'}
+              title={pick(language, "Règles d'Origine ZLECAf", 'AfCFTA Rules of Origin', 'قواعد المنشأ في زليكاف')}
               subtitle={
-                language === 'fr'
-                  ? "Critères d'éligibilité au tarif préférentiel"
-                  : 'Preferential tariff eligibility criteria'
+                pick(language, "Critères d'éligibilité au tarif préférentiel", 'Preferential tariff eligibility criteria', 'معايير الأهلية للتعريفة التفضيلية')
               }
               dotColor="copper"
             />
@@ -371,11 +364,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Profils Pays' : 'Country Profiles'}
+              title={pick(language, 'Profils Pays', 'Country Profiles', 'ملفات البلدان')}
               subtitle={
-                language === 'fr'
-                  ? 'Données économiques et commerciales par pays'
-                  : 'Economic and trade data by country'
+                pick(language, 'Données économiques et commerciales par pays', 'Economic and trade data by country', 'البيانات الاقتصادية والتجارية حسب البلد')
               }
               dotColor="success"
             />
@@ -390,11 +381,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Opportunités' : 'Opportunities'}
+              title={pick(language, 'Opportunités', 'Opportunities', 'الفرص')}
               subtitle={
-                language === 'fr'
-                  ? 'Scénarios S1–S4, recherche de marchés, rapport bilatéral et substitution SH6 (S5)'
-                  : 'S1–S4 scenarios, market finding, bilateral report and HS6 substitution (S5)'
+                pick(language, 'Scénarios S1–S4, recherche de marchés, rapport bilatéral et substitution SH6 (S5)', 'S1–S4 scenarios, market finding, bilateral report and HS6 substitution (S5)', 'السيناريوهات S1–S4، البحث عن الأسواق، التقرير الثنائي واستبدال الواردات على مستوى SH6 (S5)')
               }
               dotColor="copper"
             />
@@ -409,11 +398,9 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Contact' : 'Contact'}
+              title={pick(language, 'Contact', 'Contact', 'اتصل بنا')}
               subtitle={
-                language === 'fr'
-                  ? 'Une question, une suggestion ? Écrivez-nous.'
-                  : 'A question, a suggestion? Write to us.'
+                pick(language, 'Une question, une suggestion ? Écrivez-nous.', 'A question, a suggestion? Write to us.', 'سؤال أو اقتراح؟ راسلونا.')
               }
               dotColor="success"
             />
@@ -427,8 +414,10 @@ function App() {
     }
   };
 
+  // Les primitives Radix (onglets, listes, menus) se posent en dir="ltr"
+  // par défaut : sans ce fournisseur, elles ignoreraient l'arabe.
   return (
-    <>
+    <DirectionProvider dir={isRtl(language) ? 'rtl' : 'ltr'}>
       <div className="kente-band" />
       <div className="afcfta-layout-v2">
         <Toaster />
@@ -497,12 +486,10 @@ function App() {
               <span style={{ fontSize: 15 }}>⚡</span>
               <span>
                 <strong style={{ color: 'var(--danger)' }}>
-                  {language === 'fr' ? 'Serveur hors ligne' : 'Server offline'}
+                  {pick(language, 'Serveur hors ligne', 'Server offline', 'الخادم غير متصل')}
                 </strong>
                 {' — '}
-                {language === 'fr'
-                  ? 'Démarrez le backend (port 8000) pour accéder aux données.'
-                  : 'Start the backend (port 8000) to access data.'}
+                {pick(language, 'Démarrez le backend (port 8000) pour accéder aux données.', 'Start the backend (port 8000) to access data.', 'شغّل الخادم الخلفي (المنفذ 8000) للوصول إلى البيانات.')}
               </span>
             </div>
           )}
@@ -512,7 +499,7 @@ function App() {
         </div>
       </main>
     </div>
-    </>
+    </DirectionProvider>
   );
 }
 

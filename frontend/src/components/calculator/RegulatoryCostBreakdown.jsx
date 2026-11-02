@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { AlertTriangle, Landmark, Info, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 // Composition du coût réglementaire — présente, en lignes distinctes, les droits
 // et taxes PUBLICS puis les frais de formalité et de prestataire mandaté, et
@@ -37,66 +38,47 @@ function fmt(amount, currency) {
 }
 
 function T(language) {
-  const fr = language !== 'en';
   return {
-    title: fr ? 'Composition du coût réglementaire' : 'Regulatory cost composition',
-    desc: fr
-      ? 'Droits et taxes publics, puis frais de formalité et de prestataire mandaté — séparés.'
-      : 'Public duties and taxes, then formality and mandated-provider fees — kept separate.',
-    customs: fr ? 'Droits & taxes publics' : 'Public duties & taxes',
-    duty: fr ? 'Droits de douane' : 'Customs duties',
-    vat: fr ? 'Taxes intérieures (TVA)' : 'Domestic taxes (VAT)',
-    other: fr ? 'Autres prélèvements publics' : 'Other public levies',
-    publicSubtotal: fr ? 'Sous-total droits & taxes' : 'Duties & taxes subtotal',
-    formalityFees: fr ? 'Frais de formalités obligatoires' : 'Mandatory formality fees',
-    providerFees: fr ? 'Frais du prestataire mandaté' : 'Mandated-provider fees',
-    regulatoryTotal: fr ? 'Coût réglementaire total' : 'Total regulatory cost',
-    estimatedTotal: fr ? 'Coût total estimé de l’opération' : 'Estimated total cost',
-    toConfirm: fr ? 'montant à confirmer' : 'amount to be confirmed',
-    partial: fr ? 'Partiel' : 'Partial',
-    complete: fr ? 'Complet' : 'Complete',
-    incompleteNote: fr
-      ? "Cette opération est soumise à des frais dus au prestataire mandaté. Leur montant n’est pas disponible dans les sources actuellement vérifiées. Veuillez prendre attache avec le prestataire ou l’autorité compétente avant l’expédition."
-      : 'This operation is subject to fees owed to the mandated provider. Their amount is not available in the currently verified sources. Please contact the provider or competent authority before shipping.',
-    mandatingAuthority: fr ? 'Autorité mandante' : 'Mandating authority',
-    provider: fr ? 'Prestataire' : 'Provider',
-    service: fr ? 'Service' : 'Service',
-    contact: fr ? 'Lien / contact' : 'Link / contact',
-    sideImport: fr ? 'Import' : 'Import',
-    sideExport: fr ? 'Export' : 'Export',
-    separatedNote: fr
-      ? 'Les frais du prestataire sont distincts des droits et taxes publics et ne sont jamais confondus avec eux.'
-      : 'Provider fees are distinct from public duties and taxes and never merged with them.',
-    verified: fr ? 'VÉRIFIÉ (source primaire)' : 'VERIFIED (primary source)',
-    adValoremUnit: fr ? "dans l'unité de la valeur saisie" : 'in the entered value unit',
-    conditions: fr ? 'Conditions' : 'Conditions',
-    source: fr ? 'Source' : 'Source',
-    between: fr ? 'entre' : 'between',
-    and: fr ? 'et' : 'and',
-    ofFob: fr ? 'du FOB' : 'of FOB',
+    title: pick(language, 'Composition du coût réglementaire', 'Regulatory cost composition', 'مكونات التكلفة التنظيمية'),
+    desc: pick(language, 'Droits et taxes publics, puis frais de formalité et de prestataire mandaté — séparés.', 'Public duties and taxes, then formality and mandated-provider fees — kept separate.', 'الرسوم والضرائب العامة، ثم رسوم الإجراءات ومقدم الخدمة المفوَّض — كلٌّ على حدة.'),
+    customs: pick(language, 'Droits & taxes publics', 'Public duties & taxes', 'الرسوم والضرائب العامة'),
+    duty: pick(language, 'Droits de douane', 'Customs duties', 'الرسوم الجمركية'),
+    vat: pick(language, 'Taxes intérieures (TVA)', 'Domestic taxes (VAT)', 'الضرائب الداخلية (ضريبة القيمة المضافة)'),
+    other: pick(language, 'Autres prélèvements publics', 'Other public levies', 'رسوم عامة أخرى'),
+    publicSubtotal: pick(language, 'Sous-total droits & taxes', 'Duties & taxes subtotal', 'المجموع الفرعي للرسوم والضرائب'),
+    formalityFees: pick(language, 'Frais de formalités obligatoires', 'Mandatory formality fees', 'رسوم الإجراءات الإلزامية'),
+    providerFees: pick(language, 'Frais du prestataire mandaté', 'Mandated-provider fees', 'رسوم مقدم الخدمة المفوَّض'),
+    regulatoryTotal: pick(language, 'Coût réglementaire total', 'Total regulatory cost', 'التكلفة التنظيمية الإجمالية'),
+    estimatedTotal: pick(language, 'Coût total estimé de l’opération', 'Estimated total cost', 'التكلفة الإجمالية التقديرية للعملية'),
+    toConfirm: pick(language, 'montant à confirmer', 'amount to be confirmed', 'المبلغ قيد التأكيد'),
+    partial: pick(language, 'Partiel', 'Partial', 'جزئي'),
+    complete: pick(language, 'Complet', 'Complete', 'كامل'),
+    incompleteNote: pick(language, "Cette opération est soumise à des frais dus au prestataire mandaté. Leur montant n’est pas disponible dans les sources actuellement vérifiées. Veuillez prendre attache avec le prestataire ou l’autorité compétente avant l’expédition.", 'This operation is subject to fees owed to the mandated provider. Their amount is not available in the currently verified sources. Please contact the provider or competent authority before shipping.', "تخضع هذه العملية لرسوم مستحقة لمقدم الخدمة المفوَّض. ومبلغها غير متاح في المصادر المُتحقَّق منها حاليًا. يُرجى التواصل مع مقدم الخدمة أو السلطة المختصة قبل الشحن."),
+    mandatingAuthority: pick(language, 'Autorité mandante', 'Mandating authority', 'السلطة المفوِّضة'),
+    provider: pick(language, 'Prestataire', 'Provider', 'مقدم الخدمة'),
+    service: pick(language, 'Service', 'Service', 'الخدمة'),
+    contact: pick(language, 'Lien / contact', 'Link / contact', 'الرابط / جهة الاتصال'),
+    sideImport: pick(language, 'Import', 'Import', 'استيراد'),
+    sideExport: pick(language, 'Export', 'Export', 'تصدير'),
+    separatedNote: pick(language, 'Les frais du prestataire sont distincts des droits et taxes publics et ne sont jamais confondus avec eux.', 'Provider fees are distinct from public duties and taxes and never merged with them.', 'رسوم مقدم الخدمة مستقلة عن الرسوم والضرائب العامة ولا تُدمج معها أبدًا.'),
+    verified: pick(language, 'VÉRIFIÉ (source primaire)', 'VERIFIED (primary source)', 'مُتحقَّق منه (مصدر أولي)'),
+    adValoremUnit: pick(language, "dans l'unité de la valeur saisie", 'in the entered value unit', "بوحدة القيمة المُدخلة"),
+    conditions: pick(language, 'Conditions', 'Conditions', 'الشروط'),
+    source: pick(language, 'Source', 'Source', 'المصدر'),
+    between: pick(language, 'entre', 'between', 'بين'),
+    and: pick(language, 'et', 'and', 'و'),
+    ofFob: pick(language, 'du FOB', 'of FOB', 'من القيمة فوب (FOB)'),
     // Volets import / export
-    exportStageTitle: fr
-      ? "Formalités à l'export (amont — pays d'origine)"
-      : 'Export-side formalities (upstream — country of origin)',
-    exportStageDesc: fr
-      ? "Accomplies avant embarquement dans le pays d'origine, à la charge de l'exportateur."
-      : 'Completed before shipment in the country of origin, borne by the exporter.',
-    importStageTitle: fr
-      ? "Formalités à l'import (aval — pays de destination)"
-      : 'Import-side formalities (downstream — country of destination)',
-    importStageDesc: fr
-      ? "Acquittées à l'arrivée dans le pays de destination, à la charge de l'importateur."
-      : 'Paid on arrival in the destination country, borne by the importer.',
-    publicScope: fr ? 'perçu public' : 'public levy',
-    providerScope: fr ? 'prestataire privé' : 'private provider',
-    explainTitle: fr ? "Import vs export : comment lire ces frais" : 'Import vs export: how to read these fees',
-    explainBody: fr
-      ? "Les formalités déléguées se répartissent en deux étapes de l'opération. À l'EXPORT (amont), les programmes de conformité (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) sont exécutés dans le pays d'origine AVANT l'embarquement et payés par l'exportateur — même s'ils sont exigés par le pays de destination. À l'IMPORT (aval), d'autres frais sont acquittés à destination par l'importateur (ex. redevance OCC en RDC, certificat SONCAP au Nigeria). Les frais du prestataire PRIVÉ restent distincts des perçus PUBLICS (organismes d'État)."
-      : "Delegated formalities split into two stages of the operation. On the EXPORT side (upstream), conformity programmes (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) are carried out in the country of origin BEFORE shipment and paid by the exporter — even though required by the destination country. On the IMPORT side (downstream), other fees are paid at destination by the importer (e.g. OCC levy in DRC, SONCAP certificate in Nigeria). PRIVATE-provider fees remain distinct from PUBLIC levies (state bodies).",
-    unconfirmedProvider: fr ? 'prestataire non confirmé' : 'provider unconfirmed',
-    unconfirmedProviderNote: fr
-      ? "Formalité obligatoire confirmée par une source, mais aucun prestataire actuellement actif ni frais n'est établi — l'absence de prestataire n'est pas démontrée pour autant. À ne pas confondre avec un frais nul."
-      : 'Mandatory formality confirmed by a source, but no currently active provider or fee is established — the absence of a provider is not established either. Not to be read as a zero fee.',
+    exportStageTitle: pick(language, "Formalités à l'export (amont — pays d'origine)", 'Export-side formalities (upstream — country of origin)', "إجراءات التصدير (المرحلة السابقة — بلد المنشأ)"),
+    exportStageDesc: pick(language, "Accomplies avant embarquement dans le pays d'origine, à la charge de l'exportateur.", 'Completed before shipment in the country of origin, borne by the exporter.', "تُنجَز قبل الشحن في بلد المنشأ، على عاتق المصدِّر."),
+    importStageTitle: pick(language, "Formalités à l'import (aval — pays de destination)", 'Import-side formalities (downstream — country of destination)', "إجراءات الاستيراد (المرحلة اللاحقة — بلد المقصد)"),
+    importStageDesc: pick(language, "Acquittées à l'arrivée dans le pays de destination, à la charge de l'importateur.", 'Paid on arrival in the destination country, borne by the importer.', "تُؤدّى عند الوصول إلى بلد المقصد، على عاتق المستورد."),
+    publicScope: pick(language, 'perçu public', 'public levy', 'تحصيل عام'),
+    providerScope: pick(language, 'prestataire privé', 'private provider', 'مقدم خدمة خاص'),
+    explainTitle: pick(language, "Import vs export : comment lire ces frais", 'Import vs export: how to read these fees', "الاستيراد مقابل التصدير: كيف تُقرأ هذه الرسوم"),
+    explainBody: pick(language, "Les formalités déléguées se répartissent en deux étapes de l'opération. À l'EXPORT (amont), les programmes de conformité (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) sont exécutés dans le pays d'origine AVANT l'embarquement et payés par l'exportateur — même s'ils sont exigés par le pays de destination. À l'IMPORT (aval), d'autres frais sont acquittés à destination par l'importateur (ex. redevance OCC en RDC, certificat SONCAP au Nigeria). Les frais du prestataire PRIVÉ restent distincts des perçus PUBLICS (organismes d'État).", "Delegated formalities split into two stages of the operation. On the EXPORT side (upstream), conformity programmes (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) are carried out in the country of origin BEFORE shipment and paid by the exporter — even though required by the destination country. On the IMPORT side (downstream), other fees are paid at destination by the importer (e.g. OCC levy in DRC, SONCAP certificate in Nigeria). PRIVATE-provider fees remain distinct from PUBLIC levies (state bodies).", "تتوزع الإجراءات المفوَّضة على مرحلتين من العملية. في التصدير (المرحلة السابقة)، تُنفَّذ برامج المطابقة (VOC وPVoC وCBCA وPECAE وPROGEC وPCEC) في بلد المنشأ قبل الشحن ويدفعها المصدِّر — حتى وإن كان بلد المقصد هو من يشترطها. وفي الاستيراد (المرحلة اللاحقة)، يؤدي المستورد رسومًا أخرى في بلد المقصد (مثل إتاوة OCC في جمهورية الكونغو الديمقراطية، وشهادة SONCAP في نيجيريا). وتبقى رسوم مقدم الخدمة الخاص مستقلة عن التحصيلات العامة (الهيئات الحكومية)."),
+    unconfirmedProvider: pick(language, 'prestataire non confirmé', 'provider unconfirmed', 'مقدم خدمة غير مؤكَّد'),
+    unconfirmedProviderNote: pick(language, "Formalité obligatoire confirmée par une source, mais aucun prestataire actuellement actif ni frais n'est établi — l'absence de prestataire n'est pas démontrée pour autant. À ne pas confondre avec un frais nul.", 'Mandatory formality confirmed by a source, but no currently active provider or fee is established — the absence of a provider is not established either. Not to be read as a zero fee.', "إجراء إلزامي يؤكده مصدر، لكن لم يثبت وجود مقدم خدمة نشط حاليًا ولا رسوم — كما لم يثبت غياب مقدم الخدمة. لا يُفهم على أنه رسم منعدم."),
   };
 }
 

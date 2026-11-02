@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Plane, DollarSign, Clock, Package, Info, Weight } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -17,12 +18,12 @@ const FALLBACK_AIRPORTS = [
 ];
 
 const FALLBACK_COMMODITIES = [
-  { value: 'general', label_fr: 'Marchandise générale', label_en: 'General cargo' },
-  { value: 'perishable', label_fr: 'Périssable (chaîne du froid)', label_en: 'Perishable (cold chain)' },
-  { value: 'pharma', label_fr: 'Pharmaceutique', label_en: 'Pharma' },
-  { value: 'dangerous', label_fr: 'Marchandise dangereuse', label_en: 'Dangerous goods' },
-  { value: 'valuable', label_fr: 'Valeur / sécurisé', label_en: 'Valuable' },
-  { value: 'live', label_fr: 'Animaux vivants', label_en: 'Live animals' },
+  { value: 'general', label_fr: 'Marchandise générale', label_en: 'General cargo', label_ar: 'بضائع عامة' },
+  { value: 'perishable', label_fr: 'Périssable (chaîne du froid)', label_en: 'Perishable (cold chain)', label_ar: 'بضائع قابلة للتلف (سلسلة التبريد)' },
+  { value: 'pharma', label_fr: 'Pharmaceutique', label_en: 'Pharma', label_ar: 'منتجات صيدلانية' },
+  { value: 'dangerous', label_fr: 'Marchandise dangereuse', label_en: 'Dangerous goods', label_ar: 'بضائع خطرة' },
+  { value: 'valuable', label_fr: 'Valeur / sécurisé', label_en: 'Valuable', label_ar: 'بضائع ثمينة / مؤمَّنة' },
+  { value: 'live', label_fr: 'Animaux vivants', label_en: 'Live animals', label_ar: 'حيوانات حية' },
 ];
 
 const texts = {
@@ -54,6 +55,32 @@ const texts = {
     selectAll: 'Select airports and weight.', samePorts: 'Origin and destination must differ.',
     minCharge: 'Minimum charge applied', perKg: '/kg',
   },
+  ar: {
+    title: 'حاسبة الشحن الجوي',
+    subtitle: 'تقدير 2024 — نموذج معاير وفق IATA TACT وتعريفات الشحن لشركات الطيران الأفريقية',
+    origin: 'مطار المنشأ', destination: 'مطار المقصد',
+    weight: 'الوزن الإجمالي (kg)', volume: 'الحجم (m³، اختياري)', commodity: 'طبيعة البضاعة',
+    calculate: 'احسب الشحن', loading: 'جارٍ الحساب…', result: 'تفصيل التكاليف',
+    totalCost: 'التكلفة الإجمالية التقديرية', airFreight: 'الشحن الجوي', fsc: 'رسم الوقود الإضافي (FSC)',
+    ssc: 'رسم الأمن الإضافي (SSC)', handling: 'المناولة + بوليصة الشحن الجوي (AWB)', distance: 'المسافة',
+    transit: 'مدة العبور', carriers: 'شركات الشحن', days: 'يوم', km: 'km',
+    chargeable: 'الوزن الخاضع للرسوم', actualW: 'الوزن الفعلي', volW: 'الوزن الحجمي',
+    ratePerKg: 'السعر', source: 'المصدر', disclaimer: 'تنبيه',
+    selectAll: 'اختر المطارات والوزن.', samePorts: 'يجب أن يختلف المنشأ عن المقصد.',
+    minCharge: 'تم تطبيق الحد الأدنى للرسوم', perKg: '/kg',
+  },
+};
+
+// Régions renvoyées par l'API (en français) → arabe.
+const REGION_AR = {
+  'Afrique du Nord': 'شمال أفريقيا',
+  "Afrique de l'Ouest": 'غرب أفريقيا',
+  "Afrique de l'Est": 'شرق أفريقيا',
+  'Afrique Centrale': 'وسط أفريقيا',
+  'Afrique centrale': 'وسط أفريقيا',
+  'Afrique Australe': 'الجنوب الأفريقي',
+  'Afrique australe': 'الجنوب الأفريقي',
+  'Aéroports': 'المطارات',
 };
 
 function groupByRegion(list) {
@@ -137,7 +164,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
     }
   };
 
-  const commodityLabel = (c) => (language === 'fr' ? c.label_fr : c.label_en);
+  const commodityLabel = (c) => pick(language, c.label_fr, c.label_en, c.label_ar || c.label_fr);
 
   return (
     <div className="space-y-4" data-testid="air-freight-calculator">
@@ -165,7 +192,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
               >
                 <option value="">— {t.origin} —</option>
                 {Object.entries(groupByRegion(airports)).map(([region, list]) => (
-                  <optgroup key={region} label={region}>
+                  <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(a => (
                       <option key={a.iata} value={a.iata}>{a.flag} {a.name} ({a.iata})</option>
                     ))}
@@ -184,7 +211,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
               >
                 <option value="">— {t.destination} —</option>
                 {Object.entries(groupByRegion(destinationOptions)).map(([region, list]) => (
-                  <optgroup key={region} label={region}>
+                  <optgroup key={region} label={pick(language, region, region, REGION_AR[region] || region)}>
                     {list.map(a => (
                       <option key={a.iata} value={a.iata}>{a.flag} {a.name} ({a.iata})</option>
                     ))}
@@ -253,7 +280,7 @@ export default function AirFreightCalculator({ language = 'fr' }) {
           <CardHeader className="py-4 border-b border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <div className="flex items-center justify-between">
               <CardTitle className="text-base font-bold text-[var(--text)]">{t.result}</CardTitle>
-              <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] text-xs">{language === 'fr' ? 'Estimé' : 'Modeled'} · {result.data_year}</Badge>
+              <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] text-xs">{pick(language, 'Estimé', 'Modeled', 'تقديري')} · {result.data_year}</Badge>
             </div>
             <div className="flex flex-wrap gap-2 mt-1">
               <Badge variant="outline" className="text-xs"><Plane className="w-3 h-3 mr-1" />{result.origin_iata} → {result.destination_iata}</Badge>
