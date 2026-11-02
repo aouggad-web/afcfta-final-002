@@ -12,11 +12,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Badge } from '../ui/badge';
 import { Layers, TrendingDown, ArrowLeftRight } from 'lucide-react';
 import { montant } from '../../utils/nombres';
+import { pick } from '../../i18n/lang';
 
 const CATEGORY_LABEL = {
-  droit_douane: { fr: 'Droit de douane', en: 'Customs duty' },
-  tva: { fr: 'TVA', en: 'VAT' },
-  autre_taxe: { fr: 'Prélèvement', en: 'Levy' },
+  droit_douane: { fr: 'Droit de douane', en: 'Customs duty', ar: 'الرسم الجمركي' },
+  tva: { fr: 'TVA', en: 'VAT', ar: 'ضريبة القيمة المضافة' },
+  autre_taxe: { fr: 'Prélèvement', en: 'Levy', ar: 'رسم' },
 };
 
 export default function TaxBreakdownDual({
@@ -26,7 +27,6 @@ export default function TaxBreakdownDual({
   zlecafAvailable = true,
   language = 'fr',
 }) {
-  const fr = language === 'fr';
   const hasLocal = !!(currency && currency.available && currency.usd_to_local_rate);
   const [mode, setMode] = useState('USD'); // 'USD' | 'LOCAL'
   const useLocal = mode === 'LOCAL' && hasLocal;
@@ -61,18 +61,16 @@ export default function TaxBreakdownDual({
             </div>
             <div>
               <CardTitle className="text-lg text-[var(--text)]">
-                {fr ? 'Détail des droits et taxes — NPF vs ZLECAf' : 'Duties & taxes — MFN vs AfCFTA'}
+                {pick(language, 'Détail des droits et taxes — NPF vs ZLECAf', 'Duties & taxes — MFN vs AfCFTA', 'تفصيل الرسوم والضرائب — NPF مقابل زليكاف')}
               </CardTitle>
               <CardDescription className="text-[var(--afcfta-muted)]">
-                {fr
-                  ? 'Chaque taxe calculée sur sa base (assiette) déclarée'
-                  : 'Each tax computed on its declared base'}
+                {pick(language, 'Chaque taxe calculée sur sa base (assiette) déclarée', 'Each tax computed on its declared base', 'كل ضريبة محسوبة على وعائها المصرَّح به')}
                 {currency && currency.local_code && (
                   <span className="ml-1 text-[var(--afcfta-muted)]">
                     · {currency.local_code}
                     {hasLocal
                       ? ` @ ${Number(currency.usd_to_local_rate).toLocaleString('fr-FR', { maximumFractionDigits: 2 })}/USD`
-                      : ` (${fr ? 'taux indisponible' : 'rate unavailable'})`}
+                      : ` (${pick(language, 'taux indisponible', 'rate unavailable', 'السعر غير متاح')})`}
                   </span>
                 )}
               </CardDescription>
@@ -94,21 +92,19 @@ export default function TaxBreakdownDual({
       <CardContent>
         {!zlecafAvailable && (
           <div className="mb-4 rounded-lg border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] bg-[color-mix(in_srgb,var(--gold)_10%,var(--afcfta-card))] p-3 text-sm text-[var(--gold)]">
-            {fr
-              ? 'Taux ZLECAf non disponible pour cette ligne : la colonne préférentielle et les économies ne sont pas calculées.'
-              : 'AfCFTA rate unavailable for this line: the preferential column and savings are not calculated.'}
+            {pick(language, 'Taux ZLECAf non disponible pour cette ligne : la colonne préférentielle et les économies ne sont pas calculées.', 'AfCFTA rate unavailable for this line: the preferential column and savings are not calculated.', 'معدل زليكاف غير متاح لهذا البند: لا يُحتسب العمود التفضيلي ولا الوفورات.')}
           </div>
         )}
         {/* En-tête de colonnes */}
         <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs text-[var(--afcfta-muted)]">
-          <div className="col-span-5">{fr ? 'Taxe / base' : 'Tax / base'}</div>
-          <div className="col-span-3 text-right">{fr ? 'NPF' : 'MFN'}</div>
+          <div className="col-span-5">{pick(language, 'Taxe / base', 'Tax / base', 'الضريبة / الوعاء')}</div>
+          <div className="col-span-3 text-right">{pick(language, 'NPF', 'MFN', 'NPF')}</div>
           <div className="col-span-4 text-right">ZLECAf</div>
         </div>
 
         <div className="space-y-2">
           {breakdown.map((b, idx) => {
-            const cat = CATEGORY_LABEL[b.category] || { fr: b.category, en: b.category };
+            const cat = CATEGORY_LABEL[b.category] || { fr: b.category, en: b.category, ar: b.category };
             const reduced = zlecafAvailable
               && b.affected_by_zlecaf
               && b.amount_zlecaf < b.amount_npf;
@@ -125,17 +121,17 @@ export default function TaxBreakdownDual({
                     </Badge>
                     {b.cap && (
                       <Badge variant="outline" className="text-[11px] border-[color-mix(in_srgb,var(--gold)_30%,transparent)] text-[var(--gold)]">
-                        {fr ? 'plafond' : 'cap'} {b.cap.amount.toLocaleString('fr-FR')} {b.cap.currency}
+                        {pick(language, 'plafond', 'cap', 'السقف')} {b.cap.amount.toLocaleString('fr-FR')} {b.cap.currency}
                       </Badge>
                     )}
                   </div>
                   <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">
-                    {fr ? cat.fr : cat.en} · {fr ? 'base' : 'base'}: {b.base_expr}
+                    {pick(language, cat.fr, cat.en, cat.ar)} · {pick(language, 'base', 'base', 'الوعاء')}: {b.base_expr}
                   </p>
                 </div>
 
                 <div className="md:col-span-3 flex md:block items-center justify-between md:text-right">
-                  <span className="md:hidden text-xs text-[var(--afcfta-muted)]">{fr ? 'NPF' : 'MFN'}</span>
+                  <span className="md:hidden text-xs text-[var(--afcfta-muted)]">{pick(language, 'NPF', 'MFN', 'NPF')}</span>
                   <div>
                     <span className="text-[var(--text)] font-bold">{fmt(b.amount_npf, b.amount_npf_local)}</span>
                     <span className="text-[var(--afcfta-muted)] text-xs ml-1">({b.rate_npf_pct}%)</span>
@@ -164,7 +160,7 @@ export default function TaxBreakdownDual({
         {summary && (
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
             <SummaryCard
-              title={fr ? 'Total NPF' : 'Total MFN'}
+              title={pick(language, 'Total NPF', 'Total MFN', 'مجموع NPF')}
               s={npf}
               sLocal={slNpf}
               useLocal={useLocal}
@@ -173,7 +169,7 @@ export default function TaxBreakdownDual({
               tone="red"
             />
             <SummaryCard
-              title={fr ? 'Total ZLECAf' : 'Total AfCFTA'}
+              title={pick(language, 'Total ZLECAf', 'Total AfCFTA', 'مجموع زليكاف')}
               s={zlc}
               sLocal={zlecafAvailable ? slZlc : {}}
               useLocal={useLocal}
@@ -188,7 +184,7 @@ export default function TaxBreakdownDual({
           <div className="mt-3 flex items-center justify-between p-3 rounded-lg bg-[color-mix(in_srgb,var(--success)_10%,var(--afcfta-card))] border border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
             <div className="flex items-center gap-2 text-[var(--success)]">
               <TrendingDown className="w-4 h-4" />
-              <span className="font-semibold">{fr ? 'Économie totale ZLECAf' : 'Total AfCFTA savings'}</span>
+              <span className="font-semibold">{pick(language, 'Économie totale ZLECAf', 'Total AfCFTA savings', 'إجمالي الوفورات بفضل زليكاف')}</span>
             </div>
             <span className="text-[var(--success)] font-bold text-lg">
               {!zlecafAvailable || s.economie_totale === null || s.economie_totale === undefined
@@ -205,7 +201,6 @@ export default function TaxBreakdownDual({
 }
 
 function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
-  const fr = language === 'fr';
   const color = tone === 'emerald' ? 'text-[var(--success)]' : 'text-[var(--danger)]';
   const val = (k) => {
     if (useLocal) {
@@ -226,11 +221,11 @@ function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
   return (
     <div className="p-3 rounded-lg bg-[var(--afcfta-card2)] border border-[var(--afcfta-border)] space-y-1.5">
       <p className={`font-semibold ${color}`}>{title}</p>
-      <Row label={fr ? 'Droit de douane' : 'Customs duty'} k="droit_douane" />
-      <Row label={fr ? 'Autres taxes' : 'Other levies'} k="autres_taxes" />
-      <Row label="TVA" k="tva" />
+      <Row label={pick(language, 'Droit de douane', 'Customs duty', 'الرسم الجمركي')} k="droit_douane" />
+      <Row label={pick(language, 'Autres taxes', 'Other levies', 'ضرائب أخرى')} k="autres_taxes" />
+      <Row label={pick(language, 'TVA', 'TVA', 'ضريبة القيمة المضافة')} k="tva" />
       <div className="border-t border-[var(--afcfta-border)] my-1" />
-      <Row label={fr ? 'Coût total' : 'Total cost'} k="cout_total" />
+      <Row label={pick(language, 'Coût total', 'Total cost', 'التكلفة الإجمالية')} k="cout_total" />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { AlertTriangle, FlaskConical, Info, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { pick } from '../../i18n/lang';
 
 // Couche « indications secondaires » : prestataires et frais REPORTÉS par une
 // synthèse non vérifiée, pour les pays pas encore couverts par le registre
@@ -33,48 +34,45 @@ const PAYER_LABELS = {
     EXPORTER_AGENT: "Exporter's agent",
     LOGISTICS_ACTORS: 'Local logistics actors',
   },
+  ar: {
+    EXPORTER: 'المصدِّر (المورِّد في الخارج)',
+    IMPORTER: 'المستورد',
+    IMPORTER_OR_FORWARDER: 'المستورد أو وكيل الشحن',
+    IMPORTER_OR_DECLARANT: 'المستورد أو المصرِّح',
+    FORWARDER_OR_IMPORTER: 'وكيل الشحن أو المستورد',
+    SHIPPER: 'الشاحن',
+    SHIPPER_EXPORTER: 'الشاحن / المصدِّر',
+    TRANSPORTER_OR_FORWARDER: 'الناقل أو وكيل الشحن',
+    EXPORTER_AGENT: 'وكيل المصدِّر',
+    LOGISTICS_ACTORS: 'الفاعلون اللوجستيون المحليون',
+  },
 };
 
 function T(language) {
-  const fr = language !== 'en';
   return {
-    title: fr ? 'Indications secondaires — prestataires & frais reportés' : 'Secondary indications — reported providers & fees',
-    desc: fr
-      ? 'Pays non encore couverts par le registre officiel. Données de synthèse à vérifier.'
-      : 'Countries not yet in the official registry. Synthesis data to be verified.',
-    warning: fr
-      ? "Ces éléments proviennent d'une synthèse secondaire NON VÉRIFIÉE (backlog de collecte). Les montants sont approximatifs, non opposables, et n'entrent dans aucun total. À confirmer auprès du prestataire ou de l'autorité compétente avant toute décision."
-      : 'These items come from an UNVERIFIED secondary synthesis (collection backlog). Amounts are approximate, non-binding, and enter no total. Confirm with the provider or competent authority before any decision.',
-    toConfirm: fr ? 'à confirmer' : 'to be confirmed',
-    providers: fr ? 'Prestataire(s)' : 'Provider(s)',
-    payer: fr ? 'Payeur' : 'Payer',
-    period: fr ? 'Période' : 'Period',
-    reportedFee: fr ? 'Frais reporté' : 'Reported fee',
-    traceability: fr ? 'Traçabilité' : 'Traceability',
-    sideImport: fr ? 'Import' : 'Import',
-    sideExport: fr ? 'Export' : 'Export',
-    unverified: fr ? 'NON VÉRIFIÉ' : 'UNVERIFIED',
-    exportStageTitle: fr
-      ? "Formalités à l'export (amont — pays d'origine)"
-      : 'Export-side formalities (upstream — country of origin)',
-    exportStageDesc: fr
-      ? "Accomplies avant embarquement dans le pays d'origine, à la charge de l'exportateur."
-      : 'Completed before shipment in the country of origin, borne by the exporter.',
-    importStageTitle: fr
-      ? "Formalités à l'import (aval — pays de destination)"
-      : 'Import-side formalities (downstream — country of destination)',
-    importStageDesc: fr
-      ? "Acquittées à l'arrivée dans le pays de destination, à la charge de l'importateur."
-      : 'Paid on arrival in the destination country, borne by the importer.',
-    explainTitle: fr ? "Import vs export : comment lire ces indications" : 'Import vs export: how to read these indications',
-    explainBody: fr
-      ? "Ces indications se répartissent selon l'étape de l'opération : à l'EXPORT (amont), les formalités concernent le pays d'origine, avant embarquement ; à l'IMPORT (aval), elles concernent le pays de destination, à l'arrivée. Dans les deux cas, ces montants restent NON VÉRIFIÉS et n'entrent dans aucun total."
-      : "These indications are split by the stage of the operation: on the EXPORT side (upstream), formalities concern the country of origin, before shipment; on the IMPORT side (downstream), they concern the destination country, on arrival. In both cases, these amounts remain UNVERIFIED and enter no total.",
+    title: pick(language, 'Indications secondaires — prestataires & frais reportés', 'Secondary indications — reported providers & fees', 'مؤشرات ثانوية — مقدمو الخدمات والرسوم المُبلَّغ عنها'),
+    desc: pick(language, 'Pays non encore couverts par le registre officiel. Données de synthèse à vérifier.', 'Countries not yet in the official registry. Synthesis data to be verified.', 'بلدان لم يشملها السجل الرسمي بعد. بيانات تجميعية تحتاج إلى تحقق.'),
+    warning: pick(language, "Ces éléments proviennent d'une synthèse secondaire NON VÉRIFIÉE (backlog de collecte). Les montants sont approximatifs, non opposables, et n'entrent dans aucun total. À confirmer auprès du prestataire ou de l'autorité compétente avant toute décision.", 'These items come from an UNVERIFIED secondary synthesis (collection backlog). Amounts are approximate, non-binding, and enter no total. Confirm with the provider or competent authority before any decision.', "مصدر هذه العناصر تجميع ثانوي غير مُتحقَّق منه (قائمة جمع متأخرة). المبالغ تقريبية وغير ملزمة ولا تدخل في أي مجموع. يجب تأكيدها لدى مقدم الخدمة أو السلطة المختصة قبل أي قرار."),
+    toConfirm: pick(language, 'à confirmer', 'to be confirmed', 'قيد التأكيد'),
+    providers: pick(language, 'Prestataire(s)', 'Provider(s)', 'مقدم(و) الخدمة'),
+    payer: pick(language, 'Payeur', 'Payer', 'الجهة الدافعة'),
+    period: pick(language, 'Période', 'Period', 'الفترة'),
+    reportedFee: pick(language, 'Frais reporté', 'Reported fee', 'الرسم المُبلَّغ عنه'),
+    traceability: pick(language, 'Traçabilité', 'Traceability', 'قابلية التتبع'),
+    sideImport: pick(language, 'Import', 'Import', 'استيراد'),
+    sideExport: pick(language, 'Export', 'Export', 'تصدير'),
+    unverified: pick(language, 'NON VÉRIFIÉ', 'UNVERIFIED', 'غير مُتحقَّق منه'),
+    exportStageTitle: pick(language, "Formalités à l'export (amont — pays d'origine)", 'Export-side formalities (upstream — country of origin)', "إجراءات التصدير (المرحلة السابقة — بلد المنشأ)"),
+    exportStageDesc: pick(language, "Accomplies avant embarquement dans le pays d'origine, à la charge de l'exportateur.", 'Completed before shipment in the country of origin, borne by the exporter.', "تُنجَز قبل الشحن في بلد المنشأ، على عاتق المصدِّر."),
+    importStageTitle: pick(language, "Formalités à l'import (aval — pays de destination)", 'Import-side formalities (downstream — country of destination)', "إجراءات الاستيراد (المرحلة اللاحقة — بلد المقصد)"),
+    importStageDesc: pick(language, "Acquittées à l'arrivée dans le pays de destination, à la charge de l'importateur.", 'Paid on arrival in the destination country, borne by the importer.', "تُؤدّى عند الوصول إلى بلد المقصد، على عاتق المستورد."),
+    explainTitle: pick(language, "Import vs export : comment lire ces indications", 'Import vs export: how to read these indications', "الاستيراد مقابل التصدير: كيف تُقرأ هذه المؤشرات"),
+    explainBody: pick(language, "Ces indications se répartissent selon l'étape de l'opération : à l'EXPORT (amont), les formalités concernent le pays d'origine, avant embarquement ; à l'IMPORT (aval), elles concernent le pays de destination, à l'arrivée. Dans les deux cas, ces montants restent NON VÉRIFIÉS et n'entrent dans aucun total.", "These indications are split by the stage of the operation: on the EXPORT side (upstream), formalities concern the country of origin, before shipment; on the IMPORT side (downstream), they concern the destination country, on arrival. In both cases, these amounts remain UNVERIFIED and enter no total.", "تتوزع هذه المؤشرات حسب مرحلة العملية: في التصدير (المرحلة السابقة) تخص الإجراءات بلد المنشأ قبل الشحن؛ وفي الاستيراد (المرحلة اللاحقة) تخص بلد المقصد عند الوصول. وفي الحالتين، تبقى هذه المبالغ غير مُتحقَّق منها ولا تدخل في أي مجموع."),
   };
 }
 
 function ReportedItem({ item, t, language }) {
-  const payerLabels = PAYER_LABELS[language !== 'en' ? 'fr' : 'en'];
+  const payerLabels = PAYER_LABELS[language] || PAYER_LABELS.fr;
   const period = item.period ? `${item.period.start || '?'} → ${item.period.end || '?'}` : null;
   return (
     <div className="p-3 rounded-lg bg-[var(--overlay)] border border-dashed border-[var(--afcfta-border)] text-sm">
