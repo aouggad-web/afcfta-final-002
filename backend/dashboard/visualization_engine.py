@@ -57,7 +57,8 @@ class VisualizationEngine:
         labels = [d.replace("_", " ").title() for d in dimensions]
 
         datasets = []
-        for country in countries:
+        # Dédoublonnés et bornés (constat E2) : un calcul de score par pays.
+        for country in list(dict.fromkeys(countries))[:20]:
             score = engine.calculate_investment_score(country, sector)
             values = [c.raw_score for c in score.component_scores]
             color = self._country_color(country)

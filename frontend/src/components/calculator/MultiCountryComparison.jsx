@@ -19,6 +19,8 @@ import { normalizeTaxesDetail } from './taxesDetail';
 import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
 import { montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -297,6 +299,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           .then((res) => ({ iso3, calcul: res.data }))
           .catch((err) => {
             const detail = err.response?.data?.detail;
+            // Calculs sans abonnement épuisés (audit E1) : l'avis s'affiche
+            // une fois sous la liste, pas à chaque pays.
+            const limite = anonymousCalculationNoticeText(err, language);
+            if (limite) return { iso3, limite, erreur: pick(language, 'limite atteinte', 'limit reached', 'تم بلوغ الحدّ') };
             return { iso3, erreur: typeof detail === 'string' ? detail : (detail?.message || err.message) };
           })));
 
@@ -490,6 +496,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           <CardContent className="py-4 text-sm text-[var(--afcfta-muted)]" data-testid="compare-echecs">
             <span className="font-medium text-[var(--text)]">{t.notCalculated} :</span>{' '}
             {echecs.map((e) => `${COUNTRY_NAMES[e.iso3]?.[language] || e.iso3} (${e.erreur})`).join(' · ')}
+            {echecs.some((e) => e.limite) && (
+              <p className="mt-2 text-[var(--text)]">
+                <SubscriptionNotice text={echecs.find((e) => e.limite).limite} language={language} />
+              </p>
+            )}
           </CardContent>
         </Card>
       )}

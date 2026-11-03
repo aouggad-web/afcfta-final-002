@@ -209,12 +209,31 @@ def test_chargily_webhook_unsigned_returns_400(client, monkeypatch):
 # ── Détection de pays et routage ────────────────────────────────────────────
 
 
-def _request_with(headers: dict):
-    """Fabrique une Request Starlette minimale portant les en-têtes donnés."""
+def _request_with(headers: dict, pair: str = "10.0.0.1"):
+    """Fabrique une Request Starlette minimale portant les en-têtes donnés,
+    reçue par défaut d'un relais du réseau privé."""
     from starlette.requests import Request as StarletteRequest
 
     raw = [(k.lower().encode(), v.encode()) for k, v in headers.items()]
-    return StarletteRequest({"type": "http", "headers": raw, "client": ("10.0.0.1", 1234)})
+    return StarletteRequest({"type": "http", "headers": raw, "client": (pair, 1234)})
+
+
+def _avec_pair(app, hote):
+    """TestClient fixe le pair à « testclient » : on le remplace par `hote`,
+    par exemple l'adresse privée de l'ingress."""
+
+    async def asgi(scope, receive, send):
+        if scope["type"] == "http":
+            scope = {**scope, "client": (hote, 50000)}
+        await app(scope, receive, send)
+
+    return asgi
+
+
+@pytest.fixture
+def client_derriere_l_ingress(client):
+    """Même application que `client`, jointe par un relais du réseau privé."""
+    return TestClient(_avec_pair(client.app, "10.0.0.1"))
 
 
 def test_client_ip_trusts_rightmost_forwarded_entry():
@@ -349,7 +368,9 @@ def test_ipinfo_failure_is_unknown_and_not_cached(fake_ipinfo):
     assert fake_ipinfo.calls == 2
 
 
-def test_checkout_uses_ipinfo_for_legacy_account(client, monkeypatch, fake_ipinfo):
+def test_checkout_uses_ipinfo_for_legacy_account(
+    client_derriere_l_ingress, monkeypatch, fake_ipinfo
+):
     """Compte sans pays d'inscription, aucune autre source : IPinfo tranche."""
 
     async def _fake_user(_request):
@@ -357,7 +378,7 @@ def test_checkout_uses_ipinfo_for_legacy_account(client, monkeypatch, fake_ipinf
 
     monkeypatch.setattr(billing, "get_current_user", _fake_user)
     monkeypatch.setenv("CHARGILY_ENABLED", "false")
-    resp = client.post(
+    resp = client_derriere_l_ingress.post(
         "/billing/checkout",
         json={"plan": "pro", "cycle": "monthly"},
         headers={"X-Forwarded-For": "41.100.0.9"},
@@ -652,13 +673,13 @@ def test_invoice_payment_failed_skips_email_when_customer_unknown(webhook_client
     assert calls == []
 
 
-def test_geo_diagnostic_reports_what_backend_sees(client, monkeypatch):
+def test_geo_diagnostic_reports_what_backend_sees(client_derriere_l_ingress, monkeypatch):
     """Le diagnostic reflète fidèlement la requête : en-têtes vus, IP, pays."""
     monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
     monkeypatch.delenv("TRUST_CLOUDFLARE_HEADERS", raising=False)
     monkeypatch.delenv("GEOIP_DB_PATH", raising=False)
     monkeypatch.delenv("IPINFO_TOKEN", raising=False)
-    resp = client.get(
+    resp = client_derriere_l_ingress.get(
         "/billing/geo-diagnostic",
         headers={"CF-IPCountry": "DZ", "X-Forwarded-For": "1.2.3.4, 41.100.0.9"},
     )
@@ -670,6 +691,7 @@ def test_geo_diagnostic_reports_what_backend_sees(client, monkeypatch):
     assert body["geoip_db_configured"] is False
     assert body["headers_seen"]["cf_ipcountry"] is True
     assert body["headers_seen"]["x_forwarded_for_hops"] == 2
+    assert body["proxy_peer_trusted"] is True
 
 
 def test_webhook_is_idempotent_on_replay(webhook_client, monkeypatch):
@@ -719,6 +741,144 @@ def test_hop_count_larger_than_chain_is_clamped(monkeypatch):
 def test_invalid_hop_count_falls_back_to_one(monkeypatch):
     monkeypatch.setenv("TRUSTED_PROXY_HOPS", "beaucoup")
     assert geo_service.trusted_proxy_hops() == 1
+
+
+# ── X-Forwarded-For n'est cru que d'un relais approuvé (constat E5) ─────────
+
+
+@pytest.fixture
+def env_relais(monkeypatch):
+    """Aucun réglage de relais ni de Cloudflare hérité de l'environnement."""
+    for nom in (
+        "TRUSTED_PROXY_CIDRS",
+        "TRUSTED_PROXY_HOPS",
+        "CLOUDFLARE_EDGE_SECRET",
+        "TRUST_CLOUDFLARE_HEADERS",
+        "GEOIP_DB_PATH",
+        "IPINFO_TOKEN",
+    ):
+        monkeypatch.delenv(nom, raising=False)
+    return monkeypatch
+
+
+def test_xff_ignore_quand_le_pair_direct_n_est_pas_un_relais(env_relais):
+    """Origine jointe en direct : l'en-tête vient du client, seul le pair fait foi."""
+    req = _request_with({"x-forwarded-for": "81.200.5.4"}, pair="41.100.0.9")
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_xff_ignore_quel_que_soit_le_nombre_de_relais(env_relais):
+    env_relais.setenv("TRUSTED_PROXY_HOPS", "3")
+    req = _request_with({"x-forwarded-for": "81.200.5.4, 9.9.9.9, 8.8.8.8"}, pair="41.100.0.9")
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+@pytest.mark.parametrize(
+    "pair",
+    ["127.0.0.1", "172.20.1.1", "192.168.1.1", "100.64.3.4", "::1", "fd00::5", "::ffff:10.1.2.3"],
+)
+def test_plages_internes_approuvees_par_defaut(env_relais, pair):
+    """Sans TRUSTED_PROXY_CIDRS, toute adresse non routable sur Internet est un
+    relais (100.64.0.0/10 : réseaux de pods en CGNAT)."""
+    req = _request_with({"x-forwarded-for": "41.100.0.9"}, pair=pair)
+    assert geo_service.peer_is_trusted_proxy(req) is True
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_trusted_proxy_cidrs_remplace_les_plages_par_defaut(env_relais):
+    env_relais.setenv("TRUSTED_PROXY_CIDRS", "34.120.0.0/16")
+    req = _request_with({"x-forwarded-for": "41.100.0.9"}, pair="34.120.7.7")
+    assert geo_service.client_ip(req) == "41.100.0.9"
+    # Le réseau privé n'est plus approuvé : l'en-tête est ignoré, le pair privé
+    # ne donne aucune IP.
+    req = _request_with({"x-forwarded-for": "41.100.0.9"}, pair="10.0.0.1")
+    assert geo_service.client_ip(req) is None
+
+
+def test_trusted_proxy_cidrs_vide_n_approuve_aucun_relais(env_relais):
+    """Cas d'un relais réseau (NAT) qui n'ajoute pas X-Forwarded-For."""
+    env_relais.setenv("TRUSTED_PROXY_CIDRS", "")
+    req = _request_with({"x-forwarded-for": "41.100.0.9"}, pair="172.17.0.1")
+    assert geo_service.peer_is_trusted_proxy(req) is False
+    assert geo_service.client_ip(req) is None
+
+
+def test_trusted_proxy_cidrs_entree_invalide_ignoree(env_relais):
+    env_relais.setenv("TRUSTED_PROXY_CIDRS", "pas-une-plage, 10.0.0.0/8")
+    assert geo_service.client_ip(_request_with({"x-forwarded-for": "41.100.0.9"})) == "41.100.0.9"
+
+
+def test_pair_non_ip_n_est_pas_un_relais(env_relais):
+    req = _request_with({"x-forwarded-for": "41.100.0.9"}, pair="testclient")
+    assert geo_service.peer_is_trusted_proxy(req) is False
+    assert geo_service.client_ip(req) is None
+
+
+def test_toutes_les_lignes_x_forwarded_for_sont_lues(env_relais):
+    """Un relais qui ajoute sa propre ligne ne doit pas laisser gagner celle du client."""
+    from starlette.requests import Request as StarletteRequest
+
+    env_relais.setenv("TRUSTED_PROXY_HOPS", "3")
+    lignes = [
+        (b"x-forwarded-for", b"81.200.5.4"),
+        (b"x-forwarded-for", b"41.100.0.9, 10.0.0.2, 10.0.0.3"),
+    ]
+    req = StarletteRequest({"type": "http", "headers": lignes, "client": ("10.0.0.1", 1234)})
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_cloudflare_prouve_par_secret_independamment_du_pair(env_relais):
+    """Le secret d'edge reste la preuve des en-têtes CF-* : aucune plage d'IP à tenir."""
+    env_relais.setenv("CLOUDFLARE_EDGE_SECRET", "s3cr3t")
+    req = _request_with(
+        {"x-edge-secret": "s3cr3t", "cf-connecting-ip": "41.100.0.9"}, pair="172.64.1.1"
+    )
+    assert geo_service.client_ip(req) == "41.100.0.9"
+    req = _request_with({"cf-connecting-ip": "81.200.5.4", "cf-ipcountry": "FR"})
+    assert geo_service.cloudflare_is_trusted(req) is False
+
+
+def test_secret_d_edge_non_ascii_refuse_sans_erreur(env_relais):
+    from starlette.requests import Request as StarletteRequest
+
+    env_relais.setenv("CLOUDFLARE_EDGE_SECRET", "s3cr3t")
+    req = StarletteRequest(
+        {"type": "http", "headers": [(b"x-edge-secret", b"\xe9")], "client": ("10.0.0.1", 1)}
+    )
+    assert geo_service.cloudflare_is_trusted(req) is False
+
+
+class _LecteurGeoIPFactice:
+    """GeoIP factice : 41.x → DZ, 81.x → FR."""
+
+    pays = {"41": "DZ", "81": "FR"}
+
+    def country(self, ip):
+        code = self.pays[ip.split(".")[0]]
+        return type("R", (), {"country": type("C", (), {"iso_code": code})()})()
+
+
+def test_xff_forge_ne_change_pas_le_prestataire(client, env_relais):
+    """Un visiteur algérien joignant l'origine en direct ne se fait pas passer
+    pour un Français en forgeant X-Forwarded-For."""
+    env_relais.setattr(geo_service, "_geoip_reader", lambda: _LecteurGeoIPFactice())
+    direct = TestClient(_avec_pair(client.app, "41.100.0.9"))
+    ctx = direct.get("/billing/payment-context", headers={"X-Forwarded-For": "81.200.5.4"}).json()
+    assert (ctx["provider"], ctx["country"]) == ("chargily", "DZ")
+
+
+def test_geo_diagnostic_indique_si_le_pair_est_un_relais_approuve(client, env_relais):
+    corps = client.get("/billing/geo-diagnostic", headers={"X-Forwarded-For": "8.8.8.8"}).json()
+    assert corps["client_ip"] is None and corps["proxy_peer_trusted"] is False
+    relais = TestClient(_avec_pair(client.app, "10.0.0.9"))
+    corps = relais.get("/billing/geo-diagnostic", headers={"X-Forwarded-For": "8.8.8.8"}).json()
+    assert corps["client_ip"] == "8.8.8.8" and corps["proxy_peer_trusted"] is True
+    # Les relais à ligne séparée sont comptés, comme dans client_ip.
+    corps = relais.get(
+        "/billing/geo-diagnostic",
+        headers=[("X-Forwarded-For", "8.8.8.8"), ("X-Forwarded-For", "10.0.0.2")],
+    ).json()
+    assert corps["headers_seen"]["x_forwarded_for_hops"] == 2
 
 
 # ── TVA : Stripe Tax ────────────────────────────────────────────────────────

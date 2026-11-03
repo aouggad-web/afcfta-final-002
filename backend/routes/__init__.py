@@ -25,8 +25,8 @@ from auth import require_admin, require_auth
 from entitlement_guard import (
     require_api_access,
     require_calculations_quota,
-    require_module,
     require_module_enabled,
+    require_paid_module,
 )
 from fastapi import APIRouter, Depends
 
@@ -41,7 +41,10 @@ _admin = [Depends(require_admin)]
 # API key", these check "does this subscriber's tier include this module". A
 # JWT-session subscriber is gated on their real tier; anyone else (API-key-only,
 # or no auth at all) is gated as the free tier — see
-# entitlement_guard.get_optional_subscriber.
+# entitlement_guard.get_optional_subscriber. Exceptions (audit E1): without a
+# session, calculations are counted in memory per visitor, and reports, API v2
+# and file exports are refused unless a valid API key is sent — see the
+# entitlement_guard module docstring.
 #
 # Browse/reference modules (stats, production, logistics, roo, tools) are gated
 # on the tier on/off switch ONLY — no per-request metering. A single UI view of
@@ -57,7 +60,12 @@ _production_entitlement = [Depends(require_module_enabled("production"))]
 _logistics_entitlement = [Depends(require_module_enabled("logistics"))]
 _roo_entitlement = [Depends(require_module_enabled("roo"))]
 _tools_entitlement = [Depends(require_module_enabled("tools"))]
-_reports_entitlement = [Depends(require_module("reports"))]
+# Module Opportunités réservé aux abonnements payants (audit E1).
+_reports_entitlement = [Depends(require_paid_module("reports"))]
+# Sous-onglets du même onglet Opportunités (Substitution, Flux stratégiques,
+# Algérie) : réservés eux aussi aux abonnements payants, sans décompte du
+# quota de rapports (écrans de consultation, nombreuses requêtes).
+_opportunites_entitlement = [Depends(require_paid_module("reports", compter=False))]
 _calculator_entitlement = [Depends(require_calculations_quota())]
 _api_entitlement = [Depends(require_api_access())]
 
@@ -326,14 +334,6 @@ except ImportError:
     INSURANCE_AVAILABLE = False
 
 try:
-    from api.graphql.schema import router as graphql_router
-
-    GRAPHQL_AVAILABLE = True
-except ImportError:
-    graphql_router = None
-    GRAPHQL_AVAILABLE = False
-
-try:
     from api.websocket.handlers import router as websocket_router
 
     WEBSOCKET_AVAILABLE = True
@@ -375,10 +375,12 @@ except ImportError:
 
 try:
     from .reports import router as reports_router
+    from .reports import router_diagnostics as reports_diagnostics_router
 
     REPORTS_AVAILABLE = True
 except ImportError as e:
     reports_router = None
+    reports_diagnostics_router = None
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
@@ -445,12 +447,20 @@ def register_routes(api_router: APIRouter):
         dependencies=_auth + _stats_entitlement,
     )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
-    api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     api_router.include_router(
-        industrie_nationale_router, tags=["Industrie nationale"], dependencies=_auth
+        substitution_router,
+        tags=["Trade Substitution"],
+        dependencies=_auth + _opportunites_entitlement,
     )
     api_router.include_router(
-        strategic_router, tags=["Strategic Trade Intelligence"], dependencies=_auth
+        industrie_nationale_router,
+        tags=["Industrie nationale"],
+        dependencies=_auth + _opportunites_entitlement,
+    )
+    api_router.include_router(
+        strategic_router,
+        tags=["Strategic Trade Intelligence"],
+        dependencies=_auth + _opportunites_entitlement,
     )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
@@ -567,8 +577,11 @@ def register_routes(api_router: APIRouter):
             tags=["Insurance"],
             dependencies=_auth,
         )
-    if GRAPHQL_AVAILABLE:
-        api_router.include_router(graphql_router, tags=["GraphQL"], dependencies=_auth)
+    # GraphQL (/api/graphql, playground, /api/graphql/schema) n'est plus servi :
+    # aucun appelant dans l'application, et il exposait aux anonymes la purge
+    # du cache, des métriques internes et des messages d'erreur bruts
+    # (constats E2 et E4 de l'audit de sécurité). Module conservé dans
+    # api/graphql/schema.py, non monté.
     if WEBSOCKET_AVAILABLE:
         api_router.include_router(
             websocket_router, tags=["WebSocket Real-time"], dependencies=_auth
@@ -590,6 +603,12 @@ def register_routes(api_router: APIRouter):
             reports_router,
             tags=["Premium Opportunity Reports"],
             dependencies=_auth + _reports_entitlement,
+        )
+        # Diagnostics publics, hors abonnement et hors quota.
+        api_router.include_router(
+            reports_diagnostics_router,
+            tags=["Premium Opportunity Reports"],
+            dependencies=_auth,
         )
 
     # SaaS layer: user accounts (JWT session, separate from the X-API-Key

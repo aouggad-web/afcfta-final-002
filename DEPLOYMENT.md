@@ -249,6 +249,10 @@ services:
   backend:
     command: uvicorn backend.server:app --host 0.0.0.0 --port 8000 --workers 4
 ```
+Attention : le quota des calculs sans compte et le limiteur de débit sont
+comptés en mémoire, par processus. Avec N workers, un visiteur dispose de
+N fois son quota : gardez un seul worker tant que ces compteurs ne sont pas
+partagés (par exemple dans Redis).
 
 ### Backup automatique
 

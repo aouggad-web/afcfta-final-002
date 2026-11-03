@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { nomPays } from "../../utils/iso3166";
 import { pick, intlLocale } from "../../i18n/lang";
+import { reportsNoticeText } from "../tools/entitlementNotice";
+import SubscriptionNotice from "../tools/SubscriptionNotice";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -380,12 +382,18 @@ export default function NationalIndustryView({ fr, language = fr ? "fr" : "en" }
   const [hs6, setHs6] = useState("");
   const [fiche, setFiche] = useState(null);
   const [erreur, setErreur] = useState(null);
+  // Module Opportunités réservé aux abonnements payants (audit E1) : avis
+  // localisé avec un lien vers les formules, au lieu de « Données indisponibles ».
+  const signalerErreur = (e) => {
+    const notice = reportsNoticeText(e, language);
+    setErreur(notice ? <SubscriptionNotice text={notice} language={language} /> : pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة."));
+  };
 
   useEffect(() => {
     axios
       .get(`${API}/industrie-nationale/DZA?lang=${lang}`)
       .then((r) => setInd(r.data))
-      .catch(() => setErreur(pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة.")));
+      .catch(signalerErreur);
   }, [lang, fr, language]);
 
   useEffect(() => {
@@ -394,7 +402,7 @@ export default function NationalIndustryView({ fr, language = fr ? "fr" : "en" }
         `${API}/industrie-nationale/DZA/exportations?lang=${lang}&region=${region}&limite=25&hors_hydrocarbures=${horsHydro}`
       )
       .then((r) => setExp(r.data))
-      .catch(() => setErreur(pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة.")));
+      .catch(signalerErreur);
   }, [lang, region, horsHydro, fr, language]);
 
   const ouvrir = useCallback(
@@ -405,7 +413,7 @@ export default function NationalIndustryView({ fr, language = fr ? "fr" : "en" }
       axios
         .get(`${API}/industrie-nationale/DZA/exportations/${c}?lang=${lang}`)
         .then((r) => setFiche(r.data))
-        .catch(() => setErreur(pick(language, "Données indisponibles.", "Data unavailable.", "البيانات غير متاحة.")));
+        .catch(signalerErreur);
     },
     [lang, fr, language]
   );

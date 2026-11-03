@@ -91,25 +91,26 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     def _get_client_ip(self, request: Request) -> str:
         """Adresse servant de clé de compteur.
 
-        Délègue à `geo_service.client_ip`, qui tient compte du nombre de relais
-        en frontal (TRUSTED_PROXY_HOPS). Prendre naïvement la dernière entrée de
+        Délègue à `geo_service.cle_de_comptage`, qui ne lit X-Forwarded-For
+        que derrière un relais approuvé et tient compte du nombre de relais en
+        frontal (TRUSTED_PROXY_HOPS). Prendre naïvement la dernière entrée de
         X-Forwarded-For derrière plusieurs relais renverrait une adresse
         d'infrastructure identique pour tout le monde : l'ensemble des visiteurs
         partagerait alors un seul quota, et un utilisateur actif suffirait à
         bloquer tous les autres.
+
+        À défaut, le pair direct — jamais un en-tête : un X-Forwarded-For brut,
+        changé à chaque requête, contournerait le quota.
         """
         try:
             from services import geo_service
 
-            resolved = geo_service.client_ip(request)
+            resolved = geo_service.cle_de_comptage(request)
             if resolved:
                 return resolved
         except Exception:  # pragma: no cover - le limiteur ne doit jamais casser
             logger.debug("Résolution d'IP déléguée indisponible, repli local", exc_info=True)
 
-        forwarded = request.headers.get("x-forwarded-for")
-        if forwarded:
-            return forwarded.split(",")[-1].strip()
         if request.client:
             return request.client.host
         return "unknown"

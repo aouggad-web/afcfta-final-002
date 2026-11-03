@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Badge } from '../ui/badge';
 import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
 import { pick } from '../../i18n/lang';
+import { nombre } from '../../utils/nombres';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -53,6 +53,11 @@ const REGION_ICONS = {
   igad: "🌅",
 };
 
+/* Aucun téléchargement de tarif, quelle que soit la formule (décision du
+   responsable produit, 03/11/2026) : l'écran affiche le nombre de positions
+   tarifaires nationales de chaque pays. Seul le compte admin, quand le
+   serveur l'autorise (`telechargement`, ADMIN_ACCES_ILLIMITE), voit les
+   boutons de téléchargement. */
 function DownloadButton({ url, label, icon, className, size = "normal" }) {
   const [status, setStatus] = useState('idle');
 
@@ -62,7 +67,9 @@ function DownloadButton({ url, label, icon, className, size = "normal" }) {
     if (status === 'loading') return;
     setStatus('loading');
     try {
-      const res = await fetch(`${API}${url}`);
+      // La session admin (cookie) autorise le téléchargement : l'envoyer aussi
+      // quand l'API est sur une autre origine (VITE_BACKEND_URL).
+      const res = await fetch(`${API}${url}`, { credentials: 'include' });
       if (!res.ok) throw new Error('Download failed');
       const blob = await res.blob();
       const disposition = res.headers.get('content-disposition') || '';
@@ -118,38 +125,35 @@ export default function TariffDownloads({ language = 'fr' }) {
   const [loading, setLoading] = useState(true);
 
   const t = pick(language, {
-    title: "Téléchargement des Tarifs NPF (Droit Commun)",
-    subtitle: (n) => `${n} pays — tarif NPF tel que le calculateur l'applique`,
+    title: "Tarifs NPF (droit commun) : positions nationales",
+    subtitle: (n) => `${n} pays — nombre de positions du tarif national tel que le calculateur l'applique`,
     loading: "Chargement des données...",
+    positions: (n) => `${nombre(n, 'fr')} positions tarifaires nationales`,
     downloadCountry: "CSV",
     downloadJson: "JSON",
     downloadRegion: "Télécharger tout le groupe",
-    format: "Une ligne par position nationale : CSV (« ; ») + fichier de notes, ou JSON",
-    columnsDetail: "Taux par prélèvement, total pour 100 CAF, état du calcul, manques, restrictions",
     error: "Erreur de chargement",
     subscriptionTitle: "Module réservé aux abonnés",
     countries: "pays",
   }, {
-    title: "MFN Tariff Data Download (Common Law)",
-    subtitle: (n) => `${n} countries — MFN tariff as applied by the calculator`,
+    title: "MFN tariffs (common law): national tariff lines",
+    subtitle: (n) => `${n} countries — number of national tariff lines as applied by the calculator`,
     loading: "Loading data...",
+    positions: (n) => `${nombre(n, 'en')} national tariff lines`,
     downloadCountry: "CSV",
     downloadJson: "JSON",
     downloadRegion: "Download entire group",
-    format: "One row per national tariff line: CSV (« ; ») + notes file, or JSON",
-    columnsDetail: "Rate per levy, total per 100 CIF, calculation status, missing inputs, restrictions",
     error: "Loading error",
     subscriptionTitle: "Subscribers-only module",
     countries: "countries",
   }, {
-    title: "تنزيل تعريفات الدولة الأولى بالرعاية (NPF) (النظام العام)",
-    subtitle: (n) => `عدد البلدان: ${n} — تعريفة الدولة الأولى بالرعاية كما تطبّقها الحاسبة`,
+    title: "تعريفات الدولة الأولى بالرعاية (NPF) (النظام العام): البنود الوطنية",
+    subtitle: (n) => `عدد البلدان: ${n} — عدد بنود التعريفة الوطنية كما تطبّقها الحاسبة`,
     loading: "جارٍ تحميل البيانات…",
+    positions: (n) => `عدد البنود التعريفية الوطنية: ${nombre(n, 'ar')}`,
     downloadCountry: "CSV",
     downloadJson: "JSON",
     downloadRegion: "تنزيل المجموعة كاملة",
-    format: "سطر لكل بند وطني: CSV (« ; ») + ملف ملاحظات، أو JSON",
-    columnsDetail: "المعدل لكل رسم، المجموع لكل 100 من القيمة سيف (CIF)، حالة الحساب، النواقص، القيود",
     error: "خطأ في التحميل",
     subscriptionTitle: "وحدة مخصّصة للمشتركين",
     countries: "بلدًا",
@@ -213,6 +217,7 @@ export default function TariffDownloads({ language = 'fr' }) {
 
   const regions = downloadData.regions || {};
   const countries = downloadData.countries || [];
+  const telechargement = downloadData.telechargement === true;
 
   const getCountriesForRegion = (regionKey) => {
     const regionCountryCodes = regions[regionKey]?.countries || [];
@@ -224,19 +229,14 @@ export default function TariffDownloads({ language = 'fr' }) {
       <Card className="border-2 border-green-200">
         <CardHeader className="bg-gradient-to-r from-green-50 to-blue-50">
           <CardTitle className="text-2xl flex items-center gap-3">
-            📥 {t.title}
+            📊 {t.title}
           </CardTitle>
           <div className="text-gray-600 mt-1">{t.subtitle(countries.length)}</div>
-          <div className="flex flex-wrap gap-2 mt-3">
-            <Badge variant="outline" className="text-sm">{t.format}</Badge>
-            <Badge variant="outline" className="text-sm">{t.columnsDetail}</Badge>
-          </div>
         </CardHeader>
       </Card>
 
       {Object.entries(regions).map(([regionKey, region]) => {
         const regionCountries = getCountriesForRegion(regionKey);
-        const totalSizeKb = regionCountries.reduce((s, c) => s + (c.total_size_kb || 0), 0);
 
         return (
           <Card key={regionKey} className="border border-gray-200 overflow-hidden">
@@ -247,15 +247,17 @@ export default function TariffDownloads({ language = 'fr' }) {
                   <span>{regionLabels[regionKey]}</span>
                 </div>
                 <div className="text-sm opacity-90 mt-1">
-                  {regionCountries.length} {t.countries} — {Math.round(totalSizeKb / 1024 * 10) / 10} MB
+                  {regionCountries.length} {t.countries}
                 </div>
               </div>
-              <DownloadButton
-                url={`/tariff-data/download-region-zip/${regionKey}`}
-                label={t.downloadRegion}
-                icon="📦"
-                className="bg-white text-gray-800 shadow-md"
-              />
+              {telechargement && (
+                <DownloadButton
+                  url={`/tariff-data/download-region-zip/${regionKey}`}
+                  label={t.downloadRegion}
+                  icon="📦"
+                  className="bg-white text-gray-800 shadow-md"
+                />
+              )}
             </div>
 
             <CardContent className="p-3">
@@ -265,26 +267,29 @@ export default function TariffDownloads({ language = 'fr' }) {
                     <div className="flex items-center justify-between p-3 bg-gray-50">
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold text-sm truncate">{country.name}</div>
-                        <div className="text-xs text-gray-500">{country.code} — {country.total_size_kb} KB</div>
+                        <div className="text-xs text-gray-500">{country.code}</div>
+                        <div className="text-sm text-gray-700 mt-1" data-testid="positions-nationales">
+                          {t.positions(country.positions)}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1 ml-2">
-                        <DownloadButton
-                          url={country.download_url}
-                          label={t.downloadCountry}
-                          icon="📥"
-                          className="bg-green-600 text-white"
-                          size="small"
-                        />
-                        {country.json_ready && (
+                      {telechargement && country.download_url && (
+                        <div className="flex items-center gap-1 ml-2">
                           <DownloadButton
-                            url={`/tariff-data/download-json/${country.code}`}
+                            url={country.download_url}
+                            label={t.downloadCountry}
+                            icon="📥"
+                            className="bg-green-600 text-white"
+                            size="small"
+                          />
+                          <DownloadButton
+                            url={country.json_download_url}
                             label={t.downloadJson}
                             icon="📋"
                             className="bg-blue-600 text-white"
                             size="small"
                           />
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

@@ -58,6 +58,8 @@ import {
 } from './zlecafAvailability';
 import { montant } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -757,6 +759,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             `${detail.positions?.length || 'Plusieurs'} positions nationales sous ce code SH6 : choisissez la vôtre dans la liste « Positions Tarifaires Nationales », puis relancez le calcul.`,
             `${detail.positions?.length || 'Several'} national positions under this HS6 code: choose yours in the "National Tariff Positions" list, then calculate again.`,
             `${detail.positions?.length ? `بنود وطنية عددها ${detail.positions.length}` : 'عدة بنود وطنية'} تحت رمز SH6 هذا: اختر بندك من قائمة «البنود التعريفية الوطنية»، ثم أعد الحساب.`),
+        });
+        return;
+      }
+      // Calculs sans abonnement épuisés (audit E1) : inviter à souscrire,
+      // dans la langue de l'interface.
+      const limiteAnonyme = anonymousCalculationNoticeText(error, language);
+      if (limiteAnonyme) {
+        toast({
+          title: pick(language, 'Limite de calculs atteinte', 'Calculation limit reached', 'تم بلوغ حدّ الحسابات'),
+          description: <SubscriptionNotice text={limiteAnonyme} language={language} />,
+          variant: 'destructive',
         });
         return;
       }

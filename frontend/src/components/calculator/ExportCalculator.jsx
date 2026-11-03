@@ -15,6 +15,8 @@ import { Badge } from '../ui/badge';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import { chiffres } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { anonymousCalculationNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -48,6 +50,9 @@ function detailErreur(e, language) {
     return pick(language, 'Position nationale requise : choisissez la position complète.', 'National position required: choose the full position.', 'البند الوطني مطلوب: اختر البند كاملًا.');
   }
   if (typeof detail === 'string') return detail;
+  // Calculs sans abonnement épuisés (audit E1), quota partagé avec /calcul.
+  const limite = anonymousCalculationNoticeText(e, language);
+  if (limite) return <SubscriptionNotice text={limite} language={language} />;
   return pick(language, 'Calcul impossible', 'Calculation failed', 'تعذّر الحساب');
 }
 

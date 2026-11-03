@@ -302,6 +302,11 @@ def test_export_contains_data_without_secrets(client, db, supabase):
 
 def test_delete_account_cancels_billing_and_erases_data(client, db, supabase, monkeypatch):
     uid = _seed_account(db)
+    # Compteurs d'échecs de connexion : celui du compte et celui d'un appareil connu.
+    db.login_attempts.docs += [
+        {"identifier": "alice@example.com", "count": 2},
+        {"identifier": "alice@example.com|appareil|n1", "email": "alice@example.com", "count": 1},
+    ]
     canceled = []
     monkeypatch.setattr(stripe_service, "cancel_subscription", canceled.append)
     client.cookies.set("access_token", _token())
@@ -310,7 +315,7 @@ def test_delete_account_cancels_billing_and_erases_data(client, db, supabase, mo
     assert set(canceled) == {"sub_plan", "sub_api"}
     assert supabase["deleted"] == [SUB]
     assert not db.users.docs and not db.api_keys.docs and not db.payment_attempts.docs
-    assert not db.contact_messages.docs
+    assert not db.contact_messages.docs and not db.login_attempts.docs
     assert db.purchases.docs[0]["user_id"] is None  # conservé anonymisé
     assert uid not in [d.get("user_id") for d in db.purchases.docs]
 

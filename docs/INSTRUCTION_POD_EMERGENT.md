@@ -158,9 +158,18 @@ Un exportateur ne peut servir que ce que le pays **ne produit pas** : la
 production nationale est soustraite (`importable_need`), et c'est sur cette
 grandeur que les marchés sont classés.
 
+Le module Opportunités est réservé aux abonnements payants : sur le pod (avec
+base), un appel anonyme reçoit un 403. On interroge donc l'application dans le
+processus, sans base (comme la CI) :
+
 ```bash
-curl -s "http://localhost:8001/api/reports/national-need?hs_code=0714&country=DZA"
-curl -s "http://localhost:8001/api/reports/national-need?hs_code=0803&country=DZA"
+cd /app/backend && MONGO_URL= python - <<'EOF'
+from fastapi.testclient import TestClient
+import server
+c = TestClient(server.app)
+for hs in ("0714", "0803"):
+    print(hs, c.get(f"/api/reports/national-need?hs_code={hs}&country=DZA").json())
+EOF
 ```
 
 Le premier doit être **non établi** ; le second doit **rester un marché réel**.

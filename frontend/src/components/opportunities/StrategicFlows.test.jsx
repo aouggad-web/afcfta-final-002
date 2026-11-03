@@ -84,4 +84,20 @@ describe('StrategicFlows', () => {
     await waitFor(() =>
       expect(screen.queryByTestId('strategic-flow-card')).not.toBeInTheDocument());
   });
+
+  it('annonce l’abonnement requis au lieu de planter sur le refus du serveur', async () => {
+    // Module Opportunités réservé aux abonnements payants (audit E1) : le
+    // `detail` du refus est un objet, que React ne peut pas afficher tel quel.
+    const refus = {
+      response: {
+        status: 403,
+        data: { detail: { error: 'upgrade_required', tier: 'anonymous', message: 'Réservé' } },
+      },
+    };
+    axios.get.mockImplementation(() => Promise.reject(refus));
+    render(<StrategicFlows language="fr" initialCountry={{ iso3: 'KEN' }} />);
+    const avis = await screen.findAllByTestId('subscription-notice');
+    expect(avis[0]).toHaveTextContent('réservé aux abonnements payants');
+    expect(avis[0].querySelector('a')).toHaveAttribute('href', '/pricing.html');
+  });
 });

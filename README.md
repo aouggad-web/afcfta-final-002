@@ -80,6 +80,8 @@ The health endpoints provide real-time monitoring of:
 | `/api/export/validation-report/json` | GET | Export validation report with quality metrics |
 | `/api/export/comparison/csv` | GET | Compare tariffs between countries |
 
+Access: a session on a plan that includes the format (CSV: Starter and above; Excel: Pro and above) or a valid API key. The validation report requires an admin key.
+
 #### Examples:
 
 **Get Latest Trade Data with Smart Selection:**

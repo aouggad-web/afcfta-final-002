@@ -19,6 +19,10 @@ from services import report_engine
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/reports")
+#: Diagnostics d'exploitation (/reports/health, /reports/oec-health) : publics et
+#: hors quota, car sync_emergent.sh et INSTRUCTION_EMERGENT.md les appellent sans
+#: session. `routes/__init__.py` ne pose le contrôle d'abonnement que sur `router`.
+router_diagnostics = APIRouter(prefix="/reports")
 
 
 @router.get("/opportunity", summary="Rapport d'opportunité bilatéral (produit)")
@@ -371,7 +375,9 @@ async def macro_profile(country_iso3: str):
     return macro.get_macro_profile(country_iso3)
 
 
-@router.get("/oec-health", summary="Diagnostic de connexion OEC (canal gratuit + direct)")
+@router_diagnostics.get(
+    "/oec-health", summary="Diagnostic de connexion OEC (canal gratuit + direct)"
+)
 async def oec_health(year: int = Query(default=2022, description="Année de test")):
     """
     Vérifie la connexion à l'OEC depuis l'environnement courant, en sondant
@@ -471,7 +477,7 @@ async def sectoral_analysis(
     )
 
 
-@router.get("/health", summary="Diagnostic de disponibilité des données du moteur")
+@router_diagnostics.get("/health", summary="Diagnostic de disponibilité des données du moteur")
 async def reports_health():
     """
     Indique quelles sources d'angle répondent dans l'environnement courant

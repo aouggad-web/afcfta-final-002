@@ -112,7 +112,9 @@ def search(query: str, limit: int = 20) -> Dict:
     """
     data = _load()
     query_norm = _normalize(query)
-    tokens = query_norm.split()
+    # Un token répété ne coûte qu'une fois : tous sont exigés (ET) et le score
+    # ne lit que query_norm (constat E2).
+    tokens = list(dict.fromkeys(query_norm.split()))
     if not tokens:
         return {"query": query, "count": 0, "results": [], "source": data.get("source")}
 

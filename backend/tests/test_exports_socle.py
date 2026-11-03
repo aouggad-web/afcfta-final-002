@@ -1,8 +1,10 @@
 """L'export CSV du socle (backend/data/exports/socle/) reste celui du socle.
 
-Le SaaS sert ces fichiers tels quels. Un socle reconstruit — ou un moteur
-modifié, qui change le total pour 100 CAF — sans réexport servirait un tarif
-qui n'est plus celui du calculateur. Remède : relancer
+Le SaaS ne les sert à aucune formule (seul le compte admin les télécharge,
+si ADMIN_ACCES_ILLIMITE est activé) ; leur manifeste donne le nombre de
+positions affiché par le module Outils. Un socle reconstruit — ou un moteur modifié, qui change le
+total pour 100 CAF — sans réexport décrirait un tarif qui n'est plus celui du
+calculateur. Remède : relancer
 ``python3 scripts/exporter_tarifs_socle.py`` (après ``build_socle.py``).
 """
 
@@ -76,28 +78,86 @@ def test_le_reexport_redonne_les_fichiers_archives(tmp_path):
     assert not ecarts, f"{REMEDE} {' '.join(ecarts)}"
 
 
-def _client(quota=False):
+def _client(quota=False, utilisateur=None):
     """Client du routeur seul. Le quota « tools » (abonnement, base de
-    données) est neutralisé, sauf ``quota=True`` qui le laisse s'appliquer."""
+    données) est neutralisé, sauf ``quota=True`` qui le laisse s'appliquer.
+    ``utilisateur`` est la session vue par l'application (aucune par défaut)."""
+    from entitlement_guard import get_optional_subscriber
     from routes.tariff_data import _tools_metered
 
     app = FastAPI()
     app.include_router(router)
     if not quota:
         app.dependency_overrides[_tools_metered[0].dependency] = lambda: None
+    app.dependency_overrides[get_optional_subscriber] = lambda: utilisateur
     return TestClient(app)
 
 
-def test_la_liste_annonce_chaque_export():
+ADMIN = {"email": "admin@exemple.invalid", "role": "admin"}
+
+
+@pytest.fixture
+def admin(monkeypatch):
+    """Client du compte admin, accès illimité activé (cas d'Emergent)."""
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    return _client(utilisateur=ADMIN)
+
+
+def test_la_liste_ne_donne_que_le_nombre_de_positions(monkeypatch):
+    monkeypatch.delenv("ADMIN_ACCES_ILLIMITE", raising=False)
     corps = _client().get("/tariff-data/download/list").json()
     assert corps["count"] == len(EXPORTS_PAYS)
+    assert corps["telechargement"] is False
     cog = next(c for c in corps["countries"] if c["code"] == "COG")
     assert cog["positions"] == EXPORTS_PAYS["COG"]["positions"]
+    # Aucun lien ni aucune taille de fichier : rien n'est téléchargeable.
+    assert set(cog) == {"code", "name", "positions", "collecte", "devise"}
+
+
+TELECHARGEMENTS = [
+    "/tariff-data/download-zip/COG",
+    "/tariff-data/download-json/COG",
+    "/tariff-data/download-region-zip/cemac",
+]
+
+
+@pytest.mark.parametrize("chemin", TELECHARGEMENTS)
+@pytest.mark.parametrize(
+    "reglage, utilisateur",
+    [
+        (None, None),  # anonyme
+        ("true", {"email": "pro@exemple.invalid", "role": "user"}),  # abonné
+        (None, ADMIN),  # admin, accès illimité désactivé (défaut)
+        ("false", ADMIN),
+    ],
+)
+def test_aucune_formule_ne_telecharge_les_tarifs(monkeypatch, chemin, reglage, utilisateur):
+    """Décision du responsable produit (03/11/2026) : aucun téléchargement de
+    tarif, pour aucune formule ni aucun pays."""
+    if reglage is None:
+        monkeypatch.delenv("ADMIN_ACCES_ILLIMITE", raising=False)
+    else:
+        monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", reglage)
+    reponse = _client(utilisateur=utilisateur).get(chemin)
+    assert reponse.status_code == 403
+    assert reponse.json()["detail"]["error"] == "downloads_disabled"
+
+
+def test_les_lignes_tarifaires_paginees_ne_sont_plus_servies(admin):
+    assert admin.get("/tariff-data/COG").status_code == 404
+
+
+def test_l_admin_recoit_les_liens_de_telechargement(admin):
+    corps = admin.get("/tariff-data/download/list").json()
+    assert corps["telechargement"] is True
+    cog = next(c for c in corps["countries"] if c["code"] == "COG")
     assert cog["download_url"] == "/tariff-data/download-zip/COG"
+    assert cog["json_download_url"] == "/tariff-data/download-json/COG"
+    assert cog["total_size_kb"] > 0
 
 
-def test_le_zip_porte_le_tarif_et_ses_notes():
-    reponse = _client().get("/tariff-data/download-zip/cog")
+def test_le_zip_porte_le_tarif_et_ses_notes(admin):
+    reponse = admin.get("/tariff-data/download-zip/cog")
     assert reponse.status_code == 200
     with zipfile.ZipFile(io.BytesIO(reponse.content)) as zf:
         assert sorted(zf.namelist()) == ["COG_NPF.csv", "COG_NPF_notes.csv"]
@@ -105,8 +165,8 @@ def test_le_zip_porte_le_tarif_et_ses_notes():
     assert entete.startswith("Position;Désignation;Chapitre;Unité;DD ")
 
 
-def test_le_zip_d_un_groupe_porte_les_exports_de_ses_pays():
-    reponse = _client().get("/tariff-data/download-region-zip/cemac")
+def test_le_zip_d_un_groupe_porte_les_exports_de_ses_pays(admin):
+    reponse = admin.get("/tariff-data/download-region-zip/cemac")
     assert reponse.status_code == 200
     with zipfile.ZipFile(io.BytesIO(reponse.content)) as zf:
         noms = zf.namelist()
@@ -114,24 +174,15 @@ def test_le_zip_d_un_groupe_porte_les_exports_de_ses_pays():
     assert all(n.endswith(("_NPF.csv", "_NPF_notes.csv")) for n in noms)
 
 
-def test_les_anciens_csv_par_chapitres_ne_sont_plus_servis():
-    """Les CSV de l'ancien collecteur (``<ISO>_NPF_chXX-YY.csv``) ne portaient
-    pas les corrections du socle : ils ont été retirés, et rien ne les
-    régénère."""
-    exports = os.path.dirname(EXPORTS)
-    assert [f for f in os.listdir(exports) if f.endswith(".csv")] == []
-    assert _client().get("/tariff-data/download/COG/01-10").status_code == 404
+def test_un_pays_sans_export_est_refuse(admin):
+    assert admin.get("/tariff-data/download-zip/DJI").status_code == 404
+    assert admin.get("/tariff-data/download-zip/..%2F..%2Fetc").status_code == 404
 
 
-def test_un_pays_sans_export_est_refuse():
-    assert _client().get("/tariff-data/download-zip/DJI").status_code == 404
-    assert _client().get("/tariff-data/download-zip/..%2F..%2Fetc").status_code == 404
-
-
-def test_le_json_reprend_le_csv_archive():
+def test_le_json_reprend_le_csv_archive(admin):
     """Le JSON se lit sur le CSV archivé : un réexport du tarif le met à jour
     sans autre étape."""
-    corps = _client().get("/tariff-data/download-json/cog").json()
+    corps = admin.get("/tariff-data/download-json/cog").json()
     assert corps["pays"] == "COG"
     assert corps["socle_sha256"] == EXPORTS_PAYS["COG"]["socle_sha256"]
     assert len(corps["positions"]) == EXPORTS_PAYS["COG"]["positions"]
@@ -143,14 +194,23 @@ def test_le_json_reprend_le_csv_archive():
     assert all(n in corps["notes"] for n in cheval["notes"])
 
 
-def test_le_json_garde_les_formes_publiees_et_les_restrictions():
-    zaf = _client().get("/tariff-data/download-json/ZAF").json()
+def test_le_json_garde_les_formes_publiees_et_les_restrictions(admin):
+    zaf = admin.get("/tariff-data/download-json/ZAF").json()
     primates = next(p for p in zaf["positions"] if p["position"] == "020830")
     assert primates["droits"]["DD"] == "8c/kg"
     assert primates["total_pour_100_caf"] is None
-    lby = _client().get("/tariff-data/download-json/LBY").json()
+    lby = admin.get("/tariff-data/download-json/LBY").json()
     biere = next(p for p in lby["positions"] if p["position"] == "220300")
     assert biere["restrictions"] == ["Importation interdite (NPF et Ligue arabe)"]
+
+
+def test_les_anciens_csv_par_chapitres_ne_sont_plus_servis():
+    """Les CSV de l'ancien collecteur (``<ISO>_NPF_chXX-YY.csv``) ne portaient
+    pas les corrections du socle : ils ont été retirés, et rien ne les
+    régénère."""
+    exports = os.path.dirname(EXPORTS)
+    assert [f for f in os.listdir(exports) if f.endswith(".csv")] == []
+    assert _client().get("/tariff-data/download/COG/01-10").status_code == 404
 
 
 def test_chaque_export_annonce_ses_colonnes():
@@ -158,14 +218,3 @@ def test_chaque_export_annonce_ses_colonnes():
         with open(os.path.join(EXPORTS, entree["fichier"]), encoding="utf-8-sig") as f:
             entete = f.readline().rstrip("\n").split(";")
         assert len(entete) == 4 + len(entree["colonnes"]) + 5, cc
-
-
-def test_le_json_compte_dans_le_quota_tools():
-    """Choix produit : chaque téléchargement JSON est décompté du quota
-    « tools », comme les routes qui recalculent le tarif."""
-    from routes.tariff_data import _tools_metered
-
-    route = next(r for r in router.routes if r.path == "/tariff-data/download-json/{country_code}")
-    assert route.dependencies == _tools_metered
-    # Sans abonnement (formule gratuite), le module « tools » est fermé.
-    assert _client(quota=True).get("/tariff-data/download-json/COG").status_code == 403
