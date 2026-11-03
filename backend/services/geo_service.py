@@ -7,10 +7,11 @@ changes), les autres partent vers Stripe.
 
 Trois limites assumées, documentées ici pour éviter les fausses promesses :
 
-1. **L'IP la plus à gauche de `X-Forwarded-For` est fournie par le client** et
-   donc falsifiable. On lit la plus à droite, posée par le proxy de confiance —
-   même convention que `middlewares/rate_limiter.py`. Cela suppose exactement un
-   hop de confiance en frontal (`--forwarded-allow-ips` côté uvicorn).
+1. **`X-Forwarded-For` est un texte que n'importe quel client peut envoyer.**
+   On ne le lit que si le pair direct (`request.client.host`) est un relais
+   approuvé (`TRUSTED_PROXY_CIDRS`, voir `peer_is_trusted_proxy()`), et alors à
+   `TRUSTED_PROXY_HOPS` positions de la fin. Sinon, seule l'adresse du pair fait
+   foi. Le limiteur de débit (`middlewares/rate_limiter.py`) suit cette règle.
 2. **Aucune détection de VPN/proxy n'est faite ici.** Elle exige un service
    commercial (MaxMind Anonymous IP, IPQualityScore, IPinfo Privacy). On se
    contente d'enregistrer les signaux pour audit — voir `collect_signals()`.
@@ -29,6 +30,7 @@ Sources supportées, par ordre de priorité :
 
 from __future__ import annotations
 
+import functools
 import hmac
 import ipaddress
 import logging
@@ -69,13 +71,58 @@ def trusted_proxy_hops() -> int:
         return 1
 
 
+@functools.lru_cache(maxsize=4)
+def _plages_de_relais(valeur: str) -> tuple:
+    """Plages de `TRUSTED_PROXY_CIDRS` ; une entrée illisible est ignorée et
+    signalée une seule fois (le résultat est mis en cache)."""
+    plages = []
+    for entree in valeur.split(","):
+        entree = entree.strip()
+        if not entree:
+            continue
+        try:
+            plages.append(ipaddress.ip_network(entree, strict=False))
+        except ValueError:
+            logger.warning("TRUSTED_PROXY_CIDRS : entrée invalide ignorée (%s)", entree)
+    return tuple(plages)
+
+
+def peer_is_trusted_proxy(request: Request) -> bool:
+    """Dit si le pair direct peut poser `X-Forwarded-For` pour le visiteur.
+
+    `TRUSTED_PROXY_CIDRS` (plages séparées par des virgules) :
+      - absente : toute adresse non routable sur Internet (privée, boucle
+        locale, CGNAT 100.64.0.0/10, IPv6 locale) — cas d'un ingress interne ;
+      - renseignée : ces plages seulement ;
+      - vide : aucun relais — à utiliser derrière un relais réseau (NAT de
+        niveau 4) qui n'ajoute pas `X-Forwarded-For`, sans quoi celui du client
+        passerait pour celui du relais.
+
+    `request.client.host` est l'adresse TCP, sauf si uvicorn la réécrit
+    (`--forwarded-allow-ips`) : jamais `*`, sinon le client choisit son pair.
+    """
+    host = request.client.host if request.client else None
+    try:
+        adresse = ipaddress.ip_address(host or "")
+    except ValueError:
+        return False
+    if adresse.version == 6 and adresse.ipv4_mapped:
+        adresse = adresse.ipv4_mapped
+    valeur = os.environ.get("TRUSTED_PROXY_CIDRS")
+    if valeur is None:
+        return not adresse.is_global
+    return any(adresse in plage for plage in _plages_de_relais(valeur))
+
+
 def client_ip(request: Request) -> Optional[str]:
     """IP client réelle, en ne faisant confiance qu'aux relais en frontal.
 
-    L'adresse est lue à `TRUSTED_PROXY_HOPS` positions de la fin de
-    `X-Forwarded-For` — et non systématiquement à la dernière, qui n'est la
-    bonne que derrière un unique relais. Voir `trusted_proxy_hops()` pour
-    calibrer ce nombre.
+    `X-Forwarded-For` (toutes ses lignes) n'est lu que si le pair direct est un
+    relais approuvé (`peer_is_trusted_proxy()`) ; l'adresse est alors lue à
+    `TRUSTED_PROXY_HOPS` positions de la fin — et non systématiquement à la
+    dernière, qui n'est la bonne que derrière un unique relais. Voir
+    `trusted_proxy_hops()` pour calibrer ce nombre. Sinon, c'est l'adresse du
+    pair direct.
 
     Retourne None si l'IP est absente, privée ou illisible — l'appelant doit
     traiter ce cas comme « pays inconnu », pas comme une fraude.
@@ -94,7 +141,13 @@ def client_ip(request: Request) -> Optional[str]:
             ):
                 return str(parsed_cf)
 
-    forwarded = request.headers.get("x-forwarded-for")
+    # Un relais qui ajoute sa propre ligne ne doit pas laisser gagner celle du
+    # client : toutes les lignes sont lues, dans l'ordre.
+    forwarded = (
+        ",".join(request.headers.getlist("x-forwarded-for"))
+        if peer_is_trusted_proxy(request)
+        else None
+    )
     raw = None
     if forwarded:
         # Chaque proxy traversé ajoute à droite l'adresse dont il a reçu la
@@ -213,7 +266,8 @@ def cloudflare_is_trusted(request: Request) -> bool:
     secret = os.environ.get("CLOUDFLARE_EDGE_SECRET")
     if secret:
         provided = request.headers.get("x-edge-secret")
-        return bool(provided) and hmac.compare_digest(provided, secret)
+        # En octets : un en-tête non ASCII serait sinon une TypeError (500).
+        return bool(provided) and hmac.compare_digest(provided.encode("latin-1"), secret.encode())
     return os.environ.get("TRUST_CLOUDFLARE_HEADERS", "false").lower() == "true"
 
 

@@ -98,15 +98,31 @@ contournement décrit plus haut.
 
 ## Étape 3 — En-têtes de proxy : ne pas élargir sans raison
 
-Le conteneur lance uvicorn avec `--proxy-headers --forwarded-allow-ips`, dont le
-défaut est `127.0.0.1`. **Gardez ce défaut** : la détection de pays lit
-`X-Forwarded-For` directement dans la requête et ne dépend pas de ce réglage,
-qui ne gouverne que la réécriture de `request.client` par uvicorn.
+Le backend ne lit `X-Forwarded-For` que si le pair direct (`request.client.host`,
+l'adresse qui ouvre la connexion) est un relais approuvé, réglé par
+`TRUSTED_PROXY_CIDRS` (plages séparées par des virgules) :
 
-Ne passez à `UVICORN_FORWARDED_ALLOW_IPS=*` que si l'origine est **strictement
-fermée** (Cloudflare Tunnel, ou pare-feu limité aux plages Cloudflare). Sur une
-origine joignable publiquement, `*` permet à n'importe qui de forger
-`X-Forwarded-For` — exactement le contournement que l'étape 2 vise à empêcher.
+- variable absente (défaut) : toute adresse non routable sur Internet (privée,
+  boucle locale, CGNAT `100.64.0.0/10`, IPv6 locale) — cas d'un ingress interne ;
+- liste explicite : ces plages seulement (par exemple un répartiteur de charge à
+  adresse publique) ;
+- vide (`TRUSTED_PROXY_CIDRS=`) : aucun relais. À utiliser derrière un relais
+  réseau de niveau 4 (NAT Docker, Service Kubernetes en SNAT) qui n'ajoute pas
+  `X-Forwarded-For` : sinon celui du client passerait pour celui du relais.
+
+Le conteneur lance uvicorn avec `--proxy-headers --forwarded-allow-ips`, dont le
+défaut est `127.0.0.1`. **Gardez ce défaut et ne passez jamais à
+`UVICORN_FORWARDED_ALLOW_IPS=*`** : uvicorn remplacerait alors `request.client`
+par l'entrée la plus à gauche de `X-Forwarded-For`, fournie par le client, et la
+vérification du relais la croirait — n'importe qui choisirait son IP, donc son
+pays.
+
+N'exposez jamais directement le proxy de Vite (`yarn dev` ou `vite preview`) :
+il transmet tel quel le `X-Forwarded-For` du client, que le backend reçoit de
+`127.0.0.1`.
+
+Les en-têtes Cloudflare (`CF-Connecting-IP`, `CF-IPCountry`) ne dépendent pas de
+ce réglage : leur preuve est le secret de l'étape 2.
 
 ---
 
@@ -186,7 +202,8 @@ curl -s https://<votre-domaine>/api/billing/geo-diagnostic | jq
     "x_edge_secret": false,
     "x_forwarded_for_hops": 2
   },
-  "asgi_client_is_private": true
+  "asgi_client_is_private": true,
+  "proxy_peer_trusted": true
 }
 ```
 
@@ -194,10 +211,14 @@ Comment lire le résultat :
 
 - **`client_ip` correspond à votre IP publique réelle** → la géolocalisation
   MaxMind fonctionnera. C'est la condition essentielle.
-- **`client_ip` est `null`** ou vaut une adresse interne → l'ingress masque l'IP
-  d'origine ; augmentez `UVICORN_FORWARDED_ALLOW_IPS` et vérifiez
-  `x_forwarded_for_hops`. Sans IP réelle, **aucune** méthode de géolocalisation
-  ne peut fonctionner.
+- **`client_ip` est `null`** ou vaut une adresse interne → si
+  `proxy_peer_trusted` est `false`, le pair direct n'est pas reconnu comme
+  relais : renseignez `TRUSTED_PROXY_CIDRS` avec la plage de l'ingress. Sinon,
+  ajustez `TRUSTED_PROXY_HOPS` en vérifiant `x_forwarded_for_hops`. Sans IP
+  réelle, **aucune** méthode de géolocalisation ne peut fonctionner.
+- **Falsification** : rappelez la route avec
+  `-H 'X-Forwarded-For: 8.8.8.8, 1.1.1.1'` ; `client_ip` doit rester votre IP
+  réelle.
 - **`headers_seen.cf_ipcountry` est `true`** → l'ingress laisse bien passer les
   en-têtes Cloudflare ; vous pouvez utiliser la voie Cloudflare ci-dessus.
 - **`x_edge_secret` est `true` mais `cloudflare_trusted` est `false`** → la
