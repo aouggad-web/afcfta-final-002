@@ -157,31 +157,30 @@ app = FastAPI(
 _cors_origins = resolve_cors_origins(os.environ)
 _allow_origin_regex = resolve_cors_origin_regex(os.environ)
 
-# Security middlewares (optional)
-try:
-    from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
+# Middlewares de sécurité (CSP, CSRF, limitation de débit) : import obligatoire.
+# Un déploiement partiel doit échouer au démarrage plutôt que servir l'API sans
+# protection (constat M10 de l'audit de sécurité).
+from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
 
-    app.add_middleware(SecurityHeadersMiddleware)
-    app.add_middleware(
-        CSRFMiddleware,
-        exempt_paths=[
-            "/api/docs",
-            "/api/openapi.json",
-            "/api/redoc",
-            "/api/health",
-            "/api/",
-            # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
-            # ni jeton CSRF — authentifiés par leur propre signature.
-            "/api/billing/webhook",
-            "/api/billing/chargily/webhook",
-        ],
-    )
-    # Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
-    # Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
-    app.add_middleware(RateLimitMiddleware)
-    logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
-except ImportError as e:
-    logger.warning(f"Security middlewares not loaded: {e}")
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(
+    CSRFMiddleware,
+    exempt_paths=[
+        "/api/docs",
+        "/api/openapi.json",
+        "/api/redoc",
+        "/api/health",
+        "/api/",
+        # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
+        # ni jeton CSRF — authentifiés par leur propre signature.
+        "/api/billing/webhook",
+        "/api/billing/chargily/webhook",
+    ],
+)
+# Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
+# Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
+app.add_middleware(RateLimitMiddleware)
+logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 
 app.add_middleware(
     CORSMiddleware,
