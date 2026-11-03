@@ -5,6 +5,7 @@ la source publie pour la position."""
 import importlib
 import importlib.util
 import os
+import re
 import sys
 
 import pytest
@@ -12,6 +13,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from services import socle
+from services.designation import texte_designation
 
 BACKEND = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -194,6 +196,43 @@ def test_recherche_dans_la_langue_de_l_interface(client):
     corps = _recherche(client, "MAR", "tea", langue="en")
     assert corps["langue"] == "en" and corps["results"][0]["code"].startswith("0902")
     assert client.get("/consultation/KEN/recherche", params={"q": "tea", "langue": "de"}).status_code == 422
+
+
+def test_recherche_q_bornee_a_2000_caracteres(client):
+    """Constat E2 : au-delà de 2 000 caractères, la requête est refusée."""
+    q = ("huile " * 334)[:2000]
+    assert client.get("/consultation/TUN/recherche", params={"q": q}).status_code == 200
+    assert client.get("/consultation/TUN/recherche", params={"q": q + "x"}).status_code == 422
+    assert client.get("/consultation/TUN/recherche", params={"q": "1" * 2001}).status_code == 422
+
+
+def test_recherche_la_plus_longue_designation_collee_est_acceptee(client):
+    """Coller une désignation nationale reste possible : au Maroc, certaines
+    dépassent 1 000 caractères."""
+    positions = socle.charger("MAR")["positions"].values()
+    plus_longue = max((texte_designation(p.get("designation"), "fr") or "" for p in positions), key=len)
+    assert 1000 < len(plus_longue) <= 2000
+    assert client.get("/consultation/MAR/recherche", params={"q": plus_longue}).status_code == 200
+
+
+def test_recherche_un_mot_repete_ne_compte_qu_une_fois(client, monkeypatch):
+    """Constat E2 : « de de de … » ne prépare qu'un couple de motifs, et
+    trouve ce que trouve « de »."""
+    attendu = _recherche(client, "TUN", "de")
+    motifs = []
+
+    class _ReCompte:
+        def __getattr__(self, nom):
+            return getattr(re, nom)
+
+        def compile(self, motif, *args):
+            motifs.append(motif)
+            return re.compile(motif, *args)
+
+    monkeypatch.setattr(sys.modules["routes_consultation_test"], "re", _ReCompte())
+    corps = _recherche(client, "TUN", ("de " * 100).strip())
+    assert len(motifs) == 2
+    assert corps["total"] == attendu["total"] and corps["results"] == attendu["results"]
 
 
 @pytest.mark.parametrize(

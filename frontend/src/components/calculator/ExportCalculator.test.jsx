@@ -151,6 +151,22 @@ describe('ExportCalculator', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Position nationale requise');
   });
 
+  it('invite à souscrire quand les calculs sans abonnement sont épuisés', async () => {
+    axios.post.mockRejectedValue({ response: { status: 429, data: { detail: {
+      error: 'quota_exceeded', tier: 'anonymous', module: 'calculator', quota: 10, quota_period: 'day',
+      message: 'Limite de 10 calculs par jour sans abonnement atteinte. Souscrivez un abonnement pour continuer.',
+    } } } });
+    render(<ExportCalculator />);
+
+    await userEvent.click(await screen.findByText('TUN — 17530 positions avec droit de sortie'));
+    await userEvent.type(screen.getByLabelText('Position nationale'), '8549141000');
+    await userEvent.type(screen.getByLabelText('Valeur en douane'), '1000');
+    await userEvent.click(screen.getByTestId('export-calculer'));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Souscrivez un abonnement pour continuer.');
+    expect(screen.getByRole('link', { name: 'Voir les formules' })).toHaveAttribute('href', '/pricing.html');
+  });
+
   it('demande le taux comme on le lit et envoie au moteur son inverse', async () => {
     const ferrailles = {
       pays: 'TUN',

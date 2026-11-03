@@ -12,6 +12,7 @@ import hashlib
 import json
 import logging
 import os
+import time
 from datetime import datetime, timezone
 from functools import wraps
 from typing import Any, Callable, Dict, List, Optional
@@ -72,6 +73,11 @@ CACHE_LAYERS: Dict[str, Dict[str, Any]] = {
     },
 }
 
+# Après un échec de connexion, pas de nouvel essai avant ce délai (constat E2) :
+# sinon chaque get/set d'une requête anonyme retente la connexion (jusqu'à 2 s
+# chacune si l'hôte ne répond pas), de façon synchrone dans le handler.
+_DELAI_RECONNEXION_S = 30
+
 
 class CacheLayer:
     """Single Redis cache layer with connection management."""
@@ -82,6 +88,7 @@ class CacheLayer:
         self.pattern = config["pattern"]
         self.db = config.get("db", 0)
         self._client: Optional["redis.Redis"] = None
+        self._dernier_echec: Optional[float] = None
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -91,6 +98,11 @@ class CacheLayer:
         if not REDIS_AVAILABLE:
             return None
         if self._client is None:
+            if (
+                self._dernier_echec is not None
+                and time.monotonic() - self._dernier_echec < _DELAI_RECONNEXION_S
+            ):
+                return None
             redis_url = os.environ.get("REDIS_URL", "redis://localhost:6379")
             try:
                 self._client = redis.from_url(
@@ -105,6 +117,7 @@ class CacheLayer:
             except Exception as exc:
                 logger.warning(f"[{self.name}] Redis unavailable: {exc}")
                 self._client = None
+                self._dernier_echec = time.monotonic()
         return self._client
 
     @staticmethod

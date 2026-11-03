@@ -77,7 +77,7 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <div class="scroll"><table>
 <tr><th>Données</th><th>Durée</th></tr>
 <tr><td>Compte et données associées</td><td>Tant que le compte existe ; effacées dès sa suppression</td></tr>
-<tr><td>Adresses IP</td><td>Non conservées par nous : utilisées le temps de la requête pour déterminer votre pays, puis oubliées. Nos prestataires techniques (Cloudflare, Supabase, hébergeur) peuvent les journaliser pour la sécurité, selon leurs propres durées.</td></tr>
+<tr><td>Adresses IP</td><td>Jamais enregistrées par nous : utilisées le temps de la requête pour déterminer votre pays. Sans compte, le nombre de calculs du jour est compté en mémoire du serveur, par adresse IP (par bloc pour une adresse IPv6), et effacé au plus tard à minuit (UTC). Nos prestataires techniques (Cloudflare, Supabase, hébergeur) peuvent les journaliser pour la sécurité, selon leurs propres durées.</td></tr>
 <tr><td>Achats et factures</td><td><mark>[durée comptable légale à fixer]</mark>, sous forme anonymisée après suppression du compte</td></tr>
 <tr><td>Messages de contact</td><td><mark>[durée à fixer selon les obligations légales]</mark></td></tr>
 </table></div>
@@ -96,6 +96,7 @@ Contact pour toute question sur vos données : <a href="mailto:contact@afcfta-zl
 <ul>
 <li><code>access_token</code> : maintient votre session de connexion ;</li>
 <li><code>csrf_token</code> : protège vos actions contre les attaques par falsification de requête ;</li>
+<li><code>appareil_connu</code> : posé après une connexion réussie, pour un an ; il permet de vous laisser vous connecter depuis ce navigateur même si un tiers multiplie les essais sur votre compte. Il ne contient ni votre adresse e-mail ni votre adresse IP ;</li>
 <li>stockage local du navigateur : session de connexion Supabase, thème clair/sombre, disposition de votre tableau de bord.</li>
 </ul>
 

@@ -102,7 +102,13 @@ export function CSVExportButton({
 
   const escapeCell = (val) => {
     if (val == null) return '';
-    const s = String(val);
+    let s = String(val);
+    // Injection de formules (audit M5) : un texte de plus d'un caractère qui
+    // commence par = + - @, tabulation ou retour chariot serait évalué par le
+    // tableur ; l'apostrophe le fait lire comme du texte. Nombres et booléens
+    // gardent leur valeur ; un tableau est jugé sur son texte.
+    // Résidu accepté : ouvert avec le séparateur « ; », un « ; » intérieur peut couper le champ devant un « = ».
+    if (typeof val !== 'number' && typeof val !== 'boolean' && s.length > 1 && /^[=+\-@\t\r]/.test(s)) s = `'${s}`;
     return /[",\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
 

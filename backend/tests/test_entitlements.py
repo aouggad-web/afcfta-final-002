@@ -136,6 +136,35 @@ def test_user_with_no_subscription_field_grants_free_tier():
     assert ent.tier == "free"
 
 
+def test_le_compte_admin_a_tous_les_modules_sans_aucun_quota(monkeypatch):
+    # Compte admin amorcé (server.py), pour les démonstrations : aucune limite,
+    # si le déploiement l'active (ADMIN_ACCES_ILLIMITE, Emergent).
+    monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", "true")
+    ent = resolve_entitlements({"email": "admin@example.com", "role": "admin"})
+
+    assert ent.tier == "admin"
+    assert ent.daily_calculations is None
+    assert ent.api_access is True and ent.api_monthly_quota is None
+    assert ent.export_formats == ("csv", "excel", "pdf")
+    for module_id in MODULES:
+        access = ent.module(module_id)
+        assert access.enabled is True and access.quota is None, module_id
+    # Hors de la grille vendue, et réservé au rôle admin.
+    assert "admin" not in TIERS
+    assert resolve_entitlements({"email": "u@example.com", "role": "user"}).tier == "free"
+
+
+@pytest.mark.parametrize("reglage", [None, "", "false", "0"])
+def test_sans_le_reglage_le_compte_admin_suit_sa_formule(monkeypatch, reglage):
+    # Désactivé (défaut, production à décider) : aucun privilège d'abonnement.
+    if reglage is None:
+        monkeypatch.delenv("ADMIN_ACCES_ILLIMITE", raising=False)
+    else:
+        monkeypatch.setenv("ADMIN_ACCES_ILLIMITE", reglage)
+
+    assert resolve_entitlements({"email": "admin@example.com", "role": "admin"}).tier == "free"
+
+
 @pytest.mark.parametrize("tier", ["starter", "pro", "business"])
 def test_active_subscription_grants_its_tier(tier):
     user = {"subscription_tier": tier, "subscription_status": "active"}
@@ -326,6 +355,8 @@ def test_free_tier_module_caps_and_denials():
     assert stats.quota_period is None
 
     assert ent.module("tools").enabled is False
+    # Module Opportunités réservé aux abonnements payants (audit E1).
+    assert ent.module("reports").enabled is False
     roo = ent.module("roo")
     assert roo.enabled is True
     assert roo.quota is None
@@ -469,11 +500,12 @@ async def test_require_module_enabled_never_meters_capped_module():
     # A single logistics/stats/production/roo screen fans out to many GETs;
     # enablement-only gating must let a signed-in free user load it any
     # number of times without being blocked. Exercised here against "reports"
-    # (still genuinely capped at 2/day via the metered require_module()) to
+    # (still genuinely capped at 10/day for starter via the metered
+    # require_module(); free no longer has it at all) to
     # prove require_module_enabled() ignores a module's quota entirely,
     # rather than happening to pass because the module has none.
     dep = entitlement_guard.require_module_enabled("reports")
-    user = _user("free")
+    user = _user("starter")
     for _ in range(50):
         await _call_dep(dep, user)
 
@@ -703,13 +735,18 @@ async def test_api_access_denied_below_business(fake_db, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_api_access_anonymous_keeps_prior_unmetered_access(fake_db):
-    # No JWT session at all — same "keep prior behavior" fallback as
-    # require_module, so an existing API-key-only integration isn't newly
-    # locked out of api_v2 by this provisional wiring.
+async def test_api_access_anonyme_sans_cle_refuse_avec_cle_accepte(fake_db):
+    # Audit E1 : sans session, l'API v2 n'est plus ouverte à tous. Seule une
+    # clé API valide (document api_keys, plans API vendus) passe ; le contexte
+    # public que rend require_auth sans clé est refusé.
     dep = entitlement_guard.require_api_access()
-    for _ in range(5):
-        await dep(request=None, user=None)
+    with pytest.raises(HTTPException) as exc:
+        await dep(request=None, user=None, key_doc={"tier": "public", "no_key": True})
+    assert exc.value.status_code == 403
+    assert exc.value.detail["error"] == "upgrade_required"
+
+    ent = await dep(request=None, user=None, key_doc={"key_hash": "h", "tier": "free"})
+    assert ent.tier == "free"
 
 
 @pytest.mark.asyncio

@@ -10,8 +10,11 @@ import re
 from datetime import datetime, timezone
 
 import pandas as pd
-from fastapi import APIRouter, HTTPException, Query, Response
+from auth import require_admin
+from entitlement_guard import require_export_format
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from fastapi.responses import StreamingResponse
+from formules_tableur import neutraliser_formule
 from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
@@ -28,6 +31,11 @@ def init_db(db):
     _db = db
 
 
+def _sans_formules(rows):
+    """Cellules texte neutralisées contre l'injection de formules (audit M5)."""
+    return [{k: neutraliser_formule(v) for k, v in row.items()} for row in rows]
+
+
 def get_db():
     """Get database instance"""
     if _db is None:
@@ -38,7 +46,8 @@ def get_db():
     return _db
 
 
-@router.get("/tariffs/csv")
+# Chaque export exige son format dans la formule (export_formats, audit E1).
+@router.get("/tariffs/csv", dependencies=[Depends(require_export_format("csv"))])
 async def export_tariffs_csv(
     country: str = Query(..., description="Country code"),
     latest: bool = Query(True, description="Latest only"),
@@ -85,7 +94,7 @@ async def export_tariffs_csv(
         if rows:
             writer = csv.DictWriter(output, fieldnames=rows[0].keys())
             writer.writeheader()
-            writer.writerows(rows)
+            writer.writerows(_sans_formules(rows))
 
         filename = f"tariffs_{re.sub(r'[^A-Za-z0-9_-]', '_', country)}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
 
@@ -102,7 +111,7 @@ async def export_tariffs_csv(
         raise HTTPException(500, "Internal server error")
 
 
-@router.get("/tariffs/excel")
+@router.get("/tariffs/excel", dependencies=[Depends(require_export_format("excel"))])
 async def export_tariffs_excel(
     countries: str = Query(..., description="Comma-separated country codes"),
     latest: bool = Query(True),
@@ -143,7 +152,7 @@ async def export_tariffs_excel(
                     )
 
                 if rows:
-                    df = pd.DataFrame(rows)
+                    df = pd.DataFrame(_sans_formules(rows))
                     df.to_excel(
                         writer, sheet_name=country[:31], index=False
                     )  # Excel sheet name limit is 31 chars
@@ -162,7 +171,8 @@ async def export_tariffs_excel(
         raise HTTPException(500, "Internal server error")
 
 
-@router.get("/validation-report/json")
+# Rapport qualité de la collecte : métadonnées internes, pas un format vendu.
+@router.get("/validation-report/json", dependencies=[Depends(require_admin)])
 async def export_validation_report_json(
     country: str = Query(None, description="Optional country code filter"),
     min_score: float = Query(0.0, description="Minimum validation score"),
@@ -235,7 +245,7 @@ async def export_validation_report_json(
         raise HTTPException(500, "Internal server error")
 
 
-@router.get("/comparison/csv")
+@router.get("/comparison/csv", dependencies=[Depends(require_export_format("csv"))])
 async def export_comparison_csv(
     countries: str = Query(..., description="Comma-separated country codes (2+ required)"),
     hs_codes: str = Query(None, description="Optional: Comma-separated HS codes to compare"),
@@ -311,10 +321,12 @@ async def export_comparison_csv(
         # Generate CSV
         output = io.StringIO()
         writer = csv.DictWriter(output, fieldnames=rows[0].keys())
-        writer.writeheader()
-        writer.writerows(rows)
+        # L'en-tête reprend les codes pays de la requête (`{pays}_duty`).
+        writer.writerow({k: neutraliser_formule(k) for k in rows[0]})
+        writer.writerows(_sans_formules(rows))
 
-        filename = f"comparison_{'_'.join(country_list)}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
+        pays = re.sub(r"[^A-Za-z0-9_-]", "_", "_".join(country_list))
+        filename = f"comparison_{pays}_{datetime.now(timezone.utc).strftime('%Y%m%d')}.csv"
 
         return Response(
             content=output.getvalue(),

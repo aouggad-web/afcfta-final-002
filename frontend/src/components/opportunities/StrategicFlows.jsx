@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import { montant, montantCompact } from '../../utils/nombres';
 import { getCountryName } from '../../utils/translations';
+import { reportsNoticeText } from '../tools/entitlementNotice';
+import SubscriptionNotice from '../tools/SubscriptionNotice';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -257,11 +259,14 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
       try {
         const r = await axios.get(`${API}/substitution/countries?lang=${lang}`);
         setCountries(r.data.countries || []);
-      } catch {
-        /* liste pays indisponible : le sélecteur restera vide */
+      } catch (e) {
+        /* liste pays indisponible : le sélecteur restera vide, sauf refus
+           d'abonnement (audit E1), annoncé dès l'ouverture de l'onglet */
+        const notice = reportsNoticeText(e, uiLang);
+        if (notice) setError(<SubscriptionNotice text={notice} language={uiLang} />);
       }
     })();
-  }, [lang]);
+  }, [lang, uiLang]);
 
   useEffect(() => {
     if (initialCountry?.iso3) setSelected(initialCountry.iso3);
@@ -275,12 +280,17 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
       const r = await axios.get(`${API}/strategic/flows/${iso3}?lang=${lang}&limit=40`);
       setData(r.data);
     } catch (e) {
-      setError(e?.response?.data?.detail || String(e));
+      // Refus d'abonnement (audit E1) : avis localisé. Le `detail` d'un refus
+      // est un objet, que React ne peut pas afficher tel quel.
+      const notice = reportsNoticeText(e, uiLang);
+      const detail = e?.response?.data?.detail;
+      setError(notice ? <SubscriptionNotice text={notice} language={uiLang} />
+        : (typeof detail === 'string' ? detail : String(e)));
       setData(null);
     } finally {
       setLoading(false);
     }
-  }, [lang]);
+  }, [lang, uiLang]);
 
   useEffect(() => {
     if (selected) analyze(selected);
