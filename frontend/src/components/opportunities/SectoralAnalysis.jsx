@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { montant, montantCompact } from "../../utils/nombres";
 import { pick } from "../../i18n/lang";
+import { reportsNoticeText } from "../tools/entitlementNotice";
+import SubscriptionNotice from "../tools/SubscriptionNotice";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
 
@@ -163,7 +165,8 @@ function SectoralAnalysis({ hsCode, origin, destination, fr, language }) {
       } catch (e) {
         // Distinguish a real request failure from the loading / no-section case,
         // so users don't mistake an unavailable service for "no sectoral data".
-        if (!cancelled) setError(true);
+        // Un refus d'abonnement (audit E1) garde son propre avis.
+        if (!cancelled) setError(reportsNoticeText(e, lang) || true);
       }
     };
 
@@ -180,7 +183,9 @@ function SectoralAnalysis({ hsCode, origin, destination, fr, language }) {
         <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
           {t("opportunities.sectoralAnalysis.sectoralAnalysisIsic4Idsb")}
         </div>
-        {t("opportunities.sectoralAnalysis.serviceTemporarilyUnavailableSectoral")}
+        {error === true
+          ? t("opportunities.sectoralAnalysis.serviceTemporarilyUnavailableSectoral")
+          : <SubscriptionNotice text={error} language={lang} />}
       </div>
     );
   }

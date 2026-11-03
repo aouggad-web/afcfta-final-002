@@ -47,3 +47,32 @@ export function entitlementNoticeText(refusal, language = 'fr') {
   }
   return pick(language, "Les données tarifaires de ce module sont réservées aux formules payantes. Passez à une formule supérieure pour y accéder.", 'This module’s tariff data is reserved for paid plans. Upgrade your plan to access it.', 'البيانات التعريفية في هذه الوحدة مخصّصة للباقات المدفوعة. قم بالترقية إلى باقة أعلى للوصول إليها.');
 }
+
+/** Page des formules, vers laquelle renvoient les refus d'abonnement. */
+export const PRICING_URL = '/pricing.html';
+
+/**
+ * Refus du module Opportunités (`/api/reports/*`), réservé aux abonnements
+ * payants (audit E1). Libellé local, dans la langue de l'interface : le
+ * message du serveur n'existe qu'en français. `null` pour toute autre erreur.
+ */
+export function reportsNoticeText(error, language = 'fr') {
+  const refusal = entitlementRefusal(error);
+  if (!refusal) return null;
+  if (refusal.kind === 'quota_exceeded') {
+    return pick(language, "Quota de rapports de votre formule atteint pour aujourd'hui. Passez à une formule supérieure pour continuer.", 'Your plan’s report quota for today is reached. Upgrade your plan to continue.', 'تم بلوغ حصة التقارير اليومية لباقتك. قم بالترقية إلى باقة أعلى للمتابعة.');
+  }
+  return pick(language, 'Le module Opportunités est réservé aux abonnements payants. Souscrivez un abonnement pour y accéder.', 'The Opportunities module is reserved for paid subscriptions. Subscribe to access it.', 'وحدة الفرص مخصّصة للاشتراكات المدفوعة. اشترك للوصول إليها.');
+}
+
+/**
+ * Calculs sans abonnement épuisés : 429 `quota_exceeded` de tier
+ * « anonymous » (audit E1). Libellé local qui invite à souscrire ; `null`
+ * pour toute autre erreur, y compris le quota d'un abonné.
+ */
+export function anonymousCalculationNoticeText(error, language = 'fr') {
+  const refusal = entitlementRefusal(error);
+  if (refusal?.kind !== 'quota_exceeded' || refusal.tier !== 'anonymous') return null;
+  const quota = error.response.data.detail.quota;
+  return pick(language, `Limite de ${quota} calculs par jour sans abonnement atteinte. Souscrivez un abonnement pour continuer.`, `Limit of ${quota} calculations per day without a subscription reached. Subscribe to continue.`, `تم بلوغ حدّ ${quota} عمليات حساب يوميًا دون اشتراك. اشترك للمتابعة.`);
+}

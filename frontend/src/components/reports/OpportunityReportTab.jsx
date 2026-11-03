@@ -8,8 +8,17 @@ import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 import { montant, montantUnite, nombre } from "../../utils/nombres";
 import { pick } from "../../i18n/lang";
+import { reportsNoticeText } from "../tools/entitlementNotice";
+import SubscriptionNotice from "../tools/SubscriptionNotice";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
+
+/* Refus d'abonnement (module réservé aux formules payantes, audit E1) : un avis
+   localisé avec un lien vers les formules, au lieu de l'erreur générique. */
+const reportError = (e, language, generic) => {
+  const notice = reportsNoticeText(e, language);
+  return notice ? <SubscriptionNotice text={notice} language={language} /> : generic;
+};
 
 /* Honest formatter: null / undefined -> "—" (never invented). */
 const dash = (v, suffix = "") =>
@@ -146,7 +155,7 @@ function MarketSeekingView({ fr, prefill, language = fr ? "fr" : "en" }) {
       const res = await axios.get(`${API}/reports/market-seeking?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
-      setError(pick(language, "Impossible de générer le rapport.", "Could not generate report.", "تعذّر إنشاء التقرير."));
+      setError(reportError(e, language, pick(language, "Impossible de générer le rapport.", "Could not generate report.", "تعذّر إنشاء التقرير.")));
     } finally {
       setLoading(false);
     }
@@ -402,7 +411,7 @@ export function BilateralView({ countries, fr, prefill, language = fr ? "fr" : "
       const res = await axios.get(`${API}/reports/opportunity?${params.toString()}`);
       setReport(res.data);
     } catch (e) {
-      setError(pick(language, "Impossible de générer le rapport.", "Could not generate report.", "تعذّر إنشاء التقرير."));
+      setError(reportError(e, language, pick(language, "Impossible de générer le rapport.", "Could not generate report.", "تعذّر إنشاء التقرير.")));
     } finally {
       setLoading(false);
     }
@@ -1410,7 +1419,7 @@ function DirectExportView({ countries, fr, onAnalyze, language = fr ? "fr" : "en
       const res = await axios.get(`${API}/reports/direct-export?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
-      setError(pick(language, "Impossible de générer le scénario.", "Could not generate scenario.", "تعذّر إنشاء السيناريو."));
+      setError(reportError(e, language, pick(language, "Impossible de générer le scénario.", "Could not generate scenario.", "تعذّر إنشاء السيناريو.")));
     } finally {
       setLoading(false);
     }
@@ -1633,7 +1642,7 @@ function TransformationView({ countries, fr, onAnalyze, language = fr ? "fr" : "
       const res = await axios.get(`${API}/reports/transformation?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
-      setError(pick(language, "Impossible de générer le scénario.", "Could not generate scenario.", "تعذّر إنشاء السيناريو."));
+      setError(reportError(e, language, pick(language, "Impossible de générer le scénario.", "Could not generate scenario.", "تعذّر إنشاء السيناريو.")));
     } finally {
       setLoading(false);
     }
@@ -1835,7 +1844,7 @@ function ImportOpportunitiesView({ countries, fr, onAnalyze, language = fr ? "fr
       const res = await axios.get(`${API}/reports/import-opportunities?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
-      setError(pick(language, "Impossible de générer le scan d'importation.", "Could not run the import scan.", "تعذّر إجراء مسح الواردات."));
+      setError(reportError(e, language, pick(language, "Impossible de générer le scan d'importation.", "Could not run the import scan.", "تعذّر إجراء مسح الواردات.")));
     } finally {
       setLoading(false);
     }
@@ -2013,7 +2022,7 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill, language = fr ? "
       const res = await axios.get(`${API}/reports/national-need?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
-      setError(pick(language, "Impossible d'estimer le besoin.", "Could not estimate need.", "تعذّر تقدير الحاجة."));
+      setError(reportError(e, language, pick(language, "Impossible d'estimer le besoin.", "Could not estimate need.", "تعذّر تقدير الحاجة.")));
     } finally {
       setLoading(false);
     }
