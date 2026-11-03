@@ -71,6 +71,11 @@ describe('régime de zone de libre-échange retenu à la place de la ZLECAf (GZA
     expect(preferentialRegimeLabel({ trade_regime: 'ZLECAF' })).toBeNull();
   });
 
+  it('en arabe, la nomme منطقة التجارة الحرة العربية الكبرى', () => {
+    expect(preferentialRegimeLabel(gzale, 'ar')).toBe('منطقة التجارة الحرة العربية الكبرى');
+    expect(preferentialRegimeLabel(gzale, 'fr')).toBe('GZALE');
+  });
+
   it("ne l'affiche pas quand aucun régime n'a été appliqué", () => {
     expect(isDisplayableZlecafResult({ ...gzale, preferential_regime_applied: false })).toBe(false);
   });

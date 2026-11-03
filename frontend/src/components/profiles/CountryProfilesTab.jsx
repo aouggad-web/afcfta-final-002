@@ -8,6 +8,14 @@ import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
 import { chiffres, estAnglais, montant, montantUnite } from '../../utils/nombres';
 import { pick } from '../../i18n/lang';
+import { getCountryName, getRegionName } from '../../utils/translations';
+
+// Catégories de l'indice d'attractivité (GAI 2025), servies en français et anglais.
+const GAI_CATEGORIES_AR = {
+  'Modérément attractif': 'جاذبية متوسطة',
+  'Faiblement attractif': 'جاذبية ضعيفة',
+  'Peu attractif': 'جاذبية محدودة',
+};
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -604,8 +612,8 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 <CardTitle className="flex items-center space-x-3 text-2xl">
                   <span className="text-5xl">{getFlag(countryProfile.country_code)}</span>
                   <div>
-                    <span className="font-bold text-[var(--gold)] text-3xl">{countryProfile.country_name}</span>
-                    <p className="text-sm text-[var(--text)] mt-1">{countryProfile.region}</p>
+                    <span className="font-bold text-[var(--gold)] text-3xl">{language === 'ar' ? getCountryName(countryProfile.country_code, 'ar') : countryProfile.country_name}</span>
+                    <p className="text-sm text-[var(--text)] mt-1">{language === 'ar' ? getRegionName(countryProfile.region, 'ar') : countryProfile.region}</p>
                   </div>
                 </CardTitle>
                 <CardDescription className="text-sm font-semibold text-[var(--text)] flex flex-wrap items-center gap-2 mt-2">
@@ -775,7 +783,7 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   </div>
                   {(countryProfile.projections.gai_2025_category_fr || countryProfile.projections.gai_2025_category_en) && (
                     <p className="text-sm font-semibold text-[var(--violet)] mb-2">
-                      {pick(language, countryProfile.projections.gai_2025_category_fr, countryProfile.projections.gai_2025_category_en, countryProfile.projections.gai_2025_category_fr)}
+                      {pick(language, countryProfile.projections.gai_2025_category_fr, countryProfile.projections.gai_2025_category_en, GAI_CATEGORIES_AR[countryProfile.projections.gai_2025_category_fr] || countryProfile.projections.gai_2025_category_fr)}
                     </p>
                   )}
                   <div className="flex gap-3 text-xs">
