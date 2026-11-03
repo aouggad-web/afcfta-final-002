@@ -25,7 +25,8 @@ import { useTranslation } from 'react-i18next';
 import { AlertTriangle, ArrowRight, Loader2, PackageSearch } from 'lucide-react';
 
 import EnhancedCountrySelector from './EnhancedCountrySelector';
-import { intlLocale } from '../../i18n/lang';
+import { intlLocale, isRtl } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -55,6 +56,18 @@ export function handoffToMarkets({ iso3, hsCode }) {
   }
   window.dispatchEvent(new CustomEvent('zlecaf:goto-tab', { detail: { tab: 'reports' } }));
   return true;
+}
+
+// Réserve de couverture : phrase gabarit du serveur (institution, nombre de
+// pays, libellé de la commodité). En arabe on la recompose pièce par pièce ;
+// toute autre réserve passe par le dictionnaire des données.
+const COUVERTURE_LIMITEE = /^Couverture (\S+) limitée à (\d+) pays africain\(s\) pour « (.+?) » dans notre base actuelle/;
+
+function caveatText(caveat, language) {
+  const m = isRtl(language) && COUVERTURE_LIMITEE.exec(caveat);
+  if (!m) return trDonnee(caveat, language);
+  const [, institution, n, label] = m;
+  return `تغطية ${institution} في قاعدتنا الحالية مقتصرة على ${n} بلد(ان) أفريقي(ة) بالنسبة إلى «${trDonnee(label, language)}» — فالترتيب أو الحصة القارية المحسوبة على عدد قليل كهذا من البلدان لا تعكس ريادة فعلية: يُرجَّح جدًا وجود منتجين أفارقة آخرين لم تُدرَج بياناتهم بعد. تُعامَل هذه البيانات على أنها جزئية، لا على أنها ترتيب موثوق.`;
 }
 
 function ProductionOutlets({ language = 'fr' }) {
@@ -153,21 +166,21 @@ function ProductionOutlets({ language = 'fr' }) {
                       className="border-b border-[var(--afcfta-border)] align-top"
                     >
                       <td className="py-2 pr-3 text-[var(--text)]">
-                        {p.commodity}
+                        {trDonnee(p.commodity, language)}
                         {caveat && (
                           <div
                             className="flex items-start gap-1 mt-1 text-[11px] text-[var(--gold)]"
                             data-testid="outlets-caveat"
                           >
                             <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" />
-                            <span>{caveat}</span>
+                            <span>{caveatText(caveat, language)}</span>
                           </div>
                         )}
                       </td>
                       <td className="py-2 pr-3 font-mono text-xs text-[var(--afcfta-muted)]">{p.hs_code}</td>
                       <td className="py-2 pr-3 text-right tabular-nums text-[var(--text)]">
                         {typeof p.value === 'number' ? p.value.toLocaleString(intlLocale(language)) : '—'}
-                        <span className="text-[var(--afcfta-muted)] text-xs"> {p.unit}</span>
+                        <span className="text-[var(--afcfta-muted)] text-xs"> {trDonnee(p.unit, language)}</span>
                       </td>
                       <td className="py-2 pr-3 text-xs text-[var(--afcfta-muted)]">
                         {/* Jamais le rang seul : le dénominateur le rend jugeable. */}

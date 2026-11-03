@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import { pick } from '../../i18n/lang';
+import { trDonnee } from '../../i18n/donnees';
 import {
   Wheat, Beef, Fish, TrendingUp, AlertTriangle, Loader2,
   Globe, BarChart3, Droplets, Award, Info
@@ -84,12 +85,15 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
   // ── Charts data ──────────────────────────────────────────────────────────
   const culturesChartData = () =>
-    (detail?.cultures || []).map((c) => ({
-      name: c.name.length > 14 ? c.name.slice(0, 14) + '…' : c.name,
-      fullName: c.name,
-      value: c.value_2023,
-      year: c.is_bulk_faostat ? c.year : 2023,
-    }));
+    (detail?.cultures || []).map((c) => {
+      const label = trDonnee(c.name, language);
+      return {
+        name: label.length > 14 ? label.slice(0, 14) + '…' : label,
+        fullName: label,
+        value: c.value_2023,
+        year: c.is_bulk_faostat ? c.year : 2023,
+      };
+    });
 
   const evolutionChartData = () => {
     const evo = detail?.evolution || {};
@@ -105,7 +109,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
   const elevageChartData = () =>
     (detail?.elevage || []).map((e) => ({
-      name: e.name,
+      name: trDonnee(e.name, language),
       value: e.value,
     }));
 
@@ -145,10 +149,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
             {faoStats && (
               <div className="flex flex-col items-end gap-1">
                 <Badge className="bg-[var(--overlay)] text-[var(--text)] text-sm px-3 py-1">
-                  <Globe className="w-3 h-3 mr-1" /> {faoStats.total_countries} pays
+                  <Globe className="w-3 h-3 mr-1" /> {faoStats.total_countries} {pick(language, 'pays', 'pays', 'بلدًا')}
                 </Badge>
                 <span className="text-xs text-[var(--success)]">
-                  {faoStats.total_commodities} produits · {faoStats.data_year}
+                  {faoStats.total_commodities} {pick(language, 'produits', 'produits', 'منتجًا')} · {faoStats.data_year}
                 </span>
               </div>
             )}
@@ -190,23 +194,23 @@ export default function ProductionAgriculture({ language = 'fr' }) {
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <div>
                   <CardTitle className="text-xl text-[var(--success)] flex items-center gap-2">
-                    <span className="text-3xl">🌍</span> {detail.country_name}
+                    <span className="text-3xl">🌍</span> {trDonnee(detail.country_name, language)}
                     <Badge variant="outline" className="border-[color-mix(in_srgb,var(--success)_30%,transparent)] text-[var(--success)] text-xs ml-2">
-                      {detail.region}
+                      {trDonnee(detail.region, language)}
                     </Badge>
                   </CardTitle>
                   <div className="flex gap-2 mt-2 flex-wrap">
                     <Badge className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]">
-                      {detail.cultures?.length || 0} cultures
+                      {detail.cultures?.length || 0} {pick(language, 'cultures', 'cultures', 'محصولًا')}
                     </Badge>
                     {detail.has_livestock && (
                       <Badge className="bg-[color-mix(in_srgb,var(--gold)_8%,var(--afcfta-card))] text-[var(--gold)] border-[color-mix(in_srgb,var(--gold)_30%,transparent)]">
-                        <Beef className="w-3 h-3 mr-1" /> Élevage
+                        <Beef className="w-3 h-3 mr-1" /> {pick(language, 'Élevage', 'Élevage', 'تربية المواشي')}
                       </Badge>
                     )}
                     {detail.has_fisheries && (
                       <Badge className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">
-                        <Fish className="w-3 h-3 mr-1" /> Pêche
+                        <Fish className="w-3 h-3 mr-1" /> {pick(language, 'Pêche', 'Pêche', 'الصيد البحري')}
                       </Badge>
                     )}
                   </div>
@@ -296,7 +300,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                               {detail.cultures.map((c) => (
                                 <tr key={c.name} className="border-b hover:bg-[var(--afcfta-card2)]">
                                   <td className="px-3 py-2">
-                                    <span className="font-medium">{c.name}</span>
+                                    <span className="font-medium">{trDonnee(c.name, language)}</span>
                                   </td>
                                   <td className="px-3 py-2 text-right font-mono text-[var(--success)] font-bold">
                                     {fmt(c.value_2023)} t
@@ -345,6 +349,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                 key={crop}
                                 type="monotone"
                                 dataKey={crop}
+                                name={trDonnee(crop, language)}
                                 stroke={SERIES[i]}
                                 strokeWidth={2}
                                 dot={{ r: 4, stroke: 'var(--afcfta-card)', strokeWidth: 2, fill: SERIES[i] }}
@@ -449,10 +454,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             {detail.elevage.map((e) => (
                               <tr key={e.name} className="border-b hover:bg-[var(--afcfta-card2)]">
                                 <td className="px-3 py-2.5">
-                                  <span className="font-medium">{e.name}</span>
+                                  <span className="font-medium">{trDonnee(e.name, language)}</span>
                                 </td>
                                 <td className="px-3 py-2.5 text-right font-mono font-bold text-[var(--gold)]">
-                                  {fmt(e.value)} {e.unit}
+                                  {fmt(e.value)} {trDonnee(e.unit, language)}
                                 </td>
                                 <td className="px-3 py-2.5 text-center">
                                   {e.rank_africa ? (
@@ -480,8 +485,8 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                           {Object.entries(detail.livestock_production_2023).map(([name, d]) => (
                             <div key={name} className="text-center bg-[var(--afcfta-card)] rounded-xl p-3 border border-[color-mix(in_srgb,var(--gold)_30%,transparent)] shadow-sm">
                               <p className="text-xl font-bold text-[var(--gold)]">{fmt(d.value)}</p>
-                              <p className="text-xs text-[var(--afcfta-muted)] mt-1">{d.unit}</p>
-                              <p className="text-sm font-medium text-[var(--text)] mt-1">{name}</p>
+                              <p className="text-xs text-[var(--afcfta-muted)] mt-1">{trDonnee(d.unit, language)}</p>
+                              <p className="text-sm font-medium text-[var(--text)] mt-1">{trDonnee(name, language)}</p>
                             </div>
                           ))}
                         </div>
@@ -516,7 +521,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <p className="text-sm text-[var(--info)] mt-1">{t('production.agriculture.panel.capture')} 2023</p>
                             {detail.peche_aquaculture?.capture_rank_africa && (
                               <Badge className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] mt-2 text-xs">
-                                Rang Afrique #{detail.peche_aquaculture.capture_rank_africa}
+                                {pick(language, 'Rang Afrique', 'Rang Afrique', 'الترتيب أفريقيًا')} #{detail.peche_aquaculture.capture_rank_africa}
                               </Badge>
                             )}
                           </div>
@@ -535,7 +540,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <p className="text-sm text-[var(--success)] mt-1">{t('production.agriculture.panel.aquaculture')} 2023</p>
                             {detail.peche_aquaculture?.aquaculture_rank_africa && (
                               <Badge className="bg-[color-mix(in_srgb,var(--success)_8%,var(--afcfta-card))] text-[var(--success)] mt-2 text-xs">
-                                Rang Afrique #{detail.peche_aquaculture.aquaculture_rank_africa}
+                                {pick(language, 'Rang Afrique', 'Rang Afrique', 'الترتيب أفريقيًا')} #{detail.peche_aquaculture.aquaculture_rank_africa}
                               </Badge>
                             )}
                           </div>
@@ -585,7 +590,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {detail.peche_aquaculture.species.map(s => (
-                                <Badge key={s} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">{s}</Badge>
+                                <Badge key={s} className="bg-[color-mix(in_srgb,var(--info)_8%,var(--afcfta-card))] text-[var(--info)] border-[color-mix(in_srgb,var(--info)_30%,transparent)]">{trDonnee(s, language)}</Badge>
                               ))}
                             </div>
                           </div>
@@ -597,7 +602,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {detail.peche_aquaculture.main_ports.map(p => (
-                                <Badge key={p} className="bg-[var(--afcfta-card2)] text-[var(--text)]">{p}</Badge>
+                                <Badge key={p} className="bg-[var(--afcfta-card2)] text-[var(--text)]">{trDonnee(p, language)}</Badge>
                               ))}
                             </div>
                           </div>
@@ -668,7 +673,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                 {fmt(p.value)}
                               </p>
                               <p className="text-[11px] text-[var(--afcfta-muted)]">
-                                {p.year} · {proj.unit}
+                                {p.year} · {trDonnee(proj.unit, language)}
                               </p>
                             </div>
                           ))}
