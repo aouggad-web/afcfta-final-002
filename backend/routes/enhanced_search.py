@@ -184,7 +184,9 @@ def _semantic_matches(
 
 @router.get("/hs-codes")
 async def enhanced_hs_code_search(
-    q: str = Query(..., min_length=2, description="Search query (product name or HS code)"),
+    q: str = Query(
+        ..., min_length=2, max_length=100, description="Search query (product name or HS code)"
+    ),
     language: str = Query("en", description="Language for labels: en or fr"),
     limit: int = Query(20, ge=1, le=100, description="Maximum results per match type"),
 ):
@@ -275,7 +277,9 @@ def _search_engine():
 
 @router.get("/hs-codes")
 async def search_hs_codes(
-    q: str = Query(..., min_length=2, description="Search query (code or description)"),
+    q: str = Query(
+        ..., min_length=2, max_length=100, description="Search query (code or description)"
+    ),
     lang: str = Query("en", description="Response language: en | fr"),
     limit: int = Query(20, ge=1, le=100),
 ):
@@ -339,7 +343,7 @@ async def search_investment_opportunities(request: InvestmentSearchRequest):
 
 @router.get("/autocomplete")
 async def autocomplete(
-    q: str = Query(..., min_length=1),
+    q: str = Query(..., min_length=1, max_length=100),
     type: str = Query("all", description="all | hs_code | country | sector"),
     limit: int = Query(8, ge=1, le=20),
 ):
